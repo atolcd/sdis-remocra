@@ -1,0 +1,52 @@
+<wms>
+  <id>wms</id>
+  <enabled>false</enabled>
+  <name>WMS</name>
+  <title>Web Map Service</title>
+  <accessConstraints>NONE</accessConstraints>
+  <fees>NONE</fees>
+  <versions>
+    <org.geotools.util.Version>
+      <version>1.1.1</version>
+    </org.geotools.util.Version>
+    <org.geotools.util.Version>
+      <version>1.3.0</version>
+    </org.geotools.util.Version>
+  </versions>
+  <keywords>
+    <string>WFS</string>
+    <string>WMS</string>
+    <string>GEOSERVER</string>
+  </keywords>
+  <metadataLink/>
+  <citeCompliant>false</citeCompliant>
+  <schemaBaseURL>http://schemas.opengis.net</schemaBaseURL>
+  <verbose>false</verbose>
+  <metadata>
+    <entry key="jpegCompression">25</entry>
+    <entry key="pngCompression">25</entry>
+    <entry key="kmlSuperoverlayMode">auto</entry>
+    <entry key="framesDelay">1000</entry>
+    <entry key="maxAllowedFrames">2147483647</entry>
+    <entry key="kmlReflectorMode">refresh</entry>
+    <entry key="svgAntiAlias">true</entry>
+    <entry key="kmlKmscore">40</entry>
+    <entry key="kmlPlacemark">false</entry>
+    <entry key="kmlAttr">true</entry>
+    <entry key="scalehintMapunitsPixel">false</entry>
+    <entry key="loopContinuously">false</entry>
+    <entry key="svgRenderer">Batik</entry>
+  </metadata>
+  <watermark class="org.geoserver.wms.WatermarkInfoImpl">
+    <enabled>false</enabled>
+    <position>BOT_RIGHT</position>
+    <transparency>0</transparency>
+  </watermark>
+  <interpolation>Nearest</interpolation>
+  <getFeatureInfoMimeTypeCheckingEnabled>false</getFeatureInfoMimeTypeCheckingEnabled>
+  <getMapMimeTypeCheckingEnabled>false</getMapMimeTypeCheckingEnabled>
+  <maxBuffer>25</maxBuffer>
+  <maxRequestMemory>70536</maxRequestMemory>
+  <maxRenderingTime>60</maxRenderingTime>
+  <maxRenderingErrors>1000</maxRenderingErrors>
+</wms>

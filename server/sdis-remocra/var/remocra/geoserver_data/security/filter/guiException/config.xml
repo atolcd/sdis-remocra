@@ -1,0 +1,6 @@
+<exceptionTranslation>
+  <id>297577d5:13cf7b65194:-7ff0</id>
+  <name>guiException</name>
+  <className>org.geoserver.security.filter.GeoServerExceptionTranslationFilter</className>
+  <authenticationFilterName>form</authenticationFilterName>
+</exceptionTranslation>

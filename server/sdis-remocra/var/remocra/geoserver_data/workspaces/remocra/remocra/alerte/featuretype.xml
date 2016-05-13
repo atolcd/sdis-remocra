@@ -1,0 +1,42 @@
+<featureType>
+  <id>FeatureTypeInfoImpl--400135ad:14c12551eb1:-7fff</id>
+  <name>alerte</name>
+  <nativeName>alerte</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-282f5674:13cf8724624:-7fff</id>
+  </namespace>
+  <title>alerte</title>
+  <keywords>
+    <string>features</string>
+    <string>alerte</string>
+  </keywords>
+  <srs>EPSG:2154</srs>
+  <nativeBoundingBox>
+    <minx>859391.75</minx>
+    <maxx>1063352.5</maxx>
+    <miny>6176583.0</miny>
+    <maxy>6355025.5</maxy>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>4.942178003530158</minx>
+    <maxx>7.548698140095245</maxx>
+    <miny>42.59733395428302</miny>
+    <maxy>44.276106878044274</maxy>
+    <crs>GEOGCS[&quot;WGS84(DD)&quot;, 
+  DATUM[&quot;WGS84&quot;, 
+    SPHEROID[&quot;WGS84&quot;, 6378137.0, 298.257223563]], 
+  PRIMEM[&quot;Greenwich&quot;, 0.0], 
+  UNIT[&quot;degree&quot;, 0.017453292519943295], 
+  AXIS[&quot;Geodetic longitude&quot;, EAST], 
+  AXIS[&quot;Geodetic latitude&quot;, NORTH]]</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--4d96a8ce:13e41ba1733:-7592</id>
+  </store>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

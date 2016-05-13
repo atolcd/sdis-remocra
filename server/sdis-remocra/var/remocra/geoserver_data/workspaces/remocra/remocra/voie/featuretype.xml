@@ -1,0 +1,69 @@
+<featureType>
+  <id>FeatureTypeInfoImpl--400135ad:14c12551eb1:-7ff9</id>
+  <name>voie</name>
+  <nativeName>voie</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-282f5674:13cf8724624:-7fff</id>
+  </namespace>
+  <title>voie</title>
+  <keywords>
+    <string>voie</string>
+    <string>features</string>
+  </keywords>
+  <nativeCRS class="projected">PROJCS[&quot;RGF93 / Lambert-93&quot;, 
+  GEOGCS[&quot;RGF93&quot;, 
+    DATUM[&quot;Reseau Geodesique Francais 1993&quot;, 
+      SPHEROID[&quot;GRS 1980&quot;, 6378137.0, 298.257222101, AUTHORITY[&quot;EPSG&quot;,&quot;7019&quot;]], 
+      TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 
+      AUTHORITY[&quot;EPSG&quot;,&quot;6171&quot;]], 
+    PRIMEM[&quot;Greenwich&quot;, 0.0, AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]], 
+    UNIT[&quot;degree&quot;, 0.017453292519943295], 
+    AXIS[&quot;Geodetic longitude&quot;, EAST], 
+    AXIS[&quot;Geodetic latitude&quot;, NORTH], 
+    AUTHORITY[&quot;EPSG&quot;,&quot;4171&quot;]], 
+  PROJECTION[&quot;Lambert_Conformal_Conic_2SP&quot;, AUTHORITY[&quot;EPSG&quot;,&quot;9802&quot;]], 
+  PARAMETER[&quot;central_meridian&quot;, 3.0], 
+  PARAMETER[&quot;latitude_of_origin&quot;, 46.5], 
+  PARAMETER[&quot;standard_parallel_1&quot;, 49.0], 
+  PARAMETER[&quot;false_easting&quot;, 700000.0], 
+  PARAMETER[&quot;false_northing&quot;, 6600000.0], 
+  PARAMETER[&quot;scale_factor&quot;, 1.0], 
+  PARAMETER[&quot;standard_parallel_2&quot;, 44.0], 
+  UNIT[&quot;m&quot;, 1.0], 
+  AXIS[&quot;Easting&quot;, EAST], 
+  AXIS[&quot;Northing&quot;, NORTH], 
+  AUTHORITY[&quot;EPSG&quot;,&quot;2154&quot;]]</nativeCRS>
+  <srs>EPSG:2154</srs>
+  <nativeBoundingBox>
+    <minx>894360.0</minx>
+    <maxx>1018009.0</maxx>
+    <miny>6215727.0</miny>
+    <maxy>6307204.0</maxy>
+    <crs class="projected">EPSG:2154</crs>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>5.382416430052672</minx>
+    <maxx>6.952140969647449</maxx>
+    <miny>42.97028823418922</miny>
+    <maxy>43.83707651163552</maxy>
+    <crs>GEOGCS[&quot;WGS84(DD)&quot;, 
+  DATUM[&quot;WGS84&quot;, 
+    SPHEROID[&quot;WGS84&quot;, 6378137.0, 298.257223563]], 
+  PRIMEM[&quot;Greenwich&quot;, 0.0], 
+  UNIT[&quot;degree&quot;, 0.017453292519943295], 
+  AXIS[&quot;Geodetic longitude&quot;, EAST], 
+  AXIS[&quot;Geodetic latitude&quot;, NORTH]]</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="cachingEnabled">false</entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--4d96a8ce:13e41ba1733:-7592</id>
+  </store>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

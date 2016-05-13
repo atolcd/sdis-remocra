@@ -1,0 +1,15 @@
+<layer>
+  <name>commune_remocra</name>
+  <id>LayerInfoImpl--400135ad:14c12551eb1:-7ffc</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-75527c18:13f3c6c27ec:-6ff3</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--400135ad:14c12551eb1:-7ffd</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+</layer>

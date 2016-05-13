@@ -1,0 +1,5 @@
+<logging>
+  <level>VERBOSE_LOGGING.properties</level>
+  <location>logs/geoserver.log</location>
+  <stdOutLogging>true</stdOutLogging>
+</logging>

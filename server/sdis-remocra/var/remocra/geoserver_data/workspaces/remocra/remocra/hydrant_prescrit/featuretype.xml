@@ -1,0 +1,38 @@
+<featureType>
+  <id>FeatureTypeInfoImpl--851c7b5:14006f5bc40:-7ffd</id>
+  <name>hydrant_prescrit</name>
+  <nativeName>hydrant_prescrit</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-282f5674:13cf8724624:-7fff</id>
+  </namespace>
+  <title>hydrant_prescrit</title>
+  <keywords>
+    <string>hydrant_prescrit</string>
+    <string>features</string>
+  </keywords>
+  <srs>EPSG:2154</srs>
+  <nativeBoundingBox>
+    <minx>938741.598156083</minx>
+    <maxx>979770.511</maxx>
+    <miny>6229120.19193822</miny>
+    <maxy>6276370.602</maxy>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>5.9320756842223</minx>
+    <maxx>6.46079122038205</maxx>
+    <miny>43.10657376876153</miny>
+    <maxy>43.54621252273737</maxy>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="cachingEnabled">false</entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--4d96a8ce:13e41ba1733:-7592</id>
+  </store>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

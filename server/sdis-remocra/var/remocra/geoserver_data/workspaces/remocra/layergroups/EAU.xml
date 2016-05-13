@@ -1,0 +1,38 @@
+<layerGroup>
+  <id>LayerGroupInfoImpl-737bb25e:14c32a5c2e1:-8000</id>
+  <name>EAU</name>
+  <mode>SINGLE</mode>
+  <title>EAU</title>
+  <workspace>
+    <id>WorkspaceInfoImpl-282f5674:13cf8724624:-8000</id>
+  </workspace>
+  <publishables>
+    <published type="layer">
+      <id>LayerInfoImpl--5d4a1c8a:13fd2d29294:-7ffe</id>
+    </published>
+    <published type="layer">
+      <id>LayerInfoImpl--5d4a1c8a:13fd2d29294:-7ff4</id>
+    </published>
+    <published type="layer">
+      <id>LayerInfoImpl--851c7b5:14006f5bc40:-7ffc</id>
+    </published>
+  </publishables>
+  <styles>
+    <style>
+      <id>StyleInfoImpl--5d4a1c8a:13fd2d29294:-7ffb</id>
+    </style>
+    <style>
+      <id>StyleInfoImpl--5d4a1c8a:13fd2d29294:-7ffb</id>
+    </style>
+    <style>
+      <id>StyleInfoImpl--5d4a1c8a:13fd2d29294:-77cf</id>
+    </style>
+  </styles>
+  <bounds>
+    <minx>938600.019751988</minx>
+    <maxx>979770.511</maxx>
+    <miny>6228998.0</miny>
+    <maxy>6276370.602</maxy>
+    <crs class="projected">EPSG:2154</crs>
+  </bounds>
+</layerGroup>

@@ -1,0 +1,31 @@
+<settings>
+  <id>SettingsInfoImpl--1635624:14c32734a3a:-8000</id>
+  <workspace>
+    <id>WorkspaceInfoImpl-282f5674:13cf8724624:-8000</id>
+    <name>remocra</name>
+  </workspace>
+  <contact>
+    <id>contact</id>
+    <address>ZAE Les Terres d&apos;Or</address>
+    <addressCity>Gevrey-Chambertin</addressCity>
+    <addressCountry>France</addressCountry>
+    <addressPostalCode>21220</addressPostalCode>
+    <addressType>Work</addressType>
+    <contactOrganization>Atol Conseils et Développements</contactOrganization>
+    <contactPerson>M. GeoServer</contactPerson>
+  </contact>
+  <charset>UTF-8</charset>
+  <numDecimals>8</numDecimals>
+  <onlineResource>http://geoserver.org</onlineResource>
+  <verbose>false</verbose>
+  <verboseExceptions>false</verboseExceptions>
+  <metadata>
+    <map>
+      <entry>
+        <string>quietOnNotFound</string>
+        <boolean>false</boolean>
+      </entry>
+    </map>
+  </metadata>
+  <localWorkspaceIncludesPrefix>false</localWorkspaceIncludesPrefix>
+</settings>

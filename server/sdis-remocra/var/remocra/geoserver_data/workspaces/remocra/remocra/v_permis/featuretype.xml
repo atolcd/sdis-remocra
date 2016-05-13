@@ -1,0 +1,83 @@
+<featureType>
+  <id>FeatureTypeInfoImpl--5a8c3c36:14010e5e7d1:-7ffa</id>
+  <name>v_permis</name>
+  <nativeName>v_permis</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-282f5674:13cf8724624:-7fff</id>
+  </namespace>
+  <title>v_permis</title>
+  <keywords>
+    <string>features</string>
+    <string>v_permis</string>
+  </keywords>
+  <nativeCRS class="projected">PROJCS[&quot;RGF93 / Lambert-93&quot;, 
+  GEOGCS[&quot;RGF93&quot;, 
+    DATUM[&quot;Reseau Geodesique Francais 1993&quot;, 
+      SPHEROID[&quot;GRS 1980&quot;, 6378137.0, 298.257222101, AUTHORITY[&quot;EPSG&quot;,&quot;7019&quot;]], 
+      TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 
+      AUTHORITY[&quot;EPSG&quot;,&quot;6171&quot;]], 
+    PRIMEM[&quot;Greenwich&quot;, 0.0, AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]], 
+    UNIT[&quot;degree&quot;, 0.017453292519943295], 
+    AXIS[&quot;Geodetic longitude&quot;, EAST], 
+    AXIS[&quot;Geodetic latitude&quot;, NORTH], 
+    AUTHORITY[&quot;EPSG&quot;,&quot;4171&quot;]], 
+  PROJECTION[&quot;Lambert_Conformal_Conic_2SP&quot;], 
+  PARAMETER[&quot;central_meridian&quot;, 3.0], 
+  PARAMETER[&quot;latitude_of_origin&quot;, 46.5], 
+  PARAMETER[&quot;standard_parallel_1&quot;, 49.0], 
+  PARAMETER[&quot;false_easting&quot;, 700000.0], 
+  PARAMETER[&quot;false_northing&quot;, 6600000.0], 
+  PARAMETER[&quot;scale_factor&quot;, 1.0], 
+  PARAMETER[&quot;standard_parallel_2&quot;, 44.0], 
+  UNIT[&quot;m&quot;, 1.0], 
+  AXIS[&quot;Easting&quot;, EAST], 
+  AXIS[&quot;Northing&quot;, NORTH], 
+  AUTHORITY[&quot;EPSG&quot;,&quot;2154&quot;]]</nativeCRS>
+  <srs>EPSG:2154</srs>
+  <nativeBoundingBox>
+    <minx>917701.0</minx>
+    <maxx>1018043.0</maxx>
+    <miny>6215468.0</miny>
+    <maxy>6304144.0</maxy>
+    <crs class="projected">EPSG:2154</crs>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>5.66821126390129</minx>
+    <maxx>6.95066172591443</maxx>
+    <miny>42.96794674550922</miny>
+    <maxy>43.80274277902228</maxy>
+    <crs>GEOGCS[&quot;WGS84(DD)&quot;, 
+  DATUM[&quot;WGS84&quot;, 
+    SPHEROID[&quot;WGS84&quot;, 6378137.0, 298.257223563]], 
+  PRIMEM[&quot;Greenwich&quot;, 0.0], 
+  UNIT[&quot;degree&quot;, 0.017453292519943295], 
+  AXIS[&quot;Geodetic longitude&quot;, EAST], 
+  AXIS[&quot;Geodetic latitude&quot;, NORTH]]</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <advertised>true</advertised>
+  <metadata>
+    <entry key="cachingEnabled">false</entry>
+    <entry key="JDBC_VIRTUAL_TABLE">
+      <virtualTable>
+        <name>v_permis</name>
+        <sql>select p.id, p.voie, numero, p.nom, p.avis avis, a.nom avislbl, c.nom commune, annee, complement, observations, parcelle_cadastrale,section_cadastrale, p.geometrie from remocra.permis p left join remocra.type_permis_avis a on(p.avis=a.id) left join remocra.commune c on (p.commune=c.id)
+</sql>
+        <escapeSql>false</escapeSql>
+        <geometry>
+          <name>geometrie</name>
+          <type>Point</type>
+          <srid>2154</srid>
+        </geometry>
+      </virtualTable>
+    </entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--4d96a8ce:13e41ba1733:-7592</id>
+  </store>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

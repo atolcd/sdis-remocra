@@ -1,0 +1,21 @@
+<layer>
+  <name>v_hydrant_pibi</name>
+  <id>LayerInfoImpl--5d4a1c8a:13fd2d29294:-7ffe</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--5d4a1c8a:13fd2d29294:-7ffb</id>
+  </defaultStyle>
+  <styles class="linked-hash-set">
+    <style>
+      <id>StyleInfoImpl-7b9ef621:1438fc034c1:-205c</id>
+    </style>
+  </styles>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--5d4a1c8a:13fd2d29294:-7fff</id>
+  </resource>
+  <enabled>true</enabled>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+</layer>

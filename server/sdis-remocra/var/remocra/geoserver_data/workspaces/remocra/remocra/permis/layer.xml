@@ -1,0 +1,16 @@
+<layer>
+  <name>permis</name>
+  <id>LayerInfoImpl--4d96a8ce:13e41ba1733:-7590</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-10705b92:13fbdea06a4:-790d</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--4d96a8ce:13e41ba1733:-7591</id>
+  </resource>
+  <enabled>true</enabled>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+</layer>

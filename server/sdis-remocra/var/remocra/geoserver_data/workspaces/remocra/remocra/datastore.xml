@@ -1,0 +1,35 @@
+<dataStore>
+  <id>DataStoreInfoImpl--4d96a8ce:13e41ba1733:-7592</id>
+  <name>remocra</name>
+  <description>remocra</description>
+  <type>PostGIS</type>
+  <enabled>true</enabled>
+  <workspace>
+    <id>WorkspaceInfoImpl-282f5674:13cf8724624:-8000</id>
+  </workspace>
+  <connectionParameters>
+    <entry key="port">5432</entry>
+    <entry key="Connection timeout">20</entry>
+    <entry key="passwd">crypt1:hOYGnhwXYn9KGXh9tt71M4eKj2M37qsu</entry>
+    <entry key="dbtype">postgis</entry>
+    <entry key="host">localhost</entry>
+    <entry key="validate connections">true</entry>
+    <entry key="encode functions">false</entry>
+    <entry key="max connections">10</entry>
+    <entry key="Support on the fly geometry simplification">false</entry>
+    <entry key="database">remocra</entry>
+    <entry key="namespace">http://localhost:8090/geoserver/remocra</entry>
+    <entry key="schema">remocra</entry>
+    <entry key="Test while idle">false</entry>
+    <entry key="Loose bbox">true</entry>
+    <entry key="Expose primary keys">true</entry>
+    <entry key="create database">false</entry>
+    <entry key="fetch size">1000</entry>
+    <entry key="Max open prepared statements">50</entry>
+    <entry key="preparedStatements">false</entry>
+    <entry key="Estimated extends">true</entry>
+    <entry key="user">postgres</entry>
+    <entry key="min connections">1</entry>
+  </connectionParameters>
+  <__default>false</__default>
+</dataStore>
