@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_1yk3oKKMEeKQcL4hfzW0bA" name="model">
+  <ownedComment xmi:id="_iKqVgKKPEeKQcL4hfzW0bA" annotatedElement="_Gb2XAKKNEeKQcL4hfzW0bA _9vcnkKKMEeKQcL4hfzW0bA">
+    <body>Administration initiale : préparation des profils</body>
+  </ownedComment>
+  <ownedComment xmi:id="_loeOQKKREeKQcL4hfzW0bA" annotatedElement="_-fsYwKKMEeKQcL4hfzW0bA _DGaFMKKNEeKQcL4hfzW0bA">
+    <body>Profil d'un organisme, qui peut évoluer dans le temps (ou pas) :
+Commune Etape 1, Commune Etape 2, SDIS, etc.</body>
+  </ownedComment>
+  <ownedComment xmi:id="_tH-QQKKSEeKQcL4hfzW0bA">
+    <body>Connu de l'application : n'est pas modifié</body>
+  </ownedComment>
+  <ownedComment xmi:id="_4wDGoKKSEeKQcL4hfzW0bA">
+    <body>Administration courante : création des organismes et des comptes utilisateurs</body>
+  </ownedComment>
+  <ownedComment xmi:id="_KdDT4KKTEeKQcL4hfzW0bA" annotatedElement="_-fsYwKKMEeKQcL4hfzW0bA">
+    <body>N'évolue pas : SDIS, Commune, DDTM, DDE</body>
+  </ownedComment>
+  <ownedComment xmi:id="_UICygKKTEeKQcL4hfzW0bA">
+    <body> </body>
+  </ownedComment>
+  <ownedComment xmi:id="_XUs7wKKTEeKQcL4hfzW0bA" annotatedElement="_CRKfQKKNEeKQcL4hfzW0bA">
+    <body>Exemple : maire de commune, Secrétaire de mairie, agent de le voie publique, pompier, préventionniste</body>
+  </ownedComment>
+  <ownedComment xmi:id="_PV1yUKKUEeKQcL4hfzW0bA" annotatedElement="_Gb2XAKKNEeKQcL4hfzW0bA">
+    <body>Définit un type de droit nommé.
+-
+Exemple :
+- adresses, adresses_delib_adresses_alertes
+- permis
+- risques
+- ...</body>
+  </ownedComment>
+  <ownedComment xmi:id="_6X0DwKKUEeKQcL4hfzW0bA" annotatedElement="_Fya_gKKNEeKQcL4hfzW0bA">
+    <body>Pour un profil, définit le niveau d'accès CRUD pour un type de droit.
+-
+Exemple : Sdis admin/risques/crud, Maire commune/risques/r</body>
+  </ownedComment>
+  <ownedComment xmi:id="_YZS6YKKVEeKQcL4hfzW0bA" annotatedElement="_EcxbMKKNEeKQcL4hfzW0bA">
+    <body> Définit un ensemble de droits et un code &quot;feuille de style XSL&quot; utilisé par l'outil générique des informations des entités cartographiques
+-
+Exemple : Sdis admin, Sdis utilisteur, Secréraire mairie Etape 1, etc.</body>
+  </ownedComment>
+  <ownedComment xmi:id="_8blc4KKVEeKQcL4hfzW0bA">
+    <body>Définit pour un profil d'organisme </body>
+  </ownedComment>
+  <ownedComment xmi:id="_ChTLAKKjEeKQcL4hfzW0bA">
+    <body>Changement d'étape d'une commune :
+- l'administrateur change le profilOrganisme de la commune. Via la table ProfilOrganismeUtilisateurDroit, chaque utilisateur de la commune voit son ProfilDroit modifié.</body>
+  </ownedComment>
+  <ownedComment xmi:id="_F7l8EKKtEeKXoJpo6OFfdQ">
+    <body> En rouge, les contraintes d'intégrités fonctionnelles</body>
+  </ownedComment>
+  <ownedComment xmi:id="_bO72gKKwEeKt1oq1RRQOLg" annotatedElement="_bFW8MKKOEeKQcL4hfzW0bA">
+    <body> Permet de définir les droits d'un utilisateur en fonction de son profil et du profil &quot;courant&quot; de son organisme.
+-
+Exemple :
+Maire de commune / Commune Etape 1 / Maire lecture hydrants
+Maire de commune / Commune Etape 2 / Maire écriture hydrants</body>
+  </ownedComment>
+  <packagedElement xmi:type="uml:Class" xmi:id="_7s6IEKKMEeKQcL4hfzW0bA" name="Utilisateur">
+    <ownedAttribute xmi:id="_KS3E0KKNEeKQcL4hfzW0bA" name="organisme" type="_9vcnkKKMEeKQcL4hfzW0bA" association="_KS3E06KNEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KS3E0aKNEeKQcL4hfzW0bA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_KS3E0qKNEeKQcL4hfzW0bA" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_RlcsMKKOEeKQcL4hfzW0bA" name="profilUtilisateur" type="_CRKfQKKNEeKQcL4hfzW0bA" association="_RldTQKKOEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_RlcsMaKOEeKQcL4hfzW0bA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_RlcsMqKOEeKQcL4hfzW0bA" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_dvPtkKKkEeKQcL4hfzW0bA" name="identifiant" visibility="public" type="_PSAlwKKVEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_eQpKcKKkEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_eQpxgKKkEeKQcL4hfzW0bA" value="1"/>
+      <defaultValue xmi:type="uml:LiteralString" xmi:id="_eQrmsKKkEeKQcL4hfzW0bA">
+        <value xsi:nil="true"/>
+      </defaultValue>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_hex6YKKkEeKQcL4hfzW0bA" name="password" visibility="public" type="_PSAlwKKVEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_h0nngKKkEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_h0o1oKKkEeKQcL4hfzW0bA" value="1"/>
+      <defaultValue xmi:type="uml:LiteralString" xmi:id="_h0qDwKKkEeKQcL4hfzW0bA">
+        <value xsi:nil="true"/>
+      </defaultValue>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_jqI-sKKkEeKQcL4hfzW0bA" name="salt" visibility="public" type="_PSAlwKKVEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_j20IwKKkEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_j21W4KKkEeKQcL4hfzW0bA" value="1"/>
+      <defaultValue xmi:type="uml:LiteralString" xmi:id="_j22lAKKkEeKQcL4hfzW0bA">
+        <value xsi:nil="true"/>
+      </defaultValue>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_9vcnkKKMEeKQcL4hfzW0bA" name="Organisme">
+    <ownedAttribute xmi:id="_wOMzoKKNEeKQcL4hfzW0bA" name="typeOrganisme" type="_-fsYwKKMEeKQcL4hfzW0bA" association="_wONasKKNEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_wOMzoaKNEeKQcL4hfzW0bA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_wOMzoqKNEeKQcL4hfzW0bA" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_5UyksKKNEeKQcL4hfzW0bA" name="profilOrganisme" type="_DGaFMKKNEeKQcL4hfzW0bA" association="_5Uzy0KKNEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5UyksaKNEeKQcL4hfzW0bA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5UyksqKNEeKQcL4hfzW0bA" value="*"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_-fsYwKKMEeKQcL4hfzW0bA" name="TypeOrganisme"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_CRKfQKKNEeKQcL4hfzW0bA" name="ProfilUtilisateur">
+    <ownedAttribute xmi:id="_6ZkMsKKTEeKQcL4hfzW0bA" name="typeOrganisme" type="_-fsYwKKMEeKQcL4hfzW0bA" association="_6ZkzwqKTEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6ZkzwKKTEeKQcL4hfzW0bA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6ZkzwaKTEeKQcL4hfzW0bA" value="*"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_DGaFMKKNEeKQcL4hfzW0bA" name="ProfilOrganisme">
+    <ownedAttribute xmi:id="_WirbMKKOEeKQcL4hfzW0bA" name="typeOrganisme" type="_-fsYwKKMEeKQcL4hfzW0bA" association="_WisCQKKOEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_WirbMaKOEeKQcL4hfzW0bA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_WirbMqKOEeKQcL4hfzW0bA" value="*"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_EcxbMKKNEeKQcL4hfzW0bA" name="ProfilDroit">
+    <ownedAttribute xmi:id="_UiEKIKKVEeKQcL4hfzW0bA" name="feuille_style_geo" visibility="public" type="_PSAlwKKVEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_UxqsYKKVEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_UxwL8KKVEeKQcL4hfzW0bA" value="1"/>
+      <defaultValue xmi:type="uml:LiteralString" xmi:id="_UxxaEKKVEeKQcL4hfzW0bA">
+        <value xsi:nil="true"/>
+      </defaultValue>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Fya_gKKNEeKQcL4hfzW0bA" name="Droit">
+    <ownedAttribute xmi:id="_Bk3kgKKOEeKQcL4hfzW0bA" name="typeDroit" type="_Gb2XAKKNEeKQcL4hfzW0bA" association="_Bk4yoKKOEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Bk3kgaKOEeKQcL4hfzW0bA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Bk3kgqKOEeKQcL4hfzW0bA" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_JRTEsKKOEeKQcL4hfzW0bA" name="profilDroit" type="_EcxbMKKNEeKQcL4hfzW0bA" association="_JRUS0KKOEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_JRTEsaKOEeKQcL4hfzW0bA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_JRTEsqKOEeKQcL4hfzW0bA" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_c_35YKKUEeKQcL4hfzW0bA" name="c" visibility="public" type="_sbO0IKKUEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_d80p0KKUEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_d86wcKKUEeKQcL4hfzW0bA" value="1"/>
+      <defaultValue xmi:type="uml:LiteralString" xmi:id="_d89MsKKUEeKQcL4hfzW0bA">
+        <value xsi:nil="true"/>
+      </defaultValue>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_yVEVUKKUEeKQcL4hfzW0bA" name="r" visibility="public" type="_sbO0IKKUEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_yxw4YKKUEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_yx0iwKKUEeKQcL4hfzW0bA" value="1"/>
+      <defaultValue xmi:type="uml:LiteralString" xmi:id="_yx2_AKKUEeKQcL4hfzW0bA">
+        <value xsi:nil="true"/>
+      </defaultValue>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_03OJAKKUEeKQcL4hfzW0bA" name="u" visibility="public" type="_sbO0IKKUEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YCXEKKUEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YDlMKKUEeKQcL4hfzW0bA" value="1"/>
+      <defaultValue xmi:type="uml:LiteralString" xmi:id="_1YEzUKKUEeKQcL4hfzW0bA">
+        <value xsi:nil="true"/>
+      </defaultValue>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_2kRgsKKUEeKQcL4hfzW0bA" name="d" visibility="public" type="_sbO0IKKUEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_3BOicKKUEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_3BXsYKKUEeKQcL4hfzW0bA" value="1"/>
+      <defaultValue xmi:type="uml:LiteralString" xmi:id="_3BZhkKKUEeKQcL4hfzW0bA">
+        <value xsi:nil="true"/>
+      </defaultValue>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Gb2XAKKNEeKQcL4hfzW0bA" name="TypeDroit"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_KS3E06KNEeKQcL4hfzW0bA" name="organisme" memberEnd="_KS3E1KKNEeKQcL4hfzW0bA _KS3E0KKNEeKQcL4hfzW0bA">
+    <ownedEnd xmi:id="_KS3E1KKNEeKQcL4hfzW0bA" name="utilisateur" type="_7s6IEKKMEeKQcL4hfzW0bA" association="_KS3E06KNEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KS3E1aKNEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_KS3E1qKNEeKQcL4hfzW0bA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_wONasKKNEeKQcL4hfzW0bA" name="typeOrganisme" memberEnd="_wONasaKNEeKQcL4hfzW0bA _wOMzoKKNEeKQcL4hfzW0bA">
+    <ownedEnd xmi:id="_wONasaKNEeKQcL4hfzW0bA" name="organisme" type="_9vcnkKKMEeKQcL4hfzW0bA" association="_wONasKKNEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_wONasqKNEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_wONas6KNEeKQcL4hfzW0bA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_5Uzy0KKNEeKQcL4hfzW0bA" name="profilOrganisme" memberEnd="_5Uzy0aKNEeKQcL4hfzW0bA _5UyksKKNEeKQcL4hfzW0bA">
+    <ownedEnd xmi:id="_5Uzy0aKNEeKQcL4hfzW0bA" name="organisme" type="_9vcnkKKMEeKQcL4hfzW0bA" association="_5Uzy0KKNEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5Uzy0qKNEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5Uzy06KNEeKQcL4hfzW0bA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_Bk4yoKKOEeKQcL4hfzW0bA" name="typeDroit" memberEnd="_Bk4yoaKOEeKQcL4hfzW0bA _Bk3kgKKOEeKQcL4hfzW0bA">
+    <ownedEnd xmi:id="_Bk4yoaKOEeKQcL4hfzW0bA" name="droit" type="_Fya_gKKNEeKQcL4hfzW0bA" association="_Bk4yoKKOEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Bk4yoqKOEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Bk4yo6KOEeKQcL4hfzW0bA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_JRUS0KKOEeKQcL4hfzW0bA" name="profilDroit" memberEnd="_JRUS0aKOEeKQcL4hfzW0bA _JRTEsKKOEeKQcL4hfzW0bA">
+    <ownedEnd xmi:id="_JRUS0aKOEeKQcL4hfzW0bA" name="droit" type="_Fya_gKKNEeKQcL4hfzW0bA" association="_JRUS0KKOEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_JRUS0qKOEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_JRUS06KOEeKQcL4hfzW0bA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_RldTQKKOEeKQcL4hfzW0bA" name="profilUtilisateur" memberEnd="_RldTQaKOEeKQcL4hfzW0bA _RlcsMKKOEeKQcL4hfzW0bA">
+    <ownedEnd xmi:id="_RldTQaKOEeKQcL4hfzW0bA" name="utilisateur" type="_7s6IEKKMEeKQcL4hfzW0bA" association="_RldTQKKOEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Rld6UKKOEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Rld6UaKOEeKQcL4hfzW0bA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_WisCQKKOEeKQcL4hfzW0bA" name="typeOrganisme" memberEnd="_WisCQaKOEeKQcL4hfzW0bA _WirbMKKOEeKQcL4hfzW0bA">
+    <ownedEnd xmi:id="_WisCQaKOEeKQcL4hfzW0bA" name="profilOrganisme" type="_DGaFMKKNEeKQcL4hfzW0bA" association="_WisCQKKOEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_WisCQqKOEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_WisCQ6KOEeKQcL4hfzW0bA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_bFW8MKKOEeKQcL4hfzW0bA" name="ProfilOrganismeUtilisateurDroit">
+    <ownedAttribute xmi:id="_fALzAaKOEeKQcL4hfzW0bA" name="profilUtilisateur" type="_CRKfQKKNEeKQcL4hfzW0bA" association="_fALzAKKOEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fALzAqKOEeKQcL4hfzW0bA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fALzA6KOEeKQcL4hfzW0bA" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_ywYnEKKOEeKQcL4hfzW0bA" name="profilOrganisme" type="_DGaFMKKNEeKQcL4hfzW0bA" association="_ywZOIKKOEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ywYnEaKOEeKQcL4hfzW0bA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ywYnEqKOEeKQcL4hfzW0bA" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_8dSKMKKOEeKQcL4hfzW0bA" name="profilDroit" type="_EcxbMKKNEeKQcL4hfzW0bA" association="_8dSxQKKOEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_8dSKMaKOEeKQcL4hfzW0bA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_8dSKMqKOEeKQcL4hfzW0bA" value="*"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_fALzAKKOEeKQcL4hfzW0bA" name="profilUtilisateur" memberEnd="_fALzAaKOEeKQcL4hfzW0bA _fALL8KKOEeKQcL4hfzW0bA">
+    <ownedEnd xmi:id="_fALL8KKOEeKQcL4hfzW0bA" name="profilOrganismeUtilisateurDroit" type="_bFW8MKKOEeKQcL4hfzW0bA" association="_fALzAKKOEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fALL8aKOEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fALL8qKOEeKQcL4hfzW0bA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_ywZOIKKOEeKQcL4hfzW0bA" name="profilOrganisme" memberEnd="_ywZOIaKOEeKQcL4hfzW0bA _ywYnEKKOEeKQcL4hfzW0bA">
+    <ownedEnd xmi:id="_ywZOIaKOEeKQcL4hfzW0bA" name="profilOrganismeUtilisateurDroit" type="_bFW8MKKOEeKQcL4hfzW0bA" association="_ywZOIKKOEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ywZOIqKOEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ywZOI6KOEeKQcL4hfzW0bA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_8dSxQKKOEeKQcL4hfzW0bA" name="profilDroit" memberEnd="_8dSxQaKOEeKQcL4hfzW0bA _8dSKMKKOEeKQcL4hfzW0bA">
+    <ownedEnd xmi:id="_8dSxQaKOEeKQcL4hfzW0bA" name="profilOrganismeUtilisateurDroit" type="_bFW8MKKOEeKQcL4hfzW0bA" association="_8dSxQKKOEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_8dSxQqKOEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_8dSxQ6KOEeKQcL4hfzW0bA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_6ZkzwqKTEeKQcL4hfzW0bA" name="typeOrganisme" memberEnd="_6Zkzw6KTEeKQcL4hfzW0bA _6ZkMsKKTEeKQcL4hfzW0bA">
+    <ownedEnd xmi:id="_6Zkzw6KTEeKQcL4hfzW0bA" name="profilUtilisateur" type="_CRKfQKKNEeKQcL4hfzW0bA" association="_6ZkzwqKTEeKQcL4hfzW0bA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6ZkzxKKTEeKQcL4hfzW0bA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6ZkzxaKTEeKQcL4hfzW0bA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_sbO0IKKUEeKQcL4hfzW0bA" name="Boolean"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_PSAlwKKVEeKQcL4hfzW0bA" name="String"/>
+</uml:Model>
