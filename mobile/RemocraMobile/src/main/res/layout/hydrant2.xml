@@ -1,0 +1,201 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:descendantFocusability="beforeDescendants">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/verif_pibi">
+
+            <TextView
+                style="@style/sectionHeader"
+                android:text="Vérification"
+                android:id="@+id/title_verif_pibi"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                />
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Débit (1 Bar) m³/h"
+                android:id="@+id/lbl_verif_debit"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/title_verif_pibi"
+                android:labelFor="@+id/verif_debit"/>
+
+            <EditText
+                style="@style/field"
+                android:inputType="numberSigned"
+                android:ems="10"
+                android:id="@+id/verif_debit"
+                android:layout_below="@+id/title_verif_pibi"
+                android:layout_toRightOf="@+id/lbl_verif_debit"/>
+
+            <TextView
+                style="@style/labelError"
+                android:text=""
+                android:id="@+id/verif_debit_msg"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/verif_debit"
+                android:visibility="gone"/>
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Pression statique (bar)"
+                android:id="@+id/lbl_verif_pression"
+                android:layout_below="@+id/verif_debit_msg"
+                android:layout_alignParentLeft="true"/>
+
+            <EditText
+                style="@style/field"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/verif_pression"
+                android:layout_below="@+id/verif_debit_msg"
+                android:layout_toRightOf="@+id/lbl_verif_pression"/>
+
+            <TextView
+                style="@style/labelError"
+                android:text=""
+                android:id="@+id/verif_pression_msg"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/verif_pression"
+                android:visibility="gone"/>
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Débit max (m³/h)"
+                android:id="@+id/lbl_verif_debit_max"
+                android:layout_below="@+id/verif_pression_msg"
+                android:layout_alignParentLeft="true"/>
+
+            <EditText
+                style="@style/field"
+                android:inputType="numberSigned"
+                android:ems="10"
+                android:id="@+id/verif_debit_max"
+                android:layout_below="@+id/verif_pression_msg"
+                android:layout_toRightOf="@+id/lbl_verif_debit_max"/>
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Pression dynamique (bar)"
+                android:id="@+id/lbl_verif_pression_dyn"
+                android:layout_below="@+id/verif_debit_max"
+                android:layout_alignParentLeft="true"/>
+
+            <EditText
+                style="@style/field"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/verif_pression_dyn"
+                android:layout_below="@+id/verif_debit_max"
+                android:layout_toRightOf="@+id/lbl_verif_pression_dyn"/>
+
+            <TextView
+                style="@style/labelError"
+                android:text=""
+                android:id="@+id/verif_pression_dyn_msg"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/verif_pression_dyn"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/verif_citerne">
+
+            <TextView
+                style="@style/sectionHeader"
+                android:text="Citerne"
+                android:id="@+id/title_citerne"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                />
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Positionnement"
+                android:id="@+id/lbl_citerne_positionnement"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/title_citerne"/>
+
+            <Spinner
+                style="@style/field"
+                android:id="@+id/citerne_positionnement"
+                android:spinnerMode="dropdown"
+                android:layout_below="@id/title_citerne"
+                android:layout_toRightOf="@+id/lbl_citerne_positionnement"/>
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Type"
+                android:id="@+id/lbl_citerne_type"
+                android:layout_below="@+id/citerne_positionnement"
+                android:layout_alignParentLeft="true"/>
+
+            <Spinner
+                style="@style/field"
+                android:id="@+id/citerne_materiau"
+                android:layout_below="@+id/citerne_positionnement"
+                android:layout_toRightOf="@+id/lbl_citerne_type"
+                android:spinnerMode="dropdown"/>
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Q. d'appoint (m³/h)"
+                android:id="@+id/lbl_citerne_qappoint"
+                android:layout_below="@+id/citerne_materiau"
+                android:layout_alignParentLeft="true"/>
+
+            <EditText
+                style="@style/field"
+                android:id="@+id/citerne_qappoint"
+                android:layout_below="@+id/citerne_materiau"
+                android:layout_toRightOf="@+id/lbl_citerne_qappoint"
+                android:inputType="numberDecimal"/>
+        </RelativeLayout>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/verif_pena">
+
+            <TextView
+                style="@style/sectionHeader"
+                android:text="Vérification"
+                android:id="@+id/title_citerne_pena"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                />
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Capacité théorique (m³)"
+                android:id="@+id/lbl_verif_pena_capa"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/title_citerne_pena"
+                android:labelFor="@+id/verif_debit"/>
+
+            <EditText
+                style="@style/field"
+                android:id="@+id/verif_pena_capa"
+                android:layout_below="@+id/title_citerne_pena"
+                android:layout_toRightOf="@+id/lbl_verif_pena_capa"
+                android:inputType="numberDecimal"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</ScrollView>

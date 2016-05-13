@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/help"
+          android:title="@string/help"
+          android:showAsAction="never" />
+    <item android:id="@+id/action_param"
+          android:icon="@drawable/action_search"
+          android:title="@string/action_param"
+          android:showAsAction="never" />
+</menu>

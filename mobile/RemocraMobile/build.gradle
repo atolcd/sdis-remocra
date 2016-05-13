@@ -1,0 +1,41 @@
+buildscript {
+    repositories {
+        maven { url 'http://repo1.maven.org/maven2' }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.0.0'
+    }
+}
+apply plugin: 'com.android.application'
+
+dependencies {
+    compile files('libs/android-support-v4.jar')
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion '19.1.0'
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 19
+    }
+
+    signingConfigs {
+        debug {
+        }
+
+        remocra {
+            storeFile file(System.getenv("REMOCRA_MOBILE_KEYSTORE"))
+            storePassword System.getenv("REMOCRA_MOBILE_KEYSTORE_PASSWORD")
+            keyAlias System.getenv("REMOCRA_MOBILE_KEY_ALIAS")
+            keyPassword System.getenv("REMOCRA_MOBILE_KEY_PASSWORD")
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.remocra
+            //zipAlign true
+        }
+    }
+}

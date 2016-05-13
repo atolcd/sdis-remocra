@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Remocra</string>
+    <string name="help">Aide</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_websearch">Web search</string>
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
+    <string name="action_test">test</string>
+    <string name="text_empty">Aucune donnée</string>
+    <string name="accueil">Accueil</string>
+    <string name="pteau">Points d\'eau</string>
+
+    <!-- Strings related to tournees -->
+    <string name="tournees">Tournées</string>
+    <string name="tournee">Tournée</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_identifier">Identifiant</string>
+    <string name="prompt_password">Mot de passe</string>
+    <string name="action_sign_in">S\'identifier</string>
+    <string name="action_synchro">Synchroniser</string>
+    <string name="login_progress_signing_in">Identification…</string>
+    <string name="login_signed_in">Vous êtes authentifié en tant que "%s"</string>
+    <string name="error_invalid_identifier">Cet identifiant n\'est pas valide</string>
+    <string name="error_invalid_password">Ce mot de passe est trop court</string>
+    <string name="error_incorrect_password">Ce mot de passe n\'est pas valide</string>
+    <string name="error_field_required">Ce champ est requis</string>
+    <string name="text_loading">Chargement en cours…</string>
+
+    <!-- Strings related to List Tournee -->
+    <string name="tournee_id">Tournée n°%d</string>
+
+    <string name="nombreHydrantEmpty">Aucun point d\'eau</string>
+    <plurals name="nombreHydrant">
+        <item quantity="one">1 point d\'eau</item>
+        <item quantity="other">%d points d\'eau</item>
+    </plurals>
+
+    <string name="syncNbHydrantEmpty">Aucun point d\'eau à synchroniser</string>
+    <plurals name="syncNbHydrant">
+        <item quantity="zero">Aucun point d\'eau à synchroniser</item>
+        <item quantity="one">1 point d\'eau en attente de synchronisation</item>
+        <item quantity="other">%d points d\'eau en attente de synchronisation</item>
+    </plurals>
+
+    <string name="syncNbTourneeEmpty">Aucune tournée</string>
+    <plurals name="syncNbTournee">
+        <item quantity="one">1 tournée embarquée</item>
+        <item quantity="other">%d tournées embarquées</item>
+    </plurals>
+
+    <string name="nombreTourneeEmpty">Aucune tournée embarquée</string>
+    <plurals name="nombreTournee">
+        <item quantity="one">1 tournée</item>
+        <item quantity="other">%d tournées</item>
+    </plurals>
+
+    <string name="title_activity_hydrant">Hydrant</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_fragment_hydrant1">Hydrant1</string>
+    <string name="title_activity_hydrant2">Hydrant 2</string>
+    <string name="title_activity_import_export">Import / Export</string>
+    <string name="action_logout">Déconnexion</string>
+    <string name="action_help">Aide</string>
+    <string name="action_param">Paramètres</string>
+    <string name="localisation_param">Paramètres…</string>
+    <string name="filtre">Filtre</string>
+    <string name="tournees_in_progress">En cours</string>
+    <string name="tournees_finish">Terminées</string>
+    <string name="tournees_all">Toutes</string>
+    <string name="tournees_start">A commencer</string>
+    <string name="hydrant_numero">Numéro</string>
+    <string name="identification">Identification</string>
+    <string name="verification">Vérification</string>
+    <string name="mco">MCO</string>
+    <string name="point_attention">Points d\'attention</string>
+    <string name="title_activity_sync">Synchronisation</string>
+    <string name="prefHeader1summary">toto</string>
+    <string name="prefHeader1title">titi</string>
+    <string name="title_activity_param">Paramètres</string>
+    <string name="param_password_msg">L\'accès à la modification des paramètres est soumis à la saisie d\'un mot de passe. Veuillez le renseigner ci-dessous.</string>
+    <string name="title_activity_help">Aide</string>
+    <string name="sync_conn_valide">Connexion valide</string>
+    <string name="sync_send_hydrant">Envoi des points d\'eau…</string>
+    <string name="sync_loading_referentiel">Chargement des référentiels…</string>
+    <string name="sync_referentiel_loaded">Référentiels chargés</string>
+    <string name="sync_loading_tournee">Chargement des tournées…</string>
+    <string name="sync_tournee_loaded">Tournées chargées</string>
+    <string name="sync_integre_data">Intégration des données…</string>
+    <string name="sync_integre_done">Données intégrées (%d)</string>
+    <string name="observation">Observations</string>
+    <string name="photo">Photo</string>
+    <string name="sort">Tri</string>
+    <string name="sort_name">Libellé</string>
+    <string name="sort_position">Position</string>
+    <string name="action_add_hydrant">Ajouter un point d\'eau</string>
+    <string name="hydrant_nature">Nature du point d\'eau</string>
+
+    <string name="LECT">Lecture seule</string>
+    <string name="CREA">Création</string>
+    <string name="RECEP">Réception</string>
+    <string name="RECO">Reconnaissance</string>
+    <string name="CTRL">Contrôle</string>
+    <string name="VERIF">Vérification</string>
+    <string name="action_change_user">Autre utilisateur</string>
+    <string name="sync_get_server_info">Récupération des informations</string>
+    <string name="change_user_title">Perte de données</string>
+    <string name="change_user_message">Les données saisies par l\'utilisateur actuel seront perdues.</string>
+    <string name="create">Créer</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="valid">Valider</string>
+    <string name="cancel">Annuler</string>
+    <string name="no_thanks">Non merci</string>
+    <string name="sync_check_connexion">Authentification en cours…</string>
+
+    <!-- GPS -->
+    <string name="gps_positionning">Positionnement GPS</string>
+    <string name="gps_notactive"><Data><![CDATA[ Le GPS n\'est pas activé. Veuillez <b>activer l\'option "Satellites GPS"</b> dans les paramètres de localisation. Vous pouvez également <b>activer l\'option "Services de localisation"</b> pour obtenir un pré-positionnement à partir des réseaux de données. ]]> </Data></string>
+    <string name="gps_pos_unknown">La localisation est actuellement inconnue. Vous pourrez valider la création du point d\'eau lorsqu\'elle sera connue.</string>
+    <string name="gps_pos_became_known">La location est maintenant connue. Vous pouvez créer un point d\'eau</string>
+    <string name="gps_pos_lost">La localisation a été perdue. Veuillez patienter le temps qu\'elle soit à nouveau disponible.</string>
+
+    <!-- Message d'info -->
+    <string name="accueilInfo"><Data><![CDATA[ <html><body style="color:#999;background-color:#eee"><i><p>Cet écran constitue <b>l\'accueil identifié</b>.</p><p>D\'un point de vue navigation :<ul><li>En haut à gauche, faites apparaître le <b>menu de navigation</b> ou revenez à <b>l\'écran précédent</b>.</li><li>En haut à droite, accédez aux <b>options</b> : ajout d\'un point d\'eau, synchronisation, paramètres et déconnexion.</li><li>A partir d\'une liste, accédez au détail en <b>appuyant sur l\'élément</b> (tournée, point d\'eau...)</li></ul></p></i></body></html> ]]> </Data></string>
+    <string name="loginInfo"><Data><![CDATA[ <html><body style="color:#999;background-color:#eee"><i><p><b>Bienvenue sur REMOcRA</b>.</p><p>S\'il s\'agit de votre première connexion, <b>renseignez le serveur</b> via  le menu accessible en haut à droite.</p><p>Si vous <b>changez d\'utilisateur</b>, assurez-vous que tous les points d\'eau modifiés ont été envoyés : <b>les saisies non validées seront perdues</b>.</p></i></body></html> ]]> </Data></string>
+    <string name="syncInfo"><Data><![CDATA[ <html><body style="color:#999;background-color:#eee"><i><p>Suite à la validation, la synchronisation se déroule en <b>trois étapes</b> :<ul><li>L\'ensemble des <b>points d\'eau présents sur la tablette est envoyé</b>, dont les nouveaux. </li><li>Les <b>données de référence</b> de la tablette sont mises à jour : natures, anomalies, etc. </li><li>Les <b>tournées sélectionnées</b> dans la fenêtre sont récupérées ou mises à jour.</li></ul></p></i></body></html> ]]> </Data></string>
+    <string name="continuer">Continuer</string>
+    <string name="action_imp_exp">Import/Export</string>
+    <string name="Importer">Importer</string>
+    <string name="export_success">L\'export des tournées a été effectué avec succès</string>
+    <string name="import_success">L\'import des tournées a été effectué avec succès. (%d données intégrées)</string>
+    <string name="exporter">Exporter</string>
+    <string name="action_exporter">Exporter les données actuelles</string>
+    <string name="action_importer">Importer</string>
+    <string name="action_delete">Supprimer</string>
+    <string name="error_export">Erreur lors de l\'export : %s</string>
+    <string name="send_to">Envoyer le fichier</string>
+    <string name="action_send_file">Envoyer</string>
+    <string name="file_location">Emplacement du fichier :\n%s</string>
+
+</resources>

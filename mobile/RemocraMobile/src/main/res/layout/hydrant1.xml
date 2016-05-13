@@ -1,0 +1,230 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:descendantFocusability="beforeDescendants">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:orientation="vertical"
+        >
+
+
+        <LinearLayout
+            android:id="@+id/bloc_type_saisie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <TextView
+            style="@style/sectionHeader"
+            android:text="Tyde de saisie"
+            android:id="@+id/title_localisation_verif"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"/>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vérification"
+            android:id="@+id/switch_verification"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/sectionHeader"
+                android:text="Localisation"
+                android:id="@+id/title_localisation"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
+
+            <TextView
+                style="@style/labelShort"
+                android:text="Commune"
+                android:id="@+id/lbl_loca_commune"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/title_localisation"
+                android:labelFor="@+id/verif_debit"/>
+
+            <AutoCompleteTextView
+                style="@style/field"
+                android:inputType="text|textNoSuggestions"
+                android:id="@+id/loca_commune"
+                android:layout_below="@+id/title_localisation"
+                android:layout_toRightOf="@+id/lbl_loca_commune"/>
+
+            <TextView
+                style="@style/labelShort"
+                android:text="Lieu-dit"
+                android:id="@+id/lbl_loca_lieudit"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/loca_commune"
+                android:labelFor="@+id/verif_debit"/>
+
+            <EditText
+                style="@style/field"
+                android:inputType="text"
+                android:id="@+id/loca_lieudit"
+                android:layout_below="@+id/loca_commune"
+                android:layout_toRightOf="@+id/lbl_loca_lieudit"/>
+
+            <TextView
+                style="@style/labelShort"
+                android:text="Voie"
+                android:id="@+id/lbl_loca_voie"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/loca_lieudit"
+                android:labelFor="@+id/verif_debit"/>
+
+            <EditText
+                style="@style/field"
+                android:inputType="text"
+                android:id="@+id/loca_voie"
+                android:layout_below="@+id/loca_lieudit"
+                android:layout_toRightOf="@+id/lbl_loca_voie"/>
+
+            <TextView
+                style="@style/labelShort"
+                android:text="Voie 2"
+                android:id="@+id/lbl_loca_voie2"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/loca_voie"
+                android:labelFor="@+id/verif_debit"/>
+
+            <EditText
+                style="@style/field"
+                android:inputType="text"
+                android:id="@+id/loca_voie2"
+                android:layout_below="@+id/loca_voie"
+                android:layout_toRightOf="@+id/lbl_loca_voie2"/>
+
+            <TextView
+                style="@style/labelShort"
+                android:text="Complément"
+                android:id="@+id/lbl_loca_compl"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/loca_voie2"
+                android:labelFor="@+id/verif_debit"/>
+
+            <EditText
+                style="@style/field"
+                android:inputType="textMultiLine"
+                android:id="@+id/loca_compl"
+                android:layout_below="@+id/loca_voie2"
+                android:layout_toRightOf="@+id/lbl_loca_compl"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                style="@style/sectionHeader"
+                android:text="Identification"
+                android:id="@+id/lbl_identification"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"/>
+
+            <TextView
+                style="@style/labelShort"
+                android:text="N° interne"
+                android:id="@+id/lbl_ident_num"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/lbl_identification"
+                android:labelFor="@+id/verif_debit"/>
+
+            <TextView
+                style="@style/field"
+                android:id="@+id/ident_num"
+                android:layout_below="@+id/lbl_identification"
+                android:layout_toRightOf="@+id/lbl_ident_num"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ident_pibi"
+            >
+
+            <TextView
+                style="@style/labelShort"
+                android:text="Type"
+                android:id="@+id/lbl_ident_pibi_type"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
+
+            <Spinner
+                style="@style/field"
+                android:spinnerMode="dropdown"
+                android:id="@+id/ident_pibi_type"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/lbl_ident_pibi_type"/>
+
+            <TextView
+                style="@style/labelShort"
+                android:text="Diamètre"
+                android:id="@+id/lbl_ident_pibi_diam"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/ident_pibi_type"/>
+
+            <Spinner
+                style="@style/field"
+                android:spinnerMode="dropdown"
+                android:id="@+id/ident_pibi_diam"
+                android:layout_below="@+id/ident_pibi_type"
+                android:layout_toRightOf="@+id/lbl_ident_pibi_diam"/>
+
+            <TextView
+                style="@style/labelShort"
+                android:text="Identifiant SCP"
+                android:id="@+id/lbl_ident_pibi_scp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/ident_pibi_diam"/>
+
+            <EditText
+                style="@style/field"
+                android:id="@+id/ident_pibi_scp"
+                android:layout_below="@+id/ident_pibi_diam"
+                android:layout_toRightOf="@+id/lbl_ident_pibi_scp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ident_pena"
+            >
+
+            <TextView
+                style="@style/labelShort"
+                android:text="Nature"
+                android:id="@+id/lbl_ident_pena_nature"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
+
+            <Spinner
+                style="@style/field"
+                android:spinnerMode="dialog"
+                android:id="@+id/ident_pena_nature"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/lbl_ident_pena_nature"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ident_pena_hbe"
+                android:layout_gravity="center"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="120dp"
+                android:checked="false"
+                android:text="HBE"
+                android:layout_below="@+id/lbl_ident_pena_nature"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

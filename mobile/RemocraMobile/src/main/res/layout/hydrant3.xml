@@ -1,0 +1,171 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:descendantFocusability="beforeDescendants">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/sectionHeader"
+            android:text="Elément de MCO"
+            android:id="@+id/title_mco"
+            android:layout_alignParentLeft="true"/>
+
+        <RelativeLayout
+            android:id="@+id/mco_marque_modele"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Marque"
+                android:id="@+id/lbl_mco_marque"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"/>
+
+            <Spinner
+                style="@style/field"
+                android:id="@+id/mco_marque"
+                android:spinnerMode="dropdown"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/lbl_mco_marque"/>
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Modèle"
+                android:id="@+id/lbl_mco_modele"
+                android:layout_below="@+id/mco_marque"
+                android:layout_alignParentLeft="true"/>
+
+            <Spinner
+                style="@style/field"
+                android:id="@+id/mco_modele"
+                android:spinnerMode="dropdown"
+                android:layout_below="@+id/mco_marque"
+                android:layout_toRightOf="@+id/lbl_mco_modele"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/mco_layout_annee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Année de fabrication"
+                android:id="@+id/lbl_mco_annee"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
+
+            <EditText
+                style="@style/field"
+                android:id="@+id/mco_annee"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/lbl_mco_annee"
+                android:inputType="numberSigned"/>
+
+        </RelativeLayout>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/mco_choc"
+            android:layout_marginLeft="180dp"
+            android:checked="false"
+            android:text="CHOC"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/sectionHeader"
+                android:text="Gestionnaire"
+                android:id="@+id/title_gestionnaire"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Domaine"
+                android:id="@+id/lbl_gest_domaine"
+                android:layout_below="@+id/title_gestionnaire"
+                android:layout_alignParentLeft="true"/>
+
+            <Spinner
+                style="@style/field"
+                android:id="@+id/gest_domaine"
+                android:layout_below="@+id/title_gestionnaire"
+                android:layout_toRightOf="@+id/lbl_gest_domaine"
+                android:spinnerMode="dropdown"/>
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Gestionnaire point d'eau"
+                android:id="@+id/lbl_gest_pt_eau"
+                android:layout_below="@+id/gest_domaine"
+                android:layout_alignParentLeft="true"/>
+
+            <EditText
+                style="@style/field"
+                android:id="@+id/gest_pt_eau"
+                android:layout_below="@+id/gest_domaine"
+                android:layout_toRightOf="@+id/lbl_gest_pt_eau"
+                android:inputType="text"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/gest_layout_reseau">
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Gestionnaire réseau"
+                android:id="@+id/lbl_gest_reseau"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
+
+            <EditText
+                style="@style/field"
+                android:id="@+id/gest_reseau"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/lbl_gest_reseau"
+                android:inputType="text"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/sectionHeader"
+                android:text="Divers"
+                android:id="@+id/title_divers"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Courrier/Convention"
+                android:id="@+id/lbl_divers_courrier"
+                android:layout_below="@+id/title_divers"
+                android:layout_alignParentLeft="true"/>
+
+            <EditText
+                style="@style/field"
+                android:id="@+id/divers_courrier"
+                android:layout_below="@+id/title_divers"
+                android:layout_toRightOf="@+id/lbl_divers_courrier"
+                android:inputType="text"/>
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <ScrollView
+        android:id="@+id/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/login_info"
+
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                style="@style/title"
+                android:text="REMOcRA Mobile"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp" />
+
+            <fr.sdis83.remocra.widget.InfoView
+                android:id="@+id/textViewInfo"
+                android:text="info"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp" />
+
+            <TextView
+                style="@style/sectionHeader"
+                android:text="Tournées"
+                android:paddingTop="20dp" />
+
+            <TextView
+                style="@style/labelAllParent"
+                android:text=""
+                android:id="@+id/accueil_tournee"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
+
+            <!--TextView
+                style="@style/labelAllParent"
+                android:text="aucune tournée complète"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"/ -->
+
+            <TextView
+                style="@style/sectionHeader"
+                android:text="Points d\'eau" />
+
+            <TextView
+                style="@style/labelAllParent"
+                android:id="@+id/accueil_hydrant"
+                android:text=""
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
+
+            <TextView
+                style="@style/labelAllParent"
+                android:text=""
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

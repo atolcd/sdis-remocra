@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
+
+    <TextView
+        style="@style/sectionHeader"
+        android:text="@string/exporter"
+        android:paddingTop="20dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/action_exporter"
+        android:id="@+id/export_button"
+        android:layout_gravity="center_horizontal"
+        android:onClick="doExport" />
+
+    <TextView
+        style="@style/sectionHeader"
+        android:text="@string/Importer"
+        android:paddingTop="20dp" />
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1" />
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="49dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_importer"
+            android:id="@+id/import_button"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:onClick="doImport" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_delete"
+            android:id="@+id/delete_button"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/import_button"
+            android:layout_toEndOf="@+id/import_button"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:onClick="doDelete" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_send_file"
+            android:id="@+id/send_button"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/delete_button"
+            android:layout_toEndOf="@+id/delete_button"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:onClick="doSendFile" />
+    </RelativeLayout>
+
+
+</LinearLayout>

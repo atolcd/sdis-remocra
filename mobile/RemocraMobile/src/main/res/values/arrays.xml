@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tournees_menu">
+        <item>Toutes</item>
+        <item>Terminées</item>
+        <item>En cours</item>
+        <item>A commencer</item>
+    </string-array>
+</resources>

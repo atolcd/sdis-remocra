@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp">
+
+    <ScrollView
+        android:id="@+id/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/login_info"
+
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                style="@style/title"
+                android:text="Synchronisation"
+                android:id="@+id/titre"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp" />
+
+            <fr.sdis83.remocra.widget.InfoView
+                android:id="@+id/textViewInfo"
+                android:text="info"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/message1"
+                android:paddingTop="20dp"
+                android:paddingBottom="10dp" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/message2"
+                android:paddingBottom="10dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Synchroniser"
+                android:id="@+id/synchro"
+                android:layout_gravity="center"
+                android:onClick="doSynchro"
+                android:enabled="false"
+                android:layout_marginBottom="20dp" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/message3"
+                android:paddingBottom="10dp" />
+
+            <ProgressBar
+                android:visibility="gone"
+                android:id="@+id/progressBar"
+                android:layout_gravity="center"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

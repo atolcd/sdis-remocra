@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="LoginFormContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="title">
+        <item name="android:textSize">30sp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="sectionHeader" parent="android:Widget.Holo.Light.TextView">
+        <item name="android:drawableBottom">@drawable/section_header</item>
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:padding">15dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/emphasis</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Large</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="labelShort">
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:textColor">@color/label</item>
+    </style>
+
+    <style name="labelLong" parent="labelShort">
+        <item name="android:layout_width">180dp</item>
+    </style>
+
+    <style name="labelAllParent" parent="labelShort">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="field">
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_height">42dp</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="labelError" parent="labelAllParent">
+        <item name="android:textColor">@color/error</item>
+    </style>
+
+    <style name="listRemocra">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">#eee</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <style name="listViewRemocra">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:divider">#eee</item>
+        <item name="android:dividerHeight">16dp</item>
+        <item name="android:choiceMode">singleChoice</item>
+    </style>
+
+    <style name="listRemocraItem">
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:background">@drawable/bg_row</item>
+    </style>
+</resources>

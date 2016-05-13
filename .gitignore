@@ -8,6 +8,7 @@ build/
 *.iml
 *.ipr
 *.iws
+gradle-app.setting
 # ---------------
 # remocra-server (Eclipse)
 # ---------------

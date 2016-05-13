@@ -1,0 +1,120 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".LoginActivity">
+
+    <ScrollView
+        android:id="@+id/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/login_info"
+
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                style="@style/title"
+                android:text="REMOcRA Mobile"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp" />
+
+            <fr.sdis83.remocra.widget.InfoView
+                android:id="@+id/textViewInfo"
+                android:text="info"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp" />
+
+            <!-- Login progress -->
+            <LinearLayout
+                android:id="@+id/login_status"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/login_status_message"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/login_progress_signing_in" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/login_form_and_btn"
+                style="@style/LoginFormContainer"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/identifier"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textNoSuggestions"
+                    android:hint="@string/prompt_identifier" />
+
+                <EditText
+                    android:id="@+id/password"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_password"
+                    android:inputType="textPassword"
+                    android:imeActionLabel="@string/action_sign_in"
+                    android:imeActionId="@+id/login"
+                    android:imeOptions="actionUnspecified" />
+
+                <RelativeLayout
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent">
+
+                    <Button
+                        android:id="@+id/sign_in_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/action_sign_in"
+                        android:paddingLeft="32dp"
+                        android:paddingRight="32dp"
+                        android:layout_alignParentRight="true"
+                        />
+
+                    <Button
+                        android:id="@+id/change_user_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/action_change_user"
+                        android:paddingLeft="32dp"
+                        android:paddingRight="32dp"
+                        android:visibility="gone"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@id/sign_in_button"
+                        />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</merge>

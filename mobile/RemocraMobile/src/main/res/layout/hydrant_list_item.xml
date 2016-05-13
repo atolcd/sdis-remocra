@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/listRemocraItem"
+    >
+
+    <ImageView
+        android:layout_width="3dp"
+        android:layout_height="64dp"
+        android:id="@+id/state"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"/>
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="24dp"
+        android:gravity="center_horizontal"
+        android:id="@+id/numero"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"/>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:id="@+id/imageView"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/numero"/>
+
+    <TextView
+        android:layout_width="20dp"
+        android:layout_height="24dp"
+        android:id="@+id/diametre"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/imageView"/>
+
+    <TextView
+        android:layout_width="130dp"
+        android:layout_height="24dp"
+        android:text="Réception"
+        android:id="@+id/receptionLbl"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/diametre"/>
+
+    <TextView
+        android:layout_width="130dp"
+        android:layout_height="24dp"
+        android:text="Reconnaissance"
+        android:id="@+id/recoLbl"
+        android:layout_below="@+id/receptionLbl"
+        android:layout_alignLeft="@+id/receptionLbl"/>
+
+    <TextView
+        android:layout_width="130dp"
+        android:layout_height="24dp"
+        android:text="Contrôle"
+        android:id="@+id/ctrlLbl"
+        android:layout_below="@+id/recoLbl"
+        android:layout_alignLeft="@+id/recoLbl"/>
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="24dp"
+        android:id="@+id/dateRecep"
+        android:layout_alignTop="@+id/receptionLbl"
+        android:layout_toRightOf="@+id/receptionLbl"/>
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="24dp"
+        android:id="@+id/dateReco"
+        android:layout_below="@+id/dateRecep"
+        android:layout_toRightOf="@+id/recoLbl"/>
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="24dp"
+        android:id="@+id/dateCtrl"
+        android:layout_alignTop="@+id/ctrlLbl"
+        android:layout_alignRight="@+id/dateReco"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:text="Disponibilité"
+        android:id="@+id/dispo"
+        android:layout_alignTop="@+id/dateRecep"
+        android:layout_toRightOf="@+id/dateRecep"/>
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/dispoOpImg"
+        android:background="@android:color/transparent"
+        android:padding="2dp"
+        android:layout_below="@+id/dispo"
+        android:layout_toRightOf="@+id/dateRecep"/>
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/dispoHbeImg"
+        android:background="@android:color/transparent"
+        android:padding="2dp"
+        android:layout_below="@+id/dispoOpImg"
+        android:layout_alignLeft="@+id/dispoOpImg"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Opérationnelle"
+        android:id="@+id/dispoOpLbl"
+        android:padding="5dp"
+        android:layout_alignTop="@+id/dispoOpImg"
+        android:layout_toRightOf="@+id/dispoOpImg"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="HBE"
+        android:padding="5dp"
+        android:id="@+id/dispoHbeLbl"
+        android:layout_below="@+id/dispoOpLbl"
+        android:layout_toRightOf="@+id/dispoOpImg"/>
+
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:id="@+id/stateImage"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/dispoOpLbl"
+        android:layout_marginLeft="28dp"/>
+
+</RelativeLayout>

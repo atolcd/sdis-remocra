@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:dialogTitle="URL du serveur distant"
+        android:key="serveur_url"
+        android:summary=""
+        android:hint="Renseigner le serveur distant"
+        android:title="Serveur distant"/>
+
+</PreferenceScreen>
