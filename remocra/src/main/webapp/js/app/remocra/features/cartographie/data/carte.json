@@ -1,0 +1,168 @@
+{
+"libelle":"Légende",
+"items":[{
+    "libelle":"Fonds SDIS",
+    "items":[{
+        "type": "wms",
+        "libelle":"Permis",
+        "id":"permisLayer",
+        "wms_layer":true,
+        "layers":"remocra:v_permis",
+        "url":"/remocra/proxy/wms",
+        "projection":"EPSG:900913",
+        "sld":null,
+        "scale_min":"0",
+        "scale_max":"362834",
+        "visibility":true,
+        "opacity":1,
+        "interrogeable": true,
+        "items":[
+                {"libelle":"En attente","image":"permis/attente.png"},
+                {"libelle":"Défavorable","image":"permis/defavorable.png"},
+                {"libelle":"Favorable","image":"permis/favorable.png"},
+                {"libelle":"RFF","image":"permis/rff.png"},
+                {"libelle":"RM","image":"permis/rm.png"},
+                {"libelle":"SRFF","image":"permis/srff.png"}
+        ]
+    }, {
+        "type": "wms",
+        "libelle":"Administratif",
+        "id":"administratifLayer",
+        "wms_layer":true,
+        "layers":"remocra:ADMINISTRATIF",
+        "url":"/remocra/proxy/wms",
+        "projection":"EPSG:900913",
+        "sld":null,
+        "scale_min":"0",
+        "scale_max":"362834",
+        "visibility":true,
+        "opacity":1,
+        "interrogeable": true,
+        "items":[
+            {"libelle":"CIS","image":"administratif/bat_cis.png"},
+            {"libelle":"Commune","image":"administratif/commune.png"},
+            {"libelle":"Departement","image":"administratif/departement.png"}
+        ]
+    }, {
+        "type": "wms",
+        "libelle":"Atlas DFCI",
+        "id":"atlasDfciLayer",
+        "wms_layer":true,
+        "layers":"remocra:ATLAS_DFCI",
+        "url":"/remocra/proxy/wms",
+        "projection":"EPSG:900913",
+        "sld":null,
+        "scale_min":"0",
+        "scale_max":"362834",
+        "visibility":false,
+        "opacity":1,
+        "interrogeable": true,
+        "items":[
+            {"libelle":"Aéro","image":"reseau_dfci/dfci_aero.png"},
+            {"libelle":"Aire de croisement","image":"reseau_dfci/dfci_aire_croisement.png"},
+            {"libelle":"Aire de retournement","image":"reseau_dfci/dfci_aire_retournement.png"},
+            {"libelle":"Atlas DFCI","image":"reseau_dfci/atlas_dfci.png"},
+            {"libelle":"Barrière","image":"reseau_dfci/res_routier_barriere.png"},
+            {"libelle":"Débroussaillement","image":"reseau_dfci/dfci_debroussaillement.png"},
+            {"libelle":"Débroussaillement","image":"reseau_dfci/dfci_dz.png"},
+            {"libelle":"Tour de guet","image":"reseau_dfci/dfci_tour_guet.png"},
+            {"libelle":"Panneau","image":"reseau_dfci/dfci_panneau.png"},
+            {"libelle":"PCM","image":"reseau_dfci/dfci_pcm.png"},
+            {"libelle":"Point noir","image":"reseau_dfci/dfci_point_noir.png"}
+        ]
+    }, {
+        "type": "wms",
+        "libelle":"Carroyage DFCI",
+        "id":"carroyageDfciLayer",
+        "wms_layer":true,
+        "layers":"remocra:CARROYAGE_DFCI",
+        "url":"/remocra/proxy/wms",
+        "projection":"EPSG:900913",
+        "sld":null,
+        "scale_min":"0",
+        "scale_max":"362834",
+        "visibility":false,
+        "opacity":1,
+        "interrogeable": false,
+        "items":[
+            {"libelle":"Carroyage DFCI","image":"reseau_dfci/carroyage_dfci.png"}
+        ]
+    }, {
+        "type": "wms",
+        "libelle":"Eau",
+        "id":"eauDfciLayer",
+        "wms_layer":true,
+        "layers":"remocra:EAU_DFCI",
+        "url":"/remocra/proxy/wms",
+        "projection":"EPSG:900913",
+        "sld":null,
+        "scale_min":"0",
+        "scale_max":"362834",
+        "visibility":false,
+        "opacity":1,
+        "interrogeable": false,
+        "items":[
+	        {"libelle":"BI < 30m³/h","image":"eau/pibi/bi_low.png"},
+            {"libelle":"BI 30 à 60m³/h","image":"eau/pibi/bi_med.png"},
+            {"libelle":"BI > 60m³/h","image":"eau/pibi/bi_high.png"},
+            {"libelle":"PI < 30m³/h","image":"eau/pibi/pi_low.png"},
+            {"libelle":"PI 30 à 60m³/h","image":"eau/pibi/pi_med.png"},
+            {"libelle":"PI < 30m³/h","image":"eau/pibi/pi_high.png"},
+            {"libelle":"Citerne fixe","image":"eau/pena/pn_citerne_fixe.png"},
+            {"libelle":"Autre PENA","image":"eau/pena/pn_autre.png"},
+            {"libelle":"HBE","image":"eau/hbe.png"},
+            {"libelle":"Indisponible","image":"eau/indispo.png"},
+            {"libelle":"Surface hydro","image":"eau/surf_hydro.png"}
+        ]
+    }, {
+        "type": "wms",
+        "libelle":"Réseau DFCI",
+        "id":"reseauDfciLayer",
+        "wms_layer":true,
+        "layers":"remocra:piste",
+        "url":"/remocra/proxy/wms",
+        "projection":"EPSG:900913",
+        "sld":null,
+        "scale_min":"0",
+        "scale_max":"362834",
+        "visibility":false,
+        "opacity":1,
+        "interrogeable": false,
+        "items":[
+	        {"libelle":"Première catégorie","image":"reseau_dfci/res_piste_cat1.png"},
+	        {"libelle":"Seconde catégorie","image":"reseau_dfci/res_piste_cat2.png"},
+	        {"libelle":"Troisième catégorie","image":"reseau_dfci/res_piste_cat3.png"},
+	        {"libelle":"Quatrième catégorie","image":"reseau_dfci/res_piste_cat4.png"}
+        ]
+    }]
+	}, {
+    "libelle":"Fonds IGN",
+    "items":[{
+        "type": "ign",
+        "libelle":"Cartes IGN",
+        "id":"carteLayer",
+        "scale_min":"5669",
+        "scale_max":"999999999",
+        "visibility": false,
+        "opacity":0.5,
+        "format":null,
+        "layers":"GEOGRAPHICALGRIDSYSTEMS.MAPS",
+        "items":[
+                {"libelle":"Cartes IGN","image":"ign/carte.png"}
+        ]},{
+        "base_layer": true,
+        "type": "ign",
+        "libelle":"Photos aériennes",
+        "num_zoom_levels": 20,
+        "id":"photoLayer",
+        "scale_min":"0",
+        "scale_max":"999999999",
+        "visibility": true,
+        "opacity":1,
+        "format":null,
+        "layers":"ORTHOIMAGERY.ORTHOPHOTOS",
+        "items":[
+                {"libelle":"Photos aériennes","image":"ign/photo.png"}
+        ]}]
+    }
+]}

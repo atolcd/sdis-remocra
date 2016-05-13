@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:menu="urn:jsptagdir:/WEB-INF/tags/menu" id="menu" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <menu:menu id="_menu-static" z="nZaf43BjUg1iM0v70HJVEsXDopc=">
+        <menu:category id="c_task" z="HNFq5nPh3CLO7dNmI81Q1gIYs/E=">
+            <menu:item id="i_task_list" label="Conservé pour l'exemple" url="/" z="gs/QJRFM0u5D7j9lz1596ddRg156"/>
+        </menu:category>
+    </menu:menu>
+</div>

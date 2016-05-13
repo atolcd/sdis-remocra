@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xsi:tournees xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <tournee>
+                <debSync>2013-08-14T12:00:00+02:00</debSync>
+                <hydrants>
+                        <hydrantPena xsi:type="CI_FIXE">
+                                <anomalies/>
+                                <codeCommune>APS</codeCommune>
+                                <codeDomaine/>
+                                <codeNature>CI_FIXE</codeNature>
+                                <complement>APS</complement>
+                                <dateGps>2010-09-20T00:00:00+02:00</dateGps>
+                                <dispo>DISPO</dispo>
+                                <numero>PN CNJ 41</numero>
+                                <numeroInterne>41</numeroInterne>
+                                <capacite>30</capacite>
+                                <codeMateriau>METAL</codeMateriau>
+                                <codeVolConstate/>
+                                <dispoHbe>INDISPO</dispoHbe>
+                                <hbe>false</hbe>
+                        </hydrantPena>
+                        <hydrantPena xsi:type="CI_FIXE">
+                                <anomalies/>
+                                <codeCommune>SME</codeCommune>
+                                <codeDomaine/>
+                                <codeNature>CI_FIXE</codeNature>
+                                <complement>SME</complement>
+                                <dateGps>2011-03-28T00:00:00+02:00</dateGps>
+                                <dispo>DISPO</dispo>
+                                <lieuDit>LES AMANDIERS</lieuDit>
+                                <numero>PN SME 4</numero>
+                                <numeroInterne>4</numeroInterne>
+                                <voie>PISTE F234 - LES SAQUEDES</voie>
+                                <capacite>30</capacite>
+                                <codeMateriau>METAL</codeMateriau>
+                                <codeVolConstate/>
+                                <coordDFCI>LD42D3.3</coordDFCI>
+                                <dispoHbe>INDISPO</dispoHbe>
+                                <hbe>false</hbe>
+                        </hydrantPena>
+                        <hydrantPena xsi:type="CI_FIXE">
+                                <anomalies/>
+                                <codeCommune>APS</codeCommune>
+                                <codeDomaine/>
+                                <codeNature>CI_FIXE</codeNature>
+                                <complement>APS</complement>
+                                <dateGps>2010-09-20T00:00:00+02:00</dateGps>
+                                <dispo>DISPO</dispo>
+                                <numero>PN CNJ 47</numero>
+                                <numeroInterne>47</numeroInterne>
+                                <voie>PISTE CNJ12 - CANJ</voie>
+                                <capacite>30</capacite>
+                                <codeMateriau>METAL</codeMateriau>
+                                <codeVolConstate/>
+                                <dispoHbe>DISPO</dispoHbe>
+                                <hbe>true</hbe>
+                        </hydrantPena>
+                        <hydrantPena xsi:type="CI_FIXE">
+                                <anomalies/>
+                                <codeCommune>APS</codeCommune>
+                                <codeDomaine/>
+                                <codeNature>CI_FIXE</codeNature>
+                                <complement>APS</complement>
+                                <dateGps>2010-09-16T00:00:00+02:00</dateGps>
+                                <dispo>DISPO</dispo>
+                                <numero>PN APS 8</numero>
+                                <numeroInterne>8</numeroInterne>
+                                <voie>PISTE K80 - GAVOUAT</voie>
+                                <capacite>30</capacite>
+                                <codeMateriau>METAL</codeMateriau>
+                                <codeVolConstate/>
+                                <dispoHbe>INDISPO</dispoHbe>
+                                <hbe>false</hbe>
+                        </hydrantPena>
+                        <hydrantPena xsi:type="PE">
+                                <anomalies/>
+                                <codeCommune>TVS</codeCommune>
+                                <codeDomaine/>
+                                <codeNature>PE</codeNature>
+                                <complement>TVS</complement>
+                                <dispo/>
+                                <lieuDit>LE BILLARDIER</lieuDit>
+                                <numero>PN TVS 541</numero>
+                                <numeroInterne>541</numeroInterne>
+                                <voie>ACCES DOMAINE DU BILLARDIER</voie>
+                        </hydrantPena>
+                        <hydrantPena xsi:type="CI_FIXE">
+                                <anomalies/>
+                                <codeCommune>APS</codeCommune>
+                                <codeDomaine/>
+                                <codeNature>CI_FIXE</codeNature>
+                                <complement>APS</complement>
+                                <dateGps>2010-09-20T00:00:00+02:00</dateGps>
+                                <dispo>DISPO</dispo>
+                                <numero>PN CNJ 49</numero>
+                                <numeroInterne>49</numeroInterne>
+                                <capacite>30</capacite>
+                                <codeMateriau>METAL</codeMateriau>
+                                <codeVolConstate/>
+                                <dispoHbe>DISPO</dispoHbe>
+                                <hbe>true</hbe>
+                        </hydrantPena>
+                        <hydrantPena xsi:type="CI_FIXE">
+                                <anomalies>
+                                        <anomalie>
+                                                <code>ANUMROTER</code>
+                                        </anomalie>
+                                        <anomalie>
+                                                <code>APEINDRE</code>
+                                        </anomalie>
+                                </anomalies>
+                                <codeCommune>SZE</codeCommune>
+                                <codeDomaine/>
+                                <codeNature>CI_FIXE</codeNature>
+                                <complement>SZE</complement>
+                                <dateGps>2011-02-17T00:00:00+01:00</dateGps>
+                                <dispo>INDISPO</dispo>
+                                <numero>PN SZE 13</numero>
+                                <numeroInterne>13</numeroInterne>
+                                <voie>PISTE S91 - SAINT CLAIR</voie>
+                                <capacite>30</capacite>
+                                <codeMateriau>METAL</codeMateriau>
+                                <codeVolConstate/>
+                                <coordDFCI>KD62H3.1</coordDFCI>
+                                <dispoHbe>INDISPO</dispoHbe>
+                                <hbe>false</hbe>
+                        </hydrantPena>
+                        <hydrantPena xsi:type="CI_FIXE">
+                                <anomalies/>
+                                <codeCommune>MTE</codeCommune>
+                                <codeDomaine/>
+                                <codeNature>CI_FIXE</codeNature>
+                                <complement>MTE</complement>
+                                <dateGps>2010-07-30T00:00:00+02:00</dateGps>
+                                <dispo>DISPO</dispo>
+                                <numero>PN MTE 1</numero>
+                                <numeroInterne>1</numeroInterne>
+                                <voie>PISTE M7 - LE ROUSSET</voie>
+                                <capacite>30</capacite>
+                                <codeMateriau>METAL</codeMateriau>
+                                <codeVolConstate/>
+                                <dispoHbe>INDISPO</dispoHbe>
+                                <hbe>false</hbe>
+                        </hydrantPena>
+                        <hydrantPena xsi:type="CI_ENTERRE">
+                                <anomalies/>
+                                <codeCommune>RCL</codeCommune>
+                                <codeDomaine/>
+                                <codeNature>CI_ENTERRE</codeNature>
+                                <complement>RCL</complement>
+                                <dateGps>2010-04-13T00:00:00+02:00</dateGps>
+                                <dispo>DISPO</dispo>
+                                <numero>PN RCL 542</numero>
+                                <numeroInterne>542</numeroInterne>
+                                <capacite>90</capacite>
+                                <codeMateriau>BETON</codeMateriau>
+                                <codeVolConstate/>
+                                <dispoHbe>INDISPO</dispoHbe>
+                                <hbe>false</hbe>
+                        </hydrantPena>
+                        <hydrantPena xsi:type="CI_FIXE">
+                                <anomalies/>
+                                <codeCommune>LMY</codeCommune>
+                                <codeDomaine/>
+                                <codeNature>CI_FIXE</codeNature>
+                                <complement>LMY</complement>
+                                <dateGps>2010-07-30T00:00:00+02:00</dateGps>
+                                <dispo>DISPO</dispo>
+                                <numero>PN LMY 10</numero>
+                                <numeroInterne>10</numeroInterne>
+                                <capacite>30</capacite>
+                                <codeMateriau>METAL</codeMateriau>
+                                <codeVolConstate/>
+                                <dispoHbe>INDISPO</dispoHbe>
+                                <hbe>false</hbe>
+                        </hydrantPena>
+                        <hydrantPibi xsi:type="PI">
+                                <agent1>Adc VALENTIN</agent1>
+                                <agent2/>
+                                <anomalies/>
+                                <codeCommune>TLN</codeCommune>
+                                <codeDomaine>COMMUNAL</codeDomaine>
+                                <codeNature>PI</codeNature>
+                                <complement>DEVANT GALERIE LAFAYETTE</complement>
+                                <dateContr>2013-08-14T00:00:00+02:00</dateContr>
+                                <dateRecep>2013-02-25T01:00:00+01:00</dateRecep>
+                                <dispo>DISPO</dispo>
+                                <lieuDit/>
+                                <numero>PI TLN 37</numero>
+                                <numeroInterne>37</numeroInterne>
+                                <voie>RUE DOCTEUR JEAN BERTHOLET</voie>
+                                <choc>false</choc>
+                                <codeDiametre>DIAM100</codeDiametre>
+                                <codeMarque/>
+                                <debit>120</debit>
+                                <gestReseau/>
+                                <numeroSCP/>
+                                <pression>8.0</pression>
+                                <pressionDyn>0.0</pressionDyn>
+                        </hydrantPibi>
+                        <hydrantPibi xsi:type="PI">
+                                <agent1>Adc VALENTIN</agent1>
+                                <agent2/>
+                                <anomalies>
+                                        <anomalie>
+                                                <code>CAPOTCASSEMANQUANT</code>
+                                        </anomalie>
+                                </anomalies>
+                                <codeCommune>TLN</codeCommune>
+                                <codeDomaine>COMMUNAL</codeDomaine>
+                                <codeNature>PI</codeNature>
+                                <complement/>
+                                <dateContr>2013-08-14T00:00:00+02:00</dateContr>
+                                <dateRecep>2012-12-12T01:00:00+01:00</dateRecep>
+                                <dispo>DISPO</dispo>
+                                <lieuDit/>
+                                <numero>PI TLN 692</numero>
+                                <numeroInterne>692</numeroInterne>
+                                <voie>RUE JEAN JAURES</voie>
+                                <voie2>RUE PROSPER FERRERO</voie2>
+                                <choc>false</choc>
+                                <codeDiametre>DIAM100</codeDiametre>
+                                <codeMarque/>
+                                <debit>120</debit>
+                                <gestReseau/>
+                                <numeroSCP/>
+                                <pression>4.0</pression>
+                                <pressionDyn>0.0</pressionDyn>
+                        </hydrantPibi>
+                        <hydrantPibi xsi:type="PI">
+                                <agent1>Adc VALENTIN</agent1>
+                                <agent2/>
+                                <anomalies/>
+                                <codeCommune>TLN</codeCommune>
+                                <codeDomaine>COMMUNAL</codeDomaine>
+                                <codeNature>PI</codeNature>
+                                <complement>PLACE AMIRAL SENES</complement>
+                                <dateContr>2013-08-14T00:00:00+02:00</dateContr>
+                                <dateRecep>2013-02-26T00:00:00+01:00</dateRecep>
+                                <dispo>DISPO</dispo>
+                                <lieuDit/>
+                                <numero>PI TLN 22</numero>
+                                <numeroInterne>22</numeroInterne>
+                                <voie>RUE ANATOLE FRANCE</voie>
+                                <choc>false</choc>
+                                <codeDiametre>DIAM100</codeDiametre>
+                                <codeMarque/>
+                                <debit>120</debit>
+                                <gestReseau/>
+                                <numeroSCP/>
+                                <pression>5.0</pression>
+                                <pressionDyn>0.0</pressionDyn>
+                        </hydrantPibi>
+                </hydrants>
+        </tournee>
+        <tournee>
+                <debSync>2013-08-14T12:00:00+02:00</debSync>
+                <hydrants>
+                        <hydrantPibi xsi:type="PI">
+                                <agent1>MORSELLI</agent1>
+                                <agent2/>
+                                <anomalies/>
+                                <codeCommune>FRJ</codeCommune>
+                                <codeDomaine>COMMUNAL</codeDomaine>
+                                <codeNature>PI</codeNature>
+                                <complement>INTERSECTION</complement>
+                                <dateContr>2013-08-14T00:00:00+02:00</dateContr>
+                                <dateGps>2004-01-12T00:00:00+01:00</dateGps>
+                                <dateRecep>2012-03-16T00:00:00+01:00</dateRecep>
+                                <dispo>DISPO</dispo>
+                                <lieuDit/>
+                                <numero>PI FRJ 5014</numero>
+                                <numeroInterne>5014</numeroInterne>
+                                <voie>RUE HIPPOLYTE FABRE</voie>
+                                <voie2>RUE DE LA MEDITERRANEE</voie2>
+                                <choc>false</choc>
+                                <codeDiametre>DIAM100</codeDiametre>
+                                <codeMarque/>
+                                <debit>60</debit>
+                                <gestReseau/>
+                                <numeroSCP/>
+                                <pression>6.0</pression>
+                                <pressionDyn>1.0</pressionDyn>
+                        </hydrantPibi>
+                        <hydrantPibi xsi:type="PI">
+                                <agent1>MORSELLI</agent1>
+                                <anomalies>
+                                        <anomalie>
+                                                <code>MANQUEBOUCHON70</code>
+                                        </anomalie>
+                                </anomalies>
+                                <codeCommune>FRJ</codeCommune>
+                                <codeDomaine>COMMUNAL</codeDomaine>
+                                <codeNature>PI</codeNature>
+                                <complement>PROCHE ENTREE N2</complement>
+                                <dateContr>2012-03-16T00:00:00+01:00</dateContr>
+                                <dateGps>2004-03-31T00:00:00+02:00</dateGps>
+                                <dateRecep>2012-03-16T00:00:00+01:00</dateRecep>
+                                <dispo>DISPO</dispo>
+                                <lieuDit>RESIDENCE ACAPULCO</lieuDit>
+                                <numero>PI FRJ 5161</numero>
+                                <numeroInterne>5161</numeroInterne>
+                                <voie>RUE DES MICOCOULIERS</voie>
+                                <voie2>ROND-POINT DES MEDAILLES MILITAIRES</voie2>
+                                <codeDiametre>DIAM100</codeDiametre>
+                                <codeMarque/>
+                                <debit>60</debit>
+                                <pression>6.0</pression>
+                                <pressionDyn>1.0</pressionDyn>
+                        </hydrantPibi>
+                        <hydrantPibi xsi:type="PI">
+                                <agent1>CHAUVIGNE</agent1>
+                                <agent2/>
+                                <anomalies/>
+                                <codeCommune>FRJ</codeCommune>
+                                <codeDomaine>COMMUNAL</codeDomaine>
+                                <codeNature>PI</codeNature>
+                                <complement>ENTREE COTE MER</complement>
+                                <dateContr>2013-08-14T00:00:00+02:00</dateContr>
+                                <dateGps>2004-04-07T00:00:00+02:00</dateGps>
+                                <dateRecep>2012-03-19T00:00:00+01:00</dateRecep>
+                                <dispo>DISPO</dispo>
+                                <lieuDit>RESIDENCE ACAPULCO</lieuDit>
+                                <numero>PI FRJ 5160</numero>
+                                <numeroInterne>5160</numeroInterne>
+                                <voie>BOULEVARD D'ALGER</voie>
+                                <choc>false</choc>
+                                <codeDiametre>DIAM100</codeDiametre>
+                                <codeMarque/>
+                                <debit>60</debit>
+                                <gestReseau/>
+                                <numeroSCP/>
+                                <pression>6.0</pression>
+                                <pressionDyn>1.0</pressionDyn>
+                        </hydrantPibi>
+                        <hydrantPibi xsi:type="PI">
+                                <agent1>MORSELLI</agent1>
+                                <agent2/>
+                                <anomalies/>
+                                <codeCommune>FRJ</codeCommune>
+                                <codeDomaine>COMMUNAL</codeDomaine>
+                                <codeNature>PI</codeNature>
+                                <complement>FACE ENTREE 1 BAT A</complement>
+                                <dateContr>2013-08-14T00:00:00+02:00</dateContr>
+                                <dateGps>2004-03-31T00:00:00+02:00</dateGps>
+                                <dateRecep>2012-03-16T00:00:00+01:00</dateRecep>
+                                <dispo>DISPO</dispo>
+                                <lieuDit>RESIDENCE ACAPULCO</lieuDit>
+                                <numero>PI FRJ 5162</numero>
+                                <numeroInterne>5162</numeroInterne>
+                                <voie>RUE DES MICOCOULIERS</voie>
+                                <choc>false</choc>
+                                <codeDiametre>DIAM100</codeDiametre>
+                                <codeMarque/>
+                                <debit>60</debit>
+                                <gestReseau/>
+                                <numeroSCP/>
+                                <pression>7.0</pression>
+                                <pressionDyn>1.0</pressionDyn>
+                        </hydrantPibi>
+                </hydrants>
+        </tournee>
+</xsi:tournees>

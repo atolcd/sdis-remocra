@@ -1,0 +1,252 @@
+package fr.sdis83.remocra.web;
+
+import java.io.StringWriter;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+
+import org.apache.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import flexjson.JSONSerializer;
+import flexjson.transformer.DateTransformer;
+import fr.sdis83.remocra.domain.remocra.Organisme;
+import fr.sdis83.remocra.domain.remocra.Utilisateur;
+import fr.sdis83.remocra.exception.BusinessException;
+import fr.sdis83.remocra.security.AccessRight;
+import fr.sdis83.remocra.security.AuthoritiesUtil;
+import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.util.ExceptionUtils;
+import fr.sdis83.remocra.web.message.ItemFilter;
+import fr.sdis83.remocra.web.message.ItemSorting;
+import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
+import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
+import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
+import fr.sdis83.remocra.xml.UserInformation;
+
+@RequestMapping("/utilisateurs")
+@Controller
+public class UtilisateurController {
+
+    private final Logger logger = Logger.getLogger(getClass());
+
+    @Autowired
+    private UtilisateurService utilisateurService;
+
+    @Autowired
+    private AuthoritiesUtil authUtils;
+
+    @RequestMapping(headers = "Accept=application/json")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<java.lang.String> listJson(@RequestParam(value = "page", required = false) Integer page,
+            final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
+            @RequestParam(value = "sort", required = false) String sorts, @RequestParam(value = "filter", required = false) String filters) {
+        final List<ItemSorting> sortList = ItemSorting.decodeJson(sorts);
+        final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
+        return new AbstractExtListSerializer<Utilisateur>("Utilisateurs retrieved.") {
+
+            @Override
+            protected List<Utilisateur> getRecords() {
+                return utilisateurService.findUtilisateurs(start, limit, sortList, itemFilterList);
+            }
+
+            @Override
+            protected Long countRecords() {
+                return utilisateurService.countUtilisateurs(itemFilterList);
+            }
+        }.serialize();
+    }
+
+    @RequestMapping(value = "/current", headers = "Accept=application/json")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<java.lang.String> showCurrentJson() {
+
+        return new AbstractExtObjectSerializer<Utilisateur>("Utilisateur retrieved") {
+
+            @Override
+            protected Utilisateur getRecord() {
+                return utilisateurService.getCurrentUtilisateur();
+            }
+
+            @Override
+            protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+                return serializer.transform(new DateTransformer("MM/dd/yy"), Date.class);
+            }
+
+        }.serialize();
+    }
+
+    @RequestMapping(value = "/current/xml", headers = "Accept=application/xml")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<java.lang.String> showCurrentXML() {
+
+        List<AccessRight> rights = authUtils.getCurrentRights();
+        UserInformation lstRights = new UserInformation();
+        lstRights.setRights(rights);
+        JAXBContext jaxbContext;
+        StringWriter stringWriter = new StringWriter();
+        try {
+            jaxbContext = JAXBContext.newInstance(lstRights.getClass());
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.marshal(lstRights, stringWriter);
+        } catch (JAXBException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        return new ResponseEntity<String>(stringWriter.toString(), responseHeaders, HttpStatus.OK);
+
+    }
+
+    @RequestMapping(value = "/current/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<java.lang.String> updateProfilFromJson(@PathVariable("id") Long id, @RequestBody String json) {
+
+        final Utilisateur record = Utilisateur.fromJsonToUtilisateur(json);
+
+        // Pas l'utilisateur connecté
+        if (record.getId() != utilisateurService.getCurrentUtilisateur().getId()) {
+            throw new AccessDeniedException("L'utilisateur n'est pas autorisé à modifier cette donnée");
+        }
+        return new AbstractExtObjectSerializer<Utilisateur>("Utilisateur updated") {
+
+            @Override
+            protected Utilisateur getRecord() throws BusinessException {
+                return utilisateurService.updateProfil(record);
+            }
+
+            @Override
+            protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+                return serializer.transform(new DateTransformer("MM/dd/yy"), Date.class);
+            }
+        }.serialize();
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    public ResponseEntity<java.lang.String> updateFromJson(@PathVariable("id") Long id, @RequestBody String json) {
+
+        final Utilisateur record = Utilisateur.fromJsonToUtilisateur(json);
+
+        return new AbstractExtObjectSerializer<Utilisateur>("Utilisateur updated") {
+
+            @Override
+            protected Utilisateur getRecord() {
+                return utilisateurService.update(record);
+            }
+
+            @Override
+            protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+                return serializer.transform(new DateTransformer("MM/dd/yy"), Date.class);
+            }
+        }.serialize();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    public ResponseEntity<java.lang.String> createFromJson(final @RequestBody String json) {
+        final Utilisateur record = Utilisateur.fromJsonToUtilisateur(json);
+
+        try {
+            record.setOrganisme(Organisme.findOrganisme(record.getOrganisme().getId()));
+
+            final Utilisateur returned = record.merge();
+
+            // Mot de passe aléatoire en clair
+            returned.setPassword(UUID.randomUUID().toString().substring(0, 8));
+            utilisateurService.create(returned);
+
+            return new AbstractExtObjectSerializer<Utilisateur>("Utilisateur created.") {
+                @Override
+                protected Utilisateur getRecord() throws BusinessException {
+                    return returned;
+                }
+            }.serialize();
+
+        } catch (Exception e) {
+            // Est-ce une exception liée à une contrainte ?
+            ConstraintViolationException e2 = ExceptionUtils.getNestedExceptionWithClass(e, ConstraintViolationException.class);
+            if (e2 != null) {
+                // Contrainte spécifique "utilisateur_identifiant_key" ?
+                String msg = "utilisateur_identifiant_key".equals(e2.getConstraintName()) ? "L'identifiant \"" + record.getIdentifiant() + "\" est déjà utilisé."
+                        : "Une contrainte n'est pas respectée";
+                return new SuccessErrorExtSerializer(false, msg + "<br/>Veuillez modifier votre saisie.").serialize();
+            }
+
+            // Autre exception : message générique
+            logger.error(e.getMessage(), e);
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
+    }
+
+    protected String findUsernameConnected() throws BusinessException {
+        SecurityContext sc = SecurityContextHolder.getContext();
+        Authentication aut = sc.getAuthentication();
+        if (aut == null || !aut.isAuthenticated() || "anonymousUser".equals(aut.getPrincipal())) {
+            throw new BusinessException("Anonymous users are not allowed");
+        }
+        User user = (User) (aut.getPrincipal());
+        String userName = user.getUsername();
+        return userName;
+    }
+
+    // --------------------------------------------------
+    // - GESTION DES MOTS DE PASSE
+    // --------------------------------------------------
+    /**
+     * Enregistrement d'une demande de réinitialisation de mot de passe.
+     * 
+     * @param identifiant
+     * @return
+     */
+    @RequestMapping(value = "/lostpassword", method = RequestMethod.POST, headers = "Accept=application/json")
+    public ResponseEntity<java.lang.String> lostPassword(final @RequestParam(value = "identifiant", required = true) String identifiant) {
+        try {
+            utilisateurService.newDemandeMdp(identifiant);
+        } catch (Exception e) {
+            return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de l'enregistrement de la demande").serialize();
+        }
+        return new SuccessErrorExtSerializer(true, "La demande de réinitialisation de mot de passe a été transmise").serialize();
+    }
+
+    /**
+     * Mise à jour du mot de passe d'un utilisateur qui est passé par
+     * l'interface de perte de mot de passe.
+     * 
+     * @param code
+     *            le code de la demande
+     * @param plainPwd
+     * @return
+     */
+    @RequestMapping(value = "/resetpwd", method = RequestMethod.POST, headers = "Accept=application/json")
+    public ResponseEntity<java.lang.String> resetPassword(@RequestParam(value = "code", required = true) String code,
+            final @RequestParam(value = "pwd", required = true) String plainPwd) {
+        try {
+            utilisateurService.resetPasswordFromDde(code, plainPwd);
+        } catch (Exception e) {
+            return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la mise à jour du mot de passe").serialize();
+        }
+        return new SuccessErrorExtSerializer(true, "Le mot de passe a été mis à jour").serialize();
+    }
+}

@@ -1,0 +1,53 @@
+[
+    // Colonne 1
+    [ {
+        type : 'hydrants'
+    }, {
+        type : 'dfci'
+    }, {
+        type : 'metadonnees'
+    }, {
+        type : 'cartographie'
+    }, {
+        type : 'risques'
+    } ],
+    // Colonne 2
+    [ {
+        type : 'info',
+        title : '&nbsp;',
+        content : '<iframe height="400" src="https://www.youtube.com/embed/fRtYO6Ts04w?list=PLgIqBvactlMJQ7dOots4OKfFXLrofghKH" frameborder="0" allowfullscreen></iframe>'
+    }, {
+        type : 'adresses'
+    }, {
+        type : 'rci'
+    }, {
+        type : 'traitements'
+    } ],
+    // Colonne 3
+    [ {
+        type : 'permis'
+    },
+    {
+        type : 'info',
+        title : 'REMOcRA',
+        content : '<ul>Quelques ressources :<li><a href="https://www.atolcd.com/open-source/remocra-une-solution-concue-par-et-pour-les-sdis.html" target="_blank">Une solution concue par et pour les SDIS</a></li><li><a href="http://crd.ensosp.fr/doc_num.php?explnum_id=8124" target="_blank">Rapport - Prix de l\'Innovation option techniques, matériels et logiciels</a></li><li><a href="http://www.cnfpt.fr/sites/default/files/plateforme_departementale_collaborative_multi-partenaires-sdis83.pdf" target="_blank">Centre National de la Fonction Publique</a></li></ul>'
+    }, {
+        //profils : ['MAIREDELACOMMUNEENTAPE1'],
+        type : 'doc',
+        title : 'Documents',
+        icon : 'documents.png',
+        pageSize : 5,
+        // Configuration du contenu
+        thematiques : ['POINTDEAU','ADRESSES', 'PERMIS', 'DFCI', 'RISQUES', 'DIVERS']
+    }, {
+        //profils : ,
+        type : 'doc',
+        title : 'Cartothèque',
+        icon : 'documents.png',
+        pageSize : 5,
+        // Configuration du contenu
+        thematiques : ['CARTOTHEQUE']
+    }, {
+        type : 'admin'
+    } ]
+]

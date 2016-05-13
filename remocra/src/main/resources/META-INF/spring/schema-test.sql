@@ -1,0 +1,2 @@
+CREATE SCHEMA pdi;
+CREATE SCHEMA remocra;

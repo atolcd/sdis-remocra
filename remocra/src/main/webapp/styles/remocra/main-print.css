@@ -1,0 +1,116 @@
+/* Feuille de style impressions */
+
+body {
+	background-color: white;
+}
+
+#toolbarcontainer,#pageBottom {
+	display: none;
+}
+
+.appliBlockCenter {
+	padding-top: 0px;
+}
+
+@media print {
+	.maptbar {
+		display: none;
+	}
+
+	div.olControlMousePosition {
+		display : none;
+	}
+}
+
+.map {
+	border: 1px solid rgb(228, 228, 228);
+}
+.maplegend {
+	width: 200px;
+	float: left;
+}
+
+.simplemaplegend:before {
+	content: url('../../images/remocra/impression-header.png');
+}
+
+.mapmentions {
+	float: left;
+	clear: both;
+	font-style: italic;
+}
+
+.mapsrc {
+	float: left;
+}
+.mapcp {
+	float: right;
+}
+
+/************************************************/
+/* Règles tous navigateurs (Validé avec Chrome) */
+/************************************************/
+/* A4 PORTRAIT */
+.format-a4.orientation-portrait .map {
+	width: 440px;
+	height: 880px;
+}
+.format-a4.orientation-portrait .mapmentions {
+	width: 640px;
+}
+
+/* A4 PAYSAGE */
+.format-a4.orientation-landscape .map {
+	width: 730px;
+	height: 570px;
+}
+.format-a4.orientation-landscape .mapmentions {
+	width: 930px;
+}
+
+/* A3 PORTRAIT */
+.format-a3.orientation-portrait .map {
+	width: 730px;
+	height: 1300px;
+}
+.format-a3.orientation-portrait .mapmentions {
+	width: 930px;
+}
+
+/* A3 PAYSAGE */
+.format-a3.orientation-landscape .map {
+	width: 1150px;
+	height: 880px;
+}
+.format-a3.orientation-landscape .mapmentions {
+	width: 1350px;
+}
+
+/************************************************/
+/* Règles Firefox uniquement                    */
+/************************************************/
+@-moz-document url-prefix() {
+	/* A4 PORTRAIT */
+	.format-a4.orientation-portrait .map {
+		width: 565px;
+		height: 1100px;
+	}
+
+	/* A4 PAYSAGE */
+	.format-a4.orientation-landscape .map {
+		width: 895px;
+		height: 650px;
+	}
+
+	/* A3 PORTRAIT */
+	.format-a3.orientation-portrait .map {
+		width: 850px;
+		height: 1550px;
+	}
+
+	/* A3 PAYSAGE */
+	.format-a3.orientation-landscape .map {
+		width: 1150px;
+		height: 880px;
+	}
+}

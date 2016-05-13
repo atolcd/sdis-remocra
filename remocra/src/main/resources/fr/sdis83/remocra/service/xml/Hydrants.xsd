@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.w3.org/2001/XMLSchema-instance">
+
+  <xs:import schemaLocation="DefHydrants.xsd"/>
+
+  <xs:element name="hydrants" type="lstHydrants"/>
+
+</xs:schema>
+

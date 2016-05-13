@@ -1,0 +1,133 @@
+<html xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:tiles="http://tiles.apache.org/tags-tiles" xmlns:spring="http://www.springframework.org/tags"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" version="2.0">  
+	
+	<jsp:output doctype-root-element="html"
+    	doctype-public="-//W3C//DTD HTML 4.01//EN"
+    	doctype-system="http://www.w3.org/TR/html4/strict.dtd"/>
+    
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />  
+	<jsp:directive.page pageEncoding="UTF-8" /> 
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta charset="UTF-8"/>
+		<meta name="title" content="SDIS - REMOcRA" />
+		<meta name="description" content="Plateforme collaborative départementale des risques" />
+		<meta name="keywords" content="remocra, hydrant, eau, permis, risque, dfci, forêt, alertes, pompier, pompiers, sdis, sdis83, atol, atolcd, atol conseils &amp; développements, android, mobile" />
+		<meta name="language" content="fr" />
+		<meta name="author" content="Atol Conseils &amp; Développements"/>
+		
+		<!-- TODO : Tester sur les mobiles avec les entêtes suivantes
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+		<meta name="apple-mobile-web-app-capable" content="yes"/>
+		-->
+    
+		<title>SDIS - REMOcRA</title>
+		
+		<spring:url var="favicon" value="/resources/images/remocra/favicon.ico" />
+		<link rel="shortcut icon" href="${favicon}" />
+		<spring:url var="imageSrcUrl" value="/resources/images/remocra/image_src.jpg" />
+		<link rel="image_src" href="${imageSrcUrl}"/>
+		
+		<!-- Stylesheets -->
+		<spring:url var="base" value="/" />
+		<spring:url var="resbase" value="/resources" />
+		<spring:url var="jsbase" value="/resources/js" />
+		<spring:url var="cssbase" value="/resources/styles" />
+		<spring:url var="extrescssbase" value="/ext-res/styles" />
+		<spring:url var="imagesbase" value="/resources/images" />
+		
+		<style type="text/css">
+			.remocra-cmp div.olMap { margin-left: 2px !important; }
+		</style>
+
+		<link rel="stylesheet" type="text/css" href="${jsbase}/openlayers-2.12/theme/default/style.css"/>
+		<!--link rel="stylesheet" type="text/css" href="${jsbase}/openlayers-2.12/theme/default/google.css"/-->
+        
+		<link rel="stylesheet" type="text/css" href="${jsbase}/ext-4.1.1a/resources/css/ext-all-gray.css"/>
+		<link rel="stylesheet" type="text/css" href="${cssbase}/remocra/main.css"/>
+		<link rel="stylesheet" type="text/css" href="${cssbase}/remocra/vertical-bar.css"/>
+		<link rel="stylesheet" type="text/css" href="${extrescssbase}/remocra/override.css"/>
+
+		<!--script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"--><!-- --><!--/script-->
+		        
+		<!-- Javascripts, cstes -->
+		<script type="text/javascript">
+			<!-- Définition des constantes -->
+			<spring:url var="home" value="/remocra" />
+			var URL_SITE = '${url_site}';
+			var BASE_URL='<spring:escapeBody javaScriptEscape="false">${home}</spring:escapeBody>';
+			var RES_URL='<spring:escapeBody javaScriptEscape="false">${resbase}</spring:escapeBody>';
+			var REMOCRA_INFO_MODE = '<c:choose><c:when test="${modeDebug}">debug</c:when><c:otherwise>info</c:otherwise></c:choose>';
+			var REMOCRA_VERSION_NUMBER = '${versionNumber}';
+			var REMOCRA_REVISION_NUMBER = '${revisionNumber}';
+			var REMOCRA_DB_NUMBER = '${patchNumber}';
+			var REMOCRA_INFO_COPYRIGHT = '© 2015 SDIS 83';
+			var REMOCRA_INIT_BOUNDS = '${initBounds}';
+			var REMOCRA_IGN_KEYS = ${clesIgn};
+			var REMOCRA_MAXINACTIVEINTERVAL_SEC = ${maxInactiveIntervalSec};
+			var REMOCRA_USR_IDENTIFIANT = '<c:if test="${pageContext['request'].userPrincipal != null}">
+				<c:set var="username" value="${pageContext['request'].userPrincipal.principal.username}" />
+				<c:out value="${username}"/>
+			</c:if>';
+			var REMOCRA_USR_PROFIL_DROIT = '${userProfilDroit}';
+			var REMOCRA_USR_ORGANISME = '${organisme}';
+			var REMOCRA_USR_RIGHTS = ${userRights};
+			
+			var REMOCRA_ENTETE_MESSAGE = '${message_entete}';
+			
+			var HYDRANT_CFG = '${hydrant_cfg}';
+			var REMOCRA_DEFAULT_ORIENTATION = { x : '${orientationX}', y : '${orientationY}' };
+		</script>
+	</head>
+	
+  	<body>
+  	
+		<div id="loading" style="position:absolute; top:10px;left:33%;width:33%;z-index:999999;">
+		  <div class="loading-indicator" style="background-image:none;font-style:italic;text-align:center;font-family: tahoma,arial,verdana,sans-serif;font-size: 12px;">
+		  	<span>SDIS83 - REMOcRA</span><br/>
+		  	<img src="${imagesbase}/remocra/chargement.gif" style="margin-right:8px;"/><br/>
+		  	<span id="loading-msg" style="color:#424041;">Chargement de l'application en cours. Veuillez patienter...</span>
+		  </div>
+		</div>
+  	
+  	
+
+	<!-- Javascripts, scripts -->
+	<c:choose>
+		<c:when test="${modeDebug}">
+			<!-- MODE DEBUG -->
+			<script type="text/javascript" src="${jsbase}/openlayers-2.12/lib/OpenLayers.js"><!-- requis, ne pas retirer --></script>
+			<script type="text/javascript" src="${jsbase}/openlayers-2.12/lib/OpenLayers/Lang/fr.js"><!-- requis, ne pas retirer --></script>
+			<script type="text/javascript" src="${jsbase}/proj4js-1.1.0/lib/proj4js-compressed.js"><!-- requis, ne pas retirer --></script>
+			
+			<script type="text/javascript" src="${jsbase}/ext-4.1.1a/ext-all-dev.js"><!-- requis, ne pas retirer --></script>
+			<script type="text/javascript" src="${jsbase}/ext-4.1.1a/locale/ext-lang-fr.js"><!-- requis, ne pas retirer --></script>
+	
+    		<script type="text/javascript">
+			    var cfg = Ext.Loader.getConfig();
+			    cfg.enabled = true;
+			    cfg.disableCaching = false;
+			    Ext.Loader.setConfig(cfg);
+			    Ext.Loader.setPath('Sdis.Remocra', '${jsbase}/app/remocra');
+			    Ext.Loader.setPath('Ext.ux', '${jsbase}/app/remocra/ux');
+			    Ext.Loader.setPath('Skirtle', '${jsbase}/Skirtle');
+			    
+			    OpenLayers.ProxyHost = '${base}proxy?url=';
+			</script>
+			<script type="text/javascript" src="${jsbase}/app/remocra/bootstrap.js"><!-- requis, ne pas retirer --></script>
+		</c:when>
+		<c:otherwise>
+			<!-- MODE PROD -->
+    		<script type="text/javascript" src="${jsbase}/all-classes${revisionNumber}.js"><!-- requis, ne pas retirer --></script>
+    		<script type="text/javascript">
+    			OpenLayers.ImgPath = '${jsbase}/openlayers-2.12/img/';
+    			OpenLayers._getScriptLocation=function(){return '${jsbase}/openlayers-2.12/';};
+    			OpenLayers.ProxyHost = '${base}proxy?url=';
+			</script>
+		</c:otherwise>
+	</c:choose>
+	
+	</body>
+</html>

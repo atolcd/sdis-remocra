@@ -1,0 +1,25 @@
+{
+    "success": true,
+    "data": [{
+        "url": "",
+        "lbl": "Aucun"
+    }, {
+        "url": "ext-res/images/remocra/cartes/legende/administratif/bat_cis.png",
+        "lbl": "CIS"
+    }, {
+        "url": "ext-res/images/remocra/cartes/legende/habillage_urbain/bat_camping.png",
+        "lbl": "Camping"
+    }, {
+        "url": "ext-res/images/remocra/cartes/legende/reseau_dfci/dfci_tour_guet.png",
+        "lbl": "DFCI tour de guet"
+    }, {
+        "url": "ext-res/images/remocra/cartes/legende/reseau_urbain/res_fer_gare.png",
+        "lbl": "Gare"
+    }, {
+        "url": "ext-res/images/remocra/cartes/legende/rci/rci.png",
+        "lbl": "Départ feu"
+    }, {
+        "url": "ext-res/images/remocra/cartes/legende/rci/rci-tmp.png",
+        "lbl": "Départ feu bleu"
+    }]
+}

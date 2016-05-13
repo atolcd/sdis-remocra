@@ -1,0 +1,1136 @@
+html {
+	font-size: 90%;
+}
+body {
+	background-color: #f4f4f4;
+    font-family: sans-serif,arial,verdana;
+    font-size: 0.85em;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    margin:0px;
+	padding:0px;
+	position: absolute; 
+}
+
+body.mode-info #mode {
+    display: none;
+}
+.partenaires {
+	float:left;
+	margin-left: 20px;
+}
+.partenaires span, .partenaires img {
+	margin-right: 15px;
+}
+.mentions {
+	float:right;
+	text-align: right;
+	padding-right: 20px;
+	margin-top: 0px;
+	font-style: italic;
+}
+.copyright {
+}
+
+ul {
+	margin: 0;
+    padding: 0; 
+}
+
+#viewport {
+	margin:0px;
+	padding:0px;
+	position: relative;
+}
+
+.appliContent {
+}
+
+.appliBlockToolbar {
+	 height: 35px;
+	 position: relative;
+}
+
+.remocra-toolbar {
+	height: 36px;
+	background-color: #525252;
+	border: medium none;
+    position: relative;
+    box-shadow: rgba(0,0,0,0.2) 0px 5px 10px;
+    background-image: none;
+}
+
+.remocra-toolbar .x-toolbar {
+	background: none;
+	border: none;
+	padding: 0px;
+	margin-right: 50px;
+}
+.remocra-toolbar .toolbar-icon {
+	background: url("../../images/remocra/chevron-btn.png") no-repeat scroll 5px 11px transparent;
+}
+.remocra-toolbar .x-toolbar-item {
+	height : 32px;
+	line-height: 32px;
+}
+
+#deauthBtn-btnInnerEl {
+	text-decoration: underline;
+}
+#authInfo {
+	line-height: 32px;
+}
+.remocra-toolbar .x-box-inner {
+	height: 36px;
+}
+.remocra-toolbar .x-btn-inner, .remocra-toolbar label {
+	color: #ffffff;
+	font-size: 15px;
+}
+.remocra-toolbar .x-toolbar-text span {
+	font-style: italic;
+}
+.remocra-toolbar .x-btn-default-toolbar-small {
+	border: none;
+}
+.remocra-toolbar .x-btn-default-toolbar-small-over, .remocra-toolbar .x-btn-over {
+	background-image: none;
+	background-color: #f2f2f2;
+}
+.remocra-toolbar .x-btn-over .x-btn-inner {
+	color: black;
+}
+
+#authBtn {
+	line-height: 32px;
+	margin-right: 15px;
+}
+
+#indexAuthPanel .x-form-item {
+	margin-top: 3px;
+}
+.x-nlg .x-toolbar-default {
+	background: none !important;
+}
+		
+.appliBlockCenter {
+	margin: 26px;
+	margin-top: 0px;
+    padding: 10px 0 0;
+    padding-top: 10px;
+    margin-left: 28px;
+	margin-right: 26px;
+}
+.x-panel-body-default {
+	background-color: transparent;
+}
+
+#pageTop {
+    height: 195px;
+    background-size: cover;
+    background-image: url('../../images/remocra/fond-pageTop.png');
+    /* Meilleur rendu en css3 */
+    background-image: linear-gradient(left,#424041,#afadae);
+	background-image: -moz-linear-gradient(left,#424041,#afadae);
+	background-image: -o-linear-gradient(left,#424041,#afadae);
+	background-image: -webkit-linear-gradient(left,#424041,#afadae);
+	background-image: -ms-linear-gradient(left,#424041,#afadae);
+}
+
+#banniere {
+    background-image: url('../../images/remocra/banniere.png');
+	width: 924px;
+	height: 200px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#pageCenter {
+	max-width: 1920px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#pageBottom {
+	height: 70px;
+    clear:both;
+    padding-top: 10px;
+    margin-bottom: 0px;
+    border-top: solid 5px #525252;
+    background-color: #fff;
+}
+.bottom-container {
+	max-width: 1920px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.error {
+    display: block;
+    color: red;
+}
+
+.remocra-cmp .x-panel-header-text {
+	color: #7B7B7B;
+	font-size: 18px;
+	text-transform: uppercase;
+}
+.remocra-cmp .x-panel-header-default-top {
+	box-shadow: none;
+}
+
+.remocra-cmp .x-panel-header {
+	background: none;
+	margin-bottom: 20px;
+}
+.remocra-cmp {
+	padding: 10px;
+}
+
+.remocra-light-fs legend{
+	font: 12px arial;
+	font-weight: bold;
+	padding: 10px;
+}
+.remocra-light-fs .x-fieldset-body {
+	padding-left: 30px;
+}
+
+.htmlpanel p {
+	margin-bottom: 20px;
+}
+
+div.indexbloc-inscription {
+	background-color: #525252;
+	background-image: none;
+	/* Meilleur rendu en css3 */
+	background-image: linear-gradient(top,#afadae,#525252);
+	background-image: -moz-linear-gradient(top,#afadae,#525252);
+	background-image: -o-linear-gradient(top,#afadae,#525252);
+	background-image: -webkit-linear-gradient(top,#afadae,#525252);
+	background-image: -ms-linear-gradient(top,#afadae,#525252);
+}
+div.indexbloc-inscription * {
+	color: #fff;
+}
+div.indexbloc-inscription .x-panel-header-text {
+	color: #fff;
+}
+a {
+/*.index-bloc a, .x-grid-row .x-grid-cell a {*/
+	color: #525252;
+}
+a:hover {
+/*.index-bloc a:hover, .x-grid-row .x-grid-cell a:hover {*/
+	color: #323232;
+}
+.index-bloc div, .index-bloc .x-toolbar .x-toolbar-text, .remocra-cmp .blocdocumentgrid div {
+    color: #525252;
+    font-size: 15px;
+}
+
+#indexpri {
+	min-width: 1024px;
+}
+
+#indexpri .blocdocumentgrid {
+	display: block;
+	float: right;
+	margin-right: 84px;
+	width: -webkit-calc(100% - 120px);
+	width: calc(100% - 120px);
+	margin-right: 10px;
+}
+
+.blocdocumentgrid {
+	position: absolute;
+	width: 265px;
+	right: 0px;
+}
+
+.linkbutton a {
+	line-height: 20px;
+}
+/* TODO affiner l'affichage */
+.tabblocdocument .blocdocumentgrid {
+	position: relative;
+	margin-top: 20px;
+	float: none;
+	width: 400px;
+}
+
+#okBtnindexAuthPanel, #okBtnindexAuthPanel * {
+	background-image: none;
+	background-color: #707070;
+	background-image: url('../../images/remocra/fond-index-btn.png');
+	background-size: cover;
+	/* Meilleur rendu en css3 */
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #707070), color-stop(100%, #525252));
+	background-image: -webkit-linear-gradient(top, #707070,#525252);
+	background-image: -moz-linear-gradient(top, #707070,#525252);
+	background-image: -o-linear-gradient(top, #707070,#525252);
+	background-image: -ms-linear-gradient(top, #707070,#525252);
+	background-image: linear-gradient(top, #707070,#525252);
+}
+#okBtnindexAuthPanel.x-btn-default-small-over {
+	border-color: #424041;
+}
+#okBtnindexAuthPanel-btnInnerEl {
+	color: #ffffff;
+}
+
+.index-bloc {
+	box-shadow: rgba(0,0,0,0.2) 1px 1px 10px;
+	border-radius: 5px;
+	border: solid 1px #d0d0d0;
+	background-color: #dddddd;
+	/* Meilleur rendu en css3 */
+    background-image: linear-gradient(top,#f2f2f2,#d9d9d9);
+	background-image: -moz-linear-gradient(top,#f2f2f2,#d9d9d9);
+	background-image: -o-linear-gradient(top,#f2f2f2,#d9d9d9);
+	background-image: -webkit-linear-gradient(top,#f2f2f2,#d9d9d9);
+	background-image: -ms-linear-gradient(top,#f2f2f2,#d9d9d9);
+}
+
+.x-panel-header-text {
+	font-family: sans-serif,arial,verdana;
+}
+#indexpri .index-bloc .x-panel-header-text {
+	white-space: normal;
+	padding-left: 105px;
+	padding-right: 10px;
+	line-height: 0px;
+}
+#indexpri .index-bloc .x-panel-header-text div {
+	line-height: 17px;
+}
+.index-bloc .x-panel-header-text {
+	margin-left: 10px;
+	font-size: 15px;
+	text-transform: uppercase;
+	color: #c4050a;
+}
+.index-bloc .x-panel-header {
+	margin-bottom: 5px;
+	margin-top: 10px;
+}
+
+.index-bloc .x-panel-body {
+	border: none;
+}
+.index-bloc li, .index-bloc .html-content {
+	margin-left: 20px;
+}
+
+.index-bloc a {
+	text-decoration: none;
+}
+
+/* *******************************
+ * Modal Mask 
+ ********************************* */
+ 
+.x-mask {
+	position: fixed !important;
+}
+
+/* *******************************
+ * Disabled items
+ ********************************* */
+ 
+.x-item-disabled {
+    opacity: 0.5;
+}
+
+/* *******************************
+ * Tables d'affichage de données
+ ********************************* */
+.remocra-cmp .x-table-layout{
+    height: 100%;
+    /*margin: 5px 0 10px;*/
+    width: 100%;
+}
+
+.remocra-cmp .x-spaced-cell{
+    padding: 5px;
+}
+
+.remocra-cmp .x-fieldset-body{
+	margin: 7px 0 10px;
+}
+.fileuploadpanel-down .x-fieldset-body {
+	margin: 0px;
+}
+
+.remocra-cmp .x-table-layout .label-column{
+	width : 15%; 
+}
+
+.remocra-cmp .x-table-layout .right-align-column{
+	text-align : right;
+}
+
+/* *******************************
+ * FieldSets
+ ********************************* */
+ 
+.remocra-cmp .x-fieldset-header-text{
+	font-size : 12px;
+	font-family: sans-serif,arial,verdana;
+    font-weight: bold;
+    padding: 0 8px 0 8px;
+}
+
+/* *******************************
+ * Grid Filter Headers
+ ********************************* */
+ 
+.x-gridheaderfilters-filter-container {
+	padding:4px;
+}
+
+/* ********************************
+ * Panel de chargement
+ ********************************** */
+.cr-loading {
+	background: url("../../images/remocra/chargement.gif") no-repeat scroll center 20px transparent;
+    line-height: 50px;
+    padding-top: 20px;
+    text-align: center;
+}
+
+strong {
+  display: block;
+  margin-bottom: 3px;
+}
+
+/* ********************************
+ * Champ en lecture seule qui ne doit pas apparaitre en tant que tel
+ ********************************** */
+.remocra-field-read-only {
+	opacity: 1;
+}
+.remocra-field-read-only label, .remocra-field-read-only input, .remocra-field-read-only textarea {
+	background: none;
+	color: black;
+	border: none;
+}
+
+/* ********************************
+ * Carte
+ ********************************** */
+ 
+.remocra-ecart-ko {
+	color: red;
+}
+.remocra-ecart-ok {
+	color: green;
+}
+ 
+ /* Positionnement des copyright Google */
+.olLayerGooglePoweredBy, .olLayerGoogleCopyright {
+ 	/*visibility: hidden;*/
+}
+.gmnoprint {
+ 	margin-right: -110px;
+ 	margin-bottom: 2px;
+}
+
+.olImageLoadError { 
+    /* when OL encounters a 404, don't display the pink image */
+    display: none !important;
+}
+
+.olControlAttribution {
+	bottom: 3px;
+	left: 5px;
+}
+.olControlAttribution a {
+	float:left;
+	clear:both;
+	color: black;
+	font-style: italic;
+}
+
+.olControlScaleLine, div.olControlMousePosition {
+	background-color: white;
+	font-size: small;
+	padding: 2px;
+	font-style: italic;
+	opacity: 0.7;
+	filter: alpha(opacity=70);
+	right: 5px;
+}
+.olControlScaleLine {
+	bottom: 5px;
+	left: auto;
+	padding: 0px;
+}
+.olControlScaleLineTop {
+	border: solid 1px black;
+	border-top: none;
+	text-align: center;
+}
+div.olControlMousePosition {
+	bottom: 26px;
+}
+ 
+.map {
+	float: left;
+	width: -webkit-calc(100% - 280px);
+	width: calc(100% - 280px);
+	height: 700px;
+	box-shadow: rgba(0,0,0,0.1) 0px 0px 5px;
+}
+
+.mapinfo {
+	display: block;
+	clear: both;
+	margin: 5px;
+	float: left;
+}
+
+/* Légende simple (cas cartographie par exemple) */
+.simplemaplegend .blocN1, .simplemaplegend .legend-all {
+	display: none;
+}
+.simplemaplegend.maplegend .blocN4 {
+	margin-left: 40px;
+}
+
+.maplegend, .createalerte {
+	display: block;
+	float: right;
+	width: 250px;
+	margin-left: 10px;
+}
+.maplegend .blocN1 {
+	color: #7B7B7B;
+	font-size: 15px;
+	font-weight: bold;
+}
+.maplegend .blocN2 span {
+	font-weight:bold;
+}
+.maplegend .blocN3 span {
+	font-weight: normal;
+}
+.maplegend .blocN2, .maplegend .blocN3, .maplegend .blocN4, .maplegend .blocN5 {
+	color: #000000;
+	margin-left: 15px;
+	margin-top: 10px;
+	font-size: 12px;
+	font-weight: normal;
+}
+.maplegend .blocN4 {
+	color: grey;
+	font-style: italic;
+}
+.maplegend .blocN4, .maplegend .blocN5, .maplegend ul {
+	margin-top: 2px;
+}
+.maplegend img {
+	margin-right: 5px;
+	display: inline-block;
+}
+.maplegend .layer {
+	line-height: 20px;
+}
+.layer-cfg span {
+	display: none;
+}
+.layer-cfg.layervisible span {
+	display: block;
+}
+.layer-cfg, .layer-cfg.layervisible:hover {
+	box-shadow: rgba(0,0,0,0.1) 1px 1px 3px;
+	border-radius: 3px;
+	background-color: #fff;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	line-height: 18px;
+	padding-left: 5px;
+	margin-right: 5px;
+	border: 1px solid grey;
+	color: grey;
+	cursor: pointer;
+	vertical-align: top;
+}
+.layer-cfg:hover, .layer-cfg.layervisible {
+	border-color: #000;
+	color: #000;
+}
+.blocN3 .legend-hideifnotover {
+	display: block;
+	overflow: hidden;
+    opacity: 0;
+    max-height: 0px;
+    transition: opacity 1s ease-in-out, max-height 1s;
+    -moz-transition: opacity 1s ease-in-out, max-height 1s;
+    -o-transition: opacity 1s ease-in-out, max-height 1s;
+    -webkit-transition: opacity 1s ease-in-out, max-height 1s;
+    -ms-transition: opacity 1s ease-in-out, max-height 1s;
+}
+/* Pour afficher un bloc au survol (agaçant) */
+.blocN3:hover .legend-hideifnotover {
+	opacity: 1;
+    max-height: 666px;
+}
+
+.legend-xtip {
+	background-color: #fff;
+	border-color: #ccc;
+}
+
+/*
+Affichage de toute la légende
+--> quelque soit la position du curseur
+.maplegend:hover .blocN3 .legend-hideifnotover {
+	display: block;
+}
+--> uniquement quand le curseur est sur le titre de la légende
+*/
+.maplegend.over .blocN3 .legend-hideifnotover {
+	opacity: 1;
+    max-height: 666px;
+}
+.maplegend.forceover .blocN3 .legend-hideifnotover {
+	opacity: 1;
+    max-height: 666px;
+}
+.legend-all, .maplegend.forceover .legend-all:hover {
+	box-shadow: rgba(0,0,0,0.1) 1px 2px 3px;
+	border-radius: 3px;
+	background-color: #fff;
+	width: 30px;
+	height: 30px;
+	line-height: 28px;
+	padding-left: 10px;
+	margin-top: 4px;
+	border: 1px solid grey;
+	color: grey;
+	cursor: pointer;
+	vertical-align: top;
+	float: right;
+}
+.legend-all:hover, .maplegend.forceover .legend-all {
+	border-color: #000;
+	color: #000;
+}
+
+
+.maptbar {
+	margin-bottom: 5px;
+}
+.maptbar .x-btn-inner span {
+	display: none;
+}
+.maptbar .x-toolbar-spacer {
+	width: 20px;
+}
+.maptbar button {
+	width: 18px;
+}
+.zoom-commune input {
+}
+.panIcon {
+	background-image:url('../../images/remocra/cartes/pan.png');
+}
+.zoomIcon {
+	background-image:url('../../images/remocra/cartes/magnifier.png');
+}
+.zoom-plusIcon {
+	background-image:url('../../images/remocra/cartes/magnifier_zoom_in.png');
+}
+.zoom-minusIcon {
+	background-image:url('../../images/remocra/cartes/magnifier_zoom_out.png');
+}
+.zoom-prevIcon {
+	background-image:url('../../images/remocra/cartes/zoom_prec.png');
+}
+.zoom-nextIcon {
+	background-image:url('../../images/remocra/cartes/zoom_suiv.png');
+}
+.measureIcon, .measure-lengthIcon {
+	background-image:url('../../images/remocra/cartes/ruler.png');
+}
+.measure-areaIcon {
+	background-image:url('../../images/remocra/cartes/ruler_square.png');
+}
+.infoIcon {
+	background-image:url('../../images/remocra/cartes/information.png');
+}
+.editIcon, .edit-geomIcon {
+	background-image:url('../../images/remocra/cartes/pencil.png');
+}
+.moveIcon, .move-geomIcon {
+	background-image:url('../../images/remocra/cartes/pencil_move.png');
+}
+.moveRotateIcon {
+	background-image:url('../../images/remocra/cartes/pencil_move_rotate.png');
+}
+.dessinerIcon {
+	background-image:url('../../images/remocra/cartes/pencil_point.png');
+}
+.dessinerIconBlue {
+	background-image:url('../../images/remocra/cartes/pencil_point_blue.png');
+}
+.addXYIcon {
+	background-image:url('../../images/remocra/cartes/application_view_columns_xy.png');
+}
+.edit-infoIcon {
+	background-image:url('../../images/remocra/cartes/application_view_columns.png');
+}
+.maptbar .delete {
+	background-image: none;
+}
+.deleteIcon {
+	background-image:url('../../images/remocra/cartes/decline.png');
+}
+
+.download-atlasIcon {
+	background-image:url('../../images/remocra/cartes/package.png');
+}
+
+.purger-risqueexpressIcon {
+	background-image:url('../../images/remocra/cartes/decline.png');
+}
+
+.search-permisIcon {
+	background-image:url('../../images/remocra/cartes/searchPermis.png');
+}
+.rightIcon {
+	background-image:url('../../images/remocra/cartes/right.png');
+}
+.leftIcon {
+	background-image:url('../../images/remocra/cartes/left.png');
+}
+.cogIcon {
+	background-image:url('../../images/remocra/cartes/cog.png');
+}
+
+.remocraControlLayerSwitcher {
+    position: absolute;
+    top: 10px; right: 10px;
+    width: 24px; height: 24px;
+	background-image:url('../../images/remocra/openlayers/layer-default.png');
+    background-repeat: no-repeat;
+    background-color: white;
+	border: 1px solid #01253e;
+	cursor: pointer;
+}
+
+/* On définit l'image de fond de la couche suivante (choix) */
+.remocraControlLayerSwitcherLayerGoogleSatellite {
+	background-image: url(../../images/remocra/openlayers/layer-gstreets.png);
+}
+.remocraControlLayerSwitcherLayerGoogleStreets {
+	background-image: url(../../images/remocra/openlayers/layer-gsat.png);
+}
+
+.remocraControlFlagSwitcher {
+    position: absolute;
+    top: 10px; right: 75px;
+    width: 24px; height: 24px;
+	background-image:url(../../images/remocra/openlayers/tolerance-switcher.png);
+    background-repeat: no-repeat;
+    background-color: white;
+	border: 1px solid #01253e;
+	cursor: pointer;
+}
+
+.mapRightBlock{
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+#mesureLegende ul {
+	list-style: none;
+	padding: 0;
+	margin: 20px 0 0 0;
+}
+#mesuresLegende li {
+	margin-top: 2px;
+	line-height: 26px;
+	vertical-align: middle;
+	padding-left: 30px;
+}
+#mesuresLegende li.ok {
+	background: url(../../images/remocra/openlayers/mesures/ok/MES_VAL.png) no-repeat;
+}
+#mesuresLegende li.ko {
+	background: url(../../images/remocra/openlayers/mesures/ko/MES_ERR.png) no-repeat;
+}
+#mesuresLegende li.tolerance {
+	background: url(../../images/remocra/openlayers/mesures/tolerance.png) no-repeat;
+}
+#mesuresLegende li.geo {
+	background: url(../../images/remocra/openlayers/mesures/geo/MES_GEO.png) no-repeat;
+}
+#mesuresMesureInfo {
+	margin-left: 35px;	
+}
+.edit-btn .edit-btn-icon {
+	background-image: url(../../images/update.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	width: 26px;
+}
+.edit-btn .x-btn-center {
+	width: 28px;
+}
+.edit-btn span.x-btn-inner {
+	display: none;
+}
+
+.draw-pointIcon {
+	background-image:url('../../images/remocra/cartes/pencil_point.png');
+}
+.draw-linestringIcon {
+	background-image:url('../../images/remocra/cartes/pencil_ligne.png');
+}
+.draw-polygonIcon {
+	background-image:url('../../images/remocra/cartes/pencil_polygone.png');
+}
+
+.select-pointIcon {
+	background-image:url('../../images/remocra/cartes/selection_point.png');
+}
+
+.select-polygoneIcon {
+	background-image:url('../../images/remocra/cartes/selection_polygone.png');
+}
+
+.hide-old-rciIcon {
+	background-image:url('../../images/remocra/cartes/hide-old-rci.png');
+}
+
+
+/*  ------- Messages ------------*/
+
+.dossier-messages {
+	background-color:  #EDF6FF;
+    overflow: auto;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+
+.dossier-message {
+	background-color:  #A9C8E5;
+	float:left;
+	padding : 10px;
+    margin: 0 20px 10px 0;
+    border-radius: 10px 10px 10px 10px;
+    max-width: 50%;
+}
+
+.dossier-message-nonlu {
+	font-weight: bold;
+}
+
+.dossier-message .mess-content{
+    white-space: wrap;
+    margin: 0 25px 0 0;
+}
+.mess-exp, .mess-dst, .mess-dat, .mess-obj, .mess-msg {
+	font-style: italic;
+	text-decoration: underline;
+}
+
+.dossier-message-other-SDIS{
+	background-color:  #A6BF9C;
+	float:right;
+}
+
+.dossier-message-other-LABO{
+	background-color:  #BFBB97;
+	float:right;
+}
+
+.dossier-message-other-SDIS{
+	background-color : #BC949B;
+	float:right;
+}
+
+.dossier-message-other-OP{
+	background-color : #9B8CAD;
+	float:right;
+}
+
+.dossier-message-other-ASP{
+	background-color : #A6BF9C;
+	float:right;
+}
+
+.dossier-messages .message-button{
+	cursor: pointer;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.dossier-messages .more-mess{
+	color: blue;
+    cursor: pointer;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/*  ------- Grilles éditables ------------*/
+
+.add {
+	background-image:url('../../images/add.png');
+}
+.delete {
+	background-image:url('../../images/delete.png');
+}
+.update {
+	background-image:url('../../images/update.png');
+}
+
+.x-grid-checkheader {
+    height: 14px;
+    background-image: url('../../js/ext-4.1.1a/resources/themes/images/gray/grid/unchecked.gif');
+    background-position: 50% -2px;
+    background-repeat: no-repeat;
+    background-color: transparent;
+}
+
+.x-grid-checkheader-checked {
+	background-image: url('../../js/ext-4.1.1a/resources/themes/images/gray/grid/checked.gif');
+}
+
+.x-grid-checkheader-editor .x-form-cb-wrap {
+    text-align: center;
+}
+
+/*  ------- Mesures atypiques ------------*/
+.mesure-header-info {
+	margin-top: 10px;
+	height: 40px;
+}
+.mesure-header-info div {
+	padding-bottom: 10px;
+}
+.mesure-header-info span {
+	padding-right: 20px;
+}
+
+/* Styles used by Ext.ux.form.ItemSelector */
+
+.x-form-itemselector-body .x-panel-header-text{
+	color:grey;
+	font-size:12px;
+}
+
+.x-form-itemselector-body .x-form-item {
+    margin: 0;
+}
+
+.x-form-itemselector-top {
+    background-image: url(../../images/itemselector/top2.gif);
+}
+.x-form-itemselector-up {
+    background-image: url(../../images/itemselector/up2.gif);
+}
+.x-form-itemselector-add {
+    background-image: url(../../images/itemselector/right2.gif);
+}
+.x-form-itemselector-remove {
+    background-image: url(../../images/itemselector/left2.gif);
+}
+.x-form-itemselector-down {
+    background-image: url(../../images/itemselector/down2.gif);
+}
+.x-form-itemselector-bottom {
+    background-image: url(../../images/itemselector/bottom2.gif);
+}
+.x-form-itemselector-addAll {
+	background-image: url(../../images/itemselector/right2-all.png);
+}
+.x-form-itemselector-removeAll {
+	background-image: url(../../images/itemselector/left2-all.png);
+}
+
+/* Rapports de mesures */
+.rapport-grid {
+	margin-top: 10px;
+}
+.rapport-grid-header {
+    color: #000000;
+    font-size : 12px;
+	font-family: sans-serif,arial,verdana;
+	margin-top: 10px;
+    font-weight: bold;
+}
+
+.rapport-searcher {
+    /*background-image: url('../../resources/themes/images/gray/form/trigger.gif');
+    background-position: 0 0;
+    width: 17px;*/
+}
+
+/* Alignement des libellés à gauche quand on a un layout table */
+.cell-left-lbl {
+	float: left;
+	margin-right: 5px;
+}
+
+/* Pour ne jamais mettre le petit triangle rouge qui indique qu'une cellule a été modifiée */
+.remocra-phantom-grid .x-grid-dirty-cell {
+	background-image: none;
+}
+
+/* Hauteur des lignes dans la grille d'exploration */
+.remocra-searchgrid .x-grid-row .x-grid-cell-inner {
+	height: 23px;
+	line-height: 23px;
+}
+.remocra-searchgrid .x-tree-elbow {
+	height: 23px;
+}
+
+.metadonnee {
+	margin-left: 100px;
+    min-height: 120px;
+    border-radius: 7px;
+	padding: 5px;
+}
+
+.metadonnee.over {
+	background-color: #DDD;
+	cursor:pointer;
+}
+
+.metadonnee > h2 {
+	margin-bottom: 5px;	
+}
+
+.metadonnee > img {
+    float: left;
+    margin: 5px 5px 5px 15px;
+    max-height: 80px;
+}
+
+.metadonnee > p {
+    margin: 10px 10px 5px 150px;
+}
+
+.x-grid-row .hydrantAlertErr {
+	color: red;
+	font-weight: bold;
+}
+
+.x-grid-row .hydrantAlertUrgent {
+	color: red;
+}
+
+.x-grid-row .hydrantAlertWarn {
+	color: orange;
+}
+
+.tourneeFull {
+	color: green;
+}
+
+.tourneeNotFull {
+	color: red;
+}
+
+.fiche-tab-notread .x-tab-inner {
+	color: red;
+}
+
+.fiche-tab-reading .x-tab-inner {
+	color: orange;
+}
+
+.fiche-tab-read .x-tab-inner {
+	color: green;
+}
+
+.x-grid-cell.attention-maj {
+	font-weight: bold;
+}
+
+.hydrant-disponibilite {
+	padding-left: 6px;
+	border-left: solid 10px #CCC;
+	font-style: italic;
+}
+
+.dispo .hydrant-disponibilite {
+	border-color: green;
+}
+
+.indispo .hydrant-disponibilite {
+	border-color: red;
+}
+
+.non_conforme .hydrant-disponibilite {
+	border-color: orange;
+}
+
+.x-grid-row-checker-no-modif {
+  height: 14px;
+  width: 14px;
+  line-height: 0;
+  background-image: url('../../js/ext-4.1.1a/resources/themes/images/gray/grid/unchecked.gif');
+  background-position: -1px -1px;
+  background-repeat: no-repeat;
+  background-color: transparent; 
+  margin-left: 1px;
+}
+
+.x-grid-row-selected .x-grid-row-checker-no-modif,
+.x-grid-row-checked .x-grid-row-checker-no-modif {
+  background-image: url('../../js/ext-4.1.1a/resources/themes/images/gray/grid/checked.gif');
+}
+
+.anomalie-unmodifiable .x-grid-cell-inner {
+	background-color: #E2FFF9;
+	font-style: italic;
+}
+
+.x-grid-row .grid-hydrant-indispo {
+	color: white;
+	background-color: red !important;
+}
+
+.x-grid-row .grid-hydrant-non_conforme {
+	color: white;
+	background-color: orange !important;
+}
+
+.x-grid-row .grid-hydrant-nonconcerne {
+	color: white;
+	background-color: #e0e0e0 !important;
+}
+.x-grid-row .grid-hydrant-nonconcerne .x-grid-cell-inner {
+	display: none;
+}
+
+.hydrantMiniature {
+	height: 100%;
+}
+
+.hydrant-msg-error .x-form-display-field {
+	color: red;	
+	padding: 1px 0 0 20px;
+	background: url("../../js/ext-4.1.1a/resources/themes/images/gray/form/exclamation.gif") no-repeat scroll 1px 1px transparent
+}
+
+/* debug pour IE : boutons de toolbars qui ne sont pas visibles */
+body.x-ie .x-btn-default-toolbar-small-icon-text-left .x-btn-inner {
+	padding-left : 4px;
+}
+
+/* Hauteur minimale pour l'édition (cas 1 seul élément) */
+.x-grid.remocra-editable .x-grid-view {
+    min-height: 80px;
+}

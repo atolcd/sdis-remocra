@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xsi:hydrants xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<hydrantPena xsi:type="CI_FIXE" verif="false">
+		<agent1/>
+		<agent2/>
+		<anomalies/>
+		<codeCommune>LMY</codeCommune>
+		<codeDomaine/>
+		<codeNature>CI_FIXE</codeNature>
+		<complement>LMY</complement>
+		<coordonnees>
+			<latitude>43.53489725570157</latitude>
+			<longitude>6.63248622577353</longitude>
+		</coordonnees>
+		<dispo/>
+		<lieuDit/>
+		<numero>PN LMY 10</numero>
+		<numeroInterne>10</numeroInterne>
+		<observation>RAS</observation>
+		<voie/>
+		<voie2/>
+		<capacite>30</capacite>
+		<codeMateriau>METAL</codeMateriau>
+		<codeVolConstate/>
+		<dispoHbe/>
+		<hbe>false</hbe>
+	</hydrantPena>
+	<hydrantPena xsi:type="CI_FIXE" verif="false">
+		<agent1/>
+		<agent2/>
+		<anomalies/>
+		<codeCommune>APS</codeCommune>
+		<codeDomaine/>
+		<codeNature>CI_FIXE</codeNature>
+		<complement>APS</complement>
+		<coordonnees>
+			<latitude>43.645383220784865</latitude>
+			<longitude>6.385203458348075</longitude>
+		</coordonnees>
+		<dispo/>
+		<lieuDit/>
+		<numero>PN CNJ 47</numero>
+		<numeroInterne>47</numeroInterne>
+		<voie>PISTE CNJ12 - CANJ</voie>
+		<voie2/>
+		<capacite>30</capacite>
+		<codeMateriau>METAL</codeMateriau>
+		<codeVolConstate/>
+		<dispoHbe/>
+		<hbe>true</hbe>
+	</hydrantPena>
+	<hydrantPena xsi:type="CI_FIXE" verif="false">
+		<agent1/>
+		<agent2/>
+		<anomalies/>
+		<codeCommune>APS</codeCommune>
+		<codeDomaine/>
+		<codeNature>CI_FIXE</codeNature>
+		<complement>APS</complement>
+		<coordonnees>
+			<latitude>43.647212884842524</latitude>
+			<longitude>6.3423867830738425</longitude>
+		</coordonnees>
+		<dispo/>
+		<lieuDit/>
+		<numero>PN CNJ 49</numero>
+		<numeroInterne>49</numeroInterne>
+		<voie/>
+		<voie2/>
+		<capacite>30</capacite>
+		<codeMateriau>METAL</codeMateriau>
+		<codeVolConstate/>
+		<dispoHbe/>
+		<hbe>true</hbe>
+	</hydrantPena>
+	<hydrantPena xsi:type="CI_FIXE" verif="false">
+		<agent1/>
+		<agent2/>
+		<anomalies/>
+		<codeCommune>SME</codeCommune>
+		<codeDomaine/>
+		<codeNature>CI_FIXE</codeNature>
+		<complement>SME</complement>
+		<coordonnees>
+			<latitude>43.35351558080995</latitude>
+			<longitude>6.6160216471325315</longitude>
+		</coordonnees>
+		<dispo/>
+		<lieuDit>LES AMANDIERS</lieuDit>
+		<numero>PN SME 4</numero>
+		<numeroInterne>4</numeroInterne>
+		<observation>RAS NOUVEL EMPLACEMENT</observation>
+		<voie>PISTE F234 - LES SAQUEDES</voie>
+		<voie2/>
+		<capacite>30</capacite>
+		<codeMateriau>METAL</codeMateriau>
+		<codeVolConstate/>
+		<dispoHbe/>
+		<hbe>false</hbe>
+	</hydrantPena>
+	<hydrantPena xsi:type="CI_FIXE" verif="false">
+		<agent1/>
+		<agent2/>
+		<anomalies/>
+		<codeCommune>APS</codeCommune>
+		<codeDomaine/>
+		<codeNature>CI_FIXE</codeNature>
+		<complement>APS</complement>
+		<coordonnees>
+			<latitude>43.63735839605717</latitude>
+			<longitude>6.36404568296435</longitude>
+		</coordonnees>
+		<dispo/>
+		<lieuDit/>
+		<numero>PN CNJ 41</numero>
+		<numeroInterne>41</numeroInterne>
+		<observation>RAS</observation>
+		<voie/>
+		<voie2/>
+		<capacite>30</capacite>
+		<codeMateriau>METAL</codeMateriau>
+		<codeVolConstate/>
+		<dispoHbe/>
+		<hbe>false</hbe>
+	</hydrantPena>
+	<hydrantPena xsi:type="CI_FIXE" verif="false">
+		<agent1/>
+		<agent2/>
+		<anomalies/>
+		<codeCommune>MTE</codeCommune>
+		<codeDomaine/>
+		<codeNature>CI_FIXE</codeNature>
+		<complement>MTE</complement>
+		<coordonnees>
+			<latitude>43.50423107896384</latitude>
+			<longitude>6.530485861342496</longitude>
+		</coordonnees>
+		<dispo/>
+		<lieuDit/>
+		<numero>PN MTE 1</numero>
+		<numeroInterne>1</numeroInterne>
+		<observation>RAS</observation>
+		<voie>PISTE M7 - LE ROUSSET</voie>
+		<voie2/>
+		<capacite>30</capacite>
+		<codeMateriau>METAL</codeMateriau>
+		<codeVolConstate/>
+		<dispoHbe/>
+		<hbe>false</hbe>
+	</hydrantPena>
+	<hydrantPena xsi:type="CI_ENTERRE" verif="false">
+		<agent1/>
+		<agent2/>
+		<anomalies/>
+		<codeCommune>RCL</codeCommune>
+		<codeDomaine/>
+		<codeNature>CI_ENTERRE</codeNature>
+		<complement>RCL</complement>
+		<coordonnees>
+			<latitude>43.1640303286724</latitude>
+			<longitude>6.4852685055059895</longitude>
+		</coordonnees>
+		<dispo/>
+		<lieuDit/>
+		<numero>PN RCL 542</numero>
+		<numeroInterne>542</numeroInterne>
+		<observation>BASSIN 90M3 SUR PISTE A33</observation>
+		<voie/>
+		<voie2/>
+		<capacite>90</capacite>
+		<codeMateriau>BETON</codeMateriau>
+		<codeVolConstate/>
+		<dispoHbe/>
+		<hbe>false</hbe>
+	</hydrantPena>
+	<hydrantPena xsi:type="PE" verif="false">
+		<agent1/>
+		<agent2/>
+		<anomalies/>
+		<codeCommune>TVS</codeCommune>
+		<codeDomaine/>
+		<codeNature>PE</codeNature>
+		<complement>TVS</complement>
+		<coordonnees>
+			<latitude>43.41923229546904</latitude>
+			<longitude>5.896559941073028</longitude>
+		</coordonnees>
+		<dispo/>
+		<lieuDit>LE BILLARDIER</lieuDit>
+		<numero>PN TVS 541</numero>
+		<numeroInterne>541</numeroInterne>
+		<voie>ACCES DOMAINE DU BILLARDIER</voie>
+		<voie2>coucou</voie2>
+	</hydrantPena>
+	<hydrantPena xsi:type="CI_FIXE" verif="false">
+		<agent1/>
+		<agent2/>
+		<anomalies/>
+		<codeCommune>APS</codeCommune>
+		<codeDomaine/>
+		<codeNature>CI_FIXE</codeNature>
+		<complement>APS</complement>
+		<coordonnees>
+			<latitude>43.62255103388422</latitude>
+			<longitude>6.393339123548993</longitude>
+		</coordonnees>
+		<dispo/>
+		<lieuDit/>
+		<numero>PN APS 8</numero>
+		<numeroInterne>8</numeroInterne>
+		<observation>RAS</observation>
+		<voie>PISTE K80 - GAVOUAT</voie>
+		<voie2/>
+		<capacite>30</capacite>
+		<codeMateriau>METAL</codeMateriau>
+		<codeVolConstate/>
+		<dispoHbe/>
+		<hbe>false</hbe>
+	</hydrantPena>
+	<hydrantPena xsi:type="CI_FIXE" verif="false">
+		<agent1/>
+		<agent2/>
+		<anomalies>
+			<anomalie>
+				<code>ANUMROTER</code>
+			</anomalie>
+			<anomalie>
+				<code>APEINDRE</code>
+			</anomalie>
+		</anomalies>
+		<codeCommune>SZE</codeCommune>
+		<codeDomaine/>
+		<codeNature>CI_FIXE</codeNature>
+		<complement>SZE</complement>
+		<coordonnees>
+			<latitude>43.39472099353993</latitude>
+			<longitude>5.716995850825049</longitude>
+		</coordonnees>
+		<dispo/>
+		<lieuDit/>
+		<numero>PN SZE 13</numero>
+		<numeroInterne>13</numeroInterne>
+		<observation>RAS</observation>
+		<voie>PISTE S91 - SAINT CLAIR</voie>
+		<voie2/>
+		<capacite>30</capacite>
+		<codeMateriau>METAL</codeMateriau>
+		<codeVolConstate/>
+		<dispoHbe/>
+		<hbe>false</hbe>
+	</hydrantPena>
+	<hydrantPibi xsi:type="PI" verif="false">
+		<agent1>Adc VALENTIN</agent1>
+		<agent2/>
+		<anomalies/>
+		<codeCommune>TLN</codeCommune>
+		<codeDomaine>COMMUNAL</codeDomaine>
+		<codeNature>PI</codeNature>
+		<complement>DEVANT GALERIE LAFAYETTE</complement>
+		<coordonnees>
+			<latitude>43.124700000000026</latitude>
+			<longitude>5.930699999999999</longitude>
+		</coordonnees>
+		<dispo/>
+		<lieuDit/>
+		<numero>PI TLN 37</numero>
+		<numeroInterne>37</numeroInterne>
+		<observation/>
+		<voie>RUE DOCTEUR JEAN BERTHOLET</voie>
+		<voie2/>
+		<choc>false</choc>
+		<codeDiametre>DIAM100</codeDiametre>
+		<codeMarque/>
+		<debit>120</debit>
+		<gestReseau/>
+		<numeroSCP/>
+		<pression>8.0</pression>
+		<pressionDyn>0.0</pressionDyn>
+	</hydrantPibi>
+	<hydrantPibi xsi:type="PI" verif="false">
+		<agent1>Adc VALENTIN</agent1>
+		<agent2/>
+		<anomalies>
+			<anomalie>
+				<code>CAPOTCASSEMANQUANT</code>
+			</anomalie>
+		</anomalies>
+		<codeCommune>TLN</codeCommune>
+		<codeDomaine>COMMUNAL</codeDomaine>
+		<codeNature>PI</codeNature>
+		<complement/>
+		<coordonnees>
+			<latitude>43.12440000000001</latitude>
+			<longitude>5.9298</longitude>
+		</coordonnees>
+		<dispo/>
+		<lieuDit/>
+		<numero>PI TLN 692</numero>
+		<numeroInterne>692</numeroInterne>
+		<observation/>
+		<voie>RUE JEAN JAURES</voie>
+		<voie2>RUE PROSPER FERRERO</voie2>
+		<choc>false</choc>
+		<codeDiametre>DIAM100</codeDiametre>
+		<codeMarque/>
+		<debit>120</debit>
+		<gestReseau/>
+		<numeroSCP/>
+		<pression>4.0</pression>
+		<pressionDyn>0.0</pressionDyn>
+	</hydrantPibi>
+	<hydrantPibi xsi:type="PI" verif="false">
+		<agent1>Adc VALENTIN</agent1>
+		<agent2/>
+		<anomalies/>
+		<codeCommune>TLN</codeCommune>
+		<codeDomaine>COMMUNAL</codeDomaine>
+		<codeNature>PI</codeNature>
+		<complement>PLACE AMIRAL SENES</complement>
+		<coordonnees>
+			<latitude>43.12410000000002</latitude>
+			<longitude>5.930600000000001</longitude>
+		</coordonnees>
+		<dispo/>
+		<lieuDit/>
+		<numero>PI TLN 22</numero>
+		<numeroInterne>22</numeroInterne>
+		<observation/>
+		<voie>RUE ANATOLE FRANCE</voie>
+		<voie2/>
+		<choc>false</choc>
+		<codeDiametre>DIAM100</codeDiametre>
+		<codeMarque/>
+		<debit>120</debit>
+		<gestReseau/>
+		<numeroSCP/>
+		<pression>5.0</pression>
+		<pressionDyn>0.0</pressionDyn>
+	</hydrantPibi>
+</xsi:hydrants>
+	

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="anomalies" type="lstAnomalies"/>
+
+  <xs:element name="natures" type="lstAnomaliesNatures"/>
+
+  <xs:element name="saisies" type="lstSaisies"/>
+
+  <xs:complexType name="lstHydrants">
+    <xs:sequence>
+      <xs:element name="hydrantPena" type="hydrantPena" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="hydrantPibi" type="hydrantPibi" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="hydrantPena" abstract="true">
+    <xs:complexContent>
+      <xs:extension base="hydrant">
+        <xs:sequence>
+          <xs:element name="coordDFCI" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="hydrant" abstract="true">
+    <xs:sequence>
+      <xs:element name="agent1" type="xs:string" minOccurs="0"/>
+      <xs:element name="agent2" type="xs:string" minOccurs="0"/>
+      <xs:element name="anneeFabrication" type="xs:int" minOccurs="0"/>
+      <xs:element ref="anomalies" minOccurs="0"/>
+      <xs:element name="codeCommune" type="xs:string" minOccurs="0"/>
+      <xs:element name="codeDomaine" type="xs:string" minOccurs="0"/>
+      <xs:element name="codeNature" type="xs:string" minOccurs="0"/>
+      <xs:element name="complement" type="xs:string" minOccurs="0"/>
+      <xs:element name="coordonnees" type="coordonnee" minOccurs="0"/>
+      <xs:element name="courrier" type="xs:string" minOccurs="0"/>
+      <xs:element name="dateContr" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="dateGps" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="dateModification" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="dateRecep" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="dateReco" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="dateVerif" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="dispo" type="xs:string" minOccurs="0"/>
+      <xs:element name="gestPointEau" type="xs:string" minOccurs="0"/>
+      <xs:element name="lieuDit" type="xs:string" minOccurs="0"/>
+      <xs:element name="numero" type="xs:string" minOccurs="0"/>
+      <xs:element name="numeroInterne" type="xs:int" minOccurs="0"/>
+      <xs:element name="observation" type="xs:string" minOccurs="0"/>
+      <xs:element name="photo" type="xs:string" minOccurs="0"/>
+      <xs:element name="version" type="xs:int" minOccurs="0"/>
+      <xs:element name="voie" type="xs:string" minOccurs="0"/>
+      <xs:element name="voie2" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="verif" type="xs:boolean" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="lstAnomalies">
+    <xs:sequence>
+      <xs:element name="anomalie" type="anomalie" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="anomalie">
+    <xs:sequence>
+      <xs:element name="code" type="xs:string" minOccurs="0"/>
+      <xs:element name="libelle" type="xs:string" minOccurs="0"/>
+      <xs:element name="critere" type="xs:string" minOccurs="0"/>
+      <xs:element ref="natures" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="lstAnomaliesNatures">
+    <xs:sequence>
+      <xs:element name="nature" type="anomalieNature" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="anomalieNature">
+    <xs:sequence>
+      <xs:element name="codeNature" type="xs:string" minOccurs="0"/>
+      <xs:element name="valeur" type="xs:int" minOccurs="0"/>
+      <xs:element name="valeurAdmin" type="xs:int" minOccurs="0"/>
+      <xs:element ref="saisies" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="lstSaisies">
+    <xs:sequence>
+      <xs:element name="saisie" type="saisie" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="saisie">
+    <xs:sequence>
+      <xs:element name="code" type="xs:string" minOccurs="0"/>
+      <xs:element name="libelle" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="coordonnee">
+    <xs:sequence>
+      <xs:element name="latitude" type="xs:double"/>
+      <xs:element name="longitude" type="xs:double"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CI_ENTERRE">
+    <xs:complexContent>
+      <xs:extension base="hydrantPena">
+        <xs:sequence>
+          <xs:element name="capacite" type="xs:string" minOccurs="0"/>
+          <xs:element name="codeMateriau" type="xs:string" minOccurs="0"/>
+          <xs:element name="codeVolConstate" type="xs:string" minOccurs="0"/>
+          <xs:element name="dispoHbe" type="xs:string" minOccurs="0"/>
+          <xs:element name="hbe" type="xs:boolean"/>
+          <xs:element name="qAppoint" type="xs:double" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="CI_FIXE">
+    <xs:complexContent>
+      <xs:extension base="CI_ENTERRE">
+        <xs:sequence>
+          <xs:element name="codePositionnement" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="CE">
+    <xs:complexContent>
+      <xs:extension base="hydrantPena">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="PE">
+    <xs:complexContent>
+      <xs:extension base="hydrantPena">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="PU">
+    <xs:complexContent>
+      <xs:extension base="hydrantPena">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="RE">
+    <xs:complexContent>
+      <xs:extension base="hydrantPena">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="hydrantPibi" abstract="true">
+    <xs:complexContent>
+      <xs:extension base="hydrant">
+        <xs:sequence>
+          <xs:element name="choc" type="xs:boolean" minOccurs="0"/>
+          <xs:element name="codeDiametre" type="xs:string" minOccurs="0"/>
+          <xs:element name="codeMarque" type="xs:string" minOccurs="0"/>
+          <xs:element name="codeModele" type="xs:string" minOccurs="0"/>
+          <xs:element name="codePena" type="xs:string" minOccurs="0"/>
+          <xs:element name="debit" type="xs:int" minOccurs="0"/>
+          <xs:element name="debitMax" type="xs:int" minOccurs="0"/>
+          <xs:element name="gestReseau" type="xs:string" minOccurs="0"/>
+          <xs:element name="numeroSCP" type="xs:string" minOccurs="0"/>
+          <xs:element name="pression" type="xs:double" minOccurs="0"/>
+          <xs:element name="pressionDyn" type="xs:double" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="PI">
+    <xs:complexContent>
+      <xs:extension base="hydrantPibi">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="BI">
+    <xs:complexContent>
+      <xs:extension base="hydrantPibi">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>

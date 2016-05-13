@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+	<REMOCRA.TYPE_ORGANISME id="1" code="COMMUNE" nom="COMMUNE" />
+	<REMOCRA.TYPE_ORGANISME id="5" code="SDIS" nom="SDIS" />
+	
+	<REMOCRA.PROFIL_ORGANISME id="1" type_organisme="1" nom="Commune Etape 1" code="COMMUNEETAPE1"/>
+	<REMOCRA.PROFIL_ORGANISME id="2" type_organisme="1" nom="Commune Etape 2" code="COMMUNEETAPE2"/>
+	<REMOCRA.PROFIL_ORGANISME id="3" type_organisme="5" nom="SDIS Beta" code="SDIS BETA"/>
+	
+	<REMOCRA.ORGANISME id="1" code="commune1"  nom="nom de la commune 1" email_contact="admin@commune1.fr" type_organisme="1" profil_organisme="1" version="1" />
+	<REMOCRA.ORGANISME id="2" code="commune2" nom="nom de la commune 2" email_contact="admin@commune2.fr" type_organisme="1" profil_organisme="2" version="1" />
+	<REMOCRA.ORGANISME id="3" code="sdis" nom="nom du sdis" email_contact="admin@sdis.fr" type_organisme="5" profil_organisme="3" version="1" />
+	
+	<REMOCRA.TYPE_DROIT id="1" code="REFERENTIELS" nom="Référentiels"/>
+	<REMOCRA.TYPE_DROIT id="2" code="ADRESSES" nom="Adresses"/>
+	
+	<REMOCRA.PROFIL_UTILISATEUR id="1" type_organisme="1" nom="Maire de la commune" code="MAIREDELACOMMUNE"/>
+	<REMOCRA.PROFIL_UTILISATEUR id="2" type_organisme="1" nom="Secretaire de mairie" code="SECRETAIREDEMAIRIE"/>
+	<REMOCRA.PROFIL_UTILISATEUR id="3" type_organisme="1" nom="Agent voie publique" code="AGENTVOIEPUBLIQUE"/>
+	<REMOCRA.PROFIL_UTILISATEUR id="4" type_organisme="5" nom="Capitaine de brigade" code="CAPITAINEDEBRIGADE"/>
+	<REMOCRA.PROFIL_UTILISATEUR id="5" type_organisme="5" nom="Pompier" code="POMPIER"/>
+	
+	<REMOCRA.PROFIL_DROIT id="1" version="1" code="MAIREDELACOMMUNEENTAPE1" nom="Maire de la commune en étape 1" />
+	<REMOCRA.PROFIL_DROIT id="2" version="1" code="MAIREDELACOMMUNEENTAPE2" nom="Maire de la commune en étape 2" />
+	<REMOCRA.PROFIL_DROIT id="3" version="1" code="CAPITAINEDEBRIGADE"  nom="Capitaine de Brigade" />
+	
+	<REMOCRA.DROIT id="1" profil_droit="1" type_droit="1" droit_create="true" droit_read="false" droit_update="false" droit_delete="false"/>
+	<REMOCRA.DROIT id="2" profil_droit="1" type_droit="2" droit_create="false" droit_read="false" droit_update="false" droit_delete="false"/>	
+	<REMOCRA.DROIT id="3" profil_droit="3" type_droit="1" droit_create="false" droit_read="false" droit_update="false" droit_delete="false"/>
+
+	<REMOCRA.PROFIL_ORGANISME_UTILISATEUR_DROIT PROFIL_UTILISATEUR="1" PROFIL_ORGANISME="1" PROFIL_DROIT="1" />
+	<REMOCRA.PROFIL_ORGANISME_UTILISATEUR_DROIT PROFIL_UTILISATEUR="1" PROFIL_ORGANISME="2" PROFIL_DROIT="2" />
+	<REMOCRA.PROFIL_ORGANISME_UTILISATEUR_DROIT PROFIL_UTILISATEUR="4" PROFIL_ORGANISME="3" PROFIL_DROIT="3" />
+	
+	<REMOCRA.UTILISATEUR id="1" identifiant="maire" email="maire@commune1.com" organisme="1"
+		password="d9185547e3129754fb80d3341a269f5c"
+		salt="jp6dti05"
+		version="1" profil_utilisateur="1"/>
+	<REMOCRA.UTILISATEUR id="2" identifiant="secretaire" email="secretaire@commune2.com" organisme="2"
+		password="d9185547e3129754fb80d3341a269f5c"
+		salt="jp6dti05"
+		version="1" profil_utilisateur="2"/>
+	<REMOCRA.UTILISATEUR id="3" identifiant="capitaine" email="capitaine@sdis.com" organisme="3"
+		password="d9185547e3129754fb80d3341a269f5c"
+		salt="jp6dti05"
+		version="1" profil_utilisateur="4"/>
+</dataset>

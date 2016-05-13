@@ -1,0 +1,89 @@
+/* Vertical Tab Panel CSS */
+
+.x-tab-bar-vertical .x-tab-bar-body-vertical {
+    border: none;
+	overflow: auto;
+}
+
+.x-tab-bar-vertical .x-box-inner {
+    overflow: visible;
+}
+
+.x-tab-bar-vertical .x-box-scroller-top {
+}
+
+.x-tab-bar-vertical .x-box-layout-ct {
+    overflow: visible;
+}
+
+.x-tab-left {
+	height : 25px;
+    margin: 0 0 2px 2px;
+	display: inline-block;
+	float: left;
+	width: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.x-tab-left button{
+	font-size: 13px;
+}
+
+.x-ie .x-tab-left em,
+.x-opera .x-tab-left em{
+    line-height: 12px;
+}
+
+/*
+.x-vertical-tab-panel {
+	overflow: hidden;
+	float: right;
+}
+*/
+
+.x-tab-default-toolbar-left {
+    -moz-border-radius-topleft: 4px;
+    -webkit-border-top-left-radius: 4px;
+    -o-border-top-left-radius: 4px;
+    -ms-border-top-left-radius: 4px;
+    -khtml-border-top-left-radius: 4px;
+    border-top-left-radius: 4px;
+    -moz-border-radius-topright: 0;
+    -webkit-border-top-right-radius: 0px;
+    -o-border-top-right-radius: 0;
+    -ms-border-top-right-radius: 0;
+    -khtml-border-top-right-radius: 0;
+    border-top-right-radius: 0;
+    -moz-border-radius-bottomright: 0;
+    -webkit-border-bottom-right-radius: 0;
+    -o-border-bottom-right-radius: 0;
+    -ms-border-bottom-right-radius: 0;
+    -khtml-border-bottom-right-radius: 0;
+    border-bottom-right-radius: 0;
+    -moz-border-radius-bottomleft: 4px;
+    -webkit-border-bottom-left-radius: 4px;
+    -o-border-bottom-left-radius: 4px;
+    -ms-border-bottom-left-radius: 4px;
+    -khtml-border-bottom-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    padding: 3px 0 3px 3px;
+    border-width: 1px 0 1px 1px;
+    border-style: solid;
+    background-image: none;
+    background-color: #EAEAEA;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #DCDCDC), color-stop(100%, #EAEAEA));
+    background-image: -moz-linear-gradient(top, #DCDCDC,#EAEAEA );
+    background-image: linear-gradient(top, #DCDCDC,#EAEAEA );
+}
+.x-tab-left-active {
+    background-image: none;
+    background-color: #EAEAEA;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, white), color-stop(25%, #FFFFFF), color-stop(45%, #EAEAEA));
+    background-image: -moz-linear-gradient(top, white,#FFFFFF 25%,#EAEAEA 45%);
+    background-image: linear-gradient(top, white,#FFFFFF 25%,#EAEAEA 45%);
+}
+
+.x-nlg .x-tab-left-active {
+    background-image: url("../../resources/themes/images/default/tab/tab-default-top-active-bg.gif");
+}

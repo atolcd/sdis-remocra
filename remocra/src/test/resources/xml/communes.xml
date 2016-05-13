@@ -1,0 +1,1955 @@
+<?xml version="1.0" encoding="utf-8"?>
+<communes>
+    <commune>
+        <libelle>LA SEYNE SUR MER</libelle>
+        <code>SMRLA SEYNE SUR MER</code>
+        <insee>83126</insee>
+    </commune>
+    <commune>
+        <libelle>GREOUX LES BAINS</libelle>
+        <code>GREOUXLESBAINSGREOUX LES BAINS</code>
+        <insee>04094</insee>
+    </commune>
+    <commune>
+        <libelle>LA CADIERE D'AZUR</libelle>
+        <code>CARLA CADIERE D'AZUR</code>
+        <insee>83027</insee>
+    </commune>
+    <commune>
+        <libelle>SANARY SUR MER</libelle>
+        <code>SNRSANARY SUR MER</code>
+        <insee>83123</insee>
+    </commune>
+    <commune>
+        <libelle>CUCURON</libelle>
+        <code>CUCURONCUCURON</code>
+        <insee>84042</insee>
+    </commune>
+    <commune>
+        <libelle>ST RAPHAEL</libelle>
+        <code>SRLST RAPHAEL</code>
+        <insee>83118</insee>
+    </commune>
+    <commune>
+        <libelle>SEILLANS</libelle>
+        <code>SLNSEILLANS</code>
+        <insee>83124</insee>
+    </commune>
+    <commune>
+        <libelle>CALLAS</libelle>
+        <code>CASCALLAS</code>
+        <insee>83028</insee>
+    </commune>
+    <commune>
+        <libelle>MONS</libelle>
+        <code>MNSMONS</code>
+        <insee>83080</insee>
+    </commune>
+    <commune>
+        <libelle>ROQUEBRUNE SUR ARGENS</libelle>
+        <code>RAGROQUEBRUNE SUR ARGENS</code>
+        <insee>83107</insee>
+    </commune>
+    <commune>
+        <libelle>ST MARTIN DE CASTILLON</libelle>
+        <code>STMARTINDECASTILLONST MARTIN DE CASTILLON</code>
+        <insee>84112</insee>
+    </commune>
+    <commune>
+        <libelle>VAUVENARGUES</libelle>
+        <code>VAUVENARGUESVAUVENARGUES</code>
+        <insee>13111</insee>
+    </commune>
+    <commune>
+        <libelle>ANTIBES</libelle>
+        <code>ANTIBESANTIBES</code>
+        <insee>06004</insee>
+    </commune>
+    <commune>
+        <libelle>PUYLOUBIER</libelle>
+        <code>PUYLOUBIERPUYLOUBIER</code>
+        <insee>13079</insee>
+    </commune>
+    <commune>
+        <libelle>CASSIS</libelle>
+        <code>CASSISCASSIS</code>
+        <insee>13022</insee>
+    </commune>
+    <commune>
+        <libelle>CASTELLANE</libelle>
+        <code>CASTELLANECASTELLANE</code>
+        <insee>04039</insee>
+    </commune>
+    <commune>
+        <libelle>ST MARC JAUMEGARDE</libelle>
+        <code>STMARCJAUMEGARDEST MARC JAUMEGARDE</code>
+        <insee>13095</insee>
+    </commune>
+    <commune>
+        <libelle>AURIOL</libelle>
+        <code>AURIOLAURIOL</code>
+        <insee>13007</insee>
+    </commune>
+    <commune>
+        <libelle>CIPIERES</libelle>
+        <code>CIPIERESCIPIERES</code>
+        <insee>06041</insee>
+    </commune>
+    <commune>
+        <libelle>CANNES</libelle>
+        <code>CANNESCANNES</code>
+        <insee>06029</insee>
+    </commune>
+    <commune>
+        <libelle>GREOLIERES</libelle>
+        <code>GREOLIERESGREOLIERES</code>
+        <insee>06070</insee>
+    </commune>
+    <commune>
+        <libelle>LA TOUR D'AIGUES</libelle>
+        <code>LATOURDAIGUESLA TOUR D'AIGUES</code>
+        <insee>84133</insee>
+    </commune>
+    <commune>
+        <libelle>PLAN D'AUPS STE BAUME</libelle>
+        <code>PASPLAN D'AUPS STE BAUME</code>
+        <insee>83093</insee>
+    </commune>
+    <commune>
+        <libelle>MONTAUROUX</libelle>
+        <code>MTXMONTAUROUX</code>
+        <insee>83081</insee>
+    </commune>
+    <commune>
+        <libelle>LE MUY</libelle>
+        <code>LMYLE MUY</code>
+        <insee>83086</insee>
+    </commune>
+    <commune>
+        <libelle>LA LONDE LES MAURES</libelle>
+        <code>LMSLA LONDE LES MAURES</code>
+        <insee>83071</insee>
+    </commune>
+    <commune>
+        <libelle>FAYENCE</libelle>
+        <code>FYEFAYENCE</code>
+        <insee>83055</insee>
+    </commune>
+    <commune>
+        <libelle>STE MAXIME</libelle>
+        <code>SMESTE MAXIME</code>
+        <insee>83115</insee>
+    </commune>
+    <commune>
+        <libelle>VIENS</libelle>
+        <code>VIENSVIENS</code>
+        <insee>84144</insee>
+    </commune>
+    <commune>
+        <libelle>COMPS SUR ARTUBY</libelle>
+        <code>CAYCOMPS SUR ARTUBY</code>
+        <insee>83044</insee>
+    </commune>
+    <commune>
+        <libelle>ST JULIEN D'ASSE</libelle>
+        <code>STJULIENDASSEST JULIEN D'ASSE</code>
+        <insee>04182</insee>
+    </commune>
+    <commune>
+        <libelle>VIDAUBAN</libelle>
+        <code>VBNVIDAUBAN</code>
+        <insee>83148</insee>
+    </commune>
+    <commune>
+        <libelle>ST JEANNET</libelle>
+        <code>STJEANNETST JEANNET</code>
+        <insee>04181</insee>
+    </commune>
+    <commune>
+        <libelle>NICE</libelle>
+        <code>NICENICE</code>
+        <insee>06088</insee>
+    </commune>
+    <commune>
+        <libelle>EVENOS</libelle>
+        <code>ENSEVENOS</code>
+        <insee>83053</insee>
+    </commune>
+    <commune>
+        <libelle>ALLAUCH</libelle>
+        <code>ALLAUCHALLAUCH</code>
+        <insee>13002</insee>
+    </commune>
+    <commune>
+        <libelle>LES MUJOULS</libelle>
+        <code>LESMUJOULSLES MUJOULS</code>
+        <insee>06087</insee>
+    </commune>
+    <commune>
+        <libelle>LA BOUILLADISSE</libelle>
+        <code>LABOUILLADISSELA BOUILLADISSE</code>
+        <insee>13016</insee>
+    </commune>
+    <commune>
+        <libelle>RAMATUELLE</libelle>
+        <code>RTERAMATUELLE</code>
+        <insee>83101</insee>
+    </commune>
+    <commune>
+        <libelle>UTELLE</libelle>
+        <code>UTELLEUTELLE</code>
+        <insee>06151</insee>
+    </commune>
+    <commune>
+        <libelle>JOUQUES</libelle>
+        <code>JOUQUESJOUQUES</code>
+        <insee>13048</insee>
+    </commune>
+    <commune>
+        <libelle>MAZAUGUES</libelle>
+        <code>MZSMAZAUGUES</code>
+        <insee>83076</insee>
+    </commune>
+    <commune>
+        <libelle>LA TOUR</libelle>
+        <code>LATOURLA TOUR</code>
+        <insee>06144</insee>
+    </commune>
+    <commune>
+        <libelle>LA VERDIERE</libelle>
+        <code>VDELA VERDIERE</code>
+        <insee>83146</insee>
+    </commune>
+    <commune>
+        <libelle>REILLANNE</libelle>
+        <code>REILLANNEREILLANNE</code>
+        <insee>04160</insee>
+    </commune>
+    <commune>
+        <libelle>VENCE</libelle>
+        <code>VENCEVENCE</code>
+        <insee>06157</insee>
+    </commune>
+    <commune>
+        <libelle>VALENSOLE</libelle>
+        <code>VALENSOLEVALENSOLE</code>
+        <insee>04230</insee>
+    </commune>
+    <commune>
+        <libelle>PIERREFEU</libelle>
+        <code>PIERREFEUPIERREFEU</code>
+        <insee>06097</insee>
+    </commune>
+    <commune>
+        <libelle>VACHERES</libelle>
+        <code>VACHERESVACHERES</code>
+        <insee>04227</insee>
+    </commune>
+    <commune>
+        <libelle>CUEBRIS</libelle>
+        <code>CUEBRISCUEBRIS</code>
+        <insee>06052</insee>
+    </commune>
+    <commune>
+        <libelle>FORCALQUIER</libelle>
+        <code>FORCALQUIERFORCALQUIER</code>
+        <insee>04088</insee>
+    </commune>
+    <commune>
+        <libelle>VILLENEUVE</libelle>
+        <code>VILLENEUVEVILLENEUVE</code>
+        <insee>04242</insee>
+    </commune>
+    <commune>
+        <libelle>MARSEILLE</libelle>
+        <code>MARSEILLEMARSEILLE</code>
+        <insee>13055</insee>
+    </commune>
+    <commune>
+        <libelle>RIANS</libelle>
+        <code>RASRIANS</code>
+        <insee>83104</insee>
+    </commune>
+    <commune>
+        <libelle>COLLOBRIERES</libelle>
+        <code>CLSCOLLOBRIERES</code>
+        <insee>83043</insee>
+    </commune>
+    <commune>
+        <libelle>ST CYR SUR MER</libelle>
+        <code>SCMST CYR SUR MER</code>
+        <insee>83112</insee>
+    </commune>
+    <commune>
+        <libelle>AIX EN PROVENCE</libelle>
+        <code>AIXENPROVENCEAIX EN PROVENCE</code>
+        <insee>13001</insee>
+    </commune>
+    <commune>
+        <libelle>ST ANTONIN SUR BAYON</libelle>
+        <code>STANTONINSURBAYONST ANTONIN SUR BAYON</code>
+        <insee>13090</insee>
+    </commune>
+    <commune>
+        <libelle>MANDELIEU LA NAPOULE</libelle>
+        <code>MANDELIEULANAPOULEMANDELIEU LA NAPOULE</code>
+        <insee>06079</insee>
+    </commune>
+    <commune>
+        <libelle>MEOUNES LES MONTRIEUX</libelle>
+        <code>MMXMEOUNES LES MONTRIEUX</code>
+        <insee>83077</insee>
+    </commune>
+    <commune>
+        <libelle>BELGENTIER</libelle>
+        <code>BGRBELGENTIER</code>
+        <insee>83017</insee>
+    </commune>
+    <commune>
+        <libelle>VALLAURIS</libelle>
+        <code>VALLAURISVALLAURIS</code>
+        <insee>06155</insee>
+    </commune>
+    <commune>
+        <libelle>MANOSQUE</libelle>
+        <code>MANOSQUEMANOSQUE</code>
+        <insee>04112</insee>
+    </commune>
+    <commune>
+        <libelle>ROUSSET</libelle>
+        <code>ROUSSETROUSSET</code>
+        <insee>13087</insee>
+    </commune>
+    <commune>
+        <libelle>CUERS</libelle>
+        <code>CESCUERS</code>
+        <insee>83049</insee>
+    </commune>
+    <commune>
+        <libelle>BORMES LES MIMOSAS</libelle>
+        <code>BLMBORMES LES MIMOSAS</code>
+        <insee>83019</insee>
+    </commune>
+    <commune>
+        <libelle>LE THORONET</libelle>
+        <code>TRTLE THORONET</code>
+        <insee>83136</insee>
+    </commune>
+    <commune>
+        <libelle>LE LAVANDOU</libelle>
+        <code>LVULE LAVANDOU</code>
+        <insee>83070</insee>
+    </commune>
+    <commune>
+        <libelle>LA BASTIDE DES JOURDANS</libelle>
+        <code>LABASTIDEDESJOURDANSLA BASTIDE DES JOURDANS</code>
+        <insee>84009</insee>
+    </commune>
+    <commune>
+        <libelle>PIERREVERT</libelle>
+        <code>PIERREVERTPIERREVERT</code>
+        <insee>04152</insee>
+    </commune>
+    <commune>
+        <libelle>ENTREVAUX</libelle>
+        <code>ENTREVAUXENTREVAUX</code>
+        <insee>04076</insee>
+    </commune>
+    <commune>
+        <libelle>FREJUS</libelle>
+        <code>FRJFREJUS</code>
+        <insee>83061</insee>
+    </commune>
+    <commune>
+        <libelle>SOLLIES TOUCAS</libelle>
+        <code>STSSOLLIES TOUCAS</code>
+        <insee>83131</insee>
+    </commune>
+    <commune>
+        <libelle>AIGLUN</libelle>
+        <code>AIGLUNAIGLUN</code>
+        <insee>06001</insee>
+    </commune>
+    <commune>
+        <libelle>SIMIANE LA ROTONDE</libelle>
+        <code>SIMIANELAROTONDESIMIANE LA ROTONDE</code>
+        <insee>04208</insee>
+    </commune>
+    <commune>
+        <libelle>MOUSTIERS STE MARIE</libelle>
+        <code>MOUSTIERSSTEMARIEMOUSTIERS STE MARIE</code>
+        <insee>04135</insee>
+    </commune>
+    <commune>
+        <libelle>ROUGON</libelle>
+        <code>ROUGONROUGON</code>
+        <insee>04171</insee>
+    </commune>
+    <commune>
+        <libelle>LA CRAU</libelle>
+        <code>CRULA CRAU</code>
+        <insee>83047</insee>
+    </commune>
+    <commune>
+        <libelle>AURIBEAU</libelle>
+        <code>AURIBEAUAURIBEAU</code>
+        <insee>84006</insee>
+    </commune>
+    <commune>
+        <libelle>LA PALUD SUR VERDON</libelle>
+        <code>LAPALUDSURVERDONLA PALUD SUR VERDON</code>
+        <insee>04144</insee>
+    </commune>
+    <commune>
+        <libelle>TOURRETTES</libelle>
+        <code>TRSTOURRETTES</code>
+        <insee>83138</insee>
+    </commune>
+    <commune>
+        <libelle>LIMANS</libelle>
+        <code>LIMANSLIMANS</code>
+        <insee>04104</insee>
+    </commune>
+    <commune>
+        <libelle>AUBAGNE</libelle>
+        <code>AUBAGNEAUBAGNE</code>
+        <insee>13005</insee>
+    </commune>
+    <commune>
+        <libelle>BELCODENE</libelle>
+        <code>BELCODENEBELCODENE</code>
+        <insee>13013</insee>
+    </commune>
+    <commune>
+        <libelle>LORGUES</libelle>
+        <code>LGSLORGUES</code>
+        <insee>83072</insee>
+    </commune>
+    <commune>
+        <libelle>POURCIEUX</libelle>
+        <code>PCXPOURCIEUX</code>
+        <insee>83096</insee>
+    </commune>
+    <commune>
+        <libelle>ST LAURENT DU VERDON</libelle>
+        <code>STLAURENTDUVERDONST LAURENT DU VERDON</code>
+        <insee>04186</insee>
+    </commune>
+    <commune>
+        <libelle>LE MAS</libelle>
+        <code>LEMASLE MAS</code>
+        <insee>06081</insee>
+    </commune>
+    <commune>
+        <libelle>LES ADRETS DE L'ESTEREL</libelle>
+        <code>AELLES ADRETS DE L'ESTEREL</code>
+        <insee>83001</insee>
+    </commune>
+    <commune>
+        <libelle>TRETS</libelle>
+        <code>TRETSTRETS</code>
+        <insee>13110</insee>
+    </commune>
+    <commune>
+        <libelle>BAUDUEN</libelle>
+        <code>BDNBAUDUEN</code>
+        <insee>83015</insee>
+    </commune>
+    <commune>
+        <libelle>HYERES</libelle>
+        <code>HRSHYERES</code>
+        <insee>83069</insee>
+    </commune>
+    <commune>
+        <libelle>TOURVES</libelle>
+        <code>TVSTOURVES</code>
+        <insee>83140</insee>
+    </commune>
+    <commune>
+        <libelle>TOULON</libelle>
+        <code>TLNTOULON</code>
+        <insee>83137</insee>
+    </commune>
+    <commune>
+        <libelle>ST TROPEZ</libelle>
+        <code>STZST TROPEZ</code>
+        <insee>83119</insee>
+    </commune>
+    <commune>
+        <libelle>CAVALAIRE SUR MER</libelle>
+        <code>CMRCAVALAIRE SUR MER</code>
+        <insee>83036</insee>
+    </commune>
+    <commune>
+        <libelle>LE BEAUSSET</libelle>
+        <code>BSTLE BEAUSSET</code>
+        <insee>83016</insee>
+    </commune>
+    <commune>
+        <libelle>LE CANNET DES MAURES</libelle>
+        <code>CMSLE CANNET DES MAURES</code>
+        <insee>83031</insee>
+    </commune>
+    <commune>
+        <libelle>LA ROQUEBRUSSANNE</libelle>
+        <code>RBELA ROQUEBRUSSANNE</code>
+        <insee>83108</insee>
+    </commune>
+    <commune>
+        <libelle>LE CASTELLET</libelle>
+        <code>CTTLE CASTELLET</code>
+        <insee>83035</insee>
+    </commune>
+    <commune>
+        <libelle>TRIGANCE</libelle>
+        <code>TGETRIGANCE</code>
+        <insee>83142</insee>
+    </commune>
+    <commune>
+        <libelle>LES SALLES SUR VERDON</libelle>
+        <code>SVNLES SALLES SUR VERDON</code>
+        <insee>83122</insee>
+    </commune>
+    <commune>
+        <libelle>MANE</libelle>
+        <code>MANEMANE</code>
+        <insee>04111</insee>
+    </commune>
+    <commune>
+        <libelle>COURSEGOULES</libelle>
+        <code>COURSEGOULESCOURSEGOULES</code>
+        <insee>06050</insee>
+    </commune>
+    <commune>
+        <libelle>SENEZ</libelle>
+        <code>SENEZSENEZ</code>
+        <insee>04204</insee>
+    </commune>
+    <commune>
+        <libelle>ST JEANNET</libelle>
+        <code>STJEANNETST JEANNET</code>
+        <insee>06122</insee>
+    </commune>
+    <commune>
+        <libelle>TOURNEFORT</libelle>
+        <code>TOURNEFORTTOURNEFORT</code>
+        <insee>06146</insee>
+    </commune>
+    <commune>
+        <libelle>BANDOL</libelle>
+        <code>BDLBANDOL</code>
+        <insee>83009</insee>
+    </commune>
+    <commune>
+        <libelle>PUGET VILLE</libelle>
+        <code>PVEPUGET VILLE</code>
+        <insee>83100</insee>
+    </commune>
+    <commune>
+        <libelle>THEOULE SUR MER</libelle>
+        <code>THEOULESURMERTHEOULE SUR MER</code>
+        <insee>06138</insee>
+    </commune>
+    <commune>
+        <libelle>TANNERON</libelle>
+        <code>TRNTANNERON</code>
+        <insee>83133</insee>
+    </commune>
+    <commune>
+        <libelle>CALLIAN</libelle>
+        <code>CLNCALLIAN</code>
+        <insee>83029</insee>
+    </commune>
+    <commune>
+        <libelle>TOURETTE DU CHATEAU</libelle>
+        <code>TOURETTEDUCHATEAUTOURETTE DU CHATEAU</code>
+        <insee>06145</insee>
+    </commune>
+    <commune>
+        <libelle>LA GARDE FREINET</libelle>
+        <code>GFTLA GARDE FREINET</code>
+        <insee>83063</insee>
+    </commune>
+    <commune>
+        <libelle>ST VALLIER DE THIEY</libelle>
+        <code>STVALLIERDETHIEYST VALLIER DE THIEY</code>
+        <insee>06130</insee>
+    </commune>
+    <commune>
+        <libelle>BRIGNOLES</libelle>
+        <code>BGSBRIGNOLES</code>
+        <insee>83023</insee>
+    </commune>
+    <commune>
+        <libelle>AURIBEAU SUR SIAGNE</libelle>
+        <code>AURIBEAUSURSIAGNEAURIBEAU SUR SIAGNE</code>
+        <insee>06007</insee>
+    </commune>
+    <commune>
+        <libelle>ST JURS</libelle>
+        <code>STJURSST JURS</code>
+        <insee>04184</insee>
+    </commune>
+    <commune>
+        <libelle>ST ANDRE LES ALPES</libelle>
+        <code>STANDRELESALPESST ANDRE LES ALPES</code>
+        <insee>04173</insee>
+    </commune>
+    <commune>
+        <libelle>BARRÊME</libelle>
+        <code>BARRMEBARRÊME</code>
+        <insee>04022</insee>
+    </commune>
+    <commune>
+        <libelle>CERESTE</libelle>
+        <code>CERESTECERESTE</code>
+        <insee>04045</insee>
+    </commune>
+    <commune>
+        <libelle>BEYNES</libelle>
+        <code>BEYNESBEYNES</code>
+        <insee>04028</insee>
+    </commune>
+    <commune>
+        <libelle>LURS</libelle>
+        <code>LURSLURS</code>
+        <insee>04106</insee>
+    </commune>
+    <commune>
+        <libelle>LES MEES</libelle>
+        <code>LESMEESLES MEES</code>
+        <insee>04116</insee>
+    </commune>
+    <commune>
+        <libelle>BRAS D'ASSE</libelle>
+        <code>BRASDASSEBRAS D'ASSE</code>
+        <insee>04031</insee>
+    </commune>
+    <commune>
+        <libelle>PUIMICHEL</libelle>
+        <code>PUIMICHELPUIMICHEL</code>
+        <insee>04156</insee>
+    </commune>
+    <commune>
+        <libelle>REVEST DES BROUSSES</libelle>
+        <code>REVESTDESBROUSSESREVEST DES BROUSSES</code>
+        <insee>04162</insee>
+    </commune>
+    <commune>
+        <libelle>ST MARTIN LES EAUX</libelle>
+        <code>STMARTINLESEAUXST MARTIN LES EAUX</code>
+        <insee>04190</insee>
+    </commune>
+    <commune>
+        <libelle>ANGLES</libelle>
+        <code>ANGLESANGLES</code>
+        <insee>04007</insee>
+    </commune>
+    <commune>
+        <libelle>CHATEAUVIEUX</libelle>
+        <code>CVXCHATEAUVIEUX</code>
+        <insee>83040</insee>
+    </commune>
+    <commune>
+        <libelle>PERTUIS</libelle>
+        <code>PERTUISPERTUIS</code>
+        <insee>84089</insee>
+    </commune>
+    <commune>
+        <libelle>VITROLLES EN LUBERON</libelle>
+        <code>VITROLLESENLUBERONVITROLLES EN LUBERON</code>
+        <insee>84151</insee>
+    </commune>
+    <commune>
+        <libelle>ST MARTIN DE BRÔMES</libelle>
+        <code>STMARTINDEBRMESST MARTIN DE BRÔMES</code>
+        <insee>04189</insee>
+    </commune>
+    <commune>
+        <libelle>CONSEGUDES</libelle>
+        <code>CONSEGUDESCONSEGUDES</code>
+        <insee>06047</insee>
+    </commune>
+    <commune>
+        <libelle>LA ROQUETTE SUR VAR</libelle>
+        <code>LAROQUETTESURVARLA ROQUETTE SUR VAR</code>
+        <insee>06109</insee>
+    </commune>
+    <commune>
+        <libelle>CABRIERES D'AIGUES</libelle>
+        <code>CABRIERESDAIGUESCABRIERES D'AIGUES</code>
+        <insee>84024</insee>
+    </commune>
+    <commune>
+        <libelle>SAIGNON</libelle>
+        <code>SAIGNONSAIGNON</code>
+        <insee>84105</insee>
+    </commune>
+    <commune>
+        <libelle>CAILLE</libelle>
+        <code>CAILLECAILLE</code>
+        <insee>06028</insee>
+    </commune>
+    <commune>
+        <libelle>GARDANNE</libelle>
+        <code>GARDANNEGARDANNE</code>
+        <insee>13041</insee>
+    </commune>
+    <commune>
+        <libelle>CADOLIVE</libelle>
+        <code>CADOLIVECADOLIVE</code>
+        <insee>13020</insee>
+    </commune>
+    <commune>
+        <libelle>BEAUMONT DE PERTUIS</libelle>
+        <code>BEAUMONTDEPERTUISBEAUMONT DE PERTUIS</code>
+        <insee>84014</insee>
+    </commune>
+    <commune>
+        <libelle>UBRAYE</libelle>
+        <code>UBRAYEUBRAYE</code>
+        <insee>04224</insee>
+    </commune>
+    <commune>
+        <libelle>ST SAVOURNIN</libelle>
+        <code>STSAVOURNINST SAVOURNIN</code>
+        <insee>13101</insee>
+    </commune>
+    <commune>
+        <libelle>MIRABEAU</libelle>
+        <code>MIRABEAUMIRABEAU</code>
+        <insee>84076</insee>
+    </commune>
+    <commune>
+        <libelle>LA FARLEDE</libelle>
+        <code>FLELA FARLEDE</code>
+        <insee>83054</insee>
+    </commune>
+    <commune>
+        <libelle>ST JULIEN DU VERDON</libelle>
+        <code>STJULIENDUVERDONST JULIEN DU VERDON</code>
+        <insee>04183</insee>
+    </commune>
+    <commune>
+        <libelle>LE THOLONET</libelle>
+        <code>LETHOLONETLE THOLONET</code>
+        <insee>13109</insee>
+    </commune>
+    <commune>
+        <libelle>LA PENNE SUR HUVEAUNE</libelle>
+        <code>LAPENNESURHUVEAUNELA PENNE SUR HUVEAUNE</code>
+        <insee>13070</insee>
+    </commune>
+    <commune>
+        <libelle>BRIANÇONNET</libelle>
+        <code>BRIANONNETBRIANÇONNET</code>
+        <insee>06024</insee>
+    </commune>
+    <commune>
+        <libelle>LA CIOTAT</libelle>
+        <code>LACIOTATLA CIOTAT</code>
+        <insee>13028</insee>
+    </commune>
+    <commune>
+        <libelle>CUGES LES PINS</libelle>
+        <code>CUGESLESPINSCUGES LES PINS</code>
+        <insee>13030</insee>
+    </commune>
+    <commune>
+        <libelle>CHAUDON NORANTE</libelle>
+        <code>CHAUDONNORANTECHAUDON NORANTE</code>
+        <insee>04055</insee>
+    </commune>
+    <commune>
+        <libelle>ESTOUBLON</libelle>
+        <code>ESTOUBLONESTOUBLON</code>
+        <insee>04084</insee>
+    </commune>
+    <commune>
+        <libelle>ANDON</libelle>
+        <code>ANDONANDON</code>
+        <insee>06003</insee>
+    </commune>
+    <commune>
+        <libelle>ST LAURENT DU VAR</libelle>
+        <code>STLAURENTDUVARST LAURENT DU VAR</code>
+        <insee>06123</insee>
+    </commune>
+    <commune>
+        <libelle>CAGNES SUR MER</libelle>
+        <code>CAGNESSURMERCAGNES SUR MER</code>
+        <insee>06027</insee>
+    </commune>
+    <commune>
+        <libelle>LE CANNET</libelle>
+        <code>LECANNETLE CANNET</code>
+        <insee>06030</insee>
+    </commune>
+    <commune>
+        <libelle>PEYROULES</libelle>
+        <code>PEYROULESPEYROULES</code>
+        <insee>04148</insee>
+    </commune>
+    <commune>
+        <libelle>VILLARS</libelle>
+        <code>VILLARSVILLARS</code>
+        <insee>84145</insee>
+    </commune>
+    <commune>
+        <libelle>LAGARDE D'APT</libelle>
+        <code>LAGARDEDAPTLAGARDE D'APT</code>
+        <insee>84060</insee>
+    </commune>
+    <commune>
+        <libelle>CASENEUVE</libelle>
+        <code>CASENEUVECASENEUVE</code>
+        <insee>84032</insee>
+    </commune>
+    <commune>
+        <libelle>RUSTREL</libelle>
+        <code>RUSTRELRUSTREL</code>
+        <insee>84103</insee>
+    </commune>
+    <commune>
+        <libelle>ST CHRISTOL</libelle>
+        <code>STCHRISTOLST CHRISTOL</code>
+        <insee>84107</insee>
+    </commune>
+    <commune>
+        <libelle>SIGALE</libelle>
+        <code>SIGALESIGALE</code>
+        <insee>06135</insee>
+    </commune>
+    <commune>
+        <libelle>BRUNET</libelle>
+        <code>BRUNETBRUNET</code>
+        <insee>04035</insee>
+    </commune>
+    <commune>
+        <libelle>DEMANDOLX</libelle>
+        <code>DEMANDOLXDEMANDOLX</code>
+        <insee>04069</insee>
+    </commune>
+    <commune>
+        <libelle>MEYREUIL</libelle>
+        <code>MEYREUILMEYREUIL</code>
+        <insee>13060</insee>
+    </commune>
+    <commune>
+        <libelle>PEGOMAS</libelle>
+        <code>PEGOMASPEGOMAS</code>
+        <insee>06090</insee>
+    </commune>
+    <commune>
+        <libelle>VENELLES</libelle>
+        <code>VENELLESVENELLES</code>
+        <insee>13113</insee>
+    </commune>
+    <commune>
+        <libelle>LA DESTROUSSE</libelle>
+        <code>LADESTROUSSELA DESTROUSSE</code>
+        <insee>13031</insee>
+    </commune>
+    <commune>
+        <libelle>LA ROCHETTE</libelle>
+        <code>LAROCHETTELA ROCHETTE</code>
+        <insee>04170</insee>
+    </commune>
+    <commune>
+        <libelle>MORIEZ</libelle>
+        <code>MORIEZMORIEZ</code>
+        <insee>04133</insee>
+    </commune>
+    <commune>
+        <libelle>ST PIERRE</libelle>
+        <code>STPIERREST PIERRE</code>
+        <insee>04194</insee>
+    </commune>
+    <commune>
+        <libelle>ROQUESTERON GRASSE</libelle>
+        <code>ROQUESTERONGRASSEROQUESTERON GRASSE</code>
+        <insee>06107</insee>
+    </commune>
+    <commune>
+        <libelle>MALAUSSENE</libelle>
+        <code>MALAUSSENEMALAUSSENE</code>
+        <insee>06078</insee>
+    </commune>
+    <commune>
+        <libelle>VILLARS SUR VAR</libelle>
+        <code>VILLARSSURVARVILLARS SUR VAR</code>
+        <insee>06158</insee>
+    </commune>
+    <commune>
+        <libelle>TOUDON</libelle>
+        <code>TOUDONTOUDON</code>
+        <insee>06141</insee>
+    </commune>
+    <commune>
+        <libelle>ST ANTONIN</libelle>
+        <code>STANTONINST ANTONIN</code>
+        <insee>06115</insee>
+    </commune>
+    <commune>
+        <libelle>ASCROS</libelle>
+        <code>ASCROSASCROS</code>
+        <insee>06005</insee>
+    </commune>
+    <commune>
+        <libelle>TOUET SUR VAR</libelle>
+        <code>TOUETSURVARTOUET SUR VAR</code>
+        <insee>06143</insee>
+    </commune>
+    <commune>
+        <libelle>CABRIS</libelle>
+        <code>CABRISCABRIS</code>
+        <insee>06026</insee>
+    </commune>
+    <commune>
+        <libelle>LA PENNE</libelle>
+        <code>LAPENNELA PENNE</code>
+        <insee>06093</insee>
+    </commune>
+    <commune>
+        <libelle>RIEZ</libelle>
+        <code>RIEZRIEZ</code>
+        <insee>04166</insee>
+    </commune>
+    <commune>
+        <libelle>SPERACEDES</libelle>
+        <code>SPERACEDESSPERACEDES</code>
+        <insee>06137</insee>
+    </commune>
+    <commune>
+        <libelle>BIOT</libelle>
+        <code>BIOTBIOT</code>
+        <insee>06018</insee>
+    </commune>
+    <commune>
+        <libelle>ST PAUL</libelle>
+        <code>STPAULST PAUL</code>
+        <insee>06128</insee>
+    </commune>
+    <commune>
+        <libelle>ALLONS</libelle>
+        <code>ALLONSALLONS</code>
+        <insee>04005</insee>
+    </commune>
+    <commune>
+        <libelle>MOUGINS</libelle>
+        <code>MOUGINSMOUGINS</code>
+        <insee>06085</insee>
+    </commune>
+    <commune>
+        <libelle>GRASSE</libelle>
+        <code>GRASSEGRASSE</code>
+        <insee>06069</insee>
+    </commune>
+    <commune>
+        <libelle>ROQUEVAIRE</libelle>
+        <code>ROQUEVAIREROQUEVAIRE</code>
+        <insee>13086</insee>
+    </commune>
+    <commune>
+        <libelle>PEYPIN D'AIGUES</libelle>
+        <code>PEYPINDAIGUESPEYPIN D'AIGUES</code>
+        <insee>84090</insee>
+    </commune>
+    <commune>
+        <libelle>LA MOTTE D'AIGUES</libelle>
+        <code>LAMOTTEDAIGUESLA MOTTE D'AIGUES</code>
+        <insee>84084</insee>
+    </commune>
+    <commune>
+        <libelle>ST MARTIN DE LA BRASQUE</libelle>
+        <code>STMARTINDELABRASQUEST MARTIN DE LA BRASQUE</code>
+        <insee>84113</insee>
+    </commune>
+    <commune>
+        <libelle>CORBIERES</libelle>
+        <code>CORBIERESCORBIERES</code>
+        <insee>04063</insee>
+    </commune>
+    <commune>
+        <libelle>MONTJUSTIN</libelle>
+        <code>MONTJUSTINMONTJUSTIN</code>
+        <insee>04129</insee>
+    </commune>
+    <commune>
+        <libelle>VILLEMUS</libelle>
+        <code>VILLEMUSVILLEMUS</code>
+        <insee>04241</insee>
+    </commune>
+    <commune>
+        <libelle>LE CASTELLET</libelle>
+        <code>LECASTELLETLE CASTELLET</code>
+        <insee>04041</insee>
+    </commune>
+    <commune>
+        <libelle>ALLEMAGNE EN PROVENCE</libelle>
+        <code>ALLEMAGNEENPROVENCEALLEMAGNE EN PROVENCE</code>
+        <insee>04004</insee>
+    </commune>
+    <commune>
+        <libelle>CARNOUX EN PROVENCE</libelle>
+        <code>CARNOUXENPROVENCECARNOUX EN PROVENCE</code>
+        <insee>13119</insee>
+    </commune>
+    <commune>
+        <libelle>ROQUEFORT LA BEDOULE</libelle>
+        <code>ROQUEFORTLABEDOULEROQUEFORT LA BEDOULE</code>
+        <insee>13085</insee>
+    </commune>
+    <commune>
+        <libelle>CHATEAUNEUF LE ROUGE</libelle>
+        <code>CHATEAUNEUFLEROUGECHATEAUNEUF LE ROUGE</code>
+        <insee>13025</insee>
+    </commune>
+    <commune>
+        <libelle>COLLONGUES</libelle>
+        <code>COLLONGUESCOLLONGUES</code>
+        <insee>06045</insee>
+    </commune>
+    <commune>
+        <libelle>ORAISON</libelle>
+        <code>ORAISONORAISON</code>
+        <insee>04143</insee>
+    </commune>
+    <commune>
+        <libelle>ST MICHEL L'OBSERVATOIRE</libelle>
+        <code>STMICHELLOBSERVATOIREST MICHEL L'OBSERVATOIRE</code>
+        <insee>04192</insee>
+    </commune>
+    <commune>
+        <libelle>AUBENAS LES ALPES</libelle>
+        <code>AUBENASLESALPESAUBENAS LES ALPES</code>
+        <insee>04012</insee>
+    </commune>
+    <commune>
+        <libelle>STE CROIX À LAUZE</libelle>
+        <code>STECROIXLAUZESTE CROIX À LAUZE</code>
+        <insee>04175</insee>
+    </commune>
+    <commune>
+        <libelle>ST AUBAN</libelle>
+        <code>STAUBANST AUBAN</code>
+        <insee>06116</insee>
+    </commune>
+    <commune>
+        <libelle>LA GARDE</libelle>
+        <code>LAGARDELA GARDE</code>
+        <insee>04092</insee>
+    </commune>
+    <commune>
+        <libelle>VAL DE CHALVAGNE</libelle>
+        <code>VALDECHALVAGNEVAL DE CHALVAGNE</code>
+        <insee>04043</insee>
+    </commune>
+    <commune>
+        <libelle>ST BENOÎT</libelle>
+        <code>STBENOTST BENOÎT</code>
+        <insee>04174</insee>
+    </commune>
+    <commune>
+        <libelle>ANNOT</libelle>
+        <code>ANNOTANNOT</code>
+        <insee>04008</insee>
+    </commune>
+    <commune>
+        <libelle>LE ROURET</libelle>
+        <code>LEROURETLE ROURET</code>
+        <insee>06112</insee>
+    </commune>
+    <commune>
+        <libelle>LA ROQUETTE SUR SIAGNE</libelle>
+        <code>LAROQUETTESURSIAGNELA ROQUETTE SUR SIAGNE</code>
+        <insee>06108</insee>
+    </commune>
+    <commune>
+        <libelle>PIERRERUE</libelle>
+        <code>PIERRERUEPIERRERUE</code>
+        <insee>04151</insee>
+    </commune>
+    <commune>
+        <libelle>SALLAGRIFFON</libelle>
+        <code>SALLAGRIFFONSALLAGRIFFON</code>
+        <insee>06131</insee>
+    </commune>
+    <commune>
+        <libelle>SIMIANE COLLONGUE</libelle>
+        <code>SIMIANECOLLONGUESIMIANE COLLONGUE</code>
+        <insee>13107</insee>
+    </commune>
+    <commune>
+        <libelle>GRAMBOIS</libelle>
+        <code>GRAMBOISGRAMBOIS</code>
+        <insee>84052</insee>
+    </commune>
+    <commune>
+        <libelle>DAUPHIN</libelle>
+        <code>DAUPHINDAUPHIN</code>
+        <insee>04068</insee>
+    </commune>
+    <commune>
+        <libelle>VALBONNE</libelle>
+        <code>VALBONNEVALBONNE</code>
+        <insee>06152</insee>
+    </commune>
+    <commune>
+        <libelle>SOLEILHAS</libelle>
+        <code>SOLEILHASSOLEILHAS</code>
+        <insee>04210</insee>
+    </commune>
+    <commune>
+        <libelle>FUVEAU</libelle>
+        <code>FUVEAUFUVEAU</code>
+        <insee>13040</insee>
+    </commune>
+    <commune>
+        <libelle>LE BAR SUR LOUP</libelle>
+        <code>LEBARSURLOUPLE BAR SUR LOUP</code>
+        <insee>06010</insee>
+    </commune>
+    <commune>
+        <libelle>CHATEAUNEUF GRASSE</libelle>
+        <code>CHATEAUNEUFGRASSECHATEAUNEUF GRASSE</code>
+        <insee>06038</insee>
+    </commune>
+    <commune>
+        <libelle>STE CROIX DU VERDON</libelle>
+        <code>STECROIXDUVERDONSTE CROIX DU VERDON</code>
+        <insee>04176</insee>
+    </commune>
+    <commune>
+        <libelle>MONTFORT SUR ARGENS</libelle>
+        <code>MASMONTFORT SUR ARGENS</code>
+        <insee>83083</insee>
+    </commune>
+    <commune>
+        <libelle>LA GAUDE</libelle>
+        <code>LAGAUDELA GAUDE</code>
+        <insee>06065</insee>
+    </commune>
+    <commune>
+        <libelle>PEYPIN</libelle>
+        <code>PEYPINPEYPIN</code>
+        <insee>13073</insee>
+    </commune>
+    <commune>
+        <libelle>TOURRETTES SUR LOUP</libelle>
+        <code>TOURRETTESSURLOUPTOURRETTES SUR LOUP</code>
+        <insee>06148</insee>
+    </commune>
+    <commune>
+        <libelle>LA COLLE SUR LOUP</libelle>
+        <code>LACOLLESURLOUPLA COLLE SUR LOUP</code>
+        <insee>06044</insee>
+    </commune>
+    <commune>
+        <libelle>PLAN DE CUQUES</libelle>
+        <code>PLANDECUQUESPLAN DE CUQUES</code>
+        <insee>13075</insee>
+    </commune>
+    <commune>
+        <libelle>VALDEROURE</libelle>
+        <code>VALDEROUREVALDEROURE</code>
+        <insee>06154</insee>
+    </commune>
+    <commune>
+        <libelle>LA BRILLANNE</libelle>
+        <code>LABRILLANNELA BRILLANNE</code>
+        <insee>04034</insee>
+    </commune>
+    <commune>
+        <libelle>MONTAGNAC MONTPEZAT</libelle>
+        <code>MONTAGNACMONTPEZATMONTAGNAC MONTPEZAT</code>
+        <insee>04124</insee>
+    </commune>
+    <commune>
+        <libelle>QUINSON</libelle>
+        <code>QUINSONQUINSON</code>
+        <insee>04158</insee>
+    </commune>
+    <commune>
+        <libelle>PEYROLLES EN PROVENCE</libelle>
+        <code>PEYROLLESENPROVENCEPEYROLLES EN PROVENCE</code>
+        <insee>13074</insee>
+    </commune>
+    <commune>
+        <libelle>LA BASTIDONNE</libelle>
+        <code>LABASTIDONNELA BASTIDONNE</code>
+        <insee>84010</insee>
+    </commune>
+    <commune>
+        <libelle>AMIRAT</libelle>
+        <code>AMIRATAMIRAT</code>
+        <insee>06002</insee>
+    </commune>
+    <commune>
+        <libelle>ST PAUL LES DURANCE</libelle>
+        <code>STPAULLESDURANCEST PAUL LES DURANCE</code>
+        <insee>13099</insee>
+    </commune>
+    <commune>
+        <libelle>ROQUEFORT LES PINS</libelle>
+        <code>ROQUEFORTLESPINSROQUEFORT LES PINS</code>
+        <insee>06105</insee>
+    </commune>
+    <commune>
+        <libelle>MOUANS SARTOUX</libelle>
+        <code>MOUANSSARTOUXMOUANS SARTOUX</code>
+        <insee>06084</insee>
+    </commune>
+    <commune>
+        <libelle>GIGNAC</libelle>
+        <code>GIGNACGIGNAC</code>
+        <insee>84048</insee>
+    </commune>
+    <commune>
+        <libelle>VILLENEUVE LOUBET</libelle>
+        <code>VILLENEUVELOUBETVILLENEUVE LOUBET</code>
+        <insee>06161</insee>
+    </commune>
+    <commune>
+        <libelle>PUIMOISSON</libelle>
+        <code>PUIMOISSONPUIMOISSON</code>
+        <insee>04157</insee>
+    </commune>
+    <commune>
+        <libelle>ESPARRON DE VERDON</libelle>
+        <code>ESPARRONDEVERDONESPARRON DE VERDON</code>
+        <insee>04081</insee>
+    </commune>
+    <commune>
+        <libelle>STE TULLE</libelle>
+        <code>STETULLESTE TULLE</code>
+        <insee>04197</insee>
+    </commune>
+    <commune>
+        <libelle>PEYMEINADE</libelle>
+        <code>PEYMEINADEPEYMEINADE</code>
+        <insee>06095</insee>
+    </commune>
+    <commune>
+        <libelle>ST MAIME</libelle>
+        <code>STMAIMEST MAIME</code>
+        <insee>04188</insee>
+    </commune>
+    <commune>
+        <libelle>GOURDON</libelle>
+        <code>GOURDONGOURDON</code>
+        <insee>06068</insee>
+    </commune>
+    <commune>
+        <libelle>OPIO</libelle>
+        <code>OPIOOPIO</code>
+        <insee>06089</insee>
+    </commune>
+    <commune>
+        <libelle>GARS</libelle>
+        <code>GARSGARS</code>
+        <insee>06063</insee>
+    </commune>
+    <commune>
+        <libelle>COURMES</libelle>
+        <code>COURMESCOURMES</code>
+        <insee>06049</insee>
+    </commune>
+    <commune>
+        <libelle>SERANON</libelle>
+        <code>SERANONSERANON</code>
+        <insee>06134</insee>
+    </commune>
+    <commune>
+        <libelle>VOLX</libelle>
+        <code>VOLXVOLX</code>
+        <insee>04245</insee>
+    </commune>
+    <commune>
+        <libelle>MEYRARGUES</libelle>
+        <code>MEYRARGUESMEYRARGUES</code>
+        <insee>13059</insee>
+    </commune>
+    <commune>
+        <libelle>OPPEDETTE</libelle>
+        <code>OPPEDETTEOPPEDETTE</code>
+        <insee>04142</insee>
+    </commune>
+    <commune>
+        <libelle>SANNES</libelle>
+        <code>SANNESSANNES</code>
+        <insee>84121</insee>
+    </commune>
+    <commune>
+        <libelle>PEYNIER</libelle>
+        <code>PEYNIERPEYNIER</code>
+        <insee>13072</insee>
+    </commune>
+    <commune>
+        <libelle>BLIEUX</libelle>
+        <code>BLIEUXBLIEUX</code>
+        <insee>04030</insee>
+    </commune>
+    <commune>
+        <libelle>BEAURECUEIL</libelle>
+        <code>BEAURECUEILBEAURECUEIL</code>
+        <insee>13012</insee>
+    </commune>
+    <commune>
+        <libelle>ROUMOULES</libelle>
+        <code>ROUMOULESROUMOULES</code>
+        <insee>04172</insee>
+    </commune>
+    <commune>
+        <libelle>CAUSSOLS</libelle>
+        <code>CAUSSOLSCAUSSOLS</code>
+        <insee>06037</insee>
+    </commune>
+    <commune>
+        <libelle>MONTFURON</libelle>
+        <code>MONTFURONMONTFURON</code>
+        <insee>04128</insee>
+    </commune>
+    <commune>
+        <libelle>ESCRAGNOLLES</libelle>
+        <code>ESCRAGNOLLESESCRAGNOLLES</code>
+        <insee>06058</insee>
+    </commune>
+    <commune>
+        <libelle>ANSOUIS</libelle>
+        <code>ANSOUISANSOUIS</code>
+        <insee>84002</insee>
+    </commune>
+    <commune>
+        <libelle>GEMENOS</libelle>
+        <code>GEMENOSGEMENOS</code>
+        <insee>13042</insee>
+    </commune>
+    <commune>
+        <libelle>GRIMAUD</libelle>
+        <code>GMDGRIMAUD</code>
+        <insee>83068</insee>
+    </commune>
+    <commune>
+        <libelle>COGOLIN</libelle>
+        <code>CGNCOGOLIN</code>
+        <insee>83042</insee>
+    </commune>
+    <commune>
+        <libelle>LE PUY STE REPARADE</libelle>
+        <code>LEPUYSTEREPARADELE PUY STE REPARADE</code>
+        <insee>13080</insee>
+    </commune>
+    <commune>
+        <libelle>VILLELAURE</libelle>
+        <code>VILLELAUREVILLELAURE</code>
+        <insee>84147</insee>
+    </commune>
+    <commune>
+        <libelle>BOUC BEL AIR</libelle>
+        <code>BOUCBELAIRBOUC BEL AIR</code>
+        <insee>13015</insee>
+    </commune>
+    <commune>
+        <libelle>MAJASTRES</libelle>
+        <code>MAJASTRESMAJASTRES</code>
+        <insee>04107</insee>
+    </commune>
+    <commune>
+        <libelle>COLOMARS</libelle>
+        <code>COLOMARSCOLOMARS</code>
+        <insee>06046</insee>
+    </commune>
+    <commune>
+        <libelle>ST MARTIN DU VAR</libelle>
+        <code>STMARTINDUVARST MARTIN DU VAR</code>
+        <insee>06126</insee>
+    </commune>
+    <commune>
+        <libelle>ST BLAISE</libelle>
+        <code>STBLAISEST BLAISE</code>
+        <insee>06117</insee>
+    </commune>
+    <commune>
+        <libelle>BOUYON</libelle>
+        <code>BOUYONBOUYON</code>
+        <insee>06022</insee>
+    </commune>
+    <commune>
+        <libelle>CARROS</libelle>
+        <code>CARROSCARROS</code>
+        <insee>06033</insee>
+    </commune>
+    <commune>
+        <libelle>GATTIERES</libelle>
+        <code>GATTIERESGATTIERES</code>
+        <insee>06064</insee>
+    </commune>
+    <commune>
+        <libelle>LE BROC</libelle>
+        <code>LEBROCLE BROC</code>
+        <insee>06025</insee>
+    </commune>
+    <commune>
+        <libelle>BEZAUDUN LES ALPES</libelle>
+        <code>BEZAUDUNLESALPESBEZAUDUN LES ALPES</code>
+        <insee>06017</insee>
+    </commune>
+    <commune>
+        <libelle>LEVENS</libelle>
+        <code>LEVENSLEVENS</code>
+        <insee>06075</insee>
+    </commune>
+    <commune>
+        <libelle>BONSON</libelle>
+        <code>BONSONBONSON</code>
+        <insee>06021</insee>
+    </commune>
+    <commune>
+        <libelle>GILETTE</libelle>
+        <code>GILETTEGILETTE</code>
+        <insee>06066</insee>
+    </commune>
+    <commune>
+        <libelle>REVEST LES ROCHES</libelle>
+        <code>REVESTLESROCHESREVEST LES ROCHES</code>
+        <insee>06100</insee>
+    </commune>
+    <commune>
+        <libelle>PUGET THENIERS</libelle>
+        <code>PUGETTHENIERSPUGET THENIERS</code>
+        <insee>06099</insee>
+    </commune>
+    <commune>
+        <libelle>MASSOINS</libelle>
+        <code>MASSOINSMASSOINS</code>
+        <insee>06082</insee>
+    </commune>
+    <commune>
+        <libelle>CEYRESTE</libelle>
+        <code>CEYRESTECEYRESTE</code>
+        <insee>13023</insee>
+    </commune>
+    <commune>
+        <libelle>VERGONS</libelle>
+        <code>VERGONSVERGONS</code>
+        <insee>04236</insee>
+    </commune>
+    <commune>
+        <libelle>ROQUESTERON</libelle>
+        <code>ROQUESTERONROQUESTERON</code>
+        <insee>06106</insee>
+    </commune>
+    <commune>
+        <libelle>LES FERRES</libelle>
+        <code>LESFERRESLES FERRES</code>
+        <insee>06061</insee>
+    </commune>
+    <commune>
+        <libelle>ST CEZAIRE SUR SIAGNE</libelle>
+        <code>STCEZAIRESURSIAGNEST CEZAIRE SUR SIAGNE</code>
+        <insee>06118</insee>
+    </commune>
+    <commune>
+        <libelle>GREASQUE</libelle>
+        <code>GREASQUEGREASQUE</code>
+        <insee>13046</insee>
+    </commune>
+    <commune>
+        <libelle>LE TIGNET</libelle>
+        <code>LETIGNETLE TIGNET</code>
+        <insee>06140</insee>
+    </commune>
+    <commune>
+        <libelle>NIOZELLES</libelle>
+        <code>NIOZELLESNIOZELLES</code>
+        <insee>04138</insee>
+    </commune>
+    <commune>
+        <libelle>CASTELLET</libelle>
+        <code>CASTELLETCASTELLET</code>
+        <insee>84033</insee>
+    </commune>
+    <commune>
+        <libelle>ENTREVENNES</libelle>
+        <code>ENTREVENNESENTREVENNES</code>
+        <insee>04077</insee>
+    </commune>
+    <commune>
+        <libelle>MIMET</libelle>
+        <code>MIMETMIMET</code>
+        <insee>13062</insee>
+    </commune>
+    <commune>
+        <libelle>SIGNES</libelle>
+        <code>SGSSIGNES</code>
+        <insee>83127</insee>
+    </commune>
+    <commune>
+        <libelle>GONFARON</libelle>
+        <code>GFNGONFARON</code>
+        <insee>83067</insee>
+    </commune>
+    <commune>
+        <libelle>DRAGUIGNAN</libelle>
+        <code>DGNDRAGUIGNAN</code>
+        <insee>83050</insee>
+    </commune>
+    <commune>
+        <libelle>RIBOUX</libelle>
+        <code>RBXRIBOUX</code>
+        <insee>83105</insee>
+    </commune>
+    <commune>
+        <libelle>LE REVEST LES EAUX</libelle>
+        <code>REXLE REVEST LES EAUX</code>
+        <insee>83103</insee>
+    </commune>
+    <commune>
+        <libelle>NEOULES</libelle>
+        <code>NLSNEOULES</code>
+        <insee>83088</insee>
+    </commune>
+    <commune>
+        <libelle>ROCBARON</libelle>
+        <code>RBNROCBARON</code>
+        <insee>83106</insee>
+    </commune>
+    <commune>
+        <libelle>BESSE SUR ISSOLE</libelle>
+        <code>BIEBESSE SUR ISSOLE</code>
+        <insee>83018</insee>
+    </commune>
+    <commune>
+        <libelle>VINON SUR VERDON</libelle>
+        <code>VVNVINON SUR VERDON</code>
+        <insee>83150</insee>
+    </commune>
+    <commune>
+        <libelle>ST MANDRIER SUR MER</libelle>
+        <code>SDRST MANDRIER SUR MER</code>
+        <insee>83153</insee>
+    </commune>
+    <commune>
+        <libelle>ENTRECASTEAUX</libelle>
+        <code>ECXENTRECASTEAUX</code>
+        <insee>83051</insee>
+    </commune>
+    <commune>
+        <libelle>PLAN DE LA TOUR</libelle>
+        <code>PTRPLAN DE LA TOUR</code>
+        <insee>83094</insee>
+    </commune>
+    <commune>
+        <libelle>CARCES</libelle>
+        <code>CCSCARCES</code>
+        <insee>83032</insee>
+    </commune>
+    <commune>
+        <libelle>CABASSE</libelle>
+        <code>CBECABASSE</code>
+        <insee>83026</insee>
+    </commune>
+    <commune>
+        <libelle>LES ARCS</libelle>
+        <code>ACSLES ARCS</code>
+        <insee>83004</insee>
+    </commune>
+    <commune>
+        <libelle>GINASSERVIS</libelle>
+        <code>GSSGINASSERVIS</code>
+        <insee>83066</insee>
+    </commune>
+    <commune>
+        <libelle>BARJOLS</libelle>
+        <code>BJSBARJOLS</code>
+        <insee>83012</insee>
+    </commune>
+    <commune>
+        <libelle>LES MAYONS</libelle>
+        <code>MYSLES MAYONS</code>
+        <insee>83075</insee>
+    </commune>
+    <commune>
+        <libelle>FIGANIERES</libelle>
+        <code>FGSFIGANIERES</code>
+        <insee>83056</insee>
+    </commune>
+    <commune>
+        <libelle>LA CELLE</libelle>
+        <code>CLELA CELLE</code>
+        <insee>83037</insee>
+    </commune>
+    <commune>
+        <libelle>BRAS</libelle>
+        <code>BRSBRAS</code>
+        <insee>83021</insee>
+    </commune>
+    <commune>
+        <libelle>REGUSSE</libelle>
+        <code>RGEREGUSSE</code>
+        <insee>83102</insee>
+    </commune>
+    <commune>
+        <libelle>MOISSAC BELLEVUE</libelle>
+        <code>MBEMOISSAC BELLEVUE</code>
+        <insee>83078</insee>
+    </commune>
+    <commune>
+        <libelle>LA MOLE</libelle>
+        <code>MLELA MOLE</code>
+        <insee>83079</insee>
+    </commune>
+    <commune>
+        <libelle>PUGET SUR ARGENS</libelle>
+        <code>PAGPUGET SUR ARGENS</code>
+        <insee>83099</insee>
+    </commune>
+    <commune>
+        <libelle>ARTIGUES</libelle>
+        <code>ATSARTIGUES</code>
+        <insee>83006</insee>
+    </commune>
+    <commune>
+        <libelle>TRANS EN PROVENCE</libelle>
+        <code>TPETRANS EN PROVENCE</code>
+        <insee>83141</insee>
+    </commune>
+    <commune>
+        <libelle>PIGNANS</libelle>
+        <code>PGSPIGNANS</code>
+        <insee>83092</insee>
+    </commune>
+    <commune>
+        <libelle>ST ANTONIN DU VAR</libelle>
+        <code>SAVST ANTONIN DU VAR</code>
+        <insee>83154</insee>
+    </commune>
+    <commune>
+        <libelle>ROUGIERS</libelle>
+        <code>RGSROUGIERS</code>
+        <insee>83110</insee>
+    </commune>
+    <commune>
+        <libelle>BRUE AURIAC</libelle>
+        <code>BACBRUE AURIAC</code>
+        <insee>83025</insee>
+    </commune>
+    <commune>
+        <libelle>FLASSANS SUR ISSOLE</libelle>
+        <code>FIEFLASSANS SUR ISSOLE</code>
+        <insee>83057</insee>
+    </commune>
+    <commune>
+        <libelle>BAGNOLS EN FORET</libelle>
+        <code>BFTBAGNOLS EN FORET</code>
+        <insee>83008</insee>
+    </commune>
+    <commune>
+        <libelle>TAVERNES</libelle>
+        <code>TESTAVERNES</code>
+        <insee>83135</insee>
+    </commune>
+    <commune>
+        <libelle>MONTFERRAT</libelle>
+        <code>MFTMONTFERRAT</code>
+        <insee>83082</insee>
+    </commune>
+    <commune>
+        <libelle>SOLLIES PONT</libelle>
+        <code>SPTSOLLIES PONT</code>
+        <insee>83130</insee>
+    </commune>
+    <commune>
+        <libelle>LA MARTRE</libelle>
+        <code>MRELA MARTRE</code>
+        <insee>83074</insee>
+    </commune>
+    <commune>
+        <libelle>SILLANS LA CASCADE</libelle>
+        <code>SCESILLANS LA CASCADE</code>
+        <insee>83128</insee>
+    </commune>
+    <commune>
+        <libelle>TARADEAU</libelle>
+        <code>TDUTARADEAU</code>
+        <insee>83134</insee>
+    </commune>
+    <commune>
+        <libelle>CHATEAUDOUBLE</libelle>
+        <code>CDECHATEAUDOUBLE</code>
+        <insee>83038</insee>
+    </commune>
+    <commune>
+        <libelle>AIGUINES</libelle>
+        <code>AGSAIGUINES</code>
+        <insee>83002</insee>
+    </commune>
+    <commune>
+        <libelle>POURRIERES</libelle>
+        <code>PRSPOURRIERES</code>
+        <insee>83097</insee>
+    </commune>
+    <commune>
+        <libelle>ST MAXIMIN LA STE BAUME</libelle>
+        <code>SMBST MAXIMIN LA STE BAUME</code>
+        <insee>83116</insee>
+    </commune>
+    <commune>
+        <libelle>SIX FOURS LES PLAGES</libelle>
+        <code>SFPSIX FOURS LES PLAGES</code>
+        <insee>83129</insee>
+    </commune>
+    <commune>
+        <libelle>GAREOULT</libelle>
+        <code>GRTGAREOULT</code>
+        <insee>83064</insee>
+    </commune>
+    <commune>
+        <libelle>CAMPS LA SOURCE</libelle>
+        <code>CSECAMPS LA SOURCE</code>
+        <insee>83030</insee>
+    </commune>
+    <commune>
+        <libelle>MONTMEYAN</libelle>
+        <code>MNNMONTMEYAN</code>
+        <insee>83084</insee>
+    </commune>
+    <commune>
+        <libelle>VARAGES</libelle>
+        <code>VGSVARAGES</code>
+        <insee>83145</insee>
+    </commune>
+    <commune>
+        <libelle>OLLIERES</libelle>
+        <code>ORSOLLIERES</code>
+        <insee>83089</insee>
+    </commune>
+    <commune>
+        <libelle>BRENON</libelle>
+        <code>BNNBRENON</code>
+        <insee>83022</insee>
+    </commune>
+    <commune>
+        <libelle>LA CROIX VALMER</libelle>
+        <code>CVRLA CROIX VALMER</code>
+        <insee>83048</insee>
+    </commune>
+    <commune>
+        <libelle>LA MOTTE</libelle>
+        <code>MTELA MOTTE</code>
+        <insee>83085</insee>
+    </commune>
+    <commune>
+        <libelle>RAYOL CANADEL SUR MER</libelle>
+        <code>RCLRAYOL CANADEL SUR MER</code>
+        <insee>83152</insee>
+    </commune>
+    <commune>
+        <libelle>VINS SUR CARAMY</libelle>
+        <code>VCYVINS SUR CARAMY</code>
+        <insee>83151</insee>
+    </commune>
+    <commune>
+        <libelle>CARQUEIRANNE</libelle>
+        <code>CQECARQUEIRANNE</code>
+        <insee>83034</insee>
+    </commune>
+    <commune>
+        <libelle>LE LUC</libelle>
+        <code>LLCLE LUC</code>
+        <insee>83073</insee>
+    </commune>
+    <commune>
+        <libelle>LA ROQUE ESCLAPON</libelle>
+        <code>RENLA ROQUE ESCLAPON</code>
+        <insee>83109</insee>
+    </commune>
+    <commune>
+        <libelle>PONTEVES</libelle>
+        <code>PTSPONTEVES</code>
+        <insee>83095</insee>
+    </commune>
+    <commune>
+        <libelle>FORCALQUEIRET</libelle>
+        <code>FLTFORCALQUEIRET</code>
+        <insee>83059</insee>
+    </commune>
+    <commune>
+        <libelle>LE PRADET</libelle>
+        <code>PDTLE PRADET</code>
+        <insee>83098</insee>
+    </commune>
+    <commune>
+        <libelle>STE ANASTASIE SUR ISSOLE</libelle>
+        <code>SAISTE ANASTASIE SUR ISSOLE</code>
+        <insee>83111</insee>
+    </commune>
+    <commune>
+        <libelle>SOLLIES VILLE</libelle>
+        <code>SVESOLLIES VILLE</code>
+        <insee>83132</insee>
+    </commune>
+    <commune>
+        <libelle>VERIGNON</libelle>
+        <code>VGNVERIGNON</code>
+        <insee>83147</insee>
+    </commune>
+    <commune>
+        <libelle>OLLIOULES</libelle>
+        <code>OLSOLLIOULES</code>
+        <insee>83090</insee>
+    </commune>
+    <commune>
+        <libelle>SALERNES</libelle>
+        <code>SLSSALERNES</code>
+        <insee>83121</insee>
+    </commune>
+    <commune>
+        <libelle>CARNOULES</libelle>
+        <code>CNSCARNOULES</code>
+        <insee>83033</insee>
+    </commune>
+    <commune>
+        <libelle>TOURTOUR</libelle>
+        <code>TTRTOURTOUR</code>
+        <insee>83139</insee>
+    </commune>
+    <commune>
+        <libelle>ST ZACHARIE</libelle>
+        <code>SZEST ZACHARIE</code>
+        <insee>83120</insee>
+    </commune>
+    <commune>
+        <libelle>VILLECROZE</libelle>
+        <code>VCEVILLECROZE</code>
+        <insee>83149</insee>
+    </commune>
+    <commune>
+        <libelle>LA GARDE</libelle>
+        <code>GRELA GARDE</code>
+        <insee>83062</insee>
+    </commune>
+    <commune>
+        <libelle>PIERREFEU DU VAR</libelle>
+        <code>PVRPIERREFEU DU VAR</code>
+        <insee>83091</insee>
+    </commune>
+    <commune>
+        <libelle>SEILLONS SOURCE D'ARGENS</libelle>
+        <code>SSASEILLONS SOURCE D'ARGENS</code>
+        <insee>83125</insee>
+    </commune>
+    <commune>
+        <libelle>BAUDINARD SUR VERDON</libelle>
+        <code>BDDBAUDINARD SUR VERDON</code>
+        <insee>83014</insee>
+    </commune>
+    <commune>
+        <libelle>ESPARRON</libelle>
+        <code>EPNESPARRON</code>
+        <insee>83052</insee>
+    </commune>
+    <commune>
+        <libelle>ST PAUL EN FORET</libelle>
+        <code>SPFST PAUL EN FORET</code>
+        <insee>83117</insee>
+    </commune>
+    <commune>
+        <libelle>NANS LES PINS</libelle>
+        <code>NPSNANS LES PINS</code>
+        <insee>83087</insee>
+    </commune>
+    <commune>
+        <libelle>ST JULIEN</libelle>
+        <code>SJNST JULIEN</code>
+        <insee>83113</insee>
+    </commune>
+    <commune>
+        <libelle>FLAYOSC</libelle>
+        <code>FYCFLAYOSC</code>
+        <insee>83058</insee>
+    </commune>
+    <commune>
+        <libelle>BARGEMON</libelle>
+        <code>BGNBARGEMON</code>
+        <insee>83011</insee>
+    </commune>
+    <commune>
+        <libelle>AMPUS</libelle>
+        <code>APSAMPUS</code>
+        <insee>83003</insee>
+    </commune>
+    <commune>
+        <libelle>CORRENS</libelle>
+        <code>CRSCORRENS</code>
+        <insee>83045</insee>
+    </commune>
+    <commune>
+        <libelle>AUPS</libelle>
+        <code>AUPAUPS</code>
+        <insee>83007</insee>
+    </commune>
+    <commune>
+        <libelle>COTIGNAC</libelle>
+        <code>CTCCOTIGNAC</code>
+        <insee>83046</insee>
+    </commune>
+    <commune>
+        <libelle>BARGEME</libelle>
+        <code>BGEBARGEME</code>
+        <insee>83010</insee>
+    </commune>
+    <commune>
+        <libelle>CLAVIERS</libelle>
+        <code>CVSCLAVIERS</code>
+        <insee>83041</insee>
+    </commune>
+    <commune>
+        <libelle>CHATEAUVERT</libelle>
+        <code>CVTCHATEAUVERT</code>
+        <insee>83039</insee>
+    </commune>
+    <commune>
+        <libelle>LA VALETTE DU VAR</libelle>
+        <code>VVRLA VALETTE DU VAR</code>
+        <insee>83144</insee>
+    </commune>
+    <commune>
+        <libelle>LA BASTIDE</libelle>
+        <code>BTELA BASTIDE</code>
+        <insee>83013</insee>
+    </commune>
+    <commune>
+        <libelle>GASSIN</libelle>
+        <code>GSNGASSIN</code>
+        <insee>83065</insee>
+    </commune>
+    <commune>
+        <libelle>FOX AMPHOUX</libelle>
+        <code>FAXFOX AMPHOUX</code>
+        <insee>83060</insee>
+    </commune>
+    <commune>
+        <libelle>ARTIGNOSC SUR VERDON</libelle>
+        <code>AVNARTIGNOSC SUR VERDON</code>
+        <insee>83005</insee>
+    </commune>
+    <commune>
+        <libelle>ST MARTIN</libelle>
+        <code>SMNST MARTIN</code>
+        <insee>83114</insee>
+    </commune>
+    <commune>
+        <libelle>LE BOURGUET</libelle>
+        <code>BGTLE BOURGUET</code>
+        <insee>83020</insee>
+    </commune>
+    <commune>
+        <libelle>LE VAL</libelle>
+        <code>LVLLE VAL</code>
+        <insee>83143</insee>
+    </commune>
+
+
+</communes>

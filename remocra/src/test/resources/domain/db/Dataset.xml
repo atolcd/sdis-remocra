@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+	<REMOCRA.PROFIL_DROIT id="1" code="PD1" nom="PD1" feuille_de_style_geo_server="fdsgs1"/>
+	<REMOCRA.PROFIL_DROIT id="2" code="PD2" nom="PD2" feuille_de_style_geo_server="fdsgs2"/>
+	<REMOCRA.PROFIL_DROIT id="3" code="PD3" nom="PD3" feuille_de_style_geo_server="fdsgs3"/>
+	<REMOCRA.PROFIL_DROIT id="4" code="PD4" nom="PD4" feuille_de_style_geo_server="fdsgs4"/>
+	
+	<REMOCRA.THEMATIQUE id="1" code="TH1" nom="TH1"/>
+	<REMOCRA.THEMATIQUE id="2" code="TH2" nom="TH2"/>
+	<REMOCRA.THEMATIQUE id="3" code="TH3" nom="TH3"/>
+	<REMOCRA.THEMATIQUE id="4" code="TH4" nom="TH4"/>
+	
+</dataset>

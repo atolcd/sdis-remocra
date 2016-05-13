@@ -1,0 +1,1 @@
+Ext.require('Sdis.Remocra.App');
