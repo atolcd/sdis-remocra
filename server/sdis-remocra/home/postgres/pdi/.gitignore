@@ -1,0 +1,10 @@
+# Tout ignorer
+*
+# Sauf
+!.gitignore
+!libext/JDBC/ojdbc14.jar
+!libext/JDBC/orai18n.jar
+!repositories.xml
+!simple-jndi/jdbc.properties
+# Valable pour les sous-répertoires
+!*/

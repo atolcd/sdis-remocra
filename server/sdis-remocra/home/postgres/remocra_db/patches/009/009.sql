@@ -1,0 +1,175 @@
+SET search_path = remocra, pdi, public, pg_catalog;
+
+BEGIN;
+
+
+-- Communes PPRIF
+update remocra.commune set pprif = false;
+update remocra.commune set pprif = true where insee like '83%' and lower(nom) similar to
+'%(plan%de%la%tour|vidauban|le%beausset|evenos|signes|adrets|frejus|bormes|tanneron|la%cadiere|s%te%maxime|le%castellet|collobrieres|s%t%raphael)%';
+
+
+
+-- Mise à jour des codes des communes du VAR
+
+-- Issu de la base APIS via
+-- Récupération des codes communes dans APIS (génère un script UPDATE à jouer côté REMOcRA)
+--    select 'update remocra.commune set code = '''|| trigramme ||''' where lower(nom) = '''||lower(replace(nom, '''', ''''''))||''' and insee like ''83%'';' as data  
+--    from remocra.commune where trigramme is not null and insee_commune like '83%';
+update remocra.commune set code = 'CVX' where lower(nom) = 'chateauvieux' and insee like '83%';	
+update remocra.commune set code = 'SMR' where lower(nom) = 'la seyne sur mer' and insee like '83%';	
+update remocra.commune set code = 'FLE' where lower(nom) = 'la farlede' and insee like '83%';	
+update remocra.commune set code = 'GFN' where lower(nom) = 'gonfaron' and insee like '83%';	
+update remocra.commune set code = 'DGN' where lower(nom) = 'draguignan' and insee like '83%';	
+update remocra.commune set code = 'RBX' where lower(nom) = 'riboux' and insee like '83%';	
+update remocra.commune set code = 'REX' where lower(nom) = 'le revest les eaux' and insee like '83%';	
+update remocra.commune set code = 'CAR' where lower(nom) = 'la cadiere d''azur' and insee like '83%';	
+update remocra.commune set code = 'NLS' where lower(nom) = 'neoules' and insee like '83%';	
+update remocra.commune set code = 'SNR' where lower(nom) = 'sanary sur mer' and insee like '83%';	
+update remocra.commune set code = 'RBN' where lower(nom) = 'rocbaron' and insee like '83%';	
+update remocra.commune set code = 'BIE' where lower(nom) = 'besse sur issole' and insee like '83%';	
+update remocra.commune set code = 'VVN' where lower(nom) = 'vinon sur verdon' and insee like '83%';	
+update remocra.commune set code = 'SRL' where lower(nom) = 'st raphael' and insee like '83%';	
+update remocra.commune set code = 'SLN' where lower(nom) = 'seillans' and insee like '83%';	
+update remocra.commune set code = 'CAS' where lower(nom) = 'callas' and insee like '83%';	
+update remocra.commune set code = 'MNS' where lower(nom) = 'mons' and insee like '83%';	
+update remocra.commune set code = 'RAG' where lower(nom) = 'roquebrune sur argens' and insee like '83%';	
+update remocra.commune set code = 'SDR' where lower(nom) = 'st mandrier sur mer' and insee like '83%';	
+update remocra.commune set code = 'ECX' where lower(nom) = 'entrecasteaux' and insee like '83%';	
+update remocra.commune set code = 'PAS' where lower(nom) = 'plan d''aups ste baume' and insee like '83%';	
+update remocra.commune set code = 'MTX' where lower(nom) = 'montauroux' and insee like '83%';	
+update remocra.commune set code = 'PTR' where lower(nom) = 'plan de la tour' and insee like '83%';	
+update remocra.commune set code = 'CCS' where lower(nom) = 'carces' and insee like '83%';	
+update remocra.commune set code = 'CBE' where lower(nom) = 'cabasse' and insee like '83%';	
+update remocra.commune set code = 'ACS' where lower(nom) = 'les arcs' and insee like '83%';	
+update remocra.commune set code = 'LMS' where lower(nom) = 'la londe les maures' and insee like '83%';	
+update remocra.commune set code = 'GSS' where lower(nom) = 'ginasservis' and insee like '83%';	
+update remocra.commune set code = 'BJS' where lower(nom) = 'barjols' and insee like '83%';	
+update remocra.commune set code = 'FYE' where lower(nom) = 'fayence' and insee like '83%';	
+update remocra.commune set code = 'SME' where lower(nom) = 'ste maxime' and insee like '83%';	
+update remocra.commune set code = 'PCX' where lower(nom) = 'pourcieux' and insee like '83%';	
+update remocra.commune set code = 'MYS' where lower(nom) = 'les mayons' and insee like '83%';	
+update remocra.commune set code = 'FGS' where lower(nom) = 'figanieres' and insee like '83%';	
+update remocra.commune set code = 'CLE' where lower(nom) = 'la celle' and insee like '83%';	
+update remocra.commune set code = 'CAY' where lower(nom) = 'comps sur artuby' and insee like '83%';	
+update remocra.commune set code = 'MAS' where lower(nom) = 'montfort sur argens' and insee like '83%';	
+update remocra.commune set code = 'BRS' where lower(nom) = 'bras' and insee like '83%';	
+update remocra.commune set code = 'SGS' where lower(nom) = 'signes' and insee like '83%';	
+update remocra.commune set code = 'LMY' where lower(nom) = 'le muy' and insee like '83%';	
+update remocra.commune set code = 'RGE' where lower(nom) = 'regusse' and insee like '83%';	
+update remocra.commune set code = 'VBN' where lower(nom) = 'vidauban' and insee like '83%';	
+update remocra.commune set code = 'ENS' where lower(nom) = 'evenos' and insee like '83%';	
+update remocra.commune set code = 'MBE' where lower(nom) = 'moissac bellevue' and insee like '83%';	
+update remocra.commune set code = 'MLE' where lower(nom) = 'la mole' and insee like '83%';	
+update remocra.commune set code = 'PAG' where lower(nom) = 'puget sur argens' and insee like '83%';	
+update remocra.commune set code = 'ATS' where lower(nom) = 'artigues' and insee like '83%';	
+update remocra.commune set code = 'TPE' where lower(nom) = 'trans en provence' and insee like '83%';	
+update remocra.commune set code = 'SAV' where lower(nom) = 'st antonin du var' and insee like '83%';	
+update remocra.commune set code = 'RGS' where lower(nom) = 'rougiers' and insee like '83%';	
+update remocra.commune set code = 'BAC' where lower(nom) = 'brue auriac' and insee like '83%';	
+update remocra.commune set code = 'RTE' where lower(nom) = 'ramatuelle' and insee like '83%';	
+update remocra.commune set code = 'BDN' where lower(nom) = 'bauduen' and insee like '83%';	
+update remocra.commune set code = 'FIE' where lower(nom) = 'flassans sur issole' and insee like '83%';	
+update remocra.commune set code = 'BFT' where lower(nom) = 'bagnols en foret' and insee like '83%';	
+update remocra.commune set code = 'TES' where lower(nom) = 'tavernes' and insee like '83%';	
+update remocra.commune set code = 'MZS' where lower(nom) = 'mazaugues' and insee like '83%';	
+update remocra.commune set code = 'MFT' where lower(nom) = 'montferrat' and insee like '83%';	
+update remocra.commune set code = 'SPT' where lower(nom) = 'sollies pont' and insee like '83%';	
+update remocra.commune set code = 'MRE' where lower(nom) = 'la martre' and insee like '83%';	
+update remocra.commune set code = 'VDE' where lower(nom) = 'la verdiere' and insee like '83%';	
+update remocra.commune set code = 'SCE' where lower(nom) = 'sillans la cascade' and insee like '83%';	
+update remocra.commune set code = 'CDE' where lower(nom) = 'chateaudouble' and insee like '83%';	
+update remocra.commune set code = 'AGS' where lower(nom) = 'aiguines' and insee like '83%';	
+update remocra.commune set code = 'PRS' where lower(nom) = 'pourrieres' and insee like '83%';	
+update remocra.commune set code = 'SMB' where lower(nom) = 'st maximin la ste baume' and insee like '83%';	
+update remocra.commune set code = 'SFP' where lower(nom) = 'six fours les plages' and insee like '83%';	
+update remocra.commune set code = 'LGS' where lower(nom) = 'lorgues' and insee like '83%';	
+update remocra.commune set code = 'RAS' where lower(nom) = 'rians' and insee like '83%';	
+update remocra.commune set code = 'CLS' where lower(nom) = 'collobrieres' and insee like '83%';	
+update remocra.commune set code = 'SCM' where lower(nom) = 'st cyr sur mer' and insee like '83%';	
+update remocra.commune set code = 'GRT' where lower(nom) = 'gareoult' and insee like '83%';	
+update remocra.commune set code = 'CSE' where lower(nom) = 'camps la source' and insee like '83%';	
+update remocra.commune set code = 'MNN' where lower(nom) = 'montmeyan' and insee like '83%';	
+update remocra.commune set code = 'VGS' where lower(nom) = 'varages' and insee like '83%';	
+update remocra.commune set code = 'MMX' where lower(nom) = 'meounes les montrieux' and insee like '83%';	
+update remocra.commune set code = 'BGR' where lower(nom) = 'belgentier' and insee like '83%';	
+update remocra.commune set code = 'ORS' where lower(nom) = 'ollieres' and insee like '83%';	
+update remocra.commune set code = 'BNN' where lower(nom) = 'brenon' and insee like '83%';	
+update remocra.commune set code = 'CES' where lower(nom) = 'cuers' and insee like '83%';	
+update remocra.commune set code = 'BLM' where lower(nom) = 'bormes les mimosas' and insee like '83%';	
+update remocra.commune set code = 'TRT' where lower(nom) = 'le thoronet' and insee like '83%';	
+update remocra.commune set code = 'LVU' where lower(nom) = 'le lavandou' and insee like '83%';	
+update remocra.commune set code = 'CVR' where lower(nom) = 'la croix valmer' and insee like '83%';	
+update remocra.commune set code = 'HRS' where lower(nom) = 'hyeres' and insee like '83%';	
+update remocra.commune set code = 'TVS' where lower(nom) = 'tourves' and insee like '83%';	
+update remocra.commune set code = 'TLN' where lower(nom) = 'toulon' and insee like '83%';	
+update remocra.commune set code = 'STZ' where lower(nom) = 'st tropez' and insee like '83%';	
+update remocra.commune set code = 'CMR' where lower(nom) = 'cavalaire sur mer' and insee like '83%';	
+update remocra.commune set code = 'BST' where lower(nom) = 'le beausset' and insee like '83%';	
+update remocra.commune set code = 'FRJ' where lower(nom) = 'frejus' and insee like '83%';	
+update remocra.commune set code = 'SVN' where lower(nom) = 'les salles sur verdon' and insee like '83%';	
+update remocra.commune set code = 'MTE' where lower(nom) = 'la motte' and insee like '83%';	
+update remocra.commune set code = 'STS' where lower(nom) = 'sollies toucas' and insee like '83%';	
+update remocra.commune set code = 'RCL' where lower(nom) = 'rayol canadel sur mer' and insee like '83%';	
+update remocra.commune set code = 'PGS' where lower(nom) = 'pignans' and insee like '83%';	
+update remocra.commune set code = 'VCY' where lower(nom) = 'vins sur caramy' and insee like '83%';	
+update remocra.commune set code = 'CQE' where lower(nom) = 'carqueiranne' and insee like '83%';	
+update remocra.commune set code = 'LLC' where lower(nom) = 'le luc' and insee like '83%';	
+update remocra.commune set code = 'REN' where lower(nom) = 'la roque esclapon' and insee like '83%';	
+update remocra.commune set code = 'PTS' where lower(nom) = 'ponteves' and insee like '83%';	
+update remocra.commune set code = 'FLT' where lower(nom) = 'forcalqueiret' and insee like '83%';	
+update remocra.commune set code = 'CRU' where lower(nom) = 'la crau' and insee like '83%';	
+update remocra.commune set code = 'TDU' where lower(nom) = 'taradeau' and insee like '83%';	
+update remocra.commune set code = 'TRS' where lower(nom) = 'tourrettes' and insee like '83%';	
+update remocra.commune set code = 'PDT' where lower(nom) = 'le pradet' and insee like '83%';	
+update remocra.commune set code = 'SAI' where lower(nom) = 'ste anastasie sur issole' and insee like '83%';	
+update remocra.commune set code = 'SVE' where lower(nom) = 'sollies ville' and insee like '83%';	
+update remocra.commune set code = 'VGN' where lower(nom) = 'verignon' and insee like '83%';	
+update remocra.commune set code = 'OLS' where lower(nom) = 'ollioules' and insee like '83%';	
+update remocra.commune set code = 'CNS' where lower(nom) = 'carnoules' and insee like '83%';	
+update remocra.commune set code = 'AEL' where lower(nom) = 'les adrets de l''esterel' and insee like '83%';	
+update remocra.commune set code = 'SZE' where lower(nom) = 'st zacharie' and insee like '83%';	
+update remocra.commune set code = 'GRE' where lower(nom) = 'la garde' and insee like '83%';	
+update remocra.commune set code = 'SLS' where lower(nom) = 'salernes' and insee like '83%';	
+update remocra.commune set code = 'PVR' where lower(nom) = 'pierrefeu du var' and insee like '83%';	
+update remocra.commune set code = 'CMS' where lower(nom) = 'le cannet des maures' and insee like '83%';	
+update remocra.commune set code = 'RBE' where lower(nom) = 'la roquebrussanne' and insee like '83%';	
+update remocra.commune set code = 'CTT' where lower(nom) = 'le castellet' and insee like '83%';	
+update remocra.commune set code = 'TGE' where lower(nom) = 'trigance' and insee like '83%';	
+update remocra.commune set code = 'SSA' where lower(nom) = 'seillons source d''argens' and insee like '83%';	
+update remocra.commune set code = 'EPN' where lower(nom) = 'esparron' and insee like '83%';	
+update remocra.commune set code = 'TTR' where lower(nom) = 'tourtour' and insee like '83%';	
+update remocra.commune set code = 'GMD' where lower(nom) = 'grimaud' and insee like '83%';	
+update remocra.commune set code = 'CGN' where lower(nom) = 'cogolin' and insee like '83%';	
+update remocra.commune set code = 'BDL' where lower(nom) = 'bandol' and insee like '83%';	
+update remocra.commune set code = 'SPF' where lower(nom) = 'st paul en foret' and insee like '83%';	
+update remocra.commune set code = 'NPS' where lower(nom) = 'nans les pins' and insee like '83%';	
+update remocra.commune set code = 'VCE' where lower(nom) = 'villecroze' and insee like '83%';	
+update remocra.commune set code = 'SJN' where lower(nom) = 'st julien' and insee like '83%';	
+update remocra.commune set code = 'PVE' where lower(nom) = 'puget ville' and insee like '83%';	
+update remocra.commune set code = 'FYC' where lower(nom) = 'flayosc' and insee like '83%';	
+update remocra.commune set code = 'TRN' where lower(nom) = 'tanneron' and insee like '83%';	
+update remocra.commune set code = 'BGN' where lower(nom) = 'bargemon' and insee like '83%';	
+update remocra.commune set code = 'APS' where lower(nom) = 'ampus' and insee like '83%';	
+update remocra.commune set code = 'CLN' where lower(nom) = 'callian' and insee like '83%';	
+update remocra.commune set code = 'CRS' where lower(nom) = 'correns' and insee like '83%';	
+update remocra.commune set code = 'AUP' where lower(nom) = 'aups' and insee like '83%';	
+update remocra.commune set code = 'CTC' where lower(nom) = 'cotignac' and insee like '83%';	
+update remocra.commune set code = 'BGE' where lower(nom) = 'bargeme' and insee like '83%';	
+update remocra.commune set code = 'GFT' where lower(nom) = 'la garde freinet' and insee like '83%';	
+update remocra.commune set code = 'BDD' where lower(nom) = 'baudinard sur verdon' and insee like '83%';	
+update remocra.commune set code = 'CVS' where lower(nom) = 'claviers' and insee like '83%';	
+update remocra.commune set code = 'CVT' where lower(nom) = 'chateauvert' and insee like '83%';	
+update remocra.commune set code = 'VVR' where lower(nom) = 'la valette du var' and insee like '83%';	
+update remocra.commune set code = 'GSN' where lower(nom) = 'gassin' and insee like '83%';	
+update remocra.commune set code = 'FAX' where lower(nom) = 'fox amphoux' and insee like '83%';	
+update remocra.commune set code = 'SMN' where lower(nom) = 'st martin' and insee like '83%';	
+update remocra.commune set code = 'BTE' where lower(nom) = 'la bastide' and insee like '83%';	
+update remocra.commune set code = 'AVN' where lower(nom) = 'artignosc sur verdon' and insee like '83%';	
+update remocra.commune set code = 'BGT' where lower(nom) = 'le bourguet' and insee like '83%';	
+update remocra.commune set code = 'BGS' where lower(nom) = 'brignoles' and insee like '83%';	
+update remocra.commune set code = 'LVL' where lower(nom) = 'le val' and insee like '83%';	
+
+
+COMMIT;
+
