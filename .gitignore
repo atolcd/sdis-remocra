@@ -1,0 +1,22 @@
+# ---------------
+# remocra-mobile (Android Studio)
+# ---------------
+mobile/local.properties
+.gradle/
+.idea/
+build/
+*.iml
+*.ipr
+*.iws
+# ---------------
+# remocra-server (Eclipse)
+# ---------------
+remocra/target
+.settings/
+.project
+.classpath
+# ---------------
+# vagrant / docker
+# ---------------
+.vagrant
+.docker
