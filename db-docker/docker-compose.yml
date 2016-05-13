@@ -1,0 +1,14 @@
+postgres:
+  image: cismet/cids-integration-base
+  ports:
+    - "5432:5432"
+  volumes:
+    - .docker/postgresql:/var/lib/postgresql/data
+  environment:
+    ENV LOCALE: fr_FR
+    POSTGRES_USER: postgres
+    POSTGRES_DB: remocra
+    POSTGRES_PASSWORD: postgres
+  log_opt:
+    max-size: "10k"
+    max-file: "20"
