@@ -23,12 +23,12 @@ La suite a été réalisée à partir d'un Linux.
 
 Installer :
 * [git](https://git-scm.com/) pour la gestion des sources
-* [docker](https://www.docker.com/) et [psql](http://www.postgresql.org/docs/9.5/static/app-psql.html) (paquet postgresql) pour créer une base de données de développements rapidement
+* [docker](https://www.docker.com/), [docker-compose](https://docs.docker.com/compose/) et [psql](http://www.postgresql.org/docs/9.5/static/app-psql.html) (paquet postgresql) pour créer une base de données de développements rapidement
 * une [jdk 1.7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html) et [maven 3](https://maven.apache.org/) pour la compilation et la gestion des dépendances
 
 Récupérer les sources du projet :
 
-    mkdir -p ~/projet && cd ~/projet
+    mkdir -p ~/projets && cd ~/projets
     git clone git://github.com/atolcd/sdis-remocra.git
 
 Démarrer le serveur de données :
@@ -37,12 +37,13 @@ Démarrer le serveur de données :
 
 Créer la base de données  et insérer un jeu de données minimal :
 
-    ~/projets/sdis-remocra/server/sdis-remocra/home/postgres/remocra_db/reset_db.sh
-    ~/projets/sdis-remocra/server/sdis-remocra/home/postgres/remocra_db/dev/data_tests.sh
+    PGPASSWORD=postgres ~/projets/sdis-remocra/server/sdis-remocra/home/postgres/remocra_db/reset_db.sh
+    PGPASSWORD=postgres ~/projets/sdis-remocra/server/sdis-remocra/home/postgres/remocra_db/dev/data_tests.sh
 
 Lancer l'application. Par exemple :
 
     cd ~/projets/sdis-remocra/remocra
+    mvn install:install-file -Dfile=lib/irstv-cts.jar -DgroupId=org.cts -DartifactId=cts -Dversion=1.69 -Dpackaging=jar
     mvn tomcat:run
 
 Ouvrir l'URL suivante dans un navigateur :

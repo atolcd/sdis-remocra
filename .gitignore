@@ -21,3 +21,7 @@ remocra/target
 # ---------------
 .vagrant
 .docker
+# ---------------
+# divers
+# ---------------
+*.log

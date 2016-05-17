@@ -42,7 +42,7 @@ Créer un keystore puis définir les variables suivantes dans le profil de l'uti
 
 Récupérer les sources du projet :
 
-    mkdir -p ~/projet && cd ~/projet
+    mkdir -p ~/projets && cd ~/projets
     git clone git://github.com/atolcd/sdis-remocra.git
 
 Exécuter le script suivant :
