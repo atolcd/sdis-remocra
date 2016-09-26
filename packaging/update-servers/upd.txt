@@ -1,0 +1,22 @@
+# Arrêter le serveur d'applications
+service tomcat6 stop
+# Sauvegarder le fichier database.properties
+/bin/cp -f /var/lib/tomcat6/webapps/remocra/WEB-INF/classes/META-INF/spring/database.properties /var/lib/tomcat6/webapps/database.properties.save
+# Supprimer le dossier /var/lib/tomcat6/webapps/remocra
+rm -rf /var/lib/tomcat6/webapps/remocra
+
+mv -f /home/postgres/remocra.war /var/lib/tomcat6/webapps
+
+# Décompresser l'archive de l'application
+cd /var/lib/tomcat6/webapps
+mkdir remocra
+unzip -q remocra.war -d remocra
+# Restaurer le fichier database.properties
+/bin/cp -f /var/lib/tomcat6/webapps/database.properties.save /var/lib/tomcat6/webapps/remocra/WEB-INF/classes/META-INF/spring/database.properties
+# Fixer les droits
+chown tomcat:tomcat -R /var/lib/tomcat6/webapps/remocra
+# Démarrer le serveur d'applications
+service tomcat6 start
+
+service httpd reload
+

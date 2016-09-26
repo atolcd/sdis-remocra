@@ -9,10 +9,7 @@ echo "Réinitialisation de la base : début"
 
 
 echo "     -> Suppression de la base"
-dropdb -h localhost -U postgres remocra
-if [ $? = 1 ]; then
-  echo "       Avertissement"
-fi
+dropdb -h localhost -U postgres remocra || echo "       Avertissement"
 
 
 echo "     -> Création de la base"
@@ -23,16 +20,14 @@ if [ $? = 1 ]; then
 fi
 
 echo "     -> Nettoyage des fichiers de log"
-rm *.log
-if [ $? = 1 ]; then
-  echo "       Avertissement"
-fi
+rm *.log || echo "       Avertissement"
+
 
 echo "     -> Création des schémas"
 psql -h localhost -U postgres remocra -f 000_remocra_all.sql > 000_remocra_all.log 2> 000_remocra_all_error.log
 if [ $? = 1 ]; then
   echo "       Erreur"
-  exit $?
+  exit 1
 fi
 
 

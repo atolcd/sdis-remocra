@@ -4,7 +4,7 @@
 mobile/local.properties
 .gradle/
 .idea/
-build/
+#build/
 *.iml
 *.ipr
 *.iws
@@ -25,3 +25,4 @@ remocra/target
 # divers
 # ---------------
 *.log
+packaging/remocrapackage

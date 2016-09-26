@@ -7,6 +7,13 @@
 	<version>0.1.0.BUILD-SNAPSHOT</version>
 	<name>remocra</name>
 
+	<scm>
+	    <connection/>
+            <developerConnection>scm:git:git@github.com/atolcd/sdis-remocra.git</developerConnection>
+	    <tag/>
+	    <url/>
+        </scm>
+
 	<properties>
 		<aspectj.version>1.6.12</aspectj.version>
 		<java.version>1.6</java.version>

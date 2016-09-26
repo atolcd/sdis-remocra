@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# Gestion des erreurs
+set -e
+
 # ----------
 # Création du war "de production" (modeinfo-able)
 # ----------
