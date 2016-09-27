@@ -10,6 +10,8 @@ import fr.sdis83.remocra.domain.remocra.RciDocument;
 import fr.sdis83.remocra.domain.remocra.TypeRciDegreCertitude;
 import fr.sdis83.remocra.domain.remocra.TypeRciOrigineAlerte;
 import fr.sdis83.remocra.domain.remocra.TypeRciPromCategorie;
+import fr.sdis83.remocra.domain.remocra.TypeRciPromFamille;
+import fr.sdis83.remocra.domain.remocra.TypeRciPromPartition;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import java.util.Date;
 import java.util.Set;
@@ -262,6 +264,22 @@ privileged aspect Rci_Roo_JavaBean {
     
     public void Rci.setCategoriePromethee(TypeRciPromCategorie categoriePromethee) {
         this.categoriePromethee = categoriePromethee;
+    }
+    
+    public TypeRciPromPartition Rci.getPartitionPromethee() {
+        return this.partitionPromethee;
+    }
+    
+    public void Rci.setPartitionPromethee(TypeRciPromPartition partitionPromethee) {
+        this.partitionPromethee = partitionPromethee;
+    }
+    
+    public TypeRciPromFamille Rci.getFamillePromethee() {
+        return this.famillePromethee;
+    }
+    
+    public void Rci.setFamillePromethee(TypeRciPromFamille famillePromethee) {
+        this.famillePromethee = famillePromethee;
     }
     
     public TypeRciDegreCertitude Rci.getDegreCertitude() {

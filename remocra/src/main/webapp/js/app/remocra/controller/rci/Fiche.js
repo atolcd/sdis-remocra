@@ -317,7 +317,9 @@ Ext.define('Sdis.Remocra.controller.rci.Fiche', {
 
     onChangeFamille: function(combo, newValue, oldValue, opt) {
         var rec = combo.getStore().getById(newValue);
-        var cboPartition = combo.up('rciCauseResultats').queryById('partitionPromethee');
+        var rciCauseResultats = combo.up('rciCauseResultats');
+        var cboPartition = rciCauseResultats.queryById('partitionPromethee');
+        var cboCategorie = rciCauseResultats.queryById('categoriePromethee');
         cboPartition.setDisabled(rec == null);
         if (rec) {
             cboPartition.store.clearFilter(true);
@@ -326,6 +328,15 @@ Ext.define('Sdis.Remocra.controller.rci.Fiche', {
                     return partition.getFamille().get('id') == rec.get('id');
                 }
             });
+            // Recherche ancienne valeur et réinitialisation si non trouvée
+            var currentPartitionValue = cboPartition.getValue();
+            var foundIdx = cboPartition.store.findBy(function(record, id) {
+                return currentPartitionValue == id;
+            });
+            if (foundIdx<0) {
+                cboPartition.setValue(null);
+                cboCategorie.setValue(null);
+            }
         }
     },
     onChangePartition: function(combo, newValue, oldValue, opt) {
@@ -339,6 +350,14 @@ Ext.define('Sdis.Remocra.controller.rci.Fiche', {
                     return categorie.getPartition().get('id') == rec.get('id');
                 }
             });
+            // Recherche ancienne valeur et réinitialisation si non trouvée
+            var currentCategorieValue = cboCategorie.getValue();
+            var foundIdx = cboCategorie.store.findBy(function(record, id) {
+                return currentCategorieValue == id;
+            });
+            if (foundIdx<0) {
+                cboCategorie.setValue(null);
+            }
         }
     },
     
@@ -395,13 +414,25 @@ Ext.define('Sdis.Remocra.controller.rci.Fiche', {
         }
         
         // Catégorie, partition, famille
+        var cboCategorie = fiche.queryById('categoriePromethee');
+        var cboPartition = fiche.queryById('partitionPromethee');
+        var cboFamille = fiche.queryById('famillePromethee');
         if (fiche.record.getCategoriePromethee()) {
-            var cboCategorie = fiche.queryById('categoriePromethee');
-            var cboPartition = fiche.queryById('partitionPromethee');
-            var cboFamille = fiche.queryById('famillePromethee');
             cboFamille.select(fiche.record.getCategoriePromethee().getPartition().getFamille());
             cboPartition.select(fiche.record.getCategoriePromethee().getPartition());
             cboCategorie.select(fiche.record.getCategoriePromethee());
+        } else if (fiche.record.getPartitionPromethee()) {
+            cboFamille.select(fiche.record.getPartitionPromethee().getFamille());
+            cboPartition.select(fiche.record.getPartitionPromethee());
+            cboCategorie.setValue(null);
+        } else if (fiche.record.getFamillePromethee()) {
+            cboFamille.select(fiche.record.getFamillePromethee());
+            cboPartition.setValue(null);
+            cboCategorie.setValue(null);
+        } else {
+            cboFamille.setValue(null);
+            cboPartition.setValue(null);
+            cboCategorie.setValue(null);
         }
         
         // Utilisateur
@@ -514,6 +545,8 @@ Ext.define('Sdis.Remocra.controller.rci.Fiche', {
         commune.set('geometrie', null);
         record.setCommune(commune);
         record.setCategoriePromethee(this.getValueModelCbo(fiche, 'categoriePromethee'));
+        record.setPartitionPromethee(this.getValueModelCbo(fiche, 'partitionPromethee'));
+        record.setFamillePromethee(this.getValueModelCbo(fiche, 'famillePromethee'));
         record.setDegreCertitude(this.getValueModelCbo(fiche, 'degreCertitude'));
 
         // Cas spécial de la géométrie

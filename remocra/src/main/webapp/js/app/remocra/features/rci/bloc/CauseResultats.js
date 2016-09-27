@@ -51,7 +51,8 @@ Ext.define('Sdis.Remocra.features.rci.bloc.CauseResultats', {
         editable : false,
         queryMode : 'local',
         itemId : 'partitionPromethee',
-        name : 'partitionPromethee'
+        name : 'partitionPromethee',
+        disabled: true
     }, {
         colspan : 2,
         xtype : 'combo',
@@ -63,7 +64,8 @@ Ext.define('Sdis.Remocra.features.rci.bloc.CauseResultats', {
         editable : false,
         queryMode : 'local',
         itemId : 'categoriePromethee',
-        name : 'categoriePromethee'
+        name : 'categoriePromethee',
+        disabled: true
     }, {
         colspan : 2,
         xtype : 'displayfield',

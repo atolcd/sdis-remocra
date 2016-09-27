@@ -172,6 +172,22 @@ Ext.define('Sdis.Remocra.model.Rci', {
         persist : true
     }, {
         type : 'belongsTo',
+        model : 'Sdis.Remocra.model.TypeRciPromPartition',
+        associationKey : 'partitionPromethee',
+        getterName : 'getPartitionPromethee',
+        setterName : 'setPartitionPromethee',
+        associatedName : 'PartitionPromethee',
+        persist : true
+    }, {
+        type : 'belongsTo',
+        model : 'Sdis.Remocra.model.TypeRciPromFamille',
+        associationKey : 'famillePromethee',
+        getterName : 'getFamillePromethee',
+        setterName : 'setFamillePromethee',
+        associatedName : 'FamillePromethee',
+        persist : true
+    }, {
+        type : 'belongsTo',
         model : 'Sdis.Remocra.model.TypeRciDegreCertitude',
         associationKey : 'degreCertitude',
         getterName : 'getDegreCertitude',

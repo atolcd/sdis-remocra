@@ -868,6 +868,8 @@
         <column name="arrivee_sdis" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <column name="arrivee_gendarmerie" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <column name="arrivee_police" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
+        <column name="famille_promethee" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
+        <column name="partition_promethee" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <column name="cause" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
         <foreign-key foreignTable="commune" name="fk1b858d2da796c" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
@@ -888,6 +890,16 @@
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="categorie_promethee"/>
+        </foreign-key>
+        <foreign-key foreignTable="type_rci_prom_famille" name="fk_rci_famille_promethee" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="remocra"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="famille_promethee"/>
+        </foreign-key>
+        <foreign-key foreignTable="type_rci_prom_partition" name="fk_rci_partition_promethee" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="remocra"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="partition_promethee"/>
         </foreign-key>
         <foreign-key foreignTable="utilisateur" name="fk1b858a9c54d11" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
@@ -1499,6 +1511,11 @@
         <column name="code" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <column name="nom" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <column name="version" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
+        <foreign-key foreignTable="rci" name="fk_rci_famille_promethee" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="remocra"/>
+            <option key="exported" value="true"/>
+            <reference foreign="famille_promethee" local="id"/>
+        </foreign-key>
         <foreign-key foreignTable="type_rci_prom_partition" name="fk257dcb7aa7ef692" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="true"/>
@@ -1519,6 +1536,11 @@
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="famille"/>
+        </foreign-key>
+        <foreign-key foreignTable="rci" name="fk_rci_partition_promethee" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="remocra"/>
+            <option key="exported" value="true"/>
+            <reference foreign="partition_promethee" local="id"/>
         </foreign-key>
         <foreign-key foreignTable="type_rci_prom_categorie" name="fkcaf3ab04d230270a" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>

@@ -406,6 +406,8 @@ Ext.define('Sdis.Remocra.controller.rci.Rci', {
         record.setOrigineAlerte(null);
         record.setCommune(null);
         record.setCategoriePromethee(null);
+        record.setPartitionPromethee(null);
+        record.setFamillePromethee(null);
         record.setDegreCertitude(null);
         return record;
     },

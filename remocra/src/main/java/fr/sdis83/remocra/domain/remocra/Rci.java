@@ -144,6 +144,12 @@ public class Rci implements Featurable {
     private TypeRciPromCategorie categoriePromethee;
 
     @ManyToOne
+    private TypeRciPromPartition partitionPromethee;
+
+    @ManyToOne
+    private TypeRciPromFamille famillePromethee;
+
+    @ManyToOne
     private TypeRciDegreCertitude degreCertitude;
 
     private String commentaireConclusions;
