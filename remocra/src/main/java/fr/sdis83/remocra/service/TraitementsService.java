@@ -59,10 +59,17 @@ public class TraitementsService {
     }
 
     public List<PdiVueCombo> getComboValues(String nomvue) {
+        return getComboValues(nomvue, null);
+    }
+
+    public List<PdiVueCombo> getComboValues(String nomvue, String query) {
         List<PdiVueCombo> lstResult = new ArrayList<PdiVueCombo>();
 
+        String whereClause = query == null || query.isEmpty() ? ""
+                : "lower(v.libelle) like lower('%" + query + "%')";
         @SuppressWarnings("unchecked")
-        List<Object[]> results = entityManager.createNativeQuery("SELECT v.id, v.libelle FROM pdi." + nomvue + " as v").getResultList();
+        List<Object[]> results = entityManager.createNativeQuery("SELECT v.id, v.libelle FROM pdi." + nomvue + " as v"
+                + (whereClause.isEmpty() ? "" : " where " + whereClause)).getResultList();
 
         for (Object[] result : results) {
             lstResult.add(new PdiVueCombo(((BigInteger) result[0]), (String) result[1]));

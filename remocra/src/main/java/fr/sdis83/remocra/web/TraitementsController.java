@@ -282,16 +282,19 @@ public class TraitementsController {
     }
 
     /**
-     * Retourne la liste des valeurs pour un paramètre de type 'combo'. Vérifier
-     * si la vue existe bien en base.
+     * Retourne la liste des valeurs pour un paramètre de type 'combo'. Si query
+     * est fourni, une requête de type LIKE est réalisée sur le libellé.
+     * Vérifier si la vue existe bien en base.
      * 
      * @param nomvue
+     * @param query
      * @return
      */
-
     @RequestMapping(value = "modtrtparalst/{nomvue}", method = RequestMethod.GET, headers = "Accept=application/json")
     // @PreAuthorize : tests internes pour gérer les spécificités
-    public ResponseEntity<java.lang.String> getListComboModeleTraitement(final @PathVariable("nomvue") String nomvue) {
+    public ResponseEntity<java.lang.String> getListComboModeleTraitementLike(
+            final @PathVariable("nomvue") String nomvue,
+            final @RequestParam(value = "query", required = false) String query) {
 
         // Ici, on teste si l'utilisateur a au moins un accès parmis les
         // traitements de l'interface de traitements
@@ -301,7 +304,7 @@ public class TraitementsController {
 
             @Override
             protected List<PdiVueCombo> getRecords() {
-                return traitementsService.getComboValues(nomvue);
+                return traitementsService.getComboValues(nomvue, query);
             }
 
         }.serialize();
