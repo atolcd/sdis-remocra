@@ -168,9 +168,49 @@ Ext.define('Sdis.Remocra.features.traitements.Traitements', {
             var typeControle = data[i]['formTypeValeur'];
 
             switch (typeControle) {
-                // Combo
-                case 'combo':
+                // Static Combo
+                case 'staticcombo':
                     var paramLstDStore = new Ext.data.JsonStore({
+                        proxy : {
+                            format : 'json',
+                            type : 'rest',
+                            headers : { 'Accept' : 'application/json,application/xml', 'Content-Type' : 'application/json' },
+                            url : Sdis.Remocra.util.Util.withBaseUrl("../traitements/modtrtparalst/" + data[i]['formSourceDonnee']),
+                            reader : { type : 'json', root : 'data', totalProperty : 'total' }
+                        },
+                        idProperty : 'id',
+                        autoLoad : true,
+                        restful : true,
+                        fields : [ { name : 'id', type : 'integer' },
+                                   { name : 'libelle', type : 'string' }
+                        ]
+                    });
+                    panelFather.add({
+                        xtype : data[i]['formTypeValeur'],
+                        itemId : 'param-'+data[i]['idparametre'],
+                        fieldLabel : data[i]['formEtiquette'],
+                        allowBlank : !data[i]['formObligatoire'],
+                        value : data[i]['formValeurDefaut'],
+                        // Propre à la combo
+                        store : paramLstDStore,
+                        valueField : 'id',
+                        displayField : 'libelle',
+                        hiddenName : 'id',
+                        // typeAhead: true,
+                        mode : 'local',
+                        triggerAction : 'all',
+                        forceSelection : true,
+                        hideTrigger : false,
+                        editable : false,
+                        width : 470,
+                        emptyText : "Sélectionner une valeur",
+                        labelWidth : 120
+                    });
+                    break;
+
+                // Combo avec requête Saisie et requête de type "like" sur le libellé
+                case 'combo':
+                    var paramLstLikeDStore = new Ext.data.JsonStore({
                         proxy : { 
                             format : 'json',
                             type : 'rest',
@@ -183,29 +223,30 @@ Ext.define('Sdis.Remocra.features.traitements.Traitements', {
                         restful : true, 
                         fields : [ { name : 'id', type : 'integer' },
                                    { name : 'libelle', type : 'string' }
-                        ] });
-
+                        ]
+                    });
                     panelFather.add({
-                                xtype : data[i]['formTypeValeur'],
-                                itemId : 'param-'+data[i]['idparametre'],
-                                fieldLabel : data[i]['formEtiquette'],
-                                allowBlank : !data[i]['formObligatoire'],
-                                value : data[i]['formValeurDefaut'],
-                                // Propre à la combo
-                                store : paramLstDStore, 
-                                valueField : 'id', 
-                                displayField : 'libelle',
-                                hiddenName : 'id',
-                                // typeAhead: true,
-                                mode : 'local', 
-                                triggerAction : 'all', 
-                                forceSelection : true, 
-                                hideTrigger : false,                                 
-                                editable : false,
-                                width : 470,
-                                emptyText : "Sélectionner une valeur", 
-                                labelWidth : 120 
-                            });
+                        xtype: 'combo',
+                        itemId : 'param-'+data[i]['idparametre'],
+                        fieldLabel : data[i]['formEtiquette'],
+                        allowBlank : !data[i]['formObligatoire'],
+                        value : data[i]['formValeurDefaut'],
+                        // Propre à la combo
+                        store: paramLstLikeDStore,
+                        valueField: 'id',
+                        displayField: 'libelle',
+                        hiddenName : 'id',
+                        typeAhead: true,
+                        mode : 'remote',
+                        triggerAction : 'all',
+                        forceSelection: true,
+                        hideTrigger : false,
+                        editable : true,
+                        minChars: 1,
+                        width : 470,
+                        emptyText : "Sélectionner une valeur",
+                        labelWidth : 120
+                    });
                     break;
 
                 // FileUpload
