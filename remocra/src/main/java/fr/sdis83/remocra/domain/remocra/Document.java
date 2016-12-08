@@ -35,7 +35,9 @@ public class Document {
         // Blocs (documents génériques)
         BLOC,
         // "Métiers"
-        ALERTE, HYDRANT, PERMIS, RCI
+        ALERTE, HYDRANT, PERMIS, RCI,
+        // Courrier
+        COURRIER
     }
 
     @Id

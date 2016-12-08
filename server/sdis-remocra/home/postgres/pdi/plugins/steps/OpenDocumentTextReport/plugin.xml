@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+   id="OpenDocumentTextReport"
+   iconfile="OpenDocumentTextReport.png"
+   description="Open Document Text Report"
+   tooltip="Create ODT (OpenOffice/LibreOffice) report with XML data (Use JodReports)"
+   category="Atol CD - Various"
+   classname="com.atolcd.pdi.plugin.trans.opendocument.textreport.OpenDocumentTextReportMeta">
+	<libraries>
+		<library name="OpenDocumentTextReport.jar"/>
+		<library name="lib/freemarker.jar"/>
+		<library name="lib/jodreports-2.4.0.jar"/>
+		<library name="lib/xom-1.2.5.jar"/>
+	</libraries>
+	<localized_category>
+		<category locale="en_US">Atol CD - Various</category>
+		<category locale="fr_FR">Atol CD - Divers</category>
+	</localized_category>
+	<localized_description>
+		<description locale="en_US">Open Document Text Report</description>
+		<description locale="fr_FR">Rapport Open Document Texte</description>
+	</localized_description>
+	<localized_tooltip>
+		<tooltip locale="en_US">Create ODT (OpenOffice/LibreOffice) report with XML data (Use JodReports)</tooltip>
+		<tooltip locale="fr_FR">Création d'un rapport ODT (OpenOffice/LibreOffice) à partir de données XML (Basé sur JodReports)</tooltip>
+	</localized_tooltip>
+</plugin>

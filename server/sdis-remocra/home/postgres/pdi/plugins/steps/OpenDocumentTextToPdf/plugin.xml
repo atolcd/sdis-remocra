@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+	id="OdtToPdfConverter"
+	iconfile="OdtToPdfConverter.png"
+	description="Odt To Pdf Converter"
+	tooltip="Convert Open document Odt file to Pdf file"
+	category="Atol CD - Various"
+	classname="com.atolcd.pdi.plugin.converter.OdtToPdfConverterMeta">
+	<libraries>
+		<library name="OdtToPdfConverter.jar"/>
+		<library name="lib/fr.opensagres.xdocreport.itext.extension-1.0.0.jar"/>
+		<library name="lib/org.odftoolkit.odfdom.converter.core-1.0.0.jar"/>
+		<library name="lib/org.odftoolkit.odfdom.converter.pdf-1.0.0.jar"/>
+		<library name="lib/odfdom-java-0.8.7.jar"/>
+	</libraries>
+	<localized_category>
+		<category locale="en_US">Atol CD - Various</category>
+		<category locale="fr_FR">Atol CD - Divers</category>
+	</localized_category>
+	<localized_description>
+		<description locale="en_US">Odt To Pdf Converter</description>
+		<description locale="fr_FR">Convertisseur Odt vers Pdf</description>
+	</localized_description>
+	<localized_tooltip>
+		<tooltip locale="en_US">Convert Open document Odt file to Pdf file</tooltip>
+		<tooltip locale="fr_FR">Conversion de fichier Odt en fichier Pdf</tooltip>
+	</localized_tooltip>
+</plugin>

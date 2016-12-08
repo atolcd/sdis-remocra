@@ -2,12 +2,17 @@ package fr.sdis83.remocra.util;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Date;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileUploadException;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
@@ -15,9 +20,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.remocra.Document.TypeDocument;
+import fr.sdis83.remocra.web.serialize.StreamFileUtils;
 
 @Configurable
 public class DocumentUtil {
+
+    protected final Logger logger = Logger.getLogger(getClass());
 
     @Autowired
     private MessageDigestPasswordEncoder messageDigestPasswordEncoder;
@@ -34,13 +42,15 @@ public class DocumentUtil {
     private DocumentUtil() {
     }
 
-    public Document createNonPersistedDocument(TypeDocument typeDocument, MultipartFile mf, String depotRepertoire) throws Exception {
+    public Document createNonPersistedDocument(TypeDocument typeDocument, MultipartFile mf, String depotRepertoire)
+            throws Exception {
         if (mf == null) {
             throw new FileUploadException("Un fichier n'a pas été trouvé");
         }
 
         String fichier = mf.getOriginalFilename();
-        String code = messageDigestPasswordEncoder.encodePassword(new Date().getTime() + mf.getOriginalFilename(), null);
+        String code = messageDigestPasswordEncoder.encodePassword(new Date().getTime() + mf.getOriginalFilename(),
+                null);
         String repertoire = depotRepertoire + File.separator + code + File.separator;
 
         saveFileToHD(mf, repertoire, fichier);
@@ -55,8 +65,8 @@ public class DocumentUtil {
         return d;
     }
 
-    public Document createNonPersistedDocument(TypeDocument typeDocument, BufferedImage buffImage, String filename, String depotRepertoire) throws SecurityException, IOException,
-            FileUploadException {
+    public Document createNonPersistedDocument(TypeDocument typeDocument, BufferedImage buffImage, String filename,
+            String depotRepertoire) throws SecurityException, IOException, FileUploadException {
         if (buffImage == null || buffImage.getHeight() == 0 || buffImage.getWidth() == 0) {
             throw new FileUploadException("Fichier vide");
         }
@@ -158,4 +168,67 @@ public class DocumentUtil {
         return dir;
     }
 
+    public File getFile(String filePath, String code) {
+        if (filePath == null) {
+            logger.info("Fichier demandé non trouvé dans la base (" + code + ")");
+            return null;
+        }
+        File file = new File(filePath);
+        if (!file.exists()) {
+            logger.info("Fichier demandé non trouvé sur disque (" + code + ") : " + filePath);
+            return null;
+        }
+        return file;
+    }
+
+    public void downloadDocument(String filePath, String code, HttpServletResponse response) throws IOException {
+        File file = getFile(filePath, code);
+        if (file == null) {
+            response.setStatus(404);
+            return;
+        }
+
+        String fileName = file.getName();
+        response.setHeader("Content-Disposition", "inline; filename=\"" + fileName + "\"");
+        response.setHeader("Content-Type", "application/force-download");
+        response.setContentLength(new Long(file.length()).intValue());
+
+        InputStream is = new FileInputStream(file);
+        OutputStream os = response.getOutputStream();
+
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = is.read(buffer)) != -1) {
+            os.write(buffer, 0, bytesRead);
+        }
+        is.close();
+        os.flush();
+        os.close();
+    }
+
+    public void showDocument(String filePath, String code, HttpServletResponse response) throws IOException {
+        File file = getFile(filePath, code);
+        if (file == null) {
+            response.setStatus(404);
+            return;
+        }
+
+        String contentType = StreamFileUtils.getContentTypeFromFile(file);
+        if (contentType != null) {
+            response.setContentType(contentType);
+        }
+        response.setContentLength(new Long(file.length()).intValue());
+
+        InputStream is = new FileInputStream(file);
+        OutputStream os = response.getOutputStream();
+
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = is.read(buffer)) != -1) {
+            os.write(buffer, 0, bytesRead);
+        }
+        is.close();
+        os.flush();
+        os.close();
+    }
 }

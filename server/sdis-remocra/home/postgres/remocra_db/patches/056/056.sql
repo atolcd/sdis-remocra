@@ -19,7 +19,7 @@ declare
 begin
     -- Métadonnées du patch
     numero_patch := 56;
-    description_patch := 'Suivi des patches avec vérification préalable';
+    description_patch := 'Enregistrement famille et partition promethee';
 
     -- Vérification
     if (select numero_patch-1 != (select max(numero) from remocra.suivi_patches)) then

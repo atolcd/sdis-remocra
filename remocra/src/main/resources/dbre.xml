@@ -105,6 +105,23 @@
             <unique-column name="id"/>
         </unique>
     </table>
+    <table alias="remocra" name="courrier_document">
+        <column name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
+        <column name="code" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
+        <column name="nom_destinaraire" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
+        <column name="type_destinaraire" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
+        <column name="id_destinaraire" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
+        <column name="accuse" primaryKey="false" required="false" scale="6" size="29" type="93,timestamp"/>
+        <column name="document" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
+        <foreign-key foreignTable="document" name="courrier_document_document_fk" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="remocra"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="document"/>
+        </foreign-key>
+        <unique name="courrier_document_pkey">
+            <unique-column name="id"/>
+        </unique>
+    </table>
     <table alias="remocra" name="bloc_document">
         <column name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
         <column name="description" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
