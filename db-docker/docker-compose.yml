@@ -1,5 +1,5 @@
 postgres:
-  image: cismet/cids-integration-base
+  image: cismet/cids-integration-base:postgres-9.0.3
   ports:
     - "5432:5432"
   volumes:
