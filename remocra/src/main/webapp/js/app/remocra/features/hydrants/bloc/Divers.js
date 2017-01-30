@@ -1,9 +1,9 @@
-Ext.require('Ext.form.FieldSet');
-Ext.require('Ext.form.Panel');
-Ext.require('Ext.form.field.File');
-Ext.require('Sdis.Remocra.widget.LinkButton');
+Ext.require ('Ext.form.FieldSet');
+Ext.require ('Ext.form.Panel');
+Ext.require ('Ext.form.field.File');
+Ext.require ('Sdis.Remocra.widget.LinkButton');
 
-Ext.define('Sdis.Remocra.features.hydrants.bloc.Divers', {
+Ext.define ('Sdis.Remocra.features.hydrants.bloc.Divers',{
     extend: 'Ext.form.FieldSet',
     title: 'Divers',
     alias: 'widget.hydrant.divers',
@@ -11,11 +11,11 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.Divers', {
     defaults: {
         anchor: '100%',
         labelAlign: 'right',
-        labelWidth: 150,
+        labelWidth: 200,
         maxWidth: 500
     },
 
-    items: [{
+    items: [ {
         fieldLabel: 'Courrier/convention',
         xtype: 'textfield',
         name: 'courrier'
@@ -31,7 +31,7 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.Divers', {
         defaults: {
             anchor: '100%',
             labelAlign: 'right',
-            labelWidth: 150,
+            labelWidth: 200,
             maxWidth: 500
         },
         name: 'formPhoto',
@@ -47,7 +47,7 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.Divers', {
         layout: 'hbox',
         fieldLabel: 'Photo',
         name: 'photoContainer',
-        items: [{
+        items: [ {
             xtype: 'linkbutton',
             name: 'download',
             text: 'Télécharger',
@@ -56,6 +56,11 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.Divers', {
             xtype: 'button',
             name: 'deletePhoto',
             text: 'Supprimer'
-        }]
-    }]
+        } ]
+    },{
+        fieldLabel: 'Date de dernière attestation',
+        xtype: 'datefield',
+        format: 'd/m/Y',
+        name: 'dateAttestation'
+    } ]
 });

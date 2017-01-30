@@ -39,6 +39,9 @@ Ext.define('Sdis.Remocra.model.Hydrant', {
         name : 'dateRecep',
         type : 'date'
     }, {
+        name : 'dateAttestation',
+        type : 'date'
+    }, {
         name : 'dateVerif',
         type : 'date'
     }, {

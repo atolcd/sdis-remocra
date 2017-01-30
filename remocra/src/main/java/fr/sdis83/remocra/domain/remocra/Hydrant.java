@@ -112,6 +112,10 @@ public class Hydrant implements Featurable {
     @DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
     private Date dateGps;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
+    private Date dateAttestation;
+
     @Column
     private String agent1;
 
