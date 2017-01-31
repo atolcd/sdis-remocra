@@ -217,8 +217,8 @@ Ext.define('Sdis.Remocra.controller.rci.Fiche', {
 
     updDd: function(x, y) {
         var fiche = this.getRciFiche();
-        fiche.queryById('ddOrientX').setValue(x<0?'E':'O', true);
-        fiche.queryById('ddOrientY').setValue(y<0?'N':'S', true);
+        fiche.queryById('ddOrientX').setValue(x<0?'O':'E', true);
+        fiche.queryById('ddOrientY').setValue(y<0?'S':'N', true);
         fiche.queryById('ddCoordXd').setRawValue(Math.abs(x));
         fiche.queryById('ddCoordYd').setRawValue(Math.abs(y));
     },
