@@ -157,7 +157,17 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
         var mousePosition = new OpenLayers.Control.MousePosition({
             displayProjection: Sdis.Remocra.widget.map.EPSG4326, // En WGS84
             prefix: 'x : ',
-            separator: ', y : '
+            separator: ', y : ',
+            formatOutput: function(lonLat) {
+                var digits = parseInt(this.numDigits, 10);
+                var newHtml =
+                    this.prefix +
+                    Sdis.Remocra.util.Util.getFormattedCoord('x', lonLat.lon, COORDONNEES_FORMAT_AFFICHAGE, digits) +
+                    this.separator + 
+                    Sdis.Remocra.util.Util.getFormattedCoord('y', lonLat.lat, COORDONNEES_FORMAT_AFFICHAGE, digits) +
+                    this.suffix;
+                return newHtml;
+            }
         });
         this.map.addControl(mousePosition);
 

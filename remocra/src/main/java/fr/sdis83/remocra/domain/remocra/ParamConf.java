@@ -99,7 +99,8 @@ public class ParamConf {
         HYDRANT_RENOUVELLEMENT_RECO("HYDRANT_RENOUVELLEMENT_RECO", Integer.class),
         HYDRANT_RENOUVELLEMENT_CTRL("HYDRANT_RENOUVELLEMENT_CTRL", Integer.class),
         WMS_BASE_URL("WMS_BASE_URL", String.class),
-        WMS_PUBLIC_LAYERS("WMS_PUBLIC_LAYERS", String.class);
+        WMS_PUBLIC_LAYERS("WMS_PUBLIC_LAYERS", String.class),
+        COORDONNEES_FORMAT_AFFICHAGE("COORDONNEES_FORMAT_AFFICHAGE",String.class);
 
         private final String cle;
         private final Class cl;

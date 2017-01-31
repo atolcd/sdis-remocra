@@ -11,7 +11,6 @@ Ext.require('Sdis.Remocra.store.TypeHydrantMarque');
 Ext.require('Sdis.Remocra.store.TypeHydrantPositionnement');
 Ext.require('Sdis.Remocra.store.TypeHydrantMateriau');
 Ext.require('Sdis.Remocra.store.Utilisateur');
-
 Ext.require('Sdis.Remocra.model.HydrantPena');
 Ext.require('Sdis.Remocra.model.HydrantPibi');
 
@@ -232,7 +231,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
         }
 
         fiche.setTitle('Fiche ' + fiche.hydrant.get('code') + ' - ' + Ext.getStore('TypeHydrantSaisie').findRecord('code', typeSaisie).get('nom'));
-        //Gestion date contrôle en fonction du stype de saisie
+        // Gestion date contrôle en fonction du stype de saisie
         var dateSaisie = form.findField('dateSaisie');
         switch (fiche.typeSaisie) {
         case 'RECO':
@@ -460,8 +459,12 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                 var result = wktFormat.read(wkt);
                 var geom = result.geometry;
                 geom.transform('EPSG:2154', Sdis.Remocra.widget.map.EPSG4326);
-                form.findField('x').setValue(Ext.Number.toFixed(geom.x, 4));
-                form.findField('y').setValue(Ext.Number.toFixed(geom.y, 4));
+
+                var x = Sdis.Remocra.util.Util.getFormattedCoord('x', geom.x, COORDONNEES_FORMAT_AFFICHAGE, 5);
+                var y = Sdis.Remocra.util.Util.getFormattedCoord('y', geom.y, COORDONNEES_FORMAT_AFFICHAGE, 5);
+
+                form.findField('x').setValue(x);
+                form.findField('y').setValue(y);
             }
 
             if (fiche.typeSaisie != 'LECT') {
@@ -493,7 +496,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                 this.updateUiDispo(fiche);
             }, 150, this);
 
-            //On charge l'historique débit, pression, uniquement pour les PIBI
+            // On charge l'historique débit, pression, uniquement pour les PIBI
             if(fiche.isUpdating && currentCode == 'PIBI') {
                 Ext.Ajax.request({
                     scope : this,
@@ -641,10 +644,10 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
     },
 
     validFicheHydrant: function(button) {
-        //Verification si mode consultation
+        // Verification si mode consultation
         var fiche = button.up('window');
         var form = fiche.down('form[name=fiche]').getForm();
-        //On formate pour la comparaison au jour près (on exclut l'heure)
+        // On formate pour la comparaison au jour près (on exclut l'heure)
         var dateSaisie = Ext.Date.format(form.findField('dateSaisie').getValue(),'d/m/Y');
         var dateControle = null;
         var needConfirmation = false;

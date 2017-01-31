@@ -197,6 +197,10 @@ public class ParamConfService {
         return (String) this.getValue(ParamConfParam.WMS_BASE_URL, "http://localhost:8080/geoserver");
     }
 
+    public String getCoordonneesFormatAffichage() {
+        return (String) this.getValue(ParamConfParam.COORDONNEES_FORMAT_AFFICHAGE, "DD_DDDD");
+    }
+
     @Transactional
     public ParamConf update(ParamConf record) {
         log.info("updateParamConf : " + record.getCle());

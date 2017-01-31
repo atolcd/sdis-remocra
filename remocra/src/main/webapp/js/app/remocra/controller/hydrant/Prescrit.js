@@ -131,8 +131,13 @@ Ext.define('Sdis.Remocra.controller.hydrant.Prescrit', {
                 var result = wktFormat.read(wkt);
                 var geom = result.geometry;
                 geom.transform('EPSG:2154', Sdis.Remocra.widget.map.EPSG4326);
-                form.findField('x').setValue(Ext.Number.toFixed(geom.x, 4));
-                form.findField('y').setValue(Ext.Number.toFixed(geom.y, 4));
+                
+
+                var x = Sdis.Remocra.util.Util.getFormattedCoord('x', geom.x, COORDONNEES_FORMAT_AFFICHAGE, 5);
+                var y = Sdis.Remocra.util.Util.getFormattedCoord('y', geom.y, COORDONNEES_FORMAT_AFFICHAGE, 5);
+
+                form.findField('x').setValue(x);
+                form.findField('y').setValue(y);
             }
         }
     },

@@ -79,6 +79,8 @@
 			
 			var HYDRANT_CFG = '${hydrant_cfg}';
 			var REMOCRA_DEFAULT_ORIENTATION = { x : '${orientationX}', y : '${orientationY}' };
+
+			var COORDONNEES_FORMAT_AFFICHAGE = '${coordonnees_format_affichage}';
 		</script>
 	</head>
 	

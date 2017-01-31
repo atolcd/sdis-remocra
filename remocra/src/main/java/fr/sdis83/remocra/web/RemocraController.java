@@ -108,6 +108,8 @@ public class RemocraController {
 
         model.addAttribute("hydrant_cfg", paramConfService.getHydrantCfg());
 
+        model.addAttribute("coordonnees_format_affichage", paramConfService.getCoordonneesFormatAffichage());
+
         // Durée d'inactivité permis en secondes
         model.addAttribute("maxInactiveIntervalSec", request.getSession().getMaxInactiveInterval());
 

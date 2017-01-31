@@ -227,6 +227,43 @@ Ext.define('Sdis.Remocra.util.Util', {
     },
     
     /**
+     * Formattage d'une coordonnée x ou y suivant le format passé en paramètre
+     *
+     * @param coord  coordonnée 'x' ou 'y'
+     * @param value  coordonnée au format par défaut (DD_DDDD)
+     * @param format  'DD_DDDD', 'DD_MM_MM', 'DD_MM_SSSS'
+     * @param decimal  nombre de décimales
+     *
+     * Returns: {String} donnée formattée
+     */
+    getFormattedCoord: function(coord, value, format, decimal) {
+
+        if(format == 'DD_DDDD') {
+            return Number.parseFloat(value).toFixed(decimal);
+        }
+
+        if(format == 'DD_MM_MM' && coord == 'x') {
+            var dmX = Sdis.Remocra.util.Util.getFormattedLonLat(value, 'lon', 'dm', true, true);
+            return (dmX.o=='O'?'Ouest ':'Est ') + dmX.d + '° ' + Number.parseFloat(dmX.m).toFixed(decimal) +'\'';
+        }
+        if(format == 'DD_MM_MM' && coord == 'y') {
+            var dmY = Sdis.Remocra.util.Util.getFormattedLonLat(value, 'lat', 'dm', true, true);
+            return (dmY.o=='N'?'Nord ' :'Sud ') + dmY.d + '° ' + Number.parseFloat(dmY.m).toFixed(decimal) +'\'';
+        }
+
+        if(format == 'DD_MM_SSSS' && coord == 'x') {
+            var dmsX = Sdis.Remocra.util.Util.getFormattedLonLat(value, 'lon', 'dms', true, true);
+            return (dmsX.o=='O'?'Ouest ':'Est ') + dmsX.d + '° ' + dmsX.m +'\' ' + Number.parseFloat(dmsX.s).toFixed(decimal) + '"';
+        }
+        if(format == 'DD_MM_SSSS' && coord == 'y') {
+            var dmsY = Sdis.Remocra.util.Util.getFormattedLonLat(value, 'lat', 'dms', true, true);
+            return (dmsY.o=='N'?'Nord ' :'Sud ') + dmsY.d + '° ' + dmsY.m +'\' ' + Number.parseFloat(dmsY.s).toFixed(decimal) + '"';
+        }
+
+        return value;
+    },
+
+    /**
      * Récupération 'une coordonnées à partir des info dms et orientation
      * @param deg
      * @param min
