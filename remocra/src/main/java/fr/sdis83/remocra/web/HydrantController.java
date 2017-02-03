@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -115,6 +116,18 @@ public class HydrantController {
         String message = hydrantService.checkDispo(id, nature, codeCommune, (num == null || num.isEmpty() ? null : Integer.valueOf(num)), geometrie);
         return new SuccessErrorExtSerializer(message == null || message.isEmpty(), message).serialize();
 
+    }
+
+    @RequestMapping(value = "/document/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('HYDRANTS', 'CREATE')")
+    @Transactional
+    public ResponseEntity<java.lang.String> deleteHydrantDocument(@PathVariable("id") Long id) {
+        try {
+            hydrantService.deleteDocument(id);
+            return new SuccessErrorExtSerializer(true, "Document supprimé").serialize();
+        } catch (Exception e) {
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
     }
 
     @RequestMapping(value = "{id}/deplacer", method = RequestMethod.POST, headers = "Accept=application/json")

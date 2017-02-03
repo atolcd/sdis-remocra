@@ -6,37 +6,41 @@ Ext.define('Sdis.Remocra.features.hydrants.FichePibi', {
 
     title: 'PIBI',
 
-    tabItems: [{
+    tabItems: [ {
         title: 'Identification et localisation',
-        items: [{
+        items: [ {
             xtype: 'hydrant.tracabilite'
-        },{
+        }, {
             xtype: 'hydrant.localisationpibi'
-        },{
+        }, {
             xtype: 'hydrant.identificationpibi'
-        }]
-    },{
+        } ]
+    }, {
         title: 'Vérification',
-        items: [{
+        items: [ {
             xtype: 'hydrant.verifhydrauliquepibi'
-        }]
-    },{
+        } ]
+    }, {
         itemId: 'tabMCO',
         title: 'Gestionnaire, MCO, divers',
-        items: [{
+        items: [ {
             xtype: 'hydrant.mcopibi'
-        },{
+        }, {
             xtype: 'hydrant.gestionnairepibi'
-        },{
+        }, {
             xtype: 'hydrant.divers'
-        }]
-    },{
+        } ]
+    }, {
+        title: 'Documents',
+        xtype: 'crFileupload',
+        itemId: 'documents'
+    }, {
         title: 'Points d\'attention',
-        pointAttention : true,
-        items: [{
+        pointAttention: true,
+        items: [ {
             xtype: 'hydrant.anomalie'
-        }]
-    }],
+        } ]
+    } ],
 
     initComponent: function() {
         this.callParent(arguments);

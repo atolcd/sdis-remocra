@@ -6,39 +6,43 @@ Ext.define('Sdis.Remocra.features.hydrants.FichePena', {
 
     title: 'PENA',
 
-    tabItems: [{
+    tabItems: [ {
         title: 'Identification et localisation',
-        items: [{
+        items: [ {
             xtype: 'hydrant.tracabilite'
-        },{
+        }, {
             xtype: 'hydrant.localisationpena'
-        },{
+        }, {
             xtype: 'hydrant.identificationpena'
-        }]
-    },{
+        } ]
+    }, {
         title: 'Citerne',
-        items: [{
+        items: [ {
             xtype: 'hydrant.citerne'
-        },{
+        }, {
             xtype: 'hydrant.verifhydrauliquepena'
-        }]
-    },{
+        } ]
+    }, {
         itemId: 'tabMCO',
         title: 'Gestionnaire, MCO, divers',
-        items: [{
+        items: [ {
             xtype: 'hydrant.mcopena'
-        },{
+        }, {
             xtype: 'hydrant.gestionnairepena'
-        },{
+        }, {
             xtype: 'hydrant.divers'
-        }]
-    },{
+        } ]
+    }, {
+        title: 'Documents',
+        xtype: 'crFileupload',
+        itemId: 'documents'
+    }, {
         title: 'Points d\'attention',
         pointAttention: true,
-        items: [{
+        items: [ {
             xtype: 'hydrant.anomalie'
-        }]
-    }],
+        } ]
+    } ],
 
     initComponent: function() {
         this.callParent(arguments);

@@ -431,12 +431,12 @@ public class XmlService {
             return lstTourneesXML;
         }
 
-        TypedQuery<Tournee> query = entityManager.createQuery("SELECT t FROM Tournee t " + " where t.id IN :ids " + " and t.affectation = :organisme "
-                + " and (t.reservation is null OR t.reservation = :user) " +
-                // Pour permettre à l'utilisateur qui le souhaite de conserver
-                // sa tournée, on commente le filtre sur l'état de la tournée :
-                // + " and t.etat < 100 "
-                " and t.hydrantCount > 0", Tournee.class);
+        TypedQuery<Tournee> query = entityManager
+                .createQuery("SELECT t FROM Tournee t " + " where t.id IN :ids " + " and t.affectation = :organisme " + " and (t.reservation is null OR t.reservation = :user) " +
+        // Pour permettre à l'utilisateur qui le souhaite de conserver
+        // sa tournée, on commente le filtre sur l'état de la tournée :
+        // + " and t.etat < 100 "
+                        " and t.hydrantCount > 0", Tournee.class);
         query.setParameter("ids", idTournees);
         query.setParameter("organisme", utilisateurService.getCurrentUtilisateur().getOrganisme());
         query.setParameter("user", utilisateurService.getCurrentUtilisateur());
@@ -542,19 +542,21 @@ public class XmlService {
         hydrantXML.setCourrier(hydrant.getCourrier());
         hydrantXML.setGestPointEau(hydrant.getGestPointEau());
 
-        if (hydrant.getPhotos().size() > 0) {
-            HydrantDocument hydrantDocument = hydrant.getPhotos().iterator().next();
-            Document document = hydrantDocument.getDocument();
+        if (hydrant.getHydrantDocuments().size() > 0) {
 
-            File file = new File(document.getRepertoire() + File.separator + document.getFichier());
-            BufferedImage originalImage = ImageIO.read(file);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(originalImage, "jpg", baos);
-            baos.flush();
-            byte[] imageInByte = baos.toByteArray();
-            baos.close();
-            String img64 = Base64.encodeBase64String(imageInByte);
-            hydrantXML.setPhoto(img64);
+            HydrantDocument photo = hydrant.getPhoto();
+            if (photo != null) {
+                Document document = hydrant.getPhoto().getDocument();
+                File file = new File(document.getRepertoire() + File.separator + document.getFichier());
+                BufferedImage originalImage = ImageIO.read(file);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(originalImage, "jpg", baos);
+                baos.flush();
+                byte[] imageInByte = baos.toByteArray();
+                baos.close();
+                String img64 = Base64.encodeBase64String(imageInByte);
+                hydrantXML.setPhoto(img64);
+            }
         }
 
         Set<TypeHydrantAnomalie> lstAnomalies = hydrant.getAnomalies();
@@ -577,8 +579,8 @@ public class XmlService {
 
     }
 
-    public void fillHydrantPibi(fr.sdis83.remocra.xml.HydrantPibi hydrantPibiXML, fr.sdis83.remocra.domain.remocra.HydrantPibi hydrantPibi) throws IOException, CRSException,
-            IllegalCoordinateException {
+    public void fillHydrantPibi(fr.sdis83.remocra.xml.HydrantPibi hydrantPibiXML, fr.sdis83.remocra.domain.remocra.HydrantPibi hydrantPibi)
+            throws IOException, CRSException, IllegalCoordinateException {
         fillHydrant(hydrantPibiXML, hydrantPibi);
         hydrantPibiXML.setChoc(hydrantPibi.getChoc());
         hydrantPibiXML.setCodeDiametre(hydrantPibi.getDiametre() != null ? hydrantPibi.getDiametre().getCode() : "");
@@ -592,8 +594,8 @@ public class XmlService {
         hydrantPibiXML.setPressionDyn(hydrantPibi.getPressionDyn());
     }
 
-    public void fillHydrantPena(fr.sdis83.remocra.xml.HydrantPena hydrantPenaXML, fr.sdis83.remocra.domain.remocra.HydrantPena hydrantPena) throws IOException, CRSException,
-            IllegalCoordinateException {
+    public void fillHydrantPena(fr.sdis83.remocra.xml.HydrantPena hydrantPenaXML, fr.sdis83.remocra.domain.remocra.HydrantPena hydrantPena)
+            throws IOException, CRSException, IllegalCoordinateException {
         fillHydrant(hydrantPenaXML, hydrantPena);
         hydrantPenaXML.setCoordDFCI(hydrantPena.getCoordDFCI());
 
@@ -610,9 +612,9 @@ public class XmlService {
     }
 
     public void fillHydrantCiterne(HydrantCiterneEnterre hydrantPenaXML, fr.sdis83.remocra.domain.remocra.HydrantPena hydrantPena) {
-        ((HydrantCiterneEnterre) hydrantPenaXML).setCodeMateriau(hydrantPena.getMateriau() != null ? hydrantPena.getMateriau().getCode() : "");
-        ((HydrantCiterneEnterre) hydrantPenaXML).setCodeVolConstate(hydrantPena.getVolConstate() != null ? hydrantPena.getVolConstate().getCode() : "");
-        ((HydrantCiterneEnterre) hydrantPenaXML).setqAppoint(hydrantPena.getQAppoint());
+        hydrantPenaXML.setCodeMateriau(hydrantPena.getMateriau() != null ? hydrantPena.getMateriau().getCode() : "");
+        hydrantPenaXML.setCodeVolConstate(hydrantPena.getVolConstate() != null ? hydrantPena.getVolConstate().getCode() : "");
+        hydrantPenaXML.setqAppoint(hydrantPena.getQAppoint());
     }
 
     @Transactional
@@ -711,7 +713,7 @@ public class XmlService {
      * Rappel sur la portée des champs liée au droit HYDRANTS_MCO.C. champs
      * communs : anneeFabrication, codeDomaine, gestPointEau, courrier, photo ;
      * champs Pibi uniquement : codeMarque, codeModele, choc, gestReseau
-     * 
+     *
      * @param hydrant
      * @param hydrantXML
      * @throws IOException
@@ -721,8 +723,8 @@ public class XmlService {
      * @throws AnomalieException
      * @throws DroitException
      */
-    void updateHydrant(Hydrant hydrant, fr.sdis83.remocra.xml.Hydrant hydrantXML) throws IOException, SecurityException, FileUploadException, BusinessException, AnomalieException,
-            DroitException {
+    void updateHydrant(Hydrant hydrant, fr.sdis83.remocra.xml.Hydrant hydrantXML)
+            throws IOException, SecurityException, FileUploadException, BusinessException, AnomalieException, DroitException {
 
         // Vérification du territoire de compétence de l'utilisateur connecté
         Boolean result = zoneCompetenceService.check(hydrant.getGeometrie(), utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence());
@@ -784,14 +786,20 @@ public class XmlService {
                 Document d;
                 byte[] dataImage = Base64.decodeBase64(hydrantXML.getPhoto());
                 InputStream in = new ByteArrayInputStream(dataImage);
-                String filename = "hydrant_" + hydrant.getId() + ".jpg";
+                String filename = Hydrant.TITRE_PHOTO;
                 BufferedImage bImageFromConvert = ImageIO.read(in);
                 d = DocumentUtil.getInstance().createNonPersistedDocument(TypeDocument.HYDRANT, bImageFromConvert, filename, paramConfService.getDossierDocHydrant());
                 HydrantDocument hd = new HydrantDocument();
                 hd.setHydrant(hydrant);
                 hd.setDocument(Hydrant.entityManager().merge(d));
-                hydrant.getPhotos().clear();
-                hydrant.getPhotos().add(hd);
+
+                HydrantDocument toDetach = hydrant.getPhoto();
+                if (toDetach != null) {
+                    // Suppression de l'ancienne photo
+                    hydrant.getHydrantDocuments().remove(toDetach);
+                }
+                // Ajout de la nouvelle photo
+                hydrant.getHydrantDocuments().add(hd);
             }
         }
 
@@ -897,8 +905,8 @@ public class XmlService {
             if (hydrantXML instanceof HydrantCiterneFixe) {
                 HydrantCiterneFixe hydrantPenaCiterneFixe = (HydrantCiterneFixe) hydrantXML;
                 if (hydrantPenaCiterneFixe.getCodePositionnement() != null && !hydrantPenaCiterneFixe.getCodePositionnement().isEmpty()) {
-                    hydrantDomPena.setPositionnement(TypeHydrantPositionnement.findTypeHydrantPositionnementsByCode(hydrantPenaCiterneFixe.getCodePositionnement())
-                            .getSingleResult());
+                    hydrantDomPena
+                            .setPositionnement(TypeHydrantPositionnement.findTypeHydrantPositionnementsByCode(hydrantPenaCiterneFixe.getCodePositionnement()).getSingleResult());
                 } else {
                     hydrantDomPena.setPositionnement(null);
                 }
@@ -944,6 +952,7 @@ public class XmlService {
         try {
             XmlUtil.serializeXml(classe, lst, referentiel, out);
         } catch (Exception e) {
+            logger.error("Erreur de parsing xml", e);
             GenericJDBCException nested = ExceptionUtils.getNestedExceptionWithClass(e, GenericJDBCException.class);
             if (nested != null) {
                 throw new SQLBusinessException(nested.getMessage(), nested.getSQLState());
@@ -1005,15 +1014,11 @@ public class XmlService {
         String param_anomalies = lstAnomalies.toString().replace('[', ' ').replace(']', ' ');
 
         Query query = entityManager
-                .createNativeQuery(
-                        "SELECT count(*) from remocra.type_hydrant_anomalie tha join remocra.type_hydrant_anomalie_nature than on (tha.id = than.anomalie) "
-                                + "join remocra.type_hydrant_nature thn on (than.nature = thn.id) "
-                                + "join remocra.type_hydrant_anomalie_nature_saisies thans on (than.id  = thans.type_hydrant_anomalie_nature) "
-                                + "join remocra.type_hydrant_saisie ths on (thans.saisies = ths.id)"
-                                + "where thn.code = :codeNature and tha.code in ("
-                                + param_anomalies
-                                + ") "
-                                + "and ths.code = :typeSaisie and case when :isHbe then than.val_indispo_hbe >= 0  OR than.val_indispo_terrestre >= 0 else than.val_indispo_terrestre >= 0 end ")
+                .createNativeQuery("SELECT count(*) from remocra.type_hydrant_anomalie tha join remocra.type_hydrant_anomalie_nature than on (tha.id = than.anomalie) "
+                        + "join remocra.type_hydrant_nature thn on (than.nature = thn.id) "
+                        + "join remocra.type_hydrant_anomalie_nature_saisies thans on (than.id  = thans.type_hydrant_anomalie_nature) "
+                        + "join remocra.type_hydrant_saisie ths on (thans.saisies = ths.id)" + "where thn.code = :codeNature and tha.code in (" + param_anomalies + ") "
+                        + "and ths.code = :typeSaisie and case when :isHbe then than.val_indispo_hbe >= 0  OR than.val_indispo_terrestre >= 0 else than.val_indispo_terrestre >= 0 end ")
                 .setParameter("codeNature", codeNature).setParameter("typeSaisie", typeSaisie.toString()).setParameter("isHbe", isHbe);
 
         BigInteger nbAnomalieReturn = (BigInteger) query.getSingleResult();

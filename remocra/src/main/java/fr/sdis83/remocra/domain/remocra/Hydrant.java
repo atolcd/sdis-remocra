@@ -23,6 +23,8 @@ import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.roo.addon.javabean.RooJavaBean;
@@ -40,6 +42,11 @@ import fr.sdis83.remocra.util.Feature;
 @RooJpaActiveRecord(inheritanceType = "JOINED", finders = { "findHydrantsByNumero" })
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "numero" }) })
 public class Hydrant implements Featurable {
+
+    /**
+     * Titre associé à la photo de l'hydrant
+     */
+    public static String TITRE_PHOTO = "hydrant.jpg";
 
     public static enum Disponibilite {
         DISPO, INDISPO, NON_CONFORME
@@ -147,13 +154,9 @@ public class Hydrant implements Featurable {
     @Column
     private Integer anneeFabrication;
 
-    @OneToMany(mappedBy = "hydrant", orphanRemoval = true, cascade = CascadeType.ALL)
-    private Set<HydrantDocument> photos = new HashSet<HydrantDocument>();
-
-    public void setPhotos(Set<HydrantDocument> photos) {
-        this.photos.clear();
-        this.photos.addAll(photos);
-    }
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hydrant", orphanRemoval = true)
+    private Set<HydrantDocument> hydrantDocuments = new HashSet<HydrantDocument>();
 
     @Column
     private String courrier;
@@ -185,7 +188,7 @@ public class Hydrant implements Featurable {
     private Disponibilite dispoAdmin;
 
     // Autre
-
+    @Override
     public Feature toFeature() {
         Feature feature = new Feature(this.id, this.getJsonGeometrie());
         feature.addProperty("typeHydrantCode", this.getCode());
@@ -305,5 +308,29 @@ public class Hydrant implements Featurable {
 
         // Calcul du numéro
         hydrant.setNumero(Hydrant.computeNumero(hydrant));
+    }
+
+    public HydrantDocument getPhoto() {
+        HydrantDocument photo = null;
+        for (HydrantDocument hydrantDocument : hydrantDocuments) {
+            if (TITRE_PHOTO.equals(hydrantDocument.getTitre())) {
+                return hydrantDocument;
+            }
+        }
+        return photo;
+    }
+
+    public void setPhoto(HydrantDocument photo) {
+        HydrantDocument toRemove = null;
+        for (HydrantDocument hydrantDocument : hydrantDocuments) {
+            if (TITRE_PHOTO.equals(hydrantDocument.getTitre())) {
+                toRemove = hydrantDocument;
+            }
+            break;
+        }
+        if (toRemove != null) {
+            hydrantDocuments.remove(toRemove);
+        }
+        hydrantDocuments.add(photo);
     }
 }

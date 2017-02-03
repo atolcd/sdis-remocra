@@ -218,8 +218,8 @@ privileged aspect Hydrant_Roo_JavaBean {
         this.anneeFabrication = anneeFabrication;
     }
 
-    public Set<HydrantDocument> Hydrant.getPhotos() {
-        return this.photos;
+    public Set<HydrantDocument> Hydrant.getHydrantDocuments() {
+        return this.hydrantDocuments;
     }
 
     public String Hydrant.getCourrier() {

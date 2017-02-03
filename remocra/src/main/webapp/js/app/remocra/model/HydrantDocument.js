@@ -5,19 +5,18 @@ Ext.require('Sdis.Remocra.model.TypeHydrantDomaine');
 Ext.require('Sdis.Remocra.model.TypeHydrantAnomalie');
 
 Ext.define('Sdis.Remocra.model.HydrantDocument', {
-    extend : 'Ext.data.Model',
+    extend: 'Ext.data.Model',
 
-    fields : [ {
-        name : 'id',
-        type : 'int',
-        useNull : true
+    fields: [ {
+        name: 'id',
+        type: 'int',
+        useNull: true
     }, {
-        name : 'hydrant',
-        type : 'int'
+        name: 'titre',
+        type: 'string'
     }, {
-        name : 'document',
-        type : 'auto',
-        useNull : true,
-        defaultValue : null
+        name: 'code',
+        type: 'string'
     } ]
+
 });

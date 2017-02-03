@@ -19,6 +19,8 @@ import com.vividsolutions.jts.geom.Geometry;
 
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.domain.remocra.HistoVerificationHydraulique;
+import fr.sdis83.remocra.domain.remocra.Hydrant;
+import fr.sdis83.remocra.domain.remocra.HydrantDocument;
 import fr.sdis83.remocra.domain.remocra.HydrantPibi;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.HydrantPibiService;
@@ -79,7 +81,14 @@ public class HydrantPibiController {
 
             @Override
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
-                return serializer.include("data.anomalies", "data.photos").exclude("data.utilisateur", "data.commune.geometrie");
+                return serializer
+                        // anomalies
+                        .include("data.anomalies")
+                        // photo associée
+                        .include("data.photo")
+                        // Documents
+                        .include("data.hydrantDocuments.id").include("data.hydrantDocuments.titre").include("data.hydrantDocuments.code").exclude("data.hydrantDocuments.*")
+                        .exclude("data.utilisateur", "data.commune.geometrie");
             }
 
             @Override

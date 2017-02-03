@@ -13,6 +13,7 @@ import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,8 @@ import fr.sdis83.remocra.web.message.ItemSorting;
 
 @Configuration
 public abstract class AbstractHydrantService<T extends Hydrant> extends AbstractService<T> {
+
+    private final Logger logger = Logger.getLogger(getClass());
 
     @Autowired
     protected ParamConfService paramConfService;
@@ -115,16 +118,24 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
         // date de modification
         attached.setDateModification(new Date());
 
-        // traitement photo
+        // traitement des fichiers
         if (files != null && !files.isEmpty()) {
-            MultipartFile file = files.values().iterator().next();
-            if (!file.isEmpty()) {
-                Document d = DocumentUtil.getInstance().createNonPersistedDocument(TypeDocument.HYDRANT, file, paramConfService.getDossierDocHydrant());
-                HydrantDocument hd = new HydrantDocument();
-                hd.setHydrant(attached);
-                hd.setDocument(this.entityManager.merge(d));
-                attached.getPhotos().clear();
-                attached.getPhotos().add(hd);
+            for (MultipartFile file : files.values()) {
+                if (!file.isEmpty()) {
+                    Document d = DocumentUtil.getInstance().createNonPersistedDocument(TypeDocument.HYDRANT, file, paramConfService.getDossierDocHydrant());
+                    HydrantDocument hd = new HydrantDocument();
+                    hd.setHydrant(attached);
+                    hd.setDocument(this.entityManager.merge(d));
+                    // Si on est sur un élément photo
+                    if (Hydrant.TITRE_PHOTO.equals(hd.getTitre())) {
+                        // Suppression de l'ancienne
+                        HydrantDocument toDetach = attached.getPhoto();
+                        if (toDetach != null) {
+                            attached.getHydrantDocuments().remove(toDetach);
+                        }
+                    }
+                    attached.getHydrantDocuments().add(hd);
+                }
             }
         }
 
@@ -136,4 +147,31 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
 
         return attached;
     }
+
+    @Override
+    protected void beforeDelete(T attached) {
+        for (HydrantDocument hydrD : attached.getHydrantDocuments()) {
+            try {
+                deleteDocument(hydrD.getId());
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+        super.beforeDelete(attached);
+    }
+
+    public void deleteDocument(Long id) throws Exception {
+        HydrantDocument attached = entityManager.find(HydrantDocument.class, id);
+        Document d = attached.getDocument();
+
+        // Ici, le fait de supprimer le Document provoque la suppression du
+        // HydrantDocument en cascade
+        entityManager.remove(attached);
+        entityManager.remove(d);
+        entityManager.flush();
+
+        // Nettoyage du disque
+        DocumentUtil.getInstance().deleteHDFile(d);
+    }
+
 }

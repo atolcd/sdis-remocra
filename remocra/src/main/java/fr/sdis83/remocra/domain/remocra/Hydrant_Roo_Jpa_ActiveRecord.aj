@@ -13,15 +13,15 @@ privileged aspect Hydrant_Roo_Jpa_ActiveRecord {
     
     @PersistenceContext
     transient EntityManager Hydrant.entityManager;
-    
-    public static final List<String> Hydrant.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "version", "code", "geometrie", "jsonGeometrie", "tournee", "nature", "numero", "numeroInterne", "zoneSpeciale", "dateRecep", "dateReco", "dateContr", "dateVerif", "dateModification", "dateGps", "agent1", "agent2", "organisme", "lieuDit", "commune", "voie", "voie2", "complement", "anneeFabrication", "photos", "courrier", "domaine", "gestPointEau", "observation", "anomalies", "dispoTerrestre", "dispoHbe", "dispoAdmin");
-    
+
+    public static final List<String> Hydrant.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "version", "code", "geometrie", "jsonGeometrie", "tournee", "nature", "numero", "numeroInterne", "zoneSpeciale", "dateRecep", "dateReco", "dateContr", "dateVerif", "dateModification", "dateGps", "agent1", "agent2", "organisme", "lieuDit", "commune", "voie", "voie2", "complement", "anneeFabrication", "hydrantDocuments", "courrier", "domaine", "gestPointEau", "observation", "anomalies", "dispoTerrestre", "dispoHbe", "dispoAdmin");
+
     public static final EntityManager Hydrant.entityManager() {
         EntityManager em = new Hydrant().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
-    
+
     public static long Hydrant.countHydrants() {
         return entityManager().createQuery("SELECT COUNT(o) FROM Hydrant o", Long.class).getSingleResult();
     }
@@ -40,16 +40,16 @@ privileged aspect Hydrant_Roo_Jpa_ActiveRecord {
         }
         return entityManager().createQuery(jpaQuery, Hydrant.class).getResultList();
     }
-    
+
     public static Hydrant Hydrant.findHydrant(Long id) {
         if (id == null) return null;
         return entityManager().find(Hydrant.class, id);
     }
-    
+
     public static List<Hydrant> Hydrant.findHydrantEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM Hydrant o", Hydrant.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
-    
+
     public static List<Hydrant> Hydrant.findHydrantEntries(int firstResult, int maxResults, String sortFieldName, String sortOrder) {
         String jpaQuery = "SELECT o FROM Hydrant o";
         if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
@@ -60,13 +60,13 @@ privileged aspect Hydrant_Roo_Jpa_ActiveRecord {
         }
         return entityManager().createQuery(jpaQuery, Hydrant.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
-    
+
     @Transactional
     public void Hydrant.persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
     }
-    
+
     @Transactional
     public void Hydrant.remove() {
         if (this.entityManager == null) this.entityManager = entityManager();
@@ -77,19 +77,19 @@ privileged aspect Hydrant_Roo_Jpa_ActiveRecord {
             this.entityManager.remove(attached);
         }
     }
-    
+
     @Transactional
     public void Hydrant.flush() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.flush();
     }
-    
+
     @Transactional
     public void Hydrant.clear() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.clear();
     }
-    
+
     @Transactional
     public Hydrant Hydrant.merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
@@ -97,5 +97,5 @@ privileged aspect Hydrant_Roo_Jpa_ActiveRecord {
         this.entityManager.flush();
         return merged;
     }
-    
+
 }

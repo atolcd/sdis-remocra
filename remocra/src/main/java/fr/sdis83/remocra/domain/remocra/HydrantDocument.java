@@ -27,10 +27,19 @@ public class HydrantDocument {
 
     @NotNull
     @ManyToOne(optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Hydrant hydrant;
 
     @NotNull
     @ManyToOne(optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Document document;
+
+    public String getTitre() {
+        return document.getFichier();
+    }
+
+    public String getCode() {
+        return document.getCode();
+    }
 }

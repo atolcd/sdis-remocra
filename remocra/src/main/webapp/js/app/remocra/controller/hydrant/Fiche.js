@@ -467,7 +467,32 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                     }
                 });
             }
-            this.traitePhoto(fiche, fiche.hydrant);
+
+            if(fiche.typeSaisie == 'LECT' || fiche.isUpdating) {
+                this.traitePhoto(fiche, fiche.hydrant);
+            }
+
+         // Documents : on ajoute des liens s'il en existe (un conteneur est
+            // prévu à cet effet dans FileUploadPanel)
+            var documentsP = fiche.queryById('documents');
+            var documents = fiche.hydrant.hydrantDocuments();
+            if(documentsP != null && documents != null) {
+                documentsP.addDocuments(documents, {
+                    urlStart: Sdis.Remocra.model.Hydrant.proxy.url + '/document',
+                    method: 'DELETE',
+                    scope: this,
+                    failure: function() {
+                        Ext.MessageBox.show({
+                            title: 'Documents de la fiche',
+                            msg: 'Une erreur est survenue lors de la suppression d\'un document.',
+                            buttons: Ext.Msg.OK,
+                            icon: Ext.MessageBox.ERROR
+                         });
+                    }
+                });
+            }
+            // Pour marquer les champs obligatoires
+            form.isValid();
 
             form.loadRecord(fiche.hydrant);
 
@@ -647,20 +672,12 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
     },
 
     traitePhoto: function(fiche, record) {
-        var btn = fiche.down('linkbutton[name=download]'), formPhoto = fiche.down('form[name=formPhoto]'), photoContainer = fiche.down('fieldcontainer[name=photoContainer]');
-
-        if (record.photos().getCount() > 0) {
-            var photo = record.photos().getAt(0);
-            formPhoto.hide();
-            photoContainer.setVisible(fiche.ficheParente == null);
-            btn.setText(photo.get('document').fichier, "telechargement/document/" + photo.get('document').code, '_blank');
-            fiche.down('image').setSrc("telechargement/show/" + photo.get('document').code);
+        var photo = record.getPhoto();
+        if (photo != null) {
+            fiche.down('image').setSrc("telechargement/show/" + photo.get('code'));
         } else {
-            photoContainer.hide();
-            formPhoto.setVisible(fiche.ficheParente == null);
             fiche.down('image').setSrc(null);
         }
-
     },
     
     verifPression: function(button) {
@@ -769,9 +786,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             }
 
             // Cas du fichier ...
-            var panelPhoto = fiche.down('form[name=formPhoto]'), isNew = hydrant.phantom;
+            var formFiles = fiche.down('form[name=fiche]').down('filefield'), isNew = hydrant.phantom;
 
-            if (!Ext.isEmpty(panelPhoto.down('filefield').getValue()) || hydrant.dirty || (hydrantAssocie != null && hydrantAssocie.dirty)) {
+            if (!Ext.isEmpty(formFiles.getValue()) || hydrant.dirty || (hydrantAssocie != null && hydrantAssocie.dirty)) {
                 if (fiche.ficheParente == null) {
                     var data = hydrant.getProxy().getWriter().getRecordData(hydrant);
                     var params = {};
@@ -781,7 +798,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                         params.associe = Ext.encode(dataAssocie);
                         params.idpibi = hydrantAssocie.getId();
                     }
-                    panelPhoto.submit({
+                    formFiles.up().submit({
                         scope: this,
                         params: params,
                         url: hydrant.getProxy().url + (hydrant.phantom ? '' : '/' + hydrant.getId()),
