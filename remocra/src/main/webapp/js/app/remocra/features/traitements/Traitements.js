@@ -355,7 +355,11 @@ Ext.define('Sdis.Remocra.features.traitements.Traitements', {
                 value = comp.getValue();
             }
 
-            data.push({ idparametre : { idparametre : this.tab_items[i].substring(6) }, idtraitement : { idtraitement : -1 }, valeur : value.toString() });
+            var valeur = "";
+            if(value != null) {
+                valeur = value.toString();
+            }
+            data.push({ idparametre : { idparametre : this.tab_items[i].substring(6) }, idtraitement : { idtraitement : -1 }, valeur : valeur});
         }
 
         // TODO api ajouter une vérification utilisateur connecté
