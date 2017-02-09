@@ -285,7 +285,7 @@ Ext.define('Sdis.Remocra.features.traitements.Traitements', {
                         itemId : 'param-'+data[i]['idparametre'],
                         fieldLabel : data[i]['formEtiquette'],
                         allowBlank : !data[i]['formObligatoire'],
-                        checked : data[i]['formValeurDefaut'],
+                        checked : data[i]['formValeurDefaut'] == 'true' ? true : false,
                         labelWidth : 120
                     });
 
