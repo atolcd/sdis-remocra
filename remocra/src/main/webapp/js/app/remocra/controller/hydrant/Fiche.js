@@ -42,7 +42,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                 close: this.onClose
             },
             'hydrantFiche #ok': {
-                click: this.validFicheHydrant
+                click: this.verifPression
             },
             'hydrantFiche tabpanel': {
                 tabchange: this.onFicheTabChange
@@ -87,6 +87,12 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             'hydrantFiche numberfield[name=debit]': {
                 change: function(field) {
                     this.bufferedCheckConstraint(field.up('hydrantFiche'));
+                    this.onChangePression(field);
+                }
+            },
+            'hydrantFiche numberfield[name=debitMax]': {
+                change: function(field) {
+                    this.bufferedCheckConstraint(field.up('hydrantFiche'));
                 }
             },
             'hydrantFiche numberfield[name=pression]': {
@@ -95,9 +101,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                 }
             },
             'hydrantFiche numberfield[name=pressionDyn]': {
-                change: function(field) {
-                    this.bufferedCheckConstraint(field.up('hydrantFiche'));
-                }
+                change: this.onChangePression
             },
             'hydrantFiche image': {
                 afterrender: function(image) {
@@ -113,6 +117,21 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                 }
             }
         });
+    },
+    
+    onChangePression: function(field) {
+
+        var fiche = field.up('hydrantFiche'), pressiondyn = fiche.down('numberfield[name=pressionDyn]'), 
+        debit = fiche.down('numberfield[name=debit]'), 
+        erreurPression = fiche.down('displayfield[name=Error_msg]'),
+        messagePression = fiche.down('displayfield[name=pressionDyn_msg]');
+        erreurPression.hide();
+        messagePression.show();
+        if (pressiondyn.getValue() < 1 && pressiondyn.getValue() != null && debit.getValue() != null) {
+            erreurPression.show();
+            messagePression.hide();
+        }
+        this.bufferedCheckConstraint(field.up('hydrantFiche'));
     },
 
     onClose: function(fiche) {
@@ -510,6 +529,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                             form.findField('pressionNM1').setValue(res.data.pressionNM1 != null ? res.data.pressionNM1 : 'Non renseigné');
                             form.findField('debitMaxNM1').setValue(res.data.debitMaxNM1 != null ? res.data.debitMaxNM1 : 'Non renseigné');
                             form.findField('pressionDynNM1').setValue(res.data.pressionDynNM1 != null ? res.data.pressionDynNM1 : 'Non renseigné');
+                            form.findField('pressionDynDebNM1').setValue(res.data.pressionDynDebNM1 != null ? res.data.pressionDynDebNM1 : 'Non renseigné');
                         }
                     }
                 });
@@ -641,6 +661,21 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             fiche.down('image').setSrc(null);
         }
 
+    },
+    
+    verifPression: function(button) {
+
+        var fiche = button.up('window'), form = fiche.down('form[name=fiche]').getForm();
+        if (form.findField('Error_msg').isVisible()) {
+            Ext.Msg.show({
+                title: fiche.title,
+                msg: 'La pression dynamique à 60 m³ ne peut pas être inférieure à 1.'+'<br>Veuillez vérifier votre saisie.',
+                buttons: Ext.Msg.OK,
+                icon: Ext.Msg.WARNING
+              });
+        } else {
+            this.validFicheHydrant(button);
+        }
     },
 
     validFicheHydrant: function(button) {
@@ -846,16 +881,26 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
         if (fiche.hydrant.get('code') == 'PIBI') {
             var cboDiametre = fiche.down('combo[name=diametre]'), diametre = cboDiametre.getStore().getById(cboDiametre.getValue());
 
-            var comp, valeur, result, currentAnomalie, anomalie;
+            var comp, valeur, result, currentAnomalie, anomalie, debit, debitMax;
             Ext.Object.each(this.cfgDebit, function(type) {
                 comp = fiche.down('numberfield[name=' + type + ']');
                 if (comp) {
                     anomalie = null;
                     currentAnomalie = comp.anomalie;
                     result = null;
-                    valeur = comp.getValue();
-                    if (valeur != null) {
-                        if (diametre != null) {
+                    debit = fiche.down('numberfield[name=debit]');
+                    debitMax = fiche.down('numberfield[name=debitMax]');
+                    valeur = (comp == debit && debitMax.getValue() != null) ? debitMax.getValue(): comp.getValue();
+                      if (debitMax.getValue() != null) {
+                           fiche.down('displayfield[name=debitMax_msg]').setValue(fiche.down('displayfield[name=debit_msg]').getValue());
+                           fiche.down('displayfield[name=debitMax_msg]').show();
+                           fiche.down('displayfield[name=debit_msg]').hide();
+                       } else {
+                           fiche.down('displayfield[name=debitMax_msg]').hide();
+                           fiche.down('displayfield[name=debit_msg]').show();
+                       }
+                      if (valeur != null) {
+                          if (diametre != null) {
                             result = this.getErrorConstraint(type, diametre.get('code'), valeur);
                             if (result != null) {
                                 anomalie = this.getStore('TypeHydrantAnomalie').findRecord('code', result, 0, false, true, true);
@@ -1086,3 +1131,5 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
     }
 
 });
+
+ 

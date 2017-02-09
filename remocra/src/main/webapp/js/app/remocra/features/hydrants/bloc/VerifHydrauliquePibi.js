@@ -13,7 +13,7 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.VerifHydrauliquePibi', {
     defaults: {
         anchor: '100%',
         labelAlign: 'right',
-        labelWidth: 150,
+        labelWidth: 250,
         xtype: 'numberfield',
         hideTrigger: true,
         minValue: 0,
@@ -24,14 +24,14 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.VerifHydrauliquePibi', {
         fieldLabel: '&nbsp;',
         xtype: 'displayfield', labelSeparator : ''
     }, {
-        width: 300,
+        width: 400,
         fieldLabel: '&nbsp;',
         xtype: 'displayfield', labelSeparator : '',
         name : 'dateTerrain',
         value : 'Aucun historique',
         fieldStyle : 'font-weight: bold;'
     }, {
-        fieldLabel: 'Débit (1 Bar) m³/h',
+        fieldLabel: 'Débit à 1 bar (m³/h)',
         name: 'debit',
         allowDecimals: false
     },{
@@ -42,21 +42,30 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.VerifHydrauliquePibi', {
     },{
         xtype: 'displayfield',
         name: 'debit_msg',
-        margin: '0 0 0 160',
+        margin: '0 0 0 260',
         colspan: 2
     },{
-        fieldLabel: 'Pression statique (bar)',
-        name :'pression'
+        fieldLabel: 'Pression dynamique à 60m³ (bar)',
+        name: 'pressionDyn'
     },{
         width: 250,
         fieldLabel: '&nbsp;',
         xtype: 'displayfield', labelSeparator : '',
-        name: 'pressionNM1'
+        name: 'pressionDynNM1'
     },{
         xtype: 'displayfield',
-        name: 'pression_msg',
-        margin: '0 0 0 160',
+        name: 'pressionDyn_msg',
+        margin: '0 0 0 260',
         colspan: 2
+       
+    },{
+        xtype: 'displayfield',
+        name: 'Error_msg',
+        value: 'La pression dynamique à 60 m³ ne peut pas être inférieure à 1.',
+        cls: 'hydrant-msg-error',
+        margin: '0 0 0 260',
+        colspan: 2,
+        hidden:true
     },{
         fieldLabel: 'Débit max (m³/h)',
         name: 'debitMax',
@@ -69,20 +78,35 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.VerifHydrauliquePibi', {
     },{
         xtype: 'displayfield',
         name: 'debitMax_msg',
-        margin: '0 0 0 160',
-        colspan: 2
+        margin: '0 0 0 260',
+        colspan: 2,
+        hidden:true
+        
     },{
-        fieldLabel: 'Pression dynamique (bar)',
-        name: 'pressionDyn'
+        fieldLabel: 'Pression dynamique au débit max (bar)',
+        name: 'pressionDynDeb'
     },{
         width: 250,
         fieldLabel: '&nbsp;',
         xtype: 'displayfield', labelSeparator : '',
-        name: 'pressionDynNM1'
+        name: 'pressionDynDebNM1'
     },{
         xtype: 'displayfield',
-        name: 'pressionDyn_msg',
-        margin: '0 0 0 160',
+        name: 'pressionDynDeb_msg',
+        margin: '0 0 0 260',
+        colspan: 2
+    },{
+        fieldLabel: 'Pression statique (bar)',
+        name :'pression'
+    },{
+        width: 250,
+        fieldLabel: '&nbsp;',
+        xtype: 'displayfield', labelSeparator : '',
+        name: 'pressionNM1'
+    },{
+        xtype: 'displayfield',
+        name: 'pression_msg',
+        margin: '0 0 0 260',
         colspan: 2
     }]
 });

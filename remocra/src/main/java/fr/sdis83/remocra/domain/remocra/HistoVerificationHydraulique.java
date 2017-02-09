@@ -19,6 +19,7 @@ public class HistoVerificationHydraulique {
     private Integer debitMaxNM1;
     private Double pressionNM1;
     private Double pressionDynNM1;
+    private Double pressionDynDebNM1;
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
@@ -28,7 +29,7 @@ public class HistoVerificationHydraulique {
 
     }
 
-    public HistoVerificationHydraulique(String numero, Integer debitNM1, Integer debitMaxNM1, Double pressionNM1, Double pressionDynNM1, Date dateTerrain) {
+    public HistoVerificationHydraulique(String numero, Integer debitNM1, Integer debitMaxNM1, Double pressionNM1, Double pressionDynNM1, Double pressionDynDebNM1, Date dateTerrain) {
         super();
         this.numero = numero;
         this.debitNM1 = debitNM1;
@@ -36,6 +37,8 @@ public class HistoVerificationHydraulique {
         this.pressionNM1 = pressionNM1;
         this.pressionDynNM1 = pressionDynNM1;
         this.pressionDynNM1 = pressionDynNM1;
+        this.pressionDynDebNM1 = pressionDynDebNM1;
+        
         this.dateTerrain = dateTerrain;
     }
 

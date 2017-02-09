@@ -193,9 +193,10 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                     var file = 'images/remocra/cartes/legende/eau/';
                     if (feature.data['typeHydrantCode'] == 'PIBI') {
                         file += 'pibi/' + (feature.data['nature'] == 'PI' ? 'pi' : 'bi');
-                        if (feature.data['debit'] < 30) {
+                        var debitRetenu = (feature.data['debitMax']!=null)?feature.data['debitMax']:feature.data['debit'];
+                        if (debitRetenu < 30) {
                             file += '_low';
-                        } else if (feature.data['debit'] < 60) {
+                        } else if (debitRetenu < 60) {
                             file += '_med';
                         } else {
                             file += '_high';

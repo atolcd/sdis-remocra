@@ -99,4 +99,11 @@ privileged aspect HydrantPibi_Roo_JavaBean {
         this.pena = pena;
     }
     
+    public Double HydrantPibi.getPressionDynDeb() {
+        return this.pressionDynDeb;
+    }
+    
+    public void HydrantPibi.setPressionDynDeb(Double pressionDynDeb) {
+        this.pressionDynDeb = pressionDynDeb;
+    }
 }

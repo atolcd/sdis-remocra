@@ -43,6 +43,9 @@ public class HydrantPibi extends Hydrant {
     private Double pressionDyn;
 
     @Column
+    private Double pressionDynDeb;
+
+    @Column
     private String gestReseau;
 
     @Column
@@ -63,6 +66,7 @@ public class HydrantPibi extends Hydrant {
     public Feature toFeature() {
         Feature feature = super.toFeature();
         feature.addProperty("debit", this.getDebit());
+        feature.addProperty("debitMax", this.getDebitMax());
         return feature;
     }
 

@@ -108,7 +108,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
 
     public HistoVerificationHydraulique getHistoVerifHydrau(Long id) {
         try {
-            Object[] result = (Object[]) entityManager.createNativeQuery("select numero, debit, debit_max, pression, pression_dyn, date_terrain"
+            Object[] result = (Object[]) entityManager.createNativeQuery("select numero, debit, debit_max, pression, pression_dyn, pression_dyn_deb, date_terrain"
             +" from (select *, greatest(date_contr, date_verif) as date_terrain from tracabilite.hydrant) as hydrant_dateterrain"
             +" where id_hydrant = "+id+" and date_terrain = ("
             +"  select max(date_terrain)"
@@ -116,7 +116,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
             +"  where id_hydrant = "+id+ "and extract(YEAR from date_terrain) < extract(YEAR from now())"
             +")"
             +"order by date_operation desc limit 1").getSingleResult();
-        return new HistoVerificationHydraulique((String)result[0], (Integer)result[1] , (Integer)result[2] , (Double)result[3], (Double)result[4],(Date)result[5]);
+        return new HistoVerificationHydraulique((String)result[0], (Integer)result[1] , (Integer)result[2] , (Double)result[3], (Double)result[4], (Double)result[5], (Date)result[6]);
         } catch(Exception ex) {
             //Pas d'historique
             return null;

@@ -48,6 +48,14 @@ privileged aspect HistoVerificationHydraulique_Roo_JavaBean {
         this.pressionDynNM1 = pressionDynNM1;
     }
     
+    public Double HistoVerificationHydraulique.getPressionDynDebNM1() {
+        return this.pressionDynDebNM1;
+    }
+    
+    public void HistoVerificationHydraulique.setPressionDynDebNM1(Double pressionDynDebNM1) {
+        this.pressionDynDebNM1 = pressionDynDebNM1;
+    }
+    
     public Date HistoVerificationHydraulique.getDateTerrain() {
         return this.dateTerrain;
     }

@@ -35,6 +35,10 @@ Ext.define('Sdis.Remocra.model.HydrantPibi', {
         type: 'float',
         useNull: true
     },{
+        name: 'pressionDynDeb',
+        type: 'float',
+        useNull: true
+    },{
         name: 'marque',
         type: 'fk',
         useNull: true,
