@@ -11,16 +11,22 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.util.Calendar;
+
 import fr.sdis83.remocra.GlobalRemocra;
 import fr.sdis83.remocra.R;
 import fr.sdis83.remocra.contentprovider.RemocraProvider;
 import fr.sdis83.remocra.database.HydrantTable;
 import fr.sdis83.remocra.database.MarqueTable;
+import fr.sdis83.remocra.fragment.components.DatePickerFragment;
+import fr.sdis83.remocra.fragment.components.EditDate;
+import fr.sdis83.remocra.util.DbUtils;
 
 public class Hydrant3 extends AbstractHydrant {
 
     public Hydrant3() {
         super(R.layout.hydrant3, HydrantTable.COLUMN_STATE_H3);
+
         addBindableData(R.id.mco_marque, HydrantTable.COLUMN_MARQUE, Spinner.class);
         addBindableData(R.id.mco_modele, HydrantTable.COLUMN_MODELE, Spinner.class);
         addBindableData(R.id.mco_annee, HydrantTable.COLUMN_ANNEE_FAB, EditText.class);
@@ -29,6 +35,7 @@ public class Hydrant3 extends AbstractHydrant {
         addBindableData(R.id.gest_pt_eau, HydrantTable.COLUMN_GEST_PTEAU, EditText.class);
         addBindableData(R.id.gest_reseau, HydrantTable.COLUMN_GEST_RESEAU, EditText.class);
         addBindableData(R.id.divers_courrier, HydrantTable.COLUMN_COURRIER, EditText.class);
+        addBindableData(R.id.date_attestation, HydrantTable.COLUMN_DATE_ATTESTATION, EditDate.class);
     }
 
     @Override
@@ -65,6 +72,10 @@ public class Hydrant3 extends AbstractHydrant {
                 //
             }
         });
+
+        // Initialisation du fragment manager obligatoire pour l'affichage de la dialog de date.
+        ((EditDate) view.findViewById(R.id.date_attestation)).setFragmentManager(getFragmentManager());
+
         return view;
     }
 

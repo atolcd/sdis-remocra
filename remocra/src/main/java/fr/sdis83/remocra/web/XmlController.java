@@ -195,7 +195,7 @@ public class XmlController {
 
     @RequestMapping(value = "/hydrants", method = RequestMethod.POST)
     @PreAuthorize("hasRight('HYDRANTS', 'CREATE') or hasRight('HYDRANTS_RECONNAISSANCE', 'CREATE') or hasRight('HYDRANTS_CONTROLE', 'CREATE')")
-    public void updateHydrants(final @RequestBody String xml, HttpServletResponse response) throws IOException {
+    public void updateHydrants(final @RequestBody String xml, HttpServletResponse response, final @RequestParam(value = "v", required = false) Integer v) throws IOException {
 
         if (traceRequests) {
             // Sérialisation de la requête sur disque
@@ -207,7 +207,7 @@ public class XmlController {
         prepareXMLResponse(response);
         String xmlResp = null;
         try {
-            xmlService.deSerializeHydrants(xml);
+            xmlService.deSerializeHydrants(xml, v);
             response.setStatus(HttpServletResponse.SC_OK);
             xmlResp = XML_RESPONSE_UPDATE_HYDRANTS_OK;
         } catch (XmlValidationException e) {

@@ -24,6 +24,8 @@ public abstract class Hydrant {
 
     private Date dateModification;
 
+    private Date dateAttestation;
+
     private Date dateGps;
 
     private String agent1;
@@ -108,6 +110,14 @@ public abstract class Hydrant {
 
     public Date getDateContr() {
         return dateContr;
+    }
+
+    public Date getDateAttestation() {
+        return dateAttestation;
+    }
+
+    public void setDateAttestation(Date dateAttestation) {
+        this.dateAttestation = dateAttestation;
     }
 
     public void setDateContr(Date dateContr) {

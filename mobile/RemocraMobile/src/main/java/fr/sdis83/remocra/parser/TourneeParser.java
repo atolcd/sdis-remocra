@@ -63,6 +63,7 @@ public class TourneeParser extends AbstractRemocraParser {
     public static final String TAG_GEST_PT_EAU = "gestPointEau";
     public static final String TAG_GEST_RESEAU = "gestReseau";
     public static final String TAG_COURRIER = "courrier";
+    public static final String TAG_DATE_ATTESTATION = "dateAttestation";
     public static final String TAG_ANOMALIE = "anomalie";
     public static final String TAG_CODE = "code";
     public static final String TAG_VOL_CONSTATE = "codeVolConstate";
@@ -155,6 +156,7 @@ public class TourneeParser extends AbstractRemocraParser {
             ContentValues values = new ContentValues();
             values.put(HydrantTable.COLUMN_NATURE, this.remocraParser.getIdFromCodeReferentiel(nature, RemocraProvider.CONTENT_NATURE_URI));
             values.put(HydrantTable.COLUMN_TYPE_HYDRANT, "hydrantPibi".equals(xmlParser.getName()) ? HydrantTable.TYPE_PIBI : HydrantTable.TYPE_PENA);
+
             while (xmlParser.next() != XmlPullParser.END_TAG) {
                 String name = xmlParser.getName();
                 if (TAG_CODE_NATURE.equals(name)) {
@@ -233,6 +235,8 @@ public class TourneeParser extends AbstractRemocraParser {
                     values.put(HydrantTable.COLUMN_GEST_RESEAU, this.readBaliseText(xmlParser, name));
                 } else if (TAG_COURRIER.equals(name)) {
                     values.put(HydrantTable.COLUMN_COURRIER, this.readBaliseText(xmlParser, name));
+                } else if (TAG_DATE_ATTESTATION.equals(name)) {
+                    values.put(HydrantTable.COLUMN_DATE_ATTESTATION, this.readBaliseDate(xmlParser, name));
                 } else if (TAG_VOL_CONSTATE.equals(name)) {
                     values.put(HydrantTable.COLUMN_VOL_CONSTATE, this.readBaliseIdReferentiel(xmlParser, name, RemocraProvider.CONTENT_VOL_CONSTATE_URI));
                 } else if (TAG_OBSERVATION.equals(name)) {
@@ -249,6 +253,7 @@ public class TourneeParser extends AbstractRemocraParser {
                     skip(xmlParser);
                 }
             }
+
             if (values.size() > 0) {
                 this.lstHydrant.add(values);
             }

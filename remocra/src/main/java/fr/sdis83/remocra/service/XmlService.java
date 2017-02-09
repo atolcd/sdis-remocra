@@ -541,6 +541,7 @@ public class XmlService {
         hydrantXML.setObservation(hydrant.getObservation());
         hydrantXML.setCourrier(hydrant.getCourrier());
         hydrantXML.setGestPointEau(hydrant.getGestPointEau());
+        hydrantXML.setDateAttestation(hydrant.getDateAttestation());
 
         if (hydrant.getHydrantDocuments().size() > 0) {
 
@@ -618,7 +619,7 @@ public class XmlService {
     }
 
     @Transactional
-    public void deSerializeHydrants(String xml) throws BusinessException, XmlValidationException, SQLBusinessException, DroitException, AnomalieException {
+    public void deSerializeHydrants(String xml, Integer version) throws BusinessException, XmlValidationException, SQLBusinessException, DroitException, AnomalieException {
         try {
             LstHydrants hydrants = (LstHydrants) XmlUtil.unSerializeXml(xml, fr.sdis83.remocra.xml.LstHydrants.class);
 
@@ -638,7 +639,7 @@ public class XmlService {
                 // Par sécurité
                 hydrantPena.setCode(TYPE_HYDRANT_PENA);
 
-                updateHydrant(hydrantPena, hydrant);
+                updateHydrant(hydrantPena, hydrant, version);
             }
 
             for (HydrantPibi hydrant : hydrants.getHydrantsPibi()) {
@@ -657,7 +658,7 @@ public class XmlService {
                 // Par sécurité
                 hydrantPibi.setCode(TYPE_HYDRANT_PIBI);
 
-                updateHydrant(hydrantPibi, hydrant);
+                updateHydrant(hydrantPibi, hydrant, version);
             }
         } catch (SAXException e) {
             SAXParseException nested = ExceptionUtils.getNestedExceptionWithClass(e, SAXParseException.class);
@@ -723,7 +724,7 @@ public class XmlService {
      * @throws AnomalieException
      * @throws DroitException
      */
-    void updateHydrant(Hydrant hydrant, fr.sdis83.remocra.xml.Hydrant hydrantXML)
+    void updateHydrant(Hydrant hydrant, fr.sdis83.remocra.xml.Hydrant hydrantXML, Integer version)
             throws IOException, SecurityException, FileUploadException, BusinessException, AnomalieException, DroitException {
 
         // Vérification du territoire de compétence de l'utilisateur connecté
@@ -761,6 +762,11 @@ public class XmlService {
         hydrant.setVoie2(hydrantXML.getVoie2());
         hydrant.setDispoTerrestre(getDispo(hydrantXML.getDispoTerrestre()));
         hydrant.setObservation(hydrantXML.getObservation());
+        // La date d'attestation n'est jamais remontée par l'application mobile dans les versions antérieures à la 2. 
+        // Il ne faut donc pas "vider" une date qui aurait été saisie par ailleurs.
+        if (version != null && version > 1) {
+            hydrant.setDateAttestation(hydrantXML.getDateAttestation());
+        }
 
         // Eléments communs liés au droit MCO.C (anneeFabrication, codeDomaine,
         // gestPointEau, courrier, photo)

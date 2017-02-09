@@ -10,12 +10,14 @@ import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Calendar;
 
 import fr.sdis83.remocra.contentprovider.RemocraProvider;
 import fr.sdis83.remocra.database.HydrantTable;
 import fr.sdis83.remocra.database.NatureTable;
 import fr.sdis83.remocra.parser.AbstractRemocraParser;
 import fr.sdis83.remocra.parser.TourneeParser;
+import fr.sdis83.remocra.util.DbUtils;
 
 /**
  * Created by jpt on 03/10/13.
@@ -108,6 +110,8 @@ public class HydrantSerializer extends AbstractSerializer {
         addBalise(serializer, TourneeParser.TAG_COMPLEMENT, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_COMPLEMENT)));
         addBaliseCoordonnee(serializer, cursor);
         addBalise(serializer, TourneeParser.TAG_COURRIER, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_COURRIER)));
+
+        addBaliseDate(serializer, TourneeParser.TAG_DATE_ATTESTATION, cursor.getLong(cursor.getColumnIndex(HydrantTable.COLUMN_DATE_ATTESTATION)));
         addBaliseDate(serializer, TourneeParser.TAG_DATE_CTRL, cursor.getLong(cursor.getColumnIndex(HydrantTable.COLUMN_DATE_CTRL)));
         // Date GPS
         addBaliseDate(serializer, TourneeParser.TAG_DATE_MODIF, cursor.getLong(cursor.getColumnIndex(HydrantTable.COLUMN_DATE_MODIF)));

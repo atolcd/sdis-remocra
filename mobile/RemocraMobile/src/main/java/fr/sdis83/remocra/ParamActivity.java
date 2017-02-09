@@ -26,6 +26,8 @@ public class ParamActivity extends PreferenceActivity {
     public static final String SERVEUR_URL_DEFAULT_VALUE = "http://remocra.sapeurspompiers-var.fr/remocra";
     private static final String PARAM_NUMBER_PASSWORD = "3217";
 
+    public static final Integer APP_XML_VERSION = 2;
+
     public static final String SERVEUR_URL = "serveur_url";
     public static final int PARAMETRAGE_INITIAL = 1;
 

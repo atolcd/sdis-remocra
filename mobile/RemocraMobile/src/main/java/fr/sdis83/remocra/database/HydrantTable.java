@@ -84,6 +84,7 @@ public final class HydrantTable implements BaseColumns {
 
     // Divers
     public static final String COLUMN_COURRIER = "courrier";
+    public static final String COLUMN_DATE_ATTESTATION = "dateAttestation";
 
     // Anomalie
     public static final String COLUMN_ANOMALIES = "anomalies";
@@ -164,6 +165,7 @@ public final class HydrantTable implements BaseColumns {
             COLUMN_GEST_PTEAU + " TEXT null," +
             COLUMN_GEST_RESEAU + " TEXT null," +
             COLUMN_COURRIER + " TEXT null," +
+            COLUMN_DATE_ATTESTATION + " INTEGER null," +
 
             COLUMN_ANOMALIES + " TEXT null," +
             COLUMN_ANOMALIES_APP + " TEXT null," +

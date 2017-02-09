@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
@@ -23,6 +24,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +33,7 @@ import java.util.Map;
 import fr.sdis83.remocra.HydrantActivity;
 import fr.sdis83.remocra.database.HydrantTable;
 import fr.sdis83.remocra.database.ReferentielTable;
+import fr.sdis83.remocra.fragment.components.EditDate;
 import fr.sdis83.remocra.util.DbUtils;
 
 public abstract class AbstractHydrant extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -126,8 +130,17 @@ public abstract class AbstractHydrant extends Fragment implements LoaderManager.
                     }
                     String result = TextUtils.join(",", lstIds);
                     values.put(data.getValue().column, result);
-                } else if (TextView.class.equals(cls)) {
-                    // champs en lecture seul
+                } else if (EditDate.class.equals(cls)) {
+                    Editable editText = ((EditDate) view).getText();
+                    String value = null;
+                    if(editText != null) {
+                        try {
+                            value = String.valueOf(DbUtils.DATE_FORMAT_EDIT.parse(editText.toString()).getTime());
+                        } catch (Exception e) {
+                            throw new AssertionError("Format de date invalide");
+                        }
+                    }
+                    values.put(data.getValue().column, editText == null ? null : value);
                 }
             }
         }
@@ -168,6 +181,12 @@ public abstract class AbstractHydrant extends Fragment implements LoaderManager.
                             list.setItemChecked(position, true);
                         }
                     }
+                }
+            } else if (EditDate.class.equals(cls)) {
+                if(cursor.getString(colIndex) != null) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(Long.valueOf(cursor.getString(colIndex)));
+                    ((EditDate) view).setText(DbUtils.DATE_FORMAT_EDIT.format(cal.getTime()));
                 }
             }
         }

@@ -435,7 +435,8 @@ public class SyncActivity extends FragmentActivity implements ChoiceTournee.Choi
 
     private ActionResult uploadHydrants(Uri uriServeur) {
         DefaultHttpClient httpclient = addCookies(new DefaultHttpClient(prepareHttpParameters()));
-        HttpPost request = new HttpPost(uriServeur.buildUpon().appendEncodedPath("xml/hydrants").build().toString());
+        HttpPost request = new HttpPost(uriServeur.buildUpon().appendEncodedPath("xml/hydrants").appendQueryParameter("v", String.valueOf(ParamActivity.APP_XML_VERSION)).build().toString());
+
         Cursor cursor = null;
         String sMessage = "";
         boolean result = false;
@@ -474,6 +475,7 @@ public class SyncActivity extends FragmentActivity implements ChoiceTournee.Choi
             se.setContentType("application/xml");
 
             request.setEntity(se);
+
             HttpResponse response = httpclient.execute(request);
             if (response.getStatusLine().getStatusCode() == 200) {
                 // TODO : implémenter un parseur de réponse XML

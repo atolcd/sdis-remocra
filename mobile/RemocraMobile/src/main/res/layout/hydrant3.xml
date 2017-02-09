@@ -1,5 +1,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -10,7 +11,8 @@
         android:layout_height="wrap_content"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <TextView
             style="@style/sectionHeader"
@@ -120,6 +122,7 @@
                 android:layout_below="@+id/gest_domaine"
                 android:layout_toRightOf="@+id/lbl_gest_pt_eau"
                 android:inputType="text"/>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -144,21 +147,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/sectionHeader"
-                android:text="Divers"
-                android:id="@+id/title_divers"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"/>
-
-            <TextView
-                style="@style/labelLong"
-                android:text="Courrier/Convention"
-                android:id="@+id/lbl_divers_courrier"
-                android:layout_below="@+id/title_divers"
-                android:layout_alignParentLeft="true"/>
+            android:layout_height="wrap_content"
+            android:layout_weight="8.46">
 
             <EditText
                 style="@style/field"
@@ -166,6 +156,44 @@
                 android:layout_below="@+id/title_divers"
                 android:layout_toRightOf="@+id/lbl_divers_courrier"
                 android:inputType="text"/>
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Courrier/Convention"
+                android:id="@+id/lbl_divers_courrier"
+                android:layout_alignBottom="@+id/divers_courrier"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                style="@style/sectionHeader"
+                android:text="Divers"
+                android:id="@+id/title_divers"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="7dp" />
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Date de dernière\nattestation"
+                android:id="@+id/lbl_divers_date_attestation"
+                android:layout_below="@+id/divers_courrier"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_height="match_parent" />
+
+            <fr.sdis83.remocra.fragment.components.EditDate
+                style="@style/field"
+                android:id="@+id/date_attestation"
+                android:layout_toRightOf="@+id/lbl_divers_date_attestation"
+                android:layout_toEndOf="@+id/lbl_divers_date_attestation"
+                android:layout_below="@+id/divers_courrier"
+                android:textAlignment="center"
+                android:textDirection="inherit"
+                android:textSize="18sp" />
+
+
         </RelativeLayout>
     </LinearLayout>
 </ScrollView>

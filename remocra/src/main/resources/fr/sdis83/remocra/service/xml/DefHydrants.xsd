@@ -39,6 +39,7 @@
       <xs:element name="complement" type="xs:string" minOccurs="0"/>
       <xs:element name="coordonnees" type="coordonnee" minOccurs="0"/>
       <xs:element name="courrier" type="xs:string" minOccurs="0"/>
+      <xs:element name="dateAttestation" type="xs:dateTime" minOccurs="0"/>
       <xs:element name="dateContr" type="xs:dateTime" minOccurs="0"/>
       <xs:element name="dateGps" type="xs:dateTime" minOccurs="0"/>
       <xs:element name="dateModification" type="xs:dateTime" minOccurs="0"/>
