@@ -372,6 +372,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             } else {
                 fiche.down('combo[name=diametre]').select(null);
             }
+            this.manageVerifTabVisibility(fiche, nature);
         }
         if (initial!==true) {
             Ext.defer(function() {
@@ -559,6 +560,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                     }
                 });
             }
+            if (nature) {
+                this.manageVerifTabVisibility(fiche, Ext.getStore('TypeHydrantNature').findRecord('id', nature));
+            }
         }
     },
 
@@ -681,9 +685,10 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
     },
     
     verifPression: function(button) {
-
         var fiche = button.up('window'), form = fiche.down('form[name=fiche]').getForm();
-        if (form.findField('Error_msg').isVisible()) {
+        var nature = fiche.down('combo[name=nature]').getValue();
+        var natureCode = Ext.getStore('TypeHydrantNature').findRecord('id', nature).get('code');
+        if (this.natureHasDebitPression(natureCode) && form.findField('Error_msg').isVisible()) {
             Ext.Msg.show({
                 title: fiche.title,
                 msg: 'La pression dynamique à 60 m³ ne peut pas être inférieure à 1.'+'<br>Veuillez vérifier votre saisie.',
@@ -896,8 +901,10 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
     // CONTRAINTE METIER
     checkConstraint: function(fiche) {
         if (fiche.hydrant.get('code') == 'PIBI') {
+            if (!this.natureHasDebitPression(fiche.down('combo[name=nature]').getValue())) {
+                return;
+            }
             var cboDiametre = fiche.down('combo[name=diametre]'), diametre = cboDiametre.getStore().getById(cboDiametre.getValue());
-
             var comp, valeur, result, currentAnomalie, anomalie, debit, debitMax;
             Ext.Object.each(this.cfgDebit, function(type) {
                 comp = fiche.down('numberfield[name=' + type + ']');
@@ -1097,7 +1104,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
         var fiche = btn.up('hydrantFiche');
         Ext.widget('sdischoice', {
             name: 'choiceRole',
-            title: 'Associer un PI',
+            title: 'Associer un PI / PA',
             width: 600,
             cboConfig: {
                 store: {
@@ -1108,11 +1115,11 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                         value: fiche.hydrant.get('geometrie')
                     }, {
                         property: 'naturecode',
-                        value : 'PI'
+                        value : 'PI,PA'
                     }]
                 },
                 queryMode: 'remote',
-                fieldLabel: 'PI',
+                fieldLabel: 'PI / PA',
                 displayField: 'numero',
                 valueField: 'id'
             },
@@ -1145,6 +1152,16 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                 }
             });
         }
+    },
+
+    manageVerifTabVisibility: function(fiche, natureModel) {
+        var tabVerif = fiche.down('#verification');
+        if (tabVerif) {
+            tabVerif.tab.setVisible(this.natureHasDebitPression(natureModel?natureModel.get('code'):null));
+        }
+    },
+    natureHasDebitPression: function(natureCode) {
+        return natureCode=='PI' || natureCode=='BI';
     }
 
 });

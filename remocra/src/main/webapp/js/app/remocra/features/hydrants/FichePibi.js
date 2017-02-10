@@ -17,6 +17,7 @@ Ext.define('Sdis.Remocra.features.hydrants.FichePibi', {
         } ]
     }, {
         title: 'Vérification',
+        id: 'verification',
         items: [ {
             xtype: 'hydrant.verifhydrauliquepibi'
         } ]

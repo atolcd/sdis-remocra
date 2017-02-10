@@ -257,6 +257,7 @@
             {"libelle":"PI < 30m³/h","image":"eau/pibi/pi_low.png"},
             {"libelle":"PI 30 à 60m³/h","image":"eau/pibi/pi_med.png"},
             {"libelle":"PI < 30m³/h","image":"eau/pibi/pi_high.png"},
+            {"libelle":"PA","image":"eau/pibi/pa.png"},
             {"libelle":"Citerne fixe","image":"eau/pena/pn_citerne_fixe.png"},
             {"libelle":"Autre PENA","image":"eau/pena/pn_autre.png"},
             {"libelle":"HBE","image":"eau/hbe.png"},

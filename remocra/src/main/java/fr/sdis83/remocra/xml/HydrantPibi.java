@@ -2,11 +2,12 @@ package fr.sdis83.remocra.xml;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
 
-@XmlSeeAlso({ HydrantPi.class, HydrantBi.class })
+@XmlSeeAlso({ HydrantPi.class, HydrantBi.class, HydrantPa.class })
 public abstract class HydrantPibi extends Hydrant {
 
     public static final String CODE_NATURE_PI = "PI";
     public static final String CODE_NATURE_BI = "BI";
+    public static final String CODE_NATURE_PA = "PA";
 
     public HydrantPibi() {
         //

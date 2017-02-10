@@ -38,15 +38,15 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.Citerne', {
         hideTrigger: true
     },{
         xtype: 'fieldcontainer',
-        fieldLabel: 'PI d\'aspiration associé',
+        fieldLabel: 'PI / PA associé',
         items: [{
             name: 'btnPIAssocie',
             xtype: 'button',
-            text: 'Associer un PI'
+            text: 'Associer un PI / PA'
         },{
             name: 'btnPIOpen',
             xtype: 'button',
-            text: 'Ouvrir la fiche du PI associé',
+            text: 'Ouvrir la fiche du PI / PA associé',
             hidden: true
         }]
     }]

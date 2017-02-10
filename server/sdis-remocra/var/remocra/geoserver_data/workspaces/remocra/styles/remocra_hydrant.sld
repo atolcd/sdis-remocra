@@ -22,7 +22,7 @@
                 <OnlineResource xlink:type="simple" xlink:href="eau/${img}"/>
                 <sld:Format>image/png</sld:Format>
               </sld:ExternalGraphic>
-              <sld:Size>${height}</sld:Size>
+              <sld:Size>12</sld:Size>
             </sld:Graphic>
           </sld:PointSymbolizer>
 
@@ -36,7 +36,7 @@
             </Label>
             <Font>
               <CssParameter name="font-family">SansSerif</CssParameter>
-              <CssParameter name="font-size">11</CssParameter>
+              <CssParameter name="font-size">10</CssParameter>
               <CssParameter name="font-style">normal</CssParameter>
               <CssParameter name="font-weight">normal</CssParameter>
             </Font>

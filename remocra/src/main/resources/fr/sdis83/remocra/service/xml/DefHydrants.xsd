@@ -199,4 +199,12 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+
+    <xs:complexType name="PA">
+    <xs:complexContent>
+      <xs:extension base="hydrantPibi">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
 </xs:schema>

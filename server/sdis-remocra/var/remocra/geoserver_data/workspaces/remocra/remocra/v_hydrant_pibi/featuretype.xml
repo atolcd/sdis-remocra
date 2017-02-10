@@ -21,7 +21,7 @@
     AXIS[&quot;Geodetic longitude&quot;, EAST], 
     AXIS[&quot;Geodetic latitude&quot;, NORTH], 
     AUTHORITY[&quot;EPSG&quot;,&quot;4171&quot;]], 
-  PROJECTION[&quot;Lambert_Conformal_Conic_2SP&quot;], 
+  PROJECTION[&quot;Lambert_Conformal_Conic_2SP&quot;, AUTHORITY[&quot;EPSG&quot;,&quot;9802&quot;]], 
   PARAMETER[&quot;central_meridian&quot;, 3.0], 
   PARAMETER[&quot;latitude_of_origin&quot;, 46.5], 
   PARAMETER[&quot;standard_parallel_1&quot;, 49.0], 
@@ -56,27 +56,25 @@
   </latLonBoundingBox>
   <projectionPolicy>FORCE_DECLARED</projectionPolicy>
   <enabled>true</enabled>
-  <advertised>true</advertised>
   <metadata>
     <entry key="cachingEnabled">false</entry>
     <entry key="JDBC_VIRTUAL_TABLE">
       <virtualTable>
         <name>v_hydrant_pibi</name>
-        <sql>select h.id, numero, numero_interne, dispo_terrestre, debit, pression, pression_dyn, diametre, geometrie,&#xd;
+        <sql>select h.id, numero, numero_interne, voie, dispo_terrestre, debit, pression, pression_dyn, d.nom as diametre, geometrie,&#xd;
 &apos;pibi/&apos; ||&#xd;
 (&#xd;
-  select case when n.code=&apos;PI&apos; then &apos;pi_&apos; else &apos;bi_&apos;end&#xd;
+  select case when n.code=&apos;PI&apos; then &apos;pi&apos; when n.code=&apos;BI&apos; then &apos;bi&apos; else &apos;pa&apos; end&#xd;
 ) || (&#xd;
-  select case when debit&lt;30 then &apos;low&apos; when debit&lt;60 then &apos;med&apos; else &apos;high&apos; end&#xd;
+  select case when n.code=&apos;PA&apos; then &apos;&apos; when debit&lt;30 then &apos;_low&apos; when debit&lt;60 then &apos;_med&apos; else &apos;_high&apos; end&#xd;
 )  || (&#xd;
   select case when dispo_terrestre=&apos;INDISPO&apos; then &apos;_indispo&apos; else &apos;&apos; end&#xd;
 ) || &apos;.png&apos; as img&#xd;
 from&#xd;
-remocra.hydrant h, remocra.hydrant_pibi hp, remocra.type_hydrant_nature n&#xd;
+remocra.hydrant h, remocra.hydrant_pibi hp, remocra.type_hydrant_nature n,remocra.type_hydrant_diametre d&#xd;
 where&#xd;
-h.id=hp.id and h.nature=n.id
-</sql>
-        <escapeSql>false</escapeSql>
+h.id=hp.id and h.nature=n.id and hp.diametre=d.id</sql>
+        <keyColumn>id</keyColumn>
         <geometry>
           <name>geometrie</name>
           <type>Point</type>
@@ -90,6 +88,4 @@ h.id=hp.id and h.nature=n.id
   </store>
   <maxFeatures>0</maxFeatures>
   <numDecimals>0</numDecimals>
-  <overridingServiceSRS>false</overridingServiceSRS>
-  <circularArcPresent>false</circularArcPresent>
 </featureType>

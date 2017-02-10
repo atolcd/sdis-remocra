@@ -192,14 +192,20 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                 imgLegend: function(feature) {
                     var file = 'images/remocra/cartes/legende/eau/';
                     if (feature.data['typeHydrantCode'] == 'PIBI') {
-                        file += 'pibi/' + (feature.data['nature'] == 'PI' ? 'pi' : 'bi');
-                        var debitRetenu = (feature.data['debitMax']!=null)?feature.data['debitMax']:feature.data['debit'];
-                        if (debitRetenu < 30) {
-                            file += '_low';
-                        } else if (debitRetenu < 60) {
-                            file += '_med';
+                        file += 'pibi/';
+                        if (feature.data['nature'] == 'PA') {
+                            // Pas de débit / pression pour les PA
+                            file += 'pa';
                         } else {
-                            file += '_high';
+                            file += (feature.data['nature'] == 'PI' ? 'pi' : 'bi');
+                            var debitRetenu = (feature.data['debitMax']!=null)?feature.data['debitMax']:feature.data['debit'];
+                            if (debitRetenu < 30) {
+                                file += '_low';
+                            } else if (debitRetenu < 60) {
+                                file += '_med';
+                            } else {
+                                file += '_high';
+                            }
                         }
                     } else {
                         file += 'pena/pn_' + (feature.data['nature'] == 'CI_FIXE' ? 'citerne_fixe' : 'autre');

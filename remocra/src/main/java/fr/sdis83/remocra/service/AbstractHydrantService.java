@@ -1,5 +1,6 @@
 package fr.sdis83.remocra.service;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -92,8 +93,10 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
             Expression<Integer> cpPath = from.join("nature").get("id");
             predicat = cBuilder.equal(cpPath, itemFilter.getValue());
         } else if ("naturecode".equals(itemFilter.getFieldName())) {
+            // Exemples de valeur : 'PI,PA' ou 'PI' ou ''
+            List<String> codes = Arrays.asList(itemFilter.getValue().split(","));
             Expression<Integer> cpPath = from.join("nature").get("code");
-            predicat = cBuilder.equal(cpPath, itemFilter.getValue());
+            predicat = cpPath.in(codes);
         } else {
             return super.processFilterItem(parameters, from, itemFilter);
         }

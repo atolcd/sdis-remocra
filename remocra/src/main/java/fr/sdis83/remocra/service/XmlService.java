@@ -73,6 +73,7 @@ import fr.sdis83.remocra.xml.HydrantBi;
 import fr.sdis83.remocra.xml.HydrantCiterneEnterre;
 import fr.sdis83.remocra.xml.HydrantCiterneFixe;
 import fr.sdis83.remocra.xml.HydrantCoursEau;
+import fr.sdis83.remocra.xml.HydrantPa;
 import fr.sdis83.remocra.xml.HydrantPena;
 import fr.sdis83.remocra.xml.HydrantPi;
 import fr.sdis83.remocra.xml.HydrantPibi;
@@ -467,6 +468,8 @@ public class XmlService {
                         hydrantPibiXML = new HydrantPi();
                     } else if (hydrant.getNature().getCode().equals(HydrantPibi.CODE_NATURE_BI)) {
                         hydrantPibiXML = new HydrantBi();
+                    } else if(HydrantPibi.CODE_NATURE_PA.equals(hydrant.getNature().getCode())) {
+                        hydrantPibiXML = new HydrantPa();
                     }
                     fillHydrantPibi(hydrantPibiXML, (fr.sdis83.remocra.domain.remocra.HydrantPibi) hydrant);
                     lsthydrantsPibiXML.add(hydrantPibiXML);
