@@ -286,6 +286,10 @@ public class ProxyController {
             Enumeration<String> headerNames = request.getHeaderNames();
             while (headerNames.hasMoreElements()) {
                 String headerName = headerNames.nextElement();
+                if ("authorization".equalsIgnoreCase(headerName)) {
+                    // Pour éviter de propager l'authentification Remocra vers le GeoServer
+                    continue;
+                }
                 targetRequest.setHeader(headerName, request.getHeader(headerName));
             }
 
