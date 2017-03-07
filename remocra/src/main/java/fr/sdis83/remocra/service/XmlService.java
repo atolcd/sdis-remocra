@@ -596,6 +596,7 @@ public class XmlService {
         hydrantPibiXML.setNumeroSCP(hydrantPibi.getNumeroSCP());
         hydrantPibiXML.setPression(hydrantPibi.getPression());
         hydrantPibiXML.setPressionDyn(hydrantPibi.getPressionDyn());
+        hydrantPibiXML.setPressionDynDeb(hydrantPibi.getPressionDynDeb());
     }
 
     public void fillHydrantPena(fr.sdis83.remocra.xml.HydrantPena hydrantPenaXML, fr.sdis83.remocra.domain.remocra.HydrantPena hydrantPena)
@@ -848,6 +849,9 @@ public class XmlService {
             }
             if (hydrantPibi.getPressionDyn() != null && hydrantPibi.getPressionDyn().intValue() >= 0) {
                 hydrantDomPibi.setPressionDyn(hydrantPibi.getPressionDyn());
+            }
+            if (hydrantPibi.getPressionDynDeb() != null && hydrantPibi.getPressionDynDeb().intValue() >= 0) {
+                hydrantDomPibi.setPressionDynDeb(hydrantPibi.getPressionDynDeb());
             }
 
             // Eléments spécifiques aux PIBI liés au droit MCO.C (codeMarque,

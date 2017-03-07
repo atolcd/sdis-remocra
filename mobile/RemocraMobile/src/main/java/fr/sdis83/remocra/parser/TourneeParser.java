@@ -49,6 +49,7 @@ public class TourneeParser extends AbstractRemocraParser {
     public static final String TAG_PRESSION = "pression";
     public static final String TAG_DEBIT_MAX = "debitMax";
     public static final String TAG_PRESSION_DYN = "pressionDyn";
+    public static final String TAG_PRESSION_DYN_DEB = "pressionDynDeb";
     public static final String TAG_HBE = "hbe";
     public static final String TAG_POSITIONNEMENT = "codePositionnement";
     public static final String TAG_CODE_MATERIAU = "codeMateriau";
@@ -209,6 +210,8 @@ public class TourneeParser extends AbstractRemocraParser {
                     values.put(HydrantTable.COLUMN_DEBIT_MAX, this.readBaliseText(xmlParser, name));
                 } else if (TAG_PRESSION_DYN.equals(name)) {
                     values.put(HydrantTable.COLUMN_PRESSION_DYN, this.readBaliseText(xmlParser, name));
+                } else if (TAG_PRESSION_DYN_DEB.equals(name)) {
+                    values.put(HydrantTable.COLUMN_PRESSION_DYN_DEB, this.readBaliseText(xmlParser, name));
                 } else if (TAG_HBE.equals(name)) {
                     values.put(HydrantTable.COLUMN_HBE, this.readBaliseBoolean(xmlParser, name));
                 } else if (TAG_POSITIONNEMENT.equals(name)) {

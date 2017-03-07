@@ -11,8 +11,8 @@
         android:padding="16dp"
         android:orientation="vertical">
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/verif_pibi">
 
@@ -21,12 +21,11 @@
                 android:text="Vérification"
                 android:id="@+id/title_verif_pibi"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                />
+                android:layout_alignParentLeft="true" />
 
             <TextView
                 style="@style/labelLong"
-                android:text="Débit (1 Bar) m³/h"
+                android:text="Débit à 1 bar (m3/h)"
                 android:id="@+id/lbl_verif_debit"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/title_verif_pibi"
@@ -34,7 +33,7 @@
 
             <EditText
                 style="@style/field"
-                android:inputType="numberSigned"
+                android:inputType="number"
                 android:ems="10"
                 android:id="@+id/verif_debit"
                 android:layout_below="@+id/title_verif_pibi"
@@ -50,8 +49,8 @@
 
             <TextView
                 style="@style/labelLong"
-                android:text="Pression statique (bar)"
-                android:id="@+id/lbl_verif_pression"
+                android:text="Pression dynamique à 60m3 (bar)"
+                android:id="@+id/lbl_verif_pression_dyn"
                 android:layout_below="@+id/verif_debit_msg"
                 android:layout_alignParentLeft="true"/>
 
@@ -59,8 +58,85 @@
                 style="@style/field"
                 android:inputType="numberDecimal"
                 android:ems="10"
-                android:id="@+id/verif_pression"
+                android:id="@+id/verif_pression_dyn"
                 android:layout_below="@+id/verif_debit_msg"
+                android:layout_toRightOf="@+id/lbl_verif_pression_dyn"/>
+
+            <TextView
+                style="@style/labelError"
+                android:text=""
+                android:id="@+id/verif_pression_dyn_msg"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/verif_pression_dyn"
+                android:visibility="gone"/>
+
+            <TextView
+                style="@style/labelError"
+                android:text="La pression dynamique à 60 m3 ne peut pas être inférieure à 1."
+                android:id="@+id/verif_pression_dyn_msgerreur"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/verif_pression_dyn_msg"
+                android:visibility="gone"/>
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Débit max (m³/h)"
+                android:id="@+id/lbl_verif_debit_max"
+                android:layout_below="@+id/verif_pression_dyn_msgerreur"
+                android:layout_alignParentLeft="true"/>
+
+            <EditText
+                style="@style/field"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/verif_debit_max"
+                android:layout_below="@+id/verif_pression_dyn_msgerreur"
+                android:layout_toRightOf="@+id/lbl_verif_debit_max"/>
+
+            <TextView
+                style="@style/labelError"
+                android:text=""
+                android:id="@+id/verif_debit_max_msg"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/verif_debit_max"
+                android:visibility="gone"/>
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Pression dynamique au débit max (bar)"
+                android:id="@+id/lbl_verif_pression_dyn_deb"
+                android:layout_below="@+id/verif_debit_max_msg"
+                android:layout_alignParentLeft="true"/>
+
+            <EditText
+                style="@style/field"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/verif_pression_dyn_deb"
+                android:layout_below="@+id/verif_debit_max_msg"
+                android:layout_toRightOf="@+id/lbl_verif_pression_dyn_deb"/>
+
+            <TextView
+                style="@style/labelError"
+                android:text=""
+                android:id="@+id/verif_pression_dyn_deb_msg"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/verif_pression_dyn_deb"
+                android:visibility="gone"/>
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Pression statique (bar)"
+                android:id="@+id/lbl_verif_pression"
+                android:layout_below="@+id/verif_pression_dyn_deb_msg"
+                android:layout_alignParentLeft="true" />
+
+            <EditText
+                style="@style/field"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/verif_pression"
+                android:layout_below="@+id/verif_pression_dyn_deb_msg"
                 android:layout_toRightOf="@+id/lbl_verif_pression"/>
 
             <TextView
@@ -71,43 +147,7 @@
                 android:layout_below="@+id/verif_pression"
                 android:visibility="gone"/>
 
-            <TextView
-                style="@style/labelLong"
-                android:text="Débit max (m³/h)"
-                android:id="@+id/lbl_verif_debit_max"
-                android:layout_below="@+id/verif_pression_msg"
-                android:layout_alignParentLeft="true"/>
 
-            <EditText
-                style="@style/field"
-                android:inputType="numberSigned"
-                android:ems="10"
-                android:id="@+id/verif_debit_max"
-                android:layout_below="@+id/verif_pression_msg"
-                android:layout_toRightOf="@+id/lbl_verif_debit_max"/>
-
-            <TextView
-                style="@style/labelLong"
-                android:text="Pression dynamique (bar)"
-                android:id="@+id/lbl_verif_pression_dyn"
-                android:layout_below="@+id/verif_debit_max"
-                android:layout_alignParentLeft="true"/>
-
-            <EditText
-                style="@style/field"
-                android:inputType="numberDecimal"
-                android:ems="10"
-                android:id="@+id/verif_pression_dyn"
-                android:layout_below="@+id/verif_debit_max"
-                android:layout_toRightOf="@+id/lbl_verif_pression_dyn"/>
-
-            <TextView
-                style="@style/labelError"
-                android:text=""
-                android:id="@+id/verif_pression_dyn_msg"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/verif_pression_dyn"
-                android:visibility="gone"/>
 
         </RelativeLayout>
 

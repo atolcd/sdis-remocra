@@ -148,6 +148,7 @@ public class HydrantSerializer extends AbstractSerializer {
             addBalise(serializer, TourneeParser.TAG_NUM_SCP, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_NUMERO_SCP)));
             addBalise(serializer, TourneeParser.TAG_PRESSION, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_PRESSION)));
             addBalise(serializer, TourneeParser.TAG_PRESSION_DYN, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_PRESSION_DYN)));
+            addBalise(serializer, TourneeParser.TAG_PRESSION_DYN_DEB, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_PRESSION_DYN_DEB)));
         } else {
             addBalise(serializer, TourneeParser.TAG_CAPACITE, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_CAPACITE)));
             addBalise(serializer, TourneeParser.TAG_DISPO_HBE, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_DISPO_HBE)));

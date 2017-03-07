@@ -20,6 +20,8 @@ public abstract class HydrantPibi extends Hydrant {
     private Double pression;
 
     private Double pressionDyn;
+    
+    private Double pressionDynDeb;
 
     private String gestReseau;
 
@@ -121,5 +123,13 @@ public abstract class HydrantPibi extends Hydrant {
 
     public void setCodePena(String codePena) {
         this.codePena = codePena;
+    }
+    
+    public Double getPressionDynDeb() {
+        return pressionDynDeb;
+    }
+
+    public void setPressionDynDeb(Double pressionDynDeb) {
+        this.pressionDynDeb = pressionDynDeb;
     }
 }

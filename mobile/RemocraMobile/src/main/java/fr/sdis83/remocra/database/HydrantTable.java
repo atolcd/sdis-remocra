@@ -58,6 +58,7 @@ public final class HydrantTable implements BaseColumns {
     public static final String COLUMN_PRESSION = "pression";
     public static final String COLUMN_DEBIT_MAX = "debitMax";
     public static final String COLUMN_PRESSION_DYN = "pressionDyn";
+    public static final String COLUMN_PRESSION_DYN_DEB = "pressionDynDeb";
 
     // PENA
     public static final String COLUMN_HBE = "hbe";
@@ -147,6 +148,7 @@ public final class HydrantTable implements BaseColumns {
             COLUMN_PRESSION + " REAL null," +
             COLUMN_DEBIT_MAX + " REAL null," +
             COLUMN_PRESSION_DYN + " REAL null," +
+            COLUMN_PRESSION_DYN_DEB + " REAL null," +
 
             COLUMN_HBE + " BOOLEAN DEFAULT FALSE," +
             COLUMN_POSITIONNEMENT + " INTEGER null," +

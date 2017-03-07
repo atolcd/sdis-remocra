@@ -28,17 +28,17 @@ import fr.sdis83.remocra.database.DiametreTable;
 import fr.sdis83.remocra.database.HydrantTable;
 import fr.sdis83.remocra.database.NatureTable;
 import fr.sdis83.remocra.util.DbUtils;
-
-public class Hydrant2 extends AbstractHydrant {
+public class Hydrant2 extends AbstractHydrant{
 
     private String currentDiametre;
     private boolean pibi;
-
     private enum TypeControle {
         debit,
         pression,
         pressionDyn
     }
+
+
 
     private Map<TypeControle, ContentValues> anomalieApp = new HashMap<TypeControle, ContentValues>();
 
@@ -48,6 +48,7 @@ public class Hydrant2 extends AbstractHydrant {
         addBindableData(R.id.verif_pression, HydrantTable.COLUMN_PRESSION, EditText.class);
         addBindableData(R.id.verif_debit_max, HydrantTable.COLUMN_DEBIT_MAX, EditText.class);
         addBindableData(R.id.verif_pression_dyn, HydrantTable.COLUMN_PRESSION_DYN, EditText.class);
+        addBindableData(R.id.verif_pression_dyn_deb, HydrantTable.COLUMN_PRESSION_DYN_DEB, EditText.class);
         addBindableData(R.id.citerne_positionnement, HydrantTable.COLUMN_POSITIONNEMENT, Spinner.class);
         addBindableData(R.id.citerne_materiau, HydrantTable.COLUMN_MATERIAU, Spinner.class);
         addBindableData(R.id.citerne_qappoint, HydrantTable.COLUMN_QAPPOINT, EditText.class);
@@ -108,15 +109,20 @@ public class Hydrant2 extends AbstractHydrant {
 
         EditText verif_debit = (EditText) view.findViewById(R.id.verif_debit);
         TextView verif_debit_msg = (TextView) view.findViewById(R.id.verif_debit_msg);
-        verif_debit.addTextChangedListener(new VerifTextWatcher(verif_debit_msg, TypeControle.debit));
+        verif_debit.addTextChangedListener(new VerifTextWatcher(this, verif_debit_msg, TypeControle.debit));
+
+        EditText verif_debit_max = (EditText) view.findViewById(R.id.verif_debit_max);
+        TextView verif_debit_max_msg = (TextView) view.findViewById(R.id.verif_debit_max_msg);
+        verif_debit_max.addTextChangedListener(new VerifTextWatcher(this, verif_debit_max_msg, TypeControle.debit));
 
         EditText verif_pression = (EditText) view.findViewById(R.id.verif_pression);
         TextView verif_pression_msg = (TextView) view.findViewById(R.id.verif_pression_msg);
-        verif_pression.addTextChangedListener(new VerifTextWatcher(verif_pression_msg, TypeControle.pression));
+        verif_pression.addTextChangedListener(new VerifTextWatcher(this, verif_pression_msg, TypeControle.pression));
 
         EditText verif_pression_dyn = (EditText) view.findViewById(R.id.verif_pression_dyn);
         TextView verif_pression_dyn_msg = (TextView) view.findViewById(R.id.verif_pression_dyn_msg);
-        verif_pression_dyn.addTextChangedListener(new VerifTextWatcher(verif_pression_dyn_msg, TypeControle.pressionDyn));
+        verif_pression_dyn.addTextChangedListener(new VerifTextWatcher(this, verif_pression_dyn_msg, TypeControle.pressionDyn));
+
         return view;
     }
 
@@ -126,6 +132,7 @@ public class Hydrant2 extends AbstractHydrant {
 
 
     }
+
 
     private class VerifTextWatcher implements TextWatcher {
         private static final String DEBIT_INSUFF = "DEBIT_INSUFF";
@@ -139,10 +146,11 @@ public class Hydrant2 extends AbstractHydrant {
 
         private TextView messageTextView;
         private TypeControle typeControle;
-
-        private VerifTextWatcher(TextView messageTextView, TypeControle typeControle) {
+        private Hydrant2 hydrant2;
+        private VerifTextWatcher(Hydrant2 hydrant2, TextView messageTextView, TypeControle typeControle) {
             this.messageTextView = messageTextView;
             this.typeControle = typeControle;
+            this.hydrant2 = hydrant2;
         }
 
         @Override
@@ -155,12 +163,31 @@ public class Hydrant2 extends AbstractHydrant {
 
         @Override
         public void afterTextChanged(Editable editable) {
+
+            EditText debit_Max = (EditText) hydrant2.getView().findViewById(R.id.verif_debit_max);
+            TextView message_debit_Max = (TextView) hydrant2.getView().findViewById(R.id.verif_debit_max_msg);
+
+            EditText debit = (EditText) hydrant2.getView().findViewById(R.id.verif_debit);
+            TextView message_debit = (TextView) hydrant2.getView().findViewById(R.id.verif_debit_msg);
+
+            EditText pression_Dyn = (EditText) hydrant2.getView().findViewById(R.id.verif_pression_dyn);
+            TextView message_pression_Dyn = (TextView) hydrant2.getView().findViewById(R.id.verif_pression_dyn_msg);
+            TextView message_pression_Dyn_Erreur = (TextView) hydrant2.getView().findViewById(R.id.verif_pression_dyn_msgerreur);
+
             String error = null;
             ContentValues anomalie = null;
+
             if (pibi) {
+
                 String val = editable.toString();
+                Double valeur;
                 if (!TextUtils.isEmpty(val)) {
-                    Double valeur = Double.valueOf(val);
+                    if (messageTextView.getId() == message_debit.getId()){
+                        if(!debit_Max.getText().toString().isEmpty()){
+                            val = debit_Max.getText().toString();
+                        }
+                    }
+                    valeur = Double.valueOf("0"+val);
                     String codeAnomalie = getCodeAnomalie(valeur);
                     if (!TextUtils.isEmpty(codeAnomalie)) {
                         anomalie = DbUtils.getContentFromCodeReferentiel(getActivity().getContentResolver(), RemocraProvider.CONTENT_ANOMALIE_URI, codeAnomalie);
@@ -168,15 +195,45 @@ public class Hydrant2 extends AbstractHydrant {
                             error = anomalie.getAsString(AnomalieTable.COLUMN_LIBELLE);
                         }
                     }
+
                 }
                 messageTextView.setVisibility(error == null ? View.GONE : View.VISIBLE);
+
+                if (pression_Dyn.getText().toString().equals(".")){
+
+                    pression_Dyn.getText().clear();
+                }
+                if (!pression_Dyn.getText().toString().isEmpty() && Double.valueOf("0"+pression_Dyn.getText().toString()) < 1) {
+                    if (!debit.getText().toString().isEmpty()) {
+                        pression_Dyn.getText().clear();
+                        message_pression_Dyn_Erreur.setVisibility(View.VISIBLE);
+                        message_pression_Dyn.setVisibility(View.GONE);
+
+                    }
+                }else message_pression_Dyn_Erreur.setVisibility(View.GONE);
+
+
+                if(!debit_Max.getText().toString().isEmpty() || debit.getText().toString().isEmpty()){
+                    message_debit.setVisibility(View.GONE);
+
+                }else if (debit_Max.getText().toString().isEmpty() && !message_debit.getText().toString().isEmpty()){
+
+                    message_debit.setVisibility(View.VISIBLE);
+                }
+
             }
             anomalieApp.put(typeControle, anomalie);
             messageTextView.setText(error);
+
+
         }
 
+
         private String getCodeAnomalie(Double valeur) {
+
             switch (typeControle) {
+
+
                 case debit:
                     if ("DIAM80".equals(currentDiametre)) {
                         return (valeur < 30 ? DEBIT_INSUFF : valeur > 90 ? DEBIT_TROP_ELEVE : null);
@@ -186,10 +243,11 @@ public class Hydrant2 extends AbstractHydrant {
                         return (valeur < 60 ? DEBIT_INSUFF : valeur < 120 ? DEBIT_INSUFF_NC : valeur > 150 ? DEBIT_TROP_ELEVE : null);
                     }
                     break;
+
                 case pression:
                     return valeur < 1 ? PRESSION_INSUFF : valeur > 16 ? PRESSION_TROP_ELEVEE : null;
                 case pressionDyn:
-                    return valeur < 0.1 ? null : valeur < 1 ? PRESSION_DYN_INSUFF : valeur > 16 ? PRESSION_DYN_TROP_ELEVEE : null;
+                    return valeur < 0 ? null : valeur < 1 ? PRESSION_DYN_INSUFF : valeur > 16 ? PRESSION_DYN_TROP_ELEVEE : null;
             }
             return null;
         }
