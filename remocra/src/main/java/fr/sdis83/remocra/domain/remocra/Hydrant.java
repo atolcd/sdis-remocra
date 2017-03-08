@@ -230,23 +230,25 @@ public class Hydrant implements Featurable {
      *            sinon)
      * @return
      */
-    public static String computeNumero(Hydrant hydrant) {
-        String codeZS = hydrant.getZoneSpeciale() == null ? null : hydrant.getZoneSpeciale().getCode();
+    public static String computeNumero(Hydrant hydrant){
+            String codeZS = hydrant.getZoneSpeciale() == null ? null : hydrant.getZoneSpeciale().getCode();
 
-        StringBuilder sb = new StringBuilder();
-        if ("PIBI".equals(hydrant.getCode())) {
-            sb.append(hydrant.getNature().getCode()).append(" ");
-            HydrantPibi pibi = (HydrantPibi) hydrant;
-            if (pibi.getPena() != null) {
-                // Pibi lié à un Pena : on double le code zone ou commune
-                sb.append(codeZS != null ? codeZS : hydrant.getCommune().getCode()).append(" ");
+            StringBuilder sb = new StringBuilder();
+            if ("PIBI".equals(hydrant.getCode())) {
+                sb.append(hydrant.getNature().getCode()).append(" ");
+                HydrantPibi pibi = (HydrantPibi) hydrant;
+                if (pibi.getPena() != null && !"PA".equals(pibi.getNature().getCode())) {
+                    // Pibi lié à un Pena : on double le code zone ou commune
+                    sb.append(codeZS != null ? codeZS : hydrant.getCommune().getCode()).append(" ");
+                }
+            } else if ("RI".equals(hydrant.getNature().getCode())){
+                sb.append("RI ");
+            }else{
+                sb.append("PN ");
             }
-        } else {
-            sb.append("PN ");
-        }
 
-        sb.append(codeZS != null ? codeZS : hydrant.getCommune().getCode());
-        return sb.append(" ").append(hydrant.getNumeroInterne()).toString();
+            sb.append(codeZS != null ? codeZS : hydrant.getCommune().getCode());
+            return sb.append(" ").append(hydrant.getNumeroInterne()).toString();
     }
 
     public static Integer computeNumeroInterne(Hydrant hydrant) {

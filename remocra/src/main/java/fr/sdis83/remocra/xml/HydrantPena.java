@@ -11,6 +11,7 @@ public abstract class HydrantPena extends Hydrant {
     public static final String CODE_NATURE_PE = "PE";
     public static final String CODE_NATURE_PU = "PU";
     public static final String CODE_NATURE_RE = "RE";
+    public static final String CODE_NATURE_RI = "RI";
 
     private String coordDFCI;
 

@@ -79,6 +79,7 @@ import fr.sdis83.remocra.xml.HydrantPi;
 import fr.sdis83.remocra.xml.HydrantPibi;
 import fr.sdis83.remocra.xml.HydrantPlanEau;
 import fr.sdis83.remocra.xml.HydrantPuisard;
+import fr.sdis83.remocra.xml.HydrantReserveIncendie;
 import fr.sdis83.remocra.xml.HydrantRetenue;
 import fr.sdis83.remocra.xml.LstAnomalies;
 import fr.sdis83.remocra.xml.LstAnomaliesNatures;
@@ -488,6 +489,8 @@ public class XmlService {
                         hydrantPenaXML = new HydrantPuisard();
                     } else if (hydrant.getNature().getCode().equals(HydrantPena.CODE_NATURE_RE)) {
                         hydrantPenaXML = new HydrantRetenue();
+                    } else if (hydrant.getNature().getCode().equals(HydrantPena.CODE_NATURE_RI)) {
+                        hydrantPenaXML = new HydrantReserveIncendie();
                     }
                     fillHydrantPena(hydrantPenaXML, (fr.sdis83.remocra.domain.remocra.HydrantPena) hydrant);
                     lsthydrantsPenaXML.add(hydrantPenaXML);

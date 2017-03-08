@@ -334,10 +334,19 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
 
     onChangeNature: function(combo, records, initial) {
         var fiche = combo.up('hydrantFiche'), nature = records[0];
+        var elementMco = fiche.down('#elementMco');
+        if(elementMco){
+            if (nature.get('code')=="RI"){
+                elementMco.setVisible(false);
+            }else{
+                elementMco.setVisible(true);
+            }
+        }
+      
         if (fiche.hydrant.get('code') == 'PENA') {
             var isFixe, citerneTab = fiche.down('fieldset[xtype=hydrant.citerne]').ownerCt, cboPosition = citerneTab.down('combo[name=positionnement]'), numCapa = fiche
                     .down('numberfield[name=capacite]');
-            if (nature.get('code').substring(0, 3) == this.CODE_CITERNE) {
+            if (nature.get('code').substring(0, 3) == this.CODE_CITERNE || nature.get('code')=="RI") {
                 citerneTab.tab.show();
                 isFixe = nature.get('code') == this.CODE_CITERNE_FIXE;
                 if (fiche.isUpdating) {
@@ -813,8 +822,19 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                                     + " mis à jour.");
                             fiche.close();
                         },
-                        failure: function() {
-                            fiche.close();
+                        failure: function(form, action) {
+                          if (action && action.result && action.result.message && action.result.message == "hydrant_numero_key") {
+                                Ext.Msg.show({
+                                    title: fiche.title,
+                                    msg: "Un hydrant ayant le même numéro existe déjà.<br>",
+                                    buttons: Ext.Msg.OK,
+                                    icon: Ext.Msg.WARNING
+                                  });
+                                fiche.down('button[name=btnPIOpen]').hide();
+                                fiche.down('button[name=btnPIAssocie]').show();
+                                } else {
+                                fiche.close();
+                            }
                         }
                     });
                 } else {
@@ -901,7 +921,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
     // CONTRAINTE METIER
     checkConstraint: function(fiche) {
         if (fiche.hydrant.get('code') == 'PIBI') {
-            if (!this.natureHasDebitPression(fiche.down('combo[name=nature]').getValue())) {
+            var nature = fiche.down('combo[name=nature]').getValue();
+            var natureCode = Ext.getStore('TypeHydrantNature').findRecord('id', nature).get('code');
+           if (!this.natureHasDebitPression(natureCode)) {
                 return;
             }
             var cboDiametre = fiche.down('combo[name=diametre]'), diametre = cboDiametre.getStore().getById(cboDiametre.getValue());
@@ -1102,6 +1124,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
     // GESTION DES PIBI ASSOCIES
     associerPibi: function(btn) {
         var fiche = btn.up('hydrantFiche');
+        var nature = fiche.down('combo[name=nature]').getValue();
+        var natureCode = Ext.getStore('TypeHydrantNature').findRecord('id', nature).get('code'); 
         Ext.widget('sdischoice', {
             name: 'choiceRole',
             title: 'Associer un PI / PA',
@@ -1115,7 +1139,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                         value: fiche.hydrant.get('geometrie')
                     }, {
                         property: 'naturecode',
-                        value : 'PI,PA'
+                        value : this.choixFiltre(natureCode)
                     }]
                 },
                 queryMode: 'remote',
@@ -1156,14 +1180,21 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
 
     manageVerifTabVisibility: function(fiche, natureModel) {
         var tabVerif = fiche.down('#verification');
-        if (tabVerif) {
+        if (tabVerif) {
             tabVerif.tab.setVisible(this.natureHasDebitPression(natureModel?natureModel.get('code'):null));
         }
     },
     natureHasDebitPression: function(natureCode) {
         return natureCode=='PI' || natureCode=='BI';
-    }
-
+    },
+    
+   choixFiltre: function(natureCode){
+       if(natureCode == 'RI'){
+           return 'PA';
+       }else {
+           return 'PI,PA';
+     }
+   }
 });
 
  

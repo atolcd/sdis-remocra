@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ import fr.sdis83.remocra.domain.remocra.HydrantPena;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.HydrantPenaService;
 import fr.sdis83.remocra.service.HydrantPibiService;
+import fr.sdis83.remocra.util.ExceptionUtils;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
@@ -111,11 +113,17 @@ public class HydrantPenaController {
                 }.serialize();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            ConstraintViolationException dke = ExceptionUtils.getNestedExceptionWithClass(e, ConstraintViolationException.class);
+            if (dke!=null) {
+                String message = dke.getMessage();
+                logger.error(message, e);
+                if (message!=null && message.contains("hydrant_numero_key")) {
+                    return new SuccessErrorExtSerializer(false, "hydrant_numero_key").serialize();
+                }
+            }
             return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
         }
         return new SuccessErrorExtSerializer(false, "Hydrant Pena inexistant", HttpStatus.NOT_FOUND).serialize();
-
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")

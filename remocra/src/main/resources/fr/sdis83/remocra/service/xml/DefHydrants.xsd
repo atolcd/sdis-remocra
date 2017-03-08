@@ -163,6 +163,14 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  
+  <xs:complexType name="RI">
+    <xs:complexContent>
+      <xs:extension base="hydrantPena">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
 
   <xs:complexType name="hydrantPibi" abstract="true">
     <xs:complexContent>

@@ -4,6 +4,7 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.MCOPena', {
 
     extend: 'Ext.form.FieldSet',
     title: 'Elément de MCO',
+    id: 'elementMco',
     alias: 'widget.hydrant.mcopena',
 
     layout: 'hbox',
