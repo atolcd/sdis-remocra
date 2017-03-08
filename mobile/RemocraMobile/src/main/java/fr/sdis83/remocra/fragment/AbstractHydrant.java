@@ -133,7 +133,7 @@ public abstract class AbstractHydrant extends Fragment implements LoaderManager.
                 } else if (EditDate.class.equals(cls)) {
                     Editable editText = ((EditDate) view).getText();
                     String value = null;
-                    if(editText != null) {
+                    if(editText != null && !editText.toString().isEmpty()) {
                         try {
                             value = String.valueOf(DbUtils.DATE_FORMAT_EDIT.parse(editText.toString()).getTime());
                         } catch (Exception e) {

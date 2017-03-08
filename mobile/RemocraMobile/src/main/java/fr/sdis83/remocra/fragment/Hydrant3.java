@@ -18,6 +18,7 @@ import fr.sdis83.remocra.R;
 import fr.sdis83.remocra.contentprovider.RemocraProvider;
 import fr.sdis83.remocra.database.HydrantTable;
 import fr.sdis83.remocra.database.MarqueTable;
+import fr.sdis83.remocra.database.NatureTable;
 import fr.sdis83.remocra.fragment.components.DatePickerFragment;
 import fr.sdis83.remocra.fragment.components.EditDate;
 import fr.sdis83.remocra.util.DbUtils;
@@ -46,6 +47,9 @@ public class Hydrant3 extends AbstractHydrant {
     @Override
     protected void onBeforeBind(Cursor cursor) {
         boolean pibi = isPibi(cursor);
+        String codeNature = NatureTable.getCodeById(getActivity(), cursor.getInt(cursor.getColumnIndex(HydrantTable.COLUMN_NATURE)));
+        getView().findViewById(R.id.mco_layout_annee).setVisibility(codeNature!=null && codeNature.equals("RI") ? View.GONE : View.VISIBLE);
+        getView().findViewById(R.id.title_mco).setVisibility(codeNature!=null && codeNature.equals("RI") ? View.GONE : View.VISIBLE);
         getView().findViewById(R.id.mco_marque_modele).setVisibility(pibi ? View.VISIBLE : View.GONE);
         getView().findViewById(R.id.mco_choc).setVisibility(pibi ? View.VISIBLE : View.GONE);
         getView().findViewById(R.id.gest_layout_reseau).setVisibility(pibi ? View.VISIBLE : View.GONE);

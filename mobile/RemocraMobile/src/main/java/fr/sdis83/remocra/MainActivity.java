@@ -369,7 +369,7 @@ public class MainActivity extends FragmentActivity implements ListTournee.ListTo
             String natureCode = nature.getCode();
             values.put(HydrantTable.COLUMN_NATURE, nature.getId());
             values.put(HydrantTable.COLUMN_TYPE_HYDRANT, nature.getTypeNature());
-            values.put(HydrantTable.COLUMN_NUMERO, (natureCode.equals("PI") ? "PI " : natureCode.equals("BI") ? "BI " : "PN ") + "*");
+            values.put(HydrantTable.COLUMN_NUMERO, (natureCode.equals("PI") ? "PI " : natureCode.equals("BI") ? "BI " :natureCode.equals("PA") ? "PA ":natureCode.equals("RI") ? "RI ": "PN ") + "*");
             values.put(HydrantTable.COLUMN_TYPE_SAISIE, HydrantTable.TYPE_SAISIE.CREA.toString());
 
             values.put(HydrantTable.COLUMN_COORD_LON, location.getLongitude());

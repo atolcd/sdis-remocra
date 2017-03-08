@@ -16,6 +16,7 @@ import java.util.List;
 import fr.sdis83.remocra.GlobalRemocra;
 import fr.sdis83.remocra.database.HydrantTable;
 import fr.sdis83.remocra.database.HydrantTable.TYPE_SAISIE;
+import fr.sdis83.remocra.database.NatureTable;
 import fr.sdis83.remocra.fragment.AbstractHydrant;
 import fr.sdis83.remocra.fragment.Hydrant1;
 import fr.sdis83.remocra.fragment.Hydrant2;
@@ -35,12 +36,17 @@ public class ViewHydrantAdapter extends FragmentPagerAdapter {
     public List<String> fragmentClassNames = new LinkedList<String>();
     private HydrantTable.TYPE_SAISIE typeSaisie = HydrantTable.TYPE_SAISIE.LECT;
 
-    public ViewHydrantAdapter(FragmentManager supportFragmentManager, Context context) {
+    public ViewHydrantAdapter(Cursor hydrant,FragmentManager supportFragmentManager, Context context) {
         super(supportFragmentManager);
         this.context = context;
-
+        this.hydrant=hydrant;
         fragmentClassNames.add(Hydrant1.class.getName());
-        fragmentClassNames.add(Hydrant2.class.getName());
+        String codeNature = NatureTable.getCodeById(context, hydrant.getInt(hydrant.getColumnIndex(HydrantTable.COLUMN_NATURE)));
+
+        if (!codeNature.equals("PA")){
+            fragmentClassNames.add(Hydrant2.class.getName());
+        }
+
         // Droit MCO
         if (GlobalRemocra.getInstance(context).getCanSetMco()) {
             fragmentClassNames.add(Hydrant3.class.getName());

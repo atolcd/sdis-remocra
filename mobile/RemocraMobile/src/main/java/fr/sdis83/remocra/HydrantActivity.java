@@ -210,7 +210,7 @@ public class HydrantActivity extends FragmentActivity implements ActionBar.TabLi
                 mViewHydrantAdapter.setHydrant(cursor, mViewPager.getCurrentItem());
             } else {
                 // Set up the adapter.
-                mViewHydrantAdapter = new ViewHydrantAdapter(getSupportFragmentManager(), getBaseContext());
+                mViewHydrantAdapter = new ViewHydrantAdapter(cursor,getSupportFragmentManager(), getBaseContext());
                 mViewPager = (ViewPager) findViewById(R.id.viewPager);
                 mViewPager.setAdapter(mViewHydrantAdapter);
                 mViewPager.setOffscreenPageLimit(mViewHydrantAdapter.getCount() - 1);
