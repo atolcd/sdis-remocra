@@ -1,0 +1,12 @@
+# ---------------
+# remocra-mobile (Android Studio)
+# ---------------
+local.properties
+.gradle/
+.idea/
+build/
+*.iml
+*.ipr
+*.iws
+gradle-app.setting
+

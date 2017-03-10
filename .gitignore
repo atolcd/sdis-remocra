@@ -1,15 +1,4 @@
 # ---------------
-# remocra-mobile (Android Studio)
-# ---------------
-mobile/local.properties
-.gradle/
-.idea/
-#build/
-*.iml
-*.ipr
-*.iws
-gradle-app.setting
-# ---------------
 # remocra-server (Eclipse)
 # ---------------
 remocra/target
