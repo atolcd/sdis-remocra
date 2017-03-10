@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.text.MessageFormat;
@@ -43,6 +44,7 @@ public class ListHydrant extends ListFragment implements LoaderManager.LoaderCal
     }
 
     private ListHydrantListener mListener;
+
     private BroadcastReceiver broadcastReceiver = null;
     private HydrantAdapter adapter;
 

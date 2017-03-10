@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <org.osmdroid.views.MapView android:id="@+id/carte_hydrant"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+    <ImageButton
+        android:src="@drawable/ic_menu_mylocation"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="-40dp"
+        android:layout_marginRight="30dp"
+        android:id="@+id/ic_menu_mylocation"
+        android:layout_below="@+id/carte_hydrant"
+        android:layout_alignLeft="@+id/carte_hydrant"
+        android:layout_alignStart="@+id/carte_hydrant"
+        android:background="@drawable/ic_menu_mylocation"
+        android:adjustViewBounds="false" />
+
+</LinearLayout>

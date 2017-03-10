@@ -11,6 +11,7 @@
     <string name="text_empty">Aucune donnée</string>
     <string name="accueil">Accueil</string>
     <string name="pteau">Points d\'eau</string>
+    <string name="carte">Carte des points d\'eau</string>
 
     <!-- Strings related to tournees -->
     <string name="tournees">Tournées</string>
@@ -97,6 +98,7 @@
     <string name="sort_name">Libellé</string>
     <string name="sort_position">Position</string>
     <string name="action_add_hydrant">Ajouter un point d\'eau</string>
+    <string name="action_show_map">Carte des points d\'eau</string>
     <string name="hydrant_nature">Nature du point d\'eau</string>
 
     <string name="LECT">Lecture seule</string>

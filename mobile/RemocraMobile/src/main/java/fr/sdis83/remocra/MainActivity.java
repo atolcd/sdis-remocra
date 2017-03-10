@@ -18,6 +18,7 @@ package fr.sdis83.remocra;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,6 +37,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,6 +45,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.views.MapView;
 
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -80,6 +85,7 @@ public class MainActivity extends FragmentActivity implements ListTournee.ListTo
 
     public static final int LISTE_TOURNEE = 1;
     public static final int LISTE_PT_EAU = 2;
+    public static final int CARTE_PT_EAU = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,6 +232,11 @@ public class MainActivity extends FragmentActivity implements ListTournee.ListTo
         map.put(ICON, imageId);
         list.add(map);
 
+        map = new HashMap<String, Object>();
+        map.put(LABEL, getString(R.string.carte));
+        map.put(ICON, imageId);
+        list.add(map);
+
         return list;
     }
 
@@ -247,6 +258,16 @@ public class MainActivity extends FragmentActivity implements ListTournee.ListTo
     }
 
     @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+        return super.onCreateView(name, context, attrs);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // The action bar home/up action should open or close the drawer.
         // ActionBarDrawerToggle will take care of this.
@@ -262,6 +283,10 @@ public class MainActivity extends FragmentActivity implements ListTournee.ListTo
                     return true;
                 }
                 return super.onOptionsItemSelected(item);
+            case R.id.action_show_map:
+                intent = new Intent(this, MapHydrantActivity.class);
+                startActivity(intent);
+                return true;
             case R.id.action_add_hydrant:
                 NewHydrant dialog = new NewHydrant();
                 dialog.show(getSupportFragmentManager(), "newHydrant");
@@ -301,10 +326,14 @@ public class MainActivity extends FragmentActivity implements ListTournee.ListTo
                 fragment = new ListTournee();
             } else if (position == LISTE_PT_EAU) { // Liste hydrant
                 fragment = ListHydrant.newInstance(null);
+            } else if (position == CARTE_PT_EAU) { // Carte
+                startActivity( new Intent(this, MapHydrantActivity.class));
             } else {
                 fragment = new Accueil();
             }
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment, "init").commit();
+            if (fragment!=null) {
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment, "init").commit();
+            }
         }
         mDrawerList.setItemChecked(position, true);
         setTitle(data.get(LABEL).toString());

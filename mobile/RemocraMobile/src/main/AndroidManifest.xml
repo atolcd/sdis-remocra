@@ -13,6 +13,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
     <application
         android:name=".RemocraApp"
         android:allowBackup="true"
@@ -48,6 +51,11 @@
         <activity
             android:name="fr.sdis83.remocra.HydrantActivity"
             android:label="@string/title_activity_hydrant">
+        </activity>
+
+        <activity
+            android:name="fr.sdis83.remocra.MapHydrantActivity"
+            android:label="@string/carte">
         </activity>
 
         <activity
