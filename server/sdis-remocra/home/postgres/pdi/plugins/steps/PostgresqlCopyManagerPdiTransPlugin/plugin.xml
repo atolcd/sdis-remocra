@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+   id="PostgresqlCopyManager"
+   iconfile="PostgresqlCopyManager.png"
+   description="Postgresql Copy Manager"
+   tooltip="Generate Copy to or Copy from Postgresql files"
+   category="Atol CD - Various"
+   classname="com.atolcd.pdi.plugin.trans.sql.postgresql.copymanager.PostgresqlCopyManagerMeta">
+		<libraries>
+			<library name="PostgresqlCopyManager.jar"/>
+		</libraries>
+		<localized_category>
+			<category locale="en_US">Atol CD - Various</category>
+			<category locale="fr_FR">Atol CD - Divers</category>
+		</localized_category>
+		<localized_description>
+			<description locale="en_US">Postgresql Copy Manager</description>
+			<description locale="fr_FR">Postgresql Copy Manager</description>
+		</localized_description>
+		<localized_tooltip>
+			<tooltip locale="en_US">Generate Copy to or Copy from Postgresql files</tooltip>
+			<tooltip locale="fr_FR">Génération de fichiers Copy to ou Copy from pour Postgresql</tooltip>
+		</localized_tooltip>
+</plugin>

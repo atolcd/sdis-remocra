@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+   id="PdfMerge"
+   iconfile="PdfMerge.png"
+   description="PDF Merge"
+   tooltip="Merge PDF files"
+   category="Atol CD - Various"
+   classname="com.atolcd.pdi.plugin.trans.pdf.pdfmerge.PdfMergeMeta">
+		<libraries>
+			<library name="PdfMerge.jar"/>
+		</libraries>
+		<localized_category>
+			<category locale="en_US">Atol CD - Various</category>
+			<category locale="fr_FR">Atol CD - Divers</category>
+		</localized_category>
+		<localized_description>
+			<description locale="en_US">PDF Merge</description>
+			<description locale="fr_FR">Concaténation PDF</description>
+		</localized_description>
+		<localized_tooltip>
+			<tooltip locale="en_US">Merge PDF files</tooltip>
+			<tooltip locale="fr_FR">Création d'un PDF unique à partir de plusieurs fichiers PDF</tooltip>
+		</localized_tooltip>
+</plugin>
