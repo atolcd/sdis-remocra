@@ -56,8 +56,8 @@ import fr.sdis83.remocra.domain.remocra.TypeHydrantSaisie;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantVolConstate;
 import fr.sdis83.remocra.exception.AnomalieException;
 import fr.sdis83.remocra.exception.BusinessException;
-import fr.sdis83.remocra.exception.DroitException;
 import fr.sdis83.remocra.exception.SQLBusinessException;
+import fr.sdis83.remocra.exception.XmlDroitException;
 import fr.sdis83.remocra.exception.XmlValidationException;
 import fr.sdis83.remocra.security.AccessRight.Permission;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
@@ -626,7 +626,7 @@ public class XmlService {
     }
 
     @Transactional
-    public void deSerializeHydrants(String xml, Integer version) throws BusinessException, XmlValidationException, SQLBusinessException, DroitException, AnomalieException {
+    public void deSerializeHydrants(String xml, Integer version) throws BusinessException, XmlValidationException, SQLBusinessException, XmlDroitException, AnomalieException {
         try {
             LstHydrants hydrants = (LstHydrants) XmlUtil.unSerializeXml(xml, fr.sdis83.remocra.xml.LstHydrants.class);
 
@@ -683,9 +683,9 @@ public class XmlService {
             }
             logger.error("Problème avec la désérialisation des hydrants : " + e.getMessage(), e);
             throw new BusinessException("Problème avec la désérialisation des hydrants : " + e.getMessage());
-        } catch (DroitException e) {
+        } catch (XmlDroitException e) {
             logger.error(e.getMessage(), e);
-            throw new DroitException(e.getMessage());
+            throw new XmlDroitException(e.getMessage());
         } catch (AnomalieException e) {
             logger.error(e.getMessage(), e);
             throw new AnomalieException(e.getMessage());
@@ -729,15 +729,18 @@ public class XmlService {
      * @throws FileUploadException
      * @throws BusinessException
      * @throws AnomalieException
-     * @throws DroitException
+     * @throws XmlDroitException
      */
     void updateHydrant(Hydrant hydrant, fr.sdis83.remocra.xml.Hydrant hydrantXML, Integer version)
-            throws IOException, SecurityException, FileUploadException, BusinessException, AnomalieException, DroitException {
+            throws IOException, SecurityException, FileUploadException, BusinessException, AnomalieException, XmlDroitException {
 
         // Vérification du territoire de compétence de l'utilisateur connecté
         Boolean result = zoneCompetenceService.check(hydrant.getGeometrie(), utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence());
         if (!result) {
-            throw new DroitException("Le point d'eau n'est pas sur le territoire de compétence");
+            if (hydrantXML.getNumero() == null || hydrantXML.getNumero().isEmpty()) {
+                throw new XmlDroitException("Un des points d'eau à synchroniser est en dehors du territoire de compétence.");
+            }
+            throw new XmlDroitException("Le point d'eau " + hydrantXML.getNumero() + " est en dehors du territoire de compétence.");
         }
 
         Hydrant.TYPE_SAISIE typeSaisie = getTypeSaisie(hydrant, hydrantXML.isVerif());
@@ -983,17 +986,17 @@ public class XmlService {
      * @param isVerif
      * @return
      * @throws BusinessException
-     * @throws DroitException
+     * @throws XmlDroitException
      */
-    private Hydrant.TYPE_SAISIE getTypeSaisie(Hydrant hydrant, boolean isVerif) throws BusinessException, DroitException {
+    private Hydrant.TYPE_SAISIE getTypeSaisie(Hydrant hydrant, boolean isVerif) throws BusinessException, XmlDroitException {
         if (hydrant.getId() == null) {
             if (!authUtils.hasRight(TypeDroitEnum.HYDRANTS, Permission.CREATE)) {
-                throw new DroitException("L'utilisateur n'a pas les droits suffisants pour la remontée des anomalies");
+                throw new XmlDroitException("L'utilisateur n'a pas les droits suffisants pour la remontée des anomalies");
             }
             return Hydrant.TYPE_SAISIE.CREA;
         } else if (hydrant.getId() != null && hydrant.getDateRecep() == null) {
             if (!authUtils.hasRight(TypeDroitEnum.HYDRANTS, Permission.CREATE)) {
-                throw new DroitException("L'utilisateur n'a pas les droits suffisants pour la remontée des anomalies");
+                throw new XmlDroitException("L'utilisateur n'a pas les droits suffisants pour la remontée des anomalies");
             }
             return Hydrant.TYPE_SAISIE.RECEP;
         } else if (authUtils.hasRight(TypeDroitEnum.HYDRANTS_CONTROLE, Permission.CREATE)) {
@@ -1002,7 +1005,7 @@ public class XmlService {
             return Hydrant.TYPE_SAISIE.RECO;
         }
 
-        throw new DroitException("L'utilisateur n'a pas les droits suffisants pour la remontée des anomalies");
+        throw new XmlDroitException("L'utilisateur n'a pas les droits suffisants pour la remontée des anomalies");
     }
 
     /**

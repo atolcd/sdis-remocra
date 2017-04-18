@@ -16,6 +16,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import fr.sdis83.remocra.GlobalRemocra;
+import fr.sdis83.remocra.HydrantActivity;
 import fr.sdis83.remocra.R;
 import fr.sdis83.remocra.adapter.CommuneAdapter;
 import fr.sdis83.remocra.contentprovider.RemocraProvider;
@@ -90,7 +91,13 @@ public class Hydrant1 extends AbstractHydrant {
     @Override
     public ContentValues getDataToSave() {
         ContentValues values = super.getDataToSave();
-        values.put(HydrantTable.COLUMN_STATE_H1, true);
+        String valeurDeLaCommune = values.getAsString(HydrantTable.COLUMN_COMMUNE);
+        boolean state = valeurDeLaCommune != null
+                && !"".equals(valeurDeLaCommune)
+                && ((HydrantActivity)getActivity()).isLibelleCommuneValid(valeurDeLaCommune);
+        // Onglet valide si la commune est valide
+        // (empèche l'utilisateur de synchroniser Hydrant avec une commune non valide)
+        values.put(HydrantTable.COLUMN_STATE_H1, state);
         return values;
     }
 

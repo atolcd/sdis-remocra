@@ -25,7 +25,8 @@ public class XmlValidationException extends Exception {
     }
 
     public String getMessageXMLError() {
-        return "<error><message>Problème de validation XML \n" + this.getMessage() + "</message><ligne>" + this.ligne + "</ligne><colonne>" + this.colonne + "</colonne></error>";
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?><error><message>Problème de validation XML \n" + this.getMessage() + "</message><ligne>" + this.ligne
+                + "</ligne><colonne>" + this.colonne + "</colonne></error>";
     }
 
     public int getLigne() {
