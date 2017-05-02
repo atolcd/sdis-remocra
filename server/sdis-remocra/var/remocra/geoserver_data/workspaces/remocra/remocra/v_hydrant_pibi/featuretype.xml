@@ -61,7 +61,7 @@
     <entry key="JDBC_VIRTUAL_TABLE">
       <virtualTable>
         <name>v_hydrant_pibi</name>
-        <sql>select h.id, numero, numero_interne, voie, dispo_terrestre, debit, pression, pression_dyn, d.nom as diametre, geometrie,&#xd;
+        <sql>select h.id, numero, numero_interne, voie, dispo_terrestre, coalesce(debit_max, debit) as debit, pression, pression_dyn, d.nom as diametre, geometrie,&#xd;
 &apos;pibi/&apos; ||&#xd;
 (&#xd;
   select case when n.code=&apos;PI&apos; then &apos;pi&apos; when n.code=&apos;BI&apos; then &apos;bi&apos; else &apos;pa&apos; end&#xd;
