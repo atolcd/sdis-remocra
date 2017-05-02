@@ -16,7 +16,7 @@ privileged aspect ModeleTraitement_Roo_Finder {
         q.setParameter("code", code);
         return ((Long) q.getSingleResult());
     }
-    
+
     public static TypedQuery<ModeleTraitement> ModeleTraitement.findModeleTraitementsByCode(Integer code) {
         if (code == null) throw new IllegalArgumentException("The code argument is required");
         EntityManager em = ModeleTraitement.entityManager();
@@ -24,7 +24,18 @@ privileged aspect ModeleTraitement_Roo_Finder {
         q.setParameter("code", code);
         return q;
     }
-    
+
+	public static ModeleTraitement ModeleTraitement.findModeleTraitementParCheminEtNom(String ref_chemin, String ref_nom) {
+		if (ref_chemin == null || ref_nom == null || ref_chemin.isEmpty() || ref_nom.isEmpty()) return null;
+
+		EntityManager em = ModeleTraitement.entityManager();
+        TypedQuery<ModeleTraitement> q = em.createQuery("SELECT o FROM ModeleTraitement AS o WHERE o.refChemin = :ref_chemin AND o.refNom = :ref_nom", ModeleTraitement.class);
+        q.setParameter("ref_chemin", ref_chemin);
+        q.setParameter("ref_nom", ref_nom);
+
+		return ((ModeleTraitement)q.getSingleResult());
+    }
+
     public static TypedQuery<ModeleTraitement> ModeleTraitement.findModeleTraitementsByCode(Integer code, String sortFieldName, String sortOrder) {
         if (code == null) throw new IllegalArgumentException("The code argument is required");
         EntityManager em = ModeleTraitement.entityManager();
@@ -39,5 +50,5 @@ privileged aspect ModeleTraitement_Roo_Finder {
         q.setParameter("code", code);
         return q;
     }
-    
+
 }

@@ -36,6 +36,9 @@ public class Metadonnee {
     @Column
     private String urlFiche;
 
+    @Column
+    private String codeExport;
+
     @ManyToOne
     @NotNull
     private Thematique thematique;

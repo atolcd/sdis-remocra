@@ -55,5 +55,13 @@ privileged aspect Metadonnee_Roo_JavaBean {
     public void Metadonnee.setThematique(Thematique thematique) {
         this.thematique = thematique;
     }
-    
+
+    public void Metadonnee.setCodeExport(String codeExport) {
+		this.codeExport = codeExport;
+    }
+
+    public String Metadonnee.getCodeExport() {
+		return this.codeExport;
+    }
+
 }

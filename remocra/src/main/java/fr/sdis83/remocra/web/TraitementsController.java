@@ -311,6 +311,63 @@ public class TraitementsController {
     }
 
     /**
+     * Sauvegarde en base une demande de téléchargement de donnée "métadonnées"
+     *
+     * @param request
+     *            : Requête Http
+     * @return
+     * @throws BusinessException
+     */
+    @RequestMapping(value = "/specifique/metadonnees/{codeexport}", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<java.lang.String> createTraitementSpecifiqueMetadonnees(HttpServletRequest request, final @PathVariable("codeexport") String codeExport) throws BusinessException {
+
+        // Le chemin/nom va permettre de trouver le traitement correspondant
+        String ref_chemin = "/demandes/export";
+        String ref_nom = "exporter_donnees";
+        ModeleTraitement modele = null;
+        try {
+            modele = ModeleTraitement.findModeleTraitementParCheminEtNom(ref_chemin, ref_nom);
+        } catch (Exception e) {
+            // Le problème peut être du au fait qu'aucun traitement n'est trouvé, qu'il existe plusieurs traitement pour le même chemin/nom...
+            return new SuccessErrorExtSerializer(false, "Problème lors de la création du Traitement !").serialize();
+        }
+
+        // Il y a deux paramètres à passer pour exporter les données d'une
+        // métadonnée
+        TraitementParametre[] paramArray = new TraitementParametre[2];
+
+        // MODELE_EXPORT_ID
+        Long idExportModele = traitementsService.getExportModeleFromCode(codeExport).getId();
+
+        // ZONE_COMPETENCE_ID
+        Long idZoneCompetence = utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getId();
+
+        // Premier paramètre = id du modèle d'export
+
+        // obligatoire pour éviter "Not-null property references a transient value"
+        Traitement trt = new Traitement();
+        trt.setIdtraitement(-1);
+
+        TraitementParametre tpModeleExport = new TraitementParametre();
+        tpModeleExport.setIdparametre(ModeleTraitementParametre.findModeleTraitementParametresByNomAndIdmodele("MODELE_EXPORT_ID", modele).getSingleResult());
+        tpModeleExport.setIdtraitement(trt);
+        tpModeleExport.setValeur(idExportModele.toString());
+        paramArray[0] = tpModeleExport;
+
+        // Deuxième paramètre = id de la zone de compétence
+
+        TraitementParametre tpZoneCompetence = new TraitementParametre();
+        tpZoneCompetence.setIdparametre(ModeleTraitementParametre.findModeleTraitementParametresByNomAndIdmodele("ZONE_COMPETENCE_ID", modele).getSingleResult());
+        tpZoneCompetence.setIdtraitement(trt);
+        tpZoneCompetence.setValeur(idZoneCompetence.toString());
+        paramArray[1] = tpZoneCompetence;
+
+        String jsonValeurs = new JSONSerializer().include("idparametre.idparametre").include("idtraitement.idtraitement").include("valeur").exclude("*").serialize(paramArray);
+        return doCreateTraitement(modele.getIdmodele(), jsonValeurs, request);
+    }
+
+    /**
      * Sauvegarde en base une demande de traitement "Atlas"
      * 
      * @param request

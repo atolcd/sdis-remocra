@@ -19,6 +19,7 @@ import fr.sdis83.remocra.domain.pdi.Statut;
 import fr.sdis83.remocra.domain.pdi.Traitement;
 import fr.sdis83.remocra.domain.pdi.TraitementParametre;
 import fr.sdis83.remocra.domain.pdi.TraitementParametrePK;
+import fr.sdis83.remocra.domain.remocra.ExportModele;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.exception.BusinessException;
 
@@ -56,6 +57,10 @@ public class TraitementsService {
         entityManager.flush();
 
         return newTraitement;
+    }
+
+    public ExportModele getExportModeleFromCode(String code) {
+        return ExportModele.findExportModelesByCode(code).getSingleResult();
     }
 
     public List<PdiVueCombo> getComboValues(String nomvue) {

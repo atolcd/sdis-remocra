@@ -25,10 +25,17 @@ Ext.define('Sdis.Remocra.features.metadonnees.Metadonnees', {
                 forceSelection: true
             },{
                 xtype: 'button',
+                itemId: 'backButton',
                 text: 'Retour à la thématique',
                 margin: '0 0 0 30',
                 hidden: true
-            }]
+            } ]
+        },{
+            xtype: 'button',
+            itemId: 'telechargerButton',
+            text: 'Télécharger les données',
+            margin: '10 10 10 10',
+            hidden: true
         },{
             xtype: 'dataview',
             itemSelector: 'div.metadonnee',
