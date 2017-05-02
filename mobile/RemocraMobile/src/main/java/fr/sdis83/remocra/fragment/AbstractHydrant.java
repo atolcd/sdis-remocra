@@ -15,7 +15,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
@@ -25,7 +24,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,9 +70,19 @@ public abstract class AbstractHydrant extends Fragment implements LoaderManager.
         if (mListener != null) {
             if (cursor.getLong(cursor.getColumnIndex(fieldRead)) == 1) {
                 int position = getArguments().getInt("position");
-                mListener.setTabRead(position);
+                // Désactivation de l'onglet 0 si la commune n'est pas valide
+                // (empèche l'utilisateur de synchroniser Hydrant avec une commune non valide)
+                if(position == 0 && !mListener.isLibelleCommuneValid(cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_COMMUNE)))) {
+                    mListener.setTabNotRead(position);
+                } else {
+                    mListener.setTabRead(position);
+                }
             }
         }
+    }
+
+    public Cursor getCursor() {
+        return cursor;
     }
 
     protected void addBindableData(int resource, String column, Class cls) {

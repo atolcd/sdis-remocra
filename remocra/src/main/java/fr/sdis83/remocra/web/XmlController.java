@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import fr.sdis83.remocra.exception.AnomalieException;
-import fr.sdis83.remocra.exception.DroitException;
 import fr.sdis83.remocra.exception.SQLBusinessException;
+import fr.sdis83.remocra.exception.XmlDroitException;
 import fr.sdis83.remocra.exception.XmlValidationException;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.XmlService;
@@ -220,10 +220,10 @@ public class XmlController {
             xmlResp = XML_RESPONSE_DB_CONNECTION_ERROR;
         } catch (SQLBusinessException e) {
             xmlResp = manageSQLBusinessExceptionOrException(response, e);
-        } catch (DroitException e) {
+        } catch (XmlDroitException e) {
             log.error(e);
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            xmlResp = e.getMessage();
+            xmlResp = e.getMessageXMLError();
         } catch (AnomalieException e) {
             log.error(e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

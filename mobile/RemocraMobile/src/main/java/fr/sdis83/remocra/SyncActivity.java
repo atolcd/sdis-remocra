@@ -497,7 +497,7 @@ public class SyncActivity extends FragmentActivity implements ChoiceTournee.Choi
                     XmlPullParser xmlPullParser = Xml.newPullParser();
                     try {
                         xmlPullParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-                        xmlPullParser.setInput(stream, null);
+                        xmlPullParser.setInput(stream, "ISO-8859-1");
                         XmlErrorParser parserError = new XmlErrorParser();
                         sMessage = parserError.parse(xmlPullParser);
                     } catch (XmlPullParserException e) {

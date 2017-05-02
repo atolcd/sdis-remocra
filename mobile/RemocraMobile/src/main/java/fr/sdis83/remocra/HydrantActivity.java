@@ -29,13 +29,13 @@ import fr.sdis83.remocra.contentprovider.RemocraProvider;
 import fr.sdis83.remocra.database.AnomalieNatureTable;
 import fr.sdis83.remocra.database.AnomalieTable;
 import fr.sdis83.remocra.database.HydrantTable;
+import fr.sdis83.remocra.database.ReferentielTable;
 import fr.sdis83.remocra.fragment.AbstractHydrant;
 import fr.sdis83.remocra.util.DbUtils;
 
 public class HydrantActivity extends FragmentActivity implements ActionBar.TabListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     public static String ID_HYDRANT = "ID_HYDRANT";
-
     private static final int URL_LOADER = 0;
 
     private ViewHydrantAdapter mViewHydrantAdapter;
@@ -156,6 +156,19 @@ public class HydrantActivity extends FragmentActivity implements ActionBar.TabLi
         }
     }
 
+    public void setTabNotRead(int position) {
+        if (getActionBar() != null) {
+            ActionBar actionBar = getActionBar();
+            if (position < actionBar.getTabCount()) {
+                ActionBar.Tab tab = getActionBar().getTabAt(position);
+                if (tab != null) {
+                    tab.setIcon(R.drawable.icon_unread);
+                    tab.setTag(Boolean.FALSE);
+                }
+            }
+        }
+    }
+
     public void setTabRead(int position) {
         if (getActionBar() != null) {
             ActionBar actionBar = getActionBar();
@@ -208,6 +221,11 @@ public class HydrantActivity extends FragmentActivity implements ActionBar.TabLi
         if (cursor.moveToFirst()) {
             if (mViewHydrantAdapter != null) {
                 mViewHydrantAdapter.setHydrant(cursor, mViewPager.getCurrentItem());
+                // Désactivation de l'onglet 0 si la commune n'est pas valide
+                // (empèche l'utilisateur de synchroniser Hydrant avec une commune non valide)
+                if(!isLibelleCommuneValid(cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_COMMUNE)))) {
+                    setTabNotRead(0);
+                }
             } else {
                 // Set up the adapter.
                 mViewHydrantAdapter = new ViewHydrantAdapter(cursor,getSupportFragmentManager(), getBaseContext());
@@ -242,6 +260,32 @@ public class HydrantActivity extends FragmentActivity implements ActionBar.TabLi
             updateTitle();
         } else {
             Log.d("REMOCRA", "loadDataFromCursor - nothing");
+        }
+    }
+
+    /**
+     * Retourne si la commune est valide
+     * (l'utilisateur doit passer par les communes existantes dans l'application dans la saisie)
+     * @return
+     */
+    public boolean isLibelleCommuneValid(String libelleCommune) {
+        if (TextUtils.isEmpty(libelleCommune)) {
+            return false;
+        }
+        Cursor c = getContentResolver().query(RemocraProvider.CONTENT_COMMUNE_URI, new String[]{ReferentielTable.COLUMN_CODE}, ReferentielTable.COLUMN_LIBELLE + "=?", new String[]{libelleCommune}, null);
+        try {
+            if (c.getCount() == 1) {
+                c.moveToPosition(0);
+                String result = c.getString(c.getColumnIndex(ReferentielTable.COLUMN_CODE));
+                if (!RemocraProvider.EMPTY_FIELD.equals(result)) {
+                    return true;
+                }
+            }
+            return false;
+        } finally {
+            if (c != null) {
+                c.close();
+            }
         }
     }
 
