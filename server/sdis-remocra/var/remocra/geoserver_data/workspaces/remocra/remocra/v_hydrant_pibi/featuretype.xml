@@ -56,17 +56,18 @@
   </latLonBoundingBox>
   <projectionPolicy>FORCE_DECLARED</projectionPolicy>
   <enabled>true</enabled>
+  <advertised>true</advertised>
   <metadata>
     <entry key="cachingEnabled">false</entry>
     <entry key="JDBC_VIRTUAL_TABLE">
       <virtualTable>
         <name>v_hydrant_pibi</name>
-        <sql>select h.id, numero, numero_interne, voie, dispo_terrestre, coalesce(debit_max, debit) as debit, pression, pression_dyn, d.nom as diametre, geometrie,&#xd;
+        <sql>select h.id, numero, numero_interne, voie, dispo_terrestre, debit, debit_max, pression, pression_dyn, d.nom as diametre, geometrie,&#xd;
 &apos;pibi/&apos; ||&#xd;
 (&#xd;
   select case when n.code=&apos;PI&apos; then &apos;pi&apos; when n.code=&apos;BI&apos; then &apos;bi&apos; else &apos;pa&apos; end&#xd;
 ) || (&#xd;
-  select case when n.code=&apos;PA&apos; then &apos;&apos; when debit&lt;30 then &apos;_low&apos; when debit&lt;60 then &apos;_med&apos; else &apos;_high&apos; end&#xd;
+  select case when n.code=&apos;PA&apos; then &apos;&apos; when coalesce(debit_max, debit)&lt;30 then &apos;_low&apos; when coalesce(debit_max, debit)&lt;60 then &apos;_med&apos; else &apos;_high&apos; end&#xd;
 )  || (&#xd;
   select case when dispo_terrestre=&apos;INDISPO&apos; then &apos;_indispo&apos; else &apos;&apos; end&#xd;
 ) || &apos;.png&apos; as img&#xd;
