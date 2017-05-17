@@ -2,22 +2,17 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 8.4.20
--- Dumped by pg_dump version 9.5.5
-
--- Started on 2017-03-21 10:43:28 CET
+-- Started on 2017-05-17 08:59:07 CEST
 
 SET statement_timeout = 0;
-SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = off;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET escape_string_warning = off;
-SET row_security = off;
 
 --
--- TOC entry 2164 (class 1262 OID 19134)
+-- TOC entry 2126 (class 1262 OID 249956)
 -- Name: remocra_ref_pdi; Type: DATABASE; Schema: -; Owner: postgres
 --
 
@@ -29,13 +24,21 @@ ALTER DATABASE remocra_ref_pdi OWNER TO postgres;
 \connect remocra_ref_pdi
 
 SET statement_timeout = 0;
-SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = off;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET escape_string_warning = off;
-SET row_security = off;
+
+--
+-- TOC entry 704 (class 2612 OID 249959)
+-- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
+--
+
+CREATE PROCEDURAL LANGUAGE plpgsql;
+
+
+ALTER PROCEDURAL LANGUAGE plpgsql OWNER TO postgres;
 
 SET search_path = public, pg_catalog;
 
@@ -44,8 +47,9 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- TOC entry 140 (class 1259 OID 19135)
--- Name: r_cluster; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 140 (class 1259 OID 249960)
+-- Dependencies: 6
+-- Name: r_cluster; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_cluster (
@@ -59,25 +63,26 @@ CREATE TABLE r_cluster (
 );
 
 
-ALTER TABLE r_cluster OWNER TO postgres;
+ALTER TABLE public.r_cluster OWNER TO postgres;
 
 --
--- TOC entry 141 (class 1259 OID 19141)
+-- TOC entry 141 (class 1259 OID 249966)
+-- Dependencies: 140 6
 -- Name: r_cluster_id_cluster_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_cluster_id_cluster_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_cluster_id_cluster_seq OWNER TO postgres;
+ALTER TABLE public.r_cluster_id_cluster_seq OWNER TO postgres;
 
 --
--- TOC entry 2167 (class 0 OID 0)
+-- TOC entry 2129 (class 0 OID 0)
 -- Dependencies: 141
 -- Name: r_cluster_id_cluster_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -86,8 +91,18 @@ ALTER SEQUENCE r_cluster_id_cluster_seq OWNED BY r_cluster.id_cluster;
 
 
 --
--- TOC entry 142 (class 1259 OID 19143)
--- Name: r_cluster_slave; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2130 (class 0 OID 0)
+-- Dependencies: 141
+-- Name: r_cluster_id_cluster_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_cluster_id_cluster_seq', 1, false);
+
+
+--
+-- TOC entry 142 (class 1259 OID 249968)
+-- Dependencies: 6
+-- Name: r_cluster_slave; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_cluster_slave (
@@ -97,25 +112,26 @@ CREATE TABLE r_cluster_slave (
 );
 
 
-ALTER TABLE r_cluster_slave OWNER TO postgres;
+ALTER TABLE public.r_cluster_slave OWNER TO postgres;
 
 --
--- TOC entry 143 (class 1259 OID 19146)
+-- TOC entry 143 (class 1259 OID 249971)
+-- Dependencies: 142 6
 -- Name: r_cluster_slave_id_cluster_slave_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_cluster_slave_id_cluster_slave_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_cluster_slave_id_cluster_slave_seq OWNER TO postgres;
+ALTER TABLE public.r_cluster_slave_id_cluster_slave_seq OWNER TO postgres;
 
 --
--- TOC entry 2168 (class 0 OID 0)
+-- TOC entry 2131 (class 0 OID 0)
 -- Dependencies: 143
 -- Name: r_cluster_slave_id_cluster_slave_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -124,8 +140,18 @@ ALTER SEQUENCE r_cluster_slave_id_cluster_slave_seq OWNED BY r_cluster_slave.id_
 
 
 --
--- TOC entry 144 (class 1259 OID 19148)
--- Name: r_condition; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2132 (class 0 OID 0)
+-- Dependencies: 143
+-- Name: r_cluster_slave_id_cluster_slave_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_cluster_slave_id_cluster_slave_seq', 1, false);
+
+
+--
+-- TOC entry 144 (class 1259 OID 249973)
+-- Dependencies: 6
+-- Name: r_condition; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_condition (
@@ -140,25 +166,26 @@ CREATE TABLE r_condition (
 );
 
 
-ALTER TABLE r_condition OWNER TO postgres;
+ALTER TABLE public.r_condition OWNER TO postgres;
 
 --
--- TOC entry 145 (class 1259 OID 19154)
+-- TOC entry 145 (class 1259 OID 249979)
+-- Dependencies: 6 144
 -- Name: r_condition_id_condition_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_condition_id_condition_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_condition_id_condition_seq OWNER TO postgres;
+ALTER TABLE public.r_condition_id_condition_seq OWNER TO postgres;
 
 --
--- TOC entry 2169 (class 0 OID 0)
+-- TOC entry 2133 (class 0 OID 0)
 -- Dependencies: 145
 -- Name: r_condition_id_condition_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -167,8 +194,18 @@ ALTER SEQUENCE r_condition_id_condition_seq OWNED BY r_condition.id_condition;
 
 
 --
--- TOC entry 146 (class 1259 OID 19156)
--- Name: r_database; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2134 (class 0 OID 0)
+-- Dependencies: 145
+-- Name: r_condition_id_condition_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_condition_id_condition_seq', 1, false);
+
+
+--
+-- TOC entry 146 (class 1259 OID 249981)
+-- Dependencies: 6
+-- Name: r_database; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_database (
@@ -187,11 +224,12 @@ CREATE TABLE r_database (
 );
 
 
-ALTER TABLE r_database OWNER TO postgres;
+ALTER TABLE public.r_database OWNER TO postgres;
 
 --
--- TOC entry 147 (class 1259 OID 19162)
--- Name: r_database_attribute; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 147 (class 1259 OID 249987)
+-- Dependencies: 6
+-- Name: r_database_attribute; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_database_attribute (
@@ -202,25 +240,26 @@ CREATE TABLE r_database_attribute (
 );
 
 
-ALTER TABLE r_database_attribute OWNER TO postgres;
+ALTER TABLE public.r_database_attribute OWNER TO postgres;
 
 --
--- TOC entry 148 (class 1259 OID 19168)
+-- TOC entry 148 (class 1259 OID 249993)
+-- Dependencies: 147 6
 -- Name: r_database_attribute_id_database_attribute_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_database_attribute_id_database_attribute_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_database_attribute_id_database_attribute_seq OWNER TO postgres;
+ALTER TABLE public.r_database_attribute_id_database_attribute_seq OWNER TO postgres;
 
 --
--- TOC entry 2170 (class 0 OID 0)
+-- TOC entry 2135 (class 0 OID 0)
 -- Dependencies: 148
 -- Name: r_database_attribute_id_database_attribute_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -229,8 +268,18 @@ ALTER SEQUENCE r_database_attribute_id_database_attribute_seq OWNED BY r_databas
 
 
 --
--- TOC entry 149 (class 1259 OID 19170)
--- Name: r_database_contype; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2136 (class 0 OID 0)
+-- Dependencies: 148
+-- Name: r_database_attribute_id_database_attribute_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_database_attribute_id_database_attribute_seq', 1, false);
+
+
+--
+-- TOC entry 149 (class 1259 OID 249995)
+-- Dependencies: 6
+-- Name: r_database_contype; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_database_contype (
@@ -240,25 +289,26 @@ CREATE TABLE r_database_contype (
 );
 
 
-ALTER TABLE r_database_contype OWNER TO postgres;
+ALTER TABLE public.r_database_contype OWNER TO postgres;
 
 --
--- TOC entry 150 (class 1259 OID 19176)
+-- TOC entry 150 (class 1259 OID 250001)
+-- Dependencies: 6 149
 -- Name: r_database_contype_id_database_contype_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_database_contype_id_database_contype_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_database_contype_id_database_contype_seq OWNER TO postgres;
+ALTER TABLE public.r_database_contype_id_database_contype_seq OWNER TO postgres;
 
 --
--- TOC entry 2171 (class 0 OID 0)
+-- TOC entry 2137 (class 0 OID 0)
 -- Dependencies: 150
 -- Name: r_database_contype_id_database_contype_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -267,22 +317,32 @@ ALTER SEQUENCE r_database_contype_id_database_contype_seq OWNED BY r_database_co
 
 
 --
--- TOC entry 151 (class 1259 OID 19178)
+-- TOC entry 2138 (class 0 OID 0)
+-- Dependencies: 150
+-- Name: r_database_contype_id_database_contype_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_database_contype_id_database_contype_seq', 1, false);
+
+
+--
+-- TOC entry 151 (class 1259 OID 250003)
+-- Dependencies: 6 146
 -- Name: r_database_id_database_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_database_id_database_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_database_id_database_seq OWNER TO postgres;
+ALTER TABLE public.r_database_id_database_seq OWNER TO postgres;
 
 --
--- TOC entry 2172 (class 0 OID 0)
+-- TOC entry 2139 (class 0 OID 0)
 -- Dependencies: 151
 -- Name: r_database_id_database_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -291,8 +351,18 @@ ALTER SEQUENCE r_database_id_database_seq OWNED BY r_database.id_database;
 
 
 --
--- TOC entry 152 (class 1259 OID 19180)
--- Name: r_database_type; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2140 (class 0 OID 0)
+-- Dependencies: 151
+-- Name: r_database_id_database_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_database_id_database_seq', 1, false);
+
+
+--
+-- TOC entry 152 (class 1259 OID 250005)
+-- Dependencies: 6
+-- Name: r_database_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_database_type (
@@ -302,25 +372,26 @@ CREATE TABLE r_database_type (
 );
 
 
-ALTER TABLE r_database_type OWNER TO postgres;
+ALTER TABLE public.r_database_type OWNER TO postgres;
 
 --
--- TOC entry 153 (class 1259 OID 19186)
+-- TOC entry 153 (class 1259 OID 250011)
+-- Dependencies: 152 6
 -- Name: r_database_type_id_database_type_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_database_type_id_database_type_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_database_type_id_database_type_seq OWNER TO postgres;
+ALTER TABLE public.r_database_type_id_database_type_seq OWNER TO postgres;
 
 --
--- TOC entry 2173 (class 0 OID 0)
+-- TOC entry 2141 (class 0 OID 0)
 -- Dependencies: 153
 -- Name: r_database_type_id_database_type_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -329,8 +400,18 @@ ALTER SEQUENCE r_database_type_id_database_type_seq OWNED BY r_database_type.id_
 
 
 --
--- TOC entry 154 (class 1259 OID 19188)
--- Name: r_dependency; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2142 (class 0 OID 0)
+-- Dependencies: 153
+-- Name: r_database_type_id_database_type_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_database_type_id_database_type_seq', 1, false);
+
+
+--
+-- TOC entry 154 (class 1259 OID 250013)
+-- Dependencies: 6
+-- Name: r_dependency; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_dependency (
@@ -342,25 +423,26 @@ CREATE TABLE r_dependency (
 );
 
 
-ALTER TABLE r_dependency OWNER TO postgres;
+ALTER TABLE public.r_dependency OWNER TO postgres;
 
 --
--- TOC entry 155 (class 1259 OID 19194)
+-- TOC entry 155 (class 1259 OID 250019)
+-- Dependencies: 154 6
 -- Name: r_dependency_id_dependency_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_dependency_id_dependency_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_dependency_id_dependency_seq OWNER TO postgres;
+ALTER TABLE public.r_dependency_id_dependency_seq OWNER TO postgres;
 
 --
--- TOC entry 2174 (class 0 OID 0)
+-- TOC entry 2143 (class 0 OID 0)
 -- Dependencies: 155
 -- Name: r_dependency_id_dependency_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -369,8 +451,18 @@ ALTER SEQUENCE r_dependency_id_dependency_seq OWNED BY r_dependency.id_dependenc
 
 
 --
--- TOC entry 156 (class 1259 OID 19196)
--- Name: r_directory; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2144 (class 0 OID 0)
+-- Dependencies: 155
+-- Name: r_dependency_id_dependency_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_dependency_id_dependency_seq', 1, false);
+
+
+--
+-- TOC entry 156 (class 1259 OID 250021)
+-- Dependencies: 6
+-- Name: r_directory; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_directory (
@@ -380,25 +472,26 @@ CREATE TABLE r_directory (
 );
 
 
-ALTER TABLE r_directory OWNER TO postgres;
+ALTER TABLE public.r_directory OWNER TO postgres;
 
 --
--- TOC entry 157 (class 1259 OID 19199)
+-- TOC entry 157 (class 1259 OID 250024)
+-- Dependencies: 156 6
 -- Name: r_directory_id_directory_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_directory_id_directory_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_directory_id_directory_seq OWNER TO postgres;
+ALTER TABLE public.r_directory_id_directory_seq OWNER TO postgres;
 
 --
--- TOC entry 2175 (class 0 OID 0)
+-- TOC entry 2145 (class 0 OID 0)
 -- Dependencies: 157
 -- Name: r_directory_id_directory_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -407,8 +500,18 @@ ALTER SEQUENCE r_directory_id_directory_seq OWNED BY r_directory.id_directory;
 
 
 --
--- TOC entry 158 (class 1259 OID 19201)
--- Name: r_job; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2146 (class 0 OID 0)
+-- Dependencies: 157
+-- Name: r_directory_id_directory_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_directory_id_directory_seq', 1, false);
+
+
+--
+-- TOC entry 158 (class 1259 OID 250026)
+-- Dependencies: 6
+-- Name: r_job; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_job (
@@ -432,11 +535,12 @@ CREATE TABLE r_job (
 );
 
 
-ALTER TABLE r_job OWNER TO postgres;
+ALTER TABLE public.r_job OWNER TO postgres;
 
 --
--- TOC entry 159 (class 1259 OID 19207)
--- Name: r_job_attribute; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 159 (class 1259 OID 250032)
+-- Dependencies: 6
+-- Name: r_job_attribute; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_job_attribute (
@@ -449,25 +553,26 @@ CREATE TABLE r_job_attribute (
 );
 
 
-ALTER TABLE r_job_attribute OWNER TO postgres;
+ALTER TABLE public.r_job_attribute OWNER TO postgres;
 
 --
--- TOC entry 160 (class 1259 OID 19213)
+-- TOC entry 160 (class 1259 OID 250038)
+-- Dependencies: 6 159
 -- Name: r_job_attribute_id_job_attribute_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_job_attribute_id_job_attribute_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_job_attribute_id_job_attribute_seq OWNER TO postgres;
+ALTER TABLE public.r_job_attribute_id_job_attribute_seq OWNER TO postgres;
 
 --
--- TOC entry 2176 (class 0 OID 0)
+-- TOC entry 2147 (class 0 OID 0)
 -- Dependencies: 160
 -- Name: r_job_attribute_id_job_attribute_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -476,8 +581,18 @@ ALTER SEQUENCE r_job_attribute_id_job_attribute_seq OWNED BY r_job_attribute.id_
 
 
 --
--- TOC entry 161 (class 1259 OID 19215)
--- Name: r_job_hop; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2148 (class 0 OID 0)
+-- Dependencies: 160
+-- Name: r_job_attribute_id_job_attribute_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_job_attribute_id_job_attribute_seq', 1, false);
+
+
+--
+-- TOC entry 161 (class 1259 OID 250040)
+-- Dependencies: 6
+-- Name: r_job_hop; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_job_hop (
@@ -491,25 +606,26 @@ CREATE TABLE r_job_hop (
 );
 
 
-ALTER TABLE r_job_hop OWNER TO postgres;
+ALTER TABLE public.r_job_hop OWNER TO postgres;
 
 --
--- TOC entry 162 (class 1259 OID 19218)
+-- TOC entry 162 (class 1259 OID 250043)
+-- Dependencies: 6 161
 -- Name: r_job_hop_id_job_hop_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_job_hop_id_job_hop_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_job_hop_id_job_hop_seq OWNER TO postgres;
+ALTER TABLE public.r_job_hop_id_job_hop_seq OWNER TO postgres;
 
 --
--- TOC entry 2177 (class 0 OID 0)
+-- TOC entry 2149 (class 0 OID 0)
 -- Dependencies: 162
 -- Name: r_job_hop_id_job_hop_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -518,22 +634,32 @@ ALTER SEQUENCE r_job_hop_id_job_hop_seq OWNED BY r_job_hop.id_job_hop;
 
 
 --
--- TOC entry 163 (class 1259 OID 19220)
+-- TOC entry 2150 (class 0 OID 0)
+-- Dependencies: 162
+-- Name: r_job_hop_id_job_hop_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_job_hop_id_job_hop_seq', 1, false);
+
+
+--
+-- TOC entry 163 (class 1259 OID 250045)
+-- Dependencies: 158 6
 -- Name: r_job_id_job_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_job_id_job_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_job_id_job_seq OWNER TO postgres;
+ALTER TABLE public.r_job_id_job_seq OWNER TO postgres;
 
 --
--- TOC entry 2178 (class 0 OID 0)
+-- TOC entry 2151 (class 0 OID 0)
 -- Dependencies: 163
 -- Name: r_job_id_job_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -542,8 +668,18 @@ ALTER SEQUENCE r_job_id_job_seq OWNED BY r_job.id_job;
 
 
 --
--- TOC entry 164 (class 1259 OID 19222)
--- Name: r_job_lock; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2152 (class 0 OID 0)
+-- Dependencies: 163
+-- Name: r_job_id_job_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_job_id_job_seq', 1, false);
+
+
+--
+-- TOC entry 164 (class 1259 OID 250047)
+-- Dependencies: 6
+-- Name: r_job_lock; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_job_lock (
@@ -555,25 +691,26 @@ CREATE TABLE r_job_lock (
 );
 
 
-ALTER TABLE r_job_lock OWNER TO postgres;
+ALTER TABLE public.r_job_lock OWNER TO postgres;
 
 --
--- TOC entry 165 (class 1259 OID 19228)
+-- TOC entry 165 (class 1259 OID 250053)
+-- Dependencies: 6 164
 -- Name: r_job_lock_id_job_lock_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_job_lock_id_job_lock_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_job_lock_id_job_lock_seq OWNER TO postgres;
+ALTER TABLE public.r_job_lock_id_job_lock_seq OWNER TO postgres;
 
 --
--- TOC entry 2179 (class 0 OID 0)
+-- TOC entry 2153 (class 0 OID 0)
 -- Dependencies: 165
 -- Name: r_job_lock_id_job_lock_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -582,8 +719,18 @@ ALTER SEQUENCE r_job_lock_id_job_lock_seq OWNED BY r_job_lock.id_job_lock;
 
 
 --
--- TOC entry 166 (class 1259 OID 19230)
--- Name: r_job_note; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2154 (class 0 OID 0)
+-- Dependencies: 165
+-- Name: r_job_lock_id_job_lock_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_job_lock_id_job_lock_seq', 1, false);
+
+
+--
+-- TOC entry 166 (class 1259 OID 250055)
+-- Dependencies: 6
+-- Name: r_job_note; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_job_note (
@@ -592,11 +739,12 @@ CREATE TABLE r_job_note (
 );
 
 
-ALTER TABLE r_job_note OWNER TO postgres;
+ALTER TABLE public.r_job_note OWNER TO postgres;
 
 --
--- TOC entry 167 (class 1259 OID 19233)
--- Name: r_jobentry; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 167 (class 1259 OID 250058)
+-- Dependencies: 6
+-- Name: r_jobentry; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_jobentry (
@@ -608,11 +756,12 @@ CREATE TABLE r_jobentry (
 );
 
 
-ALTER TABLE r_jobentry OWNER TO postgres;
+ALTER TABLE public.r_jobentry OWNER TO postgres;
 
 --
--- TOC entry 168 (class 1259 OID 19239)
--- Name: r_jobentry_attribute; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 168 (class 1259 OID 250064)
+-- Dependencies: 6
+-- Name: r_jobentry_attribute; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_jobentry_attribute (
@@ -626,25 +775,26 @@ CREATE TABLE r_jobentry_attribute (
 );
 
 
-ALTER TABLE r_jobentry_attribute OWNER TO postgres;
+ALTER TABLE public.r_jobentry_attribute OWNER TO postgres;
 
 --
--- TOC entry 169 (class 1259 OID 19245)
+-- TOC entry 169 (class 1259 OID 250070)
+-- Dependencies: 6 168
 -- Name: r_jobentry_attribute_id_jobentry_attribute_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_jobentry_attribute_id_jobentry_attribute_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_jobentry_attribute_id_jobentry_attribute_seq OWNER TO postgres;
+ALTER TABLE public.r_jobentry_attribute_id_jobentry_attribute_seq OWNER TO postgres;
 
 --
--- TOC entry 2180 (class 0 OID 0)
+-- TOC entry 2155 (class 0 OID 0)
 -- Dependencies: 169
 -- Name: r_jobentry_attribute_id_jobentry_attribute_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -653,8 +803,18 @@ ALTER SEQUENCE r_jobentry_attribute_id_jobentry_attribute_seq OWNED BY r_jobentr
 
 
 --
--- TOC entry 170 (class 1259 OID 19247)
--- Name: r_jobentry_copy; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2156 (class 0 OID 0)
+-- Dependencies: 169
+-- Name: r_jobentry_attribute_id_jobentry_attribute_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_jobentry_attribute_id_jobentry_attribute_seq', 1, false);
+
+
+--
+-- TOC entry 170 (class 1259 OID 250072)
+-- Dependencies: 6
+-- Name: r_jobentry_copy; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_jobentry_copy (
@@ -670,25 +830,26 @@ CREATE TABLE r_jobentry_copy (
 );
 
 
-ALTER TABLE r_jobentry_copy OWNER TO postgres;
+ALTER TABLE public.r_jobentry_copy OWNER TO postgres;
 
 --
--- TOC entry 171 (class 1259 OID 19250)
+-- TOC entry 171 (class 1259 OID 250075)
+-- Dependencies: 170 6
 -- Name: r_jobentry_copy_id_jobentry_copy_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_jobentry_copy_id_jobentry_copy_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_jobentry_copy_id_jobentry_copy_seq OWNER TO postgres;
+ALTER TABLE public.r_jobentry_copy_id_jobentry_copy_seq OWNER TO postgres;
 
 --
--- TOC entry 2181 (class 0 OID 0)
+-- TOC entry 2157 (class 0 OID 0)
 -- Dependencies: 171
 -- Name: r_jobentry_copy_id_jobentry_copy_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -697,8 +858,18 @@ ALTER SEQUENCE r_jobentry_copy_id_jobentry_copy_seq OWNED BY r_jobentry_copy.id_
 
 
 --
--- TOC entry 172 (class 1259 OID 19252)
--- Name: r_jobentry_database; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2158 (class 0 OID 0)
+-- Dependencies: 171
+-- Name: r_jobentry_copy_id_jobentry_copy_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_jobentry_copy_id_jobentry_copy_seq', 1, false);
+
+
+--
+-- TOC entry 172 (class 1259 OID 250077)
+-- Dependencies: 6
+-- Name: r_jobentry_database; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_jobentry_database (
@@ -708,25 +879,26 @@ CREATE TABLE r_jobentry_database (
 );
 
 
-ALTER TABLE r_jobentry_database OWNER TO postgres;
+ALTER TABLE public.r_jobentry_database OWNER TO postgres;
 
 --
--- TOC entry 173 (class 1259 OID 19255)
+-- TOC entry 173 (class 1259 OID 250080)
+-- Dependencies: 167 6
 -- Name: r_jobentry_id_jobentry_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_jobentry_id_jobentry_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_jobentry_id_jobentry_seq OWNER TO postgres;
+ALTER TABLE public.r_jobentry_id_jobentry_seq OWNER TO postgres;
 
 --
--- TOC entry 2182 (class 0 OID 0)
+-- TOC entry 2159 (class 0 OID 0)
 -- Dependencies: 173
 -- Name: r_jobentry_id_jobentry_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -735,8 +907,18 @@ ALTER SEQUENCE r_jobentry_id_jobentry_seq OWNED BY r_jobentry.id_jobentry;
 
 
 --
--- TOC entry 174 (class 1259 OID 19257)
--- Name: r_jobentry_type; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2160 (class 0 OID 0)
+-- Dependencies: 173
+-- Name: r_jobentry_id_jobentry_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_jobentry_id_jobentry_seq', 1, false);
+
+
+--
+-- TOC entry 174 (class 1259 OID 250082)
+-- Dependencies: 6
+-- Name: r_jobentry_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_jobentry_type (
@@ -746,25 +928,26 @@ CREATE TABLE r_jobentry_type (
 );
 
 
-ALTER TABLE r_jobentry_type OWNER TO postgres;
+ALTER TABLE public.r_jobentry_type OWNER TO postgres;
 
 --
--- TOC entry 175 (class 1259 OID 19263)
+-- TOC entry 175 (class 1259 OID 250088)
+-- Dependencies: 174 6
 -- Name: r_jobentry_type_id_jobentry_type_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_jobentry_type_id_jobentry_type_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_jobentry_type_id_jobentry_type_seq OWNER TO postgres;
+ALTER TABLE public.r_jobentry_type_id_jobentry_type_seq OWNER TO postgres;
 
 --
--- TOC entry 2183 (class 0 OID 0)
+-- TOC entry 2161 (class 0 OID 0)
 -- Dependencies: 175
 -- Name: r_jobentry_type_id_jobentry_type_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -773,8 +956,18 @@ ALTER SEQUENCE r_jobentry_type_id_jobentry_type_seq OWNED BY r_jobentry_type.id_
 
 
 --
--- TOC entry 176 (class 1259 OID 19265)
--- Name: r_log; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2162 (class 0 OID 0)
+-- Dependencies: 175
+-- Name: r_jobentry_type_id_jobentry_type_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_jobentry_type_id_jobentry_type_seq', 1, false);
+
+
+--
+-- TOC entry 176 (class 1259 OID 250090)
+-- Dependencies: 6
+-- Name: r_log; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_log (
@@ -791,25 +984,26 @@ CREATE TABLE r_log (
 );
 
 
-ALTER TABLE r_log OWNER TO postgres;
+ALTER TABLE public.r_log OWNER TO postgres;
 
 --
--- TOC entry 177 (class 1259 OID 19271)
+-- TOC entry 177 (class 1259 OID 250096)
+-- Dependencies: 6 176
 -- Name: r_log_id_log_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_log_id_log_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_log_id_log_seq OWNER TO postgres;
+ALTER TABLE public.r_log_id_log_seq OWNER TO postgres;
 
 --
--- TOC entry 2184 (class 0 OID 0)
+-- TOC entry 2163 (class 0 OID 0)
 -- Dependencies: 177
 -- Name: r_log_id_log_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -818,8 +1012,18 @@ ALTER SEQUENCE r_log_id_log_seq OWNED BY r_log.id_log;
 
 
 --
--- TOC entry 178 (class 1259 OID 19273)
--- Name: r_loglevel; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2164 (class 0 OID 0)
+-- Dependencies: 177
+-- Name: r_log_id_log_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_log_id_log_seq', 1, false);
+
+
+--
+-- TOC entry 178 (class 1259 OID 250098)
+-- Dependencies: 6
+-- Name: r_loglevel; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_loglevel (
@@ -829,25 +1033,26 @@ CREATE TABLE r_loglevel (
 );
 
 
-ALTER TABLE r_loglevel OWNER TO postgres;
+ALTER TABLE public.r_loglevel OWNER TO postgres;
 
 --
--- TOC entry 179 (class 1259 OID 19279)
+-- TOC entry 179 (class 1259 OID 250104)
+-- Dependencies: 6 178
 -- Name: r_loglevel_id_loglevel_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_loglevel_id_loglevel_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_loglevel_id_loglevel_seq OWNER TO postgres;
+ALTER TABLE public.r_loglevel_id_loglevel_seq OWNER TO postgres;
 
 --
--- TOC entry 2185 (class 0 OID 0)
+-- TOC entry 2165 (class 0 OID 0)
 -- Dependencies: 179
 -- Name: r_loglevel_id_loglevel_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -856,8 +1061,18 @@ ALTER SEQUENCE r_loglevel_id_loglevel_seq OWNED BY r_loglevel.id_loglevel;
 
 
 --
--- TOC entry 180 (class 1259 OID 19281)
--- Name: r_note; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2166 (class 0 OID 0)
+-- Dependencies: 179
+-- Name: r_loglevel_id_loglevel_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_loglevel_id_loglevel_seq', 1, false);
+
+
+--
+-- TOC entry 180 (class 1259 OID 250106)
+-- Dependencies: 6
+-- Name: r_note; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_note (
@@ -884,25 +1099,26 @@ CREATE TABLE r_note (
 );
 
 
-ALTER TABLE r_note OWNER TO postgres;
+ALTER TABLE public.r_note OWNER TO postgres;
 
 --
--- TOC entry 181 (class 1259 OID 19287)
+-- TOC entry 181 (class 1259 OID 250112)
+-- Dependencies: 180 6
 -- Name: r_note_id_note_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_note_id_note_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_note_id_note_seq OWNER TO postgres;
+ALTER TABLE public.r_note_id_note_seq OWNER TO postgres;
 
 --
--- TOC entry 2186 (class 0 OID 0)
+-- TOC entry 2167 (class 0 OID 0)
 -- Dependencies: 181
 -- Name: r_note_id_note_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -911,8 +1127,18 @@ ALTER SEQUENCE r_note_id_note_seq OWNED BY r_note.id_note;
 
 
 --
--- TOC entry 182 (class 1259 OID 19289)
--- Name: r_partition; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2168 (class 0 OID 0)
+-- Dependencies: 181
+-- Name: r_note_id_note_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_note_id_note_seq', 1570, true);
+
+
+--
+-- TOC entry 182 (class 1259 OID 250114)
+-- Dependencies: 6
+-- Name: r_partition; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_partition (
@@ -922,25 +1148,26 @@ CREATE TABLE r_partition (
 );
 
 
-ALTER TABLE r_partition OWNER TO postgres;
+ALTER TABLE public.r_partition OWNER TO postgres;
 
 --
--- TOC entry 183 (class 1259 OID 19292)
+-- TOC entry 183 (class 1259 OID 250117)
+-- Dependencies: 182 6
 -- Name: r_partition_id_partition_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_partition_id_partition_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_partition_id_partition_seq OWNER TO postgres;
+ALTER TABLE public.r_partition_id_partition_seq OWNER TO postgres;
 
 --
--- TOC entry 2187 (class 0 OID 0)
+-- TOC entry 2169 (class 0 OID 0)
 -- Dependencies: 183
 -- Name: r_partition_id_partition_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -949,8 +1176,18 @@ ALTER SEQUENCE r_partition_id_partition_seq OWNED BY r_partition.id_partition;
 
 
 --
--- TOC entry 184 (class 1259 OID 19294)
--- Name: r_partition_schema; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2170 (class 0 OID 0)
+-- Dependencies: 183
+-- Name: r_partition_id_partition_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_partition_id_partition_seq', 1, false);
+
+
+--
+-- TOC entry 184 (class 1259 OID 250119)
+-- Dependencies: 6
+-- Name: r_partition_schema; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_partition_schema (
@@ -961,25 +1198,26 @@ CREATE TABLE r_partition_schema (
 );
 
 
-ALTER TABLE r_partition_schema OWNER TO postgres;
+ALTER TABLE public.r_partition_schema OWNER TO postgres;
 
 --
--- TOC entry 185 (class 1259 OID 19300)
+-- TOC entry 185 (class 1259 OID 250125)
+-- Dependencies: 6 184
 -- Name: r_partition_schema_id_partition_schema_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_partition_schema_id_partition_schema_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_partition_schema_id_partition_schema_seq OWNER TO postgres;
+ALTER TABLE public.r_partition_schema_id_partition_schema_seq OWNER TO postgres;
 
 --
--- TOC entry 2188 (class 0 OID 0)
+-- TOC entry 2171 (class 0 OID 0)
 -- Dependencies: 185
 -- Name: r_partition_schema_id_partition_schema_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -988,8 +1226,18 @@ ALTER SEQUENCE r_partition_schema_id_partition_schema_seq OWNED BY r_partition_s
 
 
 --
--- TOC entry 186 (class 1259 OID 19302)
--- Name: r_repository_log; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2172 (class 0 OID 0)
+-- Dependencies: 185
+-- Name: r_partition_schema_id_partition_schema_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_partition_schema_id_partition_schema_seq', 1, false);
+
+
+--
+-- TOC entry 186 (class 1259 OID 250127)
+-- Dependencies: 6
+-- Name: r_repository_log; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_repository_log (
@@ -1001,25 +1249,26 @@ CREATE TABLE r_repository_log (
 );
 
 
-ALTER TABLE r_repository_log OWNER TO postgres;
+ALTER TABLE public.r_repository_log OWNER TO postgres;
 
 --
--- TOC entry 187 (class 1259 OID 19308)
+-- TOC entry 187 (class 1259 OID 250133)
+-- Dependencies: 186 6
 -- Name: r_repository_log_id_repository_log_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_repository_log_id_repository_log_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_repository_log_id_repository_log_seq OWNER TO postgres;
+ALTER TABLE public.r_repository_log_id_repository_log_seq OWNER TO postgres;
 
 --
--- TOC entry 2189 (class 0 OID 0)
+-- TOC entry 2173 (class 0 OID 0)
 -- Dependencies: 187
 -- Name: r_repository_log_id_repository_log_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1028,8 +1277,18 @@ ALTER SEQUENCE r_repository_log_id_repository_log_seq OWNED BY r_repository_log.
 
 
 --
--- TOC entry 188 (class 1259 OID 19310)
--- Name: r_slave; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2174 (class 0 OID 0)
+-- Dependencies: 187
+-- Name: r_repository_log_id_repository_log_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_repository_log_id_repository_log_seq', 1, false);
+
+
+--
+-- TOC entry 188 (class 1259 OID 250135)
+-- Dependencies: 6
+-- Name: r_slave; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_slave (
@@ -1047,25 +1306,26 @@ CREATE TABLE r_slave (
 );
 
 
-ALTER TABLE r_slave OWNER TO postgres;
+ALTER TABLE public.r_slave OWNER TO postgres;
 
 --
--- TOC entry 189 (class 1259 OID 19316)
+-- TOC entry 189 (class 1259 OID 250141)
+-- Dependencies: 6 188
 -- Name: r_slave_id_slave_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_slave_id_slave_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_slave_id_slave_seq OWNER TO postgres;
+ALTER TABLE public.r_slave_id_slave_seq OWNER TO postgres;
 
 --
--- TOC entry 2190 (class 0 OID 0)
+-- TOC entry 2175 (class 0 OID 0)
 -- Dependencies: 189
 -- Name: r_slave_id_slave_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1074,8 +1334,18 @@ ALTER SEQUENCE r_slave_id_slave_seq OWNED BY r_slave.id_slave;
 
 
 --
--- TOC entry 190 (class 1259 OID 19318)
--- Name: r_step; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2176 (class 0 OID 0)
+-- Dependencies: 189
+-- Name: r_slave_id_slave_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_slave_id_slave_seq', 1, false);
+
+
+--
+-- TOC entry 190 (class 1259 OID 250143)
+-- Dependencies: 6
+-- Name: r_step; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_step (
@@ -1092,11 +1362,12 @@ CREATE TABLE r_step (
 );
 
 
-ALTER TABLE r_step OWNER TO postgres;
+ALTER TABLE public.r_step OWNER TO postgres;
 
 --
--- TOC entry 191 (class 1259 OID 19324)
--- Name: r_step_attribute; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 191 (class 1259 OID 250149)
+-- Dependencies: 6
+-- Name: r_step_attribute; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_step_attribute (
@@ -1110,25 +1381,26 @@ CREATE TABLE r_step_attribute (
 );
 
 
-ALTER TABLE r_step_attribute OWNER TO postgres;
+ALTER TABLE public.r_step_attribute OWNER TO postgres;
 
 --
--- TOC entry 192 (class 1259 OID 19330)
+-- TOC entry 192 (class 1259 OID 250155)
+-- Dependencies: 191 6
 -- Name: r_step_attribute_id_step_attribute_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_step_attribute_id_step_attribute_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_step_attribute_id_step_attribute_seq OWNER TO postgres;
+ALTER TABLE public.r_step_attribute_id_step_attribute_seq OWNER TO postgres;
 
 --
--- TOC entry 2191 (class 0 OID 0)
+-- TOC entry 2177 (class 0 OID 0)
 -- Dependencies: 192
 -- Name: r_step_attribute_id_step_attribute_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1137,8 +1409,18 @@ ALTER SEQUENCE r_step_attribute_id_step_attribute_seq OWNED BY r_step_attribute.
 
 
 --
--- TOC entry 193 (class 1259 OID 19332)
--- Name: r_step_database; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2178 (class 0 OID 0)
+-- Dependencies: 192
+-- Name: r_step_attribute_id_step_attribute_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_step_attribute_id_step_attribute_seq', 1, false);
+
+
+--
+-- TOC entry 193 (class 1259 OID 250157)
+-- Dependencies: 6
+-- Name: r_step_database; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_step_database (
@@ -1148,25 +1430,26 @@ CREATE TABLE r_step_database (
 );
 
 
-ALTER TABLE r_step_database OWNER TO postgres;
+ALTER TABLE public.r_step_database OWNER TO postgres;
 
 --
--- TOC entry 194 (class 1259 OID 19335)
+-- TOC entry 194 (class 1259 OID 250160)
+-- Dependencies: 190 6
 -- Name: r_step_id_step_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_step_id_step_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_step_id_step_seq OWNER TO postgres;
+ALTER TABLE public.r_step_id_step_seq OWNER TO postgres;
 
 --
--- TOC entry 2192 (class 0 OID 0)
+-- TOC entry 2179 (class 0 OID 0)
 -- Dependencies: 194
 -- Name: r_step_id_step_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1175,8 +1458,18 @@ ALTER SEQUENCE r_step_id_step_seq OWNED BY r_step.id_step;
 
 
 --
--- TOC entry 195 (class 1259 OID 19337)
--- Name: r_step_type; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2180 (class 0 OID 0)
+-- Dependencies: 194
+-- Name: r_step_id_step_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_step_id_step_seq', 1, false);
+
+
+--
+-- TOC entry 195 (class 1259 OID 250162)
+-- Dependencies: 6
+-- Name: r_step_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_step_type (
@@ -1187,25 +1480,26 @@ CREATE TABLE r_step_type (
 );
 
 
-ALTER TABLE r_step_type OWNER TO postgres;
+ALTER TABLE public.r_step_type OWNER TO postgres;
 
 --
--- TOC entry 196 (class 1259 OID 19343)
+-- TOC entry 196 (class 1259 OID 250168)
+-- Dependencies: 6 195
 -- Name: r_step_type_id_step_type_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_step_type_id_step_type_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_step_type_id_step_type_seq OWNER TO postgres;
+ALTER TABLE public.r_step_type_id_step_type_seq OWNER TO postgres;
 
 --
--- TOC entry 2193 (class 0 OID 0)
+-- TOC entry 2181 (class 0 OID 0)
 -- Dependencies: 196
 -- Name: r_step_type_id_step_type_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1214,8 +1508,18 @@ ALTER SEQUENCE r_step_type_id_step_type_seq OWNED BY r_step_type.id_step_type;
 
 
 --
--- TOC entry 197 (class 1259 OID 19345)
--- Name: r_trans_attribute; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2182 (class 0 OID 0)
+-- Dependencies: 196
+-- Name: r_step_type_id_step_type_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_step_type_id_step_type_seq', 1, false);
+
+
+--
+-- TOC entry 197 (class 1259 OID 250170)
+-- Dependencies: 6
+-- Name: r_trans_attribute; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_trans_attribute (
@@ -1228,25 +1532,26 @@ CREATE TABLE r_trans_attribute (
 );
 
 
-ALTER TABLE r_trans_attribute OWNER TO postgres;
+ALTER TABLE public.r_trans_attribute OWNER TO postgres;
 
 --
--- TOC entry 198 (class 1259 OID 19351)
+-- TOC entry 198 (class 1259 OID 250176)
+-- Dependencies: 197 6
 -- Name: r_trans_attribute_id_trans_attribute_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_trans_attribute_id_trans_attribute_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_trans_attribute_id_trans_attribute_seq OWNER TO postgres;
+ALTER TABLE public.r_trans_attribute_id_trans_attribute_seq OWNER TO postgres;
 
 --
--- TOC entry 2194 (class 0 OID 0)
+-- TOC entry 2183 (class 0 OID 0)
 -- Dependencies: 198
 -- Name: r_trans_attribute_id_trans_attribute_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1255,8 +1560,18 @@ ALTER SEQUENCE r_trans_attribute_id_trans_attribute_seq OWNED BY r_trans_attribu
 
 
 --
--- TOC entry 199 (class 1259 OID 19353)
--- Name: r_trans_cluster; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2184 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: r_trans_attribute_id_trans_attribute_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_trans_attribute_id_trans_attribute_seq', 1, false);
+
+
+--
+-- TOC entry 199 (class 1259 OID 250178)
+-- Dependencies: 6
+-- Name: r_trans_cluster; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_trans_cluster (
@@ -1266,25 +1581,26 @@ CREATE TABLE r_trans_cluster (
 );
 
 
-ALTER TABLE r_trans_cluster OWNER TO postgres;
+ALTER TABLE public.r_trans_cluster OWNER TO postgres;
 
 --
--- TOC entry 200 (class 1259 OID 19356)
+-- TOC entry 200 (class 1259 OID 250181)
+-- Dependencies: 199 6
 -- Name: r_trans_cluster_id_trans_cluster_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_trans_cluster_id_trans_cluster_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_trans_cluster_id_trans_cluster_seq OWNER TO postgres;
+ALTER TABLE public.r_trans_cluster_id_trans_cluster_seq OWNER TO postgres;
 
 --
--- TOC entry 2195 (class 0 OID 0)
+-- TOC entry 2185 (class 0 OID 0)
 -- Dependencies: 200
 -- Name: r_trans_cluster_id_trans_cluster_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1293,8 +1609,18 @@ ALTER SEQUENCE r_trans_cluster_id_trans_cluster_seq OWNED BY r_trans_cluster.id_
 
 
 --
--- TOC entry 201 (class 1259 OID 19358)
--- Name: r_trans_hop; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2186 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: r_trans_cluster_id_trans_cluster_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_trans_cluster_id_trans_cluster_seq', 1, false);
+
+
+--
+-- TOC entry 201 (class 1259 OID 250183)
+-- Dependencies: 6
+-- Name: r_trans_hop; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_trans_hop (
@@ -1306,25 +1632,26 @@ CREATE TABLE r_trans_hop (
 );
 
 
-ALTER TABLE r_trans_hop OWNER TO postgres;
+ALTER TABLE public.r_trans_hop OWNER TO postgres;
 
 --
--- TOC entry 202 (class 1259 OID 19361)
+-- TOC entry 202 (class 1259 OID 250186)
+-- Dependencies: 6 201
 -- Name: r_trans_hop_id_trans_hop_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_trans_hop_id_trans_hop_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_trans_hop_id_trans_hop_seq OWNER TO postgres;
+ALTER TABLE public.r_trans_hop_id_trans_hop_seq OWNER TO postgres;
 
 --
--- TOC entry 2196 (class 0 OID 0)
+-- TOC entry 2187 (class 0 OID 0)
 -- Dependencies: 202
 -- Name: r_trans_hop_id_trans_hop_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1333,8 +1660,18 @@ ALTER SEQUENCE r_trans_hop_id_trans_hop_seq OWNED BY r_trans_hop.id_trans_hop;
 
 
 --
--- TOC entry 203 (class 1259 OID 19363)
--- Name: r_trans_lock; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2188 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: r_trans_hop_id_trans_hop_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_trans_hop_id_trans_hop_seq', 1, false);
+
+
+--
+-- TOC entry 203 (class 1259 OID 250188)
+-- Dependencies: 6
+-- Name: r_trans_lock; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_trans_lock (
@@ -1346,25 +1683,26 @@ CREATE TABLE r_trans_lock (
 );
 
 
-ALTER TABLE r_trans_lock OWNER TO postgres;
+ALTER TABLE public.r_trans_lock OWNER TO postgres;
 
 --
--- TOC entry 204 (class 1259 OID 19369)
+-- TOC entry 204 (class 1259 OID 250194)
+-- Dependencies: 6 203
 -- Name: r_trans_lock_id_trans_lock_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_trans_lock_id_trans_lock_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_trans_lock_id_trans_lock_seq OWNER TO postgres;
+ALTER TABLE public.r_trans_lock_id_trans_lock_seq OWNER TO postgres;
 
 --
--- TOC entry 2197 (class 0 OID 0)
+-- TOC entry 2189 (class 0 OID 0)
 -- Dependencies: 204
 -- Name: r_trans_lock_id_trans_lock_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1373,8 +1711,18 @@ ALTER SEQUENCE r_trans_lock_id_trans_lock_seq OWNED BY r_trans_lock.id_trans_loc
 
 
 --
--- TOC entry 205 (class 1259 OID 19371)
--- Name: r_trans_note; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2190 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: r_trans_lock_id_trans_lock_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_trans_lock_id_trans_lock_seq', 1, false);
+
+
+--
+-- TOC entry 205 (class 1259 OID 250196)
+-- Dependencies: 6
+-- Name: r_trans_note; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_trans_note (
@@ -1383,11 +1731,12 @@ CREATE TABLE r_trans_note (
 );
 
 
-ALTER TABLE r_trans_note OWNER TO postgres;
+ALTER TABLE public.r_trans_note OWNER TO postgres;
 
 --
--- TOC entry 206 (class 1259 OID 19374)
--- Name: r_trans_partition_schema; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 206 (class 1259 OID 250199)
+-- Dependencies: 6
+-- Name: r_trans_partition_schema; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_trans_partition_schema (
@@ -1397,25 +1746,26 @@ CREATE TABLE r_trans_partition_schema (
 );
 
 
-ALTER TABLE r_trans_partition_schema OWNER TO postgres;
+ALTER TABLE public.r_trans_partition_schema OWNER TO postgres;
 
 --
--- TOC entry 207 (class 1259 OID 19377)
+-- TOC entry 207 (class 1259 OID 250202)
+-- Dependencies: 206 6
 -- Name: r_trans_partition_schema_id_trans_partition_schema_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_trans_partition_schema_id_trans_partition_schema_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_trans_partition_schema_id_trans_partition_schema_seq OWNER TO postgres;
+ALTER TABLE public.r_trans_partition_schema_id_trans_partition_schema_seq OWNER TO postgres;
 
 --
--- TOC entry 2198 (class 0 OID 0)
+-- TOC entry 2191 (class 0 OID 0)
 -- Dependencies: 207
 -- Name: r_trans_partition_schema_id_trans_partition_schema_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1424,8 +1774,18 @@ ALTER SEQUENCE r_trans_partition_schema_id_trans_partition_schema_seq OWNED BY r
 
 
 --
--- TOC entry 208 (class 1259 OID 19379)
--- Name: r_trans_slave; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2192 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: r_trans_partition_schema_id_trans_partition_schema_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_trans_partition_schema_id_trans_partition_schema_seq', 1, false);
+
+
+--
+-- TOC entry 208 (class 1259 OID 250204)
+-- Dependencies: 6
+-- Name: r_trans_slave; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_trans_slave (
@@ -1435,25 +1795,26 @@ CREATE TABLE r_trans_slave (
 );
 
 
-ALTER TABLE r_trans_slave OWNER TO postgres;
+ALTER TABLE public.r_trans_slave OWNER TO postgres;
 
 --
--- TOC entry 209 (class 1259 OID 19382)
+-- TOC entry 209 (class 1259 OID 250207)
+-- Dependencies: 208 6
 -- Name: r_trans_slave_id_trans_slave_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_trans_slave_id_trans_slave_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_trans_slave_id_trans_slave_seq OWNER TO postgres;
+ALTER TABLE public.r_trans_slave_id_trans_slave_seq OWNER TO postgres;
 
 --
--- TOC entry 2199 (class 0 OID 0)
+-- TOC entry 2193 (class 0 OID 0)
 -- Dependencies: 209
 -- Name: r_trans_slave_id_trans_slave_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1462,8 +1823,18 @@ ALTER SEQUENCE r_trans_slave_id_trans_slave_seq OWNED BY r_trans_slave.id_trans_
 
 
 --
--- TOC entry 210 (class 1259 OID 19384)
--- Name: r_trans_step_condition; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2194 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: r_trans_slave_id_trans_slave_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_trans_slave_id_trans_slave_seq', 1, false);
+
+
+--
+-- TOC entry 210 (class 1259 OID 250209)
+-- Dependencies: 6
+-- Name: r_trans_step_condition; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_trans_step_condition (
@@ -1473,11 +1844,12 @@ CREATE TABLE r_trans_step_condition (
 );
 
 
-ALTER TABLE r_trans_step_condition OWNER TO postgres;
+ALTER TABLE public.r_trans_step_condition OWNER TO postgres;
 
 --
--- TOC entry 211 (class 1259 OID 19387)
--- Name: r_transformation; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 211 (class 1259 OID 250212)
+-- Dependencies: 6
+-- Name: r_transformation; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_transformation (
@@ -1510,25 +1882,26 @@ CREATE TABLE r_transformation (
 );
 
 
-ALTER TABLE r_transformation OWNER TO postgres;
+ALTER TABLE public.r_transformation OWNER TO postgres;
 
 --
--- TOC entry 212 (class 1259 OID 19393)
+-- TOC entry 212 (class 1259 OID 250218)
+-- Dependencies: 211 6
 -- Name: r_transformation_id_transformation_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_transformation_id_transformation_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_transformation_id_transformation_seq OWNER TO postgres;
+ALTER TABLE public.r_transformation_id_transformation_seq OWNER TO postgres;
 
 --
--- TOC entry 2200 (class 0 OID 0)
+-- TOC entry 2195 (class 0 OID 0)
 -- Dependencies: 212
 -- Name: r_transformation_id_transformation_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1537,8 +1910,18 @@ ALTER SEQUENCE r_transformation_id_transformation_seq OWNED BY r_transformation.
 
 
 --
--- TOC entry 213 (class 1259 OID 19395)
--- Name: r_user; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2196 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: r_transformation_id_transformation_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_transformation_id_transformation_seq', 1, false);
+
+
+--
+-- TOC entry 213 (class 1259 OID 250220)
+-- Dependencies: 6
+-- Name: r_user; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_user (
@@ -1551,25 +1934,26 @@ CREATE TABLE r_user (
 );
 
 
-ALTER TABLE r_user OWNER TO postgres;
+ALTER TABLE public.r_user OWNER TO postgres;
 
 --
--- TOC entry 214 (class 1259 OID 19401)
+-- TOC entry 214 (class 1259 OID 250226)
+-- Dependencies: 213 6
 -- Name: r_user_id_user_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_user_id_user_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_user_id_user_seq OWNER TO postgres;
+ALTER TABLE public.r_user_id_user_seq OWNER TO postgres;
 
 --
--- TOC entry 2201 (class 0 OID 0)
+-- TOC entry 2197 (class 0 OID 0)
 -- Dependencies: 214
 -- Name: r_user_id_user_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1578,8 +1962,18 @@ ALTER SEQUENCE r_user_id_user_seq OWNED BY r_user.id_user;
 
 
 --
--- TOC entry 215 (class 1259 OID 19403)
--- Name: r_value; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2198 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: r_user_id_user_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_user_id_user_seq', 1, false);
+
+
+--
+-- TOC entry 215 (class 1259 OID 250228)
+-- Dependencies: 6
+-- Name: r_value; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_value (
@@ -1591,25 +1985,26 @@ CREATE TABLE r_value (
 );
 
 
-ALTER TABLE r_value OWNER TO postgres;
+ALTER TABLE public.r_value OWNER TO postgres;
 
 --
--- TOC entry 216 (class 1259 OID 19409)
+-- TOC entry 216 (class 1259 OID 250234)
+-- Dependencies: 215 6
 -- Name: r_value_id_value_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_value_id_value_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_value_id_value_seq OWNER TO postgres;
+ALTER TABLE public.r_value_id_value_seq OWNER TO postgres;
 
 --
--- TOC entry 2202 (class 0 OID 0)
+-- TOC entry 2199 (class 0 OID 0)
 -- Dependencies: 216
 -- Name: r_value_id_value_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1618,8 +2013,18 @@ ALTER SEQUENCE r_value_id_value_seq OWNED BY r_value.id_value;
 
 
 --
--- TOC entry 217 (class 1259 OID 19411)
--- Name: r_version; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 2200 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: r_value_id_value_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_value_id_value_seq', 1, false);
+
+
+--
+-- TOC entry 217 (class 1259 OID 250236)
+-- Dependencies: 6
+-- Name: r_version; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE r_version (
@@ -1631,25 +2036,26 @@ CREATE TABLE r_version (
 );
 
 
-ALTER TABLE r_version OWNER TO postgres;
+ALTER TABLE public.r_version OWNER TO postgres;
 
 --
--- TOC entry 218 (class 1259 OID 19414)
+-- TOC entry 218 (class 1259 OID 250239)
+-- Dependencies: 217 6
 -- Name: r_version_id_version_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE r_version_id_version_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
-ALTER TABLE r_version_id_version_seq OWNER TO postgres;
+ALTER TABLE public.r_version_id_version_seq OWNER TO postgres;
 
 --
--- TOC entry 2203 (class 0 OID 0)
+-- TOC entry 2201 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: r_version_id_version_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1658,7 +2064,17 @@ ALTER SEQUENCE r_version_id_version_seq OWNED BY r_version.id_version;
 
 
 --
--- TOC entry 1948 (class 2604 OID 19416)
+-- TOC entry 2202 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: r_version_id_version_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('r_version_id_version_seq', 1, false);
+
+
+--
+-- TOC entry 2035 (class 2604 OID 250241)
+-- Dependencies: 141 140
 -- Name: id_cluster; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1666,7 +2082,8 @@ ALTER TABLE ONLY r_cluster ALTER COLUMN id_cluster SET DEFAULT nextval('r_cluste
 
 
 --
--- TOC entry 1949 (class 2604 OID 19417)
+-- TOC entry 2036 (class 2604 OID 250242)
+-- Dependencies: 143 142
 -- Name: id_cluster_slave; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1674,7 +2091,8 @@ ALTER TABLE ONLY r_cluster_slave ALTER COLUMN id_cluster_slave SET DEFAULT nextv
 
 
 --
--- TOC entry 1950 (class 2604 OID 19418)
+-- TOC entry 2037 (class 2604 OID 250243)
+-- Dependencies: 145 144
 -- Name: id_condition; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1682,7 +2100,8 @@ ALTER TABLE ONLY r_condition ALTER COLUMN id_condition SET DEFAULT nextval('r_co
 
 
 --
--- TOC entry 1951 (class 2604 OID 19419)
+-- TOC entry 2038 (class 2604 OID 250244)
+-- Dependencies: 151 146
 -- Name: id_database; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1690,7 +2109,8 @@ ALTER TABLE ONLY r_database ALTER COLUMN id_database SET DEFAULT nextval('r_data
 
 
 --
--- TOC entry 1952 (class 2604 OID 19420)
+-- TOC entry 2039 (class 2604 OID 250245)
+-- Dependencies: 148 147
 -- Name: id_database_attribute; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1698,7 +2118,8 @@ ALTER TABLE ONLY r_database_attribute ALTER COLUMN id_database_attribute SET DEF
 
 
 --
--- TOC entry 1953 (class 2604 OID 19421)
+-- TOC entry 2040 (class 2604 OID 250246)
+-- Dependencies: 150 149
 -- Name: id_database_contype; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1706,7 +2127,8 @@ ALTER TABLE ONLY r_database_contype ALTER COLUMN id_database_contype SET DEFAULT
 
 
 --
--- TOC entry 1954 (class 2604 OID 19422)
+-- TOC entry 2041 (class 2604 OID 250247)
+-- Dependencies: 153 152
 -- Name: id_database_type; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1714,7 +2136,8 @@ ALTER TABLE ONLY r_database_type ALTER COLUMN id_database_type SET DEFAULT nextv
 
 
 --
--- TOC entry 1955 (class 2604 OID 19423)
+-- TOC entry 2042 (class 2604 OID 250248)
+-- Dependencies: 155 154
 -- Name: id_dependency; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1722,7 +2145,8 @@ ALTER TABLE ONLY r_dependency ALTER COLUMN id_dependency SET DEFAULT nextval('r_
 
 
 --
--- TOC entry 1956 (class 2604 OID 19424)
+-- TOC entry 2043 (class 2604 OID 250249)
+-- Dependencies: 157 156
 -- Name: id_directory; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1730,7 +2154,8 @@ ALTER TABLE ONLY r_directory ALTER COLUMN id_directory SET DEFAULT nextval('r_di
 
 
 --
--- TOC entry 1957 (class 2604 OID 19425)
+-- TOC entry 2044 (class 2604 OID 250250)
+-- Dependencies: 163 158
 -- Name: id_job; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1738,7 +2163,8 @@ ALTER TABLE ONLY r_job ALTER COLUMN id_job SET DEFAULT nextval('r_job_id_job_seq
 
 
 --
--- TOC entry 1958 (class 2604 OID 19426)
+-- TOC entry 2045 (class 2604 OID 250251)
+-- Dependencies: 160 159
 -- Name: id_job_attribute; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1746,7 +2172,8 @@ ALTER TABLE ONLY r_job_attribute ALTER COLUMN id_job_attribute SET DEFAULT nextv
 
 
 --
--- TOC entry 1959 (class 2604 OID 19427)
+-- TOC entry 2046 (class 2604 OID 250252)
+-- Dependencies: 162 161
 -- Name: id_job_hop; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1754,7 +2181,8 @@ ALTER TABLE ONLY r_job_hop ALTER COLUMN id_job_hop SET DEFAULT nextval('r_job_ho
 
 
 --
--- TOC entry 1960 (class 2604 OID 19428)
+-- TOC entry 2047 (class 2604 OID 250253)
+-- Dependencies: 165 164
 -- Name: id_job_lock; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1762,7 +2190,8 @@ ALTER TABLE ONLY r_job_lock ALTER COLUMN id_job_lock SET DEFAULT nextval('r_job_
 
 
 --
--- TOC entry 1961 (class 2604 OID 19429)
+-- TOC entry 2048 (class 2604 OID 250254)
+-- Dependencies: 173 167
 -- Name: id_jobentry; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1770,7 +2199,8 @@ ALTER TABLE ONLY r_jobentry ALTER COLUMN id_jobentry SET DEFAULT nextval('r_jobe
 
 
 --
--- TOC entry 1962 (class 2604 OID 19430)
+-- TOC entry 2049 (class 2604 OID 250255)
+-- Dependencies: 169 168
 -- Name: id_jobentry_attribute; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1778,7 +2208,8 @@ ALTER TABLE ONLY r_jobentry_attribute ALTER COLUMN id_jobentry_attribute SET DEF
 
 
 --
--- TOC entry 1963 (class 2604 OID 19431)
+-- TOC entry 2050 (class 2604 OID 250256)
+-- Dependencies: 171 170
 -- Name: id_jobentry_copy; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1786,7 +2217,8 @@ ALTER TABLE ONLY r_jobentry_copy ALTER COLUMN id_jobentry_copy SET DEFAULT nextv
 
 
 --
--- TOC entry 1964 (class 2604 OID 19432)
+-- TOC entry 2051 (class 2604 OID 250257)
+-- Dependencies: 175 174
 -- Name: id_jobentry_type; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1794,7 +2226,8 @@ ALTER TABLE ONLY r_jobentry_type ALTER COLUMN id_jobentry_type SET DEFAULT nextv
 
 
 --
--- TOC entry 1965 (class 2604 OID 19433)
+-- TOC entry 2052 (class 2604 OID 250258)
+-- Dependencies: 177 176
 -- Name: id_log; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1802,7 +2235,8 @@ ALTER TABLE ONLY r_log ALTER COLUMN id_log SET DEFAULT nextval('r_log_id_log_seq
 
 
 --
--- TOC entry 1966 (class 2604 OID 19434)
+-- TOC entry 2053 (class 2604 OID 250259)
+-- Dependencies: 179 178
 -- Name: id_loglevel; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1810,7 +2244,8 @@ ALTER TABLE ONLY r_loglevel ALTER COLUMN id_loglevel SET DEFAULT nextval('r_logl
 
 
 --
--- TOC entry 1967 (class 2604 OID 19435)
+-- TOC entry 2054 (class 2604 OID 250260)
+-- Dependencies: 181 180
 -- Name: id_note; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1818,7 +2253,8 @@ ALTER TABLE ONLY r_note ALTER COLUMN id_note SET DEFAULT nextval('r_note_id_note
 
 
 --
--- TOC entry 1968 (class 2604 OID 19436)
+-- TOC entry 2055 (class 2604 OID 250261)
+-- Dependencies: 183 182
 -- Name: id_partition; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1826,7 +2262,8 @@ ALTER TABLE ONLY r_partition ALTER COLUMN id_partition SET DEFAULT nextval('r_pa
 
 
 --
--- TOC entry 1969 (class 2604 OID 19437)
+-- TOC entry 2056 (class 2604 OID 250262)
+-- Dependencies: 185 184
 -- Name: id_partition_schema; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1834,7 +2271,8 @@ ALTER TABLE ONLY r_partition_schema ALTER COLUMN id_partition_schema SET DEFAULT
 
 
 --
--- TOC entry 1970 (class 2604 OID 19438)
+-- TOC entry 2057 (class 2604 OID 250263)
+-- Dependencies: 187 186
 -- Name: id_repository_log; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1842,7 +2280,8 @@ ALTER TABLE ONLY r_repository_log ALTER COLUMN id_repository_log SET DEFAULT nex
 
 
 --
--- TOC entry 1971 (class 2604 OID 19439)
+-- TOC entry 2058 (class 2604 OID 250264)
+-- Dependencies: 189 188
 -- Name: id_slave; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1850,7 +2289,8 @@ ALTER TABLE ONLY r_slave ALTER COLUMN id_slave SET DEFAULT nextval('r_slave_id_s
 
 
 --
--- TOC entry 1972 (class 2604 OID 19440)
+-- TOC entry 2059 (class 2604 OID 250265)
+-- Dependencies: 194 190
 -- Name: id_step; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1858,7 +2298,8 @@ ALTER TABLE ONLY r_step ALTER COLUMN id_step SET DEFAULT nextval('r_step_id_step
 
 
 --
--- TOC entry 1973 (class 2604 OID 19441)
+-- TOC entry 2060 (class 2604 OID 250266)
+-- Dependencies: 192 191
 -- Name: id_step_attribute; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1866,7 +2307,8 @@ ALTER TABLE ONLY r_step_attribute ALTER COLUMN id_step_attribute SET DEFAULT nex
 
 
 --
--- TOC entry 1974 (class 2604 OID 19442)
+-- TOC entry 2061 (class 2604 OID 250267)
+-- Dependencies: 196 195
 -- Name: id_step_type; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1874,7 +2316,8 @@ ALTER TABLE ONLY r_step_type ALTER COLUMN id_step_type SET DEFAULT nextval('r_st
 
 
 --
--- TOC entry 1975 (class 2604 OID 19443)
+-- TOC entry 2062 (class 2604 OID 250268)
+-- Dependencies: 198 197
 -- Name: id_trans_attribute; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1882,7 +2325,8 @@ ALTER TABLE ONLY r_trans_attribute ALTER COLUMN id_trans_attribute SET DEFAULT n
 
 
 --
--- TOC entry 1976 (class 2604 OID 19444)
+-- TOC entry 2063 (class 2604 OID 250269)
+-- Dependencies: 200 199
 -- Name: id_trans_cluster; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1890,7 +2334,8 @@ ALTER TABLE ONLY r_trans_cluster ALTER COLUMN id_trans_cluster SET DEFAULT nextv
 
 
 --
--- TOC entry 1977 (class 2604 OID 19445)
+-- TOC entry 2064 (class 2604 OID 250270)
+-- Dependencies: 202 201
 -- Name: id_trans_hop; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1898,7 +2343,8 @@ ALTER TABLE ONLY r_trans_hop ALTER COLUMN id_trans_hop SET DEFAULT nextval('r_tr
 
 
 --
--- TOC entry 1978 (class 2604 OID 19446)
+-- TOC entry 2065 (class 2604 OID 250271)
+-- Dependencies: 204 203
 -- Name: id_trans_lock; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1906,7 +2352,8 @@ ALTER TABLE ONLY r_trans_lock ALTER COLUMN id_trans_lock SET DEFAULT nextval('r_
 
 
 --
--- TOC entry 1979 (class 2604 OID 19447)
+-- TOC entry 2066 (class 2604 OID 250272)
+-- Dependencies: 207 206
 -- Name: id_trans_partition_schema; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1914,7 +2361,8 @@ ALTER TABLE ONLY r_trans_partition_schema ALTER COLUMN id_trans_partition_schema
 
 
 --
--- TOC entry 1980 (class 2604 OID 19448)
+-- TOC entry 2067 (class 2604 OID 250273)
+-- Dependencies: 209 208
 -- Name: id_trans_slave; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1922,7 +2370,8 @@ ALTER TABLE ONLY r_trans_slave ALTER COLUMN id_trans_slave SET DEFAULT nextval('
 
 
 --
--- TOC entry 1981 (class 2604 OID 19449)
+-- TOC entry 2068 (class 2604 OID 250274)
+-- Dependencies: 212 211
 -- Name: id_transformation; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1930,7 +2379,8 @@ ALTER TABLE ONLY r_transformation ALTER COLUMN id_transformation SET DEFAULT nex
 
 
 --
--- TOC entry 1982 (class 2604 OID 19450)
+-- TOC entry 2069 (class 2604 OID 250275)
+-- Dependencies: 214 213
 -- Name: id_user; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1938,7 +2388,8 @@ ALTER TABLE ONLY r_user ALTER COLUMN id_user SET DEFAULT nextval('r_user_id_user
 
 
 --
--- TOC entry 1983 (class 2604 OID 19451)
+-- TOC entry 2070 (class 2604 OID 250276)
+-- Dependencies: 216 215
 -- Name: id_value; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1946,7 +2397,8 @@ ALTER TABLE ONLY r_value ALTER COLUMN id_value SET DEFAULT nextval('r_value_id_v
 
 
 --
--- TOC entry 1984 (class 2604 OID 19452)
+-- TOC entry 2071 (class 2604 OID 250277)
+-- Dependencies: 218 217
 -- Name: id_version; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1954,7 +2406,7 @@ ALTER TABLE ONLY r_version ALTER COLUMN id_version SET DEFAULT nextval('r_versio
 
 
 --
--- TOC entry 2081 (class 0 OID 19135)
+-- TOC entry 2082 (class 0 OID 249960)
 -- Dependencies: 140
 -- Data for Name: r_cluster; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1964,16 +2416,7 @@ COPY r_cluster (id_cluster, name, base_port, sockets_buffer_size, sockets_flush_
 
 
 --
--- TOC entry 2204 (class 0 OID 0)
--- Dependencies: 141
--- Name: r_cluster_id_cluster_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_cluster_id_cluster_seq', 1, false);
-
-
---
--- TOC entry 2083 (class 0 OID 19143)
+-- TOC entry 2083 (class 0 OID 249968)
 -- Dependencies: 142
 -- Data for Name: r_cluster_slave; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1983,16 +2426,7 @@ COPY r_cluster_slave (id_cluster_slave, id_cluster, id_slave) FROM stdin;
 
 
 --
--- TOC entry 2205 (class 0 OID 0)
--- Dependencies: 143
--- Name: r_cluster_slave_id_cluster_slave_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_cluster_slave_id_cluster_slave_seq', 1, false);
-
-
---
--- TOC entry 2085 (class 0 OID 19148)
+-- TOC entry 2084 (class 0 OID 249973)
 -- Dependencies: 144
 -- Data for Name: r_condition; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2002,12 +2436,9 @@ COPY r_condition (id_condition, id_condition_parent, negated, operator, left_nam
 206	\N	N	-      	ressource	IS NOT NULL	\N	\N
 207	\N	N	-      	fichier_ressource	IS NOT NULL	\N	\N
 208	\N	N	-      	presence	=	\N	1
-242	\N	N	-      	statut_csw	=	\N	3
-243	\N	N	-      	statut_xml_metadata	=	\N	3
 201	\N	N	-      	present	=	\N	1
 209	\N	N	-      	nombre	=	\N	24
 125	\N	N	-      	\N	=	\N	\N
-244	\N	N	-      	type_image	<>	\N	29
 182	\N	N	-      	md5_local	=	md5_distant	\N
 183	\N	N	-      	\N	=	\N	\N
 210	\N	N	-      	nombre	=	\N	24
@@ -2021,10 +2452,7 @@ COPY r_condition (id_condition, id_condition_parent, negated, operator, left_nam
 219	218	N	-      	encodage	<>	\N	25
 226	\N	N	-      	hydrant_id	IS NULL	\N	\N
 227	\N	N	-      	id_zone	IS NOT NULL	\N	\N
-245	\N	N	-      	id_fiche	IS NOT NULL	\N	\N
-246	\N	N	-      	mots_clef	CONTAINS	nom_thematique	\N
 223	\N	N	-      	\N	=	\N	\N
-247	\N	N	-      	\N	=	\N	\N
 224	\N	N	-      	\N	=	\N	\N
 271	\N	N	-      	archiver_courrier	=	\N	1
 272	\N	N	-      	\N	=	\N	\N
@@ -2044,39 +2472,32 @@ COPY r_condition (id_condition, id_condition_parent, negated, operator, left_nam
 268	\N	N	-      	sql_filename	IS NOT NULL	\N	\N
 269	\N	N	-      	notification_email	IS NOT NULL	\N	1
 270	\N	N	-      	\N	=	\N	\N
-279	\N	N	-      	\N	=	\N	\N
-280	279	N	-      	code	IS NOT NULL	\N	\N
-281	279	N	AND    	spatial	IS NOT NULL	\N	\N
-282	279	N	AND    	sourceSQL	IS NOT NULL	\N	\N
+281	\N	N	-      	id_fiche	IS NOT NULL	\N	\N
+282	\N	N	-      	\N	=	\N	\N
+283	\N	N	-      	mots_clef	CONTAINS	nom_thematique	\N
+284	\N	N	-      	statut_csw	=	\N	3
+285	\N	N	-      	statut_xml_metadata	=	\N	3
+286	\N	N	-      	type_image	<>	\N	29
+287	\N	N	-      	xml_est_valide	=	\N	1
+288	\N	N	-      	\N	=	\N	\N
 \.
 
 
 --
--- TOC entry 2206 (class 0 OID 0)
--- Dependencies: 145
--- Name: r_condition_id_condition_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_condition_id_condition_seq', 1, false);
-
-
---
--- TOC entry 2087 (class 0 OID 19156)
+-- TOC entry 2085 (class 0 OID 249981)
 -- Dependencies: 146
 -- Data for Name: r_database; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY r_database (id_database, name, id_database_type, id_database_contype, host_name, database_name, port, username, password, servername, data_tbs, index_tbs) FROM stdin;
 3	Remocra (Postgis)	34	1	${REMOCRA_POSTGIS_DATABASE_HOST}	${REMOCRA_POSTGIS_DATABASE_NAME}	-1	${REMOCRA_POSTGIS_DATABASE_USER_NAME}	${REMOCRA_POSTGIS_DATABASE_USER_PASSWORD}	\N	\N	\N
-14	Remocra (Postgis) - Priv	34	1	sdis83-remocra.lan.priv.atolcd.com	remocra	5432	postgres	Encrypted 2bee8dda70fd49f90a41ead62cc97aec9	\N	\N	\N
-13	Remocra (Postgis) - Distant	34	1	sdis83-prod.ataraxie.fr	remocra	5432	postgres	Encrypted 2bee8dda70fd49f90a41ead62cc97aec9	\N	\N	\N
 4	Remocra (Oracle)	31	1	${REMOCRA_ORACLE_DATABASE_HOST}	${REMOCRA_ORACLE_DATABASE_NAME}	-1	${REMOCRA_ORACLE_DATABASE_USER_NAME}	${REMOCRA_ORACLE_DATABASE_USER_PASSWORD}	\N	\N	\N
-15	remocra	34	1	localhost	remocra	5453	postgres	Encrypted 2be98afc86a9294d1fa4dfb76cd96a7ce	\N	\N	\N
+14	Remocra (Postgis) - Developpement	34	1	sdis83-remocra.lan.priv.atolcd.com	remocra	5432	postgres	Encrypted 2bee8dda70fd49f90a41ead62cc97aec9			
 \.
 
 
 --
--- TOC entry 2088 (class 0 OID 19162)
+-- TOC entry 2086 (class 0 OID 249987)
 -- Dependencies: 147
 -- Data for Name: r_database_attribute; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2118,16 +2539,6 @@ COPY r_database_attribute (id_database_attribute, id_database, code, value_str) 
 1100	4	PREFERRED_SCHEMA_NAME	\N
 1101	4	QUOTE_ALL_FIELDS	N
 1102	4	SQL_CONNECT	\N
-1103	14	EXTRA_OPTION_POSTGRESQL.stringtype	unspecified
-1104	14	USE_POOLING	N
-1105	14	IS_CLUSTERED	N
-1106	14	SUPPORTS_BOOLEAN_DATA_TYPE	Y
-1107	14	PORT_NUMBER	5432
-1108	14	FORCE_IDENTIFIERS_TO_UPPERCASE	N
-1109	14	FORCE_IDENTIFIERS_TO_LOWERCASE	N
-1110	14	PREFERRED_SCHEMA_NAME	\N
-1111	14	QUOTE_ALL_FIELDS	N
-1112	14	SQL_CONNECT	\N
 1122	16	USE_POOLING	N
 1123	16	PRESERVE_RESERVED_WORD_CASE	N
 1124	16	IS_CLUSTERED	N
@@ -2221,20 +2632,21 @@ COPY r_database_attribute (id_database_attribute, id_database, code, value_str) 
 1137	15	PREFERRED_SCHEMA_NAME	\N
 1138	15	QUOTE_ALL_FIELDS	N
 1139	15	SQL_CONNECT	\N
+1140	14	EXTRA_OPTION_POSTGRESQL.stringtype	unspecified
+1141	14	USE_POOLING	N
+1142	14	IS_CLUSTERED	N
+1143	14	SUPPORTS_BOOLEAN_DATA_TYPE	Y
+1144	14	PORT_NUMBER	5432
+1145	14	FORCE_IDENTIFIERS_TO_UPPERCASE	N
+1146	14	FORCE_IDENTIFIERS_TO_LOWERCASE	N
+1147	14	PREFERRED_SCHEMA_NAME	
+1148	14	QUOTE_ALL_FIELDS	N
+1149	14	SQL_CONNECT	
 \.
 
 
 --
--- TOC entry 2207 (class 0 OID 0)
--- Dependencies: 148
--- Name: r_database_attribute_id_database_attribute_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_database_attribute_id_database_attribute_seq', 1, false);
-
-
---
--- TOC entry 2090 (class 0 OID 19170)
+-- TOC entry 2087 (class 0 OID 249995)
 -- Dependencies: 149
 -- Data for Name: r_database_contype; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2249,25 +2661,7 @@ COPY r_database_contype (id_database_contype, code, description) FROM stdin;
 
 
 --
--- TOC entry 2208 (class 0 OID 0)
--- Dependencies: 150
--- Name: r_database_contype_id_database_contype_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_database_contype_id_database_contype_seq', 1, false);
-
-
---
--- TOC entry 2209 (class 0 OID 0)
--- Dependencies: 151
--- Name: r_database_id_database_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_database_id_database_seq', 1, false);
-
-
---
--- TOC entry 2093 (class 0 OID 19180)
+-- TOC entry 2088 (class 0 OID 250005)
 -- Dependencies: 152
 -- Data for Name: r_database_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2321,16 +2715,7 @@ COPY r_database_type (id_database_type, code, description) FROM stdin;
 
 
 --
--- TOC entry 2210 (class 0 OID 0)
--- Dependencies: 153
--- Name: r_database_type_id_database_type_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_database_type_id_database_type_seq', 1, false);
-
-
---
--- TOC entry 2095 (class 0 OID 19188)
+-- TOC entry 2089 (class 0 OID 250013)
 -- Dependencies: 154
 -- Data for Name: r_dependency; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2340,16 +2725,7 @@ COPY r_dependency (id_dependency, id_transformation, id_database, table_name, fi
 
 
 --
--- TOC entry 2211 (class 0 OID 0)
--- Dependencies: 155
--- Name: r_dependency_id_dependency_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_dependency_id_dependency_seq', 1, false);
-
-
---
--- TOC entry 2097 (class 0 OID 19196)
+-- TOC entry 2090 (class 0 OID 250021)
 -- Dependencies: 156
 -- Data for Name: r_directory; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2394,16 +2770,7 @@ COPY r_directory (id_directory, id_directory_parent, directory_name) FROM stdin;
 
 
 --
--- TOC entry 2212 (class 0 OID 0)
--- Dependencies: 157
--- Name: r_directory_id_directory_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_directory_id_directory_seq', 1, false);
-
-
---
--- TOC entry 2099 (class 0 OID 19201)
+-- TOC entry 2091 (class 0 OID 250026)
 -- Dependencies: 158
 -- Data for Name: r_job; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2419,7 +2786,6 @@ COPY r_job (id_job, id_directory, name, description, extended_description, job_v
 29	26	export_csv	Export csv des permis avec filtre	Création d'un fichier ZIP regroupant les export csv des permis avec un filtre :\r\n * Commune : une commune ou Var (tous)\r\n * Avis : Défavorable, en attente, etc. ou "tous"\r\n * Date de début\r\n * Date de fin	\N	0	-1	\N	-	2013-06-27 08:27:36.102	admin	2013-07-04 09:49:50.816	Y	N	Y	\N
 23	22	exporter_hydrant	\N	Export des alertes et des documents\r\n- Récupération de la date de la dernière synchronisation de la thématique\r\n- Génération des instructions SQL des tables de la thématique\r\n- Copie des documents éventuellement liés à la thématique	\N	0	-1	\N	-	2013-05-23 15:11:40.359	admin	2013-08-01 12:13:43.237	Y	N	Y	\N
 22	23	exporter_permis	\N	Export des alertes et des documents\r\n- Récupération de la date de la dernière synchronisation de la thématique\r\n- Génération des instructions SQL des tables de la thématique\r\n- Copie des documents éventuellement liés à la thématique	\N	0	-1	\N	-	2013-05-23 15:11:40.359	admin	2013-08-01 12:14:24.062	Y	N	Y	\N
-17	1	importer_referentiel_et_synchroniser_metier	\N	Tâche principale de récupération des données Postgresql distantes, d'import en base locale et de synchronisation des données métier.	\N	0	-1	\N	-	2013-04-18 15:53:14.075	admin	2013-08-09 10:15:12.412	Y	N	Y	\N
 11	14	recuperer_et_publier_kml	\N	Traitement de récupération et de publication d'un fichier KML des risques\r\n* Récupération du dernier mail recu sur la BAL spécifique et sauvegarde des PJ\r\n* Publication du fichier et notification éventuelles grâce à une transformation dédiée	\N	0	-1	\N	-	2013-03-28 16:48:16.242	admin	2013-08-22 13:22:57.761	Y	N	Y	\N
 41	39	generer_et_notifier_courrier_info_prealable	\N	\N	\N	0	-1	\N	-	2016-10-24 14:38:36.405	admin	2016-10-31 10:17:34.775	Y	N	Y	\N
 42	39	generer_et_notifier_courrier_rapport	\N	\N	\N	0	-1	\N	-	2016-10-24 14:38:36.405	admin	2016-10-31 10:36:35.973	Y	N	Y	\N
@@ -2440,12 +2806,15 @@ COPY r_job (id_job, id_directory, name, description, extended_description, job_v
 35	27	etat_pena_commune	\N	job de génération de l'etat Excel pour une commune\r\n\r\n\r\nAppeler par le job "etat_pena" 	\N	0	-1	\N	-	2013-06-19 07:58:34.421	admin	2014-01-23 18:18:42.415	Y	N	Y	\N
 33	27	etat_pena_commune_indisponibles	\N	job de génération des états Excels pour les hydrants  indisponibles de la veille  pour une commune.\r\n\r\nAppeler par le job "etat_hdyrant_indisponibles" 	\N	0	-1	\N	-	2013-06-19 07:58:34.421	admin	2014-01-23 18:18:49.205	Y	N	Y	\N
 26	24	etat_hydrant	\N	Création d'un fichier ZIP regroupant les rapports Excel pour les hydrants\r\n\r\nDéclenchement via le bloc traitement, si COMMUNE_ID est renseigné fihcier Excel  pour une commune, sinon pour toutes les communes.\r\n	\N	0	-1	\N	-	2013-06-21 08:08:55.673	admin	2014-01-23 18:18:55.358	Y	N	Y	\N
-43	41	exporter_donnees	\N	\N	\N	0	-1	\N	-	2017-03-16 14:25:03.524	admin	2017-03-20 14:29:19.787	Y	N	Y	\N
+44	13	alimenter_old	\N	\N	\N	0	-1	\N	-	2017-03-23 08:48:04.685	admin	2017-03-23 15:14:09.804	Y	N	Y	\N
+45	13	alimenter_cadastre	\N	\N	\N	0	-1	\N	-	2017-03-22 15:40:36.543	admin	2017-05-16 12:04:25.009	Y	N	Y	\N
+17	1	importer_referentiel_et_synchroniser_metier	\N	Tâche principale de récupération des données Postgresql distantes, d'import en base locale et de synchronisation des données métier.	\N	0	-1	\N	-	2013-04-18 15:53:14.075	admin	2017-05-16 12:06:24.723	Y	N	Y	\N
+43	41	exporter_donnees	\N	\N	\N	0	-1	\N	-	2017-03-16 14:25:03.524	admin	2017-05-17 08:56:09.937	Y	N	Y	\N
 \.
 
 
 --
--- TOC entry 2100 (class 0 OID 19207)
+-- TOC entry 2092 (class 0 OID 250032)
 -- Dependencies: 159
 -- Data for Name: r_job_attribute; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -4874,7 +5243,6 @@ COPY r_job_attribute (id_job_attribute, id_job, nr, code, value_num, value_str) 
 130896	36	0	JOB_ENTRY_LOG_TABLE_FIELD_ID12	0	RESULT
 130897	36	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME12	0	RESULT
 130898	36	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED12	0	Y
-125241	17	0	JOB_LOG_TABLE_FIELD_ID8	0	LINES_OUTPUT
 130899	36	0	JOB_ENTRY_LOG_TABLE_FIELD_ID13	0	NR_RESULT_ROWS
 130900	36	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME13	0	NR_RESULT_ROWS
 130901	36	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED13	0	Y
@@ -5700,162 +6068,7 @@ COPY r_job_attribute (id_job_attribute, id_job, nr, code, value_num, value_str) 
 128928	25	0	JOB_LOG_TABLE_SCHEMA_NAME	0	\N
 128929	25	0	JOB_LOG_TABLE_TABLE_NAME	0	\N
 128930	25	0	JOB_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
-125242	17	0	JOB_LOG_TABLE_FIELD_NAME8	0	LINES_OUTPUT
-125243	17	0	JOB_LOG_TABLE_FIELD_ENABLED8	0	Y
-125212	17	0	LOG_SIZE_LIMIT	0	\N
-125213	17	0	JOB_LOG_TABLE_CONNECTION_NAME	0	\N
-125214	17	0	JOB_LOG_TABLE_SCHEMA_NAME	0	\N
-125215	17	0	JOB_LOG_TABLE_TABLE_NAME	0	\N
-125216	17	0	JOB_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
-125217	17	0	JOB_LOG_TABLE_FIELD_ID0	0	ID_JOB
-125218	17	0	JOB_LOG_TABLE_FIELD_NAME0	0	ID_JOB
-125219	17	0	JOB_LOG_TABLE_FIELD_ENABLED0	0	Y
-125220	17	0	JOB_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
-125221	17	0	JOB_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
-125222	17	0	JOB_LOG_TABLE_FIELD_ENABLED1	0	Y
-125223	17	0	JOB_LOG_TABLE_FIELD_ID2	0	JOBNAME
-125224	17	0	JOB_LOG_TABLE_FIELD_NAME2	0	JOBNAME
-125225	17	0	JOB_LOG_TABLE_FIELD_ENABLED2	0	Y
-125226	17	0	JOB_LOG_TABLE_FIELD_ID3	0	STATUS
-125227	17	0	JOB_LOG_TABLE_FIELD_NAME3	0	STATUS
-125228	17	0	JOB_LOG_TABLE_FIELD_ENABLED3	0	Y
-125229	17	0	JOB_LOG_TABLE_FIELD_ID4	0	LINES_READ
-125230	17	0	JOB_LOG_TABLE_FIELD_NAME4	0	LINES_READ
-125231	17	0	JOB_LOG_TABLE_FIELD_ENABLED4	0	Y
-125232	17	0	JOB_LOG_TABLE_FIELD_ID5	0	LINES_WRITTEN
-125233	17	0	JOB_LOG_TABLE_FIELD_NAME5	0	LINES_WRITTEN
-125234	17	0	JOB_LOG_TABLE_FIELD_ENABLED5	0	Y
-125235	17	0	JOB_LOG_TABLE_FIELD_ID6	0	LINES_UPDATED
-125236	17	0	JOB_LOG_TABLE_FIELD_NAME6	0	LINES_UPDATED
-125237	17	0	JOB_LOG_TABLE_FIELD_ENABLED6	0	Y
-125238	17	0	JOB_LOG_TABLE_FIELD_ID7	0	LINES_INPUT
-125239	17	0	JOB_LOG_TABLE_FIELD_NAME7	0	LINES_INPUT
-125240	17	0	JOB_LOG_TABLE_FIELD_ENABLED7	0	Y
-125244	17	0	JOB_LOG_TABLE_FIELD_ID9	0	LINES_REJECTED
-125245	17	0	JOB_LOG_TABLE_FIELD_NAME9	0	LINES_REJECTED
-125246	17	0	JOB_LOG_TABLE_FIELD_ENABLED9	0	Y
-125247	17	0	JOB_LOG_TABLE_FIELD_ID10	0	ERRORS
-125248	17	0	JOB_LOG_TABLE_FIELD_NAME10	0	ERRORS
 128931	25	0	JOB_LOG_TABLE_FIELD_ID0	0	ID_JOB
-125249	17	0	JOB_LOG_TABLE_FIELD_ENABLED10	0	Y
-125250	17	0	JOB_LOG_TABLE_FIELD_ID11	0	STARTDATE
-125251	17	0	JOB_LOG_TABLE_FIELD_NAME11	0	STARTDATE
-125252	17	0	JOB_LOG_TABLE_FIELD_ENABLED11	0	Y
-125253	17	0	JOB_LOG_TABLE_FIELD_ID12	0	ENDDATE
-125254	17	0	JOB_LOG_TABLE_FIELD_NAME12	0	ENDDATE
-125255	17	0	JOB_LOG_TABLE_FIELD_ENABLED12	0	Y
-125256	17	0	JOB_LOG_TABLE_FIELD_ID13	0	LOGDATE
-125257	17	0	JOB_LOG_TABLE_FIELD_NAME13	0	LOGDATE
-125258	17	0	JOB_LOG_TABLE_FIELD_ENABLED13	0	Y
-125259	17	0	JOB_LOG_TABLE_FIELD_ID14	0	DEPDATE
-125260	17	0	JOB_LOG_TABLE_FIELD_NAME14	0	DEPDATE
-125261	17	0	JOB_LOG_TABLE_FIELD_ENABLED14	0	Y
-125262	17	0	JOB_LOG_TABLE_FIELD_ID15	0	REPLAYDATE
-125263	17	0	JOB_LOG_TABLE_FIELD_NAME15	0	REPLAYDATE
-125264	17	0	JOB_LOG_TABLE_FIELD_ENABLED15	0	Y
-125265	17	0	JOB_LOG_TABLE_FIELD_ID16	0	LOG_FIELD
-125266	17	0	JOB_LOG_TABLE_FIELD_NAME16	0	LOG_FIELD
-125267	17	0	JOB_LOG_TABLE_FIELD_ENABLED16	0	Y
-125268	17	0	JOBLOG_TABLE_INTERVAL	0	\N
-125269	17	0	JOBLOG_TABLE_SIZE_LIMIT	0	\N
-125270	17	0	JOB_ENTRY_LOG_TABLE_CONNECTION_NAME	0	\N
-125271	17	0	JOB_ENTRY_LOG_TABLE_SCHEMA_NAME	0	\N
-125272	17	0	JOB_ENTRY_LOG_TABLE_TABLE_NAME	0	\N
-125273	17	0	JOB_ENTRY_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
-125274	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID0	0	ID_BATCH
-125275	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
-125276	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED0	0	Y
-125277	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
-125278	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
-125279	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED1	0	Y
-125280	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID2	0	LOG_DATE
-125281	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
-125282	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED2	0	Y
-125283	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID3	0	JOBNAME
-125284	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
-125285	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED3	0	Y
-125286	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID4	0	JOBENTRYNAME
-125287	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME4	0	STEPNAME
-125288	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED4	0	Y
-125289	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID5	0	LINES_READ
-125290	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME5	0	LINES_READ
-125291	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED5	0	Y
-125292	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID6	0	LINES_WRITTEN
-125293	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME6	0	LINES_WRITTEN
-125294	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED6	0	Y
-125295	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID7	0	LINES_UPDATED
-125296	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME7	0	LINES_UPDATED
-125297	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED7	0	Y
-125298	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID8	0	LINES_INPUT
-125299	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME8	0	LINES_INPUT
-125300	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED8	0	Y
-125301	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID9	0	LINES_OUTPUT
-125302	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME9	0	LINES_OUTPUT
-125303	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED9	0	Y
-125304	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID10	0	LINES_REJECTED
-125305	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME10	0	LINES_REJECTED
-125306	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED10	0	Y
-125307	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID11	0	ERRORS
-125308	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME11	0	ERRORS
-125309	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED11	0	Y
-125310	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID12	0	RESULT
-125311	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME12	0	RESULT
-125312	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED12	0	Y
-125313	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID13	0	NR_RESULT_ROWS
-125314	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME13	0	NR_RESULT_ROWS
-125315	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED13	0	Y
-125316	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID14	0	NR_RESULT_FILES
-125317	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME14	0	NR_RESULT_FILES
-125318	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED14	0	Y
-125319	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID15	0	LOG_FIELD
-125320	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME15	0	LOG_FIELD
-125321	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED15	0	N
-125322	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID16	0	COPY_NR
-125323	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME16	0	COPY_NR
-125324	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED16	0	N
-125325	17	0	CHANNEL_LOG_TABLE_CONNECTION_NAME	0	\N
-125326	17	0	CHANNEL_LOG_TABLE_SCHEMA_NAME	0	\N
-125327	17	0	CHANNEL_LOG_TABLE_TABLE_NAME	0	\N
-125328	17	0	CHANNEL_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
-125329	17	0	CHANNEL_LOG_TABLE_FIELD_ID0	0	ID_BATCH
-125330	17	0	CHANNEL_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
-125331	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED0	0	Y
-125332	17	0	CHANNEL_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
-125333	17	0	CHANNEL_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
-125334	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED1	0	Y
-125335	17	0	CHANNEL_LOG_TABLE_FIELD_ID2	0	LOG_DATE
-125336	17	0	CHANNEL_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
-125337	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED2	0	Y
-125338	17	0	CHANNEL_LOG_TABLE_FIELD_ID3	0	LOGGING_OBJECT_TYPE
-125339	17	0	CHANNEL_LOG_TABLE_FIELD_NAME3	0	LOGGING_OBJECT_TYPE
-125340	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED3	0	Y
-125341	17	0	CHANNEL_LOG_TABLE_FIELD_ID4	0	OBJECT_NAME
-125342	17	0	CHANNEL_LOG_TABLE_FIELD_NAME4	0	OBJECT_NAME
-125343	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED4	0	Y
-125344	17	0	CHANNEL_LOG_TABLE_FIELD_ID5	0	OBJECT_COPY
-125345	17	0	CHANNEL_LOG_TABLE_FIELD_NAME5	0	OBJECT_COPY
-125346	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED5	0	Y
-125347	17	0	CHANNEL_LOG_TABLE_FIELD_ID6	0	REPOSITORY_DIRECTORY
-125348	17	0	CHANNEL_LOG_TABLE_FIELD_NAME6	0	REPOSITORY_DIRECTORY
-125349	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED6	0	Y
-125350	17	0	CHANNEL_LOG_TABLE_FIELD_ID7	0	FILENAME
-125351	17	0	CHANNEL_LOG_TABLE_FIELD_NAME7	0	FILENAME
-125352	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED7	0	Y
-125353	17	0	CHANNEL_LOG_TABLE_FIELD_ID8	0	OBJECT_ID
-125354	17	0	CHANNEL_LOG_TABLE_FIELD_NAME8	0	OBJECT_ID
-125355	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED8	0	Y
-125356	17	0	CHANNEL_LOG_TABLE_FIELD_ID9	0	OBJECT_REVISION
-125357	17	0	CHANNEL_LOG_TABLE_FIELD_NAME9	0	OBJECT_REVISION
-125358	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED9	0	Y
-125359	17	0	CHANNEL_LOG_TABLE_FIELD_ID10	0	PARENT_CHANNEL_ID
-125360	17	0	CHANNEL_LOG_TABLE_FIELD_NAME10	0	PARENT_CHANNEL_ID
-125361	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED10	0	Y
-125362	17	0	CHANNEL_LOG_TABLE_FIELD_ID11	0	ROOT_CHANNEL_ID
-125363	17	0	CHANNEL_LOG_TABLE_FIELD_NAME11	0	ROOT_CHANNEL_ID
-125364	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
-125365	17	0	PARAM_KEY	0	PDI_FICHIER_PARAMETRE
-125366	17	0	PARAM_DEFAULT	0	C:/projets/remocra/pdi/remocra.properties
-125367	17	0	PARAM_DESC	0	\N
 125986	14	0	LOG_SIZE_LIMIT	0	\N
 125987	14	0	JOB_LOG_TABLE_CONNECTION_NAME	0	\N
 125988	14	0	JOB_LOG_TABLE_SCHEMA_NAME	0	\N
@@ -7275,173 +7488,626 @@ COPY r_job_attribute (id_job_attribute, id_job, nr, code, value_num, value_str) 
 131125	39	0	JOB_LOG_TABLE_FIELD_NAME4	0	LINES_READ
 131126	39	0	JOB_LOG_TABLE_FIELD_ENABLED4	0	Y
 131127	39	0	JOB_LOG_TABLE_FIELD_ID5	0	LINES_WRITTEN
-132334	43	0	LOG_SIZE_LIMIT	0	\N
-132335	43	0	JOB_LOG_TABLE_CONNECTION_NAME	0	\N
-132336	43	0	JOB_LOG_TABLE_SCHEMA_NAME	0	\N
-132337	43	0	JOB_LOG_TABLE_TABLE_NAME	0	\N
-132338	43	0	JOB_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
-132339	43	0	JOB_LOG_TABLE_FIELD_ID0	0	ID_JOB
-132340	43	0	JOB_LOG_TABLE_FIELD_NAME0	0	ID_JOB
-132341	43	0	JOB_LOG_TABLE_FIELD_ENABLED0	0	Y
-132342	43	0	JOB_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
-132343	43	0	JOB_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
-132344	43	0	JOB_LOG_TABLE_FIELD_ENABLED1	0	Y
-132345	43	0	JOB_LOG_TABLE_FIELD_ID2	0	JOBNAME
-132346	43	0	JOB_LOG_TABLE_FIELD_NAME2	0	JOBNAME
-132347	43	0	JOB_LOG_TABLE_FIELD_ENABLED2	0	Y
-132348	43	0	JOB_LOG_TABLE_FIELD_ID3	0	STATUS
-132349	43	0	JOB_LOG_TABLE_FIELD_NAME3	0	STATUS
-132350	43	0	JOB_LOG_TABLE_FIELD_ENABLED3	0	Y
-132351	43	0	JOB_LOG_TABLE_FIELD_ID4	0	LINES_READ
-132352	43	0	JOB_LOG_TABLE_FIELD_NAME4	0	LINES_READ
-132353	43	0	JOB_LOG_TABLE_FIELD_ENABLED4	0	Y
-132354	43	0	JOB_LOG_TABLE_FIELD_ID5	0	LINES_WRITTEN
-132355	43	0	JOB_LOG_TABLE_FIELD_NAME5	0	LINES_WRITTEN
-132356	43	0	JOB_LOG_TABLE_FIELD_ENABLED5	0	Y
-132357	43	0	JOB_LOG_TABLE_FIELD_ID6	0	LINES_UPDATED
-132358	43	0	JOB_LOG_TABLE_FIELD_NAME6	0	LINES_UPDATED
-132359	43	0	JOB_LOG_TABLE_FIELD_ENABLED6	0	Y
-132360	43	0	JOB_LOG_TABLE_FIELD_ID7	0	LINES_INPUT
-132361	43	0	JOB_LOG_TABLE_FIELD_NAME7	0	LINES_INPUT
-132362	43	0	JOB_LOG_TABLE_FIELD_ENABLED7	0	Y
-132363	43	0	JOB_LOG_TABLE_FIELD_ID8	0	LINES_OUTPUT
-132364	43	0	JOB_LOG_TABLE_FIELD_NAME8	0	LINES_OUTPUT
-132365	43	0	JOB_LOG_TABLE_FIELD_ENABLED8	0	Y
-132366	43	0	JOB_LOG_TABLE_FIELD_ID9	0	LINES_REJECTED
-132367	43	0	JOB_LOG_TABLE_FIELD_NAME9	0	LINES_REJECTED
-132368	43	0	JOB_LOG_TABLE_FIELD_ENABLED9	0	Y
-132369	43	0	JOB_LOG_TABLE_FIELD_ID10	0	ERRORS
-132370	43	0	JOB_LOG_TABLE_FIELD_NAME10	0	ERRORS
-132371	43	0	JOB_LOG_TABLE_FIELD_ENABLED10	0	Y
-132372	43	0	JOB_LOG_TABLE_FIELD_ID11	0	STARTDATE
-132373	43	0	JOB_LOG_TABLE_FIELD_NAME11	0	STARTDATE
-132374	43	0	JOB_LOG_TABLE_FIELD_ENABLED11	0	Y
-132375	43	0	JOB_LOG_TABLE_FIELD_ID12	0	ENDDATE
-132376	43	0	JOB_LOG_TABLE_FIELD_NAME12	0	ENDDATE
-132377	43	0	JOB_LOG_TABLE_FIELD_ENABLED12	0	Y
-132378	43	0	JOB_LOG_TABLE_FIELD_ID13	0	LOGDATE
-132379	43	0	JOB_LOG_TABLE_FIELD_NAME13	0	LOGDATE
-132380	43	0	JOB_LOG_TABLE_FIELD_ENABLED13	0	Y
-132381	43	0	JOB_LOG_TABLE_FIELD_ID14	0	DEPDATE
-132382	43	0	JOB_LOG_TABLE_FIELD_NAME14	0	DEPDATE
-132383	43	0	JOB_LOG_TABLE_FIELD_ENABLED14	0	Y
-132384	43	0	JOB_LOG_TABLE_FIELD_ID15	0	REPLAYDATE
-132385	43	0	JOB_LOG_TABLE_FIELD_NAME15	0	REPLAYDATE
-132386	43	0	JOB_LOG_TABLE_FIELD_ENABLED15	0	Y
-132387	43	0	JOB_LOG_TABLE_FIELD_ID16	0	LOG_FIELD
-132388	43	0	JOB_LOG_TABLE_FIELD_NAME16	0	LOG_FIELD
-132389	43	0	JOB_LOG_TABLE_FIELD_ENABLED16	0	Y
-132390	43	0	JOBLOG_TABLE_INTERVAL	0	\N
-132391	43	0	JOBLOG_TABLE_SIZE_LIMIT	0	\N
-132392	43	0	JOB_ENTRY_LOG_TABLE_CONNECTION_NAME	0	\N
-132393	43	0	JOB_ENTRY_LOG_TABLE_SCHEMA_NAME	0	\N
-132394	43	0	JOB_ENTRY_LOG_TABLE_TABLE_NAME	0	\N
-132395	43	0	JOB_ENTRY_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
-132396	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID0	0	ID_BATCH
-132397	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
-132398	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED0	0	Y
-132399	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
-132400	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
-132401	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED1	0	Y
-132402	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID2	0	LOG_DATE
-132403	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
-132404	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED2	0	Y
-132405	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID3	0	JOBNAME
-132406	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
-132407	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED3	0	Y
-132408	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID4	0	JOBENTRYNAME
-132409	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME4	0	STEPNAME
-132410	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED4	0	Y
-132411	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID5	0	LINES_READ
-132412	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME5	0	LINES_READ
-132413	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED5	0	Y
-132414	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID6	0	LINES_WRITTEN
-132415	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME6	0	LINES_WRITTEN
-132416	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED6	0	Y
-132417	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID7	0	LINES_UPDATED
-132418	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME7	0	LINES_UPDATED
-132419	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED7	0	Y
-132420	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID8	0	LINES_INPUT
-132421	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME8	0	LINES_INPUT
-132422	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED8	0	Y
-132423	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID9	0	LINES_OUTPUT
-132424	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME9	0	LINES_OUTPUT
-132425	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED9	0	Y
-132426	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID10	0	LINES_REJECTED
-132427	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME10	0	LINES_REJECTED
-132428	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED10	0	Y
-132429	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID11	0	ERRORS
-132430	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME11	0	ERRORS
-132431	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED11	0	Y
-132432	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID12	0	RESULT
-132433	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME12	0	RESULT
-132434	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED12	0	Y
-132435	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID13	0	NR_RESULT_ROWS
-132436	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME13	0	NR_RESULT_ROWS
-132437	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED13	0	Y
-132438	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID14	0	NR_RESULT_FILES
-132439	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME14	0	NR_RESULT_FILES
-132440	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED14	0	Y
-132441	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID15	0	LOG_FIELD
-132442	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME15	0	LOG_FIELD
-132443	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED15	0	N
-132444	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID16	0	COPY_NR
-132445	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME16	0	COPY_NR
-132446	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED16	0	N
-132447	43	0	CHANNEL_LOG_TABLE_CONNECTION_NAME	0	\N
-132448	43	0	CHANNEL_LOG_TABLE_SCHEMA_NAME	0	\N
-132449	43	0	CHANNEL_LOG_TABLE_TABLE_NAME	0	\N
-132450	43	0	CHANNEL_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
-132451	43	0	CHANNEL_LOG_TABLE_FIELD_ID0	0	ID_BATCH
-132452	43	0	CHANNEL_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
-132453	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED0	0	Y
-132454	43	0	CHANNEL_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
-132455	43	0	CHANNEL_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
-132456	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED1	0	Y
-132457	43	0	CHANNEL_LOG_TABLE_FIELD_ID2	0	LOG_DATE
-132458	43	0	CHANNEL_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
-132459	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED2	0	Y
-132460	43	0	CHANNEL_LOG_TABLE_FIELD_ID3	0	LOGGING_OBJECT_TYPE
-132461	43	0	CHANNEL_LOG_TABLE_FIELD_NAME3	0	LOGGING_OBJECT_TYPE
-132462	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED3	0	Y
-132463	43	0	CHANNEL_LOG_TABLE_FIELD_ID4	0	OBJECT_NAME
-132464	43	0	CHANNEL_LOG_TABLE_FIELD_NAME4	0	OBJECT_NAME
-132465	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED4	0	Y
-132466	43	0	CHANNEL_LOG_TABLE_FIELD_ID5	0	OBJECT_COPY
-132467	43	0	CHANNEL_LOG_TABLE_FIELD_NAME5	0	OBJECT_COPY
-132468	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED5	0	Y
-132469	43	0	CHANNEL_LOG_TABLE_FIELD_ID6	0	REPOSITORY_DIRECTORY
-132470	43	0	CHANNEL_LOG_TABLE_FIELD_NAME6	0	REPOSITORY_DIRECTORY
-132471	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED6	0	Y
-132472	43	0	CHANNEL_LOG_TABLE_FIELD_ID7	0	FILENAME
-132473	43	0	CHANNEL_LOG_TABLE_FIELD_NAME7	0	FILENAME
-132474	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED7	0	Y
-132475	43	0	CHANNEL_LOG_TABLE_FIELD_ID8	0	OBJECT_ID
-132476	43	0	CHANNEL_LOG_TABLE_FIELD_NAME8	0	OBJECT_ID
-132477	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED8	0	Y
-132478	43	0	CHANNEL_LOG_TABLE_FIELD_ID9	0	OBJECT_REVISION
-132479	43	0	CHANNEL_LOG_TABLE_FIELD_NAME9	0	OBJECT_REVISION
-132480	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED9	0	Y
-132481	43	0	CHANNEL_LOG_TABLE_FIELD_ID10	0	PARENT_CHANNEL_ID
-132482	43	0	CHANNEL_LOG_TABLE_FIELD_NAME10	0	PARENT_CHANNEL_ID
-132483	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED10	0	Y
-132484	43	0	CHANNEL_LOG_TABLE_FIELD_ID11	0	ROOT_CHANNEL_ID
-132485	43	0	CHANNEL_LOG_TABLE_FIELD_NAME11	0	ROOT_CHANNEL_ID
-132486	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
+133717	44	0	LOG_SIZE_LIMIT	0	\N
+133718	44	0	JOB_LOG_TABLE_CONNECTION_NAME	0	\N
+133719	44	0	JOB_LOG_TABLE_SCHEMA_NAME	0	\N
+133720	44	0	JOB_LOG_TABLE_TABLE_NAME	0	\N
+133721	44	0	JOB_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+133722	44	0	JOB_LOG_TABLE_FIELD_ID0	0	ID_JOB
+133723	44	0	JOB_LOG_TABLE_FIELD_NAME0	0	ID_JOB
+133724	44	0	JOB_LOG_TABLE_FIELD_ENABLED0	0	Y
+133725	44	0	JOB_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+133726	44	0	JOB_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+133727	44	0	JOB_LOG_TABLE_FIELD_ENABLED1	0	Y
+133728	44	0	JOB_LOG_TABLE_FIELD_ID2	0	JOBNAME
+133729	44	0	JOB_LOG_TABLE_FIELD_NAME2	0	JOBNAME
+133730	44	0	JOB_LOG_TABLE_FIELD_ENABLED2	0	Y
+133731	44	0	JOB_LOG_TABLE_FIELD_ID3	0	STATUS
+133732	44	0	JOB_LOG_TABLE_FIELD_NAME3	0	STATUS
+133733	44	0	JOB_LOG_TABLE_FIELD_ENABLED3	0	Y
+133734	44	0	JOB_LOG_TABLE_FIELD_ID4	0	LINES_READ
+133735	44	0	JOB_LOG_TABLE_FIELD_NAME4	0	LINES_READ
+133736	44	0	JOB_LOG_TABLE_FIELD_ENABLED4	0	Y
+133737	44	0	JOB_LOG_TABLE_FIELD_ID5	0	LINES_WRITTEN
+133738	44	0	JOB_LOG_TABLE_FIELD_NAME5	0	LINES_WRITTEN
+133739	44	0	JOB_LOG_TABLE_FIELD_ENABLED5	0	Y
+133740	44	0	JOB_LOG_TABLE_FIELD_ID6	0	LINES_UPDATED
+133741	44	0	JOB_LOG_TABLE_FIELD_NAME6	0	LINES_UPDATED
+133742	44	0	JOB_LOG_TABLE_FIELD_ENABLED6	0	Y
+133743	44	0	JOB_LOG_TABLE_FIELD_ID7	0	LINES_INPUT
+133744	44	0	JOB_LOG_TABLE_FIELD_NAME7	0	LINES_INPUT
+133745	44	0	JOB_LOG_TABLE_FIELD_ENABLED7	0	Y
+133746	44	0	JOB_LOG_TABLE_FIELD_ID8	0	LINES_OUTPUT
+133747	44	0	JOB_LOG_TABLE_FIELD_NAME8	0	LINES_OUTPUT
+133748	44	0	JOB_LOG_TABLE_FIELD_ENABLED8	0	Y
+133749	44	0	JOB_LOG_TABLE_FIELD_ID9	0	LINES_REJECTED
+133750	44	0	JOB_LOG_TABLE_FIELD_NAME9	0	LINES_REJECTED
+133751	44	0	JOB_LOG_TABLE_FIELD_ENABLED9	0	Y
+133752	44	0	JOB_LOG_TABLE_FIELD_ID10	0	ERRORS
+133753	44	0	JOB_LOG_TABLE_FIELD_NAME10	0	ERRORS
+133754	44	0	JOB_LOG_TABLE_FIELD_ENABLED10	0	Y
+133755	44	0	JOB_LOG_TABLE_FIELD_ID11	0	STARTDATE
+133756	44	0	JOB_LOG_TABLE_FIELD_NAME11	0	STARTDATE
+133757	44	0	JOB_LOG_TABLE_FIELD_ENABLED11	0	Y
+133758	44	0	JOB_LOG_TABLE_FIELD_ID12	0	ENDDATE
+133759	44	0	JOB_LOG_TABLE_FIELD_NAME12	0	ENDDATE
+133760	44	0	JOB_LOG_TABLE_FIELD_ENABLED12	0	Y
+133761	44	0	JOB_LOG_TABLE_FIELD_ID13	0	LOGDATE
+133762	44	0	JOB_LOG_TABLE_FIELD_NAME13	0	LOGDATE
+133763	44	0	JOB_LOG_TABLE_FIELD_ENABLED13	0	Y
+133764	44	0	JOB_LOG_TABLE_FIELD_ID14	0	DEPDATE
+133765	44	0	JOB_LOG_TABLE_FIELD_NAME14	0	DEPDATE
+133766	44	0	JOB_LOG_TABLE_FIELD_ENABLED14	0	Y
+133767	44	0	JOB_LOG_TABLE_FIELD_ID15	0	REPLAYDATE
+133768	44	0	JOB_LOG_TABLE_FIELD_NAME15	0	REPLAYDATE
+133769	44	0	JOB_LOG_TABLE_FIELD_ENABLED15	0	Y
+133770	44	0	JOB_LOG_TABLE_FIELD_ID16	0	LOG_FIELD
+133771	44	0	JOB_LOG_TABLE_FIELD_NAME16	0	LOG_FIELD
+133772	44	0	JOB_LOG_TABLE_FIELD_ENABLED16	0	Y
+133773	44	0	JOBLOG_TABLE_INTERVAL	0	\N
+133774	44	0	JOBLOG_TABLE_SIZE_LIMIT	0	\N
+133775	44	0	JOB_ENTRY_LOG_TABLE_CONNECTION_NAME	0	\N
+133776	44	0	JOB_ENTRY_LOG_TABLE_SCHEMA_NAME	0	\N
+133777	44	0	JOB_ENTRY_LOG_TABLE_TABLE_NAME	0	\N
+133778	44	0	JOB_ENTRY_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+133779	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ID0	0	ID_BATCH
+133780	44	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
+133781	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED0	0	Y
+133782	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+133783	44	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+133784	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED1	0	Y
+133785	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ID2	0	LOG_DATE
+133786	44	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
+133787	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED2	0	Y
+133788	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ID3	0	JOBNAME
+133789	44	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
+133790	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED3	0	Y
+133791	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ID4	0	JOBENTRYNAME
+133792	44	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME4	0	STEPNAME
+133793	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED4	0	Y
+133794	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ID5	0	LINES_READ
+133795	44	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME5	0	LINES_READ
+133796	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED5	0	Y
+133797	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ID6	0	LINES_WRITTEN
+133798	44	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME6	0	LINES_WRITTEN
+133799	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED6	0	Y
+133800	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ID7	0	LINES_UPDATED
+133801	44	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME7	0	LINES_UPDATED
+133802	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED7	0	Y
+133803	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ID8	0	LINES_INPUT
+133804	44	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME8	0	LINES_INPUT
+133805	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED8	0	Y
+133806	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ID9	0	LINES_OUTPUT
+133807	44	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME9	0	LINES_OUTPUT
+133808	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED9	0	Y
+133809	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ID10	0	LINES_REJECTED
+133810	44	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME10	0	LINES_REJECTED
+133811	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED10	0	Y
+133812	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ID11	0	ERRORS
+133813	44	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME11	0	ERRORS
+133814	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED11	0	Y
+133815	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ID12	0	RESULT
+133816	44	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME12	0	RESULT
+133817	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED12	0	Y
+133818	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ID13	0	NR_RESULT_ROWS
+133819	44	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME13	0	NR_RESULT_ROWS
+133820	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED13	0	Y
+133821	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ID14	0	NR_RESULT_FILES
+133822	44	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME14	0	NR_RESULT_FILES
+133823	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED14	0	Y
+133824	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ID15	0	LOG_FIELD
+133825	44	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME15	0	LOG_FIELD
+133826	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED15	0	N
+133827	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ID16	0	COPY_NR
+133828	44	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME16	0	COPY_NR
+133829	44	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED16	0	N
+133830	44	0	CHANNEL_LOG_TABLE_CONNECTION_NAME	0	\N
+133831	44	0	CHANNEL_LOG_TABLE_SCHEMA_NAME	0	\N
+133832	44	0	CHANNEL_LOG_TABLE_TABLE_NAME	0	\N
+133833	44	0	CHANNEL_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+133834	44	0	CHANNEL_LOG_TABLE_FIELD_ID0	0	ID_BATCH
+133835	44	0	CHANNEL_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
+133836	44	0	CHANNEL_LOG_TABLE_FIELD_ENABLED0	0	Y
+133837	44	0	CHANNEL_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+133838	44	0	CHANNEL_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+133839	44	0	CHANNEL_LOG_TABLE_FIELD_ENABLED1	0	Y
+133840	44	0	CHANNEL_LOG_TABLE_FIELD_ID2	0	LOG_DATE
+133841	44	0	CHANNEL_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
+133842	44	0	CHANNEL_LOG_TABLE_FIELD_ENABLED2	0	Y
+133843	44	0	CHANNEL_LOG_TABLE_FIELD_ID3	0	LOGGING_OBJECT_TYPE
+133844	44	0	CHANNEL_LOG_TABLE_FIELD_NAME3	0	LOGGING_OBJECT_TYPE
+133845	44	0	CHANNEL_LOG_TABLE_FIELD_ENABLED3	0	Y
+133846	44	0	CHANNEL_LOG_TABLE_FIELD_ID4	0	OBJECT_NAME
+133847	44	0	CHANNEL_LOG_TABLE_FIELD_NAME4	0	OBJECT_NAME
+133848	44	0	CHANNEL_LOG_TABLE_FIELD_ENABLED4	0	Y
+133849	44	0	CHANNEL_LOG_TABLE_FIELD_ID5	0	OBJECT_COPY
+133850	44	0	CHANNEL_LOG_TABLE_FIELD_NAME5	0	OBJECT_COPY
+133851	44	0	CHANNEL_LOG_TABLE_FIELD_ENABLED5	0	Y
+133852	44	0	CHANNEL_LOG_TABLE_FIELD_ID6	0	REPOSITORY_DIRECTORY
+133853	44	0	CHANNEL_LOG_TABLE_FIELD_NAME6	0	REPOSITORY_DIRECTORY
+133854	44	0	CHANNEL_LOG_TABLE_FIELD_ENABLED6	0	Y
+133855	44	0	CHANNEL_LOG_TABLE_FIELD_ID7	0	FILENAME
+133856	44	0	CHANNEL_LOG_TABLE_FIELD_NAME7	0	FILENAME
+133857	44	0	CHANNEL_LOG_TABLE_FIELD_ENABLED7	0	Y
+133858	44	0	CHANNEL_LOG_TABLE_FIELD_ID8	0	OBJECT_ID
+133859	44	0	CHANNEL_LOG_TABLE_FIELD_NAME8	0	OBJECT_ID
+133860	44	0	CHANNEL_LOG_TABLE_FIELD_ENABLED8	0	Y
+133861	44	0	CHANNEL_LOG_TABLE_FIELD_ID9	0	OBJECT_REVISION
+133862	44	0	CHANNEL_LOG_TABLE_FIELD_NAME9	0	OBJECT_REVISION
+133863	44	0	CHANNEL_LOG_TABLE_FIELD_ENABLED9	0	Y
+133864	44	0	CHANNEL_LOG_TABLE_FIELD_ID10	0	PARENT_CHANNEL_ID
+133865	44	0	CHANNEL_LOG_TABLE_FIELD_NAME10	0	PARENT_CHANNEL_ID
+133866	44	0	CHANNEL_LOG_TABLE_FIELD_ENABLED10	0	Y
+133867	44	0	CHANNEL_LOG_TABLE_FIELD_ID11	0	ROOT_CHANNEL_ID
+133868	44	0	CHANNEL_LOG_TABLE_FIELD_NAME11	0	ROOT_CHANNEL_ID
+133869	44	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
+134026	45	0	LOG_SIZE_LIMIT	0	\N
+134027	45	0	JOB_LOG_TABLE_CONNECTION_NAME	0	\N
+134028	45	0	JOB_LOG_TABLE_SCHEMA_NAME	0	\N
+134029	45	0	JOB_LOG_TABLE_TABLE_NAME	0	\N
+134030	45	0	JOB_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+134031	45	0	JOB_LOG_TABLE_FIELD_ID0	0	ID_JOB
+134032	45	0	JOB_LOG_TABLE_FIELD_NAME0	0	ID_JOB
+134033	45	0	JOB_LOG_TABLE_FIELD_ENABLED0	0	Y
+134034	45	0	JOB_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+134035	45	0	JOB_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+134036	45	0	JOB_LOG_TABLE_FIELD_ENABLED1	0	Y
+134037	45	0	JOB_LOG_TABLE_FIELD_ID2	0	JOBNAME
+134038	45	0	JOB_LOG_TABLE_FIELD_NAME2	0	JOBNAME
+134039	45	0	JOB_LOG_TABLE_FIELD_ENABLED2	0	Y
+134040	45	0	JOB_LOG_TABLE_FIELD_ID3	0	STATUS
+134041	45	0	JOB_LOG_TABLE_FIELD_NAME3	0	STATUS
+134042	45	0	JOB_LOG_TABLE_FIELD_ENABLED3	0	Y
+134043	45	0	JOB_LOG_TABLE_FIELD_ID4	0	LINES_READ
+134044	45	0	JOB_LOG_TABLE_FIELD_NAME4	0	LINES_READ
+134045	45	0	JOB_LOG_TABLE_FIELD_ENABLED4	0	Y
+134046	45	0	JOB_LOG_TABLE_FIELD_ID5	0	LINES_WRITTEN
+134047	45	0	JOB_LOG_TABLE_FIELD_NAME5	0	LINES_WRITTEN
+134048	45	0	JOB_LOG_TABLE_FIELD_ENABLED5	0	Y
+134049	45	0	JOB_LOG_TABLE_FIELD_ID6	0	LINES_UPDATED
+134050	45	0	JOB_LOG_TABLE_FIELD_NAME6	0	LINES_UPDATED
+134051	45	0	JOB_LOG_TABLE_FIELD_ENABLED6	0	Y
+134052	45	0	JOB_LOG_TABLE_FIELD_ID7	0	LINES_INPUT
+134053	45	0	JOB_LOG_TABLE_FIELD_NAME7	0	LINES_INPUT
+134054	45	0	JOB_LOG_TABLE_FIELD_ENABLED7	0	Y
+134055	45	0	JOB_LOG_TABLE_FIELD_ID8	0	LINES_OUTPUT
+134056	45	0	JOB_LOG_TABLE_FIELD_NAME8	0	LINES_OUTPUT
+134057	45	0	JOB_LOG_TABLE_FIELD_ENABLED8	0	Y
+134058	45	0	JOB_LOG_TABLE_FIELD_ID9	0	LINES_REJECTED
+134059	45	0	JOB_LOG_TABLE_FIELD_NAME9	0	LINES_REJECTED
+134060	45	0	JOB_LOG_TABLE_FIELD_ENABLED9	0	Y
+134061	45	0	JOB_LOG_TABLE_FIELD_ID10	0	ERRORS
+134062	45	0	JOB_LOG_TABLE_FIELD_NAME10	0	ERRORS
+134063	45	0	JOB_LOG_TABLE_FIELD_ENABLED10	0	Y
+134064	45	0	JOB_LOG_TABLE_FIELD_ID11	0	STARTDATE
+134065	45	0	JOB_LOG_TABLE_FIELD_NAME11	0	STARTDATE
+134066	45	0	JOB_LOG_TABLE_FIELD_ENABLED11	0	Y
+134067	45	0	JOB_LOG_TABLE_FIELD_ID12	0	ENDDATE
+134068	45	0	JOB_LOG_TABLE_FIELD_NAME12	0	ENDDATE
+134069	45	0	JOB_LOG_TABLE_FIELD_ENABLED12	0	Y
+134070	45	0	JOB_LOG_TABLE_FIELD_ID13	0	LOGDATE
+134071	45	0	JOB_LOG_TABLE_FIELD_NAME13	0	LOGDATE
+134072	45	0	JOB_LOG_TABLE_FIELD_ENABLED13	0	Y
+134073	45	0	JOB_LOG_TABLE_FIELD_ID14	0	DEPDATE
+134074	45	0	JOB_LOG_TABLE_FIELD_NAME14	0	DEPDATE
+134075	45	0	JOB_LOG_TABLE_FIELD_ENABLED14	0	Y
+134076	45	0	JOB_LOG_TABLE_FIELD_ID15	0	REPLAYDATE
+134077	45	0	JOB_LOG_TABLE_FIELD_NAME15	0	REPLAYDATE
+134078	45	0	JOB_LOG_TABLE_FIELD_ENABLED15	0	Y
+134079	45	0	JOB_LOG_TABLE_FIELD_ID16	0	LOG_FIELD
+134080	45	0	JOB_LOG_TABLE_FIELD_NAME16	0	LOG_FIELD
+134081	45	0	JOB_LOG_TABLE_FIELD_ENABLED16	0	Y
+134082	45	0	JOBLOG_TABLE_INTERVAL	0	\N
+134083	45	0	JOBLOG_TABLE_SIZE_LIMIT	0	\N
+134084	45	0	JOB_ENTRY_LOG_TABLE_CONNECTION_NAME	0	\N
+134085	45	0	JOB_ENTRY_LOG_TABLE_SCHEMA_NAME	0	\N
+134086	45	0	JOB_ENTRY_LOG_TABLE_TABLE_NAME	0	\N
+134087	45	0	JOB_ENTRY_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+134088	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ID0	0	ID_BATCH
+134089	45	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
+134090	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED0	0	Y
+134091	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+134092	45	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+134093	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED1	0	Y
+134094	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ID2	0	LOG_DATE
+134095	45	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
+134096	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED2	0	Y
+134097	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ID3	0	JOBNAME
+134098	45	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
+134099	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED3	0	Y
+134100	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ID4	0	JOBENTRYNAME
+134101	45	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME4	0	STEPNAME
+134102	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED4	0	Y
+134103	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ID5	0	LINES_READ
+134104	45	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME5	0	LINES_READ
+134105	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED5	0	Y
+134106	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ID6	0	LINES_WRITTEN
+134107	45	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME6	0	LINES_WRITTEN
+134108	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED6	0	Y
+134109	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ID7	0	LINES_UPDATED
+134110	45	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME7	0	LINES_UPDATED
+134111	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED7	0	Y
+134112	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ID8	0	LINES_INPUT
+134113	45	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME8	0	LINES_INPUT
+134114	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED8	0	Y
+134115	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ID9	0	LINES_OUTPUT
+134116	45	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME9	0	LINES_OUTPUT
+134117	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED9	0	Y
+134118	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ID10	0	LINES_REJECTED
+134119	45	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME10	0	LINES_REJECTED
+134120	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED10	0	Y
+134121	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ID11	0	ERRORS
+134122	45	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME11	0	ERRORS
+134123	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED11	0	Y
+134124	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ID12	0	RESULT
+134125	45	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME12	0	RESULT
+134126	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED12	0	Y
+134127	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ID13	0	NR_RESULT_ROWS
+134128	45	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME13	0	NR_RESULT_ROWS
+134129	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED13	0	Y
+134130	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ID14	0	NR_RESULT_FILES
+134131	45	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME14	0	NR_RESULT_FILES
+134132	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED14	0	Y
+134133	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ID15	0	LOG_FIELD
+134134	45	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME15	0	LOG_FIELD
+134135	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED15	0	N
+134136	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ID16	0	COPY_NR
+134137	45	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME16	0	COPY_NR
+134138	45	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED16	0	N
+134139	45	0	CHANNEL_LOG_TABLE_CONNECTION_NAME	0	\N
+134140	45	0	CHANNEL_LOG_TABLE_SCHEMA_NAME	0	\N
+134141	45	0	CHANNEL_LOG_TABLE_TABLE_NAME	0	\N
+134142	45	0	CHANNEL_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+134143	45	0	CHANNEL_LOG_TABLE_FIELD_ID0	0	ID_BATCH
+134144	45	0	CHANNEL_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
+134145	45	0	CHANNEL_LOG_TABLE_FIELD_ENABLED0	0	Y
+134146	45	0	CHANNEL_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+134147	45	0	CHANNEL_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+134148	45	0	CHANNEL_LOG_TABLE_FIELD_ENABLED1	0	Y
+134149	45	0	CHANNEL_LOG_TABLE_FIELD_ID2	0	LOG_DATE
+134150	45	0	CHANNEL_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
+134151	45	0	CHANNEL_LOG_TABLE_FIELD_ENABLED2	0	Y
+134152	45	0	CHANNEL_LOG_TABLE_FIELD_ID3	0	LOGGING_OBJECT_TYPE
+134153	45	0	CHANNEL_LOG_TABLE_FIELD_NAME3	0	LOGGING_OBJECT_TYPE
+134154	45	0	CHANNEL_LOG_TABLE_FIELD_ENABLED3	0	Y
+134155	45	0	CHANNEL_LOG_TABLE_FIELD_ID4	0	OBJECT_NAME
+134156	45	0	CHANNEL_LOG_TABLE_FIELD_NAME4	0	OBJECT_NAME
+134157	45	0	CHANNEL_LOG_TABLE_FIELD_ENABLED4	0	Y
+134158	45	0	CHANNEL_LOG_TABLE_FIELD_ID5	0	OBJECT_COPY
+134159	45	0	CHANNEL_LOG_TABLE_FIELD_NAME5	0	OBJECT_COPY
+134160	45	0	CHANNEL_LOG_TABLE_FIELD_ENABLED5	0	Y
+134161	45	0	CHANNEL_LOG_TABLE_FIELD_ID6	0	REPOSITORY_DIRECTORY
+134162	45	0	CHANNEL_LOG_TABLE_FIELD_NAME6	0	REPOSITORY_DIRECTORY
+134163	45	0	CHANNEL_LOG_TABLE_FIELD_ENABLED6	0	Y
+134164	45	0	CHANNEL_LOG_TABLE_FIELD_ID7	0	FILENAME
+134165	45	0	CHANNEL_LOG_TABLE_FIELD_NAME7	0	FILENAME
+134166	45	0	CHANNEL_LOG_TABLE_FIELD_ENABLED7	0	Y
+134167	45	0	CHANNEL_LOG_TABLE_FIELD_ID8	0	OBJECT_ID
+134168	45	0	CHANNEL_LOG_TABLE_FIELD_NAME8	0	OBJECT_ID
+134169	45	0	CHANNEL_LOG_TABLE_FIELD_ENABLED8	0	Y
+134170	45	0	CHANNEL_LOG_TABLE_FIELD_ID9	0	OBJECT_REVISION
+134171	45	0	CHANNEL_LOG_TABLE_FIELD_NAME9	0	OBJECT_REVISION
+134172	45	0	CHANNEL_LOG_TABLE_FIELD_ENABLED9	0	Y
+134173	45	0	CHANNEL_LOG_TABLE_FIELD_ID10	0	PARENT_CHANNEL_ID
+134174	45	0	CHANNEL_LOG_TABLE_FIELD_NAME10	0	PARENT_CHANNEL_ID
+134175	45	0	CHANNEL_LOG_TABLE_FIELD_ENABLED10	0	Y
+134176	45	0	CHANNEL_LOG_TABLE_FIELD_ID11	0	ROOT_CHANNEL_ID
+134177	45	0	CHANNEL_LOG_TABLE_FIELD_NAME11	0	ROOT_CHANNEL_ID
+134178	45	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
+134179	17	0	LOG_SIZE_LIMIT	0	\N
+134180	17	0	JOB_LOG_TABLE_CONNECTION_NAME	0	\N
+134181	17	0	JOB_LOG_TABLE_SCHEMA_NAME	0	\N
+134182	17	0	JOB_LOG_TABLE_TABLE_NAME	0	\N
+134183	17	0	JOB_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+134184	17	0	JOB_LOG_TABLE_FIELD_ID0	0	ID_JOB
+134185	17	0	JOB_LOG_TABLE_FIELD_NAME0	0	ID_JOB
+134186	17	0	JOB_LOG_TABLE_FIELD_ENABLED0	0	Y
+134187	17	0	JOB_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+134188	17	0	JOB_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+134189	17	0	JOB_LOG_TABLE_FIELD_ENABLED1	0	Y
+134190	17	0	JOB_LOG_TABLE_FIELD_ID2	0	JOBNAME
+134191	17	0	JOB_LOG_TABLE_FIELD_NAME2	0	JOBNAME
+134192	17	0	JOB_LOG_TABLE_FIELD_ENABLED2	0	Y
+134193	17	0	JOB_LOG_TABLE_FIELD_ID3	0	STATUS
+134194	17	0	JOB_LOG_TABLE_FIELD_NAME3	0	STATUS
+134195	17	0	JOB_LOG_TABLE_FIELD_ENABLED3	0	Y
+134196	17	0	JOB_LOG_TABLE_FIELD_ID4	0	LINES_READ
+134197	17	0	JOB_LOG_TABLE_FIELD_NAME4	0	LINES_READ
+134198	17	0	JOB_LOG_TABLE_FIELD_ENABLED4	0	Y
+134199	17	0	JOB_LOG_TABLE_FIELD_ID5	0	LINES_WRITTEN
+134200	17	0	JOB_LOG_TABLE_FIELD_NAME5	0	LINES_WRITTEN
+134201	17	0	JOB_LOG_TABLE_FIELD_ENABLED5	0	Y
+134202	17	0	JOB_LOG_TABLE_FIELD_ID6	0	LINES_UPDATED
+134203	17	0	JOB_LOG_TABLE_FIELD_NAME6	0	LINES_UPDATED
+134204	17	0	JOB_LOG_TABLE_FIELD_ENABLED6	0	Y
+134205	17	0	JOB_LOG_TABLE_FIELD_ID7	0	LINES_INPUT
+134206	17	0	JOB_LOG_TABLE_FIELD_NAME7	0	LINES_INPUT
+134207	17	0	JOB_LOG_TABLE_FIELD_ENABLED7	0	Y
+134208	17	0	JOB_LOG_TABLE_FIELD_ID8	0	LINES_OUTPUT
+134209	17	0	JOB_LOG_TABLE_FIELD_NAME8	0	LINES_OUTPUT
+134210	17	0	JOB_LOG_TABLE_FIELD_ENABLED8	0	Y
+134211	17	0	JOB_LOG_TABLE_FIELD_ID9	0	LINES_REJECTED
+134212	17	0	JOB_LOG_TABLE_FIELD_NAME9	0	LINES_REJECTED
+134213	17	0	JOB_LOG_TABLE_FIELD_ENABLED9	0	Y
+134214	17	0	JOB_LOG_TABLE_FIELD_ID10	0	ERRORS
+134215	17	0	JOB_LOG_TABLE_FIELD_NAME10	0	ERRORS
+134216	17	0	JOB_LOG_TABLE_FIELD_ENABLED10	0	Y
+134217	17	0	JOB_LOG_TABLE_FIELD_ID11	0	STARTDATE
+134218	17	0	JOB_LOG_TABLE_FIELD_NAME11	0	STARTDATE
+134219	17	0	JOB_LOG_TABLE_FIELD_ENABLED11	0	Y
+134220	17	0	JOB_LOG_TABLE_FIELD_ID12	0	ENDDATE
+134221	17	0	JOB_LOG_TABLE_FIELD_NAME12	0	ENDDATE
+134222	17	0	JOB_LOG_TABLE_FIELD_ENABLED12	0	Y
+134223	17	0	JOB_LOG_TABLE_FIELD_ID13	0	LOGDATE
+134224	17	0	JOB_LOG_TABLE_FIELD_NAME13	0	LOGDATE
+134225	17	0	JOB_LOG_TABLE_FIELD_ENABLED13	0	Y
+134226	17	0	JOB_LOG_TABLE_FIELD_ID14	0	DEPDATE
+134227	17	0	JOB_LOG_TABLE_FIELD_NAME14	0	DEPDATE
+134228	17	0	JOB_LOG_TABLE_FIELD_ENABLED14	0	Y
+134229	17	0	JOB_LOG_TABLE_FIELD_ID15	0	REPLAYDATE
+134230	17	0	JOB_LOG_TABLE_FIELD_NAME15	0	REPLAYDATE
+134231	17	0	JOB_LOG_TABLE_FIELD_ENABLED15	0	Y
+134232	17	0	JOB_LOG_TABLE_FIELD_ID16	0	LOG_FIELD
+134233	17	0	JOB_LOG_TABLE_FIELD_NAME16	0	LOG_FIELD
+134234	17	0	JOB_LOG_TABLE_FIELD_ENABLED16	0	Y
+134235	17	0	JOBLOG_TABLE_INTERVAL	0	\N
+134236	17	0	JOBLOG_TABLE_SIZE_LIMIT	0	\N
+134237	17	0	JOB_ENTRY_LOG_TABLE_CONNECTION_NAME	0	\N
+134238	17	0	JOB_ENTRY_LOG_TABLE_SCHEMA_NAME	0	\N
+134239	17	0	JOB_ENTRY_LOG_TABLE_TABLE_NAME	0	\N
+134240	17	0	JOB_ENTRY_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+134241	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID0	0	ID_BATCH
+134242	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
+134243	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED0	0	Y
+134244	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+134245	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+134246	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED1	0	Y
+134247	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID2	0	LOG_DATE
+134248	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
+134249	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED2	0	Y
+134250	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID3	0	JOBNAME
+134251	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
+134252	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED3	0	Y
+134253	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID4	0	JOBENTRYNAME
+134254	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME4	0	STEPNAME
+134255	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED4	0	Y
+134256	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID5	0	LINES_READ
+134257	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME5	0	LINES_READ
+134258	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED5	0	Y
+134259	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID6	0	LINES_WRITTEN
+134260	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME6	0	LINES_WRITTEN
+134261	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED6	0	Y
+134262	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID7	0	LINES_UPDATED
+134263	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME7	0	LINES_UPDATED
+134264	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED7	0	Y
+134265	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID8	0	LINES_INPUT
+134266	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME8	0	LINES_INPUT
+134267	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED8	0	Y
+134268	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID9	0	LINES_OUTPUT
+134269	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME9	0	LINES_OUTPUT
+134270	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED9	0	Y
+134271	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID10	0	LINES_REJECTED
+134272	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME10	0	LINES_REJECTED
+134273	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED10	0	Y
+134274	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID11	0	ERRORS
+134275	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME11	0	ERRORS
+134276	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED11	0	Y
+134277	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID12	0	RESULT
+134278	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME12	0	RESULT
+134279	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED12	0	Y
+134280	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID13	0	NR_RESULT_ROWS
+134281	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME13	0	NR_RESULT_ROWS
+134282	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED13	0	Y
+134283	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID14	0	NR_RESULT_FILES
+134284	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME14	0	NR_RESULT_FILES
+134285	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED14	0	Y
+134286	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID15	0	LOG_FIELD
+134287	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME15	0	LOG_FIELD
+134288	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED15	0	N
+134289	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ID16	0	COPY_NR
+134290	17	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME16	0	COPY_NR
+134291	17	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED16	0	N
+134292	17	0	CHANNEL_LOG_TABLE_CONNECTION_NAME	0	\N
+134293	17	0	CHANNEL_LOG_TABLE_SCHEMA_NAME	0	\N
+134294	17	0	CHANNEL_LOG_TABLE_TABLE_NAME	0	\N
+134295	17	0	CHANNEL_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+134296	17	0	CHANNEL_LOG_TABLE_FIELD_ID0	0	ID_BATCH
+134297	17	0	CHANNEL_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
+134298	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED0	0	Y
+134299	17	0	CHANNEL_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+134300	17	0	CHANNEL_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+134301	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED1	0	Y
+134302	17	0	CHANNEL_LOG_TABLE_FIELD_ID2	0	LOG_DATE
+134303	17	0	CHANNEL_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
+134304	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED2	0	Y
+134305	17	0	CHANNEL_LOG_TABLE_FIELD_ID3	0	LOGGING_OBJECT_TYPE
+134306	17	0	CHANNEL_LOG_TABLE_FIELD_NAME3	0	LOGGING_OBJECT_TYPE
+134307	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED3	0	Y
+134308	17	0	CHANNEL_LOG_TABLE_FIELD_ID4	0	OBJECT_NAME
+134309	17	0	CHANNEL_LOG_TABLE_FIELD_NAME4	0	OBJECT_NAME
+134310	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED4	0	Y
+134311	17	0	CHANNEL_LOG_TABLE_FIELD_ID5	0	OBJECT_COPY
+134312	17	0	CHANNEL_LOG_TABLE_FIELD_NAME5	0	OBJECT_COPY
+134313	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED5	0	Y
+134314	17	0	CHANNEL_LOG_TABLE_FIELD_ID6	0	REPOSITORY_DIRECTORY
+134315	17	0	CHANNEL_LOG_TABLE_FIELD_NAME6	0	REPOSITORY_DIRECTORY
+134316	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED6	0	Y
+134317	17	0	CHANNEL_LOG_TABLE_FIELD_ID7	0	FILENAME
+134318	17	0	CHANNEL_LOG_TABLE_FIELD_NAME7	0	FILENAME
+134319	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED7	0	Y
+134320	17	0	CHANNEL_LOG_TABLE_FIELD_ID8	0	OBJECT_ID
+134321	17	0	CHANNEL_LOG_TABLE_FIELD_NAME8	0	OBJECT_ID
+134322	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED8	0	Y
+134323	17	0	CHANNEL_LOG_TABLE_FIELD_ID9	0	OBJECT_REVISION
+134324	17	0	CHANNEL_LOG_TABLE_FIELD_NAME9	0	OBJECT_REVISION
+134325	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED9	0	Y
+134326	17	0	CHANNEL_LOG_TABLE_FIELD_ID10	0	PARENT_CHANNEL_ID
+134327	17	0	CHANNEL_LOG_TABLE_FIELD_NAME10	0	PARENT_CHANNEL_ID
+134328	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED10	0	Y
+134329	17	0	CHANNEL_LOG_TABLE_FIELD_ID11	0	ROOT_CHANNEL_ID
+134330	17	0	CHANNEL_LOG_TABLE_FIELD_NAME11	0	ROOT_CHANNEL_ID
+134331	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
+134332	17	0	PARAM_KEY	0	PDI_FICHIER_PARAMETRE
+134333	17	0	PARAM_DEFAULT	0	C:/projets/remocra/pdi/remocra.properties
+134334	17	0	PARAM_DESC	0	
+134335	43	0	LOG_SIZE_LIMIT	0	\N
+134336	43	0	JOB_LOG_TABLE_CONNECTION_NAME	0	\N
+134337	43	0	JOB_LOG_TABLE_SCHEMA_NAME	0	\N
+134338	43	0	JOB_LOG_TABLE_TABLE_NAME	0	\N
+134339	43	0	JOB_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+134340	43	0	JOB_LOG_TABLE_FIELD_ID0	0	ID_JOB
+134341	43	0	JOB_LOG_TABLE_FIELD_NAME0	0	ID_JOB
+134342	43	0	JOB_LOG_TABLE_FIELD_ENABLED0	0	Y
+134343	43	0	JOB_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+134344	43	0	JOB_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+134345	43	0	JOB_LOG_TABLE_FIELD_ENABLED1	0	Y
+134346	43	0	JOB_LOG_TABLE_FIELD_ID2	0	JOBNAME
+134347	43	0	JOB_LOG_TABLE_FIELD_NAME2	0	JOBNAME
+134348	43	0	JOB_LOG_TABLE_FIELD_ENABLED2	0	Y
+134349	43	0	JOB_LOG_TABLE_FIELD_ID3	0	STATUS
+134350	43	0	JOB_LOG_TABLE_FIELD_NAME3	0	STATUS
+134351	43	0	JOB_LOG_TABLE_FIELD_ENABLED3	0	Y
+134352	43	0	JOB_LOG_TABLE_FIELD_ID4	0	LINES_READ
+134353	43	0	JOB_LOG_TABLE_FIELD_NAME4	0	LINES_READ
+134354	43	0	JOB_LOG_TABLE_FIELD_ENABLED4	0	Y
+134355	43	0	JOB_LOG_TABLE_FIELD_ID5	0	LINES_WRITTEN
+134356	43	0	JOB_LOG_TABLE_FIELD_NAME5	0	LINES_WRITTEN
+134357	43	0	JOB_LOG_TABLE_FIELD_ENABLED5	0	Y
+134358	43	0	JOB_LOG_TABLE_FIELD_ID6	0	LINES_UPDATED
+134359	43	0	JOB_LOG_TABLE_FIELD_NAME6	0	LINES_UPDATED
+134360	43	0	JOB_LOG_TABLE_FIELD_ENABLED6	0	Y
+134361	43	0	JOB_LOG_TABLE_FIELD_ID7	0	LINES_INPUT
+134362	43	0	JOB_LOG_TABLE_FIELD_NAME7	0	LINES_INPUT
+134363	43	0	JOB_LOG_TABLE_FIELD_ENABLED7	0	Y
+134364	43	0	JOB_LOG_TABLE_FIELD_ID8	0	LINES_OUTPUT
+134365	43	0	JOB_LOG_TABLE_FIELD_NAME8	0	LINES_OUTPUT
+134366	43	0	JOB_LOG_TABLE_FIELD_ENABLED8	0	Y
+134367	43	0	JOB_LOG_TABLE_FIELD_ID9	0	LINES_REJECTED
+134368	43	0	JOB_LOG_TABLE_FIELD_NAME9	0	LINES_REJECTED
+134369	43	0	JOB_LOG_TABLE_FIELD_ENABLED9	0	Y
+134370	43	0	JOB_LOG_TABLE_FIELD_ID10	0	ERRORS
+134371	43	0	JOB_LOG_TABLE_FIELD_NAME10	0	ERRORS
+134372	43	0	JOB_LOG_TABLE_FIELD_ENABLED10	0	Y
+134373	43	0	JOB_LOG_TABLE_FIELD_ID11	0	STARTDATE
+134374	43	0	JOB_LOG_TABLE_FIELD_NAME11	0	STARTDATE
+134375	43	0	JOB_LOG_TABLE_FIELD_ENABLED11	0	Y
+134376	43	0	JOB_LOG_TABLE_FIELD_ID12	0	ENDDATE
+134377	43	0	JOB_LOG_TABLE_FIELD_NAME12	0	ENDDATE
+134378	43	0	JOB_LOG_TABLE_FIELD_ENABLED12	0	Y
+134379	43	0	JOB_LOG_TABLE_FIELD_ID13	0	LOGDATE
+134380	43	0	JOB_LOG_TABLE_FIELD_NAME13	0	LOGDATE
+134381	43	0	JOB_LOG_TABLE_FIELD_ENABLED13	0	Y
+134382	43	0	JOB_LOG_TABLE_FIELD_ID14	0	DEPDATE
+134383	43	0	JOB_LOG_TABLE_FIELD_NAME14	0	DEPDATE
+134384	43	0	JOB_LOG_TABLE_FIELD_ENABLED14	0	Y
+134385	43	0	JOB_LOG_TABLE_FIELD_ID15	0	REPLAYDATE
+134386	43	0	JOB_LOG_TABLE_FIELD_NAME15	0	REPLAYDATE
+134387	43	0	JOB_LOG_TABLE_FIELD_ENABLED15	0	Y
+134388	43	0	JOB_LOG_TABLE_FIELD_ID16	0	LOG_FIELD
+134389	43	0	JOB_LOG_TABLE_FIELD_NAME16	0	LOG_FIELD
+134390	43	0	JOB_LOG_TABLE_FIELD_ENABLED16	0	Y
+134391	43	0	JOBLOG_TABLE_INTERVAL	0	\N
+134392	43	0	JOBLOG_TABLE_SIZE_LIMIT	0	\N
+134393	43	0	JOB_ENTRY_LOG_TABLE_CONNECTION_NAME	0	\N
+134394	43	0	JOB_ENTRY_LOG_TABLE_SCHEMA_NAME	0	\N
+134395	43	0	JOB_ENTRY_LOG_TABLE_TABLE_NAME	0	\N
+134396	43	0	JOB_ENTRY_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+134397	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID0	0	ID_BATCH
+134398	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
+134399	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED0	0	Y
+134400	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+134401	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+134402	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED1	0	Y
+134403	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID2	0	LOG_DATE
+134404	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
+134405	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED2	0	Y
+134406	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID3	0	JOBNAME
+134407	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
+134408	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED3	0	Y
+134409	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID4	0	JOBENTRYNAME
+134410	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME4	0	STEPNAME
+134411	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED4	0	Y
+134412	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID5	0	LINES_READ
+134413	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME5	0	LINES_READ
+134414	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED5	0	Y
+134415	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID6	0	LINES_WRITTEN
+134416	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME6	0	LINES_WRITTEN
+134417	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED6	0	Y
+134418	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID7	0	LINES_UPDATED
+134419	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME7	0	LINES_UPDATED
+134420	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED7	0	Y
+134421	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID8	0	LINES_INPUT
+134422	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME8	0	LINES_INPUT
+134423	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED8	0	Y
+134424	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID9	0	LINES_OUTPUT
+134425	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME9	0	LINES_OUTPUT
+134426	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED9	0	Y
+134427	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID10	0	LINES_REJECTED
+134428	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME10	0	LINES_REJECTED
+134429	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED10	0	Y
+134430	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID11	0	ERRORS
+134431	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME11	0	ERRORS
+134432	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED11	0	Y
+134433	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID12	0	RESULT
+134434	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME12	0	RESULT
+134435	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED12	0	Y
+134436	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID13	0	NR_RESULT_ROWS
+134437	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME13	0	NR_RESULT_ROWS
+134438	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED13	0	Y
+134439	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID14	0	NR_RESULT_FILES
+134440	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME14	0	NR_RESULT_FILES
+134441	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED14	0	Y
+134442	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID15	0	LOG_FIELD
+134443	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME15	0	LOG_FIELD
+134444	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED15	0	N
+134445	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ID16	0	COPY_NR
+134446	43	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME16	0	COPY_NR
+134447	43	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED16	0	N
+134448	43	0	CHANNEL_LOG_TABLE_CONNECTION_NAME	0	\N
+134449	43	0	CHANNEL_LOG_TABLE_SCHEMA_NAME	0	\N
+134450	43	0	CHANNEL_LOG_TABLE_TABLE_NAME	0	\N
+134451	43	0	CHANNEL_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+134452	43	0	CHANNEL_LOG_TABLE_FIELD_ID0	0	ID_BATCH
+134453	43	0	CHANNEL_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
+134454	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED0	0	Y
+134455	43	0	CHANNEL_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+134456	43	0	CHANNEL_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+134457	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED1	0	Y
+134458	43	0	CHANNEL_LOG_TABLE_FIELD_ID2	0	LOG_DATE
+134459	43	0	CHANNEL_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
+134460	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED2	0	Y
+134461	43	0	CHANNEL_LOG_TABLE_FIELD_ID3	0	LOGGING_OBJECT_TYPE
+134462	43	0	CHANNEL_LOG_TABLE_FIELD_NAME3	0	LOGGING_OBJECT_TYPE
+134463	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED3	0	Y
+134464	43	0	CHANNEL_LOG_TABLE_FIELD_ID4	0	OBJECT_NAME
+134465	43	0	CHANNEL_LOG_TABLE_FIELD_NAME4	0	OBJECT_NAME
+134466	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED4	0	Y
+134467	43	0	CHANNEL_LOG_TABLE_FIELD_ID5	0	OBJECT_COPY
+134468	43	0	CHANNEL_LOG_TABLE_FIELD_NAME5	0	OBJECT_COPY
+134469	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED5	0	Y
+134470	43	0	CHANNEL_LOG_TABLE_FIELD_ID6	0	REPOSITORY_DIRECTORY
+134471	43	0	CHANNEL_LOG_TABLE_FIELD_NAME6	0	REPOSITORY_DIRECTORY
+134472	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED6	0	Y
+134473	43	0	CHANNEL_LOG_TABLE_FIELD_ID7	0	FILENAME
+134474	43	0	CHANNEL_LOG_TABLE_FIELD_NAME7	0	FILENAME
+134475	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED7	0	Y
+134476	43	0	CHANNEL_LOG_TABLE_FIELD_ID8	0	OBJECT_ID
+134477	43	0	CHANNEL_LOG_TABLE_FIELD_NAME8	0	OBJECT_ID
+134478	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED8	0	Y
+134479	43	0	CHANNEL_LOG_TABLE_FIELD_ID9	0	OBJECT_REVISION
+134480	43	0	CHANNEL_LOG_TABLE_FIELD_NAME9	0	OBJECT_REVISION
+134481	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED9	0	Y
+134482	43	0	CHANNEL_LOG_TABLE_FIELD_ID10	0	PARENT_CHANNEL_ID
+134483	43	0	CHANNEL_LOG_TABLE_FIELD_NAME10	0	PARENT_CHANNEL_ID
+134484	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED10	0	Y
+134485	43	0	CHANNEL_LOG_TABLE_FIELD_ID11	0	ROOT_CHANNEL_ID
+134486	43	0	CHANNEL_LOG_TABLE_FIELD_NAME11	0	ROOT_CHANNEL_ID
+134487	43	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
 \.
 
 
 --
--- TOC entry 2213 (class 0 OID 0)
--- Dependencies: 160
--- Name: r_job_attribute_id_job_attribute_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_job_attribute_id_job_attribute_seq', 1, false);
-
-
---
--- TOC entry 2102 (class 0 OID 19215)
+-- TOC entry 2093 (class 0 OID 250040)
 -- Dependencies: 161
 -- Data for Name: r_job_hop; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -7508,21 +8174,9 @@ COPY r_job_hop (id_job_hop, id_job, id_jobentry_copy_from, id_jobentry_copy_to, 
 5759	9	5283	5282	Y	N	N
 5760	9	5283	5284	Y	Y	N
 5761	9	5284	5282	Y	N	N
-5689	17	5226	5228	Y	Y	Y
-5690	17	5227	5229	Y	N	N
-5691	17	5230	5229	Y	N	N
-5692	17	5228	5232	Y	Y	Y
-5693	17	5232	5231	Y	Y	Y
-5694	17	5231	5233	Y	Y	N
-5695	17	5233	5227	Y	Y	Y
-5696	17	5234	5229	Y	N	N
-5697	17	5230	5234	Y	Y	N
 5974	28	5502	5501	Y	Y	N
 5975	28	5500	5504	Y	Y	Y
 5976	28	5504	5505	Y	N	N
-5698	17	5227	5235	Y	Y	N
-5699	17	5235	5230	Y	Y	N
-5700	17	5235	5229	Y	N	N
 5977	28	5504	5506	Y	Y	N
 5978	28	5506	5502	Y	Y	Y
 5979	28	5508	5507	Y	Y	N
@@ -7700,33 +8354,40 @@ COPY r_job_hop (id_job_hop, id_job, id_jobentry_copy_from, id_jobentry_copy_to, 
 6057	41	5589	5590	Y	Y	N
 6058	41	5586	5591	Y	N	N
 6059	41	5585	5591	Y	N	N
-6076	43	5609	5610	Y	N	N
-6077	43	5609	5611	Y	Y	N
-6078	43	5612	5609	Y	Y	Y
-6079	43	5608	5612	Y	Y	Y
+6135	44	5661	5663	Y	Y	Y
+6136	44	5663	5664	Y	Y	N
+6137	44	5663	5665	Y	N	N
+6138	44	5665	5662	Y	N	N
+6139	44	5664	5662	Y	N	N
+6156	45	5680	5678	Y	Y	Y
+6157	45	5678	5679	Y	N	N
+6158	17	5681	5683	Y	Y	Y
+6159	17	5682	5684	Y	N	N
+6160	17	5685	5684	Y	N	N
+6161	17	5683	5687	Y	Y	Y
+6162	17	5687	5686	Y	Y	Y
+6163	17	5686	5688	Y	Y	N
+6164	17	5688	5682	Y	Y	Y
+6165	17	5689	5684	Y	N	N
+6166	17	5682	5690	Y	Y	N
+6167	17	5690	5685	Y	Y	N
+6168	17	5690	5684	Y	N	N
+6169	17	5685	5691	N	N	Y
+6170	17	5691	5692	N	Y	Y
+6171	17	5692	5689	N	Y	Y
+6172	17	5691	5684	N	N	N
+6173	17	5692	5684	N	N	N
+6174	17	5685	5689	Y	Y	N
+6175	43	5694	5695	Y	N	N
+6176	43	5694	5696	Y	Y	N
+6177	43	5697	5694	Y	Y	Y
+6178	43	5693	5697	Y	Y	Y
+6179	43	5696	5698	Y	Y	N
 \.
 
 
 --
--- TOC entry 2214 (class 0 OID 0)
--- Dependencies: 162
--- Name: r_job_hop_id_job_hop_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_job_hop_id_job_hop_seq', 1, false);
-
-
---
--- TOC entry 2215 (class 0 OID 0)
--- Dependencies: 163
--- Name: r_job_id_job_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_job_id_job_seq', 1, false);
-
-
---
--- TOC entry 2105 (class 0 OID 19222)
+-- TOC entry 2094 (class 0 OID 250047)
 -- Dependencies: 164
 -- Data for Name: r_job_lock; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -7736,16 +8397,7 @@ COPY r_job_lock (id_job_lock, id_job, id_user, lock_message, lock_date) FROM std
 
 
 --
--- TOC entry 2216 (class 0 OID 0)
--- Dependencies: 165
--- Name: r_job_lock_id_job_lock_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_job_lock_id_job_lock_seq', 1, false);
-
-
---
--- TOC entry 2107 (class 0 OID 19230)
+-- TOC entry 2095 (class 0 OID 250055)
 -- Dependencies: 166
 -- Data for Name: r_job_note; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -7781,7 +8433,6 @@ COPY r_job_note (id_job, id_note) FROM stdin;
 25	2921
 23	2703
 22	2704
-17	2762
 11	2780
 27	2924
 27	2925
@@ -7811,13 +8462,19 @@ COPY r_job_note (id_job, id_note) FROM stdin;
 26	2941
 36	2943
 36	2944
-43	3018
-43	3019
+44	3052
+44	3053
+45	3059
+17	3060
+17	3061
+43	3068
+43	3069
+43	3070
 \.
 
 
 --
--- TOC entry 2108 (class 0 OID 19233)
+-- TOC entry 2096 (class 0 OID 250058)
 -- Dependencies: 167
 -- Data for Name: r_jobentry; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -7957,16 +8614,6 @@ COPY r_jobentry (id_jobentry, id_job, id_jobentry_type, name, description) FROM 
 5219	22	28	START	\N
 5220	22	44	exporter_tables_permis	\N
 5221	22	2	Set CODE to PERMIS	\N
-5226	17	28	START	\N
-5227	17	45	recuperer_et_importer_dump_postgresql	\N
-5228	17	2	Récupération des paramètres globaux	\N
-5229	17	45	notifier_erreur	\N
-5230	17	45	alimenter_voie	\N
-5231	17	44	creer_nom_dossier_synchro_du_jour	\N
-5232	17	23	Répertoire synchro 'IMPORT_EXTRANET'	\N
-5233	17	66	Suppression fichiers	\N
-5234	17	44	update_alerte	\N
-5235	17	44	supprimer_etatobjet_non_REF	\N
 5266	14	57	Récupération Dump Postgresql	\N
 5267	14	28	START	\N
 5268	14	40	Extraction fichiers depuis archive Zip	\N
@@ -8063,16 +8710,37 @@ COPY r_jobentry (id_jobentry, id_job, id_jobentry_type, name, description) FROM 
 5605	40	28	START	\N
 5606	40	44	recuperer_requete_source	\N
 5607	40	44	generer_courrier_pdf	\N
-5608	43	28	START	\N
-5609	43	22	requête spatiale	\N
-5610	43	44	exporter_donnees_csv	\N
-5611	43	44	exporter_donnees_shape	\N
-5612	43	44	recuperation_sql	\N
+5661	44	28	START	\N
+5662	44	51	Mise en échec tâche	\N
+5663	44	37	Initialisation	\N
+5664	44	43	Initialisation table OLDEB	\N
+5665	44	43	Mise à jour de la table OLDEB	\N
+5678	45	43	Consolidation des sections et parcelles du cadastre	\N
+5679	45	51	Mise en échec tâche	\N
+5680	45	28	START	\N
+5681	17	28	START	\N
+5682	17	45	recuperer_et_importer_dump_postgresql	\N
+5683	17	2	Récupération des paramètres globaux	\N
+5684	17	45	notifier_erreur	\N
+5685	17	45	alimenter_voie	\N
+5686	17	44	creer_nom_dossier_synchro_du_jour	\N
+5687	17	23	Répertoire synchro 'IMPORT_EXTRANET'	\N
+5688	17	66	Suppression fichiers	\N
+5689	17	44	update_alerte	\N
+5690	17	44	supprimer_etatobjet_non_REF	\N
+5691	17	45	alimenter_cadastre	\N
+5692	17	45	alimenter_old	\N
+5693	43	28	START	\N
+5694	43	22	requête spatiale	\N
+5695	43	44	exporter_donnees_csv	\N
+5696	43	44	exporter_donnees_shape	\N
+5697	43	44	recuperation_sql	\N
+5698	43	26	Fichier PRJ du Lambert 93	
 \.
 
 
 --
--- TOC entry 2109 (class 0 OID 19239)
+-- TOC entry 2097 (class 0 OID 250064)
 -- Dependencies: 168
 -- Data for Name: r_jobentry_attribute; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -8107,22 +8775,6 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 74838	41	5580	0	pass_export	0.00	N
 74839	41	5580	0	wait_until_finished	0.00	Y
 74840	41	5580	0	follow_abort_remote	0.00	N
-69912	17	5235	0	exec_per_row	0.00	N
-69913	17	5235	0	clear_rows	0.00	N
-69914	17	5235	0	clear_files	0.00	N
-69915	17	5235	0	set_logfile	0.00	N
-69916	17	5235	0	add_date	0.00	N
-69917	17	5235	0	add_time	0.00	N
-69918	17	5235	0	logfile	0.00	\N
-69919	17	5235	0	logext	0.00	\N
-69920	17	5235	0	loglevel	0.00	Basic
-69921	17	5235	0	cluster	0.00	N
-69922	17	5235	0	slave_server_name	0.00	\N
-69923	17	5235	0	set_append_logfile	0.00	N
-69924	17	5235	0	wait_until_finished	0.00	Y
-69925	17	5235	0	follow_abort_remote	0.00	N
-69926	17	5235	0	create_parent_folder	0.00	N
-69927	17	5235	0	pass_all_parameters	0.00	Y
 74841	41	5580	0	create_parent_folder	0.00	N
 74842	41	5580	0	pass_all_parameters	0.00	Y
 73998	35	5517	0	start	0.00	Y
@@ -10034,6 +10686,12 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 74336	33	5540	2	parameter_name	0.00	COMMUNE_ID
 74337	33	5540	2	parameter_stream_name	0.00	\N
 74338	33	5540	2	parameter_value	0.00	${COMMUNE_ID}
+74358	33	5542	0	fail_if_file_not_exists	0.00	N
+74359	33	5543	0	valuetype	0.00	variable
+74360	33	5543	0	fieldname	0.00	\N
+74361	33	5543	0	variablename	0.00	${NOTIFIER_COMMUNES}
+74362	33	5543	0	fieldtype	0.00	string
+74363	33	5543	0	mask	0.00	\N
 74961	41	5589	0	custom_sql	0.00	SELECT\r\n\t${COURRIER_ID}::bigint AS document,\r\n\tu_sdis.prenom || ' ' || u_sdis.nom AS nom_destinataire,\r\n\t'UTILISATEUR'::text AS type_destinataire,\r\n\tu_sdis.id AS id_destinataire,\r\n\tu_sdis.email AS email_destinataire\r\nFROM\r\n\t-- Collectivité territoriale à informer\r\n\t(SELECT\r\n\t\torg.nom,\r\n\t\tzc.geometrie\r\n\tFROM\r\n\t\t(SELECT\tnom,zone_competence FROM remocra.organisme WHERE id = ${ORGANISME_COLLECTIVITE_ID} AND actif) AS org\r\n\t\tJOIN remocra.zone_competence zc ON(zc.id = org.zone_competence)\r\n\t) AS o_ct\r\n\t-- Utilisateurs "Affaire suivie par"\r\n\tLEFT JOIN (SELECT\r\n\t\tu.id,\r\n\t\tu.nom,\r\n\t\tu.prenom,\r\n\t\tu.email,\r\n\t\tzc.geometrie\r\n\tFROM\r\n\t\t(SELECT\t* FROM remocra.utilisateur WHERE actif AND profil_utilisateur = ${PROFIL_UTILISATEUR_ID}) AS u\r\n\t\tJOIN remocra.organisme org ON(org.id = u.organisme)\r\n\t\tJOIN remocra.zone_competence zc ON(zc.id = org.zone_competence)\r\n\t) AS u_sdis ON (u_sdis.geometrie && o_ct.geometrie AND St_Intersects(u_sdis.geometrie,o_ct.geometrie))
 74962	41	5589	0	is_custom_sql	0.00	Y
 74963	41	5589	0	is_usevars	0.00	Y
@@ -10041,48 +10699,6 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 74965	41	5589	0	clear_result_rows	0.00	Y
 74966	41	5590	0	specification_method	0.00	rep_ref
 74339	33	5540	0	pass_all_parameters	0.00	Y
-69772	17	5226	0	start	0.00	Y
-69773	17	5226	0	dummy	0.00	N
-69774	17	5226	0	repeat	0.00	N
-69775	17	5226	0	schedulerType	0.00	\N
-69776	17	5226	0	intervalSeconds	0.00	\N
-69777	17	5226	0	intervalMinutes	60.00	\N
-69778	17	5226	0	hour	12.00	\N
-69779	17	5226	0	minutes	0.00	\N
-69780	17	5226	0	weekDay	1.00	\N
-69781	17	5226	0	dayOfMonth	1.00	\N
-69782	17	5227	0	specification_method	0.00	rep_ref
-69783	17	5227	0	job_object_id	0.00	14
-69784	17	5227	0	name	0.00	\N
-69785	17	5227	0	dir_path	0.00	\N
-69786	17	5227	0	file_name	0.00	\N
-69787	17	5227	0	arg_from_previous	0.00	N
-69788	17	5227	0	params_from_previous	0.00	N
-69789	17	5227	0	exec_per_row	0.00	N
-69790	17	5227	0	set_logfile	0.00	Y
-69791	17	5227	0	add_date	0.00	N
-69792	17	5227	0	add_time	0.00	N
-69793	17	5227	0	logfile	0.00	${PDI_CHEMIN_LOG}/${Internal.Job.Name}.log
-69794	17	5227	0	logext	0.00	\N
-69795	17	5227	0	set_append_logfile	0.00	N
-69796	17	5227	0	loglevel	0.00	Basic
-69797	17	5227	0	slave_server_name	0.00	\N
-69798	17	5227	0	pass_export	0.00	N
-69799	17	5227	0	wait_until_finished	0.00	Y
-69800	17	5227	0	follow_abort_remote	0.00	N
-69801	17	5227	0	create_parent_folder	0.00	N
-69802	17	5227	0	pass_all_parameters	0.00	Y
-69803	17	5228	0	replacevars	0.00	Y
-69804	17	5228	0	filename	0.00	${PDI_FICHIER_PARAMETRE}
-69805	17	5228	0	file_variable_type	0.00	JVM
-69806	17	5229	0	specification_method	0.00	rep_ref
-69807	17	5229	0	job_object_id	0.00	15
-69808	17	5229	0	name	0.00	\N
-69809	17	5229	0	dir_path	0.00	\N
-69810	17	5229	0	file_name	0.00	\N
-69811	17	5229	0	arg_from_previous	0.00	N
-69812	17	5229	0	params_from_previous	0.00	N
-69813	17	5229	0	exec_per_row	0.00	N
 74967	41	5590	0	trans_object_id	0.00	99
 74968	41	5590	0	name	0.00	\N
 74969	41	5590	0	dir_path	0.00	\N
@@ -10090,11 +10706,8 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 74971	41	5590	0	arg_from_previous	0.00	Y
 74972	41	5590	0	params_from_previous	0.00	Y
 74615	16	5565	0	start	0.00	Y
-69814	17	5229	0	set_logfile	0.00	Y
 74616	16	5565	0	dummy	0.00	N
 74617	16	5565	0	repeat	0.00	N
-69815	17	5229	0	add_date	0.00	N
-69816	17	5229	0	add_time	0.00	N
 74618	16	5565	0	schedulerType	0.00	\N
 74619	16	5565	0	intervalSeconds	0.00	\N
 74620	16	5565	0	intervalMinutes	60.00	\N
@@ -10134,12 +10747,7 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 74355	33	5541	0	createMoveToDirectory	0.00	N
 74356	33	5541	0	include_subfolders	0.00	Y
 74357	33	5542	0	filename	0.00	${OUTPUT_FULLPATH}.zip
-74358	33	5542	0	fail_if_file_not_exists	0.00	N
-74359	33	5543	0	valuetype	0.00	variable
-74360	33	5543	0	fieldname	0.00	\N
-74361	33	5543	0	variablename	0.00	${NOTIFIER_COMMUNES}
-74362	33	5543	0	fieldtype	0.00	string
-74363	33	5543	0	mask	0.00	\N
+75026	42	5593	0	add_date	0.00	N
 74364	33	5543	0	comparevalue	0.00	true
 74365	33	5543	0	minvalue	0.00	\N
 74366	33	5543	0	maxvalue	0.00	\N
@@ -10191,104 +10799,9 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 74412	26	5546	0	set_logfile	0.00	N
 74413	26	5546	0	add_date	0.00	N
 74414	26	5546	0	add_time	0.00	N
-69817	17	5229	0	logfile	0.00	${PDI_CHEMIN_LOG}/${Internal.Job.Name}.log
-69818	17	5229	0	logext	0.00	\N
-69819	17	5229	0	set_append_logfile	0.00	N
-69820	17	5229	0	loglevel	0.00	Error
-69821	17	5229	0	slave_server_name	0.00	\N
-69822	17	5229	0	pass_export	0.00	N
-69823	17	5229	0	wait_until_finished	0.00	Y
-69824	17	5229	0	follow_abort_remote	0.00	N
-69825	17	5229	0	create_parent_folder	0.00	N
-69826	17	5229	0	parameter_name	0.00	LOG_FILE
-69827	17	5229	0	parameter_stream_name	0.00	\N
-69828	17	5229	0	parameter_value	0.00	${PDI_CHEMIN_LOG}/${Internal.Job.Name}.log
-69829	17	5229	0	pass_all_parameters	0.00	Y
-69830	17	5230	0	specification_method	0.00	rep_ref
-69831	17	5230	0	job_object_id	0.00	16
-69832	17	5230	0	name	0.00	\N
-69833	17	5230	0	dir_path	0.00	\N
-69834	17	5230	0	file_name	0.00	\N
-69835	17	5230	0	arg_from_previous	0.00	N
-69836	17	5230	0	params_from_previous	0.00	N
-69837	17	5230	0	exec_per_row	0.00	N
-69838	17	5230	0	set_logfile	0.00	Y
-69839	17	5230	0	add_date	0.00	N
-69840	17	5230	0	add_time	0.00	N
-69841	17	5230	0	logfile	0.00	${PDI_CHEMIN_LOG}/${Internal.Job.Name}.log
-69842	17	5230	0	logext	0.00	\N
-69843	17	5230	0	set_append_logfile	0.00	N
-69844	17	5230	0	loglevel	0.00	Basic
-69845	17	5230	0	slave_server_name	0.00	\N
-69846	17	5230	0	pass_export	0.00	N
-69847	17	5230	0	wait_until_finished	0.00	Y
-69848	17	5230	0	follow_abort_remote	0.00	N
 74415	26	5546	0	logfile	0.00	\N
 74416	26	5546	0	logext	0.00	\N
 74417	26	5546	0	set_append_logfile	0.00	N
-69849	17	5230	0	create_parent_folder	0.00	N
-69850	17	5230	0	pass_all_parameters	0.00	Y
-69851	17	5231	0	specification_method	0.00	rep_ref
-69852	17	5231	0	trans_object_id	0.00	38
-69853	17	5231	0	name	0.00	\N
-69854	17	5231	0	dir_path	0.00	\N
-69855	17	5231	0	file_name	0.00	\N
-69856	17	5231	0	arg_from_previous	0.00	N
-69857	17	5231	0	params_from_previous	0.00	N
-69858	17	5231	0	exec_per_row	0.00	N
-69859	17	5231	0	clear_rows	0.00	N
-69860	17	5231	0	clear_files	0.00	N
-69861	17	5231	0	set_logfile	0.00	N
-69862	17	5231	0	add_date	0.00	N
-69863	17	5231	0	add_time	0.00	N
-69864	17	5231	0	logfile	0.00	\N
-69865	17	5231	0	logext	0.00	\N
-69866	17	5231	0	loglevel	0.00	Basic
-69867	17	5231	0	cluster	0.00	N
-69868	17	5231	0	slave_server_name	0.00	\N
-69869	17	5231	0	set_append_logfile	0.00	N
-69870	17	5231	0	wait_until_finished	0.00	Y
-69871	17	5231	0	follow_abort_remote	0.00	N
-69872	17	5231	0	create_parent_folder	0.00	N
-69873	17	5231	0	pass_all_parameters	0.00	Y
-69874	17	5232	0	foldername	0.00	${PDI_CHEMIN_SYNCHRO}/${PDI_DOSSIER_IMPORT_EXTRANET}/
-69875	17	5232	0	fail_of_folder_exists	0.00	N
-69876	17	5233	0	arg_from_previous	0.00	N
-69877	17	5233	0	include_subfolders	0.00	N
-69878	17	5233	0	name	0.00	${PDI_CHEMIN_SYNCHRO}/${PDI_DOSSIER_IMPORT_EXTRANET}/${DOSSIER_SYNCHRO_DU_JOUR}.ZIP
-69879	17	5233	0	filemask	0.00	\N
-69880	17	5233	1	name	0.00	${PDI_CHEMIN_SYNCHRO}/${PDI_DOSSIER_IMPORT_EXTRANET}/${DOSSIER_SYNCHRO_DU_JOUR}.MD5
-69881	17	5233	1	filemask	0.00	\N
-69882	17	5234	0	specification_method	0.00	rep_ref
-69883	17	5234	0	trans_object_id	0.00	48
-69884	17	5234	0	name	0.00	\N
-69885	17	5234	0	dir_path	0.00	\N
-69886	17	5234	0	file_name	0.00	\N
-69887	17	5234	0	arg_from_previous	0.00	N
-69888	17	5234	0	params_from_previous	0.00	N
-69889	17	5234	0	exec_per_row	0.00	N
-69890	17	5234	0	clear_rows	0.00	N
-69891	17	5234	0	clear_files	0.00	N
-69892	17	5234	0	set_logfile	0.00	N
-69893	17	5234	0	add_date	0.00	N
-69894	17	5234	0	add_time	0.00	N
-69895	17	5234	0	logfile	0.00	\N
-69896	17	5234	0	logext	0.00	\N
-69897	17	5234	0	loglevel	0.00	Basic
-69898	17	5234	0	cluster	0.00	N
-69899	17	5234	0	slave_server_name	0.00	\N
-69900	17	5234	0	set_append_logfile	0.00	N
-69901	17	5234	0	wait_until_finished	0.00	Y
-69902	17	5234	0	follow_abort_remote	0.00	N
-69903	17	5234	0	create_parent_folder	0.00	N
-69904	17	5234	0	pass_all_parameters	0.00	Y
-69905	17	5235	0	specification_method	0.00	rep_ref
-69906	17	5235	0	trans_object_id	0.00	81
-69907	17	5235	0	name	0.00	\N
-69908	17	5235	0	dir_path	0.00	\N
-69909	17	5235	0	file_name	0.00	\N
-69910	17	5235	0	arg_from_previous	0.00	N
-69911	17	5235	0	params_from_previous	0.00	N
 70341	14	5266	0	port	0.00	${PDI_FTP_PORT}
 70342	14	5266	0	servername	0.00	${PDI_FTP_URL}
 70343	14	5266	0	username	0.00	${PDI_FTP_USER_NAME}
@@ -10549,7 +11062,6 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 75023	42	5593	0	params_from_previous	0.00	N
 75024	42	5593	0	exec_per_row	0.00	N
 75025	42	5593	0	set_logfile	0.00	N
-75026	42	5593	0	add_date	0.00	N
 75027	42	5593	0	add_time	0.00	N
 75028	42	5593	0	logfile	0.00	\N
 75029	42	5593	0	logext	0.00	\N
@@ -11360,111 +11872,360 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 74518	36	5555	0	add_time	0.00	N
 74519	36	5555	0	logfile	0.00	\N
 74520	36	5555	0	logext	0.00	\N
-75258	43	5608	0	start	0.00	Y
-75259	43	5608	0	dummy	0.00	N
-75260	43	5608	0	repeat	0.00	N
-75261	43	5608	0	schedulerType	0.00	\N
-75262	43	5608	0	intervalSeconds	0.00	\N
-75263	43	5608	0	intervalMinutes	60.00	\N
-75264	43	5608	0	hour	12.00	\N
-75265	43	5608	0	minutes	0.00	\N
-75266	43	5608	0	weekDay	1.00	\N
-75267	43	5608	0	dayOfMonth	1.00	\N
-75268	43	5609	0	valuetype	0.00	variable
-75269	43	5609	0	fieldname	0.00	\N
-75270	43	5609	0	variablename	0.00	${IS_SPATIAL}
-75271	43	5609	0	fieldtype	0.00	boolean
-75272	43	5609	0	mask	0.00	\N
-75273	43	5609	0	comparevalue	0.00	\N
-75274	43	5609	0	minvalue	0.00	\N
-75275	43	5609	0	maxvalue	0.00	\N
-75276	43	5609	0	successcondition	0.00	equal
-75277	43	5609	0	successnumbercondition	0.00	equal
-75278	43	5609	0	successbooleancondition	0.00	true
-75279	43	5609	0	successwhenvarset	0.00	N
-75280	43	5610	0	specification_method	0.00	rep_name
-75281	43	5610	0	trans_object_id	0.00	\N
-75282	43	5610	0	name	0.00	exporter_donnees_csv
-75283	43	5610	0	dir_path	0.00	/demandes/export
-75284	43	5610	0	file_name	0.00	\N
-75285	43	5610	0	arg_from_previous	0.00	N
-75286	43	5610	0	params_from_previous	0.00	N
-75287	43	5610	0	exec_per_row	0.00	N
-75288	43	5610	0	clear_rows	0.00	N
-75289	43	5610	0	clear_files	0.00	N
-75290	43	5610	0	set_logfile	0.00	N
-75291	43	5610	0	add_date	0.00	N
-75292	43	5610	0	add_time	0.00	N
-75293	43	5610	0	logfile	0.00	\N
-75294	43	5610	0	logext	0.00	\N
-75295	43	5610	0	loglevel	0.00	Basic
-75296	43	5610	0	cluster	0.00	N
-75297	43	5610	0	slave_server_name	0.00	\N
-75298	43	5610	0	set_append_logfile	0.00	N
-75299	43	5610	0	wait_until_finished	0.00	Y
-75300	43	5610	0	follow_abort_remote	0.00	N
-75301	43	5610	0	create_parent_folder	0.00	N
-75302	43	5610	0	pass_all_parameters	0.00	Y
-75303	43	5611	0	specification_method	0.00	rep_name
-75304	43	5611	0	trans_object_id	0.00	\N
-75305	43	5611	0	name	0.00	exporter_donnees_shape
-75306	43	5611	0	dir_path	0.00	/demandes/export
-75307	43	5611	0	file_name	0.00	\N
-75308	43	5611	0	arg_from_previous	0.00	N
-75309	43	5611	0	params_from_previous	0.00	N
-75310	43	5611	0	exec_per_row	0.00	N
-75311	43	5611	0	clear_rows	0.00	N
-75312	43	5611	0	clear_files	0.00	N
-75313	43	5611	0	set_logfile	0.00	N
-75314	43	5611	0	add_date	0.00	N
-75315	43	5611	0	add_time	0.00	N
-75316	43	5611	0	logfile	0.00	\N
-75317	43	5611	0	logext	0.00	\N
-75318	43	5611	0	loglevel	0.00	Basic
-75319	43	5611	0	cluster	0.00	N
-75320	43	5611	0	slave_server_name	0.00	\N
-75321	43	5611	0	set_append_logfile	0.00	N
-75322	43	5611	0	wait_until_finished	0.00	Y
-75323	43	5611	0	follow_abort_remote	0.00	N
-75324	43	5611	0	create_parent_folder	0.00	N
-75325	43	5611	0	pass_all_parameters	0.00	Y
-75326	43	5612	0	specification_method	0.00	rep_name
-75327	43	5612	0	trans_object_id	0.00	\N
-75328	43	5612	0	name	0.00	recuperation_sql
-75329	43	5612	0	dir_path	0.00	/demandes/export
-75330	43	5612	0	file_name	0.00	\N
-75331	43	5612	0	arg_from_previous	0.00	N
-75332	43	5612	0	params_from_previous	0.00	N
-75333	43	5612	0	exec_per_row	0.00	N
-75334	43	5612	0	clear_rows	0.00	N
-75335	43	5612	0	clear_files	0.00	N
-75336	43	5612	0	set_logfile	0.00	N
-75337	43	5612	0	add_date	0.00	N
-75338	43	5612	0	add_time	0.00	N
-75339	43	5612	0	logfile	0.00	\N
-75340	43	5612	0	logext	0.00	\N
-75341	43	5612	0	loglevel	0.00	Basic
-75342	43	5612	0	cluster	0.00	N
-75343	43	5612	0	slave_server_name	0.00	\N
-75344	43	5612	0	set_append_logfile	0.00	N
-75345	43	5612	0	wait_until_finished	0.00	Y
-75346	43	5612	0	follow_abort_remote	0.00	N
-75347	43	5612	0	create_parent_folder	0.00	N
-75348	43	5612	0	pass_all_parameters	0.00	Y
+75907	44	5661	0	start	0.00	Y
+75908	44	5661	0	dummy	0.00	N
+75909	44	5661	0	repeat	0.00	N
+75910	44	5661	0	schedulerType	0.00	\N
+75911	44	5661	0	intervalSeconds	0.00	\N
+75912	44	5661	0	intervalMinutes	60.00	\N
+75913	44	5661	0	hour	12.00	\N
+75914	44	5661	0	minutes	0.00	\N
+75915	44	5661	0	weekDay	1.00	\N
+75916	44	5661	0	dayOfMonth	1.00	\N
+75917	44	5662	0	message	0.00	\N
+75918	44	5663	0	id_database	3.00	\N
+75919	44	5663	0	connection	3.00	\N
+75920	44	5663	0	schemaname	0.00	${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}
+75921	44	5663	0	tablename	0.00	oldeb
+75922	44	5663	0	success_condition	0.00	rows_count_smaller_equal
+75923	44	5663	0	limit	0.00	0
+75924	44	5663	0	custom_sql	0.00	\N
+75925	44	5663	0	is_custom_sql	0.00	N
+75926	44	5663	0	is_usevars	0.00	Y
+75927	44	5663	0	add_rows_result	0.00	N
+75928	44	5663	0	clear_result_rows	0.00	Y
+75929	44	5664	0	id_database	3.00	\N
+75930	44	5664	0	connection	3.00	\N
+75931	44	5664	0	sql	0.00	\n-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n-- * Création des OLD\n-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n\n\n-- Insertion des données de OLD_PARCELLE pour la première initialisation\n-- des données qui ont été flaggé à "soumi"\n\nINSERT INTO ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.oldeb (\n\tgeometrie,\n\tsection,\n\tparcelle, \n\tcommune\n)select \n\tST_Multi(oldd.geometrie), \n\toldd.section, \n\toldd.numero as parcelle, \n\tcom.id as commune\n  from ${PDI_POSTGRESQL_NOM_SCHEMA_REFERENTIEL}.old_parcelle oldd \n  inner join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.commune com on (oldd.numero_insee = CAST(com.insee as integer))\n  where soumis_old is true and oldd.etatobjet='REF'\n
+75932	44	5664	0	useVariableSubstitution	0.00	T
+75933	44	5664	0	sqlfromfile	0.00	F
+75934	44	5664	0	sqlfilename	0.00	\N
+75935	44	5664	0	sendOneStatement	0.00	T
+75936	44	5665	0	id_database	3.00	\N
+75937	44	5665	0	connection	3.00	\N
+75938	44	5665	0	sql	0.00	-- Début de la transaction\nBEGIN;\n\n-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n-- * Désactivation des OLD\n-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n\n-- Règle 1 : \n--\t\tDésactivation des OLD qui :\n-- \t\t\t- ne sont plus présent dans la table des parcelles (clé "insee" / "section" / "parcelle" non présent)\n-- \t\t\t- ont été soumi\nUPDATE ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.oldeb\nSET    actif = FALSE -- désactivation\nWHERE  id IN\n       (\n              -- Récupération des id ne correspondant pas aux critères\n              SELECT id\n              FROM   ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.oldeb oldd\n\t\t\t\t\n\t\t\t\t-- Critère de négation\n              except\n\n              SELECT     oldd.id\n              FROM       ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.oldeb oldd\n    \t\t  INNER JOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.commune com ON (oldd.commune = com.id)\n\t\t\t\t-- Critère clé présente\n    \t\t  INNER JOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REFERENTIEL}.old_parcelle old_p ON (old_p.numero_insee||old_p.section||old_p.numero LIKE com.insee||oldd.section||oldd.parcelle)\n\t\t\t\t-- Critère a été soumis\n              WHERE      old_p.soumis_old = TRUE AND old_p.etatobjet='REF'\n);\n\n-- Règle 2 : \n--\t\tDésactivation des OLD qui : \n-- \t\t\t- sont présent dans la table des parcelles\n-- \t\t\t- ne sont pas soumis\nUPDATE ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.oldeb\nSET    actif = FALSE -- désactivation\nWHERE  id IN (SELECT oldd.id\n              FROM   ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.oldeb oldd\n    \t\t  INNER JOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.commune com ON ( oldd.commune = com.id )\n\t\t\t\t-- Critère clé présente\n    \t\t  INNER JOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REFERENTIEL}.old_parcelle old_p ON ( old_p.numero_insee||old_p.section||old_p.numero LIKE com.insee||oldd.section||oldd.parcelle)\n\t\t\t\t-- Critère n'a pas été soumis (entrainant la désactivation)\n              WHERE  old_p.soumis_old = FALSE AND old_p.etatobjet='REF'\n);\n\n\n-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n-- * Mise à jour des OLD\n-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n-- Règle 3 : \n--\t\tMise à des OLD qui sont présent dans la table des parcelles et soumis\nUPDATE ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.oldeb old_to_update\nSET \r\n\tgeometrie = oldd.geometrie, \r\n\tactif = TRUE -- Si c'était à faut c'est activé\nFROM       ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.oldeb oldd\n    \t\t  INNER JOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.commune com ON (oldd.commune = com.id)\n    \t\t  INNER JOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REFERENTIEL}.old_parcelle old_p ON (\n\t\t\t\t\t-- Critère clé présente\n\t\t\t\told_p.numero_insee||old_p.section||old_p.numero LIKE com.insee||oldd.section||oldd.parcelle \n\t\t\t\t\t-- Critère n'a pas été soumis (entrainant la mise à jour de la géométrie)\n\t\t\t\tAND old_p.soumis_old = TRUE\r\n\t\t\t\tAND\told_p.etatobjet='REF'\n\t\t\t)\nWHERE\told_to_update.id = oldd.id;\n\n-- Fin de la transaction\nCOMMIT;
+75939	44	5665	0	useVariableSubstitution	0.00	T
+75940	44	5665	0	sqlfromfile	0.00	F
+75941	44	5665	0	sqlfilename	0.00	\N
+75942	44	5665	0	sendOneStatement	0.00	T
+76141	45	5678	0	id_database	3.00	\N
+76142	45	5678	0	connection	3.00	\N
+76234	17	5685	0	wait_until_finished	0.00	Y
+76235	17	5685	0	follow_abort_remote	0.00	N
+76236	17	5685	0	create_parent_folder	0.00	N
+76143	45	5678	0	sql	0.00	-- Néttoyage des tables\nTRUNCATE remocra.cadastre_section, remocra.cadastre_parcelle;\n\n-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n-- * Affectation des sections depuis les old_parcelles\n-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\nINSERT INTO ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.cadastre_section (\n\t\tgeometrie,\n\t    numero,\n    \tcommune\n) SELECT \n\t   St_Multi(St_Union(St_Buffer(oldd.geometrie, 0))) AS geometrie,\n       oldd.section AS numero,\n       com.id AS commune\nFROM   ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.commune com\n\t   INNER JOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REFERENTIEL}.old_parcelle oldd ON ( oldd.numero_insee = CAST(com.insee AS INTEGER) )\nGROUP  BY oldd.section, com.id;  \n\n-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n-- * Affectation des parcelles après avoir renseigner les sections pour que lien puisse être effectué\n-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\nINSERT INTO ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.cadastre_parcelle (\n\t   geometrie,\n       numero,\n       section\n) SELECT \n\t   St_Multi(oldd.geometrie),\n       oldd.numero,\n       cs.id AS section\nFROM   ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.cadastre_section cs\n\t   INNER JOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REFERENTIEL}.old_parcelle oldd ON ( cs.numero = oldd.section );  \n
+76144	45	5678	0	useVariableSubstitution	0.00	T
+76145	45	5678	0	sqlfromfile	0.00	F
+76146	45	5678	0	sqlfilename	0.00	
+76147	45	5678	0	sendOneStatement	0.00	T
+76148	45	5679	0	message	0.00	\N
+76149	45	5680	0	start	0.00	Y
+76150	45	5680	0	dummy	0.00	N
+76151	45	5680	0	repeat	0.00	N
+76152	45	5680	0	schedulerType	0.00	\N
+76153	45	5680	0	intervalSeconds	0.00	\N
+76154	45	5680	0	intervalMinutes	60.00	\N
+76155	45	5680	0	hour	12.00	\N
+76156	45	5680	0	minutes	0.00	\N
+76157	45	5680	0	weekDay	1.00	\N
+76158	45	5680	0	dayOfMonth	1.00	\N
+76159	17	5681	0	start	0.00	Y
+76160	17	5681	0	dummy	0.00	N
+76161	17	5681	0	repeat	0.00	N
+76162	17	5681	0	schedulerType	0.00	\N
+76163	17	5681	0	intervalSeconds	0.00	\N
+76164	17	5681	0	intervalMinutes	60.00	\N
+76165	17	5681	0	hour	12.00	\N
+76166	17	5681	0	minutes	0.00	\N
+76167	17	5681	0	weekDay	1.00	\N
+76168	17	5681	0	dayOfMonth	1.00	\N
+76169	17	5682	0	specification_method	0.00	rep_ref
+76170	17	5682	0	job_object_id	0.00	14
+76171	17	5682	0	name	0.00	\N
+76172	17	5682	0	dir_path	0.00	
+76173	17	5682	0	file_name	0.00	\N
+76174	17	5682	0	arg_from_previous	0.00	N
+76175	17	5682	0	params_from_previous	0.00	N
+76176	17	5682	0	exec_per_row	0.00	N
+76177	17	5682	0	set_logfile	0.00	Y
+76178	17	5682	0	add_date	0.00	N
+76179	17	5682	0	add_time	0.00	N
+76180	17	5682	0	logfile	0.00	${PDI_CHEMIN_LOG}/${Internal.Job.Name}.log
+76181	17	5682	0	logext	0.00	\N
+76182	17	5682	0	set_append_logfile	0.00	N
+76183	17	5682	0	loglevel	0.00	Basic
+76184	17	5682	0	slave_server_name	0.00	\N
+76185	17	5682	0	pass_export	0.00	N
+76186	17	5682	0	wait_until_finished	0.00	Y
+76187	17	5682	0	follow_abort_remote	0.00	N
+76188	17	5682	0	create_parent_folder	0.00	N
+76189	17	5682	0	pass_all_parameters	0.00	Y
+76190	17	5683	0	replacevars	0.00	Y
+76191	17	5683	0	filename	0.00	${PDI_FICHIER_PARAMETRE}
+76192	17	5683	0	file_variable_type	0.00	JVM
+76193	17	5684	0	specification_method	0.00	rep_ref
+76194	17	5684	0	job_object_id	0.00	15
+76195	17	5684	0	name	0.00	\N
+76196	17	5684	0	dir_path	0.00	
+76197	17	5684	0	file_name	0.00	\N
+76198	17	5684	0	arg_from_previous	0.00	N
+76199	17	5684	0	params_from_previous	0.00	N
+76200	17	5684	0	exec_per_row	0.00	N
+76201	17	5684	0	set_logfile	0.00	Y
+76202	17	5684	0	add_date	0.00	N
+76203	17	5684	0	add_time	0.00	N
+76204	17	5684	0	logfile	0.00	${PDI_CHEMIN_LOG}/${Internal.Job.Name}.log
+76205	17	5684	0	logext	0.00	\N
+76206	17	5684	0	set_append_logfile	0.00	N
+76207	17	5684	0	loglevel	0.00	Error
+76208	17	5684	0	slave_server_name	0.00	\N
+76209	17	5684	0	pass_export	0.00	N
+76210	17	5684	0	wait_until_finished	0.00	Y
+76211	17	5684	0	follow_abort_remote	0.00	N
+76212	17	5684	0	create_parent_folder	0.00	N
+76213	17	5684	0	parameter_name	0.00	LOG_FILE
+76214	17	5684	0	parameter_stream_name	0.00	
+76215	17	5684	0	parameter_value	0.00	${PDI_CHEMIN_LOG}/${Internal.Job.Name}.log
+76216	17	5684	0	pass_all_parameters	0.00	Y
+76217	17	5685	0	specification_method	0.00	rep_ref
+76218	17	5685	0	job_object_id	0.00	16
+76219	17	5685	0	name	0.00	\N
+76220	17	5685	0	dir_path	0.00	
+76221	17	5685	0	file_name	0.00	\N
+76222	17	5685	0	arg_from_previous	0.00	N
+76223	17	5685	0	params_from_previous	0.00	N
+76224	17	5685	0	exec_per_row	0.00	N
+76225	17	5685	0	set_logfile	0.00	Y
+76226	17	5685	0	add_date	0.00	N
+76227	17	5685	0	add_time	0.00	N
+76228	17	5685	0	logfile	0.00	${PDI_CHEMIN_LOG}/${Internal.Job.Name}.log
+76229	17	5685	0	logext	0.00	\N
+76230	17	5685	0	set_append_logfile	0.00	N
+76231	17	5685	0	loglevel	0.00	Basic
+76232	17	5685	0	slave_server_name	0.00	\N
+76233	17	5685	0	pass_export	0.00	N
+76237	17	5685	0	pass_all_parameters	0.00	Y
+76238	17	5686	0	specification_method	0.00	rep_ref
+76239	17	5686	0	trans_object_id	0.00	38
+76240	17	5686	0	name	0.00	\N
+76241	17	5686	0	dir_path	0.00	
+76242	17	5686	0	file_name	0.00	\N
+76243	17	5686	0	arg_from_previous	0.00	N
+76244	17	5686	0	params_from_previous	0.00	N
+76245	17	5686	0	exec_per_row	0.00	N
+76246	17	5686	0	clear_rows	0.00	N
+76247	17	5686	0	clear_files	0.00	N
+76248	17	5686	0	set_logfile	0.00	N
+76249	17	5686	0	add_date	0.00	N
+76250	17	5686	0	add_time	0.00	N
+76251	17	5686	0	logfile	0.00	\N
+76252	17	5686	0	logext	0.00	\N
+76253	17	5686	0	loglevel	0.00	Basic
+76254	17	5686	0	cluster	0.00	N
+76255	17	5686	0	slave_server_name	0.00	\N
+76256	17	5686	0	set_append_logfile	0.00	N
+76257	17	5686	0	wait_until_finished	0.00	Y
+76258	17	5686	0	follow_abort_remote	0.00	N
+76259	17	5686	0	create_parent_folder	0.00	N
+76260	17	5686	0	pass_all_parameters	0.00	Y
+76261	17	5687	0	foldername	0.00	${PDI_CHEMIN_SYNCHRO}/${PDI_DOSSIER_IMPORT_EXTRANET}/
+76262	17	5687	0	fail_of_folder_exists	0.00	N
+76263	17	5688	0	arg_from_previous	0.00	N
+76264	17	5688	0	include_subfolders	0.00	N
+76265	17	5688	0	name	0.00	${PDI_CHEMIN_SYNCHRO}/${PDI_DOSSIER_IMPORT_EXTRANET}/${DOSSIER_SYNCHRO_DU_JOUR}.ZIP
+76266	17	5688	0	filemask	0.00	\N
+76267	17	5688	1	name	0.00	${PDI_CHEMIN_SYNCHRO}/${PDI_DOSSIER_IMPORT_EXTRANET}/${DOSSIER_SYNCHRO_DU_JOUR}.MD5
+76268	17	5688	1	filemask	0.00	\N
+76269	17	5689	0	specification_method	0.00	rep_ref
+76270	17	5689	0	trans_object_id	0.00	48
+76271	17	5689	0	name	0.00	\N
+76272	17	5689	0	dir_path	0.00	
+76273	17	5689	0	file_name	0.00	\N
+76274	17	5689	0	arg_from_previous	0.00	N
+76275	17	5689	0	params_from_previous	0.00	N
+76276	17	5689	0	exec_per_row	0.00	N
+76277	17	5689	0	clear_rows	0.00	N
+76278	17	5689	0	clear_files	0.00	N
+76279	17	5689	0	set_logfile	0.00	N
+76280	17	5689	0	add_date	0.00	N
+76281	17	5689	0	add_time	0.00	N
+76282	17	5689	0	logfile	0.00	\N
+76283	17	5689	0	logext	0.00	\N
+76284	17	5689	0	loglevel	0.00	Basic
+76285	17	5689	0	cluster	0.00	N
+76286	17	5689	0	slave_server_name	0.00	\N
+76287	17	5689	0	set_append_logfile	0.00	N
+76288	17	5689	0	wait_until_finished	0.00	Y
+76289	17	5689	0	follow_abort_remote	0.00	N
+76290	17	5689	0	create_parent_folder	0.00	N
+76291	17	5689	0	pass_all_parameters	0.00	Y
+76292	17	5690	0	specification_method	0.00	rep_ref
+76293	17	5690	0	trans_object_id	0.00	81
+76294	17	5690	0	name	0.00	\N
+76295	17	5690	0	dir_path	0.00	
+76296	17	5690	0	file_name	0.00	\N
+76297	17	5690	0	arg_from_previous	0.00	N
+76298	17	5690	0	params_from_previous	0.00	N
+76299	17	5690	0	exec_per_row	0.00	N
+76300	17	5690	0	clear_rows	0.00	N
+76301	17	5690	0	clear_files	0.00	N
+76302	17	5690	0	set_logfile	0.00	N
+76303	17	5690	0	add_date	0.00	N
+76304	17	5690	0	add_time	0.00	N
+76305	17	5690	0	logfile	0.00	\N
+76306	17	5690	0	logext	0.00	\N
+76307	17	5690	0	loglevel	0.00	Basic
+76308	17	5690	0	cluster	0.00	N
+76309	17	5690	0	slave_server_name	0.00	\N
+76310	17	5690	0	set_append_logfile	0.00	N
+76311	17	5690	0	wait_until_finished	0.00	Y
+76312	17	5690	0	follow_abort_remote	0.00	N
+76313	17	5690	0	create_parent_folder	0.00	N
+76314	17	5690	0	pass_all_parameters	0.00	Y
+76315	17	5691	0	specification_method	0.00	rep_ref
+76316	17	5691	0	job_object_id	0.00	45
+76317	17	5691	0	name	0.00	\N
+76318	17	5691	0	dir_path	0.00	
+76319	17	5691	0	file_name	0.00	\N
+76320	17	5691	0	arg_from_previous	0.00	N
+76321	17	5691	0	params_from_previous	0.00	N
+76322	17	5691	0	exec_per_row	0.00	N
+76323	17	5691	0	set_logfile	0.00	Y
+76324	17	5691	0	add_date	0.00	N
+76325	17	5691	0	add_time	0.00	N
+76326	17	5691	0	logfile	0.00	${PDI_CHEMIN_LOG}/${Internal.Job.Name}.log
+76327	17	5691	0	logext	0.00	\N
+76328	17	5691	0	set_append_logfile	0.00	N
+76329	17	5691	0	loglevel	0.00	Basic
+76330	17	5691	0	slave_server_name	0.00	\N
+76331	17	5691	0	pass_export	0.00	N
+76332	17	5691	0	wait_until_finished	0.00	Y
+76333	17	5691	0	follow_abort_remote	0.00	N
+76334	17	5691	0	create_parent_folder	0.00	N
+76335	17	5691	0	pass_all_parameters	0.00	Y
+76336	17	5692	0	specification_method	0.00	rep_ref
+76337	17	5692	0	job_object_id	0.00	44
+76338	17	5692	0	name	0.00	\N
+76339	17	5692	0	dir_path	0.00	
+76340	17	5692	0	file_name	0.00	\N
+76341	17	5692	0	arg_from_previous	0.00	N
+76342	17	5692	0	params_from_previous	0.00	N
+76343	17	5692	0	exec_per_row	0.00	N
+76344	17	5692	0	set_logfile	0.00	Y
+76345	17	5692	0	add_date	0.00	N
+76346	17	5692	0	add_time	0.00	N
+76347	17	5692	0	logfile	0.00	${PDI_CHEMIN_LOG}/${Internal.Job.Name}.log
+76348	17	5692	0	logext	0.00	\N
+76349	17	5692	0	set_append_logfile	0.00	N
+76350	17	5692	0	loglevel	0.00	Basic
+76351	17	5692	0	slave_server_name	0.00	\N
+76352	17	5692	0	pass_export	0.00	N
+76353	17	5692	0	wait_until_finished	0.00	Y
+76354	17	5692	0	follow_abort_remote	0.00	N
+76355	17	5692	0	create_parent_folder	0.00	N
+76356	17	5692	0	pass_all_parameters	0.00	Y
+76357	43	5693	0	start	0.00	Y
+76358	43	5693	0	dummy	0.00	N
+76359	43	5693	0	repeat	0.00	N
+76360	43	5693	0	schedulerType	0.00	\N
+76361	43	5693	0	intervalSeconds	0.00	\N
+76362	43	5693	0	intervalMinutes	60.00	\N
+76363	43	5693	0	hour	12.00	\N
+76364	43	5693	0	minutes	0.00	\N
+76365	43	5693	0	weekDay	1.00	\N
+76366	43	5693	0	dayOfMonth	1.00	\N
+76367	43	5694	0	valuetype	0.00	variable
+76368	43	5694	0	fieldname	0.00	\N
+76369	43	5694	0	variablename	0.00	${IS_SPATIAL}
+76370	43	5694	0	fieldtype	0.00	boolean
+76371	43	5694	0	fieldtype	3.00	\N
+76372	43	5694	0	mask	0.00	\N
+76373	43	5694	0	comparevalue	0.00	\N
+76374	43	5694	0	minvalue	0.00	\N
+76375	43	5694	0	maxvalue	0.00	\N
+76376	43	5694	0	successcondition	0.00	equal
+76377	43	5694	0	successnumbercondition	0.00	equal
+76378	43	5694	0	successbooleancondition	0.00	true
+76379	43	5694	0	successwhenvarset	0.00	N
+76380	43	5695	0	specification_method	0.00	rep_name
+76381	43	5695	0	trans_object_id	0.00	\N
+76382	43	5695	0	name	0.00	exporter_donnees_csv
+76383	43	5695	0	dir_path	0.00	/demandes/export
+76384	43	5695	0	file_name	0.00	\N
+76385	43	5695	0	arg_from_previous	0.00	N
+76386	43	5695	0	params_from_previous	0.00	N
+76387	43	5695	0	exec_per_row	0.00	N
+76388	43	5695	0	clear_rows	0.00	N
+76389	43	5695	0	clear_files	0.00	N
+76390	43	5695	0	set_logfile	0.00	N
+76391	43	5695	0	add_date	0.00	N
+76392	43	5695	0	add_time	0.00	N
+76393	43	5695	0	logfile	0.00	\N
+76394	43	5695	0	logext	0.00	\N
+76395	43	5695	0	loglevel	0.00	Basic
+76396	43	5695	0	cluster	0.00	N
+76397	43	5695	0	slave_server_name	0.00	\N
+76398	43	5695	0	set_append_logfile	0.00	N
+76399	43	5695	0	wait_until_finished	0.00	Y
+76400	43	5695	0	follow_abort_remote	0.00	N
+76401	43	5695	0	create_parent_folder	0.00	N
+76402	43	5695	0	pass_all_parameters	0.00	Y
+76403	43	5696	0	specification_method	0.00	rep_name
+76404	43	5696	0	trans_object_id	0.00	\N
+76405	43	5696	0	name	0.00	exporter_donnees_shape
+76406	43	5696	0	dir_path	0.00	/demandes/export
+76407	43	5696	0	file_name	0.00	\N
+76408	43	5696	0	arg_from_previous	0.00	N
+76409	43	5696	0	params_from_previous	0.00	N
+76410	43	5696	0	exec_per_row	0.00	N
+76411	43	5696	0	clear_rows	0.00	N
+76412	43	5696	0	clear_files	0.00	N
+76413	43	5696	0	set_logfile	0.00	N
+76414	43	5696	0	add_date	0.00	N
+76415	43	5696	0	add_time	0.00	N
+76416	43	5696	0	logfile	0.00	\N
+76417	43	5696	0	logext	0.00	\N
+76418	43	5696	0	loglevel	0.00	Basic
+76419	43	5696	0	cluster	0.00	N
+76420	43	5696	0	slave_server_name	0.00	\N
+76421	43	5696	0	set_append_logfile	0.00	N
+76422	43	5696	0	wait_until_finished	0.00	Y
+76423	43	5696	0	follow_abort_remote	0.00	N
+76424	43	5696	0	create_parent_folder	0.00	N
+76425	43	5696	0	pass_all_parameters	0.00	Y
+76426	43	5697	0	specification_method	0.00	rep_name
+76427	43	5697	0	trans_object_id	0.00	\N
+76428	43	5697	0	name	0.00	recuperation_sql
+76429	43	5697	0	dir_path	0.00	/demandes/export
+76430	43	5697	0	file_name	0.00	\N
+76431	43	5697	0	arg_from_previous	0.00	N
+76432	43	5697	0	params_from_previous	0.00	N
+76433	43	5697	0	exec_per_row	0.00	N
+76434	43	5697	0	clear_rows	0.00	N
+76435	43	5697	0	clear_files	0.00	N
+76436	43	5697	0	set_logfile	0.00	N
+76437	43	5697	0	add_date	0.00	N
+76438	43	5697	0	add_time	0.00	N
+76439	43	5697	0	logfile	0.00	\N
+76440	43	5697	0	logext	0.00	\N
+76441	43	5697	0	loglevel	0.00	Basic
+76442	43	5697	0	cluster	0.00	N
+76443	43	5697	0	slave_server_name	0.00	\N
+76444	43	5697	0	set_append_logfile	0.00	N
+76445	43	5697	0	wait_until_finished	0.00	Y
+76446	43	5697	0	follow_abort_remote	0.00	N
+76447	43	5697	0	create_parent_folder	0.00	N
+76448	43	5697	0	pass_all_parameters	0.00	Y
+76449	43	5698	0	filename	0.00	${PDI_CHEMIN_TRAITEMENT}/${TRAITEMENT_DOSSIER_NUMERO}/${TRAITEMENT_DOSSIER_NUMERO}.prj
+76450	43	5698	0	createParentFolder	0.00	N
+76451	43	5698	0	appendFile	0.00	N
+76452	43	5698	0	content	0.00	PROJCS["RGF93_Lambert_93",GEOGCS["GCS_RGF93",DATUM["D_RGF_1993",SPHEROID["GRS_1980",6378137,298.257222101]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]],PROJECTION["Lambert_Conformal_Conic"],PARAMETER["standard_parallel_1",49],PARAMETER["standard_parallel_2",44],PARAMETER["latitude_of_origin",46.5],PARAMETER["central_meridian",3],PARAMETER["false_easting",700000],PARAMETER["false_northing",6600000],UNIT["Meter",1]]
+76453	43	5698	0	encoding	0.00	UTF-8
 \.
 
 
 --
--- TOC entry 2217 (class 0 OID 0)
--- Dependencies: 169
--- Name: r_jobentry_attribute_id_jobentry_attribute_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_jobentry_attribute_id_jobentry_attribute_seq', 1, false);
-
-
---
--- TOC entry 2111 (class 0 OID 19247)
+-- TOC entry 2098 (class 0 OID 250072)
 -- Dependencies: 170
 -- Data for Name: r_jobentry_copy; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -11605,16 +12366,6 @@ COPY r_jobentry_copy (id_jobentry_copy, id_jobentry, id_job, id_jobentry_type, n
 5219	5219	22	28	0	140	180	Y	N
 5220	5220	22	44	0	570	180	Y	N
 5221	5221	22	2	0	375	180	Y	N
-5226	5226	17	28	0	20	180	Y	N
-5227	5227	17	45	0	1160	180	Y	N
-5228	5228	17	2	0	240	180	Y	N
-5229	5229	17	45	0	720	360	Y	N
-5230	5230	17	45	0	1160	540	Y	N
-5231	5231	17	44	0	720	180	Y	N
-5232	5232	17	23	0	460	180	Y	N
-5233	5233	17	66	0	920	180	Y	N
-5234	5234	17	44	0	720	540	Y	N
-5235	5235	17	44	0	1160	360	Y	N
 5561	5561	39	28	0	175	275	Y	N
 5562	5562	39	2	0	450	275	Y	N
 5517	5517	35	28	0	22	214	Y	N
@@ -11710,25 +12461,37 @@ COPY r_jobentry_copy (id_jobentry_copy, id_jobentry, id_job, id_jobentry_type, n
 5605	5605	40	28	0	128	224	Y	N
 5606	5606	40	44	0	320	224	Y	N
 5607	5607	40	44	0	544	224	Y	N
-5608	5608	43	28	0	128	58	Y	N
-5609	5609	43	22	0	383	185	Y	N
-5610	5610	43	44	0	306	317	Y	N
-5611	5611	43	44	0	485	316	Y	N
-5612	5612	43	44	0	129	185	Y	N
+5661	5661	44	28	0	77	215	Y	N
+5662	5662	44	51	0	379	220	Y	N
+5663	5663	44	37	0	209	214	Y	N
+5664	5664	44	43	0	209	72	Y	N
+5665	5665	44	43	0	210	351	Y	N
+5678	5678	45	43	0	439	437	Y	N
+5679	5679	45	51	0	715	435	Y	N
+5680	5680	45	28	0	125	436	Y	N
+5681	5681	17	28	0	20	180	Y	N
+5682	5682	17	45	0	1160	180	Y	N
+5683	5683	17	2	0	240	180	Y	N
+5684	5684	17	45	0	721	408	Y	N
+5685	5685	17	45	0	1162	387	Y	N
+5686	5686	17	44	0	720	180	Y	N
+5687	5687	17	23	0	460	180	Y	N
+5688	5688	17	66	0	920	180	Y	N
+5689	5689	17	44	0	721	599	Y	N
+5690	5690	17	44	0	1161	288	Y	N
+5691	5691	17	45	0	1152	640	Y	N
+5692	5692	17	45	0	1088	736	Y	N
+5693	5693	43	28	0	128	58	Y	N
+5694	5694	43	22	0	383	185	Y	N
+5695	5695	43	44	0	288	320	Y	N
+5696	5696	43	44	0	480	320	Y	N
+5697	5697	43	44	0	129	185	Y	N
+5698	5698	43	26	0	672	320	Y	N
 \.
 
 
 --
--- TOC entry 2218 (class 0 OID 0)
--- Dependencies: 171
--- Name: r_jobentry_copy_id_jobentry_copy_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_jobentry_copy_id_jobentry_copy_seq', 1, false);
-
-
---
--- TOC entry 2113 (class 0 OID 19252)
+-- TOC entry 2099 (class 0 OID 250077)
 -- Dependencies: 172
 -- Data for Name: r_jobentry_database; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -11753,20 +12516,15 @@ COPY r_jobentry_database (id_job, id_jobentry, id_database) FROM stdin;
 41	5589	3
 42	5600	3
 42	5602	3
+44	5663	3
+44	5664	3
+44	5665	3
+45	5678	3
 \.
 
 
 --
--- TOC entry 2219 (class 0 OID 0)
--- Dependencies: 173
--- Name: r_jobentry_id_jobentry_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_jobentry_id_jobentry_seq', 1, false);
-
-
---
--- TOC entry 2115 (class 0 OID 19257)
+-- TOC entry 2100 (class 0 OID 250082)
 -- Dependencies: 174
 -- Data for Name: r_jobentry_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -11863,16 +12621,7 @@ COPY r_jobentry_type (id_jobentry_type, code, description) FROM stdin;
 
 
 --
--- TOC entry 2220 (class 0 OID 0)
--- Dependencies: 175
--- Name: r_jobentry_type_id_jobentry_type_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_jobentry_type_id_jobentry_type_seq', 1, false);
-
-
---
--- TOC entry 2117 (class 0 OID 19265)
+-- TOC entry 2101 (class 0 OID 250090)
 -- Dependencies: 176
 -- Data for Name: r_log; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -11882,16 +12631,7 @@ COPY r_log (id_log, name, id_loglevel, logtype, filename, fileextention, add_dat
 
 
 --
--- TOC entry 2221 (class 0 OID 0)
--- Dependencies: 177
--- Name: r_log_id_log_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_log_id_log_seq', 1, false);
-
-
---
--- TOC entry 2119 (class 0 OID 19273)
+-- TOC entry 2102 (class 0 OID 250098)
 -- Dependencies: 178
 -- Data for Name: r_loglevel; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -11907,16 +12647,7 @@ COPY r_loglevel (id_loglevel, code, description) FROM stdin;
 
 
 --
--- TOC entry 2222 (class 0 OID 0)
--- Dependencies: 179
--- Name: r_loglevel_id_loglevel_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_loglevel_id_loglevel_seq', 1, false);
-
-
---
--- TOC entry 2121 (class 0 OID 19281)
+-- TOC entry 2103 (class 0 OID 250106)
 -- Dependencies: 180
 -- Data for Name: r_note; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -12004,9 +12735,7 @@ COPY r_note (id_note, value_str, gui_location_x, gui_location_y, gui_location_wi
 -72	Purge des demandes de mots de passe\r\nToutes les demandes anterieures à 1H (basé sur l'heure de lancement de ce traitement) sont supprimées	10	10	500	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 -76	Récupère les valeurs des paramètres associés à la demande traitement.\r\nChaque valeur de paramètre est passée à la transformation ou à la tâche via la création d'une variable PDI	10	10	500	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 2966	/!\\ : Le chemin vers le dossier des PDF sources sont est en dur	560	240	372	25	Arial	10	N	N	0	0	0	255	165	0	100	100	100	Y
-2988	Alimentation de la table des métadonnées à partir d'appels aux services Web du CRIGE PACA.\r\nLa table des métadonnées est purgée totalement à chaque execution (annule / remplace)\r\n* Gérer les thématiques Sdis/crige Paca\r\n* Flager le truncage de la table	10	10	566	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 -79	Tâche principale de récupération et de publication d'un fichier KML des risques\r\n	10	10	500	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
-2762	Tâche principale de récupération des données Postgresql distantes, d'import en base locale et de synchronisation des données métier.	10	10	786	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 2774	Traitement de publication d'un fichier KML des risques\r\n* Vérification de la présence du namespace xmlns\r\n* Ajout d'un namespace xmlns si la donnée est absente du fichier d'origine\r\n* Sauvegarde du fichier final\r\n	71	49	443	69	Ariel	10	N	N	0	0	0	255	255	0	100	100	100	Y
 2924	Création d'un fichier ZIP regroupant les rapports Excel pour les hydrants  indisponibles de la veille.\r\n\r\nDéclenchement via le bloc traitement, si COMMUNE_ID est renseigné fihcier Excel  pour une commune, sinon pour toutes les communes.\r\n	10	10	812	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 2779	Traitement de publication d'un fichier KML des risques\r\n* Recherche et récupération éventuelle d'un fichier KML\r\n* Création d'un kml temporaire en UTF8 via réencodage (si nécessaire)\r\n	30	22	426	54	Ariel	10	N	N	0	0	0	255	255	0	100	100	100	Y
@@ -12074,11 +12803,7 @@ COPY r_note (id_note, value_str, gui_location_x, gui_location_y, gui_location_wi
 2909	La table TYPE_ORGANISME n'est pas synchronisée, \r\nla FK PERMIS.SERVICE_INSTRUCTEUR est un champs texte coté oracle	60	405	457	42	Arial	10	N	N	0	0	0	255	165	0	100	100	100	Y
 2910	- Génération des ordres SQL liés à la synchronisation des tables métiers liées de la thématique "PERMIS"\r\n- Copie des documents éventuels\r\nLes ordres des insctructions SQL sont précisés en "DUR" dans chaque requête d'extraction	10	10	628	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 2982	Intégration des données du SDIS dans le schéma "Referentiel"\r\n* Import des fichiers de données en provenance du SDIS par COPY FROM dans le schéma "Temporaire"\r\n* Réafectation du schéma pour chaque table. Schéma "Temporaire" vers schéma "Referentiel"	10	10	624	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
-3018	Récupération des variables\r\npour l'execution des exports\r\net pour déterminer le type d'export	198	100	196	58	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
-3019	Export d'un fichier CSV ou Shape suivant\r\nle paramétrage fait dans le XML d'export	293	396	230	42	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
 3020	La brique Shapefile génère trois fichiers : \r\n - .shp : fichier de formes\r\n - .shx : fichier d'index des formes\r\n - .dbf : fichier des données des formes	262	59	233	74	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
-3021	Extraction des informations des XML présent dans le répertoire\r\n${PDI_CHEMIN_MODELES}/export/\r\npour les insérer dans la table "export_modele"	253	40	348	58	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
-3022	Les champs de la table "export_modele" \r\nseront utilisées pour extraire les données de la requête\r\nparamétrée dans le champ "source_sql" de la table	28	453	305	58	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
 3023	- Génération des ordres SQL liés à la synchronisation des tables métiers liées de la thématique "HYDRANT"\r\n- Copie des documents éventuels\r\nLes ordres des insctructions SQL sont précisés en "DUR" dans chaque requête d'extraction	10	10	640	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 3024	10	45	240	24	25	Arial	10	N	N	0	0	0	255	165	0	100	100	100	Y
 3025	11	45	345	24	25	Arial	10	N	N	0	0	0	255	165	0	100	100	100	Y
@@ -12097,20 +12822,25 @@ COPY r_note (id_note, value_str, gui_location_x, gui_location_y, gui_location_wi
 3038	17	1395	450	24	25	Arial	10	N	N	0	0	0	255	165	0	100	100	100	Y
 3039	32	270	1470	24	25	Arial	10	N	N	0	0	0	255	165	0	100	100	100	Y
 3040	20\r\n	32	802	31	40	Arial	10	N	N	0	0	0	255	165	0	100	100	100	Y
+3052	Initialisation des OLD avec les données de OLD_PARCELLE qui ont un flag "soumis" à true	456	98	481	26	Segoe UI	9	N	N	0	0	0	255	255	128	100	100	100	Y
+3053	Désactivation / Mise à jour des OLD suivant les règles suivantes : \n - Règle 1 : \n\t\tDésactivation des OLD qui :\n\t\t\t- ne sont plus présent dans la table des parcelles (clé "insee" / "section" / "parcelle" non présent)\n\t\t\t- ont été soumi\n\n - Règle 2 : \n\t\tDésactivation des OLD qui : \n\t\t\t- sont présent dans la table des parcelles\n\t\t\t- ne sont pas soumis\n\t\t\n - Règle 3 : \n\t\tMise à des OLD qui \n\t\t\t- sont présent dans la table des parcelles et soumis\n	456	253	604	233	Segoe UI	9	N	N	0	0	0	255	255	128	100	100	100	Y
+3059	Tâche principale de récupération des données des OLD depuis remocra_referentiel\nSynchronisation des données métier des parcelles et sections.	243	345	451	42	Segoe UI	9	N	N	0	0	0	255	255	128	100	100	100	Y
+3060	Tâche principale de récupération des données Postgresql distantes, d'import en base locale et de synchronisation des données métier.	10	10	786	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
+3061	A valider et activer\r\npour livraison du module OLDEB	1152	704	199	40	\N	-1	N	N	0	0	0	255	165	0	100	100	100	Y
+3062	Alimentation de la table des métadonnées à partir d'appels aux services Web du CRIGE PACA.\r\nLa table des métadonnées est purgée totalement à chaque execution (annule / remplace)\r\n* Gérer les thématiques Sdis/crige Paca\r\n* Associer un modèle d'export de données	32	128	566	70	Arial	10	N	N	0	0	0	255	255	0	0	0	0	N
+3063	Si le code du modèle d'export est identique au code\r\nde la fiche de métadonnée, le modèle d'export sera\r\nexploité pour permettre d'exporter les données directement\r\ndepuis la fiche de métadonnée	2432	288	357	70	Arial	10	N	N	0	0	0	255	165	0	100	100	100	Y
+3064	Extraction des informations des XML présent dans le répertoire\r\n${PDI_CHEMIN_MODELES}/export/\r\npour les insérer dans la table "export_modele"	32	96	348	58	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
+3065	Les champs de la table "export_modele" \r\nseront utilisées pour extraire les données de la requête\r\nparamétrée dans le champ "source_sql" de la table	1600	96	305	58	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
+3066	XSD à modifier ici\nsi évolution de la strcure du fichier	320	480	207	40	Arial	10	N	N	0	0	0	255	165	0	100	100	100	Y
+3067	Validation du XML par le XSD.\r\nGéré en Java et non avec la brique PDI car non prise en compte\r\ndans la brique d'une chapaine XSD (fichier XSD obligatoire)	480	96	388	55	Arial	10	N	N	0	0	0	255	165	0	100	100	100	Y
+3068	Récupération des variables\r\npour l'execution des exports\r\net pour déterminer le type d'export	198	100	196	58	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
+3069	Export d'un fichier CSV ou Shape suivant\r\nle paramétrage fait dans le XML d'export	293	396	230	42	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
+3070	PRJ toujours en lambert 93	640	256	168	25	\N	-1	N	N	0	0	0	255	165	0	100	100	100	Y
 \.
 
 
 --
--- TOC entry 2223 (class 0 OID 0)
--- Dependencies: 181
--- Name: r_note_id_note_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_note_id_note_seq', 1570, true);
-
-
---
--- TOC entry 2123 (class 0 OID 19289)
+-- TOC entry 2104 (class 0 OID 250114)
 -- Dependencies: 182
 -- Data for Name: r_partition; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -12120,16 +12850,7 @@ COPY r_partition (id_partition, id_partition_schema, partition_id) FROM stdin;
 
 
 --
--- TOC entry 2224 (class 0 OID 0)
--- Dependencies: 183
--- Name: r_partition_id_partition_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_partition_id_partition_seq', 1, false);
-
-
---
--- TOC entry 2125 (class 0 OID 19294)
+-- TOC entry 2105 (class 0 OID 250119)
 -- Dependencies: 184
 -- Data for Name: r_partition_schema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -12139,16 +12860,7 @@ COPY r_partition_schema (id_partition_schema, name, dynamic_definition, partitio
 
 
 --
--- TOC entry 2225 (class 0 OID 0)
--- Dependencies: 185
--- Name: r_partition_schema_id_partition_schema_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_partition_schema_id_partition_schema_seq', 1, false);
-
-
---
--- TOC entry 2127 (class 0 OID 19302)
+-- TOC entry 2106 (class 0 OID 250127)
 -- Dependencies: 186
 -- Data for Name: r_repository_log; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -17794,20 +18506,69 @@ COPY r_repository_log (id_repository_log, rep_version, log_date, log_user, opera
 5638	4.0	2017-03-20 14:32:24.764	admin	save transformation 'creer_liste_modeles'
 5639	4.0	2017-03-20 14:32:30.212	admin	save transformation 'creer_liste_modeles'
 5640	4.0	2017-03-21 09:50:05.202	admin	save transformation 'exporter_tables_hydrants'
+5641	4.0	2017-03-23 14:11:39.142	admin	save job 'alimenter_old'
+5642	4.0	2017-03-23 14:12:03.927	admin	save job 'alimenter_cadastre'
+5643	4.0	2017-03-23 14:13:10.253	admin	save job 'alimenter_old'
+5644	4.0	2017-03-23 14:13:16.144	admin	save job 'alimenter_old'
+5645	4.0	2017-03-23 14:13:31.277	admin	save job 'alimenter_cadastre'
+5646	4.0	2017-03-23 14:25:34.388	admin	save job 'importer_referentiel_et_synchroniser_metier'
+5647	4.0	2017-03-23 14:27:47.277	admin	save job 'importer_referentiel_et_synchroniser_metier'
+5648	4.0	2017-03-23 14:29:46.332	admin	save job 'alimenter_old'
+5649	4.0	2017-03-23 14:29:58.083	admin	save job 'alimenter_old'
+5650	4.0	2017-03-23 14:30:07.964	admin	save job 'alimenter_cadastre'
+5651	4.0	2017-03-23 14:44:49.358	admin	save job 'importer_referentiel_et_synchroniser_metier'
+5652	4.0	2017-03-23 14:47:09.371	admin	save job 'alimenter_old'
+5653	4.0	2017-03-23 14:51:51.158	admin	save job 'alimenter_old'
+5654	4.0	2017-03-23 14:53:46.19	admin	save job 'alimenter_old'
+5655	4.0	2017-03-23 14:54:16.194	admin	save job 'alimenter_old'
+5656	4.0	2017-03-23 14:55:40.884	admin	save job 'alimenter_old'
+5657	4.0	2017-03-23 15:10:17.959	admin	save job 'alimenter_old'
+5658	4.0	2017-03-23 15:14:09.841	admin	save job 'alimenter_old'
+5659	4.0	2017-03-23 15:19:43.934	admin	save job 'importer_referentiel_et_synchroniser_metier'
+5660	4.0	2017-05-16 11:52:16.86	admin	save transformation 'creer_liste_modeles'
+5661	4.0	2017-05-16 11:52:37.563	admin	save transformation 'creer_liste_modeles'
+5662	4.0	2017-05-16 11:52:49.404	admin	save transformation 'creer_liste_modeles'
+5663	4.0	2017-05-16 11:53:05.298	admin	save transformation 'creer_liste_modeles'
+5664	4.0	2017-05-16 11:57:21.453	admin	save transformation 'creer_liste_modeles'
+5665	4.0	2017-05-16 11:57:36.482	admin	save transformation 'creer_liste_modeles'
+5666	4.0	2017-05-16 11:58:38.397	admin	Save database : Modification by user
+5667	4.0	2017-05-16 11:58:38.397	admin	Modification by user
+5668	4.0	2017-05-16 11:58:50.477	admin	save transformation 'creer_liste_modeles'
+5669	4.0	2017-05-16 11:59:15.041	admin	Save database : Modification by user
+5670	4.0	2017-05-16 11:59:15.043	admin	Modification by user
+5671	4.0	2017-05-16 11:59:32.157	admin	save transformation 'creer_liste_modeles'
+5672	4.0	2017-05-16 12:04:25.04	admin	save job 'alimenter_cadastre'
+5673	4.0	2017-05-16 12:06:24.77	admin	save job 'importer_referentiel_et_synchroniser_metier'
+5674	4.0	2017-05-16 13:58:28.609	admin	save transformation 'mettre_a_jour_metadonnees'
+5675	4.0	2017-05-16 14:00:15.55	admin	save transformation 'mettre_a_jour_metadonnees'
+5676	4.0	2017-05-16 14:02:01.907	admin	save transformation 'mettre_a_jour_metadonnees'
+5677	4.0	2017-05-16 14:02:35.207	admin	save transformation 'mettre_a_jour_metadonnees'
+5678	4.0	2017-05-16 14:02:46.888	admin	Save database : Modification by user
+5679	4.0	2017-05-16 14:02:46.888	admin	Modification by user
+5680	4.0	2017-05-16 14:02:48.916	admin	save transformation 'mettre_a_jour_metadonnees'
+5681	4.0	2017-05-16 14:09:35.84	admin	save transformation 'mettre_a_jour_metadonnees'
+5682	4.0	2017-05-16 14:10:26.753	admin	save transformation 'mettre_a_jour_metadonnees'
+5683	4.0	2017-05-16 14:10:44.066	admin	save transformation 'mettre_a_jour_metadonnees'
+5684	4.0	2017-05-16 14:11:01.947	admin	save transformation 'mettre_a_jour_metadonnees'
+5685	4.0	2017-05-16 14:11:08.365	admin	save transformation 'mettre_a_jour_metadonnees'
+5686	4.0	2017-05-16 14:11:20.247	admin	save transformation 'mettre_a_jour_metadonnees'
+5687	4.0	2017-05-16 14:11:40.128	admin	save transformation 'mettre_a_jour_metadonnees'
+5688	4.0	2017-05-16 14:12:23.287	admin	save transformation 'mettre_a_jour_metadonnees'
+5689	4.0	2017-05-16 14:13:00.117	admin	save transformation 'mettre_a_jour_metadonnees'
+5690	4.0	2017-05-16 14:33:13.826	admin	save transformation 'mettre_a_jour_metadonnees'
+5691	4.0	2017-05-16 14:33:26.953	admin	save transformation 'mettre_a_jour_metadonnees'
+5692	4.0	2017-05-16 16:20:39.139	admin	save transformation 'mettre_a_jour_metadonnees'
+5693	4.0	2017-05-16 17:02:34.514	admin	save transformation 'creer_liste_modeles'
+5694	4.0	2017-05-16 17:02:55.75	admin	save transformation 'creer_liste_modeles'
+5695	4.0	2017-05-16 17:04:19.163	admin	save transformation 'creer_liste_modeles'
+5696	4.0	2017-05-16 17:08:51.27	admin	save transformation 'creer_liste_modeles'
+5697	4.0	2017-05-17 08:33:58.392	admin	save job 'exporter_donnees'
+5698	4.0	2017-05-17 08:56:09.984	admin	save job 'exporter_donnees'
 \.
 
 
 --
--- TOC entry 2226 (class 0 OID 0)
--- Dependencies: 187
--- Name: r_repository_log_id_repository_log_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_repository_log_id_repository_log_seq', 1, false);
-
-
---
--- TOC entry 2129 (class 0 OID 19310)
+-- TOC entry 2107 (class 0 OID 250135)
 -- Dependencies: 188
 -- Data for Name: r_slave; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -17817,16 +18578,7 @@ COPY r_slave (id_slave, name, host_name, port, web_app_name, username, password,
 
 
 --
--- TOC entry 2227 (class 0 OID 0)
--- Dependencies: 189
--- Name: r_slave_id_slave_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_slave_id_slave_seq', 1, false);
-
-
---
--- TOC entry 2131 (class 0 OID 19318)
+-- TOC entry 2108 (class 0 OID 250143)
 -- Dependencies: 190
 -- Data for Name: r_step; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -18318,47 +19070,12 @@ COPY r_step (id_step, id_transformation, name, description, id_step_type, distri
 6921	81	Delete	\N	109	Y	1	820	200	Y
 6922	81	Insctruction SQL delete	\N	103	Y	1	540	200	Y
 6923	81	Tables avec colonne "etatobjet"	\N	98	Y	1	300	200	Y
-7258	17	Ajout constantes	\N	5	Y	1	2112	896	Y
-7259	17	CSW	\N	44	Y	1	480	384	Y
-7260	17	CSW <>200	\N	111	Y	1	608	544	Y
-7261	17	Construction des URL d'accès	\N	103	Y	1	352	384	Y
-7262	17	Extraction CSW	\N	78	Y	1	768	384	Y
-7263	17	Image <> thumbnail	\N	111	Y	1	1280	544	Y
-7264	17	Meta XML <>200	\N	111	Y	1	1024	544	Y
-7265	17	Metadata XML	\N	44	Y	1	896	384	Y
-7266	17	Metadonnee	\N	133	Y	1	1568	896	Y
-7267	17	Nettoyage	\N	18	Y	1	1856	896	Y
-7268	17	Nom fichier vignette	\N	78	Y	1	1152	384	Y
-7269	17	Online ressource	\N	61	Y	1	1664	384	Y
-7270	17	Paramètres de base	\N	120	Y	1	32	384	Y
-7271	17	Récupération Variables	\N	181	Y	1	192	384	Y
-7272	17	Statut CSW	\N	112	Y	1	608	384	Y
-7273	17	Statut Meta XML	\N	112	Y	1	1024	384	Y
-7274	17	Url Online ressource	\N	78	Y	1	1536	384	Y
-7275	17	Url des vignettes et des fiches	\N	103	Y	1	2336	896	Y
-7276	17	id GetInfo	\N	78	Y	1	1408	384	Y
-7277	17	type_image	\N	112	Y	1	1280	384	Y
-7278	17	Ajout constantes 2	\N	5	Y	1	256	192	Y
-7279	17	Id de fiche	\N	112	Y	1	1824	384	Y
-7280	17	id de fiche NULL	\N	111	Y	1	1824	576	Y
-7281	17	Mots clefs	\N	78	Y	1	1952	384	Y
-7282	17	Thematique	\N	98	Y	1	2080	576	Y
-7283	17	Présence d'un mot clef	\N	112	Y	1	2208	384	Y
-7284	17	Produit cartésien	\N	160	Y	1	2080	384	Y
-7285	17	Pas de mots clef	\N	111	Y	1	2208	576	Y
-7286	17	Dédoublonnage fiches	\N	63	Y	1	2336	704	Y
-7287	17	Tri lignes	\N	196	Y	1	2336	384	Y
 7631	103	Execution du SQL	\N	98	Y	1	146	178	Y
 7632	103	Text file output 	\N	10	Y	1	371	178	Y
 7635	101	Set Variables	\N	59	Y	1	337	136	Y
 7636	101	Récupération du SQL du modele	\N	98	Y	1	170	136	Y
 7637	102	ESRI Shapefile Output	\N	208	Y	1	432	161	Y
 7638	102	Execution du SQL	\N	98	Y	1	149	161	Y
-7639	100	Code + Spatial + SourceSQL non NULL	\N	112	Y	1	106	149	Y
-7640	100	Convertion champ "spatial"	\N	22	Y	1	105	260	Y
-7641	100	Factice	\N	111	Y	1	286	149	Y
-7642	100	Récupération des données d'export	\N	78	Y	1	107	38	Y
-7643	100	export_modele	\N	133	Y	1	106	377	Y
 7644	44	Ajout commentaires et commit	\N	22	Y	1	1363	826	Y
 7645	44	Alimentation fichier	\N	10	Y	1	1363	995	Y
 7646	44	Decompose Geometrie	\N	22	Y	1	406	843	Y
@@ -18409,11 +19126,60 @@ COPY r_step (id_step, id_transformation, name, description, id_step_type, distri
 7691	44	type_hydrant_positionnement	\N	98	Y	1	1425	465	Y
 7692	44	type_hydrant_vol_constate	\N	98	Y	1	1425	570	Y
 7693	44	zone_speciale	\N	98	Y	1	58	841	Y
+7712	17	Ajout constantes 2	\N	5	Y	1	192	288	Y
+7713	17	CSW	\N	44	Y	1	480	384	Y
+7714	17	CSW <>200	\N	111	Y	1	608	544	Y
+7715	17	Construction des URL d'accès	\N	103	Y	1	352	384	Y
+7716	17	Dédoublonnage fiches	\N	63	Y	1	2784	480	Y
+7717	17	Extraction CSW	\N	78	Y	1	768	384	Y
+7718	17	Id de fiche	\N	112	Y	1	1824	384	Y
+7719	17	Image <> thumbnail	\N	111	Y	1	1280	544	Y
+7720	17	Meta XML <>200	\N	111	Y	1	1024	544	Y
+7721	17	Metadata XML	\N	44	Y	1	896	384	Y
+7722	17	Metadonnee	\N	133	Y	1	2784	768	Y
+7723	17	Mots clefs	\N	78	Y	1	1952	384	Y
+7724	17	Nettoyage	\N	18	Y	1	2784	672	Y
+7725	17	Nom fichier vignette	\N	78	Y	1	1152	384	Y
+7726	17	Online ressource	\N	61	Y	1	1664	384	Y
+7727	17	Paramètres de base	\N	120	Y	1	32	384	Y
+7728	17	Pas de mots clef	\N	111	Y	1	2208	544	Y
+7729	17	Produit cartésien	\N	160	Y	1	2080	384	Y
+7730	17	Présence d'un mot clef	\N	112	Y	1	2208	384	Y
+7731	17	Récupération Variables	\N	181	Y	1	192	384	Y
+7732	17	Statut CSW	\N	112	Y	1	608	384	Y
+7733	17	Statut Meta XML	\N	112	Y	1	1024	384	Y
+7734	17	Thematique	\N	98	Y	1	2080	544	Y
+7735	17	Tri lignes	\N	196	Y	1	2784	384	Y
+7736	17	Url Online ressource	\N	78	Y	1	1536	384	Y
+7737	17	Url des vignettes et des fiches	\N	103	Y	1	2784	576	Y
+7738	17	id GetInfo	\N	78	Y	1	1408	384	Y
+7739	17	id de fiche NULL	\N	111	Y	1	1824	544	Y
+7740	17	type_image	\N	112	Y	1	1280	384	Y
+7741	17	Code	\N	78	Y	1	2368	384	Y
+7742	17	Modele d'export dont code = code métadonnée	\N	162	Y	1	2592	384	Y
+7743	100	Agrégation sans tri	\N	2	Y	1	1056	608	Y
+7744	100	Bloquage lignes lié à d'autres étapes	\N	24	Y	1	1056	704	Y
+7745	100	Est valide ?	\N	112	Y	1	864	192	Y
+7746	100	Factice 2	\N	111	Y	1	1056	512	Y
+7747	100	Formatage des erreurs	\N	22	Y	1	1248	320	Y
+7748	100	Infos sur le modele	\N	78	Y	1	1056	192	Y
+7749	100	Liste des modèles	\N	174	Y	1	160	192	Y
+7750	100	Message d'erreur "XML non valide"	\N	103	Y	1	864	416	Y
+7751	100	Message d'erreur "valeurs nulles"	\N	103	Y	1	1248	416	Y
+7752	100	Message uniquement	\N	18	Y	1	864	512	Y
+7753	100	Message uniquement 2	\N	18	Y	1	1248	512	Y
+7754	100	Mise en échec transformation	\N	146	Y	1	1056	832	Y
+7755	100	Produit cartésien	\N	160	Y	1	416	192	Y
+7756	100	Uniquement les colonnes de la table	\N	18	Y	1	1472	192	Y
+7757	100	Validation de données	\N	199	Y	1	1248	192	Y
+7758	100	Valider XML	\N	57	Y	1	640	192	Y
+7759	100	XSD	\N	120	Y	1	416	416	Y
+7760	100	export_modele	\N	133	Y	1	1696	192	Y
 \.
 
 
 --
--- TOC entry 2132 (class 0 OID 19324)
+-- TOC entry 2109 (class 0 OID 250149)
 -- Dependencies: 191
 -- Data for Name: r_step_attribute; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -19297,6 +20063,7 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 129617	95	7254	0	field_type	0	Integer
 129618	95	7254	0	field_format	0	#
 129619	95	7254	0	field_currency	0	\N
+114455	83	6500	0	enclosure	0	\N
 129620	95	7254	0	field_decimal	0	\N
 129621	95	7254	0	field_group	0	\N
 129622	95	7254	0	field_trim_type	0	none
@@ -19697,6 +20464,7 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 115619	88	6553	0	field_currency	0	\N
 115620	88	6553	0	field_decimal	0	\N
 115621	88	6553	0	field_group	0	\N
+126237	66	7097	9	field_group	0	\N
 115622	88	6553	0	field_trim_type	0	none
 115623	88	6553	0	field_nullif	0	\N
 115624	88	6553	0	field_length	-1	\N
@@ -19899,6 +20667,7 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 36306	24	2308	0	PARTITIONING_SCHEMA	0	\N
 36307	24	2308	0	PARTITIONING_METHOD	0	none
 36308	24	2308	0	filenamefield	0	filename
+124970	57	7040	5	field_group	0	\N
 36309	24	2308	0	targetfilenamefield	0	chemin_kml_destination
 36310	24	2308	0	sourceencoding	0	ISO-8859-1
 36311	24	2308	0	targetencoding	0	UTF-8
@@ -20594,6 +21363,7 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 36360	24	2310	4	column_name	0	expediteur
 36361	24	2310	4	stream_name	0	expediteur
 36362	24	2310	5	column_name	0	expediteur_email
+125175	57	7049	0	meta_length	-2	\N
 36363	24	2310	5	stream_name	0	expediteur_email
 36364	24	2310	0	cluster_schema	0	\N
 36365	24	2311	0	PARTITIONING_SCHEMA	0	\N
@@ -21367,6 +22137,7 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 87483	56	5166	1	field_length	-2	\N
 87484	56	5166	1	field_precision	-2	\N
 87485	56	5166	2	field_name	0	Non conforme
+137026	17	7721	0	httpLogin	0	\N
 87486	56	5166	2	field_rename	0	\N
 87487	56	5166	2	field_length	-2	\N
 87488	56	5166	2	field_precision	-2	\N
@@ -22382,6 +23153,8 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 136293	44	7680	0	PARTITIONING_SCHEMA	0	\N
 136294	44	7680	0	PARTITIONING_METHOD	0	none
 136295	44	7680	0	id_connection	3	\N
+104704	75	5974	3	field_format	0	\N
+104705	75	5974	3	field_currency	0	\N
 136296	44	7680	0	sql	0	SELECT\n\th.id, \r\n\th.agent1,\r\n\th.agent2,\r\n\th.annee_fabrication,\r\n\th.code,\r\n\t'c.gc_key' as commune, \r\n\th.complement, \r\n\t'to_timestamp(''' || h.date_contr  ||''',''YYYY-MM-DD HH24:MI:SS.FF'')' AS date_contr,\r\n\t'to_timestamp(''' || h.date_gps    ||''',''YYYY-MM-DD HH24:MI:SS.FF'')' AS date_gps,\r\n\t'to_timestamp(''' || h.date_modification  ||''',''YYYY-MM-DD HH24:MI:SS.FF'')' AS date_modification,\r\n\t'to_timestamp(''' || h.date_recep  ||''',''YYYY-MM-DD HH24:MI:SS.FF'')' AS date_recep,\r\n\t'to_timestamp(''' || h.date_reco   ||''',''YYYY-MM-DD HH24:MI:SS.FF'')' AS date_reco,\r\n\t'to_timestamp(''' || h.date_verif  ||''',''YYYY-MM-DD HH24:MI:SS.FF'')' AS date_verif,\r\n\th.dispo_admin as dispo,\r\n\th.dispo_hbe,\r\n\th.dispo_terrestre,\r\n\th.domaine,\r\n\t--'SDO_UTIL.FROM_WKTGEOMETRY(''' || st_astext(h.geometrie) || ''')' AS geometrie,\r\n    'SDO_UTIL.SDO_GEOMETRY(''' || st_astext(h.geometrie) || ''',2154)' AS geometrie,\r\n\th.lieu_dit,\r\n\th.nature,\r\n\th.numero,\r\n\th.numero_interne as numero_ordre,\t\r\n\tregexp_replace(h.observation, E'[\\\\n\\\\r]+', ' ', 'g' ) as observation,\t\r\n\th.voie,\r\n\th.voie2 as voie_croisement,\r\n\tc.insee as insee_commune,\r\n\t-- Zone Spéciale\r\n\th.zone_speciale,\r\n\t'INSERT' as action,\r\n\t30::integer AS priorite ,\n    'to_timestamp(''' || h.date_attestation  ||''',''YYYY-MM-DD HH24:MI:SS.FF'')' AS date_attestation\nFROM\r\n\t${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant h\r\n\tinner join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.commune c on (h.commune = c.id)\r\n\t
 136297	44	7680	0	limit	0	0
 136298	44	7680	0	lookup	0	\N
@@ -22445,6 +23218,12 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 122985	41	6942	0	PARTITIONING_SCHEMA	0	\N
 122986	41	6942	0	PARTITIONING_METHOD	0	none
 122987	41	6942	0	id_connection	3	\N
+104706	75	5974	3	field_decimal	0	\N
+104707	75	5974	3	field_group	0	\N
+104708	75	5974	3	field_nullif	0	\N
+104709	75	5974	3	field_length	-1	\N
+104710	75	5974	3	field_precision	-1	\N
+104711	75	5974	4	field_name	0	col4
 122988	41	6942	0	sql	0	SELECT\n  p.id as GC_KEY, \r\n  p.annee as ANNEE, \r\n  p.complement as COMPLEMENT, \r\n  'to_timestamp(''' || p.date_modification  ||''',''YYYY-MM-DD HH24:MI:SS.FF'')' AS DATE_MODIFICATION,\n  'to_timestamp(''' || p.date_permis  ||''',''YYYY-MM-DD HH24:MI:SS.FF'')' AS DATE_PERMIS,\r\n  --'SDO_UTIL.FROM_WKTGEOMETRY(''' || st_astext(p.geometrie) || ''')' AS GEOMETRIE,\r\n  'SDO_UTIL.SDO_GEOMETRY(''' || st_astext(p.geometrie) || ''',2154)' AS GEOMETRIE,\r\n  p.nom as NOM, \r\n  p.numero as NUMERO, \r\n  regexp_replace(p.observations, E'[\\\\n\\\\r]+', ' ', 'g' ) as OBSERVATIONS,\r\n  p.parcelle_cadastrale as PARCELLE_CADASTRALE, \r\n  p.section_cadastrale as SECTION_CADASTRALE, \r\n  p.voie as VOIE, \r\n  p.avis as AVIS, \r\n  'c.gc_key' as COMMUNE, \r\n  lu.identifiant AS INSTRUCTEUR,\r\n  o.nom as SERVICE_INSTRUCTEUR, \r\n  p.INTERSERVICE, \r\n  c.insee as insee_commune,\n  'INSERT' AS action,\n  15::integer AS priorite\nFROM\n\t${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.permis p \r\n\tinner join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.commune c on (p.commune = c.id)\n\tinner join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.utilisateur lu ON(p.instructeur = lu.id)\r\n\tinner join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_organisme o ON(p.service_instructeur = o.id)\r\n
 122989	41	6942	0	limit	0	0
 122990	41	6942	0	lookup	0	\N
@@ -22521,14 +23300,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 104701	75	5974	2	field_precision	-1	\N
 104702	75	5974	3	field_name	0	col3
 104703	75	5974	3	field_type	0	String
-104704	75	5974	3	field_format	0	\N
-104705	75	5974	3	field_currency	0	\N
-104706	75	5974	3	field_decimal	0	\N
-104707	75	5974	3	field_group	0	\N
-104708	75	5974	3	field_nullif	0	\N
-104709	75	5974	3	field_length	-1	\N
-104710	75	5974	3	field_precision	-1	\N
-104711	75	5974	4	field_name	0	col4
 104712	75	5974	4	field_type	0	String
 104713	75	5974	4	field_format	0	\N
 104714	75	5974	4	field_currency	0	\N
@@ -22717,6 +23488,9 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 104840	75	5979	0	PARTITIONING_SCHEMA	0	\N
 104841	75	5979	0	PARTITIONING_METHOD	0	none
 104842	75	5979	0	id_connection	3	\N
+98346	10	5731	0	case_sensitive	0	no
+136360	44	7686	0	variables_active	0	Y
+136361	44	7686	0	lazy_conversion_active	0	N
 104843	75	5979	0	sql	0	select row_number() over() as ordre   , a.nom as libelle , count(ha.hydrant) as nombre, null as col3,null as col4\r\nfrom remocra.type_hydrant_anomalie a\r\ninner join remocra.type_hydrant_anomalie_nature an on a.id = an.anomalie\r\ninner join remocra.type_hydrant_nature n on n.id = an.nature\r\nleft outer join remocra.hydrant_anomalies ha on a.id = ha.anomalies \r\nleft outer join remocra.hydrant h on ha.hydrant = h.id\r\n-- pibi uniquement\r\nwhere n.type_hydrant = 2\r\n\tand ( (h.commune = ${COMMUNE_ID} and h.dispo_terrestre is not null and h.code= 'PENA' ) or h.id is null)\r\ngroup by a.nom\r\norder by a.nom 
 104844	75	5979	0	limit	0	0
 104845	75	5979	0	lookup	0	\N
@@ -22787,9 +23561,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 104881	75	5982	0	add_to_result_filenames	0	Y
 104882	75	5982	0	file_name	0	${OUTPUT_FULLPATH}
 98345	10	5731	0	whole_world	0	no
-98346	10	5731	0	case_sensitive	0	no
-136360	44	7686	0	variables_active	0	Y
-136361	44	7686	0	lazy_conversion_active	0	N
 136362	44	7686	0	cluster_schema	0	\N
 136363	44	7687	0	PARTITIONING_SCHEMA	0	\N
 136364	44	7687	0	PARTITIONING_METHOD	0	none
@@ -22869,6 +23640,7 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 98339	10	5731	0	in_stream_name	0	objet
 98340	10	5731	0	out_stream_name	0	\N
 98341	10	5731	0	use_regex	0	no
+123231	90	6954	0	main	0	\N
 98342	10	5731	0	replace_string	0	[TRAITEMENT_DOSSIER_NUMERO]
 98343	10	5731	0	replace_by_string	0	${TRAITEMENT_DOSSIER_NUMERO}
 98344	10	5731	0	replace_field_by_string	0	\N
@@ -23452,6 +24224,13 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 123139	90	6951	0	PARTITIONING_SCHEMA	0	\N
 123140	90	6951	0	PARTITIONING_METHOD	0	none
 123141	90	6951	0	id_connection	3	\N
+123232	90	6954	0	id_condition	224	\N
+123233	90	6954	0	cluster_schema	0	\N
+125560	94	7077	0	PARTITIONING_SCHEMA	0	\N
+125561	94	7077	0	PARTITIONING_METHOD	0	none
+125562	94	7077	0	replaceAllByValue	0	\N
+125563	94	7077	0	replaceAllMask	0	\N
+125564	94	7077	0	selectFields	0	Y
 123142	90	6951	0	sql	0	SELECT \r\n\tal_total.rapporteur,\r\n\tu.nom,\r\n\tu.prenom,\r\n\tu.identifiant,\r\n\tal_total.nb_alertes,\r\n\tCOALESCE(al_valid.nb_alertes_valide,0) as nb_alertes_valide,\r\n\tCOALESCE(al_non_valid.nb_alertes_refusees,0) as nb_alertes_refusees,\r\n\tCOALESCE(al_to_valid.nb_alertes_a_valider,0) as nb_alertes_a_valider,\r\n\torg.nom as organisme_cis\r\nFROM\r\n\t(\r\n\t\tSELECT \r\n\t\t\ta.rapporteur,\r\n\t\t\tcount(*) nb_alertes,o.id as id_organisme\t\t\t\t\r\n\t\tFROM\r\n\t\t\t${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.alerte a \r\n\t\t\tJOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.utilisateur u on (a.rapporteur = u.id)\r\n\t\t\tJOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.organisme o on (u.organisme = o.id)\r\n\t\t\tJOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_organisme tyo on (o.type_organisme = tyo.id)\r\n\t\t\tWHERE ((${ORGANISME_CIS_ID} !=  -1 and  tyo.code = 'CIS' and o.id  = ${ORGANISME_CIS_ID} )  or (-1 = ${ORGANISME_CIS_ID} and  tyo.code in ('CIS','SDIS')))\r\n\t\t\tAND a.date_constat between ${date_debut_sql} and ${date_fin_sql} \r\n\t\tGROUP BY a.rapporteur, o.id\t\r\n\t) al_total\r\n\tLEFT JOIN\r\n\t(\r\n\t\t-- Alertes validées\r\n\t\tSELECT \r\n\t\t\ta.rapporteur,\t\t\r\n\t\t\tcount(*) as  nb_alertes_valide\t\t\r\n\t\tFROM\r\n\t\t\t${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.alerte a \r\n\t\t\tJOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.utilisateur u on (a.rapporteur = u.id)\r\n\t\t\tJOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.organisme o on (u.organisme = o.id)\r\n\t\t\tJOIN remocra.type_organisme tyo on (o.type_organisme = tyo.id)\r\n\t\t\tWHERE  a.etat = true and ((${ORGANISME_CIS_ID} !=  -1 and  tyo.code = 'CIS' and o.id  = ${ORGANISME_CIS_ID} )  or (-1 = ${ORGANISME_CIS_ID} and  tyo.code in ('CIS','SDIS')))\r\n\t\t\tAND a.date_constat between ${date_debut_sql} and ${date_fin_sql} \r\n\t\tGROUP BY a.rapporteur\t\r\n\t) al_valid \r\n\tON al_total.rapporteur = al_valid.rapporteur\r\n\tLEFT JOIN\r\n\t(\r\n\t\t--- Alertes refusées\r\n\t\tSELECT \r\n\t\t\ta.rapporteur,\r\n\t\t\tcount(*) nb_alertes_refusees\t\t\r\n\t\tFROM \r\n\t\t\t${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.alerte a \r\n\t\t\tJOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.utilisateur u on (a.rapporteur = u.id)\r\n\t\t\tJOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.organisme o on (u.organisme = o.id)\r\n\t\t\tJOIN remocra.type_organisme tyo on (o.type_organisme = tyo.id)\r\n\t\t\twhere a.etat = false and ((${ORGANISME_CIS_ID} !=  -1 and  tyo.code = 'CIS' and o.id  = ${ORGANISME_CIS_ID} )  or (-1 = ${ORGANISME_CIS_ID} and  tyo.code in ('CIS','SDIS')))\r\n\t\t\tAND a.date_constat between ${date_debut_sql} and ${date_fin_sql}\r\n\t\tGROUP BY a.rapporteur\r\n\r\n\t) al_non_valid\r\n\tON al_total.rapporteur = al_non_valid.rapporteur\r\n\tLEFT JOIN\r\n\t(\r\n\t--- Alertes à valider\r\n\t\tSELECT \r\n\t\t\ta.rapporteur,\r\n\t\t\tcount(*) nb_alertes_a_valider\t\t\r\n\t\tFROM \r\n\t\t\t${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.alerte a \r\n\t\t\tJOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.utilisateur u on (a.rapporteur = u.id)\r\n\t\t\tJOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.organisme o on (u.organisme = o.id)\r\n\t\t\tJOIN remocra.type_organisme tyo on (o.type_organisme = tyo.id)\r\n\t\t\tWHERE a.etat is null and ((${ORGANISME_CIS_ID} !=  -1 and  tyo.code = 'CIS' and o.id  = ${ORGANISME_CIS_ID} )  or (-1 = ${ORGANISME_CIS_ID} and  tyo.code in ('CIS','SDIS')))\r\n\t\t\tAND a.date_constat between ${date_debut_sql} and ${date_fin_sql}\r\n\t\tGROUP BY a.rapporteur\r\n\t) al_to_valid\r\n\tON al_total.rapporteur = al_to_valid.rapporteur\r\n\tJOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.utilisateur u\r\n\tON al_total.rapporteur = u.id\r\n\t-- Organisme\r\n\tJOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.organisme org on (org.id = id_organisme)\r\nORDER BY organisme_cis,nom
 123143	90	6951	0	limit	0	0
 123144	90	6951	0	lookup	0	\N
@@ -23541,14 +24320,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 123228	90	6954	0	directory	0	%%java.io.tmpdir%%
 123229	90	6954	0	prefix	0	out
 123230	90	6954	0	cache_size	500	\N
-123231	90	6954	0	main	0	\N
-123232	90	6954	0	id_condition	224	\N
-123233	90	6954	0	cluster_schema	0	\N
-125560	94	7077	0	PARTITIONING_SCHEMA	0	\N
-125561	94	7077	0	PARTITIONING_METHOD	0	none
-125562	94	7077	0	replaceAllByValue	0	\N
-125563	94	7077	0	replaceAllMask	0	\N
-125564	94	7077	0	selectFields	0	Y
 125565	94	7077	0	selectValuesType	0	N
 125566	94	7077	0	field_name	0	idutilisateur
 125567	94	7077	0	replace_value	0	19
@@ -24757,6 +25528,14 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 100767	72	5798	0	PARTITIONING_SCHEMA	0	\N
 100768	72	5798	0	PARTITIONING_METHOD	0	none
 100769	72	5798	0	id_connection	3	\N
+102925	76	5889	0	forceFormulaRecalculation	0	Y
+102926	76	5889	0	leaveExistingStylesUnchanged	0	Y
+102927	76	5889	0	file_extention	0	xls
+102928	76	5889	0	file_split	0	\N
+102929	76	5889	0	file_add_stepnr	0	N
+102930	76	5889	0	file_add_date	0	N
+102931	76	5889	0	file_add_time	0	N
+102932	76	5889	0	SpecifyFormat	0	N
 100770	72	5798	0	sql	0	select \n    h.id,\n\th.numero, h.voie, h.voie2 as carrefour, domaine.nom as domaine, \n\tnature.nom as type_hydrant, \r\n    vol.nom as vol_constate,\r\n    pena.capacite,\n\th.observation as observation,\r\n\tCASE \tWHEN h.dispo_terrestre ='INDISPO' THEN 'Indisponible'\r\n            WHEN h.dispo_terrestre ='NON_CONFORME' THEN 'Non conforme'\r\n            WHEN h.dispo_terrestre ='DISPO' THEN 'Disponible'\r\n\t\t\tELSE ''\r\n    END as disponibilite,\r\n\tCASE \tWHEN h.dispo_hbe ='INDISPO' THEN 'Indisponible'\r\n            WHEN h.dispo_hbe ='NON_CONFORME' THEN 'Non conforme'\r\n            WHEN h.dispo_hbe ='DISPO' THEN 'Disponible'\r\n\t\t\tELSE ''\r\n    END as disponibilite_hbe,\r\n\ta.anomalie,\th.date_contr as date_controle, h.date_reco as date_reconaissance\nfrom ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant h\n-- anomalies concaténées dans une colonne\nleft outer join ( \n\tselect ha.hydrant, array_to_string(array_agg(a.nom), E'\\r\\n') as anomalie\n    from ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant_anomalies ha\n\tleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_anomalie a on  ha.anomalies = a.id \n    group by ha.hydrant   \n) a on h.id = a.hydrant\nleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_domaine domaine on h.domaine = domaine.id\nleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_nature nature on h.nature = nature.id\n-- hydrant PENA uniquement\njoin ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant_pena pena on h.id =  pena.id\r\nleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_vol_constate vol on pena.vol_constate = vol.id\nwhere h.commune = ${COMMUNE_ID}\r\n\tand ( dispo_terrestre = 'INDISPO' OR  dispo_hbe = 'INDISPO' )\r\n\tand date_trunc('day',GREATEST(h.date_contr,h.date_reco, h.date_verif,h.date_recep))  = DATE 'yesterday' \r\norder by h.numero
 100771	72	5798	0	limit	0	0
 100772	72	5798	0	lookup	0	\N
@@ -24836,14 +25615,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 102922	76	5889	0	add_to_result_filenames	0	Y
 102923	76	5889	0	file_name	0	${OUTPUT_FULLPATH}
 102924	76	5889	0	do_not_open_newfile_init	0	Y
-102925	76	5889	0	forceFormulaRecalculation	0	Y
-102926	76	5889	0	leaveExistingStylesUnchanged	0	Y
-102927	76	5889	0	file_extention	0	xls
-102928	76	5889	0	file_split	0	\N
-102929	76	5889	0	file_add_stepnr	0	N
-102930	76	5889	0	file_add_date	0	N
-102931	76	5889	0	file_add_time	0	N
-102932	76	5889	0	SpecifyFormat	0	N
 102933	76	5889	0	date_time_format	0	\N
 102934	76	5889	0	autosizecolums	0	N
 102935	76	5889	0	stream_data	0	N
@@ -25318,6 +26089,10 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 105643	71	6025	0	PARTITIONING_SCHEMA	0	\N
 105644	71	6025	0	PARTITIONING_METHOD	0	none
 105645	71	6025	0	id_connection	3	\N
+126110	66	7096	0	lazy_conversion_active	0	N
+126111	66	7096	0	cluster_schema	0	\N
+126112	66	7097	0	PARTITIONING_SCHEMA	0	\N
+126113	66	7097	0	PARTITIONING_METHOD	0	none
 105646	71	6025	0	sql	0	select u.id as idutilisateur, ${TRAITEMENT_ID} as idtraitement \r\nfrom \r\nremocra.utilisateur u\r\njoin remocra.organisme o on u.organisme = o.id \r\njoin remocra.profil_organisme_utilisateur_droit poud on ( poud.profil_utilisateur = u.profil_utilisateur and poud.profil_organisme = o.profil_organisme )\r\njoin remocra.profil_droit pd on ( pd.id = poud.profil_droit and pd.code = 'SDIS-REF-DECI')\r\nwhere u.actif and u.message_remocra
 105647	71	6025	0	limit	0	0
 105648	71	6025	0	lookup	0	\N
@@ -25390,10 +26165,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 126107	66	7096	0	lookup	0	\N
 126108	66	7096	0	execute_each_row	0	N
 126109	66	7096	0	variables_active	0	Y
-126110	66	7096	0	lazy_conversion_active	0	N
-126111	66	7096	0	cluster_schema	0	\N
-126112	66	7097	0	PARTITIONING_SCHEMA	0	\N
-126113	66	7097	0	PARTITIONING_METHOD	0	none
 126114	66	7097	0	separator	0	;
 126115	66	7097	0	enclosure	0	"
 126116	66	7097	0	enclosure_forced	0	Y
@@ -25865,7 +26636,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 114452	83	6500	0	PARTITIONING_SCHEMA	0	\N
 114453	83	6500	0	PARTITIONING_METHOD	0	none
 114454	83	6500	0	separator	0	\N
-114455	83	6500	0	enclosure	0	\N
 114456	83	6500	0	enclosure_forced	0	N
 114457	83	6500	0	enclosure_fix_disabled	0	N
 114458	83	6500	0	header	0	N
@@ -26262,7 +27032,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 126234	66	7097	9	field_format	0	\N
 126235	66	7097	9	field_currency	0	\N
 126236	66	7097	9	field_decimal	0	\N
-126237	66	7097	9	field_group	0	\N
 126238	66	7097	9	field_trim_type	0	both
 126239	66	7097	9	field_nullif	0	\N
 126240	66	7097	9	field_length	-1	\N
@@ -26729,6 +27498,9 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 120928	36	6828	0	PARTITIONING_SCHEMA	0	\N
 120929	36	6828	0	PARTITIONING_METHOD	0	none
 120930	36	6828	0	id_connection	3	\N
+126569	74	7101	4	field_name	0	type_hydrant
+126570	74	7101	4	field_type	0	String
+126571	74	7101	4	field_format	0	\N
 120931	36	6828	0	sql	0	SELECT\r\n\tt.code AS "CODE",\r\n\tto_char(COALESCE(s.date_synchro, '1900-01-01'::timestamp),'YYYY-MM-DD') AS "DATE_DERNIERE_SYNCHRO"\r\nFROM\r\n\t${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.thematique t\r\n\tLEFT JOIN (SELECT thematique, date_trunc('minute',max(date_synchro)) AS date_synchro FROM ${PDI_POSTGRESQL_NOM_SCHEMA_REFERENTIEL}.synchronisation WHERE succes GROUP BY thematique) s ON t.id = s.thematique\r\nWHERE\r\n\tcode = '${CODE}'
 120932	36	6828	0	limit	0	0
 120933	36	6828	0	lookup	0	\N
@@ -26817,6 +27589,13 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 126484	53	7100	0	PARTITIONING_SCHEMA	0	\N
 126485	53	7100	0	PARTITIONING_METHOD	0	none
 126486	53	7100	0	id_connection	3	\N
+126572	74	7101	4	field_title	0	type_hydrant
+126573	74	7101	4	field_title_style_cell	0	\N
+126574	74	7101	4	field_style_cell	0	\N
+126575	74	7101	4	field_comment_field	0	\N
+126576	74	7101	4	field_comment_author_field	0	\N
+126577	74	7101	4	field_formula	0	N
+126578	74	7101	4	field_hyperlink_field	0	\N
 126487	53	7100	0	sql	0	select \n    h.id,\n\th.numero, h.voie, h.voie2 as carrefour, domaine.nom as domaine, \n\tnature.nom as type_hydrant, diametre.nom as diametre,\n\tpibi.debit as debit, pibi.pression_dyn as pression_dynamique, \n\tpibi.pression as pression_statique, \n\th.observation as observation,\r\n\tCASE \tWHEN h.dispo_terrestre ='INDISPO' THEN 'Indisponible'\r\n            WHEN h.dispo_terrestre ='NON_CONFORME' THEN 'Non conforme'\r\n            WHEN h.dispo_terrestre ='DISPO' THEN 'Disponible'\r\n    END as disponibilite, \n\ta.anomalie,\th.date_contr as date_controle, h.date_reco as date_reconaissance\nfrom ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant h\n-- anomalies concaténées dans une colonne\nleft outer join ( \n\tselect ha.hydrant, array_to_string(array_agg(a.nom), E'\\r\\n') as anomalie\n    from ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant_anomalies ha\n\tleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_anomalie a on  ha.anomalies = a.id \n    group by ha.hydrant   \n) a on h.id = a.hydrant\nleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_domaine domaine on h.domaine = domaine.id\nleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_nature nature on h.nature = nature.id\n-- hydrant pibi uniquement\njoin ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant_pibi pibi on h.id =  pibi.id\nleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_diametre diametre on pibi.diametre = diametre.id\r\nwhere h.commune = ${COMMUNE_ID}\r\n\tand h.dispo_terrestre is not null\r\norder by h.numero
 126488	53	7100	0	limit	0	0
 126489	53	7100	0	lookup	0	\N
@@ -26899,16 +27678,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 126566	74	7101	3	field_comment_author_field	0	\N
 126567	74	7101	3	field_formula	0	N
 126568	74	7101	3	field_hyperlink_field	0	\N
-126569	74	7101	4	field_name	0	type_hydrant
-126570	74	7101	4	field_type	0	String
-126571	74	7101	4	field_format	0	\N
-126572	74	7101	4	field_title	0	type_hydrant
-126573	74	7101	4	field_title_style_cell	0	\N
-126574	74	7101	4	field_style_cell	0	\N
-126575	74	7101	4	field_comment_field	0	\N
-126576	74	7101	4	field_comment_author_field	0	\N
-126577	74	7101	4	field_formula	0	N
-126578	74	7101	4	field_hyperlink_field	0	\N
 126579	74	7101	5	field_name	0	vol_constate
 126580	74	7101	5	field_type	0	String
 126581	74	7101	5	field_format	0	\N
@@ -26993,6 +27762,22 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 126660	74	7102	0	PARTITIONING_SCHEMA	0	\N
 126661	74	7102	0	PARTITIONING_METHOD	0	none
 126662	74	7102	0	id_connection	3	\N
+126736	28	7104	0	send_false_to	0	Factice
+126737	28	7104	0	cluster_schema	0	\N
+126738	28	7105	0	PARTITIONING_SCHEMA	0	\N
+126739	28	7105	0	PARTITIONING_METHOD	0	none
+126740	28	7105	0	cluster_schema	0	\N
+126741	28	7106	0	PARTITIONING_SCHEMA	0	\N
+126742	28	7106	0	PARTITIONING_METHOD	0	none
+126743	28	7106	0	replaceAllByValue	0	\N
+126744	28	7106	0	replaceAllMask	0	\N
+126745	28	7106	0	selectFields	0	Y
+126746	28	7106	0	selectValuesType	0	N
+126747	28	7106	0	field_name	0	mot_classant
+126748	28	7106	0	replace_value	0	NR
+126749	28	7106	0	replace_mask	0	\N
+126750	28	7106	1	field_name	0	nom
+126751	28	7106	1	replace_value	0	NR
 126663	74	7102	0	sql	0	select \r\n    h.id,\r\n\th.numero, h.voie, h.voie2 as carrefour, domaine.nom as domaine, \r\n\tnature.nom as type_hydrant, \r\n    vol.nom as vol_constate,\r\n    pena.capacite,\r\n\th.observation as observation,\r\n\tCASE \tWHEN h.dispo_terrestre ='INDISPO' THEN 'Indisponible'\r\n            WHEN h.dispo_terrestre ='NON_CONFORME' THEN 'Non conforme'\r\n            WHEN h.dispo_terrestre ='DISPO' THEN 'Disponible'\r\n\t\t\tELSE ''\r\n    END as disponibilite,\r\n\tCASE \tWHEN h.dispo_hbe ='INDISPO' THEN 'Indisponible'\r\n            WHEN h.dispo_hbe ='NON_CONFORME' THEN 'Non conforme'\r\n            WHEN h.dispo_hbe ='DISPO' THEN 'Disponible'\r\n\t\t\tELSE ''\r\n    END as disponibilite_hbe,\r\n\ta.anomalie,\th.date_contr as date_controle, h.date_reco as date_reconaissance\r\nfrom ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant h\r\n-- anomalies concaténées dans une colonne\r\nleft outer join ( \r\n\tselect ha.hydrant, array_to_string(array_agg(a.nom), E'\\r\\n') as anomalie\r\n    from ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant_anomalies ha\r\n\tleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_anomalie a on  ha.anomalies = a.id \r\n    group by ha.hydrant   \r\n) a on h.id = a.hydrant\r\nleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_domaine domaine on h.domaine = domaine.id\r\nleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_nature nature on h.nature = nature.id\r\n-- hydrant PENA uniquement\r\njoin ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant_pena pena on h.id =  pena.id\r\nleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_vol_constate vol on pena.vol_constate = vol.id\r\nwhere h.commune = ${COMMUNE_ID}\r\n\tand ( dispo_terrestre is not null)\r\norder by h.numero
 126664	74	7102	0	limit	0	0
 126665	74	7102	0	lookup	0	\N
@@ -27057,6 +27842,19 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 133635	9	7537	0	PARTITIONING_SCHEMA	0	\N
 133636	9	7537	0	PARTITIONING_METHOD	0	none
 133637	9	7537	0	class_name	0	Processor
+126752	28	7106	1	replace_mask	0	\N
+126753	28	7106	0	cluster_schema	0	\N
+126754	28	7107	0	PARTITIONING_SCHEMA	0	\N
+126755	28	7107	0	PARTITIONING_METHOD	0	none
+126756	28	7107	0	id_connection	3	\N
+126757	28	7107	0	cache	0	N
+126758	28	7107	0	cache_load_all	0	N
+126759	28	7107	0	cache_size	0	\N
+126760	28	7107	0	lookup_schema	0	${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}
+126761	28	7107	0	lookup_table	0	commune
+126762	28	7107	0	lookup_orderby	0	\N
+126763	28	7107	0	fail_on_multiple	0	N
+126764	28	7107	0	eat_row_on_failure	0	N
 133638	9	7537	0	class_source	0	import javax.mail.*;\nimport javax.mail.internet.InternetAddress;\nimport javax.mail.internet.MimeMessage;\nimport java.util.Properties;\n\nSession session;\r\n\nString smtpHost; // Host du STMP\nString smtpPort; // Port du STMP\nString smtpUser; // User name du SMTP\nString smtpPassword;//User password du SMTP\r\nString smtpReponseMail; //Adresse mél de réponse\r\nString smtpARMail;\t// Adresse mél de retour des accusés des récéption\r\nString smtpErreurMail; //Adresse mél de retour des erreurs de délivrance\n\nString messageID; // Identifiant de message généré par rémocra\nString messageExpediteurNom; // Nom de l'expéditeur\nString messageExpediteurMail; // Adresse mél de l'expéditeur\nString messageDestinataireNom; // Nom du destinataire\nString messageDestinataireMail; // Adresse mél du destinataire\nString messageObjet; // Objet du mél\nString messageCorps; // Corps du mél en HTML\r\nBoolean messageAR;  // Demander accusé de réception\r\n\npublic boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws KettleException{\n\n\tObject[] r = getRow();\n\n\tif (r == null) {\n\t\tsetOutputDone();\n\t\treturn false;\n\t}\n\n\tif (first) {\n\r\n\t\t//Récupération des paramètres du service SMTP\n\t\tsmtpHost = get(Fields.In, "smtp_url").getString(r);\n\t\tsmtpPort = get(Fields.In, "smtp_port").getString(r);\n\t\tsmtpUser = get(Fields.In, "smtp_user").getString(r);\n\t\tsmtpPassword = get(Fields.In, "smtp_password").getString(r);\r\n\t\tsmtpErreurMail = get(Fields.In, "erreur_delivrance_mail").getString(r);\n\n\t\tProperties properties = new Properties();\n\t\tproperties.put("mail.smtp.host", smtpHost);\n\t\tproperties.put("mail.smtp.port", smtpPort);\r\n\r\n\t\t//Adresse mél de reception des erreurs\r\n\t\tproperties.put("mail.smtp.from", smtpErreurMail);\n\r\n\t\t//Création d'un session\n\t\tAuthenticator authenticator = new javax.mail.Authenticator() {  \n\t\t\tprotected PasswordAuthentication getPasswordAuthentication() {  \n\t\t\t\treturn new PasswordAuthentication(smtpUser,smtpPassword);  \n\t\t\t}\r\n\t\t};\n\n\t\tsession = Session.getDefaultInstance(properties,authenticator);\n\n\t    first=false;\n\t}\n\n    Object[] outputRow = createOutputRow(r, data.outputRowMeta.size());\n\r\n\t//Récupération des informations sur le message à envoyer\n\tmessageID = get(Fields.In, "code").getString(r);\n\tmessageExpediteurNom = get(Fields.In, "expediteur").getString(r);\n\tmessageExpediteurMail = get(Fields.In, "expediteur_email").getString(r);\n\tmessageDestinataireNom = get(Fields.In, "destinataire").getString(r);\n\tmessageDestinataireMail = get(Fields.In, "destinataire_email").getString(r);\n\tmessageObjet = get(Fields.In, "objet").getString(r);\n\tmessageCorps = get(Fields.In, "corps").getString(r);\r\n\tmessageAR = get(Fields.In, "accuser_reception").getBoolean(r);\r\n\r\n\tsmtpReponseMail = get(Fields.In, "reponse_mail").getString(r);\r\n\tsmtpARMail = get(Fields.In, "accuse_reception_mail").getString(r);\n\n\ttry{\n\n\t\t//Nouveau message avec ID personnalisé\n\t\tMimeMessage message = new MimeMessage(session) {\n\t\t\tprotected void updateMessageID() throws MessagingException {\n\t\t        setHeader("Message-ID", messageID);\n\t\t    }\n\t\t};\r\n\r\n\t\t//Accusé de récéption du mel si démandé pour le mail et adresse non nulle\r\n\t\tif(messageAR\r\n\t\t\t&& smtpARMail != null\r\n\t\t\t&& !smtpARMail.isEmpty())\r\n\t\t{\r\n\t\t\tmessage.setHeader("Disposition-Notification-To", smtpARMail);\r\n\t   \t\tmessage.setHeader("Return-Receipt-To", smtpARMail);\r\n\t\t};\n\n\t\t//Expéditeur\n     \tmessage.setFrom(\n\t\t\tnew InternetAddress(messageExpediteurMail, messageExpediteurNom)\n\t\t);\r\n\n\t\t//Destinataire  \n     \tmessage.addRecipient(\n\t\t\tMessage.RecipientType.TO,\n\t\t\tnew InternetAddress(messageDestinataireMail, messageDestinataireNom)\n\t\t);\r\n\r\n\t\t//Adresse de réponse\r\n\t\tmessage.setReplyTo(new InternetAddress[]{new InternetAddress(smtpReponseMail)});\r\n\r\n\n    \t//Objet et corps HTML en UTF8\n\t\tmessage.setSubject(messageObjet,"UTF-8");\n\t\tmessage.setContent(messageCorps,"text/html; charset=UTF-8");\n\t      \t\n\t\t//Envoyer le message\n\t\tTransport.send(message);\n\t\t\n\t}catch (Exception e) {\n\t\t\tnew KettleException();\n\t}\n\n    putRow(data.outputRowMeta, outputRow);\n\n\treturn true;\n}
 133639	9	7537	0	class_type	0	TRANSFORM_CLASS
 133640	9	7537	0	clear_result_fields	0	N
@@ -27137,35 +27935,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 126733	28	7104	0	PARTITIONING_METHOD	0	none
 126734	28	7104	0	id_condition	231	\N
 126735	28	7104	0	send_true_to	0	Remplacer valeur nulle
-126736	28	7104	0	send_false_to	0	Factice
-126737	28	7104	0	cluster_schema	0	\N
-126738	28	7105	0	PARTITIONING_SCHEMA	0	\N
-126739	28	7105	0	PARTITIONING_METHOD	0	none
-126740	28	7105	0	cluster_schema	0	\N
-126741	28	7106	0	PARTITIONING_SCHEMA	0	\N
-126742	28	7106	0	PARTITIONING_METHOD	0	none
-126743	28	7106	0	replaceAllByValue	0	\N
-126744	28	7106	0	replaceAllMask	0	\N
-126745	28	7106	0	selectFields	0	Y
-126746	28	7106	0	selectValuesType	0	N
-126747	28	7106	0	field_name	0	mot_classant
-126748	28	7106	0	replace_value	0	NR
-126749	28	7106	0	replace_mask	0	\N
-126750	28	7106	1	field_name	0	nom
-126751	28	7106	1	replace_value	0	NR
-126752	28	7106	1	replace_mask	0	\N
-126753	28	7106	0	cluster_schema	0	\N
-126754	28	7107	0	PARTITIONING_SCHEMA	0	\N
-126755	28	7107	0	PARTITIONING_METHOD	0	none
-126756	28	7107	0	id_connection	3	\N
-126757	28	7107	0	cache	0	N
-126758	28	7107	0	cache_load_all	0	N
-126759	28	7107	0	cache_size	0	\N
-126760	28	7107	0	lookup_schema	0	${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}
-126761	28	7107	0	lookup_table	0	commune
-126762	28	7107	0	lookup_orderby	0	\N
-126763	28	7107	0	fail_on_multiple	0	N
-126764	28	7107	0	eat_row_on_failure	0	N
 126765	28	7107	0	lookup_key_name	0	nom_commune
 126766	28	7107	0	lookup_key_field	0	nom
 126767	28	7107	0	lookup_key_condition	0	LIKE
@@ -27397,60 +28166,59 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 120956	37	6830	0	enclosure_forced	0	N
 120957	37	6830	0	enclosure_fix_disabled	0	N
 120958	37	6830	0	header	0	N
-129863	17	7258	0	PARTITIONING_SCHEMA	0	\N
-129864	17	7258	0	PARTITIONING_METHOD	0	none
-129865	17	7258	0	field_name	0	thematique
-129866	17	7258	0	field_type	0	Integer
-129867	17	7258	0	field_format	0	\N
-129868	17	7258	0	field_currency	0	\N
-129869	17	7258	0	field_decimal	0	\N
-129870	17	7258	0	field_group	0	\N
-129871	17	7258	0	field_nullif	0	0
-129872	17	7258	0	field_length	-1	\N
-129873	17	7258	0	field_precision	-1	\N
-129874	17	7258	0	cluster_schema	0	\N
-129875	17	7259	0	PARTITIONING_SCHEMA	0	\N
-129876	17	7259	0	PARTITIONING_METHOD	0	none
-129877	17	7259	0	url	0	\N
-129878	17	7259	0	urlInField	0	Y
-129879	17	7259	0	urlField	0	url_csw
-129880	17	7259	0	encoding	0	UTF-8
-129881	17	7259	0	httpLogin	0	\N
-129882	17	7259	0	httpPassword	0	\N
-129883	17	7259	0	proxyHost	0	\N
-129884	17	7259	0	proxyPort	0	\N
-129885	17	7259	0	arg_name	0	request
-129886	17	7259	0	arg_parameter	0	request
-129887	17	7259	1	arg_name	0	service
-129888	17	7259	1	arg_parameter	0	service
-129889	17	7259	2	arg_name	0	version
-129890	17	7259	2	arg_parameter	0	version
-129891	17	7259	3	arg_name	0	resultType
-129892	17	7259	3	arg_parameter	0	resultType
-129893	17	7259	4	arg_name	0	outputSchema
-129894	17	7259	4	arg_parameter	0	outputSchema
-129895	17	7259	5	arg_name	0	outputFormat
-129896	17	7259	5	arg_parameter	0	outputFormat
-129897	17	7259	6	arg_name	0	typeNames
-129898	17	7259	6	arg_parameter	0	typeNames
-129899	17	7259	7	arg_name	0	constraintLanguage
-129900	17	7259	7	arg_parameter	0	constraintLanguage
-129901	17	7259	8	arg_name	0	constraint_language_version
-129902	17	7259	8	arg_parameter	0	constraint_language_version
-129903	17	7259	9	arg_name	0	elementSetName
-129904	17	7259	9	arg_parameter	0	elementSetName
-129905	17	7259	10	arg_name	0	constraint
-129906	17	7259	10	arg_parameter	0	constraint
-129907	17	7259	11	arg_name	0	maxRecords
-129908	17	7259	11	arg_parameter	0	maxRecords
-129909	17	7259	0	result_name	0	xml_csw
-129910	17	7259	0	result_code	0	statut_csw
-129911	17	7259	0	response_time	0	\N
-129912	17	7259	0	cluster_schema	0	\N
-129913	17	7260	0	PARTITIONING_SCHEMA	0	\N
-129914	17	7260	0	PARTITIONING_METHOD	0	none
-129915	17	7260	0	cluster_schema	0	\N
-129916	17	7261	0	PARTITIONING_SCHEMA	0	\N
+136813	17	7712	0	PARTITIONING_SCHEMA	0	
+136814	17	7712	0	PARTITIONING_METHOD	0	none
+136815	17	7712	0	field_name	0	url_geocatalogue
+136816	17	7712	0	field_type	0	String
+136817	17	7712	0	field_format	0	
+136818	17	7712	0	field_currency	0	
+136819	17	7712	0	field_decimal	0	
+136820	17	7712	0	field_group	0	
+136821	17	7712	0	field_nullif	0	http://geocatalogue.crige-paca.org/geonetwork
+136822	17	7712	0	field_length	-1	\N
+136823	17	7712	0	field_precision	-1	\N
+136824	17	7712	1	field_name	0	url_fiche_html
+136825	17	7712	1	field_type	0	String
+136826	17	7712	1	field_format	0	
+136827	17	7712	1	field_currency	0	
+136828	17	7712	1	field_decimal	0	
+136829	17	7712	1	field_group	0	
+136830	17	7712	1	field_nullif	0	http://www.crige-paca.org/carto/fonctionnalites/geocatalogue/geosource.php
+136831	17	7712	1	field_length	-1	\N
+136832	17	7712	1	field_precision	-1	\N
+136833	17	7712	2	field_name	0	constraint
+136834	17	7712	2	field_type	0	String
+136835	17	7712	2	field_format	0	
+136836	17	7712	2	field_currency	0	
+136837	17	7712	2	field_decimal	0	
+136838	17	7712	2	field_group	0	
+136839	17	7712	2	field_nullif	0	OrganisationName = 'SDIS du Var' OR OrganisationName = 'SDIS 83'
+136840	17	7712	2	field_length	-1	\N
+136841	17	7712	2	field_precision	-1	\N
+136842	17	7712	3	field_name	0	maxRecords
+136843	17	7712	3	field_type	0	String
+136844	17	7712	3	field_format	0	
+136845	17	7712	3	field_currency	0	
+136846	17	7712	3	field_decimal	0	
+136847	17	7712	3	field_group	0	
+136848	17	7712	3	field_nullif	0	5000
+136849	17	7712	3	field_length	-1	\N
+136850	17	7712	3	field_precision	-1	\N
+136851	17	7712	0	cluster_schema	0	
+136852	17	7713	0	PARTITIONING_SCHEMA	0	
+136853	17	7713	0	PARTITIONING_METHOD	0	none
+136854	17	7713	0	url	0	\N
+136855	17	7713	0	urlInField	0	Y
+136856	17	7713	0	urlField	0	url_csw
+136857	17	7713	0	encoding	0	UTF-8
+136858	17	7713	0	httpLogin	0	\N
+136859	17	7713	0	httpPassword	0	\N
+136860	17	7713	0	proxyHost	0	\N
+136861	17	7713	0	proxyPort	0	\N
+136862	17	7713	0	arg_name	0	request
+136863	17	7713	0	arg_parameter	0	request
+136864	17	7713	1	arg_name	0	service
+136865	17	7713	1	arg_parameter	0	service
 120964	37	6830	0	file_is_command	0	N
 120965	37	6830	0	file_servlet_output	0	N
 120966	37	6830	0	do_not_open_new_file_init	0	N
@@ -27827,6 +28595,9 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 121348	37	6853	0	PARTITIONING_SCHEMA	0	\N
 121349	37	6853	0	PARTITIONING_METHOD	0	none
 121350	37	6853	0	id_connection	3	\N
+133820	96	7542	0	parameter_tag	0	FIRSTNAME_FIELD
+133821	96	7542	0	parameter_value	0	firstname
+133822	96	7542	0	parameter_description	0	The name of the field that contains the first name
 121351	37	6853	0	sql	0	SELECT\r\n  \tl.id,\r\n\tl.code,\r\n\tl.nom,\r\n\tCASE\r\n\t\tWHEN d.id IS NULL THEN 'INSERT'\r\n\t\tELSE 'UPDATE'\r\n\tEND::text AS action,\r\n\t1::integer AS priorite\r\nFROM\r\n\t${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_alerte_elt l\r\n\tLEFT JOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REFERENTIEL}.type_alerte_elt d ON l.id = d.id\r\n
 121352	37	6853	0	limit	0	0
 121353	37	6853	0	lookup	0	\N
@@ -27910,9 +28681,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 133817	96	7542	2	field_length	-1	\N
 133818	96	7542	2	field_precision	-1	\N
 133819	96	7542	0	clear_result_fields	0	N
-133820	96	7542	0	parameter_tag	0	FIRSTNAME_FIELD
-133821	96	7542	0	parameter_value	0	firstname
-133822	96	7542	0	parameter_description	0	The name of the field that contains the first name
 133823	96	7542	1	parameter_tag	0	LASTNAME_FIELD
 133824	96	7542	1	parameter_value	0	lastname
 133825	96	7542	1	parameter_description	0	The name of the field that contains the last name
@@ -28118,7 +28886,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 124967	57	7040	5	field_idrem	0	N
 124968	57	7040	5	field_type	0	String
 124969	57	7040	5	field_format	0	\N
-124970	57	7040	5	field_group	0	\N
 124971	57	7040	5	field_decimal	0	\N
 124972	57	7040	5	field_length	-1	\N
 124973	57	7040	5	field_precision	-1	\N
@@ -28323,7 +29090,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 125172	57	7049	0	meta_name	0	date_gps
 125173	57	7049	0	meta_rename	0	date_gps
 125174	57	7049	0	meta_type	3	\N
-125175	57	7049	0	meta_length	-2	\N
 125176	57	7049	0	meta_precision	-2	\N
 125177	57	7049	0	meta_storage_type	0	\N
 125178	57	7049	0	meta_conversion_mask	0	yyyy-MM-dd
@@ -28511,6 +29277,10 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 125359	57	7061	0	PARTITIONING_METHOD	0	none
 125360	57	7061	0	id_connection	3	\N
 125361	57	7061	0	rowlimit	0	\N
+125450	57	7068	0	compress_variable	0	\N
+125451	57	7068	0	unique_rows	0	N
+125452	57	7068	0	field_name	0	combinaison_zs
+125453	57	7068	0	field_ascending	0	Y
 125362	57	7061	0	sql	0	SELECT\r\n\tCASE \r\n\t\tWHEN min(h.numero_interne) IS NULL THEN 99999\r\n\t\tELSE min(h.numero_interne) -1\r\n\tEND AS numero_min\r\nFROM\r\n\t${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant h\r\n\tJOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_nature thn ON (h.nature = thn.id)\r\nWHERE\r\n\th.commune = ?\r\nAND\r\n\tthn.type_hydrant = ?\r\nAND\r\n\th.numero_interne > 90000
 125363	57	7061	0	outer_join	0	N
 125364	57	7061	0	replace_vars	0	Y
@@ -28602,10 +29372,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 125447	57	7068	0	sort_size	0	1000000
 125448	57	7068	0	free_memory	0	\N
 125449	57	7068	0	compress	0	N
-125450	57	7068	0	compress_variable	0	\N
-125451	57	7068	0	unique_rows	0	N
-125452	57	7068	0	field_name	0	combinaison_zs
-125453	57	7068	0	field_ascending	0	Y
 125454	57	7068	0	field_case_sensitive	0	N
 125455	57	7068	0	cluster_schema	0	\N
 125456	57	7069	0	PARTITIONING_SCHEMA	0	\N
@@ -28827,716 +29593,691 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 134027	99	7557	0	return_keys	0	N
 134028	99	7557	0	return_field	0	\N
 134029	99	7557	0	column_name	0	objet
-129917	17	7261	0	PARTITIONING_METHOD	0	none
-129918	17	7261	0	field_name	0	url_csw
-129919	17	7261	0	formula_string	0	url_geocatalogue + "/srv/fr/csw"
-129920	17	7261	0	value_type	0	String
-129921	17	7261	0	value_length	-1	\N
-129922	17	7261	0	value_precision	-1	\N
-129923	17	7261	0	replace_field	0	\N
-129924	17	7261	1	field_name	0	url_metadata_get
-129925	17	7261	1	formula_string	0	url_geocatalogue + "/srv/fr/xml.metadata.get"
-129926	17	7261	1	value_type	0	String
-129927	17	7261	1	value_length	-1	\N
-129928	17	7261	1	value_precision	-1	\N
-129929	17	7261	1	replace_field	0	\N
-129930	17	7261	0	cluster_schema	0	\N
-129931	17	7262	0	PARTITIONING_SCHEMA	0	\N
-129932	17	7262	0	PARTITIONING_METHOD	0	none
-129933	17	7262	0	include	0	N
-129934	17	7262	0	include_field	0	\N
-129935	17	7262	0	addresultfile	0	N
-129936	17	7262	0	namespaceaware	0	N
-129937	17	7262	0	ignorecomments	0	N
-129938	17	7262	0	readurl	0	N
-129939	17	7262	0	validating	0	N
-129940	17	7262	0	usetoken	0	N
-129941	17	7262	0	IsIgnoreEmptyFile	0	N
-129942	17	7262	0	doNotFailIfNoFile	0	Y
-129943	17	7262	0	rownum	0	N
-129944	17	7262	0	rownum_field	0	\N
-129945	17	7262	0	limit	0	\N
-129946	17	7262	0	loopxpath	0	/csw:GetRecordsResponse/csw:SearchResults/csw:SummaryRecord
-129947	17	7262	0	encoding	0	UTF-8
-129948	17	7262	0	file_name	0	\N
-129949	17	7262	0	file_mask	0	\N
-129950	17	7262	0	exclude_file_mask	0	\N
-129951	17	7262	0	file_required	0	N
-129952	17	7262	0	include_subfolders	0	N
-129953	17	7262	0	field_name	0	identifiant
-129954	17	7262	0	field_xpath	0	dc:identifier
-129955	17	7262	0	element_type	0	node
-129956	17	7262	0	result_type	0	valueof
-129957	17	7262	0	field_type	0	String
-129958	17	7262	0	field_format	0	\N
-129959	17	7262	0	field_currency	0	\N
-129960	17	7262	0	field_decimal	0	\N
-129961	17	7262	0	field_group	0	\N
-129962	17	7262	0	field_length	-1	\N
-129963	17	7262	0	field_precision	-1	\N
-129964	17	7262	0	field_trim_type	0	none
-129965	17	7262	0	field_repeat	0	N
-129966	17	7262	1	field_name	0	titre
-129967	17	7262	1	field_xpath	0	dc:title
-129968	17	7262	1	element_type	0	node
-129969	17	7262	1	result_type	0	valueof
-129970	17	7262	1	field_type	0	String
-129971	17	7262	1	field_format	0	\N
-129972	17	7262	1	field_currency	0	\N
-129973	17	7262	1	field_decimal	0	\N
-129974	17	7262	1	field_group	0	\N
-129975	17	7262	1	field_length	-1	\N
-129976	17	7262	1	field_precision	-1	\N
-129977	17	7262	1	field_trim_type	0	none
-129978	17	7262	1	field_repeat	0	N
-129979	17	7262	2	field_name	0	resume
-129980	17	7262	2	field_xpath	0	dct:abstract
-129981	17	7262	2	element_type	0	node
-129982	17	7262	2	result_type	0	valueof
-129983	17	7262	2	field_type	0	String
-129984	17	7262	2	field_format	0	\N
-129985	17	7262	2	field_currency	0	\N
-129986	17	7262	2	field_decimal	0	\N
-129987	17	7262	2	field_group	0	\N
-129988	17	7262	2	field_length	-1	\N
-129989	17	7262	2	field_precision	-1	\N
-129990	17	7262	2	field_trim_type	0	none
-129991	17	7262	2	field_repeat	0	N
-129992	17	7262	0	IsInFields	0	Y
-129993	17	7262	0	IsAFile	0	N
-129994	17	7262	0	XmlField	0	xml_csw
-129995	17	7262	0	prunePath	0	\N
-129996	17	7262	0	shortFileFieldName	0	\N
-129997	17	7262	0	pathFieldName	0	\N
-129998	17	7262	0	hiddenFieldName	0	\N
-129999	17	7262	0	lastModificationTimeFieldName	0	\N
-130000	17	7262	0	uriNameFieldName	0	\N
-130001	17	7262	0	rootUriNameFieldName	0	\N
-130002	17	7262	0	extensionFieldName	0	\N
-130003	17	7262	0	cluster_schema	0	\N
-130004	17	7263	0	PARTITIONING_SCHEMA	0	\N
-130005	17	7263	0	PARTITIONING_METHOD	0	none
-130006	17	7263	0	cluster_schema	0	\N
-130007	17	7264	0	PARTITIONING_SCHEMA	0	\N
-130008	17	7264	0	PARTITIONING_METHOD	0	none
-130009	17	7264	0	cluster_schema	0	\N
-130010	17	7265	0	PARTITIONING_SCHEMA	0	\N
-130011	17	7265	0	PARTITIONING_METHOD	0	none
-130012	17	7265	0	url	0	\N
-130013	17	7265	0	urlInField	0	Y
-130014	17	7265	0	urlField	0	url_metadata_get
-130015	17	7265	0	encoding	0	UTF-8
-130016	17	7265	0	httpLogin	0	\N
-130017	17	7265	0	httpPassword	0	\N
-130018	17	7265	0	proxyHost	0	\N
-130019	17	7265	0	proxyPort	0	\N
-130020	17	7265	0	arg_name	0	identifiant
-130021	17	7265	0	arg_parameter	0	uuid
-130022	17	7265	0	result_name	0	xml_metadata
-130023	17	7265	0	result_code	0	statut_xml_metadata
-130024	17	7265	0	response_time	0	\N
-130025	17	7265	0	cluster_schema	0	\N
-130026	17	7266	0	PARTITIONING_SCHEMA	0	\N
-130027	17	7266	0	PARTITIONING_METHOD	0	none
-130028	17	7266	0	id_connection	3	\N
-130029	17	7266	0	schema	0	${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}
-130030	17	7266	0	table	0	metadonnee
-130031	17	7266	0	commit	0	1000
-130032	17	7266	0	truncate	0	Y
-130033	17	7266	0	ignore_errors	0	N
-130034	17	7266	0	use_batch	0	Y
-130035	17	7266	0	specify_fields	0	Y
-130036	17	7266	0	partitioning_enabled	0	N
-130037	17	7266	0	partitioning_field	0	\N
-130038	17	7266	0	partitioning_daily	0	N
-130039	17	7266	0	partitioning_monthly	0	Y
-130040	17	7266	0	tablename_in_field	0	N
-130041	17	7266	0	tablename_field	0	\N
-130042	17	7266	0	tablename_in_table	0	Y
-130043	17	7266	0	return_keys	0	N
-130044	17	7266	0	return_field	0	\N
-130045	17	7266	0	column_name	0	titre
-130046	17	7266	0	stream_name	0	titre
-130047	17	7266	1	column_name	0	resume
-130048	17	7266	1	stream_name	0	resume
-130049	17	7266	2	column_name	0	url_vignette
-130050	17	7266	2	stream_name	0	url_vignette
-130051	17	7266	3	column_name	0	url_fiche
-130052	17	7266	3	stream_name	0	url_fiche
-130053	17	7266	4	column_name	0	thematique
-130054	17	7266	4	stream_name	0	thematique
-130055	17	7266	0	cluster_schema	0	\N
-130056	17	7267	0	PARTITIONING_SCHEMA	0	\N
-130057	17	7267	0	PARTITIONING_METHOD	0	none
-130058	17	7267	0	field_name	0	titre
-130059	17	7267	0	field_rename	0	\N
-130060	17	7267	0	field_length	-2	\N
-130061	17	7267	0	field_precision	-2	\N
-130062	17	7267	1	field_name	0	resume
-130063	17	7267	1	field_rename	0	\N
-130064	17	7267	1	field_length	-2	\N
-130065	17	7267	1	field_precision	-2	\N
-130066	17	7267	2	field_name	0	url_vignette
-130067	17	7267	2	field_rename	0	\N
-130068	17	7267	2	field_length	-2	\N
-130069	17	7267	2	field_precision	-2	\N
-130070	17	7267	3	field_name	0	url_fiche
-130071	17	7267	3	field_rename	0	\N
-130072	17	7267	3	field_length	-2	\N
-130073	17	7267	3	field_precision	-2	\N
-130074	17	7267	4	field_name	0	thematique
-130075	17	7267	4	field_rename	0	\N
-130076	17	7267	4	field_length	-2	\N
-130077	17	7267	4	field_precision	-2	\N
-130078	17	7267	0	select_unspecified	0	N
-130079	17	7267	0	cluster_schema	0	\N
-130080	17	7268	0	PARTITIONING_SCHEMA	0	\N
-130081	17	7268	0	PARTITIONING_METHOD	0	none
-130082	17	7268	0	include	0	N
-130083	17	7268	0	include_field	0	\N
-130084	17	7268	0	addresultfile	0	N
-130085	17	7268	0	namespaceaware	0	N
-130086	17	7268	0	ignorecomments	0	N
-130087	17	7268	0	readurl	0	N
-130088	17	7268	0	validating	0	N
-130089	17	7268	0	usetoken	0	N
-130090	17	7268	0	IsIgnoreEmptyFile	0	N
-130091	17	7268	0	doNotFailIfNoFile	0	Y
-130092	17	7268	0	rownum	0	N
-130093	17	7268	0	rownum_field	0	\N
-130094	17	7268	0	limit	0	\N
-130095	17	7268	0	loopxpath	0	/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:graphicOverview/gmd:MD_BrowseGraphic
-130096	17	7268	0	encoding	0	UTF-8
-130097	17	7268	0	file_name	0	\N
-130098	17	7268	0	file_mask	0	\N
-130099	17	7268	0	exclude_file_mask	0	\N
-130100	17	7268	0	file_required	0	N
-130101	17	7268	0	include_subfolders	0	N
-130102	17	7268	0	field_name	0	nom_vignette
-130103	17	7268	0	field_xpath	0	gmd:fileName/gco:CharacterString
-130104	17	7268	0	element_type	0	node
-130105	17	7268	0	result_type	0	valueof
-130106	17	7268	0	field_type	0	String
-130107	17	7268	0	field_format	0	\N
-130108	17	7268	0	field_currency	0	\N
-130109	17	7268	0	field_decimal	0	\N
-130110	17	7268	0	field_group	0	\N
-130111	17	7268	0	field_length	-1	\N
-130112	17	7268	0	field_precision	-1	\N
-130113	17	7268	0	field_trim_type	0	none
-130114	17	7268	0	field_repeat	0	N
-130115	17	7268	1	field_name	0	type_image
-130116	17	7268	1	field_xpath	0	gmd:fileDescription/gco:CharacterString
-130117	17	7268	1	element_type	0	node
-130118	17	7268	1	result_type	0	valueof
-130119	17	7268	1	field_type	0	String
-130120	17	7268	1	field_format	0	\N
-130121	17	7268	1	field_currency	0	\N
-130122	17	7268	1	field_decimal	0	\N
-130123	17	7268	1	field_group	0	\N
-130124	17	7268	1	field_length	-1	\N
-130125	17	7268	1	field_precision	-1	\N
-130126	17	7268	1	field_trim_type	0	none
-130127	17	7268	1	field_repeat	0	N
-130128	17	7268	0	IsInFields	0	Y
-130129	17	7268	0	IsAFile	0	N
-130130	17	7268	0	XmlField	0	xml_metadata
-130131	17	7268	0	prunePath	0	\N
-130132	17	7268	0	shortFileFieldName	0	\N
-130133	17	7268	0	pathFieldName	0	\N
-130134	17	7268	0	hiddenFieldName	0	\N
-130135	17	7268	0	lastModificationTimeFieldName	0	\N
-130136	17	7268	0	uriNameFieldName	0	\N
-130137	17	7268	0	rootUriNameFieldName	0	\N
-130138	17	7268	0	extensionFieldName	0	\N
-130139	17	7268	0	cluster_schema	0	\N
-130140	17	7269	0	PARTITIONING_SCHEMA	0	\N
-130141	17	7269	0	PARTITIONING_METHOD	0	none
-130142	17	7269	0	splitfield	0	url_online_ressource
-130143	17	7269	0	delimiter	0	=
-130144	17	7269	0	field_name	0	prefix
-130145	17	7269	0	field_id	0	\N
-130146	17	7269	0	field_idrem	0	N
-130147	17	7269	0	field_type	0	String
-130148	17	7269	0	field_format	0	\N
-130149	17	7269	0	field_group	0	\N
-130150	17	7269	0	field_decimal	0	\N
-130151	17	7269	0	field_length	-1	\N
-130152	17	7269	0	field_precision	-1	\N
-130153	17	7269	0	field_nullif	0	\N
-130154	17	7269	0	field_ifnull	0	\N
-130155	17	7269	0	field_trimtype	0	none
-130156	17	7269	1	field_name	0	id_fiche
-130157	17	7269	1	field_id	0	\N
-130158	17	7269	1	field_idrem	0	N
-130159	17	7269	1	field_type	0	Integer
-130160	17	7269	1	field_format	0	\N
-130161	17	7269	1	field_group	0	\N
-130162	17	7269	1	field_decimal	0	\N
-130163	17	7269	1	field_length	-1	\N
-130164	17	7269	1	field_precision	-1	\N
-130165	17	7269	1	field_nullif	0	\N
-130166	17	7269	1	field_ifnull	0	\N
-130167	17	7269	1	field_trimtype	0	none
-130168	17	7269	0	cluster_schema	0	\N
-130169	17	7270	0	PARTITIONING_SCHEMA	0	\N
-130170	17	7270	0	PARTITIONING_METHOD	0	none
-130171	17	7270	0	field_name	0	request
-130172	17	7270	0	field_type	0	String
-130173	17	7270	0	field_format	0	\N
-130174	17	7270	0	field_currency	0	\N
-130175	17	7270	0	field_decimal	0	\N
-130176	17	7270	0	field_group	0	\N
-130177	17	7270	0	field_nullif	0	GetRecords
-130178	17	7270	0	field_length	-1	\N
-130179	17	7270	0	field_precision	-1	\N
-130180	17	7270	1	field_name	0	service
-130181	17	7270	1	field_type	0	String
-130182	17	7270	1	field_format	0	\N
-130183	17	7270	1	field_currency	0	\N
-130184	17	7270	1	field_decimal	0	\N
-130185	17	7270	1	field_group	0	\N
-130186	17	7270	1	field_nullif	0	CSW
-130187	17	7270	1	field_length	-1	\N
-130188	17	7270	1	field_precision	-1	\N
-130189	17	7270	2	field_name	0	version
-130190	17	7270	2	field_type	0	String
-130191	17	7270	2	field_format	0	\N
-130192	17	7270	2	field_currency	0	\N
-130193	17	7270	2	field_decimal	0	\N
-130194	17	7270	2	field_group	0	\N
-130195	17	7270	2	field_nullif	0	2.0.2
-130196	17	7270	2	field_length	-1	\N
-130197	17	7270	2	field_precision	-1	\N
-130198	17	7270	3	field_name	0	resultType
-130199	17	7270	3	field_type	0	String
-130200	17	7270	3	field_format	0	\N
-130201	17	7270	3	field_currency	0	\N
-130202	17	7270	3	field_decimal	0	\N
-130203	17	7270	3	field_group	0	\N
-130204	17	7270	3	field_nullif	0	results
-130205	17	7270	3	field_length	-1	\N
-130206	17	7270	3	field_precision	-1	\N
-130207	17	7270	4	field_name	0	outputSchema
-130208	17	7270	4	field_type	0	String
-130209	17	7270	4	field_format	0	\N
-130210	17	7270	4	field_currency	0	\N
-130211	17	7270	4	field_decimal	0	\N
-130212	17	7270	4	field_group	0	\N
-130213	17	7270	4	field_nullif	0	http://www.opengis.net/cat/csw/2.0.2
-130214	17	7270	4	field_length	-1	\N
-130215	17	7270	4	field_precision	-1	\N
-130216	17	7270	5	field_name	0	outputFormat
-130217	17	7270	5	field_type	0	String
-130218	17	7270	5	field_format	0	\N
-130219	17	7270	5	field_currency	0	\N
-130220	17	7270	5	field_decimal	0	\N
-130221	17	7270	5	field_group	0	\N
-130222	17	7270	5	field_nullif	0	application/xml
-130223	17	7270	5	field_length	-1	\N
-130224	17	7270	5	field_precision	-1	\N
-130225	17	7270	6	field_name	0	typeNames
-130226	17	7270	6	field_type	0	String
-130227	17	7270	6	field_format	0	\N
-130228	17	7270	6	field_currency	0	\N
-130229	17	7270	6	field_decimal	0	\N
-130230	17	7270	6	field_group	0	\N
-130231	17	7270	6	field_nullif	0	csw:Record
-130232	17	7270	6	field_length	-1	\N
-130233	17	7270	6	field_precision	-1	\N
-130234	17	7270	7	field_name	0	constraintLanguage
-130235	17	7270	7	field_type	0	String
-130236	17	7270	7	field_format	0	\N
-130237	17	7270	7	field_currency	0	\N
-130238	17	7270	7	field_decimal	0	\N
-130239	17	7270	7	field_group	0	\N
-130240	17	7270	7	field_nullif	0	CQL_TEXT
-130241	17	7270	7	field_length	-1	\N
-130242	17	7270	7	field_precision	-1	\N
-130243	17	7270	8	field_name	0	constraint_language_version
-130244	17	7270	8	field_type	0	String
-130245	17	7270	8	field_format	0	\N
-130246	17	7270	8	field_currency	0	\N
-130247	17	7270	8	field_decimal	0	\N
-130248	17	7270	8	field_group	0	\N
-130249	17	7270	8	field_nullif	0	1.1.0
-130250	17	7270	8	field_length	-1	\N
-130251	17	7270	8	field_precision	-1	\N
-130252	17	7270	9	field_name	0	elementSetName
-130253	17	7270	9	field_type	0	String
-130254	17	7270	9	field_format	0	\N
-130255	17	7270	9	field_currency	0	\N
-130256	17	7270	9	field_decimal	0	\N
-130257	17	7270	9	field_group	0	\N
-130258	17	7270	9	field_nullif	0	summary
-130259	17	7270	9	field_length	-1	\N
-130260	17	7270	9	field_precision	-1	\N
-130261	17	7270	0	limit	0	1
-130262	17	7270	0	cluster_schema	0	\N
-130263	17	7271	0	PARTITIONING_SCHEMA	0	\N
-130264	17	7271	0	PARTITIONING_METHOD	0	none
-130265	17	7271	0	field_name	0	url_geocatalogue
-130266	17	7271	0	field_variable	0	${PDI_METADATA_URL_GEOCATALOGUE}
-130267	17	7271	0	field_type	0	String
-130268	17	7271	0	field_format	0	\N
-130269	17	7271	0	field_currency	0	\N
-130270	17	7271	0	field_decimal	0	\N
-130271	17	7271	0	field_group	0	\N
-130272	17	7271	0	field_length	-1	\N
-130273	17	7271	0	field_precision	-1	\N
-130274	17	7271	0	field_trim_type	0	none
-130275	17	7271	1	field_name	0	url_fiche_html
-130276	17	7271	1	field_variable	0	${PDI_METADATA_URL_FICHE_COMPLETE}
-130277	17	7271	1	field_type	0	String
-130278	17	7271	1	field_format	0	\N
-130279	17	7271	1	field_currency	0	\N
-130280	17	7271	1	field_decimal	0	\N
-130281	17	7271	1	field_group	0	\N
-130282	17	7271	1	field_length	-1	\N
-130283	17	7271	1	field_precision	-1	\N
-130284	17	7271	1	field_trim_type	0	none
-130285	17	7271	2	field_name	0	constraint
-130286	17	7271	2	field_variable	0	${PDI_METADATA_FILTRE_CQL}
-130287	17	7271	2	field_type	0	String
-130288	17	7271	2	field_format	0	\N
-130289	17	7271	2	field_currency	0	\N
-130290	17	7271	2	field_decimal	0	\N
-130291	17	7271	2	field_group	0	\N
-130292	17	7271	2	field_length	-1	\N
-130293	17	7271	2	field_precision	-1	\N
-130294	17	7271	2	field_trim_type	0	none
-130295	17	7271	3	field_name	0	maxRecords
-130296	17	7271	3	field_variable	0	${PDI_METADATA_FILTRE_MAX}
-130297	17	7271	3	field_type	0	Integer
-130298	17	7271	3	field_format	0	#
-130299	17	7271	3	field_currency	0	\N
-130300	17	7271	3	field_decimal	0	\N
-130301	17	7271	3	field_group	0	\N
-130302	17	7271	3	field_length	-1	\N
-130303	17	7271	3	field_precision	-1	\N
-130304	17	7271	3	field_trim_type	0	none
-130305	17	7271	0	cluster_schema	0	\N
-130306	17	7272	0	PARTITIONING_SCHEMA	0	\N
-130307	17	7272	0	PARTITIONING_METHOD	0	none
-130308	17	7272	0	id_condition	242	\N
-130309	17	7272	0	send_true_to	0	Extraction CSW
-130310	17	7272	0	send_false_to	0	CSW <>200
-130311	17	7272	0	cluster_schema	0	\N
-130312	17	7273	0	PARTITIONING_SCHEMA	0	\N
-130313	17	7273	0	PARTITIONING_METHOD	0	none
-130314	17	7273	0	id_condition	243	\N
-130315	17	7273	0	send_true_to	0	Nom fichier vignette
-130316	17	7273	0	send_false_to	0	Meta XML <>200
-130317	17	7273	0	cluster_schema	0	\N
-130318	17	7274	0	PARTITIONING_SCHEMA	0	\N
-130319	17	7274	0	PARTITIONING_METHOD	0	none
-130320	17	7274	0	include	0	N
-130321	17	7274	0	include_field	0	\N
-130322	17	7274	0	addresultfile	0	N
-130323	17	7274	0	namespaceaware	0	N
-130324	17	7274	0	ignorecomments	0	N
-130325	17	7274	0	readurl	0	N
-130326	17	7274	0	validating	0	N
-130327	17	7274	0	usetoken	0	N
-130328	17	7274	0	IsIgnoreEmptyFile	0	N
-130329	17	7274	0	doNotFailIfNoFile	0	Y
-130330	17	7274	0	rownum	0	N
-130331	17	7274	0	rownum_field	0	\N
-130332	17	7274	0	limit	0	\N
-130333	17	7274	0	loopxpath	0	/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage[position()=1]
-130334	17	7274	0	encoding	0	UTF-8
-130335	17	7274	0	file_name	0	\N
-130336	17	7274	0	file_mask	0	\N
-130337	17	7274	0	exclude_file_mask	0	\N
-130338	17	7274	0	file_required	0	N
-130339	17	7274	0	include_subfolders	0	N
-130340	17	7274	0	field_name	0	url_online_ressource
-130341	17	7274	0	field_xpath	0	gmd:URL
-130342	17	7274	0	element_type	0	node
-130343	17	7274	0	result_type	0	valueof
-130344	17	7274	0	field_type	0	String
-130345	17	7274	0	field_format	0	\N
-130346	17	7274	0	field_currency	0	\N
-130347	17	7274	0	field_decimal	0	\N
-130348	17	7274	0	field_group	0	\N
-130349	17	7274	0	field_length	-1	\N
-130350	17	7274	0	field_precision	-1	\N
-130351	17	7274	0	field_trim_type	0	none
-130352	17	7274	0	field_repeat	0	N
-130353	17	7274	0	IsInFields	0	Y
-130354	17	7274	0	IsAFile	0	N
-130355	17	7274	0	XmlField	0	xml_metadata
-130356	17	7274	0	prunePath	0	\N
-130357	17	7274	0	shortFileFieldName	0	\N
-130358	17	7274	0	pathFieldName	0	\N
-130359	17	7274	0	hiddenFieldName	0	\N
-130360	17	7274	0	lastModificationTimeFieldName	0	\N
-130361	17	7274	0	uriNameFieldName	0	\N
-130362	17	7274	0	rootUriNameFieldName	0	\N
-130363	17	7274	0	extensionFieldName	0	\N
-130364	17	7274	0	cluster_schema	0	\N
-130365	17	7275	0	PARTITIONING_SCHEMA	0	\N
-130366	17	7275	0	PARTITIONING_METHOD	0	none
-130367	17	7275	0	field_name	0	url_vignette
-130368	17	7275	0	formula_string	0	url_geocatalogue + "/srv/fr/resources.get?id=" + id + "&fname=" + nom_vignette
-130369	17	7275	0	value_type	0	String
-130370	17	7275	0	value_length	-1	\N
-130371	17	7275	0	value_precision	-1	\N
-130372	17	7275	0	replace_field	0	\N
-130373	17	7275	1	field_name	0	url_fiche
-130374	17	7275	1	formula_string	0	url_fiche_html + "?idlot=" + id_fiche
-130375	17	7275	1	value_type	0	String
-130376	17	7275	1	value_length	-1	\N
-130377	17	7275	1	value_precision	-1	\N
-130378	17	7275	1	replace_field	0	\N
-130379	17	7275	0	cluster_schema	0	\N
-130380	17	7276	0	PARTITIONING_SCHEMA	0	\N
-130381	17	7276	0	PARTITIONING_METHOD	0	none
-130382	17	7276	0	include	0	N
-130383	17	7276	0	include_field	0	\N
-130384	17	7276	0	addresultfile	0	N
-130385	17	7276	0	namespaceaware	0	N
-130386	17	7276	0	ignorecomments	0	N
-130387	17	7276	0	readurl	0	N
-130388	17	7276	0	validating	0	N
-130389	17	7276	0	usetoken	0	N
-130390	17	7276	0	IsIgnoreEmptyFile	0	N
-130391	17	7276	0	doNotFailIfNoFile	0	Y
-130392	17	7276	0	rownum	0	N
-130393	17	7276	0	rownum_field	0	\N
-130394	17	7276	0	limit	0	\N
-130395	17	7276	0	loopxpath	0	/gmd:MD_Metadata/geonet:info
-130396	17	7276	0	encoding	0	UTF-8
-130397	17	7276	0	file_name	0	\N
-130398	17	7276	0	file_mask	0	\N
-130399	17	7276	0	exclude_file_mask	0	\N
-130400	17	7276	0	file_required	0	N
-130401	17	7276	0	include_subfolders	0	N
-130402	17	7276	0	field_name	0	id
-130403	17	7276	0	field_xpath	0	id
-130404	17	7276	0	element_type	0	node
-130405	17	7276	0	result_type	0	valueof
-130406	17	7276	0	field_type	0	Integer
-130407	17	7276	0	field_format	0	\N
-130408	17	7276	0	field_currency	0	\N
-130409	17	7276	0	field_decimal	0	\N
-130410	17	7276	0	field_group	0	\N
-130411	17	7276	0	field_length	-1	\N
-130412	17	7276	0	field_precision	-1	\N
-130413	17	7276	0	field_trim_type	0	none
-130414	17	7276	0	field_repeat	0	N
-130415	17	7276	0	IsInFields	0	Y
-130416	17	7276	0	IsAFile	0	N
-130417	17	7276	0	XmlField	0	xml_metadata
-130418	17	7276	0	prunePath	0	\N
-130419	17	7276	0	shortFileFieldName	0	\N
-130420	17	7276	0	pathFieldName	0	\N
-130421	17	7276	0	hiddenFieldName	0	\N
-130422	17	7276	0	lastModificationTimeFieldName	0	\N
-130423	17	7276	0	uriNameFieldName	0	\N
-130424	17	7276	0	rootUriNameFieldName	0	\N
-130425	17	7276	0	extensionFieldName	0	\N
-130426	17	7276	0	cluster_schema	0	\N
-130427	17	7277	0	PARTITIONING_SCHEMA	0	\N
-130428	17	7277	0	PARTITIONING_METHOD	0	none
-130429	17	7277	0	id_condition	244	\N
-130430	17	7277	0	send_true_to	0	id GetInfo
-130431	17	7277	0	send_false_to	0	Image <> thumbnail
-130432	17	7277	0	cluster_schema	0	\N
-130433	17	7278	0	PARTITIONING_SCHEMA	0	\N
-130434	17	7278	0	PARTITIONING_METHOD	0	none
-130435	17	7278	0	field_name	0	url_geocatalogue
-130436	17	7278	0	field_type	0	String
-130437	17	7278	0	field_format	0	\N
-130438	17	7278	0	field_currency	0	\N
-130439	17	7278	0	field_decimal	0	\N
-130440	17	7278	0	field_group	0	\N
-130441	17	7278	0	field_nullif	0	http://geocatalogue.crige-paca.org/geonetwork
-130442	17	7278	0	field_length	-1	\N
-130443	17	7278	0	field_precision	-1	\N
-130444	17	7278	1	field_name	0	url_fiche_html
-130445	17	7278	1	field_type	0	String
-130446	17	7278	1	field_format	0	\N
-130447	17	7278	1	field_currency	0	\N
-130448	17	7278	1	field_decimal	0	\N
-130449	17	7278	1	field_group	0	\N
-130450	17	7278	1	field_nullif	0	http://www.crige-paca.org/carto/fonctionnalites/geocatalogue/geosource.php
-130451	17	7278	1	field_length	-1	\N
-130452	17	7278	1	field_precision	-1	\N
-130453	17	7278	2	field_name	0	constraint
-130454	17	7278	2	field_type	0	String
-130455	17	7278	2	field_format	0	\N
-130456	17	7278	2	field_currency	0	\N
-130457	17	7278	2	field_decimal	0	\N
-130458	17	7278	2	field_group	0	\N
-130459	17	7278	2	field_nullif	0	OrganisationName = 'SDIS du Var' OR OrganisationName = 'SDIS 83'
-130460	17	7278	2	field_length	-1	\N
-130461	17	7278	2	field_precision	-1	\N
-130462	17	7278	3	field_name	0	maxRecords
-130463	17	7278	3	field_type	0	String
-130464	17	7278	3	field_format	0	\N
-130465	17	7278	3	field_currency	0	\N
-130466	17	7278	3	field_decimal	0	\N
-130467	17	7278	3	field_group	0	\N
-130468	17	7278	3	field_nullif	0	5000
-130469	17	7278	3	field_length	-1	\N
-130470	17	7278	3	field_precision	-1	\N
-130471	17	7278	0	cluster_schema	0	\N
-130472	17	7279	0	PARTITIONING_SCHEMA	0	\N
-130473	17	7279	0	PARTITIONING_METHOD	0	none
-130474	17	7279	0	id_condition	245	\N
-130475	17	7279	0	send_true_to	0	Mots clefs
-130476	17	7279	0	send_false_to	0	id de fiche NULL
-130477	17	7279	0	cluster_schema	0	\N
-130478	17	7280	0	PARTITIONING_SCHEMA	0	\N
-130479	17	7280	0	PARTITIONING_METHOD	0	none
-130480	17	7280	0	cluster_schema	0	\N
-130481	17	7281	0	PARTITIONING_SCHEMA	0	\N
-130482	17	7281	0	PARTITIONING_METHOD	0	none
-130483	17	7281	0	include	0	N
-130484	17	7281	0	include_field	0	\N
-130485	17	7281	0	addresultfile	0	N
-130486	17	7281	0	namespaceaware	0	N
-130487	17	7281	0	ignorecomments	0	N
-130488	17	7281	0	readurl	0	N
-130489	17	7281	0	validating	0	N
-130490	17	7281	0	usetoken	0	N
-130491	17	7281	0	IsIgnoreEmptyFile	0	N
-130492	17	7281	0	doNotFailIfNoFile	0	Y
-130493	17	7281	0	rownum	0	N
-130494	17	7281	0	rownum_field	0	\N
-130495	17	7281	0	limit	0	\N
-130496	17	7281	0	loopxpath	0	/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords
-130497	17	7281	0	encoding	0	UTF-8
-130498	17	7281	0	file_name	0	\N
-130499	17	7281	0	file_mask	0	\N
-130500	17	7281	0	exclude_file_mask	0	\N
-130501	17	7281	0	file_required	0	N
-130502	17	7281	0	include_subfolders	0	N
-130503	17	7281	0	field_name	0	mots_clef
-130504	17	7281	0	field_xpath	0	gmd:keyword/gco:CharacterString
-130505	17	7281	0	element_type	0	node
-130506	17	7281	0	result_type	0	valueof
-130507	17	7281	0	field_type	0	String
-130508	17	7281	0	field_format	0	\N
-130509	17	7281	0	field_currency	0	\N
-130510	17	7281	0	field_decimal	0	\N
-130511	17	7281	0	field_group	0	\N
-130512	17	7281	0	field_length	-1	\N
-130513	17	7281	0	field_precision	-1	\N
-130514	17	7281	0	field_trim_type	0	none
-130515	17	7281	0	field_repeat	0	N
-130516	17	7281	0	IsInFields	0	Y
-130517	17	7281	0	IsAFile	0	N
-130518	17	7281	0	XmlField	0	xml_metadata
-130519	17	7281	0	prunePath	0	\N
-130520	17	7281	0	shortFileFieldName	0	\N
-130521	17	7281	0	pathFieldName	0	\N
-130522	17	7281	0	hiddenFieldName	0	\N
-130523	17	7281	0	lastModificationTimeFieldName	0	\N
-130524	17	7281	0	uriNameFieldName	0	\N
-130525	17	7281	0	rootUriNameFieldName	0	\N
-130526	17	7281	0	extensionFieldName	0	\N
-130527	17	7281	0	cluster_schema	0	\N
-130528	17	7282	0	PARTITIONING_SCHEMA	0	\N
-130529	17	7282	0	PARTITIONING_METHOD	0	none
-130530	17	7282	0	id_connection	3	\N
-130531	17	7282	0	sql	0	SELECT\r\n\tid AS thematique,\r\n\t'remocra:'||nom AS nom_thematique\r\nFROM\r\n\t${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.thematique\r\n
-130532	17	7282	0	limit	0	0
-130533	17	7282	0	lookup	0	\N
-130534	17	7282	0	execute_each_row	0	N
-130535	17	7282	0	variables_active	0	Y
-130536	17	7282	0	lazy_conversion_active	0	N
-130537	17	7282	0	cluster_schema	0	\N
-130538	17	7283	0	PARTITIONING_SCHEMA	0	\N
-130539	17	7283	0	PARTITIONING_METHOD	0	none
-130540	17	7283	0	id_condition	246	\N
-130541	17	7283	0	send_true_to	0	Tri lignes
-130542	17	7283	0	send_false_to	0	Pas de mots clef
-130543	17	7283	0	cluster_schema	0	\N
-130544	17	7284	0	PARTITIONING_SCHEMA	0	\N
-130545	17	7284	0	PARTITIONING_METHOD	0	none
-130546	17	7284	0	directory	0	%%java.io.tmpdir%%
-130547	17	7284	0	prefix	0	out
-130548	17	7284	0	cache_size	500	\N
-130549	17	7284	0	main	0	\N
-130550	17	7284	0	id_condition	247	\N
-130551	17	7284	0	cluster_schema	0	\N
-130552	17	7285	0	PARTITIONING_SCHEMA	0	\N
-130553	17	7285	0	PARTITIONING_METHOD	0	none
-130554	17	7285	0	cluster_schema	0	\N
-130555	17	7286	0	PARTITIONING_SCHEMA	0	\N
-130556	17	7286	0	PARTITIONING_METHOD	0	none
-130557	17	7286	0	count_rows	0	N
-130558	17	7286	0	count_fields	0	\N
-130559	17	7286	0	reject_duplicate_row	0	N
-130560	17	7286	0	error_description	0	\N
-130561	17	7286	0	field_name	0	url_geocatalogue
-130562	17	7286	0	case_insensitive	0	N
-130563	17	7286	1	field_name	0	url_fiche_html
-130564	17	7286	1	case_insensitive	0	N
-130565	17	7286	2	field_name	0	identifiant
-130566	17	7286	2	case_insensitive	0	N
-130567	17	7286	3	field_name	0	titre
-130568	17	7286	3	case_insensitive	0	N
-130569	17	7286	4	field_name	0	resume
-130570	17	7286	4	case_insensitive	0	N
-130571	17	7286	5	field_name	0	nom_vignette
-130572	17	7286	5	case_insensitive	0	N
-130573	17	7286	6	field_name	0	id
-130574	17	7286	6	case_insensitive	0	N
-130575	17	7286	7	field_name	0	id_fiche
-130576	17	7286	7	case_insensitive	0	N
-130577	17	7286	8	field_name	0	thematique
-130578	17	7286	8	case_insensitive	0	N
-130579	17	7286	0	cluster_schema	0	\N
-130580	17	7287	0	PARTITIONING_SCHEMA	0	\N
-130581	17	7287	0	PARTITIONING_METHOD	0	none
-130582	17	7287	0	directory	0	%%java.io.tmpdir%%
-130583	17	7287	0	prefix	0	out
-130584	17	7287	0	sort_size	0	1000000
-130585	17	7287	0	free_memory	0	\N
-130586	17	7287	0	compress	0	N
-130587	17	7287	0	compress_variable	0	\N
-130588	17	7287	0	unique_rows	0	N
-130589	17	7287	0	field_name	0	url_geocatalogue
-130590	17	7287	0	field_ascending	0	N
-130591	17	7287	0	field_case_sensitive	0	N
-130592	17	7287	1	field_name	0	url_fiche_html
-130593	17	7287	1	field_ascending	0	N
-130594	17	7287	1	field_case_sensitive	0	N
-130595	17	7287	2	field_name	0	identifiant
-130596	17	7287	2	field_ascending	0	N
-130597	17	7287	2	field_case_sensitive	0	N
-130598	17	7287	3	field_name	0	titre
-130599	17	7287	3	field_ascending	0	N
-130600	17	7287	3	field_case_sensitive	0	N
-130601	17	7287	4	field_name	0	resume
-130602	17	7287	4	field_ascending	0	N
-130603	17	7287	4	field_case_sensitive	0	N
-130604	17	7287	5	field_name	0	nom_vignette
-130605	17	7287	5	field_ascending	0	N
-130606	17	7287	5	field_case_sensitive	0	N
-130607	17	7287	6	field_name	0	id
-130608	17	7287	6	field_ascending	0	N
-130609	17	7287	6	field_case_sensitive	0	N
-130610	17	7287	7	field_name	0	id_fiche
-130611	17	7287	7	field_ascending	0	N
-130612	17	7287	7	field_case_sensitive	0	N
-130613	17	7287	8	field_name	0	thematique
-130614	17	7287	8	field_ascending	0	N
-130615	17	7287	8	field_case_sensitive	0	N
-130616	17	7287	0	cluster_schema	0	\N
-130617	17	7268	0	step_error_handling_source_step	0	Nom fichier vignette
-130618	17	7268	0	step_error_handling_target_step	0	\N
-130619	17	7268	0	step_error_handling_is_enabled	0	Y
-130620	17	7268	0	step_error_handling_nr_valuename	0	\N
-130621	17	7268	0	step_error_handling_descriptions_valuename	0	\N
-130622	17	7268	0	step_error_handling_fields_valuename	0	\N
-130623	17	7268	0	step_error_handling_codes_valuename	0	\N
-130624	17	7268	0	step_error_handling_max_errors	0	\N
-130625	17	7268	0	step_error_handling_max_pct_errors	0	\N
-130626	17	7268	0	step_error_handling_min_pct_rows	0	\N
+136866	17	7713	2	arg_name	0	version
+136867	17	7713	2	arg_parameter	0	version
+136868	17	7713	3	arg_name	0	resultType
+136869	17	7713	3	arg_parameter	0	resultType
+136870	17	7713	4	arg_name	0	outputSchema
+136871	17	7713	4	arg_parameter	0	outputSchema
+136872	17	7713	5	arg_name	0	outputFormat
+136873	17	7713	5	arg_parameter	0	outputFormat
+136874	17	7713	6	arg_name	0	typeNames
+136875	17	7713	6	arg_parameter	0	typeNames
+136876	17	7713	7	arg_name	0	constraintLanguage
+136877	17	7713	7	arg_parameter	0	constraintLanguage
+136878	17	7713	8	arg_name	0	constraint_language_version
+136879	17	7713	8	arg_parameter	0	constraint_language_version
+136880	17	7713	9	arg_name	0	elementSetName
+136881	17	7713	9	arg_parameter	0	elementSetName
+136882	17	7713	10	arg_name	0	constraint
+136883	17	7713	10	arg_parameter	0	constraint
+136884	17	7713	11	arg_name	0	maxRecords
+136885	17	7713	11	arg_parameter	0	maxRecords
+136886	17	7713	0	result_name	0	xml_csw
+136887	17	7713	0	result_code	0	statut_csw
+136888	17	7713	0	response_time	0	\N
+136889	17	7713	0	cluster_schema	0	
+136890	17	7714	0	PARTITIONING_SCHEMA	0	
+136891	17	7714	0	PARTITIONING_METHOD	0	none
+136892	17	7714	0	cluster_schema	0	
+136893	17	7715	0	PARTITIONING_SCHEMA	0	
+136894	17	7715	0	PARTITIONING_METHOD	0	none
+136895	17	7715	0	field_name	0	url_csw
+136896	17	7715	0	formula_string	0	url_geocatalogue + "/srv/fr/csw"
+136897	17	7715	0	value_type	0	String
+136898	17	7715	0	value_length	-1	\N
+136899	17	7715	0	value_precision	-1	\N
+136900	17	7715	0	replace_field	0	\N
+136901	17	7715	1	field_name	0	url_metadata_get
+136902	17	7715	1	formula_string	0	url_geocatalogue + "/srv/fr/xml.metadata.get"
+136903	17	7715	1	value_type	0	String
+136904	17	7715	1	value_length	-1	\N
+136905	17	7715	1	value_precision	-1	\N
+136906	17	7715	1	replace_field	0	\N
+136907	17	7715	0	cluster_schema	0	
+136908	17	7716	0	PARTITIONING_SCHEMA	0	
+136909	17	7716	0	PARTITIONING_METHOD	0	none
+136910	17	7716	0	count_rows	0	N
+136911	17	7716	0	count_fields	0	
+136912	17	7716	0	reject_duplicate_row	0	N
+136913	17	7716	0	error_description	0	
+136914	17	7716	0	field_name	0	url_geocatalogue
+136915	17	7716	0	case_insensitive	0	N
+136916	17	7716	1	field_name	0	url_fiche_html
+136917	17	7716	1	case_insensitive	0	N
+136918	17	7716	2	field_name	0	identifiant
+136919	17	7716	2	case_insensitive	0	N
+136920	17	7716	3	field_name	0	titre
+136921	17	7716	3	case_insensitive	0	N
+136922	17	7716	4	field_name	0	resume
+136923	17	7716	4	case_insensitive	0	N
+136924	17	7716	5	field_name	0	nom_vignette
+136925	17	7716	5	case_insensitive	0	N
+136926	17	7716	6	field_name	0	id
+136927	17	7716	6	case_insensitive	0	N
+136928	17	7716	7	field_name	0	id_fiche
+136929	17	7716	7	case_insensitive	0	N
+136930	17	7716	8	field_name	0	thematique
+136931	17	7716	8	case_insensitive	0	N
+136932	17	7716	9	field_name	0	code_export
+136933	17	7716	9	case_insensitive	0	N
+136934	17	7716	0	cluster_schema	0	
+136935	17	7717	0	PARTITIONING_SCHEMA	0	
+136936	17	7717	0	PARTITIONING_METHOD	0	none
+136937	17	7717	0	include	0	N
+136938	17	7717	0	include_field	0	
+136939	17	7717	0	addresultfile	0	N
+136940	17	7717	0	namespaceaware	0	N
+136941	17	7717	0	ignorecomments	0	N
+136942	17	7717	0	readurl	0	N
+136943	17	7717	0	validating	0	N
+136944	17	7717	0	usetoken	0	N
+136945	17	7717	0	IsIgnoreEmptyFile	0	N
+136946	17	7717	0	doNotFailIfNoFile	0	Y
+136947	17	7717	0	rownum	0	N
+136948	17	7717	0	rownum_field	0	
+136949	17	7717	0	limit	0	\N
+136950	17	7717	0	loopxpath	0	/csw:GetRecordsResponse/csw:SearchResults/csw:SummaryRecord
+136951	17	7717	0	encoding	0	UTF-8
+136952	17	7717	0	file_name	0	
+136953	17	7717	0	file_mask	0	
+136954	17	7717	0	exclude_file_mask	0	
+136955	17	7717	0	file_required	0	N
+136956	17	7717	0	include_subfolders	0	N
+136957	17	7717	0	field_name	0	identifiant
+136958	17	7717	0	field_xpath	0	dc:identifier
+136959	17	7717	0	element_type	0	node
+136960	17	7717	0	result_type	0	valueof
+136961	17	7717	0	field_type	0	String
+136962	17	7717	0	field_format	0	
+136963	17	7717	0	field_currency	0	
+136964	17	7717	0	field_decimal	0	
+136965	17	7717	0	field_group	0	
+136966	17	7717	0	field_length	-1	\N
+136967	17	7717	0	field_precision	-1	\N
+136968	17	7717	0	field_trim_type	0	none
+136969	17	7717	0	field_repeat	0	N
+136970	17	7717	1	field_name	0	titre
+136971	17	7717	1	field_xpath	0	dc:title
+136972	17	7717	1	element_type	0	node
+136973	17	7717	1	result_type	0	valueof
+136974	17	7717	1	field_type	0	String
+136975	17	7717	1	field_format	0	
+136976	17	7717	1	field_currency	0	
+136977	17	7717	1	field_decimal	0	
+136978	17	7717	1	field_group	0	
+136979	17	7717	1	field_length	-1	\N
+136980	17	7717	1	field_precision	-1	\N
+136981	17	7717	1	field_trim_type	0	none
+136982	17	7717	1	field_repeat	0	N
+136983	17	7717	2	field_name	0	resume
+136984	17	7717	2	field_xpath	0	dct:abstract
+136985	17	7717	2	element_type	0	node
+136986	17	7717	2	result_type	0	valueof
+136987	17	7717	2	field_type	0	String
+136988	17	7717	2	field_format	0	
+136989	17	7717	2	field_currency	0	
+136990	17	7717	2	field_decimal	0	
+136991	17	7717	2	field_group	0	
+136992	17	7717	2	field_length	-1	\N
+136993	17	7717	2	field_precision	-1	\N
+136994	17	7717	2	field_trim_type	0	none
+136995	17	7717	2	field_repeat	0	N
+136996	17	7717	0	IsInFields	0	Y
+136997	17	7717	0	IsAFile	0	N
+136998	17	7717	0	XmlField	0	xml_csw
+136999	17	7717	0	prunePath	0	
+137000	17	7717	0	shortFileFieldName	0	
+137001	17	7717	0	pathFieldName	0	
+137002	17	7717	0	hiddenFieldName	0	
+137003	17	7717	0	lastModificationTimeFieldName	0	
+137004	17	7717	0	uriNameFieldName	0	
+137005	17	7717	0	rootUriNameFieldName	0	
+137006	17	7717	0	extensionFieldName	0	
+137007	17	7717	0	cluster_schema	0	
+137008	17	7718	0	PARTITIONING_SCHEMA	0	
+137009	17	7718	0	PARTITIONING_METHOD	0	none
+137010	17	7718	0	id_condition	281	\N
+137011	17	7718	0	send_true_to	0	Mots clefs
+137012	17	7718	0	send_false_to	0	id de fiche NULL
+137013	17	7718	0	cluster_schema	0	
+137014	17	7719	0	PARTITIONING_SCHEMA	0	
+137015	17	7719	0	PARTITIONING_METHOD	0	none
+137016	17	7719	0	cluster_schema	0	
+137017	17	7720	0	PARTITIONING_SCHEMA	0	
+137018	17	7720	0	PARTITIONING_METHOD	0	none
+137019	17	7720	0	cluster_schema	0	
+137020	17	7721	0	PARTITIONING_SCHEMA	0	
+137021	17	7721	0	PARTITIONING_METHOD	0	none
+137022	17	7721	0	url	0	\N
+137023	17	7721	0	urlInField	0	Y
+137024	17	7721	0	urlField	0	url_metadata_get
+137025	17	7721	0	encoding	0	UTF-8
+137027	17	7721	0	httpPassword	0	\N
+137028	17	7721	0	proxyHost	0	\N
+137029	17	7721	0	proxyPort	0	\N
+137030	17	7721	0	arg_name	0	identifiant
+137031	17	7721	0	arg_parameter	0	uuid
+137032	17	7721	0	result_name	0	xml_metadata
+137033	17	7721	0	result_code	0	statut_xml_metadata
+137034	17	7721	0	response_time	0	\N
+137035	17	7721	0	cluster_schema	0	
+137036	17	7722	0	PARTITIONING_SCHEMA	0	
+137037	17	7722	0	PARTITIONING_METHOD	0	none
+137038	17	7722	0	id_connection	3	\N
+137039	17	7722	0	schema	0	${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}
+137040	17	7722	0	table	0	metadonnee
+137041	17	7722	0	commit	0	1000
+137042	17	7722	0	truncate	0	Y
+137043	17	7722	0	ignore_errors	0	N
+137044	17	7722	0	use_batch	0	Y
+137045	17	7722	0	specify_fields	0	Y
+137046	17	7722	0	partitioning_enabled	0	N
+137047	17	7722	0	partitioning_field	0	
+137048	17	7722	0	partitioning_daily	0	N
+137049	17	7722	0	partitioning_monthly	0	Y
+137050	17	7722	0	tablename_in_field	0	N
+137051	17	7722	0	tablename_field	0	
+137052	17	7722	0	tablename_in_table	0	Y
+137053	17	7722	0	return_keys	0	N
+137054	17	7722	0	return_field	0	
+137055	17	7722	0	column_name	0	titre
+137056	17	7722	0	stream_name	0	titre
+137057	17	7722	1	column_name	0	resume
+137058	17	7722	1	stream_name	0	resume
+137059	17	7722	2	column_name	0	url_vignette
+137060	17	7722	2	stream_name	0	url_vignette
+137061	17	7722	3	column_name	0	url_fiche
+137062	17	7722	3	stream_name	0	url_fiche
+137063	17	7722	4	column_name	0	thematique
+137064	17	7722	4	stream_name	0	thematique
+137065	17	7722	5	column_name	0	code_export
+137066	17	7722	5	stream_name	0	code_export
+137067	17	7722	0	cluster_schema	0	
+137068	17	7723	0	PARTITIONING_SCHEMA	0	
+137069	17	7723	0	PARTITIONING_METHOD	0	none
+137070	17	7723	0	include	0	N
+137071	17	7723	0	include_field	0	
+137072	17	7723	0	addresultfile	0	N
+137073	17	7723	0	namespaceaware	0	N
+137074	17	7723	0	ignorecomments	0	N
+137075	17	7723	0	readurl	0	N
+137076	17	7723	0	validating	0	N
+137077	17	7723	0	usetoken	0	N
+137078	17	7723	0	IsIgnoreEmptyFile	0	N
+137079	17	7723	0	doNotFailIfNoFile	0	Y
+137080	17	7723	0	rownum	0	N
+137081	17	7723	0	rownum_field	0	
+137082	17	7723	0	limit	0	\N
+137083	17	7723	0	loopxpath	0	/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords
+137084	17	7723	0	encoding	0	UTF-8
+137085	17	7723	0	file_name	0	
+137086	17	7723	0	file_mask	0	
+137087	17	7723	0	exclude_file_mask	0	
+137088	17	7723	0	file_required	0	N
+137089	17	7723	0	include_subfolders	0	N
+137090	17	7723	0	field_name	0	mots_clef
+137091	17	7723	0	field_xpath	0	gmd:keyword/gco:CharacterString
+137092	17	7723	0	element_type	0	node
+137093	17	7723	0	result_type	0	valueof
+137094	17	7723	0	field_type	0	String
+137095	17	7723	0	field_format	0	
+137096	17	7723	0	field_currency	0	
+137097	17	7723	0	field_decimal	0	
+137098	17	7723	0	field_group	0	
+137099	17	7723	0	field_length	-1	\N
+137100	17	7723	0	field_precision	-1	\N
+137101	17	7723	0	field_trim_type	0	none
+137102	17	7723	0	field_repeat	0	N
+137103	17	7723	0	IsInFields	0	Y
+137104	17	7723	0	IsAFile	0	N
+137105	17	7723	0	XmlField	0	xml_metadata
+137106	17	7723	0	prunePath	0	
+137107	17	7723	0	shortFileFieldName	0	
+137108	17	7723	0	pathFieldName	0	
+137109	17	7723	0	hiddenFieldName	0	
+137110	17	7723	0	lastModificationTimeFieldName	0	
+137111	17	7723	0	uriNameFieldName	0	
+137112	17	7723	0	rootUriNameFieldName	0	
+137113	17	7723	0	extensionFieldName	0	
+137114	17	7723	0	cluster_schema	0	
+137115	17	7724	0	PARTITIONING_SCHEMA	0	
+137116	17	7724	0	PARTITIONING_METHOD	0	none
+137117	17	7724	0	field_name	0	titre
+137118	17	7724	0	field_rename	0	
+137119	17	7724	0	field_length	-2	\N
+137120	17	7724	0	field_precision	-2	\N
+137121	17	7724	1	field_name	0	resume
+137122	17	7724	1	field_rename	0	
+137123	17	7724	1	field_length	-2	\N
+137124	17	7724	1	field_precision	-2	\N
+137125	17	7724	2	field_name	0	url_vignette
+137126	17	7724	2	field_rename	0	
+137127	17	7724	2	field_length	-2	\N
+137128	17	7724	2	field_precision	-2	\N
+137129	17	7724	3	field_name	0	url_fiche
+137130	17	7724	3	field_rename	0	
+137131	17	7724	3	field_length	-2	\N
+137132	17	7724	3	field_precision	-2	\N
+137133	17	7724	4	field_name	0	thematique
+137134	17	7724	4	field_rename	0	
+137135	17	7724	4	field_length	-2	\N
+137136	17	7724	4	field_precision	-2	\N
+137137	17	7724	5	field_name	0	code_export
+137138	17	7724	5	field_rename	0	
+137139	17	7724	5	field_length	-2	\N
+137140	17	7724	5	field_precision	-2	\N
+137141	17	7724	0	select_unspecified	0	N
+137142	17	7724	0	cluster_schema	0	
+137143	17	7725	0	PARTITIONING_SCHEMA	0	
+137144	17	7725	0	PARTITIONING_METHOD	0	none
+137145	17	7725	0	include	0	N
+137146	17	7725	0	include_field	0	
+137147	17	7725	0	addresultfile	0	N
+137148	17	7725	0	namespaceaware	0	N
+137149	17	7725	0	ignorecomments	0	N
+137150	17	7725	0	readurl	0	N
+137151	17	7725	0	validating	0	N
+137152	17	7725	0	usetoken	0	N
+137153	17	7725	0	IsIgnoreEmptyFile	0	N
+137154	17	7725	0	doNotFailIfNoFile	0	Y
+137155	17	7725	0	rownum	0	N
+137156	17	7725	0	rownum_field	0	
+137157	17	7725	0	limit	0	\N
+137158	17	7725	0	loopxpath	0	/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:graphicOverview/gmd:MD_BrowseGraphic
+137159	17	7725	0	encoding	0	UTF-8
+137160	17	7725	0	file_name	0	
+137161	17	7725	0	file_mask	0	
+137162	17	7725	0	exclude_file_mask	0	
+137163	17	7725	0	file_required	0	N
+137164	17	7725	0	include_subfolders	0	N
+137165	17	7725	0	field_name	0	nom_vignette
+137166	17	7725	0	field_xpath	0	gmd:fileName/gco:CharacterString
+137167	17	7725	0	element_type	0	node
+137168	17	7725	0	result_type	0	valueof
+137169	17	7725	0	field_type	0	String
+137170	17	7725	0	field_format	0	
+137171	17	7725	0	field_currency	0	
+137172	17	7725	0	field_decimal	0	
+137173	17	7725	0	field_group	0	
+137174	17	7725	0	field_length	-1	\N
+137175	17	7725	0	field_precision	-1	\N
+137176	17	7725	0	field_trim_type	0	none
+137177	17	7725	0	field_repeat	0	N
+137178	17	7725	1	field_name	0	type_image
+137179	17	7725	1	field_xpath	0	gmd:fileDescription/gco:CharacterString
+137180	17	7725	1	element_type	0	node
+137181	17	7725	1	result_type	0	valueof
+137182	17	7725	1	field_type	0	String
+137183	17	7725	1	field_format	0	
+137184	17	7725	1	field_currency	0	
+137185	17	7725	1	field_decimal	0	
+137186	17	7725	1	field_group	0	
+137187	17	7725	1	field_length	-1	\N
+137188	17	7725	1	field_precision	-1	\N
+137189	17	7725	1	field_trim_type	0	none
+137190	17	7725	1	field_repeat	0	N
+137191	17	7725	0	IsInFields	0	Y
+137192	17	7725	0	IsAFile	0	N
+137193	17	7725	0	XmlField	0	xml_metadata
+137194	17	7725	0	prunePath	0	
+137195	17	7725	0	shortFileFieldName	0	
+137196	17	7725	0	pathFieldName	0	
+137197	17	7725	0	hiddenFieldName	0	
+137198	17	7725	0	lastModificationTimeFieldName	0	
+137199	17	7725	0	uriNameFieldName	0	
+137200	17	7725	0	rootUriNameFieldName	0	
+137201	17	7725	0	extensionFieldName	0	
+137202	17	7725	0	cluster_schema	0	
+137203	17	7726	0	PARTITIONING_SCHEMA	0	
+137204	17	7726	0	PARTITIONING_METHOD	0	none
+137205	17	7726	0	splitfield	0	url_online_ressource
+137206	17	7726	0	delimiter	0	=
+137207	17	7726	0	field_name	0	prefix
+137208	17	7726	0	field_id	0	\N
+137209	17	7726	0	field_idrem	0	N
+137210	17	7726	0	field_type	0	String
+137211	17	7726	0	field_format	0	\N
+137212	17	7726	0	field_group	0	\N
+137213	17	7726	0	field_decimal	0	\N
+137214	17	7726	0	field_length	-1	\N
+137215	17	7726	0	field_precision	-1	\N
+137216	17	7726	0	field_nullif	0	\N
+137217	17	7726	0	field_ifnull	0	\N
+137218	17	7726	0	field_trimtype	0	none
+137219	17	7726	1	field_name	0	id_fiche
+137220	17	7726	1	field_id	0	\N
+137221	17	7726	1	field_idrem	0	N
+137222	17	7726	1	field_type	0	Integer
+137223	17	7726	1	field_format	0	\N
+137224	17	7726	1	field_group	0	\N
+137225	17	7726	1	field_decimal	0	\N
+137226	17	7726	1	field_length	-1	\N
+137227	17	7726	1	field_precision	-1	\N
+137228	17	7726	1	field_nullif	0	\N
+137229	17	7726	1	field_ifnull	0	\N
+137230	17	7726	1	field_trimtype	0	none
+137231	17	7726	0	cluster_schema	0	
+137232	17	7727	0	PARTITIONING_SCHEMA	0	
+137233	17	7727	0	PARTITIONING_METHOD	0	none
+137234	17	7727	0	field_name	0	request
+137235	17	7727	0	field_type	0	String
+137236	17	7727	0	field_format	0	
+137237	17	7727	0	field_currency	0	
+137238	17	7727	0	field_decimal	0	
+137239	17	7727	0	field_group	0	
+137240	17	7727	0	field_nullif	0	GetRecords
+137241	17	7727	0	field_length	-1	\N
+137242	17	7727	0	field_precision	-1	\N
+137243	17	7727	1	field_name	0	service
+137244	17	7727	1	field_type	0	String
+137245	17	7727	1	field_format	0	
+137246	17	7727	1	field_currency	0	
+137247	17	7727	1	field_decimal	0	
+137248	17	7727	1	field_group	0	
+137249	17	7727	1	field_nullif	0	CSW
+137250	17	7727	1	field_length	-1	\N
+137251	17	7727	1	field_precision	-1	\N
+137252	17	7727	2	field_name	0	version
+137253	17	7727	2	field_type	0	String
+137254	17	7727	2	field_format	0	
+137255	17	7727	2	field_currency	0	
+137256	17	7727	2	field_decimal	0	
+137257	17	7727	2	field_group	0	
+137258	17	7727	2	field_nullif	0	2.0.2
+137259	17	7727	2	field_length	-1	\N
+137260	17	7727	2	field_precision	-1	\N
+137261	17	7727	3	field_name	0	resultType
+137262	17	7727	3	field_type	0	String
+137263	17	7727	3	field_format	0	
+137264	17	7727	3	field_currency	0	
+137265	17	7727	3	field_decimal	0	
+137266	17	7727	3	field_group	0	
+137267	17	7727	3	field_nullif	0	results
+137268	17	7727	3	field_length	-1	\N
+137269	17	7727	3	field_precision	-1	\N
+137270	17	7727	4	field_name	0	outputSchema
+137271	17	7727	4	field_type	0	String
+137272	17	7727	4	field_format	0	
+137273	17	7727	4	field_currency	0	
+137274	17	7727	4	field_decimal	0	
+137275	17	7727	4	field_group	0	
+137276	17	7727	4	field_nullif	0	http://www.opengis.net/cat/csw/2.0.2
+137277	17	7727	4	field_length	-1	\N
+137278	17	7727	4	field_precision	-1	\N
+137279	17	7727	5	field_name	0	outputFormat
+137280	17	7727	5	field_type	0	String
+137281	17	7727	5	field_format	0	
+137282	17	7727	5	field_currency	0	
+137283	17	7727	5	field_decimal	0	
+137284	17	7727	5	field_group	0	
+137285	17	7727	5	field_nullif	0	application/xml
+137286	17	7727	5	field_length	-1	\N
+137287	17	7727	5	field_precision	-1	\N
+137288	17	7727	6	field_name	0	typeNames
+137289	17	7727	6	field_type	0	String
+137290	17	7727	6	field_format	0	
+137291	17	7727	6	field_currency	0	
+137292	17	7727	6	field_decimal	0	
+137293	17	7727	6	field_group	0	
+137294	17	7727	6	field_nullif	0	csw:Record
+137295	17	7727	6	field_length	-1	\N
+137296	17	7727	6	field_precision	-1	\N
+137297	17	7727	7	field_name	0	constraintLanguage
+137298	17	7727	7	field_type	0	String
+137299	17	7727	7	field_format	0	
+137300	17	7727	7	field_currency	0	
+137301	17	7727	7	field_decimal	0	
+137302	17	7727	7	field_group	0	
+137303	17	7727	7	field_nullif	0	CQL_TEXT
+137304	17	7727	7	field_length	-1	\N
+137305	17	7727	7	field_precision	-1	\N
+137306	17	7727	8	field_name	0	constraint_language_version
+137307	17	7727	8	field_type	0	String
+137308	17	7727	8	field_format	0	
+137309	17	7727	8	field_currency	0	
+137310	17	7727	8	field_decimal	0	
+137311	17	7727	8	field_group	0	
+137312	17	7727	8	field_nullif	0	1.1.0
+137313	17	7727	8	field_length	-1	\N
+137314	17	7727	8	field_precision	-1	\N
+137315	17	7727	9	field_name	0	elementSetName
+137316	17	7727	9	field_type	0	String
+137317	17	7727	9	field_format	0	
+137318	17	7727	9	field_currency	0	
+137319	17	7727	9	field_decimal	0	
+137320	17	7727	9	field_group	0	
+137321	17	7727	9	field_nullif	0	summary
+137322	17	7727	9	field_length	-1	\N
+137323	17	7727	9	field_precision	-1	\N
+137324	17	7727	0	limit	0	1
+137325	17	7727	0	cluster_schema	0	
+137326	17	7728	0	PARTITIONING_SCHEMA	0	
+137327	17	7728	0	PARTITIONING_METHOD	0	none
+137328	17	7728	0	cluster_schema	0	
+137329	17	7729	0	PARTITIONING_SCHEMA	0	
+137330	17	7729	0	PARTITIONING_METHOD	0	none
+137331	17	7729	0	directory	0	%%java.io.tmpdir%%
+137332	17	7729	0	prefix	0	out
+137333	17	7729	0	cache_size	500	\N
+137334	17	7729	0	main	0	\N
+137335	17	7729	0	id_condition	282	\N
+137336	17	7729	0	cluster_schema	0	
+137337	17	7730	0	PARTITIONING_SCHEMA	0	
+137338	17	7730	0	PARTITIONING_METHOD	0	none
+137339	17	7730	0	id_condition	283	\N
+137340	17	7730	0	send_true_to	0	Code
+137341	17	7730	0	send_false_to	0	Pas de mots clef
+137342	17	7730	0	cluster_schema	0	
+137343	17	7731	0	PARTITIONING_SCHEMA	0	
+137344	17	7731	0	PARTITIONING_METHOD	0	none
+137345	17	7731	0	field_name	0	url_geocatalogue
+137346	17	7731	0	field_variable	0	${PDI_METADATA_URL_GEOCATALOGUE}
+137347	17	7731	0	field_type	0	String
+137348	17	7731	0	field_format	0	
+137349	17	7731	0	field_currency	0	
+137350	17	7731	0	field_decimal	0	
+137351	17	7731	0	field_group	0	
+137352	17	7731	0	field_length	-1	\N
+137353	17	7731	0	field_precision	-1	\N
+137354	17	7731	0	field_trim_type	0	none
+137355	17	7731	1	field_name	0	url_fiche_html
+137356	17	7731	1	field_variable	0	${PDI_METADATA_URL_FICHE_COMPLETE}
+137357	17	7731	1	field_type	0	String
+137358	17	7731	1	field_format	0	
+137359	17	7731	1	field_currency	0	
+137360	17	7731	1	field_decimal	0	
+137361	17	7731	1	field_group	0	
+137362	17	7731	1	field_length	-1	\N
+137363	17	7731	1	field_precision	-1	\N
+137364	17	7731	1	field_trim_type	0	none
+137365	17	7731	2	field_name	0	constraint
+137366	17	7731	2	field_variable	0	${PDI_METADATA_FILTRE_CQL}
+137367	17	7731	2	field_type	0	String
+137368	17	7731	2	field_format	0	
+137369	17	7731	2	field_currency	0	
+137370	17	7731	2	field_decimal	0	
+137371	17	7731	2	field_group	0	
+137372	17	7731	2	field_length	-1	\N
+137373	17	7731	2	field_precision	-1	\N
+137374	17	7731	2	field_trim_type	0	none
+137375	17	7731	3	field_name	0	maxRecords
+137376	17	7731	3	field_variable	0	${PDI_METADATA_FILTRE_MAX}
+137377	17	7731	3	field_type	0	Integer
+137378	17	7731	3	field_format	0	#
+137379	17	7731	3	field_currency	0	
+137380	17	7731	3	field_decimal	0	
+137381	17	7731	3	field_group	0	
+137382	17	7731	3	field_length	-1	\N
+137383	17	7731	3	field_precision	-1	\N
+137384	17	7731	3	field_trim_type	0	none
+137385	17	7731	0	cluster_schema	0	
+137386	17	7732	0	PARTITIONING_SCHEMA	0	
+137387	17	7732	0	PARTITIONING_METHOD	0	none
+137388	17	7732	0	id_condition	284	\N
+137389	17	7732	0	send_true_to	0	Extraction CSW
+137390	17	7732	0	send_false_to	0	CSW <>200
+137391	17	7732	0	cluster_schema	0	
+137392	17	7733	0	PARTITIONING_SCHEMA	0	
+137393	17	7733	0	PARTITIONING_METHOD	0	none
+137394	17	7733	0	id_condition	285	\N
+137395	17	7733	0	send_true_to	0	Nom fichier vignette
+137396	17	7733	0	send_false_to	0	Meta XML <>200
+137397	17	7733	0	cluster_schema	0	
+137398	17	7734	0	PARTITIONING_SCHEMA	0	
+137399	17	7734	0	PARTITIONING_METHOD	0	none
+137400	17	7734	0	id_connection	3	\N
+137401	17	7734	0	sql	0	SELECT\r\n\tid AS thematique,\r\n\t'remocra:'||nom AS nom_thematique\r\nFROM\r\n\t${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.thematique\r\n
+137402	17	7734	0	limit	0	0
+137403	17	7734	0	lookup	0	\N
+137404	17	7734	0	execute_each_row	0	N
+137405	17	7734	0	variables_active	0	Y
+137406	17	7734	0	lazy_conversion_active	0	N
+137407	17	7734	0	cluster_schema	0	
+137408	17	7735	0	PARTITIONING_SCHEMA	0	
+137409	17	7735	0	PARTITIONING_METHOD	0	none
+137410	17	7735	0	directory	0	%%java.io.tmpdir%%
+137411	17	7735	0	prefix	0	out
+137412	17	7735	0	sort_size	0	1000000
+137413	17	7735	0	free_memory	0	
+137414	17	7735	0	compress	0	N
+137415	17	7735	0	compress_variable	0	
+137416	17	7735	0	unique_rows	0	N
+137417	17	7735	0	field_name	0	url_geocatalogue
+137418	17	7735	0	field_ascending	0	N
+137419	17	7735	0	field_case_sensitive	0	N
+137420	17	7735	1	field_name	0	url_fiche_html
+137421	17	7735	1	field_ascending	0	N
+137422	17	7735	1	field_case_sensitive	0	N
+137423	17	7735	2	field_name	0	identifiant
+137424	17	7735	2	field_ascending	0	N
+137425	17	7735	2	field_case_sensitive	0	N
+137426	17	7735	3	field_name	0	titre
+137427	17	7735	3	field_ascending	0	N
+137428	17	7735	3	field_case_sensitive	0	N
+137429	17	7735	4	field_name	0	resume
+137430	17	7735	4	field_ascending	0	N
+137431	17	7735	4	field_case_sensitive	0	N
+137432	17	7735	5	field_name	0	nom_vignette
+137433	17	7735	5	field_ascending	0	N
+137434	17	7735	5	field_case_sensitive	0	N
+137435	17	7735	6	field_name	0	id
+137436	17	7735	6	field_ascending	0	N
+137437	17	7735	6	field_case_sensitive	0	N
+137438	17	7735	7	field_name	0	id_fiche
+137439	17	7735	7	field_ascending	0	N
+137440	17	7735	7	field_case_sensitive	0	N
+137441	17	7735	8	field_name	0	thematique
+137442	17	7735	8	field_ascending	0	N
+137443	17	7735	8	field_case_sensitive	0	N
+137444	17	7735	9	field_name	0	code_export
+137445	17	7735	9	field_ascending	0	N
+137446	17	7735	9	field_case_sensitive	0	N
+137447	17	7735	0	cluster_schema	0	
+137448	17	7736	0	PARTITIONING_SCHEMA	0	
+137449	17	7736	0	PARTITIONING_METHOD	0	none
+137450	17	7736	0	include	0	N
+137451	17	7736	0	include_field	0	
+137452	17	7736	0	addresultfile	0	N
+137453	17	7736	0	namespaceaware	0	N
+137454	17	7736	0	ignorecomments	0	N
+137455	17	7736	0	readurl	0	N
+137456	17	7736	0	validating	0	N
+137457	17	7736	0	usetoken	0	N
+137458	17	7736	0	IsIgnoreEmptyFile	0	N
+137459	17	7736	0	doNotFailIfNoFile	0	Y
+137460	17	7736	0	rownum	0	N
+137461	17	7736	0	rownum_field	0	
+137462	17	7736	0	limit	0	\N
+137463	17	7736	0	loopxpath	0	/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage[position()=1]
+137464	17	7736	0	encoding	0	UTF-8
+137465	17	7736	0	file_name	0	
+137466	17	7736	0	file_mask	0	
+137467	17	7736	0	exclude_file_mask	0	
+137468	17	7736	0	file_required	0	N
+137469	17	7736	0	include_subfolders	0	N
+137470	17	7736	0	field_name	0	url_online_ressource
+137471	17	7736	0	field_xpath	0	gmd:URL
+137472	17	7736	0	element_type	0	node
+137473	17	7736	0	result_type	0	valueof
+137474	17	7736	0	field_type	0	String
+137475	17	7736	0	field_format	0	
+137476	17	7736	0	field_currency	0	
+137477	17	7736	0	field_decimal	0	
+137478	17	7736	0	field_group	0	
+137479	17	7736	0	field_length	-1	\N
+137480	17	7736	0	field_precision	-1	\N
+137481	17	7736	0	field_trim_type	0	none
+137482	17	7736	0	field_repeat	0	N
+137483	17	7736	0	IsInFields	0	Y
+137484	17	7736	0	IsAFile	0	N
+137485	17	7736	0	XmlField	0	xml_metadata
+137486	17	7736	0	prunePath	0	
+137487	17	7736	0	shortFileFieldName	0	
+137488	17	7736	0	pathFieldName	0	
+137489	17	7736	0	hiddenFieldName	0	
+137490	17	7736	0	lastModificationTimeFieldName	0	
+137491	17	7736	0	uriNameFieldName	0	
+137492	17	7736	0	rootUriNameFieldName	0	
+137493	17	7736	0	extensionFieldName	0	
+137494	17	7736	0	cluster_schema	0	
+137495	17	7737	0	PARTITIONING_SCHEMA	0	
+137496	17	7737	0	PARTITIONING_METHOD	0	none
+137497	17	7737	0	field_name	0	url_vignette
+137498	17	7737	0	formula_string	0	url_geocatalogue + "/srv/fr/resources.get?id=" + id + "&fname=" + nom_vignette
+137499	17	7737	0	value_type	0	String
+137500	17	7737	0	value_length	-1	\N
+137501	17	7737	0	value_precision	-1	\N
+137502	17	7737	0	replace_field	0	\N
+137503	17	7737	1	field_name	0	url_fiche
+137504	17	7737	1	formula_string	0	url_fiche_html + "?idlot=" + id_fiche
+137505	17	7737	1	value_type	0	String
+137506	17	7737	1	value_length	-1	\N
+137507	17	7737	1	value_precision	-1	\N
+137508	17	7737	1	replace_field	0	\N
+137509	17	7737	0	cluster_schema	0	
+137510	17	7738	0	PARTITIONING_SCHEMA	0	
+137511	17	7738	0	PARTITIONING_METHOD	0	none
+137512	17	7738	0	include	0	N
+137513	17	7738	0	include_field	0	
+137514	17	7738	0	addresultfile	0	N
+137515	17	7738	0	namespaceaware	0	N
+137516	17	7738	0	ignorecomments	0	N
+137517	17	7738	0	readurl	0	N
+137518	17	7738	0	validating	0	N
+137519	17	7738	0	usetoken	0	N
+137520	17	7738	0	IsIgnoreEmptyFile	0	N
+137521	17	7738	0	doNotFailIfNoFile	0	Y
+137522	17	7738	0	rownum	0	N
+137523	17	7738	0	rownum_field	0	
+137524	17	7738	0	limit	0	\N
+137525	17	7738	0	loopxpath	0	/gmd:MD_Metadata/geonet:info
+137526	17	7738	0	encoding	0	UTF-8
+137527	17	7738	0	file_name	0	
+137528	17	7738	0	file_mask	0	
+137529	17	7738	0	exclude_file_mask	0	
+137530	17	7738	0	file_required	0	N
+137531	17	7738	0	include_subfolders	0	N
+137532	17	7738	0	field_name	0	id
+137533	17	7738	0	field_xpath	0	id
+137534	17	7738	0	element_type	0	node
+137535	17	7738	0	result_type	0	valueof
+137536	17	7738	0	field_type	0	Integer
+137537	17	7738	0	field_format	0	
+137538	17	7738	0	field_currency	0	
+137539	17	7738	0	field_decimal	0	
+137540	17	7738	0	field_group	0	
+137541	17	7738	0	field_length	-1	\N
+137542	17	7738	0	field_precision	-1	\N
+137543	17	7738	0	field_trim_type	0	none
+137544	17	7738	0	field_repeat	0	N
+137545	17	7738	0	IsInFields	0	Y
+137546	17	7738	0	IsAFile	0	N
+137547	17	7738	0	XmlField	0	xml_metadata
+137548	17	7738	0	prunePath	0	
+137549	17	7738	0	shortFileFieldName	0	
+137550	17	7738	0	pathFieldName	0	
+137551	17	7738	0	hiddenFieldName	0	
 134030	99	7557	0	stream_name	0	objet
 134031	99	7557	1	column_name	0	corps
 134032	99	7557	1	stream_name	0	corps
@@ -29594,6 +30335,10 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 134084	99	7562	1	field_length	-2	\N
 134085	99	7562	1	field_precision	-2	\N
 134086	99	7562	2	field_name	0	nom_destinataire
+137552	17	7738	0	lastModificationTimeFieldName	0	
+137553	17	7738	0	uriNameFieldName	0	
+137554	17	7738	0	rootUriNameFieldName	0	
+137555	17	7738	0	extensionFieldName	0	
 134087	99	7562	2	field_rename	0	destinataire
 134088	99	7562	2	field_length	-2	\N
 134089	99	7562	2	field_precision	-2	\N
@@ -29729,187 +30474,481 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 135282	102	7638	0	variables_active	0	Y
 135283	102	7638	0	lazy_conversion_active	0	N
 135284	102	7638	0	cluster_schema	0	\N
-135285	100	7639	0	PARTITIONING_SCHEMA	0	\N
-135286	100	7639	0	PARTITIONING_METHOD	0	none
-135287	100	7639	0	id_condition	279	\N
-135288	100	7639	0	send_true_to	0	Convertion champ "spatial"
-135289	100	7639	0	send_false_to	0	Factice
-135290	100	7639	0	cluster_schema	0	\N
-135291	100	7640	0	PARTITIONING_SCHEMA	0	\N
-135292	100	7640	0	PARTITIONING_METHOD	0	none
-135293	100	7640	0	compatible	0	N
-135294	100	7640	0	optimizationLevel	0	9
-135295	100	7640	0	jsScript_name	0	Script 1
-135296	100	7640	0	jsScript_script	0	//Script here\r\n\r\nvar spatial_b = spatial.equals("true");
-135297	100	7640	0	jsScript_type	0	\N
-135298	100	7640	0	field_name	0	spatial_b
-135299	100	7640	0	field_rename	0	spatial_b
-135300	100	7640	0	field_type	0	Boolean
-135301	100	7640	0	field_length	-1	\N
-135302	100	7640	0	field_precision	-1	\N
-135303	100	7640	0	field_replace	0	N
-135304	100	7640	0	cluster_schema	0	\N
-135305	100	7641	0	PARTITIONING_SCHEMA	0	\N
-135306	100	7641	0	PARTITIONING_METHOD	0	none
-135307	100	7641	0	cluster_schema	0	\N
-135308	100	7642	0	PARTITIONING_SCHEMA	0	\N
-135309	100	7642	0	PARTITIONING_METHOD	0	none
-135310	100	7642	0	include	0	N
-135311	100	7642	0	include_field	0	\N
-135312	100	7642	0	addresultfile	0	N
-135313	100	7642	0	namespaceaware	0	N
-135314	100	7642	0	ignorecomments	0	N
-135315	100	7642	0	readurl	0	N
-135316	100	7642	0	validating	0	N
-135317	100	7642	0	usetoken	0	N
-135318	100	7642	0	IsIgnoreEmptyFile	0	N
-135319	100	7642	0	doNotFailIfNoFile	0	Y
-135320	100	7642	0	rownum	0	N
-135321	100	7642	0	rownum_field	0	\N
-135322	100	7642	0	limit	0	\N
-135323	100	7642	0	loopxpath	0	/modele
-135324	100	7642	0	encoding	0	UTF-8
-135325	100	7642	0	file_name	0	${PDI_CHEMIN_MODELES}/export/
-135326	100	7642	0	file_mask	0	.*xml
-135327	100	7642	0	exclude_file_mask	0	\N
-135328	100	7642	0	file_required	0	N
-135329	100	7642	0	include_subfolders	0	N
-135330	100	7642	0	field_name	0	categorie
-135331	100	7642	0	field_xpath	0	categorie
-135332	100	7642	0	element_type	0	node
-135333	100	7642	0	result_type	0	valueof
-135334	100	7642	0	field_type	0	String
-135335	100	7642	0	field_format	0	\N
-135336	100	7642	0	field_currency	0	\N
-135337	100	7642	0	field_decimal	0	\N
-135338	100	7642	0	field_group	0	\N
-135339	100	7642	0	field_length	-1	\N
-135340	100	7642	0	field_precision	-1	\N
-135341	100	7642	0	field_trim_type	0	none
-135342	100	7642	0	field_repeat	0	N
-135343	100	7642	1	field_name	0	code
-135344	100	7642	1	field_xpath	0	code
-135345	100	7642	1	element_type	0	node
-135346	100	7642	1	result_type	0	valueof
-135347	100	7642	1	field_type	0	String
-135348	100	7642	1	field_format	0	\N
-135349	100	7642	1	field_currency	0	\N
-135350	100	7642	1	field_decimal	0	\N
-135351	100	7642	1	field_group	0	\N
-135352	100	7642	1	field_length	-1	\N
-135353	100	7642	1	field_precision	-1	\N
-135354	100	7642	1	field_trim_type	0	none
-135355	100	7642	1	field_repeat	0	N
-135356	100	7642	2	field_name	0	libelle
-135357	100	7642	2	field_xpath	0	libelle
-135358	100	7642	2	element_type	0	node
-135359	100	7642	2	result_type	0	valueof
-135360	100	7642	2	field_type	0	String
-135361	100	7642	2	field_format	0	\N
-135362	100	7642	2	field_currency	0	\N
-135363	100	7642	2	field_decimal	0	\N
-135364	100	7642	2	field_group	0	\N
-135365	100	7642	2	field_length	-1	\N
-135366	100	7642	2	field_precision	-1	\N
-135367	100	7642	2	field_trim_type	0	none
-135368	100	7642	2	field_repeat	0	N
-135369	100	7642	3	field_name	0	description
-135370	100	7642	3	field_xpath	0	description
-135371	100	7642	3	element_type	0	node
-135372	100	7642	3	result_type	0	valueof
-135373	100	7642	3	field_type	0	String
-135374	100	7642	3	field_format	0	\N
-135375	100	7642	3	field_currency	0	\N
-135376	100	7642	3	field_decimal	0	\N
-135377	100	7642	3	field_group	0	\N
-135378	100	7642	3	field_length	-1	\N
-135379	100	7642	3	field_precision	-1	\N
-135380	100	7642	3	field_trim_type	0	none
-135381	100	7642	3	field_repeat	0	N
-135382	100	7642	4	field_name	0	spatial
-135383	100	7642	4	field_xpath	0	spatial
-135384	100	7642	4	element_type	0	node
-135385	100	7642	4	result_type	0	valueof
-135386	100	7642	4	field_type	0	String
-135387	100	7642	4	field_format	0	\N
-135388	100	7642	4	field_currency	0	\N
-135389	100	7642	4	field_decimal	0	\N
-135390	100	7642	4	field_group	0	\N
-135391	100	7642	4	field_length	-1	\N
-135392	100	7642	4	field_precision	-1	\N
-135393	100	7642	4	field_trim_type	0	none
-135394	100	7642	4	field_repeat	0	N
-135395	100	7642	5	field_name	0	sourceSQL
-135396	100	7642	5	field_xpath	0	sourceSQL
-135397	100	7642	5	element_type	0	node
-135398	100	7642	5	result_type	0	valueof
-135399	100	7642	5	field_type	0	String
-135400	100	7642	5	field_format	0	\N
-135401	100	7642	5	field_currency	0	\N
-135402	100	7642	5	field_decimal	0	\N
-135403	100	7642	5	field_group	0	\N
-135404	100	7642	5	field_length	-1	\N
-135405	100	7642	5	field_precision	-1	\N
-135406	100	7642	5	field_trim_type	0	none
-135407	100	7642	5	field_repeat	0	N
-135408	100	7642	0	IsInFields	0	N
-135409	100	7642	0	IsAFile	0	N
-135410	100	7642	0	XmlField	0	\N
-135411	100	7642	0	prunePath	0	\N
-135412	100	7642	0	shortFileFieldName	0	\N
-135413	100	7642	0	pathFieldName	0	\N
-135414	100	7642	0	hiddenFieldName	0	\N
-135415	100	7642	0	lastModificationTimeFieldName	0	\N
-135416	100	7642	0	uriNameFieldName	0	\N
-135417	100	7642	0	rootUriNameFieldName	0	\N
-135418	100	7642	0	extensionFieldName	0	\N
-135419	100	7642	0	cluster_schema	0	\N
-135420	100	7643	0	PARTITIONING_SCHEMA	0	\N
-135421	100	7643	0	PARTITIONING_METHOD	0	none
-135422	100	7643	0	id_connection	3	\N
-135423	100	7643	0	schema	0	${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}
-135424	100	7643	0	table	0	export_modele
-135425	100	7643	0	commit	0	1000
-135426	100	7643	0	truncate	0	Y
-135427	100	7643	0	ignore_errors	0	N
-135428	100	7643	0	use_batch	0	Y
-135429	100	7643	0	specify_fields	0	Y
-135430	100	7643	0	partitioning_enabled	0	N
-135431	100	7643	0	partitioning_field	0	\N
-135432	100	7643	0	partitioning_daily	0	N
-135433	100	7643	0	partitioning_monthly	0	Y
-135434	100	7643	0	tablename_in_field	0	N
-135435	100	7643	0	tablename_field	0	\N
-135436	100	7643	0	tablename_in_table	0	Y
-135437	100	7643	0	return_keys	0	N
-135438	100	7643	0	return_field	0	\N
-135439	100	7643	0	column_name	0	categorie
-135440	100	7643	0	stream_name	0	categorie
-135441	100	7643	1	column_name	0	code
-135442	100	7643	1	stream_name	0	code
-135443	100	7643	2	column_name	0	libelle
-135444	100	7643	2	stream_name	0	libelle
-135445	100	7643	3	column_name	0	description
-135446	100	7643	3	stream_name	0	description
-135447	100	7643	4	column_name	0	spatial
-135448	100	7643	4	stream_name	0	spatial_b
-135449	100	7643	5	column_name	0	source_sql
-135450	100	7643	5	stream_name	0	sourceSQL
-135451	100	7643	0	cluster_schema	0	\N
+137556	17	7738	0	cluster_schema	0	
+137557	17	7739	0	PARTITIONING_SCHEMA	0	
+137558	17	7739	0	PARTITIONING_METHOD	0	none
+137559	17	7739	0	cluster_schema	0	
+137560	17	7740	0	PARTITIONING_SCHEMA	0	
+137561	17	7740	0	PARTITIONING_METHOD	0	none
+137562	17	7740	0	id_condition	286	\N
+137563	17	7740	0	send_true_to	0	id GetInfo
+137564	17	7740	0	send_false_to	0	Image <> thumbnail
+137565	17	7740	0	cluster_schema	0	
+137566	17	7741	0	PARTITIONING_SCHEMA	0	\N
+137567	17	7741	0	PARTITIONING_METHOD	0	none
+137568	17	7741	0	include	0	N
+137569	17	7741	0	include_field	0	
+137570	17	7741	0	addresultfile	0	N
+137571	17	7741	0	namespaceaware	0	N
+137572	17	7741	0	ignorecomments	0	N
+137573	17	7741	0	readurl	0	N
+137574	17	7741	0	validating	0	N
+137575	17	7741	0	usetoken	0	N
+137576	17	7741	0	IsIgnoreEmptyFile	0	N
+137577	17	7741	0	doNotFailIfNoFile	0	Y
+137578	17	7741	0	rownum	0	N
+137579	17	7741	0	rownum_field	0	
+137580	17	7741	0	limit	0	\N
+137581	17	7741	0	loopxpath	0	/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier
+137582	17	7741	0	encoding	0	UTF-8
+137583	17	7741	0	file_name	0	
+137584	17	7741	0	file_mask	0	
+137585	17	7741	0	exclude_file_mask	0	
+137586	17	7741	0	file_required	0	N
+137587	17	7741	0	include_subfolders	0	N
+137588	17	7741	0	field_name	0	code
+137589	17	7741	0	field_xpath	0	gmd:code
+137590	17	7741	0	element_type	0	node
+137591	17	7741	0	result_type	0	valueof
+137592	17	7741	0	field_type	0	String
+137593	17	7741	0	field_format	0	
+137594	17	7741	0	field_currency	0	
+137595	17	7741	0	field_decimal	0	
+137596	17	7741	0	field_group	0	
+137597	17	7741	0	field_length	-1	\N
+137598	17	7741	0	field_precision	-1	\N
+137599	17	7741	0	field_trim_type	0	both
+137600	17	7741	0	field_repeat	0	N
+137601	17	7741	0	IsInFields	0	Y
+137602	17	7741	0	IsAFile	0	N
+137603	17	7741	0	XmlField	0	xml_metadata
+137604	17	7741	0	prunePath	0	
+137605	17	7741	0	shortFileFieldName	0	
+137606	17	7741	0	pathFieldName	0	
+137607	17	7741	0	hiddenFieldName	0	
+137608	17	7741	0	lastModificationTimeFieldName	0	
+137609	17	7741	0	uriNameFieldName	0	
+137610	17	7741	0	rootUriNameFieldName	0	
+137611	17	7741	0	extensionFieldName	0	
+137612	17	7741	0	cluster_schema	0	
+137613	17	7742	0	PARTITIONING_SCHEMA	0	\N
+137614	17	7742	0	PARTITIONING_METHOD	0	none
+137615	17	7742	0	id_connection	3	\N
+137616	17	7742	0	cache	0	Y
+137617	17	7742	0	cache_load_all	0	Y
+137618	17	7742	0	cache_size	0	\N
+137619	17	7742	0	lookup_schema	0	${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}
+137620	17	7742	0	lookup_table	0	export_modele
+137621	17	7742	0	lookup_orderby	0	
+137622	17	7742	0	fail_on_multiple	0	N
+137623	17	7742	0	eat_row_on_failure	0	N
+137624	17	7742	0	lookup_key_name	0	code
+137625	17	7742	0	lookup_key_field	0	code
+137626	17	7742	0	lookup_key_condition	0	=
+137627	17	7742	0	lookup_key_name2	0	
+137628	17	7742	0	return_value_name	0	code
+137629	17	7742	0	return_value_rename	0	code_export
+137630	17	7742	0	return_value_default	0	
+137631	17	7742	0	return_value_type	0	String
+137632	17	7742	0	cluster_schema	0	
+137633	17	7725	0	step_error_handling_source_step	0	Nom fichier vignette
+137634	17	7725	0	step_error_handling_target_step	0	
+137635	17	7725	0	step_error_handling_is_enabled	0	Y
+137636	17	7725	0	step_error_handling_nr_valuename	0	\N
+137637	17	7725	0	step_error_handling_descriptions_valuename	0	\N
+137638	17	7725	0	step_error_handling_fields_valuename	0	\N
+137639	17	7725	0	step_error_handling_codes_valuename	0	\N
+137640	17	7725	0	step_error_handling_max_errors	0	\N
+137641	17	7725	0	step_error_handling_max_pct_errors	0	\N
+137642	17	7725	0	step_error_handling_min_pct_rows	0	\N
+137644	100	7743	0	PARTITIONING_METHOD	0	none
+137645	100	7743	0	give_back_row	0	N
+137646	100	7743	0	aggregate_name	0	messages
+137647	100	7743	0	aggregate_subject	0	message
+137648	100	7743	0	aggregate_type	0	CONCAT_STRING
+137649	100	7743	0	aggregate_value_field	0	\N
+137650	100	7743	0	cluster_schema	0	
+137651	100	7744	0	PARTITIONING_SCHEMA	0	
+137652	100	7744	0	PARTITIONING_METHOD	0	none
+137653	100	7744	0	step_name	0	Uniquement les colonnes de la table
+137654	100	7744	0	step_CopyNr	0	0
+137655	100	7744	0	cluster_schema	0	
+137656	100	7745	0	PARTITIONING_SCHEMA	0	
+137643	100	7743	0	PARTITIONING_SCHEMA	0	
+137657	100	7745	0	PARTITIONING_METHOD	0	none
+137658	100	7745	0	id_condition	287	\N
+137659	100	7745	0	send_true_to	0	Infos sur le modele
+137660	100	7745	0	send_false_to	0	Message d'erreur "XML non valide"
+137661	100	7745	0	cluster_schema	0	
+137662	100	7746	0	PARTITIONING_SCHEMA	0	
+137663	100	7746	0	PARTITIONING_METHOD	0	none
+137664	100	7746	0	cluster_schema	0	
+137665	100	7747	0	PARTITIONING_SCHEMA	0	
+137666	100	7747	0	PARTITIONING_METHOD	0	none
+137667	100	7747	0	compatible	0	N
+137668	100	7747	0	jsScript_name	0	Script 1
+137669	100	7747	0	jsScript_script	0	var erreurs = ERR_DESC.split("|");\nvar erreurs_message ="";\nfor(i =0;i<erreurs.length;i++){\n\terreurs_message += "\\t* " + erreurs[i] + "\\n";\n}\n\n
+137670	100	7747	0	jsScript_type	0	\N
+137671	100	7747	0	field_name	0	erreurs_message
+137672	100	7747	0	field_rename	0	erreurs_message
+137673	100	7747	0	field_type	0	String
+137674	100	7747	0	field_length	-1	\N
+137675	100	7747	0	field_precision	-1	\N
+137676	100	7747	0	field_replace	0	N
+137677	100	7747	0	cluster_schema	0	
+137678	100	7748	0	PARTITIONING_SCHEMA	0	
+137679	100	7748	0	PARTITIONING_METHOD	0	none
+137680	100	7748	0	include	0	N
+137681	100	7748	0	include_field	0	
+137682	100	7748	0	addresultfile	0	N
+137683	100	7748	0	namespaceaware	0	N
+137684	100	7748	0	ignorecomments	0	N
+137685	100	7748	0	readurl	0	N
+137686	100	7748	0	validating	0	N
+137687	100	7748	0	usetoken	0	N
+137688	100	7748	0	IsIgnoreEmptyFile	0	N
+137689	100	7748	0	doNotFailIfNoFile	0	Y
+137690	100	7748	0	rownum	0	N
+137691	100	7748	0	rownum_field	0	
+137692	100	7748	0	limit	0	\N
+137693	100	7748	0	loopxpath	0	/modele
+137694	100	7748	0	encoding	0	UTF-8
+137695	100	7748	0	file_name	0	
+137696	100	7748	0	file_mask	0	
+137697	100	7748	0	exclude_file_mask	0	
+137698	100	7748	0	file_required	0	N
+137699	100	7748	0	include_subfolders	0	N
+137700	100	7748	0	field_name	0	categorie
+137701	100	7748	0	field_xpath	0	categorie
+137702	100	7748	0	element_type	0	node
+137703	100	7748	0	field_type	0	String
+137704	100	7748	0	field_format	0	
+137705	100	7748	0	field_currency	0	
+137706	100	7748	0	field_decimal	0	
+137707	100	7748	0	field_group	0	
+137708	100	7748	0	field_length	-1	\N
+137709	100	7748	0	field_precision	-1	\N
+137710	100	7748	0	field_trim_type	0	none
+137711	100	7748	0	field_repeat	0	N
+137712	100	7748	1	field_name	0	code
+137713	100	7748	1	field_xpath	0	code
+137714	100	7748	1	element_type	0	node
+137715	100	7748	1	field_type	0	String
+137716	100	7748	1	field_format	0	
+137717	100	7748	1	field_currency	0	
+137718	100	7748	1	field_decimal	0	
+137719	100	7748	1	field_group	0	
+137720	100	7748	1	field_length	-1	\N
+137721	100	7748	1	field_precision	-1	\N
+137722	100	7748	1	field_trim_type	0	none
+137723	100	7748	1	field_repeat	0	N
+137724	100	7748	2	field_name	0	libelle
+137725	100	7748	2	field_xpath	0	libelle
+137726	100	7748	2	element_type	0	node
+137727	100	7748	2	field_type	0	String
+137728	100	7748	2	field_format	0	
+137729	100	7748	2	field_currency	0	
+137730	100	7748	2	field_decimal	0	
+137731	100	7748	2	field_group	0	
+137732	100	7748	2	field_length	-1	\N
+137733	100	7748	2	field_precision	-1	\N
+137734	100	7748	2	field_trim_type	0	none
+137735	100	7748	2	field_repeat	0	N
+137736	100	7748	3	field_name	0	description
+137737	100	7748	3	field_xpath	0	description
+137738	100	7748	3	element_type	0	node
+137739	100	7748	3	field_type	0	String
+137740	100	7748	3	field_format	0	
+137741	100	7748	3	field_currency	0	
+137742	100	7748	3	field_decimal	0	
+137743	100	7748	3	field_group	0	
+137744	100	7748	3	field_length	-1	\N
+137745	100	7748	3	field_precision	-1	\N
+137746	100	7748	3	field_trim_type	0	none
+137747	100	7748	3	field_repeat	0	N
+137748	100	7748	4	field_name	0	spatial
+137749	100	7748	4	field_xpath	0	@spatial
+137750	100	7748	4	element_type	0	attribut
+137751	100	7748	4	field_type	0	Boolean
+137752	100	7748	4	field_format	0	
+137753	100	7748	4	field_currency	0	
+137754	100	7748	4	field_decimal	0	
+137755	100	7748	4	field_group	0	
+137756	100	7748	4	field_length	-1	\N
+137757	100	7748	4	field_precision	-1	\N
+137758	100	7748	4	field_trim_type	0	none
+137759	100	7748	4	field_repeat	0	N
+137760	100	7748	5	field_name	0	sourceSQL
+137761	100	7748	5	field_xpath	0	sourceSQL
+137762	100	7748	5	element_type	0	node
+137763	100	7748	5	field_type	0	String
+137764	100	7748	5	field_format	0	
+137765	100	7748	5	field_currency	0	
+137766	100	7748	5	field_decimal	0	
+137767	100	7748	5	field_group	0	
+137768	100	7748	5	field_length	-1	\N
+137769	100	7748	5	field_precision	-1	\N
+137770	100	7748	5	field_trim_type	0	both
+137771	100	7748	5	field_repeat	0	N
+137772	100	7748	0	IsInFields	0	Y
+137773	100	7748	0	IsAFile	0	Y
+137774	100	7748	0	XmlField	0	filename
+137775	100	7748	0	prunePath	0	
+137776	100	7748	0	shortFileFieldName	0	
+137777	100	7748	0	pathFieldName	0	
+137778	100	7748	0	hiddenFieldName	0	
+137779	100	7748	0	lastModificationTimeFieldName	0	
+137780	100	7748	0	uriNameFieldName	0	\N
+137781	100	7748	0	rootUriNameFieldName	0	
+137782	100	7748	0	extensionFieldName	0	
+137783	100	7748	0	cluster_schema	0	
+137784	100	7749	0	PARTITIONING_SCHEMA	0	
+137785	100	7749	0	PARTITIONING_METHOD	0	none
+137786	100	7749	0	filterfiletype	0	all_files
+137787	100	7749	0	doNotFailIfNoFile	0	N
+137788	100	7749	0	rownum	0	N
+137789	100	7749	0	isaddresult	0	N
+137790	100	7749	0	filefield	0	N
+137791	100	7749	0	filename_Field	0	
+137792	100	7749	0	wildcard_Field	0	
+137793	100	7749	0	exclude_wildcard_Field	0	\N
+137794	100	7749	0	dynamic_include_subfolders	0	N
+137795	100	7749	0	rownum_field	0	
+137796	100	7749	0	limit	0	\N
+137797	100	7749	0	file_name	0	${PDI_CHEMIN_MODELES}/export/
+137798	100	7749	0	file_mask	0	.*xml
+137799	100	7749	0	exclude_file_mask	0	
+137800	100	7749	0	file_required	0	N
+137801	100	7749	0	include_subfolders	0	N
+137802	100	7749	0	cluster_schema	0	
+137803	100	7750	0	PARTITIONING_SCHEMA	0	
+137804	100	7750	0	PARTITIONING_METHOD	0	none
+137805	100	7750	0	field_name	0	message
+137806	100	7750	0	formula_string	0	"\\n- Le modèle " + short_filename + " n'est pas conforme au schéma XML. Son référencement est impossible."
+137807	100	7750	0	value_type	0	String
+137808	100	7750	0	value_length	-1	\N
+137809	100	7750	0	value_precision	-1	\N
+137810	100	7750	0	replace_field	0	\N
+137811	100	7750	0	cluster_schema	0	
+137812	100	7751	0	PARTITIONING_SCHEMA	0	
+137813	100	7751	0	PARTITIONING_METHOD	0	none
+137814	100	7751	0	field_name	0	message
+137815	100	7751	0	formula_string	0	"\\n- Le modèle " + short_filename + " n'est pas conforme pour les raisons suivantes :\\n" + erreurs_message + "Son référencement est impossible."
+137816	100	7751	0	value_type	0	String
+137817	100	7751	0	value_length	-1	\N
+137818	100	7751	0	value_precision	-1	\N
+137819	100	7751	0	replace_field	0	\N
+137820	100	7751	0	cluster_schema	0	
+137821	100	7752	0	PARTITIONING_SCHEMA	0	
+137822	100	7752	0	PARTITIONING_METHOD	0	none
+137823	100	7752	0	field_name	0	message
+137824	100	7752	0	field_rename	0	\N
+137825	100	7752	0	field_length	-2	\N
+137826	100	7752	0	field_precision	-2	\N
+137827	100	7752	0	select_unspecified	0	N
+137828	100	7752	0	cluster_schema	0	
+137829	100	7753	0	PARTITIONING_SCHEMA	0	
+137830	100	7753	0	PARTITIONING_METHOD	0	none
+137831	100	7753	0	field_name	0	message
+137832	100	7753	0	field_rename	0	\N
+137833	100	7753	0	field_length	-2	\N
+137834	100	7753	0	field_precision	-2	\N
+137835	100	7753	0	select_unspecified	0	N
+137836	100	7753	0	cluster_schema	0	
+137837	100	7754	0	PARTITIONING_SCHEMA	0	
+137838	100	7754	0	PARTITIONING_METHOD	0	none
+137839	100	7754	0	row_threshold	0	0
+137840	100	7754	0	message	0	\N
+137841	100	7754	0	always_log_rows	0	Y
+137842	100	7754	0	cluster_schema	0	
+137843	100	7755	0	PARTITIONING_SCHEMA	0	
+137844	100	7755	0	PARTITIONING_METHOD	0	none
+137845	100	7755	0	directory	0	%%java.io.tmpdir%%
+137846	100	7755	0	prefix	0	out
+137847	100	7755	0	cache_size	500	\N
+137848	100	7755	0	main	0	\N
+137849	100	7755	0	id_condition	288	\N
+137850	100	7755	0	cluster_schema	0	
+137851	100	7756	0	PARTITIONING_SCHEMA	0	
+137852	100	7756	0	PARTITIONING_METHOD	0	none
+137853	100	7756	0	field_name	0	categorie
+137854	100	7756	0	field_rename	0	
+137855	100	7756	0	field_length	-2	\N
+137856	100	7756	0	field_precision	-2	\N
+137857	100	7756	1	field_name	0	code
+137858	100	7756	1	field_rename	0	
+137859	100	7756	1	field_length	-2	\N
+137860	100	7756	1	field_precision	-2	\N
+137861	100	7756	2	field_name	0	libelle
+137862	100	7756	2	field_rename	0	
+137863	100	7756	2	field_length	-2	\N
+137864	100	7756	2	field_precision	-2	\N
+137865	100	7756	3	field_name	0	description
+137866	100	7756	3	field_rename	0	
+137867	100	7756	3	field_length	-2	\N
+137868	100	7756	3	field_precision	-2	\N
+137869	100	7756	4	field_name	0	spatial
+137870	100	7756	4	field_rename	0	
+137871	100	7756	4	field_length	-2	\N
+137872	100	7756	4	field_precision	-2	\N
+137873	100	7756	5	field_name	0	sourceSQL
+137874	100	7756	5	field_rename	0	
+137875	100	7756	5	field_length	-2	\N
+137876	100	7756	5	field_precision	-2	\N
+137877	100	7756	0	select_unspecified	0	N
+137878	100	7756	0	cluster_schema	0	
+137879	100	7757	0	PARTITIONING_SCHEMA	0	
+137880	100	7757	0	PARTITIONING_METHOD	0	none
+137881	100	7757	0	validate_all	0	Y
+137882	100	7757	0	concat_errors	0	Y
+137883	100	7757	0	concat_separator	0	|
+137884	100	7757	0	validator_field_name	0	code
+137885	100	7757	0	validator_field_validation_name	0	Code
+137886	100	7757	0	validator_field_max_length	0	\N
+137887	100	7757	0	validator_field_min_length	0	1
+137888	100	7757	0	validator_field_null_allowed	0	N
+137889	100	7757	0	validator_field_only_null_allowed	0	N
+137890	100	7757	0	validator_field_only_numeric_allowed	0	N
+137891	100	7757	0	validator_field_data_type	0	String
+137892	100	7757	0	validator_field_data_type_verified	0	Y
+137893	100	7757	0	validator_field_conversion_mask	0	\N
+137894	100	7757	0	validator_field_decimal_symbol	0	\N
+137895	100	7757	0	validator_field_grouping_symbol	0	\N
+137896	100	7757	0	validator_field_max_value	0	\N
+137897	100	7757	0	validator_field_min_value	0	\N
+137898	100	7757	0	validator_field_start_string	0	\N
+137899	100	7757	0	validator_field_end_string	0	\N
+137900	100	7757	0	validator_field_start_string_not_allowed	0	\N
+137901	100	7757	0	validator_field_end_string_not_allowed	0	\N
+137902	100	7757	0	validator_field_regular_expression	0	\N
+137903	100	7757	0	validator_field_regular_expression_not_allowed	0	\N
+137904	100	7757	0	validator_field_error_code	0	\N
+137905	100	7757	0	validator_field_error_description	0	La balise "code" du modèle n'est pas renseignée
+137906	100	7757	0	validator_field_is_sourcing_values	0	N
+137907	100	7757	0	validator_field_sourcing_step	0	\N
+137908	100	7757	0	validator_field_sourcing_field	0	\N
+137909	100	7757	1	validator_field_name	0	libelle
+137910	100	7757	1	validator_field_validation_name	0	Libelle
+137911	100	7757	1	validator_field_max_length	0	\N
+137912	100	7757	1	validator_field_min_length	0	1
+137913	100	7757	1	validator_field_null_allowed	0	N
+137914	100	7757	1	validator_field_only_null_allowed	0	N
+137915	100	7757	1	validator_field_only_numeric_allowed	0	N
+137916	100	7757	1	validator_field_data_type	0	String
+137917	100	7757	1	validator_field_data_type_verified	0	Y
+137918	100	7757	1	validator_field_conversion_mask	0	\N
+137919	100	7757	1	validator_field_decimal_symbol	0	\N
+137920	100	7757	1	validator_field_grouping_symbol	0	\N
+137921	100	7757	1	validator_field_max_value	0	\N
+137922	100	7757	1	validator_field_min_value	0	\N
+137923	100	7757	1	validator_field_start_string	0	\N
+137924	100	7757	1	validator_field_end_string	0	\N
+137925	100	7757	1	validator_field_start_string_not_allowed	0	\N
+137926	100	7757	1	validator_field_end_string_not_allowed	0	\N
+137927	100	7757	1	validator_field_regular_expression	0	\N
+137928	100	7757	1	validator_field_regular_expression_not_allowed	0	\N
+137929	100	7757	1	validator_field_error_code	0	\N
+137930	100	7757	1	validator_field_error_description	0	La balise "libelle" du modèle n'est pas renseignée
+137931	100	7757	1	validator_field_is_sourcing_values	0	N
+137932	100	7757	1	validator_field_sourcing_step	0	\N
+137933	100	7757	1	validator_field_sourcing_field	0	\N
+137934	100	7757	2	validator_field_name	0	sourceSQL
+137935	100	7757	2	validator_field_validation_name	0	SourceSQL
+137936	100	7757	2	validator_field_max_length	0	\N
+137937	100	7757	2	validator_field_min_length	0	1
+137938	100	7757	2	validator_field_null_allowed	0	N
+137939	100	7757	2	validator_field_only_null_allowed	0	N
+137940	100	7757	2	validator_field_only_numeric_allowed	0	N
+137941	100	7757	2	validator_field_data_type	0	String
+137942	100	7757	2	validator_field_data_type_verified	0	Y
+137943	100	7757	2	validator_field_conversion_mask	0	\N
+137944	100	7757	2	validator_field_decimal_symbol	0	\N
+137945	100	7757	2	validator_field_grouping_symbol	0	\N
+137946	100	7757	2	validator_field_max_value	0	\N
+137947	100	7757	2	validator_field_min_value	0	\N
+137948	100	7757	2	validator_field_start_string	0	\N
+137949	100	7757	2	validator_field_end_string	0	\N
+137950	100	7757	2	validator_field_start_string_not_allowed	0	\N
+137951	100	7757	2	validator_field_end_string_not_allowed	0	\N
+137952	100	7757	2	validator_field_regular_expression	0	\N
+137953	100	7757	2	validator_field_regular_expression_not_allowed	0	\N
+137954	100	7757	2	validator_field_error_code	0	\N
+137955	100	7757	2	validator_field_error_description	0	La balise "sourceSQL" du modèle n'est pas renseignée
+137956	100	7757	2	validator_field_is_sourcing_values	0	N
+137957	100	7757	2	validator_field_sourcing_step	0	\N
+137958	100	7757	2	validator_field_sourcing_field	0	\N
+137959	100	7757	0	cluster_schema	0	
+137960	100	7758	0	PARTITIONING_SCHEMA	0	
+137961	100	7758	0	PARTITIONING_METHOD	0	none
+137962	100	7758	0	class_name	0	Processor
+137963	100	7758	0	class_source	0	import java.io.ByteArrayInputStream;\nimport java.io.FileInputStream;\nimport java.io.IOException;\nimport java.io.InputStream;\nimport javax.xml.transform.stream.StreamSource;\nimport javax.xml.validation.SchemaFactory;\nimport javax.xml.validation.Validator;\nimport org.xml.sax.SAXException;\n\nString xmlFilename;\nValidator validator;\n\npublic boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws KettleException{\n\n\t//Recup de ligne suivante du flux\n\tObject[] r = getRow();\n\n\t//Si a\taucune ligne\n\tif (r == null) {\n\t\tsetOutputDone();\n\t\treturn false;\n\t}\n\n\t//Si première ligne du flux\n\tif (first) {\n\n\t\ttry {\n\n\t\t//Préparation du validateur à partir de la chaîne XSD\n\t\tString xsdString = get(Fields.In, "xsd").getString(r);\n\t\tInputStream xsdSource = new ByteArrayInputStream(new String(xsdString).getBytes("UTF-8"));\n\t\tSchemaFactory schemaFactory = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);\n\t\tvalidator = schemaFactory.newSchema(new StreamSource(xsdSource)).newValidator();\n\n\t\t}catch (Exception e) {\n\n\t\t\tnew KettleException();\n\t\t}\n\n\t    first=false;\n\t}\n\n\t//Ligne de sortie\n    Object[] outputRow = createOutputRow(r, data.outputRowMeta.size());\n\n\ttry{\n\t\t\n\t\t//Récupération du contenu du XML à valider\n\t\txmlFilename = get(Fields.In, "filename").getString(r);\n\t\tInputStream xmlSource = new FileInputStream(xmlFilename);\n\n\t\t//Validation du XML\n\t\tvalidator.validate(new StreamSource(xmlSource));\n\n\t\t//Si AUCUNE erreur de validation, "xml_est_valide" à VRAI\n\t\tget(Fields.Out, "xml_est_valide").setValue(outputRow, true);\n\t\t\t\n\t}catch (Exception e) {\n\n\t\t//Si erreur de validation, "xml_est_valide" à FAUX\n\t\tget(Fields.Out, "xml_est_valide").setValue(outputRow, false);\n\n\t}\n\n\t//Transmission de la ligne au flux\n    putRow(data.outputRowMeta, outputRow);\n\n\treturn true;\n}
+137964	100	7758	0	class_type	0	TRANSFORM_CLASS
+137965	100	7758	0	field_name	0	xml_est_valide
+137966	100	7758	0	field_type	0	Boolean
+137967	100	7758	0	field_length	-1	\N
+137968	100	7758	0	field_precision	-1	\N
+137969	100	7758	0	clear_result_fields	0	N
+137970	100	7758	0	cluster_schema	0	
+137971	100	7759	0	PARTITIONING_SCHEMA	0	
+137972	100	7759	0	PARTITIONING_METHOD	0	none
+137973	100	7759	0	field_name	0	xsd
+137974	100	7759	0	field_type	0	String
+137975	100	7759	0	field_format	0	\N
+137976	100	7759	0	field_currency	0	\N
+137977	100	7759	0	field_decimal	0	\N
+137978	100	7759	0	field_group	0	\N
+137979	100	7759	0	field_nullif	0	<?xml version="1.0"?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" \tattributeFormDefault="unqualified"><xs:element name="modele"><xs:annotation><xs:documentation>Modèle d'export de données exploité par REMOCRA</xs:documentation></xs:annotation><xs:complexType><xs:sequence><xs:element name="categorie" type="xs:string"><xs:annotation><xs:documentation>Libellé de catégorie permettant de regrouper ou de filtrer potentiellement les modèles selon un thème. Non exploité actuellement dans ReMOCRA</xs:documentation></xs:annotation></xs:element><xs:element name="code" type="xs:string"><xs:annotation><xs:documentation>Code permettant d'identifier de manière unique et pérenne un modèle d'export</xs:documentation></xs:annotation></xs:element><xs:element name="libelle" type="xs:string"><xs:annotation><xs:documentation>Libellé du modèle d'export affiché en liste déroulante lors du choix du modèle d'export</xs:documentation></xs:annotation></xs:element><xs:element name="description" type="xs:string"><xs:annotation><xs:documentation>Description longue du modèle d'export. Non exploité actuellement dans ReMOCRA</xs:documentation></xs:annotation></xs:element><xs:element name="sourceSQL" type="xs:string"><xs:annotation><xs:documentation>Definition de la requête SQL à exécuter sur la base de données ReOMCRA pour fournir les informations à exporter. A renseigner de préférence dans un CDATA. Utiliser Si l'attribut spatial = "true", la colonne nommée wkt est recherchée. Elle doit contenir les géométries encodées au format WKT.</xs:documentation></xs:annotation></xs:element></xs:sequence><xs:attribute name="spatial" type="xs:boolean" use="required"><xs:annotation><xs:documentation>Le modèle d'export contient de l'information géographique</xs:documentation></xs:annotation></xs:attribute></xs:complexType></xs:element></xs:schema>
+137980	100	7759	0	field_length	-1	\N
+137981	100	7759	0	field_precision	-1	\N
+137982	100	7759	0	limit	0	1
+137983	100	7759	0	cluster_schema	0	
+137984	100	7760	0	PARTITIONING_SCHEMA	0	
+137985	100	7760	0	PARTITIONING_METHOD	0	none
+137986	100	7760	0	id_connection	3	\N
+137987	100	7760	0	schema	0	${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}
+137988	100	7760	0	table	0	export_modele
+137989	100	7760	0	commit	0	1000
+137990	100	7760	0	truncate	0	Y
+137991	100	7760	0	ignore_errors	0	N
+137992	100	7760	0	use_batch	0	Y
+137993	100	7760	0	specify_fields	0	Y
+137994	100	7760	0	partitioning_enabled	0	N
+137995	100	7760	0	partitioning_field	0	
+137996	100	7760	0	partitioning_daily	0	N
+137997	100	7760	0	partitioning_monthly	0	Y
+137998	100	7760	0	tablename_in_field	0	N
+137999	100	7760	0	tablename_field	0	
+138000	100	7760	0	tablename_in_table	0	Y
+138001	100	7760	0	return_keys	0	N
+138002	100	7760	0	return_field	0	
+138003	100	7760	0	column_name	0	categorie
+138004	100	7760	0	stream_name	0	categorie
+138005	100	7760	1	column_name	0	code
+138006	100	7760	1	stream_name	0	code
+138007	100	7760	2	column_name	0	libelle
+138008	100	7760	2	stream_name	0	libelle
+138009	100	7760	3	column_name	0	description
+138010	100	7760	3	stream_name	0	description
+138011	100	7760	4	column_name	0	spatial
+138012	100	7760	4	stream_name	0	spatial
+138013	100	7760	5	column_name	0	source_sql
+138014	100	7760	5	stream_name	0	sourceSQL
+138015	100	7760	0	cluster_schema	0	
+138016	100	7757	0	step_error_handling_source_step	0	Validation de données
+138017	100	7757	0	step_error_handling_target_step	0	Formatage des erreurs
+138018	100	7757	0	step_error_handling_is_enabled	0	Y
+138019	100	7757	0	step_error_handling_nr_valuename	0	\N
+138020	100	7757	0	step_error_handling_descriptions_valuename	0	\N
+138021	100	7757	0	step_error_handling_fields_valuename	0	\N
+138022	100	7757	0	step_error_handling_codes_valuename	0	\N
+138023	100	7757	0	step_error_handling_max_errors	0	
+138024	100	7757	0	step_error_handling_max_pct_errors	0	
+138025	100	7757	0	step_error_handling_min_pct_rows	0	
 \.
 
 
 --
--- TOC entry 2228 (class 0 OID 0)
--- Dependencies: 192
--- Name: r_step_attribute_id_step_attribute_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_step_attribute_id_step_attribute_seq', 1, false);
-
-
---
--- TOC entry 2134 (class 0 OID 19332)
+-- TOC entry 2110 (class 0 OID 250157)
 -- Dependencies: 193
 -- Data for Name: r_step_database; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -30010,8 +31049,6 @@ COPY r_step_database (id_transformation, id_step, id_database) FROM stdin;
 37	6851	3
 37	6852	3
 37	6853	3
-17	7266	3
-17	7282	3
 81	6921	3
 81	6923	3
 41	6940	3
@@ -30031,7 +31068,6 @@ COPY r_step_database (id_transformation, id_step, id_database) FROM stdin;
 103	7631	3
 101	7636	3
 102	7638	3
-100	7643	3
 44	7678	3
 44	7680	3
 44	7681	3
@@ -30047,20 +31083,15 @@ COPY r_step_database (id_transformation, id_step, id_database) FROM stdin;
 44	7691	3
 44	7692	3
 44	7693	3
+17	7722	3
+17	7734	3
+17	7742	3
+100	7760	3
 \.
 
 
 --
--- TOC entry 2229 (class 0 OID 0)
--- Dependencies: 194
--- Name: r_step_id_step_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_step_id_step_seq', 1, false);
-
-
---
--- TOC entry 2136 (class 0 OID 19337)
+-- TOC entry 2111 (class 0 OID 250162)
 -- Dependencies: 195
 -- Data for Name: r_step_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -30312,16 +31343,7 @@ COPY r_step_type (id_step_type, code, description, helptext) FROM stdin;
 
 
 --
--- TOC entry 2230 (class 0 OID 0)
--- Dependencies: 196
--- Name: r_step_type_id_step_type_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_step_type_id_step_type_seq', 1, false);
-
-
---
--- TOC entry 2138 (class 0 OID 19345)
+-- TOC entry 2112 (class 0 OID 250170)
 -- Dependencies: 197
 -- Data for Name: r_trans_attribute; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -30677,134 +31699,7 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 115159	87	0	PERFORMANCE_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
 115160	87	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED3	0	Y
 115161	87	0	PERFORMANCE_LOG_TABLE_FIELD_ID4	0	STEPNAME
-124534	17	0	UNIQUE_CONNECTIONS	0	N
-124535	17	0	FEEDBACK_SHOWN	0	Y
-124536	17	0	FEEDBACK_SIZE	50000	\N
-124537	17	0	USING_THREAD_PRIORITIES	0	Y
-124538	17	0	SHARED_FILE	0	\N
-124539	17	0	CAPTURE_STEP_PERFORMANCE	0	N
-124540	17	0	STEP_PERFORMANCE_CAPTURING_DELAY	1000	\N
-124541	17	0	STEP_PERFORMANCE_CAPTURING_SIZE_LIMIT	0	100
-124542	17	0	STEP_PERFORMANCE_LOG_TABLE	0	\N
-124543	17	0	LOG_SIZE_LIMIT	0	\N
-124544	17	0	LOG_INTERVAL	0	\N
-124545	17	0	TRANSFORMATION_TYPE	0	Normal
-124546	17	0	TRANS_LOG_TABLE_CONNECTION_NAME	0	\N
-124547	17	0	TRANS_LOG_TABLE_SCHEMA_NAME	0	\N
-124548	17	0	TRANS_LOG_TABLE_TABLE_NAME	0	\N
-124549	17	0	TRANS_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
-124550	17	0	TRANS_LOG_TABLE_FIELD_ID0	0	ID_BATCH
-124551	17	0	TRANS_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
-124552	17	0	TRANS_LOG_TABLE_FIELD_ENABLED0	0	Y
-124553	17	0	TRANS_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
-124554	17	0	TRANS_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
-124555	17	0	TRANS_LOG_TABLE_FIELD_ENABLED1	0	Y
-124556	17	0	TRANS_LOG_TABLE_FIELD_ID2	0	TRANSNAME
-124557	17	0	TRANS_LOG_TABLE_FIELD_NAME2	0	TRANSNAME
-124558	17	0	TRANS_LOG_TABLE_FIELD_ENABLED2	0	Y
-124559	17	0	TRANS_LOG_TABLE_FIELD_ID3	0	STATUS
-124560	17	0	TRANS_LOG_TABLE_FIELD_NAME3	0	STATUS
-124561	17	0	TRANS_LOG_TABLE_FIELD_ENABLED3	0	Y
-124562	17	0	TRANS_LOG_TABLE_FIELD_ID4	0	LINES_READ
-124563	17	0	TRANS_LOG_TABLE_FIELD_NAME4	0	LINES_READ
-124564	17	0	TRANS_LOG_TABLE_FIELD_ENABLED4	0	Y
-124565	17	0	TRANS_LOG_TABLE_FIELD_SUBJECT4	0	\N
-124566	17	0	TRANS_LOG_TABLE_FIELD_ID5	0	LINES_WRITTEN
-124567	17	0	TRANS_LOG_TABLE_FIELD_NAME5	0	LINES_WRITTEN
-124568	17	0	TRANS_LOG_TABLE_FIELD_ENABLED5	0	Y
-124569	17	0	TRANS_LOG_TABLE_FIELD_SUBJECT5	0	\N
-124570	17	0	TRANS_LOG_TABLE_FIELD_ID6	0	LINES_UPDATED
-124571	17	0	TRANS_LOG_TABLE_FIELD_NAME6	0	LINES_UPDATED
-124572	17	0	TRANS_LOG_TABLE_FIELD_ENABLED6	0	Y
-124573	17	0	TRANS_LOG_TABLE_FIELD_SUBJECT6	0	\N
-124574	17	0	TRANS_LOG_TABLE_FIELD_ID7	0	LINES_INPUT
-124575	17	0	TRANS_LOG_TABLE_FIELD_NAME7	0	LINES_INPUT
-124576	17	0	TRANS_LOG_TABLE_FIELD_ENABLED7	0	Y
-124577	17	0	TRANS_LOG_TABLE_FIELD_SUBJECT7	0	\N
-124578	17	0	TRANS_LOG_TABLE_FIELD_ID8	0	LINES_OUTPUT
-124579	17	0	TRANS_LOG_TABLE_FIELD_NAME8	0	LINES_OUTPUT
-124580	17	0	TRANS_LOG_TABLE_FIELD_ENABLED8	0	Y
-124581	17	0	TRANS_LOG_TABLE_FIELD_SUBJECT8	0	\N
-124582	17	0	TRANS_LOG_TABLE_FIELD_ID9	0	LINES_REJECTED
-124583	17	0	TRANS_LOG_TABLE_FIELD_NAME9	0	LINES_REJECTED
-124584	17	0	TRANS_LOG_TABLE_FIELD_ENABLED9	0	Y
-124585	17	0	TRANS_LOG_TABLE_FIELD_SUBJECT9	0	\N
-124586	17	0	TRANS_LOG_TABLE_FIELD_ID10	0	ERRORS
-124587	17	0	TRANS_LOG_TABLE_FIELD_NAME10	0	ERRORS
-124588	17	0	TRANS_LOG_TABLE_FIELD_ENABLED10	0	Y
-124589	17	0	TRANS_LOG_TABLE_FIELD_ID11	0	STARTDATE
-124590	17	0	TRANS_LOG_TABLE_FIELD_NAME11	0	STARTDATE
-124591	17	0	TRANS_LOG_TABLE_FIELD_ENABLED11	0	Y
-124592	17	0	TRANS_LOG_TABLE_FIELD_ID12	0	ENDDATE
-124593	17	0	TRANS_LOG_TABLE_FIELD_NAME12	0	ENDDATE
-124594	17	0	TRANS_LOG_TABLE_FIELD_ENABLED12	0	Y
-124595	17	0	TRANS_LOG_TABLE_FIELD_ID13	0	LOGDATE
-124596	17	0	TRANS_LOG_TABLE_FIELD_NAME13	0	LOGDATE
-124597	17	0	TRANS_LOG_TABLE_FIELD_ENABLED13	0	Y
-124598	17	0	TRANS_LOG_TABLE_FIELD_ID14	0	DEPDATE
-124599	17	0	TRANS_LOG_TABLE_FIELD_NAME14	0	DEPDATE
-124600	17	0	TRANS_LOG_TABLE_FIELD_ENABLED14	0	Y
-124601	17	0	TRANS_LOG_TABLE_FIELD_ID15	0	REPLAYDATE
-124602	17	0	TRANS_LOG_TABLE_FIELD_NAME15	0	REPLAYDATE
-124603	17	0	TRANS_LOG_TABLE_FIELD_ENABLED15	0	Y
-124604	17	0	TRANS_LOG_TABLE_FIELD_ID16	0	LOG_FIELD
-124605	17	0	TRANS_LOG_TABLE_FIELD_NAME16	0	LOG_FIELD
-124606	17	0	TRANS_LOG_TABLE_FIELD_ENABLED16	0	Y
-124607	17	0	TRANSLOG_TABLE_INTERVAL	0	\N
-124608	17	0	TRANSLOG_TABLE_SIZE_LIMIT	0	\N
-124609	17	0	STEP_LOG_TABLE_CONNECTION_NAME	0	\N
-124610	17	0	STEP_LOG_TABLE_SCHEMA_NAME	0	\N
-124611	17	0	STEP_LOG_TABLE_TABLE_NAME	0	\N
-124612	17	0	STEP_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
-124613	17	0	STEP_LOG_TABLE_FIELD_ID0	0	ID_BATCH
 132404	9	0	LOG_SIZE_LIMIT	0	\N
-124614	17	0	STEP_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
-124615	17	0	STEP_LOG_TABLE_FIELD_ENABLED0	0	Y
-124616	17	0	STEP_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
-124617	17	0	STEP_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
-124618	17	0	STEP_LOG_TABLE_FIELD_ENABLED1	0	Y
-124619	17	0	STEP_LOG_TABLE_FIELD_ID2	0	LOG_DATE
-124620	17	0	STEP_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
-124621	17	0	STEP_LOG_TABLE_FIELD_ENABLED2	0	Y
-124622	17	0	STEP_LOG_TABLE_FIELD_ID3	0	TRANSNAME
-124623	17	0	STEP_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
-124624	17	0	STEP_LOG_TABLE_FIELD_ENABLED3	0	Y
-124625	17	0	STEP_LOG_TABLE_FIELD_ID4	0	STEPNAME
-124626	17	0	STEP_LOG_TABLE_FIELD_NAME4	0	STEPNAME
-124627	17	0	STEP_LOG_TABLE_FIELD_ENABLED4	0	Y
-124628	17	0	STEP_LOG_TABLE_FIELD_ID5	0	STEP_COPY
-124629	17	0	STEP_LOG_TABLE_FIELD_NAME5	0	STEP_COPY
-124630	17	0	STEP_LOG_TABLE_FIELD_ENABLED5	0	Y
-124631	17	0	STEP_LOG_TABLE_FIELD_ID6	0	LINES_READ
-124632	17	0	STEP_LOG_TABLE_FIELD_NAME6	0	LINES_READ
-124633	17	0	STEP_LOG_TABLE_FIELD_ENABLED6	0	Y
-124634	17	0	STEP_LOG_TABLE_FIELD_ID7	0	LINES_WRITTEN
-124635	17	0	STEP_LOG_TABLE_FIELD_NAME7	0	LINES_WRITTEN
-124636	17	0	STEP_LOG_TABLE_FIELD_ENABLED7	0	Y
-124637	17	0	STEP_LOG_TABLE_FIELD_ID8	0	LINES_UPDATED
-124638	17	0	STEP_LOG_TABLE_FIELD_NAME8	0	LINES_UPDATED
-124639	17	0	STEP_LOG_TABLE_FIELD_ENABLED8	0	Y
-124640	17	0	STEP_LOG_TABLE_FIELD_ID9	0	LINES_INPUT
-124641	17	0	STEP_LOG_TABLE_FIELD_NAME9	0	LINES_INPUT
-124642	17	0	STEP_LOG_TABLE_FIELD_ENABLED9	0	Y
-124643	17	0	STEP_LOG_TABLE_FIELD_ID10	0	LINES_OUTPUT
-124644	17	0	STEP_LOG_TABLE_FIELD_NAME10	0	LINES_OUTPUT
-124645	17	0	STEP_LOG_TABLE_FIELD_ENABLED10	0	Y
-124646	17	0	STEP_LOG_TABLE_FIELD_ID11	0	LINES_REJECTED
-124647	17	0	STEP_LOG_TABLE_FIELD_NAME11	0	LINES_REJECTED
-124648	17	0	STEP_LOG_TABLE_FIELD_ENABLED11	0	Y
-124649	17	0	STEP_LOG_TABLE_FIELD_ID12	0	ERRORS
-124650	17	0	STEP_LOG_TABLE_FIELD_NAME12	0	ERRORS
-124651	17	0	STEP_LOG_TABLE_FIELD_ENABLED12	0	Y
-124652	17	0	STEP_LOG_TABLE_FIELD_ID13	0	LOG_FIELD
-124653	17	0	STEP_LOG_TABLE_FIELD_NAME13	0	LOG_FIELD
-124654	17	0	STEP_LOG_TABLE_FIELD_ENABLED13	0	N
-124655	17	0	PERFORMANCE_LOG_TABLE_CONNECTION_NAME	0	\N
-124656	17	0	PERFORMANCE_LOG_TABLE_SCHEMA_NAME	0	\N
-124657	17	0	PERFORMANCE_LOG_TABLE_TABLE_NAME	0	\N
-124658	17	0	PERFORMANCE_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
-124659	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID0	0	ID_BATCH
-124660	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
 102207	10	0	TRANS_LOG_TABLE_FIELD_ENABLED15	0	Y
 102208	10	0	TRANS_LOG_TABLE_FIELD_ID16	0	LOG_FIELD
 102209	10	0	TRANS_LOG_TABLE_FIELD_NAME16	0	LOG_FIELD
@@ -30962,6 +31857,7 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 44715	12	0	CHANNEL_LOG_TABLE_FIELD_ENABLED10	0	Y
 44716	12	0	CHANNEL_LOG_TABLE_FIELD_ID11	0	ROOT_CHANNEL_ID
 44717	12	0	CHANNEL_LOG_TABLE_FIELD_NAME11	0	ROOT_CHANNEL_ID
+44932	13	0	FEEDBACK_SIZE	50000	\N
 44718	12	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
 44719	30	0	UNIQUE_CONNECTIONS	0	N
 44720	30	0	FEEDBACK_SHOWN	0	Y
@@ -31372,7 +32268,6 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 44884	30	0	PERFORMANCE_LOG_TABLE_FIELD_NAME13	0	INPUT_BUFFER_ROWS
 44885	30	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED13	0	Y
 44886	30	0	PERFORMANCE_LOG_TABLE_FIELD_ID14	0	OUTPUT_BUFFER_ROWS
-124661	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED0	0	Y
 104890	72	0	UNIQUE_CONNECTIONS	0	N
 104891	72	0	FEEDBACK_SHOWN	0	Y
 104892	72	0	FEEDBACK_SIZE	50000	\N
@@ -31464,58 +32359,6 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 44195	5	0	STEP_LOG_TABLE_FIELD_ID10	0	LINES_OUTPUT
 44196	5	0	STEP_LOG_TABLE_FIELD_NAME10	0	LINES_OUTPUT
 44197	5	0	STEP_LOG_TABLE_FIELD_ENABLED10	0	Y
-124662	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID1	0	SEQ_NR
-124663	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME1	0	SEQ_NR
-124664	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED1	0	Y
-124665	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID2	0	LOGDATE
-124666	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME2	0	LOGDATE
-124667	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED2	0	Y
-124668	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID3	0	TRANSNAME
-124669	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
-124670	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED3	0	Y
-124671	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID4	0	STEPNAME
-124672	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME4	0	STEPNAME
-124673	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED4	0	Y
-124674	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID5	0	STEP_COPY
-124675	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME5	0	STEP_COPY
-124676	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED5	0	Y
-124677	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID6	0	LINES_READ
-124678	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME6	0	LINES_READ
-124679	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED6	0	Y
-124680	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID7	0	LINES_WRITTEN
-124681	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME7	0	LINES_WRITTEN
-124682	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED7	0	Y
-124683	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID8	0	LINES_UPDATED
-124684	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME8	0	LINES_UPDATED
-124685	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED8	0	Y
-124686	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID9	0	LINES_INPUT
-124687	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME9	0	LINES_INPUT
-124688	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED9	0	Y
-124689	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID10	0	LINES_OUTPUT
-124690	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME10	0	LINES_OUTPUT
-124691	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED10	0	Y
-124692	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID11	0	LINES_REJECTED
-124693	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME11	0	LINES_REJECTED
-124694	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED11	0	Y
-124695	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID12	0	ERRORS
-124696	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME12	0	ERRORS
-124697	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED12	0	Y
-124698	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID13	0	INPUT_BUFFER_ROWS
-124699	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME13	0	INPUT_BUFFER_ROWS
-124700	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED13	0	Y
-124701	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID14	0	OUTPUT_BUFFER_ROWS
-124702	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME14	0	OUTPUT_BUFFER_ROWS
-124703	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED14	0	Y
-124704	17	0	PERFORMANCELOG_TABLE_INTERVAL	0	\N
-124705	17	0	CHANNEL_LOG_TABLE_CONNECTION_NAME	0	\N
-124706	17	0	CHANNEL_LOG_TABLE_SCHEMA_NAME	0	\N
-124707	17	0	CHANNEL_LOG_TABLE_TABLE_NAME	0	\N
-124708	17	0	CHANNEL_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
-124709	17	0	CHANNEL_LOG_TABLE_FIELD_ID0	0	ID_BATCH
-124710	17	0	CHANNEL_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
-124711	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED0	0	Y
-124712	17	0	CHANNEL_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
-124713	17	0	CHANNEL_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
 44198	5	0	STEP_LOG_TABLE_FIELD_ID11	0	LINES_REJECTED
 44199	5	0	STEP_LOG_TABLE_FIELD_NAME11	0	LINES_REJECTED
 44200	5	0	STEP_LOG_TABLE_FIELD_ENABLED11	0	Y
@@ -31575,17 +32418,7 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 44908	30	0	CHANNEL_LOG_TABLE_FIELD_ENABLED4	0	Y
 44909	30	0	CHANNEL_LOG_TABLE_FIELD_ID5	0	OBJECT_COPY
 44233	5	0	PERFORMANCE_LOG_TABLE_FIELD_NAME7	0	LINES_WRITTEN
-124714	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED1	0	Y
-124715	17	0	CHANNEL_LOG_TABLE_FIELD_ID2	0	LOG_DATE
 44234	5	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED7	0	Y
-124716	17	0	CHANNEL_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
-124717	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED2	0	Y
-124718	17	0	CHANNEL_LOG_TABLE_FIELD_ID3	0	LOGGING_OBJECT_TYPE
-124719	17	0	CHANNEL_LOG_TABLE_FIELD_NAME3	0	LOGGING_OBJECT_TYPE
-124720	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED3	0	Y
-124721	17	0	CHANNEL_LOG_TABLE_FIELD_ID4	0	OBJECT_NAME
-124722	17	0	CHANNEL_LOG_TABLE_FIELD_NAME4	0	OBJECT_NAME
-124723	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED4	0	Y
 115162	87	0	PERFORMANCE_LOG_TABLE_FIELD_NAME4	0	STEPNAME
 115163	87	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED4	0	Y
 115164	87	0	PERFORMANCE_LOG_TABLE_FIELD_ID5	0	STEP_COPY
@@ -31621,12 +32454,6 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 115194	87	0	PERFORMANCELOG_TABLE_INTERVAL	0	\N
 115195	87	0	CHANNEL_LOG_TABLE_CONNECTION_NAME	0	\N
 115196	87	0	CHANNEL_LOG_TABLE_SCHEMA_NAME	0	\N
-124724	17	0	CHANNEL_LOG_TABLE_FIELD_ID5	0	OBJECT_COPY
-124725	17	0	CHANNEL_LOG_TABLE_FIELD_NAME5	0	OBJECT_COPY
-124726	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED5	0	Y
-124727	17	0	CHANNEL_LOG_TABLE_FIELD_ID6	0	REPOSITORY_DIRECTORY
-124728	17	0	CHANNEL_LOG_TABLE_FIELD_NAME6	0	REPOSITORY_DIRECTORY
-124729	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED6	0	Y
 115197	87	0	CHANNEL_LOG_TABLE_TABLE_NAME	0	\N
 115198	87	0	CHANNEL_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
 115199	87	0	CHANNEL_LOG_TABLE_FIELD_ID0	0	ID_BATCH
@@ -31675,7 +32502,6 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 44270	5	0	CHANNEL_LOG_TABLE_FIELD_ID3	0	LOGGING_OBJECT_TYPE
 44271	5	0	CHANNEL_LOG_TABLE_FIELD_NAME3	0	LOGGING_OBJECT_TYPE
 44272	5	0	CHANNEL_LOG_TABLE_FIELD_ENABLED3	0	Y
-124730	17	0	CHANNEL_LOG_TABLE_FIELD_ID7	0	FILENAME
 115207	87	0	CHANNEL_LOG_TABLE_FIELD_ENABLED2	0	Y
 115208	87	0	CHANNEL_LOG_TABLE_FIELD_ID3	0	LOGGING_OBJECT_TYPE
 115209	87	0	CHANNEL_LOG_TABLE_FIELD_NAME3	0	LOGGING_OBJECT_TYPE
@@ -31706,6 +32532,7 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 44276	5	0	CHANNEL_LOG_TABLE_FIELD_ID5	0	OBJECT_COPY
 44277	5	0	CHANNEL_LOG_TABLE_FIELD_NAME5	0	OBJECT_COPY
 44278	5	0	CHANNEL_LOG_TABLE_FIELD_ENABLED5	0	Y
+44933	13	0	USING_THREAD_PRIORITIES	0	Y
 44279	5	0	CHANNEL_LOG_TABLE_FIELD_ID6	0	REPOSITORY_DIRECTORY
 44280	5	0	CHANNEL_LOG_TABLE_FIELD_NAME6	0	REPOSITORY_DIRECTORY
 44281	5	0	CHANNEL_LOG_TABLE_FIELD_ENABLED6	0	Y
@@ -31791,8 +32618,6 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 44929	30	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
 44930	13	0	UNIQUE_CONNECTIONS	0	N
 44931	13	0	FEEDBACK_SHOWN	0	Y
-44932	13	0	FEEDBACK_SIZE	50000	\N
-44933	13	0	USING_THREAD_PRIORITIES	0	Y
 44934	13	0	SHARED_FILE	0	\N
 44935	13	0	CAPTURE_STEP_PERFORMANCE	0	N
 44936	13	0	STEP_PERFORMANCE_CAPTURING_DELAY	1000	\N
@@ -32026,10 +32851,6 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 44342	27	0	TRANS_LOG_TABLE_FIELD_NAME8	0	LINES_OUTPUT
 44343	27	0	TRANS_LOG_TABLE_FIELD_ENABLED8	0	Y
 44344	27	0	TRANS_LOG_TABLE_FIELD_SUBJECT8	0	\N
-124731	17	0	CHANNEL_LOG_TABLE_FIELD_NAME7	0	FILENAME
-124732	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED7	0	Y
-124733	17	0	CHANNEL_LOG_TABLE_FIELD_ID8	0	OBJECT_ID
-124734	17	0	CHANNEL_LOG_TABLE_FIELD_NAME8	0	OBJECT_ID
 45134	13	0	CHANNEL_LOG_TABLE_FIELD_ENABLED9	0	Y
 45135	13	0	CHANNEL_LOG_TABLE_FIELD_ID10	0	PARENT_CHANNEL_ID
 45136	13	0	CHANNEL_LOG_TABLE_FIELD_NAME10	0	PARENT_CHANNEL_ID
@@ -32037,16 +32858,6 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 45138	13	0	CHANNEL_LOG_TABLE_FIELD_ID11	0	ROOT_CHANNEL_ID
 45139	13	0	CHANNEL_LOG_TABLE_FIELD_NAME11	0	ROOT_CHANNEL_ID
 45140	13	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
-124735	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED8	0	Y
-124736	17	0	CHANNEL_LOG_TABLE_FIELD_ID9	0	OBJECT_REVISION
-124737	17	0	CHANNEL_LOG_TABLE_FIELD_NAME9	0	OBJECT_REVISION
-124738	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED9	0	Y
-124739	17	0	CHANNEL_LOG_TABLE_FIELD_ID10	0	PARENT_CHANNEL_ID
-124740	17	0	CHANNEL_LOG_TABLE_FIELD_NAME10	0	PARENT_CHANNEL_ID
-124741	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED10	0	Y
-124742	17	0	CHANNEL_LOG_TABLE_FIELD_ID11	0	ROOT_CHANNEL_ID
-124743	17	0	CHANNEL_LOG_TABLE_FIELD_NAME11	0	ROOT_CHANNEL_ID
-124744	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
 124323	95	0	UNIQUE_CONNECTIONS	0	N
 124324	95	0	FEEDBACK_SHOWN	0	Y
 124325	95	0	FEEDBACK_SIZE	50000	\N
@@ -37120,6 +37931,7 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 108220	78	0	PERFORMANCE_LOG_TABLE_FIELD_NAME13	0	INPUT_BUFFER_ROWS
 108221	78	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED13	0	Y
 108222	78	0	PERFORMANCE_LOG_TABLE_FIELD_ID14	0	OUTPUT_BUFFER_ROWS
+117727	38	0	PERFORMANCE_LOG_TABLE_FIELD_NAME12	0	ERRORS
 108223	78	0	PERFORMANCE_LOG_TABLE_FIELD_NAME14	0	OUTPUT_BUFFER_ROWS
 108224	78	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED14	0	Y
 108225	78	0	PERFORMANCELOG_TABLE_INTERVAL	0	\N
@@ -37200,7 +38012,6 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 117724	38	0	PERFORMANCE_LOG_TABLE_FIELD_NAME11	0	LINES_REJECTED
 117725	38	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED11	0	Y
 117726	38	0	PERFORMANCE_LOG_TABLE_FIELD_ID12	0	ERRORS
-117727	38	0	PERFORMANCE_LOG_TABLE_FIELD_NAME12	0	ERRORS
 117728	38	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED12	0	Y
 117729	38	0	PERFORMANCE_LOG_TABLE_FIELD_ID13	0	INPUT_BUFFER_ROWS
 117730	38	0	PERFORMANCE_LOG_TABLE_FIELD_NAME13	0	INPUT_BUFFER_ROWS
@@ -42082,6 +42893,7 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 120250	41	0	PERFORMANCE_LOG_TABLE_FIELD_NAME8	0	LINES_UPDATED
 120251	41	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED8	0	Y
 120252	41	0	PERFORMANCE_LOG_TABLE_FIELD_ID9	0	LINES_INPUT
+122094	66	0	STEP_LOG_TABLE_FIELD_NAME4	0	STEPNAME
 120253	41	0	PERFORMANCE_LOG_TABLE_FIELD_NAME9	0	LINES_INPUT
 120254	41	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED9	0	Y
 120255	41	0	PERFORMANCE_LOG_TABLE_FIELD_ID10	0	LINES_OUTPUT
@@ -42164,7 +42976,6 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 122091	66	0	STEP_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
 122092	66	0	STEP_LOG_TABLE_FIELD_ENABLED3	0	Y
 122093	66	0	STEP_LOG_TABLE_FIELD_ID4	0	STEPNAME
-122094	66	0	STEP_LOG_TABLE_FIELD_NAME4	0	STEPNAME
 122095	66	0	STEP_LOG_TABLE_FIELD_ENABLED4	0	Y
 122096	66	0	STEP_LOG_TABLE_FIELD_ID5	0	STEP_COPY
 122097	66	0	STEP_LOG_TABLE_FIELD_NAME5	0	STEP_COPY
@@ -43231,217 +44042,6 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 138318	102	0	CHANNEL_LOG_TABLE_FIELD_ID11	0	ROOT_CHANNEL_ID
 138319	102	0	CHANNEL_LOG_TABLE_FIELD_NAME11	0	ROOT_CHANNEL_ID
 138320	102	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
-138321	100	0	UNIQUE_CONNECTIONS	0	N
-138322	100	0	FEEDBACK_SHOWN	0	Y
-138323	100	0	FEEDBACK_SIZE	50000	\N
-138324	100	0	USING_THREAD_PRIORITIES	0	Y
-138325	100	0	SHARED_FILE	0	\N
-138326	100	0	CAPTURE_STEP_PERFORMANCE	0	N
-138327	100	0	STEP_PERFORMANCE_CAPTURING_DELAY	1000	\N
-138328	100	0	STEP_PERFORMANCE_CAPTURING_SIZE_LIMIT	0	100
-138329	100	0	STEP_PERFORMANCE_LOG_TABLE	0	\N
-138330	100	0	LOG_SIZE_LIMIT	0	\N
-138331	100	0	LOG_INTERVAL	0	\N
-138332	100	0	TRANSFORMATION_TYPE	0	Normal
-138333	100	0	TRANS_LOG_TABLE_CONNECTION_NAME	0	\N
-138334	100	0	TRANS_LOG_TABLE_SCHEMA_NAME	0	\N
-138335	100	0	TRANS_LOG_TABLE_TABLE_NAME	0	\N
-138336	100	0	TRANS_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
-138337	100	0	TRANS_LOG_TABLE_FIELD_ID0	0	ID_BATCH
-138338	100	0	TRANS_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
-138339	100	0	TRANS_LOG_TABLE_FIELD_ENABLED0	0	Y
-138340	100	0	TRANS_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
-138341	100	0	TRANS_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
-138342	100	0	TRANS_LOG_TABLE_FIELD_ENABLED1	0	Y
-138343	100	0	TRANS_LOG_TABLE_FIELD_ID2	0	TRANSNAME
-138344	100	0	TRANS_LOG_TABLE_FIELD_NAME2	0	TRANSNAME
-138345	100	0	TRANS_LOG_TABLE_FIELD_ENABLED2	0	Y
-138346	100	0	TRANS_LOG_TABLE_FIELD_ID3	0	STATUS
-138347	100	0	TRANS_LOG_TABLE_FIELD_NAME3	0	STATUS
-138348	100	0	TRANS_LOG_TABLE_FIELD_ENABLED3	0	Y
-138349	100	0	TRANS_LOG_TABLE_FIELD_ID4	0	LINES_READ
-138350	100	0	TRANS_LOG_TABLE_FIELD_NAME4	0	LINES_READ
-138351	100	0	TRANS_LOG_TABLE_FIELD_ENABLED4	0	Y
-138352	100	0	TRANS_LOG_TABLE_FIELD_SUBJECT4	0	\N
-138353	100	0	TRANS_LOG_TABLE_FIELD_ID5	0	LINES_WRITTEN
-138354	100	0	TRANS_LOG_TABLE_FIELD_NAME5	0	LINES_WRITTEN
-138355	100	0	TRANS_LOG_TABLE_FIELD_ENABLED5	0	Y
-138356	100	0	TRANS_LOG_TABLE_FIELD_SUBJECT5	0	\N
-138357	100	0	TRANS_LOG_TABLE_FIELD_ID6	0	LINES_UPDATED
-138358	100	0	TRANS_LOG_TABLE_FIELD_NAME6	0	LINES_UPDATED
-138359	100	0	TRANS_LOG_TABLE_FIELD_ENABLED6	0	Y
-138360	100	0	TRANS_LOG_TABLE_FIELD_SUBJECT6	0	\N
-138361	100	0	TRANS_LOG_TABLE_FIELD_ID7	0	LINES_INPUT
-138362	100	0	TRANS_LOG_TABLE_FIELD_NAME7	0	LINES_INPUT
-138363	100	0	TRANS_LOG_TABLE_FIELD_ENABLED7	0	Y
-138364	100	0	TRANS_LOG_TABLE_FIELD_SUBJECT7	0	\N
-138365	100	0	TRANS_LOG_TABLE_FIELD_ID8	0	LINES_OUTPUT
-138366	100	0	TRANS_LOG_TABLE_FIELD_NAME8	0	LINES_OUTPUT
-138367	100	0	TRANS_LOG_TABLE_FIELD_ENABLED8	0	Y
-138368	100	0	TRANS_LOG_TABLE_FIELD_SUBJECT8	0	\N
-138369	100	0	TRANS_LOG_TABLE_FIELD_ID9	0	LINES_REJECTED
-138370	100	0	TRANS_LOG_TABLE_FIELD_NAME9	0	LINES_REJECTED
-138371	100	0	TRANS_LOG_TABLE_FIELD_ENABLED9	0	Y
-138372	100	0	TRANS_LOG_TABLE_FIELD_SUBJECT9	0	\N
-138373	100	0	TRANS_LOG_TABLE_FIELD_ID10	0	ERRORS
-138374	100	0	TRANS_LOG_TABLE_FIELD_NAME10	0	ERRORS
-138375	100	0	TRANS_LOG_TABLE_FIELD_ENABLED10	0	Y
-138376	100	0	TRANS_LOG_TABLE_FIELD_ID11	0	STARTDATE
-138377	100	0	TRANS_LOG_TABLE_FIELD_NAME11	0	STARTDATE
-138378	100	0	TRANS_LOG_TABLE_FIELD_ENABLED11	0	Y
-138379	100	0	TRANS_LOG_TABLE_FIELD_ID12	0	ENDDATE
-138380	100	0	TRANS_LOG_TABLE_FIELD_NAME12	0	ENDDATE
-138381	100	0	TRANS_LOG_TABLE_FIELD_ENABLED12	0	Y
-138382	100	0	TRANS_LOG_TABLE_FIELD_ID13	0	LOGDATE
-138383	100	0	TRANS_LOG_TABLE_FIELD_NAME13	0	LOGDATE
-138384	100	0	TRANS_LOG_TABLE_FIELD_ENABLED13	0	Y
-138385	100	0	TRANS_LOG_TABLE_FIELD_ID14	0	DEPDATE
-138386	100	0	TRANS_LOG_TABLE_FIELD_NAME14	0	DEPDATE
-138387	100	0	TRANS_LOG_TABLE_FIELD_ENABLED14	0	Y
-138388	100	0	TRANS_LOG_TABLE_FIELD_ID15	0	REPLAYDATE
-138389	100	0	TRANS_LOG_TABLE_FIELD_NAME15	0	REPLAYDATE
-138390	100	0	TRANS_LOG_TABLE_FIELD_ENABLED15	0	Y
-138391	100	0	TRANS_LOG_TABLE_FIELD_ID16	0	LOG_FIELD
-138392	100	0	TRANS_LOG_TABLE_FIELD_NAME16	0	LOG_FIELD
-138393	100	0	TRANS_LOG_TABLE_FIELD_ENABLED16	0	Y
-138394	100	0	TRANSLOG_TABLE_INTERVAL	0	\N
-138395	100	0	TRANSLOG_TABLE_SIZE_LIMIT	0	\N
-138396	100	0	STEP_LOG_TABLE_CONNECTION_NAME	0	\N
-138397	100	0	STEP_LOG_TABLE_SCHEMA_NAME	0	\N
-138398	100	0	STEP_LOG_TABLE_TABLE_NAME	0	\N
-138399	100	0	STEP_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
-138400	100	0	STEP_LOG_TABLE_FIELD_ID0	0	ID_BATCH
-138401	100	0	STEP_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
-138402	100	0	STEP_LOG_TABLE_FIELD_ENABLED0	0	Y
-138403	100	0	STEP_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
-138404	100	0	STEP_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
-138405	100	0	STEP_LOG_TABLE_FIELD_ENABLED1	0	Y
-138406	100	0	STEP_LOG_TABLE_FIELD_ID2	0	LOG_DATE
-138407	100	0	STEP_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
-138408	100	0	STEP_LOG_TABLE_FIELD_ENABLED2	0	Y
-138409	100	0	STEP_LOG_TABLE_FIELD_ID3	0	TRANSNAME
-138410	100	0	STEP_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
-138411	100	0	STEP_LOG_TABLE_FIELD_ENABLED3	0	Y
-138412	100	0	STEP_LOG_TABLE_FIELD_ID4	0	STEPNAME
-138413	100	0	STEP_LOG_TABLE_FIELD_NAME4	0	STEPNAME
-138414	100	0	STEP_LOG_TABLE_FIELD_ENABLED4	0	Y
-138415	100	0	STEP_LOG_TABLE_FIELD_ID5	0	STEP_COPY
-138416	100	0	STEP_LOG_TABLE_FIELD_NAME5	0	STEP_COPY
-138417	100	0	STEP_LOG_TABLE_FIELD_ENABLED5	0	Y
-138418	100	0	STEP_LOG_TABLE_FIELD_ID6	0	LINES_READ
-138419	100	0	STEP_LOG_TABLE_FIELD_NAME6	0	LINES_READ
-138420	100	0	STEP_LOG_TABLE_FIELD_ENABLED6	0	Y
-138421	100	0	STEP_LOG_TABLE_FIELD_ID7	0	LINES_WRITTEN
-138422	100	0	STEP_LOG_TABLE_FIELD_NAME7	0	LINES_WRITTEN
-138423	100	0	STEP_LOG_TABLE_FIELD_ENABLED7	0	Y
-138424	100	0	STEP_LOG_TABLE_FIELD_ID8	0	LINES_UPDATED
-138425	100	0	STEP_LOG_TABLE_FIELD_NAME8	0	LINES_UPDATED
-138426	100	0	STEP_LOG_TABLE_FIELD_ENABLED8	0	Y
-138427	100	0	STEP_LOG_TABLE_FIELD_ID9	0	LINES_INPUT
-138428	100	0	STEP_LOG_TABLE_FIELD_NAME9	0	LINES_INPUT
-138429	100	0	STEP_LOG_TABLE_FIELD_ENABLED9	0	Y
-138430	100	0	STEP_LOG_TABLE_FIELD_ID10	0	LINES_OUTPUT
-138431	100	0	STEP_LOG_TABLE_FIELD_NAME10	0	LINES_OUTPUT
-138432	100	0	STEP_LOG_TABLE_FIELD_ENABLED10	0	Y
-138433	100	0	STEP_LOG_TABLE_FIELD_ID11	0	LINES_REJECTED
-138434	100	0	STEP_LOG_TABLE_FIELD_NAME11	0	LINES_REJECTED
-138435	100	0	STEP_LOG_TABLE_FIELD_ENABLED11	0	Y
-138436	100	0	STEP_LOG_TABLE_FIELD_ID12	0	ERRORS
-138437	100	0	STEP_LOG_TABLE_FIELD_NAME12	0	ERRORS
-138438	100	0	STEP_LOG_TABLE_FIELD_ENABLED12	0	Y
-138439	100	0	STEP_LOG_TABLE_FIELD_ID13	0	LOG_FIELD
-138440	100	0	STEP_LOG_TABLE_FIELD_NAME13	0	LOG_FIELD
-138441	100	0	STEP_LOG_TABLE_FIELD_ENABLED13	0	N
-138442	100	0	PERFORMANCE_LOG_TABLE_CONNECTION_NAME	0	\N
-138443	100	0	PERFORMANCE_LOG_TABLE_SCHEMA_NAME	0	\N
-138444	100	0	PERFORMANCE_LOG_TABLE_TABLE_NAME	0	\N
-138445	100	0	PERFORMANCE_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
-138446	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID0	0	ID_BATCH
-138447	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
-138448	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED0	0	Y
-138449	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID1	0	SEQ_NR
-138450	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME1	0	SEQ_NR
-138451	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED1	0	Y
-138452	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID2	0	LOGDATE
-138453	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME2	0	LOGDATE
-138454	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED2	0	Y
-138455	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID3	0	TRANSNAME
-138456	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
-138457	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED3	0	Y
-138458	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID4	0	STEPNAME
-138459	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME4	0	STEPNAME
-138460	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED4	0	Y
-138461	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID5	0	STEP_COPY
-138462	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME5	0	STEP_COPY
-138463	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED5	0	Y
-138464	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID6	0	LINES_READ
-138465	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME6	0	LINES_READ
-138466	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED6	0	Y
-138467	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID7	0	LINES_WRITTEN
-138468	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME7	0	LINES_WRITTEN
-138469	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED7	0	Y
-138470	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID8	0	LINES_UPDATED
-138471	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME8	0	LINES_UPDATED
-138472	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED8	0	Y
-138473	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID9	0	LINES_INPUT
-138474	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME9	0	LINES_INPUT
-138475	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED9	0	Y
-138476	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID10	0	LINES_OUTPUT
-138477	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME10	0	LINES_OUTPUT
-138478	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED10	0	Y
-138479	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID11	0	LINES_REJECTED
-138480	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME11	0	LINES_REJECTED
-138481	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED11	0	Y
-138482	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID12	0	ERRORS
-138483	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME12	0	ERRORS
-138484	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED12	0	Y
-138485	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID13	0	INPUT_BUFFER_ROWS
-138486	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME13	0	INPUT_BUFFER_ROWS
-138487	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED13	0	Y
-138488	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID14	0	OUTPUT_BUFFER_ROWS
-138489	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME14	0	OUTPUT_BUFFER_ROWS
-138490	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED14	0	Y
-138491	100	0	PERFORMANCELOG_TABLE_INTERVAL	0	\N
-138492	100	0	CHANNEL_LOG_TABLE_CONNECTION_NAME	0	\N
-138493	100	0	CHANNEL_LOG_TABLE_SCHEMA_NAME	0	\N
-138494	100	0	CHANNEL_LOG_TABLE_TABLE_NAME	0	\N
-138495	100	0	CHANNEL_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
-138496	100	0	CHANNEL_LOG_TABLE_FIELD_ID0	0	ID_BATCH
-138497	100	0	CHANNEL_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
-138498	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED0	0	Y
-138499	100	0	CHANNEL_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
-138500	100	0	CHANNEL_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
-138501	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED1	0	Y
-138502	100	0	CHANNEL_LOG_TABLE_FIELD_ID2	0	LOG_DATE
-138503	100	0	CHANNEL_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
-138504	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED2	0	Y
-138505	100	0	CHANNEL_LOG_TABLE_FIELD_ID3	0	LOGGING_OBJECT_TYPE
-138506	100	0	CHANNEL_LOG_TABLE_FIELD_NAME3	0	LOGGING_OBJECT_TYPE
-138507	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED3	0	Y
-138508	100	0	CHANNEL_LOG_TABLE_FIELD_ID4	0	OBJECT_NAME
-138509	100	0	CHANNEL_LOG_TABLE_FIELD_NAME4	0	OBJECT_NAME
-138510	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED4	0	Y
-138511	100	0	CHANNEL_LOG_TABLE_FIELD_ID5	0	OBJECT_COPY
-138512	100	0	CHANNEL_LOG_TABLE_FIELD_NAME5	0	OBJECT_COPY
-138513	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED5	0	Y
-138514	100	0	CHANNEL_LOG_TABLE_FIELD_ID6	0	REPOSITORY_DIRECTORY
-138515	100	0	CHANNEL_LOG_TABLE_FIELD_NAME6	0	REPOSITORY_DIRECTORY
-138516	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED6	0	Y
-138517	100	0	CHANNEL_LOG_TABLE_FIELD_ID7	0	FILENAME
-138518	100	0	CHANNEL_LOG_TABLE_FIELD_NAME7	0	FILENAME
-138519	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED7	0	Y
-138520	100	0	CHANNEL_LOG_TABLE_FIELD_ID8	0	OBJECT_ID
-138521	100	0	CHANNEL_LOG_TABLE_FIELD_NAME8	0	OBJECT_ID
-138522	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED8	0	Y
-138523	100	0	CHANNEL_LOG_TABLE_FIELD_ID9	0	OBJECT_REVISION
-138524	100	0	CHANNEL_LOG_TABLE_FIELD_NAME9	0	OBJECT_REVISION
-138525	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED9	0	Y
-138526	100	0	CHANNEL_LOG_TABLE_FIELD_ID10	0	PARENT_CHANNEL_ID
-138527	100	0	CHANNEL_LOG_TABLE_FIELD_NAME10	0	PARENT_CHANNEL_ID
-138528	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED10	0	Y
-138529	100	0	CHANNEL_LOG_TABLE_FIELD_ID11	0	ROOT_CHANNEL_ID
-138530	100	0	CHANNEL_LOG_TABLE_FIELD_NAME11	0	ROOT_CHANNEL_ID
-138531	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
 137477	103	0	UNIQUE_CONNECTIONS	0	N
 137478	103	0	FEEDBACK_SHOWN	0	Y
 137479	103	0	FEEDBACK_SIZE	50000	\N
@@ -44075,20 +44675,433 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 138740	44	0	CHANNEL_LOG_TABLE_FIELD_ID11	0	ROOT_CHANNEL_ID
 138741	44	0	CHANNEL_LOG_TABLE_FIELD_NAME11	0	ROOT_CHANNEL_ID
 138742	44	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
+138979	17	0	TRANS_LOG_TABLE_FIELD_ID3	0	STATUS
+138954	17	0	UNIQUE_CONNECTIONS	0	N
+138955	17	0	FEEDBACK_SHOWN	0	Y
+138956	17	0	FEEDBACK_SIZE	50000	
+138957	17	0	USING_THREAD_PRIORITIES	0	Y
+138958	17	0	SHARED_FILE	0	\N
+138959	17	0	CAPTURE_STEP_PERFORMANCE	0	N
+138960	17	0	STEP_PERFORMANCE_CAPTURING_DELAY	1000	
+138961	17	0	STEP_PERFORMANCE_CAPTURING_SIZE_LIMIT	0	100
+138962	17	0	STEP_PERFORMANCE_LOG_TABLE	0	\N
+138963	17	0	LOG_SIZE_LIMIT	0	\N
+138964	17	0	LOG_INTERVAL	0	\N
+138965	17	0	TRANSFORMATION_TYPE	0	Normal
+138966	17	0	TRANS_LOG_TABLE_CONNECTION_NAME	0	\N
+138967	17	0	TRANS_LOG_TABLE_SCHEMA_NAME	0	\N
+138968	17	0	TRANS_LOG_TABLE_TABLE_NAME	0	\N
+138969	17	0	TRANS_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+138970	17	0	TRANS_LOG_TABLE_FIELD_ID0	0	ID_BATCH
+138971	17	0	TRANS_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
+138972	17	0	TRANS_LOG_TABLE_FIELD_ENABLED0	0	Y
+138973	17	0	TRANS_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+138974	17	0	TRANS_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+138975	17	0	TRANS_LOG_TABLE_FIELD_ENABLED1	0	Y
+138976	17	0	TRANS_LOG_TABLE_FIELD_ID2	0	TRANSNAME
+138977	17	0	TRANS_LOG_TABLE_FIELD_NAME2	0	TRANSNAME
+138978	17	0	TRANS_LOG_TABLE_FIELD_ENABLED2	0	Y
+138980	17	0	TRANS_LOG_TABLE_FIELD_NAME3	0	STATUS
+138981	17	0	TRANS_LOG_TABLE_FIELD_ENABLED3	0	Y
+138982	17	0	TRANS_LOG_TABLE_FIELD_ID4	0	LINES_READ
+138983	17	0	TRANS_LOG_TABLE_FIELD_NAME4	0	LINES_READ
+138984	17	0	TRANS_LOG_TABLE_FIELD_ENABLED4	0	Y
+138985	17	0	TRANS_LOG_TABLE_FIELD_SUBJECT4	0	\N
+138986	17	0	TRANS_LOG_TABLE_FIELD_ID5	0	LINES_WRITTEN
+138987	17	0	TRANS_LOG_TABLE_FIELD_NAME5	0	LINES_WRITTEN
+138988	17	0	TRANS_LOG_TABLE_FIELD_ENABLED5	0	Y
+138989	17	0	TRANS_LOG_TABLE_FIELD_SUBJECT5	0	\N
+138990	17	0	TRANS_LOG_TABLE_FIELD_ID6	0	LINES_UPDATED
+138991	17	0	TRANS_LOG_TABLE_FIELD_NAME6	0	LINES_UPDATED
+138992	17	0	TRANS_LOG_TABLE_FIELD_ENABLED6	0	Y
+138993	17	0	TRANS_LOG_TABLE_FIELD_SUBJECT6	0	\N
+138994	17	0	TRANS_LOG_TABLE_FIELD_ID7	0	LINES_INPUT
+138995	17	0	TRANS_LOG_TABLE_FIELD_NAME7	0	LINES_INPUT
+138996	17	0	TRANS_LOG_TABLE_FIELD_ENABLED7	0	Y
+138997	17	0	TRANS_LOG_TABLE_FIELD_SUBJECT7	0	\N
+138998	17	0	TRANS_LOG_TABLE_FIELD_ID8	0	LINES_OUTPUT
+138999	17	0	TRANS_LOG_TABLE_FIELD_NAME8	0	LINES_OUTPUT
+139000	17	0	TRANS_LOG_TABLE_FIELD_ENABLED8	0	Y
+139001	17	0	TRANS_LOG_TABLE_FIELD_SUBJECT8	0	\N
+139002	17	0	TRANS_LOG_TABLE_FIELD_ID9	0	LINES_REJECTED
+139003	17	0	TRANS_LOG_TABLE_FIELD_NAME9	0	LINES_REJECTED
+139004	17	0	TRANS_LOG_TABLE_FIELD_ENABLED9	0	Y
+139005	17	0	TRANS_LOG_TABLE_FIELD_SUBJECT9	0	\N
+139006	17	0	TRANS_LOG_TABLE_FIELD_ID10	0	ERRORS
+139007	17	0	TRANS_LOG_TABLE_FIELD_NAME10	0	ERRORS
+139008	17	0	TRANS_LOG_TABLE_FIELD_ENABLED10	0	Y
+139009	17	0	TRANS_LOG_TABLE_FIELD_ID11	0	STARTDATE
+139010	17	0	TRANS_LOG_TABLE_FIELD_NAME11	0	STARTDATE
+139011	17	0	TRANS_LOG_TABLE_FIELD_ENABLED11	0	Y
+139012	17	0	TRANS_LOG_TABLE_FIELD_ID12	0	ENDDATE
+139013	17	0	TRANS_LOG_TABLE_FIELD_NAME12	0	ENDDATE
+139014	17	0	TRANS_LOG_TABLE_FIELD_ENABLED12	0	Y
+139015	17	0	TRANS_LOG_TABLE_FIELD_ID13	0	LOGDATE
+139016	17	0	TRANS_LOG_TABLE_FIELD_NAME13	0	LOGDATE
+139017	17	0	TRANS_LOG_TABLE_FIELD_ENABLED13	0	Y
+139018	17	0	TRANS_LOG_TABLE_FIELD_ID14	0	DEPDATE
+139019	17	0	TRANS_LOG_TABLE_FIELD_NAME14	0	DEPDATE
+139020	17	0	TRANS_LOG_TABLE_FIELD_ENABLED14	0	Y
+139021	17	0	TRANS_LOG_TABLE_FIELD_ID15	0	REPLAYDATE
+139022	17	0	TRANS_LOG_TABLE_FIELD_NAME15	0	REPLAYDATE
+139023	17	0	TRANS_LOG_TABLE_FIELD_ENABLED15	0	Y
+139024	17	0	TRANS_LOG_TABLE_FIELD_ID16	0	LOG_FIELD
+139025	17	0	TRANS_LOG_TABLE_FIELD_NAME16	0	LOG_FIELD
+139026	17	0	TRANS_LOG_TABLE_FIELD_ENABLED16	0	Y
+139027	17	0	TRANSLOG_TABLE_INTERVAL	0	\N
+139028	17	0	TRANSLOG_TABLE_SIZE_LIMIT	0	\N
+139029	17	0	STEP_LOG_TABLE_CONNECTION_NAME	0	\N
+139030	17	0	STEP_LOG_TABLE_SCHEMA_NAME	0	\N
+139031	17	0	STEP_LOG_TABLE_TABLE_NAME	0	\N
+139032	17	0	STEP_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+139033	17	0	STEP_LOG_TABLE_FIELD_ID0	0	ID_BATCH
+139034	17	0	STEP_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
+139035	17	0	STEP_LOG_TABLE_FIELD_ENABLED0	0	Y
+139036	17	0	STEP_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+139037	17	0	STEP_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+139038	17	0	STEP_LOG_TABLE_FIELD_ENABLED1	0	Y
+139039	17	0	STEP_LOG_TABLE_FIELD_ID2	0	LOG_DATE
+139040	17	0	STEP_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
+139041	17	0	STEP_LOG_TABLE_FIELD_ENABLED2	0	Y
+139042	17	0	STEP_LOG_TABLE_FIELD_ID3	0	TRANSNAME
+139043	17	0	STEP_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
+139044	17	0	STEP_LOG_TABLE_FIELD_ENABLED3	0	Y
+139045	17	0	STEP_LOG_TABLE_FIELD_ID4	0	STEPNAME
+139046	17	0	STEP_LOG_TABLE_FIELD_NAME4	0	STEPNAME
+139047	17	0	STEP_LOG_TABLE_FIELD_ENABLED4	0	Y
+139048	17	0	STEP_LOG_TABLE_FIELD_ID5	0	STEP_COPY
+139049	17	0	STEP_LOG_TABLE_FIELD_NAME5	0	STEP_COPY
+139050	17	0	STEP_LOG_TABLE_FIELD_ENABLED5	0	Y
+139051	17	0	STEP_LOG_TABLE_FIELD_ID6	0	LINES_READ
+139052	17	0	STEP_LOG_TABLE_FIELD_NAME6	0	LINES_READ
+139053	17	0	STEP_LOG_TABLE_FIELD_ENABLED6	0	Y
+139054	17	0	STEP_LOG_TABLE_FIELD_ID7	0	LINES_WRITTEN
+139055	17	0	STEP_LOG_TABLE_FIELD_NAME7	0	LINES_WRITTEN
+139056	17	0	STEP_LOG_TABLE_FIELD_ENABLED7	0	Y
+139057	17	0	STEP_LOG_TABLE_FIELD_ID8	0	LINES_UPDATED
+139058	17	0	STEP_LOG_TABLE_FIELD_NAME8	0	LINES_UPDATED
+139059	17	0	STEP_LOG_TABLE_FIELD_ENABLED8	0	Y
+139060	17	0	STEP_LOG_TABLE_FIELD_ID9	0	LINES_INPUT
+139061	17	0	STEP_LOG_TABLE_FIELD_NAME9	0	LINES_INPUT
+139062	17	0	STEP_LOG_TABLE_FIELD_ENABLED9	0	Y
+139063	17	0	STEP_LOG_TABLE_FIELD_ID10	0	LINES_OUTPUT
+139064	17	0	STEP_LOG_TABLE_FIELD_NAME10	0	LINES_OUTPUT
+139065	17	0	STEP_LOG_TABLE_FIELD_ENABLED10	0	Y
+139066	17	0	STEP_LOG_TABLE_FIELD_ID11	0	LINES_REJECTED
+139067	17	0	STEP_LOG_TABLE_FIELD_NAME11	0	LINES_REJECTED
+139068	17	0	STEP_LOG_TABLE_FIELD_ENABLED11	0	Y
+139069	17	0	STEP_LOG_TABLE_FIELD_ID12	0	ERRORS
+139070	17	0	STEP_LOG_TABLE_FIELD_NAME12	0	ERRORS
+139071	17	0	STEP_LOG_TABLE_FIELD_ENABLED12	0	Y
+139072	17	0	STEP_LOG_TABLE_FIELD_ID13	0	LOG_FIELD
+139073	17	0	STEP_LOG_TABLE_FIELD_NAME13	0	LOG_FIELD
+139074	17	0	STEP_LOG_TABLE_FIELD_ENABLED13	0	N
+139075	17	0	PERFORMANCE_LOG_TABLE_CONNECTION_NAME	0	\N
+139076	17	0	PERFORMANCE_LOG_TABLE_SCHEMA_NAME	0	\N
+139077	17	0	PERFORMANCE_LOG_TABLE_TABLE_NAME	0	\N
+139078	17	0	PERFORMANCE_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+139079	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID0	0	ID_BATCH
+139080	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
+139081	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED0	0	Y
+139082	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID1	0	SEQ_NR
+139083	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME1	0	SEQ_NR
+139084	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED1	0	Y
+139085	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID2	0	LOGDATE
+139086	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME2	0	LOGDATE
+139087	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED2	0	Y
+139088	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID3	0	TRANSNAME
+139089	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
+139090	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED3	0	Y
+139091	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID4	0	STEPNAME
+139092	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME4	0	STEPNAME
+139093	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED4	0	Y
+139094	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID5	0	STEP_COPY
+139095	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME5	0	STEP_COPY
+139096	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED5	0	Y
+139097	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID6	0	LINES_READ
+139098	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME6	0	LINES_READ
+139099	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED6	0	Y
+139100	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID7	0	LINES_WRITTEN
+139101	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME7	0	LINES_WRITTEN
+139102	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED7	0	Y
+139103	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID8	0	LINES_UPDATED
+139104	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME8	0	LINES_UPDATED
+139105	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED8	0	Y
+139106	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID9	0	LINES_INPUT
+139107	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME9	0	LINES_INPUT
+139108	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED9	0	Y
+139109	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID10	0	LINES_OUTPUT
+139110	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME10	0	LINES_OUTPUT
+139111	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED10	0	Y
+139112	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID11	0	LINES_REJECTED
+139113	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME11	0	LINES_REJECTED
+139114	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED11	0	Y
+139115	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID12	0	ERRORS
+139116	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME12	0	ERRORS
+139117	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED12	0	Y
+139118	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID13	0	INPUT_BUFFER_ROWS
+139119	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME13	0	INPUT_BUFFER_ROWS
+139120	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED13	0	Y
+139121	17	0	PERFORMANCE_LOG_TABLE_FIELD_ID14	0	OUTPUT_BUFFER_ROWS
+139122	17	0	PERFORMANCE_LOG_TABLE_FIELD_NAME14	0	OUTPUT_BUFFER_ROWS
+139123	17	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED14	0	Y
+139124	17	0	PERFORMANCELOG_TABLE_INTERVAL	0	\N
+139125	17	0	CHANNEL_LOG_TABLE_CONNECTION_NAME	0	\N
+139126	17	0	CHANNEL_LOG_TABLE_SCHEMA_NAME	0	\N
+139127	17	0	CHANNEL_LOG_TABLE_TABLE_NAME	0	\N
+139128	17	0	CHANNEL_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+139129	17	0	CHANNEL_LOG_TABLE_FIELD_ID0	0	ID_BATCH
+139130	17	0	CHANNEL_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
+139131	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED0	0	Y
+139132	17	0	CHANNEL_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+139133	17	0	CHANNEL_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+139134	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED1	0	Y
+139135	17	0	CHANNEL_LOG_TABLE_FIELD_ID2	0	LOG_DATE
+139136	17	0	CHANNEL_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
+139137	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED2	0	Y
+139138	17	0	CHANNEL_LOG_TABLE_FIELD_ID3	0	LOGGING_OBJECT_TYPE
+139139	17	0	CHANNEL_LOG_TABLE_FIELD_NAME3	0	LOGGING_OBJECT_TYPE
+139140	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED3	0	Y
+139141	17	0	CHANNEL_LOG_TABLE_FIELD_ID4	0	OBJECT_NAME
+139142	17	0	CHANNEL_LOG_TABLE_FIELD_NAME4	0	OBJECT_NAME
+139143	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED4	0	Y
+139144	17	0	CHANNEL_LOG_TABLE_FIELD_ID5	0	OBJECT_COPY
+139145	17	0	CHANNEL_LOG_TABLE_FIELD_NAME5	0	OBJECT_COPY
+139146	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED5	0	Y
+139147	17	0	CHANNEL_LOG_TABLE_FIELD_ID6	0	REPOSITORY_DIRECTORY
+139148	17	0	CHANNEL_LOG_TABLE_FIELD_NAME6	0	REPOSITORY_DIRECTORY
+139149	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED6	0	Y
+139150	17	0	CHANNEL_LOG_TABLE_FIELD_ID7	0	FILENAME
+139151	17	0	CHANNEL_LOG_TABLE_FIELD_NAME7	0	FILENAME
+139152	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED7	0	Y
+139153	17	0	CHANNEL_LOG_TABLE_FIELD_ID8	0	OBJECT_ID
+139154	17	0	CHANNEL_LOG_TABLE_FIELD_NAME8	0	OBJECT_ID
+139155	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED8	0	Y
+139156	17	0	CHANNEL_LOG_TABLE_FIELD_ID9	0	OBJECT_REVISION
+139157	17	0	CHANNEL_LOG_TABLE_FIELD_NAME9	0	OBJECT_REVISION
+139158	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED9	0	Y
+139159	17	0	CHANNEL_LOG_TABLE_FIELD_ID10	0	PARENT_CHANNEL_ID
+139160	17	0	CHANNEL_LOG_TABLE_FIELD_NAME10	0	PARENT_CHANNEL_ID
+139161	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED10	0	Y
+139162	17	0	CHANNEL_LOG_TABLE_FIELD_ID11	0	ROOT_CHANNEL_ID
+139163	17	0	CHANNEL_LOG_TABLE_FIELD_NAME11	0	ROOT_CHANNEL_ID
+139164	17	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
+139165	100	0	UNIQUE_CONNECTIONS	0	N
+139166	100	0	FEEDBACK_SHOWN	0	Y
+139167	100	0	FEEDBACK_SIZE	50000	
+139168	100	0	USING_THREAD_PRIORITIES	0	Y
+139169	100	0	SHARED_FILE	0	\N
+139170	100	0	CAPTURE_STEP_PERFORMANCE	0	N
+139171	100	0	STEP_PERFORMANCE_CAPTURING_DELAY	1000	
+139172	100	0	STEP_PERFORMANCE_CAPTURING_SIZE_LIMIT	0	100
+139173	100	0	STEP_PERFORMANCE_LOG_TABLE	0	\N
+139174	100	0	LOG_SIZE_LIMIT	0	\N
+139175	100	0	LOG_INTERVAL	0	\N
+139176	100	0	TRANSFORMATION_TYPE	0	Normal
+139177	100	0	TRANS_LOG_TABLE_CONNECTION_NAME	0	\N
+139178	100	0	TRANS_LOG_TABLE_SCHEMA_NAME	0	\N
+139179	100	0	TRANS_LOG_TABLE_TABLE_NAME	0	\N
+139180	100	0	TRANS_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+139181	100	0	TRANS_LOG_TABLE_FIELD_ID0	0	ID_BATCH
+139182	100	0	TRANS_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
+139183	100	0	TRANS_LOG_TABLE_FIELD_ENABLED0	0	Y
+139184	100	0	TRANS_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+139185	100	0	TRANS_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+139186	100	0	TRANS_LOG_TABLE_FIELD_ENABLED1	0	Y
+139187	100	0	TRANS_LOG_TABLE_FIELD_ID2	0	TRANSNAME
+139188	100	0	TRANS_LOG_TABLE_FIELD_NAME2	0	TRANSNAME
+139189	100	0	TRANS_LOG_TABLE_FIELD_ENABLED2	0	Y
+139190	100	0	TRANS_LOG_TABLE_FIELD_ID3	0	STATUS
+139191	100	0	TRANS_LOG_TABLE_FIELD_NAME3	0	STATUS
+139192	100	0	TRANS_LOG_TABLE_FIELD_ENABLED3	0	Y
+139193	100	0	TRANS_LOG_TABLE_FIELD_ID4	0	LINES_READ
+139194	100	0	TRANS_LOG_TABLE_FIELD_NAME4	0	LINES_READ
+139195	100	0	TRANS_LOG_TABLE_FIELD_ENABLED4	0	Y
+139196	100	0	TRANS_LOG_TABLE_FIELD_SUBJECT4	0	\N
+139197	100	0	TRANS_LOG_TABLE_FIELD_ID5	0	LINES_WRITTEN
+139198	100	0	TRANS_LOG_TABLE_FIELD_NAME5	0	LINES_WRITTEN
+139199	100	0	TRANS_LOG_TABLE_FIELD_ENABLED5	0	Y
+139200	100	0	TRANS_LOG_TABLE_FIELD_SUBJECT5	0	\N
+139201	100	0	TRANS_LOG_TABLE_FIELD_ID6	0	LINES_UPDATED
+139202	100	0	TRANS_LOG_TABLE_FIELD_NAME6	0	LINES_UPDATED
+139203	100	0	TRANS_LOG_TABLE_FIELD_ENABLED6	0	Y
+139204	100	0	TRANS_LOG_TABLE_FIELD_SUBJECT6	0	\N
+139205	100	0	TRANS_LOG_TABLE_FIELD_ID7	0	LINES_INPUT
+139206	100	0	TRANS_LOG_TABLE_FIELD_NAME7	0	LINES_INPUT
+139207	100	0	TRANS_LOG_TABLE_FIELD_ENABLED7	0	Y
+139208	100	0	TRANS_LOG_TABLE_FIELD_SUBJECT7	0	\N
+139209	100	0	TRANS_LOG_TABLE_FIELD_ID8	0	LINES_OUTPUT
+139210	100	0	TRANS_LOG_TABLE_FIELD_NAME8	0	LINES_OUTPUT
+139211	100	0	TRANS_LOG_TABLE_FIELD_ENABLED8	0	Y
+139212	100	0	TRANS_LOG_TABLE_FIELD_SUBJECT8	0	\N
+139213	100	0	TRANS_LOG_TABLE_FIELD_ID9	0	LINES_REJECTED
+139214	100	0	TRANS_LOG_TABLE_FIELD_NAME9	0	LINES_REJECTED
+139215	100	0	TRANS_LOG_TABLE_FIELD_ENABLED9	0	Y
+139216	100	0	TRANS_LOG_TABLE_FIELD_SUBJECT9	0	\N
+139217	100	0	TRANS_LOG_TABLE_FIELD_ID10	0	ERRORS
+139218	100	0	TRANS_LOG_TABLE_FIELD_NAME10	0	ERRORS
+139219	100	0	TRANS_LOG_TABLE_FIELD_ENABLED10	0	Y
+139220	100	0	TRANS_LOG_TABLE_FIELD_ID11	0	STARTDATE
+139221	100	0	TRANS_LOG_TABLE_FIELD_NAME11	0	STARTDATE
+139222	100	0	TRANS_LOG_TABLE_FIELD_ENABLED11	0	Y
+139223	100	0	TRANS_LOG_TABLE_FIELD_ID12	0	ENDDATE
+139224	100	0	TRANS_LOG_TABLE_FIELD_NAME12	0	ENDDATE
+139225	100	0	TRANS_LOG_TABLE_FIELD_ENABLED12	0	Y
+139226	100	0	TRANS_LOG_TABLE_FIELD_ID13	0	LOGDATE
+139227	100	0	TRANS_LOG_TABLE_FIELD_NAME13	0	LOGDATE
+139228	100	0	TRANS_LOG_TABLE_FIELD_ENABLED13	0	Y
+139229	100	0	TRANS_LOG_TABLE_FIELD_ID14	0	DEPDATE
+139230	100	0	TRANS_LOG_TABLE_FIELD_NAME14	0	DEPDATE
+139231	100	0	TRANS_LOG_TABLE_FIELD_ENABLED14	0	Y
+139232	100	0	TRANS_LOG_TABLE_FIELD_ID15	0	REPLAYDATE
+139233	100	0	TRANS_LOG_TABLE_FIELD_NAME15	0	REPLAYDATE
+139234	100	0	TRANS_LOG_TABLE_FIELD_ENABLED15	0	Y
+139235	100	0	TRANS_LOG_TABLE_FIELD_ID16	0	LOG_FIELD
+139236	100	0	TRANS_LOG_TABLE_FIELD_NAME16	0	LOG_FIELD
+139237	100	0	TRANS_LOG_TABLE_FIELD_ENABLED16	0	Y
+139238	100	0	TRANSLOG_TABLE_INTERVAL	0	\N
+139239	100	0	TRANSLOG_TABLE_SIZE_LIMIT	0	\N
+139240	100	0	STEP_LOG_TABLE_CONNECTION_NAME	0	\N
+139241	100	0	STEP_LOG_TABLE_SCHEMA_NAME	0	\N
+139242	100	0	STEP_LOG_TABLE_TABLE_NAME	0	\N
+139243	100	0	STEP_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+139244	100	0	STEP_LOG_TABLE_FIELD_ID0	0	ID_BATCH
+139245	100	0	STEP_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
+139246	100	0	STEP_LOG_TABLE_FIELD_ENABLED0	0	Y
+139247	100	0	STEP_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+139248	100	0	STEP_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+139249	100	0	STEP_LOG_TABLE_FIELD_ENABLED1	0	Y
+139250	100	0	STEP_LOG_TABLE_FIELD_ID2	0	LOG_DATE
+139251	100	0	STEP_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
+139252	100	0	STEP_LOG_TABLE_FIELD_ENABLED2	0	Y
+139253	100	0	STEP_LOG_TABLE_FIELD_ID3	0	TRANSNAME
+139254	100	0	STEP_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
+139255	100	0	STEP_LOG_TABLE_FIELD_ENABLED3	0	Y
+139256	100	0	STEP_LOG_TABLE_FIELD_ID4	0	STEPNAME
+139257	100	0	STEP_LOG_TABLE_FIELD_NAME4	0	STEPNAME
+139258	100	0	STEP_LOG_TABLE_FIELD_ENABLED4	0	Y
+139259	100	0	STEP_LOG_TABLE_FIELD_ID5	0	STEP_COPY
+139260	100	0	STEP_LOG_TABLE_FIELD_NAME5	0	STEP_COPY
+139261	100	0	STEP_LOG_TABLE_FIELD_ENABLED5	0	Y
+139262	100	0	STEP_LOG_TABLE_FIELD_ID6	0	LINES_READ
+139263	100	0	STEP_LOG_TABLE_FIELD_NAME6	0	LINES_READ
+139264	100	0	STEP_LOG_TABLE_FIELD_ENABLED6	0	Y
+139265	100	0	STEP_LOG_TABLE_FIELD_ID7	0	LINES_WRITTEN
+139266	100	0	STEP_LOG_TABLE_FIELD_NAME7	0	LINES_WRITTEN
+139267	100	0	STEP_LOG_TABLE_FIELD_ENABLED7	0	Y
+139268	100	0	STEP_LOG_TABLE_FIELD_ID8	0	LINES_UPDATED
+139269	100	0	STEP_LOG_TABLE_FIELD_NAME8	0	LINES_UPDATED
+139270	100	0	STEP_LOG_TABLE_FIELD_ENABLED8	0	Y
+139271	100	0	STEP_LOG_TABLE_FIELD_ID9	0	LINES_INPUT
+139272	100	0	STEP_LOG_TABLE_FIELD_NAME9	0	LINES_INPUT
+139273	100	0	STEP_LOG_TABLE_FIELD_ENABLED9	0	Y
+139274	100	0	STEP_LOG_TABLE_FIELD_ID10	0	LINES_OUTPUT
+139275	100	0	STEP_LOG_TABLE_FIELD_NAME10	0	LINES_OUTPUT
+139276	100	0	STEP_LOG_TABLE_FIELD_ENABLED10	0	Y
+139277	100	0	STEP_LOG_TABLE_FIELD_ID11	0	LINES_REJECTED
+139278	100	0	STEP_LOG_TABLE_FIELD_NAME11	0	LINES_REJECTED
+139279	100	0	STEP_LOG_TABLE_FIELD_ENABLED11	0	Y
+139280	100	0	STEP_LOG_TABLE_FIELD_ID12	0	ERRORS
+139281	100	0	STEP_LOG_TABLE_FIELD_NAME12	0	ERRORS
+139282	100	0	STEP_LOG_TABLE_FIELD_ENABLED12	0	Y
+139283	100	0	STEP_LOG_TABLE_FIELD_ID13	0	LOG_FIELD
+139284	100	0	STEP_LOG_TABLE_FIELD_NAME13	0	LOG_FIELD
+139285	100	0	STEP_LOG_TABLE_FIELD_ENABLED13	0	N
+139286	100	0	PERFORMANCE_LOG_TABLE_CONNECTION_NAME	0	\N
+139287	100	0	PERFORMANCE_LOG_TABLE_SCHEMA_NAME	0	\N
+139288	100	0	PERFORMANCE_LOG_TABLE_TABLE_NAME	0	\N
+139289	100	0	PERFORMANCE_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+139290	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID0	0	ID_BATCH
+139291	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
+139292	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED0	0	Y
+139293	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID1	0	SEQ_NR
+139294	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME1	0	SEQ_NR
+139295	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED1	0	Y
+139296	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID2	0	LOGDATE
+139297	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME2	0	LOGDATE
+139298	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED2	0	Y
+139299	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID3	0	TRANSNAME
+139300	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
+139301	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED3	0	Y
+139302	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID4	0	STEPNAME
+139303	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME4	0	STEPNAME
+139304	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED4	0	Y
+139305	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID5	0	STEP_COPY
+139306	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME5	0	STEP_COPY
+139307	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED5	0	Y
+139308	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID6	0	LINES_READ
+139309	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME6	0	LINES_READ
+139310	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED6	0	Y
+139311	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID7	0	LINES_WRITTEN
+139312	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME7	0	LINES_WRITTEN
+139313	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED7	0	Y
+139314	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID8	0	LINES_UPDATED
+139315	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME8	0	LINES_UPDATED
+139316	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED8	0	Y
+139317	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID9	0	LINES_INPUT
+139318	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME9	0	LINES_INPUT
+139319	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED9	0	Y
+139320	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID10	0	LINES_OUTPUT
+139321	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME10	0	LINES_OUTPUT
+139322	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED10	0	Y
+139323	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID11	0	LINES_REJECTED
+139324	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME11	0	LINES_REJECTED
+139325	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED11	0	Y
+139326	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID12	0	ERRORS
+139327	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME12	0	ERRORS
+139328	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED12	0	Y
+139329	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID13	0	INPUT_BUFFER_ROWS
+139330	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME13	0	INPUT_BUFFER_ROWS
+139331	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED13	0	Y
+139332	100	0	PERFORMANCE_LOG_TABLE_FIELD_ID14	0	OUTPUT_BUFFER_ROWS
+139333	100	0	PERFORMANCE_LOG_TABLE_FIELD_NAME14	0	OUTPUT_BUFFER_ROWS
+139334	100	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED14	0	Y
+139335	100	0	PERFORMANCELOG_TABLE_INTERVAL	0	\N
+139336	100	0	CHANNEL_LOG_TABLE_CONNECTION_NAME	0	\N
+139337	100	0	CHANNEL_LOG_TABLE_SCHEMA_NAME	0	\N
+139338	100	0	CHANNEL_LOG_TABLE_TABLE_NAME	0	\N
+139339	100	0	CHANNEL_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+139340	100	0	CHANNEL_LOG_TABLE_FIELD_ID0	0	ID_BATCH
+139341	100	0	CHANNEL_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
+139342	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED0	0	Y
+139343	100	0	CHANNEL_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+139344	100	0	CHANNEL_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+139345	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED1	0	Y
+139346	100	0	CHANNEL_LOG_TABLE_FIELD_ID2	0	LOG_DATE
+139347	100	0	CHANNEL_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
+139348	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED2	0	Y
+139349	100	0	CHANNEL_LOG_TABLE_FIELD_ID3	0	LOGGING_OBJECT_TYPE
+139350	100	0	CHANNEL_LOG_TABLE_FIELD_NAME3	0	LOGGING_OBJECT_TYPE
+139351	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED3	0	Y
+139352	100	0	CHANNEL_LOG_TABLE_FIELD_ID4	0	OBJECT_NAME
+139353	100	0	CHANNEL_LOG_TABLE_FIELD_NAME4	0	OBJECT_NAME
+139354	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED4	0	Y
+139355	100	0	CHANNEL_LOG_TABLE_FIELD_ID5	0	OBJECT_COPY
+139356	100	0	CHANNEL_LOG_TABLE_FIELD_NAME5	0	OBJECT_COPY
+139357	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED5	0	Y
+139358	100	0	CHANNEL_LOG_TABLE_FIELD_ID6	0	REPOSITORY_DIRECTORY
+139359	100	0	CHANNEL_LOG_TABLE_FIELD_NAME6	0	REPOSITORY_DIRECTORY
+139360	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED6	0	Y
+139361	100	0	CHANNEL_LOG_TABLE_FIELD_ID7	0	FILENAME
+139362	100	0	CHANNEL_LOG_TABLE_FIELD_NAME7	0	FILENAME
+139363	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED7	0	Y
+139364	100	0	CHANNEL_LOG_TABLE_FIELD_ID8	0	OBJECT_ID
+139365	100	0	CHANNEL_LOG_TABLE_FIELD_NAME8	0	OBJECT_ID
+139366	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED8	0	Y
+139367	100	0	CHANNEL_LOG_TABLE_FIELD_ID9	0	OBJECT_REVISION
+139368	100	0	CHANNEL_LOG_TABLE_FIELD_NAME9	0	OBJECT_REVISION
+139369	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED9	0	Y
+139370	100	0	CHANNEL_LOG_TABLE_FIELD_ID10	0	PARENT_CHANNEL_ID
+139371	100	0	CHANNEL_LOG_TABLE_FIELD_NAME10	0	PARENT_CHANNEL_ID
+139372	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED10	0	Y
+139373	100	0	CHANNEL_LOG_TABLE_FIELD_ID11	0	ROOT_CHANNEL_ID
+139374	100	0	CHANNEL_LOG_TABLE_FIELD_NAME11	0	ROOT_CHANNEL_ID
+139375	100	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
 \.
 
 
 --
--- TOC entry 2231 (class 0 OID 0)
--- Dependencies: 198
--- Name: r_trans_attribute_id_trans_attribute_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_trans_attribute_id_trans_attribute_seq', 1, false);
-
-
---
--- TOC entry 2140 (class 0 OID 19353)
+-- TOC entry 2113 (class 0 OID 250178)
 -- Dependencies: 199
 -- Data for Name: r_trans_cluster; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -44098,16 +45111,7 @@ COPY r_trans_cluster (id_trans_cluster, id_transformation, id_cluster) FROM stdi
 
 
 --
--- TOC entry 2232 (class 0 OID 0)
--- Dependencies: 200
--- Name: r_trans_cluster_id_trans_cluster_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_trans_cluster_id_trans_cluster_seq', 1, false);
-
-
---
--- TOC entry 2142 (class 0 OID 19358)
+-- TOC entry 2114 (class 0 OID 250183)
 -- Dependencies: 201
 -- Data for Name: r_trans_hop; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -44210,27 +45214,8 @@ COPY r_trans_hop (id_trans_hop, id_transformation, id_step_from, id_step_to, ena
 7150	97	7581	7582	Y
 7151	97	7582	7584	Y
 7152	97	7584	7583	Y
-6877	17	7262	7265	Y
-6878	17	7270	7271	N
-6879	17	7276	7274	Y
-6880	17	7274	7269	Y
-6881	17	7271	7261	N
-6882	17	7261	7259	Y
-6883	17	7259	7272	Y
-6884	17	7272	7260	Y
-6885	17	7273	7264	Y
-6886	17	7265	7273	Y
-6887	17	7273	7268	Y
-6888	17	7267	7266	Y
-6889	17	7275	7258	Y
-6890	17	7258	7267	Y
-6891	17	7272	7262	Y
-6892	17	7268	7277	Y
-6893	17	7277	7263	Y
-6894	17	7277	7276	Y
 4844	67	5154	5155	Y
 4845	67	5155	5156	Y
-6895	17	7270	7278	Y
 4847	56	5167	5164	Y
 4848	56	5164	5166	Y
 4849	56	5166	5162	Y
@@ -44293,17 +45278,6 @@ COPY r_trans_hop (id_trans_hop, id_transformation, id_step_from, id_step_to, ena
 6721	66	7095	7098	Y
 6722	66	7098	7097	Y
 6723	66	7094	7095	Y
-6896	17	7278	7261	Y
-6897	17	7279	7280	Y
-6898	17	7269	7279	Y
-6899	17	7279	7281	Y
-6900	17	7281	7284	Y
-6901	17	7282	7284	Y
-6902	17	7284	7283	Y
-6903	17	7283	7285	Y
-6904	17	7283	7287	Y
-6905	17	7287	7286	Y
-6906	17	7286	7275	Y
 5647	75	5976	5989	Y
 5648	75	5989	5992	Y
 5649	75	5982	5994	Y
@@ -44585,10 +45559,6 @@ COPY r_trans_hop (id_trans_hop, id_transformation, id_step_from, id_step_to, ena
 7179	103	7631	7632	Y
 7181	101	7636	7635	Y
 7182	102	7638	7637	Y
-7183	100	7642	7639	Y
-7184	100	7639	7641	Y
-7185	100	7639	7640	Y
-7186	100	7640	7643	Y
 7187	44	7670	7654	Y
 7188	44	7687	7670	Y
 7189	44	7688	7671	Y
@@ -44638,20 +45608,60 @@ COPY r_trans_hop (id_trans_hop, id_transformation, id_step_from, id_step_to, ena
 7233	44	7660	7677	Y
 7234	44	7676	7646	Y
 7235	44	7646	7660	Y
+7254	17	7717	7721	Y
+7255	17	7727	7731	Y
+7256	17	7738	7736	Y
+7257	17	7736	7726	Y
+7258	17	7731	7715	Y
+7259	17	7715	7713	Y
+7260	17	7713	7732	Y
+7261	17	7732	7714	Y
+7262	17	7733	7720	Y
+7263	17	7721	7733	Y
+7264	17	7733	7725	Y
+7265	17	7724	7722	Y
+7266	17	7732	7717	Y
+7267	17	7725	7740	Y
+7268	17	7740	7719	Y
+7269	17	7740	7738	Y
+7270	17	7727	7712	N
+7271	17	7712	7715	N
+7272	17	7718	7739	Y
+7273	17	7726	7718	Y
+7274	17	7718	7723	Y
+7275	17	7723	7729	Y
+7276	17	7734	7729	Y
+7277	17	7729	7730	Y
+7278	17	7730	7728	Y
+7279	17	7735	7716	Y
+7280	17	7716	7737	Y
+7281	17	7737	7724	Y
+7282	17	7730	7741	Y
+7283	17	7741	7742	Y
+7284	17	7742	7735	Y
+7285	100	7745	7748	Y
+7286	100	7745	7750	Y
+7287	100	7748	7757	Y
+7288	100	7749	7755	Y
+7289	100	7755	7758	Y
+7290	100	7756	7760	Y
+7291	100	7758	7745	Y
+7292	100	7759	7755	Y
+7293	100	7750	7752	Y
+7294	100	7751	7753	Y
+7295	100	7752	7746	Y
+7296	100	7753	7746	Y
+7297	100	7746	7743	Y
+7298	100	7744	7754	Y
+7299	100	7743	7744	Y
+7300	100	7757	7756	Y
+7301	100	7747	7751	Y
+7302	100	7757	7747	Y
 \.
 
 
 --
--- TOC entry 2233 (class 0 OID 0)
--- Dependencies: 202
--- Name: r_trans_hop_id_trans_hop_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_trans_hop_id_trans_hop_seq', 1, false);
-
-
---
--- TOC entry 2144 (class 0 OID 19363)
+-- TOC entry 2115 (class 0 OID 250188)
 -- Dependencies: 203
 -- Data for Name: r_trans_lock; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -44661,16 +45671,7 @@ COPY r_trans_lock (id_trans_lock, id_transformation, id_user, lock_message, lock
 
 
 --
--- TOC entry 2234 (class 0 OID 0)
--- Dependencies: 204
--- Name: r_trans_lock_id_trans_lock_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_trans_lock_id_trans_lock_seq', 1, false);
-
-
---
--- TOC entry 2146 (class 0 OID 19371)
+-- TOC entry 2116 (class 0 OID 250196)
 -- Dependencies: 205
 -- Data for Name: r_trans_note; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -44765,12 +45766,9 @@ COPY r_trans_note (id_transformation, id_note) FROM stdin;
 41	2910
 48	2942
 57	2964
-17	2988
 94	2965
 94	2966
 102	3020
-100	3021
-100	3022
 44	3023
 44	3024
 44	3025
@@ -44789,11 +45787,17 @@ COPY r_trans_note (id_transformation, id_note) FROM stdin;
 44	3038
 44	3039
 44	3040
+17	3062
+17	3063
+100	3064
+100	3065
+100	3066
+100	3067
 \.
 
 
 --
--- TOC entry 2147 (class 0 OID 19374)
+-- TOC entry 2117 (class 0 OID 250199)
 -- Dependencies: 206
 -- Data for Name: r_trans_partition_schema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -44803,16 +45807,7 @@ COPY r_trans_partition_schema (id_trans_partition_schema, id_transformation, id_
 
 
 --
--- TOC entry 2235 (class 0 OID 0)
--- Dependencies: 207
--- Name: r_trans_partition_schema_id_trans_partition_schema_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_trans_partition_schema_id_trans_partition_schema_seq', 1, false);
-
-
---
--- TOC entry 2149 (class 0 OID 19379)
+-- TOC entry 2118 (class 0 OID 250204)
 -- Dependencies: 208
 -- Data for Name: r_trans_slave; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -44822,16 +45817,7 @@ COPY r_trans_slave (id_trans_slave, id_transformation, id_slave) FROM stdin;
 
 
 --
--- TOC entry 2236 (class 0 OID 0)
--- Dependencies: 209
--- Name: r_trans_slave_id_trans_slave_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_trans_slave_id_trans_slave_seq', 1, false);
-
-
---
--- TOC entry 2151 (class 0 OID 19384)
+-- TOC entry 2119 (class 0 OID 250209)
 -- Dependencies: 210
 -- Data for Name: r_trans_step_condition; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -44846,10 +45832,7 @@ COPY r_trans_step_condition (id_transformation, id_step, id_condition) FROM stdi
 11	5740	208
 35	5123	201
 76	5891	209
-17	7272	242
-17	7273	243
 24	2312	125
-17	7277	244
 77	5915	210
 57	7048	225
 83	6503	214
@@ -44857,10 +45840,7 @@ COPY r_trans_step_condition (id_transformation, id_step, id_condition) FROM stdi
 82	6517	218
 57	7051	226
 57	7052	227
-17	7279	245
-17	7283	246
 93	6824	223
-17	7284	247
 90	6954	224
 96	7546	265
 96	7552	268
@@ -44873,12 +45853,19 @@ COPY r_trans_step_condition (id_transformation, id_step, id_condition) FROM stdi
 28	7104	231
 95	7251	240
 95	7255	241
-100	7639	279
+17	7718	281
+17	7729	282
+17	7730	283
+17	7732	284
+17	7733	285
+17	7740	286
+100	7745	287
+100	7755	288
 \.
 
 
 --
--- TOC entry 2152 (class 0 OID 19387)
+-- TOC entry 2120 (class 0 OID 250212)
 -- Dependencies: 211
 -- Data for Name: r_transformation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -44926,7 +45913,6 @@ COPY r_transformation (id_transformation, id_directory, name, description, exten
 38	3	creer_nom_dossier_synchro_du_jour	\N	Création d'un nom de dossier pour la livraison à partir de la date du jour sous la forme "AAAA_MM_JJ"	\N	0	\N	\N	\N	\N	\N	-1	\N	Y	Y	-1	\N	\N	0.00	0.00	-	2013-05-27 10:47:10.316	admin	2013-12-20 11:21:12.74	10000
 57	25	mettre_a_jour_position_hydrant	\N	Mise à jour de la position des hydrants à partir d'un fichier TXT de positions issues d'un GPS de précision\r\n1 relevé GPS = 2 lignes successives dans le fichier TXT\r\n* 1ère ligne : numéro de relevé\r\n* 2ème ligne : informations séparées par des « ; » et structurées de la manière suivante :\r\n- Nature de l'information\r\n- Longitude en WGS84\r\n- Latitude en WGS84\r\n- X en Lambert 93\r\n- Y en Lambert 93\r\n- Numéro de l'hydrant (si connu)\r\n- Type d'hydrant (PENA/PIBI)\r\n- Nature de l'hydant (PI,BI,CE,PE...) \r\n- Diamètre\r\n- ?\r\n- Date du relevé GPS\r\n	\N	0	\N	\N	\N	\N	\N	-1	\N	Y	Y	-1	\N	\N	0.00	0.00	-	2013-05-06 10:06:18.435	admin	2014-03-03 11:05:22.662	10000
 98	36	recuperer_requete_source	\N	Récupération de la requête XML associée à un modèle de document	\N	0	\N	\N	\N	\N	\N	-1	\N	Y	Y	-1	\N	\N	0.00	0.00	-	2016-10-14 15:31:30.379	admin	2016-10-27 08:23:46.347	10000
-17	11	mettre_a_jour_metadonnees	\N	Alimentation de la table des métadonnées à partir d'appels aux services Web du CRIGE PACA.\r\nLa table des métadonnées est purgée totalement à chaque execution (annule / remplace)\r\n* Gérer les thématiques Sdis/crige Paca\r\n* Flager le truncage de la table	\N	0	\N	\N	\N	\N	\N	-1	\N	Y	Y	-1	\N	\N	0.00	0.00	-	2013-03-26 09:47:07.383	admin	2016-10-06 12:40:50.234	10000
 96	35	creer_liste_modeles	\N	\N	\N	0	\N	\N	\N	\N	\N	-1	\N	Y	Y	-1	\N	\N	0.00	0.00	-	2016-10-14 15:31:30.379	admin	2016-10-27 16:00:58.391	10000
 91	31	hydrants_a_numeroter_csv	Hydrants à numéroter dans csv	Récupère les hydrants à numéroter et\nles insert dans un fichier CSV	\N	0	\N	\N	\N	\N	\N	-1	\N	Y	Y	-1	\N	\N	0.00	0.00	admin	2014-01-07 17:10:03.16	admin	2013-12-31 13:05:44.817	10000
 92	31	organisme_cis	Liste des organismes cis	\N	\N	0	\N	\N	\N	\N	\N	-1	\N	Y	Y	-1	\N	\N	0.00	0.00	admin	2014-01-07 17:10:03.522	admin	2013-12-30 17:29:06.036	10000
@@ -44947,22 +45933,14 @@ COPY r_transformation (id_transformation, id_directory, name, description, exten
 103	41	exporter_donnees_csv	\N	\N	\N	0	\N	\N	\N	\N	\N	-1	\N	Y	Y	-1	\N	\N	0.00	0.00	-	2017-03-16 14:24:26.785	admin	2017-03-20 14:25:12.047	10000
 101	41	recuperation_sql	\N	\N	\N	0	\N	\N	\N	\N	\N	-1	\N	Y	Y	-1	\N	\N	0.00	0.00	-	2017-03-16 11:19:38.471	admin	2017-03-20 14:27:19.015	10000
 102	41	exporter_donnees_shape	\N	\N	\N	0	\N	\N	\N	\N	\N	-1	\N	Y	Y	-1	\N	\N	0.00	0.00	-	2017-03-16 14:18:08.858	admin	2017-03-20 14:29:26.66	10000
-100	41	creer_liste_modeles	\N	Référencement en base des modèles d'exports	\N	0	\N	\N	\N	\N	\N	-1	\N	Y	Y	-1	\N	\N	0.00	0.00	-	2017-03-15 16:46:50.922	admin	2017-03-20 14:32:30.182	10000
 44	22	exporter_tables_hydrants	\N	- Génération des ordres SQL liés à la synchronisation des tables métiers liées de la thématique "HYDRANT"\r\n- Copie des documents éventuels\r\nLes ordres des insctructions SQL sont précisés en "DUR" dans chaque requête d'extraction	\N	0	\N	\N	\N	\N	\N	-1	\N	Y	Y	-1	\N	\N	0.00	0.00	-	2013-05-23 15:24:16.078	admin	2017-03-21 09:50:05.097	10000
+17	11	mettre_a_jour_metadonnees	\N	Alimentation de la table des métadonnées à partir d'appels aux services Web du CRIGE PACA.\r\nLa table des métadonnées est purgée totalement à chaque execution (annule / remplace)\r\n* Gérer les thématiques Sdis/crige Paca\r\n* Flager le truncage de la table	\N	0	\N	\N	\N	\N	\N	-1	\N	Y	Y	-1	\N	\N	0.00	0.00	-	2013-03-26 09:47:07.383	admin	2017-05-16 16:20:39.092	10000
+100	41	creer_liste_modeles	\N	Référencement en base des modèles d'exports	\N	0	\N	\N	\N	\N	\N	-1	\N	Y	Y	-1	\N	\N	0.00	0.00	-	2017-03-15 16:46:50.922	admin	2017-05-16 17:08:51.239	10000
 \.
 
 
 --
--- TOC entry 2237 (class 0 OID 0)
--- Dependencies: 212
--- Name: r_transformation_id_transformation_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_transformation_id_transformation_seq', 1, false);
-
-
---
--- TOC entry 2154 (class 0 OID 19395)
+-- TOC entry 2121 (class 0 OID 250220)
 -- Dependencies: 213
 -- Data for Name: r_user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -44974,16 +45952,7 @@ COPY r_user (id_user, login, password, name, description, enabled) FROM stdin;
 
 
 --
--- TOC entry 2238 (class 0 OID 0)
--- Dependencies: 214
--- Name: r_user_id_user_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_user_id_user_seq', 1, false);
-
-
---
--- TOC entry 2156 (class 0 OID 19403)
+-- TOC entry 2122 (class 0 OID 250228)
 -- Dependencies: 215
 -- Data for Name: r_value; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -45041,16 +46010,7 @@ COPY r_value (id_value, name, value_type, value_str, is_null) FROM stdin;
 
 
 --
--- TOC entry 2239 (class 0 OID 0)
--- Dependencies: 216
--- Name: r_value_id_value_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_value_id_value_seq', 1, false);
-
-
---
--- TOC entry 2158 (class 0 OID 19411)
+-- TOC entry 2123 (class 0 OID 250236)
 -- Dependencies: 217
 -- Data for Name: r_version; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -45061,96 +46021,97 @@ COPY r_version (id_version, major_version, minor_version, upgrade_date, is_upgra
 
 
 --
--- TOC entry 2240 (class 0 OID 0)
--- Dependencies: 218
--- Name: r_version_id_version_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('r_version_id_version_seq', 1, false);
-
-
---
--- TOC entry 1987 (class 1259 OID 19453)
--- Name: idx_job_attribute_lookup; Type: INDEX; Schema: public; Owner: postgres
+-- TOC entry 2074 (class 1259 OID 250278)
+-- Dependencies: 159 159 159
+-- Name: idx_job_attribute_lookup; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE UNIQUE INDEX idx_job_attribute_lookup ON r_job_attribute USING btree (id_job, code, nr);
 
 
 --
--- TOC entry 1985 (class 1259 OID 19454)
--- Name: idx_r_database_attribute_ak; Type: INDEX; Schema: public; Owner: postgres
+-- TOC entry 2072 (class 1259 OID 250279)
+-- Dependencies: 147 147
+-- Name: idx_r_database_attribute_ak; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE UNIQUE INDEX idx_r_database_attribute_ak ON r_database_attribute USING btree (id_database, code);
 
 
 --
--- TOC entry 1986 (class 1259 OID 19455)
--- Name: idx_r_directory_ak; Type: INDEX; Schema: public; Owner: postgres
+-- TOC entry 2073 (class 1259 OID 250280)
+-- Dependencies: 156 156
+-- Name: idx_r_directory_ak; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE UNIQUE INDEX idx_r_directory_ak ON r_directory USING btree (id_directory_parent, directory_name);
 
 
 --
--- TOC entry 1988 (class 1259 OID 19456)
--- Name: idx_r_jobentry_attribute_lookup; Type: INDEX; Schema: public; Owner: postgres
+-- TOC entry 2075 (class 1259 OID 250281)
+-- Dependencies: 168 168 168
+-- Name: idx_r_jobentry_attribute_lookup; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE UNIQUE INDEX idx_r_jobentry_attribute_lookup ON r_jobentry_attribute USING btree (id_jobentry_attribute, code, nr);
 
 
 --
--- TOC entry 1989 (class 1259 OID 19457)
--- Name: idx_r_jobentry_database_lu1; Type: INDEX; Schema: public; Owner: postgres
+-- TOC entry 2076 (class 1259 OID 250282)
+-- Dependencies: 172
+-- Name: idx_r_jobentry_database_lu1; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE INDEX idx_r_jobentry_database_lu1 ON r_jobentry_database USING btree (id_job);
 
 
 --
--- TOC entry 1990 (class 1259 OID 19458)
--- Name: idx_r_jobentry_database_lu2; Type: INDEX; Schema: public; Owner: postgres
+-- TOC entry 2077 (class 1259 OID 250283)
+-- Dependencies: 172
+-- Name: idx_r_jobentry_database_lu2; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE INDEX idx_r_jobentry_database_lu2 ON r_jobentry_database USING btree (id_database);
 
 
 --
--- TOC entry 1991 (class 1259 OID 19459)
--- Name: idx_r_step_attribute_lookup; Type: INDEX; Schema: public; Owner: postgres
+-- TOC entry 2078 (class 1259 OID 250284)
+-- Dependencies: 191 191 191
+-- Name: idx_r_step_attribute_lookup; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE UNIQUE INDEX idx_r_step_attribute_lookup ON r_step_attribute USING btree (id_step, code, nr);
 
 
 --
--- TOC entry 1992 (class 1259 OID 19460)
--- Name: idx_r_step_database_lu1; Type: INDEX; Schema: public; Owner: postgres
+-- TOC entry 2079 (class 1259 OID 250285)
+-- Dependencies: 193
+-- Name: idx_r_step_database_lu1; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE INDEX idx_r_step_database_lu1 ON r_step_database USING btree (id_transformation);
 
 
 --
--- TOC entry 1993 (class 1259 OID 19461)
--- Name: idx_r_step_database_lu2; Type: INDEX; Schema: public; Owner: postgres
+-- TOC entry 2080 (class 1259 OID 250286)
+-- Dependencies: 193
+-- Name: idx_r_step_database_lu2; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE INDEX idx_r_step_database_lu2 ON r_step_database USING btree (id_database);
 
 
 --
--- TOC entry 1994 (class 1259 OID 19462)
--- Name: idx_trans_attribute_lookup; Type: INDEX; Schema: public; Owner: postgres
+-- TOC entry 2081 (class 1259 OID 250287)
+-- Dependencies: 197 197 197
+-- Name: idx_trans_attribute_lookup; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE UNIQUE INDEX idx_trans_attribute_lookup ON r_trans_attribute USING btree (id_transformation, code, nr);
 
 
 --
--- TOC entry 2166 (class 0 OID 0)
+-- TOC entry 2128 (class 0 OID 0)
 -- Dependencies: 6
 -- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
@@ -45161,7 +46122,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2017-03-21 10:43:31 CET
+-- Completed on 2017-05-17 08:59:08 CEST
 
 --
 -- PostgreSQL database dump complete
