@@ -44,6 +44,7 @@ Ext.define('Sdis.Remocra.features.hydrants.BaseFiche', {
                     xtype: 'container',
                     padding: 10
                 },
+                deferredRender: false,
                 items: this.tabItems
             }]
         }];

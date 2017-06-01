@@ -50,7 +50,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             'hydrantFiche textfield[name=numeroInterne]': {
                 change: this.doCheckDispo
             },
-            'anomalie': {
+            'hydrantFiche #hydrantAnomalies': {
                 positionChange: this.onAnomalieChange,
                 selectionChange: this.onAnomalieSelectionChange
             },
@@ -101,7 +101,10 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                 }
             },
             'hydrantFiche numberfield[name=pressionDyn]': {
-                change: this.onChangePression
+                change: function(field) {
+                    this.bufferedCheckConstraint(field.up('hydrantFiche'));
+                    this.onChangePression(field);
+                }
             },
             'hydrantFiche image': {
                 afterrender: function(image) {
@@ -131,7 +134,6 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             erreurPression.show();
             messagePression.hide();
         }
-        this.bufferedCheckConstraint(field.up('hydrantFiche'));
     },
 
     onClose: function(fiche) {
@@ -233,7 +235,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
         }
         if (initial !== true) {
             Ext.defer(function() {
-                fiche.down('anomalie').setInfo(fiche.typeSaisie, nature);
+                fiche.down('#hydrantAnomalies').setInfo(fiche.typeSaisie, nature);
                 this.doFilterAnomalie(fiche);
                 this.calculateIndisponibilite(fiche);
             }, 100, this);
@@ -387,7 +389,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             Ext.defer(function() {
                 this.checkIfAllTabRead(fiche);
                 this.doCheckDispo(combo);
-                fiche.down('anomalie').setInfo(fiche.typeSaisie, nature.getId());
+                fiche.down('#hydrantAnomalies').setInfo(fiche.typeSaisie, nature.getId());
                 this.doFilterAnomalie(fiche);
                 this.calculateIndisponibilite(fiche);
             }, 100, this);
@@ -526,7 +528,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             }
             
             // On "bind" le store des anomalies
-            var cmpAnomalie = fiche.down('anomalie');
+            var cmpAnomalie = fiche.down('#hydrantAnomalies');
             Ext.defer(function() {
                 var store = Ext.create('Ext.data.Store', {
                     model: 'Sdis.Remocra.model.TypeHydrantAnomalie',
@@ -542,7 +544,14 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                 });
                 cmpAnomalie.bindStore(store, true);
                 cmpAnomalie.setInfo(fiche.typeSaisie, nature);
-                cmpAnomalie.setSelected(fiche.hydrant.anomalies().getRange());
+                anomalies=[];
+                //on supprime les anomalies avec critère null (elles seront calculées coté client au cas ou le trigger ne se déclenche pas)
+                fiche.hydrant.anomalies().each(function(record){
+                    if(record.get('critere')!=null){
+                        anomalies.push(record);
+                    }
+                });
+                cmpAnomalie.setSelected(anomalies);
                 this.doFilterAnomalie(fiche);
                 if (Ext.isEmpty(fiche.hydrant.get('dispoAdmin'))) {
                     this.calculateIndisponibilite(fiche);
@@ -580,7 +589,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
 
         tabPtAnomalie = fiche.down('container[pointAttention=true]');
         nature = form.findField('nature').getValue();
-        anomalie = fiche.down('anomalie');
+        anomalie = fiche.down('#hydrantAnomalies');
         storeAnomalie = anomalie.getStore();
 
         if (Ext.isEmpty(nature)) {
@@ -616,7 +625,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
     },
 
     calculateIndisponibilite: function(fiche) {
-        var hydrant = fiche.hydrant, cmpAnomalie = fiche.down('anomalie'), nature = fiche.down('combo[name=nature]'), anomalies, nbAdmin = 0, nbTerr = 0, nbHBE = 0, info;
+        var hydrant = fiche.hydrant, cmpAnomalie = fiche.down('#hydrantAnomalies'), nature = fiche.down('combo[name=nature]'), anomalies, nbAdmin = 0, nbTerr = 0, nbHBE = 0, info;
         if (hydrant != null && nature != null && nature.isValid()) {
             nature = nature.getValue();
             anomalies = cmpAnomalie.getSelected();
@@ -696,7 +705,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
     verifPression: function(button) {
         var fiche = button.up('window'), form = fiche.down('form[name=fiche]').getForm();
         var nature = fiche.down('combo[name=nature]').getValue();
-        var natureCode = Ext.getStore('TypeHydrantNature').findRecord('id', nature).get('code');
+        if(nature){
+            var natureCode = Ext.getStore('TypeHydrantNature').findRecord('id', nature).get('code');
+        }
         if (this.natureHasDebitPression(natureCode) && form.findField('Error_msg').isVisible()) {
             Ext.Msg.show({
                 title: fiche.title,
@@ -768,10 +779,11 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             hydrant.set('geometrie', fiche.hydrant.get('geometrie'));
 
             // Cas des anomalies
-            var selected = fiche.down('anomalie').getSelected();
+            var selected = fiche.down('#hydrantAnomalies').getSelected();
             hydrant.anomalies().removeAll();
             hydrant.anomalies().add(selected);
-
+            // on set a dirty sinon si on ne change que les anomalies l'hydrant n'est pas condidéré comme dirty Anomalie #35510
+            hydrant.setDirty(true);
             // Cas de la date, on récupère et on affecte à la bonne date en
             // fonction du type de saisie
             if (fiche.ficheParente == null) {
@@ -961,10 +973,12 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                     }
 
                     if (currentAnomalie != null) {
-                        fiche.down('anomalie').deselectRecord(currentAnomalie, (anomalie == null));
+                        fiche.down('#hydrantAnomalies').grid.getSelectionModel().deselect(currentAnomalie);
+                        this.calculateIndisponibilite(fiche);
                     }
                     if (anomalie != null) {
-                        fiche.down('anomalie').selectRecord(anomalie, true);
+                        fiche.down('#hydrantAnomalies').grid.getSelectionModel().select(anomalie,true);
+                        this.calculateIndisponibilite(fiche);
                     }
 
                     comp = fiche.down('displayfield[name=' + type + '_msg]');

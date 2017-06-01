@@ -17,6 +17,7 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.Anomalie', {
             name: 'allAnomalie',
             boxLabel : 'Afficher toutes les anomalies'
         },{
+            id :'hydrantAnomalies',
             xtype: 'anomalie'
         }]
     },{
