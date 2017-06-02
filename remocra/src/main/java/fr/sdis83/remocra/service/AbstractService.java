@@ -41,6 +41,15 @@ public abstract class AbstractService<T> {
     public AbstractService(Class<T> cls) {
         this.cls = cls;
     }
+    
+    /**
+     * Nom de la colonne utilisée pour un tri absolu.
+     * 
+     * @return
+     */
+    public String getAbsOrderFieldName() {
+        return "id";
+    }
 
     protected Predicate processFilterItem(Map<String, Object> parameters, Root<T> from, ItemFilter itemFilter) {
         logger.info("processFilterItem non traité " + itemFilter.getFieldName() + " (" + itemFilter.getValue() + ")");
@@ -146,13 +155,20 @@ public abstract class AbstractService<T> {
     public List<Order> makeOrders(Root<T> from, List<ItemSorting> itemSortings, List<ItemFilter> itemFilters) {
         ArrayList<Order> orders = new ArrayList<Order>();
         CriteriaBuilder cBuilder = this.getCriteriaBuilder();
+        boolean absOrderFieldName = false;
         if (itemSortings != null && !itemSortings.isEmpty()) {
             for (ItemSorting itemSorting : itemSortings) {
                 if (!this.processItemSortings(orders, itemSorting, cBuilder, from)) {
                     Path<?> field = from.get(itemSorting.getFieldName());
                     orders.add(itemSorting.isDesc() ? cBuilder.desc(field) : cBuilder.asc(field));
                 }
+                if (getAbsOrderFieldName().equals(itemSorting.getFieldName())) {
+                    absOrderFieldName = true;
+                }
             }
+        }
+        if (!absOrderFieldName) {
+            orders.add(cBuilder.asc(from.get(getAbsOrderFieldName())));
         }
         return orders;
     }

@@ -50,7 +50,11 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
     public HydrantService() {
         super(Hydrant.class);
     }
-
+    
+    public String getAbsOrderFieldName() {
+        return "numero";
+    }
+    
     @Bean
     public HydrantService hydrantService() {
         return new HydrantService();
