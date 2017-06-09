@@ -239,25 +239,25 @@ Ext.define('Sdis.Remocra.util.Util', {
     getFormattedCoord: function(coord, value, format, decimal) {
 
         if(format == 'DD_DDDD') {
-            return Number.parseFloat(value).toFixed(decimal);
+            return parseFloat(value).toFixed(decimal);
         }
 
         if(format == 'DD_MM_MM' && coord == 'x') {
             var dmX = Sdis.Remocra.util.Util.getFormattedLonLat(value, 'lon', 'dm', true, true);
-            return (dmX.o=='O'?'Ouest ':'Est ') + dmX.d + '° ' + Number.parseFloat(dmX.m).toFixed(decimal) +'\'';
+            return (dmX.o=='O'?'Ouest ':'Est ') + dmX.d + '° ' + parseFloat(dmX.m).toFixed(decimal) +'\'';
         }
         if(format == 'DD_MM_MM' && coord == 'y') {
             var dmY = Sdis.Remocra.util.Util.getFormattedLonLat(value, 'lat', 'dm', true, true);
-            return (dmY.o=='N'?'Nord ' :'Sud ') + dmY.d + '° ' + Number.parseFloat(dmY.m).toFixed(decimal) +'\'';
+            return (dmY.o=='N'?'Nord ' :'Sud ') + dmY.d + '° ' + parseFloat(dmY.m).toFixed(decimal) +'\'';
         }
 
         if(format == 'DD_MM_SSSS' && coord == 'x') {
             var dmsX = Sdis.Remocra.util.Util.getFormattedLonLat(value, 'lon', 'dms', true, true);
-            return (dmsX.o=='O'?'Ouest ':'Est ') + dmsX.d + '° ' + dmsX.m +'\' ' + Number.parseFloat(dmsX.s).toFixed(decimal) + '"';
+            return (dmsX.o=='O'?'Ouest ':'Est ') + dmsX.d + '° ' + dmsX.m +'\' ' + parseFloat(dmsX.s).toFixed(decimal) + '"';
         }
         if(format == 'DD_MM_SSSS' && coord == 'y') {
             var dmsY = Sdis.Remocra.util.Util.getFormattedLonLat(value, 'lat', 'dms', true, true);
-            return (dmsY.o=='N'?'Nord ' :'Sud ') + dmsY.d + '° ' + dmsY.m +'\' ' + Number.parseFloat(dmsY.s).toFixed(decimal) + '"';
+            return (dmsY.o=='N'?'Nord ' :'Sud ') + dmsY.d + '° ' + dmsY.m +'\' ' + parseFloat(dmsY.s).toFixed(decimal) + '"';
         }
 
         return value;
