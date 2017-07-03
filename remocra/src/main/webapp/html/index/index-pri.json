@@ -3,6 +3,8 @@
     [ {
         type : 'hydrants'
     }, {
+        type : 'oldebs'
+    }, {
         type : 'dfci'
     }, {
         type : 'metadonnees'

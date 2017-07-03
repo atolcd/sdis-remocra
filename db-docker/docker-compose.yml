@@ -1,14 +1,29 @@
-postgres:
-  image: cismet/cids-integration-base:postgres-9.0.3
-  ports:
-    - "5432:5432"
-  volumes:
-    - .docker/postgresql:/var/lib/postgresql/data
-  environment:
-    ENV LOCALE: fr_FR
-    POSTGRES_USER: postgres
-    POSTGRES_DB: remocra
-    POSTGRES_PASSWORD: postgres
-  log_opt:
-    max-size: "10k"
-    max-file: "20"
+version: '2'
+
+services:
+    postgres:
+      image: cismet/cids-integration-base:postgres-9.0.3
+      ports:
+        - "5432:5432"
+      volumes:
+        - .docker/postgresql:/var/lib/postgresql/data
+      environment:
+        ENV LOCALE: fr_FR
+        POSTGRES_USER: postgres
+        POSTGRES_DB: remocra
+        POSTGRES_PASSWORD: postgres
+      network_mode: bridge
+      logging:
+        options:
+          max-size: "10k"
+          max-file: "20"
+
+    geoserver:
+      image: thklein/geoserver
+      ports:
+        - "8090:8080"
+      volumes:
+        - .docker/geoserver_data:/geoserver_data
+      network_mode: bridge
+      links:
+        - postgres:postgres

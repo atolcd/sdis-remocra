@@ -6,12 +6,18 @@ package fr.sdis83.remocra.domain.pdi;
 import fr.sdis83.remocra.domain.pdi.ModeleTraitement;
 import fr.sdis83.remocra.domain.pdi.Statut;
 import fr.sdis83.remocra.domain.pdi.Traitement;
+import fr.sdis83.remocra.domain.pdi.TraitementCc;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 privileged aspect Traitement_Roo_DbManaged {
+    
+    @OneToMany(mappedBy = "idtraitement")
+    private Set<TraitementCc> Traitement.traitementCcs;
     
     @ManyToOne
     @JoinColumn(name = "idmodele", referencedColumnName = "idmodele")
@@ -27,6 +33,14 @@ privileged aspect Traitement_Roo_DbManaged {
     
     @Column(name = "urlressource")
     private String Traitement.urlressource;
+    
+    public Set<TraitementCc> Traitement.getTraitementCcs() {
+        return traitementCcs;
+    }
+    
+    public void Traitement.setTraitementCcs(Set<TraitementCc> traitementCcs) {
+        this.traitementCcs = traitementCcs;
+    }
     
     public ModeleTraitement Traitement.getIdmodele() {
         return idmodele;

@@ -36,12 +36,12 @@ public abstract class AbstractService<T> {
 
     private final Logger logger = Logger.getLogger(getClass());
 
-    private Class<T> cls;
+    protected Class<T> cls;
 
     public AbstractService(Class<T> cls) {
         this.cls = cls;
     }
-    
+
     /**
      * Nom de la colonne utilisée pour un tri absolu.
      * 
@@ -51,7 +51,7 @@ public abstract class AbstractService<T> {
         return "id";
     }
 
-    protected Predicate processFilterItem(Map<String, Object> parameters, Root<T> from, ItemFilter itemFilter) {
+    protected Predicate processFilterItem(CriteriaQuery<?> itemQuery, Map<String, Object> parameters, Root<T> from, ItemFilter itemFilter) {
         logger.info("processFilterItem non traité " + itemFilter.getFieldName() + " (" + itemFilter.getValue() + ")");
         return null;
     }
@@ -68,7 +68,7 @@ public abstract class AbstractService<T> {
     }
 
     protected void beforeDelete(T attached) {
-
+        //
     }
 
     public T getById(Long id) {
@@ -91,7 +91,7 @@ public abstract class AbstractService<T> {
         Root<T> from = itemQuery.from(this.cls);
         // make predicates
         Map<String, Object> parameters = new HashMap<String, Object>();
-        Predicate[] predicates = this.makeFilterPredicates(parameters, from, itemFilters);
+        Predicate[] predicates = this.makeFilterPredicates(itemQuery, parameters, from, itemFilters);
         // make orders
         List<Order> orders = this.makeOrders(from, itemSortings, itemFilters);
         // get the items
@@ -141,7 +141,7 @@ public abstract class AbstractService<T> {
         Root<T> from = totalQuery.from(this.cls);
         // make predicates
         Map<String, Object> parameters = new HashMap<String, Object>();
-        Predicate[] predicates = this.makeFilterPredicates(parameters, from, itemFilters);
+        Predicate[] predicates = this.makeFilterPredicates(totalQuery, parameters, from, itemFilters);
         // get total number of items.
         totalQuery.select(isDistinct() ? cBuilder.countDistinct(from) : cBuilder.count(from));
         totalQuery.where(predicates);
@@ -173,11 +173,11 @@ public abstract class AbstractService<T> {
         return orders;
     }
 
-    public Predicate[] makeFilterPredicates(Map<String, Object> parameters, Root<T> from, List<ItemFilter> itemFilters) {
+    public Predicate[] makeFilterPredicates(CriteriaQuery<?> itemQuery, Map<String, Object> parameters, Root<T> from, List<ItemFilter> itemFilters) {
         List<Predicate> predicateList = new ArrayList<Predicate>();
         if (itemFilters != null && !itemFilters.isEmpty()) {
             for (ItemFilter itemFilter : itemFilters) {
-                Predicate predicat = this.processFilterItem(parameters, from, itemFilter);
+                Predicate predicat = this.processFilterItem(itemQuery, parameters, from, itemFilter);
                 if (predicat != null) {
                     predicateList.add(predicat);
                 }
@@ -186,11 +186,31 @@ public abstract class AbstractService<T> {
         return predicateList.toArray(new Predicate[0]);
     }
 
+    /**
+     * Méthode générique de création de prédicat via une close "like" sur un
+     * fied d'une entité
+     * 
+     * @param from
+     * @param itemFilter
+     * @param fieldName
+     * @return
+     */
+    protected Predicate makeLikeFilterPredicate(Root<T> from, ItemFilter itemFilter, String fieldName) {
+        CriteriaBuilder cBuilder = getCriteriaBuilder();
+        String filter = itemFilter.getValue();
+        if (filter == null) {
+            return null;
+        }
+        Path<String> fieldPath = from.get(fieldName);
+        return cBuilder.like(cBuilder.lower(fieldPath), "%" + filter.toLowerCase() + "%");
+    }
+
     @Transactional
     public T create(String json, Map<String, MultipartFile> files) throws Exception {
         JSONDeserializer<T> deserializer = new JSONDeserializer<T>();
-        deserializer.use(null, this.cls).use(Date.class, RemocraDateHourTransformer.getInstance()).use(Geometry.class, new GeometryFactory())
-                .use(Object.class, new RemocraBeanObjectFactory(this.entityManager));
+        deserializer.use(null, this.cls).use(Date.class, RemocraDateHourTransformer.getInstance()).use(Geometry.class, new GeometryFactory()).use(Object.class,
+                new RemocraBeanObjectFactory(this.entityManager));
+
         T attached = deserializer.deserialize(json);
         this.setUpInformation(attached, files);
         this.entityManager.persist(attached);
@@ -206,10 +226,9 @@ public abstract class AbstractService<T> {
         if (attached == null) {
             return null;
         }
-
         JSONDeserializer<T> deserializer = new JSONDeserializer<T>();
-        deserializer.use(null, this.cls).use(Date.class, RemocraDateHourTransformer.getInstance()).use(Geometry.class, new GeometryFactory())
-                .use(Object.class, new RemocraBeanObjectFactory(this.entityManager));
+        deserializer.use(null, this.cls).use(Date.class, RemocraDateHourTransformer.getInstance()).use(Geometry.class, new GeometryFactory()).use(Object.class,
+                new RemocraBeanObjectFactory(this.entityManager));
         deserializer.deserializeInto(json, attached);
 
         /*

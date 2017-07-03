@@ -711,7 +711,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
         if (this.natureHasDebitPression(natureCode) && form.findField('Error_msg').isVisible()) {
             Ext.Msg.show({
                 title: fiche.title,
-                msg: 'La pression dynamique à 60 m³ ne peut pas être inférieure à 1.'+'<br>Veuillez vérifier votre saisie.',
+                msg: 'La pression dynamique à 60 m³ ne peut pas être inférieure à 1.'+'<br/>Veuillez vérifier votre saisie.',
                 buttons: Ext.Msg.OK,
                 icon: Ext.Msg.WARNING
               });
@@ -744,7 +744,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
         }
         if(needConfirmation) {
             if(dateSaisie == dateControle) {
-                Ext.Msg.confirm(fiche.title, 'Vous n\'avez pas modifié la date de contrôle.<br>Confirmez-vous qu\'il s\'agit bien d\'une nouvelle saisie ?', function(buttonId) {
+                Ext.Msg.confirm(fiche.title, 'Vous n\'avez pas modifié la date de contrôle.<br/>Confirmez-vous qu\'il s\'agit bien d\'une nouvelle saisie ?', function(buttonId) {
                     if (buttonId == 'yes') {
                         this.saveFicheHydrant(button);
                     }
@@ -838,7 +838,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                           if (action && action.result && action.result.message && action.result.message == "hydrant_numero_key") {
                                 Ext.Msg.show({
                                     title: fiche.title,
-                                    msg: "Un hydrant ayant le même numéro existe déjà.<br>",
+                                    msg: "Un hydrant ayant le même numéro existe déjà.<br/>",
                                     buttons: Ext.Msg.OK,
                                     icon: Ext.Msg.WARNING
                                   });

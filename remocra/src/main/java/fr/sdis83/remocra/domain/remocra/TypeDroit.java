@@ -38,14 +38,16 @@ public class TypeDroit {
         PERMIS("permis"), PERMIS_DOCUMENTS("permis.documents"), PERMIS_TRAITEMENT("permis.traitement"),
 
         RCI("rci"),
-        
+
         RISQUES_KML("risques.kml"),
 
         DOCUMENTS("documents"),
 
         DEPOT_DELIB("depot.delib"), DEPOT_DECLAHYDRANT("depot.declahydrant"), DEPOT_RECEPTRAVAUX("depot.receptravaux"), HYDRANTS_EXPORT_NON_NUM("hydrants.exportnonnum"), ALERTES_EXPORT("alertes.export"),
 
-        CARTOGRAPHIES("cartographies");
+        CARTOGRAPHIES("cartographies"),
+
+        OLDEB("obligation.debroussaillment");
 
         private final String value;
 

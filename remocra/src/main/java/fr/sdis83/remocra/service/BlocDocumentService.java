@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
@@ -39,7 +40,7 @@ public class BlocDocumentService extends AbstractService<BlocDocument> {
     }
 
     @Override
-    protected Predicate processFilterItem(Map<String, Object> parameters, Root<BlocDocument> from, ItemFilter itemFilter) {
+    protected Predicate processFilterItem(CriteriaQuery<?> itemQuery, Map<String, Object> parameters, Root<BlocDocument> from, ItemFilter itemFilter) {
         CriteriaBuilder cBuilder = this.getCriteriaBuilder();
         Predicate predicat = null;
         if ("profilDroitId".equals(itemFilter.getFieldName())) {
@@ -56,7 +57,7 @@ public class BlocDocumentService extends AbstractService<BlocDocument> {
             Expression<Integer> cpPath = from.join("profilDroits").get("code");
             predicat = cpPath.in(codes);
         } else {
-            predicat = super.processFilterItem(parameters, from, itemFilter);
+            predicat = super.processFilterItem(itemQuery, parameters, from, itemFilter);
         }
         return predicat;
     }

@@ -405,6 +405,73 @@ public class TraitementsController {
     }
 
     /**
+     * Sauvegarde en base une demande de traitement "Oldeb"
+     * 
+     * @param request
+     *            : Requête Http
+     * @return
+     * @throws BusinessException
+     */
+    @RequestMapping(value = "/specifique/oldeb", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('OLDEB', 'READ')")
+    public ResponseEntity<java.lang.String> createTraitementSpecifiqueOldeb(
+            HttpServletRequest request/*
+                                       * , final @RequestParam(value =
+                                       * "commune", required = false) Long
+                                       * commune, final @RequestParam(value =
+                                       * "section", required = false) String
+                                       * section, final @RequestParam(value =
+                                       * "parcelle", required = false) String
+                                       * parcelle
+                                       */) throws BusinessException {
+
+        String commune = String.valueOf(request.getParameter("commune"));
+        String section = request.getParameter("section");
+        String parcelle = request.getParameter("parcelle");
+
+        // Id du traitement Oldeb
+        Integer idModeleOldeb = paramConfService.getIdTraitementOldeb();
+        ModeleTraitement modele = ModeleTraitement.findModeleTraitement(idModeleOldeb);
+
+        // Id de l'utilisateur
+        /*
+         * Utilisateur utilisateur = utilisateurService.getCurrentUtilisateur();
+         * Long idUtilisateur = utilisateur.getId();
+         */
+
+        TraitementParametre[] paramArray = new TraitementParametre[3];
+        Traitement trt = new Traitement();
+        trt.setIdtraitement(-1);// obligatoire pour éviter
+        // "Not-null property references a transient value"
+
+        TraitementParametre tp = new TraitementParametre();
+        // commune
+        tp.setIdparametre(ModeleTraitementParametre.findModeleTraitementParametresByNomAndIdmodele("COMMUNE_ID", modele).getSingleResult());
+        tp.setIdtraitement(trt);
+        tp.setValeur(commune);
+        paramArray[0] = tp;
+
+        // section
+        tp = new TraitementParametre();
+        tp.setIdparametre(ModeleTraitementParametre.findModeleTraitementParametresByNomAndIdmodele("NUM_SECTION", modele).getSingleResult());
+        tp.setIdtraitement(trt);
+        tp.setValeur(section);
+        paramArray[1] = tp;
+
+        // parcelle
+        tp = new TraitementParametre();
+        tp.setIdparametre(ModeleTraitementParametre.findModeleTraitementParametresByNomAndIdmodele("NUM_PARCELLE", modele).getSingleResult());
+        tp.setIdtraitement(trt);
+        tp.setValeur(parcelle);
+        paramArray[2] = tp;
+
+        // Paramètres
+        String jsonValeurs = new JSONSerializer().include("idparametre.idparametre").include("idtraitement.idtraitement").include("valeur").exclude("*").serialize(paramArray);
+
+        return doCreateTraitement(idModeleOldeb, jsonValeurs, request);
+    }
+
+    /**
      * Sauvegarde en base une demande de traitement "Purge KML"
      * 
      * @param request

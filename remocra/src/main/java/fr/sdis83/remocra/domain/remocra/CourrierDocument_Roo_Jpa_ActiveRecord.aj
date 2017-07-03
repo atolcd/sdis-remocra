@@ -14,7 +14,7 @@ privileged aspect CourrierDocument_Roo_Jpa_ActiveRecord {
     @PersistenceContext
     transient EntityManager CourrierDocument.entityManager;
     
-    public static final List<String> CourrierDocument.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "document", "code", "typeDestinataire", "idDestinataire", "accuse", "dateDoc");
+    public static final List<String> CourrierDocument.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "document", "code", "nomDestinataire", "typeDestinataire", "idDestinataire", "accuse");
     
     public static final EntityManager CourrierDocument.entityManager() {
         EntityManager em = new CourrierDocument().entityManager;

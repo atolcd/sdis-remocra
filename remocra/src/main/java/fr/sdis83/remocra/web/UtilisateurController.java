@@ -110,8 +110,7 @@ public class UtilisateurController {
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             jaxbMarshaller.marshal(lstRights, stringWriter);
         } catch (JAXBException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+           logger.error(e);
         }
 
         HttpHeaders responseHeaders = new HttpHeaders();

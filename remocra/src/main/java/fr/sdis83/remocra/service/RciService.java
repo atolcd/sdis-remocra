@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
@@ -59,7 +60,7 @@ public class RciService extends AbstractService<Rci> {
     }
 
     @Override
-    protected Predicate processFilterItem(Map<String, Object> parameters, Root<Rci> from, ItemFilter itemFilter) {
+    protected Predicate processFilterItem(CriteriaQuery<?> itemQuery, Map<String, Object> parameters, Root<Rci> from, ItemFilter itemFilter) {
         CriteriaBuilder cBuilder = this.getCriteriaBuilder();
         Predicate predicat = null;
         if ("id".equals(itemFilter.getFieldName())) {

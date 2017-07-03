@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -21,7 +23,9 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
@@ -133,8 +137,9 @@ public class GeometryUtil {
         try {
             cx = ds.getConnection();
             st = cx.createStatement();
-            st.execute("select coordonnee_complete from remocra_referentiel.carro_dfci where sous_type = 'CARRES INTRA 2x2 KM' and st_dwithin (geometrie, st_transform(st_geomfromtext('"
-                    + geom.toText() + "', " + geom.getSRID() + "), '2154'), 0) = true");
+            st.execute(
+                    "select coordonnee_complete from remocra_referentiel.carro_dfci where sous_type = 'CARRES INTRA 2x2 KM' and st_dwithin (geometrie, st_transform(st_geomfromtext('"
+                            + geom.toText() + "', " + geom.getSRID() + "), '2154'), 0) = true");
             rs = st.getResultSet();
             rs.next();
             return rs.getString("coordonnee_complete");
@@ -155,4 +160,29 @@ public class GeometryUtil {
         logger.info("Impossible de récupérer les coordonnées DFCI (table remocra_referentiel.carro_dfci)");
         throw new BusinessException("Impossible de récupérer les coordonnées DFCI");
     }
+
+    public static Geometry getMultiGeometry(Geometry geometry) {
+        GeometryFactory geometryFactory = new GeometryFactory();
+        Geometry outputGeometry = null;
+
+        if (geometry instanceof Point) {
+            List<Point> pointList = new ArrayList<Point>();
+            pointList.add((Point) geometry);
+            outputGeometry = geometryFactory.createMultiPoint(GeometryFactory.toPointArray(pointList));
+        } else if (geometry instanceof LineString) {
+            List<LineString> lineStringList = new ArrayList<LineString>();
+            lineStringList.add((LineString) geometry);
+            outputGeometry = geometryFactory.createMultiLineString(GeometryFactory.toLineStringArray(lineStringList));
+        } else if (geometry instanceof Polygon) {
+            List<Polygon> polygonList = new ArrayList<Polygon>();
+            polygonList.add((Polygon) geometry);
+            outputGeometry = geometryFactory.createMultiPolygon(GeometryFactory.toPolygonArray(polygonList));
+        } else {
+            outputGeometry = geometry;
+        }
+
+        outputGeometry.setSRID(geometry.getSRID());
+        return outputGeometry;
+    }
+
 }

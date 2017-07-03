@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
@@ -37,7 +38,7 @@ public class ProfilOrganismeService extends AbstractService<ProfilOrganisme> {
     }
 
     @Override
-    protected Predicate processFilterItem(Map<String, Object> parameters, Root<ProfilOrganisme> from, ItemFilter itemFilter) {
+    protected Predicate processFilterItem(CriteriaQuery<?> itemQuery, Map<String, Object> parameters, Root<ProfilOrganisme> from, ItemFilter itemFilter) {
         CriteriaBuilder cBuilder = this.getCriteriaBuilder();
         Predicate predicat = null;
         if ("typeOrganismeId".equals(itemFilter.getFieldName())) {

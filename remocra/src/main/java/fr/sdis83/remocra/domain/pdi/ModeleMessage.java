@@ -1,7 +1,9 @@
 package fr.sdis83.remocra.domain.pdi;
+
 import java.util.Set;
-import javax.persistence.CascadeType;
+
 import javax.persistence.OneToMany;
+
 import org.springframework.roo.addon.dbre.RooDbManaged;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;

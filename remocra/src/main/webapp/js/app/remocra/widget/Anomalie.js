@@ -64,6 +64,7 @@ Ext.define('Sdis.Remocra.widget.Anomalie', {
             }),
             columns: [{
                 text: 'Point d\'attention ',
+                flex: 400,
                 dataIndex: 'nom',
                 renderer: function(value, metadata, record, rowIndex, colIndex) {
                     // tooltip
@@ -80,7 +81,7 @@ Ext.define('Sdis.Remocra.widget.Anomalie', {
 
                     return value;
                 }
-            }],
+            } ],
             viewConfig: {
                 getRowClass: function(record, index, rowParams, store) {
                     if (!me.isAnomalieSelectionnable(record)) {
@@ -99,11 +100,11 @@ Ext.define('Sdis.Remocra.widget.Anomalie', {
             html: '&nbsp;'
         });
 
-        me.items = [me.entete,me.grid,{
+        me.items = [me.entete, me.grid, {
             xtype: 'container',
             layout: 'column',
-            items: [me.btnPrec,me.position,me.btnNext]
-        }];
+            items: [me.btnPrec, me.position, me.btnNext ]
+        } ];
         me.callParent(arguments);
         me.currentPosition = 0;
 
@@ -111,7 +112,9 @@ Ext.define('Sdis.Remocra.widget.Anomalie', {
             if (me.getStore() != null) {
                 me.unbindStoreListeners(me.getStore());
             }
+
             Ext.getStore('TypeHydrantAnomalie').rejectChanges();
+
         });
     },
 
@@ -119,6 +122,7 @@ Ext.define('Sdis.Remocra.widget.Anomalie', {
         if (record == null || !record.isModel) {
             return;
         }
+
         var lengthBefore = this.selectedRecord.length;
         Ext.Array.include(this.selectedRecord, record);
         if (this.selectedRecord.length > lengthBefore) {
@@ -151,6 +155,7 @@ Ext.define('Sdis.Remocra.widget.Anomalie', {
 
     isAnomalieSelectionnable: function(record) {
         var info = record.getInfoByNature(this.nature);
+
         if (info == null) {
             return false;
         }
@@ -167,7 +172,9 @@ Ext.define('Sdis.Remocra.widget.Anomalie', {
     bindStore: function(store, initial) {
         var me = this;
         if (!store.isGrouped()) {
+
             store.group('critere_nom');
+
         }
         me.mixins.bindable.bindStore.apply(me, arguments);
         me.initPosition(store);

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
@@ -38,7 +39,7 @@ public class TourneeService extends AbstractService<Tournee> {
     }
 
     @Override
-    protected Predicate processFilterItem(Map<String, Object> parameters, Root<Tournee> from, ItemFilter itemFilter) {
+    protected Predicate processFilterItem(CriteriaQuery<?> itemQuery, Map<String, Object> parameters, Root<Tournee> from, ItemFilter itemFilter) {
         CriteriaBuilder cBuilder = this.getCriteriaBuilder();
         Predicate predicat = null;
         if ("id".equals(itemFilter.getFieldName())) {

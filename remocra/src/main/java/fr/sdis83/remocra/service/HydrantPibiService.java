@@ -8,6 +8,7 @@ import javax.persistence.Parameter;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.ParameterExpression;
@@ -43,7 +44,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
     }
 
     @Override
-    protected Predicate processFilterItem(Map<String, Object> parameters, Root<HydrantPibi> from, ItemFilter itemFilter) {
+    protected Predicate processFilterItem(CriteriaQuery<?> itemQuery, Map<String, Object> parameters, Root<HydrantPibi> from, ItemFilter itemFilter) {
         CriteriaBuilder cBuilder = this.getCriteriaBuilder();
         if ("wkt".equals(itemFilter.getFieldName())) {
             Path<String> geometrie = from.get("geometrie");
@@ -59,7 +60,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
             Expression<Integer> cpPath = from.get("numeroInterne");
             return cBuilder.greaterThanOrEqualTo(cpPath, 90000);
         }
-        return super.processFilterItem(parameters, from, itemFilter);
+        return super.processFilterItem(itemQuery, parameters, from, itemFilter);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

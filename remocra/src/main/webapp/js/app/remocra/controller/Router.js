@@ -6,6 +6,7 @@ Ext.require('Sdis.Remocra.features.adresses.Adresses');
 Ext.require('Sdis.Remocra.features.dfci.Dfci');
 Ext.require('Sdis.Remocra.features.permis.Permis');
 Ext.require('Sdis.Remocra.features.hydrants.Hydrant');
+Ext.require('Sdis.Remocra.features.oldebs.Oldeb');
 Ext.require('Sdis.Remocra.features.hydrants.AdminAnomalie');
 Ext.require('Sdis.Remocra.features.risques.Risques');
 Ext.require('Sdis.Remocra.features.rci.Rci');
@@ -134,6 +135,7 @@ Ext.define('Sdis.Remocra.controller.Router', {
         this.routes['dfci'] = this.getDfciRoutes();
         this.routes['permis'] = this.getPermisRoutes();
         this.routes['hydrants'] = this.getHydrantsRoutes();
+        this.routes['oldebs'] = this.getOldebsRoutes();
         this.routes['risques'] = this.getRisquesRoutes();
         this.routes['rci'] = this.getRciRoutes();
         this.routes['cartographie'] = this.getCartographieRoutes();
@@ -165,7 +167,22 @@ Ext.define('Sdis.Remocra.controller.Router', {
         };
         return routes;
     },
-
+    getOldebsRoutes: function() {
+        var routes = [];
+        routes['index'] = {
+            xtype: 'crOldeb'
+        };
+        routes['obligation'] = {
+            xtype: 'crOldeb'
+        };
+        routes['localisation'] = {
+            xtype: 'crOldeb'
+        };
+        routes['access'] = {
+            xtype: 'crOldeb'
+        };
+        return routes;
+    },
     getAdressesRoutes: function() {
         var routes = [];
         routes['index'] = {

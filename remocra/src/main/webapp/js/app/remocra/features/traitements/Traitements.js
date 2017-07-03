@@ -66,27 +66,19 @@ Ext.define('Sdis.Remocra.features.traitements.Traitements', {
                 fieldLabel : 'Application',
                 labelWidth : 120,
                 queryMode : 'local',
-                valueField : 'value',
-                displayField : 'display',                    
+                valueField : 'id',
+                displayField : 'nom',
                 editable : false,
                 anchor : '50%',
-                store : new Ext.data.SimpleStore({
-                    fields : [ 'value', 'display' ],
-                    data : [ 
-                             [ '1', 'Points d\'eau' ],
-                             [ '2', 'Adresses' ],
-                             [ '3', 'Permis' ],
-                             [ '4', 'Défense de la Forêt Contre les Incendies' ],
-                             [ '5', 'Risques' ],
-                             [ '7', 'Recherche des Causes et des Circonstances Incendie' ],
-                             [ '0', 'Divers' ]
-                   ]
-                }),
+                store :{
+                    type:'crThematique',
+                    autoLoad: true
+                },
                 emptyText : 'Sélectionner une application...',
                 listeners : {
                     select : function(combo, records, eOpts) {
                         var application = records[0];
-                        var id = application.get('value');
+                        var id = application.get('id');
                         var modeleCombo = this.getComponent('formTraitement').getComponent('idmodeleTrt');
                         if(modeleCombo){
                             var descTrtCmp = this.getComponent('formTraitement').getComponent('descTrt');

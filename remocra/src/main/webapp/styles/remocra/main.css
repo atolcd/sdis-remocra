@@ -1134,3 +1134,10 @@ body.x-ie .x-btn-default-toolbar-small-icon-text-left .x-btn-inner {
 .x-grid.remocra-editable .x-grid-view {
     min-height: 80px;
 }
+
+.fileuploadpanel-down .notstored {
+	font-style: italic;
+}
+.fileuploadpanel-down .notstored .linkbutton::after {
+	content: " *";
+}

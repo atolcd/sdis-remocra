@@ -5,7 +5,7 @@ public class AnomalieException extends Exception {
     private static final long serialVersionUID = 1L;
 
     public AnomalieException() {
-        // TODO Auto-generated constructor stub
+        //
     }
 
     public AnomalieException(String message) {

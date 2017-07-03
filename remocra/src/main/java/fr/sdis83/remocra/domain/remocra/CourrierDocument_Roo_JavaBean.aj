@@ -4,10 +4,8 @@
 package fr.sdis83.remocra.domain.remocra;
 
 import fr.sdis83.remocra.domain.remocra.CourrierDocument;
-import fr.sdis83.remocra.domain.remocra.CourrierDocument.TypeDestinataire;
 import fr.sdis83.remocra.domain.remocra.Document;
 import java.util.Date;
-import java.util.Set;
 
 privileged aspect CourrierDocument_Roo_JavaBean {
     
@@ -26,7 +24,7 @@ privileged aspect CourrierDocument_Roo_JavaBean {
     public void CourrierDocument.setDocument(Document document) {
         this.document = document;
     }
-
+    
     public String CourrierDocument.getCode() {
         return this.code;
     }
@@ -66,4 +64,5 @@ privileged aspect CourrierDocument_Roo_JavaBean {
     public void CourrierDocument.setAccuse(Date accuse) {
         this.accuse = accuse;
     }
+    
 }

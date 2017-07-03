@@ -107,12 +107,20 @@ public class ParamConfService {
         return (String) this.getValue(ParamConfParam.DOSSIER_DOC_HYDRANT);
     }
 
+    public String getDossierDocOldebVisite() {
+        return (String) this.getValue(ParamConfParam.DOSSIER_DOC_OLDEBVISITE);
+    }
+
     public String getDossierDepotBloc() {
         return (String) this.getValue(ParamConfParam.DOSSIER_DEPOT_BLOC);
     }
 
     public Integer getIdTraitementAtlas() {
         return (Integer) this.getValue(ParamConfParam.ID_TRAITEMENT_ATLAS);
+    }
+
+    public Integer getIdTraitementOldeb() {
+        return (Integer) this.getValue(ParamConfParam.ID_TRAITEMENT_OLDEB);
     }
 
     public Integer getIdTraitementPurgeKml() {

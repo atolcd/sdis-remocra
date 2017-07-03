@@ -105,23 +105,6 @@
             <unique-column name="id"/>
         </unique>
     </table>
-    <table alias="remocra" name="courrier_document">
-        <column name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
-        <column name="code" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
-        <column name="nom_destinaraire" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
-        <column name="type_destinaraire" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
-        <column name="id_destinaraire" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
-        <column name="accuse" primaryKey="false" required="false" scale="6" size="29" type="93,timestamp"/>
-        <column name="document" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
-        <foreign-key foreignTable="document" name="courrier_document_document_fk" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="remocra"/>
-            <option key="exported" value="false"/>
-            <reference foreign="id" local="document"/>
-        </foreign-key>
-        <unique name="courrier_document_pkey">
-            <unique-column name="id"/>
-        </unique>
-    </table>
     <table alias="remocra" name="bloc_document">
         <column name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
         <column name="description" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
@@ -182,19 +165,14 @@
             <unique-column name="thematiques"/>
         </unique>
     </table>
-    <table alias="remocra" name="commune">
-        <column name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
-        <column name="geometrie" primaryKey="false" required="true" scale="0" size="2147483647" type="1111,geometry"/>
-        <column name="insee" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
-        <column name="nom" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
+    <table alias="remocra" description="Commune du Var. Géométrie en WGS 84 de type surfacique" name="commune">
+        <column description="Identifiant interne à la base de données" name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
+        <column description="Limite communale de type surfacique. Coordonnées en WGS84" name="geometrie" primaryKey="false" required="true" scale="0" size="2147483647" type="1111,geometry"/>
+        <column description="Code insee" name="insee" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
+        <column description="Nom" name="nom" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <column name="pprif" primaryKey="false" required="true" scale="0" size="1" type="-7,bool"/>
         <column name="code" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
         <foreign-key foreignTable="hydrant" name="fk51b8f028d2da796c" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="remocra"/>
-            <option key="exported" value="true"/>
-            <reference foreign="commune" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="hydrant_prescrit" name="fkdc1ab241d2da796c" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="true"/>
             <reference foreign="commune" local="id"/>
@@ -220,6 +198,34 @@
         <index name="commune_geometrie_idx">
             <index-column name="geometrie"/>
         </index>
+    </table>
+    <table alias="remocra" description="Courrier adressé à un destinataire unique référençant un document présent sur le système. Ce document peut donner lieu à un accusé de téléchargement" name="courrier_document">
+        <column description="Identifiant interne autogénéré" name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
+        <column description="Référence au document" name="document" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
+        <column description="Code unique exploité pour l'accusé de téléchargement" name="code" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
+        <column description="Indication sur le destinataire du courrier." name="nom_destinataire" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
+        <column description="Indication sur le type de destinataire du courrier. Organisme = ORGANISME, utilisateur = UTILISATEUR, autre = AUTRE" name="type_destinataire" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
+        <column description="Identifiant du destinataire du courrier dans la base Remocra quand le type = ORGANISME ou UTILISATEUR" name="id_destinataire" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
+        <column description="Date et heure d'accusé de téléchargement" name="accuse" primaryKey="false" required="false" scale="6" size="29" type="93,timestamp"/>
+        <foreign-key foreignTable="document" name="courrier_document_document_fk" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="remocra"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="document"/>
+        </foreign-key>
+        <unique name="courrier_document_pkey">
+            <unique-column name="id"/>
+        </unique>
+    </table>
+    <table alias="remocra" description="Modèle de courrier reférencant un fichier OTT et permettant la génération d'un courrier au format ODT" name="courrier_modele">
+        <column description="Identifiant interne autogénéré" name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
+        <column description="Code de catégorie permettant de regrouper les modèles de courriers entre eux. Issu de la métadonnée personnalisée &quot;REMOCRA_CATEGORIE_MODELE&quot; du fichier OTT" name="categorie" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
+        <column description="Libellé du modèle de courrier affiché dans les listes déroulantes. Issu de la métadonnée &quot;Titre&quot; du fichier OTT" name="libelle" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
+        <column description="Description du modèle de courrier. Issu de la métadonnée &quot;Commentaire&quot; du fichier OTT" name="description" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
+        <column description="Fichier de modèle OTT à utiliser pour générer le document ODT" name="modele_ott" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
+        <column description="Requête SQL générant une structure XML exploitable par le modèle de courrier OTT via le language FreeMarker" name="source_xml" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
+        <unique name="courrier_modele_pkey">
+            <unique-column name="id"/>
+        </unique>
     </table>
     <table alias="remocra" name="dde_mdp">
         <column name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
@@ -259,16 +265,22 @@
     <table alias="remocra" name="document">
         <column name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
         <column name="code" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
-        <column name="date_doc" primaryKey="false" required="true" scale="6" size="29" type="93,timestamp"/>
+        <column name="date" primaryKey="false" required="true" scale="6" size="29" type="93,timestamp"/>
         <column name="fichier" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <column name="repertoire" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <column name="type" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
+        <column name="date_doc" primaryKey="false" required="true" scale="6" size="29" type="93,timestamp"/>
         <foreign-key foreignTable="alerte_document" name="fkedde2a1136f0130a" onDelete="cascade" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="true"/>
             <reference foreign="document" local="id"/>
         </foreign-key>
         <foreign-key foreignTable="bloc_document" name="fkcd6c849c36f0130a" onDelete="cascade" onUpdate="none">
+            <option key="foreignSchemaName" value="remocra"/>
+            <option key="exported" value="true"/>
+            <reference foreign="document" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="courrier_document" name="courrier_document_document_fk" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="true"/>
             <reference foreign="document" local="id"/>
@@ -340,6 +352,8 @@
         <column name="expediteur_email" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
         <column name="notification" primaryKey="false" required="false" scale="6" size="29" type="93,timestamp"/>
         <column name="objet" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
+        <column description="Code utilisé pour la traçabilité des méls" name="code" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
+        <column description="Indique si le destinataire du mel est invité à accuser réception du message" name="accuser_reception" primaryKey="false" required="true" scale="0" size="1" type="-7,bool"/>
         <unique name="email_pkey">
             <unique-column name="id"/>
         </unique>
@@ -362,7 +376,6 @@
         <column name="code" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
         <column name="complement" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
         <column name="date_contr" primaryKey="false" required="false" scale="6" size="29" type="93,timestamp"/>
-        <column name="date_gps" primaryKey="false" required="false" scale="6" size="29" type="93,timestamp"/>
         <column name="date_recep" primaryKey="false" required="false" scale="6" size="29" type="93,timestamp"/>
         <column name="date_reco" primaryKey="false" required="false" scale="6" size="29" type="93,timestamp"/>
         <column name="date_verif" primaryKey="false" required="false" scale="6" size="29" type="93,timestamp"/>
@@ -385,7 +398,9 @@
         <column name="courrier" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
         <column name="gest_point_eau" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
         <column name="organisme" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
+        <column name="date_gps" primaryKey="false" required="false" scale="6" size="29" type="93,timestamp"/>
         <column name="zone_speciale" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
+        <column name="date_attestation" primaryKey="false" required="false" scale="6" size="29" type="93,timestamp"/>
         <foreign-key foreignTable="commune" name="fk51b8f028d2da796c" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="false"/>
@@ -411,7 +426,7 @@
             <option key="exported" value="false"/>
             <reference foreign="id" local="nature"/>
         </foreign-key>
-        <foreign-key foreignTable="zone_speciale" name="fk51b8f028123e1f6b" onDelete="none" onUpdate="none">
+        <foreign-key foreignTable="zone_speciale" name="fk_zone_speciale" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="zone_speciale"/>
@@ -534,6 +549,7 @@
         <column name="marque" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <column name="modele" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <column name="pena" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
+        <column name="pression_dyn_deb" primaryKey="false" required="false" scale="17" size="17" type="8,float8"/>
         <foreign-key foreignTable="hydrant" name="fkd60e21b7b34721ef" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="false"/>
@@ -565,23 +581,11 @@
     </table>
     <table alias="remocra" name="hydrant_prescrit">
         <column name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
-        <column name="complement" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
-        <column name="date_creation" primaryKey="false" required="false" scale="6" size="29" type="93,timestamp"/>
-        <column name="geometrie" primaryKey="false" required="true" scale="0" size="2147483647" type="1111,geometry"/>
-        <column name="lieu_dit" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
-        <column name="voie" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
-        <column name="voie2" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
-        <column name="commune" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
-        <column name="nature" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
-        <column name="organisme" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <column name="date_prescrit" primaryKey="false" required="false" scale="6" size="29" type="93,timestamp"/>
         <column name="debit" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
+        <column name="geometrie" primaryKey="false" required="true" scale="0" size="2147483647" type="1111,geometry"/>
         <column name="nb_poteaux" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
-        <foreign-key foreignTable="commune" name="fkdc1ab241d2da796c" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="remocra"/>
-            <option key="exported" value="false"/>
-            <reference foreign="id" local="commune"/>
-        </foreign-key>
+        <column name="organisme" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <foreign-key foreignTable="organisme" name="fkdc1ab241374add52" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="false"/>
@@ -590,18 +594,15 @@
         <unique name="hydrant_prescrit_pkey">
             <unique-column name="id"/>
         </unique>
-        <index name="hydrant_prescrit_geometrie_idx">
-            <index-column name="geometrie"/>
-        </index>
     </table>
     <table alias="remocra" name="metadonnee">
         <column name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
         <column name="resume" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
         <column name="titre" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
-        <column name="url_fiche" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
-        <column name="url_vignette" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
         <column name="version" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
         <column name="thematique" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
+        <column name="url_fiche" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
+        <column name="url_vignette" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
         <foreign-key foreignTable="thematique" name="fk507e37b0d27676e2" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="false"/>
@@ -620,7 +621,7 @@
         <column name="version" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
         <column name="profil_organisme" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
         <column name="type_organisme" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
-        <column name="zone_competence" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
+        <column name="zone_competence" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
         <foreign-key foreignTable="profil_organisme" name="fk805999d374ebaf33" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="false"/>
@@ -664,14 +665,15 @@
         <column name="cle" primaryKey="true" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <column name="description" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
         <column name="valeur" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
+        <column name="version" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
         <unique name="param_conf_pkey">
             <unique-column name="cle"/>
         </unique>
     </table>
     <table alias="remocra" name="permis">
         <column name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
-        <column name="annee" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
         <column name="complement" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
+        <column name="annee" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
         <column name="date_modification" primaryKey="false" required="true" scale="6" size="29" type="93,timestamp"/>
         <column name="geometrie" primaryKey="false" required="true" scale="0" size="2147483647" type="1111,geometry"/>
         <column name="nom" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
@@ -680,12 +682,12 @@
         <column name="parcelle_cadastrale" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <column name="section_cadastrale" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <column name="version" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
-        <column name="voie" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <column name="avis" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
         <column name="commune" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
         <column name="instructeur" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
         <column name="interservice" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
         <column name="service_instructeur" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
+        <column name="voie" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <column name="date_permis" primaryKey="false" required="true" scale="6" size="29" type="93,timestamp"/>
         <foreign-key foreignTable="commune" name="fkc4e3841ad2da796c" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
@@ -830,8 +832,6 @@
         <column name="type_organisme" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
         <column name="actif" primaryKey="false" required="true" scale="0" size="1" type="-7,bool"/>
         <column name="code" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
-        <column name="libelle" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
-        <column name="version" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
         <foreign-key foreignTable="type_organisme" name="fk82645600f5378273" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="false"/>
@@ -887,7 +887,6 @@
         <column name="arrivee_police" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <column name="famille_promethee" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <column name="partition_promethee" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
-        <column name="cause" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
         <foreign-key foreignTable="commune" name="fk1b858d2da796c" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="false"/>
@@ -933,15 +932,15 @@
             <option key="exported" value="false"/>
             <reference foreign="id" local="arrivee_police"/>
         </foreign-key>
-        <foreign-key foreignTable="utilisateur" name="fk1b858a9234c5c" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="remocra"/>
-            <option key="exported" value="false"/>
-            <reference foreign="id" local="arrivee_ddtm_onf"/>
-        </foreign-key>
         <foreign-key foreignTable="utilisateur" name="fk1b858a98055b2" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="utilisateur"/>
+        </foreign-key>
+        <foreign-key foreignTable="utilisateur" name="fk1b858a9234c5c" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="remocra"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="arrivee_ddtm_onf"/>
         </foreign-key>
         <foreign-key foreignTable="rci_document" name="fk6c6e2d224556cb5c" onDelete="cascade" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
@@ -1016,10 +1015,10 @@
     </table>
     <table alias="remocra" name="thematique">
         <column name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
-        <column name="actif" primaryKey="false" required="true" scale="0" size="1" type="-7,bool"/>
-        <column name="code" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <column name="nom" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
         <column name="version" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
+        <column name="actif" primaryKey="false" required="true" scale="0" size="1" type="-7,bool"/>
+        <column name="code" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <foreign-key foreignTable="bloc_document_thematiques" name="fk140d14a9fdec3d27" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="true"/>
@@ -1038,6 +1037,9 @@
         <unique name="thematique_code_key">
             <unique-column name="code"/>
         </unique>
+        <unique name="thematique_nom_key">
+            <unique-column name="nom"/>
+        </unique>
         <unique name="thematique_pkey">
             <unique-column name="id"/>
         </unique>
@@ -1048,9 +1050,9 @@
         <column name="last_sync" primaryKey="false" required="false" scale="6" size="29" type="93,timestamp"/>
         <column name="version" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
         <column name="affectation" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
+        <column name="reservation" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <column name="etat" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
         <column name="hydrant_count" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
-        <column name="reservation" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <foreign-key foreignTable="organisme" name="fkbc630036dbf82b2f" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="false"/>
@@ -1612,6 +1614,16 @@
             <option key="exported" value="true"/>
             <reference foreign="instructeur" local="id"/>
         </foreign-key>
+        <foreign-key foreignTable="rci" name="fk1b858a9cc1bbb" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="remocra"/>
+            <option key="exported" value="true"/>
+            <reference foreign="arrivee_gendarmerie" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="rci" name="fk1b858a9c54d11" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="remocra"/>
+            <option key="exported" value="true"/>
+            <reference foreign="arrivee_sdis" local="id"/>
+        </foreign-key>
         <foreign-key foreignTable="rci" name="fk1b858a9948aa1" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="true"/>
@@ -1626,16 +1638,6 @@
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="true"/>
             <reference foreign="arrivee_ddtm_onf" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="rci" name="fk1b858a9c54d11" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="remocra"/>
-            <option key="exported" value="true"/>
-            <reference foreign="arrivee_sdis" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="rci" name="fk1b858a9cc1bbb" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="remocra"/>
-            <option key="exported" value="true"/>
-            <reference foreign="arrivee_gendarmerie" local="id"/>
         </foreign-key>
         <foreign-key foreignTable="tournee" name="fkbc6300366f3f65fb" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
@@ -1656,6 +1658,7 @@
         <column name="nom" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <column name="source" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <column name="commune" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
+        <column name="actif" primaryKey="false" required="true" scale="0" size="1" type="-7,bool"/>
         <foreign-key foreignTable="commune" name="fk375195d2da796c" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="false"/>
@@ -1690,7 +1693,7 @@
         <column name="code" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <column name="geometrie" primaryKey="false" required="true" scale="0" size="2147483647" type="1111,geometry"/>
         <column name="nom" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
-        <foreign-key foreignTable="hydrant" name="fk51b8f028123e1f6b" onDelete="none" onUpdate="none">
+        <foreign-key foreignTable="hydrant" name="fk_zone_speciale" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="true"/>
             <reference foreign="zone_speciale" local="id"/>
@@ -1809,6 +1812,11 @@
             <option key="exported" value="false"/>
             <reference foreign="idstatut" local="idstatut"/>
         </foreign-key>
+        <foreign-key foreignTable="traitement_cc" name="fk923581f54675afa4" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="pdi"/>
+            <option key="exported" value="true"/>
+            <reference foreign="idtraitement" local="idtraitement"/>
+        </foreign-key>
         <foreign-key foreignTable="traitement_parametre" name="fkeca70365a667cb41" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="pdi"/>
             <option key="exported" value="true"/>
@@ -1816,6 +1824,19 @@
         </foreign-key>
         <unique name="traitement_pkey">
             <unique-column name="idtraitement"/>
+        </unique>
+    </table>
+    <table alias="pdi" name="traitement_cc">
+        <column name="idtraitement" primaryKey="true" required="true" scale="0" size="10" type="4,int4"/>
+        <column name="idutilisateur" primaryKey="true" required="true" scale="0" size="10" type="4,int4"/>
+        <foreign-key foreignTable="traitement" name="fk923581f54675afa4" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="pdi"/>
+            <option key="exported" value="false"/>
+            <reference foreign="idtraitement" local="idtraitement"/>
+        </foreign-key>
+        <unique name="traitement_cc_pkey">
+            <unique-column name="idtraitement"/>
+            <unique-column name="idutilisateur"/>
         </unique>
     </table>
     <table alias="pdi" name="traitement_parametre">

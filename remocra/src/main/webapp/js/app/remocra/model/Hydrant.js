@@ -8,7 +8,7 @@ Ext.require('Sdis.Remocra.model.HydrantDocument');
 Ext.define('Sdis.Remocra.model.Hydrant', {
     extend: 'Ext.data.Model',
 
-    fields: [ {
+    fields: [{
         name: 'id',
         type: 'int',
         useNull: true
@@ -129,7 +129,7 @@ Ext.define('Sdis.Remocra.model.Hydrant', {
         persist: false
     } ],
 
-    associations: [ {
+    associations: [{
         type: 'hasMany',
         model: 'Sdis.Remocra.model.TypeHydrantAnomalie',
         associationKey: 'anomalies',

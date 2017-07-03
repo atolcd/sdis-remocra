@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -26,13 +27,13 @@ public class ZoneCompetenceService extends AbstractService<ZoneCompetence> {
     }
 
     @Override
-    protected Predicate processFilterItem(Map<String, Object> parameters, Root<ZoneCompetence> from, ItemFilter itemFilter) {
+    protected Predicate processFilterItem(CriteriaQuery<?> itemQuery, Map<String, Object> parameters, Root<ZoneCompetence> from, ItemFilter itemFilter) {
         CriteriaBuilder cBuilder = this.getCriteriaBuilder();
         if ("query".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.get("nom");
             return cBuilder.like(cBuilder.lower(cpPath), itemFilter.getValue().toLowerCase() + "%");
         }
-        return super.processFilterItem(parameters, from, itemFilter);
+        return super.processFilterItem(itemQuery, parameters, from, itemFilter);
     }
 
     public Boolean check(String wkt, Integer srid, ZoneCompetence zoneCompetence) {

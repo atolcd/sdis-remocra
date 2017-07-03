@@ -125,6 +125,7 @@ public abstract class AbstractTypeReferenceController<T extends ITypeReference> 
                 }
             }
 
+            @Override
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
                 return AbstractTypeReferenceController.this.decorateSerializer(serializer);
             }
@@ -149,12 +150,17 @@ public abstract class AbstractTypeReferenceController<T extends ITypeReference> 
         List<Predicate> predicateList = new ArrayList<Predicate>();
         if (itemFilters != null && !itemFilters.isEmpty()) {
             for (ItemFilter itemFilter : itemFilters) {
-                if ("actif".equals(itemFilter.getFieldName())) {
+                // Utilisé par les ITypeReferenceNomActif (tout comme "actif")
+                if ("nom".equals(itemFilter.getFieldName())) {
+                    CriteriaBuilder cBuilder = entityManager.getCriteriaBuilder();
+                    Path<String> nom = from.get("nom");
+                    Predicate like = cBuilder.like(cBuilder.lower(nom), "%" + itemFilter.getValue().toLowerCase() + "%");
+                    predicateList.add(like);
+                } else if ("actif".equals(itemFilter.getFieldName())) {
                     CriteriaBuilder cBuilder = entityManager.getCriteriaBuilder();
                     Path<String> actif = from.get("actif");
                     Predicate equals = cBuilder.equal(actif, parseBoolean(itemFilter.getValue()));
                     predicateList.add(equals);
-
                 } else if ("typeOrganismeId".equals(itemFilter.getFieldName())) {
                     CriteriaBuilder cBuilder = entityManager.getCriteriaBuilder();
                     Path<String> typeOrganisme = from.get("typeOrganisme").get("id");

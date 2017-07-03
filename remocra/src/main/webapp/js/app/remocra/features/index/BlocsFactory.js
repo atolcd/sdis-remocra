@@ -118,6 +118,40 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
         }
         return blocAdresses;
     },
+    createOldebsBloc: function(title, icon, minHeight) {
+        var blocOldebs = {
+            type: 'oldebs',
+            minh: minHeight || this.randomHeight(),
+            title: title || 'Comité de secteur',
+            img: icon || 'oldeb.png',
+            items: []
+        };
+
+        if (Sdis.Remocra.Rights.getRight('OLDEB').Read) {
+            blocOldebs.items.push({
+                type: 'href',
+                href: 'oldebs',
+                lbl: 'Protection incendie des biens et personnes'
+            });
+        }
+
+        if (Sdis.Remocra.Rights.getRight('OLDEB').Create) {
+            if (!Ext.isEmpty(blocOldebs.items)) {
+                blocOldebs.items.push({
+                    type: 'sep'
+                });
+            }
+            blocOldebs.items.push({
+                type: 'href',
+                href: 'traitements/index/application/8',
+                lbl: 'Accéder aux traitements'
+            });
+        }
+        if (Ext.isEmpty(blocOldebs.items)) {
+            return null;
+        }
+        return blocOldebs;
+    },
 
     createPermisBloc: function(title, icon, minHeight) {
         if (!Sdis.Remocra.Rights.getRight('PERMIS').Read) {
@@ -385,7 +419,9 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
         var fn = null;
         if (cfgBloc.type == 'hydrants') {
             fn = this.createHydrantsBloc;
-        } else if (cfgBloc.type == 'adresses') {
+        } else if (cfgBloc.type == 'oldebs') {
+            fn = this.createOldebsBloc;
+        }else if (cfgBloc.type == 'adresses') {
             fn = this.createAdressesBloc;
         } else if (cfgBloc.type == 'permis') {
             fn = this.createPermisBloc;

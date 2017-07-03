@@ -8,11 +8,13 @@ import java.util.Map;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -24,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+import fr.sdis83.remocra.domain.remocra.Commune;
 import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.remocra.Document.TypeDocument;
 import fr.sdis83.remocra.domain.remocra.Hydrant;
@@ -50,14 +53,29 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
     }
 
     @Override
-    protected Predicate processFilterItem(Map<String, Object> parameters, Root<T> from, ItemFilter itemFilter) {
+    protected Predicate processFilterItem(CriteriaQuery<?> itemQuery, Map<String, Object> parameters, Root<T> from, ItemFilter itemFilter) {
         CriteriaBuilder cBuilder = this.getCriteriaBuilder();
         Predicate predicat = null;
         if ("tournee".equals(itemFilter.getFieldName())) {
             Expression<Integer> cpPath = from.join("tournee").get("id");
             predicat = cBuilder.equal(cpPath, itemFilter.getValue());
-        } else if ("zoneCompetence".equals(itemFilter.getFieldName())) {
 
+        } else if ("zoneCompetenceIdCom".equals(itemFilter.getFieldName())) {
+            // On passe par la FK commune et on retient les communes incluses
+            // dans la zone de compétence
+            Subquery<Long> sqCommuneIds = itemQuery.subquery(Long.class);
+            Root<Commune> sqCommuneIdsFrom = sqCommuneIds.from(Commune.class);
+
+            ParameterExpression<Geometry> zoneCompetence = cBuilder.parameter(Geometry.class, "zoneCompetenceIdCom");
+            ParameterExpression<Double> distanceZone = cBuilder.parameter(Double.class, "distanceZoneIdCom");
+            Predicate commZCDwithinPred = cBuilder.equal(cBuilder.function("st_dwithin", Boolean.class, sqCommuneIdsFrom.get("geometrie"), zoneCompetence, distanceZone),
+                    Boolean.TRUE);
+            sqCommuneIds.select(sqCommuneIdsFrom.<Long> get("id"));
+            sqCommuneIds.where(commZCDwithinPred);
+
+            predicat = cBuilder.in(from.get("commune")).value(sqCommuneIds);
+
+        } else if ("zoneCompetence".equals(itemFilter.getFieldName())) {
             Expression<Geometry> cpPath = from.get("geometrie");
             ParameterExpression<Geometry> zoneCompetence = cBuilder.parameter(Geometry.class, "zoneCompetence");
             ParameterExpression<Double> distanceZone = cBuilder.parameter(Double.class, "distanceZone");
@@ -98,7 +116,7 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
             Expression<Integer> cpPath = from.join("nature").get("code");
             predicat = cpPath.in(codes);
         } else {
-            return super.processFilterItem(parameters, from, itemFilter);
+            return super.processFilterItem(itemQuery, parameters, from, itemFilter);
         }
         return predicat;
     }
@@ -109,6 +127,10 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
         if (wktFilter != null) {
             itemTypedQuery.setParameter("zoneCompetence", utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie());
             itemTypedQuery.setParameter("distanceZone", Double.valueOf(0));
+        }
+        if (ItemFilter.getFilter(itemFilters, "zoneCompetenceIdCom") != null) {
+            itemTypedQuery.setParameter("zoneCompetenceIdCom", utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie());
+            itemTypedQuery.setParameter("distanceZoneIdCom", Double.valueOf(0));
         }
     }
 
@@ -142,7 +164,8 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
             }
         }
 
-        // On redéfinit le code, la zone spéciale éventuelle, le numéro interne et le numéro
+        // On redéfinit le code, la zone spéciale éventuelle, le numéro interne
+        // et le numéro
         Hydrant.setCodeZoneSpecAndNumeros(attached);
 
         // On attache l'organisme de l'utilisateur courant

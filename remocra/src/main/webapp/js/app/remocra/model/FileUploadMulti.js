@@ -1,0 +1,23 @@
+Ext.define('Sdis.Remocra.model.FileUploadMulti', {
+    extend: 'Ext.data.Model',
+    fields: [{
+        name: 'id',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'titre',
+        type: 'string'
+    }, {
+        name: 'code',
+        type: 'string'
+    }, {
+        name: 'group',
+        type: 'string'
+    }, {
+        name: 'phantom',
+        type: 'bool'
+    }, {
+        name: 'fileuploadid',
+        type: 'string'
+    } ]
+});

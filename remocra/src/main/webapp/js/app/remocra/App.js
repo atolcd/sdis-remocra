@@ -41,6 +41,7 @@ Ext.require('Sdis.Remocra.features.adresses.Adresses');
 Ext.require('Sdis.Remocra.features.dfci.Dfci');
 Ext.require('Sdis.Remocra.features.permis.Permis');
 Ext.require('Sdis.Remocra.features.hydrants.Hydrant');
+Ext.require('Sdis.Remocra.features.oldebs.Oldeb');
 Ext.require('Sdis.Remocra.features.prescrits.Map');
 Ext.require('Sdis.Remocra.features.profil.MonProfil');
 Ext.require('Sdis.Remocra.features.profil.ResetPassword');
@@ -63,10 +64,11 @@ Ext.application({
     appFolder : '/remocra/resources/js/app/remocra',
     
     controllers: ['Metadonnee',
-                  'hydrant.Hydrant', 'hydrant.Fiche', 'hydrant.Admin', 'hydrant.Prescrit',
+                  'hydrant.Hydrant', 'oldeb.Oldeb', 'hydrant.Fiche', 'oldeb.Fiche', 'hydrant.Admin', 'hydrant.Prescrit',
                   'documents.Admin', 'documents.Fiche',
                   'rci.Rci', 'rci.Fiche',
                   'cartographie.Cartographie',
+                  'widget.FileUploadMultiPanel',
                   'Router'],
     
     launch: function() {

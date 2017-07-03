@@ -12,7 +12,6 @@ Ext.define('Sdis.Remocra.widget.SdisChoice', {
     buttonAlign: 'center',
 
     initComponent: function() {
-
         this.items = [];
         // Libellé éventuel
         if (this.explanationsConfig) {
@@ -23,30 +22,41 @@ Ext.define('Sdis.Remocra.widget.SdisChoice', {
             queryMode: 'local',
             displayField: 'nom',
             valueField: 'id',
-            allowBlank: false
+            allowBlank: false,
+            listeners: {
+                scope: this,
+                'select': this.onComboChange
+            }
         }));
 
         this.buttons = [{
-            text: this.okLbl||'Valider',
+            text: this.okLbl || 'Valider',
             itemId: 'ok',
             scope: this,
             handler: this.onOkButton
-        },{
-            text: this.cancelLbl||'Annuler',
+        }, {
+            text: this.cancelLbl || 'Annuler',
             scope: this,
             handler: function() {
+                this.fireEvent('cancel');
                 this.close();
             }
 
-        }];
+        } ];
         this.callParent(arguments);
         this.combo = this.down('combo');
     },
 
     onOkButton: function() {
         if (this.combo.isValid()) {
-            this.fireEvent('valid', this.combo.getValueModel() );
+            this.fireEvent('valid', this.combo.getValueModel());
             this.close();
+        }
+    },
+
+    onComboChange: function() {
+        if (this.combo.isValid()) {
+            this.fireEvent('change', this.combo.getValueModel());
         }
     }
 });
