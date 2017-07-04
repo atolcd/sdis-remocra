@@ -31,16 +31,30 @@ Récupérer les sources du projet :
     mkdir -p ~/projets && cd ~/projets
     git clone git://github.com/atolcd/sdis-remocra.git
 
-Démarrer le serveur de données :
+Démarrer le serveur de données et le serveur de cartes via docker-compose :
 
     cd ~/projets/sdis-remocra/db-docker && docker-compose up
 
-Créer la base de données  et insérer un jeu de données minimal :
+Compléter l'installation de GeoServer :
+
+    ~/projets/sdis-remocra/db-docker/geoserver/add_plugins.sh
+
+Créer la base de données :
 
     PGPASSWORD=postgres ~/projets/sdis-remocra/server/sdis-remocra/home/postgres/remocra_db/reset_db.sh
-    PGPASSWORD=postgres ~/projets/sdis-remocra/server/sdis-remocra/home/postgres/remocra_db/dev/data_tests.sh
 
-Lancer l'application. Par exemple :
+Configurer l'adresse de GeoServer, dans le contexte docker :
+
+    PGPASSWORD=postgres psql -h localhost -U postgres remocra -c "update remocra.param_conf set valeur='http://localhost:8090/geoserver' where cle='WMS_BASE_URL'"
+
+Insérer un jeu de données minimal pour les tests :
+
+    # Base de données
+    PGPASSWORD=postgres ~/projets/sdis-remocra/server/sdis-remocra/home/postgres/remocra_db/dev/data_tests.sh
+    # GeoServer
+    ~/projets/sdis-remocra/db-docker/geoserver/dev/datatest.sh
+
+Lancer l'application :
 
     cd ~/projets/sdis-remocra/remocra
     mvn install:install-file -Dfile=lib/irstv-cts.jar -DgroupId=org.cts -DartifactId=cts -Dversion=1.69 -Dpackaging=jar
@@ -53,7 +67,7 @@ Ouvrir l'URL suivante dans un navigateur :
 
 * Changer le mot de passe de l'utilisateur sdis-adm-app
 * Insérer les communes, les zones spéciales éventuelles, les zones de compétence, les voies, les utilisateurs
-* Paramétrer l'accès à Geoserver et les cartes
+* Paramétrer les cartes
 * ...
 
 
