@@ -50,7 +50,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             'hydrantFiche textfield[name=numeroInterne]': {
                 change: this.doCheckDispo
             },
-            'hydrantFiche #hydrantAnomalies': {
+            'anomalie': {
                 positionChange: this.onAnomalieChange,
                 selectionChange: this.onAnomalieSelectionChange
             },
@@ -235,7 +235,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
         }
         if (initial !== true) {
             Ext.defer(function() {
-                fiche.down('#hydrantAnomalies').setInfo(fiche.typeSaisie, nature);
+                fiche.down('anomalie').setInfo(fiche.typeSaisie, nature);
                 this.doFilterAnomalie(fiche);
                 this.calculateIndisponibilite(fiche);
             }, 100, this);
@@ -389,7 +389,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             Ext.defer(function() {
                 this.checkIfAllTabRead(fiche);
                 this.doCheckDispo(combo);
-                fiche.down('#hydrantAnomalies').setInfo(fiche.typeSaisie, nature.getId());
+                fiche.down('anomalie').setInfo(fiche.typeSaisie, nature.getId());
                 this.doFilterAnomalie(fiche);
                 this.calculateIndisponibilite(fiche);
             }, 100, this);
@@ -528,7 +528,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             }
             
             // On "bind" le store des anomalies
-            var cmpAnomalie = fiche.down('#hydrantAnomalies');
+            var cmpAnomalie = fiche.down('anomalie');
             Ext.defer(function() {
                 var store = Ext.create('Ext.data.Store', {
                     model: 'Sdis.Remocra.model.TypeHydrantAnomalie',
@@ -589,7 +589,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
 
         tabPtAnomalie = fiche.down('container[pointAttention=true]');
         nature = form.findField('nature').getValue();
-        anomalie = fiche.down('#hydrantAnomalies');
+        anomalie = fiche.down('anomalie');
         storeAnomalie = anomalie.getStore();
 
         if (Ext.isEmpty(nature)) {
@@ -625,7 +625,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
     },
 
     calculateIndisponibilite: function(fiche) {
-        var hydrant = fiche.hydrant, cmpAnomalie = fiche.down('#hydrantAnomalies'), nature = fiche.down('combo[name=nature]'), anomalies, nbAdmin = 0, nbTerr = 0, nbHBE = 0, info;
+        var hydrant = fiche.hydrant, cmpAnomalie = fiche.down('anomalie'), nature = fiche.down('combo[name=nature]'), anomalies, nbAdmin = 0, nbTerr = 0, nbHBE = 0, info;
         if (hydrant != null && nature != null && nature.isValid()) {
             nature = nature.getValue();
             anomalies = cmpAnomalie.getSelected();
@@ -779,7 +779,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             hydrant.set('geometrie', fiche.hydrant.get('geometrie'));
 
             // Cas des anomalies
-            var selected = fiche.down('#hydrantAnomalies').getSelected();
+            var selected = fiche.down('anomalie').getSelected();
             hydrant.anomalies().removeAll();
             hydrant.anomalies().add(selected);
             // on set a dirty sinon si on ne change que les anomalies l'hydrant n'est pas condidéré comme dirty Anomalie #35510
@@ -973,11 +973,11 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                     }
 
                     if (currentAnomalie != null) {
-                        fiche.down('#hydrantAnomalies').grid.getSelectionModel().deselect(currentAnomalie);
+                        fiche.down('anomalie').grid.getSelectionModel().deselect(currentAnomalie);
                         this.calculateIndisponibilite(fiche);
                     }
                     if (anomalie != null) {
-                        fiche.down('#hydrantAnomalies').grid.getSelectionModel().select(anomalie,true);
+                        fiche.down('anomalie').grid.getSelectionModel().select(anomalie,true);
                         this.calculateIndisponibilite(fiche);
                     }
 
@@ -1179,7 +1179,21 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             Ext.widget('hydrant.fichepibi', {
                 hydrant: fiche.hydrant.get('pibiAssocie'),
                 typeSaisie: fiche.typeSaisie,
-                ficheParente: fiche
+                ficheParente: fiche,
+                listeners: {
+                    'close': function() {
+                        Ext.defer(function() {
+                            var currentPosition = this.currentPosition;
+                            //on simule le changement de la page de composant anomalie pour le raffraichir
+                            this.setPosition(this.currentPosition+1);
+                            this.setPosition(this.currentPosition-1);
+                            if (this.currentPosition!=currentPosition) {
+                                this.setPosition(currentPosition);
+                            }
+                        }, 100, this);
+                    },
+                    scope: fiche.down('anomalie')
+                }
             }).show();
         } else {
             Sdis.Remocra.model.HydrantPibi.load(fiche.hydrant.get('pibiAssocie').id, {

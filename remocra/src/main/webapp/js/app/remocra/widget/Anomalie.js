@@ -64,7 +64,6 @@ Ext.define('Sdis.Remocra.widget.Anomalie', {
             }),
             columns: [{
                 text: 'Point d\'attention ',
-                flex: 400,
                 dataIndex: 'nom',
                 renderer: function(value, metadata, record, rowIndex, colIndex) {
                     // tooltip
