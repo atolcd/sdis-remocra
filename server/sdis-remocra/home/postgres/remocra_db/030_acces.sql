@@ -129,6 +129,30 @@ GRANT ALL ON SEQUENCE remocra.type_hydrant_marque_id_seq TO remocra;
 GRANT INSERT,SELECT,UPDATE,DELETE ON TABLE remocra.type_hydrant_modele TO remocra;
 GRANT ALL ON SEQUENCE remocra.type_hydrant_modele_id_seq TO remocra;
 
+-- OLDEB
+GRANT INSERT,SELECT,UPDATE,DELETE ON TABLE remocra.type_oldeb_acces TO remocra;
+GRANT ALL ON SEQUENCE remocra.type_oldeb_acces_id_seq TO remocra;
+GRANT INSERT,SELECT,UPDATE,DELETE ON TABLE remocra.type_oldeb_action TO remocra;
+GRANT ALL ON SEQUENCE remocra.type_oldeb_action_id_seq TO remocra;
+GRANT INSERT,SELECT,UPDATE,DELETE ON TABLE remocra.type_oldeb_categorie_anomalie TO remocra;
+GRANT ALL ON SEQUENCE remocra.type_oldeb_categorie_anomalie_id_seq TO remocra;
+GRANT INSERT,SELECT,UPDATE,DELETE ON TABLE remocra.type_oldeb_categorie_caracteristique TO remocra;
+GRANT ALL ON SEQUENCE remocra.type_oldeb_categorie_caracteristique_id_seq TO remocra;
+GRANT INSERT,SELECT,UPDATE,DELETE ON TABLE remocra.type_oldeb_avis TO remocra;
+GRANT ALL ON SEQUENCE remocra.type_oldeb_avis_id_seq TO remocra;
+GRANT INSERT,SELECT,UPDATE,DELETE ON TABLE remocra.type_oldeb_debroussaillement TO remocra;
+GRANT ALL ON SEQUENCE remocra.type_oldeb_debroussaillement_id_seq TO remocra;
+GRANT INSERT,SELECT,UPDATE,DELETE ON TABLE remocra.type_oldeb_residence TO remocra;
+GRANT ALL ON SEQUENCE remocra.type_oldeb_residence_id_seq TO remocra;
+GRANT INSERT,SELECT,UPDATE,DELETE ON TABLE remocra.type_oldeb_suite TO remocra;
+GRANT ALL ON SEQUENCE remocra.type_oldeb_suite_id_seq TO remocra;
+GRANT INSERT,SELECT,UPDATE,DELETE ON TABLE remocra.type_oldeb_zone_urbanisme TO remocra;
+GRANT ALL ON SEQUENCE remocra.type_oldeb_zone_urbanisme_id_seq TO remocra;
+GRANT INSERT,SELECT,UPDATE,DELETE ON TABLE remocra.type_oldeb_anomalie TO remocra;
+GRANT ALL ON SEQUENCE remocra.type_oldeb_anomalie_id_seq TO remocra;
+GRANT INSERT,SELECT,UPDATE,DELETE ON TABLE remocra.type_oldeb_caracteristique TO remocra;
+GRANT ALL ON SEQUENCE remocra.type_oldeb_caracteristique_id_seq TO remocra;
+
 -- RCI
 GRANT UPDATE ON TABLE remocra.rci TO remocra;
 
