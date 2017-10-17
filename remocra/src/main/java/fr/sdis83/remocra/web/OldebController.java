@@ -127,7 +127,7 @@ public class OldebController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
-    @PreAuthorize("hasRight('OLDEB', 'CREATE')")
+    @PreAuthorize("hasRight('OLDEB', 'UPDATE')")
     public ResponseEntity<java.lang.String> updateOldeb(final @PathVariable Long id, MultipartHttpServletRequest request) {
         String json = request.getParameter("oldeb");
         String visiteDocumentsToDeleteJson = request.getParameter("visiteDocumentsToDelete");
@@ -212,7 +212,7 @@ public class OldebController {
      * @return
      */
     @RequestMapping(value = "{id}/updategeom", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('OLDEB', 'CREATE')")
+    @PreAuthorize("hasRight('OLDEB', 'CREATE') or hasRight('OLDEB', 'UPDATE')")
     public ResponseEntity<java.lang.String> updateGeom(final @PathVariable(value = "id") Long id, final @RequestParam(value = "geometrie") String wkt,
             final @RequestParam(value = "srid") Integer srid) {
 

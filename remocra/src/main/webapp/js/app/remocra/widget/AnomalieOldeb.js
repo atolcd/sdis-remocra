@@ -154,7 +154,7 @@ Ext.define('Sdis.Remocra.widget.AnomalieOldeb', {
     },
 
     isAnomalieSelectionnable: function(record) {
-        if (Sdis.Remocra.Rights.getRight('OLDEB').Create) {
+        if (Sdis.Remocra.Rights.getRight('OLDEB').Create || Sdis.Remocra.Rights.getRight('OLDEB').Update) {
             return true;
         } else {
             return false;
