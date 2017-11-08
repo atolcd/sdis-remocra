@@ -102,7 +102,11 @@ public class ParamConf {
         HYDRANT_RENOUVELLEMENT_CTRL("HYDRANT_RENOUVELLEMENT_CTRL", Integer.class),
         WMS_BASE_URL("WMS_BASE_URL", String.class),
         WMS_PUBLIC_LAYERS("WMS_PUBLIC_LAYERS", String.class),
-        COORDONNEES_FORMAT_AFFICHAGE("COORDONNEES_FORMAT_AFFICHAGE",String.class);
+        COORDONNEES_FORMAT_AFFICHAGE("COORDONNEES_FORMAT_AFFICHAGE",String.class),
+        SORTIE_JWT_VALIDITE_SEC("SORTIE_JWT_VALIDITE_SEC", Integer.class),
+        SORTIE_JWT_CLEPRIVEE("SORTIE_JWT_CLEPRIVEE", String.class),
+        SORTIE_JWT_CLEPUBLIQUE("SORTIE_JWT_CLEPUBLIQUE", String.class),
+        SORTIE_JWT_ISSUER("SORTIE_JWT_ISSUER", String.class);
 
         private final String cle;
         private final Class cl;

@@ -240,4 +240,20 @@ public class ParamConfService {
         return serializer.serialize(data);
     }
 
+    // Sortie JWT
+    public String getJwtOutPublicKey() {
+        return (String) this.getValue(ParamConfParam.SORTIE_JWT_CLEPUBLIQUE);
+    }
+
+    public String getJwtOutPrivateKey() {
+        return (String) this.getValue(ParamConfParam.SORTIE_JWT_CLEPRIVEE);
+    }
+
+    public String getJwtOutIssuer() {
+        return (String) this.getValue(ParamConfParam.SORTIE_JWT_ISSUER, "remocra");
+    }
+
+    public Integer getJwtOutValidite() {
+        return (Integer) this.getValue(ParamConfParam.SORTIE_JWT_VALIDITE_SEC, 30);
+    }
 }

@@ -484,11 +484,18 @@
 		</dependency>
 
 		<!--  mvn install:install-file -Dfile=lib/irstv-cts.jar -DgroupId=org.cts -DartifactId=cts -Dversion=1.69 -Dpackaging=jar -->
-		 <dependency>
+		<dependency>
 			<groupId>org.cts</groupId>
 			<artifactId>cts</artifactId>
 			<version>1.69</version>
-                </dependency>
+		</dependency>
+
+		<!-- Gestion du l'authentification JWT sortante -->
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>3.2.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>remocra</finalName>
