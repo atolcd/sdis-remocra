@@ -192,7 +192,6 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
 
         // Ici, le fait de supprimer le Document provoque la suppression du
         // HydrantDocument en cascade
-        entityManager.remove(attached);
         entityManager.remove(d);
         entityManager.flush();
 
