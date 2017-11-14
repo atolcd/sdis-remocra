@@ -1,0 +1,41 @@
+= SDIS Remocra - Cartes
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+link:index{outfilesuffix}[Retour à l'accueil]
+
+link:Manuel%20administration{outfilesuffix}[Retour au manuel d'administration]
+
+'''
+
+== Administration des documents ==
+
+Une interface permet d'administrer les documents. Elle est accessible depuis le bloc "Administration" du serveur.
+Deux boutons sont disposés au-dessous de la grille qui permettent d'ajouter ou de supprimer un document (penser à cliquer sur ligne au préalable pour sélectionner le document concerné).
+Pour modifier un document, on double-clique sur la ligne.
+
+Pour chaque document, on a :
+
+* Des informations : titre et description
+* Le document en lui-même
+* Des filtres :
+** Une liste de thématiques
+** Une liste de profils
+
+== Documents liés à une application ==
+Pour chacune des thématiques Hydrants, Adresses, DFCI, Permis et Risques, les documents sont listés dans un onglet pour les hydrants et sous la carte pour les autres.
+
+== Documents en page d'accueil ==
+La page d'accueil peut contenir plusieurs blocs de documents. Pour chaque bloc de documents, on précise :
+
+Les profils concernés : le bloc sera visible uniquement si un utilisateur connecté à un profil de droits parmi ceux qui sont listés (par exemple : ```profils : ['COM-HYDRANT-E1', 'COM-HYDRANT-E2']```)
+
+Les thématiques du bloc : seuls les documents qui ont une thématique incluse dans la liste seront listés (exemple : ```thematiques : ['POINTDEAU','ADRESSES']```)
+La taille des pages (exemple : pageSize : 5)

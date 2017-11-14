@@ -1,0 +1,137 @@
+= SDIS Remocra - Couche d'APIS à REMOcRA
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+link:index{outfilesuffix}[Retour à l'accueil]
+
+link:Manuel%20administration{outfilesuffix}[Retour au manuel d'administration]
+
+'''
+
+== Activer la synchronisation de la table dans APIS (SDIS83) ==
+
+Dans la base PostgreSQL _sdis_ du serveur APIS, référencer la table à exporter dans la table _sdis_meta.tables_a_synchroniser_ pour activer la synchronisation automatique. Par exemple :
+[source]
+----
+#id, nom, actif
+1, AERO, TRUE
+----
+
+Attendre l'exécution de la synchronisation suivante (la nuit suivante a priori), qui crée la couche correspondante dans GeoServer (schéma et données).
+
+== Créer la couche dans Geoserver ==
+
+Se connecter à GeoServer : http://remocra.sdisxx.fr/geoserver
+
+=== Style ===
+
+Au préalable, déposer les images nécessaires dans (on peut utiliser des sous-répertoires) :
+
+./var/remocra/geoserver_data/workspaces/remocra/styles
+
+Puis via l'interface graphique GeoServer :
+
+* Data / Styles
+* Add a new style
+* Name
+* Workspace remocra
+* Copier un style existant si besoin
+* _EDITER_
+* Validate
+* Submit
+
+=== Couche simple (table) ===
+
+* Data / Layers
+* Add a new resource
+* _remocra:remocra_ ou _remocra:remocra_referentiel_ selon le schéma à utiliser
+* Choisir la table concernée puis "Publish"
+* Data
+** name / title
+** Compute from native bounds
+** Save
+* Publishing
+** Default style
+** Save
+
+=== Couche dynamique (vue) ===
+
+* Data : Configure new SQL view...
+* name exemple : "v_permis"
+* Définir la requête en SQL. Par exemple :
+
+[source,sql]
+----
+select p.id, numero, p.nom, p.avis avis, a.nom avislbl, c.nom commune, annee, p.geometrie from remocra.permis p left join remocra.type_permis_avis a on(p.avis=a.id) left join remocra.commune c on (p.commune=c.id)
+----
+
+Puis :
+
+* Guess geometry type and srid
+* Refresh
+* Cocher la colonne "id"
+* Save
+* Publishing
+** Default style
+
+=== Couche composée ===
+
+* Layer groups
+* Add new layer group
+** name
+** title
+** workspace remocra
+** Add Layer...*
+** Generate Bounds
+** Save
+
+== Couche dans REMOcRA ==
+
+Déposer les images nécessaires dans (on peut utiliser des sous-répertoires) :
+
+. /var/remocra/html/images/remocra/cartes/legende
+
+Par exemple pour les images de l'exemple qui suit, on aura les images suivantes :
+
+[source]
+----
+/var/remocra/html/images/remocra/cartes/legende/reseau_dfci/res_piste_cat1.png
+/var/remocra/html/images/remocra/cartes/legende/reseau_dfci/...
+/var/remocra/html/images/remocra/cartes/legende/reseau_dfci/res_piste_cat4.png
+----
+
+Ajouter une couche dans le fichier carte.json dans un groupe.
+La"structure json décrit à la fois la couche et les éléments de la légende. Par exemple :
+[source,js]
+----
+{
+        "type": "wms",
+        "libelle":"Réseau DFCI",
+        "id":"reseauDfciLayer",
+        "wms_layer":true,
+        "layers":"remocra:piste",
+        "url":"/remocra/proxy/wms",
+        "projection":"EPSG:900913",
+        "sld":null,
+        "scale_min":"0",
+        "scale_max":"362834",
+        "visibility":true,
+        "opacity":1,
+        "interrogeable": false,
+        "items":[
+            {"libelle":"Première catégorie","image":"reseau_dfci/res_piste_cat1.png"},
+            {"libelle":"Seconde catégorie","image":"reseau_dfci/res_piste_cat2.png"},
+            {"libelle":"Troisième catégorie","image":"reseau_dfci/res_piste_cat3.png"},
+            {"libelle":"Quatrième catégorie","image":"reseau_dfci/res_piste_cat4.png"}
+        ]
+    }
+----
+
+_Aide technique : tutoriels link:http://postgis.net/docs/manual-1.5[Document PostGIS] sur postgis.net, http://docs.geoserver.org/[Documentation GeoServer] sur geoserver.org et link:http://docs.geoserver.org/latest/en/user/styling/index.html[Documentation SLD] sur geoserver.org_

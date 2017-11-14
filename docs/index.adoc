@@ -1,0 +1,20 @@
+= SDIS Remocra - Documentation
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+
+image::https://www.atolcd.com/fileadmin/Images_pages_menu/Open_Source/Remocra/header_remocra_liste_arrondi.jpg[Modules,600,225]
+
+
+* link:../remocra#premier-run[Serveur en mode développement]
+* link:Manuel%20packaging{outfilesuffix}[Manuel de packaging]
+* link:Manuel%20installation{outfilesuffix}[Manuel d'installation]
+* link:Manuel%20administration{outfilesuffix}[Manuel d'administration]
+* link:Synchronisation{outfilesuffix}[Synchronisation]

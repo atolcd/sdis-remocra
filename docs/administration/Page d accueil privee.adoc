@@ -1,0 +1,259 @@
+= SDIS Remocra - Page d'accueil privée
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+link:index{outfilesuffix}[Retour à l'accueil]
+
+link:Manuel%20administration{outfilesuffix}[Retour au manuel d'administration]
+
+'''
+
+Exemple de configuration :
+
+./var/remocra/html/html/index/index-pri.json
+[source,js]
+----
+[
+    // Colonne 1
+    [ {
+        type : 'hydrants'
+    }, {
+        type : 'dfci'
+    }, {
+        type : 'metadonnees'
+    }, {
+        type : 'rci'
+    }, {
+        type : 'cartographie'
+    } ],
+    // Colonne 2
+    [ {
+        type : 'adresses'
+    }, {
+        type : 'risques'
+    }, {
+        type : 'traitements'
+    } ],
+    // Colonne 3
+    [ {
+        type : 'permis'
+    },
+    {
+        type : 'info',
+        content : 'Une nouvelle carte thématique pourrait vous intéresser.<br/>Il s\'agit de la carte XXX.'
+    }, {
+        //profils : ['COM-HYDRANT-E1'],
+        type : 'doc',
+        title : 'Documents',
+        icon : 'documents.png',
+        pageSize : 5//,
+        // Configuration du contenu
+        //thematiques : ['POINTDEAU','ADRESSES', 'PERMIS', 'DFCI', 'RISQUES', 'DIVERS']
+    }, {
+        //profils : ,
+        type : 'doc',
+        title : 'Cartothèque',
+        icon : 'documents.png',
+        pageSize : 5,
+        // Configuration du contenu
+        thematiques : ['CARTOTHEQUE']
+    }, {
+        type : 'admin'
+    } ]
+]
+----
+
+
+== Colonnes ==
+
+Les lignes qui commencent par // sont des commentaires.
+Nous avons à faire ici à un tableau de trois colonnes qui sont configurées pour contenir :
+
+* des blocs classiques (cartographie, hydrants, oldebs, permis, rci, dfci, adresses, risques, metadonnees, traitements, admin),
+* des blocs génériques (info et doc) dont le contenu dynamique varie selon le paramétrage.
+
+== Bocs classiques ==
+
+Pour les blocs classiques, le _type_ suffit. Dans ce cas, un titre par défaut sera affecté ("Points d'eau", "Adresses", "Permis", etc.)
+
+== Blocs génériques ==
+
+Pour les blocs génériques (_info_ et _doc_), le paramètre _profils_ permet de limiter l'affichage du bloc.
+
+Pour le bloc _info_, le paramètre _content_ contient le code HTML rendu.
+
+Pour le bloc _doc_, le paramètre _thematiques_ permet de limiter la liste des documents. La taille des pages est précisée avec le paramètre _pageSize_.
+
+== Valeurs par défaut ==
+Les paragraphes suivants précisent les valeurs par défaut des différents blocs. Il est possible de les surcharger.
+
+=== Pour tous les blocs ===
+
+*Profils*
+
+On peut décider de la présence de chaque bloc en fonction du profil de l'utilisateur connecté avec le paramètre _profils_.
+Si le paramètre est absent, le bloc sera présenté à tous les utilisateurs. En revanche, si le paramètre est présent, sa valeur détermine les profils concernés par le bloc. La valeur attendue est :
+
+* Une chaîne de caractères avec une valeur de la colonne code de table PROFIL_DROIT. Par exemple :
+** ```profils : 'COM-HYDRANT-E1'```
+* Un tableau si plusieurs profils sont concernés. Par exemple :
+** ```profils : ['COM-HYDRANT-E1', 'COM-HYDRANT-E2']```
+
+Remarques :
+
+* un filtre automatique est également appliqué en fonction du profil de l'utilisateur pour les blocs métiers. Par exemple, le bloc "Permis" sera présenté que si l'utilisateur dispose des accès aux permis.
+* le filtre sera également appliqué au contenu des blocs de type "documents".
+
+*Hauteur*
+
+Le paramère _minHeight_ permet de préciser la hauteur minimale du bloc en pixels. Par exemple : ```minHeight: 150```
+
+*Bloc "cartographie"*
+
+[source,js]
+----
+type: 'cartographie'
+title: 'Cartographie'
+img: 'cartographie.png'
+----
+
+*Bloc "hydrants"*
+
+[source,js]
+----
+type: 'hydrants'
+title: 'Points d\'eau'
+img: 'pointseau.png'
+----
+
+*Bloc "oldebs"*
+
+[source,js]
+----
+type: 'oldebs'
+title: 'Comité de secteur'
+img: 'oldeb.png'
+----
+
+*Bloc "permis"*
+
+[source,js]
+----
+type: 'permis'
+title: 'Permis'
+img: 'permis.png'
+----
+
+*Bloc "rci"*
+
+[source,js]
+----
+type: 'rci'
+title: 'Recherche des Causes et des Circonstances Incendie'
+img: 'rci.png'
+----
+
+*Bloc "dfci"*
+
+[source,js]
+----
+type: 'dfci'
+title: 'Défense de la Forêt Contre les Incendies'
+img: 'dfci.png'
+----
+
+*Bloc "adresses"*
+
+[source,js]
+----
+type: 'adresses'
+title: 'Adresses'
+img: 'adresses.png'
+----
+
+*Bloc "risques"*
+
+[source,js]
+----
+type: 'risques'
+title: 'Carte des risques'
+img: 'risques.png'
+----
+
+*Bloc "metadonnees"*
+
+[source,js]
+----
+type: 'metadonnees'
+title: 'Métadonnées'
+img: 'metadonnees.png'
+----
+
+*Bloc "traitements"*
+
+[source,js]
+----
+type: 'traitements'
+title: 'Extraire, télécharger, téléverser'
+img: 'traitements.png'
+----
+
+*Bloc "admin"*
+
+[source,js]
+----
+type: 'admin'
+title: 'Administrer'
+img: 'administrer.png'
+----
+
+*Bloc "info"*
+
+Paramètres par défaut :
+[source,js]
+----
+type: 'info'
+title: 'Flash info'
+img: 'info.png'
+----
+
+Paramètres supplémentaires attendus :
+[source,js]
+----
+content: '<b>contenu html</b>'
+----
+
+*Bloc "doc"*
+
+Paramètres par défaut :
+[source,js]
+----
+type: 'doc'
+title: 'Documents'
+img: 'documents.png'
+profils: null
+pageSize: 5
+thematiques: null
+----
+
+Pour les thématiques, il s'agit de fournir un tableau avec les codes des thématiques concernées (valeurs de la colonne CODE de la table THEMATIQUE) :
+[source,js]
+----
+thematiques: ['POINTDEAU','ADRESSES', 'PERMIS', 'DFCI', 'RISQUES', 'DIVERS']
+----
+Lorsqu'une seule thématique est concernée, on peut également fournir une chaîne de caractères :
+[source,js]
+----
+thematiques: 'POINTDEAU'
+----
+Si le paramètre n'est pas précisé, aucun filtre ne sera appliqué sur les thématiques (tous les documents seront listés).
+
+
+_Aide technique : tutoriels link:http://www.w3schools.com/json[JSON] et link:http://www.w3schools.com/html[HTML] sur w3schools.com_

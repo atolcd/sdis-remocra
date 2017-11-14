@@ -1,0 +1,20 @@
+= SDIS Remocra - Manuel de packaging
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+link:index{outfilesuffix}[Retour à l'accueil]
+
+'''
+
+Pour créer un package Remocra, exécuter le script suivant :
+
+ packaging/remocra-package.sh
+
+Exemple d'archive générée : ```packaging/remocrapackage/20171108_remocrapackage0.9.14.zip```.

@@ -1,0 +1,90 @@
+= SDIS Remocra - Page d'accueil publique
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+link:index{outfilesuffix}[Retour à l'accueil]
+
+link:Manuel%20administration{outfilesuffix}[Retour au manuel d'administration]
+
+'''
+
+== Contenu principal ==
+
+Exemple de contenu avec un paragraphe et les deux liens _Carte des risques_ et _Métadonnées_ :
+
+./var/remocra/html/html/index/index.html
+[source,html]
+----
+<p>
+Repudiandae euismod porttitor quis, eleifend elit mus ut mi a, tincidunt viverra, sollicitudin odio omnis porta. Sit integer integer consequat, dolor dui sit. Facilisi odio ante leo, felis sed lacus dui vulputate. Et hendrerit id. Aenean ullamcorper, nisl pellentesque risus ante. Est libero est molestie in vel, molestias ornare aliquam suscipit quisque. Et sodales, ac nunc non, et quis elit ac auctor ipsum aenean. Diam magnis faucibus libero pharetra dolor ut, ipsum sapien convallis nec penatibus. Mattis nunc dictumst ac, arcu enim lectus pede id. Convallis et justo per quam, elit velit vestibulum et donec, quam venenatis ultrices volutpat, et sollicitudin orci est lacus porttitor eros. Aenean montes et, lectus viverra vitae vel id ac arcu, cursus vitae, non justo nonummy a rhoncus interdum sollicitudin.
+</p>
+
+<div style="display: table;margin-right: auto;margin-left: auto;">
+    <ul>
+        <li style="padding-left: 100px;background-repeat:no-repeat;background-image:url('images/remocra/blocs/risques.png');height:100px;float: left;margin-left:25px;margin-right:25px;line-height: 100px;">
+            <a style="vertical-align: top;color:#c4050a;font-size:15px;font-weight:bold;text-transform:uppercase;" href="#risques">Carte des risques</a>
+        <li style="padding-left: 100px;background-repeat:no-repeat;background-image:url('images/remocra/blocs/documents.png');height:100px;float: left;margin-left:25px;margin-right:25px;line-height: 100px;">
+            <a style="vertical-align: top;color:#c4050a;font-size:15px;font-weight:bold;text-transform:uppercase;" href="#metadonnees">Métadonnées</a>
+        </li>
+    </ul>
+</div>
+----
+
+Remarques :
+
+* Les niveaux _<html>_ et _<body>_ ne doivent pas être ajoutés dans la mesure où il s'agit d'une partie de page
+* En principe, la partie qui concerne les deux liens (div...) ne doit pas être modifiée
+
+
+
+== Bloc inscription ==
+
+Exemple de paramétrage :
+
+./var/remocra/html/html/index/inscription.html
+[source,html]
+----
+<p>Vous pouvez formuler votre demande :</p><ul><li>par téléphone : 049460XXXX</li><li>par email : XXX@sdisXX.fr</li></ul>
+----
+
+
+
+== Ajout d'images (ou autres ressources) ==
+
+Il est possible d'ajouter de nouvelles ressources publiques adressables dans remocra. De cette manière, la personnalisation peut-être plus importante.
+
+Par exemple, on dépose l'image suivante :
+
+./var/remocra/html/images/remocra/pourtester.png
+
+L'URL de l'image est ka suivante : http://remocra.sdisxx.fr/remocra/ext-res/images/remocra/pourtester.png.
+
+
+
+== Personnalisation forte ==
+
+Une feuille de styles CSS spécifique permet de modifier l'affichage des pages par des surcharges des règles existantes. Par exemple, on ajoute une règle qui spécifie que l'affichage du titre "CARTE DES ADRESSES" doit être réalisé en vert :
+
+./var/remocra/html/styles/remocra/override.css
+[source,css]
+----
+/*
+ *  Feuille de style spécifique (surcharge de main.css)
+ */
+
+#adresses_header span {
+  color: green;
+}
+----
+
+En combinant cette possibilité avec l'ajout de ressources décrit dans le paragraphe précédent, il est possible de personnaliser de manière forte l'affichage de Remocra.
+
+
+_Aide technique : tutoriels link:http://www.w3schools.com/html[HTML] et link:http://www.w3schools.com/css[CSS] sur w3schools.com_

@@ -1,0 +1,141 @@
+= SDIS Remocra - Module cartographie symboles et images
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+link:index{outfilesuffix}[Retour à l'accueil]
+
+link:Manuel%20administration{outfilesuffix}[Retour au manuel d'administration]
+
+'''
+
+Cette page fournit des explications sur la configuration des symboles et des images mises à disposition des utilisateurs dans le module de cartographie.
+
+== Symboles ==
+
+Exemple de contenu :
+
+./var/remocra/html/js/app/remocra/features/cartographie/data/styles.json
+[source,js]
+----
+{
+    "success": true,
+    "data": [{
+        "code": "",
+        "lbl": "Aucun" 
+    }, {
+        "code": "square",
+        "lbl": "Carré" 
+    }, {
+        "code": "circle",
+        "lbl": "Cercle" 
+    }, {
+        "code": "cross",
+        "lbl": "Croix" 
+    }, {
+        "code": "flag",
+        "lbl": "Drapeau",
+        "def": [0, 0, 0, -140, 120, -140, 120, -60, 4, -60, 4, 0, 0, 0]
+    }, {
+        "code": "star",
+        "lbl": "Etoile" 
+    }, {
+        "code": "lightning",
+        "lbl": "Flash",
+        "def": [0, 0, 4, 2, 6, 0, 10, 5, 6, 3, 4, 5, 0, 0]
+    }, {
+        "code": "arrow",
+        "lbl": "Flèche",
+        "def": [0, 2, 1, 0, 2, 2, 1, 0, 0, 2]
+    }, {
+        "code": "church",
+        "lbl": "Monument religieux",
+        "def": [4, 0, 6, 0, 6, 4, 10, 4, 10, 6, 6, 6, 6, 14, 4, 14, 4, 6, 0, 6, 0, 4, 4, 4, 4, 0]
+    }, {
+        "code": "rectangle",
+        "lbl": "Rectangle",
+        "def": [0, 0, 4, 0, 4, 10, 0, 10, 0, 0]
+    }, {
+        "code": "triangle",
+        "lbl": "Triangle" 
+    }, {
+        "code": "x",
+        "lbl": "X" 
+    }]
+}
+----
+
+Pour ajouter un style, on ajoute une description dans le tableau data. Par exemple un drapeau :
+[source,js]
+----
+{
+    "code": "flag",
+    "lbl": "Drapeau",
+    "def": [0, 0, 0, -140, 120, -140, 120, -60, 4, -60, 4, 0, 0, 0]
+}
+----
+
+Un symbole est défini de la manière suivante :
+
+* _code_ : un code qui représente le symbole (jamais visible par l'utilisateur)
+* _lbl_ : un libellé qui sera présenté à l'utilisateur dans la liste
+* _def_ : une définition qui est une suite de points x, y
+
+Les styles qui n'ont pas la propriété _def_ dans l'exemple sont ceux qui sont déjà prédéfinis par la librairie employée. Pour les autres, on renseigne la propriété _def_.
+
+
+== Images ==
+
+Exemple de contenu :
+
+./var/remocra/html/js/app/remocra/features/cartographie/data/images.json
+[source,js]
+----
+{
+    "success": true,
+    "data": [{
+        "url": "",
+        "lbl": "Aucun" 
+    }, {
+        "url": "ext-res/images/remocra/cartes/legende/administratif/bat_cis.png",
+        "lbl": "CIS" 
+    }, {
+        "url": "ext-res/images/remocra/cartes/legende/habillage_urbain/bat_camping.png",
+        "lbl": "Camping" 
+    }, {
+        "url": "ext-res/images/remocra/cartes/legende/reseau_dfci/dfci_tour_guet.png",
+        "lbl": "DFCI tour de guet" 
+    }, {
+        "url": "ext-res/images/remocra/cartes/legende/reseau_urbain/res_fer_gare.png",
+        "lbl": "Gare" 
+    }, {
+        "url": "ext-res/images/remocra/cartes/legende/rci/rci.png",
+        "lbl": "Départ feu" 
+    }, {
+        "url": "ext-res/images/remocra/cartes/legende/rci/rci-tmp.png",
+        "lbl": "Départ feu bleu" 
+    }]
+}
+---
+
+Pour ajouter une image, on ajoute une description dans le tableau data. Par exemple pour des images déjà présentes dans Remocra :
+[source,js]
+----
+{
+    "url": "ext-res/images/remocra/cartes/legende/rci/rci.png",
+    "lbl": "Départ feu" 
+}
+----
+
+Un symbole est défini de la manière suivante :
+
+* _url_ : l'URL de l'image à afficher (jamais visible par l'utilisateur)
+* _lbl_ : un libellé qui sera présenté à l'utilisateur dans la liste
+
+Les URLs peuvent être celles d'images déjà présentes dans Remocra (c'est le cas pour toutes les images de l'exemple, notation relative) ou celles d'images externes en notation absolue (exemple : http://www.sdis83.fr/internet/_media/img/thumb/infocom.jpg).

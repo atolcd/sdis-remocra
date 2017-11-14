@@ -1,0 +1,293 @@
+= SDIS Remocra - Courriels envoyés automatiquement
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+link:index{outfilesuffix}[Retour à l'accueil]
+
+link:Manuel%20administration{outfilesuffix}[Retour au manuel d'administration]
+
+'''
+
+Dans cette page sont listés les courriels qui sont envoyés automatiquement lors de l'utilisation de Remocra, ainsi que les modèles employés et les adresses utilisées.
+
+== DFCI ==
+=== Dépôt d'un document de réception de travaux ===
+L'adresse email destinataire est paramétrée dans les paramètres de configuration :
+
+* EMAIL_DEST_DEPOT_RECEPTRAVAUX
+* Adresse du destinataire des emails de notification de dépôts de dossiers de réception de travaux
+
+Le modèle utilisé porte le code "DEPOT_RECEPTRAVAUX" dans la table remocra.email_modele.
+
+
+
+== Adresses ==
+
+=== Dépôt de délibération ===
+L'adresse email destinataire est paramétrée dans les paramètres de configuration :
+* EMAIL_DEST_DEPOT_DELIB
+* Adresse du destinataire des emails de notification de dépôts de délibérations
+
+Le modèle utilisé porte le code "DEPOT_DELIB" dans la table remocra.email_modele.
+
+
+
+== Recherche des Causes et Circonstances d'Incendie ==
+=== Création d'un départ ===
+L'adresse email destinataire est paramétrée dans les paramètres de configuration :
+* EMAIL_DEST_CREATION_RCI
+* Adresse du destinataire des emails de notification de création d'un départ
+
+Le modèle utilisé porte le code "CREATION_RCI" dans la table remocra.email_modele.
+
+
+
+== Points d'eau ==
+=== Déclaration d'un point d'eau ===
+
+Exemple d'email diffusé suite au dépôt d'une déclaration de point(s) d'eau par un utilisateur (commune ou communauté territoriale) via le bloc "Points d'eau" de la page d'accueil :
+
+** Sujet : Déclaration d'un point d'eau
+** Fichier : en lien FoxAmphoux_PointEau_654.pdf (exemple)
+** Corps :
+++++
+    <div style="margin-left:30px;background-color:#eeeeee" class="moz-forward-container">
+      <title>Hydrants indisponibles SDIS83 REMOCRA</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style>
+      <div>
+        <p>Bonjour,<br>
+          <br>
+          Un dossier de déclaration d'hydrant(s) a été déposé par un
+          utilisateur de l'organisme FOX AMPHOUX. Le fichier est
+          disponible <a
+            href="http://remocra.sdisxx.fr/remocra/...">ici</a>.<br>
+          <br>
+          Cordialement.</p>
+        <p class="caution">En cas d'incompréhension de ce message, merci
+          de prendre contact avec le SDIS83.</p>
+        <p class="footer">Ce message vous a été envoyé automatiquement,
+          merci de ne pas répondre à l'expéditeur.</p>
+      </div>
+      <br>
+    </div>
+++++
+
+L'adresse email destinataire est paramétrée dans les paramètres de configuration :
+
+* EMAIL_DEST_DEPOT_DECLAHYDRANT
+* Adresse du destinataire des emails de notification de dépôts de dossiers de déclaration d'hydrant(s)
+
+Le modèle utilisé porte le code "DEPOT_DECLAHYDRANT" dans la table remocra.email_modele
+
+=== Vue globale de l'état des hydrants (sur demande) ===
+On distingue les deux référents : le référent PENA pour les PENA et le référent DECI pour les PIBI. Deux traitements permettent de générer un état global des PENA ou des PIBI regroupés par commune. Chaque commune reçoit un rapport avec l'ensemble de ses PENA ou PIBI et le référent concerné est notifié avec l'ensemble des états des communes (fichier zip qui contient tous les fichiers XLS). Les deux traitements qui suivent sont exécutés sur demande via l'interface des traitements :
+
+Pour l'état global des PIBI :
+
+* Chaque commune reçoit un email avec un fichier XLS joint dans lequel on retrouve l'ensemble des PIBI de la commune. Le référent DECI reçoit un email avec un lien de téléchargement d'un fichier zip qui contient l'ensemble des fichiers XLS des communes
+* Email destinataire pour la commune : valeur de la colonne email_contact de la table remocra.organisme pour la commune. L'organisme est retrouvé via l'application d'un filtre sur le code insee (exemple "83061" pour Fréjus) et par sécurité sur le type d'organisme "Commune".
+* Email destinataire pour le référent : valeur de la colonne email de la table remocra.utilisateur pour tous les utilisateurs qui ont un profil qui porte le code "SDIS-REF-DECI"
+* Email destinataire pour le demandeur du traitement : valeur de la colonne email de la table remocra.utilisateur pour l'utilisateur qui a réalisé la demande avec l'interface des traitements si c'est la cas
+* Exemple pour la commune de Fox Amphoux :
+** Sujet : SDIS83 REMOCRA - Hydrants
+** Fichier : attaché 20131007_FOX_AMPHOUX_hydrant.xls
+** Corps :
+++++
+    <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
+      <title>Hydrants indisponibles SDIS83 REMOCRA</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style>
+      <div>
+        <p>Bonjour,<br>
+          <br>
+          Veuillez trouver ci-joint en pièce jointe la liste des
+          hydrants de votre commune.<br>
+          <br>
+          Cordialement.</p>
+        <p class="caution">En cas d'incompréhension de ce message, merci
+          de prendre contact avec le SDIS83.</p>
+        <p class="footer">Ce message vous a été envoyé automatiquement,
+          merci de ne pas répondre à l'expéditeur.</p>
+      </div>
+      <br>
+    </div>
+++++
+* Exemple pour le référent PENA :
+** Sujet : Demande 0000000077 : Traitement effectué avec succès
+** Fichier : en lien 0000000077.zip
+** Corps :
+++++
+   <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
+      <title>Hydrants indisponibles SDIS83 REMOCRA</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style>
+      <div>
+        <p>Bonjour Sdis Ref Pena,<br>
+          <br>
+          Le traitement <b>"Etat des hydrants PENA"</b> demandé le 07/10/2013 à 16h00 a été exécuté avec succès.<br/><br/>
+<a href=3D"http://remocra.sdisxx.fr/remocra/telechargement/b0a314fd456adb3d9c3998baf5cb5b5d">Télécharger les données</a><br/><br/>
+          Cordialement.</p>
+        <p class="caution">En cas d'incompréhension de ce message, merci
+          de prendre contact avec le SDIS83.</p>
+        <p class="footer">Ce message vous a été envoyé automatiquement,
+          merci de ne pas répondre à l'expéditeur.</p>
+      </div>
+      <br>
+    </div>
+++++
+
+Pour l'état global des PENA :
+
+* Le principe est le même hormis qu'il s'applique aux PENA et pour le(s) référent(s) PENA (code profil "SDIS-REF-PENA").
+
+Le modèle utilisé porte le code "COMMUNE_HYDRANT" dans la table remocra.email_modele pour les communes (modèles génériques de la table pdi.modele_message pour les référents et le demandeur).
+
+
+=== Vue des points d'eau devenus indisponibles dans la nuit ===
+
+Dans le même état d'esprit que pour les états globaux, nous avons deux types de rapports. Ces rapports qui sont générés automatiquement toutes les nuits ne comportent que les PIBI ou PENA devenus indisponibles la veille.
+
+==== Cas où aucun point d'eau n'est devenu indisponible ====
+Lorsqu'il n'y a aucun hydrant concerné, le référent concerné reçoit un email qui lui confirme que le traitement a été réalisé sans qu'il n'y ait de point d'eau concerne.
+
+* Exemple d'un rapport reçu par le référent PENA lorsqu'aucun PENA n'est devenu indisponible suite aux saisie de la veille :
+** Sujet : Demande 0000000209 : Traitement effectué avec succès
+** Fichier : aucun
+** Corps :
+++++
+  <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
+      <title>Hydrants indisponibles SDIS83 REMOCRA</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style>
+      <div>
+        <p>Bonjour Sdis Ref Pena,<br>
+          <br>
+          Le traitement <b>"Etat des hydrants PENA indisponibles"</b> demandé le 07/10/2013 à 00h10 a été exécuté avec succès.<br/><br/>
+          Cordialement.</p>
+        <p class="caution">En cas d'incompréhension de ce message, merci
+          de prendre contact avec le SDIS83.</p>
+        <p class="footer">Ce message vous a été envoyé automatiquement,
+          merci de ne pas répondre à l'expéditeur.</p>
+      </div>
+      <br>
+    </div>
+++++
+
+==== Cas au moins un point d'eau est devenu indisponible la veille ====
+Lorsqu'une ou plusieurs communes ont des points d'eau devenus indisponibles suite aux saisies réalisées la veille, le référent concerné reçoit un email avec un lien de téléchargement d'un fichier zip qui contient l'ensemble des fichiers XLS des communes.
+
+* Exemple de rapport reçu par le référent DECI lorsque deux communes ont des PIBI devenus indisponibles suite aux saisie de la veille :
+** Sujet : Demande 0000000208 : Traitement effectué avec succès
+** Fichier : en lien 0000000208.zip
+** Corps :
+++++
+   <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
+      <title>Hydrants indisponibles SDIS83 REMOCRA</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style>
+      <div>
+        <p>Bonjour Sdis Ref Pena,<br>
+          <br>
+          Le traitement <b>"Etat des hydrants PIBI indisponibles"</b> demandé le 07/10/2013 à 00h10 a été exécuté avec succès.<br/><br/>
+<a href=3D"http://remocra.sdisxx.fr/remocra/telechargement/38f475670b2b4ef184c78f5dd6e6f476">Télécharger les données</a><br/><br/>
+          Cordialement.</p>
+        <p class="caution">En cas d'incompréhension de ce message, merci
+          de prendre contact avec le SDIS83.</p>
+        <p class="footer">Ce message vous a été envoyé automatiquement,
+          merci de ne pas répondre à l'expéditeur.</p>
+      </div>
+      <br>
+    </div>
+++++
+* Exemple de rapport reçu par la commune de Draguignan :
+** Sujet : SDIS83 REMOCRA - Hydrants indisponibles
+** Fichier : attaché 20131007_DRAGUIGNAN_indisponible.xls
+** Corps :
+++++
+   <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
+      <title>Hydrants indisponibles SDIS83 REMOCRA</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style>
+      <div>
+        <p>Bonjour,<br>
+          <br>
+          Des hydrants sont indisponibles sur votre commune, en voici la
+          liste en pièce jointe.<br/><br/>
+          Cordialement.</p>
+        <p class="caution">En cas d'incompréhension de ce message, merci
+          de prendre contact avec le SDIS83.</p>
+        <p class="footer">Ce message vous a été envoyé automatiquement,
+          merci de ne pas répondre à l'expéditeur.</p>
+      </div>
+      <br>
+    </div>
+++++
+* Exemple de rapport reçu par la commune de Fox Amphoux :
+** Sujet : SDIS83 REMOCRA - Hydrants indisponibles
+** Fichier : attaché 20131007_FOX_AMPHOUX_indisponible.xls
+** Corps :
+++++
+     <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
+      <title>Hydrants indisponibles SDIS83 REMOCRA</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style>
+      <div>
+        <p>Bonjour,<br>
+          <br>
+          Des hydrants sont indisponibles sur votre commune, en voici la
+          liste en pièce jointe.<br/><br/>
+          Cordialement.</p>
+        <p class="caution">En cas d'incompréhension de ce message, merci
+          de prendre contact avec le SDIS83.</p>
+        <p class="footer">Ce message vous a été envoyé automatiquement,
+          merci de ne pas répondre à l'expéditeur.</p>
+      </div>
+      <br>
+    </div>
+++++
+
+Le modèle utilisé porte le code "COMMUNE_HYDRANT_INDISPONIBLE" dans la table remocra.email_modele pour les communes (modèles génériques de la table pdi.modele_message pour les référents et le demandeur).
+
+
+
+== Risques ==
+=== Nouveau fichiers des risques express ===
+
+L'adresse email destinataire est celle de l'utilisateur qui est paramétré dans les paramètres de configuration (via son identifiant) :
+
+* PDI_NOTIFICATION_KML_UTILISATEUR_ID
+* Identifiant de l'utilisateur à notifier dans le cas de la publication d'un nouveau fichier de risques KML
+
+Le modèle utilisé porte le code "PUBLICATION_KML_RISQUE" dans la table remocra.email_modele.
+
+
+
+== Inscriptions / mots de passe ==
+=== Création d'un utilisateur ===
+A la création d'un utilisateur via l'interface d'administration, un email est envoyé à l'utilisateur en utilisant l'adresse email déterminée.
+Le modèle utilisé porte le code "UTILISATEUR_MAIL_INSCRIPTION" dans la table remocra.email_modele.
+
+=== Mot de passe perdu ===
+Lorsque l'utilisateur clique sur le lien "Choix du mot de passe" et confirme, il reçoit un email basé sur le modèle qui porte le code "UTILISATEUR_MAIL_MOT_DE_PASSE_PERDU" dans la table remocra.email_modele. Cet email contient un lien à usage unique qui permet de réinitialiser le mot de passe de l'utilisateur dans REMOcRA.
+
+Une fois que le nouveau mot de passe est déterminé, l'utilisateur reçoit une confirmation basée sur le modèle qui porte le code "UTILISATEUR_MAIL_MOT_DE_PASSE" dans la table remocra.email_modele.
+
+
+
+== Traitements génériques ==
+
+Lorsqu'un utilisateur demande l'exécution d'un traitement, il reçoit un des messages génériques de la table pdi.modele_message selon le cas de figure :
+
+* idmodele 1 : cas de succès avec un fichier en sortie (selon le traitement ; exemple : téléchargement d'une fiche Atlas)
+* idmodele 2 : cas de succès sans fichier en sortie (selon le traitement ; exemple : mise à jour des positions des points d'eau)
+* idmodele 3 : cas d'une erreur de traitement
+
+C'est le cas de l'ensemble des traitements exécutés via l'interface des traitements accessible à partir du bloc "Extraire, télécharger, téléverser".

@@ -1,0 +1,102 @@
+= SDIS Remocra - Outil i
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+link:index{outfilesuffix}[Retour à l'accueil]
+
+link:Manuel%20administration{outfilesuffix}[Retour au manuel d'administration]
+
+'''
+
+== Activation de l'outil pour la couche ==
+
+Dans le fichier JSON de la carte, on passe le booléen "interrogeable" à vrai dans la couche concernée. Par exemple, la couche ADMINISTRATIF pour la carte des Alertes (extrait) :
+
+./var/remocra/html/js/app/remocra/features/adresses/data/carte.json
+[source,js]
+----
+    {
+        "type": "wms",
+        "libelle":"Administratif",
+        "id":"administratifLayer",
+        "wms_layer":true,
+        "layers":"remocra:ADMINISTRATIF",
+        "url":"/remocra/proxy/wms",
+        "projection":"EPSG:900913",
+        "sld":null,
+        "scale_min":"0",
+        "scale_max":"362834",
+        "visibility":false,
+        "opacity":1,
+        "interrogeable": true,
+        "items":[
+            {"libelle":"CIS","image":"administratif/bat_cis.png"},
+            {"libelle":"Commune","image":"administratif/commune.png"},
+            {"libelle":"Departement","image":"administratif/departement.png"}
+        ]
+    }
+----
+
+
+== Paramétrage de l'affichage ==
+
+L'outil i s'appuie sur des transformations XSL à partir de l'interrogation WFS de GeoServer qui produit du XML.
+
+Les fichiers de configuration (de transformation) sont placés dans le répertoire ```/var/remocra/getfeatureinfo```.
+Dans ce répertoire, on retrouve des fichiers nommés de la manière suivante:
+[source]
+----
+all_layers.xsl
+global.xsl
+public.xls
+CODEPROFILDROIT.xsl*
+----
+
+Le fichier _global.xsl_ sert à définir la trame de la transformation. En principe, il n'est jamais modifié.
+
+Le fichier _all_layers_ définit l'affichage par défaut de toutes les entités (res_route, etc.).
+
+Le fichier _public.xsl_ est utilisé par défaut (lorsque la feuille de transformation n'a pas été trouvée sur disque).
+
+On retrouve pour chaque profil, un fichier _.xsl_ par valeur présente dans la colonne _feuille_de_style_geo_server_ de la table profil_droit. Dans ces fichiers, on spécialise l'affichage.
+
+Dans le fichier _all_layers.xsl_, on paramètre l'affichage par défaut de toutes les entités. Par exemple, on retrouve l'entité res_route :
+
+./var/remocra/getfeatureinfo/all_layers.xsl
+[source,xml]
+----
+<!-- Route -->
+<xsl:template match="remocra:res_route">
+  <b>Route : <xsl:value-of select="remocra:com_nme"/></b> (<xsl:value-of select="remocra:commune"/> <xsl:value-of select="remocra:lieu_dit"/>)
+  <table style="margin-left:20px;margin-bottom:10px;">
+    <tr><td>Gabarit : </td><td><xsl:value-of select="remocra:gabarit"/></td></tr>
+    <tr><td>Catégorie : </td><td><xsl:value-of select="remocra:categorie"/></td></tr>
+    <tr><td>CIS : </td><td><xsl:value-of select="remocra:cis"/></td></tr>
+  </table>
+</xsl:template>
+----
+
+Pour un profil donné, on peut spécialiser l'affichage d'une entité. Par exemple, pour le profil "public", on redéfinit l'affichage de res_route dans public.xsl :
+
+./var/remocra/getfeatureinfo/public.xsl
+[source,xml]
+----
+<xsl:template match="remocra:res_route">
+  <b>Route : <xsl:value-of select="remocra:com_nme"/></b> (<xsl:value-of select="remocra:commune"/> <xsl:value-of select="remocra:lieu_dit"/>)
+</xsl:template>
+----
+
+Remarques
+
+* S'appuyer sur les fichiers xsl fournis.
+* Au lancement 29/08/2013, il n'existe que la valeur "public" dans la colonne FEUILLE_DE_STYLE_GEO_SERVER de la table PROFIL_DROIT. Pour spécialiser les affichages, il faudra donc modifier la valeur via l'interface d'administration "1 : Profils de droits".
+
+
+_Aide technique : tutoriels link:http://www.w3schools.com/html[HTML], link:http://www.w3schools.com/xml[XML] et link:http://www.w3schools.com/xsl[XSL] sur w3schools.com_

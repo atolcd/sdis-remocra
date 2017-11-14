@@ -1,0 +1,279 @@
+= SDIS Remocra - Paramètres de configuration
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+link:index{outfilesuffix}[Retour à l'accueil]
+
+link:Manuel%20administration{outfilesuffix}[Retour au manuel d'administration]
+
+'''
+
+Les paramètres dont la clé commence par _PDI__ concernent a priori PDI.
+
+== Cartes ==
+=== Clés IGN ===
+* CLES_IGN
+** Clé(s) IGN. Exemples (mono/multi) : "rm5nr4ejwapq6d58fm0869bd" ou "{'localhost': '4n507j21zeha5rp5pkll48vj','sdis83-prod.ataraxie.fr': 'rm5nr4ejwapq6d58fm0869bd'}"
+[source,js]
+----
+{
+  'localhost':'4n507j21zeha5rp5pkll48vj',
+  'sdis83-remocra.atolcd.priv': '0o0cltvgr96zps7wcm5vsf8w',
+  'www.sdis83-remocra.atolcd.com':'axlckthtqpigwwhsees77yed',
+  'sdis83-pre-prod.ataraxie.fr':'2mf3c3bmonxwh559bwcjxmam',
+  'sdis83-prod.ataraxie.fr':'vhl4v63iekpca0ffv7nr93ca'
+}
+----
+
+=== Tolérance de chargement des voies (par rapport au clic) ===
+* PERMIS_TOLERANCE_VOIES_METRES
+** Tolérance de chargement des voies, exprimée en mètres
+** ```150```
+
+=== Couches GeoServer publiques ===
+* WMS_PUBLIC_LAYERS
+** Couches publiques du serveur WMS avec séparateur %. Exemple : ```remocra:ADMINISTRATIF%remocra:RISQUE```
+** ```remocra:risque_ff%remocra:alea_ff%remocra:ADMINISTRATIF%remocra:RISQUE```
+
+
+== Filtre des communes ==
+Ce filtre s'applique pour le choix des communes et la recherche suite à un clic (permis, etc.).
+
+* COMMUNES_INSEE_LIKE_FILTRE_SQL
+** Filtre SQL pour la récupération des communes. Exemple pour les SDIS 83 : ```83%```
+** ```83%```
+
+== Dossiers de dépôt des documents ==
+* DOSSIER_DEPOT_ALERTE
+** Emplacement du dossier de stockage des alertes
+** ```/var/remocra/alertes```
+* DOSSIER_DEPOT_BLOC
+** Emplacement du dossier de stockage des documents des blocs
+** ```/var/remocra/blocs```
+* DOSSIER_DEPOT_DECLA_HYDRANT
+** Emplacement du dossier de stockage des déclarations d'hydrants
+** ```/var/remocra/declahydrant```
+* DOSSIER_DEPOT_DELIB
+** Emplacement du dossier de stockage des délibérations
+** ```/var/remocra/deliberations```
+* DOSSIER_DEPOT_PERMIS
+** Emplacement du dossier de stockage des permis
+** ```/var/remocra/permis```
+* DOSSIER_DEPOT_RECEP_TRAVAUX
+** Emplacement du dossier de stockage des dossiers de réception de travaux
+** ```/var/remocra/receptravaux```
+* DOSSIER_DOC_HYDRANT
+** Emplacement du dossier de stockage des photos des hydrants
+** ```/var/remocra/hydrants```
+
+== Dossier des transformations de l'outil i ==
+* DOSSIER_GETFEATUREINFO
+** Emplacement du dossier des transformations GetFeatureInfo
+** ```/var/remocra/getfeatureinfo```
+
+== Emails ==
+* EMAIL_DEST_CREATION_RCI
+** Adresse mél utilisée pour la diffusion lorsqu'un départ de feux est créé
+** ```xxx@sdisxx.fr```
+* EMAIL_DEST_DEPOT_DECLAHYDRANT
+** Adresse du destinataire des emails de notification de dépôts de dossiers de déclaration d'hydrant(s)
+** ```xxx@sdisxx.fr```
+* EMAIL_DEST_DEPOT_DELIB
+** Adresse du destinataire des emails de notification de dépôts de délibérations
+** ```xxx@sdisxx.fr```
+* EMAIL_DEST_DEPOT_RECEPTRAVAUX
+** Adresse du destinataire des emails de notification de dépôts de dossiers de réception de travaux
+** ```xxx@sdisxx.fr```
+
+== Traitements PDI ==
+* ID_TRAITEMENT_ATLAS
+** Traitement de téléchargement de l'Atlas
+** ```7```
+* ID_TRAITEMENT_PURGE_KML
+** Traitement de purge de la couche des risques express
+** ```8```
+
+== Message d'entête de l'application ==
+* MESSAGE_ENTETE
+** Texte affiché dans l'entête du site (laisser vide pour ne rien afficher)
+** ``````
+
+== PDI ==
+*Chemins*
+
+* PDI_CHEMIN_KML
+** Dossier de stockage du fichier KML des risques technologiques
+** ```/var/remocra/pdi/kml```
+* PDI_CHEMIN_LOG
+** Dossier de stockage des fichiers de trace de l'ETL Pentaho Data Integration
+** ```/var/remocra/pdi/log```
+* PDI_CHEMIN_MODELES
+** Dossier de stockage des modèles de documents utilisés par l'ETL Pentaho Data Integration
+** ```/var/remocra/modeles```
+* PDI_CHEMIN_SYNCHRO
+** Dossier de stockage temporaire des fichiers d'échanges APIS – REMOCRA
+** ```/var/remocra/pdi/synchro```
+* PDI_CHEMIN_TMP
+** Dossier de travail temporaire de l'ETL Pentaho Data Integration
+** ```/var/remocra/pdi/tmp```
+* PDI_CHEMIN_TRAITEMENT
+** Dossier de stockage des documents produits par l'ETL Pentaho Data Integration à proposer en téléchargement
+** ```/var/remocra/pdi/export```
+* PDI_DOSSIER_DEPOT
+** Emplacement du dossier de stockage des fichiers de PDI
+** ```/var/remocra/pdi/depot```
+* PDI_DOSSIER_EXPORT_SDIS
+** Nom du sous-dossier temporaire dans lequel sont déposés les fichiers d'échanges produits par REMOCRA
+** ```EXPORT_SDIS```
+* PDI_DOSSIER_IMPORT_EXTRANET
+** Nom du sous-dossier temporaire dans lequel sont déposés les fichiers d'échanges récupérés d'APIS
+** ```IMPORT_EXTRANET```
+* PDI_FICHIER_PARAMETRAGE
+** Chemin et nom complet du fichier de configuration de l'ETL Pentaho Data Integration
+** ```/home/postgres/remocra_pdi/remocra.properties```
+
+== FTP ==
+* PDI_FTP_DOSSIER_EXTRANET
+** Nom du sous-dossier du serveur FTP dans lequel récupérer les fichiers produits par APIS
+** ```EXPORT_EXTRANET```
+* PDI_FTP_DOSSIER_SDIS
+** Nom du sous-dossier du serveur FTP dans lequel déposer les fichiers produits par REMOCRA
+** ```IMPORT_SDIS```
+* PDI_FTP_DOSSIER_SYNCHRO
+** Dossier du serveur FTP dédié à la synchronisation
+** ```SYNCHRO```
+* PDI_FTP_PORT
+** Port du site FTP
+** ```21```
+* PDI_FTP_URL
+** URL d'accès au site FTP
+** ```XX.XX.XX.XX```
+* PDI_FTP_USER_NAME
+** Nom d'utilisateur du compte FTP
+** ```**********```
+* PDI_FTP_USER_PASSWORD
+** Mot de passe du compte FTP
+** ```**********```
+
+== Envoi des emails - IMAP ==
+* PDI_IMAP_PASSWORD
+** Mot de passe du serveur IMPAP utilisé pour la récupération du fichier KML des risques technologiques
+** ```**********```
+* PDI_IMAP_PORT
+** Numéro du port du serveur IMAP utilisé pour la récupération du fichier KML des risques technologiques
+** ```993```
+* PDI_IMAP_URL
+** URL du serveur IMAP utilisé pour la récupération du fichier KML des risques technologiques
+** ```ssl0.ovh.net```
+* PDI_IMAP_USER
+** Nom d'utilisateur du serveur IMAP utilisé pour la récupération du fichier KML des risques technologiques
+** ```xxx+risques@sdisxx.fr```
+
+== Métadonnées ==
+* PDI_METADATA_FILTRE_CQL
+** Filtre à utiliser pour la récupération des métadonnées
+** ```OrganisationName like '%SDIS%'```
+* PDI_METADATA_FILTRE_MAX
+** Nombre d'enregistrements maximum à retourner
+** ```20```
+* PDI_METADATA_URL_FICHE_COMPLETE
+** URL d'accès aux fiches de métadonnées HTML du CRIGE PACA
+** ```http://www.crige-paca.org/carto/fonctionnalites/geocatalogue/geosource.php```
+* PDI_METADATA_URL_GEOCATALOGUE
+** URL d'accès au géocatalogue du CRIGE PACA
+** ```http://geocatalogue.crige-paca.org/geonetwork```
+
+== Nom schéma Oracle (utilisateur) ==
+* PDI_NOM_SCHEMA_ORACLE
+** Nom du schéma Oracle de la base APIS pour génération des instructions SQL
+** ```APISXX_GEO```
+
+== Notification ==
+* PDI_NOTIFICATION_GENERAL_UTILISATEUR_ID
+** Identifiant de l'utilisateur à notifier dans le cadre de la notification générale (erreurs générales, autres, etc.)
+** ```143```
+* PDI_NOTIFICATION_KML_UTILISATEUR_ID
+** Identifiant de l'utilisateur à notifier dans le cas de la publication d'un nouveau fichier de risques KML
+** ```143```
+
+== Noms schémas REMOcRA ==
+* PDI_POSTGRESQL_NOM_SCHEMA_REFERENTIEL
+** Nom du schéma Postgresql dans lequel créer et synchroniser les tables de référentiels géographiques
+** ```remocra_referentiel```
+* PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA
+** Nom du schéma Postgresql dans lequel créer et synchroniser les tables métier
+** ```remocra```
+* PDI_POSTGRESQL_NOM_SCHEMA_SYNCHRO
+** Nom du schéma PostgreSQL temporaire pour import des données APIS
+** ```sdis_referentiel```
+
+== Purge des données et fichiers temporaires ==
+* PDI_PURGE_MAIL_JOURS
+** Nombre de jours avant suppression des messages envoyés par Remocra
+** ```1```
+* PDI_PURGE_TRAITEMENT_JOURS
+** Nombre de jours avant suppression des traitements réalisés par Remocra
+** ```1```
+
+== Envoi des emails - SMTP ==
+* PDI_SMTP_EME_MAIL
+** Adresse mél d'expédition utilisée pour l'envoi de messages par Remocra
+** ```xxx@sdisxx.fr```
+* PDI_SMTP_EME_NAME
+** Nom de l'expediteur utilisé pour l'envoi de messages par Remocra
+** ```Application Remocra```
+* PDI_SMTP_PASSWORD
+** Mot de passe du serveur SMTP utilisé pour l'envoi de messages par Remocra
+** ```**********```
+* PDI_SMTP_PORT
+** Numéro du port du serveur SMTP utilisé pour l'envoi de messages par Remocra
+** ```25```
+* PDI_SMTP_REP_MAIL
+** Adresse mél de réponse utilisée pour l'envoi de messages par Remocra
+** ```no-reply@sdisxx.fr```
+* PDI_SMTP_URL
+** URL du serveur SMTP utilisé pour l'envoi de messages par Remocra
+** ```localhost```
+* PDI_SMTP_USER
+** Nom d'utilisateur du serveur SMTP utilisé pour l'envoi de messages par Remocra
+** ```**********```
+* PDI_URL_SITE
+** URL de base complète du site Remocra (Commence par "http" et finit juste avant le #)
+** ```http://remocra.sdisxx.fr/remocra/```
+
+== Permis ==
+* PERMIS_TOLERANCE_CHARGEMENT_METRES
+** Tolérance de chargement des permis, exprimée en mètres
+** ```5000```
+
+== Hydrants ==
+* HYDRANT_DELAI_CTRL_URGENT
+** Nombre de jours avant échéance où un contrôle est considéré comme "urgent"
+** ```15```
+* HYDRANT_DELAI_CTRL_WARN
+** Nombre de jours avant échéance où un contrôle est considéré comme "à faire bientôt"
+** ```45```
+* HYDRANT_DELAI_RECO_URGENT
+** ombre de jours avant échéance où une reconnaisance est considérée comme "urgente"
+** ```15```
+* HYDRANT_DELAI_RECO_WARN
+** Nombre de jours avant échéance où une reconnaisance est considérée comme "à faire bientôt"
+** ```45```
+* HYDRANT_RENOUVELLEMENT_CTRL
+** Délai légal entre 2 contrôles (en jours)
+** ```1095```
+* HYDRANT_RENOUVELLEMENT_RECO
+** Délai légal entre 2 reconnaissances (en jours)
+** ```365```
+
+== Ressources externes de personnalisation de l'application ==
+* DOSSIER_RESSOURCES_EXTERNES
+** Emplacement du dossier de stockage des ressources externes (pages accueil, cartes, images des légendes, etc.)
+** ```/var/remocra/html```

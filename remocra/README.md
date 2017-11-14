@@ -71,6 +71,11 @@ Ouvrir l'URL suivante dans un navigateur :
 * ...
 
 
+## Documentation
+
+Se référer à la [page dédiée](../docs/index.adoc) : manuel d'administration, d'installation, etc.
+
+
 ## Licence
 
 Le SDIS du Var a décidé de faire bénéficier ses confrères de sa démarche en redistribuant gratuitement l'outil sous licence [Creative Commons by-nc-sa 4.0](https://github.com/atolcd/sdis-remocra/LICENSE.txt)

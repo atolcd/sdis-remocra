@@ -1,0 +1,59 @@
+= SDIS Remocra - Manuel d'installation
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+link:index{outfilesuffix}[Retour à l'accueil]
+
+'''
+
+== Dans une machine virtuelle ==
+
+Le fichier ```vagrant_ext/Vagrantfile``` permet de créer rapidement une machine virtuelle link:https://www.virtualbox.org[VirtualBox] munie de remocra via link:https://www.vagrantup.com/downloads.html[Vagrant]. Pour tester :
+
+* Compiler le projet via ```packaging/remocra-package.sh```
+* Déposer l'archive générée (exemple : ```packaging/remocrapackage/20171108_remocrapackage0.9.14.zip```) dans ```vagrant_ext/livraison```
+* Executer ```cd vagrant_ext && vagrant up```
+
+Accès après l'installation :
+
+* http://localhost:8002/remocra
+* http://localhost:8002/geoserver
+
+== Sur un serveur ==
+
+Pour installer rapidement un serveur remocra, on réalise l'équivalent de ce qui est réalisé par Vagrant. A savoir :
+
+* Partir d'un serveur CentOS 6X vierge
+* Créer le répertoire d'accueil des éléments d'installation :
+ 
+ mkdir /livraison
+
+* Déposer les scripts du répertoire ```vagrant_ext/livraison``` :
+** ```/livraison/install_base.sh```
+** ```/livraison/install_remocra.sh```
+** ```/livraison/launcher.sh```
+
+* Rendre les scripts exécutables :
+
+ chmod u+x /livraison/*.sh
+
+* Déposer l'archive remocra. Exemple :
+** ```/livraison/remocra 20171108_remocrapackage0.9.14.zip```
+
+* Redéfinir les variables d'environnement de ```launcher.sh``` (mots de passe, mail, clé IGN, etc.)
+
+* Lancer l'installation :
+
+ /livraison/launcher.sh
+
+Accès après l'installation :
+
+* http://remocra.sdisxx.fr/remocra
+* http://remocra.sdisxx.fr/geoserver

@@ -1,0 +1,60 @@
+= SDIS Remocra - Demande clé IGN et paramétrage
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+link:index{outfilesuffix}[Retour à l'accueil]
+
+link:Manuel%20administration{outfilesuffix}[Retour au manuel d'administration]
+
+'''
+
+== Demande de clé IGN ==
+
+Deux possibilités sont offertes :
+
+* se rapprocher de son correspondant local IGN,
+* générer la clé depuis le site "Professionnels" de l'IGN.
+
+Pour le second cas de figure :
+
+* A partir de la page http://professionnels.ign.fr, s'identifier
+* Puis aller cliquer sur "Service en ligne", "L'API Géoportail pour le web" (ou cliquer directement sur le lien ci-dessous) :
+* http://professionnels.ign.fr/api-web
+* A priori, sélectionner "Pour un site intranet professionnel" (s'adapter au cas de figure)
+* S'abonner
+** Valider "LICENCE GÉOSERVICES IGN POUR MISSION DE SERVICE PUBLIC - INTRANET"
+** ETAPE SUIVANTE, CONTINUER
+*** Renseigner le champ Url (exemple : http://remocra.sdisxx.fr)
+*** ETAPE SUIVANTE
+**** Dans "Ressources d'images tuilées WMTS du Géoportail", cocher (s'adapter au cas de figure) : "WMTS-Géoportail - Orthophotographies", "WMTS-Géoportail - Parcelles cadastrales", "WMTS-Géoportail - Plan IGN"
+**** AJOUTER AU PANIER
+***** Cocher "Je valide l’ensemble des licences de mon panier"
+***** POURSUIVRE LA COMMANDE
+* Dès que la clé est générée, l'IGN envoie un email à le boîte email rattachée au compte.
+
+
+== Paramétrage de la clé ==
+
+A partir de la page http://remocra.sdisxx.fr/remocra/#admin/index/elt/paramconf
+Il s'agit du paramètre "CLES_IGN"
+
+* Clé(s) IGN. Exemples (mono/multi) : "rm5nr4ejwapq6d58fm0869bd" ou "{'localhost': '4n507j21zeha5rp5pkll48vj','sdis83-prod.ataraxie.fr': 'rm5nr4ejwapq6d58fm0869bd'}"
+** Exemple 1, mono-domaine : ```vhl4v63iekpca0ffv7nr93ca```
+** Exemple 2, multi-domaine :
+[source,js]
+----
+{
+  'localhost':'4n507j21zeha5rp5pkll48vj',
+  'sdisxx-remocra.priv.atolcd.com': '0o0cltvgr96zps7wcm5vsf8w',
+  'www.sdisxx-remocra.atolcd.com':'axlckthtqpigwwhsees77yed'
+}
+----
+
+* Puis vérifier que les dalles s'affichent sur une carte de REMOcRA.

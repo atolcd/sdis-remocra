@@ -1,0 +1,291 @@
+= SDIS Remocra - Synchronisation
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+link:index{outfilesuffix}[Retour à l'accueil]
+
+'''
+
+== Schéma XSD ==
+
+Le schéma des services XML liés aux points d'eau sont décrits dans un schéma XSD :
+
+* link:../remocra/src/main/resources/fr/sdis83/remocra/service/xml/Hydrants.xsd[Hydrants.xsd]
+* link:../remocra/src/main/resources/fr/sdis83/remocra/service/xml/DefHydrants.xsd[DefHydrants.xsd]
+
+Il décrivent la structure des éléments XML attendus en entrée et produits en sortie.
+
+
+== Services ==
+
+=== Référentiel ===
+
+Le référentiel est récupéré via des requêtes HTTP GET :
+
+* http://remocra.sdisxx.fr/remocra/xml/communes
+* http://remocra.sdisxx.fr/remocra/xml/anomalies
+* http://remocra.sdisxx.fr/remocra/xml/diametres
+* http://remocra.sdisxx.fr/remocra/xml/domaines
+* http://remocra.sdisxx.fr/remocra/xml/positionnements
+* http://remocra.sdisxx.fr/remocra/xml/materiaux
+* http://remocra.sdisxx.fr/remocra/xml/natures
+* http://remocra.sdisxx.fr/remocra/xml/modeles
+* http://remocra.sdisxx.fr/remocra/xml/marques
+* http://remocra.sdisxx.fr/remocra/xml/volconstates
+* http://remocra.sdisxx.fr/remocra/xml/referentiels
+* http://remocra.sdisxx.fr/remocra/xml/saisies
+
+Ces services permettent de récupérer de quoi faire la correspondance entre les codes employés et les libellés vus dans Remocra.
+
+
+=== Tournées ===
+
+La liste des tournées disponibles est récupérée via la requête :
+
+* http://remocra.sdisxx.fr/remocra/tournees
+
+** Méthode HTTP : GET
+** Entête HTTP : Accept=application/xml
+** Entête HTTP : Cookie JSESSIONID
+** Droits : Utilisateur authentifié
+
+La réservation de tournée et le téléchargement des informations concernant les points d'eau qui la composent sont réalisés avec la requête :
+
+* http://remocra.sdisxx.fr/remocra/xml/tournees?tournees=1,2
+
+** Méthode HTTP : GET ou POST
+** Entête HTTP : Cookie JSESSIONID
+** Droits : Utilisateur authentifié et HYDRANTS.C ou HYDRANTS_RECONNAISSANCE.C ou HYDRANTS_CONTROLE.C
+** En entrée, paramètre "tournees" :
+
+*** numéros des tournées concernées par la réservation et la récupération en XML des points d'eau. Les numéros sont séparés par le caractère ','.
+*** Remarque : toute réservation en cours dont le numéro de tournée n'est pas passé dans le paramètre "tournees" est supprimée à la suite de l'appel. Par exemple pour supprimer toutes les réservations, on laisse la valeur du paramètre "tournees" vide.
+
+=== Points d'eau ===
+
+La mise à jour de points d'eau dans REMOcRA est réalisée avec la requête suivante :
+
+* http://remocra.sdisxx.fr/remocra/xml/hydrants
+
+** Méthode HTTP : POST
+** Entête HTTP : Cookie JSESSIONID
+** Droits : HYDRANTS.C ou HYDRANTS_RECONNAISSANCE.C ou HYDRANTS_CONTROLE.C
+** Corps posté : élement de type 'lstHydrants' (voir le schéma XSD)
+
+=== Sessions, (dé)connexion ===
+
+Pour ouvrir une session, la requête suivante est employée :
+* http://remocra.sdisxx.fr/remocra/auth/login/xml?username=XXusernameXX&password=YYpasswordYY
+
+** Méthode POST
+** Droits : utilisateur autorisé
+** En entrée, paramètres :
+
+*** username : identifiant de l'utilisateur
+*** password : mot de passe de l'utilisateur
+
+** Réponse :
+
+*** Dans les entête HTTP : Set-Cookie "JSESSIONID"
+*** Dans le corps : droits de l'utilisateur
+
+
+Pour mettre fin à une session, la requête suivante est employée :
+
+* http://remocra.sdisxx.fr/remocra/auth/logout/xml
+
+** Méthode GET ou POST
+** Entête HTTP : Cookie JSESSIONID
+** Réponse : Succès en XML
+
+
+L'ensemble des web services soumis à droits nécessite l'ouverture d'une session. Celle-ci est maintenue par l'emploi d'une entête HTTP "Cookie".
+Lors de l'appel au service de connexion "auth/login/xml", le serveur répond avec une entête HTTP Set-Cookie qui contient un JSESSIONID. Par exemple :
+[source]
+----
+Set-Cookie:JSESSIONID=B61727B32E2E93FF8A0E67DF50DC1EAF; Path=/remocra
+----
+
+Par la suite et en reprenant l'exemple, la session est maintenue en transmettant l'entête HTTP de requête Cookie :
+[source]
+----
+Cookie:JSESSIONID=D807048B80A0E26C4099F2FDF10A76F0
+----
+
+== Exemples ==
+
+=== Outil wget ===
+
+Pour la suite, nous utilisons l'outil opensource wget pour illustrer deux exemples. L'outil wget permet de réaliser des requêtes HTTP.
+Il est disponible sous Linux ou sous Windows :
+
+* La page du projet : http://www.gnu.org/software/wget/
+* La page de téléchargement pour windows (via GnuWin32) : http://gnuwin32.sourceforge.net/packages/wget.htm
+
+Bien entendu, wget est utilisé uniquement pour l'exemple. Tout outil peut convenir (générique ou métier) dans la mesure où il sait réaliser des requêtes HTTP.
+
+Les options de wget qui nous intéressent, extraites de l'aide intégrée obtenue avec ```wget --help``` :
+[source]
+----
+GNU Wget 1.14, un récupérateur réseau non interactif.
+Usage: wget [OPTION]... [URL]...
+
+Journalisation et fichier d'entrée:
+  -o,  --output-file=FICHIER journaliser les messages dans le FICHIER.
+  -O,  --output-document=FICHIER écrire les documents dans le FICHIER.
+
+options HTTP :
+       --header=CHAINE         insérer la CHAINE parmi les entêtes.
+       --load-cookies=FICHIER  charger les cookies à partir du FICHIER avant la session.
+       --save-cookies=FICHIER  enregistre les cookies dans le FICHIER après la session.
+       --keep-session-cookies  charge et enregistre les cookies de session non permanents.
+       --post-data=CHAINE      utiliser une méthode POST; transmettre la CHAINE comme des données.
+----
+
+=== Récupération du référentiel ===
+
+Pour récupérer le référentiel lié aux volumes constatés, on consomme le web service adéquant :
+[source,sh]
+----
+wget http://remocra.sdisxx.fr/remocra/xml/volconstates --output-document=ex1_01_volconstates.xml
+----
+
+Exemple de fichier produit :
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><volConstates><volConstate><code>VOL4</code><libelle>4/4</libelle></volConstate><volConstate><code>VOL3</code><libelle>3/4</libelle></volConstate><volConstate><code>VOL2</code><libelle>2/4</libelle></volConstate><volConstate><code>VOL1</code><libelle>1/4</libelle></volConstate><volConstate><code>VOL0</code><libelle>0</libelle></volConstate></volConstates>
+----
+
+
+
+=== Connexion / déconnexion ===
+
+Pour se connecter :
+[source,sh]
+----
+wget http://remocra.sdisxx.fr/remocra/auth/login/xml?username=XXusernameXX\&password=YYpasswordYY --post-data= --output-document=ex2_01_login.xml --load-cookies cookies.txt --save-cookies cookies.txt --keep-session-cookies
+----
+
+Exemple de fichier produit :
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><user><right code="TOURNEE"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="HYDRANTS"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="HYDRANTS_TRAITEMENT"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="PERMIS"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="UTILISATEUR_FILTER_ORGANISME_UTILISATEUR"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="DOCUMENTS"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="DFCI"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="DEPOT_RECEPTRAVAUX"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="DEPOT_DELIB"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="UTILISATEUR_FILTER_ALL"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="PERMIS_TRAITEMENT"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="HYDRANTS_MCO"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="HYDRANTS_NUMEROTATION"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="ADRESSES"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="REFERENTIELS"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="PERMIS_DOCUMENTS"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="RISQUES_KML"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="HYDRANTS_PRESCRIT"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="HYDRANTS_CONTROLE"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="DEPOT_DECLAHYDRANT"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="TOURNEE_RESERVATION"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right><right code="HYDRANTS_RECONNAISSANCE"><permissions>CREATE</permissions><permissions>READ</permissions><permissions>UPDATE</permissions><permissions>DELETE</permissions></right></user>
+----
+
+
+[source,sh]
+----
+wget http://remocra.sdisxx.fr/remocra/auth/logout/xml --header='Content-Type:application/xml;charset=utf-8' --output-document=ex2_02_logout.xml --load-cookies cookies.txt --save-cookies cookies.txt --keep-session-cookies
+----
+
+Exemple de fichier produit :
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?><success><message>Opération réalisée avec succès</message></success>
+----
+
+
+
+=== Mise à jour simple de points d'eau ===
+
+Mise à jour simple de points d'eau :
+
+* Connexion, mise à jour, déconnexion
+
+[source,sh]
+----
+cd ~/Bureau/remocra_ws/exemples
+# On s'authentifie
+wget http://remocra.sdisxx.fr/remocra/auth/login/xml?username=XXusernameXX\&password=YYpasswordYY --post-data= --output-document=ex3_01_login.xml --load-cookies cookies.txt --save-cookies cookies.txt --keep-session-cookies
+#
+# On met à jour les points d'eau à partir d'un fichier XML
+wget http://remocra.sdisxx.fr/remocra/xml/hydrants --header='Content-Type:application/xml;charset=utf-8' --post-file=jeu_d_essai/hydrants_modifies.xml --output-document=ex3_02_hydrants.xml --load-cookies cookies.txt --save-cookies cookies.txt --keep-session-cookies
+#
+# On se déconnecte
+wget http://remocra.sdisxx.fr/remocra/auth/logout/xml --header='Content-Type:application/xml;charset=utf-8' --output-document=ex3_03_logout.xml --load-cookies cookies.txt --save-cookies cookies.txt --keep-session-cookies
+----
+
+Exemple de fichier en entrée :
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><xsi:hydrants xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><hydrantPena xsi:type="CI_FIXE" verif="false"><anneeFabrication>0</anneeFabrication><anomalies/><codeCommune>TLN</codeCommune><codeDomaine></codeDomaine><codeNature>CI_FIXE</codeNature><coordonnees><latitude>43.124900000000025</latitude><longitude>5.9277999999999995</longitude></coordonnees><courrier></courrier><dateContr>2013-11-14T15:58:33+01:00</dateContr><dateModification>2013-11-14T15:58:33+01:00</dateModification><dateRecep>2013-10-29T00:00:00+01:00</dateRecep><dispo>DISPO</dispo><gestPointEau></gestPointEau><numero>PN TLN 2</numero><numeroInterne>2</numeroInterne><observation>obsv</observation><voie>RUE XAVIER SAVELLI</voie><voie2>RUE LEBLOND SAINT HILAIRE</voie2><codeMateriau></codeMateriau><codeVolConstate></codeVolConstate><dispoHbe>DISPO</dispoHbe><hbe>false</hbe></hydrantPena><hydrantPibi xsi:type="BI" verif="false"><agent1>Tutu</agent1><agent2>Toto</agent2><anneeFabrication>1988</anneeFabrication><anomalies><anomalie><code>APROTGER</code></anomalie><anomalie><code>SANSEAU</code></anomalie><anomalie><code>DISTANCE5M</code></anomalie></anomalies><codeCommune>TLN</codeCommune><codeDomaine>DOMAINE</codeDomaine><codeNature>BI</codeNature><complement>hhg hh !vv</complement><coordonnees><latitude>43.124900000000025</latitude><longitude>5.9256</longitude></coordonnees><courrier>1154dsd</courrier><dateContr>2013-01-13T17:22:48+01:00</dateContr><dateModification>2014-01-13T17:22:48+01:00</dateModification><dateRecep>2013-01-09T07:00:00+01:00</dateRecep><dispo>INDISPO</dispo><gestPointEau>123</gestPointEau><lieuDit>api's here hé hé...</lieuDit><numero>BI TLN 99998</numero><numeroInterne>99998</numeroInterne><observation>obs... hh hubhi api</observation><voie>RUE ROBERT GUILLEMARD</voie><voie2>ALLEE AMIRAL COURBET</voie2><choc>false</choc><codeDiametre>DIAM150</codeDiametre><codeMarque>AVK</codeMarque><codeModele>VEGA</codeModele><debit>20</debit><debitMax>111</debitMax><gestReseau>ABV</gestReseau><numeroSCP>123456789</numeroSCP><pression>6.0</pression><pressionDyn>1.0</pressionDyn></hydrantPibi><hydrantPibi xsi:type="PI" verif="false"><anneeFabrication>0</anneeFabrication><anomalies/><codeCommune>TLN</codeCommune><codeDomaine></codeDomaine><codeNature>PI</codeNature><coordonnees><latitude>43.125000000000014</latitude><longitude>5.9285</longitude></coordonnees><courrier></courrier><dateModification>2013-11-14T15:42:11+01:00</dateModification><dateRecep>2013-11-14T15:42:11+01:00</dateRecep><dispo>DISPO</dispo><gestPointEau></gestPointEau><numero>PI TLN 2</numero><numeroInterne>2</numeroInterne><voie>AVENUE JEAN MOULIN</voie><choc>false</choc><codeDiametre></codeDiametre><codeMarque></codeMarque><codeModele></codeModele></hydrantPibi><hydrantPibi xsi:type="BI" verif="false"><anomalies/><codeCommune>TLN</codeCommune><codeDomaine></codeDomaine><codeNature>BI</codeNature><coordonnees><latitude>43.125100000000025</latitude><longitude>5.925099999999999</longitude></coordonnees><courrier></courrier><dateContr>2014-01-10T17:20:45+01:00</dateContr><dateModification>2014-01-10T17:20:45+01:00</dateModification><dateRecep>2013-11-14T15:30:11+01:00</dateRecep><dispo>DISPO</dispo><gestPointEau></gestPointEau><numero>BI TLN 99996</numero><numeroInterne>99996</numeroInterne><choc>false</choc><codeDiametre></codeDiametre><codeMarque>BAYARD</codeMarque><codeModele></codeModele></hydrantPibi></xsi:hydrants>
+----
+
+Exemples de fichiers produits :
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?><success><message>Hydrants enregistrés avec succès</message></success>
+
+----
+
+=== Mise à jour de points d'eau avec réservation d'une tournée ===
+
+Mise à jour de points d'eau avec réservation d'une tournée :
+
+* Connexion, liste des tournées disponibles, réservation, liste des tournées disponibles, mise à jour, suppression de la réservation, liste des tournées disponibles
+
+[source,sh]
+----
+cd ~/Bureau/remocra_ws/exemples
+# On s'authentifie
+wget http://remocra.sdisxx.fr/remocra/auth/login/xml?username=XXusernameXX\&password=YYpasswordYY --post-data= --output-document=ex4_01_login.xml --load-cookies cookies.txt --save-cookies cookies.txt --keep-session-cookies
+# Récupération de la liste des tournées disponibles (utilisateur et non déjà réservées)
+wget http://remocra.sdisxx.fr/remocra/tournees --header=Accept:application/xml --output-document=ex4_02_tournees_dispo.xml --load-cookies cookies.txt --save-cookies cookies.txt --keep-session-cookies
+# On retrouve la tournée 6 dans les tournées disponibles. On va travailler sur cette tournée qu'on réserve. Par la même occasion, on récupère la description des points d'eau
+wget http://remocra.sdisxx.fr/remocra/xml/tournees?tournees=6 --output-document=ex4_03_tournees_reservees.xml --load-cookies cookies.txt --save-cookies cookies.txt --keep-session-cookies
+# Récupération de la liste des tournées disponibles pour s'assurer que la tournée a été réservée
+wget http://remocra.sdisxx.fr/remocra/tournees --header=Accept:application/xml --output-document=ex4_04_tournees_dispo.xml --load-cookies cookies.txt --save-cookies cookies.txt --keep-session-cookies
+# Suite aux saisies terrain ou à une extraction à partir d'un autre système d'information, on met à jour les points d'eau
+wget http://remocra.sdisxx.fr/remocra/xml/hydrants --header='Content-Type:application/xml;charset=utf-8' --post-file=jeu_d_essai/hydrants_modifies.xml --output-document=ex4_05_mise_a_jour_hydrants.xml --load-cookies cookies.txt --save-cookies cookies.txt --keep-session-cookies
+# On supprime la réservation
+wget http://remocra.sdisxx.fr/remocra/xml/tournees?tournees= --output-document=ex4_06_tournees_supp_reservations.xml --load-cookies cookies.txt --save-cookies cookies.txt --keep-session-cookies
+# Récupération de la liste des tournées disponibles. On retrouve la tournée 6
+wget http://remocra.sdisxx.fr/remocra/tournees --header=Accept:application/xml --output-document=ex4_07_tournees_dispo.xml --load-cookies cookies.txt --save-cookies cookies.txt --keep-session-cookies
+# On se déconnecte
+wget http://remocra.sdisxx.fr/remocra/auth/logout/xml --header='Content-Type:application/xml;charset=utf-8' --output-document=ex4_08_logout.xml --load-cookies cookies.txt --save-cookies cookies.txt --keep-session-cookies
+----
+
+Exemples de fichiers produits :
+
+* Tournées disponibles
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><tourneesDispo><tournee>6</tournee></tourneesDispo>
+----
+
+* Tournées réservées
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><xsi:tournees xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><tournee><debSync>2013-10-28T12:00:00+01:00</debSync><hydrants><hydrantPena xsi:type="CI_FIXE" verif="false"><anomalies/><codeCommune>TLN</codeCommune><codeDomaine></codeDomaine><codeNature>CI_FIXE</codeNature><coordonnees><latitude>43.124900000000025</latitude><longitude>5.9277999999999995</longitude></coordonnees><courrier></courrier><dateContr>2013-11-14T15:58:33+01:00</dateContr><dateModification>2013-11-14T15:58:33+01:00</dateModification><dateRecep>2013-10-29T00:00:00+01:00</dateRecep><dispo>DISPO</dispo><gestPointEau></gestPointEau><numero>PN TLN 2</numero><numeroInterne>2</numeroInterne><observation>obsv</observation><voie>RUE XAVIER SAVELLI</voie><voie2>RUE LEBLOND SAINT HILAIRE</voie2><codeMateriau></codeMateriau><codeVolConstate></codeVolConstate><dispoHbe>DISPO</dispoHbe><hbe>false</hbe></hydrantPena><hydrantPibi xsi:type="PI" verif="false"><anomalies/><codeCommune>TLN</codeCommune><codeDomaine></codeDomaine><codeNature>PI</codeNature><coordonnees><latitude>43.125000000000014</latitude><longitude>5.9285</longitude></coordonnees><courrier></courrier><dateModification>2013-11-14T15:42:11+01:00</dateModification><dateRecep>2013-11-14T15:42:11+01:00</dateRecep><dispo>DISPO</dispo><gestPointEau></gestPointEau><numero>PI TLN 2</numero><numeroInterne>2</numeroInterne><voie>AVENUE JEAN MOULIN</voie><choc>false</choc><codeDiametre></codeDiametre><codeMarque></codeMarque><codeModele></codeModele></hydrantPibi><hydrantPibi xsi:type="BI" verif="false"><anomalies/><codeCommune>TLN</codeCommune><codeDomaine></codeDomaine><codeNature>BI</codeNature><coordonnees><latitude>43.125100000000025</latitude><longitude>5.925099999999999</longitude></coordonnees><courrier></courrier><dateContr>2014-01-10T17:20:45+01:00</dateContr><dateModification>2014-01-10T17:20:45+01:00</dateModification><dateRecep>2013-11-14T15:30:11+01:00</dateRecep><dispo>DISPO</dispo><gestPointEau></gestPointEau><numero>BI TLN 99996</numero><numeroInterne>99996</numeroInterne><choc>false</choc><codeDiametre></codeDiametre><codeMarque>BAYARD</codeMarque><codeModele></codeModele></hydrantPibi><hydrantPibi xsi:type="BI" verif="false"><agent1>Tutu</agent1><agent2>Toto</agent2><anneeFabrication>1988</anneeFabrication><anomalies><anomalie><code>SANSEAU</code></anomalie><anomalie><code>APROTGER</code></anomalie><anomalie><code>DISTANCE5M</code></anomalie></anomalies><codeCommune>TLN</codeCommune><codeDomaine>DOMAINE</codeDomaine><codeNature>BI</codeNature><complement>hhg hh !vv</complement><coordonnees><latitude>43.124900000000025</latitude><longitude>5.9256</longitude></coordonnees><courrier>1154dsd</courrier><dateContr>2013-01-13T17:22:48+01:00</dateContr><dateModification>2014-01-13T17:22:48+01:00</dateModification><dateRecep>2013-01-09T07:00:00+01:00</dateRecep><dispo>INDISPO</dispo><gestPointEau>123</gestPointEau><lieuDit>api's here hé hé...</lieuDit><numero>BI TLN 99998</numero><numeroInterne>99998</numeroInterne><observation>obs... hh hubhi api</observation><voie>RUE ROBERT GUILLEMARD</voie><voie2>ALLEE AMIRAL COURBET</voie2><choc>false</choc><codeDiametre>DIAM150</codeDiametre><codeMarque>AVK</codeMarque><codeModele>VEGA</codeModele><debit>20</debit><debitMax>111</debitMax><gestReseau>ABV</gestReseau><numeroSCP>123456789</numeroSCP><pression>6.0</pression><pressionDyn>1.0</pressionDyn></hydrantPibi></hydrants><id>6</id></tournee></xsi:tournees>
+----
+
+* Tournée disponible
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><tourneesDispo></tourneesDispo>
+----
+
+* Mise à jour hydrants
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?><success><message>Hydrants enregistrés avec succès</message></success>
+----
+
+* Tournées suppression reservations
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><xsi:tournees xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+----
+
+* Tournées disponibles
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><tourneesDispo><tournee>6</tournee></tourneesDispo>
+----
