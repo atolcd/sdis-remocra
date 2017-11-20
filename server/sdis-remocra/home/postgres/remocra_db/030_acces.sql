@@ -156,4 +156,9 @@ GRANT ALL ON SEQUENCE remocra.type_oldeb_caracteristique_id_seq TO remocra;
 -- RCI
 GRANT UPDATE ON TABLE remocra.rci TO remocra;
 
+-- PERMIS
+GRANT INSERT,SELECT,UPDATE,DELETE ON TABLE remocra.type_permis_avis TO remocra;
+GRANT ALL ON SEQUENCE remocra.type_permis_avis_id_seq TO remocra;
+
+
 COMMIT;
