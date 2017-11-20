@@ -27,3 +27,4 @@ link:index.adoc[Retour à l'accueil]
 ** link:administration/Gestion%20des%20zones%20de%20competence{outfilesuffix}[Gestion des zones de compétence]
 ** link:administration/Courriels{outfilesuffix}[Courriels] envoyés automatiquement
 ** link:administration/Demande%20cle%20IGN{outfilesuffix}[Demande clé IGN] et paramétrage
+** link:administration/Lien%20Prevarisc{outfilesuffix}[Lien Prevarisc]
