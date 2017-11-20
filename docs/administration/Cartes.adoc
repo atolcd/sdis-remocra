@@ -218,6 +218,17 @@ Exemple de carte :
         "items":[
                 {"libelle":"Photos aériennes","image":"ign/photo.png"}
         ]}]
+    },{
+    "libelle":"Fonds OSM",
+    "items":[{
+        "type": "osm",
+        "libelle":"Carte OSM",
+        "id": "osm",
+        "visibility": false,
+        "opacity":0.5,
+        "items":[
+                {"libelle":"OSM","image":"osm/osm.png"}
+        ]}]
     }]
 }
 ----
@@ -242,7 +253,7 @@ Les couches WMS sont spécifiées avec le booléen _wms_layer_.
 Les options communes aux couches sont les suivantes :
 [source,js]
 ----
-"type" : "wms" ou "specific" ou "ign"
+"type" : "wms" ou "specific", "ign" ou "osm"
 "libelle" : "Administratif"
 "id" : "administratifLayer"
 "scale_min" : "0",
@@ -281,6 +292,13 @@ Pour les couches de type "ign" :
 "num_zoom_levels" : 20
 "format" : "image/png"
 "layers" : "CADASTRALPARCELS.PARCELS" ou "GEOGRAPHICALGRIDSYSTEMS.MAPS" ou "ORTHOIMAGERY.ORTHOPHOTOS"
+----
+
+Pour les couches de type "osm" :
+[source,js]
+----
+"type" : "osm"
+"urls" : facultatif. Permet de changer les URLs par défaut. Exemple : ['http://a.tile.openstreetmap.org/${z}/${x}/${y}.png', 'http://b.tile.openstreetmap.org/${z}/${x}/${y}.png', 'http://c.tile.openstreetmap.org/${z}/${x}/${y}.png']
 ----
 
 Pour les couches de type "specific" :

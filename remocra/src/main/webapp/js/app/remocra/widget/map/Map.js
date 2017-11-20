@@ -548,6 +548,9 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
                 var layer = null;
                 try {
                     switch (layerDef.type) {
+                    case 'osm':
+                        layer = this.createOSMLayer(layerDef);
+                        break;
                     case 'wms':
                         layer = this.createWMSLayer(layerDef);
                         break;
@@ -615,6 +618,20 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
             styleMap: this.workingLayerStyleMap(),
             displayInLayerSwitcher: false,
             projection: 'EPSG:2154'
+        });
+    },
+
+    createOSMLayer: function(layerDef) {
+        return new OpenLayers.Layer.OSM(layerDef.name, layerDef.urls, {
+            code: layerDef.id,
+            isBaseLayer: layerDef.baseLayer,
+            visibility: layerDef.visibility,
+            opacity: layerDef.opacity,
+            projection: layerDef.projection,
+            sphericalMercator: layerDef.spherical_mercator,
+            wrapDateLine: layerDef.wrap_dateLine,
+            tileOptions: layerDef.tile_options,
+            attribution: "<a href='http://openstreetmap.org/'>OpenStreetMap</a>"
         });
     },
 

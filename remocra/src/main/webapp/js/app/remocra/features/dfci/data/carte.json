@@ -137,12 +137,23 @@
         "id":"photoLayer",
         "scale_min":"0",
         "scale_max":"999999999",
-        "visibility": true,
+        "visibility": false,
         "opacity":1,
         "format":null,
         "layers":"ORTHOIMAGERY.ORTHOPHOTOS",
         "items":[
                 {"libelle":"Photos aériennes","image":"ign/photo.png"}
+        ]}]
+    }, {
+    "libelle":"Fonds OSM",
+    "items":[{
+        "type": "osm",
+        "libelle":"Carte OSM",
+        "id": "osm",
+        "visibility": true,
+        "opacity":1.0,
+        "items":[
+                {"libelle":"OSM","image":"osm/osm.png"}
         ]}]
     }
 ]}
