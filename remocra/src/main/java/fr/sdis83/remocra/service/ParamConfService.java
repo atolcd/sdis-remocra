@@ -99,6 +99,10 @@ public class ParamConfService {
         return (String) this.getValue(ParamConfParam.DOSSIER_GETFEATUREINFO);
     }
 
+    public String getDossierLayers() {
+        return (String) this.getValue(ParamConfParam.DOSSIER_LAYERS);
+    }
+
     public String getDossierDepotRci() {
         return (String) this.getValue(ParamConfParam.DOSSIER_DEPOT_RCI);
     }

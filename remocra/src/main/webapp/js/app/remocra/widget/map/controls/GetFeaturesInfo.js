@@ -171,8 +171,8 @@ Sdis.Remocra.widget.map.controls.GetFeaturesInfo = OpenLayers.Class(OpenLayers.C
                     evt.xy,
                     layer.params.FORMAT);
                 var url = OpenLayers.Util.urlAppend(requOpts.url, OpenLayers.Util.getParameterString(requOpts.params || {}));
-                new Ext.data.Connection().request({
-                    url: internal?url:OpenLayers.ProxyHost+encodeURIComponent(url),
+                new Ext.data.Connection({ignorealert:true}).request({
+                    url: (internal?url:OpenLayers.ProxyHost+encodeURIComponent(url)),
                     callback: Ext.bind(this.manageResponse, this, [layer.name, this.idClic], true), scope: this
                 });
                 this.requestsCounter++;

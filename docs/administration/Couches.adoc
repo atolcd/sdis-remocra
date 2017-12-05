@@ -1,0 +1,67 @@
+= SDIS Remocra - Couches
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+link:../index{outfilesuffix}[Retour à l'accueil]
+
+link:../Manuel%20administration{outfilesuffix}[Retour au manuel d'administration]
+
+'''
+
+Exemple de configuration :
+
+./var/remocra/html/html/index/index-pri.json
+[source,js]
+----
+[{
+  "name": "remocra:risque_ff",
+  "open": true,
+  "profils": [],
+  "profilslimites": []
+}, {
+  "name": "remocra:zone_speciale",
+  "open": false,
+  "profils": ["*"],
+  "profilslimites": []
+}, {
+  "name": "remocra:ATLAS_DFCI",
+  "open": false,
+  "profils": ["SDIS-ADM-APP"],
+  "profilslimites": ["*"]
+}, {
+  "name": "remocra:v_hydrant_pibi",
+  "open": false,
+  "profils": ["SDIS-ADM-APP"],
+  "profilslimites": ["CG-BASE", "COM-MAIRE"]
+}]
+----
+
+La configuration consiste à énumérer les *couches accessibles* via le proxy _/remocra/geoserver/{workspace}/wms_ (exemple : paramétrage de _/remocra/geoserver/remocra/wms_ dans un fichier link:Cartes{outfilesuffix}[carte.json]) sous la forme d'un tableau. Pour chaque élément, la configuration est la suivante : 
+[source,js]
+----
+"name" : nom de la couche avec son préfixe (workspace)
+"open" : true ou false. La couche est-elle publique ?
+"profils" : profils ayant un accès à toute la couche. Les valeurs acceptées sont les codes de table PROFIL_DROIT ou '*' pour tous
+"profilslimites" : profils ayant un accès limité à la zone de compétence pour la couche. Les valeurs acceptées sont les codes de table PROFIL_DROIT ou '*' pour tous
+----
+
+Dans l'exemple plus haut :
+
+* risque_ff : couche publique
+* zone_speciale : couche accessible aux utilisateurs connectés
+* ATLAS_DFCI : couche accessible en globalité aux utilisateurs ayant le profil "SDIS-ADM-APP" et sur la zone de compétence pour les autres utilisateurs connectés
+* v_hydrant_pibi : couche accessible en globalité aux utilisateurs ayant le profil "SDIS-ADM-APP" et sur la zone de compétence pour les utilisateurs ayant le profil "CG-BASE" ou "COM-MAIRE"
+
+Remarque :
+
+* Pour recharger la configuration après une modification, utiliser l'URL https://remocra.sdisxx.fr/remocra/geoserver/layers/reload (droit _REFERENTIELS.CREATE_ requis)
+* Pour lire (vérifier) la configuration générale retenue, utiliser l'URL https://remocra.sdisxx.fr/remocra/geoserver/layers (droit _REFERENTIELS.CREATE_ requis)
+
+_Aide technique : tutoriels link:http://www.w3schools.com/json[JSON] sur w3schools.com_

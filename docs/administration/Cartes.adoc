@@ -64,7 +64,7 @@ Exemple de carte :
         "id":"administratifLayer",
         "wms_layer":true,
         "layers":"remocra:ADMINISTRATIF",
-        "url":"/remocra/proxy/wms",
+        "url":"/remocra/geoserver/remocra/wms",
         "projection":"EPSG:900913",
         "sld":null,
         "scale_min":"0",
@@ -83,7 +83,7 @@ Exemple de carte :
         "id":"eauUAdresseLayer",
         "wms_layer":true,
         "layers":"remocra:EAU_ADRESSE",
-        "url":"/remocra/proxy/wms",
+        "url":"/remocra/geoserver/remocra/wms",
         "projection":"EPSG:900913",
         "sld":null,
         "scale_min":"0",
@@ -115,7 +115,7 @@ Exemple de carte :
         "id":"habillageUrbainLayer",
         "wms_layer":true,
         "layers":"remocra:HABILLAGE_URBAIN",
-        "url":"/remocra/proxy/wms",
+        "url":"/remocra/geoserver/remocra/wms",
         "projection":"EPSG:900913",
         "sld":null,
         "scale_min":"0",
@@ -144,7 +144,7 @@ Exemple de carte :
         "id":"reseauDfciLayer",
         "wms_layer":true,
         "layers":"remocra:piste",
-        "url":"/remocra/proxy/wms",
+        "url":"/remocra/geoserver/remocra/wms",
         "projection":"EPSG:900913",
         "sld":null,
         "scale_min":"0",
@@ -164,7 +164,7 @@ Exemple de carte :
         "id":"reseauUrbainLayer",
         "wms_layer":true,
         "layers":"remocra:RESEAU_URBAIN",
-        "url":"/remocra/proxy/wms",
+        "url":"/remocra/geoserver/remocra/wms",
         "projection":"EPSG:900913",
         "sld":null,
         "scale_min":"0",
@@ -269,10 +269,20 @@ Pour les couches de type "wms" :
 "type" : "wms"
 "wms_layer" : true
 "layer" : "remocra:ADMINISTRATIF"
-"url" : "/remocra/proxy/wms"
+"url" : "/remocra/geoserver/remocra/wms"
 "projection" : "EPSG:900913"
 "sld" : null
 ----
+
+Remarque, deux proxies existent pour accéder aux couches du serveur GeoServer de la plateforme :
+
+* /remocra/geoserver/{workspace}/wms : proxy GeoServer avec 
+** gestion des workspaces
+** sécurisé finement : couche accessible publiquement ou qui nécessite une authentification, profils avec accès complet ou limités à la zone de compétence. Cf. link:Couches{outfilesuffix}[configuration des couches]. 
+** Exemple : */remocra/geoserver/remocra/wms*
+* /remocra/proxy/wms : ancien proxy GeoServer avec 
+** un seul workspace : _remocra_
+** deux niveaux d'accès public / utilisateurs authentifiés limités à la zone de compétence
 
 Pour les couches de type "ign" :
 [source,js]

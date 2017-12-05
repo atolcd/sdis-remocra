@@ -17,8 +17,10 @@ Ext.define('Sdis.Remocra.network.Ajax', {
             
             // 403 Forbidden http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4
             if (response.status == 403) {
-                Ext.Msg.alert('Gestionnaire de connexions',
-                    'Vous n\'avez pas les autorisations requises pour accéder à la ressource demandée.');
+                if (!conn.ignorealert) {
+                    Ext.Msg.alert('Gestionnaire de connexions',
+                        'Vous n\'avez pas les autorisations requises pour accéder à la ressource demandée.');
+                }
                 return false;
             }
             
@@ -28,15 +30,19 @@ Ext.define('Sdis.Remocra.network.Ajax', {
                         && response.request.options.baseParams.manage404) {
                     return true;
                 }
-                Ext.Msg.alert('Gestionnaire de connexions',
-                    'La ressource demandée n\'a pas été trouvée.');
+                if (!conn.ignorealert) {
+                    Ext.Msg.alert('Gestionnaire de connexions',
+                        'La ressource demandée n\'a pas été trouvée.');
+                }
                 return false;
             }
             
             //405 Method Not Allowed http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.6
             if (response.status == 405) {
-                Ext.Msg.alert('Gestionnaire de connexions',
-                'La méthode n\'est pas authorisée pour la ressource demandée.');
+                if (!conn.ignorealert) {
+                    Ext.Msg.alert('Gestionnaire de connexions',
+                        'La méthode n\'est pas authorisée pour la ressource demandée.');
+                }
                 return false;
             }
             

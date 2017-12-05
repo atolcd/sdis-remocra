@@ -215,7 +215,7 @@ su postgres -c "/home/postgres/pdi_db/reset_pdi_db.sh"
 echo && echo "Suppression des répertoires inutiles et création des répertoires nécessaires"
 rm -rf /home/postgres/pdi/plugins/pentaho-big-data-plugin/hadoop-configurations/mapr
 rm -rf /home/postgres/pdi/plugins/spoon/agile-bi
-mkdir -p /var/remocra/{alertes,atlas,blocs,declahydrant,deliberations,geoserver_data,getfeatureinfo,html,hydrants,modeles,pdi,permis,receptravaux}
+mkdir -p /var/remocra/{alertes,atlas,blocs,declahydrant,deliberations,geoserver_data,getfeatureinfo,html,hydrants,modeles,pdi,permis,receptravaux,rci,layers}
 mkdir -p /var/remocra/pdi/{depot,export,kml,log,synchro,tmp}
 
 echo && echo "Mise à jour de paramètres (accès aux bases, SMTP, etc.)"

@@ -17,6 +17,7 @@ link:index.adoc[Retour à l'accueil]
 
 ** link:administration/Page%20d%20accueil%20publique{outfilesuffix}[Page d'accueil publique]
 ** link:administration/Page%20d%20accueil%20privee{outfilesuffix}[Page d'accueil privée]
+** link:administration/Couches{outfilesuffix}[Couches]
 ** link:administration/Cartes{outfilesuffix}[Cartes]
 ** link:administration/Couche%20d%20APIS%20a%20Remocra{outfilesuffix}[Couche d'APIS à Remocra]
 ** link:administration/Outil%20i{outfilesuffix}[Outil i "information"]

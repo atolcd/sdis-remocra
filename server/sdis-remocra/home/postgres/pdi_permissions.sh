@@ -3,7 +3,7 @@
 # ----------
 
 # Création des répertoires s'ils n'existent pas déjà
-mkdir -p /var/remocra/{alertes,atlas,blocs,declahydrant,deliberations,geoserver_data,getfeatureinfo,html,hydrants,modeles,pdi,permis,receptravaux,rci}
+mkdir -p /var/remocra/{alertes,atlas,blocs,declahydrant,deliberations,geoserver_data,getfeatureinfo,html,hydrants,modeles,pdi,permis,receptravaux,rci,layers}
 mkdir -p /var/remocra/pdi/{depot,export,kml,log,synchro,tmp}
 
 # Propriétaire et groupe
