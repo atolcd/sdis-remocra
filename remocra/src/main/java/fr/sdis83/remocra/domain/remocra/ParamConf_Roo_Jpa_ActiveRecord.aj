@@ -14,7 +14,7 @@ privileged aspect ParamConf_Roo_Jpa_ActiveRecord {
     @PersistenceContext
     transient EntityManager ParamConf.entityManager;
     
-    public static final List<String> ParamConf.fieldNames4OrderClauseFilter = java.util.Arrays.asList("cle", "valeur", "description");
+    public static final List<String> ParamConf.fieldNames4OrderClauseFilter = java.util.Arrays.asList("cle", "valeur", "description", "nomgroupe");
     
     public static final EntityManager ParamConf.entityManager() {
         EntityManager em = new ParamConf().entityManager;

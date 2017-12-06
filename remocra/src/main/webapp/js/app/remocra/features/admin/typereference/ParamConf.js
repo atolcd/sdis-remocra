@@ -8,7 +8,8 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ParamConf', {
     alias: 'widget.crAdminParamConf',
 
     border: false, defaults: {border: false},
-    
+    bodyPadding : 10,
+
     store: null,
     
     initComponent: function() {
@@ -22,13 +23,15 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ParamConf', {
                     
                     var f = Sdis.Remocra.widget.WidgetFactory;
                     
-                    var fields = [], i, r, cle, valeur, desc, clDisplay, field, label;
+                    var fields = [], i, r, cle, valeur, desc, clDisplay, nomgroupe, field, label;
+                    var fieldsets = {};
                     for (i=0 ; i<records.length ; i++) {
                         r = records[i];
                         cle = r.get('cle');
                         valeur = r.get('valeur');
                         desc = r.get('description');
                         clDisplay = r.get('clDisplay');
+                        nomgroupe = r.get('nomgroupe');
                         field = null;
                         //label = '<span '+(desc?'title="'+desc+'"':null)+'>'+cle+'</span>';
                         label = '<span title="'+cle+'">'+(desc&&desc.length>0?desc:cle)+'</span>';
@@ -47,16 +50,24 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ParamConf', {
                             // Dans tous les autres cas : STRING
                             field = f.createTextField(label, true, valeur, {id: cle, labelWidth: 400, width: 700});
                         }
-                        fields.push(field);
+                        if (!Ext.isDefined(fieldsets[nomgroupe])) {
+                            fieldsets[nomgroupe] = {
+                                xtype: 'fieldset',
+                                title: nomgroupe,
+                                items: [],
+                                autoHeight: true,
+                                labelWidth: 150
+                            };
+                        }
+                        fieldsets[nomgroupe].items.push(field);
                     }
-                    var fs = f.createLightFS('allFs', fields, {title: 'Tous les paramètres'});
-                    
-                    var formPanel = Ext.form.FormPanel({
-                        border: false,
-                        id: 'paramconfformp', items: fs
+                    // Sans ça, le dernier panneau est coupé en bas
+                    fieldsets['invisiblehack'] = {html:'&nbsp;', border: false};
+                    this.add({
+                        xtype: 'form',
+                        items: Ext.Object.getValues(fieldsets),
+                        border: false
                     });
-                    
-                    this.add(formPanel);
                     this.doLayout();
             }, scope: this}
         });

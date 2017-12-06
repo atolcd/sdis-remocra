@@ -144,7 +144,7 @@ public class ParamConfService {
     }
 
     public Integer getToleranceVoiesMetres() {
-        return (Integer) this.getValue(ParamConfParam.PERMIS_TOLERANCE_VOIES_METRES, 150);
+        return (Integer) this.getValue(ParamConfParam.TOLERANCE_VOIES_METRES, 150);
     }
 
     public String getMessageEntete() {

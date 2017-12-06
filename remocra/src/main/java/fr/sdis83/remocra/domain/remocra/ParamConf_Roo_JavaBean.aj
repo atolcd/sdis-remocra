@@ -31,4 +31,11 @@ privileged aspect ParamConf_Roo_JavaBean {
         this.description = description;
     }
     
+    public String ParamConf.getNomgroupe() {
+        return this.nomgroupe;
+    }
+    
+    public void ParamConf.setNomgroupe(String nomgroupe) {
+        this.nomgroupe = nomgroupe;
+    }
 }

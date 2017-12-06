@@ -666,6 +666,7 @@
         <column name="description" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
         <column name="valeur" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <column name="version" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
+        <column name="nomgroupe" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <unique name="param_conf_pkey">
             <unique-column name="cle"/>
         </unique>

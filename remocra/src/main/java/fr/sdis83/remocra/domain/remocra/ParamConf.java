@@ -48,7 +48,7 @@ public class ParamConf {
         ID_TRAITEMENT_NB_ALERTES_PAR_UTILISATEUR("ID_TRAITEMENT_NB_ALERTES_PAR_UTILISATEUR", Integer.class),
         MESSAGE_ENTETE("MESSAGE_ENTETE", String.class),
         PERMIS_TOLERANCE_CHARGEMENT_METRES("PERMIS_TOLERANCE_CHARGEMENT_METRES", Integer.class),
-        PERMIS_TOLERANCE_VOIES_METRES("PERMIS_TOLERANCE_VOIES_METRES", Integer.class),
+        TOLERANCE_VOIES_METRES("TOLERANCE_VOIES_METRES", Integer.class),
         PDI_CHEMIN_KML("PDI_CHEMIN_KML", String.class),
         PDI_CHEMIN_LOG("PDI_CHEMIN_LOG", String.class),
         PDI_CHEMIN_MODELES("PDI_CHEMIN_MODELES", String.class),
@@ -146,6 +146,9 @@ public class ParamConf {
 
     private String description;
 
+    @NotNull
+    private String nomgroupe;
+    
     public String getClDisplay() {
         return ParamConfParam.getClassFromCle(cle).getSimpleName();
     }
