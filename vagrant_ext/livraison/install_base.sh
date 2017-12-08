@@ -142,6 +142,11 @@ if ! isPackagePresent tomcat6 || ! isPackagePresent tomcat6-webapps || ! isPacka
   #service tomcat6 start
   chkconfig tomcat6 on
 
+  # Gestion des URIs avec accents (exemple : GET avec QueryParam)
+  cp /etc/tomcat6/server.xml /etc/tomcat6/server.xml_save
+  sed -i "s/<Connector/<Connector URIEncoding=\"utf-8\"/" /etc/tomcat6/server.xml
+
+  # Administrateur Tomcat
   cp /etc/tomcat6/tomcat-users.xml /etc/tomcat6/tomcat-users.xml.save
   sed -i "s/^<tomcat-users>/<tomcat-users>\n  <user username=\"${TOMCAT_ADMIN_USERNAME}\" password=\"${TOMCAT_ADMIN_PASSWORD}\" roles=\"admin,manager\"\/>\n/" /etc/tomcat6/tomcat-users.xml
 
