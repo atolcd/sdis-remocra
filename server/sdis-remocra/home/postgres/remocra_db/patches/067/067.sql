@@ -35,7 +35,7 @@ drop function versionnement_dffd4df4df();
 --
 
 
-INSERT INTO remocra.param_conf (cle, description, valeur, version) VALUES ('DOSSIER_LAYERS', 'Emplacement du dossier de configuration des couches (layers.json)', '"/var/remocra/layers"', 1);
+INSERT INTO remocra.param_conf (cle, description, valeur, version) VALUES ('DOSSIER_LAYERS', 'Emplacement du dossier de configuration des couches (layers.json)', '/var/remocra/layers', 1);
 
 
 --
