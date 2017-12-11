@@ -50,7 +50,7 @@ export APP_PASSWORD=${APP_PASSWORD:-remocrad41sq}
 export TECH_EMAIL=${TECH_EMAIL:-cva+remocraXX@atolcd.com}
 
 ### Divers
-export APP_IGNKEYS=${APP_IGNKEYS:-"{''localhost'':''ruinfducv7xle3enpag3y3r2''}"}
+export APP_IGNKEYS=${APP_IGNKEYS:-"fjwf53vbh2ikn9q009g6mi7f"}
 
 ### Paramètres cachés réservés à un usage interne dans un contexte Box Vagrant par exemple
 # (REMOCRA_FORCE_CREATE_DB_IF_ABSENT : true/false)
