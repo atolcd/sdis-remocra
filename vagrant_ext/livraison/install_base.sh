@@ -53,6 +53,7 @@ if ! isPackagePresent postgresql || ! isPackagePresent postgresql-server || ! is
   chmod -R 755 /home/postgres
   usermod -d /home/postgres postgres
   service postgresql start
+  sleep 10
 
   # Si besoin, mot de passe postgres système
   #passwd XXXXXXXX
@@ -90,42 +91,26 @@ fi
 # ------------------------------
 # - JDK
 # ------------------------------
-export JDK_V=${JDK_V:=7}
-export JDK_U=${JDK_U:=75}
-export JDK_B=${JDK_B:=13}
+if [ -z "${JAVA_HOME}" ]; then
+  echo && echo "Installation de java-1.7.0-openjdk-devel"
 
-if ( ! (ls /usr/java 2> /dev/null | grep "jdk1.${JDK_V}" > /dev/null 2> /dev/null) ); then
-  echo && echo "Installation de jdk-${JDK_V}u${JDK_U}"
-  # Java JDK
-  cd /root
-  cp /livraison/ext/jdk-${JDK_V}u${JDK_U}-linux-x64.rpm . 2> /dev/null || (echo "Téléchargement JDK..." && wget -q --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/${JDK_V}u${JDK_U}-b${JDK_B}/jdk-${JDK_V}u${JDK_U}-linux-x64.rpm")
-  rpm -Uvh /root/jdk-${JDK_V}u${JDK_U}-linux-x64.rpm
-
-  # JVM par défaut
-  update-alternatives --install /usr/bin/java java /usr/java/jdk1.${JDK_V}.0_${JDK_U}/jre/bin/java 100
-  update-alternatives --set java /usr/java/jdk1.${JDK_V}.0_${JDK_U}/jre/bin/java
-  update-alternatives --display java
-  java -version
-
-  update-alternatives --install /usr/bin/javac javac /usr/java/jdk1.${JDK_V}.0_${JDK_U}/bin/javac 100
-  update-alternatives --set javac /usr/java/jdk1.${JDK_V}.0_${JDK_U}/bin/javac
-  update-alternatives --display javac
-  javac -version
+  # JAVA
+  yum -y install java-1.7.0-openjdk-devel
 
   # JAVA_HOME
   envsubst >> ~/.bashrc << "EOF" 
-export JAVA_HOME=/usr/java/jdk1.${JDK_V}.0_${JDK_U}
+export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk.x86_64/
 EOF
   . ~/.bashrc
 
   # JAI
-  cd /usr/java/jdk1.${JDK_V}.0_${JDK_U}/jre
+  cd ${JAVA_HOME}/jre
   cp /livraison/ext/jai-1_1_3-lib-linux-amd64-jre.bin . 2> /dev/null || (echo "Téléchargement JAI" && wget -q http://download.java.net/media/jai/builds/release/1_1_3/jai-1_1_3-lib-linux-amd64-jre.bin)
   echo y | sh jai-1_1_3-lib-linux-amd64-jre.bin > /dev/null
   rm -f jai-1_1_3-lib-linux-amd64-jre.bin
 
   # JAI Image I/O
-  cd /usr/java/jdk1.${JDK_V}.0_${JDK_U}/jre
+  cd ${JAVA_HOME}/jre
   cp /livraison/ext/jai_imageio-1_1-lib-linux-amd64-jre.bin . 2> /dev/null || (echo "Téléchargement JAI-IMAGEIO" && wget -q http://download.java.net/media/jai-imageio/builds/release/1.1/jai_imageio-1_1-lib-linux-amd64-jre.bin)
   export _POSIX2_VERSION=199209
   echo y | sh jai_imageio-1_1-lib-linux-amd64-jre.bin > /dev/null
@@ -177,7 +162,7 @@ if ( ! (ls /var/lib/geoserver > /dev/null 2> /dev/null) ); then
 
   # GEOSERVER_HOME et GEOSERVER_DATA_DIR
   envsubst >> /var/lib/geoserver/.bashrc << "EOF" 
-export JAVA_HOME=/usr/java/jdk1.${JDK_V}.0_${JDK_U}
+export JAVA_HOME=${JAVA_HOME}
 export GEOSERVER_HOME=/var/lib/geoserver
 export GEOSERVER_DATA_DIR=/var/remocra/geoserver_data
 #export JAVA_OPTS="-XX:MaxPermSize=128m"
@@ -225,7 +210,7 @@ EOF
 #
 
 CONNECTOR_PORT=8090
-export JAVA_HOME=/usr/java/jdk1.${JDK_V}.0_${JDK_U}
+export JAVA_HOME=${JAVA_HOME}
 export GEOSERVER_HOME=${GEOSERVER_HOME}
 
 export JAVA_OPTS="-Xms1G -Xmx5G -XX:PermSize=1G -XX:MaxPermSize=2G"
