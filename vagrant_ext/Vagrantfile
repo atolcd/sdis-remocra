@@ -140,6 +140,9 @@ fi
 echo "root : ajout des variables dans le profil"
 cat << 'EOF' >> /root/.bashrc
 
+### URL du site
+URL_SITE="http://localhost:8080/remocra/"
+
 ### SDIS
 export SRC_SDIS=83
 

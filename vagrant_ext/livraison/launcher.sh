@@ -31,6 +31,9 @@ fi
 
 
 
+### URL du site
+URL_SITE=={URL_SITE:-"http://localhost:8080/remocra/"}
+
 ### SDIS
 export SRC_SDIS=${SRC_SDIS:-83}
 

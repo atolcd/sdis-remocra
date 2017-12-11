@@ -146,6 +146,11 @@ if ! isPackagePresent tomcat6 || ! isPackagePresent tomcat6-webapps || ! isPacka
   cp /etc/tomcat6/server.xml /etc/tomcat6/server.xml_save
   sed -i "s/<Connector/<Connector URIEncoding=\"utf-8\"/" /etc/tomcat6/server.xml
 
+  if [ $(grep "https://" <<<"${URL_SITE}") ]; then
+    # Pour une configuration HTTPS prise en charge au niveau de la passerelle :
+    sed -i "s/<Connector URIEncoding=\"utf-8\" port=\"8080\"/<Connector URIEncoding=\"utf-8\" secure=\"true\" scheme=\"https\" proxyPort=\"443\" port=\"8080\"/" /etc/tomcat6/server.xml
+  fi
+
   # Administrateur Tomcat
   cp /etc/tomcat6/tomcat-users.xml /etc/tomcat6/tomcat-users.xml.save
   sed -i "s/^<tomcat-users>/<tomcat-users>\n  <user username=\"${TOMCAT_ADMIN_USERNAME}\" password=\"${TOMCAT_ADMIN_PASSWORD}\" roles=\"admin,manager\"\/>\n/" /etc/tomcat6/tomcat-users.xml

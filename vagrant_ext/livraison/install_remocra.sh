@@ -64,6 +64,9 @@ if ! $(su postgres -c "psql -l | grep '^ remocra\b' > /dev/null"); then
     # Utilisateurs à notifier
     su postgres -c "psql remocra -c \"update remocra.param_conf set valeur=(select (select id from remocra.utilisateur where identifiant='sdis-adm-app')::text) where cle='PDI_NOTIFICATION_GENERAL_UTILISATEUR_ID' or cle='PDI_NOTIFICATION_KML_UTILISATEUR_ID'\" > /dev/null 2>&1" 
 
+    # URL du site
+    su postgres -c "psql remocra -c \"update remocra.param_conf set valeur='${URL_SITE}' where cle='PDI_URL_SITE'\" > /dev/null 2>&1" 
+
     # Accès
     sed -i "s/PASSWORD '.*'/PASSWORD '${REMOCRA_DB_PASSWORD}'/g" /home/postgres/remocra_db/030_acces.sql
     su postgres -c "psql remocra -f /home/postgres/remocra_db/030_acces.sql > /dev/null 2>&1"
