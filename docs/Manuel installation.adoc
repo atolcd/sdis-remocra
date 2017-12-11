@@ -51,7 +51,7 @@ Pour installer rapidement un serveur remocra, on réalise l'équivalent de ce qu
 
 * Lancer l'installation :
 
- /livraison/launcher.sh
+ /livraison/launcher.sh 2>&1 | tee /livraison/launcher.log
 
 Accès après l'installation :
 
