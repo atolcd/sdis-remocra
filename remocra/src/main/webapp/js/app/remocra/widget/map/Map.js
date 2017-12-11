@@ -650,7 +650,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
             visibility: layerDef.visibility,
             opacity: layerDef.opacity,
             projection: 'EPSG:900913',
-            url: 'http://gpp3-wxs.ign.fr/' + Sdis.Remocra.util.Util.getIgnKey() + '/wmts',
+            url: 'https://gpp3-wxs.ign.fr/' + Sdis.Remocra.util.Util.getIgnKey() + '/wmts',
             matrixSet: 'PM',
             style: 'normal',
             numZoomLevels: 19,
@@ -676,7 +676,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
                 visibility : false,
                 opacity : 0.0,
                 projection: 'EPSG:900913',
-                url: 'http://gpp3-wxs.ign.fr/' + Sdis.Remocra.util.Util.getIgnKey() + '/wmts',
+                url: 'https://gpp3-wxs.ign.fr/' + Sdis.Remocra.util.Util.getIgnKey() + '/wmts',
                 matrixSet: 'PM',
                 style: 'normal',
                 numZoomLevels: 20
