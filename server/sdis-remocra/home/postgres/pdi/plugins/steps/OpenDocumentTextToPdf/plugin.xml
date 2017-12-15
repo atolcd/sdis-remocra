@@ -8,9 +8,7 @@
 	classname="com.atolcd.pdi.plugin.converter.OdtToPdfConverterMeta">
 	<libraries>
 		<library name="OdtToPdfConverter.jar"/>
-		<library name="lib/fr.opensagres.xdocreport.itext.extension-1.0.0.jar"/>
-		<library name="lib/org.odftoolkit.odfdom.converter.core-1.0.0.jar"/>
-		<library name="lib/org.odftoolkit.odfdom.converter.pdf-1.0.0.jar"/>
+		<library name="lib/xdocreport-2.0.1.jar"/>
 		<library name="lib/odfdom-java-0.8.7.jar"/>
 	</libraries>
 	<localized_category>
