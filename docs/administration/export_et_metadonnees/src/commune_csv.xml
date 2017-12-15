@@ -1,0 +1,19 @@
+<?xml version = "1.0" encoding="UTF-8" standalone="yes" ?>
+<modele spatial = "false">
+	<categorie>Référentiel</categorie>
+	<code>COMMUNE_CSV</code>
+	<libelle>Communes contenues dans une zone de compétence (CSV)</libelle>
+	<description>Export au format CSV des communes contenues dans une zone de compétence</description>
+	<sourceSQL><![CDATA[
+	SELECT
+		com.id,
+		com.insee,
+		com.nom
+	FROM
+		remocra.commune com
+		JOIN (SELECT geometrie FROM remocra.zone_competence WHERE id = ${ZONE_COMPETENCE_ID}) zc
+			ON(zc.geometrie && com.geometrie AND St_Contains(zc.geometrie,com.geometrie))
+	ORDER BY
+		com.insee
+	]]></sourceSQL>
+</modele>

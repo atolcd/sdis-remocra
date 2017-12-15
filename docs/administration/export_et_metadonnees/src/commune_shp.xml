@@ -1,0 +1,23 @@
+<?xml version = "1.0" encoding="UTF-8" standalone="yes" ?>
+<modele spatial = "true">
+	<categorie>Référentiel</categorie>
+	<code>COMMUNE_SHP</code>
+	<libelle>Communes contenues dans une zone de compétence (SHP)</libelle>
+	<description>Export au format ESRI Shapefile des communes contenues dans une zone de compétence</description>
+	<sourceSQL><![CDATA[
+	SELECT
+		com.id,
+		St_AsText(com.geometrie) AS wkt,
+		com.insee,
+		com.nom
+	FROM
+		remocra.commune com
+		JOIN (SELECT geometrie FROM remocra.zone_competence WHERE id = ${ZONE_COMPETENCE_ID}) zc
+			ON(zc.geometrie && com.geometrie AND St_Contains(zc.geometrie,com.geometrie))
+	ORDER BY
+		com.insee
+	]]></sourceSQL>
+</modele>
+
+
+

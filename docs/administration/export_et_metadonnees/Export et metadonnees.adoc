@@ -1,0 +1,123 @@
+= Export et métadonnées
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+:imagesdir: img
+
+:toc:
+
+:numbered:
+
+link:../../index{outfilesuffix}[Retour à l'accueil]
+
+link:../../Manuel%20administration{outfilesuffix}[Retour au manuel d'administration]
+
+'''
+
+REMOcRA dispose d'un module dédié à l'export de données au format tabulaire (CSV) ou SIG (ESRI Shapefile). Le paramétrage et l'exploitation de ce module sont décrits dans les paragraphes suivants.
+
+== Principe de fonctionnement
+
+.Principe de fonctionnement
+image::principe_lancement_export.png[]
+
+La réalisation d'un export de données depuis le système REMOcRA se base sur le mécanisme suivant :
+
+. L'utilisateur de profil "administrateur" dispose d'un nouveau traitement intitulé "Exporter les données à partir d'un modèle". Ce dernier permet de réaliser des exports de données en s'appuyant sur la liste de modèles référencée.
+. Après avoir choisi son modèle, la demande d'export formulée par l'utilisateur est stockée en file d'attente. Une tâche planifiée vérifie régulièrement la présence de demandes en attente
+. Lors de l'exécution de la tâche planifiée, le moteur ETL exécute les demandes d'export en attente en s'appuyant sur les informations contenues dans le modèle pour générer un fichier CSV (dans le cas de données non géographiques) ou des fichiers de formes (fichiers ESRI Shapefile).
+. A l'issu du traitement, les fichiers produits sont compressés au format ZIP et un lien de téléchargement est fourni dans un mél envoyé au demandeur du traitement.
+
+== Préparation et référencement des modèles d'export
+Les modèles d'exports peuvent être référencés directement par les administrateurs de la plate-forme REMOcRA grâce à des fichiers de définition de modèle (format XML) déposés fia FTP dans un sous dossier de REMOcRA.
+
+.Principe de référencement des modèles
+image::principe_referencement_modele.png[]
+
+=== Définition d'un modèle d'export
+Un modèle d'export est constitué par un fichier XML encodé en UTF-8 et structuré de la manière suivante :
+
+.Schéma XSD de validation d'un fichier XML de définition de modèle d'export
+image::schema_modele.png[]
+
+
+.Table Description du fichier XML de définition de modèle d'export
+|===
+|Noeud|Description
+
+a|[source,xml]
+[source,xml]
+<modele spatial="true">
+|Noeud racine. Attribut « spatial » de type booléen indiquant si le modèle d'export contient une géométrie. Si « true », la géométrie doit être encodée au format WKT dans la colonne nommée « wkt » retournée par la requête « sourceSQL »
+
+a|[source,xml]
+<modele>
+    <categorie>
+|Libellé de catégorie permettant de regrouper ou de filtrer potentiellement les modèles selon un thème. Non exploité actuellement dans REMOcRA
+
+
+a|[source,xml]
+<modele>
+    <code>
+|Code permettant d'identifier de manière unique et pérenne un modèle d'export. Ce code est notamment utilisé dans la table «remocra.metadonnee » pour permettre aux utilisateurs de déclencher un export directement depuis une fiche de métadonnée.
+
+a|[source,xml]
+<modele>
+    <libelle>
+|Libellé du modèle d'export affiché en liste déroulante lors du choix du modèle d'export
+
+a|[source,xml]
+<modele>
+    <description>
+|Description longue du modèle d'export. Non exploité actuellement dans REMOcRA
+
+a|[source,xml]
+<modele>
+    <sourceSQL>
+|Définition de la requête SQL à exécuter sur la base de données REMOcRA pour fournir les informations à exporter. Code SQL à renseigner dans un CDATA. Si l'attribut « spatial » de la balise « modele » est  "true", la colonne nommée WKT est recherchée comme conteneur de géométrie au format WKT. La requête SQL peut contenir le paramètres ${ZONE_COMPETENCE_ID} qui permet de filtrer les données sur le critère spatial  avec une zone de compétence spécifique.
+
+|===
+.Exemple de fichier XML de définition d'un export au format CSV (export non spatial) de toutes les communes qui intersectent une zone de compétence spécifique
+[source,xml]
+include::src/commune_shp.xml[]
+
+.Exemple de fichier XML de définition d'un export au format Esri Shapefile (export spatial) de toutes les communes qui intersectent une zone de compétence spécifique
+[source,xml]
+include::src/commune_csv.xml[]
+
+=== Référencement des modèles d'export
+
+Les fichiers XML de modèles doivent être déposés par l'administrateur de la plate-forme via FTP (utilisateur FTP _"remocra"_) dans le sous-dossier _"export"_ (dossier à créer s'il n'existe pas) présent dans dossier REMOcRA dédié aux modèles (le chemin défini dans les paramètres de configuration de l'application avec le libellé _"Dossier de stockage des modèles de documents utilisés par l'ETL Pentaho Data Integration"_. La valeur par défaut est _"/var/remocra/modeles"_.
+
+.Emplacement des modèles d'exports
+image::ftp_emplacement_modeles.png[]
+
+Une fois les modèles déposés (ou retirés s'ils n'ont plus d'utilité), l'utilisateur doit procéder à leur référencement. Cette opération est réalisée directement via l'interface de REMOcRA via un traitement PDI spécifique (traitement _"Référencer les modèles d'export de données"_ disponible dans la catégorie d'applications _"Divers"_) qui permet de référencer en base de données les modèles déposés. Il doit être déclenché après chaque ajout ou modification de modèle. La table dédiée au stockage des modèles d'export (_"remocra.export_modele"_) est purgée et réalimentée en totalité à partir de la lecture du contenu de tous les fichiers XML présents sur le système.
+
+.Référencement des modèles d'export via l'interface
+image::ihm_referencement.png[]
+
+== Réalisation d'exports de données
+=== Export de données par un utilisateur REMOcRA de profil "administrateur"
+L'utilisateur REMOcRA disposant des droits d'administration peut lancer un export directement depuis l'interface de REMOcRA en choisissant le traitement _"Exporter les données à partir d'un modèle"_. Ce dernier est disponible dans la catégorie d'applications _"Divers"_.
+
+.Réalisation d'un export via l'interface d'export
+image::ihm_lancement_administrateur.png[]
+
+L'utilisateur doit choisir le modèle d'export à utiliser et renseigner une zone de compétence (emprise géographique). Attention, dans le cas ou la _"sourceSQL"_ du modèle n'exploite pas la zone de compétence (absence d'utilisation de la variable _"${ZONE_COMPETENCE_ID}"_ dans la requête SQL), aucun filtre spatial ne sera appliqué même si une zone de compétence a été renseignée dans l'interface. A l'issu du traitement, un mél est généré avec un lien de téléchargement vers le fichier ZIP contenant aux choix un fichier CSV ou un fichier de formes (Esri Shapefile) en fonction du modèle d'export choisi.
+
+=== Export de données via le module _"Métadonnées"_
+L'interface de référencement des modèles d'export et de lancement des exports est réservée aux utilisateurs disposant des droits d'administration. Néanmoins, il est possible de proposer des exports de données à la demande aux autres profils d'utilisateurs authentifiés de REMOcRA grâce au module _"Métadonnées"_.
+
+.Réalisation d'un export via l'interface de consultation des métadonnées
+image::ihm_lancement_metadonnee.png[]
+
+Pour chaque fiche de métadonnée (table _"remocra.metadonnee"_), il est en effet possible de renseigner un code export (colonne _"code_export"_) correspondant au code du modèle d'export dans la table _"remocra.export_modele"_. Lorsque l'utilisateur authentifié accède à une fiche de métadonnée, il bénéficie d'un bouton _"Télécharger"_ les données dès lors qu'un code d'export est renseigné. Ce bouton lui permet de déclencher la génération d'un fichier d'export conforme au modèle défini.
+
+Si le modèle intègre le filtre lié au critère _"${ZONE_COMPETENCE_ID}"_, les informations sont systématiquement filtrées par rapport à la zone de compétence de l’utilisateur connecté. A l'issu du traitement, un mél est généré avec un lien de téléchargement vers le fichier ZIP contenant aux choix un fichier CSV ou un fichier de formes.
+
+NOTE: *Spécificité du SDIS 83 :* Le SDIS 83 dispose d'un traitement ETL de mise à jour de la table des métadonnées à partir du serveur GeoSource du CRIGE PACA. Ce traitement purge la table des métadonnées avant chaque nouvelle synchronisation et repeuple entièrement cette dernière. Dans ce contexte spécifique, il convient donc de spécifier un code de modèle (dans le fichier XML de définition du  modèle d'export) correspondant au code de la fiche de métadonnée (et non mentionner un code dans la table de métadonnée qui existe dans la table des modèles de traitement). Le traitement de synchronisation des fiches de métadonnées vérifie pour chaque fiche de métadonnées importée si un modèle d'export dont le code correspond au code de la fiche existe. Si c'est le cas, le modèle d'export est automatiquement associé à la fiche.
+
+

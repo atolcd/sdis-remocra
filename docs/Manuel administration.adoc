@@ -29,3 +29,4 @@ link:index.adoc[Retour à l'accueil]
 ** link:administration/Courriels{outfilesuffix}[Courriels] envoyés automatiquement
 ** link:administration/Demande%20cle%20IGN{outfilesuffix}[Demande clé IGN] et paramétrage
 ** link:administration/Lien%20Prevarisc{outfilesuffix}[Lien Prevarisc]
+** link:administration/export_et_metadonnees/Export%20et%20metadonnees{outfilesuffix}[Export et métadonnées]
