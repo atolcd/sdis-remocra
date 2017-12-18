@@ -16,6 +16,18 @@
     // Colonne 2
     [ {
         type : 'info',
+        title : 'Service prévention',
+        icon : '/ext-res/images/remocra/blocs/prevarisc.png',
+        profils : ['SDIS-ADM-APP'],
+        content : '<div style="float: left;display: block;margin: 1em;">Accès au service</div>'
+                + '<div style="float: left;display: block;margin: 1em;"><a href="sso/out/jwt?service=prevarisc&url=http%3A%2F%2Flocalhost%3A8001%2Fsession%2Flogin" target="_blank">'
++ '<div style="float: left;display: block;margin: 1em;"><a href="sso/out/jwt?service=prevarisc&url=http%3A%2F%2Flocalhost%3A8001%2Fsession%2Flogin" target="_blank">'
+                + '<div style="float: left;display: block;margin: 1em;"><a href="sso/out/jwt?service=prevarisc&url=http%3A%2F%2Flocalhost%3A8001%2Fsession%2Flogin" target="_blank">'
++ '<img style="max-width: 190px;" src="https://raw.githubusercontent.com/SDIS62/prevarisc/2.x/public/images/layout-header-logo.png" alt="Se connecter à prevarisc">'
+                + '<div style="float: left;display: block;margin: 1em;"><a href="sso/out/jwt?service=prevarisc&url=http%3A%2F%2Flocalhost%3A8001%2Fsession%2Flogin" target="_blank">'
++ '</a></div>'
+    }, {
+        type : 'info',
         title : '&nbsp;',
         content : '<iframe height="400" src="https://www.youtube.com/embed/fRtYO6Ts04w?list=PLgIqBvactlMJQ7dOots4OKfFXLrofghKH" frameborder="0" allowfullscreen></iframe>'
     }, {
