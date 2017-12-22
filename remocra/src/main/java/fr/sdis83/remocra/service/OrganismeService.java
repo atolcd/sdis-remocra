@@ -35,7 +35,7 @@ public class OrganismeService extends AbstractService<Organisme> {
             predicat = cBuilder.equal(cpPath, itemFilter.getValue());
         } else if ("query".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.get("nom");
-            predicat = cBuilder.like(cBuilder.upper(cpPath), itemFilter.getValue().toUpperCase() + "%");
+            predicat = cBuilder.like(cBuilder.upper(cpPath), "%" + itemFilter.getValue().toUpperCase() + "%");
         } else {
             logger.info("processFilterItem non traité " + itemFilter.getFieldName() + " (" + itemFilter.getValue() + ")");
         }
