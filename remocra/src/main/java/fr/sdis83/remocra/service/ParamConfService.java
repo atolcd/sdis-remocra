@@ -151,6 +151,10 @@ public class ParamConfService {
         return (String) this.getValue(ParamConfParam.MESSAGE_ENTETE);
     }
 
+    public String getMentionCnil() {
+        return (String) this.getValue(ParamConfParam.MENTION_CNIL, "");
+    }
+
     public Long getSystemUtilisateurId() {
         return (Long) this.getValue(ParamConfParam.PDI_NOTIFICATION_GENERAL_UTILISATEUR_ID);
     }

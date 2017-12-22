@@ -51,7 +51,7 @@ Ext.define('Sdis.Remocra.AppContainer', {
                                 'src="{resUrl}/images/remocra/partenaires/atolcd.jpg"/></a>',
                         '</div>',
                         '<div class="mentions">',
-                            '<div>CNIL : déclaration simplifiée n°1378196 enregistrée le 02/07/2009</div>',
+                            '<div>{mentionCnil}</div>',
                             '<div class="copyright">Copyright {copyright}</div>',
                             '<span>Version {version} {revision} {db}</span>',
                             '<span id="mode"> - {mode}</span>',
@@ -66,6 +66,7 @@ Ext.define('Sdis.Remocra.AppContainer', {
         Ext.removeNode(Ext.get('loading').dom);
         t.append(Ext.getBody(), {
             resUrl: RES_URL,
+            mentionCnil: REMOCRA_MENTION_CNIL,
             mode: REMOCRA_INFO_MODE, version: REMOCRA_VERSION_NUMBER, revision: REMOCRA_REVISION_NUMBER, db: REMOCRA_DB_NUMBER, copyright: REMOCRA_INFO_COPYRIGHT,
             message : REMOCRA_ENTETE_MESSAGE, display_message : (Ext.isEmpty(REMOCRA_ENTETE_MESSAGE)?"none":"inline") });
        

@@ -106,6 +106,9 @@ public class RemocraController {
         // Afficher un message en haut de la page
         model.addAttribute("message_entete", paramConfService.getMessageEntete());
 
+        // Afficher un message en haut de la page
+        model.addAttribute("mention_cnil", paramConfService.getMentionCnil());
+
         model.addAttribute("hydrant_cfg", paramConfService.getHydrantCfg());
 
         model.addAttribute("coordonnees_format_affichage", paramConfService.getCoordonneesFormatAffichage());
