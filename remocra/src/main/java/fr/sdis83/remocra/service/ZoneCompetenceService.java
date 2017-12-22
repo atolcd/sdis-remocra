@@ -31,7 +31,7 @@ public class ZoneCompetenceService extends AbstractService<ZoneCompetence> {
         CriteriaBuilder cBuilder = this.getCriteriaBuilder();
         if ("query".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.get("nom");
-            return cBuilder.like(cBuilder.lower(cpPath), itemFilter.getValue().toLowerCase() + "%");
+            return cBuilder.like(cBuilder.lower(cpPath), "%" + itemFilter.getValue().toLowerCase() + "%");
         }
         return super.processFilterItem(itemQuery, parameters, from, itemFilter);
     }
