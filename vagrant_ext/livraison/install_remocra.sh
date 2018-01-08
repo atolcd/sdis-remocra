@@ -68,7 +68,7 @@ if ! $(su postgres -c "psql -l | grep '^ remocra\b' > /dev/null"); then
     su postgres -c "psql remocra -c \"update remocra.param_conf set valeur='${URL_SITE}' where cle='PDI_URL_SITE'\" > /dev/null 2>&1" 
 
     # Modèles de mails
-    su postgres -c "psql remocra -c \"update remocra.email_modele set corps=replace(corps, '83', '${SRC_SDIS}'), objet=replace(corps, '83', '${SRC_SDIS}') \" > /dev/null 2>&1" 
+    su postgres -c "psql remocra -c \"update remocra.email_modele set corps=replace(corps, '83', '${SRC_SDIS}'), objet=replace(objet, '83', '${SRC_SDIS}') \" > /dev/null 2>&1" 
 
     # Accès
     sed -i "s/PASSWORD '.*'/PASSWORD '${REMOCRA_DB_PASSWORD}'/g" /home/postgres/remocra_db/030_acces.sql
