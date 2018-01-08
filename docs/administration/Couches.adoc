@@ -17,7 +17,7 @@ link:../Manuel%20administration{outfilesuffix}[Retour au manuel d'administration
 
 Exemple de configuration :
 
-./var/remocra/html/html/index/index-pri.json
+./var/remocra/layers/layers.json
 [source,js]
 ----
 [{
