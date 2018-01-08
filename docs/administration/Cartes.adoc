@@ -123,21 +123,10 @@ Exemple de carte :
         "visibility":false,
         "opacity":1,
         "interrogeable": false,
-        "items":[
-            {"libelle":"ERP","image":"habillage_urbain/bat_erp.png"},
-            {"libelle":"Emprise ERP ou ICPE","image":"habillage_urbain/bat_emprise_erp_icpe.png"},
-            {"libelle":"Service public","image":"habillage_urbain/bat_serv_public.png"},
-            {"libelle":"Emprise d'un service public","image":"habillage_urbain/bat_emprise_serv_public.png"},
-            {"libelle":"Zone d'intérêt service public","image":"habillage_urbain/bat_zone_interet_serv_public.png"},
-            {"libelle":"Entreprise","image":"habillage_urbain/bat_entreprise.png"},
-            {"libelle":"Sport plein air","image":"habillage_urbain/bat_sport_plein_air.png"},
-            {"libelle":"Emprise d'un sport plein air","image":"habillage_urbain/bat_emprise_sport_plein_air.png"},
-            {"libelle":"Zone d'intérêt sport plein air","image":"habillage_urbain/bat_zone_interet_sport_plein_air.png"},
-            {"libelle":"ZAC","image":"habillage_urbain/bat_zac.png"},
-            {"libelle":"Camping","image":"habillage_urbain/bat_camping.png"},
-            {"libelle":"EtaRé","image":"habillage_urbain/bat_etare.png"},
-            {"libelle":"Zone d'intérêt d'un etaré","image":"habillage_urbain/bat_zone_interet_etare.png"}
-        ]
+        "items":[{
+           "keepsize":true,
+           "image":"/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LEGEND_OPTIONS=bgColor:0xf4f4f4;fontStyle:italic;fontColor:0x808080;fontAntiAliasing:true&LAYER=remocra:HABILLAGE_URBAIN"
+        }]
     }, {
         "type": "wms",
         "libelle":"Réseau DFCI",
@@ -240,11 +229,11 @@ Les niveaux hiérarchiques sont les suivants :
 **** Elément de légende
 
 Pour l'ensemble des cartes, on retrouvera généralement le goupe "Fonds IGN" qui comporte la configuration des couches IGN.
-Pour les autres, on a deux types de cartes :
+Pour les autres, on a deux types de fonds :
 
-* les cartes spécifiques
+* les couches spécifiques
 ** par exemple celle qui porte l'id _alertesLayer_ dans l'exemple
-* les cartes génériques WMS
+* les couches génériques WMS
 ** par exemple celle qui porte l'id _administratifLayer_ dans l'exemple
 
 Les couches WMS sont spécifiées avec le booléen _wms_layer_.
@@ -306,5 +295,29 @@ Pour les couches spécifiques "hydrantLayer" et "prescritLayer", on précise ég
 "stategy" : "bbox"
 ----
 
+Pour chaque couche, la légende est déterminée par les _items_ (tableau). Exemples de légendes :
+[source,json]
+----
+# Les imagettes sont placées sous la couche :
+"items":[
+    {"libelle":"En attente de traitement","image":"alertes/checking.png"},
+    {"libelle":"Acceptée","image":"alertes/ok.png"},
+    {"libelle":"Refusée","image":"alertes/ko.png"}
+]}
+
+
+# Lorsque la légende est composée d'un seul élément, l'image est placée à gauche du nom de la couche :
+"items":[
+    {"libelle":"Cadastre","image":"ign/cadastre.png"}
+]
+
+
+# On peut utiliser une légende produite par GeoServer. Dans ce cas, on utilise le proxy en précisant a minima l'attribut LAYER.
+# L'image qui n'a pas de libellé associé ici sera placée sous la couche concernée. La taille de l'image produite est conservée (paramètre keepsize) :
+"items":[{
+    "keepsize":true,
+    "image":"/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LEGEND_OPTIONS=bgColor:0xf4f4f4;fontStyle:italic;fontColor:0x808080;fontAntiAliasing:true&LAYER=remocra:HABILLAGE_URBAIN"
+}]
+---- 
 
 _Aide technique : tutoriels link:http://www.w3schools.com/json[JSON] sur w3schools.com, link:http://docs.geoserver.org/[Documentation GeoServer] sur geoserver.org et link:http://ign.fr/[IGN]_

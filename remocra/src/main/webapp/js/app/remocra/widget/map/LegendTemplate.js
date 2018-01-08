@@ -20,10 +20,10 @@ Ext.define('Sdis.Remocra.widget.map.LegendTemplate', {
                                 '{libelle}',
                                 
                                 '</div><ul class="legend-hideifnotover">',// La classe est ajoutée pour masquer le groupe du dessous
-                                '<tpl if="values.items.length &gt; 1">',
+                                '<tpl if="values.items.length &gt; 1 || values.items[0].keepsize">',
                                     '<tpl for="items">', // L3 (elts de légende)
                                             '<li class="blocN4">',
-                                                '<img height="10" width="15" src="{[this.printImg(values)]}" class="blocN5" onerror="this.style.visibility=\'hidden\';">',
+                                                '<img {[this.imgWidthHeight(values)]} src="{[this.printImg(values)]}" class="blocN5" onerror="this.style.visibility=\'hidden\';">',
                                                 '<span>{libelle}</span>',
                                             '</li>',
                                     '</tpl>',
@@ -51,10 +51,16 @@ Ext.define('Sdis.Remocra.widget.map.LegendTemplate', {
     getId: function() {
         return this.id;
     },
+    imgWidthHeight: function(values) {
+        return values.keepsize?'':'height="10" width="15"';
+    },
     getImg: function(values) {
-        return (values.items && values.items.length==1 && values.items[0].image?
+        return (values.items && values.items.length==1 && values.items[0].image && values.items[0].keepsize!==true?
             values.items[0].image
             :values.image);
+    },
+    getImgUrl: function(image) {
+        return image.indexOf('http')<0 && image.indexOf('/remocra/geoserver/')<0?'ext-res/images/remocra/cartes/legende/'+image:image;
     },
     styImg: function(values) {
         var image = this.getImg(values);
@@ -62,23 +68,21 @@ Ext.define('Sdis.Remocra.widget.map.LegendTemplate', {
             return '';
         }
         var imageurl='ext-res/images/remocra/cartes/legende/'+image;
-        return ' style="background-image: url(\''+imageurl+'\');"';
+        return ' style="background-image: url(\''+this.getImgUrl(image)+'\');"';
     },
     printImg:function(values){
         var image = this.getImg(values);
         if (!image) {
             return '';
         }
-        var imageurl='ext-res/images/remocra/cartes/legende/'+image;
-        return imageurl;
+        return this.getImgUrl(image);
     },
     printImgL2:function(values){
         var image = this.getImg(values);
         if (!image) {
             return ' <img height="10" width="15" style="visibility:hidden;"/>';
         }
-        var imageurl='ext-res/images/remocra/cartes/legende/'+image;
-        return ' <img height="10" width="15" src="'+imageurl+'" onerror="this.style.visibility=\'hidden\';"/>';
+        return ' <img height="10" width="15" src="'+this.getImgUrl(image)+'" onerror="this.style.visibility=\'hidden\';"/>';
     },
     getLayerVisibleClass: function(values) {
         var visible = typeof(values.visibility)=='boolean'?values.visibility:true;
