@@ -255,6 +255,10 @@ public class ParamConfService {
         return serializer.serialize(data);
     }
 
+    public String getHydrantSymbologieMethode() {
+        return (String) this.getValue(ParamConfParam.HYDRANT_SYMBOLOGIE_METHODE, "83");
+    }
+
     // Sortie JWT
     public String getJwtOutPublicKey() {
         return (String) this.getValue(ParamConfParam.SORTIE_JWT_CLEPUBLIQUE);

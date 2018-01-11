@@ -196,6 +196,24 @@ public class Hydrant implements Featurable {
         feature.addProperty("numero", this.getNumero());
         feature.addProperty("tournee", this.getTourneeId());
         feature.addProperty("isTourneeRes", this.getTournee() != null ? this.getTournee().getReservation() != null : false);
+        // PIBI
+        String diametreCode = null;
+        if (this instanceof HydrantPibi) {
+            TypeHydrantDiametre thd = ((HydrantPibi)this).getDiametre();
+            if (thd!=null) {
+                diametreCode = thd.getCode();
+            }
+        }
+        feature.addProperty("diametre", diametreCode);
+        // PENA
+        String positionnementCode = null;
+        if (this instanceof HydrantPena) {
+            TypeHydrantPositionnement thp = ((HydrantPena)this).getPositionnement();
+            if (thp!=null) {
+                positionnementCode = thp.getCode();
+            }
+        }
+        feature.addProperty("positionnement", positionnementCode);
         return feature;
     }
 

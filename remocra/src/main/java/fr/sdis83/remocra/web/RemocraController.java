@@ -110,6 +110,7 @@ public class RemocraController {
         model.addAttribute("mention_cnil", paramConfService.getMentionCnil());
 
         model.addAttribute("hydrant_cfg", paramConfService.getHydrantCfg());
+        model.addAttribute("hydrant_symbologie", paramConfService.getHydrantSymbologieMethode());
 
         model.addAttribute("coordonnees_format_affichage", paramConfService.getCoordonneesFormatAffichage());
 

@@ -1,0 +1,72 @@
+= SDIS Remocra - Symbologie des points d'eau
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+link:index{outfilesuffix}[Retour à l'accueil]
+
+'''
+
+== Paramétrage ==
+
+Un paramètre permet de configurer la symbologie :
+
+* HYDRANT_SYMBOLOGIE_METHODE : Symbologie des PEI
+
+On précise le code symbologie à employer (exemple : "77").
+
+Les images sont placées dans le répertoire ```/var/remocra/html/images/remocra/cartes/legende/eau```.
+
+
+
+== 77 ==
+
+* PIBI :
+** *<nature>_<diametre>_<disponibilité>[_on].png*
+** <nature> : _BI_, _PI_, _PA_, _CE_
+** <diametre> : _DIAM70_, _DIAM80_, _DIAM100_, _DIAM150_ ou _INCONNU_
+** <disponibilité> : _DISPO_, _INDISPO_, _NON_CONFORME_ ou _INCONNU_
+** _on : pour les élements sélectionnés
+
+* PENA :
+** *<nature>_<positionnement>_<disponibilité>[_on].png*
+** <nature> : _CI_FIXE_, _PU_
+** <positionnement> : _AIR_LIBRE_, _ENTERRE_ ou _INCONNU_
+** <disponibilité> : _DISPO_, _INDISPO_, _NON_CONFORME_ ou _INCONNU_
+** _on : pour les élements sélectionnés
+
+* Numéro affiché :
+** Numéro interne
+** Exemple : *56*
+
+
+=== 83 (par défaut) ===
+
+* PIBI :
+** *pibi/<nature>[_<debit>][_indispo][_on].png*
+** <nature> : _pi_, _bi_ ou _pa_
+** _<debit> :
+*** pour les PI et BI uniquement
+*** __low_ si debitRetenu <30
+*** __med_ si debitRetenu < 60
+*** __high_ sinon
+*** avec debitRetenu : _debitMax_ si renseigné, _debit_ sinon
+** _indispo si indisponible
+** _on : pour les élements sélectionnés
+
+* PENA :
+** *pena/pn_<nature>[_hbe][_indispo][_on].png*
+** <nature> : _citerne_fixe_ si CI_FIXE, _autre_ sinon
+** __hbe_ pei HBE
+** __indispo_ si indisponible
+** __on_ : pour les élements sélectionnés
+
+* Numéro affiché :
+** Numéro global
+** Exemple : *PI TLN 12*

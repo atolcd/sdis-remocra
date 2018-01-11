@@ -166,6 +166,61 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
     },
 
     getStyleMap: function() {
+        if (HYDRANT_SYMBOLOGIE == '77') {
+            return this.getStyleMap77();
+        }
+        return this.getStyleMap83();
+    },
+
+    getStyleMap77: function() {
+        var customStyle = new OpenLayers.Style({
+            fillOpacity: 1,
+            externalGraphic: '${imgLegend}',
+            graphicWidth: 20,
+            graphicHeight: 20,
+            graphicYOffset: -10,
+            // Etiquettes
+            label: '${label}',
+            labelYOffset: -20,
+            labelOutlineColor: "white",
+            labelOutlineWidth: 3,
+            fontSize: 10,
+            fontColor: '#000'
+        }, {
+            context: {
+                label: function(feature) {
+                    var numero = feature.data['numero'];
+                    if (!numero) {
+                        return;
+                    }
+                    if (numero.length>4) {
+                        numero = numero.substring(numero.length-4);
+                    }
+                    return numero;
+                },
+                imgLegend: function(feature) {
+                    var file = 'ext-res/images/remocra/cartes/legende/eau/';
+                    file += feature.data['nature'];
+                    if (feature.data['typeHydrantCode'] == 'PIBI') {
+                        file += '_'+(feature.data['diametre']||'INCONNU');
+                    } else {
+                        file += '_'+(feature.data['positionnement']||'INCONNU');
+                    }
+                    file += '_'+(feature.data['dispo']||'INCONNU');
+                    if (feature.renderIntent == 'select') {
+                        file += '_on';
+                    }
+                    return file + '.png';
+                }
+            }
+        });
+        return new OpenLayers.StyleMap({
+            "default": customStyle,
+            "select": customStyle
+        });
+    },
+
+    getStyleMap83: function() {
         var customStyle = new OpenLayers.Style({
             fillOpacity: 1,
             externalGraphic: '${imgLegend}',
@@ -190,7 +245,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                     return numero;
                 },
                 imgLegend: function(feature) {
-                    var file = 'images/remocra/cartes/legende/eau/';
+                    var file = 'ext-res/images/remocra/cartes/legende/eau/';
                     if (feature.data['typeHydrantCode'] == 'PIBI') {
                         file += 'pibi/';
                         if (feature.data['nature'] == 'PA') {
@@ -257,6 +312,49 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
      * Style de la couche de travail : une étiquette avec * si numéro disponible
      */
     workingLayerStyleMap: function() {
+        if (HYDRANT_SYMBOLOGIE == '77') {
+            return this.workingLayerStyleMap77();
+        }
+        return this.workingLayerStyleMap83();
+    },
+
+    workingLayerStyleMap77: function() {
+        var sm = new OpenLayers.Style({
+            fillColor: '#64C0FF',
+            fillOpacity: 0.8,
+            strokeColor: '#64C0FF',
+            strokeOpacity: 1,
+            strokeWidth: 3,
+            pointRadius: 5,
+            // Etiquettes
+            label: '${label}',
+            labelYOffset: -20,
+            labelOutlineColor: "white",
+            labelOutlineWidth: 3,
+            fontSize: 10,
+            fontColor: '#64C0FF'
+        }, {
+            context: {
+                label: function(feature) {
+                    var numero = feature.data['numero'];
+                    if (!numero) {
+                        return '';
+                    }
+                    if (numero.length>4) {
+                        numero = numero.substring(numero.length-4);
+                    }
+                    return '*' + parseInt(numero, 10) + '*';
+                }
+            }
+        });
+        return new OpenLayers.StyleMap({
+            "default": sm,
+            "select": sm,
+            "temporary": sm
+        });
+    },
+
+    workingLayerStyleMap83: function() {
         var sm = new OpenLayers.Style({
             fillColor: '#64C0FF',
             fillOpacity: 0.8,

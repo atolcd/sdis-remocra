@@ -79,6 +79,7 @@
 			var REMOCRA_MENTION_CNIL = '${mention_cnil}';
 			
 			var HYDRANT_CFG = '${hydrant_cfg}';
+			var HYDRANT_SYMBOLOGIE = '${hydrant_symbologie}';
 			var REMOCRA_DEFAULT_ORIENTATION = { x : '${orientationX}', y : '${orientationY}' };
 
 			var COORDONNEES_FORMAT_AFFICHAGE = '${coordonnees_format_affichage}';
