@@ -20,7 +20,16 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ParamConf', {
                         return;
                     }
                     this.removeAll();
-                    
+
+                    this.add({
+                        xtype: 'panel',
+                        html: 'Veuillez vous référer à la <a'
+                            +' href="https://github.com/atolcd/sdis-remocra/blob/master/docs/administration/Parametres%20de%20configuration.adoc"'
+                            +' target="_blank">documentation dédiée</a> pour plus de renseignements.',
+                        bodyPadding : 10,
+                        border: false
+                    });
+
                     var f = Sdis.Remocra.widget.WidgetFactory;
                     
                     var fields = [], i, r, cle, valeur, desc, clDisplay, nomgroupe, field, label;
