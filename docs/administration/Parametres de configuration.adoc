@@ -272,6 +272,15 @@ Ce filtre s'applique pour le choix des communes et la recherche suite à un clic
 * HYDRANT_RENOUVELLEMENT_RECO
 ** Délai légal entre 2 reconnaissances (en jours)
 ** ```365```
+* HYDRANT_NUMEROTATION_METHODE
+** Règle de calcul des _numéros globaux_ des PEI (ex : 77, 83)
+** ```83```
+* HYDRANT_NUMEROTATION_INTERNE_METHODE
+** Règle de calcul des _numéros internes_ des PEI (ex : 77, 83)
+** ```83```
+
+Méthodes disponibles pour les règles de calcul des numéro internes et globaux : link:../Numérotation_PEI{outfilesuffix}[Numérotation des PEI]
+
 
 == Ressources externes de personnalisation de l'application ==
 * DOSSIER_RESSOURCES_EXTERNES

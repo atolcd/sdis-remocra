@@ -32,6 +32,7 @@ import fr.sdis83.remocra.domain.remocra.Document.TypeDocument;
 import fr.sdis83.remocra.domain.remocra.Hydrant;
 import fr.sdis83.remocra.domain.remocra.HydrantDocument;
 import fr.sdis83.remocra.util.DocumentUtil;
+import fr.sdis83.remocra.util.NumeroUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 
@@ -164,9 +165,8 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
             }
         }
 
-        // On redéfinit le code, la zone spéciale éventuelle, le numéro interne
-        // et le numéro
-        Hydrant.setCodeZoneSpecAndNumeros(attached);
+        // On redéfinit le code, la zone spéciale éventuelle, le numéro interne et le numéro
+        NumeroUtil.setCodeZoneSpecAndNumeros(attached);
 
         // On attache l'organisme de l'utilisateur courant
         attached.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme());

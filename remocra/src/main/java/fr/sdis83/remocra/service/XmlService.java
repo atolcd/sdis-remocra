@@ -64,6 +64,7 @@ import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.util.ExceptionUtils;
 import fr.sdis83.remocra.util.GeometryUtil;
+import fr.sdis83.remocra.util.NumeroUtil;
 import fr.sdis83.remocra.util.XmlUtil;
 import fr.sdis83.remocra.xml.Anomalie;
 import fr.sdis83.remocra.xml.AnomalieNature;
@@ -934,7 +935,7 @@ public class XmlService {
 
         // On redéfinit le code, la zone spéciale éventuelle, le numéro interne
         // et le numéro
-        Hydrant.setCodeZoneSpecAndNumeros(hydrant);
+        NumeroUtil.setCodeZoneSpecAndNumeros(hydrant);
 
         // On attache l'organisme de l'utilisateur courant
         hydrant.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme());

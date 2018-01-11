@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.domain.remocra.ParamConf;
 import fr.sdis83.remocra.domain.remocra.ParamConf.ParamConfParam;
+import fr.sdis83.remocra.util.NumeroUtil;
+import fr.sdis83.remocra.util.NumeroUtil.MethodeNumerotation;
 
 @Configuration
 public class ParamConfService {
@@ -48,7 +50,8 @@ public class ParamConfService {
         } catch (NoResultException e) {
             log.warn("Paramètre " + cle + " non présent (NoResultException), restitution de la valeur par défaut");
         } catch (EmptyResultDataAccessException e) {
-            log.warn("Paramètre " + cle + " non présent (EmptyResultDataAccessException), restitution de la valeur par défaut");
+            log.warn("Paramètre " + cle
+                    + " non présent (EmptyResultDataAccessException), restitution de la valeur par défaut");
         } catch (Exception e) {
             log.error("Paramètre " + cle + ", restitution de la valeur par défaut", e);
         }
@@ -165,6 +168,10 @@ public class ParamConfService {
 
     public Integer getHydrantRenouvellementCtrl() {
         return (Integer) this.getValue(ParamConfParam.HYDRANT_RENOUVELLEMENT_CTRL);
+    }
+
+    public MethodeNumerotation getHydrantNumerotationMethode() {
+        return NumeroUtil.getHydrantNumerotationMethode();
     }
 
     public String getEmailCreationRci() {

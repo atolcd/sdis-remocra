@@ -1,0 +1,92 @@
+= SDIS Remocra - Numérotation des point d'eau
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+link:index{outfilesuffix}[Retour à l'accueil]
+
+'''
+
+== Paramétrage ==
+
+Deux paramètres permettent de configurer la méthode de numérotation :
+
+* HYDRANT_NUMEROTATION_METHODE : Méthode de calcul des *numéros globaux* des hydrants
+* HYDRANT_NUMEROTATION_INTERNE_METHODE : Méthode de calcul des *numéros internes* des hydrants
+
+On précise le numéro de méthode à employer (exemple : "83" et "83").
+
+La suite décrit les règles de numérotation.
+
+
+
+== Numéro global ==
+
+=== 77 ===
+
+Méthode :
+
+* *<code insee commune><numéro interne>* OU *<code zone spéciale><numéro interne>* sans espace
+* <numéro interne> sur 4 chiffres (préfixe consituté de 0 si nécessaire)
+
+Exemples :
+
+* [.underline]#772880012# : PEI numéro 12 de la commune de Melun
+* [.underline]#772140006# : PEI numéro 4 de la commune de Gressy
+
+=== 83 (par défaut) ===
+
+Méthode :
+
+* *<indicatif nature> <code commune> <numéro interne>* OU *<indicatif nature> <code zone spéciale> <numéro interne>*
+* <indicatif nature> :
+** Pour les PIBI : code nature (PI ou BI ou PA)
+** Pour les PENA : RI pour les réserves incendie ou PN
+* <numéro interne> le plus court
+
+Cas particulier :
+
+* Le code commune (ou zone de compétence le cas échéant) d'un PI lié à un PENA est doublé
+* *<indicatif nature> <code commune> <code commune> <numéro interne>* OU *<indicatif nature> <code zone spéciale> <code zone spéciale> <numéro interne>*
+
+Exemples :
+
+* [.underline]#PI TLN 12# : PIBI "poteau" numéro 12 de la commune de Toulon
+* [.underline]#RI TLN 12# : PENA "réserve incendie" numéro 12 de la commune de Toulon
+* [.underline]#PN TLN 13# : PENA autre que "réserve incendie" numéro 13 de la commune de Toulon
+
+* [.underline]#PI DGN DGN 12# : PI numéro 12 de la commune de Draguignan, lié à un PENA
+
+=== 86 ===
+
+Méthode :
+
+* *<code insee commune> <numéro interne>* OU *<code zone spéciale> <numéro interne>*
+* <numéro interne> le plus court
+
+Exemples :
+
+* [.underline]#86194 12# : PEI numéro 12 sur la commune de Poitiers
+* [.underline]#86165 6# : PEI numéro 4 sur la commune de Montmorillon
+
+
+
+== Numéro interne ==
+
+=== 77 ===
+
+* Premier numéro disponible au sein de la commune (ou de la zone spéciale le cas échéant)
+
+=== 83 (par défaut) ===
+
+* Dernier numéro disponible au-dessous de 100000 au sein de la commune (ou de la zone spéciale le cas échéant) et pour le type d'hydrant (PIBI ou PENA)
+
+=== 86 ===
+
+* Dernier numéro disponible au-dessous de 100000 (sans contrainte de territoire)

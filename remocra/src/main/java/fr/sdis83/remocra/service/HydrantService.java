@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
@@ -29,11 +28,13 @@ import flexjson.JSONDeserializer;
 import fr.sdis83.remocra.domain.remocra.Commune;
 import fr.sdis83.remocra.domain.remocra.Hydrant;
 import fr.sdis83.remocra.domain.remocra.HydrantPena;
+import fr.sdis83.remocra.domain.remocra.HydrantPibi;
 import fr.sdis83.remocra.domain.remocra.Tournee;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantNature;
 import fr.sdis83.remocra.domain.remocra.ZoneSpeciale;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.util.GeometryUtil;
+import fr.sdis83.remocra.util.NumeroUtil;
 import fr.sdis83.remocra.web.message.ItemSorting;
 
 @Configuration
@@ -44,8 +45,6 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
 
     @Autowired
     DataSource dataSource;
-
-    // private final Logger logger = Logger.getLogger(getClass());
 
     public HydrantService() {
         super(Hydrant.class);
@@ -62,7 +61,8 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
 
     private final Logger logger = Logger.getLogger(getClass());
 
-    protected boolean processItemSortings(ArrayList<Order> orders, ItemSorting itemSorting, CriteriaBuilder cBuilder, Root<Hydrant> from) {
+    protected boolean processItemSortings(ArrayList<Order> orders, ItemSorting itemSorting, CriteriaBuilder cBuilder,
+            Root<Hydrant> from) {
         if ("tourneeId".equals(itemSorting.getFieldName())) {
             Expression<String> cpPath = from.join("tournee", JoinType.LEFT).get("id");
             orders.add(itemSorting.isDesc() ? cBuilder.desc(cpPath) : cBuilder.asc(cpPath));
@@ -127,16 +127,22 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
 
         // on a toute les infos, on crée et exécute la requête
         String hqlUpdate = "update Hydrant h set h.tournee = :tournee where h.id in (:ids)";
-        return entityManager.createQuery(hqlUpdate).setParameter("tournee", tournee).setParameter("ids", ids).executeUpdate();
+        return entityManager.createQuery(hqlUpdate).setParameter("tournee", tournee).setParameter("ids", ids)
+                .executeUpdate();
     }
 
-    @SuppressWarnings("unchecked")
     public String checkDispo(Long id, Long nature, Long commune, Integer num, String geometrie) {
         if (num == null) {
             return null;
         }
-        if (nature == null || commune == null) {
-            return "La commune, la nature sont obligatoires";
+        if (nature == null) {
+            return "La nature est obligatoire";
+        }
+        if (commune == null) {
+            return "La commune est obligatoire";
+        }
+        if (geometrie == null) {
+            return "La geometrie est obligatoire";
         }
 
         // Zone spéciale
@@ -144,9 +150,8 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
         try {
 
             String codeZS = (String) entityManager
-                    .createNativeQuery(
-                            "select code from remocra.zone_speciale "
-                                    + "where ST_GeomFromText(:geometrie,2154) && geometrie and st_distance(ST_GeomFromText(:geometrie,2154), geometrie)<=0")
+                    .createNativeQuery("select code from remocra.zone_speciale "
+                            + "where ST_GeomFromText(:geometrie,2154) && geometrie and st_distance(ST_GeomFromText(:geometrie,2154), geometrie)<=0")
                     .setParameter("geometrie", geometrie).getSingleResult();
             zs = ZoneSpeciale.findZoneSpecialesByCode(codeZS).getSingleResult();
 
@@ -154,57 +159,48 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
             //
         }
 
-        String hQl = "select h from Hydrant h where h.code = :code and h.numeroInterne = :num";
-        if (id != null) {
-            hQl += " and h.id != :id";
-        }
+        TypeHydrantNature thn = entityManager.getReference(TypeHydrantNature.class, nature);
+        String code = thn.getTypeHydrant().getCode();
+        Commune c = entityManager.getReference(Commune.class, commune);
 
-        if (zs != null) {
-            hQl += " and h.zoneSpeciale = :zs";
-        } else {
-            hQl += " and h.commune = :commune and h.zoneSpeciale is null";
-        }
+        // Hydrant et données nécessaires a minima
+        Hydrant hydrantToCheckNumDispo = "PIBI".equals(code) ? new HydrantPibi() : new HydrantPena();
+        hydrantToCheckNumDispo.setZoneSpeciale(zs);
+        hydrantToCheckNumDispo.setCode(code);
+        hydrantToCheckNumDispo.setNature(thn);
+        hydrantToCheckNumDispo.setCommune(c);
+        hydrantToCheckNumDispo.setNumeroInterne(num);
 
-        Query q = entityManager.createQuery(hQl);
-        Query query = q.setParameter("code", entityManager.getReference(TypeHydrantNature.class, nature).getTypeHydrant().getCode()).setParameter("num", num);
+        String numero = NumeroUtil.computeNumero(hydrantToCheckNumDispo);
 
-        if (id != null) {
-            query.setParameter("id", id);
-        }
+        Long numeroUsageCount = Hydrant.countFindHydrantsByNumero(numero);
 
-        if (zs != null) {
-            query.setParameter("zs", zs);
-        } else {
-            query.setParameter("commune", entityManager.getReference(Commune.class, commune));
-        }
-
-        List<Hydrant> results = query.getResultList();
-        if (results.size() > 0) {
-            if (zs != null) {
-                return "Le numéro " + num + " est déjà attribué pour cette zone spéciale et ce type de point d'eau";
-            }
-            return "Le numéro " + num + " est déjà attribué pour cette commune et ce type de point d'eau";
-        }
-        return ""; // le numéro " + num + " est déjà affecté";
+        return numeroUsageCount > 0 ? "Le numéro " + numero + " est déjà attribué" : "";
     }
 
     public List<Hydrant> findHydrantsByBBOX(String bbox) {
         TypedQuery<Hydrant> query = entityManager
-                .createQuery("SELECT o FROM Hydrant o where dwithin (geometrie, transform(:filter, 2154), 0) = true and dwithin (geometrie, :zoneCompetence, 0) = true",
-                        Hydrant.class).setParameter("filter", GeometryUtil.geometryFromBBox(bbox))
-                .setParameter("zoneCompetence", utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie());
+                .createQuery(
+                        "SELECT o FROM Hydrant o where dwithin (geometrie, transform(:filter, 2154), 0) = true and dwithin (geometrie, :zoneCompetence, 0) = true",
+                        Hydrant.class)
+                .setParameter("filter", GeometryUtil.geometryFromBBox(bbox)).setParameter("zoneCompetence",
+                        utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie());
         return query.getResultList();
     }
 
     public List<Hydrant> findAllHydrants() {
-        TypedQuery<Hydrant> query = entityManager.createQuery("SELECT o FROM Hydrant o where dwithin (geometrie, :zoneCompetence, 0) = true", Hydrant.class).setParameter(
-                "zoneCompetence", utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie());
+        TypedQuery<Hydrant> query = entityManager
+                .createQuery("SELECT o FROM Hydrant o where dwithin (geometrie, :zoneCompetence, 0) = true",
+                        Hydrant.class)
+                .setParameter("zoneCompetence",
+                        utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie());
         return query.getResultList();
     }
 
     // Point
     @Transactional
-    public void deplacer(Long id, Point point, Integer srid) throws CRSException, IllegalCoordinateException, BusinessException {
+    public void deplacer(Long id, Point point, Integer srid)
+            throws CRSException, IllegalCoordinateException, BusinessException {
         Hydrant h = Hydrant.findHydrant(id);
         if (h == null) {
             BusinessException e = new BusinessException("L'hydrant n'existe pas en base");

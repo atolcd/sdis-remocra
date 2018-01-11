@@ -3,6 +3,8 @@ package fr.sdis83.remocra.web;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.exception.ConstraintViolationException;
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import fr.sdis83.remocra.domain.remocra.HydrantDocument;
 import fr.sdis83.remocra.domain.remocra.HydrantPibi;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.HydrantPibiService;
+import fr.sdis83.remocra.util.ExceptionUtils;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
@@ -34,6 +37,8 @@ import fr.sdis83.remocra.web.serialize.transformer.GeometryTransformer;
 @RequestMapping("/hydrantspibi")
 @Controller
 public class HydrantPibiController {
+
+    private final Logger logger = Logger.getLogger(getClass());
 
     @Autowired
     private HydrantPibiService hydrantPibiService;
@@ -115,7 +120,15 @@ public class HydrantPibiController {
                 }.serialize();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            ConstraintViolationException dke = ExceptionUtils.getNestedExceptionWithClass(e,
+                    ConstraintViolationException.class);
+            if (dke != null) {
+                String message = dke.getMessage();
+                logger.error(message, e);
+                if (message != null && message.contains("hydrant_numero_key")) {
+                    return new SuccessErrorExtSerializer(false, "hydrant_numero_key").serialize();
+                }
+            }
             return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
         }
         return new SuccessErrorExtSerializer(false, "Hydrant Pena inexistant", HttpStatus.NOT_FOUND).serialize();

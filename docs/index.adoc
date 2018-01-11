@@ -18,3 +18,5 @@ image::https://www.atolcd.com/fileadmin/Images_pages_menu/Open_Source/Remocra/he
 * link:Manuel%20installation{outfilesuffix}[Manuel d'installation]
 * link:Manuel%20administration{outfilesuffix}[Manuel d'administration]
 * link:Synchronisation{outfilesuffix}[Synchronisation]
+
+* link:Numérotation_PEI{outfilesuffix}[Numérotation des PEI]

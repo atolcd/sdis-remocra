@@ -835,18 +835,18 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                             fiche.close();
                         },
                         failure: function(form, action) {
-                          if (action && action.result && action.result.message && action.result.message == "hydrant_numero_key") {
-                                Ext.Msg.show({
-                                    title: fiche.title,
-                                    msg: "Un hydrant ayant le même numéro existe déjà.<br/>",
-                                    buttons: Ext.Msg.OK,
-                                    icon: Ext.Msg.WARNING
-                                  });
-                                fiche.down('button[name=btnPIOpen]').hide();
-                                fiche.down('button[name=btnPIAssocie]').show();
-                                } else {
-                                fiche.close();
+                            var msg = "Une erreur est survenue lors de la création.<br/>";
+                            if (action && action.result && action.result.message && action.result.message == "hydrant_numero_key") {
+                                msg = 'Un point d\'eau ayant le même numéro existe déjà.<br/>';
                             }
+                            Ext.Msg.show({
+                                title: fiche.title,
+                                msg: msg,
+                                buttons: Ext.Msg.OK,
+                                icon: Ext.Msg.WARNING
+                            });
+                            fiche.down('button[name=btnPIOpen]').hide();
+                            fiche.down('button[name=btnPIAssocie]').show();
                         }
                     });
                 } else {

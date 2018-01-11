@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Query;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -219,97 +218,6 @@ public class Hydrant implements Featurable {
             return this.getOrganisme().getNom();
         }
         return null;
-    }
-
-    /**
-     * Calcule le numéro de l'hydrant.
-     * 
-     * @param hydrant
-     * @param codeZS
-     *            le code de la zone si l'hydrant est en zone spéciale (null
-     *            sinon)
-     * @return
-     */
-    public static String computeNumero(Hydrant hydrant){
-            String codeZS = hydrant.getZoneSpeciale() == null ? null : hydrant.getZoneSpeciale().getCode();
-
-            StringBuilder sb = new StringBuilder();
-            if ("PIBI".equals(hydrant.getCode())) {
-                sb.append(hydrant.getNature().getCode()).append(" ");
-                HydrantPibi pibi = (HydrantPibi) hydrant;
-                if (pibi.getPena() != null && !"PA".equals(pibi.getNature().getCode())) {
-                    // Pibi lié à un Pena : on double le code zone ou commune
-                    sb.append(codeZS != null ? codeZS : hydrant.getCommune().getCode()).append(" ");
-                }
-            } else if ("RI".equals(hydrant.getNature().getCode())){
-                sb.append("RI ");
-            }else{
-                sb.append("PN ");
-            }
-
-            sb.append(codeZS != null ? codeZS : hydrant.getCommune().getCode());
-            return sb.append(" ").append(hydrant.getNumeroInterne()).toString();
-    }
-
-    public static Integer computeNumeroInterne(Hydrant hydrant) {
-        String codeZS = hydrant.getZoneSpeciale() != null ? hydrant.getZoneSpeciale().getCode() : null;
-
-        if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
-            return hydrant.getNumeroInterne();
-        }
-        Integer numInterne = null;
-        try {
-            StringBuffer sb = new StringBuffer("SELECT min(h.numero_interne) FROM remocra.hydrant h WHERE");
-            sb.append(" h.code = :code and h.numero_interne > 90000  and ");
-            if (codeZS != null) {
-                sb.append("h.zone_speciale = :zs");
-            } else {
-                sb.append("h.commune = :commune and h.zone_speciale is null");
-            }
-            if (hydrant.getId() != null) {
-                sb.append(" and h.id != :id ");
-            }
-            Query query = Hydrant.entityManager().createNativeQuery(sb.toString()).setParameter("code", hydrant.getCode());
-            if (codeZS != null) {
-                query.setParameter("zs", hydrant.getZoneSpeciale());
-            } else {
-                query.setParameter("commune", hydrant.getCommune());
-            }
-            if (hydrant.getId() != null) {
-                query.setParameter("id", hydrant.getId());
-            }
-            numInterne = Integer.valueOf(query.getSingleResult().toString()) - 1;
-        } catch (Exception e) {
-            numInterne = 99999;
-        }
-        return numInterne;
-    }
-
-    public static ZoneSpeciale computeZoneSpeciale(Hydrant hydrant) {
-        try {
-            String codeZS = (String) Hydrant.entityManager()
-                    .createNativeQuery("select code from remocra.zone_speciale " + "where :geometrie && geometrie and " + "st_distance(:geometrie, geometrie)<=0")
-                    .setParameter("geometrie", hydrant.getGeometrie()).getSingleResult();
-            return ZoneSpeciale.findZoneSpecialesByCode(codeZS).getSingleResult();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public static void setCodeZoneSpecAndNumeros(Hydrant hydrant) {
-        // Code
-        hydrant.setCode(hydrant.getNature().getTypeHydrant().getCode());
-
-        // Zone Spéciale
-        hydrant.setZoneSpeciale(computeZoneSpeciale(hydrant));
-
-        // Si création : attribution d'un numéro en 99999
-        if (hydrant.getNumeroInterne() == null || hydrant.getNumeroInterne().intValue() < 1) {
-            hydrant.setNumeroInterne(computeNumeroInterne(hydrant));
-        }
-
-        // Calcul du numéro
-        hydrant.setNumero(Hydrant.computeNumero(hydrant));
     }
 
     public HydrantDocument getPhoto() {
