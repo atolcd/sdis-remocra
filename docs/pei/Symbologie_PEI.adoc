@@ -4,6 +4,7 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 
 :experimental:
 :icons: font
+:imagesdir: ../images/pei
 
 :toc:
 
@@ -45,6 +46,9 @@ Les images sont placées dans le répertoire ```/var/remocra/html/images/remocra
 ** Numéro interne
 ** Exemple : *56*
 
+Exemple de légende :
+
+image:legende_77.png[]
 
 === 83 (par défaut) ===
 
@@ -70,3 +74,7 @@ Les images sont placées dans le répertoire ```/var/remocra/html/images/remocra
 * Numéro affiché :
 ** Numéro global
 ** Exemple : *PI TLN 12*
+
+Exemple de légende :
+
+image:legende_83.png[]

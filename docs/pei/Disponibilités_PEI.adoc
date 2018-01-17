@@ -1,0 +1,119 @@
+= SDIS Remocra - Calcul des indisponibilités
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+:imagesdir: ../images/pei
+
+:toc:
+
+:numbered:
+
+link:index{outfilesuffix}[Retour à l'accueil]
+
+'''
+
+== Principe ==
+
+Pour chaque point d'eau deux disponibilités sont calculées :
+
+* *Disponibilité* "terrestre"
+* *Disponibilité HBE* (Hélicoptère Bombardier d'Eau)
+
+Les disponibilités sont calculées en fonction des anomalies rattachées au point d'eau. Chaque anomalie a deux valeurs en points de 0 à 5 pour la disponibilité terrestre et pour la disponibilité HBE. Un point d'eau est disponible ou disponible par HBE si la somme des points des anomalies constatées est inférieure à 5 dans leur catégorie respective (dispo terrestre ou HBE).
+
+Remarques :
+
+* Si la somme des points est inférieure à 5 mais qu'une des anomalies a un code de type ```*_NC```, le point d'eau est considéré ```Non conforme```.
+* La disponibilité HBE n'est calculée que pour les PENA marqués comme étant accessibles par HBE (la case "HBE" de la fiche du PENA doit être cochée) : image:pena_hbe.png[PENA HBE]
+
+== Affectation des anomalies
+
+=== Check-list (anomalies cochées manuellement)
+
+Dans la fiche du PEI, l'utilisateur coche les anomalies constatées. Les anomalies sont regroupées par catégorie ("Abords, "Accessibilité", etc.). Exemples :
+
+image:anomalies_tab1.png[Anomalies Abords] image:anomalies_tab2.png[Anomalies Accessibilité] ...
+
+
+=== Débit / pression des PIBI
+
+Pour les points d'eau de type PI et BI, les anomalies liées aux débits et aux pressions mesurés sont ajoutées automatiquement selon les règles suivantes :
+
+*Anomalie éventuelle liée au débit en m³/h :*
+
+* débit retenu : _débit max_ si renseigné, _débit_ sinon
+* [.underline]#⌀ 70 ou ⌀ 80#
+** débit < 30 → ```DEBIT_INSUFF``` : "Débit insuffisant"
+** débit > 90 → ```DEBIT_TROP_ELEVE``` : "Débit trop élevé"
+* [.underline]#⌀ 100#
+** débit < 30 → ```DEBIT_INSUFF``` : "Débit insuffisant"
+** 30 ≥ debitRetenu < 60 → ```DEBIT_NC``` : "Débit insuffisant (non conforme à la NFS 62 200)"
+** débit > 130 → ```DEBIT_TROP_ELEVE``` : "Débit trop élevé"
+* [.underline]#⌀ 150#
+** débit ≤ 60 → ```DEBIT_INSUFF``` : "Débit insuffisant"
+** 60 ≥ débit < 120 → ```DEBIT_INSUFF_NC``` : "Débit insuffisant (non conforme à la NFS 62 200)"
+** débit > 150 → ```DEBIT_TROP_ELEVE``` : "Débit trop élevé"
+
+*Anomalie éventuelle liée à la pression en bar :*
+
+* 0 ≥ pression < 1 → ```PRESSION_INSUFF``` : "Pression statique insuffisante"
+* pression >16 → ```PRESSION_TROP_ELEVEE``` : "Pression statique trop élevée"
+
+*Anomalie éventuelle liée à la pression dynamique en bar :*
+
+* 0.1 ≥ pression dynamique < 1 → ```PRESSION_DYN_INSUFF``` : "Pression dynamique insuffisante"
+* pression dynamique >16 → ```PRESSION_DYN_TROP_ELEVEE``` : "Pression dynamique trop élevée"
+
+
+=== Anomalie "Indisponibilité temporaire"
+
+Une anomalie de type "Indisponibilité temporaire" (code ```INDISPONIBILITE_TEMP```) est ajoutée automatiquement à la liste des anomalies du point d'eau lorsque qu'un utilisateur active une indisponibilité temporaire à partir des fonctionnalités dédiées.
+
+
+== Paramétrage des anomalies
+
+Le paramétrage des anomalies est réalisé via l'interface dédiée accessible via le lien "Gestion des anomalies" du bloc "Administration".
+
+image:gestion_des_anomalies.png[Gestion des anomalies]
+
+=== Gestion des types d'anomalie
+
+L'interface permet de créer un *nouveau type d'anomalie* en utilisant le bouton "Ajouter une anomalie". On précise le *libellé de l'anomalie* et son *critère* à partir d'une liste. En effet, les anomalies sont regroupées par critère : Abords, Accessibilité, Aspect, Etanchéité, etc.
+
+Dans la ligne d'une anomalie, les boutons image:delete-update-btn.png[Supp / Modif anomalie] permettent de supprimer l'anomalie ou de modifier ses caractéristiques (libellé et critère). 
+
+Remarque :
+
+* Les *anomalies sans critère* sont associées automatiquement aux PEI par Remocra. Il s'agit des anomalies liées au débit et à la pression ainsi que l'indisponibilité temporaire.
+
+=== Affectation des points
+
+Pour chaque type d'anomalie on précise pour toute nature (PI, BI, PA des PIBI et Cours d'eau, Citerne enterrée, etc. des PENA) :
+
+* Le nombre de points en cas de présence de l'anomalie pour la disponibilité terrestre ("-" pour que n'anomalie n'apparaisse pas dans la check-list)
+* Le nombre de points en cas de présence de l'anomalie pour la disponibilité HBE ("-" pour que n'anomalie n'apparaisse pas dans la check-list)
+* Les "Types de saisies" (Création, Contrôle, Réception, Reconnaissance, Vérification) concernées par le type d'anomalie
+
+Exemple de configuration :
+
+image:gestion_des_anomalies_affectation.png[Anomalie : affectation aux types de PEI]
+
+Pour accéder à l'interface de configuration, on double-clique sur la cellule anomalie / nature. Exemple pour le cellule de la ligne "Pi sous coffre" et la colonne "PA : image:gestion_des_anomalies_representation.png[Représentation anomalie]
+
+La cellule porte un résumé des informations :
+
+[source]
+----
+<Points dispo terrestre ou "-" si non concerné> / <Points dispo HBE ou "-" si non concerné>
+[Cr] [Re] [Rc] [Ct] [Ve]
+----
+
+Avec le type d'anomalie présent dans la check-list dans le cas :
+
+* Cr : d'une Création
+* Re : d'une Réception
+* Rc : d'une Reconnaissance
+* Ct : d'un Contrôle
+* Ve : d'une Vérification
