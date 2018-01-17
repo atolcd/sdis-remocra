@@ -36,6 +36,9 @@ Instructions de récupération du projet et de construction :
 * [Remocra Web](https://github.com/atolcd/sdis-remocra/tree/master/remocra/README.md)
 * [Remocra Mobile](https://github.com/atolcd/sdis-remocra/tree/master/mobile/README.md)
 
+## Documentation
+
+Se référer à la [page dédiée](docs/index.adoc) : manuel d'administration, d'installation, PEI, etc.
 
 ## Licence
 

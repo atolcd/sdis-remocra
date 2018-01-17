@@ -73,7 +73,7 @@ Ouvrir l'URL suivante dans un navigateur :
 
 ## Documentation
 
-Se référer à la [page dédiée](../docs/index.adoc) : manuel d'administration, d'installation, etc.
+Se référer à la [page dédiée](../docs/index.adoc) : manuel d'administration, d'installation, PEI, etc.
 
 
 ## Licence
