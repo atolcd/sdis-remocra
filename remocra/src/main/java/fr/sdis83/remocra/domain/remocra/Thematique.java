@@ -18,7 +18,7 @@ import org.springframework.roo.addon.tostring.RooToString;
 public class Thematique implements ITypeReferenceNomActif {
 
     public static enum ThematiqueEnum {
-        DIVERS(0), POINTDEAU(1), ADRESSES(2), PERMIS(3), DFCI(4), RISQUES(5), CARTOTHEQUE(6), RCI(7);
+        DIVERS(0), POINTDEAU(1), ADRESSES(2), PERMIS(3), DFCI(4), RISQUES(5), CARTOTHEQUE(6), RCI(7), OLD(8);
 
         private final int value;
 

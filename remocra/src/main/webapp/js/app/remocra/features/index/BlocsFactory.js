@@ -135,7 +135,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             });
         }
 
-        if (Sdis.Remocra.Rights.getRight('OLDEB').Create) {
+        if (Sdis.Remocra.Rights.getRight('OLDEB').Read) {
             if (!Ext.isEmpty(blocOldebs.items)) {
                 blocOldebs.items.push({
                     type: 'sep'

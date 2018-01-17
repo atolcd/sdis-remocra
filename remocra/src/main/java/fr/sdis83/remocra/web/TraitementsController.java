@@ -97,6 +97,11 @@ public class TraitementsController {
                 // Accès à la thématique RCI
                 return;
             }
+        } else if (thematiqueId == ThematiqueEnum.OLD.getValue()) {
+            if (authUtils.hasRight(TypeDroitEnum.OLDEB, Permission.READ)) {
+                // Accès à la thématique OLDEB
+                return;
+            }
         }
         // Autre thématique : aucun accès
         throw new AccessDeniedException("Accès insuffisant");
@@ -113,7 +118,8 @@ public class TraitementsController {
      */
     protected void checkRightsAtLeastOne() throws AccessDeniedException {
         if (authUtils.hasRight(TypeDroitEnum.REFERENTIELS, Permission.CREATE) || authUtils.hasRight(TypeDroitEnum.HYDRANTS_TRAITEMENT, Permission.CREATE)
-                || authUtils.hasRight(TypeDroitEnum.PERMIS_TRAITEMENT, Permission.CREATE) || authUtils.hasRight(TypeDroitEnum.RCI, Permission.CREATE)) {
+                || authUtils.hasRight(TypeDroitEnum.PERMIS_TRAITEMENT, Permission.CREATE) || authUtils.hasRight(TypeDroitEnum.RCI, Permission.CREATE)
+                   || authUtils.hasRight(TypeDroitEnum.OLDEB, Permission.READ)) {
             return;
         }
         throw new AccessDeniedException("Accès insuffisant");
