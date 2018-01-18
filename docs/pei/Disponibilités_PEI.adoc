@@ -52,7 +52,7 @@ Pour les points d'eau de type PI et BI, les anomalies liées aux débits et aux 
 ** 30 ≥ debitRetenu < 60 → ```DEBIT_NC``` : "Débit insuffisant (non conforme à la NFS 62 200)"
 ** débit > 130 → ```DEBIT_TROP_ELEVE``` : "Débit trop élevé"
 * [.underline]#⌀ 150#
-** débit ≤ 60 → ```DEBIT_INSUFF``` : "Débit insuffisant"
+** débit < 60 → ```DEBIT_INSUFF``` : "Débit insuffisant"
 ** 60 ≥ débit < 120 → ```DEBIT_INSUFF_NC``` : "Débit insuffisant (non conforme à la NFS 62 200)"
 ** débit > 150 → ```DEBIT_TROP_ELEVE``` : "Débit trop élevé"
 
