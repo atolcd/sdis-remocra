@@ -118,6 +118,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             'crHydrantsMap #editInfoBtn': {
                 click: this.showFicheHydrantFromMap
             },
+            'crHydrantsMap #editInfoBtnNoCtrl': {
+                click: this.showFicheHydrantFromMap
+            },
             'crHydrantsMap #deleteBtn': {
                 click: this.deleteHydrantFromMap
             },
@@ -156,9 +159,13 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             },
             // Onglet "Hydrants"
             'crHydrantsHydrant': {
+                afterrender: this.verifDroit,
                 selectionchange: this.onSelectHydrant
             },
             'crHydrantsHydrant #openHydrant': {
+                click: this.showFicheHydrantFromGrid
+            },
+            'crHydrantsHydrant #openWithoutCtrl': {
                 click: this.showFicheHydrantFromGrid
             },
             'crHydrantsHydrant #locateHydrant': {
@@ -371,12 +378,15 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     onSelectedFeatureChange: function(event) {
         var hydrantLayer = event.object, nbSelect = hydrantLayer.selectedFeatures.length;
         var btnFiche = this.getTabMap().queryById('editInfoBtn');
+        var btnFicheNoCtrl = this.getTabMap().queryById('editInfoBtnNoCtrl');
         var btnDelete = this.getTabMap().queryById('deleteBtn');
         var btnAffecter = this.getTabMap().queryById('affecterBtn');
         var btnDesaffecter = this.getTabMap().queryById('desaffecterBtn');
         var btnActiveDeplacer = this.getTabMap().queryById('activeMoveBtn');
-
-        btnFiche.setDisabled(nbSelect != 1);
+        if(btnFiche != null){  //Dans le cas ou on n'a pas les droits le bouton n'existe pas
+           btnFiche.setDisabled(nbSelect != 1);
+        }
+        btnFicheNoCtrl.setDisabled(nbSelect != 1);
         if (btnDelete != null) {
             btnDelete.setDisabled(nbSelect != 1);
         }
@@ -762,13 +772,13 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         return model;
     },
 
-    showFicheHydrant: function(typeHydrantCode, id) {
+    showFicheHydrant: function(typeHydrantCode, id, controle) {
         var model = this.getModelFromTypeHydrantCode(typeHydrantCode);
         if (model != null) {
             model.load(id, {
                 scope: this,
                 success: function(record) {
-                    this.getController('hydrant.Fiche').showFiche(record);
+                    this.getController('hydrant.Fiche').showFiche(record, controle);
                 }
             });
         }
@@ -807,7 +817,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             }
             win.ignoreDestroyFeature = true;
             win.close();
-            this.getController('hydrant.Fiche').showFiche(hydrant);
+            this.getController('hydrant.Fiche').showFiche(hydrant, true);
 
         }
     },
@@ -817,10 +827,11 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         return Ext.Array.from(features);
     },
 
-    showFicheHydrantFromMap: function() {
+    showFicheHydrantFromMap: function(button) {
+        var controle = button.itemId === 'editInfoBtnNoCtrl' ? false : true ;
         var features = this.getSelectedFeatures();
         if (features.length == 1) {
-            this.showFicheHydrant(features[0].data.typeHydrantCode, features[0].fid);
+            this.showFicheHydrant(features[0].data.typeHydrantCode, features[0].fid, controle);
         }
 
     },
@@ -1060,14 +1071,23 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     onSelectHydrant: function(sel, records, index, opt) {
         var tabHydrant = this.getTabHydrant();
         tabHydrant.queryById('openHydrant').setDisabled(records.length == 0);
+        tabHydrant.queryById('openWithoutCtrl').setDisabled(records.length == 0);
         tabHydrant.queryById('locateHydrant').setDisabled(records.length == 0);
         tabHydrant.queryById('deleteHydrant').setDisabled(records.length == 0);
     },
 
-    showFicheHydrantFromGrid: function() {
+    verifDroit : function() {
+        var tabHydrant = this.getTabHydrant();
+        tabHydrant.queryById('openHydrant').setVisible(Sdis.Remocra.Rights.getRight('HYDRANTS').Create||
+        Sdis.Remocra.Rights.getRight('HYDRANTS_RECONNAISSANCE').Create || Sdis.Remocra.Rights.getRight('HYDRANTS_CONTROLE').Create);
+    },
+
+    showFicheHydrantFromGrid: function(button) {
+
+        var controle = button.itemId === 'openWithoutCtrl' ? false : true ;
         var hydrant = this.getSelectedHydrant();
         if (hydrant) {
-            this.showFicheHydrant(hydrant.get('code'), hydrant.getId());
+            this.showFicheHydrant(hydrant.get('code'), hydrant.getId(), controle);
         }
     },
 

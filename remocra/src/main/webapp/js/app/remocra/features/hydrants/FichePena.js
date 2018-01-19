@@ -9,11 +9,13 @@ Ext.define('Sdis.Remocra.features.hydrants.FichePena', {
     tabItems: [ {
         title: 'Identification et localisation',
         items: [ {
-            xtype: 'hydrant.tracabilite'
+            xtype: 'hydrant.tracabilite',
+            itemId: 'tracabilite'
         }, {
             xtype: 'hydrant.localisationpena'
         }, {
-            xtype: 'hydrant.identificationpena'
+            xtype: 'hydrant.identificationpena',
+            itemId: 'identification'
         } ]
     }, {
         title: 'Citerne',

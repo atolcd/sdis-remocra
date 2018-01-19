@@ -9,11 +9,13 @@ Ext.define('Sdis.Remocra.features.hydrants.FichePibi', {
     tabItems: [ {
         title: 'Identification et localisation',
         items: [ {
-            xtype: 'hydrant.tracabilite'
+            xtype: 'hydrant.tracabilite',
+            itemId: 'tracabilite'
         }, {
             xtype: 'hydrant.localisationpibi'
         }, {
-            xtype: 'hydrant.identificationpibi'
+            xtype: 'hydrant.identificationpibi',
+            itemId: 'identification'
         } ]
     }, {
         title: 'Vérification',
@@ -37,6 +39,7 @@ Ext.define('Sdis.Remocra.features.hydrants.FichePibi', {
         itemId: 'documents'
     }, {
         title: 'Points d\'attention',
+        itemId: 'ptsAttention',
         pointAttention: true,
         items: [ {
             xtype: 'hydrant.anomalie'

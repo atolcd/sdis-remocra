@@ -41,13 +41,26 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
             });
         }
 
-        this.editItems.push('Modifier : ');
+        this.editItems.push('Saisir une visite : ');
+        if(Sdis.Remocra.Rights.getRight('HYDRANTS').Create||
+                Sdis.Remocra.Rights.getRight('HYDRANTS_RECONNAISSANCE').Create || Sdis.Remocra.Rights.getRight('HYDRANTS_CONTROLE').Create){
+        this.editItems.push({
+            tooltip: 'Saisir une visite (réception, contrôle, reconnaissance, vérification)',
+            text: '<span>Informations</span>',
+            cls: 'edit-info',
+            iconCls: 'add',
+            itemId: 'editInfoBtn',
+            disabled: true
+        });
+        }
+
+        this.editItems.push('Ouvrir la fiche : ');
         this.editItems.push({
             tooltip: 'Ouvrir la fiche du point d\'eau',
             text: '<span>Informations</span>',
             cls: 'edit-info',
             iconCls: 'edit-infoIcon',
-            itemId: 'editInfoBtn',
+            itemId: 'editInfoBtnNoCtrl',
             disabled: true
         });
 

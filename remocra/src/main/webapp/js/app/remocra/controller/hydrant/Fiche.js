@@ -184,7 +184,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
         }
     },
 
-    showFiche: function(hydrant) {
+    showFiche: function(hydrant, controle) {
         var xtype = null;
         if (hydrant != null) {
             switch (hydrant.get('code')) {
@@ -195,12 +195,15 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                 xtype = 'hydrant.fichepibi';
                 break;
             }
-
             if (xtype != null) {
+                typeSaisie = 'LECT';
                 if (hydrant.phantom) {
                     typeSaisie = 'CREA';
+                } else if(controle == false) {
+                  if (Sdis.Remocra.Rights.getRight('HYDRANTS').Create) {
+                     typeSaisie = 'NOCTRL';
+                  }
                 } else {
-                    typeSaisie = 'LECT';
                     if (hydrant.get('dateRecep') != null) {
                         if (Sdis.Remocra.Rights.getRight('HYDRANTS_RECONNAISSANCE').Create) {
                             typeSaisie = 'RECO';
@@ -249,9 +252,16 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                 item.hide();
             });
             this.setReadOnly(fiche.down('form'));
+        } else if (typeSaisie == 'NOCTRL') {
+            this.setReadOnly(fiche.down('#identification'));
+            this.setReadOnly(fiche.down('#tracabilite'));
+            this.setReadOnly(fiche.down('#verification'));
+            fiche.down('checkbox[name=allAnomalie]').setValue(true);
+            fiche.down('checkbox[name=allAnomalie]').hide();
         }
 
-        fiche.setTitle('Fiche ' + fiche.hydrant.get('code') + ' - ' + Ext.getStore('TypeHydrantSaisie').findRecord('code', typeSaisie).get('nom'));
+        fiche.setTitle('Fiche ' + fiche.hydrant.get('code') + (typeSaisie == 'NOCTRL' ? '':( ' - ' + Ext.getStore('TypeHydrantSaisie').findRecord('code', typeSaisie).get('nom'))));
+
         // Gestion date contrôle en fonction du stype de saisie
         var dateSaisie = form.findField('dateSaisie');
         switch (fiche.typeSaisie) {
@@ -412,7 +422,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
     onAfterRenderFiche: function(fiche) {
         if (fiche.hydrant) {
             var form = fiche.down('form').getForm(), currentCode = fiche.hydrant.get('code'), nature = fiche.hydrant.get('nature');
-            fiche.isUpdating = (fiche.typeSaisie != 'LECT' && fiche.typeSaisie != 'CREA');
+            fiche.isUpdating = (fiche.typeSaisie != 'LECT' && fiche.typeSaisie != 'CREA' && fiche.typeSaisie != 'NOCTRL');
             // Si ya une commune, on la charge dans le store de la combo
             var commune = Ext.create('Sdis.Remocra.model.Commune', fiche.hydrant.raw.commune);
             var cboCommune = form.findField('commune');
@@ -480,7 +490,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                 });
             }
 
-            if(fiche.typeSaisie == 'LECT' || fiche.isUpdating) {
+            if(fiche.typeSaisie == 'LECT' || fiche.isUpdating || fiche.typeSaisie == 'NOCTRL') {
                 this.traitePhoto(fiche, fiche.hydrant);
             }
 
@@ -523,7 +533,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                 form.findField('y').setValue(y);
             }
 
-            if (fiche.typeSaisie != 'LECT') {
+            if (fiche.typeSaisie != 'LECT' && fiche.typeSaisie != 'NOCTRL') {
                 form.findField('CISCommune').setValue(REMOCRA_USR_ORGANISME);
             }
             
@@ -1209,7 +1219,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
     manageVerifTabVisibility: function(fiche, natureModel) {
         var tabVerif = fiche.down('#verification');
         if (tabVerif) {
-            tabVerif.tab.setVisible(this.natureHasDebitPression(natureModel?natureModel.get('code'):null));
+             tabVerif.tab.setVisible(this.natureHasDebitPression(natureModel?natureModel.get('code'):null));
         }
     },
     natureHasDebitPression: function(natureCode) {

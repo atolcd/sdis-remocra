@@ -23,8 +23,16 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
             iconCls: 'zoomIcon',
             disabled: true
         },{
-            text: 'Ouvrir la fiche',
+            text: 'Saisir une visite',
             itemId: 'openHydrant',
+            tooltip: 'Saisir une visite (réception, contrôle, reconnaissance, vérification)',
+            iconCls: 'add',
+            disabled: true,
+            hidden : true
+        },{
+            text: 'Ouvrir la fiche',
+            itemId: 'openWithoutCtrl',
+            tooltip: 'Ouvrir la fiche du point d\'eau',
             iconCls: 'edit-infoIcon',
             disabled: true
         },'->',{
