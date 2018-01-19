@@ -195,9 +195,9 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
                 if (Ext.isEmpty(value) || value == 'DISPO') {
                     return '';
                 }
-                metaData.tdCls = 'grid-hydrant-' + Ext.util.Format.lowercase(value);
+                metaData.tdCls = 'grid-hydrant-' + Ext.util.Format.lowercase(value) + (record.get('indispoTemp') === 0 ?'':' indispo-tmp');
                 if (value == 'INDISPO') {
-                    return 'Indisponible';
+                    return 'Indisponible'+(record.get('indispoTemp') === 0 ?'':' temporairement');
                 }
                 return 'Non conforme';
             }

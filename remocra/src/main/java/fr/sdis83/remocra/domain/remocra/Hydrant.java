@@ -75,6 +75,9 @@ public class Hydrant implements Featurable {
     @Formula("ST_AsGeoJSON(geometrie)")
     private String jsonGeometrie;
 
+    @Formula("(select count(*) from remocra.hydrant_anomalies ha where ha.hydrant = id AND ha.anomalies = (select tha.id from remocra.type_hydrant_anomalie tha where tha.code = 'INDISPONIBILITE_TEMP'))")
+    private Integer indispoTemp ;
+
     @ManyToOne
     private Tournee tournee;
 

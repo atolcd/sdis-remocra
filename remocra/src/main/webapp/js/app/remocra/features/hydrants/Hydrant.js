@@ -1,5 +1,5 @@
 Ext.require(['Sdis.Remocra.features.hydrants.TabAccesRapide','Sdis.Remocra.features.hydrants.TabTournee','Sdis.Remocra.features.hydrants.TabMap',
-        'Sdis.Remocra.features.hydrants.TabHydrant', 'Sdis.Remocra.features.hydrants.TabBlocDocument']);
+        'Sdis.Remocra.features.hydrants.TabHydrant','Sdis.Remocra.features.hydrants.TabIndispo', 'Sdis.Remocra.features.hydrants.TabBlocDocument']);
 
 Ext.define('Sdis.Remocra.features.hydrants.Hydrant', {
     extend: 'Ext.tab.Panel',
@@ -25,6 +25,8 @@ Ext.define('Sdis.Remocra.features.hydrants.Hydrant', {
             xtype: 'crHydrantsHydrant'
         },{
             xtype: 'crHydrantsMap'
+        },{
+            xtype: 'crHydrantsIndispo'
         }];
         if (Sdis.Remocra.Rights.getRight('DOCUMENTS').Read) {
             this.items.push({

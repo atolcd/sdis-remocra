@@ -557,9 +557,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                 anomalies=[];
                 //on supprime les anomalies avec critère null (elles seront calculées coté client au cas ou le trigger ne se déclenche pas)
                 fiche.hydrant.anomalies().each(function(record){
-                    if(record.get('critere')!=null){
+                   // if(record.get('critere')!=null){
                         anomalies.push(record);
-                    }
+                    //}
                 });
                 cmpAnomalie.setSelected(anomalies);
                 this.doFilterAnomalie(fiche);

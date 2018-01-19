@@ -125,6 +125,29 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
             });
         }
 
+        this.editItems.push('Indisponibilité temporaire : ');
+        if (Sdis.Remocra.Rights.getRight('INDISPOS').Create) {
+            this.editItems.push({
+                xtype: 'button',
+                tooltip: 'Déclarer une indisponibilité temporaire',
+                text: '<span>Déclarer indispo temp.</span>',
+                cls: 'time-add',
+                iconCls: 'time-addIcon',
+                itemId: 'indispoBtn',
+                disabled: true
+            });
+        }
+
+            this.editItems.push({
+                xtype: 'button',
+                tooltip: 'Modifier une indisponibilité temporaire',
+                text: '<span>Modifier indispo temp.</span>',
+                cls: 'edit-info',
+                iconCls: 'edit-infoIcon',
+                itemId: 'editIndispoBtn',
+                disabled: true
+            });
+
         if (Sdis.Remocra.Rights.getRight('HYDRANTS_EXPORT_NON_NUM').Create) {
             this.moreItems = [ { tooltip: 'Télécharger la liste des hydrants non numérotés', text: '<span>Télécharger</span>',
                 cls: 'download-atlas', iconCls: 'download-atlasIcon',

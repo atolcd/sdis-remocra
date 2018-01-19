@@ -234,6 +234,9 @@ Ext.define('Sdis.Remocra.controller.Router', {
         routes['access'] = {
             xtype: 'crHydrants'
         };
+        routes['indispos'] = {
+            xtype: 'crHydrants'
+        };
         routes['tournees'] = {
             xtype: 'crHydrants'
         };

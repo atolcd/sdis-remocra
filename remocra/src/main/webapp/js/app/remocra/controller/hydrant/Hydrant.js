@@ -1,11 +1,12 @@
 Ext.require('Sdis.Remocra.store.Commune');
 Ext.require('Sdis.Remocra.model.Voie');
+Ext.require('Sdis.Remocra.model.HydrantIndispoTemporaire');
 Ext.require('Sdis.Remocra.store.Hydrant');
 Ext.require('Sdis.Remocra.store.Tournee');
 Ext.require('Sdis.Remocra.store.TypeHydrant');
 Ext.require('Sdis.Remocra.store.Organisme');
 Ext.require('Sdis.Remocra.store.TypeHydrantNature');
-
+Ext.require('Sdis.Remocra.model.Hydrant');
 Ext.require('Sdis.Remocra.model.HydrantPena');
 Ext.require('Sdis.Remocra.model.HydrantPibi');
 
@@ -13,6 +14,10 @@ Ext.require('Sdis.Remocra.widget.SdisChoice');
 Ext.require('Sdis.Remocra.features.hydrants.FichePena');
 Ext.require('Sdis.Remocra.features.hydrants.FichePibi');
 Ext.require('Sdis.Remocra.features.hydrants.Affectation');
+Ext.require('Sdis.Remocra.features.hydrants.NouvelleIndispo');
+Ext.require('Sdis.Remocra.features.hydrants.EditIndispo');
+Ext.require('Sdis.Remocra.features.hydrants.ActiveIndispo');
+Ext.require('Sdis.Remocra.features.hydrants.LeveIndispo');
 
 Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     extend: 'Ext.app.Controller',
@@ -35,6 +40,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         ref: 'tabTournee',
         selector: 'crHydrantsTournee'
     },{
+        ref: 'tabIndispo',
+        selector: 'crHydrantsIndispo'
+    },{
         ref: 'tabDocuments',
         selector: 'crBlocDocumentGrid'
     },{
@@ -43,7 +51,19 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     },{
         ref: 'affectation',
         selector: 'affectation'
-    }],
+    },{
+        ref: 'nouvelleIndispo',
+        selector: 'nouvelleIndispo'
+    },{
+        ref: 'editIndispo',
+        selector: 'editIndispo'
+    },{
+        ref: 'activeIndispo',
+        selector: 'activeIndispo'
+    },{
+        ref: 'leveIndispo',
+        selector: 'leveIndispo'
+    }       ],
 
     init: function() {
 
@@ -130,6 +150,12 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             'crHydrantsMap #desaffecterBtn': {
                 click: this.desaffecteTournee
             },
+            'crHydrantsMap #indispoBtn': {
+                click: this.declareIndispo
+            },
+             'crHydrantsMap #editIndispoBtn': {
+              click: this.editIndispo
+            },
             'crHydrantsMap #activeMoveBtn': {
                 toggle: function(button, pressed) {
                     this.getTabMap().activateSpecificControl('movePoint', pressed);
@@ -183,6 +209,62 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             },
             'sdischoice[name=choiceTypeHydrant] #ok': {
                 click: this.onValidChoiceTypeHydrant
+            },
+            // Fenêtre "nouvelleIndispo"
+            'nouvelleIndispo': {
+                afterrender: this.afterShowNouvelleIndispo
+            },
+            'nouvelleIndispo #addHydrantIndispo': {
+                click: this.addHydrantIndispo
+            },
+            'nouvelleIndispo #deleteHydrantIndispo': {
+                click: this.deleteHydrantIndispo
+            },
+            'nouvelleIndispo #validHydrantIndispo': {
+                click: this.validHydrantIndispo
+            },
+            'nouvelleIndispo checkbox[name=activationImmediate]': {
+                change: this.onChangeImmediate
+            },
+            'editIndispo #gridIndispos': {
+                afterrender: this.onEditIndispo,
+                select: this.onSelectIndispoFromMap
+            },
+            'crHydrantsIndispo': {
+                selectionchange: this.onSelectIndispo
+            },
+            'crHydrantsIndispo #activeIndispo': {
+                click: this.showActiveIndispo
+            },
+            'activeIndispo': {
+                afterrender: this.loadHydrantsIndispo
+            },
+            'leveIndispo': {
+                afterrender: this.loadHydrantsIndispo
+            }            ,
+            'activeIndispo #activIndispo': {
+                click: this.onActiveIndispo
+            },
+            'crHydrantsIndispo #leverIndispo': {
+                click: this.showLeveIndispo
+            },
+            'crHydrantsIndispo #deleteIndispo': {
+                click: this.deleteIndispo
+            },
+            'crHydrantsIndispo #gererIndispo': {
+                click: this.showEditIndispo
+            },
+            'crHydrantsIndispo #locateIndispo': {
+                click: this.onLocateIndispo
+            },
+            'leveIndispo #levIndispo': {
+                click: this.onLeveIndispo
+            },
+             'editIndispo #levIndispo': {
+                click: this.showLeveIndispo
+            },
+             'editIndispo #activIndispo': {
+                click: this.showActiveIndispo
             }
         });
     },
@@ -198,6 +280,16 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         }
         if (!Sdis.Remocra.Rights.getRight('HYDRANTS').Delete) {
             fiche.down('crHydrantsHydrant #deleteHydrant').hide();
+        }
+        if (!Sdis.Remocra.Rights.getRight('INDISPOS').Read) {
+            fiche.down('crHydrantsIndispo').tab.hide();
+        }
+        if (!Sdis.Remocra.Rights.getRight('INDISPOS').Create && !Sdis.Remocra.Rights.getRight('INDISPOS').Update) {
+        fiche.down('crHydrantsIndispo #activeIndispo').hide();
+        fiche.down('crHydrantsIndispo #leverIndispo').hide();
+        fiche.down('crHydrantsIndispo #gererIndispo').hide();
+        fiche.down('crHydrantsIndispo #deleteIndispo').hide();
+
         }
     },
 
@@ -383,6 +475,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         var btnAffecter = this.getTabMap().queryById('affecterBtn');
         var btnDesaffecter = this.getTabMap().queryById('desaffecterBtn');
         var btnActiveDeplacer = this.getTabMap().queryById('activeMoveBtn');
+        var btnAddIndispo = this.getTabMap().queryById('indispoBtn');
+        var btnEditIndispo = this.getTabMap().queryById('editIndispoBtn');        
         if(btnFiche != null){  //Dans le cas ou on n'a pas les droits le bouton n'existe pas
            btnFiche.setDisabled(nbSelect != 1);
         }
@@ -398,6 +492,12 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         }
         if(btnActiveDeplacer != null){
             btnActiveDeplacer.setDisabled(nbSelect != 1);
+        }
+        if (btnAddIndispo != null) {
+            btnAddIndispo.setDisabled(nbSelect < 1);
+        }
+        if (btnEditIndispo != null) {
+            btnEditIndispo.setDisabled(nbSelect != 1);
         }
     },
 
@@ -437,6 +537,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             break;
         case 'tournees':
             this.updateTournee(extraParams);
+            break;
+        case 'indispos':
+            this.updateIndispo(extraParams);
             break;
         default:
             break;
@@ -496,6 +599,12 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             this.getTabTournee().headerFilterPlugin.applyFilters();
         }
         this.getTabTournee().getStore().load();
+    },
+
+    updateIndispo: function(extraParams) {
+        this.getTabIndispo().getStore().load();
+        var tbar = this.getTabIndispo().query('pagingtoolbar')[0];
+                tbar.bindStore(this.getTabIndispo().getStore());
     },
 
     deleteHydrant: function(id, typeHydrant, config) {
@@ -851,6 +960,19 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         }
     },
 
+    declareIndispo: function() {
+       Ext.widget('nouvelleIndispo').show();
+    },
+
+    showEditIndispo: function() {
+        var indispo = this.getSelectedIndispo();
+       Ext.widget('nouvelleIndispo').show();
+    },
+
+    editIndispo: function() {
+       Ext.widget('editIndispo').show();
+    },
+
     affecteTournee: function() {
         var features = this.getSelectedFeatures();
         var messagelocked = '', feature, i, countLocked = 0;
@@ -1108,6 +1230,375 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
 
             }
         });
+    },
+
+   /******************************************************************************
+   *Fenetre "Nouvelle Indisponibilite temporaire"
+   ******************************************************************************/
+   afterShowNouvelleIndispo: function() {
+         var grid = this.getNouvelleIndispo().down('#gridHydrantIndispos');
+   if(this.getTabIndispo() && this.getTabIndispo().isVisible()){
+     this.getNouvelleIndispo().setTitle("Gestion de l'indisponibilité temporaire");
+     var indispo = this.getSelectedIndispo();
+     var datePrevDebut = indispo.get('datePrevDebut');
+     var datePrevFin = indispo.get('datePrevFin');
+     var dateDebut = indispo.get('dateDebut');
+     this.getNouvelleIndispo().down('checkbox[name=activationImmediate]').setValue(true);
+     this.getNouvelleIndispo().down('datefield[name=dateDebut]').setValue(dateDebut);
+     this.getNouvelleIndispo().down('timefield[name=timeDebut]').setValue(dateDebut);
+     this.getNouvelleIndispo().down('datefield[name=datePrevDebut]').setValue(datePrevDebut);
+     this.getNouvelleIndispo().down('timefield[name=timePrevDebut]').setValue(datePrevDebut);
+     this.getNouvelleIndispo().down('datefield[name=datePrevFin]').setValue(datePrevFin);
+     this.getNouvelleIndispo().down('timefield[name=timePrevFin]').setValue(datePrevFin);
+     this.getNouvelleIndispo().down('textfield[name=motif]').setValue(indispo.get('motif'));
+            Ext.defer(function() {
+                this.getNouvelleIndispo().down('#gridHydrantIndispos').bindStore(indispo.hydrants(), true);
+            }, 150, this);
+   }else {
+     this.getNouvelleIndispo().down('checkbox[name=activationImmediate]').setValue(false);
+     this.getNouvelleIndispo().down('datefield[name=dateDebut]').setValue(new Date());
+     this.getNouvelleIndispo().down('timefield[name=timeDebut]').setValue(new Date());
+     this.getNouvelleIndispo().down('datefield[name=datePrevDebut]').setValue(new Date());
+     this.getNouvelleIndispo().down('timefield[name=timePrevDebut]').setValue(new Date());
+     this.getNouvelleIndispo().down('datefield[name=datePrevFin]').setValue(new Date());
+     this.getNouvelleIndispo().down('timefield[name=timePrevFin]').setValue(new Date());
+     this.getNouvelleIndispo().down('textfield[name=motif]').setValue(null);
+      var features = this.getSelectedFeatures();
+      var i = 0;
+                    for (i; i < features.length ; i++) {
+                       var feature = features[i];
+                       feature.data.id=feature.fid;
+                       grid.store.add(feature.data);
+                    }
+                  grid.getView().refresh();
+     }
+   },
+
+   addHydrantIndispo : function() {
+      var grid = this.getNouvelleIndispo().down('#gridHydrantIndispos');
+      var comboIndispo = this.getNouvelleIndispo().down('combo[name=numHydrant]');
+
+                  var hydrant = comboIndispo.findRecordByValue(comboIndispo.getValue());
+                  if(grid.store.findRecord("id", hydrant.getId()) == null) {
+                    grid.store.add(hydrant);
+                    grid.getView().refresh();
+                  }
+
+   },
+
+   deleteHydrantIndispo : function() {
+      var grid = this.getNouvelleIndispo().down('#gridHydrantIndispos');
+      var hydrant = grid.getSelectionModel().getSelection();
+      grid.getStore().remove(hydrant);
+   },
+   validHydrantIndispo: function() {
+              var indispo = Ext.create('Sdis.Remocra.model.HydrantIndispoTemporaire');
+              if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
+                 indispo = this.getSelectedIndispo();
+                 indispo.set("id",indispo.get('id'));
+              }
+              var grid = this.getNouvelleIndispo().down('#gridHydrantIndispos');
+              var hydrantData = [];
+              var i=0;
+              for (i; i < grid.store.data.items.length; i++) {
+                 hydrantData.push(grid.store.data.items[i].data);
+              }
+              //on récupère les Ids des hydrants concernés
+              var ids = Ext.Array.pluck(hydrantData, "id");
+              if(this.getNouvelleIndispo().down('checkbox[name=activationImmediate]').getValue() == true) {
+                            var dateDebut = this.getNouvelleIndispo().down('datefield[name=datePrevDebut]').getValue();
+                            var timeDebut = this.getNouvelleIndispo().down('timefield[name=timePrevDebut]').getValue();
+                            dateDebut.setHours(timeDebut.getHours(),timeDebut.getMinutes());
+                            var dateFin = this.getNouvelleIndispo().down('datefield[name=datePrevFin]').getValue();
+                            var timeFin = this.getNouvelleIndispo().down('timefield[name=timePrevFin]').getValue();
+                            dateFin.setHours(timeFin.getHours(),timeFin.getMinutes());
+
+                            indispo.set('datePrevDebut',dateDebut);
+                            indispo.set('datePrevFin',dateFin);
+              }else {
+                            var dateReelDebut = this.getNouvelleIndispo().down('datefield[name=dateDebut]').getValue();
+                            var timeReelDebut = this.getNouvelleIndispo().down('timefield[name=timeDebut]').getValue();
+                            dateReelDebut.setHours(timeReelDebut.getHours(),timeReelDebut.getMinutes());
+                            indispo.set("dateDebut", dateReelDebut);
+              }
+              indispo.set("motif",this.getNouvelleIndispo().down('textfield[name=motif]').getValue());
+              //On compare les dates pour éviter que la date de fin soit superieure à la date de debut
+           if(indispo.get('dateFin')!= null && indispo.get('dateFin') < indispo.get('dateDebut')) {
+              Ext.Msg.alert('Indisponibilité temporaire','La date de Fin ne doit pas être antérieure à la date de début');
+              return;
+           }
+           if(indispo.get('dateFin')== null && indispo.get('datePrevFin') < indispo.get('datePrevDebut')) {
+              Ext.Msg.alert('Indisponibilité temporaire','La date prévisionnelle de Fin ne peut pas être antérieure à la date prévisionnelle de début');
+              return;
+           }
+          if(grid.getStore().getCount()==0) {
+              Ext.Msg.alert('Indisponibilité temporaire','Veuillez renseigner au moins un point d\'eau.');
+              return;
+          }
+           Ext.Ajax.request({
+                  scope: this,
+                  url: Sdis.Remocra.util.Util.withBaseUrl('../indisponibilites/indispoTemp'),
+                  jsonData: {
+                      ids: ids,
+                      indispo: indispo.data
+                  },
+                  callback: function(param, success, response) {
+                      var res = Ext.decode(response.responseText);
+                      Sdis.Remocra.util.Msg.msg("Indisponibilite", res.message);
+                      this.getNouvelleIndispo().close();
+                       if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
+                         this.getTabIndispo().getStore().load();
+                       }
+                  }
+              });
+   },
+
+    onChangeImmediate: function(checkbox) {
+            this.getNouvelleIndispo().down('#containDebReel').setVisible(!checkbox.getValue());
+            this.getNouvelleIndispo().down('#containDebPrev').setVisible(checkbox.getValue());
+            this.getNouvelleIndispo().down('#containFinPrev').setVisible(checkbox.getValue());
+    },
+
+    onEditIndispo: function() {
+       var gridIndispos = this.getEditIndispo().down('#gridIndispos');
+       var features =this.getSelectedFeatures();
+       gridIndispos.getStore().load({
+                         scope: this,
+                         params: {
+                             filter: Ext.encode([{
+                                 property: 'hydrantId',
+                                 value: features[0].fid
+                             }])
+                         }
+       });
+       if (!Sdis.Remocra.Rights.getRight('INDISPOS').Create && !Sdis.Remocra.Rights.getRight('INDISPOS').Update) {
+          this.getEditIndispo().down('#activIndispo').hide();
+          this.getEditIndispo().down('#levIndispo').hide();
+       }
+    },
+    /***************************************************************************
+     * Onglet "Indisponibilités temporaires"
+     **************************************************************************/
+
+     showActiveIndispo: function(){
+     Ext.widget('activeIndispo').show();
+
+     },
+
+     showLeveIndispo: function(){
+     Ext.widget('leveIndispo').show();
+
+     },
+
+     onSelectIndispo: function(sel, records, index, opt){
+       var tabIndispos = this.getTabIndispo();
+       var indispo = records[0];
+          if(indispo!=null) {
+              //tant qu'il y'a une selection on autorise la localisation et la suppression
+              tabIndispos.queryById('deleteIndispo').setDisabled(records.length == 0);
+              tabIndispos.queryById('locateIndispo').setDisabled(records.length == 0);
+             if(indispo.getStatut().get('code') == 'EN_COURS'){ // On permet la levée de l'indispo & on interdit la suppression
+               tabIndispos.queryById('activeIndispo').setDisabled(records.length != 0);
+               tabIndispos.queryById('leverIndispo').setDisabled(records.length == 0);
+               tabIndispos.queryById('gererIndispo').setDisabled(records.length != 0);
+              tabIndispos.queryById('deleteIndispo').setDisabled(records.length != 0);
+             }else if(indispo.getStatut().get('code') == 'TERMINE'){ // indispo terminée on desactive tout
+               tabIndispos.queryById('activeIndispo').setDisabled(records.length != 0);
+               tabIndispos.queryById('leverIndispo').setDisabled(records.length != 0);
+               tabIndispos.queryById('gererIndispo').setDisabled(records.length != 0);
+             }else if(indispo.getStatut().get('code') == 'PLANIFIE'){ //indispo en previsionnelle on autorise l'activation et la gestion
+               tabIndispos.queryById('activeIndispo').setDisabled(records.length == 0);
+               tabIndispos.queryById('leverIndispo').setDisabled(records.length != 0);
+               tabIndispos.queryById('gererIndispo').setDisabled(records.length == 0);
+             }
+          }else {                                                                   // En cas de suppression on reinitialise tout
+            tabIndispos.queryById('gererIndispo').setDisabled(records.length == 0);
+            tabIndispos.queryById('activeIndispo').setDisabled(records.length == 0);
+            tabIndispos.queryById('leverIndispo').setDisabled(records.length == 0);
+            tabIndispos.queryById('deleteIndispo').setDisabled(records.length == 0);
+            tabIndispos.queryById('locateIndispo').setDisabled(records.length == 0);
+          }
+     },
+
+     onSelectIndispoFromMap: function(sel, records, index, opt){
+       var editIndispos = this.getEditIndispo();
+       var indispo = this.getSelectedIndispoFromMap();
+             if(indispo.getStatut().get('code') == 'EN_COURS'){
+             editIndispos.queryById('activIndispo').setDisabled(records.length != 0);
+             editIndispos.queryById('levIndispo').setDisabled(records.length == 0);
+             }else if(indispo.getStatut().get('code') == 'TERMINE') {
+               editIndispos.queryById('activIndispo').setDisabled(records.length != 0);
+               editIndispos.queryById('levIndispo').setDisabled(records.length != 0);
+             }else {
+               editIndispos.queryById('activIndispo').setDisabled(records.length == 0);
+               editIndispos.queryById('levIndispo').setDisabled(records.length != 0);
+             }
+     },
+
+    getSelectedIndispo: function() {
+        if (!this.getTabIndispo()) {
+            console.warn('soucis ??');
+            return;
+        }
+        var record = this.getTabIndispo().getSelectionModel().getSelection();
+        if (record != null && Ext.isArray(record)) {
+            record = record[0];
+        }
+        return record;
+    },
+    getSelectedIndispoFromMap: function() {
+        if (!this.getEditIndispo()) {
+            console.warn('soucis ??');
+            return;
+        }
+        var record = this.getEditIndispo().queryById('gridIndispos').getSelectionModel().getSelection();
+        if (record != null && Ext.isArray(record)) {
+            record = record[0];
+        }
+        return record;
+    },
+
+    onActiveIndispo : function() {
+        var indispo = null;
+        if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
+          indispo = this.getSelectedIndispo();
+        }else{
+          indispo = this.getSelectedIndispoFromMap();
+          var features =this.getSelectedFeatures();
+        }
+       var dateDebut = this.getActiveIndispo().down('datefield[name=dateDebut]').getValue();
+       var timeDebut =this.getActiveIndispo().down('timefield[name=timeDebut]').getValue();
+       dateDebut.setHours(timeDebut.getHours(),timeDebut.getMinutes());
+       Ext.Ajax.request({
+                    url: Sdis.Remocra.util.Util.withBaseUrl('../indisponibilites/activeIndispoTemp/'+indispo.getId()),
+                    method: 'POST',
+                    params: {dateDebut: dateDebut},
+                    scope: this,
+                    callback: function(param, success, response) {
+                        var res = Ext.decode(response.responseText);
+                        this.getActiveIndispo().close();
+                        if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
+                          this.getTabIndispo().getStore().load();
+                        }else {
+                        this.getEditIndispo().queryById('activIndispo').setDisabled(true);
+                          this.getEditIndispo().queryById('gridIndispos').getStore().load({
+                                 scope: this,
+                                 params: {
+                                 filter: Ext.encode([{
+                                 property: 'hydrantId',
+                                  value: features[0].fid
+                                  }])
+                                }
+                           });
+                        }
+                        Sdis.Remocra.util.Msg.msg("Activation de l'indisponibilité", res.message);
+                    }
+       });
+
+    },
+
+    onLeveIndispo : function() {
+            var indispo = null;
+            if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
+              indispo = this.getSelectedIndispo();
+            }else{
+              indispo = this.getSelectedIndispoFromMap();
+              var features =this.getSelectedFeatures();
+            }
+       var dateFin = this.getLeveIndispo().down('datefield[name=dateFin]').getValue();
+       var timeFin =this.getLeveIndispo().down('timefield[name=timeFin]').getValue();
+       dateFin.setHours(timeFin.getHours(),timeFin.getMinutes());
+           //On compare les dates pour éviter que la date de fin soit superieur à la date de debut
+                  if(dateFin < indispo.get('dateDebut')) {
+                     Ext.Msg.alert('Indisponibilité temporaire','La date de fin ne doit pas être antérieure à la date de début.');
+                     return;
+                  }
+                       Ext.Ajax.request({
+                                          url: Sdis.Remocra.util.Util.withBaseUrl('../indisponibilites/leveIndispoTemp/'+indispo.getId()),
+                                          method: 'POST',
+                                          params: {dateFin: dateFin},
+                                          scope: this,
+                                          callback: function(param, success, response) {
+                                              var res = Ext.decode(response.responseText);
+                                              this.getLeveIndispo().close();
+                                              if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
+                                                this.getTabIndispo().getStore().load();
+
+                                              }else {
+                                                this.getEditIndispo().queryById('levIndispo').setDisabled(true);
+                                                this.getEditIndispo().queryById('gridIndispos').getStore().load({
+                                                     scope: this,
+                                                     params: {
+                                                     filter: Ext.encode([{
+                                                     property: 'hydrantId',
+                                                     value: features[0].fid
+                                                     }])
+                                                    }
+                                                });
+                                              }
+                                              Sdis.Remocra.util.Msg.msg("Fin de l'indisponibilité", res.message);
+                       }
+       });
+
+    },
+    onLocateIndispo: function() {
+    var indispo = this.getSelectedIndispo();
+     if (Ext.isEmpty(indispo.get('geometrie'))) {
+              Ext.Msg.show({
+                  title: 'Localisation d\'une indisponibilité',
+                  msg: 'La localisation est impossible car aucun point d\'eau n\'a été renseigné pour cette indisponibilité.',
+                  buttons: Ext.Msg.OK,
+                  icon: Ext.Msg.INFO
+              });
+          } else {
+              var bounds = Sdis.Remocra.util.Util.getBounds(indispo.get('geometrie'));
+              Sdis.Remocra.util.Util.changeHash(this.tplBounds.apply({
+                  bounds: bounds.toBBOX()
+              }));
+          }
+    },
+
+    deleteIndispo: function() {
+      var indispo = this.getSelectedIndispo();
+     Ext.Ajax.request({
+                    url: Sdis.Remocra.util.Util.withBaseUrl('../indisponibilites/'+indispo.getId()),
+                    method: 'DELETE',
+                    scope: this,
+                    callback: function(param, success, response) {
+                        var res = Ext.decode(response.responseText);
+                        if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
+                          this.getTabIndispo().getStore().load();
+                          this.refreshMap();
+                        }
+                        Sdis.Remocra.util.Msg.msg("Indisponibilité temporaire supprimée", res.message);
+                    }
+      });
+
+    },
+
+    loadHydrantsIndispo: function(){
+    //on teste si on est en mode map ou grid
+      if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
+           if (this.getActiveIndispo() && this.getActiveIndispo().isVisible()){
+               this.getActiveIndispo().queryById('gridHydrantIndispos').getStore().add (this.getSelectedIndispo().hydrants().data.items);
+                this.getActiveIndispo().down('datefield[name=dateDebut]').setValue(new Date());
+                this.getActiveIndispo().down('timefield[name=timeDebut]').setValue(new Date());
+           }else if(this.getLeveIndispo() && this.getLeveIndispo().isVisible()){
+               this.getLeveIndispo().queryById('gridHydrantIndispos').getStore().add (this.getSelectedIndispo().hydrants().data.items);
+               this.getLeveIndispo().down('datefield[name=dateFin]').setValue(new Date());
+               this.getLeveIndispo().down('timefield[name=timeFin]').setValue(new Date());
+           }
+      } else if(this.getTabMap() && this.getTabMap().isVisible()) {
+          if (this.getActiveIndispo() && this.getActiveIndispo().isVisible()){
+               this.getActiveIndispo().queryById('gridHydrantIndispos').getStore().add (this.getSelectedIndispoFromMap().hydrants().data.items);
+                this.getActiveIndispo().down('datefield[name=dateDebut]').setValue(new Date());
+                this.getActiveIndispo().down('timefield[name=timeDebut]').setValue(new Date());
+           }else if(this.getLeveIndispo() && this.getLeveIndispo().isVisible()){
+                this.getLeveIndispo().down('datefield[name=dateFin]').setValue(new Date());
+                this.getLeveIndispo().down('timefield[name=timeFin]').setValue(new Date());
+               this.getLeveIndispo().queryById('gridHydrantIndispos').getStore().add (this.getSelectedIndispoFromMap().hydrants().data.items);
+           }
+      }
     }
 
 });

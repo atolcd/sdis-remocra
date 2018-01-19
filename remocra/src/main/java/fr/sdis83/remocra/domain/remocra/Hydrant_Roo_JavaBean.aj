@@ -57,7 +57,15 @@ privileged aspect Hydrant_Roo_JavaBean {
     public void Hydrant.setJsonGeometrie(String jsonGeometrie) {
         this.jsonGeometrie = jsonGeometrie;
     }
-    
+
+    public Integer Hydrant.getIndispoTemp() {
+        return this.indispoTemp;
+    }
+
+    public void Hydrant.setIndispoTemp(Integer indispoTemp) {
+        this.indispoTemp = indispoTemp;
+    }
+
     public Tournee Hydrant.getTournee() {
         return this.tournee;
     }

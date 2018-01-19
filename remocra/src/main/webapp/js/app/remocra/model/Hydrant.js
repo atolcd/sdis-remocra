@@ -70,6 +70,9 @@ Ext.define('Sdis.Remocra.model.Hydrant', {
         name: 'courrier',
         type: 'string'
     }, {
+        name: 'indispoTemp',
+        type: 'integer'
+    }, {
         name: 'gestPointEau',
         type: 'string'
     }, {

@@ -685,6 +685,9 @@ Affichage de toute la légende
 .edit-infoIcon {
 	background-image:url('../../images/remocra/cartes/application_view_columns.png');
 }
+.time-addIcon {
+	background-image:url('../../images/remocra/cartes/time_add.png');
+}
 .maptbar .delete {
 	background-image: none;
 }
@@ -1100,6 +1103,12 @@ Affichage de toute la légende
 .x-grid-row .grid-hydrant-indispo {
 	color: white;
 	background-color: red !important;
+}
+
+.x-grid-row .grid-hydrant-indispo.indispo-tmp {
+	color: white;
+	background-image: repeating-linear-gradient(-45deg, yellow, yellow 3px, red 3px, red 30px);
+
 }
 
 .x-grid-row .grid-hydrant-non_conforme {

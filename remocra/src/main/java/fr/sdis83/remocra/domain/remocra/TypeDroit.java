@@ -47,7 +47,9 @@ public class TypeDroit {
 
         CARTOGRAPHIES("cartographies"),
 
-        OLDEB("obligation.debroussaillment");
+        OLDEB("obligation.debroussaillment"),
+
+        INDISPOS("indisponibilite.temporaire");
 
         private final String value;
 
