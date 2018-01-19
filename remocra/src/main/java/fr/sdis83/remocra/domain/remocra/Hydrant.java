@@ -134,6 +134,9 @@ public class Hydrant implements Featurable {
     @ManyToOne
     private Organisme organisme;
 
+    @ManyToOne
+    private Utilisateur utilisateurModification;
+
     // Localisation
 
     @Column

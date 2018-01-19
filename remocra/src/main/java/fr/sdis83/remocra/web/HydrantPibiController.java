@@ -61,8 +61,8 @@ public class HydrantPibiController {
 
             @Override
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
-                return new JSONSerializer().include("data.anomalies", "data.photos", "data.pena.id")
-                        .exclude("data.utilisateur", "data.commune.geometrie", "data.pena.*", "*.class").transform(new GeometryTransformer(), Geometry.class);
+                return new JSONSerializer().include("data.anomalies", "data.photos", "data.pena.id", "data.utilisateurModification")
+                        .exclude( "data.commune.geometrie", "data.pena.*", "*.class").transform(new GeometryTransformer(), Geometry.class);
             }
 
             @Override
@@ -92,8 +92,8 @@ public class HydrantPibiController {
                         // photo associée
                         .include("data.photo")
                         // Documents
-                        .include("data.hydrantDocuments.id").include("data.hydrantDocuments.titre").include("data.hydrantDocuments.code").exclude("data.hydrantDocuments.*")
-                        .exclude("data.utilisateur", "data.commune.geometrie");
+                        .include("data.hydrantDocuments.id").include("data.hydrantDocuments.titre").include("data.hydrantDocuments.code").include("data.utilisateur").exclude("data.hydrantDocuments.*")
+                        .exclude( "data.commune.geometrie");
             }
 
             @Override

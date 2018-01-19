@@ -305,5 +305,14 @@ privileged aspect Hydrant_Roo_JavaBean {
     public void Hydrant.setDispoAdmin(Disponibilite dispoAdmin) {
         this.dispoAdmin = dispoAdmin;
     }
+
+    public Utilisateur Hydrant.getUtilisateurModification() {
+        return this.utilisateurModification;
+    }
+
+    public void Hydrant.setUtilisateurModification(Utilisateur utilisateurModification) {
+        this.utilisateurModification = utilisateurModification;
+    }
+
     
 }

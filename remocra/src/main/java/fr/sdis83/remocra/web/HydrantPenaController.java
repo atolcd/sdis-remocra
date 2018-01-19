@@ -57,10 +57,10 @@ public class HydrantPenaController {
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
                 return serializer.include("data.anomalies")
                         // photo associée
-                        .include("data.photo")
+                        .include("data.photo","data.utilisateurModification")
                         // Documents
                         .include("data.hydrantDocuments.id").include("data.hydrantDocuments.titre").include("data.hydrantDocuments.code").exclude("data.hydrantDocuments.*")
-                        .include("data.pibiAssocie.id").exclude("data.utilisateur", "data.commune.geometrie", "data.pibiAssocie.*");
+                        .include("data.pibiAssocie.id").exclude("data.commune.geometrie", "data.pibiAssocie.*");
             }
 
             @Override
