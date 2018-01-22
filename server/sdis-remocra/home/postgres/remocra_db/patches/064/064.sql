@@ -600,11 +600,11 @@ COMMENT ON FUNCTION remocra.jaro_winkler(text,text) IS 'Calcule la distance de J
 select setval('remocra.type_droit_id_seq',id,false) from (select max(id)+1 as id from remocra.type_droit) as compteur;
 insert into remocra.type_droit(code, description, nom, version) values ('OLDEB', 'Droit sur le module OLDEB', 'obligation.debroussaillement', 1);
 select setval('remocra.droit_id_seq',id,false) from (select max(id)+1 as id from remocra.droit) as compteur;
-insert into remocra.droit(droit_create, droit_read, droit_update, droit_delete, profil_droit, type_droit) values (
-    true, true, true, true,
-    (select id from remocra.profil_droit where code='SDIS-ADM-APP'),
-    (select id from remocra.type_droit where code='OLDEB')
-);
+insert into remocra.droit(droit_create, droit_read, droit_update, droit_delete, "version", profil_droit, type_droit)
+  select true, true, true, true, 1, pd.id, td.id
+  from remocra.profil_droit pd, remocra.type_droit td
+  where td.code = 'OLDEB'
+  and pd.code in ('SDIS-ADM-APP');
 
 -- Nouvelle thématique OLD
 INSERT INTO remocra.thematique (id, nom, actif, code)
