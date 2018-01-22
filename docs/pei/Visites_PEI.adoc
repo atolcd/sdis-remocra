@@ -1,0 +1,74 @@
+= SDIS Remocra - Visites des PEI
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+:imagesdir: ../images/pei
+
+:toc:
+
+:numbered:
+
+link:index{outfilesuffix}[Retour à l'accueil]
+
+'''
+
+== Types de visites ==
+
+4 types de visites sont identifiés :
+
+* *Réception* (SDIS)
+* *Reconnaissance opérationnelle* périodique (SDIS)
+* *Contrôle* technique périodique (Commune/EPCI)
+* *Vérification* (Commune/EPCI + SDIS)
+
+Lorsque l'utilisateur saisit une nouvelle visite, le mode approprié est activé en fonction de l'état du PEI et des droits de l'utilisateur.
+
+Un PEI suit le cycle de vie suivant :
+
+image:cycle_de_vie.png[]
+
+La *Création d'un PEI* est réalisée après un clic sur la carte. Elle nécessite le droit ```HYDRANT.CREATE```.
+
+Puis les visites sont activées.
+Le PEI doit d'abord être *Réceptionné* (droit ```HYDRANT.CREATE``` nécessaire) pour entrer dans un fonctionnement périodique.
+
+Les visites périodiques sont réalisées en fonction du droit de l'utilisateur :
+
+* *Reconnaissance* si l'utiliateur a le droit ```HYDRANTS_RECONNAISSANCE.CREATE```
+* *Contrôle* si l'utilisateur a le droit ``HYDRANTS_CONTROLE.CREATE``` (activé même si l'utilisateur a le droit ```HYDRANTS_RECONNAISSANCE.CREATE```)
+
+Lors de la saisie d'un contrôle, l'utilisateur coche la case "Vérification" pour indiquer qu'il s'agit d'une *Vérification* plutôt qu'un contrôle.
+
+Le PEI est *Archivé* lorsqu'il est supprimé (Droit ```HYDRANT.DELETE```).
+
+== Visites et délais ==
+
+Les paramètres qui concernent les visites sont les suivants :
+
+*Reconnaissance :*
+
+* HYDRANT_RENOUVELLEMENT_RECO
+** Délai légal entre 2 reconnaissances (en jours). Ex : ```365```
+* HYDRANT_DELAI_RECO_WARN
+** Nombre de jours avant échéance où une reconnaisance est considérée comme "à faire bientôt". Ex : ```45```
+* HYDRANT_DELAI_RECO_URGENT
+** ombre de jours avant échéance où une reconnaisance est considérée comme "urgente". Ex : ```15```
+
+*Contrôle :*
+
+* HYDRANT_RENOUVELLEMENT_CTRL
+** Délai légal entre 2 contrôles (en jours). Ex : ```1095```
+* HYDRANT_DELAI_CTRL_WARN
+** Nombre de jours avant échéance où un contrôle est considéré comme "à faire bientôt". Ex : ```45```
+* HYDRANT_DELAI_CTRL_URGENT
+** Nombre de jours avant échéance où un contrôle est considéré comme "urgent". Ex : ```15```
+
+Dans le tableau des PEI, les deux colonnes "Prochaine Reconnaissance" et "Prochain Contrôle" permettent d'afficher les dates de réalisation prévues par le système :
+
+* La *date affichée* est calculée à partir de la date de dernière reconnaissance (contrôle) à laquelle on a ajouté le délai légal paramétré entre deux reconnaissances (contrôles)
+* La *couleur* indique le degré d'urgence de la prochaine visite :
+** rouge : la date est dépassée ou très proche (dépend de la valeur du paramètre ```HYDRANT_DELAI_<type de visite>_URGENT```)
+** orange : la date arrive bientôt à échéance (dépend de la valeur du paramètre ```HYDRANT_DELAI_<type de visite>_WARNING```)
+** noir : rien à signaler (par défaut)
