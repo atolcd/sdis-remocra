@@ -95,7 +95,7 @@ COMMENT ON TABLE remocra.hydrant_indispo_temporaire_hydrant
 -- Table: remocra.type_hydrant_anomalie
 select setval('remocra.type_hydrant_anomalie_id_seq',id,false) from (select max(id)+1 as id from remocra.type_hydrant_anomalie) as compteur;
 INSERT INTO remocra.type_hydrant_anomalie (actif, code, commentaire, nom, version)
-VALUES ('TRUE', 'INDISPONIBILITE_TEMP', '','Indisponibilite temporaire', '1');
+VALUES ('TRUE', 'INDISPONIBILITE_TEMP', '','Indisponibilité temporaire', '1');
 
 
 --Insertion des modèles de mail pour les notificatins des indisponibilités des hydrants
@@ -149,7 +149,7 @@ select setval('remocra.type_droit_id_seq',id,false) from (select max(id)+1 as id
 insert into remocra.type_droit(code, description, nom, version) values ('INDISPOS', 'Droit sur l''indisponibilité temporaire', 'indisponibilite.temporaire', 1);
 select setval('remocra.droit_id_seq',id,false) from (select max(id)+1 as id from remocra.droit) as compteur;
 insert into remocra.droit(droit_create, droit_delete, droit_read, droit_update, "version", profil_droit, type_droit)
-  select 'TRUE','FALSE','FALSE','FALSE',1, pd.id, td.id
+  select 'TRUE','TRUE','TRUE','TRUE',1, pd.id, td.id
   from remocra.profil_droit pd, remocra.type_droit td
   where td.code = 'INDISPOS'
   and pd.code in ('SDIS-ADM-APP');

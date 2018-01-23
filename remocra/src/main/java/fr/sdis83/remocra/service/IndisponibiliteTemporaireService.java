@@ -216,8 +216,8 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
             }
             Query query = entityManager
                 .createNativeQuery(
-                    ("DELETE FROM remocra.hydrant_indispo_temporaire_hydrant WHERE hydrant IN (:ids)"))
-                .setParameter("ids", ids);
+                    ("DELETE FROM remocra.hydrant_indispo_temporaire_hydrant WHERE indisponibilite = :indisponibilite"))
+                .setParameter("indisponibilite", id);
             query.executeUpdate();
             indispo.remove();
             this.deleteHydrantAnomalie(ids);

@@ -285,11 +285,13 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             fiche.down('crHydrantsIndispo').tab.hide();
         }
         if (!Sdis.Remocra.Rights.getRight('INDISPOS').Create && !Sdis.Remocra.Rights.getRight('INDISPOS').Update) {
-        fiche.down('crHydrantsIndispo #activeIndispo').hide();
-        fiche.down('crHydrantsIndispo #leverIndispo').hide();
-        fiche.down('crHydrantsIndispo #gererIndispo').hide();
-        fiche.down('crHydrantsIndispo #deleteIndispo').hide();
-
+           fiche.down('crHydrantsIndispo #activeIndispo').hide();
+           fiche.down('crHydrantsIndispo #leverIndispo').hide();
+           fiche.down('crHydrantsIndispo #gererIndispo').hide();
+           fiche.down('crHydrantsIndispo #deleteIndispo').hide();
+        }
+        if (!Sdis.Remocra.Rights.getRight('INDISPOS').Delete) {
+           fiche.down('crHydrantsIndispo #deleteIndispo').hide();
         }
     },
 
@@ -1395,13 +1397,14 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
        var indispo = records[0];
           if(indispo!=null) {
               //tant qu'il y'a une selection on autorise la localisation et la suppression
-              tabIndispos.queryById('deleteIndispo').setDisabled(records.length == 0);
-              tabIndispos.queryById('locateIndispo').setDisabled(records.length == 0);
+
+               tabIndispos.queryById('deleteIndispo').setDisabled(records.length == 0);
+               tabIndispos.queryById('locateIndispo').setDisabled(records.length == 0);
              if(indispo.getStatut().get('code') == 'EN_COURS'){ // On permet la levée de l'indispo & on interdit la suppression
                tabIndispos.queryById('activeIndispo').setDisabled(records.length != 0);
                tabIndispos.queryById('leverIndispo').setDisabled(records.length == 0);
                tabIndispos.queryById('gererIndispo').setDisabled(records.length != 0);
-              tabIndispos.queryById('deleteIndispo').setDisabled(records.length != 0);
+               tabIndispos.queryById('deleteIndispo').setDisabled(records.length != 0);
              }else if(indispo.getStatut().get('code') == 'TERMINE'){ // indispo terminée on desactive tout
                tabIndispos.queryById('activeIndispo').setDisabled(records.length != 0);
                tabIndispos.queryById('leverIndispo').setDisabled(records.length != 0);
