@@ -6,7 +6,7 @@ Ext.require('Ext.ux.grid.plugin.HeaderFilters');
 Ext.define('Sdis.Remocra.features.admin.typereference.UtilisateurGrid', {
     extend: 'Sdis.Remocra.features.admin.typereference.TypeReferenceGrid',
     alias: 'widget.crAdminUtilisateurGrid',
-    
+
     statics: {
         // Les colonnes sont définies au niveau de la classe pour être réutilisées ailleurs
         columns: {
@@ -180,9 +180,10 @@ Ext.define('Sdis.Remocra.features.admin.typereference.UtilisateurGrid', {
                 typeRefGridCols.actif
             ]
         });
-        
-        // Paging Toolbar
+
         this.store = Ext.create('Sdis.Remocra.store.Utilisateur', {autoLoad: true, autoSync: true, pageSize: 20});
+                // Paging Toolbar1
+
         this.bbar = Ext.create('Ext.PagingToolbar', {
             store: this.store,
             displayInfo: true,
@@ -191,14 +192,22 @@ Ext.define('Sdis.Remocra.features.admin.typereference.UtilisateurGrid', {
         });
 
         this.callParent([config]);
-
+        Sdis.Remocra.network.CurrentUtilisateurStore.getCurrentUtilisateur(this, function(user) {
         // Filtrage des profils (cas de la première édition)
-        this.editingPlugin.addListener('beforeedit', function(roweditor, e, eOpts){
+          this.editingPlugin.addListener('beforeedit', function(roweditor, e, eOpts){
             var profilsCombo = this.editingPlugin.editor.getComponent('profilUtilisateurId');
             var utilisateurRecord = e.record;
             var typeOrganismeId = utilisateurRecord.phantom?null:utilisateurRecord.getOrganisme().get('typeOrganismeId');
             this.filterProfilsAndSetProfilAccordindToOrganisme(typeOrganismeId, profilsCombo, utilisateurRecord);
-        }, this);
+        // Filtrage des organismes par rapport aux droits
+            if(!Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
+            var organismesCombo = this.editingPlugin.editor.getComponent('organismeId');
+            var organismeValue = user.getOrganisme().get('id');
+            organismesCombo.getStore().clearFilter(true);
+            organismesCombo.getStore().filter([{property: 'id', value: organismeValue}]);
+            }
+          }, this);
+        });
     },
 
     /**

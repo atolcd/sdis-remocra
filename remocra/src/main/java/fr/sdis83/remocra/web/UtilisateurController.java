@@ -9,6 +9,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import fr.sdis83.remocra.domain.remocra.TypeDroit.TypeDroitEnum;
 import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,16 @@ public class UtilisateurController {
             @RequestParam(value = "sort", required = false) String sorts, @RequestParam(value = "filter", required = false) String filters) {
         final List<ItemSorting> sortList = ItemSorting.decodeJson(sorts);
         final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
+        if(!authUtils.hasRight(TypeDroitEnum.REFERENTIELS, AccessRight.Permission.CREATE)) {
+            if(authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ORGANISME_UTILISATEUR, AccessRight.Permission.CREATE)) {
+              itemFilterList.add(new ItemFilter("organismeId" , String.valueOf(utilisateurService.getCurrentUtilisateur().getOrganisme().getId())));
+            }else {
+                itemFilterList.add(new ItemFilter("id" ,String.valueOf(utilisateurService.getCurrentUtilisateur().getId())));
+            }
+        }
+
         return new AbstractExtListSerializer<Utilisateur>("Utilisateurs retrieved.") {
+
 
             @Override
             protected List<Utilisateur> getRecords() {
@@ -143,12 +153,17 @@ public class UtilisateurController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE') or hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR', 'CREATE')")
     public ResponseEntity<java.lang.String> updateFromJson(@PathVariable("id") Long id, @RequestBody String json) {
 
         final Utilisateur record = Utilisateur.fromJsonToUtilisateur(json);
-
-        return new AbstractExtObjectSerializer<Utilisateur>("Utilisateur updated") {
+        if(!authUtils.hasRight(TypeDroitEnum.REFERENTIELS, AccessRight.Permission.CREATE)) {
+            Organisme organisme = utilisateurService.getCurrentUtilisateur().getOrganisme();
+            if(record.getOrganisme().getId() != organisme.getId()){
+                throw new AccessDeniedException("L'utilisateur n'est pas autorisé à modifier cette donnée");
+            }
+        }
+            return new AbstractExtObjectSerializer<Utilisateur>("Utilisateur updated") {
 
             @Override
             protected Utilisateur getRecord() {
@@ -163,10 +178,15 @@ public class UtilisateurController {
     }
 
     @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE') or hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR', 'CREATE')")
     public ResponseEntity<java.lang.String> createFromJson(final @RequestBody String json) {
         final Utilisateur record = Utilisateur.fromJsonToUtilisateur(json);
-
+        if(!authUtils.hasRight(TypeDroitEnum.REFERENTIELS, AccessRight.Permission.CREATE)) {
+            Organisme organisme = utilisateurService.getCurrentUtilisateur().getOrganisme();
+            if(record.getOrganisme().getId() != organisme.getId()){
+                throw new AccessDeniedException("L'utilisateur n'est pas autorisé à modifier cette donnée");
+            }
+        }
         try {
             record.setOrganisme(Organisme.findOrganisme(record.getOrganisme().getId()));
 

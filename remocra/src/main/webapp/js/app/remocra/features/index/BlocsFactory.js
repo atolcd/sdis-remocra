@@ -291,39 +291,48 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
     },
 
     createAdministrationBloc: function(title, icon, minHeight) {
-        if (!Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
-            return null;
-        }
+            items= null;
+            if(Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
+                items =[{
+                   type: 'href',
+                   href: 'admin/index/elt/paramconf',
+                   lbl: 'Paramètres de configuration'
+               },{
+                   type: 'href',
+                   href: 'hydrants/anomalies',
+                   lbl: 'Gestion des anomalies'
+               },{
+                   type: 'sep'
+               },{
+                   type: 'href',
+                   href: 'admin/index/elt/organismes',
+                   lbl: 'Les organismes'
+               },{
+                   type: 'href',
+                   href: 'admin/index/elt/utilisateurs',
+                   lbl: 'Les utilisateurs'
+               },{
+                   type: 'sep'
+               },{
+                   type: 'href',
+                   href: 'admin/documents',
+                   lbl: 'Les documents'
+               }];
+            }else {
+                   // Administateur de l'organisme
+                items = [{
+                   type: 'href',
+                   href: 'admin/index/elt/utilisateurs',
+                   lbl: 'Les utilisateurs'
+                }];
+            }
+
         return {
-            type: 'admin',
-            minh: minHeight || this.randomHeight(),
-            title: title || 'Administrer',
-            img: icon || 'administrer.png',
-            items: [{
-                type: 'href',
-                href: 'admin/index/elt/paramconf',
-                lbl: 'Paramètres de configuration'
-            },{
-                type: 'href',
-                href: 'hydrants/anomalies',
-                lbl: 'Gestion des anomalies'
-            },{
-                type: 'sep'
-            },{
-                type: 'href',
-                href: 'admin/index/elt/organismes',
-                lbl: 'Les organismes'
-            },{
-                type: 'href',
-                href: 'admin/index/elt/utilisateurs',
-                lbl: 'Les utilisateurs'
-            },{
-                type: 'sep'
-            },{
-                type: 'href',
-                href: 'admin/documents',
-                lbl: 'Les documents'
-            }]
+           type: 'admin',
+           minh: minHeight || this.randomHeight(),
+           title: title || 'Administrer',
+           img: icon || 'administrer.png',
+           items: items
         };
     },
 
