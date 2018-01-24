@@ -91,9 +91,18 @@ Ext.define('Sdis.Remocra.widget.map.LegendTemplate', {
     
     installCfg: function(layer) {
         Ext.defer(function(tpl, layerCfgId, layer) {
+
+            // Visibilité de la couche sur clic sur le carré de la légende
+            var checkElt = Ext.get(this.getId()+layer.id);
+            checkElt.on('click', function(evt, t, eOpts) {
+                var layerByCode = this.mapCmp.getLayerByCode(this.layer.id);
+                layerByCode.setVisibility(!layerByCode.visibility);
+                this.checkElt.toggleCls('layervisible');
+            }, {layer:layer, checkElt:checkElt, mapCmp:Ext.getCmp(this.getId())});
+
             var tt = Ext.create('Ext.tip.ToolTip', {
                 target: layerCfgId,
-                html: '<div style="margin-bottom:5px;"><b>Configuration de "'+layer.libelle+'"</b></div><div class="azerty"/>',
+                html: '<div style="margin-bottom:5px;"><b>'+layer.libelle+'</b></div><div class="azerty"/>',
                 bodyStyle: 'background-color:#fff;',
                 cls: 'legend-xtip',
                 anchor: 'right',
@@ -106,24 +115,6 @@ Ext.define('Sdis.Remocra.widget.map.LegendTemplate', {
                             tooltip.hide();
                         });
                         var node = Ext.dom.Query.selectNode('.azerty', el.dom);
-                        var cb = Ext.create('Ext.form.Checkbox', {
-                            renderTo: node,
-                            fieldLabel: 'Afficher',
-                            checked: typeof(layer.visibility)=='boolean'?layer.visibility:true,
-                            listeners: {
-                                scope: this,
-                                change: function(checkbox, newValue, oldValue, eOpts) {
-                                    if (newValue) {
-                                        Ext.get(layerCfgId).addCls('layervisible'); //Initialiser layervisible ou non
-                                    } else  {
-                                        Ext.get(layerCfgId).removeCls('layervisible');
-                                    }
-                                    if (this.setLayerVisibility) {
-                                        this.setLayerVisibility(layer.id, newValue);
-                                    }
-                                }
-                            }
-                        });
                         var slider = null;
                         if (this.legendHideSliders!==true) {
                             slider = Ext.create('Ext.slider.Single', {
@@ -132,7 +123,6 @@ Ext.define('Sdis.Remocra.widget.map.LegendTemplate', {
                                 minValue: 0,
                                 maxValue: 100,
                                 renderTo: node,
-                                fieldLabel: 'Opacité',
                                 value: typeof(layer.opacity)=='number'?layer.opacity*100:100,
                                 listeners: {
                                     scope: this,
@@ -148,11 +138,10 @@ Ext.define('Sdis.Remocra.widget.map.LegendTemplate', {
                             });
                         }
                         tooltip.addListener('beforedestroy', function() {
-                            this.cb.destroy();
                             if (this.slider) {
                                 this.slider.destroy();
                             }
-                        }, {cb:cb, slider:slider});
+                        }, {slider:slider});
                     }
                 }
             });
