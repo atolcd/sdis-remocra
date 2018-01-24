@@ -21,6 +21,8 @@ Ext.define('Sdis.Remocra.features.hydrants.BaseFiche', {
     width: 900,
     layout: 'fit',
 
+    cls: 'fichehydrant',
+
     title: 'A REDEFINIR',
     bodyPadding: 10,
     tabItems: [],

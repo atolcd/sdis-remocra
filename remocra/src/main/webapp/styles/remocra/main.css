@@ -1150,3 +1150,8 @@ body.x-ie .x-btn-default-toolbar-small-icon-text-left .x-btn-inner {
 .fileuploadpanel-down .notstored .linkbutton::after {
 	content: " *";
 }
+
+.fichehydrant input[readonly], .fichehydrant textarea[readonly] {
+	filter: alpha(opacity=30);
+	opacity: .3;
+}
