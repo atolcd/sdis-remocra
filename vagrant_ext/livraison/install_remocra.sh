@@ -277,6 +277,9 @@ if ! crontab -u postgres -l > /dev/null; then
 # Crée les demandes d'export des hydrants indisponible de la veille [00:10]
 10 0 * * * /home/postgres/remocra_pdi/remocra_etat_hydrant_indispo.sh  >> /var/remocra/pdi/log/remocra_etat_hydrant_indispo.log 2>&1
 #
+# Notification des indisponibilités temporaires à vérifier
+*/5 * * * * /home/postgres/remocra_pdi/remocra_notifier_indispo_temporaires.sh >> /var/remocra/pdi/log/remocra_notifier_indispo_temporaires.log 2>&1
+#
 # Importe le référentiel et synchronise les données métier (à partir du zip sur APIS) [23:30]
 #30 23 * * * /home/postgres/remocra_pdi/remocra_importer_referentiel_et_synchroniser_metier.sh >> /var/remocra/pdi/log/remocra_importer_referentiel_et_synchroniser_metier.log 2>&1
 # Synchronise les alertes, exporte les hydrants et permis (jusqu'au zip sur APIS) [01:00]
