@@ -1,5 +1,6 @@
 package fr.sdis83.remocra.web;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,11 @@ public class HydrantController {
             itemFilterList.add(new ItemFilter("query", query));
         }
 
+        // Comptage : zone de compétence simplifiée pour accélérer le calcul
+        final List<ItemFilter> itemFilterCountList = new LinkedList<ItemFilter>();
+        itemFilterCountList.addAll(itemFilterList);
+        itemFilterCountList.add(new ItemFilter("zoneCompetenceSimplified", "true"));
+
         itemFilterList.add(new ItemFilter("zoneCompetence", "true"));
 
         return new AbstractExtListSerializer<Hydrant>("fr.sdis83.remocra.domain.remocra.Hydrant retrieved.") {
@@ -76,7 +82,7 @@ public class HydrantController {
 
             @Override
             protected Long countRecords() {
-                return hydrantService.count(itemFilterList);
+                return hydrantService.count(itemFilterCountList);
             }
 
         }.serialize();

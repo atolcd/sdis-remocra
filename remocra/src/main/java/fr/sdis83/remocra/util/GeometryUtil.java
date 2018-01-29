@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
 import org.cts.CRSFactory;
 import org.cts.IllegalCoordinateException;
 import org.cts.crs.CRSException;
@@ -185,4 +186,18 @@ public class GeometryUtil {
         return outputGeometry;
     }
 
+    public static Geometry simplifyGeometry(Geometry input) {
+        return simplifyGeometry(input, 1.0, null);
+    }
+
+    public static Geometry simplifyGeometry(Geometry input, Double tolerance) {
+        return simplifyGeometry(input, tolerance, null);
+    }
+    public static Geometry simplifyGeometry(Geometry input, Double tolerance, Integer srid) {
+        TopologyPreservingSimplifier simplifier = new TopologyPreservingSimplifier(input);
+        simplifier.setDistanceTolerance(tolerance);
+        Geometry returned = simplifier.getResultGeometry();
+        returned.setSRID(srid!=null?srid:input.getSRID());
+        return returned;
+    }
 }

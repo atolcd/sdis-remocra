@@ -28,7 +28,7 @@ public class HydrantPrescritService extends AbstractService<HydrantPrescrit> {
     }
 
     public List<HydrantPrescrit> findHydrantPrescritsByBBOX(String bbox) {
-        TypedQuery<HydrantPrescrit> query = entityManager.createQuery("SELECT o FROM HydrantPrescrit o where dwithin (geometrie, transform(:filter, 2154), 0) = true",
+        TypedQuery<HydrantPrescrit> query = entityManager.createQuery("SELECT o FROM HydrantPrescrit o where contains (transform(:filter, 2154), geometrie) = true",
                 HydrantPrescrit.class).setParameter("filter", GeometryUtil.geometryFromBBox(bbox));
         return query.getResultList();
     }

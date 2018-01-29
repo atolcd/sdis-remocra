@@ -190,7 +190,7 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
 
     public List<Hydrant> findAllHydrants() {
         TypedQuery<Hydrant> query = entityManager
-                .createQuery("SELECT o FROM Hydrant o where dwithin (geometrie, :zoneCompetence, 0) = true",
+                .createQuery("SELECT o FROM Hydrant o where contains (:zoneCompetence, geometrie) = true",
                         Hydrant.class)
                 .setParameter("zoneCompetence",
                         utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie());

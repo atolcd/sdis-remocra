@@ -16,6 +16,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 
+import fr.sdis83.remocra.util.GeometryUtil;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -79,8 +80,11 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
         } else if ("zoneCompetence".equals(itemFilter.getFieldName())) {
             Expression<Geometry> cpPath = from.get("geometrie");
             ParameterExpression<Geometry> zoneCompetence = cBuilder.parameter(Geometry.class, "zoneCompetence");
-            ParameterExpression<Double> distanceZone = cBuilder.parameter(Double.class, "distanceZone");
-            predicat = cBuilder.equal(cBuilder.function("st_dwithin", Boolean.class, cpPath, zoneCompetence, distanceZone), Boolean.TRUE);
+            predicat = cBuilder.equal(cBuilder.function("st_contains", Boolean.class, zoneCompetence, cpPath), Boolean.TRUE);
+        } else if ("zoneCompetenceSimplified".equals(itemFilter.getFieldName())) {
+            Expression<Geometry> cpPath = from.get("geometrie");
+            ParameterExpression<Geometry> zoneCompetence = cBuilder.parameter(Geometry.class, "zoneCompetenceSimplified");
+            predicat = cBuilder.equal(cBuilder.function("st_contains", Boolean.class, zoneCompetence, cpPath), Boolean.TRUE);
 
         } else if ("id".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.get("id");
@@ -124,10 +128,12 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
 
     @Override
     protected void processQuery(TypedQuery<?> itemTypedQuery, List<ItemSorting> itemSortings, List<ItemFilter> itemFilters, List<Order> orders, Predicate[] predicates) {
-        ItemFilter wktFilter = ItemFilter.getFilter(itemFilters, "zoneCompetence");
-        if (wktFilter != null) {
+        if (ItemFilter.getFilter(itemFilters, "zoneCompetence") != null) {
             itemTypedQuery.setParameter("zoneCompetence", utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie());
-            itemTypedQuery.setParameter("distanceZone", Double.valueOf(0));
+        }
+        if (ItemFilter.getFilter(itemFilters, "zoneCompetenceSimplified") != null) {
+            itemTypedQuery.setParameter("zoneCompetenceSimplified", GeometryUtil.simplifyGeometry(utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie()));
+
         }
         if (ItemFilter.getFilter(itemFilters, "zoneCompetenceIdCom") != null) {
             itemTypedQuery.setParameter("zoneCompetenceIdCom", utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie());

@@ -79,7 +79,7 @@ public class RciService extends AbstractService<Rci> {
 
     public List<Rci> findByBBOX(String bbox) {
         // Pas de restriction au territoire de compétence
-        TypedQuery<Rci> query = entityManager.createQuery("SELECT o FROM Rci o where dwithin (geometrie, transform(:filter, 2154), 0) = true", Rci.class).setParameter("filter",
+        TypedQuery<Rci> query = entityManager.createQuery("SELECT o FROM Rci o where contains (transform(:filter, 2154), geometrie) = true", Rci.class).setParameter("filter",
                 GeometryUtil.geometryFromBBox(bbox));
         return query.getResultList();
     }
