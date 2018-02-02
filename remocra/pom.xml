@@ -51,10 +51,6 @@
 			<url>http://www.hibernatespatial.org/repository</url>
 		</repository>
 		<repository>
-			<id>opengeo</id>
-			<url>http://repo.opengeo.org</url>
-		</repository>
-		<repository>
 			<id>boundless</id>
 			<url>http://repo.boundlessgeo.com/main/</url>
 		</repository>
