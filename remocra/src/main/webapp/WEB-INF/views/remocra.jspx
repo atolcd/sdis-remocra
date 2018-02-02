@@ -90,7 +90,7 @@
   	
 		<div id="loading" style="position:absolute; top:10px;left:33%;width:33%;z-index:999999;">
 		  <div class="loading-indicator" style="background-image:none;font-style:italic;text-align:center;font-family: tahoma,arial,verdana,sans-serif;font-size: 12px;">
-		  	<span>SDIS83 - REMOcRA</span><br/>
+		  	<span>SDIS - REMOcRA</span><br/>
 		  	<img src="${imagesbase}/remocra/chargement.gif" style="margin-right:8px;"/><br/>
 		  	<span id="loading-msg" style="color:#424041;">Chargement de l'application en cours. Veuillez patienter...</span>
 		  </div>
