@@ -48,6 +48,7 @@ Pour installer rapidement un serveur remocra, on réalise l'équivalent de ce qu
 ** ```/livraison/remocra 20171108_remocrapackage0.9.14.zip```
 
 * Redéfinir les variables d'environnement de ```launcher.sh``` (mots de passe, mail, clé IGN, etc.)
+** Par exemple, on ajoutera les surcharges dans ```~/.bashrc``` qu'on sourcera avant de lancer l'installation en exécutant ```. ~/.bashrc```
 
 * Lancer l'installation :
 
@@ -57,3 +58,18 @@ Accès après l'installation :
 
 * http://remocra.sdisxx.fr/remocra
 * http://remocra.sdisxx.fr/geoserver
+
+
+Remarques :
+
+* Si le serveur n'est pas accessible à la fin de l'installation malgré un message positif, il se peut que ce soit lié à SELinux.
+
+Pour désactiver SE Linux, modifier le fichier :
+
+./etc/selinux/config
+[source,ruby]
+----
+SELINUX=disabled
+----
+
+Puis redémarrer le serveur : ```reboot```
