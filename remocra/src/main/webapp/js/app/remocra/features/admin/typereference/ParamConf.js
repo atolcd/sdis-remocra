@@ -55,7 +55,9 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ParamConf', {
                                 labelWidth: 400, width: 500,
                                 items: f.createCheckbox('', valeur, valeur=='true', {id: cle, labelWidth: 400, width: 700})
                             });
-                        } else {
+                        } else if (clDisplay == 'Password') {
+                            field = f.createPasswordField(label, true, valeur, {id: cle, labelWidth: 400, width: 700});
+                        } else{
                             // Dans tous les autres cas : STRING
                             field = f.createTextField(label, true, valeur, {id: cle, labelWidth: 400, width: 700});
                         }

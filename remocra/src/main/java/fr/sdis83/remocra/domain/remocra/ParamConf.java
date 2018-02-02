@@ -3,6 +3,7 @@ package fr.sdis83.remocra.domain.remocra;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
+import fr.sdis83.remocra.domain.utils.Password;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -67,8 +68,8 @@ public class ParamConf {
         PDI_FTP_PORT("PDI_FTP_PORT", Integer.class),
         PDI_FTP_URL("PDI_FTP_URL", String.class),
         PDI_FTP_USER_NAME("PDI_FTP_USER_NAME", String.class),
-        PDI_FTP_USER_PASSWORD("PDI_FTP_USER_PASSWORD", String.class),
-        PDI_IMAP_PASSWORD("PDI_IMAP_PASSWORD", String.class),
+        PDI_FTP_USER_PASSWORD("PDI_FTP_USER_PASSWORD", Password.class),
+        PDI_IMAP_PASSWORD("PDI_IMAP_PASSWORD", Password.class),
         PDI_IMAP_PORT("PDI_IMAP_PORT", Integer.class),
         PDI_IMAP_URL("PDI_IMAP_URL", String.class),
         PDI_IMAP_USER("PDI_IMAP_USER", String.class),
@@ -80,6 +81,9 @@ public class ParamConf {
         PDI_NOTIFICATION_GENERAL_MODELE_ID("PDI_NOTIFICATION_GENERAL_MODELE_ID", Integer.class),
         PDI_NOTIFICATION_KML_MODELE_ID("PDI_NOTIFICATION_KML_MODELE_ID", Integer.class),
         PDI_NOTIFICATION_KML_UTILISATEUR_ID("PDI_NOTIFICATION_KML_UTILISATEUR_ID", Integer.class),
+        PDI_PDF_SIGN_KEY_PASSWORD("PDI_PDF_SIGN_KEY_PASSWORD", Password.class),
+        PDI_PDF_SIGN_PFX_PASSWORD("PDI_PDF_SIGN_PFX_PASSWORD", Password.class),
+        PDI_PDF_SIGN_PFX_FILE("PDI_PDF_SIGN_PFX_FILE", String.class),
         PDI_POSTGRESQL_NOM_SCHEMA_REFERENTIEL("PDI_POSTGRESQL_NOM_SCHEMA_REFERENTIEL", String.class),
         PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA("PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA", String.class),
         PDI_POSTGRESQL_NOM_SCHEMA_SYNCHRO("PDI_POSTGRESQL_NOM_SCHEMA_SYNCHRO", String.class),
@@ -88,7 +92,7 @@ public class ParamConf {
         PDI_PURGE_TRAITEMENT_JOURS("PDI_PURGE_TRAITEMENT_JOURS", Integer.class),
         PDI_SMTP_EME_MAIL("PDI_SMTP_EME_MAIL", String.class),
         PDI_SMTP_EME_NAME("PDI_SMTP_EME_NAME", String.class),
-        PDI_SMTP_PASSWORD("PDI_SMTP_PASSWORD", String.class),
+        PDI_SMTP_PASSWORD("PDI_SMTP_PASSWORD", Password.class),
         PDI_SMTP_PORT("PDI_SMTP_PORT", Integer.class),
         PDI_SMTP_REP_MAIL("PDI_SMTP_REP_MAIL", String.class),
         PDI_SMTP_URL("PDI_SMTP_URL", String.class),
