@@ -36,7 +36,7 @@ import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.security.AccessRight.Permission;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
-import fr.sdis83.remocra.security.DatabaseAuthenticationProvider;
+import fr.sdis83.remocra.security.RemocraAuthenticationProvider;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 
@@ -49,7 +49,7 @@ public class UtilisateurService {
     private ParamConfService paramConfService;
 
     @Autowired
-    DatabaseAuthenticationProvider dbAuthProvider;
+    RemocraAuthenticationProvider dbAuthProvider;
 
     @Autowired
     private MailUtils mailUtils;

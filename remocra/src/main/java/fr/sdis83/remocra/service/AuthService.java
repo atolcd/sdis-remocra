@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
-import fr.sdis83.remocra.security.DatabaseAuthenticationProvider;
+import fr.sdis83.remocra.security.RemocraAuthenticationProvider;
 
 @Configuration
 public class AuthService {
@@ -20,7 +20,7 @@ public class AuthService {
     private final Logger logger = Logger.getLogger(getClass());
 
     @Autowired
-    private DatabaseAuthenticationProvider authProvider;
+    private RemocraAuthenticationProvider authProvider;
 
     public AuthService() {
     }

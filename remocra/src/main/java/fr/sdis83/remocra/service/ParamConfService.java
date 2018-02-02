@@ -1,24 +1,25 @@
 package fr.sdis83.remocra.service;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.NoResultException;
-
+import flexjson.JSONSerializer;
+import fr.sdis83.remocra.domain.remocra.ParamConf;
+import fr.sdis83.remocra.domain.remocra.ParamConf.ParamConfParam;
+import fr.sdis83.remocra.domain.utils.Password;
+import fr.sdis83.remocra.util.NumeroUtil;
+import fr.sdis83.remocra.util.NumeroUtil.MethodeNumerotation;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
-import flexjson.JSONSerializer;
-import fr.sdis83.remocra.domain.remocra.ParamConf;
-import fr.sdis83.remocra.domain.remocra.ParamConf.ParamConfParam;
-import fr.sdis83.remocra.util.NumeroUtil;
-import fr.sdis83.remocra.util.NumeroUtil.MethodeNumerotation;
+import javax.naming.Context;
+import javax.persistence.NoResultException;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 
 @Configuration
 public class ParamConfService {
@@ -209,7 +210,7 @@ public class ParamConfService {
     /**
      * Par exemple, un tableau avec remocra:ADMINISTRATIF et remocra:RISQUE
      * (initialement séparés par un %)
-     * 
+     *
      * @return
      */
     public String[] getWmsPublicLayers() {
@@ -275,4 +276,87 @@ public class ParamConfService {
     public Integer getJwtOutValidite() {
         return (Integer) this.getValue(ParamConfParam.SORTIE_JWT_VALIDITE_SEC, 30);
     }
+
+    // LDAP
+
+    public static enum LdapMethod {
+        NONE, SIMPLE, SEARCHUSER
+    }
+
+    public LdapMethod getLdapMethod() {
+        String host = getLdapUrlHost();
+        if (host == null || host.isEmpty()) {
+            return LdapMethod.NONE;
+        }
+
+        String userFilter = getLdapUserFilter();
+        if (userFilter == null || userFilter.isEmpty()) {
+            // Authentification LDAP basée sur couple username/password
+            // Possible si dn utilisatetur = identifiant remocra
+            return LdapMethod.SIMPLE;
+        }
+
+        // Etape de recherche de l'utilisateur pour obtenir son DN
+        String dn = getLdapAdminDn();
+        String password = getLdapAdminPassword();
+        String userBaseName = getLdapUserBaseName();
+        if (dn == null || dn.isEmpty() || password == null || password.isEmpty() || userBaseName == null || userBaseName.isEmpty()) {
+            // Il manque les informations de connexion administrateur
+            return LdapMethod.NONE;
+        }
+        return LdapMethod.SEARCHUSER;
+    }
+
+    public String getLdapUrlHost() {
+        return (String) this.getValue(ParamConfParam.PDI_LDAP_URL_HOST);
+    }
+
+    public Integer getLdapUrlPort() {
+        return (Integer) this.getValue(ParamConfParam.PDI_LDAP_URL_PORT, 389);
+    }
+
+    public String getLdapUrlBaseDn() {
+        return (String) this.getValue(ParamConfParam.PDI_LDAP_URL_BASE_DN);
+    }
+
+    public String getLdapAdminDn() {
+        return (String) this.getValue(ParamConfParam.PDI_LDAP_ADMIN_DN);
+    }
+
+    public String getLdapAdminPassword() {
+        Password p = (Password) this.getValue(ParamConfParam.PDI_LDAP_ADMIN_PASSWORD);
+        return p == null ? null : p.toString();
+    }
+
+    public String getLdapUserBaseName() {
+        return (String) this.getValue(ParamConfParam.PDI_LDAP_USER_BASE_NAME, "(&(objectclass=user)(sAMAccountName=[USERNAME]))");
+    }
+
+    public String getLdapUserFilter() {
+        return (String) this.getValue(ParamConfParam.PDI_LDAP_USER_FILTER);
+    }
+
+    public String getLdapUrl() {
+        String baseDn = getLdapUrlBaseDn();
+        return "ldap://" + getLdapUrlHost() + ":" + getLdapUrlPort() + (baseDn == null || baseDn.isEmpty() ? "" : "/" + baseDn);
+    }
+
+    public Hashtable<String, String> getLdapEnvironmentSimple() {
+        Hashtable<String, String> env = new Hashtable<String, String>();
+        env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+        env.put(Context.PROVIDER_URL, getLdapUrl());
+        // To get rid of the PartialResultException when using Active Directory
+        env.put(Context.REFERRAL, "follow");
+        // Needed for the Bind (User Authorized to Query the LDAP server)
+        env.put(Context.SECURITY_AUTHENTICATION, "simple");
+        return env;
+    }
+
+    public Hashtable<String, String> getLdapEnvironmentSearchUser() {
+        Hashtable<String, String> env = getLdapEnvironmentSimple();
+        env.put(Context.SECURITY_PRINCIPAL, getLdapAdminDn());
+        env.put(Context.SECURITY_CREDENTIALS, getLdapAdminPassword());
+        return env;
+    }
+
 }

@@ -28,7 +28,7 @@ import fr.sdis83.remocra.security.AccessRight.Permission;
 public class DatabaseAuthenticationProviderTest extends DbUnitBaseTest {
 
     @Autowired
-    private DatabaseAuthenticationProvider underTest;
+    private RemocraAuthenticationProvider underTest;
 
     private ProfileProvider profileProvider;
 

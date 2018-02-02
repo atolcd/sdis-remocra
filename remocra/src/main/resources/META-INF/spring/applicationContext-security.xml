@@ -43,13 +43,19 @@
 		authorities="ROLE_USER" /> </user-service> </authentication-provider> </authentication-manager> -->
 
 	<authentication-manager alias="authenticationManager">
-		<authentication-provider ref="dbAuthenticationProvider">
+		<authentication-provider>
+		<user-service>
+			<user name="memuser" password="pass"
+						   authorities="ROLE_USER" />
+		</user-service>
+	</authentication-provider>
+		<authentication-provider ref="remocraAuthenticationProvider">
 		</authentication-provider>
 	</authentication-manager>
 
-	<!-- Pour le chargement des utilisateurs depuis la base de données -->
-	<beans:bean id="dbAuthenticationProvider"
-		class="fr.sdis83.remocra.security.DatabaseAuthenticationProvider" />
+	<!-- Pour le chargement des utilisateurs depuis la base de données et authentification LDAP si nécessaire -->
+	<beans:bean id="remocraAuthenticationProvider"
+		class="fr.sdis83.remocra.security.RemocraAuthenticationProvider" />
 
 	<!-- Pour retour de statuts 401 ou 403 si nécessaire dans le cas de requêtes 
 		Ajax -->
