@@ -120,3 +120,204 @@ service apache2 reload
 Remarque :
 
 * Veillez à ce que les deux serveurs soient bien à l'heure.
+
+== Synchronisation de données
+Ce module permet de synchroniser automatiquement certaines données entre les bases de données PREVARISC et REMOCRA afin d'éviter la resaisie des informations et maintenir les données de référence.
+
+=== Données synchronisées
+* Etablissements : La base PREVARISC sert de référence pour les établissements. Les changements réalisés sur les établissements PREVARISC sont mentionnés dans REMOCRA dans le module "Adresse" dédié à la maintenance des données géographiques de référence
+
+* Communes et adresses : La base REMOCRA sert de référence pour les communes et les voies. Si une commune ou une voie n'est pas référencée dans REMOCRA mais présente dans PREVARISC, cet élément est suffixé de _"*"_ dans PREVARISC afin de signaler son obsolescence à l'utilisateur. La suppression réelle ne peut en effet être mise en oeuvre et aucun mécanisme de désactivation n'est proposé actuellement.
+
+=== Mise en place de la synchronisation
+Deux méthodes de synchronisation des données entre REMOCRA et PREVARISC sont disponibles. Le SDIS peut choisir le mode le plus approprié à son contexte d'utilisation en sachant que le mode "Echanges directs entre bases de données" est beaucoup plus simple à mettre en oeuvre.
+
+==== Synchronisation par échanges directs entre bases de données
+
+Avec cette méthode, le moteur ETL ouvre et exploite simultanément deux connexions vers les bases de données REMOCRA et PREVARISC. Cette méthode nécessite donc une connexion à la base de données PREVARISC par le moteur ETL embarqué dans REMOCRA (serveur de données PREVARISC accessible, port de base de donnée ouvert, etc.)
+
+L'activation de ce mode de synchronisation nécessite les étapes suivantes :
+
+===== Configuration de l'accès à la base de données PREVARISC
+
+Dans le fichier _"/home/postgres/.kettle/kettle.properties"_ renseigner les valeurs pour les paramètres ci-dessous :
+
+[width="100%",options="header"]
+|====================
+|Paramètre|Valeur
+|PREVARISC_DATABASE_HOST|Nom ou adresse IP du serveur de données MySQL hébergeant la base de données PREVARISC
+|PREVARISC_DATABASE_NAME|Nom de la base de données PREVARISC
+|PREVARISC_DATABASE_PORT|Port d'accès au serveur de données MySQL
+|PREVARISC_DATABASE_USER_NAME|Nom de l'utilisateur de la base de données PREVARISC
+|PREVARISC_DATABASE_USER_PASSWORD|Mot de passe de l'utilisateur de la base de données PREVARISC  
+|====================
+
+===== Lancement et planification de la synchronisation
+La synchronisation entre REMOCRA et PREVARISC peut être réalisée à la demande ou de manière automatique en executant ou en planifiant le lancement du fichier _"/home/postgres/remocra_pdi/remocra_synchroniser_prevarisc.sh"_
+
+==== Synchronisation par échange de fichiers [[synchro_par_echange_fichier]]
+Avec cette méthode, les échanges d'informations sont réalisés par le biais de fichiers déposés sur un serveur FTP, ce dernier devant être accessible par le moteur ETL embarqué dans REMOCRA.
+
+Le mécanisme repose sur les principes suivants :
+
+1. En dehors de la plateforme REMOCRA, génération de fichiers CSV contenant les informations issues de la base PREVARISC liées aux établissements, communes et adresses. Ces fichiers sont compressés au format ZIP et déposés sur un espace FTP accessible à REMOCRA.
+2. Récupération par l'ETL REMOCRA sur le serveur FTP du fichier ZIP généré précédement
+3. Intégration et traitement par l'ETL REMOCRA des données récupéreés et fourniture en retour d'un fichier SQL de mise à jour des communes et des adresses (calcul du différentiel entre les communes et les voies de PREVARISC et celles de REMOCRA (Les données de REMOCRA constituent les données de référence). Les fichiers SQL de mise à jour de PREVARISC sont compressés au format ZIP et déposés sur le serveur FTP.
+4. En dehors de la plateforme REMOCRA, récupération du fichier ZIP et mise à jour de la base de données PREVARISC à partir du fichier d'instruction SQL.
+
+===== Configuration de l'accès au serveur FTP et du nommage des dossiers dédiés aux échanges
+
+Dans REMOCRA, au sein de l'interface de gestion des _"Paramètres de configuration"_, rubrique _"Synchro SIG"_ , renseigner ou modifier les paramètres suivants :
+
+[width="100%",options="header"]
+|====================
+|Paramètre|Remarque
+|URL d'accès au site FTP|Commun à tous les échanges
+|URL d'accès au site FTP|Commun à tous les échanges
+|Port du site FTP|Commun à tous les échanges
+|Nom d'utilisateur du compte FTP|Commun à tous les échanges
+|Mot de passe du compte FTP|Commun à tous les échanges
+|Dossier du serveur FTP dédié à la synchronisation|Commun à tous les échanges
+|Nom du sous-dossier du serveur FTP dans lequel lire ou déposer les fichiers d'échange avec PREVARISC| Sous dossier de _"Dossier du serveur FTP dédié à la synchronisation"_
+|Nom du fichier ZIP contenant les données PREVARISC à synchroniser avec REMOCRA|Ce fichier contient les données CSV produites en étape 1. dans le § <<synchro_par_echange_fichier, Synchronisation par échange de fichiers>>
+|Nom du fichier ZIP contenant les données REMOCRA à synchroniser avec PREVARISC|Ce fichier contient les données SQL produites en étape 3. dans le § <<synchro_par_echange_fichier, Synchronisation par échange de fichiers>>
+|====================
+
+===== Noms et formats des fichiers d'échanges
+
+====== Fichiers CSV issus de PREVARISC à destination de REMOCRA
+
+Ces fichiers sont générés en étape 1. dans le § <<synchro_par_echange_fichier, Synchronisation par échange de fichiers>>
+
+
+*Communes (informations issues de la table PREVARISC "adressecommune")*
+
+[width="50%"options="no-header" cols="<s,"]
+|====================
+|Type de fichier|Tabulaire CSV
+|Nom du fichier|adressecommune.csv
+|Encodage|UTF-8
+|Séparateur de colonnes|,
+|Encapsulation de valeurs|"
+|====================
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Contraintes|Description
+|NUMINSEE_COMMUNE|Texte|Oui|Unique|Numéro INSEE de la commune sur 5 caractères
+|LIBELLE_COMMUNE|Texte|Oui||Nom de la commune
+|CODEPOSTAL_COMMUNE|Texte|Oui||Code postal de la commune. Non géré dans REMOCRA
+|ID_UTILISATEURINFORMATIONS|Texte|Oui||Identifiant du dernier auteur de la modification. Non géré dans REMOCRA
+|====================
+
+*Adresses (informations issues de la table PREVARISC "adresserue")*
+
+[width="50%"options="no-header" cols="<s,"]
+|====================
+|Type de fichier|Tabulaire CSV
+|Nom du fichier|adresserue.csv
+|Encodage|UTF-8
+|Séparateur de colonnes|,
+|Encapsulation de valeurs|"
+|====================
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Contraintes|Description
+|ID_RUE|Entier|Oui|Unique|Identifiant interne de la voie
+|LIBELLE_RUE|Texte|Oui||Nom de la voie
+|ID_RUETYPE|Texte|Oui||Identifiant du type de rue. Non géré dans REMOCRA
+|NUMINSEE_COMMUNE|Texte|Oui||Numéro INSEE de la commune de rattachement (5 caractères)
+|====================
+
+*Etablissements (informations issues des tables PREVARISC "etablissementinformation", "etablissementadresse" et "adresserue")*
+
+[width="50%"options="no-header" cols="<s,"]
+|====================
+|Type de fichier|Tabulaire CSV
+|Nom du fichier|etablissement.csv
+|Encodage|UTF-8
+|Séparateur de colonnes|,
+|Encapsulation de valeurs|"
+|====================
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Contraintes|Description
+|id_etablissement|Entier|Oui|Unique|Identifiant interne de l'établissement
+|nom|Texte|Oui||Nom de l'établissement
+|longitude|Réel|Oui||Longitude de l'établissement en dégrés décimaux dans le système WGS 84 (5 décimales)
+|latitude|Réel|Oui||Longitude de l'établissement en dégrés décimaux dans le système WGS 84 (5 décimales)
+|rue|Texte|Oui||Nom de la rue
+|insee|Texte|Oui||Numéro INSEE de la commune de rattachement (5 caractères)
+|date_maj|Texte|Oui||Date de dernière mise à jour des informations (yyyy-MM-dd)
+|====================
+
+NOTE: Dans PREVARISC, certaines informations liées aux établissement sont historisées. Seules les informations les plus récentes doivent être transmises à REMOCRA. Parrallèlement, un établissement peut disposer de plusieurs adresses. Ce cas n'est pas géré dans REMOCRA. La requête SQL ci-dessous permet d'éxtraire les informations permettant de produire le fichier CSV attendu
+
+[source,sql]
+----
+SELECT
+    etablissementinformations.ID_ETABLISSEMENT AS id_etablissement,
+    etablissementinformations.LIBELLE_ETABLISSEMENTINFORMATIONS AS nom,
+    (SELECT
+        etablissementadresse.LON_ETABLISSEMENTADRESSE
+    FROM
+        etablissementadresse
+    WHERE
+        etablissementadresse.ID_ETABLISSEMENT = etablissementinformations.ID_ETABLISSEMENT
+        AND LON_ETABLISSEMENTADRESSE IS NOT NULL AND LAT_ETABLISSEMENTADRESSE IS NOT NULL
+    LIMIT 1) AS longitude,
+    (SELECT
+        etablissementadresse.LAT_ETABLISSEMENTADRESSE
+    FROM
+        etablissementadresse
+    WHERE
+        etablissementadresse.ID_ETABLISSEMENT = etablissementinformations.ID_ETABLISSEMENT
+        AND LON_ETABLISSEMENTADRESSE IS NOT NULL AND LAT_ETABLISSEMENTADRESSE IS NOT NULL
+    LIMIT 1) AS latitude,
+    (SELECT
+    adresserue.libelle_rue
+    FROM
+        etablissementadresse
+        JOIN adresserue ON(adresserue.id_rue = etablissementadresse.id_rue)
+    WHERE
+        etablissementadresse.ID_ETABLISSEMENT = etablissementinformations.ID_ETABLISSEMENT
+        AND LON_ETABLISSEMENTADRESSE IS NOT NULL AND LAT_ETABLISSEMENTADRESSE IS NOT NULL
+    LIMIT 1) AS rue,
+    (SELECT
+        etablissementadresse.NUMINSEE_COMMUNE
+    FROM
+        etablissementadresse
+    WHERE
+        etablissementadresse.ID_ETABLISSEMENT = etablissementinformations.ID_ETABLISSEMENT
+        AND LON_ETABLISSEMENTADRESSE IS NOT NULL AND LAT_ETABLISSEMENTADRESSE IS NOT NULL
+    LIMIT 1) AS insee,
+    etablissementinformations.DATE_ETABLISSEMENTINFORMATIONS AS date_maj
+FROM
+    (SELECT ID_ETABLISSEMENT, max(DATE_ETABLISSEMENTINFORMATIONS) AS dateinfo FROM etablissementinformations GROUP BY ID_ETABLISSEMENT) AS max_date_info
+    LEFT JOIN etablissementinformations
+    ON (max_date_info.ID_ETABLISSEMENT = etablissementinformations.ID_ETABLISSEMENT
+        AND etablissementinformations.DATE_ETABLISSEMENTINFORMATIONS = max_date_info.dateinfo)
+    JOIN statut ON(statut.ID_STATUT = etablissementinformations.ID_STATUT AND statut.libelle_statut ='Ouvert');
+----
+
+
+====== Fichiers SQL issus de REMOCRA  à destination de PREVARISC
+
+Ces fichiers sont générés en étape 3. dans le § <<synchro_par_echange_fichier, Synchronisation par échange de fichiers>>. Les fichiers SQL permettent de maintenir les tables _"adressecommune"_ et _"adresserue"_ de PREVARISC à partir des informations de référence de REMOCRA (tables remocra.communes et remocra.voies)
+
+[width="100%",options="header"]
+|====================
+|Fichier SQL|Utilité
+|ADRESSECOMMUNE.SQL|Script SQL de maintien de la table des communes. Les nouvelles communes sont insérées, les communes de PREVARISC non présentes dans REMOCRA sont suffixées avec le caractère _"*"_
+|ADRESSERUE.SQL|Script SQL de maintien de la table des rues. Les nouvelles rues sont insérées, les rues de PREVARISC non présentes dans REMOCRA sont suffixées avec le caractère _"*"_
+
+|====================
+
+===== Lancement et planification de la synchronisation
+La synchronisation entre REMOCRA et PREVARISC peut être réalisée à la demande ou de manière automatique en executant ou en planifiant le lancement du fichier _"/home/postgres/remocra_pdi/remocra_synchroniser_prevarisc.sh"_
+
+NOTE: Le fichier ZIP éventuellement récupéré par REMOCRA sur le serveur FTP en étape 2. dans le § <<synchro_par_echange_fichier, Synchronisation par échange de fichiers>> est archivé sur le serveur FTP dans un sous dossier _"archives"_
+
+WARNING: Pour rappel, avec ce mode de synchonisation par fichier, les étapes 1. et 4. mentionnées dans le § <<synchro_par_echange_fichier, Synchronisation par échange de fichiers>> ne sont pas prises en charge par le système REMOCRA et doivent donc être réalisées par chaque SDIS souhaitant exploiter ce mode de fonctionnement.
