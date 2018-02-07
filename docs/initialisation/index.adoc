@@ -1,0 +1,23 @@
+= Préparation des données pour initialisation d'une plate-forme REMOCRA
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+:imagesdir: img
+
+:doctype: book
+:encoding: utf-8
+:lang: fr
+:toc: left
+:numbered:
+
+_Version 1.2_
+
+== Objectifs du document
+
+Ce document précise les modalités de préparation des données par le SDIS dans l'optique d'une initialisation rapide de la plateforme REMOCRA. Ce document est destiné à l'initialisation de données et ne constitue donc pas le document dédié aux synchronisations bi-directionelles entre REMOCRA et le SI du SDIS.
+
+include::donnees_elementaires{outfilesuffix}[]
+
+include::pei{outfilesuffix}[]

@@ -1,0 +1,139 @@
+== Données élémentaires
+
+=== Communes
+
+La commune constitue l'entité administrative de base pour la gestion des PEI et est également utilisée par les modules cartographiques lors des processus de localisation rapide. La liste des communes à fournir contient à minima les communes du département couvert par le SDIS. Les communes limitrophes peuvent également être ajoutées.
+
+==== Fichier à fournir
+
+[width="50%"options="no-header" cols="<s,"]
+|====================
+|Type de fichier|Fichier de forme ESRI Shapefile (.shp, .shx, .dbf)
+|Nom du fichier|commune.shp
+|Encodage (DBF)|UTF-8
+|====================
+
+==== Géométrie
+
+[width="50%"options="no-header" cols="<s,"]
+|====================
+|Type de géométrie|Surfacique
+|Dimension|2D
+|Système de coordonnées|Lambert 93 (EPSG:2154)
+|Niveau de précision attendu|IGN BD Topo ou équivalent (utilisé pour affecter automatiquement une commune à un PEI lors de la création)
+|====================
+
+==== Attributs
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Contraintes|Description
+|insee|texte(5)|Oui|Unique|Code INSEE de la commune
+|nom|texte(255)|Oui||Nom de la commune
+|====================
+
+=== Voies
+Les voies sont utilisées pour faciliter la saisie des adresses, notamment lors de la phase de création d'un PEI (une recherche est réalisée pour ne proposer que les voies de la commune situées à proximité du PEI). Dans REMOCRA, une voie est constituée par l'union géométrique de tous les tronçons porteurs d'un même nom de voie découpée par les frontières communales.
+
+==== Fichier à fournir
+
+[width="50%"options="no-header" cols="<s,"]
+|====================
+|Type de fichier|Fichier de forme ESRI Shapefile (.shp, .shx, .dbf)
+|Nom du fichier|voie.shp
+|Encodage (DBF)|UTF-8
+|====================
+
+==== Géométrie
+
+[width="50%"options="no-header" cols="<s,"]
+|====================
+|Type de géométrie|Linéaire
+|Dimension|2D
+|Système de coordonnées|Lambert 93 (EPSG:2154)
+|Niveau de précision attendu|IGN BD Topo ou équivalent
+|====================
+
+==== Attributs
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Contraintes|Description
+|nom|texte(255)|Oui||Nom de la voie
+|commune|texte(5)|Oui|Existe dans la table des communes|Code INSEE de la commune de rattachement
+|mot_classant|texte(255)||Unique|Mot clef permettant d'identifier rapidement la voie dans la commune (Ex : "FOCH" pour Avenue du Maréchal Foch). En majuscules
+|====================
+
+=== Zones de compétence
+La zone de compétence représente un territoire de gestion pour un organisme référencé dans REMOCRA. Ce zonage est utilisé pour filtrer spatialement les actions réalisables par les utilisateurs en complément des droits définis dans REMOCRA. Il est conseillé de disposer de zones de compétences légèrement plus grandes (zone tampon de quelques mètres) dans le cas de zones à associer à des unités administratives ; ceci permet d'absorber les imprécisions liées aux différents processus de numérisation des données métiers.
+
+==== Fichier à fournir
+
+[width="50%"options="no-header" cols="<s,"]
+|====================
+|Type de fichier|Fichier de forme ESRI Shapefile (.shp, .shx, .dbf)
+|Nom du fichier|zone_competence.shp
+|Encodage (DBF)|UTF-8
+|====================
+
+==== Géométrie
+
+[width="50%"options="no-header" cols="<s,"]
+|====================
+|Type de géométrie|Surfacique
+|Dimension|2D
+|Système de coordonnées|Lambert 93 (EPSG:2154)
+|Niveau de précision attendu|IGN BD Topo ou équivalent, zone tampon de quelques mètres si issu d'une entité administrative
+|====================
+
+==== Attributs
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Contraintes|Description
+|code|texte(5)|Oui|Unique|Code de la zone. Ex : numéro INSEE pour une zone de compétence à associer à une commune
+|nom|texte(255)|Oui||Nom de la zone. Ex : "Commune de Melun"
+|====================
+
+=== Organisme
+L'organisme constitue une structure utilisatrice de REMOCRA à travers les utilisateurs qui lui sont rattachés. Un organisme dispose de droits propres et d'un territoire de gestion (zone de compétence)
+
+==== Fichier à fournir
+
+[width="50%"options="no-header" cols="<s,"]
+|====================
+|Type de fichier|Tabulaire CSV
+|Nom du fichier|organisme.csv
+|Encodage|UTF-8
+|Séparateur de colonnes|,
+|Encapsulation de valeurs|"
+|Format de date |AAAA-MM-JJ
+|====================
+
+==== Colonnes
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Contraintes|Description
+|code|Texte|Oui|Unique|Code associé à l'organisme. Ex : numéro INSEE pour un organisme de type "commune"
+|nom|Texte|Oui||Nom de l'organisme. Ex : "Commune de Melun"
+|zone_competence|Texte|Oui|Existe dans la table des zones de compétence|Code de la zone de compétence associée
+|type_organisme|Texte|Oui|Valeurs admises * :  CONSEIL-GENERAL, DDT, COMMUNE, CT, CIS, SDIS, GEST-HYDRANT, MILITAIRE, ONF, GENDARMERIE, POLICE, ETSPUBLIC, PREFECTURE 
+|Code du type d'organisme
+|email_contact|Texte|||Email utilisé par défaut pour la notification des courriers DECI. Doit donc être renseigné pour les organismes du type "COMMUNE" ou "CT" si ces fonctionnalités sont exploitées.
+|====================
+
+_*Utiliser prioritairement ces valeurs. Créer de nouveaux codes pour les types d'organisme absents._
+
+
+
+
+
+
+
+		
+    
+
+
+
+

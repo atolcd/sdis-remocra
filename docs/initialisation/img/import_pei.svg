@@ -1,0 +1,1376 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:ooo="http://xml.openoffice.org/svg/export"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.2"
+   width="957.69287"
+   height="794.24011"
+   viewBox="0 0 27028.222 22415.221"
+   preserveAspectRatio="xMidYMid"
+   clip-path="url(#presentation_clip_path)"
+   xml:space="preserve"
+   id="svg2"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="import_pei.svg"
+   style="fill-rule:evenodd;stroke-width:28.22200012;stroke-linejoin:round"><metadata
+   id="metadata619"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="640"
+   inkscape:window-height="480"
+   id="namedview617"
+   showgrid="false"
+   fit-margin-top="0"
+   fit-margin-left="0"
+   fit-margin-right="0"
+   fit-margin-bottom="0"
+   inkscape:zoom="0.15858201"
+   inkscape:cx="491.24802"
+   inkscape:cy="120.5118"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="svg2" />
+ <defs
+   class="ClipPathGroup"
+   id="defs4">
+  <clipPath
+   id="presentation_clip_path"
+   clipPathUnits="userSpaceOnUse">
+   <rect
+   x="0"
+   y="0"
+   width="29700"
+   height="42000"
+   id="rect7" />
+  </clipPath>
+ </defs>
+ <defs
+   class="TextShapeIndex"
+   id="defs9">
+  <g
+   ooo:slide="id1"
+   ooo:id-list="id3 id4 id5 id6 id7 id8 id9 id10 id11 id12 id13 id14 id15 id16 id17 id18 id19 id20 id21 id22 id23 id24 id25 id26 id27 id28 id29 id30 id31 id32 id33 id34 id35 id36 id37 id38 id39 id40 id41 id42 id43 id44 id45"
+   id="g11" />
+ </defs>
+ <defs
+   class="EmbeddedBulletChars"
+   id="defs13">
+  <g
+   id="bullet-char-template(57356)"
+   transform="scale(4.8828125e-4,-4.8828125e-4)">
+   <path
+   d="M 580,1141 1163,571 580,0 -4,571 580,1141 z"
+   id="path16"
+   inkscape:connector-curvature="0" />
+  </g>
+  <g
+   id="bullet-char-template(57354)"
+   transform="scale(4.8828125e-4,-4.8828125e-4)">
+   <path
+   d="m 8,1128 1129,0 L 1137,0 8,0 8,1128 z"
+   id="path19"
+   inkscape:connector-curvature="0" />
+  </g>
+  <g
+   id="bullet-char-template(10146)"
+   transform="scale(4.8828125e-4,-4.8828125e-4)">
+   <path
+   d="M 174,0 602,739 174,1481 1456,739 174,0 z m 1184,739 -1049,607 350,-607 699,0 z"
+   id="path22"
+   inkscape:connector-curvature="0" />
+  </g>
+  <g
+   id="bullet-char-template(10132)"
+   transform="scale(4.8828125e-4,-4.8828125e-4)">
+   <path
+   d="M 2015,739 1276,0 717,0 l 543,543 -1086,0 0,393 1086,0 -543,545 557,0 741,-742 z"
+   id="path25"
+   inkscape:connector-curvature="0" />
+  </g>
+  <g
+   id="bullet-char-template(10007)"
+   transform="scale(4.8828125e-4,-4.8828125e-4)">
+   <path
+   d="m 0,-2 c -7,16 -16,29 -25,39 l 381,530 c -94,256 -141,385 -141,387 0,25 13,38 40,38 9,0 21,-2 34,-5 21,4 42,12 65,25 l 27,-13 111,-251 280,301 64,-25 24,25 c 21,-10 41,-24 62,-43 C 886,937 835,863 770,784 769,783 710,716 594,584 L 774,223 c 0,-27 -21,-55 -63,-84 l 16,-20 C 717,90 699,76 672,76 641,76 570,178 457,381 L 164,-76 c -22,-34 -53,-51 -92,-51 -42,0 -63,17 -64,51 -7,9 -10,24 -10,44 0,9 1,19 2,30 z"
+   id="path28"
+   inkscape:connector-curvature="0" />
+  </g>
+  <g
+   id="bullet-char-template(10004)"
+   transform="scale(4.8828125e-4,-4.8828125e-4)">
+   <path
+   d="M 285,-33 C 182,-33 111,30 74,156 52,228 41,333 41,471 c 0,78 14,145 41,201 34,71 87,106 158,106 53,0 88,-31 106,-94 l 23,-176 c 8,-64 28,-97 59,-98 l 735,706 c 11,11 33,17 66,17 42,0 63,-15 63,-46 l 0,-122 c 0,-36 -10,-64 -30,-84 L 442,47 C 390,-6 338,-33 285,-33 z"
+   id="path31"
+   inkscape:connector-curvature="0" />
+  </g>
+  <g
+   id="bullet-char-template(9679)"
+   transform="scale(4.8828125e-4,-4.8828125e-4)">
+   <path
+   d="M 813,0 C 632,0 489,54 383,161 276,268 223,411 223,592 c 0,181 53,324 160,431 106,107 249,161 430,161 179,0 323,-54 432,-161 108,-107 162,-251 162,-431 0,-180 -54,-324 -162,-431 C 1136,54 992,0 813,0 z"
+   id="path34"
+   inkscape:connector-curvature="0" />
+  </g>
+  <g
+   id="bullet-char-template(8226)"
+   transform="scale(4.8828125e-4,-4.8828125e-4)">
+   <path
+   d="m 346,457 c -73,0 -137,26 -191,78 -54,51 -81,114 -81,188 0,73 27,136 81,188 54,52 118,78 191,78 73,0 134,-26 185,-79 51,-51 77,-114 77,-187 0,-75 -25,-137 -76,-188 -50,-52 -112,-78 -186,-78 z"
+   id="path37"
+   inkscape:connector-curvature="0" />
+  </g>
+  <g
+   id="bullet-char-template(8211)"
+   transform="scale(4.8828125e-4,-4.8828125e-4)">
+   <path
+   d="m -4,459 1139,0 0,147 -1139,0 0,-147 z"
+   id="path40"
+   inkscape:connector-curvature="0" />
+  </g>
+ </defs>
+ <defs
+   class="TextEmbeddedBitmaps"
+   id="defs42" />
+ <g
+   id="g44"
+   transform="translate(-985.889,-1985.8893)">
+  <g
+   id="id2"
+   class="Master_Slide">
+   <g
+   id="bg-id2"
+   class="Background" />
+   <g
+   id="bo-id2"
+   class="BackgroundObjects" />
+  </g>
+ </g>
+ <g
+   class="SlideGroup"
+   id="g49"
+   transform="translate(-985.889,-1985.8893)">
+  <g
+   id="g51">
+   <g
+   id="id1"
+   class="Slide"
+   clip-path="url(#presentation_clip_path)">
+    <g
+   class="Page"
+   id="g54">
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g56">
+      <g
+   id="id3">
+       <path
+   d="m 6000,3500 -3500,0 0,-1500 7000,0 0,1500 -3500,0 z"
+   id="path59"
+   inkscape:connector-curvature="0"
+   style="fill:#e1e1e1;stroke:none" />
+       <path
+   d="m 6000,3500 -3500,0 0,-1500 7000,0 0,1500 -3500,0 z"
+   id="path61"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <text
+   class="TextShape"
+   id="text63"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan65"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="4478"
+       y="2700"
+       id="tspan67"><tspan
+         id="tspan69"
+         style="fill:#000000;stroke:none">Marques de PEI</tspan></tspan></tspan><tspan
+     class="TextParagraph"
+     font-size="353px"
+     font-weight="400"
+     id="tspan71"
+     style="font-size:353px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="3987"
+       y="3106"
+       id="tspan73"><tspan
+         id="tspan75"
+         style="fill:#000000;stroke:none">type_hydrant_marque.csv</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g77">
+      <g
+   id="id4">
+       <path
+   d="m 14500,3500 -3500,0 0,-1500 7000,0 0,1500 -3500,0 z"
+   id="path80"
+   inkscape:connector-curvature="0"
+   style="fill:#e1e1e1;stroke:none" />
+       <path
+   d="m 14500,3500 -3500,0 0,-1500 7000,0 0,1500 -3500,0 z"
+   id="path82"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <text
+   class="TextShape"
+   id="text84"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan86"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="13000"
+       y="2700"
+       id="tspan88"><tspan
+         id="tspan90"
+         style="fill:#000000;stroke:none">Modèles de PEI</tspan></tspan></tspan><tspan
+     class="TextParagraph"
+     font-size="353px"
+     font-weight="400"
+     id="tspan92"
+     style="font-size:353px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="12508"
+       y="3106"
+       id="tspan94"><tspan
+         id="tspan96"
+         style="fill:#000000;stroke:none">type_hydrant_modele.csv</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g98">
+      <g
+   id="id5">
+       <path
+   d="m 14500,13500 -3500,0 0,-1500 7000,0 0,1500 -3500,0 z"
+   id="path101"
+   inkscape:connector-curvature="0"
+   style="fill:#dcd066;stroke:none" />
+       <path
+   d="m 14500,13500 -3500,0 0,-1500 7000,0 0,1500 -3500,0 z"
+   id="path103"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <text
+   class="TextShape"
+   id="text105"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan107"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="13922"
+       y="12700"
+       id="tspan109"><tspan
+         id="tspan111"
+         style="fill:#000000;stroke:none">PENA</tspan></tspan></tspan><tspan
+     class="TextParagraph"
+     font-size="353px"
+     font-weight="400"
+     id="tspan113"
+     style="font-size:353px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="13778"
+       y="13106"
+       id="tspan115"><tspan
+         id="tspan117"
+         style="fill:#000000;stroke:none">pena.shp</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g119">
+      <g
+   id="id6">
+       <path
+   d="m 22498,16781 -3502,0 0,-1114 7003,0 0,1114 -3501,0 z"
+   id="path122"
+   inkscape:connector-curvature="0"
+   style="fill:#9dcb89;stroke:none" />
+       <path
+   d="m 22498,16781 -3502,0 0,-1114 7003,0 0,1114 -3501,0 z"
+   id="path124"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <text
+   class="TextShape"
+   id="text126"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan128"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="20394"
+       y="16174"
+       id="tspan130"><tspan
+         id="tspan132"
+         style="fill:#000000;stroke:none">Positionnement PENA</tspan></tspan></tspan><tspan
+     class="TextParagraph"
+     font-size="353px"
+     font-weight="400"
+     id="tspan134"
+     style="font-size:353px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="19892"
+       y="16580"
+       id="tspan136"><tspan
+         id="tspan138"
+         style="fill:#000000;stroke:none">type_hydrant_positionnement.csv</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g140">
+      <g
+   id="id7">
+       <path
+   d="m 21500,18807 -3500,0 0,-1114 7000,0 0,1114 -3500,0 z"
+   id="path143"
+   inkscape:connector-curvature="0"
+   style="fill:#e1e1e1;stroke:none" />
+       <path
+   d="m 21500,18807 -3500,0 0,-1114 7000,0 0,1114 -3500,0 z"
+   id="path145"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <text
+   class="TextShape"
+   id="text147"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan149"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="18406"
+       y="18200"
+       id="tspan151"><tspan
+         id="tspan153"
+         style="fill:#000000;stroke:none">Type de matériau pour les PENA</tspan></tspan></tspan><tspan
+     class="TextParagraph"
+     font-size="353px"
+     font-weight="400"
+     id="tspan155"
+     style="font-size:353px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="19401"
+       y="18606"
+       id="tspan157"><tspan
+         id="tspan159"
+         style="fill:#000000;stroke:none">type_hydrant_materiau.csv</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g161">
+      <g
+   id="id8">
+       <path
+   d="m 16500,21463 -3500,0 0,-1588 7000,0 0,1588 -3500,0 z"
+   id="path164"
+   inkscape:connector-curvature="0"
+   style="fill:#e1e1e1;stroke:none" />
+       <path
+   d="m 16500,21463 -3500,0 0,-1588 7000,0 0,1588 -3500,0 z"
+   id="path166"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <text
+   class="TextShape"
+   id="text168"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan170"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="14339"
+       y="20382"
+       id="tspan172"><tspan
+         id="tspan174"
+         style="fill:#000000;stroke:none">Indication des volumes </tspan></tspan><tspan
+       class="TextPosition"
+       x="13986"
+       y="20856"
+       id="tspan176"><tspan
+         id="tspan178"
+         style="fill:#000000;stroke:none">disponibles pour les PENA</tspan></tspan></tspan><tspan
+     class="TextParagraph"
+     font-size="353px"
+     font-weight="400"
+     id="tspan180"
+     style="font-size:353px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="14102"
+       y="21262"
+       id="tspan182"><tspan
+         id="tspan184"
+         style="fill:#000000;stroke:none">type_hydrant_vol_constate.csv</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g186">
+      <g
+   id="id9">
+       <path
+   d="m 4500,14000 -3500,0 0,-1500 7000,0 0,1500 -3500,0 z"
+   id="path189"
+   inkscape:connector-curvature="0"
+   style="fill:#e1e1e1;stroke:none" />
+       <path
+   d="m 4500,14000 -3500,0 0,-1500 7000,0 0,1500 -3500,0 z"
+   id="path191"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <text
+   class="TextShape"
+   id="text193"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan195"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="3649"
+       y="13200"
+       id="tspan197"><tspan
+         id="tspan199"
+         style="fill:#000000;stroke:none">Domaine</tspan></tspan></tspan><tspan
+     class="TextParagraph"
+     font-size="353px"
+     font-weight="400"
+     id="tspan201"
+     style="font-size:353px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="2411"
+       y="13606"
+       id="tspan203"><tspan
+         id="tspan205"
+         style="fill:#000000;stroke:none">type_hydrant_domaine.csv</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g207">
+      <g
+   id="id10">
+       <path
+   d="m 4500,18000 -3500,0 0,-1500 7000,0 0,1500 -3500,0 z"
+   id="path210"
+   inkscape:connector-curvature="0"
+   style="fill:#81abd0;stroke:none" />
+       <path
+   d="m 4500,18000 -3500,0 0,-1500 7000,0 0,1500 -3500,0 z"
+   id="path212"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <text
+   class="TextShape"
+   id="text214"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan216"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="3463"
+       y="17200"
+       id="tspan218"><tspan
+         id="tspan220"
+         style="fill:#000000;stroke:none">Organisme</tspan></tspan></tspan><tspan
+     class="TextParagraph"
+     font-size="353px"
+     font-weight="400"
+     id="tspan222"
+     style="font-size:353px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="3364"
+       y="17606"
+       id="tspan224"><tspan
+         id="tspan226"
+         style="fill:#000000;stroke:none">organisme.csv</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g228">
+      <g
+   id="id11">
+       <path
+   d="m 4500,16000 -3500,0 0,-1500 7000,0 0,1500 -3500,0 z"
+   id="path231"
+   inkscape:connector-curvature="0"
+   style="fill:#81abd0;stroke:none" />
+       <path
+   d="m 4500,16000 -3500,0 0,-1500 7000,0 0,1500 -3500,0 z"
+   id="path233"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <text
+   class="TextShape"
+   id="text235"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan237"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="3518"
+       y="15200"
+       id="tspan239"><tspan
+         id="tspan241"
+         style="fill:#000000;stroke:none">Commune</tspan></tspan></tspan><tspan
+     class="TextParagraph"
+     font-size="353px"
+     font-weight="400"
+     id="tspan243"
+     style="font-size:353px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="3389"
+       y="15606"
+       id="tspan245"><tspan
+         id="tspan247"
+         style="fill:#000000;stroke:none">commune.shp</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g249">
+      <g
+   id="id12">
+       <path
+   d="m 4500,11999 -3500,0 0,-1463 7000,0 0,1463 -3500,0 z"
+   id="path252"
+   inkscape:connector-curvature="0"
+   style="fill:#9dcb89;stroke:none" />
+       <path
+   d="m 4500,11999 -3500,0 0,-1463 7000,0 0,1463 -3500,0 z"
+   id="path254"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <text
+   class="TextShape"
+   id="text256"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan258"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="3059"
+       y="11217"
+       id="tspan260"><tspan
+         id="tspan262"
+         style="fill:#000000;stroke:none">Natures de PEI</tspan></tspan></tspan><tspan
+     class="TextParagraph"
+     font-size="353px"
+     font-weight="400"
+     id="tspan264"
+     style="font-size:353px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="2589"
+       y="11623"
+       id="tspan266"><tspan
+         id="tspan268"
+         style="fill:#000000;stroke:none">type_hydrant_nature.csv</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g270">
+      <g
+   id="id13">
+       <path
+   d="m 24500,12044 -3500,0 0,-1588 7000,0 0,1588 -3500,0 z"
+   id="path273"
+   inkscape:connector-curvature="0"
+   style="fill:#dcd066;stroke:none" />
+       <path
+   d="m 24500,12044 -3500,0 0,-1588 7000,0 0,1588 -3500,0 z"
+   id="path275"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <text
+   class="TextShape"
+   id="text277"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan279"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="21583"
+       y="10963"
+       id="tspan281"><tspan
+         id="tspan283"
+         style="fill:#000000;stroke:none">Association des anomalies aux </tspan></tspan><tspan
+       class="TextPosition"
+       x="24157"
+       y="11437"
+       id="tspan285"><tspan
+         id="tspan287"
+         style="fill:#000000;stroke:none">PEI</tspan></tspan></tspan><tspan
+     class="TextParagraph"
+     font-size="353px"
+     font-weight="400"
+     id="tspan289"
+     style="font-size:353px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="22796"
+       y="11843"
+       id="tspan291"><tspan
+         id="tspan293"
+         style="fill:#000000;stroke:none">hydrant_anomalie.csv</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g295">
+      <g
+   id="id14">
+       <path
+   d="m 24500,4044 -3500,0 0,-1588 7000,0 0,1588 -3500,0 z"
+   id="path298"
+   inkscape:connector-curvature="0"
+   style="fill:#e1e1e1;stroke:none" />
+       <path
+   d="m 24500,4044 -3500,0 0,-1588 7000,0 0,1588 -3500,0 z"
+   id="path300"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <text
+   class="TextShape"
+   id="text302"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan304"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="21382"
+       y="2963"
+       id="tspan306"><tspan
+         id="tspan308"
+         style="fill:#000000;stroke:none">Groupe de types d’anomalies sur </tspan></tspan><tspan
+       class="TextPosition"
+       x="24157"
+       y="3437"
+       id="tspan310"><tspan
+         id="tspan312"
+         style="fill:#000000;stroke:none">PEI</tspan></tspan></tspan><tspan
+     class="TextParagraph"
+     font-size="353px"
+     font-weight="400"
+     id="tspan314"
+     style="font-size:353px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="22597"
+       y="3843"
+       id="tspan316"><tspan
+         id="tspan318"
+         style="fill:#000000;stroke:none">type_hydrant_critere.csv</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g320">
+      <g
+   id="id15">
+       <path
+   d="m 24500,7544 -3500,0 0,-1588 7000,0 0,1588 -3500,0 z"
+   id="path323"
+   inkscape:connector-curvature="0"
+   style="fill:#e1e1e1;stroke:none" />
+       <path
+   d="m 24500,7544 -3500,0 0,-1588 7000,0 0,1588 -3500,0 z"
+   id="path325"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <text
+   class="TextShape"
+   id="text327"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan329"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="21465"
+       y="6463"
+       id="tspan331"><tspan
+         id="tspan333"
+         style="fill:#000000;stroke:none">Type d’anomalie possible sur un </tspan></tspan><tspan
+       class="TextPosition"
+       x="24157"
+       y="6937"
+       id="tspan335"><tspan
+         id="tspan337"
+         style="fill:#000000;stroke:none">PEI</tspan></tspan></tspan><tspan
+     class="TextParagraph"
+     font-size="353px"
+     font-weight="400"
+     id="tspan339"
+     style="font-size:353px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="22373"
+       y="7343"
+       id="tspan341"><tspan
+         id="tspan343"
+         style="fill:#000000;stroke:none">type_hydrant_anomalie.csv</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.ConnectorShape"
+   id="g345">
+      <g
+   id="id16">
+       <path
+   d="m 18997,16224 -1998,0 0,-2437"
+   id="path348"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <path
+   d="m 16999,13500 -100,300 200,0 -100,-300 z"
+   id="path350"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.ConnectorShape"
+   id="g352">
+      <g
+   id="id17">
+       <path
+   d="m 18000,18250 -3500,0 0,-4463"
+   id="path355"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <path
+   d="m 14500,13500 -100,300 200,0 -100,-300 z"
+   id="path357"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.ConnectorShape"
+   id="g359">
+      <g
+   id="id18">
+       <path
+   d="m 13000,20669 -999,0 0,-6882"
+   id="path362"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <path
+   d="m 12001,13500 -100,300 200,0 -100,-300 z"
+   id="path364"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g366">
+      <g
+   id="id19">
+       <path
+   d="m 14500,10500 -3500,0 0,-1500 7000,0 0,1500 -3500,0 z"
+   id="path369"
+   inkscape:connector-curvature="0"
+   style="fill:#dcd066;stroke:none" />
+       <path
+   d="m 14500,10500 -3500,0 0,-1500 7000,0 0,1500 -3500,0 z"
+   id="path371"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <text
+   class="TextShape"
+   id="text373"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan375"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="14098"
+       y="9700"
+       id="tspan377"><tspan
+         id="tspan379"
+         style="fill:#000000;stroke:none">PIBI</tspan></tspan></tspan><tspan
+     class="TextParagraph"
+     font-size="353px"
+     font-weight="400"
+     id="tspan381"
+     style="font-size:353px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="13897"
+       y="10106"
+       id="tspan383"><tspan
+         id="tspan385"
+         style="fill:#000000;stroke:none">pibi.shp</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.ConnectorShape"
+   id="g387">
+      <g
+   id="id20">
+       <path
+   d="m 14500,3500 0,5213"
+   id="path390"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <path
+   d="m 14500,9000 100,-300 -200,0 100,300 z"
+   id="path392"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.ConnectorShape"
+   id="g394">
+      <g
+   id="id21">
+       <path
+   d="m 24500,4044 0,1625"
+   id="path397"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <path
+   d="m 24500,5956 100,-300 -200,0 100,300 z"
+   id="path399"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.ConnectorShape"
+   id="g401">
+      <g
+   id="id22">
+       <path
+   d="m 24500,7544 0,2625"
+   id="path404"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <path
+   d="m 24500,10456 100,-300 -200,0 100,300 z"
+   id="path406"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.ConnectorShape"
+   id="g408">
+      <g
+   id="id23">
+       <path
+   d="m 14500,12000 0,-1213"
+   id="path411"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <path
+   d="m 14500,10500 -100,300 200,0 -100,-300 z"
+   id="path413"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g415">
+      <g
+   id="id24">
+       <path
+   d="m 4500,7000 -3500,0 0,-1500 7000,0 0,1500 -3500,0 z"
+   id="path418"
+   inkscape:connector-curvature="0"
+   style="fill:#9dcb89;stroke:none" />
+       <path
+   d="m 4500,7000 -3500,0 0,-1500 7000,0 0,1500 -3500,0 z"
+   id="path420"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <text
+   class="TextShape"
+   id="text422"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan424"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="1869"
+       y="6200"
+       id="tspan426"><tspan
+         id="tspan428"
+         style="fill:#000000;stroke:none">Diamètres pour les PI/BI/PA</tspan></tspan></tspan><tspan
+     class="TextParagraph"
+     font-size="353px"
+     font-weight="400"
+     id="tspan430"
+     style="font-size:353px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="2401"
+       y="6606"
+       id="tspan432"><tspan
+         id="tspan434"
+         style="fill:#000000;stroke:none">type_hydrant_diametre.csv</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.ConnectorShape"
+   id="g436">
+      <g
+   id="id25">
+       <path
+   d="m 9500,2750 1213,0"
+   id="path439"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <path
+   d="m 11000,2750 -300,-100 0,200 300,-100 z"
+   id="path441"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g443">
+      <g
+   id="id26">
+       <path
+   d="m 4500,9500 -3500,0 0,-1500 7000,0 0,1500 -3500,0 z"
+   id="path446"
+   inkscape:connector-curvature="0"
+   style="fill:#e1e1e1;stroke:none" />
+       <path
+   d="m 4500,9500 -3500,0 0,-1500 7000,0 0,1500 -3500,0 z"
+   id="path448"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <text
+   class="TextShape"
+   id="text450"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan452"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="1865"
+       y="8700"
+       id="tspan454"><tspan
+         id="tspan456"
+         style="fill:#000000;stroke:none">Combinaisons de diamètres</tspan></tspan></tspan><tspan
+     class="TextParagraph"
+     font-size="353px"
+     font-weight="400"
+     id="tspan458"
+     style="font-size:353px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="1806"
+       y="9106"
+       id="tspan460"><tspan
+         id="tspan462"
+         style="fill:#000000;stroke:none">type_hydrant_diametre_nature.csv</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.ConnectorShape"
+   id="g464">
+      <g
+   id="id27">
+       <path
+   d="m 4500,10537 0,-750"
+   id="path467"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <path
+   d="m 4500,9500 -100,300 200,0 -100,-300 z"
+   id="path469"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.ConnectorShape"
+   id="g471">
+      <g
+   id="id28">
+       <path
+   d="m 4500,7000 0,713"
+   id="path474"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <path
+   d="m 4500,8000 100,-300 -200,0 100,300 z"
+   id="path476"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g478">
+      <g
+   id="id29">
+       <path
+   d="m 14500,14500 -4500,0 0,-6500 9000,0 0,6500 -4500,0 z"
+   id="path481"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000;stroke-width:100" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.TextShape"
+   id="g483">
+      <g
+   id="id30">
+       <path
+   d="m 13096,8463 -2622,0 0,-963 5243,0 0,963 -2621,0 z"
+   id="path486"
+   inkscape:connector-curvature="0"
+   style="fill:#ffffff;stroke:none" />
+       <text
+   class="TextShape"
+   id="text488"><tspan
+     class="TextParagraph"
+     font-size="635px"
+     font-weight="400"
+     id="tspan490"
+     style="font-size:635px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="10724"
+       y="8197"
+       id="tspan492"><tspan
+         id="tspan494"
+         style="fill:#000000;stroke:none">PEI (pibi + pena)</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.ConnectorShape"
+   id="g496">
+      <g
+   id="id31">
+       <path
+   d="m 6000,3500 0,1000 6501,0 0,4213"
+   id="path499"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <path
+   d="m 12501,9000 100,-300 -200,0 100,300 z"
+   id="path501"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.ConnectorShape"
+   id="g503">
+      <g
+   id="id32">
+       <path
+   d="m 19000,11250 1713,0"
+   id="path506"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <path
+   d="m 21000,11250 -300,-100 0,200 300,-100 z"
+   id="path508"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.ConnectorShape"
+   id="g510">
+      <g
+   id="id33">
+       <path
+   d="m 8000,6250 1500,0 0,3500 1213,0"
+   id="path513"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <path
+   d="m 11000,9750 -300,-100 0,200 300,-100 z"
+   id="path515"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.ConnectorShape"
+   id="g517">
+      <g
+   id="id34">
+       <path
+   d="m 8000,11268 976,0 0,-18 737,0"
+   id="path520"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <path
+   d="m 10000,11250 -300,-100 0,200 300,-100 z"
+   id="path522"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.ConnectorShape"
+   id="g524">
+      <g
+   id="id35">
+       <path
+   d="m 8000,13250 976,0 0,-1251 737,0"
+   id="path527"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <path
+   d="m 10000,11999 -300,-100 0,200 300,-100 z"
+   id="path529"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.ConnectorShape"
+   id="g531">
+      <g
+   id="id36">
+       <path
+   d="m 8000,15250 976,0 0,-2251 737,0"
+   id="path534"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <path
+   d="m 10000,12999 -300,-100 0,200 300,-100 z"
+   id="path536"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.ConnectorShape"
+   id="g538">
+      <g
+   id="id37">
+       <path
+   d="m 8000,17250 976,0 0,-3251 737,0"
+   id="path541"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+       <path
+   d="m 10000,13999 -300,-100 0,200 300,-100 z"
+   id="path543"
+   inkscape:connector-curvature="0"
+   style="fill:#000000;stroke:none" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g545">
+      <g
+   id="id38">
+       <path
+   d="m 1787,21387 -500,0 0,-500 1000,0 0,500 -500,0 z"
+   id="path548"
+   inkscape:connector-curvature="0"
+   style="fill:#9dcb89;stroke:none" />
+       <path
+   d="m 1787,21387 -500,0 0,-500 1000,0 0,500 -500,0 z"
+   id="path550"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g552">
+      <g
+   id="id39">
+       <path
+   d="m 1787,22387 -500,0 0,-500 1000,0 0,500 -500,0 z"
+   id="path555"
+   inkscape:connector-curvature="0"
+   style="fill:#e1e1e1;stroke:none" />
+       <path
+   d="m 1787,22387 -500,0 0,-500 1000,0 0,500 -500,0 z"
+   id="path557"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g559">
+      <g
+   id="id40">
+       <path
+   d="m 1787,23387 -500,0 0,-500 1000,0 0,500 -500,0 z"
+   id="path562"
+   inkscape:connector-curvature="0"
+   style="fill:#dcd066;stroke:none" />
+       <path
+   d="m 1787,23387 -500,0 0,-500 1000,0 0,500 -500,0 z"
+   id="path564"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.TextShape"
+   id="g566">
+      <g
+   id="id41">
+       <text
+   class="TextShape"
+   id="text569"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan571"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="2537"
+       y="21281"
+       id="tspan573"><tspan
+         id="tspan575"
+         style="fill:#000000;stroke:none">Données de référence imposées</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.TextShape"
+   id="g577">
+      <g
+   id="id42">
+       <text
+   class="TextShape"
+   id="text580"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan582"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="2537"
+       y="22281"
+       id="tspan584"><tspan
+         id="tspan586"
+         style="fill:#000000;stroke:none">Données de référence adaptables par le SDIS</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.TextShape"
+   id="g588">
+      <g
+   id="id43">
+       <text
+   class="TextShape"
+   id="text591"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan593"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="2537"
+       y="23281"
+       id="tspan595"><tspan
+         id="tspan597"
+         style="fill:#000000;stroke:none">Données spécifiques au SDIS (caractéristiques des PEI et anomalies associées)</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.CustomShape"
+   id="g599">
+      <g
+   id="id44">
+       <path
+   d="m 1787,24387 -500,0 0,-500 1000,0 0,500 -500,0 z"
+   id="path602"
+   inkscape:connector-curvature="0"
+   style="fill:#729fcf;stroke:none" />
+       <path
+   d="m 1787,24387 -500,0 0,-500 1000,0 0,500 -500,0 z"
+   id="path604"
+   inkscape:connector-curvature="0"
+   style="fill:none;stroke:#000000" />
+      </g>
+     </g>
+     <g
+   class="com.sun.star.drawing.TextShape"
+   id="g606">
+      <g
+   id="id45">
+       <text
+   class="TextShape"
+   id="text609"><tspan
+     class="TextParagraph"
+     font-size="423px"
+     font-weight="400"
+     id="tspan611"
+     style="font-size:423px;font-weight:400;font-family:'Arial, sans-serif'"><tspan
+       class="TextPosition"
+       x="2537"
+       y="24281"
+       id="tspan613"><tspan
+         id="tspan615"
+         style="fill:#000000;stroke:none">Données élémentaires</tspan></tspan></tspan></text>
+
+      </g>
+     </g>
+    </g>
+   </g>
+  </g>
+ </g>
+</svg>
