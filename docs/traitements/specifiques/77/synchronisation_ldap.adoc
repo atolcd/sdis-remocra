@@ -1,0 +1,29 @@
+==== Synchronisation LDAP
+
+Ce traitement permet de synchroniser la base utilisateur LDAP du SDIS avec la base utilisateur Remocra.
+
+===== Configuration
+Le fichier _"remocraXX.properties"_ doit contenir les informations suivantes :
+[width="100%",options="header"]
+|===================
+| Paramètre | Description
+| PDI_LDAP_ORGANISME_DEFAUT | Code de l'organisme attribué par défaut aux utilisateurs créé dans Remocra
+| PDI_LDAP_PROFIL_DEFAUT | Code du profil attribué par défaut aux utilisateurs créé dans Remocra
+| PDI_UTILISATEUR_NOTIF_LDAP | Adresse mail ou code de profil des utilisateurs à notifier pour la création et la désaction des utilisateurs Remocra _ex :_ `exemple@exemple.com`, `SDIS-ADM-APP`
+|===================
+
+NOTE: Un profil et un organisme peuvent être créés spécifiquement pour les utilisateurs nouvellement créés dans Remocra.
+
+Dans l'interface d'administration de Remocra, renseigner les champs :
+[width="100%",options="header"]
+|===================
+| Paramètre | Description
+| LDAP : Hôte du serveur | Adresse du serveur LDAP _ex :_ `10.0.0.2`
+| LDAP : Port du serveur | Port d'accès au serveur LDAP _ex :_ `389`
+| LDAP : Distinguished Name du compte admin | Identifiant administrateur au serveur LDAP _ex :_ `CN=Administrator,CN=Users,DC=sdis77-ad,DC=local`
+| LDAP : Mot de passe du compte admin | Mot de passe pour deu compte administrateur
+| LDAP : Base name des comptes utilisateurs | Base contenant les utilisateurs _ex :_ `OU=Sites SDIS 77,DC=sdis77-ad,DC=local`
+|===================
+
+===== Lancement et planification de la synchronisation
+L'execution automatique s'effectue en planifiant le lancement du fichier _"synchroniser_ldap.sh"_.

@@ -1,0 +1,57 @@
+= SDIS Remocra - Traitements ETL spécifiques aux SDIS
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+:imagesdir: img
+
+:toc:
+
+:numbered:
+
+link:../../index{outfilesuffix}[Retour à l'accueil]
+
+'''
+
+== Principe général
+
+La plateforme REMOCRA embarque la solution ETL Pentaho Data Integration. Cet ETL est utilisé pour réaliser de nombreux traitements relevant de l'administration de la plateforme (ex : notification par mél) ou de processus métier (export de l'état de hydrants, publipostage, etc.).
+
+Ces traitements communs à tous ne permettent pas de répondre à toutes les attentes propres à chaque SDIS. Pour répondre à ce besoin, REMOCRA dipose d'un mécanisme permettant d'enrichir les traitements ETL REMOCRA fournis nativement avec l'application par des traitements complémentaires. Cette logique permet notament de répondre, par exemple, aux besoins suivants :
+
+* Synchronisation de données avec les bases SIG du SDIS,
+* Synchronisation des données avec le SGO du SDIS,
+* Préparation et/ou intégration de fichiers dédiés aux échanges avec PREVARISC
+* ...
+
+Contrairement aux traitements ETL communs, les traitements ETL propres aux SDIS doivent être réalisés de la manière suivante :
+
+* Rassemblement des variables communes à tous les traitements du SDIS dans un fichier _"remocraXX.properties"_ ou _"XX"_ correspond au numéro de département du SDIS
+* Stockage des tâches (job) et des transformations dans des fichiers _".kjb"_ ou _".ktr"_ et non dans le référentiel de type "Base de données" de la solution REMOCRA
+
+WARNING: Le fichier _"remocraXX.properties"_ et les fichiers de traitements _"ktr"_ et _"kjb"_ doivent être localisés  obligatoirement dans le sous-dossier _"/var/remocra/pdi/traitements_sdis/XX"_ ou _"XX"_ correspond au numéro de département du SDIS. Par praticité, les fichiers _".sh"_ destinés à lancer les traitements doivent être rasemblés à la racine de ce sous-dossier
+
+NOTE: Les traitements ETL bénéficient automatiquement des connexion aux bases de données REMOCRA (Postgis REMOCRA) et PREVARISC (si celle-ci est renseignée) puisque ces dernières sont définies dans le fichier _"/home/postgres/.kettle/kettle.properties"_
+
+.Exemple de tâche ETL d'un traitement spécifique
+image::exemple_etl_specifique.png[]
+
+.Exemple de contenu d'un fichier .sh executant un traitement spécifique (tâche ETL)
+[source,sh]
+----
+cd /home/postgres/pdi
+sh kitchen.sh -file:"/var/remocra/pdi/traitements_sdis/XX/ma_tache.kjb" -level:Error -param:"PDI_FICHIER_PARAMETRE=/home/postgres/remocra_pdi/remocra.properties"
+----
+
+
+
+== Traitements spécifiques aux SDIS
+
+=== SDIS 77
+
+include::77/synchronisation_sig{outfilesuffix}[]
+
+include::77/synchronisation_sgo{outfilesuffix}[]
+
+include::77/synchronisation_ldap{outfilesuffix}[]
