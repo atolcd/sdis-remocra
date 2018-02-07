@@ -13,16 +13,25 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 image::https://www.atolcd.com/fileadmin/Images_pages_menu/Open_Source/Remocra/header_remocra_liste_arrondi.jpg[Modules,600,225]
 
 
-* link:../remocra#premier-run[Serveur en mode développement]
-* link:Manuel%20packaging{outfilesuffix}[Manuel de packaging]
-* link:Manuel%20installation{outfilesuffix}[Manuel d'installation]
-* link:Manuel%20administration{outfilesuffix}[Manuel d'administration]
-* link:Synchronisation{outfilesuffix}[Synchronisation]
-
----
+* Administration :
+** link:Manuel%20administration{outfilesuffix}[Manuel d'administration]
 
 * Thématique points d'eau :
 ** link:pei/Numérotation_PEI{outfilesuffix}[Règles de numérotation]
 ** link:pei/Symbologie_PEI{outfilesuffix}[Symbologie]
 ** link:pei/Disponibilités_PEI{outfilesuffix}[Calcul des disponibilités]
 ** link:pei/Visites_PEI{outfilesuffix}[Visites]
+
+---
+
+* Traitements :
+** link:traitements/generiques/Traitements%20ETL%20génériques{outfilesuffix}[Traitements ETL génériques]
+** link:traitements/specifiques/Traitements%20ETL%20spécifiques{outfilesuffix}[Traitements ETL spécifiques]
+
+---
+
+* Développements, packaging, installation :
+** link:../remocra#premier-run[Serveur en mode développement]
+** link:Manuel%20packaging{outfilesuffix}[Manuel de packaging]
+** link:Manuel%20installation{outfilesuffix}[Manuel d'installation]
+** link:Synchronisation{outfilesuffix}[Synchronisation]
