@@ -18,7 +18,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             blocHydrants.items.push({
                 type: 'href',
                 href: 'hydrants',
-                lbl: 'Carte des points d\'eau'
+                lbl: 'Gestion des points d\'eau'
             });
         }
         
