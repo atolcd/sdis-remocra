@@ -25,7 +25,7 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ParamConf', {
                         xtype: 'panel',
                         html: 'Veuillez vous référer à la <a'
                             +' href="https://github.com/atolcd/sdis-remocra/blob/master/docs/administration/Parametres%20de%20configuration.adoc"'
-                            +' target="_blank">documentation dédiée</a> pour plus de renseignements.',
+                            +' target="_blank">documentation dédiée</a> pour plus de renseignements. Les liens 🔗 réfèrent directement la documentation du paramètre.',
                         bodyPadding : 10,
                         border: false
                     });
@@ -43,7 +43,9 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ParamConf', {
                         nomgroupe = r.get('nomgroupe');
                         field = null;
                         //label = '<span '+(desc?'title="'+desc+'"':null)+'>'+cle+'</span>';
-                        label = '<span title="'+cle+'">'+(desc&&desc.length>0?desc:cle)+'</span>';
+                        label = '<span title="'+cle+'"><a href="'
+                            + 'https://github.com/atolcd/sdis-remocra/blob/master/docs/administration/Parametres%20de%20configuration.adoc#'
+                            + cle.toLowerCase()+'" target="_blank">🔗</a>&nbsp;&nbsp;'+(desc&&desc.length>0?desc:cle)+'</span>';
                         if (clDisplay == 'Long' || clDisplay == 'Integer') {
                             field = f.createIntField(label,
                                 {id: cle, labelWidth: 400, width: 700, allowBlank: true, value: valeur });
