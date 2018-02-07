@@ -1,0 +1,17 @@
+= SDIS Remocra - Traitements ETL génériques
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+link:../../index{outfilesuffix}[Retour à l'accueil]
+
+'''
+
+NOTE: La documentation des traitements génériques de Remocra sera rédigée / référencée ici.
+
