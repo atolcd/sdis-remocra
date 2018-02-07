@@ -10,7 +10,7 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 
 :numbered:
 
-link:index{outfilesuffix}[Retour à l'accueil]
+link:../index{outfilesuffix}[Retour à l'accueil]
 
 '''
 

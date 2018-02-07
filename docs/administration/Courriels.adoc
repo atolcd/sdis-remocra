@@ -57,7 +57,7 @@ Exemple d'email diffusé suite au dépôt d'une déclaration de point(s) d'eau p
 ** Sujet : Déclaration d'un point d'eau
 ** Fichier : en lien FoxAmphoux_PointEau_654.pdf (exemple)
 ** Corps :
-++++
++++
     <div style="margin-left:30px;background-color:#eeeeee" class="moz-forward-container">
       <title>Hydrants indisponibles SDIS83 REMOCRA</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -78,7 +78,7 @@ Exemple d'email diffusé suite au dépôt d'une déclaration de point(s) d'eau p
       </div>
       <br>
     </div>
-++++
++++
 
 L'adresse email destinataire est paramétrée dans les paramètres de configuration :
 
@@ -100,7 +100,7 @@ Pour l'état global des PIBI :
 ** Sujet : SDIS83 REMOCRA - Hydrants
 ** Fichier : attaché 20131007_FOX_AMPHOUX_hydrant.xls
 ** Corps :
-++++
++++
     <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
       <title>Hydrants indisponibles SDIS83 REMOCRA</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -119,12 +119,12 @@ Pour l'état global des PIBI :
       </div>
       <br>
     </div>
-++++
++++
 * Exemple pour le référent PENA :
 ** Sujet : Demande 0000000077 : Traitement effectué avec succès
 ** Fichier : en lien 0000000077.zip
 ** Corps :
-++++
++++
    <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
       <title>Hydrants indisponibles SDIS83 REMOCRA</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -142,7 +142,7 @@ Pour l'état global des PIBI :
       </div>
       <br>
     </div>
-++++
++++
 
 Pour l'état global des PENA :
 
@@ -162,7 +162,7 @@ Lorsqu'il n'y a aucun hydrant concerné, le référent concerné reçoit un emai
 ** Sujet : Demande 0000000209 : Traitement effectué avec succès
 ** Fichier : aucun
 ** Corps :
-++++
++++
   <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
       <title>Hydrants indisponibles SDIS83 REMOCRA</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -179,7 +179,7 @@ Lorsqu'il n'y a aucun hydrant concerné, le référent concerné reçoit un emai
       </div>
       <br>
     </div>
-++++
++++
 
 ==== Cas au moins un point d'eau est devenu indisponible la veille ====
 Lorsqu'une ou plusieurs communes ont des points d'eau devenus indisponibles suite aux saisies réalisées la veille, le référent concerné reçoit un email avec un lien de téléchargement d'un fichier zip qui contient l'ensemble des fichiers XLS des communes.
@@ -188,7 +188,7 @@ Lorsqu'une ou plusieurs communes ont des points d'eau devenus indisponibles suit
 ** Sujet : Demande 0000000208 : Traitement effectué avec succès
 ** Fichier : en lien 0000000208.zip
 ** Corps :
-++++
++++
    <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
       <title>Hydrants indisponibles SDIS83 REMOCRA</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -206,12 +206,12 @@ Lorsqu'une ou plusieurs communes ont des points d'eau devenus indisponibles suit
       </div>
       <br>
     </div>
-++++
++++
 * Exemple de rapport reçu par la commune de Draguignan :
 ** Sujet : SDIS83 REMOCRA - Hydrants indisponibles
 ** Fichier : attaché 20131007_DRAGUIGNAN_indisponible.xls
 ** Corps :
-++++
++++
    <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
       <title>Hydrants indisponibles SDIS83 REMOCRA</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -229,12 +229,12 @@ Lorsqu'une ou plusieurs communes ont des points d'eau devenus indisponibles suit
       </div>
       <br>
     </div>
-++++
++++
 * Exemple de rapport reçu par la commune de Fox Amphoux :
 ** Sujet : SDIS83 REMOCRA - Hydrants indisponibles
 ** Fichier : attaché 20131007_FOX_AMPHOUX_indisponible.xls
 ** Corps :
-++++
++++
      <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
       <title>Hydrants indisponibles SDIS83 REMOCRA</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -252,7 +252,7 @@ Lorsqu'une ou plusieurs communes ont des points d'eau devenus indisponibles suit
       </div>
       <br>
     </div>
-++++
++++
 
 Le modèle utilisé porte le code "COMMUNE_HYDRANT_INDISPONIBLE" dans la table remocra.email_modele pour les communes (modèles génériques de la table pdi.modele_message pour les référents et le demandeur).
 
