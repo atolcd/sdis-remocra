@@ -17,3 +17,4 @@ remocra/target
 # ---------------
 *.log
 packaging/remocrapackage
+modelisation/sqlarchitect/*.pdf
