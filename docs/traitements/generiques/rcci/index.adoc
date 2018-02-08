@@ -1,0 +1,15 @@
+== Recherche des Causes et Circonstances d'Incendie
+
+=== Déclenchement provoqué par l'utilisateur
+
+==== Départs de feu
+*Départs de feu sur une période et pour une famille Prométhée.*
+
+Via l'interface "Extraire, télécharger, téléverser" :
+[width="100%",options="header"]
+|====================
+| Paramètre | Description | Type | Obligatoire | Exemple 
+| Famille prométhée | Famille prométhée concernée | Liste : ```pdi.vue_familles_promethee```  | oui | ```Accidentelle liée aux installations```
+| Début | Début de la période souhaitée | Date  | oui | ```01/01/2014```
+| Fin | Fin de la période souhaitée | Date  | oui | ```08/02/2018```
+|====================

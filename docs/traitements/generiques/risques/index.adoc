@@ -1,0 +1,22 @@
+== Risques
+
+=== Déclenchement provoqué par l'utilisateur
+
+==== Suppression du fichier KML lié aux risques technologiques
+*Supprime le fichier KML des risques technologiques.*
+
+Via l'interface "Extraire, télécharger, téléverser" :
+
+* Aucun paramètre attendu
+
+
+=== Déclenchement provoqué par une tâche planifiée
+
+==== Intégrer un KML des risques (automatique)
+*Tâche principale de récupération et de publication d'un fichier KML des risques.*
+
+Exemple de tâche planifiée avec l'utilisateur postgres, toutes les 5 minutes :
+[source]
+----
+*/5 * * * * /home/postgres/remocra_pdi/remocra_integrer_kml.sh >> /var/remocra/pdi/log/remocra_integrer_kml.log 2>&1
+----

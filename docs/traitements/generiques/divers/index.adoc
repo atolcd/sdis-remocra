@@ -1,0 +1,80 @@
+== Divers
+
+=== Déclenchement provoqué par l'utilisateur
+
+==== Mettre à jour les fiches de métadonnées
+*Mise à jour des métadonnées à partir d’un serveur de métadonnée d’information géographique (norme CSW, geonetwork, geosource).*
+
+Via l'interface "Extraire, télécharger, téléverser" :
+
+* Aucun paramètre attendu
+
+
+==== Référencer les modèles de courriers
+*Référence les modèles de courriers disponibles pour la génération de courriers personnalisés. Attention, la liste actuelle des modèles de courriers sera entièrement remplacée.*
+
+Via l'interface "Extraire, télécharger, téléverser" :
+
+* Aucun paramètre attendu
+
+
+==== Référencer les modèles d'export de données
+*Référence les modèles d'export de données.*
+
+Via l'interface "Extraire, télécharger, téléverser" :
+
+* Aucun paramètre attendu
+
+
+==== Exporter les données à partir d'un modèle
+*Exporte les données à partir d'un modèle.*
+
+Via l'interface "Extraire, télécharger, téléverser" :
+[width="100%",options="header"]
+|====================
+| Paramètre | Description | Type | Obligatoire | Exemple 
+| Exporter les données à partir d'un modèle |  | Liste : ```pdi.vue_modele_export``` | oui | ```Casernes du département```
+| Zone de compétence (emprise) |  | Liste : ```pdi.vue_zone_competence```  | oui | ```Groupement centre```
+|====================
+
+
+=== Déclenchement provoqué par une tâche planifiée
+
+==== Traiter les demandes (automatique)
+*Tâche principale de récupération et d'execution des demandes de traitements effectuées via l'interface de lancement de l'applicatif.*
+
+Exemple de tâche planifiée avec l'utilisateur postgres, toutes les 10 minutes :
+[source]
+----
+*/10 * * * * /home/postgres/remocra_pdi/remocra_traiter_demandes.sh >> /var/remocra/pdi/log/remocra_traiter_demandes.log 2>&1
+----
+
+
+==== Générer le fichier de propriétés de Pentaho Data Integration (automatique)
+*Création automatique du fichier de paramétrage de Pentaho Data Integration (pdi) à partir de la la table de configuration de l'applicatif.*
+
+Exemple de tâche planifiée avec l'utilisateur postgres, toutes les 10 minutes :
+[source]
+----
+*/10 * * * * /home/postgres/remocra_pdi/remocra_generer_fichier_proprietes.sh >> /var/remocra/pdi/log/remocra_generer_fichier_proprietes.log 2>&1
+----
+
+
+==== Envoi des mails (automatique)
+*Tâche principale de notification des utilisateurs à partir de la lecture de la table contenant les emails à notifier.*
+
+Exemple de tâche planifiée avec l'utilisateur postgres, toutes les 2 minutes :
+[source]
+----
+*/2 * * * * /home/postgres/remocra_pdi/remocra_notifier_utilisateurs.sh >> /var/remocra/pdi/log/remocra_notifier_utilisateurs.log 2>&1
+----
+
+
+==== Purge (automatique)
+*Purge les éléments générés par le système en fonction de paramètres d'ancienneté (nombre de jours).*
+
+Exemple de tâche planifiée avec l'utilisateur postgres, quotidiennement à 6h :
+[source]
+----
+0 6 * * 0 /home/postgres/remocra_pdi/remocra_purger.sh >> /var/remocra/pdi/log/remocra_purger.log 2>&1
+----

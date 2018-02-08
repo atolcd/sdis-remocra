@@ -55,3 +55,7 @@ include::77/synchronisation_sig{outfilesuffix}[]
 include::77/synchronisation_sgo{outfilesuffix}[]
 
 include::77/synchronisation_ldap{outfilesuffix}[]
+
+=== SDIS 83
+
+include::83/synchronisation_sig{outfilesuffix}[]

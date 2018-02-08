@@ -1,0 +1,16 @@
+== Permis
+
+=== Déclenchement provoqué par l'utilisateur
+
+==== Liste des permis
+*Liste des permis par avis, commune et sur une période donnée.*
+
+Via l'interface "Extraire, télécharger, téléverser" :
+[width="100%",options="header"]
+|====================
+| Paramètre | Description | Type | Obligatoire | Exemple 
+| Commune | Commune concernée | Liste : ```pdi.vue_communes```  | oui | ```Barjol```
+| Avis | Avis concerné | Liste : ```pdi.vue_permis_etats```  | oui | ```Favorable```
+| Début | Début de la période souhaitée | Date  | oui | ```01/01/2014```
+| Fin | Fin de la période souhaitée | Date  | oui | ```08/02/2018```
+|====================

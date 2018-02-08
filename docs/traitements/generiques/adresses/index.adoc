@@ -1,0 +1,17 @@
+== Alertes
+
+=== Déclenchement provoqué par l'utilisateur
+
+==== Nombre d'alertes par utilisateur dans une caserne
+*Nombre d'alertes par utilisateur dans une caserne.*
+
+Via l'interface "Extraire, télécharger, téléverser" :
+[width="100%",options="header"]
+|====================
+| Paramètre | Description | Type |  Obligatoire | Exemple 
+| Caserne | URL d’accès au site FTP | Liste : ```pdi.vue_organisme_cis``` | oui | ```CIS AUP```
+| Début | Début de la période souhaitée | Date  | oui | ```01/01/2014```
+| Fin | Fin de la période souhaitée | Date  | oui | ```08/02/2018```
+|====================
+
+Un utilisateur a également la possibilité de déclencher ce traitement en cliquant sur le *bouton "Télécharger nombre de l'alertes par utilisateur" de la carte Alertes*. De cette manière, il reçoit un lien de téléchargement de la liste de toutes ses alertes par mail.

@@ -1,0 +1,48 @@
+==== Synchronisation SIG
+
+NOTE: Ces traitements sont actuellement dans le repository PDI Remocra. Ils devraient être ressortis dans des fichiers ktr.
+D'autre part, une instance de PDI est exécutée côté APIS. Les jobs de son repository ne sont pas documentés ici.
+
+===== Configuration et mise en place
+
+Les paramètres de configuration sont intégrés dans la base de données de Remocra (```table remocra.param_conf```) :
+
+[width="100%",options="header"]
+|====================
+| Paramètre | Description | Exemple
+| *Serveur FTP* |  | 
+| PDI_FTP_URL | URL d’accès au site FTP | ```ftp.sdisxx.f```
+| PDI_FTP_PORT | Port du site FTP | ```21```
+| PDI_FTP_USER_NAME | Nom d’utilisateur du compte FTP | ```remocra```
+| PDI_FTP_USER_PASSWORD | Mot de passe du compte FTP | 
+| *Côté Remocra* |  | 
+| PDI_CHEMIN_SYNCHRO | Dossier de stockage temporaire des fichiers d’échanges APIS – REMOCRA | ```/var/remocra/pdi/synchro```
+| PDI_DOSSIER_EXPORT_SDIS | Nom du sous-dossier temporaire dans lequel sont déposés les fichiers d’échanges produits par REMOCRA | ```EXPORT_SDIS```
+| PDI_DOSSIER_IMPORT_EXTRANET | Nom du sous-dossier temporaire dans lequel sont déposés les fichiers d’échanges récupérés d’APIS | ```IMPORT_EXTRANET```
+| PDI_POSTGRESQL_NOM_SCHEMA_REFERENTIEL | Nom du schéma Postgresql dans lequel créer et synchroniser les tables de référentiels géographiques | ```sdis_referentiel```
+| PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA | Nom du schéma Postgresql dans lequel créer et synchroniser les tables métier | ```remocra```
+| PDI_POSTGRESQL_NOM_SCHEMA_SYNCHRO | Nom du schéma PostgreSQL temporaire pour import des données APIS | ```sdis_referentiel``
+| *Côté APIS* |  | 
+| PDI_FTP_DOSSIER_SYNCHRO | Dossier du serveur FTP dédié à la synchronisation | ```SYNCHRO```
+| PDI_FTP_DOSSIER_EXTRANET | Nom du sous-dossier du serveur FTP dans lequel récupérer les fichiers produits par APIS | ```EXPORT_EXTRANET```
+| PDI_FTP_DOSSIER_SDIS | Nom du sous-dossier du serveur FTP dans lequel déposer les fichiers produits par REMOCRA | ```IMPORT_SDIS```
+| PDI_NOM_SCHEMA_ORACLE | Nom du schéma Oracle de la base APIS pour génération des instructions SQL | ```APIS_GEO````
+|====================
+
+===== Export des données métier (automatique)
+Tâche principale de synchronisation des données métier vers Oracle.
+
+Exemple de tâche planifiée avec l'utilisateur postgres, quotidiennement à 1h :
+[source]
+----
+0 1 * * * /home/postgres/remocra_pdi/remocra_exporter_donnees_metier.sh >> /var/remocra/pdi/log/remocra_exporter_donnees_metier.log 2>&1
+----
+
+===== Import des données métier (automatique)
+Tâche principale de récupération des données distantes, d'import en local et de synchronisation des données métier.
+
+Exemple de tâche planifiée avec l'utilisateur postgres, quotidiennement à 23h30 :
+[source]
+----
+30 23 * * * /home/postgres/remocra_pdi/remocra_importer_referentiel_et_synchroniser_metier.sh >> /var/remocra/pdi/log/remocra_importer_referentiel_et_synchroniser_metier.log 2>&1
+----

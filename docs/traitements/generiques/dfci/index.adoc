@@ -1,0 +1,15 @@
+== Défense de la Forêt Contre les Incendies
+
+=== Déclenchement provoqué par l'utilisateur
+
+==== Téléchargement des fiches Atlas
+*Compile les fiches Atlas dans un fichier zip selon le territoire d'un utilisateur et transmet le lien dans un courrier électronique.*
+
+Via l'interface "Extraire, télécharger, téléverser" :
+[width="100%",options="header"]
+|====================
+| Paramètre | Description | Type | Obligatoire | Exemple 
+| Utilisateur | Utilisateur qui recevra le lien de téléchargement | Liste : ```pdi.vue_utilisateurs```  | oui | ```jmmichel```
+|====================
+
+Un utilisateur a également la possibilité de déclencher ce traitement en cliquant sur le le *bouton "Télécharger l'Atlas DFCI de mon territoire" de la carte DFCI*.

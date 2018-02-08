@@ -1,0 +1,103 @@
+== Points d'Eau Incendie
+
+=== Déclenchement provoqué par l'utilisateur
+
+==== Etat des hydrants PENA
+*Etat des hydrants PENA par commune.*
+
+Via l'interface "Extraire, télécharger, téléverser" :
+[width="100%",options="header"]
+|====================
+| Paramètre | Description | Type | Obligatoire | Exemple 
+| Commune | Commune concernée | Liste : ```pdi.vue_communes```  | non | ```Toutes``` ou ```Brignoles```
+| Notifier les responsables | Envoyer un courriels aux responsables ? | Booléen  | oui | ```oui```
+| Notifier les communes | Envoyer un courriels aux communes ?  | Booléen  | oui | ```non```
+|====================
+
+==== Etat des hydrants PIBI
+*Etat des hydrants PIBI par commune.*
+
+Via l'interface "Extraire, télécharger, téléverser" :
+[width="100%",options="header"]
+|====================
+| Paramètre | Description | Type | Obligatoire | Exemple 
+| Commune | Commune concernée | Liste : ```pdi.vue_communes```  | non | ```Toutes``` ou  ```Brignoles```
+| Notifier les responsables | Envoyer un courriel aux responsables ? | Booléen  | oui | ```oui```
+| Notifier les communes | Envoyer un courriel aux communes ?  | Booléen  | oui | ```non```
+|====================
+
+
+==== Mettre à jour les positions des hydrants
+*Mise à jour de la position des hydrants à partir d'un fichier de positions GPS.*
+
+Via l'interface "Extraire, télécharger, téléverser" :
+[width="100%",options="header"]
+|====================
+| Paramètre | Description | Type | Obligatoire | Exemple 
+| Fichier des positions GPS | Fichier à traiter | Fichier  | oui | -
+|====================
+
+
+==== Points d'eau à numéroter
+*Points d'eau à numéroter.*
+
+Via l'interface "Extraire, télécharger, téléverser" :
+[width="100%",options="header"]
+|====================
+| Paramètre | Description | Type | Obligatoire | Exemple 
+| Caserne | Caserne concernée | Liste : ```pdi.vue_organisme_cis```  | non | ```Toutes``` ou ```CIS ACS```
+|====================
+
+
+==== Reconnaissance opérationnelle PEI - Courrier d'information préalable
+*Génère un courrier d'information préalable à une reconnaissance opérationnelle des PEI.*
+
+Via l'interface "Extraire, télécharger, téléverser" :
+[width="100%",options="header"]
+|====================
+| Paramètre | Description | Type | Obligatoire | Exemple 
+| Commune ou intercommunalité | Entité concernée | Liste : ```pdi.vue_commune_ou_interco_one```  | non | ```CC GOLFE SAINT TROPEZ (CT)```
+| Date de début de passage | Début de la reconnaissance | Date  | oui | ```07/02/2019```
+| Date de fin de passage | Fin de la reconnaissance | Date  | non | ```15/02/2019```
+| Modèle de courrier | Modèle du présentation | Liste : ```pdi.vue_modele_courrier_information_tournee```  | oui | ```Courrier d'information - Président EPCI```
+| Profil d'utilisateur responsable | Profil de l'utilisateur responsable de la visite | Liste : ```pdi.vue_profil_sdis```  | oui | ```Chef de centre```
+| Notifier par mél les responsables | Envoyer un courriel aux responsables ? | Booléen  | oui | ```oui```
+| Notifier par mél la mairie ou l'intercommunalité | Envoyer un courriel à l'entité ?  | Booléen  | oui | ```non```
+|====================
+
+
+==== Reconnaissance opérationnelle PEI - Courrier de rapport
+*Génère un courrier de rapport suite à une reconnaissance opérationnelle des PEI.*
+
+Via l'interface "Extraire, télécharger, téléverser" :
+[width="100%",options="header"]
+|====================
+| Paramètre | Description | Type | Obligatoire | Exemple 
+| Commune ou intercommunalité | Entité concernée | Liste : ```pdi.vue_commune_ou_interco_one```  | non | ```CC GOLFE SAINT TROPEZ (CT)```
+| Modèle de courrier | Modèle du présentation | Liste : ```pdi.vue_modele_courrier_rapport_tournee```  | oui | ```Courrier de rapport - Président EPCII```
+| Profil d'utilisateur responsable | Profil de l'utilisateur responsable de la visite | Liste : ```pdi.vue_profil_sdis```  | oui | ```Chef de centre```
+| Notifier par mél les responsables | Envoyer un courriel aux responsables ? | Booléen  | oui | ```oui```
+| Notifier par mél la mairie ou l'intercommunalité | Envoyer un courriel à l'entité ?  | Booléen  | oui | ```non```
+|====================
+
+
+=== Déclenchement provoqué par une tâche planifiée
+
+==== Etat des hydrants indisponibles (automatique)
+*Crée les demandes d'export des hydrants indisponibles de la veille.*
+
+Exemple de tâche planifiée avec l'utilisateur postgres, quotidiennement à 0h10 :
+[source]
+----
+10 0 * * * /home/postgres/remocra_pdi/remocra_etat_hydrant_indispo.sh  >> /var/remocra/pdi/log/remocra_etat_hydrant_indispo.log 2>&1
+----
+
+
+==== Notifier des indisponinilités temporaires (automatique)
+*Tâche principale de création des notifications de début et de fin d'indisponibilité temporaire d'hydrant.*
+
+Exemple de tâche planifiée avec l'utilisateur postgres, toutes les 5 minutes :
+[source]
+----
+*/5 * * * * /home/postgres/remocra_pdi/remocra_notifier_indispo_temporaires.sh >> /var/remocra/pdi/log/remocra_notifier_indispo_temporaires.log 2>&1
+----

@@ -13,5 +13,18 @@ link:../../index{outfilesuffix}[Retour à l'accueil]
 
 '''
 
-NOTE: La documentation des traitements génériques de Remocra sera rédigée / référencée ici.
+include::adresses/index{outfilesuffix}[]
 
+include::dfci/index{outfilesuffix}[]
+
+include::oldeb/index{outfilesuffix}[]
+
+include::permis/index{outfilesuffix}[]
+
+include::pei/index{outfilesuffix}[]
+
+include::rcci/index{outfilesuffix}[]
+
+include::risques/index{outfilesuffix}[]
+
+include::divers/index{outfilesuffix}[]

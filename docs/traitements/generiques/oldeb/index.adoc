@@ -1,0 +1,17 @@
+== Obligations Légales de Débroussaillement
+
+=== Déclenchement provoqué par l'utilisateur
+
+==== Impression d'une fiche "obligation légale de débroussaillement"
+*Imprime la fiche parcellaire liée à une obligation légale de débroussaillement*
+
+Via l'interface "Extraire, télécharger, téléverser" :
+[width="100%",options="header"]
+|====================
+| Paramètre | Description | Type | Obligatoire | Exemple 
+| Commune | Commune concernée | Liste : ```pdi.vue_commune_oldeb```  | oui | ```Brignoles```
+| Numéro de section cadastrale | Numéro de section cadastrale concernée | Texte  | oui | ```OL```
+| Numéro de parcelle cadastrale | Numéro de parcelle cadastrale concernée  |Texte  | oui | ```153```
+|====================
+
+Un utilisateur a également la possibilité de déclencher ce traitement en cliquant sur le le *bouton "Exporter la fiche" d'une fiche d'obligation ou du tableau des obligations*.
