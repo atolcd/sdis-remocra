@@ -15,49 +15,57 @@ link:../Manuel%20administration{outfilesuffix}[Retour au manuel d'administration
 
 '''
 
-Dans cette page sont listés les courriels qui sont envoyés automatiquement lors de l'utilisation de Remocra, ainsi que les modèles employés et les adresses utilisées.
+Dans cette page sont listés les courriels qui sont envoyés automatiquement lors de l'utilisation de Remocra, les modèles employés et les adresses utilisées.
+
+
 
 == DFCI ==
 === Dépôt d'un document de réception de travaux ===
-L'adresse email destinataire est paramétrée dans les paramètres de configuration :
+Lorsqu'un document de *réception de travaux est déposé*, un courriel en envoyé à l'adresse email paramétrée dans les paramètres de configuration :
 
-* EMAIL_DEST_DEPOT_RECEPTRAVAUX
+* `EMAIL_DEST_DEPOT_RECEPTRAVAUX`
 * Adresse du destinataire des emails de notification de dépôts de dossiers de réception de travaux
 
-Le modèle utilisé porte le code "DEPOT_RECEPTRAVAUX" dans la table remocra.email_modele.
+Le modèle utilisé porte le code `DEPOT_RECEPTRAVAUX` dans la table `remocra.email_modele`.
+
 
 
 
 == Adresses ==
 
 === Dépôt de délibération ===
-L'adresse email destinataire est paramétrée dans les paramètres de configuration :
-* EMAIL_DEST_DEPOT_DELIB
+Lorsqu'une *délibération est déposée*, un courriel en envoyé à l'adresse email paramétrée dans les paramètres de configuration :
+
+* `EMAIL_DEST_DEPOT_DELIB`
 * Adresse du destinataire des emails de notification de dépôts de délibérations
 
-Le modèle utilisé porte le code "DEPOT_DELIB" dans la table remocra.email_modele.
+Le modèle utilisé porte le code `DEPOT_DELIB` dans la table `remocra.email_modele`.
+
 
 
 
 == Recherche des Causes et Circonstances d'Incendie ==
 === Création d'un départ ===
-L'adresse email destinataire est paramétrée dans les paramètres de configuration :
-* EMAIL_DEST_CREATION_RCI
+
+Lorsqu'un *départ de feu est enregistré*, un courriel est envoyé à l'adresse email paramétrée dans les paramètres de configuration :
+
+* `EMAIL_DEST_CREATION_RCI`
 * Adresse du destinataire des emails de notification de création d'un départ
 
-Le modèle utilisé porte le code "CREATION_RCI" dans la table remocra.email_modele.
+Le modèle utilisé porte le code `CREATION_RCI` dans la table `remocra.email_modele`.
+
 
 
 
 == Points d'eau ==
 === Déclaration d'un point d'eau ===
-
-Exemple d'email diffusé suite au dépôt d'une déclaration de point(s) d'eau par un utilisateur (commune ou communauté territoriale) via le bloc "Points d'eau" de la page d'accueil :
+Exemple de courriel diffusé suite au *dépôt d'une déclaration de point(s) d'eau* par un utilisateur (commune ou communauté territoriale) via le bloc "Points d'eau" de la page d'accueil :
 
 ** Sujet : Déclaration d'un point d'eau
 ** Fichier : en lien FoxAmphoux_PointEau_654.pdf (exemple)
 ** Corps :
-+++
+
+++++
     <div style="margin-left:30px;background-color:#eeeeee" class="moz-forward-container">
       <title>Hydrants indisponibles SDIS83 REMOCRA</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -78,29 +86,34 @@ Exemple d'email diffusé suite au dépôt d'une déclaration de point(s) d'eau p
       </div>
       <br>
     </div>
-+++
+++++
 
-L'adresse email destinataire est paramétrée dans les paramètres de configuration :
 
-* EMAIL_DEST_DEPOT_DECLAHYDRANT
+L'adresse email du destinataire est paramétrée dans les paramètres de configuration :
+
+* `EMAIL_DEST_DEPOT_DECLAHYDRANT`
 * Adresse du destinataire des emails de notification de dépôts de dossiers de déclaration d'hydrant(s)
 
-Le modèle utilisé porte le code "DEPOT_DECLAHYDRANT" dans la table remocra.email_modele
+Le modèle utilisé porte le code `DEPOT_DECLAHYDRANT` dans la table `remocra.email_modele`.
+
 
 === Vue globale de l'état des hydrants (sur demande) ===
-On distingue les deux référents : le référent PENA pour les PENA et le référent DECI pour les PIBI. Deux traitements permettent de générer un état global des PENA ou des PIBI regroupés par commune. Chaque commune reçoit un rapport avec l'ensemble de ses PENA ou PIBI et le référent concerné est notifié avec l'ensemble des états des communes (fichier zip qui contient tous les fichiers XLS). Les deux traitements qui suivent sont exécutés sur demande via l'interface des traitements :
+On distingue les deux référents : le référent PENA pour les PENA et le référent DECI pour les PIBI.
 
-Pour l'état global des PIBI :
+Deux traitements permettent de générer un état global des PENA ou des PIBI regroupés par commune. Chaque commune reçoit un rapport avec l'ensemble de ses PENA ou PIBI et le référent concerné est notifié avec l'ensemble des états des communes (fichier zip qui contient tous les fichiers XLS). Les deux traitements qui suivent sont exécutés sur demande via l'interface des traitements :
 
-* Chaque commune reçoit un email avec un fichier XLS joint dans lequel on retrouve l'ensemble des PIBI de la commune. Le référent DECI reçoit un email avec un lien de téléchargement d'un fichier zip qui contient l'ensemble des fichiers XLS des communes
+Pour *l'état global des PIBI* :
+
+* Chaque commune reçoit un courriel avec un fichier XLS joint dans lequel on retrouve l'ensemble des PIBI de la commune. Le référent DECI reçoit un courriel avec un lien de téléchargement d'un fichier zip qui contient l'ensemble des fichiers XLS des communes
 * Email destinataire pour la commune : valeur de la colonne email_contact de la table remocra.organisme pour la commune. L'organisme est retrouvé via l'application d'un filtre sur le code insee (exemple "83061" pour Fréjus) et par sécurité sur le type d'organisme "Commune".
-* Email destinataire pour le référent : valeur de la colonne email de la table remocra.utilisateur pour tous les utilisateurs qui ont un profil qui porte le code "SDIS-REF-DECI"
+* Email destinataire pour le référent : valeur de la colonne email de la table remocra.utilisateur pour tous les utilisateurs qui ont un profil qui porte le code `SDIS-REF-DECI`
 * Email destinataire pour le demandeur du traitement : valeur de la colonne email de la table remocra.utilisateur pour l'utilisateur qui a réalisé la demande avec l'interface des traitements si c'est la cas
 * Exemple pour la commune de Fox Amphoux :
 ** Sujet : SDIS83 REMOCRA - Hydrants
 ** Fichier : attaché 20131007_FOX_AMPHOUX_hydrant.xls
 ** Corps :
-+++
+
+++++
     <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
       <title>Hydrants indisponibles SDIS83 REMOCRA</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -119,12 +132,14 @@ Pour l'état global des PIBI :
       </div>
       <br>
     </div>
-+++
+++++
+
 * Exemple pour le référent PENA :
 ** Sujet : Demande 0000000077 : Traitement effectué avec succès
 ** Fichier : en lien 0000000077.zip
 ** Corps :
-+++
+
+++++
    <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
       <title>Hydrants indisponibles SDIS83 REMOCRA</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -142,27 +157,27 @@ Pour l'état global des PIBI :
       </div>
       <br>
     </div>
-+++
+++++
 
-Pour l'état global des PENA :
+Pour *l'état global des PENA* :
 
-* Le principe est le même hormis qu'il s'applique aux PENA et pour le(s) référent(s) PENA (code profil "SDIS-REF-PENA").
+* Le principe est le même hormis qu'il s'applique aux PENA et pour le(s) référent(s) PENA (code profil `SDIS-REF-PENA`).
 
-Le modèle utilisé porte le code "COMMUNE_HYDRANT" dans la table remocra.email_modele pour les communes (modèles génériques de la table pdi.modele_message pour les référents et le demandeur).
+Le modèle utilisé porte le code `COMMUNE_HYDRANT` dans la table `remocra.email_modele` pour les communes (modèles génériques de la table `pdi.modele_message` pour les référents et le demandeur).
 
 
 === Vue des points d'eau devenus indisponibles dans la nuit ===
-
-Dans le même état d'esprit que pour les états globaux, nous avons deux types de rapports. Ces rapports qui sont générés automatiquement toutes les nuits ne comportent que les PIBI ou PENA devenus indisponibles la veille.
+Dans le même état d'esprit que pour les états globaux, Remocra propose deux types de rapports. Ces rapports qui sont générés automatiquement toutes les nuits ne comportent que les PIBI ou PENA visités la veille et dans l'état "Indisponible".
 
 ==== Cas où aucun point d'eau n'est devenu indisponible ====
-Lorsqu'il n'y a aucun hydrant concerné, le référent concerné reçoit un email qui lui confirme que le traitement a été réalisé sans qu'il n'y ait de point d'eau concerne.
+Lorsqu'il n'y a aucun PEI concerné, le référent concerné reçoit un courriel qui lui confirme que le traitement a été réalisé sans qu'il n'y ait de point d'eau concerné.
 
 * Exemple d'un rapport reçu par le référent PENA lorsqu'aucun PENA n'est devenu indisponible suite aux saisie de la veille :
 ** Sujet : Demande 0000000209 : Traitement effectué avec succès
 ** Fichier : aucun
 ** Corps :
-+++
+
+++++
   <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
       <title>Hydrants indisponibles SDIS83 REMOCRA</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -179,16 +194,17 @@ Lorsqu'il n'y a aucun hydrant concerné, le référent concerné reçoit un emai
       </div>
       <br>
     </div>
-+++
+++++
 
 ==== Cas au moins un point d'eau est devenu indisponible la veille ====
-Lorsqu'une ou plusieurs communes ont des points d'eau devenus indisponibles suite aux saisies réalisées la veille, le référent concerné reçoit un email avec un lien de téléchargement d'un fichier zip qui contient l'ensemble des fichiers XLS des communes.
+Lorsqu'une ou plusieurs communes ont des PEI devenus indisponibles suite aux saisies réalisées la veille, le référent concerné reçoit un courriel avec un lien de téléchargement d'un fichier zip qui contient l'ensemble des fichiers XLS des communes.
 
 * Exemple de rapport reçu par le référent DECI lorsque deux communes ont des PIBI devenus indisponibles suite aux saisie de la veille :
 ** Sujet : Demande 0000000208 : Traitement effectué avec succès
 ** Fichier : en lien 0000000208.zip
 ** Corps :
-+++
+
+++++
    <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
       <title>Hydrants indisponibles SDIS83 REMOCRA</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -206,12 +222,14 @@ Lorsqu'une ou plusieurs communes ont des points d'eau devenus indisponibles suit
       </div>
       <br>
     </div>
-+++
+++++
+
 * Exemple de rapport reçu par la commune de Draguignan :
 ** Sujet : SDIS83 REMOCRA - Hydrants indisponibles
 ** Fichier : attaché 20131007_DRAGUIGNAN_indisponible.xls
 ** Corps :
-+++
+
+++++
    <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
       <title>Hydrants indisponibles SDIS83 REMOCRA</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -229,12 +247,14 @@ Lorsqu'une ou plusieurs communes ont des points d'eau devenus indisponibles suit
       </div>
       <br>
     </div>
-+++
+++++
+
 * Exemple de rapport reçu par la commune de Fox Amphoux :
 ** Sujet : SDIS83 REMOCRA - Hydrants indisponibles
 ** Fichier : attaché 20131007_FOX_AMPHOUX_indisponible.xls
 ** Corps :
-+++
+
+++++
      <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
       <title>Hydrants indisponibles SDIS83 REMOCRA</title>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -252,42 +272,88 @@ Lorsqu'une ou plusieurs communes ont des points d'eau devenus indisponibles suit
       </div>
       <br>
     </div>
-+++
+++++
 
-Le modèle utilisé porte le code "COMMUNE_HYDRANT_INDISPONIBLE" dans la table remocra.email_modele pour les communes (modèles génériques de la table pdi.modele_message pour les référents et le demandeur).
+Le modèle utilisé porte le code `COMMUNE_HYDRANT_INDISPONIBLE` dans la table `remocra.email_modele` pour les communes (modèles génériques de la table `pdi.modele_message` pour les référents et le demandeur).
+
+
+=== Création de courier pour la reconnaissance opérationnelle des PEI (information préalable ou rapport)
+
+Un courriel est envoyé à l'utilisateur à l'origine de la *demande de génération d'un courrier d'information préalable* ou de la *demande de génération d'un courrier de rapport* via l'interface.
+
+Si l'utilisateur a souhaité notifier les responsables ou "la mairie ou l'intercommunalité", un message basé sur le modèle portant le code `COURRIER_PAR_MAIL` de la table `remocra.email_modele` est envoyé :
+
+* pour l'organisme : au contact (colonne `remocra.organisme.email_contact`).
+* pour les responsables : à tout utilisateur ayant le profil de droits sélectionné (colonne `remocra.utilisateur.email`).
+
+Chaque courriel intègre un lien de téléchargement du document.
+
+
+=== Indisponibilité temporaire de PEI
+
+Dans le cas d'une indisponibilité "prévisionnelle" (prévue à l'avance), deux dates sont renseignées (précision à la minutes) :
+
+* la date prévisionnelle de début : obligatoire
+* la date prévisionnelle de fin : facultative
+
+Pour toute indisponibilité prévisionnelle, deux courriels sont potentiellement envoyés :
+
+* Un courriel est envoyé *N heures avant l'échéance prévisionnelle de début* pour informer l'utilisateur qu'il doit activer (ou non) l'indisponibilité (basculement de "Planifié" à "En cours").
+* Un courriel est envoyé *N heures après l'échéance prévisionnelle de fin* pour informer l'utilisateur qu'il doit lever (ou non) l'indisponibilité. Le courriel est envoyé uniquement si l'indisponibilité est encore à l'état "En cours" et si la date prévisionnelle de fin est renseignée.
+
+L'adresse email du destinataire est paramétrée dans les paramètres de configuration :
+
+* `PDI_UTILISATEUR_NOTIF_INDISPO`
+* Code du profil ou adresse du destinataire pour la notification de début ou de fin prévisionnelles des indisponibilités temporaires
+
+Les modèles utilisés portent les codes `INDISPO_TEMPORAIRE_DEBUT` et `INDISPO_TEMPORAIRE_FIN` dans la table `remocra.email_modele`.
+
 
 
 
 == Risques ==
-=== Nouveau fichiers des risques express ===
+=== Nouveau fichier des risques express ===
 
-L'adresse email destinataire est celle de l'utilisateur qui est paramétré dans les paramètres de configuration (via son identifiant) :
+Lorsqu'un *nouveau fichier KML est publié*, un courriel en envoyé à l'adresse email de l'utilisateur qui est paramétré dans les paramètres de configuration (via son identifiant) :
 
-* PDI_NOTIFICATION_KML_UTILISATEUR_ID
+* `PDI_NOTIFICATION_KML_UTILISATEUR_ID`
 * Identifiant de l'utilisateur à notifier dans le cas de la publication d'un nouveau fichier de risques KML
 
-Le modèle utilisé porte le code "PUBLICATION_KML_RISQUE" dans la table remocra.email_modele.
+Le modèle utilisé porte le code `PUBLICATION_KML_RISQUE` dans la table `remocra.email_modele`.
+
 
 
 
 == Inscriptions / mots de passe ==
 === Création d'un utilisateur ===
-A la création d'un utilisateur via l'interface d'administration, un email est envoyé à l'utilisateur en utilisant l'adresse email déterminée.
-Le modèle utilisé porte le code "UTILISATEUR_MAIL_INSCRIPTION" dans la table remocra.email_modele.
+A la *création d'un utilisateur* via l'interface d'administration, un courriel est envoyé à son adresse email.
+Le modèle utilisé porte le code `UTILISATEUR_MAIL_INSCRIPTION` dans la table `remocra.email_modele`.
+
 
 === Mot de passe perdu ===
-Lorsque l'utilisateur clique sur le lien "Choix du mot de passe" et confirme, il reçoit un email basé sur le modèle qui porte le code "UTILISATEUR_MAIL_MOT_DE_PASSE_PERDU" dans la table remocra.email_modele. Cet email contient un lien à usage unique qui permet de réinitialiser le mot de passe de l'utilisateur dans REMOcRA.
+Lorsque l'utilisateur clique sur le lien *"Choix du mot de passe"* et confirme, il reçoit un courriel basé sur le modèle qui porte le code `UTILISATEUR_MAIL_MOT_DE_PASSE_PERDU` dans la table `remocra.email_modele`. Ce courriel contient un lien à usage unique qui permet de réinitialiser le mot de passe de l'utilisateur dans REMOcRA.
 
-Une fois que le nouveau mot de passe est déterminé, l'utilisateur reçoit une confirmation basée sur le modèle qui porte le code "UTILISATEUR_MAIL_MOT_DE_PASSE" dans la table remocra.email_modele.
+Une fois que le nouveau mot de passe est déterminé, l'utilisateur reçoit une confirmation basée sur le modèle qui porte le code `UTILISATEUR_MAIL_MOT_DE_PASSE` dans la table `remocra.email_modele`.
+
 
 
 
 == Traitements génériques ==
 
-Lorsqu'un utilisateur demande l'exécution d'un traitement, il reçoit un des messages génériques de la table pdi.modele_message selon le cas de figure :
+=== Traitement déclenchable par l'interface
+Lorsqu'un *utilisateur demande l'exécution d'un traitement* via l'interface des traitements, il reçoit un des messages génériques de la table pdi.modele_message selon le cas de figure :
 
-* idmodele 1 : cas de succès avec un fichier en sortie (selon le traitement ; exemple : téléchargement d'une fiche Atlas)
-* idmodele 2 : cas de succès sans fichier en sortie (selon le traitement ; exemple : mise à jour des positions des points d'eau)
-* idmodele 3 : cas d'une erreur de traitement
+* idmodele `1` : cas de succès avec un fichier en sortie (selon le traitement ; exemple : _Téléchargement d'une fiche Atlas_)
+* idmodele `2` : cas de succès sans fichier en sortie (selon le traitement ; exemple : _Mise à jour des positions des points d'eau_)
+* idmodele `3` : cas d'une erreur de traitement
 
-C'est le cas de l'ensemble des traitements exécutés via l'interface des traitements accessible à partir du bloc "Extraire, télécharger, téléverser".
+C'est le cas pour l'ensemble des traitements exécutés via l'interface des traitements accessible à partir du bloc "Extraire, télécharger, téléverser".
+
+
+=== Gestion des erreurs de traitements Pentaho Data Integration
+Lorsqu'un *traitement génère une erreur*, un courriel est envoyé à l'adresse de destination qui est configurable dans les paramètres de configuration :
+
+* `PDI_NOTIFICATION_GENERAL_UTILISATEUR_ID`
+* Identifiant de l'utilisateur à notifier dans le cadre de la notification générale (erreurs générales, autres, etc.)
+
+Le modèle utilisé porte le code `ERREUR_TRAITEMENT_AUTOMATISE` dans la table `remocra.email_modele`. Un document est joint au message avec les journaux du traitement qui est en erreur : exemple `remocra_notifier_utilisateurs.log`
