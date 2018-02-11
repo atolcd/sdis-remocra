@@ -149,7 +149,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
             });
 
         if (Sdis.Remocra.Rights.getRight('HYDRANTS_EXPORT_NON_NUM').Create) {
-            this.moreItems = [ { tooltip: 'Télécharger la liste des hydrants non numérotés', text: '<span>Télécharger</span>',
+            this.moreItems = [ { tooltip: 'Télécharger la liste des points d\'eau non numérotés', text: '<span>Télécharger</span>',
                 cls: 'download-atlas', iconCls: 'download-atlasIcon',
                 itemId: 'downloadHydrantsNonNum', xtype:'button'
             }];

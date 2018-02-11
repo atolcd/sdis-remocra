@@ -14,7 +14,7 @@ Ext.define('Sdis.Remocra.features.adresses.Map', {
     // Items qui doivent figurer juste avant le bouton d'affichage de la barre d'édition
     moreItems: [
         {
-            tooltip: 'Télécharger nombre d\'alertes par utilisateur', text: '<span>Télécharger nombre d\'alertes par utilisateur</span>',
+            tooltip: 'Télécharger le nombre d\'alertes par utilisateur', text: '<span>Télécharger le nombre d\'alertes par utilisateur</span>',
             cls: 'download-atlas', iconCls: 'download-atlasIcon',
             itemId: 'downloadNbAlertesParUtil'
         }
