@@ -181,6 +181,9 @@ Ext.define('Sdis.Remocra.controller.Router', {
         routes['access'] = {
             xtype: 'crOldeb'
         };
+        routes['documents'] = {
+            xtype: 'crOldeb'
+        };
         return routes;
     },
     getAdressesRoutes: function() {

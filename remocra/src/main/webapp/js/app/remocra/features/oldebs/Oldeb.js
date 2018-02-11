@@ -1,4 +1,5 @@
-Ext.require(['Sdis.Remocra.features.oldebs.TabAccesRapide', 'Sdis.Remocra.features.oldebs.TabMap', 'Sdis.Remocra.features.oldebs.TabObligation' ]);
+Ext.require(['Sdis.Remocra.features.oldebs.TabAccesRapide', 'Sdis.Remocra.features.oldebs.TabMap',
+    'Sdis.Remocra.features.oldebs.TabObligation', 'Sdis.Remocra.features.oldebs.TabBlocDocument' ]);
 Ext.define('Sdis.Remocra.features.oldebs.Oldeb', {
     extend: 'Ext.tab.Panel',
     alias: 'widget.crOldeb',
@@ -22,7 +23,11 @@ Ext.define('Sdis.Remocra.features.oldebs.Oldeb', {
         }, {
             xtype: 'crOldebMap'
         } ];
-
+        if (Sdis.Remocra.Rights.getRight('DOCUMENTS').Read) {
+            this.items.push({
+                xtype: 'crOldebBlocDocument'
+            });
+        }
         this.callParent(arguments);
     },
     urlChanged: function(desc) {

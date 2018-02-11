@@ -21,6 +21,9 @@ Ext.define('Sdis.Remocra.controller.oldeb.Oldeb', {
     }, {
         ref: 'tabObligation',
         selector: 'crOldebObligation'
+    },{
+        ref: 'tabDocuments',
+        selector: 'crBlocDocumentGrid'
     } ],
 
     init: function() {
