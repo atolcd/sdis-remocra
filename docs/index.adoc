@@ -8,12 +8,18 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 :toc:
 
 :numbered:
+:linkattrs:
 
 
 image::https://www.atolcd.com/fileadmin/Images_pages_menu/Open_Source/Remocra/header_remocra_liste_arrondi.jpg[Modules,600,225]
 
+*```👨``` Utilisation*
 
-*```👨``` Administration*
+* https://raw.githubusercontent.com/atolcd/sdis-remocra/master/docs/fonctions.png[Carte des fonctions, window="_blank"]
+
+---
+
+*```🛠``` Administration*
 
 * link:Manuel%20administration{outfilesuffix}[Manuel d'administration]
 * Thématique points d'eau
