@@ -141,7 +141,7 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ParamConf', {
                 success: function(batch, options) {
                     this.setLoading(false);
                         Sdis.Remocra.util.Msg.msg('Paramètres de configuration',
-                            'Les paramètres de configuration on été mis à jour.', 3);
+                            'Les paramètres de configuration ont été mis à jour.', 3);
                 },
                 failure: function(batch, options) {
                     this.setLoading(false);
