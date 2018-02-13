@@ -21,6 +21,24 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ParamConf', {
                     }
                     this.removeAll();
 
+                    // Couches cartographiques (layers.json)
+                    this.add({
+                        xtype:'panel',
+                        style: 'margin-bottom:15px;',
+                        buttonAlign: 'left',
+                        buttons: ['<a href="'
+                                + 'https://github.com/atolcd/sdis-remocra/blob/master/docs/administration/Couches.adoc'
+                                + '" target="_blank">🔗</a> Couches cartographiques : ', {
+                            xtype:'button', text:'<span>Recharger</span>', listeners: {
+                            click: Ext.bind(this.reloadLayers, this),
+                            scope: this
+                        }}, {
+                            xtype : 'linkbutton',
+                            text : '<span>Visualiser</span>',
+                            src : BASE_URL+'/../geoserver/layers',
+                            hrefTarget: '_blank'
+                        }
+                   ]});
                     this.add({
                         xtype: 'panel',
                         html: 'Veuillez vous référer à la <a'
@@ -153,5 +171,22 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ParamConf', {
             Ext.Msg.alert('Paramètres de configurations',
                 'Les paramètres de configuration n\'ont pas été modifiés.');
         }
+    },
+
+    reloadLayers: function() {
+        Ext.Ajax.request({
+            url: Sdis.Remocra.util.Util.withBaseUrl('../geoserver/layers/reload'),
+            method: 'GET',
+            scope: this,
+            callback: function(options, success, response) {
+                if (success == true) {
+                    Sdis.Remocra.util.Msg.msg('Rechargement des couches',
+                        'Les couches ont bien été rechargées.', 5);
+                } else {
+                    Ext.Msg.alert('Rechargement des couches',
+                        'Un problème est survenu lors du rechargement des couches.<br/>Veuillez vérifier le fichier <i>layers.json</i>.');
+                }
+            }
+        });
     }
 });

@@ -61,7 +61,6 @@ Dans l'exemple plus haut :
 
 Remarque :
 
-* Pour recharger la configuration après une modification, utiliser l'URL https://remocra.sdisxx.fr/remocra/geoserver/layers/reload (droit _REFERENTIELS.CREATE_ requis)
-* Pour lire (vérifier) la configuration générale retenue, utiliser l'URL https://remocra.sdisxx.fr/remocra/geoserver/layers (droit _REFERENTIELS.CREATE_ requis)
+* La page *d'administration des paramètres* de Remocra permet de visualiser la configuration des couches courante et de la recharger.
 
 _Aide technique : tutoriels link:http://www.w3schools.com/json[JSON] sur w3schools.com_
