@@ -96,7 +96,12 @@ Ext.define('Sdis.Remocra.widget.map.LegendTemplate', {
             var checkElt = Ext.get(this.getId()+layer.id);
             checkElt.on('click', function(evt, t, eOpts) {
                 var layerByCode = this.mapCmp.getLayerByCode(this.layer.id);
-                layerByCode.setVisibility(!layerByCode.visibility);
+                var newVisibility = !layerByCode.visibility;
+                if (layerByCode.setVisibility) {
+                    layerByCode.setVisibility(newVisibility);
+                } else {
+                    layerByCode.visibility = newVisibility;
+                }
                 this.checkElt.toggleCls('layervisible');
             }, {layer:layer, checkElt:checkElt, mapCmp:Ext.getCmp(this.getId())});
 
