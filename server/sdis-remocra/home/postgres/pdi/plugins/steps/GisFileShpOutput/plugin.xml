@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+   id="GisFileShpOutput"
+   iconfile="GisFileShpOutput.png"
+   description="ESRI Shapefile Output"
+   tooltip="Write Esri (shp, shx and dbf) files from WKT String. Supported files : POINT, MULTIPOINT, ARC, POLYGON, POINTZ, ARCZ, POLYGONZ or MULTIPOINTZ"
+   category="Atol CD - Geospatial"
+   classname="com.atolcd.pdi.plugin.trans.gis.gisfileoutput.shp.GisFileShpOutputMeta">
+		<libraries>
+			<library name="GisFileShpOutput.jar"/>
+			<library name="lib/jts-1.13.jar"/>
+		</libraries>
+		<localized_category>
+			<category locale="en_US">Atol CD - Geospatial</category>
+			<category locale="fr_FR">Atol CD - Information géographique</category>
+		</localized_category>
+		<localized_description>
+			<description locale="en_US">ESRI Shapefile Output</description>
+			<description locale="fr_FR">Alimentation fichier ESRI Shapefile</description>
+		</localized_description>
+		<localized_tooltip>
+			<tooltip locale="en_US">Write Esri (shp, shx and dbf) files from WKT String. Supported files : POINT, MULTIPOINT, ARC, POLYGON, POINTZ, ARCZ, POLYGONZ or MULTIPOINTZ</tooltip>
+			<tooltip locale="fr_FR">Création de fichiers Esri (shp, shx et dbf) à partir de géométries encodées au format WKT. Fichiers supportés : POINT, MULTIPOINT, ARC, POLYGON, POINTZ, ARCZ, POLYGONZ or MULTIPOINTZ</tooltip>
+		</localized_tooltip>
+</plugin>
