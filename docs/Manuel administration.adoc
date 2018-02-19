@@ -13,20 +13,25 @@ link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
 
-* Manuel d'administration
+*🖹 Gestion de contenu / administration courante*
 
 ** link:administration/Page%20d%20accueil%20publique{outfilesuffix}[Page d'accueil publique]
 ** link:administration/Page%20d%20accueil%20privee{outfilesuffix}[Page d'accueil privée]
-** link:administration/Couches{outfilesuffix}[Couches]
-** link:administration/Cartes{outfilesuffix}[Cartes]
-** link:administration/Couche%20d%20APIS%20a%20Remocra{outfilesuffix}[Couche d'APIS à Remocra]
-** link:administration/Outil%20i{outfilesuffix}[Outil i "information"]
-** link:administration/Module%20cartographie%20symboles%20et%20images{outfilesuffix}[Module cartographie symboles et images]
 ** link:administration/Gestion%20des%20documents{outfilesuffix}[Gestion des documents]
 ** link:administration/Gestion%20des%20utilisateurs{outfilesuffix}[Gestion des utilisateurs]
-** link:administration/Parametres%20de%20configuration{outfilesuffix}[Paramètres de configuration]
-** link:administration/Gestion%20des%20zones%20de%20competence{outfilesuffix}[Gestion des zones de compétence]
-** link:administration/Courriels{outfilesuffix}[Courriels] envoyés automatiquement
+
+*🗺 SIG*
+
 ** link:administration/Demande%20cle%20IGN{outfilesuffix}[Demande clé IGN] et paramétrage
-** link:administration/Lien%20Prevarisc{outfilesuffix}[Lien Prevarisc]
+** link:administration/Couches{outfilesuffix}[Couches], link:administration/Cartes{outfilesuffix}[Cartes], link:administration/Couche%20d%20APIS%20a%20Remocra{outfilesuffix}[Couche d'APIS à Remocra]
+** link:administration/Outil%20i{outfilesuffix}[Outil i "information"]
+** link:administration/Module%20cartographie%20symboles%20et%20images{outfilesuffix}[Module cartographie symboles et images]
+** link:administration/Gestion%20des%20zones%20de%20competence{outfilesuffix}[Gestion des zones de compétence]
 ** link:administration/export_et_metadonnees/Export%20et%20metadonnees{outfilesuffix}[Export et métadonnées]
+
+*☸ Divers*
+
+** link:administration/Parametres%20de%20configuration{outfilesuffix}[Paramètres de configuration]
+** link:administration/Duree%20des%20sessions{outfilesuffix}[Durée des sessions]
+** link:administration/Courriels{outfilesuffix}[Courriels] envoyés automatiquement
+** link:administration/Lien%20Prevarisc{outfilesuffix}[Lien Prevarisc]

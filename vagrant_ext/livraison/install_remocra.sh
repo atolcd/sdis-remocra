@@ -105,6 +105,11 @@ EOF
 mkdir -p /var/lib/tomcat6/webapps/remocra/WEB-INF/classes/META-INF/spring/
 cp -f /var/lib/tomcat6/webapps/database.properties.save /var/lib/tomcat6/webapps/remocra/WEB-INF/classes/META-INF/spring/database.properties
 
+export REMOCRA_SESSION_TIMEOUT_MINUTES=${REMOCRA_SESSION_TIMEOUT_MINUTES:=20}
+if [ -f /var/lib/tomcat6/webapps/remocra/WEB-INF/web.xml ]; then
+  sed -i "s/<session-timeout>.*<\/session-timeout>/<session-timeout>$REMOCRA_SESSION_TIMEOUT_MINUTES<\/session-timeout>/g" /var/lib/tomcat6/webapps/remocra/WEB-INF/web.xml
+fi
+
 envsubst << "EOF" > /etc/httpd/conf.d/remocra.conf
 # ##############################
 # REMOcRA

@@ -1,0 +1,42 @@
+= SDIS Remocra - Durée des sessions
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+link:../index{outfilesuffix}[Retour à l'accueil]
+
+link:../Manuel%20administration{outfilesuffix}[Retour au manuel d'administration]
+
+'''
+
+Mise en place pour une durée de sessions de 30 minutes :
+
+[source,sh]
+----
+echo "export REMOCRA_SESSION_TIMEOUT_MINUTES=30" >> /root/.bashrc
+. ~/.bashrc
+
+sed -i "s/<session-timeout>.*<\/session-timeout>/<session-timeout>$REMOCRA_SESSION_TIMEOUT_MINUTES<\/session-timeout>/g" /var/lib/tomcat6/webapps/remocra/WEB-INF/web.xml
+
+service tomcat6 restart && service httpd reload
+----
+
+Modification suite à la mise en place :
+
+[source,sh]
+----
+sed -i "s/export REMOCRA_SESSION_TIMEOUT_MINUTES=.*/export REMOCRA_SESSION_TIMEOUT_MINUTES=30/g" ~/.bashrc
+. ~/.bashrc
+
+sed -i "s/<session-timeout>.*<\/session-timeout>/<session-timeout>$REMOCRA_SESSION_TIMEOUT_MINUTES<\/session-timeout>/g" /var/lib/tomcat6/webapps/remocra/WEB-INF/web.xml
+
+service tomcat6 restart && service httpd reload
+----
+
+Le maintien du paramétrage est assuré lors des mises à jour applicatives.
