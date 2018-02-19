@@ -54,17 +54,17 @@ Ext.define('Sdis.Remocra.features.cartographie.Config', {
     }, {
         xtype : 'displayfield',
         fieldLabel : 'Couches'
-    },{
-        xtype : 'displayfield',
-        itemId : 'couches',
-        cls : 'simplemaplegend maplegend forceover',
-        style : 'margin-left:190px;float:none'
     }, {
         xtype : 'button',
         itemId : 'open',
         text : 'Ouvrir la carte',
         width : 180,
         style : 'margin-top:20px;'
+    }, {
+        xtype : 'displayfield',
+        itemId : 'couches',
+        cls : 'simplemaplegend maplegend forceover',
+        style : 'margin-left:190px;float:none'
     } ],
 
     initComponent : function() {
@@ -160,7 +160,7 @@ Ext.define('Sdis.Remocra.features.cartographie.Config', {
         }, false);
         
         // Mise à jour de la hauteur du conteneur
-        this.doLayout();
+        Ext.defer(this.doLayout, 500, this);
     },
     
     getLayerByCode : function(layerCode) {

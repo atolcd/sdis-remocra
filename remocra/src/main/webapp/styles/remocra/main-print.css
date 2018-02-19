@@ -31,7 +31,7 @@ body {
 }
 
 .simplemaplegend:before {
-	content: url('../../images/remocra/impression-header.png');
+	content: url('../../../ext-res/images/remocra/impression-header.png');
 }
 
 .mapmentions {
