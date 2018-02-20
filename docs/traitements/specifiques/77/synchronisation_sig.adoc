@@ -1,8 +1,8 @@
 ==== Synchronisation SIG
 Ces traitements permettent de synchroniser de manière bi-directionnelle les données entre la base de données du SDIS (MS SQL Server 2008) et la base de données REMOCRA (PostgreSQL) de la manière suivante :
 
-* Dans le sens SIG vers REMOCRA, duplication intégrale (création et peuplement à chaque traitement) des tables de la base SDIS vers la base REMOCRA dans le schéma _"remocra_referentiel"_ (boucle sur chaque table MS SQL)
-* Dans le sens REMOCRA vers SIG, alimentation de la table MS SQL _"NOM_DE_TABLE_A FOURNIR"_ dédiée au stockage des informations des hydrants
+* Dans le sens *SIG vers REMOCRA*, duplication intégrale (création et peuplement à chaque traitement) des tables de la base SDIS vers la base REMOCRA dans le schéma _"remocra_referentiel"_ (boucle sur chaque table MS SQL)
+* Dans le sens *REMOCRA vers SIG*, alimentation de la table MS SQL _"NOM_DE_TABLE_A FOURNIR"_ dédiée au stockage des informations des PEI
 
 ===== Configuration et mise en place
 
@@ -11,15 +11,15 @@ Le fichier _"remocraXX.properties"_ doit contenir les informations suivantes :
 [width="100%",options="header"]
 |====================
 | Paramètre | Description
-| PDI_MSSQL_DATABASE_HOST | Adresse du serveur SIG MS SQL _(ex. : `localhost`)_
+| PDI_MSSQL_DATABASE_HOST | Adresse du serveur SIG MS SQL _(Exemple : `localhost`)_
 | PDI_MSSQL_DATABASE_NAME | Nom de la base SIG
-| PDI_MSSQL_DATABASE_PORT | Port de la base SIG_(ex. : `1433`)_
+| PDI_MSSQL_DATABASE_PORT | Port de la base SIG _(Exemple : `1433`)_
 | PDI_MSSQL_DATABASE_USER_NAME | Identifiant de connexion à la base SIG
 | PDI_MSSQL_DATABASE_USER_PASSWORD | Mot de passe d'accès à la base SIG
 |====================
 
 ===== Lancement et planification de la synchronisation
 
-* La synchronisation entre le SIG et REMOCRA peut être réalisée à la demande ou de manière automatique en executant ou en planifiant le lancement du fichier ```/var/remocra/pdi/traitements_sdis/77/synchroniser_tables_ms_sql_vers_remocra.sh```
+La *synchronisation entre le SIG et REMOCRA* peut être réalisée à la demande ou de manière automatique en exécutant ou en planifiant le lancement du fichier ```/var/remocra/pdi/traitements_sdis/77/synchroniser_tables_ms_sql_vers_remocra.sh``` avec l'utilisateur ```postgres```.
 
-* La synchronisation entre REMOCRA et le SIG peut être réalisée à la demande ou de manière automatique en executant ou en planifiant le lancement du fichier ```/var/remocra/pdi/traitements_sdis/77/synchroniser_remocra_vers_mssql.sh```
+La *synchronisation entre REMOCRA et le SIG* peut être réalisée à la demande ou de manière automatique en exécutant ou en planifiant le lancement du fichier ```/var/remocra/pdi/traitements_sdis/77/synchroniser_remocra_vers_mssql.sh``` avec l'utilisateur ```postgres```.

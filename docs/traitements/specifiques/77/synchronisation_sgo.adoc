@@ -1,12 +1,12 @@
 ==== Synchronisation SGO
-Ce traitement vise à consolider dans une table spécifique à fréquence régulière les informations relatives aux hydrants gérés dans REMOCRA pour permettre une exploitation dans le SGO. La table de consolidation est lue par le SDIS 
+Ce traitement vise à consolider dans une table spécifique à fréquence régulière les informations relatives aux PEI gérés dans REMOCRA pour permettre une exploitation dans le SGO. La table de consolidation est lue par le SDIS.
 
 ===== Configuration et mise en place
 
-Les informations de consolidation sont stockées dans le schema _"remocra_sgo"_ dont le contenu est propre à chaque SDIS. S'assurer que et qu'il correspond au SDIS concerné.
+Les informations de consolidation sont stockées dans le schema _"remocra_sgo"_ dont le contenu est propre à chaque SDIS. S'assurer qu'il correspond au SDIS concerné.
 
 ===== Lancement et planification de la synchronisation
 
-L'execution de manière automatique s'effectue en planifiant le lancement du fichier _"consolider_pour_sgo.sh"_
+L'exécution de manière automatique s'effectue en planifiant le lancement du fichier ```/var/remocra/pdi/traitements_sdis/77/consolider_pour_sgo.sh``` avec l'utilisateur ```postgres```.
 
-WARNING: Le responsable du SGO du SDIS doit veiller à mettre à jour le champ _"flag_flux"_ de la table _"remocra_sgo.hydrant_tracabilite"_ avec une valeur  dès lors que la modification  liée à l'hydrant a été prise en compte dans le SGO
+WARNING: Le responsable du SGO du SDIS doit veiller à mettre à jour le champ _"flag_flux"_ de la table _"remocra_sgo.hydrant_tracabilite"_ avec une valeur dès lors que la modification  liée au PEI a été prise en compte dans le SGO.
