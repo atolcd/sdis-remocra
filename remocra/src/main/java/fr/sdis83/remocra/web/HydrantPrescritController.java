@@ -1,7 +1,14 @@
 package fr.sdis83.remocra.web;
 
+import com.vividsolutions.jts.geom.Geometry;
+import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
+import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.service.ZoneCompetenceService;
+import fr.sdis83.remocra.web.deserialize.GeometryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,12 +24,20 @@ import fr.sdis83.remocra.service.HydrantPrescritService;
 import fr.sdis83.remocra.util.FeatureUtil;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 
+import java.util.Date;
+
 @RequestMapping("/hydrantprescrits")
 @Controller
 public class HydrantPrescritController extends AbstractServiceableController<HydrantPrescritService, HydrantPrescrit> {
 
     @Autowired
     private HydrantPrescritService service;
+
+    @Autowired
+    private ZoneCompetenceService zoneCompetenceService;
+
+    @Autowired
+    private UtilisateurService serviceUtilisateur;
 
     @Override
     protected HydrantPrescritService getService() {
@@ -41,7 +56,14 @@ public class HydrantPrescritController extends AbstractServiceableController<Hyd
 
             @Override
             protected HydrantPrescrit getRecord() throws BusinessException {
-                return service.getById(id);
+                 HydrantPrescrit current = service.getById(id);
+
+                 if(zoneCompetenceService.check(current.getGeometrie(), serviceUtilisateur.getCurrentUtilisateur().getOrganisme().getZoneCompetence())){
+                     return current;
+                 }
+                 else{
+                     throw new AccessDeniedException("Vous n'avez pas les autorisations sur cette zone géographique");
+                 }
             }
         }.serialize();
     }
@@ -60,21 +82,42 @@ public class HydrantPrescritController extends AbstractServiceableController<Hyd
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
     @PreAuthorize("hasRight('HYDRANTS_PRESCRIT', 'CREATE')")
     public ResponseEntity<java.lang.String> update(@PathVariable Long id, @RequestBody String json) {
-        return this.doUpdate(id, json);
+        HydrantPrescrit current = new JSONDeserializer<HydrantPrescrit>().use( null, HydrantPrescrit.class ).use(Date.class, RemocraDateHourTransformer.getInstance()).use(Geometry.class, new GeometryFactory()).deserialize(json);
+        current.getGeometrie().setSRID(2154);
+        if(zoneCompetenceService.check(current.getGeometrie(), serviceUtilisateur.getCurrentUtilisateur().getOrganisme().getZoneCompetence())){
+            return this.doUpdate(id, json);
+        }
+        else{
+            throw new AccessDeniedException("Vous n'avez pas les autorisations sur cette zone géographique");
+        }
     }
 
     @Override
     @RequestMapping(value = "", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("hasRight('HYDRANTS_PRESCRIT', 'CREATE')")
     public ResponseEntity<String> create(@RequestBody String json) {
-        return this.doCreate(json);
+        HydrantPrescrit current = new JSONDeserializer<HydrantPrescrit>().use( null, HydrantPrescrit.class ).use(Date.class, RemocraDateHourTransformer.getInstance()).use(Geometry.class, new GeometryFactory()).deserialize(json);
+        current.getGeometrie().setSRID(2154);
+        if(zoneCompetenceService.check(current.getGeometrie(), serviceUtilisateur.getCurrentUtilisateur().getOrganisme().getZoneCompetence())){
+            return this.doCreate(json);
+        }
+        else{
+            throw new AccessDeniedException("Vous n'avez pas les autorisations sur cette zone géographique");
+        }
     }
 
     @Override
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
     @PreAuthorize("hasRight('HYDRANTS_PRESCRIT', 'CREATE')")
     public ResponseEntity<String> delete(@PathVariable Long id) {
-        return this.doDelete(id);
+        HydrantPrescrit current = service.getById(id);
+
+        if(zoneCompetenceService.check(current.getGeometrie(), serviceUtilisateur.getCurrentUtilisateur().getOrganisme().getZoneCompetence())){
+            return this.doDelete(id);
+        }
+        else{
+            throw new AccessDeniedException("Vous n'avez pas les autorisations sur cette zone géographique");
+        }
     }
 
 }

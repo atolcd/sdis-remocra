@@ -24,12 +24,27 @@ public class HydrantPrescritService extends AbstractService<HydrantPrescrit> {
     }
 
     public List<HydrantPrescrit> findAllHydrantPrescrits() {
-        return HydrantPrescrit.findAllHydrantPrescrits();
+        TypedQuery<HydrantPrescrit> query = entityManager
+                .createQuery(
+                        "SELECT o FROM HydrantPrescrit o WHERE contains (:zoneCompetence, geometrie) = true",
+                        HydrantPrescrit.class)
+                .setParameter(
+                        "zoneCompetence",
+                        utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie());
+        return query.getResultList();
     }
 
     public List<HydrantPrescrit> findHydrantPrescritsByBBOX(String bbox) {
-        TypedQuery<HydrantPrescrit> query = entityManager.createQuery("SELECT o FROM HydrantPrescrit o where contains (transform(:filter, 2154), geometrie) = true",
-                HydrantPrescrit.class).setParameter("filter", GeometryUtil.geometryFromBBox(bbox));
+        TypedQuery<HydrantPrescrit> query = entityManager
+                .createQuery(
+                        "SELECT o FROM HydrantPrescrit o where contains (transform(:filter, 2154), geometrie) = true and contains (:zoneCompetence, geometrie) = true",
+                        HydrantPrescrit.class)
+                .setParameter(
+                        "filter",
+                        GeometryUtil.geometryFromBBox(bbox))
+                .setParameter(
+                        "zoneCompetence",
+                        utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie());
         return query.getResultList();
     }
 

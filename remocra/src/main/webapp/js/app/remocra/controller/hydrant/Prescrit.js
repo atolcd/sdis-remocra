@@ -101,21 +101,31 @@ Ext.define('Sdis.Remocra.controller.hydrant.Prescrit', {
         var hydrant = Ext.create('Sdis.Remocra.model.HydrantPrescrit', {
             datePrescrit: new Date()
         });
-        if (event.feature != null) {
-            var mapProjection = this.getMap().map.getProjection();
-            var wktFormat = new OpenLayers.Format.WKT({
-                internalProjection: mapProjection,
-                externalProjection: new OpenLayers.Projection('EPSG:2154')
-            });
-            var str = wktFormat.write(event.feature);
-            hydrant.set('geometrie', str);
-            hydrant.feature = event.feature;
-            hydrant.srid = this.getMap().getCurrentSrid();
-        }
 
-        Ext.widget('fichePrescrit', {
-            hydrant: hydrant
-        }).show();
+        Sdis.Remocra.model.ZoneCompetence.checkByXY(event.feature.geometry.x, event.feature.geometry.y, this.getMap().getCurrentSrid(), {
+            scope: this,
+            success: function(response, config){
+                if (event.feature != null) {
+                    var mapProjection = this.getMap().map.getProjection();
+                    var wktFormat = new OpenLayers.Format.WKT({
+                        internalProjection: mapProjection,
+                        externalProjection: new OpenLayers.Projection('EPSG:2154')
+                    });
+                    var str = wktFormat.write(event.feature);
+                    hydrant.set('geometrie', str);
+                    hydrant.feature = event.feature;
+                    hydrant.srid = this.getMap().getCurrentSrid();
+                }
+
+                Ext.widget('fichePrescrit', {
+                    hydrant: hydrant
+                }).show();
+            },
+            failure: function(response, config){
+                event.feature.destroy();
+                Sdis.Remocra.util.Msg.msg('HydrantPrescrit', 'Vous ne possédez pas les autorisations nécessaires pour créer un hydrant prescrit sur cette zone', 3);
+            }
+        });
 
     },
 
@@ -172,36 +182,54 @@ Ext.define('Sdis.Remocra.controller.hydrant.Prescrit', {
 
     showFicheHydrant: function() {
         var features = this.getSelectedFeatures();
-        if (features.length == 1) {
-            Sdis.Remocra.model.HydrantPrescrit.load(features[0].fid, {
-                scope: this,
-                success: function(record) {
-                    Ext.widget('fichePrescrit', {
-                        hydrant: record
-                    }).show();
+        Sdis.Remocra.model.ZoneCompetence.checkByXY(features[0].geometry.x, features[0].geometry.y, this.getMap().getCurrentSrid(), {
+            scope: this,
+            success: function(response, config){
+                if (features.length == 1) {
+                    Sdis.Remocra.model.HydrantPrescrit.load(features[0].fid, {
+                        scope: this,
+                        success: function(record) {
+                            Ext.widget('fichePrescrit', {
+                                hydrant: record
+                            }).show();
+                        }
+                    });
                 }
-            });
-        }
+            },
+            failure: function(response, config){
+                this.refreshMap();
+                Sdis.Remocra.util.Msg.msg('HydrantPrescrit', 'Vous ne possédez pas les autorisations nécessaires pour modifier un hydrant prescrit sur cette zone', 3);
+            }
+        });
     },
 
     deleteHydrant: function() {
         var features = this.getSelectedFeatures();
-        if (features.length == 1) {
-            Ext.Msg.confirm('Suppression Hydrant prescrit', 'Confirmez-vous la suppression de l\'hydrant prescrit ?', function(buttonId) {
-                if (buttonId == 'yes') {
-                    var hydrant = Ext.create(Sdis.Remocra.model.HydrantPrescrit, {
-                        id: features[0].fid
-                    });
-                    hydrant.destroy({
-                        scope: this,
-                        success: function(record, operation) {
-                            this.getMap().hydrantLayer.removeFeatures(features);
-                            Sdis.Remocra.util.Msg.msg('Suppression', 'L\'hydrant a bien été supprimé.');
-                            this.onSelectedFeatureChange();
+        Sdis.Remocra.model.ZoneCompetence.checkByXY(features[0].geometry.x, features[0].geometry.y, this.getMap().getCurrentSrid(), {
+            scope: this,
+            success: function(response, config){
+                if (features.length == 1) {
+                    Ext.Msg.confirm('Suppression Hydrant prescrit', 'Confirmez-vous la suppression de l\'hydrant prescrit ?', function(buttonId) {
+                        if (buttonId == 'yes') {
+                            var hydrant = Ext.create(Sdis.Remocra.model.HydrantPrescrit, {
+                                id: features[0].fid
+                            });
+                            hydrant.destroy({
+                                scope: this,
+                                success: function(record, operation) {
+                                    this.getMap().hydrantLayer.removeFeatures(features);
+                                    Sdis.Remocra.util.Msg.msg('Suppression', 'L\'hydrant a bien été supprimé.');
+                                    this.onSelectedFeatureChange();
+                                }
+                            });
                         }
-                    });
+                    }, this);
                 }
-            }, this);
-        }
+            },
+            failure: function(response, config){
+                this.refreshMap();
+                Sdis.Remocra.util.Msg.msg('HydrantPrescrit', 'Vous ne possédez pas les autorisations nécessaires pour supprimer un hydrant prescrit sur cette zone', 3);
+            }
+        });
     }
 });
