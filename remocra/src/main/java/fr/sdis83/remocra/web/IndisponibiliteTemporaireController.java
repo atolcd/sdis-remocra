@@ -59,7 +59,7 @@ public class IndisponibiliteTemporaireController  {
                     .include("data.datePrevFin").include("data.dateDebut").include("data.dateFin").include("data.motif")
                     .include("data.totalHydrants").include("data.statut").include("data.countHydrant").include("data.hydrants.id").include("data.hydrants.numero").include("data.geometrie").include("data.hydrants.jsonGeometrie");
 
-                return serializer.include("total").include("message");
+                return serializer.include("total").include("message").exclude("data.hydrants.*");
             }
             @Override
             protected List<HydrantIndispoTemporaire> getRecords() {
