@@ -65,29 +65,18 @@ Exemple de courriel diffusé suite au *dépôt d'une déclaration de point(s) d'
 ** Fichier : en lien FoxAmphoux_PointEau_654.pdf (exemple)
 ** Corps :
 
-++++
-    <div style="margin-left:30px;background-color:#eeeeee" class="moz-forward-container">
-      <title>Hydrants indisponibles SDIS83 REMOCRA</title>
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style>
-      <div>
-        <p>Bonjour,<br>
-          <br>
-          Un dossier de déclaration d'hydrant(s) a été déposé par un
-          utilisateur de l'organisme FOX AMPHOUX. Le fichier est
-          disponible <a
-            href="http://remocra.sdisxx.fr/remocra/...">ici</a>.<br>
-          <br>
-          Cordialement.</p>
-        <p class="caution">En cas d'incompréhension de ce message, merci
-          de prendre contact avec le SDIS83.</p>
-        <p class="footer">Ce message vous a été envoyé automatiquement,
-          merci de ne pas répondre à l'expéditeur.</p>
-      </div>
-      <br>
-    </div>
-++++
+[NOTE]
+====
+Bonjour,
 
+Un dossier de déclaration d'hydrant(s) a été déposé par un utilisateur de l'organisme FOX AMPHOUX. Le fichier est disponible http://remocra.sdisxx.fr/remocra/...[ici].
+
+Cordialement.
+
+_En cas d'incompréhension de ce message, merci de prendre contact avec le SDIS83._
+
+_Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l'expéditeur._
+====
 
 L'adresse email du destinataire est paramétrée dans les paramètres de configuration :
 
@@ -113,51 +102,38 @@ Pour *l'état global des PIBI* :
 ** Fichier : attaché 20131007_FOX_AMPHOUX_hydrant.xls
 ** Corps :
 
-++++
-    <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
-      <title>Hydrants indisponibles SDIS83 REMOCRA</title>
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style>
-      <div>
-        <p>Bonjour,<br>
-          <br>
-          Veuillez trouver ci-joint en pièce jointe la liste des
-          hydrants de votre commune.<br>
-          <br>
-          Cordialement.</p>
-        <p class="caution">En cas d'incompréhension de ce message, merci
-          de prendre contact avec le SDIS83.</p>
-        <p class="footer">Ce message vous a été envoyé automatiquement,
-          merci de ne pas répondre à l'expéditeur.</p>
-      </div>
-      <br>
-    </div>
-++++
+[NOTE]
+====
+Bonjour,
+
+Veuillez trouver ci-joint en pièce jointe la liste des hydrants de votre commune.
+
+Cordialement.
+
+_En cas d'incompréhension de ce message, merci de prendre contact avec le SDIS83._
+
+_Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l'expéditeur._
+====
 
 * Exemple pour le référent PENA :
 ** Sujet : Demande 0000000077 : Traitement effectué avec succès
 ** Fichier : en lien 0000000077.zip
 ** Corps :
 
-++++
-   <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
-      <title>Hydrants indisponibles SDIS83 REMOCRA</title>
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style>
-      <div>
-        <p>Bonjour Sdis Ref Pena,<br>
-          <br>
-          Le traitement <b>"Etat des hydrants PENA"</b> demandé le 07/10/2013 à 16h00 a été exécuté avec succès.<br/><br/>
-<a href=3D"http://remocra.sdisxx.fr/remocra/telechargement/b0a314fd456adb3d9c3998baf5cb5b5d">Télécharger les données</a><br/><br/>
-          Cordialement.</p>
-        <p class="caution">En cas d'incompréhension de ce message, merci
-          de prendre contact avec le SDIS83.</p>
-        <p class="footer">Ce message vous a été envoyé automatiquement,
-          merci de ne pas répondre à l'expéditeur.</p>
-      </div>
-      <br>
-    </div>
-++++
+[NOTE]
+====
+Bonjour Sdis Ref Pena,
+
+Le traitement *"Etat des hydrants PENA"* demandé le 07/10/2013 à 16h00 a été exécuté avec succès.
+
+http://remocra.sdisxx.fr/remocra/telechargement/b0a314fd456adb3d9c3998baf5cb5b5d[Télécharger les données]
+
+Cordialement.
+
+_En cas d'incompréhension de ce message, merci de prendre contact avec le SDIS83._
+
+_Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l'expéditeur._
+====
 
 Pour *l'état global des PENA* :
 
@@ -177,24 +153,19 @@ Lorsqu'il n'y a aucun PEI concerné, le référent concerné reçoit un courriel
 ** Fichier : aucun
 ** Corps :
 
-++++
-  <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
-      <title>Hydrants indisponibles SDIS83 REMOCRA</title>
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style>
-      <div>
-        <p>Bonjour Sdis Ref Pena,<br>
-          <br>
-          Le traitement <b>"Etat des hydrants PENA indisponibles"</b> demandé le 07/10/2013 à 00h10 a été exécuté avec succès.<br/><br/>
-          Cordialement.</p>
-        <p class="caution">En cas d'incompréhension de ce message, merci
-          de prendre contact avec le SDIS83.</p>
-        <p class="footer">Ce message vous a été envoyé automatiquement,
-          merci de ne pas répondre à l'expéditeur.</p>
-      </div>
-      <br>
-    </div>
-++++
+[NOTE]
+====
+Bonjour Sdis Ref Pena,
+
+Le traitement *"Etat des hydrants PENA indisponibles"* demandé le 07/10/2013 à 00h10 a été exécuté avec succès.
+
+Cordialement.
+
+_En cas d'incompréhension de ce message, merci de prendre contact avec le SDIS83._
+
+_Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l'expéditeur._
+====
+
 
 ==== Cas au moins un point d'eau est devenu indisponible la veille ====
 Lorsqu'une ou plusieurs communes ont des PEI devenus indisponibles suite aux saisies réalisées la veille, le référent concerné reçoit un courriel avec un lien de téléchargement d'un fichier zip qui contient l'ensemble des fichiers XLS des communes.
@@ -204,75 +175,56 @@ Lorsqu'une ou plusieurs communes ont des PEI devenus indisponibles suite aux sai
 ** Fichier : en lien 0000000208.zip
 ** Corps :
 
-++++
-   <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
-      <title>Hydrants indisponibles SDIS83 REMOCRA</title>
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style>
-      <div>
-        <p>Bonjour Sdis Ref Pena,<br>
-          <br>
-          Le traitement <b>"Etat des hydrants PIBI indisponibles"</b> demandé le 07/10/2013 à 00h10 a été exécuté avec succès.<br/><br/>
-<a href=3D"http://remocra.sdisxx.fr/remocra/telechargement/38f475670b2b4ef184c78f5dd6e6f476">Télécharger les données</a><br/><br/>
-          Cordialement.</p>
-        <p class="caution">En cas d'incompréhension de ce message, merci
-          de prendre contact avec le SDIS83.</p>
-        <p class="footer">Ce message vous a été envoyé automatiquement,
-          merci de ne pas répondre à l'expéditeur.</p>
-      </div>
-      <br>
-    </div>
-++++
+[NOTE]
+====
+Bonjour Sdis Ref Pena,
+
+Le traitement *"Etat des hydrants PIBI indisponibles"* demandé le 07/10/2013 à 00h10 a été exécuté avec succès.
+
+http://remocra.sdisxx.fr/remocra/telechargement/38f475670b2b4ef184c78f5dd6e6f476[Télécharger les données]
+
+Cordialement.
+
+_En cas d'incompréhension de ce message, merci de prendre contact avec le SDIS83._
+
+_Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l'expéditeur._
+====
 
 * Exemple de rapport reçu par la commune de Draguignan :
 ** Sujet : SDIS83 REMOCRA - Hydrants indisponibles
 ** Fichier : attaché 20131007_DRAGUIGNAN_indisponible.xls
 ** Corps :
 
-++++
-   <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
-      <title>Hydrants indisponibles SDIS83 REMOCRA</title>
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style>
-      <div>
-        <p>Bonjour,<br>
-          <br>
-          Des hydrants sont indisponibles sur votre commune, en voici la
-          liste en pièce jointe.<br/><br/>
-          Cordialement.</p>
-        <p class="caution">En cas d'incompréhension de ce message, merci
-          de prendre contact avec le SDIS83.</p>
-        <p class="footer">Ce message vous a été envoyé automatiquement,
-          merci de ne pas répondre à l'expéditeur.</p>
-      </div>
-      <br>
-    </div>
-++++
+[NOTE]
+====
+Bonjour,
+
+Des hydrants sont indisponibles sur votre commune, en voici la liste en pièce jointe.
+
+Cordialement.
+
+_En cas d'incompréhension de ce message, merci de prendre contact avec le SDIS83._
+
+_Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l'expéditeur._
+====
 
 * Exemple de rapport reçu par la commune de Fox Amphoux :
 ** Sujet : SDIS83 REMOCRA - Hydrants indisponibles
 ** Fichier : attaché 20131007_FOX_AMPHOUX_indisponible.xls
 ** Corps :
 
-++++
-     <div style="margin-left:30px;background-color:#eeeeee"  class="moz-forward-container">
-      <title>Hydrants indisponibles SDIS83 REMOCRA</title>
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style>
-      <div>
-        <p>Bonjour,<br>
-          <br>
-          Des hydrants sont indisponibles sur votre commune, en voici la
-          liste en pièce jointe.<br/><br/>
-          Cordialement.</p>
-        <p class="caution">En cas d'incompréhension de ce message, merci
-          de prendre contact avec le SDIS83.</p>
-        <p class="footer">Ce message vous a été envoyé automatiquement,
-          merci de ne pas répondre à l'expéditeur.</p>
-      </div>
-      <br>
-    </div>
-++++
+[NOTE]
+====
+Bonjour,
+
+Des hydrants sont indisponibles sur votre commune, en voici la liste en pièce jointe.
+
+Cordialement.
+
+_En cas d'incompréhension de ce message, merci de prendre contact avec le SDIS83._
+
+_Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l'expéditeur._
+====
 
 Le modèle utilisé porte le code `COMMUNE_HYDRANT_INDISPONIBLE` dans la table `remocra.email_modele` pour les communes (modèles génériques de la table `pdi.modele_message` pour les référents et le demandeur).
 
