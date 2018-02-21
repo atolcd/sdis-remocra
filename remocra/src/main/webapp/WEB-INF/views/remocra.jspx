@@ -25,9 +25,9 @@
     
 		<title>SDIS - REMOcRA</title>
 		
-		<spring:url var="favicon" value="/resources/images/remocra/favicon.ico" />
+		<spring:url var="favicon" value="/ext-res/images/remocra/favicon.ico" />
 		<link rel="shortcut icon" href="${favicon}" />
-		<spring:url var="imageSrcUrl" value="/resources/images/remocra/image_src.jpg" />
+		<spring:url var="imageSrcUrl" value="/ext-res/images/remocra/image_src.jpg" />
 		<link rel="image_src" href="${imageSrcUrl}"/>
 		
 		<!-- Stylesheets -->
@@ -36,7 +36,7 @@
 		<spring:url var="jsbase" value="/resources/js" />
 		<spring:url var="cssbase" value="/resources/styles" />
 		<spring:url var="extrescssbase" value="/ext-res/styles" />
-		<spring:url var="imagesbase" value="/resources/images" />
+		<spring:url var="imagesbase" value="/ext-res/images" />
 		
 		<style type="text/css">
 			.remocra-cmp div.olMap { margin-left: 2px !important; }
