@@ -1,8 +1,8 @@
 ==== Synchronisation SIG
 Ces traitements permettent de synchroniser de manière bi-directionnelle les données entre la base de données du SDIS (MS SQL Server 2008) et la base de données REMOCRA (PostgreSQL) de la manière suivante :
 
-* Dans le sens *SIG vers REMOCRA*, duplication intégrale (création et peuplement à chaque traitement) des tables de la base SDIS vers la base REMOCRA dans le schéma _"remocra_referentiel"_ (boucle sur chaque table MS SQL)
-* Dans le sens *REMOCRA vers SIG*, alimentation de la table MS SQL _"NOM_DE_TABLE_A FOURNIR"_ dédiée au stockage des informations des PEI
+* Dans le sens *SIG vers REMOCRA*, duplication intégrale (création et peuplement à chaque traitement) des tables de la base SDIS vers la base REMOCRA dans le schéma _"remocra_referentiel"_ (boucle sur chaque table MS SQL sauf : _"REMOCRA_PEI"_, _"REMOCRA_TABLE"_, _"REMOCRA_TOURNEES"_)
+* Dans le sens *REMOCRA vers SIG*, alimentation des table MS SQL _"REMOCRA_PEI"_, _"REMOCRA_TABLE"_, _"REMOCRA_TOURNEES"_  dédiées au stockage des informations des PEI.
 
 ===== Configuration et mise en place
 
