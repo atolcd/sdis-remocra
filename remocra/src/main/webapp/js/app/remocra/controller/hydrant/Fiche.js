@@ -255,7 +255,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
         } else if (typeSaisie == 'NOCTRL') {
             this.setReadOnly(fiche.down('#identification'));
             this.setReadOnly(fiche.down('#tracabilite'));
-            this.setReadOnly(fiche.down('#verification'));
+            if(fiche.hydrant.get('code') != 'PENA'){
+              this.setReadOnly(fiche.down('#verification'));
+            }
             fiche.down('checkbox[name=allAnomalie]').setValue(true);
             fiche.down('checkbox[name=allAnomalie]').hide();
         }
