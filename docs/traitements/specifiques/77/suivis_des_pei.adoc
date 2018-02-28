@@ -1,0 +1,35 @@
+==== Suivi des PEI
+===== PEI devenus indisponibles
+Ce traitement vise à informer les gestionnaires des PEI (commune ou EPCI si il y a délégation) qu'un ou plusieurs PEI est devenu indisponible sur son territoire de compétence par le biais d'un document envoyé par mail. Le document généré met en avant les nouveaux PEI indisponibles suivis d'un tableau de tous les PEI indisponibles sur la zone de compétence du gestionnaire. Un dernier tableau liste les PEI supprimés sur cette même zone. Ce traitement insère une demande de traitement par gestionnaires à notifier.
+
+====== Configuration
+Dans le fichier _remocraXX.properties_, ajouter les paramètres suivant : 
+
+[width="100%",options="header"]
+|====================
+| Paramètre | Description 
+| PDI_INDISPO_INTERVAL | Période de temps sur laquelle il faut vérifier si de nouveaux PEI sont devenus indisponible
+| PDI_INDISPO_MODELE_TRAITEMENT_ID | Identifiant du modèle de traitement qui génèrera le courrier
+| PDI_INDISPO_COURRIER | Nom du fichier servant de modèle de courrier
+| PDI_INDISPO_PROFIL_USER_EMETTEUR | Profil utilisateur pour définir le responsable émetteur du courrier
+|====================
+
+====== Lancement et planification de la synchronisation
+L'exécution de manière automatique s'effectue en planifiant le lancement du fichier `/var/remocra/pdi/traitements_sdis/77/creer_traitement_pei_indisponibles.sh` avec l'utilisateur `postgres`.
+
+===== PEI non réceptionné
+Ce traitement vise à informer les CIS et groupements opérationnels qu'un ou plusieurs nouveau PEI a été créé mais non réceptionné sur son territoire de compétence par le biais d'un tableau CSV envoyé par mail. Le tableau reprend l'intégralité des PEI non réceptionnés. Ce traitement insère une demande de traitement par CIS et groupement à notifier.
+
+====== Configuration
+Dans le fichier _remocraXX.properties_, ajouter les paramètres suivant : 
+
+[width="100%",options="header"]
+|====================
+| Paramètre | Description 
+| PDI_NON_RECEPTION_INTERVAL | Période de temps sur laquelle il faut vérifier si de nouveaux PEI ont été créés mais non réceptionnés
+| PDI_NON_RECEPTION_MODELE_TRAITEMENT_ID | Identifiant du modèle de traitement qui génèrera le tableau
+| PDI_NON_RECEPTION_PROFIL | Code du profil utilisateur destinataire du tableau 
+|====================
+
+====== Lancement et planification de la synchronisation
+L'exécution de manière automatique s'effectue en planifiant le lancement du fichier `/var/remocra/pdi/traitements_sdis/77/creer_traitement_non_reception.sh` avec l'utilisateur `postgres`.
