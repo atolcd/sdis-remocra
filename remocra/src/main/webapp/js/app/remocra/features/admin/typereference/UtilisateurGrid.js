@@ -200,7 +200,7 @@ Ext.define('Sdis.Remocra.features.admin.typereference.UtilisateurGrid', {
             var typeOrganismeId = utilisateurRecord.phantom?null:utilisateurRecord.getOrganisme().get('typeOrganismeId');
             this.filterProfilsAndSetProfilAccordindToOrganisme(typeOrganismeId, profilsCombo, utilisateurRecord);
         // Filtrage des organismes par rapport aux droits
-            if(!Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
+            if(!Sdis.Remocra.Rights.getRight('UTILISATEUR_FILTER_ALL').Create) {
             var organismesCombo = this.editingPlugin.editor.getComponent('organismeId');
             var organismeValue = user.getOrganisme().get('id');
             organismesCombo.getStore().clearFilter(true);

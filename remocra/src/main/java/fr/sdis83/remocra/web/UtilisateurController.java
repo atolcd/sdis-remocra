@@ -153,11 +153,11 @@ public class UtilisateurController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE') or hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR', 'CREATE')")
+    @PreAuthorize("hasRight('UTILISATEUR_FILTER_ALL', 'CREATE') or hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR', 'CREATE')")
     public ResponseEntity<java.lang.String> updateFromJson(@PathVariable("id") Long id, @RequestBody String json) {
 
         final Utilisateur record = Utilisateur.fromJsonToUtilisateur(json);
-        if(!authUtils.hasRight(TypeDroitEnum.REFERENTIELS, AccessRight.Permission.CREATE)) {
+        if(!authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ALL, AccessRight.Permission.CREATE)) {
             Organisme organisme = utilisateurService.getCurrentUtilisateur().getOrganisme();
             if(record.getOrganisme().getId() != organisme.getId()){
                 throw new AccessDeniedException("L'utilisateur n'est pas autorisé à modifier cette donnée");
@@ -178,10 +178,10 @@ public class UtilisateurController {
     }
 
     @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE') or hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR', 'CREATE')")
+    @PreAuthorize("hasRight('UTILISATEUR_FILTER_ALL', 'CREATE') or hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR', 'CREATE')")
     public ResponseEntity<java.lang.String> createFromJson(final @RequestBody String json) {
         final Utilisateur record = Utilisateur.fromJsonToUtilisateur(json);
-        if(!authUtils.hasRight(TypeDroitEnum.REFERENTIELS, AccessRight.Permission.CREATE)) {
+        if(!authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ALL, AccessRight.Permission.CREATE)) {
             Organisme organisme = utilisateurService.getCurrentUtilisateur().getOrganisme();
             if(record.getOrganisme().getId() != organisme.getId()){
                 throw new AccessDeniedException("L'utilisateur n'est pas autorisé à modifier cette donnée");

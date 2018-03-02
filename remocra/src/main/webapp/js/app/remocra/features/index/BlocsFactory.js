@@ -292,42 +292,48 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
     },
 
     createAdministrationBloc: function(title, icon, minHeight) {
-            items= null;
-            if(Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
-                items =[{
-                   type: 'href',
-                   href: 'admin/index/elt/paramconf',
-                   lbl: 'Paramètres de configuration'
-               },{
-                   type: 'href',
-                   href: 'hydrants/anomalies',
-                   lbl: 'Gestion des anomalies'
-               },{
-                   type: 'sep'
-               },{
-                   type: 'href',
-                   href: 'admin/index/elt/organismes',
-                   lbl: 'Les organismes'
-               },{
-                   type: 'href',
-                   href: 'admin/index/elt/utilisateurs',
-                   lbl: 'Les utilisateurs'
-               },{
-                   type: 'sep'
-               },{
-                   type: 'href',
-                   href: 'admin/documents',
-                   lbl: 'Les documents'
-               }];
-            }else {
-                   // Administateur de l'organisme
-                items = [{
-                   type: 'href',
-                   href: 'admin/index/elt/utilisateurs',
-                   lbl: 'Les utilisateurs'
-                }];
-            }
-
+        var items = [];
+        if(Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
+            items.push({
+               type: 'href',
+               href: 'admin/index/elt/paramconf',
+               lbl: 'Paramètres de configuration'
+             });
+             items.push({
+                 type: 'href',
+                 href: 'hydrants/anomalies',
+                 lbl: 'Gestion des anomalies'
+             });
+             items.push({
+                 type: 'sep'
+             });
+             items.push({
+                 type: 'href',
+                 href: 'admin/index/elt/organismes',
+                 lbl: 'Les organismes'
+             });
+        }
+        if (Sdis.Remocra.Rights.getRight('UTILISATEUR_FILTER_ALL').Create
+            || Sdis.Remocra.Rights.getRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR').Create) {
+            items.push({
+                type: 'href',
+                href: 'admin/index/elt/utilisateurs',
+                lbl: 'Les utilisateurs'
+            });
+        }
+        if (Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
+           items.push({
+               type: 'sep'
+           });
+           items.push({
+               type: 'href',
+               href: 'admin/documents',
+               lbl: 'Les documents'
+           });
+        }
+        if (items.length<1) {
+            return null;
+        }
         return {
            type: 'admin',
            minh: minHeight || this.randomHeight(),

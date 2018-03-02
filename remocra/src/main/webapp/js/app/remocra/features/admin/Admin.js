@@ -22,100 +22,99 @@ Ext.define('Sdis.Remocra.features.admin.Admin', {
     id: 'admin',
     
     initComponent: function() {
-        var data = [], panels;
-        if(Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
-                data.push(['adminParamConf', 'Paramètres de configuration', 'paramconf']);
-                data.push(['adminUtilisateur', '7 : Utilisateurs', 'utilisateurs']);
-                data.push(['adminOrganisme', '6 : Organismes', 'organismes']);
-                data.push(['adminProfilOrganismeUtilisateurDroit', '5 : Profils organismes, utilisateurs, droits', 'proorgutidroits']);
-                data.push(['adminProfilUtilisateur', '4\' : Profils utilisateurs', 'profilutilisateurs']);
-                data.push(['adminProfilOrganisme', '4 : Profils organismes', 'profilorganismes']);
-                data.push(['adminTypeOrganisme', '3 : Types d\'organismes', 'typeorganismes']);
-                data.push(['adminDroit', '2 : Droits', 'droits']);
-                data.push(['adminProfilDroit', '1 : Profils de droits', 'profildroits']);
-                panels = [ {
-                              xtype: 'crAdminParamConf',
-                             itemId: 'adminParamConf'
-                         },
-                         // Utilisateurs et organismes (paginés)
-                         {
-                             xtype: 'crAdminTypeReference',
-                             itemId: 'adminUtilisateur',
-                             grid: {
-                               xtype: 'crAdminUtilisateurGrid'
-                             }
-                         }, {
-                             xtype: 'crAdminTypeReference',
-                             itemId: 'adminOrganisme',
-                             grid: {
-                               xtype: 'crAdminOrganismeGrid'
-                             }
-                         },
-                         // Autres (non paginés)
-                         {
-                             xtype: 'crAdminTypeReference',
-                             itemId: 'adminTypeOrganisme',
-                             grid: {
-                                 xtype: 'crAdminTypeOrganismeGrid'
-                             }
-                         }, {
-                             xtype: 'crAdminTypeReference',
-                             itemId: 'adminProfilUtilisateur',
-                             grid: {
-                               xtype: 'crAdminProfilGrid',
-                               modelType: 'Sdis.Remocra.model.ProfilUtilisateur',
-                               store: Ext.create('Sdis.Remocra.store.ProfilUtilisateur', {
-                                   remoteFilter: true,
-                                   remoteSort: true,
-                                   autoLoad: true,
-                                   autoSync: true,
-                                   pageSize: 20
-                               })
-                             }
-
-                         }, {
-                             xtype: 'crAdminTypeReference',
-                             itemId: 'adminProfilOrganisme',
-                             grid: {
-                               xtype: 'crAdminProfilGrid',
-                               modelType: 'Sdis.Remocra.model.ProfilOrganisme',
-                               store: Ext.create('Sdis.Remocra.store.ProfilOrganisme', {
-                                   remoteFilter: true,
-                                   remoteSort: true,
-                                   autoLoad: true,
-                                   autoSync: true,
-                                   pageSize: 20
-                               })
-                             }
-                         }, {
-                             xtype: 'crAdminTypeReference',
-                             itemId: 'adminProfilDroit',
-                             grid: {
-                               xtype: 'crAdminProfilDroitGrid'
-                             }
-                         }, {
-                             xtype: 'crAdminTypeReference',
-                             itemId: 'adminDroit',
-                             grid: {
-                               xtype: 'crAdminDroitGrid'
-                             }
-                         }, {
-                             xtype: 'crAdminTypeReference',
-                             itemId: 'adminProfilOrganismeUtilisateurDroit',
-                             grid: {
-                               xtype: 'crAdminProfilOrganismeUtilisateurDroitGrid'
-                             }
-                         }
-                                         ];
-        } else if (!Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
-               data.push(['adminUtilisateur', 'Utilisateurs', 'utilisateurs']);
-               panels = [{
-                    xtype: 'crAdminTypeReference',
-                    itemId: 'adminUtilisateur',
-                    grid: {
-                        xtype: 'crAdminUtilisateurGrid'
-                    }
-               }];
+        var data = [], panels = [];
+        if (Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
+            data.push(['adminParamConf', 'Paramètres de configuration', 'paramconf']);
+            panels.push({
+                xtype: 'crAdminParamConf',
+                itemId: 'adminParamConf'
+            });
+        }
+        if (Sdis.Remocra.Rights.getRight('UTILISATEUR_FILTER_ALL').Create
+            || Sdis.Remocra.Rights.getRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR').Create) {
+            var prefix = Sdis.Remocra.Rights.getRight('REFERENTIELS').Create ? '7 : ' : '';
+            data.push(['adminUtilisateur', prefix + 'Utilisateurs', 'utilisateurs']);
+            panels.push({
+                xtype: 'crAdminTypeReference',
+                itemId: 'adminUtilisateur',
+                grid: {
+                    xtype: 'crAdminUtilisateurGrid'
+                }
+            });
+        }
+        if (Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
+            data.push(['adminOrganisme', '6 : Organismes', 'organismes']);
+            panels.push({
+                xtype: 'crAdminTypeReference',
+                itemId: 'adminOrganisme',
+                grid: {
+                    xtype: 'crAdminOrganismeGrid'
+                }
+            });
+            data.push(['adminProfilOrganismeUtilisateurDroit', '5 : Profils organismes, utilisateurs, droits', 'proorgutidroits']);
+            panels.push({
+                xtype: 'crAdminTypeReference',
+                itemId: 'adminProfilOrganismeUtilisateurDroit',
+                grid: {
+                    xtype: 'crAdminProfilOrganismeUtilisateurDroitGrid'
+                }
+            });
+            data.push(['adminProfilUtilisateur', '4\' : Profils utilisateurs', 'profilutilisateurs']);
+            panels.push({
+                xtype: 'crAdminTypeReference',
+                itemId: 'adminProfilUtilisateur',
+                grid: {
+                    xtype: 'crAdminProfilGrid',
+                    modelType: 'Sdis.Remocra.model.ProfilUtilisateur',
+                    store: Ext.create('Sdis.Remocra.store.ProfilUtilisateur', {
+                        remoteFilter: true,
+                        remoteSort: true,
+                        autoLoad: true,
+                        autoSync: true,
+                        pageSize: 20
+                    })
+                }
+            });
+            data.push(['adminProfilOrganisme', '4 : Profils organismes', 'profilorganismes']);
+            panels.push({
+                xtype: 'crAdminTypeReference',
+                itemId: 'adminProfilOrganisme',
+                grid: {
+                    xtype: 'crAdminProfilGrid',
+                    modelType: 'Sdis.Remocra.model.ProfilOrganisme',
+                    store: Ext.create('Sdis.Remocra.store.ProfilOrganisme', {
+                        remoteFilter: true,
+                        remoteSort: true,
+                        autoLoad: true,
+                        autoSync: true,
+                        pageSize: 20
+                    })
+                 }
+            });
+            data.push(['adminTypeOrganisme', '3 : Types d\'organismes', 'typeorganismes']);
+            panels.push({
+                xtype: 'crAdminTypeReference',
+                itemId: 'adminTypeOrganisme',
+                grid: {
+                    xtype: 'crAdminTypeOrganismeGrid'
+                }
+            });
+            data.push(['adminDroit', '2 : Droits', 'droits']);
+            panels.push({
+                xtype: 'crAdminTypeReference',
+                itemId: 'adminDroit',
+                grid: {
+                    xtype: 'crAdminDroitGrid'
+                }
+            });
+            data.push(['adminProfilDroit', '1 : Profils de droits', 'profildroits']);
+            panels.push({
+                xtype: 'crAdminTypeReference',
+                itemId: 'adminProfilDroit',
+                grid: {
+                    xtype: 'crAdminProfilDroitGrid'
+                }
+            });
         }
 
         var valueToBeSelected = this.searchIndexToBeSelected(data, this.extraParams.elt||null);
