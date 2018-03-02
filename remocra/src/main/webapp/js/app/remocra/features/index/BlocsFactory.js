@@ -48,7 +48,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             });
         }
         
-        if (Sdis.Remocra.Rights.getRight('HYDRANTS_TRAITEMENT').Create || Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
+        if (Sdis.Remocra.Rights.getRight('HYDRANTS_TRAITEMENT').Create || Sdis.Remocra.Rights.getRight('TRAITEMENTS').Create) {
             if (!Ext.isEmpty(blocHydrants.items)) {
                 blocHydrants.items.push({
                     type: 'sep'
@@ -99,7 +99,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
                 onclick: ' onclick="this.href=\'#adresses/delib/\'+Math.floor(Math.random()*999);"'
             });
         }
-        if (Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
+        if (Sdis.Remocra.Rights.getRight('TRAITEMENTS').Create) {
             //Traitements
             if (!Ext.isEmpty(blocAdresses.items)) {
                 blocAdresses.items.push({
@@ -198,7 +198,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             }]
         };
 
-        if (Sdis.Remocra.Rights.getRight('RCI').Create || Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
+        if (Sdis.Remocra.Rights.getRight('RCI').Create || Sdis.Remocra.Rights.getRight('TRAITEMENTS').Create) {
             bloc.items.push({
                 type: 'sep'
             }, {
@@ -275,7 +275,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
     },
 
     createTraitementsBloc: function(title, icon, minHeight) {
-        if (!Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
+        if (!Sdis.Remocra.Rights.getRight('TRAITEMENTS').Create) {
             return null;
         }
         return {
@@ -321,7 +321,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
                 lbl: 'Les utilisateurs'
             });
         }
-        if (Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
+        if (Sdis.Remocra.Rights.getRight('DOCUMENTS').Create) {
            items.push({
                type: 'sep'
            });

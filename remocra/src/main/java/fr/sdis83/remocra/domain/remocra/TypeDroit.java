@@ -23,6 +23,7 @@ public class TypeDroit {
         // Général
         UTILISATEUR_FILTER_ALL("utilisateur.filter.*"), UTILISATEUR_FILTER_ORGANISME_UTILISATEUR("utilisateur.filter.organisme.utilisateur"),
         REFERENTIELS("referentiels"),
+        TRAITEMENTS("traitements"),
         DOCUMENTS("documents"),
 
         // Module Alertes / adresses

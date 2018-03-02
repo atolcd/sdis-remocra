@@ -77,7 +77,7 @@ public class TraitementsController {
      *             Si l'utilisateur n'a pas les accès attendus.
      */
     protected void checkRightsForThematique(int thematiqueId) throws AccessDeniedException {
-        if (authUtils.hasRight(TypeDroitEnum.REFERENTIELS, Permission.CREATE)) {
+        if (authUtils.hasRight(TypeDroitEnum.TRAITEMENTS, Permission.CREATE)) {
             // Accès à tous les traitements
             return;
         }
@@ -117,9 +117,9 @@ public class TraitementsController {
      *             Si l'utilisateur n'a pas les accès attendus.
      */
     protected void checkRightsAtLeastOne() throws AccessDeniedException {
-        if (authUtils.hasRight(TypeDroitEnum.REFERENTIELS, Permission.CREATE) || authUtils.hasRight(TypeDroitEnum.HYDRANTS_TRAITEMENT, Permission.CREATE)
+        if (authUtils.hasRight(TypeDroitEnum.TRAITEMENTS, Permission.CREATE) || authUtils.hasRight(TypeDroitEnum.HYDRANTS_TRAITEMENT, Permission.CREATE)
                 || authUtils.hasRight(TypeDroitEnum.PERMIS_TRAITEMENT, Permission.CREATE) || authUtils.hasRight(TypeDroitEnum.RCI, Permission.CREATE)
-                   || authUtils.hasRight(TypeDroitEnum.OLDEB, Permission.READ)) {
+                || authUtils.hasRight(TypeDroitEnum.OLDEB, Permission.READ)) {
             return;
         }
         throw new AccessDeniedException("Accès insuffisant");
@@ -162,7 +162,7 @@ public class TraitementsController {
                     checkRightsForThematique(intCodeTraitement);
                     return ModeleTraitement.findModeleTraitementsByCode(intCodeTraitement).getResultList();
                 }
-                if (!authUtils.hasRight(TypeDroitEnum.REFERENTIELS, Permission.CREATE)) {
+                if (!authUtils.hasRight(TypeDroitEnum.TRAITEMENTS, Permission.CREATE)) {
                     // Pas accès global : on interdit
                     throw new AccessDeniedException("Accès insuffisant");
                 }
@@ -507,7 +507,7 @@ public class TraitementsController {
      * @throws BusinessException
      */
     @RequestMapping(value = "/specifique/hydrantsnonnum", method = RequestMethod.GET, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE') or hasRight('HYDRANTS_EXPORT_NON_NUM', 'CREATE') or hasRight('HYDRANTS_TRAITEMENT', 'CREATE')")
+    @PreAuthorize("hasRight('TRAITEMENTS', 'CREATE') or hasRight('HYDRANTS_EXPORT_NON_NUM', 'CREATE') or hasRight('HYDRANTS_TRAITEMENT', 'CREATE')")
     public ResponseEntity<java.lang.String> createTraitementSpecifiqueHydrantsNonNum(HttpServletRequest request) throws BusinessException {
 
         // Id du traitement Hydrants à numéroter
@@ -551,7 +551,7 @@ public class TraitementsController {
      * @throws BusinessException
      */
     @RequestMapping(value = "/specifique/nbalertesutilisateur", method = RequestMethod.GET, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE') or hasRight('ALERTES_EXPORT', 'CREATE')")
+    @PreAuthorize("hasRight('TRAITEMENTS', 'CREATE') or hasRight('ALERTES_EXPORT', 'CREATE')")
     public ResponseEntity<java.lang.String> createTraitementSpecifiqueAlertesUtilisateur(HttpServletRequest request) throws BusinessException {
 
         // Id du traitement Hydrants à numéroter
