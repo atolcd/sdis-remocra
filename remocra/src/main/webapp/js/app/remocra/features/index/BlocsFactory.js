@@ -22,7 +22,8 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             });
         }
         
-        if (Sdis.Remocra.Rights.getRight('HYDRANTS_PRESCRIT').Create) {
+        if (Sdis.Remocra.Rights.getRight('HYDRANTS_PRESCRIT').Read
+            || Sdis.Remocra.Rights.getRight('HYDRANTS_PRESCRIT').Create) {
             blocHydrants.items.push({
                 type: 'href',
                 href: 'hydrants/prescrits',

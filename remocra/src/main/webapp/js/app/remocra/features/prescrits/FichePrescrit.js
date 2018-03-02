@@ -5,6 +5,8 @@ Ext.define('Sdis.Remocra.features.prescrits.FichePrescrit', {
     width: 500,
     layout: 'fit',
 
+    cls: 'fichehydrantprescrit',
+
     title: 'Hydrant prescrit',
     bodyPadding: 10,
     tabItems: [],

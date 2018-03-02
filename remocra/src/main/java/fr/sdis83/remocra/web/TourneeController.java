@@ -33,6 +33,7 @@ public class TourneeController {
     private UtilisateurService utilisateurService;
 
     @RequestMapping(value = "", headers = "Accept=application/json")
+    @PreAuthorize("hasRight('TOURNEE', 'READ')")
     public ResponseEntity<java.lang.String> listJson(final @RequestParam(value = "page", required = false) Integer page,
             final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
             final @RequestParam(value = "sort", required = false) String sorts, final @RequestParam(value = "filter", required = false) String filters,
@@ -66,6 +67,7 @@ public class TourneeController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/xml")
+    @PreAuthorize("hasRight('TOURNEE', 'READ')")
     public ResponseEntity<String> getTourneeDisponible() {
         List<Tournee> tournees = tourneeService.getTourneeDisponible(utilisateurService.getCurrentUtilisateur());
 
@@ -83,7 +85,7 @@ public class TourneeController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRight('TOURNEE', 'CREATE')")
     public ResponseEntity<java.lang.String> deleteTournee(@PathVariable("id") Long id) {
         try {
             Tournee attached = Tournee.findTournee(id);
@@ -96,7 +98,7 @@ public class TourneeController {
     }
 
     @RequestMapping(value = "/cancelreservation/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRight('TOURNEE_RESERVATION', 'DELETE')")
     public ResponseEntity<java.lang.String> cancelReservationTournee(@PathVariable("id") Long id) {
         try {
             Tournee attached = Tournee.findTournee(id);

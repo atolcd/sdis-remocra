@@ -69,7 +69,7 @@ public class HydrantPrescritController extends AbstractServiceableController<Hyd
     }
 
     @RequestMapping(value = "/layer", method = RequestMethod.GET, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS_PRESCRIT', 'CREATE')")
+    @PreAuthorize("hasRight('HYDRANTS_PRESCRIT', 'READ')")
     public ResponseEntity<java.lang.String> layer(final @RequestParam String bbox) {
         if (bbox == null || bbox.isEmpty()) {
             return FeatureUtil.getResponse(service.findAllHydrantPrescrits());

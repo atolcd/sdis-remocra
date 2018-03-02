@@ -17,7 +17,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Prescrit', {
     init: function() {
         this.control({
             'prescritsMap': {
-                layersadded: this.initControlMap
+                layersadded: this.initControlMap,
+                afterrender: this.processRight
             },
             'prescritsMap #dessinerBtnPrescrit': {
                 toggle: function(button, pressed) {
@@ -126,7 +127,6 @@ Ext.define('Sdis.Remocra.controller.hydrant.Prescrit', {
                 Sdis.Remocra.util.Msg.msg('HydrantPrescrit', 'Vous ne possédez pas les autorisations nécessaires pour créer un hydrant prescrit sur cette zone', 3);
             }
         });
-
     },
 
     onAfterRenderFiche: function(fiche) {
@@ -148,6 +148,12 @@ Ext.define('Sdis.Remocra.controller.hydrant.Prescrit', {
 
                 form.findField('x').setValue(x);
                 form.findField('y').setValue(y);
+            }
+
+            if (!Sdis.Remocra.Rights.getRight('HYDRANTS_PRESCRIT').Create) {
+                fiche.down('#ok').hide();
+                fiche.down('#close').setText('Fermer');
+                this.setReadOnly(fiche);
             }
         }
     },
@@ -231,5 +237,40 @@ Ext.define('Sdis.Remocra.controller.hydrant.Prescrit', {
                 Sdis.Remocra.util.Msg.msg('HydrantPrescrit', 'Vous ne possédez pas les autorisations nécessaires pour supprimer un hydrant prescrit sur cette zone', 3);
             }
         });
+    },
+
+    processRight: function() {
+        if (!Sdis.Remocra.Rights.getRight('HYDRANTS_PRESCRIT').Create) {
+            this.getMap().down('#dessinerBtnPrescrit').hide();
+            this.getMap().down('#deleteBtn').hide();
+        }
+    },
+
+    setReadOnly: function(component) {
+        if (Ext.isFunction(component.cascade)) {
+            component.cascade(function(item) {
+                if (Ext.isFunction(item.setReadOnly)) {
+                    item.setReadOnly(true);
+                }
+                if (Ext.isFunction(item.hideTrigger)) {
+                    item.hideTrigger();
+                }
+                if (item.getToolbar) {
+                    toolbar = item.getToolbar();
+                }
+                if (item.isXType('grid')) {
+                    Ext.Array.each(item.plugins, function(plugin) {
+                        plugin.beforeEdit = function() {
+                            return false;
+                        };
+                    });
+                    Ext.Array.each(item.columns, function(column) {
+                        if (column.isXType('actioncolumn')) {
+                            column.destroy();
+                        }
+                    }, null, true);
+                }
+            });
+        }
     }
 });

@@ -90,7 +90,7 @@ public abstract class AbstractTypeReferenceController<T extends ITypeReference> 
     }
 
     @RequestMapping(headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'READ')")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<java.lang.String> listJson(@RequestParam(value = "filter", required = false) String filters) {
         return listJsonNR(filters);
     }

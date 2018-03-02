@@ -64,8 +64,8 @@ public class UtilisateurController {
             @RequestParam(value = "sort", required = false) String sorts, @RequestParam(value = "filter", required = false) String filters) {
         final List<ItemSorting> sortList = ItemSorting.decodeJson(sorts);
         final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
-        if(!authUtils.hasRight(TypeDroitEnum.REFERENTIELS, AccessRight.Permission.CREATE)) {
-            if(authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ORGANISME_UTILISATEUR, AccessRight.Permission.CREATE)) {
+        if(!authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ALL, AccessRight.Permission.READ)) {
+            if(authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ORGANISME_UTILISATEUR, AccessRight.Permission.READ)) {
               itemFilterList.add(new ItemFilter("organismeId" , String.valueOf(utilisateurService.getCurrentUtilisateur().getOrganisme().getId())));
             }else {
                 itemFilterList.add(new ItemFilter("id" ,String.valueOf(utilisateurService.getCurrentUtilisateur().getId())));

@@ -19,38 +19,47 @@ import org.springframework.roo.addon.tostring.RooToString;
 public class TypeDroit {
 
     public static enum TypeDroitEnum {
+
+        // Général
         UTILISATEUR_FILTER_ALL("utilisateur.filter.*"), UTILISATEUR_FILTER_ORGANISME_UTILISATEUR("utilisateur.filter.organisme.utilisateur"),
-
         REFERENTIELS("referentiels"),
-
-        ADRESSES("adresses"),
-
-        DFCI("dfci"),DFCI_EXPORTATLAS("dfci.exportatlas"),
-
-        HYDRANTS("hydrants"), HYDRANTS_PRESCRIT("hydrants.prescrit"), HYDRANTS_TRAITEMENT("hydrants.traitement"),
-
-        HYDRANTS_RECONNAISSANCE("hydrants.reconnaissance"), HYDRANTS_CONTROLE("hydrants.controle"), HYDRANTS_VERIFICATION("hydrants.verification"), HYDRANTS_RECEPTION("hydrants.reception"),
-        HYDRANTS_DEPLACEMENT("hydrants.deplacement"),
-
-        HYDRANTS_NUMEROTATION("hydrants.numerotation"), HYDRANTS_MCO("hydrants.mco"),
-
-        TOURNEE("tournee"), TOURNEE_RESERVATION("tournee.reservation"),
-
-        PERMIS("permis"), PERMIS_DOCUMENTS("permis.documents"), PERMIS_TRAITEMENT("permis.traitement"),
-
-        RCI("rci"),
-
-        RISQUES_KML("risques.kml"),
-
         DOCUMENTS("documents"),
 
-        DEPOT_DELIB("depot.delib"), DEPOT_DECLAHYDRANT("depot.declahydrant"), DEPOT_RECEPTRAVAUX("depot.receptravaux"), HYDRANTS_EXPORT_NON_NUM("hydrants.exportnonnum"), ALERTES_EXPORT("alertes.export"),
+        // Module Alertes / adresses
+        ADRESSES("adresses"),
+        ALERTES_EXPORT("alertes.export"),
+        DEPOT_DELIB("depot.delib"),
 
-        CARTOGRAPHIES("cartographies"),
+        // Module DFCI
+        DFCI("dfci"),DFCI_EXPORTATLAS("dfci.exportatlas"),
+        DEPOT_RECEPTRAVAUX("depot.receptravaux"),
 
-        OLDEB("obligation.debroussaillment"),
+        // Module PEI
+        HYDRANTS("hydrants"),
+        HYDRANTS_RECONNAISSANCE("hydrants.reconnaissance"), HYDRANTS_CONTROLE("hydrants.controle"),
+        HYDRANTS_NUMEROTATION("hydrants.numerotation"), HYDRANTS_MCO("hydrants.mco"),
+        INDISPOS("indisponibilite.temporaire"),
+        TOURNEE("tournee"), TOURNEE_RESERVATION("tournee.reservation"),
+        HYDRANTS_TRAITEMENT("hydrants.traitement"),
+        HYDRANTS_EXPORT_NON_NUM("hydrants.exportnonnum"),
+        DEPOT_DECLAHYDRANT("depot.declahydrant"),
 
-        INDISPOS("indisponibilite.temporaire");
+        HYDRANTS_PRESCRIT("hydrants.prescrit"),
+
+        // Module Permis
+        PERMIS("permis"), PERMIS_DOCUMENTS("permis.documents"), PERMIS_TRAITEMENT("permis.traitement"),
+
+        // Module RCCI
+        RCI("rci"),
+
+        // Module Risques
+        RISQUES_KML("risques.kml"),
+
+        // Module Débroussaillement
+        OLDEB("obligation.debroussaillement"),
+
+        // Module Cartographie
+        CARTOGRAPHIES("cartographies");
 
         private final String value;
 

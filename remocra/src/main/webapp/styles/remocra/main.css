@@ -1151,7 +1151,8 @@ body.x-ie .x-btn-default-toolbar-small-icon-text-left .x-btn-inner {
 	content: " *";
 }
 
-.fichehydrant input[readonly], .fichehydrant textarea[readonly] {
+.fichehydrant input[readonly], .fichehydrant textarea[readonly],
+.fichehydrantprescrit input[readonly], .fichehydrantprescrit textarea[readonly] {
 	filter: alpha(opacity=30);
 	opacity: .3;
 }

@@ -10,7 +10,7 @@ Ext.define('Sdis.Remocra.features.prescrits.Map', {
 
     editItems: ['Sélectionner : ',{
         xtype: 'button',
-        tooltip: 'Sélectionner des hydrants prescrits',
+        tooltip: 'Sélectionner des points d\'eau prescrits',
         text: '<span>Sélectionner</span>',
         iconCls: 'select-polygoneIcon',
         toggleGroup: 'excl-ctrl1',
@@ -20,8 +20,8 @@ Ext.define('Sdis.Remocra.features.prescrits.Map', {
         itemId: 'selectBtn'
     },'Prévention',{
         xtype: 'button',
-        tooltip: 'Ajouter un hydrant prescrit',
-        text: '<span>Ajout un poteau prescrit</span>',
+        tooltip: 'Prescrire des points d\'eau',
+        text: '<span>Prescrire des points d\'eau</span>',
         cls: 'dessiner',
         iconCls: 'dessinerIconBlue',
         toggleGroup: 'excl-ctrl1',
@@ -30,14 +30,14 @@ Ext.define('Sdis.Remocra.features.prescrits.Map', {
         allowDepress: true,
         itemId: 'dessinerBtnPrescrit'
     },{
-        tooltip: 'Ouvrir la fiche de l\'hydrant prescrit',
+        tooltip: 'Ouvrir la fiche de la prescription',
         text: '<span>Informations</span>',
         cls: 'edit-info',
         iconCls: 'edit-infoIcon',
         itemId: 'editInfoBtn',
         disabled: true
     },{
-        tooltip: 'Supprimer l\'hydrant sélectionné',
+        tooltip: 'Supprimer la prescription sélectionnée',
         text: '<span>Supprimer</span>',
         cls: 'delete',
         iconCls: 'deleteIcon',

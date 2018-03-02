@@ -278,6 +278,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         if (!Sdis.Remocra.Rights.getRight('TOURNEE').Create) {
             fiche.down('crHydrantsTournee #deleteTournee').hide();
         }
+        if (!Sdis.Remocra.Rights.getRight('TOURNEE_RESERVATION').Delete) {
+            fiche.down('crHydrantsTournee #cancelReservation').hide();
+        }
         if (!Sdis.Remocra.Rights.getRight('HYDRANTS').Delete) {
             fiche.down('crHydrantsHydrant #deleteHydrant').hide();
         }
