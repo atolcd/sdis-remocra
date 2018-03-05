@@ -36,7 +36,7 @@ public class OldebVisiteController extends AbstractServiceableController<OldebVi
      * Retour de la liste des visites
      */
     @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/xml")
-    @PreAuthorize("hasRight('OLDEB', 'READ')")
+    @PreAuthorize("hasRight('OLDEB_R')")
     public ResponseEntity<java.lang.String> listJson(final @RequestParam(value = "page", required = false) Integer page,
             final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
             final @RequestParam(value = "query", required = false) String query, @RequestParam(value = "sort", required = false) String sorts,
@@ -77,7 +77,7 @@ public class OldebVisiteController extends AbstractServiceableController<OldebVi
     }
 
     @RequestMapping(value = "/document/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('OLDEB', 'DELETE')")
+    @PreAuthorize("hasRight('OLDEB_D')")
     @Transactional
     public ResponseEntity<java.lang.String> deleteOldebVisiteDocument(@PathVariable("id") Long id) {
         try {

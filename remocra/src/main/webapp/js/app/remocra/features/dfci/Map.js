@@ -20,7 +20,7 @@ Ext.define('Sdis.Remocra.features.dfci.Map', {
             listeners: {
                 afterrender: function() {
                     var downloadAtlas = this.maptbar1.getComponent('downloadAtlas');
-                      if (Sdis.Remocra.Rights.getRight('DFCI_EXPORTATLAS').Create) {
+                      if (Sdis.Remocra.Rights.hasRight('DFCI_EXPORTATLAS_C')) {
                         downloadAtlas.addListener('click', this.downloadAtlas, this);
                       }else {
                         downloadAtlas.hide();

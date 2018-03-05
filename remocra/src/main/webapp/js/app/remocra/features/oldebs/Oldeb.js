@@ -23,7 +23,7 @@ Ext.define('Sdis.Remocra.features.oldebs.Oldeb', {
         }, {
             xtype: 'crOldebMap'
         } ];
-        if (Sdis.Remocra.Rights.getRight('DOCUMENTS').Read) {
+        if (Sdis.Remocra.Rights.hasRight('DOCUMENTS_R')) {
             this.items.push({
                 xtype: 'crOldebBlocDocument'
             });

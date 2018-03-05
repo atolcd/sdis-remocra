@@ -9,7 +9,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +22,6 @@ import fr.sdis83.remocra.domain.remocra.ProfilUtilisateur;
 import fr.sdis83.remocra.domain.remocra.TypeDroit.TypeDroitEnum;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.exception.BusinessException;
-import fr.sdis83.remocra.security.AccessRight.Permission;
 
 public class DatabaseAuthenticationProviderTest extends DbUnitBaseTest {
 
@@ -123,8 +121,7 @@ public class DatabaseAuthenticationProviderTest extends DbUnitBaseTest {
         assertNotNull(underTest);
 
         ArrayList<AccessRight> accessRights = new ArrayList<AccessRight>();
-        AccessRight accessRight = new AccessRight(TypeDroitEnum.ADRESSES);
-        accessRight.addPermissions(EnumSet.of(Permission.READ));
+        AccessRight accessRight = new AccessRight(TypeDroitEnum.ADRESSES_C);
         accessRights.add(accessRight);
         when(profileProvider.getProfileAccessRights(any(ProfilUtilisateur.class), any(ProfilOrganisme.class))).thenReturn(accessRights);
 

@@ -1,7 +1,6 @@
 package fr.sdis83.remocra.security;
 
 import java.util.Collection;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,13 +16,10 @@ import fr.sdis83.remocra.domain.remocra.ProfilOrganismeUtilisateurDroit;
 import fr.sdis83.remocra.domain.remocra.ProfilUtilisateur;
 import fr.sdis83.remocra.domain.remocra.TypeDroit.TypeDroitEnum;
 import fr.sdis83.remocra.exception.BusinessException;
-import fr.sdis83.remocra.security.AccessRight.Permission;
 
 /**
  * Recupère le profile et les droits d'accès d'un utilisateur en fonction de son
  * profil et de son organisme.
- * 
- * @author bpa
  * 
  */
 @Configuration
@@ -63,44 +59,9 @@ public class ProfileProvider {
         // Récupération des droits
         Map<TypeDroitEnum, AccessRight> result = new HashMap<TypeDroitEnum, AccessRight>();
         for (Droit droit : profil.getDroits()) {
-            EnumSet<Permission> permissions = parsePermission(droit);
-            logger.debug(" Found right : " + permissions + " for right : " + droit.getTypeDroit().getNom());
-            if (result.containsKey(droit.getTypeDroit().getValue())) {
-                result.get(droit.getTypeDroit().getValue()).addPermissions(permissions);
-            } else {
-                // Autorise les espaces dans la définition des droits
-                AccessRight accessRight = new AccessRight(droit.getTypeDroit().getValue()).addPermissions(permissions);
-                result.put(droit.getTypeDroit().getValue(), accessRight);
-            }
+            result.put(droit.getTypeDroit().getValue(), new AccessRight(droit.getTypeDroit().getValue()));
         }
         return result.values();
 
-    }
-
-    /**
-     * Methode de lecture des permission.
-     * 
-     * @param value
-     * @return
-     * @throws BusinessException
-     */
-    private EnumSet<Permission> parsePermission(Droit droit) throws BusinessException {
-        EnumSet<Permission> result = EnumSet.noneOf(Permission.class);
-        if (droit.isDroitCreate()) {
-            result.add(Permission.CREATE);
-            result.add(Permission.READ);
-        }
-        if (droit.isDroitRead()) {
-            result.add(Permission.READ);
-        }
-        if (droit.isDroitUpdate()) {
-            result.add(Permission.UPDATE);
-            result.add(Permission.READ);
-        }
-        if (droit.isDroitDelete()) {
-            result.add(Permission.DELETE);
-            result.add(Permission.READ);
-        }
-        return result;
     }
 }

@@ -30,7 +30,7 @@ public class OldebProprietaireController extends AbstractServiceableController<O
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/xml")
-    @PreAuthorize("hasRight('OLDEB', 'READ')")
+    @PreAuthorize("hasRight('OLDEB_R')")
     public ResponseEntity<java.lang.String> listJson(/*
                                                       * final @RequestParam(
                                                       * value = "page", required

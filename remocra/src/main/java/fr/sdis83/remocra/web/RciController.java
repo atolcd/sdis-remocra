@@ -68,7 +68,7 @@ public class RciController extends AbstractServiceableController<RciService, Rci
     // -----------------------------------
 
     @RequestMapping(headers = "Accept=application/json")
-    @PreAuthorize("hasRight('RCI', 'CREATE')")
+    @PreAuthorize("hasRight('RCI_C')")
     public ResponseEntity<java.lang.String> listJson(@RequestParam(value = "page", required = false) Integer page,
             final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
             @RequestParam(value = "sort", required = false) String sorts, @RequestParam(value = "filter", required = false) String filters,
@@ -77,7 +77,7 @@ public class RciController extends AbstractServiceableController<RciService, Rci
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('RCI', 'CREATE')")
+    @PreAuthorize("hasRight('RCI_C')")
     public ResponseEntity<java.lang.String> get(final @RequestParam(value = "id", required = true) Long id) {
 
         return new AbstractExtObjectSerializer<Rci>("fr.sdis83.remocra.domain.remocra.Rci retrieved.") {
@@ -96,19 +96,19 @@ public class RciController extends AbstractServiceableController<RciService, Rci
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('RCI', 'CREATE')")
+    @PreAuthorize("hasRight('RCI_C')")
     public ResponseEntity<java.lang.String> update(final @PathVariable Long id, final @RequestBody String json) {
         return this.doUpdate(id, json);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('RCI', 'CREATE')")
+    @PreAuthorize("hasRight('RCI_C')")
     public ResponseEntity<java.lang.String> delete(@PathVariable("id") Long id) {
         return this.doDelete(id);
     }
 
     @RequestMapping(value = "/document/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('RCI', 'CREATE')")
+    @PreAuthorize("hasRight('RCI_C')")
     @Transactional
     public ResponseEntity<java.lang.String> deleteRciDocument(@PathVariable("id") Long id) {
         try {
@@ -125,7 +125,7 @@ public class RciController extends AbstractServiceableController<RciService, Rci
     // -----------------------------------
 
     @RequestMapping(value = "/layer", method = RequestMethod.GET, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('RCI', 'CREATE')")
+    @PreAuthorize("hasRight('RCI_C')")
     public ResponseEntity<java.lang.String> layer(final @RequestParam String bbox) {
         if (bbox == null || bbox.isEmpty()) {
             return FeatureUtil.getResponse(service.findAll());
@@ -145,7 +145,7 @@ public class RciController extends AbstractServiceableController<RciService, Rci
      */
     @Transactional
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
-    @PreAuthorize("hasRight('RCI', 'CREATE')")
+    @PreAuthorize("hasRight('RCI_C')")
     public ResponseEntity<java.lang.String> update(final @PathVariable("id") Long id, MultipartHttpServletRequest request, final @RequestParam String jsonRci,
             final @RequestParam int fileCounter) {
         try {
@@ -193,7 +193,7 @@ public class RciController extends AbstractServiceableController<RciService, Rci
      */
     @Transactional
     @RequestMapping(value = "", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
-    @PreAuthorize("hasRight('RCI', 'CREATE')")
+    @PreAuthorize("hasRight('RCI_C')")
     public ResponseEntity<java.lang.String> create(MultipartHttpServletRequest request, final @RequestParam String jsonRci, final @RequestParam int fileCounter) {
 
         try {
@@ -244,7 +244,7 @@ public class RciController extends AbstractServiceableController<RciService, Rci
     }
 
     @RequestMapping(value = "{id}/deplacer", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('RCI', 'CREATE')")
+    @PreAuthorize("hasRight('RCI_C')")
     public ResponseEntity<java.lang.String> deplacer(final @PathVariable(value = "id") Long id, final @RequestParam(value = "geometrie") String geometrie,
             final @RequestParam(value = "srid") Integer srid) {
         try {

@@ -12,8 +12,8 @@
 	<REMOCRA.ORGANISME id="2" code="commune2" nom="nom de la commune 2" email_contact="admin@commune2.fr" type_organisme="1" profil_organisme="2" version="1" />
 	<REMOCRA.ORGANISME id="3" code="sdis" nom="nom du sdis" email_contact="admin@sdis.fr" type_organisme="5" profil_organisme="3" version="1" />
 	
-	<REMOCRA.TYPE_DROIT id="1" code="REFERENTIELS" nom="Référentiels"/>
-	<REMOCRA.TYPE_DROIT id="2" code="ADRESSES" nom="Adresses"/>
+	<REMOCRA.TYPE_DROIT id="1" code="REFERENTIELS_C" nom="Référentiels"/>
+	<REMOCRA.TYPE_DROIT id="2" code="ADRESSES_C" nom="Adresses"/>
 	
 	<REMOCRA.PROFIL_UTILISATEUR id="1" type_organisme="1" nom="Maire de la commune" code="MAIREDELACOMMUNE"/>
 	<REMOCRA.PROFIL_UTILISATEUR id="2" type_organisme="1" nom="Secretaire de mairie" code="SECRETAIREDEMAIRIE"/>
@@ -25,9 +25,9 @@
 	<REMOCRA.PROFIL_DROIT id="2" version="1" code="MAIREDELACOMMUNEENTAPE2" nom="Maire de la commune en étape 2" />
 	<REMOCRA.PROFIL_DROIT id="3" version="1" code="CAPITAINEDEBRIGADE"  nom="Capitaine de Brigade" />
 	
-	<REMOCRA.DROIT id="1" profil_droit="1" type_droit="1" droit_create="true" droit_read="false" droit_update="false" droit_delete="false"/>
-	<REMOCRA.DROIT id="2" profil_droit="1" type_droit="2" droit_create="false" droit_read="false" droit_update="false" droit_delete="false"/>	
-	<REMOCRA.DROIT id="3" profil_droit="3" type_droit="1" droit_create="false" droit_read="false" droit_update="false" droit_delete="false"/>
+	<REMOCRA.DROIT id="1" profil_droit="1" type_droit="1"/>
+	<REMOCRA.DROIT id="2" profil_droit="1" type_droit="2"/>
+	<REMOCRA.DROIT id="3" profil_droit="3" type_droit="1"/>
 
 	<REMOCRA.PROFIL_ORGANISME_UTILISATEUR_DROIT PROFIL_UTILISATEUR="1" PROFIL_ORGANISME="1" PROFIL_DROIT="1" />
 	<REMOCRA.PROFIL_ORGANISME_UTILISATEUR_DROIT PROFIL_UTILISATEUR="1" PROFIL_ORGANISME="2" PROFIL_DROIT="2" />

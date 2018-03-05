@@ -26,7 +26,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
         }];
 
         this.editItems.push('Créer : ');
-        if (Sdis.Remocra.Rights.getRight('HYDRANTS').Create) {
+        if (Sdis.Remocra.Rights.hasRight('HYDRANTS_C')) {
             this.editItems.push({
                 xtype: 'button',
                 tooltip: 'Ajouter un point d\'eau',
@@ -42,8 +42,8 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
         }
 
         this.editItems.push('Saisir une visite : ');
-        if(Sdis.Remocra.Rights.getRight('HYDRANTS').Create||
-                Sdis.Remocra.Rights.getRight('HYDRANTS_RECONNAISSANCE').Create || Sdis.Remocra.Rights.getRight('HYDRANTS_CONTROLE').Create){
+        if(Sdis.Remocra.Rights.hasRight('HYDRANTS_C')||
+                Sdis.Remocra.Rights.hasRight('HYDRANTS_RECONNAISSANCE_C') || Sdis.Remocra.Rights.hasRight('HYDRANTS_CONTROLE_C')){
         this.editItems.push({
             tooltip: 'Saisir une visite (réception, contrôle, reconnaissance, vérification)',
             text: '<span>Informations</span>',
@@ -64,8 +64,8 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
             disabled: true
         });
 
-        if (Sdis.Remocra.Rights.getRight('HYDRANTS').Delete) {
-            this.editItems.push('Supprimer : ',{
+        if (Sdis.Remocra.Rights.hasRight('HYDRANTS_D')) {
+            this.editItems.push('Supprimer : ', {
                 tooltip: 'Supprimer un élément',
                 cls: 'delete',
                 iconCls: 'deleteIcon',
@@ -73,7 +73,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                 disabled: true
             });
         }
-        if (Sdis.Remocra.Rights.getRight('HYDRANTS_DEPLACEMENT').Create) {
+        if (Sdis.Remocra.Rights.hasRight('HYDRANTS_DEPLACEMENT_C')) {
             //Déplacement hydrant
             this.editItems.push('Déplacer : ',{
                 tooltip: 'Activer le déplacement',
@@ -105,7 +105,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
             });
         }
 
-        if (Sdis.Remocra.Rights.getRight('TOURNEE').Create) {
+        if (Sdis.Remocra.Rights.hasRight('TOURNEE_C')) {
             this.editItems.push('-');
             this.editItems.push('Tournée', {
                 tooltip: 'Désaffecte les points d\'eau de leur tournée',
@@ -125,7 +125,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
         }
 
         this.editItems.push('Indisponibilité temporaire : ');
-        if (Sdis.Remocra.Rights.getRight('INDISPOS').Create) {
+        if (Sdis.Remocra.Rights.hasRight('INDISPOS_C')) {
             this.editItems.push({
                 xtype: 'button',
                 tooltip: 'Déclarer une indisponibilité temporaire',
@@ -147,7 +147,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                 disabled: true
             });
 
-        if (Sdis.Remocra.Rights.getRight('HYDRANTS_EXPORT_NON_NUM').Create) {
+        if (Sdis.Remocra.Rights.hasRight('HYDRANTS_EXPORT_NON_NUM_C')) {
             this.moreItems = [ { tooltip: 'Télécharger la liste des points d\'eau non numérotés', text: '<span>Télécharger</span>',
                 cls: 'download-atlas', iconCls: 'download-atlasIcon',
                 itemId: 'downloadHydrantsNonNum', xtype:'button'

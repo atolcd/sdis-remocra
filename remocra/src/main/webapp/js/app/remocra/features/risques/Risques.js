@@ -12,7 +12,7 @@ Ext.define('Sdis.Remocra.features.risques.Risques', {
         this.items = [ {
             xtype : 'crRisquesMap'
         } ];
-        if (Sdis.Remocra.Rights.getRight('DOCUMENTS').Read) {
+        if (Sdis.Remocra.Rights.hasRight('DOCUMENTS_R')) {
             this.items.push({
                 xtype : 'crBlocDocumentGrid',
                 thematiques : 'RISQUES'

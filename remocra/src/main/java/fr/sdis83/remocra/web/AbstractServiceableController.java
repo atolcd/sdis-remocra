@@ -74,7 +74,7 @@ public abstract class AbstractServiceableController<ServiceT extends AbstractSer
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
     public ResponseEntity<java.lang.String> create(final @RequestBody String json) {
         return this.doCreate(json);
     }
@@ -101,7 +101,7 @@ public abstract class AbstractServiceableController<ServiceT extends AbstractSer
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
     public ResponseEntity<java.lang.String> update(final @PathVariable Long id, final @RequestBody String json) {
         return this.doUpdate(id, json);
     }
@@ -130,7 +130,7 @@ public abstract class AbstractServiceableController<ServiceT extends AbstractSer
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
     public ResponseEntity<java.lang.String> delete(@PathVariable("id") Long id) {
         return this.doDelete(id);
     }

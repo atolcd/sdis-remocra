@@ -40,37 +40,4 @@ privileged aspect Droit_Roo_JavaBean {
     public void Droit.setTypeDroit(TypeDroit typeDroit) {
         this.typeDroit = typeDroit;
     }
-    
-    public boolean Droit.isDroitCreate() {
-        return this.droitCreate;
-    }
-    
-    public void Droit.setDroitCreate(boolean droitCreate) {
-        this.droitCreate = droitCreate;
-    }
-    
-    public boolean Droit.isDroitRead() {
-        return this.droitRead;
-    }
-    
-    public void Droit.setDroitRead(boolean droitRead) {
-        this.droitRead = droitRead;
-    }
-    
-    public boolean Droit.isDroitUpdate() {
-        return this.droitUpdate;
-    }
-    
-    public void Droit.setDroitUpdate(boolean droitUpdate) {
-        this.droitUpdate = droitUpdate;
-    }
-    
-    public boolean Droit.isDroitDelete() {
-        return this.droitDelete;
-    }
-    
-    public void Droit.setDroitDelete(boolean droitDelete) {
-        this.droitDelete = droitDelete;
-    }
-    
 }

@@ -15,7 +15,7 @@ Ext.define('Sdis.Remocra.features.cartographie.Cartographie', {
     },
 
     initComponent : function() {
-        if (!Sdis.Remocra.Rights.getRight('CARTOGRAPHIES').Create) {
+        if (!Sdis.Remocra.Rights.hasRight('CARTOGRAPHIES_C')) {
             this.items = [{
                 title : 'Vous ne disposez pas de droits nécessaires pour accéder à ce module.'
             }];

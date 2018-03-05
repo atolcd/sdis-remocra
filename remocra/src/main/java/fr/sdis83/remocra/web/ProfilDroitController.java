@@ -30,7 +30,7 @@ public class ProfilDroitController extends AbstractServiceableController<ProfilD
     }
 
     @RequestMapping(value = "/{to}/droits/copyfrom/{from}", method = RequestMethod.PUT, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
     public ResponseEntity<java.lang.String> copydroits(final @PathVariable Long from, final @PathVariable Long to) {
         try {
             getService().copyDroits(from, to);
@@ -45,7 +45,7 @@ public class ProfilDroitController extends AbstractServiceableController<ProfilD
     }
 
     @RequestMapping(value = "/{pd}/droits", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
     public ResponseEntity<java.lang.String> copydroits(final @PathVariable Long pd) {
         try {
             getService().clearDroits(pd);

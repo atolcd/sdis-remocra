@@ -33,7 +33,7 @@ public class OldebVisiteSuiteController extends AbstractServiceableController<Ol
      * Retour de la liste des visitesuites
      */
     @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/xml")
-    @PreAuthorize("hasRight('OLDEB', 'READ')")
+    @PreAuthorize("hasRight('OLDEB_R')")
     public ResponseEntity<java.lang.String> listJson(final @RequestParam(value = "page", required = false) Integer page,
             final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
             final @RequestParam(value = "query", required = false) String query, @RequestParam(value = "sort", required = false) String sorts,

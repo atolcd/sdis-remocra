@@ -44,7 +44,7 @@ public class HydrantPibiController {
     private HydrantPibiService hydrantPibiService;
 
     @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS', 'READ')")
+    @PreAuthorize("hasRight('HYDRANTS_R')")
     public ResponseEntity<java.lang.String> listJson(final @RequestParam(value = "page", required = false) Integer page,
             final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
             final @RequestParam(value = "sort", required = false) String sorts, final @RequestParam(value = "filter", required = false) String filters,
@@ -79,7 +79,7 @@ public class HydrantPibiController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS', 'READ')")
+    @PreAuthorize("hasRight('HYDRANTS_R')")
     public ResponseEntity<java.lang.String> getHydrant(final @RequestParam(value = "id", required = true) Long id) {
 
         return new AbstractExtObjectSerializer<HydrantPibi>("fr.sdis83.remocra.domain.remocra.Hydrant-Pibi retrieved.") {
@@ -105,7 +105,7 @@ public class HydrantPibiController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
-    @PreAuthorize("hasRight('HYDRANTS', 'CREATE')")
+    @PreAuthorize("hasRight('HYDRANTS_C')")
     public ResponseEntity<java.lang.String> createHydrant(MultipartHttpServletRequest request) {
         String json = request.getParameter("hydrant");
         Map<String, MultipartFile> files = request.getFileMap();
@@ -135,7 +135,7 @@ public class HydrantPibiController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
-    @PreAuthorize("hasRight('HYDRANTS', 'CREATE') or hasRight('HYDRANTS_RECONNAISSANCE', 'CREATE') or hasRight('HYDRANTS_CONTROLE', 'CREATE')")
+    @PreAuthorize("hasRight('HYDRANTS_C') or hasRight('HYDRANTS_RECONNAISSANCE_C') or hasRight('HYDRANTS_CONTROLE_C')")
     public ResponseEntity<java.lang.String> updateHydrant(final @PathVariable Long id, MultipartHttpServletRequest request) {
         String json = request.getParameter("hydrant");
         Map<String, MultipartFile> files = request.getFileMap();
@@ -158,7 +158,7 @@ public class HydrantPibiController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS', 'DELETE')")
+    @PreAuthorize("hasRight('HYDRANTS_D')")
     public ResponseEntity<java.lang.String> deleteHydrantPibi(@PathVariable("id") Long id) {
         try {
             hydrantPibiService.delete(id);
@@ -169,7 +169,7 @@ public class HydrantPibiController {
     }
 
     @RequestMapping(value = "/histoverifhydrau/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS', 'READ')")
+    @PreAuthorize("hasRight('HYDRANTS_R')")
     public ResponseEntity<java.lang.String> getHistoVerifHydrau(final @PathVariable Long id) {
 
         return new AbstractExtObjectSerializer<HistoVerificationHydraulique>("Hydrant Pibi historique vérification hydraulique retrieved.") {

@@ -31,37 +31,37 @@ public class DepotController extends AbstractRemocraController {
     private MailUtils mailUtils;
 
     @RequestMapping(value = "/delibrights", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('DEPOT_DELIB', 'CREATE')")
+    @PreAuthorize("hasRight('DEPOT_DELIB_C')")
     public ResponseEntity<java.lang.String> uploadDelibRights() {
         return RemocraController.DUMMY_RESPONSE;
     }
 
     @RequestMapping(value = "/declahydrantrights", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('DEPOT_DECLAHYDRANT', 'CREATE')")
+    @PreAuthorize("hasRight('DEPOT_DECLAHYDRANT_C')")
     public ResponseEntity<java.lang.String> uploadDeclaHydrantRights() {
         return RemocraController.DUMMY_RESPONSE;
     }
 
     @RequestMapping(value = "/receptravauxrights", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('DEPOT_RECEPTRAVAUX', 'CREATE')")
+    @PreAuthorize("hasRight('DEPOT_RECEPTRAVAUX_C')")
     public ResponseEntity<java.lang.String> uploadRecepTravauxRights() {
         return RemocraController.DUMMY_RESPONSE;
     }
 
     @RequestMapping(value = "/delib", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
-    @PreAuthorize("hasRight('DEPOT_DELIB', 'CREATE')")
+    @PreAuthorize("hasRight('DEPOT_DELIB_C')")
     public ResponseEntity<java.lang.String> uploadDelib(MultipartHttpServletRequest request) {
         return uploadDepot(request, TypeDocument.DELIB);
     }
 
     @RequestMapping(value = "/declahydrant", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
-    @PreAuthorize("hasRight('DEPOT_DECLAHYDRANT', 'CREATE')")
+    @PreAuthorize("hasRight('DEPOT_DECLAHYDRANT_C')")
     public ResponseEntity<java.lang.String> uploadDeclaHydrant(MultipartHttpServletRequest request) {
         return uploadDepot(request, TypeDocument.DECLAHYDRANT);
     }
 
     @RequestMapping(value = "/receptravaux", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
-    @PreAuthorize("hasRight('DEPOT_RECEPTRAVAUX', 'CREATE')")
+    @PreAuthorize("hasRight('DEPOT_RECEPTRAVAUX_C')")
     public ResponseEntity<java.lang.String> uploadRecepTravaux(MultipartHttpServletRequest request) {
         return uploadDepot(request, TypeDocument.RECEPTRAVAUX);
     }

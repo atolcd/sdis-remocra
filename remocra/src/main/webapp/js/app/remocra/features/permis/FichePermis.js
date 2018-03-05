@@ -20,7 +20,7 @@ Ext.define('Sdis.Remocra.features.permis.FichePermis', {
         // -- EVENEMENTS
         this.addEvents('ok', 'cancel', 'permisCreated');
         
-        var dockedItems = Sdis.Remocra.Rights.getRight('PERMIS').Create ? {
+        var dockedItems = Sdis.Remocra.Rights.hasRight('PERMIS_C') ? {
             xtype: 'toolbar',
             dock: 'bottom',
             items: [ '->', {
@@ -161,7 +161,7 @@ Ext.define('Sdis.Remocra.features.permis.FichePermis', {
     
     createDocumentsPanel: function() {
         return Ext.create('Sdis.Remocra.widget.FileUploadPanel', {title: 'Documents', itemId: 'documents',
-            readOnly: !Sdis.Remocra.Rights.getRight('PERMIS_DOCUMENTS').Create || !Sdis.Remocra.Rights.getRight('PERMIS').Create,
+            readOnly: !Sdis.Remocra.Rights.hasRight('PERMIS_DOCUMENTS_C') || !Sdis.Remocra.Rights.hasRight('PERMIS_C'),
             moreHelp: '<p style="font-style:italic;color:#a9a9a9;padding-bottom:20px">Les <b>documents déjà transmis</b> ne sont plus accessibles.</p>',
             savePermis: function(permis, mapProjection) {
                 Sdis.Remocra.network.CurrentUtilisateurStore.getCurrentUtilisateur(this, function(user) {

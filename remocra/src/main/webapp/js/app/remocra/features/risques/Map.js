@@ -19,7 +19,7 @@ Ext.define('Sdis.Remocra.features.risques.Map', {
             listeners: {
                 afterrender: function() {
                     var purgerRisqueexpress = this.maptbar1.getComponent('purgerRisqueexpress');
-                    if (Sdis.Remocra.Rights.getRight('RISQUES_KML').Create) {
+                    if (Sdis.Remocra.Rights.hasRight('RISQUES_KML_C')) {
                         purgerRisqueexpress.addListener('click', this.purgerRisqueExpress, this);
                     } else {
                         purgerRisqueexpress.hide();
@@ -55,7 +55,7 @@ Ext.define('Sdis.Remocra.features.risques.Map', {
     createSpecificLayer: function(layerDef) {
         // Couche KML
         if (layerDef.id == 'risquesExpressLayer') {
-            if (!Sdis.Remocra.Rights.getRight('RISQUES_KML').Read) {
+            if (!Sdis.Remocra.Rights.hasRight('RISQUES_KML_R')) {
                 return null;
             }
             

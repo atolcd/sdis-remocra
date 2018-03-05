@@ -150,7 +150,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Prescrit', {
                 form.findField('y').setValue(y);
             }
 
-            if (!Sdis.Remocra.Rights.getRight('HYDRANTS_PRESCRIT').Create) {
+            if (!Sdis.Remocra.Rights.hasRight('HYDRANTS_PRESCRIT_C')) {
                 fiche.down('#ok').hide();
                 fiche.down('#close').setText('Fermer');
                 this.setReadOnly(fiche);
@@ -240,7 +240,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Prescrit', {
     },
 
     processRight: function() {
-        if (!Sdis.Remocra.Rights.getRight('HYDRANTS_PRESCRIT').Create) {
+        if (!Sdis.Remocra.Rights.hasRight('HYDRANTS_PRESCRIT_C')) {
             this.getMap().down('#dessinerBtnPrescrit').hide();
             this.getMap().down('#deleteBtn').hide();
         }

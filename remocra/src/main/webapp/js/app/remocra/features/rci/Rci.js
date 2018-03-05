@@ -8,7 +8,7 @@ Ext.define('Sdis.Remocra.features.rci.Rci', {
     id : 'rci',
 
     initComponent : function() {
-        if (!Sdis.Remocra.Rights.getRight('RCI').Create) {
+        if (!Sdis.Remocra.Rights.hasRight('RCI_C')) {
             this.items = [{
                 html : 'Vous ne disposez pas de droits nécessaires pour accéder à ce module.'
             }];
@@ -18,7 +18,7 @@ Ext.define('Sdis.Remocra.features.rci.Rci', {
         this.items = [ {
             xtype : 'crRciMap'
         } ];
-        if (Sdis.Remocra.Rights.getRight('DOCUMENTS').Read) {
+        if (Sdis.Remocra.Rights.hasRight('DOCUMENTS_R')) {
             this.items.push({
                 xtype : 'crBlocDocumentGrid',
                 thematiques : 'RCI'

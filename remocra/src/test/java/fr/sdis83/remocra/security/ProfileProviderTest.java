@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
+import fr.sdis83.remocra.domain.remocra.TypeDroit;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fr.sdis83.remocra.domain.remocra.ProfilOrganisme;
 import fr.sdis83.remocra.domain.remocra.ProfilUtilisateur;
 import fr.sdis83.remocra.exception.BusinessException;
-import fr.sdis83.remocra.security.AccessRight.Permission;
 
 public class ProfileProviderTest extends DbUnitBaseTest {
 
@@ -36,14 +36,14 @@ public class ProfileProviderTest extends DbUnitBaseTest {
     @Test
     public void testProfileProvider_Success() throws BusinessException {
         Collection<AccessRight> result = underTest.getProfileAccessRights(ProfilUtilisateur.findProfilUtilisateur(1L), ProfilOrganisme.findProfilOrganisme(1L));
-
         assertEquals(2, result.size());
         boolean found = false;
         for (AccessRight accessRight : result) {
-            if (accessRight.hasPermission(Permission.CREATE))
+            if (accessRight.getKey().equals(TypeDroit.TypeDroitEnum.REFERENTIELS_C))
                 found = true;
         }
         assertTrue(found);
+
     }
 
 }

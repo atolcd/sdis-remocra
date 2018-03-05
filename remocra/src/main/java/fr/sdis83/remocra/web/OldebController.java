@@ -50,7 +50,7 @@ public class OldebController {
      * Retour de la liste des oldebs
      */
     @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/xml")
-    @PreAuthorize("hasRight('OLDEB', 'READ')")
+    @PreAuthorize("hasRight('OLDEB_R')")
     public ResponseEntity<java.lang.String> listJson(final @RequestParam(value = "page", required = false) Integer page,
             final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
             final @RequestParam(value = "query", required = false) String query, @RequestParam(value = "sort", required = false) String sorts,
@@ -100,7 +100,7 @@ public class OldebController {
      * Retour d'un old par id
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('OLDEB', 'READ')")
+    @PreAuthorize("hasRight('OLDEB_R')")
     public ResponseEntity<java.lang.String> getOldeb(final @RequestParam(value = "id", required = true) Long id) {
 
         return new AbstractExtObjectSerializer<Oldeb>("Oldeb retrieved.") {
@@ -127,7 +127,7 @@ public class OldebController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
-    @PreAuthorize("hasRight('OLDEB', 'UPDATE')")
+    @PreAuthorize("hasRight('OLDEB_U')")
     public ResponseEntity<java.lang.String> updateOldeb(final @PathVariable Long id, MultipartHttpServletRequest request) {
         String json = request.getParameter("oldeb");
         String visiteDocumentsToDeleteJson = request.getParameter("visiteDocumentsToDelete");
@@ -153,7 +153,7 @@ public class OldebController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
-    @PreAuthorize("hasRight('OLDEB', 'CREATE')")
+    @PreAuthorize("hasRight('OLDEB_C')")
     public ResponseEntity<java.lang.String> createOldeb(MultipartHttpServletRequest request) {
         String json = request.getParameter("oldeb");
         Map<String, MultipartFile> files = request.getFileMap();
@@ -175,7 +175,7 @@ public class OldebController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('OLDEB', 'DELETE')")
+    @PreAuthorize("hasRight('OLDEB_D')")
     public ResponseEntity<java.lang.String> delete(@PathVariable("id") Long id) {
         try {
             oldebService.delete(id);
@@ -186,7 +186,7 @@ public class OldebController {
     }
 
     @RequestMapping(value = "/layer", method = RequestMethod.GET, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('OLDEB', 'READ')")
+    @PreAuthorize("hasRight('OLDEB_R')")
     public ResponseEntity<java.lang.String> layer(final @RequestParam String point, @RequestParam String projection) {
 
         if (point == null || point.isEmpty()) {
@@ -212,7 +212,7 @@ public class OldebController {
      * @return
      */
     @RequestMapping(value = "{id}/updategeom", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('OLDEB', 'CREATE') or hasRight('OLDEB', 'UPDATE')")
+    @PreAuthorize("hasRight('OLDEB_C') or hasRight('OLDEB_U')")
     public ResponseEntity<java.lang.String> updateGeom(final @PathVariable(value = "id") Long id, final @RequestParam(value = "geometrie") String wkt,
             final @RequestParam(value = "srid") Integer srid) {
 
@@ -233,7 +233,7 @@ public class OldebController {
     }
 
     @RequestMapping(value = "/checkdispo", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('OLDEB', 'READ')")
+    @PreAuthorize("hasRight('OLDEB_R')")
     public ResponseEntity<java.lang.String> checkDispo(final @RequestParam(value = "id", required = false) Long id,
             final @RequestParam(value = "commune", required = false) Long codeCommune, final @RequestParam(value = "section", required = false) String section,
             final @RequestParam(value = "parcelle", required = false) String parcelle) {

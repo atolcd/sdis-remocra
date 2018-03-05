@@ -64,8 +64,8 @@ public class UtilisateurController {
             @RequestParam(value = "sort", required = false) String sorts, @RequestParam(value = "filter", required = false) String filters) {
         final List<ItemSorting> sortList = ItemSorting.decodeJson(sorts);
         final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
-        if(!authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ALL, AccessRight.Permission.READ)) {
-            if(authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ORGANISME_UTILISATEUR, AccessRight.Permission.READ)) {
+        if(!authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ALL_R)) {
+            if(authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_R)) {
               itemFilterList.add(new ItemFilter("organismeId" , String.valueOf(utilisateurService.getCurrentUtilisateur().getOrganisme().getId())));
             }else {
                 itemFilterList.add(new ItemFilter("id" ,String.valueOf(utilisateurService.getCurrentUtilisateur().getId())));
@@ -153,11 +153,11 @@ public class UtilisateurController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('UTILISATEUR_FILTER_ALL', 'CREATE') or hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR', 'CREATE')")
+    @PreAuthorize("hasRight('UTILISATEUR_FILTER_ALL_C') or hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_C')")
     public ResponseEntity<java.lang.String> updateFromJson(@PathVariable("id") Long id, @RequestBody String json) {
 
         final Utilisateur record = Utilisateur.fromJsonToUtilisateur(json);
-        if(!authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ALL, AccessRight.Permission.CREATE)) {
+        if(!authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ALL_C)) {
             Organisme organisme = utilisateurService.getCurrentUtilisateur().getOrganisme();
             if(record.getOrganisme().getId() != organisme.getId()){
                 throw new AccessDeniedException("L'utilisateur n'est pas autorisé à modifier cette donnée");
@@ -178,10 +178,10 @@ public class UtilisateurController {
     }
 
     @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('UTILISATEUR_FILTER_ALL', 'CREATE') or hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR', 'CREATE')")
+    @PreAuthorize("hasRight('UTILISATEUR_FILTER_ALL_C') or hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_C')")
     public ResponseEntity<java.lang.String> createFromJson(final @RequestBody String json) {
         final Utilisateur record = Utilisateur.fromJsonToUtilisateur(json);
-        if(!authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ALL, AccessRight.Permission.CREATE)) {
+        if(!authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ALL_C)) {
             Organisme organisme = utilisateurService.getCurrentUtilisateur().getOrganisme();
             if(record.getOrganisme().getId() != organisme.getId()){
                 throw new AccessDeniedException("L'utilisateur n'est pas autorisé à modifier cette donnée");

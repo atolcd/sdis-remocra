@@ -48,7 +48,7 @@ public class HydrantPenaController {
     DataSource dataSource;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS', 'READ')")
+    @PreAuthorize("hasRight('HYDRANTS_R')")
     public ResponseEntity<java.lang.String> getHydrant(final @RequestParam(value = "id", required = true) Long id) {
 
         return new AbstractExtObjectSerializer<HydrantPena>("fr.sdis83.remocra.domain.remocra.Hydrant-Pena retrieved.") {
@@ -72,7 +72,7 @@ public class HydrantPenaController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
-    @PreAuthorize("hasRight('HYDRANTS', 'CREATE')")
+    @PreAuthorize("hasRight('HYDRANTS_C')")
     public ResponseEntity<java.lang.String> createHydrant(MultipartHttpServletRequest request) {
         String json = request.getParameter("hydrant");
         Map<String, MultipartFile> files = request.getFileMap();
@@ -92,7 +92,7 @@ public class HydrantPenaController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
-    @PreAuthorize("hasRight('HYDRANTS', 'CREATE') or hasRight('HYDRANTS_RECONNAISSANCE', 'CREATE') or hasRight('HYDRANTS_CONTROLE', 'CREATE')")
+    @PreAuthorize("hasRight('HYDRANTS_C') or hasRight('HYDRANTS_RECONNAISSANCE_C') or hasRight('HYDRANTS_CONTROLE_C')")
     public ResponseEntity<java.lang.String> updateHydrant(final @PathVariable Long id, MultipartHttpServletRequest request) {
         String json = request.getParameter("hydrant");
         String paramPibi = request.getParameter("idpibi");
@@ -127,7 +127,7 @@ public class HydrantPenaController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS', 'DELETE')")
+    @PreAuthorize("hasRight('HYDRANTS_D')")
     public ResponseEntity<java.lang.String> deleteHydrantPena(@PathVariable("id") Long id) {
         try {
             hydrantPenaService.delete(id);
@@ -146,7 +146,7 @@ public class HydrantPenaController {
      * @return
      */
     @RequestMapping(value = "/dfci", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS', 'READ') OR hasRight('RCI', 'CREATE')")
+    @PreAuthorize("hasRight('HYDRANTS_R') OR hasRight('RCI_C')")
     public ResponseEntity<java.lang.String> findCoordDfci(final @RequestParam(value = "srid", required = true) Integer srid,
             final @RequestParam(value = "wkt", required = true) String wkt) {
         try {

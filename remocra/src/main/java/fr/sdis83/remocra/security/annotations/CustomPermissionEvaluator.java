@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
-import fr.sdis83.remocra.security.AccessRight.Permission;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.service.UtilisateurService;
 
@@ -43,8 +42,8 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
     public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
 
-        Permission perm = Permission.valueOf((String) permission);
-        logger.debug("Evaluating rights for " + targetType + " with id : " + targetId + " and permission : " + perm + " and user " + authentication.getName());
+        logger.debug("Evaluating rights for " + targetType + " with id : " + targetId + " and permission : "
+                + permission + " and user " + authentication.getName());
 
         if (targetId == null) {
             return false;

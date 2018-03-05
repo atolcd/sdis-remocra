@@ -40,13 +40,4 @@ public class Droit {
     @NotNull
     @ManyToOne
     private TypeDroit typeDroit;
-
-    private boolean droitCreate;
-
-    private boolean droitRead;
-
-    private boolean droitUpdate;
-
-    private boolean droitDelete;
-
 }

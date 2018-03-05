@@ -140,7 +140,7 @@ Ext.define('Sdis.Remocra.features.cartographie.Map', {
             // Chaque couche (à l'envers)
             for(iLay=grp.items.length ; iLay>0 ; iLay--) {
                 var layerDef = grp.items[iLay-1];
-                if (!this.couches[layerDef.id] || (layerDef.id=='permisLayer' && !Sdis.Remocra.Rights.getRight('PERMIS').Read)) {
+                if (!this.couches[layerDef.id] || (layerDef.id=='permisLayer' && !Sdis.Remocra.Rights.hasRight('PERMIS_R'))) {
                     // Pas de droit sur cette couche
                     Ext.Array.erase(legendDataPrepared.items[iGrp - 1].items, iLay - 1, 1);
                 } else {

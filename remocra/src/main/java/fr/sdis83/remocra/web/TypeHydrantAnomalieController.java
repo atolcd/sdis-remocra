@@ -67,7 +67,7 @@ public class TypeHydrantAnomalieController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
     public ResponseEntity<java.lang.String> create(final @RequestBody String json) {
         try {
             final TypeHydrantAnomalie attached = service.create(json, null);
@@ -85,7 +85,7 @@ public class TypeHydrantAnomalieController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
     public ResponseEntity<java.lang.String> update(final @PathVariable Long id, final @RequestBody String json) {
         try {
             final TypeHydrantAnomalie attached = service.update(id, json, null);
@@ -105,7 +105,7 @@ public class TypeHydrantAnomalieController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
     public ResponseEntity<java.lang.String> delete(@PathVariable("id") Long id) {
         try {
             service.delete(id);

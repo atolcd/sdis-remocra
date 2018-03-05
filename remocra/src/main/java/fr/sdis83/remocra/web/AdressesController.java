@@ -43,7 +43,7 @@ public class AdressesController extends AbstractRemocraController {
     // ------------------------------
 
     @RequestMapping(value = "/alerte", method = RequestMethod.GET)
-    @PreAuthorize("hasRight('ADRESSES', 'CREATE')")
+    @PreAuthorize("hasRight('ADRESSES_C')")
     public ResponseEntity<String> alertes() {
         // Récupération des alertes filtrées par utilisateur
         List<Alerte> alertes = Alerte.findAlertesByRapporteurEquals(utilisateurService.getCurrentUtilisateur()).getResultList();
@@ -55,7 +55,7 @@ public class AdressesController extends AbstractRemocraController {
     }
 
     @RequestMapping(value = "/alerte", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
-    @PreAuthorize("hasRight('ADRESSES', 'CREATE')")
+    @PreAuthorize("hasRight('ADRESSES_C')")
     public ResponseEntity<String> alerte(MultipartHttpServletRequest request, final @RequestParam String jsonAlerte, final @RequestParam int fileCounter) {
         try {
 

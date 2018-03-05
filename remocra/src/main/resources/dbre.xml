@@ -318,10 +318,6 @@
     </table>
     <table alias="remocra" name="droit">
         <column name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
-        <column name="droit_create" primaryKey="false" required="true" scale="0" size="1" type="-7,bool"/>
-        <column name="droit_delete" primaryKey="false" required="true" scale="0" size="1" type="-7,bool"/>
-        <column name="droit_read" primaryKey="false" required="true" scale="0" size="1" type="-7,bool"/>
-        <column name="droit_update" primaryKey="false" required="true" scale="0" size="1" type="-7,bool"/>
         <column name="version" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
         <column name="profil_droit" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
         <column name="type_droit" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
@@ -1107,6 +1103,7 @@
         <column name="description" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
         <column name="nom" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
         <column name="version" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
+        <column name="categorie" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
         <foreign-key foreignTable="droit" name="fk5b6ae8c12db1a65" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="true"/>

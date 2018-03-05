@@ -22,6 +22,8 @@ public class DroitService extends AbstractService<Droit> {
     @Override
     protected boolean processItemSortings(ArrayList<Order> orders, ItemSorting itemSorting, CriteriaBuilder cBuilder, Root<Droit> from) {
         if ("typeDroitId".equals(itemSorting.getFieldName())) {
+            Expression<String> categoriePath = from.join("typeDroit").get("categorie");
+            orders.add(itemSorting.isDesc() ? cBuilder.desc(categoriePath) : cBuilder.asc(categoriePath));
             Expression<String> cpPath = from.join("typeDroit").get("nom");
             orders.add(itemSorting.isDesc() ? cBuilder.desc(cpPath) : cBuilder.asc(cpPath));
             return true;

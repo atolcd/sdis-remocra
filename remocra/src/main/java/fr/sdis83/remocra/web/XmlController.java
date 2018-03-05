@@ -171,7 +171,7 @@ public class XmlController {
 
     @RequestMapping(value = "/tournees")
     @Transactional
-    @PreAuthorize("hasRight('HYDRANTS', 'CREATE') or hasRight('HYDRANTS_RECONNAISSANCE', 'CREATE') or hasRight('HYDRANTS_CONTROLE', 'CREATE')")
+    @PreAuthorize("hasRight('HYDRANTS_C') or hasRight('HYDRANTS_RECONNAISSANCE_C') or hasRight('HYDRANTS_CONTROLE_C')")
     public void getTournees(HttpServletResponse response, final @RequestParam(value = "tournees", required = false) String tournees) throws IOException {
         prepareXMLResponse(response);
         try {
@@ -194,7 +194,7 @@ public class XmlController {
     }
 
     @RequestMapping(value = "/hydrants", method = RequestMethod.POST)
-    @PreAuthorize("hasRight('HYDRANTS', 'CREATE') or hasRight('HYDRANTS_RECONNAISSANCE', 'CREATE') or hasRight('HYDRANTS_CONTROLE', 'CREATE')")
+    @PreAuthorize("hasRight('HYDRANTS_C') or hasRight('HYDRANTS_RECONNAISSANCE_C') or hasRight('HYDRANTS_CONTROLE_C')")
     public void updateHydrants(final @RequestBody String xml, HttpServletResponse response, final @RequestParam(value = "v", required = false) Integer v) throws IOException {
 
         if (traceRequests) {
@@ -256,7 +256,7 @@ public class XmlController {
     }
 
     @RequestMapping(value = "trace")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
     public void trace(HttpServletResponse response) throws IOException {
         traceRequests = true;
         response.setStatus(HttpServletResponse.SC_OK);
@@ -264,7 +264,7 @@ public class XmlController {
     }
 
     @RequestMapping(value = "notrace")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
     public void notrace(HttpServletResponse response) throws IOException {
         traceRequests = false;
         response.setStatus(HttpServletResponse.SC_OK);

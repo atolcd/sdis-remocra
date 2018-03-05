@@ -26,7 +26,7 @@ public class RisquesController {
     private ParamConfService paramConfService;
 
     @RequestMapping(value = "/express")
-    @PreAuthorize("hasRight('RISQUES_KML', 'READ')")
+    @PreAuthorize("hasRight('RISQUES_KML_R')")
     public void risqueExpress(HttpServletResponse response) throws IOException {
 
         String filePath = paramConfService.getPdiCheminKml() + "/risques.kml";

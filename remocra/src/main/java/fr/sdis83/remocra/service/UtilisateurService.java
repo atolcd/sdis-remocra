@@ -34,7 +34,6 @@ import fr.sdis83.remocra.domain.remocra.ProfilOrganismeUtilisateurDroit;
 import fr.sdis83.remocra.domain.remocra.TypeDroit.TypeDroitEnum;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.exception.BusinessException;
-import fr.sdis83.remocra.security.AccessRight.Permission;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.security.RemocraAuthenticationProvider;
 import fr.sdis83.remocra.web.message.ItemFilter;
@@ -326,7 +325,7 @@ public class UtilisateurService {
                     if (p != null) {
                         predicateList.add(p);
                     }
-                } else if ("dnasp".equals(itemFilter.getFieldName()) && "true".equals(itemFilter.getValue()) && authUtils.hasRight(TypeDroitEnum.RCI, Permission.CREATE)) {
+                } else if ("dnasp".equals(itemFilter.getFieldName()) && "true".equals(itemFilter.getValue()) && authUtils.hasRight(TypeDroitEnum.RCI_C)) {
                     // On choisit de ne pas filtrer sur les droits utilisateurs
                     // Permis dans les RCCI uniquement (dans un premier temps au moins)
                     doNotAddSecurityPredicate = true;
@@ -353,11 +352,11 @@ public class UtilisateurService {
 
         Predicate p = cBuilder.disjunction(); // ne renvoi rien par defaut.
 
-        if (authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ALL, Permission.READ)) {
+        if (authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ALL_R)) {
             // Tous les utilisateurs
             p = cBuilder.or(cBuilder.conjunction());
 
-        } else if (authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ORGANISME_UTILISATEUR, Permission.READ)) {
+        } else if (authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_R)) {
             // Utilisateurs du même organisme
             p = cBuilder.or(p, cBuilder.equal(utilisateurPath.join("organisme").get("id"), currentUtilisateur.getOrganisme().getId()));
 
@@ -445,23 +444,20 @@ public class UtilisateurService {
     }
 
     /**
-     * Filtrage par niveau d'accès (droits). Valeur : "Code droit"."accès".
-     * Exemple : RCI.Create
+     * Filtrage par type de droit. Valeur : "Code droit".
+     * Exemple : RCI_C
      * 
      * @param from
      * @param itemFilter
      * @return
      */
     private Predicate hasRightPredicate(Root<Utilisateur> from, ItemFilter itemFilter) {
-        String typeAccess = itemFilter.getValue();
-        String[] splitted = typeAccess.split("\\.");
-        String typeDroitCode = splitted[0];
-        String typeDroitAccess = splitted[1];
+        String typeDroitCode = itemFilter.getValue();
 
         EntityManager entityManager = Utilisateur.entityManager();
-        String sql = "select distinct profil_utilisateur from remocra.profil_organisme_utilisateur_droit where"
-                + "    profil_droit in (select profil_droit from remocra.droit where type_droit=(select id from remocra.type_droit where code='" + typeDroitCode + "') and droit_"
-                + typeDroitAccess + "=true)";
+        String sql = "select distinct profil_utilisateur from remocra.profil_organisme_utilisateur_droit where profil_droit in ("
+                + "select profil_droit from remocra.droit where type_droit=(select id from remocra.type_droit where code='" + typeDroitCode + "')"
+                + ")";
         Query query = entityManager.createNativeQuery(sql);
         @SuppressWarnings("unchecked")
         List<Long> results = query.getResultList();

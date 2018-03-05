@@ -194,7 +194,7 @@ Ext.define('Sdis.Remocra.controller.Router', {
         // Cas d'une description dynamique : si dépot délib, fenêtre
         routes['delib'] = {
             dynamicDesc: function() {
-                if (Sdis.Remocra.Rights.getRight('DEPOT_DELIB').Create) {
+                if (Sdis.Remocra.Rights.hasRight('DEPOT_DELIB_C')) {
                     new Sdis.Remocra.features.adresses.delib.DelibWindow().show();
                 }
                 // Le code 'nothing' permet d'indiquer qu'il n'y a plus rien à
@@ -212,7 +212,7 @@ Ext.define('Sdis.Remocra.controller.Router', {
         // Cas d'une description dynamique : si dépot délib, fenêtre
         routes['receptravaux'] = {
             dynamicDesc: function() {
-                if (Sdis.Remocra.Rights.getRight('DEPOT_RECEPTRAVAUX').Create) {
+                if (Sdis.Remocra.Rights.hasRight('DEPOT_RECEPTRAVAUX_C')) {
                     new Sdis.Remocra.features.dfci.receptravaux.RecepTravauxWindow().show();
                 }
                 // Le code 'nothing' permet d'indiquer qu'il n'y a plus rien à
@@ -261,7 +261,7 @@ Ext.define('Sdis.Remocra.controller.Router', {
         // Cas d'une description dynamique : si dépot délib, fenêtre
         routes['declahydrant'] = {
             dynamicDesc: function() {
-                if (Sdis.Remocra.Rights.getRight('DEPOT_DECLAHYDRANT').Create) {
+                if (Sdis.Remocra.Rights.hasRight('DEPOT_DECLAHYDRANT_C')) {
                     new Sdis.Remocra.features.hydrants.declahydrant.DeclaHydrantWindow().show();
                 }
                 // Le code 'nothing' permet d'indiquer qu'il n'y a plus rien à

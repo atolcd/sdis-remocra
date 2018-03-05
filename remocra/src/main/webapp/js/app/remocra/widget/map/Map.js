@@ -266,7 +266,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
                     'select': this.onZoomToTournee,
                      scope: this
                 },
-                hidden : !Sdis.Remocra.Rights.getRight('TOURNEE').Read || this.hideZoomTournee
+                hidden : !Sdis.Remocra.Rights.hasRight('TOURNEE_R') || this.hideZoomTournee
             },
             ' ',
             {

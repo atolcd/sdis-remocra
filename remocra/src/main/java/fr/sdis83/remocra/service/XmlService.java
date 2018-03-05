@@ -59,7 +59,6 @@ import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.exception.SQLBusinessException;
 import fr.sdis83.remocra.exception.XmlDroitException;
 import fr.sdis83.remocra.exception.XmlValidationException;
-import fr.sdis83.remocra.security.AccessRight.Permission;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.util.ExceptionUtils;
@@ -747,7 +746,7 @@ public class XmlService {
         Hydrant.TYPE_SAISIE typeSaisie = getTypeSaisie(hydrant, hydrantXML.isVerif());
 
         // Droits sur MCO
-        boolean mcoCreate = authUtils.hasRight(TypeDroitEnum.HYDRANTS_MCO, Permission.CREATE);
+        boolean mcoCreate = authUtils.hasRight(TypeDroitEnum.HYDRANTS_MCO_C);
 
         hydrant.setAgent1(hydrantXML.getAgent1());
         hydrant.setAgent2(hydrantXML.getAgent2());
@@ -991,18 +990,18 @@ public class XmlService {
      */
     private Hydrant.TYPE_SAISIE getTypeSaisie(Hydrant hydrant, boolean isVerif) throws BusinessException, XmlDroitException {
         if (hydrant.getId() == null) {
-            if (!authUtils.hasRight(TypeDroitEnum.HYDRANTS, Permission.CREATE)) {
+            if (!authUtils.hasRight(TypeDroitEnum.HYDRANTS_C)) {
                 throw new XmlDroitException("L'utilisateur n'a pas les droits suffisants pour la remontée des anomalies");
             }
             return Hydrant.TYPE_SAISIE.CREA;
         } else if (hydrant.getId() != null && hydrant.getDateRecep() == null) {
-            if (!authUtils.hasRight(TypeDroitEnum.HYDRANTS, Permission.CREATE)) {
+            if (!authUtils.hasRight(TypeDroitEnum.HYDRANTS_C)) {
                 throw new XmlDroitException("L'utilisateur n'a pas les droits suffisants pour la remontée des anomalies");
             }
             return Hydrant.TYPE_SAISIE.RECEP;
-        } else if (authUtils.hasRight(TypeDroitEnum.HYDRANTS_CONTROLE, Permission.CREATE)) {
+        } else if (authUtils.hasRight(TypeDroitEnum.HYDRANTS_CONTROLE_C)) {
             return isVerif ? Hydrant.TYPE_SAISIE.VERIF : Hydrant.TYPE_SAISIE.CTRL;
-        } else if (authUtils.hasRight(TypeDroitEnum.HYDRANTS_RECONNAISSANCE, Permission.CREATE)) {
+        } else if (authUtils.hasRight(TypeDroitEnum.HYDRANTS_RECONNAISSANCE_C)) {
             return Hydrant.TYPE_SAISIE.RECO;
         }
 

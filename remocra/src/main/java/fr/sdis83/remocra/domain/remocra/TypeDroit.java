@@ -21,46 +21,71 @@ public class TypeDroit {
     public static enum TypeDroitEnum {
 
         // Général
-        UTILISATEUR_FILTER_ALL("utilisateur.filter.*"), UTILISATEUR_FILTER_ORGANISME_UTILISATEUR("utilisateur.filter.organisme.utilisateur"),
-        REFERENTIELS("referentiels"),
-        TRAITEMENTS("traitements"),
-        DOCUMENTS("documents"),
+        UTILISATEUR_FILTER_ALL_R("utilisateur.filter.*_R"),
+        UTILISATEUR_FILTER_ALL_C("utilisateur.filter.*_C"),
+        UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_R("utilisateur.filter.organisme.utilisateur_R"),
+        UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_C("utilisateur.filter.organisme.utilisateur_C"),
+        REFERENTIELS_C("referentiels_C"),
+        TRAITEMENTS_C("traitements_C"),
+        DOCUMENTS_R("documents_R"),
+        DOCUMENTS_C("documents_C"),
 
         // Module Alertes / adresses
-        ADRESSES("adresses"),
-        ALERTES_EXPORT("alertes.export"),
-        DEPOT_DELIB("depot.delib"),
+        ADRESSES_C("adresses_C"),
+        ALERTES_EXPORT_C("alertes.export_C"),
+        DEPOT_DELIB_C("depot.delib_C"),
 
         // Module DFCI
-        DFCI("dfci"),DFCI_EXPORTATLAS("dfci.exportatlas"),
-        DEPOT_RECEPTRAVAUX("depot.receptravaux"),
+        DFCI_R("dfci_R"),
+        DFCI_EXPORTATLAS_C("dfci.exportatlas_C"),
+        DEPOT_RECEPTRAVAUX_C("depot.receptravaux_C"),
 
         // Module PEI
-        HYDRANTS("hydrants"),
-        HYDRANTS_RECONNAISSANCE("hydrants.reconnaissance"), HYDRANTS_CONTROLE("hydrants.controle"),
-        HYDRANTS_NUMEROTATION("hydrants.numerotation"), HYDRANTS_MCO("hydrants.mco"),
-        INDISPOS("indisponibilite.temporaire"),
-        TOURNEE("tournee"), TOURNEE_RESERVATION("tournee.reservation"),
-        HYDRANTS_TRAITEMENT("hydrants.traitement"),
-        HYDRANTS_EXPORT_NON_NUM("hydrants.exportnonnum"),
-        DEPOT_DECLAHYDRANT("depot.declahydrant"),
-
-        HYDRANTS_PRESCRIT("hydrants.prescrit"),
+        HYDRANTS_R("hydrants_R"),
+        HYDRANTS_C("hydrants_C"),
+        HYDRANTS_D("hydrants_D"),
+        HYDRANTS_DEPLACEMENT_C("hydrants.deplacement_C"),
+        HYDRANTS_RECEPTION_C("hydrants.reception_C"),
+        HYDRANTS_RECONNAISSANCE_C("hydrants.reconnaissance_C"),
+        HYDRANTS_CONTROLE_C("hydrants.controle_C"),
+        HYDRANTS_VERIFICATION_C("hydrants.verification_C"),
+        HYDRANTS_NUMEROTATION_R("hydrants.numerotation_R"),
+        HYDRANTS_NUMEROTATION_C("hydrants.numerotation_C"),
+        HYDRANTS_MCO_C("hydrants.mco_C"),
+        INDISPOS_R("indisponibilite.temporaire_R"),
+        INDISPOS_C("indisponibilite.temporaire_C"),
+        INDISPOS_U("indisponibilite.temporaire_U"),
+        INDISPOS_D("indisponibilite.temporaire_D"),
+        TOURNEE_R("tournee_R"),
+        TOURNEE_C("tournee_C"),
+        TOURNEE_RESERVATION_D("tournee.reservation_D"),
+        HYDRANTS_EXPORT_NON_NUM_C("hydrants.exportnonnum_C"),
+        HYDRANTS_TRAITEMENT_C("hydrants.traitement_C"),
+        DEPOT_DECLAHYDRANT_C("depot.declahydrant_C"),
+        HYDRANTS_PRESCRIT_R("hydrants.prescrit_R"),
+        HYDRANTS_PRESCRIT_C("hydrants.prescrit_C"),
 
         // Module Permis
-        PERMIS("permis"), PERMIS_DOCUMENTS("permis.documents"), PERMIS_TRAITEMENT("permis.traitement"),
+        PERMIS_R("permis_R"),
+        PERMIS_C("permis_C"),
+        PERMIS_DOCUMENTS_C("permis.documents_C"),
+        PERMIS_TRAITEMENT_C("permis.traitement_C"),
 
         // Module RCCI
-        RCI("rci"),
+        RCI_C("rci_C"),
 
         // Module Risques
-        RISQUES_KML("risques.kml"),
+        RISQUES_KML_R("risques.kml_R"),
+        RISQUES_KML_C("risques.kml_C"),
 
         // Module Débroussaillement
-        OLDEB("obligation.debroussaillement"),
+        OLDEB_R("obligation.debroussaillement_R"),
+        OLDEB_C("obligation.debroussaillement_C"),
+        OLDEB_U("obligation.debroussaillement_U"),
+        OLDEB_D("obligation.debroussaillement_D"),
 
         // Module Cartographie
-        CARTOGRAPHIES("cartographies");
+        CARTOGRAPHIES_C("cartographies_C");
 
         private final String value;
 
@@ -84,6 +109,8 @@ public class TypeDroit {
     private String nom;
 
     private String description;
+
+    private String categorie;
 
     public TypeDroitEnum getValue() {
         try {

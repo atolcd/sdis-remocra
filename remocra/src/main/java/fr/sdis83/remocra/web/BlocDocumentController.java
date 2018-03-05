@@ -21,7 +21,6 @@ import fr.sdis83.remocra.domain.remocra.BlocDocument;
 import fr.sdis83.remocra.domain.remocra.ProfilDroit;
 import fr.sdis83.remocra.domain.remocra.TypeDroit.TypeDroitEnum;
 import fr.sdis83.remocra.exception.BusinessException;
-import fr.sdis83.remocra.security.AccessRight.Permission;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.service.BlocDocumentService;
 import fr.sdis83.remocra.web.message.ItemFilter;
@@ -43,7 +42,7 @@ public class BlocDocumentController extends AbstractRemocraController {
     private AuthoritiesUtil authUtils;
 
     @RequestMapping(value = "", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
-    @PreAuthorize("hasRight('DOCUMENTS', 'CREATE')")
+    @PreAuthorize("hasRight('DOCUMENTS_C')")
     public ResponseEntity<java.lang.String> create(MultipartHttpServletRequest request) {
         String json = request.getParameter("data");
         Map<String, MultipartFile> files = request.getFileMap();
@@ -65,7 +64,7 @@ public class BlocDocumentController extends AbstractRemocraController {
     }
 
     @RequestMapping(headers = "Accept=application/json")
-    @PreAuthorize("hasRight('DOCUMENTS', 'READ')")
+    @PreAuthorize("hasRight('DOCUMENTS_R')")
     public ResponseEntity<java.lang.String> list(@RequestParam(value = "page", required = false) Integer page,
             final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
             @RequestParam(value = "sort", required = false) String sorts, @RequestParam(value = "filter", required = false) String filters) {
@@ -91,7 +90,7 @@ public class BlocDocumentController extends AbstractRemocraController {
         }
 
         // Pas le droit d'administrer les documents (consultation simple)
-        if (!authUtils.hasRight(TypeDroitEnum.DOCUMENTS, Permission.CREATE)) {
+        if (!authUtils.hasRight(TypeDroitEnum.DOCUMENTS_C)) {
             itemFilterList.add(new ItemFilter("profilDroitId", profilDroit.getId().toString()));
         }
 
@@ -123,7 +122,7 @@ public class BlocDocumentController extends AbstractRemocraController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
-    @PreAuthorize("hasRight('DOCUMENTS', 'CREATE')")
+    @PreAuthorize("hasRight('DOCUMENTS_C')")
     public ResponseEntity<java.lang.String> update(MultipartHttpServletRequest request, @PathVariable("id") Long id) {
         String json = request.getParameter("data");
         Map<String, MultipartFile> files = request.getFileMap();
@@ -142,7 +141,7 @@ public class BlocDocumentController extends AbstractRemocraController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('DOCUMENTS', 'CREATE')")
+    @PreAuthorize("hasRight('DOCUMENTS_C')")
     public ResponseEntity<java.lang.String> delete(@PathVariable("id") Long id) {
         try {
             blocDocumentService.delete(id);

@@ -123,14 +123,14 @@ public class GeoserverController {
         return layers;
     }
 
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
     protected void reloadLayers() {
         log.info("Proxy WMS : rechargement de la configuration");
         this.layers = null;
         getLayers();
     }
 
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
     public ResponseEntity<java.lang.String> readLayers() {
         Map<String, Layer> l = getLayers();
         HttpHeaders responseHeaders = new HttpHeaders();

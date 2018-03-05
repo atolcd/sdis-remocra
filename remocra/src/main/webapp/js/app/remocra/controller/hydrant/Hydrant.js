@@ -270,29 +270,29 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     },
 
     processRightHydrant: function(fiche) {
-        if (!Sdis.Remocra.Rights.getRight('TOURNEE').Read) {
+        if (!Sdis.Remocra.Rights.hasRight('TOURNEE_R')) {
             fiche.down('crHydrantsTournee').tab.hide();
             fiche.down('#tourneeRapide').hide();
             fiche.down('crHydrantsHydrant gridcolumn[dataIndex=tourneeId]').hide();
         }
-        if (!Sdis.Remocra.Rights.getRight('TOURNEE').Create) {
+        if (!Sdis.Remocra.Rights.hasRight('TOURNEE_C')) {
             fiche.down('crHydrantsTournee #deleteTournee').hide();
         }
-        if (!Sdis.Remocra.Rights.getRight('TOURNEE_RESERVATION').Delete) {
+        if (!Sdis.Remocra.Rights.hasRight('TOURNEE_RESERVATION_D')) {
             fiche.down('crHydrantsTournee #cancelReservation').hide();
         }
-        if (!Sdis.Remocra.Rights.getRight('HYDRANTS').Delete) {
+        if (!Sdis.Remocra.Rights.hasRight('HYDRANTS_D')) {
             fiche.down('crHydrantsHydrant #deleteHydrant').hide();
         }
-        if (!Sdis.Remocra.Rights.getRight('INDISPOS').Read) {
+        if (!Sdis.Remocra.Rights.hasRight('INDISPOS_R')) {
             fiche.down('crHydrantsIndispo').tab.hide();
         }
-        if (!Sdis.Remocra.Rights.getRight('INDISPOS').Update) {
+        if (!Sdis.Remocra.Rights.hasRight('INDISPOS_U')) {
            fiche.down('crHydrantsIndispo #activeIndispo').hide();
            fiche.down('crHydrantsIndispo #leverIndispo').hide();
            fiche.down('crHydrantsIndispo #gererIndispo').hide();
         }
-        if (!Sdis.Remocra.Rights.getRight('INDISPOS').Delete) {
+        if (!Sdis.Remocra.Rights.hasRight('INDISPOS_D')) {
            fiche.down('crHydrantsIndispo #deleteIndispo').hide();
         }
     },
@@ -1204,8 +1204,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
 
     verifDroit : function() {
         var tabHydrant = this.getTabHydrant();
-        tabHydrant.queryById('openHydrant').setVisible(Sdis.Remocra.Rights.getRight('HYDRANTS').Create||
-        Sdis.Remocra.Rights.getRight('HYDRANTS_RECONNAISSANCE').Create || Sdis.Remocra.Rights.getRight('HYDRANTS_CONTROLE').Create);
+        tabHydrant.queryById('openHydrant').setVisible(Sdis.Remocra.Rights.hasRight('HYDRANTS_C')||
+        Sdis.Remocra.Rights.hasRight('HYDRANTS_RECONNAISSANCE_C') || Sdis.Remocra.Rights.hasRight('HYDRANTS_CONTROLE_C'));
     },
 
     showFicheHydrantFromGrid: function(button) {
@@ -1375,7 +1375,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                              }])
                          }
        });
-       if (!Sdis.Remocra.Rights.getRight('INDISPOS').Update) {
+       if (!Sdis.Remocra.Rights.hasRight('INDISPOS_U')) {
           this.getEditIndispo().down('#activIndispo').hide();
           this.getEditIndispo().down('#levIndispo').hide();
        }

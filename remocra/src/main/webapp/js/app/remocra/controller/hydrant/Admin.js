@@ -58,7 +58,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Admin', {
     },
 
     initColumns: function() {
-        if (!Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
+        if (!Sdis.Remocra.Rights.hasRight('REFERENTIELS_C')) {
             if (this.getPanelAdmin()) {
                 this.getPanelAdmin().add({html : 'Vous n\'avez pas les autorisations requises pour accéder à la ressource demandée.'});
             }

@@ -200,19 +200,19 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                 if (hydrant.phantom) {
                     typeSaisie = 'CREA';
                 } else if(controle == false) {
-                  if (Sdis.Remocra.Rights.getRight('HYDRANTS').Create) {
+                  if (Sdis.Remocra.Rights.hasRight('HYDRANTS_C')) {
                      typeSaisie = 'NOCTRL';
                   }
                 } else {
                     if (hydrant.get('dateRecep') != null) {
-                        if (Sdis.Remocra.Rights.getRight('HYDRANTS_RECONNAISSANCE').Create) {
+                        if (Sdis.Remocra.Rights.hasRight('HYDRANTS_RECONNAISSANCE_C')) {
                             typeSaisie = 'RECO';
                         }
-                        if (Sdis.Remocra.Rights.getRight('HYDRANTS_CONTROLE').Create) {
+                        if (Sdis.Remocra.Rights.hasRight('HYDRANTS_CONTROLE_C')) {
                             typeSaisie = 'CTRL';
                         }
                     } else {
-                        if (Sdis.Remocra.Rights.getRight('HYDRANTS_RECEPTION').Create) {
+                        if (Sdis.Remocra.Rights.hasRight('HYDRANTS_RECEPTION_C')) {
                             typeSaisie = 'RECEP';
                         }
                     }
@@ -234,7 +234,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
         var nature = fiche.down('combo[name=nature]').getValue(), chkVerif = fiche.down('checkbox[name=verification]');
         fiche.typeSaisie = typeSaisie;
         if ((typeSaisie != 'CTRL' && typeSaisie != 'VERIF' && typeSaisie != 'RECO')
-                || (!Sdis.Remocra.Rights.getRight('HYDRANTS_VERIFICATION').Create) || fiche.ficheParente != null) {
+                || (!Sdis.Remocra.Rights.hasRight('HYDRANTS_VERIFICATION_C') || fiche.ficheParente != null)) {
             chkVerif.hide();
         }
         if (initial !== true) {
@@ -410,11 +410,11 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
     },
 
     onBeforeRenderFiche: function(fiche) {
-        if (!Sdis.Remocra.Rights.getRight('HYDRANTS_MCO').Create) {
+        if (!Sdis.Remocra.Rights.hasRight('HYDRANTS_MCO_C')) {
             fiche.down('#tabMCO').tab.hide();
         }
-        if (!Sdis.Remocra.Rights.getRight('HYDRANTS_NUMEROTATION').Create) {
-            if (Sdis.Remocra.Rights.getRight('HYDRANTS_NUMEROTATION').Read) {
+        if (!Sdis.Remocra.Rights.hasRight('HYDRANTS_NUMEROTATION_C')) {
+            if (Sdis.Remocra.Rights.hasRight('HYDRANTS_NUMEROTATION_R')) {
                 fiche.down('#numeroInterne').setReadOnly(true);
             } else {
                 fiche.down('#numeroInterne').hide();

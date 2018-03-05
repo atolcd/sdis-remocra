@@ -27,7 +27,6 @@ import fr.sdis83.remocra.domain.remocra.PermisDocument;
 import fr.sdis83.remocra.domain.remocra.TypeDroit.TypeDroitEnum;
 import fr.sdis83.remocra.domain.remocra.ZoneCompetence;
 import fr.sdis83.remocra.exception.BusinessException;
-import fr.sdis83.remocra.security.AccessRight.Permission;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.service.PermisService;
 import fr.sdis83.remocra.service.UtilisateurService;
@@ -69,7 +68,7 @@ public class PermisController extends AbstractRemocraController {
     }
 
     @RequestMapping(value = "/searchxy", headers = "Accept=application/json")
-    @PreAuthorize("hasRight('PERMIS', 'READ')")
+    @PreAuthorize("hasRight('PERMIS_R')")
     public ResponseEntity<java.lang.String> searchPermis(final @RequestParam(value = "srid", required = true) Integer srid,
             final @RequestParam(value = "x", required = true) Float x, final @RequestParam(value = "y", required = true) Float y) {
 
@@ -93,7 +92,7 @@ public class PermisController extends AbstractRemocraController {
     }
 
     @RequestMapping(value = "/search", headers = "Accept=application/json")
-    @PreAuthorize("hasRight('PERMIS', 'READ')")
+    @PreAuthorize("hasRight('PERMIS_R')")
     public ResponseEntity<java.lang.String> searchPermis(final @RequestParam(value = "nom", required = false) String nom,
             final @RequestParam(value = "commune", required = false) Integer commune, final @RequestParam(value = "numero", required = false) String numero,
             final @RequestParam(value = "sectionCadastrale", required = false) String sectionCadastrale,
@@ -124,7 +123,7 @@ public class PermisController extends AbstractRemocraController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    @PreAuthorize("hasRight('PERMIS', 'CREATE')")
+    @PreAuthorize("hasRight('PERMIS_C')")
     public ResponseEntity<java.lang.String> deletePermis(@PathVariable("id") Long id) {
         try {
             Permis attached = Permis.findPermis(id);
@@ -148,7 +147,7 @@ public class PermisController extends AbstractRemocraController {
      */
     @Transactional
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
-    @PreAuthorize("hasRight('PERMIS', 'CREATE')")
+    @PreAuthorize("hasRight('PERMIS_C')")
     public ResponseEntity<java.lang.String> updatePermis(final @PathVariable("id") Long id, MultipartHttpServletRequest request, final @RequestParam String jsonPermis,
             final @RequestParam int fileCounter) {
         try {
@@ -161,7 +160,7 @@ public class PermisController extends AbstractRemocraController {
             }
             final Permis permis = permisService.updatePermis(record);
 
-            if (authUtils.hasRight(TypeDroitEnum.PERMIS_DOCUMENTS, Permission.CREATE)) {
+            if (authUtils.hasRight(TypeDroitEnum.PERMIS_DOCUMENTS_C)) {
                 // Récupération des fichiers
                 for (int i = 0; i < fileCounter; i++) {
                     // Récupération des paramètres
@@ -198,7 +197,7 @@ public class PermisController extends AbstractRemocraController {
      */
     @Transactional
     @RequestMapping(value = "", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
-    @PreAuthorize("hasRight('PERMIS', 'CREATE')")
+    @PreAuthorize("hasRight('PERMIS_C')")
     public ResponseEntity<java.lang.String> createPermis(MultipartHttpServletRequest request, final @RequestParam String jsonPermis, final @RequestParam int fileCounter) {
         try {
             // sauvegarde du permis
@@ -206,7 +205,7 @@ public class PermisController extends AbstractRemocraController {
             final Permis permis = permisService.createPermis(record);
             checkZoneCompetence(permis.getGeometrie());
 
-            if (authUtils.hasRight(TypeDroitEnum.PERMIS_DOCUMENTS, Permission.CREATE)) {
+            if (authUtils.hasRight(TypeDroitEnum.PERMIS_DOCUMENTS_C)) {
                 // Récupération des fichiers
                 for (int i = 0; i < fileCounter; i++) {
                     // Récupération des paramètres

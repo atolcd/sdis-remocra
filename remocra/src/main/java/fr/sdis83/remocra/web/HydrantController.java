@@ -45,7 +45,7 @@ public class HydrantController {
     private UtilisateurService serviceUtilisateur;
 
     @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS', 'READ')")
+    @PreAuthorize("hasRight('HYDRANTS_R')")
     public ResponseEntity<java.lang.String> listJson(final @RequestParam(value = "page", required = false) Integer page,
             final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
             final @RequestParam(value = "sort", required = false) String sorts, final @RequestParam(value = "filter", required = false) String filters,
@@ -89,7 +89,7 @@ public class HydrantController {
     }
 
     @RequestMapping(value = "/layer", method = RequestMethod.GET, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS', 'READ')")
+    @PreAuthorize("hasRight('HYDRANTS_R')")
     public ResponseEntity<java.lang.String> layer(final @RequestParam String bbox) {
         if (bbox == null || bbox.isEmpty()) {
             return FeatureUtil.getResponse(hydrantService.findAllHydrants());
@@ -99,7 +99,7 @@ public class HydrantController {
     }
 
     @RequestMapping(value = "/desaffecter", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('TOURNEE', 'CREATE')")
+    @PreAuthorize("hasRight('TOURNEE_C')")
     public ResponseEntity<java.lang.String> desaffecter(final @RequestBody String json) {
         Integer nbHydrant = hydrantService.desaffecter(json);
         return new SuccessErrorExtSerializer(true, nbHydrant.toString() + " hydrant(s) désaffecté(s)").serialize();
@@ -107,7 +107,7 @@ public class HydrantController {
     }
 
     @RequestMapping(value = "/affecter", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('TOURNEE', 'CREATE')")
+    @PreAuthorize("hasRight('TOURNEE_C')")
     public ResponseEntity<java.lang.String> affecter(final @RequestBody String json) {
         Integer nbHydrant = hydrantService.affecter(json);
         return new SuccessErrorExtSerializer(true, nbHydrant.toString() + " hydrant(s) affecté(s)").serialize();
@@ -115,7 +115,7 @@ public class HydrantController {
     }
 
     @RequestMapping(value = "/checkdispo", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS', 'READ')")
+    @PreAuthorize("hasRight('HYDRANTS_R')")
     public ResponseEntity<java.lang.String> checkDispo(final @RequestParam(value = "id", required = false) Long id,
             final @RequestParam(value = "nature", required = false) Long nature, final @RequestParam(value = "commune", required = false) Long codeCommune,
             final @RequestParam(value = "num", required = false) String num, final @RequestParam(value = "geometrie", required = false) String geometrie) {
@@ -125,7 +125,7 @@ public class HydrantController {
     }
 
     @RequestMapping(value = "/document/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS', 'CREATE')")
+    @PreAuthorize("hasRight('HYDRANTS_C')")
     @Transactional
     public ResponseEntity<java.lang.String> deleteHydrantDocument(@PathVariable("id") Long id) {
         try {
@@ -137,7 +137,7 @@ public class HydrantController {
     }
 
     @RequestMapping(value = "{id}/deplacer", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS_DEPLACEMENT', 'CREATE')")
+    @PreAuthorize("hasRight('HYDRANTS_DEPLACEMENT_C')")
     public ResponseEntity<java.lang.String> deplacer(final @PathVariable(value = "id") Long id, final @RequestParam(value = "geometrie") String geometrie,
             final @RequestParam(value = "srid") Integer srid) {
 

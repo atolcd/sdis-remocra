@@ -4,7 +4,6 @@ import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.core.Authentication;
 
 import fr.sdis83.remocra.domain.remocra.TypeDroit.TypeDroitEnum;
-import fr.sdis83.remocra.security.AccessRight.Permission;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
 
 /**
@@ -26,13 +25,13 @@ public class CustomSecurityExpressionRoot extends SecurityExpressionRoot {
     }
 
     /**
-     * Authorisation pour un droit précis
+     * Authorisation pour un droit
      * 
-     * @param expression
+     * @param typeDroit
      * @return boolean
      */
-    public boolean hasRight(TypeDroitEnum typeDroit, Permission perm) {
-        return authUtils.hasRight(typeDroit, perm);
+    public boolean hasRight(TypeDroitEnum typeDroit) {
+        return authUtils.hasRight(typeDroit);
     }
 
 }

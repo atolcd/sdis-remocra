@@ -34,7 +34,7 @@ public class IndisponibiliteTemporaireController  {
     private IndisponibiliteTemporaireService indisponibiliteTemporaireService;
 
     @RequestMapping(value = "", headers = "Accept=application/json")
-    @PreAuthorize("hasRight('INDISPOS', 'READ')")
+    @PreAuthorize("hasRight('INDISPOS_R')")
     public ResponseEntity<String> listJson(final @RequestParam(value = "page", required = false) Integer page,
             final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
             final @RequestParam(value = "sort", required = false) String sorts, final @RequestParam(value = "filter", required = false) String filters,
@@ -78,7 +78,7 @@ public class IndisponibiliteTemporaireController  {
     }
 
     @RequestMapping(value = "/indispoTemp", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('INDISPOS', 'CREATE')")
+    @PreAuthorize("hasRight('INDISPOS_C')")
     public ResponseEntity<java.lang.String> setIndispo(final @RequestBody String json) {
         Integer nbHydrantIndispo = indisponibiliteTemporaireService.setIndispo(json);
 
@@ -87,7 +87,7 @@ public class IndisponibiliteTemporaireController  {
     }
 
     @RequestMapping(value = "/activeIndispoTemp/{id}", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('INDISPOS', 'UPDATE') ")
+    @PreAuthorize("hasRight('INDISPOS_U')")
     public ResponseEntity<java.lang.String> activeIndispoTemp(@PathVariable("id") Long id, final @RequestParam String dateDebut) {
         try {
 
@@ -119,7 +119,7 @@ public class IndisponibiliteTemporaireController  {
     }
 
     @RequestMapping(value = "/leveIndispoTemp/{id}", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('INDISPOS', 'UPDATE') ")
+    @PreAuthorize("hasRight('INDISPOS_U')")
     public ResponseEntity<java.lang.String> leveIndispoTemp(@PathVariable("id") Long id, final @RequestParam String dateFin) {
         try {
             DateFormat df = new SimpleDateFormat(RemocraDateHourTransformer.FORMAT);
@@ -147,7 +147,7 @@ public class IndisponibiliteTemporaireController  {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('INDISPOS', 'DELETE')")
+    @PreAuthorize("hasRight('INDISPOS_D')")
     public ResponseEntity<java.lang.String> delete(@PathVariable("id") Long id) {
         try {
             indisponibiliteTemporaireService.delete(id);

@@ -14,6 +14,9 @@ Ext.define('Sdis.Remocra.model.TypeDroit', {
     }, {
         name : 'description',
         type : 'string'
+    }, {
+        name : 'categorie',
+        type : 'string'
     } ],
 
     proxy : {

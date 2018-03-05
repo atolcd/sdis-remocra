@@ -28,7 +28,7 @@ Ext.define('Sdis.Remocra.features.hydrants.Hydrant', {
         },{
             xtype: 'crHydrantsIndispo'
         }];
-        if (Sdis.Remocra.Rights.getRight('DOCUMENTS').Read) {
+        if (Sdis.Remocra.Rights.hasRight('DOCUMENTS_R')) {
             this.items.push({
                 xtype: 'crHydrantsBlocDocument'
             });

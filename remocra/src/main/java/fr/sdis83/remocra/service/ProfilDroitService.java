@@ -36,10 +36,6 @@ public class ProfilDroitService extends AbstractService<ProfilDroit> {
             Droit cp = new Droit();
             cp.setProfilDroit(toPd);
             cp.setTypeDroit(d.getTypeDroit());
-            cp.setDroitCreate(d.isDroitCreate());
-            cp.setDroitRead(d.isDroitRead());
-            cp.setDroitUpdate(d.isDroitUpdate());
-            cp.setDroitDelete(d.isDroitDelete());
             cp.persist();
         }
         toPd.merge();

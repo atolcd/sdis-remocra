@@ -67,7 +67,7 @@ Ext.define('Sdis.Remocra.features.permis.Map', {
                     var creerLbl = this.maptbar2.getComponent('creerLbl');
                     var modifierLbl = this.maptbar2.getComponent('modifierLbl');
                     
-                    if (Sdis.Remocra.Rights.getRight('PERMIS').Create) {
+                    if (Sdis.Remocra.Rights.hasRight('PERMIS_C')) {
                         drawPointBtn.addListener('toggle', function(button, pressed) {
                             this.activateSpecificControl('drawPermis', pressed);
                         }, this);

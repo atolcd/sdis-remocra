@@ -26,7 +26,7 @@ Ext.define('Sdis.Remocra.features.oldebs.TabMap', {
         } ];
 
         this.editItems.push('Créer : ');
-        if (Sdis.Remocra.Rights.getRight('OLDEB').Create) {
+        if (Sdis.Remocra.Rights.hasRight('OLDEB_C')) {
             this.editItems.push({
                 xtype: 'button',
                 tooltip: 'Ajouter une obligation',
@@ -84,7 +84,7 @@ Ext.define('Sdis.Remocra.features.oldebs.TabMap', {
             disabled: true
         });
 
-        if (Sdis.Remocra.Rights.getRight('OLDEB').Delete) {
+        if (Sdis.Remocra.Rights.hasRight('OLDEB_D')) {
             // Suppression de l'old
             this.editItems.push({
                 tooltip: 'Supprimer un élément',

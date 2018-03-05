@@ -19,8 +19,8 @@ path=$(pwd)
 PROJECT=remocra
 
 # URL repository et branche
-GITREPO=git://github.com/atolcd/sdis-remocra.git
-#GITREPO=file:////${HOME}/projets/atolcd/sdis-remocra
+#GITREPO=git://github.com/atolcd/sdis-remocra.git
+GITREPO=file:////${HOME}/projets/atolcd/sdis-remocra
 GITBRANCH=master
 
 # Répertoire de travail

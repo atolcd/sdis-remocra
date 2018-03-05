@@ -120,7 +120,7 @@ Ext.define('Sdis.Remocra.controller.oldeb.Fiche', {
     },
 
     onBeforeRenderFiche: function(fiche) {
-        if (Sdis.Remocra.Rights.getRight('OLDEB').Read && !Sdis.Remocra.Rights.getRight('OLDEB').Create && !Sdis.Remocra.Rights.getRight('OLDEB').Update) {
+        if (Sdis.Remocra.Rights.hasRight('OLDEB_R') && !Sdis.Remocra.Rights.hasRight('OLDEB_C') && !Sdis.Remocra.Rights.hasRight('OLDEB_U')) {
             fiche.down('#ok').hide();
             fiche.down('#close').setText('Fermer');
             Ext.Array.each(fiche.query('filefield'), function(item) {
@@ -231,7 +231,7 @@ Ext.define('Sdis.Remocra.controller.oldeb.Fiche', {
     },
 
     onChoiceProprietaire: function(textfield) {
-        if (Sdis.Remocra.Rights.getRight('OLDEB').Create || Sdis.Remocra.Rights.getRight('OLDEB').Update) {
+        if (Sdis.Remocra.Rights.hasRight('OLDEB_C') || Sdis.Remocra.Rights.hasRight('OLDEB_U')) {
             var fiche = textfield.up('oldebsFiche'), form = fiche.down('form').getForm(), oldeb = form.getRecord();
             var fieldRaisonSocialeProprietaire = form.findField('raisonSocialProprietaire'), fieldNomProprietaire = form
                     .findField('nomProprietaire'), fieldPrenomProprietaire = form.findField('prenomProprietaire'), fieldNumVoieProprietaire = form
@@ -354,7 +354,7 @@ Ext.define('Sdis.Remocra.controller.oldeb.Fiche', {
     },
 
     deleteVisite: function() {
-        if (Sdis.Remocra.Rights.getRight('OLDEB').Create || Sdis.Remocra.Rights.getRight('OLDEB').Update) {
+        if (Sdis.Remocra.Rights.hasRight('OLDEB_C') || Sdis.Remocra.Rights.hasRight('OLDEB_U')) {
             var grid = Ext.getCmp('gridVisite'), fiche = grid.up('window'), detailVisite = fiche.down("#detailVisite"), removeVisite = grid
                     .down('#removeVisite');
             var selection = grid.getSelectionModel().getSelection()[0];
@@ -376,7 +376,7 @@ Ext.define('Sdis.Remocra.controller.oldeb.Fiche', {
     },
 
     addVisite: function() {
-        if (Sdis.Remocra.Rights.getRight('OLDEB').Create || Sdis.Remocra.Rights.getRight('OLDEB').Update) {
+        if (Sdis.Remocra.Rights.hasRight('OLDEB_C') || Sdis.Remocra.Rights.hasRight('OLDEB_U')) {
             var grid = Ext.getCmp('gridVisite'), fiche = grid.up('window'), detailVisite = fiche.down("#detailVisite");
             var visite = Ext.create('Sdis.Remocra.model.OldebVisite', null);
             visite.set('dateVisite', new Date());
@@ -393,7 +393,7 @@ Ext.define('Sdis.Remocra.controller.oldeb.Fiche', {
     },
 
     deleteSuite: function() {
-        if (Sdis.Remocra.Rights.getRight('OLDEB').Create || Sdis.Remocra.Rights.getRight('OLDEB').Update) {
+        if (Sdis.Remocra.Rights.hasRight('OLDEB_C') || Sdis.Remocra.Rights.hasRight('OLDEB_U')) {
             var grid = Ext.getCmp('gridVisite'), fiche = grid.up('window'), gridSuite = fiche.down('#gridSuites');
             var selection = gridSuite.getView().getSelectionModel().getSelection()[0];
             if (selection) {
@@ -407,7 +407,7 @@ Ext.define('Sdis.Remocra.controller.oldeb.Fiche', {
     },
 
     addSuite: function() {
-        if (Sdis.Remocra.Rights.getRight('OLDEB').Create || Sdis.Remocra.Rights.getRight('OLDEB').Update) {
+        if (Sdis.Remocra.Rights.hasRight('OLDEB_C') || Sdis.Remocra.Rights.hasRight('OLDEB_U')) {
             var grid = Ext.getCmp('gridVisite'), fiche = grid.up('window'), gridSuite = fiche.down('#gridSuites');
             var suite = Ext.create('Sdis.Remocra.model.OldebVisiteSuite', null);
             suite.set('dateSuite', new Date());

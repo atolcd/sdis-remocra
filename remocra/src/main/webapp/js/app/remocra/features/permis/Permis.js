@@ -25,7 +25,7 @@ Ext.define('Sdis.Remocra.features.permis.Permis', {
         this.items = [ {
             xtype : 'crPermisMap'
         } ];
-        if (Sdis.Remocra.Rights.getRight('DOCUMENTS').Read) {
+        if (Sdis.Remocra.Rights.hasRight('DOCUMENTS_R')) {
             this.items.push({
                 xtype : 'crBlocDocumentGrid',
                 thematiques : 'PERMIS'

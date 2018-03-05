@@ -38,5 +38,12 @@ privileged aspect TypeDroit_Roo_JavaBean {
     public void TypeDroit.setDescription(String description) {
         this.description = description;
     }
-    
+
+    public String TypeDroit.getCategorie() {
+        return this.categorie;
+    }
+
+    public void TypeDroit.setCategorie(String categorie) {
+        this.categorie = categorie;
+    }
 }

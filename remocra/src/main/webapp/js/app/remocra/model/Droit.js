@@ -8,18 +8,6 @@ Ext.define('Sdis.Remocra.model.Droit', {
         name : 'id',
         type : 'int',
         useNull : true
-    }, {
-        name : 'droitCreate',
-        type : 'bool'
-    }, {
-        name : 'droitRead',
-        type : 'bool'
-    }, {
-        name : 'droitUpdate',
-        type : 'bool'
-    }, {
-        name : 'droitDelete',
-        type : 'bool'
     },
 
     // Pour les FK

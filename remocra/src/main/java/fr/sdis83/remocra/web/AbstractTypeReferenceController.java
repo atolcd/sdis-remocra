@@ -188,7 +188,7 @@ public abstract class AbstractTypeReferenceController<T extends ITypeReference> 
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
     public ResponseEntity<java.lang.String> updateFromJson(final @PathVariable("id") Long id, final @RequestBody String json) {
         return new AbstractExtObjectSerializer<T>(tableName + " updated.") {
             @Override
@@ -206,7 +206,7 @@ public abstract class AbstractTypeReferenceController<T extends ITypeReference> 
     }
 
     @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
     public ResponseEntity<java.lang.String> createFromJson(final @RequestBody String json) {
         return new AbstractExtObjectSerializer<T>(tableName + " created.") {
             @Override

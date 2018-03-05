@@ -45,7 +45,7 @@ public class HydrantPrescritController extends AbstractServiceableController<Hyd
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS_PRESCRIT', 'READ')")
+    @PreAuthorize("hasRight('HYDRANTS_PRESCRIT_R')")
     public ResponseEntity<java.lang.String> read(final @RequestParam(value = "id", required = true) Long id) {
         return new AbstractExtObjectSerializer<HydrantPrescrit>("fr.sdis83.remocra.domain.remocra.HydrantPrescrit retrieved.") {
 
@@ -69,7 +69,7 @@ public class HydrantPrescritController extends AbstractServiceableController<Hyd
     }
 
     @RequestMapping(value = "/layer", method = RequestMethod.GET, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS_PRESCRIT', 'READ')")
+    @PreAuthorize("hasRight('HYDRANTS_PRESCRIT_R')")
     public ResponseEntity<java.lang.String> layer(final @RequestParam String bbox) {
         if (bbox == null || bbox.isEmpty()) {
             return FeatureUtil.getResponse(service.findAllHydrantPrescrits());
@@ -80,7 +80,7 @@ public class HydrantPrescritController extends AbstractServiceableController<Hyd
 
     @Override
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS_PRESCRIT', 'CREATE')")
+    @PreAuthorize("hasRight('HYDRANTS_PRESCRIT_C')")
     public ResponseEntity<java.lang.String> update(@PathVariable Long id, @RequestBody String json) {
         HydrantPrescrit current = new JSONDeserializer<HydrantPrescrit>().use( null, HydrantPrescrit.class ).use(Date.class, RemocraDateHourTransformer.getInstance()).use(Geometry.class, new GeometryFactory()).deserialize(json);
         current.getGeometrie().setSRID(2154);
@@ -94,7 +94,7 @@ public class HydrantPrescritController extends AbstractServiceableController<Hyd
 
     @Override
     @RequestMapping(value = "", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS_PRESCRIT', 'CREATE')")
+    @PreAuthorize("hasRight('HYDRANTS_PRESCRIT_C')")
     public ResponseEntity<String> create(@RequestBody String json) {
         HydrantPrescrit current = new JSONDeserializer<HydrantPrescrit>().use( null, HydrantPrescrit.class ).use(Date.class, RemocraDateHourTransformer.getInstance()).use(Geometry.class, new GeometryFactory()).deserialize(json);
         current.getGeometrie().setSRID(2154);
@@ -108,7 +108,7 @@ public class HydrantPrescritController extends AbstractServiceableController<Hyd
 
     @Override
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS_PRESCRIT', 'CREATE')")
+    @PreAuthorize("hasRight('HYDRANTS_PRESCRIT_C')")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         HydrantPrescrit current = service.getById(id);
 

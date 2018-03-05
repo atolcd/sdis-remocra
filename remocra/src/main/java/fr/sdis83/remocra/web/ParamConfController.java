@@ -32,7 +32,7 @@ public class ParamConfController {
     }
 
     @RequestMapping(method = RequestMethod.GET, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
     public ResponseEntity<java.lang.String> listJson() {
         return new AbstractExtListSerializer<ParamConf>("ParamConf retrieved.") {
             @SuppressWarnings("unchecked")
@@ -44,7 +44,7 @@ public class ParamConfController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
     public ResponseEntity<java.lang.String> updateFromJson(final @RequestBody String json) {
         return new AbstractExtListSerializer<ParamConf>("ParamConf retrieved.") {
             @Override
@@ -58,7 +58,7 @@ public class ParamConfController {
 
     // ATTENTION : ici, le POST est considéré comme un PUT
     @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('REFERENTIELS', 'CREATE')")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
     public ResponseEntity<java.lang.String> postFromJson(final @RequestBody String json) {
         return updateFromJson(json);
     }

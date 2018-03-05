@@ -14,7 +14,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             items: []
         };
 
-        if (Sdis.Remocra.Rights.getRight('HYDRANTS').Read) {
+        if (Sdis.Remocra.Rights.hasRight('HYDRANTS_R')) {
             blocHydrants.items.push({
                 type: 'href',
                 href: 'hydrants',
@@ -22,8 +22,8 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             });
         }
         
-        if (Sdis.Remocra.Rights.getRight('HYDRANTS_PRESCRIT').Read
-            || Sdis.Remocra.Rights.getRight('HYDRANTS_PRESCRIT').Create) {
+        if (Sdis.Remocra.Rights.hasRight('HYDRANTS_PRESCRIT_R')
+            || Sdis.Remocra.Rights.hasRight('HYDRANTS_PRESCRIT_C')) {
             blocHydrants.items.push({
                 type: 'href',
                 href: 'hydrants/prescrits',
@@ -31,7 +31,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             });
         }
 
-        if (Sdis.Remocra.Rights.getRight('DEPOT_DECLAHYDRANT').Create) {
+        if (Sdis.Remocra.Rights.hasRight('DEPOT_DECLAHYDRANT_C')) {
             if (!Ext.isEmpty(blocHydrants.items)) {
                 blocHydrants.items.push({
                     type: 'sep'
@@ -48,7 +48,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             });
         }
         
-        if (Sdis.Remocra.Rights.getRight('HYDRANTS_TRAITEMENT').Create || Sdis.Remocra.Rights.getRight('TRAITEMENTS').Create) {
+        if (Sdis.Remocra.Rights.hasRight('HYDRANTS_TRAITEMENT_C') || Sdis.Remocra.Rights.hasRight('TRAITEMENTS_C')) {
             if (!Ext.isEmpty(blocHydrants.items)) {
                 blocHydrants.items.push({
                     type: 'sep'
@@ -76,14 +76,14 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             items: []
         };
 
-        if (Sdis.Remocra.Rights.getRight('ADRESSES').Create) {
+        if (Sdis.Remocra.Rights.hasRight('ADRESSES_C')) {
             blocAdresses.items.push({
                 type: 'href',
                 href: 'adresses',
                 lbl: 'Carte des adresses'
             });
         }
-        if (Sdis.Remocra.Rights.getRight('DEPOT_DELIB').Create) {
+        if (Sdis.Remocra.Rights.hasRight('DEPOT_DELIB_C')) {
             if (!Ext.isEmpty(blocAdresses.items)) {
                 blocAdresses.items.push({
                     type: 'sep'
@@ -99,7 +99,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
                 onclick: ' onclick="this.href=\'#adresses/delib/\'+Math.floor(Math.random()*999);"'
             });
         }
-        if (Sdis.Remocra.Rights.getRight('TRAITEMENTS').Create) {
+        if (Sdis.Remocra.Rights.hasRight('TRAITEMENTS_C')) {
             //Traitements
             if (!Ext.isEmpty(blocAdresses.items)) {
                 blocAdresses.items.push({
@@ -128,7 +128,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             items: []
         };
 
-        if (Sdis.Remocra.Rights.getRight('OLDEB').Read) {
+        if (Sdis.Remocra.Rights.hasRight('OLDEB_R')) {
             blocOldebs.items.push({
                 type: 'href',
                 href: 'oldebs',
@@ -136,7 +136,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             });
         }
 
-        if (Sdis.Remocra.Rights.getRight('OLDEB').Read) {
+        if (Sdis.Remocra.Rights.hasRight('OLDEB_R')) {
             if (!Ext.isEmpty(blocOldebs.items)) {
                 blocOldebs.items.push({
                     type: 'sep'
@@ -155,7 +155,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
     },
 
     createPermisBloc: function(title, icon, minHeight) {
-        if (!Sdis.Remocra.Rights.getRight('PERMIS').Read) {
+        if (!Sdis.Remocra.Rights.hasRight('PERMIS_R')) {
             return null;
         }
         var blocPermis = {
@@ -170,7 +170,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             }]
         };
 
-        if (Sdis.Remocra.Rights.getRight('PERMIS_TRAITEMENT').Create) {
+        if (Sdis.Remocra.Rights.hasRight('PERMIS_TRAITEMENT_C')) {
             blocPermis.items.push({
                 type: 'sep'
             }, {
@@ -183,7 +183,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
     },
     
     createRciBloc: function(title, icon, minHeight) {
-        if (!Sdis.Remocra.Rights.getRight('RCI').Create) {
+        if (!Sdis.Remocra.Rights.hasRight('RCI_C')) {
             return null;
         }
         var bloc = {
@@ -198,7 +198,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             }]
         };
 
-        if (Sdis.Remocra.Rights.getRight('RCI').Create || Sdis.Remocra.Rights.getRight('TRAITEMENTS').Create) {
+        if (Sdis.Remocra.Rights.hasRight('RCI_C') || Sdis.Remocra.Rights.hasRight('TRAITEMENTS_C')) {
             bloc.items.push({
                 type: 'sep'
             }, {
@@ -211,7 +211,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
     },
 
     createDFCIBloc: function(title, icon, minHeight) {
-        if (!Sdis.Remocra.Rights.getRight('DFCI').Read) {
+        if (!Sdis.Remocra.Rights.hasRight('DFCI_R')) {
             return null;
         }
         var blocDfci = {
@@ -225,7 +225,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
                 lbl: 'Carte DFCI'
             }]
         };
-        if (Sdis.Remocra.Rights.getRight('DEPOT_RECEPTRAVAUX').Create) {
+        if (Sdis.Remocra.Rights.hasRight('DEPOT_RECEPTRAVAUX_C')) {
             // Ici, on définit un onclick qui modifie le href à
             // chaque fois (cas où l'utilisateur ferme la
             // fenêtre et clique à nouveau sur le lien)
@@ -275,7 +275,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
     },
 
     createTraitementsBloc: function(title, icon, minHeight) {
-        if (!Sdis.Remocra.Rights.getRight('TRAITEMENTS').Create) {
+        if (!Sdis.Remocra.Rights.hasRight('TRAITEMENTS_C')) {
             return null;
         }
         return {
@@ -293,7 +293,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
 
     createAdministrationBloc: function(title, icon, minHeight) {
         var items = [];
-        if(Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
+        if(Sdis.Remocra.Rights.hasRight('REFERENTIELS_C')) {
             items.push({
                type: 'href',
                href: 'admin/index/elt/paramconf',
@@ -313,15 +313,15 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
                  lbl: 'Les organismes'
              });
         }
-        if (Sdis.Remocra.Rights.getRight('UTILISATEUR_FILTER_ALL').Create
-            || Sdis.Remocra.Rights.getRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR').Create) {
+        if (Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ALL_C')
+            || Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_C')) {
             items.push({
                 type: 'href',
                 href: 'admin/index/elt/utilisateurs',
                 lbl: 'Les utilisateurs'
             });
         }
-        if (Sdis.Remocra.Rights.getRight('DOCUMENTS').Create) {
+        if (Sdis.Remocra.Rights.hasRight('DOCUMENTS_C')) {
            items.push({
                type: 'sep'
            });
@@ -357,7 +357,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
     },
 
     createDocBloc: function(title, icon, minHeight, pageSize, thematiques, profils) {
-        if (!Sdis.Remocra.Rights.getRight('DOCUMENTS').Read) {
+        if (!Sdis.Remocra.Rights.hasRight('DOCUMENTS_R')) {
             return null;
         }
         return {
@@ -379,7 +379,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
     },
 
     createCartographieBloc: function(title, icon, minHeight) {
-        if (!Sdis.Remocra.Rights.getRight('CARTOGRAPHIES').Create) {
+        if (!Sdis.Remocra.Rights.hasRight('CARTOGRAPHIES_C')) {
             return null;
         }
         return {

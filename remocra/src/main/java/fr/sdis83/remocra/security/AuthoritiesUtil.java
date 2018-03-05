@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.GrantedAuthority;
 
 import fr.sdis83.remocra.domain.remocra.TypeDroit.TypeDroitEnum;
-import fr.sdis83.remocra.security.AccessRight.Permission;
 import fr.sdis83.remocra.service.AuthService;
 
 @Configuration
@@ -23,7 +22,7 @@ public class AuthoritiesUtil {
         return new AuthoritiesUtil();
     }
 
-    public boolean hasRight(TypeDroitEnum typeDroitEnum, Permission perm) {
+    public boolean hasRight(TypeDroitEnum typeDroitEnum) {
         Collection<? extends GrantedAuthority> authorities = AuthService.getCurrentAuth().getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
 
@@ -33,11 +32,8 @@ public class AuthoritiesUtil {
 
             AccessRight ar = (AccessRight) grantedAuthority;
             if (ar.getKey().equals(typeDroitEnum)) {
-                logger.debug(" Found right for key " + typeDroitEnum.getValue() + " with perms : " + ar.permissionsToString());
-                if (ar.hasPermission(perm)) {
-                    logger.debug(" Found right : " + perm + " for key : " + typeDroitEnum.getValue());
-                    return true;
-                }
+                logger.debug(" Found right : " + typeDroitEnum.getValue());
+                return true;
             }
         }
         logger.debug(" No right for key : " + typeDroitEnum.getValue());

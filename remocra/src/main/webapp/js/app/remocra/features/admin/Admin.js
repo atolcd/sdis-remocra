@@ -23,16 +23,16 @@ Ext.define('Sdis.Remocra.features.admin.Admin', {
     
     initComponent: function() {
         var data = [], panels = [];
-        if (Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
+        if (Sdis.Remocra.Rights.hasRight('REFERENTIELS_C')) {
             data.push(['adminParamConf', 'Paramètres de configuration', 'paramconf']);
             panels.push({
                 xtype: 'crAdminParamConf',
                 itemId: 'adminParamConf'
             });
         }
-        if (Sdis.Remocra.Rights.getRight('UTILISATEUR_FILTER_ALL').Create
-            || Sdis.Remocra.Rights.getRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR').Create) {
-            var prefix = Sdis.Remocra.Rights.getRight('REFERENTIELS').Create ? '7 : ' : '';
+        if (Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ALL_C')
+            || Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_C')) {
+            var prefix = Sdis.Remocra.Rights.hasRight('REFERENTIELS_C') ? '7 : ' : '';
             data.push(['adminUtilisateur', prefix + 'Utilisateurs', 'utilisateurs']);
             panels.push({
                 xtype: 'crAdminTypeReference',
@@ -42,7 +42,7 @@ Ext.define('Sdis.Remocra.features.admin.Admin', {
                 }
             });
         }
-        if (Sdis.Remocra.Rights.getRight('REFERENTIELS').Create) {
+        if (Sdis.Remocra.Rights.hasRight('REFERENTIELS_C')) {
             data.push(['adminOrganisme', '6 : Organismes', 'organismes']);
             panels.push({
                 xtype: 'crAdminTypeReference',

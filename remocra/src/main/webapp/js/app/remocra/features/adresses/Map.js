@@ -127,7 +127,7 @@ Ext.define('Sdis.Remocra.features.adresses.Map', {
                     }, this);
 
                     var nbAlertesUtils = this.maptbar1.getComponent('downloadNbAlertesParUtil');
-                    if (Sdis.Remocra.Rights.getRight('TRAITEMENTS').Create || Sdis.Remocra.Rights.getRight('ALERTES_EXPORT').Create) {
+                    if (Sdis.Remocra.Rights.hasRight('TRAITEMENTS_C') || Sdis.Remocra.Rights.hasRight('ALERTES_EXPORT_C')) {
                         nbAlertesUtils.addListener('click', this.downloadNbAlertesUtils, this);
                     } else {
                         nbAlertesUtils.hide();

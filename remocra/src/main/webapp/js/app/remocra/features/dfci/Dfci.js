@@ -12,7 +12,7 @@ Ext.define('Sdis.Remocra.features.dfci.Dfci', {
         this.items = [ {
             xtype : 'crDfciMap'
         } ];
-        if (Sdis.Remocra.Rights.getRight('DOCUMENTS').Read) {
+        if (Sdis.Remocra.Rights.hasRight('DOCUMENTS_R')) {
             this.items.push({
                 xtype : 'crBlocDocumentGrid',
                 thematiques : 'DFCI'
