@@ -25,11 +25,12 @@ public class TypeDroit {
 
         ADRESSES("adresses"),
 
-        DFCI("dfci"),
+        DFCI("dfci"),DFCI_EXPORTATLAS("dfci.exportatlas"),
 
         HYDRANTS("hydrants"), HYDRANTS_PRESCRIT("hydrants.prescrit"), HYDRANTS_TRAITEMENT("hydrants.traitement"),
 
-        HYDRANTS_RECONNAISSANCE("hydrants.reconnaissance"), HYDRANTS_CONTROLE("hydrants.controle"),
+        HYDRANTS_RECONNAISSANCE("hydrants.reconnaissance"), HYDRANTS_CONTROLE("hydrants.controle"), HYDRANTS_VERIFICATION("hydrants.verification"), HYDRANTS_RECEPTION("hydrants.reception"),
+        HYDRANTS_DEPLACEMENT("hydrants.deplacement"),
 
         HYDRANTS_NUMEROTATION("hydrants.numerotation"), HYDRANTS_MCO("hydrants.mco"),
 

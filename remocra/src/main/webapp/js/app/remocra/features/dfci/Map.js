@@ -1,11 +1,11 @@
 Ext.ns('Sdis.Remocra.features.dfci');
 
 Ext.require('Sdis.Remocra.widget.map.Map');
-
 Ext.define('Sdis.Remocra.features.dfci.Map', {
     extend: 'Sdis.Remocra.widget.map.Map',
     alias: 'widget.crDfciMap',
     
+
     moreItems: [
         { tooltip: 'Télécharger l\'Atlas DFCI de mon territoire', text: '<span>Télécharger l\'Atlas DFCI</span>',
             cls: 'download-atlas', iconCls: 'download-atlasIcon',
@@ -20,7 +20,11 @@ Ext.define('Sdis.Remocra.features.dfci.Map', {
             listeners: {
                 afterrender: function() {
                     var downloadAtlas = this.maptbar1.getComponent('downloadAtlas');
-                    downloadAtlas.addListener('click', this.downloadAtlas, this);
+                      if (Sdis.Remocra.Rights.getRight('DFCI_EXPORTATLAS').Create) {
+                        downloadAtlas.addListener('click', this.downloadAtlas, this);
+                      }else {
+                        downloadAtlas.hide();
+                      }
                 }
             }
         });
@@ -36,7 +40,7 @@ Ext.define('Sdis.Remocra.features.dfci.Map', {
                 }
             }, this);
     },
-    
+
     goDownloadAtlas: function() {
         Ext.Ajax.request({
             url: Sdis.Remocra.util.Util.withBaseUrl("../traitements/specifique/atlas"),
@@ -57,5 +61,6 @@ Ext.define('Sdis.Remocra.features.dfci.Map', {
             }
         });
     }
+
 
 });

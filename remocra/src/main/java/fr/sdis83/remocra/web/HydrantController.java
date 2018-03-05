@@ -137,7 +137,7 @@ public class HydrantController {
     }
 
     @RequestMapping(value = "{id}/deplacer", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS', 'DELETE')")
+    @PreAuthorize("hasRight('HYDRANTS_DEPLACEMENT', 'CREATE')")
     public ResponseEntity<java.lang.String> deplacer(final @PathVariable(value = "id") Long id, final @RequestParam(value = "geometrie") String geometrie,
             final @RequestParam(value = "srid") Integer srid) {
 

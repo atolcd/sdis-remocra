@@ -212,7 +212,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                             typeSaisie = 'CTRL';
                         }
                     } else {
-                        if (Sdis.Remocra.Rights.getRight('HYDRANTS').Create) {
+                        if (Sdis.Remocra.Rights.getRight('HYDRANTS_RECEPTION').Create) {
                             typeSaisie = 'RECEP';
                         }
                     }
@@ -233,7 +233,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
         var form = fiche.down('form').getForm();
         var nature = fiche.down('combo[name=nature]').getValue(), chkVerif = fiche.down('checkbox[name=verification]');
         fiche.typeSaisie = typeSaisie;
-        if ((typeSaisie != 'CTRL' && typeSaisie != 'VERIF') || fiche.ficheParente != null) {
+        if ((typeSaisie != 'CTRL' && typeSaisie != 'VERIF' && typeSaisie != 'RECO')
+                || (!Sdis.Remocra.Rights.getRight('HYDRANTS_VERIFICATION').Create) || fiche.ficheParente != null) {
             chkVerif.hide();
         }
         if (initial !== true) {

@@ -65,19 +65,18 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
         });
 
         if (Sdis.Remocra.Rights.getRight('HYDRANTS').Delete) {
-            this.editItems.push({
+            this.editItems.push('Supprimer : ',{
                 tooltip: 'Supprimer un élément',
-                text: '<span>Supprimer</span>',
                 cls: 'delete',
                 iconCls: 'deleteIcon',
                 itemId: 'deleteBtn',
                 disabled: true
             });
-
+        }
+        if (Sdis.Remocra.Rights.getRight('HYDRANTS_DEPLACEMENT').Create) {
             //Déplacement hydrant
             this.editItems.push('Déplacer : ',{
                 tooltip: 'Activer le déplacement',
-                text: '<span>Activer</span>',
                 iconCls: 'editIcon',
                 itemId: 'activeMoveBtn',
                 disabled: true,

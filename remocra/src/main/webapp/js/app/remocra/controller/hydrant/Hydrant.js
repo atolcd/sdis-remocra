@@ -284,11 +284,10 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         if (!Sdis.Remocra.Rights.getRight('INDISPOS').Read) {
             fiche.down('crHydrantsIndispo').tab.hide();
         }
-        if (!Sdis.Remocra.Rights.getRight('INDISPOS').Create && !Sdis.Remocra.Rights.getRight('INDISPOS').Update) {
+        if (!Sdis.Remocra.Rights.getRight('INDISPOS').Update) {
            fiche.down('crHydrantsIndispo #activeIndispo').hide();
            fiche.down('crHydrantsIndispo #leverIndispo').hide();
            fiche.down('crHydrantsIndispo #gererIndispo').hide();
-           fiche.down('crHydrantsIndispo #deleteIndispo').hide();
         }
         if (!Sdis.Remocra.Rights.getRight('INDISPOS').Delete) {
            fiche.down('crHydrantsIndispo #deleteIndispo').hide();
@@ -1373,7 +1372,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                              }])
                          }
        });
-       if (!Sdis.Remocra.Rights.getRight('INDISPOS').Create && !Sdis.Remocra.Rights.getRight('INDISPOS').Update) {
+       if (!Sdis.Remocra.Rights.getRight('INDISPOS').Update) {
           this.getEditIndispo().down('#activIndispo').hide();
           this.getEditIndispo().down('#levIndispo').hide();
        }

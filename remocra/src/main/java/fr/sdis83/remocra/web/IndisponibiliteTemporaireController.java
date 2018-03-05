@@ -87,7 +87,7 @@ public class IndisponibiliteTemporaireController  {
     }
 
     @RequestMapping(value = "/activeIndispoTemp/{id}", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('INDISPOS', 'CREATE') or hasRight('INDISPOS', 'UPDATE') ")
+    @PreAuthorize("hasRight('INDISPOS', 'UPDATE') ")
     public ResponseEntity<java.lang.String> activeIndispoTemp(@PathVariable("id") Long id, final @RequestParam String dateDebut) {
         try {
 
@@ -119,7 +119,7 @@ public class IndisponibiliteTemporaireController  {
     }
 
     @RequestMapping(value = "/leveIndispoTemp/{id}", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('INDISPOS', 'CREATE') or hasRight('INDISPOS', 'UPDATE') ")
+    @PreAuthorize("hasRight('INDISPOS', 'UPDATE') ")
     public ResponseEntity<java.lang.String> leveIndispoTemp(@PathVariable("id") Long id, final @RequestParam String dateFin) {
         try {
             DateFormat df = new SimpleDateFormat(RemocraDateHourTransformer.FORMAT);
