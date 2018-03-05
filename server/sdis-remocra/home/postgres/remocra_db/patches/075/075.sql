@@ -44,7 +44,7 @@ insert into remocra.droit(droit_create, droit_delete, droit_read, droit_update, 
  select 'TRUE','TRUE','TRUE','TRUE',1, pd.id, td.id
   from remocra.profil_droit pd, remocra.type_droit td
   where td.code = 'HYDRANTS_RECEPTION'
-  and pd.id in (select d.profil_droit from remocra.droit d where (d.type_droit = (select td.id from remocra.type_droit td where td.code  = 'HYDRANTS')  and d.droit_create = true))
+  and pd.id in (select d.profil_droit from remocra.droit d where (d.type_droit = (select td.id from remocra.type_droit td where td.code  = 'HYDRANTS')  and d.droit_create = true));
 
 
 -- Droits sur la déplacement d'hydrant : Deplacement CRUD 
@@ -55,7 +55,7 @@ insert into remocra.droit(droit_create, droit_delete, droit_read, droit_update, 
  select 'TRUE','TRUE','TRUE','TRUE',1, pd.id, td.id
   from remocra.profil_droit pd, remocra.type_droit td
   where td.code = 'HYDRANTS_DEPLACEMENT'
-  and pd.id in (select d.profil_droit from remocra.droit d where (d.type_droit = (select td.id from remocra.type_droit td where td.code  = 'HYDRANTS')  and d.droit_delete = true))
+  and pd.id in (select d.profil_droit from remocra.droit d where (d.type_droit = (select td.id from remocra.type_droit td where td.code  = 'HYDRANTS')  and d.droit_delete = true));
 
 
 
@@ -75,10 +75,11 @@ insert into remocra.droit(droit_create, droit_delete, droit_read, droit_update, 
  select 'TRUE','FALSE','FALSE','FALSE',1, pd.id, td.id
   from remocra.profil_droit pd, remocra.type_droit td
   where td.code = 'DFCI_EXPORTATLAS'
-  and pd.id in (select d.profil_droit from remocra.droit d where (d.type_droit = (select td.id from remocra.type_droit td where td.code  = 'DFCI')  and d.droit_read = true))
+  and pd.id in (select d.profil_droit from remocra.droit d where (d.type_droit = (select td.id from remocra.type_droit td where td.code  = 'DFCI')  and d.droit_read = true));
 
 -- Contenu réel du patch fin
 --------------------------------------------------
 
 commit;
+
 
