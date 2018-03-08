@@ -4,7 +4,7 @@ Ext.require('Sdis.Remocra.store.ProfilDroit');
 Ext.define('Sdis.Remocra.features.admin.typereference.ProfilDroitChoixWindow', {
     extend: 'Ext.Window',
 
-    title: 'Choix d\'un profil de droits',
+    title: 'Choix d\'un groupe de fonctionnalités',
     width: 500,
 
     data: null,
@@ -23,6 +23,7 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ProfilDroitChoixWindow', {
             editable: false,
             store: {
                 type: 'crProfilDroit',
+                pageSize: 200,
                 autoLoad: true,
                 // Exclusion d'un élément
                 filters: [
@@ -50,7 +51,7 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ProfilDroitChoixWindow', {
             buttonAlign: 'center',
             items: [{
                 border: false,
-                html: '<p>Veuillez sélectionner le profil de droit :</p>'
+                html: '<p>Veuillez sélectionner le groupe de fonctionnalités :</p>'
             }, combo],
             buttons: [{
                 itemId : 'okBtn',

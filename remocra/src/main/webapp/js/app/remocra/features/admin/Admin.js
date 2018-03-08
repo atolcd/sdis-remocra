@@ -6,8 +6,8 @@ Ext.require('Sdis.Remocra.store.ProfilOrganisme');
 Ext.require('Sdis.Remocra.features.admin.typereference.OrganismeGrid');
 Ext.require('Sdis.Remocra.features.admin.typereference.UtilisateurGrid');
 Ext.require('Sdis.Remocra.features.admin.typereference.ProfilGrid');
+Ext.require('Sdis.Remocra.features.admin.typereference.AdminDroit');
 Ext.require('Sdis.Remocra.features.admin.typereference.ProfilDroitGrid');
-Ext.require('Sdis.Remocra.features.admin.typereference.DroitGrid');
 Ext.require('Sdis.Remocra.features.admin.typereference.ProfilOrganismeUtilisateurDroitGrid');
 Ext.require('Sdis.Remocra.features.admin.typereference.TypeOrganismeGrid');
 Ext.require('Sdis.Remocra.store.Utilisateur');
@@ -24,7 +24,7 @@ Ext.define('Sdis.Remocra.features.admin.Admin', {
     initComponent: function() {
         var data = [], panels = [];
         if (Sdis.Remocra.Rights.hasRight('REFERENTIELS_C')) {
-            data.push(['adminParamConf', 'Paramètres de configuration', 'paramconf']);
+            data.push(['adminParamConf', 'Paramètres de configuration', 'paramconf', '#a63a3a']);
             panels.push({
                 xtype: 'crAdminParamConf',
                 itemId: 'adminParamConf'
@@ -33,7 +33,7 @@ Ext.define('Sdis.Remocra.features.admin.Admin', {
         if (Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ALL_C')
             || Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_C')) {
             var prefix = Sdis.Remocra.Rights.hasRight('REFERENTIELS_C') ? '7 : ' : '';
-            data.push(['adminUtilisateur', prefix + 'Utilisateurs', 'utilisateurs']);
+            data.push(['adminUtilisateur', prefix + 'Utilisateurs', 'utilisateurs', '#000000']);
             panels.push({
                 xtype: 'crAdminTypeReference',
                 itemId: 'adminUtilisateur',
@@ -43,7 +43,7 @@ Ext.define('Sdis.Remocra.features.admin.Admin', {
             });
         }
         if (Sdis.Remocra.Rights.hasRight('REFERENTIELS_C')) {
-            data.push(['adminOrganisme', '6 : Organismes', 'organismes']);
+            data.push(['adminOrganisme', '6 : Organismes', 'organismes', '#000000']);
             panels.push({
                 xtype: 'crAdminTypeReference',
                 itemId: 'adminOrganisme',
@@ -51,15 +51,23 @@ Ext.define('Sdis.Remocra.features.admin.Admin', {
                     xtype: 'crAdminOrganismeGrid'
                 }
             });
-            data.push(['adminProfilOrganismeUtilisateurDroit', '5 : Profils organismes, utilisateurs, droits', 'proorgutidroits']);
+            data.push(['adminProfilOrganismeUtilisateurDroit', '5 : Liens entre les profils et les fonctionnalités', 'proorgutidroits', '#6262a0']);
             panels.push({
-                xtype: 'crAdminTypeReference',
                 itemId: 'adminProfilOrganismeUtilisateurDroit',
-                grid: {
-                    xtype: 'crAdminProfilOrganismeUtilisateurDroitGrid'
-                }
+                border: false, defaults: {border: false},
+                bodyPadding : 10,
+                items : [{
+                     html : 'Il s\'agit ici de déterminer le groupe de fonctionnalités attribué à un utilisateur en fonction de son profil'
+                        + ' et du profil de son organisme.',
+                         style: 'font-style:italic;margin-bottom: 20px;'
+                 }, {
+                    xtype: 'crAdminTypeReference',
+                    grid: {
+                        xtype: 'crAdminProfilOrganismeUtilisateurDroitGrid'
+                    }
+                }]
             });
-            data.push(['adminProfilUtilisateur', '4\' : Profils utilisateurs', 'profilutilisateurs']);
+            data.push(['adminProfilUtilisateur', '4\' : Profils utilisateurs', 'profilutilisateurs', '#6262a0']);
             panels.push({
                 xtype: 'crAdminTypeReference',
                 itemId: 'adminProfilUtilisateur',
@@ -75,23 +83,32 @@ Ext.define('Sdis.Remocra.features.admin.Admin', {
                     })
                 }
             });
-            data.push(['adminProfilOrganisme', '4 : Profils organismes', 'profilorganismes']);
+            data.push(['adminProfilOrganisme', '4 : Profils organismes', 'profilorganismes', '#6262a0']);
             panels.push({
-                xtype: 'crAdminTypeReference',
                 itemId: 'adminProfilOrganisme',
-                grid: {
-                    xtype: 'crAdminProfilGrid',
-                    modelType: 'Sdis.Remocra.model.ProfilOrganisme',
-                    store: Ext.create('Sdis.Remocra.store.ProfilOrganisme', {
-                        remoteFilter: true,
-                        remoteSort: true,
-                        autoLoad: true,
-                        autoSync: true,
-                        pageSize: 20
-                    })
-                 }
+                border: false, defaults: {border: false},
+                bodyPadding : 10,
+                items : [{
+                    html : 'Au plus simple, le profil d\'un organisme correspond à son type.'
+                        + ' Le profil d\'organisme permet aussi de gérer des <b>variations dans le temps</b> (commune étape 1, étape 2, etc.)'
+                        + ' ou <b>de typologie</b> ("grosse commune", "petite commune", etc.).',
+                        style: 'font-style:italic;margin-bottom: 20px;'
+                }, {
+                    xtype: 'crAdminTypeReference',
+                    grid: {
+                        xtype: 'crAdminProfilGrid',
+                        modelType: 'Sdis.Remocra.model.ProfilOrganisme',
+                        store: Ext.create('Sdis.Remocra.store.ProfilOrganisme', {
+                            remoteFilter: true,
+                            remoteSort: true,
+                            autoLoad: true,
+                            autoSync: true,
+                            pageSize: 20
+                        })
+                     }
+                }]
             });
-            data.push(['adminTypeOrganisme', '3 : Types d\'organismes', 'typeorganismes']);
+            data.push(['adminTypeOrganisme', '3 : Types d\'organismes', 'typeorganismes', '#6262a0']);
             panels.push({
                 xtype: 'crAdminTypeReference',
                 itemId: 'adminTypeOrganisme',
@@ -99,21 +116,27 @@ Ext.define('Sdis.Remocra.features.admin.Admin', {
                     xtype: 'crAdminTypeOrganismeGrid'
                 }
             });
-            data.push(['adminDroit', '2 : Droits', 'droits']);
+            data.push(['adminDroit', '2 : Attribution des fonctionnalités', 'fonctionnalites', '#a87e2d']);
             panels.push({
-                xtype: 'crAdminTypeReference',
-                itemId: 'adminDroit',
-                grid: {
-                    xtype: 'crAdminDroitGrid'
-                }
+                xtype: 'crAdminDroit',
+                itemId: 'adminDroit'
             });
-            data.push(['adminProfilDroit', '1 : Profils de droits', 'profildroits']);
+            data.push(['adminProfilDroit', '1 : Groupes de fonctionnalités', 'groupesfnct', '#a87e2d']);
             panels.push({
-                xtype: 'crAdminTypeReference',
                 itemId: 'adminProfilDroit',
-                grid: {
-                    xtype: 'crAdminProfilDroitGrid'
-                }
+                border: false, defaults: {border: false},
+                bodyPadding : 10,
+                items : [{
+                     html : 'Un groupe de fonctionnalités porte les <b><a href="#admin/index/elt/fonctionnalites">fonctionnalités'
+                        + ' qui sont attribuées</a> aux profils</b> et détermine la manière de <b>présenter les informations des'
+                        + ' cartes</b> lorsque le bouton "Information" est utilisé (via une feuille de style GeoServer).',
+                         style: 'font-style:italic;margin-bottom: 20px;'
+                 }, {
+                    xtype: 'crAdminTypeReference',
+                    grid: {
+                        xtype: 'crAdminProfilDroitGrid'
+                    }
+                }]
             });
         }
 
@@ -122,15 +145,16 @@ Ext.define('Sdis.Remocra.features.admin.Admin', {
         Ext.apply(this, {
             items: [{
                 xtype: 'combo',
+                tpl: '<tpl for="."><li role="option" class="x-boundlist-item" style="color: {color};">{display}</li></tpl>',
                 itemId: 'adminCombo',
-                width: Sdis.Remocra.widget.WidgetFactory.DEFAULT_WIDTH,
+                width: 500,
                 labelSeparator: Sdis.Remocra.widget.WidgetFactory.DEFAULT_LABEL_SEP,
                 labelWidth: Sdis.Remocra.widget.WidgetFactory.DEFAULT_LABEL_WIDTH,
-                fieldLabel: "Administrer les",
+                fieldLabel: 'Administrer les',
                 queryMode: 'local', valueField: 'value', displayField: 'display',
                 editable: false,
                 store: new Ext.data.SimpleStore({
-                    fields: ['value', 'display', 'key'],
+                    fields: ['value', 'display', 'key', 'color'],
                     data : data
                 }),
                 value: valueToBeSelected, // On sélectionne le premier élément

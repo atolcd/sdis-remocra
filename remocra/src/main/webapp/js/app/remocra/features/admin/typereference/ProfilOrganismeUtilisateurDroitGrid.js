@@ -15,8 +15,14 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ProfilOrganismeUtilisateur
         // Ajout des définitions des colonnes si elles ne sont pas déjà définies
         var typeRefGridCols = Sdis.Remocra.features.admin.typereference.TypeReferenceGrid.columns;
         Ext.applyIf(config, {
-            columns: [
-                {
+            columns: [{
+                    header: '',
+                    menuDisabled: true,
+                    flex: 1, align: 'center',
+                    renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                        return '<i>Quand</i>';
+                    }
+                }, {
                     header: 'Profil organisme',
                     dataIndex: 'profilOrganismeId',
                     menuDisabled: true,
@@ -54,6 +60,13 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ProfilOrganismeUtilisateur
                                 droitRecord.setProfilOrganisme(newRec);
                             }, scope: this
                         }
+                    }
+                }, {
+                    header: '',
+                    menuDisabled: true,
+                    flex: 1, align: 'center',
+                    renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                        return '<i>et</i>';
                     }
                 }, {
                     header: 'Profil utilisateur',
@@ -95,7 +108,14 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ProfilOrganismeUtilisateur
                         }
                     }
                 }, {
-                    header: 'Profil de droits',
+                    header: '',
+                    menuDisabled: true,
+                    flex: 1, align: 'center',
+                    renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                        return '➜';
+                    }
+                }, {
+                    header: 'Groupe de fonctionnalités',
                     dataIndex: 'profilDroitId',
                     menuDisabled: true,
                     flex: 5, align: 'center',
@@ -107,7 +127,7 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ProfilOrganismeUtilisateur
                             return null;
                         }
                         var pd = record.getProfilDroit(); 
-                        return pd?pd.get('nom'):null;
+                        return pd?'<b>'+pd.get('nom')+'</b>':null;
                     },
                     editor: {
                         xtype: 'combo', itemId: 'profilDroitId',

@@ -29,33 +29,33 @@ image::../images/Modele_Droits.png[Modèle des droits]
 
 *Tables connues par l'application (figé)*
 
-La table des types de droits (TypeDroit) n'est pas modifiable : les droits sont connus de l'application et nommés.
+La table des types de droits (type_droit) n'est pas modifiable : les fonctionnalités sont connues de l'application et nommées.
 
 *Table des droits et profils (préparation initiale)*
 
 La préparation consiste à remplir les tables dans l'ordre :
 
-* Profils de droits :
+* Groupes de fonctionnalités :
 
-** 1 : ProfilDroit
-** 2 : Droit
+** 1 : Groupes nommés de fonctinnalités (table profil_droit)
+** 2 : Fonctionnalités des groupes (table droit, associations type_droit / profil_droit)
 
 * Profils d'organismes :
 
-** 3 : TypeOrganisme
-** 4 : ProfilOrganisme : selon les étapes anticipées (au plus simple : un type d'organisme → une seul ProfilOrganisme)
+** 3 : Types d'organisme (table type_organisme)
+** 4 : Profils d'organismes (table profil_organisme) : selon les étapes anticipées (au plus simple : un type d'organisme → une seul profil d'organisme)
 
 * Profils d'utilisateurs :
 
-** 4' : ProfilUtilisateur : recense les profils « logiques »
+** 4' : Profils d'utilisateurs (table profil_utilisateur)
 
-* Liens entre les profils et les droits :
+* Liens entre les profils et les groupes de fonctionnalités :
 
-** 5 : ProfilOrganismeUtilisateurDroit : fait le lien entre les types d'organismes, les « étapes » de l'organisme, les profils utilisateurs et les droits.
+** 5 : La table profil_organisme_utilisateur_droit fait le lien entre les profils d'organismes, les profils utilisateurs et les groupes d'utilisateurs.
 
 *Table des Utilisateurs et Organismes (administration)*
 
-Les tables « Utilisateur » et « Organisme » sont utilisées. Elle constituent les étapes 6 et 7 (administration courante) :
+Les tables utilisateur et organisme sont utilisées. Elle constituent les étapes 6 et 7 (administration courante) :
 
 ** 6 : Organisme
 ** 7 : Utilisateur
@@ -64,12 +64,12 @@ Les tables « Utilisateur » et « Organisme » sont utilisées. Elle constituen
 == Administration courante ==
 
 L'administration courante consiste à _créer des organismes et des utilisateurs_.
-En ce qui concerne l'application Hydrants, les communes entreront progressivement dans le dispositif. Cette progression est modélisée par les profils d'organismes : « Commune Etape 1 », « Commune Etape 2 », etc. Ainsi, lorsqu'une commune change d'étape, l'administrateur n'a qu'une opération à réaliser : il modifie le profil de la commune. Cette modification impacte les droits de tous les utilisateurs concernés.
+En ce qui concerne l'application Hydrants, les communes entreront progressivement dans le dispositif. Cette progression est modélisée par les profils d'organismes : « Commune Etape 1 », « Commune Etape 2 », etc. Ainsi, lorsqu'une commune change d'étape, l'administrateur n'a qu'une opération à réaliser : il modifie le profil de la commune. Cette modification impacte les fonctionnalités de tous les utilisateurs concernés.
 
 *Avantage de ce modèle* :
 L'administrateur peut préparer les droits dès le lancement du projet. Lorsque le temps est venu pour un organisme de changer d'étape, une seule opération permet de modifier les droits des utilisateurs de l'organisme sans modifier les profils ou les utilisateurs un par un.
 
-Lorsqu'un nouveau type d'organisme non prévu au départ souhaite entrer dans le dispositif, l'administrateur crée ce type et les profils adéquats. L'application continue de fonctionner sans qu'il ne soit même nécessaire de recompiler le code source.
+Lorsqu'un nouveau type d'organisme non prévu au départ souhaite entrer dans le dispositif, l'administrateur crée ce type et les profils adéquats. L'application continue de fonctionner sans qu'il ne soit nécessaire de recompiler le code source.
 
 
 == Zones de compétences ==

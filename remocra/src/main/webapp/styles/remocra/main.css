@@ -1156,3 +1156,31 @@ body.x-ie .x-btn-default-toolbar-small-icon-text-left .x-btn-inner {
 	filter: alpha(opacity=30);
 	opacity: .3;
 }
+
+/* Administration des groupes de fonctionnalités */
+#admindroits .x-column-header-inner .x-column-header-text {
+  white-space: normal
+}
+#admindroits .x-grid-row {
+    height: 30px;
+}
+#admindroits .x-grid-cell-inner {
+    padding: 5px;
+}
+#admindroits .grid-cell-tdpd {
+    border-right: 1px solid #e0e0e0;
+    font-size: 18px;
+}
+#admindroits .grid-cell-tdpd-unchecked {
+    color: #c7c7c7;
+}
+#admindroits .grid-cell-tdpd-unchecked .x-grid-cell-inner {
+    display: none;
+}
+#admindroits .x-grid-group-hd {
+    height: 50px;
+    vertical-align: bottom;
+}
+#admindroits .x-column-header-text {
+    font-size: 10px;
+}

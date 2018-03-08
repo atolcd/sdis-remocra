@@ -42,8 +42,8 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ProfilDroitGrid', {
         this.bbar = Ext.create('Ext.PagingToolbar', {
             store: this.store,
             displayInfo: true,
-            displayMsg: 'Profils {0} - {1} de {2}',
-            emptyMsg: 'Aucun profil à afficher'
+            displayMsg: 'Groupes {0} - {1} de {2}',
+            emptyMsg: 'Aucun groupe à afficher'
         });
         
         this.callParent([config]);
@@ -53,16 +53,16 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ProfilDroitGrid', {
         tbar.add({
             itemId: 'copydroits',
             disabled: true,
-            text: 'Réinitialiser les droits à partir du profil...',
-            tooltip: 'réinitialiser les droits à partir d\'un profil',
+            text: 'Réinitialiser à partir du groupe...',
+            tooltip: 'Réinitialiser les fonctionnalités à partir du groupe',
             iconCls: 'leftIcon',
             handler: this.copyDroitsFromAnotherProfilDroit,
             scope: this
         }, {
             itemId: 'cleardroits',
             disabled: true,
-            text: 'Vider les droits du profil',
-            tooltip: 'vider les droits du profil',
+            text: 'Vider',
+            tooltip: 'Retirer toutes les fonctionnalités du groupe',
             iconCls: 'deleteIcon',
             handler: this.clearDroits,
             scope: this
@@ -100,12 +100,12 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ProfilDroitGrid', {
             scope: this,
             callback: function(options, success, response) {
                 if (success == true) {
-                    Sdis.Remocra.util.Msg.msg('Profil de droits',
-                        'Le profil "' + target.get('nom') + '" dispose maintenant des mêmes droits que le profil "' + profilDroit.get('nom') + '".', 5);
+                    Sdis.Remocra.util.Msg.msg('Groupe de fonctionnalités',
+                        'Le groupe  "' + target.get('nom') + '" dispose maintenant des mêmes droits que le groupe "' + profilDroit.get('nom') + '".', 5);
                 } else {
                     var msg = o.result && o.result.message ? ' :<br/>'+o.result.message : '';
-                    Ext.Msg.alert('Profil de droits',
-                        'Un problème est survenu lors de la réinitialisation du profil de droits.' + msg + '.');
+                    Ext.Msg.alert('Groupe de fonctionnalités',
+                        'Un problème est survenu lors de la réinitialisation du groupe de fonctionnalités.' + msg + '.');
                 }
             }
         });
@@ -116,7 +116,7 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ProfilDroitGrid', {
         if (!target) {
             return;
         }
-        Ext.Msg.confirm('Droits du profil', 'Vider les droits du profil "' + target.get('nom') + '" ?', function(btn) {
+        Ext.Msg.confirm('Groupe de fonctionnalités', 'Vider les droits du groupe "' + target.get('nom') + '" ?', function(btn) {
             if (btn == "yes"){
                 this.clearDroitsReal(target);
             }
@@ -129,12 +129,12 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ProfilDroitGrid', {
             scope: this,
             callback: function(options, success, response) {
                 if (success == true) {
-                    Sdis.Remocra.util.Msg.msg('Profil de droits',
-                        'Le profil "' + target.get('nom') + '" a été vidé.', 5);
+                    Sdis.Remocra.util.Msg.msg('Groupe de fonctionnalités',
+                        'Le groupe "' + target.get('nom') + '" n\'a plus aucune fonctionnalité.', 5);
                 } else {
                     var msg = o.result && o.result.message ? ' :<br/>'+o.result.message : '';
-                    Ext.Msg.alert('Profil de droits',
-                        'Un problème est survenu lors du vidage des droits du profil de droits.' + msg + '.');
+                    Ext.Msg.alert('Groupe de fonctionnalités',
+                        'Un problème est survenu lors du vidage des fonctionnalités du groupe.' + msg + '.');
                 }
             }
         });
@@ -146,8 +146,8 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ProfilDroitGrid', {
             target = target[0];
         }
         if (!target) {
-            Ext.Msg.alert('Profil de droits',
-                'Veuillez sélectionner un profil au préalable.');
+            Ext.Msg.alert('Groupe de fonctionnalités',
+                'Veuillez sélectionner un groupe au préalable.');
             return;
         }
         return target;

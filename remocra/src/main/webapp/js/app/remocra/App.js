@@ -52,6 +52,7 @@ Ext.require('Sdis.Remocra.features.cartographie.Cartographie');
 Ext.require('Sdis.Remocra.features.traitements.Traitements');
 
 Ext.require('Sdis.Remocra.network.TypeAlerteEltStore');
+Ext.require('Sdis.Remocra.store.TypeDroit');
 
 Ext.ns('Sdis.Remocra.App');
 
