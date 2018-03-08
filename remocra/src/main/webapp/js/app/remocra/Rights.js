@@ -14,6 +14,9 @@ Ext.define('Sdis.Remocra.Rights', {
         if(this.disabledRights){
             return true;
         }
+        if (!(this.userRights instanceof Object)) {
+            return false;
+        }
         return Ext.Array.contains(this.userRights, key);
     },
 
