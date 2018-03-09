@@ -41,7 +41,7 @@ CREATE OR REPLACE VIEW pdi.vue_organisme AS
    FROM remocra.organisme o
       JOIN remocra.type_organisme tyo ON o.type_organisme = tyo.id
    WHERE o.actif = true
-  ORDER BY o.tricol NULLS FIRST;
+  ORDER BY tricol NULLS FIRST;
 
 ALTER TABLE pdi.vue_organisme
   OWNER TO postgres;
@@ -60,7 +60,7 @@ INSERT INTO pdi.modele_traitement_parametre(
             idparametre, form_etiquette, form_num_ordre, form_obligatoire,
             form_source_donnee, form_type_valeur, form_valeur_defaut, nom,
             idmodele)
-    VALUES ((SELECT MAX(idparametre)+1 FROM pdi.modele_traitement_parametre), 'Organisme', '1', true, 'vue_organisme',
+    VALUES ((SELECT MAX(idparametre)+1 FROM pdi.modele_traitement_parametre), 'Organisme', 1, true, 'vue_organisme',
             'combo', null, 'ORGANISME_ID', (SELECT MAX(idmodele) FROM pdi.modele_traitement));
 
 INSERT INTO pdi.modele_traitement_parametre(
