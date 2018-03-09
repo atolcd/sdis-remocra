@@ -666,13 +666,24 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
 
             // ------------------ REGLE METIER -------------------------
             // hydrant.set('dispoAdmin', nbAdmin >= 4 ? 'INDISPO' : 'DISPO');
+            //Si l'hydrant est réceptionné on calcule l'indispo sinon par défaut il est indisponible
+            if (hydrant.get('dateRecep') != null) {
             hydrant.set('dispoAdmin', null);
             hydrant.set('dispoTerrestre', nbTerr >= 5 ? 'INDISPO' : (hasNC ? 'NON_CONFORME' : 'DISPO'));
             hydrant.set('dispoHbe', nbHBE >= 5 ? 'INDISPO' : 'DISPO');
             // ---------------------------------------------------------
-
             this.updateUiDispo(fiche);
+
+            } else {
+             hydrant.set('dispoAdmin', null);
+             hydrant.set('dispoTerrestre', 'INDISPO');
+             hydrant.set('dispoHbe', 'INDISPO');
+             // ---------------------------------------------------------
+             this.updateUiDispo(fiche);
+            }
+
         }
+
     },
 
     updateUiDispo: function(fiche) {
@@ -823,6 +834,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                     hydrantAssocie.set(dateField, dateSaisie);
                 }
             }
+            // On recalcule l'indisponibilité après l'affectation de la date réception
+            this.calculateIndisponibilite(fiche);
 
             // Cas du fichier ...
             var formFiles = fiche.down('form[name=fiche]').down('filefield'), isNew = hydrant.phantom;
@@ -993,16 +1006,14 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                         fiche.down('anomalie').grid.getSelectionModel().select(anomalie,true);
                         this.calculateIndisponibilite(fiche);
                     }
-
                     comp = fiche.down('displayfield[name=' + type + '_msg]');
                     if (comp) {
                         comp.setValue(result);
                     }
                 }
-            }, this);
+           }, this);
         }
     },
-
     getErrorConstraint: function(type, diam, valeur) {
         var vals = this.cfgDebit[type];
         if (!vals) {
