@@ -91,6 +91,16 @@ public class HydrantIndispoTemporaire {
         return 0;
     }
 
+    public String getCommune(){
+        Set<Hydrant> listeHydrants = this.getHydrants();
+        if(listeHydrants!=null) {
+            if(listeHydrants.iterator().hasNext()){
+                return listeHydrants.iterator().next().getCommune().getNom();
+            }
+        }
+        return "inconnue";
+    }
+
     public Geometry getGeometrie(){
         Geometry geom = null;
         if(this.getHydrants()!=null && this.getHydrants().size()!=0) {

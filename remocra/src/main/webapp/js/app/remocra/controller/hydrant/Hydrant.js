@@ -965,6 +965,17 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     },
 
     declareIndispo: function() {
+       var features = this.getSelectedFeatures();
+          var i = 0;
+          var communeId = features[0].data.commune;
+
+                for (i; i < features.length ; i++) {
+                   if (features[i].data.commune !== communeId) {
+                      Ext.Msg.alert('Indisponibilité temporaire','Merci de vérifier que tous les points d\'eau sélectionnés sont localisés sur la même commune');
+                      return;
+                   }
+                }
+
        Ext.widget('nouvelleIndispo').show();
     },
 
@@ -1258,6 +1269,14 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             Ext.defer(function() {
                 this.getNouvelleIndispo().down('#gridHydrantIndispos').bindStore(indispo.hydrants(), true);
             }, 150, this);
+      if(indispo.getStatut().get('code') !== 'PLANIFIE') {
+           this.setReadOnly(this.getNouvelleIndispo());
+           this.getNouvelleIndispo().queryById('validHydrantIndispo').hide(true);
+           this.getNouvelleIndispo().queryById('annulHydrantIndispo').setText('Fermer');
+           var msgErrorField = this.getNouvelleIndispo().down('displayfield[name=errorMsg]');
+           msgErrorField.setValue('Seules les indisponibilités en état "Planifié" peuvent être modifiées.');
+           msgErrorField.show();
+      }
    }else {
      this.getNouvelleIndispo().down('checkbox[name=activationImmediate]').setValue(false);
      this.getNouvelleIndispo().down('datefield[name=dateDebut]').setValue(new Date());
@@ -1276,17 +1295,24 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                     }
                   grid.getView().refresh();
      }
+
    },
 
    addHydrantIndispo : function() {
       var grid = this.getNouvelleIndispo().down('#gridHydrantIndispos');
       var comboIndispo = this.getNouvelleIndispo().down('combo[name=numHydrant]');
-
                   var hydrant = comboIndispo.findRecordByValue(comboIndispo.getValue());
-                  if(grid.store.findRecord("id", hydrant.getId()) == null) {
-                    grid.store.add(hydrant);
-                    grid.getView().refresh();
-                  }
+                    if(hydrant){
+                        //On teste si la commune de l'hydrant est la meme
+                        if (hydrant.data.commune !== grid.store.getAt(0).data.commune) {
+                             Ext.Msg.alert('Indisponibilité temporaire','Merci de vérifier que tous les points d\'eau sélectionnés sont localisés sur la même commune');
+                             return;
+                        }
+                        if(grid.store.findRecord("id", hydrant.getId()) == null) {
+                          grid.store.add(hydrant);
+                          grid.getView().refresh();
+                        }
+                    }
 
    },
 
@@ -1402,19 +1428,20 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
 
                tabIndispos.queryById('deleteIndispo').setDisabled(records.length == 0);
                tabIndispos.queryById('locateIndispo').setDisabled(records.length == 0);
+               tabIndispos.queryById('gererIndispo').setDisabled(records.length == 0);
              if(indispo.getStatut().get('code') == 'EN_COURS'){ // On permet la levée de l'indispo & on interdit la suppression
                tabIndispos.queryById('activeIndispo').setDisabled(records.length != 0);
                tabIndispos.queryById('leverIndispo').setDisabled(records.length == 0);
-               tabIndispos.queryById('gererIndispo').setDisabled(records.length != 0);
+               //tabIndispos.queryById('gererIndispo').setDisabled(records.length != 0);
                tabIndispos.queryById('deleteIndispo').setDisabled(records.length != 0);
              }else if(indispo.getStatut().get('code') == 'TERMINE'){ // indispo terminée on desactive tout
                tabIndispos.queryById('activeIndispo').setDisabled(records.length != 0);
                tabIndispos.queryById('leverIndispo').setDisabled(records.length != 0);
-               tabIndispos.queryById('gererIndispo').setDisabled(records.length != 0);
+               //tabIndispos.queryById('gererIndispo').setDisabled(records.length != 0);
              }else if(indispo.getStatut().get('code') == 'PLANIFIE'){ //indispo en previsionnelle on autorise l'activation et la gestion
                tabIndispos.queryById('activeIndispo').setDisabled(records.length == 0);
                tabIndispos.queryById('leverIndispo').setDisabled(records.length != 0);
-               tabIndispos.queryById('gererIndispo').setDisabled(records.length == 0);
+               //tabIndispos.queryById('gererIndispo').setDisabled(records.length == 0);
              }
           }else {                                                                   // En cas de suppression on reinitialise tout
             tabIndispos.queryById('gererIndispo').setDisabled(records.length == 0);
@@ -1604,6 +1631,36 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                this.getLeveIndispo().queryById('gridHydrantIndispos').getStore().add (this.getSelectedIndispoFromMap().hydrants().data.items);
            }
       }
-    }
+    },
+     setReadOnly: function(component) {
+        if (Ext.isFunction(component.cascade)) {
+            component.cascade(function(item) {
+                if (Ext.isFunction(item.setReadOnly)) {
+                    item.setReadOnly(true);
+                }
+                if (Ext.isFunction(item.hideTrigger)) {
+                    item.hideTrigger();
+                }
+                if (item.getToolbar) {
+                    toolbar = item.getToolbar();
+                }
+                if (item.isXType('button')) {
+                   item.setDisabled(true);
+                }
+                if (item.isXType('grid')) {
+                    Ext.Array.each(item.plugins, function(plugin) {
+                        plugin.beforeEdit = function() {
+                            return false;
+                        };
+                    });
+                    Ext.Array.each(item.columns, function(column) {
+                        if (column.isXType('actioncolumn')) {
+                            column.destroy();
+                        }
+                    }, null, true);
+                }
+            });
+        }
+     }
 
 });

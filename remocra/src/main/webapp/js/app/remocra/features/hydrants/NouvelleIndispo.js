@@ -3,8 +3,9 @@ Ext.require('Sdis.Remocra.features.hydrants.GridHydrantIndispos');
 Ext.define('Sdis.Remocra.features.hydrants.NouvelleIndispo', {
     extend: 'Ext.window.Window',
     alias: 'widget.nouvelleIndispo',
+    cls: 'fichehydrant',
     width: 550,
-       height: 350,
+       height: 400,
        title: 'Nouvelle indisponibilité temporaire',
        modal: true,
        layout: 'form',
@@ -16,6 +17,12 @@ Ext.define('Sdis.Remocra.features.hydrants.NouvelleIndispo', {
        },
 
         items: [{
+            xtype: 'displayfield',
+            cls: 'indispo-msg-error',
+            value: 'Un petit message d\'erreur ...',
+            name: 'errorMsg',
+            hidden: true
+        },{
            boxLabel: 'Déclarer une indisponibilité prévisionnelle',
            labelAlign: 'right',
            xtype: 'checkbox',
@@ -157,6 +164,7 @@ Ext.define('Sdis.Remocra.features.hydrants.NouvelleIndispo', {
             itemId: 'validHydrantIndispo'
         },{
             text: 'Annuler',
+            itemId: 'annulHydrantIndispo',
             scope: this,
             handler: function() {
                 this.close();

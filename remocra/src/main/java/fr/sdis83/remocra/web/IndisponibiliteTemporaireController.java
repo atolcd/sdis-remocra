@@ -11,8 +11,10 @@ import flexjson.JSONSerializer;
 import fr.sdis83.remocra.domain.remocra.Hydrant;
 import fr.sdis83.remocra.domain.remocra.HydrantIndispoTemporaire;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantIndispoStatut;
+import fr.sdis83.remocra.domain.remocra.ZoneCompetence;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.service.IndisponibiliteTemporaireService;
+import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
@@ -32,6 +34,9 @@ public class IndisponibiliteTemporaireController  {
 
     @Autowired
     private IndisponibiliteTemporaireService indisponibiliteTemporaireService;
+
+    @Autowired
+    private UtilisateurService utilisateurService;
 
     @RequestMapping(value = "", headers = "Accept=application/json")
     @PreAuthorize("hasRight('INDISPOS_R')")
@@ -56,8 +61,9 @@ public class IndisponibiliteTemporaireController  {
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
                 serializer
                     .include("data.nomStatut").include("data.id").include("data.datePrevDebut").include("data.dateRappelDebut").include("data.dateRappelFin")
-                    .include("data.datePrevFin").include("data.dateDebut").include("data.dateFin").include("data.motif")
-                    .include("data.totalHydrants").include("data.statut").include("data.countHydrant").include("data.hydrants.id").include("data.hydrants.numero").include("data.geometrie").include("data.hydrants.jsonGeometrie");
+                    .include("data.datePrevFin").include("data.dateDebut").include("data.dateFin").include("data.motif").include("data.commune")
+                    .include("data.totalHydrants").include("data.statut").include("data.countHydrant").include("data.hydrants.id").include("data.hydrants.numero").include("data.geometrie").include("data.hydrants.jsonGeometrie")
+                    .include("data.hydrants.commune.id");
 
                 return serializer.include("total").include("message").exclude("data.hydrants.*");
             }
@@ -66,7 +72,8 @@ public class IndisponibiliteTemporaireController  {
                 if(itemFilterList.size()!=0 && itemFilterList.get(0).getFieldName().equals("hydrantId")) {
                     return indisponibiliteTemporaireService.getIndisponibilite(Long.valueOf(itemFilterList.get(0).getValue()));
                 }
-                return indisponibiliteTemporaireService.find(start, limit, sortList, itemFilterList);
+                ZoneCompetence zc = utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence();
+                return indisponibiliteTemporaireService.getIndisponibiliteByZc(zc, limit, start);
             }
 
             @Override

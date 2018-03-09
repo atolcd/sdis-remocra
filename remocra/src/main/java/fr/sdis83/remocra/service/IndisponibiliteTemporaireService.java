@@ -23,6 +23,7 @@ import fr.sdis83.remocra.domain.remocra.Hydrant;
 import fr.sdis83.remocra.domain.remocra.HydrantIndispoTemporaire;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantIndispoStatut;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
+import fr.sdis83.remocra.domain.remocra.ZoneCompetence;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import org.apache.log4j.Logger;
@@ -75,8 +76,21 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
     public List<HydrantIndispoTemporaire> getIndisponibilite(Long hydrant) {
         String sql = "select * from remocra.hydrant_indispo_temporaire where remocra.hydrant_indispo_temporaire.id in (select indisponibilite from remocra.hydrant_indispo_temporaire_hydrant where remocra.hydrant_indispo_temporaire_hydrant.hydrant = :hydrant)";
         Query query =  entityManager.createNativeQuery(sql,HydrantIndispoTemporaire.class);
-        System.out.println(sql);
         query.setParameter("hydrant", hydrant);
+        return query.getResultList();
+    }
+
+    public List<HydrantIndispoTemporaire> getIndisponibiliteByZc(ZoneCompetence zc, Integer limit, Integer offset) {
+        String sql = "select * from remocra.hydrant_indispo_temporaire\n" +
+            " where remocra.hydrant_indispo_temporaire.id \n" +
+            " in (select indisponibilite from remocra.hydrant_indispo_temporaire_hydrant\n" +
+            " where remocra.hydrant_indispo_temporaire_hydrant.hydrant\n" +
+            "  in(\n" +
+            "select id from remocra.hydrant h where h. commune \n" +
+            "in (select id from remocra.commune c where st_Overlaps((select geometrie from remocra.zone_competence where zone_competence.id = :zc),c.geometrie)\n" +
+            "or st_contains((select geometrie from remocra.zone_competence where zone_competence.id = :zc),c.geometrie)))) limit :limit offset :offset";
+        Query query =  entityManager.createNativeQuery(sql,HydrantIndispoTemporaire.class);
+        query.setParameter("zc", zc.getId()).setParameter("limit", limit).setParameter("offset", offset );
         return query.getResultList();
     }
 

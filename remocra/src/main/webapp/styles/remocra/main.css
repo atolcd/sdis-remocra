@@ -1134,6 +1134,14 @@ Affichage de toute la légende
 	background: url("../../js/ext-4.1.1a/resources/themes/images/gray/form/exclamation.gif") no-repeat scroll 1px 1px transparent
 }
 
+.indispo-msg-error .x-form-display-field {
+	color: red;
+	padding: 1px 0 10px 20px;
+    margin-left: 40px;
+	background: url("../../js/ext-4.1.1a/resources/themes/images/gray/form/exclamation.gif") no-repeat scroll 1px 1px transparent
+
+}
+
 /* debug pour IE : boutons de toolbars qui ne sont pas visibles */
 body.x-ie .x-btn-default-toolbar-small-icon-text-left .x-btn-inner {
 	padding-left : 4px;

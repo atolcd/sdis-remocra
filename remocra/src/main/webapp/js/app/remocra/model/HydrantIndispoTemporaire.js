@@ -49,6 +49,9 @@ Ext.define('Sdis.Remocra.model.HydrantIndispoTemporaire', {
         type: 'fk',
         useNull: true
     }, {
+       name : 'commune',
+       xtype: 'string'
+    }, {
        name : 'nomStatut',
         type: 'string'
     },{

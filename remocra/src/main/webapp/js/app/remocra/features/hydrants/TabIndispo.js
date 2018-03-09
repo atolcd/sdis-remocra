@@ -115,10 +115,15 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
                     }
                 }
             }
-        }         ,{
+        },{
             text: 'Motif',
             dataIndex: 'motif',
             align : 'center'
+        },{
+             text: 'Commune',
+             align : 'center',
+             dataIndex: 'commune',
+             sortable: false
         },{
             text: 'Points d\'eau',
             align : 'center',
