@@ -1432,16 +1432,16 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
              if(indispo.getStatut().get('code') == 'EN_COURS'){ // On permet la levée de l'indispo & on interdit la suppression
                tabIndispos.queryById('activeIndispo').setDisabled(records.length != 0);
                tabIndispos.queryById('leverIndispo').setDisabled(records.length == 0);
-               //tabIndispos.queryById('gererIndispo').setDisabled(records.length != 0);
+               tabIndispos.queryById('gererIndispo').setText('Lister les points d\'eau');
                tabIndispos.queryById('deleteIndispo').setDisabled(records.length != 0);
              }else if(indispo.getStatut().get('code') == 'TERMINE'){ // indispo terminée on desactive tout
                tabIndispos.queryById('activeIndispo').setDisabled(records.length != 0);
                tabIndispos.queryById('leverIndispo').setDisabled(records.length != 0);
-               //tabIndispos.queryById('gererIndispo').setDisabled(records.length != 0);
+               tabIndispos.queryById('gererIndispo').setText('Lister les points d\'eau');
              }else if(indispo.getStatut().get('code') == 'PLANIFIE'){ //indispo en previsionnelle on autorise l'activation et la gestion
                tabIndispos.queryById('activeIndispo').setDisabled(records.length == 0);
                tabIndispos.queryById('leverIndispo').setDisabled(records.length != 0);
-               //tabIndispos.queryById('gererIndispo').setDisabled(records.length == 0);
+               tabIndispos.queryById('gererIndispo').setText('Gérer');
              }
           }else {                                                                   // En cas de suppression on reinitialise tout
             tabIndispos.queryById('gererIndispo').setDisabled(records.length == 0);
