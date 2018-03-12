@@ -36,7 +36,7 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.Tracabilite', {
     },{
         items: [{
             xtype: 'datefield',
-            fieldLabel: 'Date de contrôle',
+            fieldLabel: 'Date de visite',
             format: 'd/m/Y',
             name: 'dateSaisie',
             value: new Date()

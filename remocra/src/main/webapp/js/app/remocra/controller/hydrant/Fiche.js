@@ -768,7 +768,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
         }
         if(needConfirmation) {
             if(dateSaisie == dateControle) {
-                Ext.Msg.confirm(fiche.title, 'Vous n\'avez pas modifié la date de contrôle.<br/>Confirmez-vous qu\'il s\'agit bien d\'une nouvelle saisie ?', function(buttonId) {
+                Ext.Msg.confirm(fiche.title, 'Vous n\'avez pas modifié la date de visite.<br/>Confirmez-vous qu\'il s\'agit bien d\'une nouvelle saisie ?', function(buttonId) {
                     if (buttonId == 'yes') {
                         this.saveFicheHydrant(button);
                     }
