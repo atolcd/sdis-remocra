@@ -44,7 +44,7 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ProfilOrganismeUtilisateur
                         store: {
                             type: 'crProfilOrganisme',
                             autoLoad: true,
-                            remoteFilter: false,
+                            remoteFilter: true,
                             remoteSort: true,
                             sorters: [{
                                 property: 'nom',
@@ -55,9 +55,16 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ProfilOrganismeUtilisateur
                         pageSize: true, // bizarrerie ExtJS
                         listeners: {
                             select: function(combo, records, eOpts) {
-                                var droitRecord = this.editingPlugin.context.record;
+                                var popupdRecord = this.editingPlugin.context.record;
                                 var newRec = records[0];
-                                droitRecord.setProfilOrganisme(newRec);
+                                popupdRecord.setProfilOrganisme(newRec);
+
+                                var profilsUtilisateursCombo = this.editingPlugin.editor.getComponent('profilUtilisateurId');
+                                // Filtrage des profils
+                                var typeOrganismeId = newRec.getTypeOrganisme().get('id');
+                                if (typeOrganismeId) {
+                                    this.filterPUAndSetPUAccordindToTO(typeOrganismeId, profilsUtilisateursCombo, popupdRecord);
+                                }
                             }, scope: this
                         }
                     }
@@ -90,7 +97,7 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ProfilOrganismeUtilisateur
                         store: {
                             type: 'crProfilUtilisateur',
                             autoLoad: true,
-                            remoteFilter: false,
+                            remoteFilter: true,
                             remoteSort: true,
                             sorters: [{
                                 property: 'nom',
@@ -101,9 +108,9 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ProfilOrganismeUtilisateur
                         pageSize: true, // bizarrerie ExtJS
                         listeners: {
                             select: function(combo, records, eOpts) {
-                                var droitRecord = this.editingPlugin.context.record;
+                                var popupdRecord = this.editingPlugin.context.record;
                                 var newRec = records[0];
-                                droitRecord.setProfilUtilisateur(newRec);
+                                popupdRecord.setProfilUtilisateur(newRec);
                             }, scope: this
                         }
                     }
@@ -147,9 +154,9 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ProfilOrganismeUtilisateur
                         pageSize: true, // bizarrerie ExtJS
                         listeners: {
                             select: function(combo, records, eOpts) {
-                                var droitRecord = this.editingPlugin.context.record;
+                                var popupdRecord = this.editingPlugin.context.record;
                                 var newRec = records[0];
-                                droitRecord.setProfilDroit(newRec);
+                                popupdRecord.setProfilDroit(newRec);
                             }, scope: this
                         }
                     }
@@ -173,5 +180,55 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ProfilOrganismeUtilisateur
         });
         
         this.callParent([config]);
+
+        Sdis.Remocra.network.CurrentUtilisateurStore.getCurrentUtilisateur(this, function(user) {
+          // Filtrage des profils (cas de la première édition)
+          this.editingPlugin.addListener('beforeedit', function(roweditor, e, eOpts){
+              var profilUtilisateursCombo = this.editingPlugin.editor.getComponent('profilUtilisateurId');
+              var popupdRecord = e.record;
+              var typeOrganismeId = popupdRecord.phantom?null:popupdRecord.getProfilOrganisme().getTypeOrganisme().get('id');
+              this.filterPUAndSetPUAccordindToTO(typeOrganismeId, profilUtilisateursCombo, popupdRecord);
+          }, this);
+        });
+    },
+
+    /**
+     * Filtre la combo des profils utilisateurs en fonction du type d'organisme du profil organisme et définit le profil utilisateur.
+     *
+     * @param typeOrganismeId Type d'organisme concerné (null = tous)
+     * @param profilUtilisateursCombo
+     * @param popupdRecord
+     */
+    filterPUAndSetPUAccordindToTO: function(typeOrganismeId, profilUtilisateursCombo, popupdRecord) {
+        var profilsStore = profilUtilisateursCombo.getStore();
+        // Ecoute chargement pour mise à jour du contenu de la combo profils et du profil de l'utilisateur
+        profilsStore.addListener('load', function(store, records, successful, eOpts) {
+            var toBeSelected = null;
+            if (this.popupdRecord.phantom===true) {
+                // Sélection du premier si l'ancienne valeur n'est pas présente
+                toBeSelected = store.first();
+            } else {
+                // Sélection du premier si l'ancienne valeur n'est pas présente
+                var profilId = this.popupdRecord.ProfilUtilisateurBelongsToInstance && this.popupdRecord.getProfilUtilisateur().get('id');
+                var foundProfilIndex = store.find('id', profilId);
+                if (foundProfilIndex<0) {
+                    toBeSelected = store.first();
+                } else {
+                    toBeSelected = store.getAt(foundProfilIndex);
+                }
+            }
+            // Sélection dans la combo et définition dans le record
+            this.profilUtilisateursCombo.select(toBeSelected);
+            this.popupdRecord.setProfilUtilisateur(toBeSelected);
+        }, { profilUtilisateursCombo: profilUtilisateursCombo, popupdRecord: popupdRecord }, { single: true });
+
+        // Chargement de la combo des profils
+        profilsStore.clearFilter(typeOrganismeId); // Evénement uniquement si pas de filtre par la suite
+        if (typeOrganismeId) {
+            profilsStore.filter([{
+                property: "typeOrganismeId",
+                value: typeOrganismeId
+            }]);
+        }
     }
 });
