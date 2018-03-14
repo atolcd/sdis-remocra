@@ -45,7 +45,7 @@
       <type>SET_VARIABLES</type>
       <replacevars>Y</replacevars>
       <filename>${PDI_FICHIER_PARAMETRE}</filename>
-      <file_variable_type>JVM</file_variable_type>
+      <file_variable_type>ROOT_JOB</file_variable_type>
       <fields>
       </fields>
       <parallel>N</parallel>
