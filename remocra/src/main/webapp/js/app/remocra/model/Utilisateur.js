@@ -14,6 +14,7 @@ Ext.define('Sdis.Remocra.model.Utilisateur', {
         { name: 'messageRemocra', type: 'boolean' },
         { name: 'identifiant', type: 'string' },
         { name: 'actif', type: 'bool' },
+        { name: 'groupeFnct', type: 'string' },
         
         // Pas réellement chargé, mais uniquement pour l'édition dans les grilles (éviter une déselection du record de la combo associée)
         // Ce champ est utilisé dans le dataIndex. Sur sélect de la combo, penser à faire un set de la référence et de l'id.

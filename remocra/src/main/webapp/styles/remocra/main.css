@@ -1192,3 +1192,11 @@ body.x-ie .x-btn-default-toolbar-small-icon-text-left .x-btn-inner {
 #admindroits .x-column-header-text {
     font-size: 10px;
 }
+
+.x-grid-row .grid-cell-groupe-fnct {
+    font-style: italic;
+    color: gray;
+}
+.x-grid-row .grid-cell-groupe-fnct-warning {
+    color: #ff5722;
+}

@@ -112,5 +112,13 @@ privileged aspect Utilisateur_Roo_JavaBean {
     public void Utilisateur.setActif(Boolean actif) {
         this.actif = actif;
     }
-    
+
+    public String Utilisateur.getGroupeFnct() {
+        return this.groupeFnct;
+    }
+
+    public void Utilisateur.setGroupeFnct(String groupeFnct) {
+        this.groupeFnct = groupeFnct;
+    }
+
 }

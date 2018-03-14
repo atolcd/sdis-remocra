@@ -176,6 +176,23 @@ Ext.define('Sdis.Remocra.features.admin.typereference.UtilisateurGrid', {
                             }, scope: this
                         }
                     }
+                }, {
+                    header: 'Groupe de<br/>fonctionnalités',
+                    dataIndex: 'groupeFnct',
+                    menuDisabled: true,
+                    flex: 4, align: 'center',
+                    renderer: function(value, metadata, record, rowIndex, colIndex) {
+                        metadata.tdCls = 'grid-cell-groupe-fnct';
+                        var groupeFnct = record.get('groupeFnct');
+                        var parts = /^(.*) \((.*)\)$/gm.exec(groupeFnct);
+                        if (parts==null || parts.length<3) {
+                            metadata.tdCls += ' grid-cell-groupe-fnct-warning';
+                            return '∅';
+                        }
+                        metadata.tdAttr = 'data-qtip="Groupe de fonctionnalités : ' + parts[1]
+                            + '<br/>Feuille de style GeoServer : ' + parts[2]+'"';
+                        return parts[1];
+                    }
                 },
                 typeRefGridCols.actif
             ]

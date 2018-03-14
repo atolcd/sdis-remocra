@@ -12,6 +12,7 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Formula;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -72,6 +73,9 @@ public class Utilisateur {
     @NotNull
     @Column(columnDefinition = "boolean default true")
     private Boolean actif;
+
+    @Formula("(select pd.nom||' ('||pd.feuille_de_style_geo_server||')' from remocra.utilisateur u join remocra.organisme o on (u.organisme=o.id) join remocra.profil_organisme_utilisateur_droit popupd on (popupd.profil_organisme=o.profil_organisme and popupd.profil_utilisateur=u.profil_utilisateur) join remocra.profil_droit pd on(popupd.profil_droit=pd.id) where u.profil_utilisateur = popupd.profil_utilisateur and o.profil_organisme = popupd.profil_organisme and u.id = id)")
+    private String groupeFnct;
 
     public static Utilisateur fromJsonToUtilisateur(String json) {
         return new JSONDeserializer<Utilisateur>().use(null, Utilisateur.class).use(Geometry.class, new GeometryFactory()).deserialize(json);
