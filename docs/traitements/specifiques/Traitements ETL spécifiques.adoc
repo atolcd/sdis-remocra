@@ -56,6 +56,8 @@ include::77/synchronisation_sgo{outfilesuffix}[]
 
 include::77/synchronisation_ldap{outfilesuffix}[]
 
+include::77/suivi_des_pei{outfilesuffix}[]
+
 === SDIS 83
 
 include::83/synchronisation_sig{outfilesuffix}[]
