@@ -8,7 +8,7 @@ Dans le fichier _remocraXX.properties_, ajouter les paramètres suivant :
 [width="100%",options="header"]
 |====================
 | Paramètre | Description 
-| PDI_INDISPO_INTERVAL | Période de temps sur laquelle il faut vérifier si de nouveaux PEI sont devenus indisponible
+| PDI_INDISPO_INTERVAL | Période de temps sur laquelle il faut vérifier si de nouveaux PEI sont devenus indisponibles (en heures)
 | PDI_INDISPO_MODELE_TRAITEMENT_ID | Identifiant du modèle de traitement qui génèrera le courrier
 | PDI_INDISPO_COURRIER | Nom du fichier servant de modèle de courrier
 | PDI_INDISPO_PROFIL_USER_EMETTEUR | Profil utilisateur pour définir le responsable émetteur du courrier
@@ -26,7 +26,7 @@ Dans le fichier _remocraXX.properties_, ajouter les paramètres suivant :
 [width="100%",options="header"]
 |====================
 | Paramètre | Description 
-| PDI_NON_RECEPTION_INTERVAL | Période de temps sur laquelle il faut vérifier si de nouveaux PEI ont été créés mais non réceptionnés
+| PDI_NON_RECEPTION_INTERVAL | Période de temps sur laquelle il faut vérifier si de nouveaux PEI ont été créés mais non réceptionnés (en heures)
 | PDI_NON_RECEPTION_MODELE_TRAITEMENT_ID | Identifiant du modèle de traitement qui génèrera le tableau
 | PDI_NON_RECEPTION_PROFIL | Code du profil utilisateur destinataire du tableau 
 |====================
