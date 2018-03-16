@@ -24,7 +24,7 @@ L'authentification LDAP est prioritaire sur l'authentification à partir de la b
 
 * *Simple*
 ** L'authentification est réalisée directement avec le couple identifiant / mot de passe fourni. C'est possible lorsque le ```CN``` de l'utilisateur LDAP est le même que le ```remocra.utilisateur.identifiant``` de la base de données.
-** Exemple de configuration (les autres paramètres ```\*\_LDAP_*``` sont laissés vides) : 
+** Exemple de configuration (les autres paramètres ```\*\_LDAP_*``` sont laissés vides) :
 *** Accès au serveur :
 **** ```PDI_LDAP_URL_HOST``` : ```atolcd-sdis77-ad.cloud.priv.atolcd.com```
 **** ```PDI_LDAP_URL_PORT``` : ```389```
@@ -33,7 +33,7 @@ L'authentification LDAP est prioritaire sur l'authentification à partir de la b
 
 * *Recherche de l'utilisateur*
 ** Une première requête avec un compte administrateur permet de retrouver le ```CN``` de l'utilisateur. C'est le couple ```CN``` / mot de passe saisi qui est utilisé pour valider l'authentification.
-** Exemple de configuration: 
+** Exemple de configuration:
 *** Accès au serveur :
 **** ```PDI_LDAP_URL_HOST``` : ```atolcd-sdis77-ad.cloud.priv.atolcd.com```
 **** ```PDI_LDAP_URL_PORT``` : ```389```
@@ -307,6 +307,10 @@ L'authentification LDAP est prioritaire sur l'authentification à partir de la b
 === MESSAGE_ENTETE ===
 * Texte affiché dans l'entête du site
 * Par défaut : ``````
+
+=== PDI_CODE_SDIS ===
+* Code du département
+* Exemple : `83`
 
 === PDI_URL_SITE ===
 * URL de base complète du site Remocra (Commence par "http" et finit juste avant le #)

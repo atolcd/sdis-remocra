@@ -89,7 +89,7 @@ include::src/commune_csv.xml[]
 
 === Référencement des modèles d'export
 
-Les fichiers XML de modèles doivent être déposés par l'administrateur de la plate-forme via FTP (utilisateur FTP _"remocra"_) dans le sous-dossier _"export"_ (dossier à créer s'il n'existe pas) présent dans dossier REMOcRA dédié aux modèles (le chemin défini dans les paramètres de configuration de l'application avec le libellé _"Dossier de stockage des modèles de documents utilisés par l'ETL Pentaho Data Integration"_. La valeur par défaut est _"/var/remocra/modeles"_.
+Les fichiers XML de modèles doivent être déposés par l'administrateur de la plate-forme via FTP (utilisateur FTP _"remocra"_) dans le sous-dossier _"export/sdis/XX"_ (dossiers à créer s'ils n'existent pas, XX étant le code du département) présent dans dossier REMOcRA dédié aux modèles (le chemin défini dans les paramètres de configuration de l'application avec le libellé _"Dossier de stockage des modèles de documents utilisés par l'ETL Pentaho Data Integration"_. La valeur par défaut est _"/var/remocra/modeles"_.
 
 .Emplacement des modèles d'exports
 image::ftp_emplacement_modeles.png[]
@@ -119,5 +119,3 @@ Pour chaque fiche de métadonnée (table _"remocra.metadonnee"_), il est en effe
 Si le modèle intègre le filtre lié au critère _"${ZONE_COMPETENCE_ID}"_, les informations sont systématiquement filtrées par rapport à la zone de compétence de l’utilisateur connecté. A l'issu du traitement, un mél est généré avec un lien de téléchargement vers le fichier ZIP contenant aux choix un fichier CSV ou un fichier de formes.
 
 NOTE: *Spécificité du SDIS 83 :* Le SDIS 83 dispose d'un traitement ETL de mise à jour de la table des métadonnées à partir du serveur GeoSource du CRIGE PACA. Ce traitement purge la table des métadonnées avant chaque nouvelle synchronisation et repeuple entièrement cette dernière. Dans ce contexte spécifique, il convient donc de spécifier un code de modèle (dans le fichier XML de définition du  modèle d'export) correspondant au code de la fiche de métadonnée (et non mentionner un code dans la table de métadonnée qui existe dans la table des modèles de traitement). Le traitement de synchronisation des fiches de métadonnées vérifie pour chaque fiche de métadonnées importée si un modèle d'export dont le code correspond au code de la fiche existe. Si c'est le cas, le modèle d'export est automatiquement associé à la fiche.
-
-
