@@ -3,7 +3,7 @@ WITH territoire AS (
 		org.nom,
 		zc.geometrie
 	FROM
-		(SELECT	nom,zone_competence FROM remocra.organisme WHERE id = ${ORGANISME_COLLECTIVITE_ID} AND actif) AS org
+		(SELECT	nom,zone_competence FROM remocra.organisme WHERE id = ${ORGANISME_ID} AND actif) AS org
 		JOIN remocra.zone_competence zc ON(zc.id = org.zone_competence)
 ),
 der_etat_dispo AS (
@@ -104,7 +104,7 @@ FROM
 			dispo_terrestre = 'INDISPO'
 		) AS h_indispo
 		JOIN der_etat_dispo ON(der_etat_dispo.id_hydrant = h_indispo.id_hydrant)
-		WHERE der_etat_dispo.date_operation >= now() - interval '24 hourss') AS pe
+		WHERE der_etat_dispo.date_operation >= now() - interval '${INTERVAL_INDISPO} hours') AS pe
 		LEFT JOIN remocra.type_hydrant_nature nature ON(nature.id = pe.nature)
 		LEFT JOIN remocra.commune ON (commune.id = pe.commune)
 	 WHERE

@@ -1,4 +1,5 @@
 == Points d'Eau Incendie
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 
 === Déclenchement provoqué par l'utilisateur
 
@@ -8,7 +9,7 @@
 Via l'interface "Extraire, télécharger, téléverser" :
 [width="100%",options="header"]
 |====================
-| Paramètre | Description | Type | Obligatoire | Exemple 
+| Paramètre | Description | Type | Obligatoire | Exemple
 | Commune | Commune concernée | Liste : ```pdi.vue_communes```  | non | ```Toutes``` ou ```Brignoles```
 | Notifier les responsables | Envoyer un courriels aux responsables ? | Booléen  | oui | ```oui```
 | Notifier les communes | Envoyer un courriels aux communes ?  | Booléen  | oui | ```non```
@@ -20,7 +21,7 @@ Via l'interface "Extraire, télécharger, téléverser" :
 Via l'interface "Extraire, télécharger, téléverser" :
 [width="100%",options="header"]
 |====================
-| Paramètre | Description | Type | Obligatoire | Exemple 
+| Paramètre | Description | Type | Obligatoire | Exemple
 | Commune | Commune concernée | Liste : ```pdi.vue_communes```  | non | ```Toutes``` ou  ```Brignoles```
 | Notifier les responsables | Envoyer un courriel aux responsables ? | Booléen  | oui | ```oui```
 | Notifier les communes | Envoyer un courriel aux communes ?  | Booléen  | oui | ```non```
@@ -33,7 +34,7 @@ Via l'interface "Extraire, télécharger, téléverser" :
 Via l'interface "Extraire, télécharger, téléverser" :
 [width="100%",options="header"]
 |====================
-| Paramètre | Description | Type | Obligatoire | Exemple 
+| Paramètre | Description | Type | Obligatoire | Exemple
 | Fichier des positions GPS | Fichier à traiter | Fichier  | oui | -
 |====================
 
@@ -44,7 +45,7 @@ Via l'interface "Extraire, télécharger, téléverser" :
 Via l'interface "Extraire, télécharger, téléverser" :
 [width="100%",options="header"]
 |====================
-| Paramètre | Description | Type | Obligatoire | Exemple 
+| Paramètre | Description | Type | Obligatoire | Exemple
 | Caserne | Caserne concernée | Liste : ```pdi.vue_organisme_cis```  | non | ```Toutes``` ou ```CIS ACS```
 |====================
 
@@ -55,7 +56,7 @@ Via l'interface "Extraire, télécharger, téléverser" :
 Via l'interface "Extraire, télécharger, téléverser" :
 [width="100%",options="header"]
 |====================
-| Paramètre | Description | Type | Obligatoire | Exemple 
+| Paramètre | Description | Type | Obligatoire | Exemple
 | Commune ou intercommunalité | Entité concernée | Liste : ```pdi.vue_commune_ou_interco_one```  | non | ```CC GOLFE SAINT TROPEZ (CT)```
 | Date de début de passage | Début de la reconnaissance | Date  | oui | ```07/02/2019```
 | Date de fin de passage | Fin de la reconnaissance | Date  | non | ```15/02/2019```
@@ -72,7 +73,7 @@ Via l'interface "Extraire, télécharger, téléverser" :
 Via l'interface "Extraire, télécharger, téléverser" :
 [width="100%",options="header"]
 |====================
-| Paramètre | Description | Type | Obligatoire | Exemple 
+| Paramètre | Description | Type | Obligatoire | Exemple
 | Commune ou intercommunalité | Entité concernée | Liste : ```pdi.vue_commune_ou_interco_one```  | non | ```CC GOLFE SAINT TROPEZ (CT)```
 | Modèle de courrier | Modèle du présentation | Liste : ```pdi.vue_modele_courrier_rapport_tournee```  | oui | ```Courrier de rapport - Président EPCII```
 | Profil d'utilisateur responsable | Profil de l'utilisateur responsable de la visite | Liste : ```pdi.vue_profil_sdis```  | oui | ```Chef de centre```
@@ -80,6 +81,35 @@ Via l'interface "Extraire, télécharger, téléverser" :
 | Notifier par mél la mairie ou l'intercommunalité | Envoyer un courriel à l'entité ?  | Booléen  | oui | ```non```
 |====================
 
+
+==== Mise en indisponibilité d'un PEI - courrier d'information
+*Génère un courrier de rapport de la liste des PEI indisponibles avec mise en avant des nouvelles indiponibilités*
+
+Via l'interface "Extraire, télécharger, téléverser" :
+[width="100%",options="header"]
+|====================
+| Paramètre | Description | Type | Obligatoire | Exemple
+| Organisme | Entité concernée | Liste : ```pdi.vue_organisme```  | oui | ```CC GOLFE SAINT TROPEZ (CT)```
+| Modèle de courrier | Modèle du présentation | Liste : ```pdi.vue_modele_courrier_hydrant_non_dispo```  | oui | ```Courrier d'information - Maire```
+| Profil d'utilisateur responsable | Profil de l'utilisateur responsable du courrier | Liste : ```pdi.vue_profil_sdis```  | oui | ```Chef de centre```
+| Notifier par mél la mairie ou l'intercommunalité | Envoyer un courriel à l'entité ?  | Booléen  | oui | ```non```
+| Intervalle de temps de sélection des nouveaux PEI indisponibles | Intervalle pour la mise en avant des PEI nouvellement indisponibles | Texte | oui | `24`
+|====================
+
+NOTE: Pour automatiser ce traitement, voir la documentation link:../../specifiques/77/suivi_des_pei{outfilesuffix}[Suivi des PEI] rubrique _PEI devenus indisponibles_.
+
+==== Etat des PEI non réceptionnés
+*Génère un tableau avec la liste des PEI non réceptionnés*
+
+Via l'interface "Extraire, télécharger, téléverser" :
+[width="100%",options="header"]
+|====================
+| Paramètre | Description | Type | Obligatoire | Exemple
+| Organisme | Entité concernée | Liste : ```pdi.vue_organisme```  | oui | ```CC GOLFE SAINT TROPEZ (CT)```
+| Profil d'utilisateur responsable | Profil des utilisateurs à notifier | Liste : ```pdi.vue_profil_sdis```  | oui | ```Chef de centre```
+|====================
+
+NOTE: Pour automatiser ce traitement, voir la documentation link:../../specifiques/77/suivi_des_pei{outfilesuffix}[Suivi des PEI] rubrique _PEI non réceptionné_.
 
 === Déclenchement provoqué par une tâche planifiée
 
