@@ -21,7 +21,6 @@ public class UserParser extends AbstractRemocraParser {
 
     private static final String TAG_USER = "user";
     private static final String TAG_RIGHT = "right";
-    private static final String TAG_PERMISSIONS = "permissions";
 
     public UserParser(RemocraParser remocraParser) {
         super(remocraParser);
@@ -29,7 +28,7 @@ public class UserParser extends AbstractRemocraParser {
 
     @Override
     public Iterable<? extends String> getNames() {
-        return Arrays.asList(TAG_USER, TAG_RIGHT, TAG_PERMISSIONS);
+        return Arrays.asList(TAG_USER, TAG_RIGHT);
     }
 
     @Override
@@ -49,48 +48,44 @@ public class UserParser extends AbstractRemocraParser {
         values.put(UserTable.COLUMN_RECONNAISSANCE, "");
         values.put(UserTable.COLUMN_MCO, "");
         values.put(UserTable.COLUMN_RECEPTION, "");
-
-        while (xmlParser.next() != XmlPullParser.END_TAG) {
-            String name = xmlParser.getName();
-            if (TAG_RIGHT.equals(name)) {
-                readBaliseRight(xmlParser, values);
-            } else {
-                skip(xmlParser);
+        int eventType = xmlParser.getEventType();
+        //On parcourt le xml jusqu'a la fin du document
+        while (eventType != xmlParser.END_DOCUMENT) {
+            //a chaque ouverture de balise on teste si elle est pas une balise user
+            if (eventType == xmlParser.START_TAG && !xmlParser.getName().equals("user")) {
+                String name = xmlParser.getName();
+                if (TAG_RIGHT.equals(name)&& name != null) {
+                    readBaliseRight(xmlParser, values);
+                } else {
+                    skip(xmlParser);
+                }
             }
+            //On passe à la deuxieme balise
+            eventType = xmlParser.next();
+
         }
         addContent(RemocraProvider.CONTENT_USER_URI, values);
+
     }
 
     private void readBaliseRight(XmlPullParser xmlParser, ContentValues values) throws IOException, XmlPullParserException {
-        xmlParser.require(XmlPullParser.START_TAG, ns, TAG_RIGHT);
+       // xmlParser.require(XmlPullParser.START_TAG, ns, XmlParser.EN);
         String code = xmlParser.getAttributeValue(ns, TAG_CODE);
-        String permissions = "";
-        while (xmlParser.next() != XmlPullParser.END_TAG) {
-            String name = xmlParser.getName();
-            if (TAG_PERMISSIONS.equals(name)) {
-                String text = this.readBaliseText(xmlParser, name);
-                if (!TextUtils.isEmpty(text)) {
-                    permissions += text.substring(0, 1);
-                }
-            } else {
-                skip(xmlParser);
-            }
-        }
         if (code != null) {
-            if (code.equals("HYDRANTS")) {
-                // Création et Réception, c'est le même droit.
-                values.put(UserTable.COLUMN_HYDRANT, permissions);
-                values.put(UserTable.COLUMN_RECEPTION, permissions);
-            } else if (code.equals("HYDRANTS_CONTROLE")) {
-                values.put(UserTable.COLUMN_CONTROLE, permissions);
-            } else if (code.equals("HYDRANTS_RECONNAISSANCE")) {
-                values.put(UserTable.COLUMN_RECONNAISSANCE, permissions);
-            } else if (code.equals("HYDRANTS_MCO")) {
-                values.put(UserTable.COLUMN_MCO, permissions);
+            if (code.equals("HYDRANTS_C")) {
+                values.put(UserTable.COLUMN_HYDRANT, "C");
+            } else if (code.equals("HYDRANTS_RECEPTION_C")) {
+                values.put(UserTable.COLUMN_RECEPTION, "C");
+            } else if (code.equals("HYDRANTS_CONTROLE_C")) {
+                values.put(UserTable.COLUMN_CONTROLE, "C");
+            } else if (code.equals("HYDRANTS_RECONNAISSANCE_C")) {
+                values.put(UserTable.COLUMN_RECONNAISSANCE, "C");
+            } else if (code.equals("HYDRANTS_MCO_C")) {
+                values.put(UserTable.COLUMN_MCO, "C");
             } else {
                 Log.d("REMOCRA", "Code ignoré : " + code);
             }
         }
-        xmlParser.require(XmlPullParser.END_TAG, ns, TAG_RIGHT);
+      //  xmlParser.require(XmlPullParser.END_TAG,"", TAG_RIGHT);
     }
 }

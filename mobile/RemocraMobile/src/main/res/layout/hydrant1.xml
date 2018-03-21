@@ -12,28 +12,6 @@
         android:orientation="vertical"
         >
 
-
-        <LinearLayout
-            android:id="@+id/bloc_type_saisie"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-        <TextView
-            style="@style/sectionHeader"
-            android:text="Tyde de saisie"
-            android:id="@+id/title_localisation_verif"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"/>
-
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Vérification"
-            android:id="@+id/switch_verification"/>
-
-        </LinearLayout>
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

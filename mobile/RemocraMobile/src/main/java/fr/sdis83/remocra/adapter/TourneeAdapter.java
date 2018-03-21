@@ -22,7 +22,14 @@ public class TourneeAdapter extends CursorAdapter {
             TourneeTable.COLUMN_NAME_DEB_SYNC,
             TourneeTable.COLUMN_NAME_LAST_SYNC,
             TourneeTable.COLUMN_NB_HYDRANT,
-            "(select sum(100 / " + TourneeTable.TABLE_NAME + "." + TourneeTable.COLUMN_NB_HYDRANT + ")" +
+            "(select sum(100 * (  " +
+                    "(" + HydrantTable.COLUMN_STATE_H1 + ") + " +
+                    "(" + HydrantTable.COLUMN_STATE_H2 + ") + " +
+                    "(" + HydrantTable.COLUMN_STATE_H3 + ") + " +
+                    "(" + HydrantTable.COLUMN_STATE_H4 + ") + " +
+                    "(" + HydrantTable.COLUMN_STATE_H5 + ") + " +
+                    "(" + HydrantTable.COLUMN_STATE_H6 + "))) " +
+                    " / ( 6 * " + TourneeTable.TABLE_NAME + "." + TourneeTable.COLUMN_NB_HYDRANT + ")" +
                     " from " + HydrantTable.TABLE_NAME +
                     " where " + HydrantTable.COLUMN_TOURNEE + " = " + TourneeTable.TABLE_NAME + "." + TourneeTable._ID +
                     " and((" + HydrantTable.COLUMN_STATE_H1 + ") + " +

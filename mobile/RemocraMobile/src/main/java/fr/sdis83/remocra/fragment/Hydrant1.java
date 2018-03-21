@@ -48,27 +48,6 @@ public class Hydrant1 extends AbstractHydrant {
 
     @Override
     protected void onBeforeBind(Cursor cursor) {
-        if (!(typeSaisie.equals(HydrantTable.TYPE_SAISIE.CTRL) || typeSaisie.equals(HydrantTable.TYPE_SAISIE.VERIF))) {
-            getView().findViewById(R.id.bloc_type_saisie).setVisibility(View.GONE);
-        } else {
-            Switch switcher = (Switch) getView().findViewById(R.id.switch_verification);
-            if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_TYPE_SAISIE)))) {
-                switcher.setEnabled(false);
-                if (typeSaisie.equals(HydrantTable.TYPE_SAISIE.VERIF)) {
-                    switcher.setChecked(true);
-                } else {
-                    getView().findViewById(R.id.bloc_type_saisie).setVisibility(View.GONE);
-                }
-            } else {
-                switcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        HydrantTable.TYPE_SAISIE newTypeSaisie = isChecked ? HydrantTable.TYPE_SAISIE.VERIF : HydrantTable.TYPE_SAISIE.CTRL;
-                        mListener.setTypeSaisie(newTypeSaisie);
-                    }
-                });
-            }
-        }
         boolean pibi = isPibi(cursor);
         getView().findViewById(R.id.ident_pibi).setVisibility(pibi ? View.VISIBLE : View.GONE);
         getView().findViewById(R.id.ident_pena).setVisibility(pibi ? View.GONE : View.VISIBLE);
