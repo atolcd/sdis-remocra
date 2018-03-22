@@ -558,11 +558,12 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                 cmpAnomalie.bindStore(store, true);
                 cmpAnomalie.setInfo(fiche.typeSaisie, nature);
                 anomalies=[];
-                //on supprime les anomalies avec critère null (elles seront calculées coté client au cas ou le trigger ne se déclenche pas)
+                /*on supprime les anomalies avec critère null sauf indisponibilite temporaire
+                (elles seront recalculées coté client pour éviter le problème lié au basculement des règles de calcul(debit debitMax)*/
                 fiche.hydrant.anomalies().each(function(record){
-                   // if(record.get('critere')!=null){
+                   if(record.get('critere')!= null || record.get('code')==='INDISPONIBILITE_TEMP') {
                         anomalies.push(record);
-                    //}
+                   }
                 });
                 cmpAnomalie.setSelected(anomalies);
                 this.doFilterAnomalie(fiche);
