@@ -89,22 +89,6 @@ if ( ! (cat /etc/sysconfig/tomcat6 | grep "database.password" > /dev/null) ); th
 fi
 # LANG
 
-envsubst << "EOF" > /var/lib/tomcat6/webapps/database.properties.save
-#Updated at Tue Feb 14 11:17:49 CET 2012
-#Tue Feb 14 11:17:49 CET 2012
-database.password=${POSTGRES_DB_PASSWORD}
-database.url=jdbc\:postgresql\://localhost\:5432/remocra
-database.username=postgres
-database.driverClassName=org.postgresql.Driver
-
-database.test.password=postgres
-database.test.url=jdbc\:postgresql\://localhost\:5432/test
-database.test.username=postgres
-database.test.driverClassName=org.postgresql.Driver
-EOF
-mkdir -p /var/lib/tomcat6/webapps/remocra/WEB-INF/classes/META-INF/spring/
-cp -f /var/lib/tomcat6/webapps/database.properties.save /var/lib/tomcat6/webapps/remocra/WEB-INF/classes/META-INF/spring/database.properties
-
 export REMOCRA_SESSION_TIMEOUT_MINUTES=${REMOCRA_SESSION_TIMEOUT_MINUTES:=20}
 if [ -f /var/lib/tomcat6/webapps/remocra/WEB-INF/web.xml ]; then
   sed -i "s/<session-timeout>.*<\/session-timeout>/<session-timeout>$REMOCRA_SESSION_TIMEOUT_MINUTES<\/session-timeout>/g" /var/lib/tomcat6/webapps/remocra/WEB-INF/web.xml
@@ -280,7 +264,7 @@ if ! crontab -u postgres -l > /dev/null; then
 0 6 * * * /home/postgres/remocra_pdi/remocra_purger.sh >> /var/remocra/pdi/log/remocra_purger.log 2>&1
 #
 # Crée les demandes d'export des hydrants indisponible de la veille [00:10]
-10 0 * * * /home/postgres/remocra_pdi/remocra_etat_hydrant_indispo.sh  >> /var/remocra/pdi/log/remocra_etat_hydrant_indispo.log 2>&1
+# Voir au cas par cas
 #
 # Notification des indisponibilités temporaires à vérifier
 */5 * * * * /home/postgres/remocra_pdi/remocra_notifier_indispo_temporaires.sh >> /var/remocra/pdi/log/remocra_notifier_indispo_temporaires.log 2>&1

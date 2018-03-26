@@ -16,6 +16,9 @@ set -e
 cd $(dirname $0)
 path=$(pwd)
 
+modeinstall=$1
+modeinstall=${modeinstall:=0}
+
 PROJECT=remocra
 
 # URL repository et branche
@@ -64,6 +67,21 @@ echo "---"
 
 
 
+echo "---"
+echo "---" 
+if [ $modeinstall -eq 0 ]
+then
+    echo "Mode mise à jour. Répertoires 'geoserver_data' et 'getfeatureinfo' ignorés"
+    SUFFIXMODE='update'
+    rm -rf $WORKINGDIR/cloned/$PROJECT/server/sdis-remocra/var/remocra/geoserver_data/*
+    rm -rf $WORKINGDIR/cloned/$PROJECT/server/sdis-remocra/var/remocra/getfeatureinfo/*
+else
+    echo "Mode installation"
+    SUFFIXMODE='install'
+fi
+echo "---"
+echo "---"
+
 echo ""
 echo "---"
 echo "Copie des fichiers de base"
@@ -90,11 +108,11 @@ echo "Création de l'archive finale"
 
 TODAY=$(date +"%Y%m%d")
 REPNAME=${TODAY}_${PROJECT}package${VERSION}
-mv $WORKINGDIR/final $WORKINGDIR/$REPNAME
+mv $WORKINGDIR/final $WORKINGDIR/$REPNAME-$SUFFIXMODE
 cd $WORKINGDIR
-zip -rq $REPNAME.zip $REPNAME
+zip -rq $REPNAME-$SUFFIXMODE.zip $REPNAME-$SUFFIXMODE
 
-rm -rf $WORKINGDIR/$REPNAME
+rm -rf $WORKINGDIR/$REPNAME-$SUFFIXMODE
 rm -rf $WORKINGDIR/cloned
 
 
@@ -102,5 +120,5 @@ rm -rf $WORKINGDIR/cloned
 echo ""
 echo "---"
 echo "L'archive finale est créée :"
-echo "--- Archive               : $WORKINGDIR/$REPNAME.zip"
+echo "--- Archive               : $WORKINGDIR/$REPNAME-$SUFFIXMODE.zip"
 

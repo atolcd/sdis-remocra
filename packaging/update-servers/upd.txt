@@ -1,10 +1,7 @@
-# Fichier database.properties : sauvegardé puis restitué
 # Durée de session dans web.xml, par défaut : 10 minutes
 
 echo "       arrêt Tomcat" && service tomcat6 stop
-echo "       sauvegarde database.properties" && /bin/cp -f /var/lib/tomcat6/webapps/remocra/WEB-INF/classes/META-INF/spring/database.properties /var/lib/tomcat6/webapps/database.properties.save
 echo "       remplacement remocra.war" && rm -rf /var/lib/tomcat6/webapps/remocra && mv -f /home/postgres/remocra.war /var/lib/tomcat6/webapps && cd /var/lib/tomcat6/webapps && mkdir remocra && unzip -q remocra.war -d remocra
-echo "       restitution database.properties" && /bin/cp -f /var/lib/tomcat6/webapps/database.properties.save /var/lib/tomcat6/webapps/remocra/WEB-INF/classes/META-INF/spring/database.properties
 echo "       définition du timeout" && export REMOCRA_SESSION_TIMEOUT_MINUTES=${REMOCRA_SESSION_TIMEOUT_MINUTES:=10} && sed -i "s/<session-timeout>.*<\/session-timeout>/<session-timeout>$REMOCRA_SESSION_TIMEOUT_MINUTES<\/session-timeout>/g" /var/lib/tomcat6/webapps/remocra/WEB-INF/web.xml
 echo "       droits" && chown tomcat:tomcat -R /var/lib/tomcat6/webapps/remocra
 echo "       démarrage Tomcat et rechargement d'Apache" && service tomcat6 start && sleep 10 && service httpd reload

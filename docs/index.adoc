@@ -30,9 +30,10 @@ image::https://www.atolcd.com/fileadmin/Images_pages_menu/Open_Source/Remocra/he
 
 ---
 
-*```🔃``` Echanges*
+*```🔃``` Echanges, initialisation*
 
 * link:Synchronisation{outfilesuffix}[Synchronisation]
+* link:initialisation/index{outfilesuffix}[Préparation des données pour initialisation]
 
 ---
 
@@ -43,9 +44,14 @@ image::https://www.atolcd.com/fileadmin/Images_pages_menu/Open_Source/Remocra/he
 
 ---
 
-*```💻``` Développements, packaging, installation*
+*```🖧``` Exploitation*
+
+* link:Manuel%20installation{outfilesuffix}[Manuel d'installation]
+* https://github.com/atolcd/sdis-remocra/wiki/Mises-%C3%A0-jour[Manuel de mise à jour]
+
+---
+
+*```💻``` Développements*
 
 * link:../remocra#premier-run[Serveur en mode développement]
 * link:Manuel%20packaging{outfilesuffix}[Manuel de packaging]
-* link:Manuel%20installation{outfilesuffix}[Manuel d'installation]
-* link:initialisation/index{outfilesuffix}[Préparation des données pour initialisation]
