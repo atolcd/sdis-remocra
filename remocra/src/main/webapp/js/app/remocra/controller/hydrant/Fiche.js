@@ -78,9 +78,6 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             'hydrantFiche checkbox[name=hbe]': {
                 change: this.checkboxChange
             },
-            'hydrantFiche checkbox[name=verification]': {
-                change: this.onChangeVerification
-            },
             'hydrantFiche combo[name=diametre]': {
                 change: this.onChangeDiametre
             },
@@ -231,12 +228,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
 
     onChangeTypeSaisie: function(fiche, typeSaisie, initial) {
         var form = fiche.down('form').getForm();
-        var nature = fiche.down('combo[name=nature]').getValue(), chkVerif = fiche.down('checkbox[name=verification]');
+        var nature = fiche.down('combo[name=nature]').getValue();
         fiche.typeSaisie = typeSaisie;
-        if ((typeSaisie != 'CTRL' && typeSaisie != 'VERIF' && typeSaisie != 'RECO')
-                || (!Sdis.Remocra.Rights.hasRight('HYDRANTS_VERIFICATION_C') || fiche.ficheParente != null)) {
-            chkVerif.hide();
-        }
         if (initial !== true) {
             Ext.defer(function() {
                 fiche.down('anomalie').setInfo(fiche.typeSaisie, nature);
@@ -274,9 +267,6 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
         case 'CTRL':
             dateSaisie.setValue(fiche.hydrant.get('dateContr'));
             break;
-        case 'VERIF':
-            dateSaisie.setValue(fiche.hydrant.get('dateVerif'));
-            break;
         }
         if(!dateSaisie.getValue()) {
             dateSaisie.setValue(new Date());
@@ -309,11 +299,6 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                 }
             });
         }
-    },
-
-    onChangeVerification: function(checkbox, newValue, oldValue) {
-        var fiche = checkbox.up('hydrantFiche');
-        this.onChangeTypeSaisie(fiche, newValue ? 'VERIF' : 'CTRL');
     },
 
     onChangeCommune: function(combo, records) {
@@ -762,10 +747,6 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
               dateControle = Ext.Date.format(fiche.hydrant.get('dateContr'), 'd/m/Y');
               needConfirmation = true;
               break;
-            case 'VERIF':
-              dateControle =  Ext.Date.format(fiche.hydrant.get('dateVerif'), 'd/m/Y');
-              needConfirmation = true;
-              break;
         }
         if(needConfirmation) {
             if(dateSaisie == dateControle) {
@@ -825,9 +806,6 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                     break;
                 case 'CTRL':
                     dateField = 'dateContr';
-                    break;
-                case 'VERIF':
-                    dateField = 'dateVerif';
                     break;
                 }
                 hydrant.set(dateField, dateSaisie);

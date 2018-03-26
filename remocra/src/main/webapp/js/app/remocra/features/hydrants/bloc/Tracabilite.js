@@ -28,10 +28,6 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.Tracabilite', {
             xtype: 'textfield',
             fieldLabel: 'Agent 1',
             name: 'agent1'
-        },{
-            xtype: 'checkbox',
-            name: 'verification',
-            fieldLabel: 'Vérification'
         }]
     },{
         items: [{

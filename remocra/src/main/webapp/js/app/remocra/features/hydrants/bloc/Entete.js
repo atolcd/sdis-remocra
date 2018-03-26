@@ -46,9 +46,6 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.Entete', {
         },{
             fieldLabel: 'Reconnaissance',
             name: 'dateReco'
-        },{
-            fieldLabel: 'Vérification',
-            name: 'dateVerif'
         }]
     },{
         width: 250,
