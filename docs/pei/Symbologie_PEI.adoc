@@ -26,7 +26,8 @@ Les images sont placées dans le répertoire ```/var/remocra/html/images/remocra
 
 
 
-== 77 ==
+== Symbologies disponibles
+=== 77 ===
 
 * PIBI :
 ** *<nature>_<diametre>_<disponibilité>[_on].png*
@@ -78,3 +79,15 @@ image:legende_77.png[]
 Exemple de légende :
 
 image:legende_83.png[]
+
+=== 89 ===
+
+* PIBI et PENA :
+** *<nature>_<disponibilité>[_on].png*
+** <nature> : _BI_, _PI_, _CE_, _CI_FIXE_, _PU_, _PE_, _RE_, _CA_
+** <disponibilité> : _DISPO_, _INDISPO_, _NON_CONFORME_ ou _INCONNU_
+** _on : pour les élements sélectionnés
+
+* Numéro affiché :
+** Numéro global
+** Exemple : *89387_164*

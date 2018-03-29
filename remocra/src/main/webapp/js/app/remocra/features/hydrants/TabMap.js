@@ -201,10 +201,14 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
     },
 
     getStyleMap: function() {
-        if (HYDRANT_SYMBOLOGIE == '77') {
-            return this.getStyleMap77();
+        switch (HYDRANT_SYMBOLOGIE){
+            case '77' :
+                return this.getStyleMap77();
+            case '89' :
+                return this.getStyleMap89();
+            default :
+                return this.getStyleMap83();
         }
-        return this.getStyleMap83();
     },
 
     getStyleMap77: function() {
@@ -254,6 +258,46 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
             "select": customStyle
         });
     },
+
+    getStyleMap89: function() {
+            var customStyle = new OpenLayers.Style({
+                fillOpacity: 1,
+                externalGraphic: '${imgLegend}',
+                graphicWidth: 20,
+                graphicHeight: 20,
+                graphicYOffset: -10,
+                // Etiquettes
+                label: '${label}',
+                labelYOffset: -20,
+                labelOutlineColor: "white",
+                labelOutlineWidth: 3,
+                fontSize: 10,
+                fontColor: '#000'
+            }, {
+                context: {
+                    label: function(feature) {
+                        var numero = feature.data['numero'];
+                        if (!numero) {
+                            return;
+                        }
+                        return numero;
+                    },
+                    imgLegend: function(feature) {
+                        var file = 'ext-res/images/remocra/cartes/legende/eau/';
+                        file += feature.data['nature'];
+                        file += '_'+(feature.data['dispo']||'INCONNU');
+                        if (feature.renderIntent == 'select') {
+                            file += '_on';
+                        }
+                        return file + '.png';
+                    }
+                }
+            });
+            return new OpenLayers.StyleMap({
+                "default": customStyle,
+                "select": customStyle
+            });
+        },
 
     getStyleMap83: function() {
         var customStyle = new OpenLayers.Style({
