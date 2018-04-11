@@ -114,7 +114,38 @@
     </attributes>
   </connection>
   <order>
-  <hop> <from>recueration_liste_anomalies</from><to>creation_champ_anomalie_code</to><enabled>Y</enabled> </hop>  <hop> <from>selection_pei</from><to>ajout_champ_anomalie_code</to><enabled>Y</enabled> </hop>  <hop> <from>creation_champ_anomalie_code</from><to>ajout_champ_anomalie_code</to><enabled>Y</enabled> </hop>  <hop> <from>ajout_champ_anomalie_code</from><to>Stream lookup</to><enabled>Y</enabled> </hop>  <hop> <from>Etat_PEI</from><to>Stream lookup</to><enabled>Y</enabled> </hop>  <hop> <from>Stream lookup</from><to>filtre_avant_insertion</to><enabled>Y</enabled> </hop>  <hop> <from>filtre_avant_insertion</from><to>insertion_pei</to><enabled>Y</enabled> </hop>  </order>
+  <hop> <from>recueration_liste_anomalies</from><to>creation_champ_anomalie_code</to><enabled>Y</enabled> </hop>  <hop> <from>selection_pei</from><to>ajout_champ_anomalie_code</to><enabled>Y</enabled> </hop>  <hop> <from>creation_champ_anomalie_code</from><to>ajout_champ_anomalie_code</to><enabled>Y</enabled> </hop>  <hop> <from>ajout_champ_anomalie_code</from><to>Stream lookup</to><enabled>Y</enabled> </hop>  <hop> <from>Etat_PEI</from><to>Stream lookup</to><enabled>Y</enabled> </hop>  <hop> <from>Stream lookup</from><to>Code opération SQL = INSERT</to><enabled>Y</enabled> </hop>  <hop> <from>Code opération SQL = INSERT</from><to>Génération instructions SQL</to><enabled>Y</enabled> </hop>  <hop> <from>Génération instructions SQL</from><to>Insertion SQL Server</to><enabled>Y</enabled> </hop>  </order>
+  <step>
+    <name>Code opération SQL = INSERT</name>
+    <type>Constant</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>
+      <field>
+        <name>operation_sql</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>INSERT</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+    </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>672</xloc>
+      <yloc>304</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
   <step>
     <name>Etat_PEI</name>
     <type>DataGrid</type>
@@ -165,8 +196,147 @@
     </data>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>656</xloc>
-      <yloc>160</yloc>
+      <xloc>496</xloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Génération instructions SQL</name>
+    <type>GenericSqlEncoder</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <schemaName>dbo</schemaName>
+    <tableName>REMOCRA_PEI</tableName>
+    <dateFormat>yyyy-MM-dd</dateFormat>
+    <booleanSupported>N</booleanSupported>
+    <sqlCommandFieldName>sql</sqlCommandFieldName>
+    <toUpperCase>N</toUpperCase>
+    <sqlOperationFieldName>operation_sql</sqlOperationFieldName>
+    <insertKey>INSERT</insertKey>
+    <updateKey>UPDATE</updateKey>
+    <deleteKey>DELETE</deleteKey>
+    <fields>
+      <field>
+        <fieldName>idpteau</fieldName>
+        <isUpdate>N</isUpdate>
+        <isFunction>N</isFunction>
+      </field>
+      <field>
+        <fieldName>num_pei</fieldName>
+        <isUpdate>N</isUpdate>
+        <isFunction>N</isFunction>
+      </field>
+      <field>
+        <fieldName>nature</fieldName>
+        <isUpdate>N</isUpdate>
+        <isFunction>N</isFunction>
+      </field>
+      <field>
+        <fieldName>statut</fieldName>
+        <isUpdate>N</isUpdate>
+        <isFunction>N</isFunction>
+      </field>
+      <field>
+        <fieldName>code_insee</fieldName>
+        <isUpdate>N</isUpdate>
+        <isFunction>N</isFunction>
+      </field>
+      <field>
+        <fieldName>commune</fieldName>
+        <isUpdate>N</isUpdate>
+        <isFunction>N</isFunction>
+      </field>
+      <field>
+        <fieldName>carroyage</fieldName>
+        <isUpdate>N</isUpdate>
+        <isFunction>N</isFunction>
+      </field>
+      <field>
+        <fieldName>created_date</fieldName>
+        <isUpdate>N</isUpdate>
+        <isFunction>N</isFunction>
+      </field>
+      <field>
+        <fieldName>created_user</fieldName>
+        <isUpdate>N</isUpdate>
+        <isFunction>N</isFunction>
+      </field>
+      <field>
+        <fieldName>last_edited_date</fieldName>
+        <isUpdate>N</isUpdate>
+        <isFunction>N</isFunction>
+      </field>
+      <field>
+        <fieldName>last_edited_user</fieldName>
+        <isUpdate>Y</isUpdate>
+        <isFunction>N</isFunction>
+      </field>
+      <field>
+        <fieldName>date_extraction</fieldName>
+        <isUpdate>Y</isUpdate>
+        <isFunction>N</isFunction>
+      </field>
+      <field>
+        <fieldName>ANOMALIE_CODE</fieldName>
+        <isUpdate>N</isUpdate>
+        <isFunction>N</isFunction>
+      </field>
+      <field>
+        <fieldName>etat_pei_code</fieldName>
+        <isUpdate>N</isUpdate>
+        <isFunction>N</isFunction>
+      </field>
+      <field>
+        <fieldName>etat_pei_lib</fieldName>
+        <isUpdate>N</isUpdate>
+        <isFunction>N</isFunction>
+      </field>
+      <field>
+        <fieldName>shape</fieldName>
+        <isUpdate>Y</isUpdate>
+        <isFunction>Y</isFunction>
+      </field>
+    </fields>
+    <whereClauseInField>N</whereClauseInField>
+    <sqlWhereClauseFieldName/>
+    <keys>
+    </keys>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>848</xloc>
+      <yloc>304</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Insertion SQL Server</name>
+    <type>ExecSQLRow</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <commit>10000</commit>
+    <connection>SDIS_MSSQL</connection>
+    <sql_field>sql</sql_field>
+    <insert_field/>
+    <update_field/>
+    <delete_field/>
+    <read_field/>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>1024</xloc>
+      <yloc>304</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -195,19 +365,19 @@
         <name>etat_pei_code</name>
         <rename>etat_pei_code</rename>
         <default/>
-        <type>-</type>
+        <type>String</type>
       </value>
       <value>
         <name>etat_pei_lib</name>
         <rename>etat_pei_lib</rename>
         <default/>
-        <type>-</type>
+        <type>String</type>
       </value>
     </lookup>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>656</xloc>
-      <yloc>288</yloc>
+      <xloc>496</xloc>
+      <yloc>304</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -236,13 +406,13 @@
         <name>code</name>
         <rename>ANOMALIE_CODE</rename>
         <default/>
-        <type>-</type>
+        <type>String</type>
       </value>
     </lookup>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>448</xloc>
-      <yloc>288</yloc>
+      <xloc>288</xloc>
+      <yloc>304</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -280,124 +450,8 @@
       </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>448</xloc>
-      <yloc>160</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>filtre_avant_insertion</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <fields>      <field>        <name>idpteau</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>num_pei</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>nature</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>statut</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>code_insee</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>commune</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>carroyage</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>created_date</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>created_user</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>last_edited_date</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>last_edited_user</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>date_extraction</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>ANOMALIE_CODE</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>etat_pei_code</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>etat_pei_lib</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>        <select_unspecified>N</select_unspecified>
-    </fields>     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>832</xloc>
-      <yloc>288</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>insertion_pei</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <connection>SDIS_MSSQL</connection>
-    <schema>dbo</schema>
-    <table>REMOCRA_PEI</table>
-    <commit>1000</commit>
-    <truncate>Y</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>N</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-    </fields>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>1024</xloc>
-      <yloc>288</yloc>
+      <xloc>288</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -424,8 +478,8 @@ ORDER BY hydrant</sql>
     <lazy_conversion_active>N</lazy_conversion_active>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>448</xloc>
-      <yloc>48</yloc>
+      <xloc>288</xloc>
+      <yloc>64</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -441,12 +495,12 @@ ORDER BY hydrant</sql>
            <schema_name/>
            </partitioning>
     <connection>REMOCRA_POSTGIS</connection>
-    <sql>SELECT h.id, substr(h.numero,1,10) AS IdPtEau, h.numero_interne AS NUM_PEI,
-   substr(hn.code_nature_sgo,1,80) AS NATURE,
-   substr(thdo.code,1,20) AS STATUT, substr(c.insee,1,5) AS CODE_INSEE, c.nom AS COMMUNE,
-   substr(carroy.idcarre200,1,10) AS CARROYAGE, h.dispo_terrestre, traca.date_operation AS created_date, 
-   traca.auteur_modification AS created_user, h.date_modification AS last_edited_date,
-   COALESCE(u.nom,&apos; &apos;) || &apos; &apos; || COALESCE(u.prenom, &apos; &apos;) AS last_edited_user, now() AS Date_Extraction
+    <sql>SELECT h.id, substr(substr(h.numero,1,5) || &apos;_&apos; || substr(h.numero,6,10),1,10) AS IdPtEau, h.numero_interne AS NUM_PEI,
+   &apos;geometry::STGeomFromText(&apos;&apos;&apos;|| st_astext(h.geometrie) ||&apos;&apos;&apos;,&apos;|| st_srid(h.geometrie) ||&apos;)&apos; AS shape, substr(hn.code_nature_sgo,1,80) AS NATURE,
+   coalesce(substr(thdo.code,1,20), &apos;U&apos;) AS STATUT, substr(c.insee,1,5) AS CODE_INSEE, c.nom AS COMMUNE,
+   substr(carroy.idcarre200,1,10) AS CARROYAGE, h.dispo_terrestre, to_char(traca.date_operation, &apos;DD&#47;MM&#47;YYYY&apos;) AS created_date, 
+   traca.auteur_modification AS created_user, to_char(h.date_modification, &apos;DD&#47;MM&#47;YYYY&apos;) AS last_edited_date,
+   COALESCE(u.nom,&apos; &apos;) || &apos; &apos; || COALESCE(u.prenom, &apos; &apos;) AS last_edited_user, to_char(now(), &apos;DD&#47;MM&#47;YYYY&apos;) AS Date_Extraction
 FROM remocra.hydrant h
    INNER JOIN remocra.hydrant_pibi hpi ON hpi.id = h.id
    LEFT JOIN remocra.commune c ON c.id = h.commune
@@ -460,12 +514,12 @@ FROM remocra.hydrant h
 
 UNION
 
-SELECT h.id, substr(h.numero,1,10) AS IdPtEau, h.numero_interne AS NUM_PEI,
-   substr(hn.code_nature_sgo,1,80) AS NATURE,
-   substr(thdo.code,1,20) AS STATUT, substr(c.insee,1,5) AS CODE_INSEE, c.nom AS COMMUNE,
-   substr(carroy.idcarre200,1,10) AS CARROYAGE, h.dispo_terrestre, traca.date_operation AS created_date, 
-   traca.auteur_modification AS created_user, h.date_modification AS last_edited_date,
-   COALESCE(u.nom,&apos; &apos;) || &apos; &apos; || COALESCE(u.prenom, &apos; &apos;) AS last_edited_user, now() AS Date_Extraction
+SELECT h.id, substr(substr(h.numero,1,5) || &apos;_&apos; || substr(h.numero,6,10),1,10) AS IdPtEau, h.numero_interne AS NUM_PEI,
+   &apos;geometry::STGeomFromText(&apos;&apos;&apos;|| st_astext(h.geometrie) ||&apos;&apos;&apos;,&apos;|| st_srid(h.geometrie) ||&apos;)&apos; AS shape, substr(hn.code_nature_sgo,1,80) AS NATURE,
+   coalesce(substr(thdo.code,1,20), &apos;U&apos;) AS STATUT, substr(c.insee,1,5) AS CODE_INSEE, c.nom AS COMMUNE,
+   substr(carroy.idcarre200,1,10) AS CARROYAGE, h.dispo_terrestre, to_char(traca.date_operation, &apos;DD&#47;MM&#47;YYYY&apos;) AS created_date, 
+   traca.auteur_modification AS created_user, to_char(h.date_modification, &apos;DD&#47;MM&#47;YYYY&apos;) AS last_edited_date,
+   COALESCE(u.nom,&apos; &apos;) || &apos; &apos; || COALESCE(u.prenom, &apos; &apos;) AS last_edited_user, to_char(now(), &apos;DD&#47;MM&#47;YYYY&apos;) AS Date_Extraction
 FROM remocra.hydrant h
    INNER JOIN remocra.hydrant_pena hpe ON hpe.id = h.id
    LEFT JOIN remocra.commune c ON c.id = h.commune
@@ -483,8 +537,8 @@ FROM remocra.hydrant h
     <lazy_conversion_active>N</lazy_conversion_active>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>208</xloc>
-      <yloc>288</yloc>
+      <xloc>48</xloc>
+      <yloc>304</yloc>
       <draw>Y</draw>
       </GUI>
     </step>

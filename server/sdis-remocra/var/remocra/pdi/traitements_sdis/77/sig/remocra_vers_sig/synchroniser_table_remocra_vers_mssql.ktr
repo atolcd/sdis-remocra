@@ -162,7 +162,7 @@
            <schema_name/>
            </partitioning>
     <connection>REMOCRA_POSTGIS</connection>
-    <sql>SELECT substr(h.numero,1,10) AS IdPtEau, hpi.debit AS DEBIT,
+    <sql>SELECT substr(substr(h.numero,1,5) || &apos;_&apos; || substr(h.numero,6,10),1,10) AS IdPtEau, hpi.debit AS DEBIT,
    CASE WHEN thdi.nom~E&apos;^\\d+$&apos; THEN thdi.nom::integer ELSE NULL END diametre, NULL::integer AS capacite,
    h.voie AS adresse, h.voie2 AS carrefour,
    h.complement AS complement_adresse, h.lieu_dit AS lieu_dit, substr(grp.code,1,10) AS GROUPEMENT,
@@ -175,10 +175,10 @@ FROM remocra.hydrant h
 
 UNION
 
-SELECT h.numero AS IdPtEau, NULL::integer AS DEBIT,
+SELECT substr(substr(h.numero,1,5) || &apos;_&apos; || substr(h.numero,6,10),1,10) AS IdPtEau, NULL::integer AS DEBIT,
    NULL::integer AS diametre, CASE WHEN hpe.capacite~E&apos;^\\d+$&apos; THEN hpe.capacite::integer ELSE NULL END AS capacite,
    h.voie AS adresse, h.voie2 AS carrefour,
-   h.complement AS complement_adresse, h.lieu_dit AS lieu_dit, grp.code AS GROUPEMENT,
+   h.complement AS complement_adresse, h.lieu_dit AS lieu_dit, substr(grp.code,1,10) AS GROUPEMENT,
    substring(c.insee from 1 for 2) AS dept_num, now() AS Date_Extraction_Table
 FROM remocra.hydrant h
    LEFT JOIN remocra.commune c ON c.id = h.commune

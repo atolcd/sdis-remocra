@@ -99,7 +99,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1216</xloc>
+      <xloc>944</xloc>
       <yloc>480</yloc>
       </entry>
     <entry>
@@ -181,7 +181,7 @@
       </parameters>      <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>944</xloc>
+      <xloc>1216</xloc>
       <yloc>192</yloc>
       </entry>
     <entry>
@@ -214,7 +214,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>1216</xloc>
-      <yloc>192</yloc>
+      <yloc>336</yloc>
       </entry>
     <entry>
       <name>synchroniser_table_remocra_vers_mssql.ktr</name>
@@ -246,7 +246,23 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>1216</xloc>
-      <yloc>320</yloc>
+      <yloc>480</yloc>
+      </entry>
+    <entry>
+      <name>Purge de REMOCRA_PEI</name>
+      <description/>
+      <type>SQL</type>
+      <sql>TRUNCATE TABLE REMOCRA_PEI;</sql>
+      <useVariableSubstitution>F</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>SDIS_MSSQL</connection>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>944</xloc>
+      <yloc>192</yloc>
       </entry>
   </entries>
   <hops>
@@ -287,15 +303,6 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Verif connexion MSSQL</from>
-      <to>synchronisation_pei_remocra_vers_mssql.ktr</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>Y</unconditional>
-    </hop>
-    <hop>
       <from>synchronisation_pei_remocra_vers_mssql.ktr</from>
       <to>synchroniser_tournees_remocra_vers_mssql.ktr</to>
       <from_nr>0</from_nr>
@@ -316,6 +323,24 @@
     <hop>
       <from>synchroniser_table_remocra_vers_mssql.ktr</from>
       <to>Success</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>Verif connexion MSSQL</from>
+      <to>Purge de REMOCRA_PEI</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>Purge de REMOCRA_PEI</from>
+      <to>synchronisation_pei_remocra_vers_mssql.ktr</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>

@@ -24,13 +24,13 @@
     </parameters>
   <connection>
     <name>Remocra</name>
-    <server>atolcd-sdis77-remocra-demo.hosting.priv.atolcd.com</server>
+    <server>${REMOCRA_POSTGIS_DATABASE_HOST}</server>
     <type>POSTGRESQL</type>
     <access>Native</access>
-    <database>remocra</database>
-    <port>5432</port>
-    <username>postgres</username>
-    <password>Encrypted 2be98afc86aa7f2e4f84dab60f48a9d8e</password>
+    <database>${REMOCRA_POSTGIS_DATABASE_NAME}</database>
+    <port>${REMOCRA_POSTGIS_DATABASE_PORT}</port>
+    <username>${REMOCRA_POSTGIS_DATABASE_USER_NAME}</username>
+    <password>${REMOCRA_POSTGIS_DATABASE_USER_PASSWORD}</password>
     <servername/>
     <data_tablespace/>
     <index_tablespace/>
@@ -38,7 +38,7 @@
       <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
       <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
       <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
-      <attribute><code>PORT_NUMBER</code><attribute>5432</attribute></attribute>
+      <attribute><code>PORT_NUMBER</code><attribute>${REMOCRA_POSTGIS_DATABASE_PORT}</attribute></attribute>
       <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
       <attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
       <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>

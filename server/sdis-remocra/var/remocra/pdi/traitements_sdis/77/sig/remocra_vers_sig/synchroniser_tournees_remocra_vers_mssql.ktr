@@ -162,7 +162,7 @@
            <schema_name/>
            </partitioning>
     <connection>REMOCRA_POSTGIS</connection>
-    <sql>SELECT substr(h.numero,1,10) AS IdPtEau, substr(thdo.code,1,20) AS STATUT_PEI,
+    <sql>SELECT substr(substr(h.numero,1,5) || &apos;_&apos; || substr(h.numero,6,10),1,10) AS IdPtEau, coalesce(substr(thdo.code,1,20), &apos;U&apos;) AS STATUT_PEI,
    hpi.gest_reseau AS SOCIETE_EAUX, h.gest_point_eau AS GESTIONNAIRE,
    h.date_recep AS Date_Reception, h.date_contr AS Date_Controle_Pesee,
    h.date_reco AS Date_Reco, substr(cis.code,1,20) AS CODE_CIS,
