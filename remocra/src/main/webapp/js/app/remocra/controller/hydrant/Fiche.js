@@ -386,7 +386,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
         if (initial!==true) {
             Ext.defer(function() {
                 this.checkIfAllTabRead(fiche);
-                this.doCheckDispo(combo);
+                if(HYDRANT_SYMBOLOGIE === '83') {
+                   this.doCheckDispo(combo);
+                }
                 fiche.down('anomalie').setInfo(fiche.typeSaisie, nature.getId());
                 this.doFilterAnomalie(fiche);
                 this.calculateIndisponibilite(fiche);
