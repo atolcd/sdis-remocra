@@ -135,7 +135,7 @@ public class UtilisateurController {
         final Utilisateur record = Utilisateur.fromJsonToUtilisateur(json);
 
         // Pas l'utilisateur connecté
-        if (record.getId() != utilisateurService.getCurrentUtilisateur().getId()) {
+        if (record.getId().longValue() != utilisateurService.getCurrentUtilisateur().getId().longValue()) {
             throw new AccessDeniedException("L'utilisateur n'est pas autorisé à modifier cette donnée");
         }
         return new AbstractExtObjectSerializer<Utilisateur>("Utilisateur updated") {
@@ -159,7 +159,7 @@ public class UtilisateurController {
         final Utilisateur record = Utilisateur.fromJsonToUtilisateur(json);
         if(!authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ALL_C)) {
             Organisme organisme = utilisateurService.getCurrentUtilisateur().getOrganisme();
-            if(record.getOrganisme().getId() != organisme.getId()){
+            if(organisme.getId().longValue() != record.getOrganisme().getId().longValue()){
                 throw new AccessDeniedException("L'utilisateur n'est pas autorisé à modifier cette donnée");
             }
         }
