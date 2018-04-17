@@ -126,7 +126,7 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Renseignements', {
             }],
             filters : [
                 {'property':'organismeTypeCodes', value:'DDTM%ONF'},
-                {'property':'hasRight', value:'RCI.Create'},
+                {'property':'hasRight', value:'RCI_C'},
                 {'property':'dnasp', value:'true'}],
             pageSize: 15
         },
@@ -152,7 +152,7 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Renseignements', {
             }],
             filters : [
                 {'property':'organismeTypeCodes', value:'SDIS%CIS%CIS-ETAPE-1%CIS-ETAPE-2'},
-                {'property':'hasRight', value:'RCI.Create'},
+                {'property':'hasRight', value:'RCI_C'},
                 {'property':'dnasp', value:'true'}],
             pageSize: 15
         },
@@ -178,7 +178,7 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Renseignements', {
             }],
             filters : [
                 {'property':'organismeTypeCodes', value:'GENDARMERIE'},
-                {'property':'hasRight', value:'RCI.Create'},
+                {'property':'hasRight', value:'RCI_C'},
                 {'property':'dnasp', value:'true'}],
             pageSize: 15
         },
@@ -204,7 +204,7 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Renseignements', {
             }],
             filters : [
                 {'property':'organismeTypeCodes', value:'POLICE'},
-                {'property':'hasRight', value:'RCI.Create'},
+                {'property':'hasRight', value:'RCI_C'},
                 {'property':'dnasp', value:'true'}],
             pageSize: 15
         },
