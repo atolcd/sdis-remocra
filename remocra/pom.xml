@@ -25,6 +25,15 @@
 		<powermock.version>1.4.12</powermock.version>
 		<mockito.version>1.9.0</mockito.version>
 		<hibernate.version>4.1.4.Final</hibernate.version>
+		<jooq.version>3.6.0</jooq.version>
+		<!-- Reverse jooq -->
+		<db.host>localhost</db.host>
+		<db.user>postgres</db.user>
+		<db.pass>postgres</db.pass>
+		<db.name>remocra</db.name>
+		<db.schema></db.schema>
+		<guice-persist-jooq.version>0.1.2</guice-persist-jooq.version>
+		<plugin.build-helper-maven-plugin>1.10</plugin.build-helper-maven-plugin>
 	</properties>
 	<repositories>
 		<repository>
@@ -479,6 +488,11 @@
 			<version>4.2.3</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.jooq</groupId>
+			<artifactId>jooq</artifactId>
+			<version>${jooq.version}</version>
+		</dependency>
 		<!--  mvn install:install-file -Dfile=lib/irstv-cts.jar -DgroupId=org.cts -DartifactId=cts -Dversion=1.69 -Dpackaging=jar -->
 		<dependency>
 			<groupId>org.cts</groupId>
@@ -491,6 +505,11 @@
 			<groupId>com.auth0</groupId>
 			<artifactId>java-jwt</artifactId>
 			<version>3.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>4.1.0</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -652,6 +671,25 @@
 					<password>${tomcat.manager.password}</password>
 					<uriEncoding>utf-8</uriEncoding>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>${plugin.build-helper-maven-plugin}</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/jooq</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
@@ -911,6 +949,61 @@
 								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.jooq</groupId>
+					<artifactId>jooq-codegen-maven</artifactId>
+					<version>${jooq.version}</version>
+					<configuration>
+						<jdbc>
+							<driver>org.postgresql.Driver</driver>
+							<url>jdbc:postgresql://${db.host}/${db.name}</url>
+							<user>${db.user}</user>
+							<password>${db.pass}</password>
+						</jdbc>
+						<generator>
+							<generate>
+								<pojos>true</pojos>
+								<records>false</records>
+								<fluentSetters>true</fluentSetters>
+							</generate>
+							<name>org.jooq.util.DefaultGenerator</name>
+							<database>
+								<name>org.jooq.util.postgres.PostgresDatabase</name>
+								<includes>.*</includes>
+								<excludes>information_schema.*|pg_catalog.*|public.*|remocra_referentiel.*|remocra_sgo.*|sdis_referentiel.*|schema_version|uuid.*</excludes>
+								<inputSchema>${db.schema}</inputSchema>
+								<customTypes>
+									<customType>
+										<name>Instant</name>
+										<type>org.joda.time.Instant</type>
+										<converter>fr.sdis83.remocra.db.converter.InstantConverter</converter>
+									</customType>
+									<customType>
+										<name>LocalTime</name>
+										<type>org.joda.time.LocalTime</type>
+										<converter>fr.sdis83.remocra.db.converter.LocalTimeConverter</converter>
+									</customType>
+								</customTypes>
+								<forcedTypes>
+									<forcedType>
+										<name>Instant</name>
+										<!-- .* pour gérer "without time zone", … -->
+										<types>timestamp(\ .*)?</types>
+									</forcedType>
+									<forcedType>
+										<name>LocalTime</name>
+										<!-- .* pour gérer "without time zone", … -->
+										<types>time(\ .*)?</types>
+									</forcedType>
+								</forcedTypes>
+							</database>
+							<target>
+								<packageName>fr.sdis83.remocra.db.model</packageName>
+								<directory>${basedir}/src/main/jooq</directory>
+							</target>
+						</generator>
 					</configuration>
 				</plugin>
 			</plugins>

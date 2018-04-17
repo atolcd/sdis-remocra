@@ -91,5 +91,35 @@
     <bean class="org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder" id="messageDigestPasswordEncoder">
         <constructor-arg value="md5" />
     </bean>
-    
+
+    <!-- Configure jOOQ's ConnectionProvider to use Spring's TransactionAwareDataSourceProxy,
+      which can dynamically discover the transaction context -->
+    <bean id="transactionAwareDataSource"
+          class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
+        <constructor-arg ref="dataSource" />
+    </bean>
+
+    <bean class="org.jooq.impl.DataSourceConnectionProvider" name="connectionProvider">
+        <constructor-arg ref="transactionAwareDataSource" />
+    </bean>
+
+    <!-- Configure the DSL object, optionally overriding jOOQ Exceptions with Spring Exceptions -->
+    <bean id="dsl" class="org.jooq.impl.DefaultDSLContext">
+        <constructor-arg ref="config" />
+    </bean>
+
+    <!-- Invoking an internal, package-private constructor for the example
+         Implement your own Configuration for more reliable behaviour -->
+    <bean class="org.jooq.impl.DefaultConfiguration" name="config">
+        <constructor-arg index="0" ref="connectionProvider" />
+        <constructor-arg index="1"><null /></constructor-arg>
+        <constructor-arg index="2"><null /></constructor-arg>
+        <constructor-arg index="3"><null/></constructor-arg>
+        <constructor-arg index="4"><null /></constructor-arg>
+        <constructor-arg index="5"><value type="org.jooq.SQLDialect">H2</value></constructor-arg>
+        <constructor-arg index="6"><null /></constructor-arg>
+        <constructor-arg index="7"><null /></constructor-arg>
+    </bean>
+
+
 </beans>
