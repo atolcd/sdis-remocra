@@ -60,11 +60,35 @@ Accès après l'installation :
 * http://remocra.sdisxx.fr/geoserver
 
 
-Remarques :
+== Remarques ==
 
-* Si le serveur n'est pas accessible à la fin de l'installation malgré un message positif, il se peut que ce soit lié à SELinux.
+Si une erreur se produit, l'installation est immédiatement arrêtée. Le cas échéant, rechercher la cause de l'erreur, corriger manuellement les erreurs de manière à être dans un état cohérent et relancer l'installation.
 
-Pour désactiver SE Linux, modifier le fichier :
+Les *causes d'erreurs les plus courantes* sont les suivantes :
+
+=== Tomcat n'a pas eu le temps de démarrer ===
+
+* Détection : message obtenu dans le console lors de l'installation :
+[source,ruby]
+----
+Stopping tomcat6: waiting for processes 43660 to exit
+Starting tomcat6: ÉCHOUÉ
+ABORTED - L'installation / mise à jour a été interrompue -
+----
+
+* Action : Redémarrer tomcat puis l'installation :
+[source,ruby]
+----
+service tomcat6 restart && service tomcat6 status
+/livraison/launcher.sh 2>&1 | tee /livraison/launcher.log
+----
+
+=== SELinux activé ===
+
+* Détection : serveur inaccessible à la fin de l'installation malgré un message positif
+* Action : désactiver SELinux
+
+Désactiver SE Linux en modifiant le fichier :
 
 ./etc/selinux/config
 [source,ruby]
@@ -72,4 +96,41 @@ Pour désactiver SE Linux, modifier le fichier :
 SELINUX=disabled
 ----
 
-Puis redémarrer le serveur : ```reboot```
+Puis redémarrer le serveur avec la commande ```reboot```
+
+Exemple de vérification avec la commande `sestatus && getenforce` :
+[source,ruby]
+----
+SELinux status:                 disabled
+Disabled
+----
+
+
+=== Hostname mal paramétré ===
+
+* Détection : Message du type `Erreur: Exception envoyée par l'agent : java.net.MalformedURLException: Local host name unknown: java.net.UnknownHostException: XXXXX: XXXXX: Nom ou service inconnu` dans le fichier `/var/log/tomcat6/catalina.out`
+* Action : paramétrer le `hostname`
+
+Exemples de fichiers :
+
+./etc/hosts
+[source,ruby]
+----
+127.0.0.1   localhost localhost.localdomain remocra.sdisXX.fr
+::1         localhost localhost.localdomain remocra.sdisXX.fr
+----
+
+./etc/sysconfig/network
+[source,ruby]
+----
+NETWORKING=yes
+HOSTNAME=remocra.sdisXX.fr
+----
+
+Puis redémarrer le serveur avec la commande `reboot`
+
+Exemple de vérification avec la commande `hostname` :
+[source,ruby]
+----
+remocra.sdisXX.fr
+----
