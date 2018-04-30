@@ -46,7 +46,7 @@
 		<!--link rel="stylesheet" type="text/css" href="${jsbase}/openlayers-2.12/theme/default/google.css"/-->
         
 		<link rel="stylesheet" type="text/css" href="${jsbase}/ext-4.1.1a/resources/css/ext-all-gray.css"/>
-		<link rel="stylesheet" type="text/css" href="${cssbase}/remocra/main.css?d=20180314"/>
+		<link rel="stylesheet" type="text/css" href="${cssbase}/remocra/main.css?d=20180429"/>
 		<link rel="stylesheet" type="text/css" href="${cssbase}/remocra/vertical-bar.css"/>
 		<link rel="stylesheet" type="text/css" href="${extrescssbase}/remocra/override.css"/>
 
