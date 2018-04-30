@@ -370,16 +370,16 @@ L'authentification LDAP est prioritaire sur l'authentification à partir de la b
 * Par défaut : ```45```
 
 === HYDRANT_NUMEROTATION_INTERNE_METHODE ===
-* Règle de calcul des <i>numéros internes</i> des PEI (ex : 77, 83). <a href="https://github.com/atolcd/sdis-remocra/blob/master/docs/Numérotation_PEI.adoc" target="_blank">Méthodes disponibles</a>
+* Règle de calcul des <i>numéros internes</i> des PEI (ex : 77, 83)
 * Par défaut : ```83```
 
-Méthodes disponibles pour les règles de calcul des numéro internes et globaux : link:../Numérotation_PEI{outfilesuffix}[Numérotation des PEI]
+Méthodes disponibles pour les règles de calcul des numéro internes et globaux : link:../pei/Numérotation_PEI{outfilesuffix}[Numérotation des PEI]
 
 === HYDRANT_NUMEROTATION_METHODE ===
-* Règle de calcul des <i>numéros globaux</i> des PEI (ex : 77, 83). <a href="https://github.com/atolcd/sdis-remocra/blob/master/docs/Numérotation_PEI.adoc" target="_blank">Méthodes disponibles</a>
+* Règle de calcul des <i>numéros globaux</i> des PEI (ex : 77, 83)
 * Par défaut : ```83```
 
-Méthodes disponibles pour les règles de calcul des numéro internes et globaux : link:../Numérotation_PEI{outfilesuffix}[Numérotation des PEI]
+Méthodes disponibles pour les règles de calcul des numéro internes et globaux : link:../pei/Numérotation_PEI{outfilesuffix}[Numérotation des PEI]
 
 === HYDRANT_RENOUVELLEMENT_CTRL ===
 * Délai légal entre 2 contrôles (en jours)
@@ -390,10 +390,10 @@ Méthodes disponibles pour les règles de calcul des numéro internes et globaux
 * Par défaut : ```365```
 
 === HYDRANT_SYMBOLOGIE_METHODE ===
-* Symbologie des PEI (ex : 77, 83). <a href="https://github.com/atolcd/sdis-remocra/blob/master/docs/Symbologie_PEI.adoc" target="_blank">Symbologies disponibles</a>
+* Symbologie des PEI (ex : 77, 83)
 * Par défaut : ```83%```
 
-Méthodes disponibles pour la symbologie des PEI : link:../Symbologie_PEI{outfilesuffix}[Symbologies disponibles]
+Méthodes disponibles pour la symbologie des PEI : link:../pei/Symbologie_PEI{outfilesuffix}[Symbologies disponibles]
 
 === NIVEAU_TRACABILITE ===
 * Niveau de traçabilité des points d'eau (valeurs admises : organisme , utilisateur)
