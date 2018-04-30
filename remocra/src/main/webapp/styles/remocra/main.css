@@ -895,6 +895,9 @@ Affichage de toute la légende
 .update {
 	background-image:url('../../images/update.png');
 }
+.refresh {
+	background-image:url('../../images/refresh.png');
+}
 
 .x-grid-checkheader {
     height: 14px;
@@ -1199,4 +1202,8 @@ body.x-ie .x-btn-default-toolbar-small-icon-text-left .x-btn-inner {
 }
 .x-grid-row .grid-cell-groupe-fnct-warning {
     color: #ff5722;
+}
+
+.hydrants-map-requetage .info {
+    display: none;
 }

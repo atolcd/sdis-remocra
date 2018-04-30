@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 
+import fr.sdis83.remocra.repository.RequeteModeleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -64,6 +65,9 @@ public class TraitementsController {
 
     @Autowired
     private AuthoritiesUtil authUtils;
+
+    @Autowired
+    private RequeteModeleRepository requeteModeleRepository;
 
     /**
      * Vérifie que l'utilisateur a le droit d'accéder à la brique Traitements
@@ -214,6 +218,39 @@ public class TraitementsController {
         checkRightsForThematique(modeleTraitement.getCode().intValue());
 
         return doCreateTraitement(idmodele, json, request);
+    }
+
+
+    @RequestMapping(value = "/requetage", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<java.lang.String> createTraitement(HttpServletRequest request) throws BusinessException {
+
+        Integer idModeleRequetage = paramConfService.getIdTraitementRequetage();
+        ModeleTraitement modele = ModeleTraitement.findModeleTraitement(idModeleRequetage);
+        //checkRightsForThematique(modele.getCode().intValue());
+
+
+
+        Traitement trt = new Traitement();
+        trt.setIdtraitement(-1);
+        TraitementParametre[] paramArray = new TraitementParametre[2];
+
+        TraitementParametre tpSpatial = new TraitementParametre();
+        tpSpatial.setIdparametre(ModeleTraitementParametre.findModeleTraitementParametresByNomAndIdmodele("SPATIAL", modele).getSingleResult());
+        tpSpatial.setIdtraitement(trt);
+        tpSpatial.setValeur(String.valueOf(request.getParameter("spatial")));
+        paramArray[0] = tpSpatial;
+
+        String sourceSql = requeteModeleRepository.getSourceSqlFromSelection(Long.valueOf(request.getParameter("requete")));
+        TraitementParametre tpRequete = new TraitementParametre();
+        tpRequete.setIdparametre(ModeleTraitementParametre.findModeleTraitementParametresByNomAndIdmodele("REQUETE", modele).getSingleResult());
+        tpRequete.setIdtraitement(trt);
+        tpRequete.setValeur(sourceSql);
+        paramArray[1] = tpRequete;
+
+
+        String jsonValeurs = new JSONSerializer().include("idparametre.idparametre").include("idtraitement.idtraitement").include("valeur").exclude("*").serialize(paramArray);
+        return doCreateTraitement(modele.getIdmodele(), jsonValeurs, request);
     }
 
     /**
@@ -595,4 +632,5 @@ public class TraitementsController {
 
         return doCreateTraitement(idModeleAlertesUtilisateurs, jsonValeurs, request);
     }
+
 }

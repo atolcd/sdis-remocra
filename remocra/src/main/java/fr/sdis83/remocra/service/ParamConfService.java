@@ -130,6 +130,9 @@ public class ParamConfService {
     public Integer getIdTraitementOldeb() {
         return (Integer) this.getValue(ParamConfParam.ID_TRAITEMENT_OLDEB);
     }
+    public Integer getIdTraitementRequetage() {
+        return (Integer) this.getValue(ParamConfParam.ID_TRAITEMENT_REQUETAGE);
+    }
 
     public Integer getIdTraitementPurgeKml() {
         return (Integer) this.getValue(ParamConfParam.ID_TRAITEMENT_PURGE_KML);

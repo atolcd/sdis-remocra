@@ -1,0 +1,49 @@
+{
+"libelle":"Légende",
+"items":[{
+    "libelle":"Analyse",
+    "items":[{
+        "type": "wms",
+        "libelle":"Résultat d'analyse<br/>",
+        "id":"zonesLayer",
+        "wms_layer":true,
+        "layers":"remocra:v_requete_modele_selection_detail",
+        "url":"/remocra/geoserver/remocra/wms",
+        "projection":"EPSG:900913",
+        "sld":null,
+        "scale_min":"0",
+        "scale_max":"362834",
+        "visibility":true,
+        "opacity":1,
+        "interrogeable": true
+        }]
+  },{
+    "libelle":"Fonds IGN",
+    "items":[{
+        "type": "ign",
+        "libelle":"Cartes IGN",
+        "id":"carteLayer",
+        "scale_min":"5669",
+        "scale_max":"999999999",
+        "visibility": false,
+        "opacity":0.5,
+        "format":null,
+        "layers":"GEOGRAPHICALGRIDSYSTEMS.MAPS",
+        "items":[
+            {"libelle":"Cartes IGN","image":"ign/carte.png"}
+        ]},{
+        "base_layer": true,
+        "type": "ign",
+        "libelle":"Photos aériennes",
+        "id":"photoLayer",
+        "scale_min":"0",
+        "scale_max":"999999999",
+        "visibility": true,
+        "opacity":1,
+        "format":null,
+        "layers":"ORTHOIMAGERY.ORTHOPHOTOS",
+        "items":[
+            {"libelle":"Photos aériennes","image":"ign/photo.png"}
+        ]}]
+}
+]}

@@ -872,4 +872,5 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
     getCurrentSrid: function() {
         return this.map.getProjection().split(':')[1];
     }
+
 });

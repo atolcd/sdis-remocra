@@ -44,6 +44,7 @@ public class ParamConf {
         EMAIL_DEST_DEPOT_RECEPTRAVAUX("EMAIL_DEST_DEPOT_RECEPTRAVAUX", String.class),
         ID_TRAITEMENT_ATLAS("ID_TRAITEMENT_ATLAS", Integer.class),
         ID_TRAITEMENT_OLDEB("ID_TRAITEMENT_OLDEB", Integer.class),
+        ID_TRAITEMENT_REQUETAGE("ID_TRAITEMENT_REQUETAGE", Integer.class ),
         ID_TRAITEMENT_PURGE_KML("ID_TRAITEMENT_PURGE_KML", Integer.class),
         ID_TRAITEMENT_HYDRANTS_NON_NUM("ID_TRAITEMENT_HYDRANTS_NON_NUM", Integer.class),
         ID_TRAITEMENT_NB_ALERTES_PAR_UTILISATEUR("ID_TRAITEMENT_NB_ALERTES_PAR_UTILISATEUR", Integer.class),
@@ -124,8 +125,8 @@ public class ParamConf {
         PDI_LDAP_ADMIN_DN("PDI_LDAP_ADMIN_DN", String.class),
         PDI_LDAP_ADMIN_PASSWORD("PDI_LDAP_ADMIN_PASSWORD", Password.class),
         PDI_LDAP_USER_BASE_NAME("PDI_LDAP_USER_BASE_NAME", String.class),
-        PDI_LDAP_USER_FILTER("PDI_LDAP_USER_FILTER", String.class)
-        ;
+        PDI_LDAP_USER_FILTER("PDI_LDAP_USER_FILTER", String.class);
+
 
         private final String cle;
         private final Class cl;
