@@ -79,6 +79,10 @@ createLayer zone_speciale ${LOCAL_REMOCRA_WS_PATH}/remocra/zone_speciale/feature
 createStyle remocra_oldeb remocra_oldeb.sld ${LOCAL_REMOCRA_WS_PATH}/styles/remocra_oldeb.sld
 createLayer oldeb_zonage ${LOCAL_REMOCRA_WS_PATH}/remocra/oldeb_zonage/featuretype.xml remocra_oldeb
 
+# REQUETES
+createStyle remocra_selection remocra_selection.sld ${LOCAL_REMOCRA_WS_PATH}/styles/remocra_selection.sld
+createLayer v_requete_modele_selection_detail ${LOCAL_REMOCRA_WS_PATH}/remocra/v_requete_modele_selection_detail/featuretype.xml remocra_selection
+
 
 # Reset cache
 echo "Vidage du cache"

@@ -1,0 +1,15 @@
+<layer>
+  <name>v_requete_modele_selection_detail</name>
+  <id>LayerInfoImpl-21acce4e:1621e708141:-7ffb</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-21acce4e:1621e708141:-7ff6</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-21acce4e:1621e708141:-7ffc</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+</layer>
