@@ -27,9 +27,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
              'TypeHydrantMarque', 'Utilisateur', 'TypeHydrantPositionnement', 'TypeHydrantMateriau'],
 
     refs: [],
-
     CODE_CITERNE: 'CI_',
     CODE_CITERNE_FIXE: 'CI_FIXE',
+
 
     init: function() {
 
@@ -443,7 +443,10 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             // Pour un nouveau pena, on le définir à "citerne fixe" par défaut
             if (currentCode == "PENA") {
                 if (fiche.hydrant.phantom) {
-                    fiche.hydrant.set('nature', Ext.getStore('TypeHydrantNature').findRecord('code', this.CODE_CITERNE_FIXE).getId());
+                    var defaultCodePena = this.getDefaultCodePena();
+                    if(defaultCodePena !== null){
+                       fiche.hydrant.set('nature', Ext.getStore('TypeHydrantNature').findRecord('code', defaultCodePena).getId());
+                    }
                     // on recherche les coords DFCI
                     Ext.Ajax.request({
                         url: Sdis.Remocra.util.Util.withBaseUrl('../hydrantspena/dfci'),
@@ -1227,6 +1230,21 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
        }else {
            return 'PI,PA';
      }
+   },
+
+   getDefaultCodePena: function(){
+   var codeCiterneFixe = Ext.getStore('TypeHydrantNature').findRecord('code', 'CI_FIXE').get('code');
+   if(codeCiterneFixe){
+      return codeCiterneFixe;
+   } else {
+         var defaultCodePena =  Ext.getStore('TypeHydrantNature').findRecord('typeHydrantId', 2).get('code');
+         if(defaultCodePena) {
+            return defaultCodePena;
+         }else {
+            Sdis.Remocra.util.Msg.msg('Hydrant', 'Impossible de récupérer un code de PENA.');
+            return null;
+         }
+   }
    }
 });
 
