@@ -5,7 +5,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMapRequetage', {
     cls: 'hydrants-map-requetage',
     title: 'LocalisationRequetage',
     itemId: 'localisationRequetage',
-    legendUrl: BASE_URL + '/../ext-res/js/app/remocra/features/hydrants/data/carte2.json',
+    legendUrl: BASE_URL + '/../ext-res/js/app/remocra/features/hydrants/data/carte-requete-selection.json',
     initComponent: function() {
         this.callParent(arguments);
     },

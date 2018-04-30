@@ -23,6 +23,7 @@ Les fichiers des cartes sont les suivants :
 ----
 /var/remocra/html/js/app/remocra/features/cartographie/data/carte.json
 /var/remocra/html/js/app/remocra/features/hydrants/data/carte.json
+/var/remocra/html/js/app/remocra/features/hydrants/data/carte-requete-selection.json
 /var/remocra/html/js/app/remocra/features/oldebs/data/carte.json
 /var/remocra/html/js/app/remocra/features/permis/data/carte.json
 /var/remocra/html/js/app/remocra/features/rci/data/carte.json
@@ -319,5 +320,26 @@ Pour chaque couche, la légende est déterminée par les _items_ (tableau). Exem
     "image":"/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LEGEND_OPTIONS=bgColor:0xf4f4f4;fontStyle:italic;fontColor:0x808080;fontAntiAliasing:true&LAYER=remocra:HABILLAGE_URBAIN"
 }]
 ---- 
+
+La *carte "Recherches et analyses" du module PEI s'appuie sur une couche de type `wms` avec l'identifiant `zonesLayer`* (c'est un prérequis). Exemple de couche paramétrée dans le fichier fichier `/var/remocra/html/js/app/remocra/features/hydrants/data/carte-requete-selection.json` :
+[source,json]
+----
+{
+  "type": "wms",
+  "libelle":"Résultat d'analyse<br/>",
+  "id":"zonesLayer",
+  "wms_layer":true,
+  "layers":"remocra:v_requete_modele_selection_detail",
+  "url":"/remocra/geoserver/remocra/wms",
+  "projection":"EPSG:900913",
+  "sld":null,
+  "scale_min":"0",
+  "scale_max":"362834",
+  "visibility":true,
+  "opacity":1,
+  "interrogeable": true
+}
+----
+
 
 _Aide technique : tutoriels link:http://www.w3schools.com/json[JSON] sur w3schools.com, link:http://docs.geoserver.org/[Documentation GeoServer] sur geoserver.org et link:http://ign.fr/[IGN]_
