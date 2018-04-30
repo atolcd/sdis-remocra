@@ -79,7 +79,7 @@ Nous avons à faire ici à un tableau de trois colonnes qui sont configurées po
 * des blocs classiques (cartographie, hydrants, oldebs, permis, rci, dfci, adresses, risques, metadonnees, traitements, admin),
 * des blocs génériques (info et doc) dont le contenu dynamique varie selon le paramétrage.
 
-== Bocs classiques ==
+== Blocs classiques ==
 
 Pour les blocs classiques, le _type_ suffit. Dans ce cas, un titre par défaut sera affecté ("Points d'eau", "Adresses", "Permis", etc.)
 
