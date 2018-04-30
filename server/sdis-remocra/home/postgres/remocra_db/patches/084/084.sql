@@ -1,4 +1,4 @@
-begin;
+﻿begin;
 
 set statement_timeout = 0;
 set client_encoding = 'UTF8';
@@ -35,7 +35,7 @@ drop function versionnement_dffd4df4df();
 
 
 -- table remocra.requete_modele
-﻿DROP TABLE IF EXISTS remocra.requete_modele CASCADE;
+DROP TABLE IF EXISTS remocra.requete_modele CASCADE;
 CREATE TABLE remocra.requete_modele (
 	id bigserial NOT NULL,
 	categorie character varying NOT NULL,
