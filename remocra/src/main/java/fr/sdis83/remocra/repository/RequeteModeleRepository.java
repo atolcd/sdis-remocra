@@ -34,6 +34,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.pojos.RequeteModeleSelection;
 import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.domain.remocra.ZoneCompetence;
+import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import org.apache.log4j.Logger;
@@ -84,11 +85,17 @@ public class RequeteModeleRepository {
         }
       }
     }
+
     //On récupere les requêtes en fonction des profils
-    List<RequeteModele> l = context.select().from(REQUETE_MODELE)
-        .leftOuterJoin(REQUETE_MODELE_DROIT)
-        .on(REQUETE_MODELE.ID.eq(REQUETE_MODELE_DROIT.REQUETE_MODELE))
-        .where(REQUETE_MODELE_DROIT.PROFIL_DROIT.eq(utilisateurService.getCurrentUtilisateur().getProfilUtilisateur().getId()).and(REQUETE_MODELE.CATEGORIE.eq(categorie))).fetchInto(RequeteModele.class);
+    List<RequeteModele> l = null;
+    try {
+      l = context.select().from(REQUETE_MODELE)
+          .leftOuterJoin(REQUETE_MODELE_DROIT)
+          .on(REQUETE_MODELE.ID.eq(REQUETE_MODELE_DROIT.REQUETE_MODELE))
+          .where(REQUETE_MODELE_DROIT.PROFIL_DROIT.eq(utilisateurService.getCurrentProfilDroit().getId()).and(REQUETE_MODELE.CATEGORIE.eq(categorie))).fetchInto(RequeteModele.class);
+    } catch (BusinessException e) {
+      e.printStackTrace();
+    }
     return l;
   }
 
