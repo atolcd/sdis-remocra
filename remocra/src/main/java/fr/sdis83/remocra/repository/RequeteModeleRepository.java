@@ -103,10 +103,11 @@ public class RequeteModeleRepository {
     return context.fetchCount(context.select().from(REQUETE_MODELE));
   }
 
-  public List<RemocraVueCombo> getComboValues(Long id) throws SQLException, ParseException {
+  public List<RemocraVueCombo> getComboValues(Long id, String pathParam) throws SQLException, ParseException {
     List<RemocraVueCombo> lstResult = new ArrayList<RemocraVueCombo>();
     @SuppressWarnings("unchecked")
     String query = context.select(REQUETE_MODELE_PARAMETRE.SOURCE_SQL).from(REQUETE_MODELE_PARAMETRE).where(REQUETE_MODELE_PARAMETRE.ID.eq(id)).fetchOne(REQUETE_MODELE.SOURCE_SQL);
+    String libelle = context.select(REQUETE_MODELE_PARAMETRE.SOURCE_SQL_LIBELLE).from(REQUETE_MODELE_PARAMETRE).where(REQUETE_MODELE_PARAMETRE.ID.eq(id)).fetchOne(REQUETE_MODELE_PARAMETRE.SOURCE_SQL_LIBELLE);
       Pattern p = Pattern.compile("\\$\\{(.+?)\\}");
       Matcher matcher = p.matcher(query);
       List<String> requestParams = new ArrayList<String>();
@@ -139,6 +140,10 @@ public class RequeteModeleRepository {
     uTmp.put("valeur", String.valueOf(u.getId()));
     typeParametre.add(uTmp);
     Connection connection = context.configuration().connectionProvider().acquire();
+    //on applique les filtres si y'en a
+    if(pathParam != null && pathParam != "") {
+      query = "SELECT * FROM ("+ query +") AS foo WHERE lower(" +libelle +") LIKE lower( "+"'%"+pathParam+"%')" ;
+    }
     //On prépare la requete (sourceSql dans requete modele selection en settant les parametres ${})
     PreparedStatement preparedStatement = connection.prepareStatement(query);
     for (int i = 0; i < requestParams.size(); i++) {

@@ -111,14 +111,15 @@ public class RequeteModeleController {
   @RequestMapping(value = "reqmodparalst/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
   @PreAuthorize("hasRight('HYDRANTS_ANALYSE_C')")
   public ResponseEntity<java.lang.String> getListComboModeleRequeteLike(
-      final @PathVariable("id") Long id){
+      final @PathVariable("id") Long id,
+      final @RequestParam(value = "query", required = false) String query){
 
     return new AbstractExtListSerializer<RemocraVueCombo>(" retrieved.") {
 
       @Override
       protected List<RemocraVueCombo> getRecords() {
         try {
-          return requeteModeleRepository.getComboValues(id);
+          return requeteModeleRepository.getComboValues(id, query);
         } catch (SQLException e) {
           e.printStackTrace();
         } catch (ParseException e) {
