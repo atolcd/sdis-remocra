@@ -1233,18 +1233,18 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
    },
 
    getDefaultCodePena: function(){
-   var codeCiterneFixe = Ext.getStore('TypeHydrantNature').findRecord('code', 'CI_FIXE').get('code');
-   if(codeCiterneFixe){
-      return codeCiterneFixe;
-   } else {
-         var defaultCodePena =  Ext.getStore('TypeHydrantNature').findRecord('typeHydrantId', 2).get('code');
-         if(defaultCodePena) {
-            return defaultCodePena;
-         }else {
-            Sdis.Remocra.util.Msg.msg('Hydrant', 'Impossible de récupérer un code de PENA.');
-            return null;
-         }
-   }
+       var codeCiterneFixe = Ext.getStore('TypeHydrantNature').findRecord('code', 'CIFIXE');
+       if(codeCiterneFixe) {
+            return codeCiterneFixe.get('code');
+       } else {
+            var defaultCodePena =  Ext.getStore('TypeHydrantNature').findRecord('typeHydrantId', 2);
+            if(defaultCodePena){
+                return defaultCodePena.get('code');
+            }else {
+                Sdis.Remocra.util.Msg.msg('Hydrant', 'Impossible de récupérer un code de PENA.');
+                return null;
+            }
+       }
    }
 });
 
