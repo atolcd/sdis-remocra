@@ -39,7 +39,6 @@ Exemples :
 * [.underline]#772140006# : PEI numéro 4 de la commune de Gressy
 
 === 83 (par défaut) ===
-=== 83 (par défaut) ===
 
 Méthode :
 
@@ -72,7 +71,19 @@ Méthode :
 Exemples :
 
 * [.underline]#86194 12# : PEI numéro 12 sur la commune de Poitiers
-* [.underline]#86165 6# : PEI numéro 4 sur la commune de Montmorillon
+* [.underline]#86165 6# : PEI numéro 6 sur la commune de Montmorillon
+
+=== 89 ===
+
+Méthode :
+
+* *<code insee commune>_<numéro interne>*
+* <numéro interne> le plus court
+
+Exemples :
+
+* [.underline]#89024_12# : PEI numéro 12 sur la commune de Auxerre
+* [.underline]#89387_6# : PEI numéro 6 sur la commune de Sens
 
 
 
