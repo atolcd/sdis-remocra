@@ -1,0 +1,64 @@
+= Traitement à la demande par fichier
+
+== Principe de fonctionnement
+Remocra permet aux utilisateurs d'éxécuter des traitements Pentaho Data Integration (PDI) intégrés à Remocra via l'interface.
+Il est aussi possible d'éxécuter des traitements réalisés par les utilisateurs en fichier `.ktr` ou `.kjb`.
+
+== Paramètres accessibles dans le traitement
+Dans le traitement créé, il est possible d'accèder à tous les paramètres du fichier `remocra.properties` (cf documentation Paramètres de configuration).
+
+De plus, un dossier propre au traitement est initialisé afin d'enregistrer les éventuels documents produits par le traitement.
+Le chemin du dossier est : `${PDI_CHEMIN_TRAITEMENT}/${TRAITEMENT_DOSSIER_NUMERO}/`.
+
+Les paramètres éventuels renseignés via l'interface, à la demande de traitement, sont accessibles dans le traitement.
+
+== Mise en place
+Déposer le traitement créé dans le dossier : `/var/remocra/pdi/traitements_sdis/XX`.
+
+[NOTE]
+====
+Ne pas hésiter à créer un sous dossier par traitement pour organiser les différents traitements.
+====
+
+[IMPORTANT]
+====
+Une fois les fichiers déposés, changer le propriétaire pour l'utilisateur `postgres` avec les droits 770.
+====
+
+Pour ajouter le traitement à l'interface il faut insérer une ligne dans la table `pdi.modele_traitement` :
+
+[options="header]
+|=======================
+|Colonne       |Type             |Obligatoire|Information
+|idmodele      |integer          |Oui        |Identifiant du modele traitement
+|code          |integer          |Non        |Identifiant de la table `remocra.thematique`. Permet de définir la thématique dans laquelle est rangé le traitement
+|description   |character varying|Oui        |Description du traitement.
+|nom           |character varying|Oui        |Nom du traitement. Affiché notamment dans le sélecteur des traitements.
+|ref_chemin    |character varying|Oui        |Chemin sur le disque vers le fichier du traitement.
+|ref_nom       |character varying|Oui        |Nom du fichier du traitement avec l'extension (`.ktr` ou `.kjb`)
+|type          |character varying|Oui        |Type du fichier d'entrée dans le traitement. `T` pour une transformation (extension en `.ktr`) ou `J` pour une tache (extension en `.kjb`)
+|message_echec |integer          |Non        |Identifiant du modèle de courrier envoyé en cas d'échec du traitement (table `pdi.modele_message`)
+|message_succes|integer          |Non        |Identifiant du modèle de courrier envoyé en cas de réussite du traitement (table `pdi.modele_message`)
+|=======================
+
+Si le traitement créé a besoin de paramètre renseigné via l'interface, lors de la demande, insérer une ligne dans `pdi.modele_traitement_parametre` :
+[options="header]
+|=======================
+|Colonne           |Type             |Obligatoire|Information
+|idparametre       |integer          |Oui        |Identifiant du paramètre
+|form_etiquette    |character varying|Oui        |Libellé affiché dans l'interface
+|form_num_ordre    |integer          |Oui        |Numéro d'ordre du paramètre dans l'interface
+|form_obligatoire  |boolean          |Oui        |Paramètre obligatoire
+|form_source_donnee|character varying|Non        |Si le paramètre est une liste déroulante, vue source de donnée
+|form_type_valeur  |character varying|Oui        |Type de champ pour le paramètre. Valeurs possibles : `combo`, `datefield`, `filefield`, `checkbox`, `textfield`
+|form_valeur_defaut|character varying|Non        |Valeur par défaut du paramètre
+|nom               |character varying|Oui        |Nom du champ. Utilisé pour créer le paramètre dans PDI. Ne pas mettre d'espace et préférer un nom tout en majuscules
+|idmodele          |integer          |Oui        |Identifiant du modèle de traitement
+|=======================
+
+[NOTE]
+====
+Les vues pour la colonne `form_source_donnee` doivent être dans le schéma `pdi` et compter deux colonnes : `id` et `libelle`
+====
+
+Le traitement est désormais disponible dans la rubrique _Accéder aux traitements_ du module _Extraire, télécharger, téléverser_.
