@@ -125,6 +125,8 @@ public class RemocraProvider extends ContentProvider {
         sURIMatcher.addURI(AUTHORITY, POSITIONNEMENT_PATH, POSITIONNEMENT);
         sURIMatcher.addURI(AUTHORITY, USER_PATH, USER);
         sURIMatcher.addURI(AUTHORITY, SUMMARY_PATH, SUMMARY);
+        sURIMatcher.addURI(AUTHORITY, VOL_CONSTATE_PATH, VOL_CONSTATE);
+
     }
 
     // database

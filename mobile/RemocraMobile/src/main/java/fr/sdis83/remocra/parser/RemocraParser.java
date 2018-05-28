@@ -45,6 +45,8 @@ public class RemocraParser {
             this.registerParser(new MateriauParser(this));
             this.registerParser(new PositionnementParser(this));
             this.registerParser(new AnomaliesParser(this));
+            this.registerParser(new VolConstateParser(this));
+
         }
         this.registerParser(new TourneeParser(this));
     }
