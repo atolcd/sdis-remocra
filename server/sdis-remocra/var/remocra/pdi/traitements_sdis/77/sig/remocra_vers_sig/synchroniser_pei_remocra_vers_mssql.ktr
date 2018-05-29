@@ -495,7 +495,7 @@ ORDER BY hydrant</sql>
            <schema_name/>
            </partitioning>
     <connection>REMOCRA_POSTGIS</connection>
-    <sql>SELECT h.id, substr(substr(h.numero,1,5) || &apos;_&apos; || substr(h.numero,6,10),1,10) AS IdPtEau, h.numero_interne AS NUM_PEI,
+    <sql>SELECT DISTINCT ON (h.id) h.id, substr(substr(h.numero,1,5) || &apos;_&apos; || substr(h.numero,6,10),1,10) AS IdPtEau, h.numero_interne AS NUM_PEI,
    &apos;geometry::STGeomFromText(&apos;&apos;&apos;|| st_astext(h.geometrie) ||&apos;&apos;&apos;,&apos;|| st_srid(h.geometrie) ||&apos;)&apos; AS shape, substr(hn.code_nature_sgo,1,80) AS NATURE,
    coalesce(substr(thdo.code,1,20), &apos;U&apos;) AS STATUT, substr(c.insee,1,5) AS CODE_INSEE, c.nom AS COMMUNE,
    substr(carroy.idcarre200,1,10) AS CARROYAGE, h.dispo_terrestre, to_char(traca.date_operation, &apos;DD&#47;MM&#47;YYYY&apos;) AS created_date, 
@@ -514,7 +514,7 @@ FROM remocra.hydrant h
 
 UNION
 
-SELECT h.id, substr(substr(h.numero,1,5) || &apos;_&apos; || substr(h.numero,6,10),1,10) AS IdPtEau, h.numero_interne AS NUM_PEI,
+SELECT DISTINCT ON (h.id) h.id, substr(substr(h.numero,1,5) || &apos;_&apos; || substr(h.numero,6,10),1,10) AS IdPtEau, h.numero_interne AS NUM_PEI,
    &apos;geometry::STGeomFromText(&apos;&apos;&apos;|| st_astext(h.geometrie) ||&apos;&apos;&apos;,&apos;|| st_srid(h.geometrie) ||&apos;)&apos; AS shape, substr(hn.code_nature_sgo,1,80) AS NATURE,
    coalesce(substr(thdo.code,1,20), &apos;U&apos;) AS STATUT, substr(c.insee,1,5) AS CODE_INSEE, c.nom AS COMMUNE,
    substr(carroy.idcarre200,1,10) AS CARROYAGE, h.dispo_terrestre, to_char(traca.date_operation, &apos;DD&#47;MM&#47;YYYY&apos;) AS created_date, 
