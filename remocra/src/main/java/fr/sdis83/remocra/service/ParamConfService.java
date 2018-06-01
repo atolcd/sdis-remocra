@@ -182,6 +182,11 @@ public class ParamConfService {
         return (String) this.getValue(ParamConfParam.EMAIL_DEST_CREATION_RCI);
     }
 
+    public Boolean getHydrantRenumerotationActivation() {
+        return (Boolean) this.getValue(ParamConfParam.HYDRANT_RENUMEROTATION_ACTIVATION, true);
+    }
+
+
     public String getEmailDepotDelib() {
         return (String) this.getValue(ParamConfParam.EMAIL_DEST_DEPOT_DELIB);
     }
