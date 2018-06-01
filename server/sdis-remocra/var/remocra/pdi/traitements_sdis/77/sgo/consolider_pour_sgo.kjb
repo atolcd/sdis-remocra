@@ -86,7 +86,7 @@
       <name>Consolidation des infos de traçabilité PEI</name>
       <description/>
       <type>SQL</type>
-      <sql>INSERT INTO remocra_sgo.hydrant_tracabilite
+      <sql>INSERT INTO remocra_sgo.hydrant_tracabilite (date_message, num, na_pt_code, dep_num, cod_insee, etat_pt_eau_cod, cs_code, statut, adr_1, adr_2, cp, ville, num_voie, coord_x, coord_y, debit, capacite, diam_canal, cod_valid, date_maj_remocra, type_maj, carroyage)
 SELECT
 	now() AS date_message,
 	substring(h.numero from &apos;....$&apos;)AS num,
@@ -113,13 +113,15 @@ SELECT
 	null::double precision	AS diam_canal,
 	null::character varying AS cod_valid,
 	h.date_operation AS date_maj_remocra,
-	h.nom_operation AS type_maj
+	h.nom_operation AS type_maj,
+	carroy.idcarre200 AS carroyage
 FROM
 	tracabilite.hydrant h
 	JOIN remocra.type_hydrant_nature n ON(n.nom = h.nature)
 	LEFT JOIN remocra.type_hydrant_diametre d ON(d.nom = h.diametre)
 	LEFT JOIN remocra.type_hydrant_positionnement p ON(p.nom = h.positionnement)
 	LEFT JOIN remocra.type_hydrant_domaine thd ON thd.nom = h.domaine
+	LEFT JOIN (SELECT idcarre200, shape FROM remocra_referentiel.carre_200) carroy ON ST_Contains(carroy.shape, h.geometrie)
 	JOIN remocra_sgo.hydrant_nature sgo_n ON(sgo_n.code_nature_remocra = replace(n.code || &apos;_&apos; ||  COALESCE(d.code,&apos;_&apos;) || &apos;_&apos; || COALESCE(p.code,&apos;_&apos;),&apos;__&apos;,&apos;&apos;))
 	JOIN (SELECT
 			org.code,
@@ -234,8 +236,8 @@ ORDER BY
       <note>Consolidation des informations de traçabilité en vue d&apos;une exploitation par le SGO</note>
       <xloc>125</xloc>
       <yloc>100</yloc>
-      <width>445</width>
-      <heigth>26</heigth>
+      <width>553</width>
+      <heigth>30</heigth>
       <fontname/>
       <fontsize>-1</fontsize>
       <fontbold>N</fontbold>
