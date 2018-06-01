@@ -1218,6 +1218,12 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
         var tabVerif = fiche.down('#verification');
         if (tabVerif) {
              tabVerif.tab.setVisible(this.natureHasDebitPression(natureModel?natureModel.get('code'):null));
+             if(fiche.typeSaisie == 'CTRL' || fiche.typeSaisie == 'RECEP' || fiche.typeSaisie =='CREA'){
+               return;
+             }else{
+                this.setReadOnly(tabVerif);
+             }
+
         }
     },
     natureHasDebitPression: function(natureCode) {
