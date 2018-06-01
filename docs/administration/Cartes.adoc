@@ -200,6 +200,7 @@ Exemple de carte :
         "visibility": false,
         "opacity":1, 
         "format":null,
+        "style":"normal",
         "layers":"GEOGRAPHICALGRIDSYSTEMS.MAPS",
         "items":[
                 {"libelle":"Cartes IGN","image":"ign/carte.png"}
@@ -214,6 +215,7 @@ Exemple de carte :
         "visibility": true,
         "opacity":1,
         "format":null,
+        "style":"normal",
         "layers":"ORTHOIMAGERY.ORTHOPHOTOS",
         "items":[
                 {"libelle":"Photos aériennes","image":"ign/photo.png"}
@@ -292,6 +294,7 @@ Pour les couches de type "ign" :
 "num_zoom_levels" : 20
 "format" : "image/png"
 "layers" : "CADASTRALPARCELS.PARCELS" ou "GEOGRAPHICALGRIDSYSTEMS.MAPS" ou "ORTHOIMAGERY.ORTHOPHOTOS"
+"style" : "normal"
 ----
 
 Pour les couches de type "osm" :

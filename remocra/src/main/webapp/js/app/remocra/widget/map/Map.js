@@ -669,7 +669,6 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
             projection: 'EPSG:900913',
             url: 'https://gpp3-wxs.ign.fr/' + Sdis.Remocra.util.Util.getIgnKey() + '/wmts',
             matrixSet: 'PM',
-            style: 'normal',
             numZoomLevels: 19,
             attribution: '<a href="http://www.geoportail.fr/" target="_blank">' + '<img src="' + BASE_URL + '/../images/remocra/cartes/logo_gp.gif"></a>'
                     + '<a href="http://www.geoportail.gouv.fr/depot/api/cgu/licAPI_CGUF.pdf" alt="TOS" title="TOS" target="_blank">Condifions générales d\'utilisation</a>'
@@ -677,6 +676,9 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
         if (layerDef.format) {
             options.format = layerDef.format;
         }
+
+        options.style = typeof (layerDef.style)==='undefined' ? 'normal' : layerDef.style;
+
         return new OpenLayers.Layer.WMTS(options);
     },
 

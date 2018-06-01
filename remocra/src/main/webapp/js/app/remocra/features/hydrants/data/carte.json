@@ -157,6 +157,7 @@
         "visibility": false,
         "opacity":0.5, 
         "format":null,
+        "style": "normal",
         "layers":"GEOGRAPHICALGRIDSYSTEMS.MAPS",
         "items":[
                 {"libelle":"Cartes IGN","image":"ign/carte.png"}
@@ -170,6 +171,7 @@
         "visibility": true,
         "opacity":1,
         "format":null,
+        "style": "normal",
         "layers":"ORTHOIMAGERY.ORTHOPHOTOS",
         "items":[
                 {"libelle":"Photos aériennes","image":"ign/photo.png"}
