@@ -170,6 +170,10 @@ public class ParamConfService {
         return (Integer) this.getValue(ParamConfParam.HYDRANT_RENOUVELLEMENT_RECO);
     }
 
+    public Integer getHydrantNombreHistorique() {
+        return (Integer) this.getValue(ParamConfParam.HYDRANT_NOMBRE_HISTORIQUE,3);
+    }
+
     public Integer getHydrantRenouvellementCtrl() {
         return (Integer) this.getValue(ParamConfParam.HYDRANT_RENOUVELLEMENT_CTRL);
     }

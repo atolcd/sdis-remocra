@@ -21,8 +21,6 @@ import com.vividsolutions.jts.geom.Geometry;
 
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.domain.remocra.HistoVerificationHydraulique;
-import fr.sdis83.remocra.domain.remocra.Hydrant;
-import fr.sdis83.remocra.domain.remocra.HydrantDocument;
 import fr.sdis83.remocra.domain.remocra.HydrantPibi;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.HydrantPibiService;
@@ -176,6 +174,19 @@ public class HydrantPibiController {
             @Override
             protected HistoVerificationHydraulique getRecord() {
                 return hydrantPibiService.getHistoVerifHydrau(id);
+            }
+
+        }.serialize();
+    }
+
+    @RequestMapping(value = "/histoverifhydrauforchart/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('HYDRANTS_R')")
+    public ResponseEntity<java.lang.String> getHistoVerifHydrauForChart(final @PathVariable Long id) {
+
+        return new AbstractExtObjectSerializer<List<Object>>("Hydrant Pibi historique vérification hydraulique retrieved.") {
+            @Override
+            protected List<Object> getRecord() {
+                return hydrantPibiService.getHistoVerifHydrauForChart(id);
             }
 
         }.serialize();

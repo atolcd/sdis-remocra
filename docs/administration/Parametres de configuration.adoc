@@ -383,7 +383,7 @@ Méthodes disponibles pour les règles de calcul des numéro internes et globaux
 
 === HYDRANT_RENUMEROTATION_ACTIVATION ===
 * Activer la renumérotation automatique lors de la mise à jour
-* Par défaut : ```true``
+* Par défaut : ```true```
 
 === HYDRANT_RENOUVELLEMENT_CTRL ===
 * Délai légal entre 2 contrôles (en jours)
@@ -398,6 +398,10 @@ Méthodes disponibles pour les règles de calcul des numéro internes et globaux
 * Par défaut : ```83%```
 
 Méthodes disponibles pour la symbologie des PEI : link:../pei/Symbologie_PEI{outfilesuffix}[Symbologies disponibles]
+
+=== HYDRANT_NOMBRE_HISTORIQUE ===
+* Nombre de mesures à prendre en compte dans l'historique des mesures débits/pressions
+* Par défaut : ```3```
 
 === NIVEAU_TRACABILITE ===
 * Niveau de traçabilité des points d'eau (valeurs admises : organisme , utilisateur)

@@ -565,26 +565,55 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
 
             // On charge l'historique débit, pression, uniquement pour les PIBI
             if(fiche.isUpdating && currentCode == 'PIBI') {
-                Ext.Ajax.request({
-                    scope : this,
-                    url: Sdis.Remocra.util.Util.withBaseUrl('../hydrantspibi/histoverifhydrau/'+fiche.hydrant.get('id')),
-                    method :'GET',
-                    callback: function(param, success, response) {
-                        var res = Ext.decode(response.responseText);
-                        if(success && res.data != null) {
-                            form.findField('dateTerrain').setValue('Le '+ (Ext.Date.format(new Date(res.data.dateTerrain), 'd/m/Y')));
-                            form.findField('debitNM1').setValue(res.data.debitNM1 != null ? res.data.debitNM1 : 'Non renseigné');
-                            form.findField('pressionNM1').setValue(res.data.pressionNM1 != null ? res.data.pressionNM1 : 'Non renseigné');
-                            form.findField('debitMaxNM1').setValue(res.data.debitMaxNM1 != null ? res.data.debitMaxNM1 : 'Non renseigné');
-                            form.findField('pressionDynNM1').setValue(res.data.pressionDynNM1 != null ? res.data.pressionDynNM1 : 'Non renseigné');
-                            form.findField('pressionDynDebNM1').setValue(res.data.pressionDynDebNM1 != null ? res.data.pressionDynDebNM1 : 'Non renseigné');
+                 Ext.Ajax.request({
+                        scope : this,
+                        url: Sdis.Remocra.util.Util.withBaseUrl('../hydrantspibi/histoverifhydrauforchart/'+fiche.hydrant.get('id')),
+                        method :'GET',
+                        callback: function(param, success, response) {
+                            var res = Ext.decode(response.responseText);
+                            var chartDebit = Ext.getCmp('chartDebit');
+                            var gridDebit = Ext.getCmp('gridDebit');
+                            if(success && res.data != null && res.data.length !== 0) {
+                                var i = 0;
+                                var j = 0;
+                                var dataDebit = [];
+                                var dataDebitForGrid = [];
+                                if (res.data.length != 1) {
+                                    for (i; i< res.data.length; i++){
+                                       dataDebit.push({'dateOp':(res.data[i])[0], 'debit': (res.data[i])[1]});
+                                    }
+                                    chartDebit.store.removeAll();
+                                    chartDebit.store.add(dataDebit);
+                                } else {
+                                      var summary = gridDebit.getView().features[0];
+                                      summary.disable();
+                                      chartDebit.setVisible(false);
+                                      form.findField('dateTerrain').setValue('');
+                                      form.findField('separator').setVisible(true);
+                                }
+
+                                for (j; j< res.data.length; j++){
+                                   dataDebitForGrid.push({'dateOp':(res.data[j])[0], 'debit': (res.data[j])[1], 'debitMax': (res.data[j])[2], 'pressionStat': (res.data[j])[3],
+                                    'pressionDyn': (res.data[j])[4], 'pressionDynDeb': (res.data[j])[5]});
+                                }
+
+                                 gridDebit.store.removeAll();
+                                 gridDebit.store.add(dataDebitForGrid);
+
+                            }else {
+                                  gridDebit.setVisible(false);
+                                  chartDebit.setVisible(false);
+                                  form.findField('dateTerrain').setVisible(false);
+                                  Ext.getCmp('verifHydrauliquePibi').layout.columns = 1;
+                                  Ext.getCmp('verifHydrauliquePibi').doLayout();
+                            }
                         }
-                    }
-                });
+                    });
             }
             if (nature) {
                 this.manageVerifTabVisibility(fiche, Ext.getStore('TypeHydrantNature').findRecord('id', nature));
             }
+
         }
     },
 

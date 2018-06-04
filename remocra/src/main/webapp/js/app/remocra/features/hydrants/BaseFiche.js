@@ -8,6 +8,7 @@ Ext.require('Sdis.Remocra.features.hydrants.bloc.Citerne');
 Ext.require('Sdis.Remocra.features.hydrants.bloc.GestionnairePibi');
 Ext.require('Sdis.Remocra.features.hydrants.bloc.GestionnairePena');
 Ext.require('Sdis.Remocra.features.hydrants.bloc.VerifHydrauliquePibi');
+Ext.require('Sdis.Remocra.features.hydrants.bloc.ChartPibi');
 Ext.require('Sdis.Remocra.features.hydrants.bloc.VerifHydrauliquePena');
 Ext.require('Sdis.Remocra.features.hydrants.bloc.MCOPibi');
 Ext.require('Sdis.Remocra.features.hydrants.bloc.MCOPena');

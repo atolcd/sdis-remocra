@@ -1207,3 +1207,9 @@ body.x-ie .x-btn-default-toolbar-small-icon-text-left .x-btn-inner {
 .hydrants-map-requetage .info {
     display: none;
 }
+
+.x-grid-row-summary .x-grid-cell-inner {
+    text-align: left;
+    font-weight: bold;
+    background: lightgrey;
+}
