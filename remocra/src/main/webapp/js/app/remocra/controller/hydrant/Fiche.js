@@ -564,7 +564,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             }, 150, this);
 
             // On charge l'historique débit, pression, uniquement pour les PIBI
-            if(fiche.isUpdating && currentCode == 'PIBI') {
+            if(typeSaisie !== 'CREA' && currentCode == 'PIBI') {
                  Ext.Ajax.request({
                         scope : this,
                         url: Sdis.Remocra.util.Util.withBaseUrl('../hydrantspibi/histoverifhydrauforchart/'+fiche.hydrant.get('id')),

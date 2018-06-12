@@ -29,7 +29,7 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.VerifHydrauliquePibi', {
         fieldLabel: '&nbsp;',
         xtype: 'displayfield', labelSeparator : '',
         name : 'dateTerrain',
-        value : 'Evolution du débit',
+        value : 'Evolution du débit (m³/h)',
         fieldStyle : 'font-weight: bold;'
     }, {
         fieldLabel: 'Débit à 1 bar (m³/h)',
@@ -68,9 +68,10 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.VerifHydrauliquePibi', {
               yField: ['debit'],
               highlight:true,
               tips: {
+                width: 60,
                 trackMouse: true,
                 renderer: function(storeItem, item) {
-                   this.setTitle(String(item.value[1]));
+                   this.setTitle(String(item.value[1])+' m³/h');
                 }
               }
           }]
