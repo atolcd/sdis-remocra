@@ -1,0 +1,159 @@
+= SDIS Remocra - Requêtes personnalisées
+
+link:../index{outfilesuffix}[Retour à l'accueil]
+
+link:../Manuel%20administration{outfilesuffix}[Retour au manuel d'administration]
+
+'''
+
+REMOCRA dispose d’un mécanisme permettant aux utilisateurs d'exécuter des requêtes personnalisées (requêtes préparées par un administrateur et pour lesquelles l'utilisateur doit renseigner des paramètres). Le paramétrage et l’exploitation de ce module sont décrits dans les paragraphes suivants.
+
+[NOTE]
+====
+Cette fonctionnalité "Requêtes personnalisées" n'est actuellement disponible que pour le module de gestion des points d'eau à travers l'onglet "Recherches et analyses" ; elle devrait être disponible pour certains autres modules lors de prochaines versions.
+====
+
+== Principe de fonctionnement
+
+L'exécution d'une requête personnalisée par un utilisateur depuis le système REMOcRA repose sur le principe suivant :
+
+.Interface d'exécution de requête
+image::interface_recherche_analyse_001.png[]
+
+* L'utilisateur connecté accède à l'onglet _"Recherche et analyses"_ si la fonctionnalité _"Analyser les résultats des requêtes"_ est autorisée pour son profil.
+* L'utilisateur dispose d'une liste déroulante des analyses qu'il est en mesure d'exécuter. La présence d'une analyse dans la liste est conditionnée par les droits d'accès à son profil. Ces accès sont précisés dans le fichier XML de définition du modèle.
+* En choisissant une analyse, l'utilisateur accède au formulaire de saisie des paramètres attendus par la requête (certaines requêtes ne possèdent pas de paramètres). Le caractère obligatoire de la saisie est déterminé par le modèle.
+* Après saisie des paramètres, l'utilisateur peut lancer l'exécution de la requête en cliquant sur le bouton "Exécuter".
+** Si la requête retourne de l'information géographique, un onglet _"Carte"_ est affiché.
+** Si la requête ne retourne que de l'information tabulaire, seul l'onglet _"Données"_ est affiché.
+* L'utilisateur peut décider d'exporter le résultat de sa requête en cliquant sur le bouton _"Exporter la sélection"_. Un mél sera envoyé avec un lien de téléchargement du fichier produit. L'encodage des données est "UTF-8"
+** Si la requête produit un résultat contenant de l'information géographique, un fichier ESRI Shapefile sera produit
+** Si la requête produit uniquement un résultat tabulaire, un fichier CSV sera mis à disposition.
+* L'utilisateur peux purger le résultat en cliquant sur le bouton _"Réinitialiser la sélection"_
+
+== Préparation et référencement des modèles de requêtes
+Les modèles de requêtes peuvent être référencés directement par les administrateurs de la plate-forme REMOcRA grâce à des fichiers de définition de modèle (format XML) déposés via FTP dans un sous dossier de REMOcRA.
+
+.Principe de référencement des modèles
+image::principe_referencement_modele.png[]
+
+=== Définition d'un modèle de requête personnalisée
+Un modèle de requête personnalisée est constitué par un fichier XML encodé en UTF-8 et structuré de la manière suivante :
+
+.Schéma XSD de validation d'un fichier XML de définition de modèle de requête
+image::schema_modele.png[]
+
+.Table Description du fichier XML de définition de modèle de requête
+|===
+|Noeud|Description
+
+a|[source,xml]
+[source,xml]
+<modele spatial = "">
+|Noeud racine du fichier XML. L'attribut booléen _spatial_ permet de préciser si la requête retourne un résultat contenant de l'information géographique. Dans ce cas, la source SQL doit impérativement fournir une colonne nommée _wkt_ qui contient la géométrie de l'entité encodée au format WKT. Dans PostGIS, cet encodage est obtenu en utilisant la fonction _St_AsText([nom de la colonne géométrie])_
+
+a|[source,xml]
+<modele>
+    <categorie>
+|Libellé de catégorie permettant de regrouper ou de filtrer potentiellement les modèles selon un thème. Non exploité actuellement dans REMOcRA
+
+a|[source,xml]
+<modele>
+    <code>
+|Code permettant d'identifier de manière unique et pérenne un modèle de requête personnalisée.
+
+a|[source,xml]
+<modele>
+    <libelle>
+|Libellé du modèle de requête personnalisée affiché en liste déroulante lors du choix du modèle d'export
+
+a|[source,xml]
+<modele>
+    <description>
+|Description longue du modèle de requête personnalisée. Non exploité actuellement dans REMOcRA
+
+a|[source,xml]
+<modele>
+    <sourceSQL>
+|A renseigner dans un CDATA. Définition de la requête SQL à exécuter sur la base de données REMOCRA pour fournir les informations à retourner. La requête peut exploiter des paramètres sous la forme _${NOM_DU_PARAMETRE}_. Chaque paramètre mentionné doit être décrit dans une balise _<parametre>_ insérée dans la balise parente _<parametres>_ à l'exception du paramètre _${ZONE_COMPETENCE_ID}_ éventuellement utilisée dans la requête pour filtrer le résultat par zone de compétence (la valeur de _${ZONE_COMPETENCE_ID}_ est automatiquement renseignée par le système à partir de l'utilisateur REMOCRA connecté). L'utilisation de _"."_ et de _"%"_ dans les noms de colonnes et le typage de données sous la forme _"colonne::type postgresql"_ sont interdits (utiliser la méthode _CAST()_)
+
+a|[source,xml]
+<modele>
+    <parametres>
+        <parametre>
+            <nom>
+|Nom du paramètre. Sans espace ni caractère accentué. De préférence en majuscule.
+
+a|[source,xml]
+<modele>
+    <parametres>
+        <parametre>
+            <typeValeur>
+a|Type de valeur SGBD par la requête SQL. Seuls les types suivants sont autorisés :
+
+* character varying
+* integer
+* double precision
+* date
+* timestamp
+* boolean
+* geometry
+* uuid
+
+a|[source,xml]
+<modele>
+    <parametres>
+        <parametre>
+            <obligatoire>
+|Renseigner à _true_ si la saisie d'une valeur pour le paramètre est obligatoire
+
+a|[source,xml]
+<modele>
+    <parametres>
+        <sourceSQL
+            champValeur = ""
+            champLibelle = "">
+|A renseigner dans un CDATA.Définition de la requête SQL à exécuter sur la base de données REMOCRA pour fournir les informations facilitant ou limitant la saisie de valeurs pour l'utilisateur à travers une liste déroulante. La variable _${ZONE_COMPETENCE_ID}_ peut éventuellement être utilisée dans la requête pour filtrer le résultat par zone de compétence ; cette dernière étant automatiquement renseignée par le système à partir de l'utilisateur REMOCRA connecté. Le typage de données sous la forme _"colonne::type postgresql"_ est interdit (utiliser la méthode _CAST()_)
+L'attribut textuel _champValeur_ permet de préciser le nom de la colonne contenant l'identifiant de la valeur de la liste. L'attribut textuel _champLibelle_ permet de préciser le nom de la colonne contenant le libellé affiché dans la liste.
+
+a|[source,xml]
+<modele>
+    <parametres>
+        <parametre>
+            <formulaire
+                etiquette = ""
+                typeControle = ""
+                valeurDefaut = ""
+                >
+a|Informations permettant de mettre en forme le formulaire. L'attribut textuel _etiquette_ permet de définir l'étiquette accompagnant le champ de saisie . L'attribut textuel _typeControle_ permet spécifier le type de contrôle javascript à utiliser pour le contrôle de formulaire. L'attribut textuel _valeurDefaut_ permet de préciser la valeur proposée par défaut dans le champ de saisie (optionnel). Seules les valeurs suivantes sont autorisées pour l'attribut _typeControle_ :
+
+* checkbox : Champ de saisie de type "Case à cocher"
+* combo : Champ de saisie de type "Liste déroulante" avec autocomplétion
+* datefield : Champ de saisie de type "Calendrier"
+* textfield : Champ de saisie de type "Zone de texte"
+* numberfield : Champ de saisie de type "Saisie de nombre"
+
+a|[source,xml]
+<modele>
+    <profils tousProfils = "">
+|Profil pour lequel la requête est accessible (affichée dans la liste déroulante des analyses). Si L'attribut booléen _tousProfils_ est = _true_, la requête est accessible à tous dès lors que l'utilisateur accède à l'onglet _"Recherches et Analyses"_. Dans le cas contraire, il faut préciser les codes des profils dans une liste de balise _<profil>_ (valeur de la colonne _code_ de la table _remocra.profil_droit_)
+
+|========
+
+|===
+.Exemple de fichier XML de définition d'une requête spatiale
+[source,xml]
+include::src/pei_commune.xml[]
+
+=== Référencement des modèles de requêtes personnalisées
+
+Les fichiers XML de modèles doivent être déposés par l'administrateur de la plate-forme via FTP (utilisateur FTP _"remocra"_) dans le sous-dossier _"requete/sdis/XX"_ (dossiers à créer s'ils n'existent pas, XX étant le code du département) présent dans dossier REMOCRA dédié aux modèles (le chemin défini dans les paramètres de configuration de l'application avec le libellé _"Dossier de stockage des modèles de documents utilisés par l'ETL Pentaho Data Integration"_. La valeur par défaut est _"/var/remocra/modeles"_.
+
+
+.Emplacement des modèles de requêtes personnalisées
+image::ftp_emplacement_modeles.png[]
+
+Une fois les modèles déposés (ou retirés s'ils n'ont plus d'utilité), l'utilisateur doit procéder à leur référencement. Cette opération est réalisée directement via l'interface de REMOCRA via un traitement PDI spécifique (traitement _"Référencer les modèles de requêtes personnalisées"_ disponible dans la catégorie d'applications _"Divers"_) qui permet de référencer en base de données les modèles déposés. Il doit être déclenché après chaque ajout ou modification de modèle. La table dédiée au stockage des modèles de requête (_"remocra.requete_modele"_) est purgée et réalimentée en totalité à partir de la lecture du contenu de tous les fichiers XML présents sur le système.
+
+.Référencement des modèles de requêtes personnalisées via l'interface
+image::ihm_referencement.png[]
