@@ -611,7 +611,16 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
                     });
             }
             if (nature) {
+                if(currentCode == 'PIBI'){
+                    Ext.getStore('TypeHydrantDiametre').clearFilter(true);
+                    Ext.getStore('TypeHydrantDiametre').filter({
+                        filterFn: function(diametre) {
+                            return diametre.hasNature(nature);
+                        }
+                    });
+                }
                 this.manageVerifTabVisibility(fiche, Ext.getStore('TypeHydrantNature').findRecord('id', nature));
+
             }
 
         }
