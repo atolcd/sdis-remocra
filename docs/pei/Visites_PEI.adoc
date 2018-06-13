@@ -52,9 +52,9 @@ Les paramètres qui concernent les visites sont les suivants :
 * HYDRANT_RENOUVELLEMENT_RECO
 ** Délai légal entre 2 reconnaissances (en jours). Ex : ```365```
 * HYDRANT_DELAI_RECO_WARN
-** Nombre de jours avant échéance où une reconnaisance est considérée comme "à faire bientôt". Ex : ```45```
+** Nombre de jours avant échéance où une reconnaissance est considérée comme "à faire bientôt". Ex : ```45```
 * HYDRANT_DELAI_RECO_URGENT
-** ombre de jours avant échéance où une reconnaisance est considérée comme "urgente". Ex : ```15```
+** ombre de jours avant échéance où une reconnaissance est considérée comme "urgente". Ex : ```15```
 
 *Contrôle :*
 
