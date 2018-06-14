@@ -79,11 +79,11 @@ a|[source,xml]
 |Définition de la requête SQL à exécuter sur la base de données REMOcRA pour fournir les informations à exporter. Code SQL à renseigner dans un CDATA. Si l'attribut « spatial » de la balise « modele » est  "true", la colonne nommée WKT est recherchée comme conteneur de géométrie au format WKT. La requête SQL peut contenir le paramètres ${ZONE_COMPETENCE_ID} qui permet de filtrer les données sur le critère spatial  avec une zone de compétence spécifique.
 
 |===
-.Exemple de fichier XML de définition d'un export au format CSV (export non spatial) de toutes les communes qui intersectent une zone de compétence spécifique
+.link:src/commune_shp.xml[Exemple de fichier XML] de définition d'un export au format CSV (export non spatial) de toutes les communes qui intersectent une zone de compétence spécifique
 [source,xml]
 include::src/commune_shp.xml[]
 
-.Exemple de fichier XML de définition d'un export au format Esri Shapefile (export spatial) de toutes les communes qui intersectent une zone de compétence spécifique
+.link:src/commune_csv.xml[Exemple de fichier XML] de définition d'un export au format Esri Shapefile (export spatial) de toutes les communes qui intersectent une zone de compétence spécifique
 [source,xml]
 include::src/commune_csv.xml[]
 

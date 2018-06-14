@@ -1,8 +1,18 @@
 = SDIS Remocra - Requêtes personnalisées
 
-link:../index{outfilesuffix}[Retour à l'accueil]
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 
-link:../Manuel%20administration{outfilesuffix}[Retour au manuel d'administration]
+:experimental:
+:icons: font
+:imagesdir: img
+
+:toc:
+
+:numbered:
+
+link:../../index{outfilesuffix}[Retour à l'accueil]
+
+link:../../Manuel%20administration{outfilesuffix}[Retour au manuel d'administration]
 
 '''
 
@@ -141,7 +151,7 @@ a|[source,xml]
 |========
 
 |===
-.Exemple de fichier XML de définition d'une requête spatiale
+.link:src/pei_commune.xml[Exemple de fichier XML] de définition d'une requête spatiale
 [source,xml]
 include::src/pei_commune.xml[]
 

@@ -28,6 +28,7 @@ link:index{outfilesuffix}[Retour à l'accueil]
 ** link:administration/Module%20cartographie%20symboles%20et%20images{outfilesuffix}[Module cartographie symboles et images]
 ** link:administration/Gestion%20des%20zones%20de%20competence{outfilesuffix}[Gestion des zones de compétence]
 ** link:administration/export_et_metadonnees/Export%20et%20metadonnees{outfilesuffix}[Export et métadonnées]
+** link:administration/requetes_personnalisees/Requetes%20personnalisees{outfilesuffix}[Requêtes personnalisées]
 
 *☸ Divers*
 
