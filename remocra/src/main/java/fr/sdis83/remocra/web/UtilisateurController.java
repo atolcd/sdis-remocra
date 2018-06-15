@@ -183,7 +183,7 @@ public class UtilisateurController {
         final Utilisateur record = Utilisateur.fromJsonToUtilisateur(json);
         if(!authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ALL_C)) {
             Organisme organisme = utilisateurService.getCurrentUtilisateur().getOrganisme();
-            if(record.getOrganisme().getId() != organisme.getId()){
+            if(record.getOrganisme().getId().longValue() != organisme.getId().longValue()){
                 throw new AccessDeniedException("L'utilisateur n'est pas autorisé à modifier cette donnée");
             }
         }
