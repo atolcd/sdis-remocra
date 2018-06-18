@@ -173,16 +173,16 @@ service tomcat6 restart
 #${GEOSERVER_HOME}/webapps/geoserver/WEB-INF/web.xml
 
 URL_CIBLE=localhost
-find /var/remocra/geoserver_data -type f -name "*" -exec sed -i "s/sdis83-remocra.priv.atolcd.com/$URL_CIBLE/g" {} \;
-find /var/remocra/geoserver_data -type f -name "*" -exec sed -i "s/sdis83-remocra-demo.priv.atolcd.com/$URL_CIBLE/g" {} \;
-find /var/remocra/geoserver_data -type f -name "*" -exec sed -i "s/www.sdis83-remocra.atolcd.com/$URL_CIBLE/g" {} \;
-find /var/remocra/geoserver_data -type f -name "*" -exec sed -i "s/sdis83-remocra-dev/$URL_CIBLE/g" {} \;
-find /var/remocra/geoserver_data -type f -name "*" -exec sed -i "s/sdis83-remocra-prod/$URL_CIBLE/g" {} \;
-find /var/remocra/geoserver_data -type f -name "*" -exec sed -i "s/www.sapeurspompiers-var.fr/$URL_CIBLE/g" {} \;
-find /var/remocra/geoserver_data -type f -name "*" -exec sed -i "s/remocra.sapeurspompiers-var.fr/$URL_CIBLE/g" {} \;
-find /var/remocra/geoserver_data -type f -name "*" -exec sed -i "s/localhost:8090/$URL_CIBLE/g" {} \;
+find /var/remocra/geoserver_data -type f -name "*" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/sdis83-remocra.priv.atolcd.com/$URL_CIBLE/g" {} \;
+find /var/remocra/geoserver_data -type f -name "*" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/sdis83-remocra-demo.priv.atolcd.com/$URL_CIBLE/g" {} \;
+find /var/remocra/geoserver_data -type f -name "*" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/www.sdis83-remocra.atolcd.com/$URL_CIBLE/g" {} \;
+find /var/remocra/geoserver_data -type f -name "*" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/sdis83-remocra-dev/$URL_CIBLE/g" {} \;
+find /var/remocra/geoserver_data -type f -name "*" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/sdis83-remocra-prod/$URL_CIBLE/g" {} \;
+find /var/remocra/geoserver_data -type f -name "*" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/www.sapeurspompiers-var.fr/$URL_CIBLE/g" {} \;
+find /var/remocra/geoserver_data -type f -name "*" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/remocra.sapeurspompiers-var.fr/$URL_CIBLE/g" {} \;
+find /var/remocra/geoserver_data -type f -name "*" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/localhost:8090/$URL_CIBLE/g" {} \;
 
-find /var/remocra/geoserver_data/workspaces -type f -name "datastore.xml" -exec sed -i "s/<entry key=\"passwd\">.*<\/entry>/<entry key=\"passwd\">plain:${POSTGRES_DB_PASSWORD}<\/entry>/g" {} \;
+find /var/remocra/geoserver_data/workspaces/remocra/remocra -type f -name "datastore.xml" -exec sed -i "s/<entry key=\"passwd\">.*<\/entry>/<entry key=\"passwd\">plain:${POSTGRES_DB_PASSWORD}<\/entry>/g" {} \;
 #sed -i "s/<entry key=\"passwd\">.*<\/entry>/<entry key=\"passwd\">plain:${POSTGRES_DB_PASSWORD}<\/entry>/g" /var/remocra/geoserver_data/workspaces/remocra/remocra/datastore.xml
 sed -i "s/password=\".*\"/password=\"plain:${GEOSERVER_ADMIN_PASSWORD}\"/g" /var/remocra/geoserver_data/security/usergroup/default/users.xml
 
