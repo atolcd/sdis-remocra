@@ -46,7 +46,6 @@ function maybeCreateStyle {
   workspace=$5
   workspace=${workspace:-remocra}
 
-  stylename="remocra_selection"
   response=$(curl --write-out %{http_code} --silent --output /dev/null -u ${USERNAME_PWD} -XGET "${GEOSERVER_URL_REST}/workspaces/${workspace}/styles/${stylename}.sld")
   if [ "${response}" -eq 404 ] ; then
     echo "    Style ${stylename} : récupération"
