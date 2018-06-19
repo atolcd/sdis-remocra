@@ -94,6 +94,11 @@ if [ -f /var/lib/tomcat6/webapps/remocra/WEB-INF/web.xml ]; then
   sed -i "s/<session-timeout>.*<\/session-timeout>/<session-timeout>$REMOCRA_SESSION_TIMEOUT_MINUTES<\/session-timeout>/g" /var/lib/tomcat6/webapps/remocra/WEB-INF/web.xml
 fi
 
+if "${REMOCRA_PRESERVE_REMOCRACONF}" ; then
+  echo "Configuration Apache Remocra : préservation"
+else
+  echo "Configuration Apache Remocra : remplacement"
+
 envsubst << "EOF" > /etc/httpd/conf.d/remocra.conf
 # ##############################
 # REMOcRA
@@ -162,6 +167,7 @@ ServerName sdis83-remocra.priv.atolcd.com
 # REMOcRA
 # ##############################
 EOF
+fi
 
 service tomcat6 restart
 
@@ -172,15 +178,15 @@ service tomcat6 restart
 # TODO voir si nécessaire de préciser GEOSERVER_DATA_DIR
 #${GEOSERVER_HOME}/webapps/geoserver/WEB-INF/web.xml
 
-URL_CIBLE=localhost
-find /var/remocra/geoserver_data -type f -name "*" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/sdis83-remocra.priv.atolcd.com/$URL_CIBLE/g" {} \;
-find /var/remocra/geoserver_data -type f -name "*" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/sdis83-remocra-demo.priv.atolcd.com/$URL_CIBLE/g" {} \;
-find /var/remocra/geoserver_data -type f -name "*" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/www.sdis83-remocra.atolcd.com/$URL_CIBLE/g" {} \;
-find /var/remocra/geoserver_data -type f -name "*" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/sdis83-remocra-dev/$URL_CIBLE/g" {} \;
-find /var/remocra/geoserver_data -type f -name "*" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/sdis83-remocra-prod/$URL_CIBLE/g" {} \;
-find /var/remocra/geoserver_data -type f -name "*" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/www.sapeurspompiers-var.fr/$URL_CIBLE/g" {} \;
-find /var/remocra/geoserver_data -type f -name "*" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/remocra.sapeurspompiers-var.fr/$URL_CIBLE/g" {} \;
-find /var/remocra/geoserver_data -type f -name "*" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/localhost:8090/$URL_CIBLE/g" {} \;
+GEOSERVER_URL_CIBLE=${GEOSERVER_URL_CIBLE:-localhost}
+find /var/remocra/geoserver_data -type f -name "*.xml" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/sdis83-remocra.priv.atolcd.com/$GEOSERVER_URL_CIBLE/g" {} \;
+find /var/remocra/geoserver_data -type f -name "*.xml" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/sdis83-remocra-demo.priv.atolcd.com/$GEOSERVER_URL_CIBLE/g" {} \;
+find /var/remocra/geoserver_data -type f -name "*.xml" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/www.sdis83-remocra.atolcd.com/$GEOSERVER_URL_CIBLE/g" {} \;
+find /var/remocra/geoserver_data -type f -name "*.xml" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/sdis83-remocra-dev/$GEOSERVER_URL_CIBLE/g" {} \;
+find /var/remocra/geoserver_data -type f -name "*.xml" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/sdis83-remocra-prod/$GEOSERVER_URL_CIBLE/g" {} \;
+find /var/remocra/geoserver_data -type f -name "*.xml" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/www.sapeurspompiers-var.fr/$GEOSERVER_URL_CIBLE/g" {} \;
+find /var/remocra/geoserver_data -type f -name "*.xml" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/remocra.sapeurspompiers-var.fr/$GEOSERVER_URL_CIBLE/g" {} \;
+find /var/remocra/geoserver_data -type f -name "*.xml" ! -path "/var/remocra/geoserver_data/data/*" -exec sed -i "s/localhost:8090/$GEOSERVER_URL_CIBLE/g" {} \;
 
 find /var/remocra/geoserver_data/workspaces/remocra/remocra -type f -name "datastore.xml" -exec sed -i "s/<entry key=\"passwd\">.*<\/entry>/<entry key=\"passwd\">plain:${POSTGRES_DB_PASSWORD}<\/entry>/g" {} \;
 #sed -i "s/<entry key=\"passwd\">.*<\/entry>/<entry key=\"passwd\">plain:${POSTGRES_DB_PASSWORD}<\/entry>/g" /var/remocra/geoserver_data/workspaces/remocra/remocra/datastore.xml
@@ -215,6 +221,12 @@ mkdir -p /var/remocra/pdi/{depot,export,kml,log,synchro,tmp}
 
 echo && echo "Mise à jour de paramètres (accès aux bases, SMTP, etc.)"
 mkdir -p /home/postgres/.kettle
+
+if "${REMOCRA_PRESERVE_DOTKETTLE}" ; then
+  echo "Configuration .kettle : préservation"
+else
+  echo "Configuration .kettle : remplacement"
+
 envsubst << "EOF" > /home/postgres/.kettle/kettle.properties
 #Connexion à la base de données Postgis
 REMOCRA_POSTGIS_DATABASE_HOST = localhost
@@ -230,6 +242,7 @@ REMOCRA_ORACLE_DATABASE_PORT =
 REMOCRA_ORACLE_DATABASE_USER_NAME = 
 REMOCRA_ORACLE_DATABASE_USER_PASSWORD = 
 EOF
+fi
 
 envsubst << "EOF" > /home/postgres/pdi/simple-jndi/jdbc.properties
 #Connexion à la base de données Remocra Postgis
