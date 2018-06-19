@@ -48,13 +48,12 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
 
         // Affichage / masquage du bandeau
         var banniere = Ext.get('banniere');
-        var banDisplay = banniere.getStyle('display');
         banniere.setStyle('display', 'none');
         Ext.get('pageTop').toggleDisplay(undefined, true);
         this.on('destroy', function() {
             Ext.get('pageTop').toggleDisplay(true, {
                 callback: Ext.bind(function() {
-                    this.setStyle("display", banDisplay);
+                    this.setStyle("display", 'block');
                 }, banniere)
             });
         });
