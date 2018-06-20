@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.sdis83.remocra.util.DocumentUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -98,7 +99,7 @@ public class ExtResourcesController extends AbstractRemocraController {
                 response.setContentType(contentType);
             }
         }
-        response.setContentLength(new Long(file.length()).intValue());
+        DocumentUtil.getInstance().setContentLengthHeader(response, file);
 
         InputStream is = new FileInputStream(file);
         OutputStream os = response.getOutputStream();

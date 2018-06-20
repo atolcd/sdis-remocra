@@ -101,7 +101,7 @@ public class DocumentUtil {
 
     /**
      * Suppression fichier (et du répertoire conteneur) sur disque du document.
-     * 
+     *
      * @param document
      * @throws Exception
      */
@@ -124,11 +124,11 @@ public class DocumentUtil {
 
     /**
      * Sauvegarde du fichier sur disque.
-     * 
+     *
      * @param mf
      * @param repertoire
      * @param fichier
-     * 
+     *
      * @throws Exception
      */
     private void saveFileToHD(MultipartFile mf, String repertoire, String fichier) throws Exception {
@@ -151,7 +151,7 @@ public class DocumentUtil {
 
     /**
      * S'assure que le répertoire existe en le créant si besoin.
-     * 
+     *
      * @param repertoire
      * @return
      * @throws SecurityException
@@ -191,7 +191,7 @@ public class DocumentUtil {
         String fileName = file.getName();
         response.setHeader("Content-Disposition", "inline; filename=\"" + fileName + "\"");
         response.setHeader("Content-Type", "application/force-download");
-        response.setContentLength(new Long(file.length()).intValue());
+        setContentLengthHeader(response, file);
 
         InputStream is = new FileInputStream(file);
         OutputStream os = response.getOutputStream();
@@ -217,7 +217,7 @@ public class DocumentUtil {
         if (contentType != null) {
             response.setContentType(contentType);
         }
-        response.setContentLength(new Long(file.length()).intValue());
+        setContentLengthHeader(response, file);
 
         InputStream is = new FileInputStream(file);
         OutputStream os = response.getOutputStream();
@@ -230,5 +230,16 @@ public class DocumentUtil {
         is.close();
         os.flush();
         os.close();
+    }
+
+    public void setContentLengthHeader(HttpServletResponse response, File file) {
+        if (response != null && file != null) {
+            long length = file.length();
+            if (length <= Integer.MAX_VALUE) {
+                response.setContentLength((int) length);
+            } else {
+                response.addHeader("Content-Length", Long.toString(length));
+            }
+        }
     }
 }
