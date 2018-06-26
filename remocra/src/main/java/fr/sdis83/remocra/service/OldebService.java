@@ -508,7 +508,7 @@ public class OldebService extends AbstractService<Oldeb> {
                 for (int j = 0; j < suitesDb.size(); j++) {
                     boolean toDelete = true;
                     for (int k = 0; k < oldebVisiteSuites.size(); k++) {
-                        if (suitesDb.get(j).getId() == oldebVisiteSuites.get(k).getId()) {
+                        if (suitesDb.get(j).getId().longValue() == oldebVisiteSuites.get(k).getId().longValue()) {
                             toDelete = false;
                         }
                     }
@@ -538,7 +538,7 @@ public class OldebService extends AbstractService<Oldeb> {
             boolean toDelete = true;
             OldebVisite visiteDb = visitesDb.get(i);
             for (int j = 0; j < oldebVisites.size(); j++) {
-                if (visiteDb.getId() == oldebVisites.get(j).getId()) {
+                if (visiteDb.getId().longValue() == oldebVisites.get(j).getId().longValue()) {
                     toDelete = false;
                     break;
                 }
