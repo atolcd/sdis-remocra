@@ -293,6 +293,7 @@ Ext.define('Sdis.Remocra.controller.rci.Fiche', {
         var fiche = combo.up('rciFiche'),
             voie = fiche.queryById('voie'),
             commune = records[0], filters = [], wkt = fiche.record.get('geometrie');
+
         if (wkt != null) {
             filters.push({
                 property: "wkt",
@@ -390,6 +391,7 @@ Ext.define('Sdis.Remocra.controller.rci.Fiche', {
             var cboCommune = fiche.queryById('commune');
             cboCommune.store.add(fiche.record.getCommune());
             cboCommune.setValue(fiche.record.getCommune().getId(), false); // On empêche les événements de se propager
+            this.onChangeCommune(cboCommune, [fiche.record.getCommune()]);
         } else if (fiche.record.feature) {
             // Actuellement pas de commune et un point est défini (X et Y nécessaires)
             this.cascadeXY();
