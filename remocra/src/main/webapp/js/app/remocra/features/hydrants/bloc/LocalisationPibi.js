@@ -41,31 +41,39 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.LocalisationPibi', {
         xtype: 'fieldcontainer',
         layout: 'hbox',
         items: [{
-            xtype: 'comboforce',
+            xtype: 'combo',
             name: 'voie',
             width: 275,
             store: {
                 type: 'crVoie'
             },
-            displayField: 'nom',
-            valueField: 'nom',
-            forceSelection: true,
-            queryCaching: false
+             queryMode : 'remote',
+             displayField : 'nom',
+             valueField : 'nom',
+             triggerAction : "all",
+             hideTrigger : false,
+             typeAhead : true,
+             minChars : 3,
+             allowBlank : true
         },{
             fieldLabel: 'Carrefour',
-            xtype: 'comboforce',
+            xtype: 'combo',
             name: 'voie2',
             store: {
                 type: 'crVoie'
             },
-            displayField: 'nom',
-            valueField: 'nom',
-            forceSelection: true,
+             queryMode : 'remote',
+               displayField : 'nom',
+               valueField : 'nom',
+               triggerAction : "all",
+               hideTrigger : false,
+               typeAhead : true,
+               minChars : 3,
+               allowBlank : true,
             labelWidth: 60,
             flex: 1,
             labelAlign: 'right',
-            maxWidth: 420,
-            queryCaching: false
+            maxWidth: 420
         }]
     },{
         xtype: 'textarea',

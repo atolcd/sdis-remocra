@@ -303,7 +303,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
 
     onChangeCommune: function(combo, records) {
         var fiche = combo.up('hydrantFiche'),
-            voie = fiche.down('comboforce[name=voie]'), voie2 = fiche.down('comboforce[name=voie2]'),
+            voie = fiche.down('combo[name=voie]'), voie2 = fiche.down('combo[name=voie2]'),
             commune = records[0], filters = [], wkt = fiche.hydrant.get('geometrie');
 
         this.doCheckDispo(combo);
