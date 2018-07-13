@@ -128,7 +128,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
         if (limit != 0) {
             try {
                 List<Object> l = entityManager.createNativeQuery("select * from (select distinct on (cast (date_contr as date)) date_contr as dc, debit as d, debit_max as dm, pression as p, pression_dyn as pd, pression_dyn_deb as pdd" +
-                    "                    from tracabilite.hydrant h WHERE h.id_hydrant = "+id+" order by  (cast (date_contr as date)) desc) t  limit " + limit).getResultList();
+                    "                    from tracabilite.hydrant h WHERE h.id_hydrant = "+id+" AND (cast (date_contr as date)IS NOT NULL) order by  (cast (date_contr as date)) desc) t  limit " + limit).getResultList();
                 return l;
             } catch (Exception ex) {
                 //Pas d'historique
