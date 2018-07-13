@@ -107,6 +107,26 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
         return super.setUpInformation(attached, files, params);
     }
 
+    @Transactional
+    public HydrantPibi create(String json, Map<String, MultipartFile> files) throws Exception {
+        HydrantPibi hp = super.create(json, files);
+        // Pour déclencher le calcul des anomalies via trigger
+        entityManager.createNativeQuery("update remocra.hydrant_pibi set debit=debit where id=:id")
+                .setParameter("id", hp.getId())
+                .executeUpdate();
+        return hp;
+    }
+
+    @Transactional
+    public HydrantPibi update(Long id, String json, Map<String, MultipartFile> files, Object... params) throws Exception {
+        HydrantPibi hp = super.update(id, json, files, params);
+        // Pour déclencher le calcul des anomalies via trigger
+        entityManager.createNativeQuery("update remocra.hydrant_pibi set debit=debit where id=:id")
+                .setParameter("id", id)
+                .executeUpdate();
+        return hp;
+    }
+
     public HistoVerificationHydraulique getHistoVerifHydrau(Long id) {
         try {
             Object[] result = (Object[]) entityManager.createNativeQuery("select numero, debit, debit_max, pression, pression_dyn, pression_dyn_deb, date_terrain"

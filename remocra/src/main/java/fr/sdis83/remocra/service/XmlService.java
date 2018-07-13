@@ -954,7 +954,13 @@ public class XmlService {
             } else {
                 throw new AnomalieException("Les anomalies remontées ne sont pas en adéquation avec le référentiel");
             }
+        }
 
+        if (hydrantXML instanceof HydrantPibi) {
+            // Pour déclencher le calcul des anomalies via trigger
+            entityManager.createNativeQuery("update remocra.hydrant_pibi set debit=debit where id=:id")
+                    .setParameter("id", hydrant.getId())
+                    .executeUpdate();
         }
     }
 
