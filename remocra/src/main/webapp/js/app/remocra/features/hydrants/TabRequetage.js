@@ -11,7 +11,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabRequetage', {
          items: [{
                region:'west',
                xtype: 'crHydrantsAnalyses',
-               width: '25%'
+               width: 400
            },{
                region: 'center',     // center region is required, no width/height specified
                xtype: 'crRecherche',
