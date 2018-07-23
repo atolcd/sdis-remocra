@@ -7,11 +7,39 @@ Ext.require('Sdis.Remocra.widget.WidgetFactory');
 
 Ext.require('Sdis.Remocra.widget.map.LegendTemplate');
 
-// Sdis.Remocra.widget.map.EPSG3857 = new OpenLayers.Projection('EPSG:3857');
-Sdis.Remocra.widget.map.EPSG900913 = new OpenLayers.Projection('EPSG:900913'); // Google
-// Mercator
-Sdis.Remocra.widget.map.EPSG4326 = new OpenLayers.Projection('EPSG:4326'); // Projection
-// WGS84
+// WGS 84 / Pseudo-Mercator
+Sdis.Remocra.widget.map.EPSG3857 = new OpenLayers.Projection('EPSG:3857');
+// Google Spherical Mercator
+Sdis.Remocra.widget.map.EPSG900913 = new OpenLayers.Projection('EPSG:900913');
+// WGS 84
+Sdis.Remocra.widget.map.EPSG4326 = new OpenLayers.Projection('EPSG:4326');
+
+// Origine et résolutions 3857
+Sdis.Remocra.widget.map.WMTS_TILEORIGIN_3857 = new OpenLayers.LonLat(-20037508, 20037508);
+Sdis.Remocra.widget.map.WMTS_RESOLUTIONS_3857 =  [
+    156543.03392804103,
+    78271.5169640205,
+    39135.75848201024,
+    19567.879241005125,
+    9783.939620502562,
+    4891.969810251281,
+    2445.9849051256406,
+    1222.9924525628203,
+    611.4962262814101,
+    305.74811314070485,
+    152.87405657035254,
+    76.43702828517625,
+    38.218514142588134,
+    19.109257071294063,
+    9.554628535647034,
+    4.777314267823517,
+    2.3886571339117584,
+    1.1943285669558792,
+    0.5971642834779396,
+    0.29858214173896974,
+    0.14929107086948493,
+    0.07464553543474241
+];
 
 Ext.define('Sdis.Remocra.widget.map.Map', {
     extend: 'Ext.container.Container',
@@ -398,7 +426,11 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
             srid = "epsg:" + srid;
             var lonlat = new OpenLayers.LonLat(x, y);
             lonlat.transform(srid, this.map.getProjection());
-            this.map.setCenter(lonlat, this.map.baseLayer.resolutions.length - 1, false, true);
+
+            // On centre avec un niveau de zoom max équivalent aux ortho dispo en province
+            var maxZoom = this.map.baseLayer.resolutions.length - 1;
+            var zoomForOrtho = this.map.getZoomForResolution(0.29858214173896974);
+            this.map.setCenter(lonlat, maxZoom < zoomForOrtho ? maxZoom : zoomForOrtho, false, true);
         }
     },
 
@@ -521,11 +553,6 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
     },
 
     addLayersFromLayerConfig: function(legendData) {
-        // Toujours une baseLayer => fake au démarrage
-        var baseLayer = this.createSpecificLayer('fakebaselayer');
-        this.map.addLayer(baseLayer);
-        this.map.setBaseLayer(baseLayer);
-
         var iGrp, iLay, legendShow = Ext.clone(legendData);
         // Chaque groupe (à l'envers)
         for (iGrp = legendData.items.length; iGrp > 0; iGrp--) {
@@ -552,6 +579,9 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
                         break;
                     case 'wms':
                         layer = this.createWMSLayer(layerDef);
+                        break;
+                    case 'wmts':
+                        layer = this.createWMTSLayer(layerDef);
                         break;
                     case 'ign':
                         layer = this.createIGNLayer(layerDef);
@@ -585,7 +615,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
                 Ext.Array.erase(legendShow.items, iGrp - 1, 1);
             }
         }
-        
+
         // Ajout de la couche de travail
         if (this.workingLayer) {
             this.map.addLayer(this.workingLayer);
@@ -655,9 +685,51 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
             interrogeable: layerDef.interrogeable,
             projection: layerDef.projection
         });
-    },    
+    },
 
-    createIGNLayer: function(layerDef) {
+    /**
+     * Réduit le tableau des résolutions.
+     *
+     * @param resolutions résolutions à traiter
+     * @param min résolution minimum. Exemple : 0.29858214173896974
+     * @param max résolution maximum. Exemple : 2445.9849051256400
+     *
+     * @return tableau des résolutions souhaitées uniquement.
+     *
+     **/
+    getTruncatedResolutions: function(resolutions, min, max) {
+        var i, returned = [];
+        // Comparaison sur des valeurs arrondies car précision variable des données en entrée
+        var roundMin = min ? Math.round(min * 10000) / 10000 : resolutions[resolutions.length - 1];
+        var roundMax = max ? Math.round(max * 10000) / 10000 : resolutions[0];
+        for (i = 0; i < resolutions.length; i++) {
+            var resolution = resolutions[i];
+            var roundResolution = Math.round(resolution * 10000) / 10000;
+            if (roundResolution <= roundMax && roundResolution >= roundMin) {
+                returned.push(resolution);
+            }
+        }
+        return returned;
+    },
+    getTruncatedWmts3857Resolutions: function(min, max) {
+        return this.getTruncatedResolutions(Sdis.Remocra.widget.map.WMTS_RESOLUTIONS_3857, min, max);
+    },
+
+    createWMTSLayer: function(layerDef) {
+        if (typeof (layerDef.style) === 'undefined') {
+            // Premier style disponible
+            if (layerDef.styles && layerDef.styles.length>0) {
+                layerDef.style = layerDef.styles[0].id;
+            }
+        }
+
+        var resolutions = Sdis.Remocra.widget.map.WMTS_RESOLUTIONS_3857;
+        if (layerDef.tileMatrixSet) {
+            resolutions = this.getTruncatedWmts3857Resolutions(layerDef.tileMatrixSet.resolution_min, layerDef.tileMatrixSet.resolution_max);
+        }
+        var minResolution = resolutions[resolutions.length - 1];
+        var maxResolution = resolutions[0];
+
         var options = {
             isBaseLayer: layerDef.baseLayer,
             code: layerDef.id,
@@ -665,20 +737,35 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
             layer: layerDef.layers,
             visibility: layerDef.visibility,
             opacity: layerDef.opacity,
-            projection: 'EPSG:900913',
-            url: 'https://gpp3-wxs.ign.fr/' + Sdis.Remocra.util.Util.getIgnKey() + '/wmts',
-            matrixSet: 'PM',
-            numZoomLevels: 19,
-            attribution: '<a href="http://www.geoportail.fr/" target="_blank">' + '<img src="' + BASE_URL + '/../images/remocra/cartes/logo_gp.gif"></a>'
-                    + '<a href="http://www.geoportail.gouv.fr/depot/api/cgu/licAPI_CGUF.pdf" alt="TOS" title="TOS" target="_blank">Condifions générales d\'utilisation</a>'
+            projection: layerDef.projection || 'EPSG:3857',
+            url: layerDef.url,
+            attribution: layerDef.attribution,
+
+            style: layerDef.style,
+
+            matrixSet: layerDef.matrixSet || (layerDef.tileMatrixSet && layerDef.tileMatrixSet.nom ? layerDef.tileMatrixSet.nom : null),
+            tileOrigin: Sdis.Remocra.widget.map.WMTS_TILEORIGIN_3857,
+            resolutions: resolutions,
+            minResolution: minResolution,
+            maxResolution: maxResolution
         };
         if (layerDef.format) {
             options.format = layerDef.format;
         }
-
-        options.style = typeof (layerDef.style)==='undefined' ? 'normal' : layerDef.style;
-
         return new OpenLayers.Layer.WMTS(options);
+    },
+
+    createIGNLayer: function(layerDef) {
+        layerDef.url = 'https://wxs.ign.fr/' + Sdis.Remocra.util.Util.getIgnKey() + '/geoportail/wmts';
+        layerDef.projection = 'EPSG:3857';
+        layerDef.matrixSet = 'PM';
+        layerDef.attribution = '<a href="http://www.geoportail.fr/" target="_blank">'
+            + '<img src="' + BASE_URL + '/../images/remocra/cartes/logo_gp.gif"></a>'
+            + '<a href="http://www.geoportail.gouv.fr/depot/api/cgu/licAPI_CGUF.pdf" '
+            + 'alt="TOS" title="TOS" target="_blank">Condifions générales d\'utilisation</a>';
+        layerDef.style = layerDef.style || 'normal';
+        layerDef.format = layerDef.format || 'image/jpeg';
+        return this.createWMTSLayer(layerDef);
     },
 
     // A implémenter dans des cartes spécifiques si nécessaire (composants qui
@@ -692,12 +779,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
                 name : layerDef,
                 layers : 'ORTHOIMAGERY.ORTHOPHOTOS',
                 visibility : false,
-                opacity : 0.0,
-                projection: 'EPSG:900913',
-                url: 'https://gpp3-wxs.ign.fr/' + Sdis.Remocra.util.Util.getIgnKey() + '/wmts',
-                matrixSet: 'PM',
-                style: 'normal',
-                numZoomLevels: 20
+                opacity : 0.0
             });
         }
         throw 'La couche spécifique \'' + layerDef.id + '\' est inconnue pour cette carte.';
