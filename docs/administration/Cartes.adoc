@@ -39,198 +39,176 @@ Exemple de carte :
 [source,js]
 ----
 {
-"libelle":"Légende",
-"items":[{
-    "libelle":"Analysée",
-    "items":[{
-        "type":"specific",
-        "libelle":"Mes alertes",
-        "id":"alertesLayer",
-        "scale_min":"0",
-        "scale_max":"90708",
-        "visibility":true,
-        //"opacity":0.5,
-        "interrogeable": true,
-        "items":[
-            {"libelle":"En attente de traitement","image":"alertes/checking.png"},
-            {"libelle":"Acceptée","image":"alertes/ok.png"},
-            {"libelle":"Refusée","image":"alertes/ko.png"}
-        ]}
+    "libelle": "Légende",
+    "items": [{
+        "libelle": "Groupe spécifique",
+        "items": [{
+                "type": "specific",
+                "libelle": "Mes alertes",
+                "id": "alertesLayer",
+                "scale_min": "0",
+                "scale_max": "90708",
+                "visibility": true,
+                //"opacity":0.5,
+                "interrogeable": true,
+                "items": [
+                    {
+                        "libelle": "En attente de traitement",
+                        "image": "alertes/checking.png"
+                    },
+                    {
+                        "libelle": "Acceptée",
+                        "image": "alertes/ok.png"
+                    },
+                    {
+                        "libelle": "Refusée",
+                        "image": "alertes/ko.png"
+                    }
+        ]
+            }
     ]
-    },{
-    "libelle":"Fonds SDIS",
-    "items":[{
-        "type": "wms",
-        "libelle":"Administratif",
-        "id":"administratifLayer",
-        "wms_layer":true,
-        "layers":"remocra:ADMINISTRATIF",
-        "url":"/remocra/geoserver/remocra/wms",
-        "projection":"EPSG:900913",
-        "sld":null,
-        "scale_min":"0",
-        "scale_max":"362834",
-        "visibility":false,
-        "opacity":1,
-        "interrogeable": true,
-        "items":[
-            {"libelle":"CIS","image":"administratif/bat_cis.png"},
-            {"libelle":"Commune","image":"administratif/commune.png"},
-            {"libelle":"Departement","image":"administratif/departement.png"}
+    }, {
+        "libelle": "Groupe SDIS",
+        "items": [{
+            "type": "wms",
+            "libelle": "Administratif",
+            "id": "administratifLayer",
+            "layers": "remocra:ADMINISTRATIF",
+            "url": "/remocra/geoserver/remocra/wms",
+            "projection": "EPSG:900913",
+            "sld": null,
+            "scale_min": "0",
+            "scale_max": "362834",
+            "visibility": false,
+            "opacity": 1,
+            "interrogeable": true,
+            "items": [
+                {
+                    "libelle": "CIS",
+                    "image": "administratif/bat_cis.png"
+                },
+                {
+                    "libelle": "Commune",
+                    "image": "administratif/commune.png"
+                },
+                {
+                    "libelle": "Departement",
+                    "image": "administratif/departement.png"
+                }
         ]
     }, {
-        "type": "wms",
-        "libelle":"Eau",
-        "id":"eauUAdresseLayer",
-        "wms_layer":true,
-        "layers":"remocra:EAU_ADRESSE",
-        "url":"/remocra/geoserver/remocra/wms",
-        "projection":"EPSG:900913",
-        "sld":null,
-        "scale_min":"0",
-        "scale_max":"362834",
-        "visibility":false,
-        "opacity":1,
-        "interrogeable": false,
-        "items":[
-            {"libelle":"BI < 30m³/h","image":"eau/pibi/bi_low.png"},
-            {"libelle":"BI 30 à 60m³/h","image":"eau/pibi/bi_med.png"},
-            {"libelle":"BI > 60m³/h","image":"eau/pibi/bi_high.png"},
-            {"libelle":"PI < 30m³/h","image":"eau/pibi/pi_low.png"},
-            {"libelle":"PI 30 à 60m³/h","image":"eau/pibi/pi_med.png"},
-            {"libelle":"PI < 30m³/h","image":"eau/pibi/pi_high.png"},
-            {"libelle":"Citerne fixe","image":"eau/pena/pn_citerne_fixe.png"},
-            {"libelle":"Autre PENA","image":"eau/pena/pn_autre.png"},
-            {"libelle":"HBE","image":"eau/hbe.png"},
-            {"libelle":"Indisponible","image":"eau/indispo.png"},
-
-            {"libelle":"Colonne sèche","image":"eau/colonne_seche.png"},
-            {"libelle":"Colonne humide","image":"eau/colonne_humide.png"},
-            {"libelle":"Relais","image":"eau/poteau_relais.png"},
-            {"libelle":"Réserve eau","image":"eau/reserve_eau.png"},
-            {"libelle":"Surface hydro","image":"eau/surf_hydro.png"}
-        ]
+            "type": "wms",
+            "libelle": "Habillage urbain",
+            "id": "habillageUrbainLayer",
+            "layers": "remocra:HABILLAGE_URBAIN",
+            "url": "/remocra/geoserver/remocra/wms",
+            "projection": "EPSG:900913",
+            "sld": null,
+            "scale_min": "0",
+            "scale_max": "362834",
+            "visibility": false,
+            "opacity": 1,
+            "interrogeable": false,
+            "items": [{
+                "keepsize": true,
+                "image": "/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LEGEND_OPTIONS=bgColor:0xf4f4f4;fontStyle:italic;fontColor:0x808080;fontAntiAliasing:true&LAYER=remocra:HABILLAGE_URBAIN"
+        }]
+    }]
     }, {
-        "type": "wms",
-        "libelle":"Habillage urbain",
-        "id":"habillageUrbainLayer",
-        "wms_layer":true,
-        "layers":"remocra:HABILLAGE_URBAIN",
-        "url":"/remocra/geoserver/remocra/wms",
-        "projection":"EPSG:900913",
-        "sld":null,
-        "scale_min":"0",
-        "scale_max":"362834",
-        "visibility":false,
-        "opacity":1,
-        "interrogeable": false,
-        "items":[{
-           "keepsize":true,
-           "image":"/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LEGEND_OPTIONS=bgColor:0xf4f4f4;fontStyle:italic;fontColor:0x808080;fontAntiAliasing:true&LAYER=remocra:HABILLAGE_URBAIN"
+        "libelle": "Groupe divers WMTS",
+        "items": [{
+            "type": "wmts",
+            "base_layer": true,
+            "libelle": "Orthophotographie Auvergne CRAIG/IGN 2013",
+            "id": "ab27573715e8e84f20879a014e24a341",
+            "scale_min": "0",
+            "scale_max": "1000000",
+            "visibility": true,
+            "opacity": 1,
+            "interrogeable": false,
+            "items": null,
+            "format": "image/jpeg",
+            "layers": "ortho_2013",
+            "url": "http://tiles.craig.fr/ortho/service",
+            "styles": [{
+                "id": "default",
+                "libelle": ""
+                }],
+            "tileMatrixSet": {
+                "nom": "webmercator",
+                "resolution_min": 0.0746455354347,
+                "resolution_max": 156543.0339281199800
+            }
+    }]
+    }, {
+        "libelle": "Groupe IGN",
+        "items": [{
+            "type": "ign",
+            "libelle": "Parcelles cadastrales",
+            "id": "cadastreLayer",
+            "scale_min": "0",
+            "scale_max": "22677",
+            "visibility": false,
+            "opacity": 0.5,
+            "format": "image/png",
+            "layers": "CADASTRALPARCELS.PARCELS",
+            "items": [
+                {
+                    "libelle": "Cadastre",
+                    "image": "ign/cadastre.png"
+                }
+        ]
+        }, {
+            "type": "ign",
+            "libelle": "Cartes IGN",
+            "id": "carteLayer",
+            "scale_min": "5669",
+            "scale_max": "999999999",
+            "visibility": false,
+            "opacity": 1,
+            "format": null,
+            "style": "normal",
+            "layers": "GEOGRAPHICALGRIDSYSTEMS.MAPS",
+            "items": [
+                {
+                    "libelle": "Cartes IGN",
+                    "image": "ign/carte.png"
+                }
+        ]
+        }, {
+            "base_layer": true,
+            "type": "ign",
+            "libelle": "Photos aériennes",
+            "id": "photoLayer",
+            "scale_min": "0",
+            "scale_max": "999999999",
+            "visibility": true,
+            "opacity": 1,
+            "format": null,
+            "style": "normal",
+            "layers": "ORTHOIMAGERY.ORTHOPHOTOS",
+            "items": [
+                {
+                    "libelle": "Photos aériennes",
+                    "image": "ign/photo.png"
+                }
+        ]
         }]
     }, {
-        "type": "wms",
-        "libelle":"Réseau DFCI",
-        "id":"reseauDfciLayer",
-        "wms_layer":true,
-        "layers":"remocra:piste",
-        "url":"/remocra/geoserver/remocra/wms",
-        "projection":"EPSG:900913",
-        "sld":null,
-        "scale_min":"0",
-        "scale_max":"362834",
-        "visibility":false,
-        "opacity":1,
-        "interrogeable": false,
-        "items":[
-            {"libelle":"Première catégorie","image":"reseau_dfci/res_piste_cat1.png"},
-            {"libelle":"Seconde catégorie","image":"reseau_dfci/res_piste_cat2.png"},
-            {"libelle":"Troisième catégorie","image":"reseau_dfci/res_piste_cat3.png"},
-            {"libelle":"Quatrième catégorie","image":"reseau_dfci/res_piste_cat4.png"}
+        "libelle": "Groupe OSM",
+        "items": [{
+            "type": "osm",
+            "libelle": "Carte OSM",
+            "id": "osm",
+            "visibility": false,
+            "opacity": 0.5,
+            "items": [
+                {
+                    "libelle": "OSM",
+                    "image": "osm/osm.png"
+                }
         ]
-    }, {
-        "type": "wms",
-        "libelle":"Réseau Urbain",
-        "id":"reseauUrbainLayer",
-        "wms_layer":true,
-        "layers":"remocra:RESEAU_URBAIN",
-        "url":"/remocra/geoserver/remocra/wms",
-        "projection":"EPSG:900913",
-        "sld":null,
-        "scale_min":"0",
-        "scale_max":"362834",
-        "visibility":false,
-        "opacity":1,
-        "interrogeable": false,
-        "items":[
-            // Ferré
-            {"libelle":"Voie","image":"reseau_urbain/res_fer_voie.png"},
-            {"libelle":"Passage à niveau","image":"reseau_urbain/res_fer_pass_niveau.png"},
-            {"libelle":"Gare","image":"reseau_urbain/res_fer_gare.png"},
-            // Routier
-            {"libelle":"Aucun véhicule ne passe","image":"reseau_urbain/res_routier_aucun_vehicule.png"},
-            {"libelle":"Non renseigné","image":"reseau_urbain/res_routier_non_rens.png"},
-            {"libelle":"Pont","image":"reseau_urbain/res_routier_pont.png"},
-            {"libelle":"Tout véhicule routiers passe","image":"reseau_urbain/res_routier_tous_veh_routiers.png"},
-            {"libelle":"Tunnel","image":"reseau_urbain/res_routier_tunnel.png"},
-            {"libelle":"VSAB routier","image":"reseau_urbain/res_routier_vsab_routier.png"}
-        ]
-    }]
-    },{
-    "libelle":"Fonds IGN",
-    "items":[{
-        "type": "ign",
-        "libelle":"Parcelles cadastrales",
-        "num_zoom_levels": 20,
-        "id":"cadastreLayer",
-        "scale_min":"0",
-        "scale_max":"22677",
-        "visibility": false,
-        "opacity":0.5,
-        "format":"image/png",
-        "layers":"CADASTRALPARCELS.PARCELS",
-        "items":[
-                {"libelle":"Cadastre","image":"ign/cadastre.png"}
-        ]},{
-        "type": "ign",
-        "libelle":"Cartes IGN",
-        "id":"carteLayer",
-        "scale_min":"5669",
-        "scale_max":"999999999",
-        "visibility": false,
-        "opacity":1, 
-        "format":null,
-        "style":"normal",
-        "layers":"GEOGRAPHICALGRIDSYSTEMS.MAPS",
-        "items":[
-                {"libelle":"Cartes IGN","image":"ign/carte.png"}
-        ]},{
-        "base_layer": true,
-        "type": "ign",
-        "libelle":"Photos aériennes",
-        "num_zoom_levels": 20,
-        "id":"photoLayer",
-        "scale_min":"0",
-        "scale_max":"999999999",
-        "visibility": true,
-        "opacity":1,
-        "format":null,
-        "style":"normal",
-        "layers":"ORTHOIMAGERY.ORTHOPHOTOS",
-        "items":[
-                {"libelle":"Photos aériennes","image":"ign/photo.png"}
-        ]}]
-    },{
-    "libelle":"Fonds OSM",
-    "items":[{
-        "type": "osm",
-        "libelle":"Carte OSM",
-        "id": "osm",
-        "visibility": false,
-        "opacity":0.5,
-        "items":[
-                {"libelle":"OSM","image":"osm/osm.png"}
-        ]}]
+        }]
     }]
 }
 ----
@@ -247,22 +225,21 @@ Pour les autres, on a deux types de fonds :
 
 * les couches spécifiques
 ** par exemple celle qui porte l'id _alertesLayer_ dans l'exemple
-* les couches génériques WMS
+* les couches génériques : WMS, WMTS, IGN, OSM
 ** par exemple celle qui porte l'id _administratifLayer_ dans l'exemple
-
-Les couches WMS sont spécifiées avec le booléen _wms_layer_.
 
 Les options communes aux couches sont les suivantes :
 [source,js]
 ----
-"type" : "wms" ou "specific", "ign" ou "osm"
+"type" : "specific", "wms", "wmts", "ign" ou "osm"
 "libelle" : "Administratif"
 "id" : "administratifLayer"
-"scale_min" : "0",
-"scale_max" : "362834",
-"visibility" : false,
-"opacity" : 1,
-"interrogeable" : true,
+"projection" : "EPGS:3857", EPSG:900913", etc.
+"scale_min" : "0"
+"scale_max" : "362834"
+"visibility" : false
+"opacity" : 1
+"interrogeable" : true
 "items" : []
 ----
 
@@ -270,10 +247,8 @@ Pour les couches de type "wms" :
 [source,js]
 ----
 "type" : "wms"
-"wms_layer" : true
 "layer" : "remocra:ADMINISTRATIF"
 "url" : "/remocra/geoserver/remocra/wms"
-"projection" : "EPSG:900913"
 "sld" : null
 ----
 
@@ -283,17 +258,28 @@ Remarque, deux proxies existent pour accéder aux couches du serveur GeoServer d
 ** gestion des workspaces
 ** sécurisé finement : couche accessible publiquement ou qui nécessite une authentification, profils avec accès complet ou limités à la zone de compétence. Cf. link:Couches{outfilesuffix}[configuration des couches]. 
 ** Exemple : */remocra/geoserver/remocra/wms*
-* /remocra/proxy/wms : ancien proxy GeoServer avec 
+* /remocra/proxy/wms : ancien proxy GeoServer (éviter de l'utiliser) avec 
 ** un seul workspace : _remocra_
 ** deux niveaux d'accès public / utilisateurs authentifiés limités à la zone de compétence
+
+Pour les couches de type "wmts" (informations déductibles des Capabilities du service) :
+[source,js]
+----
+"type" : "wmts"
+"format" : "image/png" ou "image/jpeg"
+"layers" : "ortho_2013", "CADASTRALPARCELS.PARCELS" etc.
+"url" : "http://tiles.craig.fr/ortho/service" 
+"style" : "normal" (recherche du premier élément de styles en cas d'absence)
+"styles" : [{ "id": "default", "libelle": "" }]
+"tileMatrixSet": { "nom": "webmercator", "resolution_min": 0.0746455354347, "resolution_max": 156543.0339281199800 }
+----
 
 Pour les couches de type "ign" :
 [source,js]
 ----
 "type" : "ign"
-"num_zoom_levels" : 20
 "format" : "image/png"
-"layers" : "CADASTRALPARCELS.PARCELS" ou "GEOGRAPHICALGRIDSYSTEMS.MAPS" ou "ORTHOIMAGERY.ORTHOPHOTOS"
+"layers" : "CADASTRALPARCELS.PARCELS" ou "GEOGRAPHICALGRIDSYSTEMS.MAPS" "ORTHOIMAGERY.ORTHOPHOTOS", "GEOGRAPHICALGRIDSYSTEMS.MAPS.BDUNI.J1" etc.
 "style" : "normal"
 ----
 
@@ -349,7 +335,6 @@ La *carte "Recherches et analyses" du module PEI s'appuie sur une couche de type
   "type": "wms",
   "libelle":"Résultat d'analyse<br/>",
   "id":"zonesLayer",
-  "wms_layer":true,
   "layers":"remocra:v_requete_modele_selection_detail",
   "url":"/remocra/geoserver/remocra/wms",
   "projection":"EPSG:900913",
