@@ -48,11 +48,12 @@
                 android:visibility="gone"/>
 
             <TextView
-                style="@style/labelLong"
-                android:text="Pression dynamique à 60m3 (bar)"
                 android:id="@+id/lbl_verif_pression_dyn"
+                style="@style/labelLong"
+                android:layout_alignParentLeft="true"
                 android:layout_below="@+id/verif_debit_msg"
-                android:layout_alignParentLeft="true"/>
+                android:paddingTop="8dp"
+                android:text="Pression dynamique à 60m3 (bar)" />
 
             <EditText
                 style="@style/field"
@@ -102,11 +103,12 @@
                 android:visibility="gone"/>
 
             <TextView
-                style="@style/labelLong"
-                android:text="Pression dynamique au débit max (bar)"
                 android:id="@+id/lbl_verif_pression_dyn_deb"
+                style="@style/labelLong"
+                android:layout_alignParentLeft="true"
                 android:layout_below="@+id/verif_debit_max_msg"
-                android:layout_alignParentLeft="true"/>
+                android:paddingTop="8dp"
+                android:text="Pression dynamique au débit max (bar)" />
 
             <EditText
                 style="@style/field"
