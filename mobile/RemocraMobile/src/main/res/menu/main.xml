@@ -17,7 +17,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/action_show_map"
         android:title="@string/action_show_map"
-        android:icon="@drawable/ic_menu_mapmode"
+        android:icon="@drawable/ic_menu_carte"
         android:showAsAction="ifRoom" />
     <item android:id="@+id/action_add_hydrant"
           android:title="@string/action_add_hydrant"

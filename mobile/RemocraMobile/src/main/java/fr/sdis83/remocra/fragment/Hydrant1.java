@@ -3,10 +3,12 @@ package fr.sdis83.remocra.fragment;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -63,7 +65,10 @@ public class Hydrant1 extends AbstractHydrant {
         loadSpinner(R.id.ident_pibi_type, RemocraProvider.getUriNature(RemocraProvider.TYPE_NATURE.PIBI));
         loadSpinner(R.id.ident_pibi_diam, RemocraProvider.CONTENT_DIAMETRE_URI);
         loadSpinner(R.id.ident_pena_nature, RemocraProvider.getUriNature(RemocraProvider.TYPE_NATURE.PENA));
-
+        //on modifie l'action de multiline à suivant
+        EditText loca = (EditText) view.findViewById(R.id.loca_compl);
+        loca.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        loca.setRawInputType(InputType.TYPE_CLASS_TEXT);
         return view;
     }
 
