@@ -2,13 +2,18 @@ package fr.sdis83.remocra;
 
 import android.app.ActionBar;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -32,13 +37,20 @@ import fr.sdis83.remocra.fragment.components.HydrantItem;
 /**
  * Created by vde on 17/02/2017.
  */
-public class MapHydrantActivity extends FragmentActivity {
+public class MapHydrantActivity extends FragmentActivity implements LocationListener {
 
     private ImageButton btCenterMap;
+    private ImageButton btCompassMapOn;
+    private ImageButton btCompassMapOff;
+
     private OverlayItem currentItem;
 
     private BoundingBox globalBBox;
     private MapView mapView;
+    private Boolean automaticNavigation;
+    private ItemizedOverlayWithFocus<OverlayItem> hydrantOverlay;
+    private LocationManager locationManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,20 +99,24 @@ public class MapHydrantActivity extends FragmentActivity {
             globalBBox = BoundingBox.fromGeoPoints(toBoundingZoom);
         }
 
+
         mapView = (MapView) findViewById(R.id.carte_hydrant);
         mapView.setBuiltInZoomControls(true);
         mapView.setMultiTouchControls(true);
         mapView.setTilesScaledToDpi(true);
 
         // Overlay des items de la carte.
-        ItemizedOverlayWithFocus<OverlayItem> hydrantOverlay = buildMapOverlay(items);
+        hydrantOverlay = buildMapOverlay(items);
         mapView.getOverlays().add(hydrantOverlay);
-
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.invalidate();
 
         // Ajout du bouton qui centrer sur sa position gps
         addCenterMapBnt(hydrantOverlay);
+        addNavigationMapBntOn(hydrantOverlay);
+        addNavigationMapBntOff(hydrantOverlay);
+        automaticNavigation = false;
+        initialiseLocationManager();
 
         // Utilisation d'un delay pour laisser le temps à la carte de se charger
         // dans l'activity
@@ -116,6 +132,11 @@ public class MapHydrantActivity extends FragmentActivity {
                }
             }
         }, 200);
+    }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        killlocation();
     }
 
     /**
@@ -181,17 +202,43 @@ public class MapHydrantActivity extends FragmentActivity {
                 if(((RemocraApp) getApplicationContext()).getCurrentLocation() != null) {
                     GeoPoint currentLocation = new GeoPoint(((RemocraApp) getApplicationContext()).getCurrentLocation());
                     mapView.getController().animateTo(currentLocation);
-                    Drawable currentMarker = getResources().getDrawable(R.drawable.person);
-                    if (currentItem != null) {
-                        mOverlay.removeItem(currentItem);
-                    }
-                    currentItem = new OverlayItem("", "", currentLocation);
-                    currentItem.setMarker(currentMarker);
-                    mOverlay.addItem(currentItem);
-                    mOverlay.setFocusItemsOnTap(false);
+                }else {
+                    Toast.makeText(getApplicationContext(), "Localisation GPS inactive ou inconnue", Toast.LENGTH_SHORT).show();
+                }
+
+                automaticNavigation = false;
+            }
+        });
+    }
+
+    private void addNavigationMapBntOff(final ItemizedOverlayWithFocus mOverlay) {
+        btCompassMapOff = (ImageButton) findViewById(R.id.ic_menu_compass_off);
+        btCompassMapOn = (ImageButton) findViewById(R.id.ic_menu_compass_on);
+        btCompassMapOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                automaticNavigation = true;
+                if (((RemocraApp) getApplicationContext()).getCurrentLocation() != null) {
+                    onLocationChanged(((RemocraApp) getApplicationContext()).getCurrentLocation());
+                    btCompassMapOn.setVisibility(View.VISIBLE);
+                    btCompassMapOff.setVisibility(View.GONE);
                 } else {
                     Toast.makeText(getApplicationContext(), "Localisation GPS inactive ou inconnue", Toast.LENGTH_SHORT).show();
                 }
+
+            }
+        });
+    }
+
+    private void addNavigationMapBntOn(final ItemizedOverlayWithFocus mOverlay) {
+        btCompassMapOff = (ImageButton) findViewById(R.id.ic_menu_compass_off);
+        btCompassMapOn = (ImageButton) findViewById(R.id.ic_menu_compass_on);
+        btCompassMapOn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btCompassMapOff.setVisibility(View.VISIBLE);
+                btCompassMapOn.setVisibility(View.GONE);
+                automaticNavigation = false;
             }
         });
     }
@@ -204,6 +251,68 @@ public class MapHydrantActivity extends FragmentActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        GeoPoint currentLocation = new GeoPoint(location);
+        Drawable currentMarker = getResources().getDrawable(R.drawable.position);
+        if (automaticNavigation != null && automaticNavigation == true) {
+            mapView.getController().animateTo(currentLocation);
+        }
+        if (currentItem != null) {
+            hydrantOverlay.removeItem(currentItem);
+        }
+        currentItem = new OverlayItem("", "", currentLocation);
+        currentItem.setMarker(currentMarker);
+        mapView.getOverlays().clear();
+        mapView.getOverlays().add(hydrantOverlay);
+        if(currentItem != null){
+            hydrantOverlay.addItem(currentItem);
+        }
+        hydrantOverlay.setFocusItemsOnTap(false);
+        mapView.invalidate();
+    }
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    public void initialiseLocationManager() {
+        if(((RemocraApp) getApplicationContext()).getCurrentLocation() != null) {
+        try {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        } catch (Exception ex) {
+            Toast.makeText(getApplicationContext(), "Localisation GPS inactive ou inconnue", Toast.LENGTH_SHORT).show();
+        }
+    }else {
+            Toast.makeText(getApplicationContext(), "Localisation GPS inactive ou inconnue", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void killlocation()
+    {
+        try
+        {
+            locationManager.removeUpdates(this);
+            locationManager=null;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
         }
     }
 

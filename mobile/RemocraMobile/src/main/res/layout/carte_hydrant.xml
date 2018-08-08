@@ -1,24 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <org.osmdroid.views.MapView android:id="@+id/carte_hydrant"
+    <org.osmdroid.views.MapView
+        android:id="@+id/carte_hydrant"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="match_parent" />
 
     <ImageButton
-        android:src="@drawable/ic_menu_mylocation"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginTop="-40dp"
-        android:layout_marginRight="30dp"
         android:id="@+id/ic_menu_mylocation"
-        android:layout_below="@+id/carte_hydrant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/carte_hydrant"
         android:layout_alignStart="@+id/carte_hydrant"
-        android:background="@drawable/ic_menu_mylocation"
-        android:adjustViewBounds="false" />
+        android:layout_below="@+id/carte_hydrant"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="-55dp"
+        android:adjustViewBounds="false"
+        android:background="@drawable/center"
+        android:src="@drawable/center" />
+
+    <ImageButton
+        android:id="@+id/ic_menu_compass_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/carte_hydrant"
+        android:layout_alignStart="@+id/carte_hydrant"
+        android:layout_below="@+id/carte_hydrant"
+        android:layout_marginLeft="310dp"
+        android:layout_marginTop="-45dp"
+        android:adjustViewBounds="false"
+        android:background="@drawable/center_auto_off"
+        android:src="@drawable/center_auto_off" />
+
+    <ImageButton
+        android:id="@+id/ic_menu_compass_on"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/carte_hydrant"
+        android:layout_alignStart="@+id/carte_hydrant"
+        android:layout_below="@+id/carte_hydrant"
+        android:layout_marginLeft="310dp"
+        android:layout_marginTop="-45dp"
+        android:background="@drawable/center_auto_on"
+        android:src="@drawable/center_auto_on"
+        android:visibility="invisible" />
 
 </LinearLayout>
