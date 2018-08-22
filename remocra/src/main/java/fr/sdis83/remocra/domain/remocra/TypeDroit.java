@@ -65,6 +65,7 @@ public class TypeDroit {
         DEPOT_DECLAHYDRANT_C("depot.declahydrant_C"),
         HYDRANTS_PRESCRIT_R("hydrants.prescrit_R"),
         HYDRANTS_PRESCRIT_C("hydrants.prescrit_C"),
+        HYDRANTS_ANOMALIES_C("hydrants.anomalies_C"),
 
         // Module Permis
         PERMIS_R("permis_R"),

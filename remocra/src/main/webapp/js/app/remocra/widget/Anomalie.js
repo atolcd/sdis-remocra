@@ -154,9 +154,12 @@ Ext.define('Sdis.Remocra.widget.Anomalie', {
 
     isAnomalieSelectionnable: function(record) {
         var info = record.getInfoByNature(this.nature);
-
         if (info == null) {
             return false;
+        }
+        //si on a le droit de gestion d'anomalies hors contexte les anomalies sont sélectionnable par defaut
+        if (Sdis.Remocra.Rights.hasRight('HYDRANTS_ANOMALIES_C') && record.data.critere !== null && record.data.code !== 'INDISPONIBILITE_TEMP') {
+           return true;
         }
         return info.getSaisieByCode(this.typeSaisie) != null;
     },
