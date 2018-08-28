@@ -37,28 +37,28 @@
         android:layout_toRightOf="@+id/imageView"/>
 
     <TextView
-        android:layout_width="130dp"
-        android:layout_height="24dp"
-        android:text="Réception"
         android:id="@+id/receptionLbl"
+        android:layout_width="116dp"
+        android:layout_height="24dp"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/diametre"/>
+        android:layout_toRightOf="@+id/diametre"
+        android:text="Réception" />
 
     <TextView
-        android:layout_width="130dp"
-        android:layout_height="24dp"
-        android:text="Reconnaissance"
         android:id="@+id/recoLbl"
+        android:layout_width="116dp"
+        android:layout_height="24dp"
+        android:layout_alignLeft="@+id/receptionLbl"
         android:layout_below="@+id/receptionLbl"
-        android:layout_alignLeft="@+id/receptionLbl"/>
+        android:text="Reconnaissance" />
 
     <TextView
+        android:id="@+id/ctrlLbl"
         android:layout_width="130dp"
         android:layout_height="24dp"
-        android:text="Contrôle"
-        android:id="@+id/ctrlLbl"
+        android:layout_alignLeft="@+id/recoLbl"
         android:layout_below="@+id/recoLbl"
-        android:layout_alignLeft="@+id/recoLbl"/>
+        android:text="Contrôle" />
 
     <TextView
         android:layout_width="100dp"
@@ -75,11 +75,11 @@
         android:layout_toRightOf="@+id/recoLbl"/>
 
     <TextView
-        android:layout_width="100dp"
-        android:layout_height="24dp"
         android:id="@+id/dateCtrl"
-        android:layout_alignTop="@+id/ctrlLbl"
-        android:layout_alignRight="@+id/dateReco"/>
+        android:layout_width="86dp"
+        android:layout_height="24dp"
+        android:layout_alignRight="@+id/dateReco"
+        android:layout_alignTop="@+id/ctrlLbl" />
 
     <TextView
         android:layout_width="wrap_content"
