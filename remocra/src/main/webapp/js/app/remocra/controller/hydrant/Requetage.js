@@ -405,17 +405,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Requetage', {
 
        var tbar = grid.query('pagingtoolbar')[0];
        tbar.bindStore(store, true);
-       //On charge le store par le résultat de la sélection
-       var myMask = new Ext.LoadMask(grid, {msg:"Sélection en cours..."});
-       store.on({
-       beforeload:function(){
-             myMask.show();
-          }
-       });
        store.load({
 
                     callback : function(records, operation, success) {
-                     myMask.hide();
                      grid.reconfigure(store,columns);
                      exportRequete.setDisabled(false);
                      deleteRequete.setDisabled(false);
