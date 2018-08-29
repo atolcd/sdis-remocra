@@ -32,44 +32,44 @@
         android:layout_weight="1" />
 
     <RelativeLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="49dp">
+        android:layout_height="49dp"
+        android:orientation="horizontal">
 
         <Button
+            android:id="@+id/import_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/action_importer"
-            android:id="@+id/import_button"
-            android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:layout_marginLeft="25dp"
             android:layout_marginStart="25dp"
-            android:onClick="doImport" />
+            android:onClick="doImport"
+            android:text="@string/action_importer" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/action_delete"
             android:id="@+id/delete_button"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/import_button"
-            android:layout_toEndOf="@+id/import_button"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:onClick="doDelete" />
-
-        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/action_send_file"
-            android:id="@+id/send_button"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/delete_button"
-            android:layout_toEndOf="@+id/delete_button"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            android:onClick="doSendFile" />
+            android:layout_toEndOf="@+id/import_button"
+            android:layout_toRightOf="@+id/import_button"
+            android:onClick="doDelete"
+            android:text="@string/action_delete" />
+
+        <Button
+            android:id="@+id/send_button"
+            android:layout_width="131dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/delete_button"
+            android:layout_toRightOf="@+id/delete_button"
+            android:onClick="doSendFile"
+            android:text="@string/action_send_file" />
     </RelativeLayout>
 
 

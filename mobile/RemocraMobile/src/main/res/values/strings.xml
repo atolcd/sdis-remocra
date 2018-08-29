@@ -141,7 +141,7 @@
     <string name="action_delete">Supprimer</string>
     <string name="error_export">Erreur lors de l\'export : %s</string>
     <string name="send_to">Envoyer le fichier</string>
-    <string name="action_send_file">Envoyer</string>
+    <string name="action_send_file">Fichier</string>
     <string name="file_location">Emplacement du fichier :\n%s</string>
 
 </resources>
