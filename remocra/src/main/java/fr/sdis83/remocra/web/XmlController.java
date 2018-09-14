@@ -243,6 +243,36 @@ public class XmlController {
         }
     }
 
+    @RequestMapping(value = "/pourcentages", method = RequestMethod.POST)
+    @PreAuthorize("hasRight('HYDRANTS_C') or hasRight('HYDRANTS_RECONNAISSANCE_C') or hasRight('HYDRANTS_CONTROLE_C')")
+    public void updateTournees(final @RequestBody String xml, HttpServletResponse response, final @RequestParam(value = "v", required = false) Integer v) throws IOException {
+
+        prepareXMLResponse(response);
+        String xmlResp = null;
+        try {
+            xmlService.deSerializeTournees(xml, v);
+            response.setStatus(HttpServletResponse.SC_OK);
+            xmlResp = XML_RESPONSE_UPDATE_HYDRANTS_OK;
+        } catch (XmlValidationException e) {
+            log.error(e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            xmlResp = e.getMessageXMLError();
+        } catch (CannotCreateTransactionException e) {
+            log.error(e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            xmlResp = XML_RESPONSE_DB_CONNECTION_ERROR;
+        } catch (SQLBusinessException e) {
+            xmlResp = manageSQLBusinessExceptionOrException(response, e);
+        }  catch (Exception e) {
+            log.error(e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            xmlResp = XML_RESPONSE_UPDATE_HYDRANTS_ERROR;
+        }
+        response.getOutputStream().println(xmlResp);
+    }
+
+
+
     protected void prepareXMLResponse(HttpServletResponse response) {
         response.setHeader("Content-Type", "application/xml;charset=utf-8");
     }

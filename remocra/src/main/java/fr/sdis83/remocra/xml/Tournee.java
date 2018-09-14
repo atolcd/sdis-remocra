@@ -14,6 +14,8 @@ public class Tournee {
 
     private LstHydrants hydrants;
 
+    private Integer pourcent;
+
     public Tournee() {
         //
     }
@@ -56,5 +58,14 @@ public class Tournee {
 
     public String getNom() {
         return nom;
+    }
+
+
+    public Integer getPourcent() {
+        return pourcent;
+    }
+
+    public void setPourcent(Integer pourcent) {
+        this.pourcent = pourcent;
     }
 }

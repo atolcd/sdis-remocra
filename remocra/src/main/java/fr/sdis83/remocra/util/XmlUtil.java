@@ -34,12 +34,12 @@ public class XmlUtil {
         }
     }
 
-    public static Object unSerializeXml(String xml, Class<?> classe) throws JAXBException, SAXException {
+    public static Object unSerializeXml(String xml, Class<?> classe, String xsdResource) throws JAXBException, SAXException {
         JAXBContext jaxbContext;
 
         jaxbContext = JAXBContext.newInstance(classe);
 
-        URL urlFile = XmlUtil.class.getClassLoader().getResource("fr/sdis83/remocra/service/xml/Hydrants.xsd");
+        URL urlFile = XmlUtil.class.getClassLoader().getResource(xsdResource);
 
         SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Schema schema = sf.newSchema(new File(urlFile.getFile()));
@@ -50,4 +50,6 @@ public class XmlUtil {
 
         return unmarshaller.unmarshal(new StringReader(xml));
     }
+
+
 }

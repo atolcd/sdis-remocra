@@ -632,7 +632,7 @@ public class XmlService {
     @Transactional
     public void deSerializeHydrants(String xml, Integer version) throws BusinessException, XmlValidationException, SQLBusinessException, XmlDroitException, AnomalieException {
         try {
-            LstHydrants hydrants = (LstHydrants) XmlUtil.unSerializeXml(xml, fr.sdis83.remocra.xml.LstHydrants.class);
+            LstHydrants hydrants = (LstHydrants) XmlUtil.unSerializeXml(xml, fr.sdis83.remocra.xml.LstHydrants.class,"fr/sdis83/remocra/service/xml/Hydrants.xsd");
 
             for (HydrantPena hydrant : hydrants.getHydrantsPena()) {
                 fr.sdis83.remocra.domain.remocra.HydrantPena hydrantPena = null;
@@ -704,6 +704,47 @@ public class XmlService {
             throw new BusinessException("Problème avec  l'enregistrement des hydrants : " + e.getMessage());
         }
     }
+
+    @Transactional
+    public void deSerializeTournees(String xml, Integer version) throws BusinessException, XmlValidationException, SQLBusinessException{
+        try {
+            LstTournees tournees = (LstTournees) XmlUtil.unSerializeXml(xml, fr.sdis83.remocra.xml.LstTournees.class,"fr/sdis83/remocra/service/xml/Tournees.xsd");
+            for (fr.sdis83.remocra.xml.Tournee tournee : tournees.getTournees()) {
+                if(tournee.getId()!=null && Integer.valueOf(tournee.getPourcent()) != null){
+                    Query qUpdate = entityManager.createQuery("UPDATE Tournee t set t.etat =:pourcentage where t.id = :id");
+                    qUpdate.setParameter("pourcentage", tournee.getPourcent()).setParameter("id",tournee.getId());
+                    qUpdate.executeUpdate();
+                }
+            }
+
+            } catch (SAXException e) {
+            SAXParseException nested = ExceptionUtils.getNestedExceptionWithClass(e, SAXParseException.class);
+            if (nested != null) {
+                logger.error("Problème avec la validation XML des tournées : " + nested.getMessage() + nested.getLineNumber() + " " + nested.getColumnNumber(), e);
+                throw new XmlValidationException(nested.getMessage(), nested.getLineNumber(), nested.getColumnNumber());
+            }
+            logger.error("Problème avec la validation XML des tournées : " + e.getMessage(), e);
+            throw new BusinessException("Problème avec la désérialisation des tournées : " + e.getMessage());
+        } catch (JAXBException e) {
+            SAXParseException nested = ExceptionUtils.getNestedExceptionWithClass(e, SAXParseException.class);
+            if (nested != null) {
+                logger.error("Problème avec la validation XML des tournées : " + nested.getMessage() + nested.getLineNumber() + " " + nested.getColumnNumber(), e);
+                throw new XmlValidationException(nested.getMessage(), nested.getLineNumber(), nested.getColumnNumber());
+            }
+            logger.error("Problème avec la désérialisation des hydrants : " + e.getMessage(), e);
+            throw new BusinessException("Problème avec la désérialisation des tournées : " + e.getMessage());
+        }  catch (Exception e) {
+            if (e instanceof org.springframework.dao.EmptyResultDataAccessException) {
+                throw new SQLBusinessException(e.getMessage(), "99");
+            }
+            if (e instanceof org.springframework.dao.DataIntegrityViolationException || e instanceof org.springframework.dao.DuplicateKeyException) {
+                throw new SQLBusinessException(e.getMessage(), "23");
+            }
+            logger.error("Problème avec l'enregistrement des tournées : " + e.getMessage(), e);
+            throw new BusinessException("Problème avec  l'enregistrement des tournées : " + e.getMessage());
+        }
+    }
+
 
     /**
      * Mise à jour des hydrants.

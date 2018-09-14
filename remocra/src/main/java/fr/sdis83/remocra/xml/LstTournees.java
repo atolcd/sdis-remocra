@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "tournees", namespace = "http://www.w3.org/2001/XMLSchema-instance")
 public class LstTournees {
 
-    private ArrayList<Tournee> tournees;
+    private ArrayList<Tournee> tournees = new ArrayList<Tournee>();;
 
     public LstTournees() {
         //
