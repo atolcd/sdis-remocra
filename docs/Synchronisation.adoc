@@ -15,10 +15,15 @@ link:index{outfilesuffix}[Retour à l'accueil]
 
 == Schéma XSD ==
 
-Le schéma des services XML liés aux points d'eau sont décrits dans un schéma XSD :
+Le schéma des services XML liés aux points d'eau est décrit dans un schéma XSD :
 
 * link:../remocra/src/main/resources/fr/sdis83/remocra/service/xml/Hydrants.xsd[Hydrants.xsd]
 * link:../remocra/src/main/resources/fr/sdis83/remocra/service/xml/DefHydrants.xsd[DefHydrants.xsd]
+
+Le schéma des services XML liés aux tournées est décrit dans un schéma XSD :
+
+* link:../remocra/src/main/resources/fr/sdis83/remocra/service/xml/Tournees.xsd[Tournees.xsd]
+* link:../remocra/src/main/resources/fr/sdis83/remocra/service/xml/DefTournees.xsd[DefTournees.xsd]
 
 Les fichiers décrivent la structure des éléments XML attendus en entrée et produits en sortie.
 
@@ -76,6 +81,16 @@ La *mise à jour de points d'eau* dans REMOcRA est réalisée en postant la desc
 
 ** Méthode HTTP : POST
 ** Corps posté : élement de type 'lstHydrants' (voir le schéma XSD)
+
+
+=== Mise à jour des pourcentages des tournées ===
+
+La *mise à jour des pourcentages des tournées dans REMOcRA est réalisée en postant la description XML des tournées à l'URL suivante :
+
+* http://remocra.sdisxx.fr/remocra/xml/pourcentages
+
+** Méthode HTTP : POST
+** Corps posté : élement de type 'lstTournees' (voir le schéma XSD)
 
 
 === Authentification ===
@@ -307,7 +322,7 @@ curl -u identifiant:••••• -H "Content-Type: application/xml;charset=ut
 ----
 <?xml version="1.0" encoding="UTF-8"?>
 <tourneesDispo>
-   <tournee>6</tournee>
+   <tournee nom="Tournée du lac">6</tournee>
 </tourneesDispo>
 ----
 
@@ -442,6 +457,7 @@ curl -u identifiant:••••• -X GET http://remocra.sdisxx.fr/remocra/xml/
          </hydrantPibi>
       </hydrants>
       <id>6</id>
+      <nom>Tournée du lac</nom>
    </tournee>
 </xsi:tournees>
 ----
