@@ -6,6 +6,8 @@ public class Tournee {
 
     private Long id;
 
+    private String nom;
+
     private Date debSync;
 
     private Date lastSync;
@@ -46,5 +48,13 @@ public class Tournee {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getNom() {
+        return nom;
     }
 }

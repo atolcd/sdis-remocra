@@ -2,6 +2,7 @@ package fr.sdis83.remocra.web;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import fr.sdis83.remocra.web.serialize.transformer.GeometryTransformer;
+import sun.util.resources.LocaleNames_ga;
 
 @RequestMapping("/hydrants")
 @Controller
@@ -70,7 +72,7 @@ public class HydrantController {
             @Override
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
                 return new JSONSerializer()
-                        .include("data.id", "data.numero", "data.natureNom", "data.natureCode","data.dateRecep", "data.code", "data.tourneeId", "data.dateReco", "data.dateContr", "data.hbe",
+                        .include("data.id", "data.numero", "data.natureNom", "data.natureCode","data.dateRecep", "data.code", "data.tournees", "data.dateReco", "data.dateContr", "data.hbe",
                                 "data.jsonGeometrie", "data.dispoHbe","data.indispoTemp","data.dispoTerrestre", "data.debit", "data.utilisateurModification", "data.commune.id", "data.commune.nom").exclude("data.*", "*.class")
                         .transform(new GeometryTransformer(), Geometry.class);
             }
@@ -111,6 +113,54 @@ public class HydrantController {
     public ResponseEntity<java.lang.String> affecter(final @RequestBody String json) {
         Integer nbHydrant = hydrantService.affecter(json);
         return new SuccessErrorExtSerializer(true, nbHydrant.toString() + " hydrant(s) affecté(s)").serialize();
+
+    }
+
+    @RequestMapping(value = "/checkTournee", method = RequestMethod.POST, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('TOURNEE_C')")
+    public ResponseEntity<java.lang.String> checkTournee(final @RequestBody String json) {
+        Map<Hydrant,String> withSameOrganism = hydrantService.checkTournee(json);
+        if(withSameOrganism.isEmpty()){
+            return new SuccessErrorExtSerializer(true, "aucune tournée avec le même organisme").serialize();
+        }
+        String msg = "<div class=\"listHydrant\">";
+        for(Map.Entry<Hydrant, String> entry : withSameOrganism.entrySet()) {
+            msg+= "<li>"+entry.getKey().getNumero()+" ("+entry.getValue()+")</li>";
+            // traitements
+        }
+        msg+="</div>";
+        if(withSameOrganism.size() == 1){
+            return new SuccessErrorExtSerializer(false, "Le point d\'eau ci-dessous est associé à une autre tournée :"
+                +msg+ "<br> Merci de le désaffecter avant de procéder à une nouvelle réaffectation.").serialize();
+        }
+
+        return new SuccessErrorExtSerializer(false, "Les points d\'eau ci-dessous sont associés à d\'autres tournées :"
+            +msg+"<br> Merci de les désaffecter avant de procéder à une nouvelle réaffectation.").serialize();
+
+    }
+
+    @RequestMapping(value = "/checkReservation", method = RequestMethod.POST, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('TOURNEE_C')")
+    public ResponseEntity<java.lang.String> checkReservation(final @RequestBody String json) {
+        Map<Hydrant,String>  withReservation = hydrantService.checkReservation(json);
+        if(withReservation.isEmpty()){
+            return new SuccessErrorExtSerializer(true, "aucune tournée est réservée").serialize();
+        }
+        String msg = "<div class=\"listHydrant\">";
+        for(Map.Entry<Hydrant, String> entry : withReservation.entrySet()) {
+            msg+= "<li>"+entry.getKey().getNumero()+" ("+entry.getValue()+")</li>";
+            // traitements
+        }
+        msg+="</div>";
+        if(withReservation.size() == 1){
+            return new SuccessErrorExtSerializer(false, "Le point d\'eau ci-dessous appartient à une tournée reservée :"
+                +msg+ "<br> En continuant il sera désaffecté. "
+                +"Ceci n\'engendre pas de perte de données lors de la synchronisation mais impacte potentiellement le pourcentage si la tournée n\'a pas été finalisée.").serialize();
+        }
+
+        return new SuccessErrorExtSerializer(false, "Les points d\'eau ci-dessous appartiennent à une tournée reservée :"
+            +msg+ "<br> En continuant ils seront désaffectés. "
+            +"Ceci n\'engendre pas de perte de données lors de la synchronisation mais impacte potentiellement le pourcentage si la tournée n\'a pas été finalisée.").serialize();
 
     }
 

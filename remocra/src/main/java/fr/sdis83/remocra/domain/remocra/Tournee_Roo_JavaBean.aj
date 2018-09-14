@@ -20,7 +20,15 @@ privileged aspect Tournee_Roo_JavaBean {
     public void Tournee.setId(Long id) {
         this.id = id;
     }
-    
+
+    public String Tournee.getNom() {
+        return this.nom;
+    }
+
+    public void Tournee.setNom(String nom) {
+        this.nom = nom;
+    }
+
     public Integer Tournee.getVersion() {
         return this.version;
     }
@@ -69,28 +77,20 @@ privileged aspect Tournee_Roo_JavaBean {
         this.reservation = reservation;
     }
     
-    public Set<Hydrant> Tournee.getHydrants() {
-        return this.hydrants;
-    }
-    
-    public void Tournee.setHydrants(Set<Hydrant> hydrants) {
-        this.hydrants = hydrants;
-    }
-    
-    public Integer Tournee.getHydrantCount() {
-        return this.hydrantCount;
-    }
-    
-    public void Tournee.setHydrantCount(Integer hydrantCount) {
-        this.hydrantCount = hydrantCount;
-    }
-    
     public Integer Tournee.getEtat() {
         return this.etat;
     }
     
     public void Tournee.setEtat(Integer etat) {
         this.etat = etat;
+    }
+
+    public Integer Tournee.getHydrantCount() {
+            return hydrantCount;
+    }
+
+    public void Tournee.setHydrantCount(Integer hydrantCount) {
+       this.hydrantCount = hydrantCount;
     }
     
 }

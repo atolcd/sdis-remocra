@@ -59,7 +59,7 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
         CriteriaBuilder cBuilder = this.getCriteriaBuilder();
         Predicate predicat = null;
         if ("tournee".equals(itemFilter.getFieldName())) {
-            Expression<Integer> cpPath = from.join("tournee").get("id");
+            Expression<Integer> cpPath = from.join("tournees").get("id");
             predicat = cBuilder.equal(cpPath, itemFilter.getValue());
 
         } else if ("zoneCompetenceIdCom".equals(itemFilter.getFieldName())) {

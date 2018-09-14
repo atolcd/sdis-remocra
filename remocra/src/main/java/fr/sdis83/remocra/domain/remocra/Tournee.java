@@ -13,6 +13,7 @@ import javax.persistence.PreRemove;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.Type;
@@ -35,6 +36,10 @@ public class Tournee {
     @Column(name = "id")
     private Long id;
 
+    @NotNull
+    @Column(name = "nom")
+    private String nom;
+
     @Version
     @Column(name = "version", columnDefinition = "INTEGER default 1")
     private Integer version;
@@ -47,21 +52,18 @@ public class Tournee {
     @DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
     private Date lastSync;
 
-    @Formula("(select ST_Envelope(ST_extent(h.geometrie)) from remocra.hydrant h where h.tournee = id)")
+    @Formula("(select ST_Envelope(ST_extent(h.geometrie)) from remocra.hydrant h where h.id in (select th.hydrant from remocra.hydrant_tournees th where th.tournees = id))")
     @Type(type = "org.hibernate.spatial.GeometryType")
     private Geometry geometrie;
+
+    @Formula("(select count(*) from remocra.hydrant_tournees th where th.tournees = id)")
+    private Integer hydrantCount;
 
     @ManyToOne
     private Organisme affectation;
 
     @ManyToOne
     private Utilisateur reservation;
-
-    @OneToMany(mappedBy = "tournee")
-    private Set<Hydrant> hydrants;
-
-    // @Formula("(select count(*) from remocra.hydrant h where h.tournee = id)")
-    private Integer hydrantCount;
 
     // @Formula("(case when deb_sync is null then 0 else" +
     // " case when (select count(*) from remocra.hydrant h where h.tournee = id) = 0 then 100 else"
@@ -73,10 +75,5 @@ public class Tournee {
     // + " end end)")
     private Integer etat;
 
-    @PreRemove
-    protected void onPreRemove() {
-        for (Hydrant hydrant : this.hydrants) {
-            hydrant.setTournee(null);
-        }
-    }
+
 }

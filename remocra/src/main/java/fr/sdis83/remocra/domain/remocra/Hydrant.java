@@ -1,7 +1,9 @@
 package fr.sdis83.remocra.domain.remocra;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -78,8 +80,8 @@ public class Hydrant implements Featurable {
     @Formula("(select count(*) from remocra.hydrant_anomalies ha where ha.hydrant = id AND ha.anomalies = (select tha.id from remocra.type_hydrant_anomalie tha where tha.code = 'INDISPONIBILITE_TEMP'))")
     private Integer indispoTemp ;
 
-    @ManyToOne
-    private Tournee tournee;
+    @ManyToMany
+    private Set<Tournee> tournees;
 
     // Identification
 
@@ -200,9 +202,7 @@ public class Hydrant implements Featurable {
         feature.addProperty("dispo", this.getDispoTerrestre());
         feature.addProperty("nature", this.getNature().getCode());
         feature.addProperty("numero", this.getNumero());
-        feature.addProperty("tournee", this.getTourneeId());
         feature.addProperty("commune", this.getCommuneId());
-        feature.addProperty("isTourneeRes", this.getTournee() != null ? this.getTournee().getReservation() != null : false);
         // PIBI
         String diametreCode = null;
         if (this instanceof HydrantPibi) {
@@ -222,13 +222,6 @@ public class Hydrant implements Featurable {
         }
         feature.addProperty("positionnement", positionnementCode);
         return feature;
-    }
-
-    public Long getTourneeId() {
-        if (this.getTournee() != null) {
-            return this.getTournee().getId();
-        }
-        return null;
     }
 
     public Long getCommuneId() {

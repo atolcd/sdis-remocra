@@ -3,6 +3,7 @@ package fr.sdis83.remocra.web;
 import java.io.StringWriter;
 import java.util.List;
 
+import flexjson.JSONSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -54,6 +55,12 @@ public class TourneeController {
         return new AbstractExtListSerializer<Tournee>("fr.sdis83.remocra.domain.remocra.Tournee retrieved.") {
 
             @Override
+            protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+                return serializer
+                    // anomalies
+                    .include("data.hydrantCount");
+            }
+            @Override
             protected List<Tournee> getRecords() {
                 return tourneeService.find(start, limit, sortList, itemFilterList);
             }
@@ -65,8 +72,7 @@ public class TourneeController {
 
         }.serialize();
     }
-
-    @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/xml")
+    @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/xml;charset=utf-8")
     @PreAuthorize("hasRight('TOURNEE_R')")
     public ResponseEntity<String> getTourneeDisponible() {
         List<Tournee> tournees = tourneeService.getTourneeDisponible(utilisateurService.getCurrentUtilisateur());
@@ -75,7 +81,7 @@ public class TourneeController {
         stringWriter.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
         stringWriter.append("<tourneesDispo>");
         for (Tournee tournee : tournees) {
-            stringWriter.append("<tournee>");
+            stringWriter.append("<tournee nom=\""+tournee.getNom().toString().replaceAll("\"", "&quot;")+"\" >");
             stringWriter.append(tournee.getId().toString());
             stringWriter.append("</tournee>");
         }
@@ -105,6 +111,19 @@ public class TourneeController {
             attached.setReservation(null);
             attached.flush();
             return new SuccessErrorExtSerializer(true, "Réservation de la tournée annulée").serialize();
+        } catch (Exception e) {
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
+    }
+
+    @RequestMapping(value = "/resetTournee/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('TOURNEE_C')")
+    public ResponseEntity<java.lang.String> resettournee(@PathVariable("id") Long id) {
+        try {
+            Tournee attached = Tournee.findTournee(id);
+            attached.setEtat(0);
+            attached.flush();
+            return new SuccessErrorExtSerializer(true, "La tournée "+ attached.getNom()+" a été réinitialisée").serialize();
         } catch (Exception e) {
             return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
         }

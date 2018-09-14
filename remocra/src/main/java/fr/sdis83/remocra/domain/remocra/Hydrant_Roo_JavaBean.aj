@@ -65,14 +65,6 @@ privileged aspect Hydrant_Roo_JavaBean {
     public void Hydrant.setIndispoTemp(Integer indispoTemp) {
         this.indispoTemp = indispoTemp;
     }
-
-    public Tournee Hydrant.getTournee() {
-        return this.tournee;
-    }
-    
-    public void Hydrant.setTournee(Tournee tournee) {
-        this.tournee = tournee;
-    }
     
     public TypeHydrantNature Hydrant.getNature() {
         return this.nature;
@@ -280,6 +272,14 @@ privileged aspect Hydrant_Roo_JavaBean {
     
     public void Hydrant.setAnomalies(Set<TypeHydrantAnomalie> anomalies) {
         this.anomalies = anomalies;
+    }
+
+    public Set<Tournee> Hydrant.getTournees() {
+        return this.tournees;
+    }
+
+    public void Hydrant.setTournees(Set<Tournee> tournees) {
+        this.tournees = tournees;
     }
     
     public Disponibilite Hydrant.getDispoTerrestre() {

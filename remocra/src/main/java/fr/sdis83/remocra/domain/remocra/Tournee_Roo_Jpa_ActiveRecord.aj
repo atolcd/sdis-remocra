@@ -14,7 +14,7 @@ privileged aspect Tournee_Roo_Jpa_ActiveRecord {
     @PersistenceContext
     transient EntityManager Tournee.entityManager;
     
-    public static final List<String> Tournee.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "version", "debSync", "lastSync", "geometrie", "affectation", "reservation", "hydrants", "hydrantCount", "etat");
+    public static final List<String> Tournee.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "nom", "version", "debSync", "lastSync", "geometrie", "affectation", "reservation", "hydrants", "hydrantCount", "etat");
     
     public static final EntityManager Tournee.entityManager() {
         EntityManager em = new Tournee().entityManager;

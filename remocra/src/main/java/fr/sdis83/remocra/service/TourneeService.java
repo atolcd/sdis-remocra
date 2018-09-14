@@ -1,10 +1,12 @@
 package fr.sdis83.remocra.service;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -15,6 +17,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import fr.sdis83.remocra.domain.remocra.Hydrant;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +26,7 @@ import fr.sdis83.remocra.domain.remocra.Tournee;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
+import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 public class TourneeService extends AbstractService<Tournee> {
@@ -48,6 +52,9 @@ public class TourneeService extends AbstractService<Tournee> {
         } else if ("query".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.get("id");
             predicat = cBuilder.like(cBuilder.concat("", cpPath), itemFilter.getValue() + "%");
+        } else if ("nom".equals(itemFilter.getFieldName())) {
+            Expression<String> cpPath = from.get("nom");
+            predicat = cBuilder.like(cBuilder.concat("", cpPath), "%"+ itemFilter.getValue() + "%");
         } else if ("affectation".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.join("affectation").get("id");
             predicat = cBuilder.equal(cpPath, itemFilter.getValue());
@@ -85,6 +92,19 @@ public class TourneeService extends AbstractService<Tournee> {
         TypedQuery<Tournee> query = entityManager.createQuery(sql, Tournee.class);
         query.setParameter("organisme", utilisateur.getOrganisme());
         return query.getResultList();
+    }
+
+    @Transactional
+    public List<Hydrant> getHydrants(Long id) {
+      List<Hydrant>hydrants = new ArrayList<Hydrant>();
+        String sql = "SELECT hydrant FROM remocra.hydrant_tournees ht where ht.tournees =:id";
+        Query query = entityManager.createNativeQuery(sql);
+        query.setParameter("id",id);
+        List<BigInteger> idHydrants = query.getResultList();
+        for(int i = 0; i< idHydrants.size(); i++){
+            hydrants.add(Hydrant.findHydrant(idHydrants.get(i).longValue()));
+        }
+        return hydrants;
     }
 
 }

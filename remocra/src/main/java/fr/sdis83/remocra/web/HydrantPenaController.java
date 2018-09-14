@@ -55,7 +55,7 @@ public class HydrantPenaController {
 
             @Override
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
-                return serializer.include("data.anomalies")
+                return serializer.include("data.anomalies").include("data.tournees")
                         // photo associée
                         .include("data.photo","data.utilisateurModification")
                         // Documents

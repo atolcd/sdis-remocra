@@ -87,7 +87,10 @@ public class HydrantPibiController {
                 return serializer
                         // anomalies
                         .include("data.anomalies")
-                        // photo associée
+                        // tournees
+                        .include("data.tournees")
+
+                    // photo associée
                         .include("data.photo")
                         // Documents
                         .include("data.hydrantDocuments.id").include("data.hydrantDocuments.titre").include("data.hydrantDocuments.code").include("data.utilisateur").exclude("data.hydrantDocuments.*")

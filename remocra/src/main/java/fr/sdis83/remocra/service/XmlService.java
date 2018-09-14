@@ -114,6 +114,9 @@ public class XmlService {
     private ParamConfService paramConfService;
 
     @Autowired
+    private TourneeService tourneeService;
+
+    @Autowired
     private AuthoritiesUtil authUtils;
 
     @PersistenceContext
@@ -450,10 +453,11 @@ public class XmlService {
 
             fr.sdis83.remocra.xml.Tournee tourneeXML = new fr.sdis83.remocra.xml.Tournee();
             tourneeXML.setId(tournee.getId());
+            tourneeXML.setNom(tournee.getNom());
             tourneeXML.setDebSync(tournee.getDebSync());
             tourneeXML.setLastSync(tournee.getLastSync());
 
-            Set<Hydrant> lstHydrants = tournee.getHydrants();
+            List<Hydrant> lstHydrants = tourneeService.getHydrants(tournee.getId());
 
             LstHydrants lstHydrantsXML = new LstHydrants();
 
