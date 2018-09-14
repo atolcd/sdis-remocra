@@ -32,6 +32,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.HydrantIndispoTemporaireHydrant
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPena;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPibi;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPrescrit;
+import fr.sdis83.remocra.db.model.remocra.tables.HydrantTournees;
 import fr.sdis83.remocra.db.model.remocra.tables.Metadonnee;
 import fr.sdis83.remocra.db.model.remocra.tables.Oldeb;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebCaracteristique;
@@ -153,6 +154,7 @@ public class Keys {
 	public static final Identity<Record, Long> IDENTITY_HYDRANT_DOCUMENT = Identities0.IDENTITY_HYDRANT_DOCUMENT;
 	public static final Identity<Record, Long> IDENTITY_HYDRANT_INDISPO_TEMPORAIRE = Identities0.IDENTITY_HYDRANT_INDISPO_TEMPORAIRE;
 	public static final Identity<Record, Long> IDENTITY_HYDRANT_PRESCRIT = Identities0.IDENTITY_HYDRANT_PRESCRIT;
+	public static final Identity<Record, Long> IDENTITY_HYDRANT_TOURNEES = Identities0.IDENTITY_HYDRANT_TOURNEES;
 	public static final Identity<Record, Long> IDENTITY_METADONNEE = Identities0.IDENTITY_METADONNEE;
 	public static final Identity<Record, Long> IDENTITY_OLDEB = Identities0.IDENTITY_OLDEB;
 	public static final Identity<Record, Long> IDENTITY_OLDEB_LOCATAIRE = Identities0.IDENTITY_OLDEB_LOCATAIRE;
@@ -260,6 +262,8 @@ public class Keys {
 	public static final UniqueKey<Record> HYDRANT_PENA_PKEY = UniqueKeys0.HYDRANT_PENA_PKEY;
 	public static final UniqueKey<Record> HYDRANT_PIBI_PKEY = UniqueKeys0.HYDRANT_PIBI_PKEY;
 	public static final UniqueKey<Record> HYDRANT_PRESCRIT_PKEY = UniqueKeys0.HYDRANT_PRESCRIT_PKEY;
+	public static final UniqueKey<Record> HYDRANT_TOURNEES_PKEY = UniqueKeys0.HYDRANT_TOURNEES_PKEY;
+	public static final UniqueKey<Record> UK_HYDRANT_TOURNEES = UniqueKeys0.UK_HYDRANT_TOURNEES;
 	public static final UniqueKey<Record> METADONNEE_PKEY = UniqueKeys0.METADONNEE_PKEY;
 	public static final UniqueKey<Record> OLDEB_PKEY = UniqueKeys0.OLDEB_PKEY;
 	public static final UniqueKey<Record> UK_OLDEB_COMMUNE_SECTION_PARCELLE = UniqueKeys0.UK_OLDEB_COMMUNE_SECTION_PARCELLE;
@@ -299,6 +303,7 @@ public class Keys {
 	public static final UniqueKey<Record> THEMATIQUE_NOM_KEY = UniqueKeys0.THEMATIQUE_NOM_KEY;
 	public static final UniqueKey<Record> THEMATIQUE_CODE_KEY = UniqueKeys0.THEMATIQUE_CODE_KEY;
 	public static final UniqueKey<Record> TOURNEE_PKEY = UniqueKeys0.TOURNEE_PKEY;
+	public static final UniqueKey<Record> NOM_AFFECTATION = UniqueKeys0.NOM_AFFECTATION;
 	public static final UniqueKey<Record> TYPE_ALERTE_ANO_PKEY = UniqueKeys0.TYPE_ALERTE_ANO_PKEY;
 	public static final UniqueKey<Record> TYPE_ALERTE_ELT_PKEY = UniqueKeys0.TYPE_ALERTE_ELT_PKEY;
 	public static final UniqueKey<Record> TYPE_DROIT_PKEY = UniqueKeys0.TYPE_DROIT_PKEY;
@@ -376,7 +381,6 @@ public class Keys {
 	public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028D2DA796C = ForeignKeys0.HYDRANT__FK51B8F028D2DA796C;
 	public static final ForeignKey<Record, Record> HYDRANT__FK51B8F0285D29D8A8 = ForeignKeys0.HYDRANT__FK51B8F0285D29D8A8;
 	public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028D10A0428 = ForeignKeys0.HYDRANT__FK51B8F028D10A0428;
-	public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028DA542518 = ForeignKeys0.HYDRANT__FK51B8F028DA542518;
 	public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028374ADD52 = ForeignKeys0.HYDRANT__FK51B8F028374ADD52;
 	public static final ForeignKey<Record, Record> HYDRANT__FK_ZONE_SPECIALE = ForeignKeys0.HYDRANT__FK_ZONE_SPECIALE;
 	public static final ForeignKey<Record, Record> HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION = ForeignKeys0.HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION;
@@ -397,6 +401,8 @@ public class Keys {
 	public static final ForeignKey<Record, Record> HYDRANT_PIBI__FKD60E21B7CF1BDF92 = ForeignKeys0.HYDRANT_PIBI__FKD60E21B7CF1BDF92;
 	public static final ForeignKey<Record, Record> HYDRANT_PIBI__FKD60E21B7DDA2E3C4 = ForeignKeys0.HYDRANT_PIBI__FKD60E21B7DDA2E3C4;
 	public static final ForeignKey<Record, Record> HYDRANT_PRESCRIT__FKDC1AB241374ADD52 = ForeignKeys0.HYDRANT_PRESCRIT__FKDC1AB241374ADD52;
+	public static final ForeignKey<Record, Record> HYDRANT_TOURNEES__HYDRANT_TOURNEES_HYDRANT = ForeignKeys0.HYDRANT_TOURNEES__HYDRANT_TOURNEES_HYDRANT;
+	public static final ForeignKey<Record, Record> HYDRANT_TOURNEES__HYDRANT_TOURNEES_TOURNEES = ForeignKeys0.HYDRANT_TOURNEES__HYDRANT_TOURNEES_TOURNEES;
 	public static final ForeignKey<Record, Record> METADONNEE__FK507E37B0D27676E2 = ForeignKeys0.METADONNEE__FK507E37B0D27676E2;
 	public static final ForeignKey<Record, Record> OLDEB__FK_OLDEB_COMMUNE = ForeignKeys0.OLDEB__FK_OLDEB_COMMUNE;
 	public static final ForeignKey<Record, Record> OLDEB__FK_OLDEB_ZONE_URBANISME = ForeignKeys0.OLDEB__FK_OLDEB_ZONE_URBANISME;
@@ -500,6 +506,7 @@ public class Keys {
 		public static Identity<Record, Long> IDENTITY_HYDRANT_DOCUMENT = createIdentity(HydrantDocument.HYDRANT_DOCUMENT, HydrantDocument.HYDRANT_DOCUMENT.ID);
 		public static Identity<Record, Long> IDENTITY_HYDRANT_INDISPO_TEMPORAIRE = createIdentity(HydrantIndispoTemporaire.HYDRANT_INDISPO_TEMPORAIRE, HydrantIndispoTemporaire.HYDRANT_INDISPO_TEMPORAIRE.ID);
 		public static Identity<Record, Long> IDENTITY_HYDRANT_PRESCRIT = createIdentity(HydrantPrescrit.HYDRANT_PRESCRIT, HydrantPrescrit.HYDRANT_PRESCRIT.ID);
+		public static Identity<Record, Long> IDENTITY_HYDRANT_TOURNEES = createIdentity(HydrantTournees.HYDRANT_TOURNEES, HydrantTournees.HYDRANT_TOURNEES.ID);
 		public static Identity<Record, Long> IDENTITY_METADONNEE = createIdentity(Metadonnee.METADONNEE, Metadonnee.METADONNEE.ID);
 		public static Identity<Record, Long> IDENTITY_OLDEB = createIdentity(Oldeb.OLDEB, Oldeb.OLDEB.ID);
 		public static Identity<Record, Long> IDENTITY_OLDEB_LOCATAIRE = createIdentity(OldebLocataire.OLDEB_LOCATAIRE, OldebLocataire.OLDEB_LOCATAIRE.ID);
@@ -605,6 +612,8 @@ public class Keys {
 		public static final UniqueKey<Record> HYDRANT_PENA_PKEY = createUniqueKey(HydrantPena.HYDRANT_PENA, HydrantPena.HYDRANT_PENA.ID);
 		public static final UniqueKey<Record> HYDRANT_PIBI_PKEY = createUniqueKey(HydrantPibi.HYDRANT_PIBI, HydrantPibi.HYDRANT_PIBI.ID);
 		public static final UniqueKey<Record> HYDRANT_PRESCRIT_PKEY = createUniqueKey(HydrantPrescrit.HYDRANT_PRESCRIT, HydrantPrescrit.HYDRANT_PRESCRIT.ID);
+		public static final UniqueKey<Record> HYDRANT_TOURNEES_PKEY = createUniqueKey(HydrantTournees.HYDRANT_TOURNEES, HydrantTournees.HYDRANT_TOURNEES.ID);
+		public static final UniqueKey<Record> UK_HYDRANT_TOURNEES = createUniqueKey(HydrantTournees.HYDRANT_TOURNEES, HydrantTournees.HYDRANT_TOURNEES.HYDRANT, HydrantTournees.HYDRANT_TOURNEES.TOURNEES);
 		public static final UniqueKey<Record> METADONNEE_PKEY = createUniqueKey(Metadonnee.METADONNEE, Metadonnee.METADONNEE.ID);
 		public static final UniqueKey<Record> OLDEB_PKEY = createUniqueKey(Oldeb.OLDEB, Oldeb.OLDEB.ID);
 		public static final UniqueKey<Record> UK_OLDEB_COMMUNE_SECTION_PARCELLE = createUniqueKey(Oldeb.OLDEB, Oldeb.OLDEB.COMMUNE, Oldeb.OLDEB.SECTION, Oldeb.OLDEB.PARCELLE);
@@ -644,6 +653,7 @@ public class Keys {
 		public static final UniqueKey<Record> THEMATIQUE_NOM_KEY = createUniqueKey(Thematique.THEMATIQUE, Thematique.THEMATIQUE.NOM);
 		public static final UniqueKey<Record> THEMATIQUE_CODE_KEY = createUniqueKey(Thematique.THEMATIQUE, Thematique.THEMATIQUE.CODE);
 		public static final UniqueKey<Record> TOURNEE_PKEY = createUniqueKey(Tournee.TOURNEE, Tournee.TOURNEE.ID);
+		public static final UniqueKey<Record> NOM_AFFECTATION = createUniqueKey(Tournee.TOURNEE, Tournee.TOURNEE.NOM, Tournee.TOURNEE.AFFECTATION);
 		public static final UniqueKey<Record> TYPE_ALERTE_ANO_PKEY = createUniqueKey(TypeAlerteAno.TYPE_ALERTE_ANO, TypeAlerteAno.TYPE_ALERTE_ANO.ID);
 		public static final UniqueKey<Record> TYPE_ALERTE_ELT_PKEY = createUniqueKey(TypeAlerteElt.TYPE_ALERTE_ELT, TypeAlerteElt.TYPE_ALERTE_ELT.ID);
 		public static final UniqueKey<Record> TYPE_DROIT_PKEY = createUniqueKey(TypeDroit.TYPE_DROIT, TypeDroit.TYPE_DROIT.ID);
@@ -719,7 +729,6 @@ public class Keys {
 		public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028D2DA796C = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.COMMUNE_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.COMMUNE);
 		public static final ForeignKey<Record, Record> HYDRANT__FK51B8F0285D29D8A8 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_DOMAINE_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.DOMAINE);
 		public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028D10A0428 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_NATURE_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.NATURE);
-		public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028DA542518 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TOURNEE_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.TOURNEE);
 		public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028374ADD52 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.ORGANISME);
 		public static final ForeignKey<Record, Record> HYDRANT__FK_ZONE_SPECIALE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ZONE_SPECIALE_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.ZONE_SPECIALE);
 		public static final ForeignKey<Record, Record> HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.UTILISATEUR_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.UTILISATEUR_MODIFICATION);
@@ -740,6 +749,8 @@ public class Keys {
 		public static final ForeignKey<Record, Record> HYDRANT_PIBI__FKD60E21B7CF1BDF92 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_MODELE_PKEY, HydrantPibi.HYDRANT_PIBI, HydrantPibi.HYDRANT_PIBI.MODELE);
 		public static final ForeignKey<Record, Record> HYDRANT_PIBI__FKD60E21B7DDA2E3C4 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.HYDRANT_PENA_PKEY, HydrantPibi.HYDRANT_PIBI, HydrantPibi.HYDRANT_PIBI.PENA);
 		public static final ForeignKey<Record, Record> HYDRANT_PRESCRIT__FKDC1AB241374ADD52 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, HydrantPrescrit.HYDRANT_PRESCRIT, HydrantPrescrit.HYDRANT_PRESCRIT.ORGANISME);
+		public static final ForeignKey<Record, Record> HYDRANT_TOURNEES__HYDRANT_TOURNEES_HYDRANT = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.HYDRANT_PKEY, HydrantTournees.HYDRANT_TOURNEES, HydrantTournees.HYDRANT_TOURNEES.HYDRANT);
+		public static final ForeignKey<Record, Record> HYDRANT_TOURNEES__HYDRANT_TOURNEES_TOURNEES = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TOURNEE_PKEY, HydrantTournees.HYDRANT_TOURNEES, HydrantTournees.HYDRANT_TOURNEES.TOURNEES);
 		public static final ForeignKey<Record, Record> METADONNEE__FK507E37B0D27676E2 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.THEMATIQUE_PKEY, Metadonnee.METADONNEE, Metadonnee.METADONNEE.THEMATIQUE);
 		public static final ForeignKey<Record, Record> OLDEB__FK_OLDEB_COMMUNE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.COMMUNE_PKEY, Oldeb.OLDEB, Oldeb.OLDEB.COMMUNE);
 		public static final ForeignKey<Record, Record> OLDEB__FK_OLDEB_ZONE_URBANISME = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_OLDEB_ZONE_URBANISME_PKEY, Oldeb.OLDEB, Oldeb.OLDEB.ZONE_URBANISME);

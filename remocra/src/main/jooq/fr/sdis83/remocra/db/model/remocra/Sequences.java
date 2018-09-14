@@ -136,6 +136,10 @@ public class Sequences {
 	public static final Sequence<Long> HYDRANT_PRESCRIT_ID_SEQ = new SequenceImpl<Long>("hydrant_prescrit_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
+	 * The sequence <code>remocra.hydrant_tournees_id_seq</code>
+	 */
+	public static final Sequence<Long> HYDRANT_TOURNEES_ID_SEQ = new SequenceImpl<Long>("hydrant_tournees_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+	/**
 	 * The sequence <code>remocra.metadonnee_id_seq</code>
 	 */
 	public static final Sequence<Long> METADONNEE_ID_SEQ = new SequenceImpl<Long>("metadonnee_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));

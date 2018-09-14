@@ -60,6 +60,7 @@ public class TypeDroit {
         TOURNEE_R("tournee_R"),
         TOURNEE_C("tournee_C"),
         TOURNEE_RESERVATION_D("tournee.reservation_D"),
+        TOURNEE_POURCENTAGE_C("tournee.pourcentage_C"),
         HYDRANTS_EXPORT_NON_NUM_C("hydrants.exportnonnum_C"),
         HYDRANTS_TRAITEMENT_C("hydrants.traitement_C"),
         DEPOT_DECLAHYDRANT_C("depot.declahydrant_C"),

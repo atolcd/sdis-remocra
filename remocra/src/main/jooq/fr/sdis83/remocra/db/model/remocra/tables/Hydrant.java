@@ -37,7 +37,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -36659561;
+	private static final long serialVersionUID = -78917840;
 
 	/**
 	 * The reference instance of <code>remocra.hydrant</code>
@@ -173,11 +173,6 @@ public class Hydrant extends TableImpl<Record> {
 	public final TableField<Record, Long> NATURE = createField("nature", org.jooq.impl.SQLDataType.BIGINT, this, "");
 
 	/**
-	 * The column <code>remocra.hydrant.tournee</code>.
-	 */
-	public final TableField<Record, Long> TOURNEE = createField("tournee", org.jooq.impl.SQLDataType.BIGINT, this, "");
-
-	/**
 	 * The column <code>remocra.hydrant.date_modification</code>.
 	 */
 	public final TableField<Record, Instant> DATE_MODIFICATION = createField("date_modification", org.jooq.impl.SQLDataType.TIMESTAMP, this, "", new InstantConverter());
@@ -268,7 +263,7 @@ public class Hydrant extends TableImpl<Record> {
 	 */
 	@Override
 	public List<ForeignKey<Record, ?>> getReferences() {
-		return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT__FK51B8F028D2DA796C, Keys.HYDRANT__FK51B8F0285D29D8A8, Keys.HYDRANT__FK51B8F028D10A0428, Keys.HYDRANT__FK51B8F028DA542518, Keys.HYDRANT__FK51B8F028374ADD52, Keys.HYDRANT__FK_ZONE_SPECIALE, Keys.HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION);
+		return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT__FK51B8F028D2DA796C, Keys.HYDRANT__FK51B8F0285D29D8A8, Keys.HYDRANT__FK51B8F028D10A0428, Keys.HYDRANT__FK51B8F028374ADD52, Keys.HYDRANT__FK_ZONE_SPECIALE, Keys.HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION);
 	}
 
 	/**

@@ -24,7 +24,7 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant implements Serializable {
 
-	private static final long serialVersionUID = 1475253742;
+	private static final long serialVersionUID = 2006438122;
 
 	private Long    id;
 	private String  agent1;
@@ -50,7 +50,6 @@ public class Hydrant implements Serializable {
 	private Long    commune;
 	private Long    domaine;
 	private Long    nature;
-	private Long    tournee;
 	private Instant dateModification;
 	private String  courrier;
 	private String  gestPointEau;
@@ -87,7 +86,6 @@ public class Hydrant implements Serializable {
 		this.commune = value.commune;
 		this.domaine = value.domaine;
 		this.nature = value.nature;
-		this.tournee = value.tournee;
 		this.dateModification = value.dateModification;
 		this.courrier = value.courrier;
 		this.gestPointEau = value.gestPointEau;
@@ -123,7 +121,6 @@ public class Hydrant implements Serializable {
 		Long    commune,
 		Long    domaine,
 		Long    nature,
-		Long    tournee,
 		Instant dateModification,
 		String  courrier,
 		String  gestPointEau,
@@ -157,7 +154,6 @@ public class Hydrant implements Serializable {
 		this.commune = commune;
 		this.domaine = domaine;
 		this.nature = nature;
-		this.tournee = tournee;
 		this.dateModification = dateModification;
 		this.courrier = courrier;
 		this.gestPointEau = gestPointEau;
@@ -381,15 +377,6 @@ public class Hydrant implements Serializable {
 
 	public Hydrant setNature(Long nature) {
 		this.nature = nature;
-		return this;
-	}
-
-	public Long getTournee() {
-		return this.tournee;
-	}
-
-	public Hydrant setTournee(Long tournee) {
-		this.tournee = tournee;
 		return this;
 	}
 

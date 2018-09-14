@@ -33,6 +33,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.HydrantIndispoTemporaireHydrant
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPena;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPibi;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPrescrit;
+import fr.sdis83.remocra.db.model.remocra.tables.HydrantTournees;
 import fr.sdis83.remocra.db.model.remocra.tables.Metadonnee;
 import fr.sdis83.remocra.db.model.remocra.tables.Oldeb;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebCaracteristique;
@@ -130,7 +131,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Remocra extends SchemaImpl {
 
-	private static final long serialVersionUID = -1875643489;
+	private static final long serialVersionUID = -1271913960;
 
 	/**
 	 * The reference instance of <code>remocra</code>
@@ -175,6 +176,7 @@ public class Remocra extends SchemaImpl {
 			Sequences.HYDRANT_ID_SEQ,
 			Sequences.HYDRANT_INDISPO_TEMPORAIRE_ID_SEQ,
 			Sequences.HYDRANT_PRESCRIT_ID_SEQ,
+			Sequences.HYDRANT_TOURNEES_ID_SEQ,
 			Sequences.METADONNEE_ID_SEQ,
 			Sequences.OLDEB_ID_SEQ,
 			Sequences.OLDEB_LOCATAIRE_ID_SEQ,
@@ -279,6 +281,7 @@ public class Remocra extends SchemaImpl {
 			HydrantPena.HYDRANT_PENA,
 			HydrantPibi.HYDRANT_PIBI,
 			HydrantPrescrit.HYDRANT_PRESCRIT,
+			HydrantTournees.HYDRANT_TOURNEES,
 			Metadonnee.METADONNEE,
 			Oldeb.OLDEB,
 			OldebCaracteristique.OLDEB_CARACTERISTIQUE,

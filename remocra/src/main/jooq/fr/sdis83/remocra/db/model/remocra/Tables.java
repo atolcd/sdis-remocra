@@ -32,6 +32,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.HydrantIndispoTemporaireHydrant
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPena;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPibi;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPrescrit;
+import fr.sdis83.remocra.db.model.remocra.tables.HydrantTournees;
 import fr.sdis83.remocra.db.model.remocra.tables.Metadonnee;
 import fr.sdis83.remocra.db.model.remocra.tables.Oldeb;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebCaracteristique;
@@ -260,6 +261,11 @@ public class Tables {
 	 * The table remocra.hydrant_prescrit
 	 */
 	public static final HydrantPrescrit HYDRANT_PRESCRIT = fr.sdis83.remocra.db.model.remocra.tables.HydrantPrescrit.HYDRANT_PRESCRIT;
+
+	/**
+	 * The table remocra.hydrant_tournees
+	 */
+	public static final HydrantTournees HYDRANT_TOURNEES = fr.sdis83.remocra.db.model.remocra.tables.HydrantTournees.HYDRANT_TOURNEES;
 
 	/**
 	 * The table remocra.metadonnee

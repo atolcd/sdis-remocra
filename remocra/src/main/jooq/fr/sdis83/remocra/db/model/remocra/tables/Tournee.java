@@ -37,7 +37,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tournee extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 1201049469;
+	private static final long serialVersionUID = 1865946723;
 
 	/**
 	 * The reference instance of <code>remocra.tournee</code>
@@ -75,7 +75,7 @@ public class Tournee extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.tournee.affectation</code>.
 	 */
-	public final TableField<Record, Long> AFFECTATION = createField("affectation", org.jooq.impl.SQLDataType.BIGINT, this, "");
+	public final TableField<Record, Long> AFFECTATION = createField("affectation", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
 	/**
 	 * The column <code>remocra.tournee.reservation</code>.
@@ -91,6 +91,11 @@ public class Tournee extends TableImpl<Record> {
 	 * The column <code>remocra.tournee.hydrant_count</code>.
 	 */
 	public final TableField<Record, Integer> HYDRANT_COUNT = createField("hydrant_count", org.jooq.impl.SQLDataType.INTEGER, this, "");
+
+	/**
+	 * The column <code>remocra.tournee.nom</code>.
+	 */
+	public final TableField<Record, String> NOM = createField("nom", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "");
 
 	/**
 	 * Create a <code>remocra.tournee</code> table reference
@@ -135,7 +140,7 @@ public class Tournee extends TableImpl<Record> {
 	 */
 	@Override
 	public List<UniqueKey<Record>> getKeys() {
-		return Arrays.<UniqueKey<Record>>asList(Keys.TOURNEE_PKEY);
+		return Arrays.<UniqueKey<Record>>asList(Keys.TOURNEE_PKEY, Keys.NOM_AFFECTATION);
 	}
 
 	/**

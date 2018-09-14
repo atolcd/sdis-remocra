@@ -24,7 +24,7 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tournee implements Serializable {
 
-	private static final long serialVersionUID = -1604704438;
+	private static final long serialVersionUID = 1985514344;
 
 	private Long    id;
 	private Instant debSync;
@@ -34,6 +34,7 @@ public class Tournee implements Serializable {
 	private Long    reservation;
 	private Integer etat;
 	private Integer hydrantCount;
+	private String  nom;
 
 	public Tournee() {}
 
@@ -46,6 +47,7 @@ public class Tournee implements Serializable {
 		this.reservation = value.reservation;
 		this.etat = value.etat;
 		this.hydrantCount = value.hydrantCount;
+		this.nom = value.nom;
 	}
 
 	public Tournee(
@@ -56,7 +58,8 @@ public class Tournee implements Serializable {
 		Long    affectation,
 		Long    reservation,
 		Integer etat,
-		Integer hydrantCount
+		Integer hydrantCount,
+		String  nom
 	) {
 		this.id = id;
 		this.debSync = debSync;
@@ -66,6 +69,7 @@ public class Tournee implements Serializable {
 		this.reservation = reservation;
 		this.etat = etat;
 		this.hydrantCount = hydrantCount;
+		this.nom = nom;
 	}
 
 	public Long getId() {
@@ -137,6 +141,15 @@ public class Tournee implements Serializable {
 
 	public Tournee setHydrantCount(Integer hydrantCount) {
 		this.hydrantCount = hydrantCount;
+		return this;
+	}
+
+	public String getNom() {
+		return this.nom;
+	}
+
+	public Tournee setNom(String nom) {
+		this.nom = nom;
 		return this;
 	}
 }
