@@ -17,8 +17,10 @@ import fr.sdis83.remocra.util.DbUtils;
 
 public class TourneeAdapter extends CursorAdapter {
 
+
     private static final String[] projection = new String[]{
             TourneeTable._ID,
+            TourneeTable.COLUMN_NOM,
             TourneeTable.COLUMN_NAME_DEB_SYNC,
             TourneeTable.COLUMN_NAME_LAST_SYNC,
             TourneeTable.COLUMN_NB_HYDRANT,
@@ -69,7 +71,7 @@ public class TourneeAdapter extends CursorAdapter {
         ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         TextView textPourcentage = (TextView) view.findViewById(R.id.textPourcentage);
 
-        textViewId.setText(res.getString(R.string.tournee_id, cursor.getInt(cursor.getColumnIndex(TourneeTable._ID))));
+        textViewId.setText(cursor.getString(cursor.getColumnIndex(TourneeTable.COLUMN_NOM)));
         Integer nbHydrant = cursor.getInt(cursor.getColumnIndex(TourneeTable.COLUMN_NB_HYDRANT));
         if (nbHydrant == null || nbHydrant <= 0) {
             textViewPECount.setText(res.getString(R.string.nombreHydrantEmpty));

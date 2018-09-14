@@ -9,7 +9,9 @@ import android.support.v4.app.DialogFragment;
 import android.util.SparseBooleanArray;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jpt on 29/10/13.
@@ -62,19 +64,46 @@ public class ChoiceTournee extends DialogFragment {
                 lstTourneeLib = bundle.getStringArray("ChoiceTournee.Libelle");
             } else {
                 SparseBooleanArray data = new SparseBooleanArray();
+                HashMap<Integer, Map<String, Boolean>> l = new HashMap<Integer, Map<String, Boolean>>();
                 if (bundle.containsKey("idNewTournee")) {
-                    int[] newTournee = bundle.getIntArray("idNewTournee");
-                    for (int id : newTournee) {
-                        data.put(id, false);
+                    HashMap<Integer, String> newTournee = (HashMap<Integer, String>) bundle.getSerializable("idNewTournee");
+                    for (Integer key : newTournee.keySet()) {
+                        String value = newTournee.get(key);
+                        Map<String, Boolean> li = new HashMap<String, Boolean>();
+                        li.put(value, false);
+                        l.put(key, li);
                     }
                 }
                 if (bundle.containsKey("idLocalTournee")) {
-                    int[] newTournee = bundle.getIntArray("idLocalTournee");
+                    HashMap<Integer, String> newTournee = (HashMap<Integer, String>) bundle.getSerializable("idLocalTournee");
+                    for (Integer key : newTournee.keySet()) {
+                        String value = newTournee.get(key);
+                        Map<String, Boolean> li = new HashMap<String, Boolean>();
+                        li.put(value, true);
+                        l.put(key, li);
+                    /*int[] newTournee = bundle.getIntArray("idLocalTournee");
                     for (int id : newTournee) {
                         data.put(id, true);
+                    }*/
                     }
                 }
-                lstTourneeChk = new boolean[data.size()];
+
+                lstTourneeChk = new boolean[l.size()];
+                lstTourneeId = new int[l.size()];
+                lstTourneeLib = new String[l.size()];
+                int idx = 0;
+                for (Integer key : l.keySet()) {
+                    Map<String, Boolean> value = l.get(key);
+                    for(String nom : value.keySet()){
+                        lstTourneeLib[idx] = nom;
+                        lstTourneeChk[idx] = value.get(nom);
+                    }
+                    int id = key;
+                    lstTourneeId[idx] = id;
+                    idx++;
+                }
+
+               /* lstTourneeChk = new boolean[data.size()];
                 lstTourneeId = new int[data.size()];
                 lstTourneeLib = new String[data.size()];
                 for (int idx = 0; idx < data.size(); idx++) {
@@ -82,7 +111,7 @@ public class ChoiceTournee extends DialogFragment {
                     lstTourneeId[idx] = id;
                     lstTourneeChk[idx] = data.get(id);
                     lstTourneeLib[idx] = "Tournée " + id;
-                }
+                }*/
             }
         }
     }

@@ -37,13 +37,16 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import fr.sdis83.remocra.adapter.TourneeAdapter;
 import fr.sdis83.remocra.contentprovider.RemocraProvider;
 import fr.sdis83.remocra.database.HydrantTable;
 import fr.sdis83.remocra.database.TourneeTable;
@@ -72,11 +75,11 @@ public class SyncActivity extends FragmentActivity implements ChoiceTournee.Choi
     private TextView mMessageNbHydrant;
     private List<Cookie> cookies;
     private ProgressBar mProgressBar;
-    private int[] idNewTournees;
-    private int[] idLocalTournees;
+    private HashMap<Integer,String> idNewTournees;
+    private HashMap<Integer,String> idLocalTournees;
     private List<Integer> tourneeSelectionnees;
     private TextView mMessage2;
-
+    private TourneeAdapter tourneeAdapter;
     enum SYNC_ACTION {
         GET_LOCAL_INFO,
         CHECK_CONNEXION,
@@ -84,6 +87,7 @@ public class SyncActivity extends FragmentActivity implements ChoiceTournee.Choi
         UPLOAD_HYDRANT,
         DOWNLOAD_REFERENTIEL,
         DOWNLOAD_TOURNEE,
+        UPLOAD_TOURNEE,
         INTEGRE_DATA
     }
 
@@ -137,6 +141,8 @@ public class SyncActivity extends FragmentActivity implements ChoiceTournee.Choi
         } else {
             mMessage3.setText("Aucune connexion n'est disponible");
         }
+        tourneeAdapter = new TourneeAdapter(getApplicationContext());
+
     }
 
     @Override
@@ -152,8 +158,8 @@ public class SyncActivity extends FragmentActivity implements ChoiceTournee.Choi
 
     public void doSynchro(View view) {
         Bundle bundle = new Bundle();
-        bundle.putIntArray("idNewTournee", idNewTournees);
-        bundle.putIntArray("idLocalTournee", idLocalTournees);
+        bundle.putSerializable("idNewTournee", idNewTournees);
+        bundle.putSerializable("idLocalTournee", idLocalTournees);
         ChoiceTournee dialog = new ChoiceTournee();
         dialog.setArguments(bundle);
         dialog.show(getSupportFragmentManager(), "choiceTournee");
@@ -214,6 +220,9 @@ public class SyncActivity extends FragmentActivity implements ChoiceTournee.Choi
                     case UPLOAD_HYDRANT:
                         publishProgress(getString(R.string.sync_send_hydrant));
                         return uploadHydrants(uriServeur);
+                    case UPLOAD_TOURNEE:
+                        publishProgress(getString(R.string.sync_send_tournees));
+                        return uploadTournees(uriServeur);
                     case DOWNLOAD_REFERENTIEL:
                         publishProgress(getString(R.string.sync_loading_referentiel));
                         return downloadAndParse(uriServeur.buildUpon().appendEncodedPath("xml/referentiels").build(), getString(R.string.sync_referentiel_loaded));
@@ -260,6 +269,7 @@ public class SyncActivity extends FragmentActivity implements ChoiceTournee.Choi
                 case UPLOAD_HYDRANT:
                     if (result.success) {
                         doAction(SYNC_ACTION.DOWNLOAD_REFERENTIEL);
+                        doAction(SYNC_ACTION.UPLOAD_TOURNEE);
                     }
                     break;
                 case DOWNLOAD_REFERENTIEL:
@@ -306,13 +316,14 @@ public class SyncActivity extends FragmentActivity implements ChoiceTournee.Choi
                 xmlPullParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
                 xmlPullParser.setInput(response.getEntity().getContent(), null);
                 ServerInfoParser parser = new ServerInfoParser();
-                List<Integer> lstTournee = parser.parse(xmlPullParser);
+                idNewTournees  = parser.parse(xmlPullParser);
+                /*List<Integer> lstTournee = parser.parse(xmlPullParser);
                 idNewTournees = new int[lstTournee.size()];
                 for (int idx = 0; idx < lstTournee.size(); ++idx) {
                     idNewTournees[idx] = lstTournee.get(idx);
-                }
+                }*/
                 success = true;
-                message = idNewTournees.length + " nouvelle(s) tournée(s) disponible(s)";
+                message = idNewTournees.size() + " nouvelle(s) tournée(s) disponible(s)";
             } catch (XmlPullParserException e) {
                 e.printStackTrace();
                 message = e.getMessage();
@@ -345,13 +356,13 @@ public class SyncActivity extends FragmentActivity implements ChoiceTournee.Choi
         int nbHydrant = 0;
         try {
             cursor = getContentResolver().query(RemocraProvider.CONTENT_TOURNEE_URI,
-                    new String[]{TourneeTable._ID},
+                    new String[]{TourneeTable._ID,TourneeTable.COLUMN_NOM},
                     null, null, null);
             if (cursor != null) {
-                idLocalTournees = new int[cursor.getCount()];
+                idLocalTournees = new HashMap<Integer, String>();
                 int idx = 0;
                 while (cursor.moveToNext()) {
-                    idLocalTournees[idx] = cursor.getInt(0);
+                    idLocalTournees.put(cursor.getInt(0),cursor.getString(1));
                     idx++;
                 }
             }
@@ -433,18 +444,53 @@ public class SyncActivity extends FragmentActivity implements ChoiceTournee.Choi
         return new ActionResult(success, message);
     }
 
-    private ActionResult uploadHydrants(Uri uriServeur) {
+    private ActionResult uploadTournees(Uri uriServeur) {
         DefaultHttpClient httpclient = addCookies(new DefaultHttpClient(prepareHttpParameters()));
-        HttpPost request = new HttpPost(uriServeur.buildUpon().appendEncodedPath("xml/hydrants").appendQueryParameter("v", String.valueOf(ParamActivity.APP_XML_VERSION)).build().toString());
-
-        Cursor cursor = null;
         String sMessage = "";
         boolean result = false;
+        Cursor cursor = null;
 
         try {
             // Avant l'export on sauvegarde tout.
             TourneeSerializer tourneeSerializer = new TourneeSerializer(getApplicationContext());
             tourneeSerializer.serialize();
+            HttpPost requestTournees = new HttpPost(uriServeur.buildUpon().appendEncodedPath("xml/pourcentages").appendQueryParameter("v", String.valueOf(ParamActivity.APP_XML_VERSION)).build().toString());
+            //On ajoute la balise tournees en upload des hydrants pour récupérer les pourcentage des tournées
+            cursor = getContentResolver().query(RemocraProvider.CONTENT_TOURNEE_URI, tourneeAdapter.getProjection(), null, null, TourneeTable._ID);
+            if (cursor != null) {
+                String xmlTournee = tourneeSerializer.serialize(cursor);
+                StringEntity seTournee = new StringEntity(xmlTournee);
+                seTournee.setContentType("application/xml");
+                requestTournees.setEntity(seTournee);
+                httpclient.execute(requestTournees);
+            }else {
+               return new ActionResult(false, "Erreur interne");
+            }
+        } catch (SocketTimeoutException e) {
+            e.printStackTrace();
+            int socketTimeoutSec = httpclient.getParams().getIntParameter(CoreConnectionPNames.SO_TIMEOUT, -1);
+            sMessage = e.getMessage()==null?
+                    "Délai de réponse dépassé" + (socketTimeoutSec>=0?" ("+(socketTimeoutSec/1000)+"s)":"")
+                    :e.getMessage();
+        } catch (Exception e) {
+            e.printStackTrace();
+            sMessage = e.getMessage()==null?"Impossible d'exécuter la requête":e.getMessage();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return new ActionResult(result, sMessage);
+
+    }
+    private ActionResult uploadHydrants(Uri uriServeur) {
+        DefaultHttpClient httpclient = addCookies(new DefaultHttpClient(prepareHttpParameters()));
+        HttpPost requestHydrants = new HttpPost(uriServeur.buildUpon().appendEncodedPath("xml/hydrants").appendQueryParameter("v", String.valueOf(ParamActivity.APP_XML_VERSION)).build().toString());
+        Cursor cursor = null;
+        String sMessage = "";
+        boolean result = false;
+
+        try {
 
             // Export
             cursor = getContentResolver().query(RemocraProvider.CONTENT_HYDRANT_URI, null,
@@ -468,15 +514,14 @@ public class SyncActivity extends FragmentActivity implements ChoiceTournee.Choi
             }
             HydrantSerializer serializer = new HydrantSerializer(SyncActivity.this);
             String xml = serializer.serialize(cursor);
-
             Log.d("REMOCRA", xml);
 
             StringEntity se = new StringEntity(xml);
             se.setContentType("application/xml");
 
-            request.setEntity(se);
+            requestHydrants.setEntity(se);
 
-            HttpResponse response = httpclient.execute(request);
+            HttpResponse response = httpclient.execute(requestHydrants);
             if (response.getStatusLine().getStatusCode() == 200) {
                 // TODO : implémenter un parseur de réponse XML
 
@@ -491,6 +536,7 @@ public class SyncActivity extends FragmentActivity implements ChoiceTournee.Choi
                 Log.d("REMOCRA", "reponse reçue : " + message);
 
                 result = true;
+
             } else {
                 InputStream stream = response.getEntity().getContent();
                 if (stream != null) {

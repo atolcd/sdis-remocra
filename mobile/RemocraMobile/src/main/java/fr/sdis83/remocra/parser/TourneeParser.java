@@ -75,6 +75,8 @@ public class TourneeParser extends AbstractRemocraParser {
     public static final String TAG_COORD_LATITUDE = "latitude";
     public static final String TAG_COORD_LONGITUDE = "longitude";
     public static final String TAG_CODE_NATURE = "codeNature";
+    public static final String TAG_TOTAL_HYDRANT = "totalHydrant";
+
 
     private ArrayList<ContentValues> lstHydrant;
     private ArrayList<Integer> lstAnomalieStandard;
@@ -107,6 +109,8 @@ public class TourneeParser extends AbstractRemocraParser {
                 values.put(TourneeTable.COLUMN_NAME_LAST_SYNC, this.readBaliseDate(xmlParser, nameTag));
             } else if ("id".equals(nameTag)) {
                 values.put(TourneeTable._ID, this.readBaliseText(xmlParser, nameTag));
+            }else if ("nom".equals(nameTag)) {
+                values.put(TourneeTable.COLUMN_NOM, this.readBaliseText(xmlParser, nameTag));
             } else if ("hydrants".equals(nameTag)) {
                 readHydrants(xmlParser);
             } else {

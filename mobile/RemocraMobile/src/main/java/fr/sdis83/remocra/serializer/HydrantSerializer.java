@@ -10,14 +10,12 @@ import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Calendar;
 
 import fr.sdis83.remocra.contentprovider.RemocraProvider;
 import fr.sdis83.remocra.database.HydrantTable;
 import fr.sdis83.remocra.database.NatureTable;
 import fr.sdis83.remocra.parser.AbstractRemocraParser;
 import fr.sdis83.remocra.parser.TourneeParser;
-import fr.sdis83.remocra.util.DbUtils;
 
 /**
  * Created by jpt on 03/10/13.
@@ -45,7 +43,6 @@ public class HydrantSerializer extends AbstractSerializer {
         this.fullExportMode = false;
         this.colTypeHydrant = cursor.getColumnIndex(HydrantTable.COLUMN_TYPE_HYDRANT);
         this.colNature = cursor.getColumnIndex(HydrantTable.COLUMN_NATURE);
-
         StringWriter writer = new StringWriter();
         XmlSerializer serializer = Xml.newSerializer();
         serializer.setOutput(writer);
@@ -54,6 +51,7 @@ public class HydrantSerializer extends AbstractSerializer {
         serializer.endDocument();
         return writer.toString();
     }
+
 
     public void serialize(XmlSerializer serializer, Cursor cursor) throws IOException {
         this.fullExportMode = true;
@@ -99,7 +97,6 @@ public class HydrantSerializer extends AbstractSerializer {
     }
 
     private void fillHydrant(XmlSerializer serializer, Cursor cursor, String tag, String natureCode) throws IOException {
-
         addBalise(serializer, TourneeParser.TAG_AGENT1, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_AGENT1)));
         addBalise(serializer, TourneeParser.TAG_AGENT2, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_AGENT2)));
         addBalise(serializer, TourneeParser.TAG_ANNEE_FABRICATION, cursor.getLong(cursor.getColumnIndex(HydrantTable.COLUMN_ANNEE_FAB)));
@@ -198,4 +195,5 @@ public class HydrantSerializer extends AbstractSerializer {
         }
 
     }
+
 }

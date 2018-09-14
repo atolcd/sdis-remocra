@@ -23,6 +23,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -58,6 +60,8 @@ import java.util.Map;
 
 import fr.sdis83.remocra.contentprovider.RemocraProvider;
 import fr.sdis83.remocra.database.HydrantTable;
+import fr.sdis83.remocra.database.RemocraDbHelper;
+import fr.sdis83.remocra.database.TourneeTable;
 import fr.sdis83.remocra.dialog.NewHydrant;
 import fr.sdis83.remocra.fragment.Accueil;
 import fr.sdis83.remocra.fragment.ListHydrant;
@@ -199,8 +203,8 @@ public class MainActivity extends FragmentActivity implements ListTournee.ListTo
             if ("ListHydrant".equals(fragmentName)) {
                 Long idTournee = bundle.getLong(ListHydrant.PARAM_TOURNEE);
                 if (idTournee != null && idTournee > 0) {
-                    // openTournee(idTournee, false);
-                    setTitle(MessageFormat.format("Tournée {0}", idTournee));
+                    String nom = this.getTourneeNom(idTournee);
+                    setTitle(MessageFormat.format("Tournée {0}", nom));
                     mDrawerToggle.setDrawerIndicatorEnabled(false);
                     mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                     return;
@@ -380,7 +384,8 @@ public class MainActivity extends FragmentActivity implements ListTournee.ListTo
             transaction.addToBackStack(null);
         }
         transaction.commit();
-        setTitle(MessageFormat.format("Tournée {0}", idTournee));
+        String nom = this.getTourneeNom(idTournee);
+        setTitle(MessageFormat.format("Tournée {0}",nom));
     }
 
     @Override
@@ -456,4 +461,16 @@ public class MainActivity extends FragmentActivity implements ListTournee.ListTo
             builder.show();
         }
     }
+
+    private String getTourneeNom(Long idTournee) {
+        String nom = null;
+        SQLiteDatabase db = new RemocraDbHelper(getBaseContext()).getReadableDatabase();
+        String sql = "select nom from " + TourneeTable.TABLE_NAME + " where " +TourneeTable._ID+"="+idTournee;
+        Cursor c = db.rawQuery(sql,null);
+        if (c != null && c.moveToFirst()) {
+            nom = c.getString(0);
+        }
+        return nom;
+    }
+
 }

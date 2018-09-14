@@ -32,7 +32,6 @@
 
     <!-- Strings related to List Tournee -->
     <string name="tournee_id">Tournée n°%d</string>
-
     <string name="nombreHydrantEmpty">Aucun point d\'eau</string>
     <plurals name="nombreHydrant">
         <item quantity="one">1 point d\'eau</item>
@@ -86,6 +85,7 @@
     <string name="title_activity_help">Aide</string>
     <string name="sync_conn_valide">Connexion valide</string>
     <string name="sync_send_hydrant">Envoi des points d\'eau…</string>
+    <string name="sync_send_tournees">Envoi des tournées…</string>
     <string name="sync_loading_referentiel">Chargement des référentiels…</string>
     <string name="sync_referentiel_loaded">Référentiels chargés</string>
     <string name="sync_loading_tournee">Chargement des tournées…</string>
