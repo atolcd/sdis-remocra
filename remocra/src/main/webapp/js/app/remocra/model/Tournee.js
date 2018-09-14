@@ -5,6 +5,10 @@ Ext.define('Sdis.Remocra.model.Tournee', {
         name : 'id',
         type : 'int',
         useNull : true
+    },{
+        name : 'nom',
+        type : 'string',
+        useNull : true
     }, {
         name : 'hydrantCount',
         type : 'int'
@@ -20,13 +24,6 @@ Ext.define('Sdis.Remocra.model.Tournee', {
     }, {
         name : 'geometrie',
         type : 'string'
-    }, {
-        name : 'nom',
-        type : 'string',
-        convert : function(v, record) {
-            var id = record.get('id');
-            return id == null || id < 0 ? 'Toutes' : id;
-        }
     }, {
         name : 'reservation',
         type : 'fk',

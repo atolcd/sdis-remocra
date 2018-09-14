@@ -24,7 +24,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabAccesRapide', {
         itemId: 'tourneeRapide',
         items: [{
             xtype: 'combo',
-            displayField: 'id',
+            displayField: 'nom',
             valueField: 'id',
             forceSelection: true,
             minChars: 1,

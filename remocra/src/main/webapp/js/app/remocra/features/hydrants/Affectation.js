@@ -16,12 +16,22 @@ Ext.define('Sdis.Remocra.features.hydrants.Affectation', {
         height: 30
     },
     items: [{
+        xtype: 'fieldcontainer',
+        layout: 'hbox',
+        items: [{
         xtype: 'radio',
         name: 'choiceTournee',
         boxLabel: 'Nouvelle tournée',
         checked: true,
         inputValue: '1'
-    },{
+       },{
+       xtype:'textfield',
+       name:'nom',
+       width: 200,
+       margin: '0 0 0 20',
+       allowBlank:false
+      }]
+      },{
         xtype: 'fieldcontainer',
         layout: 'hbox',
         items: [{
@@ -34,6 +44,7 @@ Ext.define('Sdis.Remocra.features.hydrants.Affectation', {
         },{
             xtype: 'component',
             html: '&nbsp;',
+            margin: '5 0 0 0',
             name: 'lastTournee'
         }]
     },{
@@ -59,11 +70,12 @@ Ext.define('Sdis.Remocra.features.hydrants.Affectation', {
                 }]
             }),
             pageSize: true, // bizarrerie ExtJS
-            displayField: 'id',
+            displayField: 'nom',
             valueField: 'id',
             allowBlank: false,
             disabled: true,
-            name: 'tournee'
+            name: 'tournee',
+            width: 200
         }]
     }/*,{
         xtype: 'combo',

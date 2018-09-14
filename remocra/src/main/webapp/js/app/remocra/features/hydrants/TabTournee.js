@@ -31,6 +31,10 @@ Ext.define('Sdis.Remocra.features.hydrants.TabTournee', {
             text: 'Annuler la réservation',
             itemId: 'cancelReservation',
             disabled: true
+        },{
+            text: 'Réinitialiser l\'état à 0%',
+            itemId: 'resetTournee',
+            disabled: true
         },'->',{
             text: 'Supprimer',
             iconCls: 'deleteIcon',
@@ -55,7 +59,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabTournee', {
 
         me.columns = [{
             text: 'Tournée',
-            dataIndex: 'id',
+            dataIndex: 'nom',
             filterable: true,
             filter: {
                 xtype: 'textfield',

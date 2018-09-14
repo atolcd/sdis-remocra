@@ -115,6 +115,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             'crHydrantsTournee #showHydrant': {
                 click: this.showListHydrants
             },
+            'crHydrantsTournee #resetTournee': {
+                click: this.resetTournee
+            },
             'crHydrantsTournee #deleteTournee': {
                 click: this.deleteTournee
             },
@@ -769,6 +772,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         tabTournee.queryById('locateTournee').setDisabled(records.length == 0);
         tabTournee.queryById('showHydrant').setDisabled(records.length == 0);
         tabTournee.queryById('deleteTournee').setDisabled(records.length == 0);
+        tabTournee.queryById('resetTournee').setDisabled(records.length == 0);
         tabTournee.queryById('cancelReservation').setDisabled(records.length == 0 || records[0].get('reservation') == null);
         if (tabTournee.length > 0) {
             this.lastTournee = tabTournee[0];
@@ -792,6 +796,21 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             }));
         }
     },
+    resetTournee: function() {
+        var tournee = this.getSelectedTournee();
+        if (tournee != null) {
+            Ext.Ajax.request({
+                url: Sdis.Remocra.util.Util.withBaseUrl('../tournees/resetTournee/'+tournee.getId()),
+                method: 'PUT',
+                scope: this,
+                callback: function(param, success, response) {
+                    var res = Ext.decode(response.responseText);
+                    this.getTabTournee().getStore().load();
+                    Sdis.Remocra.util.Msg.msg("Réinitialisation de la tournée", res.message);
+                }
+            });
+        }
+    },
 
     onLocateTourneeFromGrid: function() {
         var tournee = this.getSelectedTournee();
@@ -804,14 +823,14 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     deleteTournee: function() {
         var tournee = this.getSelectedTournee();
         if (tournee != null) {
-            Ext.Msg.confirm('Annulation de la tournée', 'Vous allez annuler la tournée ' + tournee.getId(), function(buttonId) {
+            Ext.Msg.confirm('Annulation de la tournée', 'Vous allez annuler la tournée ' + tournee.data.nom, function(buttonId) {
                 if (buttonId == 'yes') {
                     tournee.destroy({
                         scope: this,
                         success: function(record, operation) {
                             this.lastTournee = null;
                             this.getTabTournee().getStore().remove(record);
-                            Sdis.Remocra.util.Msg.msg('Annulation', 'La tournée ' + record.getId() + ' a bien été annulée.');
+                            Sdis.Remocra.util.Msg.msg('Annulation', 'La tournée ' + record.data.nom + ' a bien été annulée.');
                         }
                     });
                 }
@@ -821,7 +840,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
 
     cancelReservation: function() {
         var tournee = this.getSelectedTournee();
-        Ext.Msg.confirm('Annulation de la réservation', 'Vous allez annuler la réservation de la tournée ' + tournee.getId()+'. Voulez-vous continuer ?', function(buttonId) {
+        Ext.Msg.confirm('Annulation de la réservation', 'Vous allez annuler la réservation de la tournée ' + tournee.data.nom+'. Voulez-vous continuer ?', function(buttonId) {
             if (buttonId == 'yes') {
                 Ext.Ajax.request({
                     url: Sdis.Remocra.util.Util.withBaseUrl('../tournees/cancelreservation/'+tournee.getId()),
@@ -990,9 +1009,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
 
     affecteTournee: function() {
         var features = this.getSelectedFeatures();
-        var messagelocked = '', feature, i, countLocked = 0;
-
-        for (i=0 ; i < features.length ; i++) {
+        var messagelocked = '', feature, i, countLocked = 0, ids = [];
+        /*for (i=0 ; i < features.length ; i++) {
             feature = features[i];
             if (feature.data['isTourneeRes'] && feature.data['tournee'] != null) {
                 // On n'affiche que les 3 premiers, puis "..."
@@ -1005,9 +1023,25 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                         + (feature.data['tournee'] ? ', tournée ' + feature.data['tournee'] : '') + '</li>';
                 }
             }
+        }*/
+
+        for (i=0 ; i < features.length ; i++) {
+          ids.push(features[i].fid);
+        }
+        if (ids && ids.length > 0) {
+            Ext.Ajax.request({
+                url: Sdis.Remocra.util.Util.withBaseUrl('../hydrants/checkTournee'),
+                jsonData: ids,
+                callback: function(param, success, response) {
+                    if(success){
+                       Ext.widget('affectation').show();
+                    }
+                }
+            });
         }
 
-        if (messagelocked != '') {
+
+       /* if (messagelocked != '') {
             Ext.Msg.alert('Affectation tournée',
                 'L\'affectation ne peut pas être réalisée car des points d\'eau ('
                     + countLocked + ') appartiennent à une tournée reservée :<ul>'
@@ -1017,15 +1051,54 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
 
         if (features.length > 0) {
             Ext.widget('affectation').show();
-        }
+        }*/
     },
 
     desaffecteTournee: function() {
         var features = this.getSelectedFeatures();
         var messagelocked = '', message = '', ids = [], i, countLocked = 0;
-        if (features.length > 0) {
+
+        for (i=0 ; i < features.length ; i++) {
+                  ids.push(features[i].fid);
+        }
+        if (ids && ids.length > 0) {
+            Ext.Ajax.request({
+                url: Sdis.Remocra.util.Util.withBaseUrl('../hydrants/checkReservation'),
+                jsonData: ids,
+                callback: function(param, success, response) {
+                    if(success){
+                     var msg = "<div class=\"listHydrant\">";
+                            for (i=0; i<features.length;i++){
+                                msg+= "<li>"+features[i].data.numero+"</li>";
+                            }
+                            msg+="</div>";
+
+                              var globalMessage = features.length === 1 ? 'Le point d\'eau suivant va être désaffecté :' : 'Les points d\'eau suivants vont être désaffectés :';
+                                 globalMessage+= msg +'<br/>Souhaitez-vous continuer ?';
+                              // Demande de confirmation
+                              Ext.Msg.confirm("Retirer de la tournée",
+                                      globalMessage, Ext.bind(function(buttonId) {
+                                  if (buttonId == 'yes') {
+                                      Ext.Ajax.request({
+                                          url: Sdis.Remocra.util.Util.withBaseUrl('../hydrants/desaffecter'),
+                                          jsonData: ids,
+                                          callback: function(param, success, response) {
+                                              var res = Ext.decode(response.responseText);
+                                              Sdis.Remocra.util.Msg.msg("Désaffectation", res.message);
+                                          }
+                                      });
+                                  }
+                              }, this));
+
+                    }
+                }
+            });
+        }
+
+        /*if (features.length > 0) {
             for (i=0 ; i < features.length ; i++) {
                 var feature = features[i];
+                console.log(feature);
                 if (feature.data['isTourneeRes']) {
                     // On n'affiche que les 3 premiers, puis "..."
                     if (++countLocked > 3) {
@@ -1073,7 +1146,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 // Message d'information
                 Ext.Msg.alert('Retirer de la tournée', globalMessage);
             }
-        }
+        }*/
     },
 
     desaffecteTourneeConcrete: function(ids) {
@@ -1122,9 +1195,10 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
      * Fenêtre "Affectation"
      **************************************************************************/
     afterShowAffectation: function() {
+
         if (this.lastTournee != null) {
             this.getAffectation().down('radio[inputValue=2]').enable();
-            this.getAffectation().down('component[name=lastTournee]').update(this.lastTournee.getId());
+            this.getAffectation().down('component[name=lastTournee]').update(this.lastTournee.data.nom);
         }
     },
 
@@ -1132,6 +1206,10 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         if (radioButton.inputValue == 3) {
             this.getAffectation().down('combo[name=tournee]').setDisabled(oldValue);
         }
+        if (radioButton.inputValue == 1) {
+            this.getAffectation().down('textfield[name=nom]').setDisabled(oldValue);
+        }
+
     },
     
     onAffectationTourneeRender: function(combo, eOpts) {
@@ -1148,19 +1226,29 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     },
 
     validAffectation: function() {
-        var tourneeId = null, /*
-                                 * cboUtilisateur =
-                                 * this.getAffectation().down('combo[name=utilisateur]'),
-                                 */cboTournee = this.getAffectation().down('combo[name=tournee]');
+        var tourneeId = null,
+        tourneeNom = null,
+        nomTournee =  this.getAffectation().down('textfield[name=nom]'),
+        cboTournee = this.getAffectation().down('combo[name=tournee]');
 
-        if (/* !cboUtilisateur.isValid() || */!cboTournee.isValid()) {
+        if ( !nomTournee.isValid() || !cboTournee.isValid()) {
             return;
         }
 
         switch (this.getAffectation().down('radio[checked]').inputValue) {
         case "1": // Nouvelle tournée
+            tourneeNom = nomTournee.getValue();
             break;
         case "2": // Dernière tournée
+            if(this.lastTournee.data.reservation && this.lastTournee.data.reservation !== null ){
+              Ext.Msg.show({
+                  title: "Affectation",
+                  msg: 'La tournée sélectionnée est déjà réservée',
+                  buttons: Ext.Msg.OK,
+                  icon: Ext.Msg.WARNING
+                });
+              return;
+            }
             tourneeId = this.lastTournee.getId();
             break;
         case "3": // Tournée existante
@@ -1176,7 +1264,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             url: Sdis.Remocra.util.Util.withBaseUrl('../hydrants/affecter'),
             jsonData: {
                 ids: ids,
-                tournee: tourneeId
+                tournee: tourneeId,
+                nom: tourneeNom
             /*
              * , utilisateur: idUtilisateur
              */

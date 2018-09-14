@@ -94,11 +94,6 @@ Ext.define('Sdis.Remocra.model.Hydrant', {
         useNull: true,
         defaultValue: null
     }, {
-        name: 'tourneeId',
-        type: 'int',
-        useNull: true,
-        persist: false
-    }, {
         name: 'natureNom',
         type: 'string',
         useNull: true,
@@ -113,11 +108,6 @@ Ext.define('Sdis.Remocra.model.Hydrant', {
         type: 'fk'
     }, {
         name: 'domaine',
-        type: 'fk',
-        useNull: true,
-        defaultValue: null
-    }, {
-        name: 'tournee',
         type: 'fk',
         useNull: true,
         defaultValue: null
@@ -138,6 +128,13 @@ Ext.define('Sdis.Remocra.model.Hydrant', {
         associationKey: 'anomalies',
         name: 'anomalies',
         associatedName: 'anomalies',
+        persist: true
+    }, {
+        type: 'hasMany',
+        model: 'Sdis.Remocra.model.Tournee',
+        associationKey: 'tournees',
+        name: 'tournees',
+        associatedName: 'tournees',
         persist: true
     }, {
         type: 'hasMany',

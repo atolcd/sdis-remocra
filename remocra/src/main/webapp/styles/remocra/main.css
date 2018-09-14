@@ -1213,3 +1213,13 @@ body.x-ie .x-btn-default-toolbar-small-icon-text-left .x-btn-inner {
     font-weight: bold;
     background: lightgrey;
 }
+
+
+.listHydrant {
+    overflow-y:scroll;
+    height:55px;
+    margin-top:5px;
+    margin-bottom:5px;
+}
+.listHydrant li {margin-left:20px; background: white}
+.listHydrant li:nth-child(odd) {margin-left:20px; background: #f4f4f4; }
