@@ -284,6 +284,10 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         if (!Sdis.Remocra.Rights.hasRight('TOURNEE_C')) {
             fiche.down('crHydrantsTournee #deleteTournee').hide();
         }
+        if (!Sdis.Remocra.Rights.hasRight('TOURNEE_POURCENTAGE_C')) {
+             fiche.down('crHydrantsTournee #finaliseTournee').hide();
+             fiche.down('crHydrantsTournee #resetTournee').hide();
+        }
         if (!Sdis.Remocra.Rights.hasRight('TOURNEE_RESERVATION_D')) {
             fiche.down('crHydrantsTournee #cancelReservation').hide();
         }
@@ -830,13 +834,21 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                                  scope: this,
                                  callback: function(param, success, response) {
                                      var res = Ext.decode(response.responseText);
+                                     if(success){
+                                        Sdis.Remocra.util.Msg.msg("Renommer une tournée", res.message);
+                                     }else {
+                                        Ext.Msg.show({
+                                        title: 'Renommer une tournée',
+                                        msg: res.message,
+                                        buttons: Ext.Msg.OK,
+                                        icon: Ext.Msg.WARNING
+                                      });
+                                     }
                                      this.getTabTournee().getStore().load();
                                  }
                              });
                          }
-                     }, this, false, null,{
-                         xtype: 'textfield'
-                 });
+                     }, this, false, null);
             }
 
     },
@@ -852,14 +864,14 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     deleteTournee: function() {
         var tournee = this.getSelectedTournee();
         if (tournee != null) {
-            Ext.Msg.confirm('Annulation de la tournée', 'Vous allez annuler la tournée ' + tournee.data.nom, function(buttonId) {
+            Ext.Msg.confirm('Suppression de la tournée', 'Vous allez supprimer la tournée ' + tournee.data.nom, function(buttonId) {
                 if (buttonId == 'yes') {
                     tournee.destroy({
                         scope: this,
                         success: function(record, operation) {
                             this.lastTournee = null;
                             this.getTabTournee().getStore().remove(record);
-                            Sdis.Remocra.util.Msg.msg('Annulation', 'La tournée ' + record.data.nom + ' a bien été annulée.');
+                            Sdis.Remocra.util.Msg.msg('Suppression', 'La tournée ' + record.data.nom + ' a bien été supprimée.');
                         }
                     });
                 }
@@ -1039,20 +1051,6 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     affecteTournee: function() {
         var features = this.getSelectedFeatures();
         var messagelocked = '', feature, i, countLocked = 0, ids = [];
-        /*for (i=0 ; i < features.length ; i++) {
-            feature = features[i];
-            if (feature.data['isTourneeRes'] && feature.data['tournee'] != null) {
-                // On n'affiche que les 3 premiers, puis "..."
-                if (++countLocked > 3) {
-                    if (countLocked < 5) {
-                        messagelocked += '<li style="list-style:disc inside;margin-left:20px;">...</li>';
-                    }
-                } else {
-                    messagelocked += '<li style="list-style:disc inside;margin-left:20px;">' + feature.data['numero']
-                        + (feature.data['tournee'] ? ', tournée ' + feature.data['tournee'] : '') + '</li>';
-                }
-            }
-        }*/
 
         for (i=0 ; i < features.length ; i++) {
           ids.push(features[i].fid);
@@ -1064,23 +1062,19 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 callback: function(param, success, response) {
                     if(success){
                        Ext.widget('affectation').show();
+                    }else {
+                          var res = Ext.decode(response.responseText);
+                          Ext.Msg.show({
+                          title: 'Affectation',
+                          msg: res.message,
+                          buttons: Ext.Msg.OK,
+                          icon: Ext.Msg.WARNING
+                        });
+
                     }
                 }
             });
         }
-
-
-       /* if (messagelocked != '') {
-            Ext.Msg.alert('Affectation tournée',
-                'L\'affectation ne peut pas être réalisée car des points d\'eau ('
-                    + countLocked + ') appartiennent à une tournée reservée :<ul>'
-                    + messagelocked + '</ul>');
-            return;
-        }
-
-        if (features.length > 0) {
-            Ext.widget('affectation').show();
-        }*/
     },
 
     desaffecteTournee: function() {
@@ -1105,7 +1099,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                               var globalMessage = features.length === 1 ? 'Le point d\'eau suivant va être désaffecté :' : 'Les points d\'eau suivants vont être désaffectés :';
                                  globalMessage+= msg +'<br/>Souhaitez-vous continuer ?';
                               // Demande de confirmation
-                              Ext.Msg.confirm("Retirer de la tournée",
+                              Ext.Msg.confirm("Retirer des tournées",
                                       globalMessage, Ext.bind(function(buttonId) {
                                   if (buttonId == 'yes') {
                                       Ext.Ajax.request({
@@ -1118,64 +1112,36 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                                       });
                                   }
                               }, this));
+                    }else {
+                       var res = Ext.decode(response.responseText);
+                        Ext.Msg.show({
+                          title: 'Désaffectation',
+                          msg: res.message,
+                          buttons: Ext.MessageBox.YESNO,
+                          icon: Ext.Msg.WARNING,
+                          buttonText:{
+                              yes: "Continuer",
+                              no: "Annuler"
+                          },
+                        fn: function(btn){
+                          if(btn === 'yes'){
+                             Ext.Ajax.request({
+                                  url: Sdis.Remocra.util.Util.withBaseUrl('../hydrants/desaffecter'),
+                                  jsonData: ids,
+                                  callback: function(param, success, response) {
+                                      var res = Ext.decode(response.responseText);
+                                      Sdis.Remocra.util.Msg.msg("Désaffectation", res.message);
+                                  }
+                              });
+                          }
+                        }
+                      });
 
                     }
                 }
             });
         }
 
-        /*if (features.length > 0) {
-            for (i=0 ; i < features.length ; i++) {
-                var feature = features[i];
-                console.log(feature);
-                if (feature.data['isTourneeRes']) {
-                    // On n'affiche que les 3 premiers, puis "..."
-                    if (++countLocked > 3) {
-                        if (countLocked < 5) {
-                            messagelocked += '<li style="list-style:disc inside;margin-left:20px;">...</li>';
-                        }
-                    } else {
-                        messagelocked += '<li style="list-style:disc inside;margin-left:20px;">' + feature.data['numero']
-                            + (feature.data['tournee'] ? ', tournée ' + feature.data['tournee'] : '') + '</li>';
-                    }
-                } else {
-                    ids.push(feature['fid']);
-                    // On n'affiche que les 3 premiers, puis "..."
-                    if (ids.length > 3) {
-                        if (ids.length < 5) {
-                            message += '<li style="list-style:disc inside;margin-left:20px;">...</li>';
-                        }
-                    } else {
-                        message += '<li style="list-style:disc inside;margin-left:20px;">' + feature.data['numero']
-                            + (feature.data['tournee'] ? ', tournée ' + feature.data['tournee'] : '') + '</li>';
-                    }
-                }
-            }
-            var globalMessage = '';
-            if (countLocked > 0) {
-                globalMessage += 'Les points d\'eau suivants ('
-                    + countLocked + ') ne peuvent pas être désaffectés car ils appartiennent à une tournée reservée :<ul>'
-                    + messagelocked + '</ul>';
-            }
-            if (countLocked > 0 && ids.length > 0) {
-                globalMessage += '<br/>';
-            }
-            if (ids.length > 0) {
-                globalMessage += 'Les points d\'eau suivants (' + ids.length + ') vont être désaffectés :<ul>'
-                    + message + '</ul>' + '<br/>Souhaitez-vous continuer ?';
-                // Demande de confirmation
-                Ext.Msg.confirm("Retirer de la tournée",
-                        globalMessage, Ext.bind(function(buttonId) {
-                    if (buttonId == 'yes') {
-                        this.desaffecteTourneeConcrete(ids);
-                    }
-                }, this));
-                
-            } else {
-                // Message d'information
-                Ext.Msg.alert('Retirer de la tournée', globalMessage);
-            }
-        }*/
     },
 
     desaffecteTourneeConcrete: function(ids) {
@@ -1234,8 +1200,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     onAffectationRadioChange: function(radioButton, newValue, oldValue) {
         if (radioButton.inputValue == 3) {
             this.getAffectation().down('combo[name=tournee]').setDisabled(oldValue);
-        }
-        if (radioButton.inputValue == 1) {
+        }else if (radioButton.inputValue == 1) {
             this.getAffectation().down('textfield[name=nom]').setDisabled(oldValue);
         }
 
@@ -1272,7 +1237,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             if(this.lastTournee.data.reservation && this.lastTournee.data.reservation !== null ){
               Ext.Msg.show({
                   title: "Affectation",
-                  msg: 'La tournée sélectionnée est déjà réservée',
+                  msg: 'La tournée sélectionnée est réservée',
                   buttons: Ext.Msg.OK,
                   icon: Ext.Msg.WARNING
                 });
