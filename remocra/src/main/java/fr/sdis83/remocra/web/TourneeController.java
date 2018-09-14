@@ -4,6 +4,8 @@ import java.io.StringWriter;
 import java.util.List;
 
 import flexjson.JSONSerializer;
+import fr.sdis83.remocra.util.ExceptionUtils;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -126,6 +128,23 @@ public class TourneeController {
             return new SuccessErrorExtSerializer(true, "La tournée "+ attached.getNom()+" a été réinitialisée").serialize();
         } catch (Exception e) {
             return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
+    }
+
+    @RequestMapping(value = "/renameTournee/{id}", headers = "Accept=application/json")
+    @PreAuthorize("hasRight('TOURNEE_C')")
+    public ResponseEntity<java.lang.String> renametournee(@PathVariable("id") Long id,final @RequestParam(value = "nom") String nom) {
+        try {
+            Tournee attached = Tournee.findTournee(id);
+            attached.setNom(nom);
+            attached.flush();
+            return new SuccessErrorExtSerializer(true, "La tournée "+ attached.getNom()+" a été renommée").serialize();
+        } catch (Exception e) {
+            if (ExceptionUtils.getNestedExceptionWithClass(e, ConstraintViolationException.class) != null) {
+                return new SuccessErrorExtSerializer(false, "Une tournée avec le nom "+ nom + " existe déjà").serialize();
+            }
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+
         }
     }
 }

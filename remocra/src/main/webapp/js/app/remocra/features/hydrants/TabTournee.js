@@ -35,6 +35,10 @@ Ext.define('Sdis.Remocra.features.hydrants.TabTournee', {
             text: 'Réinitialiser l\'état à 0%',
             itemId: 'resetTournee',
             disabled: true
+        },{
+            text: 'Renommer la tournée',
+            itemId: 'renameTournee',
+            disabled: true
         },'->',{
             text: 'Supprimer',
             iconCls: 'deleteIcon',

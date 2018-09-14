@@ -27,7 +27,8 @@ Ext.define('Sdis.Remocra.features.hydrants.Affectation', {
        },{
        xtype:'textfield',
        name:'nom',
-       width: 200,
+       emptyText: 'Nom de la tournée...',
+       width: 220,
        margin: '0 0 0 20',
        allowBlank:false
       }]
@@ -75,7 +76,7 @@ Ext.define('Sdis.Remocra.features.hydrants.Affectation', {
             allowBlank: false,
             disabled: true,
             name: 'tournee',
-            width: 200
+            width: 220
         }]
     }/*,{
         xtype: 'combo',

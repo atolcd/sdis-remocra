@@ -118,6 +118,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             'crHydrantsTournee #resetTournee': {
                 click: this.resetTournee
             },
+            'crHydrantsTournee #renameTournee': {
+                click: this.renameTournee
+            },
             'crHydrantsTournee #deleteTournee': {
                 click: this.deleteTournee
             },
@@ -773,6 +776,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         tabTournee.queryById('showHydrant').setDisabled(records.length == 0);
         tabTournee.queryById('deleteTournee').setDisabled(records.length == 0);
         tabTournee.queryById('resetTournee').setDisabled(records.length == 0);
+        tabTournee.queryById('renameTournee').setDisabled(records.length == 0);
         tabTournee.queryById('cancelReservation').setDisabled(records.length == 0 || records[0].get('reservation') == null);
         if (tabTournee.length > 0) {
             this.lastTournee = tabTournee[0];
@@ -810,6 +814,31 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 }
             });
         }
+    },
+
+    renameTournee: function() {
+            var tournee = this.getSelectedTournee();
+            if (tournee != null) {
+                 Ext.Msg.prompt('Renommer la tournée',
+                     'Veuillez saisir le nouveau nom:',
+                     function (button, value) {
+                         if (button === 'ok' && value !=='') {
+                              Ext.Ajax.request({
+                                 url: Sdis.Remocra.util.Util.withBaseUrl('../tournees/renameTournee/'+tournee.getId()),
+                                 method: 'POST',
+                                 params: {nom: value},
+                                 scope: this,
+                                 callback: function(param, success, response) {
+                                     var res = Ext.decode(response.responseText);
+                                     this.getTabTournee().getStore().load();
+                                 }
+                             });
+                         }
+                     }, this, false, null,{
+                         xtype: 'textfield'
+                 });
+            }
+
     },
 
     onLocateTourneeFromGrid: function() {
