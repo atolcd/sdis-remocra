@@ -105,7 +105,7 @@ Ext.define('Sdis.Remocra.features.hydrants.AdminAnomalieFiche', {
         });
 
         this.items.push({
-            fieldLabel: 'Type de de saisie',
+            fieldLabel: 'Type de saisie',
             xtype: 'checkboxgroup',
             vertical: true,
             columns: 1,
