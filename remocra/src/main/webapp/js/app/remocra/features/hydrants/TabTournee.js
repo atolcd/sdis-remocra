@@ -32,8 +32,12 @@ Ext.define('Sdis.Remocra.features.hydrants.TabTournee', {
             itemId: 'cancelReservation',
             disabled: true
         },{
-            text: 'Réinitialiser l\'état à 0%',
+            text: 'Forcer à 0%',
             itemId: 'resetTournee',
+            disabled: true
+        },{
+            text: 'Forcer à 100%',
+            itemId: 'finaliseTournee',
             disabled: true
         },{
             text: 'Renommer la tournée',

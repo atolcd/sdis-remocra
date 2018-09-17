@@ -119,13 +119,26 @@ public class TourneeController {
     }
 
     @RequestMapping(value = "/resetTournee/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('TOURNEE_C')")
+    @PreAuthorize("hasRight('TOURNEE_POURCENTAGE_C')")
     public ResponseEntity<java.lang.String> resettournee(@PathVariable("id") Long id) {
         try {
             Tournee attached = Tournee.findTournee(id);
             attached.setEtat(0);
             attached.flush();
             return new SuccessErrorExtSerializer(true, "La tournée "+ attached.getNom()+" a été réinitialisée").serialize();
+        } catch (Exception e) {
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
+    }
+
+    @RequestMapping(value = "/finaliseTournee/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('TOURNEE_POURCENTAGE_C')")
+    public ResponseEntity<java.lang.String> finalisetournee(@PathVariable("id") Long id) {
+        try {
+            Tournee attached = Tournee.findTournee(id);
+            attached.setEtat(100);
+            attached.flush();
+            return new SuccessErrorExtSerializer(true, "La tournée "+ attached.getNom()+" a été finalisée").serialize();
         } catch (Exception e) {
             return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
         }

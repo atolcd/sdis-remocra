@@ -121,6 +121,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             'crHydrantsTournee #renameTournee': {
                 click: this.renameTournee
             },
+            'crHydrantsTournee #finaliseTournee': {
+                click: this.finaliseTournee
+            },
             'crHydrantsTournee #deleteTournee': {
                 click: this.deleteTournee
             },
@@ -781,6 +784,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         tabTournee.queryById('deleteTournee').setDisabled(records.length == 0);
         tabTournee.queryById('resetTournee').setDisabled(records.length == 0);
         tabTournee.queryById('renameTournee').setDisabled(records.length == 0);
+        tabTournee.queryById('finaliseTournee').setDisabled(records.length == 0);
         tabTournee.queryById('cancelReservation').setDisabled(records.length == 0 || records[0].get('reservation') == null);
         if (tabTournee.length > 0) {
             this.lastTournee = tabTournee[0];
@@ -809,6 +813,21 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         if (tournee != null) {
             Ext.Ajax.request({
                 url: Sdis.Remocra.util.Util.withBaseUrl('../tournees/resetTournee/'+tournee.getId()),
+                method: 'PUT',
+                scope: this,
+                callback: function(param, success, response) {
+                    var res = Ext.decode(response.responseText);
+                    this.getTabTournee().getStore().load();
+                    Sdis.Remocra.util.Msg.msg("Réinitialisation de la tournée", res.message);
+                }
+            });
+        }
+    },
+    finaliseTournee: function() {
+        var tournee = this.getSelectedTournee();
+        if (tournee != null) {
+            Ext.Ajax.request({
+                url: Sdis.Remocra.util.Util.withBaseUrl('../tournees/finaliseTournee/'+tournee.getId()),
                 method: 'PUT',
                 scope: this,
                 callback: function(param, success, response) {
