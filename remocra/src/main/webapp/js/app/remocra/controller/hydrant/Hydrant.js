@@ -1115,7 +1115,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                             }
                             msg+="</div>";
 
-                              var globalMessage = features.length === 1 ? 'Le point d\'eau suivant va être désaffecté :' : 'Les points d\'eau suivants vont être désaffectés :';
+                              var globalMessage = features.length === 1 ? 'Le point d\'eau suivant va être désaffecté de sa tournée :' : 'Les points'+
+                               'd\'eau suivants vont être désaffectés de leur tournée :';
                                  globalMessage+= msg +'<br/>Souhaitez-vous continuer ?';
                               // Demande de confirmation
                               Ext.Msg.confirm("Retirer des tournées",
@@ -1285,8 +1286,18 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             },
             callback: function(param, success, response) {
                 var res = Ext.decode(response.responseText);
-                Sdis.Remocra.util.Msg.msg("Affectation", res.message);
-                this.getAffectation().close();
+                if(success){
+                    Sdis.Remocra.util.Msg.msg("Affectation", res.message);
+                    this.getAffectation().close();
+                }else {
+                     Ext.Msg.show({
+                          title: "Affectation",
+                          msg: res.message,
+                          buttons: Ext.Msg.OK,
+                          icon: Ext.Msg.WARNING
+                    });
+                }
+
             }
         });
     },
