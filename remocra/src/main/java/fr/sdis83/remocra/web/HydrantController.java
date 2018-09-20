@@ -1,9 +1,14 @@
 package fr.sdis83.remocra.web;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import fr.sdis83.remocra.domain.remocra.Tournee;
+import fr.sdis83.remocra.service.TourneeService;
+import fr.sdis83.remocra.util.ExceptionUtils;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,6 +46,9 @@ public class HydrantController {
     private HydrantService hydrantService;
 
     @Autowired
+    private TourneeService tourneeService;
+
+    @Autowired
     private ZoneCompetenceService zoneCompetenceService;
 
     @Autowired
@@ -72,14 +80,19 @@ public class HydrantController {
             @Override
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
                 return new JSONSerializer()
-                        .include("data.id", "data.numero", "data.natureNom", "data.natureCode","data.dateRecep", "data.code", "data.tournees", "data.dateReco", "data.dateContr", "data.hbe",
+                        .include("data.id", "data.numero", "data.natureNom", "data.natureCode","data.dateRecep", "data.nomTournee", "data.code", "data.dateReco", "data.dateContr", "data.hbe",
                                 "data.jsonGeometrie", "data.dispoHbe","data.indispoTemp","data.dispoTerrestre", "data.debit", "data.utilisateurModification", "data.commune.id", "data.commune.nom").exclude("data.*", "*.class")
                         .transform(new GeometryTransformer(), Geometry.class);
             }
 
             @Override
             protected List<Hydrant> getRecords() {
-                return hydrantService.find(start, limit, sortList, itemFilterList);
+                Long organisme = serviceUtilisateur.getCurrentUtilisateur().getOrganisme().getId();
+                List<Hydrant> l = hydrantService.find(start, limit, sortList, itemFilterList);
+               for (Hydrant h : l){
+                    h.setNomTournee(tourneeService.getNomTournee(h, organisme));
+                }
+                return l;
             }
 
             @Override
@@ -111,8 +124,16 @@ public class HydrantController {
     @RequestMapping(value = "/affecter", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("hasRight('TOURNEE_C')")
     public ResponseEntity<java.lang.String> affecter(final @RequestBody String json) {
-        Integer nbHydrant = hydrantService.affecter(json);
-        return new SuccessErrorExtSerializer(true, nbHydrant.toString() + " hydrant(s) affecté(s)").serialize();
+        try{
+            Integer nbHydrant = hydrantService.affecter(json);
+            return new SuccessErrorExtSerializer(true, nbHydrant.toString() + " hydrant(s) affecté(s)").serialize();
+        }catch (Exception e) {
+            if (ExceptionUtils.getNestedExceptionWithClass(e, ConstraintViolationException.class) != null) {
+                return new SuccessErrorExtSerializer(false, "Une tournée existe déjà sous ce nom").serialize();
+            }
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+
+        }
 
     }
 

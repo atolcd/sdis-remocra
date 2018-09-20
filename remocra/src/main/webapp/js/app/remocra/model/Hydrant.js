@@ -120,7 +120,11 @@ Ext.define('Sdis.Remocra.model.Hydrant', {
         name: 'CISCommune',
         type: 'string',
         persist: false
-    } ],
+    },{
+        name: 'nomTournee',
+        type: 'string',
+        persist: false
+    }],
 
     associations: [{
         type: 'hasMany',

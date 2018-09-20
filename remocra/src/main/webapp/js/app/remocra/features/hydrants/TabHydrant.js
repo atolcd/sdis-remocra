@@ -71,7 +71,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
             }
         },{
             text: 'Tournée',
-            dataIndex: 'tourneeId',
+            dataIndex: 'nomTournee',
             filterable: true,
             filter: {
                 xtype: 'combo',
@@ -86,7 +86,8 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
                     listeners: {
                         load: function(store, records, successful, operation, eOpts) {
                             // Ajout de l'élément "Toutes" en première position
-                            store.insert(0, {id: null});
+                            store.insert(0, {id: null, nom:'Toutes'});
+
                         }
                     }
                 },

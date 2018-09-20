@@ -314,5 +314,12 @@ privileged aspect Hydrant_Roo_JavaBean {
         this.utilisateurModification = utilisateurModification;
     }
 
+    public String Hydrant.getNomTournee() {
+        return this.nomTournee;
+    }
+
+    public void Hydrant.setNomTournee(String nomTournee) {
+       this.nomTournee = nomTournee;
+    }
     
 }

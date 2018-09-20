@@ -107,4 +107,17 @@ public class TourneeService extends AbstractService<Tournee> {
         return hydrants;
     }
 
+    @Transactional
+    public String getNomTournee(Hydrant h, Long organisme){
+        String nom = null;
+        String sql = "SELECT nom FROM remocra.tournee t where t.affectation =:organisme and t.id in (SELECT tournees FROM remocra.hydrant_tournees ht where ht.hydrant =:id) ";
+        Query query = entityManager.createNativeQuery(sql);
+        query.setParameter("id",h.getId());
+        query.setParameter("organisme", organisme);
+        if(query.getResultList().size() != 0){
+           nom = String.valueOf(query.getResultList().get(0));
+        }
+        return nom;
+    }
+
 }
