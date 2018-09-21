@@ -22,6 +22,13 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.xml.bind.JAXBException;
 
+import fr.sdis83.remocra.xml.HydrantAspirationIndetermine;
+import fr.sdis83.remocra.xml.HydrantChateauEau;
+import fr.sdis83.remocra.xml.HydrantCiterneEn;
+import fr.sdis83.remocra.xml.HydrantCiterneAerienne;
+import fr.sdis83.remocra.xml.HydrantPointAspiration;
+import fr.sdis83.remocra.xml.HydrantPoteauRelais;
+import fr.sdis83.remocra.xml.HydrantPuitPuisard;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.log4j.Logger;
@@ -485,6 +492,10 @@ public class XmlService {
                         hydrantPenaXML = new HydrantCoursEau();
                     } else if (hydrant.getNature().getCode().equals(HydrantPena.CODE_NATURE_CI_ENTERRE)) {
                         hydrantPenaXML = new HydrantCiterneEnterre();
+                    } else if (hydrant.getNature().getCode().equals(HydrantPena.CODE_NATURE_CI_EN)) {
+                        hydrantPenaXML = new HydrantCiterneEn();
+                    } else if (hydrant.getNature().getCode().equals(HydrantPena.CODE_NATURE_CI_AE)) {
+                        hydrantPenaXML = new HydrantCiterneAerienne();
                     } else if (hydrant.getNature().getCode().equals(HydrantPena.CODE_NATURE_CI_FIXE)) {
                         hydrantPenaXML = new HydrantCiterneFixe();
                     } else if (hydrant.getNature().getCode().equals(HydrantPena.CODE_NATURE_PE)) {
@@ -495,6 +506,16 @@ public class XmlService {
                         hydrantPenaXML = new HydrantRetenue();
                     } else if (hydrant.getNature().getCode().equals(HydrantPena.CODE_NATURE_RI)) {
                         hydrantPenaXML = new HydrantReserveIncendie();
+                    } else if (hydrant.getNature().getCode().equals(HydrantPena.CODE_NATURE_PUI)) {
+                        hydrantPenaXML = new HydrantPuitPuisard();
+                    } else if (hydrant.getNature().getCode().equals(HydrantPena.CODE_NATURE_PA_I)) {
+                        hydrantPenaXML = new HydrantPointAspiration();
+                    } else if (hydrant.getNature().getCode().equals(HydrantPena.CODE_NATURE_ASP_I)) {
+                        hydrantPenaXML = new HydrantAspirationIndetermine();
+                    } else if (hydrant.getNature().getCode().equals(HydrantPena.CODE_NATURE_CHE)) {
+                        hydrantPenaXML = new HydrantChateauEau();
+                    } else if (hydrant.getNature().getCode().equals(HydrantPena.CODE_NATURE_PR)) {
+                        hydrantPenaXML = new HydrantPoteauRelais();
                     }
                     fillHydrantPena(hydrantPenaXML, (fr.sdis83.remocra.domain.remocra.HydrantPena) hydrant);
                     lsthydrantsPenaXML.add(hydrantPenaXML);
@@ -994,11 +1015,11 @@ public class XmlService {
             ArrayList<Anomalie> lstAnomaliesXML = hydrantXML.getAnomalies().getAnomalies();
             boolean isHbe = hydrantXML instanceof HydrantPena ? ((HydrantPena) hydrantXML).isHbe() : false;
 
-            if (checkAnomalies(typeSaisie, lstAnomaliesXML, hydrant.getNature().getCode(), isHbe)) {
+           // if (checkAnomalies(typeSaisie, lstAnomaliesXML, hydrant.getNature().getCode(), isHbe)) {
                 insertAnomalies(lstAnomaliesXML, hydrant.getId().intValue());
-            } else {
+           /* } else {
                 throw new AnomalieException("Les anomalies remontées ne sont pas en adéquation avec le référentiel");
-            }
+            }*/
         }
 
         if (hydrantXML instanceof HydrantPibi) {

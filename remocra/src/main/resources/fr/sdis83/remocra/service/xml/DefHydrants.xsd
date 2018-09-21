@@ -132,7 +132,22 @@
     </xs:complexContent>
   </xs:complexType>
 
+  <xs:complexType name="CI_EN">
+    <xs:complexContent>
+      <xs:extension base="hydrantPena">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
   <xs:complexType name="CE">
+    <xs:complexContent>
+      <xs:extension base="hydrantPena">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="CI_AE">
     <xs:complexContent>
       <xs:extension base="hydrantPena">
         <xs:sequence/>
@@ -157,6 +172,46 @@
   </xs:complexType>
 
   <xs:complexType name="RE">
+    <xs:complexContent>
+      <xs:extension base="hydrantPena">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="PUI">
+    <xs:complexContent>
+      <xs:extension base="hydrantPena">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="PA_I">
+    <xs:complexContent>
+      <xs:extension base="hydrantPena">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ASP_I">
+    <xs:complexContent>
+      <xs:extension base="hydrantPena">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="CHE">
+    <xs:complexContent>
+      <xs:extension base="hydrantPena">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="PR">
     <xs:complexContent>
       <xs:extension base="hydrantPena">
         <xs:sequence/>

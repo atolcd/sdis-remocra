@@ -2,7 +2,8 @@ package fr.sdis83.remocra.xml;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
 
-@XmlSeeAlso({ HydrantCiterneEnterre.class, HydrantCoursEau.class, HydrantPlanEau.class, HydrantPuisard.class, HydrantRetenue.class })
+@XmlSeeAlso({ HydrantCiterneEnterre.class, HydrantCoursEau.class, HydrantPlanEau.class, HydrantPuisard.class, HydrantRetenue.class,HydrantReserveIncendie.class,
+    HydrantPointAspiration.class, HydrantAspirationIndetermine.class, HydrantPuitPuisard.class, HydrantCiterneAerienne.class, HydrantChateauEau.class, HydrantPoteauRelais.class })
 public abstract class HydrantPena extends Hydrant {
 
     public static final String CODE_NATURE_CI_FIXE = "CI_FIXE";
@@ -12,6 +13,14 @@ public abstract class HydrantPena extends Hydrant {
     public static final String CODE_NATURE_PU = "PU";
     public static final String CODE_NATURE_RE = "RE";
     public static final String CODE_NATURE_RI = "RI";
+    public static final String CODE_NATURE_CI_AE = "CI_AE";
+    public static final String CODE_NATURE_CI_EN = "CI_EN";
+    public static final String CODE_NATURE_PUI = "PUI";
+    public static final String CODE_NATURE_PA_I = "PA_I";
+    public static final String CODE_NATURE_ASP_I= "ASP_I";
+    public static final String CODE_NATURE_CHE = "CHE";
+    public static final String CODE_NATURE_PR = "PR";
+
 
     private String coordDFCI;
 
