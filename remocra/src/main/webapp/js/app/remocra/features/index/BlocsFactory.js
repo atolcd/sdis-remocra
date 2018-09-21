@@ -169,7 +169,40 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
         }
         return blocOldebs;
     },
+    createCrisesBloc: function(title, icon, minHeight) {
+        var blocCrises = {
+            type: 'crises',
+            minh: minHeight || this.randomHeight(),
+            title: title || 'Gestion de crise',
+            img: icon || 'gestion-crise.png',
+            items: []
+        };
 
+        if (Sdis.Remocra.Rights.hasRight('CRISE_R')) {
+            blocCrises.items.push({
+                type: 'href',
+                href: 'crises',
+                lbl: 'Suivi cartographique de crise'
+            });
+        }
+
+        if (Sdis.Remocra.Rights.hasRight('CRISE_R')) {
+            if (!Ext.isEmpty(blocCrises.items)) {
+                blocCrises.items.push({
+                    type: 'sep'
+                });
+            }
+            blocCrises.items.push({
+                type: 'href',
+                href: 'traitements/index/application/9',
+                lbl: 'Accéder aux traitements'
+            });
+        }
+        if (Ext.isEmpty(blocCrises.items)) {
+            return null;
+        }
+        return blocCrises;
+    },
     createPermisBloc: function(title, icon, minHeight) {
         if (!Sdis.Remocra.Rights.hasRight('PERMIS_R')) {
             return null;
@@ -457,7 +490,9 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             fn = this.createAdressesBloc;
         } else if (cfgBloc.type == 'permis') {
             fn = this.createPermisBloc;
-        } else if (cfgBloc.type == 'rci') {
+        } else if (cfgBloc.type == 'crises') {
+            fn = this.createCrisesBloc;
+        }else if (cfgBloc.type == 'rci') {
             fn = this.createRciBloc;
         } else if (cfgBloc.type == 'dfci') {
             fn = this.createDFCIBloc;

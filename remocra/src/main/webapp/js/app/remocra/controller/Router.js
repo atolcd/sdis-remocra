@@ -137,6 +137,7 @@ Ext.define('Sdis.Remocra.controller.Router', {
         this.routes['permis'] = this.getPermisRoutes();
         this.routes['hydrants'] = this.getHydrantsRoutes();
         this.routes['oldebs'] = this.getOldebsRoutes();
+        this.routes['crises'] = this.getCrisesRoutes();
         this.routes['risques'] = this.getRisquesRoutes();
         this.routes['rci'] = this.getRciRoutes();
         this.routes['cartographie'] = this.getCartographieRoutes();
@@ -184,6 +185,22 @@ Ext.define('Sdis.Remocra.controller.Router', {
         };
         routes['documents'] = {
             xtype: 'crOldeb'
+        };
+        return routes;
+    },
+    getCrisesRoutes: function() {
+        var routes = [];
+        routes['index'] = {
+            xtype: 'crCrise'
+        };
+        routes['localisation'] = {
+            xtype: 'crCrise'
+        };
+        routes['vue'] = {
+            xtype: 'crCrise'
+        };
+        routes['general'] = {
+            xtype: 'crCrise'
         };
         return routes;
     },

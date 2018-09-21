@@ -43,6 +43,7 @@ Ext.require('Sdis.Remocra.features.dfci.Dfci');
 Ext.require('Sdis.Remocra.features.permis.Permis');
 Ext.require('Sdis.Remocra.features.hydrants.Hydrant');
 Ext.require('Sdis.Remocra.features.oldebs.Oldeb');
+Ext.require('Sdis.Remocra.features.crises.Crise');
 Ext.require('Sdis.Remocra.features.prescrits.Map');
 Ext.require('Sdis.Remocra.features.profil.MonProfil');
 Ext.require('Sdis.Remocra.features.profil.ResetPassword');
@@ -67,7 +68,7 @@ Ext.application({
     
     controllers: ['Metadonnee',
                   'hydrant.Hydrant', 'oldeb.Oldeb', 'hydrant.Fiche', 'oldeb.Fiche', 'hydrant.Admin', 'hydrant.Prescrit', 'hydrant.Requetage',
-                  'documents.Admin', 'documents.Fiche',
+                  'documents.Admin', 'documents.Fiche','crise.Crise',
                   'rci.Rci', 'rci.Fiche',
                   'cartographie.Cartographie',
                   'widget.FileUploadMultiPanel',

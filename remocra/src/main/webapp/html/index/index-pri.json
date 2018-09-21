@@ -2,6 +2,8 @@
     // Colonne 1
     [ {
         type : 'hydrants'
+    },{
+        type : 'crises'
     }, {
         type : 'oldebs'
     }, {
