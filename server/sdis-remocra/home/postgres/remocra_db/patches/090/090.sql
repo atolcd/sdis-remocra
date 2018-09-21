@@ -1,4 +1,4 @@
-begin;
+﻿begin;
 
 set statement_timeout = 0;
 set client_encoding = 'UTF8';
@@ -62,7 +62,7 @@ DROP TRIGGER trig_hydrant_tournee ON remocra.hydrant;
 
 DROP FUNCTION remocra.trg_hydrant_tournee();
 
-DROP FUNCTION remocra.trg_tournee();
+--DROP FUNCTION remocra.trg_tournee();
 
 DROP FUNCTION remocra.updateinfotournee(bigint);
 
