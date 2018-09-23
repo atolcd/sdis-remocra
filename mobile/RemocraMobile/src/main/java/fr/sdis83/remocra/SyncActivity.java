@@ -297,7 +297,7 @@ public class SyncActivity extends FragmentActivity implements ChoiceTournee.Choi
 
         DefaultHttpClient httpClient = addCookies(new DefaultHttpClient(prepareHttpParameters()));
         HttpGet request = new HttpGet(uriServeur.buildUpon().appendEncodedPath("tournees").build().toString());
-        request.addHeader("Accept", "application/xml");
+        request.addHeader("Accept", "application/xml;charset=utf-8");
         try {
             HttpResponse response = httpClient.execute(request);
 //            InputStream stream = response.getEntity().getContent();
