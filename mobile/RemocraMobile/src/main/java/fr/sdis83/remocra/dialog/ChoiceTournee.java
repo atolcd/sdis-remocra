@@ -120,7 +120,7 @@ public class ChoiceTournee extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog dialog = new AlertDialog.Builder(getActivity())
-                .setTitle("Sélection des tournées à synchroniser")
+                .setTitle("Tournées à embarquer")
                 .setPositiveButton("Valider",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
