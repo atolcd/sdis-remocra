@@ -189,6 +189,7 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
             today.set(Calendar.MILLISECOND, 0);
             tournee.setDebSync(today.getTime());
             tournee.setNom(tourneeNom);
+            tournee.setEtat(0);
         } else {
             tournee = Tournee.findTournee(tourneeId);
         }
