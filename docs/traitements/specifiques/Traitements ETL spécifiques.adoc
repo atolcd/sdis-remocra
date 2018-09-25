@@ -48,6 +48,14 @@ sh kitchen.sh -file:"/var/remocra/pdi/traitements_sdis/XX/ma_tache.kjb" -level:E
 
 == Traitements spécifiques aux SDIS
 
+=== SDIS 42
+
+include::42/synchronisation_ldap{outfilesuffix}[]
+
+include::42/synchronisation_sig_vers_remocra{outfilesuffix}[]
+
+include::42/synchronisation_remocra_vers_sig{outfilesuffix}[]
+
 === SDIS 77
 
 include::77/synchronisation_sig{outfilesuffix}[]

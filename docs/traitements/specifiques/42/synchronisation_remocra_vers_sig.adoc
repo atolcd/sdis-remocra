@@ -1,0 +1,18 @@
+==== Synchronisation LDAP
+
+Ce traitement permet de synchroniser les tables du SIG du SDIS avec la base Remocra.
+
+===== Configuration
+Le fichier _"remocraXX.properties"_ doit contenir les informations suivantes :
+[width="100%",options="header"]
+|===================
+| Paramètre | Description
+| PDI_SIG_DATABASE_HOST | Adresse du serveur SIG postgresql _(Exemple : `localhost`)_
+| PDI_SIG_DATABASE_NAME | Nom de la base SIG
+| PDI_SIG_DATABASE_PORT | Port de la base SIG _(Exemple : `1433`)_
+| PDI_SIG_DATABASE_USER_NAME | Identifiant de connexion à la base SIG
+| PDI_SIG_DATABASE_USER_PASSWORD | Mot de passe d'accès à la base SIG`
+|===================
+
+===== Lancement et planification de la synchronisation
+L'exécution automatique s'effectue en planifiant le lancement du fichier ```/var/remocra/pdi/traitements_sdis/42/synchroniser_remocra_vers_sig.sh``` avec l'utilisateur ```postgres```.
