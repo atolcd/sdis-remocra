@@ -845,7 +845,7 @@ public class XmlService {
         }
 
         // Eléments communs liés au droit MCO.C (anneeFabrication, codeDomaine,
-        // gestPointEau, courrier, photo)
+        // gestPointEau, courrier)
         if (mcoCreate) {
             // Année. Si AnneeFabrication 0 : NULL
             if (hydrantXML.getAnneeFabrication() != null && hydrantXML.getAnneeFabrication().intValue() > 0) {
@@ -861,28 +861,28 @@ public class XmlService {
             }
             hydrant.setGestPointEau(hydrantXML.getGestPointEau());
             hydrant.setCourrier(hydrantXML.getCourrier());
-            // Photo
-            if (hydrantXML.getPhoto() != null && !hydrantXML.getPhoto().isEmpty()) {
-                // si il y a une photo dans le xml, on ajoute/remplace
-                // l'actuelle
-                Document d;
-                byte[] dataImage = Base64.decodeBase64(hydrantXML.getPhoto());
-                InputStream in = new ByteArrayInputStream(dataImage);
-                String filename = Hydrant.TITRE_PHOTO;
-                BufferedImage bImageFromConvert = ImageIO.read(in);
-                d = DocumentUtil.getInstance().createNonPersistedDocument(TypeDocument.HYDRANT, bImageFromConvert, filename, paramConfService.getDossierDocHydrant());
-                HydrantDocument hd = new HydrantDocument();
-                hd.setHydrant(hydrant);
-                hd.setDocument(Hydrant.entityManager().merge(d));
+        }
+        // Photo
+        if (hydrantXML.getPhoto() != null && !hydrantXML.getPhoto().isEmpty()) {
+            // si il y a une photo dans le xml, on ajoute/remplace
+            // l'actuelle
+            Document d;
+            byte[] dataImage = Base64.decodeBase64(hydrantXML.getPhoto());
+            InputStream in = new ByteArrayInputStream(dataImage);
+            String filename = Hydrant.TITRE_PHOTO;
+            BufferedImage bImageFromConvert = ImageIO.read(in);
+            d = DocumentUtil.getInstance().createNonPersistedDocument(TypeDocument.HYDRANT, bImageFromConvert, filename, paramConfService.getDossierDocHydrant());
+            HydrantDocument hd = new HydrantDocument();
+            hd.setHydrant(hydrant);
+            hd.setDocument(Hydrant.entityManager().merge(d));
 
-                HydrantDocument toDetach = hydrant.getPhoto();
-                if (toDetach != null) {
-                    // Suppression de l'ancienne photo
-                    hydrant.getHydrantDocuments().remove(toDetach);
-                }
-                // Ajout de la nouvelle photo
-                hydrant.getHydrantDocuments().add(hd);
+            HydrantDocument toDetach = hydrant.getPhoto();
+            if (toDetach != null) {
+                // Suppression de l'ancienne photo
+                hydrant.getHydrantDocuments().remove(toDetach);
             }
+            // Ajout de la nouvelle photo
+            hydrant.getHydrantDocuments().add(hd);
         }
 
         // Nature

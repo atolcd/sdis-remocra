@@ -20,12 +20,16 @@
         android:layout_gravity="top"
         />
 
-    <Button
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="Capture photo"
+    <ImageButton
         android:id="@+id/capture"
-        android:layout_gravity="right"
+        android:adjustViewBounds="false"
+        android:scaleType="fitXY"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="16dp"
+        android:padding="10dp"
+        android:text="Capture photo"
+        android:layout_gravity="bottom|right"
+        android:src="@drawable/picture"
         />
-
 </LinearLayout>

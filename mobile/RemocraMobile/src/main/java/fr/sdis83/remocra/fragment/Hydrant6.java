@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
@@ -70,17 +71,13 @@ public class Hydrant6 extends AbstractHydrant {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         needSave = false;
         mImageView = (ImageView) view.findViewById(R.id.imageView);
-        Button btnCapture = (Button) view.findViewById(R.id.capture);
-        if (GlobalRemocra.getInstance().getCanSetMco()) {
-            btnCapture.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    doCapture(view);
-                }
-            });
-        } else {
-            btnCapture.setVisibility(View.INVISIBLE);
-        }
+        ImageButton btnCapture = (ImageButton) view.findViewById(R.id.capture);
+        btnCapture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                doCapture(view);
+            }
+        });
         return view;
     }
 
