@@ -1,0 +1,25 @@
+= SDIS Remocra - Tests dans une box Vagrant
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+:numbered:
+
+link:../index{outfilesuffix}[Retour à l'accueil]
+
+'''
+
+Le fichier _vagrant_ext/Vagrantfile_ permet de créer rapidement une machine virtuelle link:https://www.virtualbox.org[VirtualBox] munie de remocra via link:https://www.vagrantup.com/downloads.html[Vagrant]. Pour tester :
+
+. *Compiler le projet* via `packaging/remocra-package-install.sh`
+. *Déposer l'archive* générée (exemple : _packaging/remocrapackage/20171108_remocrapackage0.9.14-install.zip_) dans _vagrant_ext/livraison_
+. *Démarrer la box* avec la commande : `cd vagrant_ext && vagrant up`
+
+Accès après l'installation :
+
+* http://localhost:8002/remocra
+* http://localhost:8002/geoserver

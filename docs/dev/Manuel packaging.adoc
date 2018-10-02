@@ -9,7 +9,7 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 
 :numbered:
 
-link:index{outfilesuffix}[Retour à l'accueil]
+link:../index{outfilesuffix}[Retour à l'accueil]
 
 '''
 
@@ -20,7 +20,7 @@ Pour *créer un package d'installation* de Remocra, exécuter le script suivant 
 Exemple d'archive générée : ```packaging/remocrapackage/20171108_remocrapackage0.9.14-install.zip```.
 
 
-Pour un package de mise à jour :
+Pour *créer un package de mise à jour* :
 
  packaging/remocra-package-update.sh
 
