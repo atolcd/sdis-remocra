@@ -65,6 +65,7 @@ Ext.define('Sdis.Remocra.features.oldebs.TabObligation', {
 
         items: [{
             xtype: 'combo',
+            emptyText: 'Commune de...',
             id: 'commune',
             fieldLabel: 'Commune',
             margin: '10 10 10 10',
@@ -104,6 +105,7 @@ Ext.define('Sdis.Remocra.features.oldebs.TabObligation', {
             filterable: true,
             filter: {
                 xtype: 'combo',
+                emptyText: 'Section...',
                 id: 'section',
                 filterName: 'section',
                 displayField: 'numero',
@@ -133,8 +135,8 @@ Ext.define('Sdis.Remocra.features.oldebs.TabObligation', {
             dataIndex: 'parcelle',
             filterable: true,
             filter: {
-
                 xtype: 'textfield',
+                emptyText: 'Numéro de parcelle...',
                 hideTrigger: true,
                 listeners: {
                     change: deferredApplyFilter

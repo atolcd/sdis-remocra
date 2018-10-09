@@ -138,6 +138,7 @@ Ext.define('Sdis.Remocra.features.admin.typereference.OrganismeGrid', {
                     },
                     editor : {
                         xtype: 'combo',
+                        emptyText: 'Nom de la zone...',
                         itemId: 'zoneCompetenceId',
                         valueField: 'id',
                         displayField: 'nom',

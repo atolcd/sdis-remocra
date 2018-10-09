@@ -26,6 +26,7 @@ Ext.define('Sdis.Remocra.features.oldebs.bloc.Localisation', {
             labelWidth: 50
         }, {
             fieldLabel: 'Voie',
+            emptyText: 'Voie...',
             xtype: 'comboforce',
             name: 'voie',
             store: {

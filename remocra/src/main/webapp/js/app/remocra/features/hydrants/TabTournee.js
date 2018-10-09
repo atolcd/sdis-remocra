@@ -71,6 +71,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabTournee', {
             filterable: true,
             filter: {
                 xtype: 'textfield',
+                emptyText: 'Nom...',
                 hideTrigger: true,
                 listeners: {
                     change: deferredApplyFilter

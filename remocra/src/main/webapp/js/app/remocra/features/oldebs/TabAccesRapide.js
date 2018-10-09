@@ -47,6 +47,7 @@ Ext.define('Sdis.Remocra.features.oldebs.TabAccesRapide', {
         fieldLabel: 'Commune',
         items: [{
             xtype: 'combo',
+            emptyText: 'Commune de...',
             minChars: 2,
             hideTrigger: false,
             name: 'commune',
@@ -64,6 +65,7 @@ Ext.define('Sdis.Remocra.features.oldebs.TabAccesRapide', {
         fieldLabel: 'Section',
         margin: '0 0 20 0',
         items: [{
+            emptyText: 'Section...',
             disabled: true,
             xtype: 'combo',
             name: 'section',
@@ -84,6 +86,7 @@ Ext.define('Sdis.Remocra.features.oldebs.TabAccesRapide', {
         items: [{
             disabled: true,
             xtype: 'combo',
+            emptyText: 'Numéro de parcelle...',
             hideTrigger: true,
             name: 'parcellecadastre',
             minChars: 1,
@@ -99,6 +102,7 @@ Ext.define('Sdis.Remocra.features.oldebs.TabAccesRapide', {
         }, {
             disabled: true,
             xtype: 'combo',
+            emptyText: 'Numéro de parcelle...',
             name: 'parcelleoldeb',
             hideTrigger: true,
             minChars: 1,

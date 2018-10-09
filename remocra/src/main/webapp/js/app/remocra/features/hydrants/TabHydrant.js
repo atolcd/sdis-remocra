@@ -63,6 +63,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
             dataIndex: 'numero',
             filterable: true,
             filter: {
+                emptyText: 'Numéro...',
                 xtype: 'textfield',
                 hideTrigger: true,
                 listeners: {
@@ -74,6 +75,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
             dataIndex: 'nomTournee',
             filterable: true,
             filter: {
+                emptyText: 'Nom...',
                 xtype: 'combo',
                 filterName: 'tournee',
                 displayField: 'nom',

@@ -13,6 +13,7 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.LocalisationPena', {
     },
     items: [{
         xtype: 'combo',
+        emptyText: 'Commune de...',
         name: 'commune',
         displayField: 'nom',
         valueField: 'id',
@@ -41,6 +42,7 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.LocalisationPena', {
         layout: 'hbox',
         items: [{
             xtype: 'combo',
+            emptyText: 'Voie...',
             name: 'voie',
             store: {
                 type: 'crVoie'
@@ -55,6 +57,7 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.LocalisationPena', {
             allowBlank : true
         },{
             fieldLabel: 'Carrefour',
+            emptyText: 'Carrefour...',
             xtype: 'combo',
             name: 'voie2',
             store: {

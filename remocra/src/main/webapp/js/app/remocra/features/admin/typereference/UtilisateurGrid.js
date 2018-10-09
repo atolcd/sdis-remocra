@@ -114,6 +114,7 @@ Ext.define('Sdis.Remocra.features.admin.typereference.UtilisateurGrid', {
                     },
                     editor: {
                         xtype: 'combo',
+                        emptyText: 'Organisme...',
                         itemId: 'organismeId',
                         queryMode: 'remote', 
                         valueField: 'id', 

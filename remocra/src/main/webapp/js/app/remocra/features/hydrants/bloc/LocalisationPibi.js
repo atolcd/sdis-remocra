@@ -14,6 +14,7 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.LocalisationPibi', {
     },
     items: [{
         xtype: 'combo',
+        emptyText: 'Commune de...',
         name: 'commune',
         displayField: 'nom',
         valueField: 'id',
@@ -42,6 +43,7 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.LocalisationPibi', {
         layout: 'hbox',
         items: [{
             xtype: 'combo',
+            emptyText: 'Voie...',
             name: 'voie',
             width: 275,
             store: {
@@ -57,6 +59,7 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.LocalisationPibi', {
              allowBlank : true
         },{
             fieldLabel: 'Carrefour',
+            emptyText: 'Carrefour...',
             xtype: 'combo',
             name: 'voie2',
             store: {

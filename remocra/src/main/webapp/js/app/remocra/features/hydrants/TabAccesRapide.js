@@ -26,6 +26,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabAccesRapide', {
             xtype: 'combo',
             displayField: 'nom',
             valueField: 'id',
+            emptyText: 'Nom...',
             forceSelection: true,
             minChars: 1,
             mode: 'remote',
@@ -52,6 +53,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabAccesRapide', {
             xtype: 'combo',
             displayField: 'numero',
             valueField: 'id',
+            emptyText: 'Numéro...',
             forceSelection: true,
             minChars: 1,
             mode: 'remote',
@@ -79,7 +81,8 @@ Ext.define('Sdis.Remocra.features.hydrants.TabAccesRapide', {
             hideTrigger: false,
             name: 'commune',
             displayField: 'nom',
-            valueField: 'id'
+            valueField: 'id',
+            emptyText: 'Commune de...'
         }, Sdis.Remocra.widget.WidgetFactory.getCommuneComboConfig())]
     },{
         fieldLabel: 'Voie',
@@ -92,6 +95,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabAccesRapide', {
             store: 'Voie',
             displayField: 'nom',
             valueField: 'id',
+            emptyText: 'Voie...',
             forceSelection: true,
             queryCaching: false // Changement commune avec saisie identique : requête à rejouer quand-même
         },{
