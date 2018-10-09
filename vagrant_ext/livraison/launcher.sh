@@ -58,6 +58,7 @@ export APP_IGNKEYS=${APP_IGNKEYS:-"fjwf53vbh2ikn9q009g6mi7f"}
 export GEOSERVER_URL_CIBLE=${GEOSERVER_URL_CIBLE:-localhost}
 
 export REMOCRA_PRESERVE_REMOCRACONF=${REMOCRA_PRESERVE_REMOCRACONF:-false}
+export REMOCRA_PRESERVE_DOTKETTLE=${REMOCRA_PRESERVE_DOTKETTLE:-false}
 
 ### Paramètres cachés réservés à un usage interne dans un contexte Box Vagrant par exemple
 # (REMOCRA_FORCE_CREATE_DB_IF_ABSENT : true/false)
