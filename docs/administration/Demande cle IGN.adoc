@@ -25,28 +25,33 @@ Deux possibilités sont offertes :
 Pour le second cas de figure :
 
 * A partir de la page http://professionnels.ign.fr, s'identifier
-* Puis aller cliquer sur "Service en ligne", "L'API Géoportail pour le web" (ou cliquer directement sur le lien ci-dessous) :
-* http://professionnels.ign.fr/api-web
+* Puis aller cliquer dans http://professionnels.ign.fr/geoservices[Géoservices], http://professionnels.ign.fr/ressources[Les ressources], *http://professionnels.ign.fr/visualisation[Services de visualisation]*
 * A priori, sélectionner "Pour un site intranet professionnel" (s'adapter au cas de figure)
 * S'abonner
-** Valider "LICENCE GÉOSERVICES IGN POUR MISSION DE SERVICE PUBLIC - INTRANET"
-** ETAPE SUIVANTE, CONTINUER
-*** Renseigner le champ Url (exemple : http://remocra.sdisxx.fr)
-*** ETAPE SUIVANTE
-**** Dans "Ressources d'images tuilées WMTS du Géoportail", cocher (s'adapter au cas de figure) : "WMTS-Géoportail - Orthophotographies", "WMTS-Géoportail - Parcelles cadastrales", "WMTS-Géoportail - Plan IGN"
-**** AJOUTER AU PANIER
+** Renseigner un titre pour le contrat ainsi que la licence
+** Renseigner le type d'usage et la quantité
+** Mode d'accès :
+*** *Type de sécurisation : Referer*
+*** *Valeur de sécurisation (exemple) : _localhost,remocra.sdisxx.fr_*
+** Catalogue complet des ressources :
+**** Cocher les "Ressources d'images tuilées WMTS du Géoportail en WebMercator (non superposables aux ressources en Lambert-93)" souhaitées :
+***** *WMTS-Géoportail - Photographies aériennes : ORTHOIMAGERY.ORTHOPHOTOS*
+***** *WMTS-Géoportail - Cartes IGN : GEOGRAPHICALGRIDSYSTEMS.MAPS*
+***** *WMTS-Géoportail - PLAN IGN J+1 : GEOGRAPHICALGRIDSYSTEMS.MAPS.BDUNI.J1*
+***** *WMTS-Géoportail - Parcelles cadastrales : CADASTRALPARCELS.PARCELS*
+
+**** Ajouter au panier
 ***** Cocher "Je valide l’ensemble des licences de mon panier"
-***** POURSUIVRE LA COMMANDE
-* Dès que la clé est générée, l'IGN envoie un email à le boîte email rattachée au compte.
+***** Poursuivre la commande
+* La clé est reçue par mail lorsqu'elle est prête.
 
 
 == Paramétrage de la clé ==
 
-A partir de la page http://remocra.sdisxx.fr/remocra/#admin/index/elt/paramconf
-Il s'agit du paramètre "CLES_IGN"
+A partir de la page http://remocra.sdisxx.fr/remocra/#admin/index/elt/paramconf, il s'agit du paramètre "CLES_IGN"
 
-* Clé(s) IGN. Exemples (mono/multi) : "rm5nr4ejwapq6d58fm0869bd" ou "{'localhost': '4n507j21zeha5rp5pkll48vj','sdis83-prod.ataraxie.fr': 'rm5nr4ejwapq6d58fm0869bd'}"
-** Exemple 1, mono-domaine : ```vhl4v63iekpca0ffv7nr93ca```
+* *Clé(s) IGN*. Exemples (mono/multi) : "rm5nr4ejwapq6d58fm0869bd" ou "{'localhost': '4n507j21zeha5rp5pkll48vj','sdis83-prod.ataraxie.fr': 'rm5nr4ejwapq6d58fm0869bd'}"
+** *Exemple 1, mono-domaine : `vhl4v63iekpca0ffv7nr93ca`*
 ** Exemple 2, multi-domaine :
 [source,js]
 ----
@@ -57,4 +62,4 @@ Il s'agit du paramètre "CLES_IGN"
 }
 ----
 
-* Puis vérifier que les dalles s'affichent sur une carte de REMOcRA.
+* Après la validation, les fonds de plan sont affichés dans Remocra (après configuration des couches).
