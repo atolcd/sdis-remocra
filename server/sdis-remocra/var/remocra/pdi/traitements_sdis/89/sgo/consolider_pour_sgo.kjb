@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job>
+  <name>consolider_pour_sgo</name>
+    <description/>
+    <extended_description/>
+    <job_version/>
+    <job_status>0</job_status>
+  <directory>&#47;</directory>
+  <created_user>-</created_user>
+  <created_date>2018&#47;07&#47;03 14:34:10.233</created_date>
+  <modified_user>-</modified_user>
+  <modified_date>2018&#47;07&#47;03 14:34:10.233</modified_date>
+    <parameters>
+        <parameter>
+            <name>PDI_FICHIER_PARAMETRE</name>
+            <default_value/>
+            <description/>
+        </parameter>
+    </parameters>
+  <connection>
+    <name>Remocra (Postgis)</name>
+    <server>${REMOCRA_POSTGIS_DATABASE_HOST}</server>
+    <type>POSTGRESQL</type>
+    <access>Native</access>
+    <database>${REMOCRA_POSTGIS_DATABASE_NAME}</database>
+    <port>${REMOCRA_POSTGIS_DATABASE_PORT}</port>
+    <username>${REMOCRA_POSTGIS_DATABASE_USER_NAME}</username>
+    <password>${REMOCRA_POSTGIS_DATABASE_USER_PASSWORD}</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute><code>EXTRA_OPTION_POSTGRESQL.stringtype</code><attribute>unspecified</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+      <attribute><code>PORT_NUMBER</code><attribute>${REMOCRA_POSTGIS_DATABASE_PORT}</attribute></attribute>
+      <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+      <attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
+      <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+    </attributes>
+  </connection>
+    <slaveservers>
+    </slaveservers>
+<job-log-table><connection/>
+<schema/>
+<table/>
+<size_limit_lines/>
+<interval/>
+<timeout_days/>
+<field><id>ID_JOB</id><enabled>Y</enabled><name>ID_JOB</name></field><field><id>CHANNEL_ID</id><enabled>Y</enabled><name>CHANNEL_ID</name></field><field><id>JOBNAME</id><enabled>Y</enabled><name>JOBNAME</name></field><field><id>STATUS</id><enabled>Y</enabled><name>STATUS</name></field><field><id>LINES_READ</id><enabled>Y</enabled><name>LINES_READ</name></field><field><id>LINES_WRITTEN</id><enabled>Y</enabled><name>LINES_WRITTEN</name></field><field><id>LINES_UPDATED</id><enabled>Y</enabled><name>LINES_UPDATED</name></field><field><id>LINES_INPUT</id><enabled>Y</enabled><name>LINES_INPUT</name></field><field><id>LINES_OUTPUT</id><enabled>Y</enabled><name>LINES_OUTPUT</name></field><field><id>LINES_REJECTED</id><enabled>Y</enabled><name>LINES_REJECTED</name></field><field><id>ERRORS</id><enabled>Y</enabled><name>ERRORS</name></field><field><id>STARTDATE</id><enabled>Y</enabled><name>STARTDATE</name></field><field><id>ENDDATE</id><enabled>Y</enabled><name>ENDDATE</name></field><field><id>LOGDATE</id><enabled>Y</enabled><name>LOGDATE</name></field><field><id>DEPDATE</id><enabled>Y</enabled><name>DEPDATE</name></field><field><id>REPLAYDATE</id><enabled>Y</enabled><name>REPLAYDATE</name></field><field><id>LOG_FIELD</id><enabled>Y</enabled><name>LOG_FIELD</name></field></job-log-table>
+<jobentry-log-table><connection/>
+<schema/>
+<table/>
+<timeout_days/>
+<field><id>ID_BATCH</id><enabled>Y</enabled><name>ID_BATCH</name></field><field><id>CHANNEL_ID</id><enabled>Y</enabled><name>CHANNEL_ID</name></field><field><id>LOG_DATE</id><enabled>Y</enabled><name>LOG_DATE</name></field><field><id>JOBNAME</id><enabled>Y</enabled><name>TRANSNAME</name></field><field><id>JOBENTRYNAME</id><enabled>Y</enabled><name>STEPNAME</name></field><field><id>LINES_READ</id><enabled>Y</enabled><name>LINES_READ</name></field><field><id>LINES_WRITTEN</id><enabled>Y</enabled><name>LINES_WRITTEN</name></field><field><id>LINES_UPDATED</id><enabled>Y</enabled><name>LINES_UPDATED</name></field><field><id>LINES_INPUT</id><enabled>Y</enabled><name>LINES_INPUT</name></field><field><id>LINES_OUTPUT</id><enabled>Y</enabled><name>LINES_OUTPUT</name></field><field><id>LINES_REJECTED</id><enabled>Y</enabled><name>LINES_REJECTED</name></field><field><id>ERRORS</id><enabled>Y</enabled><name>ERRORS</name></field><field><id>RESULT</id><enabled>Y</enabled><name>RESULT</name></field><field><id>NR_RESULT_ROWS</id><enabled>Y</enabled><name>NR_RESULT_ROWS</name></field><field><id>NR_RESULT_FILES</id><enabled>Y</enabled><name>NR_RESULT_FILES</name></field><field><id>LOG_FIELD</id><enabled>N</enabled><name>LOG_FIELD</name></field><field><id>COPY_NR</id><enabled>N</enabled><name>COPY_NR</name></field></jobentry-log-table>
+<channel-log-table><connection/>
+<schema/>
+<table/>
+<timeout_days/>
+<field><id>ID_BATCH</id><enabled>Y</enabled><name>ID_BATCH</name></field><field><id>CHANNEL_ID</id><enabled>Y</enabled><name>CHANNEL_ID</name></field><field><id>LOG_DATE</id><enabled>Y</enabled><name>LOG_DATE</name></field><field><id>LOGGING_OBJECT_TYPE</id><enabled>Y</enabled><name>LOGGING_OBJECT_TYPE</name></field><field><id>OBJECT_NAME</id><enabled>Y</enabled><name>OBJECT_NAME</name></field><field><id>OBJECT_COPY</id><enabled>Y</enabled><name>OBJECT_COPY</name></field><field><id>REPOSITORY_DIRECTORY</id><enabled>Y</enabled><name>REPOSITORY_DIRECTORY</name></field><field><id>FILENAME</id><enabled>Y</enabled><name>FILENAME</name></field><field><id>OBJECT_ID</id><enabled>Y</enabled><name>OBJECT_ID</name></field><field><id>OBJECT_REVISION</id><enabled>Y</enabled><name>OBJECT_REVISION</name></field><field><id>PARENT_CHANNEL_ID</id><enabled>Y</enabled><name>PARENT_CHANNEL_ID</name></field><field><id>ROOT_CHANNEL_ID</id><enabled>Y</enabled><name>ROOT_CHANNEL_ID</name></field></channel-log-table>
+   <pass_batchid>N</pass_batchid>
+   <shared_objects_file/>
+  <entries>
+    <entry>
+      <name>Récupération des paramètres globaux</name>
+      <description/>
+      <type>SET_VARIABLES</type>
+      <replacevars>Y</replacevars>
+      <filename>${PDI_FICHIER_PARAMETRE}</filename>
+      <file_variable_type>JVM</file_variable_type>
+      <fields>
+      </fields>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>318</xloc>
+      <yloc>260</yloc>
+      </entry>
+    <entry>
+      <name>Test connexion à Remocra</name>
+      <description/>
+      <type>CHECK_DB_CONNECTIONS</type>
+      <connections>
+        <connection>
+          <name>Remocra (Postgis)</name>
+          <waitfor>0</waitfor>
+          <waittime>millisecond</waittime>
+        </connection>
+      </connections>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>848</xloc>
+      <yloc>261</yloc>
+      </entry>
+    <entry>
+      <name>Ecriture dans trace</name>
+      <description/>
+      <type>WRITE_TO_LOG</type>
+      <logmessage>Erreur de connexion à la base de données REMOCRA</logmessage>
+      <loglevel>Basic</loglevel>
+      <logsubject>Erreur de connexion à la base de données</logsubject>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>848</xloc>
+      <yloc>405</yloc>
+      </entry>
+    <entry>
+      <name>START</name>
+      <description/>
+      <type>SPECIAL</type>
+      <start>Y</start>
+      <dummy>N</dummy>
+      <repeat>N</repeat>
+      <schedulerType>0</schedulerType>
+      <intervalSeconds>0</intervalSeconds>
+      <intervalMinutes>60</intervalMinutes>
+      <hour>12</hour>
+      <minutes>0</minutes>
+      <weekDay>1</weekDay>
+      <DayOfMonth>1</DayOfMonth>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>126</xloc>
+      <yloc>260</yloc>
+      </entry>
+    <entry>
+      <name>Récupération des paramètres spécifiques</name>
+      <description/>
+      <type>SET_VARIABLES</type>
+      <replacevars>Y</replacevars>
+      <filename>${Internal.Job.Filename.Directory}&#47;..&#47;remocra89.properties</filename>
+      <file_variable_type>JVM</file_variable_type>
+      <fields>
+      </fields>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>602</xloc>
+      <yloc>261</yloc>
+      </entry>
+    <entry>
+      <name>Calcul nb ligne de différence</name>
+      <description/>
+      <type>EVAL_TABLE_CONTENT</type>
+      <connection>Remocra (Postgis)</connection>
+      <schemaname/>
+      <tablename/>
+      <success_condition>rows_count_different</success_condition>
+      <limit>0</limit>
+      <is_custom_sql>Y</is_custom_sql>
+      <is_usevars>N</is_usevars>
+      <custom_sql>SELECT
+  NULL 
+FROM
+  generate_series(1, @((SELECT COUNT(0) FROM remocra.hydrant) - (SELECT COUNT(0) FROM remocra_sgo.hydrant_export_sgo))) i;</custom_sql>
+      <add_rows_result>N</add_rows_result>
+      <clear_result_rows>Y</clear_result_rows>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>1035</xloc>
+      <yloc>135</yloc>
+      </entry>
+    <entry>
+      <name>CREATE TABLE remocra_sgo.hydrant_export_sgo</name>
+      <description/>
+      <type>SQL</type>
+      <sql>CREATE TABLE remocra_sgo.hydrant_export_sgo AS 
+SELECT 
+    h.numero,
+    thn.nom AS type,
+    thd.nom as domaine,
+    h.voie,
+    h.voie2,
+    c.insee as insee_commune,
+    c.nom as commune,
+    hp.debit,
+    COALESCE(
+      (SELECT avg(debit)::integer AS moyenne_debit
+      FROM 
+        (SELECT DISTINCT ON (date_contr, id_hydrant) id_hydrant, debit
+        FROM tracabilite.hydrant
+        WHERE id_hydrant = h.id
+         AND date_contr IS NOT NULL
+        ORDER BY date_contr DESC
+        LIMIT 3) avg_debit),
+      null
+    ) AS moyenne_debit,
+    st_x(h.geometrie) AS coord_x,
+    st_y(h.geometrie) AS coord_y,
+    dispo_terrestre AS disponibilite
+FROM remocra.hydrant as h
+INNER JOIN remocra.type_hydrant_nature as thn ON (thn.id = h.nature)
+INNER JOIN remocra.type_hydrant_domaine as thd ON (thd.id = h.domaine)
+INNER JOIN remocra.commune as c ON (c.id=h.commune)
+LEFT JOIN remocra.hydrant_pibi as hp ON (hp.id=h.id);</sql>
+      <useVariableSubstitution>F</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>T</sendOneStatement>
+      <connection>Remocra (Postgis)</connection>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>1643</xloc>
+      <yloc>134</yloc>
+      </entry>
+    <entry>
+      <name>DROP TABLE remocra_sgo.hydrant_export_sgo</name>
+      <description/>
+      <type>SQL</type>
+      <sql>DROP TABLE remocra_sgo.hydrant_export_sgo;</sql>
+      <useVariableSubstitution>F</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>T</sendOneStatement>
+      <connection>Remocra (Postgis)</connection>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>1306</xloc>
+      <yloc>134</yloc>
+      </entry>
+    <entry>
+      <name>Calcul le nb de ligne différente</name>
+      <description/>
+      <type>EVAL_TABLE_CONTENT</type>
+      <connection>Remocra (Postgis)</connection>
+      <schemaname/>
+      <tablename/>
+      <success_condition>rows_count_different</success_condition>
+      <limit>0</limit>
+      <is_custom_sql>Y</is_custom_sql>
+      <is_usevars>N</is_usevars>
+      <custom_sql>SELECT NULL FROM generate_series(1, 
+  (SELECT count(0) as nb_diff
+FROM remocra.hydrant as h
+INNER JOIN remocra.type_hydrant_nature as thn ON (thn.id = h.nature)
+INNER JOIN remocra.type_hydrant_domaine as thd ON (thd.id = h.domaine)
+INNER JOIN remocra.commune as c ON (c.id=h.commune)
+LEFT JOIN remocra.hydrant_pibi as hp ON (hp.id=h.id)
+LEFT JOIN remocra_sgo.hydrant_export_sgo as hes ON (hes.numero = h.numero)
+
+WHERE (COALESCE(h.numero,&apos;&apos;) &lt;&gt; COALESCE(hes.numero,&apos;&apos;)
+	OR COALESCE(thn.nom,&apos;&apos;) &lt;&gt; COALESCE(hes.type,&apos;&apos;)
+	OR COALESCE(thd.nom,&apos;&apos;) &lt;&gt; COALESCE(hes.domaine,&apos;&apos;)
+	OR COALESCE(h.voie,&apos;&apos;) &lt;&gt; COALESCE(hes.voie,&apos;&apos;)
+	OR COALESCE(h.voie2,&apos;&apos;) &lt;&gt; COALESCE(hes.voie2,&apos;&apos;)
+	OR c.insee &lt;&gt; hes.insee_commune
+	OR COALESCE(hp.debit,0) &lt;&gt; COALESCE(hes.debit,0)
+	OR COALESCE(
+	      (SELECT avg(debit)::integer AS moyenne_debit
+	      FROM 
+		(SELECT DISTINCT ON (date_contr, id_hydrant) id_hydrant, debit
+		FROM tracabilite.hydrant
+		WHERE id_hydrant = h.id
+		 AND date_contr IS NOT NULL
+		ORDER BY date_contr DESC
+		LIMIT 3) avg_debit),
+	      0
+	    ) &lt;&gt; hes.moyenne_debit
+	OR st_x(h.geometrie) &lt;&gt; hes.coord_x
+	OR st_y(h.geometrie) &lt;&gt; hes.coord_y
+	OR h.dispo_terrestre &lt;&gt; hes.disponibilite)));
+
+</custom_sql>
+      <add_rows_result>N</add_rows_result>
+      <clear_result_rows>Y</clear_result_rows>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>1169</xloc>
+      <yloc>31</yloc>
+      </entry>
+    <entry>
+      <name>Success</name>
+      <description/>
+      <type>SUCCESS</type>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>2021</xloc>
+      <yloc>31</yloc>
+      </entry>
+    <entry>
+      <name>Création du fichier CSV</name>
+      <description/>
+      <type>TRANS</type>
+      <specification_method>filename</specification_method>
+      <trans_object_id/>
+      <filename>${Internal.Job.Filename.Directory}&#47;export_csv.ktr</filename>
+      <transname/>
+      <arg_from_previous>N</arg_from_previous>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <cluster>N</cluster>
+      <slave_server_name/>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>1877</xloc>
+      <yloc>134</yloc>
+      </entry>
+    <entry>
+      <name>Call URL (GET)</name>
+      <description/>
+      <type>TRANS</type>
+      <specification_method>filename</specification_method>
+      <trans_object_id/>
+      <filename>${Internal.Job.Filename.Directory}&#47;call_url.ktr</filename>
+      <transname/>
+      <arg_from_previous>N</arg_from_previous>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <cluster>N</cluster>
+      <slave_server_name/>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>2023</xloc>
+      <yloc>134</yloc>
+      </entry>
+    <entry>
+      <name>Table hydrant_export_sgo exists</name>
+      <description/>
+      <type>TABLE_EXISTS</type>
+      <tablename>hydrant_export_sgo</tablename>
+      <schemaname>remocra_sgo</schemaname>
+      <connection>Remocra (Postgis)</connection>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>1034</xloc>
+      <yloc>261</yloc>
+      </entry>
+  </entries>
+  <hops>
+    <hop>
+      <from>START</from>
+      <to>Récupération des paramètres globaux</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>Test connexion à Remocra</from>
+      <to>Ecriture dans trace</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Récupération des paramètres globaux</from>
+      <to>Récupération des paramètres spécifiques</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>Récupération des paramètres spécifiques</from>
+      <to>Test connexion à Remocra</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>DROP TABLE remocra_sgo.hydrant_export_sgo</from>
+      <to>CREATE TABLE remocra_sgo.hydrant_export_sgo</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>Calcul nb ligne de différence</from>
+      <to>DROP TABLE remocra_sgo.hydrant_export_sgo</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Calcul nb ligne de différence</from>
+      <to>Calcul le nb de ligne différente</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Calcul le nb de ligne différente</from>
+      <to>DROP TABLE remocra_sgo.hydrant_export_sgo</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Calcul le nb de ligne différente</from>
+      <to>Success</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>CREATE TABLE remocra_sgo.hydrant_export_sgo</from>
+      <to>Création du fichier CSV</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>Création du fichier CSV</from>
+      <to>Call URL (GET)</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>Call URL (GET)</from>
+      <to>Success</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>Test connexion à Remocra</from>
+      <to>Table hydrant_export_sgo exists</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Table hydrant_export_sgo exists</from>
+      <to>Calcul nb ligne de différence</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Table hydrant_export_sgo exists</from>
+      <to>CREATE TABLE remocra_sgo.hydrant_export_sgo</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+  </hops>
+  <notepads>
+    <notepad>
+      <note>Consolidation des informations de traçabilité en vue d&apos;une exploitation par le SGO</note>
+      <xloc>74</xloc>
+      <yloc>74</yloc>
+      <width>559</width>
+      <heigth>27</heigth>
+      <fontname/>
+      <fontsize>-1</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>255</backgroundcolorred>
+      <backgroundcolorgreen>165</backgroundcolorgreen>
+      <backgroundcolorblue>0</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
+  </notepads>
+</job>

@@ -61,3 +61,7 @@ include::77/suivi_des_pei{outfilesuffix}[]
 === SDIS 83
 
 include::83/synchronisation_sig{outfilesuffix}[]
+
+=== SDIS 89
+
+include::89/export_csv_sgo{outfilesuffix}[]

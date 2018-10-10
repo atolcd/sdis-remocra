@@ -1,0 +1,23 @@
+Ce traitement permet d'exporter le contenu de la table hydrant de la base Remocra vers un fichier CSV pour le SGO.
+Cet export est généré lorsqu'il y a un changement dans le nombre de point d'eau stocké en base ou dès lors qu'il y a une des informations suivantes qui change : numéro, nature, domaine, voie, commune, débit, débit moyen, coordonnées (x et y) et disponibilité.
+Si l'export est généré un appel à une url (paramètre PDI_URL_ALERTE_SGO) est déclanché.
+
+===== Configuration
+Le fichier _"remocraXX.properties"_ doit contenir les informations suivantes :
+[width="100%",options="header"]
+|===================
+| Paramètre | Description
+| PDI_SIG_DATABASE_HOST | Adresse du serveur SIG postgresql _(Exemple : `localhost`)_
+| PDI_SIG_DATABASE_NAME | Nom de la base SIG
+| PDI_SIG_DATABASE_PORT | Port de la base SIG _(Exemple : `1433`)_
+| PDI_SIG_DATABASE_USER_NAME | Identifiant de connexion à la base SIG
+| PDI_SIG_DATABASE_USER_PASSWORD | Mot de passe d'accès à la base SIG`
+|===================
+
+| PDI_URL_ALERTE_SGO | Url à appeler si une nouvelle version du fichier CSV a été généré
+| PDI_CHEMIN_DEPOT_FICHIER_SGO | Chemin de destination du fichier csv généré pour le SGO
+| PDI_FICHIER_SGO | Nom du fichier csv généré pour le SGO
+
+
+===== Lancement et planification de la synchronisation
+L'exécution automatique s'effectue en planifiant le lancement du fichier ```/var/remocra/pdi/traitements_sdis/89/consolider_sgo.sh``` avec l'utilisateur ```postgres```.
