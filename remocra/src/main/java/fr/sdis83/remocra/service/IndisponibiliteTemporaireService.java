@@ -80,7 +80,11 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
         return query.getResultList();
     }
 
-    public List<HydrantIndispoTemporaire> getIndisponibiliteByZc(ZoneCompetence zc, Integer limit, Integer offset) {
+    public List<HydrantIndispoTemporaire> getIndisponibiliteByZc(ZoneCompetence zc, Integer limit, Integer offset,  List<ItemFilter> itemFilter) {
+        String condition = "";
+        if(itemFilter.size()!=0 && itemFilter.get(0).getFieldName().equals("statut")){
+           condition = " and remocra.hydrant_indispo_temporaire.statut = "+itemFilter.get(0).getValue();
+        }
         String sql = "select * from remocra.hydrant_indispo_temporaire\n" +
             " where remocra.hydrant_indispo_temporaire.id \n" +
             " in (select indisponibilite from remocra.hydrant_indispo_temporaire_hydrant\n" +
@@ -88,7 +92,7 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
             "  in(\n" +
             "select id from remocra.hydrant h where h. commune \n" +
             "in (select id from remocra.commune c where st_Overlaps((select geometrie from remocra.zone_competence where zone_competence.id = :zc),c.geometrie)\n" +
-            "or st_contains((select geometrie from remocra.zone_competence where zone_competence.id = :zc),c.geometrie)))) limit :limit offset :offset";
+            "or st_contains((select geometrie from remocra.zone_competence where zone_competence.id = :zc),c.geometrie))))"+condition+" limit :limit offset :offset";
         Query query =  entityManager.createNativeQuery(sql,HydrantIndispoTemporaire.class);
         query.setParameter("zc", zc.getId()).setParameter("limit", limit).setParameter("offset", offset );
         return query.getResultList();
