@@ -248,7 +248,7 @@ SET search_path = pdi, pg_catalog;
 
 INSERT INTO modele_message (idmodele, corps, objet) VALUES (1, '<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Succès traitement SDIS83 REMOCRA</title>
+		<title>Succès traitement SDIS REMOCRA</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<style type="text/css">
 			div{
@@ -285,7 +285,7 @@ INSERT INTO modele_message (idmodele, corps, objet) VALUES (1, '<html xmlns="htt
 </html>', 'Demande [TRAITEMENT_DOSSIER_NUMERO] : Traitement effectué avec succès');
 INSERT INTO modele_message (idmodele, corps, objet) VALUES (3, '<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Erreur traitement SDIS83 REMOCRA</title>
+		<title>Erreur traitement SDIS REMOCRA</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<style type="text/css">
 			div{
@@ -321,7 +321,7 @@ INSERT INTO modele_message (idmodele, corps, objet) VALUES (3, '<html xmlns="htt
 	</body', 'Demande [TRAITEMENT_DOSSIER_NUMERO] : Erreur de traitement');
 INSERT INTO modele_message (idmodele, corps, objet) VALUES (2, '<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Succès traitement SDIS83 REMOCRA</title>
+		<title>Succès traitement SDIS REMOCRA</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<style type="text/css">
 			div{
@@ -435,41 +435,7 @@ SET search_path = remocra, pg_catalog;
 -- Data for Name: profil_droit; Type: TABLE DATA; Schema: remocra; Owner: postgres
 --
 
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (7, 'CG Base', 'public', 1, 'CG-BASE');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (8, 'DDTM DFCI', 'public', 1, 'DDTM-DFCI');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (10, 'DDTM Permis', 'public', 1, 'DDTM-PERMIS');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (11, 'Maire', 'public', 1, 'COM-MAIRE');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (14, 'Commune DFCI', 'public', 1, 'COM-DFCI');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (15, 'Commune hydrant E1', 'public', 1, 'COM-HYDRANT-E1');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (16, 'Commune hydrant E2', 'public', 1, 'COM-HYDRANT-E2');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (17, 'CT DFCI', 'public', 1, 'CT-DFCI');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (18, 'CT Permis', 'public', 1, 'CT-PERMIS');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (19, 'CT Hydrant E1', 'public', 1, 'CT-HYDRANT-E1');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (20, 'CT Hydrant E2', 'public', 1, 'CT-HYDRANT-E2');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (21, 'CIS Base', 'public', 1, 'CIS-BASE');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (22, 'CIS Hydrant E1', 'public', 1, 'CIS-HYDRANT-E1');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (23, 'CIS Hydrant E2', 'public', 1, 'CIS-HYDRANT-E2');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (24, 'Chef de centre', 'public', 1, 'CIS-CHEF');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (25, 'SDIS Base', 'public', 1, 'SDIS-BASE');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (26, 'Référent DECI', 'public', 1, 'SDIS-REF-DECI');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (27, 'Référent PENA', 'public', 1, 'SDIS-REF-PENA');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (28, 'Référent DFCI', 'public', 1, 'SDIS-REF-DFCI');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (29, 'Administrateur permis', 'permis', 2, 'SDIS-ADM-PERMIS');
 INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (30, 'Administrateur application', 'public', 1, 'SDIS-ADM-APP');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (31, 'SDIS Hydrant E1', 'public', 1, 'SDIS-HYDRANT-E1');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (32, 'SDIS Hydrant E2', 'public', 1, 'SDIS-HYDRANT-E2');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (33, 'Préventionniste', 'public', 1, 'SDIS-PREV');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (34, 'CODIS', 'public', 1, 'SDIS-CODIS');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (35, 'Gestionnaire Hydrant', 'public', 1, 'GEST-HYDRANT');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (37, 'CHEF GPOP', 'public', 0, 'CHEFGPOP');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (36, 'Consultation', 'public', 0, 'CONSULTATION');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (38, 'CG DFCI', 'public', 0, 'CG-DFCI');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (39, 'Gendarme', 'public', 1, 'GENDARME');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (40, 'Policier', 'public', 1, 'POLICIER');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (41, 'RCCI', 'public', 0, 'RCCI');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (42, 'RCCI chef de centre', 'public', 0, 'RCCI-CHEFCENTRE');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (43, 'RCCI préventionniste', 'public', 0, 'RCCI-PREVENTION');
-INSERT INTO profil_droit (id, nom, feuille_de_style_geo_server, version, code) VALUES (44, 'Directeur', 'public', 0, 'DIRECTEUR');
 
 
 --
@@ -512,162 +478,6 @@ INSERT INTO type_droit (id, code, description, nom, version) VALUES (27, 'CARTOG
 -- Data for Name: droit; Type: TABLE DATA; Schema: remocra; Owner: postgres
 --
 
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (571, false, false, true, false, 1, 7, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (572, false, false, true, false, 1, 8, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (573, false, false, true, false, 1, 10, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (574, false, false, true, false, 1, 11, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (575, false, false, true, false, 1, 14, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (576, false, false, true, false, 1, 15, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (577, false, false, true, false, 1, 16, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (578, false, false, true, false, 1, 17, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (579, false, false, true, false, 1, 18, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (580, false, false, true, false, 1, 19, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (581, false, false, true, false, 1, 20, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (582, false, false, true, false, 1, 21, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (583, false, false, true, false, 1, 22, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (584, false, false, true, false, 1, 23, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (585, false, false, true, false, 1, 24, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (586, false, false, true, false, 1, 25, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (588, false, false, true, false, 1, 27, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (589, false, false, true, false, 1, 28, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (590, false, false, true, false, 1, 29, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (592, false, false, true, false, 1, 31, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (593, false, false, true, false, 1, 32, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (594, false, false, true, false, 1, 33, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (595, false, false, true, false, 1, 34, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (596, false, false, true, false, 1, 35, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (597, true, false, false, false, 1, 7, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (598, true, false, false, false, 1, 8, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (599, true, false, false, false, 1, 10, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (600, true, false, false, false, 1, 11, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (601, true, false, false, false, 1, 14, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (602, true, false, false, false, 1, 15, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (603, true, false, false, false, 1, 16, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (604, true, false, false, false, 1, 17, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (605, true, false, false, false, 1, 18, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (606, true, false, false, false, 1, 19, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (607, true, false, false, false, 1, 20, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (608, true, false, false, false, 1, 21, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (609, true, false, false, false, 1, 22, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (610, true, false, false, false, 1, 23, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (611, true, false, false, false, 1, 24, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (612, true, false, false, false, 1, 25, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (613, true, false, false, false, 1, 26, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (614, true, false, false, false, 1, 27, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (615, true, false, false, false, 1, 28, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (616, true, false, false, false, 1, 29, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (618, true, false, false, false, 1, 31, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (619, true, false, false, false, 1, 32, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (620, true, false, false, false, 1, 33, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (621, true, false, false, false, 1, 34, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (622, false, false, true, false, 1, 7, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (623, false, false, true, false, 1, 8, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (624, false, false, true, false, 1, 10, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (625, false, false, true, false, 1, 11, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (626, false, false, true, false, 1, 14, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (627, false, false, true, false, 1, 15, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (628, false, false, true, false, 1, 16, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (629, false, false, true, false, 1, 17, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (630, false, false, true, false, 1, 18, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (631, false, false, true, false, 1, 19, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (632, false, false, true, false, 1, 20, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (633, false, false, true, false, 1, 21, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (634, false, false, true, false, 1, 22, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (635, false, false, true, false, 1, 23, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (636, false, false, true, false, 1, 24, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (637, false, false, true, false, 1, 25, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (638, false, false, true, false, 1, 26, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (639, false, false, true, false, 1, 27, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (640, false, false, true, false, 1, 28, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (641, false, false, true, false, 1, 29, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (643, false, false, true, false, 1, 31, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (644, false, false, true, false, 1, 32, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (645, false, false, true, false, 1, 33, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (646, false, false, true, false, 1, 34, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (647, false, false, true, false, 1, 7, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (648, false, false, true, false, 1, 8, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (649, false, false, true, false, 1, 10, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (650, false, false, true, false, 1, 11, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (651, false, false, true, false, 1, 14, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (652, false, false, true, false, 1, 15, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (653, false, false, true, false, 1, 16, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (654, false, false, true, false, 1, 17, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (655, false, false, true, false, 1, 18, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (656, false, false, true, false, 1, 19, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (657, false, false, true, false, 1, 20, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (658, false, false, true, false, 1, 21, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (659, false, false, true, false, 1, 22, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (660, false, false, true, false, 1, 23, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (661, false, false, true, false, 1, 24, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (662, false, false, true, false, 1, 25, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (663, false, false, true, false, 1, 26, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (664, false, false, true, false, 1, 27, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (665, false, false, true, false, 1, 28, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (666, false, false, true, false, 1, 29, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (668, false, false, true, false, 1, 31, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (669, false, false, true, false, 1, 32, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (670, false, false, true, false, 1, 33, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (671, false, false, true, false, 1, 34, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (672, false, false, true, false, 1, 35, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (673, false, false, true, false, 1, 11, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (674, false, false, true, false, 1, 15, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (675, false, false, true, false, 1, 19, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (676, false, false, true, false, 1, 23, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (677, false, false, true, false, 1, 24, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (678, false, false, true, false, 1, 29, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (679, false, false, true, false, 1, 32, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (680, false, false, true, false, 1, 33, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (681, false, false, true, false, 1, 35, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (682, true, false, true, false, 1, 16, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (683, true, false, true, false, 1, 20, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (684, true, false, true, false, 1, 22, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (685, true, false, true, false, 1, 31, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (687, true, true, true, false, 1, 27, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (688, true, false, false, false, 1, 23, 7);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (689, true, false, false, false, 1, 32, 7);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (690, true, false, false, false, 1, 16, 8);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (691, true, false, false, false, 1, 20, 8);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (692, true, false, false, false, 1, 22, 8);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (693, true, false, false, false, 1, 31, 8);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (695, true, false, false, false, 1, 16, 10);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (696, true, false, false, false, 1, 20, 10);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (697, true, false, false, false, 1, 26, 10);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (698, true, false, true, false, 1, 16, 11);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (699, true, false, true, false, 1, 20, 11);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (700, true, false, true, false, 1, 22, 11);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (701, true, false, true, false, 1, 23, 11);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (702, true, false, true, false, 1, 31, 11);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (703, true, false, true, false, 1, 32, 11);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (704, true, false, false, false, 1, 26, 13);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (705, true, false, false, false, 1, 33, 13);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (706, true, false, false, false, 1, 11, 14);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (707, true, false, false, false, 1, 16, 14);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (708, true, false, false, false, 1, 20, 14);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (709, true, false, false, false, 1, 26, 14);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (710, false, false, true, false, 1, 10, 15);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (686, true, true, true, false, 3, 26, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (711, false, false, true, false, 1, 11, 15);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (712, false, false, true, false, 1, 18, 15);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (713, true, false, true, false, 1, 29, 15);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (714, true, false, false, false, 1, 10, 16);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (715, true, false, false, false, 1, 11, 16);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (716, true, false, false, false, 1, 18, 16);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (717, true, false, false, false, 1, 10, 17);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (718, true, false, false, false, 1, 11, 17);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (719, true, false, false, false, 1, 29, 17);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (720, true, false, true, false, 1, 34, 18);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (721, true, false, false, false, 1, 11, 20);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (722, true, false, false, false, 1, 11, 21);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (723, true, false, false, false, 1, 15, 21);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (724, true, false, false, false, 1, 16, 21);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (725, true, false, false, false, 1, 19, 21);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (726, true, false, false, false, 1, 20, 21);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (727, true, false, false, false, 1, 35, 21);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (728, true, false, false, false, 1, 7, 22);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (729, true, false, false, false, 1, 8, 22);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (730, true, false, false, false, 1, 14, 22);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (731, true, false, false, false, 1, 17, 22);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (732, true, false, false, false, 1, 28, 22);
 INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (591, true, true, true, true, 1, 30, 3);
 INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (617, true, true, true, true, 1, 30, 4);
 INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (642, true, true, true, true, 1, 30, 5);
@@ -690,103 +500,10 @@ INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, ver
 INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (748, true, true, true, true, 1, 30, 20);
 INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (749, true, true, true, true, 1, 30, 21);
 INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (750, true, true, true, true, 1, 30, 22);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (587, false, false, true, false, 3, 26, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (694, true, false, true, true, 2, 26, 9);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (1, true, false, false, false, 0, 26, 8);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (2, true, false, false, false, 0, 27, 8);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (751, false, false, true, false, 0, 36, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (752, true, false, false, false, 0, 36, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (753, false, false, true, false, 0, 36, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (754, false, false, true, false, 0, 36, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (755, true, false, false, false, 1, 22, 23);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (756, true, false, false, false, 1, 24, 23);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (757, true, false, false, false, 1, 26, 23);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (758, true, false, false, false, 1, 27, 23);
 INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (759, true, false, false, false, 1, 30, 23);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (760, true, false, false, false, 1, 24, 25);
 INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (761, true, false, false, false, 1, 30, 25);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (773, false, false, true, false, 0, 37, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (774, true, false, false, false, 0, 37, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (775, false, false, true, false, 0, 37, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (776, false, false, true, false, 0, 37, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (777, false, false, true, false, 0, 37, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (778, true, false, true, false, 0, 37, 15);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (779, true, false, false, false, 0, 37, 17);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (782, false, false, true, false, 1, 39, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (783, true, false, false, false, 1, 39, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (784, false, false, true, false, 1, 39, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (785, false, false, true, false, 1, 39, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (786, false, false, true, false, 1, 40, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (787, true, false, false, false, 1, 40, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (788, false, false, true, false, 1, 40, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (789, false, false, true, false, 1, 40, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (790, true, false, false, false, 1, 39, 26);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (791, true, false, false, false, 1, 40, 26);
 INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (793, true, false, false, false, 1, 30, 27);
 INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (792, true, true, true, true, 2, 30, 26);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (794, true, true, true, true, 0, 41, 26);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (795, true, false, false, false, 0, 41, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (796, false, false, true, false, 0, 41, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (797, false, false, true, false, 0, 41, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (798, false, false, true, false, 0, 41, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (799, true, false, false, false, 0, 42, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (800, false, false, true, false, 0, 42, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (801, true, true, true, true, 0, 42, 26);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (802, true, false, false, false, 0, 42, 23);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (803, false, false, true, false, 0, 42, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (804, true, false, false, false, 0, 42, 25);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (805, false, false, true, false, 0, 42, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (806, false, false, true, false, 0, 42, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (807, true, false, false, false, 0, 43, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (808, true, false, false, false, 0, 43, 13);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (809, false, false, true, false, 0, 43, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (810, false, false, true, false, 0, 43, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (811, false, false, true, false, 0, 43, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (812, true, true, true, true, 0, 43, 26);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (813, false, false, true, false, 0, 43, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (814, true, true, true, true, 0, 8, 26);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (815, true, false, false, false, 0, 38, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (816, false, false, true, false, 0, 38, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (817, false, false, true, false, 0, 38, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (818, true, false, false, false, 0, 38, 22);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (819, false, false, true, false, 0, 38, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (820, true, false, false, false, 0, 29, 27);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (821, true, false, false, false, 0, 24, 27);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (822, true, false, false, false, 0, 21, 27);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (823, true, false, false, false, 0, 22, 27);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (824, true, false, false, false, 0, 23, 27);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (825, true, false, false, false, 0, 34, 27);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (826, true, false, false, false, 0, 33, 27);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (827, true, false, false, false, 0, 41, 27);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (828, true, false, false, false, 0, 42, 27);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (829, true, false, false, false, 0, 43, 27);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (830, true, false, false, false, 0, 26, 27);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (831, true, false, false, false, 0, 28, 27);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (832, true, false, false, false, 0, 27, 27);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (833, true, false, false, false, 0, 25, 27);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (834, true, false, false, false, 0, 31, 27);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (835, true, false, false, false, 0, 32, 27);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (837, true, false, false, false, 0, 44, 27);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (844, true, true, true, true, 0, 44, 6);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (845, true, true, true, true, 0, 44, 8);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (846, true, false, false, false, 0, 44, 23);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (848, true, true, true, true, 0, 44, 9);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (850, true, true, true, true, 0, 44, 7);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (852, false, false, true, false, 0, 44, 15);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (843, false, false, true, false, 1, 44, 19);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (842, false, false, true, false, 1, 44, 5);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (836, true, false, false, false, 1, 44, 4);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (853, true, false, false, false, 1, 44, 16);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (838, true, false, true, false, 1, 44, 21);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (840, true, false, true, false, 1, 44, 20);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (851, true, false, false, false, 1, 44, 14);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (847, false, false, true, false, 1, 44, 10);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (841, true, false, false, false, 1, 44, 22);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (856, false, false, true, false, 1, 44, 3);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (849, false, false, true, false, 1, 44, 13);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (857, false, false, true, false, 2, 44, 18);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (854, true, false, false, false, 1, 44, 17);
-INSERT INTO droit (id, droit_create, droit_delete, droit_read, droit_update, version, profil_droit, type_droit) VALUES (855, true, false, false, false, 1, 44, 26);
 
 
 --
@@ -868,15 +585,15 @@ INSERT INTO email_modele (id, code, corps, objet, version) VALUES (4, 'PUBLICATI
 		</div>
 	</body>
 </html>', 'Publication d''un nouveau fichier KML des risques', 1);
-INSERT INTO email_modele (id, code, corps, objet, version) VALUES (5, 'UTILISATEUR_MAIL_INSCRIPTION', '<title>Inscription au site SDIS83 REMOCRA</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style><div><p>Bonjour,<br/><br/>Vous avez été inscrit comme utilisateur du site "REMOcRA". Nous vous communiquons ci-dessous vos identifiants d''accès.<br/><br/><b>Identifiants d''accès au site</b></p><p><b> <a href="[URL_SITE]">[URL_SITE]</a></b></p><p><table cellpadding="5"><tbody><tr><td>Nom d''utilisateur : </td><td>[IDENTIFIANT]</td></tr><tr><td>Mot de passe : </td><td>[MOT_DE_PASSE]</td></tr></tbody></table><br/>Cordialement.</p><p class="caution">En cas d''incompréhension de ce message, merci de prendre contact avec le SDIS83.</p><p class="footer">Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l''expéditeur.</p></div>', 'SDIS83 REMOCRA - INSCRIPTION AU SITE', 1);
-INSERT INTO email_modele (id, code, corps, objet, version) VALUES (6, 'UTILISATEUR_MAIL_MOT_DE_PASSE_PERDU', '<title>Demande de réinitialisation de mot de passe pour le site SDIS83 REMOCRA</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style><div><p>Bonjour,<br/><br/>Vous avez effectué une demande de réinitialisation de votre mot de passe pour le site "REMOcRA". Nous vous communiquons le lien à usage unique qui vous permettra de choisir votre nouveau mot de passe.<br/><br/></p><p><table cellpadding="5"><tbody><tr><td>Nom d''utilisateur : </td><td>[IDENTIFIANT]</td></tr><tr><td>Lien de réinitialisation</td><td><b><a href="[URL_SITE]#profil/password/reset/[CODE]">lien</a></b></td></tr></tbody></table><br/>Cordialement.</p><p class="caution">En cas d''incompréhension de ce message, merci de prendre contact avec le SDIS83.</p><p class="footer">Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l''expéditeur.</p></div>', 'SDIS83 REMOCRA - DEMANDE DE MODIFICATION DE MOT DE PASSE', 1);
-INSERT INTO email_modele (id, code, corps, objet, version) VALUES (7, 'UTILISATEUR_MAIL_MOT_DE_PASSE', '<title>Modification du mot de passe pour le site SDIS83 REMOCRA</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style><div><p>Bonjour,<br/><br/>Vous avez modifié votre mot de passe pour le site "REMOcRA". Nous vous communiquons ci-dessous vos identifiants d''accès.<br/><br/><b>Identifiants d''accès au site</b></p><p><b><a href="[URL_SITE]">[URL_SITE]</a></b></p><p><table cellpadding="5"><tbody><tr><td>Nom d''utilisateur : </td><td>[IDENTIFIANT]</td></tr><tr><td>Mot de passe : </td><td>[MOT_DE_PASSE]</td></tr></tbody></table><br/>Cordialement.</p><p class="caution">En cas d''incompréhension de ce message, merci de prendre contact avec le SDIS83.</p><p class="footer">Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l''expéditeur.</p></div>', 'SDIS83 REMOCRA - MODIFICATION DE MOT DE PASSE', 1);
-INSERT INTO email_modele (id, code, corps, objet, version) VALUES (8, 'COMMUNE_HYDRANT_INDISPONIBLE', '<title>Hydrants indisponibles SDIS83 REMOCRA</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style><div><p>Bonjour,<br/><br/>Des hydrants sont indisponibles sur votre communes, en voici la liste en piece jointe.<br/><br/>Cordialement.</p><p class="caution">En cas d''incompréhension de ce message, merci de prendre contact avec le SDIS83.</p><p class="footer">Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l''expéditeur.</p></div>', 'SDIS83 REMOCRA - Hydrants indisponibles', 1);
-INSERT INTO email_modele (id, code, corps, objet, version) VALUES (9, 'DEPOT_DELIB', '<title>Dépôt de délibération(s) SDIS83 REMOCRA</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style><div><p>Bonjour,<br/><br/>Un dépôt de délibération(s) a été réalisé par un utilisateur de l''organisme [NOM_ORGANISME]. Le fichier est disponible <a href="[URL_SITE]telechargement/document/[CODE]">ici</a><br/><br/>Cordialement.</p><p class="caution">En cas d''incompréhension de ce message, merci de prendre contact avec le SDIS83.</p><p class="footer">Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l''expéditeur.</p></div>', 'SDIS83 REMOCRA - Dépôt de délibérations - [NOM_ORGANISME]', 1);
-INSERT INTO email_modele (id, code, corps, objet, version) VALUES (10, 'DEPOT_DECLAHYDRANT', '<title>Déclaration d''un hydrant SDIS83 REMOCRA</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style><div><p>Bonjour,<br/><br/>Un dossier de déclaration d''hydrant(s) a été déposé par un utilisateur de l''organisme [NOM_ORGANISME]. Le fichier est disponible <a href="[URL_SITE]telechargement/document/[CODE]">ici</a><br/><br/>Cordialement.</p><p class="caution">En cas d''incompréhension de ce message, merci de prendre contact avec le SDIS83.</p><p class="footer">Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l''expéditeur.</p></div>', 'SDIS83 REMOCRA - Déclaration d''un hydrant - [NOM_ORGANISME]', 1);
-INSERT INTO email_modele (id, code, corps, objet, version) VALUES (11, 'DEPOT_RECEPTRAVAUX', '<title>Réception de travaux SDIS83 REMOCRA</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style><div><p>Bonjour,<br/><br/>Un dossier de réception de travaux a été déposé par un utilisateur de l''organisme [NOM_ORGANISME]. Le fichier est disponible <a href="[URL_SITE]telechargement/document/[CODE]">ici</a><br/><br/>Cordialement.</p><p class="caution">En cas d''incompréhension de ce message, merci de prendre contact avec le SDIS83.</p><p class="footer">Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l''expéditeur.</p></div>', 'SDIS83 REMOCRA - Réception de travaux - [NOM_ORGANISME]', 1);
-INSERT INTO email_modele (id, code, corps, objet, version) VALUES (12, 'COMMUNE_HYDRANT', '<title>Hydrants SDIS83 REMOCRA</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style><div><p>Bonjour,<br/><br/>Veuillez trouver ci-joint en piece la liste des hydrants de votre commune.<br/><br/>Cordialement.</p><p class="caution">En cas d''incompréhension de ce message, merci de prendre contact avec le SDIS83.</p><p class="footer">Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l''expéditeur.</p></div>', 'SDIS83 REMOCRA - Hydrants', 1);
-INSERT INTO email_modele (id, code, corps, objet, version) VALUES (13, 'CREATION_RCI', '<title>Création d''un départ de feu SDIS83 REMOCRA</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style><div><p>Bonjour,<br/><br/>Le nouveau départ de feu portant le code "[CODE]" vient d''être renseigné dans <a href="[URL_SITE]">REMOcRA</a> par l''utilisateur [IDENTIFIANT] de l''organisme [NOM_ORGANISME].<br/><br/>Cordialement.</p><p class="caution">En cas d''incompréhension de ce message, merci de prendre contact avec le SDIS83.</p><p class="footer">Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l''expéditeur.</p></div>', 'SDIS83 REMOCRA - RCCI', 1);
+INSERT INTO email_modele (id, code, corps, objet, version) VALUES (5, 'UTILISATEUR_MAIL_INSCRIPTION', '<title>Inscription au site SDIS REMOCRA</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style><div><p>Bonjour,<br/><br/>Vous avez été inscrit comme utilisateur du site "REMOcRA". Nous vous communiquons ci-dessous vos identifiants d''accès.<br/><br/><b>Identifiants d''accès au site</b></p><p><b> <a href="[URL_SITE]">[URL_SITE]</a></b></p><p><table cellpadding="5"><tbody><tr><td>Nom d''utilisateur : </td><td>[IDENTIFIANT]</td></tr><tr><td>Mot de passe : </td><td>[MOT_DE_PASSE]</td></tr></tbody></table><br/>Cordialement.</p><p class="caution">En cas d''incompréhension de ce message, merci de prendre contact avec le SDIS.</p><p class="footer">Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l''expéditeur.</p></div>', 'SDIS REMOCRA - INSCRIPTION AU SITE', 1);
+INSERT INTO email_modele (id, code, corps, objet, version) VALUES (6, 'UTILISATEUR_MAIL_MOT_DE_PASSE_PERDU', '<title>Demande de réinitialisation de mot de passe pour le site SDIS REMOCRA</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style><div><p>Bonjour,<br/><br/>Vous avez effectué une demande de réinitialisation de votre mot de passe pour le site "REMOcRA". Nous vous communiquons le lien à usage unique qui vous permettra de choisir votre nouveau mot de passe.<br/><br/></p><p><table cellpadding="5"><tbody><tr><td>Nom d''utilisateur : </td><td>[IDENTIFIANT]</td></tr><tr><td>Lien de réinitialisation</td><td><b><a href="[URL_SITE]#profil/password/reset/[CODE]">lien</a></b></td></tr></tbody></table><br/>Cordialement.</p><p class="caution">En cas d''incompréhension de ce message, merci de prendre contact avec le SDIS.</p><p class="footer">Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l''expéditeur.</p></div>', 'SDIS REMOCRA - DEMANDE DE MODIFICATION DE MOT DE PASSE', 1);
+INSERT INTO email_modele (id, code, corps, objet, version) VALUES (7, 'UTILISATEUR_MAIL_MOT_DE_PASSE', '<title>Modification du mot de passe pour le site SDIS REMOCRA</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style><div><p>Bonjour,<br/><br/>Vous avez modifié votre mot de passe pour le site "REMOcRA". Nous vous communiquons ci-dessous vos identifiants d''accès.<br/><br/><b>Identifiants d''accès au site</b></p><p><b><a href="[URL_SITE]">[URL_SITE]</a></b></p><p><table cellpadding="5"><tbody><tr><td>Nom d''utilisateur : </td><td>[IDENTIFIANT]</td></tr><tr><td>Mot de passe : </td><td>[MOT_DE_PASSE]</td></tr></tbody></table><br/>Cordialement.</p><p class="caution">En cas d''incompréhension de ce message, merci de prendre contact avec le SDIS.</p><p class="footer">Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l''expéditeur.</p></div>', 'SDIS REMOCRA - MODIFICATION DE MOT DE PASSE', 1);
+INSERT INTO email_modele (id, code, corps, objet, version) VALUES (8, 'COMMUNE_HYDRANT_INDISPONIBLE', '<title>Hydrants indisponibles SDIS REMOCRA</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style><div><p>Bonjour,<br/><br/>Des hydrants sont indisponibles sur votre communes, en voici la liste en piece jointe.<br/><br/>Cordialement.</p><p class="caution">En cas d''incompréhension de ce message, merci de prendre contact avec le SDIS.</p><p class="footer">Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l''expéditeur.</p></div>', 'SDIS REMOCRA - Hydrants indisponibles', 1);
+INSERT INTO email_modele (id, code, corps, objet, version) VALUES (9, 'DEPOT_DELIB', '<title>Dépôt de délibération(s) SDIS REMOCRA</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style><div><p>Bonjour,<br/><br/>Un dépôt de délibération(s) a été réalisé par un utilisateur de l''organisme [NOM_ORGANISME]. Le fichier est disponible <a href="[URL_SITE]telechargement/document/[CODE]">ici</a><br/><br/>Cordialement.</p><p class="caution">En cas d''incompréhension de ce message, merci de prendre contact avec le SDIS.</p><p class="footer">Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l''expéditeur.</p></div>', 'SDIS REMOCRA - Dépôt de délibérations - [NOM_ORGANISME]', 1);
+INSERT INTO email_modele (id, code, corps, objet, version) VALUES (10, 'DEPOT_DECLAHYDRANT', '<title>Déclaration d''un hydrant SDIS REMOCRA</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style><div><p>Bonjour,<br/><br/>Un dossier de déclaration d''hydrant(s) a été déposé par un utilisateur de l''organisme [NOM_ORGANISME]. Le fichier est disponible <a href="[URL_SITE]telechargement/document/[CODE]">ici</a><br/><br/>Cordialement.</p><p class="caution">En cas d''incompréhension de ce message, merci de prendre contact avec le SDIS.</p><p class="footer">Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l''expéditeur.</p></div>', 'SDIS REMOCRA - Déclaration d''un hydrant - [NOM_ORGANISME]', 1);
+INSERT INTO email_modele (id, code, corps, objet, version) VALUES (11, 'DEPOT_RECEPTRAVAUX', '<title>Réception de travaux SDIS REMOCRA</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style><div><p>Bonjour,<br/><br/>Un dossier de réception de travaux a été déposé par un utilisateur de l''organisme [NOM_ORGANISME]. Le fichier est disponible <a href="[URL_SITE]telechargement/document/[CODE]">ici</a><br/><br/>Cordialement.</p><p class="caution">En cas d''incompréhension de ce message, merci de prendre contact avec le SDIS.</p><p class="footer">Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l''expéditeur.</p></div>', 'SDIS REMOCRA - Réception de travaux - [NOM_ORGANISME]', 1);
+INSERT INTO email_modele (id, code, corps, objet, version) VALUES (12, 'COMMUNE_HYDRANT', '<title>Hydrants SDIS REMOCRA</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style><div><p>Bonjour,<br/><br/>Veuillez trouver ci-joint en piece la liste des hydrants de votre commune.<br/><br/>Cordialement.</p><p class="caution">En cas d''incompréhension de ce message, merci de prendre contact avec le SDIS.</p><p class="footer">Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l''expéditeur.</p></div>', 'SDIS REMOCRA - Hydrants', 1);
+INSERT INTO email_modele (id, code, corps, objet, version) VALUES (13, 'CREATION_RCI', '<title>Création d''un départ de feu SDIS REMOCRA</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">div{width:800px;text-align:justify;}p{text-decoration:none;color:#000000;font-family: arial;font-size: 14px;}p.footer{text-decoration:none;font-style: italic;color:#AAAAAA;font-family: arial;font-size: 12px;}p.caution{text-decoration:none;font-style: italic;color:#000000;font-family: arial;font-size: 12px;}table{border-collapse:collapse;}td{text-decoration:none;border-width:1px;border-style:solid;color:#000000;font-family: arial;font-size: 14px;}</style><div><p>Bonjour,<br/><br/>Le nouveau départ de feu portant le code "[CODE]" vient d''être renseigné dans <a href="[URL_SITE]">REMOcRA</a> par l''utilisateur [IDENTIFIANT] de l''organisme [NOM_ORGANISME].<br/><br/>Cordialement.</p><p class="caution">En cas d''incompréhension de ce message, merci de prendre contact avec le SDIS.</p><p class="footer">Ce message vous a été envoyé automatiquement, merci de ne pas répondre à l''expéditeur.</p></div>', 'SDIS REMOCRA - RCCI', 1);
 
 
 --
@@ -885,20 +602,7 @@ INSERT INTO email_modele (id, code, corps, objet, version) VALUES (13, 'CREATION
 -- Data for Name: type_organisme; Type: TABLE DATA; Schema: remocra; Owner: postgres
 --
 
-INSERT INTO type_organisme (id, code, nom, actif) VALUES (1, 'REMOCRA', 'Application Remocra', true);
-INSERT INTO type_organisme (id, code, nom, actif) VALUES (2, 'CONSEIL-GENERAL', 'Conseil général', true);
-INSERT INTO type_organisme (id, code, nom, actif) VALUES (3, 'DDTM', 'DDTM', true);
-INSERT INTO type_organisme (id, code, nom, actif) VALUES (4, 'COMMUNE', 'Commune', true);
-INSERT INTO type_organisme (id, code, nom, actif) VALUES (5, 'CT', 'Communauté territoriale', true);
-INSERT INTO type_organisme (id, code, nom, actif) VALUES (6, 'CIS', 'CIS', true);
 INSERT INTO type_organisme (id, code, nom, actif) VALUES (7, 'SDIS', 'SDIS', true);
-INSERT INTO type_organisme (id, code, nom, actif) VALUES (8, 'GEST-HYDRANT', 'Gestionnaire hydrant', true);
-INSERT INTO type_organisme (id, code, nom, actif) VALUES (9, 'MILITAIRE', 'Militaire', true);
-INSERT INTO type_organisme (id, code, nom, actif) VALUES (10, 'ENSOSP', 'ENSOSP', true);
-INSERT INTO type_organisme (id, code, nom, actif) VALUES (11, 'MODFCI', 'Maitre ouvrage DFCI', true);
-INSERT INTO type_organisme (id, code, nom, actif) VALUES (12, 'ONF', 'ONF', true);
-INSERT INTO type_organisme (id, code, nom, actif) VALUES (13, 'GENDARMERIE', 'Gendarmerie', true);
-INSERT INTO type_organisme (id, code, nom, actif) VALUES (14, 'POLICE', 'Police', true);
 
 
 --
@@ -907,22 +611,7 @@ INSERT INTO type_organisme (id, code, nom, actif) VALUES (14, 'POLICE', 'Police'
 -- Data for Name: profil_organisme; Type: TABLE DATA; Schema: remocra; Owner: postgres
 --
 
-INSERT INTO profil_organisme (id, nom, type_organisme, actif, code) VALUES (1, 'Conseil général', 2, true, 'CONSEIL-GENERAL');
-INSERT INTO profil_organisme (id, nom, type_organisme, actif, code) VALUES (2, 'DDTM', 3, true, 'DDTM');
-INSERT INTO profil_organisme (id, nom, type_organisme, actif, code) VALUES (3, 'Commune étape 1', 4, true, 'COM-ETAPE-1');
-INSERT INTO profil_organisme (id, nom, type_organisme, actif, code) VALUES (4, 'Commune étape 2', 4, true, 'COM-ETAPE-2');
-INSERT INTO profil_organisme (id, nom, type_organisme, actif, code) VALUES (5, 'Communauté territoriale étape 1', 5, true, 'CT-ETAPE-1');
-INSERT INTO profil_organisme (id, nom, type_organisme, actif, code) VALUES (6, 'Communauté territoriale étape 2', 5, true, 'CT-ETAPE-2');
-INSERT INTO profil_organisme (id, nom, type_organisme, actif, code) VALUES (12, 'CIS étape 1', 6, true, 'CIS-ETAPE-1');
-INSERT INTO profil_organisme (id, nom, type_organisme, actif, code) VALUES (13, 'CIS étape 2', 6, true, 'CIS-ETAPE-2');
 INSERT INTO profil_organisme (id, nom, type_organisme, actif, code) VALUES (14, 'SDIS', 7, true, 'SDIS');
-INSERT INTO profil_organisme (id, nom, type_organisme, actif, code) VALUES (15, 'Gestionnaire hydrant', 8, true, 'GEST-HYDRANT');
-INSERT INTO profil_organisme (id, nom, type_organisme, actif, code) VALUES (16, 'Militaire', 9, true, 'MILITAIRE');
-INSERT INTO profil_organisme (id, nom, type_organisme, actif, code) VALUES (17, 'ENSOSP', 10, true, 'ENSOSP');
-INSERT INTO profil_organisme (id, nom, type_organisme, actif, code) VALUES (18, 'Maître ouvrage DFCI', 11, true, 'MODFCI');
-INSERT INTO profil_organisme (id, nom, type_organisme, actif, code) VALUES (19, 'ONF', 12, false, 'ONF');
-INSERT INTO profil_organisme (id, nom, type_organisme, actif, code) VALUES (20, 'Gendarmerie', 13, true, 'GENDARMERIE');
-INSERT INTO profil_organisme (id, nom, type_organisme, actif, code) VALUES (21, 'Police', 14, true, 'POLICE');
 
 
 --
@@ -931,43 +620,7 @@ INSERT INTO profil_organisme (id, nom, type_organisme, actif, code) VALUES (21, 
 -- Data for Name: profil_utilisateur; Type: TABLE DATA; Schema: remocra; Owner: postgres
 --
 
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (11, 'CT Hydrant', 5, true, 'CT-HYDRANT');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (1, 'CG Base', 2, true, 'CG-BASE');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (2, 'DDTM DFCI', 3, true, 'DDTM-DFCI');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (3, 'DDTM Permis', 3, true, 'DDTM-PERMIS');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (4, 'Maire', 4, true, 'COM-MAIRE');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (5, 'Commune DFCI', 4, true, 'COM-DFCI');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (6, 'Commune Hydrant', 4, true, 'COM-HYDRANT');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (7, 'CT DFCI', 5, true, 'CT-DFCI');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (8, 'CT Permis', 5, true, 'CT-PERMIS');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (12, 'CIS Base', 6, true, 'CIS-BASE');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (13, 'CIS Hydrant', 6, true, 'CIS-HYDRANT');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (14, 'Chef de centre', 6, true, 'CIS-CHEF');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (15, 'SDIS Base', 7, true, 'SDIS-BASE');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (16, 'Référent DECI', 7, true, 'SDIS-REF-DECI');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (17, 'Référent PENA', 7, true, 'SDIS-REF-PENA');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (18, 'Référent DFCI', 7, true, 'SDIS-REF-DFCI');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (19, 'Administrateur permis', 7, true, 'SDIS-ADM-PERMIS');
 INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (20, 'Administrateur application', 7, true, 'SDIS-ADM-APP');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (21, 'SDIS Hydrant étape 1', 7, true, 'SDIS-HYDRANT-E1');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (22, 'Préventionniste', 7, true, 'SDIS-PREV');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (23, 'CODIS', 7, true, 'SDIS-CODIS');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (25, 'SDIS Hydrant étape 2', 7, true, 'SDIS-HYDRANT-E2');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (26, 'Gestionnaire hydrant', 8, true, 'GEST-HYDRANT');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (28, 'Chef de salle', 7, true, 'SDIS-CHEF');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (29, 'MILITAIRE Base', 9, true, 'MILITAIRE-BASE');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (30, 'ENSOSP Consultation', 10, true, 'ENSOSP-CONSULT');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (31, 'ONF DFCI', 12, true, 'ONF-DFCI');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (32, 'CG DFCI', 2, true, 'CG-DFCI');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (33, 'Maître ouvrage DFCI', 11, true, 'MODDFCI');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (34, 'Gendarme', 13, true, 'GENDARME');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (35, 'Policier', 14, true, 'POLICIER');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (36, 'RCCI', 7, true, 'RCCI');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (37, 'RCCI préventionniste', 7, true, 'RCCI-PREVENTION');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (38, 'RCCI chef de centre', 6, true, 'RCCI-CHEFCENTRE');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (39, 'ONF RCCI', 12, true, 'ONF-RCCI');
-INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (40, 'Directeur', 7, true, 'DIRECTEUR');
-
 
 --
 -- TOC entry 3901 (class 0 OID 549419)
@@ -975,53 +628,7 @@ INSERT INTO profil_utilisateur (id, nom, type_organisme, actif, code) VALUES (40
 -- Data for Name: profil_organisme_utilisateur_droit; Type: TABLE DATA; Schema: remocra; Owner: postgres
 --
 
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (139, 1, 7, 1, 1);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (140, 1, 8, 2, 2);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (141, 1, 10, 2, 3);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (142, 1, 11, 3, 4);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (143, 1, 11, 4, 4);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (144, 1, 14, 3, 5);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (145, 1, 14, 4, 5);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (146, 1, 15, 3, 6);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (147, 1, 16, 4, 6);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (148, 1, 17, 5, 7);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (149, 1, 17, 6, 7);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (150, 1, 18, 5, 8);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (151, 1, 18, 6, 8);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (152, 1, 19, 5, 11);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (153, 1, 20, 6, 11);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (154, 1, 21, 12, 12);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (155, 1, 21, 13, 12);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (156, 1, 22, 12, 13);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (157, 1, 23, 13, 13);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (158, 1, 24, 12, 14);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (159, 1, 24, 13, 14);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (160, 1, 25, 14, 15);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (161, 1, 26, 14, 16);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (162, 1, 27, 14, 17);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (163, 1, 28, 14, 18);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (164, 1, 29, 14, 19);
 INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (165, 1, 30, 14, 20);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (166, 1, 31, 14, 21);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (167, 1, 33, 14, 22);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (168, 1, 34, 14, 23);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (169, 1, 32, 14, 25);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (170, 1, 35, 15, 26);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (1, 0, 24, 14, 14);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (2, 0, 24, 14, 28);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (171, 1, 36, 16, 29);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (172, 1, 36, 17, 30);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (175, 0, 28, 2, 18);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (173, 1, 17, 18, 33);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (176, 1, 39, 20, 34);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (177, 1, 40, 21, 35);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (179, 0, 41, 14, 36);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (182, 0, 43, 14, 37);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (183, 0, 42, 12, 38);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (174, 1, 17, 19, 31);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (184, 0, 8, 19, 39);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (185, 0, 38, 1, 32);
-INSERT INTO profil_organisme_utilisateur_droit (id, version, profil_droit, profil_organisme, profil_utilisateur) VALUES (186, 0, 44, 14, 40);
 
 
 --
