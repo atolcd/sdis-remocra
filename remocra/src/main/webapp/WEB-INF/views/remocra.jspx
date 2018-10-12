@@ -12,7 +12,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta charset="UTF-8"/>
-		<meta name="title" content="SDIS - REMOcRA" />
+		<meta name="title" content="${titre_page}" />
 		<meta name="description" content="Plateforme collaborative départementale des risques" />
 		<meta name="keywords" content="remocra, hydrant, eau, permis, risque, dfci, forêt, alertes, pompier, pompiers, sdis, sdis83, atol, atolcd, atol conseils &amp; développements, android, mobile" />
 		<meta name="language" content="fr" />
@@ -23,7 +23,7 @@
 		<meta name="apple-mobile-web-app-capable" content="yes"/>
 		-->
     
-		<title>SDIS - REMOcRA</title>
+		<title>${titre_page}</title>
 		
 		<spring:url var="favicon" value="/ext-res/images/remocra/favicon.ico" />
 		<link rel="shortcut icon" href="${favicon}" />
@@ -90,7 +90,7 @@
   	
 		<div id="loading" style="position:absolute; top:10px;left:33%;width:33%;z-index:999999;">
 		  <div class="loading-indicator" style="background-image:none;font-style:italic;text-align:center;font-family: tahoma,arial,verdana,sans-serif;font-size: 12px;">
-		  	<span>SDIS - REMOcRA</span><br/>
+		  	<span>${titre_page}</span><br/>
 		  	<img src="${imagesbase}/remocra/chargement.gif" style="margin-right:8px;"/><br/>
 		  	<span id="loading-msg" style="color:#424041;">Chargement de l'application en cours. Veuillez patienter...</span>
 		  </div>

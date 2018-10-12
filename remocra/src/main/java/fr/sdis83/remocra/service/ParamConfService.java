@@ -158,6 +158,12 @@ public class ParamConfService {
         return (String) this.getValue(ParamConfParam.MESSAGE_ENTETE);
     }
 
+    protected static String TITRE_PAGE_DEFAULT_VALUE = "SDIS - REMOcRA";
+    public String getTitrePage() {
+        String value = (String) this.getValue(ParamConfParam.TITRE_PAGE, TITRE_PAGE_DEFAULT_VALUE);
+        return "".equals(value) ? TITRE_PAGE_DEFAULT_VALUE : value;
+    }
+
     public String getMentionCnil() {
         return (String) this.getValue(ParamConfParam.MENTION_CNIL, "");
     }

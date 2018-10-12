@@ -105,6 +105,7 @@ public class RemocraController {
 
         // Afficher un message en haut de la page
         model.addAttribute("message_entete", paramConfService.getMessageEntete());
+        model.addAttribute("titre_page", paramConfService.getTitrePage());
 
         // Afficher un message en haut de la page
         model.addAttribute("mention_cnil", paramConfService.getMentionCnil());
