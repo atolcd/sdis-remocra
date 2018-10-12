@@ -128,23 +128,19 @@ ul {
 }
 
 #pageTop {
-    height: 195px;
-    background-size: cover;
-    background-image: url('../../images/remocra/fond-pageTop.png');
-    /* Meilleur rendu en css3 */
-    background-image: linear-gradient(left,#424041,#afadae);
-	background-image: -moz-linear-gradient(left,#424041,#afadae);
-	background-image: -o-linear-gradient(left,#424041,#afadae);
-	background-image: -webkit-linear-gradient(left,#424041,#afadae);
-	background-image: -ms-linear-gradient(left,#424041,#afadae);
+  height: 200px;
+  background-color: #595a5b;
+  background-image: none;
 }
 
 #banniere {
-    background-image: url('../../images/remocra/banniere.png');
-	width: 924px;
-	height: 200px;
-	margin-left: auto;
-	margin-right: auto;
+  background-image: url('../../images/remocra/logo-lbl.png'), url('../../images/remocra/banniere.png');
+  background-size: auto, cover;
+  background-repeat: no-repeat;
+  background-position: 30px 30px, 0 0;
+  height: 200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #pageCenter {
@@ -282,17 +278,85 @@ a:hover {
 	color: #ffffff;
 }
 
+#indexpub {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#indexpub_header, #indexpri_header {
+  display: none;
+}
+
+#indexpub .centered {
+  margin: 0 auto;
+  padding: 0 1em;
+}
+
+#indexpub .card header {
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: center;
+  font-size: 17px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+#indexpub .card img {
+  display: block;
+  width: 125px;
+  height: 125px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 50%;
+  border: 10px solid #ececec;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+#indexpub .card:hover img {
+  border-color: #dd110a;
+}
+
+#indexpub .card p {
+  color: #878787;
+  font-size: 14px;
+  text-align: center;
+}
+#indexpub .cards {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#indexpub .card {
+  flex: 1 0 500px;
+  box-sizing: border-box;
+  margin: 1rem .25em;
+}
+
+#indexpub .card {
+  max-width: calc(100% -  1em);
+}
+
+@media screen and (min-width: 50em) {
+  #indexpub .card {
+    max-width: calc(50% -  1em);
+  }
+}
+
+@media screen and (min-width: 70em) {
+  #indexpub .card {
+    max-width: calc(25% - 1em);
+  }
+}
+#indexpub #okBtnindexAuthPanel-btnInnerEl {
+  font-size: 15px;
+}
+
 .index-bloc {
-	box-shadow: rgba(0,0,0,0.2) 1px 1px 10px;
-	border-radius: 5px;
-	border: solid 1px #d0d0d0;
-	background-color: #dddddd;
-	/* Meilleur rendu en css3 */
-    background-image: linear-gradient(top,#f2f2f2,#d9d9d9);
-	background-image: -moz-linear-gradient(top,#f2f2f2,#d9d9d9);
-	background-image: -o-linear-gradient(top,#f2f2f2,#d9d9d9);
-	background-image: -webkit-linear-gradient(top,#f2f2f2,#d9d9d9);
-	background-image: -ms-linear-gradient(top,#f2f2f2,#d9d9d9);
+  background: #e9e9e9;
+  border: none;
+  border-radius: unset;
+  box-shadow: none;
 }
 
 .x-panel-header-text {

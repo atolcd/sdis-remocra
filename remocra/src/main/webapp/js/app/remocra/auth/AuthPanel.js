@@ -89,7 +89,8 @@ Ext.define('Sdis.Remocra.auth.AuthPanel', {
         actionButtons.push(new Ext.Button({
             id : 'okBtn'+this.id,
             text : 'S\'identifier',
-            minWidth  : 70,
+            scale : this.inAWindow!==false ? 'small' : 'large',
+            minWidth : this.inAWindow!==false ? 70 : 120,
             listeners: {
                 click: Ext.bind(this.beforeOk, this)
             }
