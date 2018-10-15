@@ -37,7 +37,7 @@ drop function versionnement_dffd4df4df();
 
 -- Paramétrage de la méthode de calcul du numéro
 DELETE FROM remocra.param_conf where cle in ('HYDRANT_SYMBOLOGIE_METHODE');
-INSERT INTO remocra.param_conf(cle, description, valeur, version, nomgroupe) VALUES ('HYDRANT_SYMBOLOGIE_METHODE', 'Symbologie des PEI (ex : 77, 83). <a href="https://github.com/atolcd/sdis-remocra/blob/master/docs/Symbologie_PEI.adoc" target="_blank">Symbologies disponibles</a>','83', NULL, 'Points d''eau');
+INSERT INTO remocra.param_conf(cle, description, valeur, version, nomgroupe) VALUES ('HYDRANT_SYMBOLOGIE_METHODE', 'Symbologie des PEI (ex : 77, 83). <a href="https://github.com/atolcd/sdis-remocra/blob/master/docs/Symbologie_PEI.adoc" target="_blank">Symbologies disponibles</a>','GEN', NULL, 'Points d''eau');
 
 
 --

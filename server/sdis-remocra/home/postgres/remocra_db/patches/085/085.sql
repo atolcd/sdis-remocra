@@ -36,7 +36,7 @@ drop function versionnement_dffd4df4df();
 
 update remocra.param_conf set description='Règle de calcul des <i>numéros internes</i> des PEI (ex : 77, 83)' where cle='HYDRANT_NUMEROTATION_INTERNE_METHODE';
 update remocra.param_conf set description='Règle de calcul des <i>numéros globaux</i> des PEI (ex : 77, 83)' where cle='HYDRANT_NUMEROTATION_METHODE';
-update remocra.param_conf set description='Symbologie des PEI (ex : 77, 83)' where cle='HYDRANT_SYMBOLOGIE_METHODE';
+update remocra.param_conf set description='Symbologie des PEI (ex : GEN, 77, 83)' where cle='HYDRANT_SYMBOLOGIE_METHODE';
 
 
 -- Contenu réel du patch fin

@@ -206,11 +206,58 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                 return this.getStyleMap42();
             case '77' :
                 return this.getStyleMap77();
+            case '83' :
+                return this.getStyleMap89();
             case '89' :
                 return this.getStyleMap89();
             default :
-                return this.getStyleMap83();
+                return this.getStyleMapGEN();
         }
+    },
+
+    getStyleMapGEN: function() {
+        var customStyle = new OpenLayers.Style({
+            fillOpacity: 1,
+            externalGraphic: '${imgLegend}',
+            graphicWidth: 20,
+            graphicHeight: 20,
+            graphicYOffset: -10,
+            // Etiquettes
+            label: '${label}',
+            labelYOffset: -20,
+            labelOutlineColor: "white",
+            labelOutlineWidth: 3,
+            fontSize: 10,
+            fontColor: '${fontColor}'
+        }, {
+            context: {
+                label: function(feature) {
+                    var numero = feature.data['numero'];
+                    if (!numero) {
+                        return;
+                    }
+                    return numero;
+                },
+                imgLegend: function(feature) {
+                    var file = 'ext-res/images/remocra/cartes/legende/eau/';
+                    var nature = feature.data['nature'];
+
+                    file += nature=='PI'||nature=='BI'?nature:'PN';
+                    file += '_'+(feature.data['dispo']||'INCONNU');
+                    if (feature.renderIntent == 'select') {
+                        file += '_on';
+                    }
+                    return file + '.png';
+                },
+                fontColor: function(feature) {
+                    return feature.renderIntent=='select'?'#000':'#005ce6';
+                }
+            }
+        });
+        return new OpenLayers.StyleMap({
+            "default": customStyle,
+            "select": customStyle
+        });
     },
 
     getStyleMap42: function() {
@@ -345,46 +392,6 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
         });
     },
 
-    getStyleMap89: function() {
-            var customStyle = new OpenLayers.Style({
-                fillOpacity: 1,
-                externalGraphic: '${imgLegend}',
-                graphicWidth: 20,
-                graphicHeight: 20,
-                graphicYOffset: -10,
-                // Etiquettes
-                label: '${label}',
-                labelYOffset: -20,
-                labelOutlineColor: "white",
-                labelOutlineWidth: 3,
-                fontSize: 10,
-                fontColor: '#000'
-            }, {
-                context: {
-                    label: function(feature) {
-                        var numero = feature.data['numero'];
-                        if (!numero) {
-                            return;
-                        }
-                        return numero;
-                    },
-                    imgLegend: function(feature) {
-                        var file = 'ext-res/images/remocra/cartes/legende/eau/';
-                        file += feature.data['nature'];
-                        file += '_'+(feature.data['dispo']||'INCONNU');
-                        if (feature.renderIntent == 'select') {
-                            file += '_on';
-                        }
-                        return file + '.png';
-                    }
-                }
-            });
-            return new OpenLayers.StyleMap({
-                "default": customStyle,
-                "select": customStyle
-            });
-        },
-
     getStyleMap83: function() {
         var customStyle = new OpenLayers.Style({
             fillOpacity: 1,
@@ -473,6 +480,46 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
         });
     },
 
+    getStyleMap89: function() {
+        var customStyle = new OpenLayers.Style({
+            fillOpacity: 1,
+            externalGraphic: '${imgLegend}',
+            graphicWidth: 20,
+            graphicHeight: 20,
+            graphicYOffset: -10,
+            // Etiquettes
+            label: '${label}',
+            labelYOffset: -20,
+            labelOutlineColor: "white",
+            labelOutlineWidth: 3,
+            fontSize: 10,
+            fontColor: '#000'
+        }, {
+            context: {
+                label: function(feature) {
+                    var numero = feature.data['numero'];
+                    if (!numero) {
+                        return;
+                    }
+                    return numero;
+                },
+                imgLegend: function(feature) {
+                    var file = 'ext-res/images/remocra/cartes/legende/eau/';
+                    file += feature.data['nature'];
+                    file += '_'+(feature.data['dispo']||'INCONNU');
+                    if (feature.renderIntent == 'select') {
+                        file += '_on';
+                    }
+                    return file + '.png';
+                }
+            }
+        });
+        return new OpenLayers.StyleMap({
+            "default": customStyle,
+            "select": customStyle
+        });
+    },
+
     /**
      * Style de la couche de travail : une étiquette avec * si numéro disponible
      */
@@ -482,7 +529,40 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
         } else if (HYDRANT_SYMBOLOGIE == '77') {
             return this.workingLayerStyleMap77();
         }
-        return this.workingLayerStyleMap83();
+        return this.workingLayerStyleMapGEN();
+    },
+
+    workingLayerStyleMapGEN: function() {
+        var sm = new OpenLayers.Style({
+            fillColor: '#64C0FF',
+            fillOpacity: 0.8,
+            strokeColor: '#64C0FF',
+            strokeOpacity: 1,
+            strokeWidth: 3,
+            pointRadius: 5,
+            // Etiquettes
+            label: '${label}',
+            labelYOffset: -20,
+            labelOutlineColor: "white",
+            labelOutlineWidth: 3,
+            fontSize: 10,
+            fontColor: '#64C0FF'
+        }, {
+            context: {
+                label: function(feature) {
+                    var numero = feature.data['numero'];
+                    if (!numero) {
+                        return '';
+                    }
+                    return '*' + numero + '*';
+                }
+            }
+        });
+        return new OpenLayers.StyleMap({
+            "default": sm,
+            "select": sm,
+            "temporary": sm
+        });
     },
 
     workingLayerStyleMap42: function() {
@@ -548,39 +628,6 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                         numero = numero.substring(numero.length-4);
                     }
                     return '*' + parseInt(numero, 10) + '*';
-                }
-            }
-        });
-        return new OpenLayers.StyleMap({
-            "default": sm,
-            "select": sm,
-            "temporary": sm
-        });
-    },
-
-    workingLayerStyleMap83: function() {
-        var sm = new OpenLayers.Style({
-            fillColor: '#64C0FF',
-            fillOpacity: 0.8,
-            strokeColor: '#64C0FF',
-            strokeOpacity: 1,
-            strokeWidth: 3,
-            pointRadius: 5,
-            // Etiquettes
-            label: '${label}',
-            labelYOffset: -20,
-            labelOutlineColor: "white",
-            labelOutlineWidth: 3,
-            fontSize: 10,
-            fontColor: '#64C0FF'
-        }, {
-            context: {
-                label: function(feature) {
-                    var numero = feature.data['numero'];
-                    if (!numero) {
-                        return '';
-                    }
-                    return '*' + numero + '*';
                 }
             }
         });

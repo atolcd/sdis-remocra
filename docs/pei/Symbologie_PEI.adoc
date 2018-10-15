@@ -27,6 +27,22 @@ Les images sont placées dans le répertoire ```/var/remocra/html/images/remocra
 
 
 == Symbologies disponibles
+=== GEN (générique) ===
+
+* PIBI / PENA :
+** *<nature>_<disponibilité>[_on].png*.
+** <nature> : _PI_, _BI_ pour les PIBI, _PN_ pour les PENA
+** <disponibilité> : _DISPO_, _NON_CONFORME_, _INDISPO_, _INCONNU_
+** _on : pour les élements sélectionnés
+
+* Numéro affiché :
+** Numéro global
+** Exemple : *PI TLN 12*
+
+Exemple de légende :
+
+image:legende_GEN.png[]
+
 === 42 ===
 
 * PIBI / PENA :

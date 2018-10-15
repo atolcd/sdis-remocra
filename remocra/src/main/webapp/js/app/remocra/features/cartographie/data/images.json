@@ -4,16 +4,16 @@
         "url": "",
         "lbl": "Aucun"
     }, {
-        "url": "ext-res/images/remocra/cartes/legende/administratif/bat_cis.png",
+        "url": "ext-res/images/remocra/cartes/legende/divers/bat_cis.png",
         "lbl": "CIS"
     }, {
-        "url": "ext-res/images/remocra/cartes/legende/habillage_urbain/bat_camping.png",
+        "url": "ext-res/images/remocra/cartes/legende/divers/bat_camping.png",
         "lbl": "Camping"
     }, {
-        "url": "ext-res/images/remocra/cartes/legende/reseau_dfci/dfci_tour_guet.png",
+        "url": "ext-res/images/remocra/cartes/legende/divers/dfci_tour_guet.png",
         "lbl": "DFCI tour de guet"
     }, {
-        "url": "ext-res/images/remocra/cartes/legende/reseau_urbain/res_fer_gare.png",
+        "url": "ext-res/images/remocra/cartes/legende/divers/res_fer_gare.png",
         "lbl": "Gare"
     }, {
         "url": "ext-res/images/remocra/cartes/legende/rci/rci.png",

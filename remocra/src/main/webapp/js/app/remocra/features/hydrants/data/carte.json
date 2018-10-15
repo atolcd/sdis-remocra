@@ -12,17 +12,13 @@
         "visibility":true,
         "interrogeable": true,
         "items":[
-            {"libelle":"BI < 30m³/h","image":"eau/pibi/bi_low.png"},
-            {"libelle":"BI 30 à 60m³/h","image":"eau/pibi/bi_med.png"},
-            {"libelle":"BI > 60m³/h","image":"eau/pibi/bi_high.png"},
-            {"libelle":"PI < 30m³/h","image":"eau/pibi/pi_low.png"},
-            {"libelle":"PI 30 à 60m³/h","image":"eau/pibi/pi_med.png"},
-            {"libelle":"PI > 60m³/h","image":"eau/pibi/pi_high.png"},
-            {"libelle":"PA","image":"eau/pibi/pa.png"},
-            {"libelle":"Citerne fixe","image":"eau/pena/pn_citerne_fixe.png"},
-            {"libelle":"Autre PENA","image":"eau/pena/pn_autre.png"},
-            {"libelle":"HBE","image":"eau/hbe.png"},
-            {"libelle":"Indisponible","image":"eau/indispo.png"}
+            {"libelle":"PI","image":"eau/PI_DISPO.png"},
+            {"libelle":"BI","image":"eau/BI_DISPO.png"},
+            {"libelle":"PENA","image":"eau/PN_DISPO.png"},
+            {"libelle":"","image":""},
+            {"libelle":"Inform. absente","image":"eau/INCONNU.png"},
+            {"libelle":"Non conforme","image":"eau/NON_CONFORME.png"},
+            {"libelle":"Indisponible","image":"eau/INDISPO.png"}
         ]
     }
     ]}, {
