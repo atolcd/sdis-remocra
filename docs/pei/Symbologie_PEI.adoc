@@ -27,6 +27,31 @@ Les images sont placées dans le répertoire ```/var/remocra/html/images/remocra
 
 
 == Symbologies disponibles
+=== 42 ===
+
+* PIBI / PENA :
+** *<nature>[\_<diametre>][_<debit>]_<disponibilité>[_on].png*. Si une information manque : *INCONNU.png*.
+** <nature> : _PI_, _BI_, _PA_ / _CI_FIXE_, _PU_, _PR_, _CHE_
+** _<diametre> :
+*** pour les PI uniquement : _DIAM70_, _DIAM100_, _DIAM2X100_. Image _INCONNU_ si non renseigné.
+** _<debit> :
+*** pour les PI et BI uniquement
+*** __L30_ si debitRetenu <30
+*** __L60_ si debitRetenu <60
+*** __L90_ si debitRetenu <90
+*** __L120_ si debitRetenu <120
+*** __L150_ si debitRetenu <150
+*** __L180_ si debitRetenu <180
+*** __L240_ si debitRetenu <240
+*** __GE240_ si debitRetenu >=240
+*** Image _INCONNU_ si non renseigné.
+** <disponibilité> : _DISPO_, _INDISPO_. Image _INCONNU_ si non renseigné.
+** _on : pour les élements sélectionnés
+
+* Numéro affiché :
+** Numéro interne
+** Exemple : *12* pour le PEI _42218_12_.
+
 === 77 ===
 
 * PIBI :

@@ -202,6 +202,8 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
 
     getStyleMap: function() {
         switch (HYDRANT_SYMBOLOGIE){
+            case '42' :
+                return this.getStyleMap42();
             case '77' :
                 return this.getStyleMap77();
             case '89' :
@@ -209,6 +211,90 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
             default :
                 return this.getStyleMap83();
         }
+    },
+
+    getStyleMap42: function() {
+        var customStyle = new OpenLayers.Style({
+            fillOpacity: 1,
+            externalGraphic: '${imgLegend}',
+            graphicWidth: 30,
+            graphicHeight: 30,
+            graphicYOffset: -15,
+            // Etiquettes
+            label: '${label}',
+            labelYOffset: -25,
+            labelOutlineColor: "white",
+            labelOutlineWidth: 3,
+            fontSize: 10,
+            fontColor: '${fontColor}'
+        }, {
+            context: {
+                label: function(feature) {
+                    var numero = feature.data['numero'];
+                    if (!numero) {
+                        return;
+                    }
+                    var splited = numero.split('_');
+                    if (splited.length>1) {
+                        numero = splited[1];
+                    }
+                    return numero;
+                },
+                imgLegend: function(feature) {
+                    var file = 'ext-res/images/remocra/cartes/legende/eau/';
+                    var unknown = file + 'INCONNU' + (feature.renderIntent=='select'?'_on':'') + '.png';
+                    file += feature.data['nature'];
+                    if (feature.data['nature'] == 'PI') {
+                        if (!feature.data['diametre']) {
+                            return unknown;
+                        }
+                        file += '_'+feature.data['diametre'];
+                    }
+                    if (feature.data['nature'] == 'PI' || feature.data['nature'] == 'BI') {
+                        var debit = feature.data['debit'];
+                        if (!debit) {
+                            return unknown;
+                        }
+                        var debitCateg = null;
+                        if (debit < 30) {
+                            debitCateg = 'L30';
+                        } else if (debit < 60) {
+                            debitCateg = 'L60';
+                        } else if (debit < 90) {
+                             debitCateg = 'L90';
+                        } else if (debit < 120) {
+                            debitCateg = 'L120';
+                        } else if (debit < 150) {
+                            debitCateg = 'L150';
+                        } else if (debit < 180) {
+                            debitCateg = 'L180';
+                        } else if (debit < 240) {
+                            debitCateg = 'L240';
+                        } else if (debit >= 240) {
+                            debitCateg = 'GE240';
+                        } else {
+                            return unknown;
+                        }
+                        file += '_' +debitCateg;
+                    }
+                    if (!feature.data['dispo']) {
+                        return unknown;
+                    }
+                    file += '_'+feature.data['dispo'];
+                    if (feature.renderIntent == 'select') {
+                        file += '_on';
+                    }
+                    return file + '.png';
+                },
+                fontColor: function(feature) {
+                    return feature.renderIntent=='select'?'#ff00ff':'#000';
+                }
+            }
+        });
+        return new OpenLayers.StyleMap({
+            "default": customStyle,
+            "select": customStyle
+        });
     },
 
     getStyleMap77: function() {
@@ -391,10 +477,49 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
      * Style de la couche de travail : une étiquette avec * si numéro disponible
      */
     workingLayerStyleMap: function() {
-        if (HYDRANT_SYMBOLOGIE == '77') {
+        if (HYDRANT_SYMBOLOGIE == '42') {
+            return this.workingLayerStyleMap42();
+        } else if (HYDRANT_SYMBOLOGIE == '77') {
             return this.workingLayerStyleMap77();
         }
         return this.workingLayerStyleMap83();
+    },
+
+    workingLayerStyleMap42: function() {
+        var sm = new OpenLayers.Style({
+            fillColor: '#64C0FF',
+            fillOpacity: 0.8,
+            strokeColor: '#64C0FF',
+            strokeOpacity: 1,
+            strokeWidth: 3,
+            pointRadius: 5,
+            // Etiquettes
+            label: '${label}',
+            labelYOffset: -20,
+            labelOutlineColor: "white",
+            labelOutlineWidth: 3,
+            fontSize: 10,
+            fontColor: '#64C0FF'
+        }, {
+            context: {
+                label: function(feature) {
+                    var numero = feature.data['numero'];
+                    if (!numero) {
+                        return;
+                    }
+                    var splited = numero.split('_');
+                    if (splited.length>1) {
+                        numero = splited[1];
+                    }
+                    return '*' + numero + '*';
+                }
+            }
+        });
+        return new OpenLayers.StyleMap({
+            "default": sm,
+            "select": sm,
+            "temporary": sm
+        });
     },
 
     workingLayerStyleMap77: function() {

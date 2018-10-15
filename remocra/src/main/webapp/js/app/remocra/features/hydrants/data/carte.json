@@ -7,7 +7,7 @@
         "stategy" : "bbox",
         "libelle": "PIBI / PENA",
         "id": "hydrantLayer",
-        "minResolution": 0.5,
+        //"minResolution": 0.5,
         "maxResolution": 3.0,
         "visibility":true,
         "interrogeable": true,
