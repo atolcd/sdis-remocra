@@ -22,9 +22,9 @@ modeinstall=${modeinstall:=0}
 PROJECT=remocra
 
 # URL repository et branche
-#GITREPO=git://github.com/atolcd/sdis-remocra.git
-GITREPO=file:////${HOME}/projets/atolcd/sdis-remocra
-GITBRANCH=master
+#GITREPO=${GITREPO:-git://github.com/atolcd/sdis-remocra.git}
+GITREPO=${GITREPO:-file:////${HOME}/projets/atolcd/sdis-remocra}
+GITBRANCH=${GITBRANCH:-master}
 
 # Répertoire de travail
 WORKINGDIR=$path/${PROJECT}'package'
