@@ -299,7 +299,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                     }
                     if (feature.data['nature'] == 'PI' || feature.data['nature'] == 'BI') {
                         var debit = feature.data['debit'];
-                        if (!debit) {
+                        if (debit === undefined || debit === null) {
                             return unknown;
                         }
                         var debitCateg = null;
