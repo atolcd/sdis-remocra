@@ -47,12 +47,12 @@ function maybeCreateStyle {
   workspace=${workspace:-remocra}
 
   response=$(curl --write-out %{http_code} --silent --output /dev/null -u ${USERNAME_PWD} -XGET "${GEOSERVER_URL_REST}/workspaces/${workspace}/styles/${stylename}.sld")
-  if [ "${response}" -eq 404 ] ; then
+  if [ "${response}" -eq 200 ] ; then
+    echo "    Style ${stylename}.sld : déjà présent"
+  else
     echo "    Style ${stylename} : récupération"
     curl -q "https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/var/remocra/geoserver_data/workspaces/${workspace}/styles/${stylename}.sld" -o ${stylename}.sld
     createStyle $stylename $filename $localfilepath $raw
-  else
-    echo "    Style ${stylename}.sld : déjà présent"
   fi
 }
 
@@ -84,12 +84,12 @@ function maybeCreateLayer {
   datastore=${datastore:-remocra}
 
   response=$(curl --write-out %{http_code} --silent --output /dev/null -u ${USERNAME_PWD} -XGET "${GEOSERVER_URL_REST}/layers/${layername}.json")
-  if [ "${response}" -eq 404 ] ; then
+  if [ "${response}" -eq 200 ] ; then
+    echo "    Couche ${layername} : déjà présente"
+  else
     echo "    Couche ${layername} : récupération"
     curl -q "https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/var/remocra/geoserver_data/workspaces/${workspace}/${datastore}/${layername}/featuretype.xml" -o featuretype.xml
     createLayer ${layername} ${localfilepath} ${defaultStylename}
-  else
-    echo "    Couche ${layername} : déjà présente"
   fi
 }
 
