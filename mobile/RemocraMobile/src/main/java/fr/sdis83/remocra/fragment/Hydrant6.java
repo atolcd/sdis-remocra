@@ -187,7 +187,7 @@ public class Hydrant6 extends AbstractHydrant {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             mImageBitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
             byte[] imgData = baos.toByteArray();
-            values.put(HydrantTable.COLUMN_PHOTO, imgData);
+            values.put(HydrantTable.COLUMN_PHOTO, ImageUtils.getMediumBytes(imgData));
             values.put(HydrantTable.COLUMN_PHOTO_MINI, ImageUtils.getMiniatureBytes(imgData));
             values.put(HydrantTable.COLUMN_IS_NEW_PHOTO, true);
             needSave = false;

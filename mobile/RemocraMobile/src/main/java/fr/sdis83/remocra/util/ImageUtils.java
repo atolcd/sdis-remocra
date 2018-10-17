@@ -75,4 +75,11 @@ public final class ImageUtils {
         imageMini.compress(Bitmap.CompressFormat.JPEG, 50, baos);
         return baos.toByteArray();
     }
+
+    public static byte[] getMediumBytes(byte[] imgData) {
+        Bitmap imageMedium = ImageUtils.getResizedImage(500, 200, imgData);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        imageMedium.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+        return baos.toByteArray();
+    }
 }

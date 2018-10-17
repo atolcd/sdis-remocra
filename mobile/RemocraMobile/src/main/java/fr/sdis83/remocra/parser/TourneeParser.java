@@ -75,7 +75,7 @@ public class TourneeParser extends AbstractRemocraParser {
     public static final String TAG_COORD_LATITUDE = "latitude";
     public static final String TAG_COORD_LONGITUDE = "longitude";
     public static final String TAG_CODE_NATURE = "codeNature";
-    public static final String TAG_TOTAL_HYDRANT = "totalHydrant";
+    public static final String TAG_TYPE_SAISIE = "typeSaisie";
 
 
     private ArrayList<ContentValues> lstHydrant;
@@ -256,6 +256,8 @@ public class TourneeParser extends AbstractRemocraParser {
                     this.readPhoto(xmlParser, values);
                 } else if (TAG_ANOMALIES.equals(name)) {
                     this.readBaliseAnomalies(xmlParser, name, values);
+                }else if (TAG_TYPE_SAISIE.equals(name)) {
+                    values.put(HydrantTable.COLUMN_TYPE_SAISIE, this.readBaliseText(xmlParser, name));
                 } else {
                     skip(xmlParser);
                 }
@@ -293,7 +295,7 @@ public class TourneeParser extends AbstractRemocraParser {
         String text64 = readBaliseText(parser, TAG_PHOTO);
         if (!TextUtils.isEmpty(text64)) {
             byte[] imgData = Base64.decode(text64, Base64.DEFAULT);
-            values.put(HydrantTable.COLUMN_PHOTO, imgData);
+            values.put(HydrantTable.COLUMN_PHOTO, ImageUtils.getMediumBytes(imgData));
             values.put(HydrantTable.COLUMN_PHOTO_MINI, ImageUtils.getMiniatureBytes(imgData));
         }
     }
