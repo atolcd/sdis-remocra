@@ -8,7 +8,7 @@
         "id":"zonesLayer",
         "wms_layer":true,
         "layers":"remocra:oldeb_zonage",
-        "url":"/remocra/proxy/wms",
+        "url":"/remocra/geoserver/remocra/wms",
         "projection":"EPSG:900913",
         "sld":null,
         "scale_min":"0",
