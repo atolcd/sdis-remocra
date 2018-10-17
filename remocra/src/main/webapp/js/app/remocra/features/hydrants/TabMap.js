@@ -207,7 +207,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
             case '77' :
                 return this.getStyleMap77();
             case '83' :
-                return this.getStyleMap89();
+                return this.getStyleMap83();
             case '89' :
                 return this.getStyleMap89();
             default :
