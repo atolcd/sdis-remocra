@@ -1067,7 +1067,7 @@ public class XmlService {
             }
             return Hydrant.TYPE_SAISIE.CREA;
         } else if (hydrant.getId() != null && hydrant.getDateRecep() == null) {
-            if (!authUtils.hasRight(TypeDroitEnum.HYDRANTS_C)) {
+            if (!authUtils.hasRight(TypeDroitEnum.HYDRANTS_RECEPTION_C)) {
                 throw new XmlDroitException("L'utilisateur n'a pas les droits suffisants pour la remontée des anomalies");
             }
             return Hydrant.TYPE_SAISIE.RECEP;
