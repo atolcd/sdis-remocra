@@ -120,6 +120,9 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
             List<String> codes = Arrays.asList(itemFilter.getValue().split(","));
             Expression<Integer> cpPath = from.join("nature").get("code");
             predicat = cpPath.in(codes);
+        } else if("dispoTerrestre".equals(itemFilter.getFieldName())) {
+            Expression<Character> cpPath = from.get("dispoTerrestre");
+            predicat = cBuilder.equal(cpPath, Hydrant.Disponibilite.valueOf(itemFilter.getValue()));
         } else {
             return super.processFilterItem(itemQuery, parameters, from, itemFilter);
         }

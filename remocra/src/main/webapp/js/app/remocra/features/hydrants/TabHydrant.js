@@ -203,6 +203,28 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
                     return 'Indisponible'+(record.get('indispoTemp') === 0 ?'':' temporairement');
                 }
                 return 'Non conforme';
+            },
+            filterable: true,
+            filter: {
+                xtype: 'combo',
+                displayField: 'nom',
+                valueField: 'id',
+                forceSelection: true,
+                mode: 'local',
+                typeAhead: true,
+                filterName: 'dispoTerrestre',
+                values: null,
+                store: {
+                    type: 'array',
+                    fields: ['id','nom'],
+                    data: [[null,'Tous'],['INDISPO','Indisponible'],['NON_CONFORME','Non conforme'],['DISPO','Disponible']]
+                },
+                listeners: {
+                    select: function() {
+                        headerfilter.applyFilters();
+                    }
+                }
+
             }
 
         },{
