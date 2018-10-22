@@ -49,7 +49,7 @@ Ext.define('Sdis.Remocra.features.crises.bloc.Parametres', {
         xtype: 'textfield',
         itemId: 'Expression',
         labelAlign: 'top',
-        fieldLabel : 'Expression de type CRON',
+        fieldLabel : 'Intervalle d\'exécution du traitement (min)',
         allowBlank : false,
         name: 'Expression'
        }];

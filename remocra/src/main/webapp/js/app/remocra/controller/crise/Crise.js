@@ -84,9 +84,6 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
             'communeCrise #deleteCommuneCrise': {
                click: this.deleteCommuneFromCrise
             },
-            'gridFusionCrise': {
-               select: this.showFusionSelection
-            },
             'creationCrise combo[name=choixServices]':{
                change: this.changeServiceSelection
             },
@@ -225,10 +222,11 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
                         }
                     //sinon on le crée
                     }else {
+                    console.log(crise);
                       cardTab = tabPanel.add({
                       closable : true,
                       xtype : 'crCrisesMapCrise',
-                      nomCrise: crise.nom,
+                      nomCrise: crise.nom +' '+ Ext.util.Format.date(crise.activation, 'd/m/Y à H:i'),
                       idCrise: crise.id,
                       carteCrise: crise.carte,
                       bbox: bounds,
@@ -387,10 +385,6 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
                 }
       });
 
-    },
-
-    showFusionSelection: function(sel, records, index, opt){
-       Sdis.Remocra.util.Msg.msg('style selectionné  '+ records.data.id);
     },
 
     changeServiceSelection: function(combo, records){
