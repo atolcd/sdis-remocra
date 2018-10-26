@@ -17,6 +17,7 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 
 import fr.sdis83.remocra.util.GeometryUtil;
+
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -36,6 +37,8 @@ import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.util.NumeroUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
+
+import static java.lang.Boolean.TRUE;
 
 @Configuration
 public abstract class AbstractHydrantService<T extends Hydrant> extends AbstractService<T> {
@@ -71,7 +74,7 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
             ParameterExpression<Geometry> zoneCompetence = cBuilder.parameter(Geometry.class, "zoneCompetenceIdCom");
             ParameterExpression<Double> distanceZone = cBuilder.parameter(Double.class, "distanceZoneIdCom");
             Predicate commZCDwithinPred = cBuilder.equal(cBuilder.function("st_dwithin", Boolean.class, sqCommuneIdsFrom.get("geometrie"), zoneCompetence, distanceZone),
-                    Boolean.TRUE);
+                    TRUE);
             sqCommuneIds.select(sqCommuneIdsFrom.<Long> get("id"));
             sqCommuneIds.where(commZCDwithinPred);
 
@@ -80,11 +83,11 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
         } else if ("zoneCompetence".equals(itemFilter.getFieldName())) {
             Expression<Geometry> cpPath = from.get("geometrie");
             ParameterExpression<Geometry> zoneCompetence = cBuilder.parameter(Geometry.class, "zoneCompetence");
-            predicat = cBuilder.equal(cBuilder.function("st_contains", Boolean.class, zoneCompetence, cpPath), Boolean.TRUE);
+            predicat = cBuilder.equal(cBuilder.function("st_contains", Boolean.class, zoneCompetence, cpPath), TRUE);
         } else if ("zoneCompetenceSimplified".equals(itemFilter.getFieldName())) {
             Expression<Geometry> cpPath = from.get("geometrie");
             ParameterExpression<Geometry> zoneCompetence = cBuilder.parameter(Geometry.class, "zoneCompetenceSimplified");
-            predicat = cBuilder.equal(cBuilder.function("st_contains", Boolean.class, zoneCompetence, cpPath), Boolean.TRUE);
+            predicat = cBuilder.equal(cBuilder.function("st_contains", Boolean.class, zoneCompetence, cpPath), TRUE);
 
         } else if ("id".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.get("id");
@@ -123,6 +126,15 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
         } else if("dispoTerrestre".equals(itemFilter.getFieldName())) {
             Expression<Character> cpPath = from.get("dispoTerrestre");
             predicat = cBuilder.equal(cpPath, Hydrant.Disponibilite.valueOf(itemFilter.getValue()));
+        } else if("dispoHbe".equals(itemFilter.getFieldName())) {
+            TypedQuery<Long> itemTypedQuery= this.entityManager.createQuery("SELECT distinct(id) FROM HydrantPena WHERE hbe=true", Long.class);
+            List<Long> resultList = itemTypedQuery.getResultList();
+            Expression<Integer> cpID = from.get("id");
+            Expression<Character> cpDispo = from.get("dispoHbe");
+            predicat = cBuilder.and(
+                    cpID.in(resultList),
+                    cBuilder.equal(cpDispo, Hydrant.Disponibilite.valueOf(itemFilter.getValue()))
+            );
         } else {
             return super.processFilterItem(itemQuery, parameters, from, itemFilter);
         }

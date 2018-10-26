@@ -242,6 +242,28 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
                 }
                 metaData.tdCls = 'grid-hydrant-' + Ext.util.Format.lowercase(value);
                 return 'Indisponible HBE';
+            },
+            filterable: true,
+            filter: {
+                xtype: 'combo',
+                displayField: 'nom',
+                valueField: 'id',
+                forceSelection: true,
+                mode: 'local',
+                typeAhead: true,
+                filterName: 'dispoHbe',
+                values: null,
+                store: {
+                    type: 'array',
+                    fields: ['id','nom'],
+                    data: [[null,'Tous'],['INDISPO','Indisponible'],['DISPO','Disponible']]
+                },
+                listeners: {
+                    select: function() {
+                        headerfilter.applyFilters();
+                    }
+                }
+
             }
         }];
 
