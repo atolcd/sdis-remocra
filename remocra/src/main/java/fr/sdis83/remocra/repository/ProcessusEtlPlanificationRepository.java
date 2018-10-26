@@ -76,6 +76,7 @@ public class ProcessusEtlPlanificationRepository {
   }
 
 
+  @Transactional
   public List<ProcessusEtlPlanification> getAll() {
     List<ProcessusEtlPlanification> l = null;
     l = context.select().from(PROCESSUS_ETL_PLANIFICATION).fetchInto(ProcessusEtlPlanification.class);
