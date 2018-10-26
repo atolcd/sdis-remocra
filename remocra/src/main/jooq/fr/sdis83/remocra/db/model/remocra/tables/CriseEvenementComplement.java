@@ -36,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CriseEvenementComplement extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 1220974319;
+	private static final long serialVersionUID = 1664573113;
 
 	/**
 	 * The reference instance of <code>remocra.crise_evenement_complement</code>
@@ -127,7 +127,7 @@ public class CriseEvenementComplement extends TableImpl<Record> {
 	 */
 	@Override
 	public List<ForeignKey<Record, ?>> getReferences() {
-		return Arrays.<ForeignKey<Record, ?>>asList(Keys.CRISE_EVENEMENT_COMPLEMENT__CRISE_EVENEMENT_COMPLEMENT_EVENEMENT_FK, Keys.CRISE_EVENEMENT_COMPLEMENT__CRISE_EVENEMENT_COMPLEMENT_TYPE_EVENEMENT_PROPRIETE_FK);
+		return Arrays.<ForeignKey<Record, ?>>asList(Keys.CRISE_EVENEMENT_COMPLEMENT__CRISE_EVENEMENT_COMPLEMENT_TYPE_EVENEMENT_PROPRIETE_FK);
 	}
 
 	/**

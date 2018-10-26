@@ -53,6 +53,7 @@ public class Crise {
 
 
 
+
   public TypeCrise getTypeCrise() {
     return typeCrise;
   }

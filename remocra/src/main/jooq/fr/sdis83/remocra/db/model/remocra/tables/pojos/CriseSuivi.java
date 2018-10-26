@@ -27,14 +27,14 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CriseSuivi implements Serializable {
 
-	private static final long serialVersionUID = 1088644516;
+	private static final long serialVersionUID = 1720895986;
 
 	private Long    id;
 	private String  origine;
 	private String  objet;
 	private String  message;
 	private Instant creation;
-	private Long    importance;
+	private Integer importance;
 	private String  tags;
 	private Long    crise;
 	private Long    evenement;
@@ -59,7 +59,7 @@ public class CriseSuivi implements Serializable {
 		String  objet,
 		String  message,
 		Instant creation,
-		Long    importance,
+		Integer importance,
 		String  tags,
 		Long    crise,
 		Long    evenement
@@ -120,11 +120,11 @@ public class CriseSuivi implements Serializable {
 		return this;
 	}
 
-	public Long getImportance() {
+	public Integer getImportance() {
 		return this.importance;
 	}
 
-	public CriseSuivi setImportance(Long importance) {
+	public CriseSuivi setImportance(Integer importance) {
 		this.importance = importance;
 		return this;
 	}

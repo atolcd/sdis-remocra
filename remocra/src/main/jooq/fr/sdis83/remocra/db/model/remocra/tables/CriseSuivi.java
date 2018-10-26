@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CriseSuivi extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 1710912288;
+	private static final long serialVersionUID = 1151062465;
 
 	/**
 	 * The reference instance of <code>remocra.crise_suivi</code>
@@ -83,7 +83,7 @@ public class CriseSuivi extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.crise_suivi.importance</code>. Niveau d'importance permettant de filtrer facilement
 	 */
-	public final TableField<Record, Long> IMPORTANCE = createField("importance", org.jooq.impl.SQLDataType.BIGINT, this, "Niveau d'importance permettant de filtrer facilement");
+	public final TableField<Record, Integer> IMPORTANCE = createField("importance", org.jooq.impl.SQLDataType.INTEGER, this, "Niveau d'importance permettant de filtrer facilement");
 
 	/**
 	 * The column <code>remocra.crise_suivi.tags</code>. Tags permettant qualifier facilement un message

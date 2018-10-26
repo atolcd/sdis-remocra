@@ -25,16 +25,17 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CriseEvenement implements Serializable {
 
-	private static final long serialVersionUID = -1162727622;
+	private static final long serialVersionUID = -2083246315;
 
 	private Long    id;
 	private Object  geometrie;
 	private String  nom;
 	private String  description;
 	private Instant constat;
+	private Instant redefinition;
 	private Instant cloture;
 	private String  origine;
-	private Long    importance;
+	private Integer importance;
 	private String  tags;
 	private Long    crise;
 	private Long    natureEvenement;
@@ -47,6 +48,7 @@ public class CriseEvenement implements Serializable {
 		this.nom = value.nom;
 		this.description = value.description;
 		this.constat = value.constat;
+		this.redefinition = value.redefinition;
 		this.cloture = value.cloture;
 		this.origine = value.origine;
 		this.importance = value.importance;
@@ -61,9 +63,10 @@ public class CriseEvenement implements Serializable {
 		String  nom,
 		String  description,
 		Instant constat,
+		Instant redefinition,
 		Instant cloture,
 		String  origine,
-		Long    importance,
+		Integer importance,
 		String  tags,
 		Long    crise,
 		Long    natureEvenement
@@ -73,6 +76,7 @@ public class CriseEvenement implements Serializable {
 		this.nom = nom;
 		this.description = description;
 		this.constat = constat;
+		this.redefinition = redefinition;
 		this.cloture = cloture;
 		this.origine = origine;
 		this.importance = importance;
@@ -126,6 +130,15 @@ public class CriseEvenement implements Serializable {
 		return this;
 	}
 
+	public Instant getRedefinition() {
+		return this.redefinition;
+	}
+
+	public CriseEvenement setRedefinition(Instant redefinition) {
+		this.redefinition = redefinition;
+		return this;
+	}
+
 	public Instant getCloture() {
 		return this.cloture;
 	}
@@ -144,11 +157,11 @@ public class CriseEvenement implements Serializable {
 		return this;
 	}
 
-	public Long getImportance() {
+	public Integer getImportance() {
 		return this.importance;
 	}
 
-	public CriseEvenement setImportance(Long importance) {
+	public CriseEvenement setImportance(Integer importance) {
 		this.importance = importance;
 		return this;
 	}

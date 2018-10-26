@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CriseEvenement extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -605188313;
+	private static final long serialVersionUID = 437178070;
 
 	/**
 	 * The reference instance of <code>remocra.crise_evenement</code>
@@ -79,6 +79,11 @@ public class CriseEvenement extends TableImpl<Record> {
 	public final TableField<Record, Instant> CONSTAT = createField("constat", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "Date et heure de constat du phénomène ou de l'action", new InstantConverter());
 
 	/**
+	 * The column <code>remocra.crise_evenement.redefinition</code>. Date et heure de modification de l'évènement
+	 */
+	public final TableField<Record, Instant> REDEFINITION = createField("redefinition", org.jooq.impl.SQLDataType.TIMESTAMP, this, "Date et heure de modification de l'évènement", new InstantConverter());
+
+	/**
 	 * The column <code>remocra.crise_evenement.cloture</code>. Date et heure de fin de vie de l'évènement
 	 */
 	public final TableField<Record, Instant> CLOTURE = createField("cloture", org.jooq.impl.SQLDataType.TIMESTAMP, this, "Date et heure de fin de vie de l'évènement", new InstantConverter());
@@ -91,7 +96,7 @@ public class CriseEvenement extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.crise_evenement.importance</code>. Niveau d'importance permettant de filtrer facilement
 	 */
-	public final TableField<Record, Long> IMPORTANCE = createField("importance", org.jooq.impl.SQLDataType.BIGINT, this, "Niveau d'importance permettant de filtrer facilement");
+	public final TableField<Record, Integer> IMPORTANCE = createField("importance", org.jooq.impl.SQLDataType.INTEGER, this, "Niveau d'importance permettant de filtrer facilement");
 
 	/**
 	 * The column <code>remocra.crise_evenement.tags</code>. Tags permettant qualifier facilement un évènement

@@ -13,6 +13,9 @@ import fr.sdis83.remocra.db.model.remocra.routines.Nextnumerointerne;
 import fr.sdis83.remocra.db.model.remocra.routines.SoundexFr;
 import fr.sdis83.remocra.db.model.remocra.routines.TrgCalculDebitPression;
 import fr.sdis83.remocra.db.model.remocra.routines.TrgCalculIndispo;
+import fr.sdis83.remocra.db.model.remocra.routines.TrgCrise;
+import fr.sdis83.remocra.db.model.remocra.routines.TrgCriseDocument;
+import fr.sdis83.remocra.db.model.remocra.routines.TrgCriseEvenement;
 import fr.sdis83.remocra.db.model.remocra.routines.UpdateAllIndispo;
 
 import javax.annotation.Generated;
@@ -258,6 +261,63 @@ public class Routines {
 	 */
 	public static Field<Object> trgCalculIndispo() {
 		TrgCalculIndispo f = new TrgCalculIndispo();
+
+		return f.asField();
+	}
+
+	/**
+	 * Call <code>remocra.trg_crise</code>
+	 */
+	public static Object trgCrise(Configuration configuration) {
+		TrgCrise f = new TrgCrise();
+
+		f.execute(configuration);
+		return f.getReturnValue();
+	}
+
+	/**
+	 * Get <code>remocra.trg_crise</code> as a field
+	 */
+	public static Field<Object> trgCrise() {
+		TrgCrise f = new TrgCrise();
+
+		return f.asField();
+	}
+
+	/**
+	 * Call <code>remocra.trg_crise_document</code>
+	 */
+	public static Object trgCriseDocument(Configuration configuration) {
+		TrgCriseDocument f = new TrgCriseDocument();
+
+		f.execute(configuration);
+		return f.getReturnValue();
+	}
+
+	/**
+	 * Get <code>remocra.trg_crise_document</code> as a field
+	 */
+	public static Field<Object> trgCriseDocument() {
+		TrgCriseDocument f = new TrgCriseDocument();
+
+		return f.asField();
+	}
+
+	/**
+	 * Call <code>remocra.trg_crise_evenement</code>
+	 */
+	public static Object trgCriseEvenement(Configuration configuration) {
+		TrgCriseEvenement f = new TrgCriseEvenement();
+
+		f.execute(configuration);
+		return f.getReturnValue();
+	}
+
+	/**
+	 * Get <code>remocra.trg_crise_evenement</code> as a field
+	 */
+	public static Field<Object> trgCriseEvenement() {
+		TrgCriseEvenement f = new TrgCriseEvenement();
 
 		return f.asField();
 	}
