@@ -208,16 +208,6 @@ export default {
 }
 </script>
 <style>
-.custom-file,
-  {
-  position: relative;
-  width: 40%;
-  height: calc(2.25rem + 2px);
-}
-
-.custom-file-input:lang(en)~.custom-file-label::after {
-  content: "Browse";
-}
 .input-tag{
   color: #6c757d;
   background-color: #fff;

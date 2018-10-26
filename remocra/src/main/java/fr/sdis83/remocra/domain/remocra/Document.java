@@ -35,9 +35,13 @@ public class Document {
         // Blocs (documents génériques)
         BLOC,
         // "Métiers"
-        ALERTE, HYDRANT, PERMIS, RCI, OLDEBVISITE,
+        ALERTE, HYDRANT, PERMIS, RCI, OLDEBVISITE, CRISE,
         // Courrier
         COURRIER
+    }
+
+    public enum SousTypeDocument {
+        IMAGE, CARTEHORODATE, MEDIA, AUTRE
     }
 
     @Id

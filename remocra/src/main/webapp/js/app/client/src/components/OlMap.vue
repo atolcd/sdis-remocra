@@ -64,13 +64,13 @@
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
             <b-btn block variant="info"><span href="#" v-b-toggle.accordion2>Documents</span><span class="document">
-              <b-btn @click="addNewDocument" class="ctrl"><img src="/static/img/add.png"></b-btn>
-              <input type="file" id="files" ref="files" multiple v-on:change="handleFilesUpload()"/></span></b-btn>
+              <b-btn @click="addNewDocument" class="ctrl"><img src="/static/img/add.png"></b-btn></span></b-btn>
+              <new-document ref="newDocument"></new-document>
           </b-card-header>
           <b-collapse id="accordion2" accordion="my-accordion" role="tabpanel">
             <b-card-body>
               <p class="card-text">
-                Documents
+                <documents :crise="criseId" ref="evenements"></documents>
               </p>
             </b-card-body>
           </b-collapse>
@@ -194,7 +194,9 @@ import {getArea, getLength} from 'ol/sphere.js';
 import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style.js';
 import {LineString, Polygon} from 'ol/geom.js';
 import NewEvenement from './NewEvenement.vue';
+import NewDocument from './NewDocument.vue';
 import Evenements from './Evenements.vue';
+import Documents from './Documents.vue';
 import Filters from './Filters.vue';
 
   export default {
@@ -204,7 +206,9 @@ import Filters from './Filters.vue';
            SearchCommune,
            SearchRepertoire,
            NewEvenement,
+           NewDocument,
            Evenements,
+           Documents,
            Filters   },
     data () {
       return {
@@ -261,7 +265,7 @@ import Filters from './Filters.vue';
     },
     methods : {
       addNewDocument(){
-        this.$refs.files.click();
+        this.$refs['newDocument'].showModal(this.criseId);
       },
       openNewEvenement(){
         this.$refs['newEvenement'].showModal(this.criseId, null);

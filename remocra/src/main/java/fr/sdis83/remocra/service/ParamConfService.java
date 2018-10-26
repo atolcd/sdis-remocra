@@ -120,6 +120,10 @@ public class ParamConfService {
         return (String) this.getValue(ParamConfParam.DOSSIER_DOC_OLDEBVISITE);
     }
 
+    public String getDossierDocCrise() {
+        return (String) this.getValue(ParamConfParam.DOSSIER_DOC_CRISE);
+    }
+
     public String getDossierDepotBloc() {
         return (String) this.getValue(ParamConfParam.DOSSIER_DEPOT_BLOC);
     }

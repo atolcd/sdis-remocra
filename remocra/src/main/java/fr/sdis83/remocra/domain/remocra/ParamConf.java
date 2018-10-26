@@ -102,6 +102,7 @@ public class ParamConf {
         PDI_URL_SITE("PDI_URL_SITE", String.class),
         DOSSIER_DOC_HYDRANT("DOSSIER_DOC_HYDRANT", String.class),
         DOSSIER_DOC_OLDEBVISITE("DOSSIER_DOC_OLDEBVISITE", String.class),
+        DOSSIER_DOC_CRISE("DOSSIER_DOC_CRISE", String.class),
         HYDRANT_DELAI_RECO_WARN("HYDRANT_DELAI_RECO_WARN", Integer.class),
         HYDRANT_DELAI_RECO_URGENT("HYDRANT_DELAI_RECO_URGENT", Integer.class),
         HYDRANT_DELAI_CTRL_WARN("HYDRANT_DELAI_CTRL_WARN", Integer.class),

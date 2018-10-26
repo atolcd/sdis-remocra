@@ -34,6 +34,15 @@ drop function versionnement_dffd4df4df();
 -- Contenu réel du patch début*/
 
 
+INSERT INTO remocra.param_conf(
+       cle, description, valeur, version, nomgroupe)
+   VALUES ('DOSSIER_DOC_CRISE', 'Emplacement du dossier de stockage des documents CRISE', '/var/remocra/crises', 1, 'Chemins sur disque');
+INSERT INTO remocra.param_conf(
+       cle, description, valeur, version, nomgroupe)
+   VALUES ('CRISE_NOUVEL_EVT_DELAI_MINUTES', 'Nombre de minutes avant de considérer qu''un évènement n''est plus "nouveau"', '20', 1, 'Gestion de crises');
+
+
+
 -- Droits sur le module Crise
 select setval('remocra.type_droit_id_seq',id,false) from (select max(id)+1 as id from remocra.type_droit) as compteur;
 insert into remocra.type_droit(code, nom, description, categorie, version) values 

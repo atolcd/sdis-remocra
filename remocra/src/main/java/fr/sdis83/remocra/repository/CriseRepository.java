@@ -3,6 +3,7 @@ package fr.sdis83.remocra.repository;
 import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_COMMUNE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_DOCUMENT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_REPERTOIRE_LIEU;
 import static fr.sdis83.remocra.db.model.remocra.Tables.OGC_COUCHE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL_PLANIFICATION;
@@ -10,8 +11,11 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL_PLANIFICAT
 import static fr.sdis83.remocra.db.model.remocra.Tables.REPERTOIRE_LIEU;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE_STATUT;
+import static fr.sdis83.remocra.db.model.remocra.tables.Document.DOCUMENT;
 import static org.jooq.impl.DSL.row;
+import static org.jooq.impl.DSL.select;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -22,16 +26,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.activation.MimetypesFileTypeMap;
+import javax.mail.Multipart;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.google.common.io.Files;
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.OgcCouche;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlPlanificationParametre;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.RepertoireLieu;
 import fr.sdis83.remocra.domain.remocra.Commune;
+import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
+import fr.sdis83.remocra.service.ParamConfService;
+import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.deserialize.GeometryFactory;
 import fr.sdis83.remocra.web.message.ItemFilter;
@@ -56,6 +66,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Configuration
 
@@ -65,6 +76,9 @@ public class CriseRepository {
 
   @Autowired
   DSLContext context;
+
+  @Autowired
+  protected ParamConfService paramConfService;
 
   @Autowired
   JpaTransactionManager transactionManager;
@@ -445,6 +459,51 @@ public class CriseRepository {
     }
     return condition;
 
+  }
+
+  public int addDocuments(Map<String, MultipartFile> files, Long criseId) {
+    if (files != null && !files.isEmpty()) {
+      for (MultipartFile file : files.values()) {
+        if (!file.isEmpty()) {
+          try {
+            Document d = DocumentUtil.getInstance().createNonPersistedDocument(Document.TypeDocument.CRISE, file, paramConfService.getDossierDocCrise());
+            this.entityManager.persist(d);
+            context.insertInto(CRISE_DOCUMENT, CRISE_DOCUMENT.SOUS_TYPE, CRISE_DOCUMENT.DOCUMENT, CRISE_DOCUMENT.CRISE)
+            .values(getSousType(file),context.select(DSL.max((DOCUMENT.ID))).from(DOCUMENT).fetchOne().value1(),criseId).execute();
+            return 1;
+          } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+          }
+        }
+      }
+    }
+    return 0;
+  }
+
+  public List<fr.sdis83.remocra.db.model.remocra.tables.pojos.Document> getDocuments(Long criseId){
+    List<fr.sdis83.remocra.db.model.remocra.tables.pojos.Document> l;
+    l = (context.select().from(DOCUMENT)
+        .where(DOCUMENT.ID.in(context.select(CRISE_DOCUMENT.DOCUMENT)
+            .from(CRISE_DOCUMENT).where(CRISE_DOCUMENT.CRISE.eq(criseId)).fetchInto(Long.class)))).fetchInto(fr.sdis83.remocra.db.model.remocra.tables.pojos.Document.class);
+    return l;
+  }
+
+  public int countDocuments(Long criseId){
+
+    return context.fetchCount(context.select().from(DOCUMENT)
+        .where(DOCUMENT.ID.in(context.select(CRISE_DOCUMENT.DOCUMENT)
+            .from(CRISE_DOCUMENT).where(CRISE_DOCUMENT.CRISE.eq(criseId)).fetchInto(Long.class))));
+  }
+
+  public String getSousType(MultipartFile f){
+    String type = f.getContentType().split("/")[0];
+    if(type.equals("image")){
+       return Document.SousTypeDocument.IMAGE.toString();
+    }else if (type.equals("video") || type.equals("audio")){
+       return Document.SousTypeDocument.MEDIA.toString();
+    }
+    return Document.SousTypeDocument.AUTRE.toString();
   }
 
 }

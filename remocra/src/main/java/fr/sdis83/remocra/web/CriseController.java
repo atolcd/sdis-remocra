@@ -7,16 +7,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlPlanification;
+import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.domain.utils.RemocraInstantTransformer;
 import fr.sdis83.remocra.repository.CriseRepository;
 import fr.sdis83.remocra.repository.ProcessusEtlPlanificationRepository;
 import fr.sdis83.remocra.repository.TypeCriseStatutRepository;
+import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.model.Crise;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
@@ -34,6 +37,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 @RequestMapping("/crises")
 @Controller
@@ -80,8 +85,7 @@ public class CriseController {
 
       @Override
       protected Long countRecords() {
-        return
-            Long.valueOf(criseRepository.count(itemFilterList));
+        return Long.valueOf(criseRepository.count(itemFilterList));
       }
 
     }.serialize();
@@ -135,6 +139,56 @@ public class CriseController {
     }catch(Exception e){
       return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la création de la crise").serialize();
     }
+  }
+
+  @Transactional
+  @RequestMapping(value = "/{idCrise}/documents", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
+  @PreAuthorize("hasRight('CRISE_C')")
+  public ResponseEntity<java.lang.String> addNewDocuments(final @PathVariable("idCrise") Long idCrise, MultipartHttpServletRequest request) {
+    try {
+      Map<String, MultipartFile> files = request.getFileMap();
+      // traitement des fichiers
+      int  i = criseRepository.addDocuments(files, idCrise);
+      if(i != 0){
+        return new SuccessErrorExtSerializer(true, "Documents ajoutés ").serialize();
+      }
+      return new SuccessErrorExtSerializer(false, "Erreur lors De l'enregistrement des documents").serialize();
+
+    }catch(Exception e){
+      return new SuccessErrorExtSerializer(false, "Erreur lors De l'enregistrement des documents").serialize();
+    }
+  }
+
+  @Transactional
+  @RequestMapping(value = "/{idCrise}/documents", method = RequestMethod.GET)
+  @PreAuthorize("hasRight('CRISE_C')")
+  public ResponseEntity<java.lang.String> getDocuments(@PathVariable("idCrise") final Long idCrise) {
+    return new AbstractExtListSerializer<fr.sdis83.remocra.db.model.remocra.tables.pojos.Document>("Crise Document retrieved.") {
+
+      @Override
+      protected JSONSerializer getJsonSerializer() {
+        return new JSONSerializer().exclude("*.class").transform(RemocraDateHourTransformer.getInstance(), Date.class).transform(new RemocraInstantTransformer(), Instant.class)
+            .include("data.*").include("total").include("message");
+      }
+
+      @Override
+      protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+        serializer.include("data.*");
+
+        return serializer.include("total").include("message");
+      }
+
+      @Override
+      protected List<fr.sdis83.remocra.db.model.remocra.tables.pojos.Document> getRecords() {
+        return criseRepository.getDocuments(idCrise);
+      }
+
+      @Override
+      protected Long countRecords() {
+        return Long.valueOf(criseRepository.countDocuments(idCrise));
+      }
+
+    }.serialize();
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
