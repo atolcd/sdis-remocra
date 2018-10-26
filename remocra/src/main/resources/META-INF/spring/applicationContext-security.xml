@@ -69,6 +69,9 @@
 	<beans:bean id="customExpressionHandler"
 		class="fr.sdis83.remocra.security.annotations.CustomMethodSecurityExpressionHandler" />
 
+        <beans:bean id="planRepository"
+                class="fr.sdis83.remocra.repository.ProcessusEtlPlanificationRepository" />
+
 	<!-- handler for authorization failure. Will redirect to the login page 
 		or 403 for Ajax Requests -->
 	<beans:bean id="customAccessDeniedHandler"
