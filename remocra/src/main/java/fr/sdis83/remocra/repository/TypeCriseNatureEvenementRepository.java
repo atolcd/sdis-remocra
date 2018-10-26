@@ -58,7 +58,11 @@ public class TypeCriseNatureEvenementRepository {
         .in(context.select(CRISE_EVENEMENT.NATURE_EVENEMENT).from(CRISE_EVENEMENT).where(CRISE_EVENEMENT.CRISE.eq(id)).fetchInto(Long.class))).fetchInto(TypeCriseNatureEvenement.class);
     return l;
   }
-
+  public List<TypeCriseNatureEvenement> getNatureById(Long id) {
+    List<TypeCriseNatureEvenement> l = null;
+    l = context.select().from(TYPE_CRISE_NATURE_EVENEMENT).where(TYPE_CRISE_NATURE_EVENEMENT.ID.eq(id)).fetchInto(TypeCriseNatureEvenement.class);
+    return l;
+  }
 
 
   public int count() {

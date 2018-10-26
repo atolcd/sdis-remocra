@@ -79,4 +79,26 @@ public class TypeCriseNatureEvenementController {
 
     }.serialize();
   }
+
+  @RequestMapping(value = "/nature/{natureId}", method = RequestMethod.GET, headers = "Accept=application/xml")
+  @PreAuthorize("hasRight('CRISE_C')")
+  public ResponseEntity<String> getNatureById(final @PathVariable(value = "natureId") Long id){
+
+
+    return new AbstractExtListSerializer<TypeCriseNatureEvenement>("TypeCriseNatureEvenement retrieved.") {
+
+      @Override
+      protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+        serializer.include("data.*");
+
+        return serializer.include("total").include("message");
+      }
+
+      @Override
+      protected List<TypeCriseNatureEvenement> getRecords() {
+        return typeCriseNatureEvenementRepository.getNatureById(id);
+      }
+
+    }.serialize();
+  }
 }

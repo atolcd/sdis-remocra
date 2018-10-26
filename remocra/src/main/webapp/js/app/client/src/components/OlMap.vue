@@ -21,10 +21,17 @@
       </div>
     </b-col>
     <div>
-      <b-form-select v-model="selectedRuler" class="text-start my-3" @input="toggleDistance">
+      <b-dropdown  id="ddown1" class="text-start my-3">
+        <template slot="button-content">
+           <img src='/static/img/ruler.png'>
+        </template>
+        <b-dropdown-item-button @click="activateMeasure('Distance')">Distance</b-dropdown-item-button>
+        <b-dropdown-item-button @click="activateMeasure('Surface')">Surface</b-dropdown-item-button>
+      </b-dropdown>
+      <!--<b-form-select v-model="selectedRuler" class="text-start my-3" @input="toggleDistance">
         <option>Distance</option>
         <option>Surface</option>
-      </b-form-select>
+      </b-form-select>-->
     </div>
     <div class="text-start my-3">
       <b-btn class="ctrl" v-b-tooltip.hover title="Obtenir des information sur un point de la carte"><img src="/static/img/information.png"></b-btn>
@@ -46,7 +53,7 @@
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
             <b-btn block variant="info"><span href="#" v-b-toggle.accordion1>Evènements</span><span class="evenement">
-              <b-btn @click="openNewEvenement" class="ctrl"><img src="/static/img/add.png"></b-btn>
+              <b-btn @click="openNewEvenement(null)" class="ctrl"><img src="/static/img/add.png"></b-btn>
               <b-btn  class="ctrl" id="popoverButton-open2"><img src="/static/img/icon_SpecifiedFilter.png"></b-btn>
                 <b-popover  placement="right" ref="popover" target="popoverButton-open2" title="Filtrer les évènements">
                    <filters :criseId="criseId" ref="filters"></filters>
@@ -70,7 +77,7 @@
           <b-collapse id="accordion2" accordion="my-accordion" role="tabpanel">
             <b-card-body>
               <p class="card-text">
-                <documents :crise="criseId" ref="evenements"></documents>
+                <documents :crise="criseId" ref="documents"></documents>
               </p>
             </b-card-body>
           </b-collapse>
@@ -105,9 +112,7 @@
     </b-col>
     <b-col cols="8">
       <b-row id="toolsBar" class="toolsBar">
-        <b-col cols="8" class="text-start my-3">
-          <b-btn class="ctrl" v-b-tooltip.hover title="Obtenir des information sur un point de la carte"><img src="/static/img/information.png"></b-btn>
-        </b-col>
+      <tool-bar></tool-bar>
       </b-row>
       <div id="map">
         <div class="sidebar">
@@ -190,6 +195,7 @@ import OlOverlay from 'ol/Overlay.js'
 import {Vector as OlSourceVector } from 'ol/source.js'
 import {Vector as OlLayerVector} from 'ol/layer.js'
 import OlInteractionDraw from 'ol/interaction/Draw.js'
+import {Draw, Modify, Snap} from 'ol/interaction.js';
 import {getArea, getLength} from 'ol/sphere.js';
 import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style.js';
 import {LineString, Polygon} from 'ol/geom.js';
@@ -198,6 +204,7 @@ import NewDocument from './NewDocument.vue';
 import Evenements from './Evenements.vue';
 import Documents from './Documents.vue';
 import Filters from './Filters.vue';
+import ToolBar from './ToolBar.vue';
 
   export default {
     name: 'OlMap',
@@ -209,7 +216,8 @@ import Filters from './Filters.vue';
            NewDocument,
            Evenements,
            Documents,
-           Filters   },
+           Filters,
+           ToolBar   },
     data () {
       return {
         file: null,
@@ -267,8 +275,13 @@ import Filters from './Filters.vue';
       addNewDocument(){
         this.$refs['newDocument'].showModal(this.criseId);
       },
-      openNewEvenement(){
-        this.$refs['newEvenement'].showModal(this.criseId, null);
+      openNewEvenement(natureId, wktFeatureGeom){
+        if(natureId !== null){
+          this.$refs['newEvenement'].showModalFromMap(this.criseId, natureId, wktFeatureGeom)
+        }else {
+          this.$refs['newEvenement'].showModal(this.criseId, null);
+        }
+
       },
       addSortable(){
          this.addLayersFromLayerConfig(this.legend);
@@ -618,7 +631,8 @@ import Filters from './Filters.vue';
       this.map.addInteraction(measuringTool)
       this.measuringTool = measuringTool
     },
-    toggleDistance() {
+    activateMeasure(type) {
+      this.selectedRuler = type
       if(this.measuringTool){
            this.measuringTool.setActive(!this.measuringTool.getActive())
       }
@@ -649,7 +663,60 @@ import Filters from './Filters.vue';
          };
 
        }
-     }
+     },
+     addInteractions(typeGeom, natureId) {
+       var self = this
+      var source = new OlSourceVector();
+      var modify = new Modify({source: source});
+      var newInterventionLayer = new OlLayerVector({
+        source: source,
+        style: new Style({
+          fill: new Fill({
+            color: 'rgba(255, 255, 255, 0.2)'
+          }),
+          stroke: new Stroke({
+            color: '#ffcc33',
+            width: 2
+          }),
+          image: new CircleStyle({
+            radius: 7,
+            fill: new Fill({
+              color: '#ffcc33'
+            })
+          })
+        })
+      });
+      this.map.addLayer(newInterventionLayer)
+      this.map.addInteraction(modify);
+      this.map.removeInteraction(this.draw)
+      this.map.removeInteraction(this.snap)
+      let draw, snap;
+       typeGeom = typeGeom.toUpperCase()
+       switch (typeGeom) {
+           case 'LINESTRING':
+           typeGeom = 'LineString'
+           break
+           case 'POLYGON':
+           typeGeom = 'Polygon'
+           break
+           default:
+           typeGeom = 'Point'
+      }
+        draw = new Draw({
+          source: source,
+          type: typeGeom
+        });
+        this.map.addInteraction(draw);
+        var listener = draw.on('drawend',function(evt){
+          var wktFeatureGeom = new WKT().writeGeometry(evt.feature.getGeometry())
+          self.openNewEvenement(natureId, wktFeatureGeom)
+        },this)
+
+        snap = new Snap({source: source});
+        this.map.addInteraction(snap);
+        this.draw = draw
+        this.snap = snap
+      }
    }
 }
 
