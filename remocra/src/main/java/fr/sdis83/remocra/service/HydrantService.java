@@ -70,6 +70,10 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
             Expression<String> cpPath = from.join("tournees", JoinType.LEFT).get("id");
             orders.add(itemSorting.isDesc() ? cBuilder.desc(cpPath) : cBuilder.asc(cpPath));
             return true;
+        } else if ("nomTournee".equals(itemSorting.getFieldName())) {
+            Expression<String> cpPath = from.join("tournees", JoinType.LEFT).get("nom");
+            orders.add(itemSorting.isDesc() ? cBuilder.desc(cpPath) : cBuilder.asc(cpPath));
+            return true;
         } else if ("natureNom".equals(itemSorting.getFieldName())) {
             Expression<String> cpPath = from.join("nature").get("nom");
             orders.add(itemSorting.isDesc() ? cBuilder.desc(cpPath) : cBuilder.asc(cpPath));
