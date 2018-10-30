@@ -55,27 +55,50 @@ Le référentiel permet de faire la correspondance entre les codes employés et 
 
 === Tournées / consultation des points d'eau ===
 
-La *liste des tournées disponibles* est récupérée via la requête :
+*L'ensemble des tournées* est consultable avec la requête suivante :
 
-* http://remocra.sdisxx.fr/remocra/tournees
+* http://remocra.sdisxx.fr/remocra/tournees?dispo=false
 
 ** Méthode HTTP : GET
 ** Entête HTTP : Accept=application/xml
+** En entrée, paramètre *"dispo=false"*
+*** Valeur _false_ pour ne pas filtrer sur l'absence de réservation
 
-La *réservation de tournées* et *le téléchargement* des informations concernant les points d'eau qui la composent sont réalisés avec _une seule requête_ :
 
-* http://remocra.sdisxx.fr/remocra/xml/tournees?tournees=1,2
+La *liste des tournées #disponibles uniquement#* est récupérée via la requête :
+
+* http://remocra.sdisxx.fr/remocra/tournees?dispo=true
+
+** Méthode HTTP : GET
+** Entête HTTP : Accept=application/xml
+** En entrée, paramètre "dispo=true", valeur par défaut
+
+
+La *lecture de l'état des PEI* est réalisée avec la requête suivante. On s'appuie sur les tournées :
+
+* http://remocra.sdisxx.fr/remocra/xml/tournees?tournees=1,2&lock=false
+
+** Méthode HTTP : GET ou POST
+** En entrée, paramètre "tournees" :
+*** numéros des tournées concernées la récupération des points d'eau au format XML. Les numéros sont séparés par le caractère ','.
+** En entrée, paramètre *"lock=false"* :
+*** Valeur _false_ pour ne pas appliquer de réservation
+
+
+La *#réservation# de tournées* est réalisée avec la requête suivante. Elle retourne l'état des PEI qui les composent :
+
+* http://remocra.sdisxx.fr/remocra/xml/tournees?tournees=1,2&lock=true
 
 ** Méthode HTTP : GET ou POST
 ** En entrée, paramètre "tournees" :
 
-*** numéros des tournées concernées par la réservation et la récupération des points d'eau au format XML. Les numéros sont séparés par le caractère ','.
+*** numéros des tournées concernées par la réservation et la lecture des points d'eau au format XML. Les numéros sont séparés par le caractère ','.
 *** Remarque : toute réservation en cours dont le numéro de tournée n'est pas passé dans le paramètre "tournees" est supprimée à la suite de l'appel. Par exemple pour supprimer toutes les réservations, on laisse la valeur du paramètre "tournees" vide.
 
 
 === Mise à jour des points d'eau ===
 
-La *mise à jour de points d'eau* dans REMOcRA est réalisée en postant la description XML des PEI à l'URL suivante :
+La *mise à jour de points d'eau* est réalisée en postant la description XML des PEI à l'URL suivante :
 
 * http://remocra.sdisxx.fr/remocra/xml/hydrants
 
@@ -83,9 +106,9 @@ La *mise à jour de points d'eau* dans REMOcRA est réalisée en postant la desc
 ** Corps posté : élement de type 'lstHydrants' (voir le schéma XSD)
 
 
-=== Mise à jour des pourcentages des tournées ===
+=== Mise à jour des #pourcentages# des tournées ===
 
-La *mise à jour des pourcentages des tournées dans REMOcRA est réalisée en postant la description XML des tournées à l'URL suivante :
+La *mise à jour des pourcentages des tournées* est réalisée en postant la description XML des tournées à l'URL suivante :
 
 * http://remocra.sdisxx.fr/remocra/xml/pourcentages
 
@@ -104,16 +127,18 @@ Utiliser la méthode https://fr.wikipedia.org/wiki/Authentification_HTTP[Basic-a
 
 Dans les exemples qui suivent, nous utilisons l'outil opensource https://fr.wikipedia.org/wiki/CURL[cURL]. Il est disponible https://curl.haxx.se/download.html[ici].
 
-Pour authentifier une requête, on ajoute le paramètre `-u <username>:<password>`.
+Pour authentifier une requête, on ajoute le paramètre `-u <username>:<password>` en remplaçant `<username>` par l'identifiant du compte et `<password>` par son mot de passe.
 
 
-=== Récupération du référentiel ===
+=== Utilisation par les sociétés d'affermage (sans réservation de tournées) ===
 
-Pour récupérer le référentiel lié aux volumes constatés (exemple), on consomme le web service adéquat. Par exemple pour les natures :
+==== Récupération du référentiel ====
+
+Pour récupérer le *référentiel lié aux volumes constatés* (exemple), on consomme le web service adéquat. Par exemple pour les natures :
 [source,sh]
 ----
 # Accès public
-curl http://remocra.sdisxx.fr/remocra/xml/natures
+curl -v "http://remocra.sdisxx.fr/remocra/xml/natures"
 ----
 
 [source,xml]
@@ -153,184 +178,40 @@ curl http://remocra.sdisxx.fr/remocra/xml/natures
 </natures>
 ----
 
+Pour récupérer *l'ensemble du référentiel*, on consomme le web service suivant :
+[source,sh]
+----
+# Accès public
+curl -v "http://remocra.sdisxx.fr/remocra/xml/referentiels"
+----
 
-=== Mise à jour de points d'eau ===
+
+==== Liste des tournées ====
+
+*Liste des tournées* accessibles :
 
 [source,sh]
 ----
-# Ici, on poste le contenu d'un fichier XML
-# Remplacer <username> et <password>
-curl -u identifiant:••••• -d "@hydrants_a_televerser.xml" -H "Content-Type: application/xml;charset=utf-8" -X POST http://remocra.sdisxx.fr/remocra/xml/hydrants
+curl -v -u identifiant:••••• -H "Accept: application/xml;charset=utf-8" -X GET "http://remocra.sdisxx.fr/remocra/tournees?dispo=false"
 ----
 
 [source,xml]
 ----
 <?xml version="1.0" encoding="UTF-8"?>
-<success>
-    <message>Hydrants enregistrés avec succès</message>
-</success>
-----
-
-Avec en entrée les PEI à téléverser (1 PENA, 3 PIBI) :
-
-.hydrants_a_televerser.xml
-[source,xml]
-----
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<xsi:hydrants
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <hydrantPena xsi:type="CI_FIXE" verif="false">
-        <anneeFabrication>0</anneeFabrication>
-        <anomalies/>
-        <codeCommune>TLN</codeCommune>
-        <codeDomaine></codeDomaine>
-        <codeNature>CI_FIXE</codeNature>
-        <coordonnees>
-            <latitude>43.124900000000025</latitude>
-            <longitude>5.9277999999999995</longitude>
-        </coordonnees>
-        <courrier></courrier>
-        <dateContr>2013-11-14T15:58:33+01:00</dateContr>
-        <dateModification>2013-11-14T15:58:33+01:00</dateModification>
-        <dateRecep>2013-10-29T00:00:00+01:00</dateRecep>
-        <dispo>DISPO</dispo>
-        <gestPointEau></gestPointEau>
-        <numero>PN TLN 2</numero>
-        <numeroInterne>2</numeroInterne>
-        <observation>obsv</observation>
-        <voie>RUE XAVIER SAVELLI</voie>
-        <voie2>RUE LEBLOND SAINT HILAIRE</voie2>
-        <codeMateriau></codeMateriau>
-        <codeVolConstate></codeVolConstate>
-        <dispoHbe>DISPO</dispoHbe>
-        <hbe>false</hbe>
-    </hydrantPena>
-    <hydrantPibi xsi:type="BI" verif="false">
-        <agent1>Tutu</agent1>
-        <agent2>Toto</agent2>
-        <anneeFabrication>1988</anneeFabrication>
-        <anomalies>
-            <anomalie>
-                <code>APROTGER</code>
-            </anomalie>
-            <anomalie>
-                <code>SANSEAU</code>
-            </anomalie>
-            <anomalie>
-                <code>DISTANCE5M</code>
-            </anomalie>
-        </anomalies>
-        <codeCommune>TLN</codeCommune>
-        <codeDomaine>DOMAINE</codeDomaine>
-        <codeNature>BI</codeNature>
-        <complement>hhg hh !vv</complement>
-        <coordonnees>
-            <latitude>43.124900000000025</latitude>
-            <longitude>5.9256</longitude>
-        </coordonnees>
-        <courrier>1154dsd</courrier>
-        <dateContr>2013-01-13T17:22:48+01:00</dateContr>
-        <dateModification>2014-01-13T17:22:48+01:00</dateModification>
-        <dateRecep>2013-01-09T07:00:00+01:00</dateRecep>
-        <dispo>INDISPO</dispo>
-        <gestPointEau>123</gestPointEau>
-        <lieuDit>un lieu dit...</lieuDit>
-        <numero>BI TLN 99998</numero>
-        <numeroInterne>99998</numeroInterne>
-        <observation>obs... hh hubhi api</observation>
-        <voie>RUE ROBERT GUILLEMARD</voie>
-        <voie2>ALLEE AMIRAL COURBET</voie2>
-        <choc>false</choc>
-        <codeDiametre>DIAM150</codeDiametre>
-        <codeMarque>AVK</codeMarque>
-        <codeModele>VEGA</codeModele>
-        <debit>20</debit>
-        <debitMax>111</debitMax>
-        <gestReseau>ABV</gestReseau>
-        <numeroSCP>123456789</numeroSCP>
-        <pression>6.0</pression>
-        <pressionDyn>1.0</pressionDyn>
-    </hydrantPibi>
-    <hydrantPibi xsi:type="PI" verif="false">
-        <anneeFabrication>0</anneeFabrication>
-        <anomalies/>
-        <codeCommune>TLN</codeCommune>
-        <codeDomaine></codeDomaine>
-        <codeNature>PI</codeNature>
-        <coordonnees>
-            <latitude>43.125000000000014</latitude>
-            <longitude>5.9285</longitude>
-        </coordonnees>
-        <courrier></courrier>
-        <dateModification>2013-11-14T15:42:11+01:00</dateModification>
-        <dateRecep>2013-11-14T15:42:11+01:00</dateRecep>
-        <dispo>DISPO</dispo>
-        <gestPointEau></gestPointEau>
-        <numero>PI TLN 2</numero>
-        <numeroInterne>2</numeroInterne>
-        <voie>AVENUE JEAN MOULIN</voie>
-        <choc>false</choc>
-        <codeDiametre></codeDiametre>
-        <codeMarque></codeMarque>
-        <codeModele></codeModele>
-    </hydrantPibi>
-    <hydrantPibi xsi:type="BI" verif="false">
-        <anomalies/>
-        <codeCommune>TLN</codeCommune>
-        <codeDomaine></codeDomaine>
-        <codeNature>BI</codeNature>
-        <coordonnees>
-            <latitude>43.125100000000025</latitude>
-            <longitude>5.925099999999999</longitude>
-        </coordonnees>
-        <courrier></courrier>
-        <dateContr>2014-01-10T17:20:45+01:00</dateContr>
-        <dateModification>2014-01-10T17:20:45+01:00</dateModification>
-        <dateRecep>2013-11-14T15:30:11+01:00</dateRecep>
-        <dispo>DISPO</dispo>
-        <gestPointEau></gestPointEau>
-        <numero>BI TLN 99996</numero>
-        <numeroInterne>99996</numeroInterne>
-        <choc>false</choc>
-        <codeDiametre></codeDiametre>
-        <codeMarque>BAYARD</codeMarque>
-        <codeModele></codeModele>
-    </hydrantPibi>
-</xsi:hydrants>
-----
-
-
-
-=== Mise à jour de points d'eau avec réservation d'une tournée ===
-
-Processus de mise à jour de points d'eau avec réservation d'une tournée :
-
-. Liste des tournées disponibles
-. Réservation d'une tournée
-. Mise à jour des PEI
-. Suppression de la réservation
-
-
-*Liste des tournées disponibles* :
-
-[source,sh]
-----
-curl -u identifiant:••••• -H "Content-Type: application/xml;charset=utf-8" -X GET http://remocra.sdisxx.fr/remocra/tournees
-----
-
-[source,xml]
-----
-<?xml version="1.0" encoding="UTF-8"?>
-<tourneesDispo>
+<tournees>
    <tournee nom="Tournée du lac">6</tournee>
-</tourneesDispo>
+   <tournee nom="Piste P152">13</tournee>
+</tournees>
 ----
 
-*Réservation de la tournée 6* :
+
+==== Etat des PEI d'une tournée ====
+
+*Etat des PEI de la tournée 6* :
 
 [source,sh]
 ----
-curl -u identifiant:••••• -X GET http://remocra.sdisxx.fr/remocra/xml/tournees?tournees=6
+curl -v -u identifiant:••••• -X GET "http://remocra.sdisxx.fr/remocra/xml/tournees?tournees=6&lock=false"
 ----
 
 [source,xml]
@@ -463,17 +344,214 @@ curl -u identifiant:••••• -X GET http://remocra.sdisxx.fr/remocra/xml/
 ----
 
 
+
+==== Mise à jour de points d'eau ====
+
+[source,sh]
+----
+# Ici, on poste le contenu d'un fichier XML (hydrants_a_televerser.xml)
+# Remplacer <username> et <password>
+curl -v -u identifiant:••••• -d "@hydrants_a_televerser.xml" -H "Content-Type: application/xml;charset=utf-8" -X POST "http://remocra.sdisxx.fr/remocra/xml/hydrants"
+----
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<success>
+    <message>Hydrants enregistrés avec succès</message>
+</success>
+----
+
+Avec en entrée les PEI à téléverser (1 PENA, 3 PIBI). On utilise la balise `date*` adéquate en fonction du type de visite (soumis à droits) :
+
+* Visite de réception : `dateRecep`
+* Reconnaissance opérationnelle périodique : `dateReco`
+* Contrôle périodique : `dateContr`
+
+.hydrants_a_televerser.xml
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xsi:hydrants
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <hydrantPena xsi:type="CI_FIXE" verif="false">
+        <anneeFabrication>0</anneeFabrication>
+        <anomalies/>
+        <codeCommune>TLN</codeCommune>
+        <codeDomaine></codeDomaine>
+        <codeNature>CI_FIXE</codeNature>
+        <coordonnees>
+            <latitude>43.124900000000025</latitude>
+            <longitude>5.9277999999999995</longitude>
+        </coordonnees>
+        <courrier></courrier>
+        <dateContr>2013-11-14T15:58:33+01:00</dateContr>
+        <dateModification>2013-11-14T15:58:33+01:00</dateModification>
+        <dateRecep>2013-10-29T00:00:00+01:00</dateRecep>
+        <dispo>DISPO</dispo>
+        <gestPointEau></gestPointEau>
+        <numero>PN TLN 2</numero>
+        <numeroInterne>2</numeroInterne>
+        <observation>obsv</observation>
+        <voie>RUE XAVIER SAVELLI</voie>
+        <voie2>RUE LEBLOND SAINT HILAIRE</voie2>
+        <codeMateriau></codeMateriau>
+        <codeVolConstate></codeVolConstate>
+        <dispoHbe>DISPO</dispoHbe>
+        <hbe>false</hbe>
+    </hydrantPena>
+    <hydrantPibi xsi:type="BI" verif="false">
+        <agent1>Tutu</agent1>
+        <agent2>Toto</agent2>
+        <anneeFabrication>1988</anneeFabrication>
+        <anomalies>
+            <anomalie>
+                <code>APROTGER</code>
+            </anomalie>
+            <anomalie>
+                <code>SANSEAU</code>
+            </anomalie>
+            <anomalie>
+                <code>DISTANCE5M</code>
+            </anomalie>
+        </anomalies>
+        <codeCommune>TLN</codeCommune>
+        <codeDomaine>DOMAINE</codeDomaine>
+        <codeNature>BI</codeNature>
+        <complement>hhg hh !vv</complement>
+        <coordonnees>
+            <latitude>43.124900000000025</latitude>
+            <longitude>5.9256</longitude>
+        </coordonnees>
+        <courrier>1154dsd</courrier>
+        <dateContr>2013-01-13T17:22:48+01:00</dateContr>
+        <dateModification>2014-01-13T17:22:48+01:00</dateModification>
+        <dateRecep>2013-01-09T07:00:00+01:00</dateRecep>
+        <dispo>INDISPO</dispo>
+        <gestPointEau>123</gestPointEau>
+        <lieuDit>un lieu dit...</lieuDit>
+        <numero>BI TLN 99998</numero>
+        <numeroInterne>99998</numeroInterne>
+        <observation>obs... hh hubhi api</observation>
+        <voie>RUE ROBERT GUILLEMARD</voie>
+        <voie2>ALLEE AMIRAL COURBET</voie2>
+        <choc>false</choc>
+        <codeDiametre>DIAM150</codeDiametre>
+        <codeMarque>AVK</codeMarque>
+        <codeModele>VEGA</codeModele>
+        <debit>20</debit>
+        <debitMax>111</debitMax>
+        <gestReseau>ABV</gestReseau>
+        <numeroSCP>123456789</numeroSCP>
+        <pression>6.0</pression>
+        <pressionDyn>1.0</pressionDyn>
+    </hydrantPibi>
+    <hydrantPibi xsi:type="PI" verif="false">
+        <anneeFabrication>0</anneeFabrication>
+        <anomalies/>
+        <codeCommune>TLN</codeCommune>
+        <codeDomaine></codeDomaine>
+        <codeNature>PI</codeNature>
+        <coordonnees>
+            <latitude>43.125000000000014</latitude>
+            <longitude>5.9285</longitude>
+        </coordonnees>
+        <courrier></courrier>
+        <dateModification>2013-11-14T15:42:11+01:00</dateModification>
+        <dateRecep>2013-11-14T15:42:11+01:00</dateRecep>
+        <dispo>DISPO</dispo>
+        <gestPointEau></gestPointEau>
+        <numero>PI TLN 2</numero>
+        <numeroInterne>2</numeroInterne>
+        <voie>AVENUE JEAN MOULIN</voie>
+        <choc>false</choc>
+        <codeDiametre></codeDiametre>
+        <codeMarque></codeMarque>
+        <codeModele></codeModele>
+    </hydrantPibi>
+    <hydrantPibi xsi:type="BI" verif="false">
+        <anomalies/>
+        <codeCommune>TLN</codeCommune>
+        <codeDomaine></codeDomaine>
+        <codeNature>BI</codeNature>
+        <coordonnees>
+            <latitude>43.125100000000025</latitude>
+            <longitude>5.925099999999999</longitude>
+        </coordonnees>
+        <courrier></courrier>
+        <dateContr>2014-01-10T17:20:45+01:00</dateContr>
+        <dateModification>2014-01-10T17:20:45+01:00</dateModification>
+        <dateRecep>2013-11-14T15:30:11+01:00</dateRecep>
+        <dispo>DISPO</dispo>
+        <gestPointEau></gestPointEau>
+        <numero>BI TLN 99996</numero>
+        <numeroInterne>99996</numeroInterne>
+        <choc>false</choc>
+        <codeDiametre></codeDiametre>
+        <codeMarque>BAYARD</codeMarque>
+        <codeModele></codeModele>
+    </hydrantPibi>
+</xsi:hydrants>
+----
+
+
+=== Utilisation par l'application mobile (avec réservation de tournées) ===
+
+Processus de mise à jour de points d'eau avec réservation d'une tournée :
+
+. Récupération du référentiel
+. Liste des tournées disponibles
+. Réservation d'une tournée
+. Mise à jour des PEI
+. Suppression de la réservation
+
+
+*Récupération du référentiel*
+
+* Requêtes / résultats : Cf. "Société d'affermage / Récupération du référentiel"
+
+
+
+*Liste des tournées #disponibles#* :
+
+[source,sh]
+----
+curl -v -u identifiant:••••• -H "Accept: application/xml;charset=utf-8" -X GET "http://remocra.sdisxx.fr/remocra/tournees?dispo=true"
+----
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<tourneesDispo>
+   <tournee nom="Tournée du lac">6</tournee>
+</tourneesDispo>
+----
+
+
+
+*#Réservation# de la tournée 6* :
+
+[source,sh]
+----
+curl -v -u identifiant:••••• -X GET "http://remocra.sdisxx.fr/remocra/xml/tournees?tournees=6&lock=true"
+----
+
+Résultat : Cf. "Société d'affermage / Etat des PEI d'une tournée"
+
+
+
 *Mise à jour des PEI*
 
-* Cf. "Mise à jour de points d'eau"
+Requête / résultat : Cf. "Société d'affermage / Mise à jour de points d'eau"
 
 
-*Suppression de la réservation*
+
+*Suppression de la #réservation#*
 
 [source,sh]
 ----
 # On libère toutes les tournées liées à l'utilisateur
-curl -u identifiant:••••• -H "Content-Type: application/xml;charset=utf-8" -X GET http://remocra.sdisxx.fr/remocra/xml/tournees?tournees=
+curl -v -u identifiant:••••• -H "Content-Type: application/xml;charset=utf-8" -X GET "http://remocra.sdisxx.fr/remocra/xml/tournees?tournees="
 ----
 
 [source,xml]
