@@ -87,6 +87,13 @@ public class TourneeService extends AbstractService<Tournee> {
         return super.processItemSortings(orders, itemSorting, cBuilder, from);
     }
 
+    public List<Tournee> getTourneeAll(Utilisateur utilisateur) {
+        String sql = "SELECT t FROM Tournee t where t.affectation = :organisme";
+        TypedQuery<Tournee> query = entityManager.createQuery(sql, Tournee.class);
+        query.setParameter("organisme", utilisateur.getOrganisme());
+        return query.getResultList();
+    }
+
     public List<Tournee> getTourneeDisponible(Utilisateur utilisateur) {
         String sql = "SELECT t FROM Tournee t where t.affectation = :organisme and t.reservation is null and t.etat < 100 and t.hydrantCount > 0";
         TypedQuery<Tournee> query = entityManager.createQuery(sql, Tournee.class);

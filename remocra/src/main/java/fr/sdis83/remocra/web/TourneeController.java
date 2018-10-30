@@ -74,20 +74,24 @@ public class TourneeController {
 
         }.serialize();
     }
-    @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/xml;charset=utf-8")
+    @RequestMapping(value = "", method = RequestMethod.GET, headers = {"Accept=application/xml", "Accept=application/xml;charset=utf-8"})
     @PreAuthorize("hasRight('TOURNEE_R')")
-    public ResponseEntity<String> getTourneeDisponible() {
-        List<Tournee> tournees = tourneeService.getTourneeDisponible(utilisateurService.getCurrentUtilisateur());
+    public ResponseEntity<String> getTourneeDisponible(
+            final @RequestParam(value = "dispo", required = false, defaultValue = "true") boolean dispo
+    ) {
+        List<Tournee> tournees = dispo ?
+                tourneeService.getTourneeDisponible(utilisateurService.getCurrentUtilisateur())
+                : tourneeService.getTourneeAll(utilisateurService.getCurrentUtilisateur());
 
         StringWriter stringWriter = new StringWriter();
         stringWriter.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
-        stringWriter.append("<tourneesDispo>");
+        stringWriter.append("<tournees"+(dispo?"Dispo":"")+">");
         for (Tournee tournee : tournees) {
             stringWriter.append("<tournee nom=\""+tournee.getNom().toString().replaceAll("\"", "&quot;")+"\" >");
             stringWriter.append(tournee.getId().toString());
             stringWriter.append("</tournee>");
         }
-        stringWriter.append("</tourneesDispo>");
+        stringWriter.append("</tournees\"+(dispo?\"Dispo\":\"\")+\">");
         HttpHeaders responseHeaders = new HttpHeaders();
         return new ResponseEntity<String>(stringWriter.toString(), responseHeaders, HttpStatus.OK);
     }
