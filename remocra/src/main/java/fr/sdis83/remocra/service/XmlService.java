@@ -432,7 +432,7 @@ public class XmlService {
         serializeXmlExceptionManaged(fr.sdis83.remocra.xml.Referentiel.class, getReferentiels(), "référentiels", out);
     }
 
-    public LstTournees getTournees(List<Long> idTournees) throws IOException, CRSException, IllegalCoordinateException {
+    public LstTournees getTournees(List<Long> idTournees, boolean lock) throws IOException, CRSException, IllegalCoordinateException {
         LstTournees lstTourneesXML = new LstTournees();
         if (idTournees == null || idTournees.size() == 0) {
             // on "relâche" les tournées de l'utilisateur
@@ -444,14 +444,19 @@ public class XmlService {
         }
 
         TypedQuery<Tournee> query = entityManager
-                .createQuery("SELECT t FROM Tournee t " + " where t.id IN :ids " + " and t.affectation = :organisme " + " and (t.reservation is null OR t.reservation = :user) " +
+                .createQuery("SELECT t FROM Tournee t "
+                        + " where t.id IN :ids "
+                        + " and t.affectation = :organisme "
+                        + (lock ? " and (t.reservation is null OR t.reservation = :user) " : "") +
         // Pour permettre à l'utilisateur qui le souhaite de conserver
         // sa tournée, on commente le filtre sur l'état de la tournée :
         // + " and t.etat < 100 "
                         " and t.hydrantCount > 0", Tournee.class);
         query.setParameter("ids", idTournees);
         query.setParameter("organisme", utilisateurService.getCurrentUtilisateur().getOrganisme());
-        query.setParameter("user", utilisateurService.getCurrentUtilisateur());
+        if (lock) {
+            query.setParameter("user", utilisateurService.getCurrentUtilisateur());
+        }
 
         List<Tournee> lstTournees = query.getResultList();
 
@@ -530,24 +535,28 @@ public class XmlService {
             tourneeXML.setHydrants(lstHydrantsXML);
 
             lstTourneesFinal.add(tourneeXML);
-            // on "réserve" la tournée pour l'utilisateur
-            tournee.setReservation(utilisateurService.getCurrentUtilisateur());
-            tournee.merge();
+            if (lock) {
+                // on "réserve" la tournée pour l'utilisateur
+                tournee.setReservation(utilisateurService.getCurrentUtilisateur());
+                tournee.merge();
+            }
         }
         lstTourneesXML.setTournees(lstTourneesFinal);
-        // on "relâche" les tournées de l'utilisateur qui n'ont pas été
-        // sélectionnées.
-        Query qUpdate = entityManager.createQuery("UPDATE Tournee t set t.reservation = null where t.reservation = :user AND t.id NOT IN :ids");
-        qUpdate.setParameter("ids", idTournees);
-        qUpdate.setParameter("user", utilisateurService.getCurrentUtilisateur());
-        int nbTournee = qUpdate.executeUpdate();
-        logger.debug("Nombre de tournées relâchées : " + nbTournee);
+        if (lock) {
+            // on "relâche" les tournées de l'utilisateur qui n'ont pas été
+            // sélectionnées.
+            Query qUpdate = entityManager.createQuery("UPDATE Tournee t set t.reservation = null where t.reservation = :user AND t.id NOT IN :ids");
+            qUpdate.setParameter("ids", idTournees);
+            qUpdate.setParameter("user", utilisateurService.getCurrentUtilisateur());
+            int nbTournee = qUpdate.executeUpdate();
+            logger.debug("Nombre de tournées relâchées : " + nbTournee);
+        }
 
         return lstTourneesXML;
     }
 
-    public void serializeTournees(List<Long> idTournees, OutputStream out) throws BusinessException, SQLBusinessException, IOException, CRSException, IllegalCoordinateException {
-        serializeXmlExceptionManaged(fr.sdis83.remocra.xml.LstTournees.class, getTournees(idTournees), "tournées", out);
+    public void serializeTournees(List<Long> idTournees, OutputStream out, boolean lock) throws BusinessException, SQLBusinessException, IOException, CRSException, IllegalCoordinateException {
+        serializeXmlExceptionManaged(fr.sdis83.remocra.xml.LstTournees.class, getTournees(idTournees, lock), "tournées", out);
     }
 
     public void fillHydrant(fr.sdis83.remocra.xml.Hydrant hydrantXML, Hydrant hydrant) throws IOException, CRSException, IllegalCoordinateException {

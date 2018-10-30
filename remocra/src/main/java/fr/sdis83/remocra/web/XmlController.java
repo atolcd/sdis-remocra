@@ -169,10 +169,19 @@ public class XmlController {
         }
     }
 
+    /**
+     *
+     * @param response
+     * @param tournees facultatif. Absence = suppression des verrous
+     * @param lock facultatif, true par défaut. false = on ne pose pas de verrou.
+     * @throws IOException
+     */
     @RequestMapping(value = "/tournees")
     @Transactional
     @PreAuthorize("hasRight('HYDRANTS_C') or hasRight('HYDRANTS_RECONNAISSANCE_C') or hasRight('HYDRANTS_CONTROLE_C')")
-    public void getTournees(HttpServletResponse response, final @RequestParam(value = "tournees", required = false) String tournees) throws IOException {
+    public void getTournees(HttpServletResponse response,
+            final @RequestParam(value = "tournees", required = false) String tournees,
+            final @RequestParam(value = "lock", required = false, defaultValue = "true") boolean lock) throws IOException {
         prepareXMLResponse(response);
         try {
             List<Long> idTournees = new ArrayList<Long>();
@@ -187,7 +196,7 @@ public class XmlController {
                     }
                 }
             }
-            xmlService.serializeTournees(idTournees, response.getOutputStream());
+            xmlService.serializeTournees(idTournees, response.getOutputStream(), lock);
         } catch (Exception e) {
             manageSQLBusinessExceptionOrException(response, e);
         }
