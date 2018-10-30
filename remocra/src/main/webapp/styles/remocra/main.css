@@ -24,6 +24,9 @@ body.mode-info #mode {
 .partenaires span, .partenaires img {
 	margin-right: 15px;
 }
+.partenaires .crige-paca, .partenaires .avm83 {
+    display: none;
+}
 .mentions {
 	float:right;
 	text-align: right;
