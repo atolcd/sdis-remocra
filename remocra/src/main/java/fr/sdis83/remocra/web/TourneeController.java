@@ -87,11 +87,11 @@ public class TourneeController {
         stringWriter.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
         stringWriter.append("<tournees"+(dispo?"Dispo":"")+">");
         for (Tournee tournee : tournees) {
-            stringWriter.append("<tournee nom=\""+tournee.getNom().toString().replaceAll("\"", "&quot;")+"\" >");
+            stringWriter.append("<tournee nom=\""+tournee.getNom().toString().replaceAll("\"", "&quot;")+"\">");
             stringWriter.append(tournee.getId().toString());
             stringWriter.append("</tournee>");
         }
-        stringWriter.append("</tournees\"+(dispo?\"Dispo\":\"\")+\">");
+        stringWriter.append("</tournees"+(dispo?"Dispo":"")+">");
         HttpHeaders responseHeaders = new HttpHeaders();
         return new ResponseEntity<String>(stringWriter.toString(), responseHeaders, HttpStatus.OK);
     }
