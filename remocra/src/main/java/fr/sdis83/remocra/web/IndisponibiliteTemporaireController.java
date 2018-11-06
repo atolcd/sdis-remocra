@@ -71,20 +71,12 @@ public class IndisponibiliteTemporaireController  {
 
             @Override
             protected List<HydrantIndispoTemporaire> getRecords() {
-                if(itemFilterList.size()!=0 && itemFilterList.get(0).getFieldName().equals("hydrantId")) {
-                    return indisponibiliteTemporaireService.getIndisponibilite(Long.valueOf(itemFilterList.get(0).getValue()));
-                }
-                ZoneCompetence zc = utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence();
-                return indisponibiliteTemporaireService.getIndisponibiliteByZc(zc, limit, start, itemFilterList, sortList);
+                return indisponibiliteTemporaireService.getIndisponibilites(limit, start, itemFilterList, sortList);
             }
 
             @Override
             protected Long countRecords() throws BusinessException {
-                if(itemFilterList.size()!=0 && itemFilterList.get(0).getFieldName().equals("hydrantId")) {
-                    return indisponibiliteTemporaireService.getIndisponibiliteCount(Long.valueOf(itemFilterList.get(0).getValue()));
-                }
-                ZoneCompetence zc = utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence();
-                return indisponibiliteTemporaireService.getIndisponibiliteByZcCount(zc, itemFilterList);
+                return indisponibiliteTemporaireService.getIndisponibilitesCount(itemFilterList);
             }
             
 

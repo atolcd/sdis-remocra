@@ -52,6 +52,10 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
 
     private final Logger logger = Logger.getLogger(getClass());
 
+
+    @Autowired
+    private UtilisateurService utilisateurService;
+
     public IndisponibiliteTemporaireService() {
         super(HydrantIndispoTemporaire.class);
     }
@@ -88,42 +92,37 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
         return cBuilder.equal(statut, itemFilter.getValue());
     }
 
-    public Query getIndisponibiliteQuery(Long hydrant, Projection projection) {
-        StringBuilder sql = new StringBuilder("select ").append(projection)
-                .append(" from remocra.hydrant_indispo_temporaire where remocra.hydrant_indispo_temporaire.id in (")
-                .append("select indisponibilite from remocra.hydrant_indispo_temporaire_hydrant ")
-                .append("where remocra.hydrant_indispo_temporaire_hydrant.hydrant = :hydrant")
-                .append(")");
-        Query query = projection == Projection.COUNT ? entityManager.createNativeQuery(sql.toString())
-                : entityManager.createNativeQuery(sql.toString(), HydrantIndispoTemporaire.class);
-        query.setParameter("hydrant", hydrant);
-        return query;
-    }
-
-    public List<HydrantIndispoTemporaire> getIndisponibilite(Long hydrant) {
-        return getIndisponibiliteQuery(hydrant, Projection.ALL).getResultList();
-    }
-
-    public Long getIndisponibiliteCount(Long hydrant) {
-        return ((BigInteger) getIndisponibiliteQuery(hydrant, Projection.COUNT).getSingleResult()).longValue();
-    }
-
-    public Query getIndisponibiliteByZcQuery(ZoneCompetence zc, List<ItemFilter> itemFilter, List<ItemSorting> sortList, Projection projection, Integer limit, Integer offset) {
+    public Query getIndisponibilitesQuery(List<ItemFilter> itemFilter, List<ItemSorting> sortList, Projection projection, Integer limit, Integer offset) {
+        ZoneCompetence zc = utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence();
         StringBuilder sql = new StringBuilder("select ").append(projection)
                 .append(" from remocra.hydrant_indispo_temporaire hit where hit.id in (")
                 .append("select indisponibilite from remocra.hydrant_indispo_temporaire_hydrant hith ")
                 .append("where ")
-                //
+                // Filtre par zone de compétence systématique
                 .append("hith.hydrant in(")
                 .append("select h.id from remocra.hydrant h where h.commune in(")
                 .append("select c.id from remocra.commune c where st_Overlaps((select geometrie from remocra.zone_competence zc where zc.id = :zc), c.geometrie)")
                 .append(" or st_contains((select geometrie from remocra.zone_competence zc where zc.id = :zc), c.geometrie)")
-                .append("))")
+                .append("))");
                 //
-                .append(")");
-        if (itemFilter.size() != 0 && itemFilter.get(0).getFieldName().equals("statut")) {
-            sql.append(" and hit.statut = ").append(itemFilter.get(0).getValue());
+        if (itemFilter!=null && itemFilter.size()>0) {
+            for (ItemFilter f : itemFilter) {
+                String fieldName = null;
+                String fieldValue = null;
+                if ("hydrantId".equals(f.getFieldName())) {
+                    fieldName = "hith.hydrant";
+                    fieldValue = f.getValue();
+                } else if ("statut".equals(f.getFieldName())) {
+                    fieldName = "hit.statut";
+                    fieldValue = f.getValue();
+                } else {
+                    logger.info("Indispo temporaires, critère de filtre inconnu : " + f.getFieldName());
+                    continue;
+                }
+                sql.append(" and ").append(fieldName).append("=").append(fieldValue);
+            }
         }
+        sql.append(")");
         if (sortList!=null && sortList.size()>0) {
             sql.append(" order by");
             boolean first = true;
@@ -162,12 +161,12 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
         return query;
     }
 
-    public List<HydrantIndispoTemporaire> getIndisponibiliteByZc(ZoneCompetence zc, Integer limit, Integer offset, List<ItemFilter> itemFilter, List<ItemSorting> sortList) {
-        return getIndisponibiliteByZcQuery(zc, itemFilter, sortList, Projection.ALL, limit, offset).getResultList();
+    public List<HydrantIndispoTemporaire> getIndisponibilites(Integer limit, Integer offset, List<ItemFilter> itemFilter, List<ItemSorting> sortList) {
+        return getIndisponibilitesQuery(itemFilter, sortList, Projection.ALL, limit, offset).getResultList();
     }
 
-    public Long getIndisponibiliteByZcCount(ZoneCompetence zc, List<ItemFilter> itemFilter) {
-        return ((BigInteger) getIndisponibiliteByZcQuery(zc, itemFilter, null, Projection.COUNT, null, null).getSingleResult()).longValue();
+    public Long getIndisponibilitesCount(List<ItemFilter> itemFilter) {
+        return ((BigInteger) getIndisponibilitesQuery(itemFilter, null, Projection.COUNT, null, null).getSingleResult()).longValue();
     }
 
     public List<HydrantIndispoTemporaire> getAllIndisponibilite() {
