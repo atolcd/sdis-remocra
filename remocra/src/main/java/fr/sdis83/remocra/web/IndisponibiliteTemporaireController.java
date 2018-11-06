@@ -75,7 +75,7 @@ public class IndisponibiliteTemporaireController  {
                     return indisponibiliteTemporaireService.getIndisponibilite(Long.valueOf(itemFilterList.get(0).getValue()));
                 }
                 ZoneCompetence zc = utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence();
-                return indisponibiliteTemporaireService.getIndisponibiliteByZc(zc, limit, start, itemFilterList);
+                return indisponibiliteTemporaireService.getIndisponibiliteByZc(zc, limit, start, itemFilterList, sortList);
             }
 
             @Override

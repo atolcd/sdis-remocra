@@ -114,7 +114,8 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
                         headerfilter.applyFilters();
                     }
                 }
-            }
+            },
+            sortable: false
         },{
             text: 'Motif',
             dataIndex: 'motif',

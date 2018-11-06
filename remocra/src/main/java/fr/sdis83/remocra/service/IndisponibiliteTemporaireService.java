@@ -8,6 +8,7 @@ import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.domain.remocra.ZoneCompetence;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.web.message.ItemFilter;
+import fr.sdis83.remocra.web.message.ItemSorting;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -107,18 +108,47 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
         return ((BigInteger) getIndisponibiliteQuery(hydrant, Projection.COUNT).getSingleResult()).longValue();
     }
 
-    public Query getIndisponibiliteByZcQuery(ZoneCompetence zc, List<ItemFilter> itemFilter, Projection projection, Integer limit, Integer offset) {
+    public Query getIndisponibiliteByZcQuery(ZoneCompetence zc, List<ItemFilter> itemFilter, List<ItemSorting> sortList, Projection projection, Integer limit, Integer offset) {
         StringBuilder sql = new StringBuilder("select ").append(projection)
-                .append(" from remocra.hydrant_indispo_temporaire")
-                .append(" where remocra.hydrant_indispo_temporaire.id")
-                .append(" in (select indisponibilite from remocra.hydrant_indispo_temporaire_hydrant")
-                .append(" where remocra.hydrant_indispo_temporaire_hydrant.hydrant")
-                .append(" in(")
-                .append(" select h.id from remocra.hydrant h where h.commune")
-                .append(" in (select c.id from remocra.commune c where st_Overlaps((select geometrie from remocra.zone_competence where zone_competence.id = :zc),c.geometrie)")
-                .append(" or st_contains((select geometrie from remocra.zone_competence where zone_competence.id = :zc),c.geometrie))))");
+                .append(" from remocra.hydrant_indispo_temporaire hit where hit.id in (")
+                .append("select indisponibilite from remocra.hydrant_indispo_temporaire_hydrant hith ")
+                .append("where ")
+                //
+                .append("hith.hydrant in(")
+                .append("select h.id from remocra.hydrant h where h.commune in(")
+                .append("select c.id from remocra.commune c where st_Overlaps((select geometrie from remocra.zone_competence zc where zc.id = :zc), c.geometrie)")
+                .append(" or st_contains((select geometrie from remocra.zone_competence zc where zc.id = :zc), c.geometrie)")
+                .append("))")
+                //
+                .append(")");
         if (itemFilter.size() != 0 && itemFilter.get(0).getFieldName().equals("statut")) {
-            sql.append(" and remocra.hydrant_indispo_temporaire.statut = ").append(itemFilter.get(0).getValue());
+            sql.append(" and hit.statut = ").append(itemFilter.get(0).getValue());
+        }
+        if (sortList!=null && sortList.size()>0) {
+            sql.append(" order by");
+            boolean first = true;
+            for (ItemSorting s : sortList) {
+                String fieldName = null;
+                if ("datePrevDebut".equals(s.getFieldName())) {
+                    fieldName = "date_prev_debut";
+                } else if ("datePrevFin".equals(s.getFieldName())) {
+                    fieldName = "date_prev_fin";
+                } else if ("dateDebut".equals(s.getFieldName())) {
+                    fieldName = "date_debut";
+                } else if ("dateFin".equals(s.getFieldName())) {
+                    fieldName = "date_fin";
+                } else if ("motif".equals(s.getFieldName())) {
+                    fieldName = "motif";
+                } else {
+                    logger.info("Indispo temporaires, critère de tri inconnu : " + s.getFieldName());
+                    continue;
+                }
+                if (!first) {
+                    sql.append(",");
+                }
+                first = false;
+                sql.append(" ").append(fieldName).append(" ").append(s.getDirection());
+            }
         }
         if (limit != null && offset != null) {
             sql.append(" limit :limit offset :offset");
@@ -132,12 +162,12 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
         return query;
     }
 
-    public List<HydrantIndispoTemporaire> getIndisponibiliteByZc(ZoneCompetence zc, Integer limit, Integer offset, List<ItemFilter> itemFilter) {
-        return getIndisponibiliteByZcQuery(zc, itemFilter, Projection.ALL, limit, offset).getResultList();
+    public List<HydrantIndispoTemporaire> getIndisponibiliteByZc(ZoneCompetence zc, Integer limit, Integer offset, List<ItemFilter> itemFilter, List<ItemSorting> sortList) {
+        return getIndisponibiliteByZcQuery(zc, itemFilter, sortList, Projection.ALL, limit, offset).getResultList();
     }
 
     public Long getIndisponibiliteByZcCount(ZoneCompetence zc, List<ItemFilter> itemFilter) {
-        return ((BigInteger) getIndisponibiliteByZcQuery(zc, itemFilter, Projection.COUNT, null, null).getSingleResult()).longValue();
+        return ((BigInteger) getIndisponibiliteByZcQuery(zc, itemFilter, null, Projection.COUNT, null, null).getSingleResult()).longValue();
     }
 
     public List<HydrantIndispoTemporaire> getAllIndisponibilite() {
