@@ -13,6 +13,7 @@ import fr.sdis83.remocra.domain.remocra.HydrantIndispoTemporaire;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantIndispoStatut;
 import fr.sdis83.remocra.domain.remocra.ZoneCompetence;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
+import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.IndisponibiliteTemporaireService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.web.message.ItemFilter;
@@ -67,6 +68,7 @@ public class IndisponibiliteTemporaireController  {
 
                 return serializer.include("total").include("message").exclude("data.hydrants.*");
             }
+
             @Override
             protected List<HydrantIndispoTemporaire> getRecords() {
                 if(itemFilterList.size()!=0 && itemFilterList.get(0).getFieldName().equals("hydrantId")) {
@@ -74,6 +76,15 @@ public class IndisponibiliteTemporaireController  {
                 }
                 ZoneCompetence zc = utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence();
                 return indisponibiliteTemporaireService.getIndisponibiliteByZc(zc, limit, start, itemFilterList);
+            }
+
+            @Override
+            protected Long countRecords() throws BusinessException {
+                if(itemFilterList.size()!=0 && itemFilterList.get(0).getFieldName().equals("hydrantId")) {
+                    return indisponibiliteTemporaireService.getIndisponibiliteCount(Long.valueOf(itemFilterList.get(0).getValue()));
+                }
+                ZoneCompetence zc = utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence();
+                return indisponibiliteTemporaireService.getIndisponibiliteByZcCount(zc, itemFilterList);
             }
             
 

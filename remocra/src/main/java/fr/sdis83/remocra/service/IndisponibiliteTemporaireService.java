@@ -1,23 +1,5 @@
 package fr.sdis83.remocra.service;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
 import flexjson.JSONDeserializer;
 import fr.sdis83.remocra.domain.remocra.Hydrant;
 import fr.sdis83.remocra.domain.remocra.HydrantIndispoTemporaire;
@@ -32,8 +14,40 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.math.BigInteger;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 @Configuration
 public class IndisponibiliteTemporaireService extends AbstractService<HydrantIndispoTemporaire> {
+
+    protected enum Projection {
+        ALL("*"), COUNT("count(*)");
+
+        private final String value;
+
+        private Projection(String value) {
+            this.value = value;
+        }
+
+        public String toString() {
+            return this.value;
+        }
+    }
 
     private final Logger logger = Logger.getLogger(getClass());
 
@@ -73,29 +87,57 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
         return cBuilder.equal(statut, itemFilter.getValue());
     }
 
-    public List<HydrantIndispoTemporaire> getIndisponibilite(Long hydrant) {
-        String sql = "select * from remocra.hydrant_indispo_temporaire where remocra.hydrant_indispo_temporaire.id in (select indisponibilite from remocra.hydrant_indispo_temporaire_hydrant where remocra.hydrant_indispo_temporaire_hydrant.hydrant = :hydrant)";
-        Query query =  entityManager.createNativeQuery(sql,HydrantIndispoTemporaire.class);
+    public Query getIndisponibiliteQuery(Long hydrant, Projection projection) {
+        StringBuilder sql = new StringBuilder("select ").append(projection)
+                .append(" from remocra.hydrant_indispo_temporaire where remocra.hydrant_indispo_temporaire.id in (")
+                .append("select indisponibilite from remocra.hydrant_indispo_temporaire_hydrant ")
+                .append("where remocra.hydrant_indispo_temporaire_hydrant.hydrant = :hydrant")
+                .append(")");
+        Query query = projection == Projection.COUNT ? entityManager.createNativeQuery(sql.toString())
+                : entityManager.createNativeQuery(sql.toString(), HydrantIndispoTemporaire.class);
         query.setParameter("hydrant", hydrant);
-        return query.getResultList();
+        return query;
     }
 
-    public List<HydrantIndispoTemporaire> getIndisponibiliteByZc(ZoneCompetence zc, Integer limit, Integer offset,  List<ItemFilter> itemFilter) {
-        String condition = "";
-        if(itemFilter.size()!=0 && itemFilter.get(0).getFieldName().equals("statut")){
-           condition = " and remocra.hydrant_indispo_temporaire.statut = "+itemFilter.get(0).getValue();
+    public List<HydrantIndispoTemporaire> getIndisponibilite(Long hydrant) {
+        return getIndisponibiliteQuery(hydrant, Projection.ALL).getResultList();
+    }
+
+    public Long getIndisponibiliteCount(Long hydrant) {
+        return ((BigInteger) getIndisponibiliteQuery(hydrant, Projection.COUNT).getSingleResult()).longValue();
+    }
+
+    public Query getIndisponibiliteByZcQuery(ZoneCompetence zc, List<ItemFilter> itemFilter, Projection projection, Integer limit, Integer offset) {
+        StringBuilder sql = new StringBuilder("select ").append(projection)
+                .append(" from remocra.hydrant_indispo_temporaire")
+                .append(" where remocra.hydrant_indispo_temporaire.id")
+                .append(" in (select indisponibilite from remocra.hydrant_indispo_temporaire_hydrant")
+                .append(" where remocra.hydrant_indispo_temporaire_hydrant.hydrant")
+                .append(" in(")
+                .append(" select h.id from remocra.hydrant h where h.commune")
+                .append(" in (select c.id from remocra.commune c where st_Overlaps((select geometrie from remocra.zone_competence where zone_competence.id = :zc),c.geometrie)")
+                .append(" or st_contains((select geometrie from remocra.zone_competence where zone_competence.id = :zc),c.geometrie))))");
+        if (itemFilter.size() != 0 && itemFilter.get(0).getFieldName().equals("statut")) {
+            sql.append(" and remocra.hydrant_indispo_temporaire.statut = ").append(itemFilter.get(0).getValue());
         }
-        String sql = "select * from remocra.hydrant_indispo_temporaire\n" +
-            " where remocra.hydrant_indispo_temporaire.id \n" +
-            " in (select indisponibilite from remocra.hydrant_indispo_temporaire_hydrant\n" +
-            " where remocra.hydrant_indispo_temporaire_hydrant.hydrant\n" +
-            "  in(\n" +
-            "select id from remocra.hydrant h where h. commune \n" +
-            "in (select id from remocra.commune c where st_Overlaps((select geometrie from remocra.zone_competence where zone_competence.id = :zc),c.geometrie)\n" +
-            "or st_contains((select geometrie from remocra.zone_competence where zone_competence.id = :zc),c.geometrie))))"+condition+" limit :limit offset :offset";
-        Query query =  entityManager.createNativeQuery(sql,HydrantIndispoTemporaire.class);
-        query.setParameter("zc", zc.getId()).setParameter("limit", limit).setParameter("offset", offset );
-        return query.getResultList();
+        if (limit != null && offset != null) {
+            sql.append(" limit :limit offset :offset");
+        }
+        Query query = projection == Projection.COUNT ? entityManager.createNativeQuery(sql.toString())
+                : entityManager.createNativeQuery(sql.toString(), HydrantIndispoTemporaire.class);
+        query.setParameter("zc", zc.getId());
+        if (limit != null && offset != null) {
+            query.setParameter("limit", limit).setParameter("offset", offset);
+        }
+        return query;
+    }
+
+    public List<HydrantIndispoTemporaire> getIndisponibiliteByZc(ZoneCompetence zc, Integer limit, Integer offset, List<ItemFilter> itemFilter) {
+        return getIndisponibiliteByZcQuery(zc, itemFilter, Projection.ALL, limit, offset).getResultList();
+    }
+
+    public Long getIndisponibiliteByZcCount(ZoneCompetence zc, List<ItemFilter> itemFilter) {
+        return ((BigInteger) getIndisponibiliteByZcQuery(zc, itemFilter, Projection.COUNT, null, null).getSingleResult()).longValue();
     }
 
     public List<HydrantIndispoTemporaire> getAllIndisponibilite() {
