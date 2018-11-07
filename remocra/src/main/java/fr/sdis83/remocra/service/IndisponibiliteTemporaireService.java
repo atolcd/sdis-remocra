@@ -50,6 +50,10 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
         }
     }
 
+    protected enum TypeCondition {
+        EQ, DIFF, COND;
+    }
+
     private final Logger logger = Logger.getLogger(getClass());
 
 
@@ -109,7 +113,8 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
             for (ItemFilter f : itemFilter) {
                 String fieldName = null;
                 String fieldValue = null;
-                boolean eq = true;
+                String condition = null;
+                TypeCondition tc = TypeCondition.EQ;
                 if ("hydrantId".equals(f.getFieldName())) {
                     fieldName = "hith.hydrant";
                     fieldValue = f.getValue();
@@ -118,21 +123,29 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
                     Long statut = Long.parseLong(f.getValue());
                     fieldValue = f.getValue();
                     if (statut < 0) {
-                        eq = false;
-                        fieldValue = (-statut)+"";
+                        tc = TypeCondition.DIFF;
+                        fieldValue = (-statut) + "";
                     }
-
+                } else if ("commune".equals(f.getFieldName())) {
+                    tc = TypeCondition.COND;
+                    condition = "hith.hydrant in(select id from remocra.hydrant h2 where h2.commune="+f.getValue()+")";
                 } else {
                     logger.info("Indispo temporaires, critère de filtre inconnu : " + f.getFieldName());
                     continue;
                 }
-                sql.append(" and ").append(fieldName);
-                if (eq) {
-                    sql.append("=");
-                } else {
-                    sql.append("!=");
+
+                sql.append(" and ");
+                switch(tc) {
+                    case EQ:
+                        sql.append(fieldName).append("=").append(fieldValue);
+                        break;
+                    case DIFF:
+                        sql.append(fieldName).append("!=").append(fieldValue);
+                        break;
+                    case COND:
+                        sql.append(condition);
+                        break;
                 }
-                sql.append(fieldValue);
             }
         }
         sql.append(")");

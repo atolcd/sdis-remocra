@@ -105,7 +105,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
                        listeners: {
                            load: function(store, records, successful, opt) {
                                store.add(Ext.create('Sdis.Remocra.model.TypeHydrantIndispoStatut', {id: null, nom: 'Tous'}));
-                               store.add(Ext.create('Sdis.Remocra.model.TypeHydrantIndispoStatut', {id: -3, nom: 'Non terminé'}));
+                               store.add(Ext.create('Sdis.Remocra.model.TypeHydrantIndispoStatut', {id: -3, nom: 'Planifié / En cours'}));
                                store.sort('id', 'ASC');
                            }
                        }
@@ -117,6 +117,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
                 }
             },
             sortable: false
+
         },{
             text: 'Motif',
             dataIndex: 'motif',
@@ -125,7 +126,34 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
              text: 'Commune',
              align : 'center',
              dataIndex: 'commune',
-             sortable: false
+             sortable: false,
+             filterable: true,
+             filter: {
+                 xtype: 'combo',
+                 name: 'commune',
+                 displayField: 'nom',
+                 valueField: 'id',
+                 queryMode: 'remote',
+                 triggerAction: "all",
+                 typeAhead: true,
+                 store: {
+                     storeId: 'communeIndispo',
+                     model: 'Sdis.Remocra.model.Commune',
+                     pageSize: 10,
+                     remoteSort: true,
+                     remoteFilter: true,
+                     listeners: {
+                        load: function(store, records, successful, opt) {
+                            store.add(Ext.create('Sdis.Remocra.model.Commune', {id: null, nom: 'Toutes'}));
+                        }
+                     }
+                 },
+                listeners: {
+                    select: function() {
+                        headerfilter.applyFilters();
+                    }
+                }
+             }
         },{
             text: 'Points d\'eau',
             align : 'center',
