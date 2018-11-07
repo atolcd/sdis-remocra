@@ -8,5 +8,6 @@ Ext.define('Sdis.Remocra.store.HydrantIndispoTemporaire', {
     model: 'Sdis.Remocra.model.HydrantIndispoTemporaire',
     remoteSort: true,
     remoteFilter: true,
-    pageSize: 15
+    pageSize: 15,
+    filters: [{"property":"statut","value":-3}]
 });

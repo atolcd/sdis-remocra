@@ -109,17 +109,30 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
             for (ItemFilter f : itemFilter) {
                 String fieldName = null;
                 String fieldValue = null;
+                boolean eq = true;
                 if ("hydrantId".equals(f.getFieldName())) {
                     fieldName = "hith.hydrant";
                     fieldValue = f.getValue();
                 } else if ("statut".equals(f.getFieldName())) {
                     fieldName = "hit.statut";
+                    Long statut = Long.parseLong(f.getValue());
                     fieldValue = f.getValue();
+                    if (statut < 0) {
+                        eq = false;
+                        fieldValue = (-statut)+"";
+                    }
+
                 } else {
                     logger.info("Indispo temporaires, critère de filtre inconnu : " + f.getFieldName());
                     continue;
                 }
-                sql.append(" and ").append(fieldName).append("=").append(fieldValue);
+                sql.append(" and ").append(fieldName);
+                if (eq) {
+                    sql.append("=");
+                } else {
+                    sql.append("!=");
+                }
+                sql.append(fieldValue);
             }
         }
         sql.append(")");

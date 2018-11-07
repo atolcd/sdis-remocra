@@ -104,7 +104,8 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
                    model: 'Sdis.Remocra.model.TypeHydrantIndispoStatut',
                        listeners: {
                            load: function(store, records, successful, opt) {
-                               store.add(Ext.create('Sdis.Remocra.model.TypeHydrantIndispoStatut', {id: null, nom: ' Tous'}));
+                               store.add(Ext.create('Sdis.Remocra.model.TypeHydrantIndispoStatut', {id: null, nom: 'Tous'}));
+                               store.add(Ext.create('Sdis.Remocra.model.TypeHydrantIndispoStatut', {id: -3, nom: 'Non terminé'}));
                                store.sort('id', 'ASC');
                            }
                        }
