@@ -395,4 +395,19 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
         }return result;
     }
 
+    @Transactional
+    public void deleteIfEmpty(Long id)  throws Exception{
+        Query query = entityManager
+            .createNativeQuery("SELECT CAST(id as INTEGER) FROM remocra.hydrant_indispo_temporaire where id in (SELECT indisponibilite FROM remocra.hydrant_indispo_temporaire_hydrant hith where hith.hydrant = "+id+")");
+        List<Integer> l = query.getResultList();
+        for (Integer indispoId : l){
+            //Si c'est le dernier on supprime l'indispo
+            HydrantIndispoTemporaire hit = HydrantIndispoTemporaire.findHydrantIndispoTemporaire(Long.valueOf(indispoId));
+            if(hit.getCountHydrant() == 1){
+                this.delete(hit.getId());
+            }
+        }
+
+    }
+
 }

@@ -51,6 +51,9 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
     @Autowired
     private UtilisateurService utilisateurService;
 
+    @Autowired
+    private IndisponibiliteTemporaireService indisponibiliteTemporaireService;
+
     // private final Logger logger = Logger.getLogger(getClass());
 
     public AbstractHydrantService(Class<T> cls) {
@@ -200,6 +203,12 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
 
     @Override
     protected void beforeDelete(T attached) {
+
+        try {
+            indisponibiliteTemporaireService.deleteIfEmpty(attached.getId());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
         for (HydrantDocument hydrD : attached.getHydrantDocuments()) {
             try {
                 deleteDocument(hydrD.getId());
@@ -207,6 +216,7 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
                 logger.error(e.getMessage(), e);
             }
         }
+
         super.beforeDelete(attached);
     }
 
