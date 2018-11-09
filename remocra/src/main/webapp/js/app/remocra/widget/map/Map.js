@@ -59,7 +59,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
     workingLayer: null,
 
     mapTpl: Ext.create('Ext.XTemplate', '<div class="maptbar1"><!-- --></div>', '<div class="maptbar2"><!-- --></div>', '<div class="map"><!-- --></div>',
-            '<div class="maplegend"><!-- --></div>', '<div class="mapinfo"><!-- --></div>'),
+            '<div class="maplegend"><!-- --></div>'),
 
     legendTpl: null,
 
@@ -828,16 +828,13 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
      * Crée tous les contrôles dont on contrôle l'activation / désactivation
      */
     createSpecificControls: function() {
-        var mapinfo = Ext.DomQuery.selectNode("div.mapinfo", this.getEl().dom);
         return {
             measureCtrlLength: new Sdis.Remocra.widget.map.controls.Measure({
-                infoDiv: mapinfo,
                 isArea: false,
                 id: 'measureCtrlLength',
                 autoDeactivate: false
             }),
             measureCtrlArea: new Sdis.Remocra.widget.map.controls.Measure({
-                infoDiv: mapinfo,
                 isArea: true,
                 id: 'measureCtrlArea',
                 autoDeactivate: false

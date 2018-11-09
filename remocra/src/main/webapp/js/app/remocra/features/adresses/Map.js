@@ -47,8 +47,7 @@ Ext.define('Sdis.Remocra.features.adresses.Map', {
         '<div class="maptbar maptbar2"><!-- --></div>',
         '<div class="map"><!-- --></div>',
         '<div class="maplegend"><!-- --></div>',
-        '<div class="createalerte"><!-- --></div>',
-        '<div class="mapinfo"><!-- --></div>'
+        '<div class="createalerte"><!-- --></div>'
     ),
         
     // URL de la légende (qui conditionne le chargement des couches)

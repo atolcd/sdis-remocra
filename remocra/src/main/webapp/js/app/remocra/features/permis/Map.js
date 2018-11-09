@@ -44,8 +44,7 @@ Ext.define('Sdis.Remocra.features.permis.Map', {
         '<div class="map"><!-- --></div>',
         '<div class="maplegend"><!-- --></div>',
         '<div class="permis"><!-- --></div>',
-        '<div class="recherche"><!-- --></div>',
-        '<div class="mapinfo"><!-- --></div>'
+        '<div class="recherche"><!-- --></div>'
     ),
         
     legendUrl: BASE_URL+'/../ext-res/js/app/remocra/features/permis/data/carte.json',

@@ -110,7 +110,6 @@ Ext.define('Sdis.Remocra.features.cartographie.Map', {
             // de toute la légende
             '<div class="simplemaplegend maplegend forceover"><!-- --></div>',
 
-            '<div class="mapinfo"><!-- --></div>',
             '<div class="mapmentions">',
                 '<div class="mapsrc">',
                     '<span>Edition réalisée le <b>',  Ext.Date.format(new Date(), 'd/m/Y à H\\hi'),

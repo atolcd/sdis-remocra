@@ -1,18 +1,15 @@
 Ext.ns('Sdis.Remocra.widget.map.controls.Measure');
-
-// Pour la gestion des dépendances
 Ext.define('Sdis.Remocra.widget.map.controls.Measure', {});
 
-// Mesurer ; finalement, on laisse la géométrie affichée (persist: true) et l'outil actif (pas d'appel à deactivate dans handleMeasurementsEnd)
 Sdis.Remocra.widget.map.controls.Measure = OpenLayers.Class(OpenLayers.Control.Measure, {
 
     displayClass: 'remocraControlMeasure',
     autoActivate: false,
     autoDeactivate: false,
-    infoDiv: null,
+    popup: null,
     
     isArea: false,
-    
+
     //type: OpenLayers.Control.TYPE_BUTTON,
     
     initialize: function(options) {
@@ -22,6 +19,7 @@ Sdis.Remocra.widget.map.controls.Measure = OpenLayers.Class(OpenLayers.Control.M
         OpenLayers.Control.Measure.prototype.initialize.apply(this, [handler, {
             persist: true,
             geodesic: true,
+            immediate: true,
             handlerOptions: {
                 layerOptions: {
                     renderers: OpenLayers.Layer.Vector.prototype.renderers,
@@ -30,7 +28,6 @@ Sdis.Remocra.widget.map.controls.Measure = OpenLayers.Class(OpenLayers.Control.M
             },
             displayClass: 'remocraControlMeasure',
             title: 'Mesurer une distance',
-            infoDiv: options.infoDiv,
             isArea: options.isArea,
             id: options.id,
             autoDeactivate: options.autoDeactivate
@@ -38,30 +35,91 @@ Sdis.Remocra.widget.map.controls.Measure = OpenLayers.Class(OpenLayers.Control.M
         
         this.events.on({
             "measure": this.handleMeasurementsEnd,
-            "measurepartial": this.handleMeasurements
+            "measurepartial": this.handleMeasurements,
+            "activate": this.onActivate,
+            "deactivate": this.onDeactivate
         });
     },
 
+    onActivate: function() {
+        // Création de la popup si nécessaire
+        if (!this.popup) {
+            this.popup = new OpenLayers.Popup("tooltip-measure-"+(this.isArea?'polygon':'path'), null, new OpenLayers.Size(80, 20), "xxxxxxx km", false);
+            this.map.addPopup(this.popup);
+
+            // Visuel de la popup
+            this.popup.div.style.opacity = '0.75';
+            this.popup.div.style.display = 'flex';
+            this.popup.div.style.textAlign = 'center';
+
+            this.popup.div.style.backgroundColor = '#fff';
+            this.popup.div.style.border = 'solid 1px #00b3b3';
+            this.popup.div.style.borderRadius = '4px';
+            this.popup.div.style.color = '#00b3b3';
+            this.popup.div.style.fontStyle = 'italic';
+
+            this.popup.groupDiv.style.margin = 'auto';
+            this.popup.groupDiv.style.height = this.popup.div.style.height;
+            this.popup.groupDiv.style.display = 'flex';
+            this.popup.contentDiv.style.margin = 'auto';
+            this.popup.contentDiv.style.overflow = 'hidden';
+
+            //this.popup.fixPadding();
+            this.popup.hide();
+        }
+    },
+
+    onDeactivate: function() {
+        this.popup.hide();
+    },
+
     getStyleMap: function(event) {
-        return new OpenLayers.Style({
-            pointRadius: 4,
-            graphicName: "square",
-            fillColor: "white", fillOpacity : 0.25,
-            strokeWidth: 1,
-            strokeColor: "#fb1613"
-        });
+        var sketchSymbolizers = {
+            "Point": {
+                pointRadius: 4,
+                graphicName: "circle",
+                fillColor: "white",
+                fillOpacity: 1,
+                strokeWidth: 1,
+                strokeOpacity: 1,
+                strokeColor: "#00b3b3"
+            },
+            "Line": {
+                strokeWidth: 1,
+                strokeOpacity: 1,
+                strokeColor: "#00b3b3"
+            },
+            "Polygon": {
+                strokeWidth: 1,
+                strokeOpacity: 1,
+                strokeColor: "#00b3b3",
+                fillColor: "white",
+                fillOpacity: 0.3
+            }
+        };
+        var style = new OpenLayers.Style();
+        style.addRules([
+            new OpenLayers.Rule({
+                symbolizer: sketchSymbolizers
+            })
+        ]);
+        return new OpenLayers.StyleMap({"default": style});
     },
     
     handleMeasurements: function(event) {
-        // Si le conteneur est en cours de masquage, on annule (timer porté par infoDivElt)
-        var infoDivElt = Ext.Element.get(this.infoDiv);
-        if (infoDivElt.timerId) {
-            clearInterval(infoDivElt.timerId);
+        this.popup.setContentHTML(this.getMesureInfo(event));
+        this.popup.updateSize();
+
+        if (this.handler.evt.xy) {
+            // Récupération de la position du curseur
+            var posPopup = {
+                'x': this.handler.evt.xy.x - this.popup.size.w/2,
+                'y': this.handler.evt.xy.y - 45
+            };
+            this.popup.show();
+            this.popup.lonlat = this.map.getLonLatFromViewPortPx(posPopup);
+            this.popup.updatePosition();
         }
-        // On l'affiche à nouveau au cas où
-        infoDivElt.fadeIn();
-        // On affiche la mesure
-        this.infoDiv.innerHTML = this.getMesureInfo(event);
     },
     
     getMesureInfo: function(event) {
@@ -69,38 +127,27 @@ Sdis.Remocra.widget.map.controls.Measure = OpenLayers.Class(OpenLayers.Control.M
             : this.getMesureInfoDistance(event);
     },
     getMesureInfoDistance: function(event) {
-        var distance;
         if(event.units == 'm') {
-            distance = Math.round(event.measure)+" m";
-        } else {
-            distance = event.measure.toFixed(3) + " km";
+            return Math.round(event.measure)+"&nbsp;m";
         }
-        return "Distance mesurée : "+distance+".";
+        return event.measure.toFixed(3) + "&nbsp;km";
     },
     getMesureInfoSurface: function(event) {
-        var surface;
         if (event.units == 'm') {
             if(event.measure < 10000) {
-                surface = Math.round(event.measure)+" m²";
-            } else {
-                surface = Math.round(event.measure/100)/100 + " ha";
+                return Math.round(event.measure)+"&nbsp;m²";
             }
+            return Math.round(event.measure/100)/100 + "&nbsp;ha";
         } else {
             // km
             if(event.measure < 10) {
-                surface = (event.measure).toFixed(3)+" km²";
-            } else {
-                surface = (event.measure*100).toFixed(3) + " ha";
+                return (event.measure).toFixed(3)+"&nbsp;km²";
             }
+            return (event.measure*100).toFixed(3) + "&nbsp;ha";
         }
-        return "Surface mesurée : "+surface+".";
     },
     
     handleMeasurementsEnd: function(event) {
-        this.handleMeasurements(event);
-        // On masque la mesure au bout de 5 secondes
-        var infoDivElt = Ext.Element.get(this.infoDiv);
-        infoDivElt.timerId=setInterval(function() {infoDivElt.fadeOut();}, 5000);
         if (this.autoDeactivate) {
             this.deactivate();
         }
