@@ -26,6 +26,18 @@ On précise le code de méthode à employer (exemple : "83" et "83").
 
 == Numéro global ==
 
+=== 09 ===
+
+Méthode :
+
+* *<code insee commune><numéro interne>* OU *<code zone spéciale><numéro interne>* sans espace
+* <numéro interne> sur 3 chiffres (préfixe consituté de 0 si nécessaire)
+
+Exemples :
+
+* [.underline]#09122012# : PEI numéro 12 de la commune de Foix
+* [.underline]#09225006# : PEI numéro 6 de la commune de Pamiers
+
 === 77 ===
 
 Méthode :
