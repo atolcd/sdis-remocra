@@ -166,7 +166,9 @@
    hpi.gest_reseau AS SOCIETE_EAUX, h.gest_point_eau AS GESTIONNAIRE,
    h.date_recep AS Date_Reception, h.date_contr AS Date_Controle_Pesee,
    h.date_reco AS Date_Reco, substr(cis.code,1,20) AS CODE_CIS,
-   h.tournee AS TOURNEE_Num, now() AS Date_Extraction_Tournee
+   substring(array_to_string(array( (select t.nom || &apos;-&apos; || o.code FROM remocra.tournee as t INNER JOIN remocra.hydrant_tournees as ht ON (t.id = ht.tournees) INNER JOIN remocra.organisme as o ON (t.affectation=o.id) INNER JOIN remocra.type_organisme as torg ON (torg.id=o.type_organisme) WHERE ht.hydrant = h.id AND torg.code = &apos;CIS_ADMINISTRATIF&apos; )),&apos;,&apos;) from 1 for 255) as TOURNEE_SDIS,
+   substring(array_to_string(array( (select t.nom || &apos;-&apos; || o.code FROM remocra.tournee as t INNER JOIN remocra.hydrant_tournees as ht ON (t.id = ht.tournees) INNER JOIN remocra.organisme as o ON (t.affectation=o.id) INNER JOIN remocra.type_organisme as torg ON (torg.id=o.type_organisme) WHERE ht.hydrant = h.id AND torg.code &lt;&gt; &apos;CIS_ADMINISTRATIF&apos; )),&apos;,&apos;) from 1 for 255) as TOURNEE_AUTRE,
+   now() AS Date_Extraction_Tournee
 FROM remocra.hydrant h
    LEFT JOIN remocra.commune c ON c.id = h.commune
    LEFT JOIN remocra.type_hydrant_domaine thdo ON thdo.id = h.domaine
