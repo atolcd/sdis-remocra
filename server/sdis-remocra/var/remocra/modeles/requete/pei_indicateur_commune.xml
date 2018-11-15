@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modele spatial = "false">
+ <categorie>POINTDEAU</categorie>
+ <code>PEI_INDICATEUR_COMMUNE</code>
+ <libelle>Etat des points d'eau par commune</libelle>
+ <description>Etat des points d'eau par commune</description>
+ <sourceSQL><![CDATA[SELECT c.insee AS "INSEE", c.nom AS "Commune", COALESCE(h_total.indicateur,0) AS "Total", COALESCE(h_dispo.indicateur,0) AS "Disponibles", COALESCE(h_indispo.indicateur,0) AS "Non disponibles", COALESCE(h_non_conforme.indicateur,0) AS "Non conformes", COALESCE(h_indispo_temp.indicateur,0) AS "Indisponibilités temporaires en cours", CAST(CAST(COALESCE(h_dispo.indicateur,0) AS double precision)/CAST(COALESCE(h_total.indicateur,1) AS double precision)*100 AS numeric(8,2)) AS "Pourcentage disponibles" FROM remocra.commune c JOIN (SELECT geometrie FROM remocra.zone_competence WHERE id = ${ZONE_COMPETENCE_ID}) zc ON (St_Covers(zc.geometrie,c.geometrie) OR St_Contains(zc.geometrie,c.geometrie)) LEFT JOIN (SELECT commune, count(*) AS indicateur FROM remocra.hydrant GROUP BY commune) AS h_total ON (h_total.commune = c.id) LEFT JOIN (SELECT commune, count(*) AS indicateur FROM remocra.hydrant WHERE dispo_terrestre = 'DISPO' GROUP BY commune) AS h_dispo ON (h_dispo.commune = c.id) LEFT JOIN (SELECT commune, count(*) AS indicateur FROM remocra.hydrant WHERE dispo_terrestre = 'INDISPO' GROUP BY commune) AS h_indispo ON (h_indispo.commune = c.id) LEFT JOIN (SELECT commune, count(*) AS indicateur FROM remocra.hydrant WHERE dispo_terrestre = 'NON_CONFORME' GROUP BY commune) AS h_non_conforme ON (h_non_conforme.commune = c.id) LEFT JOIN (SELECT h.commune, count(*) AS indicateur FROM remocra.hydrant_indispo_temporaire_hydrant ih JOIN remocra.hydrant_indispo_temporaire i ON(i.id = ih.indisponibilite) JOIN (SELECT id FROM remocra.type_hydrant_indispo_statut WHERE code ='EN_COURS') s ON(s.id = i.statut) JOIN remocra.hydrant h ON(h.id = ih.hydrant) GROUP BY h.commune) AS h_indispo_temp ON (h_indispo_temp.commune = c.id) ORDER BY c.nom ASC;]]></sourceSQL>
+ <parametres>
+ </parametres>
+ <profils tousProfils="true">
+ </profils>
+</modele>

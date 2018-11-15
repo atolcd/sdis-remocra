@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modele spatial = "false">
+  <categorie>POINTDEAU</categorie>
+  <code>PEI_HISTORIQUE</code>
+  <libelle>Historique d'un point d'eau</libelle>
+  <description>Liste les changements de données réalisés sur un point d'eau</description>
+  <sourceSQL><![CDATA[
+WITH historique AS (
+SELECT
+	row_number() OVER (ORDER BY date_operation DESC) AS num_ligne,
+	*
+FROM
+	tracabilite.hydrant
+WHERE
+	numero = '${PEI_NUMERO}')
+SELECT
+	CAST(to_char(date_operation,'dd/MM/YYYY à HH24hMImSSs') AS character varying) AS "Date",
+	CAST(auteur_modification AS character varying) AS "Auteur",
+	CAST(CASE
+		WHEN nom_operation = 'INSERT' THEN 'Création'
+		WHEN nom_operation = 'UPDATE' THEN 'Mise à jour'
+		ELSE 'Suppression'
+	END AS character varying) AS "Type",
+	CASE WHEN nom_operation = 'INSERT' OR nom_operation = 'UPDATE' THEN CAST(array_to_string(array_agg(changement),', ') AS character varying)
+	ELSE ''
+	END AS "Modifications réalisées"
+FROM (
+	SELECT
+		a.nom_operation,
+		a.date_operation,
+		a.auteur_modification,
+		unnest(
+			ARRAY[COALESCE(CASE WHEN (a.numero <> b.numero) OR (a.nom_operation = 'INSERT' AND a.numero IS NOT NULL AND TRIM(a.numero) <> '') THEN 'Numéro -> ' || a.numero END,'')]
+			|| COALESCE(CASE WHEN (NOT(st_equals(a.geometrie,b.geometrie))) OR (a.nom_operation =  'INSERT' AND a.geometrie IS NOT NULL)  THEN 'Position -> x='||st_x(a.geometrie) || ' y='||st_y(a.geometrie) END,'')
+			|| COALESCE(CASE WHEN (a.insee <> b.insee) OR (a.nom_operation =  'INSERT' AND a.insee IS NOT NULL AND TRIM(a.insee) <> '') THEN 'INSEE -> ' || a.insee END,'')
+			|| COALESCE(CASE WHEN (a.commune <> b.commune) OR (a.nom_operation =  'INSERT' AND a.commune IS NOT NULL AND TRIM(a.commune) <> '') THEN 'Commune -> ' || a.commune END,'')
+			|| COALESCE(CASE WHEN (a.lieu_dit <> b.lieu_dit) OR (a.nom_operation =  'INSERT' AND a.lieu_dit IS NOT NULL AND TRIM(a.lieu_dit) <> '') THEN 'Lieu-dit -> ' || a.lieu_dit END,'')
+			|| COALESCE(CASE WHEN (a.voie <> b.voie) OR (a.nom_operation =  'INSERT' AND a.voie IS NOT NULL AND TRIM(a.voie) <> '') THEN 'Voie -> ' || a.voie END,'')
+			|| COALESCE(CASE WHEN (a.carrefour <> b.carrefour) OR (a.nom_operation =  'INSERT' AND a.carrefour IS NOT NULL AND TRIM(a.carrefour) <> '') THEN 'Carrefour -> ' || a.carrefour END,'')
+			|| COALESCE(CASE WHEN (a.complement <> b.complement) OR (a.nom_operation =  'INSERT' AND a.complement IS NOT NULL AND TRIM(a.complement) <> '') THEN 'Complément -> ' || a.complement END,'')
+			|| COALESCE(CASE WHEN (a.agent1 <> b.agent1) OR (a.nom_operation =  'INSERT' AND a.agent1 IS NOT NULL AND TRIM(a.agent1) <> '') THEN 'Agent 1 -> ' || a.agent1 END,'')
+			|| COALESCE(CASE WHEN (a.agent2 <> b.agent2) OR (a.nom_operation =  'INSERT' AND a.agent2 IS NOT NULL AND TRIM(a.agent2) <> '') THEN 'Agent 2 -> ' || a.agent2 END,'')
+			|| COALESCE(CASE WHEN (a.date_recep <> b.date_recep) OR (a.nom_operation =  'INSERT' AND a.date_recep IS NOT NULL) THEN 'Date ROI -> ' || a.date_recep END,'')
+			|| COALESCE(CASE WHEN (a.date_reco <> b.date_reco) OR (a.nom_operation =  'INSERT' AND a.date_reco IS NOT NULL) THEN 'Date ROP -> ' || a.date_reco END,'')
+			|| COALESCE(CASE WHEN (a.date_contr <> b.date_contr) OR (a.nom_operation =  'INSERT' AND a.date_contr IS NOT NULL) THEN 'Date CTP -> ' || a.date_contr END,'')
+			|| COALESCE(CASE WHEN (a.dispo_terrestre <> b.dispo_terrestre) OR (a.nom_operation =  'INSERT' AND a.dispo_terrestre IS NOT NULL AND TRIM(a.dispo_terrestre) <> '') THEN 'Disponibilité terrestre -> ' || a.dispo_terrestre END,'')
+			|| COALESCE(CASE WHEN (a.dispo_hbe <> b.dispo_hbe) OR (a.nom_operation =  'INSERT' AND a.dispo_hbe IS NOT NULL AND TRIM(a.dispo_hbe) <> '') THEN 'Disponibilité HBE -> ' || a.dispo_hbe END,'')
+			|| COALESCE(CASE WHEN (a.nature <> b.nature) OR (a.nom_operation =  'INSERT' AND a.nature IS NOT NULL AND TRIM(a.nature) <> '') THEN 'Nature -> ' || a.nature END,'')
+			|| COALESCE(CASE WHEN (a.domaine <> b.domaine) OR (a.nom_operation =  'INSERT' AND a.domaine IS NOT NULL AND TRIM(a.domaine) <> '') THEN 'Domaine -> ' || a.domaine END,'')
+			|| COALESCE(CASE WHEN (a.type_hydrant <> b.type_hydrant) OR (a.nom_operation =  'INSERT' AND a.type_hydrant IS NOT NULL AND TRIM(a.type_hydrant) <> '') THEN 'Type hydrant -> ' || a.type_hydrant END,'')
+			|| COALESCE(CASE WHEN (a.anomalies <> b.anomalies) OR (a.nom_operation =  'INSERT' AND array_to_string(a.anomalies,'|') IS NOT NULL) THEN 'Anomalies -> ' || array_to_string(a.anomalies,'|') END,'')
+			|| COALESCE(CASE WHEN (a.observation <> b.observation) OR (a.nom_operation =  'INSERT' AND a.observation IS NOT NULL AND TRIM(a.observation) <> '') THEN 'Observation -> ' || a.observation END,'')
+			|| COALESCE(CASE WHEN (a.hbe <> b.hbe) OR (a.nom_operation =  'INSERT' AND a.hbe IS NOT NULL) THEN 'Prise HBE -> ' || a.hbe END,'')
+			|| COALESCE(CASE WHEN (a.positionnement <> b.positionnement) OR (a.nom_operation =  'INSERT' AND a.positionnement IS NOT NULL AND TRIM(a.positionnement) <> '') THEN ', Positionnement -> ' || a.positionnement END,'')
+			|| COALESCE(CASE WHEN (a.materiau <> b.materiau) OR (a.nom_operation =  'INSERT' AND a.materiau IS NOT NULL AND TRIM(a.materiau) <> '') THEN 'Matériau -> ' || a.materiau END,'')
+			|| COALESCE(CASE WHEN (a.vol_constate <> b.vol_constate) OR (a.nom_operation =  'INSERT' AND a.vol_constate IS NOT NULL) THEN 'Volume constaté -> ' || a.vol_constate END,'')
+			|| COALESCE(CASE WHEN (a.diametre <> b.diametre) OR (a.nom_operation =  'INSERT' AND a.diametre IS NOT NULL AND TRIM(a.diametre) <> '') THEN 'Diamètre demi-raccord -> ' || a.diametre END,'')
+			|| COALESCE(CASE WHEN (a.debit <> b.debit) OR (a.nom_operation =  'INSERT' AND a.debit IS NOT NULL) THEN 'Débit -> ' || a.debit END,'')
+			|| COALESCE(CASE WHEN (a.debit_max <> b.debit_max) OR (a.nom_operation =  'INSERT' AND a.debit_max IS NOT NULL) THEN 'Débit max -> ' || a.debit_max END,'')
+			|| COALESCE(CASE WHEN (a.pression <> b.pression) OR (a.nom_operation =  'INSERT' AND a.pression IS NOT NULL) THEN 'Pression -> ' || a.pression END,'')
+			|| COALESCE(CASE WHEN (a.pression_dyn <> b.pression_dyn) OR (a.nom_operation =  'INSERT' AND a.pression_dyn IS NOT NULL) THEN 'Pression dynamique -> ' || a.pression_dyn END,'')
+			|| COALESCE(CASE WHEN (a.marque <> b.marque) OR (a.nom_operation =  'INSERT' AND a.marque IS NOT NULL AND TRIM(a.marque) <> '') THEN 'Marque -> ' || a.marque END,'')
+			|| COALESCE(CASE WHEN (a.modele <> b.modele) OR (a.nom_operation =  'INSERT' AND a.modele IS NOT NULL AND TRIM(a.modele) <> '') THEN 'Modèle -> ' || a.modele END,'')
+			|| COALESCE(CASE WHEN (a.pression_dyn_deb <> b.pression_dyn_deb) OR (a.nom_operation =  'INSERT' AND a.pression_dyn_deb IS NOT NULL) THEN 'Pression dynamique au débit max -> ' || a.pression_dyn_deb END,'')
+		) AS changement
+	FROM
+
+		historique AS a
+		LEFT JOIN historique AS b ON (b.num_ligne =  a.num_ligne + 1)
+	) AS changements
+WHERE
+	(changement IS NOT NULL AND changement <> '') OR nom_operation = 'DELETE'
+GROUP BY
+	nom_operation,
+	date_operation,
+	auteur_modification
+ORDER BY
+	date_operation DESC;
+  ]]></sourceSQL>
+  <parametres>
+    <parametre>
+      <nom>PEI_NUMERO</nom>
+      <typeValeur>character varying</typeValeur>
+      <obligatoire>true</obligatoire>
+      <sourceSQL champValeur="numero" champLibelle="numero"><![CDATA[SELECT DISTINCT numero AS numero FROM tracabilite.hydrant h JOIN (SELECT geometrie FROM remocra.zone_competence WHERE id = ${ZONE_COMPETENCE_ID}) zc ON St_Contains(zc.geometrie,h.geometrie) ORDER BY numero]]></sourceSQL>
+      <formulaire etiquette="Point d'eau" typeControle="combo"/>
+    </parametre>
+  </parametres>
+  <profils tousProfils="true">
+  </profils>
+</modele>

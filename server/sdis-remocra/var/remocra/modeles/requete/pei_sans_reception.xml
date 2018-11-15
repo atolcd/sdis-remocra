@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modele spatial = "true">
+  <categorie>POINTDEAU</categorie>
+  <code>PEI_SANS_RECONNAISSANCE_OPERATIONNELLE_INITIALE</code>
+  <libelle>PEI sans reconnaissance initiale</libelle>
+  <description>PEI dont la visite de reconnaissance initiale n'a pas été réalisée</description>
+  <sourceSQL><![CDATA[SELECT
+	St_AsText(h.geometrie) AS wkt,
+	h.numero AS "Numéro",
+	h.voie AS "Voie",
+	h.voie2 AS "Carrefour",
+	h.lieu_dit AS "Lieu dit",
+	c.nom AS "Commune",
+	CAST(St_X(h.geometrie) AS integer) AS "X en m",
+	CAST(St_Y(h.geometrie) AS integer) AS "Y en m",
+	n.nom AS "Nature",
+	d.nom AS "Domaine"
+FROM
+	remocra.hydrant h
+	JOIN (SELECT zc.geometrie FROM remocra.zone_competence zc WHERE id = ${ZONE_COMPETENCE_ID}) zc ON ST_Contains(zc.geometrie, h.geometrie)
+	JOIN remocra.commune c ON c.id = h.commune
+	LEFT JOIN remocra.type_hydrant_nature n ON (n.id = h.nature)
+	LEFT JOIN remocra.type_hydrant_domaine d ON (d.id = h.domaine)
+WHERE
+	h.date_recep IS NULL	
+ORDER BY
+	commune,
+	numero;]]></sourceSQL>
+  <parametres/>
+  <profils tousProfils="false">
+	<profil>REMOCRA-ADM-APP</profil>
+	<profil>SDIS-ADM-APP</profil>
+	<profil>SDIS-RECO-OP-PERIODIQUE</profil>
+  </profils>
+</modele>
