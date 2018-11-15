@@ -12,12 +12,10 @@ Le fichier _"remocraXX.properties"_ doit contenir les informations suivantes :
 | PDI_SIG_DATABASE_PORT | Port de la base SIG _(Exemple : `1433`)_
 | PDI_SIG_DATABASE_USER_NAME | Identifiant de connexion à la base SIG
 | PDI_SIG_DATABASE_USER_PASSWORD | Mot de passe d'accès à la base SIG`
-|===================
-
-| PDI_URL_ALERTE_SGO | Url à appeler si une nouvelle version du fichier CSV a été généré
+| PDI_URL_ALERTE_SGO | Url à appeler si une nouvelle version du fichier CSV a été générée
 | PDI_CHEMIN_DEPOT_FICHIER_SGO | Chemin de destination du fichier csv généré pour le SGO
 | PDI_FICHIER_SGO | Nom du fichier csv généré pour le SGO
-
+|===================
 
 ===== Lancement et planification de la synchronisation
 L'exécution automatique s'effectue en planifiant le lancement du fichier ```/var/remocra/pdi/traitements_sdis/89/consolider_sgo.sh``` avec l'utilisateur ```postgres```.
