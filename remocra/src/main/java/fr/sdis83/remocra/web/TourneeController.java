@@ -4,6 +4,7 @@ import java.io.StringWriter;
 import java.util.List;
 
 import flexjson.JSONSerializer;
+import fr.sdis83.remocra.domain.remocra.Hydrant;
 import fr.sdis83.remocra.util.ExceptionUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,6 +163,23 @@ public class TourneeController {
             }
             return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
 
+        }
+    }
+
+    @RequestMapping(value = "/getHydrantTournee/{id}", headers = "Accept=application/json")
+    @PreAuthorize("hasRight('TOURNEE_R') and hasRight('HYDRANTS_R')")
+    public ResponseEntity<java.lang.String> getHydrantTournee(@PathVariable("id") Long id) {
+        try {
+            StringBuffer sb = new StringBuffer("<ul>");
+            List<Hydrant> listeHydrants = tourneeService.getHydrants(id);
+
+            for(Hydrant h : listeHydrants)
+                sb.append("<li>").append(h.getNumero()).append("</li>");
+
+            sb.append("</ul>");
+            return new SuccessErrorExtSerializer(true, sb.toString()).serialize();
+        } catch (Exception e) {
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
         }
     }
 }
