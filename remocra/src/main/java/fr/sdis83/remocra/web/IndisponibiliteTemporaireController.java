@@ -163,5 +163,21 @@ public class IndisponibiliteTemporaireController  {
         }
     }
 
+    @RequestMapping(value = "/getHydrantsIndispo/{id}", headers = "Accept=application/json")
+    @PreAuthorize("hasRight('INDISPOS_R') and hasRight('HYDRANTS_R')")
+    public ResponseEntity<java.lang.String> getHydrantsIndispo(@PathVariable("id") Long id) {
+        try {
+            StringBuffer sb = new StringBuffer("<ul>");
+            HydrantIndispoTemporaire selected = HydrantIndispoTemporaire.findHydrantIndispoTemporaire(id);
+            for(Hydrant h : selected.getHydrants()) {
+                sb.append("<li>").append(h.getNumero()).append("</li>");
+            }
+            sb.append("</ul>");
+            return new SuccessErrorExtSerializer(true, sb.toString()).serialize();
+        } catch (Exception e) {
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
+    }
+
 
 }
