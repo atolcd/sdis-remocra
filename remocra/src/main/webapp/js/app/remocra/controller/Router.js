@@ -21,6 +21,7 @@ Ext.require('Sdis.Remocra.features.documents.AdminBlocDocument');
 Ext.require('Sdis.Remocra.features.hydrants.declahydrant.DeclaHydrantWindow');
 Ext.require('Sdis.Remocra.features.adresses.delib.DelibWindow');
 Ext.require('Sdis.Remocra.features.dfci.receptravaux.RecepTravauxWindow');
+Ext.require('Sdis.Remocra.features.hydrants.televerser.TeleverserHydrantWindow');
 
 Ext.ns('Sdis.Remocra');
 Ext.define('Sdis.Remocra.controller.Router', {
@@ -269,6 +270,16 @@ Ext.define('Sdis.Remocra.controller.Router', {
                 }
                 // Le code 'nothing' permet d'indiquer qu'il n'y a plus rien à
                 // faire
+                return 'nothingmore';
+            }
+        };
+        routes['televerser'] = {
+            dynamicDesc: function() {
+                if (Sdis.Remocra.Rights.hasRight('HYDRANTS_TELEVERSER_C') && (
+                    Sdis.Remocra.Rights.hasRight('HYDRANTS_C') || Sdis.Remocra.Rights.hasRight('HYDRANTS_RECONNAISSANCE_C')
+                    || Sdis.Remocra.Rights.hasRight('HYDRANTS_CONTROLE_C'))) {
+                    new Sdis.Remocra.features.hydrants.televerser.TeleverserHydrantWindow().show();
+                }
                 return 'nothingmore';
             }
         };

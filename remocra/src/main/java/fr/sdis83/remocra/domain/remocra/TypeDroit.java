@@ -53,6 +53,7 @@ public class TypeDroit {
         HYDRANTS_NUMEROTATION_R("hydrants.numerotation_R"),
         HYDRANTS_NUMEROTATION_C("hydrants.numerotation_C"),
         HYDRANTS_MCO_C("hydrants.mco_C"),
+        HYDRANTS_TELEVERSER_C("hydrants.televerser_C"),
         INDISPOS_R("indisponibilite.temporaire_R"),
         INDISPOS_C("indisponibilite.temporaire_C"),
         INDISPOS_U("indisponibilite.temporaire_U"),

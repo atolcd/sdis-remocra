@@ -47,7 +47,23 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
                 onclick: ' onclick="this.href=\'#hydrants/declahydrant/\'+Math.floor(Math.random()*999);"'
             });
         }
-        
+
+        if (Sdis.Remocra.Rights.hasRight('HYDRANTS_TELEVERSER_C') && (
+            Sdis.Remocra.Rights.hasRight('HYDRANTS_C') || Sdis.Remocra.Rights.hasRight('HYDRANTS_RECONNAISSANCE_C')
+            || Sdis.Remocra.Rights.hasRight('HYDRANTS_CONTROLE_C'))) {
+            if (!Ext.isEmpty(blocHydrants.items)) {
+                blocHydrants.items.push({
+                    type: 'sep'
+                });
+            }
+            blocHydrants.items.push({
+                type: 'href',
+                href: 'hydrants/televerser',
+                lbl: 'Téléverser un fichier de visites',
+                onclick: ' onclick="this.href=\'#hydrants/televerser/\'+Math.floor(Math.random()*999);"'
+            });
+        }
+
         if (Sdis.Remocra.Rights.hasRight('HYDRANTS_TRAITEMENT_C') || Sdis.Remocra.Rights.hasRight('TRAITEMENTS_C')) {
             if (!Ext.isEmpty(blocHydrants.items)) {
                 blocHydrants.items.push({

@@ -2,14 +2,20 @@ package fr.sdis83.remocra.web;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import fr.sdis83.remocra.domain.remocra.Document;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.CannotCreateTransactionException;
@@ -25,6 +31,8 @@ import fr.sdis83.remocra.exception.XmlDroitException;
 import fr.sdis83.remocra.exception.XmlValidationException;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.XmlService;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 @RequestMapping("/xml")
 @Controller
@@ -202,9 +210,30 @@ public class XmlController {
         }
     }
 
+    @RequestMapping(value = "/hydrants/file", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
+    @PreAuthorize("hasRight('HYDRANTS_TELEVERSER_C') and (hasRight('HYDRANTS_C') or hasRight('HYDRANTS_RECONNAISSANCE_C') or hasRight('HYDRANTS_CONTROLE_C'))")
+    public void updateHydrantsFile(MultipartHttpServletRequest request, HttpServletResponse response, final @RequestParam(value = "v", required = false) Integer v) throws IOException {
+        String xml = null;
+        MultipartFile mf = request.getFile("file");
+        InputStream is = mf.getInputStream();
+        try {
+            StringWriter writer = new StringWriter();
+            IOUtils.copy(is, writer, "UTF-8");
+            xml = writer.toString();
+            is.close();
+        } finally {
+            is.close();
+        }
+        updateHydrantsInternal(xml, response, v);
+    }
+
     @RequestMapping(value = "/hydrants", method = RequestMethod.POST)
     @PreAuthorize("hasRight('HYDRANTS_C') or hasRight('HYDRANTS_RECONNAISSANCE_C') or hasRight('HYDRANTS_CONTROLE_C')")
     public void updateHydrants(final @RequestBody String xml, HttpServletResponse response, final @RequestParam(value = "v", required = false) Integer v) throws IOException {
+        updateHydrantsInternal(xml, response, v);
+    }
+
+    public void updateHydrantsInternal(final @RequestBody String xml, HttpServletResponse response, final @RequestParam(value = "v", required = false) Integer v) throws IOException {
 
         if (traceRequests) {
             // Sérialisation de la requête sur disque
