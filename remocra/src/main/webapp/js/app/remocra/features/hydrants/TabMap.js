@@ -264,12 +264,12 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
         var customStyle = new OpenLayers.Style({
             fillOpacity: 1,
             externalGraphic: '${imgLegend}',
-            graphicWidth: 30,
-            graphicHeight: 30,
-            graphicYOffset: -15,
+            graphicWidth: 24,
+            graphicHeight: 24,
+            graphicYOffset: -12,
             // Etiquettes
             label: '${label}',
-            labelYOffset: -25,
+            labelYOffset: -20,
             labelOutlineColor: "white",
             labelOutlineWidth: 3,
             fontSize: 10,
