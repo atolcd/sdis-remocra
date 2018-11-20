@@ -1057,7 +1057,7 @@
 							<database>
 								<name>org.jooq.util.postgres.PostgresDatabase</name>
 								<includes>.*</includes>
-								<excludes>information_schema.*|pg_catalog.*|public.*|remocra_referentiel.*|remocra_sgo.*|sdis_referentiel.*|schema_version|uuid.*</excludes>
+								<excludes>information_schema.*|pg_catalog.*|remocra_referentiel.*|remocra_sgo.*|sdis_referentiel.*|schema_version|uuid.*</excludes>
 								<inputSchema>${db.schema}</inputSchema>
 								<customTypes>
 									<customType>
@@ -1070,6 +1070,26 @@
 										<type>org.joda.time.LocalTime</type>
 										<converter>fr.sdis83.remocra.db.converter.LocalTimeConverter</converter>
 									</customType>
+                                    <customType>
+                                        <name>Geometry</name>
+                                        <type>com.vividsolutions.jts.geom.Geometry</type>
+                                        <converter>fr.sdis83.remocra.db.converter.GeometryBinding</converter>
+                                    </customType>
+									<customType>
+										<name>LineString</name>
+										<type>com.vividsolutions.jts.geom.LineString</type>
+										<converter>fr.sdis83.remocra.db.converter.LineStringBinding</converter>
+										</customType>
+									<customType>
+										<name>Point</name>
+										<type>com.vividsolutions.jts.geom.Point</type>
+										<converter>fr.sdis83.remocra.db.converter.PointBinding</converter>
+									</customType>
+									<customType>
+										<name>Polygon</name>
+										<type>com.vividsolutions.jts.geom.Polygon</type>
+										<converter>fr.sdis83.remocra.db.converter.PolygonBinding</converter>
+									</customType>
 								</customTypes>
 								<forcedTypes>
 									<forcedType>
@@ -1081,6 +1101,11 @@
 										<name>LocalTime</name>
 										<!-- .* pour gérer "without time zone", … -->
 										<types>time(\ .*)?</types>
+									</forcedType>
+                                    <forcedType>
+                                        <name>Geometry</name>
+                                        <!-- Associate that custom type with your binding. -->
+										<types>(geometry|GEOMETRY)</types>
 									</forcedType>
 								</forcedTypes>
 							</database>
