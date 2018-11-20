@@ -36,7 +36,12 @@
         <rate id="importanceEvent" :length="5" v-model="form.importance" />
       </b-form-group>
       <b-form-group  horizontal label="Document:" label-for="document">
-        <b-form-file id="documentEvent" v-model="file" :state="Boolean(file)" placeholder="Choose a file..."></b-form-file>
+        <div class="custom-file b-form-file ">
+          <input id ="eventDocs" type="file" class="custom-file-input"  @change="handleChangeFile($event)">
+          <label class="custom-file-label">{{file && file.name}}</label></div>
+          <div v-for="(file, index) in files" :key="index" class="mt-3">
+            <img @click="deleteFile(file.name)" src="/static/img/delete.png"><strong >   {{file && file.name || file.fichier}}</strong>
+          </div>
       </b-form-group>
       <b-form-group  horizontal label="Tags:" label-for="tags">
         <input-tag :tags.sync="form.tags"></input-tag>
@@ -60,6 +65,7 @@ export default {
   data() {
     return {
       file: null,
+      files: [],
       criseId: null,
       evenementId:null,
       natureId:null,
@@ -84,12 +90,37 @@ export default {
     }
   },
   methods: {
-    showModal(criseId, evenementId) {
+    createEvent(criseId){
+      this.criseId = criseId
+      this.loadEvenementNatures(null)
+      this.$root.$emit('bv::hide::popover')
+      this.$refs.modal.show()
+    },
+    createCartoEvent(criseId, natureId, wktfeaturegeom){
+      this.criseId = criseId
+      this.natureId = natureId
+      this.form.geometrie = wktfeaturegeom
+      this.loadEvenementNatures(natureId)
+      axios.get('/remocra/typecrisenatureevenement/nature/'+ natureId)
+        .then((response) => {
+          if (response.data.data) {
+            this.form.type = response.data.data[0].id
+            this.disableNatures = true
+          }
+        })
+        .catch(function(error) {
+          console.error('nature évenement', error)
+        })
+      this.$root.$emit('bv::hide::popover')
+      this.$refs.modal.show()
+    },
+    modifyEvent(criseId, evenementId, natureId){
       this.criseId = criseId
       this.evenementId = evenementId
-        this.loadEvenementNatures(null)
+        this.loadEvenementNatures(natureId)
           //si l'évenementId est renseigné c'est un update
           if(evenementId !== null){
+            this.disableNatures = true
             axios.get('/remocra/evenements/'+criseId+'/'+evenementId)
               .then((response) => {
                 var evenement = response.data.data[0]
@@ -100,38 +131,32 @@ export default {
                 this.form.origine = evenement.origine
                 this.$refs.searchOrigine.selected = evenement.origine
                 this.form.importance = evenement.importance
-                this.form.tags = evenement.tags.split(",")
+                this.form.tags = evenement.tags && evenement.tags.length !== 0 ? evenement.tags.split(","): []
                 this.form.type = evenement.typeCriseNatureEvenement.id
                 console.log(this.form.constat)
               })
               .catch(function(error) {
                 console.error('categorie évenement', error)
               })
-          }
-      this.$root.$emit('bv::hide::popover')
-      this.$refs.modal.show()
-    },
 
-    showModalFromMap(criseId, natureId, wktfeaturegeom) {
-      this.criseId = criseId
-      this.natureId = natureId
-      this.form.geometrie = wktfeaturegeom
-      this.loadEvenementNatures(natureId)
-      axios.get('/remocra/typecrisenatureevenement/nature/'+ natureId)
-        .then((response) => {
-          if (response.data.data) {
-            this.form.type = response.data.data[0].id
-            this.disableNatures = true
-
+              axios.get('/remocra/evenements/'+evenementId+'/docevents')
+                .then((response) => {
+                  if (response.data.data) {
+                     this.files = response.data.data
+                  }
+                })
+                .catch(function(error) {
+                  console.error('documents', error)
+                })
           }
-        })
-        .catch(function(error) {
-          console.error('nature évenement', error)
-        })
       this.$root.$emit('bv::hide::popover')
       this.$refs.modal.show()
     },
     clearFields() {
+
+      //todo instancier les data en null et faire un reset
+      this.file = null,
+      this.files = [],
       this.form.titre = ''
       this.form.description = ''
       this.form.constat = moment().format("YYYY-MM-DD")
@@ -141,42 +166,66 @@ export default {
       this.form.importance = 0
       this.form.tags = []
       this.form.type = null
+      this.types= [],
+      this.categories= [],
+      this.interventionAssocs= [{}],
+      this.origines= [{}]
+      this.$parent.refreshMap()
     },
     handleOk(evt) {
       // Prevent modal from closing
       evt.preventDefault()
       if (!this.form.titre) {
-        alert('Please enter your name')
+        alert('lister les champs obligatoires')
       } else {
         this.handleSubmit()
+        this.$parent.refreshMap()
       }
     },
     handleSubmit() {
-      var formData = {'nom': this.form.titre,
-      'description': this.form.description,
-      'constat': moment(this.form.constat.toString()+'T'+this.form.time.toString()).format(),
-      'geometrie': this.form.geometrie,
-      'origine': this.$refs.searchOrigine.selected !== null ? this.$refs.searchOrigine.selected : this.$refs.searchOrigine.searchInput,
-      'importance': this.form.importance,
-      'tags': this.form.tags.join(),
-      'crise': this.criseId,
-      'natureEvent': this.form.type}
+      let formData = new FormData()
+      formData.append('nom', this.form.titre)
+      formData.append('description', this.form.description)
+      formData.append('constat', moment(this.form.constat.toString()+'T'+this.form.time.toString()).format())
+      if(this.form.geometrie !== null){
+        formData.append('geometrie', this.form.geometrie)
+      }
+      formData.append('origine', this.$refs.searchOrigine.selected !== null ? this.$refs.searchOrigine.selected : this.$refs.searchOrigine.searchInput)
+      formData.append('importance', this.form.importance)
+      formData.append('tags', this.form.tags.join())
+      formData.append('crise', this.criseId)
+      formData.append('natureEvent', this.form.type)
+      for( var i = 0; i < this.files.length; i++ ){
+        let file = this.files[i];
+        formData.append('files[' + i + ']', file);
+      }
       if(this.evenementId != null){
-        axios.put('/remocra/evenements/'+this.evenementId, formData)
+        axios.post('/remocra/evenements/'+this.evenementId, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+          })
           .then((response) => {
              if(response.data.success){
                this.$parent.$refs.evenements.loadEvenements(this.criseId)
+               this.$parent.refreshMap()
              }
           })
           .catch(function(error) {
             console.error('putEvent', error)
           })
       }else{
-        axios.post('/remocra/evenements', formData)
+        axios.post('/remocra/evenements', formData,
+          {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+          })
           .then((response) => {
              if(response.data.success){
                console.log(this.$parent.$refs.evenements)
                this.$parent.$refs.evenements.loadEvenements(this.criseId)
+               this.$parent.refreshMap()
              }
           })
           .catch(function(error) {
@@ -188,6 +237,9 @@ export default {
     loadEvenementNatures(natureId){
       var types = []
       var categories = []
+      if(natureId != null){
+        this.form.type = natureId
+      }
       axios.get('/remocra/typecrisecategorieevenement')
         .then((response) => {
           if (response.data.data) {
@@ -243,7 +295,25 @@ export default {
           console.error('nature évenement', error)
         })
 
-    }
+    },
+    handleChangeFile(event) {
+     var file = event.target.files[0]
+     if(file && file.name != null){
+       var index = _.findIndex(this.files, function(o) { return o.name == file.name })
+        if(index == -1){
+          this.file = file
+          this.files.push(event.target.files[0])
+        }
+      }
+  },
+  deleteFile(fileName){
+     this.files = _.reject(this.files, function(file) {
+     return fileName == file.name
+    })
+    this.file = null
+    document.getElementById("docs").value = null
+  }
+
   }
 }
 </script>

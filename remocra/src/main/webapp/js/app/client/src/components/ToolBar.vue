@@ -13,7 +13,17 @@
               </li>
           </ul>
         </b-dropdown>
-        <b-btn class="ctrl" @click="activateModify" v-b-tooltip.hover title="Modifier un évènement"><img src="/static/img/pencil.png"></b-btn>
+        <b-btn class="ctrl" @click="activateInteraction('Modify')" v-b-tooltip.hover title="Modifier la géometrie d'un évènement"><img src="/static/img/pencil.png"></b-btn>
+         <b-button-group v-if="showUpdateGeom" >
+         <b-btn @click="validModifGeom">Valider</b-btn>
+         <b-btn @click="annulModifGeom">Annuler</b-btn>
+       </b-button-group>
+       <b-btn class="ctrl" @click="activateInteraction('Translate')" v-b-tooltip.hover title="Déplacer un évènement"><img src="/static/img/pencil_move.png"></b-btn>
+       <b-button-group v-if="showTranslateGeom" >
+       <b-btn @click="validTranslateGeom">Valider</b-btn>
+       <b-btn @click="annulTranslateGeom">Annuler</b-btn>
+     </b-button-group>
+     <b-btn class="ctrl" @click="openAttributes" v-b-tooltip.hover title="Modifier les attributs d’un événement"><img src="/static/img/application_view_columns.png"></b-btn>
    </div>
 </template>
 
@@ -24,9 +34,10 @@ export default {
   name: 'ToolBar',
   data() {
     return {
+      showUpdateGeom: false,
+      showTranslateGeom: false,
       types: [],
       categories: []
-
     }
   },
   mounted(){
@@ -73,12 +84,26 @@ export default {
    },
   methods: {
     selectGeom(typeGeom, natureId){
-      console.log(typeGeom)
-      this.$parent.addInteractions(typeGeom, natureId)
+      this.$parent.addDrawInteractions(typeGeom, natureId)
       this.$refs.dropDown.hide()
     },
-    activateModify(){
-      this.$parent.activateModify()
+    activateInteraction(type){
+      this.$parent.activateInteraction(type)
+    },
+    annulModifGeom(){
+      this.$parent.annulModifGeom()
+    },
+    validModifGeom(){
+      this.$parent.validModifGeom()
+    },
+    annulTranslateGeom(){
+      this.$parent.annulTranslateGeom()
+    },
+    validTranslateGeom(){
+      this.$parent.validTranslateGeom()
+    },
+    openAttributes(){
+      this.$parent.openAttributes()
     }
   }
 

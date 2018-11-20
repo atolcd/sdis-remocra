@@ -3,8 +3,8 @@
     <b-list-group flush v-for="(evenement, index) in evenements" :key="index">
       <b-list-group-item>
        <div>
-         <img src="/static/img/folder.png" @click="loadMessages(evenement.id)"><span @dblclick="modifEvent(evenement.id)">{{evenement.nom}}</span>
-          <img src="/static/img/icon_SpecifiedFilter.png">
+         <img src="/static/img/folder.png" @click="loadMessages(evenement.id)"><span style="cursor:pointer" @dblclick="modifEvent(evenement)">{{evenement.nom}}</span>
+          <img v-if="evenement.geometrie !== null" src="/static/img/flag_green.png" @click="locateEvent(evenement.geometrie)">
           <img src="/static/img/add.png" @click="openNewMessage(evenement.id)">
       </div>
       <b-collapse v-if="evenement.criseSuivis.length!==0" class="mt-2" :id="'c'+evenement.id">
@@ -29,6 +29,7 @@ import axios from 'axios'
 import moment from 'moment'
 import 'moment-timezone';
 import NewMessage from './NewMessage.vue';
+import WKT from 'ol/format/WKT.js';
 
 export default {
   name: 'Evenements',
@@ -51,14 +52,6 @@ export default {
   },
   methods : {
     loadEvenements(crise, filters){
-    /*  var filter = ''
-      if(filters && filters.size!==0){
-        console.log(filters)
-        filter='/?filter='
-        _.forEach(filters, function(filtre){
-             filter+= ' property:'+filtre.property+' value:'+filtre.value
-        })
-      }*/
       var jsonFilters = JSON.stringify(filters)
       axios.get('/remocra/evenements/'+crise,  {params: {filter: jsonFilters}})
         .then((response) => {
@@ -84,14 +77,18 @@ export default {
       //Si la liste is not empty on collapse
       this.$root.$emit('bv::toggle::collapse','c'+id)
     },
-    modifEvent(id){
-      this.$parent.$parent.$refs.newEvenement.showModal(this.crise, id)
+    modifEvent(evenement){
+      var natureId = evenement.geometrie !== null ? evenement.natureId : null
+      this.$parent.$parent.$refs['newEvenement'].modifyEvent(this.crise, evenement.id, natureId)
     },
     openNewMessage(id){
       this.$refs.newMessage.showModal(this.crise, id, null)
     },
     showMessage(evenementId, messageId){
       this.$refs.newMessage.showModal(this.crise, evenementId, messageId)
+    },
+    locateEvent(geometrie){
+      this.$parent.$parent.zoomToGeom(geometrie)
     }
 
   }

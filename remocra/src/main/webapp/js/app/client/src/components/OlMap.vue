@@ -4,8 +4,8 @@
     <b-col cols="2">
       <div class="text-start my-3">
         <b-btn class="ctrl" v-b-tooltip.hover title="Déplacer la carte"><img src="/static/img/pan.png"></b-btn>
-          <b-btn class="ctrl" v-b-tooltip.hover title="Zoomer en avant"><img src="/static/img/magnifier_zoom_in.png"></b-btn>
-            <b-btn class="ctrl" v-b-tooltip.hover title="Zoomer en arrière"><img src="/static/img/magnifier_zoom_out.png"></b-btn>
+          <b-btn class="ctrl" v-b-tooltip.hover title="Zoomer en avant" @click="zoomIn"><img src="/static/img/magnifier_zoom_in.png"></b-btn>
+            <b-btn class="ctrl" v-b-tooltip.hover title="Zoomer en arrière" @click="zoomOut"><img src="/static/img/magnifier_zoom_out.png"></b-btn>
               <b-btn class="ctrl" v-b-tooltip.hover title="Rétablir la vue précédente"><img src="/static/img/zoom_prec.png"></b-btn>
                 <b-btn class="ctrl" v-b-tooltip.hover title="Rétablir la vue suivante"><img src="/static/img/zoom_suiv.png"></b-btn>
       </div>
@@ -25,19 +25,16 @@
         <template slot="button-content">
            <img src='/static/img/ruler.png'>
         </template>
-        <b-dropdown-item-button @click="activateMeasure('Distance')">Distance</b-dropdown-item-button>
-        <b-dropdown-item-button @click="activateMeasure('Surface')">Surface</b-dropdown-item-button>
+        <b-dropdown-item-button @click="activateMeasure('Distance')"><img src='/static/img/ruler.png'>  Distance</b-dropdown-item-button>
+        <b-dropdown-item-button @click="activateMeasure('Surface')"><img src='/static/img/ruler_square.png'>  Surface</b-dropdown-item-button>
       </b-dropdown>
-      <!--<b-form-select v-model="selectedRuler" class="text-start my-3" @input="toggleDistance">
-        <option>Distance</option>
-        <option>Surface</option>
-      </b-form-select>-->
     </div>
     <div class="text-start my-3">
-      <b-btn class="ctrl" v-b-tooltip.hover title="Obtenir des information sur un point de la carte"><img src="/static/img/information.png"></b-btn>
+      <b-btn class="ctrl" @click ="showInfo" v-b-tooltip.hover title="Obtenir des information sur un point de la carte"><img src="/static/img/information.png"></b-btn>
     </div>
     <div class="text-start my-3">
       <b-btn class="ctrl" @click="showToolsBar" v-b-toggle.collapse1 title="Activer les outils d\'édition"><img src="/static/img/pencil.png"></b-btn>
+      <show-info ref="showInfo"></show-info>
     </div>
     <b-form-group class="text-start my-3">
       <b-form-radio-group id="btnradios2" buttons button-variant="outline-primary" v-model="modeAffichage" :options="modeAffichages" name="radioBtnOutline" />
@@ -52,13 +49,13 @@
       <new-evenement ref="newEvenement"></new-evenement>
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-btn block variant="info"><span href="#" v-b-toggle.accordion1>Evènements</span><span class="evenement">
-              <b-btn @click="openNewEvenement(null)" class="ctrl"><img src="/static/img/add.png"></b-btn>
+            <span style="cursor:pointer" href="#" v-b-toggle.accordion1>Evènements</span><span class="evenement">
+              <b-btn @click="addEvent" class="ctrl"><img src="/static/img/add.png"></b-btn>
               <b-btn  class="ctrl" id="popoverButton-open2"><img src="/static/img/icon_SpecifiedFilter.png"></b-btn>
                 <b-popover  placement="right" ref="popover" target="popoverButton-open2" title="Filtrer les évènements">
                    <filters :criseId="criseId" ref="filters"></filters>
               </b-popover>
-            </span></b-btn>
+            </span>
           </b-card-header>
           <b-collapse id="accordion1" visible accordion="my-accordion" role="tabpanel">
             <b-card-body>
@@ -70,9 +67,9 @@
         </b-card>
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-btn block variant="info"><span href="#" v-b-toggle.accordion2>Documents</span><span class="document">
-              <b-btn @click="addNewDocument" class="ctrl"><img src="/static/img/add.png"></b-btn></span></b-btn>
-              <new-document ref="newDocument"></new-document>
+            <span style="cursor:pointer" href="#" v-b-toggle.accordion2>Documents</span><span class="document">
+              <b-btn @click="addNewDocument" class="ctrl"><img src="/static/img/add.png"></b-btn></span>
+              <new-document ref="newCriseDocument"></new-document>
           </b-card-header>
           <b-collapse id="accordion2" accordion="my-accordion" role="tabpanel">
             <b-card-body>
@@ -84,7 +81,7 @@
         </b-card>
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-btn block href="#" v-b-toggle.accordion3 variant="info">Indicateurs</b-btn>
+            <span style="cursor:pointer" block href="#" v-b-toggle.accordion3 variant="info">Indicateurs</span>
           </b-card-header>
           <b-collapse id="accordion3" accordion="my-accordion" role="tabpanel">
             <b-card-body>
@@ -97,7 +94,7 @@
 
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-btn block href="#" v-b-toggle.accordion4 variant="info">Recherche et analyse</b-btn>
+            <span style="cursor:pointer" block href="#" v-b-toggle.accordion4 variant="info">Recherche et analyse</span>
           </b-card-header>
           <b-collapse id="accordion4" accordion="my-accordion" role="tabpanel">
             <b-card-body>
@@ -112,47 +109,41 @@
     </b-col>
     <b-col cols="8">
       <b-row id="toolsBar" class="toolsBar">
-      <tool-bar></tool-bar>
+      <tool-bar ref="toolBar"></tool-bar>
+      <choice-feature :crise="criseId" ref="choiceFeature"></choice-feature>
       </b-row>
       <div id="map">
-        <div class="sidebar">
-          <div id="layertree">
-            <div v-for="(group,index) in legend.items" :key="index">
-              <div class="groupe">{{group.libelle}}</div>
-              <draggable :list="group.items" :options="{handle:'.my-handle'}" @start="drag=true" @end="addSortable()">
-                <div v-for="(layer,index) in group.items" :key="index">
-                  <div class="layer my-handle">
-                    <input  type="checkbox" v-bind:id="'checkbox'+layer.id" :value="layer.visibility" v-model="layer.visibility" @click="changeLayerVisibility(layer.id)">
-                    <label for="layer.id">{{layer.libelle}}</label>
-                  </div>
-                  <div>
-                    <label>opacity</label>
-                    <input type="range"  v-bind:id="'range'+layer.id"  v-model="layer.opacity" min="0" max="1" step="0.01" @change="changeLayerOpacity(layer.id)"/>
-                </div>
-                  </div>
-              </draggable>
-            </div>
-          </div>
-        </div>
       </div>
     </b-col>
     <b-col>
       <div role="tablist">
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-btn block href="#" v-b-toggle.accordion5 variant="info">Couches</b-btn>
+            <span style="cursor:pointer" block href="#" v-b-toggle.accordion5 variant="info">Couches</span>
           </b-card-header>
           <b-collapse id="accordion5" visible accordion="my-accordion2" role="tabpanel">
             <b-card-body>
-              <p class="card-text">
-                Couches
-              </p>
+                <div class="sidebar">
+                  <div id="layertree">
+                    <div v-for="(group,index) in legend.items" :key="index">
+                      <div><strong>{{group.libelle}}</strong></div>
+                      <draggable :list="group.items" :options="{handle:'.my-handle'}" @start="drag=true" @end="addSortable()">
+                        <div v-for="(layer,index) in group.items" :key="index">
+                          <div class="my-handle">
+                            <input  type="checkbox" v-bind:id="'checkbox'+layer.id" :value="layer.visibility" v-model="layer.visibility" @click="changeLayerVisibility(layer.id)">
+                            <label for="layer.id">{{layer.libelle}}</label>
+                          </div>
+                          </div>
+                      </draggable>
+                    </div>
+                  </div>
+                </div>
             </b-card-body>
           </b-collapse>
         </b-card>
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-btn block href="#" v-b-toggle.accordion6 variant="info">Légende</b-btn>
+            <span style="cursor:pointer" block href="#" v-b-toggle.accordion6 variant="info">Légende</span>
           </b-card-header>
           <b-collapse id="accordion6" accordion="my-accordion2" role="tabpanel">
             <b-card-body>
@@ -165,6 +156,9 @@
       </div>
     </b-col>
   </b-row>
+  <b-modal ref="updateGeom" title="Modifier la géométrie">
+    <p class="my-4">Voulez vous valider la nouvele géométrie</p>
+  </b-modal>
 </b-container>
 </template>
 <script>
@@ -186,25 +180,30 @@ import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
 import WKT from 'ol/format/WKT.js';
 import axios from 'axios'
 import legend from '../assets/carte-crise.json'
-import Proj from 'ol/proj.js'
+import Proj from 'ol/proj/Projection'
+import {register} from 'ol/proj/proj4.js';
+import proj4 from 'proj4';
 import _ from 'lodash'
 import draggable from 'vuedraggable'
 import SearchCommune from './SearchCommune.vue'
 import SearchRepertoire from './SearchRepertoireLieu.vue'
 import OlOverlay from 'ol/Overlay.js'
-import {Vector as OlSourceVector } from 'ol/source.js'
-import {Vector as OlLayerVector} from 'ol/layer.js'
+import OlSourceVector from 'ol/source/Vector.js'
+import OlLayerVector from 'ol/layer/Vector.js'
 import OlInteractionDraw from 'ol/interaction/Draw.js'
-import {Draw, Modify, Snap} from 'ol/interaction.js';
+import {Draw, Modify, Snap, Select, Translate} from 'ol/interaction.js';
 import {getArea, getLength} from 'ol/sphere.js';
 import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style.js';
 import {LineString, Polygon} from 'ol/geom.js';
+import GeoJSON from 'ol/format/GeoJSON';
 import NewEvenement from './NewEvenement.vue';
 import NewDocument from './NewDocument.vue';
 import Evenements from './Evenements.vue';
 import Documents from './Documents.vue';
 import Filters from './Filters.vue';
 import ToolBar from './ToolBar.vue';
+import ChoiceFeature from './ChoiceFeature.vue';
+import ShowInfo from './ShowInfo.vue';
 
   export default {
     name: 'OlMap',
@@ -217,12 +216,20 @@ import ToolBar from './ToolBar.vue';
            Evenements,
            Documents,
            Filters,
-           ToolBar   },
+           ToolBar,
+           ChoiceFeature,
+           ShowInfo   },
     data () {
       return {
         file: null,
+        selectedFeature: null,
         modalShow:false,
+        workingLayer: null,
+        sridL93 : 2154,
+        proj: null,
+        epsgL93 :null,
         selectedRuler:null,
+        select:null,
         modeAffichage:'radio1',
         modeAffichages: [
         { text: 'Opérationnel', value: 'radio1' },
@@ -252,7 +259,7 @@ import ToolBar from './ToolBar.vue';
             controls: defaultControls({
             rotate: false,
             zoom: true,
-
+            zoomToExtent: true,
             attribution: false,
             attributionOptions: {
               collapsible: false
@@ -264,24 +271,48 @@ import ToolBar from './ToolBar.vue';
                 zoom:2
             })
         });
+        this.proj = this.map.getView().getProjection()
+        this.epsgL93 = 'EPSG:' + this.sridL93
+        proj4.defs(this.epsgL93,"+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
+        register(proj4);
         this.constructMap()
-        //this.addSortable()
-
+        this.createWorkingLayer()
+        this.addModifyInteraction()
+        this.addTranslateInteraction()
     },
     updated() {
       //this.addSortable()
     },
     methods : {
-      addNewDocument(){
-        this.$refs['newDocument'].showModal(this.criseId);
+      createWorkingLayer(){
+        var source = new OlSourceVector()
+        var vectorLayer = new OlLayerVector({
+          name:'workingLayer',
+          code: 'workingLayer',
+          source: source,
+          style: new Style({
+            fill: new Fill({
+              color: 'blue'
+            }),
+            stroke: new Stroke({
+              color: '#red',
+              width: 2
+            }),
+            image: new CircleStyle({
+              radius: 7,
+              fill: new Fill({
+                color: '#ffcc33'
+              })
+            })
+          })
+        })
+        this.map.addLayer(vectorLayer)
       },
-      openNewEvenement(natureId, wktFeatureGeom){
-        if(natureId !== null){
-          this.$refs['newEvenement'].showModalFromMap(this.criseId, natureId, wktFeatureGeom)
-        }else {
-          this.$refs['newEvenement'].showModal(this.criseId, null);
-        }
-
+      addNewDocument(){
+        this.$refs['newCriseDocument'].showModal(this.criseId);
+      },
+      addEvent(){
+         this.$refs['newEvenement'].createEvent(this.criseId)
       },
       addSortable(){
          this.addLayersFromLayerConfig(this.legend);
@@ -289,12 +320,9 @@ import ToolBar from './ToolBar.vue';
       changeLayerVisibility(id){
         var layer = this.getLayerById(id);
         var checkbox = document.getElementById("checkbox"+id);
+        console.log(layer + layer.getVisible())
         var newVisibility = !layer.getVisible();
-        if (layer.setVisible) {
-            layer.setVisible(newVisibility);
-        } else {
-            layer.visibility = newVisibility;
-        }
+        layer.setVisible(newVisibility);
       },
 
       changeLayerOpacity(id) {
@@ -317,7 +345,6 @@ import ToolBar from './ToolBar.vue';
                    this.addLayersFromCrise(this.legend)
                    this.map.getView().fit(this.extent)
                    this.addMeasureInteraction()
-
               }
         })
         .catch(function(error){
@@ -407,11 +434,6 @@ import ToolBar from './ToolBar.vue';
      });
     },
     createWMSLayer(layerDef) {
-                // Pour les tests locaux (TODO : retirer ?)
-         if (window.location.hostname == 'localhost') {
-           var baseUrlRE = new RegExp('^/geoserver', 'gi');
-           layerDef.url = layerDef.url.replace(baseUrlRE, 'http://sdis83-remocra.lan.priv.atolcd.com/geoserver');
-         }
         var wmsLayer = new ImageLayer({
         source: new ImageWMS({
           url: layerDef.url,
@@ -560,6 +582,7 @@ import ToolBar from './ToolBar.vue';
   },
 
  addMeasureInteraction() {
+   this.map.un('click', this.handleMapClick)
    var formatLength =function(line) {
      var length = getLength(line);
        var output;
@@ -588,25 +611,19 @@ import ToolBar from './ToolBar.vue';
         positioning: 'bottom-center'
       })
       this.map.addOverlay(measureTooltip)
-      let source = new OlSourceVector()
-      let vectorLayer = new OlLayerVector({
-        source: source
-      })
-      this.map.addLayer(vectorLayer)
+      var workingLayer = this.getLayerById('workingLayer')
       if(this.selectedRuler && this.selectedRuler !== null){
-        console.log(this.selectedRuler)
          var type = (this.selectedRuler == 'Surface' ? 'Polygon' : 'LineString');
       }else {
         return
       }
-      console.log(type)
       let measuringTool = new OlInteractionDraw({
         type: type,
-        source: vectorLayer.getSource()
+        source: workingLayer.getSource()
       })
       measuringTool.on('drawstart', function(event) {
-        // tooltip
-        vectorLayer.getSource().clear()
+        // tooltipse
+        workingLayer.getSource().clear()
         event.feature.on('change', function(event) {
           var geom = event.target.getGeometry();
           var measurement;
@@ -624,7 +641,7 @@ import ToolBar from './ToolBar.vue';
       measuringTool.on('change:active', function(evt) {
         if (evt.oldValue) {
           // Nettoyage
-          vectorLayer.getSource().clear()
+          workingLayer.getSource().clear()
           measureTooltip.setPosition([0, 0])
         }
       })
@@ -635,13 +652,20 @@ import ToolBar from './ToolBar.vue';
       this.selectedRuler = type
       if(this.measuringTool){
            this.measuringTool.setActive(!this.measuringTool.getActive())
+      }else if(this.draw){
+        this.draw.setActive(false);
+      }else if( this.snap){
+        this.snap.setActive(false);
+      }else if(this.modify){
+        this.modify.setActive(false);
+      }else if( this.translate){
+        this.translate.setActive(false);
       }
       this.map.removeInteraction(this.measuringTool);
       this.addMeasureInteraction();
   },
   GoInFullscreen: function(event){
        var elem = document.documentElement;
-       console.log(document )
        if (
          document.fullscreenEnabled ||
          document.webkitFullscreenEnabled ||
@@ -664,30 +688,15 @@ import ToolBar from './ToolBar.vue';
 
        }
      },
-     addInteractions(typeGeom, natureId) {
+     addDrawInteractions(typeGeom, natureId) {
+       this.map.un('click', this.handleOpenAttributes)
+       this.map.un('click', this.handleMapClick)
+       this.map.removeInteraction(this.measuringTool)
+       this.modify.setActive(false)
+       this.translate.setActive(false)
        var self = this
-      var source = new OlSourceVector();
-      var modify = new Modify({source: source});
-      var newInterventionLayer = new OlLayerVector({
-        source: source,
-        style: new Style({
-          fill: new Fill({
-            color: 'rgba(255, 255, 255, 0.2)'
-          }),
-          stroke: new Stroke({
-            color: '#ffcc33',
-            width: 2
-          }),
-          image: new CircleStyle({
-            radius: 7,
-            fill: new Fill({
-              color: '#ffcc33'
-            })
-          })
-        })
-      });
-      this.map.addLayer(newInterventionLayer)
-      this.map.addInteraction(modify);
+       var workingLayer = this.getLayerById('workingLayer')
+      var modify = new Modify({source: workingLayer.getSource()});
       this.map.removeInteraction(this.draw)
       this.map.removeInteraction(this.snap)
       let draw, snap;
@@ -703,57 +712,236 @@ import ToolBar from './ToolBar.vue';
            typeGeom = 'Point'
       }
         draw = new Draw({
-          source: source,
+          source: workingLayer.getSource(),
           type: typeGeom
         });
-        this.map.addInteraction(draw);
-        var listener = draw.on('drawend',function(evt){
-          var wktFeatureGeom = new WKT().writeGeometry(evt.feature.getGeometry())
-          self.openNewEvenement(natureId, wktFeatureGeom)
-        },this)
+        this.map.addInteraction(draw)
+          var listener = draw.on('drawend',function(evt){
+          var geomL93 = evt.feature.getGeometry().transform(self.proj, getProjection(self.epsgL93))
+          var wktGeomL93 = "srid="+self.sridL93+";"+new WKT().writeGeometry(geomL93)
+          self.$refs['newEvenement'].createCartoEvent(self.criseId, natureId, wktGeomL93)
+          self.map.removeInteraction(draw)
+        })
 
-        snap = new Snap({source: source});
+        snap = new Snap({source: workingLayer.getSource()});
         this.map.addInteraction(snap);
         this.draw = draw
         this.snap = snap
+      },
+      addModifyInteraction(){
+        var workingLayer = this.getLayerById('workingLayer')
+        var modify = new Modify({
+          source: workingLayer.getSource()
+        });
+        this.modify = modify
+        this.modify.setActive(false)
+        var self = this
+        this.map.addInteraction(this.modify)
+        this.modify.on('modifyend',function(evt){
+          self.$refs.toolBar.showUpdateGeom = true
+          self.selectedFeature = evt.features.getArray()[0]
+        })
+
+     },
+     addTranslateInteraction(){
+       var workingLayer = this.getLayerById('workingLayer')
+       var translate = new Translate({
+         source: workingLayer.getSource()
+       });
+       this.translate = translate
+       this.translate.setActive(false)
+       var self = this
+       this.map.addInteraction(this.translate)
+       this.translate.on('translateend',function(evt){
+         self.$refs.toolBar.showTranslateGeom = true
+         self.selectedFeature = evt.features.getArray()[0]
+       })
+    },
+    activateInteraction(type){
+      var workingLayer = this.getLayerById('workingLayer')
+      this.map.un('click', this.handleOpenAttributes)
+      this.map.on('click', this.handleMapClick)
+      if(this.measuringTool){
+        this.map.removeInteraction(this.measuringTool)
+          // Nettoyage
+          workingLayer.getSource().clear()
+          measureTooltip.setPosition([0, 0])
       }
+      if(type === 'Translate'){
+        this.translate.setActive(true)
+        this.modify.setActive(false)
+      }else if (type === 'Modify'){
+        this.modify.setActive(true)
+        this.translate.setActive(false)
+      }
+    },
+      handleMapClick(e){
+        axios.get('/remocra/evenements/layer', {params: {
+          point: e.coordinate[0] + ', ' + e.coordinate[1],
+          projection: e.target.getView().getProjection().getCode()
+        }})
+        .then((response) => {
+            if (response.data) {
+            var features = new GeoJSON().readFeatures(JSON.stringify(response.data));
+            if (features.length == 0) {
+            this.$notify({
+             group: 'remocra',
+             title: 'Evènements',
+             type: 'warn',
+             text: 'Aucun évènement dans cet emplacement!'
+            })
+          }else if (features.length == 1){
+            var selectedFeature = features[0]
+            this.addToWorkingLayer(selectedFeature)
+          } else {
+            //On affiche un modal de choix de feature
+            this.$refs.choiceFeature.showModal(features)
+          }
+          }
+          })
+          .catch(function(error){
+            console.error('carte', error)
+          })
+        },
+        addToWorkingLayer(selectedFeature){
+          var geom = selectedFeature.getGeometry().transform(getProjection(this.epsgL93),this.proj)
+          selectedFeature.setGeometry(geom)
+          this.map.getLayers().forEach(function (layer) {
+           if (layer.get('name') != undefined && layer.get('name') === 'workingLayer') {
+               var workingFeature = selectedFeature.clone();
+               workingFeature.id_ = selectedFeature.id_
+               console.log(workingFeature)
+               layer.getSource().addFeature(workingFeature);
+          }
+          })
+        },
+        annulModifGeom(){
+        this.refreshMap()
+        this.$refs.toolBar.showUpdateGeom = false
+
+        },
+        annulTranslateGeom(){
+        this.refreshMap()
+        this.$refs.toolBar.showTranslateGeom = false
+
+        },
+        validModifGeom(){
+            var geom = this.formatGeomFromMap(this.selectedFeature.getGeometry())
+            var formData = {'geometrie': geom}
+            axios.post('/remocra/evenements/'+this.selectedFeature.getId()+'/updategeom', formData)
+            .then((response) => {
+              this.refreshMap()
+              this.$refs.toolBar.showUpdateGeom = false
+            })
+            .catch(function(error) {
+              console.error('updateGeom', error)
+            })
+        },
+        validTranslateGeom(){
+            var geom = this.formatGeomFromMap(this.selectedFeature.getGeometry())
+            var formData = {'geometrie': geom}
+            axios.post('/remocra/evenements/'+this.selectedFeature.getId()+'/updategeom', formData)
+            .then((response) => {
+              this.refreshMap()
+              this.$refs.toolBar.showTranslateGeom = false
+            })
+            .catch(function(error) {
+              console.error('updateGeom', error)
+            })
+        },
+        formatGeomFromMap(geom){
+          var geomL93 = geom.transform(this.proj, getProjection(this.epsgL93))
+          var wktGeomL93 = "srid="+this.sridL93+";"+new WKT().writeGeometry(geomL93)
+          return wktGeomL93
+        },
+        openAttributes(){
+          this.map.on('click', this.handleOpenAttributes)
+        },
+        handleOpenAttributes(e){
+          axios.get('/remocra/evenements/layer', {params: {
+            point: e.coordinate[0] + ', ' + e.coordinate[1],
+            projection: e.target.getView().getProjection().getCode()
+          }})
+          .then((response) => {
+              if (response.data) {
+              var features = new GeoJSON().readFeatures(JSON.stringify(response.data));
+              if (features.length == 0) {
+              this.$notify({
+               group: 'remocra',
+               title: 'Evènements',
+               type: 'warn',
+               text: 'Aucun évènement dans cet emplacement!'
+              })
+            }else if (features.length == 1){
+              var selectedFeature = features[0]
+              this.addToWorkingLayer(selectedFeature)
+              this.$refs['newEvenement'].modifyEvent(this.criseId, selectedFeature.getId(), selectedFeature.getProperties().nature)
+            } else {
+              //On affiche un modal de choix de feature
+              this.$refs.choiceFeature.showModal(features)
+            }
+            }
+            })
+            .catch(function(error){
+              console.error('carte', error)
+            })
+        },
+        showInfo(){
+          this.map.on('click', this.handleOpenInfo)
+        },
+        handleOpenInfo(e){
+          axios.get('/remocra/evenements/layer', {params: {
+            point: e.coordinate[0] + ', ' + e.coordinate[1],
+            projection: e.target.getView().getProjection().getCode()
+          }})
+          .then((response) => {
+              if (response.data) {
+              var features = new GeoJSON().readFeatures(JSON.stringify(response.data));
+              if (features.length == 0) {
+              this.$notify({
+               group: 'remocra',
+               title: 'Evènements',
+               type: 'warn',
+               text: 'Aucun évènement dans cet emplacement!'
+              })
+            } else if (features.length == 1){
+              var selectedFeature = features[0]
+              this.addToWorkingLayer(selectedFeature)
+              this.$refs.showInfo.showModal(selectedFeature)
+            } else {
+              //On affiche un modal de choix de feature
+              //this.$refs.choiceFeature.showModal(features)
+            }
+            }
+            })
+            .catch(function(error){
+              console.error('carte', error)
+            })
+        }, zoomToGeom(geometrie){
+          this.map.getView().fit(new WKT().readGeometry(geometrie,{dataProjection: this.epsgL93, featureProjection: this.proj}).getExtent())
+        },refreshMap(){
+          var workingLayer = this.getLayerById('workingLayer')
+          var wmsLayer = this.getLayerById('893bb7520e7fb036d665661847628994')
+          workingLayer.getSource().clear()
+          wmsLayer.getSource().refresh()
+        },
+        zoomIn(){
+          this.map.getView().setZoom(this.map.getView().getZoom()+1)
+        },zoomOut(){
+          this.map.getView().setZoom(this.map.getView().getZoom()-1)
+        }
    }
 }
 
     </script>
 
 <style>
-.sidebar {
-  height: 100%;
-  background-color: #f1f1f1;
-  ;
-  width: 400px;
-  position: absolute;
-  z-index: 100;
-  right: 0;
-  display: none;
-}
-
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   background-color: #f1f1f1;
   border: 1px solid #555;
-}
-
-.groupe {
-  background-color: #4CAF50;
-  color: white;
-
-}
-
-.layer {
-  color: #fff !important;
-  background-color: #555 !important;
-  border: none;
-  cursor: move;
-
 }
 
 #accordion1 .card-body {

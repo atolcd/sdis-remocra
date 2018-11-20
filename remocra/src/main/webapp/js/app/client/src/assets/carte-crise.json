@@ -13,14 +13,14 @@
       "interrogeable" : false,
       "items" : null,
       "wms_layer" : true,
-      "layers" : "barriere",
-      "url" : "http://sdis83-remocra.lan.priv.atolcd.com:8080/geoserver/remocra/wms",
+      "layers" : "remocra:crise_evenement",
+      "url" : "http://localhost:8080/remocra/geoserver/remocra/wms",
       "sld" : null,
-      "projection" : "EPSG:3758",
+      "projection" : "EPSG:2154",
       "styles" : [{
         "id" : "remocra_barriere",
         "libelle" : "Barrière",
-        "legende" : "http://sdis83-remocra.lan.priv.atolcd.com:8080/geoserver/remocra/wms?REQUEST=GetLegendGraphic&SERVICE=WMS&VERSION=1.3.0&LAYER=barriere&FORMAT=image/png&STYLE=remocra_barriere"
+        "legende" : "http://localhost:8080/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&SERVICE=WMS&VERSION=1.3.0&LAYER=crise_evenement&FORMAT=image/png&STYLE="
       }]
     },{
       "type" : "wmts",
