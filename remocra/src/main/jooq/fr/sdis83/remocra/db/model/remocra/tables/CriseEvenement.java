@@ -4,6 +4,7 @@
 package fr.sdis83.remocra.db.model.remocra.tables;
 
 
+import fr.sdis83.remocra.db.converter.GeometryBinding;
 import fr.sdis83.remocra.db.converter.InstantConverter;
 import fr.sdis83.remocra.db.model.remocra.Keys;
 import fr.sdis83.remocra.db.model.remocra.Remocra;
@@ -22,6 +23,7 @@ import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
 import org.jooq.impl.TableImpl;
+import org.postgis.Geometry;
 
 
 /**
@@ -61,7 +63,7 @@ public class CriseEvenement extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.crise_evenement.geometrie</code>.
 	 */
-	public final TableField<Record, Object> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "");
+	public final TableField<Record, com.vividsolutions.jts.geom.Geometry> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "",new GeometryBinding());
 
 	/**
 	 * The column <code>remocra.crise_evenement.nom</code>. Titre de l'évènement

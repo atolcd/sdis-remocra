@@ -3,14 +3,13 @@ package fr.sdis83.remocra.repository;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_EVENEMENT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_SUIVI;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE_NATURE_EVENEMENT;
-import static java.text.DateFormat.Field.SECOND;
+import static fr.sdis83.remocra.db.model.remocra.tables.Document.DOCUMENT;
+import static fr.sdis83.remocra.util.GeometryUtil.sridFromGeom;
 import static org.jooq.impl.DSL.and;
 import static org.jooq.impl.DSL.row;
 import static org.jooq.impl.DSL.select;
 import static org.jooq.impl.DSL.trueCondition;
-import static org.postgresql.core.Oid.INTERVAL;
 
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,32 +19,39 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.db.converter.InstantConverter;
+import fr.sdis83.remocra.db.model.remocra.Tables;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseSuivi;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeCriseNatureEvenement;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
+import fr.sdis83.remocra.service.ParamConfService;
+import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.deserialize.GeometryFactory;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.model.CriseEvenement;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.joda.time.Instant;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.impl.DSL;
-import org.jooq.types.Interval;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.NameTokenizers;
 import org.modelmapper.jooq.RecordValueReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 @Configuration
-
 public class CriseEvenementRepository {
   private final Logger logger = Logger.getLogger(getClass());
   private final  DateFormat df = new SimpleDateFormat(RemocraDateHourTransformer.FORMAT);
@@ -53,6 +59,18 @@ public class CriseEvenementRepository {
   @Autowired
   DSLContext context;
 
+  @Autowired
+  protected ParamConfService paramConfService;
+
+  @Autowired
+  protected CriseRepository criseRepository;
+
+
+  @Autowired
+  private UtilisateurService utilisateurService;
+
+  @PersistenceContext
+  private EntityManager entityManager;
 
   public CriseEvenementRepository() {
 
@@ -131,46 +149,115 @@ public class CriseEvenementRepository {
 
   }
 
+  public List<CriseEvenement> findCriseEventsByPoint(String point, String projection) {
+
+    String qlString = "select ce.id, ce.nom, st_asgeojson(ce.geometrie) as geometrie, tce.id as idnature, tce.nom as nomnature FROM remocra.crise_evenement as ce " +
+        "join remocra.type_crise_nature_evenement as tce " +
+        "on ce.nature_evenement = tce.id "
+        // Si le point fait partie de la géometrie d'une Oldeb
+        + "where ST_Contains(geometrie,ST_Transform(ST_SetSRID(ST_makePoint(" + point + ")," + projection + "), 2154)) = true "
+        // Et que l'oldeb est dans la zone de compétence de
+        // l'utilisateur connecté
+        + "or st_distance(geometrie ,ST_Transform(ST_SetSRID(ST_makePoint(" + point + ")," + projection + "), 2154)) < 100 "
+
+        + "and st_dwithin(geometrie, st_geomfromtext('"+utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie()+"', 2154), 0) = true";
+
+    List<CriseEvenement> l = new ArrayList<CriseEvenement>();
+    Result<Record> result = context.fetch(qlString);
+    for (Record evenement : result){
+      CriseEvenement cr = new CriseEvenement();
+      cr.setId(Long.valueOf(String.valueOf(evenement.getValue("id"))));
+      cr.setNom(String.valueOf(evenement.getValue("nom")));
+      cr.setNatureId(Long.valueOf(String.valueOf(evenement.getValue("idnature"))));
+      cr.setNatureNom(String.valueOf(evenement.getValue("nomnature")));
+      if(evenement.getValue("geometrie") != null){
+        cr.setGeoJsonGeometry(String.valueOf(evenement.getValue("geometrie")));
+      }
+      l.add(cr);
+    }
+
+    return l;
+  }
+
   public List<CriseSuivi> getMessages(Long id){
       return context.select().from(CRISE_SUIVI).where(CRISE_SUIVI.EVENEMENT.eq(id)).fetchInto(CriseSuivi.class);
   }
 
-  public fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement createEvent(String json) throws ParseException {
-   Map<String, Object> criseEventData = new JSONDeserializer<HashMap<String, Object>>().use(Date.class, RemocraDateHourTransformer.getInstance())
-        .use(Geometry.class, new GeometryFactory()).deserialize(json);
+  public fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement createEvent( MultipartHttpServletRequest request) throws ParseException {
 
+    Map<String, MultipartFile> files = request.getFileMap();
     fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement c = new fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement();
-    c.setNom((String) criseEventData.get("nom"));
-    c.setDescription((String) criseEventData.get("description"));
-    Date constat = df.parse(String.valueOf(criseEventData.get("constat")));
-    Instant t = new Instant(constat);
-    c.setConstat(t);
-    c.setOrigine((String) criseEventData.get("origine"));
-    c.setImportance((Integer) criseEventData.get("importance"));
-    c.setTags((String) criseEventData.get("tags"));
-    c.setCrise(Long.valueOf(String.valueOf(criseEventData.get("crise"))));
+    c.setNom(request.getParameter("nom"));
+    c.setDescription( request.getParameter("description"));
+    c.setOrigine(request.getParameter("origine"));
+    c.setImportance(Integer.valueOf(request.getParameter("importance")));
+    c.setTags(request.getParameter("tags"));
+    c.setCrise(Long.valueOf(String.valueOf(request.getParameter("crise"))));
+    Geometry geom = null;
+    if(request.getParameter("geometrie") != null){
+      Integer srid = 2154;
+      String[] coord = request.getParameter("geometrie").split(";");
+      srid = sridFromGeom(coord[0]);
+      geom = GeometryUtil.toGeometry(coord[1],srid);
+    }
 
     TypeCriseNatureEvenement tcn = context.select().from(TYPE_CRISE_NATURE_EVENEMENT)
-        .where(TYPE_CRISE_NATURE_EVENEMENT.ID.eq(Long.valueOf(String.valueOf(criseEventData.get("natureEvent")))))
+        .where(TYPE_CRISE_NATURE_EVENEMENT.ID.eq(Long.valueOf(String.valueOf(request.getParameter("natureEvent")))))
         .fetchInto(TypeCriseNatureEvenement.class).get(0);
     c.setNatureEvenement(tcn.getId());
-    int result = context.insertInto(CRISE_EVENEMENT, CRISE_EVENEMENT.NOM, CRISE_EVENEMENT.DESCRIPTION, CRISE_EVENEMENT.CONSTAT,
+    Date constat = df.parse(request.getParameter("constat"));
+    Instant t = new Instant(constat);
+    c.setConstat(t);
+    int result = context.insertInto(CRISE_EVENEMENT, CRISE_EVENEMENT.NOM, CRISE_EVENEMENT.GEOMETRIE, CRISE_EVENEMENT.DESCRIPTION, CRISE_EVENEMENT.CONSTAT,
         CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT)
-        .values(c.getNom(), c.getDescription(),c.getConstat(),c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement()).execute();
+        .values(c.getNom(), geom != null ? geom : null  ,  c.getDescription(),c.getConstat(),c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement()).execute();
     if(result!=0) {
       //on sélectionne la dernioère insertion
       Long idCriseEvent = context.select(DSL.max((CRISE_EVENEMENT.ID))).from(CRISE_EVENEMENT).fetchOne().value1();
 
+
+      // ajout des documents
+      criseRepository.addEventDocuments(files, c.getCrise(), idCriseEvent);
+
       context.update(CRISE_EVENEMENT)
           .set(row(CRISE_EVENEMENT.NOM)
               ,row(c.getNom()))
-          .where(CRISE_EVENEMENT.ID.eq(idCriseEvent)).execute();
+          .where(CRISE_EVENEMENT.ID.eq(Long.valueOf(idCriseEvent))).execute();
+
     }
 
     return c;
 
   }
 
+  public fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement updateEvent(Long id, MultipartHttpServletRequest request) throws ParseException {
+
+    Map<String, MultipartFile> files = request.getFileMap();
+    fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement c = new fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement();
+    c.setNom(request.getParameter("nom"));
+    c.setDescription(request.getParameter("description"));
+    Date constat = df.parse(request.getParameter("constat"));
+    Instant t = new Instant(constat);
+    c.setConstat(t);
+    c.setOrigine(request.getParameter("origine"));
+    c.setImportance(Integer.valueOf(request.getParameter("importance")));
+    c.setTags(request.getParameter("tags"));
+    c.setCrise(Long.valueOf(String.valueOf(request.getParameter("crise"))));
+
+    TypeCriseNatureEvenement tcn = context.select().from(TYPE_CRISE_NATURE_EVENEMENT)
+        .where(TYPE_CRISE_NATURE_EVENEMENT.ID.eq(Long.valueOf(String.valueOf(request.getParameter("natureEvent")))))
+        .fetchInto(TypeCriseNatureEvenement.class).get(0);
+    c.setNatureEvenement(tcn.getId());
+    Instant redefinition = new Instant();
+    c.setRedefinition(redefinition);
+    int result = context.update(CRISE_EVENEMENT).set(row( CRISE_EVENEMENT.NOM, CRISE_EVENEMENT.DESCRIPTION, CRISE_EVENEMENT.CONSTAT, CRISE_EVENEMENT.REDEFINITION,
+        CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT)
+        ,row(c.getNom(), c.getDescription(),c.getConstat(), c.getRedefinition(), c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement())).where(CRISE_EVENEMENT.ID.eq(id)).execute();
+
+    //TODO: mettre à jour les documents
+    return c;
+
+  }
 
   public CriseSuivi createMessage(String json) throws ParseException {
     Map<String, Object> criseMessageData = new JSONDeserializer<HashMap<String, Object>>().use(Date.class, RemocraDateHourTransformer.getInstance())
@@ -195,36 +282,6 @@ public class CriseEvenementRepository {
     return cs;
 
   }
-
-  public fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement updateEvent(Long id, String json) throws ParseException {
-    Map<String, Object> criseEventData = new JSONDeserializer<HashMap<String, Object>>().use(Date.class, RemocraDateHourTransformer.getInstance())
-        .use(Geometry.class, new GeometryFactory()).deserialize(json);
-
-    fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement c = new fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement();
-    c.setNom((String) criseEventData.get("nom"));
-    c.setDescription((String) criseEventData.get("description"));
-    Date constat = df.parse(String.valueOf(criseEventData.get("constat")));
-    Instant t = new Instant(constat);
-    c.setConstat(t);
-    c.setOrigine((String) criseEventData.get("origine"));
-    c.setImportance((Integer) criseEventData.get("importance"));
-    c.setTags((String) criseEventData.get("tags"));
-    c.setCrise(Long.valueOf(String.valueOf(criseEventData.get("crise"))));
-
-    TypeCriseNatureEvenement tcn = context.select().from(TYPE_CRISE_NATURE_EVENEMENT)
-        .where(TYPE_CRISE_NATURE_EVENEMENT.ID.eq(Long.valueOf(String.valueOf(criseEventData.get("natureEvent")))))
-        .fetchInto(TypeCriseNatureEvenement.class).get(0);
-    c.setNatureEvenement(tcn.getId());
-    Instant redefinition = new Instant();
-    c.setRedefinition(redefinition);
-    int result = context.update(CRISE_EVENEMENT).set(row( CRISE_EVENEMENT.NOM, CRISE_EVENEMENT.DESCRIPTION, CRISE_EVENEMENT.CONSTAT, CRISE_EVENEMENT.REDEFINITION,
-        CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT)
-        ,row(c.getNom(), c.getDescription(),c.getConstat(), c.getRedefinition(), c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement())).where(CRISE_EVENEMENT.ID.eq(id)).execute();
-
-    return c;
-
-  }
-
 
   public List<String> getCriseOrigines(Long idCrise, String query){
     Condition c = trueCondition();
@@ -331,6 +388,34 @@ public class CriseEvenementRepository {
     c = c.and(co).and(ct).and(cs).and(cp).and(cta).and(ci);
     return c;
   }
-  
+
+  public List<fr.sdis83.remocra.db.model.remocra.tables.pojos.Document> getDocuments(Long eventId){
+    List<fr.sdis83.remocra.db.model.remocra.tables.pojos.Document> l;
+    l = (context.select().from(DOCUMENT)
+        .where(DOCUMENT.ID.in(context.select(Tables.CRISE_DOCUMENT.DOCUMENT)
+            .from(Tables.CRISE_DOCUMENT).where(Tables.CRISE_DOCUMENT.EVENEMENT.eq(eventId)).fetchInto(Long.class)))).fetchInto(fr.sdis83.remocra.db.model.remocra.tables.pojos.Document.class);
+    return l;
+  }
+
+  public int countDocuments(Long eventId){
+
+    return context.fetchCount(context.select().from(DOCUMENT)
+        .where(DOCUMENT.ID.in(context.select(Tables.CRISE_DOCUMENT.DOCUMENT)
+            .from(Tables.CRISE_DOCUMENT).where(Tables.CRISE_DOCUMENT.EVENEMENT.eq(eventId)).fetchInto(Long.class))));
+  }
+
+  public void updateGeom(Long id, String wkt, int srid ) {
+    Instant redefinition = new Instant();
+    Geometry geom = GeometryUtil.toGeometry(wkt,srid);
+    Instant t = new Instant();
+    String sql = "update remocra.crise_evenement set geometrie = st_geomfromtext('"+geom+"',"+srid+") , redefinition ='"+new InstantConverter().to(t) +"' where id ="+id ;
+    context.fetch(sql);
+
+   /* context.update(CRISE_EVENEMENT)
+        .set(row(CRISE_EVENEMENT.GEOMETRIE, CRISE_EVENEMENT.REDEFINITION)
+              ,row( geom != null ? geom :null , redefinition))
+        .where(CRISE_EVENEMENT.ID.eq(id))
+        .execute();*/
+  }
 
 }

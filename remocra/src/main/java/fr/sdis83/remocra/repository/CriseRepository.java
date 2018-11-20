@@ -13,9 +13,7 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE_STATUT;
 import static fr.sdis83.remocra.db.model.remocra.tables.Document.DOCUMENT;
 import static org.jooq.impl.DSL.row;
-import static org.jooq.impl.DSL.select;
 
-import java.io.File;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -26,14 +24,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.activation.MimetypesFileTypeMap;
-import javax.mail.Multipart;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import com.google.common.io.Files;
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.OgcCouche;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlPlanificationParametre;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.RepertoireLieu;
@@ -42,7 +38,6 @@ import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.util.DocumentUtil;
-import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.deserialize.GeometryFactory;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.model.Crise;
@@ -53,7 +48,6 @@ import org.apache.log4j.Logger;
 import org.joda.time.Instant;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Query;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.impl.DSL;
@@ -63,7 +57,6 @@ import org.modelmapper.jooq.RecordValueReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.ResponseEntity;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -83,12 +76,13 @@ public class CriseRepository {
   @Autowired
   JpaTransactionManager transactionManager;
 
+  @PersistenceContext
+  private EntityManager entityManager;
+
   public CriseRepository() {
 
   }
 
-  @PersistenceContext
-  private EntityManager entityManager;
 
   @Bean
   public CriseRepository criseRepository(DSLContext context) {
@@ -470,6 +464,28 @@ public class CriseRepository {
             this.entityManager.persist(d);
             context.insertInto(CRISE_DOCUMENT, CRISE_DOCUMENT.SOUS_TYPE, CRISE_DOCUMENT.DOCUMENT, CRISE_DOCUMENT.CRISE)
             .values(getSousType(file),context.select(DSL.max((DOCUMENT.ID))).from(DOCUMENT).fetchOne().value1(),criseId).execute();
+            return 1;
+          } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+          }
+        }
+      }
+    }
+    return 0;
+  }
+
+
+
+  public int addEventDocuments(Map<String, MultipartFile> files, Long criseId, Long eventId) {
+    if (files != null && !files.isEmpty()) {
+      for (MultipartFile file : files.values()) {
+        if (!file.isEmpty()) {
+          try {
+            Document d = DocumentUtil.getInstance().createNonPersistedDocument(Document.TypeDocument.CRISE, file, paramConfService.getDossierDocCrise());
+            this.entityManager.persist(d);
+            context.insertInto(CriseDocument.CRISE_DOCUMENT, CriseDocument.CRISE_DOCUMENT.SOUS_TYPE, CriseDocument.CRISE_DOCUMENT.DOCUMENT, CriseDocument.CRISE_DOCUMENT.CRISE, CriseDocument.CRISE_DOCUMENT.EVENEMENT)
+                .values(getSousType(file),context.select(DSL.max((DOCUMENT.ID))).from(DOCUMENT).fetchOne().value1(),criseId,eventId).execute();
             return 1;
           } catch (Exception e) {
             e.printStackTrace();

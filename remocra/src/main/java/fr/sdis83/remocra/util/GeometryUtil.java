@@ -9,17 +9,6 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
-import org.cts.CRSFactory;
-import org.cts.IllegalCoordinateException;
-import org.cts.crs.CRSException;
-import org.cts.crs.CoordinateReferenceSystem;
-import org.cts.crs.GeodeticCRS;
-import org.cts.op.CoordinateOperation;
-import org.cts.op.CoordinateOperationFactory;
-import org.cts.registry.EPSGRegistry;
-import org.jboss.logging.Logger;
-
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -30,9 +19,18 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
-
+import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
 import fr.sdis83.remocra.domain.remocra.Commune;
 import fr.sdis83.remocra.exception.BusinessException;
+import org.cts.CRSFactory;
+import org.cts.IllegalCoordinateException;
+import org.cts.crs.CRSException;
+import org.cts.crs.CoordinateReferenceSystem;
+import org.cts.crs.GeodeticCRS;
+import org.cts.op.CoordinateOperation;
+import org.cts.op.CoordinateOperationFactory;
+import org.cts.registry.EPSGRegistry;
+import org.jboss.logging.Logger;
 
 public class GeometryUtil {
 
@@ -85,6 +83,10 @@ public class GeometryUtil {
 
     public static Integer sridFromEpsgCode(String coupleOrCode) {
         return Integer.valueOf(coupleOrCode.split(":")[1]);
+    }
+
+    public static Integer sridFromGeom(String coupleOrCode) {
+        return Integer.valueOf(coupleOrCode.split("=")[1]);
     }
 
     public static Geometry toGeometry(String wkt, Integer srid) {

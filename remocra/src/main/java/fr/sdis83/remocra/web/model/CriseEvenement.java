@@ -4,10 +4,13 @@ import java.util.List;
 
 import com.vividsolutions.jts.geom.Geometry;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseSuivi;
+import fr.sdis83.remocra.util.Featurable;
+import fr.sdis83.remocra.util.Feature;
+import org.hibernate.annotations.Formula;
 import org.joda.time.Instant;
 
 
-public class CriseEvenement {
+public class CriseEvenement implements Featurable {
 
 
   private Long id;
@@ -26,6 +29,12 @@ public class CriseEvenement {
 
   private String origine;
 
+  private String geoJsonGeometry;
+
+  private Long natureId;
+
+  private String natureNom;
+
   private Integer importance;
 
   private String tags;
@@ -33,7 +42,6 @@ public class CriseEvenement {
   private TypeCriseNatureEvenement typeCriseNatureEvenement;
 
   private List<CriseSuivi> criseSuivis;
-
 
   public Long getId() {
     return id;
@@ -129,5 +137,40 @@ public class CriseEvenement {
 
   public void setCriseSuivis(List<CriseSuivi> criseSuivis) {
     this.criseSuivis = criseSuivis;
+  }
+
+
+  @Override
+  public Feature toFeature() {
+    Feature feature = new Feature(this.id, this.getGeoJsonGeometry());
+    feature.addProperty("nom", this.getNom());
+    feature.addProperty("nature", this.getNatureId());
+    feature.addProperty("natureNom", this.getNatureNom());
+    feature.addProperty("creation", this.getConstat());
+    return feature;
+  }
+
+  public String getGeoJsonGeometry() {
+    return geoJsonGeometry;
+  }
+
+  public void setGeoJsonGeometry(String geoJsonGeometry) {
+    this.geoJsonGeometry = geoJsonGeometry;
+  }
+
+  public Long getNatureId() {
+    return natureId;
+  }
+
+  public void setNatureId(Long natureId) {
+    this.natureId = natureId;
+  }
+
+  public String getNatureNom() {
+    return natureNom;
+  }
+
+  public void setNatureNom(String natureNom) {
+    this.natureNom = natureNom;
   }
 }
