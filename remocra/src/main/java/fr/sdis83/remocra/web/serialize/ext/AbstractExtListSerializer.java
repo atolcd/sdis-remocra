@@ -6,7 +6,9 @@ import java.util.List;
 
 import javax.naming.AuthenticationException;
 
+import fr.sdis83.remocra.domain.utils.RemocraInstantTransformer;
 import org.apache.log4j.Logger;
+import org.joda.time.Instant;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,10 +62,16 @@ public abstract class AbstractExtListSerializer<T> {
         }
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Content-Type", "application/json;charset=utf-8");
-        return new ResponseEntity<String>(additionnalIncludeExclude(
-                new JSONSerializer().exclude("*.class").exclude("*.password").exclude("*.salt").transform(new GeometryTransformer(), Geometry.class)).transform(
-                RemocraDateHourTransformer.getInstance(), Date.class).serialize(response), responseHeaders, returnStatus);
+        return new ResponseEntity<String>(getJsonSerializer() .serialize(response), responseHeaders, returnStatus);
+
     }
+
+    protected JSONSerializer getJsonSerializer() {
+        return additionnalIncludeExclude(
+            new JSONSerializer().exclude("*.class").exclude("*.password").exclude("*.salt").transform(new GeometryTransformer(), Geometry.class)).transform(
+            RemocraDateHourTransformer.getInstance(), Date.class).transform(new RemocraInstantTransformer(), Instant.class);
+        }
+
 
     protected abstract List<T> getRecords() throws BusinessException, AuthenticationException;
 

@@ -16,6 +16,14 @@ import fr.sdis83.remocra.db.model.remocra.tables.CadastreSection;
 import fr.sdis83.remocra.db.model.remocra.tables.Commune;
 import fr.sdis83.remocra.db.model.remocra.tables.CourrierDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.CourrierModele;
+import fr.sdis83.remocra.db.model.remocra.tables.Crise;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseCommune;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseDocument;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseEvenement;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseEvenementComplement;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseRepertoireLieu;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseSuivi;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseSuiviMessageModele;
 import fr.sdis83.remocra.db.model.remocra.tables.DdeMdp;
 import fr.sdis83.remocra.db.model.remocra.tables.DelegationDeci;
 import fr.sdis83.remocra.db.model.remocra.tables.DepotDocument;
@@ -34,6 +42,9 @@ import fr.sdis83.remocra.db.model.remocra.tables.HydrantPibi;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPrescrit;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantTournees;
 import fr.sdis83.remocra.db.model.remocra.tables.Metadonnee;
+import fr.sdis83.remocra.db.model.remocra.tables.OgcCouche;
+import fr.sdis83.remocra.db.model.remocra.tables.OgcService;
+import fr.sdis83.remocra.db.model.remocra.tables.OgcSource;
 import fr.sdis83.remocra.db.model.remocra.tables.Oldeb;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebCaracteristique;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebLocataire;
@@ -47,12 +58,22 @@ import fr.sdis83.remocra.db.model.remocra.tables.Organisme;
 import fr.sdis83.remocra.db.model.remocra.tables.ParamConf;
 import fr.sdis83.remocra.db.model.remocra.tables.Permis;
 import fr.sdis83.remocra.db.model.remocra.tables.PermisDocument;
+import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtl;
+import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlDocument;
+import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlModele;
+import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlModeleDroit;
+import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlModeleParametre;
+import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlParametre;
+import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlPlanification;
+import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlPlanificationParametre;
+import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlStatut;
 import fr.sdis83.remocra.db.model.remocra.tables.ProfilDroit;
 import fr.sdis83.remocra.db.model.remocra.tables.ProfilOrganisme;
 import fr.sdis83.remocra.db.model.remocra.tables.ProfilOrganismeUtilisateurDroit;
 import fr.sdis83.remocra.db.model.remocra.tables.ProfilUtilisateur;
 import fr.sdis83.remocra.db.model.remocra.tables.Rci;
 import fr.sdis83.remocra.db.model.remocra.tables.RciDocument;
+import fr.sdis83.remocra.db.model.remocra.tables.RepertoireLieu;
 import fr.sdis83.remocra.db.model.remocra.tables.RequeteModele;
 import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleDroit;
 import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleParametre;
@@ -65,6 +86,14 @@ import fr.sdis83.remocra.db.model.remocra.tables.Thematique;
 import fr.sdis83.remocra.db.model.remocra.tables.Tournee;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeAlerteAno;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeAlerteElt;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeCrise;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseCategorieEvenement;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseContexte;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseEvenementCrise;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseEvenementDroit;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseNatureEvenement;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseProprieteEvenement;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseStatut;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeDroit;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantAnomalie;
@@ -183,6 +212,46 @@ public class Tables {
 	public static final CourrierModele COURRIER_MODELE = fr.sdis83.remocra.db.model.remocra.tables.CourrierModele.COURRIER_MODELE;
 
 	/**
+	 * Gestion de crise : Episode de crise pour lequelles des informations ont été saisies dans REMOCRA
+	 */
+	public static final Crise CRISE = fr.sdis83.remocra.db.model.remocra.tables.Crise.CRISE;
+
+	/**
+	 * Gestion de crise : commune associée à un épisode de crise. Permet de définir un teritoire impacté. Les mises à jours de communes sont traçées sous formes d'évènements spécifiques
+	 */
+	public static final CriseCommune CRISE_COMMUNE = fr.sdis83.remocra.db.model.remocra.tables.CriseCommune.CRISE_COMMUNE;
+
+	/**
+	 * Document associé à une crise de manière générale ou à un évènemement survenu lors d'une crise
+	 */
+	public static final CriseDocument CRISE_DOCUMENT = fr.sdis83.remocra.db.model.remocra.tables.CriseDocument.CRISE_DOCUMENT;
+
+	/**
+	 * Evènement associé à une crise. Route inondée sur la RD 84 à la position ....
+	 */
+	public static final CriseEvenement CRISE_EVENEMENT = fr.sdis83.remocra.db.model.remocra.tables.CriseEvenement.CRISE_EVENEMENT;
+
+	/**
+	 * Information complémentaire (attribut) attachée à un événement d'une nature spécifique
+	 */
+	public static final CriseEvenementComplement CRISE_EVENEMENT_COMPLEMENT = fr.sdis83.remocra.db.model.remocra.tables.CriseEvenementComplement.CRISE_EVENEMENT_COMPLEMENT;
+
+	/**
+	 * Gestion de crise : répertoire de lieux mobilisable dans le cadre d'une action "zoomer sur..". Associé à un épisode de crise
+	 */
+	public static final CriseRepertoireLieu CRISE_REPERTOIRE_LIEU = fr.sdis83.remocra.db.model.remocra.tables.CriseRepertoireLieu.CRISE_REPERTOIRE_LIEU;
+
+	/**
+	 * Message de suivi lié à une crise ou à un évènement. Le message peut être créé directement et manuellement par un utilisateur ou de manière indirecte par le système suite à une action dans REMOCRA (ex : mise à jour des attributs d'un évènement, ajout d'un document, création d'une carte horodatée, etc.
+	 */
+	public static final CriseSuivi CRISE_SUIVI = fr.sdis83.remocra.db.model.remocra.tables.CriseSuivi.CRISE_SUIVI;
+
+	/**
+	 * Gestion de crise : modèle de message à utiliser pour le suivi de crise. Utilisé notament par REMOCRA dans le cadre de la création automatique de messages suite à des actions utilisateurs
+	 */
+	public static final CriseSuiviMessageModele CRISE_SUIVI_MESSAGE_MODELE = fr.sdis83.remocra.db.model.remocra.tables.CriseSuiviMessageModele.CRISE_SUIVI_MESSAGE_MODELE;
+
+	/**
 	 * The table remocra.dde_mdp
 	 */
 	public static final DdeMdp DDE_MDP = fr.sdis83.remocra.db.model.remocra.tables.DdeMdp.DDE_MDP;
@@ -273,6 +342,21 @@ public class Tables {
 	public static final Metadonnee METADONNEE = fr.sdis83.remocra.db.model.remocra.tables.Metadonnee.METADONNEE;
 
 	/**
+	 * Couche de donnée mobilisable sur un serveur de données OGC pour un protocole (service) donné
+	 */
+	public static final OgcCouche OGC_COUCHE = fr.sdis83.remocra.db.model.remocra.tables.OgcCouche.OGC_COUCHE;
+
+	/**
+	 * Service de données mobilisable sur un serveur OGC
+	 */
+	public static final OgcService OGC_SERVICE = fr.sdis83.remocra.db.model.remocra.tables.OgcService.OGC_SERVICE;
+
+	/**
+	 * Serveur de données géographique interrogeable à la norme OGC
+	 */
+	public static final OgcSource OGC_SOURCE = fr.sdis83.remocra.db.model.remocra.tables.OgcSource.OGC_SOURCE;
+
+	/**
 	 * Informations relatives à une parcelle sousmise à une obligation légale de débroussaillement
 	 */
 	public static final Oldeb OLDEB = fr.sdis83.remocra.db.model.remocra.tables.Oldeb.OLDEB;
@@ -338,6 +422,51 @@ public class Tables {
 	public static final PermisDocument PERMIS_DOCUMENT = fr.sdis83.remocra.db.model.remocra.tables.PermisDocument.PERMIS_DOCUMENT;
 
 	/**
+	 * Demande d'exécution d'un processus ETL dans le cadre d'une tâche planifiée ou d'une action d'un utilisateur
+	 */
+	public static final ProcessusEtl PROCESSUS_ETL = fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtl.PROCESSUS_ETL;
+
+	/**
+	 * Document généré par un processus ETL et mis à disposition d'un destinataire
+	 */
+	public static final ProcessusEtlDocument PROCESSUS_ETL_DOCUMENT = fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlDocument.PROCESSUS_ETL_DOCUMENT;
+
+	/**
+	 * Modèle de processus ETL PDI mobilisable sous forme de tâche planifiée ou à la demande d'un utilisateur via l'interface REMOCRA
+	 */
+	public static final ProcessusEtlModele PROCESSUS_ETL_MODELE = fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlModele.PROCESSUS_ETL_MODELE;
+
+	/**
+	 * Profil de droit autorisé pour executer un processus ETL
+	 */
+	public static final ProcessusEtlModeleDroit PROCESSUS_ETL_MODELE_DROIT = fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlModeleDroit.PROCESSUS_ETL_MODELE_DROIT;
+
+	/**
+	 * Paramètre associé à un modèle de requête
+	 */
+	public static final ProcessusEtlModeleParametre PROCESSUS_ETL_MODELE_PARAMETRE = fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlModeleParametre.PROCESSUS_ETL_MODELE_PARAMETRE;
+
+	/**
+	 * Valeur de paramètre renseigné lors d'une demande de processus
+	 */
+	public static final ProcessusEtlParametre PROCESSUS_ETL_PARAMETRE = fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlParametre.PROCESSUS_ETL_PARAMETRE;
+
+	/**
+	 * Planification d'un processus ETL. Une demande de processus est automatiquement créée par le planificateur
+	 */
+	public static final ProcessusEtlPlanification PROCESSUS_ETL_PLANIFICATION = fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlPlanification.PROCESSUS_ETL_PLANIFICATION;
+
+	/**
+	 * Valeur de paramètre par défaut à utiliser lors d'une demande de processus planifié
+	 */
+	public static final ProcessusEtlPlanificationParametre PROCESSUS_ETL_PLANIFICATION_PARAMETRE = fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlPlanificationParametre.PROCESSUS_ETL_PLANIFICATION_PARAMETRE;
+
+	/**
+	 * Statut associé à une demande de processus ETL
+	 */
+	public static final ProcessusEtlStatut PROCESSUS_ETL_STATUT = fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlStatut.PROCESSUS_ETL_STATUT;
+
+	/**
 	 * The table remocra.profil_droit
 	 */
 	public static final ProfilDroit PROFIL_DROIT = fr.sdis83.remocra.db.model.remocra.tables.ProfilDroit.PROFIL_DROIT;
@@ -366,6 +495,11 @@ public class Tables {
 	 * The table remocra.rci_document
 	 */
 	public static final RciDocument RCI_DOCUMENT = fr.sdis83.remocra.db.model.remocra.tables.RciDocument.RCI_DOCUMENT;
+
+	/**
+	 * Répertoire de lieu. Un répertoire de lieu constitue une source de données géographique dont l'ensemble de données est représenté par une instruction SQL permettant de se localiser facilement dans REMOCRA
+	 */
+	public static final RepertoireLieu REPERTOIRE_LIEU = fr.sdis83.remocra.db.model.remocra.tables.RepertoireLieu.REPERTOIRE_LIEU;
 
 	/**
 	 * Modèle de requête exploité par REMOCRA
@@ -426,6 +560,46 @@ public class Tables {
 	 * The table remocra.type_alerte_elt
 	 */
 	public static final TypeAlerteElt TYPE_ALERTE_ELT = fr.sdis83.remocra.db.model.remocra.tables.TypeAlerteElt.TYPE_ALERTE_ELT;
+
+	/**
+	 * Gestion de crise : Type de crise géré par REMOCRA
+	 */
+	public static final TypeCrise TYPE_CRISE = fr.sdis83.remocra.db.model.remocra.tables.TypeCrise.TYPE_CRISE;
+
+	/**
+	 * Gestion de crise : Catégorie d'évènement (Réseau routier, Hébergement, Secours à la personne, Zones inondées, etc. 
+	 */
+	public static final TypeCriseCategorieEvenement TYPE_CRISE_CATEGORIE_EVENEMENT = fr.sdis83.remocra.db.model.remocra.tables.TypeCriseCategorieEvenement.TYPE_CRISE_CATEGORIE_EVENEMENT;
+
+	/**
+	 * Gestion de crise : Type de contexte dans lequel est géré la crise. Deux contextes cohabitent simultanément pour chaque épisode : "Opérationnel" et "Anticipation". Les données cartographiques associées peuvent varier en fonction du contexte de même que les types d'évenements à renseigner
+	 */
+	public static final TypeCriseContexte TYPE_CRISE_CONTEXTE = fr.sdis83.remocra.db.model.remocra.tables.TypeCriseContexte.TYPE_CRISE_CONTEXTE;
+
+	/**
+	 * Catégorie d'evènement mobilisable pour un type de crise
+	 */
+	public static final TypeCriseEvenementCrise TYPE_CRISE_EVENEMENT_CRISE = fr.sdis83.remocra.db.model.remocra.tables.TypeCriseEvenementCrise.TYPE_CRISE_EVENEMENT_CRISE;
+
+	/**
+	 * Profil de droit autorisé pour accéder à la catégorie d'évènement en création
+	 */
+	public static final TypeCriseEvenementDroit TYPE_CRISE_EVENEMENT_DROIT = fr.sdis83.remocra.db.model.remocra.tables.TypeCriseEvenementDroit.TYPE_CRISE_EVENEMENT_DROIT;
+
+	/**
+	 * Gestion de crise : Nature de l'évènement attaché à une catégorie (Ex:"Route barrée" pour la catégorie "Réseau routier")
+	 */
+	public static final TypeCriseNatureEvenement TYPE_CRISE_NATURE_EVENEMENT = fr.sdis83.remocra.db.model.remocra.tables.TypeCriseNatureEvenement.TYPE_CRISE_NATURE_EVENEMENT;
+
+	/**
+	 * Propriété complémentaire pouvant être renseigné lors de la création ou de la modification d'un évènement 
+	 */
+	public static final TypeCriseProprieteEvenement TYPE_CRISE_PROPRIETE_EVENEMENT = fr.sdis83.remocra.db.model.remocra.tables.TypeCriseProprieteEvenement.TYPE_CRISE_PROPRIETE_EVENEMENT;
+
+	/**
+	 * Gestion de crise : Statut associé à une crise. Le statut conditionne les actions réalisables via REMOCRA
+	 */
+	public static final TypeCriseStatut TYPE_CRISE_STATUT = fr.sdis83.remocra.db.model.remocra.tables.TypeCriseStatut.TYPE_CRISE_STATUT;
 
 	/**
 	 * The table remocra.type_droit

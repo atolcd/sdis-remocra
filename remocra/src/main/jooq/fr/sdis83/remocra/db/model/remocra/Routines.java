@@ -13,9 +13,7 @@ import fr.sdis83.remocra.db.model.remocra.routines.Nextnumerointerne;
 import fr.sdis83.remocra.db.model.remocra.routines.SoundexFr;
 import fr.sdis83.remocra.db.model.remocra.routines.TrgCalculDebitPression;
 import fr.sdis83.remocra.db.model.remocra.routines.TrgCalculIndispo;
-import fr.sdis83.remocra.db.model.remocra.routines.TrgHydrantTournee;
 import fr.sdis83.remocra.db.model.remocra.routines.UpdateAllIndispo;
-import fr.sdis83.remocra.db.model.remocra.routines.Updateinfotournee;
 
 import javax.annotation.Generated;
 
@@ -265,25 +263,6 @@ public class Routines {
 	}
 
 	/**
-	 * Call <code>remocra.trg_hydrant_tournee</code>
-	 */
-	public static Object trgHydrantTournee(Configuration configuration) {
-		TrgHydrantTournee f = new TrgHydrantTournee();
-
-		f.execute(configuration);
-		return f.getReturnValue();
-	}
-
-	/**
-	 * Get <code>remocra.trg_hydrant_tournee</code> as a field
-	 */
-	public static Field<Object> trgHydrantTournee() {
-		TrgHydrantTournee f = new TrgHydrantTournee();
-
-		return f.asField();
-	}
-
-	/**
 	 * Call <code>remocra.update_all_indispo</code>
 	 */
 	public static String updateAllIndispo(Configuration configuration) {
@@ -300,15 +279,5 @@ public class Routines {
 		UpdateAllIndispo f = new UpdateAllIndispo();
 
 		return f.asField();
-	}
-
-	/**
-	 * Call <code>remocra.updateinfotournee</code>
-	 */
-	public static void updateinfotournee(Configuration configuration, Long __1) {
-		Updateinfotournee p = new Updateinfotournee();
-		p.set__1(__1);
-
-		p.execute(configuration);
 	}
 }

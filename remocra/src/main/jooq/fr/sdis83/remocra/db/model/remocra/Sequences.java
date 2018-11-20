@@ -76,6 +76,36 @@ public class Sequences {
 	public static final Sequence<Long> COURRIER_MODELE_ID_SEQ = new SequenceImpl<Long>("courrier_modele_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
+	 * The sequence <code>remocra.crise_document_id_seq</code>
+	 */
+	public static final Sequence<Long> CRISE_DOCUMENT_ID_SEQ = new SequenceImpl<Long>("crise_document_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.crise_evenement_complement_id_seq</code>
+	 */
+	public static final Sequence<Long> CRISE_EVENEMENT_COMPLEMENT_ID_SEQ = new SequenceImpl<Long>("crise_evenement_complement_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.crise_evenement_id_seq</code>
+	 */
+	public static final Sequence<Long> CRISE_EVENEMENT_ID_SEQ = new SequenceImpl<Long>("crise_evenement_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.crise_id_seq</code>
+	 */
+	public static final Sequence<Long> CRISE_ID_SEQ = new SequenceImpl<Long>("crise_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.crise_suivi_id_seq</code>
+	 */
+	public static final Sequence<Long> CRISE_SUIVI_ID_SEQ = new SequenceImpl<Long>("crise_suivi_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.crise_suivi_message_modele_id_seq</code>
+	 */
+	public static final Sequence<Long> CRISE_SUIVI_MESSAGE_MODELE_ID_SEQ = new SequenceImpl<Long>("crise_suivi_message_modele_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
 	 * The sequence <code>remocra.dde_mdp_id_seq</code>
 	 */
 	public static final Sequence<Long> DDE_MDP_ID_SEQ = new SequenceImpl<Long>("dde_mdp_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
@@ -139,10 +169,26 @@ public class Sequences {
 	 * The sequence <code>remocra.hydrant_tournees_id_seq</code>
 	 */
 	public static final Sequence<Long> HYDRANT_TOURNEES_ID_SEQ = new SequenceImpl<Long>("hydrant_tournees_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
 	/**
 	 * The sequence <code>remocra.metadonnee_id_seq</code>
 	 */
 	public static final Sequence<Long> METADONNEE_ID_SEQ = new SequenceImpl<Long>("metadonnee_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.ogc_couche_id_seq</code>
+	 */
+	public static final Sequence<Long> OGC_COUCHE_ID_SEQ = new SequenceImpl<Long>("ogc_couche_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.ogc_service_id_seq</code>
+	 */
+	public static final Sequence<Long> OGC_SERVICE_ID_SEQ = new SequenceImpl<Long>("ogc_service_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.ogc_source_id_seq</code>
+	 */
+	public static final Sequence<Long> OGC_SOURCE_ID_SEQ = new SequenceImpl<Long>("ogc_source_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
 	 * The sequence <code>remocra.oldeb_id_seq</code>
@@ -195,6 +241,36 @@ public class Sequences {
 	public static final Sequence<Long> PERMIS_ID_SEQ = new SequenceImpl<Long>("permis_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
+	 * The sequence <code>remocra.processus_etl_document_id_seq</code>
+	 */
+	public static final Sequence<Long> PROCESSUS_ETL_DOCUMENT_ID_SEQ = new SequenceImpl<Long>("processus_etl_document_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.processus_etl_id_seq</code>
+	 */
+	public static final Sequence<Long> PROCESSUS_ETL_ID_SEQ = new SequenceImpl<Long>("processus_etl_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.processus_etl_modele_id_seq</code>
+	 */
+	public static final Sequence<Long> PROCESSUS_ETL_MODELE_ID_SEQ = new SequenceImpl<Long>("processus_etl_modele_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.processus_etl_modele_parametre_id_seq</code>
+	 */
+	public static final Sequence<Long> PROCESSUS_ETL_MODELE_PARAMETRE_ID_SEQ = new SequenceImpl<Long>("processus_etl_modele_parametre_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.processus_etl_planification_id_seq</code>
+	 */
+	public static final Sequence<Long> PROCESSUS_ETL_PLANIFICATION_ID_SEQ = new SequenceImpl<Long>("processus_etl_planification_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.processus_etl_statut_id_seq</code>
+	 */
+	public static final Sequence<Long> PROCESSUS_ETL_STATUT_ID_SEQ = new SequenceImpl<Long>("processus_etl_statut_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
 	 * The sequence <code>remocra.profil_droit_id_seq</code>
 	 */
 	public static final Sequence<Long> PROFIL_DROIT_ID_SEQ = new SequenceImpl<Long>("profil_droit_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
@@ -223,6 +299,11 @@ public class Sequences {
 	 * The sequence <code>remocra.rci_id_seq</code>
 	 */
 	public static final Sequence<Long> RCI_ID_SEQ = new SequenceImpl<Long>("rci_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.repertoire_lieu_id_seq</code>
+	 */
+	public static final Sequence<Long> REPERTOIRE_LIEU_ID_SEQ = new SequenceImpl<Long>("repertoire_lieu_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
 	 * The sequence <code>remocra.requete_modele_id_seq</code>
@@ -273,6 +354,36 @@ public class Sequences {
 	 * The sequence <code>remocra.type_alerte_elt_id_seq</code>
 	 */
 	public static final Sequence<Long> TYPE_ALERTE_ELT_ID_SEQ = new SequenceImpl<Long>("type_alerte_elt_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.type_crise_categorie_evenement_id_seq</code>
+	 */
+	public static final Sequence<Long> TYPE_CRISE_CATEGORIE_EVENEMENT_ID_SEQ = new SequenceImpl<Long>("type_crise_categorie_evenement_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.type_crise_contexte_id_seq</code>
+	 */
+	public static final Sequence<Long> TYPE_CRISE_CONTEXTE_ID_SEQ = new SequenceImpl<Long>("type_crise_contexte_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.type_crise_id_seq</code>
+	 */
+	public static final Sequence<Long> TYPE_CRISE_ID_SEQ = new SequenceImpl<Long>("type_crise_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.type_crise_nature_evenement_id_seq</code>
+	 */
+	public static final Sequence<Long> TYPE_CRISE_NATURE_EVENEMENT_ID_SEQ = new SequenceImpl<Long>("type_crise_nature_evenement_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.type_crise_propriete_evenement_id_seq</code>
+	 */
+	public static final Sequence<Long> TYPE_CRISE_PROPRIETE_EVENEMENT_ID_SEQ = new SequenceImpl<Long>("type_crise_propriete_evenement_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.type_crise_statut_id_seq</code>
+	 */
+	public static final Sequence<Long> TYPE_CRISE_STATUT_ID_SEQ = new SequenceImpl<Long>("type_crise_statut_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
 	 * The sequence <code>remocra.type_droit_id_seq</code>

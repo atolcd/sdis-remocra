@@ -782,6 +782,17 @@ Affichage de toute la légende
 .cogIcon {
 	background-image:url('../../images/remocra/cartes/cog.png');
 }
+.connectIcon {
+	background-image:url('../../images/remocra/cartes/connect.png');
+}
+
+.diskIcon {
+	background-image:url('../../images/remocra/cartes/disk.png');
+}
+
+.openIcon {
+	background-image:url('../../images/remocra/cartes/folder-open.gif');
+}
 
 .remocraControlLayerSwitcher {
     position: absolute;
@@ -1281,7 +1292,6 @@ body.x-ie .x-btn-default-toolbar-small-icon-text-left .x-btn-inner {
     background: lightgrey;
 }
 
-
 .listHydrant {
     overflow-y:scroll;
     height:55px;
@@ -1298,3 +1308,8 @@ tr[class*="anomalie-"]:not([class*="anomalie-hbe-"]) > td:nth-child(2) {
 tr[class*="anomalie-hbe-"] > td:nth-child(2) {
     text-decoration: underline;
 }
+
+.qtip-commune-crise {
+   background-color: #E2FFF9;
+}
+

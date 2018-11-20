@@ -88,6 +88,12 @@ public class TypeDroit {
         OLDEB_U("obligation.debroussaillement_U"),
         OLDEB_D("obligation.debroussaillement_D"),
 
+        // Module Crise
+        CRISE_R("crise_R"),
+        CRISE_C("crise_C"),
+        CRISE_U("crise_U"),
+        CRISE_D("crise_D"),
+
         // Module Cartographie
         CARTOGRAPHIES_C("cartographies_C");
 

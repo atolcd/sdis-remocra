@@ -12,6 +12,7 @@ services:
         POSTGRES_USER: postgres
         POSTGRES_DB: remocra
         POSTGRES_PASSWORD: postgres
+        TZ: "Europe/Paris"
       network_mode: bridge
       logging:
         options:

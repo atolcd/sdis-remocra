@@ -33,6 +33,7 @@ drop function versionnement_dffd4df4df();
 --------------------------------------------------
 -- Contenu réel du patch début
 
+
 DROP TABLE IF EXISTS remocra.zone_competence_commune;
 CREATE TABLE remocra.zone_competence_commune AS
 SELECT
@@ -52,6 +53,7 @@ ORDER BY
     commune_id;
 CREATE INDEX zone_competence_commune_zone_competence_idx ON remocra.zone_competence_commune USING btree (zone_competence_id);
 CREATE INDEX zone_competence_commune_commune_idx ON remocra.zone_competence_commune USING btree (commune_id);
+
 
 -- Contenu réel du patch fin
 --------------------------------------------------

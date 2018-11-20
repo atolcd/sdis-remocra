@@ -28,9 +28,11 @@ public class Commune {
 
     @NotNull
     @Size(max = 5, min = 5)
+    @Column(name = "insee")
     private String insee;
 
     @NotNull
+    @Column(name = "nom")
     private String nom;
 
     @NotNull
@@ -42,7 +44,7 @@ public class Commune {
 
 
     @NotNull
-    @Column(columnDefinition = "boolean default false")
+    @Column(columnDefinition = "boolean default false", name ="pprif")
     private Boolean pprif;
 
     @Column

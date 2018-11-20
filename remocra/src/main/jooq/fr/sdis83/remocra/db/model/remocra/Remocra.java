@@ -17,6 +17,14 @@ import fr.sdis83.remocra.db.model.remocra.tables.CadastreSection;
 import fr.sdis83.remocra.db.model.remocra.tables.Commune;
 import fr.sdis83.remocra.db.model.remocra.tables.CourrierDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.CourrierModele;
+import fr.sdis83.remocra.db.model.remocra.tables.Crise;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseCommune;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseDocument;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseEvenement;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseEvenementComplement;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseRepertoireLieu;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseSuivi;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseSuiviMessageModele;
 import fr.sdis83.remocra.db.model.remocra.tables.DdeMdp;
 import fr.sdis83.remocra.db.model.remocra.tables.DelegationDeci;
 import fr.sdis83.remocra.db.model.remocra.tables.DepotDocument;
@@ -35,6 +43,9 @@ import fr.sdis83.remocra.db.model.remocra.tables.HydrantPibi;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPrescrit;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantTournees;
 import fr.sdis83.remocra.db.model.remocra.tables.Metadonnee;
+import fr.sdis83.remocra.db.model.remocra.tables.OgcCouche;
+import fr.sdis83.remocra.db.model.remocra.tables.OgcService;
+import fr.sdis83.remocra.db.model.remocra.tables.OgcSource;
 import fr.sdis83.remocra.db.model.remocra.tables.Oldeb;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebCaracteristique;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebLocataire;
@@ -48,12 +59,22 @@ import fr.sdis83.remocra.db.model.remocra.tables.Organisme;
 import fr.sdis83.remocra.db.model.remocra.tables.ParamConf;
 import fr.sdis83.remocra.db.model.remocra.tables.Permis;
 import fr.sdis83.remocra.db.model.remocra.tables.PermisDocument;
+import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtl;
+import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlDocument;
+import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlModele;
+import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlModeleDroit;
+import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlModeleParametre;
+import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlParametre;
+import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlPlanification;
+import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlPlanificationParametre;
+import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlStatut;
 import fr.sdis83.remocra.db.model.remocra.tables.ProfilDroit;
 import fr.sdis83.remocra.db.model.remocra.tables.ProfilOrganisme;
 import fr.sdis83.remocra.db.model.remocra.tables.ProfilOrganismeUtilisateurDroit;
 import fr.sdis83.remocra.db.model.remocra.tables.ProfilUtilisateur;
 import fr.sdis83.remocra.db.model.remocra.tables.Rci;
 import fr.sdis83.remocra.db.model.remocra.tables.RciDocument;
+import fr.sdis83.remocra.db.model.remocra.tables.RepertoireLieu;
 import fr.sdis83.remocra.db.model.remocra.tables.RequeteModele;
 import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleDroit;
 import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleParametre;
@@ -66,6 +87,14 @@ import fr.sdis83.remocra.db.model.remocra.tables.Thematique;
 import fr.sdis83.remocra.db.model.remocra.tables.Tournee;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeAlerteAno;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeAlerteElt;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeCrise;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseCategorieEvenement;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseContexte;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseEvenementCrise;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseEvenementDroit;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseNatureEvenement;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseProprieteEvenement;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseStatut;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeDroit;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantAnomalie;
@@ -164,6 +193,12 @@ public class Remocra extends SchemaImpl {
 			Sequences.COMMUNE_ID_SEQ,
 			Sequences.COURRIER_DOCUMENT_ID_SEQ,
 			Sequences.COURRIER_MODELE_ID_SEQ,
+			Sequences.CRISE_DOCUMENT_ID_SEQ,
+			Sequences.CRISE_EVENEMENT_COMPLEMENT_ID_SEQ,
+			Sequences.CRISE_EVENEMENT_ID_SEQ,
+			Sequences.CRISE_ID_SEQ,
+			Sequences.CRISE_SUIVI_ID_SEQ,
+			Sequences.CRISE_SUIVI_MESSAGE_MODELE_ID_SEQ,
 			Sequences.DDE_MDP_ID_SEQ,
 			Sequences.DEPOT_DOCUMENT_ID_SEQ,
 			Sequences.DOCUMENT_ID_SEQ,
@@ -178,6 +213,9 @@ public class Remocra extends SchemaImpl {
 			Sequences.HYDRANT_PRESCRIT_ID_SEQ,
 			Sequences.HYDRANT_TOURNEES_ID_SEQ,
 			Sequences.METADONNEE_ID_SEQ,
+			Sequences.OGC_COUCHE_ID_SEQ,
+			Sequences.OGC_SERVICE_ID_SEQ,
+			Sequences.OGC_SOURCE_ID_SEQ,
 			Sequences.OLDEB_ID_SEQ,
 			Sequences.OLDEB_LOCATAIRE_ID_SEQ,
 			Sequences.OLDEB_PROPRIETAIRE_ID_SEQ,
@@ -188,12 +226,19 @@ public class Remocra extends SchemaImpl {
 			Sequences.ORGANISME_ID_SEQ,
 			Sequences.PERMIS_DOCUMENT_ID_SEQ,
 			Sequences.PERMIS_ID_SEQ,
+			Sequences.PROCESSUS_ETL_DOCUMENT_ID_SEQ,
+			Sequences.PROCESSUS_ETL_ID_SEQ,
+			Sequences.PROCESSUS_ETL_MODELE_ID_SEQ,
+			Sequences.PROCESSUS_ETL_MODELE_PARAMETRE_ID_SEQ,
+			Sequences.PROCESSUS_ETL_PLANIFICATION_ID_SEQ,
+			Sequences.PROCESSUS_ETL_STATUT_ID_SEQ,
 			Sequences.PROFIL_DROIT_ID_SEQ,
 			Sequences.PROFIL_ORGANISME_ID_SEQ,
 			Sequences.PROFIL_ORGANISME_UTILISATEUR_DROIT_ID_SEQ,
 			Sequences.PROFIL_UTILISATEUR_ID_SEQ,
 			Sequences.RCI_DOCUMENT_ID_SEQ,
 			Sequences.RCI_ID_SEQ,
+			Sequences.REPERTOIRE_LIEU_ID_SEQ,
 			Sequences.REQUETE_MODELE_ID_SEQ,
 			Sequences.REQUETE_MODELE_PARAMETRE_ID_SEQ,
 			Sequences.REQUETE_MODELE_SELECTION_DETAIL_ID_SEQ,
@@ -204,6 +249,12 @@ public class Remocra extends SchemaImpl {
 			Sequences.TOURNEE_ID_SEQ,
 			Sequences.TYPE_ALERTE_ANO_ID_SEQ,
 			Sequences.TYPE_ALERTE_ELT_ID_SEQ,
+			Sequences.TYPE_CRISE_CATEGORIE_EVENEMENT_ID_SEQ,
+			Sequences.TYPE_CRISE_CONTEXTE_ID_SEQ,
+			Sequences.TYPE_CRISE_ID_SEQ,
+			Sequences.TYPE_CRISE_NATURE_EVENEMENT_ID_SEQ,
+			Sequences.TYPE_CRISE_PROPRIETE_EVENEMENT_ID_SEQ,
+			Sequences.TYPE_CRISE_STATUT_ID_SEQ,
 			Sequences.TYPE_DROIT_ID_SEQ,
 			Sequences.TYPE_HYDRANT_ANOMALIE_ID_SEQ,
 			Sequences.TYPE_HYDRANT_ANOMALIE_NATURE_ID_SEQ,
@@ -265,6 +316,14 @@ public class Remocra extends SchemaImpl {
 			Commune.COMMUNE,
 			CourrierDocument.COURRIER_DOCUMENT,
 			CourrierModele.COURRIER_MODELE,
+			Crise.CRISE,
+			CriseCommune.CRISE_COMMUNE,
+			CriseDocument.CRISE_DOCUMENT,
+			CriseEvenement.CRISE_EVENEMENT,
+			CriseEvenementComplement.CRISE_EVENEMENT_COMPLEMENT,
+			CriseRepertoireLieu.CRISE_REPERTOIRE_LIEU,
+			CriseSuivi.CRISE_SUIVI,
+			CriseSuiviMessageModele.CRISE_SUIVI_MESSAGE_MODELE,
 			DdeMdp.DDE_MDP,
 			DelegationDeci.DELEGATION_DECI,
 			DepotDocument.DEPOT_DOCUMENT,
@@ -283,6 +342,9 @@ public class Remocra extends SchemaImpl {
 			HydrantPrescrit.HYDRANT_PRESCRIT,
 			HydrantTournees.HYDRANT_TOURNEES,
 			Metadonnee.METADONNEE,
+			OgcCouche.OGC_COUCHE,
+			OgcService.OGC_SERVICE,
+			OgcSource.OGC_SOURCE,
 			Oldeb.OLDEB,
 			OldebCaracteristique.OLDEB_CARACTERISTIQUE,
 			OldebLocataire.OLDEB_LOCATAIRE,
@@ -296,12 +358,22 @@ public class Remocra extends SchemaImpl {
 			ParamConf.PARAM_CONF,
 			Permis.PERMIS,
 			PermisDocument.PERMIS_DOCUMENT,
+			ProcessusEtl.PROCESSUS_ETL,
+			ProcessusEtlDocument.PROCESSUS_ETL_DOCUMENT,
+			ProcessusEtlModele.PROCESSUS_ETL_MODELE,
+			ProcessusEtlModeleDroit.PROCESSUS_ETL_MODELE_DROIT,
+			ProcessusEtlModeleParametre.PROCESSUS_ETL_MODELE_PARAMETRE,
+			ProcessusEtlParametre.PROCESSUS_ETL_PARAMETRE,
+			ProcessusEtlPlanification.PROCESSUS_ETL_PLANIFICATION,
+			ProcessusEtlPlanificationParametre.PROCESSUS_ETL_PLANIFICATION_PARAMETRE,
+			ProcessusEtlStatut.PROCESSUS_ETL_STATUT,
 			ProfilDroit.PROFIL_DROIT,
 			ProfilOrganisme.PROFIL_ORGANISME,
 			ProfilOrganismeUtilisateurDroit.PROFIL_ORGANISME_UTILISATEUR_DROIT,
 			ProfilUtilisateur.PROFIL_UTILISATEUR,
 			Rci.RCI,
 			RciDocument.RCI_DOCUMENT,
+			RepertoireLieu.REPERTOIRE_LIEU,
 			RequeteModele.REQUETE_MODELE,
 			RequeteModeleDroit.REQUETE_MODELE_DROIT,
 			RequeteModeleParametre.REQUETE_MODELE_PARAMETRE,
@@ -314,6 +386,14 @@ public class Remocra extends SchemaImpl {
 			Tournee.TOURNEE,
 			TypeAlerteAno.TYPE_ALERTE_ANO,
 			TypeAlerteElt.TYPE_ALERTE_ELT,
+			TypeCrise.TYPE_CRISE,
+			TypeCriseCategorieEvenement.TYPE_CRISE_CATEGORIE_EVENEMENT,
+			TypeCriseContexte.TYPE_CRISE_CONTEXTE,
+			TypeCriseEvenementCrise.TYPE_CRISE_EVENEMENT_CRISE,
+			TypeCriseEvenementDroit.TYPE_CRISE_EVENEMENT_DROIT,
+			TypeCriseNatureEvenement.TYPE_CRISE_NATURE_EVENEMENT,
+			TypeCriseProprieteEvenement.TYPE_CRISE_PROPRIETE_EVENEMENT,
+			TypeCriseStatut.TYPE_CRISE_STATUT,
 			TypeDroit.TYPE_DROIT,
 			TypeHydrant.TYPE_HYDRANT,
 			TypeHydrantAnomalie.TYPE_HYDRANT_ANOMALIE,
