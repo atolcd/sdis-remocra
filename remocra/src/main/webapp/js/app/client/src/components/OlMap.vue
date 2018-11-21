@@ -17,7 +17,7 @@
     </b-col>
     <b-col cols="2">
       <div class="text-start my-3">
-        <search-repertoire ref='searchRepertoire'></search-repertoire>
+        <search-repertoire :crise="criseId" ref='searchRepertoire'></search-repertoire>
       </div>
     </b-col>
     <div>
@@ -950,6 +950,7 @@ import ShowInfo from './ShowInfo.vue';
               console.error('carte', error)
             })
         }, zoomToGeom(geometrie){
+          console.log(geometrie)
           this.map.getView().fit(new WKT().readGeometry(geometrie,{dataProjection: this.epsgL93, featureProjection: this.proj}).getExtent())
         },refreshMap(){
           var workingLayer = this.getLayerById('workingLayer')

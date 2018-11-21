@@ -20,7 +20,6 @@ export default {
   },
   data() {
     return {
-      criseId: null,
       feature: null,
       nomFeature: null,
       natureFeature:null,

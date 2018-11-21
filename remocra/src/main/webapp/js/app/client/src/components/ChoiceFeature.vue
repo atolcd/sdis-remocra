@@ -11,6 +11,12 @@
 import _ from 'lodash'
 export default {
   name: 'ChoiceFeature',
+  props: {
+   crise: {
+     required: true,
+     type: String
+   }
+ },
   components: {
   },
   data() {
@@ -54,7 +60,7 @@ export default {
        }
     })
      this.$refs.modal.hide()
-     this.$parent.$refs.newEvenement.modifyEvent(this.criseId, selected.getId(), selected.getProperties().nature)
+     this.$parent.$refs.newEvenement.modifyEvent(this.crise, selected.getId(), selected.getProperties().nature)
   }
 }
 }

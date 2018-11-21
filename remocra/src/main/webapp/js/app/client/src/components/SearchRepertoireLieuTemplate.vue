@@ -1,6 +1,6 @@
 <template>
 <div>
-  <span>{{ item.libelle }}</span>
+  <span>{{ item.libelle }} ({{item.origine}})</span>
 </div>
 </template>
 

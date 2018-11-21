@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,6 +50,27 @@ public class RepertoireLieuController {
       protected Long countRecords() {
         return
             Long.valueOf(repertoireLieuRepository.count());
+      }
+
+    }.serialize();
+  }
+
+  @RequestMapping(value = "/{idCrise}", method = RequestMethod.GET, headers = "Accept=application/xml")
+  @PreAuthorize("hasRight('CRISE_C')")
+  public ResponseEntity<String> listJson(final @PathVariable(value ="idCrise") Long id,  final @RequestParam(value = "query", required = false) String query) {
+
+    return new AbstractExtListSerializer<fr.sdis83.remocra.web.model.RepertoireLieu>("Repertoire Lieu retrieved.") {
+
+      @Override
+      protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+        serializer.include("data.*");
+
+        return serializer.include("total").include("message");
+      }
+
+      @Override
+      protected List<fr.sdis83.remocra.web.model.RepertoireLieu> getRecords() {
+        return repertoireLieuRepository.getAllById(id, query);
       }
 
     }.serialize();

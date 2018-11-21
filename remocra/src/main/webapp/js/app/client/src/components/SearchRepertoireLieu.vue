@@ -1,7 +1,7 @@
 <template>
   <form v-on:submit.prevent>
-    <autocomplete :input-attrs="{ placeholder: 'Répertoire des lieux' }" v-model="selected" :items="results" :get-label="getLabel" :component-item='repertoireTemplate' :auto-select-one-item="true" @update-items="search" @item-selected="repertoireSelected"
-      @item-clicked="repertoireClicked" />
+    <autocomplete :input-attrs="{ placeholder: 'Repertoire des lieux' }" v-model="selected" :items="results" :get-label="getLabel" :component-item='repertoireTemplate' :auto-select-one-item="true" @update-items="search" @item-selected="repertoireSelected"
+       />
   </form>
 </template>
 
@@ -15,6 +15,12 @@ import RepertoireTemplate from './SearchRepertoireLieuTemplate.vue'
 
 export default {
   name: 'SearchRepertoireLieu',
+  props: {
+   crise: {
+     required: true,
+     type: String
+   }
+ },
   components: {
     Autocomplete
   },
@@ -32,7 +38,8 @@ export default {
       return item ? item.libelle: ''
     },
     search(text) {
-      axios.get('/remocra/repertoirelieu')
+      axios.get('/remocra/repertoirelieu/'+this.crise+'?query=' +
+          text + '&page=1&start=0&limit=10')
         .then((response) => {
           this.results = response.data.data
         })
@@ -42,10 +49,7 @@ export default {
     },
     repertoireSelected(repertoire) {
       // On agit directement
-      this.selected = repertoire
-    },
-    repertoireClicked(repertoire) {
-      console.debug('repertoireClicked', repertoire, this.selected)
+      this.$parent.zoomToGeom(repertoire.geometrie)
     }
   }
 }
