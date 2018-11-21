@@ -252,12 +252,25 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
         hydrantToCheckNumDispo.setNature(thn);
         hydrantToCheckNumDispo.setCommune(c);
         hydrantToCheckNumDispo.setNumeroInterne(num);
-
         String numero = NumeroUtil.computeNumero(hydrantToCheckNumDispo);
+        Long numeroUsageCount = countFindHydrantsByNumero(numero, id);
+        return numeroUsageCount.longValue() > 0 ? "Le numéro " + numero + " est déjà attribué" : "";
+    }
 
-        Long numeroUsageCount = Hydrant.countFindHydrantsByNumero(numero);
-
-        return numeroUsageCount > 0 ? "Le numéro " + numero + " est déjà attribué" : "";
+    public Long countFindHydrantsByNumero(String numero, Long id) {
+        if (numero == null || numero.length() == 0) throw new IllegalArgumentException("The numero argument is required");
+        if (id == null) throw new IllegalArgumentException("The id argument is required");
+        String hQl = "SELECT COUNT(o) FROM Hydrant o WHERE o.numero = :numero";
+        if (id != null) {
+            hQl += " AND o.id != :id";
+        }
+        Query q = entityManager.createQuery(hQl);
+        q.setParameter("numero", numero);
+        if (id != null) {
+            q.setParameter("id", id);
+        }
+        List<Long> results = q.getResultList();
+        return results.get(0);
     }
 
     public List<Hydrant> findHydrantsByBBOX(String bbox) {
