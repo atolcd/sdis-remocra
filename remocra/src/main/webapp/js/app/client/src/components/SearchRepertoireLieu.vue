@@ -1,6 +1,6 @@
 <template>
   <form v-on:submit.prevent>
-    <autocomplete :input-attrs="{ placeholder: 'Repertoire des lieux' }" v-model="selected" :items="results" :get-label="getLabel" :component-item='repertoireTemplate' :auto-select-one-item="true" @update-items="search" @item-selected="repertoireSelected"
+    <autocomplete :input-attrs="{ placeholder: 'Répertoire des lieux' }" v-model="selected" :items="results" :get-label="getLabel" :component-item='repertoireTemplate' :auto-select-one-item="true" @update-items="search" @item-selected="repertoireSelected"
       @item-clicked="repertoireClicked" />
   </form>
 </template>

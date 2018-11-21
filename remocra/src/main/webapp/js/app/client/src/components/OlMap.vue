@@ -3,11 +3,11 @@
   <b-row class="text-start">
     <b-col cols="2">
       <div class="text-start my-3">
-        <b-btn class="ctrl" v-b-tooltip.hover title="Déplacer la carte"><img src="/static/img/pan.png"></b-btn>
-          <b-btn class="ctrl" v-b-tooltip.hover title="Zoomer en avant" @click="zoomIn"><img src="/static/img/magnifier_zoom_in.png"></b-btn>
-            <b-btn class="ctrl" v-b-tooltip.hover title="Zoomer en arrière" @click="zoomOut"><img src="/static/img/magnifier_zoom_out.png"></b-btn>
-              <b-btn class="ctrl" v-b-tooltip.hover title="Rétablir la vue précédente"><img src="/static/img/zoom_prec.png"></b-btn>
-                <b-btn class="ctrl" v-b-tooltip.hover title="Rétablir la vue suivante"><img src="/static/img/zoom_suiv.png"></b-btn>
+        <b-btn class="ctrl" title="Déplacer la carte"><img src="/static/img/pan.png"></b-btn>
+          <b-btn class="ctrl" title="Zoomer en avant" @click="zoomIn"><img src="/static/img/magnifier_zoom_in.png"></b-btn>
+            <b-btn class="ctrl" title="Zoomer en arrière" @click="zoomOut"><img src="/static/img/magnifier_zoom_out.png"></b-btn>
+              <b-btn class="ctrl" title="Rétablir la vue précédente"><img src="/static/img/zoom_prec.png"></b-btn>
+                <b-btn class="ctrl" title="Rétablir la vue suivante"><img src="/static/img/zoom_suiv.png"></b-btn>
       </div>
     </b-col>
     <b-col cols="2">
@@ -30,17 +30,17 @@
       </b-dropdown>
     </div>
     <div class="text-start my-3">
-      <b-btn class="ctrl" @click ="showInfo" v-b-tooltip.hover title="Obtenir des information sur un point de la carte"><img src="/static/img/information.png"></b-btn>
+      <b-btn class="ctrl" @click ="showInfo" title="Obtenir des informations sur un point de la carte"><img src="/static/img/information.png"></b-btn>
     </div>
     <div class="text-start my-3">
-      <b-btn class="ctrl" @click="showToolsBar" v-b-toggle.collapse1 title="Activer les outils d\'édition"><img src="/static/img/pencil.png"></b-btn>
+      <b-btn class="ctrl" @click="showToolsBar" v-b-toggle.collapse1 title="Activer les outils d'édition"><img src="/static/img/pencil.png"></b-btn>
       <show-info ref="showInfo"></show-info>
     </div>
     <b-form-group class="text-start my-3">
       <b-form-radio-group id="btnradios2" buttons button-variant="outline-primary" v-model="modeAffichage" :options="modeAffichages" name="radioBtnOutline" />
     </b-form-group>
     <div class="text-start my-3">
-      <b-btn class="ctrl" @click="GoInFullscreen" v-b-tooltip.hover title="Plein écran"><img src="/static/img/pan.png"></b-btn>
+      <b-btn class="ctrl" @click="GoInFullscreen" title="Plein écran"><img src="/static/img/pan.png"></b-btn>
     </div>
   </b-row>
   <b-row class="text-start">
@@ -49,7 +49,7 @@
       <new-evenement ref="newEvenement"></new-evenement>
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <span style="cursor:pointer" href="#" v-b-toggle.accordion1>Evènements</span><span class="evenement">
+            <span style="cursor:pointer" href="#" v-b-toggle.accordion1>Évènements</span><span class="evenement">
               <b-btn @click="addEvent" class="ctrl"><img src="/static/img/add.png"></b-btn>
               <b-btn  class="ctrl" id="popoverButton-open2"><img src="/static/img/icon_SpecifiedFilter.png"></b-btn>
                 <b-popover  placement="right" ref="popover" target="popoverButton-open2" title="Filtrer les évènements">
@@ -94,12 +94,12 @@
 
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <span style="cursor:pointer" block href="#" v-b-toggle.accordion4 variant="info">Recherche et analyse</span>
+            <span style="cursor:pointer" block href="#" v-b-toggle.accordion4 variant="info">Recherches et analyses</span>
           </b-card-header>
           <b-collapse id="accordion4" accordion="my-accordion" role="tabpanel">
             <b-card-body>
               <p class="card-text">
-                Recherche et analyse
+                Recherches et analyses
               </p>
             </b-card-body>
           </b-collapse>
@@ -357,7 +357,7 @@ import ShowInfo from './ShowInfo.vue';
             if(response.data){
                var extraLayers = JSON.parse(response.data.data.carte)
                if (extraLayers && extraLayers.length !== 0){
-                 var mobilisedLayers = {"libelle": "Couches mobilisés pour la crise","items":[]}
+                 var mobilisedLayers = {"libelle": "Couches mobilisées pour la crise","items":[]}
                 _.forEach(extraLayers, function(layer) {
                   console.log(mobilisedLayers)
                   mobilisedLayers.items.push(layer);
@@ -458,7 +458,7 @@ import ShowInfo from './ShowInfo.vue';
            layerDef.attribution = '<a href="http://www.geoportail.fr/" target="_blank">'
                + '<img src="' + BASE_URL + '/../images/remocra/cartes/logo_gp.gif"></a>'
                + '<a href="http://www.geoportail.gouv.fr/depot/api/cgu/licAPI_CGUF.pdf" '
-               + 'alt="TOS" title="TOS" target="_blank">Condifions générales d\'utilisation</a>';
+               + 'alt="TOS" title="TOS" target="_blank">Conditions générales d\'utilisation</a>';
            layerDef.style = layerDef.style || 'normal';
            layerDef.format = layerDef.format || 'image/jpeg';
            return this.createWMTSLayer(layerDef);
@@ -787,9 +787,9 @@ import ShowInfo from './ShowInfo.vue';
             if (features.length == 0) {
             this.$notify({
              group: 'remocra',
-             title: 'Evènements',
+             title: 'Évènements',
              type: 'warn',
-             text: 'Aucun évènement dans cet emplacement!'
+             text: 'Aucun évènement trouvé'
             })
           }else if (features.length == 1){
             var selectedFeature = features[0]
@@ -869,9 +869,9 @@ import ShowInfo from './ShowInfo.vue';
               if (features.length == 0) {
               this.$notify({
                group: 'remocra',
-               title: 'Evènements',
+               title: 'Évènements',
                type: 'warn',
-               text: 'Aucun évènement dans cet emplacement!'
+               text: 'Aucun évènement trouvé'
               })
             }else if (features.length == 1){
               var selectedFeature = features[0]
@@ -901,9 +901,9 @@ import ShowInfo from './ShowInfo.vue';
               if (features.length == 0) {
               this.$notify({
                group: 'remocra',
-               title: 'Evènements',
+               title: 'Évènements',
                type: 'warn',
-               text: 'Aucun évènement dans cet emplacement!'
+               text: 'Aucun évènement trouvé'
               })
             } else if (features.length == 1){
               var selectedFeature = features[0]
