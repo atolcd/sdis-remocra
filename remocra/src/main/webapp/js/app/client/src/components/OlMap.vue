@@ -503,8 +503,8 @@ import ShowInfo from './ShowInfo.vue';
                 "interrogeable" : false,
                 "items" : null,
                 "wms_layer" : true,
-                "layers" : "remocra:crise_evenement",
-                "url" : "http://localhost:8080/remocra/geoserver/remocra/wms",
+                "layers" : "remocra:v_crise_evenement",
+                "url" : "http://localhost:8080/remocra/evenements/wms",
                 "sld" : null,
                 "projection" : "EPSG:2154",
                 "styles" : [{
@@ -513,7 +513,10 @@ import ShowInfo from './ShowInfo.vue';
                   "legende" : "http://localhost:8080/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&SERVICE=WMS&VERSION=1.3.0&LAYER=crise_evenement&FORMAT=image/png&STYLE="
                 }]
            })
-           return this.createWMSLayer(layerDef);
+           let layer = this.createWMSLayer(layerDef)
+           // Application du filtre initial
+           layer.getSource().getParams().filter = JSON.stringify([{ property: 'crise', value: this.criseId }])
+           return layer
        }
        throw 'La couche spécifique \'' + layerDef.id + '\' est inconnue pour cette carte.';
    },
@@ -589,6 +592,9 @@ import ShowInfo from './ShowInfo.vue';
        return matrixIds;
     },
     getLayerById(id) {
+     if (!this.map || !this.map.getLayers) {
+       return null;
+     }
      var i;
      for (i = 0; i < this.map.getLayers().getLength(); i++) {
          var layer = this.map.getLayers().item(i);

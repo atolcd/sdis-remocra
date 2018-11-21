@@ -71,6 +71,26 @@ export default {
         .catch(function(error) {
           console.error('évenements', error)
         })
+
+        // Filtre des événements de crise sur la carte
+        if (!filters) {
+          filters = [];
+        }
+        var idProp = _.find(filters, function(obj) {
+          return obj.property === 'crise'
+        })
+        if (!idProp) {
+          filters.push({ property: 'crise', value: crise })
+        } else {
+          idProp.value = crise
+        }
+        var jsonFilters = JSON.stringify(filters)
+
+        var mapCmp = this.$parent.$parent
+        var wmsLayer = mapCmp.getLayerById('893bb7520e7fb036d665661847628994')
+        if (wmsLayer) {
+          wmsLayer.getSource().updateParams({filter: jsonFilters});
+        }
     },
     loadMessages(id){
       //on recharge la liste des messsages

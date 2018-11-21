@@ -35,6 +35,7 @@ import org.apache.http.MethodNotSupportedException;
 import org.apache.http.impl.DefaultHttpRequestFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
+import org.apache.tiles.context.MapEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -138,16 +139,26 @@ public class GeoserverController {
         return new ResponseEntity<String>(new JSONSerializer().exclude("*.class").include("*").prettyPrint(true).serialize(l), responseHeaders, HttpStatus.OK);
     }
 
+    /**
+     * @param request
+     * @param response
+     * @param geoserverPath Chemin geoserver. Par défaut, reprend le chemin de la requête courante en supprimant le préfixe "/geoserver/"
+     * @param params Paramètres. Par défaut, reprend les paramètres de la requête courante.
+     */
     @RequestMapping("/**")
-    public void proxyWms(HttpServletRequest request, HttpServletResponse response) {
+    public void proxyWms(HttpServletRequest request, HttpServletResponse response, String geoserverPath, Map<String, String> params) {
         // /remocra/geoserver/** -> /geoserver/**
+
+        if (params == null) {
+            params = getMapParamsFromRequest(request);
+        }
 
         // --------------------
         // Préparation de la requête
         // --------------------
 
         try {
-            String geoserverPath = request.getServletPath().replaceFirst("/geoserver/", "");
+            geoserverPath = geoserverPath!=null ? geoserverPath : request.getServletPath().replaceFirst("/geoserver/", "");
             if (geoserverPath.endsWith("layers/reload")) {
                 reloadLayers();
                 return;
@@ -184,12 +195,18 @@ public class GeoserverController {
             // Nouvelle URL cible
             UriComponentsBuilder b = UriComponentsBuilder.fromHttpUrl(targetURL);
 
+            String inputCQLParamValue = null;
+
             // Paramètres supplémentaires éventuels
-            @SuppressWarnings("unchecked")
-            Enumeration<String> paramNames = request.getParameterNames();
-            while (paramNames.hasMoreElements()) {
-                String paramName = paramNames.nextElement();
-                b.replaceQueryParam(paramName, request.getParameter(paramName));
+            for (Map.Entry<String, String> param : params.entrySet()) {
+                String paramName = param.getKey();
+                String paramValue = param.getValue();
+                if (RequestType.GetMap == requestType && "CQL_FILTER".equalsIgnoreCase(paramName)) {
+                    // Traitement particulier du CQL Filter pour le GetMap
+                    inputCQLParamValue = paramValue;
+                } else {
+                    b.replaceQueryParam(paramName, paramValue);
+                }
             }
 
             // GetFeatureInfo : pour la mise en forme ultérieure
@@ -200,25 +217,38 @@ public class GeoserverController {
             }
 
             // GetMap : filtre sur la zone de compétence si nécessaire
-            if (RequestType.GetMap == requestType && accessLevel == AccessLevel.AUTH_ZONE) {
+            if (RequestType.GetMap == requestType) {
                 String[] layers = getParameterOrLowerOrUpperCase(request, "LAYERS").split(",");
-                // Exemple avec deux couches (clause INCLUDE si couche non
-                // filtrée) :
-                // &CQL_FILTER=INCLUDE;WITHIN(geometrie,(querySingle('remocra:zone_competence','geometrie','id=26')))
-                // On passe par l'id en échappant avec %22 (double quote) car
-                // mot réservé.
-                // C'est plus sûr qu'en passant par une chaine de caractères
-                // (code=VAR par exemple)
-                ZoneCompetence zoneCompetence = utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence();
-                String idZone = zoneCompetence.getId().toString();
-                String cqlFilterValue = "INTERSECTS(geometrie,(querySingle('remocra:zone_competence','geometrie','%22id%22=" + idZone + "')))";
-
-                // On répère autant de fois la clause qu'il y a de couches
-                String repeatedCqlFilterValue = StringUtils.repeat(cqlFilterValue, ";", layers.length);
-                b.replaceQueryParam("CQL_FILTER", repeatedCqlFilterValue);
+                StringBuffer fullCQLFilter = new StringBuffer();
+                if (accessLevel == AccessLevel.AUTH_ZONE) {
+                    // Exemple avec deux couches (clause INCLUDE si couche non
+                    // filtrée) :
+                    // &CQL_FILTER=INCLUDE;WITHIN(geometrie,(querySingle('remocra:zone_competence','geometrie','id=26')))
+                    // On passe par l'id en échappant avec %22 (double quote) car
+                    // mot réservé.
+                    // C'est plus sûr qu'en passant par une chaine de caractères
+                    // (code=VAR par exemple)
+                    ZoneCompetence zoneCompetence = utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence();
+                    String idZone = zoneCompetence.getId().toString();
+                    fullCQLFilter.append("INTERSECTS(geometrie,(querySingle('remocra:zone_competence','geometrie','%22id%22=" + idZone + "')))");
+                }
+                if (inputCQLParamValue != null) {
+                    if (fullCQLFilter.length()>0) {
+                        fullCQLFilter.append(" and (").append(inputCQLParamValue).append(")");
+                    } else {
+                        fullCQLFilter.append(inputCQLParamValue);
+                    }
+                }
+                if (fullCQLFilter.length()>0) {
+                    // On répète autant de fois la clause qu'il y a de couches
+                    String repeatedCqlFilterValue = StringUtils.repeat(fullCQLFilter.toString(), ";", layers.length);
+                    if (repeatedCqlFilterValue.length()>0) {
+                        b.replaceQueryParam("CQL_FILTER", repeatedCqlFilterValue);
+                    }
+                }
             }
 
-            String targetURLWithFilter = b.build().toUriString();
+            String targetURLWithFilter = b.build().encode().toUriString();
             log.info("Proxy WMS : targetURLWithFilter : " + targetURLWithFilter);
             HttpRequest targetRequest = new DefaultHttpRequestFactory().newHttpRequest(request.getMethod(), targetURLWithFilter);
 
@@ -295,6 +325,18 @@ public class GeoserverController {
             log.error("Proxy WMS : erreur d'entrée / sortie", e);
             response.setStatus(500);
         }
+    }
+
+    public static Map<String, String> getMapParamsFromRequest(HttpServletRequest request) {
+        Map<String, String> params = new HashMap<String, String>();
+        @SuppressWarnings("unchecked")
+        Enumeration<String> paramNames = request.getParameterNames();
+        while (paramNames.hasMoreElements()) {
+            String paramName = paramNames.nextElement();
+            String paramValue = request.getParameter(paramName);
+            params.put(paramName, paramValue);
+        }
+        return params;
     }
 
     boolean isWms(HttpServletRequest request) {
