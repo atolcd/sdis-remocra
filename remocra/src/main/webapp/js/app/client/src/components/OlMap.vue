@@ -364,7 +364,8 @@ import ShowInfo from './ShowInfo.vue';
                  })
                }
                if(mobilisedLayers && mobilisedLayers.items.length !== 0){
-                  legendData.items.push(mobilisedLayers)
+                  // Les couches mobilisées sont placées en tête
+                  legendData.items.unshift(mobilisedLayers)
                }
             }
             this.addLayersFromLayerConfig(legendData)
