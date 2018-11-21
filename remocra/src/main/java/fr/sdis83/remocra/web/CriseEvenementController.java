@@ -60,7 +60,7 @@ public class CriseEvenementController {
     final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
 
 
-    return new AbstractExtListSerializer<CriseEvenement>("Evenements retrieved.") {
+    return new AbstractExtListSerializer<CriseEvenement>("Evènements retrieved.") {
 
       @Override
       protected JSONSerializer getJsonSerializer() {
@@ -88,7 +88,7 @@ public class CriseEvenementController {
   @PreAuthorize("hasRight('CRISE_C')")
   public ResponseEntity<String> getEventsById(final @PathVariable(value = "idEvenement") Long id) {
 
-    return new AbstractExtListSerializer<CriseEvenement>("Evenements retrieved.") {
+    return new AbstractExtListSerializer<CriseEvenement>("Evènements retrieved.") {
 
       @Override
       protected JSONSerializer getJsonSerializer() {
@@ -121,7 +121,7 @@ public class CriseEvenementController {
       fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement c = criseEvenementRepository.createEvent(request);
       return new SuccessErrorExtSerializer(true, "La crise " +c.getNom()+ " a été enregistrée").serialize();
     }catch(Exception e){
-      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la création de la crise").serialize();
+      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la création de l'évènement").serialize();
     }
   }
 
@@ -134,7 +134,7 @@ public class CriseEvenementController {
       CriseSuivi cs = criseEvenementRepository.createMessage(json);
       return new SuccessErrorExtSerializer(true, "La crise " +cs.getObjet()+ " a été enregistrée").serialize();
     }catch(Exception e){
-      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la création de la crise").serialize();
+      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la création du message").serialize();
     }
   }
 
@@ -221,7 +221,7 @@ public class CriseEvenementController {
       fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement c = criseEvenementRepository.updateEvent(id, request);
       return new SuccessErrorExtSerializer(true, "L\'évenement " +c.getNom()+ " a été mis à jour").serialize();
     }catch(Exception e){
-      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la mise à jour de l\'évenement'").serialize();
+      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la mise à jour de l\'évènement'").serialize();
     }
   }
 
