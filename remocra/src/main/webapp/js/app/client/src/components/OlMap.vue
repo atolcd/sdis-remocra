@@ -924,7 +924,9 @@ import ShowInfo from './ShowInfo.vue';
           var workingLayer = this.getLayerById('workingLayer')
           var wmsLayer = this.getLayerById('893bb7520e7fb036d665661847628994')
           workingLayer.getSource().clear()
-          wmsLayer.getSource().refresh()
+          // Rafraîchissement de la couche WMS des évènements
+          //wmsLayer.getSource().refresh()
+          wmsLayer.getSource().updateParams({"time": Date.now()});
         },
         zoomIn(){
           this.map.getView().setZoom(this.map.getView().getZoom()+1)
