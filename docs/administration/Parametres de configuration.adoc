@@ -407,6 +407,10 @@ Méthodes disponibles pour la symbologie des PEI : link:../pei/Symbologie_PEI{ou
 * Nombre de mesures à prendre en compte dans l'historique des mesures débits/pressions
 * Par défaut : ```3```
 
+=== HYDRANT_VISITE_RAPIDE ===
+* Activer la saisie rapide de visite (ouverture sur clic)
+* par défaut : ```false```
+
 === NIVEAU_TRACABILITE ===
 * Niveau de traçabilité des points d'eau (valeurs admises : organisme , utilisateur)
 * Par défaut : ```organisme```

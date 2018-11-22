@@ -184,6 +184,10 @@ public class ParamConfService {
         return (Integer) this.getValue(ParamConfParam.HYDRANT_RENOUVELLEMENT_CTRL);
     }
 
+    public Boolean getHydrantVisiteRapide() {
+        return (Boolean) this.getValue(ParamConfParam.HYDRANT_VISITE_RAPIDE, false);
+    }
+
     public MethodeNumerotation getHydrantNumerotationMethode() {
         return NumeroUtil.getHydrantNumerotationMethode();
     }

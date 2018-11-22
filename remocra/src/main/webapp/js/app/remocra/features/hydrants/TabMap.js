@@ -41,17 +41,34 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
             });
         }
 
-        this.editItems.push('Saisir une visite : ');
-        if(Sdis.Remocra.Rights.hasRight('HYDRANTS_C')||
-                Sdis.Remocra.Rights.hasRight('HYDRANTS_RECONNAISSANCE_C') || Sdis.Remocra.Rights.hasRight('HYDRANTS_CONTROLE_C')){
-        this.editItems.push({
-            tooltip: 'Saisir une visite (réception, contrôle, reconnaissance, vérification)',
-            text: '<span>Informations</span>',
-            cls: 'edit-info',
-            iconCls: 'add',
-            itemId: 'editInfoBtn',
-            disabled: true
-        });
+        if(Sdis.Remocra.Rights.hasRight('HYDRANTS_C')
+                || Sdis.Remocra.Rights.hasRight('HYDRANTS_RECONNAISSANCE_C')
+                || Sdis.Remocra.Rights.hasRight('HYDRANTS_CONTROLE_C')) {
+            this.editItems.push('Saisir une visite : ');
+            if(!HYDRANT_VISITE_RAPIDE) {
+                this.editItems.push({
+                    tooltip: 'Saisir une visite (réception, contrôle, reconnaissance, vérification)',
+                    xtype: 'button',
+                    text: '<span>Informations</span>',
+                    cls: 'edit-info',
+                    iconCls: 'add',
+                    itemId: 'editInfoBtn',
+                    disabled: true
+                });
+            } else {
+                this.editItems.push({
+                    tooltip: 'Saisir une visite (réception, contrôle, reconnaissance, vérification)',
+                    xtype: 'button',
+                    text: '<span>Informations</span>',
+                    cls: 'edit-info',
+                    iconCls: 'add',
+                    toggleGroup: 'excl-ctrl1',
+                    enableToggle: true,
+                    pressed: false,
+                    allowDepress: true,
+                    itemId: 'editInfoVisiteRapideBtn'
+                });
+            }
         }
 
         this.editItems.push('Ouvrir la fiche : ');
@@ -165,6 +182,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
             layerDef.infoMarginInPixels = 10;
             this.hydrantLayer = this.createGeoJsonLayer(layerDef);
 
+            // Sélection par tracé d'un rectangle
             this.addSpecificControlLate('selectPolygone', new OpenLayers.Control.SelectFeature([this.workingLayer,this.hydrantLayer], {
                 clickout: true,
                 toggle: true,
@@ -173,6 +191,16 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                 multipleKey: "ctrlKey",
                 toggleKey: "shiftKey",
                 box: true
+            }));
+            // Sélection par clic
+            this.addSpecificControlLate('selectPoint', new OpenLayers.Control.SelectFeature([this.workingLayer,this.hydrantLayer], {
+                clickout: true,
+                toggle: true,
+                multiple: false,
+                hover: false,
+                multipleKey: "ctrlKey",
+                toggleKey: "shiftKey",
+                box: false
             }));
 
             this.addSpecificControlLate('movePoint', new OpenLayers.Control.ModifyFeature(this.workingLayer, {

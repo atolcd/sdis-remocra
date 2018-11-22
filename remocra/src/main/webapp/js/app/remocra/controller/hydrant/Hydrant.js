@@ -144,6 +144,16 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                     this.getTabMap().activateSpecificControl('selectPolygone', pressed);
                 }
             },
+            'crHydrantsMap #editInfoVisiteRapideBtn': {
+                toggle: function(button, pressed) {
+                    if (pressed) {
+                        // Désélection des toutes les features sélectionnées
+                        this.getTabMap().map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselectAll();
+                    }
+                    // (Dés)activation de l'outil de sélection par clic
+                    this.getTabMap().activateSpecificControl('selectPoint', pressed);
+                }
+            },
             'crHydrantsMap #editInfoBtn': {
                 click: this.showFicheHydrantFromMap
             },
@@ -493,10 +503,21 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         var btnDesaffecter = this.getTabMap().queryById('desaffecterBtn');
         var btnActiveDeplacer = this.getTabMap().queryById('activeMoveBtn');
         var btnAddIndispo = this.getTabMap().queryById('indispoBtn');
-        var btnEditIndispo = this.getTabMap().queryById('editIndispoBtn');        
+        var btnEditIndispo = this.getTabMap().queryById('editIndispoBtn');
+
+        var btnFicheVisiteRapide = this.getTabMap().queryById('editInfoVisiteRapideBtn');
+        var visiteRapideActive = (btnFicheVisiteRapide != null && btnFicheVisiteRapide.pressed);
+        if(visiteRapideActive && nbSelect == 1 && event.type=='featureselected'){ //Bouton pour la visite rapide des PEI
+           var features = this.getSelectedFeatures();
+           if (features.length == 1) {
+               this.showFicheHydrant(features[0].data.typeHydrantCode, features[0].fid, false);
+           }
+        }
+
         if(btnFiche != null){  //Dans le cas ou on n'a pas les droits le bouton n'existe pas
            btnFiche.setDisabled(nbSelect != 1);
         }
+
         btnFicheNoCtrl.setDisabled(nbSelect != 1);
         if (btnDelete != null) {
             btnDelete.setDisabled(nbSelect != 1);

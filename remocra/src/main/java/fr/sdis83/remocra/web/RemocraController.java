@@ -122,6 +122,9 @@ public class RemocraController {
         model.addAttribute("orientationX", paramConfService.getDefaultOrientationX());
         model.addAttribute("orientationY", paramConfService.getDefaultOrientationY());
 
+        // Mode de visite des hydrants
+        model.addAttribute("hydrant_visite_rapide", paramConfService.getHydrantVisiteRapide());
+
         return "remocra";
     }
 
