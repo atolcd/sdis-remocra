@@ -357,15 +357,21 @@ import ShowInfo from './ShowInfo.vue';
             if(response.data){
                var extraLayers = JSON.parse(response.data.data.carte)
                if (extraLayers && extraLayers.length !== 0){
-                 var mobilisedLayers = {"libelle": "Couches mobilisées pour la crise","items":[]}
-                _.forEach(extraLayers, function(layer) {
-                  console.log(mobilisedLayers)
-                  mobilisedLayers.items.push(layer);
+                 // Recherche du groupe "additional"
+                 var additionalGroup = null
+                 _.forEach(legendData.items, function (group) {
+                   if (group.code == 'additional') {
+                     additionalGroup = group
+                     return false
+                   }
                  })
-               }
-               if(mobilisedLayers && mobilisedLayers.items.length !== 0){
-                  // Les couches mobilisées sont placées en tête
-                  legendData.items.unshift(mobilisedLayers)
+                 if (!additionalGroup) {
+                   additionalGroup = {"libelle": "Couches mobilisées pour la crise","items":[]}
+                   legendData.items.unshift(additionalGroup)
+                 }
+                 _.forEach(extraLayers, function(layer) {
+                   additionalGroup.items.push(layer);
+                 })
                }
             }
             this.addLayersFromLayerConfig(legendData)
@@ -405,9 +411,6 @@ import ShowInfo from './ShowInfo.vue';
                          layer = this.createWMTSLayer(layerDef);
                          break;
                      case 'specific':
-                         Ext.applyIf(layerDef, {
-                             stategy: "fixed"
-                         });
                          layer = this.createSpecificLayer(layerDef);
                          break;
                      default:
@@ -489,6 +492,28 @@ import ShowInfo from './ShowInfo.vue';
               scale_min : 0,
               scale_max : 1000000
           });
+       } else if (layerDef.id == '893bb7520e7fb036d665661847628994') {
+           layerDef = _.defaults(layerDef, {
+                "type" : "wms",
+                "libelle" : "Évènements",
+                "scale_min" : "0",
+                "scale_max" : "1000000",
+                "visibility" : true,
+                "opacity" : 1,
+                "interrogeable" : false,
+                "items" : null,
+                "wms_layer" : true,
+                "layers" : "remocra:crise_evenement",
+                "url" : "http://localhost:8080/remocra/geoserver/remocra/wms",
+                "sld" : null,
+                "projection" : "EPSG:2154",
+                "styles" : [{
+                  "id" : "remocra_barriere",
+                  "libelle" : "Barrière",
+                  "legende" : "http://localhost:8080/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&SERVICE=WMS&VERSION=1.3.0&LAYER=crise_evenement&FORMAT=image/png&STYLE="
+                }]
+           })
+           return this.createWMSLayer(layerDef);
        }
        throw 'La couche spécifique \'' + layerDef.id + '\' est inconnue pour cette carte.';
    },

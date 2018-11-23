@@ -1,28 +1,20 @@
 {
   "libelle":"Légende",
   "items":[{
+    "libelle":"Crise",
+    "items":[{
+      "type" : "specific",
+      "id" : "893bb7520e7fb036d665661847628994",
+      "libelle" : "Évènements",
+      "visibility" : true
+    }]
+  },{
+    "libelle":"Couches mobilisées",
+    "code": "additional",
+    "items":[]
+  },{
     "libelle":"Fonds IGN",
     "items":[{
-      "type" : "wms",
-      "libelle" : "barriere",
-      "id" : "893bb7520e7fb036d665661847628994",
-      "scale_min" : "0",
-      "scale_max" : "1000000",
-      "visibility" : true,
-      "opacity" : 1,
-      "interrogeable" : false,
-      "items" : null,
-      "wms_layer" : true,
-      "layers" : "remocra:crise_evenement",
-      "url" : "http://localhost:8080/remocra/geoserver/remocra/wms",
-      "sld" : null,
-      "projection" : "EPSG:2154",
-      "styles" : [{
-        "id" : "remocra_barriere",
-        "libelle" : "Barrière",
-        "legende" : "http://localhost:8080/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&SERVICE=WMS&VERSION=1.3.0&LAYER=crise_evenement&FORMAT=image/png&STYLE="
-      }]
-    },{
       "type" : "wmts",
       "libelle" : "Cartes IGN",
       "id" : "d05123efca65d99b029d5781a1c34ef5",
