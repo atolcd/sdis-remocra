@@ -32,6 +32,7 @@ import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import fr.sdis83.remocra.web.serialize.transformer.GeometryTransformer;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Instant;
@@ -299,12 +300,24 @@ public class CriseEvenementController {
         Map<String, String> params = GeoserverController.getMapParamsFromRequest(request);
 
         List<ItemFilter> itemFilters = ItemFilter.decodeJson(filters);
-        // TODO ajouter les filtres de sécurité :
-        // * ZC (OK dans contrôleur GeoServer)
-        // * crise* (accessibles)
-        // * liens avec type_crise_categorie_evenement
+        Map<String, Statement> statementMap = toStatementMap(itemFilters);
 
-        String cqlFilter = toCQLFilter(itemFilters);
+        // TODO cva Vérifier filtre sur la zone de compétence réalisé dans contrôleur GeoServer
+
+        // TODO cva Bloquer si crise(s) non accessible(s) : 403
+
+        // Sécurité : filtre sur type_crise_categorie_evenement
+        // TODO cva : ajouter un droit qui permet d'accéder à toutes les catégories ?
+        String categorieEvenementIds = getCategorieEvenementIdsForProfilDroitStr();
+        if (categorieEvenementIds==null) {
+                log.error("Couche évènements de crise : aucune catégorie  d'évènement accessible");
+                response.setStatus(403);
+                return;
+        }
+        statementMap.put("SEC_categorie_evenement",
+                new ObjectStatement("categorie_evenement", Operator.IN, categorieEvenementIds));
+
+        String cqlFilter = toCQLFilter(statementMap);
         if (cqlFilter != null && cqlFilter.length() > 0) {
             params.put("CQL_FILTER", cqlFilter);
         }
@@ -312,6 +325,23 @@ public class CriseEvenementController {
         // Nettoyage et appel au proxy WMS
         params.remove("filter");
         geoserverController.proxyWms(request, response, "remocra/wms", params);
+    }
+
+    String getCategorieEvenementIdsForProfilDroitStr() {
+        Long[] ids = criseEvenementRepository.getCategorieEvenementIdsForProfilDroit(
+                utilisateurService.getCurrentUtilisateur().getProfilUtilisateur().getId());
+        if (ids.length<1) {
+            return null;
+        }
+        StringBuffer sbIds = new StringBuffer("(");
+        for (Long l : ids) {
+            if (sbIds.length()>1) {
+                sbIds.append(",");
+            }
+            sbIds.append(l);
+        }
+        sbIds.append(")");
+        return sbIds.toString();
     }
 
     /**
@@ -322,6 +352,16 @@ public class CriseEvenementController {
      */
     String toCQLFilter(List<ItemFilter> filters) {
         Map<String, Statement> statementMap = toStatementMap(filters);
+        return toCQLFilter(statementMap);
+    }
+
+    /**
+     * Crée une requête CQL "ET" à partir des groupes de statements fournis
+     *
+     * @param statementMap
+     * @return
+     */
+    String toCQLFilter(Map<String, Statement> statementMap) {
         Statement s = null;
         if (statementMap.size() < 1) {
             return null;
@@ -412,12 +452,18 @@ public class CriseEvenementController {
         s.addStatement(statement);
     }
     /*
-    Couche GeoServer remocra:v_crise_evenement :
+    TODO cva retirer ces lignes :
 
+Droits d'accès aux catégories d'événements (exemple) :
+  insert into remocra.type_crise_evenement_droit(profil_droit, categorie_evenement) select 20, id from remocra.type_crise_categorie_evenement;
+
+
+Couche GeoServer remocra:v_crise_evenement :
 select
   ce.geometrie,
   ce.id, ce.crise, ce.nature_evenement, ce.constat, ce.cloture, ce.tags, ce.origine, ce.importance,
-  (select creation from remocra.crise_suivi cs where cs.evenement=ce.id order by creation desc limit 1) as dernier_message
+  (select creation from remocra.crise_suivi cs where cs.evenement=ce.id order by creation desc limit 1) as dernier_message,
+  (select tcne.categorie_evenement from remocra.type_crise_nature_evenement tcne where tcne.id=ce.nature_evenement) as categorie_evenement
 from remocra.crise_evenement ce
     */
 }

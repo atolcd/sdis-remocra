@@ -2,6 +2,7 @@ package fr.sdis83.remocra.repository;
 
 import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_EVENEMENT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_SUIVI;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE_EVENEMENT_DROIT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE_NATURE_EVENEMENT;
 import static fr.sdis83.remocra.db.model.remocra.tables.Document.DOCUMENT;
 import static fr.sdis83.remocra.util.GeometryUtil.sridFromGeom;
@@ -418,4 +419,15 @@ public class CriseEvenementRepository {
         .execute();*/
   }
 
+  /**
+   * Retourne les identifiants des catégories accessibles au profil de droit.
+   *
+   * @param profilDroit
+   * @return
+   */
+  public Long[] getCategorieEvenementIdsForProfilDroit(Long profilDroit) {
+    return context.select(TYPE_CRISE_EVENEMENT_DROIT.CATEGORIE_EVENEMENT).from(TYPE_CRISE_EVENEMENT_DROIT)
+            .where(TYPE_CRISE_EVENEMENT_DROIT.PROFIL_DROIT.eq(profilDroit))
+            .fetchArray(TYPE_CRISE_EVENEMENT_DROIT.CATEGORIE_EVENEMENT);
+  }
 }
