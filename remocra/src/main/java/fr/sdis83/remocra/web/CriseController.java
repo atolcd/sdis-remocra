@@ -55,7 +55,7 @@ public class CriseController {
   private TypeCriseStatutRepository typeCriseStatutRepository;
 
   @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/xml")
-  @PreAuthorize("hasRight('CRISE_C')")
+  @PreAuthorize("hasRight('CRISE_R')")
   public ResponseEntity<String> listJson(final @RequestParam(value = "page", required = false) Integer page,
                              final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
                              final @RequestParam(value = "query", required = false) String query, @RequestParam(value = "sort", required = false) String sorts,

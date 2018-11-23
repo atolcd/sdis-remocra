@@ -169,7 +169,7 @@ public class CriseEvenementController {
   }
 
   @RequestMapping(value = "/message/{idMessage}", method = RequestMethod.GET, headers = "Accept=application/xml")
-  @PreAuthorize("hasRight('CRISE_C')")
+  @PreAuthorize("hasRight('CRISE_R')")
   public ResponseEntity<String> getMessageById(final @PathVariable(value = "idMessage") Long id) {
 
     return new AbstractExtListSerializer<CriseSuivi>("Message retrieved.") {
@@ -198,7 +198,7 @@ public class CriseEvenementController {
 
   @Transactional
   @RequestMapping(value = "/{idEvent}/docevents", method = RequestMethod.GET)
-  @PreAuthorize("hasRight('CRISE_C')")
+  @PreAuthorize("hasRight('CRISE_R')")
   public ResponseEntity<java.lang.String> getDocuments(@PathVariable("idEvent") final Long idEvent) {
     return new AbstractExtListSerializer<fr.sdis83.remocra.db.model.remocra.tables.pojos.Document>("Crise Document retrieved.") {
 
@@ -242,7 +242,7 @@ public class CriseEvenementController {
   }
 
   @RequestMapping(value = "/origines/{idCrise}", method = RequestMethod.GET, headers = "Accept=application/json")
-  @PreAuthorize("hasRight('CRISE_C')")
+  @PreAuthorize("hasRight('CRISE_R')")
   public ResponseEntity<java.lang.String> getOrigines(final @PathVariable(value = "idCrise") Long idCrise,  final @RequestParam(value = "query", required = false) String query) {
 
     return new AbstractExtObjectSerializer<List<String>>("origines retrieved.") {
