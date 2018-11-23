@@ -23,13 +23,14 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CriseDocument implements Serializable {
 
-	private static final long serialVersionUID = -1517884851;
+	private static final long serialVersionUID = -1380178930;
 
 	private Long   id;
 	private String sousType;
 	private Long   document;
 	private Long   crise;
 	private Long   evenement;
+	private Object geometrie;
 
 	public CriseDocument() {}
 
@@ -39,6 +40,7 @@ public class CriseDocument implements Serializable {
 		this.document = value.document;
 		this.crise = value.crise;
 		this.evenement = value.evenement;
+		this.geometrie = value.geometrie;
 	}
 
 	public CriseDocument(
@@ -46,13 +48,15 @@ public class CriseDocument implements Serializable {
 		String sousType,
 		Long   document,
 		Long   crise,
-		Long   evenement
+		Long   evenement,
+		Object geometrie
 	) {
 		this.id = id;
 		this.sousType = sousType;
 		this.document = document;
 		this.crise = crise;
 		this.evenement = evenement;
+		this.geometrie = geometrie;
 	}
 
 	public Long getId() {
@@ -97,6 +101,15 @@ public class CriseDocument implements Serializable {
 
 	public CriseDocument setEvenement(Long evenement) {
 		this.evenement = evenement;
+		return this;
+	}
+
+	public Object getGeometrie() {
+		return this.geometrie;
+	}
+
+	public CriseDocument setGeometrie(Object geometrie) {
+		this.geometrie = geometrie;
 		return this;
 	}
 }

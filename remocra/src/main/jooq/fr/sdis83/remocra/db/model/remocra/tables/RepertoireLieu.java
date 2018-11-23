@@ -36,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class RepertoireLieu extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 1385092125;
+	private static final long serialVersionUID = -374782366;
 
 	/**
 	 * The reference instance of <code>remocra.repertoire_lieu</code>
@@ -124,7 +124,7 @@ public class RepertoireLieu extends TableImpl<Record> {
 	 */
 	@Override
 	public List<UniqueKey<Record>> getKeys() {
-		return Arrays.<UniqueKey<Record>>asList(Keys.REPERTOIRE_LIEU_PKEY);
+		return Arrays.<UniqueKey<Record>>asList(Keys.REPERTOIRE_LIEU_PKEY, Keys.REPERTOIRE_LIEU_CODE_KEY);
 	}
 
 	/**

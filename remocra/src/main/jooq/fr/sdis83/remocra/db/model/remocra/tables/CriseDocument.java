@@ -36,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CriseDocument extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -1497563218;
+	private static final long serialVersionUID = -1172749697;
 
 	/**
 	 * The reference instance of <code>remocra.crise_document</code>
@@ -75,6 +75,11 @@ public class CriseDocument extends TableImpl<Record> {
 	 * The column <code>remocra.crise_document.evenement</code>. Evènement éventuellement associé
 	 */
 	public final TableField<Record, Long> EVENEMENT = createField("evenement", org.jooq.impl.SQLDataType.BIGINT, this, "Evènement éventuellement associé");
+
+	/**
+	 * The column <code>remocra.crise_document.geometrie</code>. Géometrie associée à la carte horodatée
+	 */
+	public final TableField<Record, Object> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "Géometrie associée à la carte horodatée");
 
 	/**
 	 * Create a <code>remocra.crise_document</code> table reference

@@ -368,6 +368,7 @@ public class Keys {
 	public static final UniqueKey<Record> RCI_PKEY = UniqueKeys0.RCI_PKEY;
 	public static final UniqueKey<Record> RCI_DOCUMENT_PKEY = UniqueKeys0.RCI_DOCUMENT_PKEY;
 	public static final UniqueKey<Record> REPERTOIRE_LIEU_PKEY = UniqueKeys0.REPERTOIRE_LIEU_PKEY;
+	public static final UniqueKey<Record> REPERTOIRE_LIEU_CODE_KEY = UniqueKeys0.REPERTOIRE_LIEU_CODE_KEY;
 	public static final UniqueKey<Record> REQUETE_MODELE_PKEY = UniqueKeys0.REQUETE_MODELE_PKEY;
 	public static final UniqueKey<Record> REQUETE_MODELE_DROIT_PKEY = UniqueKeys0.REQUETE_MODELE_DROIT_PKEY;
 	public static final UniqueKey<Record> REQUETE_MODELE_PARAMETRE_PKEY = UniqueKeys0.REQUETE_MODELE_PARAMETRE_PKEY;
@@ -819,6 +820,7 @@ public class Keys {
 		public static final UniqueKey<Record> RCI_PKEY = createUniqueKey(Rci.RCI, Rci.RCI.ID);
 		public static final UniqueKey<Record> RCI_DOCUMENT_PKEY = createUniqueKey(RciDocument.RCI_DOCUMENT, RciDocument.RCI_DOCUMENT.ID);
 		public static final UniqueKey<Record> REPERTOIRE_LIEU_PKEY = createUniqueKey(RepertoireLieu.REPERTOIRE_LIEU, RepertoireLieu.REPERTOIRE_LIEU.ID);
+		public static final UniqueKey<Record> REPERTOIRE_LIEU_CODE_KEY = createUniqueKey(RepertoireLieu.REPERTOIRE_LIEU, RepertoireLieu.REPERTOIRE_LIEU.CODE);
 		public static final UniqueKey<Record> REQUETE_MODELE_PKEY = createUniqueKey(RequeteModele.REQUETE_MODELE, RequeteModele.REQUETE_MODELE.ID);
 		public static final UniqueKey<Record> REQUETE_MODELE_DROIT_PKEY = createUniqueKey(RequeteModeleDroit.REQUETE_MODELE_DROIT, RequeteModeleDroit.REQUETE_MODELE_DROIT.REQUETE_MODELE, RequeteModeleDroit.REQUETE_MODELE_DROIT.PROFIL_DROIT);
 		public static final UniqueKey<Record> REQUETE_MODELE_PARAMETRE_PKEY = createUniqueKey(RequeteModeleParametre.REQUETE_MODELE_PARAMETRE, RequeteModeleParametre.REQUETE_MODELE_PARAMETRE.ID);
