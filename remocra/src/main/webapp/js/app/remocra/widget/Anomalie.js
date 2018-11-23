@@ -83,10 +83,11 @@ Ext.define('Sdis.Remocra.widget.Anomalie', {
             } ],
             viewConfig: {
                 getRowClass: function(record, index, rowParams, store) {
+                    var indisponibilityClass = me.getClassFromIndisponibility(record);
                     if (!me.isAnomalieSelectionnable(record)) {
-                        return 'anomalie-unmodifiable';
+                        return 'anomalie-unmodifiable '+indisponibilityClass;
                     }
-                    return '';
+                    return indisponibilityClass;
                 }
             }
         });
@@ -162,6 +163,29 @@ Ext.define('Sdis.Remocra.widget.Anomalie', {
            return true;
         }
         return info.getSaisieByCode(this.typeSaisie) != null;
+    },
+
+    getClassFromIndisponibility: function(record) {
+        var indisponibilityClass = "";
+
+        if(record.getInfoByNature(this.nature))
+        {
+            var id = record.getInfoByNature(this.nature).internalId;
+            record.raw.anomalieNatures.forEach(function(element){
+                if(element.id == id)
+                {
+                    if(element.valIndispoTerrestre != null && element.valIndispoTerrestre > 0) {
+                        indisponibilityClass += " anomalie-"+element.valIndispoTerrestre;
+                    }
+                    if(element.valIndispoHbe != null && element.valIndispoHbe > 0) {
+                        indisponibilityClass += " anomalie-hbe-"+element.valIndispoHbe;
+                    }
+                    return true;
+                }
+            });
+        }
+
+        return indisponibilityClass;
     },
 
     getStoreListeners: function() {
