@@ -174,16 +174,17 @@ public class CriseRepository {
       crise.setProcessusEtlPlanifications(processus);
 
       //on parse le string carte en json, on récupère les couches en fonction des codes
-    List<HashMap<String, Object>> couches = new JSONDeserializer<List<HashMap<String, Object>>>().deserialize(crise.getCarte());
-    List<String> codes = new ArrayList<String>();
-    for (HashMap<String, Object> couche: couches){
-      codes.add(String.valueOf(couche.get("id")));
-    }
-    System.out.println(couches);
+    if(crise.getCarte() != null){
+      List<HashMap<String, Object>> couches = new JSONDeserializer<List<HashMap<String, Object>>>().deserialize(crise.getCarte());
+      List<String> codes = new ArrayList<String>();
+      for (HashMap<String, Object> couche: couches){
+        codes.add(String.valueOf(couche.get("id")));
+      }
 
-    List<OgcCouche> criseCouches = context.select().from(OGC_COUCHE).where(OGC_COUCHE.CODE.in(codes)).fetchInto(OgcCouche.class);
-    crise.setOgcCouches(criseCouches);
-    System.out.println(criseCouches);
+      List<OgcCouche> criseCouches = context.select().from(OGC_COUCHE).where(OGC_COUCHE.CODE.in(codes)).fetchInto(OgcCouche.class);
+      crise.setOgcCouches(criseCouches);
+    }
+
     return crise;
   }
 

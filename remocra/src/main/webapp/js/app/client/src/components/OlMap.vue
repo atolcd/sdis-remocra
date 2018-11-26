@@ -360,6 +360,7 @@ import html2canvas from 'html2canvas'
         axios.get('/remocra/crises/'+this.criseId)
         .then((response)=> {
             if(response.data){
+              if(response.data.data.carte !== null){
                var extraLayers = JSON.parse(response.data.data.carte)
                if (extraLayers && extraLayers.length !== 0){
                  // Recherche du groupe "additional"
@@ -378,6 +379,7 @@ import html2canvas from 'html2canvas'
                    additionalGroup.items.push(layer);
                  })
                }
+             }
             }
             this.addLayersFromLayerConfig(legendData)
         })
