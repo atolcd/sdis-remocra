@@ -325,7 +325,6 @@ import html2canvas from 'html2canvas'
       changeLayerVisibility(id){
         var layer = this.getLayerById(id);
         var checkbox = document.getElementById("checkbox"+id);
-        console.log(layer + layer.getVisible())
         var newVisibility = !layer.getVisible();
         layer.setVisible(newVisibility);
       },
@@ -348,7 +347,7 @@ import html2canvas from 'html2canvas'
                    var feature = new WKT().readGeometry(bounds);
                    this.extent= feature.getExtent()
                    this.addLayersFromCrise(this.legend)
-                   this.map.getView().fit(this.extent)
+                   this.map.getView().fit(this.extent, {nearest: true})
                    this.addMeasureInteraction()
               }
         })
@@ -448,7 +447,7 @@ import html2canvas from 'html2canvas'
         var wmsLayer = new ImageLayer({
         source: new ImageWMS({
           url: layerDef.url,
-          crossOrigin: 'Anonymous',
+          crossOrigin: 'use-credentials',
           params: {
             'LAYERS': layerDef.layers
           }}),
@@ -851,7 +850,6 @@ import html2canvas from 'html2canvas'
            if (layer.get('name') != undefined && layer.get('name') === 'workingLayer') {
                var workingFeature = selectedFeature.clone();
                workingFeature.id_ = selectedFeature.id_
-               console.log(workingFeature)
                layer.getSource().addFeature(workingFeature);
           }
           })
@@ -970,11 +968,10 @@ import html2canvas from 'html2canvas'
             })
         },
          zoomToGeom(geometrie){
-          console.log(geometrie)
-          this.map.getView().fit(new WKT().readGeometry(geometrie,{dataProjection: this.epsgL93, featureProjection: this.proj}).getExtent())
+          this.map.getView().fit(new WKT().readGeometry(geometrie,{dataProjection: this.epsgL93, featureProjection: this.proj}).getExtent(),{nearest: true})
         },
         zoomToExtent(geometrie){
-          this.map.getView().fit(new GeoJSON().readGeometry(geometrie,{dataProjection: this.epsgL93, featureProjection: this.proj}).getExtent())
+          this.map.getView().fit(new GeoJSON().readGeometry(geometrie,{dataProjection: this.epsgL93, featureProjection: this.proj}).getExtent(),{nearest: true})
         },refreshMap(){
           var workingLayer = this.getLayerById('workingLayer')
           var wmsLayer = this.getLayerById('893bb7520e7fb036d665661847628994')

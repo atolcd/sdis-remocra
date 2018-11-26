@@ -65,7 +65,7 @@ export default {
         let formData = new FormData();
         var self = this
             self.canvas.toBlob(function(blob) {
-              var fileOfBlob = new File([blob], cardName+'.png', {type: 'image/png'});
+              var fileOfBlob = new File([blob], cardName+'.jpeg', {type: 'image/jpeg'});
            formData.append('files[0]', fileOfBlob);
            formData.append('geometrie', self.extent)
            console.log(formData)
@@ -83,7 +83,7 @@ export default {
                .catch(function(error) {
                  console.error('postEvent', error)
                })
-          })
+          },'image/jpeg')
       }
     }
 }
