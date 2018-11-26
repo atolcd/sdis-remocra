@@ -13,17 +13,18 @@
               </li>
           </ul>
         </b-dropdown>
-        <b-btn class="ctrl" @click="activateInteraction('Modify')" title="Modifier la géometrie d'un évènement"><img src="/static/img/pencil.png"></b-btn>
+        <b-btn class="ctrl" @click="activateInteraction('Modify')"  title="Modifier la géometrie d'un évènement"><img src="/static/img/pencil.png"></b-btn>
          <b-button-group v-if="showUpdateGeom" >
          <b-btn @click="validModifGeom">Valider</b-btn>
          <b-btn @click="annulModifGeom">Annuler</b-btn>
        </b-button-group>
-       <b-btn class="ctrl" @click="activateInteraction('Translate')" title="Déplacer un évènement"><img src="/static/img/pencil_move.png"></b-btn>
+       <b-btn class="ctrl" @click="activateInteraction('Translate')"  title="Déplacer un évènement"><img src="/static/img/pencil_move.png"></b-btn>
        <b-button-group v-if="showTranslateGeom" >
        <b-btn @click="validTranslateGeom">Valider</b-btn>
        <b-btn @click="annulTranslateGeom">Annuler</b-btn>
      </b-button-group>
-     <b-btn class="ctrl" @click="openAttributes" title="Modifier les attributs d’un événement"><img src="/static/img/application_view_columns.png"></b-btn>
+     <b-btn class="ctrl" @click="openAttributes"  title="Modifier les attributs d’un événement"><img src="/static/img/application_view_columns.png"></b-btn>
+     <b-btn class="ctrl" @click="addStampedCard"  title="Carte horodatée"><img src="/static/img/carte.png"></b-btn>
    </div>
 </template>
 
@@ -104,6 +105,9 @@ export default {
     },
     openAttributes(){
       this.$parent.openAttributes()
+    },
+    addStampedCard(){
+      this.$parent.addStampedCard()
     }
   }
 

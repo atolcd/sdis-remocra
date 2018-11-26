@@ -1,5 +1,7 @@
 package fr.sdis83.remocra.web;
 
+import static fr.sdis83.remocra.util.GeometryUtil.sridFromGeom;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,8 +22,10 @@ import fr.sdis83.remocra.repository.CriseRepository;
 import fr.sdis83.remocra.repository.ProcessusEtlPlanificationRepository;
 import fr.sdis83.remocra.repository.TypeCriseStatutRepository;
 import fr.sdis83.remocra.util.DocumentUtil;
+import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.model.Crise;
+import fr.sdis83.remocra.web.model.CriseDocument;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
@@ -147,8 +151,13 @@ public class CriseController {
   public ResponseEntity<java.lang.String> addNewDocuments(final @PathVariable("idCrise") Long idCrise, MultipartHttpServletRequest request) {
     try {
       Map<String, MultipartFile> files = request.getFileMap();
+      Geometry geom = null;
+      if(request.getParameter("geometrie") != null && !(request.getParameter("geometrie").isEmpty())){
+        String geometrie = request.getParameter("geometrie");
+         geom = GeometryUtil.geometryFromBBox(geometrie);
+      }
       // traitement des fichiers
-      int  i = criseRepository.addDocuments(files, idCrise);
+      int  i = criseRepository.addDocuments(files, idCrise, geom);
       if(i != 0){
         return new SuccessErrorExtSerializer(true, "Documents ajoutés ").serialize();
       }
@@ -163,7 +172,7 @@ public class CriseController {
   @RequestMapping(value = "/{idCrise}/documents", method = RequestMethod.GET)
   @PreAuthorize("hasRight('CRISE_C')")
   public ResponseEntity<java.lang.String> getDocuments(@PathVariable("idCrise") final Long idCrise) {
-    return new AbstractExtListSerializer<fr.sdis83.remocra.db.model.remocra.tables.pojos.Document>("Crise Document retrieved.") {
+    return new AbstractExtListSerializer<CriseDocument>("Crise Document retrieved.") {
 
       @Override
       protected JSONSerializer getJsonSerializer() {
@@ -179,8 +188,13 @@ public class CriseController {
       }
 
       @Override
-      protected List<fr.sdis83.remocra.db.model.remocra.tables.pojos.Document> getRecords() {
-        return criseRepository.getDocuments(idCrise);
+      protected List<CriseDocument> getRecords() {
+        try {
+          return criseRepository.getDocuments(idCrise);
+        } catch (ParseException e) {
+          e.printStackTrace();
+        }
+        return null;
       }
 
       @Override

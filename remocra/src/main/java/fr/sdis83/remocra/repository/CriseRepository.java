@@ -12,6 +12,7 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.REPERTOIRE_LIEU;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE_STATUT;
 import static fr.sdis83.remocra.db.model.remocra.tables.Document.DOCUMENT;
+import static fr.sdis83.remocra.util.GeometryUtil.sridFromGeom;
 import static org.jooq.impl.DSL.row;
 
 import java.sql.SQLException;
@@ -38,6 +39,7 @@ import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.util.DocumentUtil;
+import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.deserialize.GeometryFactory;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.model.Crise;
@@ -189,7 +191,7 @@ public class CriseRepository {
  @Transactional
   public int count(List<ItemFilter> itemFilters) {
    Condition condition = this.getFilters(itemFilters);
-   return context.fetchCount(context.select().from(CRISE) .join(TYPE_CRISE).on(TYPE_CRISE.ID.eq(CRISE.TYPE_CRISE))
+   return context.fetchCount(context.select().from(CRISE).join(TYPE_CRISE).on(TYPE_CRISE.ID.eq(CRISE.TYPE_CRISE))
        .join(TYPE_CRISE_STATUT).on(TYPE_CRISE_STATUT.ID.eq(CRISE.STATUT)).where(condition));
   }
 
@@ -255,8 +257,6 @@ public class CriseRepository {
               ,row(c.getNom()))
           .where(CRISE.ID.eq(idCrise)).execute();
     }
-
-
 
     return c;
 
@@ -455,15 +455,17 @@ public class CriseRepository {
 
   }
 
-  public int addDocuments(Map<String, MultipartFile> files, Long criseId) {
+  public int addDocuments(Map<String, MultipartFile> files, Long criseId, Geometry geometrie) {
     if (files != null && !files.isEmpty()) {
       for (MultipartFile file : files.values()) {
         if (!file.isEmpty()) {
           try {
             Document d = DocumentUtil.getInstance().createNonPersistedDocument(Document.TypeDocument.CRISE, file, paramConfService.getDossierDocCrise());
-            this.entityManager.persist(d);
-            context.insertInto(CRISE_DOCUMENT, CRISE_DOCUMENT.SOUS_TYPE, CRISE_DOCUMENT.DOCUMENT, CRISE_DOCUMENT.CRISE)
-            .values(getSousType(file),context.select(DSL.max((DOCUMENT.ID))).from(DOCUMENT).fetchOne().value1(),criseId).execute();
+            context.insertInto(DOCUMENT, DOCUMENT.CODE, DOCUMENT.DATE_DOC, DOCUMENT.FICHIER, DOCUMENT.REPERTOIRE, DOCUMENT.TYPE)
+                .values(d.getCode(), new Instant(d.getDateDoc()), d.getFichier(), d.getRepertoire(), d.getType().toString()).execute();
+            Long docId = context.select(DSL.max((DOCUMENT.ID))).from(DOCUMENT).fetchOne().value1();
+            context.insertInto(CRISE_DOCUMENT, CRISE_DOCUMENT.SOUS_TYPE, CRISE_DOCUMENT.DOCUMENT, CRISE_DOCUMENT.CRISE, CRISE_DOCUMENT.GEOMETRIE)
+            .values(getSousType(file), docId, criseId, geometrie != null ? geometrie: null).execute();
             return 1;
           } catch (Exception e) {
             e.printStackTrace();
@@ -483,9 +485,11 @@ public class CriseRepository {
         if (!file.isEmpty()) {
           try {
             Document d = DocumentUtil.getInstance().createNonPersistedDocument(Document.TypeDocument.CRISE, file, paramConfService.getDossierDocCrise());
-            this.entityManager.persist(d);
+            context.insertInto(DOCUMENT, DOCUMENT.CODE, DOCUMENT.DATE_DOC, DOCUMENT.FICHIER, DOCUMENT.REPERTOIRE, DOCUMENT.TYPE)
+                .values(d.getCode(), new Instant(d.getDateDoc()), d.getFichier(), d.getRepertoire(), d.getType().toString()).execute();
+            Long docId = context.select(DSL.max((DOCUMENT.ID))).from(DOCUMENT).fetchOne().value1();
             context.insertInto(CriseDocument.CRISE_DOCUMENT, CriseDocument.CRISE_DOCUMENT.SOUS_TYPE, CriseDocument.CRISE_DOCUMENT.DOCUMENT, CriseDocument.CRISE_DOCUMENT.CRISE, CriseDocument.CRISE_DOCUMENT.EVENEMENT)
-                .values(getSousType(file),context.select(DSL.max((DOCUMENT.ID))).from(DOCUMENT).fetchOne().value1(),criseId,eventId).execute();
+                .values(getSousType(file), docId, criseId, eventId).execute();
             return 1;
           } catch (Exception e) {
             e.printStackTrace();
@@ -497,19 +501,37 @@ public class CriseRepository {
     return 0;
   }
 
-  public List<fr.sdis83.remocra.db.model.remocra.tables.pojos.Document> getDocuments(Long criseId){
-    List<fr.sdis83.remocra.db.model.remocra.tables.pojos.Document> l;
-    l = (context.select().from(DOCUMENT)
-        .where(DOCUMENT.ID.in(context.select(CRISE_DOCUMENT.DOCUMENT)
-            .from(CRISE_DOCUMENT).where(CRISE_DOCUMENT.CRISE.eq(criseId)).fetchInto(Long.class)))).fetchInto(fr.sdis83.remocra.db.model.remocra.tables.pojos.Document.class);
-    return l;
+  public List<fr.sdis83.remocra.web.model.CriseDocument> getDocuments(Long criseId) throws ParseException {
+   /*l =context.select().from(CRISE_DOCUMENT).join(DOCUMENT).on(CRISE_DOCUMENT.DOCUMENT.eq(DOCUMENT.ID))
+       .where(CRISE_DOCUMENT.CRISE.eq(criseId)).fetchInto(fr.sdis83.remocra.web.model.CriseDocument.class);*/
+
+    List<fr.sdis83.remocra.web.model.CriseDocument> crDocuments = new ArrayList<fr.sdis83.remocra.web.model.CriseDocument>();
+    String sql = "select  cd.crise, cd.sous_type, cd.document, st_asgeojson(cd.geometrie) as geometrie, d.fichier, d.date, d.date_doc, d.code from remocra.crise_document as cd join remocra.document as d on cd.document = d.id where cd.crise ="+criseId;
+    Result<Record> result = context.fetch(sql);
+
+    for (Record r : result){
+      fr.sdis83.remocra.web.model.CriseDocument doc = new fr.sdis83.remocra.web.model.CriseDocument();
+      doc.setCode(String.valueOf(r.getValue("code")));
+      doc.setCrise(Long.valueOf(String.valueOf(r.getValue("crise"))));
+      doc.setDate(new Instant(r.getValue("date")));
+      doc.setFichier(String.valueOf(r.getValue("fichier")));
+      doc.setSousType(String.valueOf("sous_type"));
+      if(r.getValue("geometrie") != null){
+        doc.setGeometrie(String.valueOf(r.getValue("geometrie")));
+      }
+
+
+      crDocuments.add(doc);
+    }
+
+    return crDocuments ;
+
   }
 
   public int countDocuments(Long criseId){
 
-    return context.fetchCount(context.select().from(DOCUMENT)
-        .where(DOCUMENT.ID.in(context.select(CRISE_DOCUMENT.DOCUMENT)
-            .from(CRISE_DOCUMENT).where(CRISE_DOCUMENT.CRISE.eq(criseId)).fetchInto(Long.class))));
+    return context.fetchCount(context.select().from(CRISE_DOCUMENT).join(DOCUMENT).on(CRISE_DOCUMENT.DOCUMENT.eq(DOCUMENT.ID))
+        .where(CRISE_DOCUMENT.CRISE.eq(criseId)));
   }
 
   public String getSousType(MultipartFile f){

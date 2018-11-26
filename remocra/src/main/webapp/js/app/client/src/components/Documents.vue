@@ -4,6 +4,7 @@
            <b-list-group-item>
              <a onclick="return false" ondblclick="location=this.href"  :href="'/remocra/telechargement/document/'+document.code">
                <strong>{{document.fichier}} - {{document.date}}</strong>
+                <img v-if="document.geometrie !== null" src="/static/img/flag_green.png" @click="locateDoc(document.geometrie)">
              </a>
            </b-list-group-item>
     </b-list-group>
@@ -57,6 +58,9 @@ export default {
         .catch(function(error) {
           console.error('évenements', error)
         })
+    },
+    locateDoc(geometrie){
+      this.$parent.$parent.zoomToExtent(geometrie)
     }
   }
 }

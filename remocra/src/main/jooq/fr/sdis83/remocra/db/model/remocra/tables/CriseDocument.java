@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+import fr.sdis83.remocra.db.converter.GeometryBinding;
 import fr.sdis83.remocra.db.model.remocra.Keys;
 import fr.sdis83.remocra.db.model.remocra.Remocra;
 
@@ -79,7 +81,7 @@ public class CriseDocument extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.crise_document.geometrie</code>. Géometrie associée à la carte horodatée
 	 */
-	public final TableField<Record, Object> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "Géometrie associée à la carte horodatée");
+	public final TableField<Record, Geometry> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "Géometrie associée à la carte horodatée",new GeometryBinding());
 
 	/**
 	 * Create a <code>remocra.crise_document</code> table reference

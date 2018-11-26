@@ -111,6 +111,7 @@
       <b-row id="toolsBar" class="toolsBar">
       <tool-bar ref="toolBar"></tool-bar>
       <choice-feature :crise="criseId" ref="choiceFeature"></choice-feature>
+      <stamped-card :crise="criseId" ref="stampedCard"></stamped-card>
       </b-row>
       <div id="map">
       </div>
@@ -169,6 +170,7 @@ import View from 'ol/View.js';
 import {defaults as defaultControls,FullScreen} from 'ol/control.js';
 import {ScaleLine} from 'ol/control.js';
 import {getWidth} from 'ol/extent.js';
+import * as OlExtent from 'ol/extent';
 import TileLayer from 'ol/layer/Tile.js';
 import {fromLonLat, get as getProjection} from 'ol/proj.js';
 import ImageLayer from 'ol/layer/Image.js';
@@ -180,7 +182,8 @@ import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
 import WKT from 'ol/format/WKT.js';
 import axios from 'axios'
 import legend from '../assets/carte-crise.json'
-import Proj from 'ol/proj/Projection'
+import * as Proj from 'ol/proj'
+import * as Polygon from 'ol/geom/Polygon'
 import {register} from 'ol/proj/proj4.js';
 import proj4 from 'proj4';
 import _ from 'lodash'
@@ -194,7 +197,7 @@ import OlInteractionDraw from 'ol/interaction/Draw.js'
 import {Draw, Modify, Snap, Select, Translate} from 'ol/interaction.js';
 import {getArea, getLength} from 'ol/sphere.js';
 import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style.js';
-import {LineString, Polygon} from 'ol/geom.js';
+import {LineString} from 'ol/geom.js';
 import GeoJSON from 'ol/format/GeoJSON';
 import NewEvenement from './NewEvenement.vue';
 import NewDocument from './NewDocument.vue';
@@ -204,7 +207,8 @@ import Filters from './Filters.vue';
 import ToolBar from './ToolBar.vue';
 import ChoiceFeature from './ChoiceFeature.vue';
 import ShowInfo from './ShowInfo.vue';
-
+import StampedCard from './StampedCard.vue';
+import html2canvas from 'html2canvas'
   export default {
     name: 'OlMap',
     components: {
@@ -218,7 +222,8 @@ import ShowInfo from './ShowInfo.vue';
            Filters,
            ToolBar,
            ChoiceFeature,
-           ShowInfo   },
+           ShowInfo,
+           StampedCard   },
     data () {
       return {
         file: null,
@@ -441,6 +446,7 @@ import ShowInfo from './ShowInfo.vue';
         var wmsLayer = new ImageLayer({
         source: new ImageWMS({
           url: layerDef.url,
+          crossOrigin: 'Anonymous',
           params: {
             'LAYERS': layerDef.layers
           }}),
@@ -543,6 +549,7 @@ import ShowInfo from './ShowInfo.vue';
        var ignSource = new WMTS({
          // todo layerDEf.url ??? quel clé
                url: layerDef.url,
+               crossOrigin: 'Anonymous',
                layer: layerDef.layers,
                matrixSet: layerDef.matrixSet || (layerDef.tileMatrixSet && layerDef.tileMatrixSet.nom ? layerDef.tileMatrixSet.nom : null),
                format: layerDef.format,
@@ -889,6 +896,16 @@ import ShowInfo from './ShowInfo.vue';
         openAttributes(){
           this.map.on('click', this.handleOpenAttributes)
         },
+        addStampedCard(){
+          var self = this
+          var extent = this.map.getView().calculateExtent()
+          extent = Proj.transformExtent(extent, this.map.getView().getProjection().getCode(), getProjection(this.epsgL93))
+          this.map.once('postcompose', function(event) {
+            var canvas = event.context.canvas
+          self.$refs.stampedCard.makeCard(canvas, extent)
+      })
+      this.map.renderSync()
+        },
         handleOpenAttributes(e){
           axios.get('/remocra/evenements/layer', {params: {
             point: e.coordinate[0] + ', ' + e.coordinate[1],
@@ -949,9 +966,13 @@ import ShowInfo from './ShowInfo.vue';
             .catch(function(error){
               console.error('carte', error)
             })
-        }, zoomToGeom(geometrie){
+        },
+         zoomToGeom(geometrie){
           console.log(geometrie)
           this.map.getView().fit(new WKT().readGeometry(geometrie,{dataProjection: this.epsgL93, featureProjection: this.proj}).getExtent())
+        },
+        zoomToExtent(geometrie){
+          this.map.getView().fit(new GeoJSON().readGeometry(geometrie,{dataProjection: this.epsgL93, featureProjection: this.proj}).getExtent())
         },refreshMap(){
           var workingLayer = this.getLayerById('workingLayer')
           var wmsLayer = this.getLayerById('893bb7520e7fb036d665661847628994')
