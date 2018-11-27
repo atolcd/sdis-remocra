@@ -38,6 +38,7 @@ import fr.sdis83.remocra.domain.remocra.Commune;
 import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.service.ParamConfService;
+import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.deserialize.GeometryFactory;
@@ -74,6 +75,9 @@ public class CriseRepository {
 
   @Autowired
   protected ParamConfService paramConfService;
+
+  @Autowired
+  private UtilisateurService utilisateurService;
 
   @Autowired
   JpaTransactionManager transactionManager;
@@ -545,4 +549,37 @@ public class CriseRepository {
     return Document.SousTypeDocument.AUTRE.toString();
   }
 
+  /**
+   * Retourne le nombre de crises accessibles, filtrées à partir de la liste d'identifiants fournis.
+   *
+   * @param criseIds
+   * @return
+   */
+  public Long countAccessiblesCrisesIn(Long[] criseIds) {
+      Long zcId = utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getId();
+      StringBuffer sbReq = new StringBuffer("select count(distinct cr.id) as c")
+              .append(" from remocra.crise cr")
+              .append(" join remocra.crise_commune crco on (crco.crise=cr.id)")
+              .append(" join remocra.commune co on (co.id=crco.commune)")
+              .append(" where")
+              .append(" co.geometrie && (select geometrie from remocra.zone_competence where id=").append(zcId).append(")")
+              .append(" and st_intersects(co.geometrie, ")
+              .append("(select geometrie from remocra.zone_competence where id=").append(zcId).append(")")
+              .append(")")
+              .append(" and cr.id in ").append(toParenthesisArray(criseIds));
+      Record rec = context.fetchOne(sbReq.toString());
+      return (Long)rec.getValue("c");
+  }
+
+    public String toParenthesisArray(Long[] criseIds) {
+        StringBuffer sbIds = new StringBuffer("(");
+        for (Long l : criseIds) {
+            if (sbIds.length()>1) {
+                sbIds.append(",");
+            }
+            sbIds.append(l);
+        }
+        sbIds.append(")");
+        return sbIds.toString();
+    }
 }

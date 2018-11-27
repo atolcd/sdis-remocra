@@ -21,6 +21,8 @@ import fr.sdis83.remocra.ogc.cql.ObjectStatement;
 import fr.sdis83.remocra.ogc.cql.Operator;
 import fr.sdis83.remocra.ogc.cql.Statement;
 import fr.sdis83.remocra.repository.CriseEvenementRepository;
+import fr.sdis83.remocra.repository.CriseRepository;
+import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.service.ZoneCompetenceService;
 import fr.sdis83.remocra.util.FeatureUtil;
@@ -32,7 +34,6 @@ import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import fr.sdis83.remocra.web.serialize.transformer.GeometryTransformer;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Instant;
@@ -58,6 +59,9 @@ public class CriseEvenementController {
   private final Logger log = Logger.getLogger(getClass());
 
   @Autowired
+  CriseRepository criseRepository;
+
+  @Autowired
   CriseEvenementRepository criseEvenementRepository;
 
   @Autowired
@@ -65,6 +69,9 @@ public class CriseEvenementController {
 
   @Autowired
   private UtilisateurService utilisateurService;
+
+    @Autowired
+    ParamConfService paramConfService;
 
   @Autowired
   private GeoserverController geoserverController;
@@ -302,12 +309,30 @@ public class CriseEvenementController {
         List<ItemFilter> itemFilters = ItemFilter.decodeJson(filters);
         Map<String, Statement> statementMap = toStatementMap(itemFilters);
 
-        // TODO cva Vérifier filtre sur la zone de compétence réalisé dans contrôleur GeoServer
+        // Sécurité : au moins une crise passée et vérification des accès
+        CompositeStatement cs = (CompositeStatement)statementMap.get("crise");
+        Collection<Long> crises = new LinkedList<Long>();
+        for (Statement s : cs.getStatements()) {
+            ObjectStatement os = (ObjectStatement)s;
+            crises.add(Long.parseLong(os.getValue()));
+        }
+        if (crises.size()<1) {
+            log.error("Couche évènements de crise : aucune crise fournie");
+            response.setStatus(400);
+        } else {
+            // On compte les crises accessibles
+            Long count = criseRepository.countAccessiblesCrisesIn((Long[])crises.toArray(new Long[]{}));
+            if (count!=crises.size()) {
+                log.error("Couche évènements de crise : au moins une crise inaccessible");
+                response.setStatus(403);
+            }
+        }
 
-        // TODO cva Bloquer si crise(s) non accessible(s) : 403
+        // Sécurité : filtre sur crise active
+        statementMap.put("SEC_crise_active",
+                new ObjectStatement("crise_active", Operator.EQ, "true"));
 
         // Sécurité : filtre sur type_crise_categorie_evenement
-        // TODO cva : ajouter un droit qui permet d'accéder à toutes les catégories ?
         String categorieEvenementIds = getCategorieEvenementIdsForProfilDroitStr();
         if (categorieEvenementIds==null) {
                 log.error("Couche évènements de crise : aucune catégorie  d'évènement accessible");
@@ -392,10 +417,8 @@ public class CriseEvenementController {
             } else if ("statut".equals(filter.getFieldName())) {
                 ObjectStatement newStmt = null;
                 if ("Nouveau".equals(filter.getValue())) {
-                    // 2016-01-01T00:00:00Z
-                    // TODO cva : paramétrer le nombre de minutes
-                    String isoTimestamp = new DateTime().minusMinutes(60).toString();
-                    newStmt = new ObjectStatement("constat", Operator.AFTER, isoTimestamp);
+                    DateTime oldEvtDT = new DateTime().minusMinutes(paramConfService.getCriseNouvelEvtDelaiMinutes());
+                    newStmt = new ObjectStatement("constat", Operator.AFTER, oldEvtDT.toString());
                 } else if ("Clos".equals(filter.getValue())) {
                     newStmt = new ObjectStatement("cloture", Operator.IS_NOT_NULL);
                 }
@@ -417,9 +440,9 @@ public class CriseEvenementController {
                     log.warn("Filtre CQL inconnu, " + filter.getFieldName() + " : " + periodeValue);
                     continue;
                 }
-                String isoTimestamp = new DateTime().minusMinutes(minutes).toString();
+                DateTime periodeDT = new DateTime().minusMinutes(minutes);
                 secureAddToCompositeOrStatement(returned, "periode",
-                        new ObjectStatement("dernier_message", Operator.AFTER, isoTimestamp));
+                        new ObjectStatement("dernier_message", Operator.AFTER, periodeDT.toString()));
             } else if ("tag".equals(filter.getFieldName())) {
                 secureAddToCompositeOrStatement(returned, "origine",
                         new ObjectStatement("tags", Operator.LIKE, "'%" + filter.getValue() + "%'"));
@@ -457,13 +480,20 @@ public class CriseEvenementController {
 Droits d'accès aux catégories d'événements (exemple) :
   insert into remocra.type_crise_evenement_droit(profil_droit, categorie_evenement) select 20, id from remocra.type_crise_categorie_evenement;
 
-
-Couche GeoServer remocra:v_crise_evenement :
+GeoServer :
+Création couche WMS remocra:v_crise_evenement :
 select
   ce.geometrie,
   ce.id, ce.crise, ce.nature_evenement, ce.constat, ce.cloture, ce.tags, ce.origine, ce.importance,
+  (select (c.cloture is null) from remocra.crise c where c.id = ce.crise) as crise_active,
   (select creation from remocra.crise_suivi cs where cs.evenement=ce.id order by creation desc limit 1) as dernier_message,
   (select tcne.categorie_evenement from remocra.type_crise_nature_evenement tcne where tcne.id=ce.nature_evenement) as categorie_evenement
 from remocra.crise_evenement ce
+
+Puis :
+* geometrie : 2154
+* id : identifiant
+
+"SRC natif" et "SRC des données" : EPSG:2154
     */
 }

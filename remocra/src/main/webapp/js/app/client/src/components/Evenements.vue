@@ -84,6 +84,8 @@ export default {
         } else {
           idProp.value = crise
         }
+
+        // TODO cva voir s'il est nécessaire d'éviter le cache en maintenant un paramètre type "time": Date.now()
         var jsonFilters = JSON.stringify(filters)
 
         var mapCmp = this.$parent.$parent

@@ -68,6 +68,10 @@ public class ParamConfService {
         return (Integer) this.getValue(ParamConfParam.CITERNE_TOLERANCE_ASSOCIATION_PI_METRES, 500);
     }
 
+    public Integer getCriseNouvelEvtDelaiMinutes() {
+        return (Integer) this.getValue(ParamConfParam.CRISE_NOUVEL_EVT_DELAI_MINUTES, 20);
+    }
+
     public String getClesIgn() {
         return (String) this.getValue(ParamConfParam.CLES_IGN, "4n507j21zeha5rp5pkll48vj");
     }

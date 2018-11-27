@@ -22,6 +22,14 @@ public class ObjectStatement extends Statement {
         return this.attribute;
     }
 
+    public Operator getOperator() {
+        return this.operator;
+    }
+
+    public String getValue() {
+        return this.value;
+    }
+
     public String toCQL() {
         return attribute + " " + operator + (value == null || value.length() < 1 ? "" : " " + value);
     }

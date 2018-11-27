@@ -24,6 +24,14 @@ public class CompositeStatement extends Statement {
         this.conjunction = conjunction;
     }
 
+    public Collection<Statement> getStatements() {
+        return this.statements;
+    }
+
+    public Conjunction getConjunction() {
+        return this.conjunction;
+    }
+
     public void addStatement(Statement statement) {
         statements.add(statement);
     }
