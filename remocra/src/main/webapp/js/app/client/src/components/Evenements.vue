@@ -64,8 +64,11 @@ export default {
                   var IsoDateTo = moment(new Date(message.creation), 'DD/MM/YYYY[T]HH:mm:ss[Z]').format('DD/MM/YYYY'+' - '+'HH:mm')
                    message.creation = IsoDateTo
                 })
+                // Tri antéchronologique du suivi (création)
+                evenement.criseSuivis = _.orderBy(evenement.criseSuivis, ['creation'], ['desc']);
              })
-             console.log(this.evenements)
+             // Tri antéchronologique des évènements (constat)
+             this.evenements = _.orderBy(this.evenements, ['constat'], ['desc']);
           }
         })
         .catch(function(error) {
