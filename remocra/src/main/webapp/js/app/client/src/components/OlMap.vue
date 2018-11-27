@@ -444,10 +444,11 @@ import html2canvas from 'html2canvas'
      });
     },
     createWMSLayer(layerDef) {
+        let crossOriginValue = layerDef.url.indexOf(window.document.location.hostname)?'use-credentials':'anonymous'
         var wmsLayer = new ImageLayer({
         source: new ImageWMS({
           url: layerDef.url,
-          crossOrigin: 'use-credentials',
+          crossOrigin: crossOriginValue,
           params: {
             'LAYERS': layerDef.layers
           }}),
@@ -548,9 +549,9 @@ import html2canvas from 'html2canvas'
                matrixIds: matrixIds
              });
        var ignSource = new WMTS({
-         // todo layerDEf.url ??? quel clé
+         // TODO layerDEf.url ??? quelle clé
                url: layerDef.url,
-               crossOrigin: 'Anonymous',
+               crossOrigin: 'anonymous',
                layer: layerDef.layers,
                matrixSet: layerDef.matrixSet || (layerDef.tileMatrixSet && layerDef.tileMatrixSet.nom ? layerDef.tileMatrixSet.nom : null),
                format: layerDef.format,
