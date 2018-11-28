@@ -27,6 +27,7 @@
      </b-button-group>
      <b-btn class="ctrl" @click="openAttributes"  title="Modifier les attributs d’un événement"><img src="/static/img/application_view_columns.png"></b-btn>
      <b-btn class="ctrl" @click="addStampedCard"  title="Carte horodatée"><img src="/static/img/photo-add.svg"></b-btn>
+     <b-btn class="ctrl" @click="openModalImportFile"  title="Ajouter un fichier vectoriel"><img id="iconBtnImportFile" src="/static/img/cartographie.png"></b-btn>
    </div>
 </template>
 
@@ -113,6 +114,9 @@ export default {
     },
     addStampedCard(){
       EventBus.$emit(eventTypes.ADD_STAMPEDCARD)
+    },
+    openModalImportFile(){
+      this.$parent.openModalImportFile()
     }
   }
 
@@ -159,6 +163,10 @@ export default {
 }
 .dropdown-submenu>.dropdown-menu>.dropdown-item>a:hover {
     text-decoration: none;
+}
+#iconBtnImportFile{
+  height: 25px;
+  width: 25px;
 }
 
 .geom-point:before {

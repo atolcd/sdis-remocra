@@ -147,6 +147,7 @@
                           <div class="my-handle">
                             <input  type="checkbox" v-bind:id="'checkbox'+layer.id" :value="layer.visibility" v-model="layer.visibility" @click="changeLayerVisibility(layer.id)">
                             <label for="layer.id">{{layer.libelle}}</label>
+                            <b-btn v-bind:id="'btnSuppr'+layer.id" v-if="group.libelle === 'Fichiers importés'" class="ctrlImportLayer" title="Supprimer la couche" @click="deleteImportLayer(layer.id)"><img src="/static/img/decline.png"></b-btn>
                           </div>
                           </div>
                       </draggable>
@@ -186,6 +187,7 @@
   <b-modal ref="updateGeom" title="Modifier la géométrie">
     <p class="my-4">Voulez vous valider la nouvelle géométrie</p>
   </b-modal>
+  <modalImportFile ref="modalImportFile"></modalImportFile>
 </b-container>
 </template>
 <script>
@@ -237,6 +239,7 @@ import ChoiceFeature from './ChoiceFeature.vue';
 import ShowInfo from './ShowInfo.vue';
 import StampedCard from './StampedCard.vue';
 import InputGeom from './InputGeom.vue';
+import ModalImportFile from './ModalImportFile.vue'
 import html2canvas from 'html2canvas'
 import EventBus from '../bus'
 import * as eventTypes from '../bus/event-types.js'
@@ -259,7 +262,9 @@ import MultiPoint from 'ol/geom/MultiPoint'
            ChoiceFeature,
            ShowInfo,
            StampedCard,
-         InputGeom   },
+           InputGeom,
+           ModalImportFile
+         },
     data () {
       return {
         mapRowHeight: 'calc(100% - 50px)',
@@ -1404,11 +1409,70 @@ import MultiPoint from 'ol/geom/MultiPoint'
                this.map.removeInteraction(input)
             }
           })
+        },
+        openModalImportFile(){
+            //this.$refs.modalImportFile.openModal()
+            this.$refs.modalImportFile.openModal()
+        },
+        modalImportFileValider (value){
+          // on récupère les données saisies dans la fenêtre modale
+          var donneesSaisies = value;
+          // on récupère les infos concernant le layer
+          //debugger
+          var infosLayer = {id: donneesSaisies["layerCode"], libelle: donneesSaisies["layerName"], visibility: true};
+          // on recherche le groupe de layer "Autres couches"
+          var obj = this.legend.items.find(obj => obj.libelle == "Fichiers importés");
+          // si le groupe de layer "Autre couches" n'existe pas
+          if (obj == null){
+            // on créé ce groupe en ajoutant notre layer créé
+            var importLayers = {libelle: "Fichiers importés", items: [infosLayer]};
+            this.legend.items.push(importLayers);
+          // sinon on ajoute directement le layer dans cette catégorie
+          } else {
+            var indexAutresCouches = this.legend.items.length - 1;
+            this.legend.items[indexAutresCouches].items.push(infosLayer);
+          }
+          // on ajoute la couche créée grâce au fichier à la map déjà présente
+          this.map.addLayer(donneesSaisies["newLayer"]);
+          // on recentre la vue sur les features ajoutées
+          this.map.getView().fit(donneesSaisies["newLayer"].getSource().getExtent());
+  		},
+      deleteImportLayer(idLayer){
+        // on récupère tous les layers de la map
+        var layers = this.map.getLayers().getArray();
+        for (let layer of layers){
+          if(layer.get("code") == idLayer){
+            // suppression du layer de la map
+            this.map.removeLayer(layer);
+            // on récupère l'index des "fichiers importés"
+            var indexAutresCouches = this.legend.items.length - 1;
+            // on récupère le tableau de légende des couches
+            var tabLegendFileImport = this.legend.items[indexAutresCouches].items;
+            // on recherche l'index des informations de la couche que l'on a supprimer
+            var indexLayer = tabLegendFileImport.findIndex(obj => obj.id == idLayer);
+            // on supprime les informations du layer supprimé
+            tabLegendFileImport.splice(indexLayer, 1);
+            // si la partie "fichiers importés" des couches est vide
+            if(tabLegendFileImport.length == 0){
+              // alors on supprime le groupe "fichiers importés"
+              this.legend.items.splice(indexAutresCouches, 1);
+            }
+          }
         }
+      }
    }
 }
 
     </script>
 
-<style>
+<style scoped>
+  .ctrlImportLayer{
+    color: transparent;
+    background-color: currentColor;
+    border-color: currentColor;
+  }
+  .ctrlImportLayer:hover{
+    border-color:#9d9d9d;
+    background-color: #f3f3f3;
+  }
 </style>
