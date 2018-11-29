@@ -8,8 +8,8 @@
         <b-btn class="ctrl" title="Déplacer la carte"><img src="/static/img/pan.png"></b-btn>
         <b-btn class="ctrl" title="Zoomer en avant" @click="zoomIn"><img src="/static/img/magnifier_zoom_in.png"></b-btn>
         <b-btn class="ctrl" title="Zoomer en arrière" @click="zoomOut"><img src="/static/img/magnifier_zoom_out.png"></b-btn>
-        <b-btn class="ctrl" title="Rétablir la vue précédente"><img src="/static/img/zoom_prec.png"></b-btn>
-        <b-btn class="ctrl" title="Rétablir la vue suivante"><img src="/static/img/zoom_suiv.png"></b-btn>
+        <b-btn class="ctrl" title="Rétablir la vue précédente" @click="zoomPrev"><img src="/static/img/zoom_prec.png"></b-btn>
+        <b-btn class="ctrl" title="Rétablir la vue suivante" @click="zoomNext"><img src="/static/img/zoom_suiv.png"></b-btn>
       </div>
 
       <div class="h-spacer"/>
@@ -266,8 +266,13 @@ import html2canvas from 'html2canvas'
         resolutions : [156543.03392804103, 78271.5169640205, 39135.75848201024, 19567.879241005125, 9783.939620502562, 4891.969810251281, 2445.9849051256406,
                          1222.9924525628203, 611.4962262814101, 305.74811314070485, 152.87405657035254, 76.43702828517625, 38.218514142588134, 19.109257071294063,
                          9.554628535647034, 4.777314267823517, 2.3886571339117584, 1.1943285669558792, 0.5971642834779396, 0.29858214173896974, 0.14929107086948493,
-                         0.07464553543474241 ]
-
+                         0.07464553543474241 ],
+        // Historique de navigation (pile, index courant, flag provenance de l'évènement)
+        navigation: {
+          stack: [],
+          idx: -1,
+          btns: false
+        }
       }
     },
     mounted() {
@@ -298,6 +303,26 @@ import html2canvas from 'html2canvas'
         this.createWorkingLayer()
         this.addModifyInteraction()
         this.addTranslateInteraction()
+
+        // Historique de navigation
+        this.map.on('moveend', () => {
+          if (!this.navigation.btns) {
+            let view = this.map.getView()
+            // Retrait des éléments "suivants" (cas "Zoom précédent" puis "Zoom manuel") et ajout du nouvel état
+            this.navigation.stack.splice(this.navigation.idx+1, this.navigation.stack.length-(this.navigation.idx+1), {
+              zoom: view.getZoom(),
+              center: view.getCenter(),
+              rotation: view.getRotation()
+            })
+            // On limite à 10 entrées
+            if (this.navigation.stack.length>9) {
+              this.navigation.stack.shift()
+            } else {
+              this.navigation.idx++
+            }
+          }
+          this.navigation.btns = false
+        })
     },
     updated() {
       //this.addSortable()
@@ -999,6 +1024,25 @@ import html2canvas from 'html2canvas'
           this.map.getView().setZoom(this.map.getView().getZoom()+1)
         },zoomOut(){
           this.map.getView().setZoom(this.map.getView().getZoom()-1)
+        },
+        zoomPrev() {
+          if (this.navigation.idx>0) {
+            this.navigation.btns = true
+            this.navigation.idx--
+            let state = this.navigation.stack[this.navigation.idx]
+            this.map.getView().animate(state)
+          }
+        },
+        zoomNext() {
+          if (this.navigation.stack.length-this.navigation.idx <= 1) {
+            return;
+          }
+          this.navigation.btns = true
+          if (this.navigation.idx<10) {
+            this.navigation.idx++
+          }
+          let state = this.navigation.stack[this.navigation.idx]
+          this.map.getView().animate(state)
         }
    }
 }
