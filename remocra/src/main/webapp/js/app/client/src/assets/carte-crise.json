@@ -27,7 +27,7 @@
       "num_zoom_levels" : null,
       "format" : "image/jpeg",
       "layers" : "GEOGRAPHICALGRIDSYSTEMS.MAPS",
-      "url" : "https://wxs.ign.fr/fjwf53vbh2ikn9q009g6mi7f/geoportail/wmts",
+      "url" : "https://wxs.ign.fr/pratique/geoportail/wmts",
       "styles" : [{
         "id" : "normal",
         "libelle" : "Légende générique"
@@ -50,7 +50,7 @@
       "num_zoom_levels" : null,
       "format" : "image/jpeg",
       "layers" : "ORTHOIMAGERY.ORTHOPHOTOS",
-      "url" : "https://wxs.ign.fr/fjwf53vbh2ikn9q009g6mi7f/geoportail/wmts",
+      "url" : "https://wxs.ign.fr/pratique/geoportail/wmts",
       "styles" : [{
         "id" : "normal",
         "libelle" : "Légende générique"
@@ -73,7 +73,7 @@
       "num_zoom_levels" : null,
       "format" : "image/png",
       "layers" : "ADMINEXPRESS_COG_2017",
-      "url" : "https://wxs.ign.fr/fjwf53vbh2ikn9q009g6mi7f/geoportail/wmts",
+      "url" : "https://wxs.ign.fr/pratique/geoportail/wmts",
       "styles" : [{
         "id" : "normal",
         "libelle" : "Légende générique"
@@ -97,7 +97,7 @@
         "num_zoom_levels" : null,
         "format" : "image/png",
         "layers" : "BUILDINGS.BUILDINGS",
-        "url" : "https://wxs.ign.fr/fjwf53vbh2ikn9q009g6mi7f/geoportail/wmts",
+        "url" : "https://wxs.ign.fr/pratique/geoportail/wmts",
         "styles" : [{
           "id" : "normal",
           "libelle" : "Légende générique"

@@ -258,7 +258,7 @@ import html2canvas from 'html2canvas'
         extent: [256805.64470225616, 6249216.947446961, 265705.78118321137, 6252690.054919669],
         legend,
         //todo  à factoriser
-        ignKey: 'fjwf53vbh2ikn9q009g6mi7f',
+        ignKey: 'pratique',
         map: {
         type: Object,
         default: {}
@@ -526,13 +526,13 @@ import html2canvas from 'html2canvas'
                 "items" : null,
                 "wms_layer" : true,
                 "layers" : "remocra:v_crise_evenement",
-                "url" : "http://localhost:8080/remocra/evenements/wms",
+                "url" : "/remocra/evenements/wms",
                 "sld" : null,
                 "projection" : "EPSG:2154",
                 "styles" : [{
                   "id" : "remocra_barriere",
                   "libelle" : "Barrière",
-                  "legende" : "http://localhost:8080/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&SERVICE=WMS&VERSION=1.3.0&LAYER=crise_evenement&FORMAT=image/png&STYLE="
+                  "legende" : "/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&SERVICE=WMS&VERSION=1.3.0&LAYER=crise_evenement&FORMAT=image/png&STYLE="
                 }]
            })
            let layer = this.createWMSLayer(layerDef)

@@ -25,7 +25,9 @@ Ext.define('Sdis.Remocra.features.crises.TabMapCrise', {
 
    updateIframe : function() {
       if (Ext.isDefined(this.idCrise)) {
-        this.mapTpl = Ext.create('Ext.XTemplate', '<iframe id="olmapCrise" src ="http://localhost:8081/#/olmap?hash ='+this.idCrise
+        this.mapTpl = Ext.create('Ext.XTemplate', '<iframe id="olmapCrise" src ="'
+            + window.document.location.protocol + '//' + window.document.location.hostname
+            + ':8081/#/olmap?hash ='+this.idCrise
         +'" width="100%" height="750" allowfullscreen="true" frameBorder="0">/iframe>');
 
       }
