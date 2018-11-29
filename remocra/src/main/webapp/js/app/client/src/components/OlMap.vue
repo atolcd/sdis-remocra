@@ -253,7 +253,7 @@ import html2canvas from 'html2canvas'
         modeAffichages: [
         { text: 'Opérationnel', value: 'radio1' },
         { text: 'Anticipation', value: 'radio2' }],
-        criseId: window.location.hash.substr(16),
+        criseId: window.location.hash.substr(13), // TODO charger correctement (query param)
         //todo mettre le var par défaut?
         extent: [256805.64470225616, 6249216.947446961, 265705.78118321137, 6252690.054919669],
         legend,

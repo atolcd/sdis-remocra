@@ -103,7 +103,7 @@ Ext.define('Sdis.Remocra.features.crises.TabGeneral', {
             // TODO cva retirer (utile pour les tests)
             renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                 return '<a href="' + window.document.location.protocol + '//'
-                    + window.document.location.hostname + ':8081/#/olmap?hash ='
+                    + window.document.location.hostname + ':8081/#/olmap?hash='
                     + record.get('id')+'" target="_blank">'+record.get('nom')+"</a>";
             }
         },{
