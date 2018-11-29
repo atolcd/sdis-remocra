@@ -232,10 +232,14 @@ export default {
     border-color: #9d9d9d;
     background-color: #e6e6e6;
 }
-#gestcrise button.ok-cancel-btns {
+#gestcrise .toolbar button.ok-cancel-btns {
     border-color:#9d9d9d;
     background-color: #9d9d9d;
     color: #fff;
+}
+#gestcrise .toolbar button.ok-cancel-btns:hover {
+    border-color: #6f6f6f;
+    background-color: #6f6f6f;
 }
 #gestcrise .ctrl:hover, #gestcrise .dropdown-toggle:hover {
     border-color:#9d9d9d;
