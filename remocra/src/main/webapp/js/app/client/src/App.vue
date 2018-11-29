@@ -295,15 +295,13 @@ export default {
 
 #gestcrise .toolsBar {
     display: none;
+    margin-left: 0px;
     margin-bottom: 5px;
 }
 #gestcrise .toolsBar.active {
     display: block;
 }
 
-#gestcrise .document {
-    //margin-left: 125px;
-}
 #gestcrise #files {
     display: none;
 }
@@ -316,6 +314,17 @@ export default {
     border: none;
 }
 
+#gestcrise .col-map {
+    padding: 0;
+}
+#gestcrise .fullscreen-container {
+    position: absolute;
+    right: 10px;
+}
+
+#gestcrise .ol-viewport {
+  border: 1px solid rgba(0,0,0,.125);
+}
 #gestcrise #layertree .group {
     font-weight: bold;
     margin-bottom: 5px;

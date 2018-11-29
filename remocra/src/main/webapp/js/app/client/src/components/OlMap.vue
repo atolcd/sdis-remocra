@@ -2,14 +2,17 @@
 <b-container class="map-container" style="max-width:100%">
 
   <b-row class="text-start toolbar">
+
+      <div class="h-spacer"/>
       <div class="text-start my-1">
         <b-btn class="ctrl" title="Déplacer la carte"><img src="/static/img/pan.png"></b-btn>
-          <b-btn class="ctrl" title="Zoomer en avant" @click="zoomIn"><img src="/static/img/magnifier_zoom_in.png"></b-btn>
-            <b-btn class="ctrl" title="Zoomer en arrière" @click="zoomOut"><img src="/static/img/magnifier_zoom_out.png"></b-btn>
-              <b-btn class="ctrl" title="Rétablir la vue précédente"><img src="/static/img/zoom_prec.png"></b-btn>
-                <b-btn class="ctrl" title="Rétablir la vue suivante"><img src="/static/img/zoom_suiv.png"></b-btn>
+        <b-btn class="ctrl" title="Zoomer en avant" @click="zoomIn"><img src="/static/img/magnifier_zoom_in.png"></b-btn>
+        <b-btn class="ctrl" title="Zoomer en arrière" @click="zoomOut"><img src="/static/img/magnifier_zoom_out.png"></b-btn>
+        <b-btn class="ctrl" title="Rétablir la vue précédente"><img src="/static/img/zoom_prec.png"></b-btn>
+        <b-btn class="ctrl" title="Rétablir la vue suivante"><img src="/static/img/zoom_suiv.png"></b-btn>
       </div>
 
+      <div class="h-spacer"/>
       <div class="text-start" style="margin-top:0.5rem">
         <search-commune ref='searchCommune'></search-commune>
       </div>
@@ -45,8 +48,7 @@
       <b-form-radio-group id="btnradios2" buttons button-variant="outline-secondary" v-model="modeAffichage" :options="modeAffichages" name="radioBtnOutline" />
     </b-form-group>
 
-    <div class="big-h-spacer"/>
-    <div class="text-start my-1">
+    <div class="text-start my-1 fullscreen-container">
       <b-btn class="ctrl" @click="GoInFullscreen" title="Plein écran"><img src="/static/img/fullscreen.svg"></b-btn>
     </div>
   </b-row>
@@ -119,7 +121,7 @@
 
       </div>
     </b-col>
-    <b-col cols="8">
+    <b-col cols="8" class="col-map">
       <b-row id="toolsBar" class="toolsBar toolbar">
       <tool-bar ref="toolBar"></tool-bar>
       <choice-feature :crise="criseId" ref="choiceFeature"></choice-feature>
