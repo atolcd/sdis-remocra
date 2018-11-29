@@ -1,6 +1,8 @@
 <template>
   <form v-on:submit.prevent>
-    <autocomplete :input-attrs="{ placeholder: 'Origine' }" v-model="selected" :items="results" :get-label="getLabel" :component-item='origineTemplate' :auto-select-one-item="false" @update-items="search" @item-selected="origineSelected"
+    <autocomplete :input-attrs="{ placeholder: 'Origine...' }" v-model="selected"
+      :items="results" :get-label="getLabel" :component-item='origineTemplate'
+      :auto-select-one-item="false" @update-items="search" @item-selected="origineSelected"
       @item-clicked="origineClicked" search-input.sync="searchInput" />
   </form>
 </template>

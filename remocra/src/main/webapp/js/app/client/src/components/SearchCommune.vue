@@ -1,7 +1,8 @@
 <template>
   <form v-on:submit.prevent>
-    <autocomplete :input-attrs="{ placeholder: 'Commune' }" v-model="selected" :items="results" :get-label="getLabel" :component-item='communeTemplate' :auto-select-one-item="true" @update-items="search" @item-selected="communeSelected"
-       />
+    <autocomplete :input-attrs="{ placeholder: 'Zoomer sur la commune...' }" v-model="selected"
+      :items="results" :get-label="getLabel" :component-item='communeTemplate'
+      :auto-select-one-item="true" @update-items="search" @item-selected="communeSelected" />
   </form>
 </template>
 

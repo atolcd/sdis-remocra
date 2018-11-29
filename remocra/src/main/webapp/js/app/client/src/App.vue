@@ -98,6 +98,7 @@ export default {
 
 #gestcrise .v-autocomplete-list {
     z-index: 10;
+    position: absolute;
 }
 
 #gestcrise .v-autocomplete-list-item {
