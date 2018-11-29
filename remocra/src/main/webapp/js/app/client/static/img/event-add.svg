@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="24"
+   height="24"
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="svg6"
+   sodipodi:docname="event-add.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:export-filename="/home/cva/projets/atolcd/sdis-remocra/remocra/src/main/webapp/js/app/client/static/img/event-add-16.png"
+   inkscape:export-xdpi="64"
+   inkscape:export-ydpi="64">
+  <metadata
+     id="metadata12">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs10" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1863"
+     inkscape:window-height="1025"
+     id="namedview8"
+     showgrid="false"
+     inkscape:zoom="13.906433"
+     inkscape:cx="-11.590251"
+     inkscape:cy="21.804924"
+     inkscape:window-x="57"
+     inkscape:window-y="1107"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg6" />
+  <path
+     d="m 16.215727,2.1505466 v 2 H 8.2157275 v -2 h -2 v 2 h -1 c -1.11,0 -1.99,0.9 -1.99,2 l -0.01,14.0000004 c 0,1.1 0.89,2 2,2 H 19.215727 c 1.1,0 2,-0.9 2,-2 V 6.1505466 c 0,-1.1 -0.9,-2 -2,-2 h -1 v -2 z m 3,18.0000004 H 5.2157275 V 9.1505466 H 19.215727 Z"
+     id="path2"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="ccccccsccssssscccccccc"
+     inkscape:export-xdpi="64"
+     inkscape:export-ydpi="64" />
+  <path
+     d="M0 0h24v24H0z"
+     id="path4"
+     fill="none"
+     inkscape:export-xdpi="64"
+     inkscape:export-ydpi="64" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:25.29067612px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#008000;fill-opacity:1;stroke:none;stroke-width:0.63226694px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="3.962518"
+     y="23.277119"
+     id="text1393"
+     inkscape:export-xdpi="64"
+     inkscape:export-ydpi="64"
+     transform="scale(1.02742,0.9733118)"><tspan
+       sodipodi:role="line"
+       id="tspan1391"
+       x="3.962518"
+       y="23.277119"
+       style="font-weight:bold;fill:#008000;stroke-width:0.63226694px">+</tspan></text>
+</svg>

@@ -1,9 +1,9 @@
 <template>
 <!--eslint-disable-->
     <div>
-        <b-dropdown text="Dropdown Button" ref="dropDown">
+        <b-dropdown text="Dropdown Button" ref="dropDown" title="Dessiner un évènement">
           <template slot="button-content">
-             <img src='/static/img/pencil.png'>
+             <img src='/static/img/pencil_point.png'>
           </template>
             <ul v-for="(type, name) in types" :key="name">
               <li class="dropdown-submenu"><a class="dropdown-item" href="#" >{{name}}</a>
@@ -15,16 +15,16 @@
         </b-dropdown>
         <b-btn class="ctrl" @click="activateInteraction('Modify')"  title="Modifier la géometrie d'un évènement"><img src="/static/img/pencil.png"></b-btn>
          <b-button-group v-if="showUpdateGeom" >
-         <b-btn @click="validModifGeom">Valider</b-btn>
-         <b-btn @click="annulModifGeom">Annuler</b-btn>
+         <b-btn class="ok-cancel-btns" @click="validModifGeom">Valider</b-btn>
+         <b-btn class="ok-cancel-btns" @click="annulModifGeom">Annuler</b-btn>
        </b-button-group>
        <b-btn class="ctrl" @click="activateInteraction('Translate')"  title="Déplacer un évènement"><img src="/static/img/pencil_move.png"></b-btn>
        <b-button-group v-if="showTranslateGeom" >
-       <b-btn @click="validTranslateGeom">Valider</b-btn>
-       <b-btn @click="annulTranslateGeom">Annuler</b-btn>
+       <b-btn class="ok-cancel-btns" @click="validTranslateGeom">Valider</b-btn>
+       <b-btn class="ok-cancel-btns" @click="annulTranslateGeom">Annuler</b-btn>
      </b-button-group>
      <b-btn class="ctrl" @click="openAttributes"  title="Modifier les attributs d’un événement"><img src="/static/img/application_view_columns.png"></b-btn>
-     <b-btn class="ctrl" @click="addStampedCard"  title="Carte horodatée"><img src="/static/img/carte.png"></b-btn>
+     <b-btn class="ctrl" @click="addStampedCard"  title="Carte horodatée"><img src="/static/img/photo-add.svg"></b-btn>
    </div>
 </template>
 
@@ -113,10 +113,27 @@ export default {
 
 }
 </script>
+
 <style scoped>
+.dropdown-item {
+    border: 1px solid transparent;
+    border-radius: 3px;
+}
+.dropdown-item:hover {
+    background-color: #e6e6e6;
+    border-color: #9d9d9d;
+    cursor: pointer;
+}
+
+.dropdown ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
 
 .dropdown-submenu {
     position: relative;
+    line-height: 1;
 }
 
 .dropdown-submenu>.dropdown-menu {
@@ -124,43 +141,19 @@ export default {
     left: 100%;
     margin-top: -6px;
     margin-left: -1px;
-    -webkit-border-radius: 0 6px 6px 6px;
-    -moz-border-radius: 0 6px 6px;
     border-radius: 0 6px 6px 6px;
+    background-color: #f0f0f0;
 }
 
 .dropdown-submenu:hover>.dropdown-menu {
     display: block;
 }
 
-.dropdown-submenu>a:after {
-    display: block;
-    content: " ";
-    float: right;
-    width: 0;
-    height: 0;
-    border-color: transparent;
-    border-style: solid;
-    border-width: 5px 0 5px 5px;
-    border-left-color: #ccc;
-    margin-top: 5px;
-    margin-right: -10px;
+.dropdown-item.active, .dropdown-item:active, .dropdown-submenu>.dropdown-menu>.dropdown-item>a {
+    color: #212529;
 }
-
-.dropdown-submenu:hover>a:after {
-    border-left-color: #fff;
-}
-
-.dropdown-submenu.pull-left {
-    float: none;
-}
-
-.dropdown-submenu.pull-left>.dropdown-menu {
-    left: -100%;
-    margin-left: 10px;
-    -webkit-border-radius: 6px 0 6px 6px;
-    -moz-border-radius: 6px 0 6px 6px;
-    border-radius: 6px 0 6px 6px;
+.dropdown-submenu>.dropdown-menu>.dropdown-item>a:hover {
+    text-decoration: none;
 }
 
 </style>

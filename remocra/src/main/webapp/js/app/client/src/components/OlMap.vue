@@ -1,27 +1,26 @@
 <template>
-<b-container id="xx" class="bv-example-row" style="max-width:100%">
-  <b-row class="text-start">
-    <b-col cols="2">
-      <div class="text-start my-3">
+<b-container class="map-container" style="max-width:100%">
+
+  <b-row class="text-start toolbar">
+      <div class="text-start my-1">
         <b-btn class="ctrl" title="Déplacer la carte"><img src="/static/img/pan.png"></b-btn>
           <b-btn class="ctrl" title="Zoomer en avant" @click="zoomIn"><img src="/static/img/magnifier_zoom_in.png"></b-btn>
             <b-btn class="ctrl" title="Zoomer en arrière" @click="zoomOut"><img src="/static/img/magnifier_zoom_out.png"></b-btn>
               <b-btn class="ctrl" title="Rétablir la vue précédente"><img src="/static/img/zoom_prec.png"></b-btn>
                 <b-btn class="ctrl" title="Rétablir la vue suivante"><img src="/static/img/zoom_suiv.png"></b-btn>
       </div>
-    </b-col>
-    <b-col cols="2">
-      <div class="text-start my-3">
+
+      <div class="text-start" style="margin-top:0.5rem">
         <search-commune ref='searchCommune'></search-commune>
       </div>
-    </b-col>
-    <b-col cols="2">
-      <div class="text-start my-3">
+      <div class="h-spacer"/>
+      <div class="text-start" style="margin-top:0.5rem">
         <search-repertoire :crise="criseId" ref='searchRepertoire'></search-repertoire>
       </div>
-    </b-col>
+
+    <div class="big-h-spacer"/>
     <div>
-      <b-dropdown  id="ddown1" class="text-start my-3">
+      <b-dropdown  id="ddown1" class="text-start my-1">
         <template slot="button-content">
            <img src='/static/img/ruler.png'>
         </template>
@@ -29,47 +28,60 @@
         <b-dropdown-item-button @click="activateMeasure('Surface')"><img src='/static/img/ruler_square.png'>  Surface</b-dropdown-item-button>
       </b-dropdown>
     </div>
-    <div class="text-start my-3">
+
+    <div class="big-h-spacer"/>
+    <div class="text-start my-1">
       <b-btn class="ctrl" @click ="showInfo" title="Obtenir des informations sur un point de la carte"><img src="/static/img/information.png"></b-btn>
     </div>
-    <div class="text-start my-3">
+
+    <div class="big-h-spacer"/>
+    <div class="text-start my-1">
       <b-btn class="ctrl" @click="showToolsBar" v-b-toggle.collapse1 title="Activer les outils d'édition"><img src="/static/img/pencil.png"></b-btn>
       <show-info ref="showInfo"></show-info>
     </div>
-    <b-form-group class="text-start my-3">
-      <b-form-radio-group id="btnradios2" buttons button-variant="outline-primary" v-model="modeAffichage" :options="modeAffichages" name="radioBtnOutline" />
+
+    <div class="big-h-spacer"/>
+    <b-form-group class="text-start my-1">
+      <b-form-radio-group id="btnradios2" buttons button-variant="outline-secondary" v-model="modeAffichage" :options="modeAffichages" name="radioBtnOutline" />
     </b-form-group>
-    <div class="text-start my-3">
-      <b-btn class="ctrl" @click="GoInFullscreen" title="Plein écran"><img src="/static/img/pan.png"></b-btn>
+
+    <div class="big-h-spacer"/>
+    <div class="text-start my-1">
+      <b-btn class="ctrl" @click="GoInFullscreen" title="Plein écran"><img src="/static/img/fullscreen.svg"></b-btn>
     </div>
   </b-row>
+
   <b-row class="text-start">
     <b-col>
       <div role="tablist">
       <new-evenement ref="newEvenement"></new-evenement>
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <span style="cursor:pointer" href="#" v-b-toggle.accordion1>Évènements</span><span class="evenement">
-              <b-btn @click="addEvent" class="ctrl"><img src="/static/img/add.png"></b-btn>
-              <b-btn  class="ctrl" id="popoverButton-open2"><img src="/static/img/icon_SpecifiedFilter.png"></b-btn>
-                <b-popover  placement="right" ref="popover" target="popoverButton-open2" title="Filtrer les évènements">
+            <span style="cursor:pointer" href="#" v-b-toggle.accordion1>Évènements</span><span>
+            <div class="toolbar">
+              <b-btn @click="addEvent" class="ctrl" title="Nouvel évènement"><img src="/static/img/event-add.svg"></b-btn>
+              <b-btn class="ctrl" id="popoverButton-open2"><img src="/static/img/filter.svg" title="Filtrer"></b-btn>
+              <b-popover  placement="right" ref="popover" target="popoverButton-open2" title="Filtrer les évènements">
                    <filters :criseId="criseId" ref="filters"></filters>
               </b-popover>
+             </div>
             </span>
           </b-card-header>
           <b-collapse id="accordion1" visible accordion="my-accordion" role="tabpanel">
             <b-card-body>
-              <p class="card-text">
-              </p>
+              <!--p class="card-text"></p-->
             <evenements :crise="criseId" ref="evenements"></evenements>
             </b-card-body>
           </b-collapse>
         </b-card>
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <span style="cursor:pointer" href="#" v-b-toggle.accordion2>Documents</span><span class="document">
-              <b-btn @click="addNewDocument" class="ctrl"><img src="/static/img/add.png"></b-btn></span>
+            <span style="cursor:pointer" href="#" v-b-toggle.accordion2>Documents</span>
+            <div class="toolbar">
+              <span class="document">
+              <b-btn @click="addNewDocument" class="ctrl"><img src="/static/img/file-add.svg"></b-btn></span>
               <new-document ref="newCriseDocument"></new-document>
+            </div>
           </b-card-header>
           <b-collapse id="accordion2" accordion="my-accordion" role="tabpanel">
             <b-card-body>
@@ -108,7 +120,7 @@
       </div>
     </b-col>
     <b-col cols="8">
-      <b-row id="toolsBar" class="toolsBar">
+      <b-row id="toolsBar" class="toolsBar toolbar">
       <tool-bar ref="toolBar"></tool-bar>
       <choice-feature :crise="criseId" ref="choiceFeature"></choice-feature>
       <stamped-card :crise="criseId" ref="stampedCard"></stamped-card>
@@ -127,9 +139,9 @@
                 <div class="sidebar">
                   <div id="layertree">
                     <div v-for="(group,index) in legend.items" :key="index">
-                      <div><strong>{{group.libelle}}</strong></div>
+                      <div class="group">{{group.libelle}}</div>
                       <draggable :list="group.items" :options="{handle:'.my-handle'}" @start="drag=true" @end="addSortable()">
-                        <div v-for="(layer,index) in group.items" :key="index">
+                        <div class="layer" v-for="(layer,index) in group.items" :key="index">
                           <div class="my-handle">
                             <input  type="checkbox" v-bind:id="'checkbox'+layer.id" :value="layer.visibility" v-model="layer.visibility" @click="changeLayerVisibility(layer.id)">
                             <label for="layer.id">{{layer.libelle}}</label>
@@ -158,7 +170,7 @@
     </b-col>
   </b-row>
   <b-modal ref="updateGeom" title="Modifier la géométrie">
-    <p class="my-4">Voulez vous valider la nouvele géométrie</p>
+    <p class="my-4">Voulez vous valider la nouvelle géométrie</p>
   </b-modal>
 </b-container>
 </template>
@@ -669,9 +681,9 @@ import html2canvas from 'html2canvas'
           var geom = event.target.getGeometry();
           var measurement;
           var output;
-             if (geom instanceof Polygon) {
+             if (geom.getType() == 'Polygon') {
               output =formatArea(geom)
-             } else if (geom instanceof LineString) {
+             } else if (geom.getType() == 'LineString') {
               output = formatLength(geom)
              }
           measureTooltipElement.innerHTML = output
@@ -992,111 +1004,4 @@ import html2canvas from 'html2canvas'
     </script>
 
 <style>
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  background-color: #f1f1f1;
-  border: 1px solid #555;
-}
-
-#accordion1 .card-body {
-  height: 400px;
-}
-
-#accordion2 .card-body {
-  height: 400px;
-}
-
-#accordion3 .card-body {
-  height: 400px;
-}
-
-#accordion4 .card-body {
-  height: 400px;
-}
-
-#accordion5 .card-body {
-  height: 530px;
-}
-
-#accordion6 .card-body {
-  height: 530px;
-}
-
-
-.ctrl {
-  background-color: currentColor;
-}
-
-.ctrl:hover {
-  background-color: currentColor;
-}
-
-.text-start {
-  text-align: start;
-}
-
-.combo {
-  width: 10%;
-}
-
-.tooltip {
-  position: relative;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 4px;
-  color: white;
-  padding: 4px 8px;
-  opacity: 5;
-  white-space: nowrap;
-}
-
-.tooltip-measure {
-  opacity: 1;
-  font-weight: bold;
-}
-
-.tooltip-static {
-  background-color: #ffcc33;
-  color: black;
-  border: 1px solid white;
-}
-
-.tooltip-measure:before,
-.tooltip-static:before {
-  border-top: 6px solid rgba(0, 0, 0, 0.5);
-  border-right: 6px solid transparent;
-  border-left: 6px solid transparent;
-  content: "";
-  position: absolute;
-  bottom: -6px;
-  margin-left: -7px;
-  left: 50%;
-}
-
-.tooltip-static:before {
-  border-top-color: #ffcc33;
-}
-
-.toolsBar {
-  display: none !important;
-}
-
-.toolsBar.active {
-  display: block !important;
-}
-
-.btn {
-  text-align: start;
-}
-
-.evenement {
-  margin-left: 70px;
-}
-.document {
-  margin-left: 125px;
-}
-#files{
-    display: none;
-}
 </style>

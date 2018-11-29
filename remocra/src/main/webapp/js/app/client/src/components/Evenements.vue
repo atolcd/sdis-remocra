@@ -1,19 +1,24 @@
 <template>
-  <div>
-    <b-list-group flush v-for="(evenement, index) in evenements" :key="index">
+  <div class="evenements">
+    <b-list-group flush v-for="(evenement, indexevt) in evenements" :key="indexevt">
       <b-list-group-item>
-       <div>
-         <img src="/static/img/folder.png" @click="loadMessages(evenement.id)"><span style="cursor:pointer" @dblclick="modifEvent(evenement)">{{evenement.nom}}</span>
-          <img v-if="evenement.geometrie !== null" src="/static/img/flag_green.png" @click="locateEvent(evenement.geometrie)">
-          <img src="/static/img/add.png" @click="openNewMessage(evenement.id)">
+       <div class="evenement">
+         <img class="messages-toggle" src="/static/img/expand.svg" @click="loadMessages(evenement.id)">
+         <sup><span class="messages-count">{{evenement.criseSuivis.length}}</span></sup>
+         <span class="evenement-nom" @click="modifEvent(evenement)">{{evenement.nom}}</span>
+         <div class="mini-tools">
+           <img src="/static/img/message-add.svg" title="Nouveau message" @click="openNewMessage(evenement.id)">
+           <img v-if="evenement.geometrie !== null" src="/static/img/location.svg" title="Zoomer" @click="locateEvent(evenement.geometrie)">
+         </div>
       </div>
-      <b-collapse v-if="evenement.criseSuivis.length!==0" class="mt-2" :id="'c'+evenement.id">
-         <b-list-group flush v-for="(message, index) in evenement.criseSuivis" :key="index">
-           <b-list-group-item>
-             <div>
-               {{message.creation}}  {{message.origine}}
+      <b-collapse v-if="evenement.criseSuivis.length!==0" class="mt-2 messages" :id="'c'+evenement.id">
+         <b-list-group flush v-for="(message, indexmsg) in evenement.criseSuivis" :key="indexmsg">
+           <b-list-group-item @click="showMessage(evenement.id, message.id)">
+             <div class="message">
+               <span class="creation">{{message.creation}}</span>  <span class="origine">{{message.origine}}</span>
              </div>
-             <div  @dblclick="showMessage(evenement.id, message.id)">{{message.message}}</div>
+             <div class="objet">{{message.objet}}</div>
+             <div class="description" v-for="(msgpart, indexmsgpart) in message.message.split('\n')" :key="indexmsgpart">{{ msgpart }}</div>
            </b-list-group-item>
          </b-list-group>
       </b-collapse>
@@ -115,7 +120,6 @@ export default {
     locateEvent(geometrie){
       this.$parent.$parent.zoomToGeom(geometrie)
     }
-
   }
 }
 </script>

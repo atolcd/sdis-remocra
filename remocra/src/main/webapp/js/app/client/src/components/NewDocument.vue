@@ -1,13 +1,14 @@
 <template>
 <div>
-  <b-modal id="modalDocument" ref="modal" title="Nouveau document" ok-title="valider"  cancel-title="annuler" @ok="handleOk" @hide="clearFields">
-    <!-- Styled -->
+  <b-modal id="modalDocument" ref="modal" title="Nouveau document" ok-title="Valider"  cancel-title="Annuler" @ok="handleOk" @hide="clearFields">
+     <b-form-group horizontal label="Document:" label-for="docs">
      <div class="custom-file b-form-file ">
        <input id ="docs" type="file" class="custom-file-input"  @change="handleChangeFile($event)">
        <label class="custom-file-label">{{file && file.name}}</label></div>
        <div v-for="(file, index) in files" :key="index" class="mt-3">
          <img @click="deleteFile(file.name)" src="/static/img/delete.png"><strong >   {{file && file.name}}</strong>
        </div>
+       </b-form-group>
   </b-modal>
 </div>
 </template>
@@ -74,8 +75,6 @@ export default {
 }
 }
 </script>
+
 <style>
-.custom-file-input:lang(en)~.custom-file-label::after {
-    content: "Parcourir";
-}
 </style>

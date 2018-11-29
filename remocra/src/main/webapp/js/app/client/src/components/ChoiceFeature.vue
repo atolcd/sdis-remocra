@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalChoice" ref="modal" title="Évènements cartographiques" ok-title="valider" cancel-title="annuler" @ok="handleOk">
+  <b-modal id="modalChoice" ref="modal" title="Évènements cartographiques" ok-title="Valider" cancel-title="Annuler" @ok="handleOk">
     <b-form-select v-model="selected" :options="features" class="mb-3" @change="addSelected"/>
   </b-modal>
 </div>
@@ -65,6 +65,6 @@ export default {
 }
 }
 </script>
-<style>
 
+<style>
 </style>

@@ -60,19 +60,5 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-.v-autocomplete-list {
-  width: 100%;
-  z-index: 100;
-}
-
-.v-autocomplete-list-item {
-  cursor: pointer;
-  background-color: #fff;
-  color: #000;
-  padding: 10px;
-  border-bottom: 1px solid #a8a8a8;
-}
-
 </style>

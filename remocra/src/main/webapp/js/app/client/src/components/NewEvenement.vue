@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalEvent" ref="modal" title="Nouvel évènement" ok-title="valider" cancel-title="annuler" @ok="handleOk" @hide="clearFields">
+  <b-modal id="modalEvent" ref="modal" title="Nouvel évènement" ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hide="clearFields">
     <form @submit.stop.prevent="handleSubmit">
       <b-form-group horizontal label="Type:" label-for="typeEvent">
         <b-form-select :disabled="disableNatures" id="typeEvent" required  v-model="form.type">
@@ -30,7 +30,7 @@
         <b-form-input v-model="form.constat" :value="form.constat"
                   type="date"></b-form-input>
         <b-form-input v-model="form.time" :value="form.time"
-                  type="time"></b-form-input>
+                  type="time" style="margin-top:6px;"></b-form-input>
       </b-form-group>
       <b-form-group  horizontal label="Importance:" label-for="importance">
         <rate id="importanceEvent" :length="5" v-model="form.importance" />
@@ -317,9 +317,11 @@ export default {
   }
 }
 </script>
-<style>
-.input-tag{
-  color: #6c757d;
-  background-color: #fff;
+
+<style scoped>
+
+>>> input {
+    width: 100%;
 }
+
 </style>

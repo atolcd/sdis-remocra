@@ -1,11 +1,17 @@
 <template>
-  <div>
+  <div class="documents">
     <b-list-group flush v-for="(document, index) in documents" :key="index">
            <b-list-group-item>
-             <a onclick="return false" ondblclick="location=this.href"  :href="'/remocra/telechargement/document/'+document.code">
-               <strong>{{document.fichier}} - {{document.date}}</strong>
-                <img v-if="document.geometrie !== null" src="/static/img/flag_green.png" @click="locateDoc(document.geometrie)">
-             </a>
+              <div class="document">
+                <a onclick="location=this.href" :href="'/remocra/telechargement/document/'+document.code">
+                  <strong>{{document.fichier}} - {{document.date}}</strong>
+                </a>
+                <div class="mini-tools">
+                  <img v-if="document.geometrie !== null" src="/static/img/location.svg"
+                    title="Zoomer"
+                    @click="locateDoc(document.geometrie)">
+                </div>
+              </div>
            </b-list-group-item>
     </b-list-group>
   </div>

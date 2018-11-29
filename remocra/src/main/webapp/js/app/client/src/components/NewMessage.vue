@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalMessage" ref="modal" title="Nouveau message" ok-title="valider" cancel-title="annuler" :ok-disabled="disableOk" @ok="handleOk" @hide="clearFields">
+  <b-modal id="modalMessage" ref="modal" title="Nouveau message" ok-title="Valider" cancel-title="Annuler" :ok-disabled="disableOk" @ok="handleOk" @hide="clearFields">
     <form @submit.stop.prevent="handleSubmit">
       <b-form-group horizontal label="Objet:" label-for="objet">
         <b-form-input id="objetMessage" required  v-model="form.objet">
@@ -14,7 +14,7 @@
         <b-form-input v-model="form.creation"
                   type="date"></b-form-input>
         <b-form-input v-model="form.time" :value="form.time"
-                  type="time"></b-form-input>
+                  type="time" style="margin-top:6px;"></b-form-input>
       </b-form-group>
       <b-form-group horizontal label="Origine:" label-for="origine">
       <search-origine :crise='this.criseId'  ref='searchOrigine'></search-origine>
@@ -129,6 +129,11 @@ export default {
   }
 }
 </script>
-<style>
+
+<style scoped>
+
+>>> input {
+    width: 100%;
+}
 
 </style>

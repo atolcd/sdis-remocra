@@ -1,7 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import App from './App'
+import GestCrise from './App'
 import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import rate from 'vue-rate'
@@ -23,6 +23,6 @@ Vue.component('input-tag', InputTag)
 new Vue({
   el: '#app',
   router,
-  components: { App },
-  template: '<App/>'
+  components: { GestCrise },
+  template: '<GestCrise/>'
 })
