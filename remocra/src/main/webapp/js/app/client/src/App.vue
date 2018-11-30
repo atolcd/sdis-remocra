@@ -178,6 +178,10 @@ export default {
     margin-left: 15px;
 }
 
+#gestcrise .evenements .messages {
+    max-height: 400px;
+    overflow-y: scroll;
+}
 #gestcrise .evenements .messages .list-group-flush{
     margin-bottom: 10px;
 }
