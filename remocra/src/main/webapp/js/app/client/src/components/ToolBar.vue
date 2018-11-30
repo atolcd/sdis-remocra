@@ -8,7 +8,9 @@
             <ul v-for="(type, name) in types" :key="name">
               <li class="dropdown-submenu"><a class="dropdown-item" href="#" >{{name}}</a>
                 <ul class="dropdown-menu">
-                  <li v-for="(nature, index) in type" :key="index" class="dropdown-item"><a @click="selectGeom(nature.typeGeometrie, nature.value)" href="#">{{nature.text}}</a></li>
+                  <li v-for="(nature, index) in type" :key="index" class="dropdown-item">
+                    <a :class="['geom-'+nature.typeGeometrie.toLowerCase()]"
+                      @click="selectGeom(nature.typeGeometrie, nature.value)" href="#">{{nature.text}}</a></li>
                 </ul>
               </li>
           </ul>
@@ -156,4 +158,16 @@ export default {
     text-decoration: none;
 }
 
+.geom-point:before {
+    content:url('/static/img/pencil_point.png');
+    margin-right: 7px;
+}
+.geom-linestring:before {
+    content:url('/static/img/pencil_ligne.png');
+    margin-right: 7px;
+}
+.geom-polygon:before {
+    content:url('/static/img/pencil_polygone.png');
+    margin-right: 7px;
+}
 </style>
