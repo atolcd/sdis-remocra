@@ -53,7 +53,7 @@
     </div>
   </b-row>
 
-  <b-row class="text-start">
+  <b-row class="text-start" :style="{height: mapRowHeight}">
     <b-col>
       <div role="tablist">
       <new-evenement ref="newEvenement"></new-evenement>
@@ -240,6 +240,7 @@ import html2canvas from 'html2canvas'
            StampedCard   },
     data () {
       return {
+        mapRowHeight: 'calc(100% - 50px)',
         file: null,
         selectedFeature: null,
         modalShow:false,
@@ -656,8 +657,12 @@ import html2canvas from 'html2canvas'
     var x = document.getElementById('toolsBar');
     if (x.className.indexOf("active") == -1) {
         x.className += " active";
+        this.mapRowHeight = 'calc(100% - 85px)'
+        _.delay(this.map.updateSize.bind(this.map), 10)
     } else {
         x.className = x.className.replace(" active", "");
+        this.mapRowHeight = 'calc(100% - 50px)'
+        _.delay(this.map.updateSize.bind(this.map), 10)
     }
   },
 

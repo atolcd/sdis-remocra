@@ -336,4 +336,16 @@ export default {
 #gestcrise #layertree .layer {
     margin-left: 20px;
 }
+
+/* Maximisation de la hauteur de la carte */
+html, body {
+    height: 100%;
+}
+#gestcrise, #gestcrise .map-container, #gestcrise .col-map {
+    height: 100%;
+}
+#gestcrise #map {
+    height: 100%;
+    width: 100%;
+}
 </style>
