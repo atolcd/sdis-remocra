@@ -348,4 +348,20 @@ html, body {
     height: 100%;
     width: 100%;
 }
+
+#gestcrise header.card-header > span:first-child:before  {
+    background-image: url('/static/img/collapse.svg');
+    background-size: 20px 20px;
+    background-position-y: bottom;
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    content:"";
+}
+#gestcrise header.card-header > span.collapsed:first-child:before {
+    background-image: url('/static/img/expand.svg');
+}
+#gestcrise header.card-header > span:first-child:hover {
+    opacity: 0.8;
+}
 </style>
