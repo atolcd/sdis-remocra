@@ -95,6 +95,10 @@ export default {
       this.form.origine = null
       this.form.importance = 0
       this.form.tags = ''
+      this.criseId =  null,
+      this.evenementId =  null,
+      this.disableOk = false
+
     },
     handleOk(evt) {
       // Prevent modal from closing
@@ -114,17 +118,18 @@ export default {
       'tags': this.form.tags,
       'crise': this.criseId,
       'evenement': this.evenementId}
+      var criseId = this.criseId
       axios.post('/remocra/evenements/message', formData)
         .then((response) => {
            if(response.data.success){
-             this.$parent.loadEvenements(this.criseId)
+             this.$parent.loadEvenements(criseId)
+             this.$refs.modal.hide()
            }
         })
         .catch(function(error) {
           console.error('postEvent', error)
         })
 
-      this.$refs.modal.hide()
     }
   }
 }
