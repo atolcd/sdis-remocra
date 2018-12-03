@@ -7,13 +7,13 @@
          <sup><span class="messages-count">{{evenement.criseSuivis.length}}</span></sup>
          <span class="evenement-nom" @click="modifEvent(evenement)">{{evenement.nom}}</span>
          <div class="mini-tools">
-           <img src="/static/img/message-add.svg" title="Nouveau message" @click="openNewMessage(evenement.id)">
-           <img v-if="evenement.geometrie !== null" src="/static/img/location.svg" title="Zoomer" @click="locateEvent(evenement.geometrie)">
+           <img style="cursor:pointer" src="/static/img/message-add.svg" title="Nouveau message" @click="openNewMessage(evenement.id)">
+           <img style="cursor:pointer" v-if="evenement.geometrie !== null" src="/static/img/location.svg" title="Zoomer" @click="locateEvent(evenement.geometrie)">
          </div>
       </div>
       <b-collapse v-if="evenement.criseSuivis.length!==0" class="mt-2 messages" :id="'c'+evenement.id">
          <b-list-group flush v-for="(message, indexmsg) in evenement.criseSuivis" :key="indexmsg">
-           <b-list-group-item @click="showMessage(evenement.id, message.id)">
+           <b-list-group-item>
              <div class="message">
                <span class="creation">{{message.creation}}</span>  <span class="origine">{{message.origine}}</span>
              </div>
@@ -70,10 +70,10 @@ export default {
                    message.creation = IsoDateTo
                 })
                 // Tri antéchronologique du suivi (création)
-                evenement.criseSuivis = _.orderBy(evenement.criseSuivis, ['creation'], ['desc']);
+                evenement.criseSuivis = _.orderBy(evenement.criseSuivis, ['creation'], ['asc']);
              })
              // Tri antéchronologique des évènements (constat)
-             this.evenements = _.orderBy(this.evenements, ['constat'], ['desc']);
+             this.evenements = _.orderBy(this.evenements, ['constat'], ['asc']);
           }
         })
         .catch(function(error) {
