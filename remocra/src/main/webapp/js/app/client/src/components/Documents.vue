@@ -7,7 +7,7 @@
                   <strong>{{document.fichier}} - {{document.date}}</strong>
                 </a>
                 <div class="mini-tools">
-                  <img v-if="document.geometrie !== null" src="/static/img/location.svg"
+                  <img style="cursor:pointer" v-if="document.geometrie !== null" src="/static/img/location.svg"
                     title="Zoomer"
                     @click="locateDoc(document.geometrie)">
                 </div>
@@ -49,6 +49,7 @@ export default {
                var IsoDateTo = moment(new Date(document.date), 'DD/MM/YYYY[T]HH:mm:ss[Z]').format('DD/MM/YYYY'+' - '+'HH:mm')
                 document.date = IsoDateTo
              })
+             this.documents = _.orderBy(this.documents, ['date'], ['desc']);
           }
         })
         .catch(function(error) {
