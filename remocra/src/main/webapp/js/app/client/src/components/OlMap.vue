@@ -162,9 +162,21 @@
           </b-card-header>
           <b-collapse id="accordion6" accordion="my-accordion2" role="tabpanel">
             <b-card-body>
-              <p class="card-text">
-                Légende
-              </p>
+
+                <div class="sidebar">
+                  <div id="layertree">
+                    <div v-for="(group,index) in legend.items" :key="index">
+                      <div class="group">{{group.libelle}}</div>
+                        <div class="layer" v-for="(layer,index) in group.items" :key="index" :id="'legend'+layer.id">
+                          <div class="my-handle">
+                            <label>{{layer.libelle}}</label>
+                            <img style="display:block;margin-left:20px;" class="legend-img" :src="getLegendGraphics(layer)"/>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
             </b-card-body>
           </b-collapse>
         </b-card>
@@ -328,6 +340,16 @@ import html2canvas from 'html2canvas'
       //this.addSortable()
     },
     methods : {
+      getLegendGraphics(layer) {
+        if (layer.layers == 'ORTHOIMAGERY.ORTHOPHOTOS') {
+          return 'http://localhost:8080/remocra/ext-res/images/remocra/cartes/legende/ign/photo.png'
+        } else if (layer.layers == 'GEOGRAPHICALGRIDSYSTEMS.MAPS') {
+          return 'http://localhost:8080/remocra/ext-res/images/remocra/cartes/legende/ign/carte.png'
+        } else if (layer.layers == 'CADASTRALPARCELS.PARCELS') {
+          return 'http://localhost:8080/remocra/ext-res/images/remocra/cartes/legende/ign/cadastre.png'
+        }
+        return layer && layer.styles && layer.styles[0] ? layer.styles[0].legende : null
+      },
       createWorkingLayer(){
         var source = new OlSourceVector()
         var style= new Style({
@@ -371,6 +393,8 @@ import html2canvas from 'html2canvas'
         var checkbox = document.getElementById("checkbox"+id);
         var newVisibility = !layer.getVisible();
         layer.setVisible(newVisibility);
+        // Légende
+        document.getElementById('legend'+id).style.display = newVisibility?'block':'none'
       },
 
       changeLayerOpacity(id) {
@@ -562,7 +586,7 @@ import html2canvas from 'html2canvas'
                 "styles" : [{
                   "id" : "remocra_barriere",
                   "libelle" : "Barrière",
-                  "legende" : "/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&SERVICE=WMS&VERSION=1.3.0&LAYER=crise_evenement&FORMAT=image/png&STYLE="
+                  "legende" : "/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&LAYER=v_crise_evenement&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=crise_evenement"
                 }]
            })
            let layer = this.createWMSLayer(layerDef)
