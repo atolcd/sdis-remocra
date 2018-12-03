@@ -22,8 +22,8 @@
       </div>
 
     <div class="big-h-spacer"/>
-    <div>
-      <b-dropdown  id="ddown1" class="text-start my-1">
+    <div class="measure-container">
+      <b-dropdown id="ddownMeasure" class="text-start my-1">
         <template slot="button-content">
            <img src='/static/img/ruler.png' @click="removeMeasureInteraction">
         </template>
@@ -34,12 +34,12 @@
 
     <div class="big-h-spacer"/>
     <div class="text-start my-1">
-      <b-btn class="ctrl" @click ="showInfo" title="Obtenir des informations sur un point de la carte"><img src="/static/img/information.png"></b-btn>
+      <b-btn id="infoBtn" class="ctrl" @click="activateShowInfo" title="Obtenir des informations sur un point de la carte"><img src="/static/img/information.png"></b-btn>
     </div>
 
     <div class="big-h-spacer"/>
     <div class="text-start my-1">
-      <b-btn class="ctrl" @click="showToolsBar" v-b-toggle.collapse1 title="Activer les outils d'édition"><img src="/static/img/pencil.png"></b-btn>
+      <b-btn id="toolsBarBtn" class="ctrl" @click="showToolsBar" v-b-toggle.collapse1 title="Activer les outils d'édition"><img src="/static/img/pencil.png"></b-btn>
       <show-info ref="showInfo"></show-info>
     </div>
 
@@ -278,7 +278,6 @@ import html2canvas from 'html2canvas'
     },
     mounted() {
       this.map = new Map({
-            controls: [],
             target: 'map',
             layers: [],
             controls: defaultControls({
@@ -659,19 +658,16 @@ import html2canvas from 'html2canvas'
      return null;
    },
    showToolsBar() {
-    var x = document.getElementById('toolsBar');
-    if (x.className.indexOf("active") == -1) {
-        x.className += " active";
-        this.mapRowHeight = 'calc(100% - 85px)'
-        _.delay(this.map.updateSize.bind(this.map), 10)
-    } else {
-        x.className = x.className.replace(" active", "");
-        this.mapRowHeight = 'calc(100% - 50px)'
-        _.delay(this.map.updateSize.bind(this.map), 10)
-    }
+    // Toolbar
+    document.getElementById('toolsBar').classList.toggle('active')
+    // Hauteur de la carte
+    let activateToolbar = document.getElementById('toolsBarBtn').toggleAttribute('ctrl-active')
+    this.mapRowHeight = activateToolbar ? 'calc(100% - 85px)' : 'calc(100% - 50px)'
+    _.delay(this.map.updateSize.bind(this.map), 10)
   },
 
  addMeasureInteraction() {
+   document.getElementsByClassName('measure-container')[0].setAttribute('ctrl-active', 'true')
    this.map.un('click', this.handleMapClick)
      var formatLength =function(line) {
        var length = getLength(line);
@@ -758,6 +754,7 @@ import html2canvas from 'html2canvas'
       this.addMeasureInteraction()
   },
   removeMeasureInteraction(){
+    document.getElementsByClassName('measure-container')[0].removeAttribute('ctrl-active')
     if(this.measuringTool){
          this.measuringTool.setActive(!this.measuringTool.getActive())
          this.map.removeInteraction(this.measuringTool)
@@ -998,8 +995,19 @@ import html2canvas from 'html2canvas'
               console.error('carte', error)
             })
         },
-        showInfo(){
-          this.map.on('click', this.handleOpenInfo)
+        /**
+         *  Active ou désactive le contrôle Info
+         * @param activate forcer l'activation ou la désactivation (sinon fonctionnement "toggle")
+        */
+        activateShowInfo(activate) {
+          let isActive = document.getElementById('infoBtn').getAttribute('ctrl-active')!==null
+          if (activate===true || !isActive) {
+            document.getElementById('infoBtn').setAttribute('ctrl-active', 'true')
+            this.map.on('click', this.handleOpenInfo)
+          } else if (activate===false || isActive) {
+            document.getElementById('infoBtn').removeAttribute('ctrl-active')
+            this.map.un('click', this.handleOpenInfo)
+          }
         },
         handleOpenInfo(e){
           axios.get('/remocra/evenements/layer', {params: {

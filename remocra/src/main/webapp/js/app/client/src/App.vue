@@ -27,6 +27,7 @@ export default {
 #gestcrise .v-autocomplete-input, #gestcrise .custom-select {
     border: solid 1px #a1a1a1;
 }
+#gestcrise .toolbar button.btn-secondary:focus,
 #gestcrise .custom-select:focus {
     box-shadow: none;
 }
@@ -272,6 +273,12 @@ export default {
     padding: 4px 8px;
     opacity: 5;
     white-space: nowrap;
+}
+
+#gestcrise .measure-container[ctrl-active] .dropdown .dropdown-toggle,
+#gestcrise .toolbar button[ctrl-active] {
+  border-color: #9d9d9d;
+  background-color: #bbbbbb;
 }
 
 #gestcrise .tooltip-measure {
