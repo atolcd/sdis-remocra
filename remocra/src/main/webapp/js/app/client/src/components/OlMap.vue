@@ -170,7 +170,7 @@
                         <div class="layer" v-for="(layer,index) in group.items" :key="index" :id="'legend'+layer.id">
                           <div class="my-handle">
                             <label>{{layer.libelle}}</label>
-                            <img style="display:block;margin-left:20px;" class="legend-img" :src="getLegendGraphics(layer)"/>
+                            <img style="display:block;margin-left:20px;" onerror="this.src='/static/img/layer404.png'" class="legend-img" :src="getLegendGraphics(layer)"/>
                           </div>
                         </div>
                     </div>
@@ -341,13 +341,6 @@ import html2canvas from 'html2canvas'
     },
     methods : {
       getLegendGraphics(layer) {
-        if (layer.layers == 'ORTHOIMAGERY.ORTHOPHOTOS') {
-          return 'http://localhost:8080/remocra/ext-res/images/remocra/cartes/legende/ign/photo.png'
-        } else if (layer.layers == 'GEOGRAPHICALGRIDSYSTEMS.MAPS') {
-          return 'http://localhost:8080/remocra/ext-res/images/remocra/cartes/legende/ign/carte.png'
-        } else if (layer.layers == 'CADASTRALPARCELS.PARCELS') {
-          return 'http://localhost:8080/remocra/ext-res/images/remocra/cartes/legende/ign/cadastre.png'
-        }
         return layer && layer.styles && layer.styles[0] ? layer.styles[0].legende : null
       },
       createWorkingLayer(){

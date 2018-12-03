@@ -30,6 +30,7 @@
       "layers" : "GEOGRAPHICALGRIDSYSTEMS.MAPS",
       "url" : "https://wxs.ign.fr/pratique/geoportail/wmts",
       "styles" : [{
+        "legende": "/remocra/ext-res/images/remocra/cartes/legende/ign/carte.png",
         "id" : "normal",
         "libelle" : "Légende générique"
       }],
@@ -53,6 +54,7 @@
       "layers" : "ORTHOIMAGERY.ORTHOPHOTOS",
       "url" : "https://wxs.ign.fr/pratique/geoportail/wmts",
       "styles" : [{
+        "legende": "/remocra/ext-res/images/remocra/cartes/legende/ign/photo.png",
         "id" : "normal",
         "libelle" : "Légende générique"
       }],
