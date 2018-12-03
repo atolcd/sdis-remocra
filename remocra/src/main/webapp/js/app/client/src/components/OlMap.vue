@@ -681,6 +681,8 @@ import html2canvas from 'html2canvas'
     let activateToolbar = document.getElementById('toolsBarBtn').toggleAttribute('ctrl-active')
     this.mapRowHeight = activateToolbar ? 'calc(100% - 85px)' : 'calc(100% - 50px)'
     _.delay(this.map.updateSize.bind(this.map), 10)
+    this.desactivateControls()
+
   },
 
  addMeasureInteraction() {
@@ -757,18 +759,23 @@ import html2canvas from 'html2canvas'
       this.selectedRuler = type
       /*if(this.measuringTool){
            this.measuringTool.setActive(!this.measuringTool.getActive())
-      }else*/ if(this.draw){
-        this.draw.setActive(false);
-      }else if( this.snap){
-        this.snap.setActive(false);
-      }else if(this.modify){
-        this.modify.setActive(false);
-      }else if( this.translate){
-        this.translate.setActive(false);
-      }
-
+      }else*/
+      this.desactivateControls()
       //this.removeMeasureInteraction()
       this.addMeasureInteraction()
+  },
+   desactivateControls(){
+     this.map.un('click', this.handleOpenAttributes)
+     this.map.un('click', this.handleMapClick)
+     if(this.draw){
+      this.draw.setActive(false);
+    }else if( this.snap){
+      this.snap.setActive(false);
+    }else if(this.modify){
+      this.modify.setActive(false);
+    }else if( this.translate){
+      this.translate.setActive(false);
+    }
   },
   removeMeasureInteraction(){
     document.getElementsByClassName('measure-container')[0].removeAttribute('ctrl-active')
