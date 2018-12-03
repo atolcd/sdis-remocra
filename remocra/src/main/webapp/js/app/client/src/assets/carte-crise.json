@@ -6,7 +6,8 @@
       "type" : "specific",
       "id" : "893bb7520e7fb036d665661847628994",
       "libelle" : "Évènements",
-      "visibility" : true
+      "visibility" : true,
+      "opacity" : 1
     }]
   },{
     "libelle":"Couches mobilisées",
@@ -60,54 +61,7 @@
         "resolution_min" : 305.74811314070485,
         "resolution_max" : 2445.9849051256400
       }
-    },{
-      "type" : "wmts",
-      "libelle" : "ADMINEXPRESS_COG (2017)",
-      "id" : "6126e7014978fc5b560c15d38b7f6c20",
-      "scale_min" : "0",
-      "scale_max" : "1000000",
-      "visibility" : true,
-      "opacity" : 1,
-      "interrogeable" : false,
-      "items" : null,
-      "num_zoom_levels" : null,
-      "format" : "image/png",
-      "layers" : "ADMINEXPRESS_COG_2017",
-      "url" : "https://wxs.ign.fr/pratique/geoportail/wmts",
-      "styles" : [{
-        "id" : "normal",
-        "libelle" : "Légende générique"
-      }],
-      "tileMatrixSet" : {
-        "nom" : "PM",
-        "resolution_min" : 0.5971642834779,
-        "resolution_max" : 2445.9849051256400
-      }
     }
-    ,{
-        "type" : "wmts",
-        "libelle" : "Bâtiments",
-        "id" : "cd2ed0423a0de7f3c6a64fff5dc3db22",
-        "scale_min" : "0",
-        "scale_max" : "1000000",
-        "visibility" : true,
-        "opacity" : 1,
-        "interrogeable" : false,
-        "items" : null,
-        "num_zoom_levels" : null,
-        "format" : "image/png",
-        "layers" : "BUILDINGS.BUILDINGS",
-        "url" : "https://wxs.ign.fr/pratique/geoportail/wmts",
-        "styles" : [{
-          "id" : "normal",
-          "libelle" : "Légende générique"
-        }],
-        "tileMatrixSet" : {
-          "nom" : "PM",
-          "resolution_min" : 0.5971642834779,
-          "resolution_max" : 2445.9849051256400
-        }
-      }
 
     ]
   }
