@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalEvent" ref="modal" :title="title" ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hide="clearFields">
+  <b-modal id="modalEvent" ref="modal" :title="title" ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
     <form @submit.stop.prevent="handleSubmit">
       <b-form-group horizontal label="Type:" label-for="typeEvent">
         <b-form-select :disabled="disableNatures" id="typeEvent" required  v-model="form.type">
@@ -190,8 +190,9 @@ export default {
     handleOk(evt) {
       // Prevent modal from closing
       evt.preventDefault()
-      if (!this.form.titre) {
-        alert('lister les champs obligatoires')
+      if (!this.form.titre || !this.form.type || !(this.$refs.searchOrigine.searchInput !== "" || this.$refs.searchOrigine.selected !== null)
+       || !this.form.constat || !this.form.time) {
+        alert('Veuillez saisir les champs obligatoires')
       } else {
         this.handleSubmit()
         this.$parent.refreshMap()
@@ -226,7 +227,6 @@ export default {
           })
           .then((response) => {
              if(response.data.success){
-               console.log(criseId)
                this.$parent.$refs.evenements.loadEvenements(criseId)
                this.$parent.refreshMap()
                this.$refs.modal.hide()
@@ -244,7 +244,6 @@ export default {
           })
           .then((response) => {
              if(response.data.success){
-               console.log(criseId)
                this.$parent.$refs.evenements.loadEvenements(criseId)
                this.$parent.refreshMap()
                this.$refs.modal.hide()

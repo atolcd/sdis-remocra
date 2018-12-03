@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalMessage" ref="modal" title="Nouveau message" ok-title="Valider" cancel-title="Annuler" :ok-disabled="disableOk" @ok="handleOk" @hide="clearFields">
+  <b-modal id="modalMessage" ref="modal" title="Nouveau message" ok-title="Valider" cancel-title="Annuler" :ok-disabled="disableOk" @ok="handleOk" @hidden="clearFields">
     <form @submit.stop.prevent="handleSubmit">
       <b-form-group horizontal label="Objet:" label-for="objet">
         <b-form-input id="objetMessage" required  v-model="form.objet">
@@ -103,8 +103,8 @@ export default {
     handleOk(evt) {
       // Prevent modal from closing
       evt.preventDefault()
-      if (!this.form.objet) {
-        alert('Please enter your name')
+      if (!this.form.objet || !(this.$refs.searchOrigine.searchInput !== "" || this.$refs.searchOrigine.selected !== null) || !this.form.creation || !this.form.time) {
+        alert('Veuillez saisir les champs obligatoires')
       } else {
         this.handleSubmit()
       }
