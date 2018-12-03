@@ -1079,7 +1079,13 @@ import html2canvas from 'html2canvas'
             })
         },
          zoomToGeom(geometrie){
-          this.map.getView().fit(new WKT().readGeometry(geometrie,{dataProjection: this.epsgL93, featureProjection: this.proj}).getExtent(),{nearest: true})
+          let geom = new WKT().readGeometry(geometrie,{dataProjection: this.epsgL93, featureProjection: this.proj})
+          if (geom.getType() == 'Point') {
+            this.map.getView().setCenter(geom.getCoordinates())
+            this.map.getView().setResolution(0.5)
+          } else {
+            this.map.getView().fit(geom.getExtent(), {nearest: true})
+          }
         },
         zoomToExtent(geometrie){
           this.map.getView().fit(new GeoJSON().readGeometry(geometrie,{dataProjection: this.epsgL93, featureProjection: this.proj}).getExtent(),{nearest: true})
