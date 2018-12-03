@@ -36,7 +36,7 @@
       }],
       "tileMatrixSet" : {
         "nom" : "PM",
-        "resolution_min" : 0.5971642834779,
+        "resolution_min" : 0.25,
         "resolution_max" : 2445.9849051256400
       }
     },{
@@ -60,7 +60,7 @@
       }],
       "tileMatrixSet" : {
         "nom" : "PM",
-        "resolution_min" : 305.74811314070485,
+        "resolution_min" : 0.25,
         "resolution_max" : 2445.9849051256400
       }
     }
