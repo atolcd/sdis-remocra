@@ -419,12 +419,13 @@ public class CriseEvenementRepository {
             .from(Tables.CRISE_DOCUMENT).where(Tables.CRISE_DOCUMENT.EVENEMENT.eq(eventId)).fetchInto(Long.class))));
   }
 
-  public void updateGeom(Long id, String wkt, int srid ) {
+  public Result<Record> updateGeom(Long id, String wkt, int srid ) {
     Instant redefinition = new Instant();
     Geometry geom = GeometryUtil.toGeometry(wkt,srid);
     Instant t = new Instant();
-    String sql = "update remocra.crise_evenement set geometrie = st_geomfromtext('"+geom+"',"+srid+") , redefinition ='"+new InstantConverter().to(t) +"' where id ="+id ;
-    context.fetch(sql);
+    String sql = "update remocra.crise_evenement set geometrie = st_geomfromtext('"+geom+"',"+srid+") , redefinition ='"+
+        new InstantConverter().to(t) +"' where id ="+id + " and cloture is null returning cloture" ;
+    return context.fetch(sql);
 
    /* context.update(CRISE_EVENEMENT)
         .set(row(CRISE_EVENEMENT.GEOMETRIE, CRISE_EVENEMENT.REDEFINITION)

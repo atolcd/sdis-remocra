@@ -37,6 +37,8 @@ import fr.sdis83.remocra.web.serialize.transformer.GeometryTransformer;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Instant;
+import org.jooq.Record;
+import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -288,11 +290,15 @@ public class CriseEvenementController {
             srid = sridFromGeom(coord[0]);
             geom = GeometryUtil.toGeometry(coord[1], srid);
             Boolean result = zoneCompetenceService.check(coord[1], srid, utilisateurService.getCurrentZoneCompetenceId());
+            //Boolean isClos = criseEvenementRepository.getClos(id);
             if (!result) {
                 return new SuccessErrorExtSerializer(result, "Modification de la géometrie de l'évènement non autorisée").serialize();
             }
 
-            criseEvenementRepository.updateGeom(id, coord[1], srid);
+          Result<Record> r = criseEvenementRepository.updateGeom(id, coord[1], srid);
+            if(r.isEmpty()){
+              return new SuccessErrorExtSerializer(true,"Clos").serialize();
+            }
 
         } catch (Exception e) {
             return new SuccessErrorExtSerializer(false, e.getMessage().toString()).serialize();

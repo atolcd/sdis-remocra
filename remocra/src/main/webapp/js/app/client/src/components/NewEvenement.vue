@@ -136,6 +136,7 @@ export default {
                 this.form.time = moment(evenement.constat.toString()).format("HH:mm")
                 if(evenement.cloture !== null){
                   this.cloture = true
+                  this.form.cloture = evenement.cloture
                 }
                 this.form.origine = evenement.origine
                 this.$refs.searchOrigine.selected = evenement.origine
@@ -170,6 +171,7 @@ export default {
       this.form.description = ''
       this.form.constat = moment().format("YYYY-MM-DD")
       this.cloture = false
+      this.form.cloture = null
       this.form.time = moment().format("HH:mm")
       this.form.origine = null
       this.$refs.searchOrigine.selected = null
@@ -192,7 +194,9 @@ export default {
       if (!this.form.titre || !this.form.type || !(this.$refs.searchOrigine.searchInput !== "" || this.$refs.searchOrigine.selected !== null)
        || !this.form.constat || !this.form.time) {
         alert('Veuillez saisir les champs obligatoires')
-      } else {
+      } else if (this.form.cloture != null) {
+        alert('L\'évènement est déjà clos')
+      }else {
         this.handleSubmit()
         this.$parent.refreshMap()
       }
@@ -201,7 +205,7 @@ export default {
       let formData = new FormData()
       formData.append('nom', this.form.titre)
       formData.append('description', this.form.description)
-      formData.append('constat', moment(this.form.constat.format("YYYY-MM-DD")+'T'+this.form.time.format("HH:mm")).format())
+      formData.append('constat', moment(this.form.constat.toString()+'T'+this.form.time.toString()).format())
       if(this.cloture){
         formData.append('cloture', new moment())
       }

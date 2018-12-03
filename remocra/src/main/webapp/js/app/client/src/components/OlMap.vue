@@ -944,6 +944,14 @@ import html2canvas from 'html2canvas'
             var formData = {'geometrie': geom}
             axios.post('/remocra/evenements/'+this.selectedFeature.getId()+'/updategeom', formData)
             .then((response) => {
+              if(response.data.message === "Clos"){
+                this.$notify({
+                 group: 'remocra',
+                 title: 'Évènements',
+                 type: 'error',
+                 text: 'L\'évènement est déjà clos.'
+                })
+              }
               this.refreshMap()
               this.$refs.evenements.loadEvenements(this.criseId)
               this.$refs.toolBar.showUpdateGeom = false
@@ -957,6 +965,14 @@ import html2canvas from 'html2canvas'
             var formData = {'geometrie': geom}
             axios.post('/remocra/evenements/'+this.selectedFeature.getId()+'/updategeom', formData)
             .then((response) => {
+              if(response.data.message === "Clos"){
+                this.$notify({
+                 group: 'remocra',
+                 title: 'Évènements',
+                 type: 'error',
+                 text: 'L\'évènement est déjà clos.'
+                })
+              }
               this.refreshMap()
               this.$refs.evenements.loadEvenements(this.criseId)
               this.$refs.toolBar.showTranslateGeom = false

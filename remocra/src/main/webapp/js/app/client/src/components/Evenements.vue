@@ -7,7 +7,7 @@
          <sup><span class="messages-count">{{evenement.criseSuivis.length}}</span></sup>
          <span class="evenement-nom" @click="modifEvent(evenement)">{{evenement.nom}}</span>
          <div class="mini-tools">
-           <img style="cursor:pointer" src="/static/img/message-add.svg" title="Nouveau message" @click="openNewMessage(evenement.id)">
+           <img style="cursor:pointer" v-if="evenement.cloture == null" src="/static/img/message-add.svg" title="Nouveau message" @click="openNewMessage(evenement.id)">
            <img style="cursor:pointer" v-if="evenement.geometrie !== null" src="/static/img/location.svg" title="Zoomer" @click="locateEvent(evenement.geometrie)">
          </div>
       </div>
