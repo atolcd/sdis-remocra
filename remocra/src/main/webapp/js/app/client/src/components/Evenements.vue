@@ -70,10 +70,10 @@ export default {
                    message.creation = IsoDateTo
                 })
                 // Tri antéchronologique du suivi (création)
-                evenement.criseSuivis = _.orderBy(evenement.criseSuivis, ['creation'], ['asc']);
+                evenement.criseSuivis = _.orderBy(evenement.criseSuivis, ['creation'], ['desc']);
              })
              // Tri antéchronologique des évènements (constat)
-             this.evenements = _.orderBy(this.evenements, ['constat'], ['asc']);
+             this.evenements = _.orderBy(this.evenements, ['constat'], ['desc']);
           }
         })
         .catch(function(error) {
