@@ -165,8 +165,9 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
     onSelectCrise: function(sel, records, index, opt) {
        var grid = this.getTabGeneral();
            var dateCloture = records.length != 0 ? records[0].data.cloture : null ;
+           var nbCommune = records.length != 0 ? records[0].communesStore.data.length : 0 ;
                 grid.queryById('exportCrise').setDisabled(!Sdis.Remocra.Rights.hasRight('CRISE_R'));
-                grid.queryById('ouvrirCrise').setDisabled(dateCloture != null || !Sdis.Remocra.Rights.hasRight('CRISE_R'));
+                grid.queryById('ouvrirCrise').setDisabled(dateCloture != null || nbCommune == 0 || !Sdis.Remocra.Rights.hasRight('CRISE_R'));
                 grid.queryById('fusionneCrise').setDisabled(dateCloture != null || !Sdis.Remocra.Rights.hasRight('CRISE_U'));
                 grid.queryById('configureCrise').setDisabled(dateCloture != null ||!Sdis.Remocra.Rights.hasRight('CRISE_U'));
                 grid.queryById('cloreCrise').setDisabled(dateCloture != null ||!Sdis.Remocra.Rights.hasRight('CRISE_U'));
