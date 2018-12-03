@@ -201,6 +201,9 @@ public class CriseEvenementRepository {
       srid = sridFromGeom(coord[0]);
       geom = GeometryUtil.toGeometry(coord[1],srid);
     }
+    if(request.getParameter("cloture") != null){
+      c.setCloture(new Instant());
+    }
 
     TypeCriseNatureEvenement tcn = context.select().from(TYPE_CRISE_NATURE_EVENEMENT)
         .where(TYPE_CRISE_NATURE_EVENEMENT.ID.eq(Long.valueOf(String.valueOf(request.getParameter("natureEvent")))))
@@ -209,9 +212,9 @@ public class CriseEvenementRepository {
     Date constat = df.parse(request.getParameter("constat"));
     Instant t = new Instant(constat);
     c.setConstat(t);
-    int result = context.insertInto(CRISE_EVENEMENT, CRISE_EVENEMENT.NOM, CRISE_EVENEMENT.GEOMETRIE, CRISE_EVENEMENT.DESCRIPTION, CRISE_EVENEMENT.CONSTAT,
+    int result = context.insertInto(CRISE_EVENEMENT, CRISE_EVENEMENT.NOM, CRISE_EVENEMENT.GEOMETRIE, CRISE_EVENEMENT.DESCRIPTION, CRISE_EVENEMENT.CONSTAT, CRISE_EVENEMENT.CLOTURE,
         CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT)
-        .values(c.getNom(), geom != null ? geom : null  ,  c.getDescription(),c.getConstat(),c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement()).execute();
+        .values(c.getNom(), geom != null ? geom : null  ,  c.getDescription(),c.getConstat(), c.getCloture(),c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement()).execute();
     if(result!=0) {
       //on sélectionne la dernioère insertion
       Long idCriseEvent = context.select(DSL.max((CRISE_EVENEMENT.ID))).from(CRISE_EVENEMENT).fetchOne().value1();
@@ -240,6 +243,9 @@ public class CriseEvenementRepository {
     Date constat = df.parse(request.getParameter("constat"));
     Instant t = new Instant(constat);
     c.setConstat(t);
+    if(request.getParameter("cloture") != null){
+      c.setCloture(new Instant());
+    }
     c.setOrigine(request.getParameter("origine"));
     c.setImportance(Integer.valueOf(request.getParameter("importance")));
     c.setTags(request.getParameter("tags"));
@@ -251,9 +257,9 @@ public class CriseEvenementRepository {
     c.setNatureEvenement(tcn.getId());
     Instant redefinition = new Instant();
     c.setRedefinition(redefinition);
-    int result = context.update(CRISE_EVENEMENT).set(row( CRISE_EVENEMENT.NOM, CRISE_EVENEMENT.DESCRIPTION, CRISE_EVENEMENT.CONSTAT, CRISE_EVENEMENT.REDEFINITION,
+    int result = context.update(CRISE_EVENEMENT).set(row( CRISE_EVENEMENT.NOM, CRISE_EVENEMENT.DESCRIPTION, CRISE_EVENEMENT.CONSTAT, CRISE_EVENEMENT.REDEFINITION,CRISE_EVENEMENT.CLOTURE,
         CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT)
-        ,row(c.getNom(), c.getDescription(),c.getConstat(), c.getRedefinition(), c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement())).where(CRISE_EVENEMENT.ID.eq(id)).execute();
+        ,row(c.getNom(), c.getDescription(),c.getConstat(), c.getRedefinition(), c.getCloture(), c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement())).where(CRISE_EVENEMENT.ID.eq(id)).execute();
 
     //TODO: mettre à jour les documents
     return c;
