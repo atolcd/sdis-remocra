@@ -201,7 +201,7 @@ export default {
       let formData = new FormData()
       formData.append('nom', this.form.titre)
       formData.append('description', this.form.description)
-      formData.append('constat', moment(this.form.constat.toString()+'T'+this.form.time.toString()).format())
+      formData.append('constat', moment(this.form.constat.format("YYYY-MM-DD")+'T'+this.form.time.format("HH:mm")).format())
       if(this.cloture){
         formData.append('cloture', new moment())
       }
