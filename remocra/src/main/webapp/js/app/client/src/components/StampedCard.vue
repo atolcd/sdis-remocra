@@ -68,7 +68,6 @@ export default {
               var fileOfBlob = new File([blob], cardName+'.png', {type: 'image/png'});
            formData.append('files[0]', fileOfBlob);
            formData.append('geometrie', self.extent)
-           console.log(formData)
            axios.post( '/remocra/crises/'+criseId+'/documents',formData,
                {
                  headers: {

@@ -142,7 +142,6 @@ export default {
                 this.form.importance = evenement.importance
                 this.form.tags = evenement.tags && evenement.tags.length !== 0 ? evenement.tags.split(","): []
                 this.form.type = evenement.typeCriseNatureEvenement.id
-                console.log(this.form.constat)
               })
               .catch(function(error) {
                 console.error('categorie évenement', error)
@@ -308,7 +307,6 @@ export default {
               }
             })
             this.types = _.groupBy(types, t=>t.categorie);
-            console.log(this.types)
           }
         })
         .catch(function(error) {

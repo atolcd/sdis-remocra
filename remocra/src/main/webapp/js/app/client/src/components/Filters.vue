@@ -68,7 +68,6 @@ export default {
   },
   methods: {
     filterChanged(newFilters, oldFilters) {
-      console.log('filterChange')
       this.$parent.$parent.$refs.evenements.loadEvenements(this.criseId, newFilters)
     },
      load(){

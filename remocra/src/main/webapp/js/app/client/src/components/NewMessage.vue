@@ -80,7 +80,6 @@ export default {
           .catch(function(error) {
             console.error('message', error)
           })
-          console.log(this.$refs.modal)
           this.disableOk = true
       }
       this.$refs.modal.show()
