@@ -149,7 +149,7 @@ public class GeoserverController {
     public void proxyWms(HttpServletRequest request, HttpServletResponse response, String geoserverPath, Map<String, String> params) {
         // /remocra/geoserver/** -> /geoserver/**
 
-        if (params == null) {
+        if (params == null || params.isEmpty()) {
             params = getMapParamsFromRequest(request);
         }
 
