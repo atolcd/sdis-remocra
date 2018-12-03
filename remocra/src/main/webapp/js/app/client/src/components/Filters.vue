@@ -41,6 +41,7 @@
 <script>
 /* eslint-disable */
 import axios from 'axios'
+import _ from 'lodash'
 export default {
   name: 'Filters',
   data() {
@@ -85,7 +86,11 @@ export default {
            .then((response) => {
              if (response.data.data) {
                var tags = response.data.data
-               this.tags = tags
+               var t= [] ;
+               _.forEach(tags, function(tag){
+                 t.push(_.split(tag, ","))
+               })
+               this.tags = _.flattenDeep(t)
              }
            })
            .catch(function(error) {

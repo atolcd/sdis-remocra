@@ -379,9 +379,9 @@ public class CriseEvenementRepository {
       }else if(filter.getFieldName().equals("tag")){
         tag++;
         if(tag != 1){
-          cta = cta.or(CRISE_EVENEMENT.TAGS.eq(filter.getValue()));
+          cta = cta.or(CRISE_EVENEMENT.TAGS.like("%"+filter.getValue()+"%"));
         }else {
-          cta= DSL.and(CRISE_EVENEMENT.TAGS.eq(filter.getValue()));
+          cta= DSL.and(CRISE_EVENEMENT.TAGS.like("%"+filter.getValue()+"%"));
         }
       }else if(filter.getFieldName().equals("importance")){
         importance++;
