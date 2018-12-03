@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalEvent" ref="modal" title="Nouvel évènement" ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hide="clearFields">
+  <b-modal id="modalEvent" ref="modal" :title="title" ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hide="clearFields">
     <form @submit.stop.prevent="handleSubmit">
       <b-form-group horizontal label="Type:" label-for="typeEvent">
         <b-form-select :disabled="disableNatures" id="typeEvent" required  v-model="form.type">
@@ -46,7 +46,9 @@
       <b-form-group  horizontal label="Tags:" label-for="tags">
         <input-tag :tags.sync="form.tags"></input-tag>
       </b-form-group>
-
+      <b-form-group  horizontal label="Clore l'évènement:" label-for="cloture">
+        <input style="width:5%" id="cloture" type="checkbox" :value="cloture" v-model="cloture">
+     </b-form-group>
     </form>
   </b-modal>
 </div>
@@ -66,6 +68,8 @@ export default {
     return {
       file: null,
       files: [],
+      title:"Nouvel évènement",
+      cloture:false,
       criseId: null,
       evenementId:null,
       natureId:null,
@@ -94,6 +98,7 @@ export default {
       this.criseId = criseId
       this.loadEvenementNatures(null)
       this.$root.$emit('bv::hide::popover')
+      this.title="Nouvel évènement"
       this.$refs.modal.show()
     },
     createCartoEvent(criseId, natureId, wktfeaturegeom){
@@ -112,6 +117,7 @@ export default {
           console.error('nature évenement', error)
         })
       this.$root.$emit('bv::hide::popover')
+      this.title="Nouvel évènement"
       this.$refs.modal.show()
     },
     modifyEvent(criseId, evenementId, natureId){
@@ -128,6 +134,9 @@ export default {
                 this.form.description = evenement.description
                 this.form.constat = moment(evenement.constat.toString()).format("YYYY-MM-DD")
                 this.form.time = moment(evenement.constat.toString()).format("HH:mm")
+                if(evenement.cloture !== null){
+                  this.cloture = true
+                }
                 this.form.origine = evenement.origine
                 this.$refs.searchOrigine.selected = evenement.origine
                 this.form.importance = evenement.importance
@@ -150,26 +159,32 @@ export default {
                 })
           }
       this.$root.$emit('bv::hide::popover')
+      this.title = "Modification d'événement"
       this.$refs.modal.show()
     },
     clearFields() {
 
       //todo instancier les data en null et faire un reset
-      this.file = null,
-      this.files = [],
+      this.file = null
+      this.files = []
       this.form.titre = ''
       this.form.description = ''
       this.form.constat = moment().format("YYYY-MM-DD")
+      this.cloture = false
       this.form.time = moment().format("HH:mm")
       this.form.origine = null
       this.$refs.searchOrigine.selected = null
       this.form.importance = 0
       this.form.tags = []
       this.form.type = null
-      this.types= [],
-      this.categories= [],
-      this.interventionAssocs= [{}],
+      this.types= []
+      this.categories= []
+      this.interventionAssocs= [{}]
       this.origines= [{}]
+      this.disableNatures= false
+      this.criseId =  null
+      this.evenementId = null
+      this.natureId = null
       this.$parent.refreshMap()
     },
     handleOk(evt) {
@@ -187,6 +202,9 @@ export default {
       formData.append('nom', this.form.titre)
       formData.append('description', this.form.description)
       formData.append('constat', moment(this.form.constat.toString()+'T'+this.form.time.toString()).format())
+      if(this.cloture){
+        formData.append('cloture', new moment())
+      }
       if(this.form.geometrie !== null){
         formData.append('geometrie', this.form.geometrie)
       }
@@ -199,6 +217,7 @@ export default {
         let file = this.files[i];
         formData.append('files[' + i + ']', file);
       }
+      var criseId = this.criseId
       if(this.evenementId != null){
         axios.post('/remocra/evenements/'+this.evenementId, formData, {
             headers: {
@@ -207,8 +226,10 @@ export default {
           })
           .then((response) => {
              if(response.data.success){
-               this.$parent.$refs.evenements.loadEvenements(this.criseId)
+               console.log(criseId)
+               this.$parent.$refs.evenements.loadEvenements(criseId)
                this.$parent.refreshMap()
+               this.$refs.modal.hide()
              }
           })
           .catch(function(error) {
@@ -223,16 +244,16 @@ export default {
           })
           .then((response) => {
              if(response.data.success){
-               console.log(this.$parent.$refs.evenements)
-               this.$parent.$refs.evenements.loadEvenements(this.criseId)
+               console.log(criseId)
+               this.$parent.$refs.evenements.loadEvenements(criseId)
                this.$parent.refreshMap()
+               this.$refs.modal.hide()
              }
           })
           .catch(function(error) {
             console.error('postEvent', error)
           })
       }
-      this.$refs.modal.hide()
     },
     loadEvenementNatures(natureId){
       var types = []
