@@ -1,8 +1,8 @@
 <template>
   <form v-on:submit.prevent>
-    <autocomplete :input-attrs="{ placeholder: 'Zoomer sur la commune...' }" v-model="selected"
+    <autocomplete ref="autocomplete" :input-attrs="{ placeholder: 'Zoomer sur la commune...' }" v-model="selected"
       :items="results" :get-label="getLabel" :component-item='communeTemplate'
-      :auto-select-one-item="true" @update-items="search" @item-selected="communeSelected" />
+      :auto-select-one-item="false" @update-items="search" @item-selected="communeSelected" />
   </form>
 </template>
 
@@ -45,6 +45,9 @@ export default {
     communeSelected(commune) {
       // On agit directement
       this.$parent.zoomToGeom(commune.geometrie)
+      this.$nextTick(() => {
+       this.selected = null
+      })
     },
     communeClicked(commune) {
       console.log(commune)

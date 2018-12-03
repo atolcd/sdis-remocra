@@ -2,7 +2,7 @@
   <form v-on:submit.prevent>
     <autocomplete :input-attrs="{ placeholder: 'Zoomer sur le lieu...' }" v-model="selected"
       :items="results" :get-label="getLabel" :component-item='repertoireTemplate'
-      :auto-select-one-item="true" @update-items="search" @item-selected="repertoireSelected" />
+      :auto-select-one-item="false" @update-items="search" @item-selected="repertoireSelected" />
   </form>
 </template>
 
@@ -51,6 +51,9 @@ export default {
     repertoireSelected(repertoire) {
       // On agit directement
       this.$parent.zoomToGeom(repertoire.geometrie)
+      this.$nextTick(() => {
+       this.selected = null
+      })
     }
   }
 }
