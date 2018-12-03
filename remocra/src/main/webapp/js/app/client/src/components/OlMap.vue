@@ -25,7 +25,7 @@
     <div>
       <b-dropdown  id="ddown1" class="text-start my-1">
         <template slot="button-content">
-           <img src='/static/img/ruler.png'>
+           <img src='/static/img/ruler.png' @click="removeMeasureInteraction">
         </template>
         <b-dropdown-item-button @click="activateMeasure('Distance')"><img src='/static/img/ruler.png'>  Distance</b-dropdown-item-button>
         <b-dropdown-item-button @click="activateMeasure('Surface')"><img src='/static/img/ruler_square.png'>  Surface</b-dropdown-item-button>
@@ -331,25 +331,30 @@ import html2canvas from 'html2canvas'
     methods : {
       createWorkingLayer(){
         var source = new OlSourceVector()
+        var style= new Style({
+          fill: new Fill({
+            color: 'rgba(255, 255, 255, 0.2)'
+          }),
+          stroke: new Stroke({
+            color: 'blue',
+            width: 2
+          }),
+          image: new CircleStyle({
+            radius: 7,
+            fill: new Fill({
+              color: '#ffcc33'
+            })
+          })
+        })
         var vectorLayer = new OlLayerVector({
           name:'workingLayer',
           code: 'workingLayer',
           source: source,
-          style: new Style({
-            fill: new Fill({
-              color: 'blue'
-            }),
-            stroke: new Stroke({
-              color: '#red',
-              width: 2
-            }),
-            image: new CircleStyle({
-              radius: 7,
-              fill: new Fill({
-                color: '#ffcc33'
-              })
-            })
-          })
+          style: style,
+          visibility : true,
+          opacity : 1,
+          zIndex: 1000
+
         })
         this.map.addLayer(vectorLayer)
       },
@@ -388,7 +393,7 @@ import html2canvas from 'html2canvas'
                    this.extent= feature.getExtent()
                    this.addLayersFromCrise(this.legend)
                    this.map.getView().fit(this.extent, {nearest: true})
-                   this.addMeasureInteraction()
+                   //this.addMeasureInteraction()
               }
         })
         .catch(function(error){
@@ -668,76 +673,78 @@ import html2canvas from 'html2canvas'
 
  addMeasureInteraction() {
    this.map.un('click', this.handleMapClick)
-   var formatLength =function(line) {
-     var length = getLength(line);
-       var output;
-       if (length > 100) {
-         output = (Math.round(length / 1000 * 100) / 100) +' ' + 'km';
-       } else {
-         output = (Math.round(length * 100) / 100) +' ' + 'm';
-       }
-       return output;
-   }
-   var formatArea=function(polygon) {
-     var area = getArea(polygon);
-       var output;
-       if (area > 10000) {
-         output = (Math.round(area / 1000000 * 100) / 100) +' ' + 'km<sup>2</sup>';
-       } else {
-         output = (Math.round(area * 100) / 100) +' ' + 'm<sup>2</sup>';
-       }
-       return output;
-   }
-      var measureTooltipElement = document.createElement('div')
-      measureTooltipElement.className = 'tooltip tooltip-measure'
-      let measureTooltip = new OlOverlay({
-        element: measureTooltipElement,
-        offset: [0, -15],
-        positioning: 'bottom-center'
-      })
-      this.map.addOverlay(measureTooltip)
-      var workingLayer = this.getLayerById('workingLayer')
-      if(this.selectedRuler && this.selectedRuler !== null){
-         var type = (this.selectedRuler == 'Surface' ? 'Polygon' : 'LineString');
-      }else {
-        return
-      }
-      let measuringTool = new OlInteractionDraw({
-        type: type,
-        source: workingLayer.getSource()
-      })
-      measuringTool.on('drawstart', function(event) {
-        // tooltipse
-        workingLayer.getSource().clear()
-        event.feature.on('change', function(event) {
-          var geom = event.target.getGeometry();
-          var measurement;
-          var output;
-             if (geom.getType() == 'Polygon') {
-              output =formatArea(geom)
-             } else if (geom.getType() == 'LineString') {
-              output = formatLength(geom)
-             }
-          measureTooltipElement.innerHTML = output
-          measureTooltip.setPosition(event.target.getGeometry().getLastCoordinate())
+     var formatLength =function(line) {
+       var length = getLength(line);
+         var output;
+         if (length > 100) {
+           output = (Math.round(length / 1000 * 100) / 100) +' ' + 'km';
+         } else {
+           output = (Math.round(length * 100) / 100) +' ' + 'm';
+         }
+         return output;
+     }
+     var formatArea=function(polygon) {
+       var area = getArea(polygon);
+         var output;
+         if (area > 10000) {
+           output = (Math.round(area / 1000000 * 100) / 100) +' ' + 'km<sup>2</sup>';
+         } else {
+           output = (Math.round(area * 100) / 100) +' ' + 'm<sup>2</sup>';
+         }
+         return output;
+     }
+        var measureTooltipElement = document.createElement('div')
+        measureTooltipElement.className = 'tooltip tooltip-measure'
+        let measureTooltip = new OlOverlay({
+          element: measureTooltipElement,
+          offset: [0, -15],
+          positioning: 'bottom-center'
         })
-      })
-
-      measuringTool.on('change:active', function(evt) {
-        if (evt.oldValue) {
-          // Nettoyage
-          workingLayer.getSource().clear()
-          measureTooltip.setPosition([0, 0])
+        this.map.addOverlay(measureTooltip)
+        var workingLayer = this.getLayerById('workingLayer')
+        if(this.selectedRuler && this.selectedRuler !== null){
+           var type = (this.selectedRuler == 'Surface' ? 'Polygon' : 'LineString');
+        }else {
+          return
         }
-      })
-      this.map.addInteraction(measuringTool)
-      this.measuringTool = measuringTool
+        let measuringTool = new OlInteractionDraw({
+          type: type,
+          source: workingLayer.getSource()
+        })
+        measuringTool.on('drawstart', function(event) {
+          // tooltipse
+          workingLayer.getSource().clear()
+          event.feature.on('change', function(event) {
+            var geom = event.target.getGeometry();
+            var measurement;
+            var output;
+               if (geom.getType() == 'Polygon') {
+                output =formatArea(geom)
+               } else if (geom.getType() == 'LineString') {
+                output = formatLength(geom)
+               }
+            measureTooltipElement.innerHTML = output
+            measureTooltip.setPosition(event.target.getGeometry().getLastCoordinate())
+          })
+        })
+
+        measuringTool.on('change:active', function(evt) {
+          if (evt.oldValue) {
+            // Nettoyage
+            workingLayer.getSource().clear()
+            measureTooltip.setPosition([0, 0])
+          }
+        })
+        this.map.addInteraction(measuringTool)
+        this.measuringTool = measuringTool
+        this.measureTooltip = measureTooltip
+
     },
     activateMeasure(type) {
       this.selectedRuler = type
-      if(this.measuringTool){
+      /*if(this.measuringTool){
            this.measuringTool.setActive(!this.measuringTool.getActive())
-      }else if(this.draw){
+      }else*/ if(this.draw){
         this.draw.setActive(false);
       }else if( this.snap){
         this.snap.setActive(false);
@@ -746,8 +753,15 @@ import html2canvas from 'html2canvas'
       }else if( this.translate){
         this.translate.setActive(false);
       }
-      this.map.removeInteraction(this.measuringTool);
-      this.addMeasureInteraction();
+
+      //this.removeMeasureInteraction()
+      this.addMeasureInteraction()
+  },
+  removeMeasureInteraction(){
+    if(this.measuringTool){
+         this.measuringTool.setActive(!this.measuringTool.getActive())
+         this.map.removeInteraction(this.measuringTool)
+    }
   },
   GoInFullscreen: function(event){
        var elem = document.documentElement;
@@ -850,7 +864,9 @@ import html2canvas from 'html2canvas'
         this.map.removeInteraction(this.measuringTool)
           // Nettoyage
           workingLayer.getSource().clear()
-          measureTooltip.setPosition([0, 0])
+          if(this.measureTooltip != null){
+            this.measureTooltip.setPosition([0, 0])
+          }
       }
       if(type === 'Translate'){
         this.translate.setActive(true)
@@ -915,6 +931,7 @@ import html2canvas from 'html2canvas'
             axios.post('/remocra/evenements/'+this.selectedFeature.getId()+'/updategeom', formData)
             .then((response) => {
               this.refreshMap()
+              this.$refs.evenements.loadEvenements(this.criseId)
               this.$refs.toolBar.showUpdateGeom = false
             })
             .catch(function(error) {
@@ -927,6 +944,7 @@ import html2canvas from 'html2canvas'
             axios.post('/remocra/evenements/'+this.selectedFeature.getId()+'/updategeom', formData)
             .then((response) => {
               this.refreshMap()
+              this.$refs.evenements.loadEvenements(this.criseId)
               this.$refs.toolBar.showTranslateGeom = false
             })
             .catch(function(error) {
