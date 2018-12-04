@@ -50,7 +50,7 @@ public class TourneeService extends AbstractService<Tournee> {
             Expression<String> cpPath = from.get("id");
             predicat = cBuilder.equal(cpPath, itemFilter.getValue());
         } else if ("query".equals(itemFilter.getFieldName())) {
-            Expression<String> cpPath = from.get("id");
+            Expression<String> cpPath = from.get("nom");
             predicat = cBuilder.like(cBuilder.concat("", cpPath), itemFilter.getValue() + "%");
         } else if ("nom".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.get("nom");
