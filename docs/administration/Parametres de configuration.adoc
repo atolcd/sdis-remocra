@@ -308,6 +308,10 @@ L'authentification LDAP est prioritaire sur l'authentification à partir de la b
 * Texte affiché dans l'entête du site
 * Par défaut : ``````
 
+=== TITRE_PAGE ===
+* Titre de la page
+* Par défaut : ```SDIS - REMOcRA```
+
 === PDI_CODE_SDIS ===
 * Code du département
 * Exemple : `83`
