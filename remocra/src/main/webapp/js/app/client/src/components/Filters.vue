@@ -70,7 +70,10 @@ export default {
     filterChanged(newFilters, oldFilters) {
       this.$parent.$parent.$refs.evenements.loadEvenements(this.criseId, newFilters)
     },
-     load(){
+     load(criseId){
+       if (criseId){
+         this.criseId = criseId
+       }
        axios.get('/remocra/typecrisenatureevenement/'+this.criseId)
          .then((response) => {
            if (response.data.data) {

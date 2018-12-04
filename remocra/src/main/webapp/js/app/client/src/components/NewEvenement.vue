@@ -175,6 +175,7 @@ export default {
       this.form.time = moment().format("HH:mm")
       this.form.origine = null
       this.$refs.searchOrigine.selected = null
+      this.$refs.searchOrigine.searchInput = ""
       this.form.importance = 0
       this.form.tags = []
       this.form.type = null
@@ -231,6 +232,8 @@ export default {
           .then((response) => {
              if(response.data.success){
                this.$parent.$refs.evenements.loadEvenements(criseId)
+               this.$parent.$refs.documents.loadDocuments(criseId)
+               this.$parent.$refs.filters.load(criseId)
                this.$parent.refreshMap()
                this.$refs.modal.hide()
              }
@@ -248,6 +251,8 @@ export default {
           .then((response) => {
              if(response.data.success){
                this.$parent.$refs.evenements.loadEvenements(criseId)
+               this.$parent.$refs.documents.loadDocuments(criseId)
+               this.$parent.$refs.filters.load(criseId)
                this.$parent.refreshMap()
                this.$refs.modal.hide()
              }
