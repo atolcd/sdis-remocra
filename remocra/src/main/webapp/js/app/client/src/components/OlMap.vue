@@ -22,15 +22,15 @@
       </div>
 
     <div class="big-h-spacer"/>
-    <div class="measure-container">
-      <b-dropdown id="ddownMeasure" class="text-start my-1">
-        <template slot="button-content">
-           <img src='/static/img/ruler.png' @click="removeMeasureInteraction">
-        </template>
-        <b-dropdown-item-button @click="activateMeasure('Distance')"><img src='/static/img/ruler.png'>  Distance</b-dropdown-item-button>
-        <b-dropdown-item-button @click="activateMeasure('Surface')"><img src='/static/img/ruler_square.png'>  Surface</b-dropdown-item-button>
-      </b-dropdown>
-    </div>
+      <b-btn class=" text-start my-1 measure-container ctrl" id="measureTools" @click="removeMeasureInteraction"><img src="/static/img/ruler.png"></b-btn>
+      <b-popover class="dropdown-menu" placement="bottomright" ref="popover2" target="measureTools" >
+        <div>
+        <b-btn class="dropdown-item" @click="activateMeasure('Distance')"><img src='/static/img/ruler.png'>  Distance</b-btn>
+      </div>
+        <div>
+        <b-btn class="dropdown-item" @click="activateMeasure('Surface')"><img src='/static/img/ruler_square.png'>  Surface</b-btn>
+      </div>
+      </b-popover>
 
     <div class="big-h-spacer"/>
     <div class="text-start my-1">
@@ -761,7 +761,7 @@ import html2canvas from 'html2canvas'
            this.measuringTool.setActive(!this.measuringTool.getActive())
       }else*/
       this.desactivateControls()
-      //this.removeMeasureInteraction()
+      this.removeMeasureInteraction()
       this.addMeasureInteraction()
   },
    desactivateControls(){
