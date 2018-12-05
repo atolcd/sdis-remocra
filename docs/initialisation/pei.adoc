@@ -16,6 +16,8 @@ Ces données ont été préparées en amont par les équipes d'Atol CD et ne doi
 include::references/type_hydrant_nature.csv[]
 |====================
 
+Les PI et les BI sont rattachés aux PIBI, les autres natures aux PENA
+
 ===== Diamètres pour les PI/BI/PA
 [format="csv", options="header"]
 |====================
@@ -28,11 +30,17 @@ include::references/type_hydrant_diametre.csv[]
 include::references/type_hydrant_positionnement.csv[]
 |====================
 
-==== Données de référence adaptables par le SDIS
-Les données transmises dans les fichiers décrits ci-dessous constituent un socle de base. Il est souhaitable d'utiliser les valeurs existantes dès lors que cela correspond à un existant dans le SI du SDIS. Il est également possible :
+===== Type de DECI d'un PEI
+[format="csv", options="header"]
+|====================
+include::references/type_hydrant_deci.csv[]
+|====================
 
-* D'ajouter de nouvelles lignes dans le fichier si l'information n'est pas déjà présente dans le fichier livré 
-* De supprimer des lignes présentes dans le fichier livré mais jamais exploitées par le SDIS
+==== Données de référence adaptables par le SDIS/Brigade
+Les données transmises dans les fichiers décrits ci-dessous constituent un socle de base. Il est souhaitable d'utiliser les valeurs existantes dès lors que cela correspond à un existant dans le SI du SDIS/Brigade. Il est également possible :
+
+* D'ajouter de nouvelles lignes dans le fichier si l'information n'est pas déjà présente dans le fichier livré
+* De supprimer des lignes présentes dans le fichier livré mais jamais exploitées par le SDIS/Brigade
 
 Les caracteristiques suivantes sont valables pour les différents fichiers ci-dessous
 
@@ -60,12 +68,12 @@ Les caracteristiques suivantes sont valables pour les différents fichiers ci-de
 |code_diametre|Texte|Oui||Code dans le tableau "Diamètres pour les PI/BI/PA"
 |====================
 
-===== Marques de PEI
+===== Marques de PIBI
 
 [width="75%" options="no-header"cols="<s,"]
 |====================
 |Nom du fichier à fournir|type_hydrant_marque.csv
-|Description|Marque de matériel pour un PI/BI/PA
+|Description|Marque de matériel pour un PI/BI
 |====================
 
 [width="100%",options="header"]
@@ -75,12 +83,12 @@ Les caracteristiques suivantes sont valables pour les différents fichiers ci-de
 |nom|Texte|Oui|Unique|Libellé affiché en liste déroulante dans les interfaces de Remocra
 |====================
 
-===== Modèle de PEI
+===== Modèle de PIBI
 
 [width="75%" options="no-header"cols="<s,"]
 |====================
 |Nom du fichier à fournir|type_hydrant_modele.csv
-|Description|Modèle de matériel pour un PI/BI/PA
+|Description|Modèle de matériel pour un PI/BI
 |====================
 
 [width="100%",options="header"]
@@ -89,6 +97,36 @@ Les caracteristiques suivantes sont valables pour les différents fichiers ci-de
 |code|Texte|Oui|Unique|Code utilisé dans les échanges
 |nom|Texte|Oui|Unique|Libellé affiché en liste déroulante dans les interfaces de Remocra
 |marque|Texte|Oui||Code de la marque de matériel dans le fichier type_hydrant_marque.csv
+|====================
+
+===== Type de canalisation PIBI
+
+[width="75%" options="no-header"cols="<s,"]
+|====================
+|Nom du fichier à fournir|type_hydrant_canalisation.csv
+|Description|Type de canalisation pour un PI/BI
+|====================
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Contraintes|Description
+|code|Texte|Oui|Unique|Code utilisé dans les échanges
+|nom|Texte|Oui|Unique|Libellé affiché en liste déroulante dans les interfaces de Remocra
+|====================
+
+===== Type de réseau PIBI
+
+[width="75%" options="no-header"cols="<s,"]
+|====================
+|Nom du fichier à fournir|type_hydrant_reseau.csv
+|Description|Type de réseau pour un PI/BI
+|====================
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Contraintes|Description
+|code|Texte|Oui|Unique|Code utilisé dans les échanges
+|nom|Texte|Oui|Unique|Libellé affiché en liste déroulante dans les interfaces de Remocra
 |====================
 
 ===== Type de matériau pour les PENA
@@ -177,7 +215,7 @@ Les lignes associées aux types d'anomalies ci-dessous sont impérativement à c
 include::references/type_hydrant_anomalie_impose.csv[]
 |====================
 
-==== Données spécifiques au SDIS (caracteristiques des PEI et anomalies associées)
+==== Données spécifiques au SDIS/Brigade (caracteristiques des PEI et anomalies associées)
 
 ===== PIBI - Fichier cartographique
 
@@ -202,55 +240,40 @@ include::references/type_hydrant_anomalie_impose.csv[]
 [width="100%",options="header"]
 |====================
 |Nom du champ|Type|Obligatoire|Contraintes|Description
-|numero|Texte|Oui|Unicite tous PEI confondus |Numéro complet du PEI. Ex : 77402_0045. Permet d'assurer la jointure avec le fichier tabulaire pibi.csv
-|====================
-
-===== PIBI - Fichier de données alpha-numériques
-
-[width="75%" options="no-header"cols="<s,"]
-|====================
-|Nom du fichier à fournir|pibi.csv
-|Description|Informations attributaires liées au PIBI
-|Type de fichier|Tabulaire CSV
-|Encodage|UTF-8
-|Séparateur de colonnes|,
-|Encapsulation de valeurs|"
-|Format de date |AAAA-MM-JJ
-|====================
-
-[width="100%",options="header"]
-|====================
-|Nom du champ|Type|Obligatoire|Contraintes|Description
-|numero|Texte|Oui|Unicite tous PEI confondus |Numéro complet du PEI. Ex : 77402_0045. Permet d'assurer la jointure avec le fichier cartographique pibi.shp
-|numero_interne|Entier|Oui||Partie à droite du numéro
+|num|Texte|Oui|Unicite tous PEI confondus |Numéro complet du PEI. Ex : 77402_0045
+|num_inte|Entier|Oui||Partie à droite du numéro
 |agent1|Texte|||Nom et prénom du premier agent ayant réalisé le dernier contrôle ou la dernière reconnaissance
 |agent2|Texte|||Nom et prénom du second agent ayant réalisé le dernier contrôle ou la dernière reconnaissance
-|annee_fabrication|Entier|||Année de fabrication
-|complement|Texte|||Complément d'adresse
-|date_contr|Date|||Date de dernier contrôle
-|date_recep|Date|||Date de réception
-|date_reco|Date|||Date de dernière reconnaissance
-|date_verif|Date|||Date de dernière vérification (contrôle en présence de la mairie)
+|annee_fa|Entier|||Année de fabrication
+|complt|Texte|||Complément d'adresse
+|controle|Date|||Date de dernier contrôle technique périodique
+|reco_ini|Date|Oui||Date de reconnaissance initiale
+|reco_op|Date|||Date de dernière reconnaissance opérationnelle
 |lieu_dit|Texte|||Nom du lieu dit éventuel
-|observation|Texte|||Information complémentaire sur le PEI
+|observat|Texte|||Information complémentaire sur le PEI
 |voie|Texte|Oui||Nom de la voie
 |voie2|Texte|||Nom de la voie (si intersection avec voie)
+|num_v|Entier|||Numéro de la voie
+|num_v_su|Texte|||Suffixe du numéro de la voie (bis ter, A, 4)
+|etage|Entier|||Etage (localisation en sursol ou en souterrain)
 |commune|Texte|Oui|Code INSEE de commune présent dans le fichier commune.shp|
 |domaine|Texte||Code présent dans le fichier type_hydrant_domaine.csv|
 |nature|Texte|Oui|Code présent dans le fichier type_hydrant_nature.csv|
-|gest_point_eau|Texte|||Gestionnaire du point d'eau
-|organisme|Texte|||Code de l'organisme d'appartenance de l'utilisateur REMOCRA à l'origine de la dernière mise à jour des informations du PEI. A puiser dans le fichier organisme.csv
+|gest_pte|Texte|||Gestionnaire du point d'eau
+|organism|Texte|||Code de l'organisme d'appartenance de l'utilisateur REMOCRA à l'origine de la dernière mise à jour des informations du PEI. A puiser dans le fichier organisme.csv
 |debit|Entier|||Débit à 1 bar (m³/h)
 |debit_max|Entier|||Débit max (m³/h)
 |pression|Réel|||Pression statique (bar)
-|pression_dyn|Réel|||Pression dynamique à 60m³ (bar)
+|pres_dyn|Réel|||Pression dynamique à 60m³ (bar)
 |diametre|Texte||Code présent dans le fichier type_hydrant_diametre.csv|
-|gest_reseau|Texte|||Gestionnaire du réseau
+|gest_res|Texte|||Gestionnaire du réseau
 |choc|Entier (0 = Non, 1 = Oui)|||Poteau équipé d'un système destiné à supporter les chocs
 |marque|Texte||Code présent dans le fichier type_hydrant_marque.csv|
 |modele|Texte||Code présent dans le fichier type_hydrant_modele.csv|
-|pena|Texte||Numéro du PENA associé dans la table pena.shp|PENA associé à ce PEI qui doit être de nature "Point d'aspiration"
-|pression_dyn_deb|Réel|||Pression dynamique au débit max (bar)
+|presdyde|Réel|||Pression dynamique au débit max (bar)
+|typedeci|Texte|Oui||Code présent dans le fichier type_hydrant_deci.csv
+|typecana|Texte|||Code présent dans le fichier type_hydrant_canalisation.csv
+|type_res|Texte|||Code présent dans le fichier type_hydrant_reseau.csv
 |====================
 
 ===== PENA - Fichier cartographique
@@ -276,51 +299,35 @@ include::references/type_hydrant_anomalie_impose.csv[]
 [width="100%",options="header"]
 |====================
 |Nom du champ|Type|Obligatoire|Contraintes|Description
-|numero|Texte|Oui|Unicite tous PEI confondus |Numéro complet du PEI. Ex : 77402_0045. Permet d'assurer la jointure avec le fichier tabulaire pena.csv
-|====================
-
-===== PENA - Fichier de données alpha-numériques
-
-[width="75%" options="no-header"cols="<s,"]
-|====================
-|Nom du fichier à fournir|pena.csv
-|Description|Informations attributaires liées au PIBI
-|Type de fichier|Tabulaire CSV
-|Encodage|UTF-8
-|Séparateur de colonnes|,
-|Encapsulation de valeurs|"
-|Format de date |AAAA-MM-JJ
-|====================
-
-[width="100%",options="header"]
-|====================
-|Nom du champ|Type|Obligatoire|Contraintes|Description
-|numero|Texte|Oui||Numéro complet du PEI. Ex : 77402_0045.Permet d'assurer la jointure avec le fichier cartographique pena.shp
-|numero_interne|Entier|Oui||Partie à droite du numéro
+|num|Texte|Oui|Unicite tous PEI confondus |Numéro complet du PEI. Ex : 77402_0045.
+|num_inte|Entier|Oui||Partie à droite du numéro
 |agent1|Texte|||Nom et prénom du premier agent ayant réalisé le dernier contrôle ou la dernière reconnaissance
 |agent2|Texte|||Nom et prénom du second agent ayant réalisé le dernier contrôle ou la dernière reconnaissance
-|annee_fabrication|Entier|||Année de fabrication
-|complement|Texte|||Complément d'adresse
-|date_contr|Date|||Date de dernier contrôle
-|date_recep|Date|||Date de réception
-|date_reco|Date|||Date de dernière reconnaissance
-|date_verif|Date|||Date de dernière vérification (contrôle en présence de la mairie)
+|annee_fa|Entier|||Année de fabrication
+|complt|Texte|||Complément d'adresse
+|controle|Date|||Date de dernier contrôle technique périodique
+|reco_ini|Date|Oui||Date de reconnaissance initiale
+|reco_op|Date|||Date de dernière reconnaissance opérationnelle
 |lieu_dit|Texte|||Nom du lieu dit éventuel
-|observation|Texte|||Information complémentaire sur le PEI
+|observat|Texte|||Information complémentaire sur le PEI
 |voie|Texte|Oui||Nom de la voie
 |voie2|Texte|||Nom de la voie (si intersection avec voie)
+|num_v|Entier|||Numéro de la voie
+|num_v_su|Texte|||Suffixe du numéro de la voie (bis ter, A, 4)
+|etage|Entier|||Etage (localisation en sursol ou en souterrain)
 |commune|Texte|Oui|Code INSEE de commune présent dans le fichier commune.shp|
 |domaine|Texte||Code présent dans le fichier type_hydrant_domaine.csv|
 |nature|Texte|Oui|Code présent dans le fichier type_hydrant_nature.csv|
-|gest_point_eau|Texte|||Gestionnaire du point d'eau
-|organisme|Texte|||Code de l'organisme d'appartenance de l'utilisateur REMOCRA à l'origine de la dernière mise à jour des informations du PEI. A puiser dans le fichier organisme.csv
+|gest_pte|Texte|||Gestionnaire du point d'eau
+|organism|Texte|||Code de l'organisme d'appartenance de l'utilisateur REMOCRA à l'origine de la dernière mise à jour des informations du PEI. A puiser dans le fichier organisme.csv
 |capacite|Texte|||Capacité théorique en m3
-|coorddfci|Texte|||Coordonnées DFCI
+|coordfci|Texte|||Coordonnées DFCI
 |hbe|Entier (0 = Non, 1 = Oui)|||Dispose d'un équipement HBE
 |materiau|Texte||Code présent dans le fichier type_hydrant_materiau.csv|
-|positionnement|Texte||Code présent dans le fichier type_hydrant_positionnement.csv|
-|vol_constate|Texte||Code présent dans le fichier type_hydrant_vol_constate.csv|
-|q_appoint|Réel|||Débit d'appoint en m3/h
+|position|Texte||Code présent dans le fichier type_hydrant_positionnement.csv|
+|vol_cons|Texte||Code présent dans le fichier type_hydrant_vol_constate.csv|
+|q_appoin|Réel|||Débit d'appoint en m3/h
+|typedeci|Texte|Oui||Code présent dans le fichier type_hydrant_deci.csv
 |====================
 
 ===== Association des anomalies aux PEI
@@ -338,13 +345,23 @@ include::references/type_hydrant_anomalie_impose.csv[]
 |numero|Texte|Oui|Valeur de la colonne "numero" dans pibi.shp ou dans pena.shp|
 |====================
 
-===== Récupération des tournées
+===== Tournées
+[width="75%" options="no-header"cols="<s,"]
+|====================
+|Nom du fichier à fournir|hydrant_tournee.csv
+|Description|Tournées de PEI par organisme
+|====================
 
-[WARNING]
+REMOCRA permet de gérer des tournées (groupes de PEI) par organisme. Par exemple, un PEI peut être associé à une tournée d'un groupement mais également à une autre tournée d'un CIS ou d'une mairie
 
-A spécifier avec le SDIS. Nouvelles fonctionnalités de gestion des tournées en cours de spécification.
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Contraintes|Description
+|numero_pei|Texte|Oui||Numéro complet du PEI dans pena.shp ou dans pibi.shp
+|code_organisme|Texte|Oui||Organisme auquel est rattachée la tournée. Utiliser le code de l'organisme présent dans le fichier organisme.csv
+|numero_tournee|Entier|Oui||Numéro de tournée associant les PEI entre eux
+|nom_tournee|Texte|Oui||Nom de tournée associant les PEI entre eux
+|====================
 
 === Paramétrage des règles de calcul des disponibilités des PEI
-Compte tenu de la complexité, cette étape de paramétrage est à réaliser directement au sein de l'interface de REMOCRA mis à disposition par les équipes d'Atol CD. Ce paramétrage sera conservé pour être appliqué sur le serveur propre au SDIS.
-
-
+Compte tenu de la complexité, cette étape de paramétrage est à réaliser directement au sein de l'interface de REMOCRA mis à disposition par les équipes d'Atol CD. Ce paramétrage sera conservé pour être appliqué sur le serveur propre au SDIS/Brigade.
