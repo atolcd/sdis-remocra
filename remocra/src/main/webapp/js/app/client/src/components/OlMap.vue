@@ -1411,28 +1411,32 @@ import MultiPoint from 'ol/geom/MultiPoint'
           })
         },
         openModalImportFile(){
-            //this.$refs.modalImportFile.openModal()
             this.$refs.modalImportFile.openModal()
         },
         modalImportFileValider (value){
           // on récupère les données saisies dans la fenêtre modale
           var donneesSaisies = value;
           // on récupère les infos concernant le layer
-          //debugger
           var infosLayer = {id: donneesSaisies["layerCode"], libelle: donneesSaisies["layerName"], visibility: true};
           // on recherche le groupe de layer "Autres couches"
           var obj = this.legend.items.find(obj => obj.libelle == "Fichiers importés");
-          // si le groupe de layer "Autre couches" n'existe pas
-          if (obj == null){
-            // on créé ce groupe en ajoutant notre layer créé
+          // si le groupe de layer existe
+          if (obj && obj !== null){
+            // on vérifie que la légende contient au moins un élément
+            if(this.legend.items.length != 0){
+              var indexAutresCouches = this.legend.items.length - 1;
+              this.legend.items[indexAutresCouches].items.push(infosLayer);
+            // sinon on place notre élément à l'emplacement 0
+            } else {
+              var indexAutresCouches = 0;
+              this.legend.items[indexAutresCouches].items.push(infosLayer);
+            }
+          } else {
+            // on créé ce groupe en ajoutant notre nouveau layer
             var importLayers = {libelle: "Fichiers importés", items: [infosLayer]};
             this.legend.items.push(importLayers);
-          // sinon on ajoute directement le layer dans cette catégorie
-          } else {
-            var indexAutresCouches = this.legend.items.length - 1;
-            this.legend.items[indexAutresCouches].items.push(infosLayer);
           }
-          // on ajoute la couche créée grâce au fichier à la map déjà présente
+          // on ajoute la couche créée, grâce au fichier, à la map déjà présente
           this.map.addLayer(donneesSaisies["newLayer"]);
           // on recentre la vue sur les features ajoutées
           this.map.getView().fit(donneesSaisies["newLayer"].getSource().getExtent());
@@ -1448,7 +1452,7 @@ import MultiPoint from 'ol/geom/MultiPoint'
             var indexAutresCouches = this.legend.items.length - 1;
             // on récupère le tableau de légende des couches
             var tabLegendFileImport = this.legend.items[indexAutresCouches].items;
-            // on recherche l'index des informations de la couche que l'on a supprimer
+            // on recherche l'index des informations de la couche que l'on a supprimé
             var indexLayer = tabLegendFileImport.findIndex(obj => obj.id == idLayer);
             // on supprime les informations du layer supprimé
             tabLegendFileImport.splice(indexLayer, 1);
