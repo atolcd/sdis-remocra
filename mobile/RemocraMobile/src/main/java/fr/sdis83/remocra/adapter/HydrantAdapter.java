@@ -25,6 +25,7 @@ public class HydrantAdapter extends CursorAdapter {
     private int mColDateReco;
     private int mColDateCtrl;
     private int mColStates;
+    private int mColNbEcrans;
 
     private static final String[] projection = new String[]{
             HydrantTable._ID,
@@ -41,7 +42,8 @@ public class HydrantAdapter extends CursorAdapter {
                     + HydrantTable.COLUMN_STATE_H3 + " + "
                     + HydrantTable.COLUMN_STATE_H4 + " + "
                     + HydrantTable.COLUMN_STATE_H5 + " + "
-                    + HydrantTable.COLUMN_STATE_H6 + " ) " + HydrantTable.COLUMN_STATES
+                    + HydrantTable.COLUMN_STATE_H6 + " ) " + HydrantTable.COLUMN_STATES,
+            HydrantTable.COLUMN_NB_ECRANS
     };
 
     static class ViewHolder {
@@ -84,6 +86,8 @@ public class HydrantAdapter extends CursorAdapter {
             mColDateReco = cursor.getColumnIndex(HydrantTable.COLUMN_DATE_RECO);
             mColDateCtrl = cursor.getColumnIndex(HydrantTable.COLUMN_DATE_CTRL);
             mColStates = cursor.getColumnIndex(HydrantTable.COLUMN_STATES);
+            mColNbEcrans = cursor.getColumnIndex(HydrantTable.COLUMN_NB_ECRANS);
+
         }
     }
 
@@ -142,9 +146,10 @@ public class HydrantAdapter extends CursorAdapter {
 
         // Etat "tout neuf", non uploadable (tous onglets non saisis => perte potentielle), uploadable (tous onglets saisis)
         long state = cursor.getLong(mColStates);
+        long nbEcrans = cursor.getLong(mColNbEcrans);
         if (state == 0) {
             holder.imageState.setImageDrawable(context.getResources().getDrawable(R.drawable.point_off));
-        } else if (state == 6) {
+        } else if (state == nbEcrans) {
             holder.imageState.setImageDrawable(context.getResources().getDrawable(R.drawable.point_on));
         } else {
             holder.imageState.setImageDrawable(context.getResources().getDrawable(R.drawable.point_half));

@@ -81,6 +81,7 @@ public class TourneeParser extends AbstractRemocraParser {
     private ArrayList<ContentValues> lstHydrant;
     private ArrayList<Integer> lstAnomalieStandard;
     private ArrayList<Integer> lstAnomalieApplicative;
+    private int nbEcrans;
 
     public TourneeParser(RemocraParser remocraParser) {
         super(remocraParser);
@@ -120,6 +121,12 @@ public class TourneeParser extends AbstractRemocraParser {
         values.put(TourneeTable.COLUMN_NB_HYDRANT, lstHydrant.size());
         if (lstHydrant.size() > 0) {
             for (ContentValues hydrant : lstHydrant) {
+                nbEcrans = 6;
+                // si le type est PA on enlève un ecran (Verif)
+                nbEcrans  = !"PA".equals(hydrant.get("code_nature")) ? nbEcrans : nbEcrans-1;
+                // si on a pas le droit MCO on enlève un ecran(Mco)
+                nbEcrans  = GlobalRemocra.getInstance().getCanSetMco() ? nbEcrans : nbEcrans-1;
+                hydrant.put(HydrantTable.COLUMN_NB_ECRANS, nbEcrans);
                 hydrant.put(HydrantTable.COLUMN_TOURNEE, values.getAsInteger(TourneeTable._ID));
                 Long maxDate = Collections.max(Arrays.asList(
                         DbUtils.nvl(hydrant.getAsLong(HydrantTable.COLUMN_DATE_CTRL), -1L),
@@ -129,16 +136,11 @@ public class TourneeParser extends AbstractRemocraParser {
                 Long dateDebSync = DbUtils.nvl(values.getAsLong(TourneeTable.COLUMN_NAME_DEB_SYNC), 0L);
                 if (maxDate > dateDebSync) {
                     hydrant.put(HydrantTable.COLUMN_STATE_H1, true);
-                    hydrant.put(HydrantTable.COLUMN_STATE_H2, true);
-                    hydrant.put(HydrantTable.COLUMN_STATE_H3, true);
+                    hydrant.put(HydrantTable.COLUMN_STATE_H3, GlobalRemocra.getInstance().getCanSetMco());
+                    hydrant.put(HydrantTable.COLUMN_STATE_H2, !"PA".equals(HydrantTable.COLUMN_CODE_NATURE));
                     hydrant.put(HydrantTable.COLUMN_STATE_H4, true);
                     hydrant.put(HydrantTable.COLUMN_STATE_H5, true);
                     hydrant.put(HydrantTable.COLUMN_STATE_H6, true);
-                } else {
-                    // Pas de droit MCO, on considère que c'est bon pour cet onglet
-                    if (!GlobalRemocra.getInstance().getCanSetMco()) {
-                        hydrant.put(HydrantTable.COLUMN_STATE_H3, true);
-                    }
                 }
                 this.addContent(RemocraProvider.CONTENT_HYDRANT_URI, hydrant);
             }
@@ -159,6 +161,7 @@ public class TourneeParser extends AbstractRemocraParser {
         String nature = xmlParser.getAttributeValue(ns, "xsi:type");
         if (!TextUtils.isEmpty(nature)) {
             ContentValues values = new ContentValues();
+            values.put(HydrantTable.COLUMN_CODE_NATURE, nature);
             values.put(HydrantTable.COLUMN_NATURE, this.remocraParser.getIdFromCodeReferentiel(nature, RemocraProvider.CONTENT_NATURE_URI));
             values.put(HydrantTable.COLUMN_TYPE_HYDRANT, "hydrantPibi".equals(xmlParser.getName()) ? HydrantTable.TYPE_PIBI : HydrantTable.TYPE_PENA);
 

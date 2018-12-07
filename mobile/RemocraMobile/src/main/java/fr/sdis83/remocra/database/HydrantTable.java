@@ -115,6 +115,8 @@ public final class HydrantTable implements BaseColumns {
     public static final String COLUMN_STATE_H5 = "hydrant5";
     public static final String COLUMN_STATE_H6 = "hydrant6";
     public static final String COLUMN_STATES = "sum_states";
+    public static final String COLUMN_NB_ECRANS = "nb_ecrans";
+    public static final String COLUMN_CODE_NATURE = "code_nature";
 
     public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
             _ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -188,9 +190,9 @@ public final class HydrantTable implements BaseColumns {
             COLUMN_STATE_H4 + " BOOLEAN DEFAULT FALSE," +
             COLUMN_STATE_H5 + " BOOLEAN DEFAULT FALSE," +
             COLUMN_STATE_H6 + " BOOLEAN DEFAULT FALSE," +
-
-            COLUMN_TYPE_SAISIE + " TEXT null" +
-
+            COLUMN_TYPE_SAISIE + " TEXT null," +
+            COLUMN_NB_ECRANS + " INTEGER null," +
+            COLUMN_CODE_NATURE + " TEXT not null" +
             " )";
 
 
