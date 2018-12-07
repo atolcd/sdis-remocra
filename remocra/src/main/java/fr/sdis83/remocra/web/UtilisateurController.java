@@ -74,6 +74,12 @@ public class UtilisateurController {
 
         return new AbstractExtListSerializer<Utilisateur>("Utilisateurs retrieved.") {
 
+            @Override
+            protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+                return serializer
+                    .exclude( "data.organisme.zoneCompetence.geometrie");
+
+            }
 
             @Override
             protected List<Utilisateur> getRecords() {
