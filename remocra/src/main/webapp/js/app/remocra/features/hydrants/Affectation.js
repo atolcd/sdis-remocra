@@ -59,7 +59,7 @@ Ext.define('Sdis.Remocra.features.hydrants.Affectation', {
             margin: '0 20 0 0'
         },{
             xtype: 'combo',
-            queryMode: 'local',
+            queryMode: 'remote',
             typeAhead: true,
             store: Ext.create('Ext.data.Store', {
                 model: 'Sdis.Remocra.model.Tournee',
