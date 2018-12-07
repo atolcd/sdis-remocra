@@ -24,6 +24,7 @@ public class VoieController {
 
     @RequestMapping(value = "/mc", headers = "Accept=application/json")
     public ResponseEntity<java.lang.String> listMotClassantOrNomJson(final @RequestParam(value = "page", required = false) Integer page,
+             final @RequestParam(value = "withgeom", required = false,  defaultValue = "true") boolean withgeom,
             final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
             final @RequestParam(value = "query", required = false) String query, @RequestParam(value = "sort", required = false) String sorts,
             @RequestParam(value = "filter", required = false) String filters) {
@@ -44,8 +45,10 @@ public class VoieController {
 
             @Override
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
-                return serializer.include("data.id").include("data.nom").include("data.motClassant").include("data.source").include("data.geometrie").include("data.commune.*")
-                        .exclude("*");
+                return serializer.include("data.id").include("data.nom").include("data.motClassant").include("data.source").include(withgeom?"data.geometrie":"")
+                    .include(withgeom?"data.commune.id": "").include(withgeom?"data.commune.code": "").include(withgeom?"data.commune.insee": "")
+                    .exclude("data.commune.geometrie")
+                    .exclude("*");
             }
 
             @Override

@@ -28,6 +28,20 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.LocalisationPena', {
         store: {
             storeId: 'communePena',
             model: 'Sdis.Remocra.model.Commune',
+            proxy: {
+               format: 'json',
+               type: 'rest',
+               headers: {
+                   'Accept': 'application/json,application/xml',
+                   'Content-Type': 'application/json'
+               },
+               url: Sdis.Remocra.util.Util.withBaseUrl('../communes/nom'),
+               extraParams: {withgeom: false},
+               reader: {
+                   type: 'json',
+                   root: 'data'
+               }
+            },
             pageSize: 10,
             remoteSort: true,
             remoteFilter: true
@@ -45,7 +59,21 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.LocalisationPena', {
             emptyText: 'Voie...',
             name: 'voie',
             store: {
-                type: 'crVoie'
+                type: 'crVoie',
+                proxy: {
+                    format: 'json',
+                    type: 'rest',
+                    headers: {
+                        'Accept': 'application/json,application/xml',
+                        'Content-Type': 'application/json'
+                    },
+                    url: Sdis.Remocra.util.Util.withBaseUrl('../voies/mc'),
+                    extraParams: {withgeom: false},
+                    reader: {
+                        type: 'json',
+                        root: 'data'
+                    }
+                }
             },
             queryMode : 'remote',
             displayField : 'nom',

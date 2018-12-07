@@ -30,7 +30,8 @@ public class CommuneController {
 
     @RequestMapping(value = "/nom", headers = "Accept=application/json")
     public ResponseEntity<java.lang.String> listNomJson(final @RequestParam(value = "page", required = false) Integer page,
-            final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
+            final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "withgeom", required = false,  defaultValue = "true") boolean withgeom,
+            final @RequestParam(value = "limit", required = false) Integer limit,
             final @RequestParam(value = "query", required = false) String query, @RequestParam(value = "sort", required = false) String sorts,
             final @RequestParam(value = "filter", required = false) String filters) {
 
@@ -41,7 +42,7 @@ public class CommuneController {
 
             @Override
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
-                return serializer.include("data.id").include("data.nom").include("data.insee").include("data.pprif").include("data.geometrie").exclude("*");
+                return serializer.include("data.id").include("data.nom").include("data.insee").include("data.pprif").include(withgeom? "data.geometrie" : "").exclude("*");
             }
 
             @Override
