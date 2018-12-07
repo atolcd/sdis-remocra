@@ -55,12 +55,19 @@ public class HydrantPenaController {
 
             @Override
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
-                return serializer.include("data.anomalies").include("data.tournees")
-                        // photo associée
-                        .include("data.photo","data.utilisateurModification")
+                return serializer.include("data.anomalies")
+                    .include("data.tournees.id").include("data.tournees.nom")
+                    // photo associée
+                        .include("data.photo")
+                        .include("data.utilisateurModification")
                         // Documents
-                        .include("data.hydrantDocuments.id").include("data.hydrantDocuments.titre").include("data.hydrantDocuments.code").exclude("data.hydrantDocuments.*")
-                        .include("data.pibiAssocie.id").exclude("data.commune.geometrie", "data.pibiAssocie.*");
+                        .include("data.hydrantDocuments.id").include("data.hydrantDocuments.titre").include("data.hydrantDocuments.code")
+                        .include("data.pibiAssocie.id")
+                        .exclude("data.hydrantDocuments.*")
+                        .exclude("data.tournees.*")
+                        .exclude( "data.organisme.zoneCompetence.geometrie")
+                        .exclude( "data.utilisateurModification.*")
+                       .exclude("data.commune.geometrie", "data.pibiAssocie.*");
             }
 
             @Override

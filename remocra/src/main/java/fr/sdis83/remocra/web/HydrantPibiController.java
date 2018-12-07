@@ -88,13 +88,19 @@ public class HydrantPibiController {
                         // anomalies
                         .include("data.anomalies")
                         // tournees
-                        .include("data.tournees")
+                        .include("data.tournees.id").include("data.tournees.nom")
+                        .include( "data.utilisateurModification.id").include( "data.utilisateurModification.nom")
 
                     // photo associée
                         .include("data.photo")
                         // Documents
-                        .include("data.hydrantDocuments.id").include("data.hydrantDocuments.titre").include("data.hydrantDocuments.code").include("data.utilisateur").exclude("data.hydrantDocuments.*")
+                        .include("data.hydrantDocuments.id").include("data.hydrantDocuments.titre").include("data.hydrantDocuments.code")
+                        .exclude("data.hydrantDocuments.*")
+                        .exclude("data.tournees.*")
+                        .exclude( "data.organisme.zoneCompetence.geometrie")
+                        .exclude( "data.utilisateurModification.*")
                         .exclude( "data.commune.geometrie");
+
             }
 
             @Override
