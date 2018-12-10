@@ -1,0 +1,150 @@
+= Exportation des informations PIBI et PENA
+Ce traitement permet de générer les données concernant les PENA et PIBI ainsi que les anomalies associées
+
+=== PIBI - Fichier cartographique
+
+[width="50%"options="no-header" cols="<s,"]
+|====================
+|Description|Liste et état des points d'eau sous pression
+|Type de fichier|Fichier de forme ESRI Shapefile (.shp, .shx, .dbf)
+|Nom du fichier |pibi.shp
+|Encodage (DBF)|UTF-8
+|====================
+
+====== Géométrie
+
+[width="50%"options="no-header" cols="<s,"]
+|====================
+|Type de géométrie|Ponctuel
+|Dimension|2D
+|Système de coordonnées|Lambert 93 (EPSG:2154)
+|====================
+
+====== Attributs
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Description
+|num|Texte|Oui|Numéro complet du PEI
+|annee_fa|Entier||Année de fabrication
+|complt|Texte||Complément d’adresse
+|date_maj|Date||Date dernière mise à jour
+|lieu_dit|Texte||Nom du lieu dit éventuel
+|observat|Texte||Information complémentaire sur le PEI
+|voie|Texte||Nom de la voie
+|voie2|Texte||Nom de la voie (si intersection avec voie)
+|num_v|Entier||Numéro de la voie
+|num_v_su|Texte||Suffixe du numéro de la voie (bis ter, A, 4)
+|etage|Entier||Etage (localisation en sursol ou en souterrain)
+|com_insee|Texte|Oui|Numéro INSEE de la commune de localisation
+|com_nom|Texte|Oui|Nom de la commune de localisation
+|domaine|Texte||Nom du domaine
+|nature|Texte|Oui|Nature du PEI
+|gest_pte|Texte||Nom du gestionnaire du point d’eau
+|debit|Entier||Débit à 1 bar (m³/h)
+|debit_max|Entier||Débit max (m³/h)
+|pression|Réel||Pression statique (bar)
+|pres_dyn|Réel||Pression dynamique à 60m³ (bar)
+|diametre|Texte||Nombre et diamètre des sorties
+|gest_res|Texte||Nom du gestionnaire du réseau
+|choc|Entier||Poteau équipé d’un système destiné à supporter les chocs (0 = non, 1 = oui)
+|marque|Texte||Marque du PEI
+|modele|Texte||Modèle de PEI
+|presdyde|Réel||Pression dynamique au débit max (bar)
+|typedeci|Texte|Oui|Type de DECI
+|typecana|Texte||Type de canalisation
+|type_res|Texte||Type de réseau
+|====================
+
+=== PIBI / Anomalies - Fichier dbf
+
+[width="50%"options="no-header" cols="<s,"]
+|====================
+|Description|Liste des anomalies des points d'eau sous pression
+|Type de fichier|Fichier dbf
+|Nom du fichier |pibi_anomalie.dbf
+|Encodage (DBF)|UTF-8
+|====================
+
+====== Attributs
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Description
+|num|Texte|Oui|Numéro complet du pibi
+|ano_code|Texte|Oui|Code de l'anomalie
+|ano_nom|Texte|Oui|Nom de l'anomalie
+|====================
+
+=== PENA - Fichier cartographique
+
+[width="50%"options="no-header" cols="<s,"]
+|====================
+|Description|Liste et état des points d'eau naturels et artificiels
+|Type de fichier|Fichier de forme ESRI Shapefile (.shp, .shx, .dbf)
+|Nom du fichier |pibi.shp
+|Encodage (DBF)|UTF-8
+|====================
+
+====== Géométrie
+
+[width="50%"options="no-header" cols="<s,"]
+|====================
+|Type de géométrie|Ponctuel
+|Dimension|2D
+|Système de coordonnées|Lambert 93 (EPSG:2154)
+|====================
+
+====== Attributs
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Description
+|num|Texte|Oui|Numéro complet du PEI. Ex : 77402_0045.
+|annee_fa|Entier||Année de fabrication
+|complt|Texte||Complément d’adresse
+|date_maj|Date||Date dernière mise à jour
+|lieu_dit|Texte||Nom du lieu dit éventuel
+|observat|Texte||Information complémentaire sur le PEI
+|voie|Texte||Nom de la voie
+|voie2|Texte||Nom de la voie (si intersection avec voie)
+|num_v|Entier||Numéro de la voie
+|num_v_su|Texte||Suffixe du numéro de la voie (bis ter, A, 4)
+|etage|Entier||Etage (localisation en sursol ou en souterrain)
+|com_insee|Texte|Oui|Numéro INSEE de la commune de localisation
+|com_nom|Texte|Oui|Nom de la commune de localisation
+|domaine|Texte||Nom du domaine
+|nature|Texte|Oui|Nature du PEI
+|gest_pte|Texte||Nom du gestionnaire du point d’eau
+|capacite|Texte||Capacité théorique en m3
+|coordfci|Texte||Coordonnées DFCI
+|hbe|Entier||Dispose d’un équipement HBE (0 = non, 1 = oui)
+|materiau|Texte||Nom du matériau
+|position|Texte||Positionnement / surface
+|vol_cons|Texte||Indication  textuelle sur le volume constaté
+|q_appoin|Réel||Débit d’appoint en m3/h
+|typedeci|Texte|Oui|Code présent dans le fichier type_hydrant_deci.csv
+|====================
+
+=== PENA / Anomalies - Fichier dbf
+
+[width="50%"options="no-header" cols="<s,"]
+|====================
+|Description|Liste des anomalies des points d'eau naturels et artificiels
+|Type de fichier|Fichier dbf
+|Nom du fichier |pena_anomalie.dbf
+|Encodage (DBF)|UTF-8
+|====================
+
+====== Attributs
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Description
+|num|Texte|Oui|Numéro complet du pena
+|ano_code|Texte|Oui|Code de l'anomalie
+|ano_nom|Texte|Oui|Nom de l'anomalie
+|====================
+
+=== Lancement et planification de la synchronisation
+L'exécution automatique s'effectue en planifiant le lancement du fichier ```/var/remocra/pdi/traitements_sdis/bspp/export_hydrant.sh``` avec l'utilisateur ```postgres```.
