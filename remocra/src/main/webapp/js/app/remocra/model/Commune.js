@@ -19,6 +19,9 @@ Ext.define('Sdis.Remocra.model.Commune', {
     }, {
         name : 'pprif',
         type : 'boolean'
+    }, {
+        name : 'bbox',
+        type : 'string'
     } ],
     associations : [],
 

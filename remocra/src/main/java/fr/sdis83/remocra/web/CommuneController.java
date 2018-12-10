@@ -2,6 +2,7 @@ package fr.sdis83.remocra.web;
 
 import java.util.List;
 
+import fr.sdis83.remocra.web.serialize.transformer.GeometryTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -42,7 +43,7 @@ public class CommuneController {
 
             @Override
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
-                return serializer.include("data.id").include("data.nom").include("data.insee").include("data.pprif").include(withgeom? "data.geometrie" : "").exclude("*");
+                return serializer.include("data.id").include("data.nom").include("data.insee").include("data.pprif").include("data.bbox").include(withgeom? "data.geometrie" : "").exclude("*");
             }
 
             @Override

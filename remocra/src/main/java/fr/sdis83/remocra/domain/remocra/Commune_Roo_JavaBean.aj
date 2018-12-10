@@ -39,6 +39,14 @@ privileged aspect Commune_Roo_JavaBean {
     public void Commune.setGeometrie(Geometry geometrie) {
         this.geometrie = geometrie;
     }
+
+    public String Commune.getBbox() {
+        return this.bbox;
+    }
+
+    public void Commune.setBbox(String bbox) {
+        this.bbox = bbox;
+    }
     
     public Boolean Commune.getPprif() {
         return this.pprif;

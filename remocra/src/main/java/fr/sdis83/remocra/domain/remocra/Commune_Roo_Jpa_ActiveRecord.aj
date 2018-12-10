@@ -14,7 +14,7 @@ privileged aspect Commune_Roo_Jpa_ActiveRecord {
     @PersistenceContext
     transient EntityManager Commune.entityManager;
     
-    public static final List<String> Commune.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "insee", "nom", "geometrie", "pprif", "code");
+    public static final List<String> Commune.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "insee", "nom", "geometrie", "pprif", "code", "bbox");
     
     public static final EntityManager Commune.entityManager() {
         EntityManager em = new Commune().entityManager;

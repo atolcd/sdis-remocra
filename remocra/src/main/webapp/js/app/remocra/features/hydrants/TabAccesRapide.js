@@ -82,7 +82,27 @@ Ext.define('Sdis.Remocra.features.hydrants.TabAccesRapide', {
             name: 'commune',
             displayField: 'nom',
             valueField: 'id',
-            emptyText: 'Commune de...'
+            emptyText: 'Commune de...',
+            store: {
+            model: 'Sdis.Remocra.model.Commune',
+            proxy: {
+               format: 'json',
+               type: 'rest',
+               headers: {
+                   'Accept': 'application/json,application/xml',
+                   'Content-Type': 'application/json'
+               },
+               url: Sdis.Remocra.util.Util.withBaseUrl('../communes/nom'),
+               extraParams: {withgeom:false},
+               reader: {
+                   type: 'json',
+                   root: 'data'
+               }
+            },
+            pageSize: 10,
+            remoteSort: true,
+            remoteFilter: true
+        }
         }, Sdis.Remocra.widget.WidgetFactory.getCommuneComboConfig())]
     },{
         fieldLabel: 'Voie',

@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.Type;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -35,6 +36,10 @@ public class Commune {
     @NotNull
     @Type(type = "org.hibernate.spatial.GeometryType")
     private Geometry geometrie;
+
+    @Formula("(SELECT (st_xmin(c.geometrie)) || '|' || (st_ymin(c.geometrie)) || '|' || (st_xmax(c.geometrie)) || '|' || (st_ymax(c.geometrie))  FROM remocra.commune c WHERE c.id = id)")
+    private String bbox;
+
 
     @NotNull
     @Column(columnDefinition = "boolean default false")
