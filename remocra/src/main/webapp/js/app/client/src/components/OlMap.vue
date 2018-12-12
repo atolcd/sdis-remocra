@@ -235,6 +235,9 @@ import ChoiceFeature from './ChoiceFeature.vue';
 import ShowInfo from './ShowInfo.vue';
 import StampedCard from './StampedCard.vue';
 import html2canvas from 'html2canvas'
+import EventBus from '../bus'
+import * as eventTypes from '../bus/event-types.js'
+
   export default {
     name: 'OlMap',
     components: {
@@ -335,6 +338,19 @@ import html2canvas from 'html2canvas'
           }
           this.navigation.btns = false
         })
+        EventBus.$on(eventTypes.REFRESH_MAP, this.refreshMap)
+        EventBus.$on(eventTypes.ZOOM_TOGEOM, geom => {this.zoomToGeom(geom)})
+        EventBus.$on(eventTypes.ZOOM_TOEXTENT, extent => {this.zoomToExtent(extent)})
+        EventBus.$on(eventTypes.ADD_TOWORKINGLAYER, feature => {this.addToWorkingLayer(feature)})
+        EventBus.$on(eventTypes.ADD_DRAWINTERACTIONS, args => {this.addDrawInteractions(args.typeGeom, args.natureId)})
+        EventBus.$on(eventTypes.ADD_STAMPEDCARD, this.addStampedCard)
+        EventBus.$on(eventTypes.ACTIVATE_INTERACTION, type => {this.activateInteraction(type)})
+        EventBus.$on(eventTypes.ANNULE_MODIFGEOM, this.annulModifGeom)
+        EventBus.$on(eventTypes.ANNULE_TRANSLATEGEOM, this.annulTranslateGeom)
+        EventBus.$on(eventTypes.VALIDE_MODIFGEOM, this.validModifGeom)
+        EventBus.$on(eventTypes.VALIDE_TRANSLATEGEOM, this.validTranslateGeom)
+        EventBus.$on(eventTypes.OPEN_ATTRIBUTES, this.openAttributes)
+        EventBus.$on(eventTypes.UPDATE_MAPFILTERS, args => {this.updateMapFilters(args.id, args.filters)})
     },
     updated() {
       //this.addSortable()
@@ -960,7 +976,7 @@ import html2canvas from 'html2canvas'
                 })
               }
               this.refreshMap()
-              this.$refs.evenements.loadEvenements(this.criseId)
+              EventBus.$emit(eventTypes.LOAD_EVENEMENTS, {'crise': this.criseId})
               this.$refs.toolBar.showUpdateGeom = false
             })
             .catch(function(error) {
@@ -981,7 +997,7 @@ import html2canvas from 'html2canvas'
                 })
               }
               this.refreshMap()
-              this.$refs.evenements.loadEvenements(this.criseId)
+              EventBus.$emit(eventTypes.LOAD_EVENEMENTS, {'crise': this.criseId})
               this.$refs.toolBar.showTranslateGeom = false
             })
             .catch(function(error) {
@@ -1120,6 +1136,12 @@ import html2canvas from 'html2canvas'
           }
           let state = this.navigation.stack[this.navigation.idx]
           this.map.getView().animate(state)
+        },
+        updateMapFilters(id, jsonFilters){
+            var wmsLayer = this.getLayerById('893bb7520e7fb036d665661847628994')
+            if (wmsLayer) {
+              wmsLayer.getSource().updateParams({filter: jsonFilters});
+            }
         }
    }
 }

@@ -35,6 +35,8 @@ import moment from 'moment'
 import 'moment-timezone';
 import NewMessage from './NewMessage.vue';
 import WKT from 'ol/format/WKT.js';
+import EventBus from '../bus'
+import * as eventTypes from '../bus/event-types.js'
 
 export default {
   name: 'Evenements',
@@ -54,6 +56,7 @@ export default {
   mounted(){
     this.evenements =[] ,
      this.loadEvenements(this.crise)
+     EventBus.$on(eventTypes.LOAD_EVENEMENTS, args  => {this.loadEvenements(args.crise, args.filters)})
   },
   methods : {
     loadEvenements(crise, filters){
@@ -95,12 +98,7 @@ export default {
 
         // TODO cva voir s'il est nécessaire d'éviter le cache en maintenant un paramètre type "time": Date.now()
         var jsonFilters = JSON.stringify(filters)
-
-        var mapCmp = this.$parent.$parent
-        var wmsLayer = mapCmp.getLayerById('893bb7520e7fb036d665661847628994')
-        if (wmsLayer) {
-          wmsLayer.getSource().updateParams({filter: jsonFilters});
-        }
+        EventBus.$emit(eventTypes.UPDATE_MAPFILTERS, {'id': '893bb7520e7fb036d665661847628994', 'filters': jsonFilters})
     },
     loadMessages(id){
       //on recharge la liste des messsages
@@ -109,7 +107,7 @@ export default {
     },
     modifEvent(evenement){
       var natureId = evenement.geometrie !== null ? evenement.natureId : null
-      this.$parent.$parent.$refs['newEvenement'].modifyEvent(this.crise, evenement.id, natureId)
+      EventBus.$emit(eventTypes.MODIFY_EVENT, {'criseId': this.crise, 'evenementId': evenement.id, 'natureId':  natureId})
     },
     openNewMessage(id){
       this.$refs.newMessage.showModal(this.crise, id, null)
@@ -118,7 +116,7 @@ export default {
       this.$refs.newMessage.showModal(this.crise, evenementId, messageId)
     },
     locateEvent(geometrie){
-      this.$parent.$parent.zoomToGeom(geometrie)
+      EventBus.$emit(eventTypes.ZOOM_TOGEOM,geometrie)
     }
   }
 }

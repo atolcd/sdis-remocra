@@ -33,6 +33,9 @@
 <script>
 /* eslint-disable */
 import axios from 'axios'
+import EventBus from '../bus'
+import * as eventTypes from '../bus/event-types.js'
+
 export default {
   name: 'ToolBar',
   data() {
@@ -87,29 +90,29 @@ export default {
    },
   methods: {
     selectGeom(typeGeom, natureId){
-      this.$parent.addDrawInteractions(typeGeom, natureId)
+      EventBus.$emit(eventTypes.ADD_DRAWINTERACTIONS, {'typeGeom': typeGeom, 'natureId': natureId})
       this.$refs.dropDown.hide()
     },
     activateInteraction(type){
-      this.$parent.activateInteraction(type)
+      EventBus.$emit(eventTypes.ACTIVATE_INTERACTION, type)
     },
     annulModifGeom(){
-      this.$parent.annulModifGeom()
+      EventBus.$emit(eventTypes.ANNULE_MODIFGEOM)
     },
     validModifGeom(){
-      this.$parent.validModifGeom()
+      EventBus.$emit(eventTypes.VALIDE_MODIFGEOM)
     },
     annulTranslateGeom(){
-      this.$parent.annulTranslateGeom()
+      EventBus.$emit(eventTypes.ANNULE_TRANSLATEGEOM)
     },
     validTranslateGeom(){
-      this.$parent.validTranslateGeom()
+      EventBus.$emit(eventTypes.VALIDE_TRANSLATEGEOM)
     },
     openAttributes(){
-      this.$parent.openAttributes()
+      EventBus.$emit(eventTypes.OPEN_ATTRIBUTES)
     },
     addStampedCard(){
-      this.$parent.addStampedCard()
+      EventBus.$emit(eventTypes.ADD_STAMPEDCARD)
     }
   }
 

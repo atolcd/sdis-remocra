@@ -19,6 +19,9 @@
 /* eslint-disable */
 import _ from 'lodash'
 import axios from 'axios'
+import EventBus from '../bus'
+import * as eventTypes from '../bus/event-types.js'
+
 export default {
   name: 'StampedCard',
   props: {
@@ -76,7 +79,7 @@ export default {
                })
                .then((response) => {
                   if(response.data.success){
-                    self.$parent.$refs.documents.loadDocuments(criseId)
+                    EventBus.$emit(eventTypes.LOAD_DOCUMENTS, criseId)
                   }
                })
                .catch(function(error) {

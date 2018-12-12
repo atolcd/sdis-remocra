@@ -14,6 +14,9 @@
 <script>
 /* eslint-disable */
 import _ from 'lodash'
+import EventBus from '../bus'
+import * as eventTypes from '../bus/event-types.js'
+
 export default {
   name: 'ShowInfo',
   components: {
@@ -38,7 +41,7 @@ export default {
     },
     hideModal() {
      this.$refs.modal.hide()
-     this.$parent.refreshMap()
+     EventBus.$emit(eventTypes.REFRESH_MAP)
     }
 }
 }

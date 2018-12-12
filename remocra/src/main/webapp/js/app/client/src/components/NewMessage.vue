@@ -36,6 +36,8 @@
 import axios from 'axios'
 import moment from 'moment'
 import SearchOrigine from './SearchOrigine.vue'
+import EventBus from '../bus'
+import * as eventTypes from '../bus/event-types.js'
 
 import _ from 'lodash'
 export default {
@@ -121,7 +123,7 @@ export default {
       axios.post('/remocra/evenements/message', formData)
         .then((response) => {
            if(response.data.success){
-             this.$parent.loadEvenements(criseId)
+             EventBus.$emit(eventTypes.LOAD_EVENEMENTS, {'crise': criseId})
              this.$refs.modal.hide()
            }
         })

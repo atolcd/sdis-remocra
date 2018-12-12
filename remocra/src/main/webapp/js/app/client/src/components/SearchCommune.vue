@@ -13,6 +13,8 @@
 import Autocomplete from 'v-autocomplete'
 import axios from 'axios'
 import CommuneTemplate from './SearchCommuneTemplate.vue'
+import EventBus from '../bus'
+import * as eventTypes from '../bus/event-types.js'
 
 export default {
   name: 'SearchCommune',
@@ -44,7 +46,7 @@ export default {
     },
     communeSelected(commune) {
       // On agit directement
-      this.$parent.zoomToGeom(commune.geometrie)
+      EventBus.$emit(eventTypes.ZOOM_TOGEOM,commune.geometrie)
       this.$nextTick(() => {
        this.selected = null
       })

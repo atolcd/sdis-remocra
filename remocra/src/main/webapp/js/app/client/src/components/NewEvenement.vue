@@ -60,6 +60,9 @@ import axios from 'axios'
 import moment from 'moment-timezone'
 import SearchOrigine from './SearchOrigine.vue'
 import _ from 'lodash'
+import EventBus from '../bus'
+import * as eventTypes from '../bus/event-types.js'
+
 export default {
   name: 'NewEvenement',
   components: {
@@ -92,6 +95,9 @@ export default {
       origines: [{}]
 
     }
+  },
+  mounted(){
+    EventBus.$on(eventTypes.MODIFY_EVENT, args => {this.modifyEvent(args.criseId, args.evenementId, args.natureId )})
   },
   methods: {
     createEvent(criseId){
@@ -187,7 +193,7 @@ export default {
       this.criseId =  null
       this.evenementId = null
       this.natureId = null
-      this.$parent.refreshMap()
+      EventBus.$emit(eventTypes.REFRESH_MAP)
     },
     handleOk(evt) {
       // Prevent modal from closing
@@ -199,7 +205,7 @@ export default {
         alert('L\'évènement est déjà clos')
       }else {
         this.handleSubmit()
-        this.$parent.refreshMap()
+        EventBus.$emit(eventTypes.REFRESH_MAP)
       }
     },
     handleSubmit() {
@@ -231,10 +237,10 @@ export default {
           })
           .then((response) => {
              if(response.data.success){
-               this.$parent.$refs.evenements.loadEvenements(criseId)
-               this.$parent.$refs.documents.loadDocuments(criseId)
-               this.$parent.$refs.filters.load(criseId)
-               this.$parent.refreshMap()
+               EventBus.$emit(eventTypes.LOAD_EVENEMENTS, {'crise': criseId})
+               EventBus.$emit(eventTypes.LOAD_DOCUMENTS,criseId)
+               EventBus.$emit(eventTypes.LOAD_FILTERS,criseId)
+               EventBus.$emit(eventTypes.REFRESH_MAP)
                this.$refs.modal.hide()
              }
           })
@@ -250,10 +256,10 @@ export default {
           })
           .then((response) => {
              if(response.data.success){
-               this.$parent.$refs.evenements.loadEvenements(criseId)
-               this.$parent.$refs.documents.loadDocuments(criseId)
-               this.$parent.$refs.filters.load(criseId)
-               this.$parent.refreshMap()
+               EventBus.$emit(eventTypes.LOAD_EVENEMENTS, {'crise': criseId})
+               EventBus.$emit(eventTypes.LOAD_DOCUMENTS, criseId)
+               EventBus.$emit(eventTypes.LOAD_FILTERS,criseId)
+               EventBus.$emit(eventTypes.REFRESH_MAP)
                this.$refs.modal.hide()
              }
           })

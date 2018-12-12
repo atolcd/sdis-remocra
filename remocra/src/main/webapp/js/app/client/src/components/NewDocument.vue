@@ -19,6 +19,8 @@
 /* eslint-disable */
 import axios from 'axios'
 import _ from 'lodash'
+import EventBus from '../bus'
+import * as eventTypes from '../bus/event-types.js'
 export default {
   name: 'NewDocument',
   data() {
@@ -42,7 +44,7 @@ export default {
           alert('Veuillez ajouter des documents')
         } else {
           this.handleSubmit()
-          this.$parent.refreshMap()
+          EventBus.$emit(eventTypes.REFRESH_MAP)
         }
     },
     handleSubmit() {
@@ -59,7 +61,7 @@ export default {
           })
           .then((response) => {
              if(response.data.success){
-               this.$parent.$refs.documents.loadDocuments(this.criseId)
+               EventBus.$emit(eventTypes.LOAD_DOCUMENTS,this.criseId)
                this.$refs.modal.hide()
              }
           })

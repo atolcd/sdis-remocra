@@ -42,6 +42,9 @@
 /* eslint-disable */
 import axios from 'axios'
 import _ from 'lodash'
+import EventBus from '../bus'
+import * as eventTypes from '../bus/event-types.js'
+
 export default {
   name: 'Filters',
   data() {
@@ -61,6 +64,7 @@ export default {
   },
   mounted(){
     this.load()
+    EventBus.$on(eventTypes.LOAD_FILTERS, crise  => {this.load(crise)})
   },
   watch:{
     'filterTags' :'filterChanged',
@@ -68,7 +72,7 @@ export default {
   },
   methods: {
     filterChanged(newFilters, oldFilters) {
-      this.$parent.$parent.$refs.evenements.loadEvenements(this.criseId, newFilters)
+      EventBus.$emit(eventTypes.LOAD_EVENEMENTS, {'crise': this.criseId, 'filters': newFilters})
     },
      load(criseId){
        if (criseId){
@@ -137,7 +141,7 @@ export default {
              }
              return _.indexOf(difference, filter.value) !== -1;
            })
-           this.$parent.$parent.$refs.evenements.loadEvenements(this.criseId, this.filterTags)
+           EventBus.$emit(eventTypes.LOAD_EVENEMENTS, {'crise': this.criseId, 'filters': this.filterTags})
         }
      }
 

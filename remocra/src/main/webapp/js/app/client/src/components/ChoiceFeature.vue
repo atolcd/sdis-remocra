@@ -1,7 +1,7 @@
 <template>
 <div>
   <b-modal id="modalChoice" ref="modal" title="Évènements cartographiques" ok-title="Valider" cancel-title="Annuler" @ok="handleOk">
-    <b-form-select v-model="selected" :options="features" class="mb-3" @change="addSelected"/>
+    <b-form-select v-model="selected" :options="features" class="mb-3" @input="addSelected"/>
   </b-modal>
 </div>
 </template>
@@ -9,6 +9,9 @@
 <script>
 /* eslint-disable */
 import _ from 'lodash'
+import EventBus from '../bus'
+import * as eventTypes from '../bus/event-types.js'
+
 export default {
   name: 'ChoiceFeature',
   props: {
@@ -41,7 +44,7 @@ export default {
       this.$root.$emit('bv::hide::popover')
     },
     addSelected() {
-    this.$parent.refreshMap()
+    EventBus.$emit(eventTypes.REFRESH_MAP)
     var selected = this.selected
     var originFeatures = this.originFeatures
     _.forEach(originFeatures, function(feature){
@@ -49,7 +52,7 @@ export default {
          selected = feature
        }
     })
-    this.$parent.addToWorkingLayer(selected)
+    EventBus.$emit(eventTypes.ADD_TOWORKINGLAYER, selected)
   },
   handleOk() {
     var selected = this.selected
@@ -60,7 +63,7 @@ export default {
        }
     })
      this.$refs.modal.hide()
-     this.$parent.$refs.newEvenement.modifyEvent(this.crise, selected.getId(), selected.getProperties().nature)
+     EventBus.$emit(eventTypes.MODIFY_EVENT, {'criseId': this.crise, 'evenementId': selected.getId(), 'natureId':  selected.getProperties().nature })
   }
 }
 }

@@ -22,6 +22,8 @@
 import axios from 'axios'
 import moment from 'moment'
 import 'moment-timezone';
+import EventBus from '../bus'
+import * as eventTypes from '../bus/event-types.js'
 
 export default {
   name: 'Documents',
@@ -38,6 +40,9 @@ export default {
   mounted(){
     this.documents =[] ,
      this.loadDocuments(this.crise)
+     EventBus.$on(eventTypes.LOAD_DOCUMENTS, crise => {
+       this.loadDocuments(crise)
+     })
   },
   methods : {
     loadDocuments(crise){
@@ -67,7 +72,7 @@ export default {
         })
     },
     locateDoc(geometrie){
-      this.$parent.$parent.zoomToExtent(geometrie)
+      EventBus.$emit(eventTypes.ZOOM_TOEXTENT, geometrie)
     }
   }
 }

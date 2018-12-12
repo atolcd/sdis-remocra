@@ -13,6 +13,8 @@
 import Autocomplete from 'v-autocomplete'
 import axios from 'axios'
 import RepertoireTemplate from './SearchRepertoireLieuTemplate.vue'
+import EventBus from '../bus'
+import * as eventTypes from '../bus/event-types.js'
 
 export default {
   name: 'SearchRepertoireLieu',
@@ -50,7 +52,7 @@ export default {
     },
     repertoireSelected(repertoire) {
       // On agit directement
-      this.$parent.zoomToGeom(repertoire.geometrie)
+      EventBus.$emit(eventTypes.ZOOM_TOGEOM, repertoire.geometrie)
       this.$nextTick(() => {
        this.selected = null
       })
