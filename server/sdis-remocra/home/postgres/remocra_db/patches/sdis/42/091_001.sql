@@ -16,15 +16,6 @@ COMMENT ON COLUMN remocra_referentiel.synchronisation_sig.statut_last_synchro IS
 COMMENT ON COLUMN remocra_referentiel.synchronisation_sig.sql_query_after_synchro IS 'Requête SQL à jouer immédiatement après synchronisation des données';
 
 -- Création de l'index sur la table tracabilite.hydrant
-IF NOT EXISTS (
-    SELECT 1
-    FROM   pg_class c
-    JOIN   pg_namespace n ON n.oid = c.relnamespace
-    WHERE  c.relname = 'hydrant_id_hydrant_idx'
-    AND    n.nspname = 'tracabilite'
-    ) THEN
-
-    CREATE INDEX hydrant_id_hydrant_idx  ON tracabilite.hydrant  USING btree (id_hydrant);
-END IF;
+CREATE INDEX hydrant_id_hydrant_idx  ON tracabilite.hydrant  USING btree (id_hydrant);
 
 commit;
