@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Started on 2018-12-18 10:33:51 CET
+-- Started on 2018-12-18 12:39:03 CET
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
@@ -2869,6 +2869,7 @@ COPY r_job (id_job, id_directory, name, description, extended_description, job_v
 39	32	export_csv	Export csv des départs de feu avec filtre	Création d'un fichier ZIP regroupant les export csv des départs de feu avec un filtre :\r\n * Famille prométhée ou "Toutes"\r\n * Date de début\r\n * Date de fin	\N	0	-1	\N	-	2013-06-27 08:27:36.102	admin	2014-05-22 15:18:47.884	Y	N	Y	\N
 37	31	hydrants_a_numeroter	Hydrant à numéroter	Job permettant de connaitre les hydrants ayant un numéro qui leur a été attribué automatiquement > 90000\n	\N	0	-1	\N	admin	2014-01-07 17:10:04.014	admin	2013-12-24 16:01:54.975	Y	N	Y	\N
 25	24	etat_hydrant_commune	\N	job de génération de l'etat Excel pour une commune\r\n\r\n\r\nAppeler par le job "etat_hdyrant" 	\N	0	-1	\N	-	2013-06-19 07:58:34.421	admin	2014-01-23 18:08:31.229	Y	N	Y	\N
+58	54	actualisation_zone_competence_commune	\N	Réactualise le contenu de la table remocra.zone_competence_commune	\N	0	-1	\N	-	2018-12-17 15:24:14.455	admin	2018-12-18 12:37:45.356	Y	N	Y	\N
 27	24	etat_hydrant_indisponibles	\N	Création d'un fichier ZIP regroupant les rapports Excel pour les hydrants  indisponibles de la veille.\r\n\r\nDéclenchement via le bloc traitement, si COMMUNE_ID est renseigné fihcier Excel  pour une commune, sinon pour toutes les communes.\r\n	\N	0	-1	\N	-	2013-06-21 08:08:55.673	admin	2014-01-23 18:08:47.405	Y	N	Y	\N
 34	27	etat_pena	\N	Création d'un fichier ZIP regroupant les rapports Excel pour les hydrants PENA\r\n\r\nDéclenchement via le bloc traitement, si COMMUNE_ID est renseigné fihcier Excel  pour une commune, sinon pour toutes les communes.\r\n	\N	0	-1	\N	-	2013-06-21 08:08:55.673	admin	2014-01-23 18:10:36.877	Y	N	Y	\N
 28	24	etat_hydrant_commune_indisponibles	\N	job de génération des états Excels pour les hydrants  indisponibles de la veille  pour une commune.\r\n\r\nAppeler par le job "etat_hdyrant_indisponibles" 	\N	0	-1	\N	-	2013-06-19 07:58:34.421	admin	2014-01-23 18:12:19.269	Y	N	Y	\N
@@ -2897,7 +2898,6 @@ COPY r_job (id_job, id_directory, name, description, extended_description, job_v
 4	4	traiter_demandes	\N	Tâche principale de récupération et d'exécution des demandes de traitements effectuées via l'interface de lancement de l'applicatif.\r\nLes modèles de traitement et les demandes de traitements sont stockées dans le schéma "pdi".	\N	0	-1	\N	-	2011-05-31 11:51:36.406	admin	2018-06-12 14:53:00.967	Y	N	Y	\N
 40	36	generer_courrier	\N	\N	\N	0	-1	\N	-	2016-10-24 14:38:36.405	admin	2018-11-22 11:51:12.857	Y	N	Y	\N
 8	8	notifier_utilisateurs	\N	Tâche principale de notification des utilisateurs à partir de la lecture de la table contenant les emails à notifier\r\n* Récupération des paramètres de PDI\r\n* Exécution de la transformation de notification	\N	0	-1	\N	-	2013-03-25 09:31:31.828	admin	2018-11-27 13:02:21.554	Y	N	Y	\N
-58	54	actualisation_zone_competence_commune	\N	Réactualise le contenu de la table remocra.zone_competence_commune	\N	0	-1	\N	-	2018-12-17 15:24:14.455	admin	2018-12-17 16:22:22.91	Y	N	Y	\N
 \.
 
 
@@ -3187,7 +3187,6 @@ COPY r_job_attribute (id_job_attribute, id_job, nr, code, value_num, value_str) 
 60271	13	0	CHANNEL_LOG_TABLE_FIELD_ID11	0	ROOT_CHANNEL_ID
 60272	13	0	CHANNEL_LOG_TABLE_FIELD_NAME11	0	ROOT_CHANNEL_ID
 60273	13	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
-152845	58	0	LOG_SIZE_LIMIT	0	\N
 126282	9	0	CHANNEL_LOG_TABLE_FIELD_ENABLED8	0	Y
 126283	9	0	CHANNEL_LOG_TABLE_FIELD_ID9	0	OBJECT_REVISION
 126284	9	0	CHANNEL_LOG_TABLE_FIELD_NAME9	0	OBJECT_REVISION
@@ -3952,6 +3951,7 @@ COPY r_job_attribute (id_job_attribute, id_job, nr, code, value_num, value_str) 
 58030	15	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME6	0	LINES_WRITTEN
 58031	15	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED6	0	Y
 58032	15	0	JOB_ENTRY_LOG_TABLE_FIELD_ID7	0	LINES_UPDATED
+152845	58	0	LOG_SIZE_LIMIT	0	\N
 58033	15	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME7	0	LINES_UPDATED
 58034	15	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED7	0	Y
 58035	15	0	JOB_ENTRY_LOG_TABLE_FIELD_ID8	0	LINES_INPUT
@@ -10094,6 +10094,8 @@ COPY r_job_hop (id_job_hop, id_job, id_jobentry_copy_from, id_jobentry_copy_to, 
 7246	4	6810	6813	Y	N	N
 7247	40	6814	6815	Y	Y	Y
 7248	40	6815	6816	Y	Y	N
+7252	58	6821	6822	Y	Y	Y
+7253	58	6822	6823	Y	Y	N
 5424	29	4943	4944	Y	Y	N
 7106	20	6711	6710	Y	N	N
 5425	29	4940	4942	Y	Y	N
@@ -10357,7 +10359,6 @@ COPY r_job_hop (id_job_hop, id_job, id_jobentry_copy_from, id_jobentry_copy_to, 
 7089	56	6692	6691	Y	Y	N
 7090	56	6692	6690	Y	N	Y
 7091	56	6690	6694	Y	Y	N
-7252	58	6821	6822	Y	Y	Y
 7205	5	6780	6787	Y	Y	Y
 7206	5	6782	6781	Y	Y	N
 7207	5	6783	6782	Y	Y	N
@@ -10423,7 +10424,6 @@ COPY r_job_hop (id_job_hop, id_job, id_jobentry_copy_from, id_jobentry_copy_to, 
 7026	47	6628	6622	Y	Y	N
 7233	5	6797	6788	Y	Y	N
 7234	5	6797	6786	Y	N	N
-7253	58	6822	6823	Y	Y	N
 \.
 
 
@@ -10719,7 +10719,6 @@ COPY r_jobentry (id_jobentry, id_job, id_jobentry_type, name, description) FROM 
 5549	26	62	Succès tâche	\N
 6809	4	28	START	Entrées spéciales
 6810	4	45	Traiter la demande	Pour chaque notification, envoi d'un mail
-6821	58	28	START	\N
 5597	42	2	ARCHIVER_COURRIER = FAUX	\N
 6708	20	28	START	\N
 6709	20	2	Récupération des paramètres globaux	\N
@@ -10746,8 +10745,6 @@ COPY r_jobentry (id_jobentry, id_job, id_jobentry_type, name, description) FROM 
 6811	4	37	Récupère les traitements "En attente"	Récupération des informations sur les traitements en attente\r\n(idstatut=1)
 6812	4	2	Récupération des paramètres globaux	\N
 6813	4	45	notifier_erreur	\N
-6822	58	2	Récupération des paramètres globaux	\N
-6823	58	43	Actualisation table zone_competence_commune	\N
 5764	45	43	Consolidation des sections et parcelles du cadastre	\N
 5693	43	28	START	\N
 5694	43	22	requête spatiale	\N
@@ -10853,6 +10850,9 @@ COPY r_jobentry (id_jobentry, id_job, id_jobentry_type, name, description) FROM 
 6608	48	44	recuperer_id_rue_suivant	\N
 6496	51	28	START	\N
 6497	51	44	Inserer_notif_debut_indispo	\N
+6821	58	28	START	\N
+6822	58	2	Récupération des paramètres globaux	\N
+6823	58	43	Actualisation table zone_competence_commune	\N
 6785	5	43	Maj statut traitement à "Terminé" avec Zip	En cas de succès, passe le statut\nde "En cours" à "Terminé" (idstatut=2)\net renseigne le fichier zip associé au traitement
 6786	5	43	Maj statut traitement à "Echec"	En cas d'echec, passe le statut\nde "En cours" à "Echec" (idstatut=3)
 6787	5	43	Maj statut traitement à "En cours" et heure execution	Passe le statut du traitement à "En cours" (idstatut=4)\nPermet de visualiser cette information dans\nle tableau de bord dans le cas de long traitements
@@ -14488,21 +14488,6 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 90019	20	6708	0	minutes	0.00	\N
 90020	20	6708	0	weekDay	1.00	\N
 90021	20	6708	0	dayOfMonth	1.00	\N
-91590	58	6821	0	start	0.00	Y
-91591	58	6821	0	dummy	0.00	N
-91592	58	6821	0	repeat	0.00	N
-91593	58	6821	0	schedulerType	0.00	\N
-91594	58	6821	0	intervalSeconds	0.00	\N
-91595	58	6821	0	intervalMinutes	60.00	\N
-91596	58	6821	0	hour	12.00	\N
-91597	58	6821	0	minutes	0.00	\N
-91598	58	6821	0	weekDay	1.00	\N
-91599	58	6821	0	dayOfMonth	1.00	\N
-91600	58	6822	0	replacevars	0.00	Y
-91601	58	6822	0	filename	0.00	${PDI_FICHIER_PARAMETRE}
-91602	58	6822	0	file_variable_type	0.00	ROOT_JOB
-91603	58	6823	0	id_database	3.00	\N
-91604	58	6823	0	connection	3.00	\N
 90022	20	6709	0	replacevars	0.00	Y
 90023	20	6709	0	filename	0.00	${PDI_FICHIER_PARAMETRE}
 90024	20	6709	0	file_variable_type	0.00	JVM
@@ -14618,11 +14603,6 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 88722	47	6617	0	adddate	0.00	N
 88723	47	6617	0	SpecifyFormat	0.00	N
 90048	20	6710	0	pass_all_parameters	0.00	Y
-91605	58	6823	0	sql	0.00	TRUNCATE TABLE remocra.zone_competence_commune;\nINSERT INTO remocra.zone_competence_commune (zone_competence_id, commune_id) \nSELECT\n    zc.id AS zone_competence_id,\n    c.id AS commune_id\nFROM\n    remocra.commune c,\n    remocra.zone_competence zc\nWHERE\n    st_Overlaps(st_buffer(zc.geometrie,0),st_buffer(c.geometrie,0))\n    OR st_contains(st_buffer(zc.geometrie,0),st_buffer(c.geometrie,0))\nORDER BY\n    zone_competence_id ,\n    commune_id;
-91606	58	6823	0	useVariableSubstitution	0.00	F
-91607	58	6823	0	sqlfromfile	0.00	F
-91608	58	6823	0	sqlfilename	0.00	\N
-91609	58	6823	0	sendOneStatement	0.00	T
 88724	47	6617	0	date_time_format	0.00	\N
 88725	47	6617	0	AddDateBeforeExtension	0.00	N
 88726	47	6617	0	isaddresult	0.00	Y
@@ -14694,6 +14674,26 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 87363	52	6509	0	wait_until_finished	0.00	Y
 87364	52	6509	0	follow_abort_remote	0.00	N
 87365	52	6509	0	create_parent_folder	0.00	N
+91590	58	6821	0	start	0.00	Y
+91591	58	6821	0	dummy	0.00	N
+91592	58	6821	0	repeat	0.00	N
+91593	58	6821	0	schedulerType	0.00	\N
+91594	58	6821	0	intervalSeconds	0.00	\N
+91595	58	6821	0	intervalMinutes	60.00	\N
+91596	58	6821	0	hour	12.00	\N
+91597	58	6821	0	minutes	0.00	\N
+91598	58	6821	0	weekDay	1.00	\N
+91599	58	6821	0	dayOfMonth	1.00	\N
+91600	58	6822	0	replacevars	0.00	Y
+91601	58	6822	0	filename	0.00	${PDI_FICHIER_PARAMETRE}
+91602	58	6822	0	file_variable_type	0.00	ROOT_JOB
+91603	58	6823	0	id_database	3.00	\N
+91604	58	6823	0	connection	3.00	\N
+91605	58	6823	0	sql	0.00	TRUNCATE TABLE remocra.zone_competence_commune;\nINSERT INTO remocra.zone_competence_commune (zone_competence_id, commune_id) \nSELECT\n    zc.id AS zone_competence_id,\n    c.id AS commune_id\nFROM\n    remocra.commune c,\n    remocra.zone_competence zc\nWHERE\n    (zc.geometrie && c.geometrie)\nAND (\n    st_Overlaps(st_buffer(zc.geometrie,0),st_buffer(c.geometrie,0))\n    OR st_contains(st_buffer(zc.geometrie,0),st_buffer(c.geometrie,0))\n    )\nORDER BY\n    zone_competence_id,\n    commune_id;
+91606	58	6823	0	useVariableSubstitution	0.00	F
+91607	58	6823	0	sqlfromfile	0.00	F
+91608	58	6823	0	sqlfilename	0.00	\N
+91609	58	6823	0	sendOneStatement	0.00	T
 87145	51	6496	0	start	0.00	Y
 87146	51	6496	0	dummy	0.00	N
 87147	51	6496	0	repeat	0.00	N
@@ -15875,9 +15875,6 @@ COPY r_jobentry_copy (id_jobentry_copy, id_jobentry, id_job, id_jobentry_type, n
 5696	5696	43	44	0	480	320	Y	N
 5697	5697	43	44	0	129	185	Y	N
 5698	5698	43	26	0	672	320	Y	N
-6821	6821	58	28	0	195	272	Y	N
-6822	6822	58	2	0	451	272	Y	N
-6823	6823	58	43	0	814	273	Y	N
 6508	6508	52	28	0	352	320	Y	N
 6509	6509	52	44	0	528	320	Y	N
 6768	6768	17	28	0	256	64	Y	N
@@ -15971,6 +15968,9 @@ COPY r_jobentry_copy (id_jobentry_copy, id_jobentry, id_job, id_jobentry_type, n
 6696	6696	56	44	0	704	672	Y	N
 6697	6697	56	62	0	896	416	Y	N
 6698	6698	56	28	0	96	112	Y	N
+6821	6821	58	28	0	195	272	Y	N
+6822	6822	58	2	0	451	272	Y	N
+6823	6823	58	43	0	814	273	Y	N
 6780	6780	5	28	0	1072	16	Y	N
 6781	6781	5	22	0	1552	400	Y	N
 6782	6782	5	44	0	1072	400	Y	N
@@ -23333,6 +23333,7 @@ COPY r_repository_log (id_repository_log, rep_version, log_date, log_user, opera
 6903	4.0	2018-12-17 16:20:06.147	admin	save job 'actualisation_zone_competence_commune'
 6904	4.0	2018-12-17 16:21:04.27	admin	save job 'actualisation_zone_competence_commune'
 6905	4.0	2018-12-17 16:22:23.005	admin	save job 'actualisation_zone_competence_commune'
+6906	4.0	2018-12-18 12:37:45.469	admin	save job 'actualisation_zone_competence_commune'
 \.
 
 
@@ -60309,7 +60310,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2018-12-18 10:33:52 CET
+-- Completed on 2018-12-18 12:39:04 CET
 
 --
 -- PostgreSQL database dump complete
