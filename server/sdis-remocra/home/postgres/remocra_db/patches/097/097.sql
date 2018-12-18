@@ -42,10 +42,13 @@ FROM
     remocra.commune c,
     remocra.zone_competence zc
 WHERE
-    st_Overlaps(st_buffer(zc.geometrie,0),st_buffer(c.geometrie,0))
-    OR st_contains(st_buffer(zc.geometrie,0),st_buffer(c.geometrie,0))
+    (zc.geometrie && c.geometrie)
+    and (
+      st_Overlaps(st_buffer(zc.geometrie,0), st_buffer(c.geometrie,0))
+      OR st_contains(st_buffer(zc.geometrie,0), st_buffer(c.geometrie,0))
+    )
 ORDER BY
-    zone_competence_id ,
+    zone_competence_id,
     commune_id;
 CREATE INDEX zone_competence_commune_zone_competence_idx ON remocra.zone_competence_commune USING btree (zone_competence_id);
 CREATE INDEX zone_competence_commune_commune_idx ON remocra.zone_competence_commune USING btree (commune_id);
