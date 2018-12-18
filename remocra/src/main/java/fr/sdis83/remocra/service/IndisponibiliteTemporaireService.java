@@ -97,7 +97,7 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
     }
 
     public Query getIndisponibilitesQuery(List<ItemFilter> itemFilter, List<ItemSorting> sortList, Projection projection, Integer limit, Integer offset) {
-        ZoneCompetence zc = utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence();
+        Long zc = utilisateurService.getCurrentZoneCompetenceId();
         StringBuilder sql = new StringBuilder("select ").append(projection)
                 .append(" from remocra.hydrant_indispo_temporaire hit where hit.id in (")
                 .append("select indisponibilite from remocra.hydrant_indispo_temporaire_hydrant hith ")
@@ -179,7 +179,7 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
         }
         Query query = projection == Projection.COUNT ? entityManager.createNativeQuery(sql.toString())
                 : entityManager.createNativeQuery(sql.toString(), HydrantIndispoTemporaire.class);
-        query.setParameter("zc", zc.getId());
+        query.setParameter("zc", zc);
         if (limit != null && offset != null) {
             query.setParameter("limit", limit).setParameter("offset", offset);
         }

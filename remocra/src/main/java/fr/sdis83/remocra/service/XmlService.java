@@ -810,7 +810,7 @@ public class XmlService {
             throws IOException, SecurityException, FileUploadException, BusinessException, AnomalieException, XmlDroitException {
 
         // Vérification du territoire de compétence de l'utilisateur connecté
-        Boolean result = zoneCompetenceService.check(hydrant.getGeometrie(), utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence());
+        Boolean result = zoneCompetenceService.check(hydrant.getGeometrie(), utilisateurService.getCurrentZoneCompetenceId());
         if (!result) {
             if (hydrantXML.getNumero() == null || hydrantXML.getNumero().isEmpty()) {
                 throw new XmlDroitException("Un des points d'eau à synchroniser est en dehors du territoire de compétence.");

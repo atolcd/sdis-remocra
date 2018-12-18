@@ -217,7 +217,7 @@ public class OldebController {
             final @RequestParam(value = "srid") Integer srid) {
 
         try {
-            Boolean result = zoneCompetenceService.check(wkt, srid, utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence());
+            Boolean result = zoneCompetenceService.check(wkt, srid, utilisateurService.getCurrentZoneCompetenceId());
             if (!result) {
                 return new SuccessErrorExtSerializer(result, "Modification de la géometrie de l'obligation de débroussaillement non autorisée").serialize();
             }

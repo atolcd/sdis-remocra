@@ -217,7 +217,7 @@ public class HydrantController {
             deserializer.use((String) null, new GeometryFactory());
             Point point = deserializer.deserialize(geometrie);
             point.setSRID(srid);
-            Boolean result = zoneCompetenceService.check(point, serviceUtilisateur.getCurrentUtilisateur().getOrganisme().getZoneCompetence());
+            Boolean result = zoneCompetenceService.check(point, serviceUtilisateur.getCurrentZoneCompetenceId());
             if (!result) {
                 return new SuccessErrorExtSerializer(result, "Déplacement du point d'eau non autorisé").serialize();
             }

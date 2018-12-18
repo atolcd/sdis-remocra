@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -56,6 +57,9 @@ public class UtilisateurService {
     @Autowired
     private AuthoritiesUtil authUtils;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Autowired
     private MessageDigestPasswordEncoder messageDigestPasswordEncoder;
 
@@ -70,6 +74,13 @@ public class UtilisateurService {
         // soit quand même fait ... du coup on perd le mot de passe
         // utilisateur.setPassword("");
         return utilisateur;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    public Long getCurrentZoneCompetenceId() {
+        String identifiant = AuthService.getCurrentUserIdentifiant();
+        Object o = entityManager.createNativeQuery("SELECT o.zone_competence FROM remocra.organisme o JOIN remocra.utilisateur u on u.organisme = o.id WHERE u.identifiant = '"+identifiant+"'").getSingleResult();
+        return Long.valueOf(o.toString());
     }
 
     public Utilisateur getSystemUtilisateur() throws BusinessException {

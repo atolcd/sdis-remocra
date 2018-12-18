@@ -39,7 +39,7 @@ public class ZoneCompetenceController extends AbstractServiceableController<Zone
     public ResponseEntity<java.lang.String> checkByXY(final @RequestParam(value = "srid", required = true) Integer srid,
             final @RequestParam(value = "wkt", required = true) String wkt) {
         try {
-            Boolean result = service.check(wkt, srid, serviceUtilisateur.getCurrentUtilisateur().getOrganisme().getZoneCompetence());
+            Boolean result = service.check(wkt, srid, serviceUtilisateur.getCurrentZoneCompetenceId());
             return new SuccessErrorExtSerializer(result, "zonecompetences - check " + (result ? "OK" : "NOK")).serialize();
         } catch (Exception e) {
             return new SuccessErrorExtSerializer(false, "zonecompetences - check").serialize();

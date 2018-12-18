@@ -127,7 +127,7 @@ public class RequeteModeleRepository {
     HashMap<String,String> zcTmp = new HashMap<String, String>();
     zcTmp.put("nomparametre", "ZONE_COMPETENCE_ID");
     zcTmp.put("type","integer");
-    zcTmp.put("valeur", String.valueOf(u.getOrganisme().getZoneCompetence().getId()));
+    zcTmp.put("valeur", String.valueOf(utilisateurService.getCurrentZoneCompetenceId()));
     typeParametre.add(zcTmp);
     HashMap<String,String> orTmp = new HashMap<String, String>();
     orTmp.put("nomparametre", "ORGANISME_ID");
@@ -184,11 +184,10 @@ public class RequeteModeleRepository {
     }
 
     //On rajoute systématiquement la zone de compétence
-    ZoneCompetence zc = utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence();
     HashMap<String,String> zcTmp = new HashMap<String, String>();
     zcTmp.put("nomparametre", "ZONE_COMPETENCE_ID");
     zcTmp.put("type","integer");
-    zcTmp.put("valeur", String.valueOf(zc.getId()));
+    zcTmp.put("valeur", String.valueOf(utilisateurService.getCurrentZoneCompetenceId()));
     typeParametre.add(zcTmp);
 
     try {

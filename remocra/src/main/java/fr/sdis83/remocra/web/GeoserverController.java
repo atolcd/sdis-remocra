@@ -352,7 +352,7 @@ public class GeoserverController {
             String bbox = getParameterOrLowerOrUpperCase(request, "BBOX");
             String wkt = GeometryUtil.wktFromBBox(bbox);
             Integer srid = GeometryUtil.sridFromEpsgCode(getParameterOrLowerOrUpperCase(request, "SRS"));
-            ZoneCompetence zoneCompetence = utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence();
+            Long zoneCompetence = utilisateurService.getCurrentZoneCompetenceId();
 
             if (!zoneCompetenceService.check(wkt, srid, zoneCompetence)) {
                 log.info("Proxy WMS : " + requestType + " hors zone compétence");

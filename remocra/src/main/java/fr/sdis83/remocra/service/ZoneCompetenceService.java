@@ -36,37 +36,37 @@ public class ZoneCompetenceService extends AbstractService<ZoneCompetence> {
         return super.processFilterItem(itemQuery, parameters, from, itemFilter);
     }
 
-    public Boolean check(String wkt, Integer srid, ZoneCompetence zoneCompetence) {
+    public Boolean check(String wkt, Integer srid, Long zoneCompetence) {
         return this.check(wkt, srid, zoneCompetence, 0);
     }
 
-    public Boolean checkXY(Float x, Float y, Integer srid, int toleranceMeters, ZoneCompetence zoneCompetence) {
+    public Boolean checkXY(Float x, Float y, Integer srid, int toleranceMeters, Long zoneCompetence) {
         String wkt = "POINT(" + x + " " + y + ")";
         return check(wkt, srid, zoneCompetence, toleranceMeters);
     }
 
-    public Boolean check(String wkt, Integer srid, ZoneCompetence zoneCompetence, int toleranceMeters) {
+    public Boolean check(String wkt, Integer srid, Long zoneCompetence, int toleranceMeters) {
         Geometry filter = GeometryUtil.toGeometry(wkt, srid);
         EntityManager em = this.entityManager;
-        Query query = em.createQuery("select dwithin(zc.geometrie, transform(:filter, 2154), :tolerance) from ZoneCompetence zc where zc = :id");
+        Query query = em.createQuery("select dwithin(zc.geometrie, transform(:filter, 2154), :tolerance) from ZoneCompetence zc where zc.id = :id");
         query.setParameter("tolerance", toleranceMeters);
         query.setParameter("filter", filter);
         query.setParameter("id", zoneCompetence);
         return (Boolean) query.getSingleResult();
     }
 
-    public boolean check(Point geometrie, ZoneCompetence zoneCompetence, int toleranceChargementMetres) {
+    public boolean check(Point geometrie, Long zoneCompetence, int toleranceChargementMetres) {
         EntityManager em = this.entityManager;
-        Query query = em.createQuery("select dwithin(zc.geometrie, :point, :tolerance) from ZoneCompetence zc where zc = :id");
+        Query query = em.createQuery("select dwithin(zc.geometrie, :point, :tolerance) from ZoneCompetence zc where zc.id = :id");
         query.setParameter("tolerance", toleranceChargementMetres);
         query.setParameter("point", geometrie);
         query.setParameter("id", zoneCompetence);
         return (Boolean) query.getSingleResult();
     }
 
-    public boolean check(Point geometrie, ZoneCompetence zoneCompetence) {
+    public boolean check(Point geometrie, Long zoneCompetence) {
         EntityManager em = this.entityManager;
-        Query query = em.createQuery("select within(transform(:point, 2154), zc.geometrie) from ZoneCompetence zc where zc = :id");
+        Query query = em.createQuery("select within(transform(:point, 2154), zc.geometrie) from ZoneCompetence zc where zc.id = :id");
         query.setParameter("point", geometrie);
         query.setParameter("id", zoneCompetence);
         return (Boolean) query.getSingleResult();

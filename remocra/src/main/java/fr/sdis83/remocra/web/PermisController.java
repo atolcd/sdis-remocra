@@ -117,7 +117,7 @@ public class PermisController extends AbstractRemocraController {
     }
 
     private void checkZoneCompetence(Point geom) {
-        if (!zoneCompetenceService.check(geom, utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence())) {
+        if (!zoneCompetenceService.check(geom, utilisateurService.getCurrentZoneCompetenceId())) {
             throw new AccessDeniedException("Vous n'avez pas les autorisations sur cette zone géographique");
         }
     }

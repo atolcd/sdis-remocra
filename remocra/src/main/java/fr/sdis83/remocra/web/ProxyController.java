@@ -224,7 +224,7 @@ public class ProxyController {
             // On traitera la réponse => pas de zip
             boolean acceptEncoding = !isGetFeatureInfo;
 
-            ZoneCompetence zoneCompetence = isPublic ? null : utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence();
+            Long zoneCompetence = isPublic ? null : utilisateurService.getCurrentZoneCompetenceId();
 
             // GetFeatureInfo : on filtre en amont selon la Zone de compétence
             if (isGetFeatureInfo) {
@@ -267,7 +267,7 @@ public class ProxyController {
                     // car mot réservé.
                     // C'est plus sûr qu'en passant par une chaine de caractères
                     // (code=VAR par exemple)
-                    String idZone = zoneCompetence.getId().toString();
+                    String idZone = zoneCompetence.toString();
                     String cqlFilterValue = "INTERSECTS(geometrie,(querySingle('remocra:zone_competence','geometrie','%22id%22=" + idZone + "')))";
 
                     // On répère autant de fois la clause qu'il y a de couches

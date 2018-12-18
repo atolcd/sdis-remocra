@@ -58,7 +58,7 @@ public class HydrantPrescritController extends AbstractServiceableController<Hyd
             protected HydrantPrescrit getRecord() throws BusinessException {
                  HydrantPrescrit current = service.getById(id);
 
-                 if(zoneCompetenceService.check(current.getGeometrie(), serviceUtilisateur.getCurrentUtilisateur().getOrganisme().getZoneCompetence())){
+                 if(zoneCompetenceService.check(current.getGeometrie(), serviceUtilisateur.getCurrentZoneCompetenceId())){
                      return current;
                  }
                  else{
@@ -84,7 +84,7 @@ public class HydrantPrescritController extends AbstractServiceableController<Hyd
     public ResponseEntity<java.lang.String> update(@PathVariable Long id, @RequestBody String json) {
         HydrantPrescrit current = new JSONDeserializer<HydrantPrescrit>().use( null, HydrantPrescrit.class ).use(Date.class, RemocraDateHourTransformer.getInstance()).use(Geometry.class, new GeometryFactory()).deserialize(json);
         current.getGeometrie().setSRID(2154);
-        if(zoneCompetenceService.check(current.getGeometrie(), serviceUtilisateur.getCurrentUtilisateur().getOrganisme().getZoneCompetence())){
+        if(zoneCompetenceService.check(current.getGeometrie(), serviceUtilisateur.getCurrentZoneCompetenceId())){
             return this.doUpdate(id, json);
         }
         else{
@@ -98,7 +98,7 @@ public class HydrantPrescritController extends AbstractServiceableController<Hyd
     public ResponseEntity<String> create(@RequestBody String json) {
         HydrantPrescrit current = new JSONDeserializer<HydrantPrescrit>().use( null, HydrantPrescrit.class ).use(Date.class, RemocraDateHourTransformer.getInstance()).use(Geometry.class, new GeometryFactory()).deserialize(json);
         current.getGeometrie().setSRID(2154);
-        if(zoneCompetenceService.check(current.getGeometrie(), serviceUtilisateur.getCurrentUtilisateur().getOrganisme().getZoneCompetence())){
+        if(zoneCompetenceService.check(current.getGeometrie(), serviceUtilisateur.getCurrentZoneCompetenceId())){
             return this.doCreate(json);
         }
         else{
@@ -112,7 +112,7 @@ public class HydrantPrescritController extends AbstractServiceableController<Hyd
     public ResponseEntity<String> delete(@PathVariable Long id) {
         HydrantPrescrit current = service.getById(id);
 
-        if(zoneCompetenceService.check(current.getGeometrie(), serviceUtilisateur.getCurrentUtilisateur().getOrganisme().getZoneCompetence())){
+        if(zoneCompetenceService.check(current.getGeometrie(), serviceUtilisateur.getCurrentZoneCompetenceId())){
             return this.doDelete(id);
         }
         else{

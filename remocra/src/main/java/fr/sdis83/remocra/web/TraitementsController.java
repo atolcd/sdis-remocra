@@ -383,7 +383,7 @@ public class TraitementsController {
         Long idExportModele = traitementsService.getExportModeleFromCode(codeExport).getId();
 
         // ZONE_COMPETENCE_ID
-        Long idZoneCompetence = utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getId();
+        Long idZoneCompetence = utilisateurService.getCurrentZoneCompetenceId();
 
         // Premier paramètre = id du modèle d'export
 
