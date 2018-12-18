@@ -105,8 +105,7 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
                 // Filtre par zone de compétence systématique
                 .append("hith.hydrant in(")
                 .append("select h.id from remocra.hydrant h where h.commune in(")
-                .append("select c.id from remocra.commune c where st_Overlaps((select geometrie from remocra.zone_competence zc where zc.id = :zc), c.geometrie)")
-                .append(" or st_contains((select geometrie from remocra.zone_competence zc where zc.id = :zc), c.geometrie)")
+                .append("select zcc.commune_id from remocra.zone_competence_commune zcc where zcc.zone_competence_id =:zc")
                 .append("))");
                 //
         if (itemFilter!=null && itemFilter.size()>0) {
