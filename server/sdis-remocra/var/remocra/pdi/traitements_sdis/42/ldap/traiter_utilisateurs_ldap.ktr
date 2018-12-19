@@ -111,28 +111,7 @@
     </attributes>
   </connection>
   <order>
-  <hop> <from>utilisateur remocra</from><to>Statut actif</to><enabled>Y</enabled> </hop>  <hop> <from>valeurs null</from><to>insert &#47; update</to><enabled>Y</enabled> </hop>  <hop> <from>désactivation 2</from><to>filtre flux insert</to><enabled>Y</enabled> </hop>  <hop> <from>filtre flux insert</from><to>Sort rows</to><enabled>Y</enabled> </hop>  <hop> <from>Group by</from><to>Row flattener</to><enabled>Y</enabled> </hop>  <hop> <from>Row flattener</from><to>Filter rows</to><enabled>Y</enabled> </hop>  <hop> <from>Filter rows</from><to>Abort</to><enabled>Y</enabled> </hop>  <hop> <from>Filter rows</from><to>Set Variables</to><enabled>Y</enabled> </hop>  <hop> <from>Sort rows</from><to>If field value is null</to><enabled>Y</enabled> </hop>  <hop> <from>If field value is null</from><to>Group by</to><enabled>Y</enabled> </hop>  <hop> <from>insertion utilisateurs</from><to>Detect empty stream</to><enabled>Y</enabled> </hop>  <hop> <from>Detect empty stream</from><to>désactivation 2</to><enabled>Y</enabled> </hop>  <hop> <from>insertion utilisateurs</from><to>désactivation 2</to><enabled>Y</enabled> </hop>  <hop> <from>Statut LDAP</from><to>Statut actif</to><enabled>Y</enabled> </hop>  <hop> <from>insert &#47; update</from><to>utilisateur_actif</to><enabled>Y</enabled> </hop>  <hop> <from>utilisateur_actif</from><to>ignore</to><enabled>Y</enabled> </hop>  <hop> <from>Extract organisme &#47; profil</from><to>Remove champ memberOf</to><enabled>Y</enabled> </hop>  <hop> <from>Remove champ memberOf</from><to>utilisateur remocra</to><enabled>Y</enabled> </hop>  <hop> <from>Extraction depuis SDIS</from><to>Filtre les users groupe REMOCRA_</to><enabled>Y</enabled> </hop>  <hop> <from>Filtre les users groupe REMOCRA_</from><to>Dummy (do nothing)</to><enabled>Y</enabled> </hop>  <hop> <from>Filtre les users groupe REMOCRA_</from><to>Extract organisme &#47; profil</to><enabled>Y</enabled> </hop>  <hop> <from>Select organisme</from><to>Récup id orga</to><enabled>Y</enabled> </hop>  <hop> <from>Statut actif</from><to>password</to><enabled>Y</enabled> </hop>  <hop> <from>password</from><to>Récup id orga</to><enabled>Y</enabled> </hop>  <hop> <from>Select profil</from><to>Récup id profil</to><enabled>Y</enabled> </hop>  <hop> <from>Récup id orga</from><to>Récup id profil</to><enabled>Y</enabled> </hop>  <hop> <from>Récup id profil</from><to>valeurs null</to><enabled>Y</enabled> </hop>  <hop> <from>utilisateur_actif</from><to>utilisateur avec profil et orga</to><enabled>Y</enabled> </hop>  <hop> <from>utilisateur avec profil et orga</from><to>insertion utilisateurs</to><enabled>Y</enabled> </hop>  <hop> <from>utilisateur avec profil et orga</from><to>ignore2</to><enabled>Y</enabled> </hop>  <hop> <from>Désactivation utilisateur LDAP</from><to>Extraction depuis SDIS</to><enabled>Y</enabled> </hop>  <hop> <from>insert &#47; update</from><to>mise à jour utilisateur</to><enabled>Y</enabled> </hop>  <hop> <from>Row flattener</from><to>Set Variables</to><enabled>N</enabled> </hop>  </order>
-  <step>
-    <name>Abort</name>
-    <type>Abort</type>
-    <description/>
-    <distribute>Y</distribute>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-      <row_threshold>0</row_threshold>
-      <message/>
-      <always_log_rows>Y</always_log_rows>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>2268</xloc>
-      <yloc>578</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
+  <hop> <from>utilisateur remocra</from><to>Statut actif</to><enabled>Y</enabled> </hop>  <hop> <from>valeurs null</from><to>insert &#47; update</to><enabled>Y</enabled> </hop>  <hop> <from>désactivation 2</from><to>filtre flux insert</to><enabled>Y</enabled> </hop>  <hop> <from>filtre flux insert</from><to>Sort rows</to><enabled>Y</enabled> </hop>  <hop> <from>Group by</from><to>Row flattener</to><enabled>Y</enabled> </hop>  <hop> <from>Sort rows</from><to>If field value is null</to><enabled>Y</enabled> </hop>  <hop> <from>If field value is null</from><to>Group by</to><enabled>Y</enabled> </hop>  <hop> <from>insertion utilisateurs</from><to>Detect empty stream</to><enabled>Y</enabled> </hop>  <hop> <from>Detect empty stream</from><to>désactivation 2</to><enabled>Y</enabled> </hop>  <hop> <from>insertion utilisateurs</from><to>désactivation 2</to><enabled>Y</enabled> </hop>  <hop> <from>Statut LDAP</from><to>Statut actif</to><enabled>Y</enabled> </hop>  <hop> <from>insert &#47; update</from><to>utilisateur_actif</to><enabled>Y</enabled> </hop>  <hop> <from>utilisateur_actif</from><to>ignore</to><enabled>Y</enabled> </hop>  <hop> <from>Extract organisme &#47; profil</from><to>Remove champ memberOf</to><enabled>Y</enabled> </hop>  <hop> <from>Remove champ memberOf</from><to>utilisateur remocra</to><enabled>Y</enabled> </hop>  <hop> <from>Extraction depuis SDIS</from><to>Filtre les users groupe REMOCRA_</to><enabled>Y</enabled> </hop>  <hop> <from>Filtre les users groupe REMOCRA_</from><to>Dummy (do nothing)</to><enabled>Y</enabled> </hop>  <hop> <from>Filtre les users groupe REMOCRA_</from><to>Extract organisme &#47; profil</to><enabled>Y</enabled> </hop>  <hop> <from>Select organisme</from><to>Récup id orga</to><enabled>Y</enabled> </hop>  <hop> <from>Statut actif</from><to>password</to><enabled>Y</enabled> </hop>  <hop> <from>password</from><to>Récup id orga</to><enabled>Y</enabled> </hop>  <hop> <from>Select profil</from><to>Récup id profil</to><enabled>Y</enabled> </hop>  <hop> <from>Récup id orga</from><to>Récup id profil</to><enabled>Y</enabled> </hop>  <hop> <from>Récup id profil</from><to>valeurs null</to><enabled>Y</enabled> </hop>  <hop> <from>utilisateur_actif</from><to>utilisateur avec profil et orga</to><enabled>Y</enabled> </hop>  <hop> <from>utilisateur avec profil et orga</from><to>insertion utilisateurs</to><enabled>Y</enabled> </hop>  <hop> <from>utilisateur avec profil et orga</from><to>ignore2</to><enabled>Y</enabled> </hop>  <hop> <from>Désactivation utilisateur LDAP</from><to>Extraction depuis SDIS</to><enabled>Y</enabled> </hop>  <hop> <from>insert &#47; update</from><to>mise à jour utilisateur</to><enabled>Y</enabled> </hop>  <hop> <from>Row flattener</from><to>Set Variables</to><enabled>Y</enabled> </hop>  </order>
   <step>
     <name>Detect empty stream</name>
     <type>DetectEmptyStream</type>
@@ -435,39 +414,6 @@ if (listGroupRemocraP.length &gt; 0) {
     </step>
 
   <step>
-    <name>Filter rows</name>
-    <type>FilterRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-<send_true_to>Set Variables</send_true_to>
-<send_false_to>Abort</send_false_to>
-    <compare>
-<condition>
- <negated>N</negated>
- <conditions>
-  <condition>
-   <negated>N</negated>
-   <leftvalue>insertions</leftvalue>
-   <function>&lt;&gt;</function>
-   <rightvalue/>
-   <value><name>constant</name><type>String</type><text>NA</text><length>-1</length><precision>-1</precision><isnull>N</isnull><mask/></value>   </condition>
-  </conditions>
- </condition>
-    </compare>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>2140</xloc>
-      <yloc>578</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
     <name>Filtre les users groupe REMOCRA_</name>
     <type>FilterRows</type>
     <description/>
@@ -482,10 +428,22 @@ if (listGroupRemocraP.length &gt; 0) {
     <compare>
 <condition>
  <negated>N</negated>
- <leftvalue>memberOf</leftvalue>
- <function>CONTAINS</function>
- <rightvalue/>
- <value><name>constant</name><type>String</type><text>REMOCRA_</text><length>-1</length><precision>-1</precision><isnull>N</isnull><mask/></value> </condition>
+ <conditions>
+  <condition>
+   <negated>N</negated>
+   <leftvalue>memberOf</leftvalue>
+   <function>CONTAINS</function>
+   <rightvalue/>
+   <value><name>constant</name><type>String</type><text>REMOCRA_P</text><length>-1</length><precision>-1</precision><isnull>N</isnull><mask/></value>   </condition>
+  <condition>
+   <negated>N</negated>
+   <operator>AND</operator>
+   <leftvalue>memberOf</leftvalue>
+   <function>CONTAINS</function>
+   <rightvalue/>
+   <value><name>constant</name><type>String</type><text>REMOCRA_O</text><length>-1</length><precision>-1</precision><isnull>N</isnull><mask/></value>   </condition>
+  </conditions>
+ </condition>
     </compare>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
@@ -794,8 +752,8 @@ if (listGroupRemocraP.length &gt; 0) {
     <use_formatting>Y</use_formatting>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>2033</xloc>
-      <yloc>701</yloc>
+      <xloc>2145</xloc>
+      <yloc>572</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
