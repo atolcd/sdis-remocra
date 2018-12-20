@@ -113,7 +113,7 @@
           <b-collapse id="accordion4" accordion="my-accordion" role="tabpanel">
             <b-card-body>
               <p class="card-text">
-                Recherches et analyses
+                <input-geom ref="inputGeom"></input-geom>
               </p>
             </b-card-body>
           </b-collapse>
@@ -210,6 +210,7 @@ import axios from 'axios'
 import legend from '../assets/carte-crise.json'
 import * as Proj from 'ol/proj'
 import * as Polygon from 'ol/geom/Polygon'
+import MultiPolygon from 'ol/geom/MultiPolygon'
 import {register} from 'ol/proj/proj4.js';
 import proj4 from 'proj4';
 import _ from 'lodash'
@@ -219,9 +220,10 @@ import SearchRepertoire from './SearchRepertoireLieu.vue'
 import OlOverlay from 'ol/Overlay.js'
 import OlSourceVector from 'ol/source/Vector.js'
 import OlLayerVector from 'ol/layer/Vector.js'
-import OlInteractionDraw from 'ol/interaction/Draw.js'
+import OlInteractionDraw, {createBox} from 'ol/interaction/Draw.js'
 import {Draw, Modify, Snap, Select, Translate} from 'ol/interaction.js';
 import {getArea, getLength} from 'ol/sphere.js';
+import {toStringXY} from 'ol/coordinate';
 import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style.js';
 import {LineString} from 'ol/geom.js';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -234,9 +236,13 @@ import ToolBar from './ToolBar.vue';
 import ChoiceFeature from './ChoiceFeature.vue';
 import ShowInfo from './ShowInfo.vue';
 import StampedCard from './StampedCard.vue';
+import InputGeom from './InputGeom.vue';
 import html2canvas from 'html2canvas'
 import EventBus from '../bus'
 import * as eventTypes from '../bus/event-types.js'
+import Feature from 'ol/Feature'
+import MultiLineString from 'ol/geom/MultiLineString'
+import MultiPoint from 'ol/geom/MultiPoint'
 
   export default {
     name: 'OlMap',
@@ -252,12 +258,14 @@ import * as eventTypes from '../bus/event-types.js'
            ToolBar,
            ChoiceFeature,
            ShowInfo,
-           StampedCard   },
+           StampedCard,
+         InputGeom   },
     data () {
       return {
         mapRowHeight: 'calc(100% - 50px)',
         file: null,
         selectedFeature: null,
+        oldSelectedFeatureGeom: null,
         modalShow:false,
         workingLayer: null,
         sridL93 : 2154,
@@ -288,7 +296,8 @@ import * as eventTypes from '../bus/event-types.js'
           stack: [],
           idx: -1,
           btns: false
-        }
+        },
+        inputGeoms:[]
       }
     },
     mounted() {
@@ -315,7 +324,7 @@ import * as eventTypes from '../bus/event-types.js'
         proj4.defs(this.epsgL93,"+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
         register(proj4);
         this.constructMap()
-        this.createWorkingLayer()
+        this.createWorkingLayer('workingLayer')
         this.addModifyInteraction()
         this.addTranslateInteraction()
 
@@ -351,6 +360,11 @@ import * as eventTypes from '../bus/event-types.js'
         EventBus.$on(eventTypes.VALIDE_TRANSLATEGEOM, this.validTranslateGeom)
         EventBus.$on(eventTypes.OPEN_ATTRIBUTES, this.openAttributes)
         EventBus.$on(eventTypes.UPDATE_MAPFILTERS, args => {this.updateMapFilters(args.id, args.filters)})
+        EventBus.$on(eventTypes.INPUT_GEOM,  args => {this.inputGeom(args.typeGeom, args.index)})
+        EventBus.$on(eventTypes.ANNULE_INPUTGEOM, index =>{this.annulGeom(index)})
+        EventBus.$on(eventTypes.VALIDE_INPUTGEOM, index =>{this.validGeom(index)})
+        EventBus.$on(eventTypes.MODIFY_INPUTGEOM, this.modifyGeom)
+        EventBus.$on(eventTypes.DELETE_INPUTGEOM, this.deleteGeom)
     },
     updated() {
       //this.addSortable()
@@ -359,7 +373,7 @@ import * as eventTypes from '../bus/event-types.js'
       getLegendGraphics(layer) {
         return layer && layer.styles && layer.styles[0] ? layer.styles[0].legende : null
       },
-      createWorkingLayer(){
+      createWorkingLayer(code){
         var source = new OlSourceVector()
         var style= new Style({
           fill: new Fill({
@@ -377,8 +391,8 @@ import * as eventTypes from '../bus/event-types.js'
           })
         })
         var vectorLayer = new OlLayerVector({
-          name:'workingLayer',
-          code: 'workingLayer',
+          name:code,
+          code: code,
           source: source,
           style: style,
           visibility : true,
@@ -387,6 +401,7 @@ import * as eventTypes from '../bus/event-types.js'
 
         })
         this.map.addLayer(vectorLayer)
+        return vectorLayer
       },
       addNewDocument(){
         this.$refs['newCriseDocument'].showModal(this.criseId);
@@ -700,30 +715,44 @@ import * as eventTypes from '../bus/event-types.js'
     this.desactivateControls()
 
   },
+  formatLength(line) {
+    var length = getLength(line);
+      var output;
+      if (length > 100) {
+        output = (Math.round(length / 1000 * 100) / 100) +' ' + 'km';
+      } else {
+        output = (Math.round(length * 100) / 100) +' ' + 'm';
+      }
+      return output;
+  },
+  formatRadius(circle) {
+    var radius = circle.getRadius();
+      var output;
+      if (radius > 100) {
+        output = 'Rayon: '+(Math.round(radius / 1000 * 100) / 100)+ ' km';
+      } else {
+        output = 'Rayon: '+(Math.round(radius * 100) / 100)+' m';
+      }
+      return output;
+  },
+  formatArea(polygon) {
+    var area = getArea(polygon);
+      var output;
+      if (area > 10000) {
+        output = (Math.round(area / 1000000 * 100) / 100) +' ' + 'km<sup>2</sup>';
+      } else {
+        output = (Math.round(area * 100) / 100) +' ' + 'm<sup>2</sup>';
+      }
+      return output;
+  },
+  formatXy(point) {
+    var output = toStringXY(point.getCoordinates())
+      return output
+  },
 
  addMeasureInteraction() {
    document.getElementsByClassName('measure-container')[0].setAttribute('ctrl-active', 'true')
    this.map.un('click', this.handleMapClick)
-     var formatLength =function(line) {
-       var length = getLength(line);
-         var output;
-         if (length > 100) {
-           output = (Math.round(length / 1000 * 100) / 100) +' ' + 'km';
-         } else {
-           output = (Math.round(length * 100) / 100) +' ' + 'm';
-         }
-         return output;
-     }
-     var formatArea=function(polygon) {
-       var area = getArea(polygon);
-         var output;
-         if (area > 10000) {
-           output = (Math.round(area / 1000000 * 100) / 100) +' ' + 'km<sup>2</sup>';
-         } else {
-           output = (Math.round(area * 100) / 100) +' ' + 'm<sup>2</sup>';
-         }
-         return output;
-     }
         var measureTooltipElement = document.createElement('div')
         measureTooltipElement.className = 'tooltip tooltip-measure'
         let measureTooltip = new OlOverlay({
@@ -742,17 +771,17 @@ import * as eventTypes from '../bus/event-types.js'
           type: type,
           source: workingLayer.getSource()
         })
+        var self = this
         measuringTool.on('drawstart', function(event) {
           // tooltipse
           workingLayer.getSource().clear()
           event.feature.on('change', function(event) {
             var geom = event.target.getGeometry();
-            var measurement;
             var output;
                if (geom.getType() == 'Polygon') {
-                output =formatArea(geom)
+                output = self.formatArea(geom)
                } else if (geom.getType() == 'LineString') {
-                output = formatLength(geom)
+                output = self.formatLength(geom)
                }
             measureTooltipElement.innerHTML = output
             measureTooltip.setPosition(event.target.getGeometry().getLastCoordinate())
@@ -780,6 +809,26 @@ import * as eventTypes from '../bus/event-types.js'
       this.removeMeasureInteraction()
       this.addMeasureInteraction()
   },
+  getCoordinates(){
+    let measuringTool = new OlInteractionDraw({
+      type: type,
+      source: workingLayer.getSource()
+    })
+    var self = this
+    measuringTool.on('drawstart', function(event) {
+      // tooltipse
+      workingLayer.getSource().clear()
+      event.feature.on('change', function(event) {
+        var geom = event.target.getGeometry();
+        var output;
+           if (geom.getType() == 'Polygon') {
+            output = self.formatArea(geom)
+           } else if (geom.getType() == 'LineString') {
+            output = self.formatLength(geom)
+           }
+      })
+    })
+  },
    desactivateControls(){
      this.map.un('click', this.handleOpenAttributes)
      this.map.un('click', this.handleMapClick)
@@ -798,6 +847,9 @@ import * as eventTypes from '../bus/event-types.js'
     if(this.measuringTool){
          this.measuringTool.setActive(!this.measuringTool.getActive())
          this.map.removeInteraction(this.measuringTool)
+    }
+    if(this.measureTooltip){
+      this.measureTooltip.setPosition([0, 0])
     }
   },
   GoInFullscreen: function(event){
@@ -879,6 +931,20 @@ import * as eventTypes from '../bus/event-types.js'
         })
 
      },
+     addModifyInteractionFromInput(){
+       var workingLayer = this.getLayerById('workingLayer')
+       var modify = new Modify({
+         source: workingLayer.getSource()
+       });
+       this.modify = modify
+       this.modify.setActive(false)
+       var self = this
+       this.map.addInteraction(this.modify)
+       this.modify.on('modifyend',function(evt){
+         this.$refs.inputGeom.showValidGeom = true
+       })
+
+    },
      addTranslateInteraction(){
        var workingLayer = this.getLayerById('workingLayer')
        var translate = new Translate({
@@ -1142,6 +1208,202 @@ import * as eventTypes from '../bus/event-types.js'
             if (wmsLayer) {
               wmsLayer.getSource().updateParams({filter: jsonFilters});
             }
+        },
+
+        inputGeom(typeGeom, index){
+          typeGeom = typeGeom.toUpperCase()
+          var geometryFunction;
+          switch (typeGeom) {
+              case 'POINT':
+              typeGeom = 'Point'
+              break
+              case 'LINESTRING':
+              typeGeom = 'LineString'
+              break
+              case 'POLYGON':
+              typeGeom = 'Polygon'
+              break
+              case 'CIRCLE':
+              typeGeom = 'Circle'
+              break
+              case 'BOX':
+              typeGeom = 'Circle'
+              geometryFunction= createBox()
+              break
+              default:
+              typeGeom = 'Point'
+         }
+           this.map.un('click', this.handleMapClick)
+                var measureTooltipElement = document.createElement('div')
+                measureTooltipElement.className = 'tooltip tooltip-measure'
+                var measureTooltip = new OlOverlay({
+                  element: measureTooltipElement,
+                  offset: [0, -15],
+                  positioning: 'bottom-center'
+                })
+                this.map.addOverlay(measureTooltip)
+                //On crée un layer par input
+                var workingLayer = this.getLayerById('input'+index)
+                if(workingLayer == null){
+                  workingLayer = this.createWorkingLayer('input'+index)
+                }
+                var measuringTool = new OlInteractionDraw({
+                  type: typeGeom,
+                  geometryFunction: geometryFunction,
+                  source: workingLayer.getSource()
+                })
+                var self = this
+                measuringTool.on('drawstart', function(event) {
+                  // tooltipse
+                  event.feature.on('change', function(event) {
+                    var geometrie = event.target.getGeometry();
+                    var output;
+                       if (geometrie.getType() == 'Polygon' || geometrie.getType() == 'Box') {
+                        output = self.formatArea(geometrie)
+                      } else if (geometrie.getType() == 'LineString') {
+                        output = self.formatLength(geometrie)
+                      } else if (geometrie.getType() == 'Circle') {
+                        output = self.formatRadius(geometrie)
+                      } else if (geometrie.getType() == 'Point') {
+                        output = self.formatXy(geometrie)
+                      }
+                    measureTooltipElement.innerHTML = output
+                    measureTooltip.setPosition(event.target.getGeometry().getLastCoordinate())
+                  })
+                })
+                measuringTool.on('drawend',function(evt){
+                   self.$refs.inputGeom.showValidGeom = index
+                   self.selectedFeature = evt.feature
+                   self.map.removeInteraction(measuringTool)
+                })
+                measuringTool.on('change:active', function(evt) {
+                  if (evt.oldValue) {
+                  }
+                })
+                measuringTool.id = 'tool'+index
+                measureTooltip.id =  'tooltip'+index
+                this.map.addInteraction(measuringTool)
+                this.inputGeoms.push(measuringTool, measureTooltip)
+        },
+        annulGeom(index){
+          var layer  = this.getLayerById('input'+index)
+          var features = layer.getSource().getFeatures()
+          //layer.getSource().clear()*/
+            _.forEach(features, feature => {
+              if(feature.ol_uid == this.selectedFeature.ol_uid){
+                if(this.oldSelectedFeatureGeom !== null){
+                  feature.setGeometry(this.oldSelectedFeatureGeom)
+                  this.validGeom(index)
+                }else {
+                  layer.getSource().removeFeature(feature)
+                }
+              }
+            })
+          this.removeMeasureInputGeomInteraction(index)
+          this.removeModifInputGeomInteraction(index)
+          this.removeSelectInputGeomInteraction(index)
+          this.$refs.inputGeom.showValidGeom = null
+        },
+        validGeom(index){
+          _.forEach(this.$refs.inputGeom.$refs, input => {
+            if(input[0].id == 'input'+index ){
+              var geomL93 = null
+              var wktGeomL93 = null
+              var multigeom = null
+                   var geoms =[]
+                   var geom = null
+                   var layer  = this.getLayerById('input'+index)
+                   var features = layer.getSource().getFeatures()
+                   _.forEach(features, function(feature, index){
+                        geom = feature.clone().getGeometry()
+                       if(geom.getType() == 'Circle'){
+                         geom = Polygon.fromCircle(geom)
+                      }
+                      geoms.push(geom)
+                   })
+                    if(geoms.length > 1){
+                      if(geoms[0].getType() == 'Point'){
+                         multigeom = this.formatGeomFromMap(new MultiPoint(geoms))
+                      }else if (geoms[0].getType() == 'LineString') {
+                        multigeom = this.formatGeomFromMap(new MultiLineString(geoms))
+                      }else{
+                        multigeom = this.formatGeomFromMap(new MultiPolygon(geoms))
+                      }
+                    }else {
+                      console.log(geoms[0])
+                      multigeom = this.formatGeomFromMap(geoms[0])
+                    }
+              input[0].value = multigeom
+            }
+          })
+          this.$refs.inputGeom.showValidGeom = null
+          this.removeModifInputGeomInteraction(index)
+          this.removeMeasureInputGeomInteraction(index)
+          this.removeSelectInputGeomInteraction(index)
+        },
+        modifyGeom(index){
+          var workingLayer = this.getLayerById('input'+index)
+          if(workingLayer && workingLayer !== null){
+            var selectInput = new Select({
+              source: workingLayer.getSource()
+            });
+            this.map.addInteraction(selectInput);
+
+          var modifyInput = new Modify({
+            features: selectInput.getFeatures()
+          });
+            var self = this
+            modifyInput.id = 'modif'+index
+            selectInput.id = 'select'+index
+            this.inputGeoms.push(modifyInput, selectInput)
+            this.map.addInteraction(modifyInput)
+            modifyInput.on('modifyend',function(evt){
+              self.$refs.inputGeom.showValidGeom = index
+              self.selectedFeature = evt.features.getArray()[0]
+            })
+            modifyInput.on('modifystart',function(evt){
+              self.oldSelectedFeatureGeom = evt.features.getArray()[0].clone().getGeometry()
+            })
+            /*selectInput.on('select',function(evt){
+              self.oldSelectedFeature = evt.selected[0]
+            })*/
+          }
+        },
+        deleteGeom(index){
+          this.removeMeasureInputGeomInteraction(index)
+          this.removeModifInputGeomInteraction(index)
+          this.getLayerById('input'+index).getSource().clear()
+          this.$refs.inputGeom.showValidGeom = false
+          _.forEach(this.$refs.inputGeom.$refs, input => {
+            if(input[0].id == 'input'+index ){
+              input[0].value = null
+            }
+          })
+        },
+        removeMeasureInputGeomInteraction(index){
+          _.forEach(this.inputGeoms, input => {
+            if(input.id == 'tool'+index){
+               input.setActive(!input.getActive())
+               this.map.removeInteraction(input)
+            }
+            if(input.id == 'tooltip'+index){
+              input.setPosition([0, 0])
+            }
+          })
+        },
+        removeModifInputGeomInteraction(index){
+          _.forEach(this.inputGeoms, input => {
+            if(input.id == 'modif'+index){
+               this.map.removeInteraction(input)
+            }
+          })
+        },
+        removeSelectInputGeomInteraction(index){
+          _.forEach(this.inputGeoms, input => {
+            if(input.id == 'select'+index){
+               this.map.removeInteraction(input)
+            }
+          })
         }
    }
 }
