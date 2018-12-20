@@ -24,7 +24,7 @@
         </b-form-select>
       </b-form-group>
       <b-form-group  horizontal label="Origine:" label-for="origine">
-      <search-origine id="origineEvent" :crise='this.criseId'  ref='searchOrigine'></search-origine>
+      <search-origine :selected="form.origine!== null ? form.origine : '' " id="origineEvent" :crise='this.criseId' ref='searchOrigine'></search-origine>
       </b-form-group>
       <b-form-group  horizontal label="Constaté:" label-for="constate">
         <b-form-input v-model="form.constat" :value="form.constat"
@@ -40,7 +40,7 @@
           <input id ="eventDocs" type="file" class="custom-file-input"  @change="handleChangeFile($event)">
           <label class="custom-file-label">{{file && file.name}}</label></div>
           <div v-for="(file, index) in files" :key="index" class="mt-3">
-            <img @click="deleteFile(file.name)" src="/static/img/delete.png"><strong >   {{file && file.name || file.fichier}}</strong>
+            <img @click="deleteFile(file.name || file.fichier)" src="/static/img/delete.png"><strong > {{file && file.name || file.fichier}}</strong>
           </div>
       </b-form-group>
       <b-form-group  horizontal label="Tags:" label-for="tags">
@@ -146,6 +146,7 @@ export default {
                 }
                 this.form.origine = evenement.origine
                 this.$refs.searchOrigine.selected = evenement.origine
+
                 this.form.importance = evenement.importance
                 this.form.tags = evenement.tags && evenement.tags.length !== 0 ? evenement.tags.split(","): []
                 this.form.type = evenement.typeCriseNatureEvenement.id
@@ -225,7 +226,7 @@ export default {
       formData.append('crise', this.criseId)
       formData.append('natureEvent', this.form.type)
       for( var i = 0; i < this.files.length; i++ ){
-        let file = this.files[i];
+        var file = this.files[i];
         formData.append('files[' + i + ']', file);
       }
       var criseId = this.criseId
@@ -340,11 +341,11 @@ export default {
       }
   },
   deleteFile(fileName){
-     this.files = _.reject(this.files, function(file) {
-     return fileName == file.name
+     this.files = _.reject(this.files, file => {
+     return fileName == (file.name || file.fichier)
     })
     this.file = null
-    document.getElementById("docs").value = null
+    document.getElementById("eventDocs").value = null
   }
 
   }

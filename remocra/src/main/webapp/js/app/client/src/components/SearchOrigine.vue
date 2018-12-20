@@ -1,9 +1,9 @@
 <template>
   <form v-on:submit.prevent>
-    <autocomplete :input-attrs="{ placeholder: 'Origine...' }" v-model="selected"
+    <autocomplete :input-attrs="{ placeholder: 'Origine...' }" v-model="origine"
       :items="results" :get-label="getLabel" :component-item='origineTemplate'
       :auto-select-one-item="false" @update-items="search" @item-selected="origineSelected"
-      @item-clicked="origineClicked" search-input.sync="searchInput" />
+      @item-clicked="origineClicked"  />
   </form>
 </template>
 
@@ -23,7 +23,7 @@ export default {
 
   data() {
     return {
-      selected: null,
+    origine: null,
       results: [],
       origineTemplate: OrigineTemplate,
       searchInput: ""
@@ -53,10 +53,10 @@ export default {
     },
     origineSelected(origine) {
       // On agit directement
-      this.selected = origine
+      this.origine = origine
     },
     origineClicked(origine) {
-      console.debug('origineClicked', origine, this.selected)
+      this.origine = origine
     }
   }
 }

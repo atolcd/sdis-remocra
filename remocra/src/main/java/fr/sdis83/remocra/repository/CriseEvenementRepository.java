@@ -1,5 +1,6 @@
 package fr.sdis83.remocra.repository;
 
+import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_DOCUMENT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_EVENEMENT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_SUIVI;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE_EVENEMENT_DROIT;
@@ -267,9 +268,9 @@ public class CriseEvenementRepository {
           ,row(c.getNom(), c.getDescription(),c.getConstat(), c.getRedefinition(), c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement())).where(CRISE_EVENEMENT.ID.eq(id)).execute();
     }
 
-
-
-    //TODO: mettre à jour les documents
+    //mise à jour des documents
+    context.delete(CRISE_DOCUMENT).where(CRISE_DOCUMENT.EVENEMENT.eq(id)).execute();
+    criseRepository.addEventDocuments(files, c.getCrise(), id);
     return c;
 
   }
