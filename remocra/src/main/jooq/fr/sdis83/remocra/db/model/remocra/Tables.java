@@ -133,6 +133,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromPartition;
 import fr.sdis83.remocra.db.model.remocra.tables.Utilisateur;
 import fr.sdis83.remocra.db.model.remocra.tables.Voie;
 import fr.sdis83.remocra.db.model.remocra.tables.ZoneCompetence;
+import fr.sdis83.remocra.db.model.remocra.tables.ZoneCompetenceCommune;
 import fr.sdis83.remocra.db.model.remocra.tables.ZoneSpeciale;
 
 import javax.annotation.Generated;
@@ -795,6 +796,11 @@ public class Tables {
 	 * The table remocra.zone_competence
 	 */
 	public static final ZoneCompetence ZONE_COMPETENCE = fr.sdis83.remocra.db.model.remocra.tables.ZoneCompetence.ZONE_COMPETENCE;
+
+	/**
+	 * The table remocra.zone_competence_commune
+	 */
+	public static final ZoneCompetenceCommune ZONE_COMPETENCE_COMMUNE = fr.sdis83.remocra.db.model.remocra.tables.ZoneCompetenceCommune.ZONE_COMPETENCE_COMMUNE;
 
 	/**
 	 * The table remocra.zone_speciale

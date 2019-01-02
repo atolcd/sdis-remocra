@@ -44,6 +44,12 @@
     </div>
 
     <div class="big-h-spacer"/>
+    <div class="text-start my-1">
+      <b-btn id="processBtn" class="ctrl" @click="showProcess"  title="Processus"><img src="/static/img/process.png"></b-btn>
+      <process ref="showProcess"></process>
+    </div>
+
+    <div class="big-h-spacer"/>
     <b-form-group class="text-start my-1">
       <b-form-radio-group id="btnradios2" buttons button-variant="outline-secondary" v-model="modeAffichage" :options="modeAffichages" name="radioBtnOutline" />
     </b-form-group>
@@ -246,6 +252,7 @@ import * as eventTypes from '../bus/event-types.js'
 import Feature from 'ol/Feature'
 import MultiLineString from 'ol/geom/MultiLineString'
 import MultiPoint from 'ol/geom/MultiPoint'
+import Process from './Process.vue';
 
   export default {
     name: 'OlMap',
@@ -263,8 +270,8 @@ import MultiPoint from 'ol/geom/MultiPoint'
            ShowInfo,
            StampedCard,
            InputGeom,
-           ModalImportFile
-         },
+           ModalImportFile,
+           Process   },
     data () {
       return {
         mapRowHeight: 'calc(100% - 50px)',
@@ -720,6 +727,9 @@ import MultiPoint from 'ol/geom/MultiPoint'
     this.desactivateControls()
 
   },
+  showProcess() {
+   this.$refs.showProcess.showModal()
+ },
   formatLength(line) {
     var length = getLength(line);
       var output;

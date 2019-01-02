@@ -134,6 +134,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromPartition;
 import fr.sdis83.remocra.db.model.remocra.tables.Utilisateur;
 import fr.sdis83.remocra.db.model.remocra.tables.Voie;
 import fr.sdis83.remocra.db.model.remocra.tables.ZoneCompetence;
+import fr.sdis83.remocra.db.model.remocra.tables.ZoneCompetenceCommune;
 import fr.sdis83.remocra.db.model.remocra.tables.ZoneSpeciale;
 
 import java.util.ArrayList;
@@ -160,7 +161,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Remocra extends SchemaImpl {
 
-	private static final long serialVersionUID = -1271913960;
+	private static final long serialVersionUID = -1590062764;
 
 	/**
 	 * The reference instance of <code>remocra</code>
@@ -433,6 +434,7 @@ public class Remocra extends SchemaImpl {
 			Utilisateur.UTILISATEUR,
 			Voie.VOIE,
 			ZoneCompetence.ZONE_COMPETENCE,
+			ZoneCompetenceCommune.ZONE_COMPETENCE_COMMUNE,
 			ZoneSpeciale.ZONE_SPECIALE);
 	}
 }

@@ -95,7 +95,7 @@ public class ProcessusEtlPlanificationRepository {
       .values(context.select(PROCESSUS_ETL_PLANIFICATION.MODELE).from(PROCESSUS_ETL_PLANIFICATION).where(PROCESSUS_ETL_PLANIFICATION.ID.eq(idPlannification)).fetchOne().value1()
           ,context.select(PROCESSUS_ETL_STATUT.ID).from(PROCESSUS_ETL_STATUT).where(PROCESSUS_ETL_STATUT.CODE.eq("C")).fetchOne().value1()
           ,Long.valueOf(idUtilisateur)
-          ,Long.valueOf(1)
+          ,1
           ,t).execute();
   Long idProcess  = context.select(DSL.max((PROCESSUS_ETL.ID))).from(PROCESSUS_ETL).fetchOne().value1();
   if(idProcess != null){

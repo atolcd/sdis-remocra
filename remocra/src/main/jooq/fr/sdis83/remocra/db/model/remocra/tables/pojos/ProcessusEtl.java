@@ -25,15 +25,16 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProcessusEtl implements Serializable {
 
-	private static final long serialVersionUID = 652934386;
+	private static final long serialVersionUID = 527355382;
 
 	private Long    id;
 	private Long    modele;
 	private Long    statut;
 	private Long    utilisateur;
-	private Long    priorite;
+	private Integer priorite;
 	private Instant demande;
 	private Instant execution;
+	private String  code;
 
 	public ProcessusEtl() {}
 
@@ -45,6 +46,7 @@ public class ProcessusEtl implements Serializable {
 		this.priorite = value.priorite;
 		this.demande = value.demande;
 		this.execution = value.execution;
+		this.code = value.code;
 	}
 
 	public ProcessusEtl(
@@ -52,9 +54,10 @@ public class ProcessusEtl implements Serializable {
 		Long    modele,
 		Long    statut,
 		Long    utilisateur,
-		Long    priorite,
+		Integer priorite,
 		Instant demande,
-		Instant execution
+		Instant execution,
+		String  code
 	) {
 		this.id = id;
 		this.modele = modele;
@@ -63,6 +66,7 @@ public class ProcessusEtl implements Serializable {
 		this.priorite = priorite;
 		this.demande = demande;
 		this.execution = execution;
+		this.code = code;
 	}
 
 	public Long getId() {
@@ -101,11 +105,11 @@ public class ProcessusEtl implements Serializable {
 		return this;
 	}
 
-	public Long getPriorite() {
+	public Integer getPriorite() {
 		return this.priorite;
 	}
 
-	public ProcessusEtl setPriorite(Long priorite) {
+	public ProcessusEtl setPriorite(Integer priorite) {
 		this.priorite = priorite;
 		return this;
 	}
@@ -125,6 +129,15 @@ public class ProcessusEtl implements Serializable {
 
 	public ProcessusEtl setExecution(Instant execution) {
 		this.execution = execution;
+		return this;
+	}
+
+	public String getCode() {
+		return this.code;
+	}
+
+	public ProcessusEtl setCode(String code) {
+		this.code = code;
 		return this;
 	}
 }

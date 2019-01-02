@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProcessusEtl extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -1315652535;
+	private static final long serialVersionUID = 2006451625;
 
 	/**
 	 * The reference instance of <code>remocra.processus_etl</code>
@@ -69,14 +69,14 @@ public class ProcessusEtl extends TableImpl<Record> {
 	public final TableField<Record, Long> STATUT = createField("statut", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "Etat de la demande");
 
 	/**
-	 * The column <code>remocra.processus_etl.utilisateur</code>. Utilisateur demandeur. Dans le cas d'une tâche planifié, identifiant correspondant à l'utilisateur mentionné dans paramconf
+	 * The column <code>remocra.processus_etl.utilisateur</code>. Utilisateur demandeur. Dans le cas d'une tâche planifiée, identifiant correspondant à l'utilisateur mentionné dans param_conf
 	 */
-	public final TableField<Record, Long> UTILISATEUR = createField("utilisateur", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "Utilisateur demandeur. Dans le cas d'une tâche planifié, identifiant correspondant à l'utilisateur mentionné dans paramconf");
+	public final TableField<Record, Long> UTILISATEUR = createField("utilisateur", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "Utilisateur demandeur. Dans le cas d'une tâche planifiée, identifiant correspondant à l'utilisateur mentionné dans param_conf");
 
 	/**
 	 * The column <code>remocra.processus_etl.priorite</code>. Niveau de priorité. De 1 : Pas prioritaire urgent à 5 : Très urgent
 	 */
-	public final TableField<Record, Long> PRIORITE = createField("priorite", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "Niveau de priorité. De 1 : Pas prioritaire urgent à 5 : Très urgent");
+	public final TableField<Record, Integer> PRIORITE = createField("priorite", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "Niveau de priorité. De 1 : Pas prioritaire urgent à 5 : Très urgent");
 
 	/**
 	 * The column <code>remocra.processus_etl.demande</code>. Date et heure de création de la demande
@@ -84,9 +84,14 @@ public class ProcessusEtl extends TableImpl<Record> {
 	public final TableField<Record, Instant> DEMANDE = createField("demande", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "Date et heure de création de la demande", new InstantConverter());
 
 	/**
-	 * The column <code>remocra.processus_etl.execution</code>. Date et heure de fin d'execution du processus
+	 * The column <code>remocra.processus_etl.execution</code>. Date et heure de fin d'exécution du processus
 	 */
-	public final TableField<Record, Instant> EXECUTION = createField("execution", org.jooq.impl.SQLDataType.TIMESTAMP, this, "Date et heure de fin d'execution du processus", new InstantConverter());
+	public final TableField<Record, Instant> EXECUTION = createField("execution", org.jooq.impl.SQLDataType.TIMESTAMP, this, "Date et heure de fin d'exécution du processus", new InstantConverter());
+
+	/**
+	 * The column <code>remocra.processus_etl.code</code>. Code interne
+	 */
+	public final TableField<Record, String> CODE = createField("code", org.jooq.impl.SQLDataType.VARCHAR.nullable(false).defaulted(true), this, "Code interne");
 
 	/**
 	 * Create a <code>remocra.processus_etl</code> table reference

@@ -3,8 +3,13 @@ package fr.sdis83.remocra.repository;
 import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL_MODELE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL_MODELE_DROIT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL_MODELE_PARAMETRE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL_PARAMETRE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.REQUETE_MODELE_PARAMETRE;
+import static fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtl.PROCESSUS_ETL;
+import static fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlStatut.PROCESSUS_ETL_STATUT;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,23 +22,32 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import fr.sdis83.remocra.db.model.remocra.Tables;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtl;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlModele;
 import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.exception.BusinessException;
+import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import org.apache.log4j.Logger;
+import org.joda.time.Instant;
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 @Configuration
 public class ProcessusEtlModeleRepository {
@@ -46,6 +60,8 @@ public class ProcessusEtlModeleRepository {
   @Autowired
   private UtilisateurService utilisateurService;
 
+  @Autowired
+  private ParamConfService paramConfService;
 
   public ProcessusEtlModeleRepository() {
 
@@ -91,7 +107,7 @@ public class ProcessusEtlModeleRepository {
     return context.fetchCount(context.select().from(PROCESSUS_ETL_MODELE));
   }
 
-  public List<RemocraVueCombo> getComboValues(Long id, String pathParam) throws SQLException, ParseException {
+  public List<RemocraVueCombo> getComboValues(Long id, String pathParam, Integer limit) throws SQLException, ParseException {
     List<RemocraVueCombo> lstResult = new ArrayList<RemocraVueCombo>();
     @SuppressWarnings("unchecked")
     String query = context.select(PROCESSUS_ETL_MODELE_PARAMETRE.SOURCE_SQL).from(PROCESSUS_ETL_MODELE_PARAMETRE).where(PROCESSUS_ETL_MODELE_PARAMETRE.ID.eq(id)).fetchOne(PROCESSUS_ETL_MODELE_PARAMETRE.SOURCE_SQL);
@@ -130,7 +146,7 @@ public class ProcessusEtlModeleRepository {
     Connection connection = context.configuration().connectionProvider().acquire();
     //on applique les filtres si y'en a
     if(pathParam != null && pathParam != "") {
-      query = "SELECT * FROM ("+ query +") AS foo WHERE lower(" +libelle +") LIKE lower( "+"'%"+pathParam+"%')" ;
+      query = "SELECT * FROM ("+ query +") AS foo WHERE lower(" +libelle +") LIKE lower( "+"'%"+pathParam+"%') limit "+limit ;
     }
     //On prépare la requete (sourceSql dans requete modele selection en settant les parametres ${})
     PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -194,5 +210,73 @@ public class ProcessusEtlModeleRepository {
       ps.setObject(index,parameterObj.get("valeur"));
     }
   }
+
+  public ProcessusEtl createProcess(MultipartHttpServletRequest request) throws ParseException, IOException {
+
+    ProcessusEtl p  = new ProcessusEtl();
+    //Ajout du processusEtl
+    Long idModele = Long.valueOf(String.valueOf(request.getParameter("processus")));
+    Instant t = new Instant();
+    int priorite  = Integer.valueOf(String.valueOf(request.getParameter("priorite")));
+    Utilisateur u = utilisateurService.getCurrentUtilisateur();
+    context.insertInto(PROCESSUS_ETL, PROCESSUS_ETL.MODELE, PROCESSUS_ETL.STATUT, PROCESSUS_ETL.UTILISATEUR, PROCESSUS_ETL.PRIORITE, PROCESSUS_ETL.DEMANDE)
+        .values(idModele
+            ,context.select(PROCESSUS_ETL_STATUT.ID).from(PROCESSUS_ETL_STATUT).where(PROCESSUS_ETL_STATUT.CODE.eq("C")).fetchOne().value1()
+            ,Long.valueOf(u.getId())
+            ,priorite
+            ,t).execute();
+    Long idProcess  = context.select(DSL.max((Tables.PROCESSUS_ETL.ID))).from(Tables.PROCESSUS_ETL).fetchOne().value1();
+    String codeProcess  = context.select(PROCESSUS_ETL.CODE).from(PROCESSUS_ETL).where(PROCESSUS_ETL.ID.eq(idProcess)).fetchOne().value1();
+    //Ajout des fichiers
+  Map<String, MultipartFile> files = request.getFileMap();
+    if (request.getFileNames() != null) {
+      // Répertoire "depots PDI"
+      String basePath = paramConfService.getDossierDepotPdi();
+      // Répertoire "depots PDI" du traitement
+      String uploadDirPath = basePath + File.separator + codeProcess;
+
+      File depotDir = new File(uploadDirPath);
+      if (!depotDir.exists()) {
+        // Créer le répertoire
+        if (!depotDir.mkdir()) {
+          throw new SecurityException("Impossible de créer le répertoire " + uploadDirPath);
+        }
+      }
+
+      Map<String, MultipartFile> mapFile = ((MultipartHttpServletRequest) request).getFileMap();
+
+      for (Map.Entry<String, MultipartFile> entry : mapFile.entrySet()) {
+        CommonsMultipartFile file = (CommonsMultipartFile) entry.getValue();
+        // Création du fichier sur disque
+        String targetFilePath = depotDir + File.separator + file.getOriginalFilename();
+        File targetTmpFile = new File(depotDir + File.separator + file.getOriginalFilename() + ".tmp");
+        if (depotDir.canWrite()) {
+          // Copie dans un fichier temporaire
+          file.transferTo(targetTmpFile);
+          // Fichier définitif : on retire le .tmp
+          targetTmpFile.renameTo(new File(targetFilePath));
+        } else {
+          throw new SecurityException("Impossible de créer le fichier " + targetFilePath);
+        }
+      }
+    }
+    //Ajout des paramètres
+    Map  mapParams = request.getParameterMap();
+    for(Object key : mapParams.keySet()){
+      String keyStr = (String)key;
+      String[] values = (String[])(mapParams.get(keyStr));
+      for(String  val : values){
+        if(keyStr.substring(0,5).equals("input")){
+          context.insertInto(PROCESSUS_ETL_PARAMETRE, PROCESSUS_ETL_PARAMETRE.PROCESSUS, PROCESSUS_ETL_PARAMETRE.PARAMETRE, PROCESSUS_ETL_PARAMETRE.VALEUR)
+              .values(idProcess
+                  ,Long.valueOf(keyStr.substring(5))
+                  ,val).execute();
+        }
+      }
+    }
+    return p;
+
+  }
+
 
 }
