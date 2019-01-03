@@ -118,9 +118,8 @@
           </b-card-header>
           <b-collapse id="accordion4" accordion="my-accordion" role="tabpanel">
             <b-card-body>
-              <p class="card-text">
-                <input-geom ref="inputGeom"></input-geom>
-              </p>
+		          <recherche-analyse ref="rechercheAnalyse"></recherche-analyse>
+
             </b-card-body>
           </b-collapse>
         </b-card>
@@ -244,7 +243,6 @@ import ToolBar from './ToolBar.vue';
 import ChoiceFeature from './ChoiceFeature.vue';
 import ShowInfo from './ShowInfo.vue';
 import StampedCard from './StampedCard.vue';
-import InputGeom from './InputGeom.vue';
 import ModalImportFile from './ModalImportFile.vue'
 import html2canvas from 'html2canvas'
 import EventBus from '../bus'
@@ -252,6 +250,7 @@ import * as eventTypes from '../bus/event-types.js'
 import Feature from 'ol/Feature'
 import MultiLineString from 'ol/geom/MultiLineString'
 import MultiPoint from 'ol/geom/MultiPoint'
+import RechercheAnalyse from './RechercheAnalyse.vue';
 import Process from './Process.vue';
 
   export default {
@@ -264,12 +263,12 @@ import Process from './Process.vue';
            NewDocument,
            Evenements,
            Documents,
+           RechercheAnalyse,
            Filters,
            ToolBar,
            ChoiceFeature,
            ShowInfo,
            StampedCard,
-           InputGeom,
            ModalImportFile,
            Process   },
     data () {
@@ -728,6 +727,7 @@ import Process from './Process.vue';
 
   },
   showProcess() {
+   let activateToolbar = document.getElementById('processBtn').toggleAttribute('ctrl-active')
    this.$refs.showProcess.showModal()
  },
   formatLength(line) {
@@ -956,7 +956,7 @@ import Process from './Process.vue';
        var self = this
        this.map.addInteraction(this.modify)
        this.modify.on('modifyend',function(evt){
-         this.$refs.inputGeom.showValidGeom = true
+         this.$refs.rechercheAnalyse.showValidGeom = true
        })
 
     },
@@ -1287,7 +1287,7 @@ import Process from './Process.vue';
                   })
                 })
                 measuringTool.on('drawend',function(evt){
-                   self.$refs.inputGeom.showValidGeom = index
+                   self.$refs.rechercheAnalyse.showValidGeom = index
                    self.selectedFeature = evt.feature
                    self.map.removeInteraction(measuringTool)
                 })
@@ -1317,10 +1317,10 @@ import Process from './Process.vue';
           this.removeMeasureInputGeomInteraction(index)
           this.removeModifInputGeomInteraction(index)
           this.removeSelectInputGeomInteraction(index)
-          this.$refs.inputGeom.showValidGeom = null
+          this.$refs.rechercheAnalyse.showValidGeom = null
         },
         validGeom(index){
-          _.forEach(this.$refs.inputGeom.$refs, input => {
+          _.forEach(this.$refs.rechercheAnalyse.$refs, input => {
             if(input[0].id == 'input'+index ){
               var geomL93 = null
               var wktGeomL93 = null
@@ -1348,10 +1348,10 @@ import Process from './Process.vue';
                       console.log(geoms[0])
                       multigeom = this.formatGeomFromMap(geoms[0])
                     }
-              input[0].value = multigeom
+              input[0].value = multigeom;
             }
           })
-          this.$refs.inputGeom.showValidGeom = null
+          this.$refs.rechercheAnalyse.showValidGeom = null
           this.removeModifInputGeomInteraction(index)
           this.removeMeasureInputGeomInteraction(index)
           this.removeSelectInputGeomInteraction(index)
@@ -1360,7 +1360,7 @@ import Process from './Process.vue';
           var workingLayer = this.getLayerById('input'+index)
           if(workingLayer && workingLayer !== null){
             var selectInput = new Select({
-              source: workingLayer.getSource()
+              layers: [workingLayer]
             });
             this.map.addInteraction(selectInput);
 
@@ -1373,7 +1373,7 @@ import Process from './Process.vue';
             this.inputGeoms.push(modifyInput, selectInput)
             this.map.addInteraction(modifyInput)
             modifyInput.on('modifyend',function(evt){
-              self.$refs.inputGeom.showValidGeom = index
+              self.$refs.rechercheAnalyse.showValidGeom = index
               self.selectedFeature = evt.features.getArray()[0]
             })
             modifyInput.on('modifystart',function(evt){

@@ -1,8 +1,8 @@
 <template>
   <form v-on:submit.prevent>
-    <autocomplete :input-attrs="{ placeholder: 'Origine...' }" v-model="selected"
+    <autocomplete :input-attrs="{ placeholder: 'Sélectionner une valeur..'}" v-model="selected"
       :items="results" :get-label="getLabel" :component-item='processParamTemplate' :min-len="2"
-      :auto-select-one-item="false" @update-items="search" @item-selected="paramSelected"
+      :auto-select-one-item="true" @update-items="search" @item-selected="paramSelected"
       @item-clicked="paramClicked"/>
   </form>
 </template>
@@ -23,31 +23,40 @@ export default {
 
   data() {
     return {
-    selected: null,
+      selected: '  ',
       results: [],
       processParamTemplate: SearchProcessParamTemplate,
-      searchInput: ""
     }
   },
 
   props:{
     paramId:{
-      required:false,
+      required:true,
       type: Number
+    },
+    queryURL:{
+      required:false,
+      type:String
+    },
+    searchInput:{
+      required: false,
+      type: String
     }
   },
-
+  mounted(){
+    this.search(this.searchInput);
+  },
   methods: {
     getLabel(item) {
       // valeur affiché peut être un libelle ou un nom ou autre
       return item ? Object.values(item)[1] : ''
     },
+
     search(text) {
-      console.log(text)
-      axios.get('remocra/processusetlmodele/processusetlmodparalst/'+this.paramId+'?&query=' +text + '&page=1&start=0&limit=10')
+      var url = (this.queryURL) ? this.queryURL : 'remocra/processusetlmodele/processusetlmodparalst/';
+      axios.get(url+this.paramId+'?&query=' +text + '&page=1&start=0&limit=10')
         .then((response) => {
           this.results = response.data.data
-          this.searchInput = text
         })
         .catch(function(error) {
           console.error('origines', error)
