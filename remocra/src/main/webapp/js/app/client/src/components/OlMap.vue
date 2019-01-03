@@ -132,7 +132,8 @@
       <choice-feature :crise="criseId" ref="choiceFeature"></choice-feature>
       <stamped-card :crise="criseId" ref="stampedCard"></stamped-card>
       </b-row>
-      <div id="map">
+        <div id="map">
+        <map-features ref="MapFeatures"></map-features>
       </div>
     </b-col>
     <b-col>
@@ -252,6 +253,7 @@ import MultiLineString from 'ol/geom/MultiLineString'
 import MultiPoint from 'ol/geom/MultiPoint'
 import RechercheAnalyse from './RechercheAnalyse.vue';
 import Process from './Process.vue';
+import MapFeatures from './MapFeatures.vue';
 
   export default {
     name: 'OlMap',
@@ -270,7 +272,8 @@ import Process from './Process.vue';
            ShowInfo,
            StampedCard,
            ModalImportFile,
-           Process   },
+           Process,
+           MapFeatures},
     data () {
       return {
         mapRowHeight: 'calc(100% - 50px)',
@@ -376,6 +379,7 @@ import Process from './Process.vue';
         EventBus.$on(eventTypes.VALIDE_INPUTGEOM, index =>{this.validGeom(index)})
         EventBus.$on(eventTypes.MODIFY_INPUTGEOM, this.modifyGeom)
         EventBus.$on(eventTypes.DELETE_INPUTGEOM, this.deleteGeom)
+        EventBus.$on(eventTypes.RESEARCH_MAPFEATURES, this.drawMapFeatures)
     },
     updated() {
       //this.addSortable()
@@ -1473,6 +1477,10 @@ import Process from './Process.vue';
             }
           }
         }
+      },
+
+      drawMapFeatures(idSelection){
+        this.$refs.MapFeatures.eventDrawMapFeatures(idSelection, this.map);
       }
    }
 }

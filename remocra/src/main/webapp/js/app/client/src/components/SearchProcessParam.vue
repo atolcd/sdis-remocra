@@ -41,6 +41,10 @@ export default {
     searchInput:{
       required: false,
       type: String
+    },
+    nomParam:{
+      required:false,
+      type:String
     }
   },
   mounted(){

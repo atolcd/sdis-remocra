@@ -4,7 +4,7 @@
 
     <b-form-group>
       <select v-model="selected" id="selectAnalyse" v-on:change="createFormFromSelect()" required>
-          <option v-for="(value, key) in selectAnalyseOptions"  :data-description='value.dataDescription' :value='value.valeur'>
+          <option v-for="(value, key) in selectAnalyseOptions"  :data-description='value.dataDescription' :data-spatial='value.spatial' :value='value.valeur'>
             {{value.libelle}}
           </option>
       </select>
@@ -121,7 +121,8 @@ export default {
           var o = {
             valeur: item.id,
             dataDescription: item.description,
-            libelle: item.libelle
+            libelle: item.libelle,
+            spatial: item.spatial
           }
           self.selectAnalyseOptions.push(o);
         })
@@ -207,7 +208,7 @@ export default {
 
           valParams.push(param);
         });
-        console.log(valParams);
+
         this.executeRequest(this.selected, valParams);
       }
     },
@@ -227,8 +228,14 @@ export default {
     //Récupération des données
     retrieveData(idSelection)
     {
-      //TODO: Gérer la récupération des données de la requête (tableau et carte)
-      console.log('http://localhost:8080/remocra/requetemodele/reqmodresult/'+idSelection);
+      axios.get('/remocra/requetemodele/reqmodresult/'+idSelection).then((response) => {
+        if(document.getElementById("selectAnalyse").options[document.getElementById("selectAnalyse").selectedIndex].getAttribute('data-spatial')){
+          EventBus.$emit(eventTypes.RESEARCH_MAPFEATURES, idSelection)
+        }
+      })
+      .catch(function(error) {
+        console.error('Retrieving data ', error);
+      });
     },
 
     selectGeom(typeGeom,index){
@@ -247,7 +254,6 @@ export default {
     deleteGeom(index){
       EventBus.$emit(eventTypes.DELETE_INPUTGEOM, index)
     },
-
   }
 }
 

@@ -8,6 +8,20 @@
       "libelle" : "Évènements",
       "visibility" : true,
       "opacity" : 1
+    },{
+      "type" : "wms",
+      "id" : "selection",
+      "libelle" : "Résultat d'analyse",
+      "url":"/remocra/geoserver/remocra/wms",
+      "visibility" : true,
+      "opacity" : 1,
+      "sld": null,
+      "scale_min":"0",
+      "scale_max":"362834",
+      "layers":"remocra:v_requete_modele_selection_detail",
+      "styles" : [{ "id": "default", "libelle": "" }],
+      "projection": "EPSG:900913",
+      "interrogeable": true
     }]
   },{
     "libelle":"Couches mobilisées",
