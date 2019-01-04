@@ -217,8 +217,7 @@ export default {
     executeRequest(idRequeteModele, valParams){
       //Envoi des données
       axios.post('/remocra/requetemodele/'+idRequeteModele+'?jsonValeurs='+JSON.stringify(valParams)+'').then((response) => {
-        var idSelection = JSON.parse(response.data.message)[0].requete;
-        this.retrieveData(idSelection);
+        this.retrieveData(JSON.parse(response.data.message));
       })
       .catch(function(error) {
         console.error('requeteModele', error);
@@ -226,12 +225,12 @@ export default {
     },
 
     //Récupération des données
-    retrieveData(idSelection)
+    retrieveData(header)
     {
+      var idSelection = header[0].requete;
       axios.get('/remocra/requetemodele/reqmodresult/'+idSelection).then((response) => {
-        if(document.getElementById("selectAnalyse").options[document.getElementById("selectAnalyse").selectedIndex].getAttribute('data-spatial')){
-          EventBus.$emit(eventTypes.RESEARCH_MAPFEATURES, idSelection)
-        }
+        var spatial = document.getElementById("selectAnalyse").options[document.getElementById("selectAnalyse").selectedIndex].getAttribute('data-spatial');
+        EventBus.$emit(eventTypes.RESEARCH_TABDONNEES, header, response.data.data, spatial, idSelection)
       })
       .catch(function(error) {
         console.error('Retrieving data ', error);

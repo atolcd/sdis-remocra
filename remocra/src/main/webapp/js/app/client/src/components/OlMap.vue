@@ -132,9 +132,22 @@
       <choice-feature :crise="criseId" ref="choiceFeature"></choice-feature>
       <stamped-card :crise="criseId" ref="stampedCard"></stamped-card>
       </b-row>
-        <div id="map">
-        <map-features ref="MapFeatures"></map-features>
-      </div>
+        <b-row class='mapDiv'>
+          <b-col>
+            <div id="map">
+              <map-features ref="MapFeatures"></map-features>
+              <button class='boutonToggleTableau btn btn-info' @click='toggleTableau'>Tableau
+                <img v-if='displayType=="MAP_ONLY"' src='/static/img/collapse.svg' />
+                <img v-else src='/static/img/expand.svg' />
+              </button>
+            </div>
+          </b-col>
+        </b-row>
+         <b-row class='tableauDiv'>
+          <b-col>
+             <tableau-donnees ref="TableauDonnees" :pageSize='14'></tableau-donnees>
+          </b-col>
+         </b-row>
     </b-col>
     <b-col>
       <div role="tablist">
@@ -190,6 +203,7 @@
       </div>
     </b-col>
   </b-row>
+
   <b-modal ref="updateGeom" title="Modifier la géométrie">
     <p class="my-4">Voulez vous valider la nouvelle géométrie</p>
   </b-modal>
@@ -254,6 +268,7 @@ import MultiPoint from 'ol/geom/MultiPoint'
 import RechercheAnalyse from './RechercheAnalyse.vue';
 import Process from './Process.vue';
 import MapFeatures from './MapFeatures.vue';
+import TableauDonnees from './TableauDonnees.vue';
 
   export default {
     name: 'OlMap',
@@ -273,7 +288,8 @@ import MapFeatures from './MapFeatures.vue';
            StampedCard,
            ModalImportFile,
            Process,
-           MapFeatures},
+           MapFeatures,
+           TableauDonnees},
     data () {
       return {
         mapRowHeight: 'calc(100% - 50px)',
@@ -311,7 +327,8 @@ import MapFeatures from './MapFeatures.vue';
           idx: -1,
           btns: false
         },
-        inputGeoms:[]
+        inputGeoms:[],
+        displayType: 'MAP_ONLY'
       }
     },
     mounted() {
@@ -361,6 +378,9 @@ import MapFeatures from './MapFeatures.vue';
           }
           this.navigation.btns = false
         })
+
+        this.setDisplay(this.displayType);
+
         EventBus.$on(eventTypes.REFRESH_MAP, this.refreshMap)
         EventBus.$on(eventTypes.ZOOM_TOGEOM, geom => {this.zoomToGeom(geom)})
         EventBus.$on(eventTypes.ZOOM_TOEXTENT, extent => {this.zoomToExtent(extent)})
@@ -379,7 +399,7 @@ import MapFeatures from './MapFeatures.vue';
         EventBus.$on(eventTypes.VALIDE_INPUTGEOM, index =>{this.validGeom(index)})
         EventBus.$on(eventTypes.MODIFY_INPUTGEOM, this.modifyGeom)
         EventBus.$on(eventTypes.DELETE_INPUTGEOM, this.deleteGeom)
-        EventBus.$on(eventTypes.RESEARCH_MAPFEATURES, this.drawMapFeatures)
+        EventBus.$on(eventTypes.RESEARCH_TABDONNEES, this.showTabDonnees)
     },
     updated() {
       //this.addSortable()
@@ -1479,8 +1499,56 @@ import MapFeatures from './MapFeatures.vue';
         }
       },
 
-      drawMapFeatures(idSelection){
-        this.$refs.MapFeatures.eventDrawMapFeatures(idSelection, this.map);
+      //Affichage du tableau de données (et de la map si requête spatiale)
+      showTabDonnees(header, data, spatial, idSelection){
+        if(spatial){
+          this.$refs.MapFeatures.eventDrawMapFeatures(idSelection, this.map);
+          this.setDisplay('SPLIT');
+        }
+        else{
+          this.setDisplay('TABLE_ONLY');
+        }
+        this.$refs.TableauDonnees.eventDrawTableau(header, data);
+        document.getElementsByClassName("boutonToggleTableau")[0].style.visibility = 'visible';
+      },
+
+      //Détermine le mode d'affichage de la map et du tableau de données
+      setDisplay(type){
+        switch(type){
+          case 'MAP_ONLY': //Seulement la map
+            document.getElementsByClassName("mapDiv")[0].style.display = '';
+            document.getElementsByClassName("mapDiv")[0].style.height = '100%';
+            document.getElementsByClassName("tableauDiv")[0].style.display = 'none';
+            this.map.updateSize();
+            break;
+
+          case 'TABLE_ONLY': //Seulement le tableau
+            document.getElementsByClassName("mapDiv")[0].style.display = 'none';
+            document.getElementsByClassName("tableauDiv")[0].style.display = '';
+            document.getElementsByClassName("tableauDiv")[0].style.height = '100%';
+            this.$refs.TableauDonnees.setPageSize(37);
+            break;
+
+          case 'SPLIT': //Map et tableau
+            document.getElementsByClassName("mapDiv")[0].style.display = '';
+            document.getElementsByClassName("tableauDiv")[0].style.display = '';
+            document.getElementsByClassName("mapDiv")[0].style.height = '60%';
+            document.getElementsByClassName("tableauDiv")[0].style.height = '40%';
+            this.map.updateSize();
+            this.$refs.TableauDonnees.setPageSize(13);
+            break;
+        }
+        this.displayType = type;
+      },
+
+      toggleTableau(){
+        if(this.displayType != 'MAP_ONLY'){
+          this.setDisplay('MAP_ONLY');
+        }
+        else{
+          this.setDisplay('SPLIT');
+        }
+
       }
    }
 }
@@ -1496,5 +1564,26 @@ import MapFeatures from './MapFeatures.vue';
   .ctrlImportLayer:hover{
     border-color:#9d9d9d;
     background-color: #f3f3f3;
+  }
+
+  .tableauDiv{
+    overflow-y: auto;
+    margin-top: 5px;
+  }
+
+  .col{
+    max-height: 100%;
+  }
+
+  .boutonToggleTableau{
+    position: absolute;
+    bottom: 6px;
+    right: 20px;
+    z-index: 99999;
+    visibility: hidden;
+  }
+
+  .boutonToggleTableau img{
+    filter: invert(1);
   }
 </style>
