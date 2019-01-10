@@ -2,6 +2,8 @@ package fr.sdis83.remocra.web;
 
 import static fr.sdis83.remocra.util.GeometryUtil.sridFromGeom;
 
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,6 +15,8 @@ import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseSuivi;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeCriseProprieteEvenement;
+import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.domain.utils.RemocraInstantTransformer;
 import fr.sdis83.remocra.ogc.cql.CompositeStatement;
@@ -163,6 +167,8 @@ public class CriseEvenementController {
     }
   }
 
+
+
   @RequestMapping(value = "/layer", method = RequestMethod.GET, headers = "Accept=application/json")
   @PreAuthorize("hasRight('CRISE_R')")
   public ResponseEntity<java.lang.String> layer(final @RequestParam String point, @RequestParam String projection) {
@@ -177,6 +183,64 @@ public class CriseEvenementController {
     }
   }
 
+
+  @RequestMapping(value = "/proprietes/{idNature}", method = RequestMethod.GET, headers = "Accept=application/json")
+  @PreAuthorize("hasRight('CRISE_R')")
+  public ResponseEntity<String> getProprietes(final @PathVariable(value = "idNature") Long id) {
+
+    return new AbstractExtListSerializer<TypeCriseProprieteEvenement>("Proprietes retrieved.") {
+
+      @Override
+      protected JSONSerializer getJsonSerializer() {
+        return new JSONSerializer()
+            .transform(RemocraDateHourTransformer.getInstance(), Date.class).transform(new RemocraInstantTransformer(), Instant.class)
+            .include("data.*").include("total").include("message");
+      }
+
+      @Override
+      protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+        serializer.include("data.*");
+
+        return serializer.include("message");
+      }
+
+      @Override
+      protected List<TypeCriseProprieteEvenement> getRecords() {
+        return criseEvenementRepository.getProprietes(id);
+      }
+
+    }.serialize();
+  }
+
+
+  /**
+   * Retourne la liste des valeurs pour un paramètre de type 'combo'.
+   *
+   * @param id
+   * @return
+   */
+  @RequestMapping(value = "evenementmodparalst/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+  @PreAuthorize("hasRight('CRISE_C')")
+  public ResponseEntity<java.lang.String> getListComboModelProprieteLike(
+      final @PathVariable("id") Long id,
+      final @RequestParam(value = "query", required = false) String query,
+      final @RequestParam(value = "limit", required = false) Integer limit){
+
+    return new AbstractExtListSerializer<RemocraVueCombo>(" retrieved.") {
+
+      @Override
+      protected List<RemocraVueCombo> getRecords() {
+        try{
+          return criseEvenementRepository.getComboValues(id, query, limit != null ? limit : 10);
+        } catch (SQLException e) {
+          e.printStackTrace();
+        } catch (ParseException e) {
+          e.printStackTrace();
+        }return  null;
+      }
+
+    }.serialize();
+  }
   @RequestMapping(value = "/message/{idMessage}", method = RequestMethod.GET, headers = "Accept=application/xml")
   @PreAuthorize("hasRight('CRISE_R')")
   public ResponseEntity<String> getMessageById(final @PathVariable(value = "idMessage") Long id) {
@@ -502,4 +566,6 @@ Puis :
 
 "SRC natif" et "SRC des données" : EPSG:2154
     */
+
+
 }

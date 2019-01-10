@@ -62,7 +62,7 @@
   <b-row class="text-start" :style="{height: mapRowHeight}">
     <b-col>
       <div role="tablist">
-      <new-evenement ref="newEvenement"></new-evenement>
+      <new-evenement :criseId="criseId" ref="newEvenement"></new-evenement>
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
             <span style="cursor:pointer" href="#" v-b-toggle.accordion1>Évènements</span><span>

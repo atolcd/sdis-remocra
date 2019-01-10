@@ -546,6 +546,11 @@
                         <artifactId>quartz</artifactId>
                         <version>2.2.1</version>
                 </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20180130</version>
+        </dependency>
 	</dependencies>
 	<build>
 		<finalName>remocra</finalName>

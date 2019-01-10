@@ -17,7 +17,7 @@
                   type="time" style="margin-top:6px;"></b-form-input>
       </b-form-group>
       <b-form-group horizontal label="Origine:" label-for="origine">
-      <search-origine :crise='this.criseId'  ref='searchOrigine'></search-origine>
+      <search-origine :crise='criseId'  ref='searchOrigine'></search-origine>
       </b-form-group>
       <b-form-group  horizontal label="Importance:" label-for="importance">
         <rate id="importanceMessage" :length="5" v-model="form.importance" />
@@ -45,15 +45,20 @@ export default {
   components: {
     SearchOrigine
   },
+  props:{
+    criseId:{
+      required: true,
+      type: String
+    }
+  },
   data() {
     return {
-      criseId: null,
       evenementId: null,
       disableOk: false,
       form: {
         objet: '',
         message: '',
-        origine: null,
+        origine: '  ',
         tags: '',
         creation: moment(),
         time: moment(),
@@ -74,8 +79,10 @@ export default {
             this.form.message = message.message
             this.form.creation = moment(message.creation.toString()).format("YYYY-MM-DD")
             this.form.time = moment(message.creation.toString()).format("HH:mm")
-            this.form.origine = message.origine
-            this.$refs.searchOrigine.selected = message.origine
+            this.form.origine = message.origine !== null ?  message.origine : '  '
+            if(message.origine !== null){
+                this.$refs.searchOrigine.search(this.form.origine)
+            }
             this.form.importance = message.importance
             this.form.tags = message.tags
           })
@@ -92,11 +99,10 @@ export default {
       this.form.message = ''
       this.form.creation = moment().format("YYYY-MM-DD")
       this.form.time = moment().format("HH:mm")
-      this.$refs.searchOrigine.selected = null
       this.form.origine = null
+      this.$refs.searchOrigine.origine = '  '
       this.form.importance = 0
       this.form.tags = ''
-      this.criseId =  null,
       this.evenementId =  null,
       this.disableOk = false
 
@@ -114,7 +120,7 @@ export default {
       var formData = {'objet': this.form.objet,
       'message': this.form.message,
       'creation': moment(this.form.creation.toString()+'T'+this.form.time.toString()).format(),
-      'origine': this.$refs.searchOrigine.selected !== null ? this.$refs.searchOrigine.selected : this.$refs.searchOrigine.searchInput,
+      'origine': this.$refs.searchOrigine.origine && this.$refs.searchOrigine.origine !== null ? this.$refs.searchOrigine.origine : this.$refs.searchOrigine.searchText,
       'importance': this.form.importance,
       'tags': this.form.tags,
       'crise': this.criseId,

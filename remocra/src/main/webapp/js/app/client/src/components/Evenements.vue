@@ -24,7 +24,7 @@
       </b-collapse>
       </b-list-group-item>
   </b-list-group>
-  <new-message ref="newMessage"></new-message>
+  <new-message :criseId="crise" ref="newMessage"></new-message>
   </div>
 </template>
 

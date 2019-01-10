@@ -2,9 +2,11 @@ package fr.sdis83.remocra.repository;
 
 import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_DOCUMENT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_EVENEMENT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_EVENEMENT_COMPLEMENT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_SUIVI;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE_EVENEMENT_DROIT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE_NATURE_EVENEMENT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE_PROPRIETE_EVENEMENT;
 import static fr.sdis83.remocra.db.model.remocra.tables.Document.DOCUMENT;
 import static fr.sdis83.remocra.util.GeometryUtil.sridFromGeom;
 import static org.jooq.impl.DSL.and;
@@ -12,6 +14,12 @@ import static org.jooq.impl.DSL.row;
 import static org.jooq.impl.DSL.select;
 import static org.jooq.impl.DSL.trueCondition;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,6 +28,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,8 +38,12 @@ import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
 import fr.sdis83.remocra.db.converter.InstantConverter;
 import fr.sdis83.remocra.db.model.remocra.Tables;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenementComplement;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseSuivi;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeCriseNatureEvenement;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeCriseProprieteEvenement;
+import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
+import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
@@ -44,6 +58,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.impl.DSL;
+import org.json.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.NameTokenizers;
 import org.modelmapper.jooq.RecordValueReader;
@@ -144,6 +159,9 @@ public class CriseEvenementRepository {
       List<CriseSuivi> suivis= this.getMessages(crEvenement.getId());
       //On recupere la liste des communes
       crEvenement.setCriseSuivis(suivis);
+      List<CriseEvenementComplement> complement= this.getComplement(crEvenement.getId());
+      //On recupere la liste des complements
+      crEvenement.setCriseComplement(complement);
       crEvenements.add(crEvenement);
     }
 
@@ -183,6 +201,9 @@ public class CriseEvenementRepository {
 
   public List<CriseSuivi> getMessages(Long id){
       return context.select().from(CRISE_SUIVI).where(CRISE_SUIVI.EVENEMENT.eq(id)).fetchInto(CriseSuivi.class);
+  }
+  public List<CriseEvenementComplement> getComplement(Long id){
+    return context.select().from(CRISE_EVENEMENT_COMPLEMENT).where(CRISE_EVENEMENT_COMPLEMENT.EVENEMENT.eq(id)).fetchInto(CriseEvenementComplement.class);
   }
 
   public fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement createEvent( MultipartHttpServletRequest request) throws ParseException {
@@ -224,12 +245,16 @@ public class CriseEvenementRepository {
       // ajout des documents
       criseRepository.addEventDocuments(files, c.getCrise(), idCriseEvent);
 
+      //Ajout des complements
+      this.addComplement(idCriseEvent, request.getParameterMap());
+
       context.update(CRISE_EVENEMENT)
           .set(row(CRISE_EVENEMENT.NOM)
               ,row(c.getNom()))
           .where(CRISE_EVENEMENT.ID.eq(Long.valueOf(idCriseEvent))).execute();
 
     }
+
 
     return c;
 
@@ -271,6 +296,10 @@ public class CriseEvenementRepository {
     //mise à jour des documents
     context.delete(CRISE_DOCUMENT).where(CRISE_DOCUMENT.EVENEMENT.eq(id)).execute();
     criseRepository.addEventDocuments(files, c.getCrise(), id);
+
+    //mise à jour des complements
+    context.delete(CRISE_EVENEMENT_COMPLEMENT).where(CRISE_EVENEMENT_COMPLEMENT.EVENEMENT.eq(id)).execute();
+    this.addComplement(id, request.getParameterMap());
     return c;
 
   }
@@ -445,5 +474,133 @@ public class CriseEvenementRepository {
     return context.select(TYPE_CRISE_EVENEMENT_DROIT.CATEGORIE_EVENEMENT).from(TYPE_CRISE_EVENEMENT_DROIT)
             .where(TYPE_CRISE_EVENEMENT_DROIT.PROFIL_DROIT.eq(profilDroit))
             .fetchArray(TYPE_CRISE_EVENEMENT_DROIT.CATEGORIE_EVENEMENT);
+  }
+
+  public List<TypeCriseProprieteEvenement> getProprietes(Long natureId){
+    List<TypeCriseProprieteEvenement> l;
+    l = context.select().from(TYPE_CRISE_PROPRIETE_EVENEMENT).where(TYPE_CRISE_PROPRIETE_EVENEMENT.NATURE_EVENEMENT.eq(natureId)).fetchInto(TypeCriseProprieteEvenement.class);
+    return l;
+  }
+
+  public List<RemocraVueCombo> getComboValues(Long id, String pathParam, Integer limit) throws SQLException, ParseException {
+    List<RemocraVueCombo> lstResult = new ArrayList<RemocraVueCombo>();
+    @SuppressWarnings("unchecked")
+    String query = context.select(TYPE_CRISE_PROPRIETE_EVENEMENT.SOURCE_SQL).from(TYPE_CRISE_PROPRIETE_EVENEMENT).where(TYPE_CRISE_PROPRIETE_EVENEMENT.ID.eq(id)).fetchOne(TYPE_CRISE_PROPRIETE_EVENEMENT.SOURCE_SQL);
+    String libelle = context.select(TYPE_CRISE_PROPRIETE_EVENEMENT.SOURCE_SQL_LIBELLE).from(TYPE_CRISE_PROPRIETE_EVENEMENT).where(TYPE_CRISE_PROPRIETE_EVENEMENT.ID.eq(id)).fetchOne(TYPE_CRISE_PROPRIETE_EVENEMENT.SOURCE_SQL_LIBELLE);
+    Pattern p = Pattern.compile("\\$\\{(.+?)\\}");
+    Matcher matcher = p.matcher(query);
+    List<String> requestParams = new ArrayList<String>();
+    //on fait une liste des parametres de la requete '${}'
+    while (matcher.find()) {
+      String match = matcher.group(1);
+      requestParams.add(match);
+    }
+    //On remplace tous les '${}' par '?'
+    query = matcher.replaceAll("?");
+    for (int i = 0; i < query.length(); i++) {
+      query= query.replace("'?'", "?");
+    }
+    List<HashMap> typeParametre = new ArrayList<HashMap>();
+    //On rajoute systématiquement les parametres Utilisateurs
+    Utilisateur u = utilisateurService.getCurrentUtilisateur();
+    HashMap<String,String> zcTmp = new HashMap<String, String>();
+    zcTmp.put("nomparametre", "ZONE_COMPETENCE_ID");
+    zcTmp.put("type","integer");
+    zcTmp.put("valeur", String.valueOf(u.getOrganisme().getZoneCompetence().getId()));
+    typeParametre.add(zcTmp);
+    HashMap<String,String> orTmp = new HashMap<String, String>();
+    orTmp.put("nomparametre", "ORGANISME_ID");
+    orTmp.put("type","integer");
+    orTmp.put("valeur", String.valueOf(u.getOrganisme().getId()));
+    typeParametre.add(orTmp);
+    HashMap<String,String> uTmp = new HashMap<String, String>();
+    uTmp.put("nomparametre", "UTILISATEUR_ID");
+    uTmp.put("type","integer");
+    uTmp.put("valeur", String.valueOf(u.getId()));
+    typeParametre.add(uTmp);
+    Connection connection = context.configuration().connectionProvider().acquire();
+    //on applique les filtres si y'en a
+    if(pathParam != null && pathParam != "") {
+      query = "SELECT * FROM ("+ query +") AS foo WHERE lower(" +libelle +") LIKE lower( "+"'%"+pathParam+"%') limit "+limit ;
+    }
+    //On prépare la requete (sourceSql dans requete modele selection en settant les parametres ${})
+    PreparedStatement preparedStatement = connection.prepareStatement(query);
+    for (int i = 0; i < requestParams.size(); i++) {
+      for (int j = 0; j < typeParametre.size(); j++) {
+        //si le parametre de la requete correspond au parametre de json on le remplace par la valeur (les index preparedStatement commence par 1)
+        if (requestParams.get(i).equals(typeParametre.get(j).get("nomparametre"))) {
+          this.setObject(preparedStatement,i+1, typeParametre.get(j));
+        }
+      }
+    }
+    ResultSet resultSet = preparedStatement.executeQuery();
+    //On crée une liste avec les records à mettre dans la combo
+    lstResult = this.resultSetToArrayList(resultSet);
+    connection.close();
+    return lstResult;
+  }
+// TODO : factoriser cette partie dans utils
+  public List resultSetToArrayList(ResultSet rs) throws SQLException{
+    ResultSetMetaData md = rs.getMetaData();
+    int columns = md.getColumnCount();
+    ArrayList list = new ArrayList();
+    while (rs.next()) {
+      HashMap row = new HashMap(columns);
+      for (int i = 1; i <= columns; ++i) {
+        row.put(md.getColumnName(i), rs.getObject(i));
+      }
+      list.add(row);
+    }
+    return list;
+  }
+
+  public void setObject(PreparedStatement ps, int index ,HashMap parameterObj) throws ParseException, SQLException {
+
+    if (parameterObj.get("type").toString().equalsIgnoreCase("Byte")) {
+      ps.setInt(index, (Byte.valueOf(parameterObj.get("valeur").toString())));
+    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Character varying")) {
+
+      ps.setString(index,"'"+parameterObj.get("valeur").toString().replaceAll("'", "''")+"'");
+    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Double precision")) {
+      ps.setDouble(index, (Double.valueOf(parameterObj.get("valeur").toString())));
+    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Integer")) {
+      ps.setInt(index, (Integer.valueOf(parameterObj.get("valeur").toString())));
+    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Long")) {
+      ps.setLong(index, (Long.valueOf(parameterObj.get("valeur").toString())));
+    } else if (parameterObj.get("type").toString().equalsIgnoreCase("UUid")) {
+      ps.setLong(index, (Long.valueOf(parameterObj.get("valeur").toString())));
+    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Float")) {
+      ps.setFloat(index, ((Float.valueOf(parameterObj.get("valeur").toString()))));
+    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Date")) {
+      DateFormat format = new SimpleDateFormat("yyyy dd mm");
+      ps.setObject(index, "'"+parameterObj.get("valeur").toString()+"'");
+    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Time")) {
+      ps.setString(index,"'"+parameterObj.get("valeur").toString()+"'");
+    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Timestamp")) {
+      ps.setString(index,"'"+parameterObj.get("valeur").toString()+"'");
+    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Boolean")) {
+      //boolean x = parameterObj.get("valeur").toString().equalsIgnoreCase("true") ? true : false;
+      ps.setObject(index, parameterObj.get("valeur"), Types.BOOLEAN);
+    } else {
+      ps.setObject(index,parameterObj.get("valeur"));
+    }
+  }
+
+  public void addComplement(Long idCriseEvent, Map mapParams){
+    for(Object key : mapParams.keySet()){
+      String keyStr = (String)key;
+      String[] values = (String[])(mapParams.get(keyStr));
+      for(String  val : values){
+        if(keyStr.contains("input")){
+          JSONObject obj = new JSONObject(val);
+          String valformatee = obj.get("valeurformatee").toString();
+          String valsource = obj.get("valeursource") != null ? obj.get("valeursource").toString() :null;
+          Long propriete = Long.valueOf(keyStr.substring(5));
+          context.insertInto(CRISE_EVENEMENT_COMPLEMENT, CRISE_EVENEMENT_COMPLEMENT.VALEUR_SOURCE,CRISE_EVENEMENT_COMPLEMENT.VALEUR_FORMATEE,CRISE_EVENEMENT_COMPLEMENT.EVENEMENT,CRISE_EVENEMENT_COMPLEMENT.PROPRIETE_EVENEMENT)
+              .values(valsource,valformatee,idCriseEvent,propriete).execute();
+        }
+      }
+    }
+
   }
 }

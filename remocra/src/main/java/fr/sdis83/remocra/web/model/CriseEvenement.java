@@ -3,6 +3,7 @@ package fr.sdis83.remocra.web.model;
 import java.util.List;
 
 import com.vividsolutions.jts.geom.Geometry;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenementComplement;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseSuivi;
 import fr.sdis83.remocra.util.Featurable;
 import fr.sdis83.remocra.util.Feature;
@@ -42,6 +43,8 @@ public class CriseEvenement implements Featurable {
   private TypeCriseNatureEvenement typeCriseNatureEvenement;
 
   private List<CriseSuivi> criseSuivis;
+
+  private List<CriseEvenementComplement> criseComplement;
 
   public Long getId() {
     return id;
@@ -172,5 +175,13 @@ public class CriseEvenement implements Featurable {
 
   public void setNatureNom(String natureNom) {
     this.natureNom = natureNom;
+  }
+
+  public List<CriseEvenementComplement> getCriseComplement() {
+    return criseComplement;
+  }
+
+  public void setCriseComplement(List<CriseEvenementComplement> criseComplement) {
+    this.criseComplement = criseComplement;
   }
 }

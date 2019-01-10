@@ -43,14 +43,14 @@
                </b-form-group>
 
                   <b-form-group v-if='param.formulaireTypeControle=="datetimefield"' :id="'input'+param.id" horizontal :label='param.formulaireEtiquette' inputType='datetimefield' class='parametreProcess' :label-for="'input'+param.id">
-                    <input type='date' :id="'input'+param.id+'date'"  :value='param.formulaireValeurDefaut.split(" ")[0]' :required='param.obligatoire' class='form-control' />
-                    <input type='time' :id="'input'+param.id+'time'"  :value='param.formulaireValeurDefaut.split(" ")[1]' :required='param.obligatoire' step='1' class='form-control' />
+                    <input type='date' :id="'input'+param.id+'date'"  :value='param.formulaireValeurDefaut && param.formulaireValeurDefaut.split(" ")[0]' :required='param.obligatoire' class='form-control' />
+                    <input type='time' :id="'input'+param.id+'time'"  :value='param.formulaireValeurDefaut && param.formulaireValeurDefaut.split(" ")[1]' :required='param.obligatoire' step='1' class='form-control' />
        </b-form-group>
                     <b-form-group v-if='param.formulaireTypeControle=="filefield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id" >
                       <div class="custom-file b-form-file ">
                         <input :id="'input'+param.id" type="file" class="custom-file-input parametreProcess" :required="param.obligatoire" inputType='filefield' @change="handleChangeFile($event, param.id)">
                         <label class="custom-file-label"/>
-            <label class="custom-file-label" v-for="(file,key) in files" :key="key" v-if="file.id == param.id">{{file.file.name}}</label>
+                    <label class="custom-file-label" v-for="(file,key) in files" :key="key" v-if="file.id == param.id">{{file.file.name}}</label>
                       </div>
                     </b-form-group>
       </div>

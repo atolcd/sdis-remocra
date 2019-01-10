@@ -1,8 +1,8 @@
 <template>
   <form v-on:submit.prevent>
     <autocomplete :input-attrs="{ placeholder: 'Origine...' }" v-model="origine"
-      :items="results" :get-label="getLabel" :component-item='origineTemplate'
-      :auto-select-one-item="false" @update-items="search" @item-selected="origineSelected"
+      :items="results" :get-label="getLabel" :component-item='origineTemplate' :min-len="2"
+      :auto-select-one-item="true" @update-items="search" @item-selected="origineSelected"
       @item-clicked="origineClicked"  />
   </form>
 </template>
@@ -23,20 +23,17 @@ export default {
 
   data() {
     return {
-    origine: null,
+    origine: '  ',
       results: [],
-      origineTemplate: OrigineTemplate,
-      searchInput: ""
+      origineTemplate: OrigineTemplate
     }
   },
-
   props:{
     crise:{
-      required:false,
+      required:true,
       type: String
     }
   },
-
   methods: {
     getLabel(item) {
       return item ? item: ''
@@ -45,7 +42,6 @@ export default {
       axios.get('/remocra/evenements/origines/'+this.crise+'?&query=' +text + '&page=1&start=0&limit=10')
         .then((response) => {
           this.results = response.data.data
-          this.searchInput = text
         })
         .catch(function(error) {
           console.error('origines', error)
