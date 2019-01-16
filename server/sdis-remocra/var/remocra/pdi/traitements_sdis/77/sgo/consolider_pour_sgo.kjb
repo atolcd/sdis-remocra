@@ -128,7 +128,7 @@ FROM
 			zc.geometrie
 		FROM
 			remocra.organisme org
-			JOIN (SELECT id FROM remocra.type_organisme WHERE code = &apos;CIS_OPERATIONNEL&apos;) torg ON (torg.id = org.type_organisme)
+			JOIN (SELECT id FROM remocra.type_organisme WHERE code = &apos;CIS_ADMINISTRATIF&apos;) torg ON (torg.id = org.type_organisme)
 			JOIN remocra.zone_competence zc ON(zc.id =  org.zone_competence)
 	) AS cis ON (cis.geometrie &amp;&amp; h.geometrie AND st_contains(cis.geometrie, h.geometrie))
 WHERE
@@ -236,7 +236,7 @@ ORDER BY
       <note>Consolidation des informations de traçabilité en vue d&apos;une exploitation par le SGO</note>
       <xloc>125</xloc>
       <yloc>100</yloc>
-      <width>553</width>
+      <width>559</width>
       <heigth>30</heigth>
       <fontname/>
       <fontsize>-1</fontsize>
