@@ -188,6 +188,10 @@ public class ParamConfService {
         return (Boolean) this.getValue(ParamConfParam.HYDRANT_VISITE_RAPIDE, false);
     }
 
+    public Integer getHydrantHighlightDuree() {
+        return (Integer) this.getValue(ParamConfParam.HYDRANT_HIGHLIGHT_DUREE, 1000);
+    }
+
     public MethodeNumerotation getHydrantNumerotationMethode() {
         return NumeroUtil.getHydrantNumerotationMethode();
     }

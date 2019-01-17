@@ -409,7 +409,11 @@ Méthodes disponibles pour la symbologie des PEI : link:../pei/Symbologie_PEI{ou
 
 === HYDRANT_VISITE_RAPIDE ===
 * Activer la saisie rapide de visite (ouverture sur clic)
-* par défaut : ```false```
+* Par défaut : ```false```
+
+=== HYDRANT_HIGHLIGHT_DUREE ===
+* Durée de mise en évidence des PEI sur la carte en millisecondes. Exemples : 0 pour désactiver la mise en évidence, 1000 pour une seconde
+* Par défaut : ```1000```
 
 === NIVEAU_TRACABILITE ===
 * Niveau de traçabilité des points d'eau (valeurs admises : organisme , utilisateur)

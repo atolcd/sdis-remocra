@@ -170,6 +170,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                 itemId: 'downloadHydrantsNonNum', xtype:'button'
             }];
         }
+        this.timeoutHighlight = null;
 
         this.callParent(arguments);
     },
@@ -229,6 +230,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
     },
 
     getStyleMap: function() {
+
         switch (HYDRANT_SYMBOLOGIE){
             case '42' :
                 return this.getStyleMap42();
@@ -664,5 +666,71 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
             "select": sm,
             "temporary": sm
         });
+    },
+
+    assumeBaseLayer: function() {
+        this.callParent(arguments);
+
+        // Mise en évidence de PEI
+        this.highlightLayer = new OpenLayers.Layer.Vector('highlightLayer', {
+            style: {
+                externalGraphic: "ext-res/images/remocra/cartes/legende/highlight/highlight.png",
+                graphicWidth: 32,
+                graphicHeight: 32,
+                fillOpacity: 1
+            }
+        });
+
+        this.map.addLayer(this.highlightLayer);
+    },
+
+    highlightSelection: function(extraParams){
+        var self = this;
+        clearTimeout(this.timeoutHighlight);
+        if(extraParams.i){
+            // PEIs d'une indisponibilité temporaire
+            Ext.Ajax.request({
+                url: Sdis.Remocra.util.Util.withBaseUrl('../indisponibilites/getHydrantsIndispo/'+extraParams.i),
+                method: 'GET',
+                scope: this,
+                async: false,
+                callback: function(param, success, response) {
+                    var res = Ext.decode(response.responseText).message;
+                    var peiIndispo = res.replace(/<\/?[^>]+(>|$)/g, ";").split(';'); //On récupère la liste des PEI sans le formatage HTML
+                    this.hydrantLayer.features.forEach(function(item){
+                        if(peiIndispo.indexOf(item.attributes.numero) != -1){
+                            self.highlightLayer.addFeatures(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(item.geometry.x, item.geometry.y)));
+                            self.clearHighlightLayerDelayed();
+                        }
+                    });
+                }
+            });
+        }
+        else if(extraParams.t){
+            // PEIs d'une tournée
+            this.hydrantLayer.features.forEach(function(item){
+                if(item.attributes.tournees !== null && item.attributes.tournees.indexOf(extraParams.t) != -1){
+                    self.highlightLayer.addFeatures(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(item.geometry.x, item.geometry.y)));
+                    self.clearHighlightLayerDelayed();
+                }
+            });
+        }
+        else if(extraParams.h){
+            //Un PEI
+            this.hydrantLayer.features.forEach(function(item){
+                if(item.attributes.internalId == extraParams.h){
+                    self.highlightLayer.addFeatures(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(item.geometry.x, item.geometry.y)));
+                    self.clearHighlightLayerDelayed();
+                }
+            });
+        }
+
+    },
+
+    clearHighlightLayerDelayed: function() {
+        var self = this;
+        this.timeoutHighlight = setTimeout(function(){
+            self.highlightLayer.removeAllFeatures();
+        }, HYDRANT_HIGHLIGHT_DUREE);
     }
 });

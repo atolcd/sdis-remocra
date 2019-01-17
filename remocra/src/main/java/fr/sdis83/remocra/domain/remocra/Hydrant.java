@@ -204,6 +204,8 @@ public class Hydrant implements Featurable {
         feature.addProperty("nature", this.getNature().getCode());
         feature.addProperty("numero", this.getNumero());
         feature.addProperty("commune", this.getCommuneId());
+        feature.addProperty("internalId", this.getId());
+        feature.addProperty("tournees", this.getTourneesId());
         // PIBI
         String diametreCode = null;
         if (this instanceof HydrantPibi) {
@@ -242,6 +244,16 @@ public class Hydrant implements Featurable {
     public String getCISCommune() {
         if (this.getOrganisme() != null) {
             return this.getOrganisme().getNom();
+        }
+        return null;
+    }
+
+    public String getTourneesId() {
+        if(this.getTournees() != null && !this.getTournees().isEmpty()) {
+            ArrayList liste = new ArrayList<String>();
+            for (Tournee t : this.getTournees())
+                liste.add(t.getId().toString());
+            return liste.toString();
         }
         return null;
     }

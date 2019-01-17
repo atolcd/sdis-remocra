@@ -67,13 +67,17 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
 
     init: function() {
 
-        this.tplXY = new Ext.Template("hydrants/localisation/x/{valX}/y/{valY}");
+        this.tplXY = new Ext.Template("hydrants/localisation/x/{valX}/y/{valY}/h/{idPEI}");
         this.tplTournee = new Ext.Template("hydrants/tournees/num/{numTournee}");
         this.tplHydrantsTournee = new Ext.Template("hydrants/hydrants/tournee/{numTournee}");
         this.tplHydrant = new Ext.Template("hydrants/hydrants/num/{numero}");
         this.tplBounds = new Ext.Template("hydrants/localisation/bounds/{bounds}");
+        this.tplBoundsTournee = new Ext.Template("hydrants/localisation/bounds/{bounds}/t/{idTournee}");
+        this.tplBoundsIndispo = new Ext.Template("hydrants/localisation/bounds/{bounds}/i/{idIndispo}");
 
         this.lastTournee = null;
+
+        this.doHighlightOnce = true;
 
         this.control({
             // Page globale
@@ -585,9 +589,31 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     },
 
     updateMap: function(extraParams) {
+        var self = this;
+        this.lastExtraParams = extraParams;
+        this.doHighlightOnce = true;
+        // Mise en évidence de la sélection
+        if(this.getTabMap().hydrantLayer){
+            self.getTabMap().highlightSelection(extraParams);
+        }
+
+        this.getTabMap().map.events.register('addlayer', this, function(layer){
+            if(layer.layer.code == 'hydrantLayer')
+            {
+                layer.layer.events.register('featuresadded', this, function(){
+                    if(self.doHighlightOnce)
+                    {
+                        self.getTabMap().highlightSelection(this.lastExtraParams);
+                        self.doHighlightOnce = false;
+                    }
+                });
+            }
+        });
+
         if (extraParams.x && extraParams.y) {
-            this.getTabMap().centerToPoint(extraParams.x, extraParams.y);
-        } else if (extraParams.bounds) {
+                this.getTabMap().centerToPoint(extraParams.x, extraParams.y);
+
+        }else if (extraParams.bounds) {
             var params = extraParams.bounds.split(',');
             if (params.length == 4) {
                 var bounds = new OpenLayers.Bounds(params);
@@ -669,8 +695,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             });
         } else {
             var bounds = Sdis.Remocra.util.Util.getBounds(tournee.get('geometrie'));
-            Sdis.Remocra.util.Util.changeHash(this.tplBounds.apply({
-                bounds: bounds.toBBOX()
+            Sdis.Remocra.util.Util.changeHash(this.tplBoundsTournee.apply({
+                bounds: bounds.toBBOX(),
+                idTournee: tournee.internalId
             }));
         }
     },
@@ -689,7 +716,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 var geom = Ext.decode(hydrant.get('jsonGeometrie'));
                 Sdis.Remocra.util.Util.changeHash(this.tplXY.apply({
                     valX: geom.coordinates[0],
-                    valY: geom.coordinates[1]
+                    valY: geom.coordinates[1],
+                    idPEI: hydrant.internalId
                 }));
             }
         }
@@ -1664,47 +1692,47 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     },
 
     onLeveIndispo : function() {
-            var indispo = null;
-            if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
-              indispo = this.getSelectedIndispo();
-            }else{
-              indispo = this.getSelectedIndispoFromMap();
-              var features =this.getSelectedFeatures();
-            }
-       var dateFin = this.getLeveIndispo().down('datefield[name=dateFin]').getValue();
-       var timeFin =this.getLeveIndispo().down('timefield[name=timeFin]').getValue();
-       dateFin.setHours(timeFin.getHours(),timeFin.getMinutes());
-           //On compare les dates pour éviter que la date de fin soit superieur à la date de debut
-                  if(dateFin < indispo.get('dateDebut')) {
-                     Ext.Msg.alert('Indisponibilité temporaire','La date de fin ne doit pas être antérieure à la date de début.');
-                     return;
-                  }
-                       Ext.Ajax.request({
-                                          url: Sdis.Remocra.util.Util.withBaseUrl('../indisponibilites/leveIndispoTemp/'+indispo.getId()),
-                                          method: 'POST',
-                                          params: {dateFin: dateFin},
-                                          scope: this,
-                                          callback: function(param, success, response) {
-                                              var res = Ext.decode(response.responseText);
-                                              this.getLeveIndispo().close();
-                                              if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
-                                                this.getTabIndispo().getStore().load();
+        var indispo = null;
+        if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
+            indispo = this.getSelectedIndispo();
+        }else{
+            indispo = this.getSelectedIndispoFromMap();
+            var features =this.getSelectedFeatures();
+        }
+        var dateFin = this.getLeveIndispo().down('datefield[name=dateFin]').getValue();
+        var timeFin =this.getLeveIndispo().down('timefield[name=timeFin]').getValue();
+        dateFin.setHours(timeFin.getHours(),timeFin.getMinutes());
+        //On compare les dates pour éviter que la date de fin soit superieur à la date de debut
+        if(dateFin < indispo.get('dateDebut')) {
+            Ext.Msg.alert('Indisponibilité temporaire','La date de fin ne doit pas être antérieure à la date de début.');
+            return;
+        }
+        Ext.Ajax.request({
+            url: Sdis.Remocra.util.Util.withBaseUrl('../indisponibilites/leveIndispoTemp/'+indispo.getId()),
+            method: 'POST',
+            params: {dateFin: dateFin},
+            scope: this,
+            callback: function(param, success, response) {
+                var res = Ext.decode(response.responseText);
+                this.getLeveIndispo().close();
+                if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
+                    this.getTabIndispo().getStore().load();
 
-                                              }else {
-                                                this.getEditIndispo().queryById('levIndispo').setDisabled(true);
-                                                this.getEditIndispo().queryById('gridIndispos').getStore().load({
-                                                     scope: this,
-                                                     params: {
-                                                     filter: Ext.encode([{
-                                                     property: 'hydrantId',
-                                                     value: features[0].fid
-                                                     }])
-                                                    }
-                                                });
-                                              }
-                                              Sdis.Remocra.util.Msg.msg("Fin de l'indisponibilité", res.message);
-                       }
-       });
+                }else {
+                    this.getEditIndispo().queryById('levIndispo').setDisabled(true);
+                    this.getEditIndispo().queryById('gridIndispos').getStore().load({
+                        scope: this,
+                        params: {
+                            filter: Ext.encode([{
+                                property: 'hydrantId',
+                                value: features[0].fid
+                            }])
+                        }
+                    });
+                }
+                Sdis.Remocra.util.Msg.msg("Fin de l'indisponibilité", res.message);
+            }
+        });
 
     },
     onLocateIndispo: function() {
@@ -1718,27 +1746,28 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
               });
           } else {
               var bounds = Sdis.Remocra.util.Util.getBounds(indispo.get('geometrie'));
-              Sdis.Remocra.util.Util.changeHash(this.tplBounds.apply({
-                  bounds: bounds.toBBOX()
+              Sdis.Remocra.util.Util.changeHash(this.tplBoundsIndispo.apply({
+                  bounds: bounds.toBBOX(),
+                  idIndispo: indispo.internalId
               }));
           }
     },
 
     deleteIndispo: function() {
-      var indispo = this.getSelectedIndispo();
-     Ext.Ajax.request({
-                    url: Sdis.Remocra.util.Util.withBaseUrl('../indisponibilites/'+indispo.getId()),
-                    method: 'DELETE',
-                    scope: this,
-                    callback: function(param, success, response) {
-                        var res = Ext.decode(response.responseText);
-                        if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
-                          this.getTabIndispo().getStore().load();
-                          this.refreshMap();
-                        }
-                        Sdis.Remocra.util.Msg.msg("Indisponibilité temporaire supprimée", res.message);
-                    }
-      });
+    var indispo = this.getSelectedIndispo();
+    Ext.Ajax.request({
+        url: Sdis.Remocra.util.Util.withBaseUrl('../indisponibilites/'+indispo.getId()),
+        method: 'DELETE',
+        scope: this,
+        callback: function(param, success, response) {
+            var res = Ext.decode(response.responseText);
+            if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
+              this.getTabIndispo().getStore().load();
+              this.refreshMap();
+            }
+            Sdis.Remocra.util.Msg.msg("Indisponibilité temporaire supprimée", res.message);
+        }
+    });
 
     },
 

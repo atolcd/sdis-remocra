@@ -125,6 +125,9 @@ public class RemocraController {
         // Mode de visite des hydrants
         model.addAttribute("hydrant_visite_rapide", paramConfService.getHydrantVisiteRapide());
 
+        //Durée de mise en évidence lors de la localisation
+        model.addAttribute("hydrant_highlight_duree", paramConfService.getHydrantHighlightDuree());
+
         return "remocra";
     }
 
