@@ -14,7 +14,7 @@
 
       <div class="h-spacer"/>
       <div class="text-start" style="margin-top:0.5rem">
-        <search-commune ref='searchCommune'></search-commune>
+        <search-commune :crise='criseId' ref='searchCommune'></search-commune>
       </div>
       <div class="h-spacer"/>
       <div class="text-start" style="margin-top:0.5rem">
@@ -22,8 +22,8 @@
       </div>
 
     <div class="big-h-spacer"/>
-      <b-btn class=" text-start my-1 measure-container ctrl" id="measureTools" @click="removeMeasureInteraction"><img src="/static/img/ruler.png"></b-btn>
-      <b-popover class="dropdown-menu" placement="bottomright" ref="popover2" target="measureTools" >
+      <b-btn class=" text-start my-1 measure-container ctrl" :id="'measureTools'+criseId" @click="removeMeasureInteraction"><img src="/static/img/ruler.png"></b-btn>
+      <b-popover class="dropdown-menu" placement="bottomright" :ref="'popovermesure'+criseId" :target="'measureTools'+criseId" >
         <div>
         <b-btn class="dropdown-item" @click="activateMeasure('Distance')"><img src='/static/img/ruler.png'>  Distance</b-btn>
       </div>
@@ -34,18 +34,18 @@
 
     <div class="big-h-spacer"/>
     <div class="text-start my-1">
-      <b-btn id="infoBtn" class="ctrl" @click="activateShowInfo" title="Obtenir des informations sur un point de la carte"><img src="/static/img/information.png"></b-btn>
+      <b-btn :id="'infoBtn'+criseId" class="ctrl" @click="activateShowInfo" title="Obtenir des informations sur un point de la carte"><img src="/static/img/information.png"></b-btn>
     </div>
 
     <div class="big-h-spacer"/>
     <div class="text-start my-1">
-      <b-btn id="toolsBarBtn" class="ctrl" @click="showToolsBar" v-b-toggle.collapse1 title="Activer les outils d'édition"><img src="/static/img/pencil.png"></b-btn>
-      <show-info ref="showInfo"></show-info>
+      <b-btn :id="'toolsBarBtn'+criseId" class="ctrl" @click="showToolsBar" v-b-toggle.collapse1 title="Activer les outils d'édition"><img src="/static/img/pencil.png"></b-btn>
+      <show-info :crise="criseId" ref="showInfo"></show-info>
     </div>
 
     <div class="big-h-spacer"/>
     <div class="text-start my-1">
-      <b-btn id="processBtn" class="ctrl" @click="showProcess"  title="Processus"><img src="/static/img/process.png"></b-btn>
+      <b-btn :id="'processBtn'+criseId" class="ctrl" @click="showProcess"  title="Processus"><img src="/static/img/process.png"></b-btn>
       <process ref="showProcess"></process>
     </div>
 
@@ -68,8 +68,8 @@
             <span style="cursor:pointer" href="#" v-b-toggle.accordion1>Évènements</span><span>
             <div class="toolbar">
               <b-btn @click="addEvent" class="ctrl" title="Nouvel évènement"><img src="/static/img/event-add.svg"></b-btn>
-              <b-btn class="ctrl" id="popoverButton-open2"><img src="/static/img/filter.svg" title="Filtrer"></b-btn>
-              <b-popover  placement="right" ref="popover" target="popoverButton-open2" title="Filtrer les évènements">
+              <b-btn class="ctrl" :id="'popoverButton'+criseId"><img src="/static/img/filter.svg" title="Filtrer"></b-btn>
+              <b-popover  placement="right" ref="popover" :target="'popoverButton'+criseId" title="Filtrer les évènements">
                    <filters :criseId="criseId" ref="filters"></filters>
               </b-popover>
              </div>
@@ -127,14 +127,14 @@
       </div>
     </b-col>
     <b-col cols="8" class="col-map">
-      <b-row id="toolsBar" class="toolsBar toolbar">
+      <b-row :id="'toolsBar'+criseId" class="toolsBar toolbar">
       <tool-bar ref="toolBar"></tool-bar>
       <choice-feature :crise="criseId" ref="choiceFeature"></choice-feature>
       <stamped-card :crise="criseId" ref="stampedCard"></stamped-card>
       </b-row>
         <b-row class='mapDiv'>
           <b-col>
-            <div id="map">
+            <div :id="'map'+criseId" class="map">
               <map-features ref="MapFeatures"></map-features>
               <button class='boutonToggleTableau btn btn-info' @click='toggleTableau'>Tableau
                 <img v-if='displayType=="MAP_ONLY"' src='/static/img/collapse.svg' />
@@ -158,13 +158,13 @@
           <b-collapse id="accordion5" visible accordion="my-accordion2" role="tabpanel">
             <b-card-body>
                 <div class="sidebar">
-                  <div id="layertree">
+                  <div :id="'layertree'+criseId">
                     <div v-for="(group,index) in legend.items" :key="index">
                       <div class="group">{{group.libelle}}</div>
                       <draggable :list="group.items" :options="{handle:'.my-handle'}" @start="drag=true" @end="addSortable()">
                         <div class="layer" v-for="(layer,index) in group.items" :key="index">
                           <div class="my-handle">
-                            <input  type="checkbox" v-bind:id="'checkbox'+layer.id" :value="layer.visibility" v-model="layer.visibility" @click="changeLayerVisibility(layer.id)">
+                            <input  type="checkbox" :id="'checkbox'+layer.id+'-'+criseId" :checked="layer.visibility" @click="changeLayerVisibility(layer.id)">
                             <label for="layer.id">{{layer.libelle}}</label>
                             <b-btn v-bind:id="'btnSuppr'+layer.id" v-if="group.libelle === 'Fichiers importés'" class="ctrlImportLayer" title="Supprimer la couche" @click="deleteImportLayer(layer.id)"><img src="/static/img/decline.png"></b-btn>
                           </div>
@@ -182,12 +182,11 @@
           </b-card-header>
           <b-collapse id="accordion6" accordion="my-accordion2" role="tabpanel">
             <b-card-body>
-
                 <div class="sidebar">
                   <div id="layertree">
                     <div v-for="(group,index) in legend.items" :key="index">
                       <div class="group">{{group.libelle}}</div>
-                        <div class="layer" v-for="(layer,index) in group.items" :key="index" :id="'legend'+layer.id">
+                        <div class="layer" v-for="(layer,index) in group.items" :key="index" :id="'legend'+layer.id+'-'+criseId">
                           <div class="my-handle">
                             <label>{{layer.libelle}}</label>
                             <img style="display:block;margin-left:20px;" onerror="this.src='/static/img/layer404.png'" class="legend-img" :src="getLegendGraphics(layer)"/>
@@ -196,14 +195,12 @@
                     </div>
                   </div>
                 </div>
-
             </b-card-body>
           </b-collapse>
         </b-card>
       </div>
     </b-col>
   </b-row>
-
   <b-modal ref="updateGeom" title="Modifier la géométrie">
     <p class="my-4">Voulez vous valider la nouvelle géométrie</p>
   </b-modal>
@@ -229,7 +226,6 @@ import ImageWMS from 'ol/source/ImageWMS.js';
 import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
 import WKT from 'ol/format/WKT.js';
 import axios from 'axios'
-import legend from '../assets/carte-crise.json'
 import * as Proj from 'ol/proj'
 import * as Polygon from 'ol/geom/Polygon'
 import MultiPolygon from 'ol/geom/MultiPolygon'
@@ -260,7 +256,6 @@ import ShowInfo from './ShowInfo.vue';
 import StampedCard from './StampedCard.vue';
 import ModalImportFile from './ModalImportFile.vue'
 import html2canvas from 'html2canvas'
-import EventBus from '../bus'
 import * as eventTypes from '../bus/event-types.js'
 import Feature from 'ol/Feature'
 import MultiLineString from 'ol/geom/MultiLineString'
@@ -290,6 +285,12 @@ import TableauDonnees from './TableauDonnees.vue';
            Process,
            MapFeatures,
            TableauDonnees},
+       props:{
+         criseId:{
+           type:Number,
+           required: true
+         }
+       },
     data () {
       return {
         mapRowHeight: 'calc(100% - 50px)',
@@ -307,10 +308,9 @@ import TableauDonnees from './TableauDonnees.vue';
         modeAffichages: [
         { text: 'Opérationnel', value: 'radio1' },
         { text: 'Anticipation', value: 'radio2' }],
-        criseId: window.location.hash.substr(13), // TODO charger correctement (query param)
         //todo mettre le var par défaut?
         extent: [256805.64470225616, 6249216.947446961, 265705.78118321137, 6252690.054919669],
-        legend,
+        legend: [],
         //todo  à factoriser
         ignKey: 'pratique',
         map: {
@@ -333,7 +333,7 @@ import TableauDonnees from './TableauDonnees.vue';
     },
     mounted() {
       this.map = new Map({
-            target: 'map',
+            target: 'map'+this.criseId,
             layers: [],
             controls: defaultControls({
             rotate: false,
@@ -380,26 +380,45 @@ import TableauDonnees from './TableauDonnees.vue';
         })
 
         this.setDisplay(this.displayType);
-
-        EventBus.$on(eventTypes.REFRESH_MAP, this.refreshMap)
-        EventBus.$on(eventTypes.ZOOM_TOGEOM, geom => {this.zoomToGeom(geom)})
-        EventBus.$on(eventTypes.ZOOM_TOEXTENT, extent => {this.zoomToExtent(extent)})
-        EventBus.$on(eventTypes.ADD_TOWORKINGLAYER, feature => {this.addToWorkingLayer(feature)})
-        EventBus.$on(eventTypes.ADD_DRAWINTERACTIONS, args => {this.addDrawInteractions(args.typeGeom, args.natureId)})
-        EventBus.$on(eventTypes.ADD_STAMPEDCARD, this.addStampedCard)
-        EventBus.$on(eventTypes.ACTIVATE_INTERACTION, type => {this.activateInteraction(type)})
-        EventBus.$on(eventTypes.ANNULE_MODIFGEOM, this.annulModifGeom)
-        EventBus.$on(eventTypes.ANNULE_TRANSLATEGEOM, this.annulTranslateGeom)
-        EventBus.$on(eventTypes.VALIDE_MODIFGEOM, this.validModifGeom)
-        EventBus.$on(eventTypes.VALIDE_TRANSLATEGEOM, this.validTranslateGeom)
-        EventBus.$on(eventTypes.OPEN_ATTRIBUTES, this.openAttributes)
-        EventBus.$on(eventTypes.UPDATE_MAPFILTERS, args => {this.updateMapFilters(args.id, args.filters)})
-        EventBus.$on(eventTypes.INPUT_GEOM,  args => {this.inputGeom(args.typeGeom, args.index)})
-        EventBus.$on(eventTypes.ANNULE_INPUTGEOM, index =>{this.annulGeom(index)})
-        EventBus.$on(eventTypes.VALIDE_INPUTGEOM, index =>{this.validGeom(index)})
-        EventBus.$on(eventTypes.MODIFY_INPUTGEOM, this.modifyGeom)
-        EventBus.$on(eventTypes.DELETE_INPUTGEOM, this.deleteGeom)
-        EventBus.$on(eventTypes.RESEARCH_TABDONNEES, this.showTabDonnees)
+        this.$root.$options.bus.$on(eventTypes.REFRESH_MAP, crise => {this.refreshMap(crise)})
+        this.$root.$options.bus.$on(eventTypes.ZOOM_TOGEOM, args => {this.zoomToGeom(args.geom, args.crise)})
+        this.$root.$options.bus.$on(eventTypes.ZOOM_TOEXTENT, extent => {this.zoomToExtent(extent)})
+        this.$root.$options.bus.$on(eventTypes.ADD_TOWORKINGLAYER, feature => {this.addToWorkingLayer(feature)})
+        this.$root.$options.bus.$on(eventTypes.ADD_DRAWINTERACTIONS, args => {this.addDrawInteractions(args.typeGeom, args.natureId)})
+        this.$root.$options.bus.$on(eventTypes.ADD_STAMPEDCARD, this.addStampedCard)
+        this.$root.$options.bus.$on(eventTypes.ACTIVATE_INTERACTION, type => {this.activateInteraction(type)})
+        this.$root.$options.bus.$on(eventTypes.ANNULE_MODIFGEOM, this.annulModifGeom)
+        this.$root.$options.bus.$on(eventTypes.ANNULE_TRANSLATEGEOM, this.annulTranslateGeom)
+        this.$root.$options.bus.$on(eventTypes.VALIDE_MODIFGEOM, this.validModifGeom)
+        this.$root.$options.bus.$on(eventTypes.VALIDE_TRANSLATEGEOM, this.validTranslateGeom)
+        this.$root.$options.bus.$on(eventTypes.OPEN_ATTRIBUTES, this.openAttributes)
+        this.$root.$options.bus.$on(eventTypes.UPDATE_MAPFILTERS, args => {this.updateMapFilters(args.id, args.filters)})
+        this.$root.$options.bus.$on(eventTypes.INPUT_GEOM,  args => {this.inputGeom(args.typeGeom, args.index)})
+        this.$root.$options.bus.$on(eventTypes.ANNULE_INPUTGEOM, index =>{this.annulGeom(index)})
+        this.$root.$options.bus.$on(eventTypes.VALIDE_INPUTGEOM, index =>{this.validGeom(index)})
+        this.$root.$options.bus.$on(eventTypes.MODIFY_INPUTGEOM, this.modifyGeom)
+        this.$root.$options.bus.$on(eventTypes.DELETE_INPUTGEOM, this.deleteGeom)
+        this.$root.$options.bus.$on(eventTypes.RESEARCH_TABDONNEES, this.showTabDonnees)
+    },
+    destroyed() {
+      this.$root.$options.bus.$off(eventTypes.REFRESH_MAP)
+      this.$root.$options.bus.$off(eventTypes.ZOOM_TOGEOM)
+      this.$root.$options.bus.$off(eventTypes.ZOOM_TOEXTENT)
+      this.$root.$options.bus.$off(eventTypes.ADD_TOWORKINGLAYER)
+      this.$root.$options.bus.$off(eventTypes.ADD_DRAWINTERACTIONS)
+      this.$root.$options.bus.$off(eventTypes.ADD_STAMPEDCARD)
+      this.$root.$options.bus.$off(eventTypes.ACTIVATE_INTERACTION)
+      this.$root.$options.bus.$off(eventTypes.ANNULE_MODIFGEOM)
+      this.$root.$options.bus.$off(eventTypes.ANNULE_TRANSLATEGEOM)
+      this.$root.$options.bus.$off(eventTypes.VALIDE_MODIFGEOM)
+      this.$root.$options.bus.$off(eventTypes.VALIDE_TRANSLATEGEOM)
+      this.$root.$options.bus.$off(eventTypes.OPEN_ATTRIBUTES)
+      this.$root.$options.bus.$off(eventTypes.UPDATE_MAPFILTERS)
+      this.$root.$options.bus.$off(eventTypes.INPUT_GEOM)
+      this.$root.$options.bus.$off(eventTypes.ANNULE_INPUTGEOM)
+      this.$root.$options.bus.$off(eventTypes.VALIDE_INPUTGEOM)
+      this.$root.$options.bus.$off(eventTypes.MODIFY_INPUTGEOM)
+      this.$root.$options.bus.$off(eventTypes.DELETE_INPUTGEOM)
     },
     updated() {
       //this.addSortable()
@@ -449,11 +468,10 @@ import TableauDonnees from './TableauDonnees.vue';
       },
       changeLayerVisibility(id){
         var layer = this.getLayerById(id);
-        var checkbox = document.getElementById("checkbox"+id);
         var newVisibility = !layer.getVisible();
         layer.setVisible(newVisibility);
         // Légende
-        document.getElementById('legend'+id).style.display = newVisibility?'block':'none'
+        document.getElementById('legend'+id+'-'+this.criseId).style.display = newVisibility?'block':'none'
       },
 
       changeLayerOpacity(id) {
@@ -463,24 +481,34 @@ import TableauDonnees from './TableauDonnees.vue';
       },
 
       constructMap() {
-        axios.get('/remocra/crises/'+this.criseId+'/geometrie')
+        axios.get('/remocra/ext-res/js/app/remocra/features/crises/data/carte.json')
         .then((response) => {
-              if (response.data) {
-                  //on récupère l'extent (géometrie des commune de la crise)
-                   var sridBounds = response.data.data.split(";");
-                   var sridComplet = sridBounds[0];
-                   var srid=sridComplet.split('=')[1];
-                   var bounds = sridBounds[1];
-                   var feature = new WKT().readGeometry(bounds);
-                   this.extent= feature.getExtent()
-                   this.addLayersFromCrise(this.legend)
-                   this.map.getView().fit(this.extent, {nearest: true})
-                   //this.addMeasureInteraction()
-              }
+           if (response.data){
+             this.legend = response.data
+             axios.get('/remocra/crises/'+this.criseId+'/geometrie')
+             .then((response) => {
+                   if (response.data) {
+                       //on récupère l'extent (géometrie des commune de la crise)
+                        var sridBounds = response.data.data.split(";");
+                        var sridComplet = sridBounds[0];
+                        var srid=sridComplet.split('=')[1];
+                        var bounds = sridBounds[1];
+                        var feature = new WKT().readGeometry(bounds);
+                        this.extent= feature.getExtent()
+                        this.addLayersFromCrise(this.legend)
+                        this.map.getView().fit(this.extent)
+                        //this.addMeasureInteraction()
+                   }
+             })
+             .catch(function(error){
+               console.error('carte', error)
+             })
+           }
         })
         .catch(function(error){
           console.error('carte', error)
         })
+
       },
       addLayersFromCrise(legendData) {
         axios.get('/remocra/crises/'+this.criseId)
@@ -594,7 +622,7 @@ import TableauDonnees from './TableauDonnees.vue';
            layerDef.projection = 'EPSG:3857';
            layerDef.matrixSet = 'PM';
            layerDef.attribution = '<a href="http://www.geoportail.fr/" target="_blank">'
-               + '<img src="' + BASE_URL + '/../images/remocra/cartes/logo_gp.gif"></a>'
+               + '<img src="/remocra/images/remocra/cartes/logo_gp.gif"></a>'
                + '<a href="http://www.geoportail.gouv.fr/depot/api/cgu/licAPI_CGUF.pdf" '
                + 'alt="TOS" title="TOS" target="_blank">Conditions générales d\'utilisation</a>';
            layerDef.style = layerDef.style || 'normal';
@@ -742,16 +770,16 @@ import TableauDonnees from './TableauDonnees.vue';
    },
    showToolsBar() {
     // Toolbar
-    document.getElementById('toolsBar').classList.toggle('active')
+    document.getElementById('toolsBar'+this.criseId).classList.toggle('active')
     // Hauteur de la carte
-    let activateToolbar = document.getElementById('toolsBarBtn').toggleAttribute('ctrl-active')
+    let activateToolbar = document.getElementById('toolsBarBtn'+this.criseId).toggleAttribute('ctrl-active')
     this.mapRowHeight = activateToolbar ? 'calc(100% - 85px)' : 'calc(100% - 50px)'
     _.delay(this.map.updateSize.bind(this.map), 10)
     this.desactivateControls()
 
   },
   showProcess() {
-   let activateToolbar = document.getElementById('processBtn').toggleAttribute('ctrl-active')
+   let activateToolbar = document.getElementById('processBtn'+this.criseId).toggleAttribute('ctrl-active')
    this.$refs.showProcess.showModal()
  },
   formatLength(line) {
@@ -892,7 +920,7 @@ import TableauDonnees from './TableauDonnees.vue';
     }
   },
   GoInFullscreen: function(event){
-       var elem = document.documentElement;
+       var elem = document.getElementById(this.$root.$options.id);
        if (
          document.fullscreenEnabled ||
          document.webkitFullscreenEnabled ||
@@ -1058,12 +1086,12 @@ import TableauDonnees from './TableauDonnees.vue';
           })
         },
         annulModifGeom(){
-        this.refreshMap()
+        this.refreshMap(this.criseId)
         this.$refs.toolBar.showUpdateGeom = false
 
         },
         annulTranslateGeom(){
-        this.refreshMap()
+        this.refreshMap(this.criseId)
         this.$refs.toolBar.showTranslateGeom = false
 
         },
@@ -1080,8 +1108,8 @@ import TableauDonnees from './TableauDonnees.vue';
                  text: 'L\'évènement est déjà clos.'
                 })
               }
-              this.refreshMap()
-              EventBus.$emit(eventTypes.LOAD_EVENEMENTS, {'crise': this.criseId})
+              this.refreshMap(this.criseId)
+              this.$root.$options.bus.$emit(eventTypes.LOAD_EVENEMENTS, {'crise': this.criseId})
               this.$refs.toolBar.showUpdateGeom = false
             })
             .catch(function(error) {
@@ -1101,8 +1129,8 @@ import TableauDonnees from './TableauDonnees.vue';
                  text: 'L\'évènement est déjà clos.'
                 })
               }
-              this.refreshMap()
-              EventBus.$emit(eventTypes.LOAD_EVENEMENTS, {'crise': this.criseId})
+              this.refreshMap(this.criseId)
+              this.$root.$options.bus.$emit(eventTypes.LOAD_EVENEMENTS, {'crise': this.criseId})
               this.$refs.toolBar.showTranslateGeom = false
             })
             .catch(function(error) {
@@ -1161,12 +1189,12 @@ import TableauDonnees from './TableauDonnees.vue';
          * @param activate forcer l'activation ou la désactivation (sinon fonctionnement "toggle")
         */
         activateShowInfo(activate) {
-          let isActive = document.getElementById('infoBtn').getAttribute('ctrl-active')!==null
+          let isActive = document.getElementById('infoBtn'+this.criseId).getAttribute('ctrl-active')!==null
           if (activate===true || !isActive) {
-            document.getElementById('infoBtn').setAttribute('ctrl-active', 'true')
+            document.getElementById('infoBtn'+this.criseId).setAttribute('ctrl-active', 'true')
             this.map.on('click', this.handleOpenInfo)
           } else if (activate===false || isActive) {
-            document.getElementById('infoBtn').removeAttribute('ctrl-active')
+            document.getElementById('infoBtn'+this.criseId).removeAttribute('ctrl-active')
             this.map.un('click', this.handleOpenInfo)
           }
         },
@@ -1199,24 +1227,26 @@ import TableauDonnees from './TableauDonnees.vue';
               console.error('carte', error)
             })
         },
-         zoomToGeom(geometrie){
-          let geom = new WKT().readGeometry(geometrie,{dataProjection: this.epsgL93, featureProjection: this.proj})
-          if (geom.getType() == 'Point') {
-            this.map.getView().setCenter(geom.getCoordinates())
-            this.map.getView().setResolution(0.5)
-          } else {
-            this.map.getView().fit(geom.getExtent(), {nearest: true})
-          }
+         zoomToGeom(geometrie, crise){
+              let geom = new WKT().readGeometry(geometrie,{dataProjection: this.epsgL93, featureProjection: this.proj})
+              if (geom.getType() == 'Point') {
+                this.map.getView().setCenter(geom.getCoordinates())
+                this.map.getView().setResolution(0.5)
+              } else {
+                this.map.getView().fit(geom.getExtent(), {nearest: true})
+              }
         },
         zoomToExtent(geometrie){
           this.map.getView().fit(new GeoJSON().readGeometry(geometrie,{dataProjection: this.epsgL93, featureProjection: this.proj}).getExtent(),{nearest: true})
-        },refreshMap(){
-          var workingLayer = this.getLayerById('workingLayer')
-          var wmsLayer = this.getLayerById('893bb7520e7fb036d665661847628994')
-          workingLayer.getSource().clear()
-          // Rafraîchissement de la couche WMS des évènements
-          //wmsLayer.getSource().refresh()
-          wmsLayer.getSource().updateParams({"time": Date.now()});
+        },refreshMap(crise){
+          if(crise === this.criseId){
+            var workingLayer = this.getLayerById('workingLayer')
+            var wmsLayer = this.getLayerById('893bb7520e7fb036d665661847628994')
+            workingLayer.getSource().clear()
+            // Rafraîchissement de la couche WMS des évènements
+            //wmsLayer.getSource().refresh()
+            wmsLayer.getSource().updateParams({"time": Date.now()});
+          }
         },
         zoomIn(){
           this.map.getView().setZoom(this.map.getView().getZoom()+1)
@@ -1412,8 +1442,8 @@ import TableauDonnees from './TableauDonnees.vue';
           this.removeMeasureInputGeomInteraction(index)
           this.removeModifInputGeomInteraction(index)
           this.getLayerById('input'+index).getSource().clear()
-          this.$refs.inputGeom.showValidGeom = false
-          _.forEach(this.$refs.inputGeom.$refs, input => {
+          this.$refs.rechercheAnalyse.showValidGeom = false
+          _.forEach(this.$refs.rechercheAnalyse.$refs, input => {
             if(input[0].id == 'input'+index ){
               input[0].value = null
             }
@@ -1474,7 +1504,7 @@ import TableauDonnees from './TableauDonnees.vue';
           this.map.addLayer(donneesSaisies["newLayer"]);
           // on recentre la vue sur les features ajoutées
           this.map.getView().fit(donneesSaisies["newLayer"].getSource().getExtent());
-  		},
+        },
       deleteImportLayer(idLayer){
         // on récupère tous les layers de la map
         var layers = this.map.getLayers().getArray();

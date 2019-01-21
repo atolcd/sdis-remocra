@@ -23,9 +23,10 @@ export default {
 
   data() {
     return {
-      selected: '  ',
+    selected: null,
       results: [],
       processParamTemplate: SearchProcessParamTemplate,
+      searchInput: ""
     }
   },
 
@@ -55,12 +56,12 @@ export default {
       // valeur affiché peut être un libelle ou un nom ou autre
       return item ? Object.values(item)[1] : ''
     },
-
     search(text) {
       var url = (this.queryURL) ? this.queryURL : 'remocra/processusetlmodele/processusetlmodparalst/';
       axios.get(url+this.paramId+'?&query=' +text + '&page=1&start=0&limit=10')
         .then((response) => {
           this.results = response.data.data
+          this.searchInput = text
         })
         .catch(function(error) {
           console.error('origines', error)

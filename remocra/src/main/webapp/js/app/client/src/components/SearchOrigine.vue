@@ -31,7 +31,7 @@ export default {
   props:{
     crise:{
       required:true,
-      type: String
+      type: Number
     }
   },
   methods: {

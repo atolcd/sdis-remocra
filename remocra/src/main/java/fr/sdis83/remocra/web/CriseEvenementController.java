@@ -219,7 +219,7 @@ public class CriseEvenementController {
    * @param id
    * @return
    */
-  @RequestMapping(value = "evenementmodparalst/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+  @RequestMapping(value = "/evenementmodparalst/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
   @PreAuthorize("hasRight('CRISE_C')")
   public ResponseEntity<java.lang.String> getListComboModelProprieteLike(
       final @PathVariable("id") Long id,

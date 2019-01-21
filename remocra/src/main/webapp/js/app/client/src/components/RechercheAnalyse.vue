@@ -78,7 +78,6 @@
 
 import Autocomplete from 'v-autocomplete'
 import axios from 'axios'
-import EventBus from '../bus'
 import * as eventTypes from '../bus/event-types.js'
 import _ from 'lodash'
 import SearchProcessParam from './SearchProcessParam.vue'
@@ -230,7 +229,7 @@ export default {
       var idSelection = header[0].requete;
       axios.get('/remocra/requetemodele/reqmodresult/'+idSelection).then((response) => {
         var spatial = document.getElementById("selectAnalyse").options[document.getElementById("selectAnalyse").selectedIndex].getAttribute('data-spatial');
-        EventBus.$emit(eventTypes.RESEARCH_TABDONNEES, header, response.data.data, spatial, idSelection)
+        this.$root.$options.bus.$emit(eventTypes.RESEARCH_TABDONNEES, header, response.data.data, spatial, idSelection)
       })
       .catch(function(error) {
         console.error('Retrieving data ', error);
@@ -239,19 +238,19 @@ export default {
 
     selectGeom(typeGeom,index){
       typeGeom = _.replace(typeGeom, 'geometryfield', ''),
-      EventBus.$emit(eventTypes.INPUT_GEOM, {'typeGeom':typeGeom, 'index': index})
+      this.$root.$options.bus.$emit(eventTypes.INPUT_GEOM, {'typeGeom':typeGeom, 'index': index})
     },
     annulGeom(index){
-      EventBus.$emit(eventTypes.ANNULE_INPUTGEOM, index)
+      this.$root.$options.bus.$emit(eventTypes.ANNULE_INPUTGEOM, index)
     },
     validGeom(index){
-      EventBus.$emit(eventTypes.VALIDE_INPUTGEOM, index)
+      this.$root.$options.bus.$emit(eventTypes.VALIDE_INPUTGEOM, index)
     },
     modifGeom(index){
-      EventBus.$emit(eventTypes.MODIFY_INPUTGEOM, index)
+      this.$root.$options.bus.$emit(eventTypes.MODIFY_INPUTGEOM, index)
     },
     deleteGeom(index){
-      EventBus.$emit(eventTypes.DELETE_INPUTGEOM, index)
+      this.$root.$options.bus.$emit(eventTypes.DELETE_INPUTGEOM, index)
     },
   }
 }

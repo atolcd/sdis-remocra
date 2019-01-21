@@ -18,7 +18,8 @@ Ext.define('Sdis.Remocra.widget.map4.Map', {
 
     // Doit-on cacher la combo de zoom sur tournée (true par défaut)
     hideZoomTournee: true,
-
+    mapTpl: Ext.create('Ext.XTemplate', '<div class="maptbar1"><!-- --></div>', '<div class="maptbar2"><!-- --></div>', '<div class="map"><!-- --></div>',
+            '<div class="maplegend"><!-- --></div>', '<div class="mapinfo"><!-- --></div>'),
     workingLayer: null,
 
     legendTpl: null,
@@ -56,7 +57,6 @@ Ext.define('Sdis.Remocra.widget.map4.Map', {
 
     renderContent: function() {
         // Template global
-
         this.mapTpl.append(this.getEl(), {}, false);
     }
 

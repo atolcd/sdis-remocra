@@ -42,6 +42,11 @@
 			.remocra-cmp div.olMap { margin-left: 2px !important; }
 		</style>
 
+          <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
+            <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
+            <link type="text/css" rel="stylesheet" href="/dist/main.css"/>
+            <link type="text/css" rel="stylesheet" href="//cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css"/>
+            <link type="text/css" rel="stylesheet" href="v-autocomplete/dist/v-autocomplete.css"/>
 		<link rel="stylesheet" type="text/css" href="${jsbase}/openlayers-2.12/theme/default/style.css"/>
 		<!--link rel="stylesheet" type="text/css" href="${jsbase}/openlayers-2.12/theme/default/google.css"/-->
         
@@ -49,6 +54,7 @@
 		<link rel="stylesheet" type="text/css" href="${cssbase}/remocra/main.css?d=20180429"/>
 		<link rel="stylesheet" type="text/css" href="${cssbase}/remocra/vertical-bar.css"/>
 		<link rel="stylesheet" type="text/css" href="${extrescssbase}/remocra/override.css"/>
+
 
 		<!--script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"--><!-- --><!--/script-->
 		        
@@ -107,6 +113,8 @@
 	<c:choose>
 		<c:when test="${modeDebug}">
 			<!-- MODE DEBUG -->
+			<script type="text/javascript" src="/app.js"><!-- requis, ne pas retirer --></script>
+
 			<script type="text/javascript" src="${jsbase}/openlayers-2.12/lib/OpenLayers.js"><!-- requis, ne pas retirer --></script>
 			<script type="text/javascript" src="${jsbase}/openlayers-2.12/lib/OpenLayers/Lang/fr.js"><!-- requis, ne pas retirer --></script>
 			<script type="text/javascript" src="${jsbase}/proj4js-1.1.0/lib/proj4js-compressed.js"><!-- requis, ne pas retirer --></script>
@@ -122,7 +130,7 @@
 			    Ext.Loader.setPath('Sdis.Remocra', '${jsbase}/app/remocra');
 			    Ext.Loader.setPath('Ext.ux', '${jsbase}/app/remocra/ux');
 			    Ext.Loader.setPath('Skirtle', '${jsbase}/Skirtle');
-			    
+
 			    OpenLayers.ProxyHost = '${base}proxy?url=';
 			</script>
 			<script type="text/javascript" src="${jsbase}/app/remocra/bootstrap.js"><!-- requis, ne pas retirer --></script>

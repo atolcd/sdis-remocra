@@ -13,7 +13,6 @@
 import Autocomplete from 'v-autocomplete'
 import axios from 'axios'
 import RepertoireTemplate from './SearchRepertoireLieuTemplate.vue'
-import EventBus from '../bus'
 import * as eventTypes from '../bus/event-types.js'
 
 export default {
@@ -21,7 +20,7 @@ export default {
   props: {
    crise: {
      required: true,
-     type: String
+     type: Number
    }
  },
   components: {
@@ -52,7 +51,7 @@ export default {
     },
     repertoireSelected(repertoire) {
       // On agit directement
-      EventBus.$emit(eventTypes.ZOOM_TOGEOM, repertoire.geometrie)
+      this.$root.$options.bus.$emit(eventTypes.ZOOM_TOGEOM, {'geom': repertoire.geometrie, 'crise': this.crise})
       this.$nextTick(() => {
        this.selected = null
       })

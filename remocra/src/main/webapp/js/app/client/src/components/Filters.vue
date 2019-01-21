@@ -5,29 +5,29 @@
     <b-list-group-item>
        <strong>Type d'évènement</strong>
        <b-list-group v-for="(type, index) in types" :key="index">
-            <a @click="addFilter('type',type)" href="#">{{type.nom}}</a>
+            <a v-on:click="addFilter($event,'type',type)" href="#">{{type.nom}}</a>
        </b-list-group>
     </b-list-group-item>
     <b-list-group-item>
        <strong>Statut</strong>
        <b-list-group v-for="(statut, index) in ['Nouveau','Clos']" :key="index">
-            <a @click="addFilter('statut',statut)" href="#">{{statut}}</a>
+            <a v-on:click="addFilter($event,'statut',statut)" href="#">{{statut}}</a>
        </b-list-group>
     </b-list-group-item>
     <b-list-group-item >
        <strong>Dernier message</strong>
        <b-list-group v-for="(periode, index) in ['<10mn', '<30mn', '<1h', '<24h']" :key="index">
-            <a @click="addFilter('periode',periode)" href="#">{{periode}}</a>
+            <a v-on:click="addFilter($event,'periode',periode)" href="#">{{periode}}</a>
        </b-list-group>
     </b-list-group-item>
     <b-list-group-item>
        <strong>Tags</strong>
-            <span v-for="(tag, index) in tags" :key="index"><b-badge @click="addFilter('tag',tag)"  href="#" pill variant="primary">{{tag}}</b-badge></span>
+            <span v-for="(tag, index) in tags" :key="index"><b-badge v-on:click="addFilter($event,'tag',tag)"  href="#" pill variant="primary">{{tag}}</b-badge></span>
     </b-list-group-item>
     <b-list-group-item>
        <strong>Auteur</strong>
        <b-list-group v-for="(origine, index) in origines" :key="index">
-            <a @click="addFilter('origine',origine)" href="#">{{origine}}</a>
+            <a v-on:click="addFilter($event,'origine',origine)" href="#">{{origine}}</a>
        </b-list-group>
     </b-list-group-item>
     <b-list-group-item>
@@ -42,7 +42,6 @@
 /* eslint-disable */
 import axios from 'axios'
 import _ from 'lodash'
-import EventBus from '../bus'
 import * as eventTypes from '../bus/event-types.js'
 
 export default {
@@ -59,12 +58,15 @@ export default {
   props:{
     criseId:{
       required:true,
-      type:String
+      type:Number
     }
   },
   mounted(){
     this.load()
-    EventBus.$on(eventTypes.LOAD_FILTERS, crise  => {this.load(crise)})
+    this.$root.$options.bus.$on(eventTypes.LOAD_FILTERS, crise  => {this.load(crise)})
+  },
+  destroyed(){
+    this.$root.$options.bus.$off(eventTypes.LOAD_FILTERS)
   },
   watch:{
     'filterTags' :'filterChanged',
@@ -72,7 +74,8 @@ export default {
   },
   methods: {
     filterChanged(newFilters, oldFilters) {
-      EventBus.$emit(eventTypes.LOAD_EVENEMENTS, {'crise': this.criseId, 'filters': newFilters})
+      console.log(oldFilters)
+      this.$root.$options.bus.$emit(eventTypes.LOAD_EVENEMENTS, {'crise': this.criseId, 'filters': newFilters})
     },
      load(criseId){
        if (criseId){
@@ -113,7 +116,7 @@ export default {
                console.error('tags', error)
              })
      },
-     addFilter(filtre ,value){
+     addFilter(evt,filtre ,value){
        if(filtre === 'type'){
          if(_.indexOf(this.filtres, value.nom) === -1){
            this.filtres.push(value.nom)
@@ -123,6 +126,10 @@ export default {
          this.filtres.push(value)
          this.filterTags.push({property: filtre, value: value})
        }
+         if(evt){
+           evt.preventDefault()
+           evt.stopPropagation()
+         }
      },
      onAftereRate(rate){
        _.remove(this.filterTags, function(filter){
@@ -133,6 +140,7 @@ export default {
      },
      controlFilter(newFiltres, oldFiltres){
         if(oldFiltres.length > newFiltres.length){
+          console.log(oldFiltres)
            var difference = _.pullAll(oldFiltres, newFiltres);
            _.remove(this.filterTags, function(filter){
              //Pour les types d'évenement on recupere l'id mais on affiche les noms
@@ -141,7 +149,7 @@ export default {
              }
              return _.indexOf(difference, filter.value) !== -1;
            })
-           EventBus.$emit(eventTypes.LOAD_EVENEMENTS, {'crise': this.criseId, 'filters': this.filterTags})
+           this.$root.$options.bus.$emit(eventTypes.LOAD_EVENEMENTS, {'crise': this.criseId, 'filters': this.filterTags})
         }
      }
 

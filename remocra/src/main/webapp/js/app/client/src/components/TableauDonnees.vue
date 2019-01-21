@@ -46,7 +46,6 @@
 <script>
 
 import axios from 'axios';
-import EventBus from '../bus';
 import * as eventTypes from '../bus/event-types.js';
 import _ from 'lodash';
 

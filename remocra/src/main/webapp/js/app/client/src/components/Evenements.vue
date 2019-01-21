@@ -35,7 +35,6 @@ import moment from 'moment'
 import 'moment-timezone';
 import NewMessage from './NewMessage.vue';
 import WKT from 'ol/format/WKT.js';
-import EventBus from '../bus'
 import * as eventTypes from '../bus/event-types.js'
 
 export default {
@@ -46,7 +45,7 @@ export default {
   props: {
    crise: {
      required: true,
-     type: String
+     type: Number
    }
   },
   data () {
@@ -56,9 +55,16 @@ export default {
   mounted(){
     this.evenements =[] ,
      this.loadEvenements(this.crise)
-     EventBus.$on(eventTypes.LOAD_EVENEMENTS, args  => {this.loadEvenements(args.crise, args.filters)})
+     //EventBus.$on(eventTypes.LOAD_EVENEMENTS, args  => {this.loadEvenements(args.crise, args.filters)})
+     this.$root.$options.bus.$on(eventTypes.LOAD_EVENEMENTS, this.loadEvenemtsPrep)
+  },
+  destroyed() {
+    this.$root.$options.bus.$off(eventTypes.LOAD_EVENEMENTS)
   },
   methods : {
+    loadEvenemtsPrep(args) {
+        this.loadEvenements(args.crise, args.filters)
+    },
     loadEvenements(crise, filters){
       var jsonFilters = JSON.stringify(filters)
       axios.get('/remocra/evenements/'+crise,  {params: {filter: jsonFilters}})
@@ -98,7 +104,7 @@ export default {
 
         // TODO cva voir s'il est nécessaire d'éviter le cache en maintenant un paramètre type "time": Date.now()
         var jsonFilters = JSON.stringify(filters)
-        EventBus.$emit(eventTypes.UPDATE_MAPFILTERS, {'id': '893bb7520e7fb036d665661847628994', 'filters': jsonFilters})
+        this.$root.$options.bus.$emit(eventTypes.UPDATE_MAPFILTERS, {'id': '893bb7520e7fb036d665661847628994', 'filters': jsonFilters})
     },
     loadMessages(id){
       //on recharge la liste des messsages
@@ -107,7 +113,7 @@ export default {
     },
     modifEvent(evenement){
       var natureId = evenement.geometrie !== null ? evenement.natureId : null
-      EventBus.$emit(eventTypes.MODIFY_EVENT, {'criseId': this.crise, 'evenementId': evenement.id, 'natureId':  natureId})
+      this.$root.$options.bus.$emit(eventTypes.MODIFY_EVENT, {'criseId': this.crise, 'evenementId': evenement.id, 'natureId':  natureId})
     },
     openNewMessage(id){
       this.$refs.newMessage.showModal(this.crise, id, null)
@@ -116,7 +122,7 @@ export default {
       this.$refs.newMessage.showModal(this.crise, evenementId, messageId)
     },
     locateEvent(geometrie){
-      EventBus.$emit(eventTypes.ZOOM_TOGEOM,geometrie)
+      this.$root.$options.bus.$emit(eventTypes.ZOOM_TOGEOM,{'geom':geometrie, 'crise': this.crise })
     }
   }
 }

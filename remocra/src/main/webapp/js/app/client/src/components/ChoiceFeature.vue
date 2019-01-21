@@ -9,7 +9,6 @@
 <script>
 /* eslint-disable */
 import _ from 'lodash'
-import EventBus from '../bus'
 import * as eventTypes from '../bus/event-types.js'
 
 export default {
@@ -17,7 +16,7 @@ export default {
   props: {
    crise: {
      required: true,
-     type: String
+     type: Number
    }
  },
   components: {
@@ -44,7 +43,7 @@ export default {
       this.$root.$emit('bv::hide::popover')
     },
     addSelected() {
-    EventBus.$emit(eventTypes.REFRESH_MAP)
+    this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, {'crise': crise})
     var selected = this.selected
     var originFeatures = this.originFeatures
     _.forEach(originFeatures, function(feature){
@@ -52,7 +51,7 @@ export default {
          selected = feature
        }
     })
-    EventBus.$emit(eventTypes.ADD_TOWORKINGLAYER, selected)
+    this.$root.$options.bus.$emit(eventTypes.ADD_TOWORKINGLAYER, selected)
   },
   handleOk() {
     var selected = this.selected
@@ -63,7 +62,7 @@ export default {
        }
     })
      this.$refs.modal.hide()
-     EventBus.$emit(eventTypes.MODIFY_EVENT, {'criseId': this.crise, 'evenementId': selected.getId(), 'natureId':  selected.getProperties().nature })
+     this.$root.$options.bus.$emit(eventTypes.MODIFY_EVENT, {'criseId': this.crise, 'evenementId': selected.getId(), 'natureId':  selected.getProperties().nature })
   }
 }
 }

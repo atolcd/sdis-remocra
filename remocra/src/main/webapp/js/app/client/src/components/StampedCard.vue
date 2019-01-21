@@ -19,7 +19,6 @@
 /* eslint-disable */
 import _ from 'lodash'
 import axios from 'axios'
-import EventBus from '../bus'
 import * as eventTypes from '../bus/event-types.js'
 
 export default {
@@ -27,7 +26,7 @@ export default {
   props: {
    crise: {
      required: true,
-     type: String
+     type: Number
    }
  },
   components: {
@@ -79,7 +78,7 @@ export default {
                })
                .then((response) => {
                   if(response.data.success){
-                    EventBus.$emit(eventTypes.LOAD_DOCUMENTS, criseId)
+                    this.$root.$options.bus.$emit(eventTypes.LOAD_DOCUMENTS, criseId)
                   }
                })
                .catch(function(error) {

@@ -49,7 +49,7 @@ export default {
       return item ? Object.values(item)[1]: ''
     },
     search(text) {
-      axios.get('remocra/evenements/evenementmodparalst/'+this.paramId+'?query=' + text + '&page=1&start=0&limit=10')
+      axios.get('/remocra/evenements/evenementmodparalst/'+this.paramId+'?query=' + text + '&page=1&start=0&limit=10')
         .then((response) => {
           this.results = response.data.data
           //Si on a une valeur par defaut on fait une recherche sur le searchText et on selectionne automatiquement

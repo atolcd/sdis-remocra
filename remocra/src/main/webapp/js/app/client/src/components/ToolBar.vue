@@ -34,7 +34,6 @@
 <script>
 /* eslint-disable */
 import axios from 'axios'
-import EventBus from '../bus'
 import * as eventTypes from '../bus/event-types.js'
 
 export default {
@@ -91,29 +90,29 @@ export default {
    },
   methods: {
     selectGeom(typeGeom, natureId){
-      EventBus.$emit(eventTypes.ADD_DRAWINTERACTIONS, {'typeGeom': typeGeom, 'natureId': natureId})
+      this.$root.$options.bus.$emit(eventTypes.ADD_DRAWINTERACTIONS, {'typeGeom': typeGeom, 'natureId': natureId})
       this.$refs.dropDown.hide()
     },
     activateInteraction(type){
-      EventBus.$emit(eventTypes.ACTIVATE_INTERACTION, type)
+      this.$root.$options.bus.$emit(eventTypes.ACTIVATE_INTERACTION, type)
     },
     annulModifGeom(){
-      EventBus.$emit(eventTypes.ANNULE_MODIFGEOM)
+      this.$root.$options.bus.$emit(eventTypes.ANNULE_MODIFGEOM)
     },
     validModifGeom(){
-      EventBus.$emit(eventTypes.VALIDE_MODIFGEOM)
+      this.$root.$options.bus.$emit(eventTypes.VALIDE_MODIFGEOM)
     },
     annulTranslateGeom(){
-      EventBus.$emit(eventTypes.ANNULE_TRANSLATEGEOM)
+      this.$root.$options.bus.$emit(eventTypes.ANNULE_TRANSLATEGEOM)
     },
     validTranslateGeom(){
-      EventBus.$emit(eventTypes.VALIDE_TRANSLATEGEOM)
+      this.$root.$options.bus.$emit(eventTypes.VALIDE_TRANSLATEGEOM)
     },
     openAttributes(){
-      EventBus.$emit(eventTypes.OPEN_ATTRIBUTES)
+      this.$root.$options.bus.$emit(eventTypes.OPEN_ATTRIBUTES)
     },
     addStampedCard(){
-      EventBus.$emit(eventTypes.ADD_STAMPEDCARD)
+      this.$root.$options.bus.$emit(eventTypes.ADD_STAMPEDCARD)
     },
     openModalImportFile(){
       this.$parent.openModalImportFile()

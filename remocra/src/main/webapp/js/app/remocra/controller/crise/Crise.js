@@ -117,6 +117,7 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
         Sdis.Remocra.util.Util.changeHash('crises/' + newCard.itemId);
     },
     initFromUrl: function() {
+
         var p2 = this.getTabPanel().p2, extra = this.getTabPanel().extraParams;
         this.onUrlChanged(p2,extra);
     },
@@ -143,6 +144,9 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
             this.updateCrise(extraParams);
         break;
         case 'index':
+            this.updateCrise(extraParams);
+        break;
+        case 'localisation':
             this.updateCrise(extraParams);
         break;
         default:

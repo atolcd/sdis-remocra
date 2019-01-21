@@ -63,7 +63,6 @@
 /* eslint-disable */
 import axios from 'axios'
 import moment from 'moment'
-import EventBus from '../bus'
 import * as eventTypes from '../bus/event-types.js'
 import SearchProcessParam from './SearchProcessParam.vue'
 import _ from 'lodash'
@@ -171,7 +170,7 @@ export default {
             this.params = _.sortBy(response.data.data, item => item.formulaireNumOrdre)
             _.forEach(this.params, param => {
               if (param.formulaireTypeControle == 'combo') {
-                axios.get('remocra/processusetlmodele/processusetlmodparalst/' + param.id).then((response) => {
+                axios.get('/remocra/processusetlmodele/processusetlmodparalst/' + param.id).then((response) => {
                     _.forEach(response.data.data, option => {
                       var o = {
                         nomChamp: param.id,
@@ -182,7 +181,6 @@ export default {
                       };
                       this.comboOptions.push(o);
                     });
-                    console.log(this.comboOptions)
                   })
                   .catch(function(error) {
                     console.error('Combo', error)

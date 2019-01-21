@@ -109,7 +109,6 @@ import moment from 'moment-timezone'
 import SearchOrigine from './SearchOrigine.vue'
 import SearchComplement from './SearchComplement.vue'
 import _ from 'lodash'
-import EventBus from '../bus'
 import * as eventTypes from '../bus/event-types.js'
 
 export default {
@@ -121,7 +120,7 @@ export default {
   props:{
     criseId:{
       required: true,
-      type: String
+      type: Number
     }
   },
   data() {
@@ -156,13 +155,15 @@ export default {
     }
   },
   mounted() {
-    EventBus.$on(eventTypes.MODIFY_EVENT, args => {
+    this.$root.$options.bus.$on(eventTypes.MODIFY_EVENT, args => {
       this.modifyEvent(args.criseId, args.evenementId, args.natureId)
     })
   },
+  destroyed() {
+    this.$root.$options.bus.$off(eventTypes.MODIFY_EVENT)
+  },
   methods: {
     createEvent(criseId) {
-      this.criseId = criseId
       this.loadEvenementNatures(null)
       this.$root.$emit('bv::hide::popover')
       this.title = "Nouvel évènement"
@@ -170,7 +171,6 @@ export default {
       this.$refs.modal.show()
     },
     createCartoEvent(criseId, natureId, wktfeaturegeom) {
-      this.criseId = criseId
       this.natureId = natureId
       this.form.geometrie = wktfeaturegeom
       this.loadEvenementNatures(natureId)
@@ -190,7 +190,6 @@ export default {
       this.$refs.modal.show()
     },
     modifyEvent(criseId, evenementId, natureId) {
-      this.criseId = criseId
       this.evenementId = evenementId
       this.loadEvenementNatures(natureId)
       //si l'évenementId est renseigné c'est un update
@@ -269,7 +268,7 @@ export default {
       this.disableNatures = false
       this.evenementId = null
       this.natureId = null
-      EventBus.$emit(eventTypes.REFRESH_MAP)
+      this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, {'crise': this.criseId})
       this.tabIndex = 0
     },
     handleOk(evt) {
@@ -335,7 +334,7 @@ export default {
           }
         })
         this.handleSubmit(formData)
-        EventBus.$emit(eventTypes.REFRESH_MAP)
+        this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, {'crise': criseId})
       }
     },
     handleSubmit(formData) {
@@ -348,12 +347,12 @@ export default {
           })
           .then((response) => {
             if (response.data.success) {
-              EventBus.$emit(eventTypes.LOAD_EVENEMENTS, {
+              this.$root.$options.bus.$emit(eventTypes.LOAD_EVENEMENTS, {
                 'crise': criseId
               })
-              EventBus.$emit(eventTypes.LOAD_DOCUMENTS, criseId)
-              EventBus.$emit(eventTypes.LOAD_FILTERS, criseId)
-              EventBus.$emit(eventTypes.REFRESH_MAP)
+              this.$root.$options.bus.$emit(eventTypes.LOAD_DOCUMENTS, criseId)
+              this.$root.$options.bus.$emit(eventTypes.LOAD_FILTERS, criseId)
+              this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, {'crise': criseId})
               this.$refs.modal.hide()
             }
           })
@@ -368,12 +367,12 @@ export default {
           })
           .then((response) => {
             if (response.data.success) {
-              EventBus.$emit(eventTypes.LOAD_EVENEMENTS, {
+              this.$root.$options.bus.$emit(eventTypes.LOAD_EVENEMENTS, {
                 'crise': criseId
               })
-              EventBus.$emit(eventTypes.LOAD_DOCUMENTS, criseId)
-              EventBus.$emit(eventTypes.LOAD_FILTERS, criseId)
-              EventBus.$emit(eventTypes.REFRESH_MAP)
+              this.$root.$options.bus.$emit(eventTypes.LOAD_DOCUMENTS, criseId)
+              this.$root.$options.bus.$emit(eventTypes.LOAD_FILTERS, criseId)
+              this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, {'crise': criseId})
               this.$refs.modal.hide()
             }
           })
@@ -464,19 +463,14 @@ export default {
     showTabComplement(){
         var listeElements = document.querySelectorAll("a");
        _.forEach(listeElements, element =>{
-         console.log(element.id)
           // si un élément contient dans son id tabComplement
         if(element.id.includes("tabComplement")){
-          console.log(element)
-
          // si le formulaire est inexistant
          if(this.params.length == 0){
-           console.log(element)
            // alors on cache le bouton de la tab
            element.style.display = "none";
          // sinon le formulaire est présent, l'évènement comporte des champs compléments
          } else {
-           console.log(element)
            // on affiche le bouton de la tab complément
            element.style.display = "block";
          }
@@ -505,7 +499,7 @@ export default {
                     if (param.formulaireTypeControle === 'autocomplete') {
                       param.formulaireValeurDefaut = valeurFormatee !== null ? valeurFormatee : param.formulaireValeurDefaut
                     }else if (param.formulaireTypeControle === 'combo') {
-                      axios.get('remocra/evenements/evenementmodparalst/' + param.id).then((response) => {
+                      axios.get('evenements/evenementmodparalst/' + param.id).then((response) => {
                            _.forEach(response.data.data, option => {
                             var o = {
                               nomChamp: param.id,
@@ -545,5 +539,11 @@ export default {
 <style scoped>
 >>>input {
   width: 100%;
+}
+.mt-3 {
+  display: -webkit-box;
+}
+.mt-3 img {
+  margin-right: 10px;
 }
 </style>

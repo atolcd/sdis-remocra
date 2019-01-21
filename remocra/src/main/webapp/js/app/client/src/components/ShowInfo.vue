@@ -14,12 +14,17 @@
 <script>
 /* eslint-disable */
 import _ from 'lodash'
-import EventBus from '../bus'
 import * as eventTypes from '../bus/event-types.js'
 
 export default {
   name: 'ShowInfo',
   components: {
+  },
+  props:{
+    crise:{
+      required: true,
+      type: Number
+    }
   },
   data() {
     return {
@@ -41,7 +46,7 @@ export default {
     },
     hideModal() {
      this.$refs.modal.hide()
-     EventBus.$emit(eventTypes.REFRESH_MAP)
+     this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, {'crise': crise})
     }
 }
 }
