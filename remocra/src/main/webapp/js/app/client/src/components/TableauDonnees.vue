@@ -1,34 +1,29 @@
 <template>
-
-  <table id="tableauDonnees" class='table table-bordered table-hover table-sm w-auto'>
-    <thead class='thead-light'>
-      <tr>
-        <th v-for="colonne in colonnes" v-on:click="sortTable(colonne)">
-          {{ colonne }}
-          <span class="arrow" v-if="sortColumn==colonne" :class="ascending ? 'asc' : 'dsc'"></span>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="ligne in donnees.slice(pageNumber * pageSize, pageNumber * pageSize + pageSize)">
-        <td v-for="index in colonnes">{{ligne[index]}}</td>
-      </tr>
-    </tbody>
-
-    <tfoot>
+<table id="tableauDonnees" class='table table-bordered table-hover table-sm w-auto'>
+  <thead class='thead-light'>
+    <tr>
+      <th v-for="(colonne, key)  in colonnes" :key="key" v-on:click="sortTable(colonne)">
+        {{ colonne }}
+        <span class="arrow" v-if="sortColumn==colonne" :class="ascending ? 'asc' : 'dsc'"></span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="(ligne, key) in donnees.slice(pageNumber * pageSize, pageNumber * pageSize + pageSize)" :key="key">
+      <td v-for="(index, key) in colonnes" :key="key">{{ligne[index]}}</td>
+    </tr>
+  </tbody>
+  <tfoot>
     <div class='pagination' v-if='donnees.slice(pageNumber * pageSize, pageNumber * pageSize + pageSize).length!=0'>
       <div class='btn-group'>
         <button @click="pageNumber=0" :disabled='pageNumber==0' class='btn'>
-           <img src='/static/img/resultset_first.png' alt='first' />
+          <img src='/static/img/resultset_first.png' alt='first' />
         </button>
         <button @click="pageNumber--" :disabled='pageNumber==0' class='btn'>
-           <img src='/static/img/resultset_previous.png' alt='previous' />
+          <img src='/static/img/resultset_previous.png' alt='previous' />
         </button>
       </div>
-
-
       <p class='text-center'>Page {{pageNumber+1}}/{{Math.ceil(donnees.length/pageSize)}}</p>
-
       <div class='btn-group'>
         <button @click="pageNumber++" :disabled='pageNumber >= Math.ceil(donnees.length/pageSize) -1' class='btn'>
           <img src='/static/img/resultset_next.png' alt='next' />
@@ -38,126 +33,111 @@
         </button>
       </div>
     </div>
-    </tfoot>
-  </table>
-
+  </tfoot>
+</table>
 </template>
 
 <script>
-
-import axios from 'axios';
-import * as eventTypes from '../bus/event-types.js';
-import _ from 'lodash';
-
+import _ from 'lodash'
 export default {
   name: 'TableauDonnees',
-
   data() {
-    return{
+    return {
       colonnes: [],
       donnees: [],
       pageNumber: 0,
       donneesPaginees: [],
       ascending: false,
       sortColumn: '',
-      pageSize: 14,
+      pageSize: 14
     }
-
   },
-
   methods: {
-    eventDrawTableau(header, data){
-      var self = this;
-      this.colonnes = [];
-      this.donnees = data;
-      this.pageNumber = 0;
-      this.sortColumn = '';
-      this.ascending = false;
-
-      _.forEach(header, function(item){
-        self.colonnes.push(item.header);
-      });
+    eventDrawTableau(header, data) {
+      var self = this
+      this.colonnes = []
+      this.donnees = data
+      this.pageNumber = 0
+      this.sortColumn = ''
+      this.ascending = false
+      _.forEach(header, function(item) {
+        self.colonnes.push(item.header)
+      })
     },
-
     sortTable(col) {
       if (this.sortColumn === col) {
-        this.ascending = !this.ascending;
+        this.ascending = !this.ascending
       } else {
-        this.ascending = true;
-        this.sortColumn = col;
+        this.ascending = true
+        this.sortColumn = col
       }
-
-      var ascending = this.ascending;
-
+      var ascending = this.ascending
       this.donnees.sort(function(a, b) {
-        //Gestion des cellules sans valeur
-        a[col] = (a[col] === null) ? "" : a[col];
-        b[col] = (b[col] === null) ? "" : b[col];
-        if(a[col] === ""){
-          return 1;
+        // Gestion des cellules sans valeur
+        a[col] = (a[col] === null) ? '' : a[col]
+        b[col] = (b[col] === null) ? '' : b[col]
+        if (a[col] === '') {
+          return 1
         }
-        if(b[col] === ""){
-          return -1;
+        if (b[col] === '') {
+          return -1
         }
-
-        //Tri
+        // Tri
         if (a[col] > b[col]) {
           return ascending ? 1 : -1
         } else if (a[col] < b[col]) {
           return ascending ? -1 : 1
         }
-        return 0;
-      });
-      this.pageNumber = 0;
+        return 0
+      })
+      this.pageNumber = 0
     },
-
-    setPageSize(size){
-      this.pageSize = size;
+    setPageSize(size) {
+      this.pageSize = size
     }
-
   }
 }
-
 </script>
 
 <style scoped>
-.table{
+.table {
   table-layout: fixed;
 }
 
-#tableauDonnees{
+#tableauDonnees {
   position: relative;
   min-width: 100%;
 }
 
-#tableauDonnees tfoot{
+#tableauDonnees tfoot {
   position: absolute;
   right: 10px;
   bottom: -30px;
   text-align: right;
 }
 
-#tableauDonnees .pagination{
-  display:flex;
-  justify-content:space-between;
+#tableauDonnees .pagination {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
-#tableauDonnees th{
+#tableauDonnees th {
   cursor: pointer;
 }
-#tableauDonnees .pagination button{
+
+#tableauDonnees .pagination button {
   height: 70%;
   border: none;
 }
 
-#tableauDonnees .pagination p{
+#tableauDonnees .pagination p {
   margin-left: 10px;
   margin-right: 10px;
   margin-bottom: 0;
 }
 
-#tableauDonnees td{
+#tableauDonnees td {
   font-size: 10px;
   padding: 3px;
 }
