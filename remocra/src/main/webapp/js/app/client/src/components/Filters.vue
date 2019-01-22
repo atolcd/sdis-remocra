@@ -34,7 +34,9 @@
     </b-list-group-item>
     <b-list-group-item>
       <strong>Importance</strong>
-      <rate :length="5" @after-rate="onAftereRate" />
+      <div class="resetrate">
+      <img src="/static/img/resetrate.png"  style="cursor:pointer" @click="resetRate">
+      <rate :length="5" @after-rate="onAftereRate" v-model="myRate" /></div>
     </b-list-group-item>
   </b-list-group>
 </div>
@@ -50,6 +52,7 @@ export default {
     return {
       types: [],
       tags: [],
+      myRate: 0,
       origines: [],
       filtres: [],
       filterTags: []
@@ -76,7 +79,6 @@ export default {
   },
   methods: {
     filterChanged(newFilters, oldFilters) {
-      console.log(oldFilters)
       this.$root.$options.bus.$emit(eventTypes.LOAD_EVENEMENTS, {
         'crise': this.criseId,
         'filters': newFilters
@@ -145,6 +147,17 @@ export default {
       this.filterTags.push({
         property: 'importance',
         value: rate
+      })
+    },
+    resetRate() {
+      this.myRate = 0
+      _.remove(this.filterTags, function(filter) {
+        // Pour le filtre importance on supprime l'ancienne valeur
+        return filter.property === 'importance'
+      })
+      this.$root.$options.bus.$emit(eventTypes.LOAD_EVENEMENTS, {
+        'crise': this.criseId,
+        'filters': this.filterTags
       })
     },
     controlFilter(newFiltres, oldFiltres) {

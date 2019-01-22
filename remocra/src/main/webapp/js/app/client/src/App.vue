@@ -452,4 +452,9 @@ body {
 .gestcrise header.card-header>span:first-child:hover {
   opacity: 0.8;
 }
+
+.resetrate {
+  display: -webkit-box;
+  -webkit-box-align: baseline;
+}
 </style>
