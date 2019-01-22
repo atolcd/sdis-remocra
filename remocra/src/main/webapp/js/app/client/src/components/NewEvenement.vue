@@ -1,10 +1,10 @@
 <template>
 <div>
-  <b-modal id="modalEvent" ref="modal" :title="title" ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
+  <b-modal :id="'modalEvent'+criseId" ref="modal" :title="title" ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
     <b-card no-body>
       <b-tabs id="tabsNewEvenement" card ref="tabs" v-model="tabIndex">
         <b-tab title="Général" active>
-          <form id="formEvent" class="needs-validation" @submit.stop.prevent="handleSubmit">
+          <form :id="'formEvent'+criseId" class="needs-validation" @submit.stop.prevent="handleSubmit">
             <b-form-group horizontal label="Type:" label-for="typeEvent">
               <b-form-select :disabled="disableNatures" id="typeEvent" required v-model="form.type" @input="loadComplement">
                 <optgroup v-for="(type, name) in types" :key="name" :label="name">
@@ -45,7 +45,7 @@
           </form>
         </b-tab>
         <b-tab id="tabComplement" title="Complément">
-          <form id="formComplement" class="needs-validation" v-if="params.length > 0">
+          <form :id="'formComplement'+criseId" class="needs-validation" v-if="params.length > 0">
             <div v-for="(param, index) in params" :key="index">
               <b-form-group v-if='param.formulaireTypeControle=="autocomplete"' :id="'input'+param.id" inputType='autocomplete' :required="param.obligatoire" class="parametreComplement" horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
                 <search-complement :searchInput="param.formulaireValeurDefaut" :ref="'searchinput'+param.id" :paramId="param.id"></search-complement>
@@ -228,9 +228,9 @@ export default {
     },
     clearFields() {
       // todo instancier les data en null et faire un reset
-      document.getElementById('formEvent').classList.remove('was-validated')
-      if (document.getElementById('formComplement')) {
-        document.getElementById('formComplement').classList.remove('was-validated')
+      document.getElementById('formEvent' + this.criseId).classList.remove('was-validated')
+      if (document.getElementById('formComplement' + this.criseId)) {
+        document.getElementById('formComplement' + this.criseId).classList.remove('was-validated')
       }
       this.params = []
       this.comboOptions = []
@@ -263,13 +263,13 @@ export default {
     handleOk(evt) {
       // Prevent modal from closing
       evt.preventDefault()
-      var formValid = document.getElementById('formEvent').checkValidity()
-      var complementValid = document.getElementById('formComplement') ? document.getElementById('formComplement').checkValidity() : true
+      var formValid = document.getElementById('formEvent' + this.criseId).checkValidity()
+      var complementValid = document.getElementById('formComplement' + this.criseId) ? document.getElementById('formComplement' + this.criseId).checkValidity() : true
       if ((complementValid && formValid) === false) {
         alert('Veuillez saisir les champs obligatoires')
-        document.getElementById('formEvent').classList.add('was-validated')
-        if (document.getElementById('formComplement')) {
-          document.getElementById('formComplement').classList.add('was-validated')
+        document.getElementById('formEvent' + this.criseId).classList.add('was-validated')
+        if (document.getElementById('formComplement' + this.criseId)) {
+          document.getElementById('formComplement' + this.criseId).classList.add('was-validated')
         }
       } else if (this.form.cloture != null) {
         alert('L\'évènement est déjà clos')
