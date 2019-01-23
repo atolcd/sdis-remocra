@@ -120,7 +120,7 @@
     <name>Données tracabilite.hydrant</name>
     <type>TableInput</type>
     <description/>
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <copies>1</copies>
          <partitioning>
            <method>none</method>
@@ -138,7 +138,7 @@
       (SELECT CASE WHEN ((coalesce(h1.nature,h3.nature,&apos;&apos;)  &lt;&gt; coalesce(h3.nature,&apos;&apos;))) THEN &apos;, Maj du type&apos; ELSE &apos;&apos; END) ||
       (SELECT CASE WHEN ((coalesce(h1.debit,h3.debit,0)  &lt;&gt; coalesce(h3.debit,0))) THEN &apos;, Maj de debit&apos; ELSE &apos;&apos; END) ||
       (SELECT CASE WHEN ((coalesce(h1.dispo_terrestre,h3.dispo_terrestre,&apos;&apos;)  &lt;&gt; coalesce(h3.dispo_terrestre,&apos;&apos;))) THEN &apos;, Maj disponibilite&apos; ELSE &apos;&apos; END) ||
-      (SELECT CASE WHEN (St_Distance(ST_Transform(h1.geometrie,4326)::geography, ST_Transform(h3.geometrie,4326)::geography) &gt; 0) THEN &apos;, Maj de position&apos; ELSE &apos;&apos; END)
+      (SELECT CASE WHEN (St_Distance(h1.geometrie, h3.geometrie) &gt; 0 OR St_Distance(h1.geometrie, h3.geometrie) IS NULL) THEN &apos;, Maj de position&apos; ELSE &apos;&apos; END)
     , &apos;, &apos;)::varchar 
   END) as type_maj,
   h3.debit as debit_courant,
@@ -148,8 +148,8 @@
   h3.nature as type_pei_courant,
   h1.nature as type_pei_precedent,
   st_astext(h3.geometrie) as position_courante,
-  st_astext(h1.geometrie) as position_precedente,
- (st_astext(h1.geometrie) &lt;&gt; st_astext(h3.geometrie)) as maj_position
+  st_astext(coalesce(h1.geometrie,h3.geometrie)) as position_precedente,
+  coalesce((st_astext(h1.geometrie) &lt;&gt; st_astext(h3.geometrie)),false) as maj_position
 FROM
   ( SELECT 
       hydrant_maj.id_hydrant_maj, 
@@ -163,7 +163,7 @@ FROM
   INNER JOIN tracabilite.hydrant as h2 ON (h2.id = id_action_first_after_last_synchro)
   INNER JOIN tracabilite.hydrant as h3 ON (h3.id = id_action_last)
 WHERE 
-  St_Distance(ST_Transform(h1.geometrie,4326)::geography, ST_Transform(h3.geometrie,4326)::geography) &gt; 0
+  (St_Distance(h1.geometrie, h3.geometrie) &gt; 0 OR St_Distance(h1.geometrie, h3.geometrie) IS NULL)
   OR ((coalesce(h1.debit,h3.debit,0)  &lt;&gt; coalesce(h3.debit,0))) 
   OR ((coalesce(h1.nature,h3.nature,&apos;&apos;)  &lt;&gt; coalesce(h3.nature,&apos;&apos;)))
   OR ((coalesce(h1.dispo_terrestre,h3.dispo_terrestre,&apos;&apos;)  &lt;&gt; coalesce(h3.dispo_terrestre,&apos;&apos;)))
@@ -198,14 +198,14 @@ WHERE
     <truncate>N</truncate>
     <ignore_errors>N</ignore_errors>
     <use_batch>N</use_batch>
-    <specify_fields>N</specify_fields>
+    <specify_fields>Y</specify_fields>
     <partitioning_enabled>N</partitioning_enabled>
     <partitioning_field/>
     <partitioning_daily>N</partitioning_daily>
     <partitioning_monthly>Y</partitioning_monthly>
     <tablename_in_field>N</tablename_in_field>
     <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
+    <tablename_in_table>N</tablename_in_table>
     <return_keys>N</return_keys>
     <return_field/>
     <fields>
@@ -254,12 +254,12 @@ WHERE
           <stream_name>position_courante</stream_name>
         </field>
         <field>
-          <column_name>position_precedente</column_name>
-          <stream_name>position_precedente</stream_name>
-        </field>
-        <field>
           <column_name>maj_position</column_name>
           <stream_name>maj_position</stream_name>
+        </field>
+        <field>
+          <column_name>position_precedente</column_name>
+          <stream_name>position_precedente</stream_name>
         </field>
     </fields>
      <cluster_schema/>

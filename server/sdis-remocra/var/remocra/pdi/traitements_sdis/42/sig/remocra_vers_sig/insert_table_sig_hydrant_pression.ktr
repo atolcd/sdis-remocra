@@ -146,7 +146,7 @@
   h.voie2 AS adresse_intersection,
   h.numero AS id_basepei,
   h.date_contr AS date_controle,
-  st_astext(h.geometrie) AS geometrie,
+  &apos;SRID=2154;&apos; ||st_astext(h.geometrie) AS geometrie,
   EXTRACT(YEAR FROM h.date_contr) AS annee_dernier_controle_pese,
   (SELECT CASE WHEN (coalesce(h.dispo_terrestre,&apos;&apos;)  = &apos;DISPO&apos; ) THEN &apos;DI&apos; ELSE &apos;IN&apos; END) as etat_pei
 FROM remocra.hydrant AS h

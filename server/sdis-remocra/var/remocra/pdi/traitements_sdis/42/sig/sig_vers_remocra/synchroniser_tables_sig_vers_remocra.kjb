@@ -189,19 +189,19 @@
       <connections>
         <connection>
           <name>Remocra</name>
-          <waitfor>0</waitfor>
+          <waitfor>60</waitfor>
           <waittime>millisecond</waittime>
         </connection>
         <connection>
           <name>SDIS</name>
-          <waitfor>0</waitfor>
+          <waitfor>60</waitfor>
           <waittime>millisecond</waittime>
         </connection>
       </connections>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>761</xloc>
+      <xloc>762</xloc>
       <yloc>192</yloc>
       </entry>
     <entry>
