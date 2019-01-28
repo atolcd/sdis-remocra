@@ -466,7 +466,11 @@ public class XmlService {
             fr.sdis83.remocra.xml.Tournee tourneeXML = new fr.sdis83.remocra.xml.Tournee();
             tourneeXML.setId(tournee.getId());
             tourneeXML.setNom(tournee.getNom());
-            tourneeXML.setDebSync(new Date());
+            tourneeXML.setPourcent(tournee.getEtat());
+            tourneeXML.setDebSync(tournee.getDebSync());
+            if (tourneeXML.getPourcent() == 0){
+                tourneeXML.setDebSync(new Date());
+            }
             tourneeXML.setLastSync(tournee.getLastSync());
 
             List<Hydrant> lstHydrants = tourneeService.getHydrants(tournee.getId());

@@ -12,6 +12,7 @@ public final class TourneeTable implements BaseColumns {
     public static final String COLUMN_NAME_DEB_SYNC = "debSync";
     public static final String COLUMN_NAME_LAST_SYNC = "lastSync";
     public static final String COLUMN_NB_HYDRANT = "nbHydrant";
+    public static final String COLUMN_POURCENT = "pourcent";
 
     public static final String FIELD_TOTAL_HYDRANT = "totalHydrant";
 
@@ -20,7 +21,8 @@ public final class TourneeTable implements BaseColumns {
             COLUMN_NOM+" STRING not null,"+
             COLUMN_NAME_DEB_SYNC + " INTEGER null," +
             COLUMN_NAME_LAST_SYNC + " INTEGER null," +
-            COLUMN_NB_HYDRANT + " INTEGER not null" +
+            COLUMN_NB_HYDRANT + " INTEGER not null, " +
+            COLUMN_POURCENT + " INTEGER" +
             " )";
 
 }

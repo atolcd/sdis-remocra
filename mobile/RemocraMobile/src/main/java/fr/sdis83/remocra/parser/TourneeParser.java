@@ -112,7 +112,10 @@ public class TourneeParser extends AbstractRemocraParser {
                 values.put(TourneeTable._ID, this.readBaliseText(xmlParser, nameTag));
             }else if ("nom".equals(nameTag)) {
                 values.put(TourneeTable.COLUMN_NOM, this.readBaliseText(xmlParser, nameTag));
-            } else if ("hydrants".equals(nameTag)) {
+            }else if ("pourcent".equals(nameTag)) {
+                values.put(TourneeTable.COLUMN_POURCENT, this.readBaliseText(xmlParser, nameTag));
+            }
+            else if ("hydrants".equals(nameTag)) {
                 readHydrants(xmlParser);
             } else {
                 skip(xmlParser);
@@ -134,7 +137,7 @@ public class TourneeParser extends AbstractRemocraParser {
                         DbUtils.nvl(hydrant.getAsLong(HydrantTable.COLUMN_DATE_RECO), -1L),
                         DbUtils.nvl(hydrant.getAsLong(HydrantTable.COLUMN_DATE_VERIF), -1L)));
                 Long dateDebSync = DbUtils.nvl(values.getAsLong(TourneeTable.COLUMN_NAME_DEB_SYNC), 0L);
-                if (maxDate > dateDebSync) {
+                if (maxDate > dateDebSync || values.getAsInteger(TourneeTable.COLUMN_POURCENT) == 100) {
                     hydrant.put(HydrantTable.COLUMN_STATE_H1, true);
                     hydrant.put(HydrantTable.COLUMN_STATE_H3, GlobalRemocra.getInstance().getCanSetMco());
                     hydrant.put(HydrantTable.COLUMN_STATE_H2, !"PA".equals(HydrantTable.COLUMN_CODE_NATURE));

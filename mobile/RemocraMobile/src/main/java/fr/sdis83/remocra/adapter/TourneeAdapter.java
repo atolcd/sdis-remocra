@@ -20,6 +20,7 @@ public class TourneeAdapter extends CursorAdapter {
     private static final String[] projection = new String[]{
             TourneeTable._ID,
             TourneeTable.COLUMN_NOM,
+            TourneeTable.COLUMN_POURCENT,
             TourneeTable.COLUMN_NAME_DEB_SYNC,
             TourneeTable.COLUMN_NAME_LAST_SYNC,
             TourneeTable.COLUMN_NB_HYDRANT,
