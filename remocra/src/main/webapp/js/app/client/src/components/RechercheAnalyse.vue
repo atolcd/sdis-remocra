@@ -2,54 +2,65 @@
 <div>
   <p class="card-text">Recherches et analyses</p>
   <b-form-group>
-    <select v-model="selected" id="selectAnalyse" v-on:change="createFormFromSelect()" required>
-      <option v-for="(value, key) in selectAnalyseOptions" :key="key" :data-description='value.dataDescription' :data-spatial='value.spatial' :value='value.valeur'>
-        {{value.libelle}}
+    <select v-model="selected" id="selectAnalyse" v-on:change="createFormFromSelect()" required class="form-control">
+      <option v-for="(value, key) in selectAnalyseOptions" :key="key" :data-description="value.dataDescription" :data-spatial="value.spatial" :value="value.valeur">
+        {{ value.libelle }}
       </option>
     </select>
   </b-form-group>
   <hr />
-  <div>
-    <form id="formParameters" class='needs-validation'>
-      <p v-if="parametres.length > 0">Veuillez renseigner les paramètres suivants :</p>
+  <div class="form-parameters">
+    <form id="formParameters" class="needs-validation">
+      <p v-if="parametres.length > 0"> Veuillez renseigner les paramètres suivants : </p>
       <p v-else-if="selected">Aucun paramètre pour cette requête</p>
-      <div v-for='(item, index) in parametres' :key="`${index}-${item.id}`">
-        <b-form-group v-if='item.formulaireTypeControle=="combo"' vertical :label='item.formulaireEtiquette' :label-for="item.nom">
-          <select :idInput="item.nom" :required='item.obligatoire' class="parametreRequete">
-            <option v-for="(value, key) in comboOptions" :key="key" v-if="value.nomChamp === item.nom" :value='value.valeur' :selected='value.valeur==value.formulaireValeurDefaut'>
-              {{value.libelle}}
+      <div v-for="(item, index) in parametres" :key="`${index}-${item.id}`">
+        <b-form-group v-if="item.formulaireTypeControle == 'combo'" vertical :label="item.formulaireEtiquette" :label-for="item.nom">
+          <select :idInput="item.nom" :required="item.obligatoire" class="form-control parametreRequete">
+            <option v-for="(value, key) in comboOptions" :key="key" v-if="value.nomChamp === item.nom" :value="value.valeur" :selected="value.valeur == value.formulaireValeurDefaut">
+              {{ value.libelle }}
             </option>
           </select>
         </b-form-group>
-        <b-form-group v-if='item.formulaireTypeControle=="autocomplete"' :id="'input'+item.id" :required="item.obligatoire" class="parametreRequete" inputType='autocomplete' :idInput='item.nom' vertical :label='item.formulaireEtiquette' :label-for="'input'+item.id">
-          <search-process-param :ref="'searchinput'+item.id" :paramId="item.id" :searchInput='item.formulaireValeurDefaut' queryURL='remocra/requetemodele/reqmodparalst/'></search-process-param>
+        <b-form-group v-if="item.formulaireTypeControle == 'autocomplete'" :id="'input' + item.id" :required="item.obligatoire" class="form-control parametreRequete" inputType="autocomplete" :idInput="item.nom" vertical :label="item.formulaireEtiquette"
+        :label-for="'input' + item.id">
+          <search-process-param :ref="'searchinput' + item.id" :paramId="item.id" :searchInput="item.formulaireValeurDefaut" queryURL="remocra/requetemodele/reqmodparalst/"></search-process-param>
         </b-form-group>
-        <b-form-group v-if='item.formulaireTypeControle=="checkbox"' vertical :label='item.formulaireEtiquette' :label-for="item.nom">
-          <input type='checkbox' :idInput='item.nom' class='parametreRequete' :value='checkboxChecked[item.nom]' v-model='checkboxChecked[item.nom]' />
+        <b-form-group v-if="item.formulaireTypeControle == 'checkbox'" vertical :label="item.formulaireEtiquette" :label-for="item.nom">
+          <input type="checkbox" style="width:5%" :idInput="item.nom" class="form-control parametreRequete" :value="checkboxChecked[item.nom]" v-model="checkboxChecked[item.nom]" />
         </b-form-group>
-        <b-form-group v-if='item.formulaireTypeControle=="textfield"' vertical :label='item.formulaireEtiquette' :label-for="item.nom">
-          <input type='text' :idInput='item.nom' class='parametreRequete' :value='item.formulaireValeurDefaut' :required='item.obligatoire' />
+        <b-form-group v-if="item.formulaireTypeControle == 'textfield'" vertical :label="item.formulaireEtiquette" :label-for="item.nom">
+          <input type="text" :idInput="item.nom" class="form-control parametreRequete" :value="item.formulaireValeurDefaut" :required="item.obligatoire" />
         </b-form-group>
-        <b-form-group v-if='item.formulaireTypeControle=="numberfield"' vertical :label='item.formulaireEtiquette' :label-for="item.nom">
-          <input type="number" :idInput='item.nom' class='parametreRequete' :value='item.formulaireValeurDefaut' :required='item.obligatoire' :step='(item.typeValeur=="integer")?1:0.001' />
+        <b-form-group v-if="item.formulaireTypeControle == 'numberfield'" vertical :label="item.formulaireEtiquette" :label-for="item.nom">
+          <input type="number" :idInput="item.nom" class="form-control parametreRequete" :value="item.formulaireValeurDefaut" :required="item.obligatoire" :step="item.typeValeur == 'integer' ? 1 : 0.001" />
         </b-form-group>
-        <b-form-group v-if='item.formulaireTypeControle=="datefield"' vertical :label='item.formulaireEtiquette' :label-for="item.nom">
-          <input type='date' :idInput='item.nom' class='parametreRequete' :value='item.formulaireValeurDefaut' :required='item.obligatoire' />
+        <b-form-group v-if="item.formulaireTypeControle == 'datefield'" vertical :label="item.formulaireEtiquette" :label-for="item.nom">
+          <input type="date" :idInput="item.nom" class="form-control parametreRequete" :value="item.formulaireValeurDefaut" :required="item.obligatoire" />
         </b-form-group>
-        <b-form-group v-if='item.formulaireTypeControle=="timefield"' vertical :label='item.formulaireEtiquette' :label-for="item.nom">
-          <input type='time' :idInput='item.nom' class='parametreRequete' :value='item.formulaireValeurDefaut' :required='item.obligatoire' step='1' />
+        <b-form-group v-if="item.formulaireTypeControle == 'timefield'" vertical :label="item.formulaireEtiquette" :label-for="item.nom">
+          <input type="time" :idInput="item.nom" class="form-control parametreRequete" :value="item.formulaireValeurDefaut" :required="item.obligatoire" step="1" />
         </b-form-group>
-        <b-form-group v-if='item.formulaireTypeControle=="datetimefield"' :id='item.nom' vertical :label='item.formulaireEtiquette' inputType='datetimefield' class='parametreRequete' :label-for="item.nom">
-          <input type='date' :idInput='item.nom.concat("_date")' :value='(item.formulaireValeurDefaut!==null) ? item.formulaireValeurDefaut.split(" ")[0] : "" ' :required='item.obligatoire' />
-          <input type='time' :idInput='item.nom.concat("_time")' :value='(item.formulaireValeurDefaut!==null) ? item.formulaireValeurDefaut.split(" ")[1] : "" ' :required='item.obligatoire' step='1' />
+        <b-form-group v-if="item.formulaireTypeControle == 'datetimefield'" :id="item.nom" vertical :label="item.formulaireEtiquette" inputType="datetimefield" class="parametreRequete" :label-for="item.nom">
+          <input type="date" :idInput="item.nom.concat('_date')" :value="
+                item.formulaireValeurDefaut !== null
+                  ? item.formulaireValeurDefaut.split(' ')[0]
+                  : ''
+              " :required="item.obligatoire"
+          class="form-control" />
+          <input type="time" :idInput="item.nom.concat('_time')" :value="
+                item.formulaireValeurDefaut !== null
+                  ? item.formulaireValeurDefaut.split(' ')[1]
+                  : ''
+              " :required="item.obligatoire"
+          step="1" class="form-control" />
         </b-form-group>
       </div>
       <div v-for="(param, index) in parametresGeometry" :key="index">
-        <b-form-group vertical :label='param.formulaireEtiquette' :label-for="'input'+index">
-          <input :ref="'input'+index" :id="'input'+index" type="text" :idInput='param.nom' class='parametreRequete' readonly hidden />
-          <a :class="['geom-'+param.formulaireTypeControle.toLowerCase()]" href="#" @click="selectGeom(param.formulaireTypeControle,index)"></a>
-          <a style="cursor:pointer" class="modif" href="#" @click="modifGeom(index)"></a>
-          <a style="cursor:pointer" class="delete" href="#" @click="deleteGeom(index)"></a>
+        <b-form-group vertical :label="param.formulaireEtiquette" :label-for="'input' + index">
+          <input :ref="'input' + index" :id="'input' + index" type="text" :idInput="param.nom" class="parametreRequete" readonly hidden />
+          <a :class="['geom-' + param.formulaireTypeControle.toLowerCase()]" href="#" @click="selectGeom($event, param.formulaireTypeControle, index)"></a>
+          <a class="modif" href="#" @click="modifGeom($event, index)"></a>
+          <a class="delete" href="#" @click="deleteGeom($event, index)"></a>
           <b-button-group v-if="showValidGeom === index">
             <b-btn class="ok-cancel-btns" @click="validGeom(index)">Valider</b-btn>
             <b-btn class="ok-cancel-btns" @click="annulGeom(index)">Annuler</b-btn>
@@ -57,7 +68,7 @@
         </b-form-group>
       </div>
       <br />
-      <input type="submit" id='formExecuteButton' v-on:click.self="createRequest" value="Exécuter" />
+      <input type="submit" id="formExecuteButton" v-on:click.self="createRequest" value="Exécuter" />
     </form>
   </div>
 </div>
@@ -177,7 +188,9 @@ export default {
     executeRequest(idRequeteModele, valParams) {
       // Envoi des données
       axios.post('/remocra/requetemodele/' + idRequeteModele + '?jsonValeurs=' + JSON.stringify(valParams) + '').then(response => {
-        this.retrieveData(JSON.parse(response.data.message))
+        if (response.data.message) {
+          this.retrieveData(JSON.parse(response.data.message))
+        }
       }).catch(function(error) {
         console.error('requeteModele', error)
       })
@@ -192,12 +205,16 @@ export default {
         console.error('Retrieving data ', error)
       })
     },
-    selectGeom(typeGeom, index) {
+    selectGeom(evt, typeGeom, index) {
       typeGeom = _.replace(typeGeom, 'geometryfield', '')
       this.$root.$options.bus.$emit(eventTypes.INPUT_GEOM, {
         typeGeom: typeGeom,
         index: index
       })
+      if (evt) {
+        evt.preventDefault()
+        evt.stopPropagation()
+      }
     },
     annulGeom(index) {
       this.$root.$options.bus.$emit(eventTypes.ANNULE_INPUTGEOM, index)
@@ -205,11 +222,20 @@ export default {
     validGeom(index) {
       this.$root.$options.bus.$emit(eventTypes.VALIDE_INPUTGEOM, index)
     },
-    modifGeom(index) {
+    modifGeom(evt, index) {
       this.$root.$options.bus.$emit(eventTypes.MODIFY_INPUTGEOM, index)
+      // on arrete la propagation de l'évenement pour que le router ne prends pas en compte le href#
+      if (evt) {
+        evt.preventDefault()
+        evt.stopPropagation()
+      }
     },
-    deleteGeom(index) {
+    deleteGeom(evt, index) {
       this.$root.$options.bus.$emit(eventTypes.DELETE_INPUTGEOM, index)
+      if (evt) {
+        evt.preventDefault()
+        evt.stopPropagation()
+      }
     }
   }
 }
@@ -251,13 +277,13 @@ export default {
   cursor: pointer;
 }
 
-.delete:before {
+.delete {
   content: url('/static/img/delete.png');
   margin-right: 7px;
   cursor: pointer;
 }
 
-.modif:before {
+.modif {
   content: url('/static/img/pencil.png');
   margin-right: 7px;
   cursor: pointer;

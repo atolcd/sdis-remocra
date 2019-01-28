@@ -223,9 +223,13 @@ export default {
   margin-left: 15px;
 }
 
-.gestcrise .evenements .messages {
-  max-height: 400px;
+.gestcrise .evenements , .messages, .documents, .form-parameters, .sidebar {
+  max-height: 500px;
   overflow-y: scroll;
+}
+
+.gestcrise .form-parameters{
+  padding: 6px;
 }
 
 .gestcrise .evenements .messages .list-group-flush {
@@ -392,7 +396,7 @@ export default {
 
 .gestcrise .evenements .list-group-item,
 .gestcrise .documents .list-group-item {
-  padding: 5px;
+  padding: 6px;
   border: none;
 }
 
