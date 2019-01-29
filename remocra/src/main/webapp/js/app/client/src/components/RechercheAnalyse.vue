@@ -8,9 +8,9 @@
       </option>
     </select>
   </b-form-group>
-  <hr />
   <div class="form-parameters">
-    <form id="formParameters" class="needs-validation">
+  <hr />
+    <form id="formParameters" class="needs-validation" @submit="createRequest" @reset="resetRequest">
       <p v-if="parametres.length > 0"> Veuillez renseigner les paramètres suivants : </p>
       <p v-else-if="selected">Aucun paramètre pour cette requête</p>
       <div v-for="(item, index) in parametres" :key="`${index}-${item.id}`">
@@ -55,20 +55,25 @@
           step="1" class="form-control" />
         </b-form-group>
       </div>
-      <div v-for="(param, index) in parametresGeometry" :key="index">
-        <b-form-group vertical :label="param.formulaireEtiquette" :label-for="'input' + index">
+      <div>
+      <div   v-for="(param, index) in parametresGeometry" :key="index">
+        <b-form-group class='rechercheGeom' vertical :label="param.formulaireEtiquette" :label-for="'input' + index">
           <input :ref="'input' + index" :id="'input' + index" type="text" :idInput="param.nom" class="parametreRequete" readonly hidden />
           <a :class="['geom-' + param.formulaireTypeControle.toLowerCase()]" href="#" @click="selectGeom($event, param.formulaireTypeControle, index)"></a>
           <a class="modif" href="#" @click="modifGeom($event, index)"></a>
           <a class="delete" href="#" @click="deleteGeom($event, index)"></a>
-          <b-button-group v-if="showValidGeom === index">
-            <b-btn class="ok-cancel-btns" @click="validGeom(index)">Valider</b-btn>
-            <b-btn class="ok-cancel-btns" @click="annulGeom(index)">Annuler</b-btn>
+          <b-button-group  size="sm" class="validation-geom" v-if="showValidGeom === index">
+            <b-btn  class="ok-cancel-btns" @click="validGeom(index)">Valider</b-btn>
+            <b-btn  class="ok-cancel-btns" @click="annulGeom(index)">Annuler</b-btn>
           </b-button-group>
         </b-form-group>
       </div>
+    </div>
       <br />
-      <input type="submit" id="formExecuteButton" v-on:click.self="createRequest" value="Exécuter" />
+      <div class="modal-footer">
+      <b-button size="sm" type="submit" variant="primary">Exécuter</b-button>
+      <b-button size="sm" type="reset" variant="secondary">Annuler</b-button>
+    </div>
     </form>
   </div>
 </div>
@@ -108,7 +113,7 @@ export default {
     getSelectAnalyseItems() {
       var self = this
       this.selectAnalyseOptions = []
-      axios.get('/remocra/requetemodele.json?filter=[{"property":"categorie","value":"CRISE"}]').then(response => {
+      axios.get('/remocra/requetemodele.json?filter=[{"property":"categorie","value":"GESTION_CRISE"}]').then(response => {
         _.forEach(response.data.data, function(item) {
           var o = {
             valeur: item.id,
@@ -183,6 +188,17 @@ export default {
         })
         this.executeRequest(this.selected, valParams)
       }
+    },
+    resetRequest() {
+      this.selected = null
+      this.parametres = []
+      this.parametresGeometry = []
+      this.comboOptions = []
+      this.nombreParametres = -1
+      this.checkboxChecked = []
+      this.toggle = null
+      this.geom = null
+      this.showValidGeom = null
     },
     // Clic sur le bouton Exécuter
     executeRequest(idRequeteModele, valParams) {
@@ -287,5 +303,12 @@ export default {
   content: url('/static/img/pencil.png');
   margin-right: 7px;
   cursor: pointer;
+}
+.rechercheGeom{
+  background-color: darkgray;
+  text-indent: 5px;
+}
+.validation-geom{
+  display:flex;
 }
 </style>
