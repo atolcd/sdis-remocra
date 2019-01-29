@@ -250,18 +250,16 @@ Ext.define('Sdis.Remocra.controller.hydrant.Requetage', {
                      });
                      break;
                 default:
-                    panelFather.add({
-                        xtype : data[i]['formulaireTypeControle'],
-                        itemId : 'param-'+data[i]['id'],
-                        fieldLabel : data[i]['formulaireEtiquette'],
-                        allowBlank : !data[i]['obligatoire'],
-                        value : data[i]['formulaireValeurDefaut'],
-                        name : data[i]['nom']
+                     panelFather.add({
+                       xtype : data[i]['formulaireTypeControle'].includes('geom') ? 'textfield' : data[i]['formulaireTypeControle'],
+                       itemId : 'param-'+data[i]['id'],
+                       fieldLabel : data[i]['formulaireEtiquette'],
+                       allowBlank : !data[i]['obligatoire'],
+                       value : data[i]['formulaireValeurDefaut'],
+                       name : data[i]['nom']
 
-                    });
-
-                    break;
-
+                     });
+                   break;
             }
             this.tab_items.push('param-'+data[i]['id']);
             panelFather.doLayout();
