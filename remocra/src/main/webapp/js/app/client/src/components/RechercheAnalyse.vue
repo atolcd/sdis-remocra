@@ -9,7 +9,7 @@
     </select>
   </b-form-group>
   <div class="form-parameters">
-  <hr />
+    <hr />
     <form id="formParameters" class="needs-validation" @submit="createRequest" @reset="resetRequest">
       <p v-if="parametres.length > 0"> Veuillez renseigner les paramètres suivants : </p>
       <p v-else-if="selected">Aucun paramètre pour cette requête</p>
@@ -56,24 +56,24 @@
         </b-form-group>
       </div>
       <div>
-      <div   v-for="(param, index) in parametresGeometry" :key="index">
-        <b-form-group class='rechercheGeom' vertical :label="param.formulaireEtiquette" :label-for="'input' + index">
-          <input :ref="'input' + index" :id="'input' + index" type="text" :idInput="param.nom" class="parametreRequete" readonly hidden />
-          <a :class="['geom-' + param.formulaireTypeControle.toLowerCase()]" href="#" @click="selectGeom($event, param.formulaireTypeControle, index)"></a>
-          <a class="modif" href="#" @click="modifGeom($event, index)"></a>
-          <a class="delete" href="#" @click="deleteGeom($event, index)"></a>
-          <b-button-group  size="sm" class="validation-geom" v-if="showValidGeom === index">
-            <b-btn  class="ok-cancel-btns" @click="validGeom(index)">Valider</b-btn>
-            <b-btn  class="ok-cancel-btns" @click="annulGeom(index)">Annuler</b-btn>
-          </b-button-group>
-        </b-form-group>
+        <div v-for="(param, index) in parametresGeometry" :key="index">
+          <b-form-group class='rechercheGeom' vertical :label="param.formulaireEtiquette" :label-for="'input' + index">
+            <input :ref="'input' + index" :id="'input' + index" type="text" :idInput="param.nom" class="parametreRequete" readonly hidden />
+            <a :class="['geom-' + param.formulaireTypeControle.toLowerCase()]" href="#" @click="selectGeom($event, param.formulaireTypeControle, index)"></a>
+            <a class="modif" href="#" @click="modifGeom($event, index)"></a>
+            <a class="delete" href="#" @click="deleteGeom($event, index)"></a>
+            <b-button-group size="sm" class="validation-geom" v-if="showValidGeom === index">
+              <b-btn class="ok-cancel-btns" @click="validGeom(index)">Valider</b-btn>
+              <b-btn class="ok-cancel-btns" @click="annulGeom(index)">Annuler</b-btn>
+            </b-button-group>
+          </b-form-group>
+        </div>
       </div>
-    </div>
       <br />
       <div class="modal-footer">
-      <b-button size="sm" type="submit" variant="primary">Exécuter</b-button>
-      <b-button size="sm" type="reset" variant="secondary">Annuler</b-button>
-    </div>
+        <b-button size="sm" type="submit" variant="primary">Exécuter</b-button>
+        <b-button size="sm" type="reset" variant="secondary">Annuler</b-button>
+      </div>
     </form>
   </div>
 </div>
@@ -144,7 +144,7 @@ export default {
           // Si c'est une combo, on récupère toutes les valeurs
           if (item.formulaireTypeControle === 'combo') {
             // Récupération des valeurs de la comboBox
-            axios.get('remocra/requetemodele/reqmodparalst/' + item.id).then(response => {
+            axios.get('/remocra/requetemodele/reqmodparalst/' + item.id).then(response => {
               self.comboOptions[item.nom] = []
               _.forEach(response.data.data, function(option) {
                 var o = {
@@ -215,8 +215,17 @@ export default {
     retrieveData(header) {
       var idSelection = header[0].requete
       axios.get('/remocra/requetemodele/reqmodresult/' + idSelection).then(response => {
-        var spatial = document.getElementById('selectAnalyse').options[document.getElementById('selectAnalyse').selectedIndex].getAttribute('data-spatial')
-        this.$root.$options.bus.$emit(eventTypes.RESEARCH_TABDONNEES, header, response.data.data, spatial, idSelection)
+        if (response.data.data && response.data.data.length !== 0) {
+          var spatial = document.getElementById('selectAnalyse').options[document.getElementById('selectAnalyse').selectedIndex].getAttribute('data-spatial')
+          this.$root.$options.bus.$emit(eventTypes.RESEARCH_TABDONNEES, header, response.data.data, spatial, idSelection)
+        } else {
+          this.$notify({
+            group: 'remocra',
+            title: 'Recherche et analyse',
+            type: 'error',
+            text: "Aucune donnée n'est disponible pour cette séléction."
+          })
+        }
       }).catch(function(error) {
         console.error('Retrieving data ', error)
       })
@@ -304,11 +313,13 @@ export default {
   margin-right: 7px;
   cursor: pointer;
 }
-.rechercheGeom{
+
+.rechercheGeom {
   background-color: darkgray;
   text-indent: 5px;
 }
-.validation-geom{
-  display:flex;
+
+.validation-geom {
+  display: flex;
 }
 </style>
