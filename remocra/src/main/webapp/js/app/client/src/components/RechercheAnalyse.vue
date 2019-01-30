@@ -10,7 +10,7 @@
   </b-form-group>
   <div class="form-parameters">
     <hr />
-    <form id="formParameters" class="needs-validation" @submit="createRequest" @reset="resetRequest">
+    <form :id="'formParameters'+criseId" class="needs-validation" @submit="createRequest" @reset="resetRequest">
       <p v-if="parametres.length > 0"> Veuillez renseigner les paramètres suivants : </p>
       <p v-else-if="selected">Aucun paramètre pour cette requête</p>
       <div v-for="(item, index) in parametres" :key="`${index}-${item.id}`">
@@ -57,7 +57,7 @@
       </div>
       <div>
         <div v-for="(param, index) in parametresGeometry" :key="index">
-          <b-form-group class='rechercheGeom' vertical :label="param.formulaireEtiquette" :label-for="'input' + index">
+          <b-form-group class='recherchegeom' vertical :label="param.formulaireEtiquette" :label-for="'input' + index">
             <input :ref="'input' + index" :id="'input' + index" type="text" :idInput="param.nom" class="parametreRequete" readonly hidden />
             <a :class="['geom-' + param.formulaireTypeControle.toLowerCase()]" href="#" @click="selectGeom($event, param.formulaireTypeControle, index)"></a>
             <a class="modif" href="#" @click="modifGeom($event, index)"></a>
@@ -72,7 +72,7 @@
       <br />
       <div class="modal-footer">
         <b-button size="sm" type="submit" variant="primary">Exécuter</b-button>
-        <b-button size="sm" type="reset" variant="secondary">Annuler</b-button>
+        <b-button size="sm" type="reset" variant="secondary">Réinitialiser</b-button>
       </div>
     </form>
   </div>
@@ -90,6 +90,12 @@ export default {
   components: {
     Autocomplete,
     SearchProcessParam
+  },
+  props: {
+    criseId: {
+      required: true,
+      type: Number
+    }
   },
   data() {
     return {
@@ -169,7 +175,7 @@ export default {
     },
     createRequest() {
       var self = this
-      if (document.getElementById('formParameters').checkValidity()) {
+      if (document.getElementById('formParameters' + this.criseId).checkValidity()) {
         var valParams = []
         _.forEach(document.getElementsByClassName('parametreRequete'), function(item) {
           var param = {}
@@ -314,8 +320,8 @@ export default {
   cursor: pointer;
 }
 
-.rechercheGeom {
-  background-color: darkgray;
+.recherchegeom {
+  background-color: #e9ecef;
   text-indent: 5px;
 }
 

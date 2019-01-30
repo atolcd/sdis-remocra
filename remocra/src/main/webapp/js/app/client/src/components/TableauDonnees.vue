@@ -1,5 +1,5 @@
 <template>
-<table id="tableauDonnees" class='table table-bordered table-hover table-sm w-auto'>
+<table :id="'tableauDonnees'+criseId" class='table table-bordered table-hover table-sm w-auto'>
   <thead class='thead-light'>
     <tr>
       <th v-for="(colonne, key)  in colonnes" :key="key" v-on:click="sortTable(colonne)">
@@ -52,6 +52,12 @@ export default {
       pageSize: 14
     }
   },
+  props: {
+    criseId: {
+      required: true,
+      type: Number
+    }
+  },
   methods: {
     eventDrawTableau(header, data) {
       var self = this
@@ -102,47 +108,44 @@ export default {
 <style scoped>
 .table {
   table-layout: fixed;
-}
-
-#tableauDonnees {
   position: relative;
   min-width: 100%;
 }
 
-#tableauDonnees tfoot {
+.table tfoot {
   position: absolute;
   right: 10px;
   bottom: -30px;
   text-align: right;
 }
 
-#tableauDonnees .pagination {
+.table.pagination {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-#tableauDonnees th {
+.table th {
   cursor: pointer;
 }
 
-#tableauDonnees .pagination button {
+.table .pagination button {
   height: 70%;
   border: none;
 }
 
-#tableauDonnees .pagination p {
+.table .pagination p {
   margin-left: 10px;
   margin-right: 10px;
   margin-bottom: 0;
 }
 
-#tableauDonnees td {
+.table td {
   font-size: 10px;
   padding: 3px;
 }
 
-#tableauDonnees .arrow {
+.table .arrow {
   display: inline-block;
   vertical-align: middle;
   width: 0;
@@ -151,13 +154,13 @@ export default {
   opacity: 0.66;
 }
 
-#tableauDonnees .arrow.asc {
+.table .arrow.asc {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-bottom: 4px solid #000;
 }
 
-#tableauDonnees .arrow.dsc {
+.table .arrow.dsc {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-top: 4px solid #000;

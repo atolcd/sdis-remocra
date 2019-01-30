@@ -106,7 +106,7 @@
           </b-card-header>
           <b-collapse id="accordion4" accordion="my-accordion" role="tabpanel">
             <b-card-body>
-              <recherche-analyse ref="rechercheAnalyse"></recherche-analyse>
+              <recherche-analyse :criseId="criseId" ref="rechercheAnalyse"></recherche-analyse>
             </b-card-body>
           </b-collapse>
         </b-card>
@@ -118,19 +118,19 @@
         <choice-feature :crise="criseId" ref="choiceFeature"></choice-feature>
         <stamped-card :crise="criseId" ref="stampedCard"></stamped-card>
       </b-row>
-      <b-row class='mapDiv'>
+      <b-row :id="'mapDiv'+criseId" class='mapDiv'>
         <b-col>
           <div :id="'map'+criseId" class="map">
-            <map-features ref="MapFeatures"></map-features>
-            <button class='boutonToggleTableau btn btn-info' @click='toggleTableau'>Tableau <img v-if='displayType=="MAP_ONLY"' src='/static/img/collapse.svg' />
+            <map-features :criseId="criseId" ref="MapFeatures"></map-features>
+            <button :id="'boutonToggleTableau'+criseId" class='boutonToggleTableau btn btn-info' @click='toggleTableau'>Données <img v-if='displayType=="MAP_ONLY"' src='/static/img/collapse.svg' />
               <img v-else src='/static/img/expand.svg' />
             </button>
           </div>
         </b-col>
       </b-row>
-      <b-row class='tableauDiv'>
+      <b-row :id="'tableauDiv'+criseId" class='tableauDiv'>
         <b-col>
-          <tableau-donnees ref="TableauDonnees" :pageSize='14'></tableau-donnees>
+          <tableau-donnees :criseId="criseId" ref="TableauDonnees" :pageSize='14'></tableau-donnees>
         </b-col>
       </b-row>
     </b-col>
@@ -1554,30 +1554,30 @@ export default {
         this.setDisplay('TABLE_ONLY')
       }
       this.$refs.TableauDonnees.eventDrawTableau(header, data)
-      document.getElementsByClassName('boutonToggleTableau')[0].style.visibility = 'visible'
+      document.getElementById('boutonToggleTableau' + this.criseId).style.visibility = 'visible'
     },
     // Détermine le mode d'affichage de la map et du tableau de données
     setDisplay(type) {
       switch (type) {
         case 'MAP_ONLY': // Seulement la map
-          document.getElementsByClassName('mapDiv')[0].style.display = ''
-          document.getElementsByClassName('mapDiv')[0].style.height = '100%'
-          document.getElementsByClassName('tableauDiv')[0].style.display = 'none'
+          document.getElementById('mapDiv' + this.criseId).style.display = ''
+          document.getElementById('mapDiv' + this.criseId).style.height = '100%'
+          document.getElementById('tableauDiv' + this.criseId).style.display = 'none'
           this.map.updateSize()
           break
         case 'TABLE_ONLY': // Seulement le tableau
-          document.getElementsByClassName('mapDiv')[0].style.display = 'none'
-          document.getElementsByClassName('tableauDiv')[0].style.display = ''
-          document.getElementsByClassName('tableauDiv')[0].style.height = '100%'
+          document.getElementById('mapDiv' + this.criseId).style.display = 'none'
+          document.getElementById('tableauDiv' + this.criseId).style.display = ''
+          document.getElementById('tableauDiv' + this.criseId).style.height = '100%'
           this.$refs.TableauDonnees.setPageSize(37)
           break
         case 'SPLIT': // Map et tableau
-          document.getElementsByClassName('mapDiv')[0].style.display = ''
-          document.getElementsByClassName('tableauDiv')[0].style.display = ''
-          document.getElementsByClassName('mapDiv')[0].style.height = '60%'
-          document.getElementsByClassName('tableauDiv')[0].style.height = '40%'
+          document.getElementById('mapDiv' + this.criseId).style.display = ''
+          document.getElementById('tableauDiv' + this.criseId).style.display = ''
+          document.getElementById('mapDiv' + this.criseId).style.height = '60%'
+          document.getElementById('tableauDiv' + this.criseId).style.height = '40%'
           this.map.updateSize()
-          this.$refs.TableauDonnees.setPageSize(13)
+          this.$refs.TableauDonnees.setPageSize(10)
           break
       }
       this.displayType = type

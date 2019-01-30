@@ -8,7 +8,7 @@
       <li class="dropdown-submenu"><a class="dropdown-item" href="#">{{name}}</a>
         <ul class="dropdown-menu">
           <li v-for="(nature, index) in type" :key="index" class="dropdown-item">
-            <a :class="['geom-'+nature.typeGeometrie.toLowerCase()]" @click="selectGeom(nature.typeGeometrie, nature.value)" href="#">{{nature.text}}</a></li>
+            <a :class="['geom-'+nature.typeGeometrie.toLowerCase()]" @click="selectGeom($event, nature.typeGeometrie, nature.value)" href="#">{{nature.text}}</a></li>
         </ul>
       </li>
     </ul>
@@ -82,12 +82,16 @@ export default {
     })
   },
   methods: {
-    selectGeom(typeGeom, natureId) {
+    selectGeom(evt, typeGeom, natureId) {
       this.$root.$options.bus.$emit(eventTypes.ADD_DRAWINTERACTIONS, {
         'typeGeom': typeGeom,
         'natureId': natureId
       })
       this.$refs.dropDown.hide()
+      if (evt) {
+        evt.preventDefault()
+        evt.stopPropagation()
+      }
     },
     activateInteraction(type) {
       this.$root.$options.bus.$emit(eventTypes.ACTIVATE_INTERACTION, type)

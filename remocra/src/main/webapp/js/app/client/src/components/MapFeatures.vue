@@ -1,5 +1,5 @@
 <template>
-<div></div>
+<div :id="'mapFeatures'+criseId"></div>
 </template>
 
 <script>
@@ -8,6 +8,12 @@ import _ from 'lodash'
 import WKT from 'ol/format/WKT.js'
 export default {
   name: 'MapFeatures',
+  props: {
+    criseId: {
+      required: true,
+      type: Number
+    }
+  },
   data() {
     return {}
   },
