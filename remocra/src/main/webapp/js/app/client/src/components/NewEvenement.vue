@@ -1,12 +1,11 @@
 <template>
 <div>
   <b-modal :id="'modalEvent'+criseId" ref="modal" :title="title" ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
-    <b-card no-body>
-      <b-tabs id="tabsNewEvenement" card ref="tabs" v-model="tabIndex">
+      <b-tabs id="tabsNewEvenement" ref="tabs" v-model="tabIndex">
         <b-tab title="Général" active>
           <form :id="'formEvent'+criseId" class="needs-validation" @submit.stop.prevent="handleSubmit">
             <b-form-group horizontal label="Type:" label-for="typeEvent">
-              <b-form-select :disabled="disableNatures" id="typeEvent" required v-model="form.type" @input="loadComplement">
+              <b-form-select :disabled="disableNatures" id="typeEvent" required class="form-control" v-model="form.type" @input="loadComplement">
                 <optgroup v-for="(type, name) in types" :key="name" :label="name">
                   <option v-for="(nature, index) in type" :key="index" :value="nature.value">
                     {{ nature.text }}
@@ -15,32 +14,32 @@
               </b-form-select>
             </b-form-group>
             <b-form-group horizontal label="Titre:" label-for="titleEvent">
-              <b-form-input id="titleEvent" type="text" tabIndex="0" v-model="form.titre" required>
+              <b-form-input id="titleEvent" type="text" tabIndex="0" class="form-control" v-model="form.titre" required>
               </b-form-input>
             </b-form-group>
             <b-form-group horizontal label="Description:" label-for="descriptEvent">
-              <b-form-textarea id="descriptEvent" v-model="form.description" :rows="3" :max-rows="6">
+              <b-form-textarea id="descriptEvent" v-model="form.description" class="form-control" :rows="3" :max-rows="6">
               </b-form-textarea>
             </b-form-group>
             <b-form-group horizontal label="Intervention associée:" label-for="interventionAssoc">
-              <b-form-select id="interventionAssoc" :options="interventionAssocs" v-model="form.interventionAssoc">
+              <b-form-select id="interventionAssoc" :options="interventionAssocs" class="form-control" v-model="form.interventionAssoc">
               </b-form-select>
             </b-form-group>
             <b-form-group horizontal label="Origine:" label-for="origine">
               <search-origine id="origineEvent" :crise='criseId' ref='searchOrigine'></search-origine>
             </b-form-group>
             <b-form-group horizontal label="Constaté:" label-for="constate">
-              <b-form-input v-model="form.constat" :value="form.constat" type="date"></b-form-input>
-              <b-form-input v-model="form.time" :value="form.time" type="time" style="margin-top:6px;"></b-form-input>
+              <b-form-input v-model="form.constat" :value="form.constat" type="date" class="form-control"></b-form-input>
+              <b-form-input v-model="form.time" :value="form.time" type="time" style="margin-top:6px;" class="form-control"></b-form-input>
             </b-form-group>
-            <b-form-group horizontal label="Importance:" label-for="importance">
+            <b-form-group horizontal label="Importance:" label-for="importanceEvent">
               <rate id="importanceEvent" :length="5" v-model="form.importance" />
             </b-form-group>
             <b-form-group horizontal label="Tags:" label-for="tags">
               <input-tag :tags.sync="form.tags"></input-tag>
             </b-form-group>
             <b-form-group horizontal label="Clore l'évènement:" label-for="cloture">
-              <input style="width:5%" id="cloture" type="checkbox" :value="cloture" v-model="cloture">
+              <input style="width:5%" id="cloture" type="checkbox" :value="cloture" v-model="cloture" class="form-control">
             </b-form-group>
           </form>
         </b-tab>
@@ -90,7 +89,6 @@
           </b-form-group>
         </b-tab>
       </b-tabs>
-    </b-card>
   </b-modal>
 </div>
 </template>
@@ -131,8 +129,8 @@ export default {
         origine: null,
         geometrie: null,
         tags: [],
-        constat: moment(),
-        time: moment(),
+        constat: moment().format('YYYY-MM-DD'),
+        time: moment().format('HH:mm'),
         importance: 0
       },
       types: [],
@@ -266,13 +264,23 @@ export default {
       var formValid = document.getElementById('formEvent' + this.criseId).checkValidity()
       var complementValid = document.getElementById('formComplement' + this.criseId) ? document.getElementById('formComplement' + this.criseId).checkValidity() : true
       if ((complementValid && formValid) === false) {
-        alert('Veuillez saisir les champs obligatoires')
+        this.$notify({
+          group: 'remocra',
+          title: 'Évènements',
+          type: 'error',
+          text: 'Veuillez saisir les champs obligatoires.'
+        })
         document.getElementById('formEvent' + this.criseId).classList.add('was-validated')
         if (document.getElementById('formComplement' + this.criseId)) {
           document.getElementById('formComplement' + this.criseId).classList.add('was-validated')
         }
       } else if (this.form.cloture != null) {
-        alert('L\'évènement est déjà clos')
+        this.$notify({
+          group: 'remocra',
+          title: 'Évènements',
+          type: 'error',
+          text: 'L\'évenement est dejà clos.'
+        })
       } else {
         // formulaire d'évenement
         let formData = new FormData()
@@ -531,6 +539,10 @@ export default {
 
 .mt-3 {
   display: -webkit-box;
+}
+
+>>>button.Rate__star {
+  color: #fff;
 }
 
 .mt-3 img {

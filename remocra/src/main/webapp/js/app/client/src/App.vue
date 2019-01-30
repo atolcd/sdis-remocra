@@ -49,6 +49,20 @@ export default {
   background-color: #dfdfdf;
 }
 
+.gestcrise .tab-content {
+  margin-top: 6px;
+}
+
+.gestcrise .nav-tabs {
+    border-bottom: 1px solid #eff1f3
+}
+
+.gestcrise .nav-tabs .nav-link.active {
+    color: #495057;
+    background-color: #dfdfdf;
+    border-color: #eff1f3 #eff1f3 transparent;
+}
+
 .gestcrise .modal-dialog .form-control {
   height: 22px;
   padding-top: 0;
@@ -159,15 +173,6 @@ export default {
 .gestcrise .notification.success {
   background: #68CD86;
   border-left-color: #42A85F;
-}
-
-.gestcrise .Rate__star {
-  color: #c2c2c2;
-}
-
-.gestcrise .Rate__star.filled,
-.gestcrise .Rate__star.hover {
-  color: #efc20f;
 }
 
 .gestcrise header span {
