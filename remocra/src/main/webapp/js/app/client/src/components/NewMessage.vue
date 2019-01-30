@@ -1,23 +1,23 @@
 <template>
 <div>
   <b-modal id="modalMessage" ref="modal" title="Nouveau message" ok-title="Valider" cancel-title="Annuler" :ok-disabled="disableOk" @ok="handleOk" @hidden="clearFields">
-    <form @submit.stop.prevent="handleSubmit">
+    <form :id="'formMessage'+criseId" @submit.stop.prevent="handleSubmit" class="needs-validation">
       <b-form-group horizontal label="Objet:" label-for="objet">
-        <b-form-input id="objetMessage" required v-model="form.objet">
+        <b-form-input id="objetMessage" required v-model="form.objet" class="form-control">
         </b-form-input>
       </b-form-group>
       <b-form-group horizontal label="Message:" label-for="message">
-        <b-form-textarea id="message" v-model="form.message" :rows="3" :max-rows="6">
+        <b-form-textarea id="message" v-model="form.message" :rows="3" :max-rows="6" class="form-control">
         </b-form-textarea>
       </b-form-group>
       <b-form-group horizontal label="Constaté:" label-for="constate">
-        <b-form-input v-model="form.creation" type="date"></b-form-input>
-        <b-form-input v-model="form.time" :value="form.time" type="time" style="margin-top:6px;"></b-form-input>
+        <b-form-input v-model="form.creation" type="date" class="form-control"></b-form-input>
+        <b-form-input v-model="form.time" :value="form.time" type="time" style="margin-top:6px;" class="form-control"></b-form-input>
       </b-form-group>
       <b-form-group horizontal label="Origine:" label-for="origine">
         <search-origine :crise='criseId' ref='searchOrigine'></search-origine>
       </b-form-group>
-      <b-form-group horizontal label="Importance:" label-for="importance">
+      <b-form-group horizontal label="Importance:" label-for="importanceMessage">
         <rate id="importanceMessage" :length="5" v-model="form.importance" />
       </b-form-group>
       <b-form-group horizontal label="Tags:" label-for="tags">
@@ -54,8 +54,8 @@ export default {
         message: '',
         origine: '  ',
         tags: '',
-        creation: moment(),
-        time: moment(),
+        creation: moment().format('YYYY-MM-DD'),
+        time: moment().format('HH:mm'),
         importance: 0
       }
     }
@@ -64,29 +64,11 @@ export default {
     showModal(criseId, evenementId, messageId) {
       this.criseId = criseId
       this.evenementId = evenementId
-      if (messageId !== null) {
-        // c'est un updated
-        axios.get('/remocra/evenements/message/' + messageId).then(response => {
-          var message = response.data.data[0]
-          this.form.objet = message.objet
-          this.form.message = message.message
-          this.form.creation = moment(message.creation.toString()).format('YYYY-MM-DD')
-          this.form.time = moment(message.creation.toString()).format('HH:mm')
-          this.form.origine = message.origine !== null ? message.origine : '  '
-          if (message.origine !== null) {
-            this.$refs.searchOrigine.search(this.form.origine)
-          }
-          this.form.importance = message.importance
-          this.form.tags = message.tags
-        }).catch(function(error) {
-          console.error('message', error)
-        })
-        this.disableOk = true
-      }
       this.$refs.modal.show()
       this.$root.$emit('bv::hide::popover')
     },
     clearFields() {
+      document.getElementById('formMessage' + this.criseId).classList.remove('was-validated')
       this.form.objet = ''
       this.form.message = ''
       this.form.creation = moment().format('YYYY-MM-DD')
@@ -101,10 +83,16 @@ export default {
     handleOk(evt) {
       // Prevent modal from closing
       evt.preventDefault()
-      if (!this.form.objet || !(this.$refs.searchOrigine.searchInput !== '' || this.$refs.searchOrigine.selected !== null) || !this.form.creation || !this.form.time) {
-        alert('Veuillez saisir les champs obligatoires')
-      } else {
+      if (document.getElementById('formMessage' + this.criseId).checkValidity()) {
         this.handleSubmit()
+      } else {
+        this.$notify({
+          group: 'remocra',
+          title: 'Évènements',
+          type: 'error',
+          text: 'Veuillez saisir les champs obligatoires.'
+        })
+        document.getElementById('formMessage' + this.criseId).classList.add('was-validated')
       }
     },
     handleSubmit() {
@@ -137,5 +125,9 @@ export default {
 <style scoped>
 >>>input {
   width: 100%;
+}
+
+>>>button.Rate__star {
+  color: #fff;
 }
 </style>
