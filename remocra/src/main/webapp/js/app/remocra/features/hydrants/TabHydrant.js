@@ -267,6 +267,17 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
             }
         }];
 
+        var colonnesOrdonnees = [];
+        HYDRANT_COLONNES.forEach(function(colonne){
+            me.columns.forEach(function(c){
+                if(c.dataIndex == colonne){
+                    colonnesOrdonnees.push(c);
+                }
+            });
+        });
+
+        me.columns = colonnesOrdonnees;
+
         me.callParent(arguments);
     }
 });

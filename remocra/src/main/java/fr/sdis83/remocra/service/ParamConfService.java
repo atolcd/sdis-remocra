@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Arrays;
 
 @Configuration
 public class ParamConfService {
@@ -190,6 +191,15 @@ public class ParamConfService {
 
     public Integer getHydrantHighlightDuree() {
         return (Integer) this.getValue(ParamConfParam.HYDRANT_HIGHLIGHT_DUREE, 1000);
+    }
+
+    public static String HYDRANT_COLONNES_DEFAULT[] = {"numero", "nomTournee", "natureNom", "dateReco", "dateContr", "dispoTerrestre", "dispoHbe"};
+    public String[] getHydrantColonnes(){
+        String hydrantColonnes = (String) this.getValue(ParamConfParam.HYDRANT_COLONNES);
+        if(hydrantColonnes == null || hydrantColonnes.length() ==0){
+            return HYDRANT_COLONNES_DEFAULT;
+        }
+        return hydrantColonnes.split("%");
     }
 
     public MethodeNumerotation getHydrantNumerotationMethode() {

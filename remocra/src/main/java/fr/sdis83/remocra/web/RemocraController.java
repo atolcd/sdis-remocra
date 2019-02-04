@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 
+import flexjson.JSONSerializer;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -127,6 +128,9 @@ public class RemocraController {
 
         //Durée de mise en évidence lors de la localisation
         model.addAttribute("hydrant_highlight_duree", paramConfService.getHydrantHighlightDuree());
+
+        //Paramétrage des colonnes du tableau de suivi des PEI
+        model.addAttribute("hydrant_colonnes", (new JSONSerializer()).serialize(paramConfService.getHydrantColonnes()));
 
         return "remocra";
     }

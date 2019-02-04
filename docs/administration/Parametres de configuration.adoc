@@ -415,6 +415,18 @@ Méthodes disponibles pour la symbologie des PEI : link:../pei/Symbologie_PEI{ou
 * Durée de mise en évidence des PEI sur la carte en millisecondes. Exemples : 0 pour désactiver la mise en évidence, 1000 pour une seconde
 * Par défaut : ```1000```
 
+=== HYDRANT_COLONNES ===
+* Colonnes et ordre des colonnes à afficher dans le tableau de suivi des PEI, séparateur %
+* Par défaut: ```numero%nomTournee%natureNom%dateReco%dateContr%dispoTerrestre%dispoHbe```
+* Valeurs possibles:
+** ```numero``` Numéro du PEI
+** ```nomTournee``` Tournée à laquelle appartient le PEI
+** ```natureNom``` Type du PEI
+** ```dateReco``` Date de la prochaine reconnaissance
+** ```dateContr``` Date du prochain contrôle
+** ```dispoTerrestre``` Disponibilité terrestre
+** ```dispoHbe``` Disponibilité des Hélicoptères Bombardiers d'Eau
+
 === NIVEAU_TRACABILITE ===
 * Niveau de traçabilité des points d'eau (valeurs admises : organisme , utilisateur)
 * Par défaut : ```organisme```

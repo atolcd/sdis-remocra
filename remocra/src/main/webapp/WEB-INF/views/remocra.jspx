@@ -82,6 +82,7 @@
 			var HYDRANT_SYMBOLOGIE = '${hydrant_symbologie}';
 			var HYDRANT_VISITE_RAPIDE = ${hydrant_visite_rapide};
 			var HYDRANT_HIGHLIGHT_DUREE = ${hydrant_highlight_duree};
+			var HYDRANT_COLONNES = ${hydrant_colonnes};
 			var REMOCRA_DEFAULT_ORIENTATION = { x : '${orientationX}', y : '${orientationY}' };
 
 			var COORDONNEES_FORMAT_AFFICHAGE = '${coordonnees_format_affichage}';
