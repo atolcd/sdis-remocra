@@ -300,6 +300,13 @@ L'authentification LDAP est prioritaire sur l'authentification à partir de la b
 * Il s'applique pour le choix des communes et la recherche suite à un clic (permis, etc.).
 * Par défaut : ```83%```
 
+=== COMPLEXITE_PASSWORD ===
+* Configuration de la complexité du mot de passe des utilisateurs
+* Par défaut : ```libre```
+* Valeurs possibles:
+** ```libre``` Mot de passe libre
+** ```complexe``` 9 caractères minimum, doit contenir au moins 1 lettre et 1 chiffre
+
 === MENTION_CNIL ===
 * Mention CNIL affichée dans le pied de page
 * Par défaut : ``````

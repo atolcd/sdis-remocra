@@ -86,6 +86,8 @@
 			var REMOCRA_DEFAULT_ORIENTATION = { x : '${orientationX}', y : '${orientationY}' };
 
 			var COORDONNEES_FORMAT_AFFICHAGE = '${coordonnees_format_affichage}';
+
+			var COMPLEXITE_PASSWORD = '${complexite_password}';
 		</script>
 	</head>
 	

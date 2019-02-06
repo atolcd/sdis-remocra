@@ -123,7 +123,7 @@ public class UtilisateurService {
 
         Utilisateur attached = Utilisateur.findUtilisateur(utilisateur.getId());
         String plainPassword = utilisateur.getPassword();
-        if (!StringUtils.isEmpty(plainPassword)) {
+        if (!StringUtils.isEmpty(plainPassword) && this.checkPasswordValidity(plainPassword)) {
             dbAuthProvider.encodeNewPasswordForUser(attached, utilisateur.getPassword());
 
             // Email de confirmation
@@ -185,6 +185,22 @@ public class UtilisateurService {
                         .add(EmailModeleKeys.IDENTIFIANT, utilisateur.getIdentifiant()).add(EmailModeleKeys.URL_SITE, paramConfService.getUrlSite()));
 
         utilisateur.persist();
+    }
+
+    /**
+     * Vérifie la validité du mot de passe en fonction de paramètre COMPLEXITE_PASSWORD
+     *  -> libre: valide si au moins 1 caractère
+     *  -> complexe: valise si au moins 9 caractères, au moins 1 chiffre et au moins 1 lettre
+     * @param plainPwd
+     * @return TRUE si le password est conforme, FALSE le cas échéant
+     */
+    public Boolean checkPasswordValidity(String plainPwd){
+        if("complexe".equals(paramConfService.getComplexitePassword())){
+            return (plainPwd.length() >= 9 && plainPwd.matches("^(?=.*[0-9])(?=.*[a-zA-Z])(.+)$"));
+        }
+        else{
+            return plainPwd.length() > 0;
+        }
     }
 
     @Transactional

@@ -261,6 +261,10 @@ public class ParamConfService {
         return (String) this.getValue(ParamConfParam.COORDONNEES_FORMAT_AFFICHAGE, "DD_DDDD");
     }
 
+    public String getComplexitePassword() {
+        return (String) this.getValue(ParamConfParam.COMPLEXITE_PASSWORD, "libre");
+    }
+
     @Transactional
     public ParamConf update(ParamConf record) {
         log.info("updateParamConf : " + record.getCle());

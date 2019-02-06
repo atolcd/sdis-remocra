@@ -119,6 +119,7 @@ public class ParamConf {
         WMS_BASE_URL("WMS_BASE_URL", String.class),
         WMS_PUBLIC_LAYERS("WMS_PUBLIC_LAYERS", String.class),
         COORDONNEES_FORMAT_AFFICHAGE("COORDONNEES_FORMAT_AFFICHAGE", String.class),
+        COMPLEXITE_PASSWORD("COMPLEXITE_PASSWORD", String.class),
         // JWT
         SORTIE_JWT_VALIDITE_SEC("SORTIE_JWT_VALIDITE_SEC", Integer.class),
         SORTIE_JWT_CLEPRIVEE("SORTIE_JWT_CLEPRIVEE", String.class),
@@ -132,6 +133,8 @@ public class ParamConf {
         PDI_LDAP_ADMIN_PASSWORD("PDI_LDAP_ADMIN_PASSWORD", Password.class),
         PDI_LDAP_USER_BASE_NAME("PDI_LDAP_USER_BASE_NAME", String.class),
         PDI_LDAP_USER_FILTER("PDI_LDAP_USER_FILTER", String.class);
+
+
 
 
         private final String cle;

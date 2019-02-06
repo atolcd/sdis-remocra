@@ -12,11 +12,19 @@ Ext.apply(Ext.form.VTypes, {
     'password': function(val, field) {
         if (field.otherPwdFieldId) {
             var pwd = Ext.getCmp(field.otherPwdFieldId);
-            return (val == pwd.getValue());
+            if(COMPLEXITE_PASSWORD == "complexe"){
+                return (val == pwd.getValue() && val.length >= 9 && val.match(/^(?=.*[0-9])(?=.*[a-zA-Z])(.+)$/));
+            }
+            else{
+                return (val == pwd.getValue());
+            }
         }
         return true;
     },
-    'passwordText' : 'Les mots de passe ne sont pas identiques',
+    'passwordText' : (COMPLEXITE_PASSWORD == "complexe") ?
+        "Les mots de passe ne sont pas identiques ou ne sont pas suffisamment sécurisé."
+        +"Merci de fournir un mot de passe de 9 caractères minimum avec au moins 1 lettre et au moins 1 chiffre" :
+        "Les mots de passe ne sont pas identiques",
     'imagefile': function(v){
         v = v.replace(/^\s|\s$/g, ""); //trims string
         return v.match(/([^\/\\]+)\.(bmp|gif|png|jpg|jpeg)$/i);

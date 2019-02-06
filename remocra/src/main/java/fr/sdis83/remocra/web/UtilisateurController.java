@@ -10,6 +10,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import fr.sdis83.remocra.domain.remocra.TypeDroit.TypeDroitEnum;
+import fr.sdis83.remocra.service.ParamConfService;
 import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,9 @@ public class UtilisateurController {
 
     @Autowired
     private AuthoritiesUtil authUtils;
+
+    @Autowired
+    protected ParamConfService paramConfService;
 
     @RequestMapping(headers = "Accept=application/json")
     @PreAuthorize("isAuthenticated()")
@@ -199,7 +203,12 @@ public class UtilisateurController {
             final Utilisateur returned = record.merge();
 
             // Mot de passe aléatoire en clair
-            returned.setPassword(UUID.randomUUID().toString().substring(0, 8));
+            String password = null;
+            do{
+                password = UUID.randomUUID().toString().replace("-", "").substring(0, 9);
+            }while(!utilisateurService.checkPasswordValidity(password));
+            returned.setPassword(password);
+
             utilisateurService.create(returned);
 
             return new AbstractExtObjectSerializer<Utilisateur>("Utilisateur created.") {
