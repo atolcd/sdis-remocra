@@ -321,5 +321,13 @@ privileged aspect Hydrant_Roo_JavaBean {
     public void Hydrant.setNomTournee(String nomTournee) {
        this.nomTournee = nomTournee;
     }
+
+    public TypeHydrantNatureDeci Hydrant.getNatureDeci() {
+        return this.natureDeci;
+    }
+
+    public void Hydrant.setNatureDeci(TypeHydrantNatureDeci natureDeci) {
+        this.natureDeci = natureDeci;
+    }
     
 }

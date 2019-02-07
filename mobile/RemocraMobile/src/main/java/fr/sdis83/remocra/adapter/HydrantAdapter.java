@@ -43,7 +43,9 @@ public class HydrantAdapter extends CursorAdapter {
                     + HydrantTable.COLUMN_STATE_H4 + " + "
                     + HydrantTable.COLUMN_STATE_H5 + " + "
                     + HydrantTable.COLUMN_STATE_H6 + " ) " + HydrantTable.COLUMN_STATES,
-            HydrantTable.COLUMN_NB_ECRANS
+            HydrantTable.COLUMN_NB_ECRANS,
+            HydrantTable.COLUMN_NATURE_DECI
+
     };
 
     static class ViewHolder {

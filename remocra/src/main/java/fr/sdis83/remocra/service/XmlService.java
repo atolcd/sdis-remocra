@@ -58,6 +58,7 @@ import fr.sdis83.remocra.domain.remocra.TypeHydrantMarque;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantMateriau;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantModele;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantNature;
+import fr.sdis83.remocra.domain.remocra.TypeHydrantNatureDeci;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantPositionnement;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantSaisie;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantVolConstate;
@@ -98,6 +99,7 @@ import fr.sdis83.remocra.xml.LstMarques;
 import fr.sdis83.remocra.xml.LstMateriaux;
 import fr.sdis83.remocra.xml.LstModeles;
 import fr.sdis83.remocra.xml.LstNatures;
+import fr.sdis83.remocra.xml.LstNaturesDeci;
 import fr.sdis83.remocra.xml.LstPositionnements;
 import fr.sdis83.remocra.xml.LstSaisies;
 import fr.sdis83.remocra.xml.LstTournees;
@@ -105,6 +107,7 @@ import fr.sdis83.remocra.xml.LstVolConstates;
 import fr.sdis83.remocra.xml.Marque;
 import fr.sdis83.remocra.xml.Modele;
 import fr.sdis83.remocra.xml.Nature;
+import fr.sdis83.remocra.xml.NatureDeci;
 import fr.sdis83.remocra.xml.Referentiel;
 import fr.sdis83.remocra.xml.Saisie;
 
@@ -411,6 +414,25 @@ public class XmlService {
         serializeXmlExceptionManaged(fr.sdis83.remocra.xml.LstSaisies.class, getSaisies(), "saisies", out);
     }
 
+    public LstNaturesDeci getNaturesDeci() {
+
+        List<TypeHydrantNatureDeci> lstNaturesDeci = TypeHydrantNatureDeci.findTypeHydrantNatureDecisByActif(true).getResultList();
+
+        ArrayList<fr.sdis83.remocra.xml.NatureDeci> lstFinalNaturesDeci = new ArrayList<NatureDeci>();
+        for (TypeHydrantNatureDeci natureDeci : lstNaturesDeci) {
+            lstFinalNaturesDeci.add(new fr.sdis83.remocra.xml.NatureDeci(natureDeci.getCode(), natureDeci.getNom()));
+        }
+
+        LstNaturesDeci lstNaturesDeciXML = new LstNaturesDeci();
+        lstNaturesDeciXML.setNaturesDeci(lstFinalNaturesDeci);
+
+        return lstNaturesDeciXML;
+    }
+
+    public void serializeNaturesDeci(OutputStream out) throws BusinessException, SQLBusinessException {
+        serializeXmlExceptionManaged(fr.sdis83.remocra.xml.LstNaturesDeci.class, getNaturesDeci(), "naturesDeci", out);
+    }
+
     public Referentiel getReferentiels() {
 
         Referentiel referentiels = new Referentiel();
@@ -424,6 +446,7 @@ public class XmlService {
         referentiels.setNatures(this.getNatures());
         referentiels.setPositionnements(this.getPositionnements());
         referentiels.setVolConstates(this.getVolConstates());
+        referentiels.setNaturesDeci(this.getNaturesDeci());
 
         return referentiels;
     }
@@ -587,6 +610,7 @@ public class XmlService {
         hydrantXML.setCourrier(hydrant.getCourrier());
         hydrantXML.setGestPointEau(hydrant.getGestPointEau());
         hydrantXML.setDateAttestation(hydrant.getDateAttestation());
+        hydrantXML.setCodeNatureDeci(hydrant.getNatureDeci() != null ? hydrant.getNatureDeci().getCode() : "");
 
         if (hydrant.getHydrantDocuments().size() > 0) {
 
@@ -920,6 +944,11 @@ public class XmlService {
         } else {
             // La commune est obligatoire : on bloque
             throw new BusinessException("La commune est obligatoire");
+        }
+
+        //Nature deci
+        if (hydrantXML.getCodeNatureDeci() != null && !hydrantXML.getCodeNatureDeci().isEmpty()) {
+            hydrant.setNatureDeci(TypeHydrantNatureDeci.findTypeHydrantNatureDecisByCode(hydrantXML.getCodeNatureDeci()).getSingleResult());
         }
 
         // PIBI

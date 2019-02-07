@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 import javax.annotation.Generated;
 
+import fr.sdis83.remocra.domain.remocra.TypeHydrantNatureDeci;
 import org.joda.time.Instant;
 
 
@@ -58,6 +59,7 @@ public class Hydrant implements Serializable {
 	private Long    zoneSpeciale;
 	private Instant dateAttestation;
 	private Long    utilisateurModification;
+	private Long    natureDeci;
 
 	public Hydrant() {}
 
@@ -94,6 +96,7 @@ public class Hydrant implements Serializable {
 		this.zoneSpeciale = value.zoneSpeciale;
 		this.dateAttestation = value.dateAttestation;
 		this.utilisateurModification = value.utilisateurModification;
+		this.natureDeci = value.natureDeci;
 	}
 
 	public Hydrant(
@@ -128,7 +131,8 @@ public class Hydrant implements Serializable {
 		Instant dateGps,
 		Long    zoneSpeciale,
 		Instant dateAttestation,
-		Long    utilisateurModification
+		Long    utilisateurModification,
+		Long    natureDeci
 	) {
 		this.id = id;
 		this.agent1 = agent1;
@@ -162,6 +166,7 @@ public class Hydrant implements Serializable {
 		this.zoneSpeciale = zoneSpeciale;
 		this.dateAttestation = dateAttestation;
 		this.utilisateurModification = utilisateurModification;
+		this.natureDeci = natureDeci;
 	}
 
 	public Long getId() {
@@ -449,6 +454,15 @@ public class Hydrant implements Serializable {
 
 	public Hydrant setUtilisateurModification(Long utilisateurModification) {
 		this.utilisateurModification = utilisateurModification;
+		return this;
+	}
+
+	public Long getNatureDeci() {
+		return this.natureDeci;
+	}
+
+	public Hydrant setNatureDeci(Long natureDeci) {
+		this.natureDeci = natureDeci;
 		return this;
 	}
 }

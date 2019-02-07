@@ -76,6 +76,7 @@ public class TourneeParser extends AbstractRemocraParser {
     public static final String TAG_COORD_LONGITUDE = "longitude";
     public static final String TAG_CODE_NATURE = "codeNature";
     public static final String TAG_TYPE_SAISIE = "typeSaisie";
+    public static final String TAG_NATURE_DECI = "codeNatureDeci";
 
 
     private ArrayList<ContentValues> lstHydrant;
@@ -264,6 +265,8 @@ public class TourneeParser extends AbstractRemocraParser {
                     this.readBaliseAnomalies(xmlParser, name, values);
                 }else if (TAG_TYPE_SAISIE.equals(name)) {
                     values.put(HydrantTable.COLUMN_TYPE_SAISIE, this.readBaliseText(xmlParser, name));
+                } else if(TAG_NATURE_DECI.equals(name)) {
+                    values.put(HydrantTable.COLUMN_NATURE_DECI, this.readBaliseIdReferentiel(xmlParser, name, RemocraProvider.CONTENT_NATURE_DECI_URI));
                 } else {
                     skip(xmlParser);
                 }

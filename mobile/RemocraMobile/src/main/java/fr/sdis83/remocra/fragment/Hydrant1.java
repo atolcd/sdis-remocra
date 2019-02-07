@@ -43,6 +43,7 @@ public class Hydrant1 extends AbstractHydrant {
         addBindableData(R.id.ident_pibi_diam, HydrantTable.COLUMN_DIAMETRE, Spinner.class);
         addBindableData(R.id.ident_pena_nature, HydrantTable.COLUMN_NATURE, Spinner.class);
         addBindableData(R.id.ident_pena_hbe, HydrantTable.COLUMN_HBE, CheckBox.class);
+        addBindableData(R.id.ident_deci_nature, HydrantTable.COLUMN_NATURE_DECI, Spinner.class);
     }
 
     @Override
@@ -67,6 +68,7 @@ public class Hydrant1 extends AbstractHydrant {
         loadSpinner(R.id.ident_pibi_type, RemocraProvider.getUriNature(RemocraProvider.TYPE_NATURE.PIBI));
         loadSpinner(R.id.ident_pibi_diam, RemocraProvider.CONTENT_DIAMETRE_URI);
         loadSpinner(R.id.ident_pena_nature, RemocraProvider.getUriNature(RemocraProvider.TYPE_NATURE.PENA));
+        loadSpinner(R.id.ident_deci_nature, RemocraProvider.CONTENT_NATURE_DECI_URI);
         //on modifie l'action de multiline à suivant
         EditText loca = (EditText) view.findViewById(R.id.loca_compl);
         loca.setImeOptions(EditorInfo.IME_ACTION_NEXT);

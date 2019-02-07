@@ -11,7 +11,7 @@ import android.util.Log;
 public final class RemocraDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
 
     public static final String DATABASE_NAME = "remocra.db";
     private static final String TAG = "RemocraDbHelper";
@@ -36,6 +36,7 @@ public final class RemocraDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(NatureTable.CREATE_TABLE);
         sqLiteDatabase.execSQL(PositionnementTable.CREATE_TABLE);
         sqLiteDatabase.execSQL(VolConstateTable.CREATE_TABLE);
+        sqLiteDatabase.execSQL(NatureDeciTable.CREATE_TABLE);
     }
 
     private void deleteAllTable(SQLiteDatabase db) {
@@ -53,6 +54,7 @@ public final class RemocraDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + PositionnementTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + VolConstateTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + UserTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + NatureDeciTable.TABLE_NAME);
     }
 
     @Override

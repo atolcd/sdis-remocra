@@ -98,6 +98,9 @@ public class Hydrant implements Featurable {
     @ManyToOne
     private ZoneSpeciale zoneSpeciale;
 
+    @ManyToOne
+    private TypeHydrantNatureDeci natureDeci;
+
     // Tracabilité
 
     @Temporal(TemporalType.TIMESTAMP)

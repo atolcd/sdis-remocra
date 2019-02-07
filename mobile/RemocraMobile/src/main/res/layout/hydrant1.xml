@@ -214,6 +214,20 @@
                 android:id="@+id/ident_pibi_scp"
                 android:layout_below="@+id/ident_pibi_diam"
                 android:layout_toRightOf="@+id/lbl_ident_pibi_scp"/>
+
+            <TextView
+                style="@style/labelShort"
+                android:text="Nature DECI"
+                android:id="@+id/lbl_ident_deci_nature"
+                android:layout_below="@+id/lbl_ident_pibi_scp"
+                android:layout_alignParentLeft="true"/>
+
+            <Spinner
+                style="@style/field"
+                android:spinnerMode="dropdown"
+                android:id="@+id/ident_deci_nature"
+                android:layout_below="@+id/ident_pibi_scp"
+                android:layout_toRightOf="@+id/lbl_ident_deci_nature"/>
         </RelativeLayout>
 
         <RelativeLayout

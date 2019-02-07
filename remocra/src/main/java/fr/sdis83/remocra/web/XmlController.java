@@ -177,6 +177,16 @@ public class XmlController {
         }
     }
 
+    @RequestMapping(value = "/naturesDeci")
+    public void getNaturesDeci(HttpServletResponse response) throws IOException {
+        prepareXMLResponse(response);
+        try {
+            xmlService.serializeNaturesDeci(response.getOutputStream());
+        } catch (Exception e) {
+            manageSQLBusinessExceptionOrException(response, e);
+        }
+    }
+
     /**
      *
      * @param response

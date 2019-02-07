@@ -397,6 +397,7 @@
         <column name="date_gps" primaryKey="false" required="false" scale="6" size="29" type="93,timestamp"/>
         <column name="zone_speciale" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <column name="date_attestation" primaryKey="false" required="false" scale="6" size="29" type="93,timestamp"/>
+        <column name="nature_deci" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <foreign-key foreignTable="commune" name="fk51b8f028d2da796c" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="false"/>
@@ -446,6 +447,11 @@
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="true"/>
             <reference foreign="id" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="type_hydrant_nature_deci" name="fk_nature_deci" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="remocra"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="nature_deci"/>
         </foreign-key>
         <unique name="hydrant_numero_key">
             <unique-column name="numero"/>
@@ -1355,6 +1361,16 @@
             <reference foreign="natures" local="id"/>
         </foreign-key>
         <unique name="type_hydrant_nature_pkey">
+            <unique-column name="id"/>
+        </unique>
+    </table>
+    <table alias="remocra" name="type_hydrant_nature_deci">
+        <column name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
+        <column name="actif" primaryKey="false" required="true" scale="0" size="1" type="-7,bool"/>
+        <column name="code" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
+        <column name="nom" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
+        <column name="version" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
+        <unique name="type_hydrant_nature_deci_pkey">
             <unique-column name="id"/>
         </unique>
     </table>

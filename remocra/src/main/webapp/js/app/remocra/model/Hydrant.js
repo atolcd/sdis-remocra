@@ -4,6 +4,7 @@ Ext.require('Sdis.Remocra.model.TypeHydrantNature');
 Ext.require('Sdis.Remocra.model.TypeHydrantDomaine');
 Ext.require('Sdis.Remocra.model.TypeHydrantAnomalie');
 Ext.require('Sdis.Remocra.model.HydrantDocument');
+Ext.require('Sdis.Remocra.model.TypeHydrantNatureDeci');
 
 Ext.define('Sdis.Remocra.model.Hydrant', {
     extend: 'Ext.data.Model',
@@ -124,7 +125,10 @@ Ext.define('Sdis.Remocra.model.Hydrant', {
         name: 'nomTournee',
         type: 'string',
         persist: false
-    }],
+    }, {
+       name: 'natureDeci',
+       type: 'fk'
+   }],
 
     associations: [{
         type: 'hasMany',
@@ -155,6 +159,13 @@ Ext.define('Sdis.Remocra.model.Hydrant', {
         getterName: 'getPhoto',
         persist: false,
         foreignKey: 'hydrant'
+    },{
+        type : 'belongsTo',
+        model : 'Sdis.Remocra.model.TypeHydrantNatureDeci',
+        associationKey : 'natureDeci',
+        getterName : 'getNatureDeci',
+        associatedName : 'natureDeci',
+        persist : true
     } ],
 
     proxy: {

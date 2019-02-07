@@ -42,6 +42,7 @@ public final class HydrantTable implements BaseColumns {
     public static final String COLUMN_AGENT1 = "agent1";
     public static final String COLUMN_AGENT2 = "agent2";
     public static final String COLUMN_NATURE = "nature";
+    public static final String COLUMN_NATURE_DECI = "natureDeci";
 
     // localisation
     public static final String COLUMN_COMMUNE = "commune";
@@ -192,7 +193,8 @@ public final class HydrantTable implements BaseColumns {
             COLUMN_STATE_H6 + " BOOLEAN DEFAULT FALSE," +
             COLUMN_TYPE_SAISIE + " TEXT null," +
             COLUMN_NB_ECRANS + " INTEGER null," +
-            COLUMN_CODE_NATURE + " TEXT not null" +
+            COLUMN_CODE_NATURE + " TEXT not null," +
+            COLUMN_NATURE_DECI + " TEXT null "+
             " )";
 
 

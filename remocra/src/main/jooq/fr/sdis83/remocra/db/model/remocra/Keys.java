@@ -113,6 +113,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMarque;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMateriau;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantModele;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantNature;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantNatureDeci;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantPositionnement;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantSaisie;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantVolConstate;
@@ -254,6 +255,7 @@ public class Keys {
 	public static final Identity<Record, Long> IDENTITY_TYPE_HYDRANT_MATERIAU = Identities0.IDENTITY_TYPE_HYDRANT_MATERIAU;
 	public static final Identity<Record, Long> IDENTITY_TYPE_HYDRANT_MODELE = Identities0.IDENTITY_TYPE_HYDRANT_MODELE;
 	public static final Identity<Record, Long> IDENTITY_TYPE_HYDRANT_NATURE = Identities0.IDENTITY_TYPE_HYDRANT_NATURE;
+	public static final Identity<Record, Long> IDENTITY_TYPE_HYDRANT_NATURE_DECI = Identities0.IDENTITY_TYPE_HYDRANT_NATURE_DECI;
 	public static final Identity<Record, Long> IDENTITY_TYPE_HYDRANT_POSITIONNEMENT = Identities0.IDENTITY_TYPE_HYDRANT_POSITIONNEMENT;
 	public static final Identity<Record, Long> IDENTITY_TYPE_HYDRANT_SAISIE = Identities0.IDENTITY_TYPE_HYDRANT_SAISIE;
 	public static final Identity<Record, Long> IDENTITY_TYPE_HYDRANT_VOL_CONSTATE = Identities0.IDENTITY_TYPE_HYDRANT_VOL_CONSTATE;
@@ -430,6 +432,7 @@ public class Keys {
 	public static final UniqueKey<Record> TYPE_HYDRANT_MATERIAU_PKEY = UniqueKeys0.TYPE_HYDRANT_MATERIAU_PKEY;
 	public static final UniqueKey<Record> TYPE_HYDRANT_MODELE_PKEY = UniqueKeys0.TYPE_HYDRANT_MODELE_PKEY;
 	public static final UniqueKey<Record> TYPE_HYDRANT_NATURE_PKEY = UniqueKeys0.TYPE_HYDRANT_NATURE_PKEY;
+	public static final UniqueKey<Record> TYPE_HYDRANT_NATURE_DECI_PKEY = UniqueKeys0.TYPE_HYDRANT_NATURE_DECI_PKEY;
 	public static final UniqueKey<Record> TYPE_HYDRANT_POSITIONNEMENT_PKEY = UniqueKeys0.TYPE_HYDRANT_POSITIONNEMENT_PKEY;
 	public static final UniqueKey<Record> TYPE_HYDRANT_SAISIE_PKEY = UniqueKeys0.TYPE_HYDRANT_SAISIE_PKEY;
 	public static final UniqueKey<Record> TYPE_HYDRANT_VOL_CONSTATE_PKEY = UniqueKeys0.TYPE_HYDRANT_VOL_CONSTATE_PKEY;
@@ -516,6 +519,7 @@ public class Keys {
 	public static final ForeignKey<Record, Record> HYDRANT__FK51B8F0285D29D8A8 = ForeignKeys0.HYDRANT__FK51B8F0285D29D8A8;
 	public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028D10A0428 = ForeignKeys0.HYDRANT__FK51B8F028D10A0428;
 	public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028374ADD52 = ForeignKeys0.HYDRANT__FK51B8F028374ADD52;
+	public static final ForeignKey<Record, Record> HYDRANT__fk_nature_deci = ForeignKeys0.HYDRANT__fk_nature_deci;
 	public static final ForeignKey<Record, Record> HYDRANT__FK_ZONE_SPECIALE = ForeignKeys0.HYDRANT__FK_ZONE_SPECIALE;
 	public static final ForeignKey<Record, Record> HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION = ForeignKeys0.HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION;
 	public static final ForeignKey<Record, Record> HYDRANT_ANOMALIES__FK5E56B38A50004FC = ForeignKeys0.HYDRANT_ANOMALIES__FK5E56B38A50004FC;
@@ -729,6 +733,7 @@ public class Keys {
 		public static Identity<Record, Long> IDENTITY_TYPE_HYDRANT_MATERIAU = createIdentity(TypeHydrantMateriau.TYPE_HYDRANT_MATERIAU, TypeHydrantMateriau.TYPE_HYDRANT_MATERIAU.ID);
 		public static Identity<Record, Long> IDENTITY_TYPE_HYDRANT_MODELE = createIdentity(TypeHydrantModele.TYPE_HYDRANT_MODELE, TypeHydrantModele.TYPE_HYDRANT_MODELE.ID);
 		public static Identity<Record, Long> IDENTITY_TYPE_HYDRANT_NATURE = createIdentity(TypeHydrantNature.TYPE_HYDRANT_NATURE, TypeHydrantNature.TYPE_HYDRANT_NATURE.ID);
+		public static Identity<Record, Long> IDENTITY_TYPE_HYDRANT_NATURE_DECI = createIdentity(TypeHydrantNatureDeci.TYPE_HYDRANT_NATURE_DECI, TypeHydrantNatureDeci.TYPE_HYDRANT_NATURE_DECI.ID);
 		public static Identity<Record, Long> IDENTITY_TYPE_HYDRANT_POSITIONNEMENT = createIdentity(TypeHydrantPositionnement.TYPE_HYDRANT_POSITIONNEMENT, TypeHydrantPositionnement.TYPE_HYDRANT_POSITIONNEMENT.ID);
 		public static Identity<Record, Long> IDENTITY_TYPE_HYDRANT_SAISIE = createIdentity(TypeHydrantSaisie.TYPE_HYDRANT_SAISIE, TypeHydrantSaisie.TYPE_HYDRANT_SAISIE.ID);
 		public static Identity<Record, Long> IDENTITY_TYPE_HYDRANT_VOL_CONSTATE = createIdentity(TypeHydrantVolConstate.TYPE_HYDRANT_VOL_CONSTATE, TypeHydrantVolConstate.TYPE_HYDRANT_VOL_CONSTATE.ID);
@@ -903,6 +908,7 @@ public class Keys {
 		public static final UniqueKey<Record> TYPE_HYDRANT_MATERIAU_PKEY = createUniqueKey(TypeHydrantMateriau.TYPE_HYDRANT_MATERIAU, TypeHydrantMateriau.TYPE_HYDRANT_MATERIAU.ID);
 		public static final UniqueKey<Record> TYPE_HYDRANT_MODELE_PKEY = createUniqueKey(TypeHydrantModele.TYPE_HYDRANT_MODELE, TypeHydrantModele.TYPE_HYDRANT_MODELE.ID);
 		public static final UniqueKey<Record> TYPE_HYDRANT_NATURE_PKEY = createUniqueKey(TypeHydrantNature.TYPE_HYDRANT_NATURE, TypeHydrantNature.TYPE_HYDRANT_NATURE.ID);
+		public static final UniqueKey<Record> TYPE_HYDRANT_NATURE_DECI_PKEY = createUniqueKey(TypeHydrantNatureDeci.TYPE_HYDRANT_NATURE_DECI, TypeHydrantNatureDeci.TYPE_HYDRANT_NATURE_DECI.ID);
 		public static final UniqueKey<Record> TYPE_HYDRANT_POSITIONNEMENT_PKEY = createUniqueKey(TypeHydrantPositionnement.TYPE_HYDRANT_POSITIONNEMENT, TypeHydrantPositionnement.TYPE_HYDRANT_POSITIONNEMENT.ID);
 		public static final UniqueKey<Record> TYPE_HYDRANT_SAISIE_PKEY = createUniqueKey(TypeHydrantSaisie.TYPE_HYDRANT_SAISIE, TypeHydrantSaisie.TYPE_HYDRANT_SAISIE.ID);
 		public static final UniqueKey<Record> TYPE_HYDRANT_VOL_CONSTATE_PKEY = createUniqueKey(TypeHydrantVolConstate.TYPE_HYDRANT_VOL_CONSTATE, TypeHydrantVolConstate.TYPE_HYDRANT_VOL_CONSTATE.ID);
@@ -986,6 +992,7 @@ public class Keys {
 		public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028D2DA796C = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.COMMUNE_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.COMMUNE);
 		public static final ForeignKey<Record, Record> HYDRANT__FK51B8F0285D29D8A8 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_DOMAINE_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.DOMAINE);
 		public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028D10A0428 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_NATURE_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.NATURE);
+		public static final ForeignKey<Record, Record> HYDRANT__fk_nature_deci = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_NATURE_DECI_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.NATURE_DECI);
 		public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028374ADD52 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.ORGANISME);
 		public static final ForeignKey<Record, Record> HYDRANT__FK_ZONE_SPECIALE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ZONE_SPECIALE_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.ZONE_SPECIALE);
 		public static final ForeignKey<Record, Record> HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.UTILISATEUR_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.UTILISATEUR_MODIFICATION);

@@ -14,7 +14,7 @@ privileged aspect Hydrant_Roo_Jpa_ActiveRecord {
     @PersistenceContext
     transient EntityManager Hydrant.entityManager;
     
-    public static final List<String> Hydrant.fieldNames4OrderClauseFilter = java.util.Arrays.asList("TITRE_PHOTO", "id", "version", "code", "tournees", "geometrie", "jsonGeometrie", "nature", "numero", "numeroInterne", "zoneSpeciale", "dateRecep", "dateReco", "dateContr", "dateVerif", "dateModification", "dateGps", "dateAttestation", "agent1", "agent2", "organisme", "lieuDit", "commune", "voie", "voie2", "complement", "anneeFabrication", "hydrantDocuments", "courrier", "domaine", "gestPointEau", "observation", "anomalies", "dispoTerrestre", "dispoHbe", "dispoAdmin");
+    public static final List<String> Hydrant.fieldNames4OrderClauseFilter = java.util.Arrays.asList("TITRE_PHOTO", "id", "version", "code", "tournees", "geometrie", "jsonGeometrie", "nature", "numero", "numeroInterne", "zoneSpeciale", "dateRecep", "dateReco", "dateContr", "dateVerif", "dateModification", "dateGps", "dateAttestation", "agent1", "agent2", "organisme", "lieuDit", "commune", "voie", "voie2", "complement", "anneeFabrication", "hydrantDocuments", "courrier", "domaine", "gestPointEau", "observation", "anomalies", "dispoTerrestre", "dispoHbe", "dispoAdmin", "natureDeci");
     
     public static final EntityManager Hydrant.entityManager() {
         EntityManager em = new Hydrant().entityManager;

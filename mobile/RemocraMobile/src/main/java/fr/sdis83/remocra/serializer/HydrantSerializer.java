@@ -103,6 +103,7 @@ public class HydrantSerializer extends AbstractSerializer {
         addBaliseAnomalies(serializer, TourneeParser.TAG_ANOMALIES, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_ANOMALIES)));
         addBalise(serializer, TourneeParser.TAG_CODE_COMMUNE, getCodeFromLibelle(cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_COMMUNE)), RemocraProvider.CONTENT_COMMUNE_URI));
         addBalise(serializer, TourneeParser.TAG_DOMAINE, getCodeFromIdReferentiel(cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_DOMAINE)), RemocraProvider.CONTENT_DOMAINE_URI));
+        addBalise(serializer, TourneeParser.TAG_NATURE_DECI, getCodeFromIdReferentiel(cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_NATURE_DECI)), RemocraProvider.CONTENT_NATURE_DECI_URI));
         // Nature
         addBalise(serializer, TourneeParser.TAG_COMPLEMENT, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_COMPLEMENT)));
         addBaliseCoordonnee(serializer, cursor);

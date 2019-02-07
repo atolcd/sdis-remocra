@@ -81,7 +81,7 @@ public class HydrantController {
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
                 return new JSONSerializer()
                         .include("data.id", "data.numero", "data.natureNom", "data.natureCode","data.dateRecep", "data.nomTournee", "data.code", "data.dateReco", "data.dateContr", "data.hbe",
-                                "data.jsonGeometrie", "data.dispoHbe","data.indispoTemp","data.dispoTerrestre", "data.debit", "data.commune.id", "data.commune.nom").exclude("data.*", "*.class")
+                                "data.jsonGeometrie", "data.dispoHbe","data.indispoTemp","data.dispoTerrestre", "data.debit", "data.commune.id", "data.commune.nom", "data.natureDeci.id", "data.natureDeci.code").exclude("data.*", "*.class")
                         .transform(new GeometryTransformer(), Geometry.class);
             }
 
@@ -126,6 +126,10 @@ public class HydrantController {
     public ResponseEntity<java.lang.String> affecter(final @RequestBody String json) {
         try{
             Integer nbHydrant = hydrantService.affecter(json);
+            if(nbHydrant == 0){
+                return new SuccessErrorExtSerializer(false, "Affectation impossible: Il est incompatible " +
+                        "d'effectuer des ROP privées avec des PEI publics et inversement").serialize();
+            }
             return new SuccessErrorExtSerializer(true, nbHydrant.toString() + " hydrant(s) affecté(s)").serialize();
         }catch (Exception e) {
             if (ExceptionUtils.getNestedExceptionWithClass(e, ConstraintViolationException.class) != null) {
@@ -141,6 +145,12 @@ public class HydrantController {
     @PreAuthorize("hasRight('TOURNEE_C')")
     public ResponseEntity<java.lang.String> checkTournee(final @RequestBody String json) {
         Map<Hydrant,String> withSameOrganism = hydrantService.checkTournee(json);
+        boolean correctTypeDECI = hydrantService.checkHydrantsNatureDeci(json);
+
+        if(!correctTypeDECI){
+            return new SuccessErrorExtSerializer(false, "Création de tournée impossible: Il est incompatible " +
+                    "d'effectuer des ROP privées avec des PEI publics et inversement").serialize();
+        }
         if(withSameOrganism.isEmpty()){
             return new SuccessErrorExtSerializer(true, "aucune tournée avec le même organisme").serialize();
         }

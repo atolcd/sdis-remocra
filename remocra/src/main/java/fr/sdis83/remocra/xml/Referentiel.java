@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name = "referentiel")
-@XmlType(propOrder = { "natures", "anomalies", "communes", "diametres", "domaines", "marques", "materiaux", "positionnements", "volConstates" })
+@XmlType(propOrder = { "natures", "anomalies", "communes", "diametres", "domaines", "marques", "materiaux", "positionnements", "volConstates", "naturesDeci"})
 public class Referentiel {
 
     private LstAnomalies anomalies;
@@ -24,6 +24,8 @@ public class Referentiel {
     private LstPositionnements positionnements;
 
     private LstVolConstates volConstates;
+
+    private LstNaturesDeci naturesDeci;
 
     public Referentiel() {
         //
@@ -99,5 +101,13 @@ public class Referentiel {
 
     public void setVolConstates(LstVolConstates volConstates) {
         this.volConstates = volConstates;
+    }
+
+    public LstNaturesDeci getNaturesDeci() {
+        return naturesDeci;
+    }
+
+    public void setNaturesDeci(LstNaturesDeci naturesDeci) {
+        this.naturesDeci = naturesDeci;
     }
 }

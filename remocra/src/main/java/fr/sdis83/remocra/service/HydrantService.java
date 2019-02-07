@@ -16,6 +16,7 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
 
+import flexjson.JSONSerializer;
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import org.apache.log4j.Logger;
 import org.cts.IllegalCoordinateException;
@@ -130,6 +131,37 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
         return withSameOrganism;
     }
 
+    /**
+     * Vérifie si la tournée peut être créée
+     * Conditions (mutuellement exclusives): Seulement des PEI privés OU PEI public/conventionnés
+     * @param json Un tableau des id des hydrants
+     * @return TRUE si la tournée respecte les conditions, FALSE sinon
+     */
+    @Transactional
+    public Boolean checkHydrantsNatureDeci(String json){
+        ArrayList<Integer> items = new JSONDeserializer<ArrayList<Integer>>().deserialize(json);
+        ArrayList<Long> ids = new ArrayList<Long>();
+        for (Integer item : items) {
+            ids.add(Long.valueOf(item));
+        }
+        if(ids.size() > 0){
+            Query query = entityManager.createNativeQuery("select distinct hn.code" +
+                    " from remocra.hydrant h" +
+                    " join remocra.type_hydrant_nature_deci hn" +
+                    " on h.nature_deci = hn.id" +
+                    " where (h.id in (:ids))")
+                    .setParameter("ids", ids);
+            ArrayList<String> naturesDECI = (ArrayList<String>) query.getResultList();
+            if(naturesDECI.size() > 1 && naturesDECI.indexOf("PRIVE") != -1){
+                return false;
+            }else{
+                return true;
+            }
+        }
+        return false;
+
+    }
+
     @Transactional
     public Map<Hydrant,String> checkReservation(String json) {
         ArrayList<Integer> items = new JSONDeserializer<ArrayList<Integer>>().deserialize(json);
@@ -197,6 +229,24 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
         } else {
             tournee = Tournee.findTournee(tourneeId);
         }
+
+        //Si on ajoute l'hydrant à une tournée existante, on vérifie que la règle sur la nature DECI est respectée
+        if(tourneeId != null){
+            Query query = entityManager.createNativeQuery("select distinct h.id " +
+                " from remocra.hydrant_tournees ht" +
+                " join remocra.hydrant h on ht.hydrant=h.id" +
+                " where ht.tournees = :tourneeId")
+                //.setParameter("ids", ids)
+                .setParameter("tourneeId", tourneeId);
+            ArrayList<Long> hydrants = (ArrayList<Long>) query.getResultList();
+            hydrants.addAll(ids);
+            JSONSerializer serializer = new JSONSerializer();
+            boolean checkTypes = this.checkHydrantsNatureDeci(serializer.serialize(hydrants));
+            if(!checkTypes){
+                return 0;
+            }
+        }
+
         tournee.setAffectation(utilisateurService.getCurrentUtilisateur().getOrganisme());
         tournee.persist();
         // on a toute les infos, on crée et exécute la requête

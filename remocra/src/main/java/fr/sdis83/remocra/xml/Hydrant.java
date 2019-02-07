@@ -1,5 +1,7 @@
 package fr.sdis83.remocra.xml;
 
+import fr.sdis83.remocra.domain.remocra.TypeHydrantNatureDeci;
+
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -63,6 +65,8 @@ public abstract class Hydrant {
     private String gestPointEau;
 
     private boolean verif;
+
+    private String codeNatureDeci;
 
     public Hydrant() {
         //
@@ -294,5 +298,13 @@ public abstract class Hydrant {
 
     public void setVerif(boolean verif) {
         this.verif = verif;
+    }
+
+    public String getCodeNatureDeci() {
+        return this.codeNatureDeci;
+    }
+
+    public void setCodeNatureDeci(String codeNatureDeci) {
+        this.codeNatureDeci = codeNatureDeci;
     }
 }

@@ -63,7 +63,7 @@ public class IndisponibiliteTemporaireController  {
                 serializer
                     .include("data.nomStatut").include("data.id").include("data.datePrevDebut").include("data.dateRappelDebut").include("data.dateRappelFin")
                     .include("data.datePrevFin").include("data.dateDebut").include("data.dateFin").include("data.motif").include("data.commune")
-                    .include("data.totalHydrants").include("data.statut").include("data.countHydrant").include("data.hydrants.id").include("data.hydrants.numero").include("data.geometrie").include("data.hydrants.jsonGeometrie")
+                    .include("data.totalHydrants").include("data.statut").include("data.countHydrant").include("data.hydrants.id").include("data.hydrants.numero").include("data.geometrie").include("data.hydrants.jsonGeometrie").include("data.hydrants.natureDeci")
                     .include("data.hydrants.commune.id");
 
                 return serializer.include("total").include("message").exclude("data.hydrants.*");
