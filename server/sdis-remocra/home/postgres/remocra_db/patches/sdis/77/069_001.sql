@@ -13,7 +13,7 @@ CREATE TABLE remocra_sgo.hydrant_tracabilite (
 	dep_num character varying(2) NOT NULL,
 	cod_insee character varying(3) NOT NULL,
 	etat_pt_eau_cod character varying(2) NOT NULL,
-	cs_code character varying(5) NOT NULL,
+	cs_code character varying(50) NOT NULL,
 	statut character varying(1) NOT NULL,
 	adr_1 character varying(32),
 	adr_2 character varying(32),
