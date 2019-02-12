@@ -396,12 +396,20 @@ Méthodes disponibles pour les règles de calcul des numéro internes et globaux
 * Activer la renumérotation automatique lors de la mise à jour
 * Par défaut : ```true```
 
-=== HYDRANT_RENOUVELLEMENT_CTRL ===
-* Délai légal entre 2 contrôles (en jours)
-* Par défaut : ```1095```
+=== HYDRANT_RENOUVELLEMENT_CTRL_PUBLIC ===
+* Délai légal entre 2 contrôles techniques périodiques sur PEI de DECI publique ou privée sous convention (en jours)
+* Par défaut : ```365```
 
-=== HYDRANT_RENOUVELLEMENT_RECO ===
-* Délai légal entre 2 reconnaissances (en jours)
+=== HYDRANT_RENOUVELLEMENT_CTRL_PRIVE ===
+* Délai légal entre 2 contrôles techniques périodiques sur PEI de DECI privée (en jours)
+* Par défaut : ```365```
+
+=== HYDRANT_RENOUVELLEMENT_RECO_PUBLIC ===
+* Délai légal entre 2 reconnaissances opérationnelles périodiques sur PEI de DECI publique ou privée sous convention (en jours)
+* Par défaut : ```180```
+
+=== HYDRANT_RENOUVELLEMENT_RECO_PRIVE ===
+* Délai légal entre 2 reconnaissances opérationnelles périodiques sur PEI de DECI privée (en jours)
 * Par défaut : ```365```
 
 === HYDRANT_SYMBOLOGIE_METHODE ===

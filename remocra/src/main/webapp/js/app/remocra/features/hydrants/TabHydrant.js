@@ -123,7 +123,10 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
             align: 'center',
             renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                 if (value != null) {
-                    var dateFutur = Ext.Date.add(value, Ext.Date.DAY, cfg.delai_rnvl_reco), now = new Date();
+                    var dateFutur = (record.getNatureDeci().get('code') === 'PRIVE') ?
+                                    Ext.Date.add(value, Ext.Date.DAY, cfg.delai_rnvl_reco_prive) :
+                                    Ext.Date.add(value, Ext.Date.DAY, cfg.delai_rnvl_reco_public);
+                    var now = new Date();
                     if (dateFutur < now) {
                         metaData.tdCls = "hydrantAlertErr";
                     } else if (dateFutur < Ext.Date.add(now, Ext.Date.DAY, cfg.delai_reco_urgent)) {
@@ -161,7 +164,10 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
             filterable: true,
             renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                 if (value != null) {
-                    var dateFutur = Ext.Date.add(value, Ext.Date.DAY, cfg.delai_rnvl_ctrl), now = new Date();
+                    var dateFutur = (record.getNatureDeci().get('code') === 'PRIVE') ?
+                                    Ext.Date.add(value, Ext.Date.DAY, cfg.delai_rnvl_ctrl_prive) :
+                                    Ext.Date.add(value, Ext.Date.DAY, cfg.delai_rnvl_ctrl_public);
+                    var now = new Date();
                     if (dateFutur < now) {
                         metaData.tdCls = "hydrantAlertErr";
                     } else if (dateFutur < Ext.Date.add(now, Ext.Date.DAY, cfg.delai_ctrl_urgent)) {

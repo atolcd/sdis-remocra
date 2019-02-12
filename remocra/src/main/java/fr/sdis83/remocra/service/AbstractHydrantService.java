@@ -101,23 +101,17 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
         } else if ("dateReco".equals(itemFilter.getFieldName())) {
             Expression<Date> cpPath = from.get("dateReco");
             Integer nbMonths = Integer.valueOf(itemFilter.getValue());
-            if (nbMonths > 0) {
-                DateTime date = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementReco())).plus(Period.months(nbMonths));
-                predicat = cBuilder.or(cBuilder.isNull(cpPath), cBuilder.lessThanOrEqualTo(cpPath, date.toDate()));
-            } else if (nbMonths < 0) {
-                DateTime date = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementReco()));
-                predicat = cBuilder.lessThanOrEqualTo(cpPath, date.toDate());
-            }
+            Expression<Character> cpNatureDECI = from.get("natureDeci");
+            DateTime datePrive = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementRecoPrive()));
+            DateTime datePublic = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementRecoPublic()));
+            predicat = this.getDatePredicat(cpPath, nbMonths, cpNatureDECI, datePrive, datePublic);
         } else if ("dateContr".equals(itemFilter.getFieldName())) {
             Expression<Date> cpPath = from.get("dateContr");
             Integer nbMonths = Integer.valueOf(itemFilter.getValue());
-            if (nbMonths > 0) {
-                DateTime date = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementCtrl())).plus(Period.months(nbMonths));
-                predicat = cBuilder.or(cBuilder.isNull(cpPath), cBuilder.lessThanOrEqualTo(cpPath, date.toDate()));
-            } else if (nbMonths < 0) {
-                DateTime date = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementCtrl()));
-                predicat = cBuilder.lessThanOrEqualTo(cpPath, date.toDate());
-            }
+            Expression<Character> cpNatureDECI = from.get("natureDeci");
+            DateTime datePrive = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementCtrlPrive()));
+            DateTime datePublic = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementCtrlPublic()));
+            predicat = this.getDatePredicat(cpPath, nbMonths, cpNatureDECI, datePrive, datePublic);
         } else if ("nature".equals(itemFilter.getFieldName())) {
             Expression<Integer> cpPath = from.join("nature").get("id");
             predicat = cBuilder.equal(cpPath, itemFilter.getValue());
@@ -231,6 +225,33 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
 
         // Nettoyage du disque
         DocumentUtil.getInstance().deleteHDFile(d);
+    }
+
+
+    private Predicate getDatePredicat(Expression<Date> cpPath, int nbMonths, Expression<Character> cpNatureDECI, DateTime datePrive, DateTime datePublic){
+        CriteriaBuilder cBuilder = this.getCriteriaBuilder();
+        Predicate predicat = null;
+        TypedQuery<Long> itemTypedQuery= this.entityManager.createQuery("SELECT distinct(id) FROM TypeHydrantNatureDeci WHERE code='PRIVE'", Long.class);
+        List<Long> resultList = itemTypedQuery.getResultList();
+
+        if (nbMonths > 0) {
+            datePrive = datePrive.plus(Period.months(nbMonths));
+            datePublic = datePublic.plus(Period.months(nbMonths));
+        }
+
+        if(nbMonths != 0) {
+            predicat = !resultList.isEmpty() ? cBuilder.or(
+                    cBuilder.and(
+                            cpNatureDECI.in(resultList),
+                            cBuilder.or(cBuilder.isNull(cpPath), cBuilder.lessThanOrEqualTo(cpPath, datePrive.toDate()))
+                    ),
+                    cBuilder.and(
+                            cpNatureDECI.in(resultList).not(),
+                            cBuilder.or(cBuilder.isNull(cpPath), cBuilder.lessThanOrEqualTo(cpPath, datePublic.toDate()))
+                    )
+            ) : cBuilder.or(cBuilder.isNull(cpPath), cBuilder.lessThanOrEqualTo(cpPath, datePublic.toDate()));
+        }
+        return predicat;
     }
 
 }

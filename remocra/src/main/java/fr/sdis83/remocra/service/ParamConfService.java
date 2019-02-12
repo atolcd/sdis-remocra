@@ -181,16 +181,24 @@ public class ParamConfService {
         return (Long) this.getValue(ParamConfParam.PDI_NOTIFICATION_GENERAL_UTILISATEUR_ID);
     }
 
-    public Integer getHydrantRenouvellementReco() {
-        return (Integer) this.getValue(ParamConfParam.HYDRANT_RENOUVELLEMENT_RECO);
+    public Integer getHydrantRenouvellementRecoPublic() {
+        return (Integer) this.getValue(ParamConfParam.HYDRANT_RENOUVELLEMENT_RECO_PUBLIC, 180);
+    }
+
+    public Integer getHydrantRenouvellementRecoPrive() {
+        return (Integer) this.getValue(ParamConfParam.HYDRANT_RENOUVELLEMENT_RECO_PRIVE, 365);
     }
 
     public Integer getHydrantNombreHistorique() {
         return (Integer) this.getValue(ParamConfParam.HYDRANT_NOMBRE_HISTORIQUE,3);
     }
 
-    public Integer getHydrantRenouvellementCtrl() {
-        return (Integer) this.getValue(ParamConfParam.HYDRANT_RENOUVELLEMENT_CTRL);
+    public Integer getHydrantRenouvellementCtrlPublic() {
+        return (Integer) this.getValue(ParamConfParam.HYDRANT_RENOUVELLEMENT_CTRL_PUBLIC, 365);
+    }
+
+    public Integer getHydrantRenouvellementCtrlPrive() {
+        return (Integer) this.getValue(ParamConfParam.HYDRANT_RENOUVELLEMENT_CTRL_PRIVE, 365);
     }
 
     public Boolean getHydrantVisiteRapide() {
@@ -296,10 +304,12 @@ public class ParamConfService {
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("delai_reco_warn", this.getValue(ParamConfParam.HYDRANT_DELAI_RECO_WARN));
         data.put("delai_reco_urgent", this.getValue(ParamConfParam.HYDRANT_DELAI_RECO_URGENT));
-        data.put("delai_rnvl_reco", this.getValue(ParamConfParam.HYDRANT_RENOUVELLEMENT_RECO));
+        data.put("delai_rnvl_reco_prive", this.getValue(ParamConfParam.HYDRANT_RENOUVELLEMENT_RECO_PRIVE));
+        data.put("delai_rnvl_reco_public", this.getValue(ParamConfParam.HYDRANT_RENOUVELLEMENT_RECO_PUBLIC));
         data.put("delai_ctrl_warn", this.getValue(ParamConfParam.HYDRANT_DELAI_CTRL_WARN));
         data.put("delai_ctrl_urgent", this.getValue(ParamConfParam.HYDRANT_DELAI_CTRL_URGENT));
-        data.put("delai_rnvl_ctrl", this.getValue(ParamConfParam.HYDRANT_RENOUVELLEMENT_CTRL));
+        data.put("delai_rnvl_ctrl_prive", this.getValue(ParamConfParam.HYDRANT_RENOUVELLEMENT_CTRL_PRIVE));
+        data.put("delai_rnvl_ctrl_public", this.getValue(ParamConfParam.HYDRANT_RENOUVELLEMENT_CTRL_PUBLIC));
 
         return serializer.serialize(data);
     }
