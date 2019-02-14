@@ -687,6 +687,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
     highlightSelection: function(extraParams){
         var self = this;
         clearTimeout(this.timeoutHighlight);
+        this.highlightLayer.removeAllFeatures();
         if(extraParams.i){
             // PEIs d'une indisponibilité temporaire
             Ext.Ajax.request({
@@ -700,9 +701,9 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                     this.hydrantLayer.features.forEach(function(item){
                         if(peiIndispo.indexOf(item.attributes.numero) != -1){
                             self.highlightLayer.addFeatures(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(item.geometry.x, item.geometry.y)));
-                            self.clearHighlightLayerDelayed();
                         }
                     });
+                    self.clearHighlightLayerDelayed();
                 }
             });
         }
@@ -711,24 +712,25 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
             this.hydrantLayer.features.forEach(function(item){
                 if(item.attributes.tournees !== null && item.attributes.tournees.indexOf(extraParams.t) != -1){
                     self.highlightLayer.addFeatures(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(item.geometry.x, item.geometry.y)));
-                    self.clearHighlightLayerDelayed();
                 }
             });
+            self.clearHighlightLayerDelayed();
         }
         else if(extraParams.h){
             //Un PEI
             this.hydrantLayer.features.forEach(function(item){
                 if(item.attributes.internalId == extraParams.h){
                     self.highlightLayer.addFeatures(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(item.geometry.x, item.geometry.y)));
-                    self.clearHighlightLayerDelayed();
                 }
             });
+            self.clearHighlightLayerDelayed();
         }
 
     },
 
     clearHighlightLayerDelayed: function() {
         var self = this;
+        clearTimeout(this.timeoutHighlight);
         this.timeoutHighlight = setTimeout(function(){
             self.highlightLayer.removeAllFeatures();
         }, HYDRANT_HIGHLIGHT_DUREE);
