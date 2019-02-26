@@ -1,4 +1,4 @@
-==== Synchronisation LDAP
+==== Synchronisation Remocra vers SIG
 
 Ce traitement permet de synchroniser les tables du SIG du SDIS avec la base Remocra.
 
