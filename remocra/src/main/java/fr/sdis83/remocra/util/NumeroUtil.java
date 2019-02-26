@@ -12,7 +12,7 @@ import javax.persistence.Query;
 public class NumeroUtil {
 
     public enum MethodeNumerotation {
-        M_09, M_77, M_83, M_86, M_89
+        M_09, M_77, M_83, M_86, M_89, M_42
     }
 
     public static MethodeNumerotation getHydrantNumerotationMethode() {
@@ -30,7 +30,7 @@ public class NumeroUtil {
     }
 
     public enum MethodeNumerotationInterne {
-        M_77, M_83, M_86
+        M_77, M_83, M_86, M_42
     }
 
     public static MethodeNumerotationInterne getHydrantNumerotationInterneMethode() {
@@ -66,6 +66,9 @@ public class NumeroUtil {
             case M_86:
                 return NumeroUtil.computeNumero86(hydrant);
             case M_89:
+                return NumeroUtil.computeNumero89(hydrant);
+            // même methode que 89
+            case M_42:
                 return NumeroUtil.computeNumero89(hydrant);
             default:
                 return NumeroUtil.computeNumero83(hydrant);
@@ -230,6 +233,8 @@ public class NumeroUtil {
         switch (getHydrantNumerotationInterneMethode()) {
             case M_77:
                 return NumeroUtil.computeNumeroInterne77(hydrant);
+            case M_42:
+                return NumeroUtil.computeNumeroInterne42(hydrant);
             case M_86:
                 return NumeroUtil.computeNumeroInterne86(hydrant);
             default:
@@ -265,6 +270,29 @@ public class NumeroUtil {
             numInterne = 99999;
         }
         return numInterne;
+    }
+
+    public static Integer computeNumeroInterne42(Hydrant hydrant) {
+        // Retour du numéro interne s'il existe
+        if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
+            return hydrant.getNumeroInterne();
+        }
+        Integer numInterne = null;
+        try {
+            // Incrementation automatique de numero interne
+            StringBuffer sb = new StringBuffer("select max(numero_interne)  from remocra.hydrant h where ");
+            sb.append("h.commune = :idcommune order by 1 limit 1");
+
+            Query query = Hydrant.entityManager().createNativeQuery(sb.toString());
+            query.setParameter("idcommune", hydrant.getCommune().getId());
+
+            numInterne = Integer.valueOf(query.getSingleResult().toString());
+            // On prend le suivant
+            numInterne ++;
+        } catch (Exception e) {
+            numInterne = 99999;
+        }
+        return numInterne  ;
     }
 
     public static Integer computeNumeroInterne83(Hydrant hydrant) {

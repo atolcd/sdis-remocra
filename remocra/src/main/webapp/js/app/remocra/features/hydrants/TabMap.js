@@ -615,7 +615,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                 label: function(feature) {
                     var numero = feature.data['numero'];
                     if (!numero) {
-                        return;
+                        return '';
                     }
                     var splited = numero.split('_');
                     if (splited.length>1) {
