@@ -162,6 +162,46 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
 
     }
 
+    public ArrayList<String> checkHydrantsDureeIndispo(){
+        ArrayList<String> peis = new ArrayList<String>();
+        Query query = entityManager.createNativeQuery("SELECT h.numero " +
+                "FROM remocra.hydrant h " +
+                "JOIN " +
+
+                    "(SELECT h.id_hydrant, MIN(h.date_operation) AS date_operation " + //Jointure pour s'assurer que les peis existent encore
+                    "FROM tracabilite.hydrant h " +
+                    "JOIN " +
+
+                        "(SELECT h.id_hydrant, max(h.date_operation) AS date_operation " + //Bascule dispo -> indispo
+                        "FROM tracabilite.hydrant h " +
+                        "WHERE (dispo_terrestre <> 'INDISPO' OR dispo_terrestre IS NULL) AND (dispo_hbe <> 'INDISPO' OR dispo_hbe IS NULL) " +
+                        "GROUP BY h.id_hydrant) dispo " +
+                        "ON(dispo.id_hydrant = h.id_hydrant AND dispo.date_operation < h.date_operation) " +
+
+                    "WHERE dispo_terrestre = 'INDISPO' OR dispo_hbe = 'INDISPO' " +
+                    "GROUP BY h.id_hydrant " +
+
+                    "UNION " +
+
+                    "SELECT h.id_hydrant, min(h.date_operation) AS date_operation " + //UNION les peis en indispo depuis leur déclaration
+                    "FROM tracabilite.hydrant h " +
+                    "WHERE h.id_hydrant NOT IN " +
+                        "(SELECT h.id_hydrant " +
+                        "FROM tracabilite.hydrant h " +
+                        "WHERE (h.dispo_terrestre IS NULL OR h.dispo_terrestre!='INDISPO') AND (h.dispo_hbe IS NULL OR h.dispo_hbe!='INDISPO') " +
+                        "GROUP BY h.id_hydrant) " +
+
+                    "GROUP BY h.id_hydrant) AS R1 " +
+                "ON R1.id_hydrant=h.id " +
+                "GROUP BY h.numero, R1.date_operation " +
+                "HAVING DATE_PART('day', NOW() - max(R1.date_operation)) > :dureeIndispo " +
+                "ORDER BY R1.date_operation") //Filtre selon leur durée d'indisponibilité
+                .setParameter("dureeIndispo", paramConfService.getHydrantLongueIndisponibiliteJours());
+
+        peis = (ArrayList<String>) query.getResultList();
+        return peis;
+    }
+
     @Transactional
     public Map<Hydrant,String> checkReservation(String json) {
         ArrayList<Integer> items = new JSONDeserializer<ArrayList<Integer>>().deserialize(json);

@@ -209,6 +209,18 @@ public class ParamConfService {
         return (Integer) this.getValue(ParamConfParam.HYDRANT_HIGHLIGHT_DUREE, 1000);
     }
 
+    public Integer getHydrantLongueIndisponibiliteJours() {
+        return (Integer) this.getValue(ParamConfParam.HYDRANT_LONGUE_INDISPONIBILITE_JOURS);
+    }
+
+    public String getHydrantLongueIndisponibiliteMessage() {
+        return (String) this.getValue(ParamConfParam.HYDRANT_LONGUE_INDISPONIBILITE_MESSAGE);
+    }
+
+    public String getHydrantLongueIndisponibiliteTypeOrganisme() {
+        return (String) this.getValue(ParamConfParam.HYDRANT_LONGUE_INDISPONIBILITE_TYPEORGANISME, "^(COMMUNE|EPCI)$");
+    }
+
     public static String HYDRANT_COLONNES_DEFAULT[] = {"numero", "nomTournee", "natureNom", "dateReco", "dateContr", "dispoTerrestre", "dispoHbe"};
     public String[] getHydrantColonnes(){
         String hydrantColonnes = (String) this.getValue(ParamConfParam.HYDRANT_COLONNES);

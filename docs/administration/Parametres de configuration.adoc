@@ -442,6 +442,24 @@ Méthodes disponibles pour la symbologie des PEI : link:../pei/Symbologie_PEI{ou
 ** ```dispoTerrestre``` Disponibilité terrestre
 ** ```dispoHbe``` Disponibilité des Hélicoptères Bombardiers d'Eau
 
+=== HYDRANT_LONGUE_INDISPONIBILITE_JOURS ===
+* Nombre de jours avant de considérer un PEI comme indisponible depuis trop longtemps
+* Le nombre de jours doit être strictement positif. Dans le cas contraire, l'affichage du message est désactivé
+* Par défaut : ```180```
+
+=== HYDRANT_LONGUE_INDISPONIBILITE_MESSAGE ===
+* Message à afficher en cas de PEI indisponible depuis trop longtemps
+* Si laissé vide, l'affichage du message est désactivé pour les utilisateurs
+* Le message ne s'affiche que pour les utilisateurs faisant partie d'un type d'organisme ayant pour code ```COMMUNE``` ou ```EPCI```
+* Par défaut : ```Un ou plusieurs PEI situé(s) sur votre territoire est/sont indisponible(s) depuis plus de %MOIS% mois et %JOURS% jours :```
+** ``%MOIS%`` sera remplacé par le nombre de mois calculé depuis HYDRANT_LONGUE_INDISPONIBILITE_JOURS
+** ``%JOURS%`` sera remplacé par le nombre de jours calculé depuis HYDRANT_LONGUE_INDISPONIBILITE_JOURS (modulo le nombre de mois)
+
+=== HYDRANT_LONGUE_INDISPONIBILITE_TYPEORGANISME ===
+* Organismes concernés par le message à afficher en cas de PEI indisponible depuis trop longtemps
+* Correspond à une expression régulière java
+* Par défaut : ```^(COMMUNE|EPCI)$```
+
 === NIVEAU_TRACABILITE ===
 * Niveau de traçabilité des points d'eau (valeurs admises : organisme , utilisateur)
 * Par défaut : ```organisme```

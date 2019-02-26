@@ -114,6 +114,8 @@ Ext.application({
             var expires = new Date();
             expires.setDate(expires.getDate()+7); // Expiration à 7 jours
             Ext.util.Cookies.set("loginUser", login, expires);
+
+            this.messageOnLogin();
         }
         
         Sdis.Remocra.network.ServerSession.startLoginWatcher();
@@ -143,7 +145,6 @@ Ext.application({
     },
     
     updUserInfo: function(gui, login) {
-        
         // Données
         Sdis.Remocra.network.ServerSession.setUserData('login', login);
         
@@ -195,6 +196,29 @@ Ext.application({
                     cls: 'x-hidden', 
                     src: url
                 });
+            }
+        });
+    },
+
+    messageOnLogin: function(){
+        Ext.Ajax.request({
+            url: Sdis.Remocra.util.Util.withBaseUrl('../checkMessage'),
+            method: 'GET',
+            headers: {
+                'Accept' : 'application/json,application/xml',
+                'Content-Type' : 'application/json'
+            },
+            scope: this,
+            success: function (response) {
+                var jsResp = Ext.decode(response.responseText);
+                if(jsResp.success && jsResp.message != null){
+                    Ext.MessageBox.show({
+                        title: 'Message informatif',
+                        msg: jsResp.message,
+                        buttons: Ext.Msg.OK,
+                        icon: Ext.MessageBox.WARNING
+                    });
+                }
             }
         });
     }

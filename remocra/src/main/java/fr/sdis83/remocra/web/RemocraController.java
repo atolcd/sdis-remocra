@@ -1,5 +1,25 @@
 package fr.sdis83.remocra.web;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
+
+import flexjson.JSONSerializer;
+import fr.sdis83.remocra.domain.remocra.TypeDroit;
+import fr.sdis83.remocra.service.HydrantService;
+import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Months;
+import org.joda.time.Period;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.domain.remocra.Organisme;
@@ -29,6 +49,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.ArrayList;
 
 @RequestMapping("/")
 @Controller
@@ -56,6 +79,9 @@ public class RemocraController {
     @Autowired
     private UtilisateurService utilisateurService;
 
+    @Autowired
+    private HydrantService hydrantService;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -78,6 +104,7 @@ public class RemocraController {
                 Geometry territoire = organisme.getZoneCompetence().getGeometrie();
                 bounds = GeometryUtil.bboxFromGeometry(territoire);
                 nomOrganisme = organisme.getNom().replace("'", "\\'");
+
             }
         } catch (BusinessException e) {
             log.debug("BusinessException lors de la récupération du code du profil de droits de l'utilisateur");
@@ -122,13 +149,13 @@ public class RemocraController {
         // Mode de visite des hydrants
         model.addAttribute("hydrant_visite_rapide", paramConfService.getHydrantVisiteRapide());
 
-        //Durée de mise en évidence lors de la localisation
+        // Durée de mise en évidence lors de la localisation
         model.addAttribute("hydrant_highlight_duree", paramConfService.getHydrantHighlightDuree());
 
-        //Paramétrage des colonnes du tableau de suivi des PEI
+        // Paramétrage des colonnes du tableau de suivi des PEI
         model.addAttribute("hydrant_colonnes", (new JSONSerializer()).serialize(paramConfService.getHydrantColonnes()));
 
-        //Définit la complexité du mot de passe
+        // Définit la complexité du mot de passe
         model.addAttribute("complexite_password", paramConfService.getComplexitePassword());
 
         return "remocra";
@@ -219,5 +246,41 @@ public class RemocraController {
             //
         }
         return "";
+    }
+
+    /**
+     * Vérifie si les conditions sont réunies pour l'affichage d'un message à la connexion de l'utilisateur
+     */
+    @RequestMapping(value = "/checkMessage", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<java.lang.String> checkMessage(final @RequestBody String json) {
+        //PEIs indisponibles depuis trop longtemps
+        if(authUtils.hasRight(TypeDroit.TypeDroitEnum.HYDRANTS_R) && paramConfService.getHydrantLongueIndisponibiliteJours() > 0 && paramConfService.getHydrantLongueIndisponibiliteMessage().trim().length() > 0){
+
+            String codeOrganisme = utilisateurService.getCurrentUtilisateur().getOrganisme().getTypeOrganisme().getCode();
+
+            if(codeOrganisme.matches(paramConfService.getHydrantLongueIndisponibiliteTypeOrganisme())) {
+                ArrayList<String> peis = hydrantService.checkHydrantsDureeIndispo();
+                if(peis.size() > 0){
+                    Integer nbJoursIndispoMax = paramConfService.getHydrantLongueIndisponibiliteJours();
+                    DateTime today = new DateTime();
+                    DateTime limitDate = today.minus(Period.days(nbJoursIndispoMax));
+                    int nbMonths = Months.monthsBetween(limitDate, today).getMonths();
+
+                    limitDate = limitDate.plus(Period.months(nbMonths));
+                    int nbJours = Days.daysBetween(limitDate, today).getDays();
+
+                    StringBuffer sb = new StringBuffer("<div class=\"listHydrant\">")
+                    .append(paramConfService.getHydrantLongueIndisponibiliteMessage().replace("%MOIS%", String.valueOf(nbMonths)).replace("%JOURS%", String.valueOf(nbJours)));
+
+                    for (String s : peis) {
+                        sb.append("<li>").append(s).append("</li>");
+                    }
+                    sb.append("</div>");
+                    return new SuccessErrorExtSerializer(true, sb.toString()).serialize();
+                }
+            }
+        }
+        return new SuccessErrorExtSerializer(true, null).serialize();
     }
 }
