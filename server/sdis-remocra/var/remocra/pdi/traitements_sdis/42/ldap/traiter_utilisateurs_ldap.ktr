@@ -111,7 +111,7 @@
     </attributes>
   </connection>
   <order>
-  <hop> <from>utilisateur remocra</from><to>Statut actif</to><enabled>Y</enabled> </hop>  <hop> <from>désactivation 2</from><to>filtre flux insert</to><enabled>Y</enabled> </hop>  <hop> <from>filtre flux insert</from><to>Sort rows</to><enabled>Y</enabled> </hop>  <hop> <from>Group by</from><to>Row flattener</to><enabled>Y</enabled> </hop>  <hop> <from>Sort rows</from><to>If field value is null</to><enabled>Y</enabled> </hop>  <hop> <from>If field value is null</from><to>Group by</to><enabled>Y</enabled> </hop>  <hop> <from>insertion utilisateurs</from><to>Detect empty stream</to><enabled>Y</enabled> </hop>  <hop> <from>Detect empty stream</from><to>désactivation 2</to><enabled>Y</enabled> </hop>  <hop> <from>insertion utilisateurs</from><to>désactivation 2</to><enabled>Y</enabled> </hop>  <hop> <from>Statut LDAP</from><to>Statut actif</to><enabled>Y</enabled> </hop>  <hop> <from>insert &#47; update</from><to>utilisateur_actif</to><enabled>Y</enabled> </hop>  <hop> <from>utilisateur_actif</from><to>ignore</to><enabled>Y</enabled> </hop>  <hop> <from>Extract organisme &#47; profil</from><to>Remove champ memberOf</to><enabled>Y</enabled> </hop>  <hop> <from>Remove champ memberOf</from><to>utilisateur remocra</to><enabled>Y</enabled> </hop>  <hop> <from>Extraction depuis SDIS</from><to>Filtre les users groupe REMOCRA_</to><enabled>Y</enabled> </hop>  <hop> <from>Filtre les users groupe REMOCRA_</from><to>Dummy (do nothing)</to><enabled>Y</enabled> </hop>  <hop> <from>Filtre les users groupe REMOCRA_</from><to>Extract organisme &#47; profil</to><enabled>Y</enabled> </hop>  <hop> <from>Select organisme</from><to>Récup id orga</to><enabled>Y</enabled> </hop>  <hop> <from>Statut actif</from><to>password</to><enabled>Y</enabled> </hop>  <hop> <from>password</from><to>Récup id orga</to><enabled>Y</enabled> </hop>  <hop> <from>Select profil</from><to>Récup id profil</to><enabled>Y</enabled> </hop>  <hop> <from>Récup id orga</from><to>Récup id profil</to><enabled>Y</enabled> </hop>  <hop> <from>Récup id profil</from><to>valeurs null</to><enabled>Y</enabled> </hop>  <hop> <from>utilisateur_actif</from><to>utilisateur avec profil et orga</to><enabled>Y</enabled> </hop>  <hop> <from>utilisateur avec profil et orga</from><to>insertion utilisateurs</to><enabled>Y</enabled> </hop>  <hop> <from>utilisateur avec profil et orga</from><to>ignore2</to><enabled>Y</enabled> </hop>  <hop> <from>Désactivation utilisateur LDAP</from><to>Extraction depuis SDIS</to><enabled>Y</enabled> </hop>  <hop> <from>insert &#47; update</from><to>mise à jour utilisateur</to><enabled>Y</enabled> </hop>  <hop> <from>Row flattener</from><to>Set Variables</to><enabled>Y</enabled> </hop>  <hop> <from>valeurs null</from><to>profil_org_is_null</to><enabled>Y</enabled> </hop>  <hop> <from>profil_org_is_null</from><to>insert &#47; update</to><enabled>Y</enabled> </hop>  <hop> <from>profil_org_is_null</from><to>ignore3</to><enabled>Y</enabled> </hop>  <hop> <from>insertion utilisateurs</from><to>ignore4</to><enabled>Y</enabled> </hop>  <hop> <from>mise à jour utilisateur</from><to>ignore5</to><enabled>Y</enabled> </hop>  </order>
+  <hop> <from>utilisateur remocra</from><to>Statut actif</to><enabled>Y</enabled> </hop>  <hop> <from>désactivation 2</from><to>filtre flux insert</to><enabled>Y</enabled> </hop>  <hop> <from>filtre flux insert</from><to>Sort rows</to><enabled>Y</enabled> </hop>  <hop> <from>Group by</from><to>Row flattener</to><enabled>Y</enabled> </hop>  <hop> <from>Sort rows</from><to>If field value is null</to><enabled>Y</enabled> </hop>  <hop> <from>If field value is null</from><to>Group by</to><enabled>Y</enabled> </hop>  <hop> <from>insertion utilisateurs</from><to>Detect empty stream</to><enabled>Y</enabled> </hop>  <hop> <from>Detect empty stream</from><to>désactivation 2</to><enabled>Y</enabled> </hop>  <hop> <from>insertion utilisateurs</from><to>désactivation 2</to><enabled>Y</enabled> </hop>  <hop> <from>Statut LDAP</from><to>Statut actif</to><enabled>Y</enabled> </hop>  <hop> <from>insert &#47; update</from><to>utilisateur_actif</to><enabled>Y</enabled> </hop>  <hop> <from>utilisateur_actif</from><to>ignore</to><enabled>Y</enabled> </hop>  <hop> <from>Extract organisme &#47; profil</from><to>Remove champ memberOf</to><enabled>Y</enabled> </hop>  <hop> <from>Remove champ memberOf</from><to>utilisateur remocra</to><enabled>Y</enabled> </hop>  <hop> <from>Extraction depuis SDIS</from><to>Filtre les users groupe REMOCRA_</to><enabled>Y</enabled> </hop>  <hop> <from>Filtre les users groupe REMOCRA_</from><to>Dummy (do nothing)</to><enabled>Y</enabled> </hop>  <hop> <from>Filtre les users groupe REMOCRA_</from><to>Extract organisme &#47; profil</to><enabled>Y</enabled> </hop>  <hop> <from>Select organisme</from><to>Récup id orga</to><enabled>Y</enabled> </hop>  <hop> <from>Statut actif</from><to>password</to><enabled>Y</enabled> </hop>  <hop> <from>password</from><to>Récup id orga</to><enabled>Y</enabled> </hop>  <hop> <from>Select profil</from><to>Récup id profil</to><enabled>Y</enabled> </hop>  <hop> <from>Récup id orga</from><to>Récup id profil</to><enabled>Y</enabled> </hop>  <hop> <from>Récup id profil</from><to>valeurs null</to><enabled>Y</enabled> </hop>  <hop> <from>Désactivation utilisateur LDAP</from><to>Extraction depuis SDIS</to><enabled>Y</enabled> </hop>  <hop> <from>insert &#47; update</from><to>mise à jour utilisateur</to><enabled>Y</enabled> </hop>  <hop> <from>Row flattener</from><to>Set Variables</to><enabled>Y</enabled> </hop>  <hop> <from>valeurs null</from><to>profil_org_is_null</to><enabled>Y</enabled> </hop>  <hop> <from>profil_org_is_null</from><to>insert &#47; update</to><enabled>Y</enabled> </hop>  <hop> <from>profil_org_is_null</from><to>ignore3</to><enabled>Y</enabled> </hop>  <hop> <from>insertion utilisateurs</from><to>ignore4</to><enabled>Y</enabled> </hop>  <hop> <from>mise à jour utilisateur</from><to>ignore5</to><enabled>Y</enabled> </hop>  <hop> <from>utilisateur_actif</from><to>insertion utilisateurs</to><enabled>Y</enabled> </hop>  </order>
   <step>
     <name>Detect empty stream</name>
     <type>DetectEmptyStream</type>
@@ -942,14 +942,14 @@ if (listGroupRemocraP.length &gt; 0) {
            </partitioning>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>1297</xloc>
-      <yloc>389</yloc>
+      <xloc>1461</xloc>
+      <yloc>403</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
 
   <step>
-    <name>ignore2</name>
+    <name>ignore3</name>
     <type>Dummy</type>
     <description/>
     <distribute>Y</distribute>
@@ -960,8 +960,44 @@ if (listGroupRemocraP.length &gt; 0) {
            </partitioning>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>1459</xloc>
-      <yloc>385</yloc>
+      <xloc>1096</xloc>
+      <yloc>389</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>ignore4</name>
+    <type>Dummy</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>1642</xloc>
+      <yloc>386</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>ignore5</name>
+    <type>Dummy</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>1275</xloc>
+      <yloc>505</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -988,7 +1024,7 @@ if (listGroupRemocraP.length &gt; 0) {
     </compare>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>1172</xloc>
+      <xloc>1276</xloc>
       <yloc>240</yloc>
       <draw>Y</draw>
       </GUI>
@@ -1127,7 +1163,7 @@ if (listGroupRemocraP.length &gt; 0) {
       </lookup>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>1172</xloc>
+      <xloc>1276</xloc>
       <yloc>391</yloc>
       <draw>Y</draw>
       </GUI>
@@ -1176,7 +1212,7 @@ if (listGroupRemocraP.length &gt; 0) {
     </step>
 
   <step>
-    <name>utilisateur avec profil et orga</name>
+    <name>profil_org_is_null</name>
     <type>FilterRows</type>
     <description/>
     <distribute>Y</distribute>
@@ -1185,8 +1221,8 @@ if (listGroupRemocraP.length &gt; 0) {
            <method>none</method>
            <schema_name/>
            </partitioning>
-<send_true_to>insertion utilisateurs</send_true_to>
-<send_false_to>ignore2</send_false_to>
+<send_true_to>ignore3</send_true_to>
+<send_false_to>insert &#47; update</send_false_to>
     <compare>
 <condition>
  <negated>N</negated>
@@ -1194,14 +1230,14 @@ if (listGroupRemocraP.length &gt; 0) {
   <condition>
    <negated>N</negated>
    <leftvalue>organisme</leftvalue>
-   <function>IS NOT NULL</function>
+   <function>IS NULL</function>
    <rightvalue/>
    </condition>
   <condition>
    <negated>N</negated>
    <operator>AND</operator>
    <leftvalue>profil</leftvalue>
-   <function>IS NOT NULL</function>
+   <function>IS NULL</function>
    <rightvalue/>
    </condition>
   </conditions>
@@ -1209,7 +1245,7 @@ if (listGroupRemocraP.length &gt; 0) {
     </compare>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>1460</xloc>
+      <xloc>1096</xloc>
       <yloc>240</yloc>
       <draw>Y</draw>
       </GUI>
@@ -1266,7 +1302,7 @@ if (listGroupRemocraP.length &gt; 0) {
            <method>none</method>
            <schema_name/>
            </partitioning>
-<send_true_to>utilisateur avec profil et orga</send_true_to>
+<send_true_to>insertion utilisateurs</send_true_to>
 <send_false_to>ignore</send_false_to>
     <compare>
 <condition>
@@ -1278,7 +1314,7 @@ if (listGroupRemocraP.length &gt; 0) {
     </compare>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>1297</xloc>
+      <xloc>1461</xloc>
       <yloc>240</yloc>
       <draw>Y</draw>
       </GUI>
@@ -1311,100 +1347,6 @@ if (listGroupRemocraP.length &gt; 0) {
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>940</xloc>
       <yloc>240</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>profil_org_is_null</name>
-    <type>FilterRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-<send_true_to>ignore3</send_true_to>
-<send_false_to>insert &#47; update</send_false_to>
-    <compare>
-<condition>
- <negated>N</negated>
- <conditions>
-  <condition>
-   <negated>N</negated>
-   <leftvalue>organisme</leftvalue>
-   <function>IS NULL</function>
-   <rightvalue/>
-   </condition>
-  <condition>
-   <negated>N</negated>
-   <operator>AND</operator>
-   <leftvalue>profil</leftvalue>
-   <function>IS NULL</function>
-   <rightvalue/>
-   </condition>
-  </conditions>
- </condition>
-    </compare>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>1058</xloc>
-      <yloc>241</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>ignore3</name>
-    <type>Dummy</type>
-    <description/>
-    <distribute>Y</distribute>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>1058</xloc>
-      <yloc>390</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>ignore4</name>
-    <type>Dummy</type>
-    <description/>
-    <distribute>Y</distribute>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>1642</xloc>
-      <yloc>386</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>ignore5</name>
-    <type>Dummy</type>
-    <description/>
-    <distribute>Y</distribute>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>1171</xloc>
-      <yloc>505</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
