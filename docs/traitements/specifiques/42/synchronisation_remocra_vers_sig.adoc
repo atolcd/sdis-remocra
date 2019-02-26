@@ -1,6 +1,8 @@
 ==== Synchronisation Remocra vers SIG
 
-Ce traitement permet de synchroniser les tables du SIG du SDIS avec la base Remocra.
+Ce traitement permet de synchroniser les tables du SIG du SDIS avec les données de la base Remocra.
+Les tables suivantes sont mises à jour : public.journal_pei, public.sig_hydrant_pression et public.sig_hydrant_aspiration.
+
 
 ===== Configuration
 Le fichier _"remocraXX.properties"_ doit contenir les informations suivantes :

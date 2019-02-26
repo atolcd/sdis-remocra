@@ -1,6 +1,22 @@
 ==== Synchronisation SIG vers Remocra
 
-Ce traitement permet de synchroniser les tables du SIG du SDIS avec la base Remocra.
+Ce traitement permet de synchroniser les tables du SIG du SDIS vers la base Remocra.
+
+Il permet de dupliquer la structure et le contenu des tables du SIG dans la base de données Remocra. Pour cela, il faut renseigner dans la base de données Remocra, dans la table "remocra_referentiel.synchronisation_sig", la liste des tables présentes dans le SIG à extraire.
+Indiquer dans la colonne "schema_table_name", le nom de schéma et le nom de la (ou les) table(s) issue(s) du SIG à synchroniser vers Remocra. (Exemple : public.sig_hydrant_pression)
+
+Dans Remocra, les tables seront dupliquées dans le schéma "remocra_referentiel".
+
+Il est possible à l'issue de chaque synchronisation d'une table, de lancer un ordre SQL. Pour cela, il faut renseigner pour chaque table à synchroniser, la colonne "sql_query_after_synchro" de la table "remocra_referentiel.synchronisation_sig" avec l'ordre SQL à exécuter (Ex : UPDATE remocra_referentiel.sig_hydrant_pression SET ... WHERE ...).
+
+Exemple de contenu de la table "remocra_referentiel.synchronisation_sig"
+[width="100%",options="header"]
+|===================
+| schema_table_name | date_heure_last_synchro | statut_last_synchro | sql_query_after_synchro
+| public.sig_hydrant_aspiration | 2019-01-01 00:00:00.000000 | Succès | UPDATE remocra_referentiel.sig_hydrant_aspiration ...
+| public.sig_hydrant_pression | 2019-01-01 00:00:00.000000 | Succès |
+|===================
+
 
 ===== Configuration
 Le fichier _"remocraXX.properties"_ doit contenir les informations suivantes :
