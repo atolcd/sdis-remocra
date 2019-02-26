@@ -329,11 +329,11 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                     }
                     if (feature.data['nature'] == 'PI' || feature.data['nature'] == 'BI') {
                         var debit = feature.data['debit'];
-                        if (debit === undefined || debit === null) {
+                        /*if (debit === undefined || debit === null) {
                             return unknown;
-                        }
+                        }*/
                         var debitCateg = null;
-                        if (debit < 30) {
+                        if (debit < 30 || debit === undefined || debit === null) {
                             debitCateg = 'L30';
                         } else if (debit < 60) {
                             debitCateg = 'L60';
