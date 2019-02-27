@@ -134,10 +134,8 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
             List<Long> resultList = itemTypedQuery.getResultList();
             Expression<Integer> cpID = from.get("id");
             Expression<Character> cpDispo = from.get("dispoHbe");
-            predicat = cBuilder.and(
-                    cpID.in(resultList),
-                    cBuilder.equal(cpDispo, Hydrant.Disponibilite.valueOf(itemFilter.getValue()))
-            );
+            predicat = !resultList.isEmpty() ? cBuilder.and(cpID.in(resultList) ,
+                    cBuilder.equal(cpDispo, Hydrant.Disponibilite.valueOf(itemFilter.getValue()))): predicat;
         } else {
             return super.processFilterItem(itemQuery, parameters, from, itemFilter);
         }
