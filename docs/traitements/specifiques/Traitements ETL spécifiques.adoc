@@ -64,6 +64,8 @@ include::42/synchronisation_sig_vers_remocra{outfilesuffix}[]
 
 include::42/synchronisation_remocra_vers_sig{outfilesuffix}[]
 
+include::42/deci_info_ROI_et_suppression_de_PEI{outfilesuffix}[]
+
 === SDIS 77
 
 include::77/synchronisation_sig{outfilesuffix}[]

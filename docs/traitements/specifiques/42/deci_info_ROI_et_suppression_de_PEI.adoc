@@ -1,0 +1,19 @@
+==== DECI - Information de ROI et de suppression de PEI
+
+Ce traitement permet d'automatiser l'envoi d'un rapport des PEI ayant fait l'objet d'une ROI ou ayant été supprimé.
+Le rapport est envoyé à tous les utilisateurs appartenant à un certains profils utilisateur de Remocra.
+
+
+===== Configuration
+Le fichier _"remocraXX.properties"_ doit contenir les informations suivantes :
+[width="100%",options="header"]
+|===================
+| Paramètre | Description
+| PDI_DECI_ROI_SUPPR_COURRIER | Nom du modèle de courrier à générer _(Exemple : `DECI_INFO_ROI_SUPPRESSION.OTT`)_
+| PDI_DECI_ROI_SUPPR_PERIODE | Période sur laquelle doit être faite la vérification de la ROI ou de suppression _(Exemple : `24`)_
+| PDI_DECI_ROI_SUPPR_PROFIL_USER_DESTINATAIRE | Profil des utilisateurs qui vont recevoir le rapport _(Exemple : `REMOCRA_P_SDIS-ADM-BPRS`)_
+| PDI_DECI_ROI_SUPPR_MODELE_TRAITEMENT_ID | Identifiant du traitement de génération du rapport dans la table `pdi.modele_traitement` _(Exemple : `27`)_
+|===================
+
+===== Lancement et planification de la synchronisation
+L'exécution automatique s'effectue en planifiant le lancement du fichier ```/var/remocra/pdi/traitements_sdis/42/creer_deci_info_roi_suppression.sh``` avec l'utilisateur ```postgres```.
