@@ -144,13 +144,12 @@
   h.observation AS observation,
   hi.pression_dyn AS pression_dynamique_60m3h,
   hi.pression As pression_statique,
-  (COALESCE(thn.nom,&apos;&apos;) || COALESCE(thdi.nom,&apos;&apos;)) AS sous_type,
+  (SELECT sous_type FROM remocra_referentiel.nature_diametre_sig WHERE code_nature = COALESCE(thn.code,&apos;&apos;) AND code_diametre = COALESCE(thdi.code,&apos;&apos;) LIMIT 1) AS sous_type,
   h.voie AS adresse,
   h.voie2 AS adresse_intersection,
   h.numero AS id_basepei,
   h.date_contr AS date_controle,
   &apos;SRID=2154;&apos; || st_astext(h.geometrie) AS geometrie,
-  EXTRACT(YEAR FROM h.date_contr) AS annee_dernier_controle_pese,
   (SELECT CASE WHEN (coalesce(h.dispo_terrestre,&apos;&apos;)  = &apos;DISPO&apos; ) THEN &apos;DI&apos; ELSE &apos;IN&apos; END) as etat_pei
 FROM remocra.hydrant AS h
 INNER JOIN remocra.hydrant_pibi AS hi ON (h.id=hi.id)
@@ -274,13 +273,13 @@ LEFT JOIN remocra.type_hydrant_diametre AS thdi ON (thdi.id=hi.diametre);</sql>
         <update>Y</update>
       </value>
       <value>
-        <name>annee_dernier_controle_pese</name>
-        <rename>annee_dernier_controle_pese</rename>
+        <name>etat_pei</name>
+        <rename>etat_pei</rename>
         <update>Y</update>
       </value>
       <value>
-        <name>etat_pei</name>
-        <rename>etat_pei</rename>
+        <name>id_basepei</name>
+        <rename>id_basepei</rename>
         <update>N</update>
       </value>
     </lookup>

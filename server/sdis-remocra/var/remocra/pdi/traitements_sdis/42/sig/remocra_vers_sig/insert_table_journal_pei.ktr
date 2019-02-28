@@ -129,7 +129,7 @@
     <connection>Remocra</connection>
     <sql>SELECT 
   now() as date_message,
-  hydrant_idaction.id_hydrant_maj::varchar as id_basepei,
+  h3.numero as id_basepei,
   h3.date_operation as date_maj,
   (SELECT CASE WHEN (h3.nom_operation = &apos;DELETE&apos;) THEN &apos;Suppression&apos;
   WHEN (h2.nom_operation = &apos;INSERT&apos;) THEN &apos;Création&apos;
