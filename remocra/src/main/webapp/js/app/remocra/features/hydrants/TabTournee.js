@@ -75,24 +75,24 @@ Ext.define('Sdis.Remocra.features.hydrants.TabTournee', {
                 hideTrigger: true,
                 listeners: {
                     change: deferredApplyFilter
-                },
-                renderer: function(value, metaData, record, rowIdx, colIdx, store, successCallback) {
-                    Ext.Ajax.request({
-                        url: Sdis.Remocra.util.Util.withBaseUrl('../tournees/getHydrantTournee/'+record.internalId),
-                        method: 'GET',
-                        scope: this,
-                        async: false,
-                        callback: function(param, success, response) {
-                            var res = Ext.decode(response.responseText);
-                            metaData.tdAttr = 'data-qtip="' + res.message + '"';
-                        }
-                    });
-                    return value;
-                 }
+                }
             }
         },{
             text: 'Points d\'eau',
-            dataIndex: 'hydrantCount'
+            dataIndex: 'hydrantCount',
+            renderer: function(value, metaData, record, rowIdx, colIdx, store, successCallback) {
+                Ext.Ajax.request({
+                    url: Sdis.Remocra.util.Util.withBaseUrl('../tournees/getHydrantTournee/'+record.internalId),
+                    method: 'GET',
+                    scope: this,
+                    async: false,
+                    callback: function(param, success, response) {
+                        var res = Ext.decode(response.responseText);
+                        metaData.tdAttr = 'data-qtip="' + res.message + '"';
+                    }
+                });
+                return value;
+            }
         },{
             text: 'Synchronisé',
             xtype: 'datecolumn',
