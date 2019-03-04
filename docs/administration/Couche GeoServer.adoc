@@ -1,4 +1,4 @@
-= SDIS Remocra - Couche d'APIS à REMOcRA
+= SDIS Remocra - Création d'une couche dans GeoServer
 
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 
@@ -15,7 +15,24 @@ link:../Manuel%20administration{outfilesuffix}[Retour au manuel d'administration
 
 '''
 
-== Activer la synchronisation de la table dans APIS (SDIS83) ==
+
+*Paramétrage des cartes*
+
+. **Création d'une couche dans GeoServer**
+. link:Couches%20Remocra{outfilesuffix}[Référencement des couches et sécurisation des accès]
+. link:Cartes{outfilesuffix}[Définition des cartes]
+
+'''
+
+
+== Créer la table si nécessaire ==
+
+Avant de créer la couche dans GeoServer, les données doivent être accessibles.
+Par exemple, on peut créer la table avec un script SQL, un ETL ou tout autre mécanisme.
+
+Généralement, les tables sont créées dans le schéma dédié _remocra_referentiel_ de la base de données _remocra_.
+
+=== Activer la synchronisation de la table dans APIS (spécifique SDIS83)
 
 Dans la base PostgreSQL _sdis_ du serveur APIS, référencer la table à exporter dans la table _sdis_meta.tables_a_synchroniser_ pour activer la synchronisation automatique. Par exemple :
 [source]
@@ -91,47 +108,5 @@ Puis :
 ** Add Layer...*
 ** Generate Bounds
 ** Save
-
-== Couche dans REMOcRA ==
-
-Déposer les images nécessaires dans (on peut utiliser des sous-répertoires) :
-
-. /var/remocra/html/images/remocra/cartes/legende
-
-Par exemple pour les images de l'exemple qui suit, on aura les images suivantes :
-
-[source]
-----
-/var/remocra/html/images/remocra/cartes/legende/reseau_dfci/res_piste_cat1.png
-/var/remocra/html/images/remocra/cartes/legende/reseau_dfci/...
-/var/remocra/html/images/remocra/cartes/legende/reseau_dfci/res_piste_cat4.png
-----
-
-Ajouter une couche dans le fichier carte.json dans un groupe.
-La"structure json décrit à la fois la couche et les éléments de la légende. Par exemple :
-[source,js]
-----
-{
-        "type": "wms",
-        "libelle":"Réseau DFCI",
-        "id":"reseauDfciLayer",
-        "wms_layer":true,
-        "layers":"remocra:piste",
-        "url":"/remocra/proxy/wms",
-        "projection":"EPSG:900913",
-        "sld":null,
-        "scale_min":"0",
-        "scale_max":"362834",
-        "visibility":true,
-        "opacity":1,
-        "interrogeable": false,
-        "items":[
-            {"libelle":"Première catégorie","image":"reseau_dfci/res_piste_cat1.png"},
-            {"libelle":"Seconde catégorie","image":"reseau_dfci/res_piste_cat2.png"},
-            {"libelle":"Troisième catégorie","image":"reseau_dfci/res_piste_cat3.png"},
-            {"libelle":"Quatrième catégorie","image":"reseau_dfci/res_piste_cat4.png"}
-        ]
-    }
-----
 
 _Aide technique : tutoriels link:http://postgis.net/docs/manual-1.5[Document PostGIS] sur postgis.net, http://docs.geoserver.org/[Documentation GeoServer] sur geoserver.org et link:http://docs.geoserver.org/latest/en/user/styling/index.html[Documentation SLD] sur geoserver.org_

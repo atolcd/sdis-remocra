@@ -1,4 +1,4 @@
-= SDIS Remocra - Couches
+= SDIS Remocra - Référencement des couches et sécurisation des accès
 
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 
@@ -14,6 +14,16 @@ link:../index{outfilesuffix}[Retour à l'accueil]
 link:../Manuel%20administration{outfilesuffix}[Retour au manuel d'administration]
 
 '''
+
+
+*Paramétrage des cartes*
+
+. link:Couche%20GeoServer{outfilesuffix}[Création d'une couche dans GeoServer]
+. **Référencement des couches et sécurisation des accès**
+. link:Cartes{outfilesuffix}[Définition des cartes]
+
+'''
+
 
 Exemple de configuration :
 

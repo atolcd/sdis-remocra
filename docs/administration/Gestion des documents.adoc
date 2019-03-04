@@ -1,4 +1,4 @@
-= SDIS Remocra - Cartes
+= SDIS Remocra - Documents
 
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 

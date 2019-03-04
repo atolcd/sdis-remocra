@@ -23,7 +23,10 @@ link:index{outfilesuffix}[Retour à l'accueil]
 *🗺 SIG*
 
 ** link:administration/Demande%20cle%20IGN{outfilesuffix}[Demande clé IGN] et paramétrage
-** link:administration/Couches{outfilesuffix}[Couches], link:administration/Cartes{outfilesuffix}[Cartes], link:administration/Couche%20d%20APIS%20a%20Remocra{outfilesuffix}[Couche d'APIS à Remocra]
+** Paramétrage des cartes :
+. link:administration/Couche%20GeoServer{outfilesuffix}[Création d'une couche dans GeoServer]
+. link:administration/Couches%20Remocra{outfilesuffix}[Référencement des couches et sécurisation des accès]
+. link:administration/Cartes{outfilesuffix}[Définition des cartes]
 ** link:administration/Outil%20i{outfilesuffix}[Outil i "information"]
 ** link:administration/Module%20cartographie%20symboles%20et%20images{outfilesuffix}[Module cartographie symboles et images]
 ** link:administration/Gestion%20des%20zones%20de%20competence{outfilesuffix}[Gestion des zones de compétence]

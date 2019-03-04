@@ -55,7 +55,7 @@ Dans ce répertoire, on retrouve des fichiers nommés de la manière suivante:
 ----
 all_layers.xsl
 global.xsl
-public.xls
+public.xsl
 CODEPROFILDROIT.xsl*
 ----
 

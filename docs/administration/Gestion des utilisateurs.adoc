@@ -1,4 +1,4 @@
-= SDIS Remocra - Gestion des sutilisateurs
+= SDIS Remocra - Gestion des utilisateurs
 
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 

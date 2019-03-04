@@ -1,4 +1,4 @@
-= SDIS Remocra - Cartes
+= SDIS Remocra - Définition des cartes
 
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 
@@ -15,7 +15,20 @@ link:../Manuel%20administration{outfilesuffix}[Retour au manuel d'administration
 
 '''
 
+
+*Paramétrage des cartes*
+
+. link:Couche%20GeoServer{outfilesuffix}[Création d'une couche dans GeoServer]
+. link:Couches%20Remocra{outfilesuffix}[Référencement des couches et sécurisation des accès]
+. **Définition des cartes**
+
+'''
+
+
 Les cartes sont configurées via des fichiers JSON.
+
+
+== Liste des fichiers des cartes ==
 
 Les fichiers des cartes sont les suivants :
 
@@ -32,6 +45,9 @@ Les fichiers des cartes sont les suivants :
 /var/remocra/html/js/app/remocra/features/risques/data/carte.json
 /var/remocra/html/js/app/remocra/features/prescrits/data/carte.json
 ----
+
+
+== Exemple de définition de carte ==
 
 Exemple de carte :
 
@@ -213,6 +229,9 @@ Exemple de carte :
 }
 ----
 
+
+== Définition d'une carte ==
+
 Les niveaux hiérarchiques sont les suivants :
 
 * Carte
@@ -223,10 +242,13 @@ Les niveaux hiérarchiques sont les suivants :
 Pour l'ensemble des cartes, on retrouvera généralement le goupe "Fonds IGN" qui comporte la configuration des couches IGN.
 Pour les autres, on a deux types de fonds :
 
-* les couches spécifiques
-** par exemple celle qui porte l'id _alertesLayer_ dans l'exemple
 * les couches génériques : WMS, WMTS, IGN, OSM
 ** par exemple celle qui porte l'id _administratifLayer_ dans l'exemple
+* les couches spécifiques
+** par exemple celle qui porte l'id _alertesLayer_ dans l'exemple
+
+
+=== Options communes ===
 
 Les options communes aux couches sont les suivantes :
 [source,js]
@@ -243,7 +265,9 @@ Les options communes aux couches sont les suivantes :
 "items" : []
 ----
 
-Pour les couches de type "wms" :
+=== Options couches génériques ===
+
+==== Pour les couches de type "wms"
 [source,js]
 ----
 "type" : "wms"
@@ -254,27 +278,29 @@ Pour les couches de type "wms" :
 
 Remarque, deux proxies existent pour accéder aux couches du serveur GeoServer de la plateforme :
 
-* /remocra/geoserver/{workspace}/wms : proxy GeoServer avec 
+* /remocra/geoserver/{workspace}/wms : proxy GeoServer avec
 ** gestion des workspaces
-** sécurisé finement : couche accessible publiquement ou qui nécessite une authentification, profils avec accès complet ou limités à la zone de compétence. Cf. link:Couches{outfilesuffix}[configuration des couches]. 
+** sécurisé finement : couche accessible publiquement ou qui nécessite une authentification, profils avec accès complet ou limités à la zone de compétence. Cf. link:Couches%20Remocra{outfilesuffix}[configuration des couches].
 ** Exemple : */remocra/geoserver/remocra/wms*
-* /remocra/proxy/wms : ancien proxy GeoServer (éviter de l'utiliser) avec 
+* /remocra/proxy/wms : ancien proxy GeoServer (éviter de l'utiliser) avec
 ** un seul workspace : _remocra_
 ** deux niveaux d'accès public / utilisateurs authentifiés limités à la zone de compétence
 
-Pour les couches de type "wmts" (informations déductibles des Capabilities du service) :
+==== Pour les couches de type "wmts"
+
+Les informations sont déductibles des Capabilities du service :
 [source,js]
 ----
 "type" : "wmts"
 "format" : "image/png" ou "image/jpeg"
 "layers" : "ortho_2013", "CADASTRALPARCELS.PARCELS" etc.
-"url" : "http://tiles.craig.fr/ortho/service" 
+"url" : "http://tiles.craig.fr/ortho/service"
 "style" : "normal" (recherche du premier élément de styles en cas d'absence)
 "styles" : [{ "id": "default", "libelle": "" }]
 "tileMatrixSet": { "nom": "webmercator", "resolution_min": 0.0746455354347, "resolution_max": 156543.0339281199800 }
 ----
 
-Pour les couches de type "ign" :
+==== Pour les couches de type "ign"
 [source,js]
 ----
 "type" : "ign"
@@ -283,14 +309,17 @@ Pour les couches de type "ign" :
 "style" : "normal"
 ----
 
-Pour les couches de type "osm" :
+Remarque, link:Demande%20cle%20IGN{outfilesuffix}[une clé IGN] doit être paramétrée pour le bon fonctionnement de ce type de couche.
+
+==== Pour les couches de type "osm"
 [source,js]
 ----
 "type" : "osm"
 "urls" : facultatif. Permet de changer les URLs par défaut. Exemple : ['http://a.tile.openstreetmap.org/${z}/${x}/${y}.png', 'http://b.tile.openstreetmap.org/${z}/${x}/${y}.png', 'http://c.tile.openstreetmap.org/${z}/${x}/${y}.png']
 ----
 
-Pour les couches de type "specific" :
+=== Options couches spécifiques ===
+
 [source,js]
 ----
 "type" : "specific"
@@ -302,6 +331,9 @@ Pour les couches spécifiques "hydrantLayer" et "prescritLayer", on précise ég
 ----
 "stategy" : "bbox"
 ----
+
+
+== Images de la légende ==
 
 Pour chaque couche, la légende est déterminée par les _items_ (tableau). Exemples de légendes :
 [source,json]
@@ -326,7 +358,24 @@ Pour chaque couche, la légende est déterminée par les _items_ (tableau). Exem
     "keepsize":true,
     "image":"/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LEGEND_OPTIONS=bgColor:0xf4f4f4;fontStyle:italic;fontColor:0x808080;fontAntiAliasing:true&LAYER=remocra:HABILLAGE_URBAIN"
 }]
----- 
+----
+
+Les images nécessaires à la construction de la légende sont déposées dans (on peut utiliser des sous-répertoires) :
+
+ /var/remocra/html/images/remocra/cartes/legende
+
+Par exemple pour les images de l'exemple qui précède, on a les images suivantes :
+
+[source]
+----
+/var/remocra/html/images/remocra/cartes/legende/alertes/checking.png
+/var/remocra/html/images/remocra/cartes/legende/alertes/ok.png
+/var/remocra/html/images/remocra/cartes/legende/alertes/ko.png
+----
+
+== Cartes spécifiques ==
+
+=== Module PEI, recherches et analyses ===
 
 La *carte "Recherches et analyses" du module PEI s'appuie sur une couche de type `wms` avec l'identifiant `zonesLayer`* (c'est un prérequis). Exemple de couche paramétrée dans le fichier fichier `/var/remocra/html/js/app/remocra/features/hydrants/data/carte-requete-selection.json` :
 [source,json]
