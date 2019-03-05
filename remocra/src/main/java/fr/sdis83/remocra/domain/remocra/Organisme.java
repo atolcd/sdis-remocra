@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Query;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
@@ -14,6 +15,8 @@ import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.tostring.RooToString;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 
 @RooJavaBean
 @RooToString
@@ -65,5 +68,29 @@ public class Organisme {
 
     @ManyToOne(optional = true)
     private Organisme organismeParent;
+
+    /**
+     * Retourne la liste des IDs composée de l'ID d'un organisme ainsi que les IDs de tous ses enfants.
+     * La requête est récursive, tous les enfants de tous les degrés sont retournés
+     * @param idOrganisme l'ID de l'organisme parent
+     * @return Un ArrayList d'entier contenant la liste des IDs de tous les organismes concernés
+     */
+    public static ArrayList<Integer> getOrganismeAndChildren(int idOrganisme){
+        Query query = entityManager().createNativeQuery("with recursive organisme(id, nom) as" +
+            "(" +
+                "select id, nom " +
+                "from remocra.organisme d " +
+                "where id=:idOrganisme " +
+
+                "union all " +
+
+                "select d.id, d.nom " +
+                "from remocra.organisme d, remocra.organisme o " +
+                "where o.id=d.organisme_parent " +
+            ") " +
+            "select distinct CAST(id AS INTEGER) from organisme").setParameter("idOrganisme", idOrganisme);
+        ArrayList<Integer> ids = (ArrayList<Integer>) query.getResultList();
+        return ids;
+    }
 
 }

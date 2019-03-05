@@ -3,8 +3,10 @@ package fr.sdis83.remocra.web;
 
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.domain.remocra.Organisme;
+import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.OrganismeService;
 import fr.sdis83.remocra.util.ExceptionUtils;
+import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.naming.AuthenticationException;
 import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequestMapping("/organismes")
 @Controller
@@ -76,7 +81,7 @@ public class OrganismeController extends AbstractServiceableController<Organisme
         }
         return new SuccessErrorExtSerializer(false, "Model inexistant", HttpStatus.NOT_FOUND).serialize();
     }
-
+    
     @RequestMapping(value = "/removeOrganismeParentForSpecificType", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("hasRight('REFERENTIELS_C')")
     protected ResponseEntity<java.lang.String> removeOrganismeParentForSpecificType(final Long idTypeOrganisme){
@@ -102,12 +107,27 @@ public class OrganismeController extends AbstractServiceableController<Organisme
 
     @RequestMapping(value = "/removeOrganismeParentForSpecificParent", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("hasRight('REFERENTIELS_C')")
-    protected ResponseEntity<java.lang.String> removeOrganismeParentForSpecificParent(final Long idOrganisme){
-        try{
+    protected ResponseEntity<java.lang.String> removeOrganismeParentForSpecificParent(final Long idOrganisme) {
+        try {
             service.removeOrganismeParentForSpecificParent(idOrganisme);
             return new SuccessErrorExtSerializer(true, "Organismes updated").serialize();
-        }catch(Exception e){
+        } catch (Exception e) {
             return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
+    }
+
+    @RequestMapping(value = "/organismeetenfants", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<java.lang.String> getOrganismeAndChildrenId(){
+        try {
+            return new AbstractExtListSerializer<Integer>("Data retrieved.") {
+                @Override
+                protected List<Integer> getRecords() throws BusinessException, AuthenticationException {
+                    return Organisme.getOrganismeAndChildren((utilisateurService.getCurrentUtilisateur().getOrganisme().getId()).intValue());
+                }
+            }.serialize();
+        }catch (Exception e) {
+                return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
         }
     }
 }

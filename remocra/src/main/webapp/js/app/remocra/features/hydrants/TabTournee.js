@@ -94,6 +94,12 @@ Ext.define('Sdis.Remocra.features.hydrants.TabTournee', {
                 return value;
             }
         },{
+            text: 'Organisme',
+            dataIndex: 'affectation',
+            renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                return record.affectationBelongsToInstance.data.nom;
+            }
+        },{
             text: 'Synchronisé',
             xtype: 'datecolumn',
             format: 'd/m/Y',

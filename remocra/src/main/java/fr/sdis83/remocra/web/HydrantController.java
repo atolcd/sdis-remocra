@@ -81,7 +81,7 @@ public class HydrantController {
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
                 return new JSONSerializer()
                         .include("data.id", "data.numero", "data.natureNom", "data.natureCode","data.dateRecep", "data.nomTournee", "data.code", "data.dateReco", "data.dateContr", "data.hbe",
-                                "data.jsonGeometrie", "data.dispoHbe","data.indispoTemp","data.dispoTerrestre", "data.debit", "data.commune.id", "data.commune.nom", "data.natureDeci.id", "data.natureDeci.code").exclude("data.*", "*.class")
+                                "data.jsonGeometrie", "data.dispoHbe","data.indispoTemp","data.dispoTerrestre", "data.debit", "data.commune.id", "data.commune.nom", "data.natureDeci.id", "data.natureDeci.code", "data.nomTournees").exclude("data.*", "*.class")
                         .transform(new GeometryTransformer(), Geometry.class);
             }
 
@@ -115,9 +115,9 @@ public class HydrantController {
 
     @RequestMapping(value = "/desaffecter", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("hasRight('TOURNEE_C')")
-    public ResponseEntity<java.lang.String> desaffecter(final @RequestBody String json) {
-        Integer nbHydrant = hydrantService.desaffecter(json);
-        return new SuccessErrorExtSerializer(true, nbHydrant.toString() + " hydrant(s) désaffecté(s)").serialize();
+    public ResponseEntity<java.lang.String> desaffecter(final @RequestParam String json, final @RequestParam Boolean allOrganismes) {
+        Integer nbHydrant = hydrantService.desaffecter(json, allOrganismes);
+        return new SuccessErrorExtSerializer(true, nbHydrant.toString() + " désaffectation(s) effectuée(s)").serialize();
 
     }
 
@@ -141,33 +141,39 @@ public class HydrantController {
 
     }
 
-    @RequestMapping(value = "/checkTournee", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping(value = "/checkHydrantsNatureDeci", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("hasRight('TOURNEE_C')")
-    public ResponseEntity<java.lang.String> checkTournee(final @RequestBody String json) {
-        Map<Hydrant,String> withSameOrganism = hydrantService.checkTournee(json);
+    public ResponseEntity<java.lang.String> checkHydrantsNatureDeci(final @RequestBody String json) {
         boolean correctTypeDECI = hydrantService.checkHydrantsNatureDeci(json);
-
         if(!correctTypeDECI){
-            return new SuccessErrorExtSerializer(false, "Création de tournée impossible: Il est incompatible " +
+            return new SuccessErrorExtSerializer(false, "Création de tournée impossible : Il est incompatible " +
                     "d'effectuer des ROP privées avec des PEI publics et inversement").serialize();
         }
-        if(withSameOrganism.isEmpty()){
+
+        return new SuccessErrorExtSerializer(true, "Création de tournée possible").serialize();
+    }
+
+    @RequestMapping(value = "/checkTournee", method = RequestMethod.POST, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('TOURNEE_C')")
+    public ResponseEntity<java.lang.String> checkTournee(final @RequestParam String json, final @RequestParam(value = "idOrganisme", required = false) Long idOrganisme) {
+        Map<Hydrant, String> withSameOrganism = hydrantService.checkTournee(json, idOrganisme);
+        if (withSameOrganism.isEmpty()) {
             return new SuccessErrorExtSerializer(true, "aucune tournée avec le même organisme").serialize();
         }
         String msg = "<div class=\"listHydrant\">";
-        for(Map.Entry<Hydrant, String> entry : withSameOrganism.entrySet()) {
-            msg+= "<li>"+entry.getKey().getNumero()+" ("+entry.getValue()+")</li>";
+        for (Map.Entry<Hydrant, String> entry : withSameOrganism.entrySet()) {
+            msg += "<li>" + entry.getKey().getNumero() + " (" + entry.getValue() + ")</li>";
             // traitements
         }
-        msg+="</div>";
-        if(withSameOrganism.size() == 1){
-            return new SuccessErrorExtSerializer(false, "Le point d\'eau ci-dessous est associé à une autre tournée :"
-                +msg+ "<br> Merci de le désaffecter avant de procéder à une nouvelle réaffectation.").serialize();
+        msg += "</div>";
+        if (withSameOrganism.size() == 1) {
+            return new SuccessErrorExtSerializer(false, "Le point d\'eau ci-dessous est associé à une autre tournée pour l'organisme spécifié :"
+                + msg + "<br> Merci de le désaffecter avant de procéder à une nouvelle réaffectation.").serialize();
         }
 
-        return new SuccessErrorExtSerializer(false, "Les points d\'eau ci-dessous sont associés à d\'autres tournées :"
-            +msg+"<br> Merci de les désaffecter avant de procéder à une nouvelle réaffectation.").serialize();
 
+        return new SuccessErrorExtSerializer(false, "Les points d\'eau ci-dessous sont associés à d\'autres tournées pour l'organisme spécifié :"
+            + msg + "<br> Merci de les désaffecter avant de procéder à une nouvelle réaffectation.").serialize();
     }
 
     @RequestMapping(value = "/checkReservation", method = RequestMethod.POST, headers = "Accept=application/json")

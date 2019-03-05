@@ -13,11 +13,13 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
+import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import fr.sdis83.remocra.domain.remocra.Hydrant;
+import fr.sdis83.remocra.domain.remocra.Organisme;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,7 +59,8 @@ public class TourneeService extends AbstractService<Tournee> {
             predicat = cBuilder.like(cBuilder.concat("", cpPath), "%"+ itemFilter.getValue() + "%");
         } else if ("affectation".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.join("affectation").get("id");
-            predicat = cBuilder.equal(cpPath, itemFilter.getValue());
+            ArrayList<Integer> ids = Organisme.getOrganismeAndChildren(Integer.valueOf(itemFilter.getValue()));
+            predicat = cBuilder.isTrue(cpPath.in(ids));
         } else if ("hydrantCount".equals(itemFilter.getFieldName())) {
             Expression<Collection<String>> hydrants = from.get("hydrants");
             predicat = cBuilder.equal(cBuilder.size(hydrants), itemFilter.getValue());

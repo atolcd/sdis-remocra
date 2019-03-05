@@ -85,27 +85,41 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
     }
 
     @Transactional
-    public int desaffecter(String json) {
+    public int desaffecter(String json, Boolean allOrganismes) {
         ArrayList<Integer> items = new JSONDeserializer<ArrayList<Integer>>().deserialize(json);
         ArrayList<Long> ids = new ArrayList<Long>();
+
+        //On ne désaffecte que pour les tournées de notre organisme ou des organismes enfants si allOrganismes = true
+        // Sinon, on ne désaffecte que pour les tournées de notre organisme
+        UtilisateurService utilisateurService = new UtilisateurService();
+        ArrayList<Integer> idOrganismes = new ArrayList<Integer>();
+
+        // Desaffectation pour tous les utilisateurs
+        if(allOrganismes){
+           idOrganismes = Organisme.getOrganismeAndChildren(utilisateurService.getCurrentUtilisateur().getOrganisme().getId().intValue());
+        }
+        // Désaffectation pour l'organisme de l'utilisateur courant seulement
+        else{
+            idOrganismes.add(utilisateurService.getCurrentUtilisateur().getOrganisme().getId().intValue());
+        }
+
         for (Integer item : items) {
             ids.add(Long.valueOf(item));
         }
         if (ids.size() > 0) {
             Query query;
-            Long organisme = utilisateurService.getCurrentUtilisateur().getOrganisme().getId();
             query = entityManager
                 .createNativeQuery(
-                    ("DELETE FROM remocra.hydrant_tournees WHERE hydrant in (:ids) AND tournees in (select t.id from remocra.tournee t where t.affectation=:organisme)"))
+                    ("DELETE FROM remocra.hydrant_tournees WHERE hydrant in (:ids) AND tournees in (select id from remocra.tournee WHERE affectation in (:idOrganismes))"))
                 .setParameter("ids", ids)
-                .setParameter("organisme", organisme);
+                .setParameter("idOrganismes", idOrganismes);
             return query.executeUpdate();
         }
         return 0;
     }
 
     @Transactional
-    public Map<Hydrant,String> checkTournee(String json) {
+    public Map<Hydrant,String> checkTournee(String json, Long idOrganisme) {
         ArrayList<Integer> items = new JSONDeserializer<ArrayList<Integer>>().deserialize(json);
         ArrayList<Long> ids = new ArrayList<Long>();
         Map<Hydrant,String> withSameOrganism = new HashMap<Hydrant, String>();
@@ -113,7 +127,7 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
             ids.add(Long.valueOf(item));
         }
         if (ids.size() > 0) {
-            Long currentOrganisme = utilisateurService.getCurrentUtilisateur().getOrganisme().getId();
+            Long currentOrganisme = (idOrganisme != null) ? idOrganisme : utilisateurService.getCurrentUtilisateur().getOrganisme().getId();
                 Query query = entityManager.createNativeQuery("select (CAST (t.affectation AS INTEGER )) as affectation, t.nom as nom, th.hydrant as id" +
                     " from remocra.tournee t" +
                     " join remocra.hydrant_tournees th" +
@@ -287,7 +301,19 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
             }
         }
 
-        tournee.setAffectation(utilisateurService.getCurrentUtilisateur().getOrganisme());
+        Long organismeId = null;
+        obj = items.get("organisme");
+        if (obj != null) {
+            organismeId = Long.valueOf(obj.toString());
+        }
+
+        if(organismeId != null){
+            tournee.setAffectation(Organisme.findOrganisme(organismeId));
+        }
+        else{
+            tournee.setAffectation(utilisateurService.getCurrentUtilisateur().getOrganisme());
+        }
+
         tournee.persist();
         // on a toute les infos, on crée et exécute la requête
         Query query;

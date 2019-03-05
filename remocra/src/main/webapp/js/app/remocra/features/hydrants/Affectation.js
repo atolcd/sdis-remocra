@@ -19,20 +19,55 @@ Ext.define('Sdis.Remocra.features.hydrants.Affectation', {
         xtype: 'fieldcontainer',
         layout: 'hbox',
         items: [{
-        xtype: 'radio',
-        name: 'choiceTournee',
-        boxLabel: 'Nouvelle tournée',
-        checked: true,
-        inputValue: '1'
-       },{
-       xtype:'textfield',
-       name:'nom',
-       emptyText: 'Nom de la tournée...',
-       width: 220,
-       margin: '0 0 0 20',
-       allowBlank:false
-      }]
-      },{
+            xtype: 'radio',
+            name: 'choiceTournee',
+            boxLabel: 'Nouvelle tournée',
+            checked: true,
+            inputValue: '1'
+            /*listeners: {
+                change: function(radiogrup, value) {
+                    Ext.getCmp('comboOrganisme').setDisabled(!value);
+                }
+            }*/
+        },{
+            xtype: 'fieldcontainer',
+            layout: 'vbox',
+            items: [{
+               xtype:'textfield',
+               name:'nom',
+               emptyText: 'Nom de la tournée...',
+               width: 220,
+               margin: '0 0 0 20',
+               allowBlank:false
+            },{
+                xtype: 'combo',
+                queryMode: 'local',
+                typeAhead: false,
+                id: 'comboOrganisme',
+                itemId: 'comboOrganisme',
+                emptyText: 'Organisme...',
+                store: Ext.create('Ext.data.Store', {
+                    model: 'Sdis.Remocra.model.Organisme',
+                    remoteSort: true,
+                    remoteFilter: false,
+                    autoLoad: true,
+                    pageSize: 999
+                }),
+                pageSize: false, // bizarrerie ExtJS
+                displayField: 'nom',
+                valueField: 'id',
+                disabled: false,
+                name: 'organisme',
+                width: 220,
+                margin: '0 0 0 20',
+                allowBlank: false,
+                editable: false,
+                validator: function (val) {
+                    return val.length > 0;
+                }
+            }]
+        }]
+    },{
         xtype: 'fieldcontainer',
         layout: 'hbox',
         items: [{
@@ -71,6 +106,11 @@ Ext.define('Sdis.Remocra.features.hydrants.Affectation', {
                     value: 'false'
                 }]
             }),
+            listConfig: {
+                getInnerTpl: function() {
+                    return '[{affectation.nom}] {nom}';
+                }
+            },
             pageSize: true, // bizarrerie ExtJS
             displayField: 'nom',
             valueField: 'id',
@@ -103,5 +143,27 @@ Ext.define('Sdis.Remocra.features.hydrants.Affectation', {
 
         }];
         this.callParent(arguments);
+
+        var organismesCombo = Ext.getCmp('comboOrganisme');
+
+        Ext.Ajax.request({
+            url: Sdis.Remocra.util.Util.withBaseUrl('../organismes/organismeetenfants'),
+            method: 'GET',
+            headers: {
+                'Accept' : 'application/json,application/xml',
+                'Content-Type' : 'application/json'
+            },
+            scope: this,
+            success: function (response) {
+                var jsResp = Ext.decode(response.responseText);
+                if(jsResp.success){
+                    organismesCombo.store.filter(new Ext.util.Filter({
+                        filterFn: function(item) {
+                            return jsResp.data.indexOf(item.data.id) != -1;
+                        }
+                    }));
+                }
+            }
+        });
     }
 });

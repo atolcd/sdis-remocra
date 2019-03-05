@@ -1125,7 +1125,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         }
         if (ids && ids.length > 0) {
             Ext.Ajax.request({
-                url: Sdis.Remocra.util.Util.withBaseUrl('../hydrants/checkTournee'),
+                url: Sdis.Remocra.util.Util.withBaseUrl('../hydrants/checkHydrantsNatureDeci'),
                 jsonData: ids,
                 callback: function(param, success, response) {
                     if(success){
@@ -1158,29 +1158,40 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 jsonData: ids,
                 callback: function(param, success, response) {
                     if(success){
-                     var msg = "<div class=\"listHydrant\">";
-                            for (i=0; i<features.length;i++){
-                                msg+= "<li>"+features[i].data.numero+"</li>";
-                            }
-                            msg+="</div>";
+                        var msg = "<div class=\"listHydrant\">";
+                        for (i=0; i<features.length;i++){
+                            msg+= "<li>"+features[i].data.numero+"</li>";
+                        }
+                        msg+="</div>";
 
-                              var globalMessage = features.length === 1 ? 'Le point d\'eau suivant va être désaffecté de sa tournée :' : 'Les points'+
-                               'd\'eau suivants vont être désaffectés de leur tournée :';
-                                 globalMessage+= msg +'<br/>Souhaitez-vous continuer ?';
-                              // Demande de confirmation
-                              Ext.Msg.confirm("Retirer des tournées",
-                                      globalMessage, Ext.bind(function(buttonId) {
-                                  if (buttonId == 'yes') {
-                                      Ext.Ajax.request({
-                                          url: Sdis.Remocra.util.Util.withBaseUrl('../hydrants/desaffecter'),
-                                          jsonData: ids,
-                                          callback: function(param, success, response) {
-                                              var res = Ext.decode(response.responseText);
-                                              Sdis.Remocra.util.Msg.msg("Désaffectation", res.message);
-                                          }
-                                      });
-                                  }
-                              }, this));
+                        var globalMessage = features.length === 1 ? 'Le point d\'eau suivant va être désaffecté de ses tournées :' : 'Les points'+
+                               'd\'eau suivants vont être désaffectés de leurs tournées :';
+                        globalMessage+= msg +'<br/> Pour quel(s) organisme(s) souhaitez-vous retirer ce PEI ?';
+
+                        Ext.Msg.show({
+                            title: 'Désaffectation',
+                            msg: globalMessage,
+                            icon: Ext.Msg.WARNING,
+                            buttonText: {
+                                yes: 'Le mien',
+                                no: 'Tous',
+                                cancel: 'Annuler'
+                            },
+                            buttons: Ext.Msg.YESNOCANCEL,
+                            fn: function(btn){
+                                Ext.Ajax.request({
+                                      url: Sdis.Remocra.util.Util.withBaseUrl('../hydrants/desaffecter'),
+                                      params: {
+                                        json: JSON.stringify(ids),
+                                        allOrganismes: btn === 'no'
+                                      },
+                                      callback: function(param, success, response) {
+                                          var res = Ext.decode(response.responseText);
+                                          Sdis.Remocra.util.Msg.msg("Désaffectation", res.message);
+                                      }
+                                  });
+                            }
+                        });
                     }else {
                        var res = Ext.decode(response.responseText);
                         Ext.Msg.show({
@@ -1271,6 +1282,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             this.getAffectation().down('combo[name=tournee]').setDisabled(oldValue);
         }else if (radioButton.inputValue == 1) {
             this.getAffectation().down('textfield[name=nom]').setDisabled(oldValue);
+            this.getAffectation().down('combo[name=organisme]').setDisabled(oldValue);
         }
 
     },
@@ -1291,16 +1303,19 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     validAffectation: function() {
         var tourneeId = null,
         tourneeNom = null,
+        organismeId = null,
         nomTournee =  this.getAffectation().down('textfield[name=nom]'),
+        cboOrganisme = this.getAffectation().down('combo[name=organisme]'),
         cboTournee = this.getAffectation().down('combo[name=tournee]');
 
-        if ( !nomTournee.isValid() || !cboTournee.isValid()) {
+        if ( !nomTournee.isValid() || !cboTournee.isValid() || !cboOrganisme.isValid()) {
             return;
         }
 
         switch (this.getAffectation().down('radio[checked]').inputValue) {
         case "1": // Nouvelle tournée
             tourneeNom = nomTournee.getValue();
+            organismeId = cboOrganisme.getValue();
             break;
         case "2": // Dernière tournée
             if(this.lastTournee.data.reservation && this.lastTournee.data.reservation !== null ){
@@ -1313,40 +1328,52 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
               return;
             }
             tourneeId = this.lastTournee.getId();
+            organismeId = this.lastTournee.affectationBelongsToInstance.get('id');
             break;
         case "3": // Tournée existante
             tourneeId = cboTournee.getValue();
+            organismeId = cboTournee.getValueModel().get('affectation').id;
             break;
         }
 
         var ids = Ext.Array.pluck(this.getSelectedFeatures(), "fid");
-        // var idUtilisateur = cboUtilisateur.getValue();
 
         Ext.Ajax.request({
             scope: this,
-            url: Sdis.Remocra.util.Util.withBaseUrl('../hydrants/affecter'),
-            jsonData: {
-                ids: ids,
-                tournee: tourneeId,
-                nom: tourneeNom
-            /*
-             * , utilisateur: idUtilisateur
-             */
+            url: Sdis.Remocra.util.Util.withBaseUrl('../hydrants/checkTournee'),
+            params: {
+                json: JSON.stringify(ids),
+                idOrganisme: organismeId
             },
             callback: function(param, success, response) {
                 var res = Ext.decode(response.responseText);
-                if(success){
-                    Sdis.Remocra.util.Msg.msg("Affectation", res.message);
-                    this.getAffectation().close();
-                }else {
-                     Ext.Msg.show({
-                          title: "Affectation",
-                          msg: res.message,
-                          buttons: Ext.Msg.OK,
-                          icon: Ext.Msg.WARNING
+                if(res.success){ // Si toutes les vérif sont OK, on affecte la tournée
+                    Ext.Ajax.request({
+                        scope: this,
+                        url: Sdis.Remocra.util.Util.withBaseUrl('../hydrants/affecter'),
+                        jsonData: {
+                            ids: ids,
+                            tournee: tourneeId,
+                            nom: tourneeNom,
+                            organisme: organismeId
+                        },
+                        callback: function(param, success, response) {
+                            var res = Ext.decode(response.responseText);
+                            if(success){
+                                Sdis.Remocra.util.Msg.msg("Affectation", res.message);
+                                this.getAffectation().close();
+                            }else {
+                                 Ext.Msg.show({
+                                      title: "Affectation",
+                                      msg: res.message,
+                                      buttons: Ext.Msg.OK,
+                                      icon: Ext.Msg.WARNING
+                                });
+                            }
+
+                        }
                     });
                 }
-
             }
         });
     },

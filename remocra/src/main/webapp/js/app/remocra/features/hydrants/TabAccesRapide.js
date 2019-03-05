@@ -34,6 +34,11 @@ Ext.define('Sdis.Remocra.features.hydrants.TabAccesRapide', {
             store: {
                 model: 'Sdis.Remocra.model.Tournee'
             },
+            listConfig: {
+                getInnerTpl: function() {
+                    return '[{affectation.nom}] {nom}';
+                }
+            },
             name: 'numTournee'
         },{
             xtype: 'button',

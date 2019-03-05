@@ -24,6 +24,8 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
+import fr.sdis83.remocra.service.AuthService;
+import fr.sdis83.remocra.service.UtilisateurService;
 import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -209,6 +211,7 @@ public class Hydrant implements Featurable {
         feature.addProperty("commune", this.getCommuneId());
         feature.addProperty("internalId", this.getId());
         feature.addProperty("tournees", this.getTourneesId());
+        feature.addProperty("nomTournees", this.getNomTournees());
         // PIBI
         String diametreCode = null;
         if (this instanceof HydrantPibi) {
@@ -256,6 +259,24 @@ public class Hydrant implements Featurable {
             ArrayList liste = new ArrayList<String>();
             for (Tournee t : this.getTournees())
                 liste.add(t.getId().toString());
+            return liste.toString();
+        }
+        return null;
+    }
+
+    public String getNomTournees(){
+        if(this.getTournees() != null && !this.getTournees().isEmpty()) {
+            ArrayList liste = new ArrayList<String>();
+            String identifiant = AuthService.getCurrentUserIdentifiant();
+            Utilisateur utilisateur = Utilisateur.findUtilisateursByIdentifiant(identifiant).getSingleResult();
+            int idOrganisme = utilisateur.getOrganisme().getId().intValue();
+
+            for (Tournee t : this.getTournees()){
+                if(Organisme.getOrganismeAndChildren(idOrganisme).contains(t.getAffectation().getId().intValue())){
+                    liste.add(t.getNom()+" ["+t.getAffectation().getNom()+"]");
+                }
+
+            }
             return liste.toString();
         }
         return null;

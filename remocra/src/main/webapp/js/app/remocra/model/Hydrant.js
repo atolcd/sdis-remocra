@@ -125,6 +125,10 @@ Ext.define('Sdis.Remocra.model.Hydrant', {
         name: 'nomTournee',
         type: 'string',
         persist: false
+    },{
+        name: 'nomTournees',
+        type: 'string',
+        persist: false
     }, {
        name: 'natureDeci',
        type: 'fk'
