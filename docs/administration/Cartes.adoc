@@ -211,7 +211,7 @@ Exemple de carte :
         ]
         }]
     }, {
-        "libelle": "Groupe OSM",
+        "libelle": "Autres fonds",
         "items": [{
             "type": "osm",
             "libelle": "Carte OSM",
@@ -224,7 +224,20 @@ Exemple de carte :
                     "image": "osm/osm.png"
                 }
         ]
-        }]
+        }, {
+           "type": "tms",
+           "libelle": "Atlas parcellaire",
+           "id": "atlas",
+           "visibility": true,
+           "opacity": 0.8,
+           "base_layer": false,
+           /* Niveaux 16 à 18 */
+           "min_resolution": 0.5971642834779396,
+           "max_resolution": 2.3886571339117584,
+           "url": "https://remocra.sdisxx.fr/tms/",
+           "layername": "parcellaire",
+           "format": "png"
+       }]
     }]
 }
 ----
@@ -242,7 +255,7 @@ Les niveaux hiérarchiques sont les suivants :
 Pour l'ensemble des cartes, on retrouvera généralement le goupe "Fonds IGN" qui comporte la configuration des couches IGN.
 Pour les autres, on a deux types de fonds :
 
-* les couches génériques : WMS, WMTS, IGN, OSM
+* les couches génériques : WMS, WMTS, IGN, OSM, TMS
 ** par exemple celle qui porte l'id _administratifLayer_ dans l'exemple
 * les couches spécifiques
 ** par exemple celle qui porte l'id _alertesLayer_ dans l'exemple
@@ -253,7 +266,7 @@ Pour les autres, on a deux types de fonds :
 Les options communes aux couches sont les suivantes :
 [source,js]
 ----
-"type" : "specific", "wms", "wmts", "ign" ou "osm"
+"type" : "specific", "wms", "wmts", "ign" ou "osm" ou "tms"
 "libelle" : "Administratif"
 "id" : "administratifLayer"
 "projection" : "EPGS:3857", EPSG:900913", etc.
@@ -317,6 +330,21 @@ Remarque, link:Demande%20cle%20IGN{outfilesuffix}[une clé IGN] doit être param
 "type" : "osm"
 "urls" : facultatif. Permet de changer les URLs par défaut. Exemple : ['http://a.tile.openstreetmap.org/${z}/${x}/${y}.png', 'http://b.tile.openstreetmap.org/${z}/${x}/${y}.png', 'http://c.tile.openstreetmap.org/${z}/${x}/${y}.png']
 ----
+
+==== Pour les couches de type "tms"
+[source,js]
+----
+"type" : "tms"
+/* Exemple pour afficher la couche des niveaux 16 à 18 */
+"min_resolution": 0.5971642834779396
+"max_resolution": 2.3886571339117584
+"url": "https://remocra.sdisxx.fr/tms/"
+"layername": "parcellaire"
+"format": "png" (par défaut) ou "jpg"
+"version": "1.0.0" par défaut
+----
+Les résolutions sont exprimées en 3857 ; se référer aux link:https://github.com/atolcd/sdis-remocra/blob/master/remocra/src/main/webapp/js/app/remocra/widget/map/Map.js:[résolutions définies ici].
+
 
 === Options couches spécifiques ===
 

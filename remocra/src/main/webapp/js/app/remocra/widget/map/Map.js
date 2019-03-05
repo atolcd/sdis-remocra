@@ -40,6 +40,8 @@ Sdis.Remocra.widget.map.WMTS_RESOLUTIONS_3857 =  [
     0.14929107086948493,
     0.07464553543474241
 ];
+Sdis.Remocra.widget.map.TMS_TILEORIGIN_3857 = new OpenLayers.LonLat(-20037508.34, -20037508.34);
+Sdis.Remocra.widget.map.TMS_RESOLUTIONS_3857 = Sdis.Remocra.widget.map.WMTS_RESOLUTIONS_3857;
 
 Ext.define('Sdis.Remocra.widget.map.Map', {
     extend: 'Ext.container.Container',
@@ -583,6 +585,9 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
                     case 'wmts':
                         layer = this.createWMTSLayer(layerDef);
                         break;
+                    case 'tms':
+                        layer = this.createTMSLayer(layerDef);
+                        break;
                     case 'ign':
                         layer = this.createIGNLayer(layerDef);
                         break;
@@ -753,6 +758,35 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
             options.format = layerDef.format;
         }
         return new OpenLayers.Layer.WMTS(options);
+    },
+
+    createTMSLayer: function(layerDef) {
+        var resolutions = Sdis.Remocra.widget.map.TMS_RESOLUTIONS_3857;
+        return new OpenLayers.Layer.TMS(layerDef.name, layerDef.url, {
+            // Remocra
+            code: layerDef.id,
+            // Layer
+            isBaseLayer: layerDef.baseLayer,
+            name: layerDef.libelle,
+            visibility: layerDef.visibility,
+            opacity: layerDef.opacity,
+            projection: 'EPSG:3857',
+            attribution: layerDef.attribution,
+            resolutions: resolutions,
+            /* Exemple pour les niveaux de zoom de 16 à 18 :
+            * ➔ maxResolution = Sdis.Remocra.widget.map.TMS_RESOLUTIONS_3857[16]
+            * ➔ minResolution = Sdis.Remocra.widget.map.TMS_RESOLUTIONS_3857[18]
+            */
+            minResolution: layerDef.min_resolution || resolutions[resolutions.length - 1],
+            maxResolution: layerDef.max_resolution || resolutions[0],
+            // Layer.TMS
+            serviceVersion: layerDef.version,
+            layername: layerDef.layername,
+            type: layerDef.format || 'png',
+            tileOrigin: Sdis.Remocra.widget.map.TMS_TILEORIGIN_3857,
+            serverResolutions: resolutions,
+            zoomOffset: layerDef.zoom_offset || 0
+        });
     },
 
     createIGNLayer: function(layerDef) {
