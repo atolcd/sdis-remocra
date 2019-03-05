@@ -7,7 +7,6 @@ import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.domain.remocra.ProfilOrganisme;
 import fr.sdis83.remocra.domain.remocra.TypeOrganisme;
 import fr.sdis83.remocra.domain.remocra.ZoneCompetence;
-
 privileged aspect Organisme_Roo_JavaBean {
     
     public Long Organisme.getId() {
@@ -81,5 +80,12 @@ privileged aspect Organisme_Roo_JavaBean {
     public void Organisme.setZoneCompetence(ZoneCompetence zoneCompetence) {
         this.zoneCompetence = zoneCompetence;
     }
-    
+
+    public Organisme Organisme.getOrganismeParent() {
+        return this.organismeParent;
+    }
+
+    public void Organisme.setOrganismeParent(Organisme organismeParent) {
+        this.organismeParent = organismeParent;
+    }
 }

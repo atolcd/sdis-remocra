@@ -205,5 +205,16 @@ Ext.define('Sdis.Remocra.features.admin.Admin', {
         if(contentPanel.layout.activeItem.refreshView) {
             contentPanel.layout.activeItem.refreshView();
         }
+
+        // Si on bascule dans l'administration des organismes ou l'administration des types d'organisme, on refresh le store
+        // Ca permet de prendre en compte les changements d'autres onglets (comme les types d'organisme parent) sans avoir besoin de rafraîchir la page
+        if(key === "organismes" || key === "typeorganismes"){
+            contentPanel.items.items.forEach(function(item){
+                if(item.itemId === "adminOrganisme" || item.itemId === "adminTypeOrganisme"){
+                    item.items.items[0].store.reload();
+                }
+            });
+        }
+
     } 
 });

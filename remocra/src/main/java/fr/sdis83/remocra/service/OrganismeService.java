@@ -1,8 +1,10 @@
 package fr.sdis83.remocra.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
@@ -16,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
+import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 public class OrganismeService extends AbstractService<Organisme> {
@@ -56,9 +59,52 @@ public class OrganismeService extends AbstractService<Organisme> {
             Expression<String> cpPath = from.join("zoneCompetence").get("nom");
             orders.add(itemSorting.isDesc() ? cBuilder.desc(cpPath) : cBuilder.asc(cpPath));
             return true;
+        } else if ("organismeParentId".equals(itemSorting.getFieldName())) {
+            Expression<String> cpPath = from.join("organismeParent").get("nom");
+            orders.add(itemSorting.isDesc() ? cBuilder.desc(cpPath) : cBuilder.asc(cpPath));
+            return true;
         } else {
             return super.processItemSortings(orders, itemSorting, cBuilder, from);
         }
+    }
+
+    /**
+     * Désaffecte l'organisme parent de tous les organismes correspondant à un type d'organisme spécifique
+     * @param idTypeOrganisme L'ID du type d'organisme spécifique
+     */
+    @Transactional
+    public int removeOrganismeParentForSpecificType(Long idTypeOrganisme){
+        Query query = entityManager
+                .createNativeQuery(
+                        ("UPDATE remocra.organisme SET organisme_parent=NULL WHERE type_organisme=(:idTypeOrganisme)"))
+                .setParameter("idTypeOrganisme", idTypeOrganisme);
+        return query.executeUpdate();
+    }
+
+    /**
+     * Renvoie le nombre d'organismes enfants pour un organisme donné
+     * @param id L'ID de l'organisme parent
+     * @return INT le nombre d'organismes enfants
+     */
+    public int nbOrganismesAvecParentEtProfilSpecifique(Long id){
+        Query query = entityManager.createNativeQuery("SELECT CAST(COUNT(*) AS INTEGER) FROM remocra.organisme " +
+                "WHERE organisme_parent = :id")
+                .setParameter("id", id);
+        List<Integer> response = query.getResultList();
+        return response.get(0);
+    }
+
+    /**
+     * Désaffecte les organismes parent d'un organisme spécifique
+     * @param idOrganisme L'ID de l'organisme parent
+     */
+    @Transactional
+    public int removeOrganismeParentForSpecificParent(Long idOrganisme){
+        Query query = entityManager
+                .createNativeQuery(
+                        ("UPDATE remocra.organisme SET organisme_parent=NULL WHERE organisme_parent=(:idOrganisme)"))
+                .setParameter("idOrganisme", idOrganisme);
+        return query.executeUpdate();
     }
 
 }

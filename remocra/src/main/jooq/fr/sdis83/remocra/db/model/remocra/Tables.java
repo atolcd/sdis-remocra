@@ -87,6 +87,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleSelectionDetail;
 import fr.sdis83.remocra.db.model.remocra.tables.SousTypeAlerteElt;
 import fr.sdis83.remocra.db.model.remocra.tables.SuiviPatches;
 import fr.sdis83.remocra.db.model.remocra.tables.Synchronisation;
+import fr.sdis83.remocra.db.model.remocra.tables.Temp;
 import fr.sdis83.remocra.db.model.remocra.tables.Thematique;
 import fr.sdis83.remocra.db.model.remocra.tables.Tournee;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeAlerteAno;
@@ -113,6 +114,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMarque;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMateriau;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantModele;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantNature;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantNatureDeci;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantPositionnement;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantSaisie;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantVolConstate;
@@ -574,6 +576,11 @@ public class Tables {
 	public static final Synchronisation SYNCHRONISATION = fr.sdis83.remocra.db.model.remocra.tables.Synchronisation.SYNCHRONISATION;
 
 	/**
+	 * The table remocra.temp
+	 */
+	public static final Temp TEMP = fr.sdis83.remocra.db.model.remocra.tables.Temp.TEMP;
+
+	/**
 	 * The table remocra.thematique
 	 */
 	public static final Thematique THEMATIQUE = fr.sdis83.remocra.db.model.remocra.tables.Thematique.THEMATIQUE;
@@ -702,6 +709,11 @@ public class Tables {
 	 * The table remocra.type_hydrant_nature
 	 */
 	public static final TypeHydrantNature TYPE_HYDRANT_NATURE = fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantNature.TYPE_HYDRANT_NATURE;
+
+	/**
+	 * Statut du PEI (ex: privé, public, privé sous convention)
+	 */
+	public static final TypeHydrantNatureDeci TYPE_HYDRANT_NATURE_DECI = fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantNatureDeci.TYPE_HYDRANT_NATURE_DECI;
 
 	/**
 	 * The table remocra.type_hydrant_positionnement

@@ -519,9 +519,9 @@ public class Keys {
 	public static final ForeignKey<Record, Record> HYDRANT__FK51B8F0285D29D8A8 = ForeignKeys0.HYDRANT__FK51B8F0285D29D8A8;
 	public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028D10A0428 = ForeignKeys0.HYDRANT__FK51B8F028D10A0428;
 	public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028374ADD52 = ForeignKeys0.HYDRANT__FK51B8F028374ADD52;
-	public static final ForeignKey<Record, Record> HYDRANT__fk_nature_deci = ForeignKeys0.HYDRANT__fk_nature_deci;
 	public static final ForeignKey<Record, Record> HYDRANT__FK_ZONE_SPECIALE = ForeignKeys0.HYDRANT__FK_ZONE_SPECIALE;
 	public static final ForeignKey<Record, Record> HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION = ForeignKeys0.HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION;
+	public static final ForeignKey<Record, Record> HYDRANT__FK_NATURE_DECI = ForeignKeys0.HYDRANT__FK_NATURE_DECI;
 	public static final ForeignKey<Record, Record> HYDRANT_ANOMALIES__FK5E56B38A50004FC = ForeignKeys0.HYDRANT_ANOMALIES__FK5E56B38A50004FC;
 	public static final ForeignKey<Record, Record> HYDRANT_ANOMALIES__FK5E56B38A1C51B70D = ForeignKeys0.HYDRANT_ANOMALIES__FK5E56B38A1C51B70D;
 	public static final ForeignKey<Record, Record> HYDRANT_DOCUMENT__FK5B90BF5236F0130A = ForeignKeys0.HYDRANT_DOCUMENT__FK5B90BF5236F0130A;
@@ -571,6 +571,7 @@ public class Keys {
 	public static final ForeignKey<Record, Record> ORGANISME__FK805999D374EBAF33 = ForeignKeys0.ORGANISME__FK805999D374EBAF33;
 	public static final ForeignKey<Record, Record> ORGANISME__FK805999D3F5378273 = ForeignKeys0.ORGANISME__FK805999D3F5378273;
 	public static final ForeignKey<Record, Record> ORGANISME__FK805999D39B5C78A5 = ForeignKeys0.ORGANISME__FK805999D39B5C78A5;
+	public static final ForeignKey<Record, Record> ORGANISME__FK_ORGANISME_PARENT = ForeignKeys0.ORGANISME__FK_ORGANISME_PARENT;
 	public static final ForeignKey<Record, Record> PERMIS__FKC4E3841A60BAC826 = ForeignKeys0.PERMIS__FKC4E3841A60BAC826;
 	public static final ForeignKey<Record, Record> PERMIS__FKC4E3841AD2DA796C = ForeignKeys0.PERMIS__FKC4E3841AD2DA796C;
 	public static final ForeignKey<Record, Record> PERMIS__FKC4E3841ADE630077 = ForeignKeys0.PERMIS__FKC4E3841ADE630077;
@@ -636,6 +637,7 @@ public class Keys {
 	public static final ForeignKey<Record, Record> TYPE_HYDRANT_NATURE__FK42ACD04386657E5D = ForeignKeys0.TYPE_HYDRANT_NATURE__FK42ACD04386657E5D;
 	public static final ForeignKey<Record, Record> TYPE_OLDEB_ANOMALIE__FK_TYPE_OLDEB_ANOMALIE_CATEGORIE = ForeignKeys0.TYPE_OLDEB_ANOMALIE__FK_TYPE_OLDEB_ANOMALIE_CATEGORIE;
 	public static final ForeignKey<Record, Record> TYPE_OLDEB_CARACTERISTIQUE__FK_TYPE_OLDEB_CARACTERISTIQUE_CATEGORIE = ForeignKeys0.TYPE_OLDEB_CARACTERISTIQUE__FK_TYPE_OLDEB_CARACTERISTIQUE_CATEGORIE;
+	public static final ForeignKey<Record, Record> TYPE_ORGANISME__FK_TYPE_ORGANISME_PARENT = ForeignKeys0.TYPE_ORGANISME__FK_TYPE_ORGANISME_PARENT;
 	public static final ForeignKey<Record, Record> TYPE_RCI_PROM_CATEGORIE__FKCAF3AB04D230270A = ForeignKeys0.TYPE_RCI_PROM_CATEGORIE__FKCAF3AB04D230270A;
 	public static final ForeignKey<Record, Record> TYPE_RCI_PROM_PARTITION__FK257DCB7AA7EF692 = ForeignKeys0.TYPE_RCI_PROM_PARTITION__FK257DCB7AA7EF692;
 	public static final ForeignKey<Record, Record> UTILISATEUR__FKDD163383374ADD52 = ForeignKeys0.UTILISATEUR__FKDD163383374ADD52;
@@ -992,10 +994,10 @@ public class Keys {
 		public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028D2DA796C = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.COMMUNE_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.COMMUNE);
 		public static final ForeignKey<Record, Record> HYDRANT__FK51B8F0285D29D8A8 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_DOMAINE_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.DOMAINE);
 		public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028D10A0428 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_NATURE_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.NATURE);
-		public static final ForeignKey<Record, Record> HYDRANT__fk_nature_deci = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_NATURE_DECI_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.NATURE_DECI);
 		public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028374ADD52 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.ORGANISME);
 		public static final ForeignKey<Record, Record> HYDRANT__FK_ZONE_SPECIALE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ZONE_SPECIALE_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.ZONE_SPECIALE);
 		public static final ForeignKey<Record, Record> HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.UTILISATEUR_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.UTILISATEUR_MODIFICATION);
+		public static final ForeignKey<Record, Record> HYDRANT__FK_NATURE_DECI = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_NATURE_DECI_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.NATURE_DECI);
 		public static final ForeignKey<Record, Record> HYDRANT_ANOMALIES__FK5E56B38A50004FC = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.HYDRANT_PKEY, HydrantAnomalies.HYDRANT_ANOMALIES, HydrantAnomalies.HYDRANT_ANOMALIES.HYDRANT);
 		public static final ForeignKey<Record, Record> HYDRANT_ANOMALIES__FK5E56B38A1C51B70D = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_ANOMALIE_PKEY, HydrantAnomalies.HYDRANT_ANOMALIES, HydrantAnomalies.HYDRANT_ANOMALIES.ANOMALIES);
 		public static final ForeignKey<Record, Record> HYDRANT_DOCUMENT__FK5B90BF5236F0130A = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.DOCUMENT_PKEY, HydrantDocument.HYDRANT_DOCUMENT, HydrantDocument.HYDRANT_DOCUMENT.DOCUMENT);
@@ -1045,6 +1047,7 @@ public class Keys {
 		public static final ForeignKey<Record, Record> ORGANISME__FK805999D374EBAF33 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.PROFIL_ORGANISME_PKEY, Organisme.ORGANISME, Organisme.ORGANISME.PROFIL_ORGANISME);
 		public static final ForeignKey<Record, Record> ORGANISME__FK805999D3F5378273 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_ORGANISME_PKEY, Organisme.ORGANISME, Organisme.ORGANISME.TYPE_ORGANISME);
 		public static final ForeignKey<Record, Record> ORGANISME__FK805999D39B5C78A5 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ZONE_COMPETENCE_PKEY, Organisme.ORGANISME, Organisme.ORGANISME.ZONE_COMPETENCE);
+		public static final ForeignKey<Record, Record> ORGANISME__FK_ORGANISME_PARENT = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, Organisme.ORGANISME, Organisme.ORGANISME.ORGANISME_PARENT);
 		public static final ForeignKey<Record, Record> PERMIS__FKC4E3841A60BAC826 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_PERMIS_AVIS_PKEY, Permis.PERMIS, Permis.PERMIS.AVIS);
 		public static final ForeignKey<Record, Record> PERMIS__FKC4E3841AD2DA796C = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.COMMUNE_PKEY, Permis.PERMIS, Permis.PERMIS.COMMUNE);
 		public static final ForeignKey<Record, Record> PERMIS__FKC4E3841ADE630077 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.UTILISATEUR_PKEY, Permis.PERMIS, Permis.PERMIS.INSTRUCTEUR);
@@ -1110,6 +1113,7 @@ public class Keys {
 		public static final ForeignKey<Record, Record> TYPE_HYDRANT_NATURE__FK42ACD04386657E5D = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_PKEY, TypeHydrantNature.TYPE_HYDRANT_NATURE, TypeHydrantNature.TYPE_HYDRANT_NATURE.TYPE_HYDRANT);
 		public static final ForeignKey<Record, Record> TYPE_OLDEB_ANOMALIE__FK_TYPE_OLDEB_ANOMALIE_CATEGORIE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_OLDEB_CATEGORIE_ANOMALIE_PKEY, TypeOldebAnomalie.TYPE_OLDEB_ANOMALIE, TypeOldebAnomalie.TYPE_OLDEB_ANOMALIE.CATEGORIE);
 		public static final ForeignKey<Record, Record> TYPE_OLDEB_CARACTERISTIQUE__FK_TYPE_OLDEB_CARACTERISTIQUE_CATEGORIE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_OLDEB_CATEGORIE_CARACTERISTIQUE_PKEY, TypeOldebCaracteristique.TYPE_OLDEB_CARACTERISTIQUE, TypeOldebCaracteristique.TYPE_OLDEB_CARACTERISTIQUE.CATEGORIE);
+		public static final ForeignKey<Record, Record> TYPE_ORGANISME__FK_TYPE_ORGANISME_PARENT = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_ORGANISME_PKEY, TypeOrganisme.TYPE_ORGANISME, TypeOrganisme.TYPE_ORGANISME.TYPE_ORGANISME_PARENT);
 		public static final ForeignKey<Record, Record> TYPE_RCI_PROM_CATEGORIE__FKCAF3AB04D230270A = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_RCI_PROM_PARTITION_PKEY, TypeRciPromCategorie.TYPE_RCI_PROM_CATEGORIE, TypeRciPromCategorie.TYPE_RCI_PROM_CATEGORIE.PARTITION);
 		public static final ForeignKey<Record, Record> TYPE_RCI_PROM_PARTITION__FK257DCB7AA7EF692 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_RCI_PROM_FAMILLE_PKEY, TypeRciPromPartition.TYPE_RCI_PROM_PARTITION, TypeRciPromPartition.TYPE_RCI_PROM_PARTITION.FAMILLE);
 		public static final ForeignKey<Record, Record> UTILISATEUR__FKDD163383374ADD52 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, Utilisateur.UTILISATEUR, Utilisateur.UTILISATEUR.ORGANISME);

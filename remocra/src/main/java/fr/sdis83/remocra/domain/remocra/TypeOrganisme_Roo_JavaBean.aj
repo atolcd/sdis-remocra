@@ -38,5 +38,13 @@ privileged aspect TypeOrganisme_Roo_JavaBean {
     public void TypeOrganisme.setActif(Boolean actif) {
         this.actif = actif;
     }
+
+    public TypeOrganisme TypeOrganisme.getTypeOrganismeParent() {
+        return this.typeOrganismeParent;
+    }
+
+    public void TypeOrganisme.setTypeOrganismeParent(TypeOrganisme parent) {
+        this.typeOrganismeParent = parent;
+    }
     
 }

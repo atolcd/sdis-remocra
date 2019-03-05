@@ -456,6 +456,11 @@ public class Sequences {
 	public static final Sequence<Long> TYPE_HYDRANT_MODELE_ID_SEQ = new SequenceImpl<Long>("type_hydrant_modele_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
+	 * The sequence <code>remocra.type_hydrant_nature_deci_id_seq</code>
+	 */
+	public static final Sequence<Long> TYPE_HYDRANT_NATURE_DECI_ID_SEQ = new SequenceImpl<Long>("type_hydrant_nature_deci_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
 	 * The sequence <code>remocra.type_hydrant_nature_id_seq</code>
 	 */
 	public static final Sequence<Long> TYPE_HYDRANT_NATURE_ID_SEQ = new SequenceImpl<Long>("type_hydrant_nature_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));

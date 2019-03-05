@@ -13,6 +13,7 @@ import java.util.List;
 import javax.annotation.Generated;
 
 import org.jooq.Field;
+import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Record;
 import org.jooq.Table;
@@ -34,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TypeOrganisme extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -1889081443;
+	private static final long serialVersionUID = -149655262;
 
 	/**
 	 * The reference instance of <code>remocra.type_organisme</code>
@@ -68,6 +69,11 @@ public class TypeOrganisme extends TableImpl<Record> {
 	 * The column <code>remocra.type_organisme.actif</code>.
 	 */
 	public final TableField<Record, Boolean> ACTIF = createField("actif", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false).defaulted(true), this, "");
+
+	/**
+	 * The column <code>remocra.type_organisme.type_organisme_parent</code>.
+	 */
+	public final TableField<Record, Long> TYPE_ORGANISME_PARENT = createField("type_organisme_parent", org.jooq.impl.SQLDataType.BIGINT, this, "");
 
 	/**
 	 * Create a <code>remocra.type_organisme</code> table reference
@@ -113,6 +119,14 @@ public class TypeOrganisme extends TableImpl<Record> {
 	@Override
 	public List<UniqueKey<Record>> getKeys() {
 		return Arrays.<UniqueKey<Record>>asList(Keys.TYPE_ORGANISME_PKEY, Keys.TYPE_ORGANISME_CODE_KEY);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<ForeignKey<Record, ?>> getReferences() {
+		return Arrays.<ForeignKey<Record, ?>>asList(Keys.TYPE_ORGANISME__FK_TYPE_ORGANISME_PARENT);
 	}
 
 	/**

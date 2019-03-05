@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Organisme extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -2015983228;
+	private static final long serialVersionUID = 124944394;
 
 	/**
 	 * The reference instance of <code>remocra.organisme</code>
@@ -96,6 +96,11 @@ public class Organisme extends TableImpl<Record> {
 	public final TableField<Record, Long> ZONE_COMPETENCE = createField("zone_competence", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
 	/**
+	 * The column <code>remocra.organisme.organisme_parent</code>.
+	 */
+	public final TableField<Record, Long> ORGANISME_PARENT = createField("organisme_parent", org.jooq.impl.SQLDataType.BIGINT, this, "");
+
+	/**
 	 * Create a <code>remocra.organisme</code> table reference
 	 */
 	public Organisme() {
@@ -146,7 +151,7 @@ public class Organisme extends TableImpl<Record> {
 	 */
 	@Override
 	public List<ForeignKey<Record, ?>> getReferences() {
-		return Arrays.<ForeignKey<Record, ?>>asList(Keys.ORGANISME__FK805999D374EBAF33, Keys.ORGANISME__FK805999D3F5378273, Keys.ORGANISME__FK805999D39B5C78A5);
+		return Arrays.<ForeignKey<Record, ?>>asList(Keys.ORGANISME__FK805999D374EBAF33, Keys.ORGANISME__FK805999D3F5378273, Keys.ORGANISME__FK805999D39B5C78A5, Keys.ORGANISME__FK_ORGANISME_PARENT);
 	}
 
 	/**

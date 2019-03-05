@@ -88,6 +88,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleSelectionDetail;
 import fr.sdis83.remocra.db.model.remocra.tables.SousTypeAlerteElt;
 import fr.sdis83.remocra.db.model.remocra.tables.SuiviPatches;
 import fr.sdis83.remocra.db.model.remocra.tables.Synchronisation;
+import fr.sdis83.remocra.db.model.remocra.tables.Temp;
 import fr.sdis83.remocra.db.model.remocra.tables.Thematique;
 import fr.sdis83.remocra.db.model.remocra.tables.Tournee;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeAlerteAno;
@@ -114,6 +115,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMarque;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMateriau;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantModele;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantNature;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantNatureDeci;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantPositionnement;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantSaisie;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantVolConstate;
@@ -167,7 +169,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Remocra extends SchemaImpl {
 
-	private static final long serialVersionUID = 1508503393;
+	private static final long serialVersionUID = -1867520938;
 
 	/**
 	 * The reference instance of <code>remocra</code>
@@ -276,6 +278,7 @@ public class Remocra extends SchemaImpl {
 			Sequences.TYPE_HYDRANT_MARQUE_ID_SEQ,
 			Sequences.TYPE_HYDRANT_MATERIAU_ID_SEQ,
 			Sequences.TYPE_HYDRANT_MODELE_ID_SEQ,
+			Sequences.TYPE_HYDRANT_NATURE_DECI_ID_SEQ,
 			Sequences.TYPE_HYDRANT_NATURE_ID_SEQ,
 			Sequences.TYPE_HYDRANT_POSITIONNEMENT_ID_SEQ,
 			Sequences.TYPE_HYDRANT_SAISIE_ID_SEQ,
@@ -398,6 +401,7 @@ public class Remocra extends SchemaImpl {
 			SousTypeAlerteElt.SOUS_TYPE_ALERTE_ELT,
 			SuiviPatches.SUIVI_PATCHES,
 			Synchronisation.SYNCHRONISATION,
+			Temp.TEMP,
 			Thematique.THEMATIQUE,
 			Tournee.TOURNEE,
 			TypeAlerteAno.TYPE_ALERTE_ANO,
@@ -424,6 +428,7 @@ public class Remocra extends SchemaImpl {
 			TypeHydrantMateriau.TYPE_HYDRANT_MATERIAU,
 			TypeHydrantModele.TYPE_HYDRANT_MODELE,
 			TypeHydrantNature.TYPE_HYDRANT_NATURE,
+			TypeHydrantNatureDeci.TYPE_HYDRANT_NATURE_DECI,
 			TypeHydrantPositionnement.TYPE_HYDRANT_POSITIONNEMENT,
 			TypeHydrantSaisie.TYPE_HYDRANT_SAISIE,
 			TypeHydrantVolConstate.TYPE_HYDRANT_VOL_CONSTATE,

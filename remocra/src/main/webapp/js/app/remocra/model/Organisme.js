@@ -91,7 +91,26 @@ Ext.define('Sdis.Remocra.model.Organisme', {
             // Rien
             return null;
         }
-    } ],
+    },{
+          name : 'organismeParent',
+          type : 'int',
+          convert : function(v, record) {
+              if (!record) {
+                  return null;
+              }
+              // Après mise à jour côté client
+              if (record.organismeParentBelongsToInstance) {
+                  return record.organismeParentBelongsToInstance.getId();
+              }
+              // Par les raw data (chargement par le serveur)
+              if (record.raw && record.raw.organismeParent) {
+                  return record.raw.organismeParent.id;
+              }
+
+              // Rien
+              return null;
+          }
+      } ],
 
     // Validations supplémentaires
     validations : [ {
@@ -139,7 +158,15 @@ Ext.define('Sdis.Remocra.model.Organisme', {
         setterName : 'setZoneCompetence',
         associatedName : 'ZoneCompetence',
         persist : true
-    } ],
+    },{
+        type : 'belongsTo',
+        model : 'Sdis.Remocra.model.Organisme',
+        associationKey : 'organismeParent',
+        getterName : 'getOrganismeParent',
+        setterName : 'setOrganismeParent',
+        associatedName : 'organismeParent',
+        persist : true
+    }],
 
     proxy : {
         type : 'remocra.rest',

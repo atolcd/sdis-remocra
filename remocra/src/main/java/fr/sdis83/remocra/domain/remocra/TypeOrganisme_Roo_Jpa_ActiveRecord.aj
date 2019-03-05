@@ -14,7 +14,7 @@ privileged aspect TypeOrganisme_Roo_Jpa_ActiveRecord {
     @PersistenceContext
     transient EntityManager TypeOrganisme.entityManager;
     
-    public static final List<String> TypeOrganisme.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "code", "nom", "actif");
+    public static final List<String> TypeOrganisme.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "code", "nom", "actif", "typeOrganismeParent");
     
     public static final EntityManager TypeOrganisme.entityManager() {
         EntityManager em = new TypeOrganisme().entityManager;

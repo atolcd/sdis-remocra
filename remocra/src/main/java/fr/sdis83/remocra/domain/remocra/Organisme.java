@@ -1,5 +1,6 @@
 package fr.sdis83.remocra.domain.remocra;
 
+
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,7 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.tostring.RooToString;
+import org.springframework.transaction.annotation.Transactional;
 
 @RooJavaBean
 @RooToString
@@ -60,5 +62,8 @@ public class Organisme {
 
     @ManyToOne
     private ZoneCompetence zoneCompetence;
+
+    @ManyToOne(optional = true)
+    private Organisme organismeParent;
 
 }

@@ -47,7 +47,7 @@ Ext.define('Sdis.Remocra.features.admin.typereference.OrganismeGrid', {
                             // On n'a pas encore le nom
                             return null;
                         }
-                        var to = record.getTypeOrganisme(); 
+                        var to = record.getTypeOrganisme();
                         return to?to.get('nom'):null;
                     },
                     editor: {
@@ -78,6 +78,63 @@ Ext.define('Sdis.Remocra.features.admin.typereference.OrganismeGrid', {
                                 var typeOrganismeId = newRec.get('id');
                                 if (typeOrganismeId) {
                                     this.filterProfilsAndSetProfilAccordindToOrganisme(typeOrganismeId, profilsCombo, organismeRecord);
+                                    var typeOrganismeParent = newRec.get('typeOrganismeParent') ? newRec.get('typeOrganismeParent').id : null;
+                                    this.filterOrganismeParent(newRec, typeOrganismeParent);
+                                    organismeRecord.setOrganismeParent(null);
+                                }
+
+                                var record = this.editingPlugin.context.record;
+                                var self = this;
+                                var oldValue = record.data.typeOrganismeParent;
+                                var newValue = combo.value;
+
+                                if(oldValue !== null && oldValue != newValue){
+                                    Ext.Ajax.request({ //Si l'on change le profil d'un organisme, il faut désaffecter les organismes qui l'ont comme parent
+                                        url: Sdis.Remocra.util.Util.withBaseUrl('../organismes/nbOrganismesEnfants/'+record.data.id),
+                                        method: 'GET',
+                                        scope: this,
+                                        callback: function(options, success, response) {
+                                            var jsResp = Ext.decode(response.responseText);
+                                            if(jsResp.success && parseInt(jsResp.message, 10) > 0){
+                                                Ext.MessageBox.show({
+                                                    title: 'Avertissement',
+                                                    msg: "Cet organisme est parent de "+Number(jsResp.message)+" autre(s) organisme(s). Si vous modifiez le type de cet organisme"+
+                                                    ", les organismes enfants seront désaffectés.",
+                                                    buttons: Ext.Msg.YESNO,
+                                                    buttonText: {
+                                                        yes: 'Continuer',
+                                                        no: 'Annuler'
+                                                    },
+                                                    fn: function(text, btn){
+                                                        if(text == 'no'){ // Annulation
+                                                            combo.setRawValue(oldValue);
+                                                            self.editingPlugin.cancelEdit();
+                                                            self.editingPlugin.context.store.reload();
+                                                        }
+                                                       else{ // Désaffectation des organismes parents pour les organismes de ce type
+                                                            Ext.Ajax.request({
+                                                                url: Sdis.Remocra.util.Util.withBaseUrl('../organismes/removeOrganismeParentForSpecificParent/'),
+                                                                method: 'POST',
+                                                                scope: this,
+                                                                params: {
+                                                                    idOrganisme: record.data.id
+                                                                },
+                                                                callback: function(options, success, response) {
+                                                                    record.setOrganismeParent(null);
+                                                                    record.save({
+                                                                        callback: function(records, operation, success){
+                                                                        self.editingPlugin.context.store.reload();
+                                                                       }
+                                                                    });
+                                                                }
+                                                            });
+                                                        }
+                                                    },
+                                                    icon: Ext.MessageBox.WARNING
+                                                });
+                                            }
+                                        }
+                                    });
                                 }
                             }, scope: this
                         }
@@ -158,7 +215,71 @@ Ext.define('Sdis.Remocra.features.admin.typereference.OrganismeGrid', {
                             }, scope: this
                         }
                     }
-                },
+                },{
+                    header: 'Organisme parent',
+                    dataIndex: 'organismeParent',
+                    menuDisabled: true,
+                    flex: 5, align: 'center',
+                    renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                    // On va chercher le nom de l'organisme
+                      if (record.phantom === true
+                              && record.dirty === false) {
+                          // On n'a pas encore le nom
+                          return null;
+                      }
+                      var to = record.getOrganismeParent();
+                      return (to !== null) ?to.get('nom'):null;
+                    },
+                    editor: {
+                        xtype: 'combo',
+                        emptyText: 'Nom de l\'organisme parent...',
+                        itemId: 'organismeParent',
+                        valueField: 'id',
+                        displayField: 'nom',
+                        queryMode: 'local',
+                        editable: true,
+                        allowBlank: true,
+                        forceSelection: true,
+                        store: {
+                            type: 'Organisme',
+                            autoLoad: true,
+                            remoteFilter: false,
+                            pageSize: 99999,
+                            remoteSort: true,
+                            sorters: [{
+                                property: 'nom',
+                                direction: 'ASC'
+                            }],
+                            listeners:
+                            {
+                                load: function(store, records)
+                                {
+                                    store.insert(0, [{
+                                        id: null,
+                                        nom: "[Aucune sélection]"
+                                    }]);
+                                }
+                            }
+
+                        },
+                        pageSize: true,
+                        listeners: {
+                            select: function(combo, records, eOpts) {
+                                var organismeRecord = this.editingPlugin.context.record;
+                                var newRec = records[0];
+                                organismeRecord.setOrganismeParent(newRec);
+
+                                // Sélection d'aucun organisme parent
+                                if(organismeRecord.organismeParentBelongsToInstance.data.id === null){
+                                    organismeRecord.setOrganismeParent(null);
+                                    organismeRecord.save();
+                                    combo.clearValue();
+                                    combo.collapse();
+                                }
+                            }, scope: this
+                        }
+                    }
+                  },
                 typeRefGridCols.actif
             ]
         });
@@ -179,7 +300,18 @@ Ext.define('Sdis.Remocra.features.admin.typereference.OrganismeGrid', {
             var profilsCombo = this.editingPlugin.editor.getComponent('profilOrganismeId');
             var organismeRecord = e.record;
             var typeOrganismeId = organismeRecord.phantom?null:organismeRecord.get('typeOrganismeId');
+
             this.filterProfilsAndSetProfilAccordindToOrganisme(typeOrganismeId, profilsCombo, organismeRecord);
+
+            var idTypeOrganismeParent = null;
+            if(e.record.TypeOrganismeBelongsToInstance != null){
+                idTypeOrganismeParent = (e.record.TypeOrganismeBelongsToInstance.get("typeOrganismeParent") !== null
+                                        && e.record.TypeOrganismeBelongsToInstance.get("typeOrganismeParent").id !== undefined)
+                ? e.record.TypeOrganismeBelongsToInstance.get("typeOrganismeParent").id
+                : e.record.TypeOrganismeBelongsToInstance.get("typeOrganismeParent");
+            }
+            this.filterOrganismeParent(e.record, idTypeOrganismeParent);
+
         }, this);
     },
 
@@ -221,5 +353,29 @@ Ext.define('Sdis.Remocra.features.admin.typereference.OrganismeGrid', {
                 value: typeOrganismeId
             }]);
         }
+    },
+
+    /**
+      * Filtre la combo des organismes parents en fonction du type d'organisme choisi 
+      *
+      * @param record
+      * @param idTypeOrganismeParent l'ID du type d'organisme parent. Si il n'est pas renseigné ou si il n'a pas changé, on le recoit à NULL
+      */
+    filterOrganismeParent: function(record, idTypeOrganismeParent){
+        var organismesCombo = this.editingPlugin.editor.getComponent('organismeParent');
+        var organismeId = record.get('id');
+
+        organismesCombo.store.load(); // Refresh après une mise à jour des données
+
+        //Nettoyage des filtres et de la combobox
+        organismesCombo.store.clearFilter(true);
+        organismesCombo.clearValue();
+
+        // Filtre pour ne pas qu'un organisme ne soit son propre parent
+        organismesCombo.store.filter(new Ext.util.Filter({
+            filterFn: function(item) {
+                return item.data.id != organismeId && item.data.typeOrganismeId === idTypeOrganismeParent;
+            }
+        }));
     }
 });

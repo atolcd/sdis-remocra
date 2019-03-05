@@ -22,7 +22,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Organisme implements Serializable {
 
-	private static final long serialVersionUID = -1548974132;
+	private static final long serialVersionUID = 1940344733;
 
 	private Long    id;
 	private Boolean actif;
@@ -33,6 +33,7 @@ public class Organisme implements Serializable {
 	private Long    profilOrganisme;
 	private Long    typeOrganisme;
 	private Long    zoneCompetence;
+	private Long    organismeParent;
 
 	public Organisme() {}
 
@@ -46,6 +47,7 @@ public class Organisme implements Serializable {
 		this.profilOrganisme = value.profilOrganisme;
 		this.typeOrganisme = value.typeOrganisme;
 		this.zoneCompetence = value.zoneCompetence;
+		this.organismeParent = value.organismeParent;
 	}
 
 	public Organisme(
@@ -57,7 +59,8 @@ public class Organisme implements Serializable {
 		Integer version,
 		Long    profilOrganisme,
 		Long    typeOrganisme,
-		Long    zoneCompetence
+		Long    zoneCompetence,
+		Long    organismeParent
 	) {
 		this.id = id;
 		this.actif = actif;
@@ -68,6 +71,7 @@ public class Organisme implements Serializable {
 		this.profilOrganisme = profilOrganisme;
 		this.typeOrganisme = typeOrganisme;
 		this.zoneCompetence = zoneCompetence;
+		this.organismeParent = organismeParent;
 	}
 
 	public Long getId() {
@@ -148,6 +152,15 @@ public class Organisme implements Serializable {
 
 	public Organisme setZoneCompetence(Long zoneCompetence) {
 		this.zoneCompetence = zoneCompetence;
+		return this;
+	}
+
+	public Long getOrganismeParent() {
+		return this.organismeParent;
+	}
+
+	public Organisme setOrganismeParent(Long organismeParent) {
+		this.organismeParent = organismeParent;
 		return this;
 	}
 }

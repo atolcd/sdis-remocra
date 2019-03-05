@@ -22,12 +22,13 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TypeOrganisme implements Serializable {
 
-	private static final long serialVersionUID = -1883230123;
+	private static final long serialVersionUID = -81721384;
 
 	private Long    id;
 	private String  code;
 	private String  nom;
 	private Boolean actif;
+	private Long    typeOrganismeParent;
 
 	public TypeOrganisme() {}
 
@@ -36,18 +37,21 @@ public class TypeOrganisme implements Serializable {
 		this.code = value.code;
 		this.nom = value.nom;
 		this.actif = value.actif;
+		this.typeOrganismeParent = value.typeOrganismeParent;
 	}
 
 	public TypeOrganisme(
 		Long    id,
 		String  code,
 		String  nom,
-		Boolean actif
+		Boolean actif,
+		Long    typeOrganismeParent
 	) {
 		this.id = id;
 		this.code = code;
 		this.nom = nom;
 		this.actif = actif;
+		this.typeOrganismeParent = typeOrganismeParent;
 	}
 
 	public Long getId() {
@@ -83,6 +87,15 @@ public class TypeOrganisme implements Serializable {
 
 	public TypeOrganisme setActif(Boolean actif) {
 		this.actif = actif;
+		return this;
+	}
+
+	public Long getTypeOrganismeParent() {
+		return this.typeOrganismeParent;
+	}
+
+	public TypeOrganisme setTypeOrganismeParent(Long typeOrganismeParent) {
+		this.typeOrganismeParent = typeOrganismeParent;
 		return this;
 	}
 }

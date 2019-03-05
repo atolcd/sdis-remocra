@@ -8,7 +8,6 @@ import java.io.Serializable;
 
 import javax.annotation.Generated;
 
-import fr.sdis83.remocra.domain.remocra.TypeHydrantNatureDeci;
 import org.joda.time.Instant;
 
 
@@ -25,7 +24,7 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant implements Serializable {
 
-	private static final long serialVersionUID = 2006438122;
+	private static final long serialVersionUID = 454540934;
 
 	private Long    id;
 	private String  agent1;

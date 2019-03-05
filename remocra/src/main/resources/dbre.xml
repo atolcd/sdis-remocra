@@ -624,6 +624,7 @@
         <column name="profil_organisme" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
         <column name="type_organisme" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
         <column name="zone_competence" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
+        <column name="organisme_parent" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <foreign-key foreignTable="profil_organisme" name="fk805999d374ebaf33" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="false"/>
@@ -655,6 +656,11 @@
             <reference foreign="affectation" local="id"/>
         </foreign-key>
         <foreign-key foreignTable="utilisateur" name="fkdd163383374add52" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="remocra"/>
+            <option key="exported" value="true"/>
+            <reference foreign="organisme" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="organisme" name="fk_organisme_parent" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="true"/>
             <reference foreign="organisme" local="id"/>
@@ -1424,6 +1430,7 @@
         <column name="code" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <column name="nom" primaryKey="false" required="true" scale="0" size="2147483647" type="12,varchar"/>
         <column name="actif" primaryKey="false" required="true" scale="0" size="1" type="-7,bool"/>
+        <column name="type_organisme_parent" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <foreign-key foreignTable="organisme" name="fk805999d3f5378273" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="true"/>
@@ -1440,6 +1447,11 @@
             <reference foreign="type_organisme" local="id"/>
         </foreign-key>
         <foreign-key foreignTable="profil_utilisateur" name="fk82645600f5378273" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="remocra"/>
+            <option key="exported" value="true"/>
+            <reference foreign="type_organisme" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="type_organisme" name="fk_type_organisme_parent" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="remocra"/>
             <option key="exported" value="true"/>
             <reference foreign="type_organisme" local="id"/>
