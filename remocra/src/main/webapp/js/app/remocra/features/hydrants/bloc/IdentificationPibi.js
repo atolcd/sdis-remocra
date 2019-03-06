@@ -44,7 +44,8 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.IdentificationPibi', {
         queryMode: 'local'
     },{
         xtype: 'textfield',
-        fieldLabel: 'Identifiant SCP',
+        cls: 'numero-scp',
+        fieldLabel: '<span>Identifiant SCP</span>',
         name : 'numeroSCP'
     }]
 });
