@@ -11,6 +11,7 @@ if ! grep remocrasys /etc/group > /dev/null; then
   usermod -a -G remocrasys postgres
   usermod -a -G remocrasys tomcat
   usermod -a -G remocrasys geoserver
+  usermod -a -G remocrasys apache
 fi
 
 # Droits
