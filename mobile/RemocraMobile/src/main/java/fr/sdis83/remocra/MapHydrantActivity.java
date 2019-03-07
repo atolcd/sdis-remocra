@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.drawable.Drawable;
@@ -12,6 +13,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -19,6 +21,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
@@ -108,6 +111,7 @@ public class MapHydrantActivity extends FragmentActivity implements LocationList
         // Overlay des items de la carte.
         hydrantOverlay = buildMapOverlay(items);
         mapView.getOverlays().add(hydrantOverlay);
+        Configuration.getInstance().setUserAgentValue(getUrlServeur());
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.invalidate();
 
@@ -314,6 +318,11 @@ public class MapHydrantActivity extends FragmentActivity implements LocationList
         {
             e.printStackTrace();
         }
+    }
+
+    private String getUrlServeur() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        return sharedPref.getString(ParamActivity.SERVEUR_URL, "");
     }
 
 }
