@@ -15,70 +15,13 @@ link:../Manuel%20administration{outfilesuffix}[Retour au manuel d'administration
 
 '''
 
-== Principe de gestion des zones de compétences ==
+La table *`remocra.zone_competence_commune` permet d'accélérer drastiquement certaines requêtes* liées aux zones de compétence, en particulier pour les indisponibilités temporaires des PEI.
 
-Les zones de compétences sont traitées directement dans la base de données REMOcRA.
-Côté APIS, la table ```zone_competence_remocra``` est maintenue par le SDIS. Cette table est importée dans Remocra par le mécanisme générique.
-
-Lorsqu'une modification qui concerne les zones de compétences est réalisée dans la base APIS, il faut reporter la modification en s'appuyant sur la table ```zone_de_competence_remocra``` mise à jour suite à l'export de 00h10 (fonction du paramétrage).
-
-Ainsi, le lendemain de ses modifications dans la base APIS, on vérifie qu'elles ont bien été récupérées dans le base Remocra. Puis on réalise un traitement qui dépend du type d'opération réalisée en s'appuyant sur la table des zones de compétences :
-
-On répertorie :
-
-* (A) zones supprimées
-* (B) zones ajoutées
-* \(C) zones pour lesquelles le geom a été modifié (ou une autre propriété)
-* (D) organismes concernés par un changement de zone
-
-Puis on traite les modifications dans l'ordre, en s'appuyant sur la table ```remocra_referentiel.zone_competence``` :
-
-* (B) des ordres insert dans remocra.zone_competence
-* \(C) des ordres update sur remocra.zone_competence.geom par rapport à ```remocra.zone_competence.geom```
-* (D) des ordres update sur remocra.organisme.zone_competence (changements de FK)
-* (A) des ordres delete sur remocra.zone_competence
-
-Eventuellement, on maintient les organismes si nécessaire (création de nouveaux, suppression des anciens, etc.).
-
-
-== Exemple ==
-
+Le contenu de la table est *actualisé par le traitement* suivant à exécuter avec l'utilisateur `postgres` :
 [source,js]
 ----
---
--- Modification des zones de compétences 27/09/2013
---
-
-/*
-FA Pasquini :
-
-Dans un premier temps, j'ai effectué les manipulations sur la table zone_competence_REMOCRA :
- - j'ai modifié géométriquement la zone de compétence LE MUY ROQUEBRUNE qui est devenue la zone LE MUY ( organisme CIS LMY)
- - j'ai créé la zone de compétence ROQUEBRUNE SUR ARGENS - organisme CIS RAG)
-
-Puis j'ai activé la synchronisation de la table zone_competence_remocra d'Oracle vers PostgreSQL.
-
-*/
-
-BEGIN;
-
--- Création de la zone de compétence "SP RAG" (ROQUEBRUNE SUR ARGENS)
-insert into remocra.zone_competence(code, nom, geometrie)
-  select 'SPRAG', 'SP RAG', geometrie from remocra_referentiel.zone_competence_remocra where nom = 'SP RAG'
-;
-
--- Création de l'organisme "CIS RAG" (ROQUEBRUNE SUR ARGENS)
-insert into remocra.organisme(code, email_contact, nom, profil_organisme, type_organisme, zone_competence, actif, version) values (
-  'CISRAG', null, 'CIS RAG',
-  (select id from remocra.profil_organisme where code = 'CIS-ETAPE-1'),
-  (select id from remocra.type_organisme where code = 'CIS'),
-  (select id from remocra.zone_competence where code = 'SPRAG' limit 1),
-  true, 1
-);
-
--- Reprise du geom de la zone de compétence "SP LMY" (LE MUY ROQUEBRUNE)
-update remocra.zone_competence set geometrie = (select geometrie from remocra_referentiel.zone_competence_remocra where nom = 'SP LMY')
-  where code = 'SPLMY';
-
-COMMIT;
+su postgres -c "/home/postgres/remocra_pdi/remocra_actualiser_zone_competence_commune.sh"
 ----
+
+
+*Il est nécessaire de jouer le script en cas de mise à jour des communes ou des zones de compétence*.
