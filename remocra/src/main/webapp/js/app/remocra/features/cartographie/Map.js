@@ -113,7 +113,7 @@ Ext.define('Sdis.Remocra.features.cartographie.Map', {
             '<div class="mapmentions">',
                 '<div class="mapsrc">',
                     '<span>Edition réalisée le <b>',  Ext.Date.format(new Date(), 'd/m/Y à H\\hi'),
-                    '</b> à partir de <u>', URL_SITE, '</u></span>',
+                    '</b> à partir de <u>', window.location.href.split('#')[0], '</u></span>',
                 '</div>',
                 '<div class="mapcp">',
                     '<span> Copyright ', REMOCRA_INFO_COPYRIGHT, '</span>',

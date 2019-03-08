@@ -273,8 +273,8 @@ Ext.define('Sdis.Remocra.widget.PrintWindow', {
                 }
             }
             // Ajout des feuilles de style spécifique pour l'impression
-            printCSS.push(URL_SITE+'/resources/styles/remocra/main-print.css');
-            printCSS.push(URL_SITE+'/ext-res/styles/remocra/override-print.css');
+            printCSS.push('/remocra/resources/styles/remocra/main-print.css');
+            printCSS.push('/remocra/ext-res/styles/remocra/override-print.css');
 
             var config = {
                 title : title,
@@ -302,13 +302,13 @@ Ext.define('Sdis.Remocra.widget.PrintWindow', {
                 tag : 'link',
                 rel : 'stylesheet',
                 type : 'text/css', 
-                href : URL_SITE+'resources/styles/remocra/main-print.css'
+                href : '/remocra/resources/styles/remocra/main-print.css'
             });
             Ext.DomHelper.append(ifDoc.head, {
                 tag : 'link',
                 rel : 'stylesheet',
                 type : 'text/css',
-                href : URL_SITE+'ext-res/styles/remocra/override-print.css'
+                href : '/remocra/ext-res/styles/remocra/override-print.css'
             });
         }
     }
