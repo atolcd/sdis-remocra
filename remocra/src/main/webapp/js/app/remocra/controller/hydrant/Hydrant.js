@@ -514,7 +514,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         if(visiteRapideActive && nbSelect == 1 && event.type=='featureselected'){ //Bouton pour la visite rapide des PEI
            var features = this.getSelectedFeatures();
            if (features.length == 1) {
-               this.showFicheHydrant(features[0].data.typeHydrantCode, features[0].fid, false);
+               this.showFicheHydrant(features[0].data.typeHydrantCode, features[0].fid, true);
            }
         }
 
