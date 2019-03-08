@@ -48,6 +48,14 @@ sh kitchen.sh -file:"/var/remocra/pdi/traitements_sdis/XX/ma_tache.kjb" -level:E
 
 == Traitements spécifiques aux SDIS
 
+=== BSPP
+
+include::bspp/export_remocra_vers_sig{outfilesuffix}[]
+
+include::bspp/import_sig_to_remocra{outfilesuffix}[]
+
+include::bspp/synchronisation_ldap{outfilesuffix}[]
+
 === SDIS 42
 
 include::42/synchronisation_ldap{outfilesuffix}[]
