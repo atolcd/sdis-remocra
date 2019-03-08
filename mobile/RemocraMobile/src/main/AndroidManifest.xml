@@ -50,6 +50,7 @@
 
         <activity
             android:name="fr.sdis83.remocra.HydrantActivity"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/title_activity_hydrant">
         </activity>
 
