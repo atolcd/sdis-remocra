@@ -1291,18 +1291,10 @@ body.x-ie .x-btn-default-toolbar-small-icon-text-left .x-btn-inner {
 .listHydrant li {margin-left:20px; background: white}
 .listHydrant li:nth-child(odd) {margin-left:20px; background: #f4f4f4; }
 
-.anomalie-1 .x-grid-cell-inner,
-.anomalie-2 .x-grid-cell-inner,
-.anomalie-3 .x-grid-cell-inner,
-.anomalie-4 .x-grid-cell-inner,
-.anomalie-5 .x-grid-cell-inner {
+tr[class*="anomalie-"]:not([class*="anomalie-hbe-"]) > td:nth-child(2) {
     font-weight: bold;
 }
 
-.anomalie-hbe-1 .x-grid-cell-inner,
-.anomalie-hbe-2 .x-grid-cell-inner,
-.anomalie-hbe-3 .x-grid-cell-inner,
-.anomalie-hbe-4 .x-grid-cell-inner,
-.anomalie-hbe-5 .x-grid-cell-inner {
+tr[class*="anomalie-hbe-"] > td:nth-child(2) {
     text-decoration: underline;
 }
