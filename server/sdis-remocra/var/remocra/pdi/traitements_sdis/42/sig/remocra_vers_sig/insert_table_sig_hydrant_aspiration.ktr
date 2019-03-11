@@ -115,9 +115,9 @@
     </attributes>
   </connection>
   <order>
-  <hop> <from>Données hydrant_pibi</from><to>Insert &#47; Update</to><enabled>Y</enabled> </hop>  </order>
+  <hop> <from>Données hydrant_pena</from><to>Insert &#47; Update</to><enabled>Y</enabled> </hop>  </order>
   <step>
-    <name>Données hydrant_pibi</name>
+    <name>Données hydrant_pena</name>
     <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
@@ -129,9 +129,8 @@
     <connection>Remocra</connection>
     <sql>SELECT 
   (SELECT CASE thd.code = &apos;canal_forez&apos; WHEN TRUE THEN &apos;Vrai&apos; ELSE &apos;Faux&apos; END) AS canal_forez,
+  (SELECT CASE ha.capacite = &apos;&apos; WHEN TRUE THEN NULL::integer ELSE ha.capacite::real::integer END) AS capacite_en_m3,
   c.nom AS commune,
-  hi.debit AS debit_1bar,
-  COALESCE(hi.debit_max,hi.debit,0) AS debit_max_en_m3h,
   substring(c.insee FROM 1 FOR 2) AS dept_num,
   thd.nom AS domaine,
   array_to_string(ARRAY(
@@ -142,21 +141,18 @@
                  ), &apos;,&apos;) AS num_tournee,
   h.complement AS num_voie,
   h.observation AS observation,
-  hi.pression_dyn AS pression_dynamique_60m3h,
-  hi.pression As pression_statique,
-  (SELECT sous_type FROM remocra_referentiel.nature_diametre_sig WHERE code_nature = COALESCE(thn.code,&apos;&apos;) AND code_diametre = COALESCE(thdi.code,&apos;&apos;) LIMIT 1) AS sous_type,
+  (SELECT sous_type FROM remocra_referentiel.nature_diametre_sig WHERE code_nature = COALESCE(thn.code,&apos;&apos;) AND code_diametre = &apos;&apos; LIMIT 1) AS sous_type,
   h.voie AS adresse,
   h.voie2 AS adresse_intersection,
   h.numero AS id_basepei,
   h.date_contr AS date_controle,
-  &apos;SRID=2154;&apos; || st_astext(h.geometrie) AS geometrie,
+  &apos;SRID=2154;&apos; ||st_astext(h.geometrie) AS geometrie,
   (SELECT CASE WHEN (coalesce(h.dispo_terrestre,&apos;&apos;)  = &apos;DISPO&apos; ) THEN &apos;DI&apos; ELSE &apos;IN&apos; END) as etat_pei
 FROM remocra.hydrant AS h
-INNER JOIN remocra.hydrant_pibi AS hi ON (h.id=hi.id)
+INNER JOIN remocra.hydrant_pena AS ha ON (h.id=ha.id)
 LEFT JOIN remocra.commune AS c ON (c.id=h.commune)
 LEFT JOIN remocra.type_hydrant_domaine AS thd ON (thd.id=h.domaine)
-LEFT JOIN remocra.type_hydrant_nature AS thn ON(thn.id=h.nature)
-LEFT JOIN remocra.type_hydrant_diametre AS thdi ON (thdi.id=hi.diametre);</sql>
+LEFT JOIN remocra.type_hydrant_nature AS thn ON(thn.id=h.nature);</sql>
     <limit>0</limit>
     <lookup/>
     <execute_each_row>N</execute_each_row>
@@ -185,7 +181,7 @@ LEFT JOIN remocra.type_hydrant_diametre AS thdi ON (thdi.id=hi.diametre);</sql>
     <update_bypassed>N</update_bypassed>
     <lookup>
       <schema>public</schema>
-      <table>sig_hydrant_pression</table>
+      <table>sig_hydrant_aspiration</table>
       <key>
         <name>id_basepei</name>
         <field>id_basepei</field>
@@ -198,18 +194,13 @@ LEFT JOIN remocra.type_hydrant_diametre AS thdi ON (thdi.id=hi.diametre);</sql>
         <update>Y</update>
       </value>
       <value>
+        <name>capacite_en_m3</name>
+        <rename>capacite_en_m3</rename>
+        <update>Y</update>
+      </value>
+      <value>
         <name>commune</name>
         <rename>commune</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>debit_1bar</name>
-        <rename>debit_1bar</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>debit_max_en_m3h</name>
-        <rename>debit_max_en_m3h</rename>
         <update>Y</update>
       </value>
       <value>
@@ -235,16 +226,6 @@ LEFT JOIN remocra.type_hydrant_diametre AS thdi ON (thdi.id=hi.diametre);</sql>
       <value>
         <name>observation</name>
         <rename>observation</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>pression_dynamique_60m3h</name>
-        <rename>pression_dynamique_60m3h</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>pression_statique</name>
-        <rename>pression_statique</rename>
         <update>Y</update>
       </value>
       <value>

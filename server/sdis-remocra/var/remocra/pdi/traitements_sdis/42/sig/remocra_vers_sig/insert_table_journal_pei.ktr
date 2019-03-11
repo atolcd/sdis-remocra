@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>exporter_vers_pg_depuis_sig</name>
+    <name>insert_table_journal_pei</name>
     <description/>
     <extended_description/>
     <trans_version/>
@@ -135,21 +135,24 @@
   WHEN (h2.nom_operation = &apos;INSERT&apos;) THEN &apos;Création&apos;
   ELSE 
     ltrim(
-      (SELECT CASE WHEN ((coalesce(h1.nature,h3.nature,&apos;&apos;)  &lt;&gt; coalesce(h3.nature,&apos;&apos;))) THEN &apos;, Maj du type&apos; ELSE &apos;&apos; END) ||
-      (SELECT CASE WHEN ((coalesce(h1.debit,h3.debit,0)  &lt;&gt; coalesce(h3.debit,0))) THEN &apos;, Maj de debit&apos; ELSE &apos;&apos; END) ||
-      (SELECT CASE WHEN ((coalesce(h1.dispo_terrestre,h3.dispo_terrestre,&apos;&apos;)  &lt;&gt; coalesce(h3.dispo_terrestre,&apos;&apos;))) THEN &apos;, Maj disponibilite&apos; ELSE &apos;&apos; END) ||
-      (SELECT CASE WHEN (St_Distance(h1.geometrie, h3.geometrie) &gt; 0 OR St_Distance(h1.geometrie, h3.geometrie) IS NULL) THEN &apos;, Maj de position&apos; ELSE &apos;&apos; END)
+      (SELECT CASE WHEN ( (coalesce(h1.nature,&apos;&apos;) &lt;&gt; coalesce(h3.nature,&apos;&apos;)) OR (coalesce(h1.diametre,&apos;&apos;)  &lt;&gt; coalesce(h3.diametre,&apos;&apos;))) THEN &apos;, Maj du type (nature et&#47;ou diamètre)&apos; ELSE &apos;&apos; END) ||
+      (SELECT CASE WHEN ((coalesce(h1.debit,0) &lt;&gt; coalesce(h3.debit,0))) THEN &apos;, Maj de débit&apos; ELSE &apos;&apos; END) ||
+      (SELECT CASE WHEN ((coalesce(h1.dispo_terrestre,&apos;&apos;) &lt;&gt; coalesce(h3.dispo_terrestre,&apos;&apos;))) THEN &apos;, Maj disponibilité&apos; ELSE &apos;&apos; END) ||
+      (SELECT CASE WHEN (St_Distance(h1.geometrie, h3.geometrie) &gt; 0 OR St_Distance(h1.geometrie, h3.geometrie) IS NULL) THEN &apos;, Maj de position&apos; ELSE &apos;&apos; END) ||
+      (SELECT CASE WHEN ((coalesce(h1.capacite,&apos;&apos;) &lt;&gt; coalesce(h3.capacite,&apos;&apos;))) THEN &apos;, Maj de la capacité&apos; ELSE &apos;&apos; END)
     , &apos;, &apos;)::varchar 
   END) as type_maj,
   h3.debit as debit_courant,
   h1.debit as debit_precedent,
-  NULL::integer as capacite_courante,
-  NULL::integer as capacite_precedente,
-  h3.nature as type_pei_courant,
-  h1.nature as type_pei_precedent,
+  CASE WHEN trim(h3.capacite) SIMILAR TO &apos;[0-9]+&apos; THEN CAST(trim(h3.capacite) AS integer) ELSE null::integer END as capacite_courante,
+  CASE WHEN trim(h1.capacite) SIMILAR TO &apos;[0-9]+&apos; THEN CAST(trim(h1.capacite) AS integer) ELSE null::integer END as capacite_precedente,
+  h3.nature || coalesce(&apos; &apos; || h3.diametre,&apos;&apos;) as type_pei_courant,
+  h1.nature || coalesce(&apos; &apos; || h1.diametre,&apos;&apos;) as type_pei_precedent,
   st_astext(h3.geometrie) as position_courante,
   st_astext(coalesce(h1.geometrie,h3.geometrie)) as position_precedente,
-  coalesce((st_astext(h1.geometrie) &lt;&gt; st_astext(h3.geometrie)),false) as maj_position
+  coalesce((st_astext(h1.geometrie) &lt;&gt; st_astext(h3.geometrie)),false) as maj_position,
+  (SELECT CASE WHEN (coalesce(h3.dispo_terrestre, &apos;DISPO&apos;) = &apos;DISPO&apos;) THEN &apos;DI&apos; ELSE &apos;IN&apos; END) as etat_pei_courant,
+  (SELECT CASE WHEN (coalesce(h1.dispo_terrestre, &apos;DISPO&apos;) = &apos;DISPO&apos;) THEN &apos;DI&apos; ELSE &apos;IN&apos; END) as etat_pei_precedent
 FROM
   ( SELECT 
       hydrant_maj.id_hydrant_maj, 
@@ -164,9 +167,14 @@ FROM
   INNER JOIN tracabilite.hydrant as h3 ON (h3.id = id_action_last)
 WHERE 
   (St_Distance(h1.geometrie, h3.geometrie) &gt; 0 OR St_Distance(h1.geometrie, h3.geometrie) IS NULL)
-  OR ((coalesce(h1.debit,h3.debit,0)  &lt;&gt; coalesce(h3.debit,0))) 
-  OR ((coalesce(h1.nature,h3.nature,&apos;&apos;)  &lt;&gt; coalesce(h3.nature,&apos;&apos;)))
-  OR ((coalesce(h1.dispo_terrestre,h3.dispo_terrestre,&apos;&apos;)  &lt;&gt; coalesce(h3.dispo_terrestre,&apos;&apos;)))
+  OR ((coalesce(h1.debit,0) &lt;&gt; coalesce(h3.debit,0))) 
+  OR ((coalesce(h1.nature,&apos;&apos;) &lt;&gt; coalesce(h3.nature,&apos;&apos;)))
+  OR ((coalesce(h1.diametre,&apos;&apos;) &lt;&gt; coalesce(h3.diametre,&apos;&apos;)))
+  OR ((coalesce(h1.dispo_terrestre,&apos;&apos;) &lt;&gt; coalesce(h3.dispo_terrestre,&apos;&apos;)))
+  OR ((coalesce(h1.capacite,&apos;&apos;) &lt;&gt; coalesce(h3.capacite,&apos;&apos;))) 
+  OR ((SELECT CASE WHEN (coalesce(h1.dispo_terrestre, &apos;DISPO&apos;) = &apos;DISPO&apos;) THEN &apos;DI&apos; ELSE &apos;IN&apos; END) &lt;&gt; (SELECT CASE WHEN (coalesce(h3.dispo_terrestre, &apos;DISPO&apos;) = &apos;DISPO&apos;) THEN &apos;DI&apos; ELSE &apos;IN&apos; END))
+  OR (h3.nom_operation = &apos;DELETE&apos;)
+  OR (h2.nom_operation = &apos;INSERT&apos;)
 ;</sql>
     <limit>0</limit>
     <lookup/>
@@ -175,8 +183,8 @@ WHERE
     <lazy_conversion_active>N</lazy_conversion_active>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>414</xloc>
-      <yloc>135</yloc>
+      <xloc>412</xloc>
+      <yloc>134</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -260,6 +268,14 @@ WHERE
         <field>
           <column_name>position_precedente</column_name>
           <stream_name>position_precedente</stream_name>
+        </field>
+        <field>
+          <column_name>etat_pei_courant</column_name>
+          <stream_name>etat_pei_courant</stream_name>
+        </field>
+        <field>
+          <column_name>etat_pei_precedent</column_name>
+          <stream_name>etat_pei_precedent</stream_name>
         </field>
     </fields>
      <cluster_schema/>
