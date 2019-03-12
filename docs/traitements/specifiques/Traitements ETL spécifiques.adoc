@@ -54,7 +54,7 @@ include::BSPP/export_remocra_vers_sig{outfilesuffix}[]
 
 include::BSPP/import_sig_to_remocra{outfilesuffix}[]
 
-include::BSPP/synchronisation_ldap{outfilesuffix}[]
+include::BSPP/import_utilisateur{outfilesuffix}[]
 
 === SDIS 42
 
