@@ -1,5 +1,14 @@
-= Exportation des informations PIBI et PENA
+==== Export des informations PIBI et PENA
+
 Ce traitement permet de générer les données concernant les PENA et PIBI ainsi que les anomalies associées
+
+===== Configuration
+Le fichier _"remocraXXXX.properties"_ doit contenir les informations suivantes :
+[width="100%",options="header"]
+|===================
+| Paramètre | Description
+| PDI_PATH_FILES_EXPORT | Dossier utilisé pour la création des fichiers PEI _ex :_ /var/remocra/pdi/export/
+|===================
 
 === PIBI - Fichier cartographique
 
@@ -146,5 +155,5 @@ Ce traitement permet de générer les données concernant les PENA et PIBI ainsi
 |ano_nom|Texte|Oui|Nom de l'anomalie
 |====================
 
-=== Lancement et planification de la synchronisation
+===== Lancement et planification de la synchronisation
 L'exécution automatique s'effectue en planifiant le lancement du fichier ```/var/remocra/pdi/traitements_sdis/bspp/export_hydrant.sh``` avec l'utilisateur ```postgres```.

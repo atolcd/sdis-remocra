@@ -1,6 +1,6 @@
 = Synchronisation des utilisateurs de l'annuaire vers REMOCRA
 
-Ce traitement permet d'intégrer les utilisateurs extrait de l'annuaire via un fichier au format CSV.
+Ce traitement permet d'intégrer les utilisateurs extraits de l'annuaire via un fichier au format CSV.
 Le fichier sera généré une fois par jour et sera nommé selon le formalisme suivant : "utilisateurs-AAAA-MM-JJ.csv" où AAAA correspond à l'année, MM correspond au numéro de mois et JJ correspond au numéro de jour (Ex : utilisateurs-2019-01-09.csv).
 
 Le traitement vérifie dans un premier temps la présence du fichier, si celui ci n'est pas présent, un email d'alerte est transmis à une adresse email qui sera configurée dans le fichier propriété.
@@ -9,7 +9,7 @@ Le traitement vérifie dans un premier temps la présence du fichier, si celui c
 
 - *Création d'un utilisateur* : Si l'utilisateur est présent dans le fichier CSV mais non présent dans REMOCRA
 - *Mise à jour d'un utilisateur* : Si l'utilisateur est présent dans le fichier CSV et présent dans REMOCRA
-- *Désactivation d'un utilisateur* : Si l'utilisateur est présent dans REMOCRA (et marqué LDAP) mais non présent dans le fichier CSV
+- *Désactivation d'un utilisateur* : Si l'utilisateur est présent dans REMOCRA (et créé initialement à partir d'une source extérieure) mais non présent dans le fichier CSV
 
 ===== Configuration
 Le fichier _"remocraXX.properties"_ doit contenir les informations suivantes :
