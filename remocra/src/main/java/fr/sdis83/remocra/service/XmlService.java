@@ -673,8 +673,13 @@ public class XmlService {
                 fr.sdis83.remocra.domain.remocra.HydrantPena hydrantPena = null;
 
                 if (hydrant.getNumero() != null) {
-                    hydrantPena = (fr.sdis83.remocra.domain.remocra.HydrantPena) fr.sdis83.remocra.domain.remocra.HydrantPena.findHydrantsByNumero(hydrant.getNumero())
+                    try {
+                        hydrantPena = (fr.sdis83.remocra.domain.remocra.HydrantPena) fr.sdis83.remocra.domain.remocra.HydrantPena.findHydrantsByNumero(hydrant.getNumero())
                             .getSingleResult();
+                    } catch (Exception e) {
+                        logger.warn("Hydrant non trouvé : " + hydrant.getNumero());
+                        continue;
+                    }
                 } else {
                     hydrantPena = new fr.sdis83.remocra.domain.remocra.HydrantPena();
                     Coordonnee coordonnee = hydrant.getCoordonnee();
@@ -692,8 +697,13 @@ public class XmlService {
                 fr.sdis83.remocra.domain.remocra.HydrantPibi hydrantPibi = null;
 
                 if ((hydrant.getNumero() != null)) {
-                    hydrantPibi = (fr.sdis83.remocra.domain.remocra.HydrantPibi) fr.sdis83.remocra.domain.remocra.HydrantPibi.findHydrantsByNumero(hydrant.getNumero())
+                    try {
+                        hydrantPibi = (fr.sdis83.remocra.domain.remocra.HydrantPibi) fr.sdis83.remocra.domain.remocra.HydrantPibi.findHydrantsByNumero(hydrant.getNumero())
                             .getSingleResult();
+                    }catch(Exception e ){
+                        logger.warn("Hydrant non trouvé : " + hydrant.getNumero());
+                        continue;
+                    }
                 } else {
                     hydrantPibi = new fr.sdis83.remocra.domain.remocra.HydrantPibi();
                     Coordonnee coordonnee = hydrant.getCoordonnee();
