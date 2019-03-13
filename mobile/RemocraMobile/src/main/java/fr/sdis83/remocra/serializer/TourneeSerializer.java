@@ -80,18 +80,15 @@ public class TourneeSerializer extends AbstractSerializer {
     }
 
     private void addTournees(XmlSerializer serializer, Cursor cursor) throws IOException {
-            serializer.startTag(AbstractRemocraParser.ns, TOURNEES_XSI);
-            serializer.attribute(AbstractRemocraParser.ns, "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        serializer.startTag(AbstractRemocraParser.ns, TOURNEES_XSI);
+        serializer.attribute(AbstractRemocraParser.ns, "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 addTournee(serializer, cursor);
                 cursor.moveToNext();
             }
         }
-        if (this.fullExportMode) {
-            serializer.endTag(AbstractRemocraParser.ns, TOURNEES_XSI);
-        }
-
+        serializer.endTag(AbstractRemocraParser.ns, TOURNEES_XSI);
     }
 
     private void addTournee(XmlSerializer serializer, Cursor cursor) throws IOException {
