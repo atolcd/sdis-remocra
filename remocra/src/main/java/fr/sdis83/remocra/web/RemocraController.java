@@ -48,7 +48,7 @@ public class RemocraController {
     // Automatiquement défini lors du packaging (ne pas toucher cette ligne)
     public static String REVISION_NUMBER = "";
 
-    public static String VERSION_NUMBER = "0.12.1";
+    public static String VERSION_NUMBER = "0.12.2";
 
     @Autowired
     private AuthoritiesUtil authUtils;
