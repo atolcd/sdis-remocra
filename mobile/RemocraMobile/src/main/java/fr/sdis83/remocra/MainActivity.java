@@ -86,6 +86,8 @@ public class MainActivity extends FragmentActivity implements ListTournee.ListTo
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    private CharSequence oldTitle;
+    private Integer oldPosition;
 
     public static final int LISTE_TOURNEE = 1;
     public static final int LISTE_PT_EAU = 2;
@@ -324,6 +326,11 @@ public class MainActivity extends FragmentActivity implements ListTournee.ListTo
         @SuppressWarnings("unchecked")
         Map<String, Object> data = (Map<String, Object>) mDrawerList.getAdapter().getItem(position);
         if (onlyDrawner == false) {
+            // On ignore la position "carte des points d'eau" car c'est une activity et non pas un fragment la navigation est différente
+            if (position != CARTE_PT_EAU) {
+                oldPosition = position;
+                oldTitle = data.get(LABEL).toString();
+            }
             FragmentManager fragmentManager = getSupportFragmentManager();
             Fragment fragment = null;
             if (position == LISTE_TOURNEE) { // Liste tournée
@@ -331,7 +338,7 @@ public class MainActivity extends FragmentActivity implements ListTournee.ListTo
             } else if (position == LISTE_PT_EAU) { // Liste hydrant
                 fragment = ListHydrant.newInstance(null);
             } else if (position == CARTE_PT_EAU) { // Carte
-                startActivity( new Intent(this, MapHydrantActivity.class));
+                startActivity(new Intent(this, MapHydrantActivity.class));
             } else {
                 fragment = new Accueil();
             }
@@ -339,8 +346,8 @@ public class MainActivity extends FragmentActivity implements ListTournee.ListTo
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment, "init").commit();
             }
         }
-        mDrawerList.setItemChecked(position, true);
-        setTitle(data.get(LABEL).toString());
+        mDrawerList.setItemChecked(position == CARTE_PT_EAU ? oldPosition : position, true);
+        setTitle(position == CARTE_PT_EAU ? oldTitle : data.get(LABEL).toString());
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
