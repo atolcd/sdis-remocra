@@ -4,7 +4,7 @@
 #
 # Exemple :
 #   convert-export-to-hydrants.sh "20180925184322_utilisateur_export.xml"
-#   curl -v -u username:password -d "@20180925184322_utilisateur_export" -H "Content-Type: application/xml;charset=utf-8" -X POST http://remocra.sdisxx.fr/remocra/xml/hydrants
+#   curl -v -u username:password -d "@20180925184322_utilisateur_export.xml" -H "Content-Type: application/xml;charset=utf-8" -X POST http://remocra.sdisxx.fr/remocra/xml/hydrants
 
 fileToConvert="$1"
 
