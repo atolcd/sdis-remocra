@@ -116,6 +116,12 @@ Ext.application({
         }
         
         Sdis.Remocra.network.ServerSession.startLoginWatcher();
+
+        Ext.QuickTips.init();
+        Ext.apply(Ext.QuickTips.getQuickTip(), {
+            dismissDelay: 0,
+            showDelay: 100
+        });
     },
 
     /*******************************************/
