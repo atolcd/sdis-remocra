@@ -565,8 +565,8 @@ public class XmlService {
     }
 
     public void fillHydrant(fr.sdis83.remocra.xml.Hydrant hydrantXML, Hydrant hydrant) throws IOException, CRSException, IllegalCoordinateException {
-        hydrantXML.setAgent1(hydrant.getAgent1());
-        hydrantXML.setAgent2(hydrant.getAgent2());
+        hydrantXML.setAgent1(null);
+        hydrantXML.setAgent2(null);
         hydrantXML.setAnneeFabrication(hydrant.getAnneeFabrication());
         hydrantXML.setCodeCommune(hydrant.getCommune() != null ? hydrant.getCommune().getCode() : "");
         hydrantXML.setCodeDomaine(hydrant.getDomaine() != null ? hydrant.getDomaine().getCode() : "");

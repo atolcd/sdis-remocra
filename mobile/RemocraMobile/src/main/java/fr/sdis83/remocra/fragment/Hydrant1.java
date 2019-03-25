@@ -28,6 +28,8 @@ public class Hydrant1 extends AbstractHydrant {
 
     public Hydrant1() {
         super(R.layout.hydrant1, HydrantTable.COLUMN_STATE_H1);
+        addBindableData(R.id.agent1, HydrantTable.COLUMN_AGENT1, EditText.class);
+        addBindableData(R.id.agent2, HydrantTable.COLUMN_AGENT2, EditText.class);
         addBindableData(R.id.loca_commune, HydrantTable.COLUMN_COMMUNE, EditText.class);
         addBindableData(R.id.loca_lieudit, HydrantTable.COLUMN_LIEUDIT, EditText.class);
         addBindableData(R.id.loca_voie, HydrantTable.COLUMN_VOIE, EditText.class);

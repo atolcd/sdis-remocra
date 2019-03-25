@@ -11,6 +11,50 @@
         android:padding="16dp"
         android:orientation="vertical"
         >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/sectionHeader"
+                android:text="Traçabilité"
+                android:id="@+id/title_tracabilite"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
+
+            <TextView
+                style="@style/labelShort"
+                android:text="Agent1"
+                android:id="@+id/lbl_agent1"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/title_tracabilite"
+                android:labelFor="@+id/agent1"/>
+
+            <EditText
+                style="@style/field"
+                android:inputType="text"
+                android:id="@+id/agent1"
+                android:layout_below="@+id/title_tracabilite"
+                android:layout_toRightOf="@+id/lbl_agent1"/>
+
+            <TextView
+                style="@style/labelShort"
+                android:text="Agent2"
+                android:id="@+id/lbl_agent2"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/agent1"
+                android:labelFor="@+id/agent2"/>
+
+            <EditText
+                style="@style/field"
+                android:inputType="text"
+                android:id="@+id/agent2"
+                android:layout_below="@+id/agent1"
+                android:layout_toRightOf="@+id/lbl_agent2"/>
+
+
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
