@@ -101,9 +101,10 @@ public class TourneeService extends AbstractService<Tournee> {
         return query.getResultList();
     }
 
+
     @Transactional
     public List<Hydrant> getHydrants(Long id) {
-      List<Hydrant>hydrants = new ArrayList<Hydrant>();
+        List<Hydrant>hydrants = new ArrayList<Hydrant>();
         String sql = "SELECT hydrant FROM remocra.hydrant_tournees ht where ht.tournees =:id";
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter("id",id);
@@ -112,6 +113,15 @@ public class TourneeService extends AbstractService<Tournee> {
             hydrants.add(Hydrant.findHydrant(idHydrants.get(i).longValue()));
         }
         return hydrants;
+    }
+
+    @Transactional
+    public List<String> getNumHydrants(Long id) {
+        String sql = "SELECT numero FROM remocra.hydrant h where h.id in (select hydrant from remocra.hydrant_tournees ht where ht.tournees =:id)";
+        Query query = entityManager.createNativeQuery(sql);
+        query.setParameter("id",id);
+        List<String> numHydrants = query.getResultList();
+        return numHydrants;
     }
 
     @Transactional

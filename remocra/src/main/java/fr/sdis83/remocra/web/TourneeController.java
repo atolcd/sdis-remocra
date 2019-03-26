@@ -171,10 +171,10 @@ public class TourneeController {
     public ResponseEntity<java.lang.String> getHydrantTournee(@PathVariable("id") Long id) {
         try {
             StringBuffer sb = new StringBuffer("<ul>");
-            List<Hydrant> listeHydrants = tourneeService.getHydrants(id);
+            List<String> listeHydrants = tourneeService.getNumHydrants(id);
 
-            for(Hydrant h : listeHydrants)
-                sb.append("<li>").append(h.getNumero()).append("</li>");
+            for(String numero : listeHydrants)
+                sb.append("<li>").append(numero).append("</li>");
 
             sb.append("</ul>");
             return new SuccessErrorExtSerializer(true, sb.toString()).serialize();
