@@ -156,7 +156,7 @@
       <is_usevars>Y</is_usevars>
       <custom_sql>SELECT h.id
 	FROM remocra.hydrant h
-	WHERE h.date_recep &gt;= CURRENT_TIMESTAMP - interval &apos;${PDI_DECI_ROI_SUPPR_PERIODE} hours&apos;
+	WHERE h.date_recep &gt;= CAST(CURRENT_DATE AS timestamp) - interval &apos;${PDI_DECI_ROI_SUPPR_PERIODE} hours&apos;
 UNION
 SELECT h.id
 	FROM tracabilite.hydrant h
