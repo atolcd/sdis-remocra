@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
   <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8">
     <title>Gestion de crise</title>
 
     <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
@@ -11,6 +11,17 @@
     <link type="text/css" rel="stylesheet" href="v-autocomplete/dist/v-autocomplete.css"/>
   </head>
   <body>
+    <noscript>
+      <strong>We're sorry but client doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
     <div id="app"></div>
+    <!-- built files will be auto injected -->
+    <div id="crise-container"></div>
   </body>
+    <script type="text/javascript">
+      var s = window.location.href.split('?');
+      if (s.length==2) {
+        remocraVue.buildVue('container', s[1])
+      }
+    </script>
 </html>
