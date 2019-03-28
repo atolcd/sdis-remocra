@@ -229,7 +229,7 @@ export default {
 }
 
 .gestcrise .evenements , .messages, .documents, .form-parameters, .sidebar {
-  max-height: 500px;
+  max-height: 400px;
   overflow-y: scroll;
 }
 
@@ -389,6 +389,10 @@ export default {
 
 .gestcrise .toolsBar.active {
   display: block;
+  position: absolute;
+  margin-left: 525px;
+  background-color: #f4f4f4;
+
 }
 
 .gestcrise #files {
@@ -437,6 +441,7 @@ body {
 .gestcrise .map-container,
 .gestcrise .col-map {
   height: 100%;
+  width: 100%
 }
 
 .gestcrise .map {

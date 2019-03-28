@@ -173,11 +173,11 @@ export default {
         console.error('requeteModele', error)
       })
     },
-    createRequest() {
+    createRequest(evt) {
       var self = this
       if (document.getElementById('formParameters' + this.criseId).checkValidity()) {
         var valParams = []
-        _.forEach(document.getElementsByClassName('parametreRequete'), function(item) {
+        _.forEach(evt.target.getElementsByClassName('parametreRequete'), function(item) {
           var param = {}
           if (item.getAttribute('inputType') === 'datetimefield') {
             param['nomparametre'] = item.id
@@ -205,6 +205,7 @@ export default {
       this.toggle = null
       this.geom = null
       this.showValidGeom = null
+      this.$root.$options.bus.$emit(eventTypes.TOGGLE_TABDONNEES)
     },
     // Clic sur le bouton Exécuter
     executeRequest(idRequeteModele, valParams) {

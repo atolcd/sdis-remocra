@@ -1,56 +1,63 @@
 <template>
-<b-container class="map-container" style="max-width:100%">
-  <b-row class="text-start toolbar">
-    <div class="h-spacer" />
-    <div class="text-start my-1">
-      <b-btn class="ctrl" title="Déplacer la carte"><img src="/static/img/pan.png"></b-btn>
-      <b-btn class="ctrl" title="Zoomer en avant" @click="zoomIn"><img src="/static/img/magnifier_zoom_in.png"></b-btn>
-      <b-btn class="ctrl" title="Zoomer en arrière" @click="zoomOut"><img src="/static/img/magnifier_zoom_out.png"></b-btn>
-      <b-btn class="ctrl" title="Rétablir la vue précédente" @click="zoomPrev"><img src="/static/img/zoom_prec.png"></b-btn>
-      <b-btn class="ctrl" title="Rétablir la vue suivante" @click="zoomNext"><img src="/static/img/zoom_suiv.png"></b-btn>
-    </div>
-    <div class="h-spacer" />
-    <div class="text-start" style="margin-top:0.5rem">
-      <search-commune :crise='criseId' ref='searchCommune'></search-commune>
-    </div>
-    <div class="h-spacer" />
-    <div class="text-start" style="margin-top:0.5rem">
-      <search-repertoire :crise="criseId" ref='searchRepertoire'></search-repertoire>
-    </div>
-    <div class="big-h-spacer" />
-    <b-btn class=" text-start my-1 measure-container ctrl" :id="'measureTools'+criseId" @click="removeMeasureInteraction"><img src="/static/img/ruler.png"></b-btn>
-    <b-popover class="dropdown-menu" placement="bottomright" :ref="'popovermesure'+criseId" :target="'measureTools'+criseId">
-      <div>
-        <b-btn class="dropdown-item" @click="activateMeasure('Distance')"><img src='/static/img/ruler.png'> Distance</b-btn>
-      </div>
-      <div>
-        <b-btn class="dropdown-item" @click="activateMeasure('Surface')"><img src='/static/img/ruler_square.png'> Surface</b-btn>
-      </div>
-    </b-popover>
-    <div class="big-h-spacer" />
-    <div class="text-start my-1">
-      <b-btn :id="'infoBtn'+criseId" class="ctrl" @click="activateShowInfo" title="Obtenir des informations sur un point de la carte"><img src="/static/img/information.png"></b-btn>
-    </div>
-    <div class="big-h-spacer" />
-    <div class="text-start my-1">
-      <b-btn :id="'toolsBarBtn'+criseId" class="ctrl" @click="showToolsBar" v-b-toggle.collapse1 title="Activer les outils d'édition"><img src="/static/img/pencil.png"></b-btn>
-      <show-info :crise="criseId" ref="showInfo"></show-info>
-    </div>
-    <div class="big-h-spacer" />
-    <div class="text-start my-1">
-      <b-btn :id="'processBtn'+criseId" class="ctrl" @click="showProcess" title="Processus"><img src="/static/img/process.png"></b-btn>
-      <process ref="showProcess"></process>
-    </div>
-    <div class="big-h-spacer" />
-    <b-form-group class="text-start my-1">
-      <b-form-radio-group id="btnradios2" buttons button-variant="outline-secondary" v-model="modeAffichage" :options="modeAffichages" name="radioBtnOutline" />
-    </b-form-group>
-    <div class="text-start my-1 fullscreen-container">
-      <b-btn class="ctrl" @click="GoInFullscreen" title="Plein écran"><img src="/static/img/fullscreen.svg"></b-btn>
-    </div>
-  </b-row>
+<b-container class="map-container" style="max-width:100%; max-height: 100%;">
   <b-row class="text-start" :style="{height: mapRowHeight}">
-    <b-col>
+    <b-col class="top_content">
+      <b-row class="text-start toolbar">
+        <div class="h-spacer" />
+        <div class="text-start my-1">
+          <b-btn class="ctrl" title="Déplacer la carte"><img src="/static/img/pan.png"></b-btn>
+          <b-btn class="ctrl" title="Zoomer en avant" @click="zoomIn"><img src="/static/img/magnifier_zoom_in.png"></b-btn>
+          <b-btn class="ctrl" title="Zoomer en arrière" @click="zoomOut"><img src="/static/img/magnifier_zoom_out.png"></b-btn>
+          <b-btn class="ctrl" title="Rétablir la vue précédente" @click="zoomPrev"><img src="/static/img/zoom_prec.png"></b-btn>
+          <b-btn class="ctrl" title="Rétablir la vue suivante" @click="zoomNext"><img src="/static/img/zoom_suiv.png"></b-btn>
+        </div>
+        <div class="h-spacer" />
+        <div class="text-start" style="margin-top:0.5rem">
+          <search-commune :crise='criseId' ref='searchCommune'></search-commune>
+        </div>
+        <div class="h-spacer" />
+        <div class="text-start" style="margin-top:0.5rem">
+          <search-repertoire :crise="criseId" ref='searchRepertoire'></search-repertoire>
+        </div>
+        <div class="big-h-spacer" />
+        <b-btn class=" text-start my-1 measure-container ctrl" :id="'measureTools'+criseId" @click="removeMeasureInteraction"><img src="/static/img/ruler.png"></b-btn>
+        <b-popover class="dropdown-menu" placement="bottomright" :ref="'popovermesure'+criseId" :target="'measureTools'+criseId">
+          <div>
+            <b-btn class="dropdown-item" @click="activateMeasure('Distance')"><img src='/static/img/ruler.png'> Distance</b-btn>
+          </div>
+          <div>
+            <b-btn class="dropdown-item" @click="activateMeasure('Surface')"><img src='/static/img/ruler_square.png'> Surface</b-btn>
+          </div>
+        </b-popover>
+        <div class="big-h-spacer" />
+        <div class="text-start my-1">
+          <b-btn :id="'infoBtn'+criseId" class="ctrl" @click="activateShowInfo" title="Obtenir des informations sur un point de la carte"><img src="/static/img/information.png"></b-btn>
+        </div>
+        <div class="big-h-spacer" />
+        <div class="text-start my-1">
+          <b-btn :id="'toolsBarBtn'+criseId" class="ctrl" @click="showToolsBar" v-b-toggle.collapse1 title="Activer les outils d'édition"><img src="/static/img/pencil.png"></b-btn>
+          <show-info :crise="criseId" ref="showInfo"></show-info>
+        </div>
+        <div class="big-h-spacer" />
+        <div class="text-start my-1">
+          <b-btn :id="'processBtn'+criseId" class="ctrl" @click="showProcess" title="Processus"><img src="/static/img/process.png"></b-btn>
+          <process ref="showProcess"></process>
+        </div>
+        <div class="big-h-spacer" />
+        <b-form-group class="text-start my-1">
+          <b-form-radio-group id="btnradios2" buttons button-variant="outline-secondary" v-model="modeAffichage" :options="modeAffichages" name="radioBtnOutline" />
+        </b-form-group>
+        <div class="text-start my-1 fullscreen-container">
+          <b-btn class="ctrl" @click="GoInFullscreen" title="Plein écran"><img src="/static/img/fullscreen.svg"></b-btn>
+        </div>
+      </b-row>
+      <b-row :id="'toolsBar'+criseId" class="toolsBar toolbar">
+        <tool-bar ref="toolBar"></tool-bar>
+        <choice-feature :crise="criseId" ref="choiceFeature"></choice-feature>
+        <stamped-card :crise="criseId" ref="stampedCard"></stamped-card>
+      </b-row>
+  </b-col>
+    <b-col class="left_content">
       <div role="tablist">
         <new-evenement :criseId="criseId" ref="newEvenement"></new-evenement>
         <b-card no-body class="mb-1">
@@ -112,29 +119,34 @@
         </b-card>
       </div>
     </b-col>
-    <b-col cols="8" class="col-map">
-      <b-row :id="'toolsBar'+criseId" class="toolsBar toolbar">
-        <tool-bar ref="toolBar"></tool-bar>
-        <choice-feature :crise="criseId" ref="choiceFeature"></choice-feature>
-        <stamped-card :crise="criseId" ref="stampedCard"></stamped-card>
-      </b-row>
+    <b-col class="col-map">
       <b-row :id="'mapDiv'+criseId" class='mapDiv'>
         <b-col>
           <div :id="'map'+criseId" class="map">
             <map-features :criseId="criseId" ref="MapFeatures"></map-features>
-            <button :id="'boutonToggleTableau'+criseId" class='boutonToggleTableau btn btn-info' @click='toggleTableau'>Données <img v-if='displayType=="MAP_ONLY"' src='/static/img/collapse.svg' />
-              <img v-else src='/static/img/expand.svg' />
-            </button>
+            <b-row :id="'tableauDiv'+criseId" class='tableauDiv'>
+              <b-col>
+                <div role="tablist">
+                  <b-button-close class="boutonToggleTableau" :id="'boutonToggleTableau'+criseId" @click='toggleTableau'></b-button-close>
+                  <b-card no-body class="mb-1">
+                    <b-collapse id="accordion7" visible accordion="my-accordion3" role="tabpanel">
+                      <b-card-body class="accord7">
+                        <tableau-donnees :criseId="criseId" ref="TableauDonnees" :pageSize='10'></tableau-donnees>
+                      </b-card-body>
+                    </b-collapse>
+                    <b-card-header header-tag="header" class="p-1" role="tab">
+                      <span style="cursor:pointer" block href="#" v-b-toggle.accordion7 visible variant="info">Données</span>
+                    </b-card-header>
+                    </b-card>
+                  </div>
+              </b-col>
+            </b-row>
           </div>
         </b-col>
       </b-row>
-      <b-row :id="'tableauDiv'+criseId" class='tableauDiv'>
-        <b-col>
-          <tableau-donnees :criseId="criseId" ref="TableauDonnees" :pageSize='14'></tableau-donnees>
-        </b-col>
-      </b-row>
+
     </b-col>
-    <b-col>
+    <b-col class="right_content">
       <div role="tablist">
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
@@ -366,7 +378,7 @@ export default {
       layers: [],
       controls: defaultControls({
         rotate: false,
-        zoom: true,
+        zoom: false,
         zoomToExtent: true,
         attribution: false,
         attributionOptions: {
@@ -447,6 +459,7 @@ export default {
     this.$root.$options.bus.$on(eventTypes.MODIFY_INPUTGEOM, this.modifyGeom)
     this.$root.$options.bus.$on(eventTypes.DELETE_INPUTGEOM, this.deleteGeom)
     this.$root.$options.bus.$on(eventTypes.RESEARCH_TABDONNEES, this.showTabDonnees)
+    this.$root.$options.bus.$on(eventTypes.TOGGLE_TABDONNEES, this.toggleTableau)
   },
   destroyed() {
     this.$root.$options.bus.$off(eventTypes.REFRESH_MAP)
@@ -467,6 +480,8 @@ export default {
     this.$root.$options.bus.$off(eventTypes.VALIDE_INPUTGEOM)
     this.$root.$options.bus.$off(eventTypes.MODIFY_INPUTGEOM)
     this.$root.$options.bus.$off(eventTypes.DELETE_INPUTGEOM)
+    this.$root.$options.bus.$off(eventTypes.RESEARCH_TABDONNEES)
+    this.$root.$options.bus.$off(eventTypes.TOGGLE_TABDONNEES)
   },
   updated() {
     // this.addSortable()
@@ -1561,21 +1576,21 @@ export default {
       switch (type) {
         case 'MAP_ONLY': // Seulement la map
           document.getElementById('mapDiv' + this.criseId).style.display = ''
-          document.getElementById('mapDiv' + this.criseId).style.height = '100%'
+          // document.getElementById('mapDiv' + this.criseId).style.height = '100%'
           document.getElementById('tableauDiv' + this.criseId).style.display = 'none'
           this.map.updateSize()
           break
         case 'TABLE_ONLY': // Seulement le tableau
           document.getElementById('mapDiv' + this.criseId).style.display = 'none'
           document.getElementById('tableauDiv' + this.criseId).style.display = ''
-          document.getElementById('tableauDiv' + this.criseId).style.height = '100%'
+          // document.getElementById('tableauDiv' + this.criseId).style.height = '100%'
           this.$refs.TableauDonnees.setPageSize(37)
           break
         case 'SPLIT': // Map et tableau
           document.getElementById('mapDiv' + this.criseId).style.display = ''
           document.getElementById('tableauDiv' + this.criseId).style.display = ''
-          document.getElementById('mapDiv' + this.criseId).style.height = '60%'
-          document.getElementById('tableauDiv' + this.criseId).style.height = '40%'
+          /* document.getElementById('mapDiv' + this.criseId).style.height = '60%'
+          document.getElementById('tableauDiv' + this.criseId).style.height = '40%' */
           this.map.updateSize()
           this.$refs.TableauDonnees.setPageSize(10)
           break
@@ -1583,11 +1598,10 @@ export default {
       this.displayType = type
     },
     toggleTableau() {
-      if (this.displayType !== 'MAP_ONLY') {
-        this.setDisplay('MAP_ONLY')
-      } else {
-        this.setDisplay('SPLIT')
-      }
+      document.getElementById('mapDiv' + this.criseId).style.display = ''
+      // document.getElementById('mapDiv' + this.criseId).style.height = '100%'
+      document.getElementById('tableauDiv' + this.criseId).style.display = 'none'
+      this.map.updateSize()
     }
   }
 }
@@ -1606,8 +1620,11 @@ export default {
 }
 
 .tableauDiv {
-  overflow-y: auto;
-  margin-top: 5px;
+  bottom: 16%;
+  width: 65%;
+  margin-left: 300px;
+  position: absolute;
+  z-index: 1000;
 }
 
 .col {
@@ -1615,14 +1632,39 @@ export default {
 }
 
 .boutonToggleTableau {
-  position: absolute;
-  bottom: 6px;
-  right: 20px;
-  z-index: 99999;
-  visibility: hidden;
+    color: #000000;
+    opacity: inherit;
+    background-color: #f7f7f7;
+    border-radius: 10px;
 }
 
-.boutonToggleTableau img {
-  filter: invert(1);
+.left_content {
+  position: absolute;
+  width: 300px;
+  z-index: 1000;
+  left: 10px;
+  margin-top: 60px;
+  margin-inline-start: inherit;
+
+}
+.right_content {
+  position: absolute;
+  width: 300px;
+  z-index: 900;
+  right: 10px;
+  margin-top: 60px;
+  margin-inline-end: inherit;
+
+}
+.top_content {
+  position: absolute;
+  width: -webkit-fill-available;
+  z-index: 900;
+  margin: 10px 10px 10px 10px;
+  background: #f4f4f4;
+
+}
+.accord7{
+  padding: 15px;
 }
 </style>
