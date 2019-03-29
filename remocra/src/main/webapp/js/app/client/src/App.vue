@@ -399,10 +399,6 @@ export default {
   display: none;
 }
 
-.gestcrise .card-body {
-  padding: 5px;
-}
-
 .gestcrise .evenements .list-group-item,
 .gestcrise .documents .list-group-item {
   padding: 6px;
