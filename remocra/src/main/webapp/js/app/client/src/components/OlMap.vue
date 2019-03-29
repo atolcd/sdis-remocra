@@ -127,8 +127,8 @@
             <b-row :id="'tableauDiv'+criseId" class='tableauDiv'>
               <b-col>
                 <div role="tablist">
-                  <b-button-close class="boutonToggleTableau" :id="'boutonToggleTableau'+criseId" @click='toggleTableau'></b-button-close>
                   <b-card no-body class="mb-1">
+                    <b-button-close :id="'boutonToggleTableau'+criseId" @click='toggleTableau'></b-button-close>
                     <b-collapse id="accordion7" visible accordion="my-accordion3" role="tabpanel">
                       <b-card-body class="accord7">
                         <tableau-donnees :criseId="criseId" ref="TableauDonnees" :pageSize='10'></tableau-donnees>
@@ -1631,11 +1631,17 @@ export default {
   max-height: 100%;
 }
 
-.boutonToggleTableau {
-    color: #000000;
-    opacity: inherit;
-    background-color: #f7f7f7;
-    border-radius: 10px;
+button.close {
+  width: 30px;
+  height: 30px;
+  color: #030303;
+  opacity: inherit;
+  background-color: #f7f7f7;
+  border-radius: 50%;
+  position: absolute;
+  top: -15px;
+  right: -10px;
+  border: solid 1px #d3d3d3;
 }
 
 .left_content {
