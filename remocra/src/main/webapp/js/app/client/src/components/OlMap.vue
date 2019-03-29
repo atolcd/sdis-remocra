@@ -302,7 +302,7 @@ export default {
   },
   data() {
     return {
-      mapRowHeight: 'calc(100% - 50px)',
+      mapRowHeight: '100%',
       file: null,
       selectedFeature: null,
       oldSelectedFeatureGeom: null,
@@ -1620,7 +1620,7 @@ export default {
 }
 
 .tableauDiv {
-  bottom: 16%;
+  bottom: 1%;
   width: 65%;
   margin-left: 300px;
   position: absolute;
@@ -1672,5 +1672,8 @@ button.close {
 }
 .accord7{
   padding: 15px;
+}
+.mapDiv{
+  height: 100%;
 }
 </style>
