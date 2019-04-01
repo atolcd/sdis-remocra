@@ -240,6 +240,8 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                 return this.getStyleMap83();
             case '89' :
                 return this.getStyleMap89();
+            case '78' :
+                return this.getStyleMap78();
             default :
                 return this.getStyleMapGEN();
         }
@@ -550,6 +552,55 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
         });
     },
 
+    getStyleMap78: function() {
+        var customStyle = new OpenLayers.Style({
+            fillOpacity: 1,
+            externalGraphic: '${imgLegend}',
+            graphicWidth: 24,
+            graphicHeight: 24,
+            graphicYOffset: -12,
+            // Etiquettes
+            label: '${label}',
+            labelYOffset: -20,
+            labelOutlineColor: "white",
+            labelOutlineWidth: 3,
+            fontSize: 10,
+            fontColor: '#000'
+        }, {
+            context: {
+                label: function(feature) {
+                   var numero = feature.data['numero'];
+                   if (!numero) {
+                       return '';
+                   }
+                   if(numero.length > 4){
+                     if (numero.includes('A')) {
+                        return parseInt(numero.substring(numero.length-4), 10)+'A';
+                     }
+                     return parseInt(numero.substring(numero.length-4), 10);
+                   }
+                   return numero;
+                },
+                imgLegend: function(feature) {
+                    var file = 'ext-res/images/remocra/cartes/legende/eau/';
+                    if (feature.data['nature'] == 'CI_FIXE') {
+                      file += (feature.data['positionnement'] || 'INCONNU');
+                    }else {
+                     file += feature.data['nature'];
+                    }
+                    file += '_'+(feature.data['dispo']);
+                    if (feature.renderIntent == 'select') {
+                        file += '_on';
+                    }
+                    return file + '.png';
+                }
+            }
+        });
+        return new OpenLayers.StyleMap({
+            "default": customStyle,
+            "select": customStyle
+        });
+    },
     /**
      * Style de la couche de travail : une étiquette avec * si numéro disponible
      */
