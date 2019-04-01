@@ -11,10 +11,14 @@ remocra/target
 # vagrant / docker
 # ---------------
 .vagrant
-.docker
+.docker*
 # ---------------
 # divers
 # ---------------
 *.log
 packaging/remocrapackage
 modelisation/sqlarchitect/*.pdf
+# ---------------
+# Temporaire crise
+remocra/src/main/webapp/js/app/client
+# ---------------
