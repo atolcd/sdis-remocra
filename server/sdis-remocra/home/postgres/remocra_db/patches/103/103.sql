@@ -90,7 +90,7 @@ BEGIN
             perform tracabilite.update_hydrant(p_id, TG_OP::varchar, txid_current());
         elsif (TG_WHEN = 'AFTER' AND p_operation != 'DELETE') then
             if TG_TABLE_NAME = 'hydrant' then
-                perform tracabilite.update_hydrant(p_id, TG_OP::varchar, txid_current());
+                perform tracabilite.update_hydrant(p_id, p_operation, txid_current());
             elsif TG_TABLE_NAME = 'hydrant_pibi' then
                 perform tracabilite.update_hydrant_pibi(p_id, TG_OP::varchar, txid_current());
             elsif TG_TABLE_NAME = 'hydrant_pena' then
