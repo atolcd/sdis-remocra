@@ -97,7 +97,17 @@ Exemples :
 * [.underline]#89024_12# : PEI numéro 12 sur la commune de Auxerre
 * [.underline]#89387_6# : PEI numéro 6 sur la commune de Sens
 
+=== 78 ===
 
+Méthode :
+
+* *<code insee commune><numéro interne>
+* <numéro interne> sur 5 chiffres (préfixe consituté de 0 si nécessaire ou 'A' si le domaine est 'AUTOROUTE')
+
+Exemples :
+
+* [.underline]#7800300001# : PEI numéro 1 de la commune de Ablis
+* [.underline]#78003A0009# : PEI numéro 9 sur autouroute de la commune de Ablis
 
 == Numéro interne ==
 
@@ -112,3 +122,7 @@ Exemples :
 === 86 ===
 
 * Dernier numéro disponible au-dessous de 100000 (sans contrainte de territoire)
+
+=== 78 ===
+
+* Dernier numéro disponible au-dessous de 100000 au sein de la commune

@@ -12,7 +12,7 @@ import javax.persistence.Query;
 public class NumeroUtil {
 
     public enum MethodeNumerotation {
-        M_09, M_77, M_83, M_86, M_89, M_42
+        M_09, M_77, M_83, M_86, M_89, M_42, M_78
     }
 
     public static MethodeNumerotation getHydrantNumerotationMethode() {
@@ -30,7 +30,7 @@ public class NumeroUtil {
     }
 
     public enum MethodeNumerotationInterne {
-        M_77, M_83, M_86, M_42
+        M_77, M_83, M_86, M_42, M_78
     }
 
     public static MethodeNumerotationInterne getHydrantNumerotationInterneMethode() {
@@ -70,6 +70,8 @@ public class NumeroUtil {
             // même methode que 89
             case M_42:
                 return NumeroUtil.computeNumero89(hydrant);
+            case M_78:
+                return NumeroUtil.computeNumero78(hydrant);
             default:
                 return NumeroUtil.computeNumero83(hydrant);
         }
@@ -123,6 +125,25 @@ public class NumeroUtil {
         sb.append(hydrant.getCommune().getInsee());
         sb.append("_");
         return sb.append(hydrant.getNumeroInterne().toString()).toString();
+    }
+
+    /**
+     * <code insee commune>0 ou A<numéro interne>
+     * <p>
+     * Exemple : 8904300012 ou  89043A0012 pour les Autoroutes
+     *
+     * @param hydrant
+     * @return
+     */
+    protected static String computeNumero78(Hydrant hydrant) {
+        StringBuilder sb = new StringBuilder();
+        String codeDomaine = hydrant.getDomaine() == null ? null : hydrant.getDomaine().getCode();
+        sb.append(hydrant.getCommune().getInsee());
+        if("AUTOROUTE".equals(codeDomaine)){
+            sb.append("A");
+            return sb.append(String.format("%04d", hydrant.getNumeroInterne())).toString();
+        }
+        return sb.append(String.format("%05d", hydrant.getNumeroInterne())).toString();
     }
 
     /**
@@ -237,6 +258,8 @@ public class NumeroUtil {
                 return NumeroUtil.computeNumeroInterne42(hydrant);
             case M_86:
                 return NumeroUtil.computeNumeroInterne86(hydrant);
+            case M_78:
+                return NumeroUtil.computeNumeroInterne78(hydrant);
             default:
                 return NumeroUtil.computeNumeroInterne83(hydrant);
         }
@@ -273,6 +296,29 @@ public class NumeroUtil {
     }
 
     public static Integer computeNumeroInterne42(Hydrant hydrant) {
+        // Retour du numéro interne s'il existe
+        if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
+            return hydrant.getNumeroInterne();
+        }
+        Integer numInterne = null;
+        try {
+            // Incrementation automatique de numero interne
+            StringBuffer sb = new StringBuffer("select max(numero_interne)  from remocra.hydrant h where ");
+            sb.append("h.commune = :idcommune order by 1 limit 1");
+
+            Query query = Hydrant.entityManager().createNativeQuery(sb.toString());
+            query.setParameter("idcommune", hydrant.getCommune().getId());
+
+            numInterne = Integer.valueOf(query.getSingleResult().toString());
+            // On prend le suivant
+            numInterne ++;
+        } catch (Exception e) {
+            numInterne = 99999;
+        }
+        return numInterne  ;
+    }
+
+    public static Integer computeNumeroInterne78(Hydrant hydrant) {
         // Retour du numéro interne s'il existe
         if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
             return hydrant.getNumeroInterne();
