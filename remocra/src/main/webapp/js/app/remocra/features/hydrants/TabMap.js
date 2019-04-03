@@ -574,7 +574,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                        return '';
                    }
                    if(numero.length > 4){
-                     if (numero.includes('A')) {
+                     if (numero.indexOf('A') !== -1) {
                         return parseInt(numero.substring(numero.length-4), 10)+'A';
                      }
                      return parseInt(numero.substring(numero.length-4), 10);
