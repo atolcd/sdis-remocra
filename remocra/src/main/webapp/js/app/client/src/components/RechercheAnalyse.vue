@@ -9,14 +9,14 @@
     </select>
   </b-form-group>
   <div class="form-parameters">
-    <hr />
     <form :id="'formParameters'+criseId" class="needs-validation" @submit="createRequest" @reset="resetRequest">
       <p v-if="parametres.length > 0"> Veuillez renseigner les paramètres suivants : </p>
       <p v-else-if="selected">Aucun paramètre pour cette requête</p>
+      <hr />
       <div v-for="(item, index) in parametres" :key="`${index}-${item.id}`">
         <b-form-group v-if="item.formulaireTypeControle == 'combo'" vertical :label="item.formulaireEtiquette" :label-for="item.nom">
           <select :idInput="item.nom" :required="item.obligatoire" class="form-control parametreRequete">
-            <option v-for="(value, key) in comboOptions" :key="key" v-if="value.nomChamp === item.nom" :value="value.valeur" :selected="value.valeur == value.formulaireValeurDefaut">
+            <option v-for="(value, key) in getOption(item.nom)" :key="key"  :value="value.valeur" :selected="value.valeur == value.formulaireValeurDefaut">
               {{ value.libelle }}
             </option>
           </select>
@@ -80,7 +80,6 @@
 </template>
 
 <script>
-import Autocomplete from 'v-autocomplete'
 import axios from 'axios'
 import * as eventTypes from '../bus/event-types.js'
 import _ from 'lodash'
@@ -88,7 +87,6 @@ import SearchProcessParam from './SearchProcessParam.vue'
 export default {
   name: 'RechercheAnalyse',
   components: {
-    Autocomplete,
     SearchProcessParam
   },
   props: {
@@ -268,6 +266,12 @@ export default {
         evt.preventDefault()
         evt.stopPropagation()
       }
+    },
+    getOption: function (nom) {
+      console.log(nom)
+      return this.comboOptions.filter(function (value) {
+        return value.nomChamp === nom
+      })
     }
   }
 }

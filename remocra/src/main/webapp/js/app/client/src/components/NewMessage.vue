@@ -61,7 +61,7 @@ export default {
     }
   },
   methods: {
-    showModal(criseId, evenementId, messageId) {
+    showModal(criseId, evenementId) {
       this.criseId = criseId
       this.evenementId = evenementId
       this.$refs.modal.show()

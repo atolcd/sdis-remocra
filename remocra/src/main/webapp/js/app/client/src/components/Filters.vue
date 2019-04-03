@@ -78,7 +78,7 @@ export default {
     'filtres': 'controlFilter'
   },
   methods: {
-    filterChanged(newFilters, oldFilters) {
+    filterChanged(newFilters) {
       this.$root.$options.bus.$emit(eventTypes.LOAD_EVENEMENTS, {
         'crise': this.criseId,
         'filters': newFilters

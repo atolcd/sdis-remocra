@@ -59,13 +59,6 @@ export default {
         console.error('évenements', error)
       })
     },
-    showDocument(code) {
-      axios.get('/remocra/telechargement/document/' + code).then(response => {
-        if (response.data.data) {}
-      }).catch(function(error) {
-        console.error('évenements', error)
-      })
-    },
     locateDoc(geometrie) {
       this.$root.$options.bus.$emit(eventTypes.ZOOM_TOEXTENT, geometrie)
     }

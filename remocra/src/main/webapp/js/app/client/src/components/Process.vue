@@ -15,7 +15,7 @@
         </b-form-group>
         <b-form-group v-if='param.formulaireTypeControle=="combo"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
           <select :id="'input'+param.id" :required='param.obligatoire' class="form-control parametreProcess">
-            <option v-for="(value, key) in comboOptions" :key="key" v-if="value.nomChamp === param.id" :value='value.valeur' :selected='value.valeur==value.formulaireValeurDefaut'>
+            <option v-for="(value, key) in getOption(param.id)" :key="key" :value='value.valeur' :selected='value.valeur==value.formulaireValeurDefaut'>
               {{value.libelle}}
             </option>
           </select>
@@ -43,7 +43,7 @@
           <div class="custom-file b-form-file ">
             <input :id="'input'+param.id" type="file" class="custom-file-input parametreProcess" :required="param.obligatoire" inputType='filefield' @change="handleChangeFile($event, param.id)">
             <label class="custom-file-label" />
-            <label class="custom-file-label" v-for="(file,key) in files" :key="key" v-if="file.id === param.id">{{file.file.name}}</label>
+            <label class="custom-file-label" v-for="(file,key) in getFile(param.id)" :key="key">{{file.file.name}}</label>
           </div>
         </b-form-group>
       </div>
@@ -188,6 +188,16 @@ export default {
           file: file
         })
       }
+    },
+    getOption: function (id) {
+      return this.comboOptions.filter(function (value) {
+        return value.nomChamp === id
+      })
+    },
+    getFile: function (id) {
+      return this.files.filter(function (value) {
+        return value.id === id
+      })
     }
   }
 }

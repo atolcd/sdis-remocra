@@ -945,7 +945,7 @@ export default {
         this.measureTooltip.setPosition([0, 0])
       }
     },
-    GoInFullscreen: function(event) {
+    GoInFullscreen: function() {
       var elem = document.getElementById(this.$root.$options.id)
       if (document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled) {
         if (elem.requestFullscreen) {
@@ -1021,7 +1021,7 @@ export default {
       this.modify = modify
       this.modify.setActive(false)
       this.map.addInteraction(this.modify)
-      this.modify.on('modifyend', function(evt) {
+      this.modify.on('modifyend', function() {
         this.$refs.rechercheAnalyse.showValidGeom = true
       })
     },
@@ -1242,7 +1242,7 @@ export default {
         console.error('carte', error)
       })
     },
-    zoomToGeom(geometrie, crise) {
+    zoomToGeom(geometrie) {
       let geom = new WKT().readGeometry(geometrie, {
         dataProjection: this.epsgL93,
         featureProjection: this.proj
@@ -1376,9 +1376,6 @@ export default {
         self.selectedFeature = evt.feature
         self.map.removeInteraction(measuringTool)
       })
-      measuringTool.on('change:active', function(evt) {
-        if (evt.oldValue) {}
-      })
       measuringTool.id = 'tool' + index
       measureTooltip.id = 'tooltip' + index
       this.map.addInteraction(measuringTool)
@@ -1411,7 +1408,7 @@ export default {
           var geom = null
           var layer = this.getLayerById('input' + index)
           var features = layer.getSource().getFeatures()
-          _.forEach(features, function(feature, index) {
+          _.forEach(features, function(feature) {
             geom = feature.clone().getGeometry()
             if (geom.getType() === 'Circle') {
               geom = Polygon.fromCircle(geom)

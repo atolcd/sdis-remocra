@@ -51,7 +51,7 @@
               </b-form-group>
               <b-form-group v-if='param.formulaireTypeControle=="combo"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
                 <select :id="'input'+param.id" :required='param.obligatoire' class="form-control parametreComplement" inputType="combo">
-                  <option v-for="(value, key) in comboOptions" :key="key" v-if="value.nomChamp === param.id" :value="value.valeur" :selected="value.valeur === value.formulaireValeurDefaut">
+                  <option v-for="(value, key) in getOption(param.id)" :key="key" :value="value.valeur" :selected="value.valeur === value.formulaireValeurDefaut">
                     {{value.libelle}}
                   </option>
                 </select>
@@ -152,7 +152,7 @@ export default {
     this.$root.$options.bus.$off(eventTypes.MODIFY_EVENT)
   },
   methods: {
-    createEvent(criseId) {
+    createEvent() {
       this.loadEvenementNatures(null)
       this.$root.$emit('bv::hide::popover')
       this.title = 'Nouvel évènement'
@@ -527,6 +527,11 @@ export default {
           console.error('complement', error)
         })
       }
+    },
+    getOption: function (id) {
+      return this.comboOptions.filter(function (value) {
+        return value.nomChamp === id
+      })
     }
   }
 }
