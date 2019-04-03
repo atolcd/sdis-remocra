@@ -1,0 +1,29 @@
+==== Synchronisation LDAP
+
+Ce traitement permet de synchroniser la base utilisateur LDAP du SDIS avec la base utilisateur Remocra.
+
+===== Configuration
+Le fichier _"remocraXX.properties"_ doit contenir les informations suivantes :
+[width="100%",options="header"]
+|===================
+| Paramètre | Description
+| PDI_UTILISATEUR_NOTIF_LDAP | Adresse mail ou code de profil des utilisateurs à notifier en cas d'erreur de synchro _ex :_ `exemple@exemple.com`, `SDIS-ADM-APP`
+| PDI_LDAP_ORGANISME_DEFAUT | Organisme par défaut attribué aux nouveaux utilisateurs créés _ex :_ `78112`
+| PDI_LDAP_PROFIL_DEFAUT | Profil utilisateur attribué par défaut aux nouveaux utilisateurs créés _ex :_ `SDIS_INACTIF`
+|===================
+
+
+Dans l'interface d'administration de Remocra, renseigner les champs :
+[width="100%",options="header"]
+|===================
+| Paramètre | Description
+| PDI_LDAP_URL_HOST | <hôte> du serveur : `ldap://<hôte>:<port>[/dn]` _(Exemple : `10.0.0.2`)_
+| PDI_LDAP_URL_PORT | <port> du serveur : `ldap://<hôte>:<port>[/dn]` _(Par défaut : `389`)_
+| PDI_LDAP_ADMIN_DN | Distinguished Name du compte admin _(Exemple : `cn=Administrator,cn=Users,dc=sdis42-ad,dc=local`)_
+| PDI_LDAP_ADMIN_PASSWORD | Mot de passe du compte admin
+| PDI_LDAP_USER_BASE_NAME | Base name des comptes utilisateurs _(Exemple : `cn=Administrator,cn=Users,dc=sdis42-ad,dc=local`)_
+| PDI_LDAP_USER_FILTER | Filtre des comptes utilisateurs _(Exemple : `(&(objectclass=user)(mailNickname=[USERNAME]))`)_
+|===================
+
+===== Lancement et planification de la synchronisation
+L'exécution automatique s'effectue en planifiant le lancement du fichier ```/var/remocra/pdi/traitements_sdis/78/synchroniser_ldap.sh``` avec l'utilisateur ```postgres```.
