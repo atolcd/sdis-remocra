@@ -81,7 +81,7 @@ public class HydrantController {
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
                 return new JSONSerializer()
                         .include("data.id", "data.numero", "data.natureNom", "data.natureCode","data.dateRecep", "data.nomTournee", "data.code", "data.dateReco", "data.dateContr", "data.hbe",
-                                "data.jsonGeometrie", "data.dispoHbe","data.indispoTemp","data.dispoTerrestre", "data.debit", "data.commune.id", "data.commune.nom", "data.natureDeci.id", "data.natureDeci.code", "data.nomTournees").exclude("data.*", "*.class")
+                                "data.jsonGeometrie", "data.dispoHbe","data.indispoTemp","data.dispoTerrestre", "data.debit", "data.commune.id", "data.nomCommune", "data.natureDeci.id", "data.nomNatureDeci", "data.adresse", "data.numeroInterne").exclude("data.*", "*.class")
                         .transform(new GeometryTransformer(), Geometry.class);
             }
 

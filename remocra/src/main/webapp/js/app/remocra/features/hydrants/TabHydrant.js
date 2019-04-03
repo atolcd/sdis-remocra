@@ -271,6 +271,69 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
                 }
 
             }
+        },{
+            text: 'Commune',
+            dataIndex: 'nomCommune',
+
+            filter: {
+                emptyText: 'Nom...',
+                xtype: 'textfield',
+                hideTrigger: true,
+                listeners: {
+                    change: deferredApplyFilter
+                }
+            }
+
+        },{
+            text: 'Statut',
+            dataIndex: 'nomNatureDeci',
+            filterable: true,
+            filter: {
+                xtype: 'combo',
+                filterName: 'nomNatureDeci',
+                displayField: 'nom',
+                valueField: 'id',
+                queryMode: 'local',
+                typeAhead: true,
+                store: 'TypeHydrantNatureDeciTous',
+                listeners: {
+                    select: function() {
+                        headerfilter.applyFilters();
+                    }
+                }
+            }
+
+        },{
+            text: 'Adresse',
+            dataIndex: 'adresse',
+            renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                if(value !== null){
+                    metaData.tdAttr = 'data-qtip="' + value + '"';
+                }
+
+                return value;
+            },
+            filter: {
+                emptyText: 'Nom...',
+                xtype: 'textfield',
+                hideTrigger: true,
+                listeners: {
+                    change: deferredApplyFilter
+                }
+            }
+
+        },{
+            text: 'Numéro interne',
+            dataIndex: 'numeroInterne',
+            filterable: true,
+            filter: {
+                emptyText: 'Numéro...',
+                xtype: 'textfield',
+                hideTrigger: true,
+                listeners: {
+                    change: deferredApplyFilter
+                }
+            }
         }];
 
         var colonnesOrdonnees = [];

@@ -117,6 +117,11 @@ Ext.define('Sdis.Remocra.model.Hydrant', {
         type: 'fk',
         useNull: true,
         defaultValue: null
+    },{
+        name: 'nomCommune',
+        type: 'string',
+        useNull: true,
+        persist: false
     }, {
         name: 'CISCommune',
         type: 'string',
@@ -132,6 +137,16 @@ Ext.define('Sdis.Remocra.model.Hydrant', {
     }, {
        name: 'natureDeci',
        type: 'fk'
+    },{
+        name: 'nomNatureDeci',
+        type: 'string',
+        useNull: true,
+        persist: false
+   },{
+        name: 'adresse',
+        type: 'string',
+        useNull: true,
+        persist: false
    }],
 
     associations: [{

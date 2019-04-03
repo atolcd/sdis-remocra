@@ -79,6 +79,18 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
             Expression<String> cpPath = from.join("nature").get("nom");
             orders.add(itemSorting.isDesc() ? cBuilder.desc(cpPath) : cBuilder.asc(cpPath));
             return true;
+        } else if ("nomCommune".equals(itemSorting.getFieldName())) {
+            Expression<String> cpPath = from.join("commune").get("nom");
+            orders.add(itemSorting.isDesc() ? cBuilder.desc(cpPath) : cBuilder.asc(cpPath));
+            return true;
+        } else if ("adresse".equals(itemSorting.getFieldName())) {
+            Expression<String> cpPath = from.get("adresse");
+            orders.add(itemSorting.isDesc() ? cBuilder.desc(cpPath) : cBuilder.asc(cpPath));
+            return true;
+        } else if ("nomNatureDeci".equals(itemSorting.getFieldName())) {
+            Expression<String> cpPath = from.join("natureDeci").get("nom");
+            orders.add(itemSorting.isDesc() ? cBuilder.desc(cpPath) : cBuilder.asc(cpPath));
+            return true;
         } else {
             return super.processItemSortings(orders, itemSorting, cBuilder, from);
         }

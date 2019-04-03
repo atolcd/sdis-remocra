@@ -11,6 +11,8 @@ Ext.require('Sdis.Remocra.store.TypeHydrantMarque');
 Ext.require('Sdis.Remocra.store.TypeHydrantPositionnement');
 Ext.require('Sdis.Remocra.store.TypeHydrantMateriau');
 Ext.require('Sdis.Remocra.store.Utilisateur');
+Ext.require('Sdis.Remocra.store.TypeHydrantNatureDeci');
+Ext.require('Sdis.Remocra.store.TypeHydrantNatureDeciTous');
 Ext.require('Sdis.Remocra.model.HydrantPena');
 Ext.require('Sdis.Remocra.model.HydrantPibi');
 
@@ -24,7 +26,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
 
     stores: ['Commune', 'Voie', 'Hydrant', 'TypeHydrant', 'TypeHydrantAnomalie', 'TypeHydrantDiametre', 'TypeHydrantDomaine',
              'TypeHydrantNature', 'TypeHydrantNatureTous', 'TypeHydrantVolConstate',
-             'TypeHydrantMarque', 'Utilisateur', 'TypeHydrantPositionnement', 'TypeHydrantMateriau'],
+             'TypeHydrantMarque', 'Utilisateur', 'TypeHydrantPositionnement', 'TypeHydrantMateriau', 'TypeHydrantNatureDeci', 'TypeHydrantNatureDeciTous'],
 
     refs: [],
     CODE_CITERNE: 'CI_',

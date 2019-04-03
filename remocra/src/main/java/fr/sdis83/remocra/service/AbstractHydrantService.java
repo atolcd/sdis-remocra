@@ -10,6 +10,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Predicate;
@@ -130,6 +131,18 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
             Expression<Character> cpDispo = from.get("dispoHbe");
             predicat = !resultList.isEmpty() ? cBuilder.and(cpID.in(resultList) ,
                     cBuilder.equal(cpDispo, Hydrant.Disponibilite.valueOf(itemFilter.getValue()))): predicat;
+        } else if("nomCommune".equals(itemFilter.getFieldName())){
+            Expression<String> cpPath = from.join("commune", JoinType.LEFT).get("nom");
+            predicat = cBuilder.like(cBuilder.upper(cpPath), "%" + itemFilter.getValue().toUpperCase(Locale.FRANCE) + "%");
+        } else if("nomNatureDeci".equals(itemFilter.getFieldName())){
+            Expression<Integer> cpPath = from.join("natureDeci").get("id");
+            predicat = cBuilder.equal(cpPath, itemFilter.getValue());
+        } else if("adresse".equals(itemFilter.getFieldName())){
+            Expression<String> cpPath = from.get("adresse");
+            predicat = cBuilder.like(cBuilder.upper(cpPath), "%" + itemFilter.getValue().toUpperCase(Locale.FRANCE) + "%");
+        } else if("numeroInterne".equals(itemFilter.getFieldName())){
+            Expression<String> cpPath = from.get("numeroInterne");
+            predicat = cBuilder.equal(cpPath, itemFilter.getValue());
         } else {
             return super.processFilterItem(itemQuery, parameters, from, itemFilter);
         }

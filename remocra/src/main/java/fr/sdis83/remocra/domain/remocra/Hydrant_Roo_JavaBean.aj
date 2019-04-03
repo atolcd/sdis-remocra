@@ -12,6 +12,7 @@ import fr.sdis83.remocra.domain.remocra.Tournee;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantAnomalie;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantDomaine;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantNature;
+import fr.sdis83.remocra.domain.remocra.TypeHydrantNatureDeci;
 import fr.sdis83.remocra.domain.remocra.ZoneSpeciale;
 import java.util.Date;
 import java.util.Set;
@@ -328,6 +329,14 @@ privileged aspect Hydrant_Roo_JavaBean {
 
     public void Hydrant.setNatureDeci(TypeHydrantNatureDeci natureDeci) {
         this.natureDeci = natureDeci;
+    }
+
+    public String Hydrant.getAdresse() {
+        return this.adresse;
+    }
+
+    public void Hydrant.setAdresse(String Adresse) {
+        this.adresse = adresse;
     }
     
 }

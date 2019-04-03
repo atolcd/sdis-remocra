@@ -167,6 +167,9 @@ public class Hydrant implements Featurable {
     @Column
     private Integer anneeFabrication;
 
+    @Formula("(select case when char_length(voie)>0 and char_length(voie2)>0 then voie || ' - ' || voie2 else voie end from remocra.hydrant h where h.id=id and char_length(voie)>0)")
+    private String adresse;
+
     @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hydrant", orphanRemoval = true)
     private Set<HydrantDocument> hydrantDocuments = new HashSet<HydrantDocument>();
@@ -209,9 +212,11 @@ public class Hydrant implements Featurable {
         feature.addProperty("nature", this.getNature().getCode());
         feature.addProperty("numero", this.getNumero());
         feature.addProperty("commune", this.getCommuneId());
+        feature.addProperty("nomCommune", this.getNomCommune());
         feature.addProperty("internalId", this.getId());
         feature.addProperty("tournees", this.getTourneesId());
-        feature.addProperty("nomTournees", this.getNomTournees());
+	    feature.addProperty("nomNatureDeci", this.getNomNatureDeci());
+
         // PIBI
         String diametreCode = null;
         if (this instanceof HydrantPibi) {
@@ -240,6 +245,13 @@ public class Hydrant implements Featurable {
         return null;
     }
 
+    public String getNomCommune() {
+        if (this.getCommune() != null) {
+            return this.getCommune().getNom();
+        }
+        return null;
+    }
+
     public String getNatureNom() {
         if (this.getNature() != null) {
             return this.getNature().getNom();
@@ -264,24 +276,6 @@ public class Hydrant implements Featurable {
         return null;
     }
 
-    public String getNomTournees(){
-        if(this.getTournees() != null && !this.getTournees().isEmpty()) {
-            ArrayList liste = new ArrayList<String>();
-            String identifiant = AuthService.getCurrentUserIdentifiant();
-            Utilisateur utilisateur = Utilisateur.findUtilisateursByIdentifiant(identifiant).getSingleResult();
-            int idOrganisme = utilisateur.getOrganisme().getId().intValue();
-
-            for (Tournee t : this.getTournees()){
-                if(Organisme.getOrganismeAndChildren(idOrganisme).contains(t.getAffectation().getId().intValue())){
-                    liste.add(t.getNom()+" ["+t.getAffectation().getNom()+"]");
-                }
-
-            }
-            return liste.toString();
-        }
-        return null;
-    }
-
     public HydrantDocument getPhoto() {
         HydrantDocument photo = null;
         for (HydrantDocument hydrantDocument : hydrantDocuments) {
@@ -290,6 +284,13 @@ public class Hydrant implements Featurable {
             }
         }
         return photo;
+    }
+
+    public String getNomNatureDeci() {
+        if (this.getNatureDeci() != null) {
+            return this.getNatureDeci().getNom();
+        }
+        return null;
     }
 
     public void setPhoto(HydrantDocument photo) {
