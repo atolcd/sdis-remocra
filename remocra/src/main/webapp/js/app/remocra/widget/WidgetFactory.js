@@ -22,8 +22,8 @@ Ext.apply(Ext.form.VTypes, {
         return true;
     },
     'passwordText' : (COMPLEXITE_PASSWORD == "complexe") ?
-        "Les mots de passe ne sont pas identiques ou ne sont pas suffisamment sécurisé."
-        +"Merci de fournir un mot de passe de 9 caractères minimum avec au moins 1 lettre et au moins 1 chiffre" :
+        "Les mots de passe ne sont pas identiques ou ne sont pas suffisamment sécurisés."
+        +"Le mot de passe doit contenir un mélange de chiffres et de lettres et faire une longueur totale d’au moins 9 caractères." :
         "Les mots de passe ne sont pas identiques",
     'imagefile': function(v){
         v = v.replace(/^\s|\s$/g, ""); //trims string
