@@ -6,7 +6,6 @@ Sdis.Remocra.widget.map.controls.Measure = OpenLayers.Class(OpenLayers.Control.M
     displayClass: 'remocraControlMeasure',
     autoActivate: false,
     autoDeactivate: false,
-    popup: null,
     
     isArea: false,
 
@@ -39,38 +38,44 @@ Sdis.Remocra.widget.map.controls.Measure = OpenLayers.Class(OpenLayers.Control.M
             "activate": this.onActivate,
             "deactivate": this.onDeactivate
         });
+
+        this.handler.destroyPersistedFeature = function(){};
     },
 
     onActivate: function() {
         // Création de la popup si nécessaire
-        if (!this.popup) {
-            this.popup = new OpenLayers.Popup("tooltip-measure-"+(this.isArea?'polygon':'path'), null, new OpenLayers.Size(80, 20), "xxxxxxx km", false);
-            this.map.addPopup(this.popup);
+        this.createNewPopup();
+
+    },
+
+    createNewPopup: function(){
+            var popup = new OpenLayers.Popup("tooltip-measure-"+(this.isArea?'polygon':'path'), null, new OpenLayers.Size(80, 20), "xxxxxxx km", false);
+            this.map.addPopup(popup);
 
             // Visuel de la popup
-            this.popup.div.style.opacity = '0.75';
-            this.popup.div.style.display = 'flex';
-            this.popup.div.style.textAlign = 'center';
+            popup.div.style.opacity = '0.75';
+            popup.div.style.display = 'flex';
+            popup.div.style.textAlign = 'center';
 
-            this.popup.div.style.backgroundColor = '#fff';
-            this.popup.div.style.border = 'solid 1px #00b3b3';
-            this.popup.div.style.borderRadius = '4px';
-            this.popup.div.style.color = '#00b3b3';
-            this.popup.div.style.fontStyle = 'italic';
+            popup.div.style.backgroundColor = '#fff';
+            popup.div.style.border = 'solid 1px #00b3b3';
+            popup.div.style.borderRadius = '4px';
+            popup.div.style.color = '#00b3b3';
+            popup.div.style.fontStyle = 'italic';
 
-            this.popup.groupDiv.style.margin = 'auto';
-            this.popup.groupDiv.style.height = this.popup.div.style.height;
-            this.popup.groupDiv.style.display = 'flex';
-            this.popup.contentDiv.style.margin = 'auto';
-            this.popup.contentDiv.style.overflow = 'hidden';
+            popup.groupDiv.style.margin = 'auto';
+            popup.groupDiv.style.height = popup.div.style.height;
+            popup.groupDiv.style.display = 'flex';
+            popup.contentDiv.style.margin = 'auto';
+            popup.contentDiv.style.overflow = 'hidden';
 
-            //this.popup.fixPadding();
-            this.popup.hide();
-        }
+            popup.hide();
     },
 
     onDeactivate: function() {
-        this.popup.hide();
+        while(this.map.popups.length ) {
+            this.map.removePopup(this.map.popups[0]);
+        }
     },
 
     getStyleMap: function(event) {
@@ -107,18 +112,19 @@ Sdis.Remocra.widget.map.controls.Measure = OpenLayers.Class(OpenLayers.Control.M
     },
     
     handleMeasurements: function(event) {
-        this.popup.setContentHTML(this.getMesureInfo(event));
-        this.popup.updateSize();
+        var popup = this.map.popups[this.map.popups.length-1];
+        popup.setContentHTML(this.getMesureInfo(event));
+        popup.updateSize();
 
         if (this.handler.evt.xy) {
             // Récupération de la position du curseur
             var posPopup = {
-                'x': this.handler.evt.xy.x - this.popup.size.w/2,
+                'x': this.handler.evt.xy.x - popup.size.w/2,
                 'y': this.handler.evt.xy.y - 45
             };
-            this.popup.show();
-            this.popup.lonlat = this.map.getLonLatFromViewPortPx(posPopup);
-            this.popup.updatePosition();
+            popup.show();
+            popup.lonlat = this.map.getLonLatFromViewPortPx(posPopup);
+            popup.updatePosition();
         }
     },
     
@@ -148,6 +154,7 @@ Sdis.Remocra.widget.map.controls.Measure = OpenLayers.Class(OpenLayers.Control.M
     },
     
     handleMeasurementsEnd: function(event) {
+        this.createNewPopup();
         if (this.autoDeactivate) {
             this.deactivate();
         }
