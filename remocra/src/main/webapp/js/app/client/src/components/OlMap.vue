@@ -825,9 +825,6 @@ export default {
     showToolsBar() {
       // Toolbar
       document.getElementById('toolsBar' + this.criseId).classList.toggle('active')
-      // Hauteur de la carte
-      let activateToolbar = document.getElementById('toolsBarBtn' + this.criseId).toggleAttribute('ctrl-active')
-      this.mapRowHeight = activateToolbar ? 'calc(100% - 85px)' : 'calc(100% - 50px)'
       _.delay(this.map.updateSize.bind(this.map), 10)
       this.desactivateControls()
     },
