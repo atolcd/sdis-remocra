@@ -148,7 +148,7 @@
   h.voie AS adresse,
   h.voie2 AS adresse_intersection,
   h.numero AS id_basepei,
-  h.date_contr AS date_controle,
+  coalesce(h.date_contr, h.date_recep) AS date_controle,
   &apos;SRID=2154;&apos; || st_astext(h.geometrie) AS geometrie,
   (SELECT CASE WHEN (coalesce(h.dispo_terrestre,&apos;&apos;)  = &apos;DISPO&apos; ) THEN &apos;DI&apos; ELSE &apos;IN&apos; END) as etat_pei
 FROM remocra.hydrant AS h

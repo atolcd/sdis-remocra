@@ -166,7 +166,9 @@ FROM
   INNER JOIN tracabilite.hydrant as h2 ON (h2.id = id_action_first_after_last_synchro)
   INNER JOIN tracabilite.hydrant as h3 ON (h3.id = id_action_last)
 WHERE 
-  (St_Distance(h1.geometrie, h3.geometrie) &gt; 0 OR St_Distance(h1.geometrie, h3.geometrie) IS NULL)
+   (NOT (h3.nom_operation = &apos;DELETE&apos; AND h2.nom_operation = &apos;INSERT&apos;))
+AND 
+  ((St_Distance(h1.geometrie, h3.geometrie) &gt; 0 OR St_Distance(h1.geometrie, h3.geometrie) IS NULL)
   OR ((coalesce(h1.debit,0) &lt;&gt; coalesce(h3.debit,0))) 
   OR ((coalesce(h1.nature,&apos;&apos;) &lt;&gt; coalesce(h3.nature,&apos;&apos;)))
   OR ((coalesce(h1.diametre,&apos;&apos;) &lt;&gt; coalesce(h3.diametre,&apos;&apos;)))
@@ -175,6 +177,7 @@ WHERE
   OR ((SELECT CASE WHEN (coalesce(h1.dispo_terrestre, &apos;DISPO&apos;) = &apos;DISPO&apos;) THEN &apos;DI&apos; ELSE &apos;IN&apos; END) &lt;&gt; (SELECT CASE WHEN (coalesce(h3.dispo_terrestre, &apos;DISPO&apos;) = &apos;DISPO&apos;) THEN &apos;DI&apos; ELSE &apos;IN&apos; END))
   OR (h3.nom_operation = &apos;DELETE&apos;)
   OR (h2.nom_operation = &apos;INSERT&apos;)
+  )
 ;</sql>
     <limit>0</limit>
     <lookup/>
