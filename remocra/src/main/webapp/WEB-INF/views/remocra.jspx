@@ -46,7 +46,7 @@
             <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
             <link type="text/css" rel="stylesheet" href="/dist/main.css"/>
             <link type="text/css" rel="stylesheet" href="//cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css"/>
-            <link type="text/css" rel="stylesheet" href="v-autocomplete/dist/v-autocomplete.css"/>
+            <link type="text/css" rel="stylesheet" href="/v-autocomplete/dist/v-autocomplete.css"/>
 		<link rel="stylesheet" type="text/css" href="${jsbase}/openlayers-2.12/theme/default/style.css"/>
 		<!--link rel="stylesheet" type="text/css" href="${jsbase}/openlayers-2.12/theme/default/google.css"/-->
         
