@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalChoice" ref="modal" title="Évènements cartographiques" ok-title="Valider" cancel-title="Annuler" @ok="handleOk">
+  <b-modal id="modalChoice" ref="modal" no-close-on-backdrop title="Évènements cartographiques" ok-title="Valider" cancel-title="Annuler" @ok="handleOk">
     <b-form-select v-model="selected" :options="features" class="mb-3" @input="addSelected" />
   </b-modal>
 </div>
@@ -43,9 +43,7 @@ export default {
       this.$root.$emit('bv::hide::popover')
     },
     addSelected() {
-      this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, {
-        'crise': this.crise
-      })
+      this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, this.crise)
       var selected = this.selected
       var originFeatures = this.originFeatures
       _.forEach(originFeatures, function(feature) {

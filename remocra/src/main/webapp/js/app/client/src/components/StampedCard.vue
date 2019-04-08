@@ -1,7 +1,7 @@
 <template>
 <div>
   <!-- Modal Component -->
-  <b-modal id="modalCard" ref="modal" title="Carte horodatée" @ok="handleOk" @shown="clearName">
+  <b-modal id="modalCard" ref="modal" no-close-on-backdrop title="Carte horodatée" @ok="handleOk" @shown="clearName">
     <form @submit.stop.prevent="handleSubmit">
       <b-form-input type="text" placeholder="Saisir le titre de la carte" v-model="name"></b-form-input>
     </form>

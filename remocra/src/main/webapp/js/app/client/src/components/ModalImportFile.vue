@@ -1,6 +1,6 @@
 <template>
 <div id="modalFile">
-  <b-modal ref="modalImportFile" title="Importer un fichier" ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
+  <b-modal ref="modalImportFile" title="Importer un fichier" no-close-on-backdrop ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
     <form @submit.stop.prevent="handleSubmit">
       <b-form-group horizontal label="Fichier:" label-for="inputFichier">
         <div class="custom-file b-form-file">

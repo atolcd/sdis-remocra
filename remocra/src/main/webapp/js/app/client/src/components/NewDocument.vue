@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalDocument" ref="modal" title="Nouveau document" ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
+  <b-modal id="modalDocument" ref="modal" title="Nouveau document" no-close-on-backdrop ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
     <form @submit.stop.prevent="handleSubmit">
       <b-form-group horizontal label="Document:" label-for="docs">
         <div class="custom-file b-form-file ">
@@ -41,9 +41,7 @@ export default {
         alert('Veuillez ajouter des documents')
       } else {
         this.handleSubmit()
-        this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, {
-          crise: this.criseId
-        })
+        this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, this.criseId)
       }
     },
     handleSubmit() {

@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal :id="'modalEvent'+criseId" ref="modal" :title="title" ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
+  <b-modal :id="'modalEvent'+criseId" ref="modal" :title="title" ok-title="Valider" no-close-on-backdrop cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
       <b-tabs id="tabsNewEvenement" ref="tabs" v-model="tabIndex">
         <b-tab title="Général" active>
           <form :id="'formEvent'+criseId" class="needs-validation" @submit.stop.prevent="handleSubmit">
@@ -253,9 +253,7 @@ export default {
       this.disableNatures = false
       this.evenementId = null
       this.natureId = null
-      this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, {
-        'crise': this.criseId
-      })
+      this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, this.criseId)
       this.tabIndex = 0
     },
     handleOk(evt) {
@@ -336,9 +334,7 @@ export default {
           }
         })
         this.handleSubmit(formData)
-        this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, {
-          'crise': this.criseId
-        })
+        this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, this.criseId)
       }
     },
     handleSubmit(formData) {
@@ -355,9 +351,7 @@ export default {
             })
             this.$root.$options.bus.$emit(eventTypes.LOAD_DOCUMENTS, criseId)
             this.$root.$options.bus.$emit(eventTypes.LOAD_FILTERS, criseId)
-            this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, {
-              'crise': criseId
-            })
+            this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, criseId)
             this.$refs.modal.hide()
           }
         }).catch(function(error) {
@@ -375,9 +369,7 @@ export default {
             })
             this.$root.$options.bus.$emit(eventTypes.LOAD_DOCUMENTS, criseId)
             this.$root.$options.bus.$emit(eventTypes.LOAD_FILTERS, criseId)
-            this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, {
-              'crise': criseId
-            })
+            this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, criseId)
             this.$refs.modal.hide()
           }
         }).catch(function(error) {

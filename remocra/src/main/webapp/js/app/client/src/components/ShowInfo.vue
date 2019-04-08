@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalInfo" ref="modal" title="Informations" hide-footer>
+  <b-modal id="modalInfo"no-close-on-backdrop ref="modal" title="Informations" hide-footer>
     <div><strong>Nom :</strong> {{nomFeature}}</div>
     <div><strong>Nature :</strong> {{natureFeature}}</div>
     <div><strong>Constaté :</strong> {{creationFeature}}</div>
@@ -41,9 +41,7 @@ export default {
     },
     hideModal() {
       this.$refs.modal.hide()
-      this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, {
-        'crise': this.crise
-      })
+      this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP,this.crise)
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalProcess" ref="modal" title="Processus Etl" ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
+  <b-modal id="modalProcess" ref="modal" title="Processus Etl" no-close-on-backdrop  ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
     <b-form-group horizontal label="Choix du Processus:" label-for="process">
       <b-form-select id="process" v-model="selected" :options="options" class="mb-3" @input="getParams" />
     </b-form-group>

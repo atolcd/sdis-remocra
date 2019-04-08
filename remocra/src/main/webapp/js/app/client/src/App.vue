@@ -418,12 +418,12 @@ export default {
   border: 1px solid rgba(0, 0, 0, .125);
 }
 
-.gestcrise #layertree .group {
+.gestcrise .sidebar .group {
   font-weight: bold;
   margin-bottom: 5px;
 }
 
-.gestcrise #layertree .layer {
+.gestcrise .sidebar .layer {
   margin-left: 20px;
 }
 

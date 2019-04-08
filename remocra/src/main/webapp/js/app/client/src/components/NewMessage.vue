@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalMessage" ref="modal" title="Nouveau message" ok-title="Valider" cancel-title="Annuler" :ok-disabled="disableOk" @ok="handleOk" @hidden="clearFields">
+  <b-modal id="modalMessage" ref="modal" title="Nouveau message" no-close-on-backdrop ok-title="Valider" cancel-title="Annuler" :ok-disabled="disableOk" @ok="handleOk" @hidden="clearFields">
     <form :id="'formMessage'+criseId" @submit.stop.prevent="handleSubmit" class="needs-validation">
       <b-form-group horizontal label="Objet:" label-for="objet">
         <b-form-input id="objetMessage" required v-model="form.objet" class="form-control">
