@@ -4,8 +4,9 @@ function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 module.exports = {
-  assetsDir: 'static',
+  assetsDir: 'remocra/static',
   publicPath: '/',
+  filenameHashing: false,
   outputDir: path.resolve(__dirname, 'dist'),
   devServer: {
     port: 8081,

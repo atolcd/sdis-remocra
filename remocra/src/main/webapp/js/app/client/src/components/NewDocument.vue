@@ -7,7 +7,7 @@
           <input id="docs" type="file" class="custom-file-input" @change="handleChangeFile($event)">
           <label class="custom-file-label">{{file && file.name}}</label></div>
         <div v-for="(file, index) in files" :key="index" class="mt-3">
-          <img @click="deleteFile(file.name)" src="/static/img/delete.png"><strong> {{file && file.name}}</strong>
+          <img @click="deleteFile(file.name)" src="/remocra/static/img/delete.png"><strong> {{file && file.name}}</strong>
         </div>
       </b-form-group>
     </form>

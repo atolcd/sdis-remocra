@@ -35,7 +35,7 @@
     <b-list-group-item>
       <strong>Importance</strong>
       <div class="resetrate">
-      <img src="/static/img/resetrate.png"  style="cursor:pointer" @click="resetRate">
+      <img src="/remocra/static/img/resetrate.png"  style="cursor:pointer" @click="resetRate">
       <rate :length="5" @after-rate="onAftereRate" v-model="myRate" /></div>
     </b-list-group-item>
   </b-list-group>

@@ -288,43 +288,43 @@ export default {
 }
 
 .geom-pointgeometryfield:before {
-  content: url('/static/img/pencil_point.png');
+  content: url('/remocra/static/img/pencil_point.png');
   margin-right: 7px;
   cursor: pointer;
 }
 
 .geom-linestringgeometryfield:before {
-  content: url('/static/img/pencil_ligne.png');
+  content: url('/remocra/static/img/pencil_ligne.png');
   margin-right: 7px;
   cursor: pointer;
 }
 
 .geom-polygongeometryfield:before {
-  content: url('/static/img/pencil_polygone.png');
+  content: url('/remocra/static/img/pencil_polygone.png');
   margin-right: 7px;
   cursor: pointer;
 }
 
 .geom-circlegeometryfield:before {
-  content: url('/static/img/pencil_circle.png');
+  content: url('/remocra/static/img/pencil_circle.png');
   margin-right: 7px;
   cursor: pointer;
 }
 
 .geom-boxgeometryfield:before {
-  content: url('/static/img/pencil_rectangle.png');
+  content: url('/remocra/static/img/pencil_rectangle.png');
   margin-right: 7px;
   cursor: pointer;
 }
 
 .delete {
-  content: url('/static/img/delete.png');
+  content: url('/remocra/static/img/delete.png');
   margin-right: 7px;
   cursor: pointer;
 }
 
 .modif {
-  content: url('/static/img/pencil.png');
+  content: url('/remocra/static/img/pencil.png');
   margin-right: 7px;
   cursor: pointer;
 }

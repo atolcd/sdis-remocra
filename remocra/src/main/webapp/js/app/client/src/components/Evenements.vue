@@ -3,12 +3,12 @@
   <b-list-group flush v-for="(evenement, indexevt) in evenements" :key="indexevt">
     <b-list-group-item>
       <div class="evenement">
-        <img class="messages-toggle" src="/static/img/expand.svg" @click="loadMessages(evenement.id)">
+        <img class="messages-toggle" src="/remocra/static/img/expand.svg" @click="loadMessages(evenement.id)">
         <sup><span class="messages-count">{{evenement.criseSuivis.length}}</span></sup>
         <span class="evenement-nom" @click="modifEvent(evenement)">{{evenement.nom}}</span>
         <div class="mini-tools">
-          <img style="cursor:pointer" v-if="evenement.cloture == null" src="/static/img/message-add.svg" title="Nouveau message" @click="openNewMessage(evenement.id)">
-          <img style="cursor:pointer" v-if="evenement.geometrie !== null" src="/static/img/location.svg" title="Zoomer" @click="locateEvent(evenement.geometrie)">
+          <img style="cursor:pointer" v-if="evenement.cloture == null" src="/remocra/static/img/message-add.svg" title="Nouveau message" @click="openNewMessage(evenement.id)">
+          <img style="cursor:pointer" v-if="evenement.geometrie !== null" src="/remocra/static/img/location.svg" title="Zoomer" @click="locateEvent(evenement.geometrie)">
         </div>
       </div>
       <b-collapse v-if="evenement.criseSuivis.length!==0" class="mt-2 messages" :id="'c'+evenement.id">

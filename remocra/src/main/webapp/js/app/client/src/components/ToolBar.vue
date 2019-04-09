@@ -2,7 +2,7 @@
 <div>
   <b-dropdown text="Dropdown Button" ref="dropDown" title="Dessiner un évènement">
     <template slot="button-content">
-      <img src='/static/img/pencil_point.png'>
+      <img src='/remocra/static/img/pencil_point.png'>
     </template>
     <ul v-for="(type, name) in types" :key="name">
       <li class="dropdown-submenu"><a class="dropdown-item" href="#">{{name}}</a>
@@ -13,19 +13,19 @@
       </li>
     </ul>
   </b-dropdown>
-  <b-btn class="ctrl" @click="activateInteraction('Modify')" title="Modifier la géometrie d'un évènement"><img src="/static/img/pencil.png"></b-btn>
+  <b-btn class="ctrl" @click="activateInteraction('Modify')" title="Modifier la géometrie d'un évènement"><img src="/remocra/static/img/pencil.png"></b-btn>
   <b-button-group v-if="showUpdateGeom">
     <b-btn class="ok-cancel-btns" @click="validModifGeom">Valider</b-btn>
     <b-btn class="ok-cancel-btns" @click="annulModifGeom">Annuler</b-btn>
   </b-button-group>
-  <b-btn class="ctrl" @click="activateInteraction('Translate')" title="Déplacer un évènement"><img src="/static/img/pencil_move.png"></b-btn>
+  <b-btn class="ctrl" @click="activateInteraction('Translate')" title="Déplacer un évènement"><img src="/remocra/static/img/pencil_move.png"></b-btn>
   <b-button-group v-if="showTranslateGeom">
     <b-btn class="ok-cancel-btns" @click="validTranslateGeom">Valider</b-btn>
     <b-btn class="ok-cancel-btns" @click="annulTranslateGeom">Annuler</b-btn>
   </b-button-group>
-  <b-btn class="ctrl" @click="openAttributes" title="Modifier les attributs d’un événement"><img src="/static/img/application_view_columns.png"></b-btn>
-  <b-btn class="ctrl" @click="addStampedCard" title="Carte horodatée"><img src="/static/img/photo-add.svg"></b-btn>
-  <b-btn class="ctrl" @click="openModalImportFile" title="Ajouter un fichier vectoriel"><img id="iconBtnImportFile" src="/static/img/cartographie.png"></b-btn>
+  <b-btn class="ctrl" @click="openAttributes" title="Modifier les attributs d’un événement"><img src="/remocra/static/img/application_view_columns.png"></b-btn>
+  <b-btn class="ctrl" @click="addStampedCard" title="Carte horodatée"><img src="/remocra/static/img/photo-add.svg"></b-btn>
+  <b-btn class="ctrl" @click="openModalImportFile" title="Ajouter un fichier vectoriel"><img id="iconBtnImportFile" src="/remocra/static/img/cartographie.png"></b-btn>
 </div>
 </template>
 
@@ -173,17 +173,17 @@ export default {
 }
 
 .geom-point:before {
-  content: url('/static/img/pencil_point.png');
+  content: url('/remocra/static/img/pencil_point.png');
   margin-right: 7px;
 }
 
 .geom-linestring:before {
-  content: url('/static/img/pencil_ligne.png');
+  content: url('/remocra/static/img/pencil_ligne.png');
   margin-right: 7px;
 }
 
 .geom-polygon:before {
-  content: url('/static/img/pencil_polygone.png');
+  content: url('/remocra/static/img/pencil_polygone.png');
   margin-right: 7px;
 }
 </style>

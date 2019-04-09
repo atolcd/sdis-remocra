@@ -16,7 +16,9 @@ Ext.define('Sdis.Remocra.features.crises.TabMapCrise', {
     'afterrender': function(){
          if (Ext.isDefined(this.idCrise)) {
             if(Ext.isDefined(window.remocraVue)) {
-              window.remocraVue.buildVue(this.id, this.idCrise);
+              remocraVue.buildVue(this.id, this.idCrise);
+            } else {
+                console.log('Crise : remocraVue undefined');
             }
          }
     },

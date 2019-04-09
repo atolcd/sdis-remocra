@@ -17,19 +17,19 @@
     <div class='pagination' v-if='donnees.slice(pageNumber * pageSize, pageNumber * pageSize + pageSize).length!=0'>
       <div class='btn-group'>
         <button @click="pageNumber=0" :disabled='pageNumber==0' class='btn'>
-          <img src='/static/img/resultset_first.png' alt='first' />
+          <img src='/remocra/static/img/resultset_first.png' alt='first' />
         </button>
         <button @click="pageNumber--" :disabled='pageNumber==0' class='btn'>
-          <img src='/static/img/resultset_previous.png' alt='previous' />
+          <img src='/remocra/static/img/resultset_previous.png' alt='previous' />
         </button>
       </div>
       <p class='text-center'>Page {{pageNumber+1}}/{{Math.ceil(donnees.length/pageSize)}}</p>
       <div class='btn-group'>
         <button @click="pageNumber++" :disabled='pageNumber >= Math.ceil(donnees.length/pageSize) -1' class='btn'>
-          <img src='/static/img/resultset_next.png' alt='next' />
+          <img src='/remocra/static/img/resultset_next.png' alt='next' />
         </button>
         <button @click="pageNumber = Math.ceil(donnees.length/pageSize) -1" :disabled='pageNumber >= Math.ceil(donnees.length/pageSize) -1' class='btn'>
-          <img src='/static/img/resultset_last.png' alt='last' />
+          <img src='/remocra/static/img/resultset_last.png' alt='last' />
         </button>
       </div>
     </div>

@@ -446,7 +446,7 @@ body {
 }
 
 .gestcrise header.card-header>span:first-child:before {
-  background-image: url('/static/img/collapse.svg');
+  background-image: url('/remocra/static/img/collapse.svg');
   background-size: 20px 20px;
   background-position-y: bottom;
   display: inline-block;
@@ -456,7 +456,7 @@ body {
 }
 
 .gestcrise header.card-header>span.collapsed:first-child:before {
-  background-image: url('/static/img/expand.svg');
+  background-image: url('/remocra/static/img/expand.svg');
 }
 
 .gestcrise header.card-header>span:first-child:hover {

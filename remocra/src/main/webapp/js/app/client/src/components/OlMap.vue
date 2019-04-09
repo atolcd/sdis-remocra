@@ -5,11 +5,11 @@
       <b-row class="text-start toolbar">
         <div class="h-spacer" />
         <div class="text-start my-1">
-          <b-btn class="ctrl" title="Déplacer la carte"><img src="/static/img/pan.png"></b-btn>
-          <b-btn class="ctrl" title="Zoomer en avant" @click="zoomIn"><img src="/static/img/magnifier_zoom_in.png"></b-btn>
-          <b-btn class="ctrl" title="Zoomer en arrière" @click="zoomOut"><img src="/static/img/magnifier_zoom_out.png"></b-btn>
-          <b-btn class="ctrl" title="Rétablir la vue précédente" @click="zoomPrev"><img src="/static/img/zoom_prec.png"></b-btn>
-          <b-btn class="ctrl" title="Rétablir la vue suivante" @click="zoomNext"><img src="/static/img/zoom_suiv.png"></b-btn>
+          <b-btn class="ctrl" title="Déplacer la carte"><img src="/remocra/static/img/pan.png"></b-btn>
+          <b-btn class="ctrl" title="Zoomer en avant" @click="zoomIn"><img src="/remocra/static/img/magnifier_zoom_in.png"></b-btn>
+          <b-btn class="ctrl" title="Zoomer en arrière" @click="zoomOut"><img src="/remocra/static/img/magnifier_zoom_out.png"></b-btn>
+          <b-btn class="ctrl" title="Rétablir la vue précédente" @click="zoomPrev"><img src="/remocra/static/img/zoom_prec.png"></b-btn>
+          <b-btn class="ctrl" title="Rétablir la vue suivante" @click="zoomNext"><img src="/remocra/static/img/zoom_suiv.png"></b-btn>
         </div>
         <div class="h-spacer" />
         <div class="text-start" style="margin-top:0.5rem">
@@ -20,27 +20,27 @@
           <search-repertoire :crise="criseId" ref='searchRepertoire'></search-repertoire>
         </div>
         <div class="big-h-spacer" />
-        <b-btn class=" text-start my-1 measure-container ctrl" :id="'measureTools'+criseId" @click="removeMeasureInteraction"><img src="/static/img/ruler.png"></b-btn>
+        <b-btn class=" text-start my-1 measure-container ctrl" :id="'measureTools'+criseId" @click="removeMeasureInteraction"><img src="/remocra/static/img/ruler.png"></b-btn>
         <b-popover class="dropdown-menu" placement="bottomright" :ref="'popovermesure'+criseId" :target="'measureTools'+criseId">
           <div>
-            <b-btn class="dropdown-item" @click="activateMeasure('Distance')"><img src='/static/img/ruler.png'> Distance</b-btn>
+            <b-btn class="dropdown-item" @click="activateMeasure('Distance')"><img src='/remocra/static/img/ruler.png'> Distance</b-btn>
           </div>
           <div>
-            <b-btn class="dropdown-item" @click="activateMeasure('Surface')"><img src='/static/img/ruler_square.png'> Surface</b-btn>
+            <b-btn class="dropdown-item" @click="activateMeasure('Surface')"><img src='/remocra/static/img/ruler_square.png'> Surface</b-btn>
           </div>
         </b-popover>
         <div class="big-h-spacer" />
         <div class="text-start my-1">
-          <b-btn :id="'infoBtn'+criseId" class="ctrl" @click="activateShowInfo" title="Obtenir des informations sur un point de la carte"><img src="/static/img/information.png"></b-btn>
+          <b-btn :id="'infoBtn'+criseId" class="ctrl" @click="activateShowInfo" title="Obtenir des informations sur un point de la carte"><img src="/remocra/static/img/information.png"></b-btn>
         </div>
         <div class="big-h-spacer" />
         <div class="text-start my-1">
-          <b-btn :id="'toolsBarBtn'+criseId" class="ctrl" @click="showToolsBar" v-b-toggle.collapse1 title="Activer les outils d'édition"><img src="/static/img/pencil.png"></b-btn>
+          <b-btn :id="'toolsBarBtn'+criseId" class="ctrl" @click="showToolsBar" v-b-toggle.collapse1 title="Activer les outils d'édition"><img src="/remocra/static/img/pencil.png"></b-btn>
           <show-info :crise="criseId" ref="showInfo"></show-info>
         </div>
         <div class="big-h-spacer" />
         <div class="text-start my-1">
-          <b-btn :id="'processBtn'+criseId" class="ctrl" @click="showProcess" title="Processus"><img src="/static/img/process.png"></b-btn>
+          <b-btn :id="'processBtn'+criseId" class="ctrl" @click="showProcess" title="Processus"><img src="/remocra/static/img/process.png"></b-btn>
           <process ref="showProcess"></process>
         </div>
         <div class="big-h-spacer" />
@@ -48,7 +48,7 @@
           <b-form-radio-group id="btnradios2" buttons button-variant="outline-secondary" v-model="modeAffichage" :options="modeAffichages" name="radioBtnOutline" />
         </b-form-group>
         <div class="text-start my-1 fullscreen-container">
-          <b-btn class="ctrl" @click="GoInFullscreen" title="Plein écran"><img src="/static/img/fullscreen.svg"></b-btn>
+          <b-btn class="ctrl" @click="GoInFullscreen" title="Plein écran"><img src="/remocra/static/img/fullscreen.svg"></b-btn>
         </div>
       </b-row>
       <b-row :id="'toolsBar'+criseId" class="toolsBar toolbar">
@@ -64,8 +64,8 @@
           <b-card-header header-tag="header" class="p-1" role="tab">
             <span style="cursor:pointer" href="#" v-b-toggle.accordion1>Évènements</span><span>
               <div class="toolbar">
-                <b-btn @click="addEvent" class="ctrl" title="Nouvel évènement"><img src="/static/img/event-add.svg"></b-btn>
-                <b-btn class="ctrl" :id="'popoverButton'+criseId"><img src="/static/img/filter.svg" title="Filtrer"></b-btn>
+                <b-btn @click="addEvent" class="ctrl" title="Nouvel évènement"><img src="/remocra/static/img/event-add.svg"></b-btn>
+                <b-btn class="ctrl" :id="'popoverButton'+criseId"><img src="/remocra/static/img/filter.svg" title="Filtrer"></b-btn>
                 <b-popover placement="right" ref="popover" :target="'popoverButton'+criseId" title="Filtrer les évènements">
                   <filters :criseId="criseId" ref="filters"></filters>
                 </b-popover>
@@ -84,7 +84,7 @@
             <span style="cursor:pointer" href="#" v-b-toggle.accordion2>Documents</span>
             <div class="toolbar">
               <span class="document">
-                <b-btn @click="addNewDocument" class="ctrl"><img src="/static/img/file-add.svg"></b-btn>
+                <b-btn @click="addNewDocument" class="ctrl"><img src="/remocra/static/img/file-add.svg"></b-btn>
               </span>
               <new-document ref="newCriseDocument"></new-document>
             </div>
@@ -163,7 +163,7 @@
                         <div class="my-handle">
                           <input type="checkbox" :id="'checkbox'+layer.id+'-'+criseId" :checked="layer.visibility" @click="changeLayerVisibility(layer.id)">
                           <label for="layer.id">{{layer.libelle}}</label>
-                          <b-btn v-bind:id="'btnSuppr'+layer.id" v-if="group.libelle === 'Fichiers importés'" class="ctrlImportLayer" title="Supprimer la couche" @click="deleteImportLayer(layer.id)"><img src="/static/img/decline.png"></b-btn>
+                          <b-btn v-bind:id="'btnSuppr'+layer.id" v-if="group.libelle === 'Fichiers importés'" class="ctrlImportLayer" title="Supprimer la couche" @click="deleteImportLayer(layer.id)"><img src="/remocra/static/img/decline.png"></b-btn>
                         </div>
                       </div>
                     </draggable>
@@ -186,7 +186,7 @@
                     <div class="layer" v-for="(layer,index) in group.items" :key="index" :id="'legend'+layer.id+'-'+criseId">
                       <div class="my-handle">
                         <label>{{layer.libelle}}</label>
-                        <img style="display:block;margin-left:20px;" onerror="this.src='/static/img/layer404.png'" class="legend-img" :src="getLegendGraphics(layer)" />
+                        <img style="display:block;margin-left:20px;" onerror="this.src='/remocra/static/img/layer404.png'" class="legend-img" :src="getLegendGraphics(layer)" />
                       </div>
                     </div>
                   </div>

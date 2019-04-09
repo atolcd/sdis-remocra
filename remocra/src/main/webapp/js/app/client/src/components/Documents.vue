@@ -7,7 +7,7 @@
           <strong>{{document.fichier}} - {{document.date}}</strong>
         </a>
         <div class="mini-tools">
-          <img style="cursor:pointer" v-if="document.geometrie !== null" src="/static/img/location.svg" title="Zoomer" @click="locateDoc(document.geometrie)">
+          <img style="cursor:pointer" v-if="document.geometrie !== null" src="/remocra/static/img/location.svg" title="Zoomer" @click="locateDoc(document.geometrie)">
         </div>
       </div>
     </b-list-group-item>

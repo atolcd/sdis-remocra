@@ -218,7 +218,7 @@ export default {
       styleLigne: [],
       stylesKeys: [],
       imageUrl: '',
-      listeUrl: ['/static/img/bat_cis.png', '/static/img/bat_camping.png', '/static/img/dfci_tour_guet.png', '/static/img/res_fer_gare.png', '/static/img/rci.png', '/static/img/rci-tmp.png'],
+      listeUrl: ['/remocra/static/img/bat_cis.png', '/remocra/static/img/bat_camping.png', '/remocra/static/img/dfci_tour_guet.png', '/remocra/static/img/res_fer_gare.png', '/remocra/static/img/rci.png', '/remocra/static/img/rci-tmp.png'],
       nbGpx: 1,
       nbKml: 1,
       nbGeojson: 1,
