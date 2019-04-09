@@ -100,10 +100,13 @@ Ext.define('Sdis.Remocra.features.crises.TabGeneral', {
             text: 'Nom de crise',
             align : 'center',
             dataIndex: 'nom',
-            // TODO cva retirer (utile pour les tests)
             renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                // TODO cva retirer (utile pour les tests)
+                if (REMOCRA_INFO_MODE!=='debug') {
+                    return record.get('nom');
+                }
                 return '<a href="' + window.document.location.protocol + '//'
-                    + window.document.location.hostname + ':8081/#/olmap?hash='
+                    + window.document.location.hostname + ':8081/?'
                     + record.get('id')+'" target="_blank">'+record.get('nom')+"</a>";
             }
         },{
