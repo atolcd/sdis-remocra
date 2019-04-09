@@ -83,11 +83,36 @@ docker run --rm \
   -v ~/.m2:/var/maven/.m2 -e MAVEN_CONFIG=/var/maven/.m2 -e MAVEN_OPTS="-Duser.home=/var/maven -Ddatabase.url=jdbc:postgresql://postgis.sdisxx.fr:5432/remocra" \
   cvagner/docker-jdk-maven-sencha-cmd:7-3.6.0-3.0.2 \
   \
-  mvn tomcat:run
+  mvn tomcat:run -Dngclient.dir=~/projets/sdis-remocra/client/dist/remocra/static
 ```
 
 Ouvrir l'URL suivante dans un navigateur :
 * [http://localhost:8080/remocra/](http://localhost:8080/remocra/)
+
+
+## Client NG
+
+Le client NG fournit des composants réalisés avec des versions plus récentes de librairies / frameworks :
+* [Vue.js](https://vuejs.org/)
+* [OpenLayers 5](https://openlayers.org/)
+* [npm](https://www.npmjs.com/)
+* [Vue CLI](https://cli.vuejs.org/)
+
+Ces composants sont utilisés dans la version classique de Remocra.
+
+Pour avoir accès au client NG (crise, nouvelle fiche PEI), il faut au préalable construire les assets du projet concerné (cf. propriété système "client-ng.dir" définie plus haut pour modifier le chemin) :
+
+    cd ~/projets/sdis-remocra/client-ng
+    npm install && npm run build
+
+De manière à simplifier le développement, il est possible d'exécuter le projet de manière indépendante :
+
+    cd ~/projets/sdis-remocra/client-ng
+    npm install && npm run dev
+
+S'identifier sur remocra classique et ouvrir la crise 1 (exemple) dans un nouvel onglet :
+* [http://localhost:8081/?1](http://localhost:8081/?1)
+
 
 ## Pour continuer
 
