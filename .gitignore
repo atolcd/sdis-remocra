@@ -20,5 +20,5 @@ packaging/remocrapackage
 modelisation/sqlarchitect/*.pdf
 # ---------------
 # Temporaire crise
-remocra/src/main/webapp/js/app/client
+client-ng
 # ---------------
