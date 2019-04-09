@@ -8,6 +8,8 @@ module.exports = {
   publicPath: '/',
   outputDir: path.resolve(__dirname, 'dist'),
   devServer: {
+    port: 8081,
+    host: '0.0.0.0',
     proxy: {
       '/remocra': {
         target: 'http://0.0.0.0:8080',
