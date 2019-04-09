@@ -192,6 +192,10 @@ export default {
         })
         this.executeRequest(this.selected, valParams)
       }
+      if (evt) {
+        evt.preventDefault()
+        evt.stopPropagation()
+      }
     },
     resetRequest() {
       this.selected = null
