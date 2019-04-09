@@ -1,9 +1,9 @@
 <template>
 <div>
-  <b-modal id="modalInfo"no-close-on-backdrop ref="modal" title="Informations" hide-footer>
+  <b-modal id="modalInfo" no-close-on-backdrop ref="modal" title="Informations" hide-footer>
     <div><strong>Nom :</strong> {{nomFeature}}</div>
     <div><strong>Nature :</strong> {{natureFeature}}</div>
-    <div><strong>Constaté :</strong> {{creationFeature}}</div>
+    <div><strong>Constaté le :</strong> {{creationFeature}}</div>
     <b-btn size="sm" class="float-right" variant="primary" @click="hideModal"> Fermer </b-btn>
   </b-modal>
 </div>
@@ -47,5 +47,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+strong {
+  font-weight: bold;
+  display: -webkit-inline-box;
+}
 </style>
