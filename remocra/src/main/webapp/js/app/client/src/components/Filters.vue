@@ -1,6 +1,6 @@
 <template>
 <div>
-  <input-tag :tags.sync="filtres" v-on:change="controlFilter"></input-tag>
+  <input-tag v-model="filtres" v-on:change="controlFilter"></input-tag>
   <b-list-group flush>
     <b-list-group-item>
       <strong>Type d'évènement</strong>
@@ -162,7 +162,6 @@ export default {
     },
     controlFilter(newFiltres, oldFiltres) {
       if (oldFiltres.length > newFiltres.length) {
-        console.log(oldFiltres)
         var difference = _.pullAll(oldFiltres, newFiltres)
         _.remove(this.filterTags, function(filter) {
           // Pour les types d'évenement on recupere l'id mais on affiche les noms
