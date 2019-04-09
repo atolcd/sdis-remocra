@@ -343,7 +343,7 @@ export default {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 4px;
   color: white;
-  padding: 4px 8px;
+  padding: 10px 8px;
   opacity: 5;
   white-space: nowrap;
 }
