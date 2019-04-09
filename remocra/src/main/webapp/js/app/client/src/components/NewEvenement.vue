@@ -33,7 +33,9 @@
               <b-form-input v-model="form.time" :value="form.time" type="time" style="margin-top:6px;" class="form-control"></b-form-input>
             </b-form-group>
             <b-form-group horizontal label="Importance:" label-for="importanceEvent">
-              <rate id="importanceEvent" :length="5" v-model="form.importance" />
+              <div class="resetrate">
+              <img src="/static/img/resetrate.png"  style="cursor:pointer" @click="resetRate">
+              <rate id="importanceEvent" :length="5" v-model="form.importance" /></div>
             </b-form-group>
             <b-form-group horizontal label="Tags:" label-for="tags">
               <input-tag :tags.sync="form.tags"></input-tag>
@@ -524,6 +526,9 @@ export default {
       return this.comboOptions.filter(function (value) {
         return value.nomChamp === id
       })
+    },
+    resetRate() {
+      this.form.importance = 0
     }
   }
 }
