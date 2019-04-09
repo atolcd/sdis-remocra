@@ -13,6 +13,12 @@ import Notifications from 'vue-notification'
 import velocity from 'velocity-animate'
 import _ from 'lodash'
 
+// Feuilles de style
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-vue/dist/bootstrap-vue.min.css'
+import 'ol/ol.css'
+import 'v-autocomplete/dist/v-autocomplete.css'
+
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
