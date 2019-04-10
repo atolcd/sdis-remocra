@@ -83,7 +83,7 @@ docker run --rm \
   -v ~/.m2:/var/maven/.m2 -e MAVEN_CONFIG=/var/maven/.m2 -e MAVEN_OPTS="-Duser.home=/var/maven -Ddatabase.url=jdbc:postgresql://postgis.sdisxx.fr:5432/remocra" \
   cvagner/docker-jdk-maven-sencha-cmd:7-3.6.0-3.0.2 \
   \
-  mvn tomcat:run -Dngclient.dir=~/projets/sdis-remocra/client/dist/remocra/static
+  mvn tomcat:run -Dclient-ng.dir=~/projets/sdis-remocra/client-ng/dist/remocra/static
 ```
 
 Ouvrir l'URL suivante dans un navigateur :
