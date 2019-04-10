@@ -1,0 +1,24 @@
+#!/usr/bin/env groovy
+
+pipeline {
+  agent {
+    docker {
+      label 'docker&&ovh'
+      image 'cvagner/docker-jdk-maven-sencha-cmd:7-3.6.0-3.0.2'
+      args '-v /var/lib/jenkins/.m2/settings.xml:/tmp/settings.xml:ro'
+    }
+  }
+  stages {
+    stage('Build') {
+      steps {
+        // Run the maven build (mvn is in the PATH in the Docker image)
+        sh "mvn -f remocra/pom.xml -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -B -U -ff clean verify -P modeinfo-able"
+      }
+      post {
+        always {
+          sh "git checkout -- ."
+        }
+      }
+    }
+  }
+}

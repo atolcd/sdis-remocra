@@ -23,42 +23,68 @@ La suite a été réalisée à partir d'un Linux.
 
 Installer :
 * [git](https://git-scm.com/) pour la gestion des sources
-* [docker](https://www.docker.com/), [docker-compose](https://docs.docker.com/compose/) et [psql](http://www.postgresql.org/docs/9.5/static/app-psql.html) (paquet postgresql) pour créer une base de données de développements rapidement
-* une [jdk 1.7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html) et [maven 3](https://maven.apache.org/) pour la compilation et la gestion des dépendances
+* [docker](https://www.docker.com/), [docker-compose](https://docs.docker.com/compose/) et [psql](http://www.postgresql.org/docs/9.5/static/app-psql.html) (paquet postgresql)
+
+Docker est exploité pour :
+* créer un serveur de données PostgreSQL et un serveur cartographique GeoServer de développements
+* compiler / exécuter l'application via un conteneur qui contient les outils à utiliser : une [jdk 1.7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html), [maven 3](https://maven.apache.org/) et [sencha-cmd 3.0.2](https://docs.sencha.com/cmd/)
 
 Récupérer les sources du projet :
 
-    mkdir -p ~/projets && cd ~/projets
+```bash
+    mkdir -p ~/projets/atolcd && cd ~/projets/atolcd
     git clone git://github.com/atolcd/sdis-remocra.git
+```
 
 Démarrer le serveur de données et le serveur de cartes via docker-compose :
 
-    cd ~/projets/sdis-remocra/db-docker && docker-compose up
+```bash
+    cd ~/projets/atolcd/sdis-remocra/db-docker && docker-compose up
+```
 
 Compléter l'installation de GeoServer :
 
-    ~/projets/sdis-remocra/db-docker/geoserver/add_plugins.sh
+```bash
+    ~/projets/atolcd/sdis-remocra/db-docker/geoserver/add_plugins.sh
+```
 
 Créer la base de données :
 
-    PGPASSWORD=postgres ~/projets/sdis-remocra/server/sdis-remocra/home/postgres/remocra_db/reset_db.sh
-
-Configurer l'adresse de GeoServer, dans le contexte docker :
-
-    PGPASSWORD=postgres psql -h localhost -U postgres remocra -c "update remocra.param_conf set valeur='http://localhost:8090/geoserver' where cle='WMS_BASE_URL'"
+```bash
+    PGPASSWORD=postgres ~/projets/atolcd/sdis-remocra/server/sdis-remocra/home/postgres/remocra_db/reset_db.sh
+```
 
 Insérer un jeu de données minimal pour les tests :
 
+```bash
     # Base de données
-    PGPASSWORD=postgres ~/projets/sdis-remocra/server/sdis-remocra/home/postgres/remocra_db/dev/data_tests.sh
+    PGPASSWORD=postgres ~/projets/atolcd/sdis-remocra/server/sdis-remocra/home/postgres/remocra_db/dev/data_tests.sh
     # GeoServer
-    ~/projets/sdis-remocra/db-docker/geoserver/dev/datatest.sh
+    ~/projets/atolcd/sdis-remocra/db-docker/geoserver/dev/datatest.sh
+```
+
+Configurer l'adresse de GeoServer, dans le contexte docker :
+
+```bash
+    PGPASSWORD=postgres psql -h localhost -U postgres remocra -c "update remocra.param_conf set valeur='http://geoserver.sdisxx.fr:8080/geoserver' where cle='WMS_BASE_URL'" 
+```
 
 Lancer l'application :
 
-    cd ~/projets/sdis-remocra/remocra
-    mvn install:install-file -Dfile=lib/irstv-cts.jar -DgroupId=org.cts -DartifactId=cts -Dversion=1.69 -Dpackaging=jar
-    mvn tomcat:run
+```bash
+cd ~/projets/atolcd/sdis-remocra/remocra
+docker run --rm \
+  --name remocra \
+  -u $(id -u):$(id -g) \
+  -v "$(pwd)":/app -w /app \
+  -p 0.0.0.0:8080:8080 \
+  -v "/var/remocra/layers":/var/remocra/layers \
+  --link dbdocker_postgres_1:postgis.sdisxx.fr --link dbdocker_geoserver_1:geoserver.sdisxx.fr \
+  -v ~/.m2:/var/maven/.m2 -e MAVEN_CONFIG=/var/maven/.m2 -e MAVEN_OPTS="-Duser.home=/var/maven -Ddatabase.url=jdbc:postgresql://postgis.sdisxx.fr:5432/remocra" \
+  cvagner/docker-jdk-maven-sencha-cmd:7-3.6.0-3.0.2 \
+  \
+  mvn tomcat:run
+```
 
 Ouvrir l'URL suivante dans un navigateur :
 * [http://localhost:8080/remocra/](http://localhost:8080/remocra/)
