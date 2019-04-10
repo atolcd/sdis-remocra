@@ -36,12 +36,10 @@
         <div class="big-h-spacer" />
         <div class="text-start my-1">
           <b-btn :id="'toolsBarBtn'+criseId" class="ctrl" @click="showToolsBar" v-b-toggle.collapse1 title="Activer les outils d'édition"><img src="/remocra/static/img/pencil.png"></b-btn>
-          <show-info :crise="criseId" ref="showInfo"></show-info>
         </div>
         <div class="big-h-spacer" />
         <div class="text-start my-1">
           <b-btn :id="'processBtn'+criseId" class="ctrl" @click="showProcess" title="Processus"><img src="/remocra/static/img/process.png"></b-btn>
-          <process ref="showProcess"></process>
         </div>
         <div class="big-h-spacer" />
         <b-form-group class="text-start my-1">
@@ -53,13 +51,10 @@
       </b-row>
       <b-row :id="'toolsBar'+criseId" class="toolsBar toolbar">
         <tool-bar ref="toolBar"></tool-bar>
-        <choice-feature :crise="criseId" ref="choiceFeature"></choice-feature>
-        <stamped-card :crise="criseId" ref="stampedCard"></stamped-card>
       </b-row>
   </b-col>
     <b-col class="left_content">
       <div role="tablist">
-        <new-evenement :criseId="criseId" ref="newEvenement"></new-evenement>
         <b-card no-body class="mb-1">
           <b-card-header header-tag="header" class="p-1" role="tab">
             <span style="cursor:pointer" href="#" v-b-toggle.accordion1>Évènements</span><span>
@@ -198,10 +193,13 @@
       </div>
     </b-col>
   </b-row>
-  <b-modal ref="updateGeom" title="Modifier la géométrie">
-    <p class="my-4">Voulez vous valider la nouvelle géométrie</p>
-  </b-modal>
   <modalImportFile ref="modalImportFile"></modalImportFile>
+  <process ref="showProcess"></process>
+  <choice-feature :crise="criseId" ref="choiceFeature"></choice-feature>
+  <stamped-card :crise="criseId" ref="stampedCard"></stamped-card>
+  <show-info :crise="criseId" ref="showInfo"></show-info>
+  <new-evenement :criseId="criseId" ref="newEvenement"></new-evenement>
+
 </b-container>
 </template>
 <script>
@@ -1641,7 +1639,7 @@ button.close {
 .left_content {
   position: absolute;
   width: 300px;
-  z-index: 1000;
+  z-index: 900;
   left: 10px;
   margin-top: 60px;
   margin-inline-start: inherit;
@@ -1650,7 +1648,7 @@ button.close {
 .right_content {
   position: absolute;
   width: 300px;
-  z-index: 900;
+  z-index: 800;
   right: 10px;
   margin-top: 60px;
   margin-inline-end: inherit;
@@ -1658,8 +1656,8 @@ button.close {
 }
 .top_content {
   position: absolute;
-  width: -webkit-fill-available;
   z-index: 900;
+  width: -webkit-fill-available;
   margin: 10px 10px 10px 10px;
   background: #f4f4f4;
 
