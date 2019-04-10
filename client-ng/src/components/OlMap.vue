@@ -11,7 +11,7 @@
           <b-btn class="ctrl" title="Rétablir la vue précédente" @click="zoomPrev"><img src="/remocra/static/img/zoom_prec.png"></b-btn>
           <b-btn class="ctrl" title="Rétablir la vue suivante" @click="zoomNext"><img src="/remocra/static/img/zoom_suiv.png"></b-btn>
         </div>
-        <div class="h-spacer" />
+        <div class="big-h-spacer" />
         <div class="text-start" style="margin-top:0.5rem">
           <search-commune :crise='criseId' ref='searchCommune'></search-commune>
         </div>
@@ -45,7 +45,8 @@
         <b-form-group class="text-start my-1">
           <b-form-radio-group id="btnradios2" buttons button-variant="outline-secondary" v-model="modeAffichage" :options="modeAffichages" name="radioBtnOutline" />
         </b-form-group>
-        <div class="text-start my-1 fullscreen-container">
+        <div class="big-h-spacer" />
+        <div class="text-start my-1">
           <b-btn class="ctrl" @click="GoInFullscreen" title="Plein écran"><img src="/remocra/static/img/fullscreen.svg"></b-btn>
         </div>
       </b-row>
@@ -1613,8 +1614,8 @@ export default {
 
 .tableauDiv {
   bottom: 1%;
-  width: 65%;
-  margin-left: 300px;
+  width: 60%;
+  left: 25%;
   position: absolute;
   z-index: 1000;
 }
@@ -1638,28 +1639,31 @@ button.close {
 
 .left_content {
   position: absolute;
-  width: 300px;
+  width: 350px;
   z-index: 900;
   left: 10px;
-  margin-top: 60px;
+  top: 10px;
+  -webkit-margin-start: inherit;
   margin-inline-start: inherit;
 
 }
 .right_content {
   position: absolute;
-  width: 300px;
+  width: 350px;
   z-index: 800;
   right: 10px;
-  margin-top: 60px;
+  top: 10px;
+  -webkit-margin-end: inherit;
   margin-inline-end: inherit;
-
 }
 .top_content {
   position: absolute;
   z-index: 900;
-  width: -webkit-fill-available;
-  margin: 10px 10px 10px 10px;
+  width: 45%;
+  right: 28%;
+  top: 10px;
   background: #f4f4f4;
+  border-radius: 3px;
 
 }
 .accord7{

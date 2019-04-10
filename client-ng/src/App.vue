@@ -331,7 +331,7 @@ export default {
 }
 
 .gestcrise .big-h-spacer {
-  margin-left: 10px;
+  margin-left: 15px;
 }
 
 .gestcrise .combo {
