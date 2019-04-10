@@ -108,7 +108,7 @@ Pour avoir accès au client NG (crise, nouvelle fiche PEI), il faut au préalabl
 De manière à simplifier le développement, il est possible d'exécuter le projet de manière indépendante :
 
     cd ~/projets/sdis-remocra/client-ng
-    npm install && npm run dev
+    npm install && npm run serve
 
 S'identifier sur remocra classique et ouvrir la crise 1 (exemple) dans un nouvel onglet :
 * [http://localhost:8081/?1](http://localhost:8081/?1)
