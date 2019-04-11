@@ -19,7 +19,3 @@ dist/target
 *.log
 packaging/remocrapackage
 modelisation/sqlarchitect/*.pdf
-# ---------------
-# Temporaire crise
-client-ng
-# ---------------
