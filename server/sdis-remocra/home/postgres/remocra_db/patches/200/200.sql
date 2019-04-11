@@ -1,4 +1,4 @@
-﻿begin;
+begin;
 
 set statement_timeout = 0;
 set client_encoding = 'UTF8';
