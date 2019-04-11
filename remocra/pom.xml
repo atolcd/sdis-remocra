@@ -36,6 +36,13 @@
 		<plugin.build-helper-maven-plugin>1.10</plugin.build-helper-maven-plugin>
 	</properties>
 	<repositories>
+		<!-- Local repository -->
+		<repository>
+			<id>local-maven-repo</id>
+			<name>Local Maven Repo</name>
+			<url>file://${project.basedir}/local-maven-repo</url>
+		</repository>
+		<!-- Remote repositories -->
 		<repository>
 			<id>spring-maven-release</id>
 			<name>Spring Maven Release Repository</name>
@@ -493,7 +500,6 @@
 			<artifactId>jooq</artifactId>
 			<version>${jooq.version}</version>
 		</dependency>
-		<!--  mvn install:install-file -Dfile=lib/irstv-cts.jar -DgroupId=org.cts -DartifactId=cts -Dversion=1.69 -Dpackaging=jar -->
 		<dependency>
 			<groupId>org.cts</groupId>
 			<artifactId>cts</artifactId>
