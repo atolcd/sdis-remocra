@@ -21,7 +21,7 @@
         </div>
         <div class="big-h-spacer" />
         <b-btn class=" text-start my-1 measure-container ctrl" :id="'measureTools'+criseId" @click="removeMeasureInteraction"><img src="/remocra/static/img/ruler.png"></b-btn>
-        <b-popover class="dropdown-menu" placement="bottomright" :ref="'popovermesure'+criseId" :target="'measureTools'+criseId">
+        <b-popover class="dropdown-menu" placement="bottomright" :ref="'popovermesure'+criseId" :container="'mapDiv'+criseId" :target="'measureTools'+criseId">
           <div>
             <b-btn class="dropdown-item" @click="activateMeasure('Distance')"><img src='/remocra/static/img/ruler.png'> Distance</b-btn>
           </div>
@@ -62,7 +62,7 @@
               <div class="toolbar">
                 <b-btn @click="addEvent" class="ctrl" title="Nouvel évènement"><img src="/remocra/static/img/event-add.svg"></b-btn>
                 <b-btn class="ctrl" :id="'popoverButton'+criseId"><img src="/remocra/static/img/filter.svg" title="Filtrer"></b-btn>
-                <b-popover placement="right" ref="popover" :target="'popoverButton'+criseId" title="Filtrer les évènements">
+                <b-popover placement="rightbottom" :container="'mapDiv'+criseId" ref="popover" :target="'popoverButton'+criseId" title="Filtrer les évènements">
                   <filters :criseId="criseId" ref="filters"></filters>
                 </b-popover>
               </div>
