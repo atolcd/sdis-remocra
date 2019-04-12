@@ -4,6 +4,7 @@ import static fr.sdis83.remocra.util.GeometryUtil.sridFromGeom;
 
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -520,8 +521,22 @@ public class CriseEvenementController {
                 secureAddToCompositeOrStatement(returned, "origine",
                         new ObjectStatement("origine", Operator.EQ, "'" + filter.getValue() + "'"));
             } else if ("importance".equals(filter.getFieldName())) {
+              List<Integer> filterValue = new ArrayList<Integer>();
+              int value = Integer.valueOf(filter.getValue());
+              while (value != 0){
+                filterValue.add(value);
+                value --;
+              }
+              StringBuffer sbIds = new StringBuffer("(");
+              for (Integer l : filterValue) {
+                if (sbIds.length()>1) {
+                  sbIds.append(",");
+                }
+                sbIds.append(l);
+              }
+              sbIds.append(")");
                 secureAddToCompositeOrStatement(returned, "importance",
-                        new ObjectStatement("importance", Operator.GTE, filter.getValue()));
+                        new ObjectStatement("importance", Operator.IN, sbIds.toString()));
             } else {
                 log.warn("Filtre CQL inconnu : " + filter.getFieldName());
             }

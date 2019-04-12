@@ -423,10 +423,16 @@ public class CriseEvenementRepository {
         }
       }else if(filter.getFieldName().equals("importance")){
         importance++;
+        List<Integer> filterValue = new ArrayList<Integer>();
+        int value = Integer.valueOf(filter.getValue());
+        while (value != 0){
+          filterValue.add(value);
+          value --;
+        }
         if(importance != 1){
-          ci = ci.or(CRISE_EVENEMENT.IMPORTANCE.eq(Integer.valueOf(filter.getValue())));
+          ci = ci.or(CRISE_EVENEMENT.IMPORTANCE.in(filterValue));
         }else {
-          ci= DSL.and(CRISE_EVENEMENT.IMPORTANCE.eq(Integer.valueOf(filter.getValue())));
+          ci= DSL.and(CRISE_EVENEMENT.IMPORTANCE.in(filterValue));
         }
       }
     }
