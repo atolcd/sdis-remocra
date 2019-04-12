@@ -3,9 +3,8 @@
   <b-row class="text-start" :style="{height: mapRowHeight}">
     <b-col class="top_content">
       <b-row class="text-start toolbar">
-        <div class="h-spacer" />
+        <div class="big-h-spacer" />
         <div class="text-start my-1">
-          <b-btn class="ctrl" title="Déplacer la carte"><img src="/remocra/static/img/pan.png"></b-btn>
           <b-btn class="ctrl" title="Zoomer en avant" @click="zoomIn"><img src="/remocra/static/img/magnifier_zoom_in.png"></b-btn>
           <b-btn class="ctrl" title="Zoomer en arrière" @click="zoomOut"><img src="/remocra/static/img/magnifier_zoom_out.png"></b-btn>
           <b-btn class="ctrl" title="Rétablir la vue précédente" @click="zoomPrev"><img src="/remocra/static/img/zoom_prec.png"></b-btn>
@@ -15,7 +14,7 @@
         <div class="text-start" style="margin-top:0.5rem">
           <search-commune :crise='criseId' ref='searchCommune'></search-commune>
         </div>
-        <div class="h-spacer" />
+        <div class="big-h-spacer" />
         <div class="text-start" style="margin-top:0.5rem">
           <search-repertoire :crise="criseId" ref='searchRepertoire'></search-repertoire>
         </div>
