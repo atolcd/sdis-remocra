@@ -395,23 +395,23 @@ public class CriseEvenementRepository {
         Instant t = new Instant();
         if(periode != 1){
           if(filter.getValue().equals("<10mn")){
-            cp = cp.or(CRISE_EVENEMENT.ID.eq(select(CRISE_SUIVI.EVENEMENT).from(CRISE_SUIVI).where(CRISE_SUIVI.CREATION.greaterThan(new Instant().toDateTime().minusMinutes(10).toInstant()))));
+            cp = cp.or(CRISE_EVENEMENT.ID.in(select(CRISE_SUIVI.EVENEMENT).from(CRISE_SUIVI).where(CRISE_SUIVI.CREATION.greaterThan(new Instant().toDateTime().minusMinutes(10).toInstant()))));
           }else if(filter.getValue().equals("<30mn")){
-            cp = cp.or(CRISE_EVENEMENT.ID.eq(select(CRISE_SUIVI.EVENEMENT).from(CRISE_SUIVI).where(CRISE_SUIVI.CREATION.greaterThan(new Instant().toDateTime().minusMinutes(30).toInstant()))));
+            cp = cp.or(CRISE_EVENEMENT.ID.in(select(CRISE_SUIVI.EVENEMENT).from(CRISE_SUIVI).where(CRISE_SUIVI.CREATION.greaterThan(new Instant().toDateTime().minusMinutes(30).toInstant()))));
           }else if(filter.getValue().equals("<1h")){
-            cp = cp.or(CRISE_EVENEMENT.ID.eq(select(CRISE_SUIVI.EVENEMENT).from(CRISE_SUIVI).where(CRISE_SUIVI.CREATION.greaterThan(new Instant().toDateTime().minusHours(1).toInstant()))));
+            cp = cp.or(CRISE_EVENEMENT.ID.in(select(CRISE_SUIVI.EVENEMENT).from(CRISE_SUIVI).where(CRISE_SUIVI.CREATION.greaterThan(new Instant().toDateTime().minusHours(1).toInstant()))));
           }else if(filter.getValue().equals("<24h")) {
-            cp = cp.or(CRISE_EVENEMENT.ID.eq(select(CRISE_SUIVI.EVENEMENT).from(CRISE_SUIVI).where(CRISE_SUIVI.CREATION.greaterThan(new Instant().toDateTime().minusHours(24).toInstant()))));
+            cp = cp.or(CRISE_EVENEMENT.ID.in(select(CRISE_SUIVI.EVENEMENT).from(CRISE_SUIVI).where(CRISE_SUIVI.CREATION.greaterThan(new Instant().toDateTime().minusHours(24).toInstant()))));
           }
         }else {
           if(filter.getValue().equals("<10mn")){
-            cp = DSL.and(CRISE_EVENEMENT.ID.eq(select(CRISE_SUIVI.EVENEMENT).from(CRISE_SUIVI).where(CRISE_SUIVI.CREATION.greaterThan(new Instant().toDateTime().minusMinutes(10).toInstant()))));
+            cp = DSL.and(CRISE_EVENEMENT.ID.in(select(CRISE_SUIVI.EVENEMENT).from(CRISE_SUIVI).where(CRISE_SUIVI.CREATION.greaterThan(new Instant().toDateTime().minusMinutes(10).toInstant()))));
           }else if(filter.getValue().equals("<30mn")){
-            cp = DSL.and(CRISE_EVENEMENT.ID.eq(select(CRISE_SUIVI.EVENEMENT).from(CRISE_SUIVI).where(CRISE_SUIVI.CREATION.greaterThan(new Instant().toDateTime().minusMinutes(30).toInstant()))));
+            cp = DSL.and(CRISE_EVENEMENT.ID.in(select(CRISE_SUIVI.EVENEMENT).from(CRISE_SUIVI).where(CRISE_SUIVI.CREATION.greaterThan(new Instant().toDateTime().minusMinutes(30).toInstant()))));
           }else if(filter.getValue().equals("<1h")){
-            cp = DSL.and(CRISE_EVENEMENT.ID.eq(select(CRISE_SUIVI.EVENEMENT).from(CRISE_SUIVI).where(CRISE_SUIVI.CREATION.greaterThan(new Instant().toDateTime().minusHours(1).toInstant()))));
+            cp = DSL.and(CRISE_EVENEMENT.ID.in(select(CRISE_SUIVI.EVENEMENT).from(CRISE_SUIVI).where(CRISE_SUIVI.CREATION.greaterThan(new Instant().toDateTime().minusHours(1).toInstant()))));
           }else if(filter.getValue().equals("<24h")) {
-            cp = DSL.and(CRISE_EVENEMENT.ID.eq(select(CRISE_SUIVI.EVENEMENT).from(CRISE_SUIVI).where(CRISE_SUIVI.CREATION.greaterThan(new Instant().toDateTime().minusHours(24).toInstant()))));
+            cp = DSL.and(CRISE_EVENEMENT.ID.in(select(CRISE_SUIVI.EVENEMENT).from(CRISE_SUIVI).where(CRISE_SUIVI.CREATION.greaterThan(new Instant().toDateTime().minusHours(24).toInstant()))));
           }
         }
       }else if(filter.getFieldName().equals("tag")){
