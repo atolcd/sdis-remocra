@@ -127,6 +127,15 @@ export default {
             showedFilter: value.nom
           })
         }
+      } else if (filtre === 'periode'){
+        // on peut pas cumuler des filtres de periode
+        if(_.filter(this.filterTags, ['property', 'periode']).length === 0){
+          this.filtres.push(value)
+          this.filterTags.push({
+            property: filtre,
+            value: value
+          })
+        }
       } else if (_.indexOf(this.filtres, value) === -1) {
         this.filtres.push(value)
         this.filterTags.push({
