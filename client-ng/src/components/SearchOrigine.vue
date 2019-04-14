@@ -33,6 +33,7 @@ export default {
       return item !== null ? item : ''
     },
     search(text) {
+      this.searchText = text
       axios.get('/remocra/evenements/origines/' + this.crise + '?&query=' + text + '&page=1&start=0&limit=10').then((response) => {
         this.results = response.data.data
       }).catch(function(error) {
