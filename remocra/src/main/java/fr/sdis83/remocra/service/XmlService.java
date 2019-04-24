@@ -652,7 +652,7 @@ public class XmlService {
     public void fillHydrantPibi(fr.sdis83.remocra.xml.HydrantPibi hydrantPibiXML, fr.sdis83.remocra.domain.remocra.HydrantPibi hydrantPibi)
             throws IOException, CRSException, IllegalCoordinateException {
         fillHydrant(hydrantPibiXML, hydrantPibi);
-        hydrantPibiXML.setChoc(hydrantPibi.getChoc());
+        hydrantPibiXML.setRenversable(hydrantPibi.getRenversable());
         hydrantPibiXML.setCodeDiametre(hydrantPibi.getDiametre() != null ? hydrantPibi.getDiametre().getCode() : "");
         hydrantPibiXML.setCodeMarque(hydrantPibi.getMarque() != null ? hydrantPibi.getMarque().getCode() : "");
         hydrantPibiXML.setCodeModele(hydrantPibi.getModele() != null ? hydrantPibi.getModele().getCode() : "");
@@ -992,7 +992,7 @@ public class XmlService {
                 } else {
                     hydrantDomPibi.setModele(null);
                 }
-                hydrantDomPibi.setChoc(hydrantPibi.getChoc());
+                hydrantDomPibi.setRenversable(hydrantPibi.getRenversable());
                 hydrantDomPibi.setGestReseau(hydrantPibi.getGestReseau());
             }
 

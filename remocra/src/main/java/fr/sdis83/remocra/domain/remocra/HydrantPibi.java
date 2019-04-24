@@ -2,7 +2,9 @@ package fr.sdis83.remocra.domain.remocra;
 
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -52,7 +54,7 @@ public class HydrantPibi extends Hydrant {
     private String numeroSCP;
 
     @Column
-    private Boolean choc;
+    private Boolean renversable;
 
     @ManyToOne
     private TypeHydrantMarque marque;
@@ -62,6 +64,36 @@ public class HydrantPibi extends Hydrant {
 
     @OneToOne()
     private HydrantPena pena;
+
+    @ManyToOne
+    private HydrantReservoir reservoir;
+
+    @ManyToOne
+    private HydrantPibi jumele;
+
+    @Column
+    private Boolean dispositif_inviolabilite;
+
+    @ManyToOne
+    private Organisme serviceEaux;
+
+    @Column(name= "debit_renforce")
+    private Boolean debitRenforce;
+
+    @ManyToOne
+    private TypeReseauCanalisation typeReseauCanalisation;
+
+    @ManyToOne
+    private TypeReseauAlimentation typeReseauAlimentation;
+
+    @Column
+    private Integer diametreCanalisation;
+
+    @Column
+    private Boolean surpresse;
+
+    @Column
+    private Boolean additive;
 
     public Feature toFeature() {
         Feature feature = super.toFeature();

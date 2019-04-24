@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 privileged aspect HydrantPena_Roo_Jpa_ActiveRecord {
     
-    public static final List<String> HydrantPena.fieldNames4OrderClauseFilter = java.util.Arrays.asList("coordDFCI", "capacite", "qAppoint", "volConstate", "positionnement", "materiau", "hbe", "pibiAssocie");
+    public static final List<String> HydrantPena.fieldNames4OrderClauseFilter = java.util.Arrays.asList("coordDFCI", "capacite", "qAppoint", "volConstate", "positionnement", "materiau", "hbe", "pibiAssocie", "illimitee", "incertaine");
     
     public static long HydrantPena.countHydrantPenas() {
         return entityManager().createQuery("SELECT COUNT(o) FROM HydrantPena o", Long.class).getSingleResult();

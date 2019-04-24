@@ -32,7 +32,7 @@ public class HydrantPibi implements Serializable {
 	private Long    diametre;
 	private String  gestReseau;
 	private String  numeroscp;
-	private Boolean choc;
+	private Boolean renversable;
 	private Long    marque;
 	private Long    modele;
 	private Long    pena;
@@ -49,7 +49,7 @@ public class HydrantPibi implements Serializable {
 		this.diametre = value.diametre;
 		this.gestReseau = value.gestReseau;
 		this.numeroscp = value.numeroscp;
-		this.choc = value.choc;
+		this.renversable = value.renversable;
 		this.marque = value.marque;
 		this.modele = value.modele;
 		this.pena = value.pena;
@@ -65,7 +65,7 @@ public class HydrantPibi implements Serializable {
 		Long    diametre,
 		String  gestReseau,
 		String  numeroscp,
-		Boolean choc,
+		Boolean renversable,
 		Long    marque,
 		Long    modele,
 		Long    pena,
@@ -79,7 +79,7 @@ public class HydrantPibi implements Serializable {
 		this.diametre = diametre;
 		this.gestReseau = gestReseau;
 		this.numeroscp = numeroscp;
-		this.choc = choc;
+		this.renversable = renversable;
 		this.marque = marque;
 		this.modele = modele;
 		this.pena = pena;
@@ -158,12 +158,12 @@ public class HydrantPibi implements Serializable {
 		return this;
 	}
 
-	public Boolean getChoc() {
-		return this.choc;
+	public Boolean getRenversable() {
+		return this.renversable;
 	}
 
-	public HydrantPibi setChoc(Boolean choc) {
-		this.choc = choc;
+	public HydrantPibi setRenversable(Boolean renversable) {
+		this.renversable = renversable;
 		return this;
 	}
 

@@ -82,7 +82,7 @@
             android:id="@+id/mco_choc"
             android:layout_marginLeft="180dp"
             android:checked="false"
-            android:text="CHOC"/>
+            android:text="Renversable"/>
 
         <RelativeLayout
             android:layout_width="match_parent"

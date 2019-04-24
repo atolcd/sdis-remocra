@@ -75,12 +75,12 @@ privileged aspect HydrantPibi_Roo_JavaBean {
         this.numeroSCP = numeroSCP;
     }
     
-    public Boolean HydrantPibi.getChoc() {
-        return this.choc;
+    public Boolean HydrantPibi.getRenversable() {
+        return this.renversable;
     }
     
-    public void HydrantPibi.setChoc(Boolean choc) {
-        this.choc = choc;
+    public void HydrantPibi.setRenversable(Boolean renversable) {
+        this.renversable = renversable;
     }
     
     public TypeHydrantMarque HydrantPibi.getMarque() {
@@ -106,5 +106,86 @@ privileged aspect HydrantPibi_Roo_JavaBean {
     public void HydrantPibi.setPena(HydrantPena pena) {
         this.pena = pena;
     }
+
+    public HydrantReservoir HydrantPibi.getReservoir(){
+        return this.reservoir;
+    }
+
+    public void HydrantPibi.setReservoir(HydrantReservoir reservoir){
+        this.reservoir = reservoir;
+    }
+
+    public HydrantPibi HydrantPibi.getJumele(){
+        return this.jumele;
+    }
+
+    public void HydrantPibi.setJumele(HydrantPibi jumele){
+        this.jumele = jumele;
+    }
+
+    public Boolean HydrantPibi.getDispositif_inviolabilite(){
+        return this.dispositif_inviolabilite;
+    }
+
+    public void HydrantPibi.setDispositif_inviolabilite(Boolean dispositif_inviolabilite){
+        this.dispositif_inviolabilite = dispositif_inviolabilite;
+    }
+
+    public Organisme HydrantPibi.getServiceEaux() {
+        return this.serviceEaux;
+    }
+
+    public void HydrantPibi.setServiceEaux(Organisme serviceEaux) {
+        this.serviceEaux = serviceEaux;
+    }
+
+    public Boolean HydrantPibi.getDebitRenforce() {
+        return this.debitRenforce;
+    }
+
+    public void HydrantPibi.setDebitRenforce(Boolean debitRenforce) {
+        this.debitRenforce = debitRenforce;
+    }
+
+    public TypeReseauCanalisation HydrantPibi.getTypeReseauCanalisation() {
+        return this.typeReseauCanalisation;
+    }
+
+    public void HydrantPibi.setTypeReseauCanalisation(TypeReseauCanalisation typeReseauCanalisation) {
+        this.typeReseauCanalisation = typeReseauCanalisation;
+    }
+
+    public TypeReseauAlimentation HydrantPibi.getTypeReseauAlimentation() {
+        return this.typeReseauAlimentation;
+    }
+
+    public void HydrantPibi.setTypeReseauAlimentation(TypeReseauAlimentation typeReseauAlimentation) {
+        this.typeReseauAlimentation = typeReseauAlimentation;
+    }
+
+    public Integer HydrantPibi.getDiametreCanalisation() {
+        return this.diametreCanalisation;
+    }
+
+    public void HydrantPibi.setDiametreCanalisation(Integer diametreCanalisation) {
+        this.diametreCanalisation = diametreCanalisation;
+    }
+
+    public Boolean HydrantPibi.getSurpresse() {
+        return this.surpresse;
+    }
+
+    public void HydrantPibi.setSurpresse(Boolean surpresse) {
+        this.surpresse = surpresse;
+    }
+
+    public Boolean HydrantPibi.getAdditive() {
+        return this.additive;
+    }
+
+    public void HydrantPibi.setAdditive(Boolean additive) {
+        this.additive = additive;
+    }
+
     
 }

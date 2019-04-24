@@ -203,6 +203,24 @@ public class Hydrant implements Featurable {
     @Enumerated(EnumType.STRING)
     private Disponibilite dispoAdmin;
 
+    @Column(name="numero_voie")
+    private Integer numeroVoie;
+
+    @Column(name="suffixe_voie")
+    private String suffixeVoie;
+
+    @ManyToOne
+    private TypeHydrantNiveau niveau;
+
+    @Column
+    private Long gestionnaire;
+
+    @ManyToOne
+    private Site site;
+
+    @ManyToOne
+    private Organisme autoriteDeci;
+
     // Autre
     @Override
     public Feature toFeature() {

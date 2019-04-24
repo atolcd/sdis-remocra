@@ -338,5 +338,53 @@ privileged aspect Hydrant_Roo_JavaBean {
     public void Hydrant.setAdresse(String Adresse) {
         this.adresse = adresse;
     }
+
+    public Integer Hydrant.getNumeroVoie() {
+        return this.numeroVoie;
+    }
+
+    public void Hydrant.setNumeroVoie(Integer numeroVoie) {
+       this.numeroVoie = numeroVoie;
+    }
+
+    public String Hydrant.getSuffixeVoie() {
+        return this.suffixeVoie;
+    }
+
+    public void Hydrant.setSuffixeVoie(String suffixeVoie) {
+       this.suffixeVoie = suffixeVoie;
+    }
+
+    public TypeHydrantNiveau Hydrant.getNiveau() {
+        return this.niveau;
+    }
+
+    public void Hydrant.setNiveau(TypeHydrantNiveau niveau) {
+       this.niveau = niveau;
+    }
+
+    public Long Hydrant.getGestionnaire() {
+        return this.gestionnaire;
+    }
+
+    public void Hydrant.setGestionnaire(Long gestionnaire) {
+       this.gestionnaire = gestionnaire;
+    }
+
+    public Site Hydrant.getSite() {
+        return this.site;
+    }
+
+    public void Hydrant.setSite(Site site) {
+       this.site = site;
+    }
+
+    public Organisme Hydrant.getAutoriteDeci() {
+        return this.autoriteDeci;
+    }
+
+    public void Hydrant.setAutoriteDeci(Organisme autoriteDeci) {
+       this.autoriteDeci = autoriteDeci;
+    }
     
 }

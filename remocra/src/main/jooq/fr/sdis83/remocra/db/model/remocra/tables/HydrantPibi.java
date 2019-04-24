@@ -90,9 +90,9 @@ public class HydrantPibi extends TableImpl<Record> {
 	public final TableField<Record, String> NUMEROSCP = createField("numeroscp", org.jooq.impl.SQLDataType.VARCHAR, this, "");
 
 	/**
-	 * The column <code>remocra.hydrant_pibi.choc</code>.
+	 * The column <code>remocra.hydrant_pibi.renversable</code>.
 	 */
-	public final TableField<Record, Boolean> CHOC = createField("choc", org.jooq.impl.SQLDataType.BOOLEAN, this, "");
+	public final TableField<Record, Boolean> renversable = createField("renversable", org.jooq.impl.SQLDataType.BOOLEAN, this, "");
 
 	/**
 	 * The column <code>remocra.hydrant_pibi.marque</code>.

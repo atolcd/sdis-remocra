@@ -27,7 +27,7 @@ public abstract class HydrantPibi extends Hydrant {
 
     private String numeroSCP;
 
-    private Boolean choc;
+    private Boolean renversable;
 
     private String codeMarque;
 
@@ -85,12 +85,12 @@ public abstract class HydrantPibi extends Hydrant {
         this.numeroSCP = numeroSCP;
     }
 
-    public Boolean getChoc() {
-        return choc;
+    public Boolean getRenversable() {
+        return renversable;
     }
 
-    public void setChoc(Boolean choc) {
-        this.choc = choc;
+    public void setRenversable(Boolean renversable) {
+        this.renversable = renversable;
     }
 
     public String getCodeMarque() {

@@ -547,7 +547,7 @@
         <column name="diametre" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <column name="gest_reseau" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
         <column name="numeroscp" primaryKey="false" required="false" scale="0" size="2147483647" type="12,varchar"/>
-        <column name="choc" primaryKey="false" required="false" scale="0" size="1" type="-7,bool"/>
+        <column name="renversable" primaryKey="false" required="false" scale="0" size="1" type="-7,bool"/>
         <column name="marque" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <column name="modele" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <column name="pena" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>

@@ -51,6 +51,12 @@ public class HydrantPena extends Hydrant {
     @OneToOne(mappedBy = "pena")
     private HydrantPibi pibiAssocie;
 
+    @Column
+    private Boolean illimitee;
+
+    @Column
+    private Boolean incertaine;
+
     public Feature toFeature() {
         Feature feature = super.toFeature();
         if (this.hbe != null && this.hbe.booleanValue() && this.getDispoHbe() != Disponibilite.INDISPO) {

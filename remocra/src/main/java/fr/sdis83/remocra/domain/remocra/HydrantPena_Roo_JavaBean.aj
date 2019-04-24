@@ -74,5 +74,21 @@ privileged aspect HydrantPena_Roo_JavaBean {
     public void HydrantPena.setPibiAssocie(HydrantPibi pibiAssocie) {
         this.pibiAssocie = pibiAssocie;
     }
+
+    public Boolean HydrantPena.getIllimitee() {
+        return this.illimitee;
+    }
+
+    public void HydrantPena.setIllimite(Boolean illimitee) {
+        this.illimitee = illimitee;
+    }
+
+    public Boolean HydrantPena.getIncertaine() {
+        return this.incertaine;
+    }
+
+    public void HydrantPena.setIncertaine(Boolean incertaine) {
+        this.incertaine = incertaine;
+    }
     
 }
