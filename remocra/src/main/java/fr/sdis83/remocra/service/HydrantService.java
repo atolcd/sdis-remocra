@@ -1,5 +1,7 @@
 package fr.sdis83.remocra.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,6 +19,9 @@ import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
 
 import flexjson.JSONSerializer;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import org.apache.log4j.Logger;
 import org.cts.IllegalCoordinateException;
@@ -445,6 +450,50 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
             } catch (Exception e) {
                 logger.debug("Problème lors de la requête sur la table remocra_referentiel.carro_dfci", e);
             }
+        }
+    }
+
+    /**
+     * Transforme des coordonnées (tout système) en un Point géographique en Lambert 93
+     * @param json Un objet JSON contenant:
+     *            - Le système de coordonnées (srid)
+     *            - La latitude (ou X)
+     *            - La longitude (ou Y)
+     *            - Flag booléen "degres" indiquant si on souhaite des degrés décimaux (true) ou sexagésimaux (false)
+     * @return Un point géographique
+     */
+    @Transactional
+    public Point coordonneesToPoint(String json) throws BusinessException, IllegalCoordinateException, CRSException {
+        HashMap<String, Object> items = new JSONDeserializer<HashMap<String, Object>>().deserialize(json);
+
+        int srid = Integer.parseInt(items.get("systeme").toString());
+        boolean degres = Boolean.parseBoolean(items.get("degres").toString());
+        double longitude;
+        double latitude;
+
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 2154);
+        //Si les données sont déjà en Lambert 93, on peut mettre à jour
+        if(srid == 2154){
+            longitude = Double.parseDouble(items.get("longitude").toString());
+            latitude = Double.parseDouble(items.get("latitude").toString());
+
+            Point p = geometryFactory.createPoint(new Coordinate(longitude, latitude));
+            return p;
+        }
+        else{
+            // Si les données sont en WSG84 en degrés sexagésiamaux, on les convertit d'abord en degrés décimaux
+            if(srid == 4326 && !degres){
+                longitude = GeometryUtil.convertDegresSexagesimauxToDecimaux(items.get("longitude").toString());
+                latitude = GeometryUtil.convertDegresSexagesimauxToDecimaux(items.get("latitude").toString());
+            } else {
+                longitude = Double.parseDouble(items.get("longitude").toString());
+                latitude = Double.parseDouble(items.get("latitude").toString());
+            }
+            double[] coordonneConvert = GeometryUtil.transformCordinate(longitude, latitude, items.get("systeme").toString(), "2154");
+            longitude = BigDecimal.valueOf(coordonneConvert[0]).setScale(0, RoundingMode.HALF_UP).intValue();
+            latitude = BigDecimal.valueOf(coordonneConvert[1]).setScale(0, RoundingMode.HALF_UP).intValue();
+            Point p = geometryFactory.createPoint(new Coordinate(longitude, latitude));
+            return p;
         }
     }
 

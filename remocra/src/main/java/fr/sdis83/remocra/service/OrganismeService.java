@@ -13,6 +13,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.apache.log4j.Logger;
+import org.jooq.tools.json.JSONArray;
+import org.jooq.tools.json.JSONObject;
 import org.springframework.context.annotation.Configuration;
 
 import fr.sdis83.remocra.domain.remocra.Organisme;
@@ -39,6 +41,9 @@ public class OrganismeService extends AbstractService<Organisme> {
         } else if ("query".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.get("nom");
             predicat = cBuilder.like(cBuilder.upper(cpPath), "%" + itemFilter.getValue().toUpperCase() + "%");
+        } else if ("typeOrganisme".equals(itemFilter.getFieldName())) {
+            Expression<String> cpPath = from.join("typeOrganisme").get("id");
+            predicat = cBuilder.equal(cpPath, itemFilter.getValue());
         } else {
             logger.info("processFilterItem non traité " + itemFilter.getFieldName() + " (" + itemFilter.getValue() + ")");
         }
@@ -99,12 +104,40 @@ public class OrganismeService extends AbstractService<Organisme> {
      * @param idOrganisme L'ID de l'organisme parent
      */
     @Transactional
-    public int removeOrganismeParentForSpecificParent(Long idOrganisme){
+    public int removeOrganismeParentForSpecificParent(Long idOrganisme) {
         Query query = entityManager
                 .createNativeQuery(
                         ("UPDATE remocra.organisme SET organisme_parent=NULL WHERE organisme_parent=(:idOrganisme)"))
                 .setParameter("idOrganisme", idOrganisme);
         return query.executeUpdate();
+    }
+
+    /*
+     * Retourne la liste des organismes dont la zone de compétence comprend le PEI spécifié
+     * @param geometrie La géométrie (de type POINT) du PEI
+     * @param organismesAcceptes Une liste contenant le code des type d'organisme souhaités
+     * @return Un objet JSON contenant certains attributs des organismes valides
+     */
+    public JSONArray getAvailableOrganismes(String geometrie, List<String> organismesAcceptes){
+        Query query = entityManager.createNativeQuery("SELECT o.id, o.nom, t.code " +
+              "FROM remocra.organisme o " +
+              "JOIN remocra.zone_competence zc ON (zc.id = o.zone_competence) " +
+              "JOIN remocra.type_organisme t ON t.id=o.type_organisme " +
+              "WHERE (ST_Intersects(ST_GeomFromText(:geometrie, 2154), zc.geometrie)) AND (o.type_organisme IN " +
+                "(SELECT id FROM remocra.type_organisme WHERE code IN (:typeOrganismes) ))")
+              .setParameter("geometrie", geometrie)
+              .setParameter("typeOrganismes", organismesAcceptes);
+
+        JSONArray json = new JSONArray();
+        List<Object[]> organisme = query.getResultList();
+            for (Object[] o : organisme) {
+                JSONObject obj = new JSONObject();
+                obj.put("id", Long.valueOf(o[0].toString()));
+                obj.put("nom", o[1].toString());
+                obj.put("typeOrganisme", o[2].toString());
+                json.add(obj);
+            }
+        return json;
     }
 
 }

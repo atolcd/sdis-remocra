@@ -203,6 +203,8 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
         // On attache l'organisme de l'utilisateur courant
         attached.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme());
         attached.setUtilisateurModification(utilisateurService.getCurrentUtilisateur());
+
+
         return attached;
     }
 

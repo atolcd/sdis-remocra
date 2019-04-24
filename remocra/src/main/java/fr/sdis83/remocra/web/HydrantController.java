@@ -8,6 +8,7 @@ import java.util.Map;
 import fr.sdis83.remocra.domain.remocra.Tournee;
 import fr.sdis83.remocra.service.TourneeService;
 import fr.sdis83.remocra.util.ExceptionUtils;
+import fr.sdis83.remocra.util.GeometryUtil;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,7 @@ import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import fr.sdis83.remocra.web.serialize.transformer.GeometryTransformer;
 import sun.util.resources.LocaleNames_ga;
+
 
 @RequestMapping("/hydrants")
 @Controller
@@ -244,4 +246,53 @@ public class HydrantController {
         return new SuccessErrorExtSerializer(true, "Point d'eau déplacé").serialize();
 
     }
+
+    /**
+     * Transforme les coordonnées passées en projection Lambert 93
+     * @param srid Le système de projection actuel des coordonnées
+     * @param degres Flag booléen (0: degrés sexagesimaux, 1: degrés décimaux)
+     * @return
+     */
+    @RequestMapping(value = "/transformCoordonnees", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('HYDRANTS_C')")
+    public ResponseEntity<java.lang.String> transformCoordonnees(final @RequestParam(value = "srid") Integer srid,
+                                                                 final @RequestParam(value = "latitude") Double latitude,
+                                                                 final @RequestParam(value = "longitude") Double longitude,
+                                                                 final @RequestParam(value = "degres", required = false, defaultValue = "true") boolean degres){
+        try {
+            // Lambert 83, on renvoie les coordonnées existantes
+            if(srid == 2154){
+                return new SuccessErrorExtSerializer(true, longitude+","+latitude).serialize();
+            }
+            else{
+                double[] coordonneConvert = GeometryUtil.transformCordinate(longitude, latitude, "2154", srid.toString());
+
+                //Si on a choisi le système WGS84 et qu'on ne souhaite pas l'exprimer en degrés décimaux, on le convertit en degrés minutes secondes
+                if(srid == 4326 && !degres){
+                    String longitudeConvert = GeometryUtil.convertDegresDecimauxToSexagesimaux(coordonneConvert[0]);
+                    String latitudeConvert = GeometryUtil.convertDegresDecimauxToSexagesimaux(coordonneConvert[1]);
+                    return new SuccessErrorExtSerializer(true, longitudeConvert+","+latitudeConvert).serialize();
+                }
+                return new SuccessErrorExtSerializer(true, coordonneConvert[0]+","+coordonneConvert[1]).serialize();
+            }
+
+        } catch (Exception e) {
+            return new SuccessErrorExtSerializer(false, "Problème survenu lors du calcul de la projection de coordonnées").serialize();
+        }
+    }
+
+    @RequestMapping(value = "/getUpdatedCoordonnees", method = RequestMethod.POST, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('HYDRANTS_C')")
+    public ResponseEntity<java.lang.String> updateCoordonnees(final @RequestBody String json){
+        try {
+            Point p = hydrantService.coordonneesToPoint(json);
+            return new SuccessErrorExtSerializer(true, p.toString()).serialize();
+        } catch (Exception e) {
+            System.out.println(e);
+            return new SuccessErrorExtSerializer(false, "Problème survenu lors de la mise à jour des coordonnées").serialize();
+        }
+    }
+
+
+
 }

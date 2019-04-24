@@ -147,7 +147,22 @@ Ext.define('Sdis.Remocra.model.Hydrant', {
         type: 'string',
         useNull: true,
         persist: false
-   }],
+   },{
+        name: 'gestionnaire',
+        type: 'fk',
+        useNull: true,
+        defaultValue: null
+    },{
+        name: 'site',
+        type: 'fk',
+        useNull: true,
+        defaultValue: null
+    },{
+        name: 'autoriteDeci',
+        type: 'fk',
+        useNull: true,
+        defaultValue: null
+    }],
 
     associations: [{
         type: 'hasMany',

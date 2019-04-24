@@ -1,5 +1,7 @@
 package fr.sdis83.remocra.util;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -201,5 +203,42 @@ public class GeometryUtil {
         Geometry returned = simplifier.getResultGeometry();
         returned.setSRID(srid!=null?srid:input.getSRID());
         return returned;
+    }
+
+    /**
+     * Convertit une coordonnée WSG84 en degrés décimaux en
+     * @param coordDegres
+     * @return
+     */
+    public static String convertDegresDecimauxToSexagesimaux(double coordDegres){
+        StringBuilder coords = new StringBuilder();
+        BigDecimal bd = new BigDecimal(String.valueOf(coordDegres));
+        coords.append(bd.intValue()+"°");
+        bd = bd.remainder(BigDecimal.ONE);
+
+        bd = bd.multiply(new BigDecimal("60"));
+        coords.append(bd.intValue()+"'");
+        bd = bd.remainder(BigDecimal.ONE);
+
+        bd = bd.multiply(new BigDecimal("60"));
+        bd = bd.setScale(4, RoundingMode.HALF_UP);
+        coords.append(bd+"''");
+        return coords.toString();
+    }
+
+    public static double convertDegresSexagesimauxToDecimaux(String coordSexa) {
+
+        String[] parts = coordSexa.split("°");
+        String[] parts2 = parts[1].split("'");
+
+        BigDecimal minutes = new BigDecimal(parts2[0]);
+        BigDecimal secondes = new BigDecimal(parts2[1]);
+
+        BigDecimal coord = new BigDecimal(parts[0]);
+        minutes = minutes.divide((new BigDecimal("60")), 14, RoundingMode.HALF_UP);
+        secondes = secondes.divide((new BigDecimal("3600")), 14, RoundingMode.HALF_UP);
+        coord = coord.add(minutes).add(secondes);
+
+        return coord.doubleValue();
     }
 }

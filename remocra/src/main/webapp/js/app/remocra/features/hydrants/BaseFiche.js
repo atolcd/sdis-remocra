@@ -20,6 +20,7 @@ Ext.define('Sdis.Remocra.features.hydrants.BaseFiche', {
     alias: 'widget.hydrantFiche',
     modal: true,
     width: 900,
+    height: 900,
     layout: 'fit',
 
     cls: 'fichehydrant',
@@ -36,20 +37,7 @@ Ext.define('Sdis.Remocra.features.hydrants.BaseFiche', {
             layout: {
                 type: 'vbox',
                 align: 'stretch'
-            },
-            items: [{
-                xtype: 'hydrant.entete'
-            },{
-                xtype: 'tabpanel',
-                plain: true,
-                flex: 1,
-                defaults: {
-                    xtype: 'container',
-                    padding: 10
-                },
-                deferredRender: false,
-                items: this.tabItems
-            }]
+            }
         }];
 
         this.tbar = [{
