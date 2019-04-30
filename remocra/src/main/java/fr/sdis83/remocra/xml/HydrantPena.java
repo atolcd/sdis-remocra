@@ -3,7 +3,7 @@ package fr.sdis83.remocra.xml;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 @XmlSeeAlso({ HydrantCiterneEnterre.class, HydrantCoursEau.class, HydrantPlanEau.class, HydrantPuisard.class, HydrantRetenue.class,HydrantReserveIncendie.class,
-    HydrantPointAspiration.class, HydrantAspirationIndetermine.class, HydrantPuitPuisard.class, HydrantCiterneAerienne.class, HydrantChateauEau.class, HydrantPoteauRelais.class })
+    HydrantPointAspiration.class, HydrantAspirationIndetermine.class, HydrantPuitPuisard.class, HydrantCiterneAerienne.class, HydrantCiterneEn.class, HydrantChateauEau.class, HydrantPoteauRelais.class })
 public abstract class HydrantPena extends Hydrant {
 
     public static final String CODE_NATURE_CI_FIXE = "CI_FIXE";
