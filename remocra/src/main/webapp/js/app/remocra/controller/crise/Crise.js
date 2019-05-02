@@ -185,6 +185,12 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
     showConfigureCrise: function(){
        var grid = this.getTabGeneral();
        var criseId = grid.getSelectionModel().getSelection()[0].data.id;
+       var tabPanel = this.getTabPanel();
+       tabPanel.items.each(function(item, index, len) {
+          if (item.xtype == 'crCrisesMapCrise' && item.getItemId() == 'localisation/a/'+criseId) {
+              tabPanel.remove(item, true);
+          }
+       });
        var model = Sdis.Remocra.model.Crise;
         if (model != null) {
                   model.load(criseId, {
