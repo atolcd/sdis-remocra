@@ -1,7 +1,7 @@
 <template>
 <div>
   <!-- Modal Component -->
-  <b-modal id="modalCard" ref="modal" no-close-on-backdrop title="Carte horodatée" @ok="handleOk" @shown="clearName">
+  <b-modal :id="'modalCard'+crise" ref="modal" no-close-on-backdrop title="Carte horodatée" ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @shown="clearName">
     <form @submit.stop.prevent="handleSubmit">
       <b-form-input type="text" placeholder="Saisir le titre de la carte" v-model="name"></b-form-input>
     </form>
@@ -49,7 +49,6 @@ export default {
       var cardName = this.name
       var criseId = this.crise
       this.clearName()
-      this.$refs.modal.hide()
       this.saveCard(cardName, criseId)
     },
     saveCard(cardName, criseId) {
@@ -67,7 +66,8 @@ export default {
           }
         }).then(response => {
           if (response.data.success) {
-            this.$root.$options.bus.$emit(eventTypes.LOAD_DOCUMENTS, criseId)
+            self.$root.$options.bus.$emit(eventTypes.LOAD_DOCUMENTS, criseId)
+            self.$refs.modal.hide()
           }
         }).catch(function(error) {
           console.error('postEvent', error)
