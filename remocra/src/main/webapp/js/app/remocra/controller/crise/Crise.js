@@ -304,22 +304,28 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
 
     showCloreCrise: function(){
        var grid = this.getTabGeneral();
-           var criseId = grid.getSelectionModel().getSelection()[0].data.id;
-           var model = Sdis.Remocra.model.Crise;
-            if (model != null) {
-                      model.load(criseId, {
-                          scope: this,
-                          success: function(record) {
-                            var ficheClore = Ext.widget('creationCrise', {'crise': record});
-                            this.setReadOnly(ficheClore);
-                            ficheClore.down('datefield[name=dateFinCrise]').setDisabled(false);
-                            ficheClore.down('timefield[name=timeFinCrise]').setDisabled(false);
-                            ficheClore.down('datefield[name=dateFinCrise]').setReadOnly(false);
-                            ficheClore.down('timefield[name=timeFinCrise]').setReadOnly(false);
-                            ficheClore.show();
-                          }
-                      });
-                  }
+       var criseId = grid.getSelectionModel().getSelection()[0].data.id;
+       var tabPanel = this.getTabPanel();
+       tabPanel.items.each(function(item, index, len) {
+         if (item.xtype == 'crCrisesMapCrise' && item.getItemId() == 'localisation/a/'+criseId) {
+             tabPanel.remove(item, true);
+         }
+       });
+       var model = Sdis.Remocra.model.Crise;
+        if (model != null) {
+                  model.load(criseId, {
+                      scope: this,
+                      success: function(record) {
+                        var ficheClore = Ext.widget('creationCrise', {'crise': record});
+                        this.setReadOnly(ficheClore);
+                        ficheClore.down('datefield[name=dateFinCrise]').setDisabled(false);
+                        ficheClore.down('timefield[name=timeFinCrise]').setDisabled(false);
+                        ficheClore.down('datefield[name=dateFinCrise]').setReadOnly(false);
+                        ficheClore.down('timefield[name=timeFinCrise]').setReadOnly(false);
+                        ficheClore.show();
+                      }
+                  });
+              }
     },
 
     showExportCrise: function(){
