@@ -4,7 +4,7 @@ Ext.define('Sdis.Remocra.features.crises.bloc.ActivationCrise', {
     extend: 'Ext.form.FieldSet',
     title: 'Activation de crise',
     id: 'activationCrise',
-    alias: 'widget.crise.Activation',
+    alias: 'widget.activationCrise',
      height: 120,
     layout: 'vbox',
     defaults: {
@@ -21,6 +21,7 @@ Ext.define('Sdis.Remocra.features.crises.bloc.ActivationCrise', {
            labelAlign: 'left',
            name: 'dateDebutCrise',
            value: new Date(),
+           maxValue: new Date(),
            format: 'd/m/Y',
            allowBlank: false
         },{
@@ -28,7 +29,6 @@ Ext.define('Sdis.Remocra.features.crises.bloc.ActivationCrise', {
            name: 'timeDebutCrise',
            fieldLabel: 'à * ',
            labelWidth: 30,
-           minValue: "00:00",
            value: new Date(),
            format: 'H:i',
            increment: 15,

@@ -2,6 +2,8 @@ Ext.require('Sdis.Remocra.features.crises.CreationCrise');
 Ext.require('Sdis.Remocra.features.crises.ExportCrise');
 Ext.require('Sdis.Remocra.features.crises.FusionCrise');
 Ext.require('Sdis.Remocra.features.crises.bloc.CommuneCrise');
+Ext.require('Sdis.Remocra.features.crises.bloc.ActivationCrise');
+Ext.require('Sdis.Remocra.features.crises.bloc.ClotureCrise');
 Ext.require('Sdis.Remocra.features.crises.bloc.GridFusionCrise');
 Ext.require('Sdis.Remocra.features.crises.bloc.ServicesCrise');
 Ext.require('Sdis.Remocra.features.crises.bloc.Repertoires');
@@ -26,7 +28,13 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
     }, {
        ref: 'creationCrise',
        selector: 'creationCrise'
-    },{
+    }, {
+       ref: 'activationCrise',
+       selector: 'activationCrise'
+    }, {
+       ref: 'clotureCrise',
+       selector: 'clotureCrise'
+    }, {
        ref: 'exportCrise',
        selector: 'exportCrise'
     },{
@@ -86,6 +94,18 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
             },
             'creationCrise combo[name=choixServices]':{
                change: this.changeServiceSelection
+            },
+            'activationCrise timefield[name=timeDebutCrise]':{
+               change: this.checkTimeActivation
+            },
+            'activationCrise datefield[name=dateDebutCrise]':{
+               change: this.checkTimeActivation
+            },
+            'clotureCrise timefield[name=timeFinCrise]':{
+               change: this.checkTimeCloture
+            },
+            'clotureCrise datefield[name=dateFinCrise]':{
+               change: this.checkTimeCloture
             },
             'creationCrise #validCrise':{
                click: this.saveCrise
@@ -427,6 +447,54 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
        gridServicesCrise.firstGrid.bindStore(storeLeft);
     },
 
+    checkTimeActivation: function(){
+          var fiche = this.getCreationCrise();
+          var msgErrorField = fiche.down('displayfield[name=errorMsg]');
+          msgErrorField.setVisible(false);
+          fiche.down('datefield[name=dateDebutCrise]').clearInvalid();
+          fiche.down('timefield[name=timeDebutCrise]').clearInvalid();
+          var dateActivation = fiche.down('datefield[name=dateDebutCrise]').getValue();
+          var timeActivation = fiche.down('timefield[name=timeDebutCrise]').getValue();
+          if(timeActivation != null){
+              dateActivation.setHours(timeActivation.getHours(),timeActivation.getMinutes());
+          }
+
+          if (dateActivation > new Date()) {
+             fiche.down('datefield[name=dateDebutCrise]').markInvalid("");
+             fiche.down('timefield[name=timeDebutCrise]').markInvalid("");
+             msgErrorField.setValue("La date d'activation ne peut pas être postérieure à la date actuelle");
+             msgErrorField.setVisible(true);
+             return;
+          }
+    },
+
+    checkTimeCloture: function(){
+          var fiche = this.getCreationCrise();
+          var crise = fiche.crise;
+          var msgErrorField = fiche.down('displayfield[name=errorMsg]');
+          msgErrorField.setVisible(false);
+          fiche.down('datefield[name=dateFinCrise]').clearInvalid();
+          fiche.down('timefield[name=timeFinCrise]').clearInvalid();
+          var dateCloture = fiche.down('datefield[name=dateFinCrise]').getValue();
+          var timeCloture = fiche.down('timefield[name=timeFinCrise]').getValue();
+          if(timeCloture != null){
+              dateCloture.setHours(timeCloture.getHours(),timeCloture.getMinutes());
+          }
+          if (dateCloture > new Date()) {
+             fiche.down('datefield[name=dateFinCrise]').markInvalid("");
+             fiche.down('timefield[name=timeFinCrise]').markInvalid("");
+             msgErrorField.setValue("La date de clôture ne peut pas être postérieure à la date actuelle");
+             msgErrorField.setVisible(true);
+             return;
+          } else if (dateCloture < crise.get('activation')) {
+             fiche.down('datefield[name=dateFinCrise]').markInvalid("");
+             fiche.down('timefield[name=timeFinCrise]').markInvalid("");
+             msgErrorField.setValue("La date de clôture ne peut pas être antérieure à la date d'activation");
+             msgErrorField.setVisible(true);
+             return;
+          }
+    },
+
     saveCrise: function(){
         var fiche = this.getCreationCrise(), gridRepertoires = fiche.down('#repertoire'), gridProcessus = fiche.down('#synchro'), gridServices = fiche.down('#gridServices');
         var crise = (fiche.crise && !fiche.crise.phantom) ? fiche.crise : Ext.create('Sdis.Remocra.model.Crise',null);
@@ -434,16 +502,18 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
         crise.set('description', fiche.down('field[name=descriptionCrise]').getValue());
         var dateActivation = fiche.down('datefield[name=dateDebutCrise]').getValue();
         var timeActivation = fiche.down('timefield[name=timeDebutCrise]').getValue();
-        dateActivation.setHours(timeActivation.getHours(),timeActivation.getMinutes());
+        if(timeActivation != null) {
+          dateActivation.setHours(timeActivation.getHours(),timeActivation.getMinutes());
+        }
         crise.set('activation', dateActivation);
 
         var dateCloture = fiche.down('datefield[name=dateFinCrise]').getValue();
         var timeCloture = fiche.down('timefield[name=timeFinCrise]').getValue();
-        if(dateCloture != null){
+        if(dateCloture != null && timeCloture != null){
           dateCloture.setHours(timeCloture.getHours(),timeCloture.getMinutes());
           crise.set('cloture', dateCloture);
-
         }
+
         crise.setTypeCrise(fiche.down('combo[name=typeCrise]').getValue());
         var selectedCommunes = this.getCommuneCrise().down('#gridCommuneCrise').getStore().data.items;
         crise.communes().removeAll();
@@ -487,15 +557,8 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
 
         var form = fiche.down('form[name=ficheCreation]').getForm();
        if(form.isValid()){
-                var msgErrorField = fiche.down('displayfield[name=errorMsg]');
-                if(crise.get('cloture') && crise.get('cloture')< crise.get('activation')){
-                  form.findField('dateFinCrise').markInvalid("");
-                  form.findField('timeFinCrise').markInvalid("");
-                  msgErrorField.setValue("La date de clôture ne peut pas être antérieure à la date d'activation");
-                  msgErrorField.setVisible(true);
-                  return;
-                }
               if(crise && !crise.phantom){
+                    this.checkTimeCloture();
                     //On fait un update
                     Ext.Ajax.request({
                               scope: this,
@@ -520,6 +583,7 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
                               }
                     });
               }else {
+                    this.checkTimeActivation();
                     Ext.Ajax.request({
                               scope: this,
                               method: 'POST',

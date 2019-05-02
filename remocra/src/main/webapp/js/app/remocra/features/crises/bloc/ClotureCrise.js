@@ -4,7 +4,7 @@ Ext.define('Sdis.Remocra.features.crises.bloc.ClotureCrise', {
     extend: 'Ext.form.FieldSet',
     title: 'Cloture de crise',
     id: 'clotureCrise',
-    alias: 'widget.crise.Cloture',
+    alias: 'widget.clotureCrise',
      height: 120,
     layout: 'vbox',
     defaults: {
@@ -30,13 +30,11 @@ Ext.define('Sdis.Remocra.features.crises.bloc.ClotureCrise', {
              name: 'timeFinCrise',
              fieldLabel: 'à * ',
              labelWidth: 30,
-             minValue: "00:00",
              value: null,
              format: 'H:i',
              increment: 15,
              disabled: true,
-             allowBlank: false,
-             maxValue: new Date()
+             allowBlank: false
             }]
     }]
 });

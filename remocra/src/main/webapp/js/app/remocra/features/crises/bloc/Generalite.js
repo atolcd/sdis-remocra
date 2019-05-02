@@ -71,12 +71,12 @@ Ext.define('Sdis.Remocra.features.crises.bloc.Generalite', {
                    xtype: 'fieldcontainer',
                     layout: 'vbox',
                     items: [{
-                       xtype: 'crise.Activation',
+                       xtype: 'activationCrise',
                        id: 'criseActivation',
                        width: 300,
                        margin: '30 0 0 10'
                     },{
-                      xtype: 'crise.Cloture',
+                      xtype: 'clotureCrise',
                       id: 'criseCloture',
                       width:300,
                       margin: '15 0 0 10'
