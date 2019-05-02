@@ -81,7 +81,7 @@
               <span class="document">
                 <b-btn @click="addNewDocument" class="ctrl"><img src="/remocra/static/img/file-add.svg"></b-btn>
               </span>
-              <new-document ref="newCriseDocument"></new-document>
+              <new-document :criseId="criseId" ref="newCriseDocument"></new-document>
             </div>
           </b-card-header>
           <b-collapse id="accordion2" accordion="my-accordion" role="tabpanel">
@@ -157,7 +157,7 @@
                       <div class="layer" v-for="(layer,index) in group.items" :key="index">
                         <div class="my-handle">
                           <input type="checkbox" :id="'checkbox'+layer.id+'-'+criseId" :checked="layer.visibility" @click="changeLayerVisibility(layer.id)">
-                          <label for="layer.id">&nbsp&nbsp{{layer.libelle}}</label>
+                          <label for="layer.id">&nbsp;&nbsp;{{layer.libelle}}</label>
                           <b-btn v-bind:id="'btnSuppr'+layer.id" v-if="group.libelle === 'Fichiers importés'" class="ctrlImportLayer" title="Supprimer la couche" @click="deleteImportLayer(layer.id)"><img src="/remocra/static/img/decline.png"></b-btn>
                         </div>
                       </div>

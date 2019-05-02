@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalDocument" ref="modal" title="Nouveau document" no-close-on-backdrop ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
+  <b-modal :id="'modalDocument'+criseId" ref="modal" title="Nouveau document" no-close-on-backdrop ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
     <form @submit.stop.prevent="handleSubmit">
       <b-form-group horizontal label="Document:" label-for="docs">
         <div class="custom-file b-form-file ">
@@ -21,9 +21,14 @@ import _ from 'lodash'
 import * as eventTypes from '../bus/event-types.js'
 export default {
   name: 'NewDocument',
+  props: {
+    criseId: {
+      required: true,
+      type: Number
+    }
+  },
   data() {
     return {
-      criseId: null,
       file: null,
       files: []
     }
@@ -33,7 +38,10 @@ export default {
       this.criseId = criseId
       this.$refs.modal.show()
     },
-    clearFields() {},
+    clearFields() {
+      this.file = null,
+      this.files = []
+    },
     handleOk(evt) {
       // Prevent modal from closing
       evt.preventDefault()
