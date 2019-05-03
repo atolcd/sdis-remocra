@@ -237,9 +237,10 @@ export default {
     // sélection du fichier saisi dans l'input
     fileSelect() {
       var fileList = document.getElementById('inputFichier')
+
       this.file = fileList.files[0]
       // on vérifie si le fichier choisi est bien d'un type autorisé
-      if ((this.file.type.includes('gpx')) || (this.file.type.includes('kml')) || (this.file.type.includes('json')) || (this.file.type.includes('geojson'))) {
+      if ((this.file.type.includes('gpx')) || (this.file.type.includes('kml')) || (this.file.type.includes('json')) || (this.file.name.includes('.geojson'))) {
         // si le fichier est d'un type souhaité on affiche rien
         this.fileState = false
         // si ce n'est pas le cas on prévient l'utilisateur
@@ -556,10 +557,12 @@ export default {
           self.creationCoucheGpx(event)
         } else if (extension.includes('json')) {
           self.creationCoucheJson(event)
+        } else if (self.file.name.includes('.geojson')) {
+          self.creationCoucheJson(event)
         } else if (extension.includes('kml')) {
           self.creationCoucheKml(event)
         } else {
-          this.$notify({
+          self.$notify({
             group: 'remocra',
             title: 'Import de fichier',
             type: 'error',
@@ -785,15 +788,25 @@ export default {
       // gère un bug car la fonction est déclenchée lorsqu'on réinitialise l'input à la fermeture de la modale
       if ((this.file !== null) && (this.layerName !== '')) {
         // on revérifie que le fichier choisi est bien d'un type autorisé
-        if ((this.file.type.includes('gpx')) || (this.file.type.includes('kml')) || (this.file.type.includes('json')) || (this.file.type.includes('geojson'))) {
+        if ((this.file.type.includes('gpx')) || (this.file.type.includes('kml')) || (this.file.type.includes('json')) || (this.file.name.includes('.geojson'))) {
           this.handleSubmit()
           // sinon on déclenche l'action d'afficher un message se qui empêche la validation du fichier
         } else {
           // on signale à l'utilisateur de changer de fichier
-          alert('Veuillez choisir un fichier gpx, kml ou json')
+          this.$notify({
+            group: 'remocra',
+            title: 'Import de fichier',
+            type: 'error',
+            text: 'Veuillez choisir un fichier gpx, kml ou json'
+          })
         }
       } else {
-        alert('Veuillez saisir les champs obligatoires')
+        this.$notify({
+          group: 'remocra',
+          title: 'Import de fichier',
+          type: 'warn',
+          text: 'Veuillez saisir les champs obligatoires'
+        })
       }
     },
     handleSubmit() {
