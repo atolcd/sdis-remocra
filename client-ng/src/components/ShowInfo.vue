@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalInfo" no-close-on-backdrop ref="modal" title="Informations" hide-footer>
+  <b-modal :id="'modalInfo'+crise" no-close-on-backdrop ref="modal" title="Informations" hide-footer>
     <div><strong>Nom :</strong> {{nomFeature}}</div>
     <div><strong>Nature :</strong> {{natureFeature}}</div>
     <div><strong>Constaté le :</strong> {{creationFeature}}</div>
@@ -36,6 +36,13 @@ export default {
       this.nomFeature = feature.getProperties().nom
       this.natureFeature = feature.getProperties().natureNom
       this.creationFeature = moment(new Date(feature.getProperties().creation), 'DD/MM/YYYY[T]HH:mm:ss[Z]').format('DD/MM/YYYY' + ' - ' + 'HH:mm')
+      this.$refs.modal.show()
+      this.$root.$emit('bv::hide::popover')
+    },
+    showModalFromValues(feature) {
+      this.nomFeature = feature.feature.nom
+      this.natureFeature = feature.feature.natureNom
+      this.creationFeature = moment(new Date(feature.feature.creation), 'DD/MM/YYYY[T]HH:mm:ss[Z]').format('DD/MM/YYYY' + ' - ' + 'HH:mm')
       this.$refs.modal.show()
       this.$root.$emit('bv::hide::popover')
     },

@@ -454,6 +454,9 @@ export default {
     this.$root.$options.bus.$on(eventTypes.VALIDE_INPUTGEOM, index => {
       this.validGeom(index)
     })
+    this.$root.$options.bus.$on(eventTypes.SHOW_INFO, feature => {
+      this.showInfo(feature)
+    })
     this.$root.$options.bus.$on(eventTypes.MODIFY_INPUTGEOM, this.modifyGeom)
     this.$root.$options.bus.$on(eventTypes.DELETE_INPUTGEOM, this.deleteGeom)
     this.$root.$options.bus.$on(eventTypes.RESEARCH_TABDONNEES, this.showTabDonnees)
@@ -480,6 +483,8 @@ export default {
     this.$root.$options.bus.$off(eventTypes.DELETE_INPUTGEOM)
     this.$root.$options.bus.$off(eventTypes.RESEARCH_TABDONNEES)
     this.$root.$options.bus.$off(eventTypes.TOGGLE_TABDONNEES)
+    this.$root.$options.bus.$off(eventTypes.SHOW_INFO)
+
   },
   updated() {
     // this.addSortable()
@@ -1230,12 +1235,15 @@ export default {
             this.$refs.showInfo.showModal(selectedFeature)
           } else {
             // On affiche un modal de choix de feature
-            // this.$refs.choiceFeature.showModal(features)
+            this.$refs.choiceFeature.showInfo(features)
           }
         }
       }).catch(function(error) {
         console.error('carte', error)
       })
+    },
+    showInfo(selectedFeature){
+        this.$refs.showInfo.showModalFromValues(selectedFeature)
     },
     zoomToGeom(geometrie) {
       let geom = new WKT().readGeometry(geometrie, {
@@ -1419,7 +1427,6 @@ export default {
               multigeom = this.formatGeomFromMap(new MultiPolygon(geoms))
             }
           } else {
-            console.log(geoms[0])
             multigeom = this.formatGeomFromMap(geoms[0])
           }
           input[0].value = multigeom

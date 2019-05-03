@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalChoice" ref="modal" no-close-on-backdrop title="Évènements cartographiques" ok-title="Valider" cancel-title="Annuler" @ok="handleOk">
+  <b-modal :id="'modalChoice'+crise" ref="modal" no-close-on-backdrop title="Évènements cartographiques" ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearMode()">
     <b-form-select v-model="selected" :options="features" class="mb-3" @input="addSelected" />
   </b-modal>
 </div>
@@ -23,7 +23,8 @@ export default {
       criseId: null,
       features: [],
       originFeatures: [],
-      selected: null
+      selected: null,
+      mode: 'modif'
     }
   },
   methods: {
@@ -41,6 +42,13 @@ export default {
       this.selected = this.features[0].value
       this.$refs.modal.show()
       this.$root.$emit('bv::hide::popover')
+    },
+     showInfo(features) {
+      this.mode = 'info'
+      this.showModal(features)
+    },
+    clearMode(){
+      this.mode= 'modif'
     },
     addSelected() {
       this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, this.crise)
@@ -61,12 +69,18 @@ export default {
           selected = feature
         }
       })
+      if (this.mode == 'info') {
+        this.$root.$options.bus.$emit(eventTypes.SHOW_INFO, {
+          'feature': selected.getProperties(),
+        })
+      } else {
+        this.$root.$options.bus.$emit(eventTypes.MODIFY_EVENT, {
+          'criseId': this.crise,
+          'evenementId': selected.getId(),
+          'natureId': selected.getProperties().nature
+        })
+      }
       this.$refs.modal.hide()
-      this.$root.$options.bus.$emit(eventTypes.MODIFY_EVENT, {
-        'criseId': this.crise,
-        'evenementId': selected.getId(),
-        'natureId': selected.getProperties().nature
-      })
     }
   }
 }
