@@ -1,0 +1,20 @@
+==== Suivi des PEI
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+===== PEI ayant changé d'état
+Ce traitement vise à informer les acteurs DECI qu'un ou plusieurs PEI a changé d'état de disponible sur son territoire de compétence par le biais d'un mail récapitulatif.
+
+Ce traitement insère une demande d'envoie de mail aux utilisateurs rattachés à l'un des profils paramétrés (cf Configuration).
+
+====== Configuration
+Dans le fichier _remocraXX.properties_, ajouter les paramètres suivant :
+
+[width="100%",options="header"]
+|====================
+| Paramètre | Description
+| PDI_BASCULE_PERIODE | Période de temps sur laquelle il faut vérifier si de nouveaux PEI ont changés d'état de disponibilité (en heures)
+| PDI_DESTINATAIRES_CHANGEMENT_DISPO | Liste des codes des profils qui recevront le mail récapitulatif séparés par une virgule. Les profils doivent être rattaché à un CIS, un groupement ou à l'Etat Major (exemple : _SDIS_REF_CIS,SDIS_REF_SPO,SDIS_REF_CODIS_)
+|====================
+
+====== Lancement et planification de la synchronisation
+L'exécution de manière automatique s'effectue en planifiant le lancement du fichier `/var/remocra/pdi/traitements_sdis/78/notifier_changement_etat_pei.sh` avec l'utilisateur `postgres`.
