@@ -107,7 +107,12 @@ export default {
     handleOk(evt) {
       evt.preventDefault()
       if (document.getElementById('formProcess').checkValidity() === false) {
-        alert('Veuillez saisir les champs obligatoires')
+        this.$notify({
+          group: 'remocra',
+          title: 'Processus Etl',
+          type: 'warn',
+          text: 'Veuillez saisir les champs obligatoires'
+        })
         document.getElementById('formProcess').classList.add('was-validated')
       } else {
         let formData = new FormData()

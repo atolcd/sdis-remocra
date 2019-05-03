@@ -46,7 +46,12 @@ export default {
       // Prevent modal from closing
       evt.preventDefault()
       if (this.files.length === 0) {
-        alert('Veuillez ajouter des documents')
+        this.$notify({
+          group: 'remocra',
+          title: 'Nouveau document',
+          type: 'warn',
+          text: 'Veuillez ajouter des documents'
+        })
       } else {
         this.handleSubmit()
         this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, this.criseId)

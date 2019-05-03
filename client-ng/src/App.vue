@@ -150,31 +150,6 @@ export default {
   border-bottom: 1px solid #a8a8a8;
 }
 
-.gestcrise .notification {
-  padding: 30px;
-  margin: 0 5px 5px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #ffffff;
-  background: #44A4FC;
-  border-left: 5px solid #187FE7;
-}
-
-.gestcrise .notification.warn {
-  background: #ffb648;
-  border-left-color: #f48a06;
-}
-
-.gestcrise .notification.error {
-  background: #E54D42;
-  border-left-color: #B82E24;
-}
-
-.gestcrise .notification.success {
-  background: #68CD86;
-  border-left-color: #42A85F;
-}
-
 .gestcrise header span {
   font-weight: bold;
 }

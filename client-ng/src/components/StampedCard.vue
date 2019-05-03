@@ -37,7 +37,12 @@ export default {
       // Prevent modal from closing
       evt.preventDefault()
       if (!this.name) {
-        alert('Please enter your name')
+        this.$notify({
+          group: 'remocra',
+          title: 'Carte horodatée',
+          type: 'warn',
+          text: 'Veuillez saisir le titre de la carte'
+        })
       } else {
         this.handleSubmit()
       }
