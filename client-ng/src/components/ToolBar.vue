@@ -43,7 +43,7 @@ export default {
       categories: []
     }
   },
-  mounted() {
+  created() {
     var types = []
     var categories = []
     axios.get('/remocra/typecrisecategorieevenement').then((response) => {
@@ -54,31 +54,31 @@ export default {
             categories.push(typeCateg)
           }
         })
-      }
-    }).catch(function(error) {
-      console.error('categorie évenement', error)
-    })
-    axios.get('/remocra/typecrisenatureevenement').then((response) => {
-      if (response.data.data) {
-        var typeEvents = response.data.data
-        _.forEach(typeEvents, function(typeEvenement) {
-          if (typeEvenement.typeGeometrie !== null) {
-            _.forEach(categories, function(categ) {
-              if (categ.id === typeEvenement.categorieEvenement) {
-                types.push({
-                  value: typeEvenement.id,
-                  text: typeEvenement.nom,
-                  categorie: categ.nom,
-                  typeGeometrie: typeEvenement.typeGeometrie
+        axios.get('/remocra/typecrisenatureevenement').then((response) => {
+          if (response.data.data) {
+            var typeEvents = response.data.data
+            _.forEach(typeEvents, function(typeEvenement) {
+              if (typeEvenement.typeGeometrie !== null) {
+                _.forEach(categories, function(categ) {
+                  if (categ.id === typeEvenement.categorieEvenement) {
+                    types.push({
+                      value: typeEvenement.id,
+                      text: typeEvenement.nom,
+                      categorie: categ.nom,
+                      typeGeometrie: typeEvenement.typeGeometrie
+                    })
+                  }
                 })
               }
             })
+            this.types = _.groupBy(types, t => t.categorie)
           }
+        }).catch(function(error) {
+          console.error('nature évenement', error)
         })
-        this.types = _.groupBy(types, t => t.categorie)
       }
     }).catch(function(error) {
-      console.error('nature évenement', error)
+      console.error('categorie évenement', error)
     })
   },
   methods: {

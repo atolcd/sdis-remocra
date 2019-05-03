@@ -165,18 +165,18 @@ export default {
       this.natureId = natureId
       this.form.geometrie = wktfeaturegeom
       this.loadEvenementNatures(natureId)
+      this.$root.$emit('bv::hide::popover')
       axios.get('/remocra/typecrisenatureevenement/nature/' + natureId).then((response) => {
         if (response.data.data) {
           this.form.type = response.data.data[0].id
           this.disableNatures = true
+          this.title = 'Nouvel évènement'
+          this.showTabComplement()
+          this.$refs.modal.show()
         }
       }).catch(function(error) {
         console.error('nature évenement', error)
       })
-      this.$root.$emit('bv::hide::popover')
-      this.title = 'Nouvel évènement'
-      this.showTabComplement()
-      this.$refs.modal.show()
     },
     modifyEvent(criseId, evenementId, natureId) {
       this.evenementId = evenementId
@@ -393,46 +393,46 @@ export default {
               categories.push(typeCateg)
             }
           })
+          axios.get('/remocra/typecrisenatureevenement').then((response) => {
+            if (response.data.data) {
+              var typeEvents = response.data.data
+              _.forEach(typeEvents, function(typeEvenement) {
+                if (natureId !== null) {
+                  if (typeEvenement.typeGeometrie !== null) {
+                    _.forEach(categories, function(categ) {
+                      if (categ.id === typeEvenement.categorieEvenement) {
+                        types.push({
+                          value: typeEvenement.id,
+                          text: typeEvenement.nom,
+                          categorie: categ.nom,
+                          typeGeometrie: typeEvenement.typeGeometrie
+                        })
+                      }
+                    })
+                  }
+                } else {
+                  if (typeEvenement.typeGeometrie === null) {
+                    _.forEach(categories, function(categ) {
+                      if (categ.id === typeEvenement.categorieEvenement) {
+                        types.push({
+                          value: typeEvenement.id,
+                          text: typeEvenement.nom,
+                          categorie: categ.nom,
+                          typeGeometrie: typeEvenement.typeGeometrie
+                        })
+                      }
+                    })
+                  }
+                }
+              })
+              this.types = _.groupBy(types, t => t.categorie)
+            }
+          }).catch(function(error) {
+            console.error('nature évenement', error)
+          })
         }
       }).catch(function(error) {
         console.error('categorie évenement', error)
-      })
-      axios.get('/remocra/typecrisenatureevenement').then((response) => {
-        if (response.data.data) {
-          var typeEvents = response.data.data
-          _.forEach(typeEvents, function(typeEvenement) {
-            if (natureId !== null) {
-              if (typeEvenement.typeGeometrie !== null) {
-                _.forEach(categories, function(categ) {
-                  if (categ.id === typeEvenement.categorieEvenement) {
-                    types.push({
-                      value: typeEvenement.id,
-                      text: typeEvenement.nom,
-                      categorie: categ.nom,
-                      typeGeometrie: typeEvenement.typeGeometrie
-                    })
-                  }
-                })
-              }
-            } else {
-              if (typeEvenement.typeGeometrie === null) {
-                _.forEach(categories, function(categ) {
-                  if (categ.id === typeEvenement.categorieEvenement) {
-                    types.push({
-                      value: typeEvenement.id,
-                      text: typeEvenement.nom,
-                      categorie: categ.nom,
-                      typeGeometrie: typeEvenement.typeGeometrie
-                    })
-                  }
-                })
-              }
-            }
-          })
-          this.types = _.groupBy(types, t => t.categorie)
-        }
-      }).catch(function(error) {
-        console.error('nature évenement', error)
       })
     },
     handleChangeFile(event) {
@@ -492,7 +492,7 @@ export default {
               if (param.formulaireTypeControle === 'autocomplete') {
                 param.formulaireValeurDefaut = valeurFormatee !== null ? valeurFormatee : param.formulaireValeurDefaut
               } else if (param.formulaireTypeControle === 'combo') {
-                axios.get('evenements/evenementmodparalst/' + param.id).then((response) => {
+                axios.get('/remocra/evenements/evenementmodparalst/' + param.id).then((response) => {
                   _.forEach(response.data.data, option => {
                     var o = {
                       nomChamp: param.id,

@@ -253,7 +253,6 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
                         }
                     //sinon on le crée
                     }else {
-                    console.log(crise);
                       cardTab = tabPanel.add({
                       closable : true,
                       xtype : 'crCrisesMapCrise',
