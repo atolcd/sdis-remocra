@@ -49,6 +49,17 @@ export default {
   background-color: #dfdfdf;
 }
 
+.gestcrise .modal-footer .btn-secondary {
+  margin-left: .25rem;
+  position: absolute;
+  width: 80px;
+}
+
+.gestcrise .modal-footer .btn-primary {
+  margin-right: 6rem;
+  width: 80px;
+}
+
 .gestcrise .tab-content {
   margin-top: 6px;
 }
