@@ -73,7 +73,7 @@ export default {
         this.$root.$options.bus.$emit(eventTypes.SHOW_INFO, {
           'feature': selected.getProperties(),
         })
-      } else {
+      } else if (this.mode == 'modif') {
         this.$root.$options.bus.$emit(eventTypes.MODIFY_EVENT, {
           'criseId': this.crise,
           'evenementId': selected.getId(),

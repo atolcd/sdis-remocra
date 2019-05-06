@@ -2,7 +2,7 @@
 <div>
   <b-dropdown text="Dropdown Button" ref="dropDown" title="Dessiner un évènement">
     <template slot="button-content">
-      <img src='/remocra/static/img/pencil_point.png'>
+      <img @click="toggleButton" src='/remocra/static/img/pencil_point.png'>
     </template>
     <ul v-for="(type, name) in types" :key="name">
       <li class="dropdown-submenu"><a class="dropdown-item" href="#">{{name}}</a>
@@ -13,17 +13,17 @@
       </li>
     </ul>
   </b-dropdown>
-  <b-btn class="ctrl" @click="activateInteraction('Modify')" title="Modifier la géometrie d'un évènement"><img src="/remocra/static/img/pencil.png"></b-btn>
+  <b-btn class="ctrl" :id="'modif'+criseId" @click="activateInteraction('Modify', $event)" title="Modifier la géometrie d'un évènement"><img src="/remocra/static/img/pencil.png"></b-btn>
   <b-button-group v-if="showUpdateGeom">
     <b-btn class="ok-cancel-btns" @click="validModifGeom">Valider</b-btn>
     <b-btn class="ok-cancel-btns" @click="annulModifGeom">Annuler</b-btn>
   </b-button-group>
-  <b-btn class="ctrl" @click="activateInteraction('Translate')" title="Déplacer un évènement"><img src="/remocra/static/img/pencil_move.png"></b-btn>
+  <b-btn class="ctrl" :id="'translate'+criseId" @click="activateInteraction('Translate', $event)" title="Déplacer un évènement"><img src="/remocra/static/img/pencil_move.png"></b-btn>
   <b-button-group v-if="showTranslateGeom">
     <b-btn class="ok-cancel-btns" @click="validTranslateGeom">Valider</b-btn>
     <b-btn class="ok-cancel-btns" @click="annulTranslateGeom">Annuler</b-btn>
   </b-button-group>
-  <b-btn class="ctrl" @click="openAttributes" title="Modifier les attributs d’un événement"><img src="/remocra/static/img/application_view_columns.png"></b-btn>
+  <b-btn class="ctrl" :id="'attribute'+criseId" @click="openAttributes" title="Modifier les attributs d’un événement"><img src="/remocra/static/img/application_view_columns.png"></b-btn>
   <b-btn class="ctrl" @click="addStampedCard" title="Carte horodatée"><img src="/remocra/static/img/photo-add.svg"></b-btn>
   <b-btn class="ctrl" @click="openModalImportFile" title="Ajouter un fichier vectoriel"><img id="iconBtnImportFile" src="/remocra/static/img/cartographie.png"></b-btn>
 </div>
@@ -35,6 +35,12 @@ import * as eventTypes from '../bus/event-types.js'
 import _ from 'lodash'
 export default {
   name: 'ToolBar',
+  props: {
+    criseId: {
+      required: true,
+      type: Number
+    }
+  },
   data() {
     return {
       showUpdateGeom: false,
@@ -93,8 +99,16 @@ export default {
         evt.stopPropagation()
       }
     },
-    activateInteraction(type) {
-      this.$root.$options.bus.$emit(eventTypes.ACTIVATE_INTERACTION, type)
+    activateInteraction(type, event) {
+      if(type == 'Modify'){
+        document.getElementById('translate'+this.criseId).classList.remove('active')
+      }else{
+        document.getElementById('modif'+this.criseId).classList.remove('active')
+      }
+      document.getElementById('attribute'+this.criseId).classList.remove('active')
+      this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, this.criseId)
+      var isActive = event.target.parentElement.classList.toggle('active')
+      this.$root.$options.bus.$emit(eventTypes.ACTIVATE_INTERACTION, {'type':type, 'isActive':isActive})
     },
     annulModifGeom() {
       this.$root.$options.bus.$emit(eventTypes.ANNULE_MODIFGEOM)
@@ -108,14 +122,24 @@ export default {
     validTranslateGeom() {
       this.$root.$options.bus.$emit(eventTypes.VALIDE_TRANSLATEGEOM)
     },
-    openAttributes() {
-      this.$root.$options.bus.$emit(eventTypes.OPEN_ATTRIBUTES)
+    openAttributes(e) {
+    document.getElementById('modif'+this.criseId).classList.remove('active')
+    document.getElementById('translate'+this.criseId).classList.remove('active')
+    this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, this.criseId)
+    var isActive = e.target.parentElement.classList.toggle('active')
+      this.$root.$options.bus.$emit(eventTypes.OPEN_ATTRIBUTES, isActive)
     },
     addStampedCard() {
       this.$root.$options.bus.$emit(eventTypes.ADD_STAMPEDCARD)
     },
     openModalImportFile() {
       this.$parent.openModalImportFile()
+    },
+    toggleButton() {
+      document.getElementById('modif'+this.criseId).classList.remove('active')
+      document.getElementById('translate'+this.criseId).classList.remove('active')
+      document.getElementById('attribute'+this.criseId).classList.remove('active')
+      this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, this.criseId)
     }
   }
 }

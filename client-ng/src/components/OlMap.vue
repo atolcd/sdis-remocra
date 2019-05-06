@@ -19,7 +19,7 @@
           <search-repertoire :crise="criseId" ref='searchRepertoire'></search-repertoire>
         </div>
         <div class="big-h-spacer" />
-        <b-btn class=" text-start my-1 measure-container ctrl" :id="'measureTools'+criseId" @click="removeMeasureInteraction"><img src="/remocra/static/img/ruler.png"></b-btn>
+        <b-btn class=" text-start my-1 measure-container ctrl" :id="'measureTools'+criseId" @click="activateMeasureInteraction"><img src="/remocra/static/img/ruler.png"></b-btn>
         <b-popover class="dropdown-menu" placement="bottomright" :ref="'popovermesure'+criseId" :container="'mapDiv'+criseId" :target="'measureTools'+criseId">
           <div>
             <b-btn class="dropdown-item" @click="activateMeasure('Distance')"><img src='/remocra/static/img/ruler.png'> Distance</b-btn>
@@ -50,7 +50,7 @@
         </div>
       </b-row>
       <b-row :id="'toolsBar'+criseId" class="toolsBar toolbar">
-        <tool-bar ref="toolBar"></tool-bar>
+        <tool-bar :criseId="criseId" ref="toolBar"></tool-bar>
       </b-row>
   </b-col>
     <b-col class="left_content">
@@ -434,14 +434,14 @@ export default {
       this.addDrawInteractions(args.typeGeom, args.natureId)
     })
     this.$root.$options.bus.$on(eventTypes.ADD_STAMPEDCARD, this.addStampedCard)
-    this.$root.$options.bus.$on(eventTypes.ACTIVATE_INTERACTION, type => {
-      this.activateInteraction(type)
+    this.$root.$options.bus.$on(eventTypes.ACTIVATE_INTERACTION, args => {
+      this.activateInteraction(args.type, args.isActive)
     })
     this.$root.$options.bus.$on(eventTypes.ANNULE_MODIFGEOM, this.annulModifGeom)
     this.$root.$options.bus.$on(eventTypes.ANNULE_TRANSLATEGEOM, this.annulTranslateGeom)
     this.$root.$options.bus.$on(eventTypes.VALIDE_MODIFGEOM, this.validModifGeom)
     this.$root.$options.bus.$on(eventTypes.VALIDE_TRANSLATEGEOM, this.validTranslateGeom)
-    this.$root.$options.bus.$on(eventTypes.OPEN_ATTRIBUTES, this.openAttributes)
+    this.$root.$options.bus.$on(eventTypes.OPEN_ATTRIBUTES, isActive => this.openAttributes(isActive))
     this.$root.$options.bus.$on(eventTypes.UPDATE_MAPFILTERS, args => {
       this.updateMapFilters(args.id, args.filters)
     })
@@ -827,7 +827,7 @@ export default {
     },
     showToolsBar() {
       // Toolbar
-      document.getElementById('toolsBar' + this.criseId).classList.toggle('active')
+      this.toggleButton('toolsBarBtn'+this.criseId)
       _.delay(this.map.updateSize.bind(this.map), 10)
       this.desactivateControls()
     },
@@ -869,7 +869,6 @@ export default {
       return output
     },
     addMeasureInteraction() {
-      document.getElementsByClassName('measure-container')[0].setAttribute('ctrl-active', 'true')
       this.map.un('click', this.handleMapClick)
       var measureTooltipElement = document.createElement('div')
       measureTooltipElement.className = 'tooltip tooltip-measure'
@@ -919,12 +918,13 @@ export default {
     activateMeasure(type) {
       this.selectedRuler = type
       this.desactivateControls()
-      this.removeMeasureInteraction()
       this.addMeasureInteraction()
     },
     desactivateControls() {
       this.map.un('click', this.handleOpenAttributes)
+      this.map.un('click', this.handleOpenInfo)
       this.map.un('click', this.handleMapClick)
+      this.removeMeasureInteraction()
       if (this.draw) {
         this.draw.setActive(false)
       } else if (this.snap) {
@@ -935,8 +935,11 @@ export default {
         this.translate.setActive(false)
       }
     },
-    removeMeasureInteraction() {
-      document.getElementsByClassName('measure-container')[0].removeAttribute('ctrl-active')
+    activateMeasureInteraction() {
+    this.toggleButton('measureTools'+this.criseId)
+    this.removeMeasureInteraction()
+    },
+    removeMeasureInteraction(){
       if (this.measuringTool) {
         this.measuringTool.setActive(!this.measuringTool.getActive())
         this.map.removeInteraction(this.measuringTool)
@@ -1039,10 +1042,7 @@ export default {
         self.selectedFeature = evt.features.getArray()[0]
       })
     },
-    activateInteraction(type) {
-      var workingLayer = this.getLayerById('workingLayer')
-      this.map.un('click', this.handleOpenAttributes)
-      this.map.on('click', this.handleMapClick)
+    activateInteraction(type, isActive) {
       if (this.measuringTool) {
         this.map.removeInteraction(this.measuringTool)
         // Nettoyage
@@ -1051,12 +1051,22 @@ export default {
           this.measureTooltip.setPosition([0, 0])
         }
       }
-      if (type === 'Translate') {
-        this.translate.setActive(true)
+      if(!isActive){
+        this.map.un('click', this.handleMapClick)
         this.modify.setActive(false)
-      } else if (type === 'Modify') {
-        this.modify.setActive(true)
         this.translate.setActive(false)
+        this.refreshMap(this.criseId)
+      } else {
+        var workingLayer = this.getLayerById('workingLayer')
+        this.map.un('click', this.handleOpenAttributes)
+        this.map.on('click', this.handleMapClick)
+        if (type === 'Translate') {
+          this.translate.setActive(true)
+          this.modify.setActive(false)
+        } else if (type === 'Modify') {
+          this.modify.setActive(true)
+          this.translate.setActive(false)
+        }
       }
     },
     handleMapClick(e) {
@@ -1080,6 +1090,9 @@ export default {
             this.addToWorkingLayer(selectedFeature)
           } else {
             // On affiche un modal de choix de feature
+            if(document.getElementById('infoBtn'+this.criseId).getAttribute('ctrl-active') === null){
+              this.$refs.choiceFeature.mode = 'mesure'
+            }
             this.$refs.choiceFeature.showModal(features)
           }
         }
@@ -1157,8 +1170,14 @@ export default {
       var wktGeomL93 = 'srid=' + this.sridL93 + ';' + new WKT().writeGeometry(geomL93)
       return wktGeomL93
     },
-    openAttributes() {
-      this.map.on('click', this.handleOpenAttributes)
+    openAttributes(isActive) {
+      this.desactivateControls()
+      if(isActive){
+        this.map.on('click', this.handleOpenAttributes)
+      }else {
+        this.map.un('click', this.handleOpenAttributes)
+      }
+
     },
     addStampedCard() {
       var self = this
@@ -1203,15 +1222,8 @@ export default {
      *  Active ou désactive le contrôle Info
      * @param activate forcer l'activation ou la désactivation (sinon fonctionnement "toggle")
      */
-    activateShowInfo(activate) {
-      let isActive = document.getElementById('infoBtn' + this.criseId).getAttribute('ctrl-active') !== null
-      if (activate === true || !isActive) {
-        document.getElementById('infoBtn' + this.criseId).setAttribute('ctrl-active', 'true')
-        this.map.on('click', this.handleOpenInfo)
-      } else if (activate === false || isActive) {
-        document.getElementById('infoBtn' + this.criseId).removeAttribute('ctrl-active')
-        this.map.un('click', this.handleOpenInfo)
-      }
+    activateShowInfo() {
+      this.toggleButton('infoBtn' + this.criseId)
     },
     handleOpenInfo(e) {
       axios.get('/remocra/evenements/layer', {
@@ -1601,6 +1613,27 @@ export default {
       // document.getElementById('mapDiv' + this.criseId).style.height = '100%'
       document.getElementById('tableauDiv' + this.criseId).style.display = 'none'
       this.map.updateSize()
+    },
+    toggleButton(id){
+      let isActive = document.getElementById(id).getAttribute('ctrl-active') !== null
+      document.getElementById('infoBtn'+this.criseId).removeAttribute('ctrl-active')
+      document.getElementById('toolsBarBtn'+this.criseId).removeAttribute('ctrl-active')
+      document.getElementById('measureTools'+this.criseId).removeAttribute('ctrl-active')
+      this.desactivateControls()
+      document.getElementById('toolsBar' + this.criseId).classList.remove('active')
+      this.$refs.toolBar.toggleButton()
+      if (!isActive) {
+        document.getElementById(id).setAttribute('ctrl-active', 'true')
+        if(id == 'infoBtn'+this.criseId){
+          this.map.on('click', this.handleOpenInfo)
+          this.$root.$emit('bv::hide::popover')
+        }else if( id == 'toolsBarBtn'+this.criseId){
+          document.getElementById('toolsBar' + this.criseId).classList.toggle('active')
+          this.$root.$emit('bv::hide::popover')
+        }
+      } else if (isActive) {
+        document.getElementById(id).removeAttribute('ctrl-active')
+      }
     }
   }
 }
