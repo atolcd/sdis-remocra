@@ -310,6 +310,7 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
        if(commune){
           if(grid.store.findRecord("id", commune.getId(),0, false, true, true) == null) {
              grid.store.add(commune);
+             comboCommune.clearInvalid();
              grid.getView().refresh();
           }
        }
@@ -556,6 +557,10 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
 
         var form = fiche.down('form[name=ficheCreation]').getForm();
        if(form.isValid()){
+              if (crise.communes().data.length === 0){
+                 this.getCommuneCrise().down('combo[name=communeCrise]').markInvalid("");
+                 return;
+              }
               if(crise && !crise.phantom){
                     this.checkTimeCloture();
                     //On fait un update
