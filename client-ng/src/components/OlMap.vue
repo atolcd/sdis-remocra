@@ -1043,6 +1043,7 @@ export default {
       })
     },
     activateInteraction(type, isActive) {
+      var workingLayer = this.getLayerById('workingLayer')
       if (this.measuringTool) {
         this.map.removeInteraction(this.measuringTool)
         // Nettoyage
@@ -1057,7 +1058,6 @@ export default {
         this.translate.setActive(false)
         this.refreshMap(this.criseId)
       } else {
-        var workingLayer = this.getLayerById('workingLayer')
         this.map.un('click', this.handleOpenAttributes)
         this.map.on('click', this.handleMapClick)
         if (type === 'Translate') {
