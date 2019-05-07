@@ -242,4 +242,14 @@ public class DocumentUtil {
             }
         }
     }
+
+    public String getSousType(MultipartFile f){
+        String type = f.getContentType().split("/")[0];
+        if(type.equals("image")){
+            return Document.SousTypeDocument.IMAGE.toString();
+        }else if (type.equals("video") || type.equals("audio")){
+            return Document.SousTypeDocument.MEDIA.toString();
+        }
+        return Document.SousTypeDocument.AUTRE.toString();
+    }
 }

@@ -86,7 +86,7 @@
               <input id="eventDocs" type="file" class="custom-file-input" @change="handleChangeFile($event)">
               <label class="custom-file-label">{{file && file.name}}</label></div>
             <div v-for="(file, index) in files" :key="index" class="mt-3">
-              <img @click="deleteFile(file.name)" src="/remocra/static/img/delete.png"><strong> {{file && file.name || file.fichier}}</strong>
+              <img @click="deleteFile(file.name || file.fichier)" src="/remocra/static/img/delete.png"><strong> {{file && file.name || file.fichier}}</strong>
             </div>
           </b-form-group>
         </b-tab>
@@ -118,6 +118,7 @@ export default {
     return {
       file: null,
       files: [],
+      dbFiles: [],
       title: 'Nouvel évènement',
       cloture: false,
       evenementId: null,
@@ -217,6 +218,7 @@ export default {
         axios.get('/remocra/evenements/' + evenementId + '/docevents').then((response) => {
           if (response.data.data) {
             this.files = response.data.data
+            this.dbFiles = _.clone(this.files)
           }
         }).catch(function(error) {
           console.error('documents', error)
@@ -237,6 +239,7 @@ export default {
       this.complements = []
       this.file = null
       this.files = []
+      this.dbFiles = []
       this.form.titre = ''
       this.form.description = ''
       this.form.constat = moment().format('YYYY-MM-DD')
@@ -301,6 +304,10 @@ export default {
         for (var i = 0; i < this.files.length; i++) {
           var file = this.files[i]
           formData.append('files[' + i + ']', file)
+        }
+        var filesToSave = _.intersectionBy(this.files, this.dbFiles, 'code')
+        if(filesToSave.length !== 0){
+          formData.append('filesToSave', JSON.stringify(_.map(filesToSave, file =>{return file.id})))
         }
         // formulaire complementaire
         _.forEach(evt.target.getElementsByClassName('parametreComplement'), item => {
@@ -445,6 +452,10 @@ export default {
           this.file = file
           this.files.push(event.target.files[0])
         }
+      }
+      if (event) {
+        event.preventDefault()
+        event.stopPropagation()
       }
     },
     deleteFile(fileName) {

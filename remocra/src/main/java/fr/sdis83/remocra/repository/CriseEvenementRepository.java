@@ -38,15 +38,18 @@ import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
 import fr.sdis83.remocra.db.converter.InstantConverter;
 import fr.sdis83.remocra.db.model.remocra.Tables;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenementComplement;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseSuivi;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeCriseNatureEvenement;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeCriseProprieteEvenement;
+import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.deserialize.GeometryFactory;
 import fr.sdis83.remocra.web.message.ItemFilter;
@@ -243,7 +246,7 @@ public class CriseEvenementRepository {
 
 
       // ajout des documents
-      criseRepository.addEventDocuments(files, c.getCrise(), idCriseEvent);
+      this.addEventDocuments(files, c.getCrise(), idCriseEvent);
 
       //Ajout des complements
       this.addComplement(idCriseEvent, request.getParameterMap());
@@ -263,6 +266,10 @@ public class CriseEvenementRepository {
   public fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement updateEvent(Long id, MultipartHttpServletRequest request) throws ParseException {
 
     Map<String, MultipartFile> files = request.getFileMap();
+    List<Long> filesToSave = new ArrayList<Long>();
+    if(request.getParameter("filesToSave") != null) {
+      filesToSave = new JSONDeserializer<ArrayList<Long>>().deserialize(request.getParameter("filesToSave"));
+    }
     fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement c = new fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement();
     c.setNom(request.getParameter("nom"));
     c.setDescription(request.getParameter("description"));
@@ -294,8 +301,8 @@ public class CriseEvenementRepository {
     }
 
     //mise à jour des documents
-    context.delete(CRISE_DOCUMENT).where(CRISE_DOCUMENT.EVENEMENT.eq(id)).execute();
-    criseRepository.addEventDocuments(files, c.getCrise(), id);
+    context.delete(CRISE_DOCUMENT).where(CRISE_DOCUMENT.EVENEMENT.eq(id)).and(filesToSave.isEmpty() ? DSL.trueCondition() : CRISE_DOCUMENT.DOCUMENT.notIn(filesToSave)).execute();
+    this.addEventDocuments(files, c.getCrise(), id);
 
     //mise à jour des complements
     context.delete(CRISE_EVENEMENT_COMPLEMENT).where(CRISE_EVENEMENT_COMPLEMENT.EVENEMENT.eq(id)).execute();
@@ -607,6 +614,26 @@ public class CriseEvenementRepository {
         }
       }
     }
+  }
 
+  public void addEventDocuments(Map<String, MultipartFile> files, Long criseId, Long eventId) {
+    if (files != null && !files.isEmpty()) {
+      for (MultipartFile file : files.values()) {
+        if (!file.isEmpty()) {
+          try {
+            Document d = DocumentUtil.getInstance().createNonPersistedDocument(Document.TypeDocument.CRISE, file, paramConfService.getDossierDocCrise());
+            String sousType = DocumentUtil.getInstance().getSousType(file);
+            context.insertInto(DOCUMENT, DOCUMENT.CODE, DOCUMENT.DATE_DOC, DOCUMENT.FICHIER, DOCUMENT.REPERTOIRE, DOCUMENT.TYPE)
+                .values(d.getCode(), new Instant(d.getDateDoc()), d.getFichier(), d.getRepertoire(), d.getType().toString()).execute();
+            Long docId = context.select(DSL.max((DOCUMENT.ID))).from(DOCUMENT).fetchOne().value1();
+            context.insertInto(CriseDocument.CRISE_DOCUMENT, CriseDocument.CRISE_DOCUMENT.SOUS_TYPE, CriseDocument.CRISE_DOCUMENT.DOCUMENT, CriseDocument.CRISE_DOCUMENT.CRISE, CriseDocument.CRISE_DOCUMENT.EVENEMENT)
+                .values(sousType, docId, criseId, eventId).execute();
+          } catch (Exception e) {
+            e.printStackTrace();
+
+          }
+        }
+      }
+    }
   }
 }

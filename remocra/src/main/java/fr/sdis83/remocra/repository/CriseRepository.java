@@ -460,48 +460,26 @@ public class CriseRepository {
 
   }
 
+  //
   public int addDocuments(Map<String, MultipartFile> files, Long criseId, Geometry geometrie) {
     if (files != null && !files.isEmpty()) {
       for (MultipartFile file : files.values()) {
         if (!file.isEmpty()) {
           try {
             Document d = DocumentUtil.getInstance().createNonPersistedDocument(Document.TypeDocument.CRISE, file, paramConfService.getDossierDocCrise());
+            String sousType = DocumentUtil.getInstance().getSousType(file);
             context.insertInto(DOCUMENT, DOCUMENT.CODE, DOCUMENT.DATE_DOC, DOCUMENT.FICHIER, DOCUMENT.REPERTOIRE, DOCUMENT.TYPE)
                 .values(d.getCode(), new Instant(d.getDateDoc()), d.getFichier(), d.getRepertoire(), d.getType().toString()).execute();
             Long docId = context.select(DSL.max((DOCUMENT.ID))).from(DOCUMENT).fetchOne().value1();
             context.insertInto(CRISE_DOCUMENT, CRISE_DOCUMENT.SOUS_TYPE, CRISE_DOCUMENT.DOCUMENT, CRISE_DOCUMENT.CRISE, CRISE_DOCUMENT.GEOMETRIE)
-            .values(getSousType(file), docId, criseId, geometrie != null ? geometrie: null).execute();
-            return 1;
+            .values(sousType, docId, criseId, geometrie != null ? geometrie: null).execute();
           } catch (Exception e) {
             e.printStackTrace();
             return 0;
           }
         }
       }
-    }
-    return 0;
-  }
-
-
-
-  public int addEventDocuments(Map<String, MultipartFile> files, Long criseId, Long eventId) {
-    if (files != null && !files.isEmpty()) {
-      for (MultipartFile file : files.values()) {
-        if (!file.isEmpty()) {
-          try {
-            Document d = DocumentUtil.getInstance().createNonPersistedDocument(Document.TypeDocument.CRISE, file, paramConfService.getDossierDocCrise());
-            context.insertInto(DOCUMENT, DOCUMENT.CODE, DOCUMENT.DATE_DOC, DOCUMENT.FICHIER, DOCUMENT.REPERTOIRE, DOCUMENT.TYPE)
-                .values(d.getCode(), new Instant(d.getDateDoc()), d.getFichier(), d.getRepertoire(), d.getType().toString()).execute();
-            Long docId = context.select(DSL.max((DOCUMENT.ID))).from(DOCUMENT).fetchOne().value1();
-            context.insertInto(CriseDocument.CRISE_DOCUMENT, CriseDocument.CRISE_DOCUMENT.SOUS_TYPE, CriseDocument.CRISE_DOCUMENT.DOCUMENT, CriseDocument.CRISE_DOCUMENT.CRISE, CriseDocument.CRISE_DOCUMENT.EVENEMENT)
-                .values(getSousType(file), docId, criseId, eventId).execute();
-            return 1;
-          } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-          }
-        }
-      }
+      return 1;
     }
     return 0;
   }
@@ -537,16 +515,6 @@ public class CriseRepository {
 
     return context.fetchCount(context.select().from(CRISE_DOCUMENT).join(DOCUMENT).on(CRISE_DOCUMENT.DOCUMENT.eq(DOCUMENT.ID))
         .where(CRISE_DOCUMENT.CRISE.eq(criseId)));
-  }
-
-  public String getSousType(MultipartFile f){
-    String type = f.getContentType().split("/")[0];
-    if(type.equals("image")){
-       return Document.SousTypeDocument.IMAGE.toString();
-    }else if (type.equals("video") || type.equals("audio")){
-       return Document.SousTypeDocument.MEDIA.toString();
-    }
-    return Document.SousTypeDocument.AUTRE.toString();
   }
 
   /**
