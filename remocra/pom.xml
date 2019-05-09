@@ -527,10 +527,53 @@
                 <version>2.1.1</version>
                 <!-- <configuration> <webXml>target/web.xml</webXml> </configuration> -->
                 <configuration>
-                    <warSourceExcludes>**/extjs/docs/**, **/extjs/pkgs/**,
-						**/extjs/welcome/**, **/extjs/build/**, **/extjs/builds/**,
-						**/extjs/jsbuilder/**, **/extjs/examples/**</warSourceExcludes>
-                    <webResources>
+                    <warSourceExcludes>
+						js/app/**/*.js,
+						js/build/**, js/jasmine-1.1.0/**,
+						js/proj4js-1.1.0/**, js/Skirtle/**, js/test/**,
+						js/ext-4.1.1a/*,
+						js/ext-4.1.1a/build/**,
+						js/ext-4.1.1a/builds/**,
+						js/ext-4.1.1a/cmd/**,
+						js/ext-4.1.1a/docs/**,
+						js/ext-4.1.1a/examples/**,
+						js/ext-4.1.1a/jsbuilder/**,
+						js/ext-4.1.1a/locale/**,
+						js/ext-4.1.1a/pkgs/**,
+						js/ext-4.1.1a/resources/css/*debug*.css,
+						js/ext-4.1.1a/resources/css/ext-all.css,
+						js/ext-4.1.1a/resources/css/*access*.css,
+						js/ext-4.1.1a/resources/css/*scoped*.css,
+						js/ext-4.1.1a/resources/css/*ie*.css,
+						js/ext-4.1.1a/resources/css/*neptune*.css,
+						js/ext-4.1.1a/resources/css/*sandbox*.css,
+						js/ext-4.1.1a/resources/css/*standard*.css,
+						js/ext-4.1.1a/resources/themes/images/access/**,
+						js/ext-4.1.1a/resources/themes/images/default/**,
+						js/ext-4.1.1a/resources/themes/images/neptune/**,
+						js/ext-4.1.1a/resources/themes/lib/**,
+						js/ext-4.1.1a/resources/themes/stylesheets/**,
+						js/ext-4.1.1a/resources/themes/templates/**,
+						js/ext-4.1.1a/resources/themes/*,
+						js/ext-4.1.1a/resources/sass/**,
+						js/ext-4.1.1a/src/**,
+						js/ext-4.1.1a/welcome/**,
+						js/openlayers-2.12/apidoc_config/**,
+						js/openlayers-2.12/art/**,
+						js/openlayers-2.12/doc/**,
+						js/openlayers-2.12/doc_config/**,
+						js/openlayers-2.12/examples/**,
+						js/openlayers-2.12/img/**,
+						js/openlayers-2.12/lib/**,
+						js/openlayers-2.12/licenses/**,
+						js/openlayers-2.12/notes/**,
+						js/openlayers-2.12/tests/**,
+						js/openlayers-2.12/tools/**,
+						js/openlayers-2.12/*,
+						**/.gitignore,
+						selenium/**
+					</warSourceExcludes>
+                     <webResources>
                         <resource>
                             <excludes>
                                 <exclude>dbre.xml</exclude>
