@@ -607,7 +607,7 @@
 						**/.gitignore,
 						selenium/**
 					</warSourceExcludes>
-                     <webResources>
+                    <webResources>
                         <resource>
                             <excludes>
                                 <exclude>dbre.xml</exclude>
