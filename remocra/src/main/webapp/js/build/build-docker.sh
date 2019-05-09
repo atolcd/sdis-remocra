@@ -1,12 +1,11 @@
+#!/bin/bash
+
 # Gestion des erreurs
 set -e
 
 # 
 #  Compilation des fichiers javascript
 # 
-
-# Si le numéro de révision n'est pas passé : on considère qu'il est une chaine vide
-revision_number=$1
 
 # Déplacement dans le répertoire adéquat
 echo "Go one directory up"
@@ -31,7 +30,4 @@ docker run --rm \
 #echo "Suppression des appels à require dans les JS compilés"
 # Suppression des appels à require
 #sed -i 's/Ext.require([^)]*);//g' all-classes.js
-
-echo "Renommage de remocra.js"
-mv all-classes.js all-classes$revision_number.js
 

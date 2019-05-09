@@ -129,7 +129,7 @@
 		</c:when>
 		<c:otherwise>
 			<!-- MODE PROD -->
-    		<script type="text/javascript" src="${jsbase}/all-classes${revisionNumber}.js"><!-- requis, ne pas retirer --></script>
+    		<script type="text/javascript" src="${jsbase}/all-classes.js?v=${revisionNumber}"><!-- requis, ne pas retirer --></script>
     		<script type="text/javascript">
     			OpenLayers.ImgPath = '${jsbase}/openlayers-2.12/img/';
     			OpenLayers._getScriptLocation=function(){return '${jsbase}/openlayers-2.12/';};

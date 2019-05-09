@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+        <parent>
+          <groupId>fr.sdis83.remocra</groupId>
+          <artifactId>parent</artifactId>
+          <version>0.12.3</version>
+        </parent>
+
 	<groupId>fr.sdis83.remocra</groupId>
 	<artifactId>remocra</artifactId>
 	<packaging>war</packaging>
-	<version>0.1.0.BUILD-SNAPSHOT</version>
 	<name>remocra</name>
 
 	<scm>
@@ -58,10 +64,10 @@
 			<name>Spring Roo Repository</name>
 			<url>http://spring-roo-repository.springsource.org/release</url>
 		</repository>
-		<repository>
+		<!--repository>
 			<id>OSGEO GeoTools repo</id>
 			<url>http://download.osgeo.org/webdav/geotools</url>
-		</repository>
+		</repository-->
 		<repository>
 			<id>Hibernate Spatial repo</id>
 			<url>http://www.hibernatespatial.org/repository</url>
@@ -434,6 +440,12 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-spatial</artifactId>
 			<version>4.0-M1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.postgis</groupId>
+					<artifactId>postgis-jdbc</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- the Postgis JDBC driver -->
 		<dependency>
@@ -451,7 +463,13 @@
 		<dependency>
 			<groupId>org.opengeo</groupId>
 			<artifactId>geodb</artifactId>
-			<version>0.7</version>
+			<version>0.8</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.vividsolutions</groupId>
+					<artifactId>jts</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- File Upload -->
@@ -581,6 +599,13 @@
                             <directory>src/main/resources</directory>
                         </resource>
                     </webResources>
+                    <archive>
+                        <manifestEntries>
+	                    <Revision-Number>${buildNumber}</Revision-Number>
+                            <Project-Version>${project.version}</Project-Version>
+                            <Build-Time>${maven.build.timestamp}</Build-Time>
+                        </manifestEntries>
+                    </archive>
                 </configuration>
             </plugin>
 			<plugin>
@@ -1061,13 +1086,8 @@
 	<profiles>		
 		<profile>
 			<id>modeinfo-able</id>
-			<!-- Activated when -Denv=priv is given as parameter. -->
 			<activation>
 				<activeByDefault>false</activeByDefault>
-				<!--property>
-					<name>env</name>
-					<value>jenkins</value>
-				</property-->
 			</activation>
 			<build>
 	    		<plugins>
@@ -1110,52 +1130,6 @@
 								</execution>
 							</executions>
 						</plugin>
-
-			        <plugin>
-			             <groupId>com.google.code.maven-replacer-plugin</groupId>
-			             <artifactId>replacer</artifactId>
-			             <version>1.5.1</version>
-		                 <configuration>
-		                    <quiet>false</quiet>
-	                     	<ignoreMissingFile>false</ignoreMissingFile>
-	                     	<regex>true</regex>
-	                     	
-	                     	<basedir>${project.basedir}/src/main/</basedir>
-					        <includes>
-					            <include>resources/META-INF/persistence.xml</include>
-					            <include>java/fr/sdis83/remocra/web/RemocraController.java</include>
-					        </includes>
-					        
-			                <!-- REMPLACER DANS LES FICHIER COMPILES, PAS DANS LES SOURCES -->
-			                <replacements>
-				                <replacement>
-					                <token>name="hibernate\.hbm2ddl\.auto" value="create"</token>
-					                <value>name="hibernate\.hbm2ddl\.auto" value="validate"</value>
-				                </replacement>
-				                <replacement>
-					                <token>name="hibernate\.hbm2ddl\.auto" value="update"</token>
-					                <value>name="hibernate\.hbm2ddl\.auto" value="validate"</value>
-				                </replacement>
-				                <replacement>
-					                <token>private static boolean modeDebug = true;</token>
-					                <value>private static boolean modeDebug = false;</value>
-				                </replacement>
-				                <replacement>
-					                <token>public static String REVISION_NUMBER = ".*";</token>
-					                <value>public static String REVISION_NUMBER = "${buildNumber}";</value>
-				                </replacement>
-				            </replacements>
-	                 	</configuration>
-			             <executions>
-			                 <execution>
-			                 	 <id>rev-number-replace</id>
-			                     <phase>process-resources</phase>
-			                     <goals>
-			                         <goal>replace</goal>
-			                     </goals>
-			                 </execution>
-			             </executions>
-			         </plugin>
    		 		</plugins>
      		 </build>
 		</profile>

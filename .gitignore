@@ -2,6 +2,7 @@
 # remocra-server
 # ---------------
 remocra/target
+dist/target
 .settings/
 .project
 .classpath

@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import flexjson.JSONSerializer;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +27,13 @@ import fr.sdis83.remocra.web.serialize.AccessRightSerializer;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
+
 @RequestMapping("/")
 @Controller
 public class RemocraController {
@@ -38,17 +47,12 @@ public class RemocraController {
      */
     public static final ResponseEntity<java.lang.String> DUMMY_RESPONSE = new SuccessErrorExtSerializer(true, "").serialize();
     public static final ResponseEntity<java.lang.String> DUMMY_RESPONSE_LIST = AbstractExtListSerializer.getDummy().serialize();
-    /**
-     * MODE DEBUG ou PRODUCTION
-     */
-    // Automatiquement passé à false lors du packaging (ne pas toucher cette
-    // ligne)
-    private static boolean modeDebug = true;
 
-    // Automatiquement défini lors du packaging (ne pas toucher cette ligne)
-    public static String REVISION_NUMBER = "";
-
-    public static String VERSION_NUMBER = "0.12.3";
+    // Mode dev par défaut si le fichier manifest n'est pas trouvé
+    private static boolean modeDebug;
+    static {
+        modeDebug = modeDev();
+    }
 
     @Autowired
     private AuthoritiesUtil authUtils;
@@ -61,6 +65,9 @@ public class RemocraController {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Autowired
+    ApplicationContext appplicationContext;
 
     @RequestMapping()
     public String show(HttpServletRequest request, Model model) {
@@ -99,8 +106,8 @@ public class RemocraController {
 
         // Information mode debug en cours
         model.addAttribute("modeDebug", modeDebug);
-        model.addAttribute("versionNumber", VERSION_NUMBER);
-        model.addAttribute("revisionNumber", REVISION_NUMBER);
+        model.addAttribute("versionNumber", getProjectVersion());
+        model.addAttribute("revisionNumber", getRevisionNumber());
         // Numéro de patch (max) : requête native pour performance
         model.addAttribute("patchNumber", entityManager.createNativeQuery("select max(numero) from remocra.suivi_patches").getSingleResult().toString());
 
@@ -141,7 +148,7 @@ public class RemocraController {
     /**
      * Passage au mode "debug" : fichiers js non minifiés, chargement à la
      * volée, etc.
-     * 
+     *
      * @return
      */
     @RequestMapping(value = "modedebug")
@@ -154,7 +161,7 @@ public class RemocraController {
 
     /**
      * Passage au mode "debug" : fichiers js minifiés
-     * 
+     *
      * @return
      */
     @RequestMapping(value = "modeinfo")
@@ -168,5 +175,42 @@ public class RemocraController {
     @RequestMapping(value = "dummy")
     public ResponseEntity<java.lang.String> dummy() {
         return DUMMY_RESPONSE;
+    }
+
+    protected String getProjectVersion() {
+        return getManifestInfo("Project-Version");
+    }
+    protected String getRevisionNumber() {
+        return getManifestInfo("Revision-Number");
+    }
+    protected String getManifestInfo(String key) {
+        Resource resource = appplicationContext.getResource("/META-INF/MANIFEST.MF");
+        if (!resource.exists()) {
+            return "";
+        }
+        try {
+            Manifest manifest = new Manifest(resource.getInputStream());
+            if (manifest != null){
+                Attributes mainAttributes = manifest.getMainAttributes();
+                if(mainAttributes != null){
+                    String returned =  mainAttributes.getValue(key);
+                    if (returned==null) {
+                        return "";
+                    }
+                }
+            }
+        } catch (IOException e) {
+            //
+        }
+        return "";
+    }
+
+    /**
+     * On considère qu'on est en mode développements lorsque le manifest est absent.
+     * @return
+     */
+    static protected boolean modeDev() {
+        URL resource = RemocraController.class.getResource("/META-INF/MANIFEST.MF");
+        return !new File(resource.getFile()).exists();
     }
 }

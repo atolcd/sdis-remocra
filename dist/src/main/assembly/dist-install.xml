@@ -1,0 +1,22 @@
+<assembly>
+  <id>dist</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>true</includeBaseDirectory>
+  <fileSets>
+    <fileSet>
+      <directory>${project.basedir}/../server/sdis-remocra</directory>
+      <outputDirectory>server_rootdir/</outputDirectory>
+      <filtered>false</filtered>
+    </fileSet>
+    <fileSet>
+      <directory>${project.basedir}/../remocra/target</directory>
+      <outputDirectory>server_rootdir/var/lib/tomcat6/webapps/</outputDirectory>
+      <includes>
+        <include>remocra.war</include>
+      </includes>
+      <filtered>false</filtered>
+    </fileSet>
+  </fileSets>
+</assembly>

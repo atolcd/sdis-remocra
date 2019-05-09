@@ -15,18 +15,20 @@ pipeline {
       }
       steps {
         // Run the maven build (mvn is in the PATH in the Docker image)
-        sh "mvn -f remocra/pom.xml -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -DnewVersion=\$(git describe) versions:set"
-        sh "mvn -f remocra/pom.xml -e -U -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -Dmaven.compiler.fork=true clean verify -P modeinfo-able"
+        sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U clean"
+        sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U verify -P modeinfo-able -P update"
+        sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U verify -P modeinfo-able -P install"
       }
       post {
         success {
-          archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/**/*.war', fingerprint: true
+          archiveArtifacts allowEmptyArchive: true, artifacts: 'remocra/target/*.war', fingerprint: true
+          archiveArtifacts allowEmptyArchive: true, artifacts: 'dist/target/*.zip', fingerprint: true
         }
         unstable {
-          archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/**/*.war', fingerprint: true
+          archiveArtifacts allowEmptyArchive: true, artifacts: 'remocra/target/*.war', fingerprint: true
+          archiveArtifacts allowEmptyArchive: true, artifacts: 'dist/target/*.zip', fingerprint: true
         }
         always {
-          sh "mvn -f remocra/pom.xml -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml versions:revert"
           sh "git checkout -- ."
         }
       }

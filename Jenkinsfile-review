@@ -12,7 +12,7 @@ pipeline {
     stage('Build') {
       steps {
         // Run the maven build (mvn is in the PATH in the Docker image)
-        sh "mvn -f remocra/pom.xml -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -B -U -ff clean verify -P modeinfo-able"
+        sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U clean verify -P modeinfo-able"
       }
       post {
         always {
