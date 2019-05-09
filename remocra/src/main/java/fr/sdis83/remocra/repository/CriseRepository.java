@@ -52,6 +52,7 @@ import org.joda.time.Instant;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.Result;
 import org.jooq.impl.DSL;
 import org.modelmapper.ModelMapper;
@@ -135,6 +136,13 @@ public class CriseRepository {
     Result<Record> result = context.fetch(sql);
     extent = String.valueOf(result.getValue(0,"geometrie"));
     return extent;
+  }
+
+  public String getActivationById (Long id) {
+    String activation = null;
+    Result<Record1<Instant>> result = context.select(CRISE.ACTIVATION).from(CRISE).where(CRISE.ID.eq(id)).fetch();
+    activation = String.valueOf(result.getValue(0,"activation"));
+    return activation;
   }
 
   public Crise getCriseById(Long id){

@@ -29,8 +29,8 @@
               <search-origine id="origineEvent" :crise='criseId' ref='searchOrigine'></search-origine>
             </b-form-group>
             <b-form-group horizontal label="Constaté:" label-for="constate">
-              <b-form-input v-model="form.constat" :value="form.constat" type="date" class="form-control"></b-form-input>
-              <b-form-input v-model="form.time" :value="form.time" type="time" style="margin-top:6px;" class="form-control"></b-form-input>
+              <b-form-input v-model="form.constat" :min="dateMin" :max="dateMax" :value="form.constat" type="date" class="form-control"></b-form-input>
+              <b-form-input v-model="form.time" id="timeConstat" @change="checkTimeConstat" :value="form.time" type="time" style="margin-top:6px;" class="form-control"></b-form-input>
             </b-form-group>
             <b-form-group horizontal label="Importance:" label-for="importanceEvent">
               <div class="resetrate">
@@ -124,6 +124,10 @@ export default {
       evenementId: null,
       natureId: null,
       disableNatures: false,
+      dateMin: null,
+      dateMax: null,
+      timeMin: null,
+      timeMax:null,
       form: {
         titre: '',
         type: null,
@@ -147,6 +151,17 @@ export default {
     }
   },
   mounted() {
+    axios.get('/remocra/crises/'+this.criseId+'/activation').then((response) => {
+      if (response.data.data) {
+        var activation = response.data.data.activation
+        this.dateMin = moment(activation).format('YYYY-MM-DD')
+        this.dateMax = moment().format('YYYY-MM-DD')
+        this.timeMin = moment(activation).format('HH:mm')
+        this.timeMax = moment().format('HH:mm')
+      }
+    }).catch(function(error) {
+      console.error('max date', error)
+    })
     this.$root.$options.bus.$on(eventTypes.MODIFY_EVENT, args => {
       this.modifyEvent(args.criseId, args.evenementId, args.natureId)
     })
@@ -260,10 +275,15 @@ export default {
       this.natureId = null
       this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, this.criseId)
       this.tabIndex = 0
+      this.dateMin = null
+      this.dateMax = null
+      this.timeMin = null
+      this.timeMax = null
     },
     handleOk(evt) {
       // Prevent modal from closing
       evt.preventDefault()
+      this.checkTimeConstat()
       var formValid = document.getElementById('formEvent' + this.criseId).checkValidity()
       var complementValid = document.getElementById('formComplement' + this.criseId) ? document.getElementById('formComplement' + this.criseId).checkValidity() : true
       if ((complementValid && formValid) === false) {
@@ -392,6 +412,17 @@ export default {
       if (natureId != null) {
         this.form.type = natureId
       }
+      axios.get('/remocra/crises/'+this.criseId+'/activation').then((response) => {
+        if (response.data.data) {
+          var activation = response.data.data
+          this.dateMin = moment(activation).format('YYYY-MM-DD')
+          this.dateMax = moment().format('YYYY-MM-DD')
+          this.timeMin = moment(activation).format('HH:mm')
+          this.timeMax = moment().format('HH:mm')
+        }
+      }).catch(function(error) {
+        console.error('max date', error)
+      })
       axios.get('/remocra/typecrisecategorieevenement').then((response) => {
         if (response.data.data) {
           var typeCategs = response.data.data
@@ -540,6 +571,20 @@ export default {
     },
     resetRate() {
       this.form.importance = 0
+    },
+    checkTimeConstat(){
+         var input = document.getElementById("timeConstat")
+         console.log(this.timeMax )
+         console.log(this.form.time)
+         if (this.form.constat == this.dateMin && this.form.time < this.timeMin){
+           input.setCustomValidity(" La date de constatation doit être égale ou postérieure à la date de création de la crise")
+           input.reportValidity()
+         }else if(this.form.constat == this.dateMax && this.form.time > this.timeMax ) {
+           input.setCustomValidity("La date de constatation doit être égale ou antérieure à la date actuelle")
+           input.reportValidity()
+         } else {
+           input.setCustomValidity("")
+         }
     }
   }
 }

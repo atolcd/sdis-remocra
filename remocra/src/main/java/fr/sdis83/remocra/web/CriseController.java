@@ -311,5 +311,26 @@ public class CriseController {
     }.serialize();
   }
 
+  @RequestMapping(value = "/{id}/activation", method = RequestMethod.GET, headers = "Accept=application/json")
+  @PreAuthorize("hasRight('CRISE_R')")
+  public ResponseEntity<java.lang.String> getActivation(final @PathVariable("id") Long id) {
+
+    return new AbstractExtObjectSerializer<String>("Crise retrieved.") {
+
+      @Override
+      protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+        return serializer.exclude("*.class").exclude("*.password").exclude("*.salt").transform(RemocraDateHourTransformer.getInstance(), Date.class).transform(new RemocraInstantTransformer(), Instant.class)
+            .include("data.*").include("total").include("message");
+
+      }
+
+      @Override
+      protected String getRecord() {
+        return criseRepository.getActivationById(id);
+      }
+
+    }.serialize();
+  }
+
 
 }
