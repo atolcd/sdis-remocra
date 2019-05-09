@@ -1124,7 +1124,7 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	<profiles>		
+	<profiles>
 		<profile>
 			<id>modeinfo-able</id>
 			<activation>
@@ -1132,6 +1132,31 @@
 			</activation>
 			<build>
 	    		<plugins>
+					<!-- Inclusion des fichiers client-ng -->
+					<plugin>
+						<artifactId>maven-resources-plugin</artifactId>
+						<version>2.5</version>
+						<executions>
+							<execution>
+								<id>copy-resources</id>
+								<phase>validate</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${basedir}/target/remocra/static</outputDirectory>
+									<resources>
+										<resource>
+											<directory>${basedir}/../client-ng/dist</directory>
+											<filtering>false</filtering>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<!-- Production du fichier all-classes.js -->
 	    		    <plugin>
 				        <groupId>org.codehaus.mojo</groupId>
 				        <artifactId>buildnumber-maven-plugin</artifactId>

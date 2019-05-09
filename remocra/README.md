@@ -81,7 +81,7 @@ docker run --rm \
   -v "/var/remocra/layers":/var/remocra/layers \
   --link dbdocker_postgres_1:postgis.sdisxx.fr --link dbdocker_geoserver_1:geoserver.sdisxx.fr \
   -v ~/.m2:/var/maven/.m2 -e MAVEN_CONFIG=/var/maven/.m2 -e MAVEN_OPTS="-Duser.home=/var/maven -Ddatabase.url=jdbc:postgresql://postgis.sdisxx.fr:5432/remocra" \
-  cvagner/docker-jdk-maven-sencha-cmd:7-3.6.0-3.0.2 \
+  cvagner/docker-jdk-maven-sencha-cmd:7-3.6.1-3.0.2 \
   \
   mvn tomcat:run -Dclient-ng.dir=~/projets/sdis-remocra/client-ng/dist/remocra/static
 ```

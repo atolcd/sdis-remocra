@@ -8,10 +8,14 @@ pipeline {
     stage('Build') {
       agent {
         docker {
-          image 'cvagner/docker-jdk-maven-sencha-cmd:7-3.6.0-3.0.2'
+          image 'cvagner/docker-jdk-maven-sencha-cmd:7-3.6.1-3.0.2'
           args '-v /var/lib/jenkins/.m2/settings.xml:/tmp/settings.xml:ro'
           reuseNode true
         }
+      }
+      environment {
+        // Force HOME for npm
+        HOME = "${env.WORKSPACE}"
       }
       steps {
         // Run the maven build (mvn is in the PATH in the Docker image)
