@@ -147,7 +147,8 @@
   h.numero AS id_basepei,
   coalesce(h.date_contr, h.date_recep) AS date_controle,
   &apos;SRID=2154;&apos; ||st_astext(h.geometrie) AS geometrie,
-  (SELECT CASE WHEN (coalesce(h.dispo_terrestre,&apos;&apos;)  = &apos;DISPO&apos; ) THEN &apos;DI&apos; ELSE &apos;IN&apos; END) as etat_pei
+  (SELECT CASE WHEN (coalesce(h.dispo_terrestre,&apos;&apos;)  = &apos;DISPO&apos; ) THEN &apos;DI&apos; ELSE &apos;IN&apos; END) as etat_pei,
+  CAST(h.numero_interne AS varchar) AS num_hydrant
 FROM remocra.hydrant AS h
 INNER JOIN remocra.hydrant_pena AS ha ON (h.id=ha.id)
 LEFT JOIN remocra.commune AS c ON (c.id=h.commune)
@@ -256,6 +257,11 @@ LEFT JOIN remocra.type_hydrant_nature AS thn ON(thn.id=h.nature);</sql>
       <value>
         <name>etat_pei</name>
         <rename>etat_pei</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>num_hydrant</name>
+        <rename>num_hydrant</rename>
         <update>Y</update>
       </value>
       <value>
