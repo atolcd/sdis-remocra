@@ -16,7 +16,7 @@ pipeline {
       steps {
         // Run the maven build (mvn is in the PATH in the Docker image)
         sh "mvn -f remocra/pom.xml -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -DnewVersion=\$(git describe) versions:set"
-        sh "mvn f remocra/pom.xml -e -U -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -Dmaven.compiler.fork=true clean verify -P modeinfo-able"
+        sh "mvn -f remocra/pom.xml -e -U -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -Dmaven.compiler.fork=true clean verify -P modeinfo-able"
       }
       post {
         success {
@@ -26,7 +26,7 @@ pipeline {
           archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/**/*.war', fingerprint: true
         }
         always {
-          sh "mvn f remocra/pom.xml -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml versions:revert"
+          sh "mvn -f remocra/pom.xml -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml versions:revert"
           sh "git checkout -- ."
         }
       }
