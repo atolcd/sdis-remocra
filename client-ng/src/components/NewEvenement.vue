@@ -38,7 +38,7 @@
               <rate id="importanceEvent" :length="5" v-model="form.importance" /></div>
             </b-form-group>
             <b-form-group horizontal label="Tags:" label-for="tags">
-              <input-tag :tags.sync="form.tags"></input-tag>
+              <input-tag v-model="form.tags"></input-tag>
             </b-form-group>
             <b-form-group horizontal label="Clore l'évènement:" label-for="cloture">
               <input style="width:5%" id="cloture" type="checkbox" :value="cloture" v-model="cloture" class="form-control">
