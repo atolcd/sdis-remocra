@@ -481,22 +481,25 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
           fiche.down('timefield[name=timeFinCrise]').clearInvalid();
           var dateCloture = fiche.down('datefield[name=dateFinCrise]').getValue();
           var timeCloture = fiche.down('timefield[name=timeFinCrise]').getValue();
-          if(timeCloture != null){
-              dateCloture.setHours(timeCloture.getHours(),timeCloture.getMinutes());
+          if(dateCloture != null){
+             if(timeCloture != null){
+                    dateCloture.setHours(timeCloture.getHours(),timeCloture.getMinutes());
+             }
+             if (dateCloture > new Date()) {
+               fiche.down('datefield[name=dateFinCrise]').markInvalid("");
+               fiche.down('timefield[name=timeFinCrise]').markInvalid("");
+               msgErrorField.setValue("La date de clôture ne peut pas être postérieure à la date actuelle");
+               msgErrorField.setVisible(true);
+               return;
+             } else if (dateCloture < crise.get('activation')) {
+               fiche.down('datefield[name=dateFinCrise]').markInvalid("");
+               fiche.down('timefield[name=timeFinCrise]').markInvalid("");
+               msgErrorField.setValue("La date de clôture ne peut pas être antérieure à la date d'activation");
+               msgErrorField.setVisible(true);
+               return;
+             }
           }
-          if (dateCloture > new Date()) {
-             fiche.down('datefield[name=dateFinCrise]').markInvalid("");
-             fiche.down('timefield[name=timeFinCrise]').markInvalid("");
-             msgErrorField.setValue("La date de clôture ne peut pas être postérieure à la date actuelle");
-             msgErrorField.setVisible(true);
-             return;
-          } else if (dateCloture < crise.get('activation')) {
-             fiche.down('datefield[name=dateFinCrise]').markInvalid("");
-             fiche.down('timefield[name=timeFinCrise]').markInvalid("");
-             msgErrorField.setValue("La date de clôture ne peut pas être antérieure à la date d'activation");
-             msgErrorField.setVisible(true);
-             return;
-          }
+
     },
 
     saveCrise: function(){
