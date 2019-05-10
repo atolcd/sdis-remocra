@@ -11,7 +11,6 @@ Ext.define('Sdis.Remocra.features.crises.bloc.Sources', {
     height: 700,
     padding: 10,
     layout: 'vbox',
-    deferredRender: false,
     defaults: {
         labelAlign: 'right',
         height: 30

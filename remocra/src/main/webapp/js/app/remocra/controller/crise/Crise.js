@@ -281,7 +281,7 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
          fiche.down('timefield[name=timeFinCrise]').setValue(crise.data.cloture);
          var gridCommune = fiche.down('#gridCommuneCrise');
          gridCommune.bindStore(crise.communes());
-         var gridRepertoires = fiche.down('#repertoire'), gridProcessus = fiche.down('#synchro'), gridServices = fiche.down('#gridServices');
+         var gridRepertoires = fiche.down('#repertoire'), gridProcessus = fiche.down('#synchro'), sourceTab = fiche.down('#sources');
 
          Ext.defer(function() {
            Ext.Array.forEach(crise.repertoireLieusStore.data.items, function(item){
@@ -299,6 +299,10 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
              gridProcessus.moveToRightEvent(recordToMove);
              });
          },500, this);
+
+          Ext.defer(function() {
+             sourceTab.doAutoRender();
+          },500,this);
        }
     },
 
