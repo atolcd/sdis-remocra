@@ -831,9 +831,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             var selected = fiche.down('anomalie').getSelected();
             hydrant.anomalies().removeAll();
              // On ajoute les anomalies sauf celles de critères null qui seront calculées avec le trigger
-            hydrant.anomalies().each(function(record){
+            Ext.Array.each(selected, function(record){
                if(record.get('critere')!= null || record.get('code')==='INDISPONIBILITE_TEMP') {
-                   hydrant.anomalies().add(selected);
+                   hydrant.anomalies().add(record);
                }
             });
             // on set a dirty sinon si on ne change que les anomalies l'hydrant n'est pas condidéré comme dirty Anomalie #35510
