@@ -117,7 +117,12 @@ export default {
     getSelectAnalyseItems() {
       var self = this
       this.selectAnalyseOptions = []
-      axios.get('/remocra/requetemodele.json?filter=[{"property":"categorie","value":"GESTION_CRISE"}]').then(response => {
+      var jsonFilters = JSON.stringify([{"property":"categorie","value":"GESTION_CRISE"}])
+      axios.get('/remocra/requetemodele', {
+        params: {
+          filter: jsonFilters
+        }
+      }).then(response => {
         _.forEach(response.data.data, function(item) {
           var o = {
             valeur: item.id,
