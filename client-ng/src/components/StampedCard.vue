@@ -72,12 +72,13 @@ export default {
         }).then(response => {
           if (response.data.success) {
             self.$root.$options.bus.$emit(eventTypes.LOAD_DOCUMENTS, criseId)
-            self.$refs.modal.hide()
           }
         }).catch(function(error) {
           console.error('postEvent', error)
         })
+        self.$refs.modal.hide()
       }, 'image/png')
+
     }
   }
 }
