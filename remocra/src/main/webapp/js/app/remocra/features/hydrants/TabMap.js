@@ -25,8 +25,8 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
             itemId: 'selectBtn'
         }];
 
-        this.editItems.push('Créer : ');
         if (Sdis.Remocra.Rights.hasRight('HYDRANTS_C')) {
+            this.editItems.push('Créer : ');
             this.editItems.push({
                 xtype: 'button',
                 tooltip: 'Ajouter un point d\'eau',
@@ -141,8 +141,8 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
             });
         }
 
-        this.editItems.push('Indisponibilité temporaire : ');
         if (Sdis.Remocra.Rights.hasRight('INDISPOS_C')) {
+            this.editItems.push('Indisponibilité temporaire : ');
             this.editItems.push({
                 xtype: 'button',
                 tooltip: 'Déclarer une indisponibilité temporaire',
@@ -152,8 +152,6 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                 itemId: 'indispoBtn',
                 disabled: true
             });
-        }
-
             this.editItems.push({
                 xtype: 'button',
                 tooltip: 'Modifier une indisponibilité temporaire',
@@ -163,6 +161,9 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                 itemId: 'editIndispoBtn',
                 disabled: true
             });
+
+        }
+
 
         if (Sdis.Remocra.Rights.hasRight('HYDRANTS_EXPORT_NON_NUM_C')) {
             this.moreItems = [ { tooltip: 'Télécharger la liste des points d\'eau non numérotés', text: '<span>Télécharger</span>',
