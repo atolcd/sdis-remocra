@@ -1,21 +1,7 @@
 package fr.sdis83.remocra.web;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.servlet.http.HttpServletRequest;
-
-import flexjson.JSONSerializer;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.vividsolutions.jts.geom.Geometry;
-
+import flexjson.JSONSerializer;
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
@@ -26,11 +12,21 @@ import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.serialize.AccessRightSerializer;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
@@ -48,11 +44,8 @@ public class RemocraController {
     public static final ResponseEntity<java.lang.String> DUMMY_RESPONSE = new SuccessErrorExtSerializer(true, "").serialize();
     public static final ResponseEntity<java.lang.String> DUMMY_RESPONSE_LIST = AbstractExtListSerializer.getDummy().serialize();
 
-    // Mode dev par défaut si le fichier manifest n'est pas trouvé
-    private static boolean modeDebug;
-    static {
-        modeDebug = modeDev();
-    }
+    @Autowired
+    ServletContext servletContext;
 
     @Autowired
     private AuthoritiesUtil authUtils;
@@ -66,12 +59,8 @@ public class RemocraController {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Autowired
-    ApplicationContext appplicationContext;
-
     @RequestMapping()
     public String show(HttpServletRequest request, Model model) {
-
         String serialRights = new AccessRightSerializer().serialize(authUtils.getCurrentRights());
         log.debug("Loading with Rights : " + serialRights);
         model.addAttribute("userRights", serialRights);
@@ -105,7 +94,7 @@ public class RemocraController {
         model.addAttribute("clesIgn", clesIgn.contains("{") ? clesIgn : "'" + clesIgn + "'");
 
         // Information mode debug en cours
-        model.addAttribute("modeDebug", modeDebug);
+        model.addAttribute("modeDebug", isModeDebug());
         model.addAttribute("versionNumber", getProjectVersion());
         model.addAttribute("revisionNumber", getRevisionNumber());
         // Numéro de patch (max) : requête native pour performance
@@ -153,7 +142,7 @@ public class RemocraController {
      */
     @RequestMapping(value = "modedebug")
     public String tomodedebug(HttpServletRequest request, Model model) {
-        modeDebug = true;
+        isModeDebug = true;
         // Plutôt que de passer par une redirection, on choisit de conserver le
         // comportement "INDEX"
         return this.show(request, model);
@@ -166,7 +155,7 @@ public class RemocraController {
      */
     @RequestMapping(value = "modeinfo")
     public String tomodeinfo(HttpServletRequest request, Model model) {
-        modeDebug = false;
+        isModeDebug = false;
         // Plutôt que de passer par une redirection, on choisit de conserver le
         // comportement "INDEX"
         return this.show(request, model);
@@ -177,40 +166,58 @@ public class RemocraController {
         return DUMMY_RESPONSE;
     }
 
-    protected String getProjectVersion() {
-        return getManifestInfo("Project-Version");
-    }
-    protected String getRevisionNumber() {
-        return getManifestInfo("Revision-Number");
-    }
-    protected String getManifestInfo(String key) {
-        Resource resource = appplicationContext.getResource("/META-INF/MANIFEST.MF");
-        if (!resource.exists()) {
-            return "";
+    // Mode debug par défaut si le manifest est absent
+    private Boolean isModeDebug = null;
+
+    public boolean isModeDebug() {
+        if (isModeDebug == null) {
+            String filePath = servletContext.getRealPath("/META-INF/MANIFEST.MF");
+            isModeDebug = !new File(filePath).exists();
         }
+        return isModeDebug;
+    }
+
+    // Version : 0.12.3
+    String projectVersion = null;
+
+    public String getProjectVersion() {
+        if (projectVersion == null) {
+            projectVersion = getManifestInfo("Project-Version");
+        }
+        return projectVersion;
+    }
+
+    // Numéro de commit court : 969f7
+    String revisionNumber = null;
+
+    public String getRevisionNumber() {
+        if (revisionNumber == null) {
+            revisionNumber = getManifestInfo("Revision-Number");
+        }
+        return revisionNumber;
+    }
+
+    protected String getManifestInfo(String key) {
         try {
-            Manifest manifest = new Manifest(resource.getInputStream());
-            if (manifest != null){
+            String filePath = servletContext.getRealPath("/META-INF/MANIFEST.MF");
+            InputStream input = new FileInputStream(filePath);
+            if (input == null) {
+                return "";
+            }
+            Manifest manifest = new Manifest(input);
+            if (manifest != null) {
                 Attributes mainAttributes = manifest.getMainAttributes();
-                if(mainAttributes != null){
-                    String returned =  mainAttributes.getValue(key);
-                    if (returned==null) {
+                if (mainAttributes != null) {
+                    String returned = mainAttributes.getValue(key);
+                    if (returned == null) {
                         return "";
                     }
+                    return returned;
                 }
             }
         } catch (IOException e) {
             //
         }
         return "";
-    }
-
-    /**
-     * On considère qu'on est en mode développements lorsque le manifest est absent.
-     * @return
-     */
-    static protected boolean modeDev() {
-        URL resource = RemocraController.class.getResource("/META-INF/MANIFEST.MF");
-        return !new File(resource.getFile()).exists();
     }
 }

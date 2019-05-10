@@ -1123,9 +1123,6 @@
 									</goals>
 									<configuration>
 										<executable>${project.basedir}/src/main/webapp/js/build/build.sh</executable>
-										<arguments>
-								            <argument>${buildNumber}</argument>
-								        </arguments>
 									</configuration>
 								</execution>
 							</executions>
