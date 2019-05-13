@@ -187,10 +187,10 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
             }
         }
 
-        // On redéfinit le code, la zone spéciale éventuelle, le numéro interne et le numéro si nécessaire
+        // On redéfinit le code, la zone spéciale éventuelle, le numéro interne et le numéro si nécessaire (valable dans le cas de mise à jour)
         boolean hasNumero = attached.getNumeroInterne() != null && attached.getNumeroInterne().intValue() > 0;
         Boolean numeroter = !hasNumero || paramConfService.getHydrantRenumerotationActivation();
-        if (numeroter) {
+        if (numeroter || attached.getId() == null) {
             NumeroUtil.setCodeZoneSpecAndNumeros(attached);
         }
         // On attache l'organisme de l'utilisateur courant
