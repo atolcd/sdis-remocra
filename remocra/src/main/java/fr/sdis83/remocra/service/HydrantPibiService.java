@@ -3,6 +3,7 @@ package fr.sdis83.remocra.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Parameter;
 import javax.persistence.Query;
@@ -16,6 +17,9 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import flexjson.JSONDeserializer;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
@@ -119,11 +123,29 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
 
     @Transactional
     public HydrantPibi update(Long id, String json, Map<String, MultipartFile> files, Object... params) throws Exception {
+        // Hydrant jumele actuel (peut valoir null si pas jumelé)
+        HydrantPibi hydrantJumele = HydrantPibi.findHydrantPibi(id).getJumele();
+
         HydrantPibi hp = super.update(id, json, files, params);
         // Pour déclencher le calcul des anomalies via trigger
         entityManager.createNativeQuery("update remocra.hydrant_pibi set debit=debit where id=:id")
                 .setParameter("id", id)
                 .executeUpdate();
+
+        // On supprime un jumelage
+        if(hp.getJumele() == null && hydrantJumele != null)
+        {
+            hydrantJumele.setJumele(null);
+        }
+        // On passe d'un jumelage à un autre
+        else if(hp.getJumele() != null && hydrantJumele != null && hp.getJumele().getId() != hydrantJumele.getId()){
+            hydrantJumele.setJumele(null);
+            hp.getJumele().setJumele(hp);
+        }
+        // Mise en place d'un jumelage
+        else if(hp.getJumele() != null){
+            hp.getJumele().setJumele(hp);
+        }
         return hp;
     }
 
@@ -166,5 +188,37 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
             .setParameter("id", id)
             .executeUpdate();
         return true;
+   }
+
+    /**
+     * Permet de trouver tous les hydrants éligibles pour un jumelage
+     * Le jumelage est possible si deux hydrants de type BI se trouvent à moins de 2 mètres l'un de l'autre
+     * @param geometrie La géométrie du PEI dont on recherche les jumelages possibles
+     * @param nature La nature du PEI (le jumelage requiert que les deux hydrants soient de même nature
+     * @param numeroInterne Le numéro interne du PEI, afin d'exclure le PEI actuel de la recherche
+     *                        On ne passe pas par l'ID car le PEI peut ne pas en avoir à ce stade (création)
+     * @return Un objet JSON contenant l'identifiant et le numéro des hydrant pouvant être utilisés pour le jumelage
+     */
+    public JSONObject findJumelage(String geometrie, Integer nature, Integer numeroInterne){
+        JSONArray data = new JSONArray();
+        List<Object[]> liste = entityManager.createNativeQuery(
+                    "SELECT h.id, h.numero " +
+                            "FROM remocra.hydrant h " +
+                            "JOIN remocra.type_hydrant_nature tn ON tn.id = h.nature " +
+                            "WHERE ST_Distance(h.geometrie, :geometrie) < 2  " +
+                            "AND tn.nom = 'BI' AND h.nature = :nature and h.numero_interne != :numeroInterne")
+            .setParameter("geometrie", "SRID=2154;"+geometrie.toString())
+            .setParameter("nature", nature)
+            .setParameter("numeroInterne", numeroInterne)
+            .getResultList();
+        for(Object[] o : liste){
+            JSONObject obj = new JSONObject();
+            obj.put("id", Long.parseLong(o[0].toString()));
+            obj.put("numero", o[1].toString());
+            data.put(obj);
+        }
+        JSONObject json = new JSONObject();
+        json.put("data", data);
+        return json;
     }
 }

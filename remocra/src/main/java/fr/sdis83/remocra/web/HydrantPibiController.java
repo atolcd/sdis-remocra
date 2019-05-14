@@ -6,6 +6,7 @@ import java.util.Map;
 import org.hibernate.exception.ConstraintViolationException;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -59,8 +60,8 @@ public class HydrantPibiController {
 
             @Override
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
-                return new JSONSerializer().include("data.anomalies", "data.photos", "data.pena.id", "data.utilisateurModification")
-                        .exclude( "data.commune.geometrie", "data.pena.*", "*.class").transform(new GeometryTransformer(), Geometry.class);
+                return new JSONSerializer().include("data.anomalies", "data.photos", "data.pena.id", "data.utilisateurModification", "data.jumele.id")
+                        .exclude( "data.commune.geometrie", "data.pena.*", "data.jumele.*", "*.class").transform(new GeometryTransformer(), Geometry.class);
             }
 
             @Override
@@ -95,11 +96,13 @@ public class HydrantPibiController {
                         .include("data.photo")
                         // Documents
                         .include("data.hydrantDocuments.id").include("data.hydrantDocuments.titre").include("data.hydrantDocuments.code")
+                        .include("data.jumele.id")
                         .exclude("data.hydrantDocuments.*")
                         .exclude("data.tournees.*")
                         .exclude( "data.organisme.zoneCompetence.geometrie")
                         .exclude( "data.utilisateurModification.*")
-                        .exclude( "data.commune.geometrie");
+                        .exclude( "data.commune.geometrie")
+                        .exclude("data.jumele.*");
 
             }
 
@@ -200,6 +203,16 @@ public class HydrantPibiController {
             }
 
         }.serialize();
+    }
+
+    @RequestMapping(value = "/findjumelage", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('HYDRANTS_R')")
+    public ResponseEntity<java.lang.String> findjumelage(final @RequestParam(value="geometrie") String geometrie,
+                                                         final @RequestParam(value="nature") Integer nature,
+                                                         final @RequestParam(value="numeroInterne") Integer numeroInterne) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("Content-Type", "application/json;charset=utf-8");
+        return new ResponseEntity<String>(hydrantPibiService.findJumelage(geometrie, nature, numeroInterne).toString(), responseHeaders, HttpStatus.OK);
     }
 
 }

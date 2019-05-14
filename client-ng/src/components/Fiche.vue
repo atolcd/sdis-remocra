@@ -83,8 +83,18 @@
             </FicheLocalisation>
           </b-tab>
 
-          <b-tab title="Caractéristiques techniques">
-            
+          <!-- ================================== Onglet Caractéristiques techniques ==================================-->
+          <b-tab title="Caractéristiques techniques" active>
+            <FicheCaracteristiquesPibi  :hydrant="hydrant"
+                                        :hydrantRecord="hydrantRecord"
+                                        :listeNaturesDeci="listeNaturesDeci"
+                                        :geometrie="geometrie"
+                                        @getComboData="getComboData"
+                                        @resolveForeignKey="resolveForeignKey"
+                                        ref="fichePibi"
+                                        v-if="hydrant.code=='PIBI' && dataLoaded">
+            </FicheCaracteristiquesPibi>
+            <p v-else>Form caractéristiques PENA</p>
           </b-tab>
           <b-tab title="Visites"><p>Form visites</p></b-tab>
           <b-tab title="Documents"><p>Form documents</p></b-tab>
@@ -104,6 +114,7 @@ import axios from 'axios'
 import _ from 'lodash'
 import ModalGestionnaire from './ModalGestionnaire.vue'
 import FicheLocalisation from './FicheLocalisation.vue'
+import FicheCaracteristiquesPibi from './FicheCaracteristiquesPibi.vue'
 
 
 export default {
@@ -112,6 +123,7 @@ export default {
   components: {
     ModalGestionnaire,
     FicheLocalisation,
+    FicheCaracteristiquesPibi
   },
 
   data() {
@@ -319,6 +331,19 @@ export default {
     },
 
     /**
+      * En cas de changement de nature DECI
+      * On met à jour le gestionnaire et on transmet l'évènement aux caractéristiques du PIBI dont les champs dépendent de la nature
+      */
+    onNatureDeciChange() {
+      this.getComboGestionnaire();
+
+      if(this.$refs.fichePibi){
+        this.$refs.fichePibi.onNatureDeciChange();
+      }
+      
+    },
+
+    /**
       * Appelée lorsque l'on créé un gestionnaire grâce à la modale
       * @param values Les données du gestionnaire créé (transmises par le composant ModalGestionnaire)
       */
@@ -354,6 +379,7 @@ export default {
       this.etats.autoriteDeci = (this.hydrant.autoriteDeci !== null) ? 'valid' : 'invalid';
       this.etats.natureDeci = (this.hydrant.natureDeci !== null) ? 'valid' : 'invalid';
       this.$refs.ficheLocalisation.checkFormValidity();
+      this.$refs.fichePibi.checkFormValidity();
       return this.$refs.formFiche.checkValidity();
     },
  
@@ -376,8 +402,13 @@ export default {
       // Récupération des données
       var data = {};
       _.forEach(document.getElementsByClassName('parametre'), item => {
-        if(item.type === "number"){
+        if(item.classList.contains('custom-checkbox')){ // Checkbox
+          var element = item.getElementsByTagName('input')[0];
+          data[element.id] = this.hydrant[element.id];
+          
+        } else if(item.type === "number"){ // Input de type number
           data[item.id] = (item.value === "") ? null : parseInt(item.value);
+
         } else {
           data[item.id] = item.value;
         }
@@ -385,7 +416,6 @@ export default {
       data["geometrie"] = this.geometrie;
       if(!this.idHydrant){
         data["numeroInterne"] = null;
-        data["commune"] = 296; // Temporaire, à supprimer après implémentation de l'onglet Localisation (une commune est nécessaire pour pouvoir calculer le numéro interne)
       }
 
       var formData = new FormData();
