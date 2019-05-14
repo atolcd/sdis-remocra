@@ -157,7 +157,8 @@ INNER JOIN remocra.hydrant_pibi AS hi ON (h.id=hi.id)
 LEFT JOIN remocra.commune AS c ON (c.id=h.commune)
 LEFT JOIN remocra.type_hydrant_domaine AS thd ON (thd.id=h.domaine)
 LEFT JOIN remocra.type_hydrant_nature AS thn ON(thn.id=h.nature)
-LEFT JOIN remocra.type_hydrant_diametre AS thdi ON (thdi.id=hi.diametre);</sql>
+LEFT JOIN remocra.type_hydrant_diametre AS thdi ON (thdi.id=hi.diametre)
+WHERE h.date_recep IS NOT NULL;</sql>
     <limit>0</limit>
     <lookup/>
     <execute_each_row>N</execute_each_row>

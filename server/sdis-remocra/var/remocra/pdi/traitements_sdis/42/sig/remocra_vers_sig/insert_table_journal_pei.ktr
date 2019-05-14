@@ -133,6 +133,7 @@
   h3.date_operation as date_maj,
   (SELECT CASE WHEN (h3.nom_operation = &apos;DELETE&apos;) THEN &apos;Suppression&apos;
   WHEN (h2.nom_operation = &apos;INSERT&apos;) THEN &apos;Création&apos;
+  WHEN (h1.date_recep IS NULL AND h3.date_recep IS NOT NULL) THEN &apos;Création&apos;
   ELSE 
     ltrim(
       (SELECT CASE WHEN ( (coalesce(h1.nature,&apos;&apos;) &lt;&gt; coalesce(h3.nature,&apos;&apos;)) OR (coalesce(h1.diametre,&apos;&apos;)  &lt;&gt; coalesce(h3.diametre,&apos;&apos;))) THEN &apos;, Maj du type (nature et&#47;ou diamètre)&apos; ELSE &apos;&apos; END) ||
@@ -156,17 +157,18 @@
 FROM
   ( SELECT 
       hydrant_maj.id_hydrant_maj, 
-      (SELECT max(id) FROM tracabilite.hydrant WHERE id_hydrant = hydrant_maj.id_hydrant_maj AND date_operation &lt;= &apos;${date_max}&apos;) as id_action_previous,
+      (SELECT max(id) FROM tracabilite.hydrant WHERE id_hydrant = hydrant_maj.id_hydrant_maj AND date_operation &lt;= &apos;${date_max}&apos;) as id_action_last_before_last_synchro,
       (SELECT min(id) FROM tracabilite.hydrant WHERE id_hydrant = hydrant_maj.id_hydrant_maj AND date_operation &gt; &apos;${date_max}&apos;) as id_action_first_after_last_synchro,
       (SELECT max(id) FROM tracabilite.hydrant WHERE id_hydrant = hydrant_maj.id_hydrant_maj AND date_operation &gt; &apos;${date_max}&apos;) as id_action_last
     FROM 
       (SELECT DISTINCT (id_hydrant) as id_hydrant_maj FROM tracabilite.hydrant  WHERE date_operation &gt; &apos;${date_max}&apos; ORDER BY id_hydrant) as hydrant_maj
   ) as hydrant_idaction
-  LEFT JOIN tracabilite.hydrant as h1 ON (h1.id = id_action_previous)
+  LEFT JOIN tracabilite.hydrant as h1 ON (h1.id = id_action_last_before_last_synchro)
   INNER JOIN tracabilite.hydrant as h2 ON (h2.id = id_action_first_after_last_synchro)
   INNER JOIN tracabilite.hydrant as h3 ON (h3.id = id_action_last)
 WHERE 
    (NOT (h3.nom_operation = &apos;DELETE&apos; AND h2.nom_operation = &apos;INSERT&apos;))
+AND h3.date_recep IS NOT NULL 
 AND 
   ((St_Distance(h1.geometrie, h3.geometrie) &gt; 0 OR St_Distance(h1.geometrie, h3.geometrie) IS NULL)
   OR ((coalesce(h1.debit,0) &lt;&gt; coalesce(h3.debit,0))) 

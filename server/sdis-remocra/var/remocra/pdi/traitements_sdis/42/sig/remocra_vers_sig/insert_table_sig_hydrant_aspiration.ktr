@@ -153,7 +153,8 @@ FROM remocra.hydrant AS h
 INNER JOIN remocra.hydrant_pena AS ha ON (h.id=ha.id)
 LEFT JOIN remocra.commune AS c ON (c.id=h.commune)
 LEFT JOIN remocra.type_hydrant_domaine AS thd ON (thd.id=h.domaine)
-LEFT JOIN remocra.type_hydrant_nature AS thn ON(thn.id=h.nature);</sql>
+LEFT JOIN remocra.type_hydrant_nature AS thn ON(thn.id=h.nature)
+WHERE h.date_recep IS NOT NULL;</sql>
     <limit>0</limit>
     <lookup/>
     <execute_each_row>N</execute_each_row>
