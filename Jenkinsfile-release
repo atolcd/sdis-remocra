@@ -6,6 +6,8 @@ pipeline {
   }
   environment {
     NEXUS_REPO = 'https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/zip'
+    // Force HOME for npm
+    HOME = "${env.WORKSPACE}"
   }
   stages {
     stage('Clean and build') {
