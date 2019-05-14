@@ -11,6 +11,7 @@
   <name>parent</name>
 
   <modules>
+    <module>client-ng</module>
     <module>remocra</module>
     <module>dist</module>
   </modules>
