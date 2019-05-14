@@ -1147,7 +1147,7 @@
 									<outputDirectory>${basedir}/target/remocra/static</outputDirectory>
 									<resources>
 										<resource>
-											<directory>${basedir}/../client-ng/dist</directory>
+											<directory>${basedir}/../client-ng/dist/remocra/static</directory>
 											<filtering>false</filtering>
 										</resource>
 									</resources>
