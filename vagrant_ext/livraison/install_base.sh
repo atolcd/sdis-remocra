@@ -117,6 +117,48 @@ EOF
   rm -f jai_imageio-1_1-lib-linux-amd64-jre.bin
 fi
 
+# ------------------------------
+# - JDK 7
+# ------------------------------
+function assumeOpenJdk7Default() {
+  # Ajout éventuel de la variable (ici pour les serveurs installés préalablement)
+  if [ -z "${JAVA_HOME_7}" ]; then
+    envsubst >> ~/.bashrc << "EOF"
+export JAVA_HOME_7=/usr/lib/jvm/java-1.7.0-openjdk.x86_64/
+EOF
+    . ~/.bashrc
+  fi
+  # Java 7 par défaut
+  update-alternatives --set java /usr/lib/jvm/jre-1.7.0-openjdk.x86_64/bin/java
+  update-alternatives --set javac /usr/lib/jvm/java-1.7.0-openjdk.x86_64/bin/javac
+}
+
+# ------------------------------
+# - JDK 8
+# ------------------------------
+function assumeOpenJdk8() {
+  if [ -z "${JAVA_HOME_8}" ]; then
+    echo && echo "Installation de java-1.8.0-openjdk-devel"
+    # JAVA
+    yum -y install java-1.8.0-openjdk-devel
+    # JAVA_HOME_*
+    envsubst >> ~/.bashrc << "EOF"
+export JAVA_HOME_8=/usr/lib/jvm/java-1.8.0-openjdk.x86_64/
+EOF
+    . ~/.bashrc
+    # JAI
+    cd ${JAVA_HOME_8}/jre
+    cp /livraison/ext/jai-1_1_3-lib-linux-amd64-jre.bin . 2> /dev/null || (echo "Téléchargement JAI" && wget -q http://download.java.net/media/jai/builds/release/1_1_3/jai-1_1_3-lib-linux-amd64-jre.bin)
+    echo y | sh jai-1_1_3-lib-linux-amd64-jre.bin > /dev/null
+    rm -f jai-1_1_3-lib-linux-amd64-jre.bin
+    # JAI Image I/O
+    cd ${JAVA_HOME_8}/jre
+    cp /livraison/ext/jai_imageio-1_1-lib-linux-amd64-jre.bin . 2> /dev/null || (echo "Téléchargement JAI-IMAGEIO" && wget -q http://download.java.net/media/jai-imageio/builds/release/1.1/jai_imageio-1_1-lib-linux-amd64-jre.bin)
+    export _POSIX2_VERSION=199209
+    echo y | sh jai_imageio-1_1-lib-linux-amd64-jre.bin > /dev/null
+    rm -f jai_imageio-1_1-lib-linux-amd64-jre.bin
+  fi
+}
 
 # ------------------------------
 # - TOMCAT
@@ -480,3 +522,28 @@ if [ ! -f "/home/postgres/pdi/kitchen.sh" ]; then
   sed -i "s/-cp \$CLASSPATH/-cp \$CLASSPATH -Dfile\.encoding=utf8/g" /home/postgres/pdi/kitchen.sh
 fi
 
+# ------------------------------
+# - ETL Pentaho Data Integrator 7.1
+# ------------------------------
+function assumePDI71() {
+  if [ ! -f "/home/postgres/pdi7.1/kitchen.sh" ]; then
+    assumeOpenJdk8
+    assumeOpenJdk7Default
+    echo && echo "Installation de Pentaho Data Integrator 7.1"
+    [ -f "/livraison/ext/pdi-ce-7.1.0.0-12.zip" ] || (echo "Téléchargement PDI CE" && cd /livraison/ext && wget -q https://sourceforge.net/projects/pentaho/files/Data%20Integration/7.1/pdi-ce-7.1.0.0-12.zip)
+    unzip -qo /livraison/ext/pdi-ce-7.1.0.0-12.zip -d /home/postgres
+    mv /home/postgres/data-integration /home/postgres/pdi7.1
+    # Pentaho-gis-plugins
+    [ -f "/livraison/ext/pentaho-gis-plugins-1.2.1-bin-7.zip" ] || (echo "Téléchargement pentaho-gis-plugins" && cd /livraison/ext && wget -q https://github.com/atolcd/pentaho-gis-plugins/releases/download/v1.2.1/pentaho-gis-plugins-1.2.1-bin-7.zip)
+    unzip /livraison/ext/pentaho-gis-plugins-1.2.1-bin-7.zip -d /home/postgres/pdi7.1/plugins
+    # Récupération des jars oracle
+    (cd /home/postgres/pdi7.1/lib/ && wget -q https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/home/postgres/pdi/libext/JDBC/ojdbc14.jar)
+    (cd /home/postgres/pdi7.1/lib/ && wget -q https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/home/postgres/pdi/libext/JDBC/orai18n.jar)
+    # Version adéquate de java
+    sed -i "s%export IS_KITCHEN=\"true\"%export IS_KITCHEN=\"true\"\nexport PENTAHO_JAVA_HOME=\"${JAVA_HOME_8}\"%g" /home/postgres/pdi7.1/kitchen.sh
+    # Permissions
+    /home/postgres/pdi_permissions.sh
+  fi
+}
+
+assumePDI71
