@@ -1,13 +1,16 @@
 package fr.sdis83.remocra.web;
 
+import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.HydrantAspirationService;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
+import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -55,5 +58,54 @@ public class HydrantAspirationController {
             }
 
         }.serialize();
+    }
+
+    /**
+     * Mise à jour de plusieurs HydrantAspiration à la fois
+     * @param json Un tableau JSON des informations des HydrantAspiration
+     */
+    @RequestMapping(value = "/updatemany", method = RequestMethod.POST, headers = "Accept=application/json")
+    public ResponseEntity<java.lang.String> update(final @RequestBody String json) {
+        try {
+            hydrantAspirationService.updateMany(json);
+            return new SuccessErrorExtSerializer(true, "HydrantAspiration updated.").serialize();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
+    }
+
+    /**
+     * Création d'une nouvelle aspiration
+     */
+    @RequestMapping(value = "", method = RequestMethod.POST, headers = "Accept=application/json")
+    public ResponseEntity<java.lang.String> create(final @RequestBody String json) {
+        try {
+            final HydrantAspiration attached = hydrantAspirationService.create(json, null);
+            return new AbstractExtObjectSerializer<HydrantAspiration>("HydrantAspiration created") {
+                @Override
+                protected HydrantAspiration getRecord() throws BusinessException {
+                    return attached;
+                }
+            }.serialize();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
+    }
+
+    /**
+     * Suppression d'une ou plusieurs aspirations
+     * @param json Un tableau d'entiers d'ID d'aspirations à supprimer
+     * @return
+     */
+    @RequestMapping(value = "", method = RequestMethod.DELETE, headers = "Accept=application/json")
+    public ResponseEntity<java.lang.String> delete(final @RequestBody String json) {
+        try {
+            hydrantAspirationService.delete(json);
+            return new SuccessErrorExtSerializer(true, "HydrantAspiration supprimé").serialize();
+        } catch (Exception e) {
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
     }
 }

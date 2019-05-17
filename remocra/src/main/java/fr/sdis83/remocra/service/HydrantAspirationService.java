@@ -7,12 +7,21 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import flexjson.JSONDeserializer;
 import fr.sdis83.remocra.domain.remocra.HydrantAspiration;
+import fr.sdis83.remocra.util.GeometryUtil;
 import org.springframework.context.annotation.Configuration;
 
 import fr.sdis83.remocra.web.message.ItemFilter;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +45,52 @@ public class HydrantAspirationService extends AbstractService<HydrantAspiration>
             predicat = cBuilder.equal(cpPath, itemFilter.getValue());
         }
         return predicat;
+    }
+
+    /**
+     * Permet de mettre à jour plusieurs instances de HydrantAspiration
+     * @param json Un tableau JSON contenant les informations de l'HydrantAspiration
+     */
+    public void updateMany(String json) throws Exception {
+        ArrayList<HashMap<String, Object>> liste = new JSONDeserializer<ArrayList<HashMap<String, Object>>>().deserialize(json);
+        for(HashMap<String, Object> obj : liste){
+
+            // Si on a indiqué des coordonnées
+            if(obj.get("longitude") != null && obj.get("latitude") != null)
+            {
+                double longitude = Double.parseDouble(obj.get("longitude").toString());
+                double latitude = Double.parseDouble(obj.get("latitude").toString());
+                obj.remove("longitude");
+                obj.remove("latitude");
+
+                double[] coordonneConvert = GeometryUtil.transformCordinate(longitude, latitude, "4326", "2154");
+                longitude = BigDecimal.valueOf(coordonneConvert[0]).setScale(0, RoundingMode.HALF_UP).intValue();
+                latitude = BigDecimal.valueOf(coordonneConvert[1]).setScale(0, RoundingMode.HALF_UP).intValue();
+
+                GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 2154);
+                Point p = geometryFactory.createPoint(new Coordinate(longitude, latitude));
+                obj.put("geometrie", p);
+            }
+            else {
+                obj.put("geometrie", null);
+            }
+
+            if(obj.get("id") == null) { // Pas d'ID: nouvelle aspiration
+                super.create(obj.toString(), null);
+            } else { // ID présent: modification dans la BDD
+                super.update(Long.parseLong(obj.get("id").toString()), obj.toString(), null);
+            }
+
+        }
+    }
+
+    @Transactional
+    public boolean delete(String json) throws Exception {
+        ArrayList<Integer> liste = new JSONDeserializer<ArrayList<Integer>>().deserialize(json);
+        for(Integer id : liste){
+            super.delete(Long.valueOf(id));
+        }
+        return true;
     }
 
 }

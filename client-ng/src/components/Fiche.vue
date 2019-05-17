@@ -94,7 +94,13 @@
                                         ref="fichePibi"
                                         v-if="hydrant.code=='PIBI' && dataLoaded">
             </FicheCaracteristiquesPibi>
-            <p v-else>Form caractéristiques PENA</p>
+            <FicheCaracteristiquesPena  :hydrant="hydrant"
+                                        :hydrantRecord="hydrantRecord"
+                                        @getComboData="getComboData"
+                                        @resolveForeignKey="resolveForeignKey"
+                                        ref="fichePena"
+                                        v-if="hydrant.code=='PENA' && dataLoaded">
+            </FicheCaracteristiquesPena>
           </b-tab>
           <b-tab title="Visites"><p>Form visites</p></b-tab>
           <b-tab title="Documents"><p>Form documents</p></b-tab>
@@ -115,6 +121,7 @@ import _ from 'lodash'
 import ModalGestionnaire from './ModalGestionnaire.vue'
 import FicheLocalisation from './FicheLocalisation.vue'
 import FicheCaracteristiquesPibi from './FicheCaracteristiquesPibi.vue'
+import FicheCaracteristiquesPena from './FicheCaracteristiquesPena.vue'
 
 
 export default {
@@ -123,7 +130,8 @@ export default {
   components: {
     ModalGestionnaire,
     FicheLocalisation,
-    FicheCaracteristiquesPibi
+    FicheCaracteristiquesPibi,
+    FicheCaracteristiquesPena
   },
 
   data() {
@@ -371,7 +379,10 @@ export default {
     },
 
     
-
+    /**
+      * Valide ou non les données du formulaire de ce module ainsi que de ses modules enfants
+      * La réponse est envoyée au serveur, qui fera appel à this.handleSubmit() pour procéder à l'envoi des données
+      */ 
     checkFormValidity(){
       this.etats.numeroInterne = !this.idHydrant || (this.idHydrant && this.hydrant.numeroInterne.toString().length > 0) ? 'valid' : 'invalid';
       this.etats.gestionnaire = (this.hydrant.gestionnaire !== null) ? 'valid' : 'invalid';
@@ -379,7 +390,13 @@ export default {
       this.etats.autoriteDeci = (this.hydrant.autoriteDeci !== null) ? 'valid' : 'invalid';
       this.etats.natureDeci = (this.hydrant.natureDeci !== null) ? 'valid' : 'invalid';
       this.$refs.ficheLocalisation.checkFormValidity();
-      this.$refs.fichePibi.checkFormValidity();
+      
+      if(this.$refs.fichePibi){
+        this.$refs.fichePibi.checkFormValidity();
+      } else if(this.$refs.fichePena) {
+        this.$refs.fichePena.checkFormValidity();
+      }
+      
       return this.$refs.formFiche.checkValidity();
     },
  
@@ -420,14 +437,23 @@ export default {
 
       var formData = new FormData();
 
-      axios.post('/remocra/hydrants/getUpdatedCoordonnees', this.$refs.ficheLocalisation.getLocalisationData()).then(function(response) { // Une fois la maj faite, on met à jour le reste des données
+      var self = this;
+      axios.post('/remocra/hydrants/getUpdatedCoordonnees', this.$refs.ficheLocalisation.getLocalisationData()).then(function(response) { // Récupération des coordonnées du PEI dans le bon système et préparation des données
         data["geometrie"] = response.data.message;
         formData.append("hydrant", JSON.stringify(data));
 
+      }).then(function() { // On met à jour le PEI
         axios.post(url, formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
+          }).then(function(response){ // Une fois le PEI mis à jour, on peut récupérer son id et mettre à jour les aspirations
+            var id = response.data.data.id;
+
+            if(id !== null) {
+              self.$refs.fichePena.sendAspirationData(id);
+            }
+            
           }).catch(function(error) {
             console.error('postEvent', error)
           })

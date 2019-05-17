@@ -1,6 +1,8 @@
 package fr.sdis83.remocra.domain.remocra;
 
 import java.awt.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +14,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
+import fr.sdis83.remocra.util.Feature;
+import fr.sdis83.remocra.util.GeometryUtil;
+import org.cts.IllegalCoordinateException;
+import org.cts.crs.CRSException;
 import org.hibernate.annotations.Type;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -38,7 +44,6 @@ public class HydrantAspiration {
     private Boolean hauteur;
 
     @ManyToOne
-    @NotNull
     private TypeHydrantAspiration typeAspiration;
 
     @Column
@@ -56,6 +61,30 @@ public class HydrantAspiration {
     @Column(name = "version", columnDefinition = "INTEGER default 1")
     private Integer version;
 
+    public Feature toFeature() throws CRSException, IllegalCoordinateException {
+        Feature feature = new Feature(this.id, null);
+        feature.addProperty("longitude", this.getLongitude());
+        feature.addProperty("latitude", this.getLatitude());
+        return feature;
+    }
+
+    public Double getLongitude() throws CRSException, IllegalCoordinateException {
+        if(this.getGeometrie() == null)
+            return null;
+        Point p = this.getGeometrie();
+        double[] coordonneConvert = GeometryUtil.transformCordinate(p.getX(), p.getY(), "2154", "4326");
+        double longitude = BigDecimal.valueOf(coordonneConvert[0]).setScale(5, RoundingMode.HALF_UP).doubleValue();
+        return longitude;
+    }
+
+    public Double getLatitude() throws CRSException, IllegalCoordinateException {
+        if(this.getGeometrie() == null)
+            return null;
+        Point p = this.getGeometrie();
+        double[] coordonneConvert = GeometryUtil.transformCordinate(p.getX(), p.getY(), "2154", "4326");
+        double latitude = BigDecimal.valueOf(coordonneConvert[1]).setScale(5, RoundingMode.HALF_UP).doubleValue();
+        return latitude;
+    }
 
 
 

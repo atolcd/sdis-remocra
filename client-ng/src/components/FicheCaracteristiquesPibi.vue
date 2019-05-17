@@ -205,9 +205,6 @@ export default {
 		this.$emit('getComboData', this, 'comboReservoir', '/remocra/reservoir.json', 'id', 'nom', 'Aucun');
 
 		if(this.hydrant.id !== null) {
-			//this.$emit('getComboData', this, 'comboJumele', '/remocra/hydrantspibi/findjumelage?nature='+this.hydrant.nature+'&geometrie='+this.geometrie.replace(/ /g, '%20'), 'id', 'numero', 'Aucun');
-		
-		//this.$emit('getComboData', this, 'comboJumele', '/remocra/hydrantspibi/findjumelage?nature='+this.hydrant.nature+'&geometrie='+this.geometrie.replace(/ /g, '%20'), 'id', 'numero', 'Aucun');
 
 			this.comboJumele = [];
 			var self = this;
@@ -275,6 +272,7 @@ export default {
 		checkFormValidity(){
 			this.etats.anneeFabrication = (this.hydrant.anneeFabrication > 0 || !this.hydrant.anneeFabrication) ? 'valid' : 'invalid';
 			this.etats.diametreCanalisation = (this.hydrant.diametreCanalisation > 0 || !this.hydrant.diametreCanalisation) ? 'valid' : 'invalid';
+			return this.etats;
 		},
 
 		onReservoirCreated(values) {			  
