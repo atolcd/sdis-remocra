@@ -51,7 +51,7 @@ export default {
 
 .gestcrise .modal-footer .btn-secondary {
   margin-left: .25rem;
-  position: absolute;
+  position: relative;
   width: 80px;
 }
 
@@ -208,10 +208,12 @@ export default {
 
 .gestcrise .document a {
   color: #000;
+  font-weight: bold;
 }
 
 .gestcrise .evenements .messages {
-  margin-left: 15px;
+  padding: 15px;
+  background-color: #17a2b8;
 }
 
 .gestcrise .evenements , .messages, .documents, .form-parameters, .sidebar {
@@ -260,6 +262,8 @@ export default {
   position: absolute;
   left: 40px;
   cursor: pointer;
+  width: 190px;
+  line-height: 15px;
 }
 
 .gestcrise .evenements .evenement>img {
@@ -389,6 +393,8 @@ export default {
 .gestcrise .documents .list-group-item {
   padding: 6px;
   border: none;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .gestcrise .col-map {
@@ -411,6 +417,7 @@ export default {
 
 .gestcrise .sidebar .layer {
   margin-left: 20px;
+  margin-right: 20px;
 }
 
 /* Maximisation de la hauteur de la carte */
@@ -452,5 +459,12 @@ body {
 .resetrate {
   display: -webkit-box;
   -webkit-box-align: baseline;
+}
+.gestcrise .gears_btn{
+ width: 28px;
+ height: 28px;
+ float: right;
+ background-image: url('/remocra/static/img/vertical-filled.svg');
+ background-repeat: no-repeat;
 }
 </style>

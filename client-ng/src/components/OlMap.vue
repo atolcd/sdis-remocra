@@ -153,12 +153,24 @@
                 <div :id="'layertree'+criseId">
                   <div v-for="(group,index) in legend.items" :key="index">
                     <div class="group">{{group.libelle}}</div>
-                    <draggable :list="group.items" :options="{handle:'.my-handle'}" @start="drag=true" @end="addSortable()">
+                    <draggable :list="group.items" :options="{handle:'.my-handle'}" @start="startDrag()" @end="addSortable()">
                       <div class="layer" v-for="(layer,index) in group.items" :key="index">
-                        <div class="my-handle">
-                          <input type="checkbox" :id="'checkbox'+layer.id+'-'+criseId" :checked="layer.visibility" @click="changeLayerVisibility(layer.id)">
-                          <label for="layer.id">&nbsp;&nbsp;{{layer.libelle}}</label>
-                          <b-btn v-bind:id="'btnSuppr'+layer.id" v-if="group.libelle === 'Fichiers importés'" class="ctrlImportLayer" title="Supprimer la couche" @click="deleteImportLayer(layer.id)"><img src="/remocra/static/img/decline.png"></b-btn>
+                        <div>
+                          <button :id ="'styleBtn'+layer.id+'-'+criseId" class="gears_btn" @click="showStyleLayer(layer.id)"></button>
+                          <span :id ="'styleTools'+layer.id+'-'+criseId" class="style-tools">
+                            <label>Opacity:</label>
+                            <b-form-input class="custom-slider" type="range" :id="'range'+layer.id+'-'+criseId"  v-model="layer.opacity" min="0" max="1" step="0.01" @change="changeLayerOpacity(layer.id)"/>
+                            <label>Styles:</label>&nbsp;&nbsp;<img style="cursor:pointer" :id="'styleIcon'+layer.id+'-'+criseId" class="visibility-style" @click="manageStyleVisibility(layer.id)"/>
+                            <select :id ="'selectStyle'+layer.id+'-'+criseId" class="form-control" @input="setDefaultLegend($event, layer.id)">
+                              <option v-for="(style, index) in  getStyles(layer.id)" :key="index" :value="style.id" >
+                                <span v-if="style.libelle !== null && style.libelle !=='' ">{{ style.libelle}}</span>
+                                <span v-else>{{style.id}}</span>
+                              </option>
+                            </select>
+                          </span>
+                          <span :id ="'layerInfo'+layer.id+'-'+criseId" class=" layer-info my-handle" >
+                          <input type="checkbox" :id="'checkbox'+layer.id+'-'+criseId" :checked="layer.visibility" v-model='layer.visibility' @click="changeLayerVisibility(layer.id)">
+                          <label class="layer-label">&nbsp;&nbsp;{{layer.libelle}}</label></span>
                         </div>
                       </div>
                     </draggable>
@@ -178,8 +190,8 @@
                 <div id="layertree">
                   <div v-for="(group,index) in legend.items" :key="index">
                     <div class="group">{{group.libelle}}</div>
-                    <div class="layer" v-for="(layer,index) in group.items" :key="index" :id="'legend'+layer.id+'-'+criseId">
-                      <div class="my-handle">
+                    <div class="layer" v-for="(layer,index) in group.items" :key="index" >
+                      <div :id="'legend'+layer.id+'-'+criseId" class="my-handle">
                         <label>{{layer.libelle}}</label>
                         <img style="display:block;margin-left:20px;" onerror="this.src='/remocra/static/img/layer404.png'" class="legend-img" :src="getLegendGraphics(layer)" />
                       </div>
@@ -230,6 +242,7 @@ import SearchRepertoire from './SearchRepertoireLieu.vue'
 import OlOverlay from 'ol/Overlay.js'
 import OlSourceVector from 'ol/source/Vector.js'
 import OlLayerVector from 'ol/layer/Vector.js'
+import LayerGroup from 'ol/layer/Group';
 import OlInteractionDraw, {
   createBox
 } from 'ol/interaction/Draw.js'
@@ -367,7 +380,8 @@ export default {
         btns: false
       },
       inputGeoms: [],
-      displayType: 'MAP_ONLY'
+      displayType: 'MAP_ONLY',
+      oldLegend: []
     }
   },
   mounted() {
@@ -490,6 +504,19 @@ export default {
     // this.addSortable()
   },
   methods: {
+    getStyles(id){
+      var l = []
+      _.forEach(this.legend.items, item =>{
+         _.forEach(item.items, layer => {
+           if(layer.id == id){
+             if(layer.styles){
+                l = _.clone(layer.styles)
+             }
+           }
+         })
+      })
+      return l
+    },
     getLegendGraphics(layer) {
       return layer && layer.styles && layer.styles[0] ? layer.styles[0].legende : null
     },
@@ -529,7 +556,32 @@ export default {
       this.$refs['newEvenement'].createEvent(this.criseId)
     },
     addSortable() {
-      this.addLayersFromLayerConfig(this.legend)
+      this.redrawLayers()
+      _.forEach(this.oldLegend, item =>{
+         _.forEach(item.items, layer => {
+             if (_.indexOf(this.activeElement, layer.id) !== -1){
+               document.getElementById('styleTools'  + layer.id + '-' + this.criseId).classList.add('active')
+               document.getElementById('layerInfo'  + layer.id + '-' + this.criseId).classList.add('active')
+             }else{
+               document.getElementById('styleTools'  + layer.id + '-' + this.criseId).classList.remove('active')
+               document.getElementById('layerInfo'  + layer.id + '-' + this.criseId).classList.remove('active')
+             }
+         })
+       })
+
+    },
+    startDrag(){
+      this.drag= true
+      this.oldLegend = _.clone(this.legend.items)
+      this.activeElement = []
+      _.forEach(this.oldLegend, item =>{
+         _.forEach(item.items, layer => {
+           if(document.getElementById('styleTools'  + layer.id + '-' + this.criseId).classList.contains('active')){
+             this.activeElement.push(layer.id)
+           //  document.getElementById('styleTools'  + layer.id + '-' + this.criseId).classList.add('active')
+           }
+         })
+       })
     },
     changeLayerVisibility(id) {
       var layer = this.getLayerById(id)
@@ -539,9 +591,47 @@ export default {
       document.getElementById('legend' + id + '-' + this.criseId).style.display = newVisibility ? 'block' : 'none'
     },
     changeLayerOpacity(id) {
-      var range = document.getElementById('range' + id)
+      var range = document.getElementById('range' + id + '-' + this.criseId)
       var layer = this.getLayerById(id)
       layer.setOpacity(parseFloat(range.value))
+    },
+    showStyleLayer(id) {
+      document.getElementById('styleTools'  + id + '-' + this.criseId).classList.toggle('active')
+      document.getElementById('layerInfo'  + id + '-' + this.criseId).classList.toggle('active')
+    },
+    setDefaultLegend(e, id){
+     var selectedStyle = e.target.value
+       if(selectedStyle !== null){
+         _.forEach(this.legend.items, item =>{
+            _.forEach(item.items, layer => {
+              if(layer.id == id){
+                 layer.style = selectedStyle
+                 if(layer.styles && layer.styles.length > 1){
+                    var s  = _.filter(layer.styles, style => style.id === selectedStyle)
+                    _.remove(layer.styles, style => style.id === selectedStyle)
+                    layer.styles.unshift(s[0])
+                    e.target.options.selectedIndex= 0
+                 }
+              }
+            })
+          })
+       }
+      this.redrawLayers()
+    },
+    manageStyleVisibility(id) {
+      document.getElementById('styleIcon'+id+'-'+this.criseId).classList.toggle('hide')
+      if(document.getElementById('styleIcon'+id+'-'+this.criseId).classList.contains('hide')){
+        document.getElementById('legend'+id+'-'+this.criseId).style.display = "none"
+      }else {
+        document.getElementById('legend'+id+'-'+this.criseId).style.display = "block"
+      }
+    },
+    redrawLayers() {
+      this.map.setLayerGroup(new LayerGroup())
+      this.addLayersFromLayerConfig(this.legend)
+      this.desactivateControls()
+      this.createWorkingLayer('workingLayer')
+      this.refreshMap(this.criseId)
     },
     constructMap() {
       axios.get('/remocra/ext-res/js/app/remocra/features/crises/data/carte.json').then(response => {
@@ -680,6 +770,7 @@ export default {
         'alt="TOS" title="TOS" target="_blank">Conditions générales d\'utilisation</a>'
       layerDef.style = layerDef.style || 'normal'
       layerDef.format = layerDef.format || 'image/jpeg'
+      layerDef.ocapcity = layerDef.opacity
       return this.createWMTSLayer(layerDef)
     },
     // A implémenter dans des cartes spécifiques si nécessaire (composants qui
@@ -691,8 +782,8 @@ export default {
           id: layerDef,
           name: layerDef,
           // layers : 'GEOGRAPHICALGRIDSYSTEMS.MAPS',
-          visibility: false,
-          opacity: 0.0,
+          visibility: layerDef.visibility,
+          opacity: layerDef.opacity,
           projection: layerDef.projection || 'EPSG:3857',
           url: 'https://wxs.ign.fr/' + this.ignKey + '/geoportail/wmts',
           tileMatrixSet: {
@@ -716,8 +807,8 @@ export default {
           libelle: 'Évènements',
           scale_min: '0',
           scale_max: '1000000',
-          visibility: true,
-          opacity: 1,
+          visibility: layerDef.visibility,
+          opacity: layerDef.opacity,
           interrogeable: false,
           items: null,
           wms_layer: true,
@@ -772,7 +863,7 @@ export default {
         format: layerDef.format,
         projection: layerDef.projection || 'EPSG:3857',
         tileGrid: tileGrid,
-        style: 'normal',
+        style: layerDef.style || 'normal',
         attributions: '<a href="http://www.geoportail.fr/" target="_blank">' + '<img src="https://api.ign.fr/geoportail/api/js/latest/' + 'theme/geoportal/img/logo_gp.gif"></a>'
       })
       var wmtsLayer = new TileLayer({
@@ -1653,7 +1744,7 @@ export default {
 
 .tableauDiv {
   bottom: 1%;
-  width: 60%;
+  width: 50%;
   left: 25%;
   position: absolute;
   z-index: 1000;
@@ -1678,7 +1769,7 @@ button.close {
 
 .left_content {
   position: absolute;
-  width: 350px;
+  width: 370px;
   z-index: 900;
   left: 10px;
   top: 10px;
@@ -1688,7 +1779,7 @@ button.close {
 }
 .right_content {
   position: absolute;
-  width: 350px;
+  width: 370px;
   z-index: 800;
   right: 10px;
   top: 10px;
@@ -1710,5 +1801,85 @@ button.close {
 }
 .mapDiv{
   height: 100%;
+}
+
+
+ .style-tools {
+  display: none;
+}
+
+.style-tools.active {
+  display: block;
+}
+.style-tools {
+background-color: #17a2b8;
+border-style: solid;
+margin-bottom: 2px;
+border-width: thin;
+padding:5px;
+line-height: 10px;
+}
+
+.layer-info {
+border-style: solid;
+margin-bottom: 2px;
+border-width: thin;
+cursor:move;
+}
+
+.layer-info {
+ display: block;
+}
+
+.layer-info.active {
+ display: none;
+}
+.layer-label {
+  width: 160px;
+  display: inline-grid;
+}
+.custom-slider::-webkit-slider-runnable-track{
+  height: 2px;
+  border: none;
+  border-radius: 0;
+}
+.custom-slider::-moz-range-track{
+  height: 2px;
+  border: none;
+  border-radius: 0;
+}
+.custom-slider::-webkit-slider-thumb{
+  width: 2em;
+  height: 12px;
+  border-style: solid;
+  border-color: #dee2e6;
+  border-width: thin;
+}
+.custom-slider::-moz-range-thumb{
+  width: 2em;
+  height: 12px;
+  border-style: solid;
+  border-color: #dee2e6;
+  border-width: thin;
+}
+.custom-slider::-ms-track{
+  width: 2em;
+  height: 12px;
+  border-style: solid;
+  border-color: #dee2e6;
+  border-width: thin;
+}
+.custom-slider::-ms-thumb{
+  width: 2em;
+  height: 12px;
+  border-style: solid;
+  border-color: #dee2e6;
+  border-width: thin;
+}
+.visibility-style{
+  content: url("/remocra/static/img/show.png");
+}
+.visibility-style.hide{
+  content: url("/remocra/static/img/hide.png");
 }
 </style>
