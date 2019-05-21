@@ -217,7 +217,9 @@ export default {
     // Clic sur le bouton Exécuter
     executeRequest(idRequeteModele, valParams) {
       // Envoi des données
-      axios.post('/remocra/requetemodele/' + idRequeteModele + '?jsonValeurs=' + JSON.stringify(valParams) + '').then(response => {
+      let formData = new FormData()
+      formData.append('jsonValeurs', JSON.stringify(valParams))
+      axios.post('/remocra/requetemodele/' + idRequeteModele ,formData).then(response => {
         if (response.data.message) {
           this.retrieveData(JSON.parse(response.data.message))
         }
