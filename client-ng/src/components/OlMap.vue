@@ -156,11 +156,13 @@
                     <draggable :list="group.items" :options="{handle:'.my-handle'}" @start="startDrag()" @end="addSortable()">
                       <div class="layer" v-for="(layer,index) in group.items" :key="index">
                         <div>
-                          <button :id ="'styleBtn'+layer.id+'-'+criseId" class="gears_btn" @click="showStyleLayer(layer.id)"></button>
+                          <img :id ="'styleBtn'+layer.id+'-'+criseId" src="/remocra/static/img/vertical-filled.svg" class="gears_btn" @click="showStyleLayer(layer.id)"/>
                           <span :id ="'styleTools'+layer.id+'-'+criseId" class="style-tools">
                             <label>Opacity:</label>
                             <b-form-input class="custom-slider" type="range" :id="'range'+layer.id+'-'+criseId"  v-model="layer.opacity" min="0" max="1" step="0.01" @change="changeLayerOpacity(layer.id)"/>
-                            <label>Styles:</label>&nbsp;&nbsp;<img style="cursor:pointer" :id="'styleIcon'+layer.id+'-'+criseId" class="visibility-style" @click="manageStyleVisibility(layer.id)"/>
+                            <div><label>Legende:</label>&nbsp;&nbsp;
+                            <img style="cursor:pointer" :id="'styleIcon'+layer.id+'-'+criseId" class="visibility-style" @click="manageStyleVisibility(layer.id)"/></div>
+                            <label>Styles:</label>
                             <select :id ="'selectStyle'+layer.id+'-'+criseId" class="form-control" @input="setDefaultLegend($event, layer.id)">
                               <option v-for="(style, index) in  getStyles(layer.id)" :key="index" :value="style.id" >
                                 <span v-if="style.libelle !== null && style.libelle !=='' ">{{ style.libelle}}</span>
@@ -1809,17 +1811,13 @@ button.close {
 }
 .style-tools {
 background-color: #17a2b8;
-border-style: solid;
 margin-bottom: 2px;
-border-width: thin;
-padding:5px;
-line-height: 10px;
+padding:10px;
+line-height: 15px;
 }
 
 .layer-info {
-border-style: solid;
 margin-bottom: 2px;
-border-width: thin;
 cursor:move;
 }
 
@@ -1834,6 +1832,11 @@ cursor:move;
   width: 160px;
   display: inline-grid;
 }
+.custom-range {
+  margin: 0 5px 0 5px;
+  width: 60%;
+  height: 10px;
+}
 .custom-slider::-webkit-slider-runnable-track{
   height: 2px;
   border: none;
@@ -1844,6 +1847,12 @@ cursor:move;
   border: none;
   border-radius: 0;
 }
+.custom-slider::-ms-track{
+  height: 2px;
+  border: none;
+  border-radius: 0;
+}
+
 .custom-slider::-webkit-slider-thumb{
   width: 2em;
   height: 12px;
@@ -1852,13 +1861,6 @@ cursor:move;
   border-width: thin;
 }
 .custom-slider::-moz-range-thumb{
-  width: 2em;
-  height: 12px;
-  border-style: solid;
-  border-color: #dee2e6;
-  border-width: thin;
-}
-.custom-slider::-ms-track{
   width: 2em;
   height: 12px;
   border-style: solid;

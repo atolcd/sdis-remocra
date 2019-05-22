@@ -466,12 +466,10 @@ body {
   -webkit-box-align: baseline;
 }
 .gestcrise .gears_btn{
- width: 28px;
- height: 28px;
- float: right;
- background-image: url('/remocra/static/img/vertical-filled.svg');
- background-repeat: no-repeat;
+  float: right;
+  cursor: pointer;
 }
+
 #nprogress .bar {
    background: #17a2b8 !important;
    height: 10px;
