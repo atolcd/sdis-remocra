@@ -1678,30 +1678,23 @@ export default {
       switch (type) {
         case 'MAP_ONLY': // Seulement la map
           document.getElementById('mapDiv' + this.criseId).style.display = ''
-          // document.getElementById('mapDiv' + this.criseId).style.height = '100%'
           document.getElementById('tableauDiv' + this.criseId).style.display = 'none'
           this.map.updateSize()
           break
         case 'TABLE_ONLY': // Seulement le tableau
-          document.getElementById('mapDiv' + this.criseId).style.display = 'none'
+          document.getElementById('mapDiv' + this.criseId).style.display = ''
           document.getElementById('tableauDiv' + this.criseId).style.display = ''
-          // document.getElementById('tableauDiv' + this.criseId).style.height = '100%'
-          this.$refs.TableauDonnees.setPageSize(37)
           break
         case 'SPLIT': // Map et tableau
           document.getElementById('mapDiv' + this.criseId).style.display = ''
           document.getElementById('tableauDiv' + this.criseId).style.display = ''
-          /* document.getElementById('mapDiv' + this.criseId).style.height = '60%'
-          document.getElementById('tableauDiv' + this.criseId).style.height = '40%' */
           this.map.updateSize()
-          this.$refs.TableauDonnees.setPageSize(10)
           break
       }
       this.displayType = type
     },
     toggleTableau() {
       document.getElementById('mapDiv' + this.criseId).style.display = ''
-      // document.getElementById('mapDiv' + this.criseId).style.height = '100%'
       document.getElementById('tableauDiv' + this.criseId).style.display = 'none'
       this.map.updateSize()
     },
@@ -1744,8 +1737,8 @@ export default {
 
 .tableauDiv {
   bottom: 1%;
-  width: 50%;
-  left: 25%;
+  width: 60%;
+  left: 20%;
   position: absolute;
   z-index: 1000;
 }
@@ -1798,6 +1791,9 @@ button.close {
 }
 .accord7{
   padding: 15px;
+  overflow-y: auto;
+  overflow-x: auto;
+  max-height: 600px;
 }
 .mapDiv{
   height: 100%;

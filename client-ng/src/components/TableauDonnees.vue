@@ -49,7 +49,7 @@ export default {
       donneesPaginees: [],
       ascending: false,
       sortColumn: '',
-      pageSize: 14
+      pageSize: 15
     }
   },
   props: {

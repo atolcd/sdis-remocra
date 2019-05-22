@@ -2,7 +2,7 @@
 <div>
   <p class="card-text">Recherches et analyses</p>
   <b-form-group>
-    <select v-model="selected" id="selectAnalyse" v-on:change="createFormFromSelect()" required class="form-control">
+    <select v-model="selected" :id="'selectAnalyse'+criseId" v-on:change="createFormFromSelect()" required class="form-control">
       <option v-for="(value, key) in selectAnalyseOptions" :key="key" :data-description="value.dataDescription" :data-spatial="value.spatial" :value="value.valeur">
         {{ value.libelle }}
       </option>
@@ -232,7 +232,7 @@ export default {
       var idSelection = header[0].requete
       axios.get('/remocra/requetemodele/reqmodresult/' + idSelection).then(response => {
         if (response.data.data && response.data.data.length !== 0) {
-          var spatial = document.getElementById('selectAnalyse').options[document.getElementById('selectAnalyse').selectedIndex].getAttribute('data-spatial')
+          var spatial = document.getElementById('selectAnalyse'+this.criseId).options[document.getElementById('selectAnalyse'+this.criseId).selectedIndex].getAttribute('data-spatial')
           this.$root.$options.bus.$emit(eventTypes.RESEARCH_TABDONNEES, header, response.data.data, spatial, idSelection)
         } else {
           this.$notify({
