@@ -1,5 +1,5 @@
 <template>
-<div class="gestcrise">
+<div :id ="'gestcrise'+crise" class="gestcrise">
   <ol-map :criseId="crise"></ol-map>
   <!--<router-view/>-->
   <notifications group="remocra" position="top right" animation-type="velocity" :duration="3000" />
@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import { loadProgressBar } from 'axios-progress-bar'
+import 'axios-progress-bar/dist/nprogress.css'
 import OlMap from './components/OlMap.vue'
 export default {
   name: 'gestcrise',
@@ -18,6 +20,9 @@ export default {
       type: Number,
       required: true
     }
+  },
+  mounted(){
+    loadProgressBar({ parent: "#gestcrise"+this.crise })
   },
   data() {
     return {}
@@ -466,5 +471,13 @@ body {
  float: right;
  background-image: url('/remocra/static/img/vertical-filled.svg');
  background-repeat: no-repeat;
+}
+#nprogress .bar {
+   background: #17a2b8 !important;
+   height: 10px;
+
+}
+#nprogress .peg {
+  box-shadow: 0 0 20px #17a2b8, 0 0 10px #17a2b8 !important;
 }
 </style>
