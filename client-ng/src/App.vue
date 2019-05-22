@@ -218,7 +218,6 @@ export default {
 
 .gestcrise .evenements .messages {
   padding: 15px;
-  background-color: #17a2b8;
 }
 
 .gestcrise .evenements , .messages, .documents, .form-parameters, .sidebar {

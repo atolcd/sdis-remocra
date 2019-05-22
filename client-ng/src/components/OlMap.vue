@@ -158,12 +158,12 @@
                         <div>
                           <img :id ="'styleBtn'+layer.id+'-'+criseId" src="/remocra/static/img/vertical-filled.svg" class="gears_btn" @click="showStyleLayer(layer.id)"/>
                           <span :id ="'styleTools'+layer.id+'-'+criseId" class="style-tools">
-                            <label>Opacity:</label>
+                            <label>Opacité:</label>
                             <b-form-input class="custom-slider" type="range" :id="'range'+layer.id+'-'+criseId"  v-model="layer.opacity" min="0" max="1" step="0.01" @change="changeLayerOpacity(layer.id)"/>
                             <div><label>Legende:</label>&nbsp;&nbsp;
-                            <img style="cursor:pointer" :id="'styleIcon'+layer.id+'-'+criseId" class="visibility-style" @click="manageStyleVisibility(layer.id)"/></div>
+                            <input type="checkbox" :id="'stylIcon'+layer.id+'-'+criseId" checked @click="manageStyleVisibility(layer.id)"></div>
                             <label>Styles:</label>
-                            <select :id ="'selectStyle'+layer.id+'-'+criseId" class="form-control" @input="setDefaultLegend($event, layer.id)">
+                            <select :id ="'selectStyle'+layer.id+'-'+criseId" class="style-combo" @input="setDefaultLegend($event, layer.id)">
                               <option v-for="(style, index) in  getStyles(layer.id)" :key="index" :value="style.id" >
                                 <span v-if="style.libelle !== null && style.libelle !=='' ">{{ style.libelle}}</span>
                                 <span v-else>{{style.id}}</span>
@@ -621,8 +621,7 @@ export default {
       this.redrawLayers()
     },
     manageStyleVisibility(id) {
-      document.getElementById('styleIcon'+id+'-'+this.criseId).classList.toggle('hide')
-      if(document.getElementById('styleIcon'+id+'-'+this.criseId).classList.contains('hide')){
+      if(document.getElementById('stylIcon'+id+'-'+this.criseId).checked === false){
         document.getElementById('legend'+id+'-'+this.criseId).style.display = "none"
       }else {
         document.getElementById('legend'+id+'-'+this.criseId).style.display = "block"
@@ -1810,7 +1809,7 @@ button.close {
   display: block;
 }
 .style-tools {
-background-color: #17a2b8;
+background-color: #f1f1f1;
 margin-bottom: 2px;
 padding:10px;
 line-height: 15px;
@@ -1874,10 +1873,8 @@ cursor:move;
   border-color: #dee2e6;
   border-width: thin;
 }
-.visibility-style{
-  content: url("/remocra/static/img/show.png");
-}
-.visibility-style.hide{
-  content: url("/remocra/static/img/hide.png");
+.style-combo{
+   width: 70%;
+   margin-left: 10px;
 }
 </style>
