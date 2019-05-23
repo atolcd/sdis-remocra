@@ -64,5 +64,62 @@ privileged aspect HydrantVisite_Roo_JavaBean {
     public void HydrantVisite.setAgent2(String agent2) {
         this.agent2 = agent2;
     }
+
+    public Integer HydrantVisite.getDebit() {
+        return this.debit;
+    }
+
+    public void HydrantVisite.setDebit(Integer debit) {
+        this.debit = debit;
+    }
+
+    public Integer HydrantVisite.getDebitMax() {
+        return this.debitMax;
+    }
+
+    public void HydrantVisite.setDebitMax(Integer debitMax) {
+        this.debitMax = debitMax;
+    }
+
+    public Double HydrantVisite.getPression() {
+        return this.pression;
+    }
+
+    public void HydrantVisite.setPression(Double pression) {
+        this.pression = pression;
+    }
+
+    public Double HydrantVisite.getPressionDyn() {
+        return this.pressionDyn;
+    }
+
+    public void HydrantVisite.setPressionDyn(Double pressionDyn) {
+        this.pressionDyn = pressionDyn;
+    }
+
+    public Double HydrantVisite.getPressionDynDeb() {
+        return this.pressionDynDeb;
+    }
+
+    public void HydrantVisite.setPressionDynDeb(Double pressionDynDeb) {
+        this.pressionDynDeb = pressionDynDeb;
+    }
+
+    public String HydrantVisite.getAnomalies() {
+        return this.anomalies;
+    }
+
+    public void HydrantVisite.setAnomalies(String anomalies) {
+        this.anomalies = anomalies;
+    }
+
+    public String HydrantVisite.getObservations() {
+        return this.observations;
+    }
+
+    public void HydrantVisite.setObservations(String observations) {
+        this.observations = observations;
+    }
+
     
 }

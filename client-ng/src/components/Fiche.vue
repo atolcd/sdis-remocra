@@ -102,7 +102,17 @@
                                         v-if="hydrant.code=='PENA' && dataLoaded">
             </FicheCaracteristiquesPena>
           </b-tab>
-          <b-tab title="Visites"><p>Form visites</p></b-tab>
+
+          <!-- ================================== Onglet Visites ==================================-->
+          <b-tab title="Visites" active>
+            <FicheVisite  :hydrant="hydrant"
+                          :utilisateurDroits="utilisateurDroits"
+                          @getComboData="getComboData"
+                          @resolveForeignKey="resolveForeignKey"
+                          ref="ficheVisite"
+                          v-if="dataLoaded">
+            </FicheVisite>
+          </b-tab>
           <b-tab title="Documents"><p>Form documents</p></b-tab>
         </b-tabs>
       </div>
@@ -122,6 +132,7 @@ import ModalGestionnaire from './ModalGestionnaire.vue'
 import FicheLocalisation from './FicheLocalisation.vue'
 import FicheCaracteristiquesPibi from './FicheCaracteristiquesPibi.vue'
 import FicheCaracteristiquesPena from './FicheCaracteristiquesPena.vue'
+import FicheVisite from './FicheVisite.vue'
 
 
 export default {
@@ -131,7 +142,8 @@ export default {
     ModalGestionnaire,
     FicheLocalisation,
     FicheCaracteristiquesPibi,
-    FicheCaracteristiquesPena
+    FicheCaracteristiquesPena,
+    FicheVisite
   },
 
   data() {
@@ -189,41 +201,44 @@ export default {
       _.forEach(xmlDoc.getElementsByTagName("right"), function(item){
           self.utilisateurDroits.push(item.getAttribute("code"));
       });
+    }).then(function() {
+
+      if(!self.idHydrant) { // Création
+        self.hydrantRecord = {
+          id: null,
+          nature: null,
+          gestionnaire: null,
+          site: null,
+          autoriteDeci: null,
+          natureDeci: null,
+          code: self.codeHydrant
+        }
+
+        self.hydrant = _.clone(self.hydrantRecord);
+        self.dataLoaded = true;
+        self.createCombo();
+
+      } else { //Modification
+        axios.get('/remocra/hydrants'+self.codeHydrant.toLowerCase()+'/'+self.idHydrant+'.json?&id='+self.idHydrant).then(response => {
+          if (response.data.data && response.data.data.length !== 0) {
+
+            self.hydrantRecord = response.data.data;
+
+            //Résolution des clés étrangères
+            self.hydrant = _.clone(self.hydrantRecord, true);
+            self.dataLoaded = true;
+            self.resolveForeignKey(['nature', 'site', 'autoriteDeci', 'natureDeci']);
+
+            self.createCombo();
+            
+          }
+        }).catch(function(error) {
+          console.error('Retrieving data ', error)  
+        })
+      }
     });
 
-    if(!this.idHydrant) { // Création
-      this.hydrantRecord = {
-        id: null,
-        nature: null,
-        gestionnaire: null,
-        site: null,
-        autoriteDeci: null,
-        natureDeci: null,
-        code: this.codeHydrant
-      }
-
-      this.hydrant = _.clone(this.hydrantRecord);
-      this.dataLoaded = true;
-      this.createCombo();
-
-    } else { //Modification
-      axios.get('/remocra/hydrants'+this.codeHydrant.toLowerCase()+'/'+this.idHydrant+'.json?&id='+this.idHydrant).then(response => {
-        if (response.data.data && response.data.data.length !== 0) {
-
-          this.hydrantRecord = response.data.data;
-
-          //Résolution des clés étrangères
-          this.hydrant = _.clone(this.hydrantRecord, true);
-          this.dataLoaded = true;
-          this.resolveForeignKey(['nature', 'site', 'autoriteDeci', 'natureDeci']);
-
-          this.createCombo();
-          
-        }
-      }).catch(function(error) {
-        console.error('Retrieving data ', error)  
-      })
-    }
+    
   },
 
   methods: {
@@ -307,6 +322,7 @@ export default {
     },
 
     getComboGestionnaire(){
+
       var idDeciPrive = this.listeNaturesDeci.filter(item => item.code === "PRIVE")[0].id;
       this.hydrant.site = null;
 
@@ -332,7 +348,7 @@ export default {
               value: nature.id
             })
           });
-        }).then(this.onGestionnaireChange()).catch(function(error) {
+        }).then(self.onGestionnaireChange()).catch(function(error) {
           console.error('Retrieving combo data from /remocra/organismes/gestionnairepublic/'+this.geometrie, error);
         });
       }
@@ -389,15 +405,38 @@ export default {
       this.etats.nature = this.hydrant.nature? 'valid' : 'invalid';
       this.etats.autoriteDeci = (this.hydrant.autoriteDeci !== null) ? 'valid' : 'invalid';
       this.etats.natureDeci = (this.hydrant.natureDeci !== null) ? 'valid' : 'invalid';
-      this.$refs.ficheLocalisation.checkFormValidity();
-      
+
+      var listeEtats = [];
+      listeEtats.push(this.etats);
+      listeEtats.push(this.$refs.ficheLocalisation.checkFormValidity());
+
       if(this.$refs.fichePibi){
-        this.$refs.fichePibi.checkFormValidity();
-      } else if(this.$refs.fichePena) {
-        this.$refs.fichePena.checkFormValidity();
+        listeEtats.push(this.$refs.fichePibi.checkFormValidity());
       }
-      
-      return this.$refs.formFiche.checkValidity();
+      else if(this.$refs.fichePena){
+        listeEtats.push(this.$refs.fichePena.checkFormValidity());
+      }
+
+      var isFormValid = true;
+      _.forEach(listeEtats, item => {
+        isFormValid = isFormValid && !this.hasInvalidState(item)
+      });
+
+      return isFormValid;
+    },
+
+    /**
+      * Vérifie si le formulaire a des champs invalides
+      * En pratique, les modules vueJS enfants ce module renvoient leur état après un appel à leur fonction checkFormValidity()
+      * @param etats L'objet "etats" des champs d'un module
+      * @return TRUE si le champ présente des champs invalides, FALSE sinon
+      */
+    hasInvalidState(etats){
+      var hasInvalidState = false;
+      for(var key in etats){
+        hasInvalidState = hasInvalidState || etats[key] == "invalid";
+      }
+      return hasInvalidState;
     },
  
     /**
@@ -430,7 +469,9 @@ export default {
           data[item.id] = item.value;
         }
       });
+
       data["geometrie"] = this.geometrie;
+
       if(!this.idHydrant){
         data["numeroInterne"] = null;
       }
@@ -440,6 +481,9 @@ export default {
       var self = this;
       axios.post('/remocra/hydrants/getUpdatedCoordonnees', this.$refs.ficheLocalisation.getLocalisationData()).then(function(response) { // Récupération des coordonnées du PEI dans le bon système et préparation des données
         data["geometrie"] = response.data.message;
+        //On ajoute en plus les données de débit/pression issues des visites (si éligibles)
+        data = _.merge(data, self.$refs.ficheVisite.updateDataFromLastVisite());
+
         formData.append("hydrant", JSON.stringify(data));
 
       }).then(function() { // On met à jour le PEI
@@ -451,7 +495,12 @@ export default {
             var id = response.data.data.id;
 
             if(id !== null) {
-              self.$refs.fichePena.sendAspirationData(id);
+              if(self.$refs.fichePena){
+                self.$refs.fichePena.sendAspirationData(id);
+              }
+              
+              // Simultanément, MAj des visites
+              self.$refs.ficheVisite.sendVisitesData(id);            
             }
             
           }).catch(function(error) {
