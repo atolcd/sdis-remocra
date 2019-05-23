@@ -470,11 +470,17 @@ body {
 }
 
 #nprogress .bar {
-   background: #17a2b8 !important;
-   height: 10px;
-
-}
-#nprogress .peg {
-  box-shadow: 0 0 20px #17a2b8, 0 0 10px #17a2b8 !important;
+  height: 10px;
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #007bff;
+    transition: width .6s ease;
+    background-image: linear-gradient(45deg,hsla(0,0%,100%,.15) 25%,transparent 0,transparent 50%,hsla(0,0%,100%,.15) 0,hsla(0,0%,100%,.15) 75%,transparent 0,transparent);
+    background-size: 2rem 2rem;
+    animation:  1s linear infinite;
 }
 </style>
