@@ -285,6 +285,9 @@ public class RequeteModeleRepository {
     } else if (parameterObj.get("type").toString().equalsIgnoreCase("Boolean")) {
       //boolean x = parameterObj.get("valeur").toString().equalsIgnoreCase("true") ? true : false;
       ps.setObject(index, parameterObj.get("valeur"), Types.BOOLEAN);
+    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Geometry")) {
+      //geometry as text
+      ps.setString(index, "'"+parameterObj.get("valeur").toString()+"'");
     } else {
       ps.setObject(index,parameterObj.get("valeur"));
     }
