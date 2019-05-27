@@ -131,7 +131,7 @@
   (SELECT CASE thd.code = &apos;canal_forez&apos; WHEN TRUE THEN &apos;Vrai&apos; ELSE &apos;Faux&apos; END) AS canal_forez,
   c.nom AS commune,
   hi.debit AS debit_1bar,
-  COALESCE(hi.debit_max,hi.debit,0) AS debit_max_en_m3h,
+  hi.debit_max AS debit_max_en_m3h,
   substring(c.insee FROM 1 FOR 2) AS dept_num,
   thd.nom AS domaine,
   array_to_string(ARRAY(
@@ -140,7 +140,7 @@
                    INNER JOIN remocra.tournee AS t ON (t.id=ht.tournees) 
                    WHERE ht.hydrant = h.id ORDER BY t.nom
                  ), &apos;,&apos;) AS num_tournee,
-  h.complement AS num_voie,
+  h.complement AS complement_adresse,
   h.observation AS observation,
   hi.pression_dyn AS pression_dynamique_60m3h,
   hi.pression As pression_statique,
@@ -230,8 +230,8 @@ WHERE h.date_recep IS NOT NULL;</sql>
         <update>Y</update>
       </value>
       <value>
-        <name>num_voie</name>
-        <rename>num_voie</rename>
+        <name>complement_adresse</name>
+        <rename>complement_adresse</rename>
         <update>Y</update>
       </value>
       <value>

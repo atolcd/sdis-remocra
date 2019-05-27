@@ -139,7 +139,7 @@
                    INNER JOIN remocra.tournee AS t ON (t.id=ht.tournees) 
                    WHERE ht.hydrant = h.id ORDER BY t.nom
                  ), &apos;,&apos;) AS num_tournee,
-  h.complement AS num_voie,
+  h.complement AS complement_adresse,
   h.observation AS observation,
   (SELECT sous_type FROM remocra_referentiel.nature_diametre_sig WHERE code_nature = COALESCE(thn.code,&apos;&apos;) AND code_diametre = &apos;&apos; LIMIT 1) AS sous_type,
   h.voie AS adresse,
@@ -221,8 +221,8 @@ WHERE h.date_recep IS NOT NULL;</sql>
         <update>Y</update>
       </value>
       <value>
-        <name>num_voie</name>
-        <rename>num_voie</rename>
+        <name>complement_adresse</name>
+        <rename>complement_adresse</rename>
         <update>Y</update>
       </value>
       <value>
