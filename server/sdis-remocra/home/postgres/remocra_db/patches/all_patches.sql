@@ -57,3 +57,5 @@ SET CLIENT_ENCODING TO 'UTF8';
 \i patches/101/101.sql
 \i patches/102/102.sql
 \i patches/103/103.sql
+\i patches/104/104.sql
+

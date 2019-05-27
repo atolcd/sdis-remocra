@@ -6,15 +6,22 @@
 
 # Dans le répertoire courant
 cd $(dirname $0)
-here=$(pwd)
+
+if [ $# -lt 1 ]
+then
+  echo 'usage: deploy.sh servername [port]'
+  exit 1
+fi
+
 
 SERVER=$1
-SERVER=sdis83-remocra-preprod.hosting.priv.atolcd.com
+port=$2
+port=${port:=22}
 
 npm run build \
   && cd dist && rm -rf client-ng.zip \
   && zip -r client-ng.zip . \
   && echo "Déploiement" \
-  && scp client-ng.zip ${SERVER}:/tmp \
-  && ssh ${SERVER} "rm -rf /var/remocra/client-ng/dist/* && unzip -q -o /tmp/client-ng.zip -d /var/remocra/client-ng/dist && rm -f /tmp/client-ng.zip"
+  && scp -P $port client-ng.zip ${SERVER}:/tmp \
+  && ssh ${SERVER} -p $port "rm -rf /var/lib/tomcat6/webapps/remocra/static/* && unzip -q -o /tmp/client-ng.zip "remocra/static/*" -d /var/lib/tomcat6/webapps/remocra/static && mv /var/lib/tomcat6/webapps/remocra/static/remocra/static/* /var/lib/tomcat6/webapps/remocra/static && rm -rf /var/lib/tomcat6/webapps/remocra/static/remocra"
 

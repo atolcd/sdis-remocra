@@ -9,7 +9,7 @@ set escape_string_warning = off;
 
 set search_path = remocra, pdi, public, pg_catalog;
 
-/*--------------------------------------------------
+--------------------------------------------------
 -- Versionnement du patch et vérification
 --
 create or replace function versionnement_dffd4df4df() returns void language plpgsql AS $body$
@@ -18,7 +18,7 @@ declare
     description_patch varchar;
 begin
     -- Métadonnées du patch
-    numero_patch := 97;
+    numero_patch := 104;
     description_patch := 'Initialisation module Crise';
 
     -- Vérification
@@ -31,7 +31,7 @@ select versionnement_dffd4df4df();
 drop function versionnement_dffd4df4df();
 
 --------------------------------------------------
--- Contenu réel du patch début*/
+-- Contenu réel du patch début
 
 
 INSERT INTO remocra.param_conf(
