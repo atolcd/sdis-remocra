@@ -23,10 +23,10 @@ function convertFile {
   echo "Fichier traité : $1" \
     && echo "-- Démarrage" \
     && sed -i 's/<xsi:tournees xmlns:xsi="http:\/\/www.w3.org\/2001\/XMLSchema-instance">/<xsi:hydrants xmlns:xsi="http:\/\/www.w3.org\/2001\/XMLSchema-instance">/g' "$1" \
-    && sed -i 's/<tournee><id>[^<]*<\/id><debSync>[^<]*<\/debSync><hydrants>//g' "$1" \
+    && sed -i 's/<tournee><id>[^<]*<\/id><nom>[^<]*<\/nom><debSync>[^<]*<\/debSync><hydrants>//g' "$1" \
     && sed -i 's/<\/hydrants><\/tournee>//g' "$1" \
     && sed -i 's/<\/xsi:tournees>/<\/xsi:hydrants>/g' "$1" \
-    && sed -i 's/<typeSaisie>.*<\/typeSaisie>//g' "$1" \
+    && sed -i 's/<typeSaisie>[^<]*<\/typeSaisie>//g' "$1" \
     && echo "-- Terminé"
 }
 

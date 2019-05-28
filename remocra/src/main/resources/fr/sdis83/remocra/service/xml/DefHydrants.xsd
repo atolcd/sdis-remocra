@@ -8,10 +8,10 @@
   <xs:element name="saisies" type="lstSaisies"/>
 
   <xs:complexType name="lstHydrants">
-    <xs:sequence>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element name="hydrantPena" type="hydrantPena" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="hydrantPibi" type="hydrantPibi" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
+    </xs:choice>
   </xs:complexType>
 
   <xs:complexType name="hydrantPena" abstract="true">
