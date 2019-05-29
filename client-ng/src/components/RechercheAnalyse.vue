@@ -59,9 +59,9 @@
         <div v-for="(param, index) in parametresGeometry" :key="index">
           <b-form-group class='recherchegeom' vertical :label="param.formulaireEtiquette" :label-for="'input' + index">
             <input :ref="'input' + index" :id="'input' + index" type="text" :idInput="param.nom" class="parametreRequete" readonly hidden />
-            <a :class="['geom-' + param.formulaireTypeControle.toLowerCase()]" href="#" @click="selectGeom($event, param.formulaireTypeControle, index)"></a>
-            <a class="modif" href="#" @click="modifGeom($event, index)"></a>
-            <a class="delete" href="#" @click="deleteGeom($event, index)"></a>
+            <a title="Dessiner" :id="'geom' + index" :class="['geom-' + param.formulaireTypeControle.toLowerCase()]" href="#" @click="selectGeom($event, param.formulaireTypeControle, index)"></a>
+            <a title="Modifier la séléction" :id="'modif' + index" class="modif" href="#" @click="modifGeom($event, index)"></a>
+            <a title="supprimer la séléction" class="delete" href="#" @click="deleteGeom($event, index)"></a>
             <b-button-group size="sm" class="validation-geom" v-if="showValidGeom === index">
               <b-btn class="ok-cancel-btns" @click="validGeom(index)">Valider</b-btn>
               <b-btn class="ok-cancel-btns" @click="annulGeom(index)">Annuler</b-btn>
@@ -247,6 +247,8 @@ export default {
       })
     },
     selectGeom(evt, typeGeom, index) {
+      document.getElementById('geom' + index).classList.toggle('active')
+      document.getElementById('modif' + index).classList.remove('active')
       typeGeom = _.replace(typeGeom, 'geometryfield', '')
       this.$root.$options.bus.$emit(eventTypes.INPUT_GEOM, {
         typeGeom: typeGeom,
@@ -258,12 +260,18 @@ export default {
       }
     },
     annulGeom(index) {
+      document.getElementById('geom' + index).classList.remove('active')
+      document.getElementById('modif' + index).classList.remove('active')
       this.$root.$options.bus.$emit(eventTypes.ANNULE_INPUTGEOM, index)
     },
     validGeom(index) {
+      document.getElementById('geom' + index).classList.remove('active')
+      document.getElementById('modif' + index).classList.remove('active')
       this.$root.$options.bus.$emit(eventTypes.VALIDE_INPUTGEOM, index)
     },
     modifGeom(evt, index) {
+      document.getElementById('geom' + index).classList.remove('active')
+      document.getElementById('modif' + index).classList.toggle('active')
       this.$root.$options.bus.$emit(eventTypes.MODIFY_INPUTGEOM, index)
       // on arrete la propagation de l'évenement pour que le router ne prends pas en compte le href#
       if (evt) {
@@ -272,6 +280,8 @@ export default {
       }
     },
     deleteGeom(evt, index) {
+      document.getElementById('geom' + index).classList.remove('active')
+      document.getElementById('modif' + index).classList.remove('active')
       this.$root.$options.bus.$emit(eventTypes.DELETE_INPUTGEOM, index)
       if (evt) {
         evt.preventDefault()
@@ -294,46 +304,85 @@ export default {
   margin-top: 5px;
 }
 
-.geom-pointgeometryfield:before {
+.geom-pointgeometryfield {
   content: url('/remocra/static/img/pencil_point.png');
-  margin-right: 7px;
   cursor: pointer;
 }
+.geom-pointgeometryfield {
+  background-color: #bbbbbb;
+  border-color: #9d9d9d;
+  border: 2px solid #9d9d9d;
+  border-radius: 3px;
+}
 
-.geom-linestringgeometryfield:before {
+.geom-linestringgeometryfield {
   content: url('/remocra/static/img/pencil_ligne.png');
-  margin-right: 7px;
   cursor: pointer;
 }
+.geom-linestringgeometryfield.active {
+  background-color: #bbbbbb;
+  border-color: #9d9d9d;
+  border: 2px solid #9d9d9d;
+  border-radius: 3px;
+}
 
-.geom-polygongeometryfield:before {
+.geom-polygongeometryfield{
   content: url('/remocra/static/img/pencil_polygone.png');
-  margin-right: 7px;
   cursor: pointer;
 }
+.geom-polygongeometryfield.active {
+  background-color: #bbbbbb;
+  border-color: #9d9d9d;
+  border: 1px solid #9d9d9d;
+  border-radius: .25em;
+}
 
-.geom-circlegeometryfield:before {
+.geom-circlegeometryfield {
   content: url('/remocra/static/img/pencil_circle.png');
-  margin-right: 7px;
   cursor: pointer;
 }
 
-.geom-boxgeometryfield:before {
+.geom-circlegeometryfield.active {
+  background-color: #bbbbbb;
+  border-color: #9d9d9d;
+  border: 1px solid #9d9d9d;
+  border-radius: .25em;
+}
+
+.geom-boxgeometryfield {
   content: url('/remocra/static/img/pencil_rectangle.png');
-  margin-right: 7px;
   cursor: pointer;
+}
+
+.geom-boxgeometryfield.active {
+  background-color: #bbbbbb;
+  border-color: #9d9d9d;
+  border: 1px solid #9d9d9d;
+  border-radius: .25em;
 }
 
 .delete {
   content: url('/remocra/static/img/delete.png');
-  margin-right: 7px;
+  margin-left: 20px;
   cursor: pointer;
+}
+.delete.active {
+  background-color: #bbbbbb;
+  border-color: #9d9d9d;
+  border: 1px solid #9d9d9d;
+  border-radius: .25em;
 }
 
 .modif {
   content: url('/remocra/static/img/pencil.png');
-  margin-right: 7px;
+  margin-left: 20px;
   cursor: pointer;
+}
+.modif.active {
+  background-color: #bbbbbb;
+  border-color: #9d9d9d;
+  border: 1px solid #9d9d9d;
+  border-radius: .25em;
 }
 
 .recherchegeom {
