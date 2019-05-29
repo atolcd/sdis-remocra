@@ -10,7 +10,6 @@ Ext.define('Sdis.Remocra.features.crises.bloc.Services', {
     border: false,
     width: 840,
     height: 245,
-
       // create the data store
     getRightStore: function() {
       return Ext.create('Ext.data.TreeStore', {
@@ -31,7 +30,7 @@ Ext.define('Sdis.Remocra.features.crises.bloc.Services', {
                           expanded: false,
                           // On ne peuple pas les caractérisiques dans le panneau de
                           // droite,
-                          // il faudra prendre celles présentes dans l'oldeb
+                          // il faudra prendre celles présentes dans la crise
                           withCouches: true
                       })
                   },
@@ -71,65 +70,26 @@ Ext.define('Sdis.Remocra.features.crises.bloc.Services', {
             });
         },
 
-    /**
-        * Méthode de validation du drop vers le panneau de droite (A surcharger si
-        * besoin)
-        */
-       validRightDropEvent: function(node, data, overModel, dropPosition, dropFunction, eOpts) {
-           // Règle 1 : Empêche le drop en interne des éléments de l'arbre (les
-           // éléments ne peuvent pas être déplacés)
-           if (data.view.id == this.id) {
-               return false;
-           }
-           // Règle 2 : Seulement les feuilles peuvent être déplacées
-           if (!data.records[0].data.leaf) {
-               return false;
-           }
-           return true;
-       },
-
-       /**
-        * Méthode de validation du drop vers le panneau de gauche (A surcharger si
-        * besoin)
-        */
-       validLeftDropEvent: function(node, data, overModel, dropPosition, dropFunction, eOpts) {
-           // Règle 1 : Empèche le drop en interne des éléments de l'arbre (les
-           // éléments ne peuvent pas être déplacés)
-           if (data.view.id == this.id) {
-               return false;
-           }
-           // Règle 2 : La réinitilisation d'une feuille peu se faire seulement sur
-           // son parent
-           if (data.records[0].data.parentId != overModel.data.id) {
-               return false;
-           }
-           return true;
-       },
-
        moveToRightEvent: function(selection) {
-           // EXEMPLE (à adapter)
-           // Un seul élément n'est sélectionnable d'où la récupération de l'index
-           // [0]
-
            // Mise à jour du parentId pour pouvoir le restituer dans l'écran de
            // gauche sur le bon parent
-           if (selection[0]) {
-               selection[0].parentId = selection[0].parentNode.data.id;
-               var rightParent = this.rightPanel.getRootNode().findChild('id', selection[0].parentId);
-               rightParent.appendChild(selection[0]);
-           }
-
+           var self = this;
+           Ext.Array.forEach(selection, function(item) {
+             item.parentId = item.parentNode.data.id;
+             var rightParent = self.rightPanel.getRootNode().findChild('id', item.parentId);
+             rightParent.appendChild(item);
+           });
        },
 
        moveToLeftEvent: function(selection) {
-           // EXEMPLE (à adapter)
            // Recherche de l'élément parent de la selection dans la liste des
            // éléments de gauche
-           if (selection[0]) {
-               var leftParent = this.leftPanel.getRootNode().findChild('id', selection[0].parentNode.data.id);
-               leftParent.appendChild(selection[0]);
-               this.leftPanel.getStore().sort('text', 'ASC');
-           }
+           var self = this;
+           Ext.Array.forEach(selection, function(item) {
+               var leftParent = self.leftPanel.getRootNode().findChild('id', item.parentNode.data.id);
+               leftParent.appendChild(item);
+               self.leftPanel.getStore().sort('text', 'ASC');
+          });
        },
 
        getLeftTitle: function() {
@@ -137,5 +97,8 @@ Ext.define('Sdis.Remocra.features.crises.bloc.Services', {
        },
        getRightTitle: function() {
            return 'A activer';
+       },
+       getMultiSelect: function() {
+          return true;
        }
    });

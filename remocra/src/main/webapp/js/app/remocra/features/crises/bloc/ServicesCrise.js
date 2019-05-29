@@ -13,23 +13,7 @@ Ext.define('Sdis.Remocra.features.crises.bloc.ServicesCrise', {
         labelAlign: 'right'
     },
 
-    items: [ /*{
-           xtype : 'combo',
-           fieldLabel : 'Service',
-           labelWidth: 100,
-           width: 700,
-           name:'choixServices',
-           store : {
-           type : 'crOgcService',
-           autoLoad: true
-           },
-           displayField : 'nom',
-           valueField : 'id',
-           emptyText: 'Veuillez séléctionner un service..',
-           forceSelection : true,
-           editable : false,
-           itemId: 'comboServices'
-        },*/{
+    items: [ {
           xtype: 'crise.Services',
           itemId: 'gridServices'
       }]
