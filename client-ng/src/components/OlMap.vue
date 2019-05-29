@@ -1578,25 +1578,40 @@ export default {
     },
     removeMeasureInputGeomInteraction(index) {
       _.forEach(this.inputGeoms, input => {
-        if (input.id === 'tool' + index) {
-          input.setActive(!input.getActive())
+        if(index){
+          if (input.id === 'tool' + index) {
+            input.setActive(!input.getActive())
+            this.map.removeInteraction(input)
+          }
+          if (input.id === 'tooltip' + index) {
+            input.setPosition([0, 0])
+          }
+        } else {
+          if(_.startsWith(input.id,'tooltip')){
+             input.setPosition([0, 0])
+          }
           this.map.removeInteraction(input)
-        }
-        if (input.id === 'tooltip' + index) {
-          input.setPosition([0, 0])
         }
       })
     },
     removeModifInputGeomInteraction(index) {
       _.forEach(this.inputGeoms, input => {
-        if (input.id === 'modif' + index) {
+        if(index){
+          if (input.id === 'modif' + index) {
+            this.map.removeInteraction(input)
+          }
+        }else {
           this.map.removeInteraction(input)
         }
       })
     },
     removeSelectInputGeomInteraction(index) {
       _.forEach(this.inputGeoms, input => {
-        if (input.id === 'select' + index) {
+        if(index){
+          if (input.id === 'select' + index) {
+            this.map.removeInteraction(input)
+          }
+        }else {
           this.map.removeInteraction(input)
         }
       })
@@ -1697,6 +1712,14 @@ export default {
     toggleTableau() {
       document.getElementById('mapDiv' + this.criseId).style.display = ''
       document.getElementById('tableauDiv' + this.criseId).style.display = 'none'
+      _.forEach(this.map.getLayers().getArray(), layer => {
+         if(_.startsWith(layer.get('code'),'input')){
+           this.map.removeLayer(layer)
+         }
+      })
+      this.removeMeasureInputGeomInteraction()
+      this.removeModifInputGeomInteraction()
+      this.removeSelectInputGeomInteraction()
       this.map.updateSize()
     },
     toggleButton(id){
