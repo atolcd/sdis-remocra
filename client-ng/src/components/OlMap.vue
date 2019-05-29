@@ -19,7 +19,7 @@
           <search-repertoire :crise="criseId" ref='searchRepertoire'></search-repertoire>
         </div>
         <div class="big-h-spacer" />
-        <b-btn class=" text-start my-1 measure-container ctrl" :id="'measureTools'+criseId" @click="activateMeasureInteraction"><img src="/remocra/static/img/ruler.png"></b-btn>
+        <b-btn class=" text-start my-1 measure-container ctrl" :id="'measureTools'+criseId" @click="activateMeasureInteraction"><img title="Outils de mesure" src="/remocra/static/img/ruler.png"></b-btn>
         <b-popover class="dropdown-menu" placement="bottomright" :ref="'popovermesure'+criseId" :container="'mapDiv'+criseId" :target="'measureTools'+criseId">
           <div>
             <b-btn class="dropdown-item" @click="activateMeasure('Distance')"><img src='/remocra/static/img/ruler.png'> Distance</b-btn>
@@ -79,7 +79,7 @@
             <span style="cursor:pointer" href="#" v-b-toggle.accordion2>Documents</span>
             <div class="toolbar">
               <span class="document">
-                <b-btn @click="addNewDocument" class="ctrl"><img src="/remocra/static/img/file-add.svg"></b-btn>
+                <b-btn title="Nouveau document" @click="addNewDocument" class="ctrl"><img src="/remocra/static/img/file-add.svg"></b-btn>
               </span>
               <new-document :criseId="criseId" ref="newCriseDocument"></new-document>
             </div>
@@ -156,7 +156,7 @@
                     <draggable :list="group.items" :options="{handle:'.my-handle'}" @start="startDrag()" @end="addSortable()">
                       <div class="layer" v-for="(layer,index) in group.items" :key="index">
                         <div>
-                          <img :id ="'styleBtn'+layer.id+'-'+criseId" src="/remocra/static/img/vertical-filled.svg" class="gears_btn" @click="showStyleLayer(layer.id)"/>
+                          <img title="Options" :id ="'styleBtn'+layer.id+'-'+criseId" src="/remocra/static/img/vertical-filled.svg" class="gears_btn" @click="showStyleLayer(layer.id)"/>
                           <span :id ="'styleTools'+layer.id+'-'+criseId" class="style-tools">
                             <label>Opacité:</label>
                             <b-form-input class="custom-slider" type="range" :id="'range'+layer.id+'-'+criseId"  v-model="layer.opacity" min="0" max="1" step="0.01" @change="changeLayerOpacity(layer.id)"/>
