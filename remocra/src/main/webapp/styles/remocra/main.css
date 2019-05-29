@@ -338,6 +338,8 @@ a:hover {
 
 #indexpub .card {
   max-width: calc(100% -  1em);
+  border: none;
+  background: none;
 }
 
 @media screen and (min-width: 50em) {
