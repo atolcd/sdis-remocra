@@ -393,12 +393,15 @@ export default {
   display: none;
 }
 
-.gestcrise .evenements .list-group-item,
-.gestcrise .documents .list-group-item {
+.gestcrise .evenements .list-group-item {
   padding: 6px;
   border: none;
   margin-top: 5px;
   margin-bottom: 5px;
+}
+.gestcrise .documents .list-group-item {
+  padding: 3px;
+  border: none;
 }
 
 .gestcrise .col-map {
