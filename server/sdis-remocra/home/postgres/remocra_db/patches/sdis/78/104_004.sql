@@ -1,3 +1,5 @@
+begin;
+
   CREATE TABLE remocra_referentiel.synchronisation_sig
   (
     schema_table_name character varying NOT NULL, -- Le nom complet de la table à synchroniser sous la forme "nom_schema.nom_table"
@@ -66,3 +68,5 @@ WHERE
 GROUP BY
     r.nom,
     c.id) AS fusion;');
+
+commit;
