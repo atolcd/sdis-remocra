@@ -308,7 +308,7 @@ export default {
   content: url('/remocra/static/img/pencil_point.png');
   cursor: pointer;
 }
-.geom-pointgeometryfield {
+.geom-pointgeometryfield.active {
   background-color: #bbbbbb;
   border-color: #9d9d9d;
   border: 2px solid #9d9d9d;
@@ -333,8 +333,8 @@ export default {
 .geom-polygongeometryfield.active {
   background-color: #bbbbbb;
   border-color: #9d9d9d;
-  border: 1px solid #9d9d9d;
-  border-radius: .25em;
+  border: 2px solid #9d9d9d;
+  border-radius: 3px;
 }
 
 .geom-circlegeometryfield {
@@ -345,8 +345,8 @@ export default {
 .geom-circlegeometryfield.active {
   background-color: #bbbbbb;
   border-color: #9d9d9d;
-  border: 1px solid #9d9d9d;
-  border-radius: .25em;
+  border: 2px solid #9d9d9d;
+  border-radius: 3px;
 }
 
 .geom-boxgeometryfield {
@@ -357,8 +357,8 @@ export default {
 .geom-boxgeometryfield.active {
   background-color: #bbbbbb;
   border-color: #9d9d9d;
-  border: 1px solid #9d9d9d;
-  border-radius: .25em;
+  border: 2px solid #9d9d9d;
+  border-radius: 3px;
 }
 
 .delete {
@@ -369,8 +369,8 @@ export default {
 .delete.active {
   background-color: #bbbbbb;
   border-color: #9d9d9d;
-  border: 1px solid #9d9d9d;
-  border-radius: .25em;
+  border: 2px solid #9d9d9d;
+  border-radius: 3px;
 }
 
 .modif {
@@ -381,8 +381,8 @@ export default {
 .modif.active {
   background-color: #bbbbbb;
   border-color: #9d9d9d;
-  border: 1px solid #9d9d9d;
-  border-radius: .25em;
+  border: 2px solid #9d9d9d;
+  border-radius: 3px;
 }
 
 .recherchegeom {
