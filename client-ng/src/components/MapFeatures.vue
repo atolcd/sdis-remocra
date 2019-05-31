@@ -30,7 +30,7 @@ export default {
         _.forEach(map.getLayers(), function(layer) {
           if (Array.isArray(layer)) {
             _.forEach(layer, function(i) {
-              if (i.values_.code === 'selection') {
+              if (i.get('code') === 'selection') {
                 i.getSource().updateParams({
                   'VIEWPARAMS': 'SELECTION_ID:' + idSelection
                 }) // Update paramètres

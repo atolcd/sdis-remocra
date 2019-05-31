@@ -1716,6 +1716,11 @@ export default {
          if(_.startsWith(layer.get('code'),'input')){
            this.map.removeLayer(layer)
          }
+         if(layer.get('code') === 'selection'){
+            layer.getSource().updateParams({
+             'VIEWPARAMS': 'SELECTION_ID:' + null
+           })
+         }
       })
       this.removeMeasureInputGeomInteraction()
       this.removeModifInputGeomInteraction()
