@@ -18,3 +18,8 @@ Dans le fichier _remocraXX.properties_, ajouter les paramètres suivant :
 
 ====== Lancement et planification de la synchronisation
 L'exécution de manière automatique s'effectue en planifiant le lancement du fichier `/var/remocra/pdi/traitements_sdis/78/notifier_changement_etat_pei.sh` avec l'utilisateur `postgres`.
+
+[WARNING]
+====
+Attention ! La fréquence définie dans le crontab doit être égale au paramètre `PDI_BASCULE_PERIODE`.
+====

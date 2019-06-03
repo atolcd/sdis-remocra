@@ -76,6 +76,14 @@ include::77/synchronisation_ldap{outfilesuffix}[]
 
 include::77/suivi_des_pei{outfilesuffix}[]
 
+=== SDIS 78
+
+include::78/suivi_des_pei{outfilesuffix}[]
+
+include::78/synchronisation_ldap{outfilesuffix}[]
+
+include::78/synchronisation_sig_vers_remocra{outfilesuffix}[]
+
 === SDIS 83
 
 include::83/synchronisation_sig{outfilesuffix}[]
