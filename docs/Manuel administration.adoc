@@ -19,6 +19,7 @@ link:index{outfilesuffix}[Retour à l'accueil]
 ** link:administration/Page%20d%20accueil%20privee{outfilesuffix}[Page d'accueil privée]
 ** link:administration/Gestion%20des%20documents{outfilesuffix}[Gestion des documents]
 ** link:administration/Gestion%20des%20utilisateurs{outfilesuffix}[Gestion des utilisateurs]
+** link:administration/traitements_etl/Traitements%20ETL{outfilesuffix}[Traitements ETL]
 
 *🗺 SIG*
 

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modele>
+	<categorie>DIVERS</categorie>
+	<code>PURGER_REQUETE_SELECTION</code>
+	<libelle>Purger les résultats des sélections de requêtes personnalisées trop anciens</libelle>
+	<description>Purge les résultats des requêtes personnalisées dont la date de requête depasse le paramètre d'ancienneté</description>
+	<fichier>purger_les_selections_de_requetes_personnalisees.ktr</fichier>
+	<priorite>1</priorite>
+	<messageSucces>
+		<objet/>
+		<corps/>
+	</messageSucces>
+	<messageEchec>
+		<objet>REMOCRA : Echec lors du processus de purge des résultats des requêtes personnalisées</objet>
+		<corps>
+		<![CDATA[
+		<p>Bonjour [UTILISATEUR_PRENOM] [UTILISATEUR_NOM],</p>
+		<p>Le traitement [PROCESSUS_LIBELLE] a généré des erreurs.<br/>
+		Vous pouvez consulter le fichier d'erreur <a href="[DOCUMENT_URL]">ici</a>.</p>
+		]]>
+		</corps>
+	</messageEchec>
+	<parametres>
+		<parametre>
+			<nom>PURGE_REQUETE_SELECTION_ANCIENNETE</nom>
+			<typeValeur>integer</typeValeur>
+			<obligatoire>true</obligatoire>
+			<formulaire etiquette="Ancienneté en heures" typeControle="numberfield" valeurDefaut="24"/>
+		</parametre>
+	</parametres>
+	<profils tousProfils="false">
+		<profil>SDIS-ADM-APP</profil>
+	</profils>
+	<planification/>
+</modele>

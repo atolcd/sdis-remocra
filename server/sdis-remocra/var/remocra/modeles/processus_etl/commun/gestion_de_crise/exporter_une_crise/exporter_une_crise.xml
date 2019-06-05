@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modele>
+	<categorie>GESTION_CRISE</categorie>
+	<code>EXPORTER_CRISE</code>
+	<libelle>Exporter les données d'une crise</libelle>
+	<description>Exporter les données d'une crise en vue d'effectuer une analyse</description>
+	<fichier>exporter_une_crise.ktr</fichier>
+	<priorite>3</priorite>
+	<messageSucces>
+		<objet>REMOCRA : SUCCES du traitement "[PROCESSUS_LIBELLE]" demandé le [PROCESSUS_DEMANDE]</objet>
+		<corps><![CDATA[
+		<p>Bonjour [UTILISATEUR_PRENOM] [UTILISATEUR_NOM],</p>
+		<p>Votre demande "[PROCESSUS_LIBELLE]" du [PROCESSUS_DEMANDE] a été traitée.<br/>Vous pouvez consulter le fichier généré <a href="[DOCUMENT_URL]">ici</a>.</p>
+		]]></corps>
+	</messageSucces>
+	<messageEchec>
+		<objet>REMOCRA : ECHEC du traitement "[PROCESSUS_LIBELLE]" demandé le [PROCESSUS_DEMANDE]</objet>
+		<corps><![CDATA[
+		<p>Bonjour [UTILISATEUR_PRENOM] [UTILISATEUR_NOM],</p>
+		<p>Le traitement [PROCESSUS_LIBELLE] ([PROCESSUS_DESCRIPTION]) demandé le [PROCESSUS_DEMANDE] a généré des erreurs.<br/>Vous pouvez consulter le fichier d'erreur <a href="[DOCUMENT_URL]">ici</a>.</p>
+		]]>
+		</corps>
+	</messageEchec>
+	<parametres>
+		<parametre>
+			<nom>CRISE_ID</nom>
+			<typeValeur>integer</typeValeur>
+			<obligatoire>true</obligatoire>
+			<sourceSQL champValeur="id" champLibelle="libelle">
+				<![CDATA[SELECT id,nom || ' (Du ' || to_char(activation,'dd/MM/YYYY à HH24:MI') || ' au ' || to_char(cloture,'dd/MM/YYYY à HH24:MI') || ')' AS libelle FROM remocra.crise ORDER BY cloture DESC]]>
+			</sourceSQL>
+			<formulaire etiquette="Crise à exporter" typeControle="combo"/>
+		</parametre>
+		<parametre>
+			<nom>DATE_HEURE_DEBUT</nom>
+			<typeValeur>timestamp</typeValeur>
+			<obligatoire>true</obligatoire>
+			<formulaire etiquette="Extraire les informations entre le " typeControle="datetimefield"/>
+		</parametre>
+		<parametre>
+			<nom>DATE_HEURE_FIN</nom>
+			<typeValeur>timestamp</typeValeur>
+			<obligatoire>false</obligatoire>
+			<formulaire etiquette="et le" typeControle="datetimefield"/>
+		</parametre>
+	</parametres>
+	<profils tousProfils="true"/>
+	<planification/>
+</modele>

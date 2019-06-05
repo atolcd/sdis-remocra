@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modele>
+	<categorie>DIVERS</categorie>
+	<code>REFERENCER_PROCESSUS_ETL</code>
+	<libelle>Référencer les processus ETL mobilisables dans REMOCRA</libelle>
+	<description>Référence les processus ETL mobilisables dans REMOCRA à partir de la lecture des fichiers XML de métadonnées associés aux fichiers KTR ou KJB Pentaho Data Integration</description>
+	<fichier>referencer_les_modeles_de_processus_etl.kjb</fichier>
+	<priorite>5</priorite>
+	<messageSucces>
+		<objet/>
+		<corps/>
+	</messageSucces>
+	<messageEchec>
+		<objet>REMOCRA : Echec du référencement des modèles de processus ETL</objet>
+		<corps>
+		<![CDATA[
+		<p>Bonjour [UTILISATEUR_PRENOM] [UTILISATEUR_NOM],</p>
+		<p>Le traitement [PROCESSUS_LIBELLE] a généré des erreurs.<br/>
+		Vous pouvez consulter le fichier d'erreur <a href="[DOCUMENT_URL]">ici</a>.</p>
+		]]>
+		</corps>
+	</messageEchec>
+	<parametres/>
+	<profils tousProfils="false">
+		<profil>SDIS-ADM-APP</profil>
+	</profils>
+	<planification/>
+</modele>
+
+
+

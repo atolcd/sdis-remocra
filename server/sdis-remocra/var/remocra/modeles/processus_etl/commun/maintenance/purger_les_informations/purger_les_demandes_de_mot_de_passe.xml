@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modele>
+	<categorie>DIVERS</categorie>
+	<code>PURGER_DEMANDE_MOT_DE_PASSE</code>
+	<libelle>Purger les demandes de mot de passe trop anciennes</libelle>
+	<description>Purge des demandes de mot de passe dont la date de demande dépasse le paramètre d'ancienneté</description>
+	<fichier>purger_les_demandes_de_mot_de_passe.ktr</fichier>
+	<priorite>1</priorite>
+	<messageSucces>
+		<objet/>
+		<corps/>
+	</messageSucces>
+	<messageEchec>
+		<objet>REMOCRA : Echec lors du processus de purge des demandes de mots de passe</objet>
+		<corps>
+		<![CDATA[
+		<p>Bonjour [UTILISATEUR_PRENOM] [UTILISATEUR_NOM],</p>
+		<p>Le traitement [PROCESSUS_LIBELLE] a généré des erreurs.<br/>
+		Vous pouvez consulter le fichier d'erreur <a href="[DOCUMENT_URL]">ici</a>.</p>
+		]]>
+		</corps>
+	</messageEchec>
+	<parametres>
+		<parametre>
+			<nom>PURGE_DEMANDE_MOT_DE_PASSE_ANCIENNETE</nom>
+			<typeValeur>integer</typeValeur>
+			<obligatoire>true</obligatoire>
+			<formulaire etiquette="Ancienneté en heures" typeControle="numberfield" valeurDefaut="1"/>
+		</parametre>
+	</parametres>
+	<profils tousProfils="false">
+		<profil>SDIS-ADM-APP</profil>
+	</profils>
+	<planification/>
+</modele>
+
+
+

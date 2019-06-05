@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modele>
+	<categorie>DIVERS</categorie>
+	<code>REFERENCER_COUCHES</code>
+	<libelle>Référencer les couches pour la crise</libelle>
+	<description>Référence les couches des différents services pour affiche sur la carte du module de crise</description>
+	<fichier>referencer_couches_cartographiques.ktr</fichier>
+	<priorite>3</priorite>
+	<messageSucces>
+		<objet/>
+		<corps/>
+	</messageSucces>
+	<messageEchec>
+		<objet>REMOCRA : Echec lors du processus de référencement des couches</objet>
+		<corps>
+		<![CDATA[
+		<p>Bonjour [UTILISATEUR_PRENOM] [UTILISATEUR_NOM],</p>
+		<p>Le traitement [PROCESSUS_LIBELLE] a généré des erreurs.<br/>
+		Vous pouvez consulter le fichier d'erreur <a href="[DOCUMENT_URL]">ici</a>.</p>
+		]]>
+		</corps>
+	</messageEchec>
+	<parametres/>
+	<profils tousProfils="false">
+		<profil>SDIS-ADM-APP</profil>
+	</profils>
+	<planification/>
+</modele>

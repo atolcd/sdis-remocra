@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modele>
+	<categorie>DIVERS</categorie>
+	<code>NOTIFIER_UTILISATEUR</code>
+	<libelle>Envoyer les méls en attente</libelle>
+	<description>Envoie les méls REMOCRA en attente à partir du contenu de la table email de REMOCRA</description>
+	<fichier>notifier_les_utilisateurs.ktr</fichier>
+	<priorite>5</priorite>
+	<messageSucces>
+		<objet/>
+		<corps/>
+	</messageSucces>
+	<messageEchec>
+		<objet>REMOCRA : Echec lors du processus de notification des utilisateurs</objet>
+		<corps>
+		<![CDATA[
+		<p>Bonjour [UTILISATEUR_PRENOM] [UTILISATEUR_NOM],</p>
+		<p>Le traitement [PROCESSUS_LIBELLE] a généré des erreurs.<br/>
+		Vous pouvez consulter le fichier d'erreur <a href="[DOCUMENT_URL]">ici</a>.</p>
+		]]>
+		</corps>
+	</messageEchec>
+	<parametres/>
+	<profils tousProfils="false">
+		<profil>SDIS-ADM-APP</profil>
+	</profils>
+	<planification/>
+</modele>
+
+
+

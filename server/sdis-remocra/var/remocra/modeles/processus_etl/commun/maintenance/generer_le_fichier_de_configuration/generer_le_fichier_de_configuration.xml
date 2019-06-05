@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modele>
+	<categorie>DIVERS</categorie>
+	<code>GENERER_FICHIER_CONFIGURATION</code>
+	<libelle>Créer ou actualiser le fichier de configuration de l'ETL</libelle>
+	<description>Génère le fichier de configuration nécessaire à l'éxecution des processus ETL Pentaho Data Integration à partir de la table param_conf de la base de données REMOCRA</description>
+	<fichier>generer_le_fichier_de_configuration.ktr</fichier>
+	<priorite>5</priorite>
+	<messageSucces>
+		<objet/>
+		<corps/>
+	</messageSucces>
+	<messageEchec>
+		<objet>REMOCRA : Echec de la génération du fichier de configuration de l'ETL</objet>
+		<corps>
+		<![CDATA[
+		<p>Bonjour [UTILISATEUR_PRENOM] [UTILISATEUR_NOM],</p>
+		<p>Le traitement [PROCESSUS_LIBELLE] a généré des erreurs.<br/>
+		Vous pouvez consulter le fichier d'erreur <a href="[DOCUMENT_URL]">ici</a>.</p>
+		]]>
+		</corps>
+	</messageEchec>
+	<parametres/>
+	<profils tousProfils="false">
+		<profil>SDIS-ADM-APP</profil>
+	</profils>
+	<planification/>
+</modele>
+
+
+

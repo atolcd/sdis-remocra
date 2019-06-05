@@ -32,7 +32,7 @@ Via l'interface "Extraire, télécharger, téléverser" :
 Via l'interface "Extraire, télécharger, téléverser" :
 [width="100%",options="header"]
 |====================
-| Paramètre | Description | Type | Obligatoire | Exemple 
+| Paramètre | Description | Type | Obligatoire | Exemple
 | Exporter les données à partir d'un modèle |  | Liste : ```pdi.vue_modele_export``` | oui | ```Casernes du département```
 | Zone de compétence (emprise) |  | Liste : ```pdi.vue_zone_competence```  | oui | ```Groupement centre```
 |====================
@@ -78,3 +78,27 @@ Exemple de tâche planifiée avec l'utilisateur postgres, quotidiennement à 6h 
 ----
 0 6 * * 0 /home/postgres/remocra_pdi/remocra_purger.sh >> /var/remocra/pdi/log/remocra_purger.log 2>&1
 ----
+
+==== Référenciation des couches cartographiques depuis des serveurs externes
+
+Ce traitement permet de référencer des couches cartographiques depuis une liste de serveurs. Ces serveurs doivent être interrogeable à la *norme OGC*.
+
+Pour cela il suffit de renseigner dans la table `remocra.ogc_source` l'URL des serveurs cibles.
+
+Exemple de contenu de la table `remocra.ogc_source`
+[width="100%",options="header"]
+|===================
+| id | url
+| 1 | http://services.sandre.eaufrance.fr/geo/hyd
+| 2 | http://wxs.ign.fr/[][CLES_IGN]/geoportail/wmts
+|===================
+
+[NOTE]
+Il est possible d'interroger des couches IGN nécessitant une clé d'authentification. Pour cela, placer _[CLE_IGN]_ dans l'URL à l'endroit ou la clé doit figurer. La clé configurée dans Remocra sera utilisée en lieu et place.
+
+[WARNING]
+Si plusieurs clés sont renseignées dans le paramètre, la première clé sera utilisée.
+
+
+===== Lancement et planification de la synchronisation
+L'exécution automatique s'effectue en planifiant le lancement du fichier ```/homme/postgres/remocra_pdi/remocra_referencer_les_couches_cartographiques.sh ``` avec l'utilisateur ```postgres```.

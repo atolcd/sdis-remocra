@@ -1,0 +1,249 @@
+= SDIS Remocra - Traitements ETL
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+:imagesdir: img
+
+:toc:
+
+:numbered:
+
+link:../../index{outfilesuffix}[Retour à l'accueil]
+
+link:../../Manuel%20administration{outfilesuffix}[Retour au manuel d'administration]
+
+'''
+
+REMOCRA dispose d’un mécanisme permettant aux utilisateurs d'exécuter des traitements ETL (traitements préparées par un administrateur et pour lesquelles l'utilisateur doit renseigner des paramètres). Le paramétrage et l’exploitation de ce module sont décrits dans les paragraphes suivants.
+
+== Principe de fonctionnement
+
+L'exécution d'un traitement par un utilisateur repose sur le principe suivant :
+
+.Interface d'exécution d'un traitement
+image::interface_recherche_analyse_001.png[]
+
+* L'administrateur crée un traitement qui sera joué selon un rythme planifié ou à la demande (pas encore actif).
+* L'administrateur décrit le traitement, ses paramètres, ses droits ainsi que sa planification.
+* L'administrateur référence le traitement et celui-ci est automatiquement planifié selon les données du fichier de description ou disponible dans l'interface (dans le future).
+
+== Préparation et référencement des traitements ETL
+Les modèles de traitements peuvent être référencés directement par les administrateurs de la plate-forme REMOcRA grâce à des fichiers de définition de modèle (format XML) couplé aux fichiers du traitement(`.kjb`, `.ktr`) déposés via FTP dans un sous dossier de REMOcRA.
+
+.Principe de référencement des modèles
+image::principe_referencement_modele.png[]
+
+=== Définition d'un modèle de traitement ETL
+Un modèle de traitement est constitué par des fichiers ktr et/ou kjb servant à réaliser le traitement ainsi que d'un fichier XML encodé en UTF-8 et structuré de la manière suivante :
+
+.Schéma XSD de validation d'un fichier XML de définition de modèle de traitement
+image::modeleProcessusETL_schema.png[]
+
+.Table Description du fichier XML de définition de modèle de traitement
+|===
+|Noeud|Description
+
+a|[source,xml]
+<modele>
+|Noeud racine du fichier XML. Modèle de processus ETL PDI mobilisable sous forme de tâche planifiée ou à la demande d'un utilisateur via linterface REMOCRA
+
+a|[source,xml]
+<modele>
+    <categorie>
+|Libellé de catégorie permettant de regrouper ou de filtrer les processus selon un thème
+
+a|[source,xml]
+<modele>
+    <code>
+|Code permettant d'identifier de manière unique et pérenne un modèle de requête
+
+a|[source,xml]
+<modele>
+    <libelle>
+|Libellé affiché en liste déroulante lors du choix du modèle de requête
+
+a|[source,xml]
+<modele>
+    <description>
+|Description longue du modèle de requête. Non exploité actuellement dans ReMOCRA
+
+a|[source,xml]
+<modele>
+    <fichier>
+|Nom du fichier court de processus Pentaho Data Integration KTR ou KJB à associé. Le fichier KTR ou KJB doit être situé dans la même arborescence que le fichier XML de métadonnée
+
+a|[source,xml]
+<modele>
+    <priorite>
+|Niveau de priorité d'exécution par défaut. De 1 : Pas prioritaire à 5 : Très urgent
+
+a|[source,xml]
+<modele>
+    <messageSucces>
+|Message de notification par mail en cas de succès du processus. Certaines variables sont mobilisables (sous la forme [NOM_VARIABLE] en objet ou dans le corps pour personnaliser le message.
+
+a|[source,xml]
+<modele>
+    <messageSucces>
+       <objet>
+a|Objet du mail en cas de succès du processus. Laisser NULL pour empêcher la notification.
+Variables mobilisables :
+
+* [PROCESSUS_LIBELLE] = Libellé du processus demandé
+* [PROCESSUS_DEMANDE]	= Date et heure de la demande initiale
+
+a|[source,xml]
+<modele>
+    <messageSucces>
+       <corps>
+a|Corps du mail en cas de succès du processus. Laisser NULL pour empêcher la notification.
+Variables mobilisables :
+
+* [PROCESSUS_LIBELLE] : Libellé du processus demandé
+* [PROCESSUS_DEMANDE]	: Date et heure de la demande initiale
+* [PROCESSUS_DESCRIPTION] : Description du processus demandé
+* [UTILISATEUR_MAIL] : Mail de l'utilisateur ayant déclenché le processus
+* [UTILISATEUR_NOM] : Nom de l'utilisateur ayant déclenché le processus
+* [UTILISATEUR_PRENOM] : Prenom de l'utilisateur ayant déclenché le processus
+* [DOCUMENT_URL] : Lien de téléchargement vers le document éventuellement généré
+
+a|[source,xml]
+<modele>
+    <messageEchec>
+|Message de notification par mail en cas d'échec du processus. Certaines variables sont mobilisables en objet ou dans le corps pour personnaliser le message.
+
+a|[source,xml]
+<modele>
+    <messageEchec>
+       <objet>
+a|Objet du mail en cas d'échec du processus. Laisser NULL pour empêcher la notification.
+Variables mobilisables :
+
+* [PROCESSUS_LIBELLE] = Libellé du processus demandé
+* [PROCESSUS_DEMANDE]	= Date et heure de la demande initiale
+
+
+a|[source,xml]
+<modele>
+    <messageEchec>
+       <corps>
+a|Corps du mail en cas d'échec du processus. Laisser NULL pour empêcher la notification.
+Variables mobilisables :
+
+* [PROCESSUS_LIBELLE] : Libellé du processus demandé
+* [PROCESSUS_DEMANDE]	: Date et heure de la demande initiale
+* [PROCESSUS_DESCRIPTION] : Description du processus demandé
+* [UTILISATEUR_MAIL] : Mail de l'utilisateur ayant déclenché le processus
+* [UTILISATEUR_NOM] : Nom de l'utilisateur ayant déclenché le processus
+* [UTILISATEUR_PRENOM] : Prenom de l'utilisateur ayant déclenché le processus
+* [DOCUMENT_URL] : Lien de téléchargement vers le fichier de log
+
+a|[source,xml]
+<modele>
+    <parametres>
+a|Paramètres exploités par le traitement. Les valeurs de paramètres sont à renseigner par l'utilisateur avant l’exécution du traitement
+
+a|[source,xml]
+<modele>
+    <parametres>
+      <parametre>
+a|Paramètre exploité par le traitement
+
+a|[source,xml]
+<modele>
+    <parametres>
+        <parametre>
+            <nom>
+a|Nom du paramètre. Sans espace ni caractère accentué. De préférence en majuscule.
+
+a|[source,xml]
+<modele>
+    <parametres>
+        <parametre>
+            <typeValeur>
+a|Type de valeur SGBD par la requête SQL. Seuls les types suivants sont autorisés :
+
+* character varying
+* integer
+* double precision
+* date
+* timestamp
+* boolean
+* geometry
+* uuid
+
+a|[source,xml]
+<modele>
+    <parametres>
+        <parametre>
+            <obligatoire>
+a|Renseigner à _true_ si la saisie d'une valeur pour le paramètre est obligatoire
+
+a|[source,xml]
+<modele>
+    <parametres>
+        <sourceSQL
+            champValeur = ""
+            champLibelle = "">
+a|A renseigner dans un CDATA.Définition de la requête SQL à exécuter sur la base de données REMOCRA pour fournir les informations facilitant ou limitant la saisie de valeurs pour l'utilisateur à travers une liste déroulante. Le typage de données sous la forme _"colonne::type postgresql"_ est interdit (utiliser la méthode _CAST()_)
+L'attribut textuel _champValeur_ permet de préciser le nom de la colonne contenant l'identifiant de la valeur de la liste. L'attribut textuel _champLibelle_ permet de préciser le nom de la colonne contenant le libellé affiché dans la liste.
+
+a|[source,xml]
+<modele>
+    <parametres>
+        <parametre>
+            <formulaire
+                etiquette = ""
+                typeControle = ""
+                valeurDefaut = ""
+                >
+a|Informations permettant de mettre en forme le formulaire. L'attribut textuel _etiquette_ permet de définir l'étiquette accompagnant le champ de saisie . L'attribut textuel _typeControle_ permet spécifier le type de contrôle javascript à utiliser pour le contrôle de formulaire. L'attribut textuel _valeurDefaut_ permet de préciser la valeur proposée par défaut dans le champ de saisie (optionnel). Seules les valeurs suivantes sont autorisées pour l'attribut _typeControle_ :
+
+* checkbox : Champ de saisie de type "Case à cocher"
+* combo : Champ de saisie de type "Liste déroulante" avec autocomplétion
+* datefield : Champ de saisie de type "Calendrier"
+* textfield : Champ de saisie de type "Zone de texte"
+* numberfield : Champ de saisie de type "Saisie de nombre"
+
+a|[source,xml]
+<modele>
+    <profils tousProfils = "">
+a|Profil pour lequel le traitement est accessible. Si L'attribut booléen _tousProfils_ est = _true_, le traitement est accessible à tous. Dans le cas contraire, il faut préciser les codes des profils dans une liste de balise _<profil>_ (valeur de la colonne _code_ de la table _remocra.profil_droit_)
+
+a|[source,xml]
+<modele>
+    <planification expression= "">
+a| Valeurs des paramètres du processus pour la planification. Remplacer par la balise `<planification/>` si le traitement n'est pas à planifier. Pour planifier le traitement, renseigner l'attribut `expression` avec une expression Quartz CRON (_ex: `* * */12 ? * * *` lance le processus tous les 12h_)
+
+a|[source,xml]
+<modele>
+    <planification expression= "">
+      <parametres>
+        <parametre nom="">
+a| Valeur à attribuer au paramètre pour l'exécution du processus. L'attribut `nom` fait référence au champ nom du noeud `parametre`.
+|========
+
+|===
+.link:src/purger_les_mails.xml[Exemple de fichier XML] de définition d'un processus planifié
+[source,xml]
+include::src/purger_les_mails.xml[]
+
+=== Référencement des modèles de requêtes personnalisées
+
+Les fichiers XML de modèles doivent être déposés par l'administrateur de la plate-forme via FTP (utilisateur FTP _"remocra"_) dans le sous-dossier _"processus_etl/sdis/XX"_ (dossiers à créer s'ils n'existent pas, XX étant le code du département) présent dans dossier REMOCRA dédié aux modèles (le chemin défini dans les paramètres de configuration de l'application avec le libellé _"Dossier de stockage des modèles de documents utilisés par l'ETL Pentaho Data Integration"_. La valeur par défaut est _"/var/remocra/modeles"_.
+
+
+.Emplacement des modèles de requêtes personnalisées
+image::ftp_emplacement_modeles.png[]
+
+Une fois les modèles déposés (ou retirés s'ils n'ont plus d'utilité), l'utilisateur doit procéder à leur référencement. Cette opération est réalisée en lançant le script _/home/postgres/remocra_pdi/remocra_referencer_modele_processus.sh_ avec l'utilisateur `postgres`. Il doit être déclenché après chaque ajout ou modification de modèle. La table dédiée au stockage des modèles de processus (_"remocra.processus_etl_modele"_) est purgée et réalimentée en totalité à partir de la lecture du contenu de tous les fichiers XML présents sur le système.
+
+[WARNING]
+====
+Si un traitement est utilisé dans le module crise, le référencement sera mis en échec pour ne pas supprimer la configuration dans ce module.
+====
+
+.Référencement des modèles de requêtes personnalisées via l'interface
+image::ihm_referencement.png[]

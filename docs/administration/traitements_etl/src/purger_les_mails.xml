@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modele>
+	<categorie>DIVERS</categorie>
+	<code>PURGER_MAIL</code>
+	<libelle>Purger les méls trop anciens</libelle>
+	<description>Purge des méls notifiés dont la date de notification dépasse le paramètre d'ancienneté</description>
+	<fichier>purger_les_mails.ktr</fichier>
+	<priorite>1</priorite>
+	<messageSucces>
+		<objet/>
+		<corps/>
+	</messageSucces>
+	<messageEchec>
+		<objet>REMOCRA : Echec lors du processus de purge des méls</objet>
+		<corps>
+		<![CDATA[
+		<p>Bonjour [UTILISATEUR_PRENOM] [UTILISATEUR_NOM],</p>
+		<p>Le traitement [PROCESSUS_LIBELLE] a généré des erreurs.<br/>
+		Vous pouvez consulter le fichier d'erreur <a href="[DOCUMENT_URL]">ici</a>.</p>
+		]]>
+		</corps>
+	</messageEchec>
+	<parametres>
+		<parametre>
+			<nom>PURGE_MAIL_ANCIENNETE</nom>
+			<typeValeur>integer</typeValeur>
+			<obligatoire>true</obligatoire>
+			<formulaire etiquette="Ancienneté en heures" typeControle="numberfield" valeurDefaut="24"/>
+		</parametre>
+	</parametres>
+	<profils tousProfils="false">
+		<profil>SDIS-ADM-APP</profil>
+	</profils>
+	<planification expression="* * */12 ? * * *">
+		<parametres>
+			<parametre nom ="PURGE_MAIL_ANCIENNETE">24</parametre>
+		</parametres>
+	</planification>
+</modele>
