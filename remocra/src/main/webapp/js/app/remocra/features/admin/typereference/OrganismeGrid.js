@@ -242,7 +242,7 @@ Ext.define('Sdis.Remocra.features.admin.typereference.OrganismeGrid', {
                         forceSelection: true,
                         store: {
                             type: 'Organisme',
-                            autoLoad: true,
+                            autoLoad: false,
                             remoteFilter: false,
                             pageSize: 99999,
                             remoteSort: true,
