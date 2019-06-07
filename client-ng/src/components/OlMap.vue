@@ -160,6 +160,7 @@
                           <span :id ="'styleTools'+layer.id+'-'+criseId" class="style-tools">
                             <label>Opacité:</label>
                             <b-form-input class="custom-slider" type="range" :id="'range'+layer.id+'-'+criseId"  v-model="layer.opacity" min="0" max="1" step="0.01" @change="changeLayerOpacity(layer.id)"/>
+                            <div v-if="group.libelle !== 'Fichiers importés'">
                             <div><label>Legende:</label>&nbsp;&nbsp;
                             <input type="checkbox" :id="'stylIcon'+layer.id+'-'+criseId" checked @click="manageStyleVisibility(layer.id)"></div>
                             <label>Styles:</label>
@@ -169,6 +170,7 @@
                                 <span v-else>{{style.id}}</span>
                               </option>
                             </select>
+                          </div>
                           </span>
                           <span :id ="'layerInfo'+layer.id+'-'+criseId" class=" layer-info my-handle" >
                           <input type="checkbox" :id="'checkbox'+layer.id+'-'+criseId" :checked="layer.visibility" v-model='layer.visibility' @click="changeLayerVisibility(layer.id)">
@@ -191,6 +193,7 @@
               <div class="sidebar">
                 <div id="layertree">
                   <div v-for="(group,index) in legend.items" :key="index">
+                    <div v-if="group.libelle !== 'Fichiers importés'">
                     <div class="group">{{group.libelle}}</div>
                     <div class="layer" v-for="(layer,index) in group.items" :key="index" >
                       <div :id="'legend'+layer.id+'-'+criseId" class="my-handle">
@@ -198,6 +201,7 @@
                         <img style="display:block;margin-left:20px;" onerror="this.src='/remocra/static/img/layer404.png'" class="legend-img" :src="getLegendGraphics(layer)" />
                       </div>
                     </div>
+                  </div>
                   </div>
                 </div>
               </div>
