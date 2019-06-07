@@ -60,8 +60,8 @@
           <b-form-group class='recherchegeom' vertical :label="param.formulaireEtiquette" :label-for="'input' + index">
             <input :ref="'input' + index" :id="'input' + index" type="text" :idInput="param.nom" class="parametreRequete" readonly hidden />
             <a title="Dessiner" :id="'geom' + index" :class="['geom-' + param.formulaireTypeControle.toLowerCase()]" href="#" @click="selectGeom($event, param.formulaireTypeControle, index)"></a>
-            <a title="Modifier la séléction" :id="'modif' + index" class="modif" href="#" @click="modifGeom($event, index)"></a>
-            <a title="supprimer la séléction" class="delete" href="#" @click="deleteGeom($event, index)"></a>
+            <a title="Modifier la géométrie" :id="'modif' + index" class="modif" href="#" @click="modifGeom($event, index)"></a>
+            <a title="Supprimer la géométrie" class="delete" href="#" @click="deleteGeom($event, index)"></a>
             <b-button-group size="sm" class="validation-geom" v-if="showValidGeom === index">
               <b-btn class="ok-cancel-btns" @click="validGeom(index)">Valider</b-btn>
               <b-btn class="ok-cancel-btns" @click="annulGeom(index)">Annuler</b-btn>
