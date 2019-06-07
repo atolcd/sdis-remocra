@@ -69,7 +69,7 @@
 
       <div>
         <b-tabs fill content-class="mt-3" active-nav-item-class="text-primary">
-          <b-tab title="Résumé" active><p>TODO : résumé</p></b-tab>
+          <b-tab title="Résumé" active></b-tab>
 
           <!-- ================================== Onglet Localisation ==================================-->
           <b-tab title="Localisation" active>
@@ -84,7 +84,7 @@
           </b-tab>
 
           <!-- ================================== Onglet Caractéristiques techniques ==================================-->
-          <b-tab title="Caractéristiques techniques" active>
+          <b-tab title="Caractéristiques techniques">
             <FicheCaracteristiquesPibi  :hydrant="hydrant"
                                         :hydrantRecord="hydrantRecord"
                                         :listeNaturesDeci="listeNaturesDeci"
@@ -104,7 +104,7 @@
           </b-tab>
 
           <!-- ================================== Onglet Visites ==================================-->
-          <b-tab title="Visites" active>
+          <b-tab title="Visites">
             <FicheVisite  :hydrant="hydrant"
                           :utilisateurDroits="utilisateurDroits"
                           @getComboData="getComboData"
@@ -113,7 +113,14 @@
                           v-if="dataLoaded">
             </FicheVisite>
           </b-tab>
-          <b-tab title="Documents"><p>Form documents</p></b-tab>
+
+          <!-- ================================== Onglet Documents ==================================-->
+          <b-tab title="Documents">
+            <FicheDocument  ref="ficheDocument"
+                            :hydrant="hydrant"
+                            v-if="dataLoaded">
+            </FicheDocument>
+          </b-tab>
         </b-tabs>
       </div>
 
@@ -133,6 +140,7 @@ import FicheLocalisation from './FicheLocalisation.vue'
 import FicheCaracteristiquesPibi from './FicheCaracteristiquesPibi.vue'
 import FicheCaracteristiquesPena from './FicheCaracteristiquesPena.vue'
 import FicheVisite from './FicheVisite.vue'
+import FicheDocument from './FicheDocument.vue'
 
 
 export default {
@@ -143,7 +151,8 @@ export default {
     FicheLocalisation,
     FicheCaracteristiquesPibi,
     FicheCaracteristiquesPena,
-    FicheVisite
+    FicheVisite,
+    FicheDocument
   },
 
   data() {
@@ -478,8 +487,14 @@ export default {
 
       var formData = new FormData();
 
-      var self = this;
-      axios.post('/remocra/hydrants/getUpdatedCoordonnees', this.$refs.ficheLocalisation.getLocalisationData()).then(function(response) { // Récupération des coordonnées du PEI dans le bon système et préparation des données
+      //Ajout des fichiers
+      var fichiers = this.$refs.ficheDocument.getFiles();
+      for (var i = 0; i < fichiers.length; i++) {
+        let file = fichiers[i].data;
+        formData.append('files[' + i + ']', file)
+      }
+	var self = this
+      axios.post('/remocra/hydrants/getUpdatedCoordonnees', this.$refs.ficheLocalisation.getLocalisationData()).then(function(response) { // Une fois la maj faite, on met à jour le reste des données
         data["geometrie"] = response.data.message;
         //On ajoute en plus les données de débit/pression issues des visites (si éligibles)
         data = _.merge(data, self.$refs.ficheVisite.updateDataFromLastVisite());
