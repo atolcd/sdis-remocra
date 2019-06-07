@@ -56,7 +56,7 @@ export default {
 
 .gestcrise .modal-footer .btn-secondary {
   margin-left: .25rem;
-  position: relative;
+  position: absolute;
   width: 80px;
 }
 
@@ -208,7 +208,7 @@ export default {
 
 .gestcrise .document {
   font-weight: bold;
-  display: inline-flex;
+  display: block;
 }
 
 .gestcrise .document a {
@@ -401,7 +401,6 @@ export default {
 }
 .gestcrise .documents .list-group-item {
   padding: 3px;
-  border: none;
 }
 
 .gestcrise .col-map {

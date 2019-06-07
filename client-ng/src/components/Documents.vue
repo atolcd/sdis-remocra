@@ -4,7 +4,7 @@
     <b-list-group-item>
       <div class="document">
         <a onclick="location=this.href" :href="'/remocra/telechargement/document/'+document.code">
-          <strong>{{document.fichier}} - {{document.date}}</strong>
+          {{document.fichier}} - {{document.date}}
         </a>
         <div class="mini-tools">
           <img style="cursor:pointer" v-if="document.geometrie !== null" src="/remocra/static/img/location.svg" title="Zoomer" @click="locateDoc(document.geometrie)">
