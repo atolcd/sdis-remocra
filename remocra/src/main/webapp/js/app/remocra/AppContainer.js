@@ -33,6 +33,8 @@ Ext.define('Sdis.Remocra.AppContainer', {
                             //'<span style="vertical-align:top;">REMOcRA est soutenu et cofinancé par</span>',
                             '<a class="europe-engage" href="http://europa.eu/index_fr.htm" target="_blank">',
                                 '<img width="80" height="40" src="{resUrl}/images/remocra/partenaires/europesengage.png"/></a>',
+                            '<a class="interreg" href="http://interreg-maritime.eu" target="_blank">',
+                                '<img width="250" height="40" src="{resUrl}/images/remocra/partenaires/logo_prt3.png"/>',
                             '<a class="crige-paca" href="http://www.crige-paca.org" target="_blank">',
                                 '<img width="40" height="40" src="{resUrl}/images/remocra/partenaires/crige.png"/></a>',
                             '<a class="avm83" href="http://www.amv83.com/" target="_blank"><img width="80" height="40" src="{resUrl}/images/remocra/partenaires/amf.png"/></a>',
