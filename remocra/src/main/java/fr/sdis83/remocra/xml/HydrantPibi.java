@@ -1,5 +1,6 @@
 package fr.sdis83.remocra.xml;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 @XmlSeeAlso({ HydrantPi.class, HydrantBi.class, HydrantPa.class })
@@ -85,6 +86,8 @@ public abstract class HydrantPibi extends Hydrant {
         this.numeroSCP = numeroSCP;
     }
 
+    // Phase de transition
+    @XmlElement(name = "choc")
     public Boolean getRenversable() {
         return renversable;
     }
