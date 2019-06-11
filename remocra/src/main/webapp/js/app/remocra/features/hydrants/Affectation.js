@@ -46,13 +46,13 @@ Ext.define('Sdis.Remocra.features.hydrants.Affectation', {
                 id: 'comboOrganisme',
                 itemId: 'comboOrganisme',
                 emptyText: 'Organisme...',
-                store: Ext.create('Ext.data.Store', {
+                store: {
                     model: 'Sdis.Remocra.model.Organisme',
                     remoteSort: true,
                     remoteFilter: false,
                     autoLoad: true,
                     pageSize: 999
-                }),
+                },
                 pageSize: false, // bizarrerie ExtJS
                 displayField: 'nom',
                 valueField: 'id',
