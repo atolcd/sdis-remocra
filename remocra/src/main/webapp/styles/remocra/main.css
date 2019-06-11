@@ -608,6 +608,9 @@ div.olControlMousePosition {
 .maplegend .layer {
 	line-height: 20px;
 }
+.maplegend .hidden {
+    display: none;
+}
 .layer-cfg span {
 	display: none;
 }

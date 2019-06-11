@@ -20,6 +20,20 @@
             {"libelle":"Non conforme","image":"eau/NON_CONFORME.png"},
             {"libelle":"Indisponible","image":"eau/INDISPO.png"}
         ]
+    }, {
+        "id": "hydrantLayerWms",
+        "class": "hidden",
+        "interrogeable": false,
+        "layers": "remocra:EAU",
+        "libelle": "Eau",
+        "opacity": 1,
+        "projection": "EPSG:900913",
+        "scale_max": "362834",
+        "scale_min": "0",
+        "sld": null,
+        "type": "wms",
+        "url": "/remocra/geoserver/remocra/wms",
+        "visibility": true
     }
     ]}, {
     "libelle":"Fonds IGN",

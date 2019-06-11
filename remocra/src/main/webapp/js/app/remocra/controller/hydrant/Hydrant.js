@@ -362,6 +362,42 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             'dragcomplete' : this.onDragCompleteMovePoint,
             'dragstart': this.onDragStartMovePoint
         });
+
+        // Synchronisation éventuelle des 2 couches hydrant vector / raster
+        // Déclencheurs : visibilité, opacité, rafraîchissement
+        var hydrantLayer = this.getTabMap().getLayerByCode('hydrantLayer');
+        var hydrantLayerWms = this.getTabMap().getLayerByCode('hydrantLayerWms');
+        if (hydrantLayer && hydrantLayerWms) {
+            hydrantLayer.events.on({
+               'visibilitychanged': function() {
+                   // Changement de visibilité
+                   hydrantLayerWms.setVisibility(hydrantLayer.getVisibility());
+               },
+               'refresh': function() {
+                   // Rafraîchissement en fonction du type de couche (via disponibilité des méthodes)
+                   if (hydrantLayerWms.clearGrid) {
+                       hydrantLayerWms.clearGrid();
+                   }
+                   if (hydrantLayerWms.redraw) {
+                       hydrantLayerWms.redraw(true);
+                   }
+                   if (hydrantLayerWms.refresh) {
+                       hydrantLayerWms.refresh({
+                           force: true
+                       });
+                   }
+               }
+            });
+            this.getTabMap().map.events.on({
+                'changelayer': function(eOpts) {
+                   if (eOpts.layer == hydrantLayer && eOpts.property=='opacity') {
+                       if (!Number.isNaN(hydrantLayer.opacity)) {
+                           hydrantLayerWms.setOpacity(hydrantLayer.opacity);
+                       }
+                   }
+                }
+            });
+        }
     },
 
     onDragStartMovePoint: function(vector){

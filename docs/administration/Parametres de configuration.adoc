@@ -413,7 +413,7 @@ Méthodes disponibles pour les règles de calcul des numéro internes et globaux
 * Par défaut : ```365```
 
 === HYDRANT_SYMBOLOGIE_METHODE ===
-* Symbologie des PEI (ex : GEN, 42, 77, 83, 89)
+* Symbologie des PEI (ex : WMS, GEN, 42, 77, 83, 89)
 * Par défaut : ```GEN```
 
 Méthodes disponibles pour la symbologie des PEI : link:../pei/Symbologie_PEI{outfilesuffix}[Symbologies disponibles]

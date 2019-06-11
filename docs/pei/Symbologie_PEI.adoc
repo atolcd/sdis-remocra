@@ -27,6 +27,14 @@ Les images sont placées dans le répertoire ```/var/remocra/html/images/remocra
 
 
 == Symbologies disponibles
+=== WMS ===
+
+*La symbologie est gérée par une couche GeoServer*. En cas d'activation, il convient de paramétrer la couche `hydrantLayerWMS`. Cf. link:../administration/Cartes{outfilesuffix}#module-pei-localisation[Module PEI, localisation]
+
+Une seule image est utilisée. Elle est commune à tous les PEI et visible pour la mise en évidence des PEI sélectionnés :
+
+* *select.png*
+
 === GEN (générique) ===
 
 * PIBI / PENA :

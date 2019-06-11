@@ -231,8 +231,9 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
     },
 
     getStyleMap: function() {
-
         switch (HYDRANT_SYMBOLOGIE){
+            case 'WMS' :
+                return this.getStyleMapWms();
             case '42' :
                 return this.getStyleMap42();
             case '77' :
@@ -246,6 +247,26 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
             default :
                 return this.getStyleMapGEN();
         }
+    },
+
+    getStyleMapWms: function() {
+        var customStyle = new OpenLayers.Style({
+            fillOpacity: '${fillOpacity}',
+            externalGraphic: 'ext-res/images/remocra/cartes/legende/eau/select.png',
+            graphicWidth: 30,
+            graphicHeight: 30,
+            graphicYOffset: -15
+        }, {
+            context: {
+                fillOpacity: function(feature) {
+                    return feature.renderIntent=='select' ? 1 : 0;
+                }
+            }
+        });
+        return new OpenLayers.StyleMap({
+            "default": customStyle,
+            "select": customStyle
+        });
     },
 
     getStyleMapGEN: function() {

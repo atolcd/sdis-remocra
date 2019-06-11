@@ -276,6 +276,7 @@ Les options communes aux couches sont les suivantes :
 "opacity" : 1
 "interrogeable" : true
 "items" : []
+"class" : "hidden" (ne pas faire apparaître une couche dans la légende)
 ----
 
 === Options couches génériques ===
@@ -344,10 +345,12 @@ Remarque, link:Demande%20cle%20IGN{outfilesuffix}[une clé IGN] doit être param
 "format": "png" (par défaut) ou "jpg"
 "version": "1.0.0" par défaut
 ----
-Les résolutions sont exprimées en 3857 ; se référer aux link:https://github.com/atolcd/sdis-remocra/blob/master/remocra/src/main/webapp/js/app/remocra/widget/map/Map.js:[résolutions définies ici].
+Les résolutions sont exprimées en 3857 ; se référer aux link:https://github.com/atolcd/sdis-remocra/blob/master/remocra/src/main/webapp/js/app/remocra/widget/map/Map.js[résolutions définies ici].
 
 
 === Options couches spécifiques ===
+
+==== Couches spécifiques
 
 [source,js]
 ----
@@ -360,7 +363,6 @@ Pour les couches spécifiques "hydrantLayer" et "prescritLayer", on précise ég
 ----
 "stategy" : "bbox"
 ----
-
 
 == Images de la légende ==
 
@@ -403,6 +405,64 @@ Par exemple pour les images de l'exemple qui précède, on a les images suivante
 ----
 
 == Cartes spécifiques ==
+
+=== Module PEI, localisation ===
+
+Pour le *module PEI*, un comportement particulier facultatif permet de coupler 2 couches :
+
+* "hydrantLayer" : couche vectorielle utilisée pour la manipulation (sélection d'objets),
+* "hydrantLayerWms" : couche WMS dédiée à l'affichage.
+
+La couche "hydrantLayerWms" peut être masquée dans la légende avec l'attribut `"class" : "hidden"`.
+D'autre part, la couche "hydrantLayerWms" est synchronisée avec la couche "hydrantLayer" sur les propriétés suivantes :
+
+* visibilité
+* transparence
+* rafraîchissement
+
+Ainsi, l'utilisateur ne voit/manipule qu'une couche et le style peut être paramétré au niveau de GeoServer.
+
+Exemple de configuration de couches dans la carte des PEI :
+
+Couche "hydrantLayer" (configuration classique) :
+[source,js]
+----
+{
+    "type": "specific",
+    "stategy": "bbox",
+    "libelle": "PIBI / PENA",
+    "id": "hydrantLayer",
+    "maxResolution": 3.0,
+    "visibility":true,
+    "interrogeable": true,
+    "items":[ ]
+}
+----
+
+Couche "hydrantLayerWms" (noter `"id": "hydrantLayerWms"` et `"class": "hidden"`, ) :
+[source,js]
+----
+{
+    "id": "hydrantLayerWms",
+    "class": "hidden",
+    "interrogeable": false,
+    "layers": "remocra:EAU",
+    "libelle": "Eau",
+    "opacity": 1,
+    "projection": "EPSG:900913",
+    "scale_max": "362834",
+    "scale_min": "0",
+    "sld": null,
+    "type": "wms",
+    "url": "/remocra/geoserver/remocra/wms",
+    "visibility": true
+}
+----
+
+Remarque :
+
+* Pour éviter de perturber l'utilisateur, on harmonise les plages de visibilité avec les paramètres `\*Resolution` et `scale*` (ce n'est pas le cas dans l'exemple).
+
 
 === Module PEI, recherches et analyses ===
 

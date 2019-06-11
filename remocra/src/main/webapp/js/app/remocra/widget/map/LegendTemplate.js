@@ -14,7 +14,7 @@ Ext.define('Sdis.Remocra.widget.map.LegendTemplate', {
                 '<tpl for="legendData.items">', // L1 (groupes)
                     '<li class="blocN2" {[this.styImg(values)]}><span>{libelle}</span><ul>',
                         '<tpl for="items">', // L2 (couches)
-                            '<li class="blocN3"><div class="layer">{[this.printImgL2(values)]}',
+                            '<li class="blocN3 {class}"><div class="layer">{[this.printImgL2(values)]}',
                                 
                                 '<div id="{[this.getId()]}{id}" class="layer-cfg {[this.getLayerVisibleClass(values)]}"><span>&radic;</span></div>',
                                 '{libelle}',
