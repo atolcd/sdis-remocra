@@ -1,9 +1,11 @@
 package fr.sdis83.remocra.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
+import fr.sdis83.remocra.domain.remocra.HydrantVisite;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -45,5 +47,15 @@ public class HydrantPenaService extends AbstractHydrantService<HydrantPena> {
             }
         }
         return attached;
+    }
+
+    @Transactional
+    public boolean delete(Long id) throws Exception {
+        List<HydrantVisite> listeVisites = HydrantVisite.findHydrantVisitesByHydrant(id);
+        for(HydrantVisite visite : listeVisites) {
+            visite.remove();
+        }
+        super.delete(id);
+        return true;
     }
 }

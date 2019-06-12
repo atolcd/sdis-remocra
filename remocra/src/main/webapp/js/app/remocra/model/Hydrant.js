@@ -136,9 +136,16 @@ Ext.define('Sdis.Remocra.model.Hydrant', {
         persist: false
     }, {
        name: 'natureDeci',
-       type: 'fk'
+       type: 'fk',
+       useNull: true,
+       defaultValue: null
     },{
         name: 'nomNatureDeci',
+        type: 'string',
+        useNull: true,
+        persist: false
+   },{
+        name: 'codeNatureDeci',
         type: 'string',
         useNull: true,
         persist: false
@@ -193,14 +200,7 @@ Ext.define('Sdis.Remocra.model.Hydrant', {
         getterName: 'getPhoto',
         persist: false,
         foreignKey: 'hydrant'
-    },{
-        type : 'belongsTo',
-        model : 'Sdis.Remocra.model.TypeHydrantNatureDeci',
-        associationKey : 'natureDeci',
-        getterName : 'getNatureDeci',
-        associatedName : 'natureDeci',
-        persist : true
-    } ],
+    }],
 
     proxy: {
         type: 'remocra.rest',

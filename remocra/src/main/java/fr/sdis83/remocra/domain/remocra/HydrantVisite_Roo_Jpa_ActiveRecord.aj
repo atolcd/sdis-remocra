@@ -60,6 +60,12 @@ privileged aspect HydrantVisite_Roo_Jpa_ActiveRecord {
         }
         return entityManager().createQuery(jpaQuery, HydrantVisite.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
+
+    public static List<HydrantVisite> HydrantVisite.findHydrantVisitesByHydrant(Long id) {
+        if (id == null) return null;
+        return entityManager().createQuery("SELECT o FROM HydrantVisite o WHERE hydrant="+id, HydrantVisite.class).getResultList();
+    }
+
     
     @Transactional
     public void HydrantVisite.persist() {

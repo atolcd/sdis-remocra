@@ -18,6 +18,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.domain.remocra.HydrantVisite;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Bean;
@@ -220,5 +221,15 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
         JSONObject json = new JSONObject();
         json.put("data", data);
         return json;
+    }
+
+    @Transactional
+    public boolean delete(Long id) throws Exception {
+        List<HydrantVisite> listeVisites = HydrantVisite.findHydrantVisitesByHydrant(id);
+        for(HydrantVisite visite : listeVisites) {
+            visite.remove();
+        }
+        super.delete(id);
+        return true;
     }
 }
