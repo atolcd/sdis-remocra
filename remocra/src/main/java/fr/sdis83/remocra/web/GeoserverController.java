@@ -224,13 +224,11 @@ public class GeoserverController {
                     // Exemple avec deux couches (clause INCLUDE si couche non
                     // filtrée) :
                     // &CQL_FILTER=INCLUDE;WITHIN(geometrie,(querySingle('remocra:zone_competence','geometrie','id=26')))
-                    // On passe par l'id en échappant avec %22 (double quote) car
-                    // mot réservé.
-                    // C'est plus sûr qu'en passant par une chaine de caractères
-                    // (code=VAR par exemple)
+                    // On passe par l'id avec des doubles quotes car mot réservé.
+                    // C'est plus sûr qu'en passant par une chaine de caractères (code=VAR par exemple)
                     ZoneCompetence zoneCompetence = utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence();
                     String idZone = zoneCompetence.getId().toString();
-                    fullCQLFilter.append("INTERSECTS(geometrie,(querySingle('remocra:zone_competence','geometrie','%22id%22=" + idZone + "')))");
+                    fullCQLFilter.append("INTERSECTS(geometrie,(querySingle('remocra:zone_competence','geometrie','\"id\"=" + idZone + "')))");
                 }
                 if (inputCQLParamValue != null) {
                     if (fullCQLFilter.length()>0) {
