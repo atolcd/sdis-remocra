@@ -4,6 +4,8 @@ Ext.define('Sdis.Remocra.features.hydrants.TabAnalyses', {
     extend: 'Ext.Panel',
     alias: 'widget.crHydrantsAnalyses',
     itemId: 'analyses',
+    maxHeight: 600,
+    autoScroll:true,
 
        defaults: {
             xtype: 'fieldcontainer',
