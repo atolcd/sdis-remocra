@@ -88,7 +88,7 @@ Ext.define('Sdis.Remocra.features.admin.typereference.OrganismeGrid', {
                                 var oldValue = record.data.typeOrganismeParent;
                                 var newValue = combo.value;
 
-                                if(oldValue !== null && oldValue != newValue){
+                                if(oldValue !== null && oldValue != newValue && record.data.id){
                                     Ext.Ajax.request({ //Si l'on change le profil d'un organisme, il faut désaffecter les organismes qui l'ont comme parent
                                         url: Sdis.Remocra.util.Util.withBaseUrl('../organismes/nbOrganismesEnfants/'+record.data.id),
                                         method: 'GET',
