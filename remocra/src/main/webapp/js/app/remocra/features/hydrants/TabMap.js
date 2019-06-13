@@ -1,4 +1,5 @@
 Ext.require('Sdis.Remocra.widget.map.Map');
+Ext.require('Sdis.Remocra.widget.map.controls.FindFeaturesClick');
 
 Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
     extend: 'Sdis.Remocra.widget.map.Map',
@@ -194,16 +195,19 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                 toggleKey: "shiftKey",
                 box: true
             }));
-            // Sélection par clic
-            this.addSpecificControlLate('selectPoint', new OpenLayers.Control.SelectFeature([this.workingLayer,this.hydrantLayer], {
-                clickout: true,
-                toggle: true,
-                multiple: false,
-                hover: false,
-                multipleKey: "ctrlKey",
-                toggleKey: "shiftKey",
-                box: false
-            }));
+            // Visite rapide
+            this.addSpecificControlLate('visiteRapide', new Sdis.Remocra.widget.map.controls.FindFeaturesClick(
+                [this.hydrantLayer], {
+                    eventListeners: {
+                        'found': function(evt) {
+                            if (evt.features.length>0) {
+                                // On relaie l'événement avec les features concernées
+                                this.fireEvent('newVisiteRapide', evt.features);
+                            }
+                        }, scope: this
+                    }
+                }
+            ));
 
             this.addSpecificControlLate('movePoint', new OpenLayers.Control.ModifyFeature(this.workingLayer, {
                 standalone: true,

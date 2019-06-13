@@ -136,7 +136,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             },
             // Onglet "Localisation" (la carte)
             'crHydrantsMap': {
-                layersadded: this.initControlMap
+                layersadded: this.initControlMap,
+                newVisiteRapide: this.createVisiteRapide
             },
             'crHydrantsMap #dessinerBtn': {
                 toggle: function(button, pressed) {
@@ -151,11 +152,11 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             'crHydrantsMap #editInfoVisiteRapideBtn': {
                 toggle: function(button, pressed) {
                     if (pressed) {
-                        // Désélection des toutes les features sélectionnées
+                        // Désélection de toutes les features sélectionnées
                         this.getTabMap().map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselectAll();
                     }
                     // (Dés)activation de l'outil de sélection par clic
-                    this.getTabMap().activateSpecificControl('selectPoint', pressed);
+                    this.getTabMap().activateSpecificControl('visiteRapide', pressed);
                 }
             },
             'crHydrantsMap #editInfoBtn': {
@@ -400,6 +401,57 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         }
     },
 
+    createVisiteRapide: function(features) {
+        if (!features || features.length<1) {
+            return;
+        }
+        var featuresCount = features.length;
+        if (featuresCount == 1) {
+            // Une seule feature : on ouvre la fiche directement
+            var f = features[0];
+            this.showFicheHydrant(f.attributes.typeHydrantCode, f.fid, true/*visite*/);
+        } else {
+            // Plusieurs features : on laisse le choix avant d'ouvrir la fiche
+            var data = [], i;
+            // On propose à l'utilisateur de choisir la feature de travail
+            for (i=0 ; i<features.length ; i++) {
+                var cFeat = features[i];
+                data.push([cFeat, cFeat.data['numero'] + ' - ' + cFeat.data['nomCommune']]);
+            }
+            Ext.widget('sdischoice', {
+                title : 'Saisir une visite',
+                width : 600,
+                height : undefined,
+                bodyPadding : 10,
+                explanationsConfig : {
+                    xtype : 'panel',
+                    border : false,
+                    html : '<ul style="margin-bottom:10px;">Veuillez préciser le point d\'eau visité.'
+                },
+                cboConfig : {
+                    fieldLabel : 'Point d\'eau ',
+                    store : new Ext.data.SimpleStore({
+                        fields: ['feature', 'display'],
+                        data : data
+                    }),
+                    displayField : 'display',
+                    valueField : 'feature',
+                    forceSelection : true,
+                    editable : false,
+                    queryMode : 'local',
+                    value : data[0][0]
+                },
+                listeners: {
+                    scope: this,
+                    valid: function(record) {
+                        var f = record.get('feature');
+                        this.showFicheHydrant(f.attributes.typeHydrantCode, f.fid, true/*visite*/);
+                    }
+                }
+            }).show();
+        }
+    },
+
     onDragStartMovePoint: function(vector){
 
         if(vector.feature.data['isTourneeRes'] && vector.feature.data['tournee'] != null){
@@ -536,46 +588,19 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
 
     onSelectedFeatureChange: function(event) {
         var hydrantLayer = event.object, nbSelect = hydrantLayer.selectedFeatures.length;
-        var btnFiche = this.getTabMap().queryById('editInfoBtn');
-        var btnFicheNoCtrl = this.getTabMap().queryById('editInfoBtnNoCtrl');
-        var btnDelete = this.getTabMap().queryById('deleteBtn');
-        var btnAffecter = this.getTabMap().queryById('affecterBtn');
-        var btnDesaffecter = this.getTabMap().queryById('desaffecterBtn');
-        var btnActiveDeplacer = this.getTabMap().queryById('activeMoveBtn');
-        var btnAddIndispo = this.getTabMap().queryById('indispoBtn');
-        var btnEditIndispo = this.getTabMap().queryById('editIndispoBtn');
-
-        var btnFicheVisiteRapide = this.getTabMap().queryById('editInfoVisiteRapideBtn');
-        var visiteRapideActive = (btnFicheVisiteRapide != null && btnFicheVisiteRapide.pressed);
-        if(visiteRapideActive && nbSelect == 1 && event.type=='featureselected'){ //Bouton pour la visite rapide des PEI
-           var features = this.getSelectedFeatures();
-           if (features.length == 1) {
-               this.showFicheHydrant(features[0].data.typeHydrantCode, features[0].fid, true);
-           }
-        }
-
-        if(btnFiche != null){  //Dans le cas ou on n'a pas les droits le bouton n'existe pas
-           btnFiche.setDisabled(nbSelect != 1);
-        }
-
-        btnFicheNoCtrl.setDisabled(nbSelect != 1);
-        if (btnDelete != null) {
-            btnDelete.setDisabled(nbSelect != 1);
-        }
-        if (btnAffecter != null) {
-            btnAffecter.setDisabled(nbSelect == 0);
-        }
-        if (btnDesaffecter != null) {
-            btnDesaffecter.setDisabled(nbSelect == 0);
-        }
-        if(btnActiveDeplacer != null){
-            btnActiveDeplacer.setDisabled(nbSelect != 1);
-        }
-        if (btnAddIndispo != null) {
-            btnAddIndispo.setDisabled(nbSelect < 1);
-        }
-        if (btnEditIndispo != null) {
-            btnEditIndispo.setDisabled(nbSelect != 1);
+        this.enableBtnIf('editInfoBtn', nbSelect == 1);
+        this.enableBtnIf('editInfoBtnNoCtrl', nbSelect == 1);
+        this.enableBtnIf('deleteBtn', nbSelect == 1);
+        this.enableBtnIf('affecterBtn', nbSelect > 0);
+        this.enableBtnIf('desaffecterBtn', nbSelect > 0);
+        this.enableBtnIf('activeMoveBtn', nbSelect == 1);
+        this.enableBtnIf('indispoBtn', nbSelect > 0);
+        this.enableBtnIf('editIndispoBtn', nbSelect == 1);
+    },
+    enableBtnIf: function(btnId, enableCond) {
+        var btn = this.getTabMap().queryById(btnId);
+        if (btn) {
+            btn.setDisabled(!enableCond);
         }
     },
 
