@@ -1,0 +1,22 @@
+==== Notification des changements d'état des PEI
+
+===== Service Public DECI
+
+Ce traitement permet de notifier les services publics DECI qu'un ou plusieurs PEI ont changé d'état sur une période de temps paramétrable.
+
+====== Configuration
+Le fichier _"remocraXX.properties"_ doit contenir les informations suivantes :
+[width="100%",options="header"]
+|===================
+| Paramètre | Description
+| MODELE_MAIL_CHANGEMENT_ETAT | Code du modèle de mail à envoyer au service public DECI (_ex :_ `NOTIF_CHANGEMENT_ETAT`)
+| PERIODE_CHANGEMENT_ETAT_PEI_PUBLIC | Période (en minutes) sur laquelle il faut vérifier s'il y a eu des changements d'état
+| ROLE_SP_DECI | Code du rôle du ou des contacts de l'organisme à notifier. Si aucun contact de ce type n'est trouvé, l'email est envoyé au contact de l'organisme. (_ex :_ `DECI_SP_DECI`)
+|===================
+
+NOTE: Les emails sont envoyés à l'adresse du contact de l'organisme déclaré comme service public DECI dans la fiche du PEI.
+
+====== Lancement et planification de la synchronisation
+L'exécution automatique s'effectue en planifiant le lancement du fichier ```/var/remocra/pdi/traitements_sdis/bspp/notifier_changement_etat_pei_public.sh``` avec l'utilisateur ```postgres```.
+
+WARNING: La période définit dans la tache CRON doit être synchronisé avec le paramètre `PERIODE_CHANGEMENT_ETAT_PEI_PUBLIC`.

@@ -56,6 +56,8 @@ include::BSPP/import_sig_to_remocra{outfilesuffix}[]
 
 include::BSPP/import_utilisateur{outfilesuffix}[]
 
+include::BSPP/notifier_changement_etat_pei{outfilesuffix}[]
+
 === SDIS 42
 
 include::42/synchronisation_ldap{outfilesuffix}[]
