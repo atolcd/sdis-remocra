@@ -3,7 +3,7 @@
 		<div class="title">PEI</div>
 		<div class="row">
 			<div class="col-md-4">
-				<b-form-group label="Diamètre nominal : " label-for="diametre">
+				<b-form-group label="Diamètre nominal : " label-for="diametre" label-cols-md="6">
 					<b-form-select id="diametre" v-model="hydrant.diametre" class="parametre" :options="comboDiametre" size="sm"></b-form-select>
 				</b-form-group>
 			</div>
@@ -31,7 +31,7 @@
 
 		<div class="row">
 			<div class="col-md-4">
-				<b-form-group label="Jumelé avec : " label-for="jumele">
+				<b-form-group label="Jumelé avec : " label-for="jumele" label-cols-md="6">
 					<b-form-select id="jumele" v-model="hydrant.jumele" class="parametre" :options="comboJumele" :disabled="this.hydrant.id == null" size="sm"></b-form-select>
 				</b-form-group>
 			</div>
@@ -39,19 +39,19 @@
 
 		<div class="row">
 			<div class="col-md-4">
-				<b-form-group label="Marque : " label-for="marque">
+				<b-form-group label="Marque : " label-for="marque" label-cols-md="3">
 					<b-form-select id="marque" v-model="hydrant.marque" class="parametre" :options="comboMarque" size="sm" v-on:change="onMarqueChange"></b-form-select>
 				</b-form-group>
 			</div>
 
 			<div class="col-md-4">
-				<b-form-group label="Modèle : " label-for="modele">
+				<b-form-group label="Modèle : " label-for="modele" label-cols-md="3">
 					<b-form-select id="modele" v-model="hydrant.modele" class="parametre" :options="comboModele" size="sm"></b-form-select>
 				</b-form-group>
 			</div>
 
 			<div class="col-md-4">
-				<b-form-group label="Année de fabrication : " label-for="anneeFabrication" invalid-feedback="L'année n'est pas valide" :state="etats.anneeFabrication">
+				<b-form-group label="Année de fabrication : " label-for="anneeFabrication" invalid-feedback="L'année n'est pas valide" :state="etats.anneeFabrication" label-cols-md="6">
 					<b-form-input id="anneeFabrication" v-model="hydrant.anneeFabrication" class="parametre" type="number" size="sm" :state="etats.anneeFabrication"></b-form-input>
 				</b-form-group>
 			</div>
@@ -60,13 +60,13 @@
 		<div class="title">Réseau</div>
 			<div class="row">
 				<div class="col-md-4">
-					<b-form-group label="Service des eaux : " label-for="serviceEaux">
+					<b-form-group label="Service des eaux : " label-for="serviceEaux" label-cols-md="5">
 						<b-form-select id="serviceEaux" v-model="hydrant.serviceEaux" class="parametre" :options="comboServiceEaux" size="sm"></b-form-select>
 					</b-form-group>
 				</div>
 
 				<div class="col-md-4">
-					<b-form-group label="Type de réseau : " label-for="typeReseauAlimentation">
+					<b-form-group label="Type de réseau : " label-for="typeReseauAlimentation" label-cols-md="5">
 						<b-form-select id="typeReseauAlimentation" v-model="hydrant.typeReseauAlimentation" class="parametre" :options="comboTypeReseauAlimentation" size="sm"></b-form-select>
 					</b-form-group>
 				</div>
@@ -84,13 +84,13 @@
 
 			<div class="row">
 				<div class="col-md-4">
-					<b-form-group label="Type de canalisation : " label-for="typeReseauCanalisation">
+					<b-form-group label="Type de canalisation : " label-for="typeReseauCanalisation" label-cols-md="6">
 						<b-form-select id="typeReseauCanalisation" v-model="hydrant.typeReseauCanalisation" class="parametre" :options="comboTypeReseauCanalisation" size="sm"></b-form-select>
 					</b-form-group>
 				</div>
 
 				<div class="col-md-4">
-					<b-form-group label="Diamètre de canalisation : " label-for="diametreCanalisation" invalid-feedback="Le diamètre n'est pas valide" :state="etats.diametreCanalisation">
+					<b-form-group label="Diamètre de canalisation : " label-for="diametreCanalisation" invalid-feedback="Le diamètre n'est pas valide" :state="etats.diametreCanalisation" label-cols-md="7">
 						<b-form-input id="diametreCanalisation" v-model="hydrant.diametreCanalisation" class="parametre" type="number" size="sm" :state="etats.diametreCanalisation"></b-form-input>
 					</b-form-group>
 				</div>
@@ -98,9 +98,11 @@
 
 			<div class="row">
 				<div class="col-md-6">
-					<b-form-group label="Réservoir : " label-for="reservoir" class="">
+					<b-form-group label="Réservoir : " label-for="reservoir" label-cols-md="2">
 						<b-form-select id="reservoir" v-model="hydrant.reservoir" :options="comboReservoir" class="parametre" size="sm"></b-form-select>
-						<div class="d-inline-flex"><button class="btnInlineForm" @click.prevent v-b-modal.modal-reservoir><img src="../assets/img/add.png"></button></div>
+						<button class="btnInlineForm btn btn-sm btn-outline-success" @click.prevent v-b-modal.modal-reservoir>
+							<img src="../assets/img/add.png">
+						</button>
 					</b-form-group>
 				</div>
 			</div>

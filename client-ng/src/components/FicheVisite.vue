@@ -783,7 +783,7 @@ export default {
 
 #tableScroll {
 	margin-top: 5px; 
-	max-height: 500px; 
+	max-height: 450px; 
 	overflow: auto;
 }
 

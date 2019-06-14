@@ -121,7 +121,7 @@ export default {
 
 #rowDocuments {
 	margin-bottom: 10px;
-	max-height: 300px; 
+	max-height: 320px; 
 	overflow: auto;
 }
 

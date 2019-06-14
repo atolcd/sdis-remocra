@@ -20,7 +20,7 @@ Ext.define('Sdis.Remocra.features.hydrants.BaseFiche', {
     alias: 'widget.hydrantFiche',
     modal: true,
     width: 900,
-    height: 900,
+    height: 700,
     layout: 'fit',
 
     cls: 'fichehydrant',
@@ -38,14 +38,6 @@ Ext.define('Sdis.Remocra.features.hydrants.BaseFiche', {
                 type: 'vbox',
                 align: 'stretch'
             }
-        }];
-
-        this.tbar = [{
-            xtype: 'displayfield',
-            cls: 'hydrant-msg-error',
-            value: 'Un petit message d\'erreur ...',
-            name: 'errorMsg',
-            hidden: true
         }];
 
         this.buttons = [{

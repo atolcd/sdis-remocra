@@ -40,7 +40,7 @@
 
 		<div class="row">
 			<div class="col-md-6">
-				<b-form-group label="Matériau de la citerne : " label-for="materiau">
+				<b-form-group label="Matériau de la citerne : " label-for="materiau" label-cols-md="4">
 					<b-form-select id="materiau" v-model="hydrant.materiau" class="parametre" :options="comboMateriau" size="sm"></b-form-select>
 				</b-form-group>
 			</div>
@@ -309,12 +309,12 @@ export default {
 }
 
 .labelDisabled {
-	color: #6c757d;
+	color: #6c757d !important;
 }
 
 #tableScroll {
 	margin-top: 5px; 
-	max-height: 300px; 
+	max-height: 270px; 
 	overflow: auto;
 }
 

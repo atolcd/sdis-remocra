@@ -3,7 +3,7 @@
     <div class="title">Coordonnées géographiques</div>
       <div class="row">
         <div class="col-md-6">
-          <b-form-group label="Système : " label-for="systeme">
+          <b-form-group label="Système : " label-for="systeme" label-cols-md="2">
               <b-form-select v-model="systeme" :options="comboSysteme" size="sm" v-on:change="onSystemeChange" required></b-form-select>
           </b-form-group>
         </div>
@@ -11,17 +11,13 @@
 
       <div class="row">
         <div class="col-md-6">
-          <b-form-group>
-            <label for="longitude" v-if="systeme == 2154">X :</label>
-            <label for="longitude" v-else>Longitude :</label>
+          <b-form-group :label="(systeme == 2154) ? 'X :' : 'Longitude: '" label-for="domaine" label-cols-md="2">
             <b-form-input id="longitude" v-model="longitude" type="text" size="sm" :disabled="utilisateurDroits.indexOf('HYDRANTS_DEPLACEMENT_C') == -1" required></b-form-input>
           </b-form-group>
         </div>
 
         <div class="col-md-6">
-          <b-form-group>
-            <label for="latitude" v-if="systeme == 2154">Y :</label>
-            <label for="latitude" v-else>Latitude :</label>
+          <b-form-group :label="(systeme == 2154) ? 'Y :' : 'Latitude: '" label-for="domaine" label-cols-md="2">
             <b-form-input id="latitude" v-model="latitude" type="text" size="sm" :disabled="utilisateurDroits.indexOf('HYDRANTS_DEPLACEMENT_C') == -1" required></b-form-input>
           </b-form-group>
         </div>
@@ -30,13 +26,13 @@
     <div class="title">Adresse</div>
       <div class="row">
         <div class="col-md-6">
-          <b-form-group label="Commune : " label-for="commune" invalid-feedback="La commune doit être renseignée" :state="etats.commune">
+          <b-form-group label="Commune : " label-for="commune" invalid-feedback="La commune doit être renseignée" :state="etats.commune" label-cols-md="3">
               <b-form-select id="commune" v-model="hydrant.commune" class="parametre" :options="comboCommune" size="sm" :state="etats.commune" v-on:change="onCommuneChange" required :disabled="modificationAdresseDisabled"></b-form-select>
           </b-form-group>
         </div>
 
         <div class="col-md-6">
-          <b-form-group label="Domaine : " label-for="domaine" invalid-feedback="Le domaine doit être renseigné" :state="etats.domaine">
+          <b-form-group label="Domaine : " label-for="domaine" invalid-feedback="Le domaine doit être renseigné" :state="etats.domaine" label-cols-md="2">
               <b-form-select id="domaine" v-model="hydrant.domaine" class="parametre" :options="comboDomaine" size="sm" :state="etats.domaine" required :disabled="modificationAdresseDisabled"></b-form-select>
           </b-form-group>
         </div>
@@ -44,19 +40,19 @@
 
       <div class="row">
         <div class="col-md-3">
-          <b-form-group label="Numéro de voie : " label-for="numeroVoie" invalid-feedback="Le numéro de voie doit être supérieur ou égal à 1" :state="etats.numeroVoie">
+          <b-form-group label="Numéro de voie : " label-for="numeroVoie" invalid-feedback="Le numéro de voie doit être supérieur ou égal à 1" :state="etats.numeroVoie" label-cols-md="7">
             <b-form-input id="numeroVoie" v-model="hydrant.numeroVoie" class="parametre" type="number" min="1"  size="sm" :state="etats.numeroVoie" :disabled="modificationAdresseDisabled"></b-form-input>
           </b-form-group>
         </div>
 
         <div class="col-md-3">
-          <b-form-group label="Suffixe : " label-for="suffixeVoie">
+          <b-form-group label="Suffixe : " label-for="suffixeVoie" label-cols-md="4">
             <b-form-input id="suffixeVoie" v-model="hydrant.suffixeVoie" class="parametre" type="text" size="sm" :disabled="modificationAdresseDisabled"></b-form-input>
           </b-form-group>
         </div>
 
         <div class="col-md-6">
-          <b-form-group label="Niveau : " label-for="niveau">
+          <b-form-group label="Niveau : " label-for="niveau" label-cols-md="2">
               <b-form-select id="niveau" v-model="hydrant.niveau" class="parametre" :options="comboNiveau" size="sm" :disabled="modificationAdresseDisabled"></b-form-select>
           </b-form-group>
         </div>
@@ -64,15 +60,13 @@
 
       <div class="row">
         <div class="col-md-6">
-          <b-form-group label="Voie : " label-for="voie" invalid-feedback="La voie doit être renseignée" :state="etats.voie">
-            <!--<b-form-input id="voie" v-model="hydrant.voie" class="parametre" type="text" size="sm" :state="etats.voie" required :disabled="modificationAdresseDisabled"></b-form-input>-->
+          <b-form-group label="Voie : " label-for="voie" invalid-feedback="La voie doit être renseignée" :state="etats.voie" label-cols-md="2">
             <b-form-select id="voie" v-model="hydrant.voie" class="parametre" :options="comboVoie" size="sm" :disabled="modificationAdresseDisabled"></b-form-select>
           </b-form-group>
         </div>
 
         <div class="col-md-6">
-          <b-form-group label="Carrefour : " label-for="voie2">
-            <!--<b-form-input id="voie2" v-model="hydrant.voie2" class="parametre" type="text" size="sm" :disabled="modificationAdresseDisabled"></b-form-input>-->
+          <b-form-group label="Carrefour : " label-for="voie2" label-cols-md="2">
             <b-form-select id="voie2" v-model="hydrant.voie2" class="parametre" :options="comboCarrefour" size="sm" :disabled="modificationAdresseDisabled"></b-form-select>
           </b-form-group>
         </div>
@@ -80,7 +74,7 @@
 
       <div class="row">
         <div class="col-md-12">
-          <b-form-group label="Lieu-dit : " label-for="lieuDit">
+          <b-form-group label="Lieu-dit : " label-for="lieuDit" label-cols-md="1">
             <b-form-input id="lieuDit" v-model="hydrant.lieuDit" class="parametre" type="text" size="sm" :disabled="modificationAdresseDisabled"></b-form-input>
           </b-form-group>
         </div>
@@ -88,7 +82,7 @@
 
       <div class="row">
         <div class="col-md-12">
-          <b-form-group label="Complément : " label-for="complement">
+          <b-form-group label="Complément : " label-for="complement" >
             <b-form-textarea id="complement" v-model="hydrant.complement" class="parametre" size="sm" :disabled="modificationAdresseDisabled"></b-form-textarea>
           </b-form-group>
         </div>
