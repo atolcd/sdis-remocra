@@ -355,7 +355,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
                 iconCls: 'editIcon',
                 itemId: 'edit',
                 enableToggle: true,
-                pressed: false,
+                pressed: !REMOCRA_MAP_TOOLBAR_MASQUEE,
                 handler: Ext.bind(this.edit, this)
             });
         }
@@ -377,7 +377,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
         var tbar = Ext.DomQuery.selectNode("div.maptbar2", this.getEl().dom);
         this.maptbar2 = Ext.create('Ext.toolbar.Toolbar', {
             style: 'background: none;border: none;',
-            hidden: true,
+            hidden: REMOCRA_MAP_TOOLBAR_MASQUEE,
             // On doit gérer la hauteur du conteneur lorsque la barre est
             // affichée / masquée (éviter décalage curseur)
             listeners: {
