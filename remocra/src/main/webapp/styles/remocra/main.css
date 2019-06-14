@@ -146,6 +146,21 @@ ul {
   margin-right: auto;
 }
 
+#banniere .msg {
+  border: 2px solid #fff;
+  background-color: green;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 6px 6px 6px 6px;
+  display: inline;
+  left: -webkit-calc(50% + 155px);
+  left: calc(50% + 155px);
+  position: absolute;
+  top: 5px;
+  width: 300px;
+  font-style: italic;
+}
+
 #pageCenter {
 	max-width: 1920px;
 	margin-left: auto;
