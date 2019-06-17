@@ -1,4 +1,25 @@
+Ext.require('Sdis.Remocra.store.Commune');
+Ext.require('Sdis.Remocra.model.Voie');
+Ext.require('Sdis.Remocra.store.TypeHydrant');
+Ext.require('Sdis.Remocra.store.TypeHydrantAnomalie');
+Ext.require('Sdis.Remocra.store.TypeHydrantDiametre');
+Ext.require('Sdis.Remocra.store.TypeHydrantDomaine');
+Ext.require('Sdis.Remocra.store.TypeHydrantNature');
+Ext.require('Sdis.Remocra.store.TypeHydrantNatureTous');
+Ext.require('Sdis.Remocra.store.TypeHydrantVolConstate');
+Ext.require('Sdis.Remocra.store.TypeHydrantMarque');
+Ext.require('Sdis.Remocra.store.TypeHydrantPositionnement');
+Ext.require('Sdis.Remocra.store.TypeHydrantMateriau');
+Ext.require('Sdis.Remocra.store.Utilisateur');
+Ext.require('Sdis.Remocra.store.TypeHydrantNatureDeci');
+Ext.require('Sdis.Remocra.store.TypeHydrantNatureDeciTous');
+Ext.require('Sdis.Remocra.model.HydrantPena');
+Ext.require('Sdis.Remocra.model.HydrantPibi');
 
+Ext.require('Sdis.Remocra.features.hydrants.FichePena');
+Ext.require('Sdis.Remocra.features.hydrants.FichePibi');
+
+Ext.require('Sdis.Remocra.widget.SdisChoice');
 
 Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
     extend: 'Ext.app.Controller',
