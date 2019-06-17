@@ -165,8 +165,8 @@ export default {
       }
     });
 
-    this.$emit('getComboData', this, 'comboDomaine', '/remocra/typehydrantdomaines.json', 'id', 'nom');
-    this.$emit('getComboData', this, 'comboNiveau', '/remocra/typehydrantniveau.json', 'id', 'nom', 'Aucun');
+    this.$emit('getComboData', this, 'comboDomaine', '/remocra/typehydrantdomaines.json', null , 'id', 'nom');
+    this.$emit('getComboData', this, 'comboNiveau', '/remocra/typehydrantniveau.json', null, 'id', 'nom', 'Aucun');
 
     //Combo des systèmes de coordonnées
     this.comboSysteme.push({
@@ -208,12 +208,20 @@ export default {
     },
 
     onCommuneChange() {
-      this.$emit('getComboData', this, 'comboVoie', 
-                  '/remocra/voies/mc.json?withgeom=false&page=1&start=0&limit=10&filter=[{"property":"wkt","value":"'+this.geometrie+'"},{"property":"communeId","value":'+this.hydrant.commune+'}]',
-                  'nom', 'nom');
-      this.$emit('getComboData', this, 'comboCarrefour', 
-                  '/remocra/voies/mc.json?withgeom=false&page=1&start=0&limit=10&filter=[{"property":"wkt","value":"'+this.geometrie+'"},{"property":"communeId","value":'+this.hydrant.commune+'}]',
-                  'nom', 'nom');
+      this.$emit('getComboData', this, 'comboVoie', '/remocra/voies/mc.json', {
+        withgeom: false,
+        page: 1,
+        start: 0,
+        limit: 10,
+        filter: JSON.stringify([{"property":"wkt","value":this.geometrie},{"property":"communeId","value":this.hydrant.commune}])
+      }, 'nom', 'nom');
+      this.$emit('getComboData', this, 'comboCarrefour', '/remocra/voies/mc.json', {
+        withgeom: false,
+        page: 1,
+        start: 0,
+        limit: 10,
+        filter: JSON.stringify([{"property":"wkt","value":this.geometrie},{"property":"communeId","value":this.hydrant.commune}])
+      }, 'nom', 'nom');
     },
 
     checkFormValidity(){

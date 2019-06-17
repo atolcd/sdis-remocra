@@ -199,12 +199,14 @@ export default {
 
 		this.$emit('resolveForeignKey', ['diametre', 'marque', 'modele', 'typeReseauAlimentation', 'typeReseauCanalisation', 'reservoir', 'serviceEaux', 'jumele']);
 
-		this.$emit('getComboData', this, 'comboDiametre', '/remocra/typehydrantdiametres.json', 'id', 'nom');
-		this.$emit('getComboData', this, 'comboMarque', '/remocra/typehydrantmarques.json', 'id', 'nom');
-		this.$emit('getComboData', this, 'comboServiceEaux', '/remocra/organismes.json?filter=[{"property":"typeOrganismeCode","value":"SERVICEEAUX"}]', 'id', 'nom');
-		this.$emit('getComboData', this, 'comboTypeReseauAlimentation', '/remocra/typereseaualimentation.json', 'id', 'nom');
-		this.$emit('getComboData', this, 'comboTypeReseauCanalisation', '/remocra/typereseaucanalisation.json', 'id', 'nom');
-		this.$emit('getComboData', this, 'comboReservoir', '/remocra/reservoir.json', 'id', 'nom', 'Aucun');
+		this.$emit('getComboData', this, 'comboDiametre', '/remocra/typehydrantdiametres.json', null, 'id', 'nom');
+		this.$emit('getComboData', this, 'comboMarque', '/remocra/typehydrantmarques.json', null, 'id', 'nom');
+		this.$emit('getComboData', this, 'comboServiceEaux', '/remocra/organismes.json', {
+			"filter": JSON.stringify([{"property":"typeOrganismeCode","value":"SERVICEEAUX"}])
+			}, 'id', 'nom');
+		this.$emit('getComboData', this, 'comboTypeReseauAlimentation', '/remocra/typereseaualimentation.json', null, 'id', 'nom');
+		this.$emit('getComboData', this, 'comboTypeReseauCanalisation', '/remocra/typereseaucanalisation.json', null, 'id', 'nom');
+		this.$emit('getComboData', this, 'comboReservoir', '/remocra/reservoir.json', null, 'id', 'nom', 'Aucun');
 
 		if(this.hydrant.id !== null) {
 
@@ -249,7 +251,11 @@ export default {
 				value: null
 			});
 			if(this.hydrant.marque){
-				axios.get('/remocra/typehydrantmarques.json?filter=[{"property":"id","value":"'+this.hydrant.marque+'"}]').then(response => {
+				axios.get('/remocra/typehydrantmarques.json', {
+					params: {
+						filter: JSON.stringify([{"property":"id","value":this.hydrant.marque}])
+					}
+				}).then(response => {
 					if(response.data.data){
 						_.forEach(response.data.data[0].modeles, function(item) {
 							self.comboModele.push({

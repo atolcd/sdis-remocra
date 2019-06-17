@@ -266,8 +266,10 @@ export default {
     // Fonction récupérant les données nécessaire aux combos du formulaire
     createCombo() {
 
-      this.getComboData(this, 'comboType', '/remocra/typehydrantnatures.json?filter=[{"property":"typeHydrantCode","value":"'+this.codeHydrant+'"}]', 'id', 'nom');
-      this.getComboData(this, 'comboDeci', '/remocra/typehydrantnaturedeci.json', 'id', 'nom');
+      this.getComboData(this, 'comboType', '/remocra/typehydrantnatures.json', {
+        "filter": JSON.stringify([{"property":"typeHydrantCode","value":this.codeHydrant}])
+        }, 'id', 'nom');
+      this.getComboData(this, 'comboDeci', '/remocra/typehydrantnaturedeci.json', null, 'id', 'nom');
 
       //Combo de l'autorité DECI: on modifie le texte affiché en fonction du type d'organisme
       var self = this;
@@ -313,9 +315,10 @@ export default {
       * @param champTexte Indique parmis les données récupérées le champ texte à afficher dans la combo
       * @param optionVide Si indiqué, ajoute en première position une option vide valant null avec un texte configurable
       */
-    getComboData(context, attribut, url, champValeur, champTexte, optionVide){
+    getComboData(context, attribut, url, params={}, champValeur, champTexte, optionVide){
       context[attribut] = [];
-      axios.get(url+'&sort=[{"property":"'+champTexte+'","direction":"ASC"}]').then(response => {
+      let allParams = _.defaults(params, {"sort":JSON.stringify([{"property":champTexte,"direction":"ASC"}])})
+      axios.get(url, {params: allParams}).then(response => {
         _.forEach(response.data.data, function(item) {
           context[attribut].push({
             text: item[champTexte],
@@ -347,13 +350,18 @@ export default {
       
       //Si DECI privé, le gestionnaire est un privé
       if(this.hydrant.natureDeci == idDeciPrive){
-        this.getComboData(this, 'comboGestionnaire', '/remocra/gestionnaire.json', 'id', 'code', 'Aucun');
+        this.getComboData(this, 'comboGestionnaire', '/remocra/gestionnaire.json', null, 'id', 'code', 'Aucun');
         this.onGestionnaireChange();
 
 
       } else { // Si DECI publique ou conventionnée, le gestionnaire est un organisme de type COMMUNE ou EPCI
         var self = this;
-        axios.get('/remocra/organismes/gestionnairepublic.json?geometrie='+this.geometrie+'&sort=[{"property":"nom","direction":"ASC"}]').then(response => {
+        axios.get('/remocra/organismes/gestionnairepublic.json', {
+          params: {
+            geometrie:this.geometrie,
+            sort:JSON.stringify([{"property":"nom","direction":"ASC"}])
+          }
+        }).then(response => {
           self.comboGestionnaire = [];
           _.forEach(response.data, function(nature){
             self.comboGestionnaire.push({
@@ -396,7 +404,10 @@ export default {
       */
     onGestionnaireChange(){
       if(this.hydrant.gestionnaire != null){
-        this.getComboData(this, 'comboSite', '/remocra/site.json?filter=[{"property":"gestionnaire","value":"'+this.hydrant.gestionnaire+'"}]&sort=[{"property":"nom","direction":"ASC"}]', 'id', 'nom', 'Aucun');
+        this.getComboData(this, 'comboSite', '/remocra/site.json', {
+            "filter": JSON.stringify([{"property":"gestionnaire","value":this.hydrant.gestionnaire}]),
+            "sort": JSON.stringify([{"property":"nom","direction":"ASC"}])
+        }, 'id', 'nom', 'Aucun');
       }
       
       if(this.hydrantRecord.gestionnaire != this.hydrant.gestionnaire){

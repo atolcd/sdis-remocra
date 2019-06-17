@@ -340,7 +340,12 @@ export default {
 
 		/* =============================================== Récupération des visites =============================================== */
 		if(this.hydrant.id != null) {
-			axios.get('/remocra/hydrantvisite.json?filter=[{"property":"hydrant","value":"'+this.hydrant.id+'"}]&sort=[{"property":"date","direction":"DESC"}]').then(response => {
+			axios.get('/remocra/hydrantvisite.json', {
+				params: {
+					filter: JSON.stringify([{"property":"hydrant","value":this.hydrant.id}]),
+					sort: JSON.stringify([{"property":"date","direction":"DESC"}])
+				}
+			}).then(response => {
 				if(response.data.data){
 					self.listeVisites = response.data.data;
 					// Pour le datetime des visites, on sépare la donnée en deux champs distincts date et time

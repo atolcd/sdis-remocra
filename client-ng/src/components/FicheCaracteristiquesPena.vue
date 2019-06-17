@@ -155,15 +155,19 @@ export default {
 
 	mounted: function(){
 		this.$emit('resolveForeignKey', ['materiau']);
-		this.$emit('getComboData', this, 'comboMateriau', '/remocra/typehydrantmateriaus.json', 'id', 'nom');
-		this.$emit('getComboData', this, 'comboTypeAspiration', '/remocra/typehydrantaspiration.json', 'id', 'nom');
+		this.$emit('getComboData', this, 'comboMateriau', '/remocra/typehydrantmateriaus.json', null, 'id', 'nom');
+		this.$emit('getComboData', this, 'comboTypeAspiration', '/remocra/typehydrantaspiration.json', null, 'id', 'nom');
 
 		this.aspirationsASupprimer = [];
 
 		// Si  l'hydrant a un identifiant, c'est une modification. Dans ce cas, on charge les aspirations existantes si elles existent
 		if(this.hydrant.id != null) {
 			var self=this;
-			axios.get('/remocra/hydrantaspiration?filter=[{"property":"pena","value":"'+this.hydrant.id+'"}]').then(response => {
+			axios.get('/remocra/hydrantaspiration', {
+				params: {
+					filter: JSON.stringify([{"property":"pena","value":this.hydrant.id}])
+				}
+			}).then(response => {
 				self.listeAspirations = response.data.data;
 
 				_.forEach(self.listeAspirations, function(item){
