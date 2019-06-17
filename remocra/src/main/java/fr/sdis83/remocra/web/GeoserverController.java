@@ -1,31 +1,17 @@
 package fr.sdis83.remocra.web;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
+import flexjson.JSONDeserializer;
+import flexjson.JSONSerializer;
+import fr.sdis83.remocra.domain.remocra.ProfilDroit;
+import fr.sdis83.remocra.domain.remocra.ZoneCompetence;
+import fr.sdis83.remocra.exception.BusinessException;
+import fr.sdis83.remocra.service.AuthService;
+import fr.sdis83.remocra.service.ParamConfService;
+import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.service.ZoneCompetenceService;
+import fr.sdis83.remocra.util.GeometryUtil;
+import fr.sdis83.remocra.util.Layer;
+import fr.sdis83.remocra.util.Layer.AccessLevel;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
@@ -35,7 +21,6 @@ import org.apache.http.MethodNotSupportedException;
 import org.apache.http.impl.DefaultHttpRequestFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
-import org.apache.tiles.context.MapEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -52,24 +37,29 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vividsolutions.jts.geom.Geometry;
-
-import flexjson.JSONDeserializer;
-import flexjson.JSONSerializer;
-import fr.sdis83.remocra.domain.remocra.ProfilDroit;
-import fr.sdis83.remocra.domain.remocra.ZoneCompetence;
-import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
-import fr.sdis83.remocra.exception.BusinessException;
-import fr.sdis83.remocra.json.JsonObjectResponse;
-import fr.sdis83.remocra.service.AuthService;
-import fr.sdis83.remocra.service.ParamConfService;
-import fr.sdis83.remocra.service.UtilisateurService;
-import fr.sdis83.remocra.service.ZoneCompetenceService;
-import fr.sdis83.remocra.util.GeometryUtil;
-import fr.sdis83.remocra.util.Layer;
-import fr.sdis83.remocra.util.Layer.AccessLevel;
-import fr.sdis83.remocra.web.serialize.transformer.GeometryTransformer;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URI;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/geoserver")
 @Controller
@@ -196,6 +186,8 @@ public class GeoserverController {
             UriComponentsBuilder b = UriComponentsBuilder.fromHttpUrl(targetURL);
 
             String inputCQLParamValue = null;
+            String inputViewparamsParamValue = null;
+            String inputRemocraZcParamValue = null;
 
             // Paramètres supplémentaires éventuels
             for (Map.Entry<String, String> param : params.entrySet()) {
@@ -204,6 +196,12 @@ public class GeoserverController {
                 if ((RequestType.GetMap == requestType || RequestType.GetFeatureInfo == requestType) && "CQL_FILTER".equalsIgnoreCase(paramName)) {
                     // Traitement particulier du CQL Filter pour le GetMap
                     inputCQLParamValue = paramValue;
+                } else if (RequestType.GetMap == requestType && "viewparams".equalsIgnoreCase(paramName)) {
+                    // Traitement particulier du paramètre viewparams pour le GetMap
+                    inputViewparamsParamValue = paramValue;
+                } else if (RequestType.GetMap == requestType && "remocra_zc".equalsIgnoreCase(paramName)) {
+                    // On retient ce paramètre pour le GetMap
+                    inputRemocraZcParamValue = paramValue;
                 } else {
                     b.replaceQueryParam(paramName, paramValue);
                 }
@@ -218,17 +216,31 @@ public class GeoserverController {
 
             // GetMap : filtre sur la zone de compétence si nécessaire
             if (RequestType.GetMap == requestType || RequestType.GetFeatureInfo == requestType) {
+                String idZone = null;
+                if ("true".equals(inputRemocraZcParamValue) || accessLevel == AccessLevel.AUTH_ZONE) {
+                    idZone = utilisateurService.getCurrentZoneCompetenceId().toString();
+                }
+                // Action de la zone de compétence viewparams
+                if ("true".equals(inputRemocraZcParamValue)) {
+                    // Ajout de la variable viewparams
+                    String viewparamsZc = "ZC_ID:" + idZone;
+                    b.replaceQueryParam("viewparams",
+                            (inputViewparamsParamValue != null && inputViewparamsParamValue.length() > 0
+                                    ? inputViewparamsParamValue + (inputViewparamsParamValue.endsWith(";") ? "" : ";") : "") + viewparamsZc);
+                } else if (inputViewparamsParamValue!=null) {
+                    b.replaceQueryParam("viewparams", inputViewparamsParamValue);
+                }
                 String[] layers = getParameterOrLowerOrUpperCase(request, "LAYERS").split(",");
                 StringBuffer fullCQLFilter = new StringBuffer();
                 if (RequestType.GetMap == requestType && accessLevel == AccessLevel.AUTH_ZONE) {
                     // Exemple avec deux couches (clause INCLUDE si couche non
                     // filtrée) :
                     // &CQL_FILTER=INCLUDE;WITHIN(geometrie,(querySingle('remocra:zone_competence','geometrie','id=26')))
-                    // On passe par l'id avec des doubles quotes car mot réservé.
-                    // C'est plus sûr qu'en passant par une chaine de caractères (code=VAR par exemple)
-                    ZoneCompetence zoneCompetence = utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence();
-                    String idZone = zoneCompetence.getId().toString();
-                    fullCQLFilter.append("INTERSECTS(geometrie,(querySingle('remocra:zone_competence','geometrie','\"id\"=" + idZone + "')))");
+                    // On passe par l'id en échappant avec %22 (double quote) car
+                    // mot réservé.
+                    // C'est plus sûr qu'en passant par une chaine de caractères
+                    // (code=VAR par exemple)
+                    fullCQLFilter.append("INTERSECTS(geometrie,(querySingle('remocra:zone_competence','geometrie','%22id%22=" + idZone + "')))");
                 }
                 if (inputCQLParamValue != null) {
                     if (fullCQLFilter.length()>0) {

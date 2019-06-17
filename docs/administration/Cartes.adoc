@@ -288,6 +288,7 @@ Les options communes aux couches sont les suivantes :
 "layer" : "remocra:ADMINISTRATIF"
 "url" : "/remocra/geoserver/remocra/wms"
 "sld" : null
+"zc": true pour activer le paramètre viewparams ZC_ID:<ID_ZONE_COMPETENCE> (pris en charge par le proxy geoserver)
 ----
 
 Remarque, deux proxies existent pour accéder aux couches du serveur GeoServer de la plateforme :

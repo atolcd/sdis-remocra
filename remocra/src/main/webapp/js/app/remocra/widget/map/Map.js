@@ -699,7 +699,9 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
         return new OpenLayers.Layer.WMS(layerDef.name, layerDef.url, {
             layers: layerDef.layers,
             SLD: layerDef.sld,
-            transparent: true
+            transparent: true,
+            // Zone de compétence fournie dans les viewparams côté serveur (ZC_ID)
+            'remocra_zc': layerDef['zc']===true?true:undefined
         }, {
             code: layerDef.id,
             singleTile: true,
