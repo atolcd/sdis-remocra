@@ -6,6 +6,8 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -63,8 +65,7 @@ public class XmlTest {
             // Désérialisation
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
-            // ClassLoader classLoader =
-            // Thread.currentThread().getContextClassLoader();
+            // ClassLoader classLoader = this.getClass().getClassLoader();
             // URL urlFile = classLoader.getResource("xml/communes.xml");
             // /LstCommunes communes = (LstCommunes)
             // unmarshaller.unmarshal(urlFile);
@@ -98,8 +99,7 @@ public class XmlTest {
             // Désérialisation
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
-            // ClassLoader classLoader =
-            // Thread.currentThread().getContextClassLoader();
+            // ClassLoader classLoader = this.getClass().getClassLoader();
             // URL urlFile = classLoader.getResource("xml/communes.xml");
             // /LstCommunes communes = (LstCommunes)
             // unmarshaller.unmarshal(urlFile);
@@ -118,7 +118,7 @@ public class XmlTest {
             jaxbContext = JAXBContext.newInstance(fr.sdis83.remocra.xml.LstTournees.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            ClassLoader classLoader = this.getClass().getClassLoader();
             URL urlFile = classLoader.getResource("xml/tournees.xml");
             LstTournees tournees = (LstTournees) unmarshaller.unmarshal(urlFile);
 
@@ -128,23 +128,24 @@ public class XmlTest {
         }
         // Tests Hydrants
         try {
-
             jaxbContext = JAXBContext.newInstance(fr.sdis83.remocra.xml.LstHydrants.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            URL urlFile = classLoader.getResource("xml/hydrants.xml");
-            URL urlFile2 = classLoader.getResource("xml/Hydrants.xsd");
+            ClassLoader classLoader = this.getClass().getClassLoader();
+            URI urlFile = classLoader.getResource("xml/hydrants.xml").toURI();
+            URI urlFile2 = classLoader.getResource("xml/Hydrants.xsd").toURI();
 
             SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            Schema schema = sf.newSchema(new File(urlFile2.getFile()));
+            Schema schema = sf.newSchema(new File(urlFile2));
 
             unmarshaller.setSchema(schema);
             unmarshaller.setEventHandler(new XmlValidationEventHandler());
-            LstHydrants hydrants = (LstHydrants) unmarshaller.unmarshal(urlFile);
+            LstHydrants hydrants = (LstHydrants) unmarshaller.unmarshal(new File(urlFile));
 
             assertTrue((hydrants.getHydrantsPena().size()+hydrants.getHydrantsPibi().size()) == 13);
         } catch (JAXBException e) {
+            fail("error " + e);
+        } catch (URISyntaxException e) {
             fail("error " + e);
         }
     }

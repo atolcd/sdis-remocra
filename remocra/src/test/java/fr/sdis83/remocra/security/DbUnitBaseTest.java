@@ -37,7 +37,7 @@ public abstract class DbUnitBaseTest {
     public void initEntityManager() throws Exception {
 
         // load dataset
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        ClassLoader classLoader = this.getClass().getClassLoader();
         URL datasetUrl = classLoader.getResource(getDataSetPath());
         dataset = new FlatXmlDataSetBuilder().build(datasetUrl);
 
@@ -65,7 +65,7 @@ public abstract class DbUnitBaseTest {
     @After
     public void cleanupEntityManager() throws DatabaseUnitException, SQLException, IOException {
 
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        ClassLoader classLoader = this.getClass().getClassLoader();
         URL datasetUrl = classLoader.getResource(getDeleteDataSetPath());
         IDataSet deleteDataSet = new FlatXmlDataSetBuilder().build(datasetUrl);
 
