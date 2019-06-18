@@ -223,7 +223,7 @@ export default {
 
 		utilisateurDroits: {
 			required: true,
-			type: Object
+			type: Array
 		}
 	},
 

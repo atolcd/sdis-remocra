@@ -77,8 +77,15 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
     },
 
     onAfterRenderFiche: function(fiche) {
-        fiche.setTitle((fiche.hydrant.get('code') == 'PIBI' ? 'PIBI' : 'PENA')+" n° "+fiche.hydrant.data.numero+" - "+fiche.hydrant.data.nomCommune);
-        window.remocraVue.buildFiche(fiche);
+        var codeHydrant = (fiche.hydrant.get('code') == 'PIBI' ? 'PIBI' : 'PENA');
+        var geometrie = fiche.hydrant.data.geometrie;
+        var idHydrant = fiche.hydrant.data.id;
+        fiche.setTitle(idHydrant ?
+            codeHydrant + " n° " + fiche.hydrant.data.numero + " - " + fiche.hydrant.data.nomCommune
+            : 'Nouveau ' + codeHydrant);
+        window.remocraVue.buildFiche('#'+fiche.getId()+'-body', {
+            id: idHydrant, code: codeHydrant, geometrie: geometrie
+        });
     },
 
     updateHydrant: function(button){

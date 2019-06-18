@@ -2,7 +2,7 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8">
-    <title>Gestion de crise</title>
+    <title>Remocra - dev</title>
   </head>
   <body>
     <noscript>
@@ -10,12 +10,46 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <style>
+      .Fiche {
+        max-width: 900px;
+        max-height: 679px;
+      }
+    </style>
     <div id="crise-container"></div>
+    <div id="fichepei-container"></div>
+    <div id="autre" style="visibility:hidden">
+      <ul>Usage :
+        <li><a href="?module=crise&id=175">Crise open</a></li>
+        <li><a href="?module=hydrant&id=226678&code=PIBI&geometrie=POINT%20(651812%206862842)">PEI update</a></li>
+        <li><a href="?module=hydrant&code=PIBI&geometrie=POINT%20(651812%206862842)">PEI create</a></li>
+      </ul>
+    </div>
   </body>
     <script type="text/javascript">
       var s = window.location.href.split('?');
       if (s.length==2) {
-        remocraVue.buildVue('container', s[1])
+        var rawUrl = s[1];
+        var params = _.chain(rawUrl).replace('?', '').split('&').map(_.partial(_.split, _, '=', 2)).fromPairs().value();
+        if (params['module']=='crise' && params['id']) {
+          // Crise
+          remocraVue.buildVue('container', params['id']);
+
+        } else if (params['module']=='hydrant' && params['id'] && params['code']) {
+          // PEI Mise à jour
+          remocraVue.buildFiche('#fichepei-container', {
+            id: Number(params['id']), code: params['code'], geometrie: params['geometrie']?decodeURIComponent(params['geometrie']):null
+          });
+        } else if (params['module']=='hydrant' && params['geometrie'] && params['code']) {
+          // PEI Création
+          remocraVue.buildFiche('#fichepei-container', {
+            id: null, code: params['code'], geometrie: params['geometrie']?decodeURIComponent(params['geometrie']):null
+          });
+        } else {
+          document.getElementById('autre').style.visibility=''
+        }
+      } else {
+        document.getElementById('autre').style.visibility=''
       }
     </script>
 </html>

@@ -46,16 +46,14 @@ const buildVue = function buildVue(id, idCrise) {
   return v
 }
 
-const buildFiche = function buildFiche(fiche) {
+const buildFiche = function buildFiche(el, data) {
   var v = new Vue({
-    el: '#'+fiche.el.id + '-body',
+    el,
     bus: new Vue(),
-    id: fiche.hydrant.data.id,
-    hydrant: fiche.hydrant.data,
     components: {
       Fiche
     },
-    template: "<Fiche :idHydrant="+fiche.hydrant.data.id+" codeHydrant="+fiche.hydrant.data.code+"  geometrie='"+fiche.hydrant.data.geometrie+"' />"
+    template: "<Fiche :idHydrant=" + data.id + " codeHydrant=" + data.code + "  geometrie='" + data.geometrie + "' />"
   })
   vm.push(v)
   return v

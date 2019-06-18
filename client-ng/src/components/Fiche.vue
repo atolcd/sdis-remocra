@@ -189,23 +189,22 @@ export default {
   
   props: {
     idHydrant: {
-      type: Object,
+      type: Number,
       required: false
     },
 
     codeHydrant: {
-      type: Object,
+      type: String,
       required: true
     },
 
     geometrie: {
-      type: Object,
+      type: String,
       required: true
     }
   },
 
   mounted: function(){
-
     var self = this;
     // Récupération des droits de l'utilisateur courant
     axios.get('/remocra/utilisateurs/current/xml').then(response => {
@@ -215,46 +214,51 @@ export default {
           self.utilisateurDroits.push(item.getAttribute("code"));
       });
     }).then(function() {
-
-      if(!self.idHydrant) { // Création
-        self.hydrantRecord = {
-          id: null,
-          nature: null,
-          gestionnaire: null,
-          site: null,
-          autoriteDeci: null,
-          natureDeci: null,
-          code: self.codeHydrant
-        }
-
-        self.hydrant = _.clone(self.hydrantRecord);
-        self.dataLoaded = true;
-        self.createCombo();
-
-      } else { //Modification
-        axios.get('/remocra/hydrants'+self.codeHydrant.toLowerCase()+'/'+self.idHydrant+'.json?&id='+self.idHydrant).then(response => {
-          if (response.data.data && response.data.data.length !== 0) {
-
-            self.hydrantRecord = response.data.data;
-
-            //Résolution des clés étrangères
-            self.hydrant = _.clone(self.hydrantRecord, true);
-            self.dataLoaded = true;
-            self.resolveForeignKey(['nature', 'site', 'autoriteDeci', 'natureDeci']);
-
-            self.createCombo();
-            
-          }
-        }).catch(function(error) {
-          console.error('Retrieving data ', error)  
-        })
+      if(self.idHydrant) {
+        self.modification()
+      } else {
+        self.creation()
       }
     });
-
-    
   },
 
   methods: {
+
+    creation() {
+      let self = this
+      self.hydrantRecord = {
+         id: null,
+         nature: null,
+         gestionnaire: null,
+         site: null,
+         autoriteDeci: null,
+         natureDeci: null,
+         code: self.codeHydrant
+      }
+
+      self.hydrant = _.clone(self.hydrantRecord);
+      self.dataLoaded = true;
+      self.createCombo();
+    },
+    modification() {
+      let self = this
+      axios.get('/remocra/hydrants'+self.codeHydrant.toLowerCase()+'/'+self.idHydrant+'.json?&id='+self.idHydrant).then(response => {
+        if (response.data.data && response.data.data.length !== 0) {
+
+          self.hydrantRecord = response.data.data;
+
+          //Résolution des clés étrangères
+          self.hydrant = _.clone(self.hydrantRecord, true);
+          self.dataLoaded = true;
+          self.resolveForeignKey(['nature', 'site', 'autoriteDeci', 'natureDeci']);
+
+          self.createCombo();
+
+        }
+      }).catch(function(error) {
+        console.error('Retrieving data ', error)
+      })
+    },
 
     // Résolution des clés étrangères
     resolveForeignKey(clesEtrangeres){

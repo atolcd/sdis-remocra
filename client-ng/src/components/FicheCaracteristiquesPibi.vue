@@ -177,11 +177,11 @@ export default {
 		},
 		listeNaturesDeci: {
 			required: true,
-			type: Object
+			type: Array
 		},
 		geometrie: {
 			required: true,
-			type: Object
+			type: String
 		}
 	},
 
