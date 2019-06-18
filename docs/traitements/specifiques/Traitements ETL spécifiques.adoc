@@ -58,6 +58,8 @@ include::BSPP/import_utilisateur{outfilesuffix}[]
 
 include::BSPP/notifier_changement_etat_pei{outfilesuffix}[]
 
+include::BSPP/creer_demandes_indispos{outfilesuffix}[]
+
 === SDIS 42
 
 include::42/synchronisation_ldap{outfilesuffix}[]

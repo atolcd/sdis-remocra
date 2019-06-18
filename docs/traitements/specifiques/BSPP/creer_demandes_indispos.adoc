@@ -1,0 +1,21 @@
+==== Automatisation des demandes de générations des listings des indisponibilités
+
+Ce traitement permet d'insérer automatiquement des demandes de génération de listing d'indisponibilités sur la zone du carré des 9.
+Une demande est insérée pour un Centre de Secours seulement s'il y a au moins un PIBI indisponible dans sa zone (carré des 9).
+
+===== Configuration
+Le fichier _"remocraXXXX.properties"_ doit contenir les informations suivantes :
+[width="100%",options="header"]
+|===================
+| Paramètre | Description
+| PDI_INDISPO_CARRE9_MODELE_TRAITEMENT_ID | Identifiant du traitement de génération du listing _ex : 31_
+| MODELE_COURRIER_INDISPO_CARRE9	| Nom du document modèle de génération du listing (fichier de type OTT) _ex :_ `INDISPO_CARRE9.OTT`
+|===================
+
+[WARNING]
+====
+Au moins un utilisateur doit être rattaché à l'organisme REMOCRA
+====
+
+===== Lancement et planification de la synchronisation
+L'exécution automatique s'effectue en planifiant le lancement du fichier `/var/remocra/pdi/traitements_sdis/bspp/creer_demandes_indispo_carre9.sh` avec l'utilisateur `postgres`.
