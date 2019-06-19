@@ -195,6 +195,10 @@ export default {
 		}
 	},
 
+	watch: {
+		'isDeciPrivee': 'onNatureDeciChange'
+	},
+
 	mounted: function(){
 
 		this.$emit('resolveForeignKey', ['diametre', 'marque', 'modele', 'typeReseauAlimentation', 'typeReseauCanalisation', 'reservoir', 'serviceEaux', 'jumele']);
