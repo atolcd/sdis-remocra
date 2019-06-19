@@ -55,7 +55,7 @@
 
 				<div class="row">
 					<div class="col-md-6">
-						<b-form-group label="Type : " label-for="type" label-cols-md="3">
+						<b-form-group label="Type" label-for="type" label-cols-md="3">
 							<b-form-select 	id="type" 
 											v-model="listeVisites[selectedRow].type" 
 											:options="comboTypeVisitesFiltered" 

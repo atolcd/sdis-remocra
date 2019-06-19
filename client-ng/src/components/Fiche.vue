@@ -7,7 +7,7 @@
           <div class="col-md-3">
             <b-form-group invalid-feedback="Le numéro du PEI est manquant" 
                           :state="etats.numeroInterne"
-                          label="Numéro interne : "
+                          label="Numéro interne"
                           label-for="numeroInterne"
                           label-cols-md="6">
               <b-form-input type="text" 
@@ -22,13 +22,13 @@
           </div>
 
           <div class="col-md-3">
-            <b-form-group label="Nature : " label-for="nature" invalid-feedback="La nature doit être renseignée" :state="etats.nature" label-cols-md="4">
+            <b-form-group label="Nature" label-for="nature" invalid-feedback="La nature doit être renseignée" :state="etats.nature" label-cols-md="4">
               <b-form-select id="nature" v-model="hydrant.nature" class="parametre" :options="comboType" size="sm" :state="etats.nature" required ></b-form-select>
             </b-form-group>
           </div>
 
           <div class="col-md-6">
-            <b-form-group label="Autorité de police DECI : " label-for="autoriteDeci" invalid-feedback="L'autorité de police DECI doit être renseignée'" :state="etats.autoriteDeci" label-cols-md="5">
+            <b-form-group label="Autorité de police DECI" label-for="autoriteDeci" invalid-feedback="L'autorité de police DECI doit être renseignée'" :state="etats.autoriteDeci" label-cols-md="5">
               <b-form-select id="autoriteDeci" v-model="hydrant.autoriteDeci" class="parametre" :options="comboAutoriteDeci" size="sm" :state="etats.autoriteDeci" required></b-form-select>
             </b-form-group>
           </div>
@@ -36,7 +36,7 @@
 
         <div class="row">
           <div class="col-md-4">
-            <b-form-group label="Type de DECI : "
+            <b-form-group label="Type de DECI"
                           label-for="nature_deci" 
                           invalid-feedback="La nature DECI doit être renseignée'" 
                           :state="etats.natureDeci"
@@ -46,7 +46,7 @@
           </div>
  
           <div class="col-md-5">
-            <b-form-group label="Gestionnaire : " label-for="gestionnaire" invalid-feedback="Le gestionnaire doit être renseigné" :state="etats.gestionnaire" label-cols-md="3">
+            <b-form-group label="Gestionnaire" label-for="gestionnaire" invalid-feedback="Le gestionnaire doit être renseigné" :state="etats.gestionnaire" label-cols-md="3">
               <b-form-select  id="gestionnaire"
                               v-model="hydrant.gestionnaire" 
                               class="parametre" 
@@ -63,7 +63,7 @@
           </div>
 
           <div class="col-md-3">
-            <b-form-group label="Site : " label-for="site" label-cols-md="4">
+            <b-form-group label="Site" label-for="site" label-cols-md="4">
               <b-form-select id="site" v-model="hydrant.site" class="parametre" :options="comboSite" size="sm"></b-form-select>
             </b-form-group>
           </div>

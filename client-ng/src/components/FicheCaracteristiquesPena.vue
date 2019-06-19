@@ -26,13 +26,13 @@
 			</div>
 
 			<div class="col-md-3 vertical-bottom" >
-				<b-form-group label="Capacité en m3 : " label-for="capacite" invalid-feedback="La capacité n'est pas valide" label-cols-sm="6" :state="etats.capacite">
+				<b-form-group label="Capacité en m3" label-for="capacite" invalid-feedback="La capacité n'est pas valide" label-cols-sm="6" :state="etats.capacite">
 					<b-form-input id="capacite" v-model="hydrant.capacite" class="parametre" type="text" size="sm" :state="etats.capacite" :disabled="hydrant.illimitee"></b-form-input>
 				</b-form-group>
 			</div>
 
 			<div class="col-md-3">
-				<b-form-group label="Q appoint en m3/h : " label-for="QAppoint" invalid-feedback="Le débit d'appoint n'est pas valide" label-cols-sm="7" :state="etats.QAppoint">
+				<b-form-group label="Q appoint en m3/h" label-for="QAppoint" invalid-feedback="Le débit d'appoint n'est pas valide" label-cols-sm="7" :state="etats.QAppoint">
 					<b-form-input id="QAppoint" v-model="hydrant.QAppoint" class="parametre" type="number" size="sm" step="any" :state="etats.QAppoint" :disabled="hydrant.illimitee"></b-form-input>
 				</b-form-group>
 			</div>
@@ -40,7 +40,7 @@
 
 		<div class="row">
 			<div class="col-md-6">
-				<b-form-group label="Matériau de la citerne : " label-for="materiau" label-cols-md="4">
+				<b-form-group label="Matériau de la citerne" label-for="materiau" label-cols-md="4">
 					<b-form-select id="materiau" v-model="hydrant.materiau" class="parametre" :options="comboMateriau" size="sm"></b-form-select>
 				</b-form-group>
 			</div>
