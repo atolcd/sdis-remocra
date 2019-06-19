@@ -297,7 +297,10 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         if (!Sdis.Remocra.Rights.hasRight('TOURNEE_R')) {
             fiche.down('crHydrantsTournee').tab.hide();
             fiche.down('#tourneeRapide').hide();
-            fiche.down('crHydrantsHydrant gridcolumn[dataIndex=nomTournee]').hide();
+            var nomTourneeCol = fiche.down('crHydrantsHydrant gridcolumn[dataIndex=nomTournee]');
+            if (nomTourneeCol) {
+                nomTourneeCol.hide();
+            }
         }
         if (!Sdis.Remocra.Rights.hasRight('TOURNEE_C')) {
             fiche.down('crHydrantsTournee #deleteTournee').hide();
