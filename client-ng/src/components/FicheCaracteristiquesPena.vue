@@ -207,7 +207,7 @@ export default {
 				this.hydrant.capacite = this.hydrantRecord.capacite;
 				this.hydrant.QAppoint = this.hydrantRecord.QAppoint;
 				document.querySelectorAll('[for="capacite"]')[0].classList.remove("labelDisabled");
-				document.querySelectorAll('[for="QAppoint"]')[0].classList.add("labelDisabled");
+				document.querySelectorAll('[for="QAppoint"]')[0].classList.remove("labelDisabled");
 			}
 		},
 
@@ -301,7 +301,7 @@ export default {
 	align-items: center;
 }
 
-.labelDisabled {
+>>> .labelDisabled {
 	color: #6c757d !important;
 }
 
