@@ -166,6 +166,11 @@ public abstract class AbstractTypeReferenceController<T extends ITypeReference> 
                     Path<String> typeOrganisme = from.get("typeOrganisme").get("id");
                     Predicate equals = cBuilder.equal(typeOrganisme, itemFilter.getValue());
                     predicateList.add(equals);
+                }else if ("id".equals(itemFilter.getFieldName())) {
+                    CriteriaBuilder cBuilder = entityManager.getCriteriaBuilder();
+                    Path<String> id = from.get("id");
+                    Predicate equals = cBuilder.equal(id, Long.valueOf(itemFilter.getValue()));
+                    predicateList.add(equals);
                 }
             }
         }
