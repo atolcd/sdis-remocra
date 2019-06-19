@@ -7,6 +7,9 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
@@ -74,11 +77,12 @@ public class HydrantAspirationService extends AbstractService<HydrantAspiration>
             else {
                 obj.put("geometrie", null);
             }
-
+            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+            String aspi = ow.writeValueAsString(obj);
             if(obj.get("id") == null) { // Pas d'ID: nouvelle aspiration
-                super.create(obj.toString(), null);
+                super.create(aspi, null);
             } else { // ID présent: modification dans la BDD
-                super.update(Long.parseLong(obj.get("id").toString()), obj.toString(), null);
+                super.update(Long.parseLong(obj.get("id").toString()), aspi, null);
             }
 
         }
