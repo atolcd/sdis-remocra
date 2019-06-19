@@ -183,6 +183,7 @@
 <script>
 import axios from 'axios'
 import _ from 'lodash'
+import moment from 'moment'
 
 export default {
 	name: 'FicheVisite',
@@ -723,15 +724,28 @@ export default {
 						found = true;
 					}
 				}
-				return data;
 			}
+			data["agent1"] = item.agent1;
+			data["agent2"] = item.agent2;
+			var date = moment(new Date(item.date), 'DD/MM/YYYY[T]HH:mm:ss[Z]').format('YYYY-MM-DDTHH:mm:ss')
+
+			switch(item.type){
+				case 2:
+					data["dateRecep"] = date;
+					break;
+				case 4:
+					data["dateReco"] = date;
+					break;
+				case 5:
+					data["dateContr"] = date;
+				break;
+			}
+				return data;
 		},
-
-
 		/**
 		  * Envoi les informations de mise à jour des visites au serveur
 		  */
-		sendVisitesData(id){
+		prepareVisitesData(id){
 			_.forEach(this.listeVisites, function(item) {
 				item.anomalies = "'"+JSON.stringify(item.anomalies)+"'"; // Mise en forme des données d'anomalies pour le passage dans la BDD
 				item.hydrant = id;
@@ -739,19 +753,8 @@ export default {
 			});
 
 			// Mise à jour et ajout
-			var data = JSON.stringify(this.listeVisites, function(key, value) { return value === "" ? null : value });
-
-			axios.post('/remocra/hydrantvisite/updatemany', JSON.parse(data)).catch(function(error) {
-				console.error('postEvent', error)
-			});
-
-			// Suppressions
-			axios.delete('/remocra/hydrantvisite', {
-				data: this.visitesASupprimer
-			}).catch(function(error) {
-				console.error('postEvent', error)
-			});
-
+			return {'visites' : JSON.stringify(this.listeVisites, function(key, value) { return value === "" ? null : value }),
+		   'visitesDel' : this.visitesASupprimer}
 		}
 	}
 };

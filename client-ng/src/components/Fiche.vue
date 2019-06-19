@@ -527,16 +527,37 @@ export default {
             }
           }).then(function(response){ // Une fois le PEI mis à jour, on peut récupérer son id et mettre à jour les aspirations
             var id = response.data.data.id;
-
+            var requests = []
             if(id !== null) {
               if(self.$refs.fichePena){
-                self.$refs.fichePena.sendAspirationData(id);
+                var aspirationData = self.$refs.fichePena.prepareAspirationData(id);
+                requests.push(axios.post('/remocra/hydrantaspiration/updatemany', JSON.parse(aspirationData.aspirations)).catch(function(error) {
+          				console.error('postEvent', error)
+          			}))
+                requests.push(	axios.delete('/remocra/hydrantaspiration/', {
+            				data: aspirationData.aspirationsDel
+            			}).catch(function(error) {
+            				console.error('postEvent', error)
+            			}))
               }
-              
+
               // Simultanément, MAj des visites
-              self.$refs.ficheVisite.sendVisitesData(id);            
+              var visiteData = self.$refs.ficheVisite.prepareVisitesData(id);
+              requests.push(axios.post('/remocra/hydrantvisite/updatemany', JSON.parse(visiteData.visites)).catch(function(error) {
+                console.error('postEvent', error)
+              }))
+              requests.push(axios.delete('/remocra/hydrantvisite', {
+                data: visiteData.visitesDel
+              }).catch(function(error) {
+                console.error('postEvent', error)
+              }))
             }
-            
+
+             axios.all(requests)
+             .then(function (response) {
+               console.log(response)
+             });
+
           }).catch(function(error) {
             console.error('postEvent', error)
           })

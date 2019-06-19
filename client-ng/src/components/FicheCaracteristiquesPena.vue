@@ -245,7 +245,7 @@ export default {
 				this.listeAspirations.splice(this.selectedRow, 1);
 				this.selectedRow = null;
 				this.onRowSelected(-1);
-				
+
 			}
 		},
 
@@ -280,7 +280,7 @@ export default {
 			return this.etats;
 		},
 
-		sendAspirationData(idPena){
+		prepareAspirationData(idPena){
 
 			_.forEach(this.listeAspirations, function(aspiration){
 				aspiration.pena = idPena;
@@ -288,21 +288,13 @@ export default {
 			});
 
 			// Mise à jour et Ajout
-			var data = JSON.stringify(this.listeAspirations, function(key, value) { return value === "" ? null : value });
+			var data = {'aspirations' : JSON.stringify(this.listeAspirations, function(key, value) { return value === "" ? null : value }),
+			 'aspirationsDel' : this.aspirationsASupprimer }
 
-			axios.post('/remocra/hydrantaspiration/updatemany', JSON.parse(data)).catch(function(error) {
-				console.error('postEvent', error)
-			});
-
-			// Suppressions
-			axios.delete('/remocra/hydrantaspiration/', {
-				data: this.aspirationsASupprimer
-			}).catch(function(error) {
-				console.error('postEvent', error)
-			});
+      return data
 		}
 	}
-  
+
 };
 </script>
 
