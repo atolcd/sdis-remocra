@@ -118,7 +118,7 @@
 
 							</b-tab>
 
-							<b-tab title="Points d'attention">
+							<b-tab class="anomalies-tab" title="Points d'attention">
 								<div class="row" id="anomalieCritere">
 									<div class="col-md-12">
 										<p class="bold">{{anomaliesCriteres[indexCritere].nom}}</p>
@@ -596,7 +596,7 @@ export default {
 			this.selectedRow = index;
 			this.updateComboTypeVisitesFiltered();
 			this.deleteVisiteDisabled = this.isVisiteProtegee(index);
-			this.indexCritere = 0;
+			this.indexCritere = this.anomaliesCriteres.length > 0 ? 1 : 0;
 		},
 
 		/**
@@ -801,5 +801,10 @@ export default {
 	font-weight: 400;
 	line-height: 1.5;
 	vertical-align: middle;
+}
+.anomalies-tab {
+	max-height: 300px;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 </style>
