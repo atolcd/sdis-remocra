@@ -725,21 +725,25 @@ export default {
 					}
 				}
 			}
-			data["agent1"] = item.agent1;
-			data["agent2"] = item.agent2;
-			var date = moment(new Date(item.date), 'DD/MM/YYYY[T]HH:mm:ss[Z]').format('YYYY-MM-DDTHH:mm:ss')
+			if(this.listeVisites && this.listeVisites.length > 0){
+				var item = this.listeVisites[0];
+				data["agent1"] = item.agent1;
+				data["agent2"] = item.agent2;
+				var date = moment(new Date(item.date), 'DD/MM/YYYY[T]HH:mm:ss[Z]').format('YYYY-MM-DDTHH:mm:ss')
 
-			switch(item.type){
-				case 2:
-					data["dateRecep"] = date;
+				switch(item.type){
+					case 2:
+						data["dateRecep"] = date;
+						break;
+					case 4:
+						data["dateReco"] = date;
+						break;
+					case 5:
+						data["dateContr"] = date;
 					break;
-				case 4:
-					data["dateReco"] = date;
-					break;
-				case 5:
-					data["dateContr"] = date;
-				break;
+				}
 			}
+
 				return data;
 		},
 		/**
