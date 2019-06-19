@@ -533,13 +533,13 @@ export default {
               if(self.$refs.fichePena){
                 var aspirationData = self.$refs.fichePena.prepareAspirationData(id);
                 requests.push(axios.post('/remocra/hydrantaspiration/updatemany', JSON.parse(aspirationData.aspirations)).catch(function(error) {
-          				console.error('postEvent', error)
-          			}))
-                requests.push(	axios.delete('/remocra/hydrantaspiration/', {
-            				data: aspirationData.aspirationsDel
-            			}).catch(function(error) {
-            				console.error('postEvent', error)
-            			}))
+                  console.error('postEvent', error)
+                }))
+                requests.push(axios.delete('/remocra/hydrantaspiration/', {
+                  data: aspirationData.aspirationsDel
+                }).catch(function(error) {
+                  console.error('postEvent', error)
+                }))
               }
 
               // Simultanément, MAj des visites
@@ -555,7 +555,7 @@ export default {
             }
 
              axios.all(requests)
-             .then(function (response) {
+             .then(function () {
                self.$root.$options.bus.$emit('pei_modified', {
                  id: id, numero: numero
                })

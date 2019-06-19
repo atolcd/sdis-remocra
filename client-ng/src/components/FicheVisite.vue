@@ -726,12 +726,12 @@ export default {
 				}
 			}
 			if(this.listeVisites && this.listeVisites.length > 0){
-				var item = this.listeVisites[0];
-				data["agent1"] = item.agent1;
-				data["agent2"] = item.agent2;
-				var date = moment(new Date(item.date), 'DD/MM/YYYY[T]HH:mm:ss[Z]').format('YYYY-MM-DDTHH:mm:ss')
+				var visite = this.listeVisites[0];
+				data["agent1"] = visite.agent1;
+				data["agent2"] = visite.agent2;
+				var date = moment(new Date(visite.date), 'DD/MM/YYYY[T]HH:mm:ss[Z]').format('YYYY-MM-DDTHH:mm:ss')
 
-				switch(item.type){
+				switch(visite.type){
 					case 2:
 						data["dateRecep"] = date;
 						break;
@@ -755,10 +755,10 @@ export default {
 				item.hydrant = id;
 				item.date = item.id ? item.date : null;
 			});
-
-			// Mise à jour et ajout
-			return {'visites' : JSON.stringify(this.listeVisites, function(key, value) { return value === "" ? null : value }),
-		   'visitesDel' : this.visitesASupprimer}
+			return {
+				'visites' : JSON.stringify(this.listeVisites, function(key, value) { return value === "" ? null : value }),
+				'visitesDel' : this.visitesASupprimer
+			}
 		}
 	}
 };

@@ -281,17 +281,14 @@ export default {
 		},
 
 		prepareAspirationData(idPena){
-
 			_.forEach(this.listeAspirations, function(aspiration){
 				aspiration.pena = idPena;
 				aspiration.version = 1
 			});
-
-			// Mise à jour et Ajout
-			var data = {'aspirations' : JSON.stringify(this.listeAspirations, function(key, value) { return value === "" ? null : value }),
-			 'aspirationsDel' : this.aspirationsASupprimer }
-
-      return data
+			return {
+				'aspirations' : JSON.stringify(this.listeAspirations, function(key, value) { return value === "" ? null : value }),
+				'aspirationsDel' : this.aspirationsASupprimer
+			}
 		}
 	}
 
