@@ -527,6 +527,7 @@ export default {
             }
           }).then(function(response){ // Une fois le PEI mis à jour, on peut récupérer son id et mettre à jour les aspirations
             var id = response.data.data.id;
+            let numero = response.data.data.numero;
             var requests = []
             if(id !== null) {
               if(self.$refs.fichePena){
@@ -555,9 +556,10 @@ export default {
 
              axios.all(requests)
              .then(function (response) {
-               console.log(response)
+               self.$root.$options.bus.$emit('pei_modified', {
+                 id: id, numero: numero
+               })
              });
-
           }).catch(function(error) {
             console.error('postEvent', error)
           })

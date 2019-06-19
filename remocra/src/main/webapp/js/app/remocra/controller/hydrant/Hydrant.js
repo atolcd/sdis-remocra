@@ -766,6 +766,11 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         }
     },
 
+    hydrantsChanged: function() {
+        this.refreshMap();
+        this.updateHydrant();
+    },
+
     refreshMap: function() {
         if (this.getTabMap() != null && this.getTabMap().rendered) {
             this.getTabMap().hydrantLayer.refresh({

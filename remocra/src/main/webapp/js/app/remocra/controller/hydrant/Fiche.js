@@ -46,10 +46,6 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             if (fiche.hydrant.feature) {
                 fiche.hydrant.feature.destroy();
             }
-            // On demande toujours le rafraichissement de la grille des hydrants
-            // ainsi que de la carte
-            this.getController('hydrant.Hydrant').refreshMap();
-            this.getController('hydrant.Hydrant').updateHydrant();
         }
     },
 
@@ -83,9 +79,13 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
         fiche.setTitle(idHydrant ?
             codeHydrant + " n° " + fiche.hydrant.data.numero + " - " + fiche.hydrant.data.nomCommune
             : 'Nouveau ' + codeHydrant);
-        window.remocraVue.buildFiche('#'+fiche.getId()+'-body', {
+        var vueFiche = window.remocraVue.buildFiche('#'+fiche.getId()+'-body', {
             id: idHydrant, code: codeHydrant, geometrie: geometrie
         });
+        // Lorsque le PEI est modifié, on informe le contrôleur
+        vueFiche.$options.bus.$on('pei_modified', Ext.bind(function(data) {
+            this.getController('hydrant.Hydrant').hydrantsChanged();
+        }, this));
     },
 
     updateHydrant: function(button){
