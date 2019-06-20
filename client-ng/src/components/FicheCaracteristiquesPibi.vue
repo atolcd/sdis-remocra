@@ -143,7 +143,7 @@ import _ from 'lodash'
 import ModalReservoir from './ModalReservoir.vue'
 
 export default {
-	name: 'FicheLocalisation',
+	name: 'FicheCaracteristiquesPibi',
 
 	components: {
 		ModalReservoir
