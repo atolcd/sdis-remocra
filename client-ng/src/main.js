@@ -31,7 +31,14 @@ Vue.use(Notifications, {
 Vue.component('input-tag', InputTag)
 
 let vm = []
-const buildVue = function buildVue(id, idCrise) {
+const listVues = function() {
+  _.forEach(vm, v => {
+    console.log(v)
+  })
+}
+
+// Crise
+const criseBuildMap = function(id, idCrise) {
   var v = new Vue({
     el: '#crise-' + id,
     id: id,
@@ -45,21 +52,7 @@ const buildVue = function buildVue(id, idCrise) {
   vm.push(v)
   return v
 }
-
-const buildFiche = function buildFiche(el, data) {
-  var v = new Vue({
-    el,
-    bus: new Vue(),
-    components: {
-      Fiche
-    },
-    template: "<Fiche :idHydrant=" + data.id + " codeHydrant=" + data.code + "  geometrie='" + data.geometrie + "' />"
-  })
-  vm.push(v)
-  return v
-}
-
-const destroyVue = function destroyVue(idCrise) {
+const criseDestroyMap = function(idCrise) {
   _.forEach(vm, v => {
     if (v.$options.crise === idCrise) {
       v.$destroy()
@@ -67,8 +60,24 @@ const destroyVue = function destroyVue(idCrise) {
   })
 }
 
+// PEI
+const peiBuildFiche = function(el, data) {
+  var v = new Vue({
+    el,
+    idPei: data.id,
+    bus: new Vue(),
+    components: {
+      Fiche
+    },
+    template: "<Fiche :idHydrant=" + data.id + " codeHydrant=" + data.code + "  geometrie='" + data.geometrie + "' />"
+  })
+  //vm.push(v)
+  return v
+}
+
 export {
-  buildVue,
-  buildFiche,
-  destroyVue
+  listVues,
+  criseBuildMap,
+  criseDestroyMap,
+  peiBuildFiche
 }

@@ -68,16 +68,16 @@
         var params = _.chain(rawUrl).replace('?', '').split('&').map(_.partial(_.split, _, '=', 2)).fromPairs().value();
         if (params['module']=='crise' && params['id']) {
           // Crise
-          remocraVue.buildVue('container', params['id']);
+          remocraVue.criseBuildMap('container', params['id']);
 
         } else if (params['module']=='hydrant' && params['id'] && params['code']) {
           // PEI Mise à jour
-          remocraVue.buildFiche('#fichepei-container', {
+          remocraVue.peiBuildFiche('#fichepei-container', {
             id: Number(params['id']), code: params['code'], geometrie: params['geometrie']?decodeURIComponent(params['geometrie']):null
           });
         } else if (params['module']=='hydrant' && params['geometrie'] && params['code']) {
           // PEI Création
-          remocraVue.buildFiche('#fichepei-container', {
+          remocraVue.peiBuildFiche('#fichepei-container', {
             id: null, code: params['code'], geometrie: params['geometrie']?decodeURIComponent(params['geometrie']):null
           });
         } else {

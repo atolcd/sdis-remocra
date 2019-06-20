@@ -79,13 +79,17 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
         fiche.setTitle(idHydrant ?
             codeHydrant + " n° " + fiche.hydrant.data.numero + " - " + fiche.hydrant.data.nomCommune
             : 'Nouveau ' + codeHydrant);
-        var vueFiche = window.remocraVue.buildFiche('#'+fiche.getId()+'-body', {
+        var vueFiche = window.remocraVue.peiBuildFiche('#'+fiche.getId()+'-body', {
             id: idHydrant, code: codeHydrant, geometrie: geometrie
         });
         // Lorsque le PEI est modifié, on informe le contrôleur
         vueFiche.$options.bus.$on('pei_modified', Ext.bind(function(data) {
             this.getController('hydrant.Hydrant').hydrantsChanged();
+            fiche.close();
         }, this));
+        fiche.on('destroy', function() {
+            vueFiche.$destroy();
+        });
     },
 
     updateHydrant: function(button){
@@ -101,7 +105,6 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
         if(hydrant != null && formValid){
             var url = hydrant.getProxy().url + (hydrant.phantom ? '' : '/' + hydrant.getId());
             document.getElementsByClassName('Fiche')[0].__vue__.handleSubmit(url);
-            button.up('window').close();
         }
     }
 });
