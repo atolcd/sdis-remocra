@@ -138,6 +138,7 @@
 <script>
 
 import axios from 'axios'
+import { loadProgressBar } from 'axios-progress-bar'
 import _ from 'lodash'
 import ModalGestionnaire from './ModalGestionnaire.vue'
 import FicheLocalisation from './FicheLocalisation.vue'
@@ -205,6 +206,7 @@ export default {
   },
 
   mounted: function(){
+    loadProgressBar({showSpinner: false})
     var self = this;
     // Récupération des droits de l'utilisateur courant
     axios.get('/remocra/utilisateurs/current/xml').then(response => {
@@ -472,7 +474,7 @@ export default {
       * @param url L'url à contacter
       */
     handleSubmit(url){
-
+      loadProgressBar({showSpinner: false})
       // Si la nature est passée de PRIVE a PUBLIC/CONVENTIONNE ou inversement, le PEI ne respecte plus la contrainte de nature DECI au sein de ses tournées
       // On le désaffecte donc pour tous les organismes
       var idDeciPrive = this.listeNaturesDeci.filter(item => item.code === "PRIVE")[0].id;
