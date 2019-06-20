@@ -4,26 +4,61 @@
     <meta charset="utf-8">
     <title>Remocra - dev</title>
   </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but client doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
     <style>
+      body {
+        padding: 10px;
+      }
+      .home {
+        text-decoration: none;
+        z-index: 99999999;
+        position: fixed;
+        right: 5px;
+        top: 0;
+      }
+      .help.start {
+        opacity: 0.6;
+        font-style: italic;
+      }
       .Fiche {
         max-width: 900px;
         max-height: 679px;
       }
     </style>
+
+    <a class="home" href="/">⯇</a>
+
     <div id="crise-container"></div>
     <div id="fichepei-container"></div>
-    <div id="autre" style="visibility:hidden">
-      <ul>Usage :
-        <li><a href="?module=crise&id=175">Crise open</a></li>
-        <li><a href="?module=hydrant&id=226678&code=PIBI&geometrie=POINT%20(651812%206862842)">PEI update</a></li>
-        <li><a href="?module=hydrant&code=PIBI&geometrie=POINT%20(651812%206862842)">PEI create</a></li>
-      </ul>
+    <div id="autre" style="display: none;">
+      <h1>Remocra - Développements</h1>
+      <div class="help start">
+        Suivre les étapes suivantes :
+        <ol>
+          <li>Démarrer le client Vue.js <code>npm run serve</code></li>
+          <li>Démarrer son serveur Tomcat <code>mvn tomcat:run</code></li>
+          <li>S'authentifier <a href="http://localhost:8080/remocra" target="_blank">http://localhost:8080/remocra</a></li>
+          <li>Utiliser un des liens suivants</li>
+        </ol>
+      </div>
+      <div class="help links">
+        <b>❗ Exemples Crise :</b>
+        <ul>
+          <li>Création de
+            <a href="?module=hydrant&id=226678&code=PIBI&geometrie=POINT%20(651812%206862842)">PIBI</a>, de
+            <a href="?module=hydrant&id=267796&code=PENA">PENA</a>
+          </li>
+          <li>Mise à jour de
+            <a href="?module=hydrant&code=PIBI&geometrie=POINT%20(651812%206862842)">PIBI</a>, de
+            <a href="?module=hydrant&code=PENA&geometrie=POINT%20(651812%206862842)">PENA</a>
+          </li>
+        </ul>
+        <b>💧 Exemples PEI :</b>
+        <ul>
+          <li><a href="?module=crise&id=1">Ouverture d'une crise</a></li>
+        </ul>
+      </div>
     </div>
   </body>
     <script type="text/javascript">
@@ -46,10 +81,10 @@
             id: null, code: params['code'], geometrie: params['geometrie']?decodeURIComponent(params['geometrie']):null
           });
         } else {
-          document.getElementById('autre').style.visibility=''
+          document.getElementById('autre').style.display=''
         }
       } else {
-        document.getElementById('autre').style.visibility=''
+        document.getElementById('autre').style.display=''
       }
     </script>
 </html>
