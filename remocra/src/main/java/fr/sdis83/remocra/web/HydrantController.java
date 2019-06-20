@@ -254,7 +254,6 @@ public class HydrantController {
      * @return
      */
     @RequestMapping(value = "/transformCoordonnees", method = RequestMethod.GET, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS_C')")
     public ResponseEntity<java.lang.String> transformCoordonnees(final @RequestParam(value = "srid") Integer srid,
                                                                  final @RequestParam(value = "latitude") Double latitude,
                                                                  final @RequestParam(value = "longitude") Double longitude,
@@ -282,7 +281,6 @@ public class HydrantController {
     }
 
     @RequestMapping(value = "/getUpdatedCoordonnees", method = RequestMethod.POST, headers = "Accept=application/json")
-    @PreAuthorize("hasRight('HYDRANTS_C')")
     public ResponseEntity<java.lang.String> updateCoordonnees(final @RequestBody String json){
         try {
             Point p = hydrantService.coordonneesToPoint(json);
