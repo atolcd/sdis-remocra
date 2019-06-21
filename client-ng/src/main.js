@@ -30,13 +30,6 @@ Vue.use(Notifications, {
 })
 Vue.component('input-tag', InputTag)
 
-let vm = []
-const listVues = function() {
-  _.forEach(vm, v => {
-    console.log(v)
-  })
-}
-
 // Crise
 const criseBuildMap = function(id, idCrise) {
   var v = new Vue({
@@ -49,15 +42,7 @@ const criseBuildMap = function(id, idCrise) {
     },
     template: '<GestCrise :crise=' + idCrise + ' />'
   })
-  vm.push(v)
   return v
-}
-const criseDestroyMap = function(idCrise) {
-  _.forEach(vm, v => {
-    if (v.$options.crise === idCrise) {
-      v.$destroy()
-    }
-  })
 }
 
 // PEI
@@ -71,13 +56,10 @@ const peiBuildFiche = function(el, data) {
     },
     template: "<Fiche :idHydrant=" + data.id + " codeHydrant=" + data.code + "  geometrie='" + data.geometrie + "' />"
   })
-  //vm.push(v)
   return v
 }
 
 export {
-  listVues,
   criseBuildMap,
-  criseDestroyMap,
   peiBuildFiche
 }
