@@ -206,7 +206,7 @@ export default {
   },
 
   mounted: function(){
-    loadProgressBar({showSpinner: false})
+    loadProgressBar({parent: "#formFiche", showSpinner: false})
     var self = this;
     // Récupération des droits de l'utilisateur courant
     axios.get('/remocra/utilisateurs/current/xml').then(response => {
@@ -474,7 +474,6 @@ export default {
       * @param url L'url à contacter
       */
     handleSubmit(url){
-      loadProgressBar({showSpinner: false})
       // Si la nature est passée de PRIVE a PUBLIC/CONVENTIONNE ou inversement, le PEI ne respecte plus la contrainte de nature DECI au sein de ses tournées
       // On le désaffecte donc pour tous les organismes
       var idDeciPrive = this.listeNaturesDeci.filter(item => item.code === "PRIVE")[0].id;
@@ -606,6 +605,9 @@ b-tab {
   color: blue;
 }
 
+#formFiche {
+  padding-top: 3px;
+}
 #formFiche .invalid-feedback{
   font-size: 100%;
 }

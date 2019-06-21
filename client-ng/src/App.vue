@@ -480,7 +480,7 @@ body {
   cursor: pointer;
 }
 
-#nprogress .bar {
+.gestcrise #nprogress .bar {
   height: 10px;
   display: flex;
   flex-direction: column;
