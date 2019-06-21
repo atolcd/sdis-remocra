@@ -62,7 +62,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             }
             if (xtype != null) {
                 Ext.widget(xtype, {
-                    hydrant: hydrant
+                    hydrant: hydrant,
+                    controle: controle
                 }).show();
             } else {
                 console.warn('xtype is null', hydrant);
@@ -80,7 +81,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Fiche', {
             codeHydrant + " n° " + fiche.hydrant.data.numero + " - " + fiche.hydrant.data.nomCommune
             : 'Nouveau ' + codeHydrant);
         var vueFiche = window.remocraVue.peiBuildFiche('#'+fiche.getId()+'-body', {
-            id: idHydrant, code: codeHydrant, geometrie: geometrie
+            id: idHydrant, code: codeHydrant, geometrie: geometrie, newVisite: fiche.controle
         });
         // Lorsque le PEI est modifié, on informe le contrôleur
         vueFiche.$options.bus.$on('pei_modified', Ext.bind(function(data) {

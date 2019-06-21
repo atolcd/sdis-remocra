@@ -73,7 +73,9 @@
 
       <div>
         <b-tabs fill content-class="mt-3" active-nav-item-class="text-primary">
-          <b-tab title="Résumé" active></b-tab>
+          <b-tab title="Résumé">
+            <div>Fonctionnalité à venir.</div>
+          </b-tab>
 
           <!-- ================================== Onglet Localisation ==================================-->
           <b-tab title="Localisation" active>
@@ -108,7 +110,7 @@
           </b-tab>
 
           <!-- ================================== Onglet Visites ==================================-->
-          <b-tab title="Visites">
+          <b-tab ref="visitesTab" title="Visites">
             <FicheVisite  :hydrant="hydrant"
                           :utilisateurDroits="utilisateurDroits"
                           @getComboData="getComboData"
@@ -189,6 +191,11 @@ export default {
   },
   
   props: {
+    newVisite: {
+        type: Boolean,
+        default: false
+    },
+
     idHydrant: {
       type: Number,
       required: false
@@ -256,6 +263,12 @@ export default {
 
           self.createCombo();
 
+          if (self.newVisite===true) {
+            self.$root.$options.bus.$on('pei_visite_ready', () => {
+              self.$refs.visitesTab.activate()
+              self.$refs.ficheVisite.createVisite()
+            })
+          }
         }
       }).catch(function(error) {
         console.error('Retrieving data ', error)

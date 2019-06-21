@@ -339,51 +339,55 @@ export default {
 
 		var self = this;
 
+		let requests = []
+
 		/* =============================================== Récupération des visites =============================================== */
 		if(this.hydrant.id != null) {
-			axios.get('/remocra/hydrantvisite.json', {
-				params: {
-					filter: JSON.stringify([{"property":"hydrant","value":this.hydrant.id}]),
-					sort: JSON.stringify([{"property":"date","direction":"DESC"}])
-				}
-			}).then(response => {
-				if(response.data.data){
-					self.listeVisites = response.data.data;
-					// Pour le datetime des visites, on sépare la donnée en deux champs distincts date et time
-					_.forEach(self.listeVisites, item => {
-						var splitDate = item.date.split("T");
-						self.formattedDate.push(splitDate[0]);
-						self.formattedTime.push(splitDate[1].substr(0, splitDate[1].length - 3));
+			requests.push(axios.get('/remocra/hydrantvisite.json', {
+                    params: {
+                        filter: JSON.stringify([{"property":"hydrant","value":this.hydrant.id}]),
+                        sort: JSON.stringify([{"property":"date","direction":"DESC"}])
+                    }
+                })
+                .then(response => {
+                    if(response.data.data){
+                        self.listeVisites = response.data.data;
+                        // Pour le datetime des visites, on sépare la donnée en deux champs distincts date et time
+                        _.forEach(self.listeVisites, item => {
+                            var splitDate = item.date.split("T");
+                            self.formattedDate.push(splitDate[0]);
+                            self.formattedTime.push(splitDate[1].substr(0, splitDate[1].length - 3));
 
-						item.type = (item.type) ? item.type.id : null;
-						item.hydrant = self.hydrant.id;
-						item.anomalies = (item.anomalies) ? JSON.parse(item.anomalies) : [];
-					});
-				}
-			}).then(function(){
+                            item.type = (item.type) ? item.type.id : null;
+                            item.hydrant = self.hydrant.id;
+                            item.anomalies = (item.anomalies) ? JSON.parse(item.anomalies) : [];
+                        });
+                    }
+                }).then(function(){
 
-				self.nbVisitesInitiales = self.listeVisites.length;
-				// Le bouton "Nouvelle visite" est désactivé ou non en fonction des droits de l'utilisateur
-				// Les droits sont en fonction des types de visite qui dépend du nombre de visites déjà effectuées
+                    self.nbVisitesInitiales = self.listeVisites.length;
+                    // Le bouton "Nouvelle visite" est désactivé ou non en fonction des droits de l'utilisateur
+                    // Les droits sont en fonction des types de visite qui dépend du nombre de visites déjà effectuées
 
-				switch(self.listeVisites.length){
-					case 0:
-						self.createVisiteDisabled = (self.utilisateurDroits.indexOf("HYDRANTS_C") == -1) ? true : false;
-						break;
+                    switch(self.listeVisites.length){
+                        case 0:
+                            self.createVisiteDisabled = (self.utilisateurDroits.indexOf("HYDRANTS_C") == -1) ? true : false;
+                            break;
 
-					case 1:
-						self.createVisiteDisabled = (self.utilisateurDroits.indexOf("HYDRANTS_RECEPTION_C") == -1) ? true : false;
-						break;
-					// Autorisation de la création si présence d'au moins 1 des 3 droits
-					default:
-						self.createVisiteDisabled = (self.utilisateurDroits.indexOf("HYDRANTS_CONTROLE_C") != -1)
-													|| (self.utilisateurDroits.indexOf("HYDRANTS_RECONNAISSANCE_C") != -1)
-													|| (self.utilisateurDroits.indexOf("HYDRANTS_ANOMALIES_C") != -1) ? false : true;
-						break;
-				}
-			}).catch(function(error) {
-				console.error('Retrieving data from remocra/hydrantvisite', error);
-			})
+                        case 1:
+                            self.createVisiteDisabled = (self.utilisateurDroits.indexOf("HYDRANTS_RECEPTION_C") == -1) ? true : false;
+                            break;
+                        // Autorisation de la création si présence d'au moins 1 des 3 droits
+                        default:
+                            self.createVisiteDisabled = (self.utilisateurDroits.indexOf("HYDRANTS_CONTROLE_C") != -1)
+                                                        || (self.utilisateurDroits.indexOf("HYDRANTS_RECONNAISSANCE_C") != -1)
+                                                        || (self.utilisateurDroits.indexOf("HYDRANTS_ANOMALIES_C") != -1) ? false : true;
+                            break;
+                    }
+                }).catch(function(error) {
+                    console.error('Retrieving data from remocra/hydrantvisite', error);
+                })
+            )
 		} else {
 			this.nbVisitesInitiales = 0;
 			this.createVisiteDisabled = (this.utilisateurDroits.indexOf("HYDRANTS_C") == -1) ? true : false;
@@ -392,87 +396,94 @@ export default {
 		/* =============================================== Liaison entre l'id des types de visites et leur libelle =============================================== */
 
 		// On récupère dans le même temps les identifiants des types de visite correspondant aux états 1 et 2 des PEI; ansi que le type par défaut pour l'état 3
-		axios.get('/remocra/typehydrantsaisies.json').then(response => {
-			_.forEach(response.data.data, function(item) {
-				if(item.code != 'LECT') {
-					self.comboTypeVisites.push({
-						text: item['nom'],
-						value: item['id']
-					});
-					
-					self.comboTypeVisitesFiltered = self.comboTypeVisites;
+		requests.push(axios.get('/remocra/typehydrantsaisies.json')
+            .then(response => {
+                _.forEach(response.data.data, function(item) {
+                    if(item.code != 'LECT') {
+                        self.comboTypeVisites.push({
+                            text: item['nom'],
+                            value: item['id']
+                        });
 
-					if(item.code == 'CREA') { self.typeNouvellesVisitesEtat1 = item.id; } 
-					else if(item.code == 'RECEP') { self.typeNouvellesVisitesEtat2 = item.id; } 
-					else if(item.code == 'NP') { self.typeNouvellesVisitesEtat3 = item.id; }
-				}
+                        self.comboTypeVisitesFiltered = self.comboTypeVisites;
 
-				self.typesVisites[item.id] = {
-					nom: item.nom,
-					code: item.code
-				};
-			})
-		}).catch(function(error) {
-			console.error('Retrieving combo data from /remocra/typehydrantsaisie', error);
-		});
+                        if(item.code == 'CREA') { self.typeNouvellesVisitesEtat1 = item.id; }
+                        else if(item.code == 'RECEP') { self.typeNouvellesVisitesEtat2 = item.id; }
+                        else if(item.code == 'NP') { self.typeNouvellesVisitesEtat3 = item.id; }
+                    }
+
+                    self.typesVisites[item.id] = {
+                        nom: item.nom,
+                        code: item.code
+                    };
+                })
+            }).catch(function(error) {
+                console.error('Retrieving combo data from /remocra/typehydrantsaisie', error);
+            })
+		)
 
 		/* =============================================== Récupération des anomalies =============================================== */
-		axios.get('/remocra/typehydrantanomalies.json').then(response => {
-			this.anomaliesRequeteResult = response.data.data;
-			// On met en forme les données depuis le résultat de la requête (on utilise ici un controller déjà existant)
-			_.forEach(response.data.data, function(item) {
-				var a = {};
-				a.code = item.code;
-				a.nom = item.nom
-				a.id = item.id;
-				a.critereCode = (item.critere) ? item.critere.code : null;
-				a.critereNom = (item.critere) ? item.critere.nom : '-';
+		requests.push(axios.get('/remocra/typehydrantanomalies.json')
+            .then(response => {
+                this.anomaliesRequeteResult = response.data.data;
+                // On met en forme les données depuis le résultat de la requête (on utilise ici un controller déjà existant)
+                _.forEach(response.data.data, function(item) {
+                    var a = {};
+                    a.code = item.code;
+                    a.nom = item.nom
+                    a.id = item.id;
+                    a.critereCode = (item.critere) ? item.critere.code : null;
+                    a.critereNom = (item.critere) ? item.critere.nom : '-';
 
-				a.indispo = {};
-				_.forEach(item.anomalieNatures, function(nature) {
-					a.indispo[nature.nature.id] = {};
-					a.indispo[nature.nature.id].valIndispoAdmin = nature.valIndispoAdmin;
-					a.indispo[nature.nature.id].valIndispoHbe = nature.valIndispoHbe;
-					a.indispo[nature.nature.id].valIndispoTerrestre = nature.valIndispoTerrestre;
-					a.indispo[nature.nature.id].natureCode = nature.nature.code;
+                    a.indispo = {};
+                    _.forEach(item.anomalieNatures, function(nature) {
+                        a.indispo[nature.nature.id] = {};
+                        a.indispo[nature.nature.id].valIndispoAdmin = nature.valIndispoAdmin;
+                        a.indispo[nature.nature.id].valIndispoHbe = nature.valIndispoHbe;
+                        a.indispo[nature.nature.id].valIndispoTerrestre = nature.valIndispoTerrestre;
+                        a.indispo[nature.nature.id].natureCode = nature.nature.code;
 
-					a.indispo[nature.nature.id].saisies = [];
-					_.forEach(nature.saisies, function(saisie) {
-						a.indispo[nature.nature.id].saisies.push(saisie.code);
-					})
-				});
+                        a.indispo[nature.nature.id].saisies = [];
+                        _.forEach(nature.saisies, function(saisie) {
+                            a.indispo[nature.nature.id].saisies.push(saisie.code);
+                        })
+                    });
 
-				// On récupère la liste des critères
-				var critereId = (item.critere) ? item.critere.id : null;
-				a.critere = critereId;
-				if(critereId != null && _.findIndex(self.anomaliesCriteres, function(o) { return o.id != null && o.id == critereId; }) == -1){
-					self.anomaliesCriteres.push(item.critere);
-				}
+                    // On récupère la liste des critères
+                    var critereId = (item.critere) ? item.critere.id : null;
+                    a.critere = critereId;
+                    if(critereId != null && _.findIndex(self.anomaliesCriteres, function(o) { return o.id != null && o.id == critereId; }) == -1){
+                        self.anomaliesCriteres.push(item.critere);
+                    }
 
-				self.anomalies.push(a);
+                    self.anomalies.push(a);
 
-			})
+                })
 
-			// Ajout manuel du premier critere
-			self.anomaliesCriteres.push({
-				id: null,
-				nom: '-'
-			});
+                // Ajout manuel du premier critere
+                self.anomaliesCriteres.push({
+                    id: null,
+                    nom: '-'
+                });
 
-			self.anomaliesCriteres.sort(function(a,b){
-				return a.id - b.id;
-			});
-			
-		}).then(function() {
-			// Si l'hydrant est créé, on force la création de la première visite (visite de réception)
-			if(self.hydrant.id == null) {
-				self.createVisite();
-				self.createVisiteDisabled = true;
-			}
-		}).catch(function(error) {
-			console.error('Retrieving data from /remocra/typehydrantanomalies', error);
-		});
+                self.anomaliesCriteres.sort(function(a,b){
+                    return a.id - b.id;
+                });
 
+            }).then(function() {
+                // Si l'hydrant est créé, on force la création de la première visite (visite de réception)
+                if(self.hydrant.id == null) {
+                    self.createVisite();
+                    self.createVisiteDisabled = true;
+                }
+            }).catch(function(error) {
+                console.error('Retrieving data from /remocra/typehydrantanomalies', error);
+            })
+        )
+
+        axios.all(requests).then(function () {
+            self.$root.$options.bus.$emit('pei_visite_ready')
+        })
 		this.deleteVisiteDisabled = true;
 	},
 

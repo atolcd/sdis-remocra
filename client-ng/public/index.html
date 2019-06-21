@@ -46,12 +46,16 @@
         <b>❗ Exemples Crise :</b>
         <ul>
           <li>Création de
+            <a href="?module=hydrant&code=PIBI&geometrie=POINT%20(651812%206862842)">PIBI</a>, de
+            <a href="?module=hydrant&code=PENA&geometrie=POINT%20(651812%206862842)">PENA</a>
+          </li>
+          <li>Ouverture fiche de
             <a href="?module=hydrant&id=226678&code=PIBI&geometrie=POINT%20(651812%206862842)">PIBI</a>, de
             <a href="?module=hydrant&id=267796&code=PENA">PENA</a>
           </li>
-          <li>Mise à jour de
-            <a href="?module=hydrant&code=PIBI&geometrie=POINT%20(651812%206862842)">PIBI</a>, de
-            <a href="?module=hydrant&code=PENA&geometrie=POINT%20(651812%206862842)">PENA</a>
+          <li>Nouvelle visite de
+            <a href="?module=hydrant&id=226678&code=PIBI&geometrie=POINT%20(651812%206862842)&newVisite=true">PIBI</a>, de
+            <a href="?module=hydrant&id=267796&code=PENA&newVisite=true">PENA</a>
           </li>
         </ul>
         <b>💧 Exemples PEI :</b>
@@ -73,7 +77,9 @@
         } else if (params['module']=='hydrant' && params['id'] && params['code']) {
           // PEI Mise à jour
           remocraVue.peiBuildFiche('#fichepei-container', {
-            id: Number(params['id']), code: params['code'], geometrie: params['geometrie']?decodeURIComponent(params['geometrie']):null
+            newVisite: params['newVisite']?Boolean(params['newVisite']):null,
+            id: Number(params['id']), code: params['code'],
+            geometrie: params['geometrie']?decodeURIComponent(params['geometrie']):null
           });
         } else if (params['module']=='hydrant' && params['geometrie'] && params['code']) {
           // PEI Création
