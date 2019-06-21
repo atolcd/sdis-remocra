@@ -12,7 +12,6 @@ import {
 import InputTag from 'vue-input-tag'
 import Notifications from 'vue-notification'
 import velocity from 'velocity-animate'
-import _ from 'lodash'
 
 // Feuilles de style
 import 'bootstrap/dist/css/bootstrap.min.css'
