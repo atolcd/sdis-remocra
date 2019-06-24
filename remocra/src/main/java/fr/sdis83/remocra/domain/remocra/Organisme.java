@@ -76,19 +76,14 @@ public class Organisme {
      * @return Un ArrayList d'entier contenant la liste des IDs de tous les organismes concernés
      */
     public static ArrayList<Integer> getOrganismeAndChildren(int idOrganisme){
-        Query query = entityManager().createNativeQuery("with recursive organisme(id, nom) as" +
-            "(" +
-                "select id, nom " +
-                "from remocra.organisme d " +
-                "where id=:idOrganisme " +
-
-                "union all " +
-
-                "select d.id, d.nom " +
-                "from remocra.organisme d, remocra.organisme o " +
-                "where o.id=d.organisme_parent " +
-            ") " +
-            "select distinct CAST(id AS INTEGER) from organisme").setParameter("idOrganisme", idOrganisme);
+        Query query = entityManager().createNativeQuery("WITH RECURSIVE org(id) AS ( " +
+                "   SELECT id FROM remocra.organisme WHERE id=:idOrganisme " +
+                "   UNION ALL " +
+                "   SELECT remocra.organisme.id " +
+                "   FROM org, remocra.organisme " +
+                "   WHERE organisme_parent=org.id " +
+                ") " +
+                "SELECT DISTINCT CAST(id AS INTEGER) id FROM org").setParameter("idOrganisme", idOrganisme);
         ArrayList<Integer> ids = (ArrayList<Integer>) query.getResultList();
         return ids;
     }

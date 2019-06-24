@@ -120,7 +120,11 @@ Ext.define('Sdis.Remocra.features.admin.typereference.UtilisateurGrid', {
                         valueField: 'id', 
                         displayField: 'nom',
                         minChars: 1,
-                        store : Ext.create('Sdis.Remocra.store.Organisme', {autoLoad: true}),
+                        store : Ext.create('Sdis.Remocra.store.Organisme', {
+                            autoLoad: true,
+                            pageSize: 20
+                        }),
+                        pageSize: true,
                         listeners: {
                             select: function(combo, records, eOpts) {
                                 var utilisateurRecord = this.editingPlugin.context.record;

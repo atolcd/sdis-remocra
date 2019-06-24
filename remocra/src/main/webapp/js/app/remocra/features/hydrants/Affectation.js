@@ -24,11 +24,6 @@ Ext.define('Sdis.Remocra.features.hydrants.Affectation', {
             boxLabel: 'Nouvelle tournée',
             checked: true,
             inputValue: '1'
-            /*listeners: {
-                change: function(radiogrup, value) {
-                    Ext.getCmp('comboOrganisme').setDisabled(!value);
-                }
-            }*/
         },{
             xtype: 'fieldcontainer',
             layout: 'vbox',
@@ -101,6 +96,7 @@ Ext.define('Sdis.Remocra.features.hydrants.Affectation', {
                 remoteSort: true,
                 remoteFilter: true,
                 pageSize: 10,
+                sorters: ['affectation', 'nom'],
                 filters : [{
                     property: 'reserved',
                     value: 'false'
@@ -119,16 +115,7 @@ Ext.define('Sdis.Remocra.features.hydrants.Affectation', {
             name: 'tournee',
             width: 220
         }]
-    }/*,{
-        xtype: 'combo',
-        mode: 'local',
-        store: 'Utilisateur',
-        fieldLabel: 'Affecter à',
-        displayField: 'prenomNomIdentifiant',
-        valueField: 'id',
-        allowBlank: false,
-        name: 'utilisateur'
-    }*/],
+    }],
 
     initComponent: function() {
         this.buttons = [{
