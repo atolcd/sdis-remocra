@@ -764,7 +764,6 @@ export default {
 			_.forEach(this.listeVisites, function(item) {
 				item.anomalies = "'"+JSON.stringify(item.anomalies)+"'"; // Mise en forme des données d'anomalies pour le passage dans la BDD
 				item.hydrant = id;
-				item.date = item.id ? item.date : null;
 			});
 			return {
 				'visites' : JSON.stringify(this.listeVisites, function(key, value) { return value === "" ? null : value }),

@@ -71,13 +71,12 @@ public class HydrantVisiteService extends AbstractService<HydrantVisite> {
     public void updateMany(String json) throws Exception {
         ArrayList<HashMap<String, Object>> liste = new JSONDeserializer<ArrayList<HashMap<String, Object>>>().deserialize(json);
         for(HashMap<String, Object> obj : liste){
-
             // ID existant -> mise à jour
             if(obj.get("id") != null) {
 
                 HydrantVisite visite = this.entityManager.find(this.cls, Long.valueOf(obj.get("id").toString()));
 
-                visite.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(obj.get("date").toString()));
+                visite.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(String.valueOf(obj.get("date"))));
                 obj.remove("date");
 
                 JSONDeserializer<HydrantVisite> deserializer = new JSONDeserializer<HydrantVisite>();
@@ -113,7 +112,7 @@ public class HydrantVisiteService extends AbstractService<HydrantVisite> {
             } else {
 
                 //ID inexistant: création
-                this.create(obj.toString(), null);
+                this.create(obj, null);
             }
         }
     }
@@ -130,14 +129,17 @@ public class HydrantVisiteService extends AbstractService<HydrantVisite> {
     }
 
     @Transactional
-    public HydrantVisite create(String json, Map<String, MultipartFile> files) throws Exception {
+    public HydrantVisite create(HashMap<String, Object> obj, Map<String, MultipartFile> files) throws Exception {
         JSONDeserializer<HydrantVisite> deserializer = new JSONDeserializer<HydrantVisite>();
         deserializer.use(null, this.cls).use(Date.class, RemocraDateHourTransformer.getInstance()).use(Geometry.class, new GeometryFactory()).use(Object.class,
                 new RemocraBeanObjectFactory(this.entityManager));
 
 
-        HydrantVisite attached = deserializer.deserialize(json);
-        attached.setDate(new Date());
+        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(String.valueOf(obj.get("date")));
+        obj.remove("date");
+        HydrantVisite attached = deserializer.deserialize(obj.toString());
+
+        attached.setDate(date);
         
         this.setUpInformation(attached, files);
         this.entityManager.persist(attached);
