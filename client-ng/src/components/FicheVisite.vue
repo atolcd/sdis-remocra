@@ -42,13 +42,13 @@
 				<div class="row">
 					<div class="col-md-6">
 						<b-form-group label="Date " label-for="date" label-cols-md="3">
-							<b-form-input id="date" v-model="formattedDate[selectedRow]" type="date" size="sm" required :disabled="isVisiteProtegee(selectedRow)"></b-form-input>
+							<b-form-input id="date" v-model="formattedDate[selectedRow]" type="date" size="sm" required></b-form-input>
 						</b-form-group>
 					</div>
 
 					<div class="col-md-6">
 						<b-form-group label="Heure " label-for="heure" label-cols-md="3">
-							<b-form-input id="heure" v-model="formattedTime[selectedRow]" type="text" size="sm" required :disabled="isVisiteProtegee(selectedRow)"></b-form-input>
+							<b-form-input id="heure" v-model="formattedTime[selectedRow]" type="text" size="sm" required></b-form-input>
 						</b-form-group>
 					</div>
 				</div>
