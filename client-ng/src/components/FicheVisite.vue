@@ -48,7 +48,7 @@
 
 					<div class="col-md-6">
 						<b-form-group label="Heure " label-for="heure" label-cols-md="3">
-							<b-form-input id="heure" v-model="formattedTime[selectedRow]" type="text" size="sm" required></b-form-input>
+							<b-form-input id="heure" v-model="formattedTime[selectedRow]" type="time" size="sm" required></b-form-input>
 						</b-form-group>
 					</div>
 				</div>
@@ -518,11 +518,13 @@ export default {
 
 			var self = this;
 			new Promise(function(resolve){
-				var d = new Date()
+				//var d = new Date()
 
 				var visite = {
 					type: typeVisite,
-					date: d.getFullYear()+'-'+((d.getMonth()+1) < 10 ? '0' : '')+(d.getMonth()+1)+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes(),
+					date: moment(new Date()).format("YYYY-MM-DD HH:mm"),
+					//date: d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2) + " " + 
+							//("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2) + ":" + ("0"+d.getSeconds()).slice(-2),
 					anomalies: [],
 					ctrl_debit_pression: false
 				}
