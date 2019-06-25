@@ -720,7 +720,7 @@ export default {
 					continuer = false;
 				}
 			}
-			
+
 
 			// On recherche la visite de type contrôle technique périodique débit pression la plus récente
 			// Ce sont ses valeurs de débit et pression que prendront les attributs éponymes du PEI
@@ -729,11 +729,11 @@ export default {
 				for(var i = 0; i < this.listeVisites.length && !found; i++){
 					if(this.typesVisites[this.listeVisites[i].type].code === "CTRL" && this.listeVisites[i].ctrl_debit_pression){
 						var item = this.listeVisites[i];
-						data["debit"] = item.debit;
-						data["debitMax"] = item.debitMax;
-						data["pression"] = item.pression;
-						data["pressionDyn"] = item.pressionDyn;
-						data["pressionDynDeb"] = item.pressionDynDeb;
+						data["debit"] = typeof(item.debit) === 'number' ? item.debit : null;
+						data["debitMax"] = typeof(item.debitMax) === 'number' ? item.debitMax : null;
+						data["pression"] = typeof(item.pression) === 'number' ? item.pression : null;
+						data["pressionDyn"] = typeof(item.pressionDyn) === 'number' ? item.pressionDyn : null;
+						data["pressionDynDeb"] = typeof(item.pressionDynDeb) === 'number' ? item.pressionDynDeb : null;
 						found = true;
 					}
 				}
