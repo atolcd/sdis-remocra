@@ -53,14 +53,14 @@ Sdis.Remocra.widget.map.controls.Measure = OpenLayers.Class(OpenLayers.Control.M
             this.map.addPopup(popup);
 
             // Visuel de la popup
-            popup.div.style.opacity = '0.75';
             popup.div.style.display = 'flex';
             popup.div.style.textAlign = 'center';
+            popup.div.style.height = '38px';
 
-            popup.div.style.backgroundColor = '#fff';
+            popup.div.style.backgroundColor = '#00b3b3';
             popup.div.style.border = 'solid 1px #00b3b3';
             popup.div.style.borderRadius = '4px';
-            popup.div.style.color = '#00b3b3';
+            popup.div.style.color = '#ffffff';
             popup.div.style.fontStyle = 'italic';
 
             popup.groupDiv.style.margin = 'auto';
