@@ -1227,40 +1227,46 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 jsonData: ids,
                 callback: function(param, success, response) {
                     if(success){
-                        var msg = "<div class=\"listHydrant\">";
+
+                        var hydrants = [];
                         for (i=0; i<features.length;i++){
-                            msg+= "<li>"+features[i].data.numero+"</li>";
+                            hydrants.push(features[i].data.internalId);
                         }
-                        msg+="</div>";
 
-                        var globalMessage = features.length === 1 ? 'Le point d\'eau suivant va être désaffecté de ses tournées :' : 'Les points'+
-                               'd\'eau suivants vont être désaffectés de leurs tournées :';
-                        globalMessage+= msg +'<br/> Pour quel(s) organisme(s) souhaitez-vous retirer ce PEI ?';
-
-                        Ext.Msg.show({
-                            title: 'Désaffectation',
-                            msg: globalMessage,
-                            icon: Ext.Msg.WARNING,
-                            buttonText: {
-                                yes: 'Le mien',
-                                no: 'Tous',
-                                cancel: 'Annuler'
+                        Ext.Ajax.request({
+                            url: Sdis.Remocra.util.Util.withBaseUrl('../hydrants/getDesaffectationMesssage'),
+                            params: {
+                                hydrants: JSON.stringify(hydrants)
                             },
-                            buttons: Ext.Msg.YESNOCANCEL,
-                            fn: function(btn){
-                                Ext.Ajax.request({
-                                      url: Sdis.Remocra.util.Util.withBaseUrl('../hydrants/desaffecter'),
-                                      params: {
-                                        json: JSON.stringify(ids),
-                                        allOrganismes: btn === 'no'
-                                      },
-                                      callback: function(param, success, response) {
-                                          var res = Ext.decode(response.responseText);
-                                          Sdis.Remocra.util.Msg.msg("Désaffectation", res.message);
-                                      }
-                                  });
+                            callback: function(param, success, response) {
+                                Ext.Msg.show({
+                                    title: 'Désaffectation',
+                                    msg: JSON.parse(response.responseText).message,
+                                    icon: Ext.Msg.WARNING,
+                                    buttonText: {
+                                        yes: 'Le mien',
+                                        no: 'Tous',
+                                        cancel: 'Annuler'
+                                    },
+                                    buttons: Ext.Msg.YESNOCANCEL,
+                                    fn: function(btn){
+                                        Ext.Ajax.request({
+                                              url: Sdis.Remocra.util.Util.withBaseUrl('../hydrants/desaffecter'),
+                                              params: {
+                                                json: JSON.stringify(ids),
+                                                allOrganismes: btn === 'no'
+                                              },
+                                              callback: function(param, success, response) {
+                                                  var res = Ext.decode(response.responseText);
+                                                  Sdis.Remocra.util.Msg.msg("Désaffectation", res.message);
+                                              }
+                                          });
+                                    }
+                                });
                             }
                         });
+
+
                     }else {
                        var res = Ext.decode(response.responseText);
                         Ext.Msg.show({

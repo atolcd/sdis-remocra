@@ -497,4 +497,39 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
         }
     }
 
+    public String getDesaffectationMesssage(String hydrants, ArrayList<Integer> organismes) {
+        hydrants = hydrants.replaceAll("[\\[\\]]","");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("<div class=\"listHydrant\">");
+
+        if(hydrants.indexOf(',') > -1) {
+            sb.append("Les points d'eau suivants vont être désaffectés de leurs tournées :");
+        } else {
+            sb.append("Le point d'eau suivant va être désaffecté de ses tournées :");
+        }
+
+        for(String s : hydrants.split(",")) {
+            Hydrant h = Hydrant.findHydrant(Long.parseLong(s));
+            ArrayList<String> nomTournees = new ArrayList<String>();
+            for(Tournee t : h.getTournees()){
+                if(organismes.contains(t.getAffectation().getId().intValue())) {
+                    nomTournees.add(t.getNom());
+                }
+
+            }
+            if(nomTournees.size() > 0) {
+                String formattedString = nomTournees.toString().replace("[", "(").replace("]", ")");
+                sb.append("<li>"+h.getNumero()+" "+formattedString+"</li>");
+            } else {
+                sb.append("<li>"+h.getNumero()+"</li>");
+            }
+        }
+        sb.append("<br/> Pour quel(s) organisme(s) souhaitez-vous retirer ce PEI ?");
+        sb.append("</div>");
+
+
+        return sb.toString();
+    }
+
 }

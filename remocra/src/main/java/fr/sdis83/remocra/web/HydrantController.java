@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.domain.remocra.Tournee;
 import fr.sdis83.remocra.service.TourneeService;
 import fr.sdis83.remocra.util.ExceptionUtils;
@@ -285,6 +286,17 @@ public class HydrantController {
         try {
             Point p = hydrantService.coordonneesToPoint(json);
             return new SuccessErrorExtSerializer(true, p.toString()).serialize();
+        } catch (Exception e) {
+            System.out.println(e);
+            return new SuccessErrorExtSerializer(false, "Problème survenu lors de la mise à jour des coordonnées").serialize();
+        }
+    }
+
+    @RequestMapping(value = "/getDesaffectationMesssage", method = RequestMethod.POST, headers = "Accept=application/json")
+    public ResponseEntity<java.lang.String> getDesaffectationMesssage(final @RequestParam(value = "hydrants", required = false) String hydrants){
+        try {
+            String reponse = hydrantService.getDesaffectationMesssage(hydrants, Organisme.getOrganismeAndChildren((serviceUtilisateur.getCurrentUtilisateur().getOrganisme().getId()).intValue()));
+            return new SuccessErrorExtSerializer(true, reponse).serialize();
         } catch (Exception e) {
             System.out.println(e);
             return new SuccessErrorExtSerializer(false, "Problème survenu lors de la mise à jour des coordonnées").serialize();
