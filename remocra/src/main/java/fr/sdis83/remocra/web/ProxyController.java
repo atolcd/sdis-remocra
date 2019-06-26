@@ -257,7 +257,7 @@ public class ProxyController {
             }
 
             // GetMap : on fait filtrer Geoserver selon la Zone de compétence
-            if (isGetMap) {
+            if (isGetMap||isGetFeatureInfo) {
                 if (!isPublic) {
                     String[] layers = request.getParameter("LAYERS").split(",");
                     // Exemple avec deux couches (clause INCLUDE si couche non
