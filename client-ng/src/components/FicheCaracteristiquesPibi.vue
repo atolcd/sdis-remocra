@@ -83,13 +83,13 @@
 			</div>
 
 			<div class="row">
-				<div class="col-md-4">
+				<div class="col-md-4 vertical-bottom">
 					<b-form-group label="Type de canalisation" label-for="typeReseauCanalisation" label-cols-md="6">
 						<b-form-select id="typeReseauCanalisation" v-model="hydrant.typeReseauCanalisation" class="parametre" :options="comboTypeReseauCanalisation" size="sm"></b-form-select>
 					</b-form-group>
 				</div>
 
-				<div class="col-md-4">
+				<div class="col-md-4 vertical-bottom">
 					<b-form-group label="Diamètre de canalisation" label-for="diametreCanalisation" invalid-feedback="Le diamètre n'est pas valide" :state="etats.diametreCanalisation" label-cols-md="7">
 						<b-form-input id="diametreCanalisation" v-model="hydrant.diametreCanalisation" class="parametre" type="number" size="sm" :state="etats.diametreCanalisation"></b-form-input>
 					</b-form-group>
@@ -98,9 +98,9 @@
 
 			<div class="row">
 				<div class="col-md-6">
-					<b-form-group label="Réservoir" label-for="reservoir" label-cols-md="2">
+					<b-form-group label="Réservoir" label-for="reservoir" label-cols-md="4">
 						<b-form-select id="reservoir" v-model="hydrant.reservoir" :options="comboReservoir" class="parametre" size="sm"></b-form-select>
-						<button class="btnInlineForm btn btn-sm btn-outline-success" @click.prevent v-b-modal.modal-reservoir>
+						<button class="btn addBtn" @click.prevent v-b-modal.modal-reservoir>
 							<img src="../assets/img/add.png">
 						</button>
 					</b-form-group>
@@ -222,7 +222,7 @@ export default {
 					geometrie: this.geometrie,
 					numeroInterne: this.hydrant.numeroInterne
 				}
-				
+
 			}).then(response => {
 				_.forEach(response.data.data, function(item) {
 					self.comboJumele.push({
@@ -287,7 +287,7 @@ export default {
 			return this.etats;
 		},
 
-		onReservoirCreated(values) {			  
+		onReservoirCreated(values) {
 			this.comboReservoir.push({
 				text: values.nom,
 				value: values.id
@@ -301,15 +301,21 @@ export default {
 			}
 		}
 	}
-  
+
 };
 </script>
 
 <style scoped>
 .vertical-bottom {
   display: flex;
-  align-items: flex-end
 }
 
+.addBtn{
+	padding: .25rem .5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+    position: absolute;
+}
 
 </style>
