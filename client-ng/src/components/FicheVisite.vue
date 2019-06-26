@@ -265,7 +265,10 @@ export default {
 		  * Etat (activé ou désactivé) du bouton contrôle débit pression
 		  */
 		ctrlDebitPressionDisabled: function() {
-			return this.hydrant.code != "PIBI" || this.selectedRow == null || this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CTRL";
+			return this.hydrant.code != "PIBI" || this.selectedRow == null 
+				|| (this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CTRL" 
+					&& this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CREA" 
+					&& this.typesVisites[this.listeVisites[this.selectedRow].type].code != "RECEP");
 		},
 
 		/**
@@ -709,12 +712,18 @@ export default {
 				data["anomalies"] = (this.listeVisites[0].anomalies) ? this.anomaliesRequeteResult.filter(item => this.listeVisites[0].anomalies.indexOf(item.id) != -1) : null;
 			}
 
-			// On recherche la visite de type contrôle technique périodique débit pression la plus récente
-			// Ce sont ses valeurs de débit et pression que prendront les attributs éponymes du PEI
+			/** On recherche la visite de type contrôle technique périodique débit pression la plus récente
+			  * Ce sont ses valeurs de débit et pression que prendront les attributs éponymes du PEI
+			  * Si il n'y a pas ce type de visite, on prend les valeurs de débit pression de la visite de ROI (si elle existe et que les données sont renseignées)
+			  * Si il n'y a pas de visite de réception, on regarde les valeurs de la visite de réception (suivant les mêmes critères)
+			  *
+			  * Si aucune visite n'est trouvée, les valeurs sont nulles
+			  */
 			if(this.hydrant.code == "PIBI" && this.listeVisites.length > 0){
 				var found = false;
 				for(var i = 0; i < this.listeVisites.length && !found; i++){
-					if(this.typesVisites[this.listeVisites[i].type].code === "CTRL" && this.listeVisites[i].ctrl_debit_pression){
+					if((this.typesVisites[this.listeVisites[i].type].code === "CTRL" || this.typesVisites[this.listeVisites[i].type].code === "RECEP" 
+						|| this.typesVisites[this.listeVisites[i].type].code === "CREA") && this.listeVisites[i].ctrl_debit_pression) {
 						var item = this.listeVisites[i];
 						data["debit"] = typeof(item.debit) === 'number' ? item.debit : null;
 						data["debitMax"] = typeof(item.debitMax) === 'number' ? item.debitMax : null;
@@ -723,6 +732,14 @@ export default {
 						data["pressionDynDeb"] = typeof(item.pressionDynDeb) === 'number' ? item.pressionDynDeb : null;
 						found = true;
 					}
+				}
+
+				if(!found) {
+					data["debit"] = null;
+					data["debitMax"] = null;
+					data["pression"] = null;
+					data["pressionDyn"] = null;
+					data["pressionDynDeb"] = null;
 				}
 			}
 			if(this.listeVisites && this.listeVisites.length > 0){
