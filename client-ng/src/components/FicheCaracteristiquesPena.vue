@@ -157,7 +157,7 @@ export default {
 		this.$emit('resolveForeignKey', ['materiau']);
 		this.$emit('getComboData', this, 'comboMateriau', '/remocra/typehydrantmateriaus.json', null, 'id', 'nom');
 		this.$emit('getComboData', this, 'comboTypeAspiration', '/remocra/typehydrantaspiration.json', null, 'id', 'nom');
-
+		this.onIllimiteeChecked(this.hydrant.illimitee);
 		this.aspirationsASupprimer = [];
 
 		// Si  l'hydrant a un identifiant, c'est une modification. Dans ce cas, on charge les aspirations existantes si elles existent
