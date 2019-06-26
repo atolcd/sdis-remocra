@@ -132,10 +132,6 @@
 									<b-form-group>
 										<b-form-checkbox-group id="checkbox-group-2" v-model="listeVisites[selectedRow].anomalies" name="flavour-2">
 											<table class="table table-striped table-sm table-bordered" id="tableAnomalies">
-												<thead class="thead-light">
-													<th scope="col">Point d'attention</th>
-												</thead>
-
 												<tbody>
 													<tr v-for="(item,index) in anomaliesFiltered" :key="index" class="rowAnomalie">
 														<b-form-checkbox :value="item.id" :class="getAnomalieClass(index)">{{item.nom}}</b-form-checkbox>
