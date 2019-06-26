@@ -24,7 +24,7 @@
 											{{dateFormatee(index)}}
 										</td>
 
-										<td>{{labelTypeSaisie(item)}} 
+										<td>{{labelTypeSaisie(item)}}
 										</td>
 
 										<td>
@@ -39,6 +39,7 @@
 			</div>
 
 			<div class="col-md-7" v-if="selectedRow != null">
+				<div :class="selectedRow!=0 ? 'notActive' : ''" >
 				<div class="row">
 					<div class="col-md-6">
 						<b-form-group label="Date " label-for="date" label-cols-md="3">
@@ -56,10 +57,10 @@
 				<div class="row">
 					<div class="col-md-6">
 						<b-form-group label="Type" label-for="type" label-cols-md="3">
-							<b-form-select 	id="type" 
-											v-model="listeVisites[selectedRow].type" 
-											:options="comboTypeVisitesFiltered" 
-											size="sm" 
+							<b-form-select 	id="type"
+											v-model="listeVisites[selectedRow].type"
+											:options="comboTypeVisitesFiltered"
+											size="sm"
 											v-on:change="onTypeVisiteChange"
 											:disabled="isVisiteProtegee(selectedRow)"></b-form-select>
 						</b-form-group>
@@ -90,12 +91,12 @@
 						</b-form-group>
 					</div>
 				</div>
-
+			</div>
 				<div class="row">
 					<div class="col-md-12">
 						<b-tabs fill content-class="mt-3" active-nav-item-class="text-primary">
 							<b-tab title="Mesures" active :disabled="!saisieDebitPression">
-
+                <div :class="selectedRow!=0 ? 'notActive' : ''">
 								<b-form-group label="Débit à 1 bar (m3/h) :" label-for="debit" label-cols-md="6">
 									<b-form-input id="debit" v-model="listeVisites[selectedRow].debit" type="number" size="sm" :disabled="!saisieDebitPression"></b-form-input>
 								</b-form-group>
@@ -115,10 +116,11 @@
 								<b-form-group label="Pression statique (bar) :" label-for="pression" label-cols-md="6">
 									<b-form-input id="pression" v-model.number="listeVisites[selectedRow].pression" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
 								</b-form-group>
-
+							</div>
 							</b-tab>
 
 							<b-tab class="anomalies-tab" title="Points d'attention">
+							<div :class="selectedRow!=0 ? 'notActive' : ''">
 								<div class="row" id="anomalieCritere">
 									<div class="col-md-12">
 										<p class="bold">{{anomaliesCriteres[indexCritere].nom}}</p>
@@ -146,19 +148,19 @@
 									</b-form-group>
 								</div>
 							</div>
-
+						</div>
 								<div class="row">
 									<div class="col-md-12">
 										<b-button @click.prevent @click="criterePrecedent" class="btn btn-primary" size="sm" :disabled="anomaliePrecedentDisabled">Precedent</b-button>
 										<b-button @click.prevent @click="critereSuivant" class="btn btn-secondary right" size="sm" :disabled="anomalieSuivantDisabled">Suivant</b-button>
 									</div>
 								</div>
-								
-							
+
+
 							</b-tab>
 
 							<b-tab title="Observations">
-								<div class="row">
+								<div class="row" :class="selectedRow!=0 ? 'notActive' : ''">
 									<div class="col-md-12">
 										<b-form-textarea
 											id="observations"
@@ -330,7 +332,7 @@ export default {
 		  * Les anomalies filtrées sont celles correspondant à la nature du type de PEI, du critère sélectionné ainsi qu'au type de saisie actuellement effectué
 		  */
 		anomaliesFiltered: function() {
-			return this.anomalies.filter(item => item.indispo[this.hydrant.nature] != null && item.critereCode == this.anomaliesCriteres[this.indexCritere].code 
+			return this.anomalies.filter(item => item.indispo[this.hydrant.nature] != null && item.critereCode == this.anomaliesCriteres[this.indexCritere].code
 				&& item.indispo[this.hydrant.nature].saisies.indexOf(this.typesVisites[this.listeVisites[this.selectedRow].type].code) > -1);
 		}
 	},
@@ -516,23 +518,23 @@ export default {
 					break;
 			}
 				//var d = new Date()
-        var anomalies =[];
+				var anomalies =[];
 				if(this.listeVisites.length != 0){
-				   anomalies= (this.listeVisites[0].anomalies) ? this.listeVisites[0].anomalies: [];
+					anomalies= (this.listeVisites[0].anomalies) ? this.listeVisites[0].anomalies: [];
 				}
 				var visite = {
 					type: typeVisite,
 					date: moment(new Date()).format("YYYY-MM-DD HH:mm"),
-					//date: d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2) + " " + 
+					//date: d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2) + " " +
 							//("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2) + ":" + ("0"+d.getSeconds()).slice(-2),
 					anomalies: anomalies,
 					ctrl_debit_pression: false
 				}
-				self.createVisiteDisabled = true;
-				self.listeVisites.unshift(visite);
+				this.createVisiteDisabled = true;
+				this.listeVisites.unshift(visite);
 				var splitDate = visite.date.split(" ");
-				self.formattedDate.unshift(splitDate[0]);
-				self.formattedTime.unshift(splitDate[1]);
+				this.formattedDate.unshift(splitDate[0]);
+				this.formattedTime.unshift(splitDate[1]);
 
 				this.onRowSelected(0); // Sélection automatique de la visite créée
 
@@ -554,7 +556,7 @@ export default {
 			var idVisite = this.listeVisites[this.selectedRow].id;
 			if(idVisite != undefined) {
 				this.visitesASupprimer.push(idVisite);
-			} 
+			}
 
 			this.listeVisites.splice(self.selectedRow, 1);
 			this.formattedDate.splice(self.selectedRow, 1);
@@ -643,7 +645,7 @@ export default {
 				return true;
 			}
 
-			if((index == this.listeVisites.length - 1 && this.nbVisitesInitiales != 0 ) 
+			if((index == this.listeVisites.length - 1 && this.nbVisitesInitiales != 0 )
 				|| (index == this.listeVisites.length - 2 && this.nbVisitesInitiales != 1)) {
 				return true;
 			} else {
@@ -660,7 +662,7 @@ export default {
 				this.indexCritere++;
 				if(!this.anomaliesFiltered.length) {
 					this.critereSuivant();
-				}			
+				}
 			}
 		},
 		/**
@@ -683,7 +685,7 @@ export default {
 		  * @param index L'index du critère situé dans this.anomaliesCriteres
 		  */
 		nbAnomaliesParCritere(index) {
-			return this.anomalies.filter(item => item.indispo[this.hydrant.nature] != null && item.critereCode == this.anomaliesCriteres[index].code 
+			return this.anomalies.filter(item => item.indispo[this.hydrant.nature] != null && item.critereCode == this.anomaliesCriteres[index].code
 									&& item.indispo[this.hydrant.nature].saisies.indexOf(this.typesVisites[this.listeVisites[this.selectedRow].type].code) > -1).length;
 		},
 
@@ -707,9 +709,9 @@ export default {
 			  * On parcourt toutes les visites, de la plus récente à la plus ancienne afin de trouver la première qui ne soit pas de type "non programmée"
 			  * Ses anomalies sont les anomalies du PEI => on fait remonter ces données dans les data envoyées pour la mise à jour du PEI
 			  */
-			    if(this.listeVisites.length > 0){
-						data["anomalies"] = (this.listeVisites[0].anomalies) ? this.anomaliesRequeteResult.filter(item => this.listeVisites[0].anomalies.indexOf(item.id) != -1) : null;
-					}
+			if(this.listeVisites.length > 0){
+				data["anomalies"] = (this.listeVisites[0].anomalies) ? this.anomaliesRequeteResult.filter(item => this.listeVisites[0].anomalies.indexOf(item.id) != -1) : null;
+			}
 
 			// On recherche la visite de type contrôle technique périodique débit pression la plus récente
 			// Ce sont ses valeurs de débit et pression que prendront les attributs éponymes du PEI
@@ -795,8 +797,8 @@ export default {
 }
 
 #tableScroll {
-	margin-top: 5px; 
-	max-height: 450px; 
+	margin-top: 5px;
+	max-height: 450px;
 	overflow: auto;
 }
 
@@ -814,5 +816,9 @@ export default {
 	max-height: 300px;
 	overflow-x: hidden;
 	overflow-y: auto;
+}
+.notActive {
+	pointer-events: none;
+	opacity: 0.4;
 }
 </style>
