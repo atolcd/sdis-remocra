@@ -229,6 +229,7 @@ export default {
       this.etats.voie = this.hydrant.voie ? 'valid' : 'invalid';
       this.etats.domaine = this.hydrant.domaine !== null ? 'valid' : 'invalid';
       this.etats.commune = this.hydrant.commune !== null ? 'valid' : 'invalid';
+      return this.etats;
     },
 
     // Informations pour la mise à jour des coordonnées
