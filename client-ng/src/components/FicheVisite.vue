@@ -515,32 +515,27 @@ export default {
 					typeVisite = this.typeNouvellesVisitesEtat3;
 					break;
 			}
-
-			var self = this;
-			new Promise(function(resolve){
 				//var d = new Date()
-
+        var anomalies =[];
+				if(this.listeVisites.length != 0){
+				   anomalies= (this.listeVisites[0].anomalies) ? this.listeVisites[0].anomalies: [];
+				}
 				var visite = {
 					type: typeVisite,
 					date: moment(new Date()).format("YYYY-MM-DD HH:mm"),
 					//date: d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2) + " " + 
 							//("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2) + ":" + ("0"+d.getSeconds()).slice(-2),
-					anomalies: [],
+					anomalies: anomalies,
 					ctrl_debit_pression: false
 				}
-
 				self.createVisiteDisabled = true;
 				self.listeVisites.unshift(visite);
-
 				var splitDate = visite.date.split(" ");
 				self.formattedDate.unshift(splitDate[0]);
 				self.formattedTime.unshift(splitDate[1]);
 
-				resolve();
-			}).then(function(){
-				self.onRowSelected(0); // Sélection automatique de la visite créée
-			});
-			
+				this.onRowSelected(0); // Sélection automatique de la visite créée
+
 		},
 
 		/**
@@ -712,15 +707,9 @@ export default {
 			  * On parcourt toutes les visites, de la plus récente à la plus ancienne afin de trouver la première qui ne soit pas de type "non programmée"
 			  * Ses anomalies sont les anomalies du PEI => on fait remonter ces données dans les data envoyées pour la mise à jour du PEI
 			  */
-			let continuer = true;
-			for(let i = 0; i < this.listeVisites.length && continuer; i++)
-			{
-				if(this.typesVisites[this.listeVisites[i].type].code != 'NP'){
-					data["anomalies"] = (this.listeVisites[i].anomalies) ? this.anomaliesRequeteResult.filter(item => this.listeVisites[i].anomalies.indexOf(item.id) != -1) : null;
-					continuer = false;
-				}
-			}
-
+			    if(this.listeVisites.length > 0){
+						data["anomalies"] = (this.listeVisites[0].anomalies) ? this.anomaliesRequeteResult.filter(item => this.listeVisites[0].anomalies.indexOf(item.id) != -1) : null;
+					}
 
 			// On recherche la visite de type contrôle technique périodique débit pression la plus récente
 			// Ce sont ses valeurs de débit et pression que prendront les attributs éponymes du PEI
