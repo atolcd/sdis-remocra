@@ -193,7 +193,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
 
     /**
      * Permet de trouver tous les hydrants éligibles pour un jumelage
-     * Le jumelage est possible si deux hydrants de type BI se trouvent à moins de 2 mètres l'un de l'autre
+     * Le jumelage est possible si deux hydrants de type BI se trouvent à moins de 25 mètres l'un de l'autre
      * @param geometrie La géométrie du PEI dont on recherche les jumelages possibles
      * @param nature La nature du PEI (le jumelage requiert que les deux hydrants soient de même nature
      * @param numeroInterne Le numéro interne du PEI, afin d'exclure le PEI actuel de la recherche
@@ -206,7 +206,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
                     "SELECT h.id, h.numero " +
                             "FROM remocra.hydrant h " +
                             "JOIN remocra.type_hydrant_nature tn ON tn.id = h.nature " +
-                            "WHERE ST_Distance(h.geometrie, :geometrie) < 2  " +
+                            "WHERE ST_Distance(h.geometrie, :geometrie) < 25  " +
                             "AND tn.nom = 'BI' AND h.nature = :nature and h.numero_interne != :numeroInterne")
             .setParameter("geometrie", "SRID=2154;"+geometrie.toString())
             .setParameter("nature", nature)
