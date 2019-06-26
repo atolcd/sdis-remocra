@@ -23,7 +23,7 @@
 
           <div class="col-md-3">
             <b-form-group label="Nature" label-for="nature" invalid-feedback="La nature doit être renseignée" :state="etats.nature" label-cols-md="4">
-              <b-form-select id="nature" v-model="hydrant.nature" class="parametre" :options="comboType" size="sm" :state="etats.nature" required ></b-form-select>
+              <b-form-select id="nature" v-model="hydrant.nature" class="parametre" :options="comboType" size="sm" :state="etats.nature" v-on:change="onNatureChange" required ></b-form-select>
             </b-form-group>
           </div>
 
@@ -405,6 +405,12 @@ export default {
         this.$refs.fichePibi.onNatureDeciChange();
       }
       
+    },
+
+    onNatureChange(value) {
+      if(this.$refs.fichePibi) {
+        this.$refs.fichePibi.updateComboDiametres(this.comboType.filter(item => item.value === value)[0].text);
+      }
     },
 
     /**

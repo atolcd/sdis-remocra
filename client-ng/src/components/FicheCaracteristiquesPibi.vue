@@ -160,6 +160,8 @@ export default {
 			comboReservoir: [],
 			comboJumele: [],
 
+			listeDiametres: [],
+
 			etats: {
 				anneeFabrication: null,
 				diametreCanalisation: null
@@ -203,7 +205,6 @@ export default {
 
 		this.$emit('resolveForeignKey', ['diametre', 'marque', 'modele', 'typeReseauAlimentation', 'typeReseauCanalisation', 'reservoir', 'serviceEaux', 'jumele']);
 
-		this.$emit('getComboData', this, 'comboDiametre', '/remocra/typehydrantdiametres.json', null, 'id', 'nom');
 		this.$emit('getComboData', this, 'comboMarque', '/remocra/typehydrantmarques.json', null, 'id', 'nom');
 		this.$emit('getComboData', this, 'comboServiceEaux', '/remocra/organismes.json', {
 			"filter": JSON.stringify([{"property":"typeOrganismeCode","value":"SERVICEEAUX"}])
@@ -212,10 +213,32 @@ export default {
 		this.$emit('getComboData', this, 'comboTypeReseauCanalisation', '/remocra/typereseaucanalisation.json', null, 'id', 'nom');
 		this.$emit('getComboData', this, 'comboReservoir', '/remocra/reservoir.json', null, 'id', 'nom', 'Aucun');
 
-		if(this.hydrant.id !== null) {
+		var self = this;
+		axios.get('/remocra/typehydrantdiametres.json').then(response => {
+			this.listeDiametres = [];
+			_.forEach(response.data.data, function(item) {
 
+				var tabNatures = [];
+				_.forEach(item.natures, nature => {
+					tabNatures.push(nature.code);
+				});
+
+				self.listeDiametres.push({
+					text: item.nom,
+					value: item.id,
+					natures: tabNatures
+				})
+			});
+		}).then(function(){
+			if(self.hydrant.nature !== null) {
+				self.updateComboDiametres(self.hydrantRecord.nature.nom);
+				self.hydrant.diametre = self.hydrantRecord.diametre.id;
+			}
+		}).catch(function(error) {
+			console.error('Retrieving combo data from /remocra/typehydrantdiametres', error);
+		})
+		if(this.hydrant.id !== null) {
 			this.comboJumele = [];
-			var self = this;
 			axios.get('/remocra/hydrantspibi/findjumelage', {
 				params: {
 					nature: this.hydrant.nature,
@@ -299,6 +322,14 @@ export default {
 				this.hydrant.surpresse = false;
 				this.hydrant.additive = false;
 			}
+		},
+
+		/**
+		  * Si la nature du PEI change, on va alimenter la combo Diametre avec les valeurs possibles pour cette nouvelle nature
+		  */
+		updateComboDiametres(code) {
+			this.hydrant.diametre = null;
+			this.comboDiametre = this.listeDiametres.filter(item => item.natures.indexOf(code) !== -1);
 		}
 	}
 
