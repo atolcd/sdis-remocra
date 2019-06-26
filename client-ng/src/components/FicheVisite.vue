@@ -24,7 +24,7 @@
 											{{dateFormatee(index)}}
 										</td>
 
-										<td>{{labelTypeSaisie(item)}}
+										<td>{{labelTypeSaisie(item)}} 
 										</td>
 
 										<td>
@@ -57,11 +57,12 @@
 				<div class="row">
 					<div class="col-md-6">
 						<b-form-group label="Type" label-for="type" label-cols-md="3">
-							<b-form-select 	id="type"
-											v-model="listeVisites[selectedRow].type"
-											:options="comboTypeVisitesFiltered"
-											size="sm"
+							<b-form-select 	id="type" 
+											v-model="listeVisites[selectedRow].type" 
+											:options="comboTypeVisitesFiltered" 
+											size="sm" 
 											v-on:change="onTypeVisiteChange"
+											required
 											:disabled="isVisiteProtegee(selectedRow)"></b-form-select>
 						</b-form-group>
 					</div>
@@ -151,8 +152,8 @@
 										<b-button @click.prevent @click="critereSuivant" class="btn btn-secondary right" size="sm" :disabled="anomalieSuivantDisabled">Suivant</b-button>
 									</div>
 								</div>
-
-
+								
+							
 							</b-tab>
 
 							<b-tab title="Observations">
@@ -175,6 +176,11 @@
 
 			</div>
 		</div>
+
+		<b-modal id="modal-datetime" size="sm" hide-header ok-only ok-title="OK" centered>
+			<p>Saisie invalide : </p>
+			<p class="my-4">Au moins deux visites sont renseignées pour la même date et la même heure sur ce point d'eau</p>
+		</b-modal>
 	</div>
 </template>
 
@@ -211,6 +217,13 @@ export default {
 			anomalies: [], // Liste de toutes les anomalies disponibles
 			anomaliesCriteres: [], // Liste des critères dans lesquels sont regroupés les anomalies
 			indexCritere: 0,
+
+			etats: {
+				date: null,
+				time: null,
+				noSameDateTime: null,
+				type: null
+			}
 		}
 	},
 
@@ -555,7 +568,7 @@ export default {
 			var idVisite = this.listeVisites[this.selectedRow].id;
 			if(idVisite != undefined) {
 				this.visitesASupprimer.push(idVisite);
-			}
+			} 
 
 			this.listeVisites.splice(self.selectedRow, 1);
 			this.formattedDate.splice(self.selectedRow, 1);
@@ -644,7 +657,7 @@ export default {
 				return true;
 			}
 
-			if((index == this.listeVisites.length - 1 && this.nbVisitesInitiales != 0 )
+			if((index == this.listeVisites.length - 1 && this.nbVisitesInitiales != 0 ) 
 				|| (index == this.listeVisites.length - 2 && this.nbVisitesInitiales != 1)) {
 				return true;
 			} else {
@@ -661,7 +674,7 @@ export default {
 				this.indexCritere++;
 				if(!this.anomaliesFiltered.length) {
 					this.critereSuivant();
-				}
+				}			
 			}
 		},
 		/**
@@ -684,8 +697,47 @@ export default {
 		  * @param index L'index du critère situé dans this.anomaliesCriteres
 		  */
 		nbAnomaliesParCritere(index) {
-			return this.anomalies.filter(item => item.indispo[this.hydrant.nature] != null && item.critereCode == this.anomaliesCriteres[index].code
+			return this.anomalies.filter(item => item.indispo[this.hydrant.nature] != null && item.critereCode == this.anomaliesCriteres[index].code 
 									&& item.indispo[this.hydrant.nature].saisies.indexOf(this.typesVisites[this.listeVisites[this.selectedRow].type].code) > -1).length;
+		},
+
+		checkFormValidity(){
+			var regexDate = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
+			var regexTime = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+
+			this.etats.date = 'valid';
+			_.forEach(this.formattedDate, date => {
+				if(!regexDate.test(date)) {
+					self.etats.date = 'invalid';
+				}
+			});
+
+			this.etats.time = 'valid';
+			_.forEach(this.formattedTime, time => {
+				if(!regexTime.test(time)) {
+					self.etats.time = 'invalid';
+				}
+			});
+
+
+			// Si deux visites sont à des dates et heures identiques, on affiche une alerte et on bloque la validation
+			if(this.listeVisites.length > 0){
+				this.etats.noSameDateTime = 'valid';
+				var tabDates = [];
+				_.forEach(this.listeVisites, (visite, index) => {
+					var date = this.formattedDate[index]+" "+this.formattedTime[index];
+
+					if(tabDates.indexOf(date) != -1){ // Une visite avec cette date existe déjà
+						this.etats.noSameDateTime = 'invalid';
+						this.$bvModal.show("modal-datetime");
+					} else {
+						tabDates.push(date);
+					}
+
+				})
+			}
+			
+			return this.etats;
 		},
 
 		/**
@@ -711,6 +763,7 @@ export default {
 			if(this.listeVisites.length > 0){
 				data["anomalies"] = (this.listeVisites[0].anomalies) ? this.anomaliesRequeteResult.filter(item => this.listeVisites[0].anomalies.indexOf(item.id) != -1) : null;
 			}
+			
 
 			/** On recherche la visite de type contrôle technique périodique débit pression la plus récente
 			  * Ce sont ses valeurs de débit et pression que prendront les attributs éponymes du PEI
@@ -834,4 +887,10 @@ export default {
 	pointer-events: none;
 	opacity: 0.4;
 }
+
+#modal-datetime p {
+	font-family: "Segoe UI",Roboto,"Helvetica Neue",Arial;
+	font-size: 14px;
+}
+
 </style>

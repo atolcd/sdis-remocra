@@ -443,29 +443,31 @@ export default {
       * La réponse est envoyée au serveur, qui fera appel à this.handleSubmit() pour procéder à l'envoi des données
       */ 
     checkFormValidity(){
-      this.etats.numeroInterne = !this.idHydrant || (this.idHydrant && this.hydrant.numeroInterne.toString().length > 0) ? 'valid' : 'invalid';
-      this.etats.gestionnaire = (this.hydrant.gestionnaire !== null) ? 'valid' : 'invalid';
-      this.etats.nature = this.hydrant.nature? 'valid' : 'invalid';
-      this.etats.autoriteDeci = (this.hydrant.autoriteDeci !== null) ? 'valid' : 'invalid';
-      this.etats.natureDeci = (this.hydrant.natureDeci !== null) ? 'valid' : 'invalid';
+        this.etats.numeroInterne = !this.idHydrant || (this.idHydrant && this.hydrant.numeroInterne.toString().length > 0) ? 'valid' : 'invalid';
+        this.etats.gestionnaire = (this.hydrant.gestionnaire !== null) ? 'valid' : 'invalid';
+        this.etats.nature = this.hydrant.nature? 'valid' : 'invalid';
+        this.etats.autoriteDeci = (this.hydrant.autoriteDeci !== null) ? 'valid' : 'invalid';
+        this.etats.natureDeci = (this.hydrant.natureDeci !== null) ? 'valid' : 'invalid';
 
-      var listeEtats = [];
-      listeEtats.push(this.etats);
-      listeEtats.push(this.$refs.ficheLocalisation.checkFormValidity());
+        var listeEtats = [];
+        listeEtats.push(this.etats);
+        listeEtats.push(this.$refs.ficheLocalisation.checkFormValidity());
 
-      if(this.$refs.fichePibi){
-        listeEtats.push(this.$refs.fichePibi.checkFormValidity());
-      }
-      else if(this.$refs.fichePena){
-        listeEtats.push(this.$refs.fichePena.checkFormValidity());
-      }
+        if(this.$refs.fichePibi){
+          listeEtats.push(this.$refs.fichePibi.checkFormValidity());
+        }
+        else if(this.$refs.fichePena){
+          listeEtats.push(this.$refs.fichePena.checkFormValidity());
+        }
 
-      var isFormValid = true;
-      _.forEach(listeEtats, item => {
-        isFormValid = isFormValid && !this.hasInvalidState(item)
-      });
+        listeEtats.push(this.$refs.ficheVisite.checkFormValidity());
 
-      return isFormValid;
+        var isFormValid = true;
+        _.forEach(listeEtats, item => {
+          isFormValid = isFormValid && !this.hasInvalidState(item)
+        });
+
+        return isFormValid;
     },
 
     /**
