@@ -14,7 +14,7 @@
 					v-model="hydrant.dispositif_inviolabilite"
 					class="parametre"
 					size="sm">
-					Dispositif d'inviolabilite
+					Dispositif d'inviolabilité
 				</b-form-checkbox>
 			</div>
 
