@@ -28,7 +28,7 @@
           </div>
 
           <div class="col-md-6">
-            <b-form-group label="Autorité de police DECI" label-for="autoriteDeci" invalid-feedback="L'autorité de police DECI doit être renseignée'" :state="etats.autoriteDeci" label-cols-md="5">
+            <b-form-group label="Autorité de police DECI" label-for="autoriteDeci" invalid-feedback="L'autorité de police DECI doit être renseignée" :state="etats.autoriteDeci" label-cols-md="5">
               <b-form-select id="autoriteDeci" v-model="hydrant.autoriteDeci" class="parametre" :options="comboAutoriteDeci" size="sm" :state="etats.autoriteDeci" required></b-form-select>
             </b-form-group>
           </div>
@@ -38,7 +38,7 @@
           <div class="col-md-4">
             <b-form-group label="Type de DECI"
                           label-for="nature_deci" 
-                          invalid-feedback="La nature DECI doit être renseignée'" 
+                          invalid-feedback="La nature DECI doit être renseignée" 
                           :state="etats.natureDeci"
                           label-cols-md="4">
               <b-form-select v-model="hydrant.natureDeci" :options="comboDeci" size="sm" id="natureDeci" class="parametre" v-on:change="getComboGestionnaire" :state="etats.natureDeci"></b-form-select>
