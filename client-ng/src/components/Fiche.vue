@@ -531,7 +531,7 @@ export default {
       // Récupération des données
       var data = {};
       _.forEach(document.getElementsByClassName('parametre'), item => {
-        if(item.classList.contains('custom-checkbox')){ // Checkbox
+        if(Array.from(item.classList).indexOf('custom-checkbox') > -1){ // Checkbox
           var element = item.getElementsByTagName('input')[0];
           data[element.id] = this.hydrant[element.id];
           
