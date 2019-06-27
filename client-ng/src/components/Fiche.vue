@@ -78,7 +78,10 @@
           </b-tab>
 
           <!-- ================================== Onglet Localisation ==================================-->
-          <b-tab title="Localisation" active>
+          <b-tab active>
+            <template slot="title">
+                    Localisation <b-badge pill variant="danger" v-if="tabWarning.localisation">!</b-badge>
+            </template>
             <FicheLocalisation  :hydrant="hydrant"
                                 :utilisateurDroits="utilisateurDroits" 
                                 :geometrie="geometrie"
@@ -90,7 +93,10 @@
           </b-tab>
 
           <!-- ================================== Onglet Caractéristiques techniques ==================================-->
-          <b-tab title="Caractéristiques techniques">
+          <b-tab>
+            <template slot="title">
+                    Caractéristiques techniques <b-badge pill variant="danger" v-if="tabWarning.caracteristiquesTechniques">!</b-badge>
+            </template>
             <FicheCaracteristiquesPibi  :hydrant="hydrant"
                                         :hydrantRecord="hydrantRecord"
                                         :listeNaturesDeci="listeNaturesDeci"
@@ -110,7 +116,10 @@
           </b-tab>
 
           <!-- ================================== Onglet Visites ==================================-->
-          <b-tab ref="visitesTab" title="Visites">
+          <b-tab ref="visitesTab">
+            <template slot="title">
+                    Visites <b-badge pill variant="danger" v-if="tabWarning.visites">!</b-badge>
+            </template>
             <FicheVisite  :hydrant="hydrant"
                           :utilisateurDroits="utilisateurDroits"
                           @getComboData="getComboData"
@@ -178,6 +187,11 @@ export default {
       comboAutoriteDeci: [],
 
       listeNaturesDeci: [],
+      tabWarning : {
+        localisation: false,
+        caracteristiquesTechniques: false,
+        visites: false,
+      },
 
       // Etat des champs du formulaire pour la validation
       etats: {
@@ -455,23 +469,32 @@ export default {
         this.etats.autoriteDeci = (this.hydrant.autoriteDeci !== null) ? 'valid' : 'invalid';
         this.etats.natureDeci = (this.hydrant.natureDeci !== null) ? 'valid' : 'invalid';
 
-        var listeEtats = [];
-        listeEtats.push(this.etats);
-        listeEtats.push(this.$refs.ficheLocalisation.checkFormValidity());
-
-        if(this.$refs.fichePibi){
-          listeEtats.push(this.$refs.fichePibi.checkFormValidity());
-        }
-        else if(this.$refs.fichePena){
-          listeEtats.push(this.$refs.fichePena.checkFormValidity());
-        }
-
-        listeEtats.push(this.$refs.ficheVisite.checkFormValidity());
+        this.tabWarning = {
+          localisation: false,
+          caracteristiquesTechniques: false,
+          visites: false
+        };
 
         var isFormValid = true;
-        _.forEach(listeEtats, item => {
-          isFormValid = isFormValid && !this.hasInvalidState(item)
-        });
+
+        if(this.hasInvalidState(this.etats)){
+          isFormValid = false;
+        }
+
+        if(this.hasInvalidState(this.$refs.ficheLocalisation.checkFormValidity())){
+          this.tabWarning.localisation = true;
+          isFormValid = false;
+        }
+
+        if((this.$refs.fichePibi && this.hasInvalidState(this.$refs.fichePibi.checkFormValidity())) || (this.$refs.fichePena && this.hasInvalidState(this.$refs.fichePena.checkFormValidity()))){
+          this.tabWarning.caracteristiquesTechniques = true;
+          isFormValid = false;
+        }
+
+        if(this.hasInvalidState(this.$refs.ficheVisite.checkFormValidity())){
+          this.tabWarning.visites = true;
+          isFormValid = false;
+        }
 
         return isFormValid;
     },

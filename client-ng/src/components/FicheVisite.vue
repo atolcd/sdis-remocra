@@ -708,14 +708,14 @@ export default {
 			this.etats.date = 'valid';
 			_.forEach(this.formattedDate, date => {
 				if(!regexDate.test(date)) {
-					self.etats.date = 'invalid';
+					this.etats.date = 'invalid';
 				}
 			});
 
 			this.etats.time = 'valid';
 			_.forEach(this.formattedTime, time => {
 				if(!regexTime.test(time)) {
-					self.etats.time = 'invalid';
+					this.etats.time = 'invalid';
 				}
 			});
 
