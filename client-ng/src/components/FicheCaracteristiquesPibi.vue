@@ -216,23 +216,23 @@ export default {
 		var self = this;
 		axios.get('/remocra/typehydrantdiametres.json').then(response => {
 			this.listeDiametres = [];
-			_.forEach(response.data.data, function(item) {
+			_.forEach(response.data.data, item => {
 
 				var tabNatures = [];
 				_.forEach(item.natures, nature => {
 					tabNatures.push(nature.code);
 				});
 
-				self.listeDiametres.push({
+				this.listeDiametres.push({
 					text: item.nom,
 					value: item.id,
 					natures: tabNatures
 				})
 			});
-		}).then(function(){
-			if(self.hydrant.nature !== null) {
-				self.updateComboDiametres(self.hydrantRecord.nature.nom);
-				self.hydrant.diametre = self.hydrantRecord.diametre.id;
+		}).then(() => {
+			if(this.hydrant.nature !== null) {
+				this.updateComboDiametres(this.hydrantRecord.nature.nom);
+				this.hydrant.diametre = (this.hydrantRecord.diametre) ? this.hydrantRecord.diametre.id : null;
 			}
 		}).catch(function(error) {
 			console.error('Retrieving combo data from /remocra/typehydrantdiametres', error);
