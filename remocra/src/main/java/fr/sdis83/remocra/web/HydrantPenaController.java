@@ -49,7 +49,7 @@ public class HydrantPenaController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
     @PreAuthorize("hasRight('HYDRANTS_R')")
-    public ResponseEntity<java.lang.String> getHydrant(final @RequestParam(value = "id", required = true) Long id) {
+    public ResponseEntity<java.lang.String> getHydrant(final @PathVariable("id") Long id) {
 
         return new AbstractExtObjectSerializer<HydrantPena>("fr.sdis83.remocra.domain.remocra.Hydrant-Pena retrieved.") {
 

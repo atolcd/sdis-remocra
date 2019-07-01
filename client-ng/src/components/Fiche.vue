@@ -272,7 +272,7 @@ export default {
     },
     modification() {
       let self = this
-      axios.get('/remocra/hydrants'+self.codeHydrant.toLowerCase()+'/'+self.idHydrant+'.json?&id='+self.idHydrant).then(response => {
+      axios.get('/remocra/hydrants'+self.codeHydrant.toLowerCase()+'/'+self.idHydrant).then(response => {
         if (response.data.data && response.data.data.length !== 0) {
 
           self.hydrantRecord = response.data.data;
