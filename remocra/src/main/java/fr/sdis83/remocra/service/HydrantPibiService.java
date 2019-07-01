@@ -229,6 +229,12 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
         for(HydrantVisite visite : listeVisites) {
             visite.remove();
         }
+
+        // Suppression du jumelage
+        HydrantPibi hp = HydrantPibi.findHydrantPibi(id).getJumele();
+        if(hp != null) {
+            hp.setJumele(null);
+        }
         super.delete(id);
         return true;
     }
