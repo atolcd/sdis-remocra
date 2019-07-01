@@ -68,7 +68,7 @@ public class HydrantPibi extends Hydrant {
     @ManyToOne
     private HydrantReservoir reservoir;
 
-    @ManyToOne(optional = true)
+    @OneToOne(optional = true)
     private HydrantPibi jumele;
 
     @Column

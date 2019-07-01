@@ -42,6 +42,28 @@ public class HydrantPibiController {
     @Autowired
     private HydrantPibiService hydrantPibiService;
 
+    protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+        return serializer
+                // anomalies
+                .include("data.anomalies")
+                // tournees
+                .include("data.tournees.id").include("data.tournees.nom")
+                .include( "data.utilisateurModification.id").include( "data.utilisateurModification.nom")
+
+            // photo associée
+                .include("data.photo")
+                // Documents
+                .include("data.hydrantDocuments.id").include("data.hydrantDocuments.titre").include("data.hydrantDocuments.code")
+                .include("data.jumele.id", "data.jumele.numero")
+                .exclude("data.hydrantDocuments.*")
+                .exclude("data.tournees.*")
+                .exclude( "data.organisme.zoneCompetence.geometrie")
+                .exclude( "data.utilisateurModification.*")
+                .exclude( "data.commune.geometrie")
+                .exclude("data.jumele.*");
+
+    }
+
     @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/json")
     @PreAuthorize("hasRight('HYDRANTS_R')")
     public ResponseEntity<java.lang.String> listJson(final @RequestParam(value = "page", required = false) Integer page,
@@ -85,24 +107,7 @@ public class HydrantPibiController {
 
             @Override
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
-                return serializer
-                        // anomalies
-                        .include("data.anomalies")
-                        // tournees
-                        .include("data.tournees.id").include("data.tournees.nom")
-                        .include( "data.utilisateurModification.id").include( "data.utilisateurModification.nom")
-
-                    // photo associée
-                        .include("data.photo")
-                        // Documents
-                        .include("data.hydrantDocuments.id").include("data.hydrantDocuments.titre").include("data.hydrantDocuments.code")
-                        .include("data.jumele.id")
-                        .exclude("data.hydrantDocuments.*")
-                        .exclude("data.tournees.*")
-                        .exclude( "data.organisme.zoneCompetence.geometrie")
-                        .exclude( "data.utilisateurModification.*")
-                        .exclude( "data.commune.geometrie")
-                        .exclude("data.jumele.*");
+                return HydrantPibiController.this.additionnalIncludeExclude(serializer);
 
             }
 
@@ -123,6 +128,11 @@ public class HydrantPibiController {
             final HydrantPibi attached = hydrantPibiService.create(json, files);
             if (attached != null) {
                 return new AbstractExtObjectSerializer<HydrantPibi>("Hydrant Pibi created.", SuccessErrorExtSerializer.DEFAULT_CONTENT_TYPE) {
+                    @Override
+                    protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+                        return HydrantPibiController.this.additionnalIncludeExclude(serializer);
+                    }
+
                     @Override
                     protected HydrantPibi getRecord() throws BusinessException {
                         return attached;
@@ -154,6 +164,11 @@ public class HydrantPibiController {
             if (attached != null) {
                 hydrantPibiService.launchTrigger(id);
                 return new AbstractExtObjectSerializer<HydrantPibi>("Hydrant Pibi updated.", SuccessErrorExtSerializer.DEFAULT_CONTENT_TYPE) {
+                    @Override
+                    protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+                        return HydrantPibiController.this.additionnalIncludeExclude(serializer);
+                    }
+
                     @Override
                     protected HydrantPibi getRecord() throws BusinessException {
                         return attached;
