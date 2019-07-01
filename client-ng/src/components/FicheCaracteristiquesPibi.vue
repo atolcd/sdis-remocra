@@ -32,7 +32,7 @@
 		<div class="row">
 			<div class="col-md-4">
 				<b-form-group label="Jumelé avec" label-for="jumele" label-cols-md="6">
-					<b-form-select id="jumele" v-model="hydrant.jumele" class="parametre" :options="comboJumele" :disabled="this.hydrant.id == null" size="sm"></b-form-select>
+					<b-form-select id="jumele" v-model="hydrant.jumele" class="parametre" :options="comboJumele" size="sm"></b-form-select>
 				</b-form-group>
 			</div>
 		</div>
@@ -213,7 +213,6 @@ export default {
 		this.$emit('getComboData', this, 'comboTypeReseauCanalisation', '/remocra/typereseaucanalisation.json', null, 'id', 'nom');
 		this.$emit('getComboData', this, 'comboReservoir', '/remocra/reservoir.json', null, 'id', 'nom', 'Aucun');
 
-		var self = this;
 		axios.get('/remocra/typehydrantdiametres.json').then(response => {
 			this.listeDiametres = [];
 			_.forEach(response.data.data, item => {
@@ -237,31 +236,9 @@ export default {
 		}).catch(function(error) {
 			console.error('Retrieving combo data from /remocra/typehydrantdiametres', error);
 		})
-		if(this.hydrant.id !== null) {
-			this.comboJumele = [];
-			axios.get('/remocra/hydrantspibi/findjumelage', {
-				params: {
-					nature: this.hydrant.nature,
-					geometrie: this.geometrie,
-					numeroInterne: this.hydrant.numeroInterne
-				}
-
-			}).then(response => {
-				_.forEach(response.data.data, function(item) {
-					self.comboJumele.push({
-						text: item.numero,
-						value: item.id
-					});
-				});
-
-				self.comboJumele.unshift({
-					text: 'Aucun',
-					value: null
-				});
-			}).catch(function(error) {
-				console.error('Retrieving combo data from /remocra/hydrantspibi/findjumelage', error);
-			})
-		}
+		
+		let nature = this.hydrantRecord.nature ? this.hydrantRecord.nature.code : null;
+		this.updateComboJumelage(nature);
 		this.onMarqueChange();
 	},
 
@@ -322,6 +299,56 @@ export default {
 				this.hydrant.surpresse = false;
 				this.hydrant.additive = false;
 			}
+		},
+
+		/**
+		  * Mise à jour de la combo de jumelage
+		  * @value La nature du PEI (BI, PI, etc), format texte
+		  * @geom Une géométrie. Paramètre optionnel. Si renseigné, la requête prendra en compte cette géométrie plutôt que celle initiale du PEI
+		  */ 
+		updateComboJumelage(value, geom) {
+			if(value === 'BI') {
+				this.comboJumele = [];
+				axios.get('/remocra/hydrantspibi/findjumelage', {
+					params: {
+						geometrie: (geom) ? geom : this.geometrie
+					}
+
+				}).then(response => {
+					_.forEach(response.data.data, item => {
+						if(this.hydrant.id == null || this.hydrant.id != item.id) {
+							this.comboJumele.push({
+								text: item.numero,
+								value: item.id
+							});
+						}
+					});
+
+					if(this.hydrantRecord.jumele){
+						this.comboJumele.push({
+							text: this.hydrantRecord.jumele.numero,
+							value: this.hydrantRecord.jumele.id
+						});
+					}
+
+					this.comboJumele.unshift({
+						text: 'Aucun',
+						value: null
+					});
+
+					this.hydrant.jumele = (this.hydrantRecord.jumele) ? this.hydrantRecord.jumele.id : null;
+				}).catch(function(error) {
+					console.error('Retrieving combo data from /remocra/hydrantspibi/findjumelage', error);
+				})
+			}
+			else {
+				this.comboJumele = [{
+					text: 'Aucun',
+					value: null
+				}]
+				this.hydrant.jumele = null;
+			}
+
 		},
 
 		/**

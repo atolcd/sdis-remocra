@@ -115,6 +115,10 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
     @Transactional
     public HydrantPibi create(String json, Map<String, MultipartFile> files) throws Exception {
         HydrantPibi hp = super.create(json, files);
+
+        if(hp.getJumele() != null){
+            hp.getJumele().setJumele(hp);
+        }
         // Pour déclencher le calcul des anomalies via trigger
         entityManager.createNativeQuery("update remocra.hydrant_pibi set debit=debit where id=:id")
                 .setParameter("id", hp.getId())
@@ -192,25 +196,21 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
    }
 
     /**
-     * Permet de trouver tous les hydrants éligibles pour un jumelage
+     * Permet de trouver tous les hydrants éligibles pour un jumelage situés autour d'une géométrie donnée
      * Le jumelage est possible si deux hydrants de type BI se trouvent à moins de 25 mètres l'un de l'autre
      * @param geometrie La géométrie du PEI dont on recherche les jumelages possibles
-     * @param nature La nature du PEI (le jumelage requiert que les deux hydrants soient de même nature
-     * @param numeroInterne Le numéro interne du PEI, afin d'exclure le PEI actuel de la recherche
-     *                        On ne passe pas par l'ID car le PEI peut ne pas en avoir à ce stade (création)
      * @return Un objet JSON contenant l'identifiant et le numéro des hydrant pouvant être utilisés pour le jumelage
      */
-    public JSONObject findJumelage(String geometrie, Integer nature, Integer numeroInterne){
+    public JSONObject findJumelage(String geometrie){
         JSONArray data = new JSONArray();
         List<Object[]> liste = entityManager.createNativeQuery(
                     "SELECT h.id, h.numero " +
                             "FROM remocra.hydrant h " +
                             "JOIN remocra.type_hydrant_nature tn ON tn.id = h.nature " +
+                            "JOIN remocra.hydrant_pibi hp on h.id=hp.id "+
                             "WHERE ST_Distance(h.geometrie, :geometrie) < 25  " +
-                            "AND tn.nom = 'BI' AND h.nature = :nature and h.numero_interne != :numeroInterne")
+                            "AND tn.nom = 'BI' AND hp.jumele IS NULL")
             .setParameter("geometrie", "SRID=2154;"+geometrie.toString())
-            .setParameter("nature", nature)
-            .setParameter("numeroInterne", numeroInterne)
             .getResultList();
         for(Object[] o : liste){
             JSONObject obj = new JSONObject();

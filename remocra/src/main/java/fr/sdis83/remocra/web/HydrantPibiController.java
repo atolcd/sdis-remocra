@@ -222,12 +222,10 @@ public class HydrantPibiController {
 
     @RequestMapping(value = "/findjumelage", method = RequestMethod.GET, headers = "Accept=application/json")
     @PreAuthorize("hasRight('HYDRANTS_R')")
-    public ResponseEntity<java.lang.String> findjumelage(final @RequestParam(value="geometrie") String geometrie,
-                                                         final @RequestParam(value="nature") Integer nature,
-                                                         final @RequestParam(value="numeroInterne") Integer numeroInterne) {
+    public ResponseEntity<java.lang.String> findjumelage(final @RequestParam(value="geometrie") String geometrie) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Content-Type", "application/json;charset=utf-8");
-        return new ResponseEntity<String>(hydrantPibiService.findJumelage(geometrie, nature, numeroInterne).toString(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<String>(hydrantPibiService.findJumelage(geometrie).toString(), responseHeaders, HttpStatus.OK);
     }
 
 }

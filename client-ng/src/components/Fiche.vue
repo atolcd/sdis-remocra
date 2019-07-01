@@ -90,6 +90,7 @@
                                 v-if="dataLoaded"
                                 @getComboData="getComboData"
                                 @resolveForeignKey="resolveForeignKey"
+                                @onCoordsChange="onCoordsChange"
                                 ref="ficheLocalisation">
             </FicheLocalisation>
           </b-tab>
@@ -430,7 +431,9 @@ export default {
 
     onNatureChange(value) {
       if(this.$refs.fichePibi) {
-        this.$refs.fichePibi.updateComboDiametres(this.comboType.filter(item => item.value === value)[0].text);
+        let nature = this.comboType.filter(item => item.value === value)[0].text;
+        this.$refs.fichePibi.updateComboDiametres(nature);
+        this.$refs.fichePibi.updateComboJumelage(nature);
       }
     },
 
@@ -464,7 +467,21 @@ export default {
       }
     },
 
+    /**
+      * Fonction appelée lorsque les coordonnées du PEI sont modifies
+      * On peut notifier les composants enfant, notamment si certains de leurs champs sont dépendant de la géométrie du PEI
+      */
+    onCoordsChange(longitude, latitude) {
+      this.geometrie = "POINT ("+longitude+" "+latitude+")";
 
+      // Mise à jour de la combo de sélection de jumelage
+      if(this.$refs.fichePibi) {
+        let nature = this.comboType.filter(item => item.value === this.hydrant.nature)[0].text;
+        this.$refs.fichePibi.updateComboJumelage(nature, this.geometrie);
+      }
+    },
+
+    
     /**
       * Valide ou non les données du formulaire de ce module ainsi que de ses modules enfants
       * La réponse est envoyée au serveur, qui fera appel à this.handleSubmit() pour procéder à l'envoi des données
