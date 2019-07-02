@@ -72,6 +72,9 @@ public class TypeDroit {
         HYDRANTS_ANOMALIES_C("hydrants.anomalies_C"),
         HYDRANTS_GESTIONNAIRE_C("hydrants.gestionnaire_C"),
         HYDRANTS_ADRESSE_C("hydrants.adresse_C"),
+        HYDRANTS_VISITE_NP_D("hydrants.visite_np_D"),
+        HYDRANTS_VISITE_RECO_D("hydrants.visite_reco_D"),
+        HYDRANTS_VISITE_CTRL_D("hydrants.visite_ctrl_D"),
 
         // Module Permis
         PERMIS_R("permis_R"),

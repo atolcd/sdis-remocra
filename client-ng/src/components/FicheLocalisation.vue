@@ -12,13 +12,13 @@
       <div class="row">
         <div class="col-md-6">
           <b-form-group :label="(systeme == 2154) ? 'X' : 'Longitude: '" label-for="domaine" label-cols-md="2">
-            <b-form-input id="longitude" v-model="longitude" type="text" size="sm" :disabled="modificationAdresseDisabled" v-on:change="$emit('onCoordsChange', longitude, latitude)" required></b-form-input>
+            <b-form-input id="longitude" v-model="longitude" type="text" size="sm" :disabled="utilisateurDroits.indexOf('HYDRANTS_DEPLACEMENT_C') == -1" v-on:change="$emit('onCoordsChange', longitude, latitude)" required></b-form-input>
           </b-form-group>
         </div>
 
         <div class="col-md-6">
           <b-form-group :label="(systeme == 2154) ? 'Y' : 'Latitude: '" label-for="domaine" label-cols-md="2">
-            <b-form-input id="latitude" v-model="latitude" type="text" size="sm" :disabled="modificationAdresseDisabled" v-on:change="$emit('onCoordsChange', longitude, latitude)" required ></b-form-input>
+            <b-form-input id="latitude" v-model="latitude" type="text" size="sm" :disabled="utilisateurDroits.indexOf('HYDRANTS_DEPLACEMENT_C') == -1" v-on:change="$emit('onCoordsChange', longitude, latitude)" required ></b-form-input>
           </b-form-group>
         </div>
       </div>

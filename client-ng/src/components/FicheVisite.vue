@@ -39,89 +39,91 @@
 			</div>
 
 			<div class="col-md-7" v-if="selectedRow != null">
-				<div :class="selectedRow!=0 ? 'notActive' : ''" >
-				<div class="row">
-					<div class="col-md-6">
-						<b-form-group label="Date " label-for="date" label-cols-md="3">
-							<b-form-input id="date" v-model="formattedDate[selectedRow]" type="date" size="sm" required></b-form-input>
-						</b-form-group>
+				<div :class="listeVisites[selectedRow].id !== undefined ? 'notActive' : ''" >
+					<div class="row">
+						<div class="col-md-6">
+							<b-form-group label="Date " label-for="date" label-cols-md="3">
+								<b-form-input id="date" v-model="formattedDate[selectedRow]" type="date" size="sm" required></b-form-input>
+							</b-form-group>
+						</div>
+
+						<div class="col-md-6">
+							<b-form-group label="Heure " label-for="heure" label-cols-md="3">
+								<b-form-input id="heure" v-model="formattedTime[selectedRow]" type="time" size="sm" required></b-form-input>
+							</b-form-group>
+						</div>
 					</div>
 
-					<div class="col-md-6">
-						<b-form-group label="Heure " label-for="heure" label-cols-md="3">
-							<b-form-input id="heure" v-model="formattedTime[selectedRow]" type="time" size="sm" required></b-form-input>
-						</b-form-group>
+					<div class="row">
+						<div class="col-md-6">
+							<b-form-group label="Type" label-for="type" label-cols-md="3">
+								<b-form-select 	id="type" 
+												v-model="listeVisites[selectedRow].type" 
+												:options="comboTypeVisitesFiltered" 
+												size="sm" 
+												v-on:change="onTypeVisiteChange"
+												invalid-feedback="Un type de visite doit être renseigné" 
+												:state="etats.type"
+												:disabled="isVisiteProtegee(selectedRow)"
+												required></b-form-select>
+							</b-form-group>
+						</div>
+
+						<div class="col-md-6 vertical-bottom">
+							<b-form-checkbox
+								id="ctrl_debit_pression"
+								v-model="listeVisites[selectedRow].ctrl_debit_pression"
+								v-on:change="onCtrlDebitPressionChecked"
+								:disabled="ctrlDebitPressionDisabled"
+								size="sm">
+								Contrôle débit et pression (CDP)
+							</b-form-checkbox>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<b-form-group label="Agent 1 :" label-for="agent1" label-cols-md="4">
+								<b-form-input id="agent1" v-model="listeVisites[selectedRow].agent1" type="text" size="sm"></b-form-input>
+							</b-form-group>
+						</div>
+
+						<div class="col-md-6">
+							<b-form-group label="Agent 2 :" label-for="agent2" label-cols-md="4">
+								<b-form-input id="agent2" v-model="listeVisites[selectedRow].agent2" type="text" size="sm"></b-form-input>
+							</b-form-group>
+						</div>
 					</div>
 				</div>
-
-				<div class="row">
-					<div class="col-md-6">
-						<b-form-group label="Type" label-for="type" label-cols-md="3">
-							<b-form-select 	id="type" 
-											v-model="listeVisites[selectedRow].type" 
-											:options="comboTypeVisitesFiltered" 
-											size="sm" 
-											v-on:change="onTypeVisiteChange"
-											required
-											:disabled="isVisiteProtegee(selectedRow)"></b-form-select>
-						</b-form-group>
-					</div>
-
-					<div class="col-md-6 vertical-bottom">
-						<b-form-checkbox
-							id="ctrl_debit_pression"
-							v-model="listeVisites[selectedRow].ctrl_debit_pression"
-							v-on:change="onCtrlDebitPressionChecked"
-							:disabled="ctrlDebitPressionDisabled"
-							size="sm">
-							Contrôle débit et pression (CDP)
-						</b-form-checkbox>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-6">
-						<b-form-group label="Agent 1 :" label-for="agent1" label-cols-md="4">
-							<b-form-input id="agent1" v-model="listeVisites[selectedRow].agent1" type="text" size="sm"></b-form-input>
-						</b-form-group>
-					</div>
-
-					<div class="col-md-6">
-						<b-form-group label="Agent 2 :" label-for="agent2" label-cols-md="4">
-							<b-form-input id="agent2" v-model="listeVisites[selectedRow].agent2" type="text" size="sm"></b-form-input>
-						</b-form-group>
-					</div>
-				</div>
-			</div>
 				<div class="row">
 					<div class="col-md-12">
 						<b-tabs fill content-class="mt-3" active-nav-item-class="text-primary">
 							<b-tab title="Mesures" active :disabled="!saisieDebitPression">
-                <div :class="selectedRow!=0 ? 'notActive' : ''">
-								<b-form-group label="Débit à 1 bar (m3/h) :" label-for="debit" label-cols-md="6">
-									<b-form-input id="debit" v-model="listeVisites[selectedRow].debit" type="number" size="sm" :disabled="!saisieDebitPression"></b-form-input>
-								</b-form-group>
+								<div :class="listeVisites[selectedRow].id !== undefined ? 'notActive' : ''">
+									<b-form-group label="Débit à 1 bar (m3/h) :" label-for="debit" label-cols-md="6">
+										<b-form-input id="debit" v-model="listeVisites[selectedRow].debit" type="number" size="sm" :disabled="!saisieDebitPression"></b-form-input>
+									</b-form-group>
 
-								<b-form-group label="Pression dynamique à 60 m3 (bar) :" label-for="pressionDyn" label-cols-md="6">
-									<b-form-input id="pressionDyn" v-model="listeVisites[selectedRow].pressionDyn" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
-								</b-form-group>
+									<b-form-group label="Pression dynamique à 60 m3 (bar) :" label-for="pressionDyn" label-cols-md="6">
+										<b-form-input id="pressionDyn" v-model="listeVisites[selectedRow].pressionDyn" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
+									</b-form-group>
 
-								<b-form-group label="Débit max (m3/h) :" label-for="debitMax" label-cols-md="6">
-									<b-form-input id="debitMax" v-model="listeVisites[selectedRow].debitMax" type="number" size="sm" :disabled="!saisieDebitPression"></b-form-input>
-								</b-form-group>
+									<b-form-group label="Débit max (m3/h) :" label-for="debitMax" label-cols-md="6">
+										<b-form-input id="debitMax" v-model="listeVisites[selectedRow].debitMax" type="number" size="sm" :disabled="!saisieDebitPression"></b-form-input>
+									</b-form-group>
 
-								<b-form-group label="Pression dynamique au débit max (bar) :" label-for="pressionDynDeb" label-cols-md="6">
-									<b-form-input id="pressionDynDeb" v-model="listeVisites[selectedRow].pressionDynDeb" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
-								</b-form-group>
+									<b-form-group label="Pression dynamique au débit max (bar) :" label-for="pressionDynDeb" label-cols-md="6">
+										<b-form-input id="pressionDynDeb" v-model="listeVisites[selectedRow].pressionDynDeb" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
+									</b-form-group>
 
-								<b-form-group label="Pression statique (bar) :" label-for="pression" label-cols-md="6">
-									<b-form-input id="pression" v-model.number="listeVisites[selectedRow].pression" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
-								</b-form-group>
-							</div>
+									<b-form-group label="Pression statique (bar) :" label-for="pression" label-cols-md="6">
+										<b-form-input id="pression" v-model.number="listeVisites[selectedRow].pression" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
+									</b-form-group>
+								</div>
 							</b-tab>
 
 							<b-tab class="anomalies-tab" title="Points d'attention">
-								<div :class="selectedRow!=0 ? 'notActive' : ''" v-if="anomaliesFiltered.length">
+								<div :class="listeVisites[selectedRow].id !== undefined ? 'notActive' : ''">
 									<div class="row" id="anomalieCritere">
 										<div class="col-md-12">
 											<p class="bold">{{anomaliesCriteres[indexCritere].nom}}</p>
@@ -139,13 +141,12 @@
 															</tr>
 														</tbody>
 													</table>
-
-
 												</b-form-checkbox-group>
 											</b-form-group>
 										</div>
 									</div>
 								</div>
+
 								<div class="row">
 									<div class="col-md-12">
 										<b-button @click.prevent @click="criterePrecedent" class="btn btn-primary" size="sm" :disabled="anomaliePrecedentDisabled">Precedent</b-button>
@@ -157,7 +158,7 @@
 							</b-tab>
 
 							<b-tab title="Observations">
-								<div class="row" :class="selectedRow!=0 ? 'notActive' : ''">
+								<div class="row" :class="listeVisites[selectedRow].id !== undefined ? 'notActive' : ''">
 									<div class="col-md-12">
 										<b-form-textarea
 											id="observations"
@@ -248,7 +249,7 @@ export default {
 		labelTypeSaisie: function() {
 			var self = this;
 			return function(item){
-				if(item.type === null){
+				if(!item.type || !self.typesVisites[item.type]){
 					return '';
 				}
 
@@ -277,6 +278,10 @@ export default {
 		  * Etat (activé ou désactivé) du bouton contrôle débit pression
 		  */
 		ctrlDebitPressionDisabled: function() {
+			if(!this.listeVisites[this.selectedRow].type){
+				return true;
+			}
+
 			return this.hydrant.code != "PIBI" || this.selectedRow == null 
 				|| (this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CTRL" 
 					&& this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CREA" 
@@ -292,7 +297,7 @@ export default {
 		  */
 		deleteVisiteDisabled: function() {
 			var hasRightToDelete = false;
-			if(this.selectedRow !== null){
+			if(this.selectedRow !== null && this.listeVisites[this.selectedRow].type){
 				let codeVisite = this.typesVisites[this.listeVisites[this.selectedRow].type].code;
 				hasRightToDelete = (this.utilisateurDroits.indexOf('HYDRANTS_VISITE_'+codeVisite+'_D') > -1);
 			}
@@ -359,6 +364,10 @@ export default {
 		  * Les anomalies filtrées sont celles correspondant à la nature du type de PEI, du critère sélectionné ainsi qu'au type de saisie actuellement effectué
 		  */
 		anomaliesFiltered: function() {
+			if(!this.listeVisites[this.selectedRow] || this.listeVisites[this.selectedRow].type == null){
+				return [];
+			}
+
 			return this.anomalies.filter(item => item.indispo[this.hydrant.nature] != null && item.critereCode == this.anomaliesCriteres[this.indexCritere].code
 				&& item.indispo[this.hydrant.nature].saisies.indexOf(this.typesVisites[this.listeVisites[this.selectedRow].type].code) > -1);
 		}
@@ -534,7 +543,8 @@ export default {
 					break;
 
 				default:
-					typeVisite = this.typeNouvellesVisitesEtat3;
+					//typeVisite = this.typeNouvellesVisitesEtat3;
+					typeVisite = null;
 					break;
 			}
 				var anomalies =[];
@@ -708,6 +718,9 @@ export default {
 		  * @param index L'index du critère situé dans this.anomaliesCriteres
 		  */
 		nbAnomaliesParCritere(index) {
+			if(!this.listeVisites[this.selectedRow].type){
+				return 0;
+			}
 			return this.anomalies.filter(item => item.indispo[this.hydrant.nature] != null && item.critereCode == this.anomaliesCriteres[index].code 
 									&& item.indispo[this.hydrant.nature].saisies.indexOf(this.typesVisites[this.listeVisites[this.selectedRow].type].code) > -1).length;
 		},
@@ -727,6 +740,13 @@ export default {
 			_.forEach(this.formattedTime, time => {
 				if(!regexTime.test(time)) {
 					this.etats.time = 'invalid';
+				}
+			});
+
+			this.etats.type = 'valid';
+			_.forEach(this.listeVisites, visite => {
+				if(visite.type === null){
+					this.etats.type = 'invalid';
 				}
 			});
 
