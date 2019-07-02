@@ -19,7 +19,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.min.css'
 import 'ol/ol.css'
 import 'v-autocomplete/dist/v-autocomplete.css'
 
-Vue.config.productionTip = false 
+Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
 Vue.use(rate)
@@ -53,7 +53,7 @@ const peiBuildFiche = function(el, data) {
     components: {
       Fiche
     },
-    template: "<Fiche :newVisite="+data.newVisite+" :idHydrant=" + data.id + " codeHydrant=" + data.code + "  geometrie='" + data.geometrie + "' />"
+    template: "<Fiche  title='"+data.title+"' :newVisite="+data.newVisite+" :idHydrant=" + data.id + " codeHydrant=" + data.code + "  geometrie='" + data.geometrie + "' />"
   })
   return v
 }

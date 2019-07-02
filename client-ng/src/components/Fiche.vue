@@ -1,20 +1,21 @@
 <template>
   <div class='Fiche'>
+    <b-modal id="modalFiche" ref="modalFiche" :title="title" no-close-on-backdrop  ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="close()" >
     <form id='formFiche' name='fiche' enctype="multipart/form-data" method="POST" ref="formFiche">
 <!-- ================================== En-tête du formulaire ==================================-->
       <div id="entete" class="form-group">
         <div class="row">
           <div class="col-md-3">
-            <b-form-group invalid-feedback="Le numéro du PEI est manquant" 
+            <b-form-group invalid-feedback="Le numéro du PEI est manquant"
                           :state="etats.numeroInterne"
                           label="Numéro interne"
                           label-for="numeroInterne"
                           label-cols-md="6">
-              <b-form-input type="text" 
-                            id="numeroInterne" 
-                            v-model="hydrant.numeroInterne" 
+              <b-form-input type="text"
+                            id="numeroInterne"
+                            v-model="hydrant.numeroInterne"
                             :disabled="!idHydrant"
-                            class="parametre" 
+                            class="parametre"
                             size="sm"
                             :state="etats.numeroInterne">
               </b-form-input>
@@ -35,7 +36,7 @@
         </div>
 
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-3">
             <b-form-group label="Type de DECI"
                           label-for="nature_deci" 
                           invalid-feedback="La nature DECI doit être renseignée" 
@@ -44,26 +45,27 @@
               <b-form-select v-model="hydrant.natureDeci" :options="comboDeci" size="sm" id="natureDeci" class="parametre" v-on:change="getComboGestionnaire" :state="etats.natureDeci"></b-form-select>
             </b-form-group>
           </div>
- 
+
           <div class="col-md-5">
-            <b-form-group label="Gestionnaire" label-for="gestionnaire" invalid-feedback="Le gestionnaire doit être renseigné" :state="etats.gestionnaire" label-cols-md="3">
+            <b-form-group label="Gestionnaire" label-for="gestionnaire" invalid-feedback="Le gestionnaire doit être renseigné" :state="etats.gestionnaire" label-cols-md="4">
               <b-form-select  id="gestionnaire"
-                              v-model="hydrant.gestionnaire" 
-                              class="parametre" 
-                              :options="comboGestionnaire" 
-                              size="sm" 
+                              v-model="hydrant.gestionnaire"
+                              class="parametre"
+                              :options="comboGestionnaire"
+                              size="sm"
                               v-on:change="onGestionnaireChange"
                               :state="etats.gestionnaire"
                               required>
               </b-form-select>
-              <button class="btnInlineForm btn btn-sm btn-outline-success" @click.prevent v-b-modal.modal-gestionnaire v-if="utilisateurDroits.indexOf('HYDRANTS_GESTIONNAIRE_C') != -1">
-                <img src="../assets/img/pencil.png">
+
+              <button class="btn gestionnaireBtn" @click.prevent v-b-modal.modalGestionnaire v-if="utilisateurDroits.indexOf('HYDRANTS_GESTIONNAIRE_C') != -1">
+                <img src="../assets/img/add.png">
               </button>
             </b-form-group>
           </div>
 
           <div class="col-md-3">
-            <b-form-group label="Site" label-for="site" label-cols-md="4">
+            <b-form-group label="Site" label-for="site" label-cols-md="3">
               <b-form-select id="site" v-model="hydrant.site" class="parametre" :options="comboSite" size="sm"></b-form-select>
             </b-form-group>
           </div>
@@ -83,7 +85,7 @@
                     Localisation <b-badge pill variant="danger" v-if="tabWarning.localisation">!</b-badge>
             </template>
             <FicheLocalisation  :hydrant="hydrant"
-                                :utilisateurDroits="utilisateurDroits" 
+                                :utilisateurDroits="utilisateurDroits"
                                 :geometrie="geometrie"
                                 v-if="dataLoaded"
                                 @getComboData="getComboData"
@@ -142,7 +144,7 @@
     </form>
 
     <ModalGestionnaire v-on:modalGestionnaireValues="onGestionnaireCreated"></ModalGestionnaire>
-
+  </b-modal>
   </div>
 </template>
 
@@ -174,10 +176,10 @@ export default {
   data() {
     return {
       hydrantRecord: {}, // Données initiales du PEI
-      hydrant: {}, // Données actuelles du PEI 
+      hydrant: {}, // Données actuelles du PEI
       utilisateurDroits: [],
       dataLoaded: false,
-      
+
 
       //ComboBox
       comboType: [],
@@ -203,7 +205,7 @@ export default {
       }
     }
   },
-  
+
   props: {
     newVisite: {
         type: Boolean,
@@ -223,11 +225,16 @@ export default {
     geometrie: {
       type: String,
       required: true
+    },
+    title:{
+      type: String,
+      required: true
     }
   },
 
   mounted: function(){
-    loadProgressBar({parent: "#formFiche", showSpinner: false})
+    this.$refs.modalFiche.show()
+    loadProgressBar({parent: "#modalFiche", showSpinner: false})
     var self = this;
     // Récupération des droits de l'utilisateur courant
     axios.get('/remocra/utilisateurs/current/xml').then(response => {
@@ -315,7 +322,7 @@ export default {
               libelle = "Maire de "+item['nom'];
               break;
 
-            case 'EPCI' : 
+            case 'EPCI' :
               libelle = "Président de "+item['nom'];
               break;
 
@@ -344,7 +351,7 @@ export default {
       * Récupère les données des combobox
       * @param attribut L'attribut du composant qui contiendra les données (on ne peut pas utiliser async/await par souci de compatibilité, et on évite l'enchaînement de callback)
       * @param url L'url remocra permettant de récupérer les données
-      * @param champValeur Indique parmis les données récupérées le champ de valeur 
+      * @param champValeur Indique parmis les données récupérées le champ de valeur
       * @param champTexte Indique parmis les données récupérées le champ texte à afficher dans la combo
       * @param optionVide Si indiqué, ajoute en première position une option vide valant null avec un texte configurable
       */
@@ -380,7 +387,7 @@ export default {
       if(this.hydrantRecord.natureDeci && (this.hydrant.natureDeci == idDeciPrive) != (this.hydrantRecord.natureDeci.id == idDeciPrive)){
         this.hydrant.gestionnaire = null;
       }
-      
+
       //Si DECI privé, le gestionnaire est un privé
       if(this.hydrant.natureDeci == idDeciPrive){
         this.getComboData(this, 'comboGestionnaire', '/remocra/gestionnaire.json', null, 'id', 'nom', ' ');
@@ -418,7 +425,7 @@ export default {
       if(this.$refs.fichePibi){
         this.$refs.fichePibi.onNatureDeciChange();
       }
-      
+
     },
 
     onNatureChange(value) {
@@ -448,7 +455,7 @@ export default {
             "sort": JSON.stringify([{"property":"nom","direction":"ASC"}])
         }, 'id', 'nom', 'Aucun');
       }
-      
+
       if(this.hydrantRecord.gestionnaire != this.hydrant.gestionnaire){
         this.hydrant.site = null;
       }
@@ -457,11 +464,11 @@ export default {
       }
     },
 
-    
+
     /**
       * Valide ou non les données du formulaire de ce module ainsi que de ses modules enfants
       * La réponse est envoyée au serveur, qui fera appel à this.handleSubmit() pour procéder à l'envoi des données
-      */ 
+      */
     checkFormValidity(){
         this.etats.numeroInterne = !this.idHydrant || (this.idHydrant && this.hydrant.numeroInterne.toString().length > 0) ? 'valid' : 'invalid';
         this.etats.gestionnaire = (this.hydrant.gestionnaire !== null) ? 'valid' : 'invalid';
@@ -512,11 +519,28 @@ export default {
       }
       return hasInvalidState;
     },
- 
+
     /**
       * Envoie les données au serveur afin de procéder à la mise à jour de l'hydrant
       * @param url L'url à contacter
       */
+    handleOk(evt){
+      evt.preventDefault()
+       var formValid = this.checkFormValidity();
+       if(formValid){
+         var url  = null;
+         if(this.hydrant != null){
+           if(this.hydrant.code == "PIBI"){
+             url = '/remocra/hydrantspibi'
+           }
+          else{
+            url = '/remocra/hydrantspena'
+           }
+             url = url + (this.hydrant.id == null ? '' : '/' + this.hydrant.id);
+             this.handleSubmit(url);
+         }
+       }
+    },
     handleSubmit(url){
       // Si la nature est passée de PRIVE a PUBLIC/CONVENTIONNE ou inversement, le PEI ne respecte plus la contrainte de nature DECI au sein de ses tournées
       // On le désaffecte donc pour tous les organismes
@@ -534,7 +558,7 @@ export default {
         if(Array.from(item.classList).indexOf('custom-checkbox') > -1){ // Checkbox
           var element = item.getElementsByTagName('input')[0];
           data[element.id] = this.hydrant[element.id];
-          
+
         } else if(item.type === "number"){ // Input de type number
           data[item.id] = (item.value === "") ? null : parseInt(item.value);
 
@@ -604,6 +628,7 @@ export default {
                self.$root.$options.bus.$emit('pei_modified', {
                  id: id, numero: numero
                })
+               self.$refs.modal.hide()
              });
           }).catch(function(error) {
             console.error('postEvent', error)
@@ -611,6 +636,10 @@ export default {
       }).catch(function (error) {
         console.log(error);
       });
+    },
+
+    close(){
+      this.$root.$options.bus.$emit('closed')
     }
 
   }
@@ -618,11 +647,8 @@ export default {
 </script>
 
 <style>
-
-.Fiche{
-  margin-top: 27px;
-  min-height: 250px;
-  padding: 10px;
+.Fiche {
+  width: 600px;
 }
 
 .nav-link {
@@ -672,5 +698,20 @@ label {
   margin-bottom: 2px;
 }
 
-
+#modalFiche .modal-content {
+  width: max-content;
+  left: 50%;
+  transform: translate(-50%);
+  background-color: #e9e9e9 !important;
+}
+#modalFiche .modal-backdrop {
+  opacity: 0;
+}
+.gestionnaireBtn{
+	padding: .25rem .5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+    position: absolute;
+}
 </style>

@@ -1,11 +1,10 @@
 <template>
   <div>
-    <b-modal 
-        id="modal-gestionnaire" 
-        centered 
-        title="Ajout d'un gestionnaire" 
-        cancel-title="Annuler" 
-        ok-title="Valider" 
+    <b-modal
+        id="modalGestionnaire"
+        title="Ajout d'un gestionnaire"
+        cancel-title="Annuler"
+        ok-title="Valider"
         ref="modalGestionnaire"
         @show="resetModal"
         @hidden="resetModal"
@@ -20,7 +19,7 @@
           <b-form-input
               id="inputNom"
               v-model="gestionnaire.nom"
-              :state="etats.nom" >      
+              :state="etats.nom" >
           </b-form-input>
         </b-form-group>
 
@@ -39,7 +38,7 @@
           ></b-form-input>
         </b-form-group>
       </form>
-      
+
     </b-modal>
   </div>
 </template>
@@ -105,28 +104,32 @@ export default {
       }).catch(function (error) {
         console.log(error);
       });
-        
+
     }
 
   }
-  
+
 };
 </script>
 
 <style>
 
-#modal-gestionnaire .invalid-feedback{
+#modalGestionnaire .invalid-feedback{
   font-size: 12px;
 }
 
-#modal-gestionnaire {
+#modalGestionnaire {
   color: black;
 }
 
-#modal-gestionnaire .modal-title{
+#modalGestionnaire .modal-title{
   color: #7B7B7B;
   font-size: 20px;
   font-family: sans-serif,arial,verdana;
+}
+
+#modalGestionnaire .modal-backdrop.show {
+  opacity:0;
 }
 
 </style>

@@ -100,7 +100,7 @@
 				<div class="col-md-6">
 					<b-form-group label="Réservoir" label-for="reservoir" label-cols-md="4">
 						<b-form-select id="reservoir" v-model="hydrant.reservoir" :options="comboReservoir" class="parametre" size="sm"></b-form-select>
-						<button class="btn addBtn" @click.prevent v-b-modal.modal-reservoir>
+						<button class="btn addBtn" @click.prevent v-b-modal.modalReservoir>
 							<img src="../assets/img/add.png">
 						</button>
 					</b-form-group>

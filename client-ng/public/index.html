@@ -79,12 +79,12 @@
           remocraVue.peiBuildFiche('#fichepei-container', {
             newVisite: params['newVisite']?Boolean(params['newVisite']):null,
             id: Number(params['id']), code: params['code'],
-            geometrie: params['geometrie']?decodeURIComponent(params['geometrie']):null
+            geometrie: params['geometrie']?decodeURIComponent(params['geometrie']):null, title:'test'
           });
         } else if (params['module']=='hydrant' && params['geometrie'] && params['code']) {
           // PEI Création
           remocraVue.peiBuildFiche('#fichepei-container', {
-            id: null, code: params['code'], geometrie: params['geometrie']?decodeURIComponent(params['geometrie']):null
+            id: null, code: params['code'], geometrie: params['geometrie']?decodeURIComponent(params['geometrie']):null, title:'test'
           });
         } else {
           document.getElementById('autre').style.display=''

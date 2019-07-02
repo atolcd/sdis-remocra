@@ -67,7 +67,7 @@ Ext.application({
     appFolder : '/remocra/resources/js/app/remocra',
     
     controllers: ['Metadonnee',
-                  'hydrant.Hydrant', 'oldeb.Oldeb', 'hydrant.Fiche', 'oldeb.Fiche', 'hydrant.Admin', 'hydrant.Prescrit', 'hydrant.Requetage',
+                  'hydrant.Hydrant', 'oldeb.Oldeb', 'oldeb.Fiche', 'hydrant.Admin', 'hydrant.Prescrit', 'hydrant.Requetage',
                   'documents.Admin', 'documents.Fiche','crise.Crise',
                   'rci.Rci', 'rci.Fiche',
                   'cartographie.Cartographie',

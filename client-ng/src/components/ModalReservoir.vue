@@ -1,11 +1,10 @@
 <template>
   <div>
-    <b-modal 
-        id="modal-reservoir" 
-        centered 
-        title="Ajout d'un réservoir" 
-        cancel-title="Annuler" 
-        ok-title="Valider" 
+    <b-modal
+        id="modalReservoir"
+        title="Ajout d'un réservoir"
+        cancel-title="Annuler"
+        ok-title="Valider"
         ref="modalReservoir"
         @show="resetModal"
         @hidden="resetModal"
@@ -20,7 +19,7 @@
           <b-form-input
               id="inputNom"
               v-model="reservoir.nom"
-              :state="etats.nom" >      
+              :state="etats.nom" >
           </b-form-input>
         </b-form-group>
 
@@ -41,7 +40,7 @@
           ></b-form-input>
         </b-form-group>
       </form>
-      
+
     </b-modal>
   </div>
 </template>
@@ -106,28 +105,23 @@ export default {
       }).catch(function (error) {
         console.log(error);
       });
-        
+
     }
 
   }
-  
+
 };
 </script>
 
 <style>
 
-#modal-gestionnaire .invalid-feedback{
+#modalReservoir .invalid-feedback{
   font-size: 12px;
 }
 
-#modal-gestionnaire {
-  color: black;
-}
-
-#modal-gestionnaire .modal-title{
+#modalReservoir .modal-title{
   color: #7B7B7B;
   font-size: 20px;
   font-family: sans-serif,arial,verdana;
 }
-
 </style>

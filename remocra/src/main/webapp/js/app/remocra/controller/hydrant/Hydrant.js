@@ -9,10 +9,25 @@ Ext.require('Sdis.Remocra.store.TypeHydrantNature');
 Ext.require('Sdis.Remocra.model.Hydrant');
 Ext.require('Sdis.Remocra.model.HydrantPena');
 Ext.require('Sdis.Remocra.model.HydrantPibi');
+Ext.require('Sdis.Remocra.store.Commune');
+Ext.require('Sdis.Remocra.model.Voie');
+Ext.require('Sdis.Remocra.store.TypeHydrant');
+Ext.require('Sdis.Remocra.store.TypeHydrantAnomalie');
+Ext.require('Sdis.Remocra.store.TypeHydrantDiametre');
+Ext.require('Sdis.Remocra.store.TypeHydrantDomaine');
+Ext.require('Sdis.Remocra.store.TypeHydrantNature');
+Ext.require('Sdis.Remocra.store.TypeHydrantNatureTous');
+Ext.require('Sdis.Remocra.store.TypeHydrantVolConstate');
+Ext.require('Sdis.Remocra.store.TypeHydrantMarque');
+Ext.require('Sdis.Remocra.store.TypeHydrantPositionnement');
+Ext.require('Sdis.Remocra.store.TypeHydrantMateriau');
+Ext.require('Sdis.Remocra.store.Utilisateur');
+Ext.require('Sdis.Remocra.store.TypeHydrantNatureDeci');
+Ext.require('Sdis.Remocra.store.TypeHydrantNatureDeciTous');
+Ext.require('Sdis.Remocra.model.HydrantPena');
+Ext.require('Sdis.Remocra.model.HydrantPibi');
 
 Ext.require('Sdis.Remocra.widget.SdisChoice');
-Ext.require('Sdis.Remocra.features.hydrants.FichePena');
-Ext.require('Sdis.Remocra.features.hydrants.FichePibi');
 Ext.require('Sdis.Remocra.features.hydrants.Affectation');
 Ext.require('Sdis.Remocra.features.hydrants.NouvelleIndispo');
 Ext.require('Sdis.Remocra.features.hydrants.EditIndispo');
@@ -22,7 +37,10 @@ Ext.require('Sdis.Remocra.features.hydrants.LeveIndispo');
 Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     extend: 'Ext.app.Controller',
 
-    stores: ['Tournee','Commune','Voie','Hydrant','TypeHydrant','Organisme'],
+    stores: ['Tournee','Commune','Voie','Hydrant','TypeHydrant','Organisme','Commune', 'Voie', 'Hydrant', 'TypeHydrant',
+     'TypeHydrantAnomalie', 'TypeHydrantDiametre', 'TypeHydrantDomaine','TypeHydrantNature', 'TypeHydrantNatureTous',
+      'TypeHydrantVolConstate','TypeHydrantMarque', 'Utilisateur', 'TypeHydrantPositionnement', 'TypeHydrantMateriau','TypeHydrantNatureDeci',
+       'TypeHydrantNatureDeciTous'],
 
     refs: [{
         ref: 'tabPanel',
@@ -1088,7 +1106,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             model.load(id, {
                 scope: this,
                 success: function(record) {
-                    this.getController('hydrant.Fiche').showFiche(record, controle);
+                    this.showFiche(record, controle);
                 }
             });
         }
@@ -1127,7 +1145,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             }
             win.ignoreDestroyFeature = true;
             win.close();
-            this.getController('hydrant.Fiche').showFiche(hydrant, true);
+            this.showFiche(hydrant, true);
 
         }
     },
@@ -1926,6 +1944,29 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 }
             });
         }
-     }
+     },
+      showFiche: function(hydrant, controle) {
+              var codeHydrant = (hydrant.get('code') == 'PIBI' ? 'PIBI' : 'PENA');
+              var geometrie = hydrant.data.geometrie;
+              var idHydrant = hydrant.data.id;
+              var title = idHydrant ?
+              codeHydrant + " n° " + hydrant.data.numero + " - " + hydrant.data.nomCommune
+              : 'Nouveau ' + codeHydrant;
+              var d = document.createElement('div');
+              var id = "show-fiche-"+(++Ext.AbstractComponent.AUTO_ID);
+              d.id=id;
+              document.body.appendChild(d);
+               var vueFiche = window.remocraVue.peiBuildFiche(d, {
+                         id: idHydrant, code: codeHydrant, geometrie: geometrie, newVisite: controle, title: title
+                     });
+               vueFiche.$options.bus.$on('pei_modified', Ext.bind(function(data) {
+                       this.hydrantsChanged();
+               }, this));
+
+               vueFiche.$options.bus.$on('closed', Ext.bind(function(data) {
+                       vueFiche.$el.remove();
+                       vueFiche.$destroy();
+               }, this));
+         }
 
 });

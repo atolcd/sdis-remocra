@@ -46,6 +46,11 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
         store: 'Hydrant',
         dock: 'bottom',
         displayInfo: true
+    },{
+
+        text:'fiche',
+        id:'show-fiche'
+
     }],
 
     initComponent: function() {
