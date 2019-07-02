@@ -70,7 +70,7 @@ public class TypeDroit {
         HYDRANTS_PRESCRIT_R("hydrants.prescrit_R"),
         HYDRANTS_PRESCRIT_C("hydrants.prescrit_C"),
         HYDRANTS_ANOMALIES_C("hydrants.anomalies_C"),
-        HYDRANTS_GESTIONNAIRE_C("hydrants.gestionnaire._C"),
+        HYDRANTS_GESTIONNAIRE_C("hydrants.gestionnaire_C"),
         HYDRANTS_ADRESSE_C("hydrants.adresse_C"),
 
         // Module Permis
