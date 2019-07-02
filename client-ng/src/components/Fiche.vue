@@ -520,7 +520,20 @@ export default {
           isFormValid = false;
         }
 
-        return isFormValid;
+        // On vérifie que le numéro de PEI n'est pas un doublon
+        if(this.hydrant.id)
+        {
+          return axios.post('/remocra/hydrants/checkdispo.json?id='+this.hydrant.id+'&nature='+this.hydrant.nature+'&commune='+this.hydrant.commune+'&num='+this.hydrant.numeroInterne+'&geometrie='+this.geometrie)
+          .then(() => {
+            return isFormValid;
+          })
+          .catch(function(error) {
+            alert(error.response.data.message);
+            return false;
+          });
+        } else {
+          return isFormValid
+        }
     },
 
     /**
@@ -543,21 +556,28 @@ export default {
       */
     handleOk(evt){
       evt.preventDefault()
-       var formValid = this.checkFormValidity();
-       if(formValid){
-         var url  = null;
-         if(this.hydrant != null){
-           if(this.hydrant.code == "PIBI"){
-             url = '/remocra/hydrantspibi'
-           }
-          else{
-            url = '/remocra/hydrantspena'
-           }
-             url = url + (this.hydrant.id == null ? '' : '/' + this.hydrant.id);
-             this.handleSubmit(url);
-         }
-       }
+      var url  = null;
+      if(this.hydrant != null){
+        if(this.hydrant.code == "PIBI"){
+          url = '/remocra/hydrantspibi'
+        }
+        else{
+          url = '/remocra/hydrantspena'
+        }
+      }
+      url = url + (this.hydrant.id == null ? '' : '/' + this.hydrant.id);
+
+      if(this.hydrant.id){ // PEI déjà en base -> on attend le retour de la requête faite au serveur pour éviter les doublons de numéro de PEI
+        this.checkFormValidity().then((response) => {
+          if(response){
+            this.handleSubmit(url);
+          }
+        });
+      } else if(this.checkFormValidity()){
+        this.handleSubmit(url);
+      }
     },
+
     handleSubmit(url){
       // Si la nature est passée de PRIVE a PUBLIC/CONVENTIONNE ou inversement, le PEI ne respecte plus la contrainte de nature DECI au sein de ses tournées
       // On le désaffecte donc pour tous les organismes
