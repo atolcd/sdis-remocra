@@ -121,31 +121,31 @@
 							</b-tab>
 
 							<b-tab class="anomalies-tab" title="Points d'attention">
-							<div :class="selectedRow!=0 ? 'notActive' : ''">
-								<div class="row" id="anomalieCritere">
-									<div class="col-md-12">
-										<p class="bold">{{anomaliesCriteres[indexCritere].nom}}</p>
+								<div :class="selectedRow!=0 ? 'notActive' : ''" v-if="anomaliesFiltered.length">
+									<div class="row" id="anomalieCritere">
+										<div class="col-md-12">
+											<p class="bold">{{anomaliesCriteres[indexCritere].nom}}</p>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-md-12">
+											<b-form-group>
+												<b-form-checkbox-group id="checkbox-group-2" v-model="listeVisites[selectedRow].anomalies" name="flavour-2">
+													<table class="table table-striped table-sm table-bordered" id="tableAnomalies">
+														<tbody>
+															<tr v-for="(item,index) in anomaliesFiltered" :key="index" class="rowAnomalie">
+																<b-form-checkbox :value="item.id" :class="getAnomalieClass(index)">{{item.nom}}</b-form-checkbox>
+															</tr>
+														</tbody>
+													</table>
+
+
+												</b-form-checkbox-group>
+											</b-form-group>
+										</div>
 									</div>
 								</div>
-
-								<div class="row">
-									<div class="col-md-12">
-									<b-form-group>
-										<b-form-checkbox-group id="checkbox-group-2" v-model="listeVisites[selectedRow].anomalies" name="flavour-2">
-											<table class="table table-striped table-sm table-bordered" id="tableAnomalies">
-												<tbody>
-													<tr v-for="(item,index) in anomaliesFiltered" :key="index" class="rowAnomalie">
-														<b-form-checkbox :value="item.id" :class="getAnomalieClass(index)">{{item.nom}}</b-form-checkbox>
-													</tr>
-												</tbody>
-											</table>
-
-
-										</b-form-checkbox-group>
-									</b-form-group>
-								</div>
-							</div>
-						</div>
 								<div class="row">
 									<div class="col-md-12">
 										<b-button @click.prevent @click="criterePrecedent" class="btn btn-primary" size="sm" :disabled="anomaliePrecedentDisabled">Precedent</b-button>
@@ -204,7 +204,6 @@ export default {
 
 			// Boutons de création/supression de visites
 			createVisiteDisabled: false,
-			deleteVisiteDisabled: true,
 
 			typeNouvellesVisitesEtat1: null, // L'id du type de visite à la création (forcé)
 			typeNouvellesVisitesEtat2: null, // L'id du type de visite à la seconde visite (forcé)
@@ -282,6 +281,22 @@ export default {
 				|| (this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CTRL" 
 					&& this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CREA" 
 					&& this.typesVisites[this.listeVisites[this.selectedRow].type].code != "RECEP");
+		},
+
+		/**
+		  * Booléen déterminant si le bouton de suppression des visites est désactivé
+		  * On peut supprimer une visite si les conditions suivantes sont réunies:
+		  *		- La visite n'est pas protégée (CREA ou RECEP, soit les deux premières visites d'un hydrant)
+		  * 	- La visite est la plus récente (index 0): on supprime par "désempilage" (structure LIFO): nécessaire pour le calcul des anomalies
+		  *		- On a le droit de supprimer une visite de ce type OU il s'agit de la visite créée grâce au bouton "nouvelle visite", donc une visite non présente dans la BDD
+		  */
+		deleteVisiteDisabled: function() {
+			var hasRightToDelete = false;
+			if(this.selectedRow !== null){
+				let codeVisite = this.typesVisites[this.listeVisites[this.selectedRow].type].code;
+				hasRightToDelete = (this.utilisateurDroits.indexOf('HYDRANTS_VISITE_'+codeVisite+'_D') > -1);
+			}
+			return (this.isVisiteProtegee(this.selectedRow) || this.selectedRow > 0 || (!this.createVisiteDisabled && !hasRightToDelete));
 		},
 
 		/**
@@ -472,12 +487,6 @@ export default {
 
                     self.anomalies.push(a);
 
-                })
-
-                // Ajout manuel du premier critere
-                self.anomaliesCriteres.push({
-                    id: null,
-                    nom: '-'
                 });
 
                 self.anomaliesCriteres.sort(function(a,b){
@@ -498,7 +507,6 @@ export default {
         axios.all(requests).then(function () {
             self.$root.$options.bus.$emit('pei_visite_ready')
         })
-		this.deleteVisiteDisabled = true;
 	},
 
 	methods: {
@@ -529,7 +537,6 @@ export default {
 					typeVisite = this.typeNouvellesVisitesEtat3;
 					break;
 			}
-				//var d = new Date()
 				var anomalies =[];
 				if(this.listeVisites.length != 0){
 					anomalies= (this.listeVisites[0].anomalies) ? this.listeVisites[0].anomalies: [];
@@ -547,6 +554,9 @@ export default {
 				this.formattedTime.unshift(splitDate[1]);
 
 				this.onRowSelected(0); // Sélection automatique de la visite créée
+
+				this.indexCritere = -1;
+				this.critereSuivant();
 
 		},
 
@@ -616,8 +626,9 @@ export default {
 			});
 			this.selectedRow = index;
 			this.updateComboTypeVisitesFiltered();
-			this.deleteVisiteDisabled = this.isVisiteProtegee(index);
-			this.indexCritere = this.anomaliesCriteres.length > 0 ? 1 : 0;
+			
+			this.indexCritere = -1;
+			this.critereSuivant();
 		},
 
 		/**
@@ -625,6 +636,8 @@ export default {
 		  */
 		onTypeVisiteChange() {
 			this.listeVisites[this.selectedRow].ctrl_debit_pression = false;
+			this.indexCritere = -1;
+			this.critereSuivant();
 		},
 
 		/**
