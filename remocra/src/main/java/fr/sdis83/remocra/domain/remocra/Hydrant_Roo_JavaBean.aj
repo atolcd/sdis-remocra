@@ -386,5 +386,13 @@ privileged aspect Hydrant_Roo_JavaBean {
     public void Hydrant.setAutoriteDeci(Organisme autoriteDeci) {
        this.autoriteDeci = autoriteDeci;
     }
+
+    public Boolean Hydrant.getEnFace() {
+        return this.enFace;
+    }
+
+    public void Hydrant.setEnFace(Boolean enFace) {
+       this.enFace = enFace;
+    }
     
 }

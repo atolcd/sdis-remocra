@@ -36,7 +36,7 @@
         </div>
 
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-4">
             <b-form-group label="Type de DECI"
                           label-for="nature_deci" 
                           invalid-feedback="La nature DECI doit être renseignée" 
@@ -47,7 +47,7 @@
           </div>
 
           <div class="col-md-5">
-            <b-form-group label="Gestionnaire" label-for="gestionnaire" invalid-feedback="Le gestionnaire doit être renseigné" :state="etats.gestionnaire" label-cols-md="4">
+            <b-form-group label="Gestionnaire" label-for="gestionnaire" invalid-feedback="Le gestionnaire doit être renseigné" :state="etats.gestionnaire" label-cols-md="3">
               <b-form-select  id="gestionnaire"
                               v-model="hydrant.gestionnaire"
                               class="parametre"

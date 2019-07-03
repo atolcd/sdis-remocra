@@ -45,13 +45,23 @@
           </b-form-group>
         </div>
 
-        <div class="col-md-3">
-          <b-form-group label="Suffixe" label-for="suffixeVoie" label-cols-md="4">
+        <div class="col-md-2">
+          <b-form-group label="Suffixe" label-for="suffixeVoie" label-cols-md="5">
             <b-form-input id="suffixeVoie" v-model="hydrant.suffixeVoie" class="parametre" type="text" size="sm" :disabled="modificationAdresseDisabled"></b-form-input>
           </b-form-group>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-2">
+          <b-form-checkbox
+            id="enFace"
+            v-model="hydrant.enFace"
+            class="parametre"
+            size="sm">
+            Situé en face
+          </b-form-checkbox>
+        </div>
+
+        <div class="col-md-5">
           <b-form-group label="Niveau" label-for="niveau" label-cols-md="2">
               <b-form-select id="niveau" v-model="hydrant.niveau" class="parametre" :options="comboNiveau" size="sm" :disabled="modificationAdresseDisabled"></b-form-select>
           </b-form-group>
