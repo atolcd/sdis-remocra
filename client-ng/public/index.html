@@ -43,7 +43,7 @@
         </ol>
       </div>
       <div class="help links">
-        <b>❗ Exemples Crise :</b>
+        <b>💧 Exemples PEI :</b>
         <ul>
           <li>Création de
             <a href="?module=hydrant&code=PIBI&geometrie=POINT%20(651812%206862842)">PIBI</a>, de
@@ -58,7 +58,7 @@
             <a href="?module=hydrant&id=267796&code=PENA&newVisite=true">PENA</a>
           </li>
         </ul>
-        <b>💧 Exemples PEI :</b>
+        <b>❗ Exemples Crise :</b>
         <ul>
           <li><a href="?module=crise&id=1">Ouverture d'une crise</a></li>
         </ul>
@@ -77,14 +77,14 @@
         } else if (params['module']=='hydrant' && params['id'] && params['code']) {
           // PEI Mise à jour
           remocraVue.peiBuildFiche('#fichepei-container', {
-            newVisite: params['newVisite']?Boolean(params['newVisite']):null,
+            newVisite: params['newVisite']?params['newVisite']=='true':null,
             id: Number(params['id']), code: params['code'],
-            geometrie: params['geometrie']?decodeURIComponent(params['geometrie']):null, title:'test'
+            geometrie: params['geometrie']?decodeURIComponent(params['geometrie']):null, title:'PEI - Mise à jour'
           });
         } else if (params['module']=='hydrant' && params['geometrie'] && params['code']) {
           // PEI Création
           remocraVue.peiBuildFiche('#fichepei-container', {
-            id: null, code: params['code'], geometrie: params['geometrie']?decodeURIComponent(params['geometrie']):null, title:'test'
+            id: null, code: params['code'], geometrie: params['geometrie']?decodeURIComponent(params['geometrie']):null, title:'PEI - Création'
           });
         } else {
           document.getElementById('autre').style.display=''
