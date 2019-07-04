@@ -1950,7 +1950,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
               var geometrie = hydrant.data.geometrie;
               var idHydrant = hydrant.data.id;
               var title = idHydrant ?
-              codeHydrant + " n° " + hydrant.data.numero + " - " + hydrant.data.nomCommune
+              codeHydrant + " n° " + hydrant.data.numero + " - " + hydrant.data.nomCommune.replace(/'/g, ' ')
               : 'Nouveau ' + codeHydrant;
               var d = document.createElement('div');
               var id = "show-fiche-"+(++Ext.AbstractComponent.AUTO_ID);

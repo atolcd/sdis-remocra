@@ -628,7 +628,7 @@ export default {
                self.$root.$options.bus.$emit('pei_modified', {
                  id: id, numero: numero
                })
-               self.$refs.modal.hide()
+               self.$refs.modalFiche.hide()
              });
           }).catch(function(error) {
             console.error('postEvent', error)
