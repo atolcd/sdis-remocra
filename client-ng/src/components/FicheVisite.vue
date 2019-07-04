@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="row">
-			<div class="col-md-5">
+			<div class="col-md-5 visites-lst">
 				<div class="row">
 					<div class="col-md-12">
 						<button class="btn btn-outline-primary" @click.prevent @click="createVisite" :disabled="createVisiteDisabled">Nouvelle visite</button>
@@ -38,7 +38,7 @@
 				</div>
 			</div>
 
-			<div class="col-md-7" v-if="selectedRow != null">
+			<div :class="{ 'col-md-7': !newVisite, 'col-md-12': newVisite }" v-if="selectedRow != null">
 				<div :class="listeVisites[selectedRow].id !== undefined ? 'notActive' : ''" >
 					<div class="row">
 						<div class="col-md-6">
@@ -236,6 +236,11 @@ export default {
 		utilisateurDroits: {
 			required: true,
 			type: Array
+		},
+
+		newVisite: {
+			type: Boolean,
+			default: false
 		}
 	},
 

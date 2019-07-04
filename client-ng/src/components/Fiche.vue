@@ -1,9 +1,10 @@
 <template>
   <div class='Fiche'>
-    <b-modal id="modalFiche" ref="modalFiche" :title="title" no-close-on-backdrop  ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="close()" >
+    <b-modal id="modalFiche" :class="{ 'mode-visite': newVisite }" ref="modalFiche" :title="title" no-close-on-backdrop
+        ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="close()" >
     <form id='formFiche' name='fiche' enctype="multipart/form-data" method="POST" ref="formFiche">
 <!-- ================================== En-tête du formulaire ==================================-->
-      <div id="entete" class="form-group">
+      <div id="entete" class="entete form-group">
         <div class="row">
           <div class="col-md-3">
             <b-form-group invalid-feedback="Le numéro du PEI est manquant"
@@ -125,6 +126,7 @@
             </template>
             <FicheVisite  :hydrant="hydrant"
                           :utilisateurDroits="utilisateurDroits"
+                          :newVisite="newVisite"
                           @getComboData="getComboData"
                           @resolveForeignKey="resolveForeignKey"
                           ref="ficheVisite"
@@ -286,8 +288,8 @@ export default {
           self.createCombo();
 
           if (self.newVisite===true) {
+            self.$refs.visitesTab.activate()
             self.$root.$options.bus.$on('pei_visite_ready', () => {
-              self.$refs.visitesTab.activate()
               self.$refs.ficheVisite.createVisite()
             })
           }
@@ -751,5 +753,12 @@ label {
     line-height: 1.5;
     border-radius: .2rem;
     position: absolute;
+}
+
+.mode-visite .entete, .mode-visite ul.nav-tabs, .mode-visite .visites-lst {
+  display: none;
+}
+.mode-visite .modal-body {
+  padding-top: 0;
 }
 </style>
