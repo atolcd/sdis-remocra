@@ -51,17 +51,17 @@ Sdis.Remocra.widget.map.controls.Measure = OpenLayers.Class(OpenLayers.Control.M
     createNewPopup: function(){
             var popup = new OpenLayers.Popup("tooltip-measure-"+(this.isArea?'polygon':'path'), null, new OpenLayers.Size(80, 20), "xxxxxxx km", false);
             this.map.addPopup(popup);
-
             // Visuel de la popup
             popup.div.style.display = 'flex';
             popup.div.style.textAlign = 'center';
             popup.div.style.height = '38px';
 
-            popup.div.style.backgroundColor = '#00b3b3';
-            popup.div.style.border = 'solid 1px #00b3b3';
+            popup.div.style.backgroundColor = '#ff4e4e';
+            popup.div.style.border = 'solid 1px #b83838';
             popup.div.style.borderRadius = '4px';
-            popup.div.style.color = '#ffffff';
+            popup.div.style.color = '#000000';
             popup.div.style.fontStyle = 'italic';
+            popup.div.style.textShadow = '0px 0px 2px #ffffff, 0px 0px 2px #ffffff, 0px 0px 2px #ffffff, 0px 0px 2px #ffffff, 0px 0px 2px #ffffff';
 
             popup.groupDiv.style.margin = 'auto';
             popup.groupDiv.style.height = popup.div.style.height;
@@ -87,19 +87,19 @@ Sdis.Remocra.widget.map.controls.Measure = OpenLayers.Class(OpenLayers.Control.M
                 fillOpacity: 1,
                 strokeWidth: 1,
                 strokeOpacity: 1,
-                strokeColor: "#00b3b3"
+                strokeColor: "#ff4e4e"
             },
             "Line": {
                 strokeWidth: 1,
                 strokeOpacity: 1,
-                strokeColor: "#00b3b3"
+                strokeColor: "#ff4e4e"
             },
             "Polygon": {
                 strokeWidth: 1,
                 strokeOpacity: 1,
-                strokeColor: "#00b3b3",
-                fillColor: "white",
-                fillOpacity: 0.3
+                strokeColor: "#ff4e4e",
+                fillColor: "#ff4e4e",
+                fillOpacity: 0.6
             }
         };
         var style = new OpenLayers.Style();
