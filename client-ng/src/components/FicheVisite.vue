@@ -809,11 +809,12 @@ export default {
 					if((this.typesVisites[this.listeVisites[i].type].code === "CTRL" || this.typesVisites[this.listeVisites[i].type].code === "RECEP" 
 						|| this.typesVisites[this.listeVisites[i].type].code === "CREA") && this.listeVisites[i].ctrl_debit_pression) {
 						var item = this.listeVisites[i];
-						data["debit"] = typeof(item.debit) === 'number' ? item.debit : null;
-						data["debitMax"] = typeof(item.debitMax) === 'number' ? item.debitMax : null;
-						data["pression"] = typeof(item.pression) === 'number' ? item.pression : null;
-						data["pressionDyn"] = typeof(item.pressionDyn) === 'number' ? item.pressionDyn : null;
-						data["pressionDynDeb"] = typeof(item.pressionDynDeb) === 'number' ? item.pressionDynDeb : null;
+
+						data["debit"] = typeof(Number(item.debit)) === 'number' ? item.debit : null;
+						data["debitMax"] = typeof(Number(item.debitMax)) === 'number' ? item.debitMax : null;
+						data["pression"] = typeof(Number(item.pression)) === 'number' ? item.pression : null;
+						data["pressionDyn"] = typeof(Number(item.pressionDyn)) === 'number' ? item.pressionDyn : null;
+						data["pressionDynDeb"] = typeof(Number(item.pressionDynDeb)) === 'number' ? item.pressionDynDeb : null;
 						found = true;
 					}
 				}
