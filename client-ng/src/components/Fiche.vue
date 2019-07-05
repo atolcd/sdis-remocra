@@ -235,7 +235,7 @@ export default {
 
   mounted: function(){
     this.$refs.modalFiche.show()
-    loadProgressBar({parent: "#modalFiche", showSpinner: false})
+    loadProgressBar({parent: "#formFiche", showSpinner: false})
     var self = this;
     // Récupération des droits de l'utilisateur courant
     axios.get('/remocra/utilisateurs/current/xml').then(response => {
@@ -662,6 +662,7 @@ export default {
 
              axios.all(requests)
              .then(function () {
+               loadProgressBar({parent: "head", showSpinner: false});
                self.$root.$options.bus.$emit('pei_modified', {
                  id: id, numero: numero
                })
