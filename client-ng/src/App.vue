@@ -567,4 +567,14 @@ body {
 .gestcrise .btn-group>.btn {
   cursor: pointer;
 }
+
+/* Animation d'un texte (variation de l'opacité) */
+@keyframes opacity-anim {
+  0% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
 </style>

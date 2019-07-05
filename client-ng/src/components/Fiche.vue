@@ -1,6 +1,6 @@
 <template>
-  <div class='Fiche'>
-    <b-modal id="modalFiche" :class="{ 'mode-visite': newVisite }" ref="modalFiche" :title="title" no-close-on-backdrop
+  <div :class="{ 'Fiche': true, 'mode-visite': newVisite, 'loading': !dataLoaded }">
+    <b-modal id="modalFiche" ref="modalFiche" :title="title" no-close-on-backdrop
         ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="close()" >
     <form id='formFiche' name='fiche' enctype="multipart/form-data" method="POST" ref="formFiche">
 <!-- ================================== En-tête du formulaire ==================================-->
@@ -760,5 +760,11 @@ label {
 }
 .mode-visite .modal-body {
   padding-top: 0;
+}
+
+.Fiche.loading .modal-body::after {
+  content: 'Initialisation fiche...';
+  margin-left: calc(50% - 67px);
+  animation: opacity-anim 1s linear infinite;
 }
 </style>

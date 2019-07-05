@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div :class="{ 'visites': true, 'loading': !dataLoaded }">
 		<div class="row">
 			<div class="col-md-5 visites-lst">
 				<div class="row">
@@ -223,7 +223,9 @@ export default {
 				time: null,
 				noSameDateTime: null,
 				type: null
-			}
+			},
+
+			dataLoaded: false
 		}
 	},
 
@@ -519,6 +521,7 @@ export default {
         )
 
         axios.all(requests).then(function () {
+            self.dataLoaded = true
             self.$root.$options.bus.$emit('pei_visite_ready')
         })
 	},
@@ -928,6 +931,12 @@ export default {
 #modal-datetime p {
 	font-family: "Segoe UI",Roboto,"Helvetica Neue",Arial;
 	font-size: 14px;
+}
+
+.visites.loading::after {
+  content: 'Initialisation visites...';
+  margin-left: calc(50% - 72px);
+  animation: opacity-anim 1s linear infinite;
 }
 
 </style>
