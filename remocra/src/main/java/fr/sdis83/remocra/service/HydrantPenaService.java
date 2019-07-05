@@ -58,4 +58,13 @@ public class HydrantPenaService extends AbstractHydrantService<HydrantPena> {
         super.delete(id);
         return true;
     }
+
+    @Transactional
+    public boolean launchTrigger(Long id) throws Exception {
+        // Pour déclencher le calcul des anomalies via trigger
+        entityManager.createNativeQuery("update remocra.hydrant_pena set capacite=capacite where id=:id")
+            .setParameter("id", id)
+            .executeUpdate();
+        return true;
+    }
 }

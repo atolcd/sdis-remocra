@@ -111,7 +111,9 @@ public class HydrantPenaController {
                 if (paramPibi != null && !paramPibi.isEmpty() && jsonAssocie != null && !jsonAssocie.isEmpty()) {
                     Long idPibi = Long.valueOf(paramPibi);
                     hydrantPibiService.update(idPibi, jsonAssocie, null, attached);
+
                 }
+                hydrantPenaService.launchTrigger(id);
                 return new AbstractExtObjectSerializer<HydrantPena>("Hydrant Pena updated.", SuccessErrorExtSerializer.DEFAULT_CONTENT_TYPE) {
                     @Override
                     protected HydrantPena getRecord() throws BusinessException {
