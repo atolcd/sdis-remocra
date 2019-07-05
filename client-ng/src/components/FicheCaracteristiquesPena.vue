@@ -301,7 +301,7 @@ export default {
 	align-items: center;
 }
 
->>> .labelDisabled {
+.labelDisabled {
 	color: #6c757d !important;
 }
 
