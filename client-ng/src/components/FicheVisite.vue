@@ -83,13 +83,13 @@
 
 					<div class="row">
 						<div class="col-md-6">
-							<b-form-group label="Agent 1 :" label-for="agent1" label-cols-md="4">
+							<b-form-group label="Agent 1" label-for="agent1" label-cols-md="4">
 								<b-form-input id="agent1" v-model="listeVisites[selectedRow].agent1" type="text" size="sm"></b-form-input>
 							</b-form-group>
 						</div>
 
 						<div class="col-md-6">
-							<b-form-group label="Agent 2 :" label-for="agent2" label-cols-md="4">
+							<b-form-group label="Agent 2" label-for="agent2" label-cols-md="4">
 								<b-form-input id="agent2" v-model="listeVisites[selectedRow].agent2" type="text" size="sm"></b-form-input>
 							</b-form-group>
 						</div>
