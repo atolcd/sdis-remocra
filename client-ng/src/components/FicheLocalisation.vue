@@ -40,8 +40,8 @@
 
       <div class="row">
         <div class="col-md-3">
-          <b-form-group label="Numéro de voie" label-for="numeroVoie" invalid-feedback="Le numéro de voie doit être supérieur ou égal à 1" :state="etats.numeroVoie" label-cols-md="7">
-            <b-form-input id="numeroVoie" v-model="hydrant.numeroVoie" class="parametre" type="number" min="1"  size="sm" :state="etats.numeroVoie" :disabled="modificationAdresseDisabled"></b-form-input>
+          <b-form-group label="Numéro de voie" label-for="numeroVoie" invalid-feedback="Le numéro de voie doit être supérieur ou égal à 0" :state="etats.numeroVoie" label-cols-md="7">
+            <b-form-input id="numeroVoie" v-model="hydrant.numeroVoie" class="parametre" type="number" min="0"  size="sm" :state="etats.numeroVoie" :disabled="modificationAdresseDisabled"></b-form-input>
           </b-form-group>
         </div>
 
@@ -235,7 +235,7 @@ export default {
     },
 
     checkFormValidity(){
-      this.etats.numeroVoie = (!this.hydrant.numeroVoie || this.hydrant.numeroVoie > 0) ? 'valid' : 'invalid';
+      this.etats.numeroVoie = (!this.hydrant.numeroVoie || this.hydrant.numeroVoie >= 0) ? 'valid' : 'invalid';
       this.etats.voie = this.hydrant.voie ? 'valid' : 'invalid';
       this.etats.domaine = this.hydrant.domaine !== null ? 'valid' : 'invalid';
       this.etats.commune = this.hydrant.commune !== null ? 'valid' : 'invalid';
