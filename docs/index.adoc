@@ -27,6 +27,7 @@ image::https://www.atolcd.com/fileadmin/Images_pages_menu/Open_Source/Remocra/he
 ** link:pei/Symbologie_PEI{outfilesuffix}[Symbologie]
 ** link:pei/Disponibilités_PEI{outfilesuffix}[Calcul des disponibilités]
 ** link:pei/Visites_PEI{outfilesuffix}[Visites]
+** link:pei/Resume_PEI{outfilesuffix}[Résumé]
 
 ---
 

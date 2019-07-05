@@ -77,13 +77,16 @@
       </div>
 
       <div>
-        <b-tabs fill content-class="mt-3" active-nav-item-class="text-primary" nav-class="fiche-onglets">
-          <b-tab title="Résumé">
-            <div>Fonctionnalité à venir.</div>
+        <b-tabs fill content-class="mt-3" active-nav-item-class="text-primary">
+          <b-tab active title="Résumé" v-if="hydrant.id !== null">
+            <FicheResume  ref="ficheResume"
+                          :hydrantRecord="hydrantRecord"
+                          v-if="dataLoaded">
+            </FicheResume>
           </b-tab>
 
           <!-- ================================== Onglet Localisation ==================================-->
-          <b-tab active>
+          <b-tab>
             <template slot="title">
                     Localisation <b-badge pill variant="danger" v-if="tabWarning.localisation">!</b-badge>
             </template>
@@ -176,6 +179,7 @@ import FicheCaracteristiquesPibi from './FicheCaracteristiquesPibi.vue'
 import FicheCaracteristiquesPena from './FicheCaracteristiquesPena.vue'
 import FicheVisite from './FicheVisite.vue'
 import FicheDocument from './FicheDocument.vue'
+import FicheResume from './FicheResume.vue'
 
 
 export default {
@@ -187,7 +191,8 @@ export default {
     FicheCaracteristiquesPibi,
     FicheCaracteristiquesPena,
     FicheVisite,
-    FicheDocument
+    FicheDocument,
+    FicheResume
   },
 
   data() {

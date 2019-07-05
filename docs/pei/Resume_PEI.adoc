@@ -1,0 +1,91 @@
+= SDIS Remocra - Onglet Résumé d'un PEI
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+:imagesdir: ../images/pei
+
+:toc:
+
+:numbered:
+
+link:../index{outfilesuffix}[Retour à l'accueil]
+
+'''
+
+== Fonctionnement ==
+
+Lors de l'ouverture de la fiche point d'eau, une requête vérifie si le document ```/var/remocra/html/html/hydrants/resume/resume.html``` est présent sur le serveur.
+Ce fichier est un template permettant de spécifier l'affichage des données d'un PEI. Si ce fichier n'est pas présent, un template par défaut sera utilisé.
+
+Le serveur joue ensuite une requête permettant de récupérer ces données depuis le serveur. Nous avons en retour un fichier xml contenant les informations que l'on souhaite afficher. Ces données seront enfin parsées dans notre template html.
+
+== Requêtes ==
+
+Les requêtes SQL de récupération des données sont situées dans la table *_remocra.requete_fiche_*. Deux requêtes sont déjà présentes: la requête par défaut pour les PIBI et la requête par défaut pour les PENA.
+Les codes des requêtes permettent au serveur de savoir quelle requête jouer. Si un fichier ```resume.html``` est spécifié, le serveur jouera les requêtes personnalisées. Sinon, il jouera une requête présente par défaut.
+
+.Correspondance entre les codes et les types de requêtes
+[cols="h,2*",options="header",width="80%"]
+|===
+||Requête par défaut | Requête personnalisée
+| PIBI | RESUME_PIBI_DEFAUT | RESUME_PIBI
+| PENA | RESUME_PENA_DEFAUT | RESUME_PENA
+|===
+
+
+
+* Il est possible d'utiliser au sein de la requête des alias qui seront remplacés dynamiquement lors de l'exécution de la requête:
+** *:id* : L'identifiant du PEI
+** *:idOrganisme* : L'identifiant de l'organisme de l'utilisateur courant
+
+Exemple d'un xml retourné par cette requête:
+[source,xml]
+<data>
+	<hydrant>
+		<adresse>54 bis RUE JEAN JACQUES ROUSSEAU</adresse>
+		<commune>1ER ARRONDISSEMENT</commune>
+		<complement>Face 41</complement>
+		<debit_renforce>true</debit_renforce>
+		<grosDebit>false</grosDebit>
+		<dispo_terrestre>INDISPO</dispo_terrestre>
+		<jumele/>
+		<tournee>prev 1</tournee>
+		<nature>PIBI</nature>
+		<cstc>CS ROUS</cstc>
+	</hydrant>
+	<anomalie>
+		<nom>Déposé ou en travaux</nom>
+		<indispo>5</indispo>
+	</anomalie>
+	<anomalie>
+		<nom>Abords à dégager / Végétation gênante</nom>
+		<indispo>0</indispo>
+	</anomalie>
+</data>
+
+== Personnalisation du fichier html ==
+
+Le fichier ```resume.hml``` peut contenir des balises html et https://bootstrap-vue.js.org/docs/[BootstrapVue] ainsi que des directives https://vuejs.org/v2/guide/[Vue.js]. +
+Le document html doit *impérativement* n'avoir qu'une seule balise racine (une balise ```<div></div>``` par exemple)
+
+Les données sont accessibles grâce aux templates Mustache. En reprenant l'exemple du xml ci-dessus, on peut donc afficher la commune comme ceci: ``{{data.hydrant.commune}}``. +
+ +
+Le fichier regroupe l'affichage des données des PIBI et des PENA. En utilisant le rendu conditionnel de Vue.js, il est possible de configurer quelles données afficher. Exemple de rendu conditionnel selon la nature du PEI et de la valeur des données:
+
+[source,html]
+----
+// Affichage spécifique aux PIBI
+<div v-if="data.hydrant.nature === 'PIBI'">
+	<p v-if="data.hydrant.debit_renforce === 'true'">Débit renforcé</p>
+	<p v-if="data.hydrant.grosDebit === 'true'">Gros débit</p>
+	<p v-if="data.hydrant.jumele">BI jumelée avec : {{data.hydrant.jumele}}</p>
+</div>
+
+// Affichage spécifique aux PENA
+<div v-else>
+	<p v-if="data.hydrant.capacite">Capacitée: {{data.hydrant.capacite}}</p>
+	<p v-if="data.hydrant.aspirations > 0">Présence de {{data.hydrant.aspirations}} point(s) d'aspiration</p>
+</div>
+----
