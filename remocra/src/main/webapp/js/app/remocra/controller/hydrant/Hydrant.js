@@ -1145,7 +1145,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             }
             win.ignoreDestroyFeature = true;
             win.close();
-            this.showFiche(hydrant, true);
+            this.showFiche(hydrant, false);
 
         }
     },
