@@ -3,6 +3,8 @@ package fr.sdis83.remocra.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
 import fr.sdis83.remocra.domain.remocra.HydrantVisite;
@@ -23,6 +25,9 @@ public class HydrantPenaService extends AbstractHydrantService<HydrantPena> {
 
     @Autowired
     DataSource dataSource;
+
+    @PersistenceContext
+    protected EntityManager entityManager;
 
     public HydrantPenaService() {
         super(HydrantPena.class);
