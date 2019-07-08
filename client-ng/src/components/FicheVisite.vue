@@ -24,7 +24,7 @@
 											{{dateFormatee(index)}}
 										</td>
 
-										<td>{{labelTypeSaisie(item)}} 
+										<td>{{labelTypeSaisie(item)}}
 										</td>
 
 										<td>
@@ -57,13 +57,14 @@
 					<div class="row">
 						<div class="col-md-6">
 							<b-form-group label="Type" label-for="type" label-cols-md="3">
-								<b-form-select 	id="type" 
-												v-model="listeVisites[selectedRow].type" 
-												:options="comboTypeVisitesFiltered" 
-												size="sm" 
+								<b-form-select 	id="type"
+												v-model="listeVisites[selectedRow].type"
+												:options="comboTypeVisitesFiltered"
+												size="sm"
 												v-on:change="onTypeVisiteChange"
-												invalid-feedback="Un type de visite doit être renseigné" 
+												invalid-feedback="Un type de visite doit être renseigné"
 												:state="etats.type"
+												
 												required></b-form-select>
 							</b-form-group>
 						</div>
@@ -152,8 +153,8 @@
 										<b-button @click.prevent @click="critereSuivant" class="btn btn-secondary right" size="sm" :disabled="anomalieSuivantDisabled">Suivant</b-button>
 									</div>
 								</div>
-								
-							
+
+
 							</b-tab>
 
 							<b-tab title="Observations">
@@ -207,6 +208,7 @@ export default {
 
 			typeNouvellesVisitesEtat1: null, // L'id du type de visite à la création (forcé)
 			typeNouvellesVisitesEtat2: null, // L'id du type de visite à la seconde visite (forcé)
+
 
 			formattedDate: [], // tableau contenant la version formattée des dates des visites
 			formattedTime: [], // tableau contenant la version formattée des heures des visites
@@ -287,9 +289,9 @@ export default {
 				return true;
 			}
 
-			return this.hydrant.code != "PIBI" || this.selectedRow == null 
-				|| (this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CTRL" 
-					&& this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CREA" 
+			return this.hydrant.code != "PIBI" || this.selectedRow == null
+				|| (this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CTRL"
+					&& this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CREA"
 					&& this.typesVisites[this.listeVisites[this.selectedRow].type].code != "RECEP");
 		},
 
@@ -452,6 +454,7 @@ export default {
 
                         if(item.code == 'CREA') { self.typeNouvellesVisitesEtat1 = item.id; }
                         else if(item.code == 'RECEP') { self.typeNouvellesVisitesEtat2 = item.id; }
+
                     }
 
                     self.typesVisites[item.id] = {
@@ -548,6 +551,7 @@ export default {
 					break;
 
 				default:
+
 					typeVisite = null;
 					break;
 			}
@@ -590,7 +594,7 @@ export default {
 			var idVisite = this.listeVisites[this.selectedRow].id;
 			if(idVisite != undefined) {
 				this.visitesASupprimer.push(idVisite);
-			} 
+			}
 
 			this.listeVisites.splice(self.selectedRow, 1);
 			this.formattedDate.splice(self.selectedRow, 1);
@@ -644,7 +648,7 @@ export default {
 			});
 			this.selectedRow = index;
 			this.updateComboTypeVisitesFiltered();
-			
+
 			this.indexCritere = -1;
 			this.critereSuivant();
 		},
@@ -672,6 +676,9 @@ export default {
 			}
 		},
 
+	
+
+
 		/**
 		  * Lors d'un clic sur le bouton "Suivant" de la sélection des anomalies
 		  * on se déplace au prochain critère non vide (fonction récursive)
@@ -681,7 +688,7 @@ export default {
 				this.indexCritere++;
 				if(!this.anomaliesFiltered.length) {
 					this.critereSuivant();
-				}			
+				}
 			}
 		},
 		/**
@@ -707,7 +714,7 @@ export default {
 			if(!this.listeVisites[this.selectedRow].type){
 				return 0;
 			}
-			return this.anomalies.filter(item => item.indispo[this.hydrant.nature] != null && item.critereCode == this.anomaliesCriteres[index].code 
+			return this.anomalies.filter(item => item.indispo[this.hydrant.nature] != null && item.critereCode == this.anomaliesCriteres[index].code
 									&& item.indispo[this.hydrant.nature].saisies.indexOf(this.typesVisites[this.listeVisites[this.selectedRow].type].code) > -1).length;
 		},
 
@@ -753,7 +760,7 @@ export default {
 
 				})
 			}
-			
+
 			return this.etats;
 		},
 
@@ -780,7 +787,11 @@ export default {
 			if(this.listeVisites.length > 0){
 				data["anomalies"] = (this.listeVisites[0].anomalies) ? this.anomaliesRequeteResult.filter(item => this.listeVisites[0].anomalies.indexOf(item.id) != -1) : null;
 			}
-			
+
+			//Gestion de l'indisponibilité temporaire
+				if(_.findIndex(_.flattenDeep(this.hydrant.anomalies), ['code','INDISPONIBILITE_TEMP']) != -1) {
+						data["anomalies"] = _.concat(data["anomalies"], this.hydrant.anomalies.filter(item => item.code == 'INDISPONIBILITE_TEMP'));
+				}
 
 			/** On recherche la visite de type contrôle technique périodique débit pression la plus récente
 			  * Ce sont ses valeurs de débit et pression que prendront les attributs éponymes du PEI
@@ -792,7 +803,7 @@ export default {
 			if(this.hydrant.code == "PIBI" && this.listeVisites.length > 0){
 				var found = false;
 				for(var i = 0; i < this.listeVisites.length && !found; i++){
-					if((this.typesVisites[this.listeVisites[i].type].code === "CTRL" || this.typesVisites[this.listeVisites[i].type].code === "RECEP" 
+					if((this.typesVisites[this.listeVisites[i].type].code === "CTRL" || this.typesVisites[this.listeVisites[i].type].code === "RECEP"
 						|| this.typesVisites[this.listeVisites[i].type].code === "CREA") && this.listeVisites[i].ctrl_debit_pression) {
 						var item = this.listeVisites[i];
 
