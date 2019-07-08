@@ -147,6 +147,18 @@
     </form>
 
     <ModalGestionnaire v-on:modalGestionnaireValues="onGestionnaireCreated"></ModalGestionnaire>
+
+    <b-modal id="modalDoublonNumero" centered title="Erreur de saisie" header-bg-variant="warning" ok-only>
+      <div class="row">
+        <div class="col-md-2">
+          <img src="../assets/img/warning.png" width="32"/>
+        </div>
+        <div class="col-md-10">
+          <p class="my-4">{{numeroInterneDoublonErrorMsg}}</p>
+        </div>
+      </div>
+    </b-modal>
+
   </b-modal>
   </div>
 </template>
@@ -192,6 +204,7 @@ export default {
       comboAutoriteDeci: [],
 
       listeNaturesDeci: [],
+      numeroInterneDoublonErrorMsg: null,
       tabWarning : {
         localisation: false,
         caracteristiquesTechniques: false,
@@ -529,8 +542,9 @@ export default {
           .then(() => {
             return isFormValid;
           })
-          .catch(function(error) {
-            alert(error.response.data.message);
+          .catch((error) => {
+            this.numeroInterneDoublonErrorMsg = error.response.data.message;
+            this.$bvModal.show('modalDoublonNumero');
             return false;
           });
         } else {
@@ -766,5 +780,13 @@ label {
   content: 'Initialisation fiche...';
   margin-left: calc(50% - 67px);
   animation: opacity-anim 1s linear infinite;
+}
+
+#modalDoublonNumero div[class^="col-md"]:first-child
+{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 </style>
