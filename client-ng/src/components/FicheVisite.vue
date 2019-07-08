@@ -64,7 +64,6 @@
 												v-on:change="onTypeVisiteChange"
 												invalid-feedback="Un type de visite doit être renseigné" 
 												:state="etats.type"
-												:disabled="isVisiteProtegee(selectedRow)"
 												required></b-form-select>
 							</b-form-group>
 						</div>
@@ -308,7 +307,7 @@ export default {
 				let codeVisite = this.typesVisites[this.listeVisites[this.selectedRow].type].code;
 				hasRightToDelete = (this.utilisateurDroits.indexOf('HYDRANTS_VISITE_'+codeVisite+'_D') > -1);
 			}
-			return (this.isVisiteProtegee(this.selectedRow) || this.selectedRow > 0 || (!this.createVisiteDisabled && !hasRightToDelete));
+			return (this.selectedRow > 0 || (!this.createVisiteDisabled && !hasRightToDelete));
 		},
 
 		/**
@@ -583,7 +582,7 @@ export default {
 		  * Les deux premières visites d'un PEI (CREA et RECEP) ne peuvent êtres effacées
 		  */
 		deleteVisite() {
-			if(this.isVisiteProtegee(this.selectedRow) || this.selectedRow === null){
+			if(this.selectedRow === null){
 				return null;
 			}
 
@@ -669,28 +668,6 @@ export default {
 				item.pression = null;
 				item.pressionDyn = null;
 				item.pressionDynDeb = null;
-			}
-		},
-
-		/**
-		  * Indique si la visite à un index donné est protégée
-		  * Les deux premières visites (CREA et RECEP) sont protégées contre le changement de date, de type et contre la suppression
-		  */
-		isVisiteProtegee(index) {
-			if(index === null){
-				return false;
-			}
-
-			// Création d'un PEI => première visite imposée, impossible de la supprimer
-			if(this.hydrant.id == null) {
-				return true;
-			}
-
-			if((index == this.listeVisites.length - 1 && this.nbVisitesInitiales != 0 ) 
-				|| (index == this.listeVisites.length - 2 && this.nbVisitesInitiales != 1)) {
-				return true;
-			} else {
-				return false;
 			}
 		},
 

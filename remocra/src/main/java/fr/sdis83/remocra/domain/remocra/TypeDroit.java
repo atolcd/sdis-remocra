@@ -75,6 +75,8 @@ public class TypeDroit {
         HYDRANTS_VISITE_NP_D("hydrants.visite_np_D"),
         HYDRANTS_VISITE_RECO_D("hydrants.visite_reco_D"),
         HYDRANTS_VISITE_CTRL_D("hydrants.visite_ctrl_D"),
+        HYDRANTS_VISITE_CREA_D("hydrants.visite_crea_D"),
+        HYDRANTS_VISITE_RECEP_D("hydrants.visite_recep_D"),
 
         // Module Permis
         PERMIS_R("permis_R"),
