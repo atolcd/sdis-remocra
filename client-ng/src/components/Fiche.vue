@@ -406,7 +406,7 @@ export default {
 
       //Si DECI privé, le gestionnaire est un privé
       if(this.hydrant.natureDeci == idDeciPrive){
-        this.getComboData(this, 'comboGestionnaire', '/remocra/gestionnaire.json', null, 'id', 'nom', ' ');
+        this.getComboData(this, 'comboGestionnaire', '/remocra/gestionnaire.json', null, 'id', 'nom');
         this.onGestionnaireChange();
 
 
