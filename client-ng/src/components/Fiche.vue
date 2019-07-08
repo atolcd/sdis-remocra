@@ -75,7 +75,7 @@
       </div>
 
       <div>
-        <b-tabs fill content-class="mt-3" active-nav-item-class="text-primary">
+        <b-tabs fill content-class="mt-3" active-nav-item-class="text-primary" nav-class="fiche-onglets">
           <b-tab title="Résumé">
             <div>Fonctionnalité à venir.</div>
           </b-tab>
@@ -755,7 +755,7 @@ label {
     position: absolute;
 }
 
-.mode-visite .entete, .mode-visite ul.nav-tabs, .mode-visite .visites-lst {
+.mode-visite .entete, .mode-visite .fiche-onglets.nav-tabs, .mode-visite .visites-lst {
   display: none;
 }
 .mode-visite .modal-body {
