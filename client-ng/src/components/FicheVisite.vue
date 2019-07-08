@@ -148,7 +148,7 @@
 
 								<div class="row">
 									<div class="col-md-12">
-										<b-button @click.prevent @click="criterePrecedent" class="btn btn-primary" size="sm" :disabled="anomaliePrecedentDisabled">Precedent</b-button>
+										<b-button @click.prevent @click="criterePrecedent" class="btn btn-primary" size="sm" :disabled="anomaliePrecedentDisabled">Précédent</b-button>
 										<b-button @click.prevent @click="critereSuivant" class="btn btn-secondary right" size="sm" :disabled="anomalieSuivantDisabled">Suivant</b-button>
 									</div>
 								</div>
@@ -323,7 +323,7 @@ export default {
 		  */
 		anomalieSuivantDisabled: function() {
 			let isLastCritere = true;
-			for(var i = this.indexCritere+1; i < this.anomaliesCriteres.length-1 && isLastCritere; i++){
+			for(var i = this.indexCritere+1; i < this.anomaliesCriteres.length && isLastCritere; i++){
 				if(this.nbAnomaliesParCritere(i) != 0){
 					isLastCritere = false;
 				}
