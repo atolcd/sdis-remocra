@@ -207,7 +207,6 @@ export default {
 
 			typeNouvellesVisitesEtat1: null, // L'id du type de visite à la création (forcé)
 			typeNouvellesVisitesEtat2: null, // L'id du type de visite à la seconde visite (forcé)
-			typeNouvellesVisitesEtat3: null, // L'id du type de visite par défaut lors de la création d'autres visites
 
 			formattedDate: [], // tableau contenant la version formattée des dates des visites
 			formattedTime: [], // tableau contenant la version formattée des heures des visites
@@ -453,7 +452,6 @@ export default {
 
                         if(item.code == 'CREA') { self.typeNouvellesVisitesEtat1 = item.id; }
                         else if(item.code == 'RECEP') { self.typeNouvellesVisitesEtat2 = item.id; }
-                        else if(item.code == 'NP') { self.typeNouvellesVisitesEtat3 = item.id; }
                     }
 
                     self.typesVisites[item.id] = {
@@ -550,7 +548,6 @@ export default {
 					break;
 
 				default:
-					//typeVisite = this.typeNouvellesVisitesEtat3;
 					typeVisite = null;
 					break;
 			}
@@ -626,6 +623,10 @@ export default {
 					(self.typesVisites[item.value].code == "CTRL" && self.utilisateurDroits.indexOf('HYDRANTS_CONTROLE_C') != -1)
 					|| (self.typesVisites[item.value].code == "RECO" && self.utilisateurDroits.indexOf('HYDRANTS_RECONNAISSANCE_C') != -1)
 					|| (self.typesVisites[item.value].code == "NP" && self.utilisateurDroits.indexOf('HYDRANTS_ANOMALIES_C') != -1) );
+			}
+
+			if(this.comboTypeVisitesFiltered.length && this.selectedRow !== null && !this.listeVisites[this.selectedRow].type) {
+				this.listeVisites[this.selectedRow].type = this.comboTypeVisitesFiltered[0].value;
 			}
 		},
 
