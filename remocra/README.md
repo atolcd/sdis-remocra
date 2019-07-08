@@ -72,7 +72,7 @@ Configurer l'adresse de GeoServer, dans le contexte docker :
 Lancer l'application :
 
 ```bash
-cd ~/projets/atolcd/sdis-remocra/remocra
+cd ~/projets/atolcd/sdis-remocra
 docker run --rm \
   --name remocra \
   -u $(id -u):$(id -g) \
@@ -80,10 +80,10 @@ docker run --rm \
   -p 0.0.0.0:8080:8080 \
   -v "/var/remocra/layers":/var/remocra/layers \
   --link dbdocker_postgres_1:postgis.sdisxx.fr --link dbdocker_geoserver_1:geoserver.sdisxx.fr \
-  -v ~/.m2:/var/maven/.m2 -e MAVEN_CONFIG=/var/maven/.m2 -e MAVEN_OPTS="-Duser.home=/var/maven -Ddatabase.url=jdbc:postgresql://postgis.sdisxx.fr:5432/remocra" \
+  -v ~/.m2:/var/maven/.m2 -e MAVEN_CONFIG=/var/maven/.m2 -e MAVEN_OPTS="-Duser.home=/var/maven" -e "npm_config_cache=npm-cache" \
   cvagner/docker-jdk-maven-sencha-cmd:7-3.6.1-3.0.2 \
   \
-  mvn tomcat:run -Dclient-ng.dir=~/projets/sdis-remocra/client-ng/dist/remocra/static
+  mvn tomcat:run -Dclient-ng.dir=client-ng/dist/remocra/static -Ddatabase.url=jdbc:postgresql://postgis.sdisxx.fr:5432/remocra
 ```
 
 Ouvrir l'URL suivante dans un navigateur :
@@ -102,12 +102,12 @@ Ces composants sont utilisés dans la version classique de Remocra.
 
 Pour avoir accès au client NG (crise, nouvelle fiche PEI), il faut au préalable construire les assets du projet concerné (cf. propriété système "client-ng.dir" définie plus haut pour modifier le chemin) :
 
-    cd ~/projets/sdis-remocra/client-ng
+    cd ~/projets/atolcd/sdis-remocra/client-ng
     npm install && npm run build
 
 De manière à simplifier le développement, il est possible d'exécuter le projet de manière indépendante :
 
-    cd ~/projets/sdis-remocra/client-ng
+    cd ~/projets/atolcd/sdis-remocra/client-ng
     npm install && npm run serve
 
 S'identifier sur remocra classique et ouvrir la crise 1 (exemple) dans un nouvel onglet :
