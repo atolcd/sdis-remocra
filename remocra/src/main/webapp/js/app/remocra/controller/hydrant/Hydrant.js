@@ -1655,6 +1655,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                       indispo: indispo.data
                   },
                   callback: function(param, success, response) {
+                      this.refreshMap();
                       var res = Ext.decode(response.responseText);
                       Sdis.Remocra.util.Msg.msg("Indisponibilite", res.message);
                       this.getNouvelleIndispo().close();
@@ -1789,6 +1790,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                     params: {dateDebut: dateDebut},
                     scope: this,
                     callback: function(param, success, response) {
+                        this.refreshMap();
                         var res = Ext.decode(response.responseText);
                         this.getActiveIndispo().close();
                         if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
@@ -1833,6 +1835,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             params: {dateFin: dateFin},
             scope: this,
             callback: function(param, success, response) {
+                this.refreshMap();
                 var res = Ext.decode(response.responseText);
                 this.getLeveIndispo().close();
                 if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
@@ -1880,6 +1883,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         method: 'DELETE',
         scope: this,
         callback: function(param, success, response) {
+            this.refreshMap();
             var res = Ext.decode(response.responseText);
             if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
               this.getTabIndispo().getStore().load();
