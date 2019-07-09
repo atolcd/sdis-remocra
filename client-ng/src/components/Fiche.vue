@@ -454,6 +454,7 @@ export default {
         this.$refs.fichePibi.updateComboDiametres(nature);
         this.$refs.fichePibi.updateComboJumelage(nature);
       }
+      this.$refs.ficheVisite.onNatureChange();
     },
 
     /**

@@ -123,7 +123,7 @@
 							</b-tab>
 
 							<b-tab class="anomalies-tab" title="Points d'attention">
-								<div :class="listeVisites[selectedRow].id !== undefined ? 'notActive' : ''">
+								<div :class="listeVisites[selectedRow].id !== undefined ? 'notActive' : ''" v-if="hydrant.nature">
 									<div class="row" id="anomalieCritere">
 										<div class="col-md-12">
 											<p class="bold">{{anomaliesCriteres[indexCritere].nom}}</p>
@@ -509,12 +509,12 @@ export default {
                     return a.id - b.id;
                 });
 
-            }).then(function() {
                 // Si l'hydrant est créé, on force la création de la première visite (visite de réception)
                 if(self.hydrant.id == null) {
                     self.createVisite();
                     self.createVisiteDisabled = true;
                 }
+
             }).catch(function(error) {
                 console.error('Retrieving data from /remocra/typehydrantanomalies', error);
             })
@@ -716,6 +716,16 @@ export default {
 			}
 			return this.anomalies.filter(item => item.indispo[this.hydrant.nature] != null && item.critereCode == this.anomaliesCriteres[index].code
 									&& item.indispo[this.hydrant.nature].saisies.indexOf(this.typesVisites[this.listeVisites[this.selectedRow].type].code) > -1).length;
+		},
+
+		/**
+		  * En cas de changement de nature du PEI, on met à jour les anomalies disponibles
+		  * Les anomalies sont dépendantes de cette valeur
+		  * Si aucune visite n'est renseignée, ce changement n'a aucun effet
+		  */
+		onNatureChange() {
+			this.indexCritere = -1;
+			this.critereSuivant();
 		},
 
 		checkFormValidity(){
