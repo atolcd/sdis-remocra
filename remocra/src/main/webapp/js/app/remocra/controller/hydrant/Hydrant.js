@@ -1082,7 +1082,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     },
 
     onCloseChoiceTypeHydrant: function(win) {
-        if (win.ignoreDestroyFeature !== true && win.feature) {
+        if (win.feature) {
             win.feature.destroy();
         }
     },
@@ -1136,14 +1136,13 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 });
                 var str = wktFormat.write(feature);
                 hydrant.set('geometrie', str);
-                hydrant.feature = feature;
+                hydrant.feature = feature.clone();
                 hydrant.srid = this.getTabMap().getCurrentSrid();
             }
             if (win.commune) {
                 hydrant.set('commune', win.commune);
                 hydrant.raw.commune = win.commune.raw;
             }
-            win.ignoreDestroyFeature = true;
             win.close();
             this.showFiche(hydrant, false);
 
