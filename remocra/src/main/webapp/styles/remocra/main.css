@@ -564,8 +564,8 @@ div.olControlMousePosition {
  
 .map {
 	float: left;
-	width: -webkit-calc(100% - 280px);
-	width: calc(100% - 280px);
+	width: -webkit-calc(100% - 290px);
+	width: calc(100% - 290px);
 	height: 700px;
 	box-shadow: rgba(0,0,0,0.1) 0px 0px 5px;
 }
