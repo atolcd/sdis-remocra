@@ -48,6 +48,7 @@ public class TypeDroit {
         HYDRANTS_D("hydrants_D"),
         HYDRANTS_DEPLACEMENT_C("hydrants.deplacement_C"),
         HYDRANTS_ANALYSE_C("hydrants.analyse_C"),
+        HYDRANTS_CREATION_C("hydrants.creation_C"),
         HYDRANTS_RECEPTION_C("hydrants.reception_C"),
         HYDRANTS_RECONNAISSANCE_C("hydrants.reconnaissance_C"),
         HYDRANTS_CONTROLE_C("hydrants.controle_C"),

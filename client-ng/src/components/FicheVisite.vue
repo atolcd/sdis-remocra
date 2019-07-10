@@ -203,9 +203,6 @@ export default {
 			nbVisitesInitiales: 0,
 			visitesASupprimer: [],
 
-			// Boutons de création/supression de visites
-			createVisiteDisabled: false,
-
 			typeNouvellesVisitesEtat1: null, // L'id du type de visite à la création (forcé)
 			typeNouvellesVisitesEtat2: null, // L'id du type de visite à la seconde visite (forcé)
 
@@ -293,6 +290,34 @@ export default {
 				|| (this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CTRL"
 					&& this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CREA"
 					&& this.typesVisites[this.listeVisites[this.selectedRow].type].code != "RECEP");
+		},
+
+		/** Le bouton "Nouvelle visite" est désactivé ou non en fonction des droits de l'utilisateur
+		  * Les droits sont en fonction des types de visite qui dépend du nombre de visites déjà effectuées
+		  */
+		createVisiteDisabled: function() {
+
+			//On ne peut créer qu'une visite à la fois. Si une visite sans id est présente en 1ere position, on en déduit qu'elle vient d'être créée
+			if(this.listeVisites.length > 0 && !this.listeVisites[0].id){
+				return true;
+			}
+			var disabled = false;
+			switch(this.listeVisites.length){
+				case 0:
+					disabled =  (this.utilisateurDroits.indexOf("HYDRANTS_CREATION_C") == -1);
+					break;
+
+				case 1:
+					disabled = (this.utilisateurDroits.indexOf("HYDRANTS_RECEPTION_C") == -1);
+					break;
+				// Autorisation de la création si présence d'au moins 1 des 3 droits
+				default:
+					disabled = (this.utilisateurDroits.indexOf("HYDRANTS_CONTROLE_C") == -1)
+						&& (this.utilisateurDroits.indexOf("HYDRANTS_RECONNAISSANCE_C") == -1)
+						&& (this.utilisateurDroits.indexOf("HYDRANTS_ANOMALIES_C") == -1);
+						break;
+			}
+			return disabled;
 		},
 
 		/**
@@ -407,27 +432,7 @@ export default {
                             item.hydrant = self.hydrant.id;
                             item.anomalies = (item.anomalies) ? JSON.parse(item.anomalies) : [];
                         });
-                    }
-                }).then(function(){
-
-                    self.nbVisitesInitiales = self.listeVisites.length;
-                    // Le bouton "Nouvelle visite" est désactivé ou non en fonction des droits de l'utilisateur
-                    // Les droits sont en fonction des types de visite qui dépend du nombre de visites déjà effectuées
-
-                    switch(self.listeVisites.length){
-                        case 0:
-                            self.createVisiteDisabled = (self.utilisateurDroits.indexOf("HYDRANTS_C") == -1) ? true : false;
-                            break;
-
-                        case 1:
-                            self.createVisiteDisabled = (self.utilisateurDroits.indexOf("HYDRANTS_RECEPTION_C") == -1) ? true : false;
-                            break;
-                        // Autorisation de la création si présence d'au moins 1 des 3 droits
-                        default:
-                            self.createVisiteDisabled = (self.utilisateurDroits.indexOf("HYDRANTS_CONTROLE_C") != -1)
-                                                        || (self.utilisateurDroits.indexOf("HYDRANTS_RECONNAISSANCE_C") != -1)
-                                                        || (self.utilisateurDroits.indexOf("HYDRANTS_ANOMALIES_C") != -1) ? false : true;
-                            break;
+                        self.nbVisitesInitiales = self.listeVisites.length;
                     }
                 }).catch(function(error) {
                     console.error('Retrieving data from remocra/hydrantvisite', error);
@@ -435,7 +440,6 @@ export default {
             )
 		} else {
 			this.nbVisitesInitiales = 0;
-			this.createVisiteDisabled = (this.utilisateurDroits.indexOf("HYDRANTS_C") == -1) ? true : false;
 		}
 
 		/* =============================================== Liaison entre l'id des types de visites et leur libelle =============================================== */
@@ -509,12 +513,6 @@ export default {
                     return a.id - b.id;
                 });
 
-                // Si l'hydrant est créé, on force la création de la première visite (visite de réception)
-                if(self.hydrant.id == null) {
-                    self.createVisite();
-                    self.createVisiteDisabled = true;
-                }
-
             }).catch(function(error) {
                 console.error('Retrieving data from /remocra/typehydrantanomalies', error);
             })
@@ -565,7 +563,7 @@ export default {
 					anomalies: anomalies,
 					ctrl_debit_pression: false
 				}
-				this.createVisiteDisabled = true;
+
 				this.listeVisites.unshift(visite);
 				var splitDate = visite.date.split(" ");
 				this.formattedDate.unshift(splitDate[0]);
@@ -585,10 +583,6 @@ export default {
 		deleteVisite() {
 			if(this.selectedRow === null){
 				return null;
-			}
-
-			if(this.createVisiteDisabled && this.selectedRow == 0){
-				this.createVisiteDisabled = false;
 			}
 
 			var idVisite = this.listeVisites[this.selectedRow].id;
@@ -616,7 +610,7 @@ export default {
 
 			var self = this;
 			if(this.listeVisites.length == 1){
-				this.comboTypeVisitesFiltered = this.comboTypeVisites.filter(item => self.typesVisites[item.value].code == "CREA" && self.utilisateurDroits.indexOf('HYDRANTS_C') != -1);
+				this.comboTypeVisitesFiltered = this.comboTypeVisites.filter(item => self.typesVisites[item.value].code == "CREA" && self.utilisateurDroits.indexOf('HYDRANTS_CREATION_C') != -1);
 			}
 			else if(this.listeVisites.length == 2){
 				this.comboTypeVisitesFiltered = this.comboTypeVisites.filter(item => self.typesVisites[item.value].code == "RECEP" && self.utilisateurDroits.indexOf('HYDRANTS_RECEPTION_C') != -1);
