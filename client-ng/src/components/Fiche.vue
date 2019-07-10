@@ -623,6 +623,8 @@ export default {
         } else if(item.type === "number"){ // Input de type number
           data[item.id] = (item.value === "") ? null : parseInt(item.value);
 
+        } else if(Array.from(item.classList).indexOf('autocomplete') > -1){ //Autocomplete
+          data[item.id] = item[0]._value;
         } else {
           data[item.id] = item.value;
         }

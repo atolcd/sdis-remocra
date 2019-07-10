@@ -27,7 +27,7 @@
       <div class="row">
         <div class="col-md-6">
           <b-form-group label="Commune" label-for="commune" invalid-feedback="La commune doit être renseignée" :state="etats.commune" label-cols-md="3">
-              <b-form-select id="commune" v-model="hydrant.commune" class="parametre" :options="comboCommune" size="sm" :state="etats.commune" v-on:change="onCommuneChange" required :disabled="modificationAdresseDisabled"></b-form-select>
+              <b-form-select id="commune" v-model="hydrant.commune" class="parametre" :options="comboCommune" size="sm" :state="etats.commune" required :disabled="modificationAdresseDisabled"></b-form-select>
           </b-form-group>
         </div>
 
@@ -70,14 +70,14 @@
 
       <div class="row">
         <div class="col-md-6">
-          <b-form-group label="Voie" label-for="voie" invalid-feedback="La voie doit être renseignée" :state="etats.voie" label-cols-md="2">
-            <b-form-select id="voie" v-model="hydrant.voie" class="parametre" :options="comboVoie" size="sm" :disabled="modificationAdresseDisabled"></b-form-select>
+          <b-form-group label="Voie" label-for="voie" invalid-feedback="La voie doit être renseignée" :state="etats.voie" label-cols-md="2" v-if="typeof hydrant.commune == 'number'">
+            <SearchVoie id="voie" :commune="hydrant.commune" :geometrie="geometrie" :defaultValue="hydrant.voie" @onVoieChange="onVoieChange" attr='voie' class="parametre autocomplete"></SearchVoie>
           </b-form-group>
         </div>
 
         <div class="col-md-6">
-          <b-form-group label="Carrefour" label-for="voie2" label-cols-md="2">
-            <b-form-select id="voie2" v-model="hydrant.voie2" class="parametre" :options="comboCarrefour" size="sm" :disabled="modificationAdresseDisabled"></b-form-select>
+          <b-form-group label="Carrefour" label-for="voie2" label-cols-md="2" v-if="typeof hydrant.commune == 'number'">
+            <SearchVoie id="voie2" :commune="hydrant.commune" :geometrie="geometrie" :defaultValue="hydrant.voie2" @onVoieChange="onVoieChange" attr='voie2' class="parametre autocomplete"></SearchVoie>
           </b-form-group>
         </div>
       </div>
@@ -104,9 +104,13 @@
 
 import axios from 'axios'
 import _ from 'lodash'
+import SearchVoie from './SearchVoie.vue'
 
 export default {
   name: 'FicheLocalisation',
+  components: {
+    SearchVoie
+  },
   data() {
     return {
 
@@ -171,7 +175,6 @@ export default {
         });
       if(self.comboCommune.length > 0) {
         self.hydrant.commune = self.comboCommune[0].value;
-        this.onCommuneChange();
       }
     });
 
@@ -217,21 +220,8 @@ export default {
       })
     },
 
-    onCommuneChange() {
-      this.$emit('getComboData', this, 'comboVoie', '/remocra/voies/mc.json', {
-        withgeom: false,
-        page: 1,
-        start: 0,
-        limit: 10,
-        filter: JSON.stringify([{"property":"wkt","value":this.geometrie},{"property":"communeId","value":this.hydrant.commune}])
-      }, 'nom', 'nom');
-      this.$emit('getComboData', this, 'comboCarrefour', '/remocra/voies/mc.json', {
-        withgeom: false,
-        page: 1,
-        start: 0,
-        limit: 10,
-        filter: JSON.stringify([{"property":"wkt","value":this.geometrie},{"property":"communeId","value":this.hydrant.commune}])
-      }, 'nom', 'nom');
+    onVoieChange(attr, value){
+      this.hydrant[attr] = value;
     },
 
     checkFormValidity(){
