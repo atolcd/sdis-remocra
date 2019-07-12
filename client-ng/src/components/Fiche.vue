@@ -39,16 +39,16 @@
         <div class="row">
           <div class="col-md-4">
             <b-form-group label="Type de DECI"
-                          label-for="nature_deci" 
-                          invalid-feedback="La nature DECI doit être renseignée" 
+                          label-for="nature_deci"
+                          invalid-feedback="La nature DECI doit être renseignée"
                           :state="etats.natureDeci"
-                          label-cols-md="4">
-              <b-form-select v-model="hydrant.natureDeci" :options="comboDeci" size="sm" id="natureDeci" class="parametre" v-on:change="getComboGestionnaire" :state="etats.natureDeci"></b-form-select>
+                          label-cols-md="5">
+              <b-form-select ref="natureDeci" v-model="hydrant.natureDeci" :options="comboDeci" size="sm" id="natureDeci" class="parametre" v-on:change="getComboGestionnaire" :state="etats.natureDeci"></b-form-select>
             </b-form-group>
           </div>
 
           <div class="col-md-5">
-            <b-form-group label="Gestionnaire" label-for="gestionnaire" invalid-feedback="Le gestionnaire doit être renseigné" :state="etats.gestionnaire" label-cols-md="3">
+            <b-form-group label="Gestionnaire" label-for="gestionnaire" invalid-feedback="Le gestionnaire doit être renseigné" :state="etats.gestionnaire" label-cols-md="4">
               <b-form-select  id="gestionnaire"
                               v-model="hydrant.gestionnaire"
                               class="parametre"
@@ -58,15 +58,17 @@
                               :state="etats.gestionnaire"
                               required>
               </b-form-select>
-
-              <button class="btn gestionnaireBtn" @click.prevent v-b-modal.modalGestionnaire v-if="utilisateurDroits.indexOf('HYDRANTS_GESTIONNAIRE_C') != -1">
-                <img src="../assets/img/add.png">
+              <button class="gestionnaireBtn" @click="modifGestionnaire" v-if="hydrant.natureDeci == idDeciPrive && utilisateurDroits.indexOf('HYDRANTS_GESTIONNAIRE_C') != -1">
+                <img src="/remocra/static/img/pencil.png">
+              </button>
+              <button class="gestionnaireBtn addGest"  @click="addGestionnaire" v-if="hydrant.natureDeci == idDeciPrive && utilisateurDroits.indexOf('HYDRANTS_GESTIONNAIRE_C') != -1">
+                <img src="/remocra/static/img/add.png">
               </button>
             </b-form-group>
           </div>
 
-          <div class="col-md-3">
-            <b-form-group label="Site" label-for="site" label-cols-md="3">
+          <div class="col-md-4">
+            <b-form-group label="Site" label-for="site" label-cols-md="2">
               <b-form-select id="site" v-model="hydrant.site" class="parametre" :options="comboSite" size="sm"></b-form-select>
             </b-form-group>
           </div>
@@ -146,7 +148,7 @@
 
     </form>
 
-    <ModalGestionnaire v-on:modalGestionnaireValues="onGestionnaireCreated"></ModalGestionnaire>
+    <ModalGestionnairePrive  v-on:modalGestionnaireValues="onGestionnaireCreated" ref="modalGestionnairePrive"></ModalGestionnairePrive>
 
     <b-modal id="modalDoublonNumero" centered title="Erreur de saisie" header-bg-variant="warning" ok-only>
       <div class="row">
@@ -168,7 +170,7 @@
 import axios from 'axios'
 import { loadProgressBar } from 'axios-progress-bar'
 import _ from 'lodash'
-import ModalGestionnaire from './ModalGestionnaire.vue'
+import ModalGestionnairePrive from './ModalGestionnairePrive.vue'
 import FicheLocalisation from './FicheLocalisation.vue'
 import FicheCaracteristiquesPibi from './FicheCaracteristiquesPibi.vue'
 import FicheCaracteristiquesPena from './FicheCaracteristiquesPena.vue'
@@ -180,7 +182,7 @@ export default {
   name: 'Fiche',
 
   components: {
-    ModalGestionnaire,
+    ModalGestionnairePrive,
     FicheLocalisation,
     FicheCaracteristiquesPibi,
     FicheCaracteristiquesPena,
@@ -190,6 +192,7 @@ export default {
 
   data() {
     return {
+      idDeciPrive : '',
       hydrantRecord: {}, // Données initiales du PEI
       hydrant: {}, // Données actuelles du PEI
       utilisateurDroits: [],
@@ -303,6 +306,7 @@ export default {
           if (self.newVisite===true) {
             self.$refs.visitesTab.activate()
             self.$root.$options.bus.$on('pei_visite_ready', () => {
+
               self.$refs.ficheVisite.createVisite()
             })
           }
@@ -395,18 +399,18 @@ export default {
 
     getComboGestionnaire(){
 
-      var idDeciPrive = this.listeNaturesDeci.filter(item => item.code === "PRIVE")[0].id;
+      this.idDeciPrive = this.listeNaturesDeci.filter(item => item.code === "PRIVE")[0].id;
       this.hydrant.site = null;
 
       // En cas de changement de nature (passage de PUBLIC/CONVENTIONNE à PRIVE et inversement), on set le gestionnaire à null
       // De cette manière, si on passe de PUBLIC à CONVENTIONNE ou inversement, on laisse tel quel
-      if(this.hydrantRecord.natureDeci && (this.hydrant.natureDeci == idDeciPrive) != (this.hydrantRecord.natureDeci.id == idDeciPrive)){
+      if(this.hydrantRecord.natureDeci && (this.hydrant.natureDeci == this.idDeciPrive) != (this.hydrantRecord.natureDeci.id == this.idDeciPrive)){
         this.hydrant.gestionnaire = null;
       }
 
       //Si DECI privé, le gestionnaire est un privé
-      if(this.hydrant.natureDeci == idDeciPrive){
-        this.getComboData(this, 'comboGestionnaire', '/remocra/gestionnaire.json', null, 'id', 'nom');
+      if(this.hydrant.natureDeci == this.idDeciPrive){
+        this.getComboData(this, 'comboGestionnaire', '/remocra/gestionnaire.json', null, 'id', 'nom', ' ');
         this.onGestionnaireChange();
 
 
@@ -457,10 +461,12 @@ export default {
       * @param values Les données du gestionnaire créé (transmises par le composant ModalGestionnaire)
       */
     onGestionnaireCreated(values){
-      this.comboGestionnaire.push({
-            text: values.nom,
-            value: values.id
-      });
+      if((_.findIndex(this.comboGestionnaire, o => o.value == values.id) == -1)){
+        this.comboGestionnaire.push({
+              text: values.nom,
+              value: values.id
+        });
+      }
     },
 
     /**
@@ -597,8 +603,8 @@ export default {
     handleSubmit(url){
       // Si la nature est passée de PRIVE a PUBLIC/CONVENTIONNE ou inversement, le PEI ne respecte plus la contrainte de nature DECI au sein de ses tournées
       // On le désaffecte donc pour tous les organismes
-      var idDeciPrive = this.listeNaturesDeci.filter(item => item.code === "PRIVE")[0].id;
-      if(this.hydrantRecord.natureDeci &&(this.hydrant.natureDeci == idDeciPrive) != (this.hydrantRecord.natureDeci.id == idDeciPrive)){
+      this.idDeciPrive = this.listeNaturesDeci.filter(item => item.code === "PRIVE")[0].id;
+      if(this.hydrantRecord.natureDeci &&(this.hydrant.natureDeci == this.idDeciPrive) != (this.hydrantRecord.natureDeci.id == this.idDeciPrive)){
         axios.post('hydrants/desaffecter?json=['+this.hydrant.id+']&allOrganismes=true')
         .catch(function(error) {
           console.error('postEvent', error)
@@ -694,7 +700,18 @@ export default {
 
     close(){
       this.$root.$options.bus.$emit('closed')
+    },
+
+    addGestionnaire(evt){
+       this.$refs.modalGestionnairePrive.editGestionnaire(null);
+        evt.preventDefault()
+    },
+
+    modifGestionnaire(evt){
+       this.$refs.modalGestionnairePrive.editGestionnaire(this.hydrant.gestionnaire);
+       evt.preventDefault()
     }
+
 
   }
 };
@@ -767,8 +784,14 @@ label {
     line-height: 1.5;
     border-radius: .2rem;
     position: absolute;
+    height: calc(1.5em + .5rem + 2px);
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
 }
-
+#modalFiche .addGest{
+  margin-left: 30px;
+}
 .mode-visite .entete, .mode-visite .fiche-onglets.nav-tabs, .mode-visite .visites-lst {
   display: none;
 }
