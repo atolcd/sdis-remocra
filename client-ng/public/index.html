@@ -32,7 +32,9 @@
     <div id="crise-container"></div>
     <div id="fichepei-container"></div>
     <div id="contact-container"></div>
-    <div id="autre" style="display: none;">
+    <div id="ficheIndispoTemp-container"></div>
+
+  <div id="autre" style="display: none;">
       <h1>Remocra - Développements</h1>
       <div class="help start">
         Suivre les étapes suivantes :
@@ -57,7 +59,11 @@
           <li>Nouvelle visite de
             <a href="?module=hydrant&id=226678&code=PIBI&geometrie=POINT%20(651812%206862842)&newVisite=true">PIBI</a>, de
             <a href="?module=hydrant&id=267796&code=PENA&newVisite=true">PENA</a>
+
+          <li>Fiche indisponibilité temporaire
+            <a href="?module=indispo">Indispo temp.</a>
           </li>
+
         </ul>
         <b>❗ Exemples Crise :</b>
         <ul>
@@ -97,6 +103,13 @@
               id: Number(params['id']),
               nom: decodeURIComponent(params['nom'])
           });
+	} else if (params['module']=='indispo') {
+          //fiche indispo
+          var idIndispoTemp = "null";
+          var tabIdPeiSelected = [226678, 226679];
+          var tabNumPeiSelected = '751010001,751010002';
+          var communeId = '153';
+          remocraVue.indispoTempBuildFiche('#ficheIndispoTemp-container', {idIndispoTemp: idIndispoTemp, tabIdPeiSelected: tabIdPeiSelected, tabNumPeiSelected: tabNumPeiSelected});
         } else {
           document.getElementById('autre').style.display=''
         }
@@ -105,3 +118,11 @@
       }
     </script>
 </html>
+
+<style>
+
+#ficheIndispoTemp-container .moddal-content{
+  height: 688.5px
+}
+
+</style>

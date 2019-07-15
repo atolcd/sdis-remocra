@@ -69,7 +69,7 @@ Pour les points d'eau de type PI et BI, les anomalies liées aux débits et aux 
 
 === Anomalie "Indisponibilité temporaire"
 
-Une anomalie de type "Indisponibilité temporaire" (code ```INDISPONIBILITE_TEMP```) est ajoutée automatiquement à la liste des anomalies du point d'eau lorsque qu'un utilisateur active une indisponibilité temporaire à partir des fonctionnalités dédiées.
+Une anomalie de type "Indisponibilité temporaire" (code ```INDISPONIBILITE_TEMP```) est ajoutée automatiquement à la liste des anomalies du point d'eau lorsque qu'une indisponibilité temporaire est activée à partir des fonctionnalités dédiées. (Activation automatique ou manuelle.)
 
 image:cycle_de_vie_indispo_tmp.png[Cycle de vie indispo temporaire]
 

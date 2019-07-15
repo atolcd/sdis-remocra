@@ -3,8 +3,8 @@ Ext.define('Sdis.Remocra.features.hydrants.ActiveIndispo', {
     extend: 'Ext.window.Window',
     alias: 'widget.activeIndispo',
     width: 450,
-       height: 250,
-       title: 'Début d\'indisponibilité temporaire',
+       height: 200,
+       title: 'Confirmation d\'activation d\'indisponibilité temporaire',
        modal: true,
        layout: 'form',
        bodyPadding: 15,
@@ -15,30 +15,6 @@ Ext.define('Sdis.Remocra.features.hydrants.ActiveIndispo', {
        },
 
         items:[{
-         xtype: 'fieldcontainer',
-         layout: 'hbox',
-         items: [{
-            xtype: 'datefield',
-            fieldLabel: 'Date réelle de début',
-            width: 250,
-            margin: '0 20 0 0',
-            labelWidth: 150,
-            labelAlign: 'left',
-            name: 'dateDebut',
-            value: new Date(),
-            format: 'd/m/Y'
-            }, {
-            xtype: 'timefield',
-            name: 'timeDebut',
-            fieldLabel: 'à',
-            width: 100,
-            labelWidth: 20,
-            minValue: "00:00",
-            value: new Date(),
-            format: 'H:i',
-            increment: 15
-            }]
-        },{
          xtype: 'fieldcontainer',
          layout: 'hbox',
          items: [{
@@ -57,10 +33,10 @@ Ext.define('Sdis.Remocra.features.hydrants.ActiveIndispo', {
 
     initComponent: function() {
         this.buttons = [{
-            text: 'Valider',
+            text: 'Confimer',
             itemId: 'activIndispo'
             },{
-            text: 'Fermer',
+            text: 'Annuler',
             scope: this,
             handler: function() {
                 this.close();

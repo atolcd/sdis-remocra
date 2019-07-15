@@ -1,10 +1,10 @@
 Ext.require('Ext.window.Window');
-Ext.define('Sdis.Remocra.features.hydrants.LeveIndispo', {
+Ext.define('Sdis.Remocra.features.hydrants.ProlongerIndispo', {
     extend: 'Ext.window.Window',
-    alias: 'widget.leveIndispo',
+    alias: 'widget.prolongerIndispo',
     width: 450,
-       height: 200,
-       title: 'Confirmation de fin d\'indisponibilité temporaire',
+       height: 250,
+       title: 'Prolongation d\'une indisponibilité temporaire',
        modal: true,
        layout: 'form',
        bodyPadding: 15,
@@ -15,6 +15,28 @@ Ext.define('Sdis.Remocra.features.hydrants.LeveIndispo', {
        },
 
     items:[{
+        xtype: 'fieldcontainer',
+        layout: 'hbox',
+        items: [{
+            xtype: 'datefield',
+            fieldLabel: 'Nouvelle date de fin',
+            width: 250,
+            margin: '0 20 0 0',
+            labelWidth: 150,
+            labelAlign: 'left',
+            name: 'dateFin',
+            format: 'd/m/Y'
+            }, {
+            xtype: 'timefield',
+            name: 'timeFin',
+            fieldLabel: 'à',
+            width: 100,
+            labelWidth: 20,
+            minValue: "00:00",
+            format: 'H:i',
+            increment: 15
+            }]
+        },{
          xtype: 'fieldcontainer',
          layout: 'hbox',
          items: [{
@@ -26,7 +48,7 @@ Ext.define('Sdis.Remocra.features.hydrants.LeveIndispo', {
            xtype: 'gridHydrantIndispos',
            itemId:'gridHydrantIndispos',
            width: 215,
-          height: 100,
+        height: 100,
            hideHeaders: true
          }]
     }    ],
@@ -34,7 +56,7 @@ Ext.define('Sdis.Remocra.features.hydrants.LeveIndispo', {
     initComponent: function() {
         this.buttons = [{
             text: 'Confirmer',
-            itemId: 'levIndispo'
+            itemId: 'prolongeIndispo'
             },{
             text: 'Annuler',
             scope: this,

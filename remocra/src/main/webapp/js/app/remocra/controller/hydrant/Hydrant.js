@@ -33,6 +33,10 @@ Ext.require('Sdis.Remocra.features.hydrants.NouvelleIndispo');
 Ext.require('Sdis.Remocra.features.hydrants.EditIndispo');
 Ext.require('Sdis.Remocra.features.hydrants.ActiveIndispo');
 Ext.require('Sdis.Remocra.features.hydrants.LeveIndispo');
+Ext.require('Sdis.Remocra.features.hydrants.ProlongerIndispo');
+Ext.require('Sdis.Remocra.features.hydrants.ListerPeiIndispo');
+
+
 
 Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     extend: 'Ext.app.Controller',
@@ -81,7 +85,13 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     },{
         ref: 'leveIndispo',
         selector: 'leveIndispo'
-    }       ],
+    },{
+        ref: 'prolongerIndispo',
+        selector: 'prolongerIndispo'
+    },{
+        ref: 'listerPeiIndispo',
+        selector: 'listerPeiIndispo'
+    }],
 
     init: function() {
 
@@ -193,7 +203,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 click: this.desaffecteTournee
             },
             'crHydrantsMap #indispoBtn': {
-                click: this.declareIndispo
+                click: this.showFicheIndispoTempFromMap
             },
              'crHydrantsMap #editIndispoBtn': {
               click: this.editIndispo
@@ -283,7 +293,13 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             },
             'leveIndispo': {
                 afterrender: this.loadHydrantsIndispo
-            }            ,
+            },
+            'prolongerIndispo': {
+                afterrender: this.loadHydrantsIndispo
+            },
+            'listerPeiIndispo': {
+                afterrender: this.loadHydrantsIndispo
+            },
             'activeIndispo #activIndispo': {
                 click: this.onActiveIndispo
             },
@@ -293,8 +309,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             'crHydrantsIndispo #deleteIndispo': {
                 click: this.deleteIndispo
             },
+            //ici
             'crHydrantsIndispo #gererIndispo': {
-                click: this.showEditIndispo
+                click: this.showFicheIndispoTempFromGrid
             },
             'crHydrantsIndispo #locateIndispo': {
                 click: this.onLocateIndispo
@@ -307,6 +324,15 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             },
              'editIndispo #activIndispo': {
                 click: this.showActiveIndispo
+            },
+             'prolongerIndispo #prolongeIndispo': {
+                click: this.onProlongerIndispo
+            },
+             'crHydrantsIndispo #prolongerIndispo': {
+                click: this.showProlongerIndispo
+            },
+             'crHydrantsIndispo #listerPeiIndispo': {
+                click: this.showListerPeiIndispo
             }
         });
     },
@@ -340,6 +366,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
            fiche.down('crHydrantsIndispo #activeIndispo').hide();
            fiche.down('crHydrantsIndispo #leverIndispo').hide();
            fiche.down('crHydrantsIndispo #gererIndispo').hide();
+           fiche.down('crHydrantsIndispo #prolongerIndispo').hide();
         }
         if (!Sdis.Remocra.Rights.hasRight('INDISPOS_D')) {
            fiche.down('crHydrantsIndispo #deleteIndispo').hide();
@@ -1160,7 +1187,6 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         if (features.length == 1) {
             this.showFicheHydrant(features[0].data.typeHydrantCode, features[0].fid, controle);
         }
-
     },
 
     deleteHydrantFromMap: function() {
@@ -1189,9 +1215,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                       return;
                    }
                 }
-
        Ext.widget('nouvelleIndispo').show();
     },
+
 
     showEditIndispo: function() {
         var indispo = this.getSelectedIndispo();
@@ -1702,35 +1728,64 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
 
      },
 
+     showProlongerIndispo: function(){
+        Ext.widget('prolongerIndispo').show();
+        var indispo = null;
+        if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
+            indispo = this.getSelectedIndispo();
+        }else{
+            indispo = this.getSelectedIndispoFromMap();
+        }
+        var dateFin = indispo.get('dateFin');
+        var date = this.getFormattedDate(dateFin, false);
+        var time = this.getFormattedTime(dateFin, false);
+        this.getProlongerIndispo().down('datefield[name=dateFin]').setValue(date);
+        this.getProlongerIndispo().down('timefield[name=timeFin]').setValue(time);        
+    },
+
+     showListerPeiIndispo: function(){
+        Ext.widget('listerPeiIndispo').show();
+     },
+
      onSelectIndispo: function(sel, records, index, opt){
        var tabIndispos = this.getTabIndispo();
        var indispo = records[0];
           if(indispo!=null) {
               //tant qu'il y'a une selection on autorise la localisation et la suppression
-
                tabIndispos.queryById('deleteIndispo').setDisabled(records.length == 0);
                tabIndispos.queryById('locateIndispo').setDisabled(records.length == 0);
                tabIndispos.queryById('gererIndispo').setDisabled(records.length == 0);
+               tabIndispos.queryById('listerPeiIndispo').setDisabled(records.length == 0);
+
              if(indispo.getStatut().get('code') == 'EN_COURS'){ // On permet la levée de l'indispo & on interdit la suppression
                tabIndispos.queryById('activeIndispo').setDisabled(records.length != 0);
                tabIndispos.queryById('leverIndispo').setDisabled(records.length == 0);
-               tabIndispos.queryById('gererIndispo').setText('Lister les points d\'eau');
+               tabIndispos.queryById('gererIndispo').setDisabled(records.length != 0);
                tabIndispos.queryById('deleteIndispo').setDisabled(records.length != 0);
+               if(indispo.get('dateFin') != null){
+                tabIndispos.queryById('prolongerIndispo').setDisabled(records.length == 0);
+               } else {
+                tabIndispos.queryById('prolongerIndispo').setDisabled(records.length != 0);
+               }
              }else if(indispo.getStatut().get('code') == 'TERMINE'){ // indispo terminée on desactive tout
                tabIndispos.queryById('activeIndispo').setDisabled(records.length != 0);
                tabIndispos.queryById('leverIndispo').setDisabled(records.length != 0);
-               tabIndispos.queryById('gererIndispo').setText('Lister les points d\'eau');
+               tabIndispos.queryById('gererIndispo').setDisabled(records.length != 0);
+               tabIndispos.queryById('prolongerIndispo').setDisabled(records.length != 0);
              }else if(indispo.getStatut().get('code') == 'PLANIFIE'){ //indispo en previsionnelle on autorise l'activation et la gestion
                tabIndispos.queryById('activeIndispo').setDisabled(records.length == 0);
                tabIndispos.queryById('leverIndispo').setDisabled(records.length != 0);
-               tabIndispos.queryById('gererIndispo').setText('Gérer');
+               tabIndispos.queryById('prolongerIndispo').setDisabled(records.length != 0);
+                         
              }
-          }else {                                                                   // En cas de suppression on reinitialise tout
+          }else {// En cas de suppression on reinitialise tout
             tabIndispos.queryById('gererIndispo').setDisabled(records.length == 0);
             tabIndispos.queryById('activeIndispo').setDisabled(records.length == 0);
             tabIndispos.queryById('leverIndispo').setDisabled(records.length == 0);
             tabIndispos.queryById('deleteIndispo').setDisabled(records.length == 0);
             tabIndispos.queryById('locateIndispo').setDisabled(records.length == 0);
+            tabIndispos.queryById('prolongerIndispo').setDisabled(records.length == 0);
+            tabIndispos.queryById('listerPeiIndispo').setDisabled(records.length == 0);
           }
      },
 
@@ -1760,6 +1815,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         }
         return record;
     },
+    
     getSelectedIndispoFromMap: function() {
         if (!this.getEditIndispo()) {
             console.warn('soucis ??');
@@ -1775,40 +1831,40 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     onActiveIndispo : function() {
         var indispo = null;
         if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
-          indispo = this.getSelectedIndispo();
+            indispo = this.getSelectedIndispo();
         }else{
-          indispo = this.getSelectedIndispoFromMap();
-          var features =this.getSelectedFeatures();
+            indispo = this.getSelectedIndispoFromMap();
+            var features =this.getSelectedFeatures();
         }
-       var dateDebut = this.getActiveIndispo().down('datefield[name=dateDebut]').getValue();
-       var timeDebut =this.getActiveIndispo().down('timefield[name=timeDebut]').getValue();
-       dateDebut.setHours(timeDebut.getHours(),timeDebut.getMinutes());
-       Ext.Ajax.request({
-                    url: Sdis.Remocra.util.Util.withBaseUrl('../indisponibilites/activeIndispoTemp/'+indispo.getId()),
-                    method: 'POST',
-                    params: {dateDebut: dateDebut},
-                    scope: this,
-                    callback: function(param, success, response) {
-                        this.refreshMap();
-                        var res = Ext.decode(response.responseText);
-                        this.getActiveIndispo().close();
-                        if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
-                          this.getTabIndispo().getStore().load();
-                        }else {
-                        this.getEditIndispo().queryById('activIndispo').setDisabled(true);
-                          this.getEditIndispo().queryById('gridIndispos').getStore().load({
-                                 scope: this,
-                                 params: {
-                                 filter: Ext.encode([{
-                                 property: 'hydrantId',
-                                  value: features[0].fid
-                                  }])
-                                }
-                           });
-                        }
-                        Sdis.Remocra.util.Msg.msg("Activation de l'indisponibilité", res.message);
+        var dateDebut = this.getFormattedDate(new Date(), true);
+        var timeDebut = this.getFormattedTime(new Date(), true);
+        var dateTimeDebut = new Date(dateDebut + "T" + timeDebut);
+        Ext.Ajax.request({
+                url: Sdis.Remocra.util.Util.withBaseUrl('../indisponibilites/activeIndispoTemp/'+indispo.getId()),
+                method: 'POST',
+                params: {dateDebut: dateTimeDebut},
+                scope: this,
+                callback: function(param, success, response) {
+                    this.refreshMap();
+                    var res = Ext.decode(response.responseText);
+                    this.getActiveIndispo().close();
+                    if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
+                        this.getTabIndispo().getStore().load();
+                    }else {
+                    this.getEditIndispo().queryById('activIndispo').setDisabled(true);
+                        this.getEditIndispo().queryById('gridIndispos').getStore().load({
+                                scope: this,
+                                params: {
+                                filter: Ext.encode([{
+                                property: 'hydrantId',
+                                value: features[0].fid
+                                }])
+                            }
+                        });
                     }
-       });
+                    Sdis.Remocra.util.Msg.msg("Activation de l'indisponibilité", res.message);
+                }
+        });
 
     },
 
@@ -1820,9 +1876,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             indispo = this.getSelectedIndispoFromMap();
             var features =this.getSelectedFeatures();
         }
-        var dateFin = this.getLeveIndispo().down('datefield[name=dateFin]').getValue();
-        var timeFin =this.getLeveIndispo().down('timefield[name=timeFin]').getValue();
-        dateFin.setHours(timeFin.getHours(),timeFin.getMinutes());
+        var dateFin = this.getFormattedDate(new Date(), true);
+        var timeFin = this.getFormattedTime(new Date(), true);
+        var dateTimeFin = new Date(dateFin + "T" + timeFin);
         //On compare les dates pour éviter que la date de fin soit superieur à la date de debut
         if(dateFin < indispo.get('dateDebut')) {
             Ext.Msg.alert('Indisponibilité temporaire','La date de fin ne doit pas être antérieure à la date de début.');
@@ -1831,7 +1887,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         Ext.Ajax.request({
             url: Sdis.Remocra.util.Util.withBaseUrl('../indisponibilites/leveIndispoTemp/'+indispo.getId()),
             method: 'POST',
-            params: {dateFin: dateFin},
+            params: {dateFin: dateTimeFin},
             scope: this,
             callback: function(param, success, response) {
                 this.refreshMap();
@@ -1857,6 +1913,34 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         });
 
     },
+
+    getFormattedDate: function(fullDate, yearFirst) {
+      var myDate = fullDate;
+      var month = ('0' + (myDate.getMonth() + 1)).slice(-2);
+      var date = ('0' + myDate.getDate()).slice(-2);
+      var year = myDate.getFullYear();
+      var formattedDate = '';
+      if(yearFirst){
+        formattedDate = year + '-' + month + '-' + date;
+      } else {
+        formattedDate = date + '/' + month + '/' + year;
+      }
+      return formattedDate;
+    },
+
+    getFormattedTime: function(fullDate, avecZeros){
+      var myTime = fullDate;
+      var hour = ('0' + (myTime.getHours() )).slice(-2);
+      var minutes = ('0' + myTime.getMinutes()).slice(-2);
+      var formattedTime = '';
+      if(avecZeros){
+        formattedTime = hour+':'+minutes+':'+'00';
+      } else {
+        formattedTime = hour+':'+minutes;
+      }
+      return formattedTime;
+    },
+
     onLocateIndispo: function() {
     var indispo = this.getSelectedIndispo();
      if (Ext.isEmpty(indispo.get('geometrie'))) {
@@ -1899,22 +1983,22 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
       if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
            if (this.getActiveIndispo() && this.getActiveIndispo().isVisible()){
                this.getActiveIndispo().queryById('gridHydrantIndispos').getStore().add (this.getSelectedIndispo().hydrants().data.items);
-                this.getActiveIndispo().down('datefield[name=dateDebut]').setValue(new Date());
-                this.getActiveIndispo().down('timefield[name=timeDebut]').setValue(new Date());
            }else if(this.getLeveIndispo() && this.getLeveIndispo().isVisible()){
                this.getLeveIndispo().queryById('gridHydrantIndispos').getStore().add (this.getSelectedIndispo().hydrants().data.items);
-               this.getLeveIndispo().down('datefield[name=dateFin]').setValue(new Date());
-               this.getLeveIndispo().down('timefield[name=timeFin]').setValue(new Date());
+           } else if(this.getProlongerIndispo() && this.getProlongerIndispo().isVisible()){
+               this.getProlongerIndispo().queryById('gridHydrantIndispos').getStore().add (this.getSelectedIndispo().hydrants().data.items);
+           } else if(this.getListerPeiIndispo() && this.getListerPeiIndispo().isVisible()){
+            this.getListerPeiIndispo().queryById('gridHydrantIndispos').getStore().add (this.getSelectedIndispo().hydrants().data.items);
            }
       } else if(this.getTabMap() && this.getTabMap().isVisible()) {
           if (this.getActiveIndispo() && this.getActiveIndispo().isVisible()){
                this.getActiveIndispo().queryById('gridHydrantIndispos').getStore().add (this.getSelectedIndispoFromMap().hydrants().data.items);
-                this.getActiveIndispo().down('datefield[name=dateDebut]').setValue(new Date());
-                this.getActiveIndispo().down('timefield[name=timeDebut]').setValue(new Date());
            }else if(this.getLeveIndispo() && this.getLeveIndispo().isVisible()){
-                this.getLeveIndispo().down('datefield[name=dateFin]').setValue(new Date());
-                this.getLeveIndispo().down('timefield[name=timeFin]').setValue(new Date());
                this.getLeveIndispo().queryById('gridHydrantIndispos').getStore().add (this.getSelectedIndispoFromMap().hydrants().data.items);
+           } else if(this.getProlongerIndispo() && this.getProlongerIndispo().isVisible()){
+            this.getProlongerIndispo().queryById('gridHydrantIndispos').getStore().add (this.getSelectedIndispo().hydrants().data.items);
+           } else if(this.getListerPeiIndispo() && this.getListerPeiIndispo().isVisible()){
+            this.getListerPeiIndispo().queryById('gridHydrantIndispos').getStore().add (this.getSelectedIndispo().hydrants().data.items);
            }
       }
     },
@@ -1970,6 +2054,86 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                        vueFiche.$el.remove();
                        vueFiche.$destroy();
                }, this));
-         }
+      },
 
+      showFicheIndispoTempFromMap: function(){
+        var features = Object.values(this.getSelectedFeatures());
+        var cpt = 0;
+        var communeId = features[0].data.commune;
+
+        for (cpt; cpt < features.length ; cpt++) {
+            if (features[cpt].data.commune !== communeId) {
+                Ext.Msg.alert('Indisponibilité temporaire','Merci de vérifier que tous les points d\'eau sélectionnés sont localisés sur la même commune');
+                return;
+            }
+        }
+        var idIndispoTemp = null;
+        var tabNumPeiSelected = [];
+        var tabIdPeiSelected = [];
+
+        var i = 0;
+        for(i; i < features.length; i++)
+        {
+            tabNumPeiSelected[i] = features[i].data.numero;
+            tabIdPeiSelected[i] = features[i].fid;
+        }
+
+        var d = document.createElement('div');
+        document.body.appendChild(d);
+        var vueFicheIndispo = window.remocraVue.indispoTempBuildFiche(d, {idIndispoTemp: idIndispoTemp, tabIdPeiSelected: tabIdPeiSelected, tabNumPeiSelected: tabNumPeiSelected});
+
+        vueFicheIndispo.$options.bus.$on('closed', Ext.bind(function(data) {
+            vueFicheIndispo.$el.remove();
+            vueFicheIndispo.$destroy();
+            }, this));
+      },
+
+      showFicheIndispoTempFromGrid: function(){
+        var indispo = this.getSelectedIndispo();
+
+        var idIndispoTemp = indispo.get('id');
+
+        var d = document.createElement('div');
+        document.body.appendChild(d);
+        var vueFicheIndispo = window.remocraVue.indispoTempBuildFiche(d, {idIndispoTemp: idIndispoTemp, tabIdPeiSelected: null, tabNumPeiSelected: null});
+
+        vueFicheIndispo.$options.bus.$on('closed', Ext.bind(function(data) {
+            vueFicheIndispo.$el.remove();
+            vueFicheIndispo.$destroy();
+            this.getTabIndispo().getStore().load();
+            }, this));
+    },
+
+    onProlongerIndispo: function(){
+        var indispo = null;
+        if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
+            indispo = this.getSelectedIndispo();
+        }else{
+            indispo = this.getSelectedIndispoFromMap();
+            var features =this.getSelectedFeatures();
+        }
+        var newDateFin = this.getProlongerIndispo().down('datefield[name=dateFin]').getValue();
+        var newTimeFin = this.getProlongerIndispo().down('timefield[name=timeFin]').getValue();
+        newDateFin.setHours(newTimeFin.getHours(),newTimeFin.getMinutes());
+        //On compare les dates pour éviter que la date de fin soit superieur à la date de debut
+        if(newDateFin < indispo.get('dateFin')) {
+            Ext.Msg.alert('Indisponibilité temporaire','La nouvelle date de fin ne doit pas être antérieure à la date de fin initiale.');
+            return;
+        }
+        Ext.Ajax.request({
+            url: Sdis.Remocra.util.Util.withBaseUrl('../indisponibilites/prolongerIndispo/'+indispo.getId()),
+            method: 'POST',
+            params: {dateFin: newDateFin},
+            scope: this,
+            callback: function(param, success, response) {
+                this.refreshMap();
+                var res = Ext.decode(response.responseText);
+                this.getProlongerIndispo().close();
+                if(this.getTabIndispo() && this.getTabIndispo().isVisible()) {
+                    this.getTabIndispo().getStore().load();
+                }
+                Sdis.Remocra.util.Msg.msg("Prolongation de l'indisponibilité", res.message);
+            }
+        });           
+    }
 });

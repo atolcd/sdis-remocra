@@ -19,6 +19,7 @@ import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
+import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+ 
+
 @RequestMapping("/indisponibilites")
 @Controller
 public class IndisponibiliteTemporaireController  {
@@ -39,7 +44,17 @@ public class IndisponibiliteTemporaireController  {
     @Autowired
     private UtilisateurService utilisateurService;
 
-    @RequestMapping(value = "", headers = "Accept=application/json")
+    protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+        serializer
+            .include("data.nomStatut").include("data.id").include("data.dateRappelDebut").include("data.dateRappelFin")
+            .include("data.dateDebut").include("data.dateFin").include("data.motif").include("data.commune")
+            .include("data.totalHydrants").include("data.statut").include("data.countHydrant").include("data.hydrants.id").include("data.hydrants.numero").include("data.geometrie").include("data.hydrants.jsonGeometrie").include("data.hydrants.natureDeci")
+            .include("data.hydrants.commune.id").include("data.basculeAutoIndispo").include("data.basculeAutoDispo").include("data.melAvantIndispo").include("data.melAvantDispo");
+
+        return serializer.include("total").include("message").exclude("data.hydrants.*");
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/json")
     @PreAuthorize("hasRight('INDISPOS_R')")
     public ResponseEntity<String> listJson(final @RequestParam(value = "page", required = false) Integer page,
             final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
@@ -50,22 +65,20 @@ public class IndisponibiliteTemporaireController  {
         final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
 
         if (query != null && !query.isEmpty()) {
-            itemFilterList.add(new ItemFilter("hydrantId", query));
+            itemFilterList.add(new ItemFilter("query", query));
         }
         if (sortList.isEmpty()) {
             sortList.add(new ItemSorting("dateDebut", "ASC"));
-            sortList.add(new ItemSorting("datePrevDebut", "ASC"));
         }
 
         return new AbstractExtListSerializer<HydrantIndispoTemporaire>("fr.sdis83.remocra.domain.remocra.HydrantIndispoTemporaire retrieved.") {
             @Override
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
                 serializer
-                    .include("data.nomStatut").include("data.id").include("data.datePrevDebut").include("data.dateRappelDebut").include("data.dateRappelFin")
-                    .include("data.datePrevFin").include("data.dateDebut").include("data.dateFin").include("data.motif").include("data.commune")
+                    .include("data.nomStatut").include("data.id").include("data.dateRappelDebut").include("data.dateRappelFin")
+                    .include("data.dateDebut").include("data.dateFin").include("data.motif").include("data.commune")
                     .include("data.totalHydrants").include("data.statut").include("data.countHydrant").include("data.hydrants.id").include("data.hydrants.numero").include("data.geometrie").include("data.hydrants.jsonGeometrie").include("data.hydrants.natureDeci")
-                    .include("data.hydrants.commune.id");
-
+                    .include("data.hydrants.commune.id").include("data.basculeAutoIndispo").include("data.basculeAutoDispo").include("data.melAvantIndispo").include("data.melAvantDispo");
                 return serializer.include("total").include("message").exclude("data.hydrants.*");
             }
 
@@ -78,7 +91,6 @@ public class IndisponibiliteTemporaireController  {
             protected Long countRecords() throws BusinessException {
                 return indisponibiliteTemporaireService.getIndisponibilitesCount(itemFilterList);
             }
-            
 
         }.serialize();
     }
@@ -86,11 +98,16 @@ public class IndisponibiliteTemporaireController  {
     @RequestMapping(value = "/indispoTemp", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("hasRight('INDISPOS_C')")
     public ResponseEntity<java.lang.String> setIndispo(final @RequestBody String json) {
-        Integer nbHydrantIndispo = indisponibiliteTemporaireService.setIndispo(json);
+        try{
+            final HydrantIndispoTemporaire attached = indisponibiliteTemporaireService.setIndispoTemp(json);
+            return new SuccessErrorExtSerializer(true, "Nouvelle indisponibilité temporaire créée").serialize();
 
-        return new SuccessErrorExtSerializer(true, nbHydrantIndispo.toString() + " Point(s) d'eau sont déclarés indisponible(s)").serialize();
-
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
     }
+
 
     @RequestMapping(value = "/activeIndispoTemp/{id}", method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("hasRight('INDISPOS_U')")
@@ -99,9 +116,6 @@ public class IndisponibiliteTemporaireController  {
 
             DateFormat df = new SimpleDateFormat(RemocraDateHourTransformer.FORMAT);
             HydrantIndispoTemporaire attached = HydrantIndispoTemporaire.findHydrantIndispoTemporaire(id);
-            //voir si on supprime les dates previsionnelle ou pas
-           // attached.setDatePrevDebut(null);
-         //   attached.setDateDebut(df.parse(String.valueOf(dateDebut)));
             Date date = df.parse(dateDebut);
             attached.setDateDebut(date);
             TypeHydrantIndispoStatut indispoStatut = TypeHydrantIndispoStatut.findTypeHydrantIndispoStatutByCode("EN_COURS").getSingleResult();
@@ -152,6 +166,22 @@ public class IndisponibiliteTemporaireController  {
         }
     }
 
+    @RequestMapping(value = "/prolongerIndispo/{id}", method = RequestMethod.POST, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('INDISPOS_U')")
+    public ResponseEntity<java.lang.String> prolongerIndispo(@PathVariable("id") Long id, final @RequestParam String dateFin) {
+        try {
+            DateFormat df = new SimpleDateFormat(RemocraDateHourTransformer.FORMAT);
+            HydrantIndispoTemporaire attached = HydrantIndispoTemporaire.findHydrantIndispoTemporaire(id);
+            Date date = df.parse(dateFin);
+            attached.setDateFin(date);
+            attached.merge();
+            attached.flush();
+            return new SuccessErrorExtSerializer(true, "Indisponibilité temporaire prolongée").serialize();
+        } catch (Exception e) {
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
     @PreAuthorize("hasRight('INDISPOS_D')")
     public ResponseEntity<java.lang.String> delete(@PathVariable("id") Long id) {
@@ -179,5 +209,24 @@ public class IndisponibiliteTemporaireController  {
         }
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('HYDRANTS_R')")
+    public ResponseEntity<java.lang.String> getIndispoTemp(final @PathVariable("id") Long id) {
+
+        return new AbstractExtObjectSerializer<HydrantIndispoTemporaire>("fr.sdis83.remocra.domain.remocra.HydrantIndispoTemporaire retrieved.") {
+
+            @Override
+            protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+                return IndisponibiliteTemporaireController.this.additionnalIncludeExclude(serializer);
+
+            }
+
+            @Override
+            protected HydrantIndispoTemporaire getRecord() {
+                return HydrantIndispoTemporaire.findHydrantIndispoTemporaire(id);
+            }
+
+        }.serialize();
+    }
 
 }

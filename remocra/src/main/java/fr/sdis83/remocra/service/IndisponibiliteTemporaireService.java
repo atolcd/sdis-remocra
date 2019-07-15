@@ -15,6 +15,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.sdis83.remocra.web.deserialize.RemocraBeanObjectFactory;
+
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -159,11 +161,7 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
             boolean first = true;
             for (ItemSorting s : sortList) {
                 String fieldName = null;
-                if ("datePrevDebut".equals(s.getFieldName())) {
-                    fieldName = "date_prev_debut";
-                } else if ("datePrevFin".equals(s.getFieldName())) {
-                    fieldName = "date_prev_fin";
-                } else if ("dateDebut".equals(s.getFieldName())) {
+                if ("dateDebut".equals(s.getFieldName())) {
                     fieldName = "date_debut";
                 } else if ("dateFin".equals(s.getFieldName())) {
                     fieldName = "date_fin";
@@ -171,6 +169,14 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
                     fieldName = "motif";
                 } else if ("commune".equals(s.getFieldName())) {
                     fieldName = "commune";
+                } else if ("basculeAutoIndispo".equals(s.getFieldName())) {
+                    fieldName = "bascule_auto_indispo";
+                } else if ("basculeAutoDispo".equals(s.getFieldName())) {
+                    fieldName = "bascule_auto_dispo";
+                } else if ("melAvantIndispo".equals(s.getFieldName())) {
+                    fieldName = "mel_avant_indispo";
+                } else if ("melAvantDispo".equals(s.getFieldName())) {
+                    fieldName = "mel_avant_dispo";
                 } else {
                     logger.info("Indispo temporaires, critère de tri inconnu : " + s.getFieldName());
                     continue;
@@ -209,97 +215,7 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
         return query.getResultList();
     }
 
-    @Transactional
-    public Integer setIndispo(String json) {
-        HashMap<String, Object> items = new JSONDeserializer<HashMap<String, Object>>().use(Date.class, RemocraDateHourTransformer.getInstance()).deserialize(json);
-
-        // id des hydrants
-        ArrayList<Long> ids = new ArrayList<Long>();
-        for (Integer item : ((ArrayList<Integer>) items.get("ids"))) {
-            ids.add(Long.valueOf(item));
-        }
-
-        // id de l'indisponibilite
-        Long indispoId = null;
-        HashMap<String,Object> obj = (HashMap<String, Object>) items.get("indispo");
-         if (obj.get("id") != null) {
-            indispoId = Long.valueOf(String.valueOf(obj.get("id")));
-        }
-
-        DateFormat df = new SimpleDateFormat(RemocraDateHourTransformer.FORMAT);
-        HydrantIndispoTemporaire indispo = null;
-            // il faut créer une indisponibilite
-            indispo = new HydrantIndispoTemporaire();
-        if(indispoId != null) {
-            indispo = HydrantIndispoTemporaire.findHydrantIndispoTemporaire(indispoId);
-            //On supprime tout les hydrants qui correspondent à cette indisponibilite
-            this.deleteHydrantsIndispo(indispo);
-        }
-            Date datePrevDebut = null;
-            if(obj.get("datePrevDebut")!=null) {
-                try {
-                    datePrevDebut = df.parse(String.valueOf(obj.get("datePrevDebut")));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-            Date datePrevFin = null;
-            if(obj.get("datePrevFin")!=null) {
-                try {
-                    datePrevFin = df.parse(String.valueOf(obj.get("datePrevFin")));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            Date dateReelDebut = null;
-            if(obj.get("dateDebut")!= null) {
-                try {
-                    dateReelDebut = df.parse(String.valueOf(obj.get("dateDebut")));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            Date dateReelFin = null;
-            if(obj.get("dateFin")!=null) {
-                try {
-                    dateReelFin = df.parse(String.valueOf(obj.get("dateFin")));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            indispo.setDateDebut(dateReelDebut);
-            indispo.setDateFin(dateReelFin);
-            indispo.setDatePrevDebut(datePrevDebut);
-            indispo.setDatePrevFin(datePrevFin);
-            indispo.setTotalHydrants(ids.size());
-            indispo.setMotif(String.valueOf(obj.get("motif")));
-            if(dateReelDebut != null && dateReelFin == null){
-                indispo.setStatut(TypeHydrantIndispoStatut.findTypeHydrantIndispoStatutByCode("EN_COURS").getSingleResult());
-            }else if(dateReelFin != null) {
-                indispo.setStatut(TypeHydrantIndispoStatut.findTypeHydrantIndispoStatutByCode("TERMINE").getSingleResult());
-            }else {
-                indispo.setStatut(TypeHydrantIndispoStatut.findTypeHydrantIndispoStatutByCode("PLANIFIE").getSingleResult());
-            }
-
-        if(indispoId != null) {
-            indispo.merge();
-        }else {
-            indispo.persist();
-            indispo.flush();
-        }
-        if("EN_COURS".equals(indispo.getStatut().getCode())){
-                //on update l'utilisateur
-                this.updateUserModification(ids);
-                //on ajoute l'anomalie indispoTeporaire
-                this.setHydrantAnomalie(ids);
-        }
-           return this.insertIndisponibilitesTemporaires(ids,indispo);
-    }
-
-    private int insertIndisponibilitesTemporaires(ArrayList<Long> hydrants, HydrantIndispoTemporaire indispo) {
+    private int insertIndisponibilitesTemporaires(ArrayList<Long> hydrants, Long idIndispo) {
         Query query;
         int result = 0;
         for (Long hydrant : hydrants) {
@@ -307,11 +223,108 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
                 .createNativeQuery(
                     ("INSERT INTO remocra.hydrant_indispo_temporaire_hydrant(indisponibilite,hydrant) SELECT :indisponibilite, :hydrant"/* +
                         " WHERE NOT EXISTS ( SELECT 1 FROM remocra.hydrant_indispo_temporaire_hydrant WHERE hydrant = :hydrant)"*/))
-                .setParameter("indisponibilite", indispo.getId())
+                .setParameter("indisponibilite", idIndispo)
                 .setParameter("hydrant", hydrant);
                 result = result + query.executeUpdate();
         }
         return result;
+    }
+
+    @Transactional
+    public HydrantIndispoTemporaire setIndispoTemp(String json){
+
+        HashMap<String, Object> obj = new JSONDeserializer<HashMap<String, Object>>().deserialize(json);
+
+        JSONDeserializer<HydrantIndispoTemporaire> deserializer = new JSONDeserializer<HydrantIndispoTemporaire>();
+        deserializer.use(null, this.cls).use(Date.class, RemocraDateHourTransformer.getInstance())
+            .use(Object.class,new RemocraBeanObjectFactory(this.entityManager));
+
+        ArrayList<Long> listeIdPei = new ArrayList<Long>();
+        for (String idPei : ((ArrayList<String>) obj.get("tabIdPeiConcernes"))) {
+            listeIdPei.add(Long.valueOf(idPei));
+        }
+
+        Long idIndispoTemp = null;
+        if(obj.get("idIndispoTemp")!=null){
+            idIndispoTemp = Long.valueOf(String.valueOf(obj.get("idIndispoTemp")));
+        }
+        obj.remove("idIndispoTemp");
+        obj.remove("tabIdPeiConcernes");
+
+        //Formatage des dates
+        Date dateDebut = null;
+        Date dateFin = null;
+        try {
+            dateDebut = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(String.valueOf(obj.get("dateDebut")));
+        }
+        catch (Exception e) {e.printStackTrace();}
+        obj.remove("dateDebut");
+        
+        if(!String.valueOf(obj.get("dateFin")).equals("null")){
+            try{
+                dateFin = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(String.valueOf(obj.get("dateFin")));
+            }
+            catch (Exception e) {e.printStackTrace();}
+            obj.remove("dateFin");
+        }
+
+        HydrantIndispoTemporaire indispo = new HydrantIndispoTemporaire();
+        indispo = deserializer.deserialize(obj.toString());
+        
+        if(idIndispoTemp != null){
+            indispo.setId(idIndispoTemp);
+        }
+
+
+        indispo.setDateDebut(dateDebut);
+        indispo.setDateFin(dateFin);
+
+        //Définition du statut
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        Date dateCourante = null;
+        try{
+            dateCourante = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateFormat.format(date));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        if(dateDebut.before(dateCourante) && (dateFin == null || dateCourante.before(dateFin))){
+            indispo.setStatut(TypeHydrantIndispoStatut.findTypeHydrantIndispoStatutByCode("EN_COURS").getSingleResult());
+        }else if(dateCourante.before(dateDebut)) {
+            indispo.setStatut(TypeHydrantIndispoStatut.findTypeHydrantIndispoStatutByCode("PLANIFIE").getSingleResult());
+        }else {
+            indispo.setStatut(TypeHydrantIndispoStatut.findTypeHydrantIndispoStatutByCode("TERMINE").getSingleResult());
+        }
+
+        try{
+            this.setUpInformation(indispo, null);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        if(idIndispoTemp != null){
+            indispo.merge();
+        } else {
+            indispo.persist();
+            indispo.flush();
+        }
+
+        //this.entityManager.persist(indispo);
+
+        //Si lindipo est en cours, on ajoute une anomalie aux hydrants 
+        if("EN_COURS".equals(indispo.getStatut().getCode())){
+            //on update l'utilisateur
+            this.updateUserModification(listeIdPei);
+            //on ajoute l'anomalie indispoTemporaire
+            this.setHydrantAnomalie(listeIdPei);
+        }
+
+        //On ajoute les pei dans la table hydrant_indispo_temporaire_hydrant
+        this.insertIndisponibilitesTemporaires(listeIdPei, indispo.getId());
+
+        return indispo;
     }
 
     private int deleteHydrantsIndispo(HydrantIndispoTemporaire indispo) {

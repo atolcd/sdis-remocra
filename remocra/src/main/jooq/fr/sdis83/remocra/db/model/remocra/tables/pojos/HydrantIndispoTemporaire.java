@@ -36,13 +36,15 @@ public class HydrantIndispoTemporaire implements Serializable {
 	private Instant dateRappelFin;
 	private Long    statut;
 	private Integer totalHydrants;
+	private Boolean basculeAutoIndispo;
+	private Boolean basculeAutoDispo;
+	private Boolean melAvantIndispo;
+	private Boolean melAvantDispo;
 
 	public HydrantIndispoTemporaire() {}
 
 	public HydrantIndispoTemporaire(HydrantIndispoTemporaire value) {
 		this.id = value.id;
-		this.datePrevDebut = value.datePrevDebut;
-		this.datePrevFin = value.datePrevFin;
 		this.dateDebut = value.dateDebut;
 		this.dateFin = value.dateFin;
 		this.motif = value.motif;
@@ -50,23 +52,27 @@ public class HydrantIndispoTemporaire implements Serializable {
 		this.dateRappelFin = value.dateRappelFin;
 		this.statut = value.statut;
 		this.totalHydrants = value.totalHydrants;
+		this.basculeAutoIndispo = value.basculeAutoIndispo;
+		this.basculeAutoDispo = value.basculeAutoDispo;
+		this.melAvantIndispo = value.melAvantIndispo;
+		this.melAvantDispo = value.melAvantDispo;
 	}
 
 	public HydrantIndispoTemporaire(
 		Long    id,
-		Instant datePrevDebut,
-		Instant datePrevFin,
 		Instant dateDebut,
 		Instant dateFin,
 		String  motif,
 		Instant dateRappelDebut,
 		Instant dateRappelFin,
 		Long    statut,
-		Integer totalHydrants
+		Integer totalHydrants,
+		Boolean basculeAutoIndispo,
+		Boolean basculeAutoDispo,
+		Boolean melAvantIndispo,
+		Boolean melAvantDispo
 	) {
 		this.id = id;
-		this.datePrevDebut = datePrevDebut;
-		this.datePrevFin = datePrevFin;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.motif = motif;
@@ -74,6 +80,10 @@ public class HydrantIndispoTemporaire implements Serializable {
 		this.dateRappelFin = dateRappelFin;
 		this.statut = statut;
 		this.totalHydrants = totalHydrants;
+		this.basculeAutoIndispo = basculeAutoIndispo;
+		this.basculeAutoDispo = basculeAutoDispo;
+		this.melAvantIndispo = melAvantIndispo;
+		this.melAvantDispo = melAvantDispo;
 	}
 
 	public Long getId() {
@@ -85,7 +95,7 @@ public class HydrantIndispoTemporaire implements Serializable {
 		return this;
 	}
 
-	public Instant getDatePrevDebut() {
+	/*public Instant getDatePrevDebut() {
 		return this.datePrevDebut;
 	}
 
@@ -101,7 +111,7 @@ public class HydrantIndispoTemporaire implements Serializable {
 	public HydrantIndispoTemporaire setDatePrevFin(Instant datePrevFin) {
 		this.datePrevFin = datePrevFin;
 		return this;
-	}
+	}*/
 
 	public Instant getDateDebut() {
 		return this.dateDebut;
@@ -163,6 +173,42 @@ public class HydrantIndispoTemporaire implements Serializable {
 
 	public HydrantIndispoTemporaire setTotalHydrants(Integer totalHydrants) {
 		this.totalHydrants = totalHydrants;
+		return this;
+	}
+
+	public Boolean getBasculeAutoIndispo() {
+		return this.basculeAutoIndispo;
+	}
+
+	public HydrantIndispoTemporaire setBasculeAutoIndispo(Boolean basculeAutoIndispo) {
+		this.basculeAutoIndispo = basculeAutoIndispo;
+		return this;
+	}
+
+	public Boolean getBasculeAutoDispo() {
+		return this.basculeAutoDispo;
+	}
+
+	public HydrantIndispoTemporaire setBasculeAutoDispo(Boolean basculeAutoDispo) {
+		this.basculeAutoDispo = basculeAutoDispo;
+		return this;
+	}
+
+	public Boolean getMelAvantIndispo() {
+		return this.melAvantIndispo;
+	}
+
+	public HydrantIndispoTemporaire setMelAvantIndispo(Boolean melAvantIndispo) {
+		this.melAvantIndispo = melAvantIndispo;
+		return this;
+	}
+
+	public Boolean getMelAvantDispo() {
+		return this.melAvantDispo;
+	}
+
+	public HydrantIndispoTemporaire setMelAvantDispo(Boolean melAvantDispo) {
+		this.melAvantDispo = melAvantDispo;
 		return this;
 	}
 }

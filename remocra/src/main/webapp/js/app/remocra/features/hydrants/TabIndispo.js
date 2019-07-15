@@ -36,12 +36,20 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
             text: 'Gérer',
             itemId: 'gererIndispo',
             disabled: true
+        },{
+            text: 'Prolonger',
+            itemId: 'prolongerIndispo',
+            disabled: true
+        },{
+            text: 'Lister les points d\'eau',
+            itemId: 'listerPeiIndispo',
+            disabled: true
         },'->',{
             text: 'Supprimer',
             iconCls: 'deleteIcon',
             itemId: 'deleteIndispo',
             disabled: true
-        }        ]
+        }]
     },{
         xtype: 'pagingtoolbar',
         store: {type: 'crIndispos'},
@@ -59,19 +67,6 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
         }, 200);
 
         me.columns = [{
-            text: 'Date prévisionnelle de début',
-            align : 'center',
-            dataIndex: 'datePrevDebut',
-            xtype: 'datecolumn',
-            format:'d/m/y'+' à '+'H:i:s'
-
-        },{
-            text: 'Date prévisionnelle de fin',
-            align : 'center',
-            dataIndex: 'datePrevFin',
-            xtype: 'datecolumn',
-            format:'d/m/y'+' à '+'H:i:s'
-        },{
             text: 'Date de début',
             align : 'center',
             dataIndex: 'dateDebut',
@@ -154,7 +149,40 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
                     }
                 }
              }
-        },{
+        }
+        ,{
+            text: 'Mise en <br /> indisponibilité automatique',
+            align : 'center',
+            dataIndex: 'basculeAutoIndispo',
+            xtype: 'booleancolumn',
+            trueText: 'Oui',
+            falseText: 'Non'
+        }
+        ,{
+            text: 'Notifier avant <br /> mise en indisponibilité',
+            align : 'center',
+            dataIndex: 'melAvantIndispo',
+            xtype: 'booleancolumn',
+            trueText: 'Oui',
+            falseText: 'Non'
+        }
+        ,{
+            text: 'Remise en <br /> disponibilité automatique',
+            align : 'center',
+            dataIndex: 'basculeAutoDispo',
+            xtype: 'booleancolumn',
+            trueText: 'Oui',
+            falseText: 'Non'
+        }
+        ,{
+            text: 'Notifier avant <br /> remise en disponibilité',
+            align : 'center',
+            dataIndex: 'melAvantDispo',
+            xtype: 'booleancolumn',
+            trueText: 'Oui',
+            falseText: 'Non'
+        }     
+        ,{
             text: 'Points d\'eau',
             align : 'center',
             dataIndex: 'countHydrant',

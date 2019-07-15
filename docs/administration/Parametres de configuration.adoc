@@ -473,7 +473,7 @@ Méthodes disponibles pour la symbologie des PEI : link:../pei/Symbologie_PEI{ou
 * Par défaut : ```1```
 
 === PDI_DELTA_NOTIF_INDISPO_FIN ===
-* Notifier par mél N heures après la fin d'une indisponibilité temporaire
+* Notifier par mél N heures avant la fin d'une indisponibilité temporaire
 * Par défaut : ```1```
 
 

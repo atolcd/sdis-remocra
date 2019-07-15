@@ -103,7 +103,7 @@ public class HydrantController {
                 return hydrantService.count(itemFilterCountList);
             }
 
-        }.serialize();
+    }.serialize();
     }
 
     @RequestMapping(value = "/layer", method = RequestMethod.GET, headers = "Accept=application/json")

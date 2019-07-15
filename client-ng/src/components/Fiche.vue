@@ -202,6 +202,7 @@ export default {
       hydrant: {}, // Données actuelles du PEI
       utilisateurDroits: [],
       dataLoaded: false,
+      
 
       //ComboBox
       comboType: [],
@@ -276,7 +277,6 @@ export default {
   },
 
   methods: {
-
     creation() {
       let self = this
       self.hydrantRecord = {
@@ -485,7 +485,7 @@ export default {
             "sort": JSON.stringify([{"property":"nom","direction":"ASC"}])
         }, 'id', 'nom', 'Aucun');
       }
-
+      
       if(this.hydrantRecord.gestionnaire != this.hydrant.gestionnaire){
         this.hydrant.site = null;
       }

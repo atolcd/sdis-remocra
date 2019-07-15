@@ -155,7 +155,20 @@ Ext.define('Sdis.Remocra.features.hydrants.NouvelleIndispo', {
            xtype: 'button',
            text: 'Retirer',
            itemId:'deleteHydrantIndispo'
-         }        ]
+         }]
+    },
+
+    {
+            xtype: 'fieldcontainer',
+            layout: 'hbox',
+            items: [{
+                fieldLabel: 'Test',
+                width: 470,
+                labelWidth: 200,
+                xtype: 'textfield',
+                name: 'motif',
+                labelAlign: 'left'
+            }]
     }],
 
     initComponent: function() {

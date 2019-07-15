@@ -33,6 +33,18 @@ Ext.define('Sdis.Remocra.model.HydrantIndispoTemporaire', {
         type : 'date',
         dateFormat: 'c'
     }, {
+        name : 'basculeAutoIndispo',
+        type : 'boolean'
+    },{
+        name : 'basculeAutoDispo',
+        type : 'boolean'
+    },{
+        name : 'melAvantIndispo',
+        type : 'boolean'
+    },{
+        name : 'melAvantDispo',
+        type : 'boolean'
+    },{
         name : 'timeDebut',
         type : 'string'
     }, {
@@ -64,14 +76,17 @@ Ext.define('Sdis.Remocra.model.HydrantIndispoTemporaire', {
                                 if (!record) {
                                     return null;
                                 }
-                                if(record.get("dateDebut") != null && record.get("dateFin") == null) {
-                                    return "En cours depuis le "+Ext.Date.format(record.get("dateDebut"),'d/m/y'+' à '+ 'H:i:s');
-                                }
-                                if (record.get("dateDebut") == null) {
-                                    return "Planifié entre le "+Ext.Date.format(record.get("datePrevDebut"),'d/m/y'+" à "+'H:i:s')
-                                    +" et le "+Ext.Date.format(record.get("datePrevFin"),'d/m/y'+" à "+'H:i:s');
-                                }
-                                if (record.get("dateFin") != null) {
+                                if((record.get('dateDebut') < new Date()) && record.get('dateFin') == null){
+                                    return "En cours depuis le "+Ext.Date.format(record.get("dateDebut"),'d/m/y'+' à '+ 'H:i:s');                            
+                                }else if ((record.get('dateDebut') < new Date())&&(record.get('dateFin') > new Date())){
+                                    return "En cours depuis le "+Ext.Date.format(record.get("dateDebut"),'d/m/y'+' à '+ 'H:i:s')
+                                    + ', termine le '+Ext.Date.format(record.get("dateFin"),'d/m/y'+' à '+ 'H:i:s' );
+                                } else if(record.get('dateDebut') > new Date() && record.get('dateFin') == null){
+                                    return "Planifié le "+Ext.Date.format(record.get("dateDebut"),'d/m/y'+' à '+ 'H:i:s');    
+                                }else if(record.get('dateDebut') > new Date()&&(record.get('dateFin') > new Date())){
+                                    return "Planifié entre le "+Ext.Date.format(record.get("dateDebut"),'d/m/y'+' à '+ 'H:i:s')
+                                    + ' et le '+Ext.Date.format(record.get("dateFin"),'d/m/y'+' à '+ 'H:i:s' );
+                                } else if(record.get('dateFin') < new Date()){
                                     return "Terminé le "+Ext.Date.format(record.get("dateFin"),'d/m/y'+" à "+'H:i:s');
                                 }
 

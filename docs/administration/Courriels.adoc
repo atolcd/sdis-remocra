@@ -243,20 +243,21 @@ Chaque courriel intègre un lien de téléchargement du document.
 
 === Indisponibilité temporaire de PEI
 
-Dans le cas d'une indisponibilité "prévisionnelle" (prévue à l'avance), deux dates sont renseignées (précision à la minutes) :
+Dans le cas d'une indisponibilité "prévisionnelle" (prévue à l'avance), deux dates sont renseignées (précision à la minute) :
 
-* la date prévisionnelle de début : obligatoire
-* la date prévisionnelle de fin : facultative
+* la date de début : Immédiate ou planifiée
+* la date prévisionnelle de fin : Inconnue ou planifiée
 
 Pour toute indisponibilité prévisionnelle, deux courriels sont potentiellement envoyés :
 
-* Un courriel est envoyé *N heures avant l'échéance prévisionnelle de début* pour informer l'utilisateur qu'il doit activer (ou non) l'indisponibilité (basculement de "Planifié" à "En cours").
-* Un courriel est envoyé *N heures après l'échéance prévisionnelle de fin* pour informer l'utilisateur qu'il doit lever (ou non) l'indisponibilité. Le courriel est envoyé uniquement si l'indisponibilité est encore à l'état "En cours" et si la date prévisionnelle de fin est renseignée.
+* Un courriel est envoyé *N heures avant l'échéance prévisionnelle de début* pour informer l'utilisateur qu'il doit activer (ou non) l'indisponibilité (basculement de "Planifié" à "En cours"). Le courriel est envoyé uniquement si l'utilisateur a coché la case *"Prévenir par mél avant la date prévue"* lors de la déclaration/modification de l'indisponibilité temporaire.
+* Un courriel est envoyé *N heures avant l'échéance prévisionnelle de fin* pour informer l'utilisateur qu'il doit lever (ou non) l'indisponibilité. Le courriel est envoyé uniquement si l'indisponibilité 
+est encore à l'état "En cours", si la date prévisionnelle de fin est renseignée et si l'utilisateur a coché la case *"Prévenir par mél avant la date prévue"* lors de la déclaration/modification de l'indisponibilité temporaire.
 
-L'adresse email du destinataire est paramétrée dans les paramètres de configuration :
+L'adresse email du/des destinataire(s) est paramétrée dans les paramètres de configuration :
 
 * `PDI_UTILISATEUR_NOTIF_INDISPO`
-* Code du profil ou adresse du destinataire pour la notification de début ou de fin prévisionnelles des indisponibilités temporaires
+* Code du profil ou adresse du/des destinataire(s) pour la notification de début ou de fin prévisionnelles des indisponibilités temporaires
 
 Les modèles utilisés portent les codes `INDISPO_TEMPORAIRE_DEBUT` et `INDISPO_TEMPORAIRE_FIN` dans la table `remocra.email_modele`.
 

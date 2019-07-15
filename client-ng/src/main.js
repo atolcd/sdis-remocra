@@ -4,7 +4,7 @@ import Vue from 'vue'
 import GestCrise from './App'
 import Fiche from './components/Fiche'
 import Contacts from './components/Contacts'
-
+import FicheIndisponibiliteTemporaire from './components/FicheIndisponibiliteTemporaire'
 // import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import rate from 'vue-rate'
@@ -73,10 +73,24 @@ const buildContacts = function(el, data) {
   return v
 }
 
+//fiche indispo temp
+const indispoTempBuildFiche = function(el, data){
+    var v = new Vue({
+    el,
+    bus: new Vue(),
+    components: {
+        FicheIndisponibiliteTemporaire
+    },
+    template: "<FicheIndisponibiliteTemporaire idIndispoTemp="+data.idIndispoTemp+" tabIdPeiSelected="+data.tabIdPeiSelected+" tabNumPeiSelected='"+data.tabNumPeiSelected+"'/>"
+    })
+    return v
+}
+
 
 
 export {
   criseBuildMap,
   peiBuildFiche,
+  indispoTempBuildFiche,
   buildContacts
 }

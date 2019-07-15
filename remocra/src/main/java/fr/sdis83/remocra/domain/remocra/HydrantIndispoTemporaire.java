@@ -37,39 +37,56 @@ public class HydrantIndispoTemporaire {
     private Long id;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
+    @Column(name = "date_debut")
+    //@DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
     private Date dateDebut;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
+    @Column (name= "date_fin")
+    //@DateTime(Format(pattern = RemocraDateHourTransformer.FORMAT)
     private Date dateFin;
 
     @Column(name = "motif")
     private String motif;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
+    @Column (name = "date_rappel_debut")
+    //@DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
     private Date dateRappelDebut;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
+    @Column(name = "date_rappel_fin")
+    //@DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
     private Date dateRappelFin;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
-    private Date datePrevDebut;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
-    private Date datePrevFin;
-    //@Transient
-   //@Formula("(select count(*) from remocra.hydrant_indispo_temporaire_hydrant ith where ith.indisponibilite = id)")
-    @Column(name= "total_hydrants")
-    private Integer totalHydrants;
 
     @ManyToOne
     @JoinColumn(name = "statut", referencedColumnName = "id", nullable = false)
-    private TypeHydrantIndispoStatut statut;
+    private TypeHydrantIndispoStatut statut;    
+    
+    @Column(name= "total_hydrants")
+    private Integer totalHydrants;
+
+    @Column(name="bascule_auto_indispo")
+    private boolean basculeAutoIndispo;
+
+    @Column(name="bascule_auto_dispo")
+    private boolean basculeAutoDispo;
+
+    @Column(name="mel_avant_indispo")
+    private boolean melAvantIndispo;
+
+    @Column(name="mel_avant_dispo")
+    private boolean melAvantDispo;
+    
+    /*@Temporal(TemporalType.TIMESTAMP)
+    //@DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
+    private Date datePrevDebut;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    //@DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
+    private Date datePrevFin;*/
+    //@Transient
+   //@Formula("(select count(*) from remocra.hydrant_indispo_temporaire_hydrant ith where ith.indisponibilite = id)")
 
     @OneToMany
     @JoinTable(name = "hydrant_indispo_temporaire_hydrant", joinColumns = { @JoinColumn(name = "indisponibilite", nullable = false) }, inverseJoinColumns = {
@@ -114,4 +131,5 @@ public class HydrantIndispoTemporaire {
         }
         return geom;
     }
+
 }

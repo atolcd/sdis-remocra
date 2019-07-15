@@ -1,10 +1,10 @@
 Ext.require('Ext.window.Window');
-Ext.define('Sdis.Remocra.features.hydrants.LeveIndispo', {
+Ext.define('Sdis.Remocra.features.hydrants.ListerPeiIndispo', {
     extend: 'Ext.window.Window',
-    alias: 'widget.leveIndispo',
-    width: 450,
-       height: 200,
-       title: 'Confirmation de fin d\'indisponibilité temporaire',
+    alias: 'widget.listerPeiIndispo',
+    width: 250,
+       height: 350,
+       title: 'Liste des points d\'eau concernés',
        modal: true,
        layout: 'form',
        bodyPadding: 15,
@@ -18,25 +18,17 @@ Ext.define('Sdis.Remocra.features.hydrants.LeveIndispo', {
          xtype: 'fieldcontainer',
          layout: 'hbox',
          items: [{
-           xtype: 'label',
-           text: 'Points d\'eau concernés :',
-           width: 150,
-           margin: '0 5 0 0'
-         },{
            xtype: 'gridHydrantIndispos',
            itemId:'gridHydrantIndispos',
            width: 215,
-          height: 100,
+          height: 250,
            hideHeaders: true
          }]
     }    ],
 
     initComponent: function() {
         this.buttons = [{
-            text: 'Confirmer',
-            itemId: 'levIndispo'
-            },{
-            text: 'Annuler',
+            text: 'Quitter',
             scope: this,
             handler: function() {
                 this.close();

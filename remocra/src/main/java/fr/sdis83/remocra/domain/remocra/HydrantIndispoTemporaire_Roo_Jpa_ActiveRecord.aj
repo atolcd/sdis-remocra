@@ -17,8 +17,9 @@ privileged aspect HydrantIndispoTemporaire_Roo_Jpa_ActiveRecord {
     @PersistenceContext
     transient EntityManager HydrantIndispoTemporaire.entityManager;
     
-    public static final List<String> HydrantIndispoTemporaire.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "dateDebut", "dateFin", "motif", "dateRappelFin", "dateRappelDebut", "datePrevDebut", "datePrevFin", "totalHydrants");
-    
+    public static final List<String> HydrantIndispoTemporaire.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "dateDebut", "dateFin", "motif", "dateRappelFin", "dateRappelDebut", "basculeAutoIndispo", "basculeAutoDispo", "melAvantIndispo", "melAvantDispo", "totalHydrants");
+
+
     public static final EntityManager HydrantIndispoTemporaire.entityManager() {
         EntityManager em = new HydrantIndispoTemporaire().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");

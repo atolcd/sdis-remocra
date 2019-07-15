@@ -27,22 +27,6 @@ privileged aspect HydrantIndispoTemporaire_Roo_JavaBean {
         this.dateDebut = dateDebut;
     }
 
-    public Date HydrantIndispoTemporaire.getDatePrevDebut() {
-        return this.datePrevDebut;
-    }
-
-    public void HydrantIndispoTemporaire.setDatePrevDebut(Date datePrevDebut) {
-        this.datePrevDebut = datePrevDebut;
-    }
-
-    public Date HydrantIndispoTemporaire.getDatePrevFin() {
-        return this.datePrevFin;
-    }
-
-    public void HydrantIndispoTemporaire.setDatePrevFin(Date datePrevFin) {
-        this.datePrevFin = datePrevFin;
-    }
-
     public Date HydrantIndispoTemporaire.getDateFin() {
         return this.dateFin;
     }
@@ -63,7 +47,7 @@ privileged aspect HydrantIndispoTemporaire_Roo_JavaBean {
         return this.dateRappelFin;
     }
 
-    public void HydrantIndispoTemporaire.setDateRappel(Date dateRappelFin) {
+    public void HydrantIndispoTemporaire.setDateRappelFin(Date dateRappelFin) {
         this.dateRappelFin = dateRappelFin;
     }
 
@@ -99,5 +83,38 @@ privileged aspect HydrantIndispoTemporaire_Roo_JavaBean {
     public void HydrantIndispoTemporaire.setHydrants(Set<Hydrant> hydrants) {
         this.hydrants = hydrants;
     }
+
+    public boolean HydrantIndispoTemporaire.getBasculeAutoIndispo() {
+        return basculeAutoIndispo;
+    }
+
+    public void HydrantIndispoTemporaire.setBasculeAutoIndispo(boolean basculeAutoIndispo) {
+        this.basculeAutoIndispo = basculeAutoIndispo;
+    }
+
+    public boolean HydrantIndispoTemporaire.getBasculeAutoDispo() {
+        return basculeAutoDispo;
+    }
+
+    public void HydrantIndispoTemporaire.setBasculeAutoDispo(boolean basculeAutoDispo) {
+        this.basculeAutoDispo = basculeAutoDispo;
+    }
+
+    public boolean HydrantIndispoTemporaire.getMelAvantIndispo() {
+        return melAvantIndispo;
+    }
+
+    public void HydrantIndispoTemporaire.setMelAvantIndispo(boolean melAvantIndispo) {
+        this.melAvantIndispo = melAvantIndispo;
+    }
+
+    public boolean HydrantIndispoTemporaire.getMelAvantDispo() {
+        return melAvantDispo;
+    }
+
+    public void HydrantIndispoTemporaire.setMelAvantDispo(boolean melAvantDispo) {
+        this.melAvantDispo = melAvantDispo;
+    }
+
 
 }
