@@ -149,6 +149,7 @@ public class HydrantPibiController {
         try {
             final HydrantPibi attached = hydrantPibiService.update(id, json, files);
             if (attached != null) {
+                hydrantPibiService.launchTrigger(id);
                 return new AbstractExtObjectSerializer<HydrantPibi>("Hydrant Pibi updated.", SuccessErrorExtSerializer.DEFAULT_CONTENT_TYPE) {
                     @Override
                     protected HydrantPibi getRecord() throws BusinessException {

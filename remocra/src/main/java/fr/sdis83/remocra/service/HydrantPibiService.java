@@ -158,4 +158,13 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
             return null;
         }
     }
+
+    @Transactional
+    public boolean launchTrigger(Long id) throws Exception {
+        // Pour déclencher le calcul des anomalies via trigger
+        entityManager.createNativeQuery("update remocra.hydrant_pibi set diametre=diametre where id=:id")
+            .setParameter("id", id)
+            .executeUpdate();
+        return true;
+    }
 }
