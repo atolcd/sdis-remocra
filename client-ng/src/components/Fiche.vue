@@ -467,6 +467,7 @@ export default {
               value: values.id
         });
       }
+      this.hydrant.gestionnaire = values.id
     },
 
     /**
