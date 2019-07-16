@@ -123,37 +123,41 @@
 							</b-tab>
 
 							<b-tab class="anomalies-tab" title="Points d'attention">
-								<div :class="listeVisites[selectedRow].id !== undefined ? 'notActive' : ''" v-if="hydrant.nature">
-									<div class="row" id="anomalieCritere">
-										<div class="col-md-12">
-											<p class="bold">{{anomaliesCriteres[indexCritere].nom}}</p>
+								<div v-if="anomaliesCriteres[indexCritere] !== undefined">
+									<div :class="listeVisites[selectedRow].id !== undefined ? 'notActive' : ''" v-if="hydrant.nature">
+										<div class="row" id="anomalieCritere">
+											<div class="col-md-12">
+												<p class="bold">{{anomaliesCriteres[indexCritere].nom}}</p>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-md-12">
+												<b-form-group>
+													<b-form-checkbox-group id="checkbox-group-2" v-model="listeVisites[selectedRow].anomalies" name="flavour-2">
+														<table class="table table-striped table-sm table-bordered" id="tableAnomalies">
+															<tbody>
+																<tr v-for="(item,index) in anomaliesFiltered" :key="index" class="rowAnomalie">
+																	<b-form-checkbox :value="item.id" :class="getAnomalieClass(index)">{{item.nom}}</b-form-checkbox>
+																</tr>
+															</tbody>
+														</table>
+													</b-form-checkbox-group>
+												</b-form-group>
+											</div>
 										</div>
 									</div>
 
 									<div class="row">
 										<div class="col-md-12">
-											<b-form-group>
-												<b-form-checkbox-group id="checkbox-group-2" v-model="listeVisites[selectedRow].anomalies" name="flavour-2">
-													<table class="table table-striped table-sm table-bordered" id="tableAnomalies">
-														<tbody>
-															<tr v-for="(item,index) in anomaliesFiltered" :key="index" class="rowAnomalie">
-																<b-form-checkbox :value="item.id" :class="getAnomalieClass(index)">{{item.nom}}</b-form-checkbox>
-															</tr>
-														</tbody>
-													</table>
-												</b-form-checkbox-group>
-											</b-form-group>
+											<b-button @click.prevent @click="criterePrecedent" class="btn btn-primary" size="sm" :disabled="anomaliePrecedentDisabled">Précédent</b-button>
+											<b-button @click.prevent @click="critereSuivant" class="btn btn-secondary right" size="sm" :disabled="anomalieSuivantDisabled">Suivant</b-button>
 										</div>
 									</div>
 								</div>
-
-								<div class="row">
-									<div class="col-md-12">
-										<b-button @click.prevent @click="criterePrecedent" class="btn btn-primary" size="sm" :disabled="anomaliePrecedentDisabled">Précédent</b-button>
-										<b-button @click.prevent @click="critereSuivant" class="btn btn-secondary right" size="sm" :disabled="anomalieSuivantDisabled">Suivant</b-button>
-									</div>
+								<div v-else>
+									<p>Chargement des données des anomalies...</p>
 								</div>
-
 
 							</b-tab>
 
@@ -396,7 +400,7 @@ export default {
 		  * Les anomalies filtrées sont celles correspondant à la nature du type de PEI, du critère sélectionné ainsi qu'au type de saisie actuellement effectué
 		  */
 		anomaliesFiltered: function() {
-			if(!this.listeVisites[this.selectedRow] || this.listeVisites[this.selectedRow].type == null){
+			if(!this.listeVisites[this.selectedRow] || this.listeVisites[this.selectedRow].type == null || this.anomaliesCriteres[this.indexCritere] == null){
 				return [];
 			}
 
@@ -513,8 +517,14 @@ export default {
                     return a.id - b.id;
                 });
 
+                if(this.selectedRow >= 0) {
+                    this.critereSuivant();
+                }
+
             }).catch(function(error) {
-                console.error('Retrieving data from /remocra/typehydrantanomalies', error);
+				if(this) {
+					console.error('Retrieving data from /remocra/typehydrantanomalies', error);
+				}
             })
         )
 
@@ -788,7 +798,7 @@ export default {
 			  * On parcourt toutes les visites, de la plus récente à la plus ancienne afin de trouver la première qui ne soit pas de type "non programmée"
 			  * Ses anomalies sont les anomalies du PEI => on fait remonter ces données dans les data envoyées pour la mise à jour du PEI
 			  */
-			if(this.listeVisites.length > 0){
+			if(this.listeVisites.length > 0 && this.anomaliesRequeteResult){
 				data["anomalies"] = (this.listeVisites[0].anomalies) ? this.anomaliesRequeteResult.filter(item => this.listeVisites[0].anomalies.indexOf(item.id) != -1) : null;
 			}
 

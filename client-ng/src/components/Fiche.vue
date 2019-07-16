@@ -1,7 +1,7 @@
 <template>
   <div :class="{ 'Fiche': true, 'mode-visite': newVisite, 'loading': !dataLoaded }">
     <b-modal id="modalFiche" ref="modalFiche" :title="title" no-close-on-backdrop
-        ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="close()" >
+        ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="close()" :ok-disabled="!dataLoaded">
     <form id='formFiche' name='fiche' enctype="multipart/form-data" method="POST" ref="formFiche">
 <!-- ================================== En-tête du formulaire ==================================-->
       <div id="entete" class="entete form-group">
@@ -202,7 +202,6 @@ export default {
       hydrant: {}, // Données actuelles du PEI
       utilisateurDroits: [],
       dataLoaded: false,
-
 
       //ComboBox
       comboType: [],
@@ -697,7 +696,9 @@ export default {
                self.$root.$options.bus.$emit('pei_modified', {
                  id: id, numero: numero
                })
-               self.$refs.modalFiche.hide()
+               if(self.$refs.modalFiche) {
+                self.$refs.modalFiche.hide()
+               }
              });
           }).catch(function(error) {
             console.error('postEvent', error)
@@ -708,6 +709,7 @@ export default {
     },
 
     close(){
+      loadProgressBar({parent: "head", showSpinner: false});
       this.$root.$options.bus.$emit('closed')
     },
 
