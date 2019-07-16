@@ -2,7 +2,7 @@
 
 :imagesdir: img
 
-=== Format d'échange pour l'initialisation de REMOCRA
+=== Format d'échange v1.4 pour l'initialisation de REMOCRA
 
 image:import_pei.svg[opts=svg]
 
@@ -274,6 +274,13 @@ include::references/type_hydrant_anomalie_impose.csv[]
 |typedeci|Texte|Oui||Code présent dans le fichier type_hydrant_deci.csv
 |typecana|Texte|||Code présent dans le fichier type_hydrant_canalisation.csv
 |type_res|Texte|||Code présent dans le fichier type_hydrant_reseau.csv
+|face|Entier||0 = Non, 1 = Oui|Indique si le PEI est situé en face du numéro de voie indiqué
+|jumele|Texte||Jumelage possible uniquement pour les BI|Numéro du PEI jumelé
+|invio|Entier||0 = Non, 1 = Oui|Présence d’un dispositif anti street-pooling
+|deb_renf|Entier||0 = Non, 1 = Oui|Débit renforcé sur le PEI
+|diamcana|Entier|||Diamètre de la canalisation en mm
+|surpres|Entier||0 = Non, 1 = Oui, PEI de DECI privée uniquement|Indique si le réseau est surpressé
+|additive|Entier||0 = Non, 1 = Oui, PEI de DECI privée uniquement|Indique si le réseau est additivé
 |====================
 
 ===== PENA - Fichier cartographique
@@ -328,6 +335,9 @@ include::references/type_hydrant_anomalie_impose.csv[]
 |vol_cons|Texte||Code présent dans le fichier type_hydrant_vol_constate.csv|
 |q_appoin|Réel|||Débit d'appoint en m3/h
 |typedeci|Texte|Oui||Code présent dans le fichier type_hydrant_deci.csv
+|face|Entier||0 = Non, 1 = Oui|Indique si le PEI est situé en face du numéro de voie indiqué
+|illimite|Entier||0 = Non, 1 = Oui|Indique si la ressource en eau est illimitée
+|incert|Entier||0 = Non, 1 = Oui|Indique si la ressource en eau est incertaine
 |====================
 
 ===== Association des anomalies aux PEI
