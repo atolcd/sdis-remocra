@@ -126,7 +126,7 @@
 								<div v-if="anomaliesCriteres[indexCritere] !== undefined">
 									<div :class="listeVisites[selectedRow].id !== undefined ? 'notActive' : ''" v-if="hydrant.nature">
 										<div class="row" id="anomalieCritere">
-											<div class="col-md-12">
+											<div class="col-md-12" v-if="this.anomaliesFiltered.length > 0">
 												<p class="bold">{{anomaliesCriteres[indexCritere].nom}}</p>
 											</div>
 										</div>
