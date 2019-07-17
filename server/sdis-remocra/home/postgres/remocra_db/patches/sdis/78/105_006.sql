@@ -3,6 +3,7 @@ begin;
 *  Patch pour la synchro avec le SGO
 */
 -- MAJ vue des PEI pour exploitation dans le SGO
+drop view if exists remocra_sgo.hydrant;
 CREATE OR REPLACE VIEW remocra_sgo.hydrant AS
   WITH remocra_hydrant_nature AS (
   SELECT h.id,
