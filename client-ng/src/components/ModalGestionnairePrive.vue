@@ -54,14 +54,14 @@
           </b-form-group>
         </div>
         <div class="col-md-5 vertical-bottom">
-          <b-form-group label="Prenom" label-for="prenom" invalid-feedback="Le prénom doit être renseigné" label-cols-md="3">
+          <b-form-group label="Prénom" label-for="prenom" invalid-feedback="Le prénom doit être renseigné" label-cols-md="3">
             <b-form-input id="prenom" v-model="prenom" class="parametre" type="text" size="sm" required></b-form-input>
           </b-form-group>
         </div>
       </div>
       <div class="row">
         <div class="col-md-3">
-          <b-form-group label="Numero" label-for="numeroVoie" label-cols-md="6">
+          <b-form-group label="Numéro" label-for="numeroVoie" label-cols-md="6">
             <b-form-input id="numeroVoie" v-model="numeroVoie" class="parametre" type="number" size="sm"></b-form-input>
           </b-form-group>
         </div>
