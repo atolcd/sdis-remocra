@@ -315,7 +315,7 @@ export default {
         console.log(error);
       });
     },
-    addContact(context) {
+    addContact() {
       //Si le contact existe on le supprime du tableau et on le remplace
       if (document.getElementById('formContacts').checkValidity() === false) {
         document.getElementById('formContacts').classList.add('was-validated')
