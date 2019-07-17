@@ -537,8 +537,7 @@ function assumePDI71() {
     [ -f "/livraison/ext/pentaho-gis-plugins-1.2.1-bin-7.zip" ] || (echo "Téléchargement pentaho-gis-plugins" && cd /livraison/ext && wget -q https://github.com/atolcd/pentaho-gis-plugins/releases/download/v1.2.1/pentaho-gis-plugins-1.2.1-bin-7.zip)
     unzip /livraison/ext/pentaho-gis-plugins-1.2.1-bin-7.zip -d /home/postgres/pdi7.1/plugins
     # Récupération des jars oracle
-    (cd /home/postgres/pdi7.1/lib/ && wget -q https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/home/postgres/pdi/libext/JDBC/ojdbc14.jar)
-    (cd /home/postgres/pdi7.1/lib/ && wget -q https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/home/postgres/pdi/libext/JDBC/orai18n.jar)
+    (cd /home/postgres/pdi7.1/lib/ && wget -q https://raw.githubusercontent.com/atolcd/sdis-remocra/master/ora/ojdbc8.jar)
     # Version adéquate de java
     sed -i "s%export IS_KITCHEN=\"true\"%export IS_KITCHEN=\"true\"\nexport PENTAHO_JAVA_HOME=\"${JAVA_HOME_8}\"%g" /home/postgres/pdi7.1/kitchen.sh
     # Permissions
