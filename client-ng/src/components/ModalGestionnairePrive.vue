@@ -33,82 +33,82 @@
       <div class="row">
         <div class="col-md-6">
           <b-form-group label="Contact associé à" label-for="appartenance" label-cols-md="5">
-            <b-form-input id="appartenance" v-model="appartenance" class="parametre" type="text" size="sm" disabled></b-form-input>
+            <b-form-input id="appartenance" v-model="appartenance" type="text" size="sm" disabled></b-form-input>
           </b-form-group>
         </div>
         <div class="col-md-6 vertical-bottom">
           <b-form-group label="Fonction" label-for="fonction" invalid-feedback="La fonction doit être renseignée" label-cols-md="3">
-            <b-form-input id="fonction" v-model="fonction" class="parametre" type="text" size="sm" required></b-form-input>
+            <b-form-input id="fonction" v-model="fonction" type="text" size="sm" required></b-form-input>
           </b-form-group>
         </div>
       </div>
       <div class="row">
         <div class="col-md-3">
           <b-form-group label="Civilité" label-for="civilite" label-cols-md="5">
-            <b-form-select id="civilite" v-model="civilite" :options="civilites" class="parametre" size="sm" required></b-form-select>
+            <b-form-select id="civilite" v-model="civilite" :options="civilites" size="sm" required></b-form-select>
           </b-form-group>
         </div>
         <div class="col-md-4 vertical-bottom">
           <b-form-group label="Nom" label-for="nom" invalid-feedback="Le nom doit être renseigné" label-cols-md="3">
-            <b-form-input id="nom" v-model="nom" class="parametre" type="text" size="sm" required></b-form-input>
+            <b-form-input id="nom" v-model="nom" type="text" size="sm" required></b-form-input>
           </b-form-group>
         </div>
         <div class="col-md-5 vertical-bottom">
           <b-form-group label="Prénom" label-for="prenom" invalid-feedback="Le prénom doit être renseigné" label-cols-md="3">
-            <b-form-input id="prenom" v-model="prenom" class="parametre" type="text" size="sm" required></b-form-input>
+            <b-form-input id="prenom" v-model="prenom" type="text" size="sm" required></b-form-input>
           </b-form-group>
         </div>
       </div>
       <div class="row">
         <div class="col-md-3">
           <b-form-group label="Numéro" label-for="numeroVoie" label-cols-md="6">
-            <b-form-input id="numeroVoie" v-model="numeroVoie" class="parametre" type="number" size="sm"></b-form-input>
+            <b-form-input id="numeroVoie" v-model="numeroVoie" type="number" size="sm"></b-form-input>
           </b-form-group>
         </div>
         <div class="col-md-3">
           <b-form-group label="Suffixe" label-for="suffixeVoie" label-cols-md="5">
-            <b-form-input id="suffixeVoie" v-model="suffixeVoie" class="parametre" type="text" size="sm"></b-form-input>
+            <b-form-input id="suffixeVoie" v-model="suffixeVoie" type="text" size="sm"></b-form-input>
           </b-form-group>
         </div>
         <div class="col-md-6">
           <b-form-group label="Voie" label-for="voie" invalid-feedback="La voie doit être renseignée" label-cols-md="2">
-            <b-form-input id="voie" v-model="voie" class="parametre" size="sm" required></b-form-input>
+            <b-form-input id="voie" v-model="voie" size="sm" required></b-form-input>
           </b-form-group>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
           <b-form-group label="Lieu-dit" label-for="lieuDit" label-cols-md="1">
-            <b-form-input id="lieuDit" v-model="lieuDit" class="parametre" type="text" size="sm"></b-form-input>
+            <b-form-input id="lieuDit" v-model="lieuDit" type="text" size="sm"></b-form-input>
           </b-form-group>
         </div>
       </div>
       <div class="row">
         <div class="col-md-3">
           <b-form-group label="Code Postal" label-for="cp" invalid-feedback="Le code postal doit être renseigné" label-cols-md="7">
-            <b-form-input id="cp" v-model="codePostal" class="parametre" size="sm" required></b-form-input>
+            <b-form-input id="cp" v-model="codePostal" size="sm" required></b-form-input>
           </b-form-group>
         </div>
         <div class="col-md-5">
           <b-form-group label="Ville" label-for="ville" invalid-feedback="La ville doit être renseignée" label-cols-md="2">
-            <b-form-input id="ville" v-model="ville" class="parametre" size="sm" required></b-form-input>
+            <b-form-input id="ville" v-model="ville" size="sm" required></b-form-input>
           </b-form-group>
         </div>
         <div class="col-md-4">
           <b-form-group label="Pays" label-for="pays" invalid-feedback="Le pays doit être renseigné" label-cols-md="3">
-            <b-form-input id="pays" v-model="pays" class="parametre" size="sm" required></b-form-input>
+            <b-form-input id="pays" v-model="pays" size="sm" required></b-form-input>
           </b-form-group>
         </div>
       </div>
       <div class="row">
         <div class="col-md-6">
           <b-form-group label="Téléphone" label-for="telephone" label-cols-md="3">
-            <b-form-input id="telephone" v-model="telephone" class="parametre" size="sm"></b-form-input>
+            <b-form-input id="telephone" v-model="telephone" size="sm"></b-form-input>
           </b-form-group>
         </div>
         <div class="col-md-6">
           <b-form-group label="Email" label-for="mail" invalid-feedback="L'adresse mail doit être renseignée" label-cols-md="2">
-            <b-form-input id="mail" v-model="email" class="parametre" size="sm" required></b-form-input>
+            <b-form-input id="mail" v-model="email" size="sm" required></b-form-input>
           </b-form-group>
         </div>
       </div>
