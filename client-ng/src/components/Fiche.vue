@@ -15,7 +15,7 @@
               <b-form-input type="text"
                             id="numeroInterne"
                             v-model="hydrant.numeroInterne"
-                            :disabled="!idHydrant"
+                            :disabled="!idHydrant || utilisateurDroits.indexOf('HYDRANTS_NUMEROTATION_C') == -1"
                             class="parametre"
                             size="sm"
                             :state="etats.numeroInterne">
