@@ -36,9 +36,7 @@ Les codes des requêtes permettent au serveur de savoir quelle requête jouer. S
 
 
 
-* Il est possible d'utiliser au sein de la requête des alias qui seront remplacés dynamiquement lors de l'exécution de la requête:
-** *:id* : L'identifiant du PEI
-** *:idOrganisme* : L'identifiant de l'organisme de l'utilisateur courant
+* Il est possible d'utiliser au sein de la requête l'alias  *:id* qui sera remplacé dynamiquement lors de l'exécution de la requête par l'identifiant du PEI:
 
 Exemple d'un xml retourné par cette requête:
 [source,xml]
@@ -72,20 +70,4 @@ Le document html doit *impérativement* n'avoir qu'une seule balise racine (une 
 
 Les données sont accessibles grâce aux templates Mustache. En reprenant l'exemple du xml ci-dessus, on peut donc afficher la commune comme ceci: ``{{data.hydrant.commune}}``. +
  +
-Le fichier regroupe l'affichage des données des PIBI et des PENA. En utilisant le rendu conditionnel de Vue.js, il est possible de configurer quelles données afficher. Exemple de rendu conditionnel selon la nature du PEI et de la valeur des données:
-
-[source,html]
-----
-// Affichage spécifique aux PIBI
-<div v-if="data.hydrant.nature === 'PIBI'">
-	<p v-if="data.hydrant.debit_renforce === 'true'">Débit renforcé</p>
-	<p v-if="data.hydrant.grosDebit === 'true'">Gros débit</p>
-	<p v-if="data.hydrant.jumele">BI jumelée avec : {{data.hydrant.jumele}}</p>
-</div>
-
-// Affichage spécifique aux PENA
-<div v-else>
-	<p v-if="data.hydrant.capacite">Capacitée: {{data.hydrant.capacite}}</p>
-	<p v-if="data.hydrant.aspirations > 0">Présence de {{data.hydrant.aspirations}} point(s) d'aspiration</p>
-</div>
-----
+Le fichier regroupe l'affichage des données des PIBI et des PENA. En utilisant le rendu conditionnel de Vue.js, il est possible de configurer quelles données afficher.

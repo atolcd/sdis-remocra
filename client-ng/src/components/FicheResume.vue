@@ -9,22 +9,9 @@
 						<p>{{data.hydrant.adresse}}</p>
 						<p>{{data.hydrant.commune}}</p>
 						<br />
-						<p class="observation">Commentaire de localisation</p>
-						<p>{{data.hydrant.complement}}</p>
-					</div>
-
-					<div class="col-md-4">
-						<p class="title">Caractéristiques</p>
-
-						<div v-if="data.hydrant.nature === 'PIBI'">
-							<p v-if="data.hydrant.debit_renforce === 'true'">Débit renforcé</p>
-							<p v-if="data.hydrant.grosDebit === 'true'">Gros débit</p>
-							<p v-if="data.hydrant.jumele">BI jumelée avec : {{data.hydrant.jumele}}</p>
-						</div>
-
-						<div v-else>
-							<p v-if="data.hydrant.capacite">Capacitée: {{data.hydrant.capacite}}</p>
-							<p v-if="data.hydrant.aspirations > 0">Présence de {{data.hydrant.aspirations}} point(s) d'aspiration</p>
+						<div v-if="data.hydrant.complement">
+							<p class="observation">Commentaire de localisation :</p>
+							<p>{{data.hydrant.complement}}</p>
 						</div>
 					</div>
 
@@ -32,27 +19,6 @@
 						<p class="title">Disponibilité</p>
 						<p v-if="data.hydrant.dispo_terrestre === 'DISPO'" class="bg-success rounded-lg dispo text-light font-weight-bolder">OUI</p>
 						<p v-else class="bg-danger rounded-lg dispo text-light font-weight-bolder">NON</p>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-4">
-						<p class="title">CSTC</p>
-						<p>{{data.hydrant.cstc}}</p>
-					</div>
-
-					<div class="col-md-4">
-						<p class="title">Tournée</p>
-						<p>{{data.hydrant.tournee}}</p>
-					</div>
-
-					<div class="col-md-4">
-						<p class="title">Anomalies</p>
-						<ul class="liste">
-							<li v-for="(anomalie, index) in data.anomalie" :key="index" :class="{ 'anomalieBloquante': anomalie.indispo == 5 }">
-								{{anomalie.nom}}
-							</li>
-						</ul>
 					</div>
 				</div>
 			</div>

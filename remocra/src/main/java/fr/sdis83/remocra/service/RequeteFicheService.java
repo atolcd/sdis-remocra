@@ -58,7 +58,6 @@ public class RequeteFicheService extends AbstractService<RequeteFiche> {
             RequeteFiche requete = RequeteFiche.findRequeteFichesByCode(code.toString()).getSingleResult();
             Object obj = entityManager.createNativeQuery(requete.getSourceSql())
                     .setParameter("id", id)
-                    .setParameter("idOrganisme", idOrganismeUser)
                     .getSingleResult();
             return obj.toString();
         } catch(Exception e){
