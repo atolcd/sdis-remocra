@@ -83,11 +83,13 @@ Ext.define('Sdis.Remocra.controller.hydrant.Requetage', {
                 // Static Combo
                 case 'staticcombo':
                     var paramLstDStore = new Ext.data.JsonStore({
+                        autoLoad: true,
                         proxy : {
                             format : 'json',
                             type : 'rest',
                             headers : { 'Accept' : 'application/json,application/xml', 'Content-Type' : 'application/json' },
                             url : Sdis.Remocra.util.Util.withBaseUrl("../requetemodele/reqmodparalst/" + data[i]['id']),
+                            extraParams : {query: data[i]['formulaireValeurDefaut']},
                             reader : { type : 'json', root : 'data', totalProperty : 'total' }
                         },
                         idProperty : 'id',
@@ -117,16 +119,21 @@ Ext.define('Sdis.Remocra.controller.hydrant.Requetage', {
                         emptyText : "Sélectionner une valeur",
                         name : data[i]['nom']
                     });
+                     var comboLstD = Ext.ComponentQuery.query('#param-'+data[i]['id'])[0];
+                     this.setDefaultValue(comboLstD);
+
                     break;
 
                 // Combo avec requête Saisie et requête de type "like" sur le libellé
                 case 'combo':
                     var paramLstLikeDStore = new Ext.data.JsonStore({
+                        autoLoad: true,
                         proxy : {
                             format : 'json',
                             type : 'rest',
                             headers : { 'Accept' : 'application/json,application/xml', 'Content-Type' : 'application/json' },
                             url : Sdis.Remocra.util.Util.withBaseUrl("../requetemodele/reqmodparalst/" + data[i]['id']),
+                            extraParams : {query: data[i]['formulaireValeurDefaut']},
                             reader : { type : 'json', root : 'data', totalProperty : 'total' }
                         },
                         idProperty : 'id',
@@ -135,6 +142,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Requetage', {
                         fields : [ { name : data[i]['sourceSqlValeur'], type : 'string' },
                                    { name : data[i]['sourceSqlLibelle'], type : 'string' }
                         ]
+
                     });
                     panelFather.add({
                         xtype: 'combo',
@@ -156,8 +164,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Requetage', {
                         minChars: 1,
                         emptyText : "Sélectionner une valeur",
                         name : data[i]['nom']
-
                     });
+                    var comboLstLike = Ext.ComponentQuery.query('#param-'+data[i]['id'])[0];
+                    this.setDefaultValue(comboLstLike);
                     break;
                 // DateField
                 case 'datefield':
@@ -265,6 +274,14 @@ Ext.define('Sdis.Remocra.controller.hydrant.Requetage', {
             panelFather.doLayout();
         }
 
+    },
+
+    setDefaultValue : function(combo){
+          combo.store.on('load', function(store, records, successful, eOpts) {
+              if (records.length>0) {
+                  this.setValue(records[0]);
+              }
+          }, combo, {single: true});
     },
 
      deleteParams : function() {
