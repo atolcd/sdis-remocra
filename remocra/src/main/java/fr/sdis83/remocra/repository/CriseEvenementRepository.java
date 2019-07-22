@@ -384,13 +384,13 @@ public class CriseEvenementRepository {
       }else if(filter.getFieldName().equals("statut")){
         statut++;
         if(statut != 1){
-          if(filter.getValue().equals("Nouveau")){
+          if(filter.getValue().equals("En cours")){
             cs = cs.or(CRISE_EVENEMENT.CLOTURE.isNull());
           }else {
             cs = cs.or(CRISE_EVENEMENT.CLOTURE.isNotNull());
           }
         }else {
-          if(filter.getValue().equals("Nouveau")){
+          if(filter.getValue().equals("En cours")){
             cs= DSL.and(CRISE_EVENEMENT.CLOTURE.isNull());
           }else {
             cs= DSL.and(CRISE_EVENEMENT.CLOTURE.isNotNull());

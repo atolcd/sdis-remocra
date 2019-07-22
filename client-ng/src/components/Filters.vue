@@ -10,7 +10,7 @@
     </b-list-group-item>
     <b-list-group-item>
       <strong>Statut</strong>
-      <b-list-group v-for="(statut, index) in ['Nouveau','Clos']" :key="index">
+      <b-list-group v-for="(statut, index) in ['En cours','Clos']" :key="index">
         <a v-on:click="addFilter($event,'statut',statut)" href="#">{{statut}}</a>
       </b-list-group>
     </b-list-group-item>
