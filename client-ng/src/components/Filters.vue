@@ -189,5 +189,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.list-group-item {
+  max-height: 200px;
+  overflow-y: auto;
+}
 </style>
