@@ -821,13 +821,11 @@ export default {
           url: '/remocra/evenements/wms',
           sld: null,
           projection: 'EPSG:2154',
-          styles: [
-            {
-              id: 'remocra_barriere',
-              libelle: 'Barrière',
-              legende: '/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&LAYER=v_crise_evenement&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=crise_evenement'
-            }
-          ]
+          styles: [{
+            id: 'crise',
+            libelle: 'Crise',
+            legende: '/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&LAYER=v_crise_evenement&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=crise'
+          }]
         })
         let layer = this.createWMSLayer(layerDef)
         // Application du filtre initial
