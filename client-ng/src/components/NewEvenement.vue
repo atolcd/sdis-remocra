@@ -423,7 +423,7 @@ export default {
       }).catch(function(error) {
         console.error('max date', error)
       })
-      axios.get('/remocra/typecrisecategorieevenement').then((response) => {
+      axios.get('/remocra/typecrisecategorieevenement/' + this.criseId).then((response) => {
         if (response.data.data) {
           var typeCategs = response.data.data
           _.forEach(typeCategs, function(typeCateg) {

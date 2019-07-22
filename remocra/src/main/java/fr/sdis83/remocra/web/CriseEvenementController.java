@@ -20,6 +20,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeCriseProprieteEveneme
 import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.domain.utils.RemocraInstantTransformer;
+import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.ogc.cql.CompositeStatement;
 import fr.sdis83.remocra.ogc.cql.Conjunction;
 import fr.sdis83.remocra.ogc.cql.ObjectStatement;
@@ -374,7 +375,7 @@ public class CriseEvenementController {
 
     @RequestMapping(value = "/wms", method = RequestMethod.GET)
     @PreAuthorize("hasRight('CRISE_R')")
-    public void proxyWms(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "filter", required = false) String filters) {
+    public void proxyWms(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "filter", required = false) String filters) throws BusinessException {
         Map<String, String> params = GeoserverController.getMapParamsFromRequest(request);
 
         List<ItemFilter> itemFilters = ItemFilter.decodeJson(filters);
@@ -423,9 +424,9 @@ public class CriseEvenementController {
         geoserverController.proxyWms(request, response, "remocra/wms", params);
     }
 
-    String getCategorieEvenementIdsForProfilDroitStr() {
+    String getCategorieEvenementIdsForProfilDroitStr() throws BusinessException {
         Long[] ids = criseEvenementRepository.getCategorieEvenementIdsForProfilDroit(
-                utilisateurService.getCurrentUtilisateur().getProfilUtilisateur().getId());
+                utilisateurService.getCurrentProfilDroit().getId());
         if (ids.length<1) {
             return null;
         }

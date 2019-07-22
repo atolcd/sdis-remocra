@@ -52,7 +52,7 @@ export default {
   created() {
     var types = []
     var categories = []
-    axios.get('/remocra/typecrisecategorieevenement').then((response) => {
+    axios.get('/remocra/typecrisecategorieevenement/' + this.criseId).then((response) => {
       if (response.data.data) {
         var typeCategs = response.data.data
         _.forEach(typeCategs, function(typeCateg) {
