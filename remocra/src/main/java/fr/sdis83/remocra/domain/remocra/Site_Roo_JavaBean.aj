@@ -4,6 +4,7 @@
 package fr.sdis83.remocra.domain.remocra;
 
 import fr.sdis83.remocra.domain.remocra.Site;
+import com.vividsolutions.jts.geom.Geometry;
 import java.util.Set;
 
 privileged aspect Site_Roo_JavaBean {
@@ -55,5 +56,12 @@ privileged aspect Site_Roo_JavaBean {
     public void Site.setGestionnaire_site(GestionnaireSite gestionnaire_site) {
         this.gestionnaire_site = gestionnaire_site;
     }
-    
+
+    public Geometry Site.getGeometrie() {
+        return this.geometrie;
+    }
+
+    public void Site.setGeometrie(Geometry geometrie){
+        this.geometrie = geometrie;
+    }
 }

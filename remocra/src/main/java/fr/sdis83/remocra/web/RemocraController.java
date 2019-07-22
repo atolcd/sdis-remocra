@@ -158,6 +158,11 @@ public class RemocraController {
         // Définit la complexité du mot de passe
         model.addAttribute("complexite_password", paramConfService.getComplexitePassword());
 
+        // Vitesse de l'eau dans le réseau retenue par le SDIS
+        model.addAttribute("vitesse_eau", paramConfService.getVitesseEau());
+
+
+
         return "remocra";
     }
 

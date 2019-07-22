@@ -1,5 +1,6 @@
 package fr.sdis83.remocra.domain.remocra;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,44 +9,32 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
-import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Point;
+import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import org.hibernate.annotations.Type;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
-@RooJpaActiveRecord(finders={"findSitesByActif","findSitesByCode"})
-public class Site {
+public class DebitSimultaneHydrant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Version
-    @Column(name = "version", columnDefinition = "INTEGER default 1")
-    private Integer version;
-
-    @NotNull
-    private String nom;
-
-    @NotNull
-    private String code;
-
-    @NotNull
-    @Column(columnDefinition = "boolean default true")
-    private Boolean actif;
-
-    @NotNull
     @ManyToOne
-    private GestionnaireSite gestionnaire_site;
+    private DebitSimultaneMesure debit;
 
-    @Type(type = "org.hibernate.spatial.GeometryType")
-    private Geometry geometrie;
+    @ManyToOne
+    private Hydrant hydrant;
 
 }

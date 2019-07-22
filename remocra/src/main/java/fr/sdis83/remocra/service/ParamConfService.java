@@ -221,6 +221,10 @@ public class ParamConfService {
         return (String) this.getValue(ParamConfParam.HYDRANT_LONGUE_INDISPONIBILITE_TYPEORGANISME, "^(COMMUNE|EPCI)$");
     }
 
+    public Integer getVitesseEau() {
+        return (Integer) this.getValue(ParamConfParam.VITESSE_EAU, 2);
+    }
+
     public static String HYDRANT_COLONNES_DEFAULT[] = {"numero", "nomTournee", "natureNom", "dateReco", "dateContr", "dispoTerrestre", "dispoHbe"};
     public String[] getHydrantColonnes(){
         String hydrantColonnes = (String) this.getValue(ParamConfParam.HYDRANT_COLONNES);

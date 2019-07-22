@@ -19,33 +19,21 @@ import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
-@RooJpaActiveRecord(finders={"findSitesByActif","findSitesByCode"})
-public class Site {
+public class DebitSimultane {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Version
-    @Column(name = "version", columnDefinition = "INTEGER default 1")
-    private Integer version;
-
-    @NotNull
-    private String nom;
-
-    @NotNull
-    private String code;
-
-    @NotNull
-    @Column(columnDefinition = "boolean default true")
-    private Boolean actif;
-
-    @NotNull
     @ManyToOne
-    private GestionnaireSite gestionnaire_site;
+    private Site site;
 
     @Type(type = "org.hibernate.spatial.GeometryType")
     private Geometry geometrie;
+
+    @NotNull
+    @Column(name = "numdossier")
+    private String numDossier;
 
 }
