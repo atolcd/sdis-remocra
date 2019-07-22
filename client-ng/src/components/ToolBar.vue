@@ -5,7 +5,7 @@
       <img @click="toggleButton" src='/remocra/static/img/pencil_point.png'>
     </template>
     <ul v-for="(type, name) in types" :key="name">
-      <li class="dropdown-submenu"><a class="dropdown-item" href="#">{{name}}</a>
+      <li class="dropdown-submenu"><a class="dropdown-item" href="#" @click.prevent>{{name}}</a>
         <ul class="dropdown-menu">
           <li v-for="(nature, index) in type" :key="index" class="dropdown-item">
             <a :class="['geom-'+nature.typeGeometrie.toLowerCase()]" @click="selectGeom($event, nature.typeGeometrie, nature.value)" href="#">{{nature.text}}</a></li>
