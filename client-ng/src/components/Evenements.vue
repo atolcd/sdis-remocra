@@ -48,6 +48,7 @@ export default {
   },
   data() {
     return {
+      lastFilters: [],
       evenements: []
     }
   },
@@ -64,7 +65,12 @@ export default {
       this.loadEvenements(args.crise, args.filters)
     },
     loadEvenements(crise, filters) {
+      //on garde les anciens filtres en mémoire pour gérer le cas de chargement après création
+      if (typeof filters === 'undefined') {
+        filters = this.lastFilters
+      }
       var jsonFilters = JSON.stringify(filters)
+      this.lastFilters = filters
       axios.get('/remocra/evenements/' + crise, {
         params: {
           filter: jsonFilters
