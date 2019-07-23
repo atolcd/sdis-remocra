@@ -5,6 +5,7 @@ import GestCrise from './App'
 import Fiche from './components/Fiche'
 import Contacts from './components/Contacts'
 import FicheIndisponibiliteTemporaire from './components/FicheIndisponibiliteTemporaire'
+import ErrorMessage from './components/ErrorMessage'
 // import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import rate from 'vue-rate'
@@ -60,6 +61,18 @@ const peiBuildFiche = function(el, data) {
   return v
 }
 
+const errorMessage = function(el, data) {
+  var v = new Vue({
+    el,
+    bus: new Vue(),
+    components: {
+      ErrorMessage
+    },
+    template: "<ErrorMessage  title='"+data.title+"' msg='"+data.msg+"' />"
+  })
+  return v
+}
+
 //contacts
 const buildContacts = function(el, data) {
   var v = new Vue({
@@ -72,6 +85,7 @@ const buildContacts = function(el, data) {
   })
   return v
 }
+
 
 //fiche indispo temp
 const indispoTempBuildFiche = function(el, data){
@@ -91,6 +105,7 @@ const indispoTempBuildFiche = function(el, data){
 export {
   criseBuildMap,
   peiBuildFiche,
+  errorMessage,
   indispoTempBuildFiche,
   buildContacts
 }
