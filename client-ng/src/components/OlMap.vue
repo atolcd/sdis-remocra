@@ -824,7 +824,7 @@ export default {
           styles: [{
             id: 'crise',
             libelle: 'Crise',
-            legende: '/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&LAYER=v_crise_evenement&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=crise'
+            legende: '/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&LAYER=v_crise_evenement&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=30&STRICT=false&style=crise'
           }]
         })
         let layer = this.createWMSLayer(layerDef)
