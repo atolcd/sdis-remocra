@@ -290,6 +290,15 @@ public class CriseEvenementRepository {
     c.setNatureEvenement(tcn.getId());
     Instant redefinition = new Instant();
     c.setRedefinition(redefinition);
+
+    //mise à jour des documents
+    context.delete(CRISE_DOCUMENT).where(CRISE_DOCUMENT.EVENEMENT.eq(id)).and(filesToSave.isEmpty() ? DSL.trueCondition() : CRISE_DOCUMENT.DOCUMENT.notIn(filesToSave)).execute();
+    this.addEventDocuments(files, c.getCrise(), id);
+
+    //mise à jour des complements
+    context.delete(CRISE_EVENEMENT_COMPLEMENT).where(CRISE_EVENEMENT_COMPLEMENT.EVENEMENT.eq(id)).execute();
+    this.addComplement(id, request.getParameterMap());
+
     if(c.getCloture() != null){
       context.update(CRISE_EVENEMENT).set(row( CRISE_EVENEMENT.NOM, CRISE_EVENEMENT.DESCRIPTION, CRISE_EVENEMENT.CONSTAT, CRISE_EVENEMENT.REDEFINITION,CRISE_EVENEMENT.CLOTURE,
           CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT)
@@ -299,14 +308,6 @@ public class CriseEvenementRepository {
           CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT)
           ,row(c.getNom(), c.getDescription(),c.getConstat(), c.getRedefinition(), c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement())).where(CRISE_EVENEMENT.ID.eq(id)).execute();
     }
-
-    //mise à jour des documents
-    context.delete(CRISE_DOCUMENT).where(CRISE_DOCUMENT.EVENEMENT.eq(id)).and(filesToSave.isEmpty() ? DSL.trueCondition() : CRISE_DOCUMENT.DOCUMENT.notIn(filesToSave)).execute();
-    this.addEventDocuments(files, c.getCrise(), id);
-
-    //mise à jour des complements
-    context.delete(CRISE_EVENEMENT_COMPLEMENT).where(CRISE_EVENEMENT_COMPLEMENT.EVENEMENT.eq(id)).execute();
-    this.addComplement(id, request.getParameterMap());
     return c;
 
   }
