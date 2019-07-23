@@ -54,7 +54,10 @@ export default {
   },
   mounted() {
     this.evenements = []
-    this.loadEvenements(this.crise)
+    this.loadEvenements(this.crise, [{
+      property: 'statut',
+      value: 'En cours'
+    }])
     this.$root.$options.bus.$on(eventTypes.LOAD_EVENEMENTS, this.loadEvenemtsPrep)
   },
   destroyed() {
