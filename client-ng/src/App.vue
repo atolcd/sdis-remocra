@@ -493,4 +493,21 @@ body {
   float: right;
   position: absolute;
 }
+
+.gestcrise .custom-mouse-position {
+  border-top: none;
+  color: #eee;
+  font-size: 10px;
+  text-align: center;
+  margin: 1px;
+  border-radius: 4px;
+  border: 1px solid #eee;
+  right: 8px;
+  padding: 2px;
+  position: absolute;
+  bottom: 35px;
+  background: darkcyan;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
 </style>

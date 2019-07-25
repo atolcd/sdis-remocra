@@ -229,6 +229,7 @@ import {
 import {
   ScaleLine
 } from 'ol/control.js';
+import MousePosition from 'ol/control/MousePosition.js';
 import TileLayer from 'ol/layer/Tile.js'
 import ImageLayer from 'ol/layer/Image.js'
 import WMTS from 'ol/source/WMTS.js'
@@ -415,6 +416,21 @@ export default {
     this.map.addControl(new ScaleLine({
       units: 'metric'
     }));
+    var self = this
+    var mousePosition = new MousePosition({
+      coordinateFormat: function(coordinate) {
+        var coord = self.getFormattedCoord('x', coordinate[0], 'DD_MM_SSSS', 0.5)
+        coord = coord + self.getFormattedCoord('y', coordinate[1], 'DD_MM_SSSS', 0.5)
+        return coord;
+      },
+      projection: 'EPSG:4326',
+      // comment the following two lines to have the mouse position
+      // be placed within the map.
+      className: 'custom-mouse-position',
+      target: document.getElementById('mouse-position'),
+      undefinedHTML: '&nbsp;'
+    });
+    this.map.addControl(mousePosition)
     this.proj = this.map.getView().getProjection()
     this.epsgL93 = 'EPSG:' + this.sridL93
     proj4.defs(this.epsgL93, '+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs')
@@ -1742,6 +1758,109 @@ export default {
       } else if (isActive) {
         document.getElementById(id).removeAttribute('ctrl-active')
       }
+    },
+    getFormattedCoord(coord, value, format, decimal) {
+      if (format == 'DD_DDDD') {
+        return parseFloat(value).toFixed(decimal);
+      }
+      if (format == 'DD_MM_MM' && coord == 'x') {
+        var dmX = this.getFormattedLonLat(value, 'lon', 'dm', true, true);
+        return (dmX.o == 'O' ? 'Ouest ' : 'Est ') + dmX.d + '° ' + parseFloat(dmX.m).toFixed(decimal) + '\'';
+      }
+      if (format == 'DD_MM_MM' && coord == 'y') {
+        var dmY = this.getFormattedLonLat(value, 'lat', 'dm', true, true);
+        return (dmY.o == 'N' ? 'Nord ' : 'Sud ') + dmY.d + '° ' + parseFloat(dmY.m).toFixed(decimal) + '\'';
+      }
+      if (format == 'DD_MM_SSSS' && coord == 'x') {
+        var dmsX = this.getFormattedLonLat(value, 'lon', 'dms', true, true);
+        return (dmsX.o == 'O' ? 'Ouest ' : 'Est ') + dmsX.d + '° ' + dmsX.m + '\' ' + parseFloat(dmsX.s).toFixed(decimal) + '"';
+      }
+      if (format == 'DD_MM_SSSS' && coord == 'y') {
+        var dmsY = this.getFormattedLonLat(value, 'lat', 'dms', true, true);
+        return (dmsY.o == 'N' ? 'Nord ' : 'Sud ') + dmsY.d + '° ' + dmsY.m + '\' ' + parseFloat(dmsY.s).toFixed(decimal) + '"';
+      }
+      return value;
+    },
+    /**
+     * Reprise de OpenLayers.util.getFormattedLonLat avec ajout du paramètre retWholeData :
+     * 
+     * Parameters:
+     * coordinate - {Float} the coordinate value to be formatted
+     * axis - {String} value of either 'lat' or 'lon' to indicate which axis is to
+     *          to be formatted (default = lat)
+     *
+     * retWholeData - {Boolean} données séparées ou juste pour affichage. true implique un retour de la forme : {d:XX, m:YY, s:ZZ, o:'W'}
+     *          
+     * dmsOption - {String} specify the precision of the output can be one of:
+     *           'dms' show degrees minutes and seconds
+     *           'dm' show only degrees and minutes
+     *           'd' show only degrees
+     * 
+     * Returns:
+     * {String} the coordinate value formatted as a string
+     */
+    getFormattedLonLat(coordinate, axis, dmsOption, retWholeData, dontround) {
+      if (!dmsOption) {
+        dmsOption = 'dms'; //default to show degree, minutes, seconds
+      }
+      coordinate = (coordinate + 540) % 360 - 180; // normalize for sphere being round
+      var abscoordinate = Math.abs(coordinate);
+      var coordinatedegrees = Math.floor(abscoordinate);
+      var coordinateminutes = (abscoordinate - coordinatedegrees) / (1 / 60);
+      var tempcoordinateminutes = coordinateminutes;
+      if ((dontround !== true && dmsOption == 'dm') || dmsOption == 'dms') {
+        coordinateminutes = Math.floor(coordinateminutes);
+      }
+      var coordinateseconds = (tempcoordinateminutes - coordinateminutes) / (1 / 60);
+      if (dontround !== true && dmsOption == 'dms') {
+        coordinateseconds = Math.round(coordinateseconds * 10);
+        coordinateseconds /= 10;
+        // CVA : on supprime la virgule
+        coordinateseconds = Math.round(coordinateseconds);
+      }
+      if (coordinateseconds >= 60) {
+        coordinateseconds -= 60;
+        coordinateminutes += 1;
+        if (coordinateminutes >= 60) {
+          coordinateminutes -= 60;
+          coordinatedegrees += 1;
+        }
+      }
+      if (coordinatedegrees < 10) {
+        coordinatedegrees = "0" + coordinatedegrees;
+      }
+      var str = coordinatedegrees + "\u00B0";
+      if (dmsOption.indexOf('dm') >= 0) {
+        if (coordinateminutes < 10) {
+          coordinateminutes = "0" + coordinateminutes;
+        }
+        str += ' ' /*CVA : espace*/ + coordinateminutes + "'";
+        if (dmsOption.indexOf('dms') >= 0) {
+          if (coordinateseconds < 10) {
+            coordinateseconds = "0" + coordinateseconds;
+          }
+          str += ' ' /*CVA : espace*/ + coordinateseconds + '"';
+        }
+      }
+      /*CVA : conteneur ensemble des données*/
+      var wholeData = {
+        d: coordinatedegrees,
+        m: coordinateminutes,
+        s: coordinateseconds
+      };
+      str += ' '; /*CVA : espace*/
+      if (axis == "lon") {
+        wholeData.o = coordinate < 0 ? "OUEST" : "EST";
+        str += wholeData.o;
+      } else {
+        wholeData.o = coordinate < 0 ? "SUD" : "NORD";
+        str += wholeData.o;
+      }
+      /*CVA : wholeData => toutes les données */
+      if (retWholeData) {
+        return wholeData;
+      }
+      return str;
     }
   }
 }
