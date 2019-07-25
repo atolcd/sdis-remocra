@@ -485,4 +485,12 @@ body {
     background-size: 2rem 2rem;
     animation:  1s linear infinite;
 }
+
+.gestcrise .ol-scale-line {
+  background: darkcyan;
+  right: 8px;
+  left: auto;
+  float: right;
+  position: absolute;
+}
 </style>
