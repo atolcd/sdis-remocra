@@ -488,7 +488,7 @@ public class CriseEvenementController {
                         new ObjectStatement("nature_evenement", Operator.EQ, filter.getValue()));
             } else if ("statut".equals(filter.getFieldName())) {
                 ObjectStatement newStmt = null;
-                if ("Nouveau".equals(filter.getValue())) {
+                if ("En cours".equals(filter.getValue())) {
                     DateTime oldEvtDT = new DateTime().minusMinutes(paramConfService.getCriseNouvelEvtDelaiMinutes());
                     newStmt = new ObjectStatement("constat", Operator.AFTER, oldEvtDT.toString());
                 } else if ("Clos".equals(filter.getValue())) {
