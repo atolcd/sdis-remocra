@@ -1,0 +1,101 @@
+<featureType>
+  <id>FeatureTypeInfoImpl-38375241:16a0cef5f4f:-7ffe</id>
+  <name>v_crise_evenement</name>
+  <nativeName>v_crise_evenement</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-282f5674:13cf8724624:-7fff</id>
+  </namespace>
+  <title>v_crise_evenement</title>
+  <keywords>
+    <string>v_crise_evenement</string>
+    <string>features</string>
+  </keywords>
+  <nativeCRS class="projected">PROJCS[&quot;RGF93 / Lambert-93&quot;, 
+  GEOGCS[&quot;RGF93&quot;, 
+    DATUM[&quot;Reseau Geodesique Francais 1993&quot;, 
+      SPHEROID[&quot;GRS 1980&quot;, 6378137.0, 298.257222101, AUTHORITY[&quot;EPSG&quot;,&quot;7019&quot;]], 
+      TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 
+      AUTHORITY[&quot;EPSG&quot;,&quot;6171&quot;]], 
+    PRIMEM[&quot;Greenwich&quot;, 0.0, AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]], 
+    UNIT[&quot;degree&quot;, 0.017453292519943295], 
+    AXIS[&quot;Geodetic longitude&quot;, EAST], 
+    AXIS[&quot;Geodetic latitude&quot;, NORTH], 
+    AUTHORITY[&quot;EPSG&quot;,&quot;4171&quot;]], 
+  PROJECTION[&quot;Lambert_Conformal_Conic_2SP&quot;, AUTHORITY[&quot;EPSG&quot;,&quot;9802&quot;]], 
+  PARAMETER[&quot;central_meridian&quot;, 3.0], 
+  PARAMETER[&quot;latitude_of_origin&quot;, 46.5], 
+  PARAMETER[&quot;standard_parallel_1&quot;, 49.0], 
+  PARAMETER[&quot;false_easting&quot;, 700000.0], 
+  PARAMETER[&quot;false_northing&quot;, 6600000.0], 
+  PARAMETER[&quot;scale_factor&quot;, 1.0], 
+  PARAMETER[&quot;standard_parallel_2&quot;, 44.0], 
+  UNIT[&quot;m&quot;, 1.0], 
+  AXIS[&quot;Easting&quot;, EAST], 
+  AXIS[&quot;Northing&quot;, NORTH], 
+  AUTHORITY[&quot;EPSG&quot;,&quot;2154&quot;]]</nativeCRS>
+  <srs>EPSG:2154</srs>
+  <nativeBoundingBox>
+    <minx>950902.862341643</minx>
+    <maxx>950904.862341643</maxx>
+    <miny>6260814.67933368</miny>
+    <maxy>6260816.67933368</maxy>
+    <crs class="projected">EPSG:2154</crs>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>6.096540989812593</minx>
+    <maxx>6.096566615171728</maxx>
+    <miny>43.402169645262866</miny>
+    <maxy>43.402188329565725</maxy>
+    <crs>GEOGCS[&quot;WGS84(DD)&quot;, 
+  DATUM[&quot;WGS84&quot;, 
+    SPHEROID[&quot;WGS84&quot;, 6378137.0, 298.257223563]], 
+  PRIMEM[&quot;Greenwich&quot;, 0.0], 
+  UNIT[&quot;degree&quot;, 0.017453292519943295], 
+  AXIS[&quot;Geodetic longitude&quot;, EAST], 
+  AXIS[&quot;Geodetic latitude&quot;, NORTH]]</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="cachingEnabled">false</entry>
+    <entry key="JDBC_VIRTUAL_TABLE">
+      <virtualTable>
+        <name>v_crise_evenement</name>
+        <sql>SELECT&#xd;
+	ce.geometrie,&#xd;
+	ce.id,&#xd;
+	ce.crise,&#xd;
+	ce.nature_evenement,&#xd;
+	ce.constat,&#xd;
+	ce.cloture,&#xd;
+	ce.tags,&#xd;
+	ce.origine,&#xd;
+	ce.importance,&#xd;
+	(SELECT (c.cloture is null) FROM remocra.crise c WHERE c.id = ce.crise) AS crise_active,&#xd;
+	(SELECT creation FROM remocra.crise_suivi cs WHERE cs.evenement = ce.id ORDER BY creation DESC LIMIT 1) AS dernier_message,&#xd;
+	(SELECT tcne.categorie_evenement FROM remocra.type_crise_nature_evenement tcne WHERE tcne.id=ce.nature_evenement) AS categorie_evenement,&#xd;
+	tce.code AS nature_evenement_code,&#xd;
+	tce.nom AS nature_evenement_libelle,&#xd;
+	ce.nom AS titre_evenement&#xd;
+FROM&#xd;
+	remocra.crise_evenement ce&#xd;
+	JOIN remocra.type_crise_nature_evenement tce ON(tce.id = ce.nature_evenement)
+</sql>
+        <escapeSql>false</escapeSql>
+        <keyColumn>id</keyColumn>
+        <geometry>
+          <name>geometrie</name>
+          <type>Geometry</type>
+          <srid>2154</srid>
+        </geometry>
+      </virtualTable>
+    </entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--4d96a8ce:13e41ba1733:-7592</id>
+  </store>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

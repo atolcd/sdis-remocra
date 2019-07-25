@@ -1,0 +1,15 @@
+<layer>
+  <name>v_crise_evenement</name>
+  <id>LayerInfoImpl-38375241:16a0cef5f4f:-7ffd</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-38375241:16a0cef5f4f:-7ffb</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-38375241:16a0cef5f4f:-7ffe</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+</layer>
