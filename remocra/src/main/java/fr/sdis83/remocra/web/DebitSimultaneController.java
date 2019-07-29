@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,6 +54,17 @@ public class DebitSimultaneController {
     @PreAuthorize("hasRight('DEBITS_SIMULTANES_R')")
     public ResponseEntity<java.lang.String> layer(final @RequestParam Double lon, final @RequestParam Double lat, final @RequestParam Integer srid, final @RequestParam Integer distance) {
         return FeatureUtil.getResponse(this.debitSimultaneService.getDebitSimultaneFromLonLat(lon, lat, srid, distance));
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('DEBITS_SIMULTANES_C')")
+    public ResponseEntity<java.lang.String> deleteDebitSimultane(@PathVariable("id") Long id) {
+        try {
+            debitSimultaneService.delete(id);
+            return new SuccessErrorExtSerializer(true, "Débit simultané supprimé").serialize();
+        } catch (Exception e) {
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
     }
 
 }

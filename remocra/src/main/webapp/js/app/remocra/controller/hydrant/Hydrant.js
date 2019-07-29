@@ -1434,7 +1434,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         }
 
     },
-    
+
     onAffectationTourneeRender: function(combo, eOpts) {
         // On masque les éléments non désirés de la toolbar :
         // first et tout ce qui est après next : last, refresh et séparateurs
@@ -2333,7 +2333,21 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
 
       // Suppression d'un débit simultané
       deleteDebitSimultane: function(id) {
-        console.log("TODO: suppression débit ", id);
+        Ext.Msg.confirm('Suppression débit simultané', 'Confirmez-vous la suppression du débit simultané ?', function(buttonId) {
+            if (buttonId == 'yes') {
+                Ext.Ajax.request({
+                    url: Sdis.Remocra.util.Util.withBaseUrl('../debitsimultane/'+id),
+                    method: 'DELETE',
+                    scope: this,
+                    callback: function(options, success, response) {
+                        if(success){
+                            this.refreshMap();
+                            Sdis.Remocra.util.Msg.msg('Le débit simultané a bien été supprimé');
+                        }
+                    }
+                });
+            }
+        }, this);
       }
 
 });
