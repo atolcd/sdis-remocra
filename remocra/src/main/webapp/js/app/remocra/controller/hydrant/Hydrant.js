@@ -2230,7 +2230,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         }
 
         if(hydrantsCompatibles){
-            console.log("TODO: Création débit simultané avec hydrants ", listeId);
+            this.showDebitSimultaneFiche(null, listeId);
         }
 
       },
@@ -2327,8 +2327,21 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
       },
 
       // Affichage de la fiche d'un débit simultané
-      showDebitSimultaneFiche: function(idDebitSimultane) {
-        console.log("TODO: Ouverture débit simultané ", idDebitSimultane);
+      showDebitSimultaneFiche: function(idDebitSimultane, listeHydrants) {
+        var d = document.createElement('div');
+        var id = "show-debitSimultaneFiche-"+(++Ext.AbstractComponent.AUTO_ID);
+        d.id=id;
+        document.body.appendChild(d);
+        var vueDebitSimultaneFiche = window.remocraVue.debitSimultaneFiche(d, {
+          idDebitSimultane: idDebitSimultane,
+          listeHydrants: listeHydrants || null,
+          vitesseEau: VITESSE_EAU
+        });
+
+        vueDebitSimultaneFiche.$options.bus.$on('closed', Ext.bind(function(data) {
+            vueDebitSimultaneFiche.$el.remove();
+            vueDebitSimultaneFiche.$destroy();
+        }, this));
       },
 
       // Suppression d'un débit simultané

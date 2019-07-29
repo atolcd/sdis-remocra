@@ -132,6 +132,10 @@ public class ParamConfService {
         return (String) this.getValue(ParamConfParam.DOSSIER_DEPOT_BLOC);
     }
 
+    public String getDossierDepotAttestation() {
+        return (String) this.getValue(ParamConfParam.DOSSIER_DEPOT_ATTESTATION);
+    }
+
     public Integer getIdTraitementAtlas() {
         return (Integer) this.getValue(ParamConfParam.ID_TRAITEMENT_ATLAS);
     }

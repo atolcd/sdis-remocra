@@ -64,6 +64,12 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
         } else if ("temporaire".equals(itemFilter.getFieldName())) {
             Expression<Integer> cpPath = from.get("numeroInterne");
             return cBuilder.greaterThanOrEqualTo(cpPath, 90000);
+        } else if("typeReseau".equals(itemFilter.getFieldName())) {
+            Expression<Integer> cpPath = from.join("typeReseauAlimentation").get("id");
+            return cBuilder.equal(cpPath, itemFilter.getValue());
+        } else if("diametre".equals(itemFilter.getFieldName())) {
+            Expression<Integer> cpPath = from.join("diametre").get("id");
+            return cBuilder.equal(cpPath, itemFilter.getValue());
         }
         return super.processFilterItem(itemQuery, parameters, from, itemFilter);
     }

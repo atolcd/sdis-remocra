@@ -137,11 +137,17 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
         } else if("nomNatureDeci".equals(itemFilter.getFieldName())){
             Expression<Integer> cpPath = from.join("natureDeci").get("id");
             predicat = cBuilder.equal(cpPath, itemFilter.getValue());
+        } else if("codeNatureDeci".equals(itemFilter.getFieldName())) {
+            Expression<String> cpPath = from.get("natureDeci").get("code");
+            predicat = cBuilder.like(cBuilder.upper(cpPath), itemFilter.getValue().toUpperCase(Locale.FRANCE));
         } else if("adresse".equals(itemFilter.getFieldName())){
             Expression<String> cpPath = from.get("adresse");
             predicat = cBuilder.like(cBuilder.upper(cpPath), "%" + itemFilter.getValue().toUpperCase(Locale.FRANCE) + "%");
         } else if("numeroInterne".equals(itemFilter.getFieldName())){
             Expression<String> cpPath = from.get("numeroInterne");
+            predicat = cBuilder.equal(cpPath, itemFilter.getValue());
+        } else if("site".equals(itemFilter.getFieldName())) {
+            Expression<Integer> cpPath = from.join("site").get("id");
             predicat = cBuilder.equal(cpPath, itemFilter.getValue());
         } else {
             return super.processFilterItem(itemQuery, parameters, from, itemFilter);

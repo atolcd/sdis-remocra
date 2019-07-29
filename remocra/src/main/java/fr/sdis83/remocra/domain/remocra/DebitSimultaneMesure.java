@@ -4,11 +4,14 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
@@ -16,6 +19,8 @@ import javax.validation.constraints.NotNull;
 
 import com.vividsolutions.jts.geom.Point;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.roo.addon.javabean.RooJavaBean;
@@ -54,5 +59,13 @@ public class DebitSimultaneMesure {
 
     @Column
     private Boolean irv;
+
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "debitSimultaneMesure", orphanRemoval = true)
+    private DebitSimultaneDocument attestation;
+
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "debit", orphanRemoval = true)
+    private Set<DebitSimultaneHydrant> hydrants = new HashSet<DebitSimultaneHydrant>();
 
 }

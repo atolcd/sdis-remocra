@@ -31,7 +31,7 @@ public class Document {
 
     public enum TypeDocument {
         // Dépots
-        DELIB, RECEPTRAVAUX, DECLAHYDRANT,
+        DELIB, RECEPTRAVAUX, DECLAHYDRANT, ATTESTATION,
         // Blocs (documents génériques)
         BLOC,
         // "Métiers"

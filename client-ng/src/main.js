@@ -7,6 +7,7 @@ import Contacts from './components/Contacts'
 import FicheIndisponibiliteTemporaire from './components/FicheIndisponibiliteTemporaire'
 import DebitSimultaneSelection from './components/DebitSimultaneSelection'
 import ErrorMessage from './components/ErrorMessage'
+import DebitSimultaneFiche from './components/DebitSimultaneFiche'
 // import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import rate from 'vue-rate'
@@ -101,7 +102,30 @@ const indispoTempBuildFiche = function(el, data){
     return v
 }
 
+const debitSimultaneSelection = function(el, data) {
+  var v = new Vue({
+    el,
+    bus: new Vue(),
+    components: {
+      DebitSimultaneSelection
+    },
+    template: "<DebitSimultaneSelection  typeSelection='"+data.typeSelection+"' debitsData='"+encodeURI(JSON.stringify(data.comboDebits))+"' />"
+  })
+  return v
+}
 
+// PEI
+const debitSimultaneFiche = function(el, data) {
+  var v = new Vue({
+    el,
+    bus: new Vue(),
+    components: {
+      DebitSimultaneFiche
+    },
+    template: "<DebitSimultaneFiche idDebitSimultane='"+data.idDebitSimultane+"' listeHydrantsOnCreate='"+data.listeHydrants+"' vitesseEau='"+data.vitesseEau+"'/>"
+  })
+  return v
+}
 
 export {
   criseBuildMap,
@@ -109,5 +133,6 @@ export {
   errorMessage,
   indispoTempBuildFiche,
   buildContacts,
-  debitSimultaneSelection
+  debitSimultaneSelection,
+  debitSimultaneFiche
 }

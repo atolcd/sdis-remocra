@@ -29,6 +29,7 @@ import fr.sdis83.remocra.util.GeometryUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Configuration
@@ -58,6 +59,27 @@ public class DebitSimultaneService extends AbstractService<DebitSimultane>{
                 .setParameter("srid", srid)
                 .setParameter("distance", distance);
         return query.getResultList();
+    }
+
+    @Transactional
+    public void updateGeometry(Long id) {
+        //DebitSimultane mesure = this.entityManager.find(this.cls, Long.valueOf(id));
+        Query query = entityManager
+                .createNativeQuery(
+                        ("UPDATE remocra.debit_simultane SET geometrie = " +
+                            "(SELECT ST_CENTROID(ST_UNION(geometrie)) " +
+                            "FROM remocra.debit_simultane_hydrant dsh " +
+                            "JOIN remocra.hydrant h ON h.id=dsh.hydrant " +
+                            "WHERE debit = " +
+                                "(SELECT dsm.id " +
+                                "FROM remocra.debit_simultane ds " +
+                                "JOIN remocra.debit_simultane_mesure dsm ON dsm.debit_simultane=ds.id " +
+                                "WHERE ds.id=:idDebitSimultane " +
+                                "ORDER BY dsm.date_mesure DESC " +
+                                "LIMIT 1)) " +
+                            "WHERE id=:idDebitSimultane"))
+                .setParameter("idDebitSimultane", id);
+        query.executeUpdate();
     }
 
 }

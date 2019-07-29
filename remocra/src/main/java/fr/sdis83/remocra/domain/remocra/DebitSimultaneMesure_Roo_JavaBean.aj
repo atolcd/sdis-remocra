@@ -72,5 +72,26 @@ privileged aspect DebitSimultaneMesure_Roo_JavaBean {
     public void DebitSimultaneMesure.setIrv(Boolean irv) {
         this.irv = irv;
     }
+
+    public DebitSimultaneDocument DebitSimultaneMesure.getAttestation() {
+        return this.attestation;
+    }
+
+    public void DebitSimultaneMesure.setAttestation(DebitSimultaneDocument attestation) {
+        this.attestation = attestation;
+
+    }
+
+    public Set<DebitSimultaneHydrant> DebitSimultaneMesure.getHydrants() {
+        return this.hydrants;
+    }
+
+    public void DebitSimultaneMesure.setHydrants(Set<DebitSimultaneHydrant> hydrants) {
+        this.hydrants.clear();
+        if(hydrants != null) {
+            this.hydrants.addAll(hydrants);
+        }
+    }
+
     
 }

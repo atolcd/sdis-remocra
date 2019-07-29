@@ -14,7 +14,7 @@ privileged aspect DebitSimultaneMesure_Roo_Jpa_ActiveRecord {
     @PersistenceContext
     transient EntityManager DebitSimultaneMesure.entityManager;
     
-    public static final List<String> DebitSimultaneMesure.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "debitSimultane", "debitRequis", "debitMesure", "dateMesure", "debitRetenu", "commentaire", "irv");
+    public static final List<String> DebitSimultaneMesure.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "debitSimultane", "debitRequis", "debitMesure", "dateMesure", "debitRetenu", "commentaire", "irv", "attestation", "hydrants");
     
     public static final EntityManager DebitSimultaneMesure.entityManager() {
         EntityManager em = new DebitSimultaneMesure().entityManager;
