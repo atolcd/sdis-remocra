@@ -5,6 +5,7 @@ import GestCrise from './App'
 import Fiche from './components/Fiche'
 import Contacts from './components/Contacts'
 import FicheIndisponibiliteTemporaire from './components/FicheIndisponibiliteTemporaire'
+import DebitSimultaneSelection from './components/DebitSimultaneSelection'
 import ErrorMessage from './components/ErrorMessage'
 // import router from './router'
 import BootstrapVue from 'bootstrap-vue'
@@ -107,5 +108,6 @@ export {
   peiBuildFiche,
   errorMessage,
   indispoTempBuildFiche,
-  buildContacts
+  buildContacts,
+  debitSimultaneSelection
 }

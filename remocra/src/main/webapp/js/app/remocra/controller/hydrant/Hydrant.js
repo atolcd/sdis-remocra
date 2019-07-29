@@ -165,7 +165,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             // Onglet "Localisation" (la carte)
             'crHydrantsMap': {
                 layersadded: this.initControlMap,
-                newVisiteRapide: this.createVisiteRapide
+                newVisiteRapide: this.createVisiteRapide,
+                debitSimultaneClick: this.onClickDebitSimultaneFromMap
             },
             'crHydrantsMap #dessinerBtn': {
                 toggle: function(button, pressed) {
@@ -221,6 +222,30 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             },
             'crHydrantsMap #downloadHydrantsNonNum': {
                 click: this.downloadHydrantsNonNum
+            },
+
+            'crHydrantsMap #debitSimultaneBtn' : {
+                click: this.createDebitSimultane
+            },
+
+            'crHydrantsMap #saisirMesureBtn' : {
+                toggle: function(button, pressed) {
+                    if (pressed) {
+                        // Désélection de toutes les features sélectionnées
+                        this.getTabMap().map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselectAll();
+                    }
+                    this.getTabMap().activateSpecificControl('saisirMesure', pressed);
+                }
+            },
+
+            'crHydrantsMap #deleteDebitSimultaneBtn' : {
+                toggle: function(button, pressed) {
+                    if (pressed) {
+                        // Désélection de toutes les features sélectionnées
+                        this.getTabMap().map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselectAll();
+                    }
+                    this.getTabMap().activateSpecificControl('deleteDebitSimultane', pressed);
+                }
             },
             // Fenêtre "affectation"
             'affectation': {
@@ -309,7 +334,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             'crHydrantsIndispo #deleteIndispo': {
                 click: this.deleteIndispo
             },
-            //ici
+
             'crHydrantsIndispo #gererIndispo': {
                 click: this.showFicheIndispoTempFromGrid
             },
@@ -644,6 +669,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         this.enableBtnIf('activeMoveBtn', nbSelect == 1);
         this.enableBtnIf('indispoBtn', nbSelect > 0);
         this.enableBtnIf('editIndispoBtn', nbSelect == 1);
+        this.enableBtnIf('debitSimultaneBtn', nbSelect > 1);
+        this.enableBtnIf('saisirMesureBtn', nbSelect == 0);
+        this.enableBtnIf('deleteDebitSimultaneBtn', nbSelect == 0);
     },
     enableBtnIf: function(btnId, enableCond) {
         var btn = this.getTabMap().queryById(btnId);
@@ -1187,6 +1215,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         if (features.length == 1) {
             this.showFicheHydrant(features[0].data.typeHydrantCode, features[0].fid, controle);
         }
+
     },
 
     deleteHydrantFromMap: function() {
@@ -1215,6 +1244,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                       return;
                    }
                 }
+
        Ext.widget('nouvelleIndispo').show();
     },
 
@@ -1752,6 +1782,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
        var indispo = records[0];
           if(indispo!=null) {
               //tant qu'il y'a une selection on autorise la localisation et la suppression
+
                tabIndispos.queryById('deleteIndispo').setDisabled(records.length == 0);
                tabIndispos.queryById('locateIndispo').setDisabled(records.length == 0);
                tabIndispos.queryById('gererIndispo').setDisabled(records.length == 0);
@@ -2135,5 +2166,174 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 Sdis.Remocra.util.Msg.msg("Prolongation de l'indisponibilité", res.message);
             }
         });           
-    }
+    },
+
+  createDebitSimultane: function() {
+        var features = this.getSelectedFeatures();
+        var title="Une erreur est survenue à la création du débit simultané";
+        var hydrantsCompatibles = true;
+        var listeCodesDeci = [];
+        var listeTypesReseau = [];
+        var listeDiametres = [];
+        var listeId = [];
+
+        // Filtre permettant de supprimer les doublons d'une collection
+        var filtre = function onlyUnique(value, index, self) {
+            return self.indexOf(value) === index;
+        };
+
+        features.forEach(function(hydrant){
+
+            listeId.push(hydrant.data.internalId);
+
+            if(hydrant.data.codeNatureDeci){
+                listeCodesDeci.push(hydrant.data.codeNatureDeci);
+            }
+
+            if(hydrant.data.typeReseau) {
+                listeTypesReseau.push(hydrant.data.typeReseau);
+            }
+
+            if(hydrant.data.diametre) {
+                listeDiametres.push(hydrant.data.diametre);
+            }
+        });
+
+        // Vérifiation sur la nature DECI
+        if(listeCodesDeci.length != features.length) {
+            hydrantsCompatibles = false;
+            this.showErrorMessage(title.replace(/'/g, ' '), (features.length-listeCodesDeci.length+" hydrant(s) n'a/n'ont pas de nature DECI attribuée").replace(/'/g, '‘'));
+        }
+        else if(listeCodesDeci.filter(filtre).length > 1 || (listeCodesDeci.filter(filtre).length > 0 && listeCodesDeci.filter(filtre)[0] !== "PRIVE")) {
+            hydrantsCompatibles = false;
+            this.showErrorMessage(title.replace(/'/g, ' '), ("Les hydrants ne sont pas tous de nature DECI privée").replace(/'/g, '‘'));
+        }
+
+        // Vérification sur le type de réseau
+        if(listeTypesReseau.length != features.length) {
+            hydrantsCompatibles = false;
+            this.showErrorMessage(title.replace(/'/g, ' '), (features.length-listeTypesReseau.length+" hydrant(s) n'a/n'ont pas de type de réseau attribué").replace(/'/g, '‘'));
+        }
+        else if(listeTypesReseau.filter(filtre).length > 1) {
+            hydrantsCompatibles = false;
+            this.showErrorMessage(title.replace(/'/g, ' '), ("Les hydrants sélectionnés n'ont pas tous le même type de réseau").replace(/'/g, '‘'));
+        }
+
+        // Vérification sur le diamètre
+        if(listeDiametres.length != features.length) {
+            hydrantsCompatibles = false;
+            this.showErrorMessage(title.replace(/'/g, ' '), (features.length-listeDiametres.length+" hydrant(s) n'a/n'ont pas de diamètre nominal attribué").replace(/'/g, '‘'));
+        }
+        else if(listeDiametres.filter(filtre).length > 1) {
+            hydrantsCompatibles = false;
+            this.showErrorMessage(title.replace(/'/g, ' '), ("Les hydrants sélectionnés n'ont pas tous le même diamètre nominal").replace(/'/g, '‘'));
+        }
+
+        if(hydrantsCompatibles){
+            console.log("TODO: Création débit simultané avec hydrants ", listeId);
+        }
+
+      },
+
+      /**
+        * Clic sur la map avec le bouton de saisie de mesure ou de suppression de débit simultané activé
+        * On recherche les DS autour du point cliqué, et on effectue l'action correspondante
+        * Si plusieurs points regroupés au même endroit, on affiche une fenêtre pour sélectionner le bon DS
+        * @param coords Les coordonnées du point cliqué (Système de projection WGS 84 / Pseudo-Mercator)
+        * @param typeEvent Le type d'évènement qui a déclenché la fonction:
+        *   - 'mesure' lors d'une saisie de mesure,
+        *   - 'suppression' lors d'une suppression de débit simultané
+        **/
+      onClickDebitSimultaneFromMap: function(coords, typeEvent) {
+        Ext.Ajax.request({
+            url: Sdis.Remocra.util.Util.withBaseUrl('../debitsimultane/getdebitssimultanesfromlonlat'),
+            method: 'GET',
+            params: {
+                lon: coords.lon,
+                lat: coords.lat,
+                srid: 3857,
+                distance: 15
+            },
+            scope: this,
+            callback: function(options, success, response) {
+                if(success){
+                    var data = JSON.parse(response.responseText);
+                    if(data.features.length == 1) {
+
+                        if(typeEvent == 'mesure') {
+                            this.showDebitSimultaneFiche(data.features[0].id);
+                        } else {
+                            this.deleteDebitSimultane(data.features[0].id);
+                        }
+
+                    } else if(data.features.length > 1) {
+                        var listeDS = [];
+                        data.features.forEach(function(debit) {
+                            listeDS.push({
+                                text: debit.properties.numDossier,
+                                value: debit.properties.id
+                            });
+                        });
+                        this.showDebitSimultaneSelection(typeEvent, listeDS);
+                    }
+                }
+            }
+        });
+      },
+
+      showErrorMessage: function(title, message){
+        var d = document.createElement('div');
+        var id = "show-errorMsg-"+(++Ext.AbstractComponent.AUTO_ID);
+        d.id=id;
+        document.body.appendChild(d);
+        var vueErrorMessage = window.remocraVue.errorMessage(d, {
+            title: title, msg: message
+        });
+
+        vueErrorMessage.$options.bus.$on('closed', Ext.bind(function(data) {
+               vueErrorMessage.$el.remove();
+               vueErrorMessage.$destroy();
+        }, this));
+      },
+
+      /**
+        * Modale de sélection du débit simultané
+        * S'affiche si lors du clic utilsiateur, plusieurs DS présents sur une zone restreinte
+        * @param typeSelection 'mesure' si modification du DS, 'suppression' sinon
+        * @param comboDebits Un tableau contenant les informations pour la combobox des débits simultanés
+        */
+      showDebitSimultaneSelection: function(typeSelection, comboDebits) {
+        var d = document.createElement('div');
+        var id = "show-debitSimultaneSelection-"+(++Ext.AbstractComponent.AUTO_ID);
+        d.id=id;
+        document.body.appendChild(d);
+        var vueDebitSimultaneSelection = window.remocraVue.debitSimultaneSelection(d, {
+          typeSelection: typeSelection, comboDebits: comboDebits
+        });
+
+        // Validation du formulaire: le DS est choisi, on redirige vers la bonne fonction
+        vueDebitSimultaneSelection.$options.bus.$on('debit_simultane_selected', Ext.bind(function(data) {
+            if(data.type === 'mesure') {
+                this.showDebitSimultaneFiche(data.id);
+            } else {
+                this.deleteDebitSimultane(data.id);
+            }
+        }, this));
+
+        vueDebitSimultaneSelection.$options.bus.$on('closed', Ext.bind(function(data) {
+            vueDebitSimultaneSelection.$el.remove();
+            vueDebitSimultaneSelection.$destroy();
+        }, this));
+      },
+
+      // Affichage de la fiche d'un débit simultané
+      showDebitSimultaneFiche: function(idDebitSimultane) {
+        console.log("TODO: Ouverture débit simultané ", idDebitSimultane);
+      },
+
+      // Suppression d'un débit simultané
+      deleteDebitSimultane: function(id) {
+        console.log("TODO: suppression débit ", id);
+      }
+
 });

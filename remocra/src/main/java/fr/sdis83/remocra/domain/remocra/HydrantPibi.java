@@ -99,7 +99,16 @@ public class HydrantPibi extends Hydrant {
         Feature feature = super.toFeature();
         feature.addProperty("debit", this.getDebit());
         feature.addProperty("debitMax", this.getDebitMax());
+        feature.addProperty("typeReseau", this.getTypeReseauId());
+        feature.addProperty("diametreCanalisation", this.diametreCanalisation);
         return feature;
+    }
+
+    public Long getTypeReseauId() {
+         if(this.getTypeReseauAlimentation() != null) {
+            return this.getTypeReseauAlimentation().getId();
+         }
+         return null;
     }
 
 }

@@ -24,6 +24,14 @@ privileged aspect DebitSimultane_Roo_JavaBean {
     public void DebitSimultane.setGeometrie(Geometry geometrie) {
         this.geometrie = geometrie;
     }
+
+    public String DebitSimultane.getJsonGeometrie() {
+        return this.jsonGeometrie;
+    }
+
+    public void DebitSimultane.setJsonGeometrie(String jsonGeometrie) {
+        this.jsonGeometrie = jsonGeometrie;
+    }
     
     public Site DebitSimultane.getSite() {
         return this.site;

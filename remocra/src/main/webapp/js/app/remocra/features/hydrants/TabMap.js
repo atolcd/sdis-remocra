@@ -165,6 +165,52 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
 
         }
 
+        if (Sdis.Remocra.Rights.hasRight('DEBITS_SIMULTANES_C') || Sdis.Remocra.Rights.hasRight('DEBITS_SIMULTANES_R')) {
+            this.editItems.push('Débits simultanés : ');
+            if(Sdis.Remocra.Rights.hasRight('DEBITS_SIMULTANES_C')) {
+                this.editItems.push({
+                    xtype: 'button',
+                    tooltip: 'Créer un débit simultané',
+                    text: '<span>Créer débit dimultané.</span>',
+                    cls: 'time-add',
+                    iconCls: 'editIcon',
+                    itemId: 'debitSimultaneBtn',
+                    disabled: true
+                });
+            }
+
+            if(Sdis.Remocra.Rights.hasRight('DEBITS_SIMULTANES_R')) {
+                this.editItems.push({
+                    xtype: 'button',
+                    tooltip: 'Saisir une mesure',
+                    text: '<span>Saisir mesure</span>',
+                    cls: 'edit-info',
+                    iconCls: 'edit-infoIcon',
+                    itemId: 'saisirMesureBtn',
+                    disabled: false,
+                    toggleGroup: 'excl-ctrl1',
+                    enableToggle: true,
+                    pressed: false,
+                    allowDepress: true
+                });
+
+                this.editItems.push({
+                    xtype: 'button',
+                    tooltip: 'Supprimer un débit simultané',
+                    text: '<span>supprimer debit simultane</span>',
+                    disabled: false,
+                    toggleGroup: 'excl-ctrl1',
+                    enableToggle: true,
+                    pressed: false,
+                    allowDepress: true,
+                    cls: 'delete',
+                    iconCls: 'deleteIcon',
+                    itemId: 'deleteDebitSimultaneBtn'
+                });
+            }
+
+        }
+
 
         if (Sdis.Remocra.Rights.hasRight('HYDRANTS_EXPORT_NON_NUM_C')) {
             this.moreItems = [ { tooltip: 'Télécharger la liste des points d\'eau non numérotés', text: '<span>Télécharger</span>',
@@ -173,12 +219,10 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
             }];
         }
         this.timeoutHighlight = null;
-
         this.callParent(arguments);
     },
 
     createSpecificLayer: function(layerDef) {
-
         if (layerDef.id == 'hydrantLayer') {
             layerDef.url = BASE_URL + '/../hydrants/layer';
             layerDef.styleMap = this.getStyleMap();
@@ -226,10 +270,46 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
     },
 
     createSpecificControls: function() {
+        var map = this;
+
+        // Contrôleur custom pour gérer les clics de l'utilisateur
+        OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
+            defaultHandlerOptions: {
+                'single': true,
+                'double': false,
+                'pixelTolerance': 5,
+                'stopSingle': false,
+                'stopDouble': false,
+                'event': null,
+                'typeEvent':null
+            },
+
+            initialize: function(options) {
+                this.handlerOptions = OpenLayers.Util.extend(
+                    {}, this.defaultHandlerOptions
+                );
+                OpenLayers.Control.prototype.initialize.apply(
+                    this, arguments
+                );
+                this.handler = new OpenLayers.Handler.Click(
+                    this, {
+                        'click': this.trigger
+                    }, this.handlerOptions
+                );
+            },
+
+            trigger: function(e) {
+                map.fireEvent(this.event, map.hydrantLayer.getLonLatFromViewPortPx(e.xy), this.typeEvent);
+            }
+
+        });
+
         // On reprend les contrôles du parent
         var ctrls = this.callParent(arguments);
         Ext.apply(ctrls, {
-            drawPoint: new OpenLayers.Control.DrawFeature(this.workingLayer, OpenLayers.Handler.Point)
+            drawPoint: new OpenLayers.Control.DrawFeature(this.workingLayer, OpenLayers.Handler.Point),
+            saisirMesure: new OpenLayers.Control.Click({event: 'debitSimultaneClick', typeEvent: 'mesure'}),
+            deleteDebitSimultane: new OpenLayers.Control.Click({event: 'debitSimultaneClick', typeEvent: 'suppression'})
         });
         return ctrls;
     },
