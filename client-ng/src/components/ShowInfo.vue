@@ -1,9 +1,7 @@
 <template>
 <div>
   <b-modal :id="'modalInfo'+crise" no-close-on-backdrop ref="modal" title="Informations" hide-footer>
-    <div><strong>Nom :</strong> {{nomFeature}}</div>
-    <div><strong>Nature :</strong> {{natureFeature}}</div>
-    <div><strong>Constaté le :</strong> {{creationFeature}}</div>
+    <div class="infoFeatures" v-html="html"></div>
     <b-btn size="sm" class="float-right" variant="primary" @click="hideModal"> Fermer </b-btn>
   </b-modal>
 </div>
@@ -23,6 +21,7 @@ export default {
   },
   data() {
     return {
+      html: null,
       feature: null,
       nomFeature: null,
       natureFeature: null,
@@ -32,12 +31,19 @@ export default {
     }
   },
   methods: {
-    showModal(feature) {
-      this.nomFeature = feature.getProperties().nom
-      this.natureFeature = feature.getProperties().natureNom
-      this.creationFeature = moment(new Date(feature.getProperties().creation), 'DD/MM/YYYY[T]HH:mm:ss[Z]').format('DD/MM/YYYY' + ' - ' + 'HH:mm')
-      this.$refs.modal.show()
-      this.$root.$emit('bv::hide::popover')
+    showModal(html) {
+      this.html = html
+      if (this.html.indexOf("<b>") !== -1) {
+        this.$refs.modal.show()
+        this.$root.$emit('bv::hide::popover')
+      } else {
+        this.$notify({
+          group: 'remocra',
+          title: 'Évènements',
+          type: 'warn',
+          text: 'Aucun évènement trouvé'
+        })
+      }
     },
     showModalFromValues(feature) {
       this.nomFeature = feature.feature.nom
@@ -47,8 +53,9 @@ export default {
       this.$root.$emit('bv::hide::popover')
     },
     hideModal() {
+      this.html = null
       this.$refs.modal.hide()
-      this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP,this.crise)
+      this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, this.crise)
     }
   }
 }
@@ -58,5 +65,13 @@ export default {
 strong {
   font-weight: bold;
   display: -webkit-inline-box;
+}
+
+.infoFeatures {
+  max-height: 500px;
+  overflow: auto;
+  margin-bottom: 10px;
+  background-color: rgb(255, 255, 255);
+  padding: 5px;
 }
 </style>

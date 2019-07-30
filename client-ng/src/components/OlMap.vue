@@ -1320,29 +1320,16 @@ export default {
       this.toggleButton('infoBtn' + this.criseId)
     },
     handleOpenInfo(e) {
-      axios.get('/remocra/evenements/layer', {
-        params: {
-          point: e.coordinate[0] + ', ' + e.coordinate[1],
-          projection: e.target.getView().getProjection().getCode()
-        }
-      }).then(response => {
+      var layer = this.getLayerById('893bb7520e7fb036d665661847628994')
+      var url = layer.getSource().getGetFeatureInfoUrl(e.coordinate, this.map.getView().getResolution(), this.map.getView().getProjection(), {
+        'INFO_FORMAT': 'application/json',
+        'QUERY_LAYERS': 'remocra:v_crise_evenement',
+        'FEATURE_COUNT': '20'
+      })
+      console.log(url)
+      axios.get(url).then(response => {
         if (response.data) {
-          var features = new GeoJSON().readFeatures(JSON.stringify(response.data))
-          if (features.length === 0) {
-            this.$notify({
-              group: 'remocra',
-              title: 'Évènements',
-              type: 'warn',
-              text: 'Aucun évènement trouvé'
-            })
-          } else if (features.length === 1) {
-            var selectedFeature = features[0]
-            this.addToWorkingLayer(selectedFeature)
-            this.$refs.showInfo.showModal(selectedFeature)
-          } else {
-            // On affiche un modal de choix de feature
-            this.$refs.choiceFeature.showInfo(features)
-          }
+          this.$refs.showInfo.showModal(response.data)
         }
       }).catch(function(error) {
         console.error('carte', error)
