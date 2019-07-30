@@ -92,7 +92,7 @@ Ext.define('Sdis.Remocra.widget.AbstractDragAndDropGrid', {
              stripeRows       : true,
              title            : 'A activer',
              hideHeaders      :true,
-             height           : 150
+             height           : 100
         });
     },
 
@@ -106,7 +106,7 @@ Ext.define('Sdis.Remocra.widget.AbstractDragAndDropGrid', {
              columns          : this.columns,
              stripeRows       : true,
              title            : 'Disponibles',
-             height           : 150,
+             height           : 100,
              hideHeaders      : true
         });
    },
