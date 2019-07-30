@@ -71,12 +71,14 @@ export default {
                       value: typeEvenement.id,
                       text: typeEvenement.nom,
                       categorie: categ.nom,
+                      codeCateg: categ.code,
                       typeGeometrie: typeEvenement.typeGeometrie
                     })
                   }
                 })
               }
             })
+            types = _.orderBy(types, ['codeCateg', 'text'], ['asc', 'asc'])
             this.types = _.groupBy(types, t => t.categorie)
           }
         }).catch(function(error) {
