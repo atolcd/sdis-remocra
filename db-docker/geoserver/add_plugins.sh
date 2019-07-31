@@ -14,7 +14,7 @@ GEOSERVER_VERSION=$(docker exec db-docker_geoserver_1 cat /usr/local/tomcat/weba
   && GEOSERVER_VERSION=${GEOSERVER_VERSION:-1}
 
 # Récupération du plugin querylayer
-wget -q "http://downloads.sourceforge.net/geoserver/geoserver-${GEOSERVER_VERSION}-querylayer-plugin.zip" \
+wget -q "https://sourceforge.net/projects/geoserver/files/GeoServer/${GEOSERVER_VERSION}/extensions/geoserver-${GEOSERVER_VERSION}-querylayer-plugin.zip/download" -o geoserver-2.6.0-querylayer-plugin.zip \
   && unzip -qn geoserver-${GEOSERVER_VERSION}-querylayer-plugin.zip \
   && rm -f geoserver-*-querylayer-plugin.zip \
   && docker cp gs-querylayer-${GEOSERVER_VERSION}.jar db-docker_geoserver_1:/usr/local/tomcat/webapps/geoserver/WEB-INF/lib/ \
