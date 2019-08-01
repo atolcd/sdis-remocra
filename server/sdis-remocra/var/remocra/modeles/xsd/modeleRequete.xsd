@@ -187,6 +187,31 @@
 					<xs:documentation>Champ de saisie de type "Saisie de nombre"</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+						<xs:enumeration value="pointgeometryfield">
+				<xs:annotation>
+					<xs:documentation>Champ de saisie de type "Saisie de géométrie ponctuelle"</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="linestringgeometryfield">
+				<xs:annotation>
+					<xs:documentation>Champ de saisie de type "Saisie de géométrie lineaire"</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="polygongeometryfield">
+				<xs:annotation>
+					<xs:documentation>Champ de saisie de type "Saisie de géométrie surfacique"</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="circlegeometryfield">
+				<xs:annotation>
+					<xs:documentation>Champ de saisie de type "Saisie de géométrie circulaire"</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="boxgeometryfield">
+				<xs:annotation>
+					<xs:documentation>Champ de saisie de type "Saisie de géométrie rectangulaire"</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>
