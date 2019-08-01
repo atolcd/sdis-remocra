@@ -424,5 +424,76 @@ La *carte "Recherches et analyses" du module PEI s'appuie sur une couche de type
 }
 ----
 
+=== Module Crise ===
+
+La *carte du module crise s'appuie sur une couche de type `wms` avec l'identifiant `893bb7520e7fb036d665661847628994`* (c'est un prérequis).
+En plus, un groupe de couches *`additional`* qui sert à contenir les couches mobilisés pour la crise (prérequis). 
+Exemple de carte par défaut du module
+`/var/remocra/html/js/app/remocra/features/crises/data/carte.json` :
+[source,json]
+----
+{
+  "libelle":"Légende",
+  "items":[{
+    "libelle":"Crise",
+    "items":[{
+      "type" : "specific",
+      "id" : "893bb7520e7fb036d665661847628994",
+      "libelle" : "Évènements",
+      "visibility" : true,
+      "opacity" : 1
+    },{
+      "type" : "wms",
+      "id" : "selection",
+      "libelle" : "Résultat d'analyse",
+      "url":"/remocra/geoserver/remocra/wms",
+      "visibility" : true,
+      "opacity" : 1,
+      "sld": null,
+      "scale_min":"0",
+      "scale_max":"362834",
+      "layers":"remocra:v_requete_modele_selection_detail",
+      "styles" : [{ "id": "default", "libelle": "" }],
+      "projection": "EPSG:900913",
+      "interrogeable": true
+    }]
+  },{
+    "libelle":"Couches mobilisées",
+    "code": "additional",
+    "items":[]
+  },{
+    "libelle":"Fonds IGN",
+    "items":[{
+      "type" : "wmts",
+      "libelle" : "Cartes IGN",
+      "id" : "d05123efca65d99b029d5781a1c34ef5",
+      "scale_min" : "0",
+      "scale_max" : "1000000",
+      "visibility" : true,
+      "opacity" : 1,
+      "interrogeable" : false,
+      "items" : null,
+      "num_zoom_levels" : null,
+      "format" : "image/jpeg",
+      "layers" : "GEOGRAPHICALGRIDSYSTEMS.MAPS",
+      "url" : "https://wxs.ign.fr/pratique/geoportail/wmts",
+      "styles" : [{
+        "legende": "/remocra/ext-res/images/remocra/cartes/legende/ign/carte.png",
+        "id" : "normal",
+        "libelle" : "Légende générique"
+      }],
+      "tileMatrixSet" : {
+        "nom" : "PM",
+        "resolution_min" : 0.25,
+        "resolution_max" : 2445.9849051256400
+      }
+    }
+
+    ]
+  }
+  ]}
+
+----
+
 
 _Aide technique : tutoriels link:http://www.w3schools.com/json[JSON] sur w3schools.com, link:http://docs.geoserver.org/[Documentation GeoServer] sur geoserver.org et link:http://ign.fr/[IGN]_
