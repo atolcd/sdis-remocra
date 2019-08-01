@@ -199,7 +199,6 @@ export default {
       this.loadEvenementNatures(natureId)
       // si l'évenementId est renseigné c'est un update
       if (evenementId !== null) {
-        this.disableNatures = true
         axios.get('/remocra/evenements/' + criseId + '/' + evenementId).then((response) => {
           var evenement = response.data.data[0]
           this.form.titre = evenement.nom
@@ -217,6 +216,7 @@ export default {
           this.form.importance = evenement.importance
           this.form.tags = evenement.tags && evenement.tags.length !== 0 ? evenement.tags.split(',') : []
           this.form.type = evenement.typeCriseNatureEvenement.id
+          this.disableNatures = true
           if (evenement.criseComplement.length !== 0) {
             _.forEach(evenement.criseComplement, complement => {
               this.complements.push({
@@ -226,7 +226,6 @@ export default {
               })
             })
           }
-          this.loadComplement()
         }).catch(function(error) {
           console.error('categorie évenement', error)
         })
