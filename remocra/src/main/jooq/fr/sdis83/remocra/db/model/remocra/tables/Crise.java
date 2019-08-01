@@ -25,8 +25,8 @@ import org.jooq.impl.TableImpl;
 
 
 /**
- * Gestion de crise : Episode de crise pour lequelles des informations ont 
- * été saisies dans REMOCRA
+ * Gestion de crise : Episode de crise pour lequel des informations ont été 
+ * saisies dans REMOCRA
  */
 @Generated(
 	value = {
@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Crise extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -962168868;
+	private static final long serialVersionUID = -98441623;
 
 	/**
 	 * The reference instance of <code>remocra.crise</code>
@@ -74,19 +74,9 @@ public class Crise extends TableImpl<Record> {
 	public final TableField<Record, Instant> ACTIVATION = createField("activation", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "Date et heure d'activation de la crise", new InstantConverter());
 
 	/**
-	 * The column <code>remocra.crise.redefinition</code>. Date et heure de redéfinition de la crise
+	 * The column <code>remocra.crise.cloture</code>. Date et heure de désactivation de la crise
 	 */
-	public final TableField<Record, Instant> REDEFINITION = createField("redefinition", org.jooq.impl.SQLDataType.TIMESTAMP, this, "Date et heure de redéfinition de la crise", new InstantConverter());
-
-	/**
-	 * The column <code>remocra.crise.cloture</code>. Date et heure de désactivation (Terminé) de la crise ou de fusion (Fusionné) de la crise
-	 */
-	public final TableField<Record, Instant> CLOTURE = createField("cloture", org.jooq.impl.SQLDataType.TIMESTAMP, this, "Date et heure de désactivation (Terminé) de la crise ou de fusion (Fusionné) de la crise", new InstantConverter());
-
-	/**
-	 * The column <code>remocra.crise.carte</code>. Définition des couches de la carte
-	 */
-	public final TableField<Record, String> CARTE = createField("carte", org.jooq.impl.SQLDataType.VARCHAR, this, "Définition des couches de la carte");
+	public final TableField<Record, Instant> CLOTURE = createField("cloture", org.jooq.impl.SQLDataType.TIMESTAMP, this, "Date et heure de désactivation de la crise", new InstantConverter());
 
 	/**
 	 * The column <code>remocra.crise.statut</code>. Identifiant du statut associé
@@ -94,14 +84,29 @@ public class Crise extends TableImpl<Record> {
 	public final TableField<Record, Long> STATUT = createField("statut", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "Identifiant du statut associé");
 
 	/**
-	 * The column <code>remocra.crise.crise_parente</code>. Identifiant du statut associé
-	 */
-	public final TableField<Record, Long> CRISE_PARENTE = createField("crise_parente", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant du statut associé");
-
-	/**
 	 * The column <code>remocra.crise.type_crise</code>. Identifiant du type de crise associé
 	 */
 	public final TableField<Record, Long> TYPE_CRISE = createField("type_crise", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "Identifiant du type de crise associé");
+
+	/**
+	 * The column <code>remocra.crise.carte</code>. Groupe de couches complémentaires à carte.json
+	 */
+	public final TableField<Record, String> CARTE = createField("carte", org.jooq.impl.SQLDataType.VARCHAR, this, "Groupe de couches complémentaires à carte.json");
+
+	/**
+	 * The column <code>remocra.crise.redefinition</code>. Date et heure de modification de la crise
+	 */
+	public final TableField<Record, Instant> REDEFINITION = createField("redefinition", org.jooq.impl.SQLDataType.TIMESTAMP, this, "Date et heure de modification de la crise", new InstantConverter());
+
+	/**
+	 * The column <code>remocra.crise.crise_parente</code>. Crise parente lors de la fusion
+	 */
+	public final TableField<Record, Long> CRISE_PARENTE = createField("crise_parente", org.jooq.impl.SQLDataType.BIGINT, this, "Crise parente lors de la fusion");
+
+	/**
+	 * The column <code>remocra.crise.auteur_crise</code>.
+	 */
+	public final TableField<Record, Long> AUTEUR_CRISE = createField("auteur_crise", org.jooq.impl.SQLDataType.BIGINT, this, "");
 
 	/**
 	 * Create a <code>remocra.crise</code> table reference
@@ -122,7 +127,7 @@ public class Crise extends TableImpl<Record> {
 	}
 
 	private Crise(String alias, Table<Record> aliased, Field<?>[] parameters) {
-		super(alias, Remocra.REMOCRA, aliased, parameters, "Gestion de crise : Episode de crise pour lequelles des informations ont été saisies dans REMOCRA");
+		super(alias, Remocra.REMOCRA, aliased, parameters, "Gestion de crise : Episode de crise pour lequel des informations ont été saisies dans REMOCRA");
 	}
 
 	/**
@@ -154,7 +159,7 @@ public class Crise extends TableImpl<Record> {
 	 */
 	@Override
 	public List<ForeignKey<Record, ?>> getReferences() {
-		return Arrays.<ForeignKey<Record, ?>>asList(Keys.CRISE__CRISE_TYPE_CRISE_STATUT, Keys.CRISE__CRISE_CRISE_PARENTE, Keys.CRISE__CRISE_TYPE_CRISE);
+		return Arrays.<ForeignKey<Record, ?>>asList(Keys.CRISE__CRISE_TYPE_CRISE_STATUT, Keys.CRISE__CRISE_TYPE_CRISE, Keys.CRISE__CRISE_CRISE_PARENTE, Keys.CRISE__CRISE_UTILISATEUR);
 	}
 
 	/**

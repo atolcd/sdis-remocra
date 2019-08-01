@@ -5,6 +5,7 @@ import java.util.List;
 import com.vividsolutions.jts.geom.Geometry;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenementComplement;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseSuivi;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.Utilisateur;
 import fr.sdis83.remocra.util.Featurable;
 import fr.sdis83.remocra.util.Feature;
 import org.hibernate.annotations.Formula;
@@ -41,6 +42,8 @@ public class CriseEvenement implements Featurable {
   private String tags;
 
   private TypeCriseNatureEvenement typeCriseNatureEvenement;
+
+  private Utilisateur auteurEvenement;
 
   private List<CriseSuivi> criseSuivis;
 
@@ -124,6 +127,14 @@ public class CriseEvenement implements Featurable {
 
   public void setTypeCriseNatureEvenement(TypeCriseNatureEvenement typeCriseNatureEvenement) {
     this.typeCriseNatureEvenement = typeCriseNatureEvenement;
+  }
+
+  public Utilisateur getAuteurEvenement() {
+    return auteurEvenement;
+  }
+
+  public void setAuteurEvenement(Utilisateur auteurEvenement) {
+    this.auteurEvenement = auteurEvenement;
   }
 
   public Instant getRedefinition() {

@@ -116,6 +116,11 @@ public class CriseEvenement extends TableImpl<Record> {
 	public final TableField<Record, Long> NATURE_EVENEMENT = createField("nature_evenement", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "Nature d'évènement associée");
 
 	/**
+	 * The column <code>remocra.crise_evenement.auteur_evenement</code>.
+	 */
+	public final TableField<Record, Long> AUTEUR_EVENEMENT = createField("auteur_evenement", org.jooq.impl.SQLDataType.BIGINT, this, "");
+
+	/**
 	 * Create a <code>remocra.crise_evenement</code> table reference
 	 */
 	public CriseEvenement() {

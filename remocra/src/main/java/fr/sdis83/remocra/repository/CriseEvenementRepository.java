@@ -7,6 +7,7 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_SUIVI;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE_EVENEMENT_DROIT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE_NATURE_EVENEMENT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE_PROPRIETE_EVENEMENT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
 import static fr.sdis83.remocra.db.model.remocra.tables.Document.DOCUMENT;
 import static fr.sdis83.remocra.util.GeometryUtil.sridFromGeom;
 import static org.jooq.impl.DSL.and;
@@ -118,8 +119,10 @@ public class CriseEvenementRepository {
         .select(TYPE_CRISE_NATURE_EVENEMENT.ID.as("typeCriseNatureEvenementId"), TYPE_CRISE_NATURE_EVENEMENT.ACTIF.as("typeCriseNatureEvenementActif"),
             TYPE_CRISE_NATURE_EVENEMENT.CODE.as("typeCriseNatureEvenementCode"), TYPE_CRISE_NATURE_EVENEMENT.NOM.as("typeCriseNatureEvenementNom"),
             TYPE_CRISE_NATURE_EVENEMENT.TYPE_GEOMETRIE.as("typeCriseNatureEvenementTypeGeometrie"))
+        .select(UTILISATEUR.IDENTIFIANT.as("utilisateurIdentifiant"))
         .from(CRISE_EVENEMENT)
         .join(TYPE_CRISE_NATURE_EVENEMENT).on(TYPE_CRISE_NATURE_EVENEMENT.ID.eq(CRISE_EVENEMENT.NATURE_EVENEMENT))
+        .leftOuterJoin(UTILISATEUR).on(UTILISATEUR.ID.eq(CRISE_EVENEMENT.AUTEUR_EVENEMENT))
         .where(CRISE_EVENEMENT.CRISE.eq(id)).and(c)
        .fetch();
 
@@ -148,8 +151,10 @@ public class CriseEvenementRepository {
         .select(TYPE_CRISE_NATURE_EVENEMENT.ID.as("typeCriseNatureEvenementId"), TYPE_CRISE_NATURE_EVENEMENT.ACTIF.as("typeCriseNatureEvenementActif"),
             TYPE_CRISE_NATURE_EVENEMENT.CODE.as("typeCriseNatureEvenementCode"), TYPE_CRISE_NATURE_EVENEMENT.NOM.as("typeCriseNatureEvenementNom"),
             TYPE_CRISE_NATURE_EVENEMENT.TYPE_GEOMETRIE.as("typeCriseNatureEvenementTypeGeometrie"))
+        .select(UTILISATEUR.IDENTIFIANT.as("utilisateurIdentifiant"))
         .from(CRISE_EVENEMENT)
         .join(TYPE_CRISE_NATURE_EVENEMENT).on(TYPE_CRISE_NATURE_EVENEMENT.ID.eq(CRISE_EVENEMENT.NATURE_EVENEMENT))
+        .leftOuterJoin(UTILISATEUR).on(UTILISATEUR.ID.eq(CRISE_EVENEMENT.AUTEUR_EVENEMENT))
         .where(CRISE_EVENEMENT.ID.eq(id))
         .fetch();
 
@@ -219,6 +224,7 @@ public class CriseEvenementRepository {
     c.setImportance(Integer.valueOf(request.getParameter("importance")));
     c.setTags(request.getParameter("tags"));
     c.setCrise(Long.valueOf(String.valueOf(request.getParameter("crise"))));
+    c.setAuteurEvenement(utilisateurService.getCurrentUtilisateur().getId());
     Geometry geom = null;
     if(request.getParameter("geometrie") != null){
       Integer srid = 2154;
@@ -238,8 +244,8 @@ public class CriseEvenementRepository {
     Instant t = new Instant(constat);
     c.setConstat(t);
     int result = context.insertInto(CRISE_EVENEMENT, CRISE_EVENEMENT.NOM, CRISE_EVENEMENT.GEOMETRIE, CRISE_EVENEMENT.DESCRIPTION, CRISE_EVENEMENT.CONSTAT, CRISE_EVENEMENT.CLOTURE,
-        CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT)
-        .values(c.getNom(), geom != null ? geom : null  ,  c.getDescription(),c.getConstat(), c.getCloture(),c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement()).execute();
+        CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT,CRISE_EVENEMENT.AUTEUR_EVENEMENT)
+        .values(c.getNom(), geom != null ? geom : null  ,  c.getDescription(),c.getConstat(), c.getCloture(),c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement(),c.getAuteurEvenement()).execute();
     if(result!=0) {
       //on sélectionne la dernioère insertion
       Long idCriseEvent = context.select(DSL.max((CRISE_EVENEMENT.ID))).from(CRISE_EVENEMENT).fetchOne().value1();
@@ -283,7 +289,7 @@ public class CriseEvenementRepository {
     c.setImportance(Integer.valueOf(request.getParameter("importance")));
     c.setTags(request.getParameter("tags"));
     c.setCrise(Long.valueOf(String.valueOf(request.getParameter("crise"))));
-
+    c.setAuteurEvenement(utilisateurService.getCurrentUtilisateur().getId());
     TypeCriseNatureEvenement tcn = context.select().from(TYPE_CRISE_NATURE_EVENEMENT)
         .where(TYPE_CRISE_NATURE_EVENEMENT.ID.eq(Long.valueOf(String.valueOf(request.getParameter("natureEvent")))))
         .fetchInto(TypeCriseNatureEvenement.class).get(0);
@@ -301,12 +307,12 @@ public class CriseEvenementRepository {
 
     if(c.getCloture() != null){
       context.update(CRISE_EVENEMENT).set(row( CRISE_EVENEMENT.NOM, CRISE_EVENEMENT.DESCRIPTION, CRISE_EVENEMENT.CONSTAT, CRISE_EVENEMENT.REDEFINITION,CRISE_EVENEMENT.CLOTURE,
-          CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT)
-          ,row(c.getNom(), c.getDescription(),c.getConstat(), c.getRedefinition(), c.getCloture(), c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement())).where(CRISE_EVENEMENT.ID.eq(id)).execute();
+          CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT, CRISE_EVENEMENT.AUTEUR_EVENEMENT)
+          ,row(c.getNom(), c.getDescription(),c.getConstat(), c.getRedefinition(), c.getCloture(), c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement(), c.getAuteurEvenement())).where(CRISE_EVENEMENT.ID.eq(id)).execute();
     }else {
       context.update(CRISE_EVENEMENT).set(row( CRISE_EVENEMENT.NOM, CRISE_EVENEMENT.DESCRIPTION, CRISE_EVENEMENT.CONSTAT, CRISE_EVENEMENT.REDEFINITION,
-          CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT)
-          ,row(c.getNom(), c.getDescription(),c.getConstat(), c.getRedefinition(), c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement())).where(CRISE_EVENEMENT.ID.eq(id)).execute();
+          CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT, CRISE_EVENEMENT.AUTEUR_EVENEMENT)
+          ,row(c.getNom(), c.getDescription(),c.getConstat(), c.getRedefinition(), c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement(), c.getAuteurEvenement())).where(CRISE_EVENEMENT.ID.eq(id)).execute();
     }
     return c;
 

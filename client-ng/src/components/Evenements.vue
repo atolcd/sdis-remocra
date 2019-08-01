@@ -15,7 +15,7 @@
         <b-list-group flush v-for="(message, indexmsg) in evenement.criseSuivis" :key="indexmsg">
           <b-list-group-item>
             <div class="message">
-              <span class="creation">{{message.creation}}</span> <span class="origine">{{message.origine}}</span>
+              <span class="creation">{{message.creation}}</span> <span class="origine"> {{message.auteur}}</span>
             </div>
             <div class="objet">{{message.objet}}</div>
             <div class="description" v-for="(msgpart, indexmsgpart) in message.message.split('\n')" :key="indexmsgpart">{{ msgpart }}</div>

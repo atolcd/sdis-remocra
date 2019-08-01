@@ -227,8 +227,9 @@ public class CriseRepository {
     TypeCriseStatut tcs = context.select().from(TYPE_CRISE_STATUT).where(TYPE_CRISE_STATUT.CODE.eq("EN_COURS")).fetchInto(TypeCriseStatut.class).get(0);
     c.setTypeCrise(tc.getId());
     c.setStatut(tcs.getId());
-    int result = context.insertInto(CRISE, CRISE.NOM, CRISE.TYPE_CRISE, CRISE.DESCRIPTION, CRISE.ACTIVATION, CRISE.STATUT, CRISE.CARTE)
-        .values(c.getNom(), c.getTypeCrise(),c.getDescription(),c.getActivation(), c.getStatut(), c.getCarte()).execute();
+    c.setAuteurCrise(utilisateurService.getCurrentUtilisateur().getId());
+    int result = context.insertInto(CRISE, CRISE.NOM, CRISE.TYPE_CRISE, CRISE.DESCRIPTION, CRISE.ACTIVATION, CRISE.STATUT, CRISE.CARTE, CRISE.AUTEUR_CRISE)
+        .values(c.getNom(), c.getTypeCrise(),c.getDescription(),c.getActivation(), c.getStatut(), c.getCarte(), c.getAuteurCrise()).execute();
     if(result != 0){
        Long idCrise = context.select(DSL.max((CRISE.ID))).from(CRISE).fetchOne().value1();
        if(idCommunes.size() != 0){
@@ -305,16 +306,17 @@ public class CriseRepository {
     c.setTypeCrise(tc.getId());
     c.setStatut(tcs.getId());
     c.setStatut(tcs.getId());
+    c.setAuteurCrise(utilisateurService.getCurrentUtilisateur().getId());
     int result = 0;
     if(c.getCloture() != null){
       result = context.update(CRISE)
-          .set(row(CRISE.NOM, CRISE.TYPE_CRISE, CRISE.DESCRIPTION, CRISE.ACTIVATION, CRISE.CLOTURE, CRISE.STATUT, CRISE.CARTE)
-              ,row(c.getNom(), c.getTypeCrise(),c.getDescription(),c.getActivation(), c.getCloture(), c.getStatut(), c.getCarte()))
+          .set(row(CRISE.NOM, CRISE.TYPE_CRISE, CRISE.DESCRIPTION, CRISE.ACTIVATION, CRISE.CLOTURE, CRISE.STATUT, CRISE.CARTE, CRISE.AUTEUR_CRISE)
+              ,row(c.getNom(), c.getTypeCrise(),c.getDescription(),c.getActivation(), c.getCloture(), c.getStatut(), c.getCarte(), c.getAuteurCrise()))
           .where(CRISE.ID.eq(id)).execute();
     }else {
       result = context.update(CRISE)
-          .set(row(CRISE.NOM, CRISE.TYPE_CRISE, CRISE.DESCRIPTION, CRISE.ACTIVATION , CRISE.STATUT, CRISE.CARTE)
-              ,row(c.getNom(), c.getTypeCrise(),c.getDescription(),c.getActivation(), c.getStatut(), c.getCarte()))
+          .set(row(CRISE.NOM, CRISE.TYPE_CRISE, CRISE.DESCRIPTION, CRISE.ACTIVATION , CRISE.STATUT, CRISE.CARTE, CRISE.AUTEUR_CRISE)
+              ,row(c.getNom(), c.getTypeCrise(),c.getDescription(),c.getActivation(), c.getStatut(), c.getCarte(), c.getAuteurCrise()))
           .where(CRISE.ID.eq(id)).execute();
     }
 
@@ -427,8 +429,8 @@ public class CriseRepository {
        }
      if(tRedefinition != null){
        context.update(CRISE)
-           .set(row(CRISE.REDEFINITION)
-               ,row(tRedefinition))
+           .set(row(CRISE.REDEFINITION, CRISE.AUTEUR_CRISE)
+               ,row(tRedefinition, utilisateurService.getCurrentUtilisateur().getId()))
            .where(CRISE.ID.in(id)).execute();
 
      }
@@ -436,8 +438,8 @@ public class CriseRepository {
     Instant tFusion = new Instant(dateFusion);
     TypeCriseStatut tcs = context.select().from(TYPE_CRISE_STATUT).where(TYPE_CRISE_STATUT.CODE.eq("FUSIONNE")).fetchInto(TypeCriseStatut.class).get(0);
     int update  = context.update(CRISE)
-        .set(row(CRISE.CLOTURE, CRISE.STATUT,CRISE.CRISE_PARENTE)
-            ,row(tFusion, tcs.getId(),id))
+        .set(row(CRISE.CLOTURE, CRISE.STATUT,CRISE.CRISE_PARENTE, CRISE.AUTEUR_CRISE)
+            ,row(tFusion, tcs.getId(),id,utilisateurService.getCurrentUtilisateur().getId()))
         .where(CRISE.ID.in(idFusionnedCrises)).execute();
 
 

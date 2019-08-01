@@ -27,7 +27,7 @@ import org.jooq.impl.TableImpl;
 /**
  * Message de suivi lié à une crise ou à un évènement. Le message peut être 
  * créé directement et manuellement par un utilisateur ou de manière indirecte 
- * par le système suite à une action dans REMOCRA (ex : mise à jour des attributs 
+ * par le système suite à une action dans REMOCRA. Ex : mise à jour des attributs 
  * d'un évènement, ajout d'un document, création d'une carte horodatée, etc.
  */
 @Generated(
@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CriseSuivi extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 1151062465;
+	private static final long serialVersionUID = 327826379;
 
 	/**
 	 * The reference instance of <code>remocra.crise_suivi</code>
@@ -101,6 +101,11 @@ public class CriseSuivi extends TableImpl<Record> {
 	public final TableField<Record, Long> EVENEMENT = createField("evenement", org.jooq.impl.SQLDataType.BIGINT, this, "Evènement éventuellement associé");
 
 	/**
+	 * The column <code>remocra.crise_suivi.auteur</code>.
+	 */
+	public final TableField<Record, String> AUTEUR = createField("auteur", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+
+	/**
 	 * Create a <code>remocra.crise_suivi</code> table reference
 	 */
 	public CriseSuivi() {
@@ -119,7 +124,7 @@ public class CriseSuivi extends TableImpl<Record> {
 	}
 
 	private CriseSuivi(String alias, Table<Record> aliased, Field<?>[] parameters) {
-		super(alias, Remocra.REMOCRA, aliased, parameters, "Message de suivi lié à une crise ou à un évènement. Le message peut être créé directement et manuellement par un utilisateur ou de manière indirecte par le système suite à une action dans REMOCRA (ex : mise à jour des attributs d'un évènement, ajout d'un document, création d'une carte horodatée, etc.");
+		super(alias, Remocra.REMOCRA, aliased, parameters, "Message de suivi lié à une crise ou à un évènement. Le message peut être créé directement et manuellement par un utilisateur ou de manière indirecte par le système suite à une action dans REMOCRA. Ex : mise à jour des attributs d'un évènement, ajout d'un document, création d'une carte horodatée, etc.");
 	}
 
 	/**

@@ -12,8 +12,8 @@ import org.joda.time.Instant;
 
 
 /**
- * Gestion de crise : Episode de crise pour lequelles des informations ont 
- * été saisies dans REMOCRA
+ * Gestion de crise : Episode de crise pour lequel des informations ont été 
+ * saisies dans REMOCRA
  */
 @Generated(
 	value = {
@@ -25,18 +25,19 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Crise implements Serializable {
 
-	private static final long serialVersionUID = 1047406701;
+	private static final long serialVersionUID = 1692035639;
 
 	private Long    id;
 	private String  nom;
 	private String  description;
 	private Instant activation;
-	private Instant redefinition;
 	private Instant cloture;
-	private String  carte;
 	private Long    statut;
-	private Long    criseParente;
 	private Long    typeCrise;
+	private String  carte;
+	private Instant redefinition;
+	private Long    criseParente;
+	private Long    auteurCrise;
 
 	public Crise() {}
 
@@ -45,12 +46,13 @@ public class Crise implements Serializable {
 		this.nom = value.nom;
 		this.description = value.description;
 		this.activation = value.activation;
-		this.redefinition = value.redefinition;
 		this.cloture = value.cloture;
-		this.carte = value.carte;
 		this.statut = value.statut;
-		this.criseParente = value.criseParente;
 		this.typeCrise = value.typeCrise;
+		this.carte = value.carte;
+		this.redefinition = value.redefinition;
+		this.criseParente = value.criseParente;
+		this.auteurCrise = value.auteurCrise;
 	}
 
 	public Crise(
@@ -58,23 +60,25 @@ public class Crise implements Serializable {
 		String  nom,
 		String  description,
 		Instant activation,
-		Instant redefinition,
 		Instant cloture,
-		String  carte,
 		Long    statut,
+		Long    typeCrise,
+		String  carte,
+		Instant redefinition,
 		Long    criseParente,
-		Long    typeCrise
+		Long    auteurCrise
 	) {
 		this.id = id;
 		this.nom = nom;
 		this.description = description;
 		this.activation = activation;
-		this.redefinition = redefinition;
 		this.cloture = cloture;
-		this.carte = carte;
 		this.statut = statut;
-		this.criseParente = criseParente;
 		this.typeCrise = typeCrise;
+		this.carte = carte;
+		this.redefinition = redefinition;
+		this.criseParente = criseParente;
+		this.auteurCrise = auteurCrise;
 	}
 
 	public Long getId() {
@@ -113,30 +117,12 @@ public class Crise implements Serializable {
 		return this;
 	}
 
-	public Instant getRedefinition() {
-		return this.redefinition;
-	}
-
-	public Crise setRedefinition(Instant redefinition) {
-		this.redefinition = redefinition;
-		return this;
-	}
-
 	public Instant getCloture() {
 		return this.cloture;
 	}
 
 	public Crise setCloture(Instant cloture) {
 		this.cloture = cloture;
-		return this;
-	}
-
-	public String getCarte() {
-		return this.carte;
-	}
-
-	public Crise setCarte(String carte) {
-		this.carte = carte;
 		return this;
 	}
 
@@ -149,6 +135,33 @@ public class Crise implements Serializable {
 		return this;
 	}
 
+	public Long getTypeCrise() {
+		return this.typeCrise;
+	}
+
+	public Crise setTypeCrise(Long typeCrise) {
+		this.typeCrise = typeCrise;
+		return this;
+	}
+
+	public String getCarte() {
+		return this.carte;
+	}
+
+	public Crise setCarte(String carte) {
+		this.carte = carte;
+		return this;
+	}
+
+	public Instant getRedefinition() {
+		return this.redefinition;
+	}
+
+	public Crise setRedefinition(Instant redefinition) {
+		this.redefinition = redefinition;
+		return this;
+	}
+
 	public Long getCriseParente() {
 		return this.criseParente;
 	}
@@ -158,12 +171,12 @@ public class Crise implements Serializable {
 		return this;
 	}
 
-	public Long getTypeCrise() {
-		return this.typeCrise;
+	public Long getAuteurCrise() {
+		return this.auteurCrise;
 	}
 
-	public Crise setTypeCrise(Long typeCrise) {
-		this.typeCrise = typeCrise;
+	public Crise setAuteurCrise(Long auteurCrise) {
+		this.auteurCrise = auteurCrise;
 		return this;
 	}
 }

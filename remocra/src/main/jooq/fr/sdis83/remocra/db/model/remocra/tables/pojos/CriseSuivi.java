@@ -14,7 +14,7 @@ import org.joda.time.Instant;
 /**
  * Message de suivi lié à une crise ou à un évènement. Le message peut être 
  * créé directement et manuellement par un utilisateur ou de manière indirecte 
- * par le système suite à une action dans REMOCRA (ex : mise à jour des attributs 
+ * par le système suite à une action dans REMOCRA. Ex : mise à jour des attributs 
  * d'un évènement, ajout d'un document, création d'une carte horodatée, etc.
  */
 @Generated(
@@ -27,7 +27,7 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CriseSuivi implements Serializable {
 
-	private static final long serialVersionUID = 1720895986;
+	private static final long serialVersionUID = -175629272;
 
 	private Long    id;
 	private String  origine;
@@ -38,6 +38,7 @@ public class CriseSuivi implements Serializable {
 	private String  tags;
 	private Long    crise;
 	private Long    evenement;
+	private String  auteur;
 
 	public CriseSuivi() {}
 
@@ -51,6 +52,7 @@ public class CriseSuivi implements Serializable {
 		this.tags = value.tags;
 		this.crise = value.crise;
 		this.evenement = value.evenement;
+		this.auteur = value.auteur;
 	}
 
 	public CriseSuivi(
@@ -62,7 +64,8 @@ public class CriseSuivi implements Serializable {
 		Integer importance,
 		String  tags,
 		Long    crise,
-		Long    evenement
+		Long    evenement,
+		String  auteur
 	) {
 		this.id = id;
 		this.origine = origine;
@@ -73,6 +76,7 @@ public class CriseSuivi implements Serializable {
 		this.tags = tags;
 		this.crise = crise;
 		this.evenement = evenement;
+		this.auteur = auteur;
 	}
 
 	public Long getId() {
@@ -153,6 +157,15 @@ public class CriseSuivi implements Serializable {
 
 	public CriseSuivi setEvenement(Long evenement) {
 		this.evenement = evenement;
+		return this;
+	}
+
+	public String getAuteur() {
+		return this.auteur;
+	}
+
+	public CriseSuivi setAuteur(String auteur) {
+		this.auteur = auteur;
 		return this;
 	}
 }

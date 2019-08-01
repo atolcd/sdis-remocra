@@ -467,8 +467,9 @@ public class Keys {
 	public static final ForeignKey<Record, Record> CADASTRE_SECTION__FK_CADASTRE_SECTION_COMMUNE = ForeignKeys0.CADASTRE_SECTION__FK_CADASTRE_SECTION_COMMUNE;
 	public static final ForeignKey<Record, Record> COURRIER_DOCUMENT__COURRIER_DOCUMENT_DOCUMENT_FK = ForeignKeys0.COURRIER_DOCUMENT__COURRIER_DOCUMENT_DOCUMENT_FK;
 	public static final ForeignKey<Record, Record> CRISE__CRISE_TYPE_CRISE_STATUT = ForeignKeys0.CRISE__CRISE_TYPE_CRISE_STATUT;
-	public static final ForeignKey<Record, Record> CRISE__CRISE_CRISE_PARENTE = ForeignKeys0.CRISE__CRISE_CRISE_PARENTE;
 	public static final ForeignKey<Record, Record> CRISE__CRISE_TYPE_CRISE = ForeignKeys0.CRISE__CRISE_TYPE_CRISE;
+	public static final ForeignKey<Record, Record> CRISE__CRISE_CRISE_PARENTE = ForeignKeys0.CRISE__CRISE_CRISE_PARENTE;
+	public static final ForeignKey<Record, Record> CRISE__CRISE_UTILISATEUR = ForeignKeys0.CRISE__CRISE_UTILISATEUR;
 	public static final ForeignKey<Record, Record> CRISE_COMMUNE__CRISE_COMMUNE_CRISE_FK = ForeignKeys0.CRISE_COMMUNE__CRISE_COMMUNE_CRISE_FK;
 	public static final ForeignKey<Record, Record> CRISE_COMMUNE__CRISE_COMMUNE_COMMUNE_FK = ForeignKeys0.CRISE_COMMUNE__CRISE_COMMUNE_COMMUNE_FK;
 	public static final ForeignKey<Record, Record> CRISE_DOCUMENT__CRISE_DOCUMENT_DOCUMENT_FK = ForeignKeys0.CRISE_DOCUMENT__CRISE_DOCUMENT_DOCUMENT_FK;
@@ -476,6 +477,8 @@ public class Keys {
 	public static final ForeignKey<Record, Record> CRISE_DOCUMENT__CRISE_DOCUMENT_EVENEMENT_FK = ForeignKeys0.CRISE_DOCUMENT__CRISE_DOCUMENT_EVENEMENT_FK;
 	public static final ForeignKey<Record, Record> CRISE_EVENEMENT__CRISE_EVENEMENT_CRISE_FK = ForeignKeys0.CRISE_EVENEMENT__CRISE_EVENEMENT_CRISE_FK;
 	public static final ForeignKey<Record, Record> CRISE_EVENEMENT__CRISE_EVENEMENT_NATURE_EVENEMENT_FK = ForeignKeys0.CRISE_EVENEMENT__CRISE_EVENEMENT_NATURE_EVENEMENT_FK;
+	public static final ForeignKey<Record, Record> CRISE_EVENEMENT__CRISE_EVENEMENT_UTILISATEUR = ForeignKeys0.CRISE_EVENEMENT__CRISE_EVENEMENT_UTILISATEUR;
+	public static final ForeignKey<Record, Record> CRISE_EVENEMENT_COMPLEMENT__CRISE_EVENEMENT_COMPLEMENT_EVENEMENT_FK = ForeignKeys0.CRISE_EVENEMENT_COMPLEMENT__CRISE_EVENEMENT_COMPLEMENT_EVENEMENT_FK;
 	public static final ForeignKey<Record, Record> CRISE_EVENEMENT_COMPLEMENT__CRISE_EVENEMENT_COMPLEMENT_TYPE_EVENEMENT_PROPRIETE_FK = ForeignKeys0.CRISE_EVENEMENT_COMPLEMENT__CRISE_EVENEMENT_COMPLEMENT_TYPE_EVENEMENT_PROPRIETE_FK;
 	public static final ForeignKey<Record, Record> CRISE_REPERTOIRE_LIEU__CRISE_REPERTOIRE_LIEU_CRISE_FK = ForeignKeys0.CRISE_REPERTOIRE_LIEU__CRISE_REPERTOIRE_LIEU_CRISE_FK;
 	public static final ForeignKey<Record, Record> CRISE_REPERTOIRE_LIEU__CRISE_REPERTOIRE_LIEU_REPERTOIRE_LIEU_FK = ForeignKeys0.CRISE_REPERTOIRE_LIEU__CRISE_REPERTOIRE_LIEU_REPERTOIRE_LIEU_FK;
@@ -917,8 +920,9 @@ public class Keys {
 		public static final ForeignKey<Record, Record> CADASTRE_SECTION__FK_CADASTRE_SECTION_COMMUNE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.COMMUNE_PKEY, CadastreSection.CADASTRE_SECTION, CadastreSection.CADASTRE_SECTION.COMMUNE);
 		public static final ForeignKey<Record, Record> COURRIER_DOCUMENT__COURRIER_DOCUMENT_DOCUMENT_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.DOCUMENT_PKEY, CourrierDocument.COURRIER_DOCUMENT, CourrierDocument.COURRIER_DOCUMENT.DOCUMENT);
 		public static final ForeignKey<Record, Record> CRISE__CRISE_TYPE_CRISE_STATUT = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_CRISE_STATUT_PKEY, Crise.CRISE, Crise.CRISE.STATUT);
-		public static final ForeignKey<Record, Record> CRISE__CRISE_CRISE_PARENTE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.CRISE_PKEY, Crise.CRISE, Crise.CRISE.CRISE_PARENTE);
 		public static final ForeignKey<Record, Record> CRISE__CRISE_TYPE_CRISE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_CRISE_PKEY, Crise.CRISE, Crise.CRISE.TYPE_CRISE);
+		public static final ForeignKey<Record, Record> CRISE__CRISE_CRISE_PARENTE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.CRISE_PKEY, Crise.CRISE, Crise.CRISE.CRISE_PARENTE);
+		public static final ForeignKey<Record, Record> CRISE__CRISE_UTILISATEUR = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.UTILISATEUR_PKEY, Crise.CRISE, Crise.CRISE.AUTEUR_CRISE);
 		public static final ForeignKey<Record, Record> CRISE_COMMUNE__CRISE_COMMUNE_CRISE_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.CRISE_PKEY, CriseCommune.CRISE_COMMUNE, CriseCommune.CRISE_COMMUNE.CRISE);
 		public static final ForeignKey<Record, Record> CRISE_COMMUNE__CRISE_COMMUNE_COMMUNE_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.COMMUNE_PKEY, CriseCommune.CRISE_COMMUNE, CriseCommune.CRISE_COMMUNE.COMMUNE);
 		public static final ForeignKey<Record, Record> CRISE_DOCUMENT__CRISE_DOCUMENT_DOCUMENT_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.DOCUMENT_PKEY, CriseDocument.CRISE_DOCUMENT, CriseDocument.CRISE_DOCUMENT.DOCUMENT);
@@ -926,6 +930,8 @@ public class Keys {
 		public static final ForeignKey<Record, Record> CRISE_DOCUMENT__CRISE_DOCUMENT_EVENEMENT_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.CRISE_EVENEMENT_PKEY, CriseDocument.CRISE_DOCUMENT, CriseDocument.CRISE_DOCUMENT.EVENEMENT);
 		public static final ForeignKey<Record, Record> CRISE_EVENEMENT__CRISE_EVENEMENT_CRISE_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.CRISE_PKEY, CriseEvenement.CRISE_EVENEMENT, CriseEvenement.CRISE_EVENEMENT.CRISE);
 		public static final ForeignKey<Record, Record> CRISE_EVENEMENT__CRISE_EVENEMENT_NATURE_EVENEMENT_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_CRISE_NATURE_EVENEMENT_PKEY, CriseEvenement.CRISE_EVENEMENT, CriseEvenement.CRISE_EVENEMENT.NATURE_EVENEMENT);
+		public static final ForeignKey<Record, Record> CRISE_EVENEMENT__CRISE_EVENEMENT_UTILISATEUR = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.UTILISATEUR_PKEY, CriseEvenement.CRISE_EVENEMENT, CriseEvenement.CRISE_EVENEMENT.AUTEUR_EVENEMENT);
+		public static final ForeignKey<Record, Record> CRISE_EVENEMENT_COMPLEMENT__CRISE_EVENEMENT_COMPLEMENT_EVENEMENT_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.CRISE_EVENEMENT_PKEY, CriseEvenementComplement.CRISE_EVENEMENT_COMPLEMENT, CriseEvenementComplement.CRISE_EVENEMENT_COMPLEMENT.EVENEMENT);
 		public static final ForeignKey<Record, Record> CRISE_EVENEMENT_COMPLEMENT__CRISE_EVENEMENT_COMPLEMENT_TYPE_EVENEMENT_PROPRIETE_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_CRISE_PROPRIETE_EVENEMENT_PKEY, CriseEvenementComplement.CRISE_EVENEMENT_COMPLEMENT, CriseEvenementComplement.CRISE_EVENEMENT_COMPLEMENT.PROPRIETE_EVENEMENT);
 		public static final ForeignKey<Record, Record> CRISE_REPERTOIRE_LIEU__CRISE_REPERTOIRE_LIEU_CRISE_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.CRISE_PKEY, CriseRepertoireLieu.CRISE_REPERTOIRE_LIEU, CriseRepertoireLieu.CRISE_REPERTOIRE_LIEU.CRISE);
 		public static final ForeignKey<Record, Record> CRISE_REPERTOIRE_LIEU__CRISE_REPERTOIRE_LIEU_REPERTOIRE_LIEU_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.REPERTOIRE_LIEU_PKEY, CriseRepertoireLieu.CRISE_REPERTOIRE_LIEU, CriseRepertoireLieu.CRISE_REPERTOIRE_LIEU.REPERTOIRE_LIEU);

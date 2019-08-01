@@ -12,8 +12,7 @@ import org.joda.time.Instant;
 
 
 /**
- * Evènement associé à une crise. Route inondée sur la RD 84 à la position 
- * ....
+ * Evènement associé à une crise. Route inondée sur la RD 84 à la position...
  */
 @Generated(
 	value = {
@@ -25,7 +24,7 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CriseEvenement implements Serializable {
 
-	private static final long serialVersionUID = -2083246315;
+	private static final long serialVersionUID = 1597653062;
 
 	private Long    id;
 	private Object  geometrie;
@@ -39,6 +38,7 @@ public class CriseEvenement implements Serializable {
 	private String  tags;
 	private Long    crise;
 	private Long    natureEvenement;
+	private Long    auteurEvenement;
 
 	public CriseEvenement() {}
 
@@ -55,6 +55,7 @@ public class CriseEvenement implements Serializable {
 		this.tags = value.tags;
 		this.crise = value.crise;
 		this.natureEvenement = value.natureEvenement;
+		this.auteurEvenement = value.auteurEvenement;
 	}
 
 	public CriseEvenement(
@@ -69,7 +70,8 @@ public class CriseEvenement implements Serializable {
 		Integer importance,
 		String  tags,
 		Long    crise,
-		Long    natureEvenement
+		Long    natureEvenement,
+		Long    auteurEvenement
 	) {
 		this.id = id;
 		this.geometrie = geometrie;
@@ -83,6 +85,7 @@ public class CriseEvenement implements Serializable {
 		this.tags = tags;
 		this.crise = crise;
 		this.natureEvenement = natureEvenement;
+		this.auteurEvenement = auteurEvenement;
 	}
 
 	public Long getId() {
@@ -190,6 +193,15 @@ public class CriseEvenement implements Serializable {
 
 	public CriseEvenement setNatureEvenement(Long natureEvenement) {
 		this.natureEvenement = natureEvenement;
+		return this;
+	}
+
+	public Long getAuteurEvenement() {
+		return this.auteurEvenement;
+	}
+
+	public CriseEvenement setAuteurEvenement(Long auteurEvenement) {
+		this.auteurEvenement = auteurEvenement;
 		return this;
 	}
 }

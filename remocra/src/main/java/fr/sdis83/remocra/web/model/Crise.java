@@ -4,6 +4,7 @@ import java.util.List;
 
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.OgcCouche;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.RepertoireLieu;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.Utilisateur;
 import fr.sdis83.remocra.domain.remocra.Commune;
 import org.joda.time.Instant;
 
@@ -24,6 +25,8 @@ public class Crise {
   private TypeCrise typeCrise;
 
   private TypeCriseStatut typeCriseStatut;
+
+  private Utilisateur auteurCrise;
 
   private String carte;
 
@@ -69,6 +72,15 @@ public class Crise {
   public void setTypeCriseStatut(TypeCriseStatut typeCriseStatut) {
     this.typeCriseStatut = typeCriseStatut;
   }
+
+  public Utilisateur getAuteurCrise() {
+    return auteurCrise;
+  }
+
+  public void setAuteurCrise(Utilisateur auteurCrise) {
+    this.auteurCrise = auteurCrise;
+  }
+
 
   public String getNom() {
     return nom;
