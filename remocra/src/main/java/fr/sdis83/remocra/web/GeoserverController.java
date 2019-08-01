@@ -201,7 +201,7 @@ public class GeoserverController {
             for (Map.Entry<String, String> param : params.entrySet()) {
                 String paramName = param.getKey();
                 String paramValue = param.getValue();
-                if (RequestType.GetMap == requestType && "CQL_FILTER".equalsIgnoreCase(paramName)) {
+                if ((RequestType.GetMap == requestType || RequestType.GetFeatureInfo == requestType) && "CQL_FILTER".equalsIgnoreCase(paramName)) {
                     // Traitement particulier du CQL Filter pour le GetMap
                     inputCQLParamValue = paramValue;
                 } else {
@@ -217,10 +217,10 @@ public class GeoserverController {
             }
 
             // GetMap : filtre sur la zone de compétence si nécessaire
-            if (RequestType.GetMap == requestType) {
+            if (RequestType.GetMap == requestType || RequestType.GetFeatureInfo == requestType) {
                 String[] layers = getParameterOrLowerOrUpperCase(request, "LAYERS").split(",");
                 StringBuffer fullCQLFilter = new StringBuffer();
-                if (accessLevel == AccessLevel.AUTH_ZONE) {
+                if (RequestType.GetMap == requestType && accessLevel == AccessLevel.AUTH_ZONE) {
                     // Exemple avec deux couches (clause INCLUDE si couche non
                     // filtrée) :
                     // &CQL_FILTER=INCLUDE;WITHIN(geometrie,(querySingle('remocra:zone_competence','geometrie','id=26')))
