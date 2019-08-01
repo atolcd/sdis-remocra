@@ -31,7 +31,7 @@
     "libelle":"Fonds IGN",
     "items":[{
       "type" : "wmts",
-      "libelle" : "Cartes IGN",
+      "libelle" : "Cartes ffIGN",
       "id" : "d05123efca65d99b029d5781a1c34ef5",
       "scale_min" : "0",
       "scale_max" : "1000000",
@@ -41,7 +41,7 @@
       "items" : null,
       "num_zoom_levels" : null,
       "format" : "image/jpeg",
-      "layers" : "GEOGRAPHICALGRIDSYSTEMS.MAPS",
+      "layers" : "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.CLASSIQUE",
       "url" : "https://wxs.ign.fr/pratique/geoportail/wmts",
       "styles" : [{
         "legende": "/remocra/ext-res/images/remocra/cartes/legende/ign/carte.png",
