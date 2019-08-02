@@ -33,7 +33,7 @@ export default {
   methods: {
     showModal(html) {
       this.html = html
-      if (this.html.indexOf("<b>") !== -1) {
+      if ("" !== this.html && this.html.indexOf("<body></body>") === -1) {
         this.$refs.modal.show()
         this.$root.$emit('bv::hide::popover')
       } else {

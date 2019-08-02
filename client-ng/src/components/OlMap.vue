@@ -785,7 +785,8 @@ export default {
         opacity: layerDef.opacity,
         visible: layerDef.visibility,
         minResolution: layerDef.scale_min,
-        maxResolution: layerDef.scale_max
+        maxResolution: layerDef.scale_max,
+        wms_layer: true
       })
       return wmsLayer
     },
@@ -1342,17 +1343,35 @@ export default {
       this.toggleButton('infoBtn' + this.criseId)
     },
     handleOpenInfo(e) {
-      var layer = this.getLayerById('893bb7520e7fb036d665661847628994')
-      var url = layer.getSource().getGetFeatureInfoUrl(e.coordinate, this.map.getView().getResolution(), this.map.getView().getProjection(), {
-        'INFO_FORMAT': 'application/json',
-        'QUERY_LAYERS': 'remocra:v_crise_evenement',
-        'FEATURE_COUNT': '20'
-      })
-      console.log(url)
-      axios.get(url).then(response => {
-        if (response.data) {
-          this.$refs.showInfo.showModal(response.data)
+      var requests = []
+      _.forEach(this.map.getLayers().getArray(), layer => {
+        if (layer.get('wms_layer')) {
+          var url = layer.getSource().getGetFeatureInfoUrl(e.coordinate, this.map.getView().getResolution(), this.map.getView().getProjection(), {
+            'INFO_FORMAT': 'application/json',
+            'FEATURE_COUNT': '20'
+          })
+          requests.push(axios.get(url).catch(function(error) {
+            console.error('postEvent', error)
+          }))
         }
+      })
+      /*  var layer = this.getLayerById('893bb7520e7fb036d665661847628994')
+        var url = layer.getSource().getGetFeatureInfoUrl(e.coordinate, this.map.getView().getResolution(), this.map.getView().getProjection(), {
+          'INFO_FORMAT': 'application/json',
+          'QUERY_LAYERS': 'remocra:v_crise_evenement',
+          'FEATURE_COUNT': '20'
+        })*/
+      var html = ""
+      axios.all(requests).then(responses => {
+        _.forEach(responses, response => {
+          if (response && response.data) {
+            console.log(response.data)
+            if (response.data.indexOf("<body></body>") === -1) {
+              html = html + response.data
+            }
+          }
+        })
+        this.$refs.showInfo.showModal(html)
       }).catch(function(error) {
         console.error('carte', error)
       })
