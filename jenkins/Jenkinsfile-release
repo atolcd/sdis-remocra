@@ -2,7 +2,7 @@
 
 pipeline {
   agent {
-    label 'docker&&ovh'
+    label 'release'
   }
   environment {
     NEXUS_REPO = 'https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/zip'

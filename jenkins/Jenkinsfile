@@ -2,7 +2,7 @@
 
 pipeline {
   agent {
-    label 'docker&&ovh'
+    label 'docker'
   }
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
