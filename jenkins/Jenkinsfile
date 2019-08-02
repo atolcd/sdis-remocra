@@ -4,6 +4,9 @@ pipeline {
   agent {
     label 'docker&&ovh'
   }
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+  }
   stages {
     stage('Build') {
       agent {
