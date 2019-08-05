@@ -2341,6 +2341,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         vueDebitSimultaneFiche.$options.bus.$on('closed', Ext.bind(function(data) {
             vueDebitSimultaneFiche.$el.remove();
             vueDebitSimultaneFiche.$destroy();
+            this.getTabMap().map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselectAll();
         }, this));
       },
 

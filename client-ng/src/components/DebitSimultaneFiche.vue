@@ -45,10 +45,10 @@
 					</div>
 				</div>
 
-				<div class="row rowButtons">
+				<div class="row rowButtons" v-if="!isNew">
 					<div class="col-md-12">
 						<button class="btn btn-secondary" @click.prevent @click="createMesure" :disabled="createMesureDisabled">Ajouter</button>
-						<button class="btn btn-danger right" @click.prevent @click="deleteMesure" :disabled="deleteVisiteDisabled">Supprimer</button>
+						<button class="btn btn-danger right" @click.prevent @click="deleteMesure" :disabled="deleteMesureDisabled">Supprimer</button>
 					</div>
 				</div>
 
@@ -62,7 +62,7 @@
 								<th scope="col">Attestation</th>
 							</thead>
 							<tbody>
-								<tr v-for="(item, index) in mesures" :key="index" @click="onRowSelected(index)">
+								<tr v-for="(item, index) in mesures" :key="index" @click="onRowSelected(index)" :class="{'table-success':index==selectedRow}">
 									<td>
 										{{datetimeFormatee(item.formattedDate+ " " + item.formattedTime)}}
 									</td>
@@ -110,7 +110,7 @@
 						</div>
 
 						<div class="col-md-6">
-							<div class="row">
+							<div class="row" v-if="!isNew">
 								<div class="col-md-9">
 									<b-form-group label="PEI" label-for="pei" label-cols-md="2">
 								
@@ -133,7 +133,7 @@
 
 							<div class="row">
 								<div class="col-md-12">
-									<b-form-group label="Débit requis (m3/h)" label-for="debitRequis" label-cols-md="6" invalid-feedback="La débit requis doit être renseigné" :state="etats.debitRequis">
+									<b-form-group label="Débit requis (m3/h)" label-for="debitRequis" label-cols-md="6" invalid-feedback="Le débit requis doit être renseigné" :state="etats.debitRequis">
 										<b-form-input id="debitRequis" v-model="mesures[selectedRow].debitRequis" type="number" size="sm"></b-form-input>
 									</b-form-group>
 								</div>
@@ -141,7 +141,7 @@
 
 							<div class="row">
 								<div class="col-md-12">
-									<b-form-group label="Débit mesuré" label-for="debitMesure" label-cols-md="6">
+									<b-form-group label="Débit mesuré" label-for="debitMesure" label-cols-md="6" invalid-feedback="Le débit mesuré doit être renseigné" :state="etats.debitMesure">
 										<b-form-select 	id="debitMesure"
 														v-model="mesures[selectedRow].debitMesure"
 														:options="comboDebitMesure"
@@ -153,7 +153,7 @@
 
 							<div class="row">
 								<div class="col-md-12">
-									<b-form-group label="Débit retenu (m3/h)" label-for="debitRetenu" label-cols-md="6" invalid-feedback="La débit retenu doit être renseigné" :state="etats.debitRetenu">
+									<b-form-group label="Débit retenu (m3/h)" label-for="debitRetenu" label-cols-md="6" invalid-feedback="Le débit retenu doit être renseigné" :state="etats.debitRetenu">
 										<b-form-input id="debitRetenu" v-model="mesures[selectedRow].debitRetenu" type="number" size="sm" :disabled="mesures[selectedRow].irv"></b-form-input>
 									</b-form-group>
 								</div>
@@ -163,7 +163,7 @@
 
 						<div class="col-md-6">
 							<div class="row">
-								<div class="col-md-9">
+								<div :class="{'col-md-9':!isNew, 'col-md-12':isNew}">
 									<b-form-group label-cols-md="2">
 									<ul :class="{'itemPeiContainer':true, 'hidden':!this.mesures[this.selectedRow].listeHydrants.length}">
 									<li v-for="item in this.mesures[this.selectedRow].listeHydrants" 
@@ -177,7 +177,7 @@
 								</b-form-group>
 								</div>
 
-								<div class="col-md-3">
+								<div class="col-md-3" v-if="!isNew">
 									<b-button @click="retirerPei" class="mr-2 btn btn-secondary d-inline-block right" size="sm" :disabled="selectedPei==null">Retirer</b-button>
 								</div>
 							</div>
@@ -260,6 +260,7 @@ export default {
 				time: null,
 				debitRequis: null,
 				debitRetenu: null,
+				debitMesure: null,
 				plusieursPeiParMesure: null,
 			}
 		}
@@ -308,7 +309,7 @@ export default {
 		 *		- L'utilisateur a le droit
 		 */
 		deleteMesureDisabled: function() {
-			return false;
+			return this.selectedRow === null || this.mesures.length <= 1;
 		},
 
 		/**
@@ -337,22 +338,84 @@ export default {
 			}
 		},
 
+		/**
+		  * Renvoie un booléen indiquant si il s'agit de la création d'un débit simultané ou non
+		  */
+		isNew: function() {
+			return this.debitSimultane.id === null;
+		}
+
 	},
 
 
 	mounted: function() {
 		this.$refs.modalDebitSimultane.show();
+
+		this.comboDebitMesure = [];
+		for(var i = 60; i <= 2400; i += 60){
+			this.comboDebitMesure.push({
+				text: i,
+				value: i
+			});
+		}
+
 		if(this.idDebitSimultane > -1 && this.listeHydrantsOnCreate === 'null') {
+			this.modification();
+		} else {
+			this.creation();
+		}
+	},
+
+	methods: {
+
+		creation() {
+			var listeHydrants = this.listeHydrantsOnCreate.split(',');
+			this.debitSimultane = {
+				id: null,
+				numDossier: ''
+			};
+
+			var nbRequetesEnAttente = listeHydrants.length;
+			var nbRequetesTerminees = 0;
+			var liste = [];
+			_.forEach(listeHydrants, idHydrant => {
+				axios.get('/remocra/hydrantspibi/'+idHydrant).then(response => {
+					var hydrant = response.data.data;
+
+					liste.push({
+						id: hydrant.id,
+						numero: hydrant.numero
+					});
+					if(this.diametreImpose === null) {
+						this.diametreImpose = hydrant.diametre;
+					}
+					if(this.typeReseauImpose === null) {
+						this.typeReseauImpose = hydrant.typeReseauAlimentation;
+					}
+
+					// On récupère les informations du site depuis l'un des hydrants
+					// Normalement, les hydrants font partie du même site. En pratique, il n'y a pas encore de vérifications pour cela
+					if(hydrant.site && hydrant.site.id && hydrant.site.nom) {
+						this.debitSimultane.site = {
+							id: hydrant.site.id,
+							nom: hydrant.site.nom
+						}
+					}
+
+					nbRequetesTerminees++;
+					if(nbRequetesTerminees === nbRequetesEnAttente){
+						this.createMesure();
+						this.mesures[0].listeHydrants = liste;
+						this.dataLoaded = true;
+					}
+				});
+			});
+
+		},
+
+		modification() {
 			axios.get('/remocra/debitsimultane/'+this.idDebitSimultane).then(response => { // Récupération des infos du débit simultané
 				this.debitSimultane = response.data.data;
-
-				this.comboDebitMesure = [];
-				for(var i = 60; i <= 2400; i += 60){
-					this.comboDebitMesure.push({
-						text: i,
-						value: i
-					});
-				}
 				
 				axios.get('/remocra/debitsimultanemesure', { // Récupération des mesures effectuées
                     params: {
@@ -421,16 +484,8 @@ export default {
 					});
 
 				});
-				
-
 			});	
-		} else {
-			console.log("TODO: Création d'un débit simultané");
-			console.log(this.listeHydrantsOnCreate.split(','));
-		}
-	},
-
-	methods: {
+		},
 
 		onIRVChecked(value) {
 			if(value) {
@@ -497,15 +552,7 @@ export default {
 		  * Lorsqu'une ligne est sélectionnée, elle obtient la classe "table-success"
 		  * Une ligne est sélectionnée si l'on clique dessus
 		  */
-		onRowSelected(index) {
-			var table = document.getElementById('tableMesures');
-			_.forEach(table.getElementsByTagName('tr'), item => {
-				item.classList.remove("table-success");
-				if(item.rowIndex == index){
-					item.classList.add("table-success");
-				}
-			});
-
+		onRowSelected(index) {			
 			if(this.selectedRow !== null) {
 				this.mesures[this.selectedRow].newAttestation = this.newAttestationInputValue;
 				this.newAttestationInputValue = this.mesures[index].newAttestation;
@@ -574,6 +621,7 @@ export default {
 			this.etats.debitRetenu = 'valid';
 			this.etats.date = 'valid';
 			this.etats.time = 'valid';
+			this.etats.debitMesure = 'valid';
 			_.forEach(this.mesures, mesure => {
 				if(!mesure.debitRequis || mesure.debitRequis.length == 0) {
 					this.etats.debitRequis = 'invalid';
@@ -592,6 +640,11 @@ export default {
 
 				if(!regexTime.test(mesure.formattedTime)) {
 					this.etats.time = 'invalid';
+					invalidMesure = mesure;
+				}
+
+				if(mesure.debitMesure === null) {
+					this.etats.debitMesure = 'invalid';
 					invalidMesure = mesure;
 				}
 			});
@@ -645,24 +698,23 @@ export default {
 			_.forEach(document.getElementsByClassName('parametre'), item => {
 				data[item.id] = item.value;
 			});
-			var formData = new FormData();
-			formData.append("debitSimultane", JSON.stringify(data));
+			
+			if(this.isNew){
+				data["site"] = this.debitSimultane.site.id;
+			}
 
 			var url = 'debitsimultane' + (this.debitSimultane.id == null ? '' : '/' + this.debitSimultane.id);
-			if(this.debitSimultane.id == null){
-				console.log("TODO: création d'un DS: id null");
-				// Gérer le post (adresse qui prend pas en compte l'id)
-				// une fois post fait -> récupérer l'id, le mettre dans les mesures + utilisation dans le updateGeometry
-				// Cette partie sera à faire dans les commits suivants
-			}
+
+			var formData = new FormData();
+			formData.append("debitSimultane", JSON.stringify(data));
 
 			// Mise à jour du débit simultané
 			axios.post(url, formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				}
-			}).then(() => {
-
+			}).then((response) => {
+				this.debitSimultane.id = response.data.data.id; // En cas de création d'un débit simultané, on récupère son ID pour le répercuter sur les mesures qui le composent
 				// Mise à jour des mesures
 				if(this.selectedRow !== null) {
 					this.mesures[this.selectedRow].newAttestation = this.newAttestationInputValue;
@@ -670,6 +722,9 @@ export default {
 				
 				var fichiers = [];
 				_.forEach(this.mesures, mesure => {
+
+					mesure.debitSimultane = this.debitSimultane.id;
+
 					mesure.dateMesure = mesure.formattedDate+" "+mesure.formattedTime+":00";
 				
 					var hydrants = [];

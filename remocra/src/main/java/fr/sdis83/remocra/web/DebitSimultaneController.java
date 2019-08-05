@@ -97,7 +97,7 @@ public class DebitSimultaneController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
     @PreAuthorize("hasRight('DEBITS_SIMULTANES_C')")
-    public ResponseEntity<java.lang.String> updateHydrant(final @PathVariable Long id, MultipartHttpServletRequest request) {
+    public ResponseEntity<java.lang.String> updateDebitSimultane(final @PathVariable Long id, MultipartHttpServletRequest request) {
         String json = request.getParameter("debitSimultane");
         Map<String, MultipartFile> files = request.getFileMap();
         try {
@@ -117,6 +117,23 @@ public class DebitSimultaneController {
         }
         return new SuccessErrorExtSerializer(false, "Debit simultané inexistant", HttpStatus.NOT_FOUND).serialize();
 
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
+    public ResponseEntity<java.lang.String> createDebitSimultane(MultipartHttpServletRequest request) {
+        String json = request.getParameter("debitSimultane");
+        try {
+            final DebitSimultane attached = debitSimultaneService.create(json, null);
+            return new AbstractExtObjectSerializer<DebitSimultane>("DebitSimultane created") {
+                @Override
+                protected DebitSimultane getRecord() throws BusinessException {
+                    return attached;
+                }
+            }.serialize();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
     }
 
     @RequestMapping(value = "updategeometry/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
