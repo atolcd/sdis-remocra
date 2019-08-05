@@ -193,7 +193,9 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                     pressed: false,
                     allowDepress: true
                 });
+            }
 
+            if(Sdis.Remocra.Rights.hasRight('DEBITS_SIMULTANES_C')) {
                 this.editItems.push({
                     xtype: 'button',
                     tooltip: 'Supprimer un débit simultané',

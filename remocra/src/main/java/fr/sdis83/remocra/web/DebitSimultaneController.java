@@ -120,6 +120,7 @@ public class DebitSimultaneController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
+    @PreAuthorize("hasRight('DEBITS_SIMULTANES_C')")
     public ResponseEntity<java.lang.String> createDebitSimultane(MultipartHttpServletRequest request) {
         String json = request.getParameter("debitSimultane");
         try {

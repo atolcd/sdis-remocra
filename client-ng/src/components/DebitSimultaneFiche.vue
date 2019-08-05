@@ -32,7 +32,7 @@
 				<div class="row">
 					<div class="col-md-6">
 						<b-form-group label="N° dossier" label-for="numDossier" label-cols-md="4" invalid-feedback="Le numéro de dossier est manquant" :state="etats.numDossier">
-							<b-form-input id="numDossier" v-model="debitSimultane.numDossier" class="parametre" type="text" size="sm" :state="etats.numDossier" required></b-form-input>
+							<b-form-input id="numDossier" v-model="debitSimultane.numDossier" class="parametre" type="text" size="sm" :state="etats.numDossier" :disabled="!userCanEdit" required></b-form-input>
 						</b-form-group>
 					</div>
 
@@ -45,7 +45,7 @@
 					</div>
 				</div>
 
-				<div class="row rowButtons" v-if="!isNew">
+				<div class="row rowButtons" v-if="!isNew && userCanEdit">
 					<div class="col-md-12">
 						<button class="btn btn-secondary" @click.prevent @click="createMesure" :disabled="createMesureDisabled">Ajouter</button>
 						<button class="btn btn-danger right" @click.prevent @click="deleteMesure" :disabled="deleteMesureDisabled">Supprimer</button>
@@ -99,12 +99,12 @@
 							<div class="row">
 								<div class="col-md-8">
 									<b-form-group label="Date " label-for="date" label-cols-md="5">
-										<b-form-input id="date" v-model="mesures[selectedRow].formattedDate" type="date" size="sm" required></b-form-input>
+										<b-form-input id="date" v-model="mesures[selectedRow].formattedDate" type="date" size="sm" :disabled="!userCanEdit" required></b-form-input>
 									</b-form-group>
 								</div>
 
 								<div class="col-md-4">
-									<b-form-input id="time" v-model="mesures[selectedRow].formattedTime" type="time" size="sm" required></b-form-input>
+									<b-form-input id="time" v-model="mesures[selectedRow].formattedTime" type="time" size="sm" :disabled="!userCanEdit" required></b-form-input>
 								</div>
 							</div>
 						</div>
@@ -114,15 +114,17 @@
 								<div class="col-md-9">
 									<b-form-group label="PEI" label-for="pei" label-cols-md="2">
 								
-										<b-form-select 	id="pei"
+										<b-form-select 	
+											id="pei"
 											v-model="selectedPeiFromCombo"
 											:options="comboAjoutHydrant()"
+											:disabled="!userCanEdit"
 											size="sm"></b-form-select>
 									</b-form-group>
 								</div>
 
 								<div class="col-md-3">
-									<b-button @click="ajouterPei" class="mr-2 btn btn-secondary d-inline-block right" size="sm" :disabled="selectedPeiFromCombo==null">Ajouter</b-button>
+									<b-button @click="ajouterPei" class="mr-2 btn btn-secondary d-inline-block right" size="sm" :disabled="selectedPeiFromCombo==null || !userCanEdit">Ajouter</b-button>
 								</div>
 							</div>
 						</div>
@@ -134,7 +136,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<b-form-group label="Débit requis (m3/h)" label-for="debitRequis" label-cols-md="6" invalid-feedback="Le débit requis doit être renseigné" :state="etats.debitRequis">
-										<b-form-input id="debitRequis" v-model="mesures[selectedRow].debitRequis" type="number" size="sm"></b-form-input>
+										<b-form-input id="debitRequis" v-model="mesures[selectedRow].debitRequis" type="number" :disabled="!userCanEdit" size="sm"></b-form-input>
 									</b-form-group>
 								</div>
 							</div>
@@ -146,6 +148,7 @@
 														v-model="mesures[selectedRow].debitMesure"
 														:options="comboDebitMesure"
 														size="sm"
+														:disabled="!userCanEdit"
 														required></b-form-select>
 									</b-form-group>
 								</div>
@@ -154,7 +157,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<b-form-group label="Débit retenu (m3/h)" label-for="debitRetenu" label-cols-md="6" invalid-feedback="Le débit retenu doit être renseigné" :state="etats.debitRetenu">
-										<b-form-input id="debitRetenu" v-model="mesures[selectedRow].debitRetenu" type="number" size="sm" :disabled="mesures[selectedRow].irv"></b-form-input>
+										<b-form-input id="debitRetenu" v-model="mesures[selectedRow].debitRetenu" type="number" size="sm" :disabled="mesures[selectedRow].irv || !userCanEdit"></b-form-input>
 									</b-form-group>
 								</div>
 							</div>
@@ -178,7 +181,7 @@
 								</div>
 
 								<div class="col-md-3" v-if="!isNew">
-									<b-button @click="retirerPei" class="mr-2 btn btn-secondary d-inline-block right" size="sm" :disabled="selectedPei==null">Retirer</b-button>
+									<b-button @click="retirerPei" class="mr-2 btn btn-secondary d-inline-block right" size="sm" :disabled="selectedPei==null || !userCanEdit">Retirer</b-button>
 								</div>
 							</div>
 							
@@ -191,6 +194,7 @@
 								id="irv"
 								v-model="mesures[selectedRow].irv"
 								v-on:change="onIRVChecked"
+								:disabled="!userCanEdit"
 								size="sm">
 								Identique Réseau Ville
 							</b-form-checkbox>
@@ -204,6 +208,7 @@
 								placeholder="Aucun fichier sélectionné"
 								:file-name-formatter="newAttestationName"
 								browse-text="Charger"
+								:disabled="!userCanEdit"
 							></b-form-file>
 						</b-form-group>
 						</div>
@@ -212,7 +217,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<b-form-group label="Commentaire" label-for="commentaire" label-cols-md="2">
-								<b-form-textarea id="commentaire" v-model="mesures[selectedRow].commentaire" size="sm"></b-form-textarea>
+								<b-form-textarea id="commentaire" v-model="mesures[selectedRow].commentaire" size="sm" :disabled="!userCanEdit"></b-form-textarea>
 							</b-form-group>
 						</div>
 					</div>
@@ -241,6 +246,7 @@ export default {
 
 	data () {
 		return {
+			utilisateurDroits: [],
 			debitSimultane: null,
 			mesures: [],
 			dataLoaded: false,
@@ -343,6 +349,13 @@ export default {
 		  */
 		isNew: function() {
 			return this.debitSimultane.id === null;
+		},
+
+		/**
+		  * Renvoie un booléen indiquant si l'utilisateur a le droit de créer et d'éditer des débits simultanés
+		  */
+		userCanEdit: function() {
+			return this.utilisateurDroits.indexOf('DEBITS_SIMULTANES_C') > -1;
 		}
 
 	},
@@ -359,11 +372,19 @@ export default {
 			});
 		}
 
-		if(this.idDebitSimultane > -1 && this.listeHydrantsOnCreate === 'null') {
-			this.modification();
-		} else {
-			this.creation();
-		}
+		axios.get('/remocra/utilisateurs/current/xml').then(response => {
+			var xmlDoc = (new DOMParser()).parseFromString(response.data,"text/xml");
+			this.utilisateurDroits = [];
+			_.forEach(xmlDoc.getElementsByTagName("right"), item => {
+				this.utilisateurDroits.push(item.getAttribute("code"));
+			});
+		}).then(() => {
+			if(this.idDebitSimultane > -1 && this.listeHydrantsOnCreate === 'null') {
+				this.modification();
+			} else {
+				this.creation();
+			}
+		});
 	},
 
 	methods: {
@@ -604,8 +625,16 @@ export default {
 
 		handleOk(modalEvent) {
 			modalEvent.preventDefault();
-			if(this.checkFormValidity()){
-				this.handleSubmit();
+			
+			if(this.userCanEdit) // Si l'utilisateur a les droits de modification: on passe à l'étape de validation
+			{
+				if(this.checkFormValidity()){
+					this.handleSubmit();
+				}
+			} else { // Si l'utilisateur n'a pas le droit, on n'a pas besoin de passer par les étapes de validation et d'envoi des données => on ferme directement la fiche
+				this.$nextTick(() => {
+					this.$refs.modalDebitSimultane.hide()
+				});
 			}
 		},
 

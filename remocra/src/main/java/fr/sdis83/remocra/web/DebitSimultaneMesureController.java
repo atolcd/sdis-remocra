@@ -31,11 +31,6 @@ public class DebitSimultaneMesureController {
     @Autowired
     private DebitSimultaneMesureService debitSimultaneMesureService;
 
-    /*public JSONSerializer decorateSerializer(JSONSerializer serializer) {
-        System.out.println("taquet 2");
-        return serializer.exclude("data.actif").exclude("*.class").exclude("data.irv").exclude("data.hydrants.*");
-    }*/
-
     @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/json")
     @PreAuthorize("hasRight('DEBITS_SIMULTANES_R')")
     public ResponseEntity<String> listJson(final @RequestParam(value = "page", required = false) Integer page,
@@ -74,6 +69,7 @@ public class DebitSimultaneMesureController {
      * Mise à jour de plusieurs DebitSimultaneMesure à la fois
      */
     @RequestMapping(value = "/updatemany", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
+    @PreAuthorize("hasRight('DEBITS_SIMULTANES_C')")
     public ResponseEntity<java.lang.String> update(MultipartHttpServletRequest request) {
         String json = request.getParameter("mesures");
         Map<String, MultipartFile> files = request.getFileMap();
@@ -87,6 +83,7 @@ public class DebitSimultaneMesureController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.DELETE, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('DEBITS_SIMULTANES_C')")
     public ResponseEntity<java.lang.String> delete(final @RequestBody String json) {
         try {
             debitSimultaneMesureService.delete(json);

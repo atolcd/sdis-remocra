@@ -24,10 +24,6 @@ public class DebitSimultaneHydrantController {
     @Autowired
     private DebitSimultaneHydrantService DebitSimultaneHydrantService;
 
-    /*public JSONSerializer decorateSerializer(JSONSerializer serializer) {
-        return serializer.exclude("data.actif").exclude("*.class");
-    }*/
-
     @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/json")
     @PreAuthorize("hasRight('DEBITS_SIMULTANES_R')")
     public ResponseEntity<String> listJson(final @RequestParam(value = "page", required = false) Integer page,
