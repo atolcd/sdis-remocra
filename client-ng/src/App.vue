@@ -510,4 +510,40 @@ body {
   user-select: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+
+/*** 1400px ***/
+@media screen and (max-width: 1400px) {
+  body .gestcrise .top_content {
+    width: 40%;
+    right: 30%;
+  }
+
+  body .gestcrise .top_content .active {
+    margin-left: 30px;
+  }
+}
+
+/*** 1200px ***/
+@media screen and (max-width: 1200px) {
+  body .gestcrise .top_content {
+    width: 30%;
+    right: 35%;
+  }
+
+  body .gestcrise .top_content .active {
+    margin-left: 85px;
+  }
+}
+
+/*** 1000px ***/
+@media screen and (max-width: 1000px) {
+  body .gestcrise .top_content {
+    width: 20%;
+    right: 40%;
+  }
+
+  body .gestcrise .top_content .active {
+    margin-left: 0px;
+  }
+}
 </style>
