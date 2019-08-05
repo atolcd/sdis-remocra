@@ -214,7 +214,9 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
                 logger.error(e.getMessage(), e);
             }
         }
-
+        attached.setUtilisateurModification(utilisateurService.getCurrentUtilisateur());
+        attached.merge();
+        attached.flush();
         super.beforeDelete(attached);
     }
 
