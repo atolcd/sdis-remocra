@@ -693,20 +693,10 @@ export default {
 
 		handleSubmit() {
 
-			//Récupération des données depuis les champs
-			var data = {};
-			_.forEach(document.getElementsByClassName('parametre'), item => {
-				data[item.id] = item.value;
-			});
-			
-			if(this.isNew){
-				data["site"] = this.debitSimultane.site.id;
-			}
-
 			var url = 'debitsimultane' + (this.debitSimultane.id == null ? '' : '/' + this.debitSimultane.id);
 
 			var formData = new FormData();
-			formData.append("debitSimultane", JSON.stringify(data));
+			formData.append("debitSimultane", JSON.stringify(this.debitSimultane));
 
 			// Mise à jour du débit simultané
 			axios.post(url, formData, {
