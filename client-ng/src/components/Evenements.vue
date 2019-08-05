@@ -80,8 +80,8 @@ export default {
         }
       }).then(response => {
         if (response.data.data) {
-          this.evenements = response.data.data
-          _.forEach(this.evenements, function(evenement) {
+          var evenements = response.data.data
+          _.forEach(evenements, function(evenement) {
             var IsoDateTo = moment(new Date(evenement.constat), 'DD/MM/YYYY[T]HH:mm:ss[Z]').format('DD/MM/YYYY' + ' - ' + 'HH:mm')
             evenement.constat = IsoDateTo
             _.forEach(evenement.criseSuivis, function(message) {
@@ -92,7 +92,11 @@ export default {
             evenement.criseSuivis = _.orderBy(evenement.criseSuivis, ['creation'], ['desc'])
           })
           // Tri antéchronologique des évènements (constat)
-          this.evenements = _.orderBy(this.evenements, ['constat'], ['desc'])
+          evenements = _.sortBy(evenements, function(evenement) {
+            var IsoDateTo = moment(evenement.constat, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss')
+            return IsoDateTo
+          })
+          this.evenements = _.reverse(evenements)
         }
       }).catch(function(error) {
         console.error('évenements', error)
