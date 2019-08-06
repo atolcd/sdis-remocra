@@ -3,6 +3,24 @@
 "items":[{
     "libelle" : "Eau",
     "items": [{
+        "type": "wms",
+        "libelle":"Débits simultanés",
+        "id":"debitsSimultanesLayer",
+        "wms_layer":true,
+        "stategy" : "bbox",
+        "layers":"remocra:v_debit_simultane",
+        "url":"/remocra/geoserver/remocra/wms",
+        "projection":"EPSG:900913",
+        "sld":null,
+        "scale_min":"0",
+        "scale_max":"999999999",
+        "visibility":true,
+        "opacity":1,
+        "interrogeable": true,
+        "items":[
+            {"keepsize":true,"image":"eau/debits_simultanes/DS_LEGENDE.png"}
+        ]
+    },{
         "type": "specific",
         "stategy" : "bbox",
         "libelle": "PIBI / PENA",

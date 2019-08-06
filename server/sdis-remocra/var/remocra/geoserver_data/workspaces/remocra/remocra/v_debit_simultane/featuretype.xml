@@ -1,0 +1,115 @@
+<featureType>
+  <id>FeatureTypeInfoImpl--2b91c067:16c230099fd:-7fff</id>
+  <name>v_debit_simultane</name>
+  <nativeName>v_debit_simultane</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl--2154526b:1663f5476f6:-7fe5</id>
+  </namespace>
+  <title>v_debit_simultane</title>
+  <keywords>
+    <string>v_debit_simultane</string>
+    <string>features</string>
+  </keywords>
+  <nativeCRS class="projected">PROJCS[&quot;RGF93 / Lambert-93&quot;, 
+  GEOGCS[&quot;RGF93&quot;, 
+    DATUM[&quot;Reseau Geodesique Francais 1993&quot;, 
+      SPHEROID[&quot;GRS 1980&quot;, 6378137.0, 298.257222101, AUTHORITY[&quot;EPSG&quot;,&quot;7019&quot;]], 
+      TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 
+      AUTHORITY[&quot;EPSG&quot;,&quot;6171&quot;]], 
+    PRIMEM[&quot;Greenwich&quot;, 0.0, AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]], 
+    UNIT[&quot;degree&quot;, 0.017453292519943295], 
+    AXIS[&quot;Geodetic longitude&quot;, EAST], 
+    AXIS[&quot;Geodetic latitude&quot;, NORTH], 
+    AUTHORITY[&quot;EPSG&quot;,&quot;4171&quot;]], 
+  PROJECTION[&quot;Lambert_Conformal_Conic_2SP&quot;, AUTHORITY[&quot;EPSG&quot;,&quot;9802&quot;]], 
+  PARAMETER[&quot;central_meridian&quot;, 3.0], 
+  PARAMETER[&quot;latitude_of_origin&quot;, 46.5], 
+  PARAMETER[&quot;standard_parallel_1&quot;, 49.0], 
+  PARAMETER[&quot;false_easting&quot;, 700000.0], 
+  PARAMETER[&quot;false_northing&quot;, 6600000.0], 
+  PARAMETER[&quot;scale_factor&quot;, 1.0], 
+  PARAMETER[&quot;standard_parallel_2&quot;, 44.0], 
+  UNIT[&quot;m&quot;, 1.0], 
+  AXIS[&quot;Easting&quot;, EAST], 
+  AXIS[&quot;Northing&quot;, NORTH], 
+  AUTHORITY[&quot;EPSG&quot;,&quot;2154&quot;]]</nativeCRS>
+  <srs>EPSG:2154</srs>
+  <nativeBoundingBox>
+    <minx>938741.598156083</minx>
+    <maxx>979770.511</maxx>
+    <miny>6229120.19193822</miny>
+    <maxy>6276370.602</maxy>
+    <crs class="projected">EPSG:2154</crs>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>5.926788528860703</minx>
+    <maxx>6.466078375743647</maxx>
+    <miny>43.056748222307974</miny>
+    <maxy>43.596038069190925</maxy>
+    <crs>GEOGCS[&quot;WGS84(DD)&quot;, 
+  DATUM[&quot;WGS84&quot;, 
+    SPHEROID[&quot;WGS84&quot;, 6378137.0, 298.257223563]], 
+  PRIMEM[&quot;Greenwich&quot;, 0.0], 
+  UNIT[&quot;degree&quot;, 0.017453292519943295], 
+  AXIS[&quot;Geodetic longitude&quot;, EAST], 
+  AXIS[&quot;Geodetic latitude&quot;, NORTH]]</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="cachingEnabled">false</entry>
+    <entry key="JDBC_VIRTUAL_TABLE">
+      <virtualTable>
+        <name>v_debit_simultane</name>
+        <sql>SELECT&#xd;
+	ds.id,&#xd;
+	ds.geom_ds,&#xd;
+	ds.geom_h,&#xd;
+	ds.debit_retenu || &apos; m3/h&apos; as debit_retenu,&#xd;
+	irv,&#xd;
+	CASE&#xd;
+		WHEN irv THEN &apos;DS_IRV.png&apos;&#xd;
+		WHEN ds.debit_retenu &lt;120 THEN &apos;DS_INDISPO.png&apos;&#xd;
+		WHEN ds.debit_retenu &gt;=120 THEN &apos;DS_DISPO.png&apos;&#xd;
+		ELSE &apos;DS_INCONNU.png&apos;&#xd;
+	END AS image,&#xd;
+	s.nom&#xd;
+FROM&#xd;
+	(SELECT&#xd;
+		ds.id,&#xd;
+		(st_accum(ds.geometrie))[1] AS geom_ds,&#xd;
+		st_union(st_makeline(ds.geometrie,h.geometrie)) AS geom_h,&#xd;
+		ds.site,&#xd;
+		dsm.debit_retenu,&#xd;
+		dsm.irv&#xd;
+	FROM&#xd;
+		remocra.debit_simultane ds&#xd;
+		JOIN (SELECT  DISTINCT ON(debit_simultane) id,debit_simultane, debit_retenu,irv FROM remocra.debit_simultane_mesure ORDER BY debit_simultane,date_mesure DESC) AS dsm ON (dsm.debit_simultane = ds.id)&#xd;
+		JOIN remocra.debit_simultane_hydrant dsh ON (dsh.debit = dsm.id)&#xd;
+		JOIN remocra.hydrant h ON (h.id = dsh.hydrant)&#xd;
+	GROUP BY&#xd;
+		ds.id,ds.site,debit_retenu,irv) ds&#xd;
+	JOIN remocra.site s ON (s.id = ds.site)
+</sql>
+        <escapeSql>false</escapeSql>
+        <geometry>
+          <name>geom_ds</name>
+          <type>Point</type>
+          <srid>2154</srid>
+        </geometry>
+        <geometry>
+          <name>geom_h</name>
+          <type>MultiLineString</type>
+          <srid>2154</srid>
+        </geometry>
+      </virtualTable>
+    </entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--2154526b:1663f5476f6:-7fe4</id>
+  </store>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>
