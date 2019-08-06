@@ -47,12 +47,12 @@
 
 				<div class="row rowButtons" v-if="!isNew && userCanEdit">
 					<div class="col-md-12">
-						<button class="btn btn-secondary" @click.prevent @click="createMesure" :disabled="createMesureDisabled">Ajouter</button>
+						<button class="btn btn-secondary" @click.prevent @click="createMesure">Ajouter</button>
 						<button class="btn btn-danger right" @click.prevent @click="deleteMesure" :disabled="deleteMesureDisabled">Supprimer</button>
 					</div>
 				</div>
 
-				<div class="row">
+				<div class="row rowMesures">
 					<div class="col-md-12">
 						<table class="table table-striped table-sm table-bordered" id="tableMesures">
 							<thead class="thead-light">
@@ -301,18 +301,9 @@ export default {
 		},
 
 		/**
-		  * Règles d'activation du bouton de saisie des mesures:
-		  *		- L'utilisateur a le droit
-		  */
-		createMesureDisabled: function() {
-			return false;
-		},
-
-		/**
 		 *	Règles d'activation du bouton de suppresion des mesures :
 		 * 		- Une ligne est sélectionnée
 		 *		- Il y a eu moins deux mesures présentes (impossible de pouvoir supprimer la dernière mesure)
-		 *		- L'utilisateur a le droit
 		 */
 		deleteMesureDisabled: function() {
 			return this.selectedRow === null || this.mesures.length <= 1;
@@ -800,6 +791,20 @@ export default {
 </script>
 
 <style>
+
+.rowMesures {
+	max-height: 150px;
+	overflow-y: scroll;
+}
+
+.itemPeiContainer {
+	max-height: 100px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	border-radius: 0.2em;
+	border: 1px solid #CED4DA;
+}
+
 .loading .modal-body::after {
   content: 'Chargement des données...';
   margin-left: calc(50% - 67px);
@@ -829,6 +834,16 @@ export default {
 	vertical-align: middle;
 }
 
+#tableMesures { 
+	overflow-y: auto; 
+	height: 100px; 
+}
+
+#tableMesures thead th { 
+	position: sticky; 
+	top: 0; 
+}
+
 .right {
 	margin-left: 10px;
 }
@@ -839,11 +854,6 @@ export default {
 
 .labelDisabled {
 	color: #6c757d !important;
-}
-
-.itemPeiContainer {
-	border-radius: 0.2em;
-	border: 1px solid #CED4DA;
 }
 
 .itemPei {
