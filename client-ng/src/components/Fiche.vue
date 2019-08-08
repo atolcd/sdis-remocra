@@ -31,7 +31,7 @@
 
           <div class="col-md-6">
             <b-form-group label="Autorité de police DECI" label-for="autoriteDeci" invalid-feedback="L'autorité de police DECI doit être renseignée" :state="etats.autoriteDeci" label-cols-md="5">
-              <b-form-select id="autoriteDeci" v-model="hydrant.autoriteDeci" class="parametre" :options="comboAutoriteDeci" size="sm" :state="etats.autoriteDeci" required></b-form-select>
+              <b-form-select id="autoriteDeci" v-model="hydrant.autoriteDeci" class="parametre" :options="ellipsis(comboAutoriteDeci)" size="sm" :state="etats.autoriteDeci" required></b-form-select>
             </b-form-group>
           </div>
         </div>
@@ -52,7 +52,7 @@
               <b-form-select  id="gestionnaire"
                               v-model="hydrant.gestionnaire"
                               class="parametre"
-                              :options="comboGestionnaire"
+                              :options="ellipsis(comboGestionnaire)"
                               size="sm"
                               v-on:change="onGestionnaireChange"
                               :state="etats.gestionnaire"
@@ -69,7 +69,7 @@
 
           <div class="col-md-4">
             <b-form-group label="Site" label-for="site" label-cols-md="2">
-              <b-form-select id="site" v-model="hydrant.site" class="parametre" :options="comboSite" size="sm"></b-form-select>
+              <b-form-select id="site" v-model="hydrant.site" class="parametre" :options="ellipsis(comboSite)" size="sm"></b-form-select>
             </b-form-group>
           </div>
         </div>
@@ -254,6 +254,35 @@ export default {
       type: String,
       required: true
     }
+  },
+
+  computed: {
+
+      /**
+        * Renvoie une liste d'option de select dont le texte a été ellipsé
+        * Cela permet d'éviter le comportement par défaut consistant à définir la taille des options selon la taille du plus grand élément. La gestion et l'affichage des éléments de type
+        * select étant différents selon les navigateurs, on s'assure de la compatibilité cross-browser en agissant sur les données
+        * @param combo Un tableau d'objet contenant les options de la combobox
+        */
+      ellipsis: function(){
+        return function(combo){
+          var c = [];
+
+          _.forEach(combo, item => {
+            var i = {
+              value: item.value,
+              text: item.text
+            };
+
+            if(i.text.length > 35) {
+              i.text = i.text.substring(0,35).concat("...");
+            }
+
+            c.push(i);
+          });
+          return c;
+        }
+    },
   },
 
   mounted: function(){
