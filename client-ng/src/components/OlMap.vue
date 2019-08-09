@@ -52,7 +52,7 @@
       <b-row :id="'toolsBar'+criseId" class="toolsBar toolbar">
         <tool-bar :criseId="criseId" ref="toolBar"></tool-bar>
       </b-row>
-  </b-col>
+    </b-col>
     <b-col class="left_content">
       <div role="tablist">
         <b-card no-body class="mb-1">
@@ -132,14 +132,13 @@
                     <b-card-header header-tag="header" class="p-1" role="tab">
                       <span style="cursor:pointer" block href="#" v-b-toggle.accordion7 visible variant="info">Données</span>
                     </b-card-header>
-                    </b-card>
-                  </div>
+                  </b-card>
+                </div>
               </b-col>
             </b-row>
           </div>
         </b-col>
       </b-row>
-
     </b-col>
     <b-col class="right_content">
       <div role="tablist">
@@ -156,25 +155,24 @@
                     <draggable :list="group.items" :options="{handle:'.my-handle'}" @start="startDrag()" @end="addSortable()">
                       <div class="layer" v-for="(layer,index) in group.items" :key="index">
                         <div>
-                          <img title="Options" :id ="'styleBtn'+layer.id+'-'+criseId" src="/remocra/static/img/vertical-filled.svg" class="gears_btn" @click="showStyleLayer(layer.id)"/>
-                          <span :id ="'styleTools'+layer.id+'-'+criseId" class="style-tools">
+                          <img title="Options" :id="'styleBtn'+layer.id+'-'+criseId" src="/remocra/static/img/vertical-filled.svg" class="gears_btn" @click="showStyleLayer(layer.id)" />
+                          <span :id="'styleTools'+layer.id+'-'+criseId" class="style-tools">
                             <label>Opacité:</label>
-                            <b-form-input class="custom-slider" type="range" :id="'range'+layer.id+'-'+criseId"  v-model="layer.opacity" min="0" max="1" step="0.01" @change="changeLayerOpacity(layer.id)"/>
+                            <b-form-input class="custom-slider" type="range" :id="'range'+layer.id+'-'+criseId" v-model="layer.opacity" min="0" max="1" step="0.01" @change="changeLayerOpacity(layer.id)" />
                             <div v-if="group.libelle !== 'Fichiers importés'">
-                            <div><label>Legende:</label>&nbsp;&nbsp;
-                            <input type="checkbox" :id="'stylIcon'+layer.id+'-'+criseId" checked @click="manageStyleVisibility(layer.id)"></div>
-                            <label>Styles:</label>
-                            <select :id ="'selectStyle'+layer.id+'-'+criseId" class="style-combo" @input="setDefaultLegend($event, layer.id)">
-                              <option v-for="(style, index) in  getStyles(layer.id)" :key="index" :value="style.id" >
-                                <span v-if="style.libelle !== null && style.libelle !=='' ">{{ style.libelle}}</span>
-                                <span v-else>{{style.id}}</span>
-                              </option>
-                            </select>
-                          </div>
+                              <div><label>Legende:</label>&nbsp;&nbsp; <input type="checkbox" :id="'stylIcon'+layer.id+'-'+criseId" checked @click="manageStyleVisibility(layer.id)"></div>
+                              <label>Styles:</label>
+                              <select :id="'selectStyle'+layer.id+'-'+criseId" class="style-combo" @input="setDefaultLegend($event, layer.id)">
+                                <option v-for="(style, index) in  getStyles(layer.id)" :key="index" :value="style.id">
+                                  <span v-if="style.libelle !== null && style.libelle !=='' ">{{ style.libelle}}</span>
+                                  <span v-else>{{style.id}}</span>
+                                </option>
+                              </select>
+                            </div>
                           </span>
-                          <span :id ="'layerInfo'+layer.id+'-'+criseId" class=" layer-info my-handle" >
-                          <input type="checkbox" :id="'checkbox'+layer.id+'-'+criseId" :checked="layer.visibility" v-model='layer.visibility' @click="changeLayerVisibility(layer.id)">
-                          <label class="layer-label">&nbsp;&nbsp;{{layer.libelle}}</label></span>
+                          <span :id="'layerInfo'+layer.id+'-'+criseId" class=" layer-info my-handle">
+                            <input type="checkbox" :id="'checkbox'+layer.id+'-'+criseId" :checked="layer.visibility" v-model='layer.visibility' @click="changeLayerVisibility(layer.id)">
+                            <label class="layer-label">&nbsp;&nbsp;{{layer.libelle}}</label></span>
                         </div>
                       </div>
                     </draggable>
@@ -194,14 +192,14 @@
                 <div id="layertree">
                   <div v-for="(group,index) in legend.items" :key="index">
                     <div v-if="group.libelle !== 'Fichiers importés'">
-                    <div class="group">{{group.libelle}}</div>
-                    <div class="layer" v-for="(layer,index) in group.items" :key="index" >
-                      <div :id="'legend'+layer.id+'-'+criseId" class="my-handle">
-                        <label>{{layer.libelle}}</label>
-                        <img style="display:block;margin-left:20px;" onerror="this.src='/remocra/static/img/layer404.png'" class="legend-img" :src="getLegendGraphics(layer)" />
+                      <div class="group">{{group.libelle}}</div>
+                      <div class="layer" v-for="(layer,index) in group.items" :key="index">
+                        <div :id="'legend'+layer.id+'-'+criseId" class="my-handle">
+                          <label>{{layer.libelle}}</label>
+                          <img style="display:block;margin-left:20px;" onerror="this.src='/remocra/static/img/layer404.png'" class="legend-img" :src="getLegendGraphics(layer)" />
+                        </div>
                       </div>
                     </div>
-                  </div>
                   </div>
                 </div>
               </div>
@@ -217,7 +215,6 @@
   <stamped-card :crise="criseId" ref="stampedCard"></stamped-card>
   <show-info :crise="criseId" ref="showInfo"></show-info>
   <new-evenement :criseId="criseId" ref="newEvenement"></new-evenement>
-
 </b-container>
 </template>
 <script>
@@ -323,6 +320,7 @@ export default {
   },
   data() {
     return {
+      showCollapse: false,
       mapRowHeight: '100%',
       file: null,
       selectedFeature: null,
@@ -335,16 +333,13 @@ export default {
       selectedRuler: null,
       select: null,
       modeAffichage: 'radio1',
-      modeAffichages: [
-        {
-          text: 'Opérationnel',
-          value: 'radio1'
-        },
-        {
-          text: 'Anticipation',
-          value: 'radio2'
-        }
-      ],
+      modeAffichages: [{
+        text: 'Opérationnel',
+        value: 'radio1'
+      }, {
+        text: 'Anticipation',
+        value: 'radio2'
+      }],
       // todo mettre le var par défaut?
       extent: [
         256805.64470225616,
@@ -526,22 +521,21 @@ export default {
     this.$root.$options.bus.$off(eventTypes.RESEARCH_TABDONNEES)
     this.$root.$options.bus.$off(eventTypes.TOGGLE_TABDONNEES)
     this.$root.$options.bus.$off(eventTypes.SHOW_INFO)
-
   },
   updated() {
     // this.addSortable()
   },
   methods: {
-    getStyles(id){
+    getStyles(id) {
       var l = []
-      _.forEach(this.legend.items, item =>{
-         _.forEach(item.items, layer => {
-           if(layer.id == id){
-             if(layer.styles){
-                l = _.clone(layer.styles)
-             }
-           }
-         })
+      _.forEach(this.legend.items, item => {
+        _.forEach(item.items, layer => {
+          if (layer.id == id) {
+            if (layer.styles) {
+              l = _.clone(layer.styles)
+            }
+          }
+        })
       })
       return l
     },
@@ -585,31 +579,30 @@ export default {
     },
     addSortable() {
       this.redrawLayers()
-      _.forEach(this.oldLegend, item =>{
-         _.forEach(item.items, layer => {
-             if (_.indexOf(this.activeElement, layer.id) !== -1){
-               document.getElementById('styleTools'  + layer.id + '-' + this.criseId).classList.add('active')
-               document.getElementById('layerInfo'  + layer.id + '-' + this.criseId).classList.add('active')
-             }else{
-               document.getElementById('styleTools'  + layer.id + '-' + this.criseId).classList.remove('active')
-               document.getElementById('layerInfo'  + layer.id + '-' + this.criseId).classList.remove('active')
-             }
-         })
-       })
-
+      _.forEach(this.oldLegend, item => {
+        _.forEach(item.items, layer => {
+          if (_.indexOf(this.activeElement, layer.id) !== -1) {
+            document.getElementById('styleTools' + layer.id + '-' + this.criseId).classList.add('active')
+            document.getElementById('layerInfo' + layer.id + '-' + this.criseId).classList.add('active')
+          } else {
+            document.getElementById('styleTools' + layer.id + '-' + this.criseId).classList.remove('active')
+            document.getElementById('layerInfo' + layer.id + '-' + this.criseId).classList.remove('active')
+          }
+        })
+      })
     },
-    startDrag(){
-      this.drag= true
+    startDrag() {
+      this.drag = true
       this.oldLegend = _.clone(this.legend.items)
       this.activeElement = []
-      _.forEach(this.oldLegend, item =>{
-         _.forEach(item.items, layer => {
-           if(document.getElementById('styleTools'  + layer.id + '-' + this.criseId).classList.contains('active')){
-             this.activeElement.push(layer.id)
-           //  document.getElementById('styleTools'  + layer.id + '-' + this.criseId).classList.add('active')
-           }
-         })
-       })
+      _.forEach(this.oldLegend, item => {
+        _.forEach(item.items, layer => {
+          if (document.getElementById('styleTools' + layer.id + '-' + this.criseId).classList.contains('active')) {
+            this.activeElement.push(layer.id)
+            //  document.getElementById('styleTools'  + layer.id + '-' + this.criseId).classList.add('active')
+          }
+        })
+      })
     },
     changeLayerVisibility(id) {
       var layer = this.getLayerById(id)
@@ -624,33 +617,33 @@ export default {
       layer.setOpacity(parseFloat(range.value))
     },
     showStyleLayer(id) {
-      document.getElementById('styleTools'  + id + '-' + this.criseId).classList.toggle('active')
-      document.getElementById('layerInfo'  + id + '-' + this.criseId).classList.toggle('active')
+      document.getElementById('styleTools' + id + '-' + this.criseId).classList.toggle('active')
+      document.getElementById('layerInfo' + id + '-' + this.criseId).classList.toggle('active')
     },
-    setDefaultLegend(e, id){
-     var selectedStyle = e.target.value
-       if(selectedStyle !== null){
-         _.forEach(this.legend.items, item =>{
-            _.forEach(item.items, layer => {
-              if(layer.id == id){
-                 layer.style = selectedStyle
-                 if(layer.styles && layer.styles.length > 1){
-                    var s  = _.filter(layer.styles, style => style.id === selectedStyle)
-                    _.remove(layer.styles, style => style.id === selectedStyle)
-                    layer.styles.unshift(s[0])
-                    e.target.options.selectedIndex= 0
-                 }
+    setDefaultLegend(e, id) {
+      var selectedStyle = e.target.value
+      if (selectedStyle !== null) {
+        _.forEach(this.legend.items, item => {
+          _.forEach(item.items, layer => {
+            if (layer.id == id) {
+              layer.style = selectedStyle
+              if (layer.styles && layer.styles.length > 1) {
+                var s = _.filter(layer.styles, style => style.id === selectedStyle)
+                _.remove(layer.styles, style => style.id === selectedStyle)
+                layer.styles.unshift(s[0])
+                e.target.options.selectedIndex = 0
               }
-            })
+            }
           })
-       }
+        })
+      }
       this.redrawLayers()
     },
     manageStyleVisibility(id) {
-      if(document.getElementById('stylIcon'+id+'-'+this.criseId).checked === false){
-        document.getElementById('legend'+id+'-'+this.criseId).style.display = "none"
-      }else {
-        document.getElementById('legend'+id+'-'+this.criseId).style.display = "block"
+      if (document.getElementById('stylIcon' + id + '-' + this.criseId).checked === false) {
+        document.getElementById('legend' + id + '-' + this.criseId).style.display = "none"
+      } else {
+        document.getElementById('legend' + id + '-' + this.criseId).style.display = "block"
       }
     },
     redrawLayers() {
@@ -786,7 +779,8 @@ export default {
         visible: layerDef.visibility,
         minResolution: layerDef.scale_min,
         maxResolution: layerDef.scale_max,
-        wms_layer: true
+        wms_layer: true,
+        libelle: layerDef.libelle
       })
       return wmsLayer
     },
@@ -819,12 +813,10 @@ export default {
             resolution_min: 0.5971642834779,
             resolution_max: 2445.98490512564
           },
-          styles: [
-            {
-              id: 'normal',
-              libelle: 'Légende générique'
-            }
-          ],
+          styles: [{
+            id: 'normal',
+            libelle: 'Légende générique'
+          }],
           numZoomLevels: 20,
           scale_min: 0,
           scale_max: 1000000
@@ -852,12 +844,10 @@ export default {
         })
         let layer = this.createWMSLayer(layerDef)
         // Application du filtre initial
-        layer.getSource().getParams().filter = JSON.stringify([
-          {
-            property: 'crise',
-            value: this.criseId
-          }
-        ])
+        layer.getSource().getParams().filter = JSON.stringify([{
+          property: 'crise',
+          value: this.criseId
+        }])
         return layer
       }
     },
@@ -944,7 +934,7 @@ export default {
     },
     showToolsBar() {
       // Toolbar
-      this.toggleButton('toolsBarBtn'+this.criseId)
+      this.toggleButton('toolsBarBtn' + this.criseId)
       _.delay(this.map.updateSize.bind(this.map), 10)
       this.desactivateControls()
     },
@@ -953,6 +943,19 @@ export default {
     },
     formatLength(line) {
       var length = getLength(line)
+      var output
+      if (length > 100) {
+        output = Math.round((length / 1000) * 100) / 100 + ' ' + 'km'
+      } else {
+        output = Math.round(length * 100) / 100 + ' ' + 'm'
+      }
+      return output
+    },
+    formatMultiLength(multiLine) {
+      var length = 0
+      _.forEach(multiLine.getLineStrings(), line => {
+        length = length + getLength(line)
+      })
       var output
       if (length > 100) {
         output = Math.round((length / 1000) * 100) / 100 + ' ' + 'km'
@@ -975,7 +978,7 @@ export default {
       var area = getArea(polygon)
       var output
       if (area > 10000) {
-        output = Math.round((area / 1000000) * 100) + ' ' + 'ha'
+        output = Math.round((area / 10000) * 100) / 100 + ' ' + 'ha'
       } else {
         output = Math.round(area * 100) / 100 + ' ' + 'm<sup>2</sup>'
       }
@@ -1053,10 +1056,10 @@ export default {
       }
     },
     activateMeasureInteraction() {
-    this.toggleButton('measureTools'+this.criseId)
-    this.removeMeasureInteraction()
+      this.toggleButton('measureTools' + this.criseId)
+      this.removeMeasureInteraction()
     },
-    removeMeasureInteraction(){
+    removeMeasureInteraction() {
       if (this.measuringTool) {
         this.measuringTool.setActive(!this.measuringTool.getActive())
         this.map.removeInteraction(this.measuringTool)
@@ -1169,7 +1172,7 @@ export default {
           this.measureTooltip.setPosition([0, 0])
         }
       }
-      if(!isActive){
+      if (!isActive) {
         this.map.un('click', this.handleMapClick)
         this.modify.setActive(false)
         this.translate.setActive(false)
@@ -1207,7 +1210,7 @@ export default {
             this.addToWorkingLayer(selectedFeature)
           } else {
             // On affiche un modal de choix de feature
-            if(document.getElementById('infoBtn'+this.criseId).getAttribute('ctrl-active') === null){
+            if (document.getElementById('infoBtn' + this.criseId).getAttribute('ctrl-active') === null) {
               this.$refs.choiceFeature.mode = 'mesure'
             }
             this.$refs.choiceFeature.showModal(features)
@@ -1289,12 +1292,11 @@ export default {
     },
     openAttributes(isActive) {
       this.desactivateControls()
-      if(isActive){
+      if (isActive) {
         this.map.on('click', this.handleOpenAttributes)
-      }else {
+      } else {
         this.map.un('click', this.handleOpenAttributes)
       }
-
     },
     addStampedCard() {
       var self = this
@@ -1344,40 +1346,87 @@ export default {
     },
     handleOpenInfo(e) {
       var requests = []
+      var html = ""
+      var i = 0
+      var nomCouche = ""
       _.forEach(this.map.getLayers().getArray(), layer => {
+        var features = []
         if (layer.get('wms_layer')) {
           var url = layer.getSource().getGetFeatureInfoUrl(e.coordinate, this.map.getView().getResolution(), this.map.getView().getProjection(), {
             'INFO_FORMAT': 'application/json',
             'FEATURE_COUNT': '20'
           })
-          requests.push(axios.get(url).catch(function(error) {
+          requests.push(axios.get(url, {
+            params: {
+              nom: layer.get('libelle')
+            }
+          }).catch(function(error) {
             console.error('postEvent', error)
           }))
         }
+        if (layer.get('isImported')) {
+          var self = this
+          features = this.map.getFeaturesAtPixel(e.pixel, {
+            layerFilter: function(celayer) {
+              return celayer === layer;
+            }
+          });
+          /*  features = this.map.getFeaturesAtPixel(e.pixel, function(layer) {
+              return true
+            })*/
+          if (features && features.length !== 0) {
+            i++
+            nomCouche = layer.get('title')
+            var featureHtml = ""
+            _.forEach(features, feature => {
+              featureHtml = featureHtml + '<table>'
+              var detailHtml = ""
+              _.forEach(feature.values_, function(value, key) {
+                if (Array.isArray(value)) {
+                  return
+                }
+                if (key === 'geometry') {
+                  if (value.getType() === 'Polygon' || value.getType() === 'Box' || value.getType() === 'MultiPolygon') {
+                    value = self.formatArea(value)
+                  } else if (value.getType() === 'LineString') {
+                    value = self.formatLength(value)
+                  } else if (value.getType() === 'MultiLineString') {
+                    value = self.formatMultiLength(value)
+                  } else if (value.getType() === 'Circle') {
+                    value = self.formatRadius(value)
+                  } else if (value.getType() === 'Point') {
+                    value = self.formatXy(value)
+                    value = 'x= ' + value.split(',')[0] + '&nbsp; y= ' + value.split(',')[1]
+                  }
+                }
+                detailHtml = detailHtml + '<tr><td><u>' + key + ' : </u></td><td>' + value + '</td></tr>'
+              });
+              featureHtml = featureHtml + detailHtml + '</table>';
+            })
+            html = html + '<div role="tablist"><b-card no-body class="mb-1"><b-card-header header-tag="header" class="p-1" role="tab">' + '<b-button block href="#" v-b-toggle.accordion-info-' + i + ' variant="info"> ' + nomCouche +
+              ' </b-button>' + '</b-card-header><b-collapse id="accordion-info-' + i + '" visible accordion="my-accordion4" role="tabpanel"><b-card-body>' + featureHtml + '</b-card-body></b-collapse></b-card></div>'
+          }
+        }
       })
-      /*  var layer = this.getLayerById('893bb7520e7fb036d665661847628994')
-        var url = layer.getSource().getGetFeatureInfoUrl(e.coordinate, this.map.getView().getResolution(), this.map.getView().getProjection(), {
-          'INFO_FORMAT': 'application/json',
-          'QUERY_LAYERS': 'remocra:v_crise_evenement',
-          'FEATURE_COUNT': '20'
-        })*/
-      var html = ""
       axios.all(requests).then(responses => {
         _.forEach(responses, response => {
+          i++;
           if (response && response.data) {
-            console.log(response.data)
             if (response.data.indexOf("<body></body>") === -1) {
-              html = html + response.data
+              nomCouche = response.config.params.nom
+              var preparedHtml = (response.data.split('<body>')[1]).split('</body>')[0]
+              html = html + '<div role="tablist"><b-card no-body class="mb-1"><b-card-header header-tag="header" class="p-1" role="tab">' + '<b-button block href="#" v-b-toggle.accordion-info-' + i + ' variant="info"> ' + nomCouche +
+                ' </b-button>' + '</b-card-header><b-collapse id="accordion-info-' + i + '" visible accordion="my-accordion4" role="tabpanel"><b-card-body>' + preparedHtml + '</b-card-body></b-collapse></b-card></div>'
             }
           }
         })
         this.$refs.showInfo.showModal(html)
       }).catch(function(error) {
-        console.error('carte', error)
+        console.error('showInfo', error)
       })
     },
-    showInfo(selectedFeature){
-        this.$refs.showInfo.showModalFromValues(selectedFeature)
+    showInfo(selectedFeature) {
+      this.$refs.showInfo.showModalFromValues(selectedFeature)
     },
     zoomToGeom(geometrie) {
       let geom = new WKT().readGeometry(geometrie, {
@@ -1397,8 +1446,7 @@ export default {
       this.map.getView().fit(new GeoJSON().readGeometry(geometrie, {
         dataProjection: this.epsgL93,
         featureProjection: this.proj
-      }).getExtent(),
-      {
+      }).getExtent(), {
         nearest: true
       })
     },
@@ -1608,7 +1656,7 @@ export default {
     },
     removeMeasureInputGeomInteraction(index) {
       _.forEach(this.inputGeoms, input => {
-        if(index){
+        if (index) {
           if (input.id === 'tool' + index) {
             input.setActive(!input.getActive())
             this.map.removeInteraction(input)
@@ -1617,8 +1665,8 @@ export default {
             input.setPosition([0, 0])
           }
         } else {
-          if(_.startsWith(input.id,'tooltip')){
-             input.setPosition([0, 0])
+          if (_.startsWith(input.id, 'tooltip')) {
+            input.setPosition([0, 0])
           }
           this.map.removeInteraction(input)
         }
@@ -1626,22 +1674,22 @@ export default {
     },
     removeModifInputGeomInteraction(index) {
       _.forEach(this.inputGeoms, input => {
-        if(index){
+        if (index) {
           if (input.id === 'modif' + index) {
             this.map.removeInteraction(input)
           }
-        }else {
+        } else {
           this.map.removeInteraction(input)
         }
       })
     },
     removeSelectInputGeomInteraction(index) {
       _.forEach(this.inputGeoms, input => {
-        if(index){
+        if (index) {
           if (input.id === 'select' + index) {
             this.map.removeInteraction(input)
           }
-        }else {
+        } else {
           this.map.removeInteraction(input)
         }
       })
@@ -1743,34 +1791,34 @@ export default {
       document.getElementById('mapDiv' + this.criseId).style.display = ''
       document.getElementById('tableauDiv' + this.criseId).style.display = 'none'
       _.forEach(this.map.getLayers().getArray(), layer => {
-         if(_.startsWith(layer.get('code'),'input')){
-           this.map.removeLayer(layer)
-         }
-         if(layer.get('code') === 'selection'){
-            layer.getSource().updateParams({
-             'VIEWPARAMS': 'SELECTION_ID:' + null
-           })
-         }
+        if (_.startsWith(layer.get('code'), 'input')) {
+          this.map.removeLayer(layer)
+        }
+        if (layer.get('code') === 'selection') {
+          layer.getSource().updateParams({
+            'VIEWPARAMS': 'SELECTION_ID:' + null
+          })
+        }
       })
       this.removeMeasureInputGeomInteraction()
       this.removeModifInputGeomInteraction()
       this.removeSelectInputGeomInteraction()
       this.map.updateSize()
     },
-    toggleButton(id){
+    toggleButton(id) {
       let isActive = document.getElementById(id).getAttribute('ctrl-active') !== null
-      document.getElementById('infoBtn'+this.criseId).removeAttribute('ctrl-active')
-      document.getElementById('toolsBarBtn'+this.criseId).removeAttribute('ctrl-active')
-      document.getElementById('measureTools'+this.criseId).removeAttribute('ctrl-active')
+      document.getElementById('infoBtn' + this.criseId).removeAttribute('ctrl-active')
+      document.getElementById('toolsBarBtn' + this.criseId).removeAttribute('ctrl-active')
+      document.getElementById('measureTools' + this.criseId).removeAttribute('ctrl-active')
       this.desactivateControls()
       document.getElementById('toolsBar' + this.criseId).classList.remove('active')
       this.$refs.toolBar.toggleButton()
       if (!isActive) {
         document.getElementById(id).setAttribute('ctrl-active', 'true')
-        if(id == 'infoBtn'+this.criseId){
+        if (id == 'infoBtn' + this.criseId) {
           this.map.on('click', this.handleOpenInfo)
           this.$root.$emit('bv::hide::popover')
-        }else if( id == 'toolsBarBtn'+this.criseId){
+        } else if (id == 'toolsBarBtn' + this.criseId) {
           document.getElementById('toolsBar' + this.criseId).classList.toggle('active')
           this.$root.$emit('bv::hide::popover')
         }
@@ -1930,8 +1978,8 @@ button.close {
   top: 10px;
   -webkit-margin-start: inherit;
   margin-inline-start: inherit;
-
 }
+
 .right_content {
   position: absolute;
   width: 370px;
@@ -1941,6 +1989,7 @@ button.close {
   -webkit-margin-end: inherit;
   margin-inline-end: inherit;
 }
+
 .top_content {
   position: absolute;
   z-index: 900;
@@ -1949,93 +1998,102 @@ button.close {
   top: 10px;
   background: #f4f4f4;
   border-radius: 3px;
-
 }
-.accord7{
+
+.accord7 {
   padding: 15px;
   overflow-y: auto;
   overflow-x: auto;
   max-height: 600px;
 }
-.mapDiv{
+
+.mapDiv {
   height: 100%;
 }
 
-
- .style-tools {
+.style-tools {
   display: none;
 }
 
 .style-tools.active {
   display: block;
 }
+
 .style-tools {
-background-color: #f1f1f1;
-margin-bottom: 2px;
-padding:10px;
-line-height: 15px;
+  background-color: #f1f1f1;
+  margin-bottom: 2px;
+  padding: 10px;
+  line-height: 15px;
 }
 
 .layer-info {
-margin-bottom: 2px;
-cursor:move;
+  margin-bottom: 2px;
+  cursor: move;
 }
 
 .layer-info {
- display: block;
+  display: block;
 }
 
 .layer-info.active {
- display: none;
+  display: none;
 }
+
 .layer-label {
   width: 160px;
   display: inline-grid;
 }
+
 .custom-range {
   margin: 0 5px 0 5px;
   width: 60%;
   height: 10px;
 }
-.custom-slider::-webkit-slider-runnable-track{
-  height: 2px;
-  border: none;
-  border-radius: 0;
-}
-.custom-slider::-moz-range-track{
-  height: 2px;
-  border: none;
-  border-radius: 0;
-}
-.custom-slider::-ms-track{
+
+.custom-slider::-webkit-slider-runnable-track {
   height: 2px;
   border: none;
   border-radius: 0;
 }
 
-.custom-slider::-webkit-slider-thumb{
+.custom-slider::-moz-range-track {
+  height: 2px;
+  border: none;
+  border-radius: 0;
+}
+
+.custom-slider::-ms-track {
+  height: 2px;
+  border: none;
+  border-radius: 0;
+}
+
+.custom-slider::-webkit-slider-thumb {
   width: 2em;
   height: 12px;
   border-style: solid;
   border-color: #dee2e6;
   border-width: thin;
 }
-.custom-slider::-moz-range-thumb{
+
+.custom-slider::-moz-range-thumb {
   width: 2em;
   height: 12px;
   border-style: solid;
   border-color: #dee2e6;
   border-width: thin;
 }
-.custom-slider::-ms-thumb{
+
+.custom-slider::-ms-thumb {
   width: 2em;
   height: 12px;
   border-style: solid;
   border-color: #dee2e6;
   border-width: thin;
 }
-.style-combo{
-   width: 70%;
-   margin-left: 10px;
+
+.style-combo {
+  width: 70%;
+  margin-left: 10px;
 }
 </style>

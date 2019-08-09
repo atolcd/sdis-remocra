@@ -1,7 +1,7 @@
 <template>
 <div>
   <b-modal :id="'modalInfo'+crise" no-close-on-backdrop ref="modal" title="Informations" hide-footer>
-    <div class="infoFeatures" v-html="html"></div>
+    <component v-bind:is="loaderFeatureInfo"></component>
     <b-btn size="sm" class="float-right" variant="primary" @click="hideModal"> Fermer </b-btn>
   </b-modal>
 </div>
@@ -10,6 +10,7 @@
 <script>
 import * as eventTypes from '../bus/event-types.js'
 import moment from 'moment'
+import Vue from 'vue'
 export default {
   name: 'ShowInfo',
   components: {},
@@ -22,18 +23,26 @@ export default {
   data() {
     return {
       html: null,
+      loaderFeatureInfo: null,
       feature: null,
       nomFeature: null,
       natureFeature: null,
       creationFeature: null,
       features: [],
-      selected: null
+      selected: null,
+      currentView: null
     }
   },
   methods: {
     showModal(html) {
       this.html = html
       if ("" !== this.html && this.html.indexOf("<body></body>") === -1) {
+        this.loaderFeatureInfo = Vue.component('info-loader', {
+          data() {
+            return {}
+          },
+          template: "<div>" + html + "</div>"
+        })
         this.$refs.modal.show()
         this.$root.$emit('bv::hide::popover')
       } else {

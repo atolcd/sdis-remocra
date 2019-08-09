@@ -579,7 +579,9 @@ export default {
       var gpxLayer = new VectorLayer({
         source: new VectorSource({}),
         title: this.layerName,
-        code: layerCode
+        code: layerCode,
+        isImported: true,
+        useSpatialIndex: false
       })
       var gpxFormat = new GPX()
       var gpxFeatures
@@ -624,7 +626,9 @@ export default {
       var geojsonLayer = new VectorLayer({
         source: new VectorSource({}),
         title: this.layerName,
-        code: layerCode
+        code: layerCode,
+        isImported: true,
+        useSpatialIndex: false
       })
       var geojsonFormat = new GeoJSON()
       var geojsonFeatures
@@ -669,7 +673,9 @@ export default {
       var kmlLayer = new VectorLayer({
         source: new VectorSource({}),
         title: this.layerName,
-        code: layerCode
+        code: layerCode,
+        isImported: true,
+        useSpatialIndex: false
       })
       // si on conserve le style du fichier, on extrait en même temps que les données, le style
       var kmlFormat = new KML({
