@@ -1401,7 +1401,7 @@ export default {
                 }
                 detailHtml = detailHtml + '<tr><td><u>' + key + ' : </u></td><td>' + value + '</td></tr>'
               });
-              featureHtml = featureHtml + detailHtml + '</table>';
+              featureHtml = featureHtml + detailHtml + '</table><hr>';
             })
             html = html + '<div role="tablist"><b-card no-body class="mb-1"><b-card-header header-tag="header" class="p-1" role="tab">' + '<b-button block href="#" v-b-toggle.accordion-info-' + i + ' variant="info"> ' + nomCouche +
               ' </b-button>' + '</b-card-header><b-collapse id="accordion-info-' + i + '" visible accordion="my-accordion4" role="tabpanel"><b-card-body>' + featureHtml + '</b-card-body></b-collapse></b-card></div>'
