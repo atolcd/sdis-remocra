@@ -48,9 +48,9 @@ export default {
       } else {
         this.$notify({
           group: 'remocra',
-          title: 'Évènements',
+          title: 'Informations',
           type: 'warn',
-          text: 'Aucun évènement trouvé'
+          text: 'Aucune information à afficher'
         })
       }
     },
