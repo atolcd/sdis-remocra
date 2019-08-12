@@ -55,7 +55,10 @@ export default {
       myRate: 0,
       origines: [],
       filtres: ['En cours'],
-      filterTags: []
+      filterTags: [{
+        property: 'statut',
+        value: 'En cours'
+      }]
     }
   },
   props: {
