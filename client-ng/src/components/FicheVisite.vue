@@ -569,7 +569,7 @@ export default {
 				}
 				var visite = {
 					type: typeVisite,
-					date: moment(new Date()).format("YYYY-MM-DD HH:mm"),
+					date: moment().format("YYYY-MM-DD HH:mm"),
 					anomalies: anomalies,
 					ctrl_debit_pression: false
 				}

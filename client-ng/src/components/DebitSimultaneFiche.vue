@@ -296,7 +296,7 @@ export default {
 		  */
 		datetimeFormatee: function(){
 			return function(datetime){
-				return moment(datetime).format('DD/MM/YYYY HH:mm')
+				return moment(datetime, "YYYY-MM-DD HH:mm").format('DD/MM/YYYY HH:mm')
 			}
 		},
 
@@ -574,7 +574,7 @@ export default {
 		},
 
 		createMesure() {
-			var date = moment(new Date()).format("YYYY-MM-DD HH:mm");
+			var date = moment().format("YYYY-MM-DD HH:mm");
 
 			this.mesures.unshift({
 				dateMesure: '',
