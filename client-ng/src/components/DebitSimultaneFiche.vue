@@ -777,13 +777,14 @@ export default {
 						'Content-Type': 'multipart/form-data'
 					}
 				}).then(() => {
-					axios.get('debitsimultane/updategeometry/' + (this.debitSimultane.id))
+					axios.get('debitsimultane/updategeometry/' + (this.debitSimultane.id)).then(() => {
+						this.$nextTick(() => {
+							this.$refs.modalDebitSimultane.hide()
+						});
+					});
 				});
 			});
 
-			this.$nextTick(() => {
-				this.$refs.modalDebitSimultane.hide()
-			});
 		}
 
 	}

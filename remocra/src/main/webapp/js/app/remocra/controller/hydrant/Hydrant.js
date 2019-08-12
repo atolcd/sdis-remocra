@@ -849,6 +849,11 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             this.getTabMap().hydrantLayer.refresh({
                 force: true
             });
+
+            var debitsSimultanesLayer = this.getTabMap().getLayerByCode("debitsSimultanesLayer");
+            if(debitsSimultanesLayer) {
+                debitsSimultanesLayer.redraw(true);
+            }
         }
     },
 
@@ -2341,7 +2346,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         vueDebitSimultaneFiche.$options.bus.$on('closed', Ext.bind(function(data) {
             vueDebitSimultaneFiche.$el.remove();
             vueDebitSimultaneFiche.$destroy();
+
             this.getTabMap().map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselectAll();
+            this.refreshMap();
         }, this));
       },
 
