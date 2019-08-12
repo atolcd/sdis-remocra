@@ -847,6 +847,9 @@ export default {
         layer.getSource().getParams().filter = JSON.stringify([{
           property: 'crise',
           value: this.criseId
+        }, {
+          property: 'statut',
+          value: 'En cours'
         }])
         return layer
       }

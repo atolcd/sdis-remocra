@@ -54,7 +54,7 @@ export default {
       tags: [],
       myRate: 0,
       origines: [],
-      filtres: [],
+      filtres: ['En cours'],
       filterTags: []
     }
   },
