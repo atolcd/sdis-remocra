@@ -1920,10 +1920,10 @@ export default {
       };
       str += ' '; /*CVA : espace*/
       if (axis == "lon") {
-        wholeData.o = coordinate < 0 ? "OUEST" : "EST";
+        wholeData.o = coordinate < 0 ? "O" : "E";
         str += wholeData.o;
       } else {
-        wholeData.o = coordinate < 0 ? "SUD" : "NORD";
+        wholeData.o = coordinate < 0 ? "S" : "N";
         str += wholeData.o;
       }
       /*CVA : wholeData => toutes les données */
