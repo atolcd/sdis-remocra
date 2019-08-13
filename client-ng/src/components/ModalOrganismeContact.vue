@@ -284,7 +284,7 @@ export default {
       }
       var formData = new FormData();
       formData.append('contacts', JSON.stringify(this.contacts))
-      axios.post('/remocra/organismes/contacts/' + this.idOrganisme, formData).then(response => {
+      axios.post('/remocra/organismes/contacts/' + this.idOrganisme, formData).then(() => {
         this.$nextTick(() => { //Fermeture manuelle de la modale
           this.resetFormOrganisme();
           this.resetFormContact();

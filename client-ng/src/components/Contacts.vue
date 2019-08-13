@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-import _ from 'lodash'
 import modalOrganismeContact from './ModalOrganismeContact.vue'
 export default {
   name: 'Contacts',
