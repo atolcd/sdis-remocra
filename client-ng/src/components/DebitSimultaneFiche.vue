@@ -576,6 +576,15 @@ export default {
 		createMesure() {
 			var date = moment().format("YYYY-MM-DD HH:mm");
 
+			// Si possible, on reprend par défaut les PEIs de la dernière visite
+			var hydrants = [];
+			var sortedMesures = this.mesures.filter(mesure => mesure.dateMesure.length > 0).sort(function(a,b){
+				return a.dateMesure < b.dateMesure;
+			});
+			if(sortedMesures.length > 0){
+				hydrants = _.clone(sortedMesures[0].listeHydrants, true);
+			}
+
 			this.mesures.unshift({
 				dateMesure: '',
 				formattedDate: date.split(" ")[0],
@@ -585,7 +594,7 @@ export default {
 				debitRetenu: this.debitSimultaneCalcule,
 				commentaire: null,
 				irv: false,
-				listeHydrants: [],
+				listeHydrants: hydrants,
 				attestation: null,
 				newAttestation: null,
 				debitSimultane: this.debitSimultane.id
@@ -837,7 +846,7 @@ export default {
 
 #tableMesures { 
 	overflow-y: auto; 
-	height: 100px; 
+	max-height: 100px; 
 }
 
 #tableMesures thead th { 
