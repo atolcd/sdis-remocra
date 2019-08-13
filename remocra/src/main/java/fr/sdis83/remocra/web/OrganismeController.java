@@ -1,22 +1,23 @@
 package fr.sdis83.remocra.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.naming.AuthenticationException;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
 
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.exception.BusinessException;
+import fr.sdis83.remocra.service.ContactService;
 import fr.sdis83.remocra.service.OrganismeService;
-
 import fr.sdis83.remocra.util.ExceptionUtils;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
+import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,16 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.naming.AuthenticationException;
-import javax.validation.ConstraintViolationException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Arrays;
 
 
 @RequestMapping("/organismes")
@@ -43,6 +35,9 @@ public class OrganismeController extends AbstractServiceableController<Organisme
 
     @Autowired
     private OrganismeService service;
+
+    @Autowired
+    ContactService contactService;
 
     @Override
     protected OrganismeService getService() {
@@ -79,6 +74,25 @@ public class OrganismeController extends AbstractServiceableController<Organisme
     @Override
     public ResponseEntity<java.lang.String> update(final @PathVariable Long id, final @RequestBody String json) {
         return doUpdate(id, json);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
+    public ResponseEntity<java.lang.String> getOrganisme(final @PathVariable Long id) {
+        return new AbstractExtObjectSerializer<Organisme>("fr.sdis83.remocra.domain.remocra.Organisme retrieved.") {
+
+            @Override
+            protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+                return OrganismeController.this.additionnalIncludeExclude(serializer);
+
+            }
+
+            @Override
+            protected Organisme getRecord() {
+                return Organisme.findOrganisme(id);
+            }
+
+        }.serialize();
     }
 
     @Override
@@ -169,5 +183,17 @@ public class OrganismeController extends AbstractServiceableController<Organisme
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Content-Type", "application/json;charset=utf-8");
         return new ResponseEntity<String>(service.getAvailableOrganismes(geometrie, Arrays.asList("COMMUNE", "EPCI")).toString(), responseHeaders, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/contacts/{id}", method = RequestMethod.POST, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('REFERENTIELS_C')")
+    public ResponseEntity<java.lang.String> update(HttpServletRequest request, @PathVariable("id") final Long id) {
+        try {
+            String contactsJson = request.getParameter("contacts");
+            contactService.updateContactsFromJson(contactsJson, "ORGANISME",id);
+            return new SuccessErrorExtSerializer(true, "Contacts created").serialize();
+        } catch (Exception e) {
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
     }
 }

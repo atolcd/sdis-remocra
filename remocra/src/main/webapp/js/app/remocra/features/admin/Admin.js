@@ -177,6 +177,13 @@ Ext.define('Sdis.Remocra.features.admin.Admin', {
             }]
         });
         this.callParent(arguments);
+        var contentPanel = this.getComponent('contentPanel');
+        contentPanel.items.items.forEach(function(item){
+             if(item.itemId === "adminOrganisme") {
+               item.down("toolbar").getComponent("organismeContact").show();
+             }
+
+        });
     },
     
     // Recherche de l'index à sélectionner. 0 par défaut
@@ -215,6 +222,7 @@ Ext.define('Sdis.Remocra.features.admin.Admin', {
                 }
             });
         }
+
 
     } 
 });

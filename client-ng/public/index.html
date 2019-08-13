@@ -31,6 +31,7 @@
 
     <div id="crise-container"></div>
     <div id="fichepei-container"></div>
+    <div id="contact-container"></div>
     <div id="autre" style="display: none;">
       <h1>Remocra - Développements</h1>
       <div class="help start">
@@ -62,6 +63,10 @@
         <ul>
           <li><a href="?module=crise&id=1">Ouverture d'une crise</a></li>
         </ul>
+        <b>📒 Exemples Contacts :</b>
+        <ul>
+          <li><a href="?module=organismeContact&id=250&nom=Application Remocra">Ouverture d'un contact d'organisme</a></li>
+        </ul>
       </div>
     </div>
   </body>
@@ -85,6 +90,12 @@
           // PEI Création
           remocraVue.peiBuildFiche('#fichepei-container', {
             id: null, code: params['code'], geometrie: params['geometrie']?decodeURIComponent(params['geometrie']):null, title:'PEI - Création'
+          });
+        }else if (params['module']=='organismeContact' && params['id'] && params['nom']) {
+          // PEI Création
+          remocraVue.buildContacts('#contact-container', {
+              id: Number(params['id']),
+              nom: decodeURIComponent(params['nom'])
           });
         } else {
           document.getElementById('autre').style.display=''

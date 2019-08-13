@@ -95,5 +95,33 @@ Ext.define('Sdis.Remocra.features.admin.typereference.TypeReferenceGrid', {
             gripPanel.store.insert(0, r);
             rowEditing.startEdit(0, 0);
         }
+    }, {
+
+          text: 'Gérer les contacts',
+          tooltip: 'Gérer les contacts de l\'organisme',
+          iconCls: 'contactIcon',
+          itemId: 'organismeContact',
+          hidden: true,
+          handler: function() {
+              var gridPanel = this.findParentByType('crAdminTypeReferenceGrid');
+              var record = gridPanel.getSelectionModel().getSelection();
+                  if (record != null && Ext.isArray(record)) {
+                      record = record[0];
+                         var d = document.createElement('div');
+                         var id = "show-contact-"+(++Ext.AbstractComponent.AUTO_ID);
+                         d.id = id;
+                         document.body.appendChild(d);
+                         var vueContacts = window.remocraVue.buildContacts(d, {
+                                   id: record.get('id'), title: 'Organisme', nom: record.get('nom')
+                         });
+
+                         vueContacts.$options.bus.$on('closed', Ext.bind(function(data) {
+                                 vueContacts.$el.remove();
+                                 vueContacts.$destroy();
+                         }, this));
+                  }
+
+
+          }
     }]
 });

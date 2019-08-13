@@ -814,6 +814,10 @@ Affichage de toute la légende
 	background-image:url('../../images/remocra/cartes/folder-open.gif');
 }
 
+.contactIcon {
+	background-image:url('../../images/contact.png');
+}
+
 .remocraControlLayerSwitcher {
     position: absolute;
     top: 10px; right: 10px;

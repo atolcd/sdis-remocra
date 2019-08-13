@@ -3,6 +3,8 @@
 import Vue from 'vue'
 import GestCrise from './App'
 import Fiche from './components/Fiche'
+import Contacts from './components/Contacts'
+
 // import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import rate from 'vue-rate'
@@ -53,12 +55,28 @@ const peiBuildFiche = function(el, data) {
     components: {
       Fiche
     },
-    template: "<Fiche  title='"+data.title+"' :newVisite="+data.newVisite+" :idHydrant=" + data.id + " codeHydrant=" + data.code + "  geometrie='" + data.geometrie + "' />"
+    template: "<Fiche  title='" + data.title + "' :newVisite=" + data.newVisite + " :idHydrant=" + data.id + " codeHydrant=" + data.code + "  geometrie='" + data.geometrie + "' />"
   })
   return v
 }
 
+//contacts
+const buildContacts = function(el, data) {
+  var v = new Vue({
+    el,
+    bus: new Vue(),
+    components: {
+      Contacts
+    },
+    template: "<Contacts :id=" + data.id + " title='" + data.title + "' nom='" + data.nom + "' />"
+  })
+  return v
+}
+
+
+
 export {
   criseBuildMap,
-  peiBuildFiche
+  peiBuildFiche,
+  buildContacts
 }
