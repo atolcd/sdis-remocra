@@ -142,6 +142,10 @@ L'authentification LDAP est prioritaire sur l'authentification à partir de la b
 * Emplacement du dossier de stockage des alertes
 * Par défaut : ```/var/remocra/alertes```
 
+=== DOSSIER_DEPOT_ATTESTATION ===
+* Emplacement du dossier de stockage des attestations de débit simultané
+* Par défaut : ```/var/remocra/attestations```
+
 === DOSSIER_DEPOT_BLOC ===
 * Emplacement du dossier de stockage des documents des blocs
 * Par défaut : ```/var/remocra/blocs```
@@ -475,6 +479,10 @@ Méthodes disponibles pour la symbologie des PEI : link:../pei/Symbologie_PEI{ou
 === PDI_DELTA_NOTIF_INDISPO_FIN ===
 * Notifier par mél N heures avant la fin d'une indisponibilité temporaire
 * Par défaut : ```1```
+
+=== VITESSE_EAU ===
+* Vitesse nominale retenue d'un réseau d'eau
+* Par défaut : ```2```
 
 
 == Risques ==
