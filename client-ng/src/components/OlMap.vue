@@ -412,20 +412,25 @@ export default {
       units: 'metric'
     }));
     var self = this
-    var mousePosition = new MousePosition({
-      coordinateFormat: function(coordinate) {
-        var coord = self.getFormattedCoord('x', coordinate[0], 'DD_MM_SSSS', 0.5)
-        coord = coord + self.getFormattedCoord('y', coordinate[1], 'DD_MM_SSSS', 0.5)
-        return coord;
-      },
-      projection: 'EPSG:4326',
-      // comment the following two lines to have the mouse position
-      // be placed within the map.
-      className: 'custom-mouse-position',
-      target: document.getElementById('mouse-position'),
-      undefinedHTML: '&nbsp;'
-    });
-    this.map.addControl(mousePosition)
+    // On récupere le mode d'affichage de curseur 
+    axios.get("/remocra/crises/coordonneaffichage").then(response => {
+      if (response.data) {
+        var mousePosition = new MousePosition({
+          coordinateFormat: function(coordinate) {
+            var coord = self.getFormattedCoord('x', coordinate[0], response.data.data, 0.5)
+            coord = coord + ' ' + self.getFormattedCoord('y', coordinate[1], response.data.data, 0.5)
+            return coord;
+          },
+          projection: 'EPSG:4326',
+          // comment the following two lines to have the mouse position
+          // be placed within the map.
+          className: 'custom-mouse-position',
+          target: document.getElementById('mouse-position'),
+          undefinedHTML: '&nbsp;'
+        });
+        this.map.addControl(mousePosition)
+      }
+    })
     this.proj = this.map.getView().getProjection()
     this.epsgL93 = 'EPSG:' + this.sridL93
     proj4.defs(this.epsgL93, '+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs')

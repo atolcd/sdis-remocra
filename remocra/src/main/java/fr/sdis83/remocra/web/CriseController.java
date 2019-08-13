@@ -21,6 +21,7 @@ import fr.sdis83.remocra.domain.utils.RemocraInstantTransformer;
 import fr.sdis83.remocra.repository.CriseRepository;
 import fr.sdis83.remocra.repository.ProcessusEtlPlanificationRepository;
 import fr.sdis83.remocra.repository.TypeCriseStatutRepository;
+import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
@@ -54,6 +55,9 @@ public class CriseController {
 
     @Autowired
     private ProcessusEtlPlanificationRepository processusEtlPlanificationRepository;
+
+  @Autowired
+  private ParamConfService paramConfService;
 
   @Autowired
   private TypeCriseStatutRepository typeCriseStatutRepository;
@@ -306,6 +310,21 @@ public class CriseController {
       @Override
       protected String getRecord() {
         return criseRepository.getExtentById(id);
+      }
+
+    }.serialize();
+  }
+
+
+  @RequestMapping(value = "/coordonneaffichage", method = RequestMethod.GET, headers = "Accept=application/json")
+  @PreAuthorize("hasRight('CRISE_R')")
+  public ResponseEntity<java.lang.String> getParamConf() {
+
+    return new AbstractExtObjectSerializer<String>("CoordonneAffichage retrieved.") {
+
+      @Override
+      protected String getRecord() {
+        return paramConfService.getCoordonneesFormatAffichage() ;
       }
 
     }.serialize();
