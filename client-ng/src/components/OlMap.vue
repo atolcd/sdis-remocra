@@ -412,6 +412,14 @@ export default {
       units: 'metric'
     }));
     var self = this
+    // Onrécupère la clé ignKey
+    axios.get("/remocra/crises/cleign").then(response => {
+      if (response.data) {
+        this.ignKey = response.data.data
+      }
+    }).catch(function(error) {
+      console.error('cleign', error)
+    })
     // On récupere le mode d'affichage de curseur 
     axios.get("/remocra/crises/coordonneaffichage").then(response => {
       if (response.data) {

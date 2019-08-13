@@ -330,6 +330,20 @@ public class CriseController {
     }.serialize();
   }
 
+  @RequestMapping(value = "/cleign", method = RequestMethod.GET, headers = "Accept=application/json")
+  @PreAuthorize("hasRight('CRISE_R')")
+  public ResponseEntity<java.lang.String> getCleIgn() {
+
+    return new AbstractExtObjectSerializer<String>("cleign retrieved.") {
+
+      @Override
+      protected String getRecord() {
+        return paramConfService.getClesIgn() ;
+      }
+
+    }.serialize();
+  }
+
   @RequestMapping(value = "/{id}/activation", method = RequestMethod.GET, headers = "Accept=application/json")
   @PreAuthorize("hasRight('CRISE_R')")
   public ResponseEntity<java.lang.String> getActivation(final @PathVariable("id") Long id) {
