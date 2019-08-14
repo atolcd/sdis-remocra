@@ -408,9 +408,6 @@ export default {
     loadEvenementNatures(natureId) {
       var types = []
       var categories = []
-      if (natureId != null) {
-        this.form.type = natureId
-      }
       axios.get('/remocra/crises/'+this.criseId+'/activation').then((response) => {
         if (response.data.data) {
           var activation = response.data.data
