@@ -149,6 +149,13 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
         } else if("site".equals(itemFilter.getFieldName())) {
             Expression<Integer> cpPath = from.join("site").get("id");
             predicat = cBuilder.equal(cpPath, itemFilter.getValue());
+        } else if("near".equals(itemFilter.getFieldName())) {
+            TypedQuery<Long> itemTypedQuery= this.entityManager.createQuery("select distinct(h.id) " +
+                    "from Hydrant h " +
+                    "where ST_Distance(h.geometrie, st_pointFromText('"+ itemFilter.getValue().toString()+ "', 2154)) < 500", Long.class);
+            List<Long> resultList = itemTypedQuery.getResultList();
+            Expression<Integer> idHydrant = from.get("id");
+            predicat = !resultList.isEmpty() ? idHydrant.in(resultList) : predicat;
         } else {
             return super.processFilterItem(itemQuery, parameters, from, itemFilter);
         }

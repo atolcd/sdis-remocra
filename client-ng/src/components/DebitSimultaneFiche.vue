@@ -476,9 +476,11 @@ export default {
 										filter: JSON.stringify([
 											{"property":"codeNatureDeci","value":"PRIVE"},
 											//{"property":"site","value":this.debitSimultane.site.id}, // Pour l'instant, le site n'est pas une caractéristique discriminante
+											{"property":"near","value":this.debitSimultane.geometrie},
 											{"property":"diametre","value":this.diametreImpose.id},
 											{"property":"typeReseau","value":this.typeReseauImpose.id}
 										]),
+										limit: 100
 									}
 								}).then(response => {
 									_.forEach(response.data.data, hydrant => {
