@@ -144,12 +144,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<b-form-group label="Débit mesuré" label-for="debitMesure" label-cols-md="6" invalid-feedback="Le débit mesuré doit être renseigné" :state="etats.debitMesure">
-										<b-form-select 	id="debitMesure"
-														v-model="mesures[selectedRow].debitMesure"
-														:options="comboDebitMesure"
-														size="sm"
-														:disabled="!userCanEdit"
-														required></b-form-select>
+										<b-form-input id="debitMesure" v-model="mesures[selectedRow].debitMesure" type="number" size="sm" :disabled="mesures[selectedRow].irv || !userCanEdit"></b-form-input>
 									</b-form-group>
 								</div>
 							</div>
@@ -157,7 +152,12 @@
 							<div class="row">
 								<div class="col-md-12">
 									<b-form-group label="Débit retenu (m3/h)" label-for="debitRetenu" label-cols-md="6" invalid-feedback="Le débit retenu doit être renseigné" :state="etats.debitRetenu">
-										<b-form-input id="debitRetenu" v-model="mesures[selectedRow].debitRetenu" type="number" size="sm" :disabled="mesures[selectedRow].irv || !userCanEdit"></b-form-input>
+										<b-form-select 	id="debitRetenu"
+														v-model="mesures[selectedRow].debitRetenu"
+														:options="comboDebitRetenu"
+														size="sm"
+														:disabled="!userCanEdit"
+														required></b-form-select>
 									</b-form-group>
 								</div>
 							</div>
@@ -250,7 +250,7 @@ export default {
 			debitSimultane: null,
 			mesures: [],
 			dataLoaded: false,
-			comboDebitMesure: null,
+			comboDebitRetenu: null,
 			diametreImpose: null,
 			typeReseauImpose: null,
 			selectedRow: null,
@@ -355,9 +355,9 @@ export default {
 	mounted: function() {
 		this.$refs.modalDebitSimultane.show();
 
-		this.comboDebitMesure = [];
+		this.comboDebitRetenu = [];
 		for(var i = 60; i <= 2400; i += 60){
-			this.comboDebitMesure.push({
+			this.comboDebitRetenu.push({
 				text: i,
 				value: i
 			});
@@ -657,8 +657,8 @@ export default {
 					invalidMesure = mesure;
 				}
 
-				if((!mesure.debitRetenu || mesure.debitRetenu.length == 0) && !mesure.irv) {
-					this.etats.debitRetenu = 'invalid';
+				if(!mesure.debitMesure || mesure.debitMesure.length == 0) {
+					this.etats.debitMesure = 'invalid';
 					invalidMesure = mesure;
 				}
 
@@ -671,9 +671,8 @@ export default {
 					this.etats.time = 'invalid';
 					invalidMesure = mesure;
 				}
-
-				if(mesure.debitMesure === null) {
-					this.etats.debitMesure = 'invalid';
+				if(mesure.debitRetenu === null && !mesure.irv) {
+					this.etats.debitRetenu = 'invalid';
 					invalidMesure = mesure;
 				}
 			});
