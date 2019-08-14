@@ -815,7 +815,7 @@ export default {
 }
 
 .loading .modal-body::after {
-  content: 'Chargement des données...';
+  content: 'Chargement des informations...';
   margin-left: calc(50% - 67px);
   animation: opacity-anim 1s linear infinite;
 }
