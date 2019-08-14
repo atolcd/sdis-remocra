@@ -239,8 +239,9 @@ export default {
       var fileList = document.getElementById('inputFichier')
 
       this.file = fileList.files[0]
+      var type = this.file.type !== "" ? this.file.type : this.file.name
       // on vérifie si le fichier choisi est bien d'un type autorisé
-      if ((this.file.type.includes('gpx')) || (this.file.type.includes('kml')) || (this.file.type.includes('json')) || (this.file.name.includes('.geojson'))) {
+      if ((type.includes('gpx')) || (type.includes('kml')) || (type.includes('json')) || (type.includes('geojson'))) {
         // si le fichier est d'un type souhaité on affiche rien
         this.fileState = false
         // si ce n'est pas le cas on prévient l'utilisateur
@@ -248,7 +249,7 @@ export default {
         this.fileState = true
       }
       // si le fichier est de type kml
-      if (this.file.type.includes('kml')) {
+      if (type.includes('kml')) {
         this.originalStyle = true
         this.isKml = true
         // si le fichier est d'un autre type (gpx, geojson...)
@@ -552,12 +553,12 @@ export default {
       reader.onload = function(evt) {
         var event = evt
         // variable contenant l'extension du fichier
-        var extension = self.file.type
+        var extension = self.file.type !== "" ? self.file.type : self.file.name
         if (extension.includes('gpx')) {
           self.creationCoucheGpx(event)
         } else if (extension.includes('json')) {
           self.creationCoucheJson(event)
-        } else if (self.file.name.includes('.geojson')) {
+        } else if (extension.includes('geojson')) {
           self.creationCoucheJson(event)
         } else if (extension.includes('kml')) {
           self.creationCoucheKml(event)
@@ -793,8 +794,9 @@ export default {
       evt.preventDefault()
       // gère un bug car la fonction est déclenchée lorsqu'on réinitialise l'input à la fermeture de la modale
       if ((this.file !== null) && (this.layerName !== '')) {
+        var type = this.file.type !== "" ? this.file.type : this.file.name
         // on revérifie que le fichier choisi est bien d'un type autorisé
-        if ((this.file.type.includes('gpx')) || (this.file.type.includes('kml')) || (this.file.type.includes('json')) || (this.file.name.includes('.geojson'))) {
+        if ((type.includes('gpx')) || (type.includes('kml')) || (type.includes('json')) || (type.includes('geojson'))) {
           this.handleSubmit()
           // sinon on déclenche l'action d'afficher un message se qui empêche la validation du fichier
         } else {
