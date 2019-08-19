@@ -1314,4 +1314,7 @@ tr[class*="anomalie-hbe-"] > td:nth-child(2) {
 .qtip-commune-crise {
    background-color: #E2FFF9;
 }
+.showChart{
+  display: block!important;
+}
 

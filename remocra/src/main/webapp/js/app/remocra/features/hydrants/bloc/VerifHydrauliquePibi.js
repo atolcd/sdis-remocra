@@ -67,6 +67,14 @@ Ext.define('Sdis.Remocra.features.hydrants.bloc.VerifHydrauliquePibi', {
               xField: 'dateOp',
               yField: ['debit'],
               highlight:true,
+              listeners: {
+                  'afterrender': function() {
+                      Ext.Array.forEach(this.items, function(item){
+                       item.sprite.addCls('showChart');
+                     });
+
+                  }
+              },
               tips: {
                 width: 60,
                 trackMouse: true,
