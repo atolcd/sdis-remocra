@@ -1209,7 +1209,8 @@ export default {
       axios.get('/remocra/evenements/layer', {
         params: {
           point: e.coordinate[0] + ', ' + e.coordinate[1],
-          projection: e.target.getView().getProjection().getCode()
+          projection: e.target.getView().getProjection().getCode(),
+          crise: this.criseId
         }
       }).then(response => {
         if (response.data) {
@@ -1328,7 +1329,8 @@ export default {
       axios.get('/remocra/evenements/layer', {
         params: {
           point: e.coordinate[0] + ', ' + e.coordinate[1],
-          projection: e.target.getView().getProjection().getCode()
+          projection: e.target.getView().getProjection().getCode(),
+          crise: this.criseId
         }
       }).then(response => {
         if (response.data) {

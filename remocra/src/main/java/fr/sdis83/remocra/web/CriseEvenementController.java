@@ -173,7 +173,7 @@ public class CriseEvenementController {
 
   @RequestMapping(value = "/layer", method = RequestMethod.GET, headers = "Accept=application/json")
   @PreAuthorize("hasRight('CRISE_R')")
-  public ResponseEntity<java.lang.String> layer(final @RequestParam String point, @RequestParam String projection) {
+  public ResponseEntity<java.lang.String> layer(final @RequestParam String point, @RequestParam String projection, @RequestParam String crise) {
 
     if (point == null || point.isEmpty()) {
       return null;
@@ -181,7 +181,7 @@ public class CriseEvenementController {
       if (projection.contains("EPSG:")) {
         projection = projection.replace("EPSG:", "");
       }
-      return FeatureUtil.getResponse(criseEvenementRepository.findCriseEventsByPoint(point, projection));
+      return FeatureUtil.getResponse(criseEvenementRepository.findCriseEventsByPoint(point, projection, Long.valueOf(crise)));
     }
   }
 

@@ -177,14 +177,14 @@ public class CriseEvenementRepository {
 
   }
 
-  public List<CriseEvenement> findCriseEventsByPoint(String point, String projection) {
+  public List<CriseEvenement> findCriseEventsByPoint(String point, String projection, Long crise) {
 
     String qlString = "select ce.id, ce.nom, st_asgeojson(ce.geometrie) as geometrie, tce.id as idnature, tce.nom as nomnature FROM remocra.crise_evenement as ce " +
         "join remocra.type_crise_nature_evenement as tce " +
         "on ce.nature_evenement = tce.id "
-        // Si le point fait partie de la géometrie d'une Oldeb
-        + "where ST_Contains(geometrie,ST_Transform(ST_SetSRID(ST_makePoint(" + point + ")," + projection + "), 2154)) = true "
-        // Et que l'oldeb est dans la zone de compétence de
+        // Si le point fait partie de la géometrie d'une crise
+        + "where ce.crise = "+crise+" and ST_Contains(geometrie,ST_Transform(ST_SetSRID(ST_makePoint(" + point + ")," + projection + "), 2154)) = true "
+        // Et que la crise est dans la zone de compétence de
         // l'utilisateur connecté
         + "or st_distance(geometrie ,ST_Transform(ST_SetSRID(ST_makePoint(" + point + ")," + projection + "), 2154)) < 100 "
 
