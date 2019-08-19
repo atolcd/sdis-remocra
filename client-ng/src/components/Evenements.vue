@@ -18,7 +18,9 @@
               <span class="creation">{{message.creation}}</span> <span class="origine"> {{message.auteur}}</span>
             </div>
             <div class="objet">{{message.objet}}</div>
-            <div class="description" v-for="(msgpart, indexmsgpart) in message.message.split('\n')" :key="indexmsgpart">{{ msgpart }}</div>
+            <div v-if="message.message !== null">
+              <div class="description" v-for="(msgpart, indexmsgpart) in message.message.split('\n')" :key="indexmsgpart">{{ msgpart }}</div>
+            </div>
           </b-list-group-item>
         </b-list-group>
       </b-collapse>
