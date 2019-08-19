@@ -33,6 +33,7 @@
     <div id="fichepei-container"></div>
     <div id="contact-container"></div>
     <div id="ficheIndispoTemp-container"></div>
+    <div id="debitSimultaneFiche-container"></div>
 
   <div id="autre" style="display: none;">
       <h1>Remocra - Développements</h1>
@@ -62,6 +63,11 @@
 
           <li>Fiche indisponibilité temporaire
             <a href="?module=indispo">Indispo temp.</a>
+          </li>
+
+          <li>Débits simultanés
+            <a href="?module=debitsSimultanes&vitesseEau=2&listeHydrantsOnCreate=[24703,24701,24702]">création</a>, 
+            <a href="?module=debitsSimultanes&id=20&vitesseEau=2">modification</a>
           </li>
 
         </ul>
@@ -103,13 +109,26 @@
               id: Number(params['id']),
               nom: decodeURIComponent(params['nom'])
           });
-	} else if (params['module']=='indispo') {
+        } else if (params['module']=='indispo') {
           //fiche indispo
           var idIndispoTemp = "null";
           var tabIdPeiSelected = [226678, 226679];
           var tabNumPeiSelected = '751010001,751010002';
           var communeId = '153';
           remocraVue.indispoTempBuildFiche('#ficheIndispoTemp-container', {idIndispoTemp: idIndispoTemp, tabIdPeiSelected: tabIdPeiSelected, tabNumPeiSelected: tabNumPeiSelected});
+
+        } else if(params['module'] == 'debitsSimultanes' && params['id'] && params['vitesseEau']) {
+          remocraVue.debitSimultaneFiche('#debitSimultaneFiche-container', {
+            listeHydrantsOnCreate: null,
+            vitesseEau: params['vitesseEau'],
+            idDebitSimultane: params['id']
+          });
+        } else if(params['module'] == 'debitsSimultanes' && params['listeHydrantsOnCreate']) {
+          remocraVue.debitSimultaneFiche('#debitSimultaneFiche-container', {
+            listeHydrantsOnCreate: JSON.stringify(JSON.parse(params['listeHydrantsOnCreate'])),
+            vitesseEau: params['vitesseEau'],
+            idDebitSimultane: null
+          });
         } else {
           document.getElementById('autre').style.display=''
         }

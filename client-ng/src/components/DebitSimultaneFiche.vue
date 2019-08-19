@@ -5,7 +5,7 @@
 					no-close-on-backdrop 
 					title="Débit simultané"
 					ok-title="Fermer" 
-					ok-only=true
+					ok-only
 					cancel-title="Annuler" 
 					size="lg"
 					@hidden="close()" 
@@ -274,7 +274,7 @@ export default {
 
 	props: {
 		idDebitSimultane: {
-			type: Number,
+			type: String,
 			required: false
 		},
 
@@ -285,7 +285,7 @@ export default {
 		},
 
 		vitesseEau: {
-			type: Number,
+			type: String,
 			required: true
 		}
 	},
@@ -370,7 +370,7 @@ export default {
 				this.utilisateurDroits.push(item.getAttribute("code"));
 			});
 		}).then(() => {
-			if(this.idDebitSimultane > -1 && this.listeHydrantsOnCreate === 'null') {
+			if(this.idDebitSimultane > -1 && (this.listeHydrantsOnCreate === 'null' || this.listeHydrantsOnCreate === 'undefined')) {
 				this.modification();
 			} else {
 				this.creation();
@@ -381,7 +381,7 @@ export default {
 	methods: {
 
 		creation() {
-			var listeHydrants = this.listeHydrantsOnCreate.split(',');
+			var listeHydrants = this.listeHydrantsOnCreate.slice(1,-1).split(',');
 			this.debitSimultane = {
 				id: null,
 				numDossier: ''

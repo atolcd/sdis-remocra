@@ -122,7 +122,7 @@ const debitSimultaneFiche = function(el, data) {
     components: {
       DebitSimultaneFiche
     },
-    template: "<DebitSimultaneFiche idDebitSimultane='"+data.idDebitSimultane+"' listeHydrantsOnCreate='"+data.listeHydrants+"' vitesseEau='"+data.vitesseEau+"'/>"
+    template: "<DebitSimultaneFiche idDebitSimultane="+data.idDebitSimultane+" listeHydrantsOnCreate='"+data.listeHydrantsOnCreate+"' vitesseEau='"+data.vitesseEau+"'/>"
   })
   return v
 }
