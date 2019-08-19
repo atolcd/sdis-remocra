@@ -142,7 +142,7 @@ public class RequeteModeleRepository {
     Connection connection = context.configuration().connectionProvider().acquire();
     //on applique les filtres si y'en a
     if(pathParam != null && pathParam != "") {
-      query = "SELECT * FROM ("+ query +") AS foo WHERE lower(" +libelle +") LIKE lower( "+"'"+pathParam+"')" ;
+      query = "SELECT * FROM ("+ query +") AS foo WHERE lower(" +libelle +") LIKE lower( "+"'%"+pathParam+"%')" ;
     }
     //On prépare la requete (sourceSql dans requete modele selection en settant les parametres ${})
     PreparedStatement preparedStatement = connection.prepareStatement(query);
