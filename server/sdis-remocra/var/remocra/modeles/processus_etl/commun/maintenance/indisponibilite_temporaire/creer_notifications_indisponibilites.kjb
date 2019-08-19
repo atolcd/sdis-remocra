@@ -4,13 +4,19 @@
   <description />
   <extended_description />
   <job_version />
+  <job_status>0</job_status>
   <directory>/</directory>
   <created_user>-</created_user>
   <created_date>2019/08/05 11:32:56.347</created_date>
   <modified_user>-</modified_user>
   <modified_date>2019/08/05 11:32:56.347</modified_date>
   <parameters>
-    </parameters>
+    <parameter>
+      <name>PDI_FICHIER_PARAMETRE</name>
+      <default_value />
+      <description />
+    </parameter>
+  </parameters>
   <connection>
     <name>Remocra (Postgis)</name>
     <server>${REMOCRA_POSTGIS_DATABASE_HOST}</server>
