@@ -425,8 +425,8 @@ export default {
       if (response.data) {
         var mousePosition = new MousePosition({
           coordinateFormat: function(coordinate) {
-            var coord = self.getFormattedCoord('x', coordinate[0], response.data.data, 0.5)
-            coord = coord + ' ' + self.getFormattedCoord('y', coordinate[1], response.data.data, 0.5)
+            var coord = self.getFormattedCoord('x', coordinate[0], response.data.data, 5)
+            coord = coord + ' ' + self.getFormattedCoord('y', coordinate[1], response.data.data, 5)
             return coord;
           },
           projection: 'EPSG:4326',
