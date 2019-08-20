@@ -183,12 +183,12 @@ public class CriseEvenementRepository {
         "join remocra.type_crise_nature_evenement as tce " +
         "on ce.nature_evenement = tce.id "
         // Si le point fait partie de la géometrie d'une crise
-        + "where ce.crise = "+crise+" and ST_Contains(geometrie,ST_Transform(ST_SetSRID(ST_makePoint(" + point + ")," + projection + "), 2154)) = true "
+        + "where ce.crise = "+crise+" and (ST_Contains(geometrie,ST_Transform(ST_SetSRID(ST_makePoint(" + point + ")," + projection + "), 2154)) = true "
         // Et que la crise est dans la zone de compétence de
         // l'utilisateur connecté
         + "or st_distance(geometrie ,ST_Transform(ST_SetSRID(ST_makePoint(" + point + ")," + projection + "), 2154)) < 100 "
 
-        + "and st_dwithin(geometrie, st_geomfromtext('"+utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie()+"', 2154), 0) = true";
+        + "and st_dwithin(geometrie, st_geomfromtext('"+utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie()+"', 2154), 0) = true)";
 
     List<CriseEvenement> l = new ArrayList<CriseEvenement>();
     Result<Record> result = context.fetch(qlString);
