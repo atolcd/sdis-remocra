@@ -268,7 +268,7 @@ export default {
 
 	props: {
 		idDebitSimultane: {
-			type: String,
+			type: Array,
 			required: false
 		},
 
@@ -376,16 +376,15 @@ export default {
 	methods: {
 
 		creation() {
-			var listeHydrants = this.listeHydrantsOnCreate.slice(1,-1).split(',');
 			this.debitSimultane = {
 				id: null,
 				numDossier: ''
 			};
 
-			var nbRequetesEnAttente = listeHydrants.length;
+			var nbRequetesEnAttente = JSON.parse(this.listeHydrantsOnCreate).length;
 			var nbRequetesTerminees = 0;
 			var liste = [];
-			_.forEach(listeHydrants, idHydrant => {
+			_.forEach(JSON.parse(this.listeHydrantsOnCreate), idHydrant => {
 				axios.get('/remocra/hydrantspibi/'+idHydrant).then(response => {
 					var hydrant = response.data.data;
 
@@ -498,11 +497,11 @@ export default {
 
 		onIRVChecked(value) {
 			if(value) {
-				this.mesures[this.selectedRow].debitRetenu = null;
-				document.querySelectorAll('[for="debitRetenu"]')[0].classList.add("labelDisabled");
+				this.mesures[this.selectedRow].debitMesure = null;
+				document.querySelectorAll('[for="debitMesure"]')[0].classList.add("labelDisabled");
 			} else {
-				this.mesures[this.selectedRow].debitRetenu = this.debitSimultaneCalcule;
-				document.querySelectorAll('[for="debitRetenu"]')[0].classList.remove("labelDisabled");
+				this.mesures[this.selectedRow].debitMesure = this.debitSimultaneCalcule;
+				document.querySelectorAll('[for="debitMesure"]')[0].classList.remove("labelDisabled");
 			}
 		},
 
@@ -587,8 +586,8 @@ export default {
 				formattedDate: date.split(" ")[0],
 				formattedTime: date.split(" ")[1],
 				debitRequis: null,
-				debitMesure: null,
-				debitRetenu: this.debitSimultaneCalcule,
+				debitMesure: this.debitSimultaneCalcule,
+				debitRetenu: null,
 				commentaire: null,
 				irv: false,
 				listeHydrants: hydrants,
