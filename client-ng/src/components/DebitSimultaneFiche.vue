@@ -8,231 +8,223 @@
 					ok-only
 					cancel-title="Annuler" 
 					size="lg"
+					:ok-disabled="!dataLoaded"
 					@hidden="close()" 
-					@ok="handleOk" 
-					centered >
-			<div v-if="dataLoaded">
-				<div class="row">
-					<div class="col-md-2">
-						Site:
-					</div>
-					<div class="col-md-4">
-						<p v-if="debitSimultane.site">{{debitSimultane.site.nom}}</p>
-					</div>
-
-					<div class="col-md-3 ">
-						Type de réseau :
-					</div>
-
-					<div class="col-md-3">
-						{{(typeReseauImpose) ? typeReseauImpose.nom : ''}}
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-6">
-						<b-form-group label="N° dossier" label-for="numDossier" label-cols-md="4" invalid-feedback="Le numéro de dossier est manquant" :state="etats.numDossier">
-							<b-form-input id="numDossier" v-model="debitSimultane.numDossier" class="parametre" type="text" size="sm" :state="etats.numDossier" :disabled="!userCanEdit" required></b-form-input>
-						</b-form-group>
-					</div>
-
-					<div class="col-md-3 ">
-						Diamètre de canalisation : 
-					</div>
-
-					<div class="col-md-3">
-						{{ diametreImpose ? diametreImpose.nom +" mm" : ''}}
-					</div>
-				</div>
-
-				<div class="row rowButtons" v-if="!isNew && userCanEdit">
-					<div class="col-md-12">
-						<button class="btn btn-secondary" @click.prevent @click="createMesure">Ajouter</button>
-						<button class="btn btn-danger right" @click.prevent @click="deleteMesure" :disabled="deleteMesureDisabled">Supprimer</button>
-					</div>
-				</div>
-
-				<div class="row rowMesures">
-					<div class="col-md-12">
-						<table class="table table-striped table-sm table-bordered" id="tableMesures">
-							<thead class="thead-light">
-								<th scope="col">Date</th>
-								<th scope="col">Débit retenu m3/h</th>
-								<th scope="col">PEI</th>
-								<th scope="col">Attestation</th>
-							</thead>
-							<tbody>
-								<tr v-for="(item, index) in mesures" :key="index" @click="onRowSelected(index)" :class="{'table-success':index==selectedRow}">
-									<td>
-										{{datetimeFormatee(item.formattedDate+ " " + item.formattedTime)}}
-									</td>
-
-									<td>
-										{{item.irv ? 'Identique au Réseau de Ville' : item.debitRetenu}}
-									</td>
-
-									<td>
-										{{ labelPEI(index) }}
-									</td>
-
-									<td>
-										<div v-if="item.attestation">
-											{{item.attestation.document.fichier}}
-											<a :href="'telechargement/document/'+item.attestation.code" download><img src="../assets/img/pdf.png" width="32"/></a>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-
-				<div v-if="mesures[selectedRow] !== undefined">
+					@ok="handleOk">
+			<div id="formDebitSimultane">
+				<div v-if="dataLoaded">
 					<div class="row">
-						<div class="col-md-12">
-							<p class="title">Mesure</p>
+						<div class="col-md-2">
+							Site:
+						</div>
+						<div class="col-md-4">
+							<p v-if="debitSimultane.site">{{debitSimultane.site.nom}}</p>
+						</div>
+
+						<div class="col-md-3 ">
+							Type de réseau :
+						</div>
+
+						<div class="col-md-3">
+							{{(typeReseauImpose) ? typeReseauImpose.nom : ''}}
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="col-md-6">
-							<div class="row">
-								<div class="col-md-8">
-									<b-form-group label="Date " label-for="date" label-cols-md="5">
-										<b-form-input id="date" v-model="mesures[selectedRow].formattedDate" type="date" size="sm" :disabled="!userCanEdit" required></b-form-input>
-									</b-form-group>
-								</div>
-
-								<div class="col-md-4">
-									<b-form-input id="time" v-model="mesures[selectedRow].formattedTime" type="time" size="sm" :disabled="!userCanEdit" required></b-form-input>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-md-6">
-							<div class="row" v-if="!isNew">
-								<div class="col-md-9">
-									<b-form-group label="PEI" label-for="pei" label-cols-md="2">
-								
-										<b-form-select 	
-											id="pei"
-											v-model="selectedPeiFromCombo"
-											:options="comboAjoutHydrant()"
-											:disabled="!userCanEdit"
-											size="sm"></b-form-select>
-									</b-form-group>
-								</div>
-
-								<div class="col-md-3">
-									<b-button @click="ajouterPei" class="mr-2 btn btn-secondary d-inline-block right" size="sm" :disabled="selectedPeiFromCombo==null || !userCanEdit">Ajouter</b-button>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-6">
-
-							<div class="row">
-								<div class="col-md-12">
-									<b-form-group label="Débit requis (m3/h)" label-for="debitRequis" label-cols-md="6" invalid-feedback="Le débit requis doit être renseigné" :state="etats.debitRequis">
-										<b-form-input id="debitRequis" v-model="mesures[selectedRow].debitRequis" type="number" :disabled="!userCanEdit" size="sm"></b-form-input>
-									</b-form-group>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col-md-12">
-									<b-form-group label="Débit mesuré" label-for="debitMesure" label-cols-md="6" invalid-feedback="Le débit mesuré doit être renseigné" :state="etats.debitMesure">
-										<b-form-input id="debitMesure" v-model="mesures[selectedRow].debitMesure" type="number" size="sm" :disabled="mesures[selectedRow].irv || !userCanEdit"></b-form-input>
-									</b-form-group>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col-md-12">
-									<b-form-group label="Débit retenu (m3/h)" label-for="debitRetenu" label-cols-md="6" invalid-feedback="Le débit retenu doit être renseigné" :state="etats.debitRetenu">
-										<b-form-select 	id="debitRetenu"
-														v-model="mesures[selectedRow].debitRetenu"
-														:options="comboDebitRetenu"
-														size="sm"
-														:disabled="!userCanEdit"
-														required></b-form-select>
-									</b-form-group>
-								</div>
-							</div>
-
-						</div>
-
-						<div class="col-md-6">
-							<div class="row">
-								<div :class="{'col-md-9':!isNew, 'col-md-12':isNew}">
-									<b-form-group label-cols-md="2">
-									<ul :class="{'itemPeiContainer':true, 'hidden':!this.mesures[this.selectedRow].listeHydrants.length}">
-									<li v-for="item in this.mesures[this.selectedRow].listeHydrants" 
-										v-bind:key="item.id" 
-										size="sm" 
-										:class="{'itemPei': true, 'bg-secondary':item.id==selectedPei, 'text-light':item.id==selectedPei}" 
-										@click="selectedPei = item.id">
-										{{item.numero}}
-									</li>
-									</ul>
-								</b-form-group>
-								</div>
-
-								<div class="col-md-3" v-if="!isNew">
-									<b-button @click="retirerPei" class="mr-2 btn btn-secondary d-inline-block right" size="sm" :disabled="selectedPei==null || !userCanEdit">Retirer</b-button>
-								</div>
-							</div>
-							
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-3 offset-md-3">
-							<b-form-checkbox
-								id="irv"
-								v-model="mesures[selectedRow].irv"
-								v-on:change="onIRVChecked"
-								:disabled="!userCanEdit"
-								size="sm">
-								Identique Réseau Ville
-							</b-form-checkbox>
-						</div>
-						<div class="col-md-6">
-							<b-form-group label="Attestation" label-for="attestation" label-cols-md="2">
-							<b-form-file
-								id="attestation"
-								v-model="newAttestationInputValue"
-								class="mb-2"
-								placeholder="Aucun fichier sélectionné"
-								:file-name-formatter="newAttestationName"
-								browse-text="Charger"
-								:disabled="!userCanEdit"
-							></b-form-file>
-						</b-form-group>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-12">
-							<b-form-group label="Commentaire" label-for="commentaire" label-cols-md="2">
-								<b-form-textarea id="commentaire" v-model="mesures[selectedRow].commentaire" size="sm" :disabled="!userCanEdit"></b-form-textarea>
+							<b-form-group label="N° dossier" label-for="numDossier" label-cols-md="4" invalid-feedback="Le numéro de dossier est manquant" :state="etats.numDossier">
+								<b-form-input id="numDossier" v-model="debitSimultane.numDossier" class="parametre" type="text" size="sm" :state="etats.numDossier" :disabled="!userCanEdit" required></b-form-input>
 							</b-form-group>
+						</div>
+
+						<div class="col-md-3 ">
+							Diamètre de canalisation : 
+						</div>
+
+						<div class="col-md-3">
+							{{ diametreImpose ? diametreImpose.nom +" mm" : ''}}
+						</div>
+					</div>
+
+					<div class="row rowButtons" v-if="!isNew && userCanEdit">
+						<div class="col-md-12">
+							<button class="btn btn-secondary" @click.prevent @click="createMesure">Ajouter</button>
+							<button class="btn btn-danger right" @click.prevent @click="deleteMesure" :disabled="deleteMesureDisabled">Supprimer</button>
+						</div>
+					</div>
+
+					<div class="row rowMesures">
+						<div class="col-md-12">
+							<table class="table table-striped table-sm table-bordered" id="tableMesures">
+								<thead class="thead-light">
+									<th scope="col">Date</th>
+									<th scope="col">Débit retenu m3/h</th>
+									<th scope="col">PEI</th>
+									<th scope="col">Attestation</th>
+								</thead>
+								<tbody>
+									<tr v-for="(item, index) in mesures" :key="index" @click="onRowSelected(index)" :class="{'table-success':index==selectedRow}">
+										<td>
+											{{datetimeFormatee(item.formattedDate+ " " + item.formattedTime)}}
+										</td>
+
+										<td>
+											{{item.irv ? 'Identique au Réseau de Ville' : item.debitRetenu}}
+										</td>
+
+										<td>
+											{{ labelPEI(index) }}
+										</td>
+
+										<td>
+											<div v-if="item.attestation">
+												{{item.attestation.document.fichier}}
+												<a :href="'telechargement/document/'+item.attestation.code" download><img src="../assets/img/pdf.png" width="32"/></a>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div v-if="mesures[selectedRow] !== undefined">
+						<div class="row">
+							<div class="col-md-12">
+								<p class="title">Mesure</p>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="row">
+									<div class="col-md-8">
+										<b-form-group label="Date " label-for="date" label-cols-md="5">
+											<b-form-input id="date" v-model="mesures[selectedRow].formattedDate" type="date" size="sm" :disabled="!userCanEdit" required></b-form-input>
+										</b-form-group>
+									</div>
+
+									<div class="col-md-4">
+										<b-form-input id="time" v-model="mesures[selectedRow].formattedTime" type="time" size="sm" :disabled="!userCanEdit" required></b-form-input>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="row" v-if="!isNew">
+									<div class="col-md-9">
+										<b-form-group label="PEI" label-for="pei" label-cols-md="2">
+									
+											<b-form-select 	
+												id="pei"
+												v-model="selectedPeiFromCombo"
+												:options="comboAjoutHydrant()"
+												:disabled="!userCanEdit"
+												size="sm"></b-form-select>
+										</b-form-group>
+									</div>
+
+									<div class="col-md-3">
+										<b-button @click="ajouterPei" class="mr-2 btn btn-secondary d-inline-block right" size="sm" :disabled="selectedPeiFromCombo==null || !userCanEdit">Ajouter</b-button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+
+								<div class="row">
+									<div class="col-md-12">
+										<b-form-group label="Débit requis (m3/h)" label-for="debitRequis" label-cols-md="6" invalid-feedback="Le débit requis doit être renseigné" :state="etats.debitRequis">
+											<b-form-input id="debitRequis" v-model="mesures[selectedRow].debitRequis" type="number" :disabled="!userCanEdit" size="sm"></b-form-input>
+										</b-form-group>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-12">
+										<b-form-group label="Débit mesuré" label-for="debitMesure" label-cols-md="6" invalid-feedback="Le débit mesuré doit être renseigné" :state="etats.debitMesure">
+											<b-form-input id="debitMesure" v-model="mesures[selectedRow].debitMesure" type="number" size="sm" :disabled="mesures[selectedRow].irv || !userCanEdit"></b-form-input>
+										</b-form-group>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-12">
+										<b-form-group label="Débit retenu (m3/h)" label-for="debitRetenu" label-cols-md="6" invalid-feedback="Le débit retenu doit être renseigné" :state="etats.debitRetenu">
+											<b-form-select 	id="debitRetenu"
+															v-model="mesures[selectedRow].debitRetenu"
+															:options="comboDebitRetenu"
+															size="sm"
+															:disabled="!userCanEdit"
+															required></b-form-select>
+										</b-form-group>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="row">
+									<div :class="{'col-md-9':!isNew, 'col-md-12':isNew}">
+										<b-form-group label-cols-md="2">
+										<ul :class="{'itemPeiContainer':true, 'hidden':!this.mesures[this.selectedRow].listeHydrants.length}">
+										<li v-for="item in this.mesures[this.selectedRow].listeHydrants" 
+											v-bind:key="item.id" 
+											size="sm" 
+											:class="{'itemPei': true, 'bg-secondary':item.id==selectedPei, 'text-light':item.id==selectedPei}" 
+											@click="selectedPei = item.id">
+											{{item.numero}}
+										</li>
+										</ul>
+									</b-form-group>
+									</div>
+
+									<div class="col-md-3" v-if="!isNew">
+										<b-button @click="retirerPei" class="mr-2 btn btn-secondary d-inline-block right" size="sm" :disabled="selectedPei==null || !userCanEdit">Retirer</b-button>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-3 offset-md-3">
+								<b-form-checkbox
+									id="irv"
+									v-model="mesures[selectedRow].irv"
+									v-on:change="onIRVChecked"
+									:disabled="!userCanEdit"
+									size="sm">
+									Identique Réseau Ville
+								</b-form-checkbox>
+							</div>
+							<div class="col-md-6">
+								<b-form-group label="Attestation" label-for="attestation" label-cols-md="2">
+								<b-form-file
+									id="attestation"
+									v-model="newAttestationInputValue"
+									class="mb-2"
+									placeholder="Aucun fichier sélectionné"
+									:file-name-formatter="newAttestationName"
+									browse-text="Charger"
+									:disabled="!userCanEdit"
+								></b-form-file>
+							</b-form-group>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<b-form-group label="Commentaire" label-for="commentaire" label-cols-md="2">
+									<b-form-textarea id="commentaire" v-model="mesures[selectedRow].commentaire" size="sm" :disabled="!userCanEdit"></b-form-textarea>
+								</b-form-group>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-
-			<b-modal id="modal-datetime" size="sm" hide-header ok-only ok-title="OK" centered>
-				<p>Saisie invalide : </p>
-				<p class="my-4">Au moins deux mesures sont renseignées pour la même date et la même heure sur ce débit simultané</p>
-			</b-modal>
-
-			<b-modal id="modal-onlyOne" size="sm" hide-header ok-only ok-title="OK" centered>
-				<p>Saisie invalide : </p>
-				<p class="my-4">Toutes les mesures doivent porter sur au moins 2 PEI différents</p>
-			</b-modal>
+			<notifications group="remocra" position="top right" animation-type="velocity" :duration="3000" />
 		</b-modal>
 	</div>
 </template>
@@ -241,6 +233,8 @@
 import axios from 'axios'
 import _ from 'lodash'
 import moment from 'moment'
+import { loadProgressBar } from 'axios-progress-bar'
+
 export default {
 	name: 'DebitSimultaneFiche',
 
@@ -354,6 +348,7 @@ export default {
 
 	mounted: function() {
 		this.$refs.modalDebitSimultane.show();
+		loadProgressBar({parent: "#formDebitSimultane", showSpinner: false})
 
 		this.comboDebitRetenu = [];
 		for(var i = 60; i <= 2400; i += 60){
@@ -622,6 +617,7 @@ export default {
 		},
 
 		close(){
+			loadProgressBar({parent: "head", showSpinner: false});
 			this.$root.$options.bus.$emit('closed');
 		},
 
@@ -688,7 +684,12 @@ export default {
 
 					if(tabDates.indexOf(date) != -1){
 						this.etats.noSameDateTime = 'invalid';
-						this.$bvModal.show("modal-datetime");
+						this.$notify({
+							group: 'remocra',
+							type: 'error',
+							title: 'Saisie invalide',
+							text: 'Au moins deux mesures sont renseignées pour la même date et la même heure sur ce débit simultané'
+						});
 					} else {
 						tabDates.push(date);
 					}
@@ -696,7 +697,12 @@ export default {
 					if(mesure.listeHydrants.length < 2){
 						invalidMesure = mesure;
 						this.etats.plusieursPeiParMesure = 'invalid';
-						this.$bvModal.show("modal-onlyOne");
+						this.$notify({
+							group: 'remocra',
+							type: 'error',
+							title: 'Saisie invalide',
+							text: 'Toutes les mesures doivent porter sur au moins 2 PEI différents'
+						});
 					}
 
 				})
@@ -803,6 +809,10 @@ export default {
 
 <style>
 
+#modalDebitSimultane .modal-content {
+	background-color: #e9e9e9 !important;
+}
+
 .rowMesures {
 	max-height: 150px;
 	overflow-y: scroll;
@@ -814,6 +824,7 @@ export default {
 	overflow-x: hidden;
 	border-radius: 0.2em;
 	border: 1px solid #CED4DA;
+	background-color: white;
 }
 
 .loading .modal-body::after {

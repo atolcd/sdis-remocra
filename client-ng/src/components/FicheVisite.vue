@@ -181,11 +181,6 @@
 
 			</div>
 		</div>
-
-		<b-modal id="modal-datetime" size="sm" hide-header ok-only ok-title="OK" centered>
-			<p>Saisie invalide : </p>
-			<p class="my-4">Au moins deux visites sont renseignées pour la même date et la même heure sur ce point d'eau</p>
-		</b-modal>
 	</div>
 </template>
 
@@ -412,7 +407,6 @@ export default {
 	mounted: function(){
 
 		var self = this;
-
 		let requests = []
 
 		/* =============================================== Récupération des visites =============================================== */
@@ -767,7 +761,14 @@ export default {
 
 					if(tabDates.indexOf(date) != -1){ // Une visite avec cette date existe déjà
 						this.etats.noSameDateTime = 'invalid';
-						this.$bvModal.show("modal-datetime");
+
+						this.$notify({
+							group: 'remocra',
+							title: 'Saisie invalide',
+							type: 'error',
+							text: 'Au moins deux visites sont renseignées pour la même date et la même heure sur ce point d\'eau'
+						})
+
 					} else {
 						tabDates.push(date);
 					}
@@ -929,11 +930,6 @@ export default {
 .notActive {
 	pointer-events: none;
 	opacity: 0.4;
-}
-
-#modal-datetime p {
-	font-family: "Segoe UI",Roboto,"Helvetica Neue",Arial;
-	font-size: 14px;
 }
 
 .visites.loading::after {

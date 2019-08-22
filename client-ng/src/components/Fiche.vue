@@ -7,7 +7,7 @@
       <div id="entete" class="entete form-group">
         <div class="row">
           <div class="col-md-3">
-            <b-form-group invalid-feedback="Le numéro du PEI est manquant"
+            <b-form-group invalid-feedback="Numéro manquant ou déjà attribué"
                           :state="etats.numeroInterne"
                           label="Numéro interne"
                           label-for="numeroInterne"
@@ -153,18 +153,9 @@
 
     <ModalGestionnairePrive  v-on:modalGestionnaireValues="onGestionnaireCreated" ref="modalGestionnairePrive"></ModalGestionnairePrive>
 
-    <b-modal id="modalDoublonNumero" centered title="Erreur de saisie" header-bg-variant="warning" ok-only>
-      <div class="row">
-        <div class="col-md-2">
-          <img src="../assets/img/warning.png" width="32"/>
-        </div>
-        <div class="col-md-10">
-          <p class="my-4">{{numeroInterneDoublonErrorMsg}}</p>
-        </div>
-      </div>
-    </b-modal>
-
+    <notifications group="remocra" position="top right" animation-type="velocity" :duration="3000" />
   </b-modal>
+  
   </div>
 </template>
 
@@ -212,7 +203,6 @@ export default {
       comboAutoriteDeci: [],
 
       listeNaturesDeci: [],
-      numeroInterneDoublonErrorMsg: null,
       tabWarning : {
         localisation: false,
         caracteristiquesTechniques: false,
@@ -584,8 +574,13 @@ export default {
             return isFormValid;
           })
           .catch((error) => {
-            this.numeroInterneDoublonErrorMsg = error.response.data.message;
-            this.$bvModal.show('modalDoublonNumero');
+            this.$notify({
+              group: 'remocra',
+              type: 'error',
+              title: 'Saisie invalide',
+              text: error.response.data.message
+            });
+            this.etats.numeroInterne = 'invalid';
             return false;
           });
         } else {
@@ -845,11 +840,4 @@ label {
   animation: opacity-anim 1s linear infinite;
 }
 
-#modalDoublonNumero div[class^="col-md"]:first-child
-{
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: center;
-}
 </style>

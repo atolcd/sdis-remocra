@@ -2175,7 +2175,10 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
 
   createDebitSimultane: function() {
         var features = this.getSelectedFeatures();
-        var title="Une erreur est survenue à la création du débit simultané";
+
+        var title="Création du débit simultané impossible";
+        var text = "";
+
         var hydrantsCompatibles = true;
         var listeCodesDeci = [];
         var listeTypesReseau = [];
@@ -2204,38 +2207,46 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             }
         });
 
+
         // Vérifiation sur la nature DECI
-        if(listeCodesDeci.length != features.length) {
+        if(listeCodesDeci.length != features.length && hydrantsCompatibles) {
             hydrantsCompatibles = false;
-            this.showErrorMessage(title.replace(/'/g, ' '), (features.length-listeCodesDeci.length+" hydrant(s) n'a/n'ont pas de nature DECI attribuée").replace(/'/g, '‘'));
+            text = features.length-listeCodesDeci.length+" hydrant(s) n'a/n'ont pas de nature DECI attribuée";
         }
-        else if(listeCodesDeci.filter(filtre).length > 1 || (listeCodesDeci.filter(filtre).length > 0 && listeCodesDeci.filter(filtre)[0] !== "PRIVE")) {
+        else if(hydrantsCompatibles && (listeCodesDeci.filter(filtre).length > 1 || (listeCodesDeci.filter(filtre).length > 0 && listeCodesDeci.filter(filtre)[0] !== "PRIVE"))) {
             hydrantsCompatibles = false;
-            this.showErrorMessage(title.replace(/'/g, ' '), ("Les hydrants ne sont pas tous de nature DECI privée").replace(/'/g, '‘'));
+            text = "Les hydrants ne sont pas tous de nature DECI privée";
         }
 
         // Vérification sur le type de réseau
-        if(listeTypesReseau.length != features.length) {
+        if(listeTypesReseau.length != features.length && hydrantsCompatibles) {
             hydrantsCompatibles = false;
-            this.showErrorMessage(title.replace(/'/g, ' '), (features.length-listeTypesReseau.length+" hydrant(s) n'a/n'ont pas de type de réseau attribué").replace(/'/g, '‘'));
+            text = features.length-listeTypesReseau.length+" hydrant(s) n'a/n'ont pas de type de réseau attribué";
         }
-        else if(listeTypesReseau.filter(filtre).length > 1) {
+        else if(listeTypesReseau.filter(filtre).length > 1 && hydrantsCompatibles) {
             hydrantsCompatibles = false;
-            this.showErrorMessage(title.replace(/'/g, ' '), ("Les hydrants sélectionnés n'ont pas tous le même type de réseau").replace(/'/g, '‘'));
+            text = "Les hydrants sélectionnés n'ont pas tous le même type de réseau";
         }
 
         // Vérification sur le diamètre
-        if(listeDiametres.length != features.length) {
+        if(listeDiametres.length != features.length && hydrantsCompatibles) {
             hydrantsCompatibles = false;
-            this.showErrorMessage(title.replace(/'/g, ' '), (features.length-listeDiametres.length+" hydrant(s) n'a/n'ont pas de diamètre nominal attribué").replace(/'/g, '‘'));
+            text = features.length-listeDiametres.length+" hydrant(s) n'a/n'ont pas de diamètre nominal attribué";
         }
-        else if(listeDiametres.filter(filtre).length > 1) {
+        else if(listeDiametres.filter(filtre).length > 1 && hydrantsCompatibles) {
             hydrantsCompatibles = false;
-            this.showErrorMessage(title.replace(/'/g, ' '), ("Les hydrants sélectionnés n'ont pas tous le même diamètre nominal").replace(/'/g, '‘'));
+            text = "Les hydrants sélectionnés n'ont pas tous le même diamètre nominal";
         }
 
         if(hydrantsCompatibles){
             this.showDebitSimultaneFiche(null, listeId);
+        } else {
+            Ext.Msg.show({
+                title : title,
+                msg : text,
+                buttons : Ext.Msg.OK,
+                icon : Ext.Msg.WARNING
+            });
         }
 
       },
@@ -2284,21 +2295,6 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 }
             }
         });
-      },
-
-      showErrorMessage: function(title, message){
-        var d = document.createElement('div');
-        var id = "show-errorMsg-"+(++Ext.AbstractComponent.AUTO_ID);
-        d.id=id;
-        document.body.appendChild(d);
-        var vueErrorMessage = window.remocraVue.errorMessage(d, {
-            title: title, msg: message
-        });
-
-        vueErrorMessage.$options.bus.$on('closed', Ext.bind(function(data) {
-               vueErrorMessage.$el.remove();
-               vueErrorMessage.$destroy();
-        }, this));
       },
 
       /**

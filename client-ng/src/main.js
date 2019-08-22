@@ -6,7 +6,6 @@ import Fiche from './components/Fiche'
 import Contacts from './components/Contacts'
 import FicheIndisponibiliteTemporaire from './components/FicheIndisponibiliteTemporaire'
 import DebitSimultaneSelection from './components/DebitSimultaneSelection'
-import ErrorMessage from './components/ErrorMessage'
 import DebitSimultaneFiche from './components/DebitSimultaneFiche'
 // import router from './router'
 import BootstrapVue from 'bootstrap-vue'
@@ -59,18 +58,6 @@ const peiBuildFiche = function(el, data) {
       Fiche
     },
     template: "<Fiche  title='" + data.title + "' :newVisite=" + data.newVisite + " :idHydrant=" + data.id + " codeHydrant=" + data.code + "  geometrie='" + data.geometrie + "' />"
-  })
-  return v
-}
-
-const errorMessage = function(el, data) {
-  var v = new Vue({
-    el,
-    bus: new Vue(),
-    components: {
-      ErrorMessage
-    },
-    template: "<ErrorMessage  title='"+data.title+"' msg='"+data.msg+"' />"
   })
   return v
 }
@@ -130,7 +117,6 @@ const debitSimultaneFiche = function(el, data) {
 export {
   criseBuildMap,
   peiBuildFiche,
-  errorMessage,
   indispoTempBuildFiche,
   buildContacts,
   debitSimultaneSelection,
