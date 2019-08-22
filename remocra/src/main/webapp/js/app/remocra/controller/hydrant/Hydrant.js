@@ -2335,7 +2335,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         document.body.appendChild(d);
         var vueDebitSimultaneFiche = window.remocraVue.debitSimultaneFiche(d, {
           idDebitSimultane: idDebitSimultane,
-          listeHydrants: listeHydrants || null,
+          listeHydrantsOnCreate: listeHydrants || null,
           vitesseEau: VITESSE_EAU
         });
 
