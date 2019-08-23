@@ -173,7 +173,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                     tooltip: 'Créer un débit simultané',
                     text: '<span>Créer débit dimultané.</span>',
                     cls: 'time-add',
-                    iconCls: 'editIcon',
+                    iconCls: 'add',
                     itemId: 'debitSimultaneBtn',
                     disabled: true
                 });
