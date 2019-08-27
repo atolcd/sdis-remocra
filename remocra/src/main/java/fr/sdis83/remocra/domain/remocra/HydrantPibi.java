@@ -100,7 +100,10 @@ public class HydrantPibi extends Hydrant {
         feature.addProperty("debit", this.getDebit());
         feature.addProperty("debitMax", this.getDebitMax());
         feature.addProperty("typeReseau", this.getTypeReseauId());
+        feature.addProperty("typeReseauNom", this.getTypeReseauNom());
         feature.addProperty("diametreCanalisation", this.diametreCanalisation);
+        feature.addProperty("diametreNom", this.getDiametreNom());
+        feature.addProperty("diametreId", this.getDiametreId());
         return feature;
     }
 
@@ -109,6 +112,27 @@ public class HydrantPibi extends Hydrant {
             return this.getTypeReseauAlimentation().getId();
          }
          return null;
+    }
+
+    public String getDiametreNom(){
+        if(this.getDiametre() != null) {
+            return this.getDiametre().getNom();
+        }
+        return null;
+    }
+
+    public Long getDiametreId(){
+        if(this.getDiametre() != null) {
+            return this.getDiametre().getId();
+        }
+        return null;
+    }
+
+    public String getTypeReseauNom(){
+        if(this.getTypeReseauAlimentation() != null) {
+            return this.getTypeReseauAlimentation().getNom();
+        }
+        return null;
     }
 
 }

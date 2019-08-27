@@ -2183,7 +2183,10 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         var listeCodesDeci = [];
         var listeTypesReseau = [];
         var listeDiametres = [];
-        var listeId = [];
+
+        var dataCreation = {
+            hydrants: []
+        };
 
         // Filtre permettant de supprimer les doublons d'une collection
         var filtre = function onlyUnique(value, index, self) {
@@ -2192,7 +2195,25 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
 
         features.forEach(function(hydrant){
 
-            listeId.push(hydrant.data.internalId);
+            dataCreation.hydrants.push({
+                id: hydrant.data.internalId,
+                numero: hydrant.data.numero
+            });
+
+            dataCreation.site = {
+                nom: hydrant.data.siteNom,
+                id: hydrant.data.siteId
+            };
+
+            dataCreation.diametre = {
+                nom: hydrant.data.diametreNom,
+                id: hydrant.data.diametreId
+            };
+
+            dataCreation.typeReseau = {
+                nom: hydrant.data.typeReseauNom,
+                id: hydrant.data.typeReseauNom
+            };
 
             if(hydrant.data.codeNatureDeci){
                 listeCodesDeci.push(hydrant.data.codeNatureDeci);
@@ -2239,7 +2260,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         }
 
         if(hydrantsCompatibles){
-            this.showDebitSimultaneFiche(null, listeId);
+            this.showDebitSimultaneFiche(null, dataCreation);
         } else {
             Ext.Msg.show({
                 title : title,
@@ -2328,14 +2349,14 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
       },
 
       // Affichage de la fiche d'un débit simultané
-      showDebitSimultaneFiche: function(idDebitSimultane, listeHydrants) {
+      showDebitSimultaneFiche: function(idDebitSimultane, dataCreation) {
         var d = document.createElement('div');
         var id = "show-debitSimultaneFiche-"+(++Ext.AbstractComponent.AUTO_ID);
         d.id=id;
         document.body.appendChild(d);
         var vueDebitSimultaneFiche = window.remocraVue.debitSimultaneFiche(d, {
           idDebitSimultane: idDebitSimultane,
-          listeHydrantsOnCreate: listeHydrants || null,
+          dataOnCreate: dataCreation || null,
           vitesseEau: VITESSE_EAU
         });
 

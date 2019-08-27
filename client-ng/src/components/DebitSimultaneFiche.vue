@@ -273,7 +273,7 @@ export default {
 		},
 
 		// Liste des hydrants à prendre en compte lors de la création du débit simultané
-		listeHydrantsOnCreate: {
+		dataOnCreate: {
 			type: String,
 			required: false
 		},
@@ -365,7 +365,7 @@ export default {
 				this.utilisateurDroits.push(item.getAttribute("code"));
 			});
 		}).then(() => {
-			if(this.idDebitSimultane > -1 && (this.listeHydrantsOnCreate === 'null' || this.listeHydrantsOnCreate === 'undefined')) {
+			if(this.idDebitSimultane > -1 && (this.dataOnCreate === 'null' || this.dataOnCreate === 'undefined')) {
 				this.modification();
 			} else {
 				this.creation();
@@ -376,47 +376,19 @@ export default {
 	methods: {
 
 		creation() {
+			var data = JSON.parse(this.dataOnCreate);
+
 			this.debitSimultane = {
 				id: null,
-				numDossier: ''
+				numDossier: '',
+				site: data.site
 			};
 
-			var nbRequetesEnAttente = JSON.parse(this.listeHydrantsOnCreate).length;
-			var nbRequetesTerminees = 0;
-			var liste = [];
-			_.forEach(JSON.parse(this.listeHydrantsOnCreate), idHydrant => {
-				axios.get('/remocra/hydrantspibi/'+idHydrant).then(response => {
-					var hydrant = response.data.data;
-
-					liste.push({
-						id: hydrant.id,
-						numero: hydrant.numero
-					});
-					if(this.diametreImpose === null) {
-						this.diametreImpose = hydrant.diametre;
-					}
-					if(this.typeReseauImpose === null) {
-						this.typeReseauImpose = hydrant.typeReseauAlimentation;
-					}
-
-					// On récupère les informations du site depuis l'un des hydrants
-					// Normalement, les hydrants font partie du même site. En pratique, il n'y a pas encore de vérifications pour cela
-					if(hydrant.site && hydrant.site.id && hydrant.site.nom) {
-						this.debitSimultane.site = {
-							id: hydrant.site.id,
-							nom: hydrant.site.nom
-						}
-					}
-
-					nbRequetesTerminees++;
-					if(nbRequetesTerminees === nbRequetesEnAttente){
-						this.createMesure();
-						this.mesures[0].listeHydrants = liste;
-						this.dataLoaded = true;
-					}
-				});
-			});
-
+			this.diametreImpose = data.diametre;
+			this.typeReseauImpose = data.typeReseau;
+			this.createMesure();
+			this.mesures[0].listeHydrants = data.hydrants;
+			this.dataLoaded = true;
 		},
 
 		modification() {
@@ -430,16 +402,15 @@ export default {
                     }
                 }).then(response => {
 					this.mesures = response.data.data;
-					var nbRequetesEnAttente = response.data.data.length;
-					var nbRequetesTerminees = 0;
 
+					var requests = [];
 					_.forEach(this.mesures, mesure => {
 						mesure.newAttestation = null;
 						var splitDate = mesure.dateMesure.split("T");
 						mesure.formattedDate = splitDate[0];
 						mesure.formattedTime = splitDate[1].substr(0, splitDate[1].length - 3);
 
-						axios.get('/remocra/debitsimultanehydrant', { // On récupère les hydrants composant chacunes des mesures
+						requests.push(axios.get('/remocra/debitsimultanehydrant', { // On récupère les hydrants composant chacunes des mesures
 							params: {
 							filter: JSON.stringify([{"property":"debit","value":mesure.id}]),
 							}
@@ -458,38 +429,32 @@ export default {
 								}
 							})
 							mesure.listeHydrants = listeHydrants;
-
-							// Permet de savoir si toutes les requêtes ont été jouées
-							// (une requête dans un forEach lance autant de requête que d'itération, il faut attendre la fin de toutes les requêtes)
-							nbRequetesTerminees++;
-							if(nbRequetesEnAttente == nbRequetesTerminees){
-
-								this.hydrantsAdequats = [];
-								axios.get('/remocra/hydrantspibi', {
-									params: {
-										filter: JSON.stringify([
-											{"property":"codeNatureDeci","value":"PRIVE"},
-											//{"property":"site","value":this.debitSimultane.site.id}, // Pour l'instant, le site n'est pas une caractéristique discriminante
-											{"property":"near","value":this.debitSimultane.geometrie},
-											{"property":"diametre","value":this.diametreImpose.id},
-											{"property":"typeReseau","value":this.typeReseauImpose.id}
-										]),
-										limit: 100
-									}
-								}).then(response => {
-									_.forEach(response.data.data, hydrant => {
-										this.hydrantsAdequats.push({
-											id: hydrant.id,
-											numero: hydrant.numero
-										}) 
-									});
-									this.dataLoaded = true;
-								});
-								
-							}
-						});
-						
+						}));
 					});
+
+					axios.all(requests).then(() => {
+						this.hydrantsAdequats = [];
+						axios.get('/remocra/hydrantspibi', {
+							params: {
+								filter: JSON.stringify([
+									{"property":"codeNatureDeci","value":"PRIVE"},
+									//{"property":"site","value":this.debitSimultane.site.id}, // Pour l'instant, le site n'est pas une caractéristique discriminante
+									{"property":"near","value":this.debitSimultane.geometrie},
+									{"property":"diametre","value":this.diametreImpose.id},
+									{"property":"typeReseau","value":this.typeReseauImpose.id}
+								]),
+								limit: 100
+							}
+						}).then(response => {
+							_.forEach(response.data.data, hydrant => {
+								this.hydrantsAdequats.push({
+									id: hydrant.id,
+									numero: hydrant.numero
+								})
+							});
+							this.dataLoaded = true;
+						});
+					})
 
 				});
 			});	
@@ -654,7 +619,7 @@ export default {
 					invalidMesure = mesure;
 				}
 
-				if(!mesure.debitMesure || mesure.debitMesure.length == 0) {
+				if((!mesure.debitMesure || mesure.debitMesure.length == 0) && !mesure.irv) {
 					this.etats.debitMesure = 'invalid';
 					invalidMesure = mesure;
 				}
@@ -668,7 +633,7 @@ export default {
 					this.etats.time = 'invalid';
 					invalidMesure = mesure;
 				}
-				if(mesure.debitRetenu === null && !mesure.irv) {
+				if(mesure.debitRetenu === null) {
 					this.etats.debitRetenu = 'invalid';
 					invalidMesure = mesure;
 				}
