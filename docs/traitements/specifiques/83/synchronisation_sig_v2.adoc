@@ -1,0 +1,37 @@
+==== Synchronisation SIG V2
+
+===== Principe
+
+Ce traitement a pour but d'assurer la synchronisation entre le système REMOcRA et le SIG du SDIS.
+
+===== Configuration et mise en place
+
+Les paramètres de configuration sont intégrés dans le fichier (```kettle.properties```) :
+
+[width="100%",options="header"]
+|====================
+| Paramètre | Description | Exemple
+| PDI_SIG_DATABASE_HOST | URL d’accès au serveur SIG | ```sig.sdisxx.fr```, `192.168.1.12`
+| PDI_SIG_DATABASE_NAME | Nom de la base du SIG | ```carto```
+| PDI_SIG_DATABASE_PORT | Port du serveur SIG | ```5432```
+| PDI_SIG_DATABASE_USER_NAME | Nom d’utilisateur du compte SIG | ```sig```
+| PDI_SIG_DATABASE_USER_PASSWORD | Mot de passe du compte FTP |
+|====================
+
+===== Export des données métier (automatique)
+Tâche principale de synchronisation des données REMOcRA vers le SIG.
+
+Exemple de tâche planifiée avec l'utilisateur postgres, quotidiennement à XXhXX :
+[source]
+----
+XX XX * * * /var/remocra/modeles/processus_etl/sdis/83/synchroniation_sig/remocra_vers_sig/synchroniser_remocra_vers_sig.sh >> /var/remocra/pdi/log/remocra_synchroniser_remocra_vers_sig.log 2>&1
+----
+
+===== Import des données métier (automatique)
+Tâche principale de récupération des données du SIG dans REMOcRA.
+
+Exemple de tâche planifiée avec l'utilisateur postgres, quotidiennement à XXhXX :
+[source]
+----
+XX XX * * * /var/remocra/modeles/processus_etl/sdis/83/synchroniation_sig/sig_vers_remocra/synchroniser_sig_vers_remocra.sh >> /var/remocra/pdi/log/remocra_synchroniser_sig_vers_remocra.log 2>&1
+----
