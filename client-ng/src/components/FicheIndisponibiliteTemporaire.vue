@@ -245,7 +245,14 @@ export default {
     initTabIdPeiConcernes() {
       var i = 0;
       for (i; i < this.value.tabNumeroPeiConcernes.length; i++) {
-        axios.get('/remocra/hydrants?filter=[{"property":"numero", "value": "' + this.value.tabNumeroPeiConcernes[i] + '"}]').then((response) => {
+        axios.get('/remocra/hydrants', { // Récupération des mesures effectuées
+          params: {
+            filter: JSON.stringify([{
+              "property": "numero",
+              "value": this.value.tabNumeroPeiConcernes[i]
+            }]),
+          }
+        }).then((response) => {
           var pei = response.data.data
           this.value.tabIdPeiConcernes.push(pei[0].id.toString())
         }).catch(function(error) {
@@ -284,7 +291,14 @@ export default {
     ajoutePeiSelect() {
       //récupération de la commune de l'indispo
       var tabCommune = [];
-      axios.get('/remocra/hydrants?filter=[{"property":"numero", "value": "' + this.value.tabNumeroPeiConcernes[0] + '"}]').then((response) => {
+      axios.get('/remocra/hydrants', { // Récupération des mesures effectuées
+        params: {
+          filter: JSON.stringify([{
+            "property": "numero",
+            "value": this.value.tabNumeroPeiConcernes[0]
+          }]),
+        }
+      }).then((response) => {
         tabCommune = response.data.data;
         this.idCommuneVerif = tabCommune[0].commune.id
         this.$nextTick(() => {
@@ -333,7 +347,14 @@ export default {
       }
     },
     checkCommune(pei) {
-      axios.get('/remocra/hydrants?filter=[{"property":"numero", "value": "' + pei + '"}]').then((response) => {
+      axios.get('/remocra/hydrants', { // Récupération des mesures effectuées
+        params: {
+          filter: JSON.stringify([{
+            "property": "numero",
+            "value": pei
+          }]),
+        }
+      }).then((response) => {
         this.idCommune = response.data.data;
       }).catch(function(error) {
         console.error(error)
