@@ -47,14 +47,14 @@ FROM
 	(SELECT xmlelement(name "hydrant",
 			xmlelement(name "adresse", h.adresse),
 			xmlelement(name "commune", h.commune),
-			xmlelement(name "observation", h.observation),
+			xmlelement(name "complement", h.complement),
 			xmlelement(name "dispo_terrestre", h.dispo_terrestre),
 			xmlelement(name "nature", h.nature)
 	) as hydrant_data
 	FROM 
-		(SELECT TRIM(COALESCE(h.numero_voie || '' '', '''') || COALESCE(h.suffixe_voie || '' '', '''') || h.voie) AS adresse,
+		(SELECT TRIM(COALESCE(h.numero_voie || '' '', '''') || COALESCE(h.suffixe_voie || '' '', '''') || h.voie || CASE WHEN h.en_face = TRUE THEN '' (En face)'' else '''' end) AS adresse,
 			c.nom AS commune,  
-			h.observation, 
+			h.complement, 
 			h.dispo_terrestre,
 			th.code AS nature
 		FROM 	remocra.hydrant h
@@ -74,14 +74,14 @@ FROM
 	(SELECT xmlelement(name "hydrant",
 			xmlelement(name "adresse", h.adresse),
 			xmlelement(name "commune", h.commune),
-			xmlelement(name "observation", h.observation),
+			xmlelement(name "complement", h.complement),
 			xmlelement(name "dispo_terrestre", h.dispo_terrestre),
 			xmlelement(name "nature", h.nature)
 	) as hydrant_data
 	FROM 
-		(SELECT TRIM(COALESCE(h.numero_voie || '' '', '''') || COALESCE(h.suffixe_voie || '' '', '''') || h.voie) AS adresse,
+		(SELECT TRIM(COALESCE(h.numero_voie || '' '', '''') || COALESCE(h.suffixe_voie || '' '', '''') || h.voie || CASE WHEN h.en_face = TRUE THEN '' (En face)'' else '''' end) AS adresse,
 			c.nom AS commune,  
-			h.observation, 
+			h.complement, 
 			h.dispo_terrestre,
 			th.code AS nature
 		FROM 	remocra.hydrant h

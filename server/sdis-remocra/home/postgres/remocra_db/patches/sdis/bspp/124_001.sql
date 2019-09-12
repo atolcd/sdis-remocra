@@ -15,7 +15,7 @@ FROM
 	(SELECT xmlelement(name "hydrant",
 			xmlelement(name "adresse", h.adresse),
 			xmlelement(name "commune", h.commune),
-			xmlelement(name "observation", h.observation),
+			xmlelement(name "complement", h.complement),
 			xmlelement(name "debit_renforce", h.debit_renforce),
 			xmlelement(name "grosDebit", h.grosDebit),
 			xmlelement(name "dispo_terrestre", h.dispo_terrestre),
@@ -23,9 +23,9 @@ FROM
 			xmlelement(name "nature", h.nature)
 	) as hydrant_data
 	FROM 
-		(SELECT TRIM(COALESCE(h.numero_voie || '' '', '''') || COALESCE(h.suffixe_voie || '' '', '''') || h.voie) AS adresse,
+		(SELECT TRIM(COALESCE(h.numero_voie || '' '', '''') || COALESCE(h.suffixe_voie || '' '', '''') || h.voie || CASE WHEN h.en_face = TRUE THEN '' (En face)'' else '''' end) AS adresse,
 			c.nom AS commune,  
-			h.observation, 
+			h.complement, 
 			hp.debit_renforce,
 			h.dispo_terrestre,
 			th.code AS nature,
@@ -91,16 +91,16 @@ FROM
 	(SELECT xmlelement(name "hydrant",
 			xmlelement(name "adresse", h.adresse),
 			xmlelement(name "commune", h.commune),
-			xmlelement(name "observation", h.observation),
+			xmlelement(name "complement", h.complement),
 			xmlelement(name "dispo_terrestre", h.dispo_terrestre),
 			xmlelement(name "nature", h.nature),
 			xmlelement(name "capacite", h.capacite),
 			xmlelement(name "aspirations", h.aspirations)
 	) as hydrant_data
 	FROM 
-		(SELECT TRIM(COALESCE(h.numero_voie || '' '', '''') || COALESCE(h.suffixe_voie || '' '', '''') || h.voie) AS adresse,
+		(SELECT TRIM(COALESCE(h.numero_voie || '' '', '''') || COALESCE(h.suffixe_voie || '' '', '''') || h.voie || CASE WHEN h.en_face = TRUE THEN '' (En face)'' else '''' end) AS adresse,
 			c.nom AS commune,  
-			h.observation, 
+			h.complement, 
 			h.dispo_terrestre,
 			th.code AS nature,
 			CASE WHEN thn.code = ''CI_FIXE'' AND hp.illimitee THEN ''Illimitée''
