@@ -329,6 +329,7 @@ Remarque, link:Demande%20cle%20IGN{outfilesuffix}[une clé IGN] doit être param
 ----
 "type" : "osm"
 "urls" : facultatif. Permet de changer les URLs par défaut. Exemple : ['http://a.tile.openstreetmap.org/${z}/${x}/${y}.png', 'http://b.tile.openstreetmap.org/${z}/${x}/${y}.png', 'http://c.tile.openstreetmap.org/${z}/${x}/${y}.png']
+"tile_options" : facultatif. Lorsqu'on paramètre un autre serveur (via "urls"), il est possible que ce dernier ne renvoie pas les entêtes Access-Control-Allow-Origin. Dans ce cas, il peut être nécessaire de définir la valeur {"crossOriginKeyword": null} pour permettre au navigateur d'afficher les tuiles.
 ----
 
 ==== Pour les couches de type "tms"
