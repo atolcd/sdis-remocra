@@ -1,7 +1,7 @@
 <template>
 <form v-on:submit.prevent>
   <autocomplete :input-attrs="{ placeholder: 'Origine...' }" v-model="origine" :items="results" :get-label="getLabel" :component-item='origineTemplate' :min-len="2" :auto-select-one-item="true" @update-items="search" @item-selected="origineSelected"
-  @item-clicked="origineClicked" />
+    @item-clicked="origineClicked" />
 </form>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
 <form v-on:submit.prevent>
-  <autocomplete :input-attrs="{placeholder: 'Sélectionner une valeur..' }" v-model="selected" :items="results" :get-label="getLabel" :component-item='complementTemplate' :min-len="2" :auto-select-one-item="true" @update-items="search" @item-selected="paramSelected"
-  @item-clicked="paramClicked" />
+  <autocomplete :input-attrs="{placeholder: 'Sélectionner une valeur..' }" v-model="selected" :items="results" :get-label="getLabel" :component-item='complementTemplate' :min-len="2" :auto-select-one-item="true" @update-items="search"
+    @item-selected="paramSelected" @item-clicked="paramClicked" />
 </form>
 </template>
 

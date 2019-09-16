@@ -43,12 +43,12 @@ export default {
       this.$refs.modal.show()
       this.$root.$emit('bv::hide::popover')
     },
-     showInfo(features) {
+    showInfo(features) {
       this.mode = 'info'
       this.showModal(features)
     },
-    clearMode(){
-      this.mode= 'modif'
+    clearMode() {
+      this.mode = 'modif'
     },
     addSelected() {
       this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, this.crise)

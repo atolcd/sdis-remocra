@@ -40,7 +40,7 @@ export default {
     },
     clearFields() {
       this.file = null,
-      this.files = []
+        this.files = []
     },
     handleOk(evt) {
       // Prevent modal from closing

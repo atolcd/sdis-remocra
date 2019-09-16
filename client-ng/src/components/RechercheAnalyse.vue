@@ -16,13 +16,13 @@
       <div v-for="(item, index) in parametres" :key="`${index}-${item.id}`">
         <b-form-group v-if="item.formulaireTypeControle == 'combo'" vertical :label="item.formulaireEtiquette" :label-for="item.nom">
           <select :idInput="item.nom" :required="item.obligatoire" class="form-control parametreRequete">
-            <option v-for="(value, key) in getOption(item.nom)" :key="key"  :value="value.valeur" :selected="value.valeur == value.formulaireValeurDefaut">
+            <option v-for="(value, key) in getOption(item.nom)" :key="key" :value="value.valeur" :selected="value.valeur == value.formulaireValeurDefaut">
               {{ value.libelle }}
             </option>
           </select>
         </b-form-group>
-        <b-form-group v-if="item.formulaireTypeControle == 'autocomplete'" :id="'input' + item.id" :required="item.obligatoire" class="form-control parametreRequete" inputType="autocomplete" :idInput="item.nom" vertical :label="item.formulaireEtiquette"
-        :label-for="'input' + item.id">
+        <b-form-group v-if="item.formulaireTypeControle == 'autocomplete'" :id="'input' + item.id" :required="item.obligatoire" class="form-control parametreRequete" inputType="autocomplete" :idInput="item.nom" vertical
+          :label="item.formulaireEtiquette" :label-for="'input' + item.id">
           <search-process-param :ref="'searchinput' + item.id" :paramId="item.id" :searchInput="item.formulaireValeurDefaut" queryURL="remocra/requetemodele/reqmodparalst/"></search-process-param>
         </b-form-group>
         <b-form-group v-if="item.formulaireTypeControle == 'checkbox'" vertical :label="item.formulaireEtiquette" :label-for="item.nom">
@@ -45,14 +45,12 @@
                 item.formulaireValeurDefaut !== null
                   ? item.formulaireValeurDefaut.split(' ')[0]
                   : ''
-              " :required="item.obligatoire"
-          class="form-control" />
+              " :required="item.obligatoire" class="form-control" />
           <input type="time" :idInput="item.nom.concat('_time')" :value="
                 item.formulaireValeurDefaut !== null
                   ? item.formulaireValeurDefaut.split(' ')[1]
                   : ''
-              " :required="item.obligatoire"
-          step="1" class="form-control" />
+              " :required="item.obligatoire" step="1" class="form-control" />
         </b-form-group>
       </div>
       <div>
@@ -117,7 +115,10 @@ export default {
     getSelectAnalyseItems() {
       var self = this
       this.selectAnalyseOptions = []
-      var jsonFilters = JSON.stringify([{"property":"categorie","value":"GESTION_CRISE"}])
+      var jsonFilters = JSON.stringify([{
+        "property": "categorie",
+        "value": "GESTION_CRISE"
+      }])
       axios.get('/remocra/requetemodele', {
         params: {
           filter: jsonFilters
@@ -219,7 +220,7 @@ export default {
       // Envoi des données
       let formData = new FormData()
       formData.append('jsonValeurs', JSON.stringify(valParams))
-      axios.post('/remocra/requetemodele/' + idRequeteModele ,formData).then(response => {
+      axios.post('/remocra/requetemodele/' + idRequeteModele, formData).then(response => {
         if (response.data.message) {
           this.retrieveData(JSON.parse(response.data.message))
         }
@@ -232,7 +233,7 @@ export default {
       var idSelection = header[0].requete
       axios.get('/remocra/requetemodele/reqmodresult/' + idSelection).then(response => {
         if (response.data.data && response.data.data.length !== 0) {
-          var spatial = document.getElementById('selectAnalyse'+this.criseId).options[document.getElementById('selectAnalyse'+this.criseId).selectedIndex].getAttribute('data-spatial')
+          var spatial = document.getElementById('selectAnalyse' + this.criseId).options[document.getElementById('selectAnalyse' + this.criseId).selectedIndex].getAttribute('data-spatial')
           this.$root.$options.bus.$emit(eventTypes.RESEARCH_TABDONNEES, header, response.data.data, spatial, idSelection)
         } else {
           this.$notify({
@@ -288,9 +289,9 @@ export default {
         evt.stopPropagation()
       }
     },
-    getOption: function (nom) {
+    getOption: function(nom) {
       console.log(nom)
-      return this.comboOptions.filter(function (value) {
+      return this.comboOptions.filter(function(value) {
         return value.nomChamp === nom
       })
     }
@@ -308,6 +309,7 @@ export default {
   content: url('/remocra/static/img/pencil_point.png');
   cursor: pointer;
 }
+
 .geom-pointgeometryfield.active {
   background-color: #bbbbbb;
   border-color: #9d9d9d;
@@ -319,6 +321,7 @@ export default {
   content: url('/remocra/static/img/pencil_ligne.png');
   cursor: pointer;
 }
+
 .geom-linestringgeometryfield.active {
   background-color: #bbbbbb;
   border-color: #9d9d9d;
@@ -326,10 +329,11 @@ export default {
   border-radius: 3px;
 }
 
-.geom-polygongeometryfield{
+.geom-polygongeometryfield {
   content: url('/remocra/static/img/pencil_polygone.png');
   cursor: pointer;
 }
+
 .geom-polygongeometryfield.active {
   background-color: #bbbbbb;
   border-color: #9d9d9d;
@@ -366,6 +370,7 @@ export default {
   margin-left: 20px;
   cursor: pointer;
 }
+
 .delete.active {
   background-color: #bbbbbb;
   border-color: #9d9d9d;
@@ -378,6 +383,7 @@ export default {
   margin-left: 20px;
   cursor: pointer;
 }
+
 .modif.active {
   background-color: #bbbbbb;
   border-color: #9d9d9d;

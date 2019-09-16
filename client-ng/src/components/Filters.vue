@@ -35,8 +35,9 @@
     <b-list-group-item>
       <strong>Importance</strong>
       <div class="resetrate">
-      <img src="/remocra/static/img/resetrate.png"  style="cursor:pointer" @click="resetRate">
-      <rate :length="5" @after-rate="onAftereRate" v-model="myRate" /></div>
+        <img src="/remocra/static/img/resetrate.png" style="cursor:pointer" @click="resetRate">
+        <rate :length="5" @after-rate="onAftereRate" v-model="myRate" />
+      </div>
     </b-list-group-item>
   </b-list-group>
 </div>
@@ -130,9 +131,9 @@ export default {
             showedFilter: value.nom
           })
         }
-      } else if (filtre === 'periode'){
+      } else if (filtre === 'periode') {
         // on peut pas cumuler des filtres de periode
-        if(_.filter(this.filterTags, ['property', 'periode']).length === 0){
+        if (_.filter(this.filterTags, ['property', 'periode']).length === 0) {
           this.filtres.push(value)
           this.filterTags.push({
             property: filtre,

@@ -77,16 +77,16 @@ const buildContacts = function(el, data) {
 
 
 //fiche indispo temp
-const indispoTempBuildFiche = function(el, data){
-    var v = new Vue({
+const indispoTempBuildFiche = function(el, data) {
+  var v = new Vue({
     el,
     bus: new Vue(),
     components: {
-        FicheIndisponibiliteTemporaire
+      FicheIndisponibiliteTemporaire
     },
-    template: "<FicheIndisponibiliteTemporaire idIndispoTemp="+data.idIndispoTemp+" tabIdPeiSelected="+data.tabIdPeiSelected+" tabNumPeiSelected='"+data.tabNumPeiSelected+"'/>"
-    })
-    return v
+    template: "<FicheIndisponibiliteTemporaire idIndispoTemp=" + data.idIndispoTemp + " tabIdPeiSelected=" + data.tabIdPeiSelected + " tabNumPeiSelected='" + data.tabNumPeiSelected + "'/>"
+  })
+  return v
 }
 
 const debitSimultaneSelection = function(el, data) {
@@ -96,7 +96,7 @@ const debitSimultaneSelection = function(el, data) {
     components: {
       DebitSimultaneSelection
     },
-    template: "<DebitSimultaneSelection  typeSelection='"+data.typeSelection+"' debitsData='"+encodeURI(JSON.stringify(data.comboDebits))+"' />"
+    template: "<DebitSimultaneSelection  typeSelection='" + data.typeSelection + "' debitsData='" + encodeURI(JSON.stringify(data.comboDebits)) + "' />"
   })
   return v
 }
@@ -109,7 +109,7 @@ const debitSimultaneFiche = function(el, data) {
     components: {
       DebitSimultaneFiche
     },
-    template: "<DebitSimultaneFiche idDebitSimultane="+data.idDebitSimultane+" dataOnCreate='"+JSON.stringify(data.dataOnCreate)+"' vitesseEau='"+data.vitesseEau+"'/>"
+    template: "<DebitSimultaneFiche idDebitSimultane=" + data.idDebitSimultane + " dataOnCreate='" + JSON.stringify(data.dataOnCreate) + "' vitesseEau='" + data.vitesseEau + "'/>"
   })
   return v
 }

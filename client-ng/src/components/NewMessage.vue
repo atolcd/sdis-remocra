@@ -19,8 +19,9 @@
       </b-form-group>
       <b-form-group horizontal label="Importance:" label-for="importanceMessage">
         <div class="resetrate">
-        <img src="/remocra/static/img/resetrate.png"  style="cursor:pointer" @click="resetRate">
-        <rate id="importanceMessage" :length="5" v-model="form.importance" /></div>
+          <img src="/remocra/static/img/resetrate.png" style="cursor:pointer" @click="resetRate">
+          <rate id="importanceMessage" :length="5" v-model="form.importance" />
+        </div>
       </b-form-group>
       <b-form-group horizontal label="Tags:" label-for="tags">
         <b-form-textarea id="tagsMessage" v-model="form.tags" :rows="3" :max-rows="6">

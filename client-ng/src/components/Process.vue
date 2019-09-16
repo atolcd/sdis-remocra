@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalProcess" ref="modal" title="Processus Etl" no-close-on-backdrop  ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
+  <b-modal id="modalProcess" ref="modal" title="Processus Etl" no-close-on-backdrop ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
     <b-form-group horizontal label="Choix du Processus:" label-for="process">
       <b-form-select id="process" v-model="selected" :options="options" class="mb-3" @input="getParams" />
     </b-form-group>
@@ -10,7 +10,8 @@
     <p v-else-if="selected">Aucun paramètre pour cette requête</p>
     <form id="formProcess" class="needs-validation" @submit.stop.prevent="handleSubmit">
       <div v-for="(param, index) in params" :key="index">
-        <b-form-group v-if='param.formulaireTypeControle=="autocomplete"' :id="'input'+param.id" inputType='autocomplete' :required="param.obligatoire" class="parametreProcess" horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+        <b-form-group v-if='param.formulaireTypeControle=="autocomplete"' :id="'input'+param.id" inputType='autocomplete' :required="param.obligatoire" class="parametreProcess" horizontal :label='param.formulaireEtiquette'
+          :label-for="'input'+param.id">
           <search-process-param :ref="'searchinput'+param.id" :paramId="param.id"></search-process-param>
         </b-form-group>
         <b-form-group v-if='param.formulaireTypeControle=="combo"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
@@ -194,13 +195,13 @@ export default {
         })
       }
     },
-    getOption: function (id) {
-      return this.comboOptions.filter(function (value) {
+    getOption: function(id) {
+      return this.comboOptions.filter(function(value) {
         return value.nomChamp === id
       })
     },
-    getFile: function (id) {
-      return this.files.filter(function (value) {
+    getFile: function(id) {
+      return this.files.filter(function(value) {
         return value.id === id
       })
     }

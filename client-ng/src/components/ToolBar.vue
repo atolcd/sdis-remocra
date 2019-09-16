@@ -102,15 +102,18 @@ export default {
       }
     },
     activateInteraction(type, event) {
-      if(type == 'Modify'){
-        document.getElementById('translate'+this.criseId).classList.remove('active')
-      }else{
-        document.getElementById('modif'+this.criseId).classList.remove('active')
+      if (type == 'Modify') {
+        document.getElementById('translate' + this.criseId).classList.remove('active')
+      } else {
+        document.getElementById('modif' + this.criseId).classList.remove('active')
       }
-      document.getElementById('attribute'+this.criseId).classList.remove('active')
+      document.getElementById('attribute' + this.criseId).classList.remove('active')
       this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, this.criseId)
       var isActive = event.target.parentElement.classList.toggle('active')
-      this.$root.$options.bus.$emit(eventTypes.ACTIVATE_INTERACTION, {'type':type, 'isActive':isActive})
+      this.$root.$options.bus.$emit(eventTypes.ACTIVATE_INTERACTION, {
+        'type': type,
+        'isActive': isActive
+      })
     },
     annulModifGeom() {
       this.$root.$options.bus.$emit(eventTypes.ANNULE_MODIFGEOM)
@@ -125,10 +128,10 @@ export default {
       this.$root.$options.bus.$emit(eventTypes.VALIDE_TRANSLATEGEOM)
     },
     openAttributes(e) {
-    document.getElementById('modif'+this.criseId).classList.remove('active')
-    document.getElementById('translate'+this.criseId).classList.remove('active')
-    this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, this.criseId)
-    var isActive = e.target.parentElement.classList.toggle('active')
+      document.getElementById('modif' + this.criseId).classList.remove('active')
+      document.getElementById('translate' + this.criseId).classList.remove('active')
+      this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, this.criseId)
+      var isActive = e.target.parentElement.classList.toggle('active')
       this.$root.$options.bus.$emit(eventTypes.OPEN_ATTRIBUTES, isActive)
     },
     addStampedCard() {
@@ -138,9 +141,9 @@ export default {
       this.$parent.openModalImportFile()
     },
     toggleButton() {
-      document.getElementById('modif'+this.criseId).classList.remove('active')
-      document.getElementById('translate'+this.criseId).classList.remove('active')
-      document.getElementById('attribute'+this.criseId).classList.remove('active')
+      document.getElementById('modif' + this.criseId).classList.remove('active')
+      document.getElementById('translate' + this.criseId).classList.remove('active')
+      document.getElementById('attribute' + this.criseId).classList.remove('active')
       this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, this.criseId)
     }
   }

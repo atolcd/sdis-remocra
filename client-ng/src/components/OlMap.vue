@@ -651,7 +651,7 @@ export default {
       this.refreshMap(this.criseId)
     },
     constructMap() {
-      // On récupere le mode d'affichage de curseur 
+      // On récupere le mode d'affichage de curseur
       var self = this
       axios.get("/remocra/crises/coordonneaffichage").then(response => {
         if (response.data) {
@@ -1906,19 +1906,19 @@ export default {
     },
     /**
      * Reprise de OpenLayers.util.getFormattedLonLat avec ajout du paramètre retWholeData :
-     * 
+     *
      * Parameters:
      * coordinate - {Float} the coordinate value to be formatted
      * axis - {String} value of either 'lat' or 'lon' to indicate which axis is to
      *          to be formatted (default = lat)
      *
      * retWholeData - {Boolean} données séparées ou juste pour affichage. true implique un retour de la forme : {d:XX, m:YY, s:ZZ, o:'W'}
-     *          
+     *
      * dmsOption - {String} specify the precision of the output can be one of:
      *           'dms' show degrees minutes and seconds
      *           'dm' show only degrees and minutes
      *           'd' show only degrees
-     * 
+     *
      * Returns:
      * {String} the coordinate value formatted as a string
      */
@@ -1986,7 +1986,7 @@ export default {
       return str;
     },
     changeContext() {
-      //Nettoyage de la carte  
+      //Nettoyage de la carte
       this.map.setLayerGroup(new LayerGroup())
       //On regénère les layers
       this.constructMap()

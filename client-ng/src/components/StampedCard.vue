@@ -78,7 +78,6 @@ export default {
         })
         self.$refs.modal.hide()
       }, 'image/png')
-
     }
   }
 }

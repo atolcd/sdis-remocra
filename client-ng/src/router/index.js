@@ -5,11 +5,9 @@ import OlMap from '@/components/OlMap'
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
-      path: '/olmap',
-      name: 'olmap',
-      component: OlMap
-    }
-  ]
+  routes: [{
+    path: '/olmap',
+    name: 'olmap',
+    component: OlMap
+  }]
 })

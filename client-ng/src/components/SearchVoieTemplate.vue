@@ -1,15 +1,19 @@
 <template>
-  <div>
-    <span>{{ item }}</span>
-  </div>
+<div>
+  <span>{{ item }}</span>
+</div>
 </template>
 
 <script>
 export default {
-	name: 'VoieTemplate',
+  name: 'VoieTemplate',
   props: {
-    item: { required: true },
-    searchText: { required: true }
+    item: {
+      required: true
+    },
+    searchText: {
+      required: true
+    }
   }
 };
 </script>

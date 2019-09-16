@@ -105,113 +105,86 @@ export default {
       isKml: false,
       pointRadius: 5,
       symbole: null,
-      optionsSymbole: [
-        {
-          value: null,
-          text: 'Aucun'
-        },
-        {
-          value: 'square',
-          text: 'Carré'
-        },
-        {
-          value: 'circle',
-          text: 'Cercle'
-        },
-        {
-          value: 'cross',
-          text: 'Croix'
-        },
-        {
-          value: 'star',
-          text: 'Etoile'
-        },
-        {
-          value: 'triangle',
-          text: 'Triangle'
-        },
-        {
-          value: 'x',
-          text: 'X'
-        }
-      ],
+      optionsSymbole: [{
+        value: null,
+        text: 'Aucun'
+      }, {
+        value: 'square',
+        text: 'Carré'
+      }, {
+        value: 'circle',
+        text: 'Cercle'
+      }, {
+        value: 'cross',
+        text: 'Croix'
+      }, {
+        value: 'star',
+        text: 'Etoile'
+      }, {
+        value: 'triangle',
+        text: 'Triangle'
+      }, {
+        value: 'x',
+        text: 'X'
+      }],
       image: null,
-      optionsImage: [
-        {
-          value: null,
-          text: 'Aucun'
-        },
-        {
-          value: 'cis',
-          text: 'CIS'
-        },
-        {
-          value: 'camping',
-          text: 'Camping'
-        },
-        {
-          value: 'dfci',
-          text: 'DFCI tour de guet'
-        },
-        {
-          value: 'gare',
-          text: 'Gare'
-        },
-        {
-          value: 'departFeu',
-          text: 'Départ feu'
-        },
-        {
-          value: 'departFeuBleu',
-          text: 'Départ feu bleu'
-        }
-      ],
+      optionsImage: [{
+        value: null,
+        text: 'Aucun'
+      }, {
+        value: 'cis',
+        text: 'CIS'
+      }, {
+        value: 'camping',
+        text: 'Camping'
+      }, {
+        value: 'dfci',
+        text: 'DFCI tour de guet'
+      }, {
+        value: 'gare',
+        text: 'Gare'
+      }, {
+        value: 'departFeu',
+        text: 'Départ feu'
+      }, {
+        value: 'departFeuBleu',
+        text: 'Départ feu bleu'
+      }],
       rotation: 0,
       strokeColor: '#000000',
       strokeOpacity: 100,
       thickness: 2,
       endLine: 'round',
-      optionsEndLine: [
-        {
-          value: 'round',
-          text: 'Arrondies'
-        },
-        {
-          value: 'square',
-          text: 'Carrées'
-        },
-        {
-          value: 'butt',
-          text: 'Droites'
-        }
-      ],
+      optionsEndLine: [{
+        value: 'round',
+        text: 'Arrondies'
+      }, {
+        value: 'square',
+        text: 'Carrées'
+      }, {
+        value: 'butt',
+        text: 'Droites'
+      }],
       strokeStyle: 'solid',
-      optionsStrokeStyle: [
-        {
-          value: 'solid',
-          text: 'Continu'
-        },
-        {
-          value: 'dot',
-          text: 'Pointillés'
-        },
-        {
-          value: 'dash',
-          text: 'Tirets'
-        },
-        {
-          value: 'dashdot',
-          text: 'Tirets / Pointillés'
-        },
-        {
-          value: 'longdash',
-          text: 'Tirets longs'
-        },
-        {
-          value: 'longdashdot',
-          text: 'Tirets longs / Pointillés'
-        }
-      ],
+      optionsStrokeStyle: [{
+        value: 'solid',
+        text: 'Continu'
+      }, {
+        value: 'dot',
+        text: 'Pointillés'
+      }, {
+        value: 'dash',
+        text: 'Tirets'
+      }, {
+        value: 'dashdot',
+        text: 'Tirets / Pointillés'
+      }, {
+        value: 'longdash',
+        text: 'Tirets longs'
+      }, {
+        value: 'longdashdot',
+        text: 'Tirets longs / Pointillés'
+      }],
       fillColor: '#000000',
       fillOpacity: 25,
       styles: null,
@@ -237,7 +210,6 @@ export default {
     // sélection du fichier saisi dans l'input
     fileSelect() {
       var fileList = document.getElementById('inputFichier')
-
       this.file = fileList.files[0]
       var type = this.file.type !== "" ? this.file.type : this.file.name
       // on vérifie si le fichier choisi est bien d'un type autorisé
@@ -738,10 +710,21 @@ export default {
       var pointGeometry = new Point([-7, 10])
       var pointFeature = new Feature({})
       pointFeature.setGeometry(pointGeometry)
-      var strokeGeometry = new LineString([[0, 10], [5, 7], [7, 13]])
+      var strokeGeometry = new LineString([
+        [0, 10],
+        [5, 7],
+        [7, 13]
+      ])
       var strokeFeature = new Feature({})
       strokeFeature.setGeometry(strokeGeometry)
-      var polygonGeometry = new Polygon([[[13, 8], [23, 8], [23, 13], [13, 13]]])
+      var polygonGeometry = new Polygon([
+        [
+          [13, 8],
+          [23, 8],
+          [23, 13],
+          [13, 13]
+        ]
+      ])
       var polygonFeature = new Feature({})
       polygonFeature.setGeometry(polygonGeometry)
       // création du layer ainsi que de sa source
