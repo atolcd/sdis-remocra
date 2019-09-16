@@ -2182,7 +2182,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         var hydrantsCompatibles = true;
         var listeCodesDeci = [];
         var listeTypesReseau = [];
-        var listeDiametres = [];
+        var listeDiametresCanalisations = [];
 
         var dataCreation = {
             hydrants: []
@@ -2193,83 +2193,113 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             return self.indexOf(value) === index;
         };
 
-        features.forEach(function(hydrant){
 
-            dataCreation.hydrants.push({
-                id: hydrant.data.internalId,
-                numero: hydrant.data.numero
-            });
-
-            dataCreation.site = {
-                nom: hydrant.data.siteNom,
-                id: hydrant.data.siteId
-            };
-
-            dataCreation.diametre = {
-                nom: hydrant.data.diametreNom,
-                id: hydrant.data.diametreId
-            };
-
-            dataCreation.typeReseau = {
-                nom: hydrant.data.typeReseauNom,
-                id: hydrant.data.typeReseauNom
-            };
-
-            if(hydrant.data.codeNatureDeci){
-                listeCodesDeci.push(hydrant.data.codeNatureDeci);
-            }
-
-            if(hydrant.data.typeReseau) {
-                listeTypesReseau.push(hydrant.data.typeReseau);
-            }
-
-            if(hydrant.data.diametre) {
-                listeDiametres.push(hydrant.data.diametre);
-            }
+        //on vérifie que les features n'appartinnent pas à un débit simultané
+        var listIds = [];
+        features.forEach(function(feature){
+          listIds.push(feature.fid);
         });
+        if(listIds.length > 0){
+            Ext.Ajax.request({
+                  url: Sdis.Remocra.util.Util.withBaseUrl('../debitsimultane/checkds'),
+                  method: 'GET',
+                  params: {
+                      ids: JSON.stringify(listIds)
+                  },
+                  scope: this,
+                  callback: function(options, success, response) {
+                      if(success){
+                          var data = JSON.parse(response.responseText);
+                          if('hasNotDs' == data.message) {
+                            features.forEach(function(hydrant){
+
+                                 dataCreation.hydrants.push({
+                                     id: hydrant.data.internalId,
+                                     numero: hydrant.data.numero
+                                 });
+
+                                 dataCreation.site = {
+                                     nom: hydrant.data.siteNom,
+                                     id: hydrant.data.siteId
+                                 };
+
+                                 dataCreation.diametreCanalisation = {
+                                     nom: hydrant.data.diametreCanalisation
+                                 };
+
+                                 dataCreation.typeReseau = {
+                                     nom: hydrant.data.typeReseauNom,
+                                     id: hydrant.data.typeReseauNom
+                                 };
+
+                                 if(hydrant.data.codeNatureDeci){
+                                     listeCodesDeci.push(hydrant.data.codeNatureDeci);
+                                 }
+
+                                 if(hydrant.data.typeReseau) {
+                                     listeTypesReseau.push(hydrant.data.typeReseau);
+                                 }
+
+                                 if(hydrant.data.diametreCanalisation) {
+                                     listeDiametresCanalisations.push(hydrant.data.diametreCanalisation);
+                                 }
+                             });
+
+                             // Vérifiation si le point d'eau appartien à une debit simultane
 
 
-        // Vérifiation sur la nature DECI
-        if(listeCodesDeci.length != features.length && hydrantsCompatibles) {
-            hydrantsCompatibles = false;
-            text = features.length-listeCodesDeci.length+" hydrant(s) n'a/n'ont pas de nature DECI attribuée";
-        }
-        else if(hydrantsCompatibles && (listeCodesDeci.filter(filtre).length > 1 || (listeCodesDeci.filter(filtre).length > 0 && listeCodesDeci.filter(filtre)[0] !== "PRIVE"))) {
-            hydrantsCompatibles = false;
-            text = "Les hydrants ne sont pas tous de nature DECI privée";
-        }
+                             // Vérifiation sur la nature DECI
+                             if(listeCodesDeci.length != features.length && hydrantsCompatibles) {
+                                 hydrantsCompatibles = false;
+                                 text = features.length-listeCodesDeci.length+" point(s) d'eau n'a/n'ont pas de nature DECI attribuée";
+                             }
+                             else if(hydrantsCompatibles && (listeCodesDeci.filter(filtre).length > 1 ||
+                              (listeCodesDeci.filter(filtre).length > 0 && listeCodesDeci.filter(filtre)[0] !== "PRIVE"))) {
+                                 hydrantsCompatibles = false;
+                                 text = "Les points d'eau ne sont pas tous de nature DECI privée";
+                             }
 
-        // Vérification sur le type de réseau
-        if(listeTypesReseau.length != features.length && hydrantsCompatibles) {
-            hydrantsCompatibles = false;
-            text = features.length-listeTypesReseau.length+" hydrant(s) n'a/n'ont pas de type de réseau attribué";
-        }
-        else if(listeTypesReseau.filter(filtre).length > 1 && hydrantsCompatibles) {
-            hydrantsCompatibles = false;
-            text = "Les hydrants sélectionnés n'ont pas tous le même type de réseau";
-        }
+                             // Vérification sur le type de réseau
+                             if(listeTypesReseau.length != features.length && hydrantsCompatibles) {
+                                 hydrantsCompatibles = false;
+                                 text = features.length-listeTypesReseau.length+" point(s) d'eau n'a/n'ont pas de type de réseau attribué";
+                             }
+                             else if(listeTypesReseau.filter(filtre).length > 1 && hydrantsCompatibles) {
+                                 hydrantsCompatibles = false;
+                                 text = "Les points d'eau sélectionnés n'ont pas tous le même type de réseau";
+                             }
 
-        // Vérification sur le diamètre
-        if(listeDiametres.length != features.length && hydrantsCompatibles) {
-            hydrantsCompatibles = false;
-            text = features.length-listeDiametres.length+" hydrant(s) n'a/n'ont pas de diamètre nominal attribué";
-        }
-        else if(listeDiametres.filter(filtre).length > 1 && hydrantsCompatibles) {
-            hydrantsCompatibles = false;
-            text = "Les hydrants sélectionnés n'ont pas tous le même diamètre nominal";
-        }
+                             // Vérification sur le diamètre
+                             if(listeDiametresCanalisations.length != features.length && hydrantsCompatibles) {
+                                 hydrantsCompatibles = false;
+                                 text = features.length-listeDiametresCanalisations.length+" point(s) d'eau n'a/n'ont pas de diamètre de canalisation attribué";
+                             }
+                             else if(listeDiametresCanalisations.filter(filtre).length > 1 && hydrantsCompatibles) {
+                                 hydrantsCompatibles = false;
+                                 text = "Les points d'eau sélectionnés n'ont pas tous le même diamètre de canalisation";
+                             }
 
-        if(hydrantsCompatibles){
-            this.showDebitSimultaneFiche(null, dataCreation);
-        } else {
-            Ext.Msg.show({
-                title : title,
-                msg : text,
-                buttons : Ext.Msg.OK,
-                icon : Ext.Msg.WARNING
+                          } else {
+                              hydrantsCompatibles = false;
+                              text = data.message;
+
+
+                          }
+
+                         if(hydrantsCompatibles){
+                             this.showDebitSimultaneFiche(null, dataCreation);
+                         } else {
+                             Ext.Msg.show({
+                                 title : title,
+                                 msg : text,
+                                 buttons : Ext.Msg.OK,
+                                 icon : Ext.Msg.WARNING
+                             });
+                         }
+                      }
+                  }
             });
         }
-
       },
 
       /**

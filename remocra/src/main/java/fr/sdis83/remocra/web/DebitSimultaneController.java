@@ -1,5 +1,6 @@
 package fr.sdis83.remocra.web;
 
+import flexjson.JSONDeserializer;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.DebitSimultaneService;
 import fr.sdis83.remocra.util.Featurable;
@@ -23,6 +24,7 @@ import fr.sdis83.remocra.domain.remocra.DebitSimultane;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -93,6 +95,24 @@ public class DebitSimultaneController {
             }
 
         }.serialize();
+    }
+
+    @RequestMapping(value = "/checkds", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('DEBITS_SIMULTANES_R')")
+    public ResponseEntity<java.lang.String> checkDebitSimultane(final @RequestParam("ids") String listIds) {
+
+        try {
+            //On vérifie si les hydrants appartiennent déjà à un debit simultane et on retoourne un message avec les numeros concernés
+            String s = debitSimultaneService.checkDs(listIds);
+            if(s != null){
+                return new SuccessErrorExtSerializer(true, s).serialize();
+            }else{
+                return new SuccessErrorExtSerializer(true, "hasNotDs").serialize();
+            }
+
+        } catch (Exception e) {
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")

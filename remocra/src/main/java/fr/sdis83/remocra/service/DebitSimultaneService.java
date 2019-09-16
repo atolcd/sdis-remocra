@@ -20,11 +20,14 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
 
+import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import fr.sdis83.remocra.domain.remocra.DebitSimultane;
+import fr.sdis83.remocra.domain.remocra.Hydrant;
+import fr.sdis83.remocra.domain.remocra.Tournee;
 import fr.sdis83.remocra.util.GeometryUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -80,6 +83,34 @@ public class DebitSimultaneService extends AbstractService<DebitSimultane>{
                             "WHERE id=:idDebitSimultane"))
                 .setParameter("idDebitSimultane", id);
         query.executeUpdate();
+    }
+
+    @Transactional
+    public String checkDs(String hydrants) {
+        ArrayList<Integer> ids = new JSONDeserializer<ArrayList<Integer>>().deserialize(hydrants);
+        StringBuilder sb = new StringBuilder();
+        List<String> hasDebitSimultane = new ArrayList<String>();
+        for(Integer id : ids) {
+            List<String>  numeros = entityManager.createNativeQuery("select h.numero from remocra.hydrant h join remocra.debit_simultane_hydrant" +
+                " dsh on dsh.hydrant = h.id where dsh.hydrant=:id").setParameter("id",Long.valueOf(id)).getResultList();
+
+            if(numeros.size() > 0) {
+                sb.append("<li>"+ numeros.get(0)+"</li>");
+                hasDebitSimultane.add(numeros.get(0));
+            }
+        }
+
+        if(hasDebitSimultane.size()> 0){
+            StringBuilder sf = new StringBuilder();
+            if(hasDebitSimultane.size() > 1) {
+                sf.append("Les points d'eau suivants sont impliqués dans un débit simultané :");
+            } else {
+                sf.append("Le point d'eau suivant est impliqué dans un débit simultané :");
+            }
+            return sf.append(sb).toString();
+        }
+
+        return null ;
     }
 
 }
