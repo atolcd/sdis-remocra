@@ -520,9 +520,9 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
             }
             if(nomTournees.size() > 0) {
                 String formattedString = nomTournees.toString().replace("[", "(").replace("]", ")");
-                sb.append("<li>"+h.getNumero()+" "+formattedString+"</li>");
+                sb.append("<li>"+h.getNumero()+" <b>"+formattedString+"</b></li>");
             } else {
-                sb.append("<li>"+h.getNumero()+"</li>");
+                sb.append("<li>"+h.getNumero()+" (<b>Aucune tournée</b>)</li>");
             }
         }
         sb.append("<br/> Pour quel(s) organisme(s) souhaitez-vous retirer ce PEI ?");

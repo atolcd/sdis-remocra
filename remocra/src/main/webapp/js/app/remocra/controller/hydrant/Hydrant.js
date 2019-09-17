@@ -1323,12 +1323,13 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                                     icon: Ext.Msg.WARNING,
                                     buttonText: {
                                         yes: 'Le mien',
-                                        no: 'Tous',
+                                        no: 'Le mien et ses enfants',
                                         cancel: 'Annuler'
                                     },
                                     buttons: Ext.Msg.YESNOCANCEL,
                                     fn: function(btn){
-                                        Ext.Ajax.request({
+                                        if(btn !== 'cancel'){
+                                            Ext.Ajax.request({
                                               url: Sdis.Remocra.util.Util.withBaseUrl('../hydrants/desaffecter'),
                                               params: {
                                                 json: JSON.stringify(ids),
@@ -1338,7 +1339,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                                                   var res = Ext.decode(response.responseText);
                                                   Sdis.Remocra.util.Msg.msg("Désaffectation", res.message);
                                               }
-                                          });
+                                            });
+                                        }
                                     }
                                 });
                             }
