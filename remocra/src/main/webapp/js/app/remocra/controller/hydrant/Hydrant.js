@@ -2225,10 +2225,6 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                                      id: hydrant.data.siteId
                                  };
 
-                                 dataCreation.diametreCanalisation = {
-                                     nom: hydrant.data.diametreCanalisation
-                                 };
-
                                  dataCreation.typeReseau = {
                                      nom: hydrant.data.typeReseauNom,
                                      id: hydrant.data.typeReseauNom
@@ -2240,10 +2236,6 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
 
                                  if(hydrant.data.typeReseau) {
                                      listeTypesReseau.push(hydrant.data.typeReseau);
-                                 }
-
-                                 if(hydrant.data.diametreCanalisation) {
-                                     listeDiametresCanalisations.push(hydrant.data.diametreCanalisation);
                                  }
                              });
 
@@ -2269,16 +2261,6 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                              else if(listeTypesReseau.filter(filtre).length > 1 && hydrantsCompatibles) {
                                  hydrantsCompatibles = false;
                                  text = "Les points d'eau sélectionnés n'ont pas tous le même type de réseau";
-                             }
-
-                             // Vérification sur le diamètre
-                             if(listeDiametresCanalisations.length != features.length && hydrantsCompatibles) {
-                                 hydrantsCompatibles = false;
-                                 text = features.length-listeDiametresCanalisations.length+" point(s) d'eau n'a/n'ont pas de diamètre de canalisation attribué";
-                             }
-                             else if(listeDiametresCanalisations.filter(filtre).length > 1 && hydrantsCompatibles) {
-                                 hydrantsCompatibles = false;
-                                 text = "Les points d'eau sélectionnés n'ont pas tous le même diamètre de canalisation";
                              }
 
                           } else {

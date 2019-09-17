@@ -21,7 +21,7 @@
           </div>
           <div class="col-md-3 "> Diamètre de canalisation : </div>
           <div class="col-md-3">
-            {{ diametreImpose ? diametreImpose.nom +" mm" : ''}}
+            {{ diametreCanalisation ? diametreCanalisation +" mm" : 'Non renseigné'}}
           </div>
         </div>
         <div class="row rowButtons" v-if="!isNew && userCanEdit">
@@ -175,7 +175,7 @@ export default {
       mesures: [],
       dataLoaded: false,
       comboDebitRetenu: null,
-      diametreImpose: null,
+      diametreCanalisation: null,
       typeReseauImpose: null,
       selectedRow: null,
       newAttestationInputValue: null,
@@ -231,8 +231,8 @@ export default {
      * Calcul automatique du débit retenu
      */
     debitSimultaneCalcule: function() {
-      // Formule: Q (m3/s) = V * S = Vitesse_eau*(PI*D*D)/4; Q (m3/h) = Q(m3/s)*3600
-      return Math.floor(this.vitesseEau * Math.pow(Number(this.diametreImpose.nom) / 1000, 2) * 2826);
+      // Formule: Q (m3/s) = V * S = Vitesse_eau*(π*D²)/4; Q (m3/h) = Q(m3/s)*3600
+      return Math.floor(this.vitesseEau * Math.pow(Number(this.diametreCanalisation) / 1000, 2) * 2826);
     },
     /**
      * Label affiché dans la colonne "PEI" des mesures
@@ -299,7 +299,7 @@ export default {
         numDossier: '',
         site: data.site
       };
-      this.diametreImpose = data.diametreCanalisation;
+      this.diametreCanalisation = data.diametreCanalisation;
       this.typeReseauImpose = data.typeReseau;
       this.createMesure();
       this.mesures[0].listeHydrants = data.hydrants;
@@ -341,9 +341,10 @@ export default {
                   id: hydrant.hydrant.id,
                   numero: hydrant.hydrant.numero
                 });
-                if (this.diametreImpose === null) {
-                  this.diametreImpose = hydrant.hydrant.diametreCanalisation;
-                }
+
+                // Le diamètre affiché est le plus gros diamètre de canalisation composant le débit simultané
+                this.diametreCanalisation = (hydrant.hydrant.diametreCanalisation > this.diametreCanalisation || this.diametreCanalisation === null) ? hydrant.hydrant.diametreCanalisation : this.diametreCanalisation
+
                 if (this.typeReseauImpose === null) {
                   this.typeReseauImpose = hydrant.hydrant.typeReseauAlimentation;
                 }
@@ -363,9 +364,6 @@ export default {
                   {
                     "property": "near",
                     "value": this.debitSimultane.geometrie
-                  }, {
-                    "property": "diametreCanalisation",
-                    "value": this.diametreImpose.nom
                   }, {
                     "property": "typeReseau",
                     "value": this.typeReseauImpose.id
@@ -391,7 +389,7 @@ export default {
         this.mesures[this.selectedRow].debitMesure = null;
         document.querySelectorAll('[for="debitMesure"]')[0].classList.add("labelDisabled");
       } else {
-        this.mesures[this.selectedRow].debitMesure = this.debitSimultaneCalcule;
+        this.mesures[this.selectedRow].debitMesure = (this.diametreCanalisation !== null) ? this.debitSimultaneCalcule : 0;
         document.querySelectorAll('[for="debitMesure"]')[0].classList.remove("labelDisabled");
       }
     },
@@ -468,7 +466,7 @@ export default {
         formattedDate: date.split(" ")[0],
         formattedTime: date.split(" ")[1],
         debitRequis: null,
-        debitMesure: this.debitSimultaneCalcule,
+        debitMesure: (this.diametreCanalisation !== null) ? this.debitSimultaneCalcule : 0,
         debitRetenu: null,
         commentaire: null,
         irv: false,
