@@ -447,8 +447,16 @@ export default {
     onRowSelected(index) {
       if (this.selectedRow !== null) {
         this.mesures[this.selectedRow].newAttestation = this.newAttestationInputValue;
+
         this.newAttestationInputValue = this.mesures[index].newAttestation;
+
+        if(this.newAttestationInputValue === null){
+          this.newAttestationInputValue = {
+            name : "Aucun fichier sélectionné"
+          }
+        }
       }
+
       this.selectedRow = index;
     },
     createMesure() {
@@ -598,7 +606,7 @@ export default {
       }).then((response) => {
         this.debitSimultane.id = response.data.data.id; // En cas de création d'un débit simultané, on récupère son ID pour le répercuter sur les mesures qui le composent
         // Mise à jour des mesures
-        if (this.selectedRow !== null) {
+        if (this.selectedRow !== null && this.newAttestationInputValue && this.newAttestationInputValue.lastModified) {
           this.mesures[this.selectedRow].newAttestation = this.newAttestationInputValue;
         }
         var fichiers = [];
