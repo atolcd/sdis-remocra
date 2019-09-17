@@ -1,6 +1,7 @@
 package fr.sdis83.remocra.jobs;
 
 import fr.sdis83.remocra.repository.ProcessusEtlPlanificationRepository;
+import org.apache.log4j.Logger;
 import org.quartz.InterruptableJob;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -9,12 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class ProcessEtlJob implements InterruptableJob {
 
+  private final Logger logger = Logger.getLogger(getClass());
 
-  /* private ProcessusEtlPlanificationRepository processusEtlPlanificationRepository;
-
-   public void setProcessusEtlPlanificationRepository(ProcessusEtlPlanificationRepository processusEtlPlanificationRepository) {
-     this.processusEtlPlanificationRepository = processusEtlPlanificationRepository;
-   }*/
 
    @Override
   public void execute(JobExecutionContext ctx)
@@ -22,7 +19,7 @@ public class ProcessEtlJob implements InterruptableJob {
      Long idProcessPlan = Long.valueOf(ctx.getJobDetail().getKey().getName().substring(15));
      Long idUtilisateur = Long.valueOf(String.valueOf(ctx.getJobDetail().getJobDataMap().get("idUtilisateur")));
      ProcessusEtlPlanificationRepository processusEtlPlanificationRepository = (ProcessusEtlPlanificationRepository) ctx.getJobDetail().getJobDataMap().get("repository");
-     System.out.println(idProcessPlan);
+     logger.info("Execution du job" + idProcessPlan);
      try{
         processusEtlPlanificationRepository.insertProcessusEtl(idProcessPlan, idUtilisateur);
      } catch(Exception e) {

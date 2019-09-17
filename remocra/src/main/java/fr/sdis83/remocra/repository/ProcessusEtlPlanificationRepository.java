@@ -120,18 +120,18 @@ public class ProcessusEtlPlanificationRepository {
 
   public void killJobs(List<ProcessusEtlPlanification> toDeletePlannifs) throws SchedulerException {
     if(toDeletePlannifs.size() != 0){
-      java.util.logging.Logger.getLogger(QuartzScheduler.class.getName()).log(Level.INFO, "Arrêt des  jobs");
+     logger.info("Arrêt des  jobs");
     } else {
-      java.util.logging.Logger.getLogger(QuartzScheduler.class.getName()).log(Level.INFO, "Aucun job à arrêter");
+      logger.info("Aucun job à arrêter");
     }
     //Scheduler scheduler = this.getScheduler() != null ? this.getScheduler() : new StdSchedulerFactory().getScheduler();
     if (scheduler==null) {
-      java.util.logging.Logger.getLogger(QuartzScheduler.class.getName()).log(Level.INFO, "------------------ Nouveau scheduler (killJobs)");
+      logger.info("------------------ Nouveau scheduler [killJobs]");
       scheduler = new StdSchedulerFactory().getScheduler();
     }
 
     for (ProcessusEtlPlanification p : toDeletePlannifs) {
-      java.util.logging.Logger.getLogger(QuartzScheduler.class.getName()).log(Level.INFO, "------------------ DELETE : " + "processusEtlJob" + p.getId().longValue());
+      logger.info("------------------ DELETE : " + "processusEtlJob" + p.getId().longValue() + "[killJobs]");
 
       for (String groupName : scheduler.getJobGroupNames()) {
         for (JobKey jobKey : scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupName))) {
@@ -139,7 +139,7 @@ public class ProcessusEtlPlanificationRepository {
           if (jobName.equals("processusEtlJob" + p.getId().longValue())) {
             scheduler.interrupt(jobKey);
             scheduler.deleteJob(jobKey);
-            java.util.logging.Logger.getLogger(QuartzScheduler.class.getName()).log(Level.INFO, "------------------ IS STOPPED : " + "processusEtlJob" + p.getId().longValue());
+            logger.info("------------------ IS STOPPED : " + "processusEtlJob" + p.getId().longValue() + "[killJobs]");
 
           }
 
@@ -150,23 +150,23 @@ public class ProcessusEtlPlanificationRepository {
 
   public void scheduleJobs(List<ProcessusEtlPlanification> newPlannifs) throws SchedulerException {
     if(newPlannifs.size() != 0){
-      java.util.logging.Logger.getLogger(QuartzScheduler.class.getName()).log(Level.INFO, "Chargement des nouveaux jobs");
+      logger.info("Chargement des nouveaux jobs [scheduleJobs]");
     } else {
-      java.util.logging.Logger.getLogger(QuartzScheduler.class.getName()).log(Level.INFO, "Aucun job a été détecté");
+      logger.info("Aucun nouveau job n'a été détecté [scheduleJobs]");
     }
 
 //    Scheduler scheduler = this.getScheduler() != null ? this.getScheduler() : new StdSchedulerFactory().getScheduler();
 //    scheduler.start();
 //    this.setScheduler(scheduler);
     if (scheduler==null) {
-      java.util.logging.Logger.getLogger(QuartzScheduler.class.getName()).log(Level.INFO, "------------------ Nouveau scheduler (scheduleJobs)");
+      logger.info("------------------ Nouveau scheduler [scheduleJobs]");
       scheduler = new StdSchedulerFactory().getScheduler();
     }
     if (!scheduler.isStarted()) {
       scheduler.start();
     }
     for (ProcessusEtlPlanification p : newPlannifs) {
-      java.util.logging.Logger.getLogger(QuartzScheduler.class.getName()).log(Level.INFO, "Chargement des jobs");
+      logger.info("Chargement des jobs [scheduleJobs]");
       int index = Integer.parseInt(String.valueOf(p.getId()));
       try {
         JobDataMap j = new JobDataMap();
@@ -178,10 +178,10 @@ public class ProcessusEtlPlanificationRepository {
         Trigger trigger = TriggerBuilder.newTrigger().withIdentity("simpleTrigger"+index, "group"+index)
             .withSchedule(cronSchedule(p.getExpression())).build();
         scheduler.scheduleJob(job, trigger);
-        java.util.logging.Logger.getLogger(QuartzScheduler.class.getName()).log(Level.INFO, "------------------ CREAtion de nouveau job processusEtlJob"+index);
+        logger.info("------------------ Création de nouveau job processusEtlJob"+index + "[scheduleJobs]");
 
       } catch (SchedulerException ex) {
-        java.util.logging.Logger.getLogger(QuartzScheduler.class.getName()).log(Level.SEVERE ,"------------------ ERREUR AU CREATION DE JOB", ex);
+        logger.error("------------------ ERREUR AU CREATION DE JOB  [scheduleJobs]" + ex );
       }
     }
   }
