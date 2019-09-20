@@ -48,7 +48,7 @@
         </div>
       </div>
       <div>
-        <b-tabs fill content-class="mt-3" active-nav-item-class="text-primary">
+        <b-tabs fill content-class="mt-3" active-nav-item-class="text-primary" nav-class="fiche-onglets">
           <b-tab active title="Résumé" v-if="hydrant.id !== null">
             <FicheResume ref="ficheResume" :hydrantRecord="hydrantRecord" v-if="dataLoaded">
             </FicheResume>

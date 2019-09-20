@@ -15,7 +15,7 @@
         </div>
         <div class="row">
           <div class="col-md-6">
-            <b-form-group label="N° dossier" label-for="numDossier" label-cols-md="4" invalid-feedback="Le numéro de dossier est manquant" :state="etats.numDossier">
+            <b-form-group label="N° dossier" label-for="numDossier" label-cols-md="4" invalid-feedback="Le numéro de dossier est manquant ou déjà attribué" :state="etats.numDossier">
               <b-form-input id="numDossier" v-model="debitSimultane.numDossier" class="parametre" type="text" size="sm" :state="etats.numDossier" :disabled="!userCanEdit" required></b-form-input>
             </b-form-group>
           </div>
@@ -508,9 +508,11 @@ export default {
       modalEvent.preventDefault();
       if (this.userCanEdit) // Si l'utilisateur a les droits de modification: on passe à l'étape de validation
       {
-        if (this.checkFormValidity()) {
-          this.handleSubmit();
-        }
+        this.checkFormValidity().then(formValid => {
+          if(formValid) {
+            this.handleSubmit();
+          }
+        })
       } else { // Si l'utilisateur n'a pas le droit, on n'a pas besoin de passer par les étapes de validation et d'envoi des données => on ferme directement la fiche
         this.$nextTick(() => {
           this.$refs.modalDebitSimultane.hide()
@@ -527,6 +529,7 @@ export default {
       this.etats.date = 'valid';
       this.etats.time = 'valid';
       this.etats.debitMesure = 'valid';
+
       _.forEach(this.mesures, mesure => {
         if (!mesure.debitRequis || mesure.debitRequis.length == 0) {
           this.etats.debitRequis = 'invalid';
@@ -585,8 +588,36 @@ export default {
           }
         });
       }
-      return !this.hasInvalidState(this.etats);
+
+      // Vérification de l'unicité du numéro de dossier au sein de la base
+      return axios.get('/remocra/debitsimultane', {
+        params: {
+          filter: JSON.stringify([{
+            "property": "numDossier",
+            "value": this.debitSimultane.numDossier
+          }])
+        }
+      }).then(response => {
+        var state = "valid";
+
+        if(response.data.data.length > 0) {
+          if (this.debitSimultane.id !== null && this.debitSimultane.id === response.data.data[0].id) {
+            state = "valid";
+          } else {
+            state = "invalid";
+            this.$notify({
+              group: 'remocra',
+              type: 'error',
+              title: 'Saisie invalide',
+              text: 'Ce numéro de dossier est déjà utilisé'
+            });
+          }
+          this.etats.numDossier = state;
+        }
+        return !this.hasInvalidState(this.etats);
+      })
     },
+
     hasInvalidState(etats) {
       var hasInvalidState = false;
       for (var key in etats) {

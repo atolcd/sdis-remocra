@@ -14,9 +14,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
 
@@ -29,6 +31,8 @@ import fr.sdis83.remocra.domain.remocra.DebitSimultane;
 import fr.sdis83.remocra.domain.remocra.Hydrant;
 import fr.sdis83.remocra.domain.remocra.Tournee;
 import fr.sdis83.remocra.util.GeometryUtil;
+import fr.sdis83.remocra.web.message.ItemFilter;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,6 +48,8 @@ public class DebitSimultaneService extends AbstractService<DebitSimultane>{
     @PersistenceContext
     protected EntityManager entityManager;
 
+    private final Logger logger = Logger.getLogger(getClass());
+
     public DebitSimultaneService() {
         super(DebitSimultane.class);
     }
@@ -51,6 +57,22 @@ public class DebitSimultaneService extends AbstractService<DebitSimultane>{
     @Bean
     public DebitSimultaneService DebitSimultaneService() {
         return new DebitSimultaneService();
+    }
+
+    @Override
+    protected Predicate processFilterItem(CriteriaQuery<?> itemQuery, Map<String, Object> parameters, Root<DebitSimultane> from, ItemFilter itemFilter) {
+        CriteriaBuilder cBuilder = this.getCriteriaBuilder();
+        Predicate predicat = null;
+        if ("id".equals(itemFilter.getFieldName())) {
+            Expression<String> cpPath = from.get("id");
+            predicat = cBuilder.equal(cpPath, itemFilter.getValue());
+        } else if ("numDossier".equals(itemFilter.getFieldName())) {
+            Expression<String> cpPath = from.get("numDossier");
+            predicat = cBuilder.like(cBuilder.concat("", cpPath), itemFilter.getValue());
+        } else {
+            logger.info("processFilterItem non traité " + itemFilter.getFieldName() + " (" + itemFilter.getValue() + ")");
+        }
+        return predicat;
     }
 
     public List<DebitSimultane> getDebitSimultaneFromLonLat(Double lon, Double lat, Integer srid, Integer distance){

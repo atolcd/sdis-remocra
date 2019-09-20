@@ -5,6 +5,8 @@ import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.DebitSimultaneService;
 import fr.sdis83.remocra.util.Featurable;
 import fr.sdis83.remocra.util.FeatureUtil;
+import fr.sdis83.remocra.web.message.ItemFilter;
+import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
@@ -39,24 +41,38 @@ public class DebitSimultaneController {
         return serializer.exclude("data.actif").exclude("*.class");
     }
 
-    @RequestMapping(value = "", headers = "Accept=application/json")
-    public ResponseEntity<java.lang.String> listJson() {
-        return new AbstractExtListSerializer<DebitSimultane>("fr.sdis83.remocra.domain.remocra.DebitSimultane retrieved.") {
+    @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/json")
+    public ResponseEntity<String> listJson(final @RequestParam(value = "page", required = false) Integer page,
+                               final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
+                               final @RequestParam(value = "query", required = false) String query, @RequestParam(value = "sort", required = false) String sorts,
+                               @RequestParam(value = "filter", required = false) String filters) {
 
-            @Override
-            protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
-                serializer.include("data.*");
 
-                return serializer;
-            }
+    final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
+    final List<ItemSorting> itemSortList = ItemSorting.decodeJson(sorts);
 
-            @Override
-            protected List<DebitSimultane> getRecords() {
-                return DebitSimultane.findAllDebitSimultanes();
-            }
+    return new AbstractExtListSerializer<DebitSimultane>("DebitSimultane retrieved.") {
 
-        }.serialize();
-    }
+      @Override
+      protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+        serializer.include("data.*");
+
+        return serializer;
+      }
+
+      @Override
+      protected List<DebitSimultane> getRecords() {
+        return debitSimultaneService.find(start, limit, itemSortList, itemFilterList);
+      }
+
+      @Override
+      protected Long countRecords() {
+        return
+           Long.valueOf(debitSimultaneService.count(itemFilterList));
+      }
+
+    }.serialize();
+  }
 
     /**
      * Retourne la liste des débits simultanés situés autour d'un point
