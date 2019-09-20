@@ -410,6 +410,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Requetage', {
           autoLoad: false,
           proxy : {
                  type   : 'ajax',
+                 timeout: 60000,
                  url    : Sdis.Remocra.util.Util.withBaseUrl("../requetemodele/reqmodresult/" + idSelection),
                  reader : {
                      type : 'json',
