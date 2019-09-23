@@ -8,15 +8,13 @@ mkdir -p /var/remocra/pdi/{depot,export,kml,log,synchro,tmp}
 
 # Propriétaire et groupe
 chown -R postgres:postgres /home/postgres
-chown -R postgres:remocrasys /var/remocra
-
-chmod -R g+s /var/remocra
-
+find /var/remocra -not -path "*/tms*" -not -path "*/geoserver_data*" -exec chown postgres:remocrasys {} \;
 chown -R tomcat:remocrasys /var/remocra/geoserver_data
 
+# Accès
+find /var/remocra -not -path "*/tms*" -exec chmod g+s {} \;
 chmod -R 755 /home/postgres
-chmod -R 770 /var/remocra
-
+find /var/remocra -not -path "*/tms*" -not -path "*/geoserver_data*" -exec chmod 770 {} \;
 chmod -R 775 /var/remocra/geoserver_data
 
 # Scripts exécutables
