@@ -14,7 +14,7 @@ privileged aspect HydrantPrescrit_Roo_Jpa_ActiveRecord {
     @PersistenceContext
     transient EntityManager HydrantPrescrit.entityManager;
     
-    public static final List<String> HydrantPrescrit.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "geometrie", "jsonGeometrie", "organisme", "datePrescrit", "nbPoteaux", "debit");
+    public static final List<String> HydrantPrescrit.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "geometrie", "jsonGeometrie", "organisme", "datePrescrit", "nbPoteaux", "debit", "agent", "commentaire", "numDossier");
     
     public static final EntityManager HydrantPrescrit.entityManager() {
         EntityManager em = new HydrantPrescrit().entityManager;

@@ -27,6 +27,18 @@ Ext.define('Sdis.Remocra.model.HydrantPrescrit', {
         name: 'debit',
         type: 'int',
         useNull: true
+    },{
+        name: 'agent',
+        type: 'string',
+        useNull: true
+    },{
+        name: 'commentaire',
+        type: 'string',
+        useNull: true
+    },{
+        name: 'numDossier',
+        type: 'string',
+        useNull: true
     }],
 
     proxy : {

@@ -38,6 +38,18 @@ Ext.define('Sdis.Remocra.features.prescrits.FichePrescrit', {
                 name: 'datePrescrit',
                 format: 'd/m/Y'
             }, {
+                xtype: 'textfield',
+                fieldLabel: 'Agent',
+                name: 'agent'
+            }, {
+                xtype: 'textfield',
+                fieldLabel: 'Numéro de dossier',
+                name: 'numDossier'
+            }, {
+                xtype: 'textareafield',
+                fieldLabel: 'Commentaire',
+                name: 'commentaire'
+            }, {
                 xtype: 'fieldcontainer',
                 anchor: '100%',
                 layout: 'hbox',

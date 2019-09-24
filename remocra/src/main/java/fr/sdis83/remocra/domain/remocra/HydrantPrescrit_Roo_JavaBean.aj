@@ -65,5 +65,29 @@ privileged aspect HydrantPrescrit_Roo_JavaBean {
     public void HydrantPrescrit.setDebit(Integer debit) {
         this.debit = debit;
     }
+
+    public String HydrantPrescrit.getAgent() {
+        return this.agent;
+    }
+
+    public void HydrantPrescrit.setAgent(String agent) {
+        this.agent = agent;
+    }
+
+    public String HydrantPrescrit.getCommentaire() {
+        return this.commentaire;
+    }
+
+    public void HydrantPrescrit.setCommentaire(String commentaire) {
+        this.commentaire = commentaire;
+    }
+
+    public String HydrantPrescrit.getNumDossier() {
+        return this.numDossier;
+    }
+
+    public void HydrantPrescrit.setNumDossier(String numDossier) {
+        this.numDossier = numDossier;
+    }
     
 }

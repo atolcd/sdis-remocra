@@ -53,8 +53,23 @@ public class HydrantPrescrit implements Featurable {
     @Column
     private Integer debit;
 
+    @Column
+    private String agent;
+
+    @Column
+    private String commentaire;
+
+    @Column(name="numdossier")
+    private String numDossier;
+
     public Feature toFeature() {
         Feature feature = new Feature(this.id, this.getJsonGeometrie());
+        feature.addProperty("Date ", this.getDatePrescrit());
+        feature.addProperty("Nombre de poteaux", this.getNbPoteaux());
+        feature.addProperty("debit", this.getDebit());
+        feature.addProperty("agent", this.getAgent());
+        feature.addProperty("commentaire", this.getCommentaire());
+        feature.addProperty("Numéro de dossier", this.getNumDossier());
         return feature;
     }
 }

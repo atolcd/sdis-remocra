@@ -38,6 +38,15 @@
             {"libelle":"Non conforme","image":"eau/NON_CONFORME.png"},
             {"libelle":"Indisponible","image":"eau/INDISPO.png"}
         ]
+    },{
+        "type": "specific",
+        "stategy" : "bbox",
+        "libelle": "Hydrants prescrits",
+        "id": "prescritLayer",
+        "visibility":true,
+        "interrogeable": true,
+        "items":[
+        ]
     }, {
         "id": "hydrantLayerWms",
         "class": "hidden",
