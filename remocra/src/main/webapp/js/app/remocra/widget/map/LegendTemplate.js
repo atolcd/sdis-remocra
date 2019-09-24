@@ -20,7 +20,7 @@ Ext.define('Sdis.Remocra.widget.map.LegendTemplate', {
                                 '{libelle}',
                                 
                                 '</div><ul class="legend-hideifnotover">',// La classe est ajoutée pour masquer le groupe du dessous
-                                '<tpl if="values.items && (values.items.length &gt; 1 || values.items[0].keepsize)">',
+                                '<tpl if="values.items && (values.items.length &gt; 1 || (values.items.length == 1 && values.items[0].keepsize))">',
                                     '<tpl for="items">', // L3 (elts de légende)
                                             '<li class="blocN4">',
                                                 '<img {[this.imgWidthHeight(values)]} src="{[this.printImg(values)]}" class="blocN5" onerror="this.style.visibility=\'hidden\';">',
