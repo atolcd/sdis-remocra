@@ -549,14 +549,14 @@ profil_utilisateur AS (
 )
 SELECT u.prenom || ' ' || u.nom AS destinataire, u.email AS adressedestinataire
 FROM remocra.organisme o
-	JOIN remocra.utilisateur u ON u.organisme = o.id
+	JOIN remocra.utilisateur u ON u.organisme = o.id AND u.actif AND u.message_remocra
 	JOIN profil_utilisateur pu ON pu.id = u.profil_utilisateur
 WHERE o.id = ${ORGANISME_ID}
 UNION
 SELECT u.prenom || ' ' || u.nom AS destinataire, u.email AS adressedestinataire
 FROM remocra.organisme o
 	JOIN remocra.type_organisme tor ON tor.id = o.type_organisme AND tor.code = 'SDIS_GROUPEMENT'
-	JOIN remocra.utilisateur u ON u.organisme = o.id
+	JOIN remocra.utilisateur u ON u.organisme = o.id AND u.actif AND u.message_remocra
 	JOIN remocra.zone_competence zc ON zc.id = o.zone_competence
 	JOIN cis ON St_Contains(zc.geometrie, cis.geometrie)
 	JOIN profil_utilisateur pu ON pu.id = u.profil_utilisateur
@@ -564,7 +564,7 @@ UNION
 SELECT u.prenom || ' ' || u.nom AS destinataire, u.email AS adressedestinataire
 FROM remocra.organisme o
 	JOIN remocra.type_organisme tor ON tor.id = o.type_organisme AND tor.code = 'SDIS_ETAT_MAJOR'
-	JOIN remocra.utilisateur u ON u.organisme = o.id
+	JOIN remocra.utilisateur u ON u.organisme = o.id AND u.actif AND u.message_remocra
 	JOIN remocra.zone_competence zc ON zc.id = o.zone_competence
 	JOIN cis ON St_Contains(zc.geometrie, cis.geometrie)
 	JOIN profil_utilisateur pu ON pu.id = u.profil_utilisateur</sql>
