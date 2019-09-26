@@ -268,23 +268,6 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
             return this.hydrantLayer;
         }
 
-        else if (layerDef.id == 'prescritLayer') {
-            layerDef.url = BASE_URL + '/../hydrantprescrits/layer';
-            layerDef.styleMap = new OpenLayers.StyleMap({
-                "default": new OpenLayers.Style({
-                    fillColor: '#ff3fff',
-                    fillOpacity: 0.5,
-                    strokeColor: '#ff3fff',
-                    strokeOpacity: 1,
-                    strokeWidth: 3,
-                    pointRadius: 5
-                })
-            });
-            layerDef.infoMarginInPixels = 10;
-            this.hydrantLayer = this.createGeoJsonLayer(layerDef);
-
-            return this.hydrantLayer;
-        }
         return this.callParent(arguments);
 
     },

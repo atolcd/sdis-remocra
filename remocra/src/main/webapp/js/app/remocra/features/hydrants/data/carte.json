@@ -39,14 +39,21 @@
             {"libelle":"Indisponible","image":"eau/INDISPO.png"}
         ]
     },{
-        "type": "specific",
+        "type": "wms",
+        "libelle":"Hydrants prescrits",
+        "id":"hydrantsPrescritsLayer",
+        "wms_layer":true,
         "stategy" : "bbox",
-        "libelle": "Hydrants prescrits",
-        "id": "prescritLayer",
+        "layers":"remocra:hydrant_prescrit",
+        "url":"/remocra/geoserver/remocra/wms",
+        "projection":"EPSG:900913",
+        "sld":null,
+        "scale_min":"0",
+        "scale_max":"999999999",
         "visibility":true,
+        "opacity":1,
         "interrogeable": true,
-        "items":[
-        ]
+        "items":[]
     }, {
         "id": "hydrantLayerWms",
         "class": "hidden",
