@@ -170,6 +170,11 @@ export default {
       this.disableIncertaine = value
     },
     onIncertaineChecked(value) {
+      if (value) {
+        this.hydrant.illimitee = false;
+      } else {
+        this.hydrant.illimitee = typeof(this.hydrantRecord.illimitee) !== 'undefined' ? this.hydrant.illimitee : false;
+      }
       this.disableIllimitee = value
     },
     /**
