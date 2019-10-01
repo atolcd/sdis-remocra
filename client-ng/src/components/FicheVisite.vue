@@ -702,19 +702,27 @@ export default {
         var visite = this.listeVisites[0];
         data["agent1"] = visite.agent1;
         data["agent2"] = visite.agent2;
-        var date = moment(new Date(visite.date), 'DD/MM/YYYY[T]HH:mm:ss[Z]').format('YYYY-MM-DDTHH:mm:ss')
-        switch (visite.type) {
-          case 2:
-            data["dateRecep"] = date;
-            break;
-          case 4:
-            data["dateReco"] = date;
-            break;
-          case 5:
-            data["dateContr"] = date;
-            break;
+
+        // Mise à jour des dates de l'hydrant
+        var dates = {
+          CTRL : null,
+          RECEP : null,
+          RECO : null
         }
+
+        _.forEach(this.listeVisites, visite => {
+          var dateCode = this.typesVisites[visite.type].code;
+          var dateMoment = moment(new Date(visite.date), 'DD/MM/YYYY[T]HH:mm:ss[Z]');
+          if(dates[dateCode] == null || dateMoment.diff(dates[dateCode]) > 0) {
+            dates[dateCode] = dateMoment;
+          }
+        });
+
+        data["dateRecep"] = (dates.RECEP) ? dates.RECEP.format('YYYY-MM-DDTHH:mm:ss') : null;
+        data["dateReco"] = (dates.RECO) ? dates.RECO.format('YYYY-MM-DDTHH:mm:ss') : null;
+        data["dateContr"] = (dates.CTRL) ? dates.CTRL.format('YYYY-MM-DDTHH:mm:ss') : null;
       }
+
       return data;
     },
     /**
