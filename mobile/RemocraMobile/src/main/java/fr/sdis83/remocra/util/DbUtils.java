@@ -9,6 +9,7 @@ import android.provider.BaseColumns;
 import android.widget.Adapter;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import fr.sdis83.remocra.database.ReferentielTable;
 
@@ -22,6 +23,7 @@ public final class DbUtils {
     public static final SimpleDateFormat DATE_HEURE_FORMAT_FR = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     public static final SimpleDateFormat DATE_FORMAT_LIGHT = new SimpleDateFormat("yyyyMMddHHmmss");
     public static final SimpleDateFormat DATE_FORMAT_EDIT = new SimpleDateFormat("dd MMMM yyyy");
+    public static final SimpleDateFormat TIME_FORMAT_EDIT = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
     public static <T> T nvl(T a, T b) {
         return (a == null) ? b : a;
