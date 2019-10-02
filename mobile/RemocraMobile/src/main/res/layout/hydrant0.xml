@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/lbl_localisation"
+        style="@style/sectionHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Localisation"
+        android:layout_alignParentLeft="true"/>
+
+    <TextView
+        android:id="@+id/localisation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/complement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/lbl_caracteristiques"
+        style="@style/sectionHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Caractéristiques"
+        android:layout_alignParentLeft="true"/>
+
+    <TextView
+        android:id="@+id/caracteristique"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/lbl_disponibilite"
+        style="@style/sectionHeader"
+        android:layout_alignParentLeft="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Disponibilité" />
+
+    <TextView
+        android:id="@+id/disponibilite"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
+
+</LinearLayout>

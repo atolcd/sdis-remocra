@@ -7,6 +7,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+
+import fr.sdis83.remocra.util.DbUtils;
+
 /**
  * Pour activer le clic sur la dialog il faut setter le
  * FragmentManager de la frame principale
@@ -45,6 +51,12 @@ public class EditDate extends EditText {
                 datePickerFragment.show(fragmentManager, "datePicker");
             }
         });
+    }
+
+    public void setNow() throws ParseException {
+        Calendar c = Calendar.getInstance();
+        this.setText(String.valueOf(DbUtils.DATE_FORMAT_EDIT.format(c.getTime())));
+
     }
 
     public void setFragmentManager(FragmentManager fragmentManager) {

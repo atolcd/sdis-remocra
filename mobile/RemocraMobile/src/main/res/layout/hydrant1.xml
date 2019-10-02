@@ -11,256 +11,262 @@
         android:padding="16dp"
         android:orientation="vertical"
         >
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/title_visite"
                 style="@style/sectionHeader"
-                android:text="Traçabilité"
-                android:id="@+id/title_tracabilite"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"/>
+                android:text="Visite" />
 
             <TextView
+                android:id="@+id/lbl_date_visite"
                 style="@style/labelShort"
-                android:text="Agent1"
+                android:layout_below="@+id/title_visite"
+                android:layout_alignParentLeft="true"
+                android:labelFor="@+id/date_visite"
+                android:text="Date" />
+
+            <fr.sdis83.remocra.fragment.components.EditDate
+                style="@style/field"
+                android:id="@+id/date_visite"
+                android:layout_below="@+id/title_visite"
+                android:layout_toRightOf="@+id/lbl_date_visite"
+                android:textAlignment="center"
+                android:textDirection="inherit"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/lbl_heure_visite"
+                style="@style/labelShort"
+                android:layout_below="@+id/date_visite"
+                android:layout_alignParentLeft="true"
+                android:labelFor="@+id/heure_visite"
+                android:text="Heure" />
+
+            <fr.sdis83.remocra.fragment.components.EditTime
+                android:id="@+id/heure_visite"
+                android:layout_below="@+id/date_visite"
+                android:layout_toRightOf="@+id/lbl_heure_visite"
+                style="@style/field"
+                android:textAlignment="center"
+                android:textDirection="inherit"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/lbl_type_visite"
+                style="@style/labelShort"
+                android:layout_below="@+id/heure_visite"
+                android:layout_alignParentLeft="true"
+                android:labelFor="@+id/type_visite"
+                android:text="Type" />
+
+            <Spinner
+                android:id="@+id/type_visite"
+                android:layout_below="@+id/heure_visite"
+                android:layout_toRightOf="@+id/lbl_type_visite"
+                style="@style/field" />
+
+            <TextView
                 android:id="@+id/lbl_agent1"
+                style="@style/labelShort"
+                android:layout_below="@+id/type_visite"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/title_tracabilite"
-                android:labelFor="@+id/agent1"/>
+                android:labelFor="@+id/agent1"
+                android:text="Agent1" />
 
             <EditText
-                style="@style/field"
-                android:inputType="text"
                 android:id="@+id/agent1"
-                android:layout_below="@+id/title_tracabilite"
-                android:layout_toRightOf="@+id/lbl_agent1"/>
+                style="@style/field"
+                android:layout_below="@+id/type_visite"
+                android:layout_toRightOf="@+id/lbl_agent1"
+                android:inputType="text" />
 
             <TextView
-                style="@style/labelShort"
-                android:text="Agent2"
                 android:id="@+id/lbl_agent2"
-                android:layout_alignParentLeft="true"
+                style="@style/labelShort"
                 android:layout_below="@+id/agent1"
-                android:labelFor="@+id/agent2"/>
+                android:layout_alignParentLeft="true"
+                android:labelFor="@+id/agent2"
+                android:text="Agent2" />
 
             <EditText
-                style="@style/field"
-                android:inputType="text"
                 android:id="@+id/agent2"
+                style="@style/field"
                 android:layout_below="@+id/agent1"
-                android:layout_toRightOf="@+id/lbl_agent2"/>
-
-
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                android:layout_toRightOf="@+id/lbl_agent2"
+                android:inputType="text" />
 
             <TextView
-                style="@style/sectionHeader"
-                android:text="Localisation"
-                android:id="@+id/title_localisation"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"/>
-
-            <TextView
+                android:id="@+id/lbl_controle"
                 style="@style/labelShort"
-                android:text="Commune"
-                android:id="@+id/lbl_loca_commune"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/title_localisation"
-                android:labelFor="@+id/verif_debit"/>
-
-            <AutoCompleteTextView
-                style="@style/field"
-                android:inputType="text|textNoSuggestions"
-                android:id="@+id/loca_commune"
-                android:layout_below="@+id/title_localisation"
-                android:layout_toRightOf="@+id/lbl_loca_commune"/>
-
-            <TextView
-                style="@style/labelShort"
-                android:text="Lieu-dit"
-                android:id="@+id/lbl_loca_lieudit"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/loca_commune"
-                android:labelFor="@+id/verif_debit"/>
-
-            <EditText
-                style="@style/field"
-                android:inputType="text"
-                android:id="@+id/loca_lieudit"
-                android:layout_below="@+id/loca_commune"
-                android:layout_toRightOf="@+id/lbl_loca_lieudit"/>
-
-            <TextView
-                style="@style/labelShort"
-                android:text="Voie"
-                android:id="@+id/lbl_loca_voie"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/loca_lieudit"
-                android:labelFor="@+id/verif_debit"/>
-
-            <EditText
-                style="@style/field"
-                android:inputType="text"
-                android:id="@+id/loca_voie"
-                android:layout_below="@+id/loca_lieudit"
-                android:layout_toRightOf="@+id/lbl_loca_voie"/>
-
-            <TextView
-                style="@style/labelShort"
-                android:text="Voie 2"
-                android:id="@+id/lbl_loca_voie2"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/loca_voie"
-                android:labelFor="@+id/verif_debit"/>
-
-            <EditText
-                style="@style/field"
-                android:inputType="text"
-                android:id="@+id/loca_voie2"
-                android:layout_below="@+id/loca_voie"
-                android:layout_toRightOf="@+id/lbl_loca_voie2"/>
-
-            <TextView
-                style="@style/labelShort"
-                android:text="Complément"
-                android:id="@+id/lbl_loca_compl"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/loca_voie2"
-                android:labelFor="@+id/verif_debit"/>
-
-            <EditText
-                style="@style/field"
-                android:inputType="textMultiLine"
-                android:id="@+id/loca_compl"
-                android:layout_below="@+id/loca_voie2"
-                android:layout_toRightOf="@+id/lbl_loca_compl"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                style="@style/sectionHeader"
-                android:text="Identification"
-                android:id="@+id/lbl_identification"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"/>
-
-            <TextView
-                style="@style/labelShort"
-                android:text="N° interne"
-                android:id="@+id/lbl_ident_num"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/lbl_identification"
-                android:labelFor="@+id/verif_debit"/>
-
-            <TextView
-                style="@style/field"
-                android:id="@+id/ident_num"
-                android:layout_below="@+id/lbl_identification"
-                android:layout_toRightOf="@+id/lbl_ident_num"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/ident_pibi"
-            >
-
-            <TextView
-                style="@style/labelShort"
-                android:text="Type"
-                android:id="@+id/lbl_ident_pibi_type"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"/>
-
-            <Spinner
-                style="@style/field"
-                android:spinnerMode="dropdown"
-                android:id="@+id/ident_pibi_type"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/lbl_ident_pibi_type"/>
-
-            <TextView
-                style="@style/labelShort"
-                android:text="Diamètre"
-                android:id="@+id/lbl_ident_pibi_diam"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/ident_pibi_type"/>
-
-            <Spinner
-                style="@style/field"
-                android:spinnerMode="dropdown"
-                android:id="@+id/ident_pibi_diam"
-                android:layout_below="@+id/ident_pibi_type"
-                android:layout_toRightOf="@+id/lbl_ident_pibi_diam"/>
-
-            <TextView
-                style="@style/labelShort"
-                android:text="Identifiant SCP"
-                android:id="@+id/lbl_ident_pibi_scp"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/ident_pibi_diam"/>
-
-            <EditText
-                style="@style/field"
-                android:id="@+id/ident_pibi_scp"
-                android:layout_below="@+id/ident_pibi_diam"
-                android:layout_toRightOf="@+id/lbl_ident_pibi_scp"/>
-
-            <TextView
-                style="@style/labelShort"
-                android:text="Nature DECI"
-                android:id="@+id/lbl_ident_deci_nature"
-                android:layout_below="@+id/lbl_ident_pibi_scp"
-                android:layout_alignParentLeft="true"/>
-
-            <Spinner
-                style="@style/field"
-                android:spinnerMode="dropdown"
-                android:id="@+id/ident_deci_nature"
-                android:layout_below="@+id/ident_pibi_scp"
-                android:layout_toRightOf="@+id/lbl_ident_deci_nature"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/ident_pena"
-            >
-
-            <TextView
-                style="@style/labelShort"
-                android:text="Nature"
-                android:id="@+id/lbl_ident_pena_nature"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"/>
-
-            <Spinner
-                style="@style/field"
-                android:spinnerMode="dialog"
-                android:id="@+id/ident_pena_nature"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/lbl_ident_pena_nature"/>
-
-            <CheckBox
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ident_pena_hbe"
-                android:layout_gravity="center"
+                android:layout_height="45dp"
+                android:layout_below="@+id/agent2"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="120dp"
-                android:checked="false"
-                android:text="HBE"
-                android:layout_below="@+id/lbl_ident_pena_nature"
-                />
+                android:labelFor="@+id/controle"
+                android:text="Contrôle débit et pression (CDP)" />
+
+            <Switch
+                android:id="@+id/controle"
+                style="@style/field"
+                android:layout_width="match_parent"
+                android:layout_height="41dp"
+                android:layout_below="@+id/agent2"
+                android:layout_marginLeft="21dp"
+                android:layout_toRightOf="@+id/lbl_controle"
+                android:text=""
+                android:typeface="normal" />
+
+
         </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/verif_pibi">
+
+            <TextView
+                style="@style/sectionHeader"
+                android:text="Mesures"
+                android:id="@+id/title_verif_pibi"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true" />
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Débit à 1 bar (m3/h)"
+                android:id="@+id/lbl_verif_debit"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/title_verif_pibi"
+                android:labelFor="@+id/verif_debit"/>
+
+            <EditText
+                style="@style/field"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/verif_debit"
+                android:layout_below="@+id/title_verif_pibi"
+                android:layout_toRightOf="@+id/lbl_verif_debit"/>
+
+            <TextView
+                style="@style/labelError"
+                android:text=""
+                android:id="@+id/verif_debit_msg"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/verif_debit"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/lbl_verif_pression_dyn"
+                style="@style/labelLong"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/verif_debit_msg"
+                android:paddingTop="8dp"
+                android:text="Pression dynamique à 60m3 (bar)" />
+
+            <EditText
+                style="@style/field"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/verif_pression_dyn"
+                android:layout_below="@+id/verif_debit_msg"
+                android:layout_toRightOf="@+id/lbl_verif_pression_dyn"/>
+
+            <TextView
+                style="@style/labelError"
+                android:text=""
+                android:id="@+id/verif_pression_dyn_msg"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/verif_pression_dyn"
+                android:visibility="gone"/>
+
+            <TextView
+                style="@style/labelError"
+                android:text="La pression dynamique à 60 m3 ne peut pas être inférieure à 1."
+                android:id="@+id/verif_pression_dyn_msgerreur"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/verif_pression_dyn_msg"
+                android:visibility="gone"/>
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Débit max (m³/h)"
+                android:id="@+id/lbl_verif_debit_max"
+                android:layout_below="@+id/verif_pression_dyn_msgerreur"
+                android:layout_alignParentLeft="true"/>
+
+            <EditText
+                style="@style/field"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/verif_debit_max"
+                android:layout_below="@+id/verif_pression_dyn_msgerreur"
+                android:layout_toRightOf="@+id/lbl_verif_debit_max"/>
+
+            <TextView
+                style="@style/labelError"
+                android:text=""
+                android:id="@+id/verif_debit_max_msg"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/verif_debit_max"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/lbl_verif_pression_dyn_deb"
+                style="@style/labelLong"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/verif_debit_max_msg"
+                android:paddingTop="8dp"
+                android:text="Pression dynamique au débit max (bar)" />
+
+            <EditText
+                style="@style/field"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/verif_pression_dyn_deb"
+                android:layout_below="@+id/verif_debit_max_msg"
+                android:layout_toRightOf="@+id/lbl_verif_pression_dyn_deb"/>
+
+            <TextView
+                style="@style/labelError"
+                android:text=""
+                android:id="@+id/verif_pression_dyn_deb_msg"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/verif_pression_dyn_deb"
+                android:visibility="gone"/>
+
+            <TextView
+                style="@style/labelLong"
+                android:text="Pression statique (bar)"
+                android:id="@+id/lbl_verif_pression"
+                android:layout_below="@+id/verif_pression_dyn_deb_msg"
+                android:layout_alignParentLeft="true" />
+
+            <EditText
+                style="@style/field"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/verif_pression"
+                android:layout_below="@+id/verif_pression_dyn_deb_msg"
+                android:layout_toRightOf="@+id/lbl_verif_pression"/>
+
+            <TextView
+                style="@style/labelError"
+                android:text=""
+                android:id="@+id/verif_pression_msg"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/verif_pression"
+                android:visibility="gone"/>
+
+
+
+        </RelativeLayout>
+
+
     </LinearLayout>
 </ScrollView>

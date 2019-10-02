@@ -372,10 +372,14 @@ public class LoginActivity extends Activity {
                     if (mPassword.equals(cursor.getString(cursor.getColumnIndex(UserTable.COLUMN_PASSWORD)))) {
                         Context context = getApplicationContext();
 
+
                         GlobalRemocra.getInstance(context).setLogin(mIdentifier);
                         GlobalRemocra.getInstance(context).setPassword(mPassword);
 
-                        String data = cursor.getString(cursor.getColumnIndex(UserTable.COLUMN_HYDRANT));
+                        String data = cursor.getString(cursor.getColumnIndex(UserTable.COLUMN_LOGGED_AGENT));
+                        GlobalRemocra.getInstance(context).setLoggedAgent(data);
+
+                        data = cursor.getString(cursor.getColumnIndex(UserTable.COLUMN_HYDRANT));
                         GlobalRemocra.getInstance(context).setCanAddHydrant(data.indexOf("C") != -1);
 
                         data = cursor.getString(cursor.getColumnIndex(UserTable.COLUMN_RECONNAISSANCE));
@@ -386,6 +390,9 @@ public class LoginActivity extends Activity {
 
                         data = cursor.getString(cursor.getColumnIndex(UserTable.COLUMN_RECEPTION));
                         GlobalRemocra.getInstance(context).setCanReception(data.indexOf("C") != -1);
+
+                        data = cursor.getString(cursor.getColumnIndex(UserTable.COLUMN_VISIT_RECEP));
+                        GlobalRemocra.getInstance(context).setCanVisitReception(data.indexOf("C") != -1);
 
                         data = cursor.getString(cursor.getColumnIndex(UserTable.COLUMN_MCO));
                         GlobalRemocra.getInstance(context).setCanSetMco(data.indexOf("C") != -1);

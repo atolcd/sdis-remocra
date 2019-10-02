@@ -42,6 +42,9 @@ public class HydrantActivity extends FragmentActivity implements ActionBar.TabLi
     private ViewPager mViewPager;
     private long idHydrant;
     private String mNumero;
+    private String mType;
+    private String mCommune;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -149,6 +152,7 @@ public class HydrantActivity extends FragmentActivity implements ActionBar.TabLi
                     @Override
                     protected void onPostExecute(Boolean result) {
                         setTabRead(position);
+
                     }
                 };
                 backUpdate.execute();
@@ -221,14 +225,9 @@ public class HydrantActivity extends FragmentActivity implements ActionBar.TabLi
         if (cursor.moveToFirst()) {
             if (mViewHydrantAdapter != null) {
                 mViewHydrantAdapter.setHydrant(cursor, mViewPager.getCurrentItem());
-                // Désactivation de l'onglet 0 si la commune n'est pas valide
-                // (empèche l'utilisateur de synchroniser Hydrant avec une commune non valide)
-                if(!isLibelleCommuneValid(cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_COMMUNE)))) {
-                    setTabNotRead(0);
-                }
             } else {
                 // Set up the adapter.
-                mViewHydrantAdapter = new ViewHydrantAdapter(cursor,getSupportFragmentManager(), getBaseContext());
+                mViewHydrantAdapter = new ViewHydrantAdapter(getSupportFragmentManager(), getBaseContext());
                 mViewPager = (ViewPager) findViewById(R.id.viewPager);
                 mViewPager.setAdapter(mViewHydrantAdapter);
                 mViewPager.setOffscreenPageLimit(mViewHydrantAdapter.getCount() - 1);
@@ -257,41 +256,16 @@ public class HydrantActivity extends FragmentActivity implements ActionBar.TabLi
                 setTabRead(0);
             }
             mNumero = cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_NUMERO));
+            mCommune = cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_COMMUNE));
+            mType = cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_TYPE_HYDRANT));
             updateTitle();
         } else {
             Log.d("REMOCRA", "loadDataFromCursor - nothing");
         }
     }
 
-    /**
-     * Retourne si la commune est valide
-     * (l'utilisateur doit passer par les communes existantes dans l'application dans la saisie)
-     * @return
-     */
-    public boolean isLibelleCommuneValid(String libelleCommune) {
-        if (TextUtils.isEmpty(libelleCommune)) {
-            return false;
-        }
-        Cursor c = getContentResolver().query(RemocraProvider.CONTENT_COMMUNE_URI, new String[]{ReferentielTable.COLUMN_CODE}, ReferentielTable.COLUMN_LIBELLE + "=?", new String[]{libelleCommune}, null);
-        try {
-            if (c.getCount() == 1) {
-                c.moveToPosition(0);
-                String result = c.getString(c.getColumnIndex(ReferentielTable.COLUMN_CODE));
-                if (!RemocraProvider.EMPTY_FIELD.equals(result)) {
-                    return true;
-                }
-            }
-            return false;
-        } finally {
-            if (c != null) {
-                c.close();
-            }
-        }
-    }
-
     private void updateTitle() {
-        int id = getResources().getIdentifier(mViewHydrantAdapter.getTypeSaisie().toString(), "string", "fr.sdis83.remocra");
-        setTitle(mNumero + " - " + getResources().getString(id));
+        setTitle(mType + " n° " + mNumero + " - " + mCommune);
     }
 
     @Override

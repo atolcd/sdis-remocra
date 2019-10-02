@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -20,6 +21,7 @@ import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ import fr.sdis83.remocra.HydrantActivity;
 import fr.sdis83.remocra.database.HydrantTable;
 import fr.sdis83.remocra.database.ReferentielTable;
 import fr.sdis83.remocra.fragment.components.EditDate;
+import fr.sdis83.remocra.fragment.components.EditTime;
 import fr.sdis83.remocra.util.DbUtils;
 
 public abstract class AbstractHydrant extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -70,13 +73,7 @@ public abstract class AbstractHydrant extends Fragment implements LoaderManager.
         if (mListener != null) {
             if (cursor.getLong(cursor.getColumnIndex(fieldRead)) == 1) {
                 int position = getArguments().getInt("position");
-                // Désactivation de l'onglet 0 si la commune n'est pas valide
-                // (empèche l'utilisateur de synchroniser Hydrant avec une commune non valide)
-                if(position == 0 && !mListener.isLibelleCommuneValid(cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_COMMUNE)))) {
-                    mListener.setTabNotRead(position);
-                } else {
-                    mListener.setTabRead(position);
-                }
+                mListener.setTabRead(position);
             }
         }
     }
@@ -149,6 +146,19 @@ public abstract class AbstractHydrant extends Fragment implements LoaderManager.
                         }
                     }
                     values.put(data.getValue().column, editText == null ? null : value);
+                }else if (EditTime.class.equals(cls)) {
+                    Editable editText = ((EditTime) view).getText();
+                    String value = null;
+                    if(editText != null && !editText.toString().isEmpty()) {
+                        try {
+                            value = String.valueOf(DbUtils.TIME_FORMAT_EDIT.parse(editText.toString()).getTime());
+                        } catch (Exception e) {
+                            throw new AssertionError("Format de l'heure invalide");
+                        }
+                    }
+                    values.put(data.getValue().column, editText == null ? null : value);
+                }else if (Switch.class.equals(cls)) {
+                    values.put(data.getValue().column, ((Switch) view).isChecked());
                 }
             }
         }

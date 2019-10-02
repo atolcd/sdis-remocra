@@ -1,91 +1,167 @@
 package fr.sdis83.remocra.fragment;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.text.InputType;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
-import android.widget.CheckBox;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TextView;
+
+import java.text.ParseException;
+import java.util.ArrayList;
 
 import fr.sdis83.remocra.GlobalRemocra;
-import fr.sdis83.remocra.HydrantActivity;
 import fr.sdis83.remocra.R;
-import fr.sdis83.remocra.adapter.CommuneAdapter;
 import fr.sdis83.remocra.contentprovider.RemocraProvider;
 import fr.sdis83.remocra.database.HydrantTable;
+import fr.sdis83.remocra.database.TypeSaisiesTable;
+import fr.sdis83.remocra.database.UserTable;
+import fr.sdis83.remocra.fragment.components.EditDate;
+import fr.sdis83.remocra.fragment.components.EditTime;
+import fr.sdis83.remocra.holder.TypeVisiteHolder;
 
 public class Hydrant1 extends AbstractHydrant {
+
+    private EditDate datePicker;
+    private EditTime timePicker;
+    private Spinner types;
+    private Switch controle;
+    private EditText agent1;
 
     public Hydrant1() {
         super(R.layout.hydrant1, HydrantTable.COLUMN_STATE_H1);
         addBindableData(R.id.agent1, HydrantTable.COLUMN_AGENT1, EditText.class);
         addBindableData(R.id.agent2, HydrantTable.COLUMN_AGENT2, EditText.class);
-        addBindableData(R.id.loca_commune, HydrantTable.COLUMN_COMMUNE, EditText.class);
-        addBindableData(R.id.loca_lieudit, HydrantTable.COLUMN_LIEUDIT, EditText.class);
-        addBindableData(R.id.loca_voie, HydrantTable.COLUMN_VOIE, EditText.class);
-        addBindableData(R.id.loca_voie2, HydrantTable.COLUMN_VOIE2, EditText.class);
-        addBindableData(R.id.loca_compl, HydrantTable.COLUMN_COMPLEMENT, EditText.class);
-
-        addBindableData(R.id.ident_num, HydrantTable.COLUMN_NUMERO_INTERNE, TextView.class);
-        addBindableData(R.id.ident_pibi_scp, HydrantTable.COLUMN_NUMERO_SCP, TextView.class);
-
-        addBindableData(R.id.ident_pibi_type, HydrantTable.COLUMN_NATURE, Spinner.class);
-        addBindableData(R.id.ident_pibi_diam, HydrantTable.COLUMN_DIAMETRE, Spinner.class);
-        addBindableData(R.id.ident_pena_nature, HydrantTable.COLUMN_NATURE, Spinner.class);
-        addBindableData(R.id.ident_pena_hbe, HydrantTable.COLUMN_HBE, CheckBox.class);
-        addBindableData(R.id.ident_deci_nature, HydrantTable.COLUMN_NATURE_DECI, Spinner.class);
+        addBindableData(R.id.controle, HydrantTable.COLUMN_CONTROLE, Switch.class);
     }
 
     @Override
     public CharSequence getTabTitle() {
-        return GlobalRemocra.getInstance().getContext().getString(R.string.identification);
+        return GlobalRemocra.getInstance().getContext().getString(R.string.visite);
     }
 
     @Override
     protected void onBeforeBind(Cursor cursor) {
-        boolean pibi = isPibi(cursor);
-        getView().findViewById(R.id.ident_pibi).setVisibility(pibi ? View.VISIBLE : View.GONE);
-        getView().findViewById(R.id.ident_pena).setVisibility(pibi ? View.GONE : View.VISIBLE);
+        getView().findViewById(R.id.verif_pibi).setVisibility(View.GONE);
+
+        ContentResolver resolver = getView().getContext().getContentResolver();
+
+        /**** On filtre le curseur selon le type de saisie
+         *  RECEP ==> RECEP
+         *  CTRL  ==> RECO ,CTRL
+         *  RECO ==> RECO
+         */
+        String selection = TypeSaisiesTable.COLUMN_CODE + "=?";
+        String[] arg;
+        if (("CTRL".equals(typeSaisie.toString()))) {
+            selection = TypeSaisiesTable.COLUMN_CODE + "=?" + " OR " + TypeSaisiesTable.COLUMN_CODE + "=?" ;
+            arg = new String[]{String.valueOf("CTRL") , String.valueOf("RECO")  };
+
+        } else {
+            arg = new String[]{String.valueOf(typeSaisie)};
+        }
+
+        Cursor c= resolver.query(RemocraProvider.CONTENT_TYPE_SAISIES_URI, null,
+                selection,
+                arg,
+                null);
+
+        ArrayList<TypeVisiteHolder> mArrayList = new ArrayList<TypeVisiteHolder>();
+        while(c.moveToNext()) {
+            TypeVisiteHolder v = new TypeVisiteHolder(c.getLong(c.getColumnIndex(TypeSaisiesTable._ID)) ,
+                    c.getString(c.getColumnIndex(TypeSaisiesTable.COLUMN_CODE)), c.getString(c.getColumnIndex(TypeSaisiesTable.COLUMN_LIBELLE)));
+            mArrayList.add(v); //add the item
+        }
+        ArrayAdapter<TypeVisiteHolder> a = new ArrayAdapter<TypeVisiteHolder>(getView().getContext(), android.R.layout.simple_spinner_item, mArrayList);
+        a.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        types = (Spinner) getView().findViewById(R.id.type_visite);
+        types.setAdapter(a);
+
+        types.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(types.getSelectedItem() != null) {
+                    TypeVisiteHolder tv = (TypeVisiteHolder) types.getSelectedItem();
+                    controle.setChecked(false);
+                    controle.setEnabled(true);
+                    if (!("CTRL".equals(tv.getCode()))){
+                        getView().findViewById(R.id.verif_pibi).setVisibility(View.GONE);
+                        controle.setEnabled(false);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        types.setSelection(0);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+        // Initialisation du fragment manager obligatoire pour l'affichage de la dialog de date.
+        datePicker = ((EditDate) view.findViewById(R.id.date_visite));
+        datePicker.setFragmentManager(getFragmentManager());
+        try {
+            datePicker.setNow();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        AutoCompleteTextView commune = (AutoCompleteTextView) view.findViewById(R.id.loca_commune);
-        commune.setAdapter(new CommuneAdapter(getActivity()));
+        // Initialisation du fragment manager obligatoire pour l'affichage de la dialog de l'heure.
+        timePicker  = ((EditTime) view.findViewById(R.id.heure_visite));
+        timePicker.setFragmentManager(getFragmentManager());
+        try {
+            timePicker.setNow();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        loadSpinner(R.id.ident_pibi_type, RemocraProvider.getUriNature(RemocraProvider.TYPE_NATURE.PIBI));
-        loadSpinner(R.id.ident_pibi_diam, RemocraProvider.CONTENT_DIAMETRE_URI);
-        loadSpinner(R.id.ident_pena_nature, RemocraProvider.getUriNature(RemocraProvider.TYPE_NATURE.PENA));
-        loadSpinner(R.id.ident_deci_nature, RemocraProvider.CONTENT_NATURE_DECI_URI);
-        //on modifie l'action de multiline à suivant
-        EditText loca = (EditText) view.findViewById(R.id.loca_compl);
-        loca.setImeOptions(EditorInfo.IME_ACTION_NEXT);
-        loca.setRawInputType(InputType.TYPE_CLASS_TEXT);
+
+        controle = ((Switch) view.findViewById(R.id.controle));
+        controle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //La saisie des mesures est activé seulement en momde CTRL
+                if(types.getSelectedItem() != null ) {
+                    if (isChecked) {
+                        if("CTRL".equals(((TypeVisiteHolder) types.getSelectedItem()).getCode())){
+                            getView().findViewById(R.id.verif_pibi).setVisibility(View.VISIBLE);
+                        }
+
+                    } else {
+                        getView().findViewById(R.id.verif_pibi).setVisibility(View.GONE);
+                    }
+                }
+
+            }
+        });
+
+        agent1 = ((EditText) view.findViewById(R.id.agent1));
+
+        String ag = GlobalRemocra.getInstance().getLoggedAgent();
+        agent1.setText(ag);
+
         return view;
     }
 
     @Override
     public ContentValues getDataToSave() {
         ContentValues values = super.getDataToSave();
-        String valeurDeLaCommune = values.getAsString(HydrantTable.COLUMN_COMMUNE);
-        boolean state = valeurDeLaCommune != null
-                && !"".equals(valeurDeLaCommune)
-                && ((HydrantActivity)getActivity()).isLibelleCommuneValid(valeurDeLaCommune);
-        // Onglet valide si la commune est valide
-        // (empèche l'utilisateur de synchroniser Hydrant avec une commune non valide)
-        values.put(HydrantTable.COLUMN_STATE_H1, state);
+        values.put(HydrantTable.COLUMN_STATE_H1, true);
         return values;
     }
 

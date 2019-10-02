@@ -14,7 +14,7 @@
         android:layout_alignParentLeft="true"/>
 
     <TextView
-        android:layout_width="100dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:id="@+id/numero"
@@ -23,14 +23,14 @@
         android:layout_alignParentLeft="true"/>
 
     <ImageView
-        android:layout_width="100dp"
+        android:layout_width="120dp"
         android:layout_height="40dp"
         android:id="@+id/imageView"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/numero"/>
 
     <TextView
-        android:layout_width="20dp"
+        android:layout_width="30dp"
         android:layout_height="24dp"
         android:id="@+id/diametre"
         android:layout_alignParentTop="true"
@@ -38,7 +38,7 @@
 
     <TextView
         android:id="@+id/receptionLbl"
-        android:layout_width="116dp"
+        android:layout_width="130dp"
         android:layout_height="24dp"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/diametre"
@@ -46,7 +46,7 @@
 
     <TextView
         android:id="@+id/recoLbl"
-        android:layout_width="116dp"
+        android:layout_width="130dp"
         android:layout_height="24dp"
         android:layout_alignLeft="@+id/receptionLbl"
         android:layout_below="@+id/receptionLbl"
@@ -61,14 +61,14 @@
         android:text="Contrôle" />
 
     <TextView
-        android:layout_width="100dp"
+        android:layout_width="130dp"
         android:layout_height="24dp"
         android:id="@+id/dateRecep"
         android:layout_alignTop="@+id/receptionLbl"
         android:layout_toRightOf="@+id/receptionLbl"/>
 
     <TextView
-        android:layout_width="100dp"
+        android:layout_width="130dp"
         android:layout_height="24dp"
         android:id="@+id/dateReco"
         android:layout_below="@+id/dateRecep"
@@ -76,61 +76,18 @@
 
     <TextView
         android:id="@+id/dateCtrl"
-        android:layout_width="86dp"
+        android:layout_width="130dp"
         android:layout_height="24dp"
         android:layout_alignRight="@+id/dateReco"
         android:layout_alignTop="@+id/ctrlLbl" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:text="Disponibilité"
-        android:id="@+id/dispo"
-        android:layout_alignTop="@+id/dateRecep"
-        android:layout_toRightOf="@+id/dateRecep"/>
-
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:id="@+id/dispoOpImg"
-        android:background="@android:color/transparent"
-        android:padding="2dp"
-        android:layout_below="@+id/dispo"
-        android:layout_toRightOf="@+id/dateRecep"/>
-
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:id="@+id/dispoHbeImg"
-        android:background="@android:color/transparent"
-        android:padding="2dp"
-        android:layout_below="@+id/dispoOpImg"
-        android:layout_alignLeft="@+id/dispoOpImg"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:text="Opérationnelle"
-        android:id="@+id/dispoOpLbl"
-        android:padding="5dp"
-        android:layout_alignTop="@+id/dispoOpImg"
-        android:layout_toRightOf="@+id/dispoOpImg"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:text="HBE"
-        android:padding="5dp"
-        android:id="@+id/dispoHbeLbl"
-        android:layout_below="@+id/dispoOpLbl"
-        android:layout_toRightOf="@+id/dispoOpImg"/>
 
     <ImageView
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:id="@+id/stateImage"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/dispoOpLbl"
+        android:layout_toRightOf="@+id/dateCtrl"
         android:layout_marginLeft="28dp"/>
 
 </RelativeLayout>

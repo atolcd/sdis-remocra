@@ -378,8 +378,6 @@ public class SyncActivity extends FragmentActivity implements ChoiceTournee.Choi
                             HydrantTable.COLUMN_STATE_H2 + "=1 AND " +
                             HydrantTable.COLUMN_STATE_H3 + "=1 AND " +
                             HydrantTable.COLUMN_STATE_H4 + "=1 AND " +
-                            HydrantTable.COLUMN_STATE_H5 + "=1 AND " +
-                            HydrantTable.COLUMN_STATE_H6 + "=1 AND " +
                             HydrantTable.COLUMN_TYPE_SAISIE + " is not null", null, null);
             if (cursor != null && cursor.moveToFirst()) {
                 nbHydrant = cursor.getInt(0);
@@ -498,8 +496,6 @@ public class SyncActivity extends FragmentActivity implements ChoiceTournee.Choi
                             HydrantTable.COLUMN_STATE_H2 + "=1 AND " +
                             HydrantTable.COLUMN_STATE_H3 + "=1 AND " +
                             HydrantTable.COLUMN_STATE_H4 + "=1 AND " +
-                            HydrantTable.COLUMN_STATE_H5 + "=1 AND " +
-                            HydrantTable.COLUMN_STATE_H6 + "=1 AND " +
                             HydrantTable.COLUMN_TYPE_SAISIE + " is not null", null,
                     HydrantTable.COLUMN_TYPE_HYDRANT);
             if (cursor != null) {

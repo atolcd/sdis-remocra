@@ -74,6 +74,7 @@
     <string name="tournees_start">A commencer</string>
     <string name="hydrant_numero">Numéro</string>
     <string name="identification">Identification</string>
+    <string name="visite">Visite</string>
     <string name="verification">Vérification</string>
     <string name="mco">MCO</string>
     <string name="point_attention">Points d\'attention</string>
@@ -93,6 +94,7 @@
     <string name="sync_integre_data">Intégration des données…</string>
     <string name="sync_integre_done">Données intégrées (%d)</string>
     <string name="observation">Observations</string>
+    <string name="resume">Résumé</string>
     <string name="photo">Photo</string>
     <string name="sort">Tri</string>
     <string name="sort_name">Libellé</string>

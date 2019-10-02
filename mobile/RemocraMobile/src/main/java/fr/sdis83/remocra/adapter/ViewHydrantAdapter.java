@@ -16,14 +16,12 @@ import java.util.List;
 import fr.sdis83.remocra.GlobalRemocra;
 import fr.sdis83.remocra.database.HydrantTable;
 import fr.sdis83.remocra.database.HydrantTable.TYPE_SAISIE;
-import fr.sdis83.remocra.database.NatureTable;
 import fr.sdis83.remocra.fragment.AbstractHydrant;
+import fr.sdis83.remocra.fragment.Hydrant0;
 import fr.sdis83.remocra.fragment.Hydrant1;
 import fr.sdis83.remocra.fragment.Hydrant2;
 import fr.sdis83.remocra.fragment.Hydrant3;
 import fr.sdis83.remocra.fragment.Hydrant4;
-import fr.sdis83.remocra.fragment.Hydrant5;
-import fr.sdis83.remocra.fragment.Hydrant6;
 /**
  * Created by jpt on 08/08/13.
  */
@@ -36,24 +34,14 @@ public class ViewHydrantAdapter extends FragmentPagerAdapter {
     public List<String> fragmentClassNames = new LinkedList<String>();
     private HydrantTable.TYPE_SAISIE typeSaisie = HydrantTable.TYPE_SAISIE.LECT;
 
-    public ViewHydrantAdapter(Cursor hydrant,FragmentManager supportFragmentManager, Context context) {
+    public ViewHydrantAdapter(FragmentManager supportFragmentManager, Context context) {
         super(supportFragmentManager);
         this.context = context;
-        this.hydrant=hydrant;
+        fragmentClassNames.add(Hydrant0.class.getName());
         fragmentClassNames.add(Hydrant1.class.getName());
-        String codeNature = NatureTable.getCodeById(context, hydrant.getInt(hydrant.getColumnIndex(HydrantTable.COLUMN_NATURE)));
-
-        if (!codeNature.equals("PA")){
-            fragmentClassNames.add(Hydrant2.class.getName());
-        }
-
-        // Droit MCO
-        if (GlobalRemocra.getInstance(context).getCanSetMco()) {
-            fragmentClassNames.add(Hydrant3.class.getName());
-        }
+        fragmentClassNames.add(Hydrant2.class.getName());
+        fragmentClassNames.add(Hydrant3.class.getName());
         fragmentClassNames.add(Hydrant4.class.getName());
-        fragmentClassNames.add(Hydrant5.class.getName());
-        fragmentClassNames.add(Hydrant6.class.getName());
     }
 
     public void setHydrant(Cursor hydrant, int currentPosition) {
@@ -73,12 +61,18 @@ public class ViewHydrantAdapter extends FragmentPagerAdapter {
     private void findTypeSaisieForCursor() {
         GlobalRemocra global = GlobalRemocra.getInstance(context);
         String actualTypeSaisie = hydrant.getString(hydrant.getColumnIndex(HydrantTable.COLUMN_TYPE_SAISIE));
+        Integer nbVisite = hydrant.getInt(hydrant.getColumnIndex(HydrantTable.COLUMN_NB_VISITE));
         if (TextUtils.isEmpty(actualTypeSaisie)) {
             typeSaisie = TYPE_SAISIE.LECT;
             if (hydrant.getLong(hydrant.getColumnIndex(HydrantTable.COLUMN_DATE_RECEP)) == 0) {
+                if (global.getCanVisitRecption()) {
+                    typeSaisie = TYPE_SAISIE.CREA;
+                }
+            } else if (nbVisite == 1) {
                 if (global.getCanReception()) {
                     typeSaisie = TYPE_SAISIE.RECEP;
                 }
+
             } else {
                 if (global.getCanReconnaissance()) {
                     typeSaisie = TYPE_SAISIE.RECO;
