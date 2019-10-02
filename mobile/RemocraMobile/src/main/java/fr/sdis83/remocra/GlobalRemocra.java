@@ -16,7 +16,9 @@ public class GlobalRemocra {
     private boolean canReconnaissance;
     private boolean canControl;
     private boolean canReception;
+    private boolean canVisitReception;
     private boolean canSetMco;
+    private String loggedAgent;
 
     public static GlobalRemocra getInstance(Context context) {
         if (mInstance == null) {
@@ -44,8 +46,17 @@ public class GlobalRemocra {
         return login;
     }
 
+
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public String getLoggedAgent() {
+        return loggedAgent;
+    }
+
+    public void setLoggedAgent(String loggedAgent) {
+        this.loggedAgent = loggedAgent;
     }
 
     public String getPassword() {
@@ -76,9 +87,13 @@ public class GlobalRemocra {
         this.canSetMco = canSetMco;
     }
 
+    public void setCanVisitReception(boolean canVisitReception) {
+        this.canVisitReception = canVisitReception;
+    }
+
     public String toString() {
         return login + " add:" + canAddHydrant + " reco:" + canReconnaissance
-                + " ctrl:" + canControl + " recep:" + canReception + " mco:" + canSetMco;
+                + " ctrl:" + canControl + " recep:" + canReception + " mco:" + canSetMco + " visitRecep:" + canVisitReception;
     }
 
     public boolean getCanAddHydrant() {
@@ -99,5 +114,9 @@ public class GlobalRemocra {
 
     public boolean getCanSetMco() {
         return canSetMco;
+    }
+
+    public boolean getCanVisitRecption() {
+        return canVisitReception;
     }
 }

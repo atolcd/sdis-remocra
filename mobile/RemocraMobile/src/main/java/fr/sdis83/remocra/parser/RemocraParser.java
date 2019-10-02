@@ -47,6 +47,7 @@ public class RemocraParser {
             this.registerParser(new AnomaliesParser(this));
             this.registerParser(new VolConstateParser(this));
             this.registerParser(new NatureDeciParser(this));
+            this.registerParser(new TypeSaisiesParser(this));
 
         }
         this.registerParser(new TourneeParser(this));

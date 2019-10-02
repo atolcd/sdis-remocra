@@ -26,22 +26,19 @@ public class TourneeAdapter extends CursorAdapter {
             TourneeTable.COLUMN_NB_HYDRANT,
             TourneeTable.COLUMN_NB_HYDRANT,
             //On fait la somme des pourcentages et on divise par nombre d'hydrants car le denominateur est different selon l'hydrant
-            "(select(select sum(pourcents) from (select ((" + HydrantTable.COLUMN_STATE_H1 + " + " +
-                    HydrantTable.COLUMN_STATE_H2 + "+ " +
-                    HydrantTable.COLUMN_STATE_H3 + "+ " +
-                    HydrantTable.COLUMN_STATE_H4 + "+ " +
-                    HydrantTable.COLUMN_STATE_H5 + "+ " +
-                    HydrantTable.COLUMN_STATE_H6 + ") * 100 " +
-                    " / " + HydrantTable.COLUMN_NB_ECRANS+ ") as pourcents" +
+            "(select sum(100 * (  " +
+                    "(" + HydrantTable.COLUMN_STATE_H1 + ") + " +
+                    "(" + HydrantTable.COLUMN_STATE_H2 + ") + " +
+                    "(" + HydrantTable.COLUMN_STATE_H3 + ") + " +
+                    "(" + HydrantTable.COLUMN_STATE_H4 + "))) " +
+                    " / ( 4 * " + TourneeTable.TABLE_NAME + "." + TourneeTable.COLUMN_NB_HYDRANT + ")" +
                     " from " + HydrantTable.TABLE_NAME +
                     " where " + HydrantTable.COLUMN_TOURNEE + " = " + TourneeTable.TABLE_NAME + "." + TourneeTable._ID +
-                    " and (" + HydrantTable.COLUMN_STATE_H1 + " + " +
-                    HydrantTable.COLUMN_STATE_H2 + "+ " +
-                    HydrantTable.COLUMN_STATE_H3 + "+ " +
-                    HydrantTable.COLUMN_STATE_H4 + "+ " +
-                    HydrantTable.COLUMN_STATE_H5 + "+ " +
-                    HydrantTable.COLUMN_STATE_H6 + ")= " + HydrantTable.COLUMN_NB_ECRANS +
-                    ")src ) / " +TourneeTable.COLUMN_NB_HYDRANT+")"+ TourneeTable.FIELD_TOTAL_HYDRANT
+                    " and((" + HydrantTable.COLUMN_STATE_H1 + ") + " +
+                    "(" + HydrantTable.COLUMN_STATE_H2 + ") + " +
+                    "(" + HydrantTable.COLUMN_STATE_H3 + ") + " +
+                    "(" + HydrantTable.COLUMN_STATE_H4 + ")) = 4 )" + TourneeTable.FIELD_TOTAL_HYDRANT
+
     };
 
 

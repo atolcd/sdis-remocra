@@ -18,14 +18,10 @@ public class HydrantAdapter extends CursorAdapter {
 
     private int mColNumero;
     private int mColPhotoMini;
-    private int mColDispo;
-    private int mColHbe;
-    private int mColDispoHbe;
     private int mColDateRecep;
     private int mColDateReco;
     private int mColDateCtrl;
     private int mColStates;
-    private int mColNbEcrans;
 
     private static final String[] projection = new String[]{
             HydrantTable._ID,
@@ -40,10 +36,7 @@ public class HydrantAdapter extends CursorAdapter {
             "(" + HydrantTable.COLUMN_STATE_H1 + " + "
                     + HydrantTable.COLUMN_STATE_H2 + " + "
                     + HydrantTable.COLUMN_STATE_H3 + " + "
-                    + HydrantTable.COLUMN_STATE_H4 + " + "
-                    + HydrantTable.COLUMN_STATE_H5 + " + "
-                    + HydrantTable.COLUMN_STATE_H6 + " ) " + HydrantTable.COLUMN_STATES,
-            HydrantTable.COLUMN_NB_ECRANS,
+                    + HydrantTable.COLUMN_STATE_H4 + ") " + HydrantTable.COLUMN_STATES,
             HydrantTable.COLUMN_NATURE_DECI
 
     };
@@ -55,10 +48,6 @@ public class HydrantAdapter extends CursorAdapter {
         public TextView dateRecep;
         public TextView dateReco;
         public TextView dateCtrl;
-        public TextView dispoOpLbl;
-        public ImageView dispoOpImg;
-        public TextView dispoHbeLbl;
-        public ImageView dispoHbeImg;
         public ImageView lineState;
         public ImageView imageState;
     }
@@ -81,15 +70,10 @@ public class HydrantAdapter extends CursorAdapter {
         if (cursor != null) {
             mColNumero = cursor.getColumnIndex(HydrantTable.COLUMN_NUMERO);
             mColPhotoMini = cursor.getColumnIndex(HydrantTable.COLUMN_PHOTO_MINI);
-            mColDispo = cursor.getColumnIndex(HydrantTable.COLUMN_DISPO);
-            mColDispoHbe = cursor.getColumnIndex(HydrantTable.COLUMN_DISPO_HBE);
-            mColHbe = cursor.getColumnIndex(HydrantTable.COLUMN_HBE);
             mColDateRecep = cursor.getColumnIndex(HydrantTable.COLUMN_DATE_RECEP);
             mColDateReco = cursor.getColumnIndex(HydrantTable.COLUMN_DATE_RECO);
             mColDateCtrl = cursor.getColumnIndex(HydrantTable.COLUMN_DATE_CTRL);
             mColStates = cursor.getColumnIndex(HydrantTable.COLUMN_STATES);
-            mColNbEcrans = cursor.getColumnIndex(HydrantTable.COLUMN_NB_ECRANS);
-
         }
     }
 
@@ -104,10 +88,6 @@ public class HydrantAdapter extends CursorAdapter {
         holder.dateRecep = (TextView) view.findViewById(R.id.dateRecep);
         holder.dateReco = (TextView) view.findViewById(R.id.dateReco);
         holder.dateCtrl = (TextView) view.findViewById(R.id.dateCtrl);
-        holder.dispoOpLbl = (TextView) view.findViewById(R.id.dispoOpLbl);
-        holder.dispoOpImg = (ImageView) view.findViewById(R.id.dispoOpImg);
-        holder.dispoHbeLbl = (TextView) view.findViewById(R.id.dispoHbeLbl);
-        holder.dispoHbeImg = (ImageView) view.findViewById(R.id.dispoHbeImg);
         holder.lineState = (ImageView) view.findViewById(R.id.state);
         holder.imageState = (ImageView) view.findViewById(R.id.stateImage);
         view.setTag(holder);
@@ -133,25 +113,11 @@ public class HydrantAdapter extends CursorAdapter {
             holder.imageHydrant.setImageBitmap(null);
         }
 
-        // Dispo opérationnelle
-        holder.dispoOpImg.setImageDrawable(context.getResources().getDrawable(getDrawableIdFromDispo(cursor.getString(mColDispo))));
-
-        // Dispo HBE
-        if (cursor.getInt(mColHbe) > 0) {
-            holder.dispoHbeImg.setImageDrawable(context.getResources().getDrawable(getDrawableIdFromDispo(cursor.getString(mColDispoHbe))));
-            holder.dispoHbeLbl.setVisibility(View.VISIBLE);
-            holder.dispoHbeImg.setVisibility(View.VISIBLE);
-        } else {
-            holder.dispoHbeLbl.setVisibility(View.GONE);
-            holder.dispoHbeImg.setVisibility(View.GONE);
-        }
-
         // Etat "tout neuf", non uploadable (tous onglets non saisis => perte potentielle), uploadable (tous onglets saisis)
         long state = cursor.getLong(mColStates);
-        long nbEcrans = cursor.getLong(mColNbEcrans);
         if (state == 0) {
             holder.imageState.setImageDrawable(context.getResources().getDrawable(R.drawable.point_off));
-        } else if (state == nbEcrans) {
+        } else if (state == 4) {
             holder.imageState.setImageDrawable(context.getResources().getDrawable(R.drawable.point_on));
         } else {
             holder.imageState.setImageDrawable(context.getResources().getDrawable(R.drawable.point_half));

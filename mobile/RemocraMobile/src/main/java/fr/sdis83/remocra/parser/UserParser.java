@@ -21,6 +21,7 @@ public class UserParser extends AbstractRemocraParser {
 
     private static final String TAG_USER = "user";
     private static final String TAG_RIGHT = "right";
+    private static final String TAG_LOGGED_AGENT = "loggedAgent";
 
     public UserParser(RemocraParser remocraParser) {
         super(remocraParser);
@@ -28,7 +29,7 @@ public class UserParser extends AbstractRemocraParser {
 
     @Override
     public Iterable<? extends String> getNames() {
-        return Arrays.asList(TAG_USER, TAG_RIGHT);
+        return Arrays.asList(TAG_USER, TAG_RIGHT, TAG_LOGGED_AGENT);
     }
 
     @Override
@@ -48,6 +49,7 @@ public class UserParser extends AbstractRemocraParser {
         values.put(UserTable.COLUMN_RECONNAISSANCE, "");
         values.put(UserTable.COLUMN_MCO, "");
         values.put(UserTable.COLUMN_RECEPTION, "");
+        values.put(UserTable.COLUMN_VISIT_RECEP, "");
         int eventType = xmlParser.getEventType();
         //On parcourt le xml jusqu'a la fin du document
         while (eventType != xmlParser.END_DOCUMENT) {
@@ -56,7 +58,9 @@ public class UserParser extends AbstractRemocraParser {
                 String name = xmlParser.getName();
                 if (TAG_RIGHT.equals(name)&& name != null) {
                     readBaliseRight(xmlParser, values);
-                } else {
+                } else if (TAG_LOGGED_AGENT.equals(name) && name != null) {
+                    values.put(UserTable.COLUMN_LOGGED_AGENT, this.readBaliseText(xmlParser, name));
+                }else {
                     skip(xmlParser);
                 }
             }
@@ -82,6 +86,8 @@ public class UserParser extends AbstractRemocraParser {
                 values.put(UserTable.COLUMN_RECONNAISSANCE, "C");
             } else if (code.equals("HYDRANTS_MCO_C")) {
                 values.put(UserTable.COLUMN_MCO, "C");
+            } else if (code.equals("HYDRANTS_CREATION_C")) {
+                values.put(UserTable.COLUMN_VISIT_RECEP, "C");
             } else {
                 Log.d("REMOCRA", "Code ignoré : " + code);
             }
