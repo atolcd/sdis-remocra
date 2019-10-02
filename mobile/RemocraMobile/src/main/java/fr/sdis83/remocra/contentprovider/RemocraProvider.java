@@ -11,6 +11,7 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
 
 import fr.sdis83.remocra.database.AnomalieNatureTable;
 import fr.sdis83.remocra.database.AnomalieTable;
@@ -26,6 +27,7 @@ import fr.sdis83.remocra.database.NatureTable;
 import fr.sdis83.remocra.database.PositionnementTable;
 import fr.sdis83.remocra.database.RemocraDbHelper;
 import fr.sdis83.remocra.database.TourneeTable;
+import fr.sdis83.remocra.database.TypeSaisiesTable;
 import fr.sdis83.remocra.database.UserTable;
 import fr.sdis83.remocra.database.VolConstateTable;
 
@@ -63,6 +65,7 @@ public class RemocraProvider extends ContentProvider {
     private static final int ANOMALIE_NATURE = 130;
     private static final int USER = 140;
     private static final int NATURE_DECI = 150;
+    private static final int TYPE_SAISIES = 160;
     private static final int SUMMARY = 200;
 
     private static final String TOURNEE_PATH = "tournee";
@@ -81,6 +84,7 @@ public class RemocraProvider extends ContentProvider {
     private static final String USER_PATH = "user";
     private static final String SUMMARY_PATH = "summary";
     private static final String NATURE_DECI_PATH = "natureDeci";
+    private static final String TYPE_SAISIES_PATH = "typeSaisies";
 
 
     public static final Uri CONTENT_TOURNEE_URI = BASE_CONTENT_URI.buildUpon().appendPath(TOURNEE_PATH).build();
@@ -99,6 +103,7 @@ public class RemocraProvider extends ContentProvider {
     public static final Uri CONTENT_USER_URI = BASE_CONTENT_URI.buildUpon().appendPath(USER_PATH).build();
     public static final Uri CONTENT_SUMMARY_URI = BASE_CONTENT_URI.buildUpon().appendPath(SUMMARY_PATH).build();
     public static final Uri CONTENT_NATURE_DECI_URI = BASE_CONTENT_URI.buildUpon().appendPath(NATURE_DECI_PATH).build();
+    public static final Uri CONTENT_TYPE_SAISIES_URI = BASE_CONTENT_URI.buildUpon().appendPath(TYPE_SAISIES_PATH).build();
 
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -131,6 +136,7 @@ public class RemocraProvider extends ContentProvider {
         sURIMatcher.addURI(AUTHORITY, SUMMARY_PATH, SUMMARY);
         sURIMatcher.addURI(AUTHORITY, VOL_CONSTATE_PATH, VOL_CONSTATE);
         sURIMatcher.addURI(AUTHORITY, NATURE_DECI_PATH, NATURE_DECI);
+        sURIMatcher.addURI(AUTHORITY, TYPE_SAISIES_PATH , TYPE_SAISIES);
 
     }
 
@@ -177,6 +183,8 @@ public class RemocraProvider extends ContentProvider {
                 return UserTable.TABLE_NAME;
             case NATURE_DECI:
                 return NatureDeciTable.TABLE_NAME;
+            case TYPE_SAISIES:
+                return TypeSaisiesTable.TABLE_NAME;
             default:
                 throw new IllegalArgumentException("Unknown uriType: " + uriType);
         }
@@ -257,6 +265,9 @@ public class RemocraProvider extends ContentProvider {
             case NATURE_DECI:
                 queryBuilder.setTables(NatureDeciTable.TABLE_NAME);
                 break;
+            case TYPE_SAISIES:
+                queryBuilder.setTables(TypeSaisiesTable.TABLE_NAME);
+                break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
@@ -299,6 +310,7 @@ public class RemocraProvider extends ContentProvider {
             case VOL_CONSTATE:
             case USER:
             case NATURE_DECI:
+            case TYPE_SAISIES:
                 insertId = sqlDB.insert(getTableName(uriType), "", contentValues);
                 return Uri.withAppendedPath(uri, String.valueOf(insertId));
             default:
@@ -345,6 +357,7 @@ public class RemocraProvider extends ContentProvider {
             case VOL_CONSTATE:
             case USER:
             case NATURE_DECI:
+            case TYPE_SAISIES:
                 return sqlDB.delete(getTableName(uriType), selection, selectionArgs);
             default:
                 throw new UnsupportedOperationException("Delete unknown uri: " + uri);

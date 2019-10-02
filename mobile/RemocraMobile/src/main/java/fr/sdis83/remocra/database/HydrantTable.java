@@ -1,6 +1,10 @@
 package fr.sdis83.remocra.database;
 
+import android.content.Context;
 import android.provider.BaseColumns;
+
+import fr.sdis83.remocra.contentprovider.RemocraProvider;
+import fr.sdis83.remocra.util.DbUtils;
 
 /**
  * Created by jpt on 06/08/13.
@@ -109,15 +113,24 @@ public final class HydrantTable implements BaseColumns {
 
     // état interne
     public static final String COLUMN_TYPE_SAISIE = "typeSaisie";
+    public static final String COLUMN_STATE_H0 = "hydrant0";
     public static final String COLUMN_STATE_H1 = "hydrant1";
     public static final String COLUMN_STATE_H2 = "hydrant2";
     public static final String COLUMN_STATE_H3 = "hydrant3";
     public static final String COLUMN_STATE_H4 = "hydrant4";
-    public static final String COLUMN_STATE_H5 = "hydrant5";
-    public static final String COLUMN_STATE_H6 = "hydrant6";
     public static final String COLUMN_STATES = "sum_states";
-    public static final String COLUMN_NB_ECRANS = "nb_ecrans";
     public static final String COLUMN_CODE_NATURE = "code_nature";
+    public static final String COLUMN_CONTROLE = "controle";
+    public static final String COLUMN_DATE_VISITE = "date_visite";
+    public static final String COLUMN_HEURE_VISITE = "heure_visite";
+    public static final String COLUMN_DEBIT_RENFORCE = "debitRenforce";
+    public static final String COLUMN_GROS_DEBIT = "grosDebit";
+    public static final String COLUMN_JUMELE = "jumele";
+    public static final String COLUMN_ILLIMITEE = "illimitee";
+    public static final String COLUMN_ASPIRATIONS = "aspirations";
+    public static final String COLUMN_ADRESSE = "adresse";
+    public static final String COLUMN_NB_VISITE = "nbVisite";
+
 
     public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
             _ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -184,18 +197,26 @@ public final class HydrantTable implements BaseColumns {
             COLUMN_COORD_DFCI + " TEXT null," +
             COLUMN_COORD_LON + " REAL null," +
             COLUMN_COORD_LAT + " REAL null," +
+            COLUMN_STATE_H0 + " BOOLEAN DEFAULT TRUE," +
 
             COLUMN_STATE_H1 + " BOOLEAN DEFAULT FALSE," +
             COLUMN_STATE_H2 + " BOOLEAN DEFAULT FALSE," +
             COLUMN_STATE_H3 + " BOOLEAN DEFAULT FALSE," +
             COLUMN_STATE_H4 + " BOOLEAN DEFAULT FALSE," +
-            COLUMN_STATE_H5 + " BOOLEAN DEFAULT FALSE," +
-            COLUMN_STATE_H6 + " BOOLEAN DEFAULT FALSE," +
+            COLUMN_CONTROLE + " BOOLEAN DEFAULT FALSE," +
             COLUMN_TYPE_SAISIE + " TEXT null," +
-            COLUMN_NB_ECRANS + " INTEGER null," +
             COLUMN_CODE_NATURE + " TEXT not null," +
-            COLUMN_NATURE_DECI + " TEXT null "+
-            " )";
+            COLUMN_DATE_VISITE + " TEXT null," +
+            COLUMN_HEURE_VISITE + " TEXT null," +
+            COLUMN_NATURE_DECI + " TEXT null, "+
+            COLUMN_JUMELE + " TEXT null, "+
+            COLUMN_ILLIMITEE + " BOOLEAN DEFAULT FALSE, "+
+            COLUMN_DEBIT_RENFORCE + " BOOLEAN DEFAULT FALSE, "+
+            COLUMN_GROS_DEBIT + " BOOLEAN DEFAULT FALSE, "+
+            COLUMN_ADRESSE + " STRING null, "+
+            COLUMN_ASPIRATIONS + " INTEGER null, "+
+            COLUMN_NB_VISITE + " INTEGER null "+
 
+            " )";
 
 }

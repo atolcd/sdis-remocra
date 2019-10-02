@@ -10,12 +10,15 @@ public final class UserTable implements BaseColumns {
     public static final String TABLE_NAME = "user";
 
     public static final String COLUMN_USERNAME = "username";
+    public static final String COLUMN_LOGGED_AGENT = "loggedAgent";
     public static final String COLUMN_PASSWORD = "password";
     public static final String COLUMN_CONTROLE = "controle";
     public static final String COLUMN_RECONNAISSANCE = "reconnaissance";
     public static final String COLUMN_RECEPTION = "reception";
     public static final String COLUMN_MCO = "mco";
     public static final String COLUMN_HYDRANT = "hydrant";
+    public static final String COLUMN_VISIT_RECEP = "visitReception";
+
 
     public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
             _ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -24,7 +27,9 @@ public final class UserTable implements BaseColumns {
             COLUMN_RECEPTION + " TEXT not null," +
             COLUMN_CONTROLE + " TEXT not null," +
             COLUMN_RECONNAISSANCE + " TEXT not null," +
+            COLUMN_VISIT_RECEP + " TEXT not null," +
             COLUMN_MCO + " TEXT not null," +
+            COLUMN_LOGGED_AGENT + " TEXT  null," +
             COLUMN_HYDRANT + " TEXT not null" +
             " )";
 

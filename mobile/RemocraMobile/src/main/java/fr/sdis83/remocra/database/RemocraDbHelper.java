@@ -3,6 +3,7 @@ package fr.sdis83.remocra.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 
 /**
@@ -37,6 +38,7 @@ public final class RemocraDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(PositionnementTable.CREATE_TABLE);
         sqLiteDatabase.execSQL(VolConstateTable.CREATE_TABLE);
         sqLiteDatabase.execSQL(NatureDeciTable.CREATE_TABLE);
+        sqLiteDatabase.execSQL(TypeSaisiesTable.CREATE_TABLE);
     }
 
     private void deleteAllTable(SQLiteDatabase db) {
@@ -55,6 +57,7 @@ public final class RemocraDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + VolConstateTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + UserTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + NatureDeciTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TypeSaisiesTable.TABLE_NAME);
     }
 
     @Override
