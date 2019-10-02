@@ -90,5 +90,13 @@ privileged aspect HydrantPena_Roo_JavaBean {
     public void HydrantPena.setIncertaine(Boolean incertaine) {
         this.incertaine = incertaine;
     }
+
+    public Integer HydrantPena.getAspirations() {
+        return this.aspirations;
+    }
+
+    public void HydrantPena.setAspirations(Integer aspirations) {
+        this.aspirations = aspirations;
+    }
     
 }

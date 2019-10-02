@@ -2,8 +2,10 @@ package fr.sdis83.remocra.domain.remocra;
 
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Formula;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
@@ -50,6 +52,10 @@ public class HydrantPena extends Hydrant {
 
     @OneToOne(mappedBy = "pena")
     private HydrantPibi pibiAssocie;
+
+    @Formula("(select count(*) from remocra.hydrant_aspiration ha where ha.pena = id)")
+    private Integer aspirations;
+
 
     @Column
     private Boolean illimitee;

@@ -68,6 +68,17 @@ public abstract class Hydrant {
 
     private String codeNatureDeci;
 
+    private String suffixeVoie;
+
+    private boolean enFace;
+
+    private Integer numeroVoie;
+
+    private String adresse;
+
+    private Integer nbVisite;
+
+
     public Hydrant() {
         //
     }
@@ -307,4 +318,22 @@ public abstract class Hydrant {
     public void setCodeNatureDeci(String codeNatureDeci) {
         this.codeNatureDeci = codeNatureDeci;
     }
+
+    public String getAdresse() {
+        return this.adresse;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
+
+    public Integer getNbVisite() {
+        return this.nbVisite;
+    }
+
+    public void setNbVisite(Integer nbVisite) {
+        this.nbVisite = nbVisite;
+    }
+
+
 }

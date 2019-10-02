@@ -27,8 +27,12 @@ public abstract class HydrantPena extends Hydrant {
     private String dispoHbe;
 
     private boolean hbe;
-    
+
+    private boolean illimitee;
+
     private String capacite;
+
+    private Integer aspirations;
     
     public HydrantPena() {
         //
@@ -65,4 +69,21 @@ public abstract class HydrantPena extends Hydrant {
     public void setCapacite(String capacite) {
         this.capacite = capacite;
     }
+
+    public Boolean getIllimitee() {
+        return illimitee;
+    }
+
+    public void setIllimitee(Boolean illimitee) {
+        this.illimitee
+            = illimitee;
+    }
+    public Integer getAspirations() {
+        return aspirations;
+    }
+
+    public void setAspirations(Integer aspirations) {
+        this.aspirations = aspirations;
+    }
+
 }

@@ -22,6 +22,8 @@
           <xs:element name="capacite" type="xs:string" minOccurs="0"/>
           <xs:element name="dispoHbe" type="xs:string" minOccurs="0"/>
           <xs:element name="hbe" type="xs:boolean"/>
+          <xs:element name="illimitee" type="xs:boolean" minOccurs="0"/>
+          <xs:element name="aspirations" type="xs:integer" minOccurs="0"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -57,6 +59,8 @@
       <xs:element name="version" type="xs:int" minOccurs="0"/>
       <xs:element name="voie" type="xs:string" minOccurs="0"/>
       <xs:element name="voie2" type="xs:string" minOccurs="0"/>
+      <xs:element name="adresse" type="xs:string" minOccurs="0"/>
+      <xs:element name="nbVisite" type="xs:int" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="verif" type="xs:boolean" use="required"/>
   </xs:complexType>
@@ -245,6 +249,9 @@
           <xs:element name="pression" type="xs:double" minOccurs="0"/>
           <xs:element name="pressionDyn" type="xs:double" minOccurs="0"/>
           <xs:element name="pressionDynDeb" type="xs:double" minOccurs="0"/>
+          <xs:element name="grosDebit" type="xs:boolean" minOccurs="0"/>
+          <xs:element name="jumele" type="xs:string" minOccurs="0"/>
+          <xs:element name="debitRenforce" type="xs:string" minOccurs="0"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

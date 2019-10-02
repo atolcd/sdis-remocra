@@ -121,7 +121,10 @@ public class UtilisateurController {
     public ResponseEntity<java.lang.String> showCurrentXML() {
 
         List<AccessRight> rights = authUtils.getCurrentRights();
+        Utilisateur user = utilisateurService.getCurrentUtilisateur();
+        String userName  = user.getNom() + ' ' + user.getPrenom();
         UserInformation lstRights = new UserInformation();
+        lstRights.setLoggedAgent(userName);
         lstRights.setRights(rights);
         JAXBContext jaxbContext;
         StringWriter stringWriter = new StringWriter();

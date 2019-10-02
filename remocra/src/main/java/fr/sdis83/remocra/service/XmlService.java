@@ -1,9 +1,15 @@
 package fr.sdis83.remocra.service;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -22,6 +28,8 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.xml.bind.JAXBException;
 
+import flexjson.JSON;
+import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.xml.HydrantAspirationIndetermine;
 import fr.sdis83.remocra.xml.HydrantChateauEau;
 import fr.sdis83.remocra.xml.HydrantCiterneEn;
@@ -127,6 +135,9 @@ public class XmlService {
     private TourneeService tourneeService;
 
     @Autowired
+    private HydrantVisiteService hdrantVisiteService ;
+
+    @Autowired
     private AuthoritiesUtil authUtils;
 
     @PersistenceContext
@@ -134,6 +145,9 @@ public class XmlService {
 
     @Autowired
     private ZoneCompetenceService zoneCompetenceService;
+
+    @Autowired
+    private RequeteFicheService requeteFicheService;
 
     @Autowired
     private UtilisateurService utilisateurService;
@@ -447,6 +461,7 @@ public class XmlService {
         referentiels.setPositionnements(this.getPositionnements());
         referentiels.setVolConstates(this.getVolConstates());
         referentiels.setNaturesDeci(this.getNaturesDeci());
+        referentiels.setTypeSaisies(this.getSaisies());
 
         return referentiels;
     }
@@ -611,6 +626,14 @@ public class XmlService {
         hydrantXML.setGestPointEau(hydrant.getGestPointEau());
         hydrantXML.setDateAttestation(hydrant.getDateAttestation());
         hydrantXML.setCodeNatureDeci(hydrant.getNatureDeci() != null ? hydrant.getNatureDeci().getCode() : "");
+        hydrantXML.setAdresse((hydrant.getNumeroVoie() != null ? hydrant.getNumeroVoie() : "") + " " +
+            (hydrant.getSuffixeVoie() != null ? hydrant.getSuffixeVoie() : "") +" "+ hydrant.getVoie() + (hydrant.getEnFace()? "(En face)" : "") + '\n' + hydrant.getNomCommune());
+        hydrantXML.setCodeNatureDeci(hydrant.getNatureDeci() != null ? hydrant.getNatureDeci().getCode() : "");
+        ItemFilter f = new ItemFilter("hydrant",String.valueOf(hydrant.getId()));
+        List<ItemFilter> itemFilterList = new ArrayList<ItemFilter>();
+        itemFilterList.add(f);
+        Long nbVisite = Long.valueOf(hdrantVisiteService.count(itemFilterList));
+        hydrantXML.setNbVisite(nbVisite.intValue());
 
         if (hydrant.getHydrantDocuments().size() > 0) {
 
@@ -618,6 +641,9 @@ public class XmlService {
             if (photo != null) {
                 Document document = hydrant.getPhoto().getDocument();
                 File file = new File(document.getRepertoire() + File.separator + document.getFichier());
+                FileReader r = new FileReader(file);
+                FileInputStream fi = new FileInputStream(file.getPath());
+
                 BufferedImage originalImage = ImageIO.read(file);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 ImageIO.write(originalImage, "jpg", baos);
@@ -663,6 +689,15 @@ public class XmlService {
         hydrantPibiXML.setPression(hydrantPibi.getPression());
         hydrantPibiXML.setPressionDyn(hydrantPibi.getPressionDyn());
         hydrantPibiXML.setPressionDynDeb(hydrantPibi.getPressionDynDeb());
+        //grosDebit
+        if(("PI".equals(hydrantPibi.getNature().getCode()) && hydrantPibi.getDiametre() != null && "150".equals(hydrantPibi.getDiametre().getCode()))
+            || ("BI".equals(hydrantPibi.getNature().getCode()) && hydrantPibi.getJumele() != null)){
+            hydrantPibiXML.setGrosDebit(TRUE);
+        }else {
+            hydrantPibiXML.setGrosDebit(FALSE);
+        }
+        hydrantPibiXML.setJumele(hydrantPibi.getJumele() != null ? hydrantPibi.getJumele().getNumero() : "");
+        hydrantPibiXML.setDebitRenforce(hydrantPibi.getDebitRenforce());
     }
 
     public void fillHydrantPena(fr.sdis83.remocra.xml.HydrantPena hydrantPenaXML, fr.sdis83.remocra.domain.remocra.HydrantPena hydrantPena)
@@ -671,6 +706,8 @@ public class XmlService {
         hydrantPenaXML.setCoordDFCI(hydrantPena.getCoordDFCI());
 
         hydrantPenaXML.setCapacite(hydrantPena.getCapacite());
+        hydrantPenaXML.setIllimitee(hydrantPena.getIllimitee());
+        hydrantPenaXML.setAspirations(hydrantPena.getAspirations());
         hydrantPenaXML.setDispoHbe(hydrantPena.getDispoHbe() != null ? hydrantPena.getDispoHbe().toString() : "");
         hydrantPenaXML.setHbe(hydrantPena.getHbe().booleanValue());
 

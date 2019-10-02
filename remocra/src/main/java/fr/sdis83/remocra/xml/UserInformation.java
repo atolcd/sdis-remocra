@@ -14,6 +14,7 @@ import fr.sdis83.remocra.security.AccessRight;
 public class UserInformation {
 
     private List<AccessRight> rights;
+    private String loggedAgent;
 
     public UserInformation() {
         //
@@ -26,6 +27,14 @@ public class UserInformation {
 
     public void setRights(List<AccessRight> rights) {
         this.rights = rights;
+    }
+
+    public String getLoggedAgent() {
+        return loggedAgent;
+    }
+
+    public void setLoggedAgent(String loggedAgent) {
+        this.loggedAgent = loggedAgent;
     }
 
 }

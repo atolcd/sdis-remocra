@@ -38,6 +38,12 @@ public abstract class HydrantPibi extends Hydrant {
 
     private String codePena;
 
+    private String jumele;
+
+    private Boolean grosDebit;
+
+    private Boolean debitRenforce;
+
     public Integer getDebit() {
         return debit;
     }
@@ -134,5 +140,29 @@ public abstract class HydrantPibi extends Hydrant {
 
     public void setPressionDynDeb(Double pressionDynDeb) {
         this.pressionDynDeb = pressionDynDeb;
+    }
+
+    public Boolean getGrosDebit() {
+        return grosDebit;
+    }
+
+    public void setGrosDebit(Boolean grosDebit) {
+        this.grosDebit = grosDebit;
+    }
+
+    public String getJumele() {
+        return jumele;
+    }
+
+    public void setJumele(String jumele) {
+        this.jumele = jumele;
+    }
+
+    public Boolean getDebitRenforce() {
+        return debitRenforce;
+    }
+
+    public void setDebitRenforce(Boolean debitRenforce) {
+        this.debitRenforce = debitRenforce;
     }
 }
