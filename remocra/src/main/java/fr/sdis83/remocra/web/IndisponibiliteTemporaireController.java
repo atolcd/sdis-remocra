@@ -229,4 +229,31 @@ public class IndisponibiliteTemporaireController  {
         }.serialize();
     }
 
+    //id : identifiant d'une indisponibilité temporaire
+    @RequestMapping(value = "/verifHydrantTjrsIndispo/{id}", headers = "Accept=application/json")
+    @PreAuthorize("hasRight('INDISPOS_R')")
+    public ResponseEntity<java.lang.String> verifHydrantTjrsIndispo(final @PathVariable("id") Long id) {
+        try {
+            List<String> results = indisponibiliteTemporaireService.hydrantsTjrsIndispo(id);
+            if(results.size() > 0){
+                StringBuilder sb = new StringBuilder();
+                sb.append("<ul>");
+                sb.append("Attention les PEI suivants demeurent indisponibles car ils présentent d\'autres anomalies : <br><br>");
+                sb.append("<div class=\"listHydrant listHydrantGrand\">");
+                for(String result : results){
+                    sb.append("<li>"+ result +"</li>");
+                }
+                sb.append("</div>");
+                sb.append("</ul>");
+
+            
+                return new SuccessErrorExtSerializer(true, sb.toString()).serialize();
+            }
+            else return new SuccessErrorExtSerializer(true, "null").serialize();
+
+        } catch (Exception e) {
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
+    }
+
 }

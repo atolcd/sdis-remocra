@@ -431,4 +431,18 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
 
     }
 
+    @Transactional
+    public List<String> hydrantsTjrsIndispo(Long id) {
+        Query query = entityManager
+        .createNativeQuery("SELECT h.numero from remocra.hydrant h " +
+                            "WHERE h.dispo_terrestre = 'INDISPO' " +
+                            "AND h.id IN (SELECT hydrant FROM remocra.hydrant_indispo_temporaire_hydrant "+
+                                            "WHERE indisponibilite = :id)"
+                            );
+        query.setParameter("id",id);
+        List<String> result = query.getResultList();
+        return result;
+
+    }
+
 }

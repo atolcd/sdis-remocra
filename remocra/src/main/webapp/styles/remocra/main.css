@@ -1325,6 +1325,13 @@ body.x-ie .x-btn-default-toolbar-small-icon-text-left .x-btn-inner {
 .listHydrant li {margin-left:20px; background: white}
 .listHydrant li:nth-child(odd) {margin-left:20px; background: #f4f4f4; }
 
+.listHydrant.listHydrantGrand {
+	height: 100px;
+	width: 200px;
+	margin-left: 30%;
+	text-align: center;
+}
+
 tr[class*="anomalie-"]:not([class*="anomalie-hbe-"]) > td:nth-child(2) {
     font-weight: bold;
 }

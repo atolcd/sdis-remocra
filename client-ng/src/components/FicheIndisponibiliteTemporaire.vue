@@ -264,6 +264,8 @@ export default {
       this.activeIndispo = true;
       this.value.dateIndispo = null;
       this.value.heureIndispo = null;
+      this.basculeAutoIndispo = true;
+
     },
     desactiveDateTimeIndispo() {
       this.value.dateIndispo = null;
@@ -277,6 +279,7 @@ export default {
     },
     activeDateTimeDispo() {
       this.activeDispo = true;
+      this.basculeAutoDispo = true;
     },
     desactiveDateTimeDispo() {
       this.value.dateDispo = null;

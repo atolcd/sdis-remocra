@@ -1947,9 +1947,31 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                     });
                 }
                 Sdis.Remocra.util.Msg.msg("Fin de l'indisponibilité", res.message);
+                this.alertPeiIndispo(indispo);
             }
         });
 
+    },
+
+    //indique si des pei vont rester indispo après avoir lever une indispo temp
+    alertPeiIndispo :function(indispo){
+        //on regarde si les pei ont d'autres anomalies
+        Ext.Ajax.request({
+            url: Sdis.Remocra.util.Util.withBaseUrl('../indisponibilites/verifHydrantTjrsIndispo/'+indispo.internalId),
+            method: 'GET',
+            params: {},
+            scope: this,
+            callback: function(param, success, response) {
+                if(success){
+                    if((JSON.parse(response.responseText).message) != "null"){
+                        Ext.Msg.show({
+                            title: 'Fin d\'indisponibilité temporaire',
+                            msg: JSON.parse(response.responseText).message
+                        });
+                    } else {return;}
+                } else {return;}
+            }
+        });
     },
 
     getFormattedDate: function(fullDate, yearFirst) {
