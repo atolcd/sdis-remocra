@@ -61,6 +61,9 @@
       <xs:element name="voie2" type="xs:string" minOccurs="0"/>
       <xs:element name="adresse" type="xs:string" minOccurs="0"/>
       <xs:element name="nbVisite" type="xs:int" minOccurs="0"/>
+      <xs:element name="dateVisite" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="heureVisite" type="xs:dateTime" minOccurs="0"/>
+
     </xs:sequence>
     <xs:attribute name="verif" type="xs:boolean" use="required"/>
   </xs:complexType>

@@ -29,6 +29,7 @@ import javax.persistence.TypedQuery;
 import javax.xml.bind.JAXBException;
 
 import flexjson.JSON;
+import fr.sdis83.remocra.domain.remocra.HydrantVisite;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.xml.HydrantAspirationIndetermine;
 import fr.sdis83.remocra.xml.HydrantChateauEau;
@@ -896,17 +897,27 @@ public class XmlService {
 
         Hydrant.TYPE_SAISIE typeSaisie = getTypeSaisie(hydrant, hydrantXML.isVerif());
 
+
+
+        //Visite
+
+        HydrantVisite hv = new HydrantVisite();
+        hv.setDate(hydrantXML.getDateVisite());
+        hv.setType(TypeHydrantSaisie.findTypeHydrantSaisieByCode(String.valueOf(typeSaisie)).getSingleResult());
+
         // Droits sur MCO
         boolean mcoCreate = authUtils.hasRight(TypeDroitEnum.HYDRANTS_MCO_C);
 
         hydrant.setAgent1(hydrantXML.getAgent1());
+        hv.setAgent1(hydrantXML.getAgent1());
         hydrant.setAgent2(hydrantXML.getAgent2());
+        hv.setAgent2(hydrantXML.getAgent1());
         hydrant.setComplement(hydrantXML.getComplement());
 
         // Dates
         hydrant.setDateModification(new Date());
         if (typeSaisie == Hydrant.TYPE_SAISIE.CREA) {
-            // Toutes les dates à null (valeur par défaut)
+            // Toutes les dates (hydrant) à null (valeur par défaut)
         } else if (typeSaisie == Hydrant.TYPE_SAISIE.RECEP) {
             hydrant.setDateRecep(securedDate(hydrantXML.getDateRecep()));
         } else if (typeSaisie == Hydrant.TYPE_SAISIE.RECO) {
@@ -916,7 +927,6 @@ public class XmlService {
         } else if (typeSaisie == Hydrant.TYPE_SAISIE.VERIF) {
             hydrant.setDateVerif(securedDate(hydrantXML.getDateVerif()));
         }
-
         hydrant.setLieuDit(hydrantXML.getLieuDit());
 
         hydrant.setVoie(hydrantXML.getVoie());
@@ -999,22 +1009,33 @@ public class XmlService {
                 hydrantDomPibi.setDiametre(TypeHydrantDiametre.findTypeHydrantDiametresByCode(hydrantPibi.getCodeDiametre()).getSingleResult());
             }
 
+            Boolean controle = false;
             // Vérifications : données mises à jour si renseignées et positives
             if (hydrantPibi.getDebit() != null && hydrantPibi.getDebit().intValue() >= 0) {
                 hydrantDomPibi.setDebit(hydrantPibi.getDebit());
+                hv.setDebit(hydrantPibi.getDebit());
+                controle = true;
             }
             if (hydrantPibi.getDebitMax() != null && hydrantPibi.getDebitMax().intValue() >= 0) {
                 hydrantDomPibi.setDebitMax(hydrantPibi.getDebitMax());
+                controle = true;
             }
             if (hydrantPibi.getPression() != null && hydrantPibi.getPression().intValue() >= 0) {
                 hydrantDomPibi.setPression(hydrantPibi.getPression());
+                hv.setPression(hydrantPibi.getPression());
+                controle = true;
             }
             if (hydrantPibi.getPressionDyn() != null && hydrantPibi.getPressionDyn().intValue() >= 0) {
                 hydrantDomPibi.setPressionDyn(hydrantPibi.getPressionDyn());
+                hv.setPressionDyn(hydrantPibi.getPressionDyn());
+                controle = true;
             }
             if (hydrantPibi.getPressionDynDeb() != null && hydrantPibi.getPressionDynDeb().intValue() >= 0) {
                 hydrantDomPibi.setPressionDynDeb(hydrantPibi.getPressionDynDeb());
+                hv.setPressionDynDeb(hydrantPibi.getPressionDynDeb());
+                controle = true;
             }
+            hv.setCtrl_debit_pression(controle);
 
             // Eléments spécifiques aux PIBI liés au droit MCO.C (codeMarque,
             // codeModele, choc, gestReseau)
@@ -1098,12 +1119,19 @@ public class XmlService {
         // Sauvegarde
         hydrant = hydrant.merge();
 
+
         // Anomalies
         deleteAnomalieByHydrantNatureSaisie(hydrant.getId().intValue(), hydrant.getNature().getCode(), typeSaisie);
 
         if (hydrantXML.getAnomalies().getAnomalies() != null) {
             ArrayList<Anomalie> lstAnomaliesXML = hydrantXML.getAnomalies().getAnomalies();
             boolean isHbe = hydrantXML instanceof HydrantPena ? ((HydrantPena) hydrantXML).isHbe() : false;
+            List<Long> l = new ArrayList<Long>();
+            for (Anomalie a:lstAnomaliesXML) {
+                TypeHydrantAnomalie tha = TypeHydrantAnomalie.findTypeHydrantAnomaliesByCode(a.getCode()).getSingleResult();
+               l.add(tha.getId());
+            }
+            hv.setAnomalies(l.toString());
 
            // if (checkAnomalies(typeSaisie, lstAnomaliesXML, hydrant.getNature().getCode(), isHbe)) {
                 insertAnomalies(lstAnomaliesXML, hydrant.getId().intValue());
@@ -1118,6 +1146,8 @@ public class XmlService {
                     .setParameter("id", hydrant.getId())
                     .executeUpdate();
         }
+        hv.setHydrant(hydrant);
+        hv.merge();
     }
 
     public Hydrant.Disponibilite getDispo(String dispo) {

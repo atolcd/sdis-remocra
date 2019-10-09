@@ -31,6 +31,7 @@ public  class Hydrant0 extends AbstractHydrant {
     @Override
     public ContentValues getDataToSave() {
         ContentValues values = super.getDataToSave();
+        values.put(HydrantTable.COLUMN_STATE_H0, true);
         return values;
     }
 

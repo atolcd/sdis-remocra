@@ -39,5 +39,14 @@ privileged aspect TypeHydrantSaisie_Roo_Finder {
         q.setParameter("actif", actif);
         return q;
     }
+
+
+    public static TypedQuery<TypeHydrantSaisie> TypeHydrantSaisie.findTypeHydrantSaisieByCode(String code) {
+        if (code == null || code.length() == 0) throw new IllegalArgumentException("The code argument is required");
+        EntityManager em = TypeHydrantSaisie.entityManager();
+        TypedQuery<TypeHydrantSaisie> q = em.createQuery("SELECT o FROM TypeHydrantSaisie AS o WHERE o.code = :code", TypeHydrantSaisie.class);
+        q.setParameter("code", code);
+        return q;
+    }
     
 }

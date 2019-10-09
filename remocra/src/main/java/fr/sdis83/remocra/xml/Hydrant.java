@@ -28,6 +28,8 @@ public abstract class Hydrant {
 
     private Date dateAttestation;
 
+    private Date dateVisite;
+
     private Date dateGps;
 
     private String agent1;
@@ -333,6 +335,14 @@ public abstract class Hydrant {
 
     public void setNbVisite(Integer nbVisite) {
         this.nbVisite = nbVisite;
+    }
+
+    public Date getDateVisite() {
+        return dateVisite;
+    }
+
+    public void setDateVisite(Date dateVisite) {
+        this.dateVisite = dateVisite;
     }
 
 
