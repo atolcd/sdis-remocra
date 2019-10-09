@@ -80,6 +80,8 @@ public abstract class Hydrant {
 
     private Integer nbVisite;
 
+    private String typeSaisie;
+
 
     public Hydrant() {
         //
@@ -346,4 +348,11 @@ public abstract class Hydrant {
     }
 
 
+    public String getTypeSaisie() {
+        return typeSaisie;
+    }
+
+    public void setTypeSaisie(String typeSaisie) {
+        this.typeSaisie = typeSaisie;
+    }
 }

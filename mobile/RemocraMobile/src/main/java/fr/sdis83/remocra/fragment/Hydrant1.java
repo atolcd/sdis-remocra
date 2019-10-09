@@ -16,16 +16,17 @@ import android.widget.Switch;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import fr.sdis83.remocra.GlobalRemocra;
 import fr.sdis83.remocra.R;
 import fr.sdis83.remocra.contentprovider.RemocraProvider;
 import fr.sdis83.remocra.database.HydrantTable;
 import fr.sdis83.remocra.database.TypeSaisiesTable;
-import fr.sdis83.remocra.database.UserTable;
 import fr.sdis83.remocra.fragment.components.EditDate;
 import fr.sdis83.remocra.fragment.components.EditTime;
 import fr.sdis83.remocra.holder.TypeVisiteHolder;
+import fr.sdis83.remocra.util.DbUtils;
 
 public class Hydrant1 extends AbstractHydrant {
 
@@ -37,9 +38,10 @@ public class Hydrant1 extends AbstractHydrant {
 
     public Hydrant1() {
         super(R.layout.hydrant1, HydrantTable.COLUMN_STATE_H1);
-        addBindableData(R.id.agent1, HydrantTable.COLUMN_AGENT1, EditText.class);
         addBindableData(R.id.agent2, HydrantTable.COLUMN_AGENT2, EditText.class);
         addBindableData(R.id.controle, HydrantTable.COLUMN_CONTROLE, Switch.class);
+        addBindableData(R.id.date_visite, HydrantTable.COLUMN_DATE_VISITE, EditDate.class);
+        addBindableData(R.id.date_visite, HydrantTable.COLUMN_DATE_VISITE, EditTime.class);
     }
 
     @Override
@@ -51,6 +53,30 @@ public class Hydrant1 extends AbstractHydrant {
     protected void onBeforeBind(Cursor cursor) {
         getView().findViewById(R.id.verif_pibi).setVisibility(View.GONE);
 
+        try {
+            if(cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_DATE_VISITE)) != null){
+                Long d= Long.valueOf(cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_DATE_VISITE)));
+                datePicker.setDate(d);
+            }else {
+                datePicker.setNow();
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if(cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_DATE_VISITE)) != null){
+                Long t = Long.valueOf(cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_DATE_VISITE)));
+                timePicker.setTime(t);
+            }else {
+                timePicker.setNow();
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
         ContentResolver resolver = getView().getContext().getContentResolver();
 
         /**** On filtre le curseur selon le type de saisie
@@ -60,10 +86,11 @@ public class Hydrant1 extends AbstractHydrant {
          */
         String selection = TypeSaisiesTable.COLUMN_CODE + "=?";
         String[] arg;
-        if (("CTRL".equals(typeSaisie.toString()))) {
+        //Si le type de saisie est reception et qu'on a aussi le droit de controle on propose les deux
+        // cas ou le pompier a le droit reconnaissance et controle
+        if (("CTRL".equals(typeSaisie.toString())) || ("RECO".equals(typeSaisie.toString()) && GlobalRemocra.getInstance().getCanControl())) {
             selection = TypeSaisiesTable.COLUMN_CODE + "=?" + " OR " + TypeSaisiesTable.COLUMN_CODE + "=?" ;
             arg = new String[]{String.valueOf("CTRL") , String.valueOf("RECO")  };
-
         } else {
             arg = new String[]{String.valueOf(typeSaisie)};
         }
@@ -84,7 +111,6 @@ public class Hydrant1 extends AbstractHydrant {
 
         types = (Spinner) getView().findViewById(R.id.type_visite);
         types.setAdapter(a);
-
         types.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -105,7 +131,17 @@ public class Hydrant1 extends AbstractHydrant {
 
             }
         });
-        types.setSelection(0);
+
+        //On sélectionne le type de saisie actuel
+        if(a.getCount() > 1){
+            for(int i = 0; i< a.getCount(); i++){
+                if (typeSaisie.toString().equals(a.getItem(i).getCode())){
+                   types.setSelection(i);
+                }
+            }
+        } else {
+            types.setSelection(0);
+        }
 
     }
 
@@ -115,21 +151,10 @@ public class Hydrant1 extends AbstractHydrant {
         // Initialisation du fragment manager obligatoire pour l'affichage de la dialog de date.
         datePicker = ((EditDate) view.findViewById(R.id.date_visite));
         datePicker.setFragmentManager(getFragmentManager());
-        try {
-            datePicker.setNow();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
         // Initialisation du fragment manager obligatoire pour l'affichage de la dialog de l'heure.
         timePicker  = ((EditTime) view.findViewById(R.id.heure_visite));
         timePicker.setFragmentManager(getFragmentManager());
-        try {
-            timePicker.setNow();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
 
         controle = ((Switch) view.findViewById(R.id.controle));
         controle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -151,7 +176,6 @@ public class Hydrant1 extends AbstractHydrant {
         });
 
         agent1 = ((EditText) view.findViewById(R.id.agent1));
-
         String ag = GlobalRemocra.getInstance().getLoggedAgent();
         agent1.setText(ag);
 
@@ -162,6 +186,19 @@ public class Hydrant1 extends AbstractHydrant {
     public ContentValues getDataToSave() {
         ContentValues values = super.getDataToSave();
         values.put(HydrantTable.COLUMN_STATE_H1, true);
+        values.put(HydrantTable.COLUMN_AGENT1, agent1.getText().toString());
+        TypeVisiteHolder v = (TypeVisiteHolder) types.getSelectedItem();
+        values.put(HydrantTable.COLUMN_TYPE_SAISIE, v.getCode());
+        //On concatène la date et l'heure pour avoir la date du visite
+        try {
+            Date dateVisite =  DbUtils.DATE_FORMAT_EDIT.parse(datePicker.getText().toString());
+            dateVisite.setHours(DbUtils.TIME_FORMAT_EDIT.parse(timePicker.getText().toString()).getHours());
+            dateVisite.setMinutes(DbUtils.TIME_FORMAT_EDIT.parse(timePicker.getText().toString()).getMinutes());
+            values.put(HydrantTable.COLUMN_DATE_VISITE, String.valueOf(dateVisite.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         return values;
     }
 

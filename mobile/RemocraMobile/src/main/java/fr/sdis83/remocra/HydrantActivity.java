@@ -29,7 +29,6 @@ import fr.sdis83.remocra.contentprovider.RemocraProvider;
 import fr.sdis83.remocra.database.AnomalieNatureTable;
 import fr.sdis83.remocra.database.AnomalieTable;
 import fr.sdis83.remocra.database.HydrantTable;
-import fr.sdis83.remocra.database.ReferentielTable;
 import fr.sdis83.remocra.fragment.AbstractHydrant;
 import fr.sdis83.remocra.util.DbUtils;
 
@@ -128,7 +127,7 @@ public class HydrantActivity extends FragmentActivity implements ActionBar.TabLi
                     }
                 }
                 values.put(HydrantTable.COLUMN_DATE_MODIF, new Date().getTime());
-                values.put(HydrantTable.COLUMN_TYPE_SAISIE, mViewHydrantAdapter.getTypeSaisie().toString());
+                //values.put(HydrantTable.COLUMN_TYPE_SAISIE, mViewHydrantAdapter.getTypeSaisie().toString());
 
                 boolean anomalieModified = false;
                 if (values.containsKey(HydrantTable.COLUMN_ANOMALIES) || values.containsKey(HydrantTable.COLUMN_ANOMALIES_APP)) {

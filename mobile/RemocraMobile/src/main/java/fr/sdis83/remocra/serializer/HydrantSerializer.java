@@ -128,14 +128,14 @@ public class HydrantSerializer extends AbstractSerializer {
             addBalise(serializer, TourneeParser.TAG_NUM_INTERNE, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_NUMERO_INTERNE)));
         }
         addBalise(serializer, TourneeParser.TAG_OBSERVATION, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_OBSERVATION)));
-        addBaliseDate(serializer, TourneeParser.TAG_DATE_VISITE, cursor.getLong(cursor.getColumnIndex(HydrantTable.COLUMN_DATE_VISITE)));
-        addBaliseDate(serializer, TourneeParser.TAG_HEURE_VISITE, cursor.getLong(cursor.getColumnIndex(HydrantTable.COLUMN_HEURE_VISITE)));
         if (cursor.getInt(cursor.getColumnIndex(HydrantTable.COLUMN_IS_NEW_PHOTO)) == 1) {
             addBaliseImage(serializer, TourneeParser.TAG_PHOTO, cursor.getBlob(cursor.getColumnIndex(HydrantTable.COLUMN_PHOTO)));
         }
         // Version
         addBalise(serializer, TourneeParser.TAG_VOIE, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_VOIE)));
         addBalise(serializer, TourneeParser.TAG_VOIE2, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_VOIE2)));
+        addBaliseDate(serializer, TourneeParser.TAG_DATE_VISITE, cursor.getLong(cursor.getColumnIndex(HydrantTable.COLUMN_DATE_VISITE)));
+        addBalise(serializer, TourneeParser.TAG_TYPE_SAISIE, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_TYPE_SAISIE)));
         if (TAG_HYDRANT_PIBI.equals(tag)) {
             addBalise(serializer, TourneeParser.TAG_CHOC, toValidBooleanValue(cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_CHOC))));
             addBalise(serializer, TourneeParser.TAG_CODE_DIAMETRE, getCodeFromIdReferentiel(cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_DIAMETRE)), RemocraProvider.CONTENT_DIAMETRE_URI));

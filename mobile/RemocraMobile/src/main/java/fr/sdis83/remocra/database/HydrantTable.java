@@ -121,8 +121,7 @@ public final class HydrantTable implements BaseColumns {
     public static final String COLUMN_STATES = "sum_states";
     public static final String COLUMN_CODE_NATURE = "code_nature";
     public static final String COLUMN_CONTROLE = "controle";
-    public static final String COLUMN_DATE_VISITE = "date_visite";
-    public static final String COLUMN_HEURE_VISITE = "heure_visite";
+    public static final String COLUMN_DATE_VISITE = "dateVisite";
     public static final String COLUMN_DEBIT_RENFORCE = "debitRenforce";
     public static final String COLUMN_GROS_DEBIT = "grosDebit";
     public static final String COLUMN_JUMELE = "jumele";
@@ -206,8 +205,7 @@ public final class HydrantTable implements BaseColumns {
             COLUMN_CONTROLE + " BOOLEAN DEFAULT FALSE," +
             COLUMN_TYPE_SAISIE + " TEXT null," +
             COLUMN_CODE_NATURE + " TEXT not null," +
-            COLUMN_DATE_VISITE + " TEXT null," +
-            COLUMN_HEURE_VISITE + " TEXT null," +
+            COLUMN_DATE_VISITE + " INTEGER null," +
             COLUMN_NATURE_DECI + " TEXT null, "+
             COLUMN_JUMELE + " TEXT null, "+
             COLUMN_ILLIMITEE + " BOOLEAN DEFAULT FALSE, "+

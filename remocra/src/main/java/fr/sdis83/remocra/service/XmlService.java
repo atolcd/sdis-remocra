@@ -628,7 +628,7 @@ public class XmlService {
         hydrantXML.setDateAttestation(hydrant.getDateAttestation());
         hydrantXML.setCodeNatureDeci(hydrant.getNatureDeci() != null ? hydrant.getNatureDeci().getCode() : "");
         hydrantXML.setAdresse((hydrant.getNumeroVoie() != null ? hydrant.getNumeroVoie() : "") + " " +
-            (hydrant.getSuffixeVoie() != null ? hydrant.getSuffixeVoie() : "") +" "+ hydrant.getVoie() + (hydrant.getEnFace()? "(En face)" : "") + '\n' + hydrant.getNomCommune());
+            (hydrant.getSuffixeVoie() != null ? hydrant.getSuffixeVoie() : "") +" "+ hydrant.getVoie() + (hydrant.getEnFace()? " (En face)" : "") + '\n' + hydrant.getNomCommune());
         hydrantXML.setCodeNatureDeci(hydrant.getNatureDeci() != null ? hydrant.getNatureDeci().getCode() : "");
         ItemFilter f = new ItemFilter("hydrant",String.valueOf(hydrant.getId()));
         List<ItemFilter> itemFilterList = new ArrayList<ItemFilter>();
@@ -895,14 +895,14 @@ public class XmlService {
             throw new XmlDroitException("Le point d'eau " + hydrantXML.getNumero() + " est en dehors du territoire de compétence.");
         }
 
-        Hydrant.TYPE_SAISIE typeSaisie = getTypeSaisie(hydrant, hydrantXML.isVerif());
+        Hydrant.TYPE_SAISIE typeSaisie = getTypeSaisie(hydrant, hydrantXML.getTypeSaisie());
 
 
 
         //Visite
 
         HydrantVisite hv = new HydrantVisite();
-        hv.setDate(hydrantXML.getDateVisite());
+        hv.setDate(securedDate(hydrantXML.getDateVisite()));
         hv.setType(TypeHydrantSaisie.findTypeHydrantSaisieByCode(String.valueOf(typeSaisie)).getSingleResult());
 
         // Droits sur MCO
@@ -919,13 +919,11 @@ public class XmlService {
         if (typeSaisie == Hydrant.TYPE_SAISIE.CREA) {
             // Toutes les dates (hydrant) à null (valeur par défaut)
         } else if (typeSaisie == Hydrant.TYPE_SAISIE.RECEP) {
-            hydrant.setDateRecep(securedDate(hydrantXML.getDateRecep()));
+            hydrant.setDateRecep(securedDate(hydrantXML.getDateVisite()));
         } else if (typeSaisie == Hydrant.TYPE_SAISIE.RECO) {
-            hydrant.setDateReco(securedDate(hydrantXML.getDateReco()));
+            hydrant.setDateReco(securedDate(hydrantXML.getDateVisite()));
         } else if (typeSaisie == Hydrant.TYPE_SAISIE.CTRL) {
-            hydrant.setDateContr(securedDate(hydrantXML.getDateContr()));
-        } else if (typeSaisie == Hydrant.TYPE_SAISIE.VERIF) {
-            hydrant.setDateVerif(securedDate(hydrantXML.getDateVerif()));
+            hydrant.setDateContr(securedDate(hydrantXML.getDateVisite()));
         }
         hydrant.setLieuDit(hydrantXML.getLieuDit());
 
@@ -1180,7 +1178,7 @@ public class XmlService {
      * @throws BusinessException
      * @throws XmlDroitException
      */
-    private Hydrant.TYPE_SAISIE getTypeSaisie(Hydrant hydrant, boolean isVerif) throws BusinessException, XmlDroitException {
+    private Hydrant.TYPE_SAISIE getTypeSaisie(Hydrant hydrant, String typeSaisie) throws BusinessException, XmlDroitException {
         if (hydrant.getId() == null) {
             if (!authUtils.hasRight(TypeDroitEnum.HYDRANTS_C)) {
                 throw new XmlDroitException("L'utilisateur n'a pas les droits suffisants pour la remontée des anomalies");
@@ -1191,9 +1189,11 @@ public class XmlService {
                 throw new XmlDroitException("L'utilisateur n'a pas les droits suffisants pour la remontée des anomalies");
             }
             return Hydrant.TYPE_SAISIE.RECEP;
-        } else if (authUtils.hasRight(TypeDroitEnum.HYDRANTS_CONTROLE_C)) {
-            return isVerif ? Hydrant.TYPE_SAISIE.VERIF : Hydrant.TYPE_SAISIE.CTRL;
-        } else if (authUtils.hasRight(TypeDroitEnum.HYDRANTS_RECONNAISSANCE_C)) {
+        } else if (authUtils.hasRight(TypeDroitEnum.HYDRANTS_CONTROLE_C) && authUtils.hasRight(TypeDroitEnum.HYDRANTS_RECONNAISSANCE_C)) {
+            return (typeSaisie != null && "CTRL".equals(typeSaisie)) ? Hydrant.TYPE_SAISIE.CTRL : Hydrant.TYPE_SAISIE.RECO;
+        }else if (authUtils.hasRight(TypeDroitEnum.HYDRANTS_CONTROLE_C)){
+            return Hydrant.TYPE_SAISIE.CTRL;
+        } if (authUtils.hasRight(TypeDroitEnum.HYDRANTS_RECONNAISSANCE_C)) {
             return Hydrant.TYPE_SAISIE.RECO;
         }
 

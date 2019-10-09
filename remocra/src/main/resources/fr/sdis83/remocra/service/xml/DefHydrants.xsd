@@ -35,7 +35,7 @@
       <xs:element name="agent2" type="xs:string" minOccurs="0"/>
       <xs:element name="anneeFabrication" type="xs:int" minOccurs="0"/>
       <xs:element ref="anomalies" minOccurs="0"/>
-      <xs:element name="codeCommune" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="codeCommune" type="xs:string" minOccurs="0" />
       <xs:element name="codeDomaine" type="xs:string" minOccurs="0"/>
       <xs:element name="codeNature" type="xs:string" minOccurs="0"/>
       <xs:element name="codeNatureDeci" type="xs:string" minOccurs="0"/>
@@ -62,7 +62,7 @@
       <xs:element name="adresse" type="xs:string" minOccurs="0"/>
       <xs:element name="nbVisite" type="xs:int" minOccurs="0"/>
       <xs:element name="dateVisite" type="xs:dateTime" minOccurs="0"/>
-      <xs:element name="heureVisite" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="typeSaisie" type="xs:string" minOccurs="0"/>
 
     </xs:sequence>
     <xs:attribute name="verif" type="xs:boolean" use="required"/>

@@ -85,7 +85,6 @@ public class TourneeParser extends AbstractRemocraParser {
     public static final String TAG_ILLIMITEE = "illimitee";
     public static final String TAG_NB_VISITE = "nbVisite";
     public static final String TAG_DATE_VISITE = "dateVisite";
-    public static final String TAG_HEURE_VISITE = "heureVisite";
 
 
     private ArrayList<ContentValues> lstHydrant;
@@ -281,6 +280,8 @@ public class TourneeParser extends AbstractRemocraParser {
                     values.put(HydrantTable.COLUMN_ADRESSE, this.readBaliseText(xmlParser, name));
                 } else if(TAG_NB_VISITE.equals(name)) {
                     values.put(HydrantTable.COLUMN_NB_VISITE, this.readBaliseText(xmlParser, name));
+                } else if (TAG_DATE_VISITE.equals(name)) {
+                    values.put(HydrantTable.COLUMN_DATE_VISITE, this.readBaliseDate(xmlParser, name));
                 } else {
                     skip(xmlParser);
                 }

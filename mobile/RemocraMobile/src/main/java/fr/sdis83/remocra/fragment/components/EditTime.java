@@ -59,6 +59,13 @@ public class EditTime extends EditText {
 
     }
 
+    public void setTime(Long t) throws ParseException {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(t);
+        this.setText(DbUtils.TIME_FORMAT_EDIT.format(cal.getTime()));
+
+    }
+
 
     public void setFragmentManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;

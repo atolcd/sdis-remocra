@@ -42,7 +42,7 @@
         android:layout_height="24dp"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/diametre"
-        android:text="Réception" />
+        android:text="R.O.I" />
 
     <TextView
         android:id="@+id/recoLbl"
@@ -50,7 +50,7 @@
         android:layout_height="24dp"
         android:layout_alignLeft="@+id/receptionLbl"
         android:layout_below="@+id/receptionLbl"
-        android:text="Reconnaissance" />
+        android:text="R.O.P" />
 
     <TextView
         android:id="@+id/ctrlLbl"
@@ -58,7 +58,7 @@
         android:layout_height="24dp"
         android:layout_alignLeft="@+id/recoLbl"
         android:layout_below="@+id/recoLbl"
-        android:text="Contrôle" />
+        android:text="C.T.P" />
 
     <TextView
         android:layout_width="130dp"
