@@ -393,36 +393,41 @@ export default {
     /* =============================================== Récupération des anomalies =============================================== */
     requests.push(axios.get('/remocra/typehydrantanomalies.json').then(response => {
       this.anomaliesRequeteResult = response.data.data;
+
       // On met en forme les données depuis le résultat de la requête (on utilise ici un controller déjà existant)
       _.forEach(response.data.data, function(item) {
-        var a = {};
-        a.code = item.code;
-        a.nom = item.nom
-        a.id = item.id;
-        a.critereCode = (item.critere) ? item.critere.code : null;
-        a.critereNom = (item.critere) ? item.critere.nom : '-';
-        a.indispo = {};
-        _.forEach(item.anomalieNatures, function(nature) {
-          a.indispo[nature.nature.id] = {};
-          a.indispo[nature.nature.id].valIndispoAdmin = nature.valIndispoAdmin;
-          a.indispo[nature.nature.id].valIndispoHbe = nature.valIndispoHbe;
-          a.indispo[nature.nature.id].valIndispoTerrestre = nature.valIndispoTerrestre;
-          a.indispo[nature.nature.id].natureCode = nature.nature.code;
-          a.indispo[nature.nature.id].saisies = [];
-          _.forEach(nature.saisies, function(saisie) {
-            a.indispo[nature.nature.id].saisies.push(saisie.code);
-          })
-        });
-        // On récupère la liste des critères
-        var critereId = (item.critere) ? item.critere.id : null;
-        a.critere = critereId;
-        if (critereId != null && _.findIndex(self.anomaliesCriteres, function(o) {
-            return o.id != null && o.id == critereId;
-          }) == -1) {
-          self.anomaliesCriteres.push(item.critere);
+
+        if(item.actif){
+          var a = {};
+          a.code = item.code;
+          a.nom = item.nom
+          a.id = item.id;
+          a.critereCode = (item.critere) ? item.critere.code : null;
+          a.critereNom = (item.critere) ? item.critere.nom : '-';
+          a.indispo = {};
+          _.forEach(item.anomalieNatures, function(nature) {
+            a.indispo[nature.nature.id] = {};
+            a.indispo[nature.nature.id].valIndispoAdmin = nature.valIndispoAdmin;
+            a.indispo[nature.nature.id].valIndispoHbe = nature.valIndispoHbe;
+            a.indispo[nature.nature.id].valIndispoTerrestre = nature.valIndispoTerrestre;
+            a.indispo[nature.nature.id].natureCode = nature.nature.code;
+            a.indispo[nature.nature.id].saisies = [];
+            _.forEach(nature.saisies, function(saisie) {
+              a.indispo[nature.nature.id].saisies.push(saisie.code);
+            })
+          });
+          // On récupère la liste des critères
+          var critereId = (item.critere) ? item.critere.id : null;
+          a.critere = critereId;
+          if (critereId != null && _.findIndex(self.anomaliesCriteres, function(o) {
+              return o.id != null && o.id == critereId;
+            }) == -1) {
+            self.anomaliesCriteres.push(item.critere);
+          }
+          self.anomalies.push(a);
         }
-        self.anomalies.push(a);
       });
+
       self.anomaliesCriteres.sort(function(a, b) {
         return a.id - b.id;
       });
