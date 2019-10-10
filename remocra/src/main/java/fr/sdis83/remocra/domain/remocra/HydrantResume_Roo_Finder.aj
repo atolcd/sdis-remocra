@@ -3,39 +3,39 @@
 
 package fr.sdis83.remocra.domain.remocra;
 
-import fr.sdis83.remocra.domain.remocra.RequeteFiche;
+import fr.sdis83.remocra.domain.remocra.HydrantResume;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-privileged aspect RequeteFiche_Roo_Finder {
+privileged aspect HydrantResume_Roo_Finder {
 
-    public static Long RequeteFiche.countFindRequeteFichesByCode(String code) {
+    public static Long HydrantResume.countFindHydrantResumesByCode(String code) {
         if (code == null || code.length() == 0) throw new IllegalArgumentException("The code argument is required");
-        EntityManager em = RequeteFiche.entityManager();
-        TypedQuery q = em.createQuery("SELECT COUNT(o) FROM RequeteFiche AS o WHERE o.code = :code", Long.class);
+        EntityManager em = HydrantResume.entityManager();
+        TypedQuery q = em.createQuery("SELECT COUNT(o) FROM HydrantResume AS o WHERE o.code = :code", Long.class);
         q.setParameter("code", code);
         return ((Long) q.getSingleResult());
     }
 
-    public static TypedQuery<RequeteFiche> RequeteFiche.findRequeteFichesByCode(String code) {
+    public static TypedQuery<HydrantResume> HydrantResume.findHydrantResumesByCode(String code) {
         if (code == null || code.length() == 0) throw new IllegalArgumentException("The code argument is required");
-        EntityManager em = RequeteFiche.entityManager();
-        TypedQuery<RequeteFiche> q = em.createQuery("SELECT o FROM RequeteFiche AS o WHERE o.code = :code", RequeteFiche.class);
+        EntityManager em = HydrantResume.entityManager();
+        TypedQuery<HydrantResume> q = em.createQuery("SELECT o FROM HydrantResume AS o WHERE o.code = :code", HydrantResume.class);
         q.setParameter("code", code);
         return q;
     }
 
-    public static TypedQuery<RequeteFiche> RequeteFiche.findRequeteFichesByCode(String code, String sortFieldName, String sortOrder) {
+    public static TypedQuery<HydrantResume> HydrantResume.findHydrantResumesByCode(String code, String sortFieldName, String sortOrder) {
         if (code == null || code.length() == 0) throw new IllegalArgumentException("The code argument is required");
-        EntityManager em = RequeteFiche.entityManager();
-        String jpaQuery = "SELECT o FROM RequeteFiche AS o WHERE o.code = :code";
+        EntityManager em = HydrantResume.entityManager();
+        String jpaQuery = "SELECT o FROM HydrantResume AS o WHERE o.code = :code";
         if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
             jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
             if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
                 jpaQuery = jpaQuery + " " + sortOrder;
             }
         }
-        TypedQuery<RequeteFiche> q = em.createQuery(jpaQuery, RequeteFiche.class);
+        TypedQuery<HydrantResume> q = em.createQuery(jpaQuery, HydrantResume.class);
         q.setParameter("code", code);
         return q;
     }

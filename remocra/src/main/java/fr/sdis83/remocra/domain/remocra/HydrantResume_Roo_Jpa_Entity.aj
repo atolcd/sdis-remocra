@@ -3,11 +3,11 @@
 
 package fr.sdis83.remocra.domain.remocra;
 
-import fr.sdis83.remocra.domain.remocra.RequeteFiche;
+import fr.sdis83.remocra.domain.remocra.HydrantResume;
 import javax.persistence.Entity;
 
-privileged aspect RequeteFiche_Roo_Jpa_Entity {
+privileged aspect HydrantResume_Roo_Jpa_Entity {
 
-    declare @type: RequeteFiche: @Entity;
+    declare @type: HydrantResume: @Entity;
 
 }

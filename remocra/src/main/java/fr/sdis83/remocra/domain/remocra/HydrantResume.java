@@ -14,8 +14,8 @@ import javax.validation.constraints.NotNull;
 
 @RooJavaBean
 @RooToString
-@RooJpaActiveRecord(finders={"findSitesByActif","findRequeteFichesByCode"})
-public class RequeteFiche {
+@RooJpaActiveRecord(finders={"findSitesByActif","findHydrantResumesByCode"})
+public class HydrantResume {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

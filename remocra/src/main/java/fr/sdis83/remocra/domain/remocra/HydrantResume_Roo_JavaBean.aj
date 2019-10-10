@@ -3,40 +3,40 @@
 
 package fr.sdis83.remocra.domain.remocra;
 
-import fr.sdis83.remocra.domain.remocra.RequeteFiche;
+import fr.sdis83.remocra.domain.remocra.HydrantResume;
 import java.util.Set;
 
-privileged aspect RequeteFiche_Roo_JavaBean {
+privileged aspect HydrantResume_Roo_JavaBean {
     
-    public Long RequeteFiche.getId() {
+    public Long HydrantResume.getId() {
         return this.id;
     }
     
-    public void RequeteFiche.setId(Long id) {
+    public void HydrantResume.setId(Long id) {
         this.id = id;
     }
 
-    public String RequeteFiche.getLibelle() {
+    public String HydrantResume.getLibelle() {
         return this.libelle;
     }
     
-    public void RequeteFiche.setLibelle(String libelle) {
+    public void HydrantResume.setLibelle(String libelle) {
         this.libelle = libelle;
     }
 
-    public String RequeteFiche.getCode() {
+    public String HydrantResume.getCode() {
         return this.code;
     }
 
-    public void RequeteFiche.setCode(String code) {
+    public void HydrantResume.setCode(String code) {
         this.code = code;
     }
 
-    public String RequeteFiche.getSourceSql() {
+    public String HydrantResume.getSourceSql() {
         return this.sourceSql;
     }
 
-    public void RequeteFiche.setSourceSql(String sourceSql) {
+    public void HydrantResume.setSourceSql(String sourceSql) {
         this.sourceSql = sourceSql;
     }
 

@@ -3,97 +3,97 @@
 
 package fr.sdis83.remocra.domain.remocra;
 
-import fr.sdis83.remocra.domain.remocra.RequeteFiche;
+import fr.sdis83.remocra.domain.remocra.HydrantResume;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.transaction.annotation.Transactional;
 
-privileged aspect RequeteFiche_Roo_Jpa_ActiveRecord {
+privileged aspect HydrantResume_Roo_Jpa_ActiveRecord {
     
     @PersistenceContext
-    transient EntityManager RequeteFiche.entityManager;
+    transient EntityManager HydrantResume.entityManager;
     
-    public static final List<String> RequeteFiche.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "version", "nom", "code", "actif");
+    public static final List<String> HydrantResume.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "version", "nom", "code", "actif");
     
-    public static final EntityManager RequeteFiche.entityManager() {
-        EntityManager em = new RequeteFiche().entityManager;
+    public static final EntityManager HydrantResume.entityManager() {
+        EntityManager em = new HydrantResume().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
     
-    public static long RequeteFiche.countRequeteFiches() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM RequeteFiche o", Long.class).getSingleResult();
+    public static long HydrantResume.countHydrantResumes() {
+        return entityManager().createQuery("SELECT COUNT(o) FROM HydrantResume o", Long.class).getSingleResult();
     }
     
-    public static List<RequeteFiche> RequeteFiche.findAllRequeteFiches() {
-        return entityManager().createQuery("SELECT o FROM RequeteFiche o", RequeteFiche.class).getResultList();
+    public static List<HydrantResume> HydrantResume.findAllHydrantResumes() {
+        return entityManager().createQuery("SELECT o FROM HydrantResume o", HydrantResume.class).getResultList();
     }
     
-    public static List<RequeteFiche> RequeteFiche.findAllRequeteFiches(String sortFieldName, String sortOrder) {
-        String jpaQuery = "SELECT o FROM RequeteFiche o";
+    public static List<HydrantResume> HydrantResume.findAllHydrantResumes(String sortFieldName, String sortOrder) {
+        String jpaQuery = "SELECT o FROM HydrantResume o";
         if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
             jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
             if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
                 jpaQuery = jpaQuery + " " + sortOrder;
             }
         }
-        return entityManager().createQuery(jpaQuery, RequeteFiche.class).getResultList();
+        return entityManager().createQuery(jpaQuery, HydrantResume.class).getResultList();
     }
     
-    public static RequeteFiche RequeteFiche.findRequeteFiche(Long id) {
+    public static HydrantResume HydrantResume.findHydrantResume(Long id) {
         if (id == null) return null;
-        return entityManager().find(RequeteFiche.class, id);
+        return entityManager().find(HydrantResume.class, id);
     }
     
-    public static List<RequeteFiche> RequeteFiche.findRequeteFicheEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM RequeteFiche o", RequeteFiche.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+    public static List<HydrantResume> HydrantResume.findHydrantResumeEntries(int firstResult, int maxResults) {
+        return entityManager().createQuery("SELECT o FROM HydrantResume o", HydrantResume.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
     
-    public static List<RequeteFiche> RequeteFiche.findRequeteFicheEntries(int firstResult, int maxResults, String sortFieldName, String sortOrder) {
-        String jpaQuery = "SELECT o FROM RequeteFiche o";
+    public static List<HydrantResume> HydrantResume.findHydrantResumeEntries(int firstResult, int maxResults, String sortFieldName, String sortOrder) {
+        String jpaQuery = "SELECT o FROM HydrantResume o";
         if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
             jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
             if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
                 jpaQuery = jpaQuery + " " + sortOrder;
             }
         }
-        return entityManager().createQuery(jpaQuery, RequeteFiche.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+        return entityManager().createQuery(jpaQuery, HydrantResume.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
     
     @Transactional
-    public void RequeteFiche.persist() {
+    public void HydrantResume.persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
     }
     
     @Transactional
-    public void RequeteFiche.remove() {
+    public void HydrantResume.remove() {
         if (this.entityManager == null) this.entityManager = entityManager();
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            RequeteFiche attached = RequeteFiche.findRequeteFiche(this.id);
+            HydrantResume attached = HydrantResume.findHydrantResume(this.id);
             this.entityManager.remove(attached);
         }
     }
     
     @Transactional
-    public void RequeteFiche.flush() {
+    public void HydrantResume.flush() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.flush();
     }
     
     @Transactional
-    public void RequeteFiche.clear() {
+    public void HydrantResume.clear() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.clear();
     }
     
     @Transactional
-    public RequeteFiche RequeteFiche.merge() {
+    public HydrantResume HydrantResume.merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
-        RequeteFiche merged = this.entityManager.merge(this);
+        HydrantResume merged = this.entityManager.merge(this);
         this.entityManager.flush();
         return merged;
     }

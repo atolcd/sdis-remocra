@@ -3,11 +3,11 @@
 
 package fr.sdis83.remocra.domain.remocra;
 
-import fr.sdis83.remocra.domain.remocra.RequeteFiche;
+import fr.sdis83.remocra.domain.remocra.HydrantResume;
 import org.springframework.beans.factory.annotation.Configurable;
 
-privileged aspect RequeteFiche_Roo_Configurable {
+privileged aspect HydrantResume_Roo_Configurable {
 
-    declare @type: RequeteFiche: @Configurable;
+    declare @type: HydrantResume: @Configurable;
 
 }

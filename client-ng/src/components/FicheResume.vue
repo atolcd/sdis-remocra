@@ -83,7 +83,7 @@ export default {
      * Les données sont ensuite parsées en JSON 
      */
     loadData: function() {
-      axios.get("/remocra/requetefiche/resume/" + this.hydrantRecord.id + "?useDefault=" + !this.useCustomResume).then(response => {
+      axios.get("/remocra/hydrantResume/" + this.hydrantRecord.id + "?useDefault=" + !this.useCustomResume).then(response => {
         parseString(response.data.toString(), {
           explicitArray: false
         }, (err, result) => {

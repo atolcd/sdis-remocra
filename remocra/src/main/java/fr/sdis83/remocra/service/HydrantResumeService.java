@@ -1,7 +1,7 @@
 package fr.sdis83.remocra.service;
 
 import fr.sdis83.remocra.domain.remocra.Hydrant;
-import fr.sdis83.remocra.domain.remocra.RequeteFiche;
+import fr.sdis83.remocra.domain.remocra.HydrantResume;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,21 +15,21 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 @Configuration
-public class RequeteFicheService extends AbstractService<RequeteFiche> {
+public class HydrantResumeService extends AbstractService<HydrantResume> {
 
     private final Logger logger = Logger.getLogger(getClass());
 
-    public RequeteFicheService() {
-        super(RequeteFiche.class);
+    public HydrantResumeService() {
+        super(HydrantResume.class);
     }
 
     @Bean
-    public RequeteFicheService RequeteFicheService() {
-        return new RequeteFicheService();
+    public HydrantResumeService HydrantResumeService() {
+        return new HydrantResumeService();
     }
 
     @Override
-    protected Predicate processFilterItem(CriteriaQuery<?> itemQuery, Map<String, Object> parameters, Root<RequeteFiche> from, ItemFilter itemFilter) {
+    protected Predicate processFilterItem(CriteriaQuery<?> itemQuery, Map<String, Object> parameters, Root<HydrantResume> from, ItemFilter itemFilter) {
         CriteriaBuilder cBuilder = this.getCriteriaBuilder();
         Predicate predicat = null;
         if ("id".equals(itemFilter.getFieldName())) {
@@ -55,13 +55,13 @@ public class RequeteFicheService extends AbstractService<RequeteFiche> {
         }
 
         try {
-            RequeteFiche requete = RequeteFiche.findRequeteFichesByCode(code.toString()).getSingleResult();
+            HydrantResume requete = HydrantResume.findHydrantResumesByCode(code.toString()).getSingleResult();
             Object obj = entityManager.createNativeQuery(requete.getSourceSql())
                     .setParameter("id", id)
                     .getSingleResult();
             return obj.toString();
         } catch(Exception e){
-            logger.error("remocra.requete_fiche: Une erreur est survenue lors de la tentative d'exécution de la requête "+code);
+            logger.error("remocra.hydrant_resume: Une erreur est survenue lors de la tentative d'exécution de la requête "+code);
             logger.error(e.getMessage());
             return null;
         }

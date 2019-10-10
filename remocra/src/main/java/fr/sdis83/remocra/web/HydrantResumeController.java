@@ -1,8 +1,8 @@
 package fr.sdis83.remocra.web;
 
 import flexjson.JSONSerializer;
-import fr.sdis83.remocra.domain.remocra.RequeteFiche;
-import fr.sdis83.remocra.service.RequeteFicheService;
+import fr.sdis83.remocra.domain.remocra.HydrantResume;
+import fr.sdis83.remocra.service.HydrantResumeService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@RequestMapping("/requetefiche")
+@RequestMapping("/hydrantResume")
 @Controller
-public class RequeteFicheController {
+public class HydrantResumeController {
 
     @Autowired
-    private RequeteFicheService requeteFicheService;
+    private HydrantResumeService hydrantResumeService;
 
     @Autowired
     private UtilisateurService utilisateurService;
@@ -40,7 +40,7 @@ public class RequeteFicheController {
     final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
     final List<ItemSorting> itemSortList = ItemSorting.decodeJson(sorts);
 
-    return new AbstractExtListSerializer<RequeteFiche>("RequeteFiche retrieved.") {
+    return new AbstractExtListSerializer<HydrantResume>("HydrantResume retrieved.") {
 
       @Override
       protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
@@ -50,30 +50,30 @@ public class RequeteFicheController {
       }
 
       @Override
-      protected List<RequeteFiche> getRecords() {
-        return requeteFicheService.find(start, limit, itemSortList, itemFilterList);
+      protected List<HydrantResume> getRecords() {
+        return hydrantResumeService.find(start, limit, itemSortList, itemFilterList);
       }
 
       @Override
       protected Long countRecords() {
         return
-           Long.valueOf(requeteFicheService.count(itemFilterList));
+           Long.valueOf(hydrantResumeService.count(itemFilterList));
       }
 
     }.serialize();
   }
 
-    @RequestMapping(value = "/resume/{id}", method = RequestMethod.GET, headers = "Accept=application/xml")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/xml")
     public ResponseEntity<java.lang.String> resumeQuery(final @PathVariable Long id, final @RequestParam(value="useDefault") Boolean useDefault) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Content-Type", "application/json;charset=utf-8");
         Long idOrganismeUser = this.utilisateurService.getCurrentUtilisateur().getOrganisme().getId();
-        String xmlDoc = requeteFicheService.resume(id, idOrganismeUser, useDefault);
+        String xmlDoc = hydrantResumeService.resume(id, idOrganismeUser, useDefault);
         if(xmlDoc != null) {
             return new ResponseEntity<String>(xmlDoc.toString(), responseHeaders, HttpStatus.OK);
         }
         else {
-            return new SuccessErrorExtSerializer(false, "remocra.requete_fiche: Une erreur est survenue lors de l'exécution de la requête").serialize();
+            return new SuccessErrorExtSerializer(false, "remocra.hydrant_resume: Une erreur est survenue lors de l'exécution de la requête").serialize();
         }
 
     }

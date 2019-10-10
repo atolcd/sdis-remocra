@@ -148,7 +148,7 @@ public class XmlService {
     private ZoneCompetenceService zoneCompetenceService;
 
     @Autowired
-    private RequeteFicheService requeteFicheService;
+    private HydrantResumeService hydrantResumeService;
 
     @Autowired
     private UtilisateurService utilisateurService;
