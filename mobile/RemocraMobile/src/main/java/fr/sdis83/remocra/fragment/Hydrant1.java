@@ -116,11 +116,15 @@ public class Hydrant1 extends AbstractHydrant {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(types.getSelectedItem() != null) {
                     TypeVisiteHolder tv = (TypeVisiteHolder) types.getSelectedItem();
-                    controle.setChecked(false);
+
+                    if(controle.isChecked()){
+                        getView().findViewById(R.id.verif_pibi).setVisibility(View.VISIBLE);
+                    }
                     controle.setEnabled(true);
                     if (!("CTRL".equals(tv.getCode()))){
                         getView().findViewById(R.id.verif_pibi).setVisibility(View.GONE);
                         controle.setEnabled(false);
+                        controle.setChecked(false);
                     }
                 }
 
@@ -142,6 +146,8 @@ public class Hydrant1 extends AbstractHydrant {
         } else {
             types.setSelection(0);
         }
+
+        controle.setChecked(cursor.getLong(cursor.getColumnIndex(HydrantTable.COLUMN_CONTROLE)) == Long.valueOf(1));
 
     }
 
@@ -189,6 +195,21 @@ public class Hydrant1 extends AbstractHydrant {
         values.put(HydrantTable.COLUMN_AGENT1, agent1.getText().toString());
         TypeVisiteHolder v = (TypeVisiteHolder) types.getSelectedItem();
         values.put(HydrantTable.COLUMN_TYPE_SAISIE, v.getCode());
+
+        if(controle.isChecked()) {
+            values.put(HydrantTable.COLUMN_DEBIT , ((EditText) getView().findViewById(R.id.verif_debit)).getText().toString());
+            values.put(HydrantTable.COLUMN_PRESSION_DYN , ((EditText) getView().findViewById(R.id.verif_pression_dyn)).getText().toString());
+            values.put(HydrantTable.COLUMN_DEBIT_MAX , ((EditText) getView().findViewById(R.id.verif_debit_max)).getText().toString());
+            values.put(HydrantTable.COLUMN_PRESSION_DYN_DEB , ((EditText) getView().findViewById(R.id.verif_pression_dyn_deb)).getText().toString());
+            values.put(HydrantTable.COLUMN_PRESSION , ((EditText) getView().findViewById(R.id.verif_pression)).getText().toString());
+        } else {
+            values.put(HydrantTable.COLUMN_DEBIT , "");
+            values.put(HydrantTable.COLUMN_PRESSION_DYN , "");
+            values.put(HydrantTable.COLUMN_DEBIT_MAX , "");
+            values.put(HydrantTable.COLUMN_PRESSION_DYN_DEB , "");
+            values.put(HydrantTable.COLUMN_PRESSION , "");
+        }
+
         //On concatène la date et l'heure pour avoir la date du visite
         try {
             Date dateVisite =  DbUtils.DATE_FORMAT_EDIT.parse(datePicker.getText().toString());

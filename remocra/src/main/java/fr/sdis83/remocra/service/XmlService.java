@@ -911,7 +911,7 @@ public class XmlService {
         hydrant.setAgent1(hydrantXML.getAgent1());
         hv.setAgent1(hydrantXML.getAgent1());
         hydrant.setAgent2(hydrantXML.getAgent2());
-        hv.setAgent2(hydrantXML.getAgent1());
+        hv.setAgent2(hydrantXML.getAgent2());
         hydrant.setComplement(hydrantXML.getComplement());
 
         // Dates
@@ -931,6 +931,7 @@ public class XmlService {
         hydrant.setVoie2(hydrantXML.getVoie2());
         hydrant.setDispoTerrestre(getDispo(hydrantXML.getDispoTerrestre()));
         hydrant.setObservation(hydrantXML.getObservation());
+        hv.setObservations(hydrantXML.getObservation());
         // La date d'attestation n'est jamais remontée par l'application mobile dans les versions antérieures à la 2. 
         // Il ne faut donc pas "vider" une date qui aurait été saisie par ailleurs.
         if (version != null && version > 1) {
@@ -1016,6 +1017,7 @@ public class XmlService {
             }
             if (hydrantPibi.getDebitMax() != null && hydrantPibi.getDebitMax().intValue() >= 0) {
                 hydrantDomPibi.setDebitMax(hydrantPibi.getDebitMax());
+                hv.setDebitMax(hydrantPibi.getDebitMax());
                 controle = true;
             }
             if (hydrantPibi.getPression() != null && hydrantPibi.getPression().intValue() >= 0) {

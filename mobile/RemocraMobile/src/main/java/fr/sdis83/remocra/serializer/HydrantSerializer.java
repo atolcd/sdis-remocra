@@ -120,7 +120,7 @@ public class HydrantSerializer extends AbstractSerializer {
         addBalise(serializer, TourneeParser.TAG_GEST_PT_EAU, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_GEST_PTEAU)));
         addBalise(serializer, TourneeParser.TAG_LIEU_DIT, cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_LIEUDIT)));
         String typeSaisie = cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_TYPE_SAISIE));
-        if (this.fullExportMode || !typeSaisie.equals(HydrantTable.TYPE_SAISIE.CREA.toString())) {
+        if (this.fullExportMode || (cursor.getString(cursor.getColumnIndex(HydrantTable.COLUMN_NUMERO_INTERNE)) != null)) {
             if (this.fullExportMode) {
                 addBalise(serializer, "typeSaisie", typeSaisie);
             }

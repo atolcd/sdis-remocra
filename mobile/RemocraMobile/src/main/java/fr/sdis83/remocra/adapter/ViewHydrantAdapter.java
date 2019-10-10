@@ -64,7 +64,7 @@ public class ViewHydrantAdapter extends FragmentPagerAdapter {
         Integer nbVisite = hydrant.getInt(hydrant.getColumnIndex(HydrantTable.COLUMN_NB_VISITE));
         if (TextUtils.isEmpty(actualTypeSaisie)) {
             typeSaisie = TYPE_SAISIE.LECT;
-            if (hydrant.getLong(hydrant.getColumnIndex(HydrantTable.COLUMN_DATE_RECEP)) == 0) {
+            if (nbVisite == 0) {
                 if (global.getCanVisitRecption()) {
                     typeSaisie = TYPE_SAISIE.CREA;
                 }
