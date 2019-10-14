@@ -1,121 +1,351 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <job>
   <name>creer_notifications_indisponibilites</name>
-    <description/>
-    <extended_description/>
-    <job_version/>
-    <job_status>0</job_status>
-  <directory>&#x2f;</directory>
+  <description />
+  <extended_description />
+  <job_version />
+  <job_status>0</job_status>
+  <directory>/</directory>
   <created_user>-</created_user>
-  <created_date>2019&#x2f;08&#x2f;05 11&#x3a;32&#x3a;56.347</created_date>
+  <created_date>2019/08/05 11:32:56.347</created_date>
   <modified_user>-</modified_user>
-  <modified_date>2019&#x2f;08&#x2f;05 11&#x3a;32&#x3a;56.347</modified_date>
-    <parameters>
-        <parameter>
-            <name>PDI_FICHIER_PARAMETRE</name>
-            <default_value/>
-            <description/>
-        </parameter>
-    </parameters>
+  <modified_date>2019/08/05 11:32:56.347</modified_date>
+  <parameters>
+    <parameter>
+      <name>PDI_FICHIER_PARAMETRE</name>
+      <default_value />
+      <description />
+    </parameter>
+  </parameters>
   <connection>
-    <name>Remocra</name>
-    <server>localhost</server>
+    <name>Remocra (Postgis)</name>
+    <server>${REMOCRA_POSTGIS_DATABASE_HOST}</server>
     <type>POSTGRESQL</type>
     <access>Native</access>
-    <database>remocra</database>
-    <port>5458</port>
-    <username>postgres</username>
-    <password>Encrypted 2be98afc86aa7f2e48f0a8529daa19fd3</password>
-    <servername/>
-    <data_tablespace/>
-    <index_tablespace/>
+    <database>${REMOCRA_POSTGIS_DATABASE_NAME}</database>
+    <port>${REMOCRA_POSTGIS_DATABASE_PORT}</port>
+    <username>${REMOCRA_POSTGIS_DATABASE_USER_NAME}</username>
+    <password>${REMOCRA_POSTGIS_DATABASE_USER_PASSWORD}</password>
+    <servername />
+    <data_tablespace />
+    <index_tablespace />
     <attributes>
-      <attribute><code>EXTRA_OPTION_POSTGRESQL.stringtype</code><attribute>unspecified</attribute></attribute>
-      <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
-      <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
-      <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
-      <attribute><code>PORT_NUMBER</code><attribute>5458</attribute></attribute>
-      <attribute><code>PRESERVE_RESERVED_WORD_CASE</code><attribute>N</attribute></attribute>
-      <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
-      <attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
-      <attribute><code>SUPPORTS_TIMESTAMP_DATA_TYPE</code><attribute>N</attribute></attribute>
-      <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>${REMOCRA_POSTGIS_DATABASE_PORT}</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
     </attributes>
   </connection>
-  <connection>
-    <name>Remocra &#x28;Postgis&#x29;</name>
-    <server>&#x24;&#x7b;REMOCRA_POSTGIS_DATABASE_HOST&#x7d;</server>
-    <type>POSTGRESQL</type>
-    <access>Native</access>
-    <database>&#x24;&#x7b;REMOCRA_POSTGIS_DATABASE_NAME&#x7d;</database>
-    <port>&#x24;&#x7b;REMOCRA_POSTGIS_DATABASE_PORT&#x7d;</port>
-    <username>&#x24;&#x7b;REMOCRA_POSTGIS_DATABASE_USER_NAME&#x7d;</username>
-    <password>&#x24;&#x7b;REMOCRA_POSTGIS_DATABASE_USER_PASSWORD&#x7d;</password>
-    <servername/>
-    <data_tablespace/>
-    <index_tablespace/>
-    <attributes>
-      <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
-      <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
-      <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
-      <attribute><code>PORT_NUMBER</code><attribute>&#x24;&#x7b;REMOCRA_POSTGIS_DATABASE_PORT&#x7d;</attribute></attribute>
-      <attribute><code>PRESERVE_RESERVED_WORD_CASE</code><attribute>Y</attribute></attribute>
-      <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
-      <attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
-      <attribute><code>SUPPORTS_TIMESTAMP_DATA_TYPE</code><attribute>Y</attribute></attribute>
-      <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
-    </attributes>
-  </connection>
-  <connection>
-    <name>Remocra 89</name>
-    <server>localhost</server>
-    <type>POSTGRESQL</type>
-    <access>Native</access>
-    <database>remocra</database>
-    <port>5456</port>
-    <username>postgres</username>
-    <password>Encrypted 2be98afc86aa7f2e4a20cf624cdb6a78b</password>
-    <servername/>
-    <data_tablespace/>
-    <index_tablespace/>
-    <attributes>
-      <attribute><code>EXTRA_OPTION_POSTGRESQL.stringtype</code><attribute>unspecified</attribute></attribute>
-      <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
-      <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
-      <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
-      <attribute><code>PORT_NUMBER</code><attribute>5456</attribute></attribute>
-      <attribute><code>PRESERVE_RESERVED_WORD_CASE</code><attribute>N</attribute></attribute>
-      <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
-      <attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
-      <attribute><code>SUPPORTS_TIMESTAMP_DATA_TYPE</code><attribute>N</attribute></attribute>
-      <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
-    </attributes>
-  </connection>
-    <slaveservers>
+  <slaveservers>
     </slaveservers>
-<job-log-table><connection/>
-<schema/>
-<table/>
-<size_limit_lines/>
-<interval/>
-<timeout_days/>
-<field><id>ID_JOB</id><enabled>Y</enabled><name>ID_JOB</name></field><field><id>CHANNEL_ID</id><enabled>Y</enabled><name>CHANNEL_ID</name></field><field><id>JOBNAME</id><enabled>Y</enabled><name>JOBNAME</name></field><field><id>STATUS</id><enabled>Y</enabled><name>STATUS</name></field><field><id>LINES_READ</id><enabled>Y</enabled><name>LINES_READ</name></field><field><id>LINES_WRITTEN</id><enabled>Y</enabled><name>LINES_WRITTEN</name></field><field><id>LINES_UPDATED</id><enabled>Y</enabled><name>LINES_UPDATED</name></field><field><id>LINES_INPUT</id><enabled>Y</enabled><name>LINES_INPUT</name></field><field><id>LINES_OUTPUT</id><enabled>Y</enabled><name>LINES_OUTPUT</name></field><field><id>LINES_REJECTED</id><enabled>Y</enabled><name>LINES_REJECTED</name></field><field><id>ERRORS</id><enabled>Y</enabled><name>ERRORS</name></field><field><id>STARTDATE</id><enabled>Y</enabled><name>STARTDATE</name></field><field><id>ENDDATE</id><enabled>Y</enabled><name>ENDDATE</name></field><field><id>LOGDATE</id><enabled>Y</enabled><name>LOGDATE</name></field><field><id>DEPDATE</id><enabled>Y</enabled><name>DEPDATE</name></field><field><id>REPLAYDATE</id><enabled>Y</enabled><name>REPLAYDATE</name></field><field><id>LOG_FIELD</id><enabled>Y</enabled><name>LOG_FIELD</name></field><field><id>EXECUTING_SERVER</id><enabled>N</enabled><name>EXECUTING_SERVER</name></field><field><id>EXECUTING_USER</id><enabled>N</enabled><name>EXECUTING_USER</name></field><field><id>START_JOB_ENTRY</id><enabled>N</enabled><name>START_JOB_ENTRY</name></field><field><id>CLIENT</id><enabled>N</enabled><name>CLIENT</name></field></job-log-table>
-<jobentry-log-table><connection/>
-<schema/>
-<table/>
-<timeout_days/>
-<field><id>ID_BATCH</id><enabled>Y</enabled><name>ID_BATCH</name></field><field><id>CHANNEL_ID</id><enabled>Y</enabled><name>CHANNEL_ID</name></field><field><id>LOG_DATE</id><enabled>Y</enabled><name>LOG_DATE</name></field><field><id>JOBNAME</id><enabled>Y</enabled><name>TRANSNAME</name></field><field><id>JOBENTRYNAME</id><enabled>Y</enabled><name>STEPNAME</name></field><field><id>LINES_READ</id><enabled>Y</enabled><name>LINES_READ</name></field><field><id>LINES_WRITTEN</id><enabled>Y</enabled><name>LINES_WRITTEN</name></field><field><id>LINES_UPDATED</id><enabled>Y</enabled><name>LINES_UPDATED</name></field><field><id>LINES_INPUT</id><enabled>Y</enabled><name>LINES_INPUT</name></field><field><id>LINES_OUTPUT</id><enabled>Y</enabled><name>LINES_OUTPUT</name></field><field><id>LINES_REJECTED</id><enabled>Y</enabled><name>LINES_REJECTED</name></field><field><id>ERRORS</id><enabled>Y</enabled><name>ERRORS</name></field><field><id>RESULT</id><enabled>Y</enabled><name>RESULT</name></field><field><id>NR_RESULT_ROWS</id><enabled>Y</enabled><name>NR_RESULT_ROWS</name></field><field><id>NR_RESULT_FILES</id><enabled>Y</enabled><name>NR_RESULT_FILES</name></field><field><id>LOG_FIELD</id><enabled>N</enabled><name>LOG_FIELD</name></field><field><id>COPY_NR</id><enabled>N</enabled><name>COPY_NR</name></field></jobentry-log-table>
-<channel-log-table><connection/>
-<schema/>
-<table/>
-<timeout_days/>
-<field><id>ID_BATCH</id><enabled>Y</enabled><name>ID_BATCH</name></field><field><id>CHANNEL_ID</id><enabled>Y</enabled><name>CHANNEL_ID</name></field><field><id>LOG_DATE</id><enabled>Y</enabled><name>LOG_DATE</name></field><field><id>LOGGING_OBJECT_TYPE</id><enabled>Y</enabled><name>LOGGING_OBJECT_TYPE</name></field><field><id>OBJECT_NAME</id><enabled>Y</enabled><name>OBJECT_NAME</name></field><field><id>OBJECT_COPY</id><enabled>Y</enabled><name>OBJECT_COPY</name></field><field><id>REPOSITORY_DIRECTORY</id><enabled>Y</enabled><name>REPOSITORY_DIRECTORY</name></field><field><id>FILENAME</id><enabled>Y</enabled><name>FILENAME</name></field><field><id>OBJECT_ID</id><enabled>Y</enabled><name>OBJECT_ID</name></field><field><id>OBJECT_REVISION</id><enabled>Y</enabled><name>OBJECT_REVISION</name></field><field><id>PARENT_CHANNEL_ID</id><enabled>Y</enabled><name>PARENT_CHANNEL_ID</name></field><field><id>ROOT_CHANNEL_ID</id><enabled>Y</enabled><name>ROOT_CHANNEL_ID</name></field></channel-log-table>
-   <pass_batchid>N</pass_batchid>
-   <shared_objects_file/>
+  <job-log-table>
+    <connection />
+    <schema />
+    <table />
+    <size_limit_lines />
+    <interval />
+    <timeout_days />
+    <field>
+      <id>ID_JOB</id>
+      <enabled>Y</enabled>
+      <name>ID_JOB</name>
+    </field>
+    <field>
+      <id>CHANNEL_ID</id>
+      <enabled>Y</enabled>
+      <name>CHANNEL_ID</name>
+    </field>
+    <field>
+      <id>JOBNAME</id>
+      <enabled>Y</enabled>
+      <name>JOBNAME</name>
+    </field>
+    <field>
+      <id>STATUS</id>
+      <enabled>Y</enabled>
+      <name>STATUS</name>
+    </field>
+    <field>
+      <id>LINES_READ</id>
+      <enabled>Y</enabled>
+      <name>LINES_READ</name>
+    </field>
+    <field>
+      <id>LINES_WRITTEN</id>
+      <enabled>Y</enabled>
+      <name>LINES_WRITTEN</name>
+    </field>
+    <field>
+      <id>LINES_UPDATED</id>
+      <enabled>Y</enabled>
+      <name>LINES_UPDATED</name>
+    </field>
+    <field>
+      <id>LINES_INPUT</id>
+      <enabled>Y</enabled>
+      <name>LINES_INPUT</name>
+    </field>
+    <field>
+      <id>LINES_OUTPUT</id>
+      <enabled>Y</enabled>
+      <name>LINES_OUTPUT</name>
+    </field>
+    <field>
+      <id>LINES_REJECTED</id>
+      <enabled>Y</enabled>
+      <name>LINES_REJECTED</name>
+    </field>
+    <field>
+      <id>ERRORS</id>
+      <enabled>Y</enabled>
+      <name>ERRORS</name>
+    </field>
+    <field>
+      <id>STARTDATE</id>
+      <enabled>Y</enabled>
+      <name>STARTDATE</name>
+    </field>
+    <field>
+      <id>ENDDATE</id>
+      <enabled>Y</enabled>
+      <name>ENDDATE</name>
+    </field>
+    <field>
+      <id>LOGDATE</id>
+      <enabled>Y</enabled>
+      <name>LOGDATE</name>
+    </field>
+    <field>
+      <id>DEPDATE</id>
+      <enabled>Y</enabled>
+      <name>DEPDATE</name>
+    </field>
+    <field>
+      <id>REPLAYDATE</id>
+      <enabled>Y</enabled>
+      <name>REPLAYDATE</name>
+    </field>
+    <field>
+      <id>LOG_FIELD</id>
+      <enabled>Y</enabled>
+      <name>LOG_FIELD</name>
+    </field>
+    <field>
+      <id>EXECUTING_SERVER</id>
+      <enabled>N</enabled>
+      <name>EXECUTING_SERVER</name>
+    </field>
+    <field>
+      <id>EXECUTING_USER</id>
+      <enabled>N</enabled>
+      <name>EXECUTING_USER</name>
+    </field>
+    <field>
+      <id>START_JOB_ENTRY</id>
+      <enabled>N</enabled>
+      <name>START_JOB_ENTRY</name>
+    </field>
+    <field>
+      <id>CLIENT</id>
+      <enabled>N</enabled>
+      <name>CLIENT</name>
+    </field>
+  </job-log-table>
+  <jobentry-log-table>
+    <connection />
+    <schema />
+    <table />
+    <timeout_days />
+    <field>
+      <id>ID_BATCH</id>
+      <enabled>Y</enabled>
+      <name>ID_BATCH</name>
+    </field>
+    <field>
+      <id>CHANNEL_ID</id>
+      <enabled>Y</enabled>
+      <name>CHANNEL_ID</name>
+    </field>
+    <field>
+      <id>LOG_DATE</id>
+      <enabled>Y</enabled>
+      <name>LOG_DATE</name>
+    </field>
+    <field>
+      <id>JOBNAME</id>
+      <enabled>Y</enabled>
+      <name>TRANSNAME</name>
+    </field>
+    <field>
+      <id>JOBENTRYNAME</id>
+      <enabled>Y</enabled>
+      <name>STEPNAME</name>
+    </field>
+    <field>
+      <id>LINES_READ</id>
+      <enabled>Y</enabled>
+      <name>LINES_READ</name>
+    </field>
+    <field>
+      <id>LINES_WRITTEN</id>
+      <enabled>Y</enabled>
+      <name>LINES_WRITTEN</name>
+    </field>
+    <field>
+      <id>LINES_UPDATED</id>
+      <enabled>Y</enabled>
+      <name>LINES_UPDATED</name>
+    </field>
+    <field>
+      <id>LINES_INPUT</id>
+      <enabled>Y</enabled>
+      <name>LINES_INPUT</name>
+    </field>
+    <field>
+      <id>LINES_OUTPUT</id>
+      <enabled>Y</enabled>
+      <name>LINES_OUTPUT</name>
+    </field>
+    <field>
+      <id>LINES_REJECTED</id>
+      <enabled>Y</enabled>
+      <name>LINES_REJECTED</name>
+    </field>
+    <field>
+      <id>ERRORS</id>
+      <enabled>Y</enabled>
+      <name>ERRORS</name>
+    </field>
+    <field>
+      <id>RESULT</id>
+      <enabled>Y</enabled>
+      <name>RESULT</name>
+    </field>
+    <field>
+      <id>NR_RESULT_ROWS</id>
+      <enabled>Y</enabled>
+      <name>NR_RESULT_ROWS</name>
+    </field>
+    <field>
+      <id>NR_RESULT_FILES</id>
+      <enabled>Y</enabled>
+      <name>NR_RESULT_FILES</name>
+    </field>
+    <field>
+      <id>LOG_FIELD</id>
+      <enabled>N</enabled>
+      <name>LOG_FIELD</name>
+    </field>
+    <field>
+      <id>COPY_NR</id>
+      <enabled>N</enabled>
+      <name>COPY_NR</name>
+    </field>
+  </jobentry-log-table>
+  <channel-log-table>
+    <connection />
+    <schema />
+    <table />
+    <timeout_days />
+    <field>
+      <id>ID_BATCH</id>
+      <enabled>Y</enabled>
+      <name>ID_BATCH</name>
+    </field>
+    <field>
+      <id>CHANNEL_ID</id>
+      <enabled>Y</enabled>
+      <name>CHANNEL_ID</name>
+    </field>
+    <field>
+      <id>LOG_DATE</id>
+      <enabled>Y</enabled>
+      <name>LOG_DATE</name>
+    </field>
+    <field>
+      <id>LOGGING_OBJECT_TYPE</id>
+      <enabled>Y</enabled>
+      <name>LOGGING_OBJECT_TYPE</name>
+    </field>
+    <field>
+      <id>OBJECT_NAME</id>
+      <enabled>Y</enabled>
+      <name>OBJECT_NAME</name>
+    </field>
+    <field>
+      <id>OBJECT_COPY</id>
+      <enabled>Y</enabled>
+      <name>OBJECT_COPY</name>
+    </field>
+    <field>
+      <id>REPOSITORY_DIRECTORY</id>
+      <enabled>Y</enabled>
+      <name>REPOSITORY_DIRECTORY</name>
+    </field>
+    <field>
+      <id>FILENAME</id>
+      <enabled>Y</enabled>
+      <name>FILENAME</name>
+    </field>
+    <field>
+      <id>OBJECT_ID</id>
+      <enabled>Y</enabled>
+      <name>OBJECT_ID</name>
+    </field>
+    <field>
+      <id>OBJECT_REVISION</id>
+      <enabled>Y</enabled>
+      <name>OBJECT_REVISION</name>
+    </field>
+    <field>
+      <id>PARENT_CHANNEL_ID</id>
+      <enabled>Y</enabled>
+      <name>PARENT_CHANNEL_ID</name>
+    </field>
+    <field>
+      <id>ROOT_CHANNEL_ID</id>
+      <enabled>Y</enabled>
+      <name>ROOT_CHANNEL_ID</name>
+    </field>
+  </channel-log-table>
+  <pass_batchid>N</pass_batchid>
+  <shared_objects_file />
   <entries>
     <entry>
       <name>START</name>
-      <description/>
+      <description />
       <type>SPECIAL</type>
       <start>Y</start>
       <dummy>N</dummy>
@@ -130,332 +360,636 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>105</xloc>
+      <xloc>45</xloc>
       <yloc>165</yloc>
-      </entry>
+    </entry>
     <entry>
       <name>recuperation_variables</name>
-      <description/>
+      <description />
       <type>SET_VARIABLES</type>
       <replacevars>Y</replacevars>
-      <filename>&#x24;&#x7b;PDI_FICHIER_PARAMETRE&#x7d;</filename>
+      <filename>${PDI_FICHIER_PARAMETRE}</filename>
       <file_variable_type>JVM</file_variable_type>
       <fields>
       </fields>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>255</xloc>
+      <xloc>195</xloc>
       <yloc>165</yloc>
-      </entry>
+    </entry>
     <entry>
       <name>creer_requete_utilisateur</name>
-      <description/>
+      <description />
       <type>TRANS</type>
       <specification_method>filename</specification_method>
-      <trans_object_id/>
-      <filename>&#x24;&#x7b;Internal.Entry.Current.Directory&#x7d;&#x2f;commun&#x2f;creer_requete_utilisateur.ktr</filename>
-      <transname/>
+      <trans_object_id />
+      <filename>${Internal.Entry.Current.Directory}/commun/creer_requete_utilisateur.ktr</filename>
+      <transname />
       <arg_from_previous>Y</arg_from_previous>
       <params_from_previous>Y</params_from_previous>
       <exec_per_row>N</exec_per_row>
       <clear_rows>N</clear_rows>
       <clear_files>N</clear_files>
       <set_logfile>N</set_logfile>
-      <logfile/>
-      <logext/>
+      <logfile />
+      <logext />
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Basic</loglevel>
       <cluster>N</cluster>
-      <slave_server_name/>
+      <slave_server_name />
       <set_append_logfile>N</set_append_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <create_parent_folder>N</create_parent_folder>
       <logging_remote_work>N</logging_remote_work>
-      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
-            <parameter>            <name>fichier_requete</name>
-            <stream_name/>
-            <value>&#x24;&#x7b;Internal.Entry.Current.Directory&#x7d;&#x2f;notif_debut&#x2f;requete_debut_indispo.csv</value>
-            </parameter>      </parameters>      <parallel>N</parallel>
+      <run_configuration />
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+        <parameter>
+          <name>fichier_requete</name>
+          <stream_name />
+          <value>${Internal.Entry.Current.Directory}/notif_debut/requete_debut_indispo.csv</value>
+        </parameter>
+      </parameters>
+      <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>480</xloc>
+      <xloc>420</xloc>
       <yloc>285</yloc>
-      </entry>
+    </entry>
     <entry>
       <name>inserer_notif_debut_indispo</name>
-      <description/>
+      <description />
       <type>JOB</type>
       <specification_method>filename</specification_method>
-      <job_object_id/>
-      <filename>&#x24;&#x7b;Internal.Entry.Current.Directory&#x7d;&#x2f;notif_debut&#x2f;inserer_notif_debut_indispo.kjb</filename>
-      <jobname/>
+      <job_object_id />
+      <filename>${Internal.Entry.Current.Directory}/notif_debut/inserer_notif_debut_indispo.kjb</filename>
+      <jobname />
       <arg_from_previous>Y</arg_from_previous>
       <params_from_previous>Y</params_from_previous>
       <exec_per_row>Y</exec_per_row>
       <set_logfile>N</set_logfile>
-      <logfile/>
-      <logext/>
+      <logfile />
+      <logext />
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Nothing</loglevel>
-      <slave_server_name/>
+      <slave_server_name />
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <expand_remote_job>N</expand_remote_job>
       <create_parent_folder>N</create_parent_folder>
       <pass_export>N</pass_export>
-      <force_separate_logging>N</force_separate_logging>
-      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
-            <parameter>            <name>destinataire_email</name>
-            <stream_name>destinataire_email</stream_name>
-            <value/>
-            </parameter>            <parameter>            <name>destinataire</name>
-            <stream_name>destinataire</stream_name>
-            <value/>
-            </parameter>            <parameter>            <name>xml</name>
-            <stream_name>xml</stream_name>
-            <value/>
-            </parameter>      </parameters>      <set_append_logfile>N</set_append_logfile>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+        <parameter>
+          <name>destinataire_email</name>
+          <stream_name>destinataire_email</stream_name>
+          <value />
+        </parameter>
+        <parameter>
+          <name>destinataire</name>
+          <stream_name>destinataire</stream_name>
+          <value />
+        </parameter>
+        <parameter>
+          <name>xml</name>
+          <stream_name>xml</stream_name>
+          <value />
+        </parameter>
+      </parameters>
+      <set_append_logfile>N</set_append_logfile>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>480</xloc>
+      <xloc>420</xloc>
       <yloc>540</yloc>
-      </entry>
+    </entry>
     <entry>
       <name>creer_requete_utilisateur 2</name>
-      <description/>
+      <description />
       <type>TRANS</type>
       <specification_method>filename</specification_method>
-      <trans_object_id/>
-      <filename>&#x24;&#x7b;Internal.Entry.Current.Directory&#x7d;&#x2f;commun&#x2f;creer_requete_utilisateur.ktr</filename>
-      <transname/>
+      <trans_object_id />
+      <filename>${Internal.Entry.Current.Directory}/commun/creer_requete_utilisateur.ktr</filename>
+      <transname />
       <arg_from_previous>Y</arg_from_previous>
       <params_from_previous>Y</params_from_previous>
       <exec_per_row>N</exec_per_row>
       <clear_rows>N</clear_rows>
       <clear_files>N</clear_files>
       <set_logfile>N</set_logfile>
-      <logfile/>
-      <logext/>
+      <logfile />
+      <logext />
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Basic</loglevel>
       <cluster>N</cluster>
-      <slave_server_name/>
+      <slave_server_name />
       <set_append_logfile>N</set_append_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <create_parent_folder>N</create_parent_folder>
       <logging_remote_work>N</logging_remote_work>
-      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
-            <parameter>            <name>fichier_requete</name>
-            <stream_name/>
-            <value>&#x24;&#x7b;Internal.Entry.Current.Directory&#x7d;&#x2f;notif_fin&#x2f;requete_fin_indispo.csv</value>
-            </parameter>      </parameters>      <parallel>N</parallel>
+      <run_configuration />
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+        <parameter>
+          <name>fichier_requete</name>
+          <stream_name />
+          <value>${Internal.Entry.Current.Directory}/notif_fin/requete_fin_indispo.csv</value>
+        </parameter>
+      </parameters>
+      <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>675</xloc>
+      <xloc>615</xloc>
       <yloc>30</yloc>
-      </entry>
+    </entry>
     <entry>
       <name>inserer_notif_fin_indispo</name>
-      <description/>
+      <description />
       <type>JOB</type>
       <specification_method>filename</specification_method>
-      <job_object_id/>
-      <filename>&#x24;&#x7b;Internal.Entry.Current.Directory&#x7d;&#x2f;notif_fin&#x2f;inserer_notif_fin_indispo.kjb</filename>
-      <jobname/>
+      <job_object_id />
+      <filename>${Internal.Entry.Current.Directory}/notif_fin/inserer_notif_fin_indispo.kjb</filename>
+      <jobname />
       <arg_from_previous>Y</arg_from_previous>
       <params_from_previous>Y</params_from_previous>
       <exec_per_row>Y</exec_per_row>
       <set_logfile>N</set_logfile>
-      <logfile/>
-      <logext/>
+      <logfile />
+      <logext />
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Nothing</loglevel>
-      <slave_server_name/>
+      <slave_server_name />
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <expand_remote_job>N</expand_remote_job>
       <create_parent_folder>N</create_parent_folder>
       <pass_export>N</pass_export>
-      <force_separate_logging>N</force_separate_logging>
-      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
-            <parameter>            <name>destinataire_email</name>
-            <stream_name>destinataire_email</stream_name>
-            <value/>
-            </parameter>            <parameter>            <name>destinataire</name>
-            <stream_name>destinataire</stream_name>
-            <value/>
-            </parameter>            <parameter>            <name>xml</name>
-            <stream_name>xml</stream_name>
-            <value/>
-            </parameter>      </parameters>      <set_append_logfile>N</set_append_logfile>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+        <parameter>
+          <name>destinataire_email</name>
+          <stream_name>destinataire_email</stream_name>
+          <value />
+        </parameter>
+        <parameter>
+          <name>destinataire</name>
+          <stream_name>destinataire</stream_name>
+          <value />
+        </parameter>
+        <parameter>
+          <name>xml</name>
+          <stream_name>xml</stream_name>
+          <value />
+        </parameter>
+      </parameters>
+      <set_append_logfile>N</set_append_logfile>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1020</xloc>
+      <xloc>960</xloc>
       <yloc>30</yloc>
-      </entry>
+    </entry>
     <entry>
       <name>verification_notif_debut</name>
-      <description/>
+      <description />
       <type>EVAL_TABLE_CONTENT</type>
-      <connection>Remocra &#x28;Postgis&#x29;</connection>
-      <schemaname/>
-      <tablename/>
+      <connection>Remocra (Postgis)</connection>
+      <schemaname />
+      <tablename />
       <success_condition>rows_count_greater</success_condition>
       <limit>0</limit>
       <is_custom_sql>Y</is_custom_sql>
       <is_usevars>Y</is_usevars>
-      <custom_sql>SELECT DISTINCT&#xd;&#xa;	h.id AS hydrant&#xd;&#xa;FROM&#xd;&#xa;	remocra.hydrant_indispo_temporaire it&#xd;&#xa;	INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id &#x3d; it.statut AND tis.CODE &#x3d; &#x27;PLANIFIE&#x27;&#xd;&#xa;	INNER JOIN remocra.hydrant_indispo_temporaire_hydrant hith ON hith.indisponibilite &#x3d; it.id&#xd;&#xa;	INNER JOIN remocra.hydrant h ON h.id &#x3d; hith.hydrant&#xd;&#xa;WHERE&#xd;&#xa;	date_rappel_debut IS NULL&#xd;&#xa;	AND mel_avant_indispo&#xd;&#xa;	AND &#x28;EXTRACT&#x28;epoch FROM date_debut - current_timestamp&#x29;&#x2f;3600&#x29; BETWEEN 0 AND &#x24;&#x7b;PDI_DELTA_NOTIF_INDISPO_DEBUT&#x7d;</custom_sql>
+      <custom_sql>SELECT DISTINCT
+	h.id AS hydrant
+FROM
+	remocra.hydrant_indispo_temporaire it
+	INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id = it.statut AND tis.CODE = 'PLANIFIE'
+	INNER JOIN remocra.hydrant_indispo_temporaire_hydrant hith ON hith.indisponibilite = it.id
+	INNER JOIN remocra.hydrant h ON h.id = hith.hydrant
+WHERE
+	date_rappel_debut IS NULL
+	AND mel_avant_indispo
+	AND (EXTRACT(epoch FROM date_debut - current_timestamp)/3600) BETWEEN 0 AND ${PDI_DELTA_NOTIF_INDISPO_DEBUT}</custom_sql>
       <add_rows_result>Y</add_rows_result>
       <clear_result_rows>Y</clear_result_rows>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>480</xloc>
+      <xloc>420</xloc>
       <yloc>165</yloc>
-      </entry>
+    </entry>
     <entry>
       <name>mise_a_jour_debut_indispo_notifie</name>
-      <description/>
+      <description />
       <type>SQL</type>
-      <sql>UPDATE remocra.hydrant_indispo_temporaire&#xa;SET date_rappel_debut &#x3d; current_timestamp&#xa;WHERE id IN &#xa;	&#x28;&#xa;		SELECT DISTINCT it.id&#xa;		FROM remocra.hydrant_indispo_temporaire it&#xa;		INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id &#x3d; it.statut AND tis.CODE &#x3d; &#x27;PLANIFIE&#x27;&#xa;		WHERE date_rappel_debut IS NULL AND&#xa;			mel_avant_indispo AND&#xa;			date_debut &#x3e;&#x3d; current_timestamp AND&#xa;			date_debut &#x3c;&#x3d; current_timestamp &#x2b; interval &#x27;&#x24;&#x7b;PDI_DELTA_NOTIF_INDISPO_DEBUT&#x7d; hour&#x27;&#xa;	&#x29;</sql>
+      <sql>UPDATE remocra.hydrant_indispo_temporaire
+SET date_rappel_debut = current_timestamp
+WHERE id IN 
+	(
+		SELECT DISTINCT it.id
+		FROM remocra.hydrant_indispo_temporaire it
+		INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id = it.statut AND tis.CODE = 'PLANIFIE'
+		WHERE date_rappel_debut IS NULL AND
+			mel_avant_indispo AND
+			date_debut >= current_timestamp AND
+			date_debut &lt;= current_timestamp + interval '${PDI_DELTA_NOTIF_INDISPO_DEBUT} hour'
+	)</sql>
       <useVariableSubstitution>T</useVariableSubstitution>
       <sqlfromfile>F</sqlfromfile>
-      <sqlfilename/>
+      <sqlfilename />
       <sendOneStatement>T</sendOneStatement>
-      <connection>Remocra &#x28;Postgis&#x29;</connection>
+      <connection>Remocra (Postgis)</connection>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>675</xloc>
+      <xloc>615</xloc>
       <yloc>540</yloc>
-      </entry>
+    </entry>
     <entry>
       <name>verification_notif_fin</name>
-      <description/>
+      <description />
       <type>EVAL_TABLE_CONTENT</type>
-      <connection>Remocra &#x28;Postgis&#x29;</connection>
-      <schemaname/>
-      <tablename/>
+      <connection>Remocra (Postgis)</connection>
+      <schemaname />
+      <tablename />
       <success_condition>rows_count_greater</success_condition>
       <limit>0</limit>
       <is_custom_sql>Y</is_custom_sql>
       <is_usevars>Y</is_usevars>
-      <custom_sql>SELECT DISTINCT&#xd;&#xa;	h.id AS hydrant&#xd;&#xa;FROM&#xd;&#xa;	remocra.hydrant_indispo_temporaire it&#xd;&#xa;	INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id &#x3d; it.statut AND tis.CODE &#x3d; &#x27;EN_COURS&#x27;&#xd;&#xa;	INNER JOIN remocra.hydrant_indispo_temporaire_hydrant hith ON hith.indisponibilite &#x3d; it.id&#xd;&#xa;	INNER JOIN remocra.hydrant h ON h.id &#x3d; hith.hydrant&#xd;&#xa;WHERE&#xd;&#xa;	date_rappel_fin IS NULL&#xd;&#xa;	AND mel_avant_dispo&#xd;&#xa;	AND &#x28;EXTRACT&#x28;epoch FROM date_fin - current_timestamp&#x29;&#x2f;3600&#x29; BETWEEN 0 AND &#x24;&#x7b;PDI_DELTA_NOTIF_INDISPO_FIN&#x7d;</custom_sql>
+      <custom_sql>SELECT DISTINCT
+	h.id AS hydrant
+FROM
+	remocra.hydrant_indispo_temporaire it
+	INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id = it.statut AND tis.CODE = 'EN_COURS'
+	INNER JOIN remocra.hydrant_indispo_temporaire_hydrant hith ON hith.indisponibilite = it.id
+	INNER JOIN remocra.hydrant h ON h.id = hith.hydrant
+WHERE
+	date_rappel_fin IS NULL
+	AND mel_avant_dispo
+	AND (EXTRACT(epoch FROM date_fin - current_timestamp)/3600) BETWEEN 0 AND ${PDI_DELTA_NOTIF_INDISPO_FIN}</custom_sql>
       <add_rows_result>Y</add_rows_result>
       <clear_result_rows>Y</clear_result_rows>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>675</xloc>
+      <xloc>615</xloc>
       <yloc>165</yloc>
-      </entry>
+    </entry>
     <entry>
       <name>mise_a_jour_fin_indispo_notifie</name>
-      <description/>
+      <description />
       <type>SQL</type>
-      <sql>UPDATE remocra.hydrant_indispo_temporaire&#xa;SET date_rappel_fin &#x3d; current_timestamp&#xa;WHERE id IN &#xa;	&#x28;&#xa;		SELECT DISTINCT it.id&#xa;		FROM remocra.hydrant_indispo_temporaire it&#xa;		INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id &#x3d; it.statut AND tis.CODE &#x3d; &#x27;EN_COURS&#x27;&#xa;		WHERE date_rappel_fin IS NULL AND&#xa;			mel_avant_dispo AND&#xa;			date_fin &#x3e;&#x3d; current_timestamp AND&#xa;			date_fin &#x3e;&#x3d; current_timestamp - interval &#x27;&#x24;&#x7b;PDI_DELTA_NOTIF_INDISPO_FIN&#x7d; hour&#x27;&#xa;	&#x29;</sql>
+      <sql>UPDATE remocra.hydrant_indispo_temporaire
+SET date_rappel_fin = current_timestamp
+WHERE id IN 
+	(
+		SELECT DISTINCT it.id
+		FROM remocra.hydrant_indispo_temporaire it
+		INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id = it.statut AND tis.CODE = 'EN_COURS'
+		WHERE date_rappel_fin IS NULL AND
+			mel_avant_dispo AND
+			date_fin >= current_timestamp AND
+			date_fin >= current_timestamp - interval '${PDI_DELTA_NOTIF_INDISPO_FIN} hour'
+	)</sql>
       <useVariableSubstitution>T</useVariableSubstitution>
       <sqlfromfile>F</sqlfromfile>
-      <sqlfilename/>
+      <sqlfilename />
       <sendOneStatement>F</sendOneStatement>
-      <connection>Remocra &#x28;Postgis&#x29;</connection>
+      <connection>Remocra (Postgis)</connection>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1200</xloc>
+      <xloc>1140</xloc>
       <yloc>30</yloc>
-      </entry>
+    </entry>
     <entry>
       <name>recuperer_liste_destinataire</name>
-      <description/>
+      <description />
       <type>TRANS</type>
       <specification_method>filename</specification_method>
-      <trans_object_id/>
-      <filename>&#x24;&#x7b;Internal.Entry.Current.Directory&#x7d;&#x2f;commun&#x2f;recuperer_liste_destinataire.ktr</filename>
-      <transname/>
+      <trans_object_id />
+      <filename>${Internal.Entry.Current.Directory}/commun/recuperer_liste_destinataire.ktr</filename>
+      <transname />
       <arg_from_previous>Y</arg_from_previous>
       <params_from_previous>Y</params_from_previous>
       <exec_per_row>N</exec_per_row>
       <clear_rows>N</clear_rows>
       <clear_files>N</clear_files>
       <set_logfile>N</set_logfile>
-      <logfile/>
-      <logext/>
+      <logfile />
+      <logext />
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Basic</loglevel>
       <cluster>N</cluster>
-      <slave_server_name/>
+      <slave_server_name />
       <set_append_logfile>N</set_append_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <create_parent_folder>N</create_parent_folder>
       <logging_remote_work>N</logging_remote_work>
-      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
-      </parameters>      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>480</xloc>
-      <yloc>405</yloc>
-      </entry>
-    <entry>
-      <name>recuperer_liste_destinataire 2</name>
-      <description/>
-      <type>TRANS</type>
-      <specification_method>filename</specification_method>
-      <trans_object_id/>
-      <filename>&#x24;&#x7b;Internal.Entry.Current.Directory&#x7d;&#x2f;commun&#x2f;recuperer_liste_destinataire.ktr</filename>
-      <transname/>
-      <arg_from_previous>Y</arg_from_previous>
-      <params_from_previous>Y</params_from_previous>
-      <exec_per_row>N</exec_per_row>
-      <clear_rows>N</clear_rows>
-      <clear_files>N</clear_files>
-      <set_logfile>N</set_logfile>
-      <logfile/>
-      <logext/>
-      <add_date>N</add_date>
-      <add_time>N</add_time>
-      <loglevel>Basic</loglevel>
-      <cluster>N</cluster>
-      <slave_server_name/>
-      <set_append_logfile>N</set_append_logfile>
-      <wait_until_finished>Y</wait_until_finished>
-      <follow_abort_remote>N</follow_abort_remote>
-      <create_parent_folder>N</create_parent_folder>
-      <logging_remote_work>N</logging_remote_work>
-      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
-      </parameters>      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>855</xloc>
-      <yloc>30</yloc>
-      </entry>
-    <entry>
-      <name>Bascule auto</name>
-      <description/>
-      <type>SQL</type>
-      <sql>&#x2f;&#x2a;&#x2a;&#x2a; Insertion de l&#x27;anomalies INDISPONIBILITE_TEMP pour les PEI concern&#xe9;s par une bascule auto &#x2a;&#x2a;&#x2a;&#x2a;&#x2f;&#xa;INSERT INTO remocra.hydrant_anomalies &#x28;hydrant, anomalies&#x29;&#xa;SELECT DISTINCT h.id AS hydrant, tha.id AS anomalies&#xa;FROM remocra.hydrant_indispo_temporaire it&#xa;	INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id &#x3d; it.statut AND tis.CODE &#x3d; &#x27;PLANIFIE&#x27;&#xa;	INNER JOIN remocra.hydrant_indispo_temporaire_hydrant hith ON hith.indisponibilite &#x3d; it.id&#xa;	INNER JOIN remocra.hydrant h ON h.id &#x3d; hith.hydrant&#xa;	LEFT JOIN &#x28;&#xa;		SELECT ha.hydrant &#xa;		FROM remocra.hydrant_anomalies ha &#xa;		JOIN remocra.type_hydrant_anomalie tha ON tha.id &#x3d; ha.anomalies AND tha.code &#x3d; &#x27;INDISPONIBILITE_TEMP&#x27;&#xa;	&#x29; indispo ON indispo.hydrant &#x3d; h.id&#xa;	JOIN remocra.type_hydrant_anomalie tha ON 1&#x3d;1 AND tha.code &#x3d; &#x27;INDISPONIBILITE_TEMP&#x27;&#xa;WHERE it.bascule_auto_indispo AND&#xa;	indispo.hydrant IS NULL AND&#xa;	it.date_debut &#x3c;&#x3d; current_timestamp&#x3b;&#xa;&#xa;&#x2f;&#x2a;&#x2a;&#x2a; Bascule de l&#x27;indispo temporaire &#xe0; en cours &#x2a;&#x2a;&#x2a;&#x2a;&#x2f;&#xa;UPDATE remocra.hydrant_indispo_temporaire&#xa;SET statut &#x3d; &#x28;SELECT id FROM remocra.type_hydrant_indispo_statut WHERE code &#x3d; &#x27;EN_COURS&#x27;&#x29;&#xa;WHERE id IN &#x28;&#xa;	SELECT DISTINCT it.id&#xa;	FROM remocra.hydrant_indispo_temporaire it&#xa;		INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id &#x3d; it.statut AND tis.CODE &#x3d; &#x27;PLANIFIE&#x27;&#xa;	WHERE it.bascule_auto_indispo AND&#xa;		it.date_debut &#x3c;&#x3d; current_timestamp&#xa;&#x29;&#x3b;&#xa;&#xa;&#x2f;&#x2a;&#x2a;&#x2a; Suppression de l&#x27;anomalies INDISPONIBILITE_TEMP pour les PEI concern&#xe9;s par une bascule auto &#x2a;&#x2a;&#x2a;&#x2a;&#x2f;&#xa;DELETE FROM remocra.hydrant_anomalies&#xa;WHERE hydrant IN &#x28;&#xa;	SELECT DISTINCT h.id AS hydrant&#xa;	FROM remocra.hydrant_indispo_temporaire it&#xa;		INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id &#x3d; it.statut AND tis.code &#x3d; &#x27;EN_COURS&#x27;&#xa;		INNER JOIN remocra.hydrant_indispo_temporaire_hydrant hith ON hith.indisponibilite &#x3d; it.id&#xa;		INNER JOIN remocra.hydrant h ON h.id &#x3d; hith.hydrant&#xa;		LEFT JOIN &#x28;&#xa;			SELECT h.id AS hydrant, COUNT&#x28;it.id&#x29; as nb_indispo&#xa;			FROM remocra.hydrant h&#xa;				JOIN remocra.hydrant_indispo_temporaire_hydrant ith ON ith.hydrant &#x3d; h.id&#xa;				JOIN remocra.hydrant_indispo_temporaire it ON it.id &#x3d; ith.indisponibilite&#xa;				JOIN remocra.type_hydrant_indispo_statut tis ON tis.id &#x3d; it.statut AND tis.code &#x3d; &#x27;EN_COURS&#x27;&#xa;			WHERE it.date_debut &#x3c;&#x3d; current_timestamp AND&#xa;				it.date_fin &#x3e; current_timestamp&#xa;			GROUP BY h.id&#xa;		&#x29; AS count_indispo ON count_indispo.hydrant &#x3d; h.id&#xa;	WHERE it.bascule_auto_dispo AND&#xa;		date_fin &#x3c;&#x3d; current_timestamp AND &#xa;		count_indispo.nb_indispo IS NULL&#xa;	&#x29; AND&#xa;	anomalies &#x3d; &#x28;SELECT id FROM remocra.type_hydrant_anomalie WHERE code &#x3d; &#x27;INDISPONIBILITE_TEMP&#x27;&#x29;&#x3b;&#xa;&#xa;&#x2f;&#x2a;&#x2a;&#x2a; Bascule de l&#x27;indispo temporaire &#xe0; termin&#xe9;e &#x2a;&#x2a;&#x2a;&#x2a;&#x2f;&#xa;UPDATE remocra.hydrant_indispo_temporaire&#xa;SET statut &#x3d; &#x28;SELECT id FROM remocra.type_hydrant_indispo_statut WHERE code &#x3d; &#x27;TERMINE&#x27;&#x29;&#xa;WHERE id IN &#x28;&#xa;	SELECT DISTINCT it.id&#xa;	FROM remocra.hydrant_indispo_temporaire it&#xa;		INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id &#x3d; it.statut AND tis.code &#x3d; &#x27;EN_COURS&#x27;&#xa;	WHERE it.bascule_auto_dispo AND&#xa;		it.date_fin &#x3c;&#x3d; current_timestamp&#xa;&#x29;&#x3b;</sql>
-      <useVariableSubstitution>F</useVariableSubstitution>
-      <sqlfromfile>F</sqlfromfile>
-      <sqlfilename/>
-      <sendOneStatement>T</sendOneStatement>
-      <connection>Remocra &#x28;Postgis&#x29;</connection>
+      <run_configuration />
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1200</xloc>
+      <xloc>420</xloc>
+      <yloc>405</yloc>
+    </entry>
+    <entry>
+      <name>recuperer_liste_destinataire 2</name>
+      <description />
+      <type>TRANS</type>
+      <specification_method>filename</specification_method>
+      <trans_object_id />
+      <filename>${Internal.Entry.Current.Directory}/commun/recuperer_liste_destinataire.ktr</filename>
+      <transname />
+      <arg_from_previous>Y</arg_from_previous>
+      <params_from_previous>Y</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile />
+      <logext />
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <cluster>N</cluster>
+      <slave_server_name />
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <logging_remote_work>N</logging_remote_work>
+      <run_configuration />
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>795</xloc>
+      <yloc>30</yloc>
+    </entry>
+    <entry>
+      <name>Bascule auto</name>
+      <description />
+      <type>SQL</type>
+      <sql>/*** Insertion de l'anomalies INDISPONIBILITE_TEMP pour les PEI concernés par une bascule auto ****/
+INSERT INTO remocra.hydrant_anomalies (hydrant, anomalies)
+SELECT DISTINCT h.id AS hydrant, tha.id AS anomalies
+FROM remocra.hydrant_indispo_temporaire it
+	INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id = it.statut AND tis.CODE = 'PLANIFIE'
+	INNER JOIN remocra.hydrant_indispo_temporaire_hydrant hith ON hith.indisponibilite = it.id
+	INNER JOIN remocra.hydrant h ON h.id = hith.hydrant
+	LEFT JOIN (
+		SELECT ha.hydrant 
+		FROM remocra.hydrant_anomalies ha 
+		JOIN remocra.type_hydrant_anomalie tha ON tha.id = ha.anomalies AND tha.code = 'INDISPONIBILITE_TEMP'
+	) indispo ON indispo.hydrant = h.id
+	JOIN remocra.type_hydrant_anomalie tha ON 1=1 AND tha.code = 'INDISPONIBILITE_TEMP'
+WHERE it.bascule_auto_indispo AND
+	indispo.hydrant IS NULL AND
+	it.date_debut &lt;= current_timestamp;
+
+/*** Bascule de l'indispo temporaire à en cours ****/
+UPDATE remocra.hydrant_indispo_temporaire
+SET statut = (SELECT id FROM remocra.type_hydrant_indispo_statut WHERE code = 'EN_COURS')
+WHERE id IN (
+	SELECT DISTINCT it.id
+	FROM remocra.hydrant_indispo_temporaire it
+		INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id = it.statut AND tis.CODE = 'PLANIFIE'
+	WHERE it.bascule_auto_indispo AND
+		it.date_debut &lt;= current_timestamp
+);
+
+/*** Suppression de l'anomalies INDISPONIBILITE_TEMP pour les PEI concernés par une bascule auto ****/
+DELETE FROM remocra.hydrant_anomalies
+WHERE hydrant IN (
+	SELECT DISTINCT h.id AS hydrant
+	FROM remocra.hydrant_indispo_temporaire it
+		INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id = it.statut AND tis.code = 'EN_COURS'
+		INNER JOIN remocra.hydrant_indispo_temporaire_hydrant hith ON hith.indisponibilite = it.id
+		INNER JOIN remocra.hydrant h ON h.id = hith.hydrant
+		LEFT JOIN (
+			SELECT h.id AS hydrant, COUNT(it.id) as nb_indispo
+			FROM remocra.hydrant h
+				JOIN remocra.hydrant_indispo_temporaire_hydrant ith ON ith.hydrant = h.id
+				JOIN remocra.hydrant_indispo_temporaire it ON it.id = ith.indisponibilite
+				JOIN remocra.type_hydrant_indispo_statut tis ON tis.id = it.statut AND tis.code = 'EN_COURS'
+			WHERE it.date_debut &lt;= current_timestamp AND
+				it.date_fin > current_timestamp
+			GROUP BY h.id
+		) AS count_indispo ON count_indispo.hydrant = h.id
+	WHERE it.bascule_auto_dispo AND
+		date_fin &lt;= current_timestamp AND 
+		count_indispo.nb_indispo IS NULL
+	) AND
+	anomalies = (SELECT id FROM remocra.type_hydrant_anomalie WHERE code = 'INDISPONIBILITE_TEMP');</sql>
+      <useVariableSubstitution>F</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename />
+      <sendOneStatement>T</sendOneStatement>
+      <connection>Remocra (Postgis)</connection>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>1140</xloc>
       <yloc>165</yloc>
-      </entry>
+    </entry>
+    <entry>
+      <name>cloture auto</name>
+      <description />
+      <type>SQL</type>
+      <sql>/*** Bascule de l'indispo temporaire à terminée ****/
+UPDATE remocra.hydrant_indispo_temporaire
+SET statut = (SELECT id FROM remocra.type_hydrant_indispo_statut WHERE code = 'TERMINE')
+WHERE id IN (
+	SELECT DISTINCT it.id
+	FROM remocra.hydrant_indispo_temporaire it
+		INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id = it.statut AND tis.code = 'EN_COURS'
+	WHERE it.bascule_auto_dispo AND
+		it.date_fin &lt;= current_timestamp
+);</sql>
+      <useVariableSubstitution>F</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename />
+      <sendOneStatement>T</sendOneStatement>
+      <connection>Remocra (Postgis)</connection>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>1140</xloc>
+      <yloc>540</yloc>
+    </entry>
+    <entry>
+      <name>verification_pei_reste_indispo</name>
+      <description />
+      <type>EVAL_TABLE_CONTENT</type>
+      <connection>Remocra (Postgis)</connection>
+      <schemaname />
+      <tablename />
+      <success_condition>rows_count_greater</success_condition>
+      <limit>0</limit>
+      <is_custom_sql>Y</is_custom_sql>
+      <is_usevars>Y</is_usevars>
+      <custom_sql>WITH indispo_terminee AS (
+	SELECT DISTINCT it.id
+	FROM remocra.hydrant_indispo_temporaire it
+		INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id = it.statut AND tis.code = 'EN_COURS'
+	WHERE it.bascule_auto_dispo AND
+		it.date_fin &lt;= current_timestamp
+)
+SELECT DISTINCT h.id AS hydrant
+FROM remocra.hydrant h
+	INNER JOIN remocra.remocra.hydrant_indispo_temporaire_hydrant ith ON ith.hydrant = h.id
+	INNER JOIN remocra.hydrant_indispo_temporaire it ON it.id = ith.indisponibilite
+	INNER JOIN indispo_terminee ON indispo_terminee.id = it.id
+WHERE h.dispo_terrestre = 'INDISPO'</custom_sql>
+      <add_rows_result>Y</add_rows_result>
+      <clear_result_rows>Y</clear_result_rows>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>1140</xloc>
+      <yloc>300</yloc>
+    </entry>
+    <entry>
+      <name>creer_requete_utilisateur 3</name>
+      <description />
+      <type>TRANS</type>
+      <specification_method>filename</specification_method>
+      <trans_object_id />
+      <filename>${Internal.Entry.Current.Directory}/commun/creer_requete_utilisateur.ktr</filename>
+      <transname />
+      <arg_from_previous>Y</arg_from_previous>
+      <params_from_previous>Y</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile />
+      <logext />
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <cluster>N</cluster>
+      <slave_server_name />
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <logging_remote_work>N</logging_remote_work>
+      <run_configuration>Pentaho local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+        <parameter>
+          <name>fichier_requete</name>
+          <stream_name />
+          <value>${Internal.Entry.Current.Directory}/notif_pei_reste_indispo/requete_pei_reste_indispo.csv</value>
+        </parameter>
+      </parameters>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>1365</xloc>
+      <yloc>300</yloc>
+    </entry>
+    <entry>
+      <name>recuperer_liste_destinataire 3</name>
+      <description />
+      <type>TRANS</type>
+      <specification_method>filename</specification_method>
+      <trans_object_id />
+      <filename>${Internal.Entry.Current.Directory}/commun/recuperer_liste_destinataire.ktr</filename>
+      <transname />
+      <arg_from_previous>Y</arg_from_previous>
+      <params_from_previous>Y</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile />
+      <logext />
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <cluster>N</cluster>
+      <slave_server_name />
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <logging_remote_work>N</logging_remote_work>
+      <run_configuration>Pentaho local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>1365</xloc>
+      <yloc>420</yloc>
+    </entry>
+    <entry>
+      <name>inserer_notif_pei_reste_indispo.kjb</name>
+      <description />
+      <type>JOB</type>
+      <specification_method>filename</specification_method>
+      <job_object_id />
+      <filename>/media/roger/DATA/repo/sdis-remocra/server/sdis-remocra/var/remocra/modeles/processus_etl/commun/maintenance/indisponibilite_temporaire/notif_pei_reste_indispo/inserer_notif_pei_reste_indispo.kjb</filename>
+      <jobname />
+      <arg_from_previous>N</arg_from_previous>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>Y</exec_per_row>
+      <set_logfile>N</set_logfile>
+      <logfile />
+      <logext />
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Nothing</loglevel>
+      <slave_server_name />
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <expand_remote_job>N</expand_remote_job>
+      <create_parent_folder>N</create_parent_folder>
+      <pass_export>N</pass_export>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+        <parameter>
+          <name>destinataire_email</name>
+          <stream_name>destinataire_email</stream_name>
+          <value />
+        </parameter>
+        <parameter>
+          <name>destinataire</name>
+          <stream_name>destinataire</stream_name>
+          <value />
+        </parameter>
+        <parameter>
+          <name>xml</name>
+          <stream_name>xml</stream_name>
+          <value />
+        </parameter>
+      </parameters>
+      <set_append_logfile>N</set_append_logfile>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>1365</xloc>
+      <yloc>540</yloc>
+    </entry>
   </entries>
   <hops>
     <hop>
@@ -608,19 +1142,120 @@
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>Bascule auto</from>
+      <to>verification_pei_reste_indispo</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
       <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>verification_pei_reste_indispo</from>
+      <to>cloture auto</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>verification_pei_reste_indispo</from>
+      <to>creer_requete_utilisateur 3</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>creer_requete_utilisateur 3</from>
+      <to>recuperer_liste_destinataire 3</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>recuperer_liste_destinataire 3</from>
+      <to>inserer_notif_pei_reste_indispo.kjb</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>inserer_notif_pei_reste_indispo.kjb</from>
+      <to>cloture auto</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>creer_requete_utilisateur 3</from>
+      <to>cloture auto</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>recuperer_liste_destinataire 3</from>
+      <to>cloture auto</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>creer_requete_utilisateur 2</from>
+      <to>Bascule auto</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>recuperer_liste_destinataire 2</from>
+      <to>Bascule auto</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>inserer_notif_fin_indispo</from>
+      <to>Bascule auto</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
       <unconditional>N</unconditional>
     </hop>
   </hops>
   <notepads>
     <notepad>
-      <note>Si il y a des notifications de d&#xe9;but d&#x27;indisponibilit&#xe9;, &#xa;	on r&#xe9;cup&#xe8;re les destinataires et on g&#xe9;n&#xe8;re les mail.&#xa;Sinon on passe au fin d&#x27;indisponibilit&#xe9;.</note>
-      <xloc>210</xloc>
+      <note>Si il y a des notifications de début d'indisponibilité, 
+	on récupère les destinataires et on génère les mail.
+Sinon on passe au fin d'indisponibilité directement.</note>
+      <xloc>150</xloc>
       <yloc>75</yloc>
       <width>338</width>
       <heigth>58</heigth>
-      <fontname/>
-      <fontsize>-1</fontsize>
+      <fontname>Arial</fontname>
+      <fontsize>10</fontsize>
       <fontbold>N</fontbold>
       <fontitalic>N</fontitalic>
       <fontcolorred>0</fontcolorred>
@@ -635,12 +1270,38 @@
       <drawshadow>Y</drawshadow>
     </notepad>
     <notepad>
-      <note>Si il y a des notifications de fin d&#x27;indisponibilit&#xe9;, &#xa;	on r&#xe9;cup&#xe8;re les destinataires et on g&#xe9;n&#xe8;re les mail.&#xa;Sinon fin du job</note>
-      <xloc>810</xloc>
+      <note>Si il y a des notifications de fin d'indisponibilité, 
+	on récupère les destinataires et on génère les mail.
+Sinon on passe à l'enclenchement/levé de l'indispo auto et
+	aux PEI restés indisponible après cette levée auto.</note>
+      <xloc>750</xloc>
       <yloc>195</yloc>
-      <width>338</width>
+      <width>350</width>
+      <heigth>74</heigth>
+      <fontname>Arial</fontname>
+      <fontsize>10</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>255</backgroundcolorred>
+      <backgroundcolorgreen>205</backgroundcolorgreen>
+      <backgroundcolorblue>112</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
+    <notepad>
+      <note>Si des PEI sont restés indispo après la levé de l'anomalie,
+	on récupère les destinataires et on génère les mails.
+Sinon on cloture l'indispo temporaire directement</note>
+      <xloc>780</xloc>
+      <yloc>405</yloc>
+      <width>349</width>
       <heigth>58</heigth>
-      <fontname/>
+      <fontname />
       <fontsize>-1</fontsize>
       <fontbold>N</fontbold>
       <fontitalic>N</fontitalic>
@@ -656,12 +1317,20 @@
       <drawshadow>Y</drawshadow>
     </notepad>
   </notepads>
-<attributes><group><name>METASTORE.pentaho</name>
-<attribute><key>Default Run Configuration</key>
-<value>&#x7b;&#x22;namespace&#x22;&#x3a;&#x22;pentaho&#x22;,&#x22;id&#x22;&#x3a;&#x22;Default Run Configuration&#x22;,&#x22;name&#x22;&#x3a;&#x22;Default Run Configuration&#x22;,&#x22;description&#x22;&#x3a;&#x22;Defines a default run configuration&#x22;,&#x22;metaStoreName&#x22;&#x3a;null&#x7d;</value>
-</attribute></group><group><name>&#x7b;&#x22;_&#x22;&#x3a;&#x22;Embedded MetaStore Elements&#x22;,&#x22;namespace&#x22;&#x3a;&#x22;pentaho&#x22;,&#x22;type&#x22;&#x3a;&#x22;Default Run Configuration&#x22;&#x7d;</name>
-<attribute><key>Pentaho local</key>
-<value>&#x7b;&#x22;children&#x22;&#x3a;&#x5b;&#x7b;&#x22;children&#x22;&#x3a;&#x5b;&#x5d;,&#x22;id&#x22;&#x3a;&#x22;server&#x22;,&#x22;value&#x22;&#x3a;null&#x7d;,&#x7b;&#x22;children&#x22;&#x3a;&#x5b;&#x5d;,&#x22;id&#x22;&#x3a;&#x22;clustered&#x22;,&#x22;value&#x22;&#x3a;&#x22;N&#x22;&#x7d;,&#x7b;&#x22;children&#x22;&#x3a;&#x5b;&#x5d;,&#x22;id&#x22;&#x3a;&#x22;name&#x22;,&#x22;value&#x22;&#x3a;&#x22;Pentaho local&#x22;&#x7d;,&#x7b;&#x22;children&#x22;&#x3a;&#x5b;&#x5d;,&#x22;id&#x22;&#x3a;&#x22;description&#x22;,&#x22;value&#x22;&#x3a;null&#x7d;,&#x7b;&#x22;children&#x22;&#x3a;&#x5b;&#x5d;,&#x22;id&#x22;&#x3a;&#x22;readOnly&#x22;,&#x22;value&#x22;&#x3a;&#x22;Y&#x22;&#x7d;,&#x7b;&#x22;children&#x22;&#x3a;&#x5b;&#x5d;,&#x22;id&#x22;&#x3a;&#x22;sendResources&#x22;,&#x22;value&#x22;&#x3a;&#x22;N&#x22;&#x7d;,&#x7b;&#x22;children&#x22;&#x3a;&#x5b;&#x5d;,&#x22;id&#x22;&#x3a;&#x22;logRemoteExecutionLocally&#x22;,&#x22;value&#x22;&#x3a;&#x22;N&#x22;&#x7d;,&#x7b;&#x22;children&#x22;&#x3a;&#x5b;&#x5d;,&#x22;id&#x22;&#x3a;&#x22;remote&#x22;,&#x22;value&#x22;&#x3a;&#x22;N&#x22;&#x7d;,&#x7b;&#x22;children&#x22;&#x3a;&#x5b;&#x5d;,&#x22;id&#x22;&#x3a;&#x22;local&#x22;,&#x22;value&#x22;&#x3a;&#x22;Y&#x22;&#x7d;,&#x7b;&#x22;children&#x22;&#x3a;&#x5b;&#x5d;,&#x22;id&#x22;&#x3a;&#x22;showTransformations&#x22;,&#x22;value&#x22;&#x3a;&#x22;N&#x22;&#x7d;&#x5d;,&#x22;id&#x22;&#x3a;&#x22;Pentaho local&#x22;,&#x22;value&#x22;&#x3a;null,&#x22;name&#x22;&#x3a;&#x22;Pentaho local&#x22;,&#x22;owner&#x22;&#x3a;null,&#x22;ownerPermissionsList&#x22;&#x3a;&#x5b;&#x5d;&#x7d;</value>
-</attribute></group></attributes>
-
+  <attributes>
+    <group>
+      <name>METASTORE.pentaho</name>
+      <attribute>
+        <key>Default Run Configuration</key>
+        <value>{"namespace":"pentaho","id":"Default Run Configuration","name":"Default Run Configuration","description":"Defines a default run configuration","metaStoreName":null}</value>
+      </attribute>
+    </group>
+    <group>
+      <name>{"_":"Embedded MetaStore Elements","namespace":"pentaho","type":"Default Run Configuration"}</name>
+      <attribute>
+        <key>Pentaho local</key>
+        <value>{"children":[{"children":[],"id":"server","value":null},{"children":[],"id":"clustered","value":"N"},{"children":[],"id":"name","value":"Pentaho local"},{"children":[],"id":"description","value":null},{"children":[],"id":"readOnly","value":"Y"},{"children":[],"id":"sendResources","value":"N"},{"children":[],"id":"logRemoteExecutionLocally","value":"N"},{"children":[],"id":"remote","value":"N"},{"children":[],"id":"local","value":"Y"},{"children":[],"id":"showTransformations","value":"N"}],"id":"Pentaho local","value":null,"name":"Pentaho local","owner":null,"ownerPermissionsList":[]}</value>
+      </attribute>
+    </group>
+  </attributes>
 </job>

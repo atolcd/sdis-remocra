@@ -1,0 +1,41 @@
+"sql"
+"WITH commune AS (
+	SELECT DISTINCT zc.geometrie
+	FROM remocra.zone_competence zc
+		INNER JOIN remocra.organisme o ON o.zone_competence = zc.id
+		INNER JOIN remocra.type_organisme tor ON tor.id = o.type_organisme AND tor.code = 'COMMUNE'
+		INNER JOIN remocra.hydrant h ON h.id IN ([HYDRANTS])
+			AND ST_Contains(zc.geometrie, h.geometrie)
+)
+SELECT DISTINCT u.prenom || ' ' || u.nom AS destinataire, u.email AS destinataire_email,
+	(SELECT CAST (xmlelement (name ""root"",
+		xmlelement(name ""indispos"",
+			xmlagg(
+				xmlelement(name ""pei"",
+					xmlelement(name ""numero"", peiIndispo.numero),
+					xmlelement(name ""commune"", peiIndispo.commune)
+				)
+			)
+		)
+	) AS text) AS xml
+	FROM (
+		SELECT DISTINCT h.numero, c.nom AS commune
+		FROM remocra.hydrant h
+			INNER JOIN remocra.remocra.hydrant_indispo_temporaire_hydrant ith ON ith.hydrant = h.id
+			INNER JOIN remocra.hydrant_indispo_temporaire it ON it.id = ith.indisponibilite
+			INNER JOIN (SELECT DISTINCT it.id
+				FROM remocra.hydrant_indispo_temporaire it
+					INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id = it.statut AND tis.code = 'EN_COURS'
+				WHERE it.bascule_auto_dispo AND
+					it.date_fin <= current_timestamp
+			) AS indispo_terminee ON indispo_terminee.id = it.id
+			INNER JOIN remocra.commune c ON c.id = h.commune
+		WHERE h.dispo_terrestre = 'INDISPO'
+	) AS peiIndispo) as xml
+FROM remocra.utilisateur u
+INNER JOIN remocra.profil_utilisateur pu ON pu.id = u.profil_utilisateur AND pu.code IN ([PROFIL_UTILISATEUR])
+INNER JOIN remocra.organisme o ON o.id = u.organisme
+INNER JOIN remocra.zone_competence zc ON zc.id = o.zone_competence
+INNER JOIN commune c ON ST_Contains(zc.geometrie, c.geometrie)
+WHERE u.email <> '' AND
+	u.message_remocra AND u.actif"
