@@ -1,6 +1,6 @@
 <template>
 <form v-on:submit.prevent>
-  <autocomplete :items="itemsFiltered" v-model="item" :get-label="getLabel" :component-item='template' @change="onValueChanged" @item-selected="onValueChanged" @update-items="updateItems" :auto-select-one-item="false" :min-len="0">
+  <autocomplete :items="itemsFiltered" :disabled="disabled" v-model="item" :get-label="getLabel" :component-item='template' @change="onValueChanged" @item-selected="onValueChanged" @update-items="updateItems" :auto-select-one-item="false" :min-len="0">
   </autocomplete>
 </form>
 </template>
@@ -38,6 +38,10 @@ export default {
     attr: {
       required: true,
       type: String
+    },
+    disabled: {
+      required: false,
+      type: Boolean
     }
   },
   mounted: function() {

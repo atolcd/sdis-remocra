@@ -45,7 +45,7 @@
       </b-form-group>
     </div>
     <div class="col-md-2">
-      <b-form-checkbox id="enFace" v-model="hydrant.enFace" class="parametre" size="sm"> Situé en face </b-form-checkbox>
+      <b-form-checkbox id="enFace" v-model="hydrant.enFace" class="parametre" size="sm" :disabled="modificationAdresseDisabled"> Situé en face </b-form-checkbox>
     </div>
     <div class="col-md-5">
       <b-form-group label="Niveau" label-for="niveau" label-cols-md="2">
@@ -56,12 +56,12 @@
   <div class="row">
     <div class="col-md-6">
       <b-form-group label="Voie" label-for="voie" invalid-feedback="La voie doit être renseignée" :state="etats.voie" label-cols-md="2" v-if="typeof hydrant.commune == 'number'">
-        <SearchVoie id="voie" :commune="hydrant.commune" :geometrie="geometrie" :defaultValue="hydrant.voie" @onVoieChange="onVoieChange" attr="voie" class="parametre autocomplete"></SearchVoie>
+        <SearchVoie id="voie" :commune="hydrant.commune" :geometrie="geometrie" :defaultValue="hydrant.voie" @onVoieChange="onVoieChange" :disabled="modificationAdresseDisabled" attr="voie" class="parametre autocomplete"></SearchVoie>
       </b-form-group>
     </div>
     <div class="col-md-6">
       <b-form-group label="Carrefour" label-for="voie2" label-cols-md="2" v-if="typeof hydrant.commune == 'number'">
-        <SearchVoie id="voie2" :commune="hydrant.commune" :geometrie="geometrie" :defaultValue="hydrant.voie2" @onVoieChange="onVoieChange" attr="voie2" class="parametre autocomplete"></SearchVoie>
+        <SearchVoie id="voie2" :commune="hydrant.commune" :geometrie="geometrie" :defaultValue="hydrant.voie2" @onVoieChange="onVoieChange" :disabled="modificationAdresseDisabled" attr="voie2" class="parametre autocomplete"></SearchVoie>
       </b-form-group>
     </div>
   </div>
