@@ -3,34 +3,34 @@
   <div class="title">Ressource</div>
   <div class="row">
     <div class="col-md-3 vertical-bottom">
-      <b-form-checkbox id="illimitee" v-model="hydrant.illimitee" :disabled="disableIllimitee" class="parametre" size="sm" v-on:change="onIllimiteeChecked"> Capacité illimitée </b-form-checkbox>
+      <b-form-checkbox id="illimitee" v-model="hydrant.illimitee" :disabled="disableIllimitee || modificationCaracteristiquesDisabled" class="parametre" size="sm" v-on:change="onIllimiteeChecked"> Capacité illimitée </b-form-checkbox>
     </div>
     <div class="col-md-3 vertical-bottom">
-      <b-form-checkbox id="incertaine" v-model="hydrant.incertaine" class="parametre" size="sm" :disabled="disableIncertaine" v-on:change="onIncertaineChecked"> Ressource incertaine </b-form-checkbox>
+      <b-form-checkbox id="incertaine" v-model="hydrant.incertaine" class="parametre" size="sm" :disabled="disableIncertaine || modificationCaracteristiquesDisabled" v-on:change="onIncertaineChecked"> Ressource incertaine </b-form-checkbox>
     </div>
     <div class="col-md-3 vertical-bottom">
       <b-form-group label="Capacité en m3" label-for="capacite" invalid-feedback="La capacité n'est pas valide" label-cols-sm="6" :state="etats.capacite">
-        <b-form-input id="capacite" v-model="hydrant.capacite" class="parametre" type="text" size="sm" :state="etats.capacite" :disabled="hydrant.illimitee"></b-form-input>
+        <b-form-input id="capacite" v-model="hydrant.capacite" class="parametre" type="text" size="sm" :state="etats.capacite" :disabled="hydrant.illimitee || modificationCaracteristiquesDisabled"></b-form-input>
       </b-form-group>
     </div>
     <div class="col-md-3">
       <b-form-group label="Q appoint en m3/h" label-for="QAppoint" invalid-feedback="Le débit d'appoint n'est pas valide" label-cols-sm="7" :state="etats.QAppoint">
-        <b-form-input id="QAppoint" v-model="hydrant.QAppoint" class="parametre" type="number" size="sm" step="any" :state="etats.QAppoint" :disabled="hydrant.illimitee"></b-form-input>
+        <b-form-input id="QAppoint" v-model="hydrant.QAppoint" class="parametre" type="number" size="sm" step="any" :state="etats.QAppoint" :disabled="hydrant.illimitee || modificationCaracteristiquesDisabled"></b-form-input>
       </b-form-group>
     </div>
   </div>
   <div class="row">
     <div class="col-md-6">
       <b-form-group label="Matériau de la citerne" label-for="materiau" label-cols-md="4">
-        <b-form-select id="materiau" v-model="hydrant.materiau" class="parametre" :options="comboMateriau" size="sm"></b-form-select>
+        <b-form-select id="materiau" v-model="hydrant.materiau" class="parametre" :options="comboMateriau" size="sm" :disabled="modificationCaracteristiquesDisabled"></b-form-select>
       </b-form-group>
     </div>
   </div>
   <div class="title">Aspiration</div>
   <div class="row">
     <div class="col-md-4">
-      <button class="btn btn-outline-primary" @click.prevent @click="createAspiration">Nouvelle aire</button>
-      <button class="btn btn-outline-danger btn-suppr" @click.prevent @click="deleteAspiration">Supprimer</button>
+      <button class="btn btn-outline-primary" @click.prevent @click="createAspiration" :disabled="modificationCaracteristiquesDisabled">Nouvelle aire</button>
+      <button class="btn btn-outline-danger btn-suppr" @click.prevent @click="deleteAspiration" :disabled="modificationCaracteristiquesDisabled">Supprimer</button>
     </div>
   </div>
   <div class="row">
@@ -49,25 +49,25 @@
           <tbody>
             <tr v-for="(item, index) in listeAspirations" :key="index" @click="onRowSelected(index)">
               <td>
-                <b-form-input v-model="item.numero" type="text" size="sm"></b-form-input>
+                <b-form-input v-model="item.numero" type="text" size="sm" :disabled="modificationCaracteristiquesDisabled"></b-form-input>
               </td>
               <td>
-                <b-form-checkbox v-model="item.normalise" size="sm"></b-form-checkbox>
+                <b-form-checkbox v-model="item.normalise" size="sm" :disabled="modificationCaracteristiquesDisabled"></b-form-checkbox>
               </td>
               <td>
-                <b-form-checkbox v-model="item.hauteur" size="sm" class="mx-auto"></b-form-checkbox>
+                <b-form-checkbox v-model="item.hauteur" size="sm" class="mx-auto" :disabled="modificationCaracteristiquesDisabled"></b-form-checkbox>
               </td>
               <td>
-                <b-form-select v-model="item.typeAspiration" :options="comboTypeAspiration" size="sm"></b-form-select>
+                <b-form-select v-model="item.typeAspiration" :options="comboTypeAspiration" size="sm" :disabled="modificationCaracteristiquesDisabled"></b-form-select>
               </td>
               <td>
-                <b-form-checkbox v-model="item.deporte" size="sm" v-on:change="onDeporteChecked($event, index)"></b-form-checkbox>
+                <b-form-checkbox v-model="item.deporte" size="sm" v-on:change="onDeporteChecked($event, index)" :disabled="modificationCaracteristiquesDisabled"></b-form-checkbox>
               </td>
               <td>
-                <b-form-input v-model="item.longitude" type="text" size="sm" pattern="[-+]?[0-9]*\.?[0-9]*" class="coordValidation" :id="'longitude-'+index"></b-form-input>
+                <b-form-input v-model="item.longitude" type="text" size="sm" pattern="[-+]?[0-9]*\.?[0-9]*" class="coordValidation" :id="'longitude-'+index" :disabled="modificationCaracteristiquesDisabled"></b-form-input>
               </td>
               <td>
-                <b-form-input v-model="item.latitude" type="text" size="sm" pattern="[-+]?[0-9]*\.?[0-9]*" class="coordValidation" :id="'latitude-'+index"></b-form-input>
+                <b-form-input v-model="item.latitude" type="text" size="sm" pattern="[-+]?[0-9]*\.?[0-9]*" class="coordValidation" :id="'latitude-'+index" :disabled="modificationCaracteristiquesDisabled"></b-form-input>
               </td>
             </tr>
           </tbody>
@@ -77,7 +77,7 @@
   </div>
   <div class="row">
     <div class="col-md-12">
-      <b-form-checkbox id="hbe" v-model="hydrant.hbe" class="parametre" size="sm"> Equipé HBE </b-form-checkbox>
+      <b-form-checkbox id="hbe" v-model="hydrant.hbe" class="parametre" size="sm" :disabled="modificationCaracteristiquesDisabled"> Equipé HBE </b-form-checkbox>
     </div>
   </div>
 </div>
@@ -113,8 +113,19 @@ export default {
     hydrantRecord: {
       required: true,
       type: Object
+    },
+    utilisateurDroits: {
+      required: true,
+      type: Array,
     }
   },
+
+  computed: {
+    modificationCaracteristiquesDisabled: function() {
+      return this.utilisateurDroits.indexOf('HYDRANTS_MCO_C') == -1
+    }
+  },
+
   mounted: function() {
     this.$emit('resolveForeignKey', ['materiau']);
     this.$emit('getComboData', this, 'comboMateriau', '/remocra/typehydrantmateriaus.json', null, 'id', 'nom');

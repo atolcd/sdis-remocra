@@ -65,10 +65,10 @@
           <b-tab>
             <template slot="title"> Caractéristiques techniques <b-badge pill variant="danger" v-if="tabWarning.caracteristiquesTechniques">!</b-badge>
             </template>
-            <FicheCaracteristiquesPibi :hydrant="hydrant" :hydrantRecord="hydrantRecord" :listeNaturesDeci="listeNaturesDeci" :geometrie="geometrie" @getComboData="getComboData" @resolveForeignKey="resolveForeignKey" ref="fichePibi"
+            <FicheCaracteristiquesPibi :hydrant="hydrant" :hydrantRecord="hydrantRecord" :listeNaturesDeci="listeNaturesDeci" :geometrie="geometrie" @getComboData="getComboData" @resolveForeignKey="resolveForeignKey" ref="fichePibi" :utilisateurDroits="utilisateurDroits"
               v-if="hydrant.code=='PIBI' && dataLoaded">
             </FicheCaracteristiquesPibi>
-            <FicheCaracteristiquesPena :hydrant="hydrant" :hydrantRecord="hydrantRecord" @getComboData="getComboData" @resolveForeignKey="resolveForeignKey" ref="fichePena" v-if="hydrant.code=='PENA' && dataLoaded">
+            <FicheCaracteristiquesPena :hydrant="hydrant" :hydrantRecord="hydrantRecord" @getComboData="getComboData" @resolveForeignKey="resolveForeignKey" :utilisateurDroits="utilisateurDroits" ref="fichePena" v-if="hydrant.code=='PENA' && dataLoaded">
             </FicheCaracteristiquesPena>
           </b-tab>
           <!-- ================================== Onglet Visites ==================================-->
