@@ -169,14 +169,10 @@ export default {
         this.hydrant.incertaine = false;
         this.hydrant.capacite = "";
         this.hydrant.QAppoint = null;
-        document.querySelectorAll('[for="capacite"]')[0].classList.add("labelDisabled");
-        document.querySelectorAll('[for="QAppoint"]')[0].classList.add("labelDisabled");
       } else {
         this.hydrant.incertaine = typeof(this.hydrantRecord.incertaine) !== 'undefined' ? this.hydrant.incertaine : false;
         this.hydrant.capacite = this.hydrantRecord.capacite;
         this.hydrant.QAppoint = this.hydrantRecord.QAppoint;
-        document.querySelectorAll('[for="capacite"]')[0].classList.remove("labelDisabled");
-        document.querySelectorAll('[for="QAppoint"]')[0].classList.remove("labelDisabled");
       }
       this.disableIncertaine = value
     },
@@ -267,10 +263,6 @@ export default {
 .vertical-bottom {
   display: flex;
   align-items: center;
-}
-
-.labelDisabled {
-  color: #6c757d !important;
 }
 
 #tableScroll {

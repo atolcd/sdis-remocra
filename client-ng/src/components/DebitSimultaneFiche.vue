@@ -264,6 +264,21 @@ export default {
       return this.utilisateurDroits.indexOf('DEBITS_SIMULTANES_C') > -1;
     }
   },
+
+  /**
+    * Désactivation des libellés lorsque le champ auquel il est lié est désactivé
+    * On est obligé de passer par du js, les sélecteurs CSS qui permettraient de faire ça ne ne sont pas encore supportés
+    */
+  updated: function() {
+    _.forEach(document.querySelectorAll('.form-group .col'), node => {
+      if(node.firstElementChild && node.firstElementChild.disabled) {
+        node.parentElement.firstChild.classList.add("labelDisabled");
+      } else {
+        node.parentElement.firstChild.classList.remove("labelDisabled");
+      }
+    });
+  },
+
   mounted: function() {
     this.$refs.modalDebitSimultane.show();
     loadProgressBar({
@@ -387,10 +402,8 @@ export default {
     onIRVChecked(value) {
       if (value) {
         this.mesures[this.selectedRow].debitMesure = null;
-        document.querySelectorAll('[for="debitMesure"]')[0].classList.add("labelDisabled");
       } else {
         this.mesures[this.selectedRow].debitMesure = (this.diametreCanalisation !== null) ? this.debitSimultaneCalcule : 0;
-        document.querySelectorAll('[for="debitMesure"]')[0].classList.remove("labelDisabled");
       }
     },
     newAttestationName: function() {

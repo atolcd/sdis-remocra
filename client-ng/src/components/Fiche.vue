@@ -7,7 +7,7 @@
         <div class="row">
           <div class="col-md-3">
             <b-form-group invalid-feedback="Numéro manquant ou déjà attribué" :state="etats.numeroInterne" label="Numéro interne" label-for="numeroInterne" label-cols-md="6">
-              <b-form-input type="text" id="numeroInterne" v-model="hydrant.numeroInterne" :disabled="!idHydrant || utilisateurDroits.indexOf('HYDRANTS_NUMEROTATION_C') == -1" class="parametre" size="sm" :state="etats.numeroInterne">
+              <b-form-input type="text" id="numeroInterne" v-model="hydrant.numeroInterne" :disabled="!idHydrant || (utilisateurDroits.indexOf('HYDRANTS_NUMEROTATION_C') == -1)" class="parametre" size="sm" :state="etats.numeroInterne">
               </b-form-input>
             </b-form-group>
           </div>
@@ -191,6 +191,7 @@ export default {
       }
     },
   },
+
   mounted: function() {
     this.$refs.modalFiche.show()
     loadProgressBar({
@@ -213,6 +214,21 @@ export default {
       }
     });
   },
+
+  /**
+    * Désactivation des libellés lorsque le champ auquel il est lié est désactivé
+    * On est obligé de passer par du js, les sélecteurs CSS qui permettraient de faire ça ne ne sont pas encore supportés
+    */
+  updated: function() {
+    _.forEach(document.querySelectorAll('.form-group .col'), node => {
+      if(node.firstElementChild && node.firstElementChild.disabled == true) {
+        node.parentElement.firstChild.classList.add("labelDisabled");
+      } else {
+        node.parentElement.firstChild.classList.remove("labelDisabled");
+      }
+    });
+  },
+
   methods: {
     creation() {
       let self = this
@@ -723,5 +739,9 @@ label {
   content: 'Initialisation fiche...';
   margin-left: calc(50% - 67px);
   animation: opacity-anim 1s linear infinite;
+}
+
+.labelDisabled {
+  color: #6c757d !important;
 }
 </style>
