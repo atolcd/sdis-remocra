@@ -36,7 +36,7 @@ Les codes des requêtes permettent au serveur de savoir quelle requête jouer. S
 
 
 
-* Il est possible d'utiliser au sein de la requête l'alias  *:id* qui sera remplacé dynamiquement lors de l'exécution de la requête par l'identifiant du PEI:
+* Il est possible d'utiliser au sein de la requête l'alias  *${HYDRANT_ID}* qui sera remplacé dynamiquement lors de l'exécution de la requête par l'identifiant du PEI:
 
 Exemple d'un xml retourné par cette requête:
 [source,xml]

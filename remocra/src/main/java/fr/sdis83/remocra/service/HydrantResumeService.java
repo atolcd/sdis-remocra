@@ -56,8 +56,8 @@ public class HydrantResumeService extends AbstractService<HydrantResume> {
 
         try {
             HydrantResume requete = HydrantResume.findHydrantResumesByCode(code.toString()).getSingleResult();
-            Object obj = entityManager.createNativeQuery(requete.getSourceSql())
-                    .setParameter("id", id)
+            Object obj = entityManager.createNativeQuery(requete.getSourceSql().replaceAll("\\$\\{", ":").replaceAll("\\}", " "))
+                    .setParameter("HYDRANT_ID", id)
                     .getSingleResult();
             return obj.toString();
         } catch(Exception e){
