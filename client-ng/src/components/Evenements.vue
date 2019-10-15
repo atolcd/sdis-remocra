@@ -101,21 +101,24 @@ export default {
         if (response.data.data) {
           var evenements = response.data.data
           _.forEach(evenements, function(evenement) {
-            var IsoDateTo = moment(new Date(evenement.constat), 'DD/MM/YYYY[T]HH:mm:ss[Z]').format('DD/MM/YYYY' + ' - ' + 'HH:mm')
-            evenement.constat = IsoDateTo
-            _.forEach(evenement.criseSuivis, function(message) {
-              var IsoDateTo = moment(new Date(message.creation), 'DD/MM/YYYY[T]HH:mm:ss[Z]').format('DD/MM/YYYY' + ' - ' + 'HH:mm')
-              message.creation = IsoDateTo
-            })
             // Tri antéchronologique du suivi (création)
-            evenement.criseSuivis = _.orderBy(evenement.criseSuivis, ['creation'], ['desc'])
+            evenement.criseSuivis.sort(function compare(a, b) {
+              var dateA = new Date(a.creation);
+              var dateB = new Date(b.creation);
+              return dateB - dateA;
+            });
+            _.forEach(evenement.criseSuivis, function(message) {
+              var messageIsoDateTo = moment(new Date(message.creation), 'YYYY-MM-DD[T]HH:mm:ss[Z]').format('DD/MM/YYYY' + ' - ' + 'HH:mm')
+              message.creation = messageIsoDateTo
+            })
           })
           // Tri antéchronologique des évènements (constat)
-          evenements = _.sortBy(evenements, function(evenement) {
-            var IsoDateTo = moment(evenement.constat, 'DD/MM/YYYY').format('YYYY-MM-DD[T]HH:mm:ss')
-            return IsoDateTo
-          })
-          this.evenements = _.reverse(evenements)
+          evenements.sort(function compare(a, b) {
+            var dateA = new Date(a.constat);
+            var dateB = new Date(b.constat);
+            return dateB - dateA;
+          });
+          this.evenements = evenements
         }
       }).catch(function(error) {
         console.error('évenements', error)
