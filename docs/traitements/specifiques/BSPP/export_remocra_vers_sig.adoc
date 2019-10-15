@@ -1,6 +1,7 @@
 ==== Export des informations PIBI et PENA
 
-Ce traitement permet de générer les données concernant les PENA et PIBI ainsi que les anomalies associées
+Ce traitement permet de générer les données concernant les PENA et PIBI ainsi que les anomalies associées.
+Le résultat est un fichier ZIP nommé du jour et heure de l'extraction (ex: `2019_10_22_14_15_256.zip`) disponible dans le dossier `/_instance_/REMOCRA_VERS_SI/SIG/` (ex: `/recette/REMOCRA_VERS_SI/SIG/`).
 
 ===== Configuration
 Le fichier _"remocraXXXX.properties"_ doit contenir les informations suivantes :
@@ -35,34 +36,46 @@ Le fichier _"remocraXXXX.properties"_ doit contenir les informations suivantes :
 |====================
 |Nom du champ|Type|Obligatoire|Description
 |num|Texte|Oui|Numéro complet du PEI
-|annee_fa|Entier||Année de fabrication
-|complt|Texte||Complément d’adresse
-|date_maj|Date||Date dernière mise à jour
-|lieu_dit|Texte||Nom du lieu dit éventuel
-|observat|Texte||Information complémentaire sur le PEI
-|voie|Texte||Nom de la voie
-|voie2|Texte||Nom de la voie (si intersection avec voie)
-|num_v|Entier||Numéro de la voie
-|num_v_su|Texte||Suffixe du numéro de la voie (bis ter, A, 4)
-|etage|Entier||Etage (localisation en sursol ou en souterrain)
+|nature|Texte|Oui|Nature du PEI
+|dispo_pei|Texte|Oui|Etat de disponibilité du PEI (DISPO,INDISPO,NON_CONFORME)
+|autorite_police|Texte||Nom de l'autorite de police DECI
+|typedeci|Texte|Oui|Type de DECI
+|gest_pte|Texte||Nom du gestionnaire du point d’eau
+|site|Texte||Site du PEI
 |com_insee|Texte|Oui|Numéro INSEE de la commune de localisation
 |com_nom|Texte|Oui|Nom de la commune de localisation
 |domaine|Texte||Nom du domaine
-|nature|Texte|Oui|Nature du PEI
-|gest_pte|Texte||Nom du gestionnaire du point d’eau
-|debit|Entier||Débit à 1 bar (m³/h)
-|debit_max|Entier||Débit max (m³/h)
-|pression|Réel||Pression statique (bar)
-|pres_dyn|Réel||Pression dynamique à 60m³ (bar)
+|num_v|Entier||Numéro de la voie
+|num_v_su|Texte||Suffixe du numéro de la voie (bis ter, A, 4)
+|en_face|Entier||Situer de l'autre côté de la rue de l'adresse renseigné (0 = non, 1 = oui)
+|etage|Entier||Etage (localisation en sursol ou en souterrain)
+|voie|Texte||Nom de la voie
+|voie2|Texte||Nom de la voie (si intersection avec voie)
+|lieu_dit|Texte||Nom du lieu dit éventuel
+|complt|Texte||Complément d’adresse
 |diametre|Texte||Nombre et diamètre des sorties
-|gest_res|Texte||Nom du gestionnaire du réseau
+|inviolabilite|Entier||Le PEI dispose d'un dispositif d'inviolabilité (0 = non, 1 = oui)
 |choc|Entier||Poteau équipé d’un système destiné à supporter les chocs (0 = non, 1 = oui)
+|jumele|Texte||Numéro du PEI avec lequel il est jumelé
 |marque|Texte||Marque du PEI
 |modele|Texte||Modèle de PEI
-|presdyde|Réel||Pression dynamique au débit max (bar)
-|typedeci|Texte|Oui|Type de DECI
-|typecana|Texte||Type de canalisation
+|annee_fa|Entier||Année de fabrication
+|gest_res|Texte||Nom du gestionnaire du réseau
 |type_res|Texte||Type de réseau
+|debit_renforce|Entier||Le PEI a un débit renforcé (0 = non, 1 = oui)
+|typecana|Texte||Type de canalisation
+|diam_cana|Entier||Diamètre de la canalisation
+|reservoir_nom|Texte||Nom du réservoir
+|reservoir_capa|Entier||Capacité du réservoir
+|reseau_surpre|Entier||Réseau surpressé (0 = non, 1 = oui)
+|reseau_additi|Entier||Réseau additivé (0 = non, 1 = oui)
+|debit|Entier||Débit à 1 bar (m³/h)
+|pres_dyn|Réel||Pression dynamique à 60m³ (bar)
+|debit_max|Entier||Débit max (m³/h)
+|presdyde|Réel||Pression dynamique au débit max (bar)
+|pression|Réel||Pression statique (bar)
+|observat|Texte||Information complémentaire sur le PEI
+|date_maj|Date||Date dernière mise à jour
 |====================
 
 === PIBI / Anomalies - Fichier dbf
@@ -110,29 +123,30 @@ Le fichier _"remocraXXXX.properties"_ doit contenir les informations suivantes :
 |====================
 |Nom du champ|Type|Obligatoire|Description
 |num|Texte|Oui|Numéro complet du PEI. Ex : 77402_0045.
-|annee_fa|Entier||Année de fabrication
-|complt|Texte||Complément d’adresse
-|date_maj|Date||Date dernière mise à jour
-|lieu_dit|Texte||Nom du lieu dit éventuel
-|observat|Texte||Information complémentaire sur le PEI
-|voie|Texte||Nom de la voie
-|voie2|Texte||Nom de la voie (si intersection avec voie)
-|num_v|Entier||Numéro de la voie
-|num_v_su|Texte||Suffixe du numéro de la voie (bis ter, A, 4)
-|etage|Entier||Etage (localisation en sursol ou en souterrain)
+|nature|Texte|Oui|Nature du PEI
+|dispo_pei|Texte|Oui|Etat de disponibilité du PEI (DISPO,INDISPO,NON_CONFORME)
+|autorite_police|Texte||Nom de l'autorite de police DECI
+|typedeci|Texte|Oui|Code présent dans le fichier type_hydrant_deci.csv
+|gest_pte|Texte||Nom du gestionnaire du point d’eau
+|site|Texte||Site du PEI
 |com_insee|Texte|Oui|Numéro INSEE de la commune de localisation
 |com_nom|Texte|Oui|Nom de la commune de localisation
 |domaine|Texte||Nom du domaine
-|nature|Texte|Oui|Nature du PEI
-|gest_pte|Texte||Nom du gestionnaire du point d’eau
+|num_v|Entier||Numéro de la voie
+|num_v_su|Texte||Suffixe du numéro de la voie (bis ter, A, 4)
+|en_face|Entier||Situer de l'autre côté de la rue de l'adresse renseigné (0 = non, 1 = oui)
+|etage|Entier||Etage (localisation en sursol ou en souterrain)
+|voie|Texte||Nom de la voie
+|voie2|Texte||Nom de la voie (si intersection avec voie)
+|lieu_dit|Texte||Nom du lieu dit éventuel
+|complt|Texte||Complément d’adresse
+|capa_illi|Entier||Capacité illimitée (0 = non, 1 = oui)
+|ressource_incer|Entier||Ressource incertaine (0 = non, 1 = oui)
 |capacite|Texte||Capacité théorique en m3
-|coordfci|Texte||Coordonnées DFCI
-|hbe|Entier||Dispose d’un équipement HBE (0 = non, 1 = oui)
-|materiau|Texte||Nom du matériau
-|position|Texte||Positionnement / surface
-|vol_cons|Texte||Indication  textuelle sur le volume constaté
 |q_appoin|Réel||Débit d’appoint en m3/h
-|typedeci|Texte|Oui|Code présent dans le fichier type_hydrant_deci.csv
+|materiau|Texte||Nom du matériau
+|hbe|Entier||Dispose d’un équipement HBE (0 = non, 1 = oui)
+|date_maj|Date||Date dernière mise à jour
 |====================
 
 === PENA / Anomalies - Fichier dbf
