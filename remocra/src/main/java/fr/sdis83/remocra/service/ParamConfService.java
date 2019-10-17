@@ -238,6 +238,10 @@ public class ParamConfService {
         return hydrantColonnes.split("%");
     }
 
+    public Boolean getHydrantZoomNumero() {
+        return (Boolean) this.getValue(ParamConfParam.HYDRANT_ZOOM_NUMERO, false);
+    }
+
     public MethodeNumerotation getHydrantNumerotationMethode() {
         return NumeroUtil.getHydrantNumerotationMethode();
     }

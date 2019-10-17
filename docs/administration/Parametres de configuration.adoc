@@ -468,6 +468,10 @@ Méthodes disponibles pour la symbologie des PEI : link:../pei/Symbologie_PEI{ou
 * Correspond à une expression régulière java
 * Par défaut : ```^(COMMUNE|EPCI)$```
 
+=== HYDRANT_ZOOM_NUMERO ===
+* Autorise l'utilisateur à effectuer des zoom sur des adresses via l'API adresse.data.gouv.fr
+* Par défaut : ```false```
+
 === NIVEAU_TRACABILITE ===
 * Niveau de traçabilité des points d'eau (valeurs admises : organisme , utilisateur)
 * Par défaut : ```organisme```

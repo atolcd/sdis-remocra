@@ -155,6 +155,9 @@ public class RemocraController {
         // Paramétrage des colonnes du tableau de suivi des PEI
         model.addAttribute("hydrant_colonnes", (new JSONSerializer()).serialize(paramConfService.getHydrantColonnes()));
 
+        // Autoriser le zoom sur les adresses adresse.data.gouv.fr
+        model.addAttribute("hydrant_zoom_numero", paramConfService.getHydrantZoomNumero());
+
         // Définit la complexité du mot de passe
         model.addAttribute("complexite_password", paramConfService.getComplexitePassword());
 

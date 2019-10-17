@@ -244,38 +244,104 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
             { tooltip: 'Rétablir la vue précédente', text: '<span>Zoom p</span>',
                 cls: 'zoom-prev', iconCls: 'zoom-prevIcon', handler: Ext.bind(this.zoomPrev, this) },
             { tooltip: 'Rétablir la vue suivante', text: '<span>Zoom n</span>',
-                cls: 'zoom-next', iconCls: 'zoom-nextIcon', handler: Ext.bind(this.zoomNext, this) },
-            // Zoom sur commune
-            Sdis.Remocra.widget.WidgetFactory.createCommuneCombo({
-                itemId : 'communeCombo',
-                emptyText: 'Zoomer sur la commune...', cls: 'zoom-commune', width: 170,
-                listeners: {
-                    'select': this.onZoomToCommune,
-                    scope: this
-                }
-            }),
-            // Zoom sur voie
-            Ext.widget('combo', {
-                store: Ext.create('Sdis.Remocra.store.Voie'),
-                queryMode: 'remote',
-                displayField: 'nom',
-                valueField: 'id',
-                triggerAction: "all",
-                hideTrigger: true,
-                typeAhead: true,
-                minChars: 3,
-                queryCaching: false, // Changement commune avec saisie identique : requête à rejouer quand-même
-                
-                allowBlank: true,
-                itemId: 'voieCombo',
-                emptyText: 'Zoomer sur la voie...', cls: 'zoom-voie', width: 170,
-                listeners: {
-                    'select': this.onZoomToVoie,
-                    'beforequery': this.onBeforeVoieQuery,
-                    scope: this
-                }
-            }),
-             // Zoom sur lieu
+                cls: 'zoom-next', iconCls: 'zoom-nextIcon', handler: Ext.bind(this.zoomNext, this) }];
+
+            // Zoom via adresse.data.gouv.fr
+            if(HYDRANT_ZOOM_NUMERO) {
+                items.push(Ext.widget('combo', {
+                    emptyText: 'Zoomer sur la voie...',
+                    displayField: 'nom',
+                    valueField: 'id',
+                    width: 400,
+                    minChars: 3,
+                    queryMode: 'remote',
+                    listeners: {
+                        scope: this,
+                        'change': function (combo) {
+                            if(combo.getValue()){
+
+                                // On donne la priorité géographique des résultats aux coordonnées situées près de l'utilisateur
+                                var sridBounds = REMOCRA_INIT_BOUNDS.split(";");
+                                var srid = sridBounds[0];
+                                var bounds = sridBounds[1];
+                                var centre = new OpenLayers.Bounds(bounds.split(',')).transform(srid, 'EPSG:4326').getCenterLonLat();
+
+                                Ext.Ajax.request({
+                                    url: 'https://api-adresse.data.gouv.fr/search/',
+                                    method: 'GET',
+                                    params : {
+                                        q : combo.getValue().replace(/ /g, '+'),
+                                        limit: 10,
+                                        lat: centre.lat,
+                                        lon: centre.lon
+                                    },
+                                    callback: function(param, success, response) {
+                                        if(success) {
+                                            var data = JSON.parse(response.responseText);
+                                            var records = [];
+                                            data.features.forEach(function(item) {
+                                                records.push({
+                                                    'nom' : item.properties.label,
+                                                    'id' : item.properties.x+" "+item.properties.y,
+                                                    'geometrie' : item.geometry
+                                                });
+                                            });
+
+                                            combo.bindStore(Ext.create('Ext.data.Store', {
+                                                fields: ['id', 'nom', 'geometrie'],
+                                                data: records
+                                            }));
+                                        }
+                                    }
+                                });
+                            } else {
+                                combo.bindStore(Ext.create('Ext.data.Store', {
+                                    fields: []
+                                }));
+                            }
+                        },
+                        'select': function(combo, records) {
+                            var coords = records[0].data.geometrie.coordinates;
+                            this.centerToPoint(coords[0], coords[1], '4326');
+                        }
+                    }
+                }));
+
+            } else {
+                // Zoom sur commune
+                items.push(Sdis.Remocra.widget.WidgetFactory.createCommuneCombo({
+                    itemId : 'communeCombo',
+                    emptyText: 'Zoomer sur la commune...', cls: 'zoom-commune', width: 170,
+                    listeners: {
+                        'select': this.onZoomToCommune,
+                        scope: this
+                    }
+                }),
+
+
+                // Zoom sur voie
+                Ext.widget('combo', {
+                    store: Ext.create('Sdis.Remocra.store.Voie'),
+                    queryMode: 'remote',
+                    displayField: 'nom',
+                    valueField: 'id',
+                    triggerAction: "all",
+                    hideTrigger: true,
+                    typeAhead: true,
+                    minChars: 3,
+                    queryCaching: false, // Changement commune avec saisie identique : requête à rejouer quand-même
+
+                    allowBlank: true,
+                    itemId: 'voieCombo',
+                    emptyText: 'Zoomer sur la voie...', cls: 'zoom-voie', width: 170,
+                    listeners: {
+                        'select': this.onZoomToVoie,
+                        'beforequery': this.onBeforeVoieQuery,
+                        scope: this
+                    }
+                }),
+
+                // Zoom sur lieu
                 Ext.widget('combo', {
                     store: Ext.create('Sdis.Remocra.store.RepertoireLieu'),
                     queryMode: 'remote',
@@ -294,9 +360,11 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
                         'select': this.onZoomToLieu,
                         scope: this
                     }
-                }),
+                }));
+            }
+
             // Zoom sur tournée
-            {
+            items.push({
                 xtype: 'combo',
                 displayField: 'id',
                 valueField: 'id',
@@ -339,7 +407,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
                 itemId: 'info',
                 cls: 'info', iconCls: 'infoIcon', handler: Ext.bind(this.info, this, [true]) },
             ' '
-        ];
+        );
         if (this.hasMoreTools()) {
             var i;
             for (i = 0; i < this.moreItems.length; i++) {
