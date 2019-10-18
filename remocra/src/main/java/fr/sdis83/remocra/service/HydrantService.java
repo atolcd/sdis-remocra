@@ -195,39 +195,43 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
 
     public ArrayList<String> checkHydrantsDureeIndispo(){
         ArrayList<String> peis = new ArrayList<String>();
-        Query query = entityManager.createNativeQuery("SELECT h.numero " +
-                "FROM remocra.hydrant h " +
-                "JOIN " +
+        Query query = entityManager.createNativeQuery("SELECT numero " +
+                "   FROM " +
+                "     (SELECT h.numero, h.commune " +
+                "     FROM remocra.hydrant h  " +
+                "     JOIN " + // Jointure pour s'assurer que les peis existent encore
 
-                    "(SELECT h.id_hydrant, MIN(h.date_operation) AS date_operation " + //Jointure pour s'assurer que les peis existent encore
-                    "FROM tracabilite.hydrant h " +
-                    "JOIN " +
+                "         (SELECT h.id_hydrant, MIN(h.date_operation) AS date_operation " + // Sélection des PEIs ayant basculés de disponible à indisponible
+                "         FROM tracabilite.hydrant h " +
+                "         JOIN " +
+                "           (SELECT h.id_hydrant, max(h.date_operation) AS date_operation " +
+                "            FROM tracabilite.hydrant h " +
+                "            WHERE (dispo_terrestre <> 'INDISPO' OR dispo_terrestre IS NULL) AND (dispo_hbe <> 'INDISPO' OR dispo_hbe IS NULL) " +
+                "            GROUP BY h.id_hydrant) dispo " +
+                "         ON(dispo.id_hydrant = h.id_hydrant AND dispo.date_operation < h.date_operation) " +
+                "         WHERE dispo_terrestre = 'INDISPO' OR dispo_hbe = 'INDISPO' " +
+                "         GROUP BY h.id_hydrant, h.commune " +
 
-                        "(SELECT h.id_hydrant, max(h.date_operation) AS date_operation " + //Bascule dispo -> indispo
-                        "FROM tracabilite.hydrant h " +
-                        "WHERE (dispo_terrestre <> 'INDISPO' OR dispo_terrestre IS NULL) AND (dispo_hbe <> 'INDISPO' OR dispo_hbe IS NULL) " +
-                        "GROUP BY h.id_hydrant) dispo " +
-                        "ON(dispo.id_hydrant = h.id_hydrant AND dispo.date_operation < h.date_operation) " +
+                "         UNION " +
 
-                    "WHERE dispo_terrestre = 'INDISPO' OR dispo_hbe = 'INDISPO' " +
-                    "GROUP BY h.id_hydrant " +
+                "         SELECT h.id_hydrant, min(h.date_operation) AS date_operation " + // Union avec les peis en indispo depuis leur déclaration
+                "         FROM tracabilite.hydrant h " +
+                "         LEFT JOIN " +
+                "           (SELECT h.id_hydrant " +
+                "            FROM tracabilite.hydrant h " +
+                "            WHERE (h.dispo_terrestre IS NULL OR h.dispo_terrestre!='INDISPO') AND (h.dispo_hbe IS NULL OR h.dispo_hbe!='INDISPO') " +
+                "            GROUP BY h.id_hydrant) AS R2 ON R2.id_hydrant=h.id_hydrant " +
+                "         WHERE R2.id_hydrant IS NULL " +
+                "         GROUP BY h.id_hydrant) AS R1 ON R1.id_hydrant=h.id " +
 
-                    "UNION " +
-
-                    "SELECT h.id_hydrant, min(h.date_operation) AS date_operation " + //UNION les peis en indispo depuis leur déclaration
-                    "FROM tracabilite.hydrant h " +
-                    "WHERE h.id_hydrant NOT IN " +
-                        "(SELECT h.id_hydrant " +
-                        "FROM tracabilite.hydrant h " +
-                        "WHERE (h.dispo_terrestre IS NULL OR h.dispo_terrestre!='INDISPO') AND (h.dispo_hbe IS NULL OR h.dispo_hbe!='INDISPO') " +
-                        "GROUP BY h.id_hydrant) " +
-
-                    "GROUP BY h.id_hydrant) AS R1 " +
-                "ON R1.id_hydrant=h.id " +
-                "GROUP BY h.numero, R1.date_operation " +
-                "HAVING DATE_PART('day', NOW() - max(R1.date_operation)) > :dureeIndispo " +
-                "ORDER BY R1.date_operation") //Filtre selon leur durée d'indisponibilité
-                .setParameter("dureeIndispo", paramConfService.getHydrantLongueIndisponibiliteJours());
+                "     GROUP BY h.numero, R1.date_operation, h.commune " +
+                "     HAVING DATE_PART('day', NOW() - max(R1.date_operation)) > :dureeIndispo) as R2 " + // PEIs indisponibles depuis plus d'un certain nombre de jours)
+                " WHERE commune in ( " +
+                "   SELECT zcc.commune_id " +
+                "       FROM remocra.zone_competence_commune zcc " +
+                "       WHERE zcc.zone_competence_id = :zoneCompetenceId)") // On garde les PEIs contenus dans la zone de compétence de l'utilisateur
+                .setParameter("dureeIndispo", paramConfService.getHydrantLongueIndisponibiliteJours())
+                .setParameter("zoneCompetenceId", utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getId());
 
         peis = (ArrayList<String>) query.getResultList();
         return peis;
