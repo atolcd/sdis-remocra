@@ -39,6 +39,7 @@ public class CriseEvenement implements Serializable {
 	private Long    crise;
 	private Long    natureEvenement;
 	private Long    auteurEvenement;
+	private String  contexte;
 
 	public CriseEvenement() {}
 
@@ -56,6 +57,7 @@ public class CriseEvenement implements Serializable {
 		this.crise = value.crise;
 		this.natureEvenement = value.natureEvenement;
 		this.auteurEvenement = value.auteurEvenement;
+		this.contexte = value.contexte;
 	}
 
 	public CriseEvenement(
@@ -71,7 +73,8 @@ public class CriseEvenement implements Serializable {
 		String  tags,
 		Long    crise,
 		Long    natureEvenement,
-		Long    auteurEvenement
+		Long    auteurEvenement,
+		String  contexte
 	) {
 		this.id = id;
 		this.geometrie = geometrie;
@@ -86,6 +89,7 @@ public class CriseEvenement implements Serializable {
 		this.crise = crise;
 		this.natureEvenement = natureEvenement;
 		this.auteurEvenement = auteurEvenement;
+		this.contexte = contexte;
 	}
 
 	public Long getId() {
@@ -202,6 +206,15 @@ public class CriseEvenement implements Serializable {
 
 	public CriseEvenement setAuteurEvenement(Long auteurEvenement) {
 		this.auteurEvenement = auteurEvenement;
+		return this;
+	}
+
+	public String getContexte() {
+		return this.contexte;
+	}
+
+	public CriseEvenement setContexte(String contexte) {
+		this.contexte = contexte;
 		return this;
 	}
 }

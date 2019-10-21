@@ -51,7 +51,8 @@ export default {
   data() {
     return {
       lastFilters: [],
-      evenements: []
+      evenements: [],
+      contexte: null,
     }
   },
   mounted() {
@@ -59,6 +60,9 @@ export default {
     this.loadEvenements(this.crise, [{
       property: 'statut',
       value: 'En cours'
+    }, {
+      property: 'contexte',
+      value: 'OPERATIONNEL'
     }])
     this.$root.$options.bus.$on(eventTypes.LOAD_EVENEMENTS, this.loadEvenemtsPrep)
   },
@@ -67,14 +71,27 @@ export default {
   },
   methods: {
     loadEvenemtsPrep(args) {
+      if (typeof(args.contexte) !== 'undefined') {
+        this.contexte = args.contexte
+      }
       this.loadEvenements(args.crise, args.filters)
     },
-    loadEvenements(crise, filters) {
-      //on garde les anciens filtres en mémoire pour gérer le cas de chargement après création
+    loadEvenements(crise, newFilters) {
+      var filters = _.clone(newFilters)
+      //On utilise les anciens filtre :  cas de chargement après création
       if (typeof filters === 'undefined') {
         filters = this.lastFilters
       }
+      // On ajoute le contexte (filtre particulier) : On supprime l'ancien (pas de cache pour ce filtre)
+      _.remove(filters, function(filter) {
+        return filter.property == 'contexte'
+      })
+      filters.push({
+        property: 'contexte',
+        value: this.contexte
+      })
       var jsonFilters = JSON.stringify(filters)
+      // On sauvegarde les filtres
       this.lastFilters = filters
       axios.get('/remocra/evenements/' + crise, {
         params: {

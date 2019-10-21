@@ -546,4 +546,8 @@ body {
     margin-left: 0px;
   }
 }
+
+.gestcrise .btn-group>.btn {
+  cursor: pointer;
+}
 </style>

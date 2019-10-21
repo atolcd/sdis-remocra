@@ -121,6 +121,11 @@ public class CriseEvenement extends TableImpl<Record> {
 	public final TableField<Record, Long> AUTEUR_EVENEMENT = createField("auteur_evenement", org.jooq.impl.SQLDataType.BIGINT, this, "");
 
 	/**
+	 * The column <code>remocra.crise_evenement.contexte</code>.
+	 */
+	public final TableField<Record, String> CONTEXTE = createField("contexte", org.jooq.impl.SQLDataType.VARCHAR.nullable(false).defaulted(true), this, "");
+
+	/**
 	 * Create a <code>remocra.crise_evenement</code> table reference
 	 */
 	public CriseEvenement() {

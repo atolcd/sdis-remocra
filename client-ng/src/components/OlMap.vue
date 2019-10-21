@@ -42,7 +42,7 @@
         </div>
         <div class="big-h-spacer" />
         <b-form-group class="text-start my-1">
-          <b-form-radio-group id="btnradios2" buttons button-variant="outline-secondary" v-model="modeAffichage" :options="modeAffichages" name="radioBtnOutline" />
+          <b-form-radio-group :id="'btnradios'+criseId" buttons button-variant="outline-secondary" v-model="modeAffichage" :options="modeAffichages" name="radioBtnOutline" @input="changeContext" />
         </b-form-group>
         <div class="big-h-spacer" />
         <div class="text-start my-1">
@@ -70,7 +70,7 @@
           <b-collapse id="accordion1" visible accordion="my-accordion" role="tabpanel">
             <b-card-body>
               <!--p class="card-text"></p-->
-              <evenements :crise="criseId" ref="evenements"></evenements>
+              <evenements :crise="criseId" ref="evenements" :modeAffichage="modeAffichage"></evenements>
             </b-card-body>
           </b-collapse>
         </b-card>
@@ -214,7 +214,7 @@
   <choice-feature :crise="criseId" ref="choiceFeature"></choice-feature>
   <stamped-card :crise="criseId" ref="stampedCard"></stamped-card>
   <show-info :crise="criseId" ref="showInfo"></show-info>
-  <new-evenement :criseId="criseId" ref="newEvenement"></new-evenement>
+  <new-evenement :criseId="criseId" :modeAffichage="modeAffichage" ref="newEvenement"></new-evenement>
 </b-container>
 </template>
 <script>
@@ -332,13 +332,13 @@ export default {
       epsgL93: null,
       selectedRuler: null,
       select: null,
-      modeAffichage: 'radio1',
+      modeAffichage: 'OPERATIONNEL',
       modeAffichages: [{
         text: 'Opérationnel',
-        value: 'radio1'
+        value: 'OPERATIONNEL'
       }, {
         text: 'Anticipation',
-        value: 'radio2'
+        value: 'ANTICIPATION'
       }],
       // todo mettre le var par défaut?
       extent: [
@@ -863,6 +863,9 @@ export default {
         }, {
           property: 'statut',
           value: 'En cours'
+        }, {
+          property: 'contexte',
+          value: this.modeAffichage
         }])
         return layer
       }
@@ -1946,6 +1949,12 @@ export default {
         return wholeData;
       }
       return str;
+    },
+    changeContext() {
+      this.$root.$options.bus.$emit(eventTypes.LOAD_EVENEMENTS, {
+        'crise': this.criseId,
+        'contexte': this.modeAffichage
+      })
     }
   }
 }

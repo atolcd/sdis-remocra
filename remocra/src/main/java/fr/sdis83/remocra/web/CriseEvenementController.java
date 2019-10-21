@@ -520,6 +520,9 @@ public class CriseEvenementController {
             } else if ("origine".equals(filter.getFieldName())) {
                 secureAddToCompositeOrStatement(returned, "origine",
                         new ObjectStatement("origine", Operator.EQ, "'" + filter.getValue() + "'"));
+            }else if ("contexte".equals(filter.getFieldName())) {
+              secureAddToCompositeOrStatement(returned, "contexte",
+                  new ObjectStatement("contexte", Operator.EQ, "'" + filter.getValue() + "'"));
             } else if ("importance".equals(filter.getFieldName())) {
               List<Integer> filterValue = new ArrayList<Integer>();
               int value = Integer.valueOf(filter.getValue());

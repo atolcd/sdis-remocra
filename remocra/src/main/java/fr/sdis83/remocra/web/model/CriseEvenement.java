@@ -41,6 +41,8 @@ public class CriseEvenement implements Featurable {
 
   private String tags;
 
+  private String contexte;
+
   private TypeCriseNatureEvenement typeCriseNatureEvenement;
 
   private Utilisateur auteurEvenement;
@@ -103,6 +105,14 @@ public class CriseEvenement implements Featurable {
 
   public void setOrigine(String origine) {
     this.origine = origine;
+  }
+
+  public String getContexte() {
+    return contexte;
+  }
+
+  public void setContexte(String contexte) {
+    this.contexte = contexte;
   }
 
   public Integer getImportance() {

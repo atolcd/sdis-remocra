@@ -112,6 +112,10 @@ export default {
     criseId: {
       required: true,
       type: Number
+    },
+    modeAffichage: {
+      required: true,
+      type: String
     }
   },
   data() {
@@ -306,6 +310,7 @@ export default {
       } else {
         // formulaire d'évenement
         let formData = new FormData()
+        formData.append('contexte', this.modeAffichage)
         formData.append('nom', this.form.titre)
         formData.append('description', this.form.description)
         formData.append('constat', moment(this.form.constat.toString() + 'T' + this.form.time.toString()).format())

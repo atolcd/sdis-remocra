@@ -115,7 +115,7 @@ public class CriseEvenementRepository {
     List<CriseEvenement> crEvenements = new ArrayList<CriseEvenement>();
     criseEvenementRecord = context.select(CRISE_EVENEMENT.ID.as("criseEvenementId"), CRISE_EVENEMENT.GEOMETRIE.as("criseEvenementGeometrie"), CRISE_EVENEMENT.NOM.as("criseEvenementNom"),
         CRISE_EVENEMENT.DESCRIPTION.as("criseEvenementDescription"), CRISE_EVENEMENT.CONSTAT.as("criseEvenementConstat"), CRISE_EVENEMENT.REDEFINITION.as("criseEvenementRedefinition"), CRISE_EVENEMENT.CLOTURE.as("criseEvenementCloture"),
-        CRISE_EVENEMENT.ORIGINE.as("criseEvenementOrigine"), CRISE_EVENEMENT.IMPORTANCE.as("criseEvenementImportance"), CRISE_EVENEMENT.CRISE.as("criseCrise"))
+        CRISE_EVENEMENT.ORIGINE.as("criseEvenementOrigine"),CRISE_EVENEMENT.CONTEXTE.as("criseEvenementContexte"), CRISE_EVENEMENT.IMPORTANCE.as("criseEvenementImportance"), CRISE_EVENEMENT.CRISE.as("criseCrise"))
         .select(TYPE_CRISE_NATURE_EVENEMENT.ID.as("typeCriseNatureEvenementId"), TYPE_CRISE_NATURE_EVENEMENT.ACTIF.as("typeCriseNatureEvenementActif"),
             TYPE_CRISE_NATURE_EVENEMENT.CODE.as("typeCriseNatureEvenementCode"), TYPE_CRISE_NATURE_EVENEMENT.NOM.as("typeCriseNatureEvenementNom"),
             TYPE_CRISE_NATURE_EVENEMENT.TYPE_GEOMETRIE.as("typeCriseNatureEvenementTypeGeometrie"))
@@ -223,6 +223,7 @@ public class CriseEvenementRepository {
     c.setOrigine(request.getParameter("origine"));
     c.setImportance(Integer.valueOf(request.getParameter("importance")));
     c.setTags(request.getParameter("tags"));
+    c.setContexte(request.getParameter("contexte"));
     c.setCrise(Long.valueOf(String.valueOf(request.getParameter("crise"))));
     c.setAuteurEvenement(utilisateurService.getCurrentUtilisateur().getId());
     Geometry geom = null;
@@ -244,8 +245,9 @@ public class CriseEvenementRepository {
     Instant t = new Instant(constat);
     c.setConstat(t);
     int result = context.insertInto(CRISE_EVENEMENT, CRISE_EVENEMENT.NOM, CRISE_EVENEMENT.GEOMETRIE, CRISE_EVENEMENT.DESCRIPTION, CRISE_EVENEMENT.CONSTAT, CRISE_EVENEMENT.CLOTURE,
-        CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT,CRISE_EVENEMENT.AUTEUR_EVENEMENT)
-        .values(c.getNom(), geom != null ? geom : null  ,  c.getDescription(),c.getConstat(), c.getCloture(),c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement(),c.getAuteurEvenement()).execute();
+        CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT,
+        CRISE_EVENEMENT.AUTEUR_EVENEMENT,CRISE_EVENEMENT.CONTEXTE)
+        .values(c.getNom(), geom != null ? geom : null  ,  c.getDescription(),c.getConstat(), c.getCloture(),c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement(),c.getAuteurEvenement(), c.getContexte()).execute();
     if(result!=0) {
       //on sélectionne la dernioère insertion
       Long idCriseEvent = context.select(DSL.max((CRISE_EVENEMENT.ID))).from(CRISE_EVENEMENT).fetchOne().value1();
@@ -279,6 +281,7 @@ public class CriseEvenementRepository {
     fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement c = new fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement();
     c.setNom(request.getParameter("nom"));
     c.setDescription(request.getParameter("description"));
+    c.setContexte(request.getParameter("contexte"));
     Date constat = df.parse(request.getParameter("constat"));
     Instant t = new Instant(constat);
     c.setConstat(t);
@@ -307,12 +310,14 @@ public class CriseEvenementRepository {
 
     if(c.getCloture() != null){
       context.update(CRISE_EVENEMENT).set(row( CRISE_EVENEMENT.NOM, CRISE_EVENEMENT.DESCRIPTION, CRISE_EVENEMENT.CONSTAT, CRISE_EVENEMENT.REDEFINITION,CRISE_EVENEMENT.CLOTURE,
-          CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT, CRISE_EVENEMENT.AUTEUR_EVENEMENT)
-          ,row(c.getNom(), c.getDescription(),c.getConstat(), c.getRedefinition(), c.getCloture(), c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement(), c.getAuteurEvenement())).where(CRISE_EVENEMENT.ID.eq(id)).execute();
+          CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT,
+          CRISE_EVENEMENT.AUTEUR_EVENEMENT, CRISE_EVENEMENT.CONTEXTE)
+          ,row(c.getNom(), c.getDescription(),c.getConstat(), c.getRedefinition(), c.getCloture(), c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement(), c.getAuteurEvenement(), c.getContexte())).where(CRISE_EVENEMENT.ID.eq(id)).execute();
     }else {
       context.update(CRISE_EVENEMENT).set(row( CRISE_EVENEMENT.NOM, CRISE_EVENEMENT.DESCRIPTION, CRISE_EVENEMENT.CONSTAT, CRISE_EVENEMENT.REDEFINITION,
-          CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT, CRISE_EVENEMENT.AUTEUR_EVENEMENT)
-          ,row(c.getNom(), c.getDescription(),c.getConstat(), c.getRedefinition(), c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement(), c.getAuteurEvenement())).where(CRISE_EVENEMENT.ID.eq(id)).execute();
+          CRISE_EVENEMENT.ORIGINE, CRISE_EVENEMENT.IMPORTANCE, CRISE_EVENEMENT.TAGS,CRISE_EVENEMENT.CRISE, CRISE_EVENEMENT.NATURE_EVENEMENT,
+          CRISE_EVENEMENT.AUTEUR_EVENEMENT, CRISE_EVENEMENT.CONTEXTE)
+          ,row(c.getNom(), c.getDescription(),c.getConstat(), c.getRedefinition(), c.getOrigine(), c.getImportance(), c.getTags(), c.getCrise(),c.getNatureEvenement(), c.getAuteurEvenement(), c.getContexte())).where(CRISE_EVENEMENT.ID.eq(id)).execute();
     }
     return c;
 
@@ -366,6 +371,8 @@ public class CriseEvenementRepository {
     Condition cp = trueCondition();
     Condition cta = trueCondition();
     Condition ci = trueCondition();
+    //Par defaut en mode anticipation on voit tout
+    Condition cc = DSL.and(CRISE_EVENEMENT.CONTEXTE.like("%ANTICIPATION%"));
 
     int origine = 0;
     int type = 0;
@@ -448,9 +455,11 @@ public class CriseEvenementRepository {
         }else {
           ci= DSL.and(CRISE_EVENEMENT.IMPORTANCE.in(filterValue));
         }
+      }else if(filter.getFieldName().equals("contexte")){
+        cc = DSL.and(CRISE_EVENEMENT.CONTEXTE.like("%"+filter.getValue()+"%"));
       }
     }
-    c = c.and(co).and(ct).and(cs).and(cp).and(cta).and(ci);
+    c = c.and(co).and(ct).and(cs).and(cp).and(cta).and(ci).and(cc);
     return c;
   }
 
