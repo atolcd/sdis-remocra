@@ -1,96 +1,97 @@
 <template>
 <div>
   <b-modal :id="'modalEvent'+criseId" ref="modal" :title="title" ok-title="Valider" no-close-on-backdrop cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
-      <b-tabs id="tabsNewEvenement" ref="tabs" v-model="tabIndex">
-        <b-tab title="Général" active>
-          <form :id="'formEvent'+criseId" class="needs-validation" @submit.stop.prevent="handleSubmit">
-            <b-form-group horizontal label="Type:" label-for="typeEvent">
-              <b-form-select :disabled="disableNatures" id="typeEvent" required class="form-control" v-model="form.type" @input="loadComplement">
-                <optgroup v-for="(type, name) in types" :key="name" :label="name">
-                  <option v-for="(nature, index) in type" :key="index" :value="nature.value">
-                    {{ nature.text }}
-                  </option>
-                </optgroup>
-              </b-form-select>
-            </b-form-group>
-            <b-form-group horizontal label="Titre:" label-for="titleEvent">
-              <b-form-input id="titleEvent" type="text" tabIndex="0" class="form-control" v-model="form.titre" required>
-              </b-form-input>
-            </b-form-group>
-            <b-form-group horizontal label="Description:" label-for="descriptEvent">
-              <b-form-textarea id="descriptEvent" v-model="form.description" class="form-control" :rows="3" :max-rows="6">
-              </b-form-textarea>
-            </b-form-group>
-            <b-form-group horizontal label="Intervention associée:" label-for="interventionAssoc">
-              <b-form-select id="interventionAssoc" :options="interventionAssocs" class="form-control" v-model="form.interventionAssoc">
-              </b-form-select>
-            </b-form-group>
-            <b-form-group horizontal label="Origine:" label-for="origine">
-              <search-origine id="origineEvent" :crise='criseId' ref='searchOrigine'></search-origine>
-            </b-form-group>
-            <b-form-group horizontal label="Constaté:" label-for="constate">
-              <b-form-input v-model="form.constat" :min="dateMin" :max="dateMax" :value="form.constat" type="date" class="form-control"></b-form-input>
-              <b-form-input v-model="form.time" id="timeConstat" @change="checkTimeConstat" :value="form.time" type="time" style="margin-top:6px;" class="form-control"></b-form-input>
-            </b-form-group>
-            <b-form-group horizontal label="Importance:" label-for="importanceEvent">
-              <div class="resetrate">
-              <img src="/remocra/static/img/resetrate.png"  style="cursor:pointer" @click="resetRate">
-              <rate id="importanceEvent" :length="5" v-model="form.importance" /></div>
-            </b-form-group>
-            <b-form-group horizontal label="Tags:" label-for="tags">
-              <input-tag v-model="form.tags"></input-tag>
-            </b-form-group>
-            <b-form-group horizontal label="Clore l'évènement:" label-for="cloture">
-              <input style="width:5%" id="cloture" type="checkbox" :value="cloture" v-model="cloture" class="form-control">
-            </b-form-group>
-          </form>
-        </b-tab>
-        <b-tab id="tabComplement" title="Complément">
-          <form :id="'formComplement'+criseId" class="needs-validation" v-if="params.length > 0">
-            <div v-for="(param, index) in params" :key="index">
-              <b-form-group v-if='param.formulaireTypeControle=="autocomplete"' :id="'input'+param.id" inputType='autocomplete' :required="param.obligatoire" class="parametreComplement" horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-                <search-complement :searchInput="param.formulaireValeurDefaut" :ref="'searchinput'+param.id" :paramId="param.id"></search-complement>
-              </b-form-group>
-              <b-form-group v-if='param.formulaireTypeControle=="combo"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-                <select :id="'input'+param.id" :required='param.obligatoire' class="form-control parametreComplement" inputType="combo">
-                  <option v-for="(value, key) in getOption(param.id)" :key="key" :value="value.valeur" :selected="value.valeur === value.formulaireValeurDefaut">
-                    {{value.libelle}}
-                  </option>
-                </select>
-              </b-form-group>
-              <b-form-group v-if='param.formulaireTypeControle=="checkbox"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-                <input type='checkbox' style="width:5%" :id="'input'+param.id" :value='param.formulaireValeurDefaut' v-model='param.formulaireValeurDefaut' inputType='checkbox' class="form-control parametreComplement" />
-              </b-form-group>
-              <b-form-group v-if='param.formulaireTypeControle=="textfield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-                <b-form-input type='text' :id="'input'+param.id" :value='param.formulaireValeurDefaut' :required='param.obligatoire' class="form-control parametreComplement" />
-              </b-form-group>
-              <b-form-group v-if='param.formulaireTypeControle=="numberfield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-                <b-form-input type="number" :id="'input'+param.id" :value='param.formulaireValeurDefaut' :required='param.obligatoire' :step='(param.typeValeur=="integer")?1:0.001' class="form-control parametreComplement" />
-              </b-form-group>
-              <b-form-group v-if='param.formulaireTypeControle=="datefield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-                <b-form-input type='date' :id="'input'+param.id" :value='param.formulaireValeurDefaut' :required='param.obligatoire' class="form-control parametreComplement" />
-              </b-form-group>
-              <b-form-group v-if='param.formulaireTypeControle=="timefield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-                <b-form-input type='time' :id="'input'+param.id" :value='param.formulaireValeurDefaut' :required='param.obligatoire' step='1' class="form-control parametreComplement" />
-              </b-form-group>
-              <b-form-group v-if='param.formulaireTypeControle=="datetimefield"' :id="'input'+param.id" horizontal :label='param.formulaireEtiquette' inputType='datetimefield' class='parametreComplement' :label-for="'input'+param.id">
-                <b-form-input type='date' :id="'input'+param.id+'date'" :value='param.formulaireValeurDefaut !== null ? param.formulaireValeurDefaut.split(" ")[0] : null' :required='param.obligatoire' class='form-control' />
-                <b-form-input type='time' :id="'input'+param.id+'time'" :value='param.formulaireValeurDefaut !== null ? param.formulaireValeurDefaut.split(" ")[1]: null' :required='param.obligatoire' step='1' class='form-control' />
-              </b-form-group>
-            </div>
-          </form>
-        </b-tab>
-        <b-tab title="Document">
-          <b-form-group horizontal label="Document:" label-for="document">
-            <div class="custom-file b-form-file ">
-              <input id="eventDocs" type="file" class="custom-file-input" @change="handleChangeFile($event)">
-              <label class="custom-file-label">{{file && file.name}}</label></div>
-            <div v-for="(file, index) in files" :key="index" class="mt-3">
-              <img @click="deleteFile(file.name || file.fichier)" src="/remocra/static/img/delete.png"><strong> {{file && file.name || file.fichier}}</strong>
+    <b-tabs id="tabsNewEvenement" ref="tabs" v-model="tabIndex">
+      <b-tab title="Général" active>
+        <form :id="'formEvent'+criseId" class="needs-validation" @submit.stop.prevent="handleSubmit">
+          <b-form-group horizontal label="Type:" label-for="typeEvent">
+            <b-form-select :disabled="disableNatures" id="typeEvent" required class="form-control" v-model="form.type" @input="loadComplement">
+              <optgroup v-for="(type, name) in types" :key="name" :label="name">
+                <option v-for="(nature, index) in type" :key="index" :value="nature.value">
+                  {{ nature.text }}
+                </option>
+              </optgroup>
+            </b-form-select>
+          </b-form-group>
+          <b-form-group horizontal label="Titre:" label-for="titleEvent">
+            <b-form-input id="titleEvent" type="text" tabIndex="0" class="form-control" v-model="form.titre" required>
+            </b-form-input>
+          </b-form-group>
+          <b-form-group horizontal label="Description:" label-for="descriptEvent">
+            <b-form-textarea id="descriptEvent" v-model="form.description" class="form-control" :rows="3" :max-rows="6">
+            </b-form-textarea>
+          </b-form-group>
+          <b-form-group horizontal label="Intervention associée:" label-for="interventionAssoc">
+            <b-form-checkbox-group v-model="form.interventionAssoc" :options="interventionAssocs" name="buttons-1"></b-form-checkbox-group>
+          </b-form-group>
+          <b-form-group horizontal label="Origine:" label-for="origine">
+            <search-origine id="origineEvent" :crise='criseId' ref='searchOrigine'></search-origine>
+          </b-form-group>
+          <b-form-group horizontal label="Constaté:" label-for="constate">
+            <b-form-input v-model="form.constat" :min="dateMin" :max="dateMax" :value="form.constat" type="date" class="form-control"></b-form-input>
+            <b-form-input v-model="form.time" id="timeConstat" @change="checkTimeConstat" :value="form.time" type="time" style="margin-top:6px;" class="form-control"></b-form-input>
+          </b-form-group>
+          <b-form-group horizontal label="Importance:" label-for="importanceEvent">
+            <div class="resetrate">
+              <img src="/remocra/static/img/resetrate.png" style="cursor:pointer" @click="resetRate">
+              <rate id="importanceEvent" :length="5" v-model="form.importance" />
             </div>
           </b-form-group>
-        </b-tab>
-      </b-tabs>
+          <b-form-group horizontal label="Tags:" label-for="tags">
+            <input-tag v-model="form.tags"></input-tag>
+          </b-form-group>
+          <b-form-group horizontal label="Clore l'évènement:">
+            <b-form-checkbox size="sm" id="cloture" v-model="cloture"></b-form-checkbox>
+          </b-form-group>
+        </form>
+      </b-tab>
+      <b-tab id="tabComplement" title="Complément">
+        <form :id="'formComplement'+criseId" class="needs-validation" v-if="params.length > 0">
+          <div v-for="(param, index) in params" :key="index">
+            <b-form-group v-if='param.formulaireTypeControle=="autocomplete"' :id="'input'+param.id" inputType='autocomplete' :required="param.obligatoire" class="parametreComplement" horizontal :label='param.formulaireEtiquette'
+              :label-for="'input'+param.id">
+              <search-complement :searchInput="param.formulaireValeurDefaut" :ref="'searchinput'+param.id" :paramId="param.id"></search-complement>
+            </b-form-group>
+            <b-form-group v-if='param.formulaireTypeControle=="combo"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+              <select :id="'input'+param.id" :required='param.obligatoire' class="form-control parametreComplement" inputType="combo">
+                <option v-for="(value, key) in getOption(param.id)" :key="key" :value="value.valeur" :selected="value.valeur === value.formulaireValeurDefaut">
+                  {{value.libelle}}
+                </option>
+              </select>
+            </b-form-group>
+            <b-form-group v-if='param.formulaireTypeControle=="checkbox"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+              <input type='checkbox' style="width:5%" :id="'input'+param.id" :value='param.formulaireValeurDefaut' v-model='param.formulaireValeurDefaut' inputType='checkbox' class="form-control parametreComplement" />
+            </b-form-group>
+            <b-form-group v-if='param.formulaireTypeControle=="textfield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+              <b-form-input type='text' :id="'input'+param.id" :value='param.formulaireValeurDefaut' :required='param.obligatoire' class="form-control parametreComplement" />
+            </b-form-group>
+            <b-form-group v-if='param.formulaireTypeControle=="numberfield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+              <b-form-input type="number" :id="'input'+param.id" :value='param.formulaireValeurDefaut' :required='param.obligatoire' :step='(param.typeValeur=="integer")?1:0.001' class="form-control parametreComplement" />
+            </b-form-group>
+            <b-form-group v-if='param.formulaireTypeControle=="datefield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+              <b-form-input type='date' :id="'input'+param.id" :value='param.formulaireValeurDefaut' :required='param.obligatoire' class="form-control parametreComplement" />
+            </b-form-group>
+            <b-form-group v-if='param.formulaireTypeControle=="timefield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+              <b-form-input type='time' :id="'input'+param.id" :value='param.formulaireValeurDefaut' :required='param.obligatoire' step='1' class="form-control parametreComplement" />
+            </b-form-group>
+            <b-form-group v-if='param.formulaireTypeControle=="datetimefield"' :id="'input'+param.id" horizontal :label='param.formulaireEtiquette' inputType='datetimefield' class='parametreComplement' :label-for="'input'+param.id">
+              <b-form-input type='date' :id="'input'+param.id+'date'" :value='param.formulaireValeurDefaut !== null ? param.formulaireValeurDefaut.split(" ")[0] : null' :required='param.obligatoire' class='form-control' />
+              <b-form-input type='time' :id="'input'+param.id+'time'" :value='param.formulaireValeurDefaut !== null ? param.formulaireValeurDefaut.split(" ")[1]: null' :required='param.obligatoire' step='1' class='form-control' />
+            </b-form-group>
+          </div>
+        </form>
+      </b-tab>
+      <b-tab title="Document">
+        <b-form-group horizontal label="Document:" label-for="document">
+          <div class="custom-file b-form-file ">
+            <input id="eventDocs" type="file" class="custom-file-input" @change="handleChangeFile($event)">
+            <label class="custom-file-label">{{file && file.name}}</label></div>
+          <div v-for="(file, index) in files" :key="index" class="mt-3">
+            <img @click="deleteFile(file.name || file.fichier)" src="/remocra/static/img/delete.png"><strong> {{file && file.name || file.fichier}}</strong>
+          </div>
+        </b-form-group>
+      </b-tab>
+    </b-tabs>
   </b-modal>
 </div>
 </template>
@@ -131,12 +132,12 @@ export default {
       dateMin: null,
       dateMax: null,
       timeMin: null,
-      timeMax:null,
+      timeMax: null,
       form: {
         titre: '',
         type: null,
         description: '',
-        interventionAssoc: null,
+        interventionAssoc: [],
         origine: null,
         geometrie: null,
         tags: [],
@@ -146,8 +147,8 @@ export default {
       },
       types: [],
       categories: [],
-      interventionAssocs: [{}],
-      origines: [{}],
+      interventionAssocs: [],
+      origines: [],
       tabIndex: 0,
       params: [],
       comboOptions: [],
@@ -155,7 +156,7 @@ export default {
     }
   },
   mounted() {
-    axios.get('/remocra/crises/'+this.criseId+'/activation').then((response) => {
+    axios.get('/remocra/crises/' + this.criseId + '/activation').then((response) => {
       if (response.data.data) {
         var activation = response.data.data.activation
         this.dateMin = moment(activation).format('YYYY-MM-DD')
@@ -176,6 +177,7 @@ export default {
   methods: {
     createEvent() {
       this.loadEvenementNatures(null)
+      this.loadEvenementInterventions(this.criseId)
       this.$root.$emit('bv::hide::popover')
       this.title = 'Nouvel évènement'
       this.showTabComplement()
@@ -185,6 +187,7 @@ export default {
       this.natureId = natureId
       this.form.geometrie = wktfeaturegeom
       this.loadEvenementNatures(natureId)
+      this.loadEvenementInterventions(criseId)
       this.$root.$emit('bv::hide::popover')
       axios.get('/remocra/typecrisenatureevenement/nature/' + natureId).then((response) => {
         if (response.data.data) {
@@ -201,6 +204,7 @@ export default {
     modifyEvent(criseId, evenementId, natureId) {
       this.evenementId = evenementId
       this.loadEvenementNatures(natureId)
+      this.loadEvenementInterventions(criseId)
       // si l'évenementId est renseigné c'est un update
       if (evenementId !== null) {
         axios.get('/remocra/evenements/' + criseId + '/' + evenementId).then((response) => {
@@ -220,6 +224,11 @@ export default {
           this.form.importance = evenement.importance
           this.form.tags = evenement.tags && evenement.tags.length !== 0 ? evenement.tags.split(',') : []
           this.form.type = evenement.typeCriseNatureEvenement.id
+          if (evenement.interventions.length != 0) {
+            _.forEach(evenement.interventions, intervention => {
+              this.form.interventionAssoc.push(intervention.id)
+            })
+          }
           this.disableNatures = true
           if (evenement.criseComplement.length !== 0) {
             _.forEach(evenement.criseComplement, complement => {
@@ -269,10 +278,11 @@ export default {
       this.form.importance = 0
       this.form.tags = []
       this.form.type = null
+      this.form.interventionAssoc = []
       this.types = []
       this.categories = []
-      this.interventionAssocs = [{}]
-      this.origines = [{}]
+      this.interventionAssocs = []
+      this.origines = []
       this.disableNatures = false
       this.evenementId = null
       this.natureId = null
@@ -322,6 +332,10 @@ export default {
         }
         formData.append('origine', this.$refs.searchOrigine.origine && this.$refs.searchOrigine.origine !== null ? this.$refs.searchOrigine.origine : this.$refs.searchOrigine.searchText)
         formData.append('importance', this.form.importance)
+        console.log(this.form.interventionAssoc)
+        formData.append('interventions', JSON.stringify(_.map(this.form.interventionAssoc, intervention => {
+          return intervention
+        })))
         formData.append('tags', this.form.tags.join())
         formData.append('crise', this.criseId)
         formData.append('natureEvent', this.form.type)
@@ -330,8 +344,10 @@ export default {
           formData.append('files[' + i + ']', file)
         }
         var filesToSave = _.intersectionBy(this.files, this.dbFiles, 'code')
-        if(filesToSave.length !== 0){
-          formData.append('filesToSave', JSON.stringify(_.map(filesToSave, file =>{return file.id})))
+        if (filesToSave.length !== 0) {
+          formData.append('filesToSave', JSON.stringify(_.map(filesToSave, file => {
+            return file.id
+          })))
         }
         // formulaire complementaire
         _.forEach(evt.target.getElementsByClassName('parametreComplement'), item => {
@@ -413,7 +429,7 @@ export default {
     loadEvenementNatures(natureId) {
       var types = []
       var categories = []
-      axios.get('/remocra/crises/'+this.criseId+'/activation').then((response) => {
+      axios.get('/remocra/crises/' + this.criseId + '/activation').then((response) => {
         if (response.data.data) {
           var activation = response.data.data
           this.dateMin = moment(activation).format('YYYY-MM-DD')
@@ -565,27 +581,45 @@ export default {
         })
       }
     },
-    getOption: function (id) {
-      return this.comboOptions.filter(function (value) {
+    getOption: function(id) {
+      return this.comboOptions.filter(function(value) {
         return value.nomChamp === id
       })
     },
     resetRate() {
       this.form.importance = 0
     },
-    checkTimeConstat(){
-         var input = document.getElementById("timeConstat")
-         console.log(this.timeMax )
-         console.log(this.form.time)
-         if (this.form.constat == this.dateMin && this.form.time < this.timeMin){
-           input.setCustomValidity(" La date de constatation doit être égale ou postérieure à la date de création de la crise")
-           input.reportValidity()
-         }else if(this.form.constat == this.dateMax && this.form.time > this.timeMax ) {
-           input.setCustomValidity("La date de constatation doit être égale ou antérieure à la date actuelle")
-           input.reportValidity()
-         } else {
-           input.setCustomValidity("")
-         }
+    checkTimeConstat() {
+      var input = document.getElementById("timeConstat")
+      console.log(this.timeMax)
+      console.log(this.form.time)
+      if (this.form.constat == this.dateMin && this.form.time < this.timeMin) {
+        input.setCustomValidity(" La date de constatation doit être égale ou postérieure à la date de création de la crise")
+        input.reportValidity()
+      } else if (this.form.constat == this.dateMax && this.form.time > this.timeMax) {
+        input.setCustomValidity("La date de constatation doit être égale ou antérieure à la date actuelle")
+        input.reportValidity()
+      } else {
+        input.setCustomValidity("")
+      }
+    },
+    loadEvenementInterventions(criseId) {
+      axios.get('/remocra/intervention/' + criseId).then((response) => {
+        if (response.data) {
+          var criseInterventions = []
+          console.log(response.data)
+          _.forEach(response.data.data, intervention => {
+            var dateIntervention = moment(new Date(intervention.dateCreation), 'YYYY-MM-DD[T]HH:mm:ss[Z]').format('DD/MM/YYYY' + ' - ' + 'HH:mm')
+            criseInterventions.push({
+              text: intervention.libelleType + '(' + dateIntervention + ')',
+              value: intervention.id
+            })
+          })
+          this.interventionAssocs = criseInterventions
+        }
+      }).catch(function(error) {
+        console.error('interventions', error)
+      })
     }
   }
 }
