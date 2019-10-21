@@ -520,6 +520,14 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+.gestcrise .ol-scale-line {
+  background: darkcyan;
+  right: 8px;
+  left: auto;
+  float: right;
+  position: absolute;
+}
+
 /*** 1400px ***/
 @media screen and (max-width: 1400px) {
   body .gestcrise .top_content {
@@ -558,23 +566,5 @@ body {
 
 .gestcrise .btn-group>.btn {
   cursor: pointer;
-}
-
-#mode-affichage .op {
-  background-color: #117a8b;
-  color: #fff;
-}
-
-#mode-affichage .ant {
-  background-color: #ffc107;
-  color: #fff;
-}
-
-.gestcrise .ant {
-  background-color: #ffc107;
-}
-
-.gestcrise .op {
-  background-color: #117a8b;
 }
 </style>

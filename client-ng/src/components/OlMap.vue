@@ -103,7 +103,7 @@
           </b-card-header>
           <b-collapse id="accordion3" accordion="my-accordion" role="tabpanel">
             <b-card-body>
-              <p class="card-text"> Indicateurs </p>
+              <indicateur></indicateur>
             </b-card-body>
           </b-collapse>
         </b-card>
@@ -296,6 +296,7 @@ import RechercheAnalyse from './RechercheAnalyse.vue'
 import Process from './Process.vue'
 import MapFeatures from './MapFeatures.vue'
 import TableauDonnees from './TableauDonnees.vue'
+import Indicateur from './Indicateur.vue'
 export default {
   name: 'OlMap',
   components: {
@@ -315,7 +316,8 @@ export default {
     ModalImportFile,
     Process,
     MapFeatures,
-    TableauDonnees
+    TableauDonnees,
+    Indicateur
   },
   props: {
     criseId: {
@@ -413,10 +415,6 @@ export default {
         zoom: 2
       })
     })
-    this.map.addControl(new ScaleLine({
-      units: 'metric'
-    }));
-    var self = this
     // Onrécupère la clé ignKey
     axios.get("/remocra/crises/cleign").then(response => {
       if (response.data) {
@@ -424,25 +422,6 @@ export default {
       }
     }).catch(function(error) {
       console.error('cleign', error)
-    })
-    // On récupere le mode d'affichage de curseur 
-    axios.get("/remocra/crises/coordonneaffichage").then(response => {
-      if (response.data) {
-        var mousePosition = new MousePosition({
-          coordinateFormat: function(coordinate) {
-            var coord = self.getFormattedCoord('x', coordinate[0], response.data.data, 5)
-            coord = coord + ' ' + self.getFormattedCoord('y', coordinate[1], response.data.data, 5)
-            return coord;
-          },
-          projection: 'EPSG:4326',
-          // comment the following two lines to have the mouse position
-          // be placed within the map.
-          className: 'custom-mouse-position',
-          target: document.getElementById('mouse-position'),
-          undefinedHTML: '&nbsp;'
-        });
-        this.map.addControl(mousePosition)
-      }
     })
     this.proj = this.map.getView().getProjection()
     this.epsgL93 = 'EPSG:' + this.sridL93
@@ -672,6 +651,31 @@ export default {
       this.refreshMap(this.criseId)
     },
     constructMap() {
+      // On récupere le mode d'affichage de curseur 
+      var self = this
+      axios.get("/remocra/crises/coordonneaffichage").then(response => {
+        if (response.data) {
+          var mousePosition = new MousePosition({
+            coordinateFormat: function(coordinate) {
+              var coord = self.getFormattedCoord('x', coordinate[0], response.data.data, 5)
+              coord = coord + ' ' + self.getFormattedCoord('y', coordinate[1], response.data.data, 5)
+              return coord;
+            },
+            projection: 'EPSG:4326',
+            // comment the following two lines to have the mouse position
+            // be placed within the map.
+            className: 'custom-mouse-position' + ((self.modeAffichage === "OPERATIONNEL") ? ' op' : ' ant'),
+            target: document.getElementById('mouse-position'),
+            undefinedHTML: '&nbsp;'
+          });
+          self.map.addControl(mousePosition)
+        }
+      })
+      var scaleLine = new ScaleLine({
+        units: 'metric',
+        className: ((self.modeAffichage === "OPERATIONNEL") ? ' op ' : ' ant ') + 'ol-scale-line'
+      });
+      this.map.addControl(scaleLine);
       axios.get('/remocra/ext-res/js/app/remocra/features/crises/data/carte.json').then(response => {
         if (response.data) {
           this.legend = response.data

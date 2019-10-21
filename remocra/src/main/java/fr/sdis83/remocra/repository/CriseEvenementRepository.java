@@ -3,7 +3,9 @@ package fr.sdis83.remocra.repository;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_DOCUMENT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_EVENEMENT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_EVENEMENT_COMPLEMENT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_EVENEMENT_INTERVENTION;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_SUIVI;
+import static fr.sdis83.remocra.db.model.remocra.Tables.INTERVENTION;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE_EVENEMENT_DROIT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE_NATURE_EVENEMENT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE_PROPRIETE_EVENEMENT;
@@ -42,6 +44,7 @@ import fr.sdis83.remocra.db.model.remocra.Tables;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenementComplement;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseSuivi;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.Intervention;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeCriseNatureEvenement;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeCriseProprieteEvenement;
 import fr.sdis83.remocra.domain.remocra.Document;
@@ -62,7 +65,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.impl.DSL;
-import org.json.*;
+import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.NameTokenizers;
 import org.modelmapper.jooq.RecordValueReader;
@@ -133,7 +136,7 @@ public class CriseEvenementRepository {
     for (Record evenement : criseEvenementRecord){
       CriseEvenement crEvenement = modelMapper.map(evenement, CriseEvenement.class);
       List<CriseSuivi> suivis= this.getMessages(crEvenement.getId());
-      //On recupere la liste des communes
+      //On recupere la liste des suivis
       crEvenement.setCriseSuivis(suivis);
       crEvenements.add(crEvenement);
     }
@@ -164,12 +167,17 @@ public class CriseEvenementRepository {
 
     for (Record evenement : criseEvenementRecord){
       CriseEvenement crEvenement = modelMapper.map(evenement, CriseEvenement.class);
+      //On recupere la liste des suivis
       List<CriseSuivi> suivis= this.getMessages(crEvenement.getId());
-      //On recupere la liste des communes
       crEvenement.setCriseSuivis(suivis);
-      List<CriseEvenementComplement> complement= this.getComplement(crEvenement.getId());
+
       //On recupere la liste des complements
+      List<CriseEvenementComplement> complement= this.getComplement(crEvenement.getId());
       crEvenement.setCriseComplement(complement);
+
+      //On récupère la liste des interventions
+      List<Intervention> interventions = this.getInterventions(crEvenement.getId());
+      crEvenement.setInterventions(interventions);
       crEvenements.add(crEvenement);
     }
 
@@ -212,6 +220,11 @@ public class CriseEvenementRepository {
   }
   public List<CriseEvenementComplement> getComplement(Long id){
     return context.select().from(CRISE_EVENEMENT_COMPLEMENT).where(CRISE_EVENEMENT_COMPLEMENT.EVENEMENT.eq(id)).fetchInto(CriseEvenementComplement.class);
+  }
+
+  public List<Intervention> getInterventions(Long id){
+    return context.select().from(CRISE_EVENEMENT_INTERVENTION)
+        .join(INTERVENTION).on(CRISE_EVENEMENT_INTERVENTION.INTERVENTION.eq(INTERVENTION.ID)).where(CRISE_EVENEMENT_INTERVENTION.CRISE_EVENEMENT.eq(id)).fetchInto(Intervention.class);
   }
 
   public fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenement createEvent( MultipartHttpServletRequest request) throws ParseException {
@@ -258,6 +271,15 @@ public class CriseEvenementRepository {
 
       //Ajout des complements
       this.addComplement(idCriseEvent, request.getParameterMap());
+
+      //Ajout des interventions
+      //mise à jour des interventions
+      if(request.getParameter("interventions") != null) {
+        List<Integer> interventions = new ArrayList<Integer>();
+        interventions = new JSONDeserializer<ArrayList<Integer>>().deserialize(request.getParameter("interventions"));
+        this.addInterventions(idCriseEvent, interventions);
+
+      }
 
       context.update(CRISE_EVENEMENT)
           .set(row(CRISE_EVENEMENT.NOM)
@@ -307,6 +329,16 @@ public class CriseEvenementRepository {
     //mise à jour des complements
     context.delete(CRISE_EVENEMENT_COMPLEMENT).where(CRISE_EVENEMENT_COMPLEMENT.EVENEMENT.eq(id)).execute();
     this.addComplement(id, request.getParameterMap());
+
+    //mise à jour des interventions
+    if(request.getParameter("interventions") != null) {
+      List<Integer> interventions = new ArrayList<Integer>();
+      interventions = new JSONDeserializer<ArrayList<Integer>>().deserialize(request.getParameter("interventions"));
+      context.delete(CRISE_EVENEMENT_INTERVENTION).where(CRISE_EVENEMENT_INTERVENTION.INTERVENTION.eq(id)).execute();
+      this.addInterventions(id, interventions);
+
+    }
+
 
     if(c.getCloture() != null){
       context.update(CRISE_EVENEMENT).set(row( CRISE_EVENEMENT.NOM, CRISE_EVENEMENT.DESCRIPTION, CRISE_EVENEMENT.CONSTAT, CRISE_EVENEMENT.REDEFINITION,CRISE_EVENEMENT.CLOTURE,
@@ -633,6 +665,19 @@ public class CriseEvenementRepository {
     }
   }
 
+  public void addInterventions(Long idCriseEvent, List<Integer> interventions){
+    if(interventions.size() != 0){
+      for (Integer id : interventions){
+        try {
+          context.insertInto(CRISE_EVENEMENT_INTERVENTION, CRISE_EVENEMENT_INTERVENTION.CRISE_EVENEMENT, CRISE_EVENEMENT_INTERVENTION.INTERVENTION)
+              .values(idCriseEvent, Long.valueOf(id)).execute();
+        } catch ( Exception e) {
+          e.printStackTrace();
+        }
+      }
+    }
+
+  }
   public void addEventDocuments(Map<String, MultipartFile> files, Long criseId, Long eventId) {
     if (files != null && !files.isEmpty()) {
       for (MultipartFile file : files.values()) {
