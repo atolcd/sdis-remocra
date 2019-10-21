@@ -520,7 +520,8 @@ public class CriseEvenementController {
             } else if ("origine".equals(filter.getFieldName())) {
                 secureAddToCompositeOrStatement(returned, "origine",
                         new ObjectStatement("origine", Operator.EQ, "'" + filter.getValue() + "'"));
-            }else if ("contexte".equals(filter.getFieldName())) {
+            } //on n'applique aucun filtre en mode anticipation
+            else if ("contexte".equals(filter.getFieldName()) && !(("ANTICIPATION").equals(filter.getValue()))) {
               secureAddToCompositeOrStatement(returned, "contexte",
                   new ObjectStatement("contexte", Operator.EQ, "'" + filter.getValue() + "'"));
             } else if ("importance".equals(filter.getFieldName())) {

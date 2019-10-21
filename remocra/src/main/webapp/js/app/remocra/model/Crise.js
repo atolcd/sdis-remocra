@@ -27,9 +27,12 @@ Ext.define('Sdis.Remocra.model.Crise', {
         type: 'date',
         dateFormat: 'c'
     }, {
-        name: 'carte',
-        type: 'string'
-    }
+         name: 'carteOp',
+         type: 'string'
+     },{
+         name: 'carteAnt',
+         type: 'string'
+     }
     ],
     associations: [{
             type: 'belongsTo',
@@ -68,10 +71,16 @@ Ext.define('Sdis.Remocra.model.Crise', {
     },{
           type : 'hasMany',
           model : 'Sdis.Remocra.model.OgcCouche',
-          associationKey : 'ogcCouches',
-          name : 'ogcCouches',
+          associationKey : 'ogcCouchesOp',
+          name : 'ogcCouchesOp',
           persist : true
-    }],
+    },{
+        type : 'hasMany',
+        model : 'Sdis.Remocra.model.OgcCouche',
+        associationKey : 'ogcCouchesAnt',
+        name : 'ogcCouchesAnt',
+        persist : true
+          }],
     proxy: {
         type: 'remocra.rest',
         url: Sdis.Remocra.util.Util.withBaseUrl('../crises')

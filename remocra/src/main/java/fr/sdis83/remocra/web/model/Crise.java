@@ -28,7 +28,9 @@ public class Crise {
 
   private Utilisateur auteurCrise;
 
-  private String carte;
+  private String carteOp;
+
+  private String carteAnt;
 
   private List<Commune> communes;
 
@@ -52,7 +54,9 @@ public class Crise {
 
   private List<ProcessusEtlPlanification> processusEtlPlanifications;
 
-  private List<OgcCouche> ogcCouches;
+  private List<OgcCouche> ogcCouchesOp;
+
+  private List<OgcCouche> ogcCouchesAnt;
 
 
 
@@ -131,20 +135,36 @@ public class Crise {
     this.processusEtlPlanifications = processusEtlPlanifications;
   }
 
-  public String getCarte() {
-    return carte;
+  public String getCarteOp() {
+    return carteOp;
   }
 
-  public void setCarte(String carte) {
-    this.carte = carte;
+  public void setCarteOp(String carteOp) {
+    this.carteOp = carteOp;
   }
 
-  public List<OgcCouche> getOgcCouches() {
-    return ogcCouches;
+  public String getCarteAnt() {
+    return carteAnt;
   }
 
-  public void setOgcCouches(List<OgcCouche> ogcCouches) {
-    this.ogcCouches = ogcCouches;
+  public void setCarteAnt(String carteAnt) {
+    this.carteAnt = carteAnt;
+  }
+
+  public List<OgcCouche> getOgcCouchesAnt() {
+    return ogcCouchesAnt;
+  }
+
+  public void setOgcCouchesAnt(List<OgcCouche> ogcCouchesAnt) {
+    this.ogcCouchesAnt = ogcCouchesAnt;
+  }
+
+  public List<OgcCouche> getOgcCouchesOp() {
+    return ogcCouchesOp;
+  }
+
+  public void setOgcCouchesOp(List<OgcCouche> ogcCouchesOp) {
+    this.ogcCouchesOp = ogcCouchesOp;
   }
 
 }

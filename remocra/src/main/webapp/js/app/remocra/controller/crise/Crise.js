@@ -548,7 +548,8 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
 
        // mettre à jour l'environnement
       var tabRight = gridServices.getRightPanel().getRootNode();
-      var couches = [];
+      var couchesAnt = [];
+      var couchesOp = [];
       // on vérifie si le composant est rendu (sinon il va
       // prendre toutes les caractéristiques par défaut)
       if (gridServices.rendered) {
@@ -556,12 +557,18 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
               var children = child;
               var childNodes = [].concat(children.childNodes);
               Ext.each(childNodes, function(child) {
-                  couches.push(child.raw.definition);
+
+                  if(child.data.isOp){
+                     couchesOp.push(child.raw.definition);
+                  }
+                  if(child.data.isAnt){
+                     couchesAnt.push(child.raw.definition);
+                  }
               });
           });
       }
-        crise.set('carte', couches);
-
+       crise.set('carteOp', couchesOp);
+       crise.set('carteAnt', couchesAnt);
         var form = fiche.down('form[name=ficheCreation]').getForm();
        if(form.isValid()){
               if (crise.communes().data.length === 0){
@@ -624,14 +631,19 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
 
      filterCouches: function() {
             var fiche = this.getCreationCrise(), gridServices = fiche.down('#gridServices'), crise = fiche.crise;
-            var couches = [];
-            var codes = [];
-            if (crise) {
-              couches = crise.ogcCouches();
-              couches.each(function(record) {
-                 codes.push(record.data.code);
+            var couchesOp = [], couchesAnt = [];
+            var codesOp = [], codesAnt = [];
+           if (crise) {
+              couchesOp = crise.ogcCouchesOp();
+              couchesOp.each(function(record) {
+                 codesOp.push(record.data.code);
               });
-            }
+
+              couchesAnt = crise.ogcCouchesAnt();
+                 couchesAnt.each(function(record) {
+                 codesAnt.push(record.data.code);
+              });
+           }
             var tabRight = gridServices.getRightPanel().getRootNode();
             var tabLeft = gridServices.getLeftPanel().getRootNode();
             tabRight.eachChild(function(child, index, array) {
@@ -643,8 +655,20 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
             Ext.each(childNodes, function(child) {
                 var codes = [];
                 var i = 0;
-                if(couches.length !== 0){
-                couches.each(function(record) {
+                if(couchesOp.length !== 0){
+                couchesOp.each(function(record) {
+                    //On ajoute la proprieté isOp pour déterminer si la case est coché ou pas
+                    if(record.raw.code === child.raw.code){
+                    child.data.isOp = true;
+                    }
+                    codes.push(record.data.code);
+                });
+                }
+                if(couchesAnt.length !== 0){
+                couchesAnt.each(function(record) {
+                    if(record.raw.code === child.raw.code){
+                       child.data.isAnt = true;
+                    }
                     codes.push(record.data.code);
                 });
                 }

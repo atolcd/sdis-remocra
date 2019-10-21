@@ -31,6 +31,10 @@ Ext.define('Sdis.Remocra.widget.AbstractDragAndDropTree', {
     rightStore: null,
     rightTitle: null,
 
+    //colonne dans le tree panel
+    leftColumns: [],
+    rightColumns: [],
+
     // multiSelection
     multiSelect: false,
 
@@ -44,6 +48,9 @@ Ext.define('Sdis.Remocra.widget.AbstractDragAndDropTree', {
 
     createComponent: function() {
         this.multiSelect = this.getMultiSelect();
+        this.leftColumns = this.getLeftColumns();
+        this.rightColumns = this.getRightColumns();
+
 
         // Création du panneau de droite
         this.rightStore = this.getRightStore();
@@ -54,6 +61,7 @@ Ext.define('Sdis.Remocra.widget.AbstractDragAndDropTree', {
         this.leftStore = this.getLeftStore();
         this.leftTitle = this.getLeftTitle();
         this.leftPanel = this.createLeftPanel();
+
 
         // Création du composant
         var items = [];
@@ -75,6 +83,7 @@ Ext.define('Sdis.Remocra.widget.AbstractDragAndDropTree', {
             title: this.leftTitle,
             store: this.leftStore,
             multiSelect: this.multiSelect,
+            columns: this.leftColumns,
             border: true,
             useArrows: true,
             rootVisible: false,
@@ -124,11 +133,10 @@ Ext.define('Sdis.Remocra.widget.AbstractDragAndDropTree', {
             multiSelect: self.multiSelect,
             title: this.rightTitle,
             store: this.rightStore,
-
+            columns: this.rightColumns,
             border: true,
             useArrows: true,
             rootVisible: false,
-
             viewConfig: {
                 plugins: {
                     ptype: 'treeviewdragdrop',
@@ -262,6 +270,14 @@ Ext.define('Sdis.Remocra.widget.AbstractDragAndDropTree', {
 
     getMultiSelect: function() {
         return false;
+    },
+
+    getLeftColumns: function() {
+        return this.leftColumns;
+    },
+
+    getRightColumns: function() {
+        return this.rightColumns;
     }
 
 

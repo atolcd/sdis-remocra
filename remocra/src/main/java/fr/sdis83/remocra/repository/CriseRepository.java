@@ -106,7 +106,7 @@ public class CriseRepository {
     Result<Record> criseRecord = null;
     List<Crise> cr = new ArrayList<Crise>();
       criseRecord = context.select(CRISE.ID.as("criseId"), CRISE.ACTIVATION.as("criseActivation"), CRISE.NOM.as("criseNom"), CRISE.DESCRIPTION.as("criseDescription"),
-          CRISE.CLOTURE.as("criseCloture"),CRISE.CARTE.as("criseCarte"))
+          CRISE.CLOTURE.as("criseCloture"),CRISE.CARTE_ANT.as("criseCarteAnt"), CRISE.CARTE_OP.as("criseCarteOp"))
           .select(TYPE_CRISE.ID.as("typeCriseId"), TYPE_CRISE.ACTIF.as("typeCriseActif"), TYPE_CRISE.NOM.as("typeCriseNom"), TYPE_CRISE.CODE.as("typeCriseCode"))
           .select(TYPE_CRISE_STATUT.ID.as("typeCriseStatutId"), TYPE_CRISE_STATUT.ACTIF.as("typeCriseStatutActif"), TYPE_CRISE_STATUT.NOM.as("typeCriseStatutNom"),
               TYPE_CRISE_STATUT.CODE.as("typeCriseStatutCode"))
@@ -149,7 +149,7 @@ public class CriseRepository {
 
     Record criseRecord= context
         .select(CRISE.ID.as("criseId"), CRISE.ACTIVATION.as("criseActivation"), CRISE.NOM.as("criseNom"), CRISE.DESCRIPTION.as("criseDescription"),
-            CRISE.CLOTURE.as("criseCloture"), CRISE.CARTE.as("criseCarte"))
+            CRISE.CLOTURE.as("criseCloture"), CRISE.CARTE_ANT.as("criseCarteAnt"), CRISE.CARTE_OP.as("criseCarteOp"))
         .select(TYPE_CRISE.ID.as("typeCriseId"), TYPE_CRISE.ACTIF.as("typeCriseActif"), TYPE_CRISE.NOM.as("typeCriseNom"), TYPE_CRISE.CODE.as("typeCriseCode"))
         .select(TYPE_CRISE_STATUT.ID.as("typeCriseStatutId"), TYPE_CRISE_STATUT.ACTIF.as("typeCriseStatutActif"), TYPE_CRISE_STATUT.NOM.as("typeCriseStatutNom"),
             TYPE_CRISE_STATUT.CODE.as("typeCriseStatutCode"))
@@ -185,16 +185,28 @@ public class CriseRepository {
       }
       crise.setProcessusEtlPlanifications(processus);
 
-      //on parse le string carte en json, on récupère les couches en fonction des codes
-    if(crise.getCarte() != null){
-      List<HashMap<String, Object>> couches = new JSONDeserializer<List<HashMap<String, Object>>>().deserialize(crise.getCarte());
-      List<String> codes = new ArrayList<String>();
-      for (HashMap<String, Object> couche: couches){
-        codes.add(String.valueOf(couche.get("id")));
+      //on parse le string carteOp en json, on récupère les couches en fonction des codes
+    if(crise.getCarteOp() != null){
+      List<HashMap<String, Object>> couchesOp = new JSONDeserializer<List<HashMap<String, Object>>>().deserialize(crise.getCarteOp());
+      List<String> codesOp = new ArrayList<String>();
+      for (HashMap<String, Object> couche: couchesOp){
+        codesOp.add(String.valueOf(couche.get("id")));
       }
 
-      List<OgcCouche> criseCouches = context.select().from(OGC_COUCHE).where(OGC_COUCHE.CODE.in(codes)).fetchInto(OgcCouche.class);
-      crise.setOgcCouches(criseCouches);
+      List<OgcCouche> criseCouchesOp = context.select().from(OGC_COUCHE).where(OGC_COUCHE.CODE.in(codesOp)).fetchInto(OgcCouche.class);
+      crise.setOgcCouchesOp(criseCouchesOp);
+    }
+
+    //on parse le string carteAnt en json, on récupère les couches en fonction des codes
+    if(crise.getCarteAnt() != null){
+      List<HashMap<String, Object>> couchesAnt = new JSONDeserializer<List<HashMap<String, Object>>>().deserialize(crise.getCarteAnt());
+      List<String> codesAnt = new ArrayList<String>();
+      for (HashMap<String, Object> couche: couchesAnt){
+        codesAnt.add(String.valueOf(couche.get("id")));
+      }
+
+      List<OgcCouche> criseCouchesAnt = context.select().from(OGC_COUCHE).where(OGC_COUCHE.CODE.in(codesAnt)).fetchInto(OgcCouche.class);
+      crise.setOgcCouchesAnt(criseCouchesAnt);
     }
 
     return crise;
@@ -222,14 +234,15 @@ public class CriseRepository {
     Date dateActivation = df.parse(String.valueOf(criseData.get("activation")));
     Instant t = new Instant(dateActivation);
     c.setActivation(t);
-    c.setCarte("["+ criseData.get("carte")+"]");
+    c.setCarteOp("["+ criseData.get("carteOp")+"]");
+    c.setCarteAnt("["+ criseData.get("carteAnt")+"]");
     TypeCrise tc = context.select().from(TYPE_CRISE).where(TYPE_CRISE.ID.eq(Long.valueOf(String.valueOf(items.get("typeCrise"))))).fetchInto(TypeCrise.class).get(0);
     TypeCriseStatut tcs = context.select().from(TYPE_CRISE_STATUT).where(TYPE_CRISE_STATUT.CODE.eq("EN_COURS")).fetchInto(TypeCriseStatut.class).get(0);
     c.setTypeCrise(tc.getId());
     c.setStatut(tcs.getId());
     c.setAuteurCrise(utilisateurService.getCurrentUtilisateur().getId());
-    int result = context.insertInto(CRISE, CRISE.NOM, CRISE.TYPE_CRISE, CRISE.DESCRIPTION, CRISE.ACTIVATION, CRISE.STATUT, CRISE.CARTE, CRISE.AUTEUR_CRISE)
-        .values(c.getNom(), c.getTypeCrise(),c.getDescription(),c.getActivation(), c.getStatut(), c.getCarte(), c.getAuteurCrise()).execute();
+    int result = context.insertInto(CRISE, CRISE.NOM, CRISE.TYPE_CRISE, CRISE.DESCRIPTION, CRISE.ACTIVATION, CRISE.STATUT, CRISE.CARTE_ANT, CRISE.CARTE_OP, CRISE.AUTEUR_CRISE)
+        .values(c.getNom(), c.getTypeCrise(),c.getDescription(),c.getActivation(), c.getStatut(), c.getCarteAnt(), c.getCarteOp(), c.getAuteurCrise()).execute();
     if(result != 0){
        Long idCrise = context.select(DSL.max((CRISE.ID))).from(CRISE).fetchOne().value1();
        if(idCommunes.size() != 0){
@@ -296,8 +309,8 @@ public class CriseRepository {
        Instant tCloture = new Instant(dateCloture);
        c.setCloture(tCloture);
     }
-    System.out.println(c.getCloture());
-    c.setCarte("["+ criseData.get("carte")+"]");
+    c.setCarteOp("["+ criseData.get("carteOp")+"]");
+    c.setCarteAnt("["+ criseData.get("carteAnt")+"]");
     TypeCrise tc = context.select().from(TYPE_CRISE).where(TYPE_CRISE.ID.eq(Long.valueOf(String.valueOf(items.get("typeCrise"))))).fetchInto(TypeCrise.class).get(0);
 
     String codeStatut = c.getCloture() != null ? "TERMINE" : "EN_COURS" ;
@@ -310,13 +323,13 @@ public class CriseRepository {
     int result = 0;
     if(c.getCloture() != null){
       result = context.update(CRISE)
-          .set(row(CRISE.NOM, CRISE.TYPE_CRISE, CRISE.DESCRIPTION, CRISE.ACTIVATION, CRISE.CLOTURE, CRISE.STATUT, CRISE.CARTE, CRISE.AUTEUR_CRISE)
-              ,row(c.getNom(), c.getTypeCrise(),c.getDescription(),c.getActivation(), c.getCloture(), c.getStatut(), c.getCarte(), c.getAuteurCrise()))
+          .set(row(CRISE.NOM, CRISE.TYPE_CRISE, CRISE.DESCRIPTION, CRISE.ACTIVATION, CRISE.CLOTURE, CRISE.STATUT, CRISE.CARTE_ANT,CRISE.CARTE_OP, CRISE.AUTEUR_CRISE)
+              ,row(c.getNom(), c.getTypeCrise(),c.getDescription(),c.getActivation(), c.getCloture(), c.getStatut(), c.getCarteAnt(), c.getCarteOp(), c.getAuteurCrise()))
           .where(CRISE.ID.eq(id)).execute();
     }else {
       result = context.update(CRISE)
-          .set(row(CRISE.NOM, CRISE.TYPE_CRISE, CRISE.DESCRIPTION, CRISE.ACTIVATION , CRISE.STATUT, CRISE.CARTE, CRISE.AUTEUR_CRISE)
-              ,row(c.getNom(), c.getTypeCrise(),c.getDescription(),c.getActivation(), c.getStatut(), c.getCarte(), c.getAuteurCrise()))
+          .set(row(CRISE.NOM, CRISE.TYPE_CRISE, CRISE.DESCRIPTION, CRISE.ACTIVATION , CRISE.STATUT, CRISE.CARTE_ANT, CRISE.CARTE_OP, CRISE.AUTEUR_CRISE)
+              ,row(c.getNom(), c.getTypeCrise(),c.getDescription(),c.getActivation(), c.getStatut(), c.getCarteAnt(),c.getCarteOp(), c.getAuteurCrise()))
           .where(CRISE.ID.eq(id)).execute();
     }
 

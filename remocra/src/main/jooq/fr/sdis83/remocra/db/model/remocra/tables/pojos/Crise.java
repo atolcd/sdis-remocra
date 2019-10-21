@@ -25,7 +25,7 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Crise implements Serializable {
 
-	private static final long serialVersionUID = 1692035639;
+	private static final long serialVersionUID = 1835231193;
 
 	private Long    id;
 	private String  nom;
@@ -34,10 +34,11 @@ public class Crise implements Serializable {
 	private Instant cloture;
 	private Long    statut;
 	private Long    typeCrise;
-	private String  carte;
+	private String  carteAnt;
 	private Instant redefinition;
 	private Long    criseParente;
 	private Long    auteurCrise;
+	private String  carteOp;
 
 	public Crise() {}
 
@@ -49,10 +50,11 @@ public class Crise implements Serializable {
 		this.cloture = value.cloture;
 		this.statut = value.statut;
 		this.typeCrise = value.typeCrise;
-		this.carte = value.carte;
+		this.carteAnt = value.carteAnt;
 		this.redefinition = value.redefinition;
 		this.criseParente = value.criseParente;
 		this.auteurCrise = value.auteurCrise;
+		this.carteOp = value.carteOp;
 	}
 
 	public Crise(
@@ -63,10 +65,11 @@ public class Crise implements Serializable {
 		Instant cloture,
 		Long    statut,
 		Long    typeCrise,
-		String  carte,
+		String  carteAnt,
 		Instant redefinition,
 		Long    criseParente,
-		Long    auteurCrise
+		Long    auteurCrise,
+		String  carteOp
 	) {
 		this.id = id;
 		this.nom = nom;
@@ -75,10 +78,11 @@ public class Crise implements Serializable {
 		this.cloture = cloture;
 		this.statut = statut;
 		this.typeCrise = typeCrise;
-		this.carte = carte;
+		this.carteAnt = carteAnt;
 		this.redefinition = redefinition;
 		this.criseParente = criseParente;
 		this.auteurCrise = auteurCrise;
+		this.carteOp = carteOp;
 	}
 
 	public Long getId() {
@@ -144,12 +148,12 @@ public class Crise implements Serializable {
 		return this;
 	}
 
-	public String getCarte() {
-		return this.carte;
+	public String getCarteAnt() {
+		return this.carteAnt;
 	}
 
-	public Crise setCarte(String carte) {
-		this.carte = carte;
+	public Crise setCarteAnt(String carteAnt) {
+		this.carteAnt = carteAnt;
 		return this;
 	}
 
@@ -177,6 +181,15 @@ public class Crise implements Serializable {
 
 	public Crise setAuteurCrise(Long auteurCrise) {
 		this.auteurCrise = auteurCrise;
+		return this;
+	}
+
+	public String getCarteOp() {
+		return this.carteOp;
+	}
+
+	public Crise setCarteOp(String carteOp) {
+		this.carteOp = carteOp;
 		return this;
 	}
 }

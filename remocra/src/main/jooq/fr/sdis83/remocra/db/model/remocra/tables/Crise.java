@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Crise extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -98441623;
+	private static final long serialVersionUID = -1696501821;
 
 	/**
 	 * The reference instance of <code>remocra.crise</code>
@@ -89,9 +89,9 @@ public class Crise extends TableImpl<Record> {
 	public final TableField<Record, Long> TYPE_CRISE = createField("type_crise", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "Identifiant du type de crise associé");
 
 	/**
-	 * The column <code>remocra.crise.carte</code>. Groupe de couches complémentaires à carte.json
+	 * The column <code>remocra.crise.carte_ant</code>. Groupe de couches complémentaires à carte.json (anticipation)
 	 */
-	public final TableField<Record, String> CARTE = createField("carte", org.jooq.impl.SQLDataType.VARCHAR, this, "Groupe de couches complémentaires à carte.json");
+	public final TableField<Record, String> CARTE_ANT = createField("carte_ant", org.jooq.impl.SQLDataType.VARCHAR, this, "Groupe de couches complémentaires à carte.json (anticipation)");
 
 	/**
 	 * The column <code>remocra.crise.redefinition</code>. Date et heure de modification de la crise
@@ -107,6 +107,11 @@ public class Crise extends TableImpl<Record> {
 	 * The column <code>remocra.crise.auteur_crise</code>.
 	 */
 	public final TableField<Record, Long> AUTEUR_CRISE = createField("auteur_crise", org.jooq.impl.SQLDataType.BIGINT, this, "");
+
+	/**
+	 * The column <code>remocra.crise.carte_op</code>. Groupe de couches complémentaires à carte.json (operationnel)
+	 */
+	public final TableField<Record, String> CARTE_OP = createField("carte_op", org.jooq.impl.SQLDataType.VARCHAR, this, "Groupe de couches complémentaires à carte.json (operationnel)");
 
 	/**
 	 * Create a <code>remocra.crise</code> table reference

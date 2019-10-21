@@ -372,7 +372,7 @@ public class CriseEvenementRepository {
     Condition cta = trueCondition();
     Condition ci = trueCondition();
     //Par defaut en mode anticipation on voit tout
-    Condition cc = DSL.and(CRISE_EVENEMENT.CONTEXTE.like("%ANTICIPATION%"));
+    Condition cc = trueCondition();
 
     int origine = 0;
     int type = 0;
@@ -455,7 +455,8 @@ public class CriseEvenementRepository {
         }else {
           ci= DSL.and(CRISE_EVENEMENT.IMPORTANCE.in(filterValue));
         }
-      }else if(filter.getFieldName().equals("contexte")){
+      } //on n'applique aucun filtre en mode anticipation
+      else if(filter.getFieldName().equals("contexte") && !(("ANTICIPATION").equals(filter.getValue()))){
         cc = DSL.and(CRISE_EVENEMENT.CONTEXTE.like("%"+filter.getValue()+"%"));
       }
     }

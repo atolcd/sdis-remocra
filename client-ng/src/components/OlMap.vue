@@ -42,7 +42,12 @@
         </div>
         <div class="big-h-spacer" />
         <b-form-group class="text-start my-1">
-          <b-form-radio-group :id="'btnradios'+criseId" buttons button-variant="outline-secondary" v-model="modeAffichage" :options="modeAffichages" name="radioBtnOutline" @input="changeContext" />
+          <div id="mode-affichage">
+            <b-form-radio-group :id="'btnradios'+criseId" buttons v-model="modeAffichage" name="radioBtnOutline" @input="changeContext">
+              <b-form-radio class="op" value="OPERATIONNEL">Opérationnel</b-form-radio>
+              <b-form-radio class="ant" value="ANTICIPATION">Anticipation</b-form-radio>
+            </b-form-radio-group>
+          </div>
         </b-form-group>
         <div class="big-h-spacer" />
         <div class="text-start my-1">
@@ -56,7 +61,7 @@
     <b-col class="left_content">
       <div role="tablist">
         <b-card no-body class="mb-1">
-          <b-card-header header-tag="header" class="p-1" role="tab">
+          <b-card-header header-tag="header" class="p-1" :class="modeAffichage == 'OPERATIONNEL' ? 'op' : 'ant'" role="tab">
             <span style="cursor:pointer" href="#" v-b-toggle.accordion1>Évènements</span><span>
               <div class="toolbar">
                 <b-btn @click="addEvent" class="ctrl" title="Nouvel évènement"><img src="/remocra/static/img/event-add.svg"></b-btn>
@@ -75,7 +80,7 @@
           </b-collapse>
         </b-card>
         <b-card no-body class="mb-1">
-          <b-card-header header-tag="header" class="p-1" role="tab">
+          <b-card-header header-tag="header" class="p-1" role="tab" :class="modeAffichage == 'OPERATIONNEL' ? 'op' : 'ant'">
             <span style="cursor:pointer" href="#" v-b-toggle.accordion2>Documents</span>
             <div class="toolbar">
               <span class="document">
@@ -93,7 +98,7 @@
           </b-collapse>
         </b-card>
         <b-card no-body class="mb-1">
-          <b-card-header header-tag="header" class="p-1" role="tab">
+          <b-card-header header-tag="header" class="p-1" role="tab" :class="modeAffichage == 'OPERATIONNEL' ? 'op' : 'ant'">
             <span style="cursor:pointer" block href="#" v-b-toggle.accordion3 variant="info">Indicateurs</span>
           </b-card-header>
           <b-collapse id="accordion3" accordion="my-accordion" role="tabpanel">
@@ -103,7 +108,7 @@
           </b-collapse>
         </b-card>
         <b-card no-body class="mb-1">
-          <b-card-header header-tag="header" class="p-1" role="tab">
+          <b-card-header header-tag="header" class="p-1" role="tab" :class="modeAffichage == 'OPERATIONNEL' ? 'op' : 'ant'">
             <span style="cursor:pointer" block href="#" v-b-toggle.accordion4 variant="info">Recherches et analyses</span>
           </b-card-header>
           <b-collapse id="accordion4" accordion="my-accordion" role="tabpanel">
@@ -129,7 +134,7 @@
                         <tableau-donnees :criseId="criseId" ref="TableauDonnees" :pageSize='10'></tableau-donnees>
                       </b-card-body>
                     </b-collapse>
-                    <b-card-header header-tag="header" class="p-1" role="tab">
+                    <b-card-header header-tag="header" class="p-1" role="tab" :class="modeAffichage == 'OPERATIONNEL' ? 'op' : 'ant'">
                       <span style="cursor:pointer" block href="#" v-b-toggle.accordion7 visible variant="info">Données</span>
                     </b-card-header>
                   </b-card>
@@ -143,7 +148,7 @@
     <b-col class="right_content">
       <div role="tablist">
         <b-card no-body class="mb-1">
-          <b-card-header header-tag="header" class="p-1" role="tab">
+          <b-card-header header-tag="header" class="p-1" role="tab" :class="modeAffichage == 'OPERATIONNEL' ? 'op' : 'ant'">
             <span style="cursor:pointer" block href="#" v-b-toggle.accordion5 variant="info">Couches</span>
           </b-card-header>
           <b-collapse id="accordion5" visible accordion="my-accordion2" role="tabpanel">
@@ -183,7 +188,7 @@
           </b-collapse>
         </b-card>
         <b-card no-body class="mb-1">
-          <b-card-header header-tag="header" class="p-1" role="tab">
+          <b-card-header header-tag="header" class="p-1" role="tab" :class="modeAffichage == 'OPERATIONNEL' ? 'op' : 'ant'">
             <span style="cursor:pointer" block href="#" v-b-toggle.accordion6 variant="info">Légende</span>
           </b-card-header>
           <b-collapse id="accordion6" accordion="my-accordion2" role="tabpanel">
@@ -693,7 +698,9 @@ export default {
       axios.get('/remocra/crises/' + this.criseId).then(response => {
         if (response.data) {
           if (response.data.data.carte !== null) {
-            var extraLayers = JSON.parse(response.data.data.carte)
+            var extraLayersOp = JSON.parse(response.data.data.carteOp)
+            var extraLayersAnt = JSON.parse(response.data.data.carteAnt)
+            var extraLayers = (this.modeAffichage === "OPERATIONNEL") ? extraLayersOp : extraLayersAnt
             if (extraLayers && extraLayers.length !== 0) {
               //  Recherche du groupe "additional"
               var additionalGroup = null
@@ -1955,6 +1962,7 @@ export default {
         'crise': this.criseId,
         'contexte': this.modeAffichage
       })
+      this.constructMap()
     }
   }
 }

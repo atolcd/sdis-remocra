@@ -77,6 +77,8 @@ Ext.define('Sdis.Remocra.features.crises.bloc.Services', {
            Ext.Array.forEach(selection, function(item) {
              item.parentId = item.parentNode.data.id;
              var rightParent = self.rightPanel.getRootNode().findChild('id', item.parentId);
+             item.data.isAnt = true;
+             item.data.isOp = true;
              rightParent.appendChild(item);
            });
        },
@@ -100,5 +102,69 @@ Ext.define('Sdis.Remocra.features.crises.bloc.Services', {
        },
        getMultiSelect: function() {
           return true;
-       }
-   });
+       },
+
+       getRightColumns: function (){
+         return [{
+                xtype: 'treecolumn', //this is so we know which column will show the tree
+                text: 'Couches',
+                flex: 3,
+                dataIndex: 'nom'
+            }, {
+                xtype: 'mytreecheckcolumn',
+                header: 'Opérationel',
+                dataIndex: 'isOp',
+                stopSelection : false
+
+            }, {
+                 xtype: 'mytreecheckcolumn',
+                 header: 'Anticipation',
+                 dataIndex: 'isAnt',
+                 stopSelection : false
+            }];
+       },
+         getLeftColumns: function (){
+            return [{
+                   xtype: 'treecolumn', //this is so we know which column will show the tree
+                   text: 'Couches',
+                   flex: 3,
+                   dataIndex: 'nom'
+               }];
+          }
+    });
+
+
+
+Ext.define('My.tree.column.CheckColumn', {
+    extend: 'Ext.ux.CheckColumn',
+    alias: 'widget.mytreecheckcolumn',
+
+       processEvent: function(type, view, cell, recordIndex, cellIndex, e) {
+                   if (type == 'mousedown' || (type == 'keydown' && (e.getKey() == e.ENTER || e.getKey() == e.SPACE))) {
+                       var record = view.store.getAt(recordIndex),
+                           dataIndex = this.dataIndex,
+                           checked = !record.get(dataIndex);
+
+                       record.set(dataIndex, checked);
+                       this.fireEvent('checkchange', this, recordIndex, checked);
+                       // cancel selection.
+                       return false;
+                   } else {
+                       return this.callParent(arguments);
+                   }
+               },
+
+           renderer : function(value, meta, record) {
+               if (record.isLeaf()) {
+                   return this.callParent(arguments);
+               }
+               return ;
+           },
+           listeners: {
+             "checkchange" : function(column, rowIndex, checked, opts ){
+
+             }
+           }
+
+
+});

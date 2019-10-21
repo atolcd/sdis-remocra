@@ -1,5 +1,5 @@
 <template>
-<div :id ="'gestcrise'+crise" class="gestcrise">
+<div :id="'gestcrise'+crise" class="gestcrise">
   <ol-map :criseId="crise"></ol-map>
   <!--<router-view/>-->
   <notifications group="remocra" position="top right" animation-type="velocity" :duration="3000" />
@@ -7,7 +7,9 @@
 </template>
 
 <script>
-import { loadProgressBar } from 'axios-progress-bar'
+import {
+  loadProgressBar
+} from 'axios-progress-bar'
 import 'axios-progress-bar/dist/nprogress.css'
 import OlMap from './components/OlMap.vue'
 export default {
@@ -21,8 +23,10 @@ export default {
       required: true
     }
   },
-  mounted(){
-    loadProgressBar({ parent: "#gestcrise"+this.crise })
+  mounted() {
+    loadProgressBar({
+      parent: "#gestcrise" + this.crise
+    })
   },
   data() {
     return {}
@@ -70,13 +74,13 @@ export default {
 }
 
 .gestcrise .nav-tabs {
-    border-bottom: 1px solid #eff1f3
+  border-bottom: 1px solid #eff1f3
 }
 
 .gestcrise .nav-tabs .nav-link.active {
-    color: #495057;
-    background-color: #dfdfdf;
-    border-color: #eff1f3 #eff1f3 transparent;
+  color: #495057;
+  background-color: #dfdfdf;
+  border-color: #eff1f3 #eff1f3 transparent;
 }
 
 .gestcrise .modal-dialog .form-control {
@@ -220,12 +224,16 @@ export default {
   padding: 15px;
 }
 
-.gestcrise .evenements , .messages, .documents, .form-parameters, .sidebar {
+.gestcrise .evenements,
+.messages,
+.documents,
+.form-parameters,
+.sidebar {
   max-height: 400px;
   overflow-y: scroll;
 }
 
-.gestcrise .form-parameters{
+.gestcrise .form-parameters {
   padding: 6px;
 }
 
@@ -386,7 +394,6 @@ export default {
   position: absolute;
   margin-left: 525px;
   background-color: #f4f4f4;
-
 }
 
 .gestcrise #files {
@@ -399,6 +406,7 @@ export default {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
 .gestcrise .documents .list-group-item {
   padding: 3px;
 }
@@ -466,7 +474,8 @@ body {
   display: -webkit-box;
   -webkit-box-align: baseline;
 }
-.gestcrise .gears_btn{
+
+.gestcrise .gears_btn {
   float: right;
   cursor: pointer;
 }
@@ -474,16 +483,16 @@ body {
 #nprogress .bar {
   height: 10px;
   display: flex;
-    flex-direction: column;
-    justify-content: center;
-    color: #fff;
-    text-align: center;
-    white-space: nowrap;
-    background-color: #007bff;
-    transition: width .6s ease;
-    background-image: linear-gradient(45deg,hsla(0,0%,100%,.15) 25%,transparent 0,transparent 50%,hsla(0,0%,100%,.15) 0,hsla(0,0%,100%,.15) 75%,transparent 0,transparent);
-    background-size: 2rem 2rem;
-    animation:  1s linear infinite;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  background-color: #007bff;
+  transition: width .6s ease;
+  background-image: linear-gradient(45deg, hsla(0, 0%, 100%, .15) 25%, transparent 0, transparent 50%, hsla(0, 0%, 100%, .15) 0, hsla(0, 0%, 100%, .15) 75%, transparent 0, transparent);
+  background-size: 2rem 2rem;
+  animation: 1s linear infinite;
 }
 
 .gestcrise .ol-scale-line {
@@ -549,5 +558,23 @@ body {
 
 .gestcrise .btn-group>.btn {
   cursor: pointer;
+}
+
+#mode-affichage .op {
+  background-color: #117a8b;
+  color: #fff;
+}
+
+#mode-affichage .ant {
+  background-color: #ffc107;
+  color: #fff;
+}
+
+.gestcrise .ant {
+  background-color: #ffc107;
+}
+
+.gestcrise .op {
+  background-color: #117a8b;
 }
 </style>

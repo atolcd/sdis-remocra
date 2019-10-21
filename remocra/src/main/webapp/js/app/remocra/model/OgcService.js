@@ -13,7 +13,15 @@ Ext.define('Sdis.Remocra.model.OgcService', {
     }, {
         name: 'description',
         type: 'string'
-    }
+    }, {
+              name: 'isOp',
+              type: 'boolean',
+              defaul: true
+          }, {
+                    name: 'isAnt',
+                   type: 'boolean',
+                                 defaul: true
+                }
     ],
     associations: [{
             type: 'hasMany',
