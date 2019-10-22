@@ -427,7 +427,7 @@ export default {
     this.epsgL93 = 'EPSG:' + this.sridL93
     proj4.defs(this.epsgL93, '+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs')
     register(proj4)
-    this.constructMap()
+    this.changeContext()
     _.delay(this.map.updateSize.bind(this.map), 10)
     this.createWorkingLayer('workingLayer')
     this.addModifyInteraction()
@@ -733,6 +733,7 @@ export default {
       })
     },
     addLayersFromLayerConfig(legendData) {
+      console.log(legendData)
       var iGrp = legendData.items.length
       //  Chaque groupe (à l'envers)
       for (iGrp; iGrp > 0; iGrp--) {
@@ -1962,11 +1963,16 @@ export default {
       return str;
     },
     changeContext() {
-      this.$root.$options.bus.$emit(eventTypes.LOAD_EVENEMENTS, {
-        'crise': this.criseId,
-        'contexte': this.modeAffichage
-      })
+      //Nettoyage de la carte  
+      this.map.setLayerGroup(new LayerGroup())
       this.constructMap()
+      var self = this
+      setTimeout(function() {
+        self.$root.$options.bus.$emit(eventTypes.LOAD_EVENEMENTS, {
+          'crise': self.criseId,
+          'contexte': self.modeAffichage
+        })
+      }, 2000)
     }
   }
 }

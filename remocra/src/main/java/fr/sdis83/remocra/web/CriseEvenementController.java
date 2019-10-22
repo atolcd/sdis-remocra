@@ -521,9 +521,12 @@ public class CriseEvenementController {
                 secureAddToCompositeOrStatement(returned, "origine",
                         new ObjectStatement("origine", Operator.EQ, "'" + filter.getValue() + "'"));
             } //on n'applique aucun filtre en mode anticipation
-            else if ("contexte".equals(filter.getFieldName()) && !(("ANTICIPATION").equals(filter.getValue()))) {
-              secureAddToCompositeOrStatement(returned, "contexte",
-                  new ObjectStatement("contexte", Operator.EQ, "'" + filter.getValue() + "'"));
+            else if ("contexte".equals(filter.getFieldName())) {
+              if(!(("ANTICIPATION").equals(filter.getValue()))){
+                secureAddToCompositeOrStatement(returned, "contexte",
+                    new ObjectStatement("contexte", Operator.EQ, "'" + filter.getValue() + "'"));
+              }
+
             } else if ("importance".equals(filter.getFieldName())) {
               List<Integer> filterValue = new ArrayList<Integer>();
               int value = Integer.valueOf(filter.getValue());
