@@ -7,11 +7,9 @@ Le fichier _"remocraXXXX.properties"_ doit contenir les informations suivantes :
 [width="100%",options="header"]
 |===================
 | Paramètre | Description
-| PDI_PATH_FILES_IMPORT | Emplacement des fichiers utilisés pour l'exportation des fichiers PEI _ex :_ /var/remocra/pdi/export/
+| PDI_PATH_FILES_IMPORT | Emplacement des fichiers utilisés pour l'exportation des fichiers PEI _ex :_ /var/remocra/pdi/depot/SHP/
 | PDI_FILTRE_SHP	| Filtre sur le format shape utilisé pour l'importation des couches cartographiques -ex :- .*shp|.*SHP
 |===================
 
 ===== Lancement et planification de la synchronisation
 L'exécution automatique s'effectue en planifiant le lancement du fichier ```/var/remocra/pdi/traitements_sdis/bspp/import_sig_to_remocra.sh``` avec l'utilisateur ```postgres```.
-
-
