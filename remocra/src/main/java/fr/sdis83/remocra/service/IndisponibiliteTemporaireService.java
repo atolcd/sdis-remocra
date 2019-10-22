@@ -98,16 +98,23 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
 
     public Query getIndisponibilitesQuery(List<ItemFilter> itemFilter, List<ItemSorting> sortList, Projection projection, Integer limit, Integer offset) {
         Long zc = utilisateurService.getCurrentZoneCompetenceId();
-        StringBuilder sql = new StringBuilder("select ").append(projection)
-                .append(" from remocra.hydrant_indispo_temporaire hit where hit.id in (")
-                .append("select indisponibilite from remocra.hydrant_indispo_temporaire_hydrant hith ")
-                .append("where ")
+        StringBuilder sql = new StringBuilder("select ").append(projection).append(" from (")
+                .append(" select hit.*, (select c.nom ")
+                    .append("from remocra.commune c ")
+                    .append("join remocra.hydrant h on h.commune=c.id ")
+                    .append("join remocra.hydrant_indispo_temporaire_hydrant hith on h.id=hith.hydrant ")
+                    .append("join remocra.hydrant_indispo_temporaire hitd on hith.indisponibilite=hitd.id ")
+                    .append("where hitd.id=hit.id group by nom) as commune ")
+                .append(" from remocra.hydrant_indispo_temporaire hit ")
+                .append("where hit.id in (")
+                    .append("select indisponibilite from remocra.hydrant_indispo_temporaire_hydrant hith ")
+                    .append("where ")
                 // Filtre par zone de compétence systématique
-                .append("hith.hydrant in(")
-                .append("select h.id from remocra.hydrant h where h.commune in(")
-                .append("select zcc.commune_id from remocra.zone_competence_commune zcc where zcc.zone_competence_id =:zc")
+                    .append("hith.hydrant in(")
+                        .append("select h.id from remocra.hydrant h where h.commune in(")
+                            .append("select zcc.commune_id from remocra.zone_competence_commune zcc where zcc.zone_competence_id =:zc")
                 .append("))");
-                //
+
         if (itemFilter!=null && itemFilter.size()>0) {
             for (ItemFilter f : itemFilter) {
                 String fieldName = null;
@@ -132,7 +139,6 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
                     logger.info("Indispo temporaires, critère de filtre inconnu : " + f.getFieldName());
                     continue;
                 }
-
                 sql.append(" and ");
                 switch(tc) {
                     case EQ:
@@ -163,6 +169,8 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
                     fieldName = "date_fin";
                 } else if ("motif".equals(s.getFieldName())) {
                     fieldName = "motif";
+                } else if ("commune".equals(s.getFieldName())) {
+                    fieldName = "commune";
                 } else {
                     logger.info("Indispo temporaires, critère de tri inconnu : " + s.getFieldName());
                     continue;
@@ -177,6 +185,7 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
         if (limit != null && offset != null) {
             sql.append(" limit :limit offset :offset");
         }
+        sql.append(" ) AS R");
         Query query = projection == Projection.COUNT ? entityManager.createNativeQuery(sql.toString())
                 : entityManager.createNativeQuery(sql.toString(), HydrantIndispoTemporaire.class);
         query.setParameter("zc", zc);

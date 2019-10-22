@@ -126,7 +126,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
              text: 'Commune',
              align : 'center',
              dataIndex: 'commune',
-             sortable: false,
+             sortable: true,
              filterable: true,
              filter: {
                  xtype: 'combo',
