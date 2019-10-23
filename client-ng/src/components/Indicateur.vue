@@ -3,9 +3,9 @@
   <!-- ============================================ Onglet par défaut ============================================ -->
   <div v-if="useCustomIndicateur== false">
     <b-tabs>
-      <b-tab v-for="(indicateur,index) in indicateurs" :key="index" :title="indicateur.nom">
+      <b-tab v-for="(indicateur,index) in indicateurs" :key="index" :title="indicateur.nom" @click="currentPage = 1">
         <div>
-          <b-table id="tab" striped hover :items="indicateur.indicateur" small :current-page="currentPage" :per-page="perPage" />
+          <b-table :id="'tab' + index" striped hover :items="indicateur.indicateur" small :current-page="currentPage" :per-page="perPage" />
           <b-pagination aria-controls="tab" v-model="currentPage" :total-rows="(indicateur.indicateur).length" :per-page="perPage" align="fill" size="sm" class="my-0">
           </b-pagination>
         </div>
