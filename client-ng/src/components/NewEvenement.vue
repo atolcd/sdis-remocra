@@ -21,7 +21,7 @@
             <b-form-textarea id="descriptEvent" v-model="form.description" class="form-control" :rows="3" :max-rows="6">
             </b-form-textarea>
           </b-form-group>
-          <b-form-group horizontal label="Intervention associée:" label-for="interventionAssoc">
+          <b-form-group v-if="showInterventions" horizontal label="Intervention associée:" label-for="interventionAssoc">
             <b-form-checkbox-group v-model="form.interventionAssoc" :options="interventionAssocs" name="buttons-1"></b-form-checkbox-group>
           </b-form-group>
           <b-form-group horizontal label="Origine:" label-for="origine">
@@ -122,6 +122,7 @@ export default {
   data() {
     return {
       file: null,
+      showInterventions: true,
       files: [],
       dbFiles: [],
       title: 'Nouvel évènement',
@@ -177,13 +178,14 @@ export default {
   methods: {
     createEvent() {
       this.loadEvenementNatures(null)
-      this.loadEvenementInterventions(this.criseId)
+      this.showInterventions = false
       this.$root.$emit('bv::hide::popover')
       this.title = 'Nouvel évènement'
       this.showTabComplement()
       this.$refs.modal.show()
     },
     createCartoEvent(criseId, natureId, wktfeaturegeom) {
+      this.showInterventions = true
       this.natureId = natureId
       this.form.geometrie = wktfeaturegeom
       this.loadEvenementNatures(natureId)
@@ -209,6 +211,9 @@ export default {
       if (evenementId !== null) {
         axios.get('/remocra/evenements/' + criseId + '/' + evenementId).then((response) => {
           var evenement = response.data.data[0]
+          if (evenement.geometrie !== null) {
+            this.showInterventions = true
+          }
           this.form.titre = evenement.nom
           this.form.description = evenement.description
           this.form.constat = moment(evenement.constat.toString()).format('YYYY-MM-DD')
@@ -611,7 +616,7 @@ export default {
           _.forEach(response.data.data, intervention => {
             var dateIntervention = moment(new Date(intervention.dateCreation), 'YYYY-MM-DD[T]HH:mm:ss[Z]').format('DD/MM/YYYY' + ' - ' + 'HH:mm')
             criseInterventions.push({
-              text: intervention.libelleType + '(' + dateIntervention + ')',
+              text: intervention.libelleType + ' (' + dateIntervention + ')',
               value: intervention.id
             })
           })
