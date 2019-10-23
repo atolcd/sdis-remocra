@@ -1234,8 +1234,8 @@ export default {
           var isFiltered = false
           //si la feature existe dans la liste des événements préalablement filtrée
           _.forEach(features, feature => {
-            _.forEach(evenements, evenement => {
-              if (evenement[0].id === feature.id_) {
+            _.forEach(evenements.evenements, evenement => {
+              if (evenement.id === feature.id_) {
                 isFiltered = true
               }
             })
@@ -1366,8 +1366,8 @@ export default {
           var isFiltered = false
           //si la feature existe dans la liste des événements préalablement filtrée
           _.forEach(features, feature => {
-            _.forEach(evenements, evenement => {
-              if (evenement[0].id === feature.id_) {
+            _.forEach(evenements.evenements, evenement => {
+              if (evenement.id === feature.id_) {
                 isFiltered = true
               }
             })
