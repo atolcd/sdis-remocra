@@ -626,6 +626,10 @@ div.olControlMousePosition {
 .maplegend .hidden {
     display: none;
 }
+.maplegend>ul{
+    overflow-y: scroll;
+    max-height: 700px;
+}
 .layer-cfg span {
 	display: none;
 }
