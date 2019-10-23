@@ -179,6 +179,7 @@ public class CriseEvenement implements Featurable {
   @Override
   public Feature toFeature() {
     Feature feature = new Feature(this.id, this.getGeoJsonGeometry());
+    feature.addProperty("id", this.getId());
     feature.addProperty("nom", this.getNom());
     feature.addProperty("nature", this.getNatureId());
     feature.addProperty("natureNom", this.getNatureNom());

@@ -1230,22 +1230,34 @@ export default {
       }).then(response => {
         if (response.data) {
           var features = new GeoJSON().readFeatures(JSON.stringify(response.data))
-          if (features.length === 0) {
+          var evenements = _.clone(this.$refs.evenements.$data);
+          var isFiltered = false
+          //si la feature existe dans la liste des événements préalablement filtrée
+          _.forEach(features, feature => {
+            _.forEach(evenements, evenement => {
+              if (evenement[0].id === feature.id_) {
+                isFiltered = true
+              }
+            })
+          })
+          if (features.length >= 1 && isFiltered) {
+            if (features.length === 1) {
+              var selectedFeature = features[0]
+              this.addToWorkingLayer(selectedFeature)
+            } else {
+              // On affiche un modal de choix de feature
+              if (document.getElementById('infoBtn' + this.criseId).getAttribute('ctrl-active') === null) {
+                this.$refs.choiceFeature.mode = 'mesure'
+              }
+              this.$refs.choiceFeature.showModal(features)
+            }
+          } else {
             this.$notify({
               group: 'remocra',
               title: 'Évènements',
               type: 'warn',
               text: 'Aucun évènement trouvé'
             })
-          } else if (features.length === 1) {
-            var selectedFeature = features[0]
-            this.addToWorkingLayer(selectedFeature)
-          } else {
-            // On affiche un modal de choix de feature
-            if (document.getElementById('infoBtn' + this.criseId).getAttribute('ctrl-active') === null) {
-              this.$refs.choiceFeature.mode = 'mesure'
-            }
-            this.$refs.choiceFeature.showModal(features)
           }
         }
       }).catch(function(error) {
@@ -1350,20 +1362,32 @@ export default {
       }).then(response => {
         if (response.data) {
           var features = new GeoJSON().readFeatures(JSON.stringify(response.data))
-          if (features.length === 0) {
+          var evenements = _.clone(this.$refs.evenements.$data);
+          var isFiltered = false
+          //si la feature existe dans la liste des événements préalablement filtrée
+          _.forEach(features, feature => {
+            _.forEach(evenements, evenement => {
+              if (evenement[0].id === feature.id_) {
+                isFiltered = true
+              }
+            })
+          })
+          if (features.length >= 1 && isFiltered) {
+            if (features.length === 1) {
+              var selectedFeature = features[0]
+              this.addToWorkingLayer(selectedFeature)
+              this.$refs['newEvenement'].modifyEvent(this.criseId, selectedFeature.getId(), selectedFeature.getProperties().nature)
+            } else {
+              // On affiche un modal de choix de feature
+              this.$refs.choiceFeature.showModal(features)
+            }
+          } else {
             this.$notify({
               group: 'remocra',
               title: 'Évènements',
               type: 'warn',
               text: 'Aucun évènement trouvé'
             })
-          } else if (features.length === 1) {
-            var selectedFeature = features[0]
-            this.addToWorkingLayer(selectedFeature)
-            this.$refs['newEvenement'].modifyEvent(this.criseId, selectedFeature.getId(), selectedFeature.getProperties().nature)
-          } else {
-            // On affiche un modal de choix de feature
-            this.$refs.choiceFeature.showModal(features)
           }
         }
       }).catch(function(error) {
@@ -1966,7 +1990,7 @@ export default {
       //Nettoyage de la carte  
       this.map.setLayerGroup(new LayerGroup())
       //On regénère les layers
-      this.addLayersFromCrise(this.legend)
+      this.constructMap()
       //on désactive les boutons de controle s'ils sont affichés
       var isToolsActive = document.getElementById('toolsBarBtn' + this.criseId).getAttribute('ctrl-active') !== null
       var isInfoActive = document.getElementById('infoBtn' + this.criseId).getAttribute('ctrl-active') !== null
