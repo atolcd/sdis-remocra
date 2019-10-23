@@ -96,6 +96,11 @@ public class Sequences {
 	public static final Sequence<Long> CRISE_ID_SEQ = new SequenceImpl<Long>("crise_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
+	 * The sequence <code>remocra.crise_indicateur_id_seq</code>
+	 */
+	public static final Sequence<Long> CRISE_INDICATEUR_ID_SEQ = new SequenceImpl<Long>("crise_indicateur_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
 	 * The sequence <code>remocra.crise_suivi_id_seq</code>
 	 */
 	public static final Sequence<Long> CRISE_SUIVI_ID_SEQ = new SequenceImpl<Long>("crise_suivi_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
@@ -171,9 +176,19 @@ public class Sequences {
 	public static final Sequence<Long> HYDRANT_TOURNEES_ID_SEQ = new SequenceImpl<Long>("hydrant_tournees_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
+	 * The sequence <code>remocra.intervention_id_seq</code>
+	 */
+	public static final Sequence<Long> INTERVENTION_ID_SEQ = new SequenceImpl<Long>("intervention_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
 	 * The sequence <code>remocra.metadonnee_id_seq</code>
 	 */
 	public static final Sequence<Long> METADONNEE_ID_SEQ = new SequenceImpl<Long>("metadonnee_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.moyen_id_seq</code>
+	 */
+	public static final Sequence<Long> MOYEN_ID_SEQ = new SequenceImpl<Long>("moyen_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
 	 * The sequence <code>remocra.ogc_couche_id_seq</code>
@@ -459,6 +474,11 @@ public class Sequences {
 	 * The sequence <code>remocra.type_hydrant_vol_constate_id_seq</code>
 	 */
 	public static final Sequence<Long> TYPE_HYDRANT_VOL_CONSTATE_ID_SEQ = new SequenceImpl<Long>("type_hydrant_vol_constate_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.type_moyen_id_seq</code>
+	 */
+	public static final Sequence<Long> TYPE_MOYEN_ID_SEQ = new SequenceImpl<Long>("type_moyen_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
 	 * The sequence <code>remocra.type_oldeb_acces_id_seq</code>

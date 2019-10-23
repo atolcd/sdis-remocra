@@ -22,6 +22,9 @@ import fr.sdis83.remocra.db.model.remocra.tables.CriseCommune;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseEvenement;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseEvenementComplement;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseEvenementIntervention;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseIndicateur;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseIntervention;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseRepertoireLieu;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseSuivi;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseSuiviMessageModele;
@@ -42,7 +45,9 @@ import fr.sdis83.remocra.db.model.remocra.tables.HydrantPena;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPibi;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPrescrit;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantTournees;
+import fr.sdis83.remocra.db.model.remocra.tables.Intervention;
 import fr.sdis83.remocra.db.model.remocra.tables.Metadonnee;
+import fr.sdis83.remocra.db.model.remocra.tables.Moyen;
 import fr.sdis83.remocra.db.model.remocra.tables.OgcCouche;
 import fr.sdis83.remocra.db.model.remocra.tables.OgcService;
 import fr.sdis83.remocra.db.model.remocra.tables.OgcSource;
@@ -112,6 +117,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantNature;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantPositionnement;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantSaisie;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantVolConstate;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeMoyen;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeOldebAcces;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeOldebAction;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeOldebAnomalie;
@@ -161,7 +167,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Remocra extends SchemaImpl {
 
-	private static final long serialVersionUID = -1590062764;
+	private static final long serialVersionUID = 1508503393;
 
 	/**
 	 * The reference instance of <code>remocra</code>
@@ -198,6 +204,7 @@ public class Remocra extends SchemaImpl {
 			Sequences.CRISE_EVENEMENT_COMPLEMENT_ID_SEQ,
 			Sequences.CRISE_EVENEMENT_ID_SEQ,
 			Sequences.CRISE_ID_SEQ,
+			Sequences.CRISE_INDICATEUR_ID_SEQ,
 			Sequences.CRISE_SUIVI_ID_SEQ,
 			Sequences.CRISE_SUIVI_MESSAGE_MODELE_ID_SEQ,
 			Sequences.DDE_MDP_ID_SEQ,
@@ -213,7 +220,9 @@ public class Remocra extends SchemaImpl {
 			Sequences.HYDRANT_INDISPO_TEMPORAIRE_ID_SEQ,
 			Sequences.HYDRANT_PRESCRIT_ID_SEQ,
 			Sequences.HYDRANT_TOURNEES_ID_SEQ,
+			Sequences.INTERVENTION_ID_SEQ,
 			Sequences.METADONNEE_ID_SEQ,
+			Sequences.MOYEN_ID_SEQ,
 			Sequences.OGC_COUCHE_ID_SEQ,
 			Sequences.OGC_SERVICE_ID_SEQ,
 			Sequences.OGC_SOURCE_ID_SEQ,
@@ -271,6 +280,7 @@ public class Remocra extends SchemaImpl {
 			Sequences.TYPE_HYDRANT_POSITIONNEMENT_ID_SEQ,
 			Sequences.TYPE_HYDRANT_SAISIE_ID_SEQ,
 			Sequences.TYPE_HYDRANT_VOL_CONSTATE_ID_SEQ,
+			Sequences.TYPE_MOYEN_ID_SEQ,
 			Sequences.TYPE_OLDEB_ACCES_ID_SEQ,
 			Sequences.TYPE_OLDEB_ACTION_ID_SEQ,
 			Sequences.TYPE_OLDEB_ANOMALIE_ID_SEQ,
@@ -322,6 +332,9 @@ public class Remocra extends SchemaImpl {
 			CriseDocument.CRISE_DOCUMENT,
 			CriseEvenement.CRISE_EVENEMENT,
 			CriseEvenementComplement.CRISE_EVENEMENT_COMPLEMENT,
+			CriseEvenementIntervention.CRISE_EVENEMENT_INTERVENTION,
+			CriseIndicateur.CRISE_INDICATEUR,
+			CriseIntervention.CRISE_INTERVENTION,
 			CriseRepertoireLieu.CRISE_REPERTOIRE_LIEU,
 			CriseSuivi.CRISE_SUIVI,
 			CriseSuiviMessageModele.CRISE_SUIVI_MESSAGE_MODELE,
@@ -342,7 +355,9 @@ public class Remocra extends SchemaImpl {
 			HydrantPibi.HYDRANT_PIBI,
 			HydrantPrescrit.HYDRANT_PRESCRIT,
 			HydrantTournees.HYDRANT_TOURNEES,
+			Intervention.INTERVENTION,
 			Metadonnee.METADONNEE,
+			Moyen.MOYEN,
 			OgcCouche.OGC_COUCHE,
 			OgcService.OGC_SERVICE,
 			OgcSource.OGC_SOURCE,
@@ -412,6 +427,7 @@ public class Remocra extends SchemaImpl {
 			TypeHydrantPositionnement.TYPE_HYDRANT_POSITIONNEMENT,
 			TypeHydrantSaisie.TYPE_HYDRANT_SAISIE,
 			TypeHydrantVolConstate.TYPE_HYDRANT_VOL_CONSTATE,
+			TypeMoyen.TYPE_MOYEN,
 			TypeOldebAcces.TYPE_OLDEB_ACCES,
 			TypeOldebAction.TYPE_OLDEB_ACTION,
 			TypeOldebAnomalie.TYPE_OLDEB_ANOMALIE,

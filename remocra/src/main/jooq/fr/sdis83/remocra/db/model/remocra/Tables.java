@@ -21,6 +21,9 @@ import fr.sdis83.remocra.db.model.remocra.tables.CriseCommune;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseEvenement;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseEvenementComplement;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseEvenementIntervention;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseIndicateur;
+import fr.sdis83.remocra.db.model.remocra.tables.CriseIntervention;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseRepertoireLieu;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseSuivi;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseSuiviMessageModele;
@@ -41,7 +44,9 @@ import fr.sdis83.remocra.db.model.remocra.tables.HydrantPena;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPibi;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPrescrit;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantTournees;
+import fr.sdis83.remocra.db.model.remocra.tables.Intervention;
 import fr.sdis83.remocra.db.model.remocra.tables.Metadonnee;
+import fr.sdis83.remocra.db.model.remocra.tables.Moyen;
 import fr.sdis83.remocra.db.model.remocra.tables.OgcCouche;
 import fr.sdis83.remocra.db.model.remocra.tables.OgcService;
 import fr.sdis83.remocra.db.model.remocra.tables.OgcSource;
@@ -111,6 +116,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantNature;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantPositionnement;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantSaisie;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantVolConstate;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeMoyen;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeOldebAcces;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeOldebAction;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeOldebAnomalie;
@@ -213,12 +219,12 @@ public class Tables {
 	public static final CourrierModele COURRIER_MODELE = fr.sdis83.remocra.db.model.remocra.tables.CourrierModele.COURRIER_MODELE;
 
 	/**
-	 * Gestion de crise : Episode de crise pour lequelles des informations ont été saisies dans REMOCRA
+	 * Gestion de crise : Episode de crise pour lequel des informations ont été saisies dans REMOCRA
 	 */
 	public static final Crise CRISE = fr.sdis83.remocra.db.model.remocra.tables.Crise.CRISE;
 
 	/**
-	 * Gestion de crise : commune associée à un épisode de crise. Permet de définir un teritoire impacté. Les mises à jours de communes sont traçées sous formes d'évènements spécifiques
+	 * Gestion de crise : commune associée à un épisode de crise. Permet de définir un territoire impacté. Les mises à jours de communes sont traçées sous formes d'évènements spécifiques
 	 */
 	public static final CriseCommune CRISE_COMMUNE = fr.sdis83.remocra.db.model.remocra.tables.CriseCommune.CRISE_COMMUNE;
 
@@ -228,7 +234,7 @@ public class Tables {
 	public static final CriseDocument CRISE_DOCUMENT = fr.sdis83.remocra.db.model.remocra.tables.CriseDocument.CRISE_DOCUMENT;
 
 	/**
-	 * Evènement associé à une crise. Route inondée sur la RD 84 à la position ....
+	 * Evènement associé à une crise. Route inondée sur la RD 84 à la position...
 	 */
 	public static final CriseEvenement CRISE_EVENEMENT = fr.sdis83.remocra.db.model.remocra.tables.CriseEvenement.CRISE_EVENEMENT;
 
@@ -238,12 +244,27 @@ public class Tables {
 	public static final CriseEvenementComplement CRISE_EVENEMENT_COMPLEMENT = fr.sdis83.remocra.db.model.remocra.tables.CriseEvenementComplement.CRISE_EVENEMENT_COMPLEMENT;
 
 	/**
-	 * Gestion de crise : répertoire de lieux mobilisable dans le cadre d'une action "zoomer sur..". Associé à un épisode de crise
+	 * Table de liaison entre des évènement d'une crises et des interventions
+	 */
+	public static final CriseEvenementIntervention CRISE_EVENEMENT_INTERVENTION = fr.sdis83.remocra.db.model.remocra.tables.CriseEvenementIntervention.CRISE_EVENEMENT_INTERVENTION;
+
+	/**
+	 * Table de stockage de la requête pour récupérer les données des indicateurs d'une crise
+	 */
+	public static final CriseIndicateur CRISE_INDICATEUR = fr.sdis83.remocra.db.model.remocra.tables.CriseIndicateur.CRISE_INDICATEUR;
+
+	/**
+	 * Table de liaison entre les crises et les interventions
+	 */
+	public static final CriseIntervention CRISE_INTERVENTION = fr.sdis83.remocra.db.model.remocra.tables.CriseIntervention.CRISE_INTERVENTION;
+
+	/**
+	 * Gestion de crise : répertoire de lieux mobilisable dans le cadre d'une action "Zoomer sur..". Associé à un épisode de crise
 	 */
 	public static final CriseRepertoireLieu CRISE_REPERTOIRE_LIEU = fr.sdis83.remocra.db.model.remocra.tables.CriseRepertoireLieu.CRISE_REPERTOIRE_LIEU;
 
 	/**
-	 * Message de suivi lié à une crise ou à un évènement. Le message peut être créé directement et manuellement par un utilisateur ou de manière indirecte par le système suite à une action dans REMOCRA (ex : mise à jour des attributs d'un évènement, ajout d'un document, création d'une carte horodatée, etc.
+	 * Message de suivi lié à une crise ou à un évènement. Le message peut être créé directement et manuellement par un utilisateur ou de manière indirecte par le système suite à une action dans REMOCRA. Ex : mise à jour des attributs d'un évènement, ajout d'un document, création d'une carte horodatée, etc.
 	 */
 	public static final CriseSuivi CRISE_SUIVI = fr.sdis83.remocra.db.model.remocra.tables.CriseSuivi.CRISE_SUIVI;
 
@@ -338,12 +359,22 @@ public class Tables {
 	public static final HydrantTournees HYDRANT_TOURNEES = fr.sdis83.remocra.db.model.remocra.tables.HydrantTournees.HYDRANT_TOURNEES;
 
 	/**
+	 * Table de synchronisation des interventions pour utilisation dans REMOcRA
+	 */
+	public static final Intervention INTERVENTION = fr.sdis83.remocra.db.model.remocra.tables.Intervention.INTERVENTION;
+
+	/**
 	 * The table remocra.metadonnee
 	 */
 	public static final Metadonnee METADONNEE = fr.sdis83.remocra.db.model.remocra.tables.Metadonnee.METADONNEE;
 
 	/**
-	 * Couche de donnée mobilisable sur un serveur de données OGC pour un protocole (service) donné
+	 * Table de synchronisation des moyens pour utilisation dans REMOcRA en lien avec les interventions
+	 */
+	public static final Moyen MOYEN = fr.sdis83.remocra.db.model.remocra.tables.Moyen.MOYEN;
+
+	/**
+	 * Couche de données mobilisable sur un serveur de données OGC pour un protocole (service) donné
 	 */
 	public static final OgcCouche OGC_COUCHE = fr.sdis83.remocra.db.model.remocra.tables.OgcCouche.OGC_COUCHE;
 
@@ -438,7 +469,7 @@ public class Tables {
 	public static final ProcessusEtlModele PROCESSUS_ETL_MODELE = fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlModele.PROCESSUS_ETL_MODELE;
 
 	/**
-	 * Profil de droit autorisé pour executer un processus ETL
+	 * Profil de droit autorisé pour exécuter un processus ETL
 	 */
 	public static final ProcessusEtlModeleDroit PROCESSUS_ETL_MODELE_DROIT = fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlModeleDroit.PROCESSUS_ETL_MODELE_DROIT;
 
@@ -573,12 +604,12 @@ public class Tables {
 	public static final TypeCriseCategorieEvenement TYPE_CRISE_CATEGORIE_EVENEMENT = fr.sdis83.remocra.db.model.remocra.tables.TypeCriseCategorieEvenement.TYPE_CRISE_CATEGORIE_EVENEMENT;
 
 	/**
-	 * Gestion de crise : Type de contexte dans lequel est géré la crise. Deux contextes cohabitent simultanément pour chaque épisode : "Opérationnel" et "Anticipation". Les données cartographiques associées peuvent varier en fonction du contexte de même que les types d'évenements à renseigner
+	 * Gestion de crise : Type de contexte dans lequel est gérée la crise. Deux contextes cohabitent simultanément pour chaque épisode : "Opérationnel" et "Anticipation". Les données cartographiques associées peuvent varier en fonction du contexte de même que les types d'évenements à renseigner
 	 */
 	public static final TypeCriseContexte TYPE_CRISE_CONTEXTE = fr.sdis83.remocra.db.model.remocra.tables.TypeCriseContexte.TYPE_CRISE_CONTEXTE;
 
 	/**
-	 * Catégorie d'evènement mobilisable pour un type de crise
+	 * Catégorie d'évènement mobilisable pour un type de crise
 	 */
 	public static final TypeCriseEvenementCrise TYPE_CRISE_EVENEMENT_CRISE = fr.sdis83.remocra.db.model.remocra.tables.TypeCriseEvenementCrise.TYPE_CRISE_EVENEMENT_CRISE;
 
@@ -588,12 +619,12 @@ public class Tables {
 	public static final TypeCriseEvenementDroit TYPE_CRISE_EVENEMENT_DROIT = fr.sdis83.remocra.db.model.remocra.tables.TypeCriseEvenementDroit.TYPE_CRISE_EVENEMENT_DROIT;
 
 	/**
-	 * Gestion de crise : Nature de l'évènement attaché à une catégorie (Ex:"Route barrée" pour la catégorie "Réseau routier")
+	 * Gestion de crise : Nature de l'évènement attaché à une catégorie. Ex : "Route barrée" pour la catégorie "Réseau routier"
 	 */
 	public static final TypeCriseNatureEvenement TYPE_CRISE_NATURE_EVENEMENT = fr.sdis83.remocra.db.model.remocra.tables.TypeCriseNatureEvenement.TYPE_CRISE_NATURE_EVENEMENT;
 
 	/**
-	 * Propriété complémentaire pouvant être renseigné lors de la création ou de la modification d'un évènement 
+	 * Propriété complémentaire pouvant être renseignée lors de la création ou de la modification d'un évènement
 	 */
 	public static final TypeCriseProprieteEvenement TYPE_CRISE_PROPRIETE_EVENEMENT = fr.sdis83.remocra.db.model.remocra.tables.TypeCriseProprieteEvenement.TYPE_CRISE_PROPRIETE_EVENEMENT;
 
@@ -686,6 +717,11 @@ public class Tables {
 	 * The table remocra.type_hydrant_vol_constate
 	 */
 	public static final TypeHydrantVolConstate TYPE_HYDRANT_VOL_CONSTATE = fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantVolConstate.TYPE_HYDRANT_VOL_CONSTATE;
+
+	/**
+	 * Type de moyen déployé, lors d'une intervention, pour filtre dans REMOcRA
+	 */
+	public static final TypeMoyen TYPE_MOYEN = fr.sdis83.remocra.db.model.remocra.tables.TypeMoyen.TYPE_MOYEN;
 
 	/**
 	 * Type de voirie permettant l'accès à une parcelle sousmise à une obligation légale de débroussaillement
