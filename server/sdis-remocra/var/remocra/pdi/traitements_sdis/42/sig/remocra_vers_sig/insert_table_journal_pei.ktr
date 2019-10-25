@@ -2,43 +2,409 @@
 <transformation>
   <info>
     <name>insert_table_journal_pei</name>
-    <description/>
-    <extended_description/>
-    <trans_version/>
+    <description />
+    <extended_description />
+    <trans_version />
     <trans_type>Normal</trans_type>
     <trans_status>0</trans_status>
-    <directory>&#47;</directory>
+    <directory>/</directory>
     <parameters>
     </parameters>
     <log>
-<trans-log-table><connection/>
-<schema/>
-<table/>
-<size_limit_lines/>
-<interval/>
-<timeout_days/>
-<field><id>ID_BATCH</id><enabled>Y</enabled><name>ID_BATCH</name></field><field><id>CHANNEL_ID</id><enabled>Y</enabled><name>CHANNEL_ID</name></field><field><id>TRANSNAME</id><enabled>Y</enabled><name>TRANSNAME</name></field><field><id>STATUS</id><enabled>Y</enabled><name>STATUS</name></field><field><id>LINES_READ</id><enabled>Y</enabled><name>LINES_READ</name><subject/></field><field><id>LINES_WRITTEN</id><enabled>Y</enabled><name>LINES_WRITTEN</name><subject/></field><field><id>LINES_UPDATED</id><enabled>Y</enabled><name>LINES_UPDATED</name><subject/></field><field><id>LINES_INPUT</id><enabled>Y</enabled><name>LINES_INPUT</name><subject/></field><field><id>LINES_OUTPUT</id><enabled>Y</enabled><name>LINES_OUTPUT</name><subject/></field><field><id>LINES_REJECTED</id><enabled>Y</enabled><name>LINES_REJECTED</name><subject/></field><field><id>ERRORS</id><enabled>Y</enabled><name>ERRORS</name></field><field><id>STARTDATE</id><enabled>Y</enabled><name>STARTDATE</name></field><field><id>ENDDATE</id><enabled>Y</enabled><name>ENDDATE</name></field><field><id>LOGDATE</id><enabled>Y</enabled><name>LOGDATE</name></field><field><id>DEPDATE</id><enabled>Y</enabled><name>DEPDATE</name></field><field><id>REPLAYDATE</id><enabled>Y</enabled><name>REPLAYDATE</name></field><field><id>LOG_FIELD</id><enabled>Y</enabled><name>LOG_FIELD</name></field></trans-log-table>
-<perf-log-table><connection/>
-<schema/>
-<table/>
-<interval/>
-<timeout_days/>
-<field><id>ID_BATCH</id><enabled>Y</enabled><name>ID_BATCH</name></field><field><id>SEQ_NR</id><enabled>Y</enabled><name>SEQ_NR</name></field><field><id>LOGDATE</id><enabled>Y</enabled><name>LOGDATE</name></field><field><id>TRANSNAME</id><enabled>Y</enabled><name>TRANSNAME</name></field><field><id>STEPNAME</id><enabled>Y</enabled><name>STEPNAME</name></field><field><id>STEP_COPY</id><enabled>Y</enabled><name>STEP_COPY</name></field><field><id>LINES_READ</id><enabled>Y</enabled><name>LINES_READ</name></field><field><id>LINES_WRITTEN</id><enabled>Y</enabled><name>LINES_WRITTEN</name></field><field><id>LINES_UPDATED</id><enabled>Y</enabled><name>LINES_UPDATED</name></field><field><id>LINES_INPUT</id><enabled>Y</enabled><name>LINES_INPUT</name></field><field><id>LINES_OUTPUT</id><enabled>Y</enabled><name>LINES_OUTPUT</name></field><field><id>LINES_REJECTED</id><enabled>Y</enabled><name>LINES_REJECTED</name></field><field><id>ERRORS</id><enabled>Y</enabled><name>ERRORS</name></field><field><id>INPUT_BUFFER_ROWS</id><enabled>Y</enabled><name>INPUT_BUFFER_ROWS</name></field><field><id>OUTPUT_BUFFER_ROWS</id><enabled>Y</enabled><name>OUTPUT_BUFFER_ROWS</name></field></perf-log-table>
-<channel-log-table><connection/>
-<schema/>
-<table/>
-<timeout_days/>
-<field><id>ID_BATCH</id><enabled>Y</enabled><name>ID_BATCH</name></field><field><id>CHANNEL_ID</id><enabled>Y</enabled><name>CHANNEL_ID</name></field><field><id>LOG_DATE</id><enabled>Y</enabled><name>LOG_DATE</name></field><field><id>LOGGING_OBJECT_TYPE</id><enabled>Y</enabled><name>LOGGING_OBJECT_TYPE</name></field><field><id>OBJECT_NAME</id><enabled>Y</enabled><name>OBJECT_NAME</name></field><field><id>OBJECT_COPY</id><enabled>Y</enabled><name>OBJECT_COPY</name></field><field><id>REPOSITORY_DIRECTORY</id><enabled>Y</enabled><name>REPOSITORY_DIRECTORY</name></field><field><id>FILENAME</id><enabled>Y</enabled><name>FILENAME</name></field><field><id>OBJECT_ID</id><enabled>Y</enabled><name>OBJECT_ID</name></field><field><id>OBJECT_REVISION</id><enabled>Y</enabled><name>OBJECT_REVISION</name></field><field><id>PARENT_CHANNEL_ID</id><enabled>Y</enabled><name>PARENT_CHANNEL_ID</name></field><field><id>ROOT_CHANNEL_ID</id><enabled>Y</enabled><name>ROOT_CHANNEL_ID</name></field></channel-log-table>
-<step-log-table><connection/>
-<schema/>
-<table/>
-<timeout_days/>
-<field><id>ID_BATCH</id><enabled>Y</enabled><name>ID_BATCH</name></field><field><id>CHANNEL_ID</id><enabled>Y</enabled><name>CHANNEL_ID</name></field><field><id>LOG_DATE</id><enabled>Y</enabled><name>LOG_DATE</name></field><field><id>TRANSNAME</id><enabled>Y</enabled><name>TRANSNAME</name></field><field><id>STEPNAME</id><enabled>Y</enabled><name>STEPNAME</name></field><field><id>STEP_COPY</id><enabled>Y</enabled><name>STEP_COPY</name></field><field><id>LINES_READ</id><enabled>Y</enabled><name>LINES_READ</name></field><field><id>LINES_WRITTEN</id><enabled>Y</enabled><name>LINES_WRITTEN</name></field><field><id>LINES_UPDATED</id><enabled>Y</enabled><name>LINES_UPDATED</name></field><field><id>LINES_INPUT</id><enabled>Y</enabled><name>LINES_INPUT</name></field><field><id>LINES_OUTPUT</id><enabled>Y</enabled><name>LINES_OUTPUT</name></field><field><id>LINES_REJECTED</id><enabled>Y</enabled><name>LINES_REJECTED</name></field><field><id>ERRORS</id><enabled>Y</enabled><name>ERRORS</name></field><field><id>LOG_FIELD</id><enabled>N</enabled><name>LOG_FIELD</name></field></step-log-table>
+      <trans-log-table>
+        <connection />
+        <schema />
+        <table />
+        <size_limit_lines />
+        <interval />
+        <timeout_days />
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>TRANSNAME</id>
+          <enabled>Y</enabled>
+          <name>TRANSNAME</name>
+        </field>
+        <field>
+          <id>STATUS</id>
+          <enabled>Y</enabled>
+          <name>STATUS</name>
+        </field>
+        <field>
+          <id>LINES_READ</id>
+          <enabled>Y</enabled>
+          <name>LINES_READ</name>
+          <subject />
+        </field>
+        <field>
+          <id>LINES_WRITTEN</id>
+          <enabled>Y</enabled>
+          <name>LINES_WRITTEN</name>
+          <subject />
+        </field>
+        <field>
+          <id>LINES_UPDATED</id>
+          <enabled>Y</enabled>
+          <name>LINES_UPDATED</name>
+          <subject />
+        </field>
+        <field>
+          <id>LINES_INPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_INPUT</name>
+          <subject />
+        </field>
+        <field>
+          <id>LINES_OUTPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_OUTPUT</name>
+          <subject />
+        </field>
+        <field>
+          <id>LINES_REJECTED</id>
+          <enabled>Y</enabled>
+          <name>LINES_REJECTED</name>
+          <subject />
+        </field>
+        <field>
+          <id>ERRORS</id>
+          <enabled>Y</enabled>
+          <name>ERRORS</name>
+        </field>
+        <field>
+          <id>STARTDATE</id>
+          <enabled>Y</enabled>
+          <name>STARTDATE</name>
+        </field>
+        <field>
+          <id>ENDDATE</id>
+          <enabled>Y</enabled>
+          <name>ENDDATE</name>
+        </field>
+        <field>
+          <id>LOGDATE</id>
+          <enabled>Y</enabled>
+          <name>LOGDATE</name>
+        </field>
+        <field>
+          <id>DEPDATE</id>
+          <enabled>Y</enabled>
+          <name>DEPDATE</name>
+        </field>
+        <field>
+          <id>REPLAYDATE</id>
+          <enabled>Y</enabled>
+          <name>REPLAYDATE</name>
+        </field>
+        <field>
+          <id>LOG_FIELD</id>
+          <enabled>Y</enabled>
+          <name>LOG_FIELD</name>
+        </field>
+        <field>
+          <id>EXECUTING_SERVER</id>
+          <enabled>N</enabled>
+          <name>EXECUTING_SERVER</name>
+        </field>
+        <field>
+          <id>EXECUTING_USER</id>
+          <enabled>N</enabled>
+          <name>EXECUTING_USER</name>
+        </field>
+        <field>
+          <id>CLIENT</id>
+          <enabled>N</enabled>
+          <name>CLIENT</name>
+        </field>
+      </trans-log-table>
+      <perf-log-table>
+        <connection />
+        <schema />
+        <table />
+        <interval />
+        <timeout_days />
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>SEQ_NR</id>
+          <enabled>Y</enabled>
+          <name>SEQ_NR</name>
+        </field>
+        <field>
+          <id>LOGDATE</id>
+          <enabled>Y</enabled>
+          <name>LOGDATE</name>
+        </field>
+        <field>
+          <id>TRANSNAME</id>
+          <enabled>Y</enabled>
+          <name>TRANSNAME</name>
+        </field>
+        <field>
+          <id>STEPNAME</id>
+          <enabled>Y</enabled>
+          <name>STEPNAME</name>
+        </field>
+        <field>
+          <id>STEP_COPY</id>
+          <enabled>Y</enabled>
+          <name>STEP_COPY</name>
+        </field>
+        <field>
+          <id>LINES_READ</id>
+          <enabled>Y</enabled>
+          <name>LINES_READ</name>
+        </field>
+        <field>
+          <id>LINES_WRITTEN</id>
+          <enabled>Y</enabled>
+          <name>LINES_WRITTEN</name>
+        </field>
+        <field>
+          <id>LINES_UPDATED</id>
+          <enabled>Y</enabled>
+          <name>LINES_UPDATED</name>
+        </field>
+        <field>
+          <id>LINES_INPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_INPUT</name>
+        </field>
+        <field>
+          <id>LINES_OUTPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_OUTPUT</name>
+        </field>
+        <field>
+          <id>LINES_REJECTED</id>
+          <enabled>Y</enabled>
+          <name>LINES_REJECTED</name>
+        </field>
+        <field>
+          <id>ERRORS</id>
+          <enabled>Y</enabled>
+          <name>ERRORS</name>
+        </field>
+        <field>
+          <id>INPUT_BUFFER_ROWS</id>
+          <enabled>Y</enabled>
+          <name>INPUT_BUFFER_ROWS</name>
+        </field>
+        <field>
+          <id>OUTPUT_BUFFER_ROWS</id>
+          <enabled>Y</enabled>
+          <name>OUTPUT_BUFFER_ROWS</name>
+        </field>
+      </perf-log-table>
+      <channel-log-table>
+        <connection />
+        <schema />
+        <table />
+        <timeout_days />
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>LOG_DATE</id>
+          <enabled>Y</enabled>
+          <name>LOG_DATE</name>
+        </field>
+        <field>
+          <id>LOGGING_OBJECT_TYPE</id>
+          <enabled>Y</enabled>
+          <name>LOGGING_OBJECT_TYPE</name>
+        </field>
+        <field>
+          <id>OBJECT_NAME</id>
+          <enabled>Y</enabled>
+          <name>OBJECT_NAME</name>
+        </field>
+        <field>
+          <id>OBJECT_COPY</id>
+          <enabled>Y</enabled>
+          <name>OBJECT_COPY</name>
+        </field>
+        <field>
+          <id>REPOSITORY_DIRECTORY</id>
+          <enabled>Y</enabled>
+          <name>REPOSITORY_DIRECTORY</name>
+        </field>
+        <field>
+          <id>FILENAME</id>
+          <enabled>Y</enabled>
+          <name>FILENAME</name>
+        </field>
+        <field>
+          <id>OBJECT_ID</id>
+          <enabled>Y</enabled>
+          <name>OBJECT_ID</name>
+        </field>
+        <field>
+          <id>OBJECT_REVISION</id>
+          <enabled>Y</enabled>
+          <name>OBJECT_REVISION</name>
+        </field>
+        <field>
+          <id>PARENT_CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>PARENT_CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>ROOT_CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>ROOT_CHANNEL_ID</name>
+        </field>
+      </channel-log-table>
+      <step-log-table>
+        <connection />
+        <schema />
+        <table />
+        <timeout_days />
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>LOG_DATE</id>
+          <enabled>Y</enabled>
+          <name>LOG_DATE</name>
+        </field>
+        <field>
+          <id>TRANSNAME</id>
+          <enabled>Y</enabled>
+          <name>TRANSNAME</name>
+        </field>
+        <field>
+          <id>STEPNAME</id>
+          <enabled>Y</enabled>
+          <name>STEPNAME</name>
+        </field>
+        <field>
+          <id>STEP_COPY</id>
+          <enabled>Y</enabled>
+          <name>STEP_COPY</name>
+        </field>
+        <field>
+          <id>LINES_READ</id>
+          <enabled>Y</enabled>
+          <name>LINES_READ</name>
+        </field>
+        <field>
+          <id>LINES_WRITTEN</id>
+          <enabled>Y</enabled>
+          <name>LINES_WRITTEN</name>
+        </field>
+        <field>
+          <id>LINES_UPDATED</id>
+          <enabled>Y</enabled>
+          <name>LINES_UPDATED</name>
+        </field>
+        <field>
+          <id>LINES_INPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_INPUT</name>
+        </field>
+        <field>
+          <id>LINES_OUTPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_OUTPUT</name>
+        </field>
+        <field>
+          <id>LINES_REJECTED</id>
+          <enabled>Y</enabled>
+          <name>LINES_REJECTED</name>
+        </field>
+        <field>
+          <id>ERRORS</id>
+          <enabled>Y</enabled>
+          <name>ERRORS</name>
+        </field>
+        <field>
+          <id>LOG_FIELD</id>
+          <enabled>N</enabled>
+          <name>LOG_FIELD</name>
+        </field>
+      </step-log-table>
+      <metrics-log-table>
+        <connection />
+        <schema />
+        <table />
+        <timeout_days />
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>LOG_DATE</id>
+          <enabled>Y</enabled>
+          <name>LOG_DATE</name>
+        </field>
+        <field>
+          <id>METRICS_DATE</id>
+          <enabled>Y</enabled>
+          <name>METRICS_DATE</name>
+        </field>
+        <field>
+          <id>METRICS_CODE</id>
+          <enabled>Y</enabled>
+          <name>METRICS_CODE</name>
+        </field>
+        <field>
+          <id>METRICS_DESCRIPTION</id>
+          <enabled>Y</enabled>
+          <name>METRICS_DESCRIPTION</name>
+        </field>
+        <field>
+          <id>METRICS_SUBJECT</id>
+          <enabled>Y</enabled>
+          <name>METRICS_SUBJECT</name>
+        </field>
+        <field>
+          <id>METRICS_TYPE</id>
+          <enabled>Y</enabled>
+          <name>METRICS_TYPE</name>
+        </field>
+        <field>
+          <id>METRICS_VALUE</id>
+          <enabled>Y</enabled>
+          <name>METRICS_VALUE</name>
+        </field>
+      </metrics-log-table>
     </log>
     <maxdate>
-      <connection/>
-      <table/>
-      <field/>
+      <connection />
+      <table />
+      <field />
       <offset>0.0</offset>
       <maxdiff>0.0</maxdiff>
     </maxdate>
@@ -49,7 +415,7 @@
     <feedback_shown>Y</feedback_shown>
     <feedback_size>50000</feedback_size>
     <using_thread_priorities>Y</using_thread_priorities>
-    <shared_objects_file/>
+    <shared_objects_file />
     <capture_step_performance>N</capture_step_performance>
     <step_performance_capturing_delay>1000</step_performance_capturing_delay>
     <step_performance_capturing_size_limit>100</step_performance_capturing_size_limit>
@@ -61,10 +427,12 @@
     </slaveservers>
     <clusterschemas>
     </clusterschemas>
-  <created_user>-</created_user>
-  <created_date>2017&#47;12&#47;20 15:01:20.526</created_date>
-  <modified_user>admin</modified_user>
-  <modified_date>2017&#47;12&#47;20 16:22:56.153</modified_date>
+    <created_user>-</created_user>
+    <created_date>2017/12/20 15:01:20.526</created_date>
+    <modified_user>admin</modified_user>
+    <modified_date>2017/12/20 16:22:56.153</modified_date>
+    <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
+    <is_key_private>N</is_key_private>
   </info>
   <notepads>
   </notepads>
@@ -77,18 +445,42 @@
     <port>${REMOCRA_POSTGIS_DATABASE_PORT}</port>
     <username>${REMOCRA_POSTGIS_DATABASE_USER_NAME}</username>
     <password>${REMOCRA_POSTGIS_DATABASE_USER_PASSWORD}</password>
-    <servername/>
-    <data_tablespace/>
-    <index_tablespace/>
+    <servername />
+    <data_tablespace />
+    <index_tablespace />
     <attributes>
-      <attribute><code>EXTRA_OPTION_POSTGRESQL.stringtype</code><attribute>unspecified</attribute></attribute>
-      <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
-      <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
-      <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
-      <attribute><code>PORT_NUMBER</code><attribute>${REMOCRA_POSTGIS_DATABASE_PORT}</attribute></attribute>
-      <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
-      <attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
-      <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+      <attribute>
+        <code>EXTRA_OPTION_POSTGRESQL.stringtype</code>
+        <attribute>unspecified</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>${REMOCRA_POSTGIS_DATABASE_PORT}</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
     </attributes>
   </connection>
   <connection>
@@ -100,200 +492,241 @@
     <port>${PDI_SIG_DATABASE_PORT}</port>
     <username>${PDI_SIG_DATABASE_USER_NAME}</username>
     <password>${PDI_SIG_DATABASE_USER_PASSWORD}</password>
-    <servername/>
-    <data_tablespace/>
-    <index_tablespace/>
+    <servername />
+    <data_tablespace />
+    <index_tablespace />
     <attributes>
-      <attribute><code>EXTRA_OPTION_POSTGRESQL.stringtype</code><attribute>unspecified</attribute></attribute>
-      <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
-      <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
-      <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
-      <attribute><code>PORT_NUMBER</code><attribute>${PDI_SIG_DATABASE_PORT}</attribute></attribute>
-      <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
-      <attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>N</attribute></attribute>
-      <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+      <attribute>
+        <code>EXTRA_OPTION_POSTGRESQL.stringtype</code>
+        <attribute>unspecified</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>${PDI_SIG_DATABASE_PORT}</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
     </attributes>
   </connection>
   <order>
-  <hop> <from>Données tracabilite.hydrant</from><to>Insert table journal_pei</to><enabled>Y</enabled> </hop>  </order>
+    <hop>
+      <from>Données tracabilite.hydrant</from>
+      <to>Insert table journal_pei</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
   <step>
     <name>Données tracabilite.hydrant</name>
     <type>TableInput</type>
-    <description/>
+    <description />
     <distribute>N</distribute>
+    <custom_distribution />
     <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
     <connection>Remocra</connection>
     <sql>SELECT 
   now() as date_message,
   h3.numero as id_basepei,
   h3.date_operation as date_maj,
-  (SELECT CASE WHEN (h3.nom_operation = &apos;DELETE&apos;) THEN &apos;Suppression&apos;
-  WHEN (h2.nom_operation = &apos;INSERT&apos;) THEN &apos;Création&apos;
-  WHEN (h1.date_recep IS NULL AND h3.date_recep IS NOT NULL) THEN &apos;Création&apos;
+  (SELECT CASE WHEN (h3.nom_operation = 'DELETE') THEN 'Suppression'
+  WHEN (h2.nom_operation = 'INSERT') THEN 'Création'
+  WHEN (h1.date_recep IS NULL AND h3.date_recep IS NOT NULL) THEN 'Création'
   ELSE 
     ltrim(
-      (SELECT CASE WHEN ( (coalesce(h1.nature,&apos;&apos;) &lt;&gt; coalesce(h3.nature,&apos;&apos;)) OR (coalesce(h1.diametre,&apos;&apos;)  &lt;&gt; coalesce(h3.diametre,&apos;&apos;))) THEN &apos;, Maj du type (nature et&#47;ou diamètre)&apos; ELSE &apos;&apos; END) ||
-      (SELECT CASE WHEN ((coalesce(h1.debit,0) &lt;&gt; coalesce(h3.debit,0))) THEN &apos;, Maj de débit&apos; ELSE &apos;&apos; END) ||
-      (SELECT CASE WHEN ((coalesce(h1.dispo_terrestre,&apos;&apos;) &lt;&gt; coalesce(h3.dispo_terrestre,&apos;&apos;))) THEN &apos;, Maj disponibilité&apos; ELSE &apos;&apos; END) ||
-      (SELECT CASE WHEN (St_Distance(h1.geometrie, h3.geometrie) &gt; 0 OR St_Distance(h1.geometrie, h3.geometrie) IS NULL) THEN &apos;, Maj de position&apos; ELSE &apos;&apos; END) ||
-      (SELECT CASE WHEN ((coalesce(h1.capacite,&apos;&apos;) &lt;&gt; coalesce(h3.capacite,&apos;&apos;))) THEN &apos;, Maj de la capacité&apos; ELSE &apos;&apos; END)
-    , &apos;, &apos;)::varchar 
+      (SELECT CASE WHEN ( (coalesce(h1.nature,'') &lt;&gt; coalesce(h3.nature,'')) OR (coalesce(h1.diametre,'')  &lt;&gt; coalesce(h3.diametre,''))) THEN ', Maj du type (nature et/ou diamètre)' ELSE '' END) ||
+      (SELECT CASE WHEN ((coalesce(h1.debit,0) &lt;&gt; coalesce(h3.debit,0))) THEN ', Maj de débit' ELSE '' END) ||
+      (SELECT CASE WHEN ((coalesce(h1.dispo_terrestre,'') &lt;&gt; coalesce(h3.dispo_terrestre,''))) THEN ', Maj disponibilité' ELSE '' END) ||
+      (SELECT CASE WHEN (St_Distance(h1.geometrie, h3.geometrie) > 0 OR St_Distance(h1.geometrie, h3.geometrie) IS NULL) THEN ', Maj de position' ELSE '' END) ||
+      (SELECT CASE WHEN ((coalesce(h1.capacite,'') &lt;&gt; coalesce(h3.capacite,''))) THEN ', Maj de la capacité' ELSE '' END)
+    , ', ')::varchar 
   END) as type_maj,
   h3.debit as debit_courant,
   h1.debit as debit_precedent,
-  CASE WHEN trim(h3.capacite) SIMILAR TO &apos;[0-9]+&apos; THEN CAST(trim(h3.capacite) AS integer) ELSE null::integer END as capacite_courante,
-  CASE WHEN trim(h1.capacite) SIMILAR TO &apos;[0-9]+&apos; THEN CAST(trim(h1.capacite) AS integer) ELSE null::integer END as capacite_precedente,
-  h3.nature || coalesce(&apos; &apos; || h3.diametre,&apos;&apos;) as type_pei_courant,
-  h1.nature || coalesce(&apos; &apos; || h1.diametre,&apos;&apos;) as type_pei_precedent,
+  CASE WHEN trim(h3.capacite) SIMILAR TO '[0-9]+' THEN CAST(trim(h3.capacite) AS integer) ELSE null::integer END as capacite_courante,
+  CASE WHEN trim(h1.capacite) SIMILAR TO '[0-9]+' THEN CAST(trim(h1.capacite) AS integer) ELSE null::integer END as capacite_precedente,
+  h3.nature || coalesce(' ' || h3.diametre,'') as type_pei_courant,
+  h1.nature || coalesce(' ' || h1.diametre,'') as type_pei_precedent,
   st_astext(h3.geometrie) as position_courante,
   st_astext(coalesce(h1.geometrie,h3.geometrie)) as position_precedente,
   coalesce((st_astext(h1.geometrie) &lt;&gt; st_astext(h3.geometrie)),false) as maj_position,
-  (SELECT CASE WHEN (coalesce(h3.dispo_terrestre, &apos;DISPO&apos;) = &apos;DISPO&apos;) THEN &apos;DI&apos; ELSE &apos;IN&apos; END) as etat_pei_courant,
-  (SELECT CASE WHEN (coalesce(h1.dispo_terrestre, &apos;DISPO&apos;) = &apos;DISPO&apos;) THEN &apos;DI&apos; ELSE &apos;IN&apos; END) as etat_pei_precedent
+  (SELECT CASE WHEN (coalesce(h3.dispo_terrestre, 'DISPO') = 'DISPO') THEN 'DI' ELSE 'IN' END) as etat_pei_courant,
+  (SELECT CASE WHEN (coalesce(h1.dispo_terrestre, 'DISPO') = 'DISPO') THEN 'DI' ELSE 'IN' END) as etat_pei_precedent
 FROM
   ( SELECT 
       hydrant_maj.id_hydrant_maj, 
-      (SELECT max(id) FROM tracabilite.hydrant WHERE id_hydrant = hydrant_maj.id_hydrant_maj AND date_operation &lt;= &apos;${date_max}&apos;) as id_action_last_before_last_synchro,
-      (SELECT min(id) FROM tracabilite.hydrant WHERE id_hydrant = hydrant_maj.id_hydrant_maj AND date_operation &gt; &apos;${date_max}&apos;) as id_action_first_after_last_synchro,
-      (SELECT max(id) FROM tracabilite.hydrant WHERE id_hydrant = hydrant_maj.id_hydrant_maj AND date_operation &gt; &apos;${date_max}&apos;) as id_action_last
+      (SELECT max(id) FROM tracabilite.hydrant WHERE id_hydrant = hydrant_maj.id_hydrant_maj AND date_operation &lt;= '${date_max}') as id_action_last_before_last_synchro,
+      (SELECT min(id) FROM tracabilite.hydrant WHERE id_hydrant = hydrant_maj.id_hydrant_maj AND date_operation > '${date_max}') as id_action_first_after_last_synchro,
+      (SELECT max(id) FROM tracabilite.hydrant WHERE id_hydrant = hydrant_maj.id_hydrant_maj AND date_operation > '${date_max}') as id_action_last
     FROM 
-      (SELECT DISTINCT (id_hydrant) as id_hydrant_maj FROM tracabilite.hydrant  WHERE date_operation &gt; &apos;${date_max}&apos; ORDER BY id_hydrant) as hydrant_maj
+      (SELECT DISTINCT (id_hydrant) as id_hydrant_maj FROM tracabilite.hydrant  WHERE date_operation > '${date_max}' ORDER BY id_hydrant) as hydrant_maj
   ) as hydrant_idaction
   LEFT JOIN tracabilite.hydrant as h1 ON (h1.id = id_action_last_before_last_synchro)
   INNER JOIN tracabilite.hydrant as h2 ON (h2.id = id_action_first_after_last_synchro)
   INNER JOIN tracabilite.hydrant as h3 ON (h3.id = id_action_last)
 WHERE 
-   (NOT (h3.nom_operation = &apos;DELETE&apos; AND h2.nom_operation = &apos;INSERT&apos;))
+   (NOT (h3.nom_operation = 'DELETE' AND h2.nom_operation = 'INSERT'))
 AND h3.date_recep IS NOT NULL 
 AND 
-  ((St_Distance(h1.geometrie, h3.geometrie) &gt; 0 OR St_Distance(h1.geometrie, h3.geometrie) IS NULL)
+  ((St_Distance(h1.geometrie, h3.geometrie) > 0 OR St_Distance(h1.geometrie, h3.geometrie) IS NULL)
   OR ((coalesce(h1.debit,0) &lt;&gt; coalesce(h3.debit,0))) 
-  OR ((coalesce(h1.nature,&apos;&apos;) &lt;&gt; coalesce(h3.nature,&apos;&apos;)))
-  OR ((coalesce(h1.diametre,&apos;&apos;) &lt;&gt; coalesce(h3.diametre,&apos;&apos;)))
-  OR ((coalesce(h1.dispo_terrestre,&apos;&apos;) &lt;&gt; coalesce(h3.dispo_terrestre,&apos;&apos;)))
-  OR ((coalesce(h1.capacite,&apos;&apos;) &lt;&gt; coalesce(h3.capacite,&apos;&apos;))) 
-  OR ((SELECT CASE WHEN (coalesce(h1.dispo_terrestre, &apos;DISPO&apos;) = &apos;DISPO&apos;) THEN &apos;DI&apos; ELSE &apos;IN&apos; END) &lt;&gt; (SELECT CASE WHEN (coalesce(h3.dispo_terrestre, &apos;DISPO&apos;) = &apos;DISPO&apos;) THEN &apos;DI&apos; ELSE &apos;IN&apos; END))
-  OR (h3.nom_operation = &apos;DELETE&apos;)
-  OR (h2.nom_operation = &apos;INSERT&apos;)
+  OR ((coalesce(h1.nature,'') &lt;&gt; coalesce(h3.nature,'')))
+  OR ((coalesce(h1.diametre,'') &lt;&gt; coalesce(h3.diametre,'')))
+  OR ((coalesce(h1.dispo_terrestre,'') &lt;&gt; coalesce(h3.dispo_terrestre,'')))
+  OR ((coalesce(h1.capacite,'') &lt;&gt; coalesce(h3.capacite,''))) 
+  OR ((SELECT CASE WHEN (coalesce(h1.dispo_terrestre, 'DISPO') = 'DISPO') THEN 'DI' ELSE 'IN' END) &lt;&gt; (SELECT CASE WHEN (coalesce(h3.dispo_terrestre, 'DISPO') = 'DISPO') THEN 'DI' ELSE 'IN' END))
+  OR (h3.nom_operation = 'DELETE')
+  OR (h2.nom_operation = 'INSERT')
   )
 ;</sql>
     <limit>0</limit>
-    <lookup/>
+    <lookup />
     <execute_each_row>N</execute_each_row>
     <variables_active>Y</variables_active>
     <lazy_conversion_active>N</lazy_conversion_active>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
       <xloc>412</xloc>
       <yloc>134</yloc>
       <draw>Y</draw>
-      </GUI>
-    </step>
-
+    </GUI>
+  </step>
   <step>
     <name>Insert table journal_pei</name>
     <type>TableOutput</type>
-    <description/>
+    <description />
     <distribute>Y</distribute>
+    <custom_distribution />
     <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
     <connection>SDIS</connection>
     <schema>public</schema>
-    <table>journal_pei</table>
+    <table>remocra_journal_pei</table>
     <commit>1000</commit>
     <truncate>N</truncate>
     <ignore_errors>N</ignore_errors>
     <use_batch>N</use_batch>
     <specify_fields>Y</specify_fields>
     <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
+    <partitioning_field />
     <partitioning_daily>N</partitioning_daily>
     <partitioning_monthly>Y</partitioning_monthly>
     <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
+    <tablename_field />
     <tablename_in_table>N</tablename_in_table>
     <return_keys>N</return_keys>
-    <return_field/>
+    <return_field />
     <fields>
-        <field>
-          <column_name>date_message</column_name>
-          <stream_name>date_message</stream_name>
-        </field>
-        <field>
-          <column_name>id_basepei</column_name>
-          <stream_name>id_basepei</stream_name>
-        </field>
-        <field>
-          <column_name>date_maj</column_name>
-          <stream_name>date_maj</stream_name>
-        </field>
-        <field>
-          <column_name>type_maj</column_name>
-          <stream_name>type_maj</stream_name>
-        </field>
-        <field>
-          <column_name>debit_courant</column_name>
-          <stream_name>debit_courant</stream_name>
-        </field>
-        <field>
-          <column_name>debit_precedent</column_name>
-          <stream_name>debit_precedent</stream_name>
-        </field>
-        <field>
-          <column_name>capacite_courante</column_name>
-          <stream_name>capacite_courante</stream_name>
-        </field>
-        <field>
-          <column_name>capacite_precedente</column_name>
-          <stream_name>capacite_precedente</stream_name>
-        </field>
-        <field>
-          <column_name>type_pei_courant</column_name>
-          <stream_name>type_pei_courant</stream_name>
-        </field>
-        <field>
-          <column_name>type_pei_precedent</column_name>
-          <stream_name>type_pei_precedent</stream_name>
-        </field>
-        <field>
-          <column_name>position_courante</column_name>
-          <stream_name>position_courante</stream_name>
-        </field>
-        <field>
-          <column_name>maj_position</column_name>
-          <stream_name>maj_position</stream_name>
-        </field>
-        <field>
-          <column_name>position_precedente</column_name>
-          <stream_name>position_precedente</stream_name>
-        </field>
-        <field>
-          <column_name>etat_pei_courant</column_name>
-          <stream_name>etat_pei_courant</stream_name>
-        </field>
-        <field>
-          <column_name>etat_pei_precedent</column_name>
-          <stream_name>etat_pei_precedent</stream_name>
-        </field>
+      <field>
+        <column_name>date_message</column_name>
+        <stream_name>date_message</stream_name>
+      </field>
+      <field>
+        <column_name>id_basepei</column_name>
+        <stream_name>id_basepei</stream_name>
+      </field>
+      <field>
+        <column_name>date_maj</column_name>
+        <stream_name>date_maj</stream_name>
+      </field>
+      <field>
+        <column_name>type_maj</column_name>
+        <stream_name>type_maj</stream_name>
+      </field>
+      <field>
+        <column_name>debit_courant</column_name>
+        <stream_name>debit_courant</stream_name>
+      </field>
+      <field>
+        <column_name>debit_precedent</column_name>
+        <stream_name>debit_precedent</stream_name>
+      </field>
+      <field>
+        <column_name>capacite_courante</column_name>
+        <stream_name>capacite_courante</stream_name>
+      </field>
+      <field>
+        <column_name>capacite_precedente</column_name>
+        <stream_name>capacite_precedente</stream_name>
+      </field>
+      <field>
+        <column_name>type_pei_courant</column_name>
+        <stream_name>type_pei_courant</stream_name>
+      </field>
+      <field>
+        <column_name>type_pei_precedent</column_name>
+        <stream_name>type_pei_precedent</stream_name>
+      </field>
+      <field>
+        <column_name>position_courante</column_name>
+        <stream_name>position_courante</stream_name>
+      </field>
+      <field>
+        <column_name>maj_position</column_name>
+        <stream_name>maj_position</stream_name>
+      </field>
+      <field>
+        <column_name>position_precedente</column_name>
+        <stream_name>position_precedente</stream_name>
+      </field>
+      <field>
+        <column_name>etat_pei_courant</column_name>
+        <stream_name>etat_pei_courant</stream_name>
+      </field>
+      <field>
+        <column_name>etat_pei_precedent</column_name>
+        <stream_name>etat_pei_precedent</stream_name>
+      </field>
     </fields>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
       <xloc>719</xloc>
       <yloc>134</yloc>
       <draw>Y</draw>
-      </GUI>
-    </step>
-
+    </GUI>
+  </step>
   <step_error_handling>
   </step_error_handling>
-   <slave-step-copy-partition-distribution>
-</slave-step-copy-partition-distribution>
-   <slave_transformation>N</slave_transformation>
+  <slave-step-copy-partition-distribution>
+  </slave-step-copy-partition-distribution>
+  <slave_transformation>N</slave_transformation>
 </transformation>
