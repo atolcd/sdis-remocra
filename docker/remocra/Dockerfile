@@ -1,0 +1,27 @@
+FROM tomcat:7.0.96-jdk8-openjdk-slim
+
+LABEL maintainer="ATOL Conseils & Développements"
+
+# ENV
+ENV LANG fr_FR.UTF-8
+
+RUN rm -rf /usr/local/tomcat/webapps/*
+
+# Gestion des URIs avec accents (exemple : GET avec QueryParam)
+RUN sed -i "s/<Connector port=\"8080\"/<Connector URIEncoding=\"utf-8\" relaxedQueryChars=\"\[\]\" port=\"8080\"/" /usr/local/tomcat/conf/server.xml
+
+# TODO voir si nécessaire pour 443 via passerelle (redirection à la connexion)
+# Eventuellement mapper ce fichier en volume
+# RUN sed -i "s/<ConnectorURIEncoding=\"utf-8\"/<Connector secure=\"true\" scheme=\"https\" proxyPort=\"443\" URIEncoding=\"utf-8\"/" /usr/local/tomcat/conf/server.xml
+
+COPY ext/remocra.war /usr/local/tomcat/webapps/
+
+# ---------------
+# Non root user
+# ---------------
+ARG UID=1000
+ARG GID=1000
+RUN groupadd -g ${GID} remocra \
+    && useradd -u ${UID} -g remocra remocra \
+    && chown -R remocra /usr/local/tomcat
+USER remocra

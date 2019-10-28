@@ -1,0 +1,138 @@
+version: '3.3'
+
+services:
+  db: 
+    container_name: remocra-db
+    image: mdillon/postgis:11-alpine
+    #user: "${UID:-1000}:${GID:-1000}"
+    ports:
+      - "5432:5432"
+    volumes:
+      - .docker/db/postgresql_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: remocra
+      POSTGRES_PASSWORD: sqDD43l8qds4d
+      POSTGRES_DB: remocra
+      TZ: "Europe/Paris"
+      POSTGRES_INITDB_ARGS: --encoding=UTF8 --locale=fr_FR --lc-collate=fr_FR.utf8 --lc-ctype=fr_FR.utf8
+    healthcheck:
+      test: "exit 0"
+    networks:
+      remocra:
+        aliases:
+          - postgis.sdisxx.fr
+
+  geoserver:
+    container_name: remocra-geoserver
+    build: ./geoserver
+    image: remocra-geoserver
+    user: "${UID:-1000}:${GID:-1000}"
+    ports:
+      - "8090:8080"
+    volumes:
+      - .docker/var_remocra/geoserver_data:/var/remocra/geoserver_data
+    environment:
+      GEOSERVER_DATA_DIR: /var/remocra/geoserver_data
+      GEOWEBCACHE_CACHE_DIR: /var/remocra/geoserver_data/gwc
+      USERS_XML: /var/remocra/geoserver_data/security/usergroup/default/users.xml
+      TOMCAT_EXTRAS: "false"
+      INITIAL_MEMORY: 1G
+      MAXIMUM_MEMORY: 2G
+      # Pour application redémarrer après avoir supprimer le lock :
+      # docker stop remocra-geoserver && rm .docker/var_remocra/geoserver_data/.updatepassword.lock && docker start remocra-geoserver
+      GEOSERVER_ADMIN_USER: remocraadmin
+      GEOSERVER_ADMIN_PASSWORD: 8eLOp44DZp
+    depends_on:
+      - db
+    healthcheck:
+      test: curl --fail -s http://localhost:8080/ || exit 1
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    networks:
+      remocra:
+        aliases:
+          - geoserver.sdisxx.fr
+
+  remocra:
+    container_name: remocra
+    build: ./remocra
+    image: remocra
+    user: "${UID:-1000}:${GID:-1000}"
+    ports:
+      - "8080:8080"
+    volumes:
+      - .docker/var_remocra:/var/remocra
+    environment:
+      LANG: "fr_FR.UTF-8"
+      JAVA_OPTS: -Ddatabase.username=remocra -Ddatabase.password=sqDD43l8qds4d -Ddatabase.url=jdbc\:postgresql\://postgis.sdisxx.fr\:5432/remocra -Dclient-ng.dir=/usr/local/tomcat/webapps/remocra/static/ -Xms1G -Xmx5G -XX:PermSize=1G -XX:MaxPermSize=2G
+    depends_on:
+      - db
+    healthcheck:
+      test: curl --fail -s http://localhost:8080/ || exit 1
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    networks:
+      remocra:
+        aliases:
+          - remocra.sdisxx.fr
+
+  jobs-4.4:
+    container_name: remocra-pdi-4.4-dkron
+    build: ./pdi-4.4-dkron
+    image: remocra-pdi-4.4-dkron
+    user: "${UID:-1000}:${GID:-1000}"
+    ports:
+      - "8060:8080"
+    volumes:
+      - .docker/var_remocra:/var/remocra
+      - .docker/jobs-common/kettle.properties:/home/pdi/.kettle/kettle.properties
+      - .docker/jobs-common/remocra.properties:/home/pdi/remocra.properties
+      - .docker/jobs-4.4/.kettle/repositories.xml:/home/pdi/.kettle/repositories.xml
+      - .docker/jobs-4.4/dkron_data:/dkron/dkron.data
+    entrypoint: ""
+    command: >
+      /bin/bash -c '
+        /home/pdi/kitchen.sh -rep:"ref_pdi_remocra" -dir:"maintenance" -job:"generer_fichier_proprietes" -user:admin -pass:admin -level:Error -param:"PDI_FICHIER_PARAMETRE=/home/pdi/remocra.properties" &&
+        /dkron/dkron agent --server --bootstrap-expect=2 --join=jobs-44.sdisxx.fr --join=jobs-71.sdisxx.fr --node-name=jobs-4.4 --tag="pdi=4.4"'
+    depends_on:
+      - db
+    healthcheck:
+      test: curl --fail -s http://localhost:8080/ || exit 1
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    networks:
+      remocra:
+        aliases:
+          - jobs-44.sdisxx.fr
+
+  jobs:
+    container_name: remocra-pdi-dkron
+    build: ./pdi-dkron
+    image: remocra-pdi-dkron
+    user: "${UID:-1000}:${GID:-1000}"
+    ports:
+      - "8070:8080"
+    volumes:
+      - .docker/var_remocra:/var/remocra
+      - .docker/jobs-common/kettle.properties:/home/pdi/.kettle/kettle.properties
+      - .docker/jobs-common/remocra.properties:/home/pdi/remocra.properties
+      - .docker/jobs/dkron_data:/dkron/dkron.data
+    command: "agent --server --bootstrap-expect=2 --join=jobs-44.sdisxx.fr --join=jobs-71.sdisxx.fr --node-name=jobs --tag='pdi=7.1'"
+    depends_on:
+      - db
+      - jobs-4.4
+    healthcheck:
+      test: curl --fail -s http://localhost:8080/ || exit 1
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    networks:
+      remocra:
+        aliases:
+          - jobs-71.sdisxx.fr
+
+networks:
+  remocra:

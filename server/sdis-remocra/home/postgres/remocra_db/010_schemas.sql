@@ -693,9 +693,9 @@ CREATE TABLE commune (
     nom character varying NOT NULL,
     pprif boolean DEFAULT false NOT NULL,
     code character varying,
-    CONSTRAINT enforce_dims_geometrie CHECK ((public.ndims(geometrie) = 2)),
+    CONSTRAINT enforce_dims_geometrie CHECK ((public.st_ndims(geometrie) = 2)),
     CONSTRAINT enforce_geotype_geometrie CHECK ((public.geometrytype(geometrie) = 'MULTIPOLYGON'::text)),
-    CONSTRAINT enforce_srid_geometrie CHECK ((public.srid(geometrie) = 2154))
+    CONSTRAINT enforce_srid_geometrie CHECK ((public.st_srid(geometrie) = 2154))
 );
 
 
@@ -981,9 +981,9 @@ CREATE TABLE alerte (
     geometrie public.geometry NOT NULL,
     version integer DEFAULT 1,
     rapporteur bigint NOT NULL,
-    CONSTRAINT enforce_dims_geometrie CHECK ((public.ndims(geometrie) = 2)),
+    CONSTRAINT enforce_dims_geometrie CHECK ((public.st_ndims(geometrie) = 2)),
     CONSTRAINT enforce_geotype_geometrie CHECK ((public.geometrytype(geometrie) = 'POINT'::text)),
-    CONSTRAINT enforce_srid_geometrie CHECK ((public.srid(geometrie) = 2154))
+    CONSTRAINT enforce_srid_geometrie CHECK ((public.st_srid(geometrie) = 2154))
 );
 
 
@@ -1042,8 +1042,8 @@ CREATE TABLE alerte_elt (
     version integer DEFAULT 1,
     alerte bigint NOT NULL,
     sous_type_alerte_elt bigint NOT NULL,
-    CONSTRAINT enforce_dims_geometrie CHECK ((public.ndims(geometrie) = 2)),
-    CONSTRAINT enforce_srid_geometrie CHECK ((public.srid(geometrie) = 2154))
+    CONSTRAINT enforce_dims_geometrie CHECK ((public.st_ndims(geometrie) = 2)),
+    CONSTRAINT enforce_srid_geometrie CHECK ((public.st_srid(geometrie) = 2154))
 );
 
 
@@ -1536,9 +1536,9 @@ CREATE TABLE hydrant (
     organisme bigint,
     date_gps timestamp without time zone,
     zone_speciale bigint,
-    CONSTRAINT enforce_dims_geometrie CHECK ((public.ndims(geometrie) = 2)),
+    CONSTRAINT enforce_dims_geometrie CHECK ((public.st_ndims(geometrie) = 2)),
     CONSTRAINT enforce_geotype_geometrie CHECK ((public.geometrytype(geometrie) = 'POINT'::text)),
-    CONSTRAINT enforce_srid_geometrie CHECK ((public.srid(geometrie) = 2154))
+    CONSTRAINT enforce_srid_geometrie CHECK ((public.st_srid(geometrie) = 2154))
 );
 
 
@@ -1805,9 +1805,9 @@ CREATE TABLE permis (
     service_instructeur bigint NOT NULL,
     voie character varying NOT NULL,
     date_permis timestamp without time zone NOT NULL,
-    CONSTRAINT enforce_dims_geometrie CHECK ((public.ndims(geometrie) = 2)),
+    CONSTRAINT enforce_dims_geometrie CHECK ((public.st_ndims(geometrie) = 2)),
     CONSTRAINT enforce_geotype_geometrie CHECK ((public.geometrytype(geometrie) = 'POINT'::text)),
-    CONSTRAINT enforce_srid_geometrie CHECK ((public.srid(geometrie) = 2154))
+    CONSTRAINT enforce_srid_geometrie CHECK ((public.st_srid(geometrie) = 2154))
 );
 
 
@@ -3303,9 +3303,9 @@ CREATE TABLE voie (
     source character varying NOT NULL,
     commune bigint NOT NULL,
     actif boolean DEFAULT true NOT NULL,
-    CONSTRAINT enforce_dims_geometrie CHECK ((public.ndims(geometrie) = 2)),
+    CONSTRAINT enforce_dims_geometrie CHECK ((public.st_ndims(geometrie) = 2)),
     CONSTRAINT enforce_geotype_geometrie CHECK ((public.geometrytype(geometrie) = 'MULTILINESTRING'::text)),
-    CONSTRAINT enforce_srid_geometrie CHECK ((public.srid(geometrie) = 2154))
+    CONSTRAINT enforce_srid_geometrie CHECK ((public.st_srid(geometrie) = 2154))
 );
 
 
@@ -3347,9 +3347,9 @@ CREATE TABLE zone_competence (
     code character varying,
     geometrie public.geometry NOT NULL,
     nom character varying,
-    CONSTRAINT enforce_dims_geometrie CHECK ((public.ndims(geometrie) = 2)),
+    CONSTRAINT enforce_dims_geometrie CHECK ((public.st_ndims(geometrie) = 2)),
     CONSTRAINT enforce_geotype_geometrie CHECK (((public.geometrytype(geometrie) = 'POLYGON'::text) OR (public.geometrytype(geometrie) = 'MULTIPOLYGON'::text))),
-    CONSTRAINT enforce_srid_geometrie CHECK ((public.srid(geometrie) = 2154))
+    CONSTRAINT enforce_srid_geometrie CHECK ((public.st_srid(geometrie) = 2154))
 );
 
 
@@ -3391,9 +3391,9 @@ CREATE TABLE zone_speciale (
     code character varying NOT NULL,
     geometrie public.geometry NOT NULL,
     nom character varying NOT NULL,
-    CONSTRAINT enforce_dims_geometrie CHECK ((public.ndims(geometrie) = 2)),
+    CONSTRAINT enforce_dims_geometrie CHECK ((public.st_ndims(geometrie) = 2)),
     CONSTRAINT enforce_geotype_geometrie CHECK (((public.geometrytype(geometrie) = 'POLYGON'::text) OR (public.geometrytype(geometrie) = 'MULTIPOLYGON'::text))),
-    CONSTRAINT enforce_srid_geometrie CHECK ((public.srid(geometrie) = 2154))
+    CONSTRAINT enforce_srid_geometrie CHECK ((public.st_srid(geometrie) = 2154))
 );
 
 

@@ -4,7 +4,7 @@
 cd $(dirname $0)/..
 
 docker run --rm \
-  --name remocra \
+  --name remocra-build \
   -u $(id -u):$(id -g) \
   -w /app \
   -v "$(pwd)":/app \

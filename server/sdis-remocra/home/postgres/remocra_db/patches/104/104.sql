@@ -290,8 +290,8 @@ CREATE TABLE remocra.crise_evenement(
 	nature_evenement bigint NOT NULL,
 	CONSTRAINT crise_evenement_crise_fk FOREIGN KEY (crise) REFERENCES remocra.crise (id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT crise_evenement_nature_evenement_fk FOREIGN KEY (nature_evenement) REFERENCES remocra.type_crise_nature_evenement (id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE,
-	CONSTRAINT enforce_dims_geometrie CHECK (ndims(geometrie) = 2),
-	CONSTRAINT enforce_srid_geometrie CHECK (srid(geometrie) = 2154)
+	CONSTRAINT enforce_dims_geometrie CHECK (st_ndims(geometrie) = 2),
+	CONSTRAINT enforce_srid_geometrie CHECK (st_srid(geometrie) = 2154)
 );
 CREATE INDEX crise_evenement_geometrie_idx ON remocra.crise_evenement USING gist (geometrie);
 CREATE INDEX crise_evenement_crise_idx ON remocra.crise_evenement USING btree (crise);

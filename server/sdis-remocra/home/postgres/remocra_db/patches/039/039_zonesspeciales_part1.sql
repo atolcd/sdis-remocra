@@ -24,9 +24,9 @@ CREATE TABLE remocra.zone_speciale
   geometrie geometry NOT NULL,
   nom character varying NOT NULL,
   CONSTRAINT zone_speciale_pkey PRIMARY KEY (id),
-  CONSTRAINT enforce_dims_geometrie CHECK (ndims(geometrie) = 2),
+  CONSTRAINT enforce_dims_geometrie CHECK (st_ndims(geometrie) = 2),
   CONSTRAINT enforce_geotype_geometrie CHECK (geometrytype(geometrie) = 'POLYGON'::text OR geometrytype(geometrie) = 'MULTIPOLYGON'::text),
-  CONSTRAINT enforce_srid_geometrie CHECK (srid(geometrie) = 2154)
+  CONSTRAINT enforce_srid_geometrie CHECK (st_srid(geometrie) = 2154)
 )
 WITH (
   OIDS=FALSE

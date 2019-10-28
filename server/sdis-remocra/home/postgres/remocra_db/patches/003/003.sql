@@ -156,32 +156,32 @@ BEGIN
 if not exists (select constraint_name 
                    from information_schema.constraint_column_usage 
                    where table_schema = 'remocra' and table_name = 'commune'  and constraint_name = 'enforce_dims_geometrie') then
-		ALTER TABLE remocra.commune ADD CONSTRAINT enforce_dims_geometrie CHECK (ndims(geometrie) = 2);
+		ALTER TABLE remocra.commune ADD CONSTRAINT enforce_dims_geometrie CHECK (st_ndims(geometrie) = 2);
 		ALTER TABLE remocra.commune ADD CONSTRAINT enforce_geotype_geometrie CHECK (geometrytype(geometrie) = 'MULTIPOLYGON'::text);
-		ALTER TABLE remocra.commune ADD CONSTRAINT enforce_srid_geometrie CHECK (srid(geometrie) = 2154);
+		ALTER TABLE remocra.commune ADD CONSTRAINT enforce_srid_geometrie CHECK (st_srid(geometrie) = 2154);
 END IF;
 
 if not exists (select constraint_name 
                    from information_schema.constraint_column_usage 
                    where table_schema = 'remocra' and table_name = 'permis'  and constraint_name = 'enforce_dims_geometrie') then
-		ALTER TABLE remocra.permis ADD CONSTRAINT enforce_dims_geometrie CHECK (ndims(geometrie) = 2);
+		ALTER TABLE remocra.permis ADD CONSTRAINT enforce_dims_geometrie CHECK (st_ndims(geometrie) = 2);
 		ALTER TABLE remocra.permis ADD CONSTRAINT enforce_geotype_geometrie CHECK (geometrytype(geometrie) = 'POINT'::text);
-		ALTER TABLE remocra.permis ADD CONSTRAINT enforce_srid_geometrie CHECK (srid(geometrie) = 2154);
+		ALTER TABLE remocra.permis ADD CONSTRAINT enforce_srid_geometrie CHECK (st_srid(geometrie) = 2154);
 END IF;
 
 if not exists (select constraint_name 
                    from information_schema.constraint_column_usage 
                    where table_schema = 'remocra' and table_name = 'alerte'  and constraint_name = 'enforce_dims_geometrie') then
-		ALTER TABLE remocra.alerte ADD CONSTRAINT enforce_dims_geometrie CHECK (ndims(geometrie) = 2);
+		ALTER TABLE remocra.alerte ADD CONSTRAINT enforce_dims_geometrie CHECK (st_ndims(geometrie) = 2);
 		ALTER TABLE remocra.alerte ADD CONSTRAINT enforce_geotype_geometrie CHECK (geometrytype(geometrie) = 'POINT'::text);
-		ALTER TABLE remocra.alerte ADD CONSTRAINT enforce_srid_geometrie CHECK (srid(geometrie) = 2154);
+		ALTER TABLE remocra.alerte ADD CONSTRAINT enforce_srid_geometrie CHECK (st_srid(geometrie) = 2154);
 END IF;
 
 if not exists (select constraint_name 
                    from information_schema.constraint_column_usage 
                    where table_schema = 'remocra' and table_name = 'alerte_elt'  and constraint_name = 'enforce_dims_geometrie') then
-		ALTER TABLE remocra.alerte_elt ADD CONSTRAINT enforce_dims_geometrie CHECK (ndims(geometrie) = 2);
-		ALTER TABLE remocra.alerte_elt ADD CONSTRAINT enforce_srid_geometrie CHECK (srid(geometrie) = 2154);
+		ALTER TABLE remocra.alerte_elt ADD CONSTRAINT enforce_dims_geometrie CHECK (st_ndims(geometrie) = 2);
+		ALTER TABLE remocra.alerte_elt ADD CONSTRAINT enforce_srid_geometrie CHECK (st_srid(geometrie) = 2154);
 END IF;
 
 END;

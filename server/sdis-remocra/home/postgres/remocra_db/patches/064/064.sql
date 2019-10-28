@@ -44,9 +44,9 @@ CREATE TABLE remocra.cadastre_section(
 	CONSTRAINT fk_cadastre_section_commune FOREIGN KEY (commune)
 		REFERENCES remocra.commune (id) MATCH SIMPLE
 		ON UPDATE NO ACTION ON DELETE NO ACTION,
-	CONSTRAINT enforce_dims_geometrie CHECK (ndims(geometrie) = 2),
+	CONSTRAINT enforce_dims_geometrie CHECK (st_ndims(geometrie) = 2),
 	CONSTRAINT enforce_geotype_geometrie CHECK (geometrytype(geometrie) = 'MULTIPOLYGON'::text),
-	CONSTRAINT enforce_srid_geometrie CHECK (srid(geometrie) = 2154)
+	CONSTRAINT enforce_srid_geometrie CHECK (st_srid(geometrie) = 2154)
 );
 COMMENT ON TABLE remocra.cadastre_section IS 'Section cadastrale d''une commune';
 COMMENT ON COLUMN remocra.cadastre_section.id IS 'Identifiant autogénéré';
@@ -70,9 +70,9 @@ CREATE TABLE remocra.cadastre_parcelle(
 	CONSTRAINT fk_cadastre_parcelle_section FOREIGN KEY (section)
 		REFERENCES remocra.cadastre_section (id) MATCH SIMPLE
 		ON UPDATE NO ACTION ON DELETE NO ACTION,
-	CONSTRAINT enforce_dims_geometrie CHECK (ndims(geometrie) = 2),
+	CONSTRAINT enforce_dims_geometrie CHECK (st_ndims(geometrie) = 2),
 	CONSTRAINT enforce_geotype_geometrie CHECK (geometrytype(geometrie) = 'MULTIPOLYGON'::text),
-	CONSTRAINT enforce_srid_geometrie CHECK (srid(geometrie) = 2154)
+	CONSTRAINT enforce_srid_geometrie CHECK (st_srid(geometrie) = 2154)
 );
 COMMENT ON TABLE remocra.cadastre_parcelle IS 'Parcelle cadastrale d''une commune';
 COMMENT ON COLUMN remocra.cadastre_parcelle.id IS 'Identifiant autogénéré';
@@ -229,9 +229,9 @@ CREATE TABLE remocra.oldeb(
 	CONSTRAINT fk_oldeb_acces FOREIGN KEY (acces)
 		REFERENCES remocra.type_oldeb_acces (id) MATCH SIMPLE
 		ON UPDATE NO ACTION ON DELETE NO ACTION,
-	CONSTRAINT enforce_dims_geometrie CHECK (ndims(geometrie) = 2),
+	CONSTRAINT enforce_dims_geometrie CHECK (st_ndims(geometrie) = 2),
 	CONSTRAINT enforce_geotype_geometrie CHECK (geometrytype(geometrie) = 'MULTIPOLYGON'::text),
-	CONSTRAINT enforce_srid_geometrie CHECK (srid(geometrie) = 2154)
+	CONSTRAINT enforce_srid_geometrie CHECK (st_srid(geometrie) = 2154)
 );
 COMMENT ON TABLE remocra.oldeb IS 'Informations relatives à une parcelle sousmise à une obligation légale de débroussaillement';
 COMMENT ON COLUMN remocra.oldeb.geometrie IS 'Géometrie de l''oldeb';

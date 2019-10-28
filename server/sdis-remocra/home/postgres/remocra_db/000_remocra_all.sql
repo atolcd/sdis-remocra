@@ -32,6 +32,6 @@ DROP FUNCTION createremocraroleonce12489();
 \i 010_schemas.sql
 \i 020_refdata.sql
 \i 021_refdata-param.sql
-\i 030_acces.sql
+--\i 030_acces.sql
 \i patches/all_patches.sql
 
