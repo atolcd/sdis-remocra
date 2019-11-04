@@ -106,18 +106,21 @@ Ext.define('Sdis.Remocra.features.crises.bloc.Services', {
 
        getRightColumns: function (){
          return [{
-                xtype: 'treecolumn', //this is so we know which column will show the tree
+                xtype: 'treecolumn',
+                sortable: false,
                 text: 'Couches',
                 flex: 3,
                 dataIndex: 'nom'
             }, {
                 xtype: 'mytreecheckcolumn',
+                sortable: false,
                 header: 'Opérationel',
                 dataIndex: 'isOp',
                 stopSelection : false
 
             }, {
                  xtype: 'mytreecheckcolumn',
+                 sortable: false,
                  header: 'Anticipation',
                  dataIndex: 'isAnt',
                  stopSelection : false
@@ -125,7 +128,8 @@ Ext.define('Sdis.Remocra.features.crises.bloc.Services', {
        },
          getLeftColumns: function (){
             return [{
-                   xtype: 'treecolumn', //this is so we know which column will show the tree
+                   xtype: 'treecolumn',
+                   sortable: false,
                    text: 'Couches',
                    flex: 3,
                    dataIndex: 'nom'

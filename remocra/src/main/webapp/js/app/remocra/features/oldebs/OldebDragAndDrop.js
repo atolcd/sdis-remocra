@@ -137,5 +137,22 @@ Ext.define('Sdis.Remocra.features.oldebs.OldebDragAndDrop', {
     },
     getRightTitle: function() {
         return 'Eléments présents sur la parcelle';
-    }
+    },
+
+    getRightColumns: function (){
+        return [{
+            xtype: 'treecolumn', //this is so we know which column will show the tree
+            sortable: false,
+            flex:1,
+            dataIndex: 'nom'
+        }];
+    },
+     getLeftColumns: function (){
+        return [{
+               xtype: 'treecolumn', //this is so we know which column will show the tree
+               sortable: false,
+               flex:1,
+               dataIndex: 'nom'
+           }];
+     }
 });
