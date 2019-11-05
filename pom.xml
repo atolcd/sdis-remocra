@@ -7,7 +7,7 @@
   <groupId>fr.sdis83.remocra</groupId>
   <artifactId>parent</artifactId>
   <packaging>pom</packaging>
-  <version>0.13.3</version>
+  <version>0.13.4</version>
   <name>parent</name>
 
   <modules>
