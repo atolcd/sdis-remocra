@@ -122,6 +122,14 @@ privileged aspect Hydrant_Roo_JavaBean {
     public void Hydrant.setDateContr(Date dateContr) {
         this.dateContr = dateContr;
     }
+
+    public Date Hydrant.getDateCrea() {
+        return this.dateCrea;
+    }
+
+    public void Hydrant.setDateCrea(Date dateCrea) {
+        this.dateCrea = dateCrea;
+    }
     
     public Date Hydrant.getDateVerif() {
         return this.dateVerif;

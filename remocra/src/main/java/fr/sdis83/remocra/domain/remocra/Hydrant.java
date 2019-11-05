@@ -119,6 +119,10 @@ public class Hydrant implements Featurable {
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
+    private Date dateCrea;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
     private Date dateVerif;
 
     @Temporal(TemporalType.TIMESTAMP)

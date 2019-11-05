@@ -658,6 +658,14 @@ export default {
       this.listeVisites.sort(function(a, b) {
         return new Date(b.date) - new Date(a.date);
       });
+
+      var dates = {
+        CREA : null,
+        CTRL : null,
+        RECEP : null,
+        RECO : null
+      }
+
       /**
        * On parcourt toutes les visites, de la plus récente à la plus ancienne afin de trouver la première qui ne soit pas de type "non programmée"
        * Ses anomalies sont les anomalies du PEI => on fait remonter ces données dans les data envoyées pour la mise à jour du PEI
@@ -704,12 +712,6 @@ export default {
         data["agent2"] = visite.agent2;
 
         // Mise à jour des dates de l'hydrant
-        var dates = {
-          CTRL : null,
-          RECEP : null,
-          RECO : null
-        }
-
         _.forEach(this.listeVisites, visite => {
           var dateCode = this.typesVisites[visite.type].code;
           var dateMoment = moment(new Date(visite.date), 'DD/MM/YYYY[T]HH:mm:ss[Z]');
@@ -717,11 +719,12 @@ export default {
             dates[dateCode] = dateMoment;
           }
         });
-
-        data["dateRecep"] = (dates.RECEP) ? dates.RECEP.format('YYYY-MM-DDTHH:mm:ss') : null;
-        data["dateReco"] = (dates.RECO) ? dates.RECO.format('YYYY-MM-DDTHH:mm:ss') : null;
-        data["dateContr"] = (dates.CTRL) ? dates.CTRL.format('YYYY-MM-DDTHH:mm:ss') : null;
       }
+
+      data["dateCrea"] = (dates.CREA) ? dates.CREA.format('YYYY-MM-DDTHH:mm:ss') : null;
+      data["dateRecep"] = (dates.RECEP) ? dates.RECEP.format('YYYY-MM-DDTHH:mm:ss') : null;
+      data["dateReco"] = (dates.RECO) ? dates.RECO.format('YYYY-MM-DDTHH:mm:ss') : null;
+      data["dateContr"] = (dates.CTRL) ? dates.CTRL.format('YYYY-MM-DDTHH:mm:ss') : null;
 
       return data;
     },
