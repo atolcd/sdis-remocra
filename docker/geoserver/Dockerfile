@@ -9,6 +9,8 @@ LABEL maintainer="ATOL Conseils & Développements"
 # COPY Dockerfile <resource>* <dest>/
 # RUN ([ -f <dest>/<resource> ] || wget -P <dest> -q <>/<resource-part-url><resource>) && rm -f Dockerfile
 
+COPY scripts/* /scripts/
+
 ENV GS_VERSION ${GS_VERSION:-2.16.0}
 
 USER root
@@ -37,3 +39,5 @@ ARG GID=1000
 RUN usermod -u ${UID} geoserver \
   && groupmod -g ${GID} geoserver \
   && chown -R geoserver /usr/local/tomcat
+
+ENTRYPOINT ["/scripts/entrypoint-remocra.sh"]

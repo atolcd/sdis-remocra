@@ -13,23 +13,22 @@ ARG UID=1000
 ARG GID=1000
 RUN addgroup -g ${GID} -S pdi && \
     adduser -u ${UID} -S pdi -G pdi
-USER pdi
+
+COPY scripts/* /scripts/
 
 # ---------------
 # Pentaho Data Integration
 # ---------------
 
 # ENV
-ENV LANG fr_FR.UTF-8
-ENV ENCODING UTF-8
-
-ENV PDI_ROOT                    /pdi
+ENV LANG                        fr_FR.UTF-8
+ENV ENCODING                    UTF-8
 
 ENV KETTLE_HOME                 /home/pdi
 ENV PENTAHO_METASTORE_FOLDER    /home/pdi/.pentaho/metastore
 ENV KETTLE_JNDI_ROOT            /home/pdi/simple-jndi
 
-# ENV PENTAHO_DI_JAVA_OPTIONS   "-DPENTAHO_METASTORE_FOLDER=/pdi_home/.pentaho"
+# ENV PENTAHO_DI_JAVA_OPTIONS   "-DPENTAHO_METASTORE_FOLDER=/home/pdi/.pentaho"
 ENV PENTAHO_DI_JAVA_OPTIONS     "-Xms1024m -Xmx2048m -XX:MaxPermSize=256m -DPENTAHO_METASTORE_FOLDER=/home/pdi/.pentaho"
 
 WORKDIR ${KETTLE_HOME}
@@ -67,7 +66,7 @@ RUN set -x \
 ENV PATH ${KETTLE_HOME}/kitchen.sh:$PATH
 
 # Pour exécution standalone
-# ENTRYPOINT ["/home/pdi/kitchen.sh"]
+#ENTRYPOINT ["/scripts/entrypoint-pdi.sh"]
 
 
 # ---------------
@@ -81,7 +80,6 @@ ENV PATH ${KETTLE_HOME}/kitchen.sh:$PATH
 ENV DKRON_VERSION 2.0.0-rc7
 ENV DKRON_HOME /dkron
 
-USER root
 RUN set -x \
   && buildDeps='bash ca-certificates openssl' \
   && apk add --update $buildDeps \
@@ -94,14 +92,20 @@ RUN set -x \
   && cd ${DKRON_HOME} \
   && tar -xzf dkron_${DKRON_VERSION}_linux_amd64.tar.gz \
   && rm ${DKRON_HOME}/dkron_${DKRON_VERSION}_linux_amd64.tar.gz \
-  && chown -R pdi:pdi ${DKRON_HOME} \
   && rm -f Dockerfile # cleaning
+
+
+# Droits
+RUN mkdir -p ${KETTLE_HOME}/.kettle \
+  && chown -R pdi:pdi ${KETTLE_HOME} \
+  && chown -R pdi:pdi /scripts \
+  && chown -R pdi:pdi ${DKRON_HOME}
+
 USER pdi
 
 EXPOSE 8080
 
 ENV SHELL /bin/bash
 WORKDIR ${DKRON_HOME}
-#ENTRYPOINT [ "sh", "-c", "${DKRON_HOME}/dkron" ]
-ENTRYPOINT ["/dkron/dkron"]
+ENTRYPOINT ["/scripts/entrypoint-dkron.sh"]
 CMD ["--help"]

@@ -45,6 +45,13 @@ cd ~/projets/atolcd/sdis-remocra/docker \
 
 
 ## Configuration des services
+
+La configuration des services est réalisée à travers des variables d'environnement.
+Par exemple, le fichier .env. Voir la [documentation de Docker](https://docs.docker.com/compose/environment-variables/) pour l'ordre de priorité.
+
+Les informations d'accès à la base PostgreSQL et à l'administration de GeoServer sont mises à jour lors du démarrage des conteneurs.
+
+**La suite est conservée pour mémoire**.
 ### Connexion à la base de données : username / password
 
 * `docker-compose.yml` :
@@ -346,12 +353,49 @@ curl -v http://localhost:8070/v1/jobs -XPOST -d '{
 ## Conteneur PDI 4.4
 
 ### Construction
-
 ```sh
 # Construction
 cd ~/projets/atolcd/sdis-remocra/docker/pdi-4.4-dkron
-docker build -t remocra-pdi-4.4 .
+docker build -t remocra-pdi-4.4-dkron .
 ```
+
+Si besoin, mettre en place le référentiel de traitement (voir plus haut)
+
+### Exécution
+```sh
+# Exécution d'un traitement
+docker run --rm \
+  -u $(id -u):$(id -g) \
+  -v "$(pwd)/.docker/var_remocra":/var/remocra \
+  -v "$(pwd)/.docker/jobs-common/kettle.properties":/home/pdi/.kettle/kettle.properties \
+  -v "$(pwd)/.docker/jobs-common/remocra.properties":/home/pdi/remocra.properties \
+  -v "$(pwd)/.docker/jobs-4.4/.kettle/repositories.xml":/home/pdi/.kettle/repositories.xml \
+  -v "$(pwd)/.docker/jobs-4.4/dkron_data":/dkron/dkron.data \
+  --network docker_remocra --link remocra-db:postgis.sdisxx.fr \
+  --entrypoint="/scripts/entrypoint-pdi.sh" \
+  remocra-pdi-4.4-dkron \
+  \
+  -file:"/var/remocra/pdi/traitements_sdis/bspp/creer_demandes_indispo_carre9/creer_demandes_indispo_carre9.kjb" -level:Error -param:"PDI_FICHIER_PARAMETRE=/home/pdi/remocra.properties"
+
+# Lancement du planificateur
+docker run -it --rm \
+  --name "jobs-4.4" \
+  \
+  -u $(id -u):$(id -g) \
+  -v "$(pwd)/.docker/var_remocra":/var/remocra \
+  -v "$(pwd)/.docker/jobs-common/kettle.properties":/home/pdi/.kettle/kettle.properties \
+  -v "$(pwd)/.docker/jobs-common/remocra.properties":/home/pdi/remocra.properties \
+  -v "$(pwd)/.docker/jobs-4.4/.kettle/repositories.xml":/home/pdi/.kettle/repositories.xml \
+  -v "$(pwd)/.docker/jobs-4.4/dkron_data":/dkron/dkron.data \
+  --network docker_remocra --link remocra-db:postgis.sdisxx.fr \
+  \
+  -p 8060:8080 \
+  remocra-pdi-4.4-dkron \
+  agent --server --bootstrap-expect=1 --node-name=jobs-4.4
+
+ # http://localhost:8060
+```
+
 
 
 
@@ -382,7 +426,7 @@ docker run --rm \
   -v "$(pwd)/.docker/jobs-common/remocra.properties":/home/pdi/remocra.properties \
   -v "$(pwd)/.docker/jobs/dkron_data":/dkron/dkron.data \
   --network docker_remocra --link remocra-db:postgis.sdisxx.fr \
-  --entrypoint="/home/pdi/kitchen.sh" \
+  --entrypoint="/scripts/entrypoint-pdi.sh" \
   remocra-pdi-dkron \
   \
   -file:"/var/remocra/pdi/traitements_sdis/bspp/creer_demandes_indispo_carre9/creer_demandes_indispo_carre9.kjb" -level:Error -param:"PDI_FICHIER_PARAMETRE=/home/pdi/remocra.properties"
@@ -401,49 +445,4 @@ docker run -it --rm \
   agent --server --bootstrap-expect=1 --node-name=jobs
 
  # http://localhost:8070
-```
-
-
-
-
-```sh
-
-# Génération du fichier de propriétés au bon endroit
-docker exec -it remocra-db psql -${DBACCESS} remocra -c "update remocra.param_conf set valeur='/home/pdi/remocra.properties' where cle='PDI_FICHIER_PARAMETRAGE'"
-
-cd ~/projets/atolcd/sdis-remocra/docker/pdi-4.4-dkron
-docker build -t remocra-pdi-4.4-dkron .
-
-
-# Lancement du planificateur
-docker run --rm \
-  -u $(id -u):$(id -g) \
-  -v "$(pwd)/.docker/var_remocra":/var/remocra \
-  -v "$(pwd)/.docker/jobs-common/kettle.properties":/home/pdi/.kettle/kettle.properties \
-  -v "$(pwd)/.docker/jobs-common/remocra.properties":/home/pdi/remocra.properties \
-  -v "$(pwd)/.docker/jobs-4.4/.kettle/repositories.xml":/home/pdi/.kettle/repositories.xml \
-  -v "$(pwd)/.docker/jobs-4.4/dkron_data":/dkron/dkron.data \
-  --network docker_remocra --link remocra-db:postgis.sdisxx.fr \
-  --entrypoint="/home/pdi/kitchen.sh" \
-  remocra-pdi-4.4-dkron \
-  \
-  -file:"/var/remocra/pdi/traitements_sdis/bspp/creer_demandes_indispo_carre9/creer_demandes_indispo_carre9.kjb" -level:Error -param:"PDI_FICHIER_PARAMETRE=/home/pdi/remocra.properties"
-
-
-docker run -it --rm \
-  --name "jobs-4.4" \
-  \
-  -u $(id -u):$(id -g) \
-  -v "$(pwd)/.docker/var_remocra":/var/remocra \
-  -v "$(pwd)/.docker/jobs-common/kettle.properties":/home/pdi/.kettle/kettle.properties \
-  -v "$(pwd)/.docker/jobs-common/remocra.properties":/home/pdi/remocra.properties \
-  -v "$(pwd)/.docker/jobs-4.4/.kettle/repositories.xml":/home/pdi/.kettle/repositories.xml \
-  -v "$(pwd)/.docker/jobs-4.4/dkron_data":/dkron/dkron.data \
-  --network docker_remocra --link remocra-db:postgis.sdisxx.fr \
-  \
-  -p 8060:8080 \
-  remocra-pdi-4.4-dkron \
-  agent --server --bootstrap-expect=1 --node-name=jobs-4.4
-
- # http://localhost:8060
 ```

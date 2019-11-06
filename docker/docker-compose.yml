@@ -1,5 +1,7 @@
 version: '3.3'
 
+# Valeurs des variables par défaut dans .env
+
 services:
   db: 
     container_name: remocra-db
@@ -10,8 +12,8 @@ services:
     volumes:
       - .docker/db/postgresql_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: remocra
-      POSTGRES_PASSWORD: sqDD43l8qds4d
+      POSTGRES_USER: ${POSTGRES_DB_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_DB_PASSWORD}
       POSTGRES_DB: remocra
       TZ: "Europe/Paris"
       POSTGRES_INITDB_ARGS: --encoding=UTF8 --locale=fr_FR --lc-collate=fr_FR.utf8 --lc-ctype=fr_FR.utf8
@@ -20,7 +22,7 @@ services:
     networks:
       remocra:
         aliases:
-          - postgis.sdisxx.fr
+          - ${POSTGRES_DB_HOSTNAME}
 
   geoserver:
     container_name: remocra-geoserver
@@ -38,10 +40,13 @@ services:
       TOMCAT_EXTRAS: "false"
       INITIAL_MEMORY: 1G
       MAXIMUM_MEMORY: 2G
-      # Pour application redémarrer après avoir supprimer le lock :
-      # docker stop remocra-geoserver && rm .docker/var_remocra/geoserver_data/.updatepassword.lock && docker start remocra-geoserver
-      GEOSERVER_ADMIN_USER: remocraadmin
-      GEOSERVER_ADMIN_PASSWORD: 8eLOp44DZp
+      # Accès à la base de données remocra
+      POSTGRES_DB_HOSTNAME: ${POSTGRES_DB_HOSTNAME}
+      POSTGRES_DB_USERNAME: ${POSTGRES_DB_USERNAME}
+      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
+      # Credentials GeoServer
+      GEOSERVER_ADMIN_USER: ${GEOSERVER_ADMIN_USERNAME}
+      GEOSERVER_ADMIN_PASSWORD: ${GEOSERVER_ADMIN_PASSWORD}
     depends_on:
       - db
     healthcheck:
@@ -65,7 +70,7 @@ services:
       - .docker/var_remocra:/var/remocra
     environment:
       LANG: "fr_FR.UTF-8"
-      JAVA_OPTS: -Ddatabase.username=remocra -Ddatabase.password=sqDD43l8qds4d -Ddatabase.url=jdbc\:postgresql\://postgis.sdisxx.fr\:5432/remocra -Dclient-ng.dir=/usr/local/tomcat/webapps/remocra/static/ -Xms1G -Xmx5G -XX:PermSize=1G -XX:MaxPermSize=2G
+      JAVA_OPTS: -Ddatabase.username=${POSTGRES_DB_USERNAME} -Ddatabase.password=${POSTGRES_DB_PASSWORD} -Ddatabase.url=jdbc\:postgresql\://${POSTGRES_DB_HOSTNAME}\:5432/remocra -Dclient-ng.dir=/usr/local/tomcat/webapps/remocra/static/ -Xms1G -Xmx5G -XX:PermSize=1G -XX:MaxPermSize=2G
     depends_on:
       - db
     healthcheck:
@@ -91,11 +96,16 @@ services:
       - .docker/jobs-common/remocra.properties:/home/pdi/remocra.properties
       - .docker/jobs-4.4/.kettle/repositories.xml:/home/pdi/.kettle/repositories.xml
       - .docker/jobs-4.4/dkron_data:/dkron/dkron.data
+    environment:
+      # Accès à la base de données remocra
+      POSTGRES_DB_HOSTNAME: ${POSTGRES_DB_HOSTNAME}
+      POSTGRES_DB_USERNAME: ${POSTGRES_DB_USERNAME}
+      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
     entrypoint: ""
     command: >
       /bin/bash -c '
-        /home/pdi/kitchen.sh -rep:"ref_pdi_remocra" -dir:"maintenance" -job:"generer_fichier_proprietes" -user:admin -pass:admin -level:Error -param:"PDI_FICHIER_PARAMETRE=/home/pdi/remocra.properties" &&
-        /dkron/dkron agent --server --bootstrap-expect=2 --join=jobs-44.sdisxx.fr --join=jobs-71.sdisxx.fr --node-name=jobs-4.4 --tag="pdi=4.4"'
+        /scripts/entrypoint-pdi.sh -rep:"ref_pdi_remocra" -dir:"maintenance" -job:"generer_fichier_proprietes" -user:admin -pass:admin -level:Error -param:"PDI_FICHIER_PARAMETRE=/home/pdi/remocra.properties" &&
+        /scripts/entrypoint-dkron.sh agent --server --bootstrap-expect=2 --join=jobs-44.sdisxx.fr --join=jobs-71.sdisxx.fr --node-name=jobs-4.4 --tag="pdi=4.4"'
     depends_on:
       - db
     healthcheck:
@@ -120,6 +130,11 @@ services:
       - .docker/jobs-common/kettle.properties:/home/pdi/.kettle/kettle.properties
       - .docker/jobs-common/remocra.properties:/home/pdi/remocra.properties
       - .docker/jobs/dkron_data:/dkron/dkron.data
+    environment:
+      # Accès à la base de données remocra
+      POSTGRES_DB_HOSTNAME: ${POSTGRES_DB_HOSTNAME}
+      POSTGRES_DB_USERNAME: ${POSTGRES_DB_USERNAME}
+      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
     command: "agent --server --bootstrap-expect=2 --join=jobs-44.sdisxx.fr --join=jobs-71.sdisxx.fr --node-name=jobs --tag='pdi=7.1'"
     depends_on:
       - db
