@@ -9,7 +9,10 @@ Certains fichiers sont téléchargés lors du build. Les builds répétés peuve
 (
   GS_VERSION=2.16.0
   cd ~/projets/atolcd/sdis-remocra/docker/geoserver/ext \
-  && wget https://sourceforge.net/projects/geoserver/files/GeoServer/${GS_VERSION}/extensions/geoserver-${GS_VERSION}-querylayer-plugin.zip
+  && wget https://sourceforge.net/projects/geoserver/files/GeoServer/${GS_VERSION}/geoserver-${GS_VERSION}-bin.zip \
+  && wget https://sourceforge.net/projects/geoserver/files/GeoServer/${GS_VERSION}/extensions/geoserver-${GS_VERSION}-querylayer-plugin.zip \
+  && wget https://download.java.net/media/jai/builds/release/1_1_3/jai-1_1_3-lib-linux-amd64.tar.gz \
+  && wget https://download.java.net/media/jai-imageio/builds/release/1.1/jai_imageio-1_1-lib-linux-amd64.tar.gz
 )
 # pdi-4.4-dkron
 (

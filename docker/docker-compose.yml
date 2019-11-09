@@ -36,8 +36,6 @@ services:
     environment:
       GEOSERVER_DATA_DIR: /var/remocra/geoserver_data
       GEOWEBCACHE_CACHE_DIR: /var/remocra/geoserver_data/gwc
-      USERS_XML: /var/remocra/geoserver_data/security/usergroup/default/users.xml
-      TOMCAT_EXTRAS: "false"
       INITIAL_MEMORY: 1G
       MAXIMUM_MEMORY: 2G
       # Accès à la base de données remocra
