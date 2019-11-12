@@ -49,94 +49,27 @@ cd ~/projets/atolcd/sdis-remocra/docker \
 
 ## Configuration des services
 
-La configuration des services est réalisée à travers des variables d'environnement.
-Par exemple, le fichier .env. Voir la [documentation de Docker](https://docs.docker.com/compose/environment-variables/) pour l'ordre de priorité.
+La configuration des services est réalisée à travers des variables d'environnement. Le fichier `.env` définit les valeurs par défaut.
+Cf. [Environment variables in Compose](https://docs.docker.com/compose/environment-variables/).
 
 Les informations d'accès à la base PostgreSQL et à l'administration de GeoServer sont mises à jour lors du démarrage des conteneurs.
 
-**La suite est conservée pour mémoire**.
-### Connexion à la base de données : username / password
-
-* `docker-compose.yml` :
-  * services.db.environment : POSTGRES_USER / POSTGRES_PASSWORD
-  * services.remocra.environment : JAVA_OPTS
-* `.docker/jobs-common/kettle.properties` :
-  * REMOCRA_POSTGIS_DATABASE_USER_NAME / REMOCRA_POSTGIS_DATABASE_USER_PASSWORD
-* `.docker/jobs-4.4/.kettle/repositories.xml`
-  * username / password
-* `.docker/var_remocra/geoserver_data/workspaces/remocra_bspp/remocra_bspp_refererentiel/datastore.xml`
-  * user / passwd
-* `.docker/var_remocra/geoserver_data/workspaces/remocra/remocra/datastore.xml`
-  * user / passwd
-
-### Connexion à GeoServer
-
-* `docker-compose.yml` :
-  * services.geoserver.environment : GEOSERVER_ADMIN_USER / GEOSERVER_ADMIN_PASSWORD
-* `.docker/var_remocra/geoserver_data/security/usergroup/default/users.xml`
-  * password
-  * (réalisé au lancement du service en cas d'absence du fichier  `.updatepassword.lock`)
-
-Exemples de modification à réaliser avant de lancer les services :
-```sh
-# ------------------------------
-# Paramètres
-# ------------------------------
-export POSTGRES_DB_HOSTNAME=postgis.sdisxx.fr
-export POSTGRES_DB_USERNAME=remocra
-export POSTGRES_DB_PASSWORD=sqDD43l8qds4d
-export GEOSERVER_ADMIN_USERNAME=remocraadmin
-export GEOSERVER_ADMIN_PASSWORD=65E8dapkf
-
-cd ~/projets/atolcd/sdis-remocra/docker
-# ------------------------------
-# Accès à la base de données
-# ------------------------------
-# docker-compose.yml
-sed -i "s/POSTGRES_USER:.*/POSTGRES_USER: ${POSTGRES_DB_USERNAME}/g" docker-compose.yml
-sed -i "s/POSTGRES_PASSWORD:.*/POSTGRES_PASSWORD: ${POSTGRES_DB_PASSWORD}/g" docker-compose.yml
-sed -i "s/-Ddatabase.username=[^ ]* /-Ddatabase.username=${POSTGRES_DB_USERNAME} /" docker-compose.yml
-sed -i "s/-Ddatabase.password=[^ ]* /-Ddatabase.password=${POSTGRES_DB_PASSWORD} /" docker-compose.yml
-sed -i "s/-Ddatabase.url=jdbc\\\:postgresql\\\:\/\/.*\\\:5432\/remocra[^ ]* /-Ddatabase.url=jdbc\\\:postgresql\\\:\/\/${POSTGRES_DB_HOSTNAME}\\\:5432\/remocra /" docker-compose.yml
-# kettle.properties
-sed -i "s/REMOCRA_POSTGIS_DATABASE_HOST.*/REMOCRA_POSTGIS_DATABASE_HOST = ${POSTGRES_DB_HOSTNAME}/g" .docker/jobs-common/kettle.properties
-sed -i "s/REMOCRA_POSTGIS_DATABASE_USER_NAME.*/REMOCRA_POSTGIS_DATABASE_USER_NAME = ${POSTGRES_DB_USERNAME}/g" .docker/jobs-common/kettle.properties
-sed -i "s/REMOCRA_POSTGIS_DATABASE_USER_PASSWORD.*/REMOCRA_POSTGIS_DATABASE_USER_PASSWORD = ${POSTGRES_DB_PASSWORD}/g" .docker/jobs-common/kettle.properties
-# repositories.xml
-sed -i "s/<server>.*<\/server>/<server>${POSTGRES_DB_HOSTNAME}<\/server>/g" .docker/jobs-4.4/.kettle/repositories.xml
-sed -i "s/<username>.*<\/username>/<username>${POSTGRES_DB_USERNAME}<\/username>/g" .docker/jobs-4.4/.kettle/repositories.xml
-sed -i "s/<password>.*<\/password>/<password>${POSTGRES_DB_PASSWORD}<\/password>/g" .docker/jobs-4.4/.kettle/repositories.xml
-# datastore.xml
-find .docker/var_remocra/geoserver_data -type f -name "datastore.xml" -exec sed -i "s/<entry key=\"host\">localhost<\/entry>/<entry key=\"host\">${POSTGRES_DB_HOSTNAME}<\/entry>/g" {} \;
-find .docker/var_remocra/geoserver_data -type f -name "datastore.xml" -exec grep -l '<entry key="host">${POSTGRES_DB_HOSTNAME}<\/entry>' {} \; -exec sed -i "s/<entry key=\"user\">.*<\/entry>/<entry key=\"user\">${POSTGRES_DB_USERNAME}<\/entry>/g" {} \;
-find .docker/var_remocra/geoserver_data -type f -name "datastore.xml" -exec grep -l '<entry key="host">${POSTGRES_DB_HOSTNAME}<\/entry>' {} \; -exec sed -i "s/<entry key=\"passwd\">.*<\/entry>/<entry key=\"passwd\">plain:${POSTGRES_DB_PASSWORD}<\/entry>/g" {} \;
-
-# ------------------------------
-# GeoServer
-# ------------------------------
-rm -f .docker/var_remocra/geoserver_data/.updatepassword.lock
-sed -i "s/GEOSERVER_ADMIN_USERNAME:.*/GEOSERVER_ADMIN_USERNAME: ${GEOSERVER_ADMIN_USERNAME}/g" docker-compose.yml
-sed -i "s/GEOSERVER_ADMIN_PASSWORD:.*/GEOSERVER_ADMIN_PASSWORD: ${GEOSERVER_ADMIN_PASSWORD}/g" docker-compose.yml
-```
 
 
-
-## Base de données
+## Traitement des bases de données / fichiers
 
 ```sh
 cd ~/projets/atolcd/sdis-remocra/docker
 docker-compose up db
 ```
 
-
-### Bases de données
-
+Pour la suite, on définit les variables suivantes :
 ```sh
 export DBACCESS="-U ${POSTGRES_DB_USERNAME:-remocra} -h localhost"
 cd ~/projets/atolcd/sdis-remocra/docker
 ```
 
-#### Référentiel PDI
+### Référentiel PDI
 
 ```sh
 REFERENTIEL_DUMP=~/projets/atolcd/sdis-remocra/server/sdis-remocra/home/postgres/pdi_db/000_remocra_pdi_all.sql
@@ -147,11 +80,11 @@ docker exec -it remocra-db createdb ${DBACCESS} -E UTF8 remocra_ref_pdi
 docker exec -i remocra-db psql ${DBACCESS} -d remocra_ref_pdi < ${REFERENTIEL_DUMP} 
 ```
 
-#### Remocra
+### Base de données Remocra
 
-##### Cas 1 : vierge (à valider)
+#### Cas 1 : vierge (à valider)
 ```sh
-# Reprise des scripts SQL (à compléter si besoin)
+# Reprise des scripts SQL - préparation à réaliser une fois et à versionner (à compléter si besoin)
 find ../server/sdis-remocra/home/postgres/remocra_db -type f -name "*.sql" -exec sed -i "s/ndims/st_ndims/g" {} \;
 find ../server/sdis-remocra/home/postgres/remocra_db -type f -name "*.sql" -exec sed -i "s/\.srid/\.st_srid/g" {} \;
 find ../server/sdis-remocra/home/postgres/remocra_db -type f -name "*.sql" -exec sed -i "s/(srid(/(st_srid(/g" {} \;
@@ -165,16 +98,18 @@ docker exec -it remocra-db psql ${DBACCESS} remocra -c "update remocra.param_con
 docker exec -it remocra-db psql -U postgres remocra -c "update remocra.param_conf set valeur='http://geoserver.sdisxx.fr:8080/geoserver' where cle='WMS_BASE_URL'"
 ```
 
-#####  Cas 2 : à partir d'un dump (migration)
-```sh
-# Migration postgis 1.5 vers postgis 2
-# https://postgis.net/docs/postgis_installation.html#hard_upgrade
+####  Cas 2 : à partir d'un dump (migration)
 
-# ➔ Sur le serveur d'origine
+Cette partie concerne la migration de postgis 1.5 vers postgis 2.
+Cf. [Hard upgrade PostGIS](https://postgis.net/docs/postgis_installation.html#hard_upgrade).
+
+Sur le serveur d'origine :
+```sh
 # Récupération du dump
 pg_dump -Fc -b -v -f "remocra-1.5.backup" remocra
-
-# ➔ Sur l'hôte
+```
+Sur l'hôte :
+```sh
 # Préparation
 sudo mv remocra-1.5.backup ~/projets/atolcd/sdis-remocra/docker/.docker/db/postgresql_data
 
@@ -189,7 +124,7 @@ docker exec -it remocra-db bash -c "perl /usr/local/share/postgresql/contrib/pos
 docker exec -it remocra-db cat /var/lib/postgresql/data/errors.txt
 docker exec -it remocra-db apk del perl
 
-# Patches si nécessaire :
+# Patches éventuels
 # docker exec -it remocra-db psql -U postgres remocra -c "select * from remocra.suivi_patches order by numero desc limit 1"
 # remocra_patches '108 109 110 111 112 113 114 115 116 117 118'
 
@@ -202,7 +137,7 @@ docker exec -it remocra-db psql ${DBACCESS} remocra -c "update remocra.param_con
 docker up
 ```
 
-##### Pour les tests
+#### Pour les tests
 
 ```sh
 EMAIL_USERNAME=cva
@@ -216,9 +151,31 @@ docker exec -it remocra-db psql ${DBACCESS} remocra -c "update remocra.param_con
 docker exec -it remocra-db psql ${DBACCESS} remocra -c "update remocra.param_conf set valeur='${SMTP_HOST}' where cle='PDI_SMTP_URL'"
 ```
 
+### Fichiers de configuration
+
+Sur le serveur d'origine :
+```sh
+# Sauvegarde (exemple)
+cd /var/remocra && zip -rq /root/var_remocra.zip . -x \
+  atlas/**\* \
+  geoserver_data/logs/*.log \
+  pdi/depot/**\* \
+  pdi/export/**\* \
+  pdi/log/**\* \
+  pdi/synchro/**\* \
+  pdi/tmp/**\*
+```
+
+Sur l'hôte :
+```sh
+# Extraction
+unzip -q var_remocra.zip -d ~/projets/atolcd/sdis-remocra/docker/.docker/var_remocra
+```
 
 
-## Démarrage des services
+
+
+## Démarrage des autres services
 
 ### Exécution
 ```sh
@@ -229,20 +186,6 @@ Accès :
 * Remocra : http://localhost:8080/remocra
 * GeoServer : http://localhost:8090/geoserver
 * Planification : http://localhost:8070 / (http://localhost:8060)
-
-
-### Commandes utiles
-
-```sh
-# Commande basique
-docker exec -it remocra ls /var/remocra
-
-# Requête
-docker exec -it remocra-db psql ${DBACCESS} remocra -c "select * from remocra.utilisateur order by id asc limit 5"
-
-# Shell
-docker exec -it remocra /bin/bash
-```
 
 
 
@@ -412,8 +355,8 @@ cd ~/projets/atolcd/sdis-remocra/docker/pdi
 docker build -t remocra-pdi .
 ```
 
+Si besoin, mettre en place les fichiers de traitements :
 ```sh
-# Mise en place des fichiers de traitements
 cp -r ~/projets/atolcd/sdis-remocra/server/sdis-remocra/var/remocra/pdi ~/projets/atolcd/sdis-remocra/docker/.docker/var_remocra
 ```
 
