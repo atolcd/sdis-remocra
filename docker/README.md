@@ -65,7 +65,7 @@ docker-compose up db
 
 Pour la suite, on définit les variables suivantes :
 ```sh
-export DBACCESS="-U ${POSTGRES_DB_USERNAME:-remocra} -h localhost"
+export PGUSER=${POSTGRES_DB_USERNAME:-remocra}
 cd ~/projets/atolcd/sdis-remocra/docker
 ```
 
@@ -74,10 +74,10 @@ cd ~/projets/atolcd/sdis-remocra/docker
 ```sh
 REFERENTIEL_DUMP=~/projets/atolcd/sdis-remocra/server/sdis-remocra/home/postgres/pdi_db/000_remocra_pdi_all.sql
 # Mise en place du référentiel des traitements
-#docker exec -i remocra-db psql ${DBACCESS} -d remocra_ref_pdi -c "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'remocra_ref_pdi' AND pid <> pg_backend_pid();"
-docker exec -it remocra-db dropdb remocra_ref_pdi ${DBACCESS}
-docker exec -it remocra-db createdb ${DBACCESS} -E UTF8 remocra_ref_pdi
-docker exec -i remocra-db psql ${DBACCESS} -d remocra_ref_pdi < ${REFERENTIEL_DUMP} 
+#docker exec -i -e PGUSER=$PGUSER remocra-db psql -d remocra_ref_pdi -c "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'remocra_ref_pdi' AND pid <> pg_backend_pid();"
+docker exec -it -e PGUSER=$PGUSER remocra-db dropdb remocra_ref_pdi
+docker exec -it -e PGUSER=$PGUSER remocra-db createdb -E UTF8 remocra_ref_pdi
+docker exec -i -e PGUSER=$PGUSER remocra-db psql -d remocra_ref_pdi < ${REFERENTIEL_DUMP} 
 ```
 
 ### Base de données Remocra
@@ -94,8 +94,8 @@ sed -i '/\\i 030_acces.sql/s/^/--/g' ../server/sdis-remocra/home/postgres/remocr
 docker-compose restart remocra
 
 # Mise à jour des paramètres
-docker exec -it remocra-db psql ${DBACCESS} remocra -c "update remocra.param_conf set valeur='/home/pdi/remocra.properties' where cle='PDI_FICHIER_PARAMETRAGE'"
-docker exec -it remocra-db psql -U postgres remocra -c "update remocra.param_conf set valeur='http://geoserver.sdisxx.fr:8080/geoserver' where cle='WMS_BASE_URL'"
+docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -c "update remocra.param_conf set valeur='/home/pdi/remocra.properties' where cle='PDI_FICHIER_PARAMETRAGE'"
+docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -c "update remocra.param_conf set valeur='http://geoserver.sdisxx.fr:8080/geoserver' where cle='WMS_BASE_URL'"
 ```
 
 ####  Cas 2 : à partir d'un dump (migration)
@@ -114,13 +114,12 @@ Sur l'hôte :
 sudo mv remocra-1.5.backup ~/projets/atolcd/sdis-remocra/docker/.docker/db/postgresql_data
 
 # Migration
-export DBACCESS="-U ${POSTGRES_DB_USERNAME:-remocra} -h localhost"
-docker exec -it remocra-db dropdb remocra ${DBACCESS}
-docker exec -it remocra-db createdb remocra ${DBACCESS} -E UTF8 remocra
-docker exec -it remocra-db psql ${DBACCESS} remocra -c "CREATE EXTENSION postgis;"
-docker exec -it remocra-db psql ${DBACCESS} remocra -f /usr/local/share/postgresql/contrib/postgis-2.5/legacy.sql
+docker exec -it -e PGUSER=$PGUSER remocra-db dropdb remocra
+docker exec -it -e PGUSER=$PGUSER remocra-db createdb remocra -E UTF8 remocra
+docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -c "CREATE EXTENSION postgis;"
+docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -f /usr/local/share/postgresql/contrib/postgis-2.5/legacy.sql
 docker exec -it remocra-db apk add perl
-docker exec -it remocra-db bash -c "perl /usr/local/share/postgresql/contrib/postgis-2.5/postgis_restore.pl /var/lib/postgresql/data/remocra-1.5.backup | psql ${DBACCESS} remocra 2> /var/lib/postgresql/data/errors.txt"
+docker exec -it -e PGUSER=$PGUSER remocra-db bash -c "perl /usr/local/share/postgresql/contrib/postgis-2.5/postgis_restore.pl /var/lib/postgresql/data/remocra-1.5.backup | psql remocra 2> /var/lib/postgresql/data/errors.txt"
 docker exec -it remocra-db cat /var/lib/postgresql/data/errors.txt
 docker exec -it remocra-db apk del perl
 
@@ -128,11 +127,11 @@ docker exec -it remocra-db apk del perl
 # docker exec -it remocra-db psql -U postgres remocra -c "select * from remocra.suivi_patches order by numero desc limit 1"
 # remocra_patches '108 109 110 111 112 113 114 115 116 117 118'
 
-docker exec -it remocra-db psql ${DBACCESS} remocra -f /usr/local/share/postgresql/contrib/postgis-2.5/uninstall_legacy.sql
+docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -f /usr/local/share/postgresql/contrib/postgis-2.5/uninstall_legacy.sql
 
 # Mise à jour des paramètres
-docker exec -it remocra-db psql ${DBACCESS} remocra -c "update remocra.param_conf set valeur='/home/pdi/remocra.properties' where cle='PDI_FICHIER_PARAMETRAGE'"
-docker exec -it remocra-db psql ${DBACCESS} remocra -c "update remocra.param_conf set valeur='http://geoserver.sdisxx.fr:8080/geoserver' where cle='WMS_BASE_URL'"
+docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -c "update remocra.param_conf set valeur='/home/pdi/remocra.properties' where cle='PDI_FICHIER_PARAMETRAGE'"
+docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -c "update remocra.param_conf set valeur='http://geoserver.sdisxx.fr:8080/geoserver' where cle='WMS_BASE_URL'"
 
 docker up
 ```
@@ -144,11 +143,11 @@ EMAIL_USERNAME=cva
 EMAIL_DOMAIN=atolcd.com
 SMTP_HOST=smtp.priv.atolcd.comm
 # Redéfinition des mails par sécurité
-docker exec -it remocra-db psql ${DBACCESS} remocra -c "update remocra.utilisateur set email='${EMAIL_USERNAME}+'||lower(identifiant)||'@${EMAIL_DOMAIN}'"
-docker exec -it remocra-db psql ${DBACCESS} remocra -c "update remocra.organisme set email_contact='${EMAIL_USERNAME}+'||lower(code)||'@${EMAIL_DOMAIN}'"
-docker exec -it remocra-db psql ${DBACCESS} remocra -c "update remocra.param_conf set valeur='${EMAIL_USERNAME}@${EMAIL_DOMAIN}' where valeur like '%@%'"
+docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -c "update remocra.utilisateur set email='${EMAIL_USERNAME}+'||lower(identifiant)||'@${EMAIL_DOMAIN}'"
+docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -c "update remocra.organisme set email_contact='${EMAIL_USERNAME}+'||lower(code)||'@${EMAIL_DOMAIN}'"
+docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -c "update remocra.param_conf set valeur='${EMAIL_USERNAME}@${EMAIL_DOMAIN}' where valeur like '%@%'"
 # Serveur SMTP
-docker exec -it remocra-db psql ${DBACCESS} remocra -c "update remocra.param_conf set valeur='${SMTP_HOST}' where cle='PDI_SMTP_URL'"
+docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -c "update remocra.param_conf set valeur='${SMTP_HOST}' where cle='PDI_SMTP_URL'"
 ```
 
 ### Fichiers de configuration
