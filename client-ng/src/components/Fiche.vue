@@ -30,7 +30,7 @@
           </div>
           <div class="col-md-5">
             <b-form-group label="Gestionnaire" label-for="gestionnaire" invalid-feedback="Le gestionnaire doit être renseigné" :state="etats.gestionnaire" label-cols-md="4">
-              <b-form-select id="gestionnaire" v-model="hydrant.gestionnaire" class="parametre" :options="ellipsis(comboGestionnaire)" size="sm" v-on:change="onGestionnaireChange" :state="etats.gestionnaire" required>
+              <b-form-select id="gestionnaire" v-model="hydrant.gestionnaire" class="parametre" :options="sortCombo(ellipsis(comboGestionnaire))" size="sm" v-on:change="onGestionnaireChange" :state="etats.gestionnaire" required>
               </b-form-select>
               <button class="gestionnaireBtn" @click="modifGestionnaire" v-if="hydrant.natureDeci == idDeciPrive && utilisateurDroits.indexOf('HYDRANTS_GESTIONNAIRE_C') != -1">
                 <img src="/remocra/static/img/pencil.png">
@@ -190,6 +190,16 @@ export default {
         return c;
       }
     },
+
+    /**
+      * Renvoie les données d'une combobox triées alphabétiqueement selon la valeur associée
+      * @param combo Un tableau d'objet contenant les options de la combobox
+      */
+    sortCombo: function() {
+      return function(combo) {
+        return combo.sort((a,b) => a.text.localeCompare(b.text));
+      }
+    }
   },
 
   mounted: function() {
