@@ -122,7 +122,11 @@
                 <div :class="{'col-md-9':!isNew, 'col-md-12':isNew}">
                   <b-form-group label-cols-md="2">
                     <ul :class="{'itemPeiContainer':true, 'hidden':!this.mesures[this.selectedRow].listeHydrants.length}">
-                      <li v-for="item in this.mesures[this.selectedRow].listeHydrants" v-bind:key="item.id" size="sm" :class="{'itemPei': true, 'bg-secondary':item.id==selectedPei, 'text-light':item.id==selectedPei}" @click="selectedPei = item.id">
+                      <li v-for="item in this.mesures[this.selectedRow].listeHydrants.sort((a,b) => a.numero.localeCompare(b.numero))"
+                          v-bind:key="item.id"
+                          size="sm"
+                          :class="{'itemPei': true, 'bg-secondary':item.id==selectedPei, 'text-light':item.id==selectedPei}"
+                          @click="selectedPei = item.id">
                         {{item.numero}}
                       </li>
                     </ul>
