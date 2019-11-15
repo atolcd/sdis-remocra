@@ -38,7 +38,6 @@ import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import fr.sdis83.remocra.web.serialize.transformer.GeometryTransformer;
-import sun.util.resources.LocaleNames_ga;
 
 
 @RequestMapping("/hydrants")
