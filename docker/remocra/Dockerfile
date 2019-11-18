@@ -2,6 +2,13 @@ FROM tomcat:7.0.96-jdk8-openjdk-slim
 
 LABEL maintainer="ATOL Conseils & Développements"
 
+# curl
+RUN set -e \
+    && apt-get -y update \
+    && apt-get install -y curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 # ENV
 ENV LANG fr_FR.UTF-8
 

@@ -81,7 +81,7 @@ ENV DKRON_VERSION 2.0.0-rc7
 ENV DKRON_HOME /dkron
 
 RUN set -x \
-  && buildDeps='bash ca-certificates openssl' \
+  && buildDeps='bash ca-certificates openssl curl' \
   && apk add --update $buildDeps \
   && rm -rf /var/cache/apk/*
 
