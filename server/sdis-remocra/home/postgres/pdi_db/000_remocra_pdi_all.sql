@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Started on 2019-09-24 08:47:59 CEST
+-- Started on 2019-11-18 10:22:10 CET
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
@@ -12,7 +12,7 @@ SET client_min_messages = warning;
 SET escape_string_warning = off;
 
 --
--- TOC entry 2126 (class 1262 OID 249956)
+-- TOC entry 2126 (class 1262 OID 357240)
 -- Name: remocra_ref_pdi; Type: DATABASE; Schema: -; Owner: postgres
 --
 
@@ -31,7 +31,7 @@ SET client_min_messages = warning;
 SET escape_string_warning = off;
 
 --
--- TOC entry 704 (class 2612 OID 249959)
+-- TOC entry 704 (class 2612 OID 357243)
 -- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
 --
 
@@ -47,7 +47,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- TOC entry 140 (class 1259 OID 249960)
+-- TOC entry 140 (class 1259 OID 357244)
 -- Dependencies: 6
 -- Name: r_cluster; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -66,7 +66,7 @@ CREATE TABLE r_cluster (
 ALTER TABLE public.r_cluster OWNER TO postgres;
 
 --
--- TOC entry 141 (class 1259 OID 249966)
+-- TOC entry 141 (class 1259 OID 357250)
 -- Dependencies: 140 6
 -- Name: r_cluster_id_cluster_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -100,7 +100,7 @@ SELECT pg_catalog.setval('r_cluster_id_cluster_seq', 1, false);
 
 
 --
--- TOC entry 142 (class 1259 OID 249968)
+-- TOC entry 142 (class 1259 OID 357252)
 -- Dependencies: 6
 -- Name: r_cluster_slave; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -115,7 +115,7 @@ CREATE TABLE r_cluster_slave (
 ALTER TABLE public.r_cluster_slave OWNER TO postgres;
 
 --
--- TOC entry 143 (class 1259 OID 249971)
+-- TOC entry 143 (class 1259 OID 357255)
 -- Dependencies: 142 6
 -- Name: r_cluster_slave_id_cluster_slave_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -149,7 +149,7 @@ SELECT pg_catalog.setval('r_cluster_slave_id_cluster_slave_seq', 1, false);
 
 
 --
--- TOC entry 144 (class 1259 OID 249973)
+-- TOC entry 144 (class 1259 OID 357257)
 -- Dependencies: 6
 -- Name: r_condition; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -169,7 +169,7 @@ CREATE TABLE r_condition (
 ALTER TABLE public.r_condition OWNER TO postgres;
 
 --
--- TOC entry 145 (class 1259 OID 249979)
+-- TOC entry 145 (class 1259 OID 357263)
 -- Dependencies: 6 144
 -- Name: r_condition_id_condition_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -203,7 +203,7 @@ SELECT pg_catalog.setval('r_condition_id_condition_seq', 1, false);
 
 
 --
--- TOC entry 146 (class 1259 OID 249981)
+-- TOC entry 146 (class 1259 OID 357265)
 -- Dependencies: 6
 -- Name: r_database; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -227,7 +227,7 @@ CREATE TABLE r_database (
 ALTER TABLE public.r_database OWNER TO postgres;
 
 --
--- TOC entry 147 (class 1259 OID 249987)
+-- TOC entry 147 (class 1259 OID 357271)
 -- Dependencies: 6
 -- Name: r_database_attribute; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -243,7 +243,7 @@ CREATE TABLE r_database_attribute (
 ALTER TABLE public.r_database_attribute OWNER TO postgres;
 
 --
--- TOC entry 148 (class 1259 OID 249993)
+-- TOC entry 148 (class 1259 OID 357277)
 -- Dependencies: 147 6
 -- Name: r_database_attribute_id_database_attribute_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -277,7 +277,7 @@ SELECT pg_catalog.setval('r_database_attribute_id_database_attribute_seq', 1, fa
 
 
 --
--- TOC entry 149 (class 1259 OID 249995)
+-- TOC entry 149 (class 1259 OID 357279)
 -- Dependencies: 6
 -- Name: r_database_contype; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -292,7 +292,7 @@ CREATE TABLE r_database_contype (
 ALTER TABLE public.r_database_contype OWNER TO postgres;
 
 --
--- TOC entry 150 (class 1259 OID 250001)
+-- TOC entry 150 (class 1259 OID 357285)
 -- Dependencies: 6 149
 -- Name: r_database_contype_id_database_contype_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -326,7 +326,7 @@ SELECT pg_catalog.setval('r_database_contype_id_database_contype_seq', 1, false)
 
 
 --
--- TOC entry 151 (class 1259 OID 250003)
+-- TOC entry 151 (class 1259 OID 357287)
 -- Dependencies: 6 146
 -- Name: r_database_id_database_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -360,7 +360,7 @@ SELECT pg_catalog.setval('r_database_id_database_seq', 1, false);
 
 
 --
--- TOC entry 152 (class 1259 OID 250005)
+-- TOC entry 152 (class 1259 OID 357289)
 -- Dependencies: 6
 -- Name: r_database_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -375,7 +375,7 @@ CREATE TABLE r_database_type (
 ALTER TABLE public.r_database_type OWNER TO postgres;
 
 --
--- TOC entry 153 (class 1259 OID 250011)
+-- TOC entry 153 (class 1259 OID 357295)
 -- Dependencies: 152 6
 -- Name: r_database_type_id_database_type_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -409,7 +409,7 @@ SELECT pg_catalog.setval('r_database_type_id_database_type_seq', 1, false);
 
 
 --
--- TOC entry 154 (class 1259 OID 250013)
+-- TOC entry 154 (class 1259 OID 357297)
 -- Dependencies: 6
 -- Name: r_dependency; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -426,7 +426,7 @@ CREATE TABLE r_dependency (
 ALTER TABLE public.r_dependency OWNER TO postgres;
 
 --
--- TOC entry 155 (class 1259 OID 250019)
+-- TOC entry 155 (class 1259 OID 357303)
 -- Dependencies: 154 6
 -- Name: r_dependency_id_dependency_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -460,7 +460,7 @@ SELECT pg_catalog.setval('r_dependency_id_dependency_seq', 1, false);
 
 
 --
--- TOC entry 156 (class 1259 OID 250021)
+-- TOC entry 156 (class 1259 OID 357305)
 -- Dependencies: 6
 -- Name: r_directory; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -475,7 +475,7 @@ CREATE TABLE r_directory (
 ALTER TABLE public.r_directory OWNER TO postgres;
 
 --
--- TOC entry 157 (class 1259 OID 250024)
+-- TOC entry 157 (class 1259 OID 357308)
 -- Dependencies: 156 6
 -- Name: r_directory_id_directory_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -509,7 +509,7 @@ SELECT pg_catalog.setval('r_directory_id_directory_seq', 1, false);
 
 
 --
--- TOC entry 158 (class 1259 OID 250026)
+-- TOC entry 158 (class 1259 OID 357310)
 -- Dependencies: 6
 -- Name: r_job; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -538,7 +538,7 @@ CREATE TABLE r_job (
 ALTER TABLE public.r_job OWNER TO postgres;
 
 --
--- TOC entry 159 (class 1259 OID 250032)
+-- TOC entry 159 (class 1259 OID 357316)
 -- Dependencies: 6
 -- Name: r_job_attribute; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -556,7 +556,7 @@ CREATE TABLE r_job_attribute (
 ALTER TABLE public.r_job_attribute OWNER TO postgres;
 
 --
--- TOC entry 160 (class 1259 OID 250038)
+-- TOC entry 160 (class 1259 OID 357322)
 -- Dependencies: 6 159
 -- Name: r_job_attribute_id_job_attribute_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -590,7 +590,7 @@ SELECT pg_catalog.setval('r_job_attribute_id_job_attribute_seq', 1, false);
 
 
 --
--- TOC entry 161 (class 1259 OID 250040)
+-- TOC entry 161 (class 1259 OID 357324)
 -- Dependencies: 6
 -- Name: r_job_hop; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -609,7 +609,7 @@ CREATE TABLE r_job_hop (
 ALTER TABLE public.r_job_hop OWNER TO postgres;
 
 --
--- TOC entry 162 (class 1259 OID 250043)
+-- TOC entry 162 (class 1259 OID 357327)
 -- Dependencies: 6 161
 -- Name: r_job_hop_id_job_hop_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -643,7 +643,7 @@ SELECT pg_catalog.setval('r_job_hop_id_job_hop_seq', 1, false);
 
 
 --
--- TOC entry 163 (class 1259 OID 250045)
+-- TOC entry 163 (class 1259 OID 357329)
 -- Dependencies: 158 6
 -- Name: r_job_id_job_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -677,7 +677,7 @@ SELECT pg_catalog.setval('r_job_id_job_seq', 1, false);
 
 
 --
--- TOC entry 164 (class 1259 OID 250047)
+-- TOC entry 164 (class 1259 OID 357331)
 -- Dependencies: 6
 -- Name: r_job_lock; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -694,7 +694,7 @@ CREATE TABLE r_job_lock (
 ALTER TABLE public.r_job_lock OWNER TO postgres;
 
 --
--- TOC entry 165 (class 1259 OID 250053)
+-- TOC entry 165 (class 1259 OID 357337)
 -- Dependencies: 6 164
 -- Name: r_job_lock_id_job_lock_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -728,7 +728,7 @@ SELECT pg_catalog.setval('r_job_lock_id_job_lock_seq', 1, false);
 
 
 --
--- TOC entry 166 (class 1259 OID 250055)
+-- TOC entry 166 (class 1259 OID 357339)
 -- Dependencies: 6
 -- Name: r_job_note; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -742,7 +742,7 @@ CREATE TABLE r_job_note (
 ALTER TABLE public.r_job_note OWNER TO postgres;
 
 --
--- TOC entry 167 (class 1259 OID 250058)
+-- TOC entry 167 (class 1259 OID 357342)
 -- Dependencies: 6
 -- Name: r_jobentry; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -759,7 +759,7 @@ CREATE TABLE r_jobentry (
 ALTER TABLE public.r_jobentry OWNER TO postgres;
 
 --
--- TOC entry 168 (class 1259 OID 250064)
+-- TOC entry 168 (class 1259 OID 357348)
 -- Dependencies: 6
 -- Name: r_jobentry_attribute; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -778,7 +778,7 @@ CREATE TABLE r_jobentry_attribute (
 ALTER TABLE public.r_jobentry_attribute OWNER TO postgres;
 
 --
--- TOC entry 169 (class 1259 OID 250070)
+-- TOC entry 169 (class 1259 OID 357354)
 -- Dependencies: 6 168
 -- Name: r_jobentry_attribute_id_jobentry_attribute_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -812,7 +812,7 @@ SELECT pg_catalog.setval('r_jobentry_attribute_id_jobentry_attribute_seq', 1, fa
 
 
 --
--- TOC entry 170 (class 1259 OID 250072)
+-- TOC entry 170 (class 1259 OID 357356)
 -- Dependencies: 6
 -- Name: r_jobentry_copy; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -833,7 +833,7 @@ CREATE TABLE r_jobentry_copy (
 ALTER TABLE public.r_jobentry_copy OWNER TO postgres;
 
 --
--- TOC entry 171 (class 1259 OID 250075)
+-- TOC entry 171 (class 1259 OID 357359)
 -- Dependencies: 170 6
 -- Name: r_jobentry_copy_id_jobentry_copy_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -867,7 +867,7 @@ SELECT pg_catalog.setval('r_jobentry_copy_id_jobentry_copy_seq', 1, false);
 
 
 --
--- TOC entry 172 (class 1259 OID 250077)
+-- TOC entry 172 (class 1259 OID 357361)
 -- Dependencies: 6
 -- Name: r_jobentry_database; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -882,7 +882,7 @@ CREATE TABLE r_jobentry_database (
 ALTER TABLE public.r_jobentry_database OWNER TO postgres;
 
 --
--- TOC entry 173 (class 1259 OID 250080)
+-- TOC entry 173 (class 1259 OID 357364)
 -- Dependencies: 167 6
 -- Name: r_jobentry_id_jobentry_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -916,7 +916,7 @@ SELECT pg_catalog.setval('r_jobentry_id_jobentry_seq', 1, false);
 
 
 --
--- TOC entry 174 (class 1259 OID 250082)
+-- TOC entry 174 (class 1259 OID 357366)
 -- Dependencies: 6
 -- Name: r_jobentry_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -931,7 +931,7 @@ CREATE TABLE r_jobentry_type (
 ALTER TABLE public.r_jobentry_type OWNER TO postgres;
 
 --
--- TOC entry 175 (class 1259 OID 250088)
+-- TOC entry 175 (class 1259 OID 357372)
 -- Dependencies: 174 6
 -- Name: r_jobentry_type_id_jobentry_type_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -965,7 +965,7 @@ SELECT pg_catalog.setval('r_jobentry_type_id_jobentry_type_seq', 1, false);
 
 
 --
--- TOC entry 176 (class 1259 OID 250090)
+-- TOC entry 176 (class 1259 OID 357374)
 -- Dependencies: 6
 -- Name: r_log; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -987,7 +987,7 @@ CREATE TABLE r_log (
 ALTER TABLE public.r_log OWNER TO postgres;
 
 --
--- TOC entry 177 (class 1259 OID 250096)
+-- TOC entry 177 (class 1259 OID 357380)
 -- Dependencies: 6 176
 -- Name: r_log_id_log_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -1021,7 +1021,7 @@ SELECT pg_catalog.setval('r_log_id_log_seq', 1, false);
 
 
 --
--- TOC entry 178 (class 1259 OID 250098)
+-- TOC entry 178 (class 1259 OID 357382)
 -- Dependencies: 6
 -- Name: r_loglevel; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1036,7 +1036,7 @@ CREATE TABLE r_loglevel (
 ALTER TABLE public.r_loglevel OWNER TO postgres;
 
 --
--- TOC entry 179 (class 1259 OID 250104)
+-- TOC entry 179 (class 1259 OID 357388)
 -- Dependencies: 6 178
 -- Name: r_loglevel_id_loglevel_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -1070,7 +1070,7 @@ SELECT pg_catalog.setval('r_loglevel_id_loglevel_seq', 1, false);
 
 
 --
--- TOC entry 180 (class 1259 OID 250106)
+-- TOC entry 180 (class 1259 OID 357390)
 -- Dependencies: 6
 -- Name: r_note; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1102,7 +1102,7 @@ CREATE TABLE r_note (
 ALTER TABLE public.r_note OWNER TO postgres;
 
 --
--- TOC entry 181 (class 1259 OID 250112)
+-- TOC entry 181 (class 1259 OID 357396)
 -- Dependencies: 180 6
 -- Name: r_note_id_note_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -1136,7 +1136,7 @@ SELECT pg_catalog.setval('r_note_id_note_seq', 1570, true);
 
 
 --
--- TOC entry 182 (class 1259 OID 250114)
+-- TOC entry 182 (class 1259 OID 357398)
 -- Dependencies: 6
 -- Name: r_partition; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1151,7 +1151,7 @@ CREATE TABLE r_partition (
 ALTER TABLE public.r_partition OWNER TO postgres;
 
 --
--- TOC entry 183 (class 1259 OID 250117)
+-- TOC entry 183 (class 1259 OID 357401)
 -- Dependencies: 182 6
 -- Name: r_partition_id_partition_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -1185,7 +1185,7 @@ SELECT pg_catalog.setval('r_partition_id_partition_seq', 1, false);
 
 
 --
--- TOC entry 184 (class 1259 OID 250119)
+-- TOC entry 184 (class 1259 OID 357403)
 -- Dependencies: 6
 -- Name: r_partition_schema; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1201,7 +1201,7 @@ CREATE TABLE r_partition_schema (
 ALTER TABLE public.r_partition_schema OWNER TO postgres;
 
 --
--- TOC entry 185 (class 1259 OID 250125)
+-- TOC entry 185 (class 1259 OID 357409)
 -- Dependencies: 6 184
 -- Name: r_partition_schema_id_partition_schema_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -1235,7 +1235,7 @@ SELECT pg_catalog.setval('r_partition_schema_id_partition_schema_seq', 1, false)
 
 
 --
--- TOC entry 186 (class 1259 OID 250127)
+-- TOC entry 186 (class 1259 OID 357411)
 -- Dependencies: 6
 -- Name: r_repository_log; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1252,7 +1252,7 @@ CREATE TABLE r_repository_log (
 ALTER TABLE public.r_repository_log OWNER TO postgres;
 
 --
--- TOC entry 187 (class 1259 OID 250133)
+-- TOC entry 187 (class 1259 OID 357417)
 -- Dependencies: 186 6
 -- Name: r_repository_log_id_repository_log_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -1286,7 +1286,7 @@ SELECT pg_catalog.setval('r_repository_log_id_repository_log_seq', 1, false);
 
 
 --
--- TOC entry 188 (class 1259 OID 250135)
+-- TOC entry 188 (class 1259 OID 357419)
 -- Dependencies: 6
 -- Name: r_slave; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1309,7 +1309,7 @@ CREATE TABLE r_slave (
 ALTER TABLE public.r_slave OWNER TO postgres;
 
 --
--- TOC entry 189 (class 1259 OID 250141)
+-- TOC entry 189 (class 1259 OID 357425)
 -- Dependencies: 6 188
 -- Name: r_slave_id_slave_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -1343,7 +1343,7 @@ SELECT pg_catalog.setval('r_slave_id_slave_seq', 1, false);
 
 
 --
--- TOC entry 190 (class 1259 OID 250143)
+-- TOC entry 190 (class 1259 OID 357427)
 -- Dependencies: 6
 -- Name: r_step; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1365,7 +1365,7 @@ CREATE TABLE r_step (
 ALTER TABLE public.r_step OWNER TO postgres;
 
 --
--- TOC entry 191 (class 1259 OID 250149)
+-- TOC entry 191 (class 1259 OID 357433)
 -- Dependencies: 6
 -- Name: r_step_attribute; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1384,7 +1384,7 @@ CREATE TABLE r_step_attribute (
 ALTER TABLE public.r_step_attribute OWNER TO postgres;
 
 --
--- TOC entry 192 (class 1259 OID 250155)
+-- TOC entry 192 (class 1259 OID 357439)
 -- Dependencies: 191 6
 -- Name: r_step_attribute_id_step_attribute_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -1418,7 +1418,7 @@ SELECT pg_catalog.setval('r_step_attribute_id_step_attribute_seq', 1, false);
 
 
 --
--- TOC entry 193 (class 1259 OID 250157)
+-- TOC entry 193 (class 1259 OID 357441)
 -- Dependencies: 6
 -- Name: r_step_database; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1433,7 +1433,7 @@ CREATE TABLE r_step_database (
 ALTER TABLE public.r_step_database OWNER TO postgres;
 
 --
--- TOC entry 194 (class 1259 OID 250160)
+-- TOC entry 194 (class 1259 OID 357444)
 -- Dependencies: 190 6
 -- Name: r_step_id_step_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -1467,7 +1467,7 @@ SELECT pg_catalog.setval('r_step_id_step_seq', 1, false);
 
 
 --
--- TOC entry 195 (class 1259 OID 250162)
+-- TOC entry 195 (class 1259 OID 357446)
 -- Dependencies: 6
 -- Name: r_step_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1483,7 +1483,7 @@ CREATE TABLE r_step_type (
 ALTER TABLE public.r_step_type OWNER TO postgres;
 
 --
--- TOC entry 196 (class 1259 OID 250168)
+-- TOC entry 196 (class 1259 OID 357452)
 -- Dependencies: 6 195
 -- Name: r_step_type_id_step_type_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -1517,7 +1517,7 @@ SELECT pg_catalog.setval('r_step_type_id_step_type_seq', 1, false);
 
 
 --
--- TOC entry 197 (class 1259 OID 250170)
+-- TOC entry 197 (class 1259 OID 357454)
 -- Dependencies: 6
 -- Name: r_trans_attribute; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1535,7 +1535,7 @@ CREATE TABLE r_trans_attribute (
 ALTER TABLE public.r_trans_attribute OWNER TO postgres;
 
 --
--- TOC entry 198 (class 1259 OID 250176)
+-- TOC entry 198 (class 1259 OID 357460)
 -- Dependencies: 197 6
 -- Name: r_trans_attribute_id_trans_attribute_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -1569,7 +1569,7 @@ SELECT pg_catalog.setval('r_trans_attribute_id_trans_attribute_seq', 1, false);
 
 
 --
--- TOC entry 199 (class 1259 OID 250178)
+-- TOC entry 199 (class 1259 OID 357462)
 -- Dependencies: 6
 -- Name: r_trans_cluster; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1584,7 +1584,7 @@ CREATE TABLE r_trans_cluster (
 ALTER TABLE public.r_trans_cluster OWNER TO postgres;
 
 --
--- TOC entry 200 (class 1259 OID 250181)
+-- TOC entry 200 (class 1259 OID 357465)
 -- Dependencies: 199 6
 -- Name: r_trans_cluster_id_trans_cluster_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -1618,7 +1618,7 @@ SELECT pg_catalog.setval('r_trans_cluster_id_trans_cluster_seq', 1, false);
 
 
 --
--- TOC entry 201 (class 1259 OID 250183)
+-- TOC entry 201 (class 1259 OID 357467)
 -- Dependencies: 6
 -- Name: r_trans_hop; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1635,7 +1635,7 @@ CREATE TABLE r_trans_hop (
 ALTER TABLE public.r_trans_hop OWNER TO postgres;
 
 --
--- TOC entry 202 (class 1259 OID 250186)
+-- TOC entry 202 (class 1259 OID 357470)
 -- Dependencies: 6 201
 -- Name: r_trans_hop_id_trans_hop_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -1669,7 +1669,7 @@ SELECT pg_catalog.setval('r_trans_hop_id_trans_hop_seq', 1, false);
 
 
 --
--- TOC entry 203 (class 1259 OID 250188)
+-- TOC entry 203 (class 1259 OID 357472)
 -- Dependencies: 6
 -- Name: r_trans_lock; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1686,7 +1686,7 @@ CREATE TABLE r_trans_lock (
 ALTER TABLE public.r_trans_lock OWNER TO postgres;
 
 --
--- TOC entry 204 (class 1259 OID 250194)
+-- TOC entry 204 (class 1259 OID 357478)
 -- Dependencies: 6 203
 -- Name: r_trans_lock_id_trans_lock_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -1720,7 +1720,7 @@ SELECT pg_catalog.setval('r_trans_lock_id_trans_lock_seq', 1, false);
 
 
 --
--- TOC entry 205 (class 1259 OID 250196)
+-- TOC entry 205 (class 1259 OID 357480)
 -- Dependencies: 6
 -- Name: r_trans_note; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1734,7 +1734,7 @@ CREATE TABLE r_trans_note (
 ALTER TABLE public.r_trans_note OWNER TO postgres;
 
 --
--- TOC entry 206 (class 1259 OID 250199)
+-- TOC entry 206 (class 1259 OID 357483)
 -- Dependencies: 6
 -- Name: r_trans_partition_schema; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1749,7 +1749,7 @@ CREATE TABLE r_trans_partition_schema (
 ALTER TABLE public.r_trans_partition_schema OWNER TO postgres;
 
 --
--- TOC entry 207 (class 1259 OID 250202)
+-- TOC entry 207 (class 1259 OID 357486)
 -- Dependencies: 206 6
 -- Name: r_trans_partition_schema_id_trans_partition_schema_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -1783,7 +1783,7 @@ SELECT pg_catalog.setval('r_trans_partition_schema_id_trans_partition_schema_seq
 
 
 --
--- TOC entry 208 (class 1259 OID 250204)
+-- TOC entry 208 (class 1259 OID 357488)
 -- Dependencies: 6
 -- Name: r_trans_slave; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1798,7 +1798,7 @@ CREATE TABLE r_trans_slave (
 ALTER TABLE public.r_trans_slave OWNER TO postgres;
 
 --
--- TOC entry 209 (class 1259 OID 250207)
+-- TOC entry 209 (class 1259 OID 357491)
 -- Dependencies: 208 6
 -- Name: r_trans_slave_id_trans_slave_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -1832,7 +1832,7 @@ SELECT pg_catalog.setval('r_trans_slave_id_trans_slave_seq', 1, false);
 
 
 --
--- TOC entry 210 (class 1259 OID 250209)
+-- TOC entry 210 (class 1259 OID 357493)
 -- Dependencies: 6
 -- Name: r_trans_step_condition; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1847,7 +1847,7 @@ CREATE TABLE r_trans_step_condition (
 ALTER TABLE public.r_trans_step_condition OWNER TO postgres;
 
 --
--- TOC entry 211 (class 1259 OID 250212)
+-- TOC entry 211 (class 1259 OID 357496)
 -- Dependencies: 6
 -- Name: r_transformation; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1885,7 +1885,7 @@ CREATE TABLE r_transformation (
 ALTER TABLE public.r_transformation OWNER TO postgres;
 
 --
--- TOC entry 212 (class 1259 OID 250218)
+-- TOC entry 212 (class 1259 OID 357502)
 -- Dependencies: 211 6
 -- Name: r_transformation_id_transformation_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -1919,7 +1919,7 @@ SELECT pg_catalog.setval('r_transformation_id_transformation_seq', 1, false);
 
 
 --
--- TOC entry 213 (class 1259 OID 250220)
+-- TOC entry 213 (class 1259 OID 357504)
 -- Dependencies: 6
 -- Name: r_user; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1937,7 +1937,7 @@ CREATE TABLE r_user (
 ALTER TABLE public.r_user OWNER TO postgres;
 
 --
--- TOC entry 214 (class 1259 OID 250226)
+-- TOC entry 214 (class 1259 OID 357510)
 -- Dependencies: 213 6
 -- Name: r_user_id_user_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -1971,7 +1971,7 @@ SELECT pg_catalog.setval('r_user_id_user_seq', 1, false);
 
 
 --
--- TOC entry 215 (class 1259 OID 250228)
+-- TOC entry 215 (class 1259 OID 357512)
 -- Dependencies: 6
 -- Name: r_value; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -1988,7 +1988,7 @@ CREATE TABLE r_value (
 ALTER TABLE public.r_value OWNER TO postgres;
 
 --
--- TOC entry 216 (class 1259 OID 250234)
+-- TOC entry 216 (class 1259 OID 357518)
 -- Dependencies: 215 6
 -- Name: r_value_id_value_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -2022,7 +2022,7 @@ SELECT pg_catalog.setval('r_value_id_value_seq', 1, false);
 
 
 --
--- TOC entry 217 (class 1259 OID 250236)
+-- TOC entry 217 (class 1259 OID 357520)
 -- Dependencies: 6
 -- Name: r_version; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -2039,7 +2039,7 @@ CREATE TABLE r_version (
 ALTER TABLE public.r_version OWNER TO postgres;
 
 --
--- TOC entry 218 (class 1259 OID 250239)
+-- TOC entry 218 (class 1259 OID 357523)
 -- Dependencies: 217 6
 -- Name: r_version_id_version_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -2073,7 +2073,7 @@ SELECT pg_catalog.setval('r_version_id_version_seq', 1, false);
 
 
 --
--- TOC entry 2035 (class 2604 OID 250241)
+-- TOC entry 2035 (class 2604 OID 357525)
 -- Dependencies: 141 140
 -- Name: id_cluster; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2082,7 +2082,7 @@ ALTER TABLE ONLY r_cluster ALTER COLUMN id_cluster SET DEFAULT nextval('r_cluste
 
 
 --
--- TOC entry 2036 (class 2604 OID 250242)
+-- TOC entry 2036 (class 2604 OID 357526)
 -- Dependencies: 143 142
 -- Name: id_cluster_slave; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2091,7 +2091,7 @@ ALTER TABLE ONLY r_cluster_slave ALTER COLUMN id_cluster_slave SET DEFAULT nextv
 
 
 --
--- TOC entry 2037 (class 2604 OID 250243)
+-- TOC entry 2037 (class 2604 OID 357527)
 -- Dependencies: 145 144
 -- Name: id_condition; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2100,7 +2100,7 @@ ALTER TABLE ONLY r_condition ALTER COLUMN id_condition SET DEFAULT nextval('r_co
 
 
 --
--- TOC entry 2038 (class 2604 OID 250244)
+-- TOC entry 2038 (class 2604 OID 357528)
 -- Dependencies: 151 146
 -- Name: id_database; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2109,7 +2109,7 @@ ALTER TABLE ONLY r_database ALTER COLUMN id_database SET DEFAULT nextval('r_data
 
 
 --
--- TOC entry 2039 (class 2604 OID 250245)
+-- TOC entry 2039 (class 2604 OID 357529)
 -- Dependencies: 148 147
 -- Name: id_database_attribute; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2118,7 +2118,7 @@ ALTER TABLE ONLY r_database_attribute ALTER COLUMN id_database_attribute SET DEF
 
 
 --
--- TOC entry 2040 (class 2604 OID 250246)
+-- TOC entry 2040 (class 2604 OID 357530)
 -- Dependencies: 150 149
 -- Name: id_database_contype; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2127,7 +2127,7 @@ ALTER TABLE ONLY r_database_contype ALTER COLUMN id_database_contype SET DEFAULT
 
 
 --
--- TOC entry 2041 (class 2604 OID 250247)
+-- TOC entry 2041 (class 2604 OID 357531)
 -- Dependencies: 153 152
 -- Name: id_database_type; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2136,7 +2136,7 @@ ALTER TABLE ONLY r_database_type ALTER COLUMN id_database_type SET DEFAULT nextv
 
 
 --
--- TOC entry 2042 (class 2604 OID 250248)
+-- TOC entry 2042 (class 2604 OID 357532)
 -- Dependencies: 155 154
 -- Name: id_dependency; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2145,7 +2145,7 @@ ALTER TABLE ONLY r_dependency ALTER COLUMN id_dependency SET DEFAULT nextval('r_
 
 
 --
--- TOC entry 2043 (class 2604 OID 250249)
+-- TOC entry 2043 (class 2604 OID 357533)
 -- Dependencies: 157 156
 -- Name: id_directory; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2154,7 +2154,7 @@ ALTER TABLE ONLY r_directory ALTER COLUMN id_directory SET DEFAULT nextval('r_di
 
 
 --
--- TOC entry 2044 (class 2604 OID 250250)
+-- TOC entry 2044 (class 2604 OID 357534)
 -- Dependencies: 163 158
 -- Name: id_job; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2163,7 +2163,7 @@ ALTER TABLE ONLY r_job ALTER COLUMN id_job SET DEFAULT nextval('r_job_id_job_seq
 
 
 --
--- TOC entry 2045 (class 2604 OID 250251)
+-- TOC entry 2045 (class 2604 OID 357535)
 -- Dependencies: 160 159
 -- Name: id_job_attribute; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2172,7 +2172,7 @@ ALTER TABLE ONLY r_job_attribute ALTER COLUMN id_job_attribute SET DEFAULT nextv
 
 
 --
--- TOC entry 2046 (class 2604 OID 250252)
+-- TOC entry 2046 (class 2604 OID 357536)
 -- Dependencies: 162 161
 -- Name: id_job_hop; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2181,7 +2181,7 @@ ALTER TABLE ONLY r_job_hop ALTER COLUMN id_job_hop SET DEFAULT nextval('r_job_ho
 
 
 --
--- TOC entry 2047 (class 2604 OID 250253)
+-- TOC entry 2047 (class 2604 OID 357537)
 -- Dependencies: 165 164
 -- Name: id_job_lock; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2190,7 +2190,7 @@ ALTER TABLE ONLY r_job_lock ALTER COLUMN id_job_lock SET DEFAULT nextval('r_job_
 
 
 --
--- TOC entry 2048 (class 2604 OID 250254)
+-- TOC entry 2048 (class 2604 OID 357538)
 -- Dependencies: 173 167
 -- Name: id_jobentry; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2199,7 +2199,7 @@ ALTER TABLE ONLY r_jobentry ALTER COLUMN id_jobentry SET DEFAULT nextval('r_jobe
 
 
 --
--- TOC entry 2049 (class 2604 OID 250255)
+-- TOC entry 2049 (class 2604 OID 357539)
 -- Dependencies: 169 168
 -- Name: id_jobentry_attribute; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2208,7 +2208,7 @@ ALTER TABLE ONLY r_jobentry_attribute ALTER COLUMN id_jobentry_attribute SET DEF
 
 
 --
--- TOC entry 2050 (class 2604 OID 250256)
+-- TOC entry 2050 (class 2604 OID 357540)
 -- Dependencies: 171 170
 -- Name: id_jobentry_copy; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2217,7 +2217,7 @@ ALTER TABLE ONLY r_jobentry_copy ALTER COLUMN id_jobentry_copy SET DEFAULT nextv
 
 
 --
--- TOC entry 2051 (class 2604 OID 250257)
+-- TOC entry 2051 (class 2604 OID 357541)
 -- Dependencies: 175 174
 -- Name: id_jobentry_type; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2226,7 +2226,7 @@ ALTER TABLE ONLY r_jobentry_type ALTER COLUMN id_jobentry_type SET DEFAULT nextv
 
 
 --
--- TOC entry 2052 (class 2604 OID 250258)
+-- TOC entry 2052 (class 2604 OID 357542)
 -- Dependencies: 177 176
 -- Name: id_log; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2235,7 +2235,7 @@ ALTER TABLE ONLY r_log ALTER COLUMN id_log SET DEFAULT nextval('r_log_id_log_seq
 
 
 --
--- TOC entry 2053 (class 2604 OID 250259)
+-- TOC entry 2053 (class 2604 OID 357543)
 -- Dependencies: 179 178
 -- Name: id_loglevel; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2244,7 +2244,7 @@ ALTER TABLE ONLY r_loglevel ALTER COLUMN id_loglevel SET DEFAULT nextval('r_logl
 
 
 --
--- TOC entry 2054 (class 2604 OID 250260)
+-- TOC entry 2054 (class 2604 OID 357544)
 -- Dependencies: 181 180
 -- Name: id_note; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2253,7 +2253,7 @@ ALTER TABLE ONLY r_note ALTER COLUMN id_note SET DEFAULT nextval('r_note_id_note
 
 
 --
--- TOC entry 2055 (class 2604 OID 250261)
+-- TOC entry 2055 (class 2604 OID 357545)
 -- Dependencies: 183 182
 -- Name: id_partition; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2262,7 +2262,7 @@ ALTER TABLE ONLY r_partition ALTER COLUMN id_partition SET DEFAULT nextval('r_pa
 
 
 --
--- TOC entry 2056 (class 2604 OID 250262)
+-- TOC entry 2056 (class 2604 OID 357546)
 -- Dependencies: 185 184
 -- Name: id_partition_schema; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2271,7 +2271,7 @@ ALTER TABLE ONLY r_partition_schema ALTER COLUMN id_partition_schema SET DEFAULT
 
 
 --
--- TOC entry 2057 (class 2604 OID 250263)
+-- TOC entry 2057 (class 2604 OID 357547)
 -- Dependencies: 187 186
 -- Name: id_repository_log; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2280,7 +2280,7 @@ ALTER TABLE ONLY r_repository_log ALTER COLUMN id_repository_log SET DEFAULT nex
 
 
 --
--- TOC entry 2058 (class 2604 OID 250264)
+-- TOC entry 2058 (class 2604 OID 357548)
 -- Dependencies: 189 188
 -- Name: id_slave; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2289,7 +2289,7 @@ ALTER TABLE ONLY r_slave ALTER COLUMN id_slave SET DEFAULT nextval('r_slave_id_s
 
 
 --
--- TOC entry 2059 (class 2604 OID 250265)
+-- TOC entry 2059 (class 2604 OID 357549)
 -- Dependencies: 194 190
 -- Name: id_step; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2298,7 +2298,7 @@ ALTER TABLE ONLY r_step ALTER COLUMN id_step SET DEFAULT nextval('r_step_id_step
 
 
 --
--- TOC entry 2060 (class 2604 OID 250266)
+-- TOC entry 2060 (class 2604 OID 357550)
 -- Dependencies: 192 191
 -- Name: id_step_attribute; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2307,7 +2307,7 @@ ALTER TABLE ONLY r_step_attribute ALTER COLUMN id_step_attribute SET DEFAULT nex
 
 
 --
--- TOC entry 2061 (class 2604 OID 250267)
+-- TOC entry 2061 (class 2604 OID 357551)
 -- Dependencies: 196 195
 -- Name: id_step_type; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2316,7 +2316,7 @@ ALTER TABLE ONLY r_step_type ALTER COLUMN id_step_type SET DEFAULT nextval('r_st
 
 
 --
--- TOC entry 2062 (class 2604 OID 250268)
+-- TOC entry 2062 (class 2604 OID 357552)
 -- Dependencies: 198 197
 -- Name: id_trans_attribute; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2325,7 +2325,7 @@ ALTER TABLE ONLY r_trans_attribute ALTER COLUMN id_trans_attribute SET DEFAULT n
 
 
 --
--- TOC entry 2063 (class 2604 OID 250269)
+-- TOC entry 2063 (class 2604 OID 357553)
 -- Dependencies: 200 199
 -- Name: id_trans_cluster; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2334,7 +2334,7 @@ ALTER TABLE ONLY r_trans_cluster ALTER COLUMN id_trans_cluster SET DEFAULT nextv
 
 
 --
--- TOC entry 2064 (class 2604 OID 250270)
+-- TOC entry 2064 (class 2604 OID 357554)
 -- Dependencies: 202 201
 -- Name: id_trans_hop; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2343,7 +2343,7 @@ ALTER TABLE ONLY r_trans_hop ALTER COLUMN id_trans_hop SET DEFAULT nextval('r_tr
 
 
 --
--- TOC entry 2065 (class 2604 OID 250271)
+-- TOC entry 2065 (class 2604 OID 357555)
 -- Dependencies: 204 203
 -- Name: id_trans_lock; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2352,7 +2352,7 @@ ALTER TABLE ONLY r_trans_lock ALTER COLUMN id_trans_lock SET DEFAULT nextval('r_
 
 
 --
--- TOC entry 2066 (class 2604 OID 250272)
+-- TOC entry 2066 (class 2604 OID 357556)
 -- Dependencies: 207 206
 -- Name: id_trans_partition_schema; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2361,7 +2361,7 @@ ALTER TABLE ONLY r_trans_partition_schema ALTER COLUMN id_trans_partition_schema
 
 
 --
--- TOC entry 2067 (class 2604 OID 250273)
+-- TOC entry 2067 (class 2604 OID 357557)
 -- Dependencies: 209 208
 -- Name: id_trans_slave; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2370,7 +2370,7 @@ ALTER TABLE ONLY r_trans_slave ALTER COLUMN id_trans_slave SET DEFAULT nextval('
 
 
 --
--- TOC entry 2068 (class 2604 OID 250274)
+-- TOC entry 2068 (class 2604 OID 357558)
 -- Dependencies: 212 211
 -- Name: id_transformation; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2379,7 +2379,7 @@ ALTER TABLE ONLY r_transformation ALTER COLUMN id_transformation SET DEFAULT nex
 
 
 --
--- TOC entry 2069 (class 2604 OID 250275)
+-- TOC entry 2069 (class 2604 OID 357559)
 -- Dependencies: 214 213
 -- Name: id_user; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2388,7 +2388,7 @@ ALTER TABLE ONLY r_user ALTER COLUMN id_user SET DEFAULT nextval('r_user_id_user
 
 
 --
--- TOC entry 2070 (class 2604 OID 250276)
+-- TOC entry 2070 (class 2604 OID 357560)
 -- Dependencies: 216 215
 -- Name: id_value; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2397,7 +2397,7 @@ ALTER TABLE ONLY r_value ALTER COLUMN id_value SET DEFAULT nextval('r_value_id_v
 
 
 --
--- TOC entry 2071 (class 2604 OID 250277)
+-- TOC entry 2071 (class 2604 OID 357561)
 -- Dependencies: 218 217
 -- Name: id_version; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2406,7 +2406,7 @@ ALTER TABLE ONLY r_version ALTER COLUMN id_version SET DEFAULT nextval('r_versio
 
 
 --
--- TOC entry 2082 (class 0 OID 249960)
+-- TOC entry 2082 (class 0 OID 357244)
 -- Dependencies: 140
 -- Data for Name: r_cluster; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2416,7 +2416,7 @@ COPY r_cluster (id_cluster, name, base_port, sockets_buffer_size, sockets_flush_
 
 
 --
--- TOC entry 2083 (class 0 OID 249968)
+-- TOC entry 2083 (class 0 OID 357252)
 -- Dependencies: 142
 -- Data for Name: r_cluster_slave; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2426,7 +2426,7 @@ COPY r_cluster_slave (id_cluster_slave, id_cluster, id_slave) FROM stdin;
 
 
 --
--- TOC entry 2084 (class 0 OID 249973)
+-- TOC entry 2084 (class 0 OID 357257)
 -- Dependencies: 144
 -- Data for Name: r_condition; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2510,7 +2510,7 @@ COPY r_condition (id_condition, id_condition_parent, negated, operator, left_nam
 
 
 --
--- TOC entry 2085 (class 0 OID 249981)
+-- TOC entry 2085 (class 0 OID 357265)
 -- Dependencies: 146
 -- Data for Name: r_database; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2524,7 +2524,7 @@ COPY r_database (id_database, name, id_database_type, id_database_contype, host_
 
 
 --
--- TOC entry 2086 (class 0 OID 249987)
+-- TOC entry 2086 (class 0 OID 357271)
 -- Dependencies: 147
 -- Data for Name: r_database_attribute; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2713,7 +2713,7 @@ COPY r_database_attribute (id_database_attribute, id_database, code, value_str) 
 
 
 --
--- TOC entry 2087 (class 0 OID 249995)
+-- TOC entry 2087 (class 0 OID 357279)
 -- Dependencies: 149
 -- Data for Name: r_database_contype; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2728,7 +2728,7 @@ COPY r_database_contype (id_database_contype, code, description) FROM stdin;
 
 
 --
--- TOC entry 2088 (class 0 OID 250005)
+-- TOC entry 2088 (class 0 OID 357289)
 -- Dependencies: 152
 -- Data for Name: r_database_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2782,7 +2782,7 @@ COPY r_database_type (id_database_type, code, description) FROM stdin;
 
 
 --
--- TOC entry 2089 (class 0 OID 250013)
+-- TOC entry 2089 (class 0 OID 357297)
 -- Dependencies: 154
 -- Data for Name: r_dependency; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2792,7 +2792,7 @@ COPY r_dependency (id_dependency, id_transformation, id_database, table_name, fi
 
 
 --
--- TOC entry 2090 (class 0 OID 250021)
+-- TOC entry 2090 (class 0 OID 357305)
 -- Dependencies: 156
 -- Data for Name: r_directory; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2852,7 +2852,7 @@ COPY r_directory (id_directory, id_directory_parent, directory_name) FROM stdin;
 
 
 --
--- TOC entry 2091 (class 0 OID 250026)
+-- TOC entry 2091 (class 0 OID 357310)
 -- Dependencies: 158
 -- Data for Name: r_job; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2903,15 +2903,15 @@ COPY r_job (id_job, id_directory, name, description, extended_description, job_v
 17	1	importer_referentiel_et_synchroniser_metier	\N	Tâche principale de récupération des données Postgresql distantes, d'import en base locale et de synchronisation des données métier.	\N	0	-1	\N	-	2013-04-18 15:53:14.075	admin	2018-04-05 16:16:35.968	Y	N	Y	\N
 5	4	traiter_demande	\N	Exécute un traitement (tâche ou transformation) via les principales étapes\r\n* Récupération des valeurs des paramètres associés à la demande de traitement\r\n* Exécute la tâche ou la transformation PDI avec les valeurs de paramètres\r\n* Si production de fichiers en sortie, compression dans un fichier zip et \r\n* Préparation d'un mail en cas d'echec ou de succès\r\nChaque traitement possède par défaut un dossier unique ou sont déposés les fichiers éventuellement générés	\N	0	-1	\N	admin	2011-05-27 14:06:46.406	admin	2018-05-07 15:26:23.889	N	N	N	\N
 57	39	generer_et_notifier_courrier_info_prealable_prive	\N	\N	\N	0	-1	\N	-	2016-10-24 14:38:36.405	admin	2018-06-05 11:08:18.058	Y	N	Y	\N
-4	4	traiter_demandes	\N	Tâche principale de récupération et d'exécution des demandes de traitements effectuées via l'interface de lancement de l'applicatif.\r\nLes modèles de traitement et les demandes de traitements sont stockées dans le schéma "pdi".	\N	0	-1	\N	-	2011-05-31 11:51:36.406	admin	2018-06-12 14:53:00.967	Y	N	Y	\N
 8	8	notifier_utilisateurs	\N	Tâche principale de notification des utilisateurs à partir de la lecture de la table contenant les emails à notifier\r\n* Récupération des paramètres de PDI\r\n* Exécution de la transformation de notification	\N	0	-1	\N	-	2013-03-25 09:31:31.828	admin	2018-11-27 13:02:21.554	Y	N	Y	\N
 47	45	importer_de_prevarisc_et_mettre_a_jour_remocra	\N	Tâche principale de lancement des traitements\r\n* De récupération des données en provenance de Prevarisc (par accès direct à la BD ou par fichier)\r\n* De mise à jour des informations dans REMOCRA\r\n	\N	0	-1	\N	-	2013-04-18 15:53:14.075	admin	2019-04-15 09:13:43.474	Y	N	Y	\N
 48	44	exporter_de_remocra_et_mettre_a_jour_prevarisc	\N	Tâche principale de lancement des traitements\r\n* D'extraction des données en provenance de REMOCRA\r\n* De mise à jour des informations dans Prevarisc (par accès direct à la BD ou par dépôt de fichier)\r\n	\N	0	-1	\N	-	2013-04-18 15:53:14.075	admin	2019-04-15 13:49:20.369	Y	N	Y	\N
+4	4	traiter_demandes	\N	Tâche principale de récupération et d'exécution des demandes de traitements effectuées via l'interface de lancement de l'applicatif.\r\nLes modèles de traitement et les demandes de traitements sont stockées dans le schéma "pdi".	\N	0	-1	\N	-	2011-05-31 11:51:36.406	admin	2019-11-18 10:20:04.165	Y	N	Y	\N
 \.
 
 
 --
--- TOC entry 2092 (class 0 OID 250032)
+-- TOC entry 2092 (class 0 OID 357316)
 -- Dependencies: 159
 -- Data for Name: r_job_attribute; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -8370,116 +8370,6 @@ COPY r_job_attribute (id_job_attribute, id_job, nr, code, value_num, value_str) 
 153304	40	0	CHANNEL_LOG_TABLE_FIELD_ID11	0	ROOT_CHANNEL_ID
 153305	40	0	CHANNEL_LOG_TABLE_FIELD_NAME11	0	ROOT_CHANNEL_ID
 153306	40	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
-152380	4	0	LOG_SIZE_LIMIT	0	\N
-152381	4	0	JOB_LOG_TABLE_CONNECTION_NAME	0	\N
-152382	4	0	JOB_LOG_TABLE_SCHEMA_NAME	0	\N
-152383	4	0	JOB_LOG_TABLE_TABLE_NAME	0	\N
-152384	4	0	JOB_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
-152385	4	0	JOB_LOG_TABLE_FIELD_ID0	0	ID_JOB
-152386	4	0	JOB_LOG_TABLE_FIELD_NAME0	0	ID_JOB
-152387	4	0	JOB_LOG_TABLE_FIELD_ENABLED0	0	Y
-152388	4	0	JOB_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
-152389	4	0	JOB_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
-152390	4	0	JOB_LOG_TABLE_FIELD_ENABLED1	0	N
-152391	4	0	JOB_LOG_TABLE_FIELD_ID2	0	JOBNAME
-152392	4	0	JOB_LOG_TABLE_FIELD_NAME2	0	JOBNAME
-152393	4	0	JOB_LOG_TABLE_FIELD_ENABLED2	0	Y
-152394	4	0	JOB_LOG_TABLE_FIELD_ID3	0	STATUS
-152395	4	0	JOB_LOG_TABLE_FIELD_NAME3	0	STATUS
-152396	4	0	JOB_LOG_TABLE_FIELD_ENABLED3	0	Y
-152397	4	0	JOB_LOG_TABLE_FIELD_ID4	0	LINES_READ
-152398	4	0	JOB_LOG_TABLE_FIELD_NAME4	0	LINES_READ
-152399	4	0	JOB_LOG_TABLE_FIELD_ENABLED4	0	Y
-152400	4	0	JOB_LOG_TABLE_FIELD_ID5	0	LINES_WRITTEN
-152401	4	0	JOB_LOG_TABLE_FIELD_NAME5	0	LINES_WRITTEN
-152402	4	0	JOB_LOG_TABLE_FIELD_ENABLED5	0	Y
-152403	4	0	JOB_LOG_TABLE_FIELD_ID6	0	LINES_UPDATED
-152404	4	0	JOB_LOG_TABLE_FIELD_NAME6	0	LINES_UPDATED
-152405	4	0	JOB_LOG_TABLE_FIELD_ENABLED6	0	Y
-152406	4	0	JOB_LOG_TABLE_FIELD_ID7	0	LINES_INPUT
-152407	4	0	JOB_LOG_TABLE_FIELD_NAME7	0	LINES_INPUT
-152408	4	0	JOB_LOG_TABLE_FIELD_ENABLED7	0	Y
-152409	4	0	JOB_LOG_TABLE_FIELD_ID8	0	LINES_OUTPUT
-152410	4	0	JOB_LOG_TABLE_FIELD_NAME8	0	LINES_OUTPUT
-152411	4	0	JOB_LOG_TABLE_FIELD_ENABLED8	0	Y
-152412	4	0	JOB_LOG_TABLE_FIELD_ID9	0	LINES_REJECTED
-152413	4	0	JOB_LOG_TABLE_FIELD_NAME9	0	LINES_REJECTED
-152414	4	0	JOB_LOG_TABLE_FIELD_ENABLED9	0	N
-152415	4	0	JOB_LOG_TABLE_FIELD_ID10	0	ERRORS
-152416	4	0	JOB_LOG_TABLE_FIELD_NAME10	0	ERRORS
-152417	4	0	JOB_LOG_TABLE_FIELD_ENABLED10	0	Y
-152418	4	0	JOB_LOG_TABLE_FIELD_ID11	0	STARTDATE
-152419	4	0	JOB_LOG_TABLE_FIELD_NAME11	0	STARTDATE
-152420	4	0	JOB_LOG_TABLE_FIELD_ENABLED11	0	Y
-152421	4	0	JOB_LOG_TABLE_FIELD_ID12	0	ENDDATE
-152422	4	0	JOB_LOG_TABLE_FIELD_NAME12	0	ENDDATE
-152423	4	0	JOB_LOG_TABLE_FIELD_ENABLED12	0	Y
-152424	4	0	JOB_LOG_TABLE_FIELD_ID13	0	LOGDATE
-152425	4	0	JOB_LOG_TABLE_FIELD_NAME13	0	LOGDATE
-152426	4	0	JOB_LOG_TABLE_FIELD_ENABLED13	0	Y
-152427	4	0	JOB_LOG_TABLE_FIELD_ID14	0	DEPDATE
-152428	4	0	JOB_LOG_TABLE_FIELD_NAME14	0	DEPDATE
-152429	4	0	JOB_LOG_TABLE_FIELD_ENABLED14	0	Y
-152430	4	0	JOB_LOG_TABLE_FIELD_ID15	0	REPLAYDATE
-152431	4	0	JOB_LOG_TABLE_FIELD_NAME15	0	REPLAYDATE
-152432	4	0	JOB_LOG_TABLE_FIELD_ENABLED15	0	Y
-152433	4	0	JOB_LOG_TABLE_FIELD_ID16	0	LOG_FIELD
-152434	4	0	JOB_LOG_TABLE_FIELD_NAME16	0	LOG_FIELD
-152435	4	0	JOB_LOG_TABLE_FIELD_ENABLED16	0	Y
-152436	4	0	JOBLOG_TABLE_INTERVAL	0	\N
-152437	4	0	JOBLOG_TABLE_SIZE_LIMIT	0	\N
-152438	4	0	JOB_ENTRY_LOG_TABLE_CONNECTION_NAME	0	\N
-152439	4	0	JOB_ENTRY_LOG_TABLE_SCHEMA_NAME	0	\N
-152440	4	0	JOB_ENTRY_LOG_TABLE_TABLE_NAME	0	\N
-152441	4	0	JOB_ENTRY_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
-152442	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID0	0	ID_BATCH
-152443	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
-152444	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED0	0	Y
-152445	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
-152446	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
-152447	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED1	0	Y
-152448	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID2	0	LOG_DATE
-152449	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
-152450	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED2	0	Y
-152451	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID3	0	JOBNAME
-152452	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
-152453	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED3	0	Y
-152454	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID4	0	JOBENTRYNAME
-152455	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME4	0	STEPNAME
-152456	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED4	0	Y
-152457	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID5	0	LINES_READ
-152458	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME5	0	LINES_READ
-152459	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED5	0	Y
-152460	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID6	0	LINES_WRITTEN
-152461	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME6	0	LINES_WRITTEN
-152462	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED6	0	Y
-152463	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID7	0	LINES_UPDATED
-152464	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME7	0	LINES_UPDATED
-152465	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED7	0	Y
-152466	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID8	0	LINES_INPUT
-152467	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME8	0	LINES_INPUT
-152468	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED8	0	Y
-152469	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID9	0	LINES_OUTPUT
-152470	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME9	0	LINES_OUTPUT
-152471	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED9	0	Y
-152472	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID10	0	LINES_REJECTED
-152473	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME10	0	LINES_REJECTED
-152474	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED10	0	Y
-152475	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID11	0	ERRORS
-152476	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME11	0	ERRORS
-152477	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED11	0	Y
-152478	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID12	0	RESULT
-152479	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME12	0	RESULT
-152480	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED12	0	Y
-152481	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID13	0	NR_RESULT_ROWS
-152482	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME13	0	NR_RESULT_ROWS
-152483	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED13	0	Y
-152484	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID14	0	NR_RESULT_FILES
-152485	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME14	0	NR_RESULT_FILES
-152486	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED14	0	Y
-152487	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID15	0	LOG_FIELD
-152488	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME15	0	LOG_FIELD
-152489	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED15	0	N
 136180	45	0	LOG_SIZE_LIMIT	0	\N
 136181	45	0	JOB_LOG_TABLE_CONNECTION_NAME	0	\N
 136182	45	0	JOB_LOG_TABLE_SCHEMA_NAME	0	\N
@@ -8974,56 +8864,10 @@ COPY r_job_attribute (id_job_attribute, id_job, nr, code, value_num, value_str) 
 153336	59	0	JOB_LOG_TABLE_FIELD_ID8	0	LINES_OUTPUT
 153337	59	0	JOB_LOG_TABLE_FIELD_NAME8	0	LINES_OUTPUT
 153338	59	0	JOB_LOG_TABLE_FIELD_ENABLED8	0	Y
-152490	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID16	0	COPY_NR
-152491	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME16	0	COPY_NR
-152492	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED16	0	N
-152493	4	0	CHANNEL_LOG_TABLE_CONNECTION_NAME	0	\N
-152494	4	0	CHANNEL_LOG_TABLE_SCHEMA_NAME	0	\N
-152495	4	0	CHANNEL_LOG_TABLE_TABLE_NAME	0	\N
-152496	4	0	CHANNEL_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
-152497	4	0	CHANNEL_LOG_TABLE_FIELD_ID0	0	ID_BATCH
-152498	4	0	CHANNEL_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
-152499	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED0	0	Y
-152500	4	0	CHANNEL_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
-152501	4	0	CHANNEL_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
-152502	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED1	0	Y
-152503	4	0	CHANNEL_LOG_TABLE_FIELD_ID2	0	LOG_DATE
-152504	4	0	CHANNEL_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
-152505	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED2	0	Y
-152506	4	0	CHANNEL_LOG_TABLE_FIELD_ID3	0	LOGGING_OBJECT_TYPE
-152507	4	0	CHANNEL_LOG_TABLE_FIELD_NAME3	0	LOGGING_OBJECT_TYPE
-152508	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED3	0	Y
-152509	4	0	CHANNEL_LOG_TABLE_FIELD_ID4	0	OBJECT_NAME
-152510	4	0	CHANNEL_LOG_TABLE_FIELD_NAME4	0	OBJECT_NAME
-152511	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED4	0	Y
-152512	4	0	CHANNEL_LOG_TABLE_FIELD_ID5	0	OBJECT_COPY
-152513	4	0	CHANNEL_LOG_TABLE_FIELD_NAME5	0	OBJECT_COPY
-152514	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED5	0	Y
-152515	4	0	CHANNEL_LOG_TABLE_FIELD_ID6	0	REPOSITORY_DIRECTORY
-152516	4	0	CHANNEL_LOG_TABLE_FIELD_NAME6	0	REPOSITORY_DIRECTORY
-152517	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED6	0	Y
-152518	4	0	CHANNEL_LOG_TABLE_FIELD_ID7	0	FILENAME
-152519	4	0	CHANNEL_LOG_TABLE_FIELD_NAME7	0	FILENAME
-152520	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED7	0	Y
-152521	4	0	CHANNEL_LOG_TABLE_FIELD_ID8	0	OBJECT_ID
-152522	4	0	CHANNEL_LOG_TABLE_FIELD_NAME8	0	OBJECT_ID
 153339	59	0	JOB_LOG_TABLE_FIELD_ID9	0	LINES_REJECTED
 153340	59	0	JOB_LOG_TABLE_FIELD_NAME9	0	LINES_REJECTED
 153936	48	0	JOB_LOG_TABLE_FIELD_ID3	0	STATUS
 153937	48	0	JOB_LOG_TABLE_FIELD_NAME3	0	STATUS
-152523	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED8	0	Y
-152524	4	0	CHANNEL_LOG_TABLE_FIELD_ID9	0	OBJECT_REVISION
-152525	4	0	CHANNEL_LOG_TABLE_FIELD_NAME9	0	OBJECT_REVISION
-152526	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED9	0	Y
-152527	4	0	CHANNEL_LOG_TABLE_FIELD_ID10	0	PARENT_CHANNEL_ID
-152528	4	0	CHANNEL_LOG_TABLE_FIELD_NAME10	0	PARENT_CHANNEL_ID
-152529	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED10	0	Y
-152530	4	0	CHANNEL_LOG_TABLE_FIELD_ID11	0	ROOT_CHANNEL_ID
-152531	4	0	CHANNEL_LOG_TABLE_FIELD_NAME11	0	ROOT_CHANNEL_ID
-152532	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
-152533	4	0	PARAM_KEY	0	PDI_FICHIER_PARAMETRE
-152534	4	0	PARAM_DEFAULT	0	\N
-152535	4	0	PARAM_DESC	0	\N
 153341	59	0	JOB_LOG_TABLE_FIELD_ENABLED9	0	Y
 153342	59	0	JOB_LOG_TABLE_FIELD_ID10	0	ERRORS
 153343	59	0	JOB_LOG_TABLE_FIELD_NAME10	0	ERRORS
@@ -10525,11 +10369,167 @@ COPY r_job_attribute (id_job_attribute, id_job, nr, code, value_num, value_str) 
 153919	47	0	PARAM_KEY	0	PDI_FICHIER_PARAMETRE
 153920	47	0	PARAM_DEFAULT	0	\N
 153921	47	0	PARAM_DESC	0	\N
+154387	4	0	LOG_SIZE_LIMIT	0	\N
+154388	4	0	JOB_LOG_TABLE_CONNECTION_NAME	0	\N
+154389	4	0	JOB_LOG_TABLE_SCHEMA_NAME	0	\N
+154390	4	0	JOB_LOG_TABLE_TABLE_NAME	0	\N
+154391	4	0	JOB_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+154392	4	0	JOB_LOG_TABLE_FIELD_ID0	0	ID_JOB
+154393	4	0	JOB_LOG_TABLE_FIELD_NAME0	0	ID_JOB
+154394	4	0	JOB_LOG_TABLE_FIELD_ENABLED0	0	Y
+154395	4	0	JOB_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+154396	4	0	JOB_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+154397	4	0	JOB_LOG_TABLE_FIELD_ENABLED1	0	N
+154398	4	0	JOB_LOG_TABLE_FIELD_ID2	0	JOBNAME
+154399	4	0	JOB_LOG_TABLE_FIELD_NAME2	0	JOBNAME
+154400	4	0	JOB_LOG_TABLE_FIELD_ENABLED2	0	Y
+154401	4	0	JOB_LOG_TABLE_FIELD_ID3	0	STATUS
+154402	4	0	JOB_LOG_TABLE_FIELD_NAME3	0	STATUS
+154403	4	0	JOB_LOG_TABLE_FIELD_ENABLED3	0	Y
+154404	4	0	JOB_LOG_TABLE_FIELD_ID4	0	LINES_READ
+154405	4	0	JOB_LOG_TABLE_FIELD_NAME4	0	LINES_READ
+154406	4	0	JOB_LOG_TABLE_FIELD_ENABLED4	0	Y
+154407	4	0	JOB_LOG_TABLE_FIELD_ID5	0	LINES_WRITTEN
+154408	4	0	JOB_LOG_TABLE_FIELD_NAME5	0	LINES_WRITTEN
+154409	4	0	JOB_LOG_TABLE_FIELD_ENABLED5	0	Y
+154410	4	0	JOB_LOG_TABLE_FIELD_ID6	0	LINES_UPDATED
+154411	4	0	JOB_LOG_TABLE_FIELD_NAME6	0	LINES_UPDATED
+154412	4	0	JOB_LOG_TABLE_FIELD_ENABLED6	0	Y
+154413	4	0	JOB_LOG_TABLE_FIELD_ID7	0	LINES_INPUT
+154414	4	0	JOB_LOG_TABLE_FIELD_NAME7	0	LINES_INPUT
+154415	4	0	JOB_LOG_TABLE_FIELD_ENABLED7	0	Y
+154416	4	0	JOB_LOG_TABLE_FIELD_ID8	0	LINES_OUTPUT
+154417	4	0	JOB_LOG_TABLE_FIELD_NAME8	0	LINES_OUTPUT
+154418	4	0	JOB_LOG_TABLE_FIELD_ENABLED8	0	Y
+154419	4	0	JOB_LOG_TABLE_FIELD_ID9	0	LINES_REJECTED
+154420	4	0	JOB_LOG_TABLE_FIELD_NAME9	0	LINES_REJECTED
+154421	4	0	JOB_LOG_TABLE_FIELD_ENABLED9	0	N
+154422	4	0	JOB_LOG_TABLE_FIELD_ID10	0	ERRORS
+154423	4	0	JOB_LOG_TABLE_FIELD_NAME10	0	ERRORS
+154424	4	0	JOB_LOG_TABLE_FIELD_ENABLED10	0	Y
+154425	4	0	JOB_LOG_TABLE_FIELD_ID11	0	STARTDATE
+154426	4	0	JOB_LOG_TABLE_FIELD_NAME11	0	STARTDATE
+154427	4	0	JOB_LOG_TABLE_FIELD_ENABLED11	0	Y
+154428	4	0	JOB_LOG_TABLE_FIELD_ID12	0	ENDDATE
+154429	4	0	JOB_LOG_TABLE_FIELD_NAME12	0	ENDDATE
+154430	4	0	JOB_LOG_TABLE_FIELD_ENABLED12	0	Y
+154431	4	0	JOB_LOG_TABLE_FIELD_ID13	0	LOGDATE
+154432	4	0	JOB_LOG_TABLE_FIELD_NAME13	0	LOGDATE
+154433	4	0	JOB_LOG_TABLE_FIELD_ENABLED13	0	Y
+154434	4	0	JOB_LOG_TABLE_FIELD_ID14	0	DEPDATE
+154435	4	0	JOB_LOG_TABLE_FIELD_NAME14	0	DEPDATE
+154436	4	0	JOB_LOG_TABLE_FIELD_ENABLED14	0	Y
+154437	4	0	JOB_LOG_TABLE_FIELD_ID15	0	REPLAYDATE
+154438	4	0	JOB_LOG_TABLE_FIELD_NAME15	0	REPLAYDATE
+154439	4	0	JOB_LOG_TABLE_FIELD_ENABLED15	0	Y
+154440	4	0	JOB_LOG_TABLE_FIELD_ID16	0	LOG_FIELD
+154441	4	0	JOB_LOG_TABLE_FIELD_NAME16	0	LOG_FIELD
+154442	4	0	JOB_LOG_TABLE_FIELD_ENABLED16	0	Y
+154443	4	0	JOBLOG_TABLE_INTERVAL	0	\N
+154444	4	0	JOBLOG_TABLE_SIZE_LIMIT	0	\N
+154445	4	0	JOB_ENTRY_LOG_TABLE_CONNECTION_NAME	0	\N
+154446	4	0	JOB_ENTRY_LOG_TABLE_SCHEMA_NAME	0	\N
+154447	4	0	JOB_ENTRY_LOG_TABLE_TABLE_NAME	0	\N
+154448	4	0	JOB_ENTRY_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+154449	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID0	0	ID_BATCH
+154450	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
+154451	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED0	0	Y
+154452	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+154453	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+154454	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED1	0	Y
+154455	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID2	0	LOG_DATE
+154456	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
+154457	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED2	0	Y
+154458	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID3	0	JOBNAME
+154459	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
+154460	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED3	0	Y
+154461	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID4	0	JOBENTRYNAME
+154462	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME4	0	STEPNAME
+154463	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED4	0	Y
+154464	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID5	0	LINES_READ
+154465	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME5	0	LINES_READ
+154466	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED5	0	Y
+154467	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID6	0	LINES_WRITTEN
+154468	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME6	0	LINES_WRITTEN
+154469	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED6	0	Y
+154470	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID7	0	LINES_UPDATED
+154471	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME7	0	LINES_UPDATED
+154472	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED7	0	Y
+154473	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID8	0	LINES_INPUT
+154474	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME8	0	LINES_INPUT
+154475	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED8	0	Y
+154476	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID9	0	LINES_OUTPUT
+154477	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME9	0	LINES_OUTPUT
+154478	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED9	0	Y
+154479	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID10	0	LINES_REJECTED
+154480	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME10	0	LINES_REJECTED
+154481	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED10	0	Y
+154482	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID11	0	ERRORS
+154483	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME11	0	ERRORS
+154484	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED11	0	Y
+154485	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID12	0	RESULT
+154486	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME12	0	RESULT
+154487	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED12	0	Y
+154488	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID13	0	NR_RESULT_ROWS
+154489	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME13	0	NR_RESULT_ROWS
+154490	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED13	0	Y
+154491	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID14	0	NR_RESULT_FILES
+154492	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME14	0	NR_RESULT_FILES
+154493	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED14	0	Y
+154494	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID15	0	LOG_FIELD
+154495	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME15	0	LOG_FIELD
+154496	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED15	0	N
+154497	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ID16	0	COPY_NR
+154498	4	0	JOB_ENTRY_LOG_TABLE_FIELD_NAME16	0	COPY_NR
+154499	4	0	JOB_ENTRY_LOG_TABLE_FIELD_ENABLED16	0	N
+154500	4	0	CHANNEL_LOG_TABLE_CONNECTION_NAME	0	\N
+154501	4	0	CHANNEL_LOG_TABLE_SCHEMA_NAME	0	\N
+154502	4	0	CHANNEL_LOG_TABLE_TABLE_NAME	0	\N
+154503	4	0	CHANNEL_LOG_TABLE_TIMEOUT_IN_DAYS	0	\N
+154504	4	0	CHANNEL_LOG_TABLE_FIELD_ID0	0	ID_BATCH
+154505	4	0	CHANNEL_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
+154506	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED0	0	Y
+154507	4	0	CHANNEL_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+154508	4	0	CHANNEL_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
+154509	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED1	0	Y
+154510	4	0	CHANNEL_LOG_TABLE_FIELD_ID2	0	LOG_DATE
+154511	4	0	CHANNEL_LOG_TABLE_FIELD_NAME2	0	LOG_DATE
+154512	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED2	0	Y
+154513	4	0	CHANNEL_LOG_TABLE_FIELD_ID3	0	LOGGING_OBJECT_TYPE
+154514	4	0	CHANNEL_LOG_TABLE_FIELD_NAME3	0	LOGGING_OBJECT_TYPE
+154515	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED3	0	Y
+154516	4	0	CHANNEL_LOG_TABLE_FIELD_ID4	0	OBJECT_NAME
+154517	4	0	CHANNEL_LOG_TABLE_FIELD_NAME4	0	OBJECT_NAME
+154518	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED4	0	Y
+154519	4	0	CHANNEL_LOG_TABLE_FIELD_ID5	0	OBJECT_COPY
+154520	4	0	CHANNEL_LOG_TABLE_FIELD_NAME5	0	OBJECT_COPY
+154521	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED5	0	Y
+154522	4	0	CHANNEL_LOG_TABLE_FIELD_ID6	0	REPOSITORY_DIRECTORY
+154523	4	0	CHANNEL_LOG_TABLE_FIELD_NAME6	0	REPOSITORY_DIRECTORY
+154524	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED6	0	Y
+154525	4	0	CHANNEL_LOG_TABLE_FIELD_ID7	0	FILENAME
+154526	4	0	CHANNEL_LOG_TABLE_FIELD_NAME7	0	FILENAME
+154527	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED7	0	Y
+154528	4	0	CHANNEL_LOG_TABLE_FIELD_ID8	0	OBJECT_ID
+154529	4	0	CHANNEL_LOG_TABLE_FIELD_NAME8	0	OBJECT_ID
+154530	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED8	0	Y
+154531	4	0	CHANNEL_LOG_TABLE_FIELD_ID9	0	OBJECT_REVISION
+154532	4	0	CHANNEL_LOG_TABLE_FIELD_NAME9	0	OBJECT_REVISION
+154533	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED9	0	Y
+154534	4	0	CHANNEL_LOG_TABLE_FIELD_ID10	0	PARENT_CHANNEL_ID
+154535	4	0	CHANNEL_LOG_TABLE_FIELD_NAME10	0	PARENT_CHANNEL_ID
+154536	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED10	0	Y
+154537	4	0	CHANNEL_LOG_TABLE_FIELD_ID11	0	ROOT_CHANNEL_ID
+154538	4	0	CHANNEL_LOG_TABLE_FIELD_NAME11	0	ROOT_CHANNEL_ID
+154539	4	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
+154540	4	0	PARAM_KEY	0	PDI_FICHIER_PARAMETRE
+154541	4	0	PARAM_DEFAULT	0	\N
+154542	4	0	PARAM_DESC	0	\N
 \.
 
 
 --
--- TOC entry 2093 (class 0 OID 250040)
+-- TOC entry 2093 (class 0 OID 357324)
 -- Dependencies: 161
 -- Data for Name: r_job_hop; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -10555,14 +10555,10 @@ COPY r_job_hop (id_job_hop, id_job, id_jobentry_copy_from, id_jobentry_copy_to, 
 7104	20	6720	6715	Y	Y	N
 7105	20	6708	6709	Y	Y	Y
 3361	3	2881	2882	Y	Y	Y
-7243	4	6811	6810	Y	Y	N
-7244	4	6809	6812	Y	Y	Y
 5420	29	4939	4940	Y	Y	Y
 5421	29	4942	4945	Y	N	N
 5422	29	4942	4941	Y	Y	N
 5423	29	4941	4943	Y	Y	N
-7245	4	6812	6811	Y	Y	Y
-7246	4	6810	6813	Y	N	N
 7298	56	6882	6877	Y	Y	Y
 7299	56	6877	6876	Y	N	Y
 7300	56	6876	6875	Y	Y	N
@@ -10903,11 +10899,16 @@ COPY r_job_hop (id_job_hop, id_job, id_jobentry_copy_from, id_jobentry_copy_to, 
 7282	47	6857	6858	Y	Y	N
 7283	47	6858	6859	Y	Y	N
 7284	47	6859	6853	Y	Y	N
+7308	4	6888	6887	Y	Y	N
+7309	4	6886	6889	Y	Y	Y
+7310	4	6889	6888	Y	Y	Y
+7311	4	6887	6890	Y	N	N
+7312	4	6888	6891	Y	N	N
 \.
 
 
 --
--- TOC entry 2094 (class 0 OID 250047)
+-- TOC entry 2094 (class 0 OID 357331)
 -- Dependencies: 164
 -- Data for Name: r_job_lock; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -10917,19 +10918,13 @@ COPY r_job_lock (id_job_lock, id_job, id_user, lock_message, lock_date) FROM std
 
 
 --
--- TOC entry 2095 (class 0 OID 250055)
+-- TOC entry 2095 (class 0 OID 357339)
 -- Dependencies: 166
 -- Data for Name: r_job_note; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY r_job_note (id_job, id_note) FROM stdin;
 3	1556
-4	3558
-4	3559
-4	3560
-4	3561
-4	3562
-4	3563
 8	3565
 29	2237
 3	-32
@@ -10993,11 +10988,17 @@ COPY r_job_note (id_job, id_note) FROM stdin;
 5	3554
 5	3555
 5	3556
+4	3600
+4	3601
+4	3602
+4	3603
+4	3604
+4	3605
 \.
 
 
 --
--- TOC entry 2096 (class 0 OID 250058)
+-- TOC entry 2096 (class 0 OID 357342)
 -- Dependencies: 167
 -- Data for Name: r_jobentry; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -11208,8 +11209,6 @@ COPY r_jobentry (id_jobentry, id_job, id_jobentry_type, name, description) FROM 
 5547	26	44	mail cc	\N
 5548	26	22	Envoi mail responsables ?	\N
 5549	26	62	Succès tâche	\N
-6809	4	28	START	Entrées spéciales
-6810	4	45	Traiter la demande	Pour chaque notification, envoi d'un mail
 5597	42	2	ARCHIVER_COURRIER = FAUX	\N
 6708	20	28	START	\N
 6709	20	2	Récupération des paramètres globaux	\N
@@ -11233,9 +11232,6 @@ COPY r_jobentry (id_jobentry, id_job, id_jobentry_type, name, description) FROM 
 5602	42	37	Evaluer le nombre de lignes d'une table 2	\N
 5603	42	44	referencer_et_notifier_courrier_pdf (responsables)	\N
 5604	42	62	Succès tâche	\N
-6811	4	37	Récupère les traitements "En attente"	Récupération des informations sur les traitements en attente\r\n(idstatut=1)
-6812	4	2	Récupération des paramètres globaux	\N
-6813	4	45	notifier_erreur	\N
 5764	45	43	Consolidation des sections et parcelles du cadastre	\N
 5693	43	28	START	\N
 5694	43	22	requête spatiale	\N
@@ -11362,11 +11358,17 @@ COPY r_jobentry (id_jobentry, id_job, id_jobentry_type, name, description) FROM 
 6871	48	44	mettre_a_jour_adressecommune_via_fichier	\N
 6872	48	2	Récupération des paramètres globaux	\N
 6873	48	44	recuperer_id_rue_suivant	\N
+6886	4	28	START	Entrées spéciales
+6887	4	45	Traiter la demande	Pour chaque notification, envoi d'un mail
+6888	4	37	Récupère les traitements "En attente"	Récupération des informations sur les traitements en attente\r\n(idstatut=1)
+6889	4	2	Récupération des paramètres globaux	\N
+6890	4	45	notifier_erreur	\N
+6891	4	62	Succès tâche	\N
 \.
 
 
 --
--- TOC entry 2097 (class 0 OID 250064)
+-- TOC entry 2097 (class 0 OID 357348)
 -- Dependencies: 168
 -- Data for Name: r_jobentry_attribute; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -11482,25 +11484,6 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 36890	3	2882	0	include_subfolders	0.00	N
 36891	3	2882	0	name	0.00	${PDI_CHEMIN_KML}
 36892	3	2882	0	filemask	0.00	.*
-91378	4	6809	0	start	0.00	Y
-91379	4	6809	0	dummy	0.00	N
-91380	4	6809	0	repeat	0.00	N
-91381	4	6809	0	schedulerType	0.00	\N
-91382	4	6809	0	intervalSeconds	0.00	\N
-91383	4	6809	0	intervalMinutes	60.00	\N
-91384	4	6809	0	hour	12.00	\N
-91385	4	6809	0	minutes	0.00	\N
-91386	4	6809	0	weekDay	1.00	\N
-91387	4	6809	0	dayOfMonth	1.00	\N
-91388	4	6810	0	specification_method	0.00	rep_ref
-91389	4	6810	0	job_object_id	0.00	5
-91390	4	6810	0	name	0.00	\N
-91391	4	6810	0	dir_path	0.00	\N
-91392	4	6810	0	file_name	0.00	\N
-91393	4	6810	0	arg_from_previous	0.00	N
-91394	4	6810	0	params_from_previous	0.00	Y
-91395	4	6810	0	exec_per_row	0.00	Y
-91396	4	6810	0	set_logfile	0.00	Y
 74059	35	5520	0	wait_until_finished	0.00	Y
 74060	35	5520	0	follow_abort_remote	0.00	N
 74061	35	5520	0	create_parent_folder	0.00	N
@@ -11619,82 +11602,11 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 70487	9	5278	0	file_variable_type	0.00	JVM
 70488	9	5279	0	start	0.00	Y
 70489	9	5279	0	dummy	0.00	N
-91397	4	6810	0	add_date	0.00	N
-91398	4	6810	0	add_time	0.00	N
-91399	4	6810	0	logfile	0.00	${PDI_CHEMIN_LOG}/${Internal.Job.Name}.log
-91400	4	6810	0	logext	0.00	\N
-91401	4	6810	0	set_append_logfile	0.00	N
-91402	4	6810	0	loglevel	0.00	Basic
-91403	4	6810	0	slave_server_name	0.00	\N
-91404	4	6810	0	pass_export	0.00	N
-91405	4	6810	0	wait_until_finished	0.00	Y
-91406	4	6810	0	follow_abort_remote	0.00	N
-91407	4	6810	0	create_parent_folder	0.00	N
-91408	4	6810	0	parameter_name	0.00	TRAITEMENT_ID
-91409	4	6810	0	parameter_stream_name	0.00	TRAITEMENT_ID
-91410	4	6810	0	parameter_value	0.00	\N
-91411	4	6810	1	parameter_name	0.00	TRAITEMENT_DOSSIER_NUMERO
-91412	4	6810	1	parameter_stream_name	0.00	TRAITEMENT_DOSSIER_NUMERO
-91413	4	6810	1	parameter_value	0.00	\N
-91414	4	6810	2	parameter_name	0.00	TRAITEMENT_MODELE_ID
-91415	4	6810	2	parameter_stream_name	0.00	TRAITEMENT_MODELE_ID
-91416	4	6810	2	parameter_value	0.00	\N
-91417	4	6810	3	parameter_name	0.00	TRAITEMENT_UTILISATEUR_ID
-91418	4	6810	3	parameter_stream_name	0.00	TRAITEMENT_UTILISATEUR_ID
-91419	4	6810	3	parameter_value	0.00	\N
-91420	4	6810	4	parameter_name	0.00	TRAITEMENT_NOM
-91421	4	6810	4	parameter_stream_name	0.00	TRAITEMENT_NOM
-91422	4	6810	4	parameter_value	0.00	\N
-91423	4	6810	5	parameter_name	0.00	TRAITEMENT_TYPE
-91424	4	6810	5	parameter_stream_name	0.00	TRAITEMENT_TYPE
-91425	4	6810	5	parameter_value	0.00	\N
-91426	4	6810	6	parameter_name	0.00	TRAITEMENT_REF_CHEMIN
-91427	4	6810	6	parameter_stream_name	0.00	TRAITEMENT_REF_CHEMIN
-91428	4	6810	6	parameter_value	0.00	\N
-91429	4	6810	7	parameter_name	0.00	TRAITEMENT_REF_NOM
-91430	4	6810	7	parameter_stream_name	0.00	TRAITEMENT_REF_NOM
-91431	4	6810	7	parameter_value	0.00	\N
-91432	4	6810	8	parameter_name	0.00	TRAITEMENT_DESCRIPTION
-91433	4	6810	8	parameter_stream_name	0.00	TRAITEMENT_DESCRIPTION
-91434	4	6810	8	parameter_value	0.00	\N
-91435	4	6810	0	pass_all_parameters	0.00	Y
-91436	4	6811	0	id_database	3.00	\N
-91437	4	6811	0	connection	3.00	\N
-91438	4	6811	0	schemaname	0.00	\N
-91439	4	6811	0	tablename	0.00	\N
-91440	4	6811	0	success_condition	0.00	rows_count_greater
-91441	4	6811	0	limit	0.00	0
-91442	4	6811	0	custom_sql	0.00	SELECT\n\tt.idtraitement AS "TRAITEMENT_ID",\n\tlpad(t.idtraitement::text,10,'0')::text AS "TRAITEMENT_DOSSIER_NUMERO",\n\tt.idmodele AS "TRAITEMENT_MODELE_ID",\n\tt.idutilisateur AS "TRAITEMENT_UTILISATEUR_ID",\n\tm.nom AS "TRAITEMENT_NOM",\r\n\tm.description AS "TRAITEMENT_DESCRIPTION",\n\tm.type AS "TRAITEMENT_TYPE",\n\tm.ref_chemin AS  "TRAITEMENT_REF_CHEMIN",\n\tm.ref_nom AS  "TRAITEMENT_REF_NOM"\nFROM\n\tpdi.traitement t\n\tJOIN pdi.modele_traitement m USING(idmodele)\nWHERE\n\tidstatut = 1;
-91443	4	6811	0	is_custom_sql	0.00	Y
-91444	4	6811	0	is_usevars	0.00	N
-91445	4	6811	0	add_rows_result	0.00	Y
-91446	4	6811	0	clear_result_rows	0.00	Y
-91447	4	6812	0	replacevars	0.00	Y
-91448	4	6812	0	filename	0.00	${PDI_FICHIER_PARAMETRE}
-91449	4	6812	0	file_variable_type	0.00	JVM
-91450	4	6813	0	specification_method	0.00	rep_ref
-91451	4	6813	0	job_object_id	0.00	15
-91452	4	6813	0	name	0.00	\N
-91453	4	6813	0	dir_path	0.00	\N
-91454	4	6813	0	file_name	0.00	\N
-91455	4	6813	0	arg_from_previous	0.00	N
-91456	4	6813	0	params_from_previous	0.00	N
-91457	4	6813	0	exec_per_row	0.00	N
-91458	4	6813	0	set_logfile	0.00	N
-91459	4	6813	0	add_date	0.00	N
 74153	35	5527	0	compressionrate	1.00	\N
 74154	35	5527	0	ifzipfileexists	2.00	\N
 74155	35	5527	0	afterzip	0.00	\N
 74156	35	5527	0	wildcard	0.00	\N
 74157	35	5527	0	wildcardexclude	0.00	\N
-91460	4	6813	0	add_time	0.00	N
-91461	4	6813	0	logfile	0.00	\N
-91462	4	6813	0	logext	0.00	\N
-91463	4	6813	0	set_append_logfile	0.00	N
-91464	4	6813	0	loglevel	0.00	Nothing
-91465	4	6813	0	slave_server_name	0.00	\N
-91466	4	6813	0	pass_export	0.00	N
-91467	4	6813	0	wait_until_finished	0.00	Y
 74158	35	5527	0	sourcedirectory	0.00	${OUTPUT_FULLPATH}.xls
 74159	35	5527	0	movetodirectory	0.00	\N
 74160	35	5527	0	addfiletoresult	0.00	N
@@ -11747,12 +11659,6 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 70501	9	5280	0	dir_path	0.00	\N
 70502	9	5280	0	file_name	0.00	\N
 70503	9	5280	0	arg_from_previous	0.00	N
-91468	4	6813	0	follow_abort_remote	0.00	N
-91469	4	6813	0	create_parent_folder	0.00	N
-91470	4	6813	0	parameter_name	0.00	LOG_FILE
-91471	4	6813	0	parameter_stream_name	0.00	\N
-91472	4	6813	0	parameter_value	0.00	${PDI_CHEMIN_LOG}/${Internal.Job.Name}.log
-91473	4	6813	0	pass_all_parameters	0.00	Y
 91793	61	6836	0	filename	0.00	\N
 91794	61	6836	0	file_variable_type	0.00	JVM
 91795	61	6836	0	variable_name	0.00	ARCHIVER_COURRIER
@@ -15310,6 +15216,17 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 87162	51	6497	0	exec_per_row	0.00	N
 77308	45	5764	0	id_database	3.00	\N
 77309	45	5764	0	connection	3.00	\N
+90069	20	6711	0	parameter_name	0.00	DOSSIER_SYNCHRO_DU_JOUR
+90070	20	6711	0	parameter_stream_name	0.00	\N
+90071	20	6711	0	parameter_value	0.00	${DOSSIER_SYNCHRO_DU_JOUR}
+90072	20	6711	0	pass_all_parameters	0.00	Y
+90073	20	6712	0	foldername	0.00	${PDI_CHEMIN_SYNCHRO}/${PDI_DOSSIER_EXPORT_SDIS}/${DOSSIER_SYNCHRO_DU_JOUR}
+90074	20	6712	0	fail_of_folder_exists	0.00	N
+90075	20	6713	0	specification_method	0.00	rep_ref
+90076	20	6713	0	trans_object_id	0.00	38
+90077	20	6713	0	name	0.00	\N
+90078	20	6713	0	dir_path	0.00	\N
+90079	20	6713	0	file_name	0.00	\N
 77310	45	5764	0	sql	0.00	-- Nettoyage des tables "Cadastre"\r\nTRUNCATE ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.cadastre_section CASCADE;\r\n\r\n-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \r\n-- * Création des sections cadastrales\r\n-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \r\nINSERT INTO ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.cadastre_section (\r\n\tgeometrie,\r\n\tnumero,\r\n    commune\r\n)\r\nSELECT \r\n\tSt_SetSrid(St_Multi(St_Extent(parc.geometrie)),2154) AS geometrie,\r\n\tparc.section AS numero,\r\n\tcom.id AS commune\r\nFROM\r\n\t${PDI_POSTGRESQL_NOM_SCHEMA_REFERENTIEL}.oldeb_parcelle parc\r\n\tJOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.commune com ON(com.insee = lpad(parc.numero_insee::character varying,5,'0'))\r\nGROUP BY\r\n\tparc.section,\r\n\tcom.id;  \r\n\r\n-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \r\n-- * Création des parcelles\r\n-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \r\nINSERT INTO ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.cadastre_parcelle (\r\n\tgeometrie,\r\n\tnumero,\r\n\tsection\r\n)\r\nSELECT \r\n\tDISTINCT ON(parc.numero_insee,parc.section,parc.numero)\r\n\tSt_SetSrid(St_Multi(parc.geometrie),2154) AS geometrie,\r\n\tparc.numero,\r\n\tsec.id AS section\r\nFROM\r\n\t${PDI_POSTGRESQL_NOM_SCHEMA_REFERENTIEL}.oldeb_parcelle parc\r\n\tJOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.commune com ON(com.insee = lpad(parc.numero_insee::character varying,5,'0'))\r\n\tJOIN ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.cadastre_section sec ON(sec.commune = com.id AND sec.numero = parc.section);
 77311	45	5764	0	useVariableSubstitution	0.00	T
 77312	45	5764	0	sqlfromfile	0.00	F
@@ -15381,17 +15298,7 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 90066	20	6711	0	wait_until_finished	0.00	Y
 90067	20	6711	0	follow_abort_remote	0.00	N
 90068	20	6711	0	create_parent_folder	0.00	N
-90069	20	6711	0	parameter_name	0.00	DOSSIER_SYNCHRO_DU_JOUR
-90070	20	6711	0	parameter_stream_name	0.00	\N
-90071	20	6711	0	parameter_value	0.00	${DOSSIER_SYNCHRO_DU_JOUR}
-90072	20	6711	0	pass_all_parameters	0.00	Y
-90073	20	6712	0	foldername	0.00	${PDI_CHEMIN_SYNCHRO}/${PDI_DOSSIER_EXPORT_SDIS}/${DOSSIER_SYNCHRO_DU_JOUR}
-90074	20	6712	0	fail_of_folder_exists	0.00	N
-90075	20	6713	0	specification_method	0.00	rep_ref
-90076	20	6713	0	trans_object_id	0.00	38
-90077	20	6713	0	name	0.00	\N
-90078	20	6713	0	dir_path	0.00	\N
-90079	20	6713	0	file_name	0.00	\N
+89615	50	6680	0	pass_export	0.00	N
 90080	20	6713	0	arg_from_previous	0.00	N
 90081	20	6713	0	params_from_previous	0.00	N
 90082	20	6713	0	exec_per_row	0.00	N
@@ -15585,7 +15492,6 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 89612	50	6680	0	set_append_logfile	0.00	N
 89613	50	6680	0	loglevel	0.00	Nothing
 89614	50	6680	0	slave_server_name	0.00	\N
-89615	50	6680	0	pass_export	0.00	N
 89616	50	6680	0	wait_until_finished	0.00	Y
 89617	50	6680	0	follow_abort_remote	0.00	N
 89618	50	6680	0	create_parent_folder	0.00	N
@@ -15781,6 +15687,7 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 91676	40	6828	0	name	0.00	\N
 91677	40	6828	0	dir_path	0.00	\N
 91678	40	6828	0	file_name	0.00	\N
+91281	57	6801	0	logext	0.00	\N
 91679	40	6828	0	arg_from_previous	0.00	N
 91680	40	6828	0	params_from_previous	0.00	N
 91681	40	6828	0	exec_per_row	0.00	N
@@ -15895,7 +15802,6 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 91278	57	6801	0	add_date	0.00	N
 91279	57	6801	0	add_time	0.00	N
 91280	57	6801	0	logfile	0.00	\N
-91281	57	6801	0	logext	0.00	\N
 91282	57	6801	0	set_append_logfile	0.00	N
 91283	57	6801	0	loglevel	0.00	Nothing
 91284	57	6801	0	slave_server_name	0.00	\N
@@ -16288,11 +16194,107 @@ COPY r_jobentry_attribute (id_jobentry_attribute, id_job, id_jobentry, nr, code,
 92411	56	6882	0	minutes	0.00	\N
 92412	56	6882	0	weekDay	1.00	\N
 92413	56	6882	0	dayOfMonth	1.00	\N
+92434	4	6886	0	start	0.00	Y
+92435	4	6886	0	dummy	0.00	N
+92436	4	6886	0	repeat	0.00	N
+92437	4	6886	0	schedulerType	0.00	\N
+92438	4	6886	0	intervalSeconds	0.00	\N
+92439	4	6886	0	intervalMinutes	60.00	\N
+92440	4	6886	0	hour	12.00	\N
+92441	4	6886	0	minutes	0.00	\N
+92442	4	6886	0	weekDay	1.00	\N
+92443	4	6886	0	dayOfMonth	1.00	\N
+92444	4	6887	0	specification_method	0.00	rep_ref
+92445	4	6887	0	job_object_id	0.00	5
+92446	4	6887	0	name	0.00	\N
+92447	4	6887	0	dir_path	0.00	\N
+92448	4	6887	0	file_name	0.00	\N
+92449	4	6887	0	arg_from_previous	0.00	N
+92450	4	6887	0	params_from_previous	0.00	Y
+92451	4	6887	0	exec_per_row	0.00	Y
+92452	4	6887	0	set_logfile	0.00	Y
+92453	4	6887	0	add_date	0.00	N
+92454	4	6887	0	add_time	0.00	N
+92455	4	6887	0	logfile	0.00	${PDI_CHEMIN_LOG}/${Internal.Job.Name}.log
+92456	4	6887	0	logext	0.00	\N
+92457	4	6887	0	set_append_logfile	0.00	N
+92458	4	6887	0	loglevel	0.00	Basic
+92459	4	6887	0	slave_server_name	0.00	\N
+92460	4	6887	0	pass_export	0.00	N
+92461	4	6887	0	wait_until_finished	0.00	Y
+92462	4	6887	0	follow_abort_remote	0.00	N
+92463	4	6887	0	create_parent_folder	0.00	N
+92464	4	6887	0	parameter_name	0.00	TRAITEMENT_ID
+92465	4	6887	0	parameter_stream_name	0.00	TRAITEMENT_ID
+92466	4	6887	0	parameter_value	0.00	\N
+92467	4	6887	1	parameter_name	0.00	TRAITEMENT_DOSSIER_NUMERO
+92468	4	6887	1	parameter_stream_name	0.00	TRAITEMENT_DOSSIER_NUMERO
+92469	4	6887	1	parameter_value	0.00	\N
+92470	4	6887	2	parameter_name	0.00	TRAITEMENT_MODELE_ID
+92471	4	6887	2	parameter_stream_name	0.00	TRAITEMENT_MODELE_ID
+92472	4	6887	2	parameter_value	0.00	\N
+92473	4	6887	3	parameter_name	0.00	TRAITEMENT_UTILISATEUR_ID
+92474	4	6887	3	parameter_stream_name	0.00	TRAITEMENT_UTILISATEUR_ID
+92475	4	6887	3	parameter_value	0.00	\N
+92476	4	6887	4	parameter_name	0.00	TRAITEMENT_NOM
+92477	4	6887	4	parameter_stream_name	0.00	TRAITEMENT_NOM
+92478	4	6887	4	parameter_value	0.00	\N
+92479	4	6887	5	parameter_name	0.00	TRAITEMENT_TYPE
+92480	4	6887	5	parameter_stream_name	0.00	TRAITEMENT_TYPE
+92481	4	6887	5	parameter_value	0.00	\N
+92482	4	6887	6	parameter_name	0.00	TRAITEMENT_REF_CHEMIN
+92483	4	6887	6	parameter_stream_name	0.00	TRAITEMENT_REF_CHEMIN
+92484	4	6887	6	parameter_value	0.00	\N
+92485	4	6887	7	parameter_name	0.00	TRAITEMENT_REF_NOM
+92486	4	6887	7	parameter_stream_name	0.00	TRAITEMENT_REF_NOM
+92487	4	6887	7	parameter_value	0.00	\N
+92488	4	6887	8	parameter_name	0.00	TRAITEMENT_DESCRIPTION
+92489	4	6887	8	parameter_stream_name	0.00	TRAITEMENT_DESCRIPTION
+92490	4	6887	8	parameter_value	0.00	\N
+92491	4	6887	0	pass_all_parameters	0.00	Y
+92492	4	6888	0	id_database	3.00	\N
+92493	4	6888	0	connection	3.00	\N
+92494	4	6888	0	schemaname	0.00	\N
+92495	4	6888	0	tablename	0.00	\N
+92496	4	6888	0	success_condition	0.00	rows_count_greater
+92497	4	6888	0	limit	0.00	0
+92498	4	6888	0	custom_sql	0.00	SELECT\n\tt.idtraitement AS "TRAITEMENT_ID",\n\tlpad(t.idtraitement::text,10,'0')::text AS "TRAITEMENT_DOSSIER_NUMERO",\n\tt.idmodele AS "TRAITEMENT_MODELE_ID",\n\tt.idutilisateur AS "TRAITEMENT_UTILISATEUR_ID",\n\tm.nom AS "TRAITEMENT_NOM",\r\n\tm.description AS "TRAITEMENT_DESCRIPTION",\n\tm.type AS "TRAITEMENT_TYPE",\n\tm.ref_chemin AS  "TRAITEMENT_REF_CHEMIN",\n\tm.ref_nom AS  "TRAITEMENT_REF_NOM"\nFROM\n\tpdi.traitement t\n\tJOIN pdi.modele_traitement m USING(idmodele)\nWHERE\n\tidstatut = 1;
+92499	4	6888	0	is_custom_sql	0.00	Y
+92500	4	6888	0	is_usevars	0.00	N
+92501	4	6888	0	add_rows_result	0.00	Y
+92502	4	6888	0	clear_result_rows	0.00	Y
+92503	4	6889	0	replacevars	0.00	Y
+92504	4	6889	0	filename	0.00	${PDI_FICHIER_PARAMETRE}
+92505	4	6889	0	file_variable_type	0.00	JVM
+92506	4	6890	0	specification_method	0.00	rep_ref
+92507	4	6890	0	job_object_id	0.00	15
+92508	4	6890	0	name	0.00	\N
+92509	4	6890	0	dir_path	0.00	\N
+92510	4	6890	0	file_name	0.00	\N
+92511	4	6890	0	arg_from_previous	0.00	N
+92512	4	6890	0	params_from_previous	0.00	N
+92513	4	6890	0	exec_per_row	0.00	N
+92514	4	6890	0	set_logfile	0.00	N
+92515	4	6890	0	add_date	0.00	N
+92516	4	6890	0	add_time	0.00	N
+92517	4	6890	0	logfile	0.00	\N
+92518	4	6890	0	logext	0.00	\N
+92519	4	6890	0	set_append_logfile	0.00	N
+92520	4	6890	0	loglevel	0.00	Nothing
+92521	4	6890	0	slave_server_name	0.00	\N
+92522	4	6890	0	pass_export	0.00	N
+92523	4	6890	0	wait_until_finished	0.00	Y
+92524	4	6890	0	follow_abort_remote	0.00	N
+92525	4	6890	0	create_parent_folder	0.00	N
+92526	4	6890	0	parameter_name	0.00	LOG_FILE
+92527	4	6890	0	parameter_stream_name	0.00	\N
+92528	4	6890	0	parameter_value	0.00	${PDI_CHEMIN_LOG}/${Internal.Job.Name}.log
+92529	4	6890	0	pass_all_parameters	0.00	Y
 \.
 
 
 --
--- TOC entry 2098 (class 0 OID 250072)
+-- TOC entry 2098 (class 0 OID 357356)
 -- Dependencies: 170
 -- Data for Name: r_jobentry_copy; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -16507,11 +16509,6 @@ COPY r_jobentry_copy (id_jobentry_copy, id_jobentry, id_job, id_jobentry_type, n
 5548	5548	26	22	0	880	255	Y	N
 5549	5549	26	62	0	1102	525	Y	N
 6703	6703	54	44	0	512	416	Y	N
-6809	6809	4	28	0	40	220	Y	N
-6810	6810	4	45	0	720	220	Y	N
-6811	6811	4	37	0	500	220	Y	N
-6812	6812	4	2	0	240	220	Y	N
-6813	6813	4	45	0	720	360	Y	N
 6375	6375	49	28	0	96	176	Y	N
 6376	6376	49	45	0	640	176	Y	N
 6377	6377	49	45	0	928	176	Y	N
@@ -16657,11 +16654,17 @@ COPY r_jobentry_copy (id_jobentry_copy, id_jobentry, id_job, id_jobentry_type, n
 6857	6857	47	43	0	1072	864	Y	N
 6858	6858	47	44	0	1072	720	Y	N
 6859	6859	47	43	0	1072	592	Y	N
+6886	6886	4	28	0	45	225	Y	N
+6887	6887	4	45	0	735	225	Y	N
+6888	6888	4	37	0	510	225	Y	N
+6889	6889	4	2	0	255	225	Y	N
+6890	6890	4	45	0	735	375	Y	N
+6891	6891	4	62	0	510	375	Y	N
 \.
 
 
 --
--- TOC entry 2099 (class 0 OID 250077)
+-- TOC entry 2099 (class 0 OID 357361)
 -- Dependencies: 172
 -- Data for Name: r_jobentry_database; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -16691,7 +16694,6 @@ COPY r_jobentry_database (id_job, id_jobentry, id_database) FROM stdin;
 5	6787	3
 5	6789	3
 57	6806	3
-4	6811	3
 61	6837	3
 16	6556	3
 16	6558	3
@@ -16703,11 +16705,12 @@ COPY r_jobentry_database (id_job, id_jobentry, id_database) FROM stdin;
 48	6861	15
 56	6879	3
 58	6885	3
+4	6888	3
 \.
 
 
 --
--- TOC entry 2100 (class 0 OID 250082)
+-- TOC entry 2100 (class 0 OID 357366)
 -- Dependencies: 174
 -- Data for Name: r_jobentry_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -16804,7 +16807,7 @@ COPY r_jobentry_type (id_jobentry_type, code, description) FROM stdin;
 
 
 --
--- TOC entry 2101 (class 0 OID 250090)
+-- TOC entry 2101 (class 0 OID 357374)
 -- Dependencies: 176
 -- Data for Name: r_log; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -16814,7 +16817,7 @@ COPY r_log (id_log, name, id_loglevel, logtype, filename, fileextention, add_dat
 
 
 --
--- TOC entry 2102 (class 0 OID 250098)
+-- TOC entry 2102 (class 0 OID 357382)
 -- Dependencies: 178
 -- Data for Name: r_loglevel; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -16830,7 +16833,7 @@ COPY r_loglevel (id_loglevel, code, description) FROM stdin;
 
 
 --
--- TOC entry 2103 (class 0 OID 250106)
+-- TOC entry 2103 (class 0 OID 357390)
 -- Dependencies: 180
 -- Data for Name: r_note; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -16899,6 +16902,7 @@ COPY r_note (id_note, value_str, gui_location_x, gui_location_y, gui_location_wi
 -69	Création automatique du fichier de paramétrage de Pentaho Data Integration (pdi) à partir de la la table de configuration de l'applicatif\r\nSeuls les paramètres commençant par "PDI_%" sont exportés dans le fichier de propriété.\r\nLe paramètre "PDI_FICHIER_PARAMETRAGE" n'est pas exporté. Ce dernier contient le nom complet du fichier de paramétrage	10	10	500	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 -70	Export des alertes et des documents\r\n- Récupération de la date de la dernière synchronisation de la thématique\r\n- Génération des instructions SQL des tables de la thématique\r\n- Copie des documents éventuellement liés à la thématique	10	10	500	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 -72	Purge des demandes de mots de passe\r\nToutes les demandes anterieures à 1H (basé sur l'heure de lancement de ce traitement) sont supprimées	10	10	500	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
+2944	Instruction sql pour la convertion des parametres de date string en timestamp.\nFormat de date  yyyy-mm-dd	157	215	466	40	\N	-1	N	N	0	0	0	255	165	0	100	100	100	Y
 -76	Récupère les valeurs des paramètres associés à la demande traitement.\r\nChaque valeur de paramètre est passée à la transformation ou à la tâche via la création d'une variable PDI	10	10	500	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 2966	/!\\ : Le chemin vers le dossier des PDF sources sont est en dur	560	240	372	25	Arial	10	N	N	0	0	0	255	165	0	100	100	100	Y
 -79	Tâche principale de récupération et de publication d'un fichier KML des risques\r\n	10	10	500	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
@@ -16928,6 +16932,7 @@ COPY r_note (id_note, value_str, gui_location_x, gui_location_y, gui_location_wi
 2937	job de génération de l'etat Excel pour une commune\r\n\r\n\r\nAppeler par le job "etat_pena" 	10	10	500	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 2938	job de génération des états Excels pour les hydrants  indisponibles de la veille  pour une commune.\r\n\r\nAppeler par le job "etat_hdyrant_indisponibles" 	10	10	589	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 2939	job de génération des états Excels pour les hydrants  indisponibles de la veille  pour une commune.\r\n\r\nAppeler par le job "etat_hdyrant_indisponibles" 	10	10	589	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
+3382	Etablissements de prevarisc du jour\r\n	150	425	202	26	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
 2940	Création d'un fichier ZIP regroupant les rapports Excel pour les hydrants\r\n\r\nDéclenchement via le bloc traitement, si COMMUNE_ID est renseigné fihcier Excel  pour une commune, sinon pour toutes les communes.\r\n	10	10	812	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 2844	Traitement de récupération et d'intégration des données de références du SDIS\r\n* Téléchargement du fichier ZIP et MD5 de synchronisation à la date du jour par FTP\r\n* Comparaison de signature MD5\r\n* Décompression du zip dans un sous dossier à la date du jour\r\n* Vérification de la présence obligatoire des fichiers "schema.sql" et "synchronisation.data" (minimum requis)\r\n* Création d'un schéma de stockage de données "Temporaire" à partir de "schema.sql"\r\n* Chargement des données (fichiers ".data") dans ce schéma "Temporaire" (au minimum : "synchronisation.data")\r\n* Remplacement des tables du schéma "Référentiel" parce celles qui existent dans le schéma "Temporaire"\r\n	10	10	670	130	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 2846	Tâche principale de purge des éléments générés par le système en fonction de paramètres d'ancienneté (nombre de jours)\r\n* Récupère le paramétrage général de pdi\r\n* Purge des messages (table remocra.email)\r\n* Purge des traitements executés (table pdi.traitement) et des fichiers générés	10	10	613	60	Microsoft Sans Serif	8	N	N	0	0	0	255	255	0	0	0	0	N
@@ -16946,15 +16951,9 @@ COPY r_note (id_note, value_str, gui_location_x, gui_location_y, gui_location_wi
 2872	Remplacement des valeurs\ndans le template	260	700	149	35	Microsoft Sans Serif	8	N	N	0	0	0	255	165	0	100	100	100	Y
 2873	Modele de mail + destinataire	400	520	154	22	Microsoft Sans Serif	8	N	N	0	0	0	255	165	0	100	100	100	Y
 2874	Traitement de publication d'un fichier KML des risques\r\n* Recherche et récupération éventuelle d'un fichier KML\r\n* Réencodage du fichier KML et depot dans le dossier dédié\r\n* Génération d'un mail si utilisateur actif et notifiable à partir d'un modèle	10	10	500	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
-3558	Tâche principale de récupération et d'exécution des demandes de traitements effectuées via l'interface de lancement de l'applicatif.\r\nLes modèles de traitement et les demandes de traitements sont stockées dans le schéma "pdi".	10	10	881	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
-3559	Récupère les demandes\r\nde traitements	440	160	158	39	Microsoft Sans Serif	8	N	N	0	0	0	255	165	0	100	100	100	N
-3560	Pour chaque demande en attente,\r\nexecute le traitement	800	200	213	39	Microsoft Sans Serif	8	N	N	0	0	0	255	165	0	100	100	100	N
-3561	Tâche principale de récupération et d'exécution des demandes de traitements effectuées via l'interface de lancement de l'applicatif.\r\nLes modèles de traitement et les demandes de traitements sont stockées dans le schéma "pdi".	10	10	881	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
-3562	Tâche principale de récupération et d'exécution des demandes de traitements effectuées via l'interface de lancement de l'applicatif.\r\nLes modèles de traitement et les demandes de traitements sont stockées dans le schéma "pdi".	10	10	881	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
-3563	Tâche principale de récupération et d'exécution des demandes de traitements effectuées via l'interface de lancement de l'applicatif.\r\nLes modèles de traitement et les demandes de traitements sont stockées dans le schéma "pdi".	10	10	881	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 2881	Récupération de la date de la dernière synchronisation réussie	10	10	500	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 2943	Création d'un fichier ZIP regroupant les export xsl des alertes par utilisateur dans une caserne\n * Caserne : Organisme type 'CIS' ou Tous (tous les CIS)\n * Date de début\n * Date de fin	33	71	558	70	Arial	10	N	N	0	0	0	255	255	0	100	100	100	Y
-2944	Instruction sql pour la convertion des parametres de date string en timestamp.\nFormat de date  yyyy-mm-dd	157	215	466	40	\N	-1	N	N	0	0	0	255	165	0	100	100	100	Y
+3457	La requête est-elle accessible à tous les profils de droit ?	704	720	307	26	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
 2882	- Génération des ordres SQL liés à la synchronisation des tables métiers liées de la thématique "ADRESSES"\r\n- Copie des documents éventuels\r\nLes ordres des insctructions SQL sont précisés en "DUR" dans chaque requête d'extraction	10	10	648	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 2883	- Génération des ordres SQL liés à la synchronisation des tables métiers liées de la thématique "ADRESSES"\r\n- Copie des documents éventuels\r\nLes ordres des insctructions SQL sont précisés en "DUR" dans chaque requête d'extraction	10	10	648	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 2985	Création de fichier même si pas de données	1200	450	265	25	Arial	10	N	N	0	0	0	255	165	0	100	100	100	Y
@@ -17014,8 +17013,6 @@ COPY r_note (id_note, value_str, gui_location_x, gui_location_y, gui_location_wi
 3456	Récupération et insertions des profils de droit autorisés à exécuter la requête.	928	944	419	26	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
 3380	Récupère les changements liés aux établissements depuis Prevarisc\r\nà partir d'un fichier de données\r\net insère ces derniers comme alertes en base de données REMOCRA\r\nà partir d'une comparaison avec l'ancien import issu de Prevarisc\r\nstocké dans REMOCRA	0	25	376	90	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
 3381	Etablissements de prevarisc stockés dans remocra\r\nlors de la dernière synchronisation	800	250	278	42	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
-3382	Etablissements de prevarisc du jour\r\n	150	425	202	26	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
-3457	La requête est-elle accessible à tous les profils de droit ?	704	720	307	26	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
 3458	Croisement avec tous les types de profils	1168	704	226	26	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
 3460	Extraction des informations des XML présent dans le répertoire\r\n${PDI_CHEMIN_MODELES}/export/\r\npour les insérer dans la table "export_modele"	32	96	348	58	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
 3461	Les champs de la table "export_modele" \r\nseront utilisées pour extraire les données de la requête\r\nparamétrée dans le champ "source_sql" de la table	1600	96	305	58	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
@@ -17063,11 +17060,17 @@ COPY r_note (id_note, value_str, gui_location_x, gui_location_y, gui_location_wi
 3528	19	1392	640	23	26	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
 3529	20	1392	736	23	26	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
 3598	Identifie les adresses de Prevarisc manquantes au regard\ndes voies présentes dans REMOCRA et insère directement\nles nouvelles adresses dans Prevarisc	75	75	321	58	Segoe UI	9	N	N	0	0	0	255	165	0	100	100	100	Y
+3600	Tâche principale de récupération et d'exécution des demandes de traitements effectuées via l'interface de lancement de l'applicatif.\r\nLes modèles de traitement et les demandes de traitements sont stockées dans le schéma "pdi".	15	15	881	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
+3601	Récupère les demandes\r\nde traitements	450	165	158	39	Microsoft Sans Serif	8	N	N	0	0	0	255	165	0	100	100	100	N
+3602	Pour chaque demande en attente,\r\nexecute le traitement	810	210	213	39	Microsoft Sans Serif	8	N	N	0	0	0	255	165	0	100	100	100	N
+3603	Tâche principale de récupération et d'exécution des demandes de traitements effectuées via l'interface de lancement de l'applicatif.\r\nLes modèles de traitement et les demandes de traitements sont stockées dans le schéma "pdi".	15	15	881	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
+3604	Tâche principale de récupération et d'exécution des demandes de traitements effectuées via l'interface de lancement de l'applicatif.\r\nLes modèles de traitement et les demandes de traitements sont stockées dans le schéma "pdi".	15	15	881	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
+3605	Tâche principale de récupération et d'exécution des demandes de traitements effectuées via l'interface de lancement de l'applicatif.\r\nLes modèles de traitement et les demandes de traitements sont stockées dans le schéma "pdi".	15	15	881	100	\N	-1	N	N	0	0	0	255	255	0	0	0	0	N
 \.
 
 
 --
--- TOC entry 2104 (class 0 OID 250114)
+-- TOC entry 2104 (class 0 OID 357398)
 -- Dependencies: 182
 -- Data for Name: r_partition; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -17077,7 +17080,7 @@ COPY r_partition (id_partition, id_partition_schema, partition_id) FROM stdin;
 
 
 --
--- TOC entry 2105 (class 0 OID 250119)
+-- TOC entry 2105 (class 0 OID 357403)
 -- Dependencies: 184
 -- Data for Name: r_partition_schema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -17087,7 +17090,7 @@ COPY r_partition_schema (id_partition_schema, name, dynamic_definition, partitio
 
 
 --
--- TOC entry 2106 (class 0 OID 250127)
+-- TOC entry 2106 (class 0 OID 357411)
 -- Dependencies: 186
 -- Data for Name: r_repository_log; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -24076,11 +24079,12 @@ COPY r_repository_log (id_repository_log, rep_version, log_date, log_user, opera
 6981	4.0	2019-06-18 09:15:02.999	admin	save job 'gener_et_notifier_hydrants_indispo'
 6982	4.0	2019-08-08 10:31:01.276	admin	save job 'actualisation_zone_competence_commune'
 6983	4.0	2019-09-23 16:24:56.424	admin	save transformation 'exporter_donnees_csv'
+6984	4.0	2019-11-18 10:20:04.304	admin	save job 'traiter_demandes'
 \.
 
 
 --
--- TOC entry 2107 (class 0 OID 250135)
+-- TOC entry 2107 (class 0 OID 357419)
 -- Dependencies: 188
 -- Data for Name: r_slave; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -24090,7 +24094,7 @@ COPY r_slave (id_slave, name, host_name, port, web_app_name, username, password,
 
 
 --
--- TOC entry 2108 (class 0 OID 250143)
+-- TOC entry 2108 (class 0 OID 357427)
 -- Dependencies: 190
 -- Data for Name: r_step; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -24908,7 +24912,7 @@ COPY r_step (id_step, id_transformation, name, description, id_step_type, distri
 
 
 --
--- TOC entry 2109 (class 0 OID 250149)
+-- TOC entry 2109 (class 0 OID 357433)
 -- Dependencies: 191
 -- Data for Name: r_step_attribute; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -28018,6 +28022,7 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 160432	44	8916	0	field_type	0	String
 160433	44	8916	0	field_format	0	\N
 160434	44	8916	0	field_currency	0	\N
+105648	71	6025	0	lookup	0	\N
 160435	44	8916	0	field_decimal	0	\N
 160436	44	8916	0	field_group	0	\N
 160437	44	8916	0	field_trim_type	0	none
@@ -28950,6 +28955,7 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 104709	75	5974	3	field_length	-1	\N
 104710	75	5974	3	field_precision	-1	\N
 104711	75	5974	4	field_name	0	col4
+153471	115	8588	0	rowlimit	0	\N
 122988	41	6942	0	sql	0	SELECT\n  p.id as GC_KEY, \r\n  p.annee as ANNEE, \r\n  p.complement as COMPLEMENT, \r\n  'to_timestamp(''' || p.date_modification  ||''',''YYYY-MM-DD HH24:MI:SS.FF'')' AS DATE_MODIFICATION,\n  'to_timestamp(''' || p.date_permis  ||''',''YYYY-MM-DD HH24:MI:SS.FF'')' AS DATE_PERMIS,\r\n  --'SDO_UTIL.FROM_WKTGEOMETRY(''' || st_astext(p.geometrie) || ''')' AS GEOMETRIE,\r\n  'SDO_UTIL.SDO_GEOMETRY(''' || st_astext(p.geometrie) || ''',2154)' AS GEOMETRIE,\r\n  p.nom as NOM, \r\n  p.numero as NUMERO, \r\n  regexp_replace(p.observations, E'[\\\\n\\\\r]+', ' ', 'g' ) as OBSERVATIONS,\r\n  p.parcelle_cadastrale as PARCELLE_CADASTRALE, \r\n  p.section_cadastrale as SECTION_CADASTRALE, \r\n  p.voie as VOIE, \r\n  p.avis as AVIS, \r\n  'c.gc_key' as COMMUNE, \r\n  lu.identifiant AS INSTRUCTEUR,\r\n  o.nom as SERVICE_INSTRUCTEUR, \r\n  p.INTERSERVICE, \r\n  c.insee as insee_commune,\n  'INSERT' AS action,\n  15::integer AS priorite\nFROM\n\t${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.permis p \r\n\tinner join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.commune c on (p.commune = c.id)\n\tinner join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.utilisateur lu ON(p.instructeur = lu.id)\r\n\tinner join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_organisme o ON(p.service_instructeur = o.id)\r\n
 122989	41	6942	0	limit	0	0
 122990	41	6942	0	lookup	0	\N
@@ -30681,6 +30687,11 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 105313	54	6005	0	id_connection	3	\N
 105373	54	6007	0	field_comment_author_field	0	\N
 105374	54	6007	0	field_formula	0	N
+105402	54	6008	0	protect_sheet	0	N
+105403	54	6008	0	protected_by	0	\N
+105404	54	6008	0	password	0	Encrypted 
+105405	54	6008	0	template_enabled	0	Y
+105406	54	6008	0	template_filename	0	${MODELE_FULLPATH}
 105314	54	6005	0	sql	0	select ordre, libelle, nombre\nfrom (\n  select 'Indisponible' as libelle, 1 as ordre, count(1) as nombre\n  from ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant h\n  where\th.dispo_terrestre = 'INDISPO'\r\n\tand h.commune = ${COMMUNE_ID}\r\n\tand h.code = 'PIBI'\n  union\n  select 'Non conforme' as libelle, 2 as ordre, count(1) as nombre\n  from ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant h\n  where h.dispo_terrestre = 'NON_CONFORME'\r\n\tand h.commune = ${COMMUNE_ID}\r\n\tand h.code = 'PIBI'\n  union\n  select 'Disponible' as libelle, 3 as ordre , count(1) as nombre\n  from ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant h\n  where h.dispo_terrestre = 'DISPO'\r\n\tand h.commune = ${COMMUNE_ID}\r\n\tand h.code = 'PIBI'\n) a\norder by ordre\n
 105315	54	6005	0	limit	0	0
 105316	54	6005	0	lookup	0	\N
@@ -30767,11 +30778,7 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 105399	54	6008	0	date_time_format	0	\N
 105400	54	6008	0	autosizecolums	0	N
 105401	54	6008	0	stream_data	0	N
-105402	54	6008	0	protect_sheet	0	N
-105403	54	6008	0	protected_by	0	\N
-105404	54	6008	0	password	0	Encrypted 
-105405	54	6008	0	template_enabled	0	Y
-105406	54	6008	0	template_filename	0	${MODELE_FULLPATH}
+114868	85	6519	0	field_group	0	\N
 105407	54	6008	0	template_sheet_enabled	0	N
 105408	54	6008	0	template_sheetname	0	\N
 105409	54	6008	0	sheetname	0	Statistiques
@@ -31074,7 +31081,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 114865	85	6519	0	field_format	0	\N
 114866	85	6519	0	field_currency	0	\N
 114867	85	6519	0	field_decimal	0	\N
-114868	85	6519	0	field_group	0	\N
 114869	85	6519	0	field_trim_type	0	none
 114870	85	6519	0	field_nullif	0	\N
 114871	85	6519	0	field_length	-1	\N
@@ -31266,6 +31272,13 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 102930	76	5889	0	file_add_date	0	N
 102931	76	5889	0	file_add_time	0	N
 102932	76	5889	0	SpecifyFormat	0	N
+102933	76	5889	0	date_time_format	0	\N
+102934	76	5889	0	autosizecolums	0	N
+102935	76	5889	0	stream_data	0	N
+102936	76	5889	0	protect_sheet	0	N
+102937	76	5889	0	protected_by	0	\N
+102938	76	5889	0	password	0	Encrypted 
+102939	76	5889	0	template_enabled	0	Y
 100770	72	5798	0	sql	0	select \n    h.id,\n\th.numero, h.voie, h.voie2 as carrefour, domaine.nom as domaine, \n\tnature.nom as type_hydrant, \r\n    vol.nom as vol_constate,\r\n    pena.capacite,\n\th.observation as observation,\r\n\tCASE \tWHEN h.dispo_terrestre ='INDISPO' THEN 'Indisponible'\r\n            WHEN h.dispo_terrestre ='NON_CONFORME' THEN 'Non conforme'\r\n            WHEN h.dispo_terrestre ='DISPO' THEN 'Disponible'\r\n\t\t\tELSE ''\r\n    END as disponibilite,\r\n\tCASE \tWHEN h.dispo_hbe ='INDISPO' THEN 'Indisponible'\r\n            WHEN h.dispo_hbe ='NON_CONFORME' THEN 'Non conforme'\r\n            WHEN h.dispo_hbe ='DISPO' THEN 'Disponible'\r\n\t\t\tELSE ''\r\n    END as disponibilite_hbe,\r\n\ta.anomalie,\th.date_contr as date_controle, h.date_reco as date_reconaissance\nfrom ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant h\n-- anomalies concaténées dans une colonne\nleft outer join ( \n\tselect ha.hydrant, array_to_string(array_agg(a.nom), E'\\r\\n') as anomalie\n    from ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant_anomalies ha\n\tleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_anomalie a on  ha.anomalies = a.id \n    group by ha.hydrant   \n) a on h.id = a.hydrant\nleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_domaine domaine on h.domaine = domaine.id\nleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_nature nature on h.nature = nature.id\n-- hydrant PENA uniquement\njoin ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant_pena pena on h.id =  pena.id\r\nleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_vol_constate vol on pena.vol_constate = vol.id\nwhere h.commune = ${COMMUNE_ID}\r\n\tand ( dispo_terrestre = 'INDISPO' OR  dispo_hbe = 'INDISPO' )\r\n\tand date_trunc('day',GREATEST(h.date_contr,h.date_reco, h.date_verif,h.date_recep))  = DATE 'yesterday' \r\norder by h.numero
 100771	72	5798	0	limit	0	0
 100772	72	5798	0	lookup	0	\N
@@ -31345,13 +31358,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 102922	76	5889	0	add_to_result_filenames	0	Y
 102923	76	5889	0	file_name	0	${OUTPUT_FULLPATH}
 102924	76	5889	0	do_not_open_newfile_init	0	Y
-102933	76	5889	0	date_time_format	0	\N
-102934	76	5889	0	autosizecolums	0	N
-102935	76	5889	0	stream_data	0	N
-102936	76	5889	0	protect_sheet	0	N
-102937	76	5889	0	protected_by	0	\N
-102938	76	5889	0	password	0	Encrypted 
-102939	76	5889	0	template_enabled	0	Y
 102940	76	5889	0	template_filename	0	${MODELE_FULLPATH}
 102941	76	5889	0	template_sheet_enabled	0	N
 102942	76	5889	0	template_sheetname	0	\N
@@ -31825,7 +31831,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 126113	66	7097	0	PARTITIONING_METHOD	0	none
 105646	71	6025	0	sql	0	select u.id as idutilisateur, ${TRAITEMENT_ID} as idtraitement \r\nfrom \r\nremocra.utilisateur u\r\njoin remocra.organisme o on u.organisme = o.id \r\njoin remocra.profil_organisme_utilisateur_droit poud on ( poud.profil_utilisateur = u.profil_utilisateur and poud.profil_organisme = o.profil_organisme )\r\njoin remocra.profil_droit pd on ( pd.id = poud.profil_droit and pd.code = 'SDIS-REF-DECI')\r\nwhere u.actif and u.message_remocra
 105647	71	6025	0	limit	0	0
-105648	71	6025	0	lookup	0	\N
 105649	71	6025	0	execute_each_row	0	N
 105650	71	6025	0	variables_active	0	Y
 105651	71	6025	0	lazy_conversion_active	0	N
@@ -32855,6 +32860,10 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 120327	89	6803	0	compatible	0	N
 120328	89	6803	0	optimizationLevel	0	9
 120329	89	6803	0	jsScript_name	0	Script 1
+126387	53	7099	4	field_title_style_cell	0	\N
+126388	53	7099	4	field_style_cell	0	\N
+126389	53	7099	4	field_comment_field	0	\N
+126390	53	7099	4	field_comment_author_field	0	\N
 120330	89	6803	0	jsScript_script	0	//Script here\nvar now = date2str(new Date(),"yyyyMMdd");\nvar xlsFileFullPath = "/" + now + "_alertes_"+ libelle_organisme + "_" + getVariable("DATE_DEB","") +"_" + getVariable("DATE_FIN","");\nxlsFileFullPath = lower(upper(xlsFileFullPath));\nxlsFileFullPath = replace(xlsFileFullPath," ","_");\nxlsFileFullPath = replace(xlsFileFullPath,"-","");\n\nvar strAccents = xlsFileFullPath.split('');\nvar strAccentsOut = new Array();\nvar strAccentsLen = strAccents.length;\nvar accents = 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';\nvar accentsOut = "AAAAAAaaaaaaOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz";\nfor (var y = 0; y < strAccentsLen; y++) {\n\tif (accents.indexOf(strAccents[y]) != -1) {\n\t\tstrAccentsOut[y] = accentsOut.substr(accents.indexOf(strAccents[y]), 1);\n\t} else {\n\t\tstrAccentsOut[y] = strAccents[y];\n\t}\n}\nxlsFileFullPath = strAccentsOut.join('');\n\n
 120331	89	6803	0	jsScript_type	0	\N
 120332	89	6803	0	field_name	0	xlsFileFullPath
@@ -32943,10 +32952,7 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 126384	53	7099	4	field_type	0	String
 126385	53	7099	4	field_format	0	\N
 126386	53	7099	4	field_title	0	type_hydrant
-126387	53	7099	4	field_title_style_cell	0	\N
-126388	53	7099	4	field_style_cell	0	\N
-126389	53	7099	4	field_comment_field	0	\N
-126390	53	7099	4	field_comment_author_field	0	\N
+120933	36	6828	0	lookup	0	\N
 126391	53	7099	4	field_formula	0	N
 126392	53	7099	4	field_hyperlink_field	0	\N
 126393	53	7099	5	field_name	0	diametre
@@ -33233,7 +33239,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 126571	74	7101	4	field_format	0	\N
 120931	36	6828	0	sql	0	SELECT\r\n\tt.code AS "CODE",\r\n\tto_char(COALESCE(s.date_synchro, '1900-01-01'::timestamp),'YYYY-MM-DD') AS "DATE_DERNIERE_SYNCHRO"\r\nFROM\r\n\t${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.thematique t\r\n\tLEFT JOIN (SELECT thematique, date_trunc('minute',max(date_synchro)) AS date_synchro FROM ${PDI_POSTGRESQL_NOM_SCHEMA_REFERENTIEL}.synchronisation WHERE succes GROUP BY thematique) s ON t.id = s.thematique\r\nWHERE\r\n\tcode = '${CODE}'
 120932	36	6828	0	limit	0	0
-120933	36	6828	0	lookup	0	\N
 120934	36	6828	0	execute_each_row	0	N
 120935	36	6828	0	variables_active	0	Y
 120936	36	6828	0	lazy_conversion_active	0	N
@@ -33326,6 +33331,14 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 126576	74	7101	4	field_comment_author_field	0	\N
 126577	74	7101	4	field_formula	0	N
 126578	74	7101	4	field_hyperlink_field	0	\N
+126579	74	7101	5	field_name	0	vol_constate
+126580	74	7101	5	field_type	0	String
+126581	74	7101	5	field_format	0	\N
+126582	74	7101	5	field_title	0	vol_constate
+126583	74	7101	5	field_title_style_cell	0	\N
+126584	74	7101	5	field_style_cell	0	\N
+126585	74	7101	5	field_comment_field	0	\N
+126586	74	7101	5	field_comment_author_field	0	\N
 126487	53	7100	0	sql	0	select \n    h.id,\n\th.numero, h.voie, h.voie2 as carrefour, domaine.nom as domaine, \n\tnature.nom as type_hydrant, diametre.nom as diametre,\n\tpibi.debit as debit, pibi.pression_dyn as pression_dynamique, \n\tpibi.pression as pression_statique, \n\th.observation as observation,\r\n\tCASE \tWHEN h.dispo_terrestre ='INDISPO' THEN 'Indisponible'\r\n            WHEN h.dispo_terrestre ='NON_CONFORME' THEN 'Non conforme'\r\n            WHEN h.dispo_terrestre ='DISPO' THEN 'Disponible'\r\n    END as disponibilite, \n\ta.anomalie,\th.date_contr as date_controle, h.date_reco as date_reconaissance\nfrom ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant h\n-- anomalies concaténées dans une colonne\nleft outer join ( \n\tselect ha.hydrant, array_to_string(array_agg(a.nom), E'\\r\\n') as anomalie\n    from ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant_anomalies ha\n\tleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_anomalie a on  ha.anomalies = a.id \n    group by ha.hydrant   \n) a on h.id = a.hydrant\nleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_domaine domaine on h.domaine = domaine.id\nleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_nature nature on h.nature = nature.id\n-- hydrant pibi uniquement\njoin ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant_pibi pibi on h.id =  pibi.id\nleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_diametre diametre on pibi.diametre = diametre.id\r\nwhere h.commune = ${COMMUNE_ID}\r\n\tand h.dispo_terrestre is not null\r\norder by h.numero
 126488	53	7100	0	limit	0	0
 126489	53	7100	0	lookup	0	\N
@@ -33408,14 +33421,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 126566	74	7101	3	field_comment_author_field	0	\N
 126567	74	7101	3	field_formula	0	N
 126568	74	7101	3	field_hyperlink_field	0	\N
-126579	74	7101	5	field_name	0	vol_constate
-126580	74	7101	5	field_type	0	String
-126581	74	7101	5	field_format	0	\N
-126582	74	7101	5	field_title	0	vol_constate
-126583	74	7101	5	field_title_style_cell	0	\N
-126584	74	7101	5	field_style_cell	0	\N
-126585	74	7101	5	field_comment_field	0	\N
-126586	74	7101	5	field_comment_author_field	0	\N
 126587	74	7101	5	field_formula	0	N
 126588	74	7101	5	field_hyperlink_field	0	\N
 126589	74	7101	6	field_name	0	capacite
@@ -33508,6 +33513,14 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 161573	130	8978	0	PARTITIONING_SCHEMA	0	\N
 161574	130	8978	0	PARTITIONING_METHOD	0	none
 161575	130	8978	0	directory	0	%%java.io.tmpdir%%
+161649	130	8982	0	return_keys	0	Y
+161650	130	8982	0	return_field	0	courrier_id
+161651	130	8982	0	column_name	0	code
+161652	130	8982	0	stream_name	0	code
+161653	130	8982	1	column_name	0	repertoire
+161654	130	8982	1	stream_name	0	repertoire
+161655	130	8982	2	column_name	0	fichier
+161656	130	8982	2	stream_name	0	fichier
 126663	74	7102	0	sql	0	select \r\n    h.id,\r\n\th.numero, h.voie, h.voie2 as carrefour, domaine.nom as domaine, \r\n\tnature.nom as type_hydrant, \r\n    vol.nom as vol_constate,\r\n    pena.capacite,\r\n\th.observation as observation,\r\n\tCASE \tWHEN h.dispo_terrestre ='INDISPO' THEN 'Indisponible'\r\n            WHEN h.dispo_terrestre ='NON_CONFORME' THEN 'Non conforme'\r\n            WHEN h.dispo_terrestre ='DISPO' THEN 'Disponible'\r\n\t\t\tELSE ''\r\n    END as disponibilite,\r\n\tCASE \tWHEN h.dispo_hbe ='INDISPO' THEN 'Indisponible'\r\n            WHEN h.dispo_hbe ='NON_CONFORME' THEN 'Non conforme'\r\n            WHEN h.dispo_hbe ='DISPO' THEN 'Disponible'\r\n\t\t\tELSE ''\r\n    END as disponibilite_hbe,\r\n\ta.anomalie,\th.date_contr as date_controle, h.date_reco as date_reconaissance\r\nfrom ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant h\r\n-- anomalies concaténées dans une colonne\r\nleft outer join ( \r\n\tselect ha.hydrant, array_to_string(array_agg(a.nom), E'\\r\\n') as anomalie\r\n    from ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant_anomalies ha\r\n\tleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_anomalie a on  ha.anomalies = a.id \r\n    group by ha.hydrant   \r\n) a on h.id = a.hydrant\r\nleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_domaine domaine on h.domaine = domaine.id\r\nleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_nature nature on h.nature = nature.id\r\n-- hydrant PENA uniquement\r\njoin ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.hydrant_pena pena on h.id =  pena.id\r\nleft outer join ${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.type_hydrant_vol_constate vol on pena.vol_constate = vol.id\r\nwhere h.commune = ${COMMUNE_ID}\r\n\tand ( dispo_terrestre is not null)\r\norder by h.numero
 126664	74	7102	0	limit	0	0
 126665	74	7102	0	lookup	0	\N
@@ -33588,14 +33601,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 161646	130	8982	0	tablename_in_field	0	N
 161647	130	8982	0	tablename_field	0	\N
 161648	130	8982	0	tablename_in_table	0	Y
-161649	130	8982	0	return_keys	0	Y
-161650	130	8982	0	return_field	0	courrier_id
-161651	130	8982	0	column_name	0	code
-161652	130	8982	0	stream_name	0	code
-161653	130	8982	1	column_name	0	repertoire
-161654	130	8982	1	stream_name	0	repertoire
-161655	130	8982	2	column_name	0	fichier
-161656	130	8982	2	stream_name	0	fichier
 161657	130	8982	3	column_name	0	type
 161658	130	8982	3	stream_name	0	type
 161659	130	8982	0	cluster_schema	0	\N
@@ -38191,6 +38196,19 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 160240	96	8905	0	PARTITIONING_SCHEMA	0	\N
 160241	96	8905	0	PARTITIONING_METHOD	0	none
 160242	96	8905	0	class_name	0	Processor
+160325	96	8910	0	partitioning_enabled	0	N
+160326	96	8910	0	partitioning_field	0	\N
+160327	96	8910	0	partitioning_daily	0	N
+160328	96	8910	0	partitioning_monthly	0	Y
+160329	96	8910	0	tablename_in_field	0	N
+160330	96	8910	0	tablename_field	0	\N
+160331	96	8910	0	tablename_in_table	0	Y
+160332	96	8910	0	return_keys	0	N
+160333	96	8910	0	return_field	0	\N
+160334	96	8910	0	column_name	0	libelle
+160335	96	8910	0	stream_name	0	titre
+160336	96	8910	1	column_name	0	description
+160337	96	8910	1	stream_name	0	description
 160243	96	8905	0	class_source	0	import java.io.File;\r\nimport org.odftoolkit.odfdom.doc.OdfDocument;\r\n\r\nString titreModele;\r\nString descriptionModele;\nString categorieModele;\r\n\npublic boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws KettleException\n{\n\n\tObject[] r = getRow();\n\n\tif (r == null) {\n\t\tsetOutputDone();\n\t\treturn false;\n\t}\n\n\tif (first) {\n\t    first=false;\n\t}\n\n    Object[] outputRow = createOutputRow(r, data.outputRowMeta.size());\n\r\n\ttry {\r\n\r\n\r\n\t\t//Ouverture du fichier modèle\r\n\t\tFile odtTpl = new File(get(Fields.Out, "filename").getString(r));\r\n\t\tOdfDocument openDoc = OdfDocument.loadDocument(odtTpl);\r\n\t\t\t\r\n\t\t//Récupération du titre\r\n\t\ttitreModele = openDoc.getOfficeMetadata().getTitle();\r\n\r\n\t\t//Récupération de la description\r\n\t\tdescriptionModele = openDoc.getOfficeMetadata().getDescription();\r\n\r\n\t\t//Récupération de la catégorie de document\r\n\t\tcategorieModele = openDoc.getOfficeMetadata().getUserDefinedElementByAttributeName("REMOCRA_CATEGORIE_MODELE").getTextContent();\r\n\r\n\t\t\r\n\t} catch (Exception e) {\r\n\t\t\t\r\n\t}\r\n\t\n\tget(Fields.Out, "titre").setValue(outputRow, titreModele);\n\tget(Fields.Out, "description").setValue(outputRow, descriptionModele);\r\n\tget(Fields.Out, "categorie").setValue(outputRow, categorieModele);\r\n    putRow(data.outputRowMeta, outputRow);\n\n\treturn true;\n}
 160244	96	8905	0	class_type	0	TRANSFORM_CLASS
 160245	96	8905	0	field_name	0	titre
@@ -38273,19 +38291,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 160322	96	8910	0	ignore_errors	0	N
 160323	96	8910	0	use_batch	0	Y
 160324	96	8910	0	specify_fields	0	Y
-160325	96	8910	0	partitioning_enabled	0	N
-160326	96	8910	0	partitioning_field	0	\N
-160327	96	8910	0	partitioning_daily	0	N
-160328	96	8910	0	partitioning_monthly	0	Y
-160329	96	8910	0	tablename_in_field	0	N
-160330	96	8910	0	tablename_field	0	\N
-160331	96	8910	0	tablename_in_table	0	Y
-160332	96	8910	0	return_keys	0	N
-160333	96	8910	0	return_field	0	\N
-160334	96	8910	0	column_name	0	libelle
-160335	96	8910	0	stream_name	0	titre
-160336	96	8910	1	column_name	0	description
-160337	96	8910	1	stream_name	0	description
 160338	96	8910	2	column_name	0	categorie
 160339	96	8910	2	stream_name	0	categorie
 160340	96	8910	3	column_name	0	modele_ott
@@ -38582,7 +38587,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 153468	115	8588	0	PARTITIONING_SCHEMA	0	\N
 153469	115	8588	0	PARTITIONING_METHOD	0	none
 153470	115	8588	0	id_connection	3	\N
-153471	115	8588	0	rowlimit	0	\N
 153472	115	8588	0	sql	0	SELECT\r\n\tst_asewkt(\r\n\t\tst_centroid(geometrie)\r\n\t) AS wkt_position\r\nFROM\r\n\tremocra.commune\r\nWHERE\r\n\tinsee = ?
 153473	115	8588	0	outer_join	0	N
 153474	115	8588	0	replace_vars	0	N
@@ -39854,6 +39858,9 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 163435	97	9116	0	PARTITIONING_SCHEMA	0	\N
 163436	97	9116	0	PARTITIONING_METHOD	0	none
 163437	97	9116	0	id_connection	3	\N
+163519	97	9124	0	PARTITIONING_SCHEMA	0	\N
+163520	97	9124	0	PARTITIONING_METHOD	0	none
+163521	97	9124	0	sourcefilenamefield	0	fichier_odt
 163438	97	9116	0	sql	0	SELECT\r\n\t'${PDI_CHEMIN_MODELES}/courrier/sdis/${PDI_CODE_SDIS}/' || modele_ott AS fichier_modele_ott,\r\n\t'${PDI_CHEMIN_TRAITEMENT}/${TRAITEMENT_DOSSIER_NUMERO}/${TRAITEMENT_DOSSIER_NUMERO}.ODT' AS fichier_odt,\r\n\t'${PDI_CHEMIN_TRAITEMENT}/${TRAITEMENT_DOSSIER_NUMERO}/${TRAITEMENT_DOSSIER_NUMERO}.PDF' AS fichier_pdf\r\nFROM\r\n\t${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.courrier_modele\r\nWHERE\r\n\tid = ${MODELE_COURRIER_ID}
 163439	97	9116	0	limit	0	0
 163440	97	9116	0	lookup	0	\N
@@ -39935,9 +39942,6 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 163516	97	9123	0	digits	0	none
 163517	97	9123	0	remove_special_characters	0	crlf
 163518	97	9123	0	cluster_schema	0	\N
-163519	97	9124	0	PARTITIONING_SCHEMA	0	\N
-163520	97	9124	0	PARTITIONING_METHOD	0	none
-163521	97	9124	0	sourcefilenamefield	0	fichier_odt
 163522	97	9124	0	targetfilenamefield	0	\N
 163523	97	9124	0	operation_type	0	delete
 163524	97	9124	0	addresultfilenames	0	N
@@ -40641,7 +40645,7 @@ COPY r_step_attribute (id_step_attribute, id_transformation, id_step, nr, code, 
 
 
 --
--- TOC entry 2110 (class 0 OID 250157)
+-- TOC entry 2110 (class 0 OID 357441)
 -- Dependencies: 193
 -- Data for Name: r_step_database; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -40851,7 +40855,7 @@ COPY r_step_database (id_transformation, id_step, id_database) FROM stdin;
 
 
 --
--- TOC entry 2111 (class 0 OID 250162)
+-- TOC entry 2111 (class 0 OID 357446)
 -- Dependencies: 195
 -- Data for Name: r_step_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -41103,7 +41107,7 @@ COPY r_step_type (id_step_type, code, description, helptext) FROM stdin;
 
 
 --
--- TOC entry 2112 (class 0 OID 250170)
+-- TOC entry 2112 (class 0 OID 357454)
 -- Dependencies: 197
 -- Data for Name: r_trans_attribute; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -41536,6 +41540,7 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 44636	12	0	PERFORMANCE_LOG_TABLE_FIELD_ID1	0	SEQ_NR
 44637	12	0	PERFORMANCE_LOG_TABLE_FIELD_NAME1	0	SEQ_NR
 44638	12	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED1	0	Y
+44934	13	0	SHARED_FILE	0	\N
 44639	12	0	PERFORMANCE_LOG_TABLE_FIELD_ID2	0	LOGDATE
 44640	12	0	PERFORMANCE_LOG_TABLE_FIELD_NAME2	0	LOGDATE
 44641	12	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED2	0	Y
@@ -41786,6 +41791,7 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 102314	10	0	CHANNEL_LOG_TABLE_FIELD_NAME0	0	ID_BATCH
 102315	10	0	CHANNEL_LOG_TABLE_FIELD_ENABLED0	0	Y
 102316	10	0	CHANNEL_LOG_TABLE_FIELD_ID1	0	CHANNEL_ID
+118208	91	0	LOG_INTERVAL	0	\N
 102317	10	0	CHANNEL_LOG_TABLE_FIELD_NAME1	0	CHANNEL_ID
 102318	10	0	CHANNEL_LOG_TABLE_FIELD_ENABLED1	0	Y
 102319	10	0	CHANNEL_LOG_TABLE_FIELD_ID2	0	LOG_DATE
@@ -42376,7 +42382,6 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 44929	30	0	CHANNEL_LOG_TABLE_FIELD_ENABLED11	0	Y
 44930	13	0	UNIQUE_CONNECTIONS	0	N
 44931	13	0	FEEDBACK_SHOWN	0	Y
-44934	13	0	SHARED_FILE	0	\N
 44935	13	0	CAPTURE_STEP_PERFORMANCE	0	N
 44936	13	0	STEP_PERFORMANCE_CAPTURING_DELAY	1000	\N
 44937	13	0	STEP_PERFORMANCE_CAPTURING_SIZE_LIMIT	0	100
@@ -47350,6 +47355,7 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 108632	54	0	PERFORMANCE_LOG_TABLE_FIELD_ID10	0	LINES_OUTPUT
 108633	54	0	PERFORMANCE_LOG_TABLE_FIELD_NAME10	0	LINES_OUTPUT
 108634	54	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED10	0	Y
+108087	78	0	TRANS_LOG_TABLE_FIELD_ID5	0	LINES_WRITTEN
 108635	54	0	PERFORMANCE_LOG_TABLE_FIELD_ID11	0	LINES_REJECTED
 108636	54	0	PERFORMANCE_LOG_TABLE_FIELD_NAME11	0	LINES_REJECTED
 108637	54	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED11	0	Y
@@ -47434,7 +47440,6 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 108084	78	0	TRANS_LOG_TABLE_FIELD_NAME4	0	LINES_READ
 108085	78	0	TRANS_LOG_TABLE_FIELD_ENABLED4	0	Y
 108086	78	0	TRANS_LOG_TABLE_FIELD_SUBJECT4	0	\N
-108087	78	0	TRANS_LOG_TABLE_FIELD_ID5	0	LINES_WRITTEN
 108088	78	0	TRANS_LOG_TABLE_FIELD_NAME5	0	LINES_WRITTEN
 108089	78	0	TRANS_LOG_TABLE_FIELD_ENABLED5	0	Y
 108090	78	0	TRANS_LOG_TABLE_FIELD_SUBJECT5	0	\N
@@ -47770,6 +47775,7 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 117725	38	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED11	0	Y
 117726	38	0	PERFORMANCE_LOG_TABLE_FIELD_ID12	0	ERRORS
 117728	38	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED12	0	Y
+102176	10	0	TRANS_LOG_TABLE_FIELD_ENABLED6	0	Y
 117729	38	0	PERFORMANCE_LOG_TABLE_FIELD_ID13	0	INPUT_BUFFER_ROWS
 117730	38	0	PERFORMANCE_LOG_TABLE_FIELD_NAME13	0	INPUT_BUFFER_ROWS
 117731	38	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED13	0	Y
@@ -47855,7 +47861,6 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 102173	10	0	TRANS_LOG_TABLE_FIELD_SUBJECT5	0	\N
 102174	10	0	TRANS_LOG_TABLE_FIELD_ID6	0	LINES_UPDATED
 102175	10	0	TRANS_LOG_TABLE_FIELD_NAME6	0	LINES_UPDATED
-102176	10	0	TRANS_LOG_TABLE_FIELD_ENABLED6	0	Y
 102177	10	0	TRANS_LOG_TABLE_FIELD_SUBJECT6	0	\N
 102178	10	0	TRANS_LOG_TABLE_FIELD_ID7	0	LINES_INPUT
 102179	10	0	TRANS_LOG_TABLE_FIELD_NAME7	0	LINES_INPUT
@@ -50543,6 +50548,7 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 172113	126	0	PERFORMANCE_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
 172114	126	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED3	0	Y
 172115	126	0	PERFORMANCE_LOG_TABLE_FIELD_ID4	0	STEPNAME
+118206	91	0	STEP_PERFORMANCE_LOG_TABLE	0	\N
 172116	126	0	PERFORMANCE_LOG_TABLE_FIELD_NAME4	0	STEPNAME
 172117	126	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED4	0	Y
 172118	126	0	PERFORMANCE_LOG_TABLE_FIELD_ID5	0	STEP_COPY
@@ -50624,9 +50630,7 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 118203	91	0	CAPTURE_STEP_PERFORMANCE	0	N
 118204	91	0	STEP_PERFORMANCE_CAPTURING_DELAY	1000	\N
 118205	91	0	STEP_PERFORMANCE_CAPTURING_SIZE_LIMIT	0	100
-118206	91	0	STEP_PERFORMANCE_LOG_TABLE	0	\N
 118207	91	0	LOG_SIZE_LIMIT	0	\N
-118208	91	0	LOG_INTERVAL	0	\N
 118209	91	0	TRANSFORMATION_TYPE	0	Normal
 118210	91	0	TRANS_LOG_TABLE_CONNECTION_NAME	0	\N
 118211	91	0	TRANS_LOG_TABLE_SCHEMA_NAME	0	\N
@@ -52318,6 +52322,7 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 120251	41	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED8	0	Y
 120252	41	0	PERFORMANCE_LOG_TABLE_FIELD_ID9	0	LINES_INPUT
 122094	66	0	STEP_LOG_TABLE_FIELD_NAME4	0	STEPNAME
+122095	66	0	STEP_LOG_TABLE_FIELD_ENABLED4	0	Y
 120253	41	0	PERFORMANCE_LOG_TABLE_FIELD_NAME9	0	LINES_INPUT
 120254	41	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED9	0	Y
 120255	41	0	PERFORMANCE_LOG_TABLE_FIELD_ID10	0	LINES_OUTPUT
@@ -52400,7 +52405,6 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 122091	66	0	STEP_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
 122092	66	0	STEP_LOG_TABLE_FIELD_ENABLED3	0	Y
 122093	66	0	STEP_LOG_TABLE_FIELD_ID4	0	STEPNAME
-122095	66	0	STEP_LOG_TABLE_FIELD_ENABLED4	0	Y
 122096	66	0	STEP_LOG_TABLE_FIELD_ID5	0	STEP_COPY
 122097	66	0	STEP_LOG_TABLE_FIELD_NAME5	0	STEP_COPY
 122098	66	0	STEP_LOG_TABLE_FIELD_ENABLED5	0	Y
@@ -52735,6 +52739,7 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 122216	53	0	USING_THREAD_PRIORITIES	0	Y
 122217	53	0	SHARED_FILE	0	\N
 122218	53	0	CAPTURE_STEP_PERFORMANCE	0	N
+138114	102	0	SHARED_FILE	0	\N
 122219	53	0	STEP_PERFORMANCE_CAPTURING_DELAY	1000	\N
 122220	53	0	STEP_PERFORMANCE_CAPTURING_SIZE_LIMIT	0	100
 122221	53	0	STEP_PERFORMANCE_LOG_TABLE	0	\N
@@ -52822,6 +52827,7 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 122303	53	0	STEP_LOG_TABLE_FIELD_ENABLED3	0	Y
 122304	53	0	STEP_LOG_TABLE_FIELD_ID4	0	STEPNAME
 122305	53	0	STEP_LOG_TABLE_FIELD_NAME4	0	STEPNAME
+168549	125	0	SHARED_FILE	0	\N
 122306	53	0	STEP_LOG_TABLE_FIELD_ENABLED4	0	Y
 122307	53	0	STEP_LOG_TABLE_FIELD_ID5	0	STEP_COPY
 122308	53	0	STEP_LOG_TABLE_FIELD_NAME5	0	STEP_COPY
@@ -52989,6 +52995,7 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 122470	74	0	TRANS_LOG_TABLE_FIELD_ENABLED8	0	Y
 122471	74	0	TRANS_LOG_TABLE_FIELD_SUBJECT8	0	\N
 122472	74	0	TRANS_LOG_TABLE_FIELD_ID9	0	LINES_REJECTED
+158815	118	0	LOG_SIZE_LIMIT	0	\N
 122473	74	0	TRANS_LOG_TABLE_FIELD_NAME9	0	LINES_REJECTED
 122474	74	0	TRANS_LOG_TABLE_FIELD_ENABLED9	0	Y
 122475	74	0	TRANS_LOG_TABLE_FIELD_SUBJECT9	0	\N
@@ -53074,6 +53081,7 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 122555	74	0	PERFORMANCE_LOG_TABLE_FIELD_ID2	0	LOGDATE
 122556	74	0	PERFORMANCE_LOG_TABLE_FIELD_NAME2	0	LOGDATE
 122557	74	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED2	0	Y
+158816	118	0	LOG_INTERVAL	0	\N
 122558	74	0	PERFORMANCE_LOG_TABLE_FIELD_ID3	0	TRANSNAME
 122559	74	0	PERFORMANCE_LOG_TABLE_FIELD_NAME3	0	TRANSNAME
 122560	74	0	PERFORMANCE_LOG_TABLE_FIELD_ENABLED3	0	Y
@@ -53155,7 +53163,6 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 138111	102	0	FEEDBACK_SHOWN	0	Y
 138112	102	0	FEEDBACK_SIZE	50000	\N
 138113	102	0	USING_THREAD_PRIORITIES	0	Y
-138114	102	0	SHARED_FILE	0	\N
 138115	102	0	CAPTURE_STEP_PERFORMANCE	0	N
 138116	102	0	STEP_PERFORMANCE_CAPTURING_DELAY	1000	\N
 138117	102	0	STEP_PERFORMANCE_CAPTURING_SIZE_LIMIT	0	100
@@ -56783,7 +56790,6 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 168546	125	0	FEEDBACK_SHOWN	0	Y
 168547	125	0	FEEDBACK_SIZE	50000	\N
 168548	125	0	USING_THREAD_PRIORITIES	0	Y
-168549	125	0	SHARED_FILE	0	\N
 168550	125	0	CAPTURE_STEP_PERFORMANCE	0	N
 168551	125	0	STEP_PERFORMANCE_CAPTURING_DELAY	1000	\N
 168552	125	0	STEP_PERFORMANCE_CAPTURING_SIZE_LIMIT	0	100
@@ -57041,8 +57047,6 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 158812	118	0	STEP_PERFORMANCE_CAPTURING_DELAY	1000	\N
 158813	118	0	STEP_PERFORMANCE_CAPTURING_SIZE_LIMIT	0	100
 158814	118	0	STEP_PERFORMANCE_LOG_TABLE	0	\N
-158815	118	0	LOG_SIZE_LIMIT	0	\N
-158816	118	0	LOG_INTERVAL	0	\N
 158817	118	0	TRANSFORMATION_TYPE	0	Normal
 158818	118	0	TRANS_LOG_TABLE_CONNECTION_NAME	0	\N
 158819	118	0	TRANS_LOG_TABLE_SCHEMA_NAME	0	\N
@@ -59750,7 +59754,7 @@ COPY r_trans_attribute (id_trans_attribute, id_transformation, nr, code, value_n
 
 
 --
--- TOC entry 2113 (class 0 OID 250178)
+-- TOC entry 2113 (class 0 OID 357462)
 -- Dependencies: 199
 -- Data for Name: r_trans_cluster; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -59760,7 +59764,7 @@ COPY r_trans_cluster (id_trans_cluster, id_transformation, id_cluster) FROM stdi
 
 
 --
--- TOC entry 2114 (class 0 OID 250183)
+-- TOC entry 2114 (class 0 OID 357467)
 -- Dependencies: 201
 -- Data for Name: r_trans_hop; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -60508,7 +60512,7 @@ COPY r_trans_hop (id_trans_hop, id_transformation, id_step_from, id_step_to, ena
 
 
 --
--- TOC entry 2115 (class 0 OID 250188)
+-- TOC entry 2115 (class 0 OID 357472)
 -- Dependencies: 203
 -- Data for Name: r_trans_lock; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -60518,7 +60522,7 @@ COPY r_trans_lock (id_trans_lock, id_transformation, id_user, lock_message, lock
 
 
 --
--- TOC entry 2116 (class 0 OID 250196)
+-- TOC entry 2116 (class 0 OID 357480)
 -- Dependencies: 205
 -- Data for Name: r_trans_note; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -60685,7 +60689,7 @@ COPY r_trans_note (id_transformation, id_note) FROM stdin;
 
 
 --
--- TOC entry 2117 (class 0 OID 250199)
+-- TOC entry 2117 (class 0 OID 357483)
 -- Dependencies: 206
 -- Data for Name: r_trans_partition_schema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -60695,7 +60699,7 @@ COPY r_trans_partition_schema (id_trans_partition_schema, id_transformation, id_
 
 
 --
--- TOC entry 2118 (class 0 OID 250204)
+-- TOC entry 2118 (class 0 OID 357488)
 -- Dependencies: 208
 -- Data for Name: r_trans_slave; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -60705,7 +60709,7 @@ COPY r_trans_slave (id_trans_slave, id_transformation, id_slave) FROM stdin;
 
 
 --
--- TOC entry 2119 (class 0 OID 250209)
+-- TOC entry 2119 (class 0 OID 357493)
 -- Dependencies: 210
 -- Data for Name: r_trans_step_condition; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -60775,7 +60779,7 @@ COPY r_trans_step_condition (id_transformation, id_step, id_condition) FROM stdi
 
 
 --
--- TOC entry 2120 (class 0 OID 250212)
+-- TOC entry 2120 (class 0 OID 357496)
 -- Dependencies: 211
 -- Data for Name: r_transformation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -60873,7 +60877,7 @@ COPY r_transformation (id_transformation, id_directory, name, description, exten
 
 
 --
--- TOC entry 2121 (class 0 OID 250220)
+-- TOC entry 2121 (class 0 OID 357504)
 -- Dependencies: 213
 -- Data for Name: r_user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -60885,7 +60889,7 @@ COPY r_user (id_user, login, password, name, description, enabled) FROM stdin;
 
 
 --
--- TOC entry 2122 (class 0 OID 250228)
+-- TOC entry 2122 (class 0 OID 357512)
 -- Dependencies: 215
 -- Data for Name: r_value; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -60959,7 +60963,7 @@ COPY r_value (id_value, name, value_type, value_str, is_null) FROM stdin;
 
 
 --
--- TOC entry 2123 (class 0 OID 250236)
+-- TOC entry 2123 (class 0 OID 357520)
 -- Dependencies: 217
 -- Data for Name: r_version; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -60970,7 +60974,7 @@ COPY r_version (id_version, major_version, minor_version, upgrade_date, is_upgra
 
 
 --
--- TOC entry 2074 (class 1259 OID 250278)
+-- TOC entry 2074 (class 1259 OID 357562)
 -- Dependencies: 159 159 159
 -- Name: idx_job_attribute_lookup; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -60979,7 +60983,7 @@ CREATE UNIQUE INDEX idx_job_attribute_lookup ON r_job_attribute USING btree (id_
 
 
 --
--- TOC entry 2072 (class 1259 OID 250279)
+-- TOC entry 2072 (class 1259 OID 357563)
 -- Dependencies: 147 147
 -- Name: idx_r_database_attribute_ak; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -60988,7 +60992,7 @@ CREATE UNIQUE INDEX idx_r_database_attribute_ak ON r_database_attribute USING bt
 
 
 --
--- TOC entry 2073 (class 1259 OID 250280)
+-- TOC entry 2073 (class 1259 OID 357564)
 -- Dependencies: 156 156
 -- Name: idx_r_directory_ak; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -60997,7 +61001,7 @@ CREATE UNIQUE INDEX idx_r_directory_ak ON r_directory USING btree (id_directory_
 
 
 --
--- TOC entry 2075 (class 1259 OID 250281)
+-- TOC entry 2075 (class 1259 OID 357565)
 -- Dependencies: 168 168 168
 -- Name: idx_r_jobentry_attribute_lookup; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -61006,7 +61010,7 @@ CREATE UNIQUE INDEX idx_r_jobentry_attribute_lookup ON r_jobentry_attribute USIN
 
 
 --
--- TOC entry 2076 (class 1259 OID 250282)
+-- TOC entry 2076 (class 1259 OID 357566)
 -- Dependencies: 172
 -- Name: idx_r_jobentry_database_lu1; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -61015,7 +61019,7 @@ CREATE INDEX idx_r_jobentry_database_lu1 ON r_jobentry_database USING btree (id_
 
 
 --
--- TOC entry 2077 (class 1259 OID 250283)
+-- TOC entry 2077 (class 1259 OID 357567)
 -- Dependencies: 172
 -- Name: idx_r_jobentry_database_lu2; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -61024,7 +61028,7 @@ CREATE INDEX idx_r_jobentry_database_lu2 ON r_jobentry_database USING btree (id_
 
 
 --
--- TOC entry 2078 (class 1259 OID 250284)
+-- TOC entry 2078 (class 1259 OID 357568)
 -- Dependencies: 191 191 191
 -- Name: idx_r_step_attribute_lookup; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -61033,7 +61037,7 @@ CREATE UNIQUE INDEX idx_r_step_attribute_lookup ON r_step_attribute USING btree 
 
 
 --
--- TOC entry 2079 (class 1259 OID 250285)
+-- TOC entry 2079 (class 1259 OID 357569)
 -- Dependencies: 193
 -- Name: idx_r_step_database_lu1; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -61042,7 +61046,7 @@ CREATE INDEX idx_r_step_database_lu1 ON r_step_database USING btree (id_transfor
 
 
 --
--- TOC entry 2080 (class 1259 OID 250286)
+-- TOC entry 2080 (class 1259 OID 357570)
 -- Dependencies: 193
 -- Name: idx_r_step_database_lu2; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -61051,7 +61055,7 @@ CREATE INDEX idx_r_step_database_lu2 ON r_step_database USING btree (id_database
 
 
 --
--- TOC entry 2081 (class 1259 OID 250287)
+-- TOC entry 2081 (class 1259 OID 357571)
 -- Dependencies: 197 197 197
 -- Name: idx_trans_attribute_lookup; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
@@ -61071,7 +61075,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2019-09-24 08:48:00 CEST
+-- Completed on 2019-11-18 10:22:11 CET
 
 --
 -- PostgreSQL database dump complete
