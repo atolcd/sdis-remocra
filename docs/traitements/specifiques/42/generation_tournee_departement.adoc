@@ -1,0 +1,17 @@
+==== DECI - Génération des fiches de tournée sur tout le département
+
+Ce traitement permet de générer toutes les fiches de tournée sur l'ensemble du département, que ce soit les tournées par commune ou les tournées par tournées.
+
+
+===== Configuration
+Le fichier _"remocraXX.properties"_ doit contenir les informations suivantes :
+[width="100%",options="header"]
+|===================
+| Paramètre | Description
+| PDI_CHEMIN_TOURNEE | Chemin de stockage des tournées générées _(Exemple : `/tournees`)_
+| MODELE_COURRIER_TOURNEE_ID | Identifiant du modèle de courrier pour les fiches de tournée par tournée _(Exemple : `24`)_
+| MODELE_COURRIER_COMMUNE_ID | Identifiant du modèle de courrier pour les fiches de tournée par commune _(Exemple : `25`)_
+|===================
+
+===== Lancement et planification de la synchronisation
+L'exécution automatique s'effectue en planifiant le lancement du fichier ```/var/remocra/pdi/traitements_sdis/42/generation_tournee_departement.sh``` avec l'utilisateur ```postgres```.
