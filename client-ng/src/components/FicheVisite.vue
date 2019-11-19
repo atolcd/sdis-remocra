@@ -34,7 +34,7 @@
         </div>
       </div>
     </div>
-    <div :class="{ 'col-md-7': !newVisite, 'col-md-12': newVisite }" v-if="selectedRow != null">
+    <div :class="{ 'col-md-7': !newVisite, 'col-md-12': newVisite }" v-if="selectedRow != null && comboTypeVisitesFiltered.length > 0">
       <div :class="listeVisites[selectedRow].id !== undefined ? 'notActive' : ''">
         <div class="row">
           <div class="col-md-6">
@@ -141,6 +141,13 @@
           </b-tabs>
         </div>
       </div>
+    </div>
+
+    <!-- Message d'erreur si aucune création de visite n'est possible lors du clic sur le bouton "Saisir une visite" (par exemple, l'utilisateur n'a pas les droits) -->
+    <div v-else-if="dataLoaded && newVisite" class="col-md-12">
+      <b-alert variant="danger" show>
+        <p>La création de visite est impossible <br /> Votre profil ne dispose pas des droits suffisants pour créer des visites dont le type est actuellement attendu par ce point d'eau </p>
+      </b-alert>
     </div>
   </div>
 </div>

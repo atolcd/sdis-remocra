@@ -268,7 +268,9 @@ export default {
           if (self.newVisite === true) {
             self.$refs.visitesTab.activate()
             self.$root.$options.bus.$on('pei_visite_ready', () => {
-              self.$refs.ficheVisite.createVisite()
+              if(!self.$refs.ficheVisite.createVisiteDisabled){ // Si l'utilisateur peut créer une visite
+                self.$refs.ficheVisite.createVisite()
+              }
             })
           }
         }
