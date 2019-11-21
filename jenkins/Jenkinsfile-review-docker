@@ -1,0 +1,168 @@
+#!/usr/bin/env groovy
+def user_id
+def group_id
+node {
+  // uid / gid de l'utilisateur courant
+  user_id = sh(returnStdout: true, script: 'id -u').trim()
+  group_id = sh(returnStdout: true, script: 'id -g').trim()
+  // uid / gid de l'utilisateur Docker
+  DOCKER_UID = 2000
+  DOCKER_GID = 2000
+}
+pipeline {
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+  }
+  agent any
+  stages {
+    stage('Build') {
+      failFast true
+      parallel {
+        stage('Build docker remocra') {
+          steps {
+            script {
+              docker.image('cvagner/docker-jdk-maven-sencha-cmd:7-3.6.1-3.0.2')
+                .inside("--name remocra-build -u ${user_id}:${group_id} -w /app -v ${pwd()}:/app -v /var/lib/jenkins:/var/maven -e HOME=/var/maven -e MAVEN_CONFIG=/var/maven/.m2 -e MAVEN_OPTS='-Duser.home=/var/maven'") {
+                sh 'mvn clean verify -P modeinfo-able -P update'
+                sh 'cp -r ./remocra/target/remocra.war ./docker/remocra/ext'
+              }
+            }
+            script {
+              remocra_image = docker.build(
+                'atolcd/remocra',
+                "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./docker/remocra/Dockerfile ./docker/remocra"
+              )
+            }
+          }
+        }
+        stage('Build docker geoserver') {
+          steps {
+            script {
+              geoserver_image = docker.build(
+                'atolcd/remocra-geoserver',
+                "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./docker/geoserver/Dockerfile ./docker/geoserver"
+              )
+            }
+          }
+        }
+        stage('Build docker pdi-4.4-dkron') {
+          steps {
+            script {
+              pdi44dkron_image = docker.build(
+                'atolcd/remocra-pdi-4.4-dkron',
+                "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./docker/pdi-4.4-dkron/Dockerfile ./docker/pdi-4.4-dkron"
+              )
+            }
+          }
+        }
+        stage('Build docker pdi-dkron') {
+          steps {
+            script {
+              pdidkron_image = docker.build(
+                'atolcd/remocra-pdi-dkron',
+                "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./docker/pdi-dkron/Dockerfile ./docker/pdi-dkron"
+              )
+            }
+          }
+        }
+      }
+    }
+    // review : pas de push
+    stage('_Push docker-registry : COMMIT_TO_BUILD & latest') {
+      failFast true
+      parallel {
+        stage('Push remocra') {
+          steps {
+            script {
+              if (remocra_image) {
+                docker.withRegistry('https://docker-registry.priv.atolcd.com') {
+                  remocra_image.push('latest')
+                }
+              }
+            }
+          }
+        }
+        stage('Push geoserver') {
+          steps {
+            script {
+              if (geoserver_image) {
+                docker.withRegistry('https://docker-registry.priv.atolcd.com') {
+                  geoserver_image.push('latest')
+                }
+              }
+            }
+          }
+        }
+        stage('Push pdi-4.4-dkron') {
+          steps {
+            script {
+              if (pdi44dkron_image) {
+                docker.withRegistry('https://docker-registry.priv.atolcd.com') {
+                  pdi44dkron_image.push('latest')
+                }
+              }
+            }
+          }
+        }
+        stage('Push pdi-dkron') {
+          steps {
+            script {
+              if (pdidkron_image) {
+                docker.withRegistry('https://docker-registry.priv.atolcd.com') {
+                  pdidkron_image.push('latest')
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    stage('Clean') {
+      failFast true
+      parallel {
+        stage('Clean workspace') {
+          steps {
+            sh 'git checkout -- .'
+            sh 'git clean -f -d -x -e client-ng/node_modules'
+          }
+        }
+        stage('Delete image remocra') {
+          steps {
+            script {
+              if (remocra_image) {
+                sh "docker rmi -f ${remocra_image.id}"
+              }
+            }
+          }
+        }
+        stage('Delete image geoserver') {
+          steps {
+            script {
+              if (geoserver_image) {
+                sh "docker rmi -f ${geoserver_image.id}"
+              }
+            }
+          }
+        }
+        stage('Delete image pdi-4.4-dkron') {
+          steps {
+            script {
+              if (pdi44dkron_image) {
+                sh "docker rmi -f ${pdi44dkron_image.id}"
+              }
+            }
+          }
+        }
+        stage('Delete image pdi-dkron') {
+          steps {
+            script {
+              if (remocra_image) {
+                sh "docker rmi -f ${pdidkron_image.id}"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
