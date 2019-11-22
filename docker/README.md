@@ -37,7 +37,8 @@ Certains fichiers sont téléchargés lors du build. Les builds répétés peuve
 Construction des images :
 ```sh
 # Construction de remocra.war
-cd ~/projets/atolcd/sdis-remocra/dist/package-update.sh \
+cd ~/projets/atolcd/sdis-remocra \
+ && dist/package-update.sh \
  && cp remocra/target/remocra.war docker/remocra/ext
 
 # Construction des images Docker
