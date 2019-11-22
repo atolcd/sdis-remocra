@@ -5,9 +5,11 @@ LABEL maintainer="ATOL Conseils & Développements"
 # curl
 RUN set -e \
     && apt-get -y update \
-    && apt-get install -y curl \
+    && apt-get install -y curl htop \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+COPY scripts/* /scripts/
 
 # ENV
 ENV LANG fr_FR.UTF-8
@@ -30,5 +32,8 @@ ARG UID=1000
 ARG GID=1000
 RUN groupadd -g ${GID} remocra \
     && useradd -u ${UID} -g remocra remocra \
-    && chown -R remocra /usr/local/tomcat
+    && chown -R remocra /usr/local/tomcat \
+    && chown -R remocra /scripts
 USER remocra
+
+ENTRYPOINT ["/scripts/entrypoint.sh"]

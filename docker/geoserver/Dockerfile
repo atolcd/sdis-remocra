@@ -16,7 +16,7 @@ COPY scripts/* /scripts/
 # unzip
 RUN set -e \
     && apt-get -y update \
-    && apt-get install -y unzip \
+    && apt-get install -y unzip htop \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && chmod +x /scripts/*.sh

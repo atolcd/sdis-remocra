@@ -15,11 +15,12 @@ make_hash() {
 [ -n "${GEOSERVER_ADMIN_USER}" ] && sed -i "s/name=\"[^\"]*\"/name=\"${GEOSERVER_ADMIN_USER}\"/g" ${GEOSERVER_DATA_DIR}/security/usergroup/default/users.xml
 [ -n "${POSTGRES_DB_PASSWORD}" ] && PWD_HASH=$(make_hash $GEOSERVER_ADMIN_PASSWORD) && sed -i "s/password=\"[^\"]*\"/password=\"${PWD_HASH//\//\\/}\"/g" ${GEOSERVER_DATA_DIR}/security/usergroup/default/users.xml
 
-export GEOSERVER_OPTS="-Djava.awt.headless=true -server -Xms${INITIAL_MEMORY} -Xmx${MAXIMUM_MEMORY} \
+# Priorité au paramètre le plus à droite
+export GEOSERVER_OPTS="-Djava.awt.headless=true -server -Xms${INITIAL_MEMORY:-1G} -Xmx${MAXIMUM_MEMORY:-2G} \
   -Duser.timezone='Europe/Paris' \
   -Dfile.encoding=UTF8 -Djavax.servlet.request.encoding=UTF-8 -Djavax.servlet.response.encoding=UTF-8 \
   -Dorg.geotools.referencing.forceXY=true -Dorg.geotools.shapefile.datetime=true -Dorg.geotools.shapefile.datetime=true"
-export JAVA_OPTS="${JAVA_OPTS} ${GEOSERVER_OPTS}"
+export JAVA_OPTS="${GEOSERVER_OPTS} ${JAVA_OPTS}"
 
 # Démarrage de GeoServer
 cd ${GEOSERVER_HOME}/bin
