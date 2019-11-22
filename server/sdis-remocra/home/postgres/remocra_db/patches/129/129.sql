@@ -19,11 +19,11 @@ declare
 begin
     -- Métadonnées du patch
     numero_patch := 129;
-    description_patch := '';
+    description_patch := 'Modèle d''email PEI resté indispo après levée indispo temp';
 
     -- Vérification
     if (select numero_patch-1 != (select max(numero) from remocra.suivi_patches)) then
-        raise exception 'Modele d''email PEI resté indispo après levé indispo temp', (select max(numero) from remocra.suivi_patches), numero_patch; end if;
+        raise exception 'Le numéro de patch requis n''est pas le bon. Dernier appliqué : %, en cours : %', (select max(numero) from remocra.suivi_patches), numero_patch; end if;
     -- Suivi
     insert into remocra.suivi_patches(numero, description) values(numero_patch, description_patch);
 end $body$;
