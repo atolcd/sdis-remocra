@@ -120,6 +120,8 @@ public class ParamConfService {
         return (String) this.getValue(ParamConfParam.DOSSIER_DOC_HYDRANT);
     }
 
+    public String getDossierCourriersExternes() {return (String) this.getValue(ParamConfParam.DOSSIER_COURRIER);}
+
     public String getDossierDocOldebVisite() {
         return (String) this.getValue(ParamConfParam.DOSSIER_DOC_OLDEBVISITE);
     }

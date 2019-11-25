@@ -9,6 +9,7 @@ import DebitSimultaneSelection from './components/DebitSimultaneSelection'
 import DebitSimultaneFiche from './components/DebitSimultaneFiche'
 // import router from './router'
 import BootstrapVue from 'bootstrap-vue'
+import Courrier from './components/Courrier'
 import rate from 'vue-rate'
 import {
   Popover
@@ -114,11 +115,25 @@ const debitSimultaneFiche = function(el, data) {
   return v
 }
 
+//module de courrier
+const buildCourrier = function(el){
+  var v = new Vue({
+  el,
+  bus: new Vue(),
+  components: {
+      Courrier
+  },
+  template: "<Courrier />"
+  })
+  return v
+}
+
 export {
   criseBuildMap,
   peiBuildFiche,
   indispoTempBuildFiche,
   buildContacts,
   debitSimultaneSelection,
-  debitSimultaneFiche
+  debitSimultaneFiche,
+  buildCourrier
 }

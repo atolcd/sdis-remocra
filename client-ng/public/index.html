@@ -30,6 +30,7 @@
     <a class="home" href="/">⯇</a>
 
     <div id="crise-container"></div>
+    <div id="courrier-container"></div>
     <div id="fichepei-container"></div>
     <div id="contact-container"></div>
     <div id="ficheIndispoTemp-container"></div>
@@ -69,6 +70,9 @@
             <a href="?module=debitsSimultanes&vitesseEau=2&listeHydrantsOnCreate=[24703,24701,24702]">création</a>, 
             <a href="?module=debitsSimultanes&id=20&vitesseEau=2">modification</a>
           </li>
+ 	  <li>Module de
+            <a href="?module=courrier">courrier</a>
+	  </li>
 
         </ul>
         <b>❗ Exemples Crise :</b>
@@ -129,7 +133,9 @@
             vitesseEau: params['vitesseEau'],
             idDebitSimultane: null
           });
-        } else {
+        } else if (params['module']=='courrier'){
+          remocraVue.buildCourrier('#courrier-container', {});
+        }else {
           document.getElementById('autre').style.display=''
         }
       } else {

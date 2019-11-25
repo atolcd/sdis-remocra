@@ -1,16 +1,18 @@
 package fr.sdis83.remocra.util;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Date;
+import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.opensagres.xdocreport.converter.ConverterRegistry;
+import fr.opensagres.xdocreport.converter.ConverterTypeTo;
+import fr.opensagres.xdocreport.converter.IConverter;
+import fr.opensagres.xdocreport.converter.Options;
+import fr.opensagres.xdocreport.core.document.DocumentKind;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,29 @@ public class DocumentUtil {
         String repertoire = depotRepertoire + File.separator + code + File.separator;
 
         saveFileToHD(mf, repertoire, fichier);
+
+        Document d = new Document();
+        d.setDateDoc(new Date());
+        d.setType(typeDocument);
+        d.setCode(code);
+        d.setRepertoire(repertoire);
+        d.setFichier(fichier);
+
+        return d;
+    }
+
+    public Document createNonPersistedDocument(TypeDocument typeDocument, File f, String depotRepertoire)
+            throws Exception {
+        if (f == null) {
+            throw new FileUploadException("Un fichier n'a pas été trouvé");
+        }
+
+        String fichier = f.getName();
+        String code = messageDigestPasswordEncoder.encodePassword(new Date().getTime() + fichier,
+                null);
+        String repertoire = depotRepertoire + File.separator + code + File.separator;
+
+        saveFileToHD(f, repertoire, fichier);
 
         Document d = new Document();
         d.setDateDoc(new Date());
@@ -131,6 +156,24 @@ public class DocumentUtil {
      *
      * @throws Exception
      */
+    private void saveFileToHD(File f, String repertoire, String fichier) throws Exception {
+
+        // Création du répertoire d'accueil si nécessaire
+        File depotDir = assumeDirExists(repertoire);
+
+        String targetFilePath = depotDir + File.separator + fichier;
+        File targetTmpFile = new File(depotDir + File.separator + fichier + ".tmp");
+        if (depotDir.canWrite()) {
+            // Copie dans un fichier temporaire
+            f.renameTo(targetTmpFile);
+            // Fichier définitif : on retire le .tmp
+            targetTmpFile.renameTo(new File(targetFilePath));
+            // Droits ?
+        } else {
+            throw new SecurityException("Impossible de créer le fichier " + targetFilePath);
+        }
+    }
+
     private void saveFileToHD(MultipartFile mf, String repertoire, String fichier) throws Exception {
 
         // Création du répertoire d'accueil si nécessaire
@@ -157,7 +200,7 @@ public class DocumentUtil {
      * @throws SecurityException
      *             si le répertoire n'a pas pu être créé
      */
-    private File assumeDirExists(String repertoire) throws SecurityException {
+    public File assumeDirExists(String repertoire) throws SecurityException {
         File dir = new File(repertoire);
         if (!dir.exists()) {
             // Créer le répertoire
@@ -251,5 +294,26 @@ public class DocumentUtil {
             return Document.SousTypeDocument.MEDIA.toString();
         }
         return Document.SousTypeDocument.AUTRE.toString();
+    }
+
+    public void generePdf(FileInputStream textFileInputStream, FileOutputStream pdfFileOutputStream){
+        //Transformation du ott en pdf
+        try {
+            Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
+            IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
+            InputStream in = textFileInputStream;
+            OutputStream out = pdfFileOutputStream;
+            final java.util.logging.Logger app = java.util.logging.Logger.getLogger("org.odftoolkit.odfdom.pkg.OdfXMLFactory");
+            app.setLevel(Level.WARNING);
+            converter.convert(in, out, options);
+
+            textFileInputStream.close();
+            pdfFileOutputStream.close();
+            in.close();
+            out.close();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

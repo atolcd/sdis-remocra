@@ -1,0 +1,572 @@
+<template>
+  <div id="Courrier"  :class="{'chargement': pdfLoaded}">
+		<!-- ================================================ Paramètres du document ========================================================= -->
+    <b-modal id="modalCourrier" ref="modalCourrier"  no-close-on-backdrop title="Génération de courrier" cancel-title="Annuler" ok-title="Aperçu" @ok="handleOk">
+    <form id='formCourrier' name='courrier' enctype="multipart/form-data" method="POST" ref="formCourrier">
+			<b-form-group>
+				<div class="row">
+					<div class="col-md-3 mt-1">
+						<label>Modèle :</label>
+					</div>
+					<div class="col-md-9">
+						<b-form-select id="modele" size="sm" v-model="choixModele" :options="comboModele" @change="getParams"></b-form-select>
+						<label class="description">{{this.choixModele.description}}</label>
+					</div>
+				</div>
+			</b-form-group>
+			<p v-if="params.length > 0">Veuillez renseigner les paramètres suivants :</p>
+			<p v-else-if="choixModele">Aucun paramètre pour cette requête</p>
+			<!--Début boucle for-->
+			<div v-for="(param, index) in params" :key="index">
+        <b-form-group v-if='param.formulaireTypeControle=="autocomplete"' :id="param.nom" inputType='autocomplete' :required="param.obligatoire" class="parametreModele" horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+          <search-process-param :ref="'searchinput'+param.id" :paramId="param.id"></search-process-param>
+        </b-form-group>
+        <b-form-group v-if='param.formulaireTypeControle=="combo"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+          <b-form-select size="sm" :id="param.nom" :required='param.obligatoire' class="form-control parametreModele">
+            <option v-for="(value, key) in getOption(param.id)" :key="key" :value='value.valeur' :selected='value.valeur==value.formulaireValeurDefaut'>
+              {{value.libelle}}
+            </option>
+          </b-form-select>
+        </b-form-group>
+        <b-form-group v-if='param.formulaireTypeControle=="checkbox"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+          <input type='checkbox' style="width:5%" :id="param.nom" :checked="param.formulaireValeurDefaut" inputType='checkbox' class="form-control parametreModele" />
+        </b-form-group>
+        <b-form-group v-if='param.formulaireTypeControle=="textfield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+          <b-form-input size="sm" type='text' :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' class="form-control parametreModele" />
+        </b-form-group>
+        <b-form-group v-if='param.formulaireTypeControle=="numberfield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+          <b-form-input size="sm" type="number" :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' :step='(param.typeValeur=="integer")?1:0.001' class="form-control parametreModele" />
+        </b-form-group>
+        <b-form-group v-if='param.formulaireTypeControle=="datefield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+          <b-form-input size="sm" type='date' :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' class="form-control parametreModele" />
+        </b-form-group>
+        <b-form-group v-if='param.formulaireTypeControle=="timefield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+          <b-form-input size="sm" type='time' :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' step='1' class="form-control parametreModele" />
+        </b-form-group>
+        <b-form-group v-if='param.formulaireTypeControle=="datetimefield"' :id="'input'+param.id" horizontal :label='param.formulaireEtiquette' inputType='datetimefield' class='parametreModele' :label-for="'input'+param.id">
+          <b-form-input size="sm" type='date' :id="param.nom" :value='param.formulaireValeurDefaut && param.formulaireValeurDefaut.split(" ")[0]' :required='param.obligatoire' class='form-control' />
+          <b-form-input size="sm" type='time' :id="param.nom" :value='param.formulaireValeurDefaut && param.formulaireValeurDefaut.split(" ")[1]' :required='param.obligatoire' step='1' class='form-control' />
+        </b-form-group>
+			</div>
+    </form>
+    </b-modal>
+
+
+			<!-- ================================================ Aperçu du document ========================================================= -->
+
+    <b-modal id="modalApercu" class="text-center" ref="modalApercu" no-close-on-backdrop title="Aperçu du courrier" hide-footer>
+		<div id="pdf-toolbar">
+			<div class="row toolbar">
+			</div>
+			<div class="pdf">
+				<object type="application/pdf" :data="this.urlCourrier"
+						width="100%" height="100%"></object>
+			</div>
+		</div>
+		<b-form-group>
+			<div class="row justify-content-md-center mt-3" id="btnApercu">
+				<div class="col-md-3 text-center">
+					<b-button id="bouton" @click="fermeApercu" class="modifier">Modifier</b-button>
+				</div>
+				<div class="col-md-3 text-center">
+					<b-button id="bouton" @click="telechargerCourrier" variant="primary">Télécharger</b-button>
+				</div>
+				<div class="col-md-3 text-center">
+					<b-button id="bouton" @click="ouvreNotifier" class="notifier" variant="primary">Notifier</b-button>
+				</div>
+				<div class="col-md-3 text-center">
+					<b-button id="bouton" @click="fermeApercu(); fermeModifier();" >Fermer</b-button>
+				</div>
+			</div>
+		</b-form-group>
+    </b-modal>
+
+			<!-- ================================================ Envoi du document ========================================================= -->
+
+	<b-modal id="modalNotifier" ref="modalNotifier" no-close-on-backdrop title="Notification par mail" hide-footer>
+		<div class="row">
+			<div class="col-md-3 mt-1">
+				<label>Recherche rapide :</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-9">
+				<b-form-input v-model="filtre" size="sm" @input="initListeDestinataire" id="filtre" placeholder="Recherche ..." >
+				</b-form-input>
+			</div>
+		</div>
+		<div class="row mt-2 ml-2">
+			<div class="col-md-3">
+				<b-form-checkbox id="chkBoxOrganisme" v-model="filtreOrga" @input="initListeDestinataire"	name="chkBoxOrganisme">Organisme</b-form-checkbox>
+			</div>
+			<div class="col-md-3">
+				<b-form-checkbox id="chkBoxUtilisateur" v-model="filtreUtil" @input="initListeDestinataire" name="chkBoxUtilisateur">Utilisateur</b-form-checkbox>
+			</div>
+			<div class="col-md-3">
+				<b-form-checkbox id="chkBoxContact" v-model="filtreContact"	@input="initListeDestinataire" name="chkBoxContact">Contact</b-form-checkbox>
+			</div>
+		</div>
+		<div class="row mt-3">
+			<div class="col-md-8">
+				<label>Destinataires potentiels: </label>
+			</div>
+		</div>
+			<div class="row">
+				<div class="col-md-9">
+					<b-form-select class="select" id="select" multiple :options="tabDestinataireNotifierNon" v-model="ajouteDestinataire">
+					</b-form-select>
+				</div>
+				<div class="col-md-2 mt-4">
+					<b-button id="bouton" @click="addRight" variant="primary"> Ajouter </b-button>
+				</div>
+			</div>
+			<div class="row">
+			<div class="col-md-12 mt-4">
+				<label>Destinataires définitifs : </label>
+			</div>
+			</div>
+			<div class="row">
+				<div class="col-md-9">
+					<b-form-select class="select" id="select" multiple :options="tabDestinataireNotifierOui" v-model="retireDestinataire">
+					</b-form-select>
+				</div>
+				<div class="col-md-2 mt-4">
+					<b-button id="bouton" @click="addLeft" variant="danger"> Retirer </b-button>
+				</div>
+			</div>
+			<b-form-group>
+				<div class="row justify-content-md-center mt-4">
+					<div class="col-md-3">
+						<b-button id="bouton" @click="fermeNotifier" class="retourApercu">Retour</b-button>
+					</div>
+					<div class="col-md-3">
+						<b-button id="bouton" @click="notificationCourrier" class="notifier" variant="primary">Notifier</b-button>
+					</div>
+					<div class="col-md-3">
+						<b-button id="bouton" @click="fermeNotifier(); fermeApercu(); fermeModifier()" >Fermer</b-button>
+					</div>
+				</div>
+			</b-form-group>
+    </b-modal>
+
+					<!-- ==================================== Pop up notifier ============================================ -->
+	<b-modal id="modalPopupNotif" ref="modalPopupNotif" no-close-on-backdrop
+		title="Succès de notification" centered ok-only ok-title="Fermer" @ok="fermeNotifier(); fermeApercu(); fermeModifier()" >
+			<b-form-group>
+				<div class="row">
+					<div class="col-md-12 text-center">
+						<label>La demande de notification à bien été prise en compte.</label>
+					</div>
+				</div>
+			</b-form-group>
+    </b-modal>
+
+  </div>
+</template>
+
+       <!-- ======================================= Script ================================================= -->
+
+<script>
+  import axios from 'axios'
+  import _ from 'lodash'
+  //import moment from 'moment'
+
+export default {
+	components: {
+		//pdf
+	},
+	name: 'Courrier',
+	
+  data() {
+    return {
+
+			codeCourrier : "",
+			/************* Partie paramètres document ****************/
+			comboModele: [],
+			choixModele: "",
+			comboOptions: [],
+			choixCommune: "",
+			comboAdresseA: [],
+			comboSite: [],
+			params: [],
+			files: [],
+
+			/************** Partie aperçu document *******************/
+
+			urlCourrier: "",
+			nomCourrier: "",
+			pdfLoaded: false,
+
+			/************** Partie notification ***********************/
+			filtre: null,
+			filtreOrga: true,
+			filtreUtil: true,
+			filtreContact: true,
+			selectAll: false,
+			destinatairesLoaded: false,
+			ajouteDestinataire: [],
+			retireDestinataire: [],
+			tabDestinataires:[],
+			tabDestinataireNotifierNon: [],
+			tabDestinataireNotifierOui: []
+    }
+	},
+	
+  props:{
+  },
+
+  computed: {
+  },
+
+  mounted: function(){
+		this.$refs.modalCourrier.show();
+		this.initComboModele();
+  },
+
+  methods: {
+
+		selectAllMethod(selectAll){
+			if(selectAll == true){
+				this.tabDestinataires = this.tabDestinataireNotifierNon;
+			} else {
+				this.tabDestinataires =[];
+			}
+		},
+
+		ouvreApercu(){
+			this.$refs.modalApercu.show();		
+		},
+
+		fermeApercu(){
+			this.$refs.modalApercu.hide();		
+		},
+
+		ouvreModifier(){
+			this.$refs.modalCourrier.show();
+		},
+
+		fermeModifier(){
+			this.$refs.modalCourrier.hide();
+		},
+
+		ouvreNotifier(){
+			if(!this.destinatairesLoaded){
+				this.initListeDestinataire();
+			}
+			this.$refs.modalNotifier.show();
+		},
+
+		fermeNotifier(){
+			this.$refs.modalNotifier.hide();
+		},
+
+
+		addRight(){
+			for(var i = 0; i<this.ajouteDestinataire.length; i++){
+				for(var j = 0; j<this.tabDestinataireNotifierNon.length;j++){
+					if(this.ajouteDestinataire[i] == this.tabDestinataireNotifierNon[j].text){
+						this.tabDestinataireNotifierOui.push(this.tabDestinataireNotifierNon[j]);
+						this.tabDestinataireNotifierNon.splice(j,1);
+					}
+				}
+			}
+			this.ajouteDestinataire = [];
+		},
+
+		addLeft(){
+			for(var i = 0; i<this.retireDestinataire.length; i++){
+				for(var j = 0; j<this.tabDestinataireNotifierOui.length;j++){
+					if(this.retireDestinataire[i] == this.tabDestinataireNotifierOui[j].text){
+						this.tabDestinataireNotifierNon.push(this.tabDestinataireNotifierOui[j]);
+						this.tabDestinataireNotifierOui.splice(j,1);
+					}
+				}
+			}
+			this.retireDestinataire = [];
+		},
+
+		initComboModele(){
+			axios.get('/remocra/courrier').then((response)=> {
+					var courriers = response.data.data;
+					_.forEach(courriers, courrier => {
+            this.comboModele.push({
+            'value': {
+              'id': courrier.id,
+              'description': courrier.description
+            },
+            'text': courrier.libelle
+          })
+          });
+
+        }).catch(function(error) {
+              console.error(error)
+          });
+		},
+
+		//Récupère les paramètres du modèle de courrier selectionné
+		getParams() {
+      if (this.choixModele !== null) {
+        axios.get('/remocra/courrier/courrierParams/' + this.choixModele.id).then((response) => {
+          this.params = _.sortBy(response.data.data, item => item.formulaireNumOrdre)
+          _.forEach(this.params, param => {
+            if (param.formulaireTypeControle === 'combo') {
+              axios.get('/remocra/courrier/courriermodparalst/' + param.id).then((response) => {
+                _.forEach(response.data.data, option => {
+                  var o = {
+                    idChamp: param.id,
+                    valeur: option[param.sourceSqlValeur],
+                    libelle: option[param.sourceSqlLibelle],
+                    obligatoire: param.obligatoire,
+                    formulaireValeurDefaut: param.formulaireValeurDefaut
+                  }
+                  this.comboOptions.push(o)
+                })
+              }).catch(function(error) {
+                console.error('Combo', error)
+              })
+            }
+          })
+        })
+      }
+		},
+		
+		getOption: function (id) {
+					return this.comboOptions.filter(function (value) {
+						return value.idChamp === id
+					})
+		},
+
+		telechargerCourrier() {
+			axios({
+				method: 'GET',
+				url: this.urlCourrier,
+				responseType: 'blob'
+				}).then((response) => {
+					var fileUrl = window.URL.createObjectURL(new Blob([response.data]));
+					var fileLink = document.createElement('a');
+
+					fileLink.href = fileUrl;
+					fileLink.setAttribute('download', this.nomCourrier);
+					document.body.appendChild(fileLink);
+
+					fileLink.click();
+					})
+					.catch(function(error) {
+						console.error('Erreur lors du téléchargement du courrier : ', error)
+			})
+    },
+
+		handleOk(evt){
+		evt.preventDefault()
+      if (document.getElementById('formCourrier').checkValidity() === false) {
+        this.$notify({
+          group: 'remocra',
+          title: 'Génération de courrier',
+          type: 'warn',
+          text: 'Veuillez saisir les champs obligatoires'
+        })
+        document.getElementById('formCourrier').classList.add('was-validated')
+      } else {
+					let formData = new FormData()
+					formData.append("modele", this.choixModele.id)
+					_.forEach(evt.target.getElementsByClassName('parametreModele'), item => {
+          if (item.getAttribute('inputType') === 'datetimefield') {
+            var date = document.querySelector('input[id=' + item.id + 'date ]').value
+            var time = document.querySelector('input[id=' + item.id + 'time]').value
+            formData.append(item.id, date + ' ' + time)
+          } else if (item.getAttribute('inputType') === 'autocomplete') {
+            var autocomplete = this.$refs['search' + item.id][0]
+            formData.append(item.getAttribute('id'), autocomplete.selected !== null ? autocomplete.selected.id : autocomplete.searchInput)
+          } else if (item.getAttribute('inputType') === 'filefield') {
+            var rawValueParts = item.value.split('\\')
+            var value = rawValueParts[rawValueParts.length - 1]
+            formData.append(item.getAttribute('id'), value)
+          } else if (item.getAttribute('inputType') === 'checkbox') {
+            formData.append(item.getAttribute('id'), item.checked)
+          } else {
+            formData.append(item.getAttribute('id'), item.value)
+          }
+        })
+        for (var i = 0; i < this.files.length; i++) {
+          var file = this.files[i]
+          formData.append(file.id, file.file)
+				}
+        this.handleSubmitParams(formData)
+      }
+		},
+
+		handleSubmitParams(formData) {
+			this.pdfLoaded = true;
+			// Envoi des données
+      axios.post('/remocra/courrier/generecourrier/' + this.choixModele.id, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then((response) => {
+        if (response.data.success) {
+					this.urlCourrier = "/remocra/ext-courrier/courrier_temp/"+response.data.message;
+					this.nomCourrier = response.data.message.split("/")[1];
+					this.codeCourrier = response.data.message.split("/")[0];
+					this.ouvreApercu();
+					this.pdfLoaded=false;
+        }
+      }).catch(function(error) {
+        console.error(error)
+      })
+		},
+		
+		initListeDestinataire() {
+
+			axios.get('/remocra/courrier/contacts',{
+				params: {
+					filter: JSON.stringify([
+					this.filtre,
+					this.filtreOrga,
+					this.filtreUtil,
+					this.filtreContact
+					])
+				}
+				}).then((response)=> {
+					this.tabDestinataireNotifierNon = [];
+					this.tabDestinataires = [];
+					var contacts = response.data.data;
+					_.forEach(contacts, contact => {
+						var contactSplit = contact.split(";");
+            this.tabDestinataires.push({
+							'value' : {
+								'id': contactSplit[0],
+								'table': contactSplit[2],
+								'nom' : contactSplit[1],
+								'text': contactSplit[1]+" - "+contactSplit[2],
+
+							}
+					})
+          });
+        }).then(()=>{
+					var i =0;
+					for(i = 0; i<this.tabDestinataires.length; i++){
+						this.tabDestinataireNotifierNon.push(this.tabDestinataires[i].value);
+					}
+					this.destinatairesLoaded = true;
+        }).catch(function(error) {
+              console.error(error)
+				});
+		},
+
+		/**
+		 * codeCourrier
+		 * tabNotifierOui
+		 */
+		notificationCourrier(){
+			var datas = {
+				"codeCourrier": this.codeCourrier,
+				"nomCourrier": this.nomCourrier,
+				"destinataires": this.tabDestinataireNotifierOui
+			}
+			axios.post('/remocra/courrier/notifier', datas, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then((response) => {
+        if (response.data.success) {
+					this.$refs.modalPopupNotif.show();
+        }
+      }).catch(function(error) {
+        console.error(error)
+      })
+
+		},
+
+  }
+};
+</script>
+
+    <!-- ============================================ Style =============================================== -->
+
+<style>
+
+#modalCourrier .modal-content{
+  background-color: #e9e9e9 !important;
+  font-size: 1rem;
+	width: 650px;
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+
+#modalApercu .modal-content{
+  background-color: #e9e9e9 !important;
+  font-size: 1rem;
+	width: 650px;
+}
+
+#modalApercu .modal-body{
+	padding: 5px;
+}
+
+#modalNotifier .modal-content{
+  background-color: #e9e9e9 !important;
+  font-size: 1rem;
+	width: 650px;
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+
+div.modal-dialog{
+	width: 650px;
+}
+#modalPopupNotif .modal-content{
+	background-color: #e9e9e9 !important;
+  font-size: 1rem;
+	min-width: 650px;
+	padding-bottom: 0px;
+}
+
+#modalPopupNotif .modal-body{
+	padding-bottom: 0px;
+
+}
+
+.chargement{
+  content: 'Chargement du courrier...';
+  margin-left: calc(50% - 67px);
+  animation: opacity-anim 1s linear infinite;
+}
+
+#bouton{
+	width: 115px;
+}
+
+#addLeft{
+	width: 38px;
+}
+
+#addRight{	
+	width: 38px;
+}
+
+#zoom{
+	width: 31px;
+}
+
+.pdf{
+	align-content: center;
+	height: 500px;
+}
+
+#btnLR{
+	margin: auto;
+}
+
+#select{
+	height: 200px;
+}
+
+.row.toolbar{
+	margin: 0;
+}
+
+.description{
+	font-size: 15px; 
+}
+
+</style>
