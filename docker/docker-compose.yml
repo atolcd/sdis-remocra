@@ -108,11 +108,10 @@ services:
       POSTGRES_DB_HOSTNAME: ${POSTGRES_DB_HOSTNAME}
       POSTGRES_DB_USERNAME: ${POSTGRES_DB_USERNAME}
       POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
-    entrypoint: ""
-    command: >
-      /bin/bash -c '
-        /scripts/entrypoint-pdi.sh -rep:"ref_pdi_remocra" -dir:"maintenance" -job:"generer_fichier_proprietes" -user:admin -pass:admin -level:Error -param:"PDI_FICHIER_PARAMETRE=/home/pdi/remocra.properties" &&
-        /scripts/entrypoint-dkron.sh agent --server --bootstrap-expect=2 --join=jobs-44.sdisxx.fr --join=jobs-71.sdisxx.fr --node-name=jobs-4.4 --tag="pdi=4.4"'
+      # Agent dkron
+      DKRON_JOIN: jobs-71.sdisxx.fr
+      DKRON_NODE_NAME: jobs-4.4
+      DKRON_TAG: "pdi=4.4"
     depends_on:
       - db
     healthcheck:
@@ -142,7 +141,10 @@ services:
       POSTGRES_DB_HOSTNAME: ${POSTGRES_DB_HOSTNAME}
       POSTGRES_DB_USERNAME: ${POSTGRES_DB_USERNAME}
       POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
-    command: "agent --server --bootstrap-expect=2 --join=jobs-44.sdisxx.fr --join=jobs-71.sdisxx.fr --node-name=jobs --tag='pdi=7.1'"
+      # Agent dkron
+      DKRON_JOIN: jobs-44.sdisxx.fr
+      DKRON_NODE_NAME: jobs
+      DKRON_TAG: "pdi=7.1"
     depends_on:
       - db
       - jobs-4.4

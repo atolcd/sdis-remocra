@@ -107,5 +107,4 @@ EXPOSE 8080
 
 ENV SHELL /bin/bash
 WORKDIR ${DKRON_HOME}
-ENTRYPOINT ["/scripts/entrypoint-dkron.sh"]
-CMD ["--help"]
+ENTRYPOINT ["/scripts/entrypoint.sh"]
