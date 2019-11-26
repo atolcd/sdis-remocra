@@ -92,7 +92,6 @@ find ../server/sdis-remocra/home/postgres/remocra_db -type f -name "*.sql" -exec
 sed -i '/\\i 030_acces.sql/s/^/--/g' ../server/sdis-remocra/home/postgres/remocra_db/000_remocra_all.sql
 # Reset
 ../server/sdis-remocra/home/postgres/remocra_db/reset_db.sh
-docker-compose restart remocra
 
 # Mise à jour des paramètres
 docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -c "update remocra.param_conf set valeur='/home/pdi/remocra.properties' where cle='PDI_FICHIER_PARAMETRAGE'"
@@ -176,6 +175,22 @@ unzip -q var_remocra.zip -d ~/projets/atolcd/sdis-remocra/docker/.docker/var_rem
 
 
 ## Démarrage des autres services
+
+###
+```sh
+cd ~/projets/atolcd/sdis-remocra/docker
+
+# Création des répertoires avec les droits adéquats
+mkdir -p .docker/var_remocra/{geoserver_data,html,layers,modeles,pdi/{kml,synchro,tmp,traitement_sdis}} \
+  .docker/jobs-common .docker/jobs-4.4/dkron_data .docker/jobs/dkron_data \
+  && touch .docker/jobs-common/kettle.properties \
+  && touch .docker/jobs-4.4/.kettle/repositories.xml \
+  && touch .docker/jobs-common/remocra.properties \
+  && chown -R $(id -u):$(id -g) .docker/var_remocra .docker/jobs-common .docker/jobs-4.4/dkron_data .docker/jobs/dkron_data
+
+# Démarrage des services
+docker-compose up
+```
 
 ### Exécution
 ```sh
