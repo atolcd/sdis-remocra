@@ -1,0 +1,249 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+	<xs:element name="modele">
+		<xs:annotation>
+			<xs:documentation>Modèle de courrier mobilisable à la demande d''un utilisateur via l''interface REMOCRA</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="thematique" type="thematique">
+					<xs:annotation>
+						<xs:documentation>Code de la thématique à laquelle est rattachée le courrier</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="code" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Code permettant d'identifier de manière unique et pérenne un modèle de courrier</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="libelle" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Libellé affiché en liste déroulante lors du choix du modèle de courrier</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="description" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Description longue du modèle de courrier. Non exploité actuellement dans ReMOCRA</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="fichier" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Nom du fichier modèle (OTT, XDOC). Il doit être situé dans la même arborescence que le fichier XML de métadonnée</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="requete" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Requête SQL d'extraction des données pour le modèle de courrier. Le résultat doit être au format XML dans un champ appelé xml</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="message">
+					<xs:annotation>
+						<xs:documentation>Message de notification par mail de la mise à disposition d'un courrier. Certaines variables sont mobilisables (sous la forme [NOM_VARIABLE] dans le corps pour personnaliser le message.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="objet" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>Objet du mail en cas de succès du processus. Laisser NULL pour empêcher la notification.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="corps" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>Corps du mail en cas de succès du processus. Laisser NULL pour empêcher la notification.
+									Variables mobilisables :
+									[UTILISATEUR_NOM] : Nom de l'utilisateur ayant déclenché le processus
+									[UTILISATEUR_PRENOM] : Prenom de l'utilisateur ayant déclenché le processus
+									[DOCUMENT_URL] : Lien de téléchargement vers le courrier généré
+									</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="parametres">
+					<xs:annotation>
+						<xs:documentation>Paramètres exploités par la requête. Les valeurs de paramètres sont à renseigner par l'utilisateur avant l'execution de la requête</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="parametre" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Paramètre exploité par la requête</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="nom" type="xs:string">
+											<xs:annotation>
+												<xs:documentation>Nom du paramètre. Sans espace ni caractère accentué. De préférence en majuscule</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="typeValeur" type="typeSQL">
+											<xs:annotation>
+												<xs:documentation>Type de valeur attendue par la requête SQL</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="obligatoire" type="xs:boolean">
+											<xs:annotation>
+												<xs:documentation>La saisie d'une valeur pour le parametre est obligatoire</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="sourceSQL" minOccurs="0" maxOccurs="1">
+											<xs:complexType>
+												<xs:annotation>
+													<xs:documentation>Définition de la requête SQL éventuelle à exécuter sur la base de données REMOCRA pour fournir les informations facilitant
+													ou limitant la saisie de valeurs pour l'utilisateur. A renseigner dans un CDATA</xs:documentation>
+												</xs:annotation>
+												<xs:simpleContent>
+													<xs:extension base="xs:string">
+														<xs:attribute name="champValeur" type="xs:string" use="required">
+															<xs:annotation>
+																<xs:documentation>Colonne de la requête SQL éventuelle contenant la valeur du paramètre</xs:documentation>
+															</xs:annotation>
+														</xs:attribute>
+														<xs:attribute name="champLibelle" type="xs:string" use="required">
+															<xs:annotation>
+																<xs:documentation>Colonne de la requête SQL éventuelle contenant le libellé associé à la valeur du paramètre</xs:documentation>
+															</xs:annotation>
+														</xs:attribute>
+													</xs:extension>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="formulaire">
+											<xs:complexType>
+												<xs:annotation>
+													<xs:documentation>Informations permettant de construire un formulaire de saisie dans REMOCRA</xs:documentation>
+												</xs:annotation>
+												<xs:attribute name="etiquette" type="xs:string" use="required">
+													<xs:annotation>
+														<xs:documentation>Etiquette associée au champ de saisie</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+												<xs:attribute name="typeControle" type="typeJS" use="required">
+													<xs:annotation>
+														<xs:documentation>Type de contrôle associé au champ de saisie</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+												<xs:attribute name="valeurDefaut" type="xs:string">
+													<xs:annotation>
+														<xs:documentation>Valeur par défaut proposée dans le champ de saisie</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="profils">
+					<xs:annotation>
+						<xs:documentation>Profils de droits autorisés à executer la requête</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="profil" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Code du profil de droit présent dans la table remocra.profil_droit</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="tousProfils" type="xs:boolean" use="required">
+							<xs:annotation>
+								<xs:documentation>Si "true", aucune restriction par profil de droit, si "false", seuls les profils listés pourrront executer la requête</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="thematique">
+		<xs:annotation>
+			<xs:documentation>Liste des thematique possible</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DIVERS"/>
+			<xs:enumeration value="POINTDEAU"/>
+			<xs:enumeration value="ADRESSES"/>
+			<xs:enumeration value="PERMIS"/>
+			<xs:enumeration value="DFCI"/>
+			<xs:enumeration value="RISQUES"/>
+			<xs:enumeration value="CARTOTHEQUE"/>
+			<xs:enumeration value="RCI"/>
+			<xs:enumeration value="OLD"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="typeSQL">
+		<xs:annotation>
+			<xs:documentation>Type de valeur au sens du SGBD</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="character varying"/>
+			<xs:enumeration value="integer"/>
+			<xs:enumeration value="double precision"/>
+			<xs:enumeration value="date"/>
+			<xs:enumeration value="timestamp"/>
+			<xs:enumeration value="boolean"/>
+			<xs:enumeration value="geometry"/>
+			<xs:enumeration value="uuid"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="typeJS">
+		<xs:annotation>
+			<xs:documentation>Type de valeur au sens du SGBD</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="checkbox">
+				<xs:annotation>
+					<xs:documentation>Champ de saisie de type "Case à cocher"</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="combo">
+				<xs:annotation>
+					<xs:documentation>Champ de saisie de type "Liste déroulante"</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="autocomplete">
+				<xs:annotation>
+					<xs:documentation>Champ de saisie de type "autocomplétion"</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="datefield">
+				<xs:annotation>
+					<xs:documentation>Champ de saisie de type "Calendrier"</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="datetimefield">
+				<xs:annotation>
+					<xs:documentation>Champ de saisie de type "Calendrier" avec heure</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="timefield">
+				<xs:annotation>
+					<xs:documentation>Champ de saisie de type "Heure"</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="textfield">
+				<xs:annotation>
+					<xs:documentation>Champ de saisie de type "Zone de texte"</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="numberfield">
+				<xs:annotation>
+					<xs:documentation>Champ de saisie de type "Saisie de nombre"</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="filefield">
+				<xs:annotation>
+					<xs:documentation>Champ de saisie de type "Téléversement de fichier"</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

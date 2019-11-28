@@ -222,7 +222,7 @@ public class CourrierController {
       Map<String, String[]> mapParametres = request.getParameterMap();
       //Ouverture du modèle de courrier
       String modeleOtt = courrierRepository.getNomModele(idModele);
-      InputStream textTplInputStream = new FileInputStream(new File("/var/remocra/modeles/courrier/"+modeleOtt));
+      InputStream textTplInputStream = new FileInputStream(new File(modeleOtt));
 
       //Récupération de la requète SQL correspondant au modèle (génère du XML)
       String xmlQuery = courrierRepository.getModeleXmlQuery(idModele, mapParametres);
