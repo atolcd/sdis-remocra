@@ -27,7 +27,7 @@
 			<typeValeur>integer</typeValeur>
 			<obligatoire>true</obligatoire>
 			<sourceSQL champValeur="id" champLibelle="libelle">
-				<![CDATA[SELECT id,nom || ' (Du ' || to_char(activation,'dd/MM/YYYY à HH24:MI') || ' au ' || to_char(cloture,'dd/MM/YYYY à HH24:MI') || ')' AS libelle FROM remocra.crise ORDER BY cloture DESC]]>
+				<![CDATA[SELECT id,nom || ' (Du ' || to_char(activation,'dd/MM/YYYY à HH24:MI') || ' au ' || COALESCE(to_char(cloture,'dd/MM/YYYY à HH24:MI'), 'en cours') || ')' AS libelle FROM remocra.crise ORDER BY cloture DESC]]>
 			</sourceSQL>
 			<formulaire etiquette="Crise à exporter" typeControle="combo"/>
 		</parametre>
