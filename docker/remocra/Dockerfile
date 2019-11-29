@@ -36,4 +36,6 @@ RUN groupadd -g ${GID} remocra \
     && chown -R remocra /scripts
 USER remocra
 
+VOLUME /var/remocra
+
 ENTRYPOINT ["/scripts/entrypoint.sh"]

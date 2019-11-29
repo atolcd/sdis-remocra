@@ -85,4 +85,6 @@ RUN groupadd -g ${GID} geoserver \
   && chown -R geoserver ${GEOSERVER_DATA_DIR}
 USER geoserver
 
+VOLUME ${GEOSERVER_DATA_DIR}
+
 ENTRYPOINT ["/scripts/entrypoint.sh"]

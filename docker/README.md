@@ -351,12 +351,12 @@ docker run -it --rm \
   --network docker_remocra --link remocra-db:postgis.sdisxx.fr \
   \
   -p 8060:8080 \
+  --entrypoint="" \
   remocra-pdi-4.4-dkron \
-  agent --server --bootstrap-expect=1 --node-name=jobs-4.4
+  /dkron/dkron agent agent --server --bootstrap-expect=1 --node-name=jobs-4.4 --tag="pdi=4.4"
 
  # http://localhost:8060
 ```
-
 
 
 
@@ -402,8 +402,9 @@ docker run -it --rm \
   --network docker_remocra --link remocra-db:postgis.sdisxx.fr \
   \
   -p 8070:8080 \
+  --entrypoint="" \
   remocra-pdi-dkron \
-  agent --server --bootstrap-expect=1 --node-name=jobs
+  /dkron/dkron agent agent --server --bootstrap-expect=1 --node-name=jobs --tag="pdi=7.1"
 
  # http://localhost:8070
 ```
