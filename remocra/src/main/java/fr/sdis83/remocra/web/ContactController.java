@@ -5,7 +5,7 @@ import java.util.List;
 
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.domain.remocra.Contact;
-import fr.sdis83.remocra.service.ContactService;
+import fr.sdis83.remocra.repository.ContactRepository;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class ContactController {
 
     @Autowired
-    ContactService contactService;
+    ContactRepository contactRepository;
 
     @RequestMapping(value = "/{idappartenance}", method = RequestMethod.GET,headers = "Accept=application/json")
     public ResponseEntity<String> listJson(@PathVariable("idappartenance") final String idappartenance) {
@@ -32,7 +32,7 @@ public class ContactController {
 
             @Override
             protected List<Contact> getRecords() {
-                return Contact.findAllContactsByIdAppartenance(idappartenance);
+                return contactRepository.findAllContactById("ORGANISME",idappartenance);
             }
 
         }.serialize();

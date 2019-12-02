@@ -10,7 +10,7 @@ import javax.validation.ConstraintViolationException;
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.exception.BusinessException;
-import fr.sdis83.remocra.service.ContactService;
+import fr.sdis83.remocra.repository.ContactRepository;
 import fr.sdis83.remocra.service.OrganismeService;
 import fr.sdis83.remocra.util.ExceptionUtils;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
@@ -37,7 +37,7 @@ public class OrganismeController extends AbstractServiceableController<Organisme
     private OrganismeService service;
 
     @Autowired
-    ContactService contactService;
+    ContactRepository contactRepository;
 
     @Override
     protected OrganismeService getService() {
@@ -190,7 +190,7 @@ public class OrganismeController extends AbstractServiceableController<Organisme
     public ResponseEntity<java.lang.String> update(HttpServletRequest request, @PathVariable("id") final Long id) {
         try {
             String contactsJson = request.getParameter("contacts");
-            contactService.updateContactsFromJson(contactsJson, "ORGANISME",id);
+            contactRepository.updateContactsFromJson(contactsJson, "ORGANISME",id);
             return new SuccessErrorExtSerializer(true, "Contacts created").serialize();
         } catch (Exception e) {
             return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();

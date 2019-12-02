@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.domain.remocra.Gestionnaire;
 import fr.sdis83.remocra.exception.BusinessException;
-import fr.sdis83.remocra.service.ContactService;
+import fr.sdis83.remocra.repository.ContactRepository;
 import fr.sdis83.remocra.service.GestionnaireService;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
@@ -29,7 +29,7 @@ public class GestionnaireController {
     GestionnaireService service;
 
     @Autowired
-    ContactService contactService;
+    ContactRepository contactRepository;
 
     public JSONSerializer decorateSerializer(JSONSerializer serializer) {
         return serializer.exclude("data.actif").exclude("*.class");
@@ -78,7 +78,7 @@ public class GestionnaireController {
 
             final Gestionnaire attached = service.create(gestionnaire, null);
 
-            contactService.createContactsFromJson(contactsJson, "GESTIONNAIRE", attached.getId());
+            contactRepository.createContactsFromJson(contactsJson, "GESTIONNAIRE", attached.getId());
 
 
             return new AbstractExtObjectSerializer<Gestionnaire>("Gestionnaire created") {
@@ -101,7 +101,7 @@ public class GestionnaireController {
             String contactsJson = request.getParameter("contacts");
 
             final Gestionnaire attached = service.update(id , gestionnaire, null);
-            contactService.updateContactsFromJson(contactsJson, "GESTIONNAIRE",id);
+            contactRepository.updateContactsFromJson(contactsJson, "GESTIONNAIRE",id);
 
             return new AbstractExtObjectSerializer<Gestionnaire>("Gestionnaire created") {
                 @Override
