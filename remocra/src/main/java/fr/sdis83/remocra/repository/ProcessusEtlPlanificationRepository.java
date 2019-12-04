@@ -93,7 +93,7 @@ public class ProcessusEtlPlanificationRepository {
   Instant t = new Instant();
   context.insertInto(PROCESSUS_ETL, PROCESSUS_ETL.MODELE, PROCESSUS_ETL.STATUT, PROCESSUS_ETL.UTILISATEUR, PROCESSUS_ETL.PRIORITE, PROCESSUS_ETL.DEMANDE)
       .values(context.select(PROCESSUS_ETL_PLANIFICATION.MODELE).from(PROCESSUS_ETL_PLANIFICATION).where(PROCESSUS_ETL_PLANIFICATION.ID.eq(idPlannification)).fetchOne().value1()
-          ,context.select(PROCESSUS_ETL_STATUT.ID).from(PROCESSUS_ETL_STATUT).where(PROCESSUS_ETL_STATUT.CODE.eq("C")).fetchOne().value1()
+          ,context.select(PROCESSUS_ETL_STATUT.ID).from(PROCESSUS_ETL_STATUT).where(PROCESSUS_ETL_STATUT.CODE.eq("A")).fetchOne().value1()
           ,Long.valueOf(idUtilisateur)
           ,1
           ,t).execute();
