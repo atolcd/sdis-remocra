@@ -1,157 +1,447 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <job>
   <name>executer_un_processus_etl</name>
-    <description/>
-    <extended_description>Ex&#xe9;cute un processus ETL&#x28;t&#xe2;che ou transformation&#x29; via les principales &#xe9;tapes&#xd;&#xa;&#x2a; Bascule du processu &#xe0; &#x22;processus en cours&#x22;&#xd;&#xa;&#x2a; Cr&#xe9;ation d&#x27;un dossier de travail temporaire&#xd;&#xa;&#x2a; R&#xe9;cup&#xe9;ration des valeurs des param&#xe8;tres associ&#xe9;s &#xe0; la demande de processus&#xd;&#xa;&#x2a; Ex&#xe9;cute la t&#xe2;che ou la transformation PDI avec les valeurs de param&#xe8;tres r&#xe9;cupr&#xe9;es&#xd;&#xa;&#x2a; Si production de fichiers en sortie, cr&#xe9;ation d&#x27;un dossier sp&#xe9;cifique pour le stockage du fichier si un seul fichier produit ou du zip g&#xe9;n&#xe9;r&#xe9; dans le cas de plusieurs fichiers&#xd;&#xa;&#x2a; Bascule du processus &#xe0; &#x22;Succ&#xe8;s&#x22; ou &#x22;Echec&#x22; en cas d&#x27;erreur&#xd;&#xa;&#x2a; Pr&#xe9;paration d&#x27;un mail &#xe9;ventuel sur la base des mod&#xe8;les de messages associ&#xe9;s au traitement et du statut du traitement &#x28;succ&#xe8;s ou echec&#x29;</extended_description>
-    <job_version/>
-    <job_status>0</job_status>
-  <directory>&#x2f;</directory>
+  <description />
+  <extended_description>Exécute un processus ETL(tâche ou transformation) via les principales étapes
+* Bascule du processu à "processus en cours"
+* Création d'un dossier de travail temporaire
+* Récupération des valeurs des paramètres associés à la demande de processus
+* Exécute la tâche ou la transformation PDI avec les valeurs de paramètres récuprées
+* Si production de fichiers en sortie, création d'un dossier spécifique pour le stockage du fichier si un seul fichier produit ou du zip généré dans le cas de plusieurs fichiers
+* Bascule du processus à "Succès" ou "Echec" en cas d'erreur
+* Préparation d'un mail éventuel sur la base des modèles de messages associés au traitement et du statut du traitement (succès ou echec)</extended_description>
+  <job_version />
+  <job_status>0</job_status>
+  <directory>/</directory>
   <created_user>admin</created_user>
-  <created_date>2011&#x2f;05&#x2f;27 14&#x3a;06&#x3a;46.406</created_date>
+  <created_date>2011/05/27 14:06:46.406</created_date>
   <modified_user>admin</modified_user>
-  <modified_date>2018&#x2f;05&#x2f;07 15&#x3a;26&#x3a;23.889</modified_date>
-    <parameters>
-        <parameter>
-            <name>MESSAGE_ECHEC_PROCESSUS_CORPS</name>
-            <default_value/>
-            <description/>
-        </parameter>
-        <parameter>
-            <name>MESSAGE_ECHEC_PROCESSUS_OBJET</name>
-            <default_value/>
-            <description/>
-        </parameter>
-        <parameter>
-            <name>MESSAGE_SUCCES_PROCESSUS_CORPS</name>
-            <default_value/>
-            <description/>
-        </parameter>
-        <parameter>
-            <name>MESSAGE_SUCCES_PROCESSUS_OBJET</name>
-            <default_value/>
-            <description/>
-        </parameter>
-        <parameter>
-            <name>MODELE_PROCESSUS_CHEMIN</name>
-            <default_value/>
-            <description/>
-        </parameter>
-        <parameter>
-            <name>MODELE_PROCESSUS_CODE</name>
-            <default_value/>
-            <description/>
-        </parameter>
-        <parameter>
-            <name>MODELE_PROCESSUS_DESCRIPTION</name>
-            <default_value/>
-            <description/>
-        </parameter>
-        <parameter>
-            <name>MODELE_PROCESSUS_FICHIER</name>
-            <default_value/>
-            <description/>
-        </parameter>
-        <parameter>
-            <name>MODELE_PROCESSUS_ID</name>
-            <default_value/>
-            <description/>
-        </parameter>
-        <parameter>
-            <name>MODELE_PROCESSUS_LIBELLE</name>
-            <default_value/>
-            <description/>
-        </parameter>
-        <parameter>
-            <name>MODELE_PROCESSUS_TYPE</name>
-            <default_value/>
-            <description/>
-        </parameter>
-        <parameter>
-            <name>PROCESSUS_CODE</name>
-            <default_value/>
-            <description/>
-        </parameter>
-        <parameter>
-            <name>PROCESSUS_DEMANDE</name>
-            <default_value/>
-            <description/>
-        </parameter>
-        <parameter>
-            <name>PROCESSUS_ID</name>
-            <default_value/>
-            <description/>
-        </parameter>
-        <parameter>
-            <name>UTILISATEUR_ID</name>
-            <default_value/>
-            <description/>
-        </parameter>
-        <parameter>
-            <name>UTILISATEUR_MAIL</name>
-            <default_value/>
-            <description/>
-        </parameter>
-        <parameter>
-            <name>UTILISATEUR_NOM</name>
-            <default_value/>
-            <description/>
-        </parameter>
-        <parameter>
-            <name>UTILISATEUR_PRENOM</name>
-            <default_value/>
-            <description/>
-        </parameter>
-    </parameters>
+  <modified_date>2018/05/07 15:26:23.889</modified_date>
+  <parameters>
+    <parameter>
+      <name>MESSAGE_ECHEC_PROCESSUS_CORPS</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>MESSAGE_ECHEC_PROCESSUS_OBJET</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>MESSAGE_SUCCES_PROCESSUS_CORPS</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>MESSAGE_SUCCES_PROCESSUS_OBJET</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>MODELE_PROCESSUS_CHEMIN</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>MODELE_PROCESSUS_CODE</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>MODELE_PROCESSUS_DESCRIPTION</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>MODELE_PROCESSUS_FICHIER</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>MODELE_PROCESSUS_ID</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>MODELE_PROCESSUS_LIBELLE</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>MODELE_PROCESSUS_TYPE</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>PROCESSUS_CODE</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>PROCESSUS_DEMANDE</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>PROCESSUS_ID</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>UTILISATEUR_ID</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>UTILISATEUR_MAIL</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>UTILISATEUR_NOM</name>
+      <default_value />
+      <description />
+    </parameter>
+    <parameter>
+      <name>UTILISATEUR_PRENOM</name>
+      <default_value />
+      <description />
+    </parameter>
+  </parameters>
   <connection>
     <name>Remocra</name>
-    <server>&#x24;&#x7b;REMOCRA_POSTGIS_DATABASE_HOST&#x7d;</server>
+    <server>${REMOCRA_POSTGIS_DATABASE_HOST}</server>
     <type>POSTGRESQL</type>
     <access>Native</access>
-    <database>&#x24;&#x7b;REMOCRA_POSTGIS_DATABASE_NAME&#x7d;</database>
-    <port>&#x24;&#x7b;REMOCRA_POSTGIS_DATABASE_PORT&#x7d;</port>
-    <username>&#x24;&#x7b;REMOCRA_POSTGIS_DATABASE_USER_NAME&#x7d;</username>
-    <password>&#x24;&#x7b;REMOCRA_POSTGIS_DATABASE_USER_PASSWORD&#x7d;</password>
-    <servername/>
-    <data_tablespace/>
-    <index_tablespace/>
+    <database>${REMOCRA_POSTGIS_DATABASE_NAME}</database>
+    <port>${REMOCRA_POSTGIS_DATABASE_PORT}</port>
+    <username>${REMOCRA_POSTGIS_DATABASE_USER_NAME}</username>
+    <password>${REMOCRA_POSTGIS_DATABASE_USER_PASSWORD}</password>
+    <servername />
+    <data_tablespace />
+    <index_tablespace />
     <attributes>
-      <attribute><code>EXTRA_OPTION_POSTGRESQL.stringtype</code><attribute>unspecified</attribute></attribute>
-      <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
-      <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
-      <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
-      <attribute><code>PORT_NUMBER</code><attribute>&#x24;&#x7b;REMOCRA_POSTGIS_DATABASE_PORT&#x7d;</attribute></attribute>
-      <attribute><code>PRESERVE_RESERVED_WORD_CASE</code><attribute>N</attribute></attribute>
-      <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
-      <attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
-      <attribute><code>SUPPORTS_TIMESTAMP_DATA_TYPE</code><attribute>N</attribute></attribute>
-      <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+      <attribute>
+        <code>EXTRA_OPTION_POSTGRESQL.stringtype</code>
+        <attribute>unspecified</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>${REMOCRA_POSTGIS_DATABASE_PORT}</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
     </attributes>
   </connection>
-    <slaveservers>
+  <slaveservers>
     </slaveservers>
-<job-log-table><connection/>
-<schema/>
-<table/>
-<size_limit_lines/>
-<interval/>
-<timeout_days/>
-<field><id>ID_JOB</id><enabled>N</enabled><name>ID_JOB</name></field><field><id>CHANNEL_ID</id><enabled>N</enabled><name>CHANNEL_ID</name></field><field><id>JOBNAME</id><enabled>Y</enabled><name>JOBNAME</name></field><field><id>STATUS</id><enabled>Y</enabled><name>STATUS</name></field><field><id>LINES_READ</id><enabled>Y</enabled><name>LINES_READ</name></field><field><id>LINES_WRITTEN</id><enabled>Y</enabled><name>LINES_WRITTEN</name></field><field><id>LINES_UPDATED</id><enabled>Y</enabled><name>LINES_UPDATED</name></field><field><id>LINES_INPUT</id><enabled>Y</enabled><name>LINES_INPUT</name></field><field><id>LINES_OUTPUT</id><enabled>Y</enabled><name>LINES_OUTPUT</name></field><field><id>LINES_REJECTED</id><enabled>N</enabled><name>LINES_REJECTED</name></field><field><id>ERRORS</id><enabled>Y</enabled><name>ERRORS</name></field><field><id>STARTDATE</id><enabled>Y</enabled><name>STARTDATE</name></field><field><id>ENDDATE</id><enabled>Y</enabled><name>ENDDATE</name></field><field><id>LOGDATE</id><enabled>Y</enabled><name>LOGDATE</name></field><field><id>DEPDATE</id><enabled>Y</enabled><name>DEPDATE</name></field><field><id>REPLAYDATE</id><enabled>Y</enabled><name>REPLAYDATE</name></field><field><id>LOG_FIELD</id><enabled>N</enabled><name>LOG_FIELD</name></field><field><id>EXECUTING_SERVER</id><enabled>N</enabled><name>EXECUTING_SERVER</name></field><field><id>EXECUTING_USER</id><enabled>N</enabled><name>EXECUTING_USER</name></field><field><id>START_JOB_ENTRY</id><enabled>N</enabled><name>START_JOB_ENTRY</name></field><field><id>CLIENT</id><enabled>N</enabled><name>CLIENT</name></field></job-log-table>
-<jobentry-log-table><connection/>
-<schema/>
-<table/>
-<timeout_days/>
-<field><id>ID_BATCH</id><enabled>Y</enabled><name>ID_BATCH</name></field><field><id>CHANNEL_ID</id><enabled>Y</enabled><name>CHANNEL_ID</name></field><field><id>LOG_DATE</id><enabled>Y</enabled><name>LOG_DATE</name></field><field><id>JOBNAME</id><enabled>Y</enabled><name>TRANSNAME</name></field><field><id>JOBENTRYNAME</id><enabled>Y</enabled><name>STEPNAME</name></field><field><id>LINES_READ</id><enabled>Y</enabled><name>LINES_READ</name></field><field><id>LINES_WRITTEN</id><enabled>Y</enabled><name>LINES_WRITTEN</name></field><field><id>LINES_UPDATED</id><enabled>Y</enabled><name>LINES_UPDATED</name></field><field><id>LINES_INPUT</id><enabled>Y</enabled><name>LINES_INPUT</name></field><field><id>LINES_OUTPUT</id><enabled>Y</enabled><name>LINES_OUTPUT</name></field><field><id>LINES_REJECTED</id><enabled>Y</enabled><name>LINES_REJECTED</name></field><field><id>ERRORS</id><enabled>Y</enabled><name>ERRORS</name></field><field><id>RESULT</id><enabled>Y</enabled><name>RESULT</name></field><field><id>NR_RESULT_ROWS</id><enabled>Y</enabled><name>NR_RESULT_ROWS</name></field><field><id>NR_RESULT_FILES</id><enabled>Y</enabled><name>NR_RESULT_FILES</name></field><field><id>LOG_FIELD</id><enabled>N</enabled><name>LOG_FIELD</name></field><field><id>COPY_NR</id><enabled>N</enabled><name>COPY_NR</name></field></jobentry-log-table>
-<channel-log-table><connection/>
-<schema/>
-<table/>
-<timeout_days/>
-<field><id>ID_BATCH</id><enabled>Y</enabled><name>ID_BATCH</name></field><field><id>CHANNEL_ID</id><enabled>Y</enabled><name>CHANNEL_ID</name></field><field><id>LOG_DATE</id><enabled>Y</enabled><name>LOG_DATE</name></field><field><id>LOGGING_OBJECT_TYPE</id><enabled>Y</enabled><name>LOGGING_OBJECT_TYPE</name></field><field><id>OBJECT_NAME</id><enabled>Y</enabled><name>OBJECT_NAME</name></field><field><id>OBJECT_COPY</id><enabled>Y</enabled><name>OBJECT_COPY</name></field><field><id>REPOSITORY_DIRECTORY</id><enabled>Y</enabled><name>REPOSITORY_DIRECTORY</name></field><field><id>FILENAME</id><enabled>Y</enabled><name>FILENAME</name></field><field><id>OBJECT_ID</id><enabled>Y</enabled><name>OBJECT_ID</name></field><field><id>OBJECT_REVISION</id><enabled>Y</enabled><name>OBJECT_REVISION</name></field><field><id>PARENT_CHANNEL_ID</id><enabled>Y</enabled><name>PARENT_CHANNEL_ID</name></field><field><id>ROOT_CHANNEL_ID</id><enabled>Y</enabled><name>ROOT_CHANNEL_ID</name></field></channel-log-table>
-   <pass_batchid>N</pass_batchid>
-   <shared_objects_file/>
+  <job-log-table>
+    <connection />
+    <schema />
+    <table />
+    <size_limit_lines />
+    <interval />
+    <timeout_days />
+    <field>
+      <id>ID_JOB</id>
+      <enabled>N</enabled>
+      <name>ID_JOB</name>
+    </field>
+    <field>
+      <id>CHANNEL_ID</id>
+      <enabled>N</enabled>
+      <name>CHANNEL_ID</name>
+    </field>
+    <field>
+      <id>JOBNAME</id>
+      <enabled>Y</enabled>
+      <name>JOBNAME</name>
+    </field>
+    <field>
+      <id>STATUS</id>
+      <enabled>Y</enabled>
+      <name>STATUS</name>
+    </field>
+    <field>
+      <id>LINES_READ</id>
+      <enabled>Y</enabled>
+      <name>LINES_READ</name>
+    </field>
+    <field>
+      <id>LINES_WRITTEN</id>
+      <enabled>Y</enabled>
+      <name>LINES_WRITTEN</name>
+    </field>
+    <field>
+      <id>LINES_UPDATED</id>
+      <enabled>Y</enabled>
+      <name>LINES_UPDATED</name>
+    </field>
+    <field>
+      <id>LINES_INPUT</id>
+      <enabled>Y</enabled>
+      <name>LINES_INPUT</name>
+    </field>
+    <field>
+      <id>LINES_OUTPUT</id>
+      <enabled>Y</enabled>
+      <name>LINES_OUTPUT</name>
+    </field>
+    <field>
+      <id>LINES_REJECTED</id>
+      <enabled>N</enabled>
+      <name>LINES_REJECTED</name>
+    </field>
+    <field>
+      <id>ERRORS</id>
+      <enabled>Y</enabled>
+      <name>ERRORS</name>
+    </field>
+    <field>
+      <id>STARTDATE</id>
+      <enabled>Y</enabled>
+      <name>STARTDATE</name>
+    </field>
+    <field>
+      <id>ENDDATE</id>
+      <enabled>Y</enabled>
+      <name>ENDDATE</name>
+    </field>
+    <field>
+      <id>LOGDATE</id>
+      <enabled>Y</enabled>
+      <name>LOGDATE</name>
+    </field>
+    <field>
+      <id>DEPDATE</id>
+      <enabled>Y</enabled>
+      <name>DEPDATE</name>
+    </field>
+    <field>
+      <id>REPLAYDATE</id>
+      <enabled>Y</enabled>
+      <name>REPLAYDATE</name>
+    </field>
+    <field>
+      <id>LOG_FIELD</id>
+      <enabled>N</enabled>
+      <name>LOG_FIELD</name>
+    </field>
+    <field>
+      <id>EXECUTING_SERVER</id>
+      <enabled>N</enabled>
+      <name>EXECUTING_SERVER</name>
+    </field>
+    <field>
+      <id>EXECUTING_USER</id>
+      <enabled>N</enabled>
+      <name>EXECUTING_USER</name>
+    </field>
+    <field>
+      <id>START_JOB_ENTRY</id>
+      <enabled>N</enabled>
+      <name>START_JOB_ENTRY</name>
+    </field>
+    <field>
+      <id>CLIENT</id>
+      <enabled>N</enabled>
+      <name>CLIENT</name>
+    </field>
+  </job-log-table>
+  <jobentry-log-table>
+    <connection />
+    <schema />
+    <table />
+    <timeout_days />
+    <field>
+      <id>ID_BATCH</id>
+      <enabled>Y</enabled>
+      <name>ID_BATCH</name>
+    </field>
+    <field>
+      <id>CHANNEL_ID</id>
+      <enabled>Y</enabled>
+      <name>CHANNEL_ID</name>
+    </field>
+    <field>
+      <id>LOG_DATE</id>
+      <enabled>Y</enabled>
+      <name>LOG_DATE</name>
+    </field>
+    <field>
+      <id>JOBNAME</id>
+      <enabled>Y</enabled>
+      <name>TRANSNAME</name>
+    </field>
+    <field>
+      <id>JOBENTRYNAME</id>
+      <enabled>Y</enabled>
+      <name>STEPNAME</name>
+    </field>
+    <field>
+      <id>LINES_READ</id>
+      <enabled>Y</enabled>
+      <name>LINES_READ</name>
+    </field>
+    <field>
+      <id>LINES_WRITTEN</id>
+      <enabled>Y</enabled>
+      <name>LINES_WRITTEN</name>
+    </field>
+    <field>
+      <id>LINES_UPDATED</id>
+      <enabled>Y</enabled>
+      <name>LINES_UPDATED</name>
+    </field>
+    <field>
+      <id>LINES_INPUT</id>
+      <enabled>Y</enabled>
+      <name>LINES_INPUT</name>
+    </field>
+    <field>
+      <id>LINES_OUTPUT</id>
+      <enabled>Y</enabled>
+      <name>LINES_OUTPUT</name>
+    </field>
+    <field>
+      <id>LINES_REJECTED</id>
+      <enabled>Y</enabled>
+      <name>LINES_REJECTED</name>
+    </field>
+    <field>
+      <id>ERRORS</id>
+      <enabled>Y</enabled>
+      <name>ERRORS</name>
+    </field>
+    <field>
+      <id>RESULT</id>
+      <enabled>Y</enabled>
+      <name>RESULT</name>
+    </field>
+    <field>
+      <id>NR_RESULT_ROWS</id>
+      <enabled>Y</enabled>
+      <name>NR_RESULT_ROWS</name>
+    </field>
+    <field>
+      <id>NR_RESULT_FILES</id>
+      <enabled>Y</enabled>
+      <name>NR_RESULT_FILES</name>
+    </field>
+    <field>
+      <id>LOG_FIELD</id>
+      <enabled>N</enabled>
+      <name>LOG_FIELD</name>
+    </field>
+    <field>
+      <id>COPY_NR</id>
+      <enabled>N</enabled>
+      <name>COPY_NR</name>
+    </field>
+  </jobentry-log-table>
+  <channel-log-table>
+    <connection />
+    <schema />
+    <table />
+    <timeout_days />
+    <field>
+      <id>ID_BATCH</id>
+      <enabled>Y</enabled>
+      <name>ID_BATCH</name>
+    </field>
+    <field>
+      <id>CHANNEL_ID</id>
+      <enabled>Y</enabled>
+      <name>CHANNEL_ID</name>
+    </field>
+    <field>
+      <id>LOG_DATE</id>
+      <enabled>Y</enabled>
+      <name>LOG_DATE</name>
+    </field>
+    <field>
+      <id>LOGGING_OBJECT_TYPE</id>
+      <enabled>Y</enabled>
+      <name>LOGGING_OBJECT_TYPE</name>
+    </field>
+    <field>
+      <id>OBJECT_NAME</id>
+      <enabled>Y</enabled>
+      <name>OBJECT_NAME</name>
+    </field>
+    <field>
+      <id>OBJECT_COPY</id>
+      <enabled>Y</enabled>
+      <name>OBJECT_COPY</name>
+    </field>
+    <field>
+      <id>REPOSITORY_DIRECTORY</id>
+      <enabled>Y</enabled>
+      <name>REPOSITORY_DIRECTORY</name>
+    </field>
+    <field>
+      <id>FILENAME</id>
+      <enabled>Y</enabled>
+      <name>FILENAME</name>
+    </field>
+    <field>
+      <id>OBJECT_ID</id>
+      <enabled>Y</enabled>
+      <name>OBJECT_ID</name>
+    </field>
+    <field>
+      <id>OBJECT_REVISION</id>
+      <enabled>Y</enabled>
+      <name>OBJECT_REVISION</name>
+    </field>
+    <field>
+      <id>PARENT_CHANNEL_ID</id>
+      <enabled>Y</enabled>
+      <name>PARENT_CHANNEL_ID</name>
+    </field>
+    <field>
+      <id>ROOT_CHANNEL_ID</id>
+      <enabled>Y</enabled>
+      <name>ROOT_CHANNEL_ID</name>
+    </field>
+  </channel-log-table>
+  <pass_batchid>N</pass_batchid>
+  <shared_objects_file />
   <entries>
     <entry>
       <name>START</name>
-      <description>Entr&#xe9;es sp&#xe9;ciales</description>
+      <description>Entrées spéciales</description>
       <type>SPECIAL</type>
       <start>Y</start>
       <dummy>N</dummy>
@@ -166,65 +456,74 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>800</xloc>
-      <yloc>50</yloc>
-      </entry>
+      <xloc>795</xloc>
+      <yloc>15</yloc>
+    </entry>
     <entry>
-      <name>Maj statut traitement &#xe0; &#x22;En cours&#x22; et heure execution</name>
-      <description>Passe le statut du traitement &#xe0; &#x22;En cours&#x22; &#x28;idstatut&#x3d;4&#x29;&#xa;Permet de visualiser cette information dans&#xa;le tableau de bord dans le cas de long traitements</description>
+      <name>Maj statut traitement à "En cours" et heure execution</name>
+      <description>Passe le statut du traitement à "En cours" (idstatut=4)
+Permet de visualiser cette information dans
+le tableau de bord dans le cas de long traitements</description>
       <type>SQL</type>
-      <sql>UPDATE&#xa;	remocra.processus_etl&#xa;SET&#xa;	statut &#x3d; &#x28;SELECT id FROM remocra.processus_etl_statut WHERE code &#x3d; &#x27;C&#x27;&#x29;,&#xa;	execution &#x3d; now&#x28;&#x29;&#xa;WHERE&#xa;	id &#x3d; &#x24;&#x7b;PROCESSUS_ID&#x7d;&#x3b;</sql>
+      <sql>UPDATE
+	remocra.processus_etl
+SET
+	statut = (SELECT id FROM remocra.processus_etl_statut WHERE code = 'C'),
+	execution = now()
+WHERE
+	id = ${PROCESSUS_ID};</sql>
       <useVariableSubstitution>T</useVariableSubstitution>
       <sqlfromfile>F</sqlfromfile>
-      <sqlfilename/>
+      <sqlfilename />
       <sendOneStatement>T</sendOneStatement>
       <connection>Remocra</connection>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>800</xloc>
-      <yloc>150</yloc>
-      </entry>
+      <xloc>795</xloc>
+      <yloc>120</yloc>
+    </entry>
     <entry>
-      <name>Succ&#xe8;s t&#xe2;che</name>
-      <description>Succ&#xe8;s t&#xe2;che</description>
+      <name>Succès tâche</name>
+      <description>Succès tâche</description>
       <type>SUCCESS</type>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>800</xloc>
-      <yloc>1550</yloc>
-      </entry>
+      <xloc>795</xloc>
+      <yloc>1620</yloc>
+    </entry>
     <entry>
-      <name>Suppression de r&#xe9;pertoire temporaire</name>
-      <description>Supprime les dossiers d&#x27;entr&#xe9;es&#x2f;sorties &#x28;gain de place&#x29;.&#xa;Ne conserve que le zip</description>
+      <name>Suppression de répertoire temporaire</name>
+      <description>Supprime les dossiers d'entrées/sorties (gain de place).
+Ne conserve que le zip</description>
       <type>DELETE_FOLDERS</type>
       <arg_from_previous>N</arg_from_previous>
       <success_condition>success_if_no_errors</success_condition>
       <limit_folders>10</limit_folders>
       <fields>
         <field>
-          <name>&#x24;&#x7b;PDI_CHEMIN_TMP&#x7d;&#x2f;&#x24;&#x7b;PROCESSUS_CODE&#x7d;</name>
+          <name>${PDI_CHEMIN_TMP}/${PROCESSUS_CODE}</name>
         </field>
       </fields>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>800</xloc>
-      <yloc>1425</yloc>
-      </entry>
+      <xloc>795</xloc>
+      <yloc>1500</yloc>
+    </entry>
     <entry>
-      <name>Est une t&#xe2;che PDI &#x3f;</name>
-      <description>Isole les traitements de type &#x22;Job&#x22;&#x28;J&#x29; de &#x22;Transformation&#x22;&#x28;T&#x29;</description>
+      <name>Est une tâche PDI ?</name>
+      <description>Isole les traitements de type "Job"(J) de "Transformation"(T)</description>
       <type>SIMPLE_EVAL</type>
       <valuetype>variable</valuetype>
-      <fieldname/>
-      <variablename>&#x24;&#x7b;MODELE_PROCESSUS_TYPE&#x7d;</variablename>
+      <fieldname />
+      <variablename>${MODELE_PROCESSUS_TYPE}</variablename>
       <fieldtype>string</fieldtype>
-      <mask/>
+      <mask />
       <comparevalue>J</comparevalue>
-      <minvalue/>
-      <maxvalue/>
+      <minvalue />
+      <maxvalue />
       <successcondition>equal</successcondition>
       <successnumbercondition>equal</successnumbercondition>
       <successbooleancondition>true</successbooleancondition>
@@ -232,122 +531,136 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>800</xloc>
-      <yloc>500</yloc>
-      </entry>
+      <xloc>795</xloc>
+      <yloc>465</yloc>
+    </entry>
     <entry>
-      <name>Executer une t&#xe2;che</name>
-      <description>Execute la t&#xe2;che associ&#xe9;e au traitement</description>
+      <name>Executer une tâche</name>
+      <description>Execute la tâche associée au traitement</description>
       <type>JOB</type>
       <specification_method>filename</specification_method>
-      <job_object_id/>
-      <filename>&#x24;&#x7b;MODELE_PROCESSUS_CHEMIN&#x7d;&#x2f;&#x24;&#x7b;MODELE_PROCESSUS_FICHIER&#x7d;</filename>
-      <jobname/>
+      <job_object_id />
+      <filename>${MODELE_PROCESSUS_CHEMIN}/${MODELE_PROCESSUS_FICHIER}</filename>
+      <jobname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
       <exec_per_row>N</exec_per_row>
       <set_logfile>Y</set_logfile>
-      <logfile>&#x24;&#x7b;PDI_CHEMIN_LOG&#x7d;&#x2f;processus_etl&#x2f;&#x24;&#x7b;PROCESSUS_CODE&#x7d;</logfile>
+      <logfile>${PDI_CHEMIN_LOG}/processus_etl/${PROCESSUS_CODE}</logfile>
       <logext>log</logext>
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Basic</loglevel>
-      <slave_server_name/>
+      <slave_server_name />
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <expand_remote_job>N</expand_remote_job>
       <create_parent_folder>Y</create_parent_folder>
       <pass_export>N</pass_export>
-      <force_separate_logging>Y</force_separate_logging>
-      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
-      </parameters>      <set_append_logfile>N</set_append_logfile>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <set_append_logfile>N</set_append_logfile>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>800</xloc>
-      <yloc>625</yloc>
-      </entry>
+      <xloc>795</xloc>
+      <yloc>585</yloc>
+    </entry>
     <entry>
       <name>Executer une transformation</name>
-      <description/>
+      <description />
       <type>TRANS</type>
       <specification_method>filename</specification_method>
-      <trans_object_id/>
-      <filename>&#x24;&#x7b;MODELE_PROCESSUS_CHEMIN&#x7d;&#x2f;&#x24;&#x7b;MODELE_PROCESSUS_FICHIER&#x7d;</filename>
-      <transname/>
+      <trans_object_id />
+      <filename>${MODELE_PROCESSUS_CHEMIN}/${MODELE_PROCESSUS_FICHIER}</filename>
+      <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
       <exec_per_row>N</exec_per_row>
       <clear_rows>N</clear_rows>
       <clear_files>N</clear_files>
       <set_logfile>Y</set_logfile>
-      <logfile>&#x24;&#x7b;PDI_CHEMIN_LOG&#x7d;&#x2f;processus_etl&#x2f;&#x24;&#x7b;PROCESSUS_CODE&#x7d;</logfile>
+      <logfile>${PDI_CHEMIN_LOG}/processus_etl/${PROCESSUS_CODE}</logfile>
       <logext>log</logext>
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Basic</loglevel>
       <cluster>N</cluster>
-      <slave_server_name/>
+      <slave_server_name />
       <set_append_logfile>N</set_append_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <create_parent_folder>Y</create_parent_folder>
       <logging_remote_work>N</logging_remote_work>
-      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
-      </parameters>      <parallel>N</parallel>
+      <run_configuration />
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>600</xloc>
-      <yloc>500</yloc>
-      </entry>
+      <xloc>585</xloc>
+      <yloc>465</yloc>
+    </entry>
     <entry>
-      <name>Maj statut traitement &#xe0; &#x22;En &#xe9;chec&#x22;</name>
-      <description>Passe le statut du traitement &#xe0; &#x22;En cours&#x22; &#x28;idstatut&#x3d;4&#x29;&#xa;Permet de visualiser cette information dans&#xa;le tableau de bord dans le cas de long traitements</description>
+      <name>Maj statut traitement à "En échec"</name>
+      <description>Passe le statut du traitement à "En cours" (idstatut=4)
+Permet de visualiser cette information dans
+le tableau de bord dans le cas de long traitements</description>
       <type>SQL</type>
-      <sql>UPDATE&#xa;	remocra.processus_etl&#xa;SET&#xa;	statut &#x3d; &#x28;SELECT id FROM remocra.processus_etl_statut WHERE code &#x3d; &#x27;E&#x27;&#x29;,&#xa;	execution&#x3d;now&#x28;&#x29;&#xa;WHERE&#xa;	id &#x3d; &#x24;&#x7b;PROCESSUS_ID&#x7d;&#x3b;</sql>
+      <sql>UPDATE
+	remocra.processus_etl
+SET
+	statut = (SELECT id FROM remocra.processus_etl_statut WHERE code = 'E'),
+	execution=now()
+WHERE
+	id = ${PROCESSUS_ID};</sql>
       <useVariableSubstitution>T</useVariableSubstitution>
       <sqlfromfile>F</sqlfromfile>
-      <sqlfilename/>
+      <sqlfilename />
       <sendOneStatement>T</sendOneStatement>
       <connection>Remocra</connection>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>250</xloc>
-      <yloc>1300</yloc>
-      </entry>
+      <xloc>240</xloc>
+      <yloc>1365</yloc>
+    </entry>
     <entry>
-      <name>R&#xe9;pertoire temporaire est vide &#x3f;</name>
-      <description>Test la pr&#xe9;sence de fichiers&#xa;dans le dossier de sortie&#xa;Si pr&#xe9;sence de fichiers -&#x3e;cr&#xe9;ation d&#x27;un ZIP</description>
+      <name>Répertoire temporaire est vide ?</name>
+      <description>Test la présence de fichiers
+dans le dossier de sortie
+Si présence de fichiers ->création d'un ZIP</description>
       <type>FOLDER_IS_EMPTY</type>
-      <foldername>&#x24;&#x7b;PDI_CHEMIN_TMP&#x7d;&#x2f;&#x24;&#x7b;PROCESSUS_CODE&#x7d;</foldername>
+      <foldername>${PDI_CHEMIN_TMP}/${PROCESSUS_CODE}</foldername>
       <include_subfolders>N</include_subfolders>
       <specify_wildcard>N</specify_wildcard>
-      <wildcard/>
+      <wildcard />
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>800</xloc>
-      <yloc>775</yloc>
-      </entry>
+      <xloc>795</xloc>
+      <yloc>735</yloc>
+    </entry>
     <entry>
-      <name>Plusieurs fichiers pr&#xe9;sents dans dossier temporaire &#x3f;</name>
-      <description/>
+      <name>Plusieurs fichiers présents dans dossier temporaire ?</name>
+      <description />
       <type>EVAL_FILES_METRICS</type>
-      <result_filenames_wildcard/>
-      <Result_field_file/>
-      <Result_field_wildcard/>
-      <Result_field_includesubfolders/>
+      <result_filenames_wildcard />
+      <Result_field_file />
+      <Result_field_wildcard />
+      <Result_field_includesubfolders />
       <fields>
         <field>
-          <source_filefolder>&#x24;&#x7b;PDI_CHEMIN_TMP&#x7d;&#x2f;&#x24;&#x7b;PROCESSUS_CODE&#x7d;</source_filefolder>
-          <wildcard>.&#x2a;</wildcard>
+          <source_filefolder>${PDI_CHEMIN_TMP}/${PROCESSUS_CODE}</source_filefolder>
+          <wildcard>.*</wildcard>
           <include_subFolders>N</include_subFolders>
         </field>
       </fields>
       <comparevalue>1</comparevalue>
-      <minvalue/>
-      <maxvalue/>
+      <minvalue />
+      <maxvalue />
       <successnumbercondition>greater</successnumbercondition>
       <source_files>files</source_files>
       <evaluation_type>count</evaluation_type>
@@ -355,20 +668,21 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>550</xloc>
-      <yloc>900</yloc>
-      </entry>
+      <xloc>540</xloc>
+      <yloc>870</yloc>
+    </entry>
     <entry>
       <name>Compression dans un ZIP</name>
-      <description>Cr&#xe9;ation ZIP des fichiers&#xa;produits par le traitement</description>
+      <description>Création ZIP des fichiers
+produits par le traitement</description>
       <type>ZIP_FILE</type>
-      <zipfilename>&#x24;&#x7b;PDI_CHEMIN_PROCESSUS_ETL_DOCUMENT&#x7d;&#x2f;&#x24;&#x7b;PROCESSUS_CODE&#x7d;&#x2f;&#x24;&#x7b;MODELE_PROCESSUS_LIBELLE&#x7d;.zip</zipfilename>
+      <zipfilename>${PDI_CHEMIN_PROCESSUS_ETL_DOCUMENT}/${PROCESSUS_CODE}/${MODELE_PROCESSUS_LIBELLE}.zip</zipfilename>
       <compressionrate>1</compressionrate>
       <ifzipfileexists>2</ifzipfileexists>
-      <wildcard/>
-      <wildcardexclude/>
-      <sourcedirectory>&#x24;&#x7b;PDI_CHEMIN_TMP&#x7d;&#x2f;&#x24;&#x7b;PROCESSUS_CODE&#x7d;</sourcedirectory>
-      <movetodirectory/>
+      <wildcard />
+      <wildcardexclude />
+      <sourcedirectory>${PDI_CHEMIN_TMP}/${PROCESSUS_CODE}</sourcedirectory>
+      <movetodirectory />
       <afterzip>0</afterzip>
       <addfiletoresult>N</addfiletoresult>
       <isfromprevious>N</isfromprevious>
@@ -376,43 +690,44 @@
       <adddate>N</adddate>
       <addtime>N</addtime>
       <SpecifyFormat>N</SpecifyFormat>
-      <date_time_format/>
+      <date_time_format />
       <createMoveToDirectory>N</createMoveToDirectory>
       <include_subfolders>Y</include_subfolders>
-      <stored_source_path_depth/>
+      <stored_source_path_depth />
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>650</xloc>
-      <yloc>1025</yloc>
-      </entry>
+      <xloc>645</xloc>
+      <yloc>990</yloc>
+    </entry>
     <entry>
-      <name>Cr&#xe9;er d&#x27;un r&#xe9;pertoire de travail temporaire</name>
-      <description>Cr&#xe9;ation d&#x27;un dossier de travail par traitement&#xa;pour isoler les sorties &#xe9;ventuelles</description>
+      <name>Créer d'un répertoire de travail temporaire</name>
+      <description>Création d'un dossier de travail par traitement
+pour isoler les sorties éventuelles</description>
       <type>CREATE_FOLDER</type>
-      <foldername>&#x24;&#x7b;PDI_CHEMIN_TMP&#x7d;&#x2f;&#x24;&#x7b;PROCESSUS_CODE&#x7d;</foldername>
+      <foldername>${PDI_CHEMIN_TMP}/${PROCESSUS_CODE}</foldername>
       <fail_of_folder_exists>N</fail_of_folder_exists>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>800</xloc>
-      <yloc>275</yloc>
-      </entry>
+      <xloc>795</xloc>
+      <yloc>240</yloc>
+    </entry>
     <entry>
-      <name>Cr&#xe9;er un r&#xe9;pertoire</name>
-      <description/>
+      <name>Créer un répertoire</name>
+      <description />
       <type>CREATE_FOLDER</type>
-      <foldername>&#x24;&#x7b;PDI_CHEMIN_PROCESSUS_ETL_DOCUMENT&#x7d;&#x2f;&#x24;&#x7b;PROCESSUS_CODE&#x7d;</foldername>
+      <foldername>${PDI_CHEMIN_PROCESSUS_ETL_DOCUMENT}/${PROCESSUS_CODE}</foldername>
       <fail_of_folder_exists>Y</fail_of_folder_exists>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>550</xloc>
-      <yloc>775</yloc>
-      </entry>
+      <xloc>540</xloc>
+      <yloc>735</yloc>
+    </entry>
     <entry>
-      <name>D&#xe9;placement de fichiers</name>
-      <description/>
+      <name>Déplacement de fichiers</name>
+      <description />
       <type>MOVE_FILES</type>
       <move_empty_folders>N</move_empty_folders>
       <arg_from_previous>N</arg_from_previous>
@@ -423,15 +738,15 @@
       <add_date>N</add_date>
       <add_time>N</add_time>
       <SpecifyFormat>N</SpecifyFormat>
-      <date_time_format/>
+      <date_time_format />
       <nr_errors_less_than>10</nr_errors_less_than>
       <success_condition>success_if_no_errors</success_condition>
       <AddDateBeforeExtension>N</AddDateBeforeExtension>
       <DoNotKeepFolderStructure>N</DoNotKeepFolderStructure>
       <iffileexists>do_nothing</iffileexists>
-      <destinationFolder/>
+      <destinationFolder />
       <ifmovedfileexists>do_nothing</ifmovedfileexists>
-      <moved_date_time_format/>
+      <moved_date_time_format />
       <create_move_to_folder>N</create_move_to_folder>
       <add_moved_date>N</add_moved_date>
       <add_moved_time>N</add_moved_time>
@@ -440,122 +755,131 @@
       <simulate>N</simulate>
       <fields>
         <field>
-          <source_filefolder>&#x24;&#x7b;PDI_CHEMIN_TMP&#x7d;&#x2f;&#x24;&#x7b;PROCESSUS_CODE&#x7d;</source_filefolder>
-          <destination_filefolder>&#x24;&#x7b;PDI_CHEMIN_PROCESSUS_ETL_DOCUMENT&#x7d;&#x2f;&#x24;&#x7b;PROCESSUS_CODE&#x7d;</destination_filefolder>
-          <wildcard>.&#x2a;</wildcard>
+          <source_filefolder>${PDI_CHEMIN_TMP}/${PROCESSUS_CODE}</source_filefolder>
+          <destination_filefolder>${PDI_CHEMIN_PROCESSUS_ETL_DOCUMENT}/${PROCESSUS_CODE}</destination_filefolder>
+          <wildcard>.*</wildcard>
         </field>
       </fields>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>450</xloc>
-      <yloc>1025</yloc>
-      </entry>
+      <xloc>435</xloc>
+      <yloc>990</yloc>
+    </entry>
     <entry>
       <name>affecter_les_parametres_a_un_processus_etl.ktr</name>
-      <description/>
+      <description />
       <type>TRANS</type>
       <specification_method>filename</specification_method>
-      <trans_object_id/>
-      <filename>&#x24;&#x7b;Internal.Job.Filename.Directory&#x7d;&#x2f;affecter_les_parametres_a_un_processus_etl.ktr</filename>
-      <transname/>
+      <trans_object_id />
+      <filename>${Internal.Job.Filename.Directory}/affecter_les_parametres_a_un_processus_etl.ktr</filename>
+      <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
       <exec_per_row>N</exec_per_row>
       <clear_rows>N</clear_rows>
       <clear_files>N</clear_files>
       <set_logfile>N</set_logfile>
-      <logfile/>
-      <logext/>
+      <logfile />
+      <logext />
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Basic</loglevel>
       <cluster>N</cluster>
-      <slave_server_name/>
+      <slave_server_name />
       <set_append_logfile>N</set_append_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <create_parent_folder>N</create_parent_folder>
       <logging_remote_work>N</logging_remote_work>
-      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
-      </parameters>      <parallel>N</parallel>
+      <run_configuration />
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>800</xloc>
-      <yloc>375</yloc>
-      </entry>
+      <xloc>795</xloc>
+      <yloc>345</yloc>
+    </entry>
     <entry>
       <name>inserer_le_document_genere_par_un_processus.ktr</name>
-      <description/>
+      <description />
       <type>TRANS</type>
       <specification_method>filename</specification_method>
-      <trans_object_id/>
-      <filename>&#x24;&#x7b;Internal.Job.Filename.Directory&#x7d;&#x2f;inserer_le_document_genere_par_un_processus.ktr</filename>
-      <transname/>
+      <trans_object_id />
+      <filename>${Internal.Job.Filename.Directory}/inserer_le_document_genere_par_un_processus.ktr</filename>
+      <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
       <exec_per_row>N</exec_per_row>
       <clear_rows>N</clear_rows>
       <clear_files>N</clear_files>
       <set_logfile>N</set_logfile>
-      <logfile/>
-      <logext/>
+      <logfile />
+      <logext />
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Basic</loglevel>
       <cluster>N</cluster>
-      <slave_server_name/>
+      <slave_server_name />
       <set_append_logfile>N</set_append_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <create_parent_folder>N</create_parent_folder>
       <logging_remote_work>N</logging_remote_work>
-      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
-      </parameters>      <parallel>N</parallel>
+      <run_configuration />
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>550</xloc>
-      <yloc>1150</yloc>
-      </entry>
+      <xloc>540</xloc>
+      <yloc>1110</yloc>
+    </entry>
     <entry>
       <name>generer_le_mail_de_notification.ktr</name>
-      <description/>
+      <description />
       <type>TRANS</type>
       <specification_method>filename</specification_method>
-      <trans_object_id/>
-      <filename>&#x24;&#x7b;Internal.Job.Filename.Directory&#x7d;&#x2f;generer_le_mail_de_notification.ktr</filename>
-      <transname/>
+      <trans_object_id />
+      <filename>${Internal.Job.Filename.Directory}/generer_le_mail_de_notification.ktr</filename>
+      <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
       <exec_per_row>N</exec_per_row>
       <clear_rows>N</clear_rows>
       <clear_files>N</clear_files>
       <set_logfile>N</set_logfile>
-      <logfile/>
-      <logext/>
+      <logfile />
+      <logext />
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Basic</loglevel>
       <cluster>N</cluster>
-      <slave_server_name/>
+      <slave_server_name />
       <set_append_logfile>N</set_append_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <create_parent_folder>N</create_parent_folder>
       <logging_remote_work>N</logging_remote_work>
-      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
-      </parameters>      <parallel>N</parallel>
+      <run_configuration />
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>800</xloc>
-      <yloc>1300</yloc>
-      </entry>
+      <xloc>795</xloc>
+      <yloc>1365</yloc>
+    </entry>
     <entry>
-      <name>PROCESSUS_SUCCES &#x3d; false</name>
-      <description/>
+      <name>PROCESSUS_SUCCES = false</name>
+      <description />
       <type>SET_VARIABLES</type>
       <replacevars>Y</replacevars>
-      <filename/>
+      <filename />
       <file_variable_type>JVM</file_variable_type>
       <fields>
         <field>
@@ -567,15 +891,15 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>550</xloc>
-      <yloc>1300</yloc>
-      </entry>
+      <xloc>540</xloc>
+      <yloc>1365</yloc>
+    </entry>
     <entry>
-      <name>PROCESSUS_SUCCES &#x3d; true</name>
-      <description/>
+      <name>PROCESSUS_SUCCES = true</name>
+      <description />
       <type>SET_VARIABLES</type>
       <replacevars>Y</replacevars>
-      <filename/>
+      <filename />
       <file_variable_type>JVM</file_variable_type>
       <fields>
         <field>
@@ -587,12 +911,12 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>800</xloc>
-      <yloc>1150</yloc>
-      </entry>
+      <xloc>795</xloc>
+      <yloc>1110</yloc>
+    </entry>
     <entry>
       <name>DUMMY 2</name>
-      <description/>
+      <description />
       <type>SPECIAL</type>
       <start>N</start>
       <dummy>Y</dummy>
@@ -607,12 +931,12 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>250</xloc>
-      <yloc>500</yloc>
-      </entry>
+      <xloc>240</xloc>
+      <yloc>465</yloc>
+    </entry>
     <entry>
       <name>DUMMY 3</name>
-      <description/>
+      <description />
       <type>SPECIAL</type>
       <start>N</start>
       <dummy>Y</dummy>
@@ -627,12 +951,12 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>250</xloc>
-      <yloc>1150</yloc>
-      </entry>
+      <xloc>240</xloc>
+      <yloc>1110</yloc>
+    </entry>
     <entry>
       <name>DUMMY</name>
-      <description/>
+      <description />
       <type>SPECIAL</type>
       <start>N</start>
       <dummy>Y</dummy>
@@ -647,12 +971,12 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>250</xloc>
-      <yloc>275</yloc>
-      </entry>
+      <xloc>240</xloc>
+      <yloc>240</yloc>
+    </entry>
     <entry>
       <name>DUMMY 4</name>
-      <description/>
+      <description />
       <type>SPECIAL</type>
       <start>N</start>
       <dummy>Y</dummy>
@@ -667,12 +991,12 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>250</xloc>
-      <yloc>375</yloc>
-      </entry>
+      <xloc>240</xloc>
+      <yloc>345</yloc>
+    </entry>
     <entry>
       <name>DUMMY 5</name>
-      <description/>
+      <description />
       <type>SPECIAL</type>
       <start>N</start>
       <dummy>Y</dummy>
@@ -687,12 +1011,12 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>250</xloc>
-      <yloc>775</yloc>
-      </entry>
+      <xloc>240</xloc>
+      <yloc>735</yloc>
+    </entry>
     <entry>
       <name>DUMMY 6</name>
-      <description/>
+      <description />
       <type>SPECIAL</type>
       <start>N</start>
       <dummy>Y</dummy>
@@ -707,12 +1031,12 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>250</xloc>
-      <yloc>1025</yloc>
-      </entry>
+      <xloc>240</xloc>
+      <yloc>990</yloc>
+    </entry>
     <entry>
       <name>DUMMY 7</name>
-      <description/>
+      <description />
       <type>SPECIAL</type>
       <start>N</start>
       <dummy>Y</dummy>
@@ -727,14 +1051,38 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>250</xloc>
-      <yloc>625</yloc>
-      </entry>
+      <xloc>240</xloc>
+      <yloc>585</yloc>
+    </entry>
+    <entry>
+      <name>Maj statut traitement à "Succes"</name>
+      <description>Passe le statut du traitement à "En cours" (idstatut=4)
+Permet de visualiser cette information dans
+le tableau de bord dans le cas de long traitements</description>
+      <type>SQL</type>
+      <sql>UPDATE
+	remocra.processus_etl
+SET
+	statut = (SELECT id FROM remocra.processus_etl_statut WHERE code = 'S'),
+	execution=now()
+WHERE
+	id = ${PROCESSUS_ID};</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename />
+      <sendOneStatement>T</sendOneStatement>
+      <connection>Remocra</connection>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>795</xloc>
+      <yloc>1230</yloc>
+    </entry>
   </entries>
   <hops>
     <hop>
       <from>START</from>
-      <to>Maj statut traitement &#xe0; &#x22;En cours&#x22; et heure execution</to>
+      <to>Maj statut traitement à "En cours" et heure execution</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -742,8 +1090,8 @@
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>Suppression de r&#xe9;pertoire temporaire</from>
-      <to>Succ&#xe8;s t&#xe2;che</to>
+      <from>Suppression de répertoire temporaire</from>
+      <to>Succès tâche</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -751,8 +1099,8 @@
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>Est une t&#xe2;che PDI &#x3f;</from>
-      <to>Executer une t&#xe2;che</to>
+      <from>Est une tâche PDI ?</from>
+      <to>Executer une tâche</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -760,7 +1108,7 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Est une t&#xe2;che PDI &#x3f;</from>
+      <from>Est une tâche PDI ?</from>
       <to>Executer une transformation</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
@@ -769,8 +1117,8 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Executer une t&#xe2;che</from>
-      <to>R&#xe9;pertoire temporaire est vide &#x3f;</to>
+      <from>Executer une tâche</from>
+      <to>Répertoire temporaire est vide ?</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -778,7 +1126,7 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Plusieurs fichiers pr&#xe9;sents dans dossier temporaire &#x3f;</from>
+      <from>Plusieurs fichiers présents dans dossier temporaire ?</from>
       <to>Compression dans un ZIP</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
@@ -788,7 +1136,7 @@
     </hop>
     <hop>
       <from>Executer une transformation</from>
-      <to>R&#xe9;pertoire temporaire est vide &#x3f;</to>
+      <to>Répertoire temporaire est vide ?</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -796,8 +1144,8 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>R&#xe9;pertoire temporaire est vide &#x3f;</from>
-      <to>Cr&#xe9;er un r&#xe9;pertoire</to>
+      <from>Répertoire temporaire est vide ?</from>
+      <to>Créer un répertoire</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -805,8 +1153,8 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Cr&#xe9;er un r&#xe9;pertoire</from>
-      <to>Plusieurs fichiers pr&#xe9;sents dans dossier temporaire &#x3f;</to>
+      <from>Créer un répertoire</from>
+      <to>Plusieurs fichiers présents dans dossier temporaire ?</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -814,8 +1162,8 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Plusieurs fichiers pr&#xe9;sents dans dossier temporaire &#x3f;</from>
-      <to>D&#xe9;placement de fichiers</to>
+      <from>Plusieurs fichiers présents dans dossier temporaire ?</from>
+      <to>Déplacement de fichiers</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -823,8 +1171,8 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Maj statut traitement &#xe0; &#x22;En cours&#x22; et heure execution</from>
-      <to>Cr&#xe9;er d&#x27;un r&#xe9;pertoire de travail temporaire</to>
+      <from>Maj statut traitement à "En cours" et heure execution</from>
+      <to>Créer d'un répertoire de travail temporaire</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -832,7 +1180,7 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Cr&#xe9;er d&#x27;un r&#xe9;pertoire de travail temporaire</from>
+      <from>Créer d'un répertoire de travail temporaire</from>
       <to>affecter_les_parametres_a_un_processus_etl.ktr</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
@@ -842,7 +1190,7 @@
     </hop>
     <hop>
       <from>affecter_les_parametres_a_un_processus_etl.ktr</from>
-      <to>Est une t&#xe2;che PDI &#x3f;</to>
+      <to>Est une tâche PDI ?</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -859,7 +1207,7 @@
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>D&#xe9;placement de fichiers</from>
+      <from>Déplacement de fichiers</from>
       <to>inserer_le_document_genere_par_un_processus.ktr</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
@@ -869,7 +1217,7 @@
     </hop>
     <hop>
       <from>generer_le_mail_de_notification.ktr</from>
-      <to>Suppression de r&#xe9;pertoire temporaire</to>
+      <to>Suppression de répertoire temporaire</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -877,8 +1225,8 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>R&#xe9;pertoire temporaire est vide &#x3f;</from>
-      <to>PROCESSUS_SUCCES &#x3d; true</to>
+      <from>Répertoire temporaire est vide ?</from>
+      <to>PROCESSUS_SUCCES = true</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -887,7 +1235,7 @@
     </hop>
     <hop>
       <from>inserer_le_document_genere_par_un_processus.ktr</from>
-      <to>PROCESSUS_SUCCES &#x3d; true</to>
+      <to>PROCESSUS_SUCCES = true</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -895,8 +1243,8 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Maj statut traitement &#xe0; &#x22;En &#xe9;chec&#x22;</from>
-      <to>PROCESSUS_SUCCES &#x3d; false</to>
+      <from>Maj statut traitement à "En échec"</from>
+      <to>PROCESSUS_SUCCES = false</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -904,16 +1252,7 @@
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>PROCESSUS_SUCCES &#x3d; true</from>
-      <to>generer_le_mail_de_notification.ktr</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>Y</unconditional>
-    </hop>
-    <hop>
-      <from>PROCESSUS_SUCCES &#x3d; false</from>
+      <from>PROCESSUS_SUCCES = false</from>
       <to>generer_le_mail_de_notification.ktr</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
@@ -941,7 +1280,7 @@
     </hop>
     <hop>
       <from>DUMMY 3</from>
-      <to>Maj statut traitement &#xe0; &#x22;En &#xe9;chec&#x22;</to>
+      <to>Maj statut traitement à "En échec"</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -949,7 +1288,7 @@
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>Cr&#xe9;er d&#x27;un r&#xe9;pertoire de travail temporaire</from>
+      <from>Créer d'un répertoire de travail temporaire</from>
       <to>DUMMY</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
@@ -1003,7 +1342,7 @@
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>Cr&#xe9;er un r&#xe9;pertoire</from>
+      <from>Créer un répertoire</from>
       <to>DUMMY 5</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
@@ -1012,7 +1351,7 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>D&#xe9;placement de fichiers</from>
+      <from>Déplacement de fichiers</from>
       <to>DUMMY 6</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
@@ -1039,7 +1378,7 @@
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>Executer une t&#xe2;che</from>
+      <from>Executer une tâche</from>
       <to>DUMMY 7</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
@@ -1047,13 +1386,40 @@
       <evaluation>N</evaluation>
       <unconditional>N</unconditional>
     </hop>
+    <hop>
+      <from>PROCESSUS_SUCCES = true</from>
+      <to>Maj statut traitement à "Succes"</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>Maj statut traitement à "Succes"</from>
+      <to>generer_le_mail_de_notification.ktr</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
   </hops>
   <notepads>
     <notepad>
-      <note>Ex&#xe9;cute un processus ETL&#x28;t&#xe2;che ou transformation&#x29; via les principales &#xe9;tapes&#xd;&#xa;&#x2a; Bascule du processu &#xe0; &#x22;processus en cours&#x22;&#xd;&#xa;&#x2a; Cr&#xe9;ation d&#x27;un dossier de travail temporaire&#xd;&#xa;&#x2a; R&#xe9;cup&#xe9;ration des valeurs des param&#xe8;tres associ&#xe9;s &#xe0; la demande de processus&#xd;&#xa;&#x2a; Ex&#xe9;cute la t&#xe2;che ou la transformation PDI avec les valeurs de param&#xe8;tres r&#xe9;cupr&#xe9;es&#xd;&#xa;&#x2a; Si production de fichiers en sortie, cr&#xe9;ation d&#x27;un dossier sp&#xe9;cifique pour le stockage du fichier&#xd;&#xa; si un seul fichier produit ou du zip g&#xe9;n&#xe9;r&#xe9; dans le cas de plusieurs fichiers&#xd;&#xa;&#x2a; Bascule du processus &#xe0; &#x22;Succ&#xe8;s&#x22; ou &#x22;Echec&#x22; en cas d&#x27;erreur&#xd;&#xa;&#x2a; Pr&#xe9;paration d&#x27;un mail &#xe9;ventuel sur la base des mod&#xe8;les de messages associ&#xe9;s&#xd;&#xa;au traitement et du statut du traitement &#x28;succ&#xe8;s ou echec&#x29;</note>
-      <xloc>25</xloc>
-      <yloc>25</yloc>
-      <width>511</width>
+      <note>Exécute un processus ETL(tâche ou transformation) via les principales étapes
+* Bascule du processu à "processus en cours"
+* Création d'un dossier de travail temporaire
+* Récupération des valeurs des paramètres associés à la demande de processus
+* Exécute la tâche ou la transformation PDI avec les valeurs de paramètres récuprées
+* Si production de fichiers en sortie, création d'un dossier spécifique pour le stockage du fichier
+ si un seul fichier produit ou du zip généré dans le cas de plusieurs fichiers
+* Bascule du processus à "Succès" ou "Echec" en cas d'erreur
+* Préparation d'un mail éventuel sur la base des modèles de messages associés
+au traitement et du statut du traitement (succès ou echec)</note>
+      <xloc>15</xloc>
+      <yloc>0</yloc>
+      <width>590</width>
       <heigth>170</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -1071,5 +1437,4 @@
       <drawshadow>Y</drawshadow>
     </notepad>
   </notepads>
-
 </job>
