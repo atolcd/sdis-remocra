@@ -115,7 +115,14 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
             },
             'fusionCrise #validFusion':{
                click: this.fusionneCrise
+            },
+            'exportCrise':{
+               render: this.loadExportData
+            },
+            'exportCrise #validExportCrise':{
+               click: this.execExport
             }
+
 
         });
     },
@@ -195,6 +202,7 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
                 grid.queryById('fusionneCrise').setDisabled(dateCloture != null || !Sdis.Remocra.Rights.hasRight('CRISE_U'));
                 grid.queryById('configureCrise').setDisabled(dateCloture != null ||!Sdis.Remocra.Rights.hasRight('CRISE_U'));
                 grid.queryById('cloreCrise').setDisabled(dateCloture != null ||!Sdis.Remocra.Rights.hasRight('CRISE_U'));
+
     },
 
     showCreationCrise: function(){
@@ -354,6 +362,256 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
 
     showExportCrise: function(){
       Ext.widget('exportCrise').show();
+    },
+
+    loadExportData: function(){
+        Ext.Ajax.request({
+                      url : Sdis.Remocra.util.Util.withBaseUrl("../processusetlmodele/processusetlmodelparam/" + 1),
+                      method : 'GET',
+                      scope : this,
+                      callback : function(options, success, response) {
+                          if (success == true) {
+                              var decodedResp = Ext.decode(response.responseText);
+                               this.deleteParamsExport();
+                              this.buildParamsForExport(decodedResp.data);
+                          } else {
+                              Ext.MessageBox.show({ title : this.title, msg : "Un problème est survenu lors de la récupération des modèles de requête.",
+                                  buttons : Ext.Msg.OK, icon : Ext.MessageBox.ERROR });
+                          }
+                      }});
+    },
+    deleteParamsExport : function() {
+             var compFather =  this.getExportCrise().getComponent('formExport');
+             var infoParam = compFather.getComponent('infoParam');
+             var temp = compFather.getComponent('temp');
+             if (infoParam) {
+                 compFather.remove(infoParam);
+             }
+             if (temp) {
+              compFather.remove(temp);
+             }
+             if (this.tab_items && this.tab_items.length > 0) {
+                 if (this.tab_items != null) {
+                     var i;
+                     for (i = 0; i < this.tab_items.length; i++) {
+                         var comp = compFather.getComponent(this.tab_items[i]);
+                         if (comp) {
+                             compFather.remove(comp, true);
+                         }
+                     }
+                 }
+             }
+     },
+
+
+    buildParamsForExport : function(data) {
+        this.tab_items = [];
+        var panelFather = this.getExportCrise().getComponent('formExport');
+        var crise = this.getTabGeneral().getSelectionModel().getSelection();
+        panelFather.add({
+            xtype:'panel', border: false, style: 'margin-bottom:10px;',
+            itemId: 'infoParam', html: (data.length>0?'Veuillez renseigner les paramètres suivants :':'Aucun paramètre pour cet export')
+        });
+        var i;
+        for (i = 0; i < data.length; i++) {
+            var typeControle = data[i]['formulaireTypeControle'];
+
+            switch (typeControle) {
+                // Static Combo
+                case 'staticcombo':
+                    var paramLstDStore = new Ext.data.JsonStore({
+                        autoLoad: true,
+                        proxy : {
+                            format : 'json',
+                            type : 'rest',
+                            headers : { 'Accept' : 'application/json,application/xml', 'Content-Type' : 'application/json' },
+                            url : Sdis.Remocra.util.Util.withBaseUrl("../processusetlmodele/processusetlmodparalst/" + data[i]['id']),
+                            //On filtre pour récupérer la valeur par défaut à l'index 0
+                            extraParams : {query: data[i]['formulaireValeurDefaut']},
+                            reader : { type : 'json', root : 'data', totalProperty : 'total' }
+                        },
+                        idProperty : 'id',
+                        //autoLoad : true,
+                        restful : true,
+                        fields : [ { name : data[i]['sourceSqlValeur'], type : 'string' },
+                                   { name : data[i]['sourceSqlLibelle'], type : 'string' }
+                        ]
+                    });
+                    panelFather.add({
+                        xtype : data[i]['formulaireTypeControle'],
+                        itemId : 'input'+data[i]['id'],
+                        fieldLabel : data[i]['formulaireEtiquette'],
+                        allowBlank : !data[i]['obligatoire'],
+                        value : data[i]['formulaireValeurDefaut'],
+                        // Propre à la combo
+                        store : paramLstDStore,
+                        valueField: data[i]['sourceSqlValeur'],
+                        displayField: data[i]['sourceSqlLibelle'],
+                        hiddenName : 'id',
+                        // typeAhead: true,
+                        mode : 'local',
+                        triggerAction : 'all',
+                        forceSelection : true,
+                        hideTrigger : false,
+                        editable : false,
+                        emptyText : "Sélectionner une valeur",
+                        name : data[i]['nom']
+                    });
+                     var comboLstD = Ext.ComponentQuery.query('#input'+data[i]['id'])[0];
+                     this.setDefaultValue(comboLstD);
+                    break;
+
+                // Combo avec requête Saisie et requête de type "like" sur le libellé
+                case 'combo':
+                    var paramLstLikeDStore = new Ext.data.JsonStore({
+                        autoLoad: true,
+                        proxy : {
+                            format : 'json',
+                            type : 'rest',
+                            headers : { 'Accept' : 'application/json,application/xml', 'Content-Type' : 'application/json' },
+                            url : Sdis.Remocra.util.Util.withBaseUrl("../processusetlmodele/processusetlmodparalst/" + data[i]['id']),
+                             //On filtre pour récupérer la valeur par défaut à l'index 0
+                             //dans ce cas le like est sur le nom et non pas l'id attention au appostrophe et doublon nom crise
+                            extraParams : {query: data[i]['nom'] == "CRISE_ID" ? crise[0].data.nom.replace('\'', '\'\'') : data[i]['formulaireValeurDefaut']},
+                            reader : { type : 'json', root : 'data', totalProperty : 'total' }
+                        },
+                        idProperty : 'id',
+                        //autoLoad : true,
+                        restful : true,
+                        fields : [ { name : data[i]['sourceSqlValeur'], type : 'string' },
+                                   { name : data[i]['sourceSqlLibelle'], type : 'string' }
+                        ]
+
+                    });
+                    panelFather.add({
+                        xtype: 'combo',
+                        itemId : 'input'+data[i]['id'],
+                        fieldLabel : data[i]['formulaireEtiquette'],
+                        allowBlank : !data[i]['obligatoire'],
+                        value : data[i]['formulaireValeurDefaut'],
+                        // Propre à la combo
+                        store: paramLstLikeDStore,
+                        valueField: data[i]['sourceSqlValeur'],
+                        displayField: data[i]['sourceSqlLibelle'],
+                        hiddenName : 'id',
+                        typeAhead: true,
+                        mode : 'remote',
+                        triggerAction : 'all',
+                        forceSelection: true,
+                        hideTrigger : false,
+                        editable : true,
+                        minChars: 1,
+                        emptyText : "Sélectionner une valeur",
+                        name : data[i]['nom']
+                    });
+                    var comboLstLike = Ext.ComponentQuery.query('#input'+data[i]['id'])[0];
+                    this.setDefaultValue(comboLstLike);
+                    break;
+                // DateField
+                case 'datefield':
+                    panelFather.add({
+                        xtype : data[i]['formulaireTypeControle'],
+                        itemId : 'input'+data[i]['id'],
+                        fieldLabel : data[i]['formulaireEtiquette'],
+                        allowBlank : !data[i]['obligatoire'],
+                        value : data[i]['formulaireValeurDefaut'],
+                        format : 'd/m/Y',
+                        name : data[i]['nom']
+
+                    });
+
+                    break;
+
+                // Composant par défaut
+                case 'checkbox':
+                    panelFather.add({
+                        xtype : data[i]['formulaireTypeControle'],
+                        itemId : 'input'+data[i]['id'],
+                        fieldLabel : data[i]['formulaireEtiquette'],
+                        allowBlank : !data[i]['obligatoire'],
+                        checked : data[i]['formulaireValeurDefaut'] == 'true' ? true : false,
+                        name : data[i]['nom']
+                    });
+
+                    break;
+                case 'datetimefield':
+                //le champ est la cncaténation d'un input-date-[id] et input-time-[id] et le résultat est enregistré dans param[id]
+                    panelFather.add({
+                        xtype: 'fieldcontainer',
+                        layout: 'hbox',
+                        fieldLabel:  data[i]['formulaireEtiquette'],
+                        items: [{
+                         xtype: 'datefield',
+                         itemId: 'input-date-'+data[i]['id'],
+                         labelAlign: 'left',
+                         width: 120,
+                         name: 'date',
+                         value: Ext.Date.format(new Date(data[i]['formulaireValeurDefaut']), 'd/m/Y'),
+                         allowBlank : !data[i]['obligatoire'],
+                         format: 'd/m/Y',
+                         listeners: {
+                             change: this.onChangeDateField
+                             }
+                         }, {
+                         xtype: 'timefield',
+                         itemId: 'input-time-'+data[i]['id'],
+                         name: 'time',
+                         fieldLabel: 'à',
+                         labelAlign: 'left',
+                         margin: '0 0 0 10',
+                         labelWidth: 25,
+                         width: 120,
+                         minValue: "00:00",
+                         value: Ext.Date.format(new Date(data[i]['formulaireValeurDefaut']), 'H:i:s'),
+                         format: 'H:i:s',
+                         allowBlank : !data[i]['obligatoire'],
+                         increment: 15,
+                          listeners: {
+                          change: this.onChangeTimeField
+                          }
+                    }]},{
+                     xtype: 'textfield',
+                     itemId: 'input'+data[i]['id'],
+                     width: 120,
+                     labelWidth: 30,
+                     labelAlign: 'left',
+                     hidden: true,
+                     name: data[i]['nom'],
+                     value: Ext.Date.format(new Date(), 'Y-m-d h:m:s')
+                    });
+
+                    break;
+                    case 'timefield':
+                     panelFather.add({
+                         xtype: data[i]['formulaireTypeControle'],
+                         itemId: 'input'+data[i]['id'],
+                         name: data[i]['nom'],
+                         fieldLabel:  data[i]['formulaireEtiquette'],
+                         margin: '0 0 0 10',
+                         labelWidth: 20,
+                         minValue: "00:00",
+                         value: data[i]['formulaireValeurDefaut'],
+                         format: 'H:i:s',
+                         allowBlank : !data[i]['obligatoire'],
+                         increment: 15
+                     });
+                     break;
+                default:
+                     panelFather.add({
+                       xtype : data[i]['formulaireTypeControle'].includes('geom') ? 'textfield' : data[i]['formulaireTypeControle'],
+                       itemId : 'input'+data[i]['id'],
+                       fieldLabel : data[i]['formulaireEtiquette'],
+                       allowBlank : !data[i]['obligatoire'],
+                       value : data[i]['formulaireValeurDefaut'],
+                       name : data[i]['nom']
+
+                     });
+                   break;
+            }
+            this.tab_items.push('input'+data[i]['id']);
+            panelFather.doLayout();
+        }
+
     },
 
     showFusionneCrise: function(){
@@ -659,7 +917,7 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
                 couchesOp.each(function(record) {
                     //On ajoute la proprieté isOp pour déterminer si la case est coché ou pas
                     if(record.raw.code === child.raw.code){
-                    child.data.isOp = true;
+                      child.data.isOp = true;
                     }
                     codes.push(record.data.code);
                 });
@@ -712,33 +970,77 @@ Ext.define('Sdis.Remocra.controller.crise.Crise', {
                    }
                });
            }
-     }/*,
+     },
 
-    removeReadOnly: function(component) {
-       if (Ext.isFunction(component.cascade)) {
-           component.cascade(function(item) {
-               if (Ext.isFunction(item.setReadOnly)) {
-                   item.setReadOnly(false);
-               }
-               if (Ext.isFunction(item.hideTrigger)) {
-                   item.triggerEl.show();
-               }
-               if (item.getToolbar) {
-                   toolbar = item.getToolbar();
-               }
-               if (item.isXType('button')) {
-                  item.setDisabled(false);
-               }
-               if (item.isXType('grid')) {
-                   Ext.Array.each(item.plugins, function(plugin) {
-                       plugin.beforeEdit = function() {
-                           return true;
-                       };
-                   });
-               }
-           });
-       }
-    }*/
+    setDefaultValue : function(combo){
+       combo.store.on('load', function(store, records, successful, eOpts) {
+           if (records.length>0) {
+               this.setValue(records[0]);
+           }
+       }, combo, {single: true});
+     },
 
+    onChangeDateField: function(datefield, newValue, oldValue) {
+          var id = datefield.getItemId().substring(11);
+          var date  =  Ext.Date.format(newValue,'Y-m-d')+" "+Ext.Date.format(Ext.ComponentQuery.query('#input-time-'+id)[0].getValue(),'h:m:s');
+          Ext.ComponentQuery.query('#input'+id)[0].setValue(date);
+
+    },
+
+    onChangeTimeField: function(timefield, newValue, oldValue) {
+         var id = timefield.getItemId().substring(11);
+         var date  = Ext.Date.format(Ext.ComponentQuery.query('#input-date-'+id)[0].getValue(),'Y-m-d')+" "+ Ext.Date.format(newValue,'h:m:s');
+         Ext.ComponentQuery.query('#input'+id)[0].setValue(date);
+    },
+
+     execExport : function() {
+         var formP = this.getExportCrise().getComponent('formExport');
+         if (!formP.getForm().isValid()) {
+             Ext.MessageBox.show({ title : this.title, msg : "Les paramètres ne sont pas tous valides.<br/>Veuillez corriger les erreurs avant de valider.", buttons : Ext.Msg.OK,
+                 icon : Ext.MessageBox.ERROR });
+             return;
+         }
+
+         var i;
+         var data = [];
+         for (i = 0; i < this.tab_items.length; i++) {
+             var comp = formP.getComponent(this.tab_items[i]);
+             var value;
+             if (comp.xtype == 'datefield') {
+                 value = Ext.Date.format(comp.getValue(), 'Y-m-d h:m:s');
+             }else if (comp.xtype == 'timefield') {
+                 value = Ext.Date.format(comp.getValue(), 'H:m:s');
+             } else {
+                 value = comp.getValue();
+             }
+             var valeur = "";
+             if(value != null) {
+                 valeur = value.toString();
+             }
+             data.push(Ext.JSON.encodeValue(comp.getItemId()) +":"+ Ext.JSON.encodeValue(valeur));
+         }
+
+         data.push(Ext.JSON.encodeValue("processus") +":"+ Ext.JSON.encodeValue(1));
+         data.push(Ext.JSON.encodeValue("priorite") +":"+ Ext.JSON.encodeValue(3));
+         Ext.Ajax.request(
+                 {
+                     jsonData:  "{" + data + "}" ,
+                     url : Sdis.Remocra.util.Util.withBaseUrl("../processusetlmodele/withoutfile/" + 1),
+                     method : 'POST',
+                     scope : this,
+
+                     success : function(form, action) {
+                         Sdis.Remocra.util.Msg.msg('Processus Etl','Votre demande est en cours de traitement.\n'+
+                          'Un message électronique vous informera de l\'issue du \n' + 'traitement.',5);
+                         this.getExportCrise().close();
+                     },
+
+                     failure : function(form, action) {
+                         Ext.MessageBox.show({ title : this.title, msg : 'Un problème est survenu lors de l\'enregistrement des paramètres.', buttons : Ext.Msg.OK,
+                             icon : Ext.MessageBox.ERROR });
+                     }
+
+         });
+     }
 
 });

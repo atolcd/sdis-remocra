@@ -3,55 +3,40 @@ Ext.define('Sdis.Remocra.features.crises.ExportCrise', {
     extend: 'Ext.window.Window',
     alias: 'widget.exportCrise',
     title: 'Exporter la crise',
-      width: 300,
-      height: 250,
       modal: true,
+      autoScroll    : true,
+      width: 400,
+      height: 400,
       plain: true,
-      buttonAlign: 'center',
-      items: [{
-             xtype: 'combo',
-             store: new Ext.data.SimpleStore({
-                       fields: ['id', 'format' ],
-                       data: [['0', 'HTML' ], ['1', 'CSV' ] ]
-             }),
-             displayField: 'format',
-             valueField: 'id',
-             forceSelection: true,
-             width: 200,
-             value: '0',
-             minChars: 1,
-             mode: 'remote',
-             margin: '30 0 10 0',
-             typeAhead: true,
-             //store: {model: 'Sdis.Remocra.model.Hydrant', autoLoad: true},
-             name: 'typeExport',
-             fieldLabel: 'Format',
-             labelAlign: 'right'
-      },{
-             boxLabel: 'Exporter des documents',
-             labelAlign: 'right',
-             margin: '20 0 0 55',
-             xtype: 'checkbox',
-             name: 'exportDocuments',
-             value: 'exportDocuments',
-             width: 280
-      }
-    ],
+
+    buttonAlign : 'center',
 
     initComponent: function() {
         this.buttons = [{
-            text: 'Valider',
-            itemId: 'validCrise'
-        },{
-            text: 'Annuler',
-            itemId: 'annulCrise',
-            scope: this,
-            handler: function() {
-                this.close();
-            }
+                   text: 'Valider',
+                   itemId: 'validExportCrise'
+               },{
+                   text: 'Annuler',
+                   itemId: 'annulExportCrise',
+                   scope: this,
+                   handler: function() {
+                       this.close();
+                   }
 
-        }];
-        this.callParent(arguments);
+               }];
+        var formPanel = new Ext.form.FormPanel({
+               itemId : 'formExport',
+               defaults : { labelSeparator : '', allowBlank : true, msgTarget : 'side', width: 350,  margin: '10 10 10 10', labelAlign: 'top' },
+              items : this.getItems(),
+              border : false
+            });
+
+               Ext.apply(this, { items : [ formPanel ] });
+               this.callParent(arguments);
+    },
+
+    getItems: function(){
+      var  items =  [];
+       return items;
     }
-
 });

@@ -4,7 +4,6 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL_MODELE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL_MODELE_DROIT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL_MODELE_PARAMETRE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL_PARAMETRE;
-import static fr.sdis83.remocra.db.model.remocra.Tables.REQUETE_MODELE_PARAMETRE;
 import static fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtl.PROCESSUS_ETL;
 import static fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlStatut.PROCESSUS_ETL_STATUT;
 
@@ -29,6 +28,7 @@ import java.util.regex.Pattern;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import flexjson.JSONDeserializer;
 import fr.sdis83.remocra.db.model.remocra.Tables;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtl;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlModele;
@@ -211,7 +211,7 @@ public class ProcessusEtlModeleRepository {
     }
   }
 
-  public ProcessusEtl createProcess(MultipartHttpServletRequest request) throws ParseException, IOException {
+  public ProcessusEtl createProcess(MultipartHttpServletRequest request) throws IOException {
 
     ProcessusEtl p  = new ProcessusEtl();
     //Ajout du processusEtl
@@ -226,10 +226,62 @@ public class ProcessusEtlModeleRepository {
             ,priorite
             ,t).execute();
     Long idProcess  = context.select(DSL.max((Tables.PROCESSUS_ETL.ID))).from(Tables.PROCESSUS_ETL).fetchOne().value1();
+    if (request.getFileNames() != null) {
+      this.addProcessFiles(request, idProcess);
+    }
+
+    //Ajout des paramètres
+    Map  mapParams = request.getParameterMap();
+    for(Object key : mapParams.keySet()){
+      String keyStr = (String)key;
+      String[] values = (String[])(mapParams.get(keyStr));
+      for(String  val : values){
+        if(keyStr.substring(0,5).equals("input")){
+          context.insertInto(PROCESSUS_ETL_PARAMETRE, PROCESSUS_ETL_PARAMETRE.PROCESSUS, PROCESSUS_ETL_PARAMETRE.PARAMETRE, PROCESSUS_ETL_PARAMETRE.VALEUR)
+              .values(idProcess
+                  ,Long.valueOf(keyStr.substring(5))
+                  ,val).execute();
+        }
+      }
+    }
+    return p;
+
+  }
+
+  //creation de processus en Extjs (le post des files est différent du vuejs)
+  public ProcessusEtl createProcessWithoutFile(String json)  {
+    Map mapParams = new JSONDeserializer<Map>().deserialize(json);
+    ProcessusEtl p  = new ProcessusEtl();
+    //Ajout du processusEtl
+    Long idModele = Long.valueOf(String.valueOf(mapParams.get("processus")));
+    Instant t = new Instant();
+    int priorite  = Integer.valueOf(String.valueOf(mapParams.get("priorite")));
+    Utilisateur u = utilisateurService.getCurrentUtilisateur();
+    context.insertInto(PROCESSUS_ETL, PROCESSUS_ETL.MODELE, PROCESSUS_ETL.STATUT, PROCESSUS_ETL.UTILISATEUR, PROCESSUS_ETL.PRIORITE, PROCESSUS_ETL.DEMANDE)
+        .values(idModele
+            ,context.select(PROCESSUS_ETL_STATUT.ID).from(PROCESSUS_ETL_STATUT).where(PROCESSUS_ETL_STATUT.CODE.eq("A")).fetchOne().value1()
+            ,Long.valueOf(u.getId())
+            ,priorite
+            ,t).execute();
+    Long idProcess  = context.select(DSL.max((Tables.PROCESSUS_ETL.ID))).from(Tables.PROCESSUS_ETL).fetchOne().value1();
+    //Ajout des paramètres
+    for(Object key : mapParams.keySet()){
+      String keyStr = (String)key;
+        if(keyStr.substring(0,5).equals("input")){
+          String val = (String)(mapParams.get(keyStr));
+          context.insertInto(PROCESSUS_ETL_PARAMETRE, PROCESSUS_ETL_PARAMETRE.PROCESSUS, PROCESSUS_ETL_PARAMETRE.PARAMETRE, PROCESSUS_ETL_PARAMETRE.VALEUR)
+              .values(idProcess
+                  ,Long.valueOf(keyStr.substring(5))
+                  ,val).execute();
+      }
+    }
+    return p;
+
+  }
+
+  public void addProcessFiles(MultipartHttpServletRequest request , Long idProcess) throws IOException {
     String codeProcess  = context.select(PROCESSUS_ETL.CODE).from(PROCESSUS_ETL).where(PROCESSUS_ETL.ID.eq(idProcess)).fetchOne().value1();
     //Ajout des fichiers
-  Map<String, MultipartFile> files = request.getFileMap();
-    if (request.getFileNames() != null) {
       // Répertoire "depots PDI"
       String basePath = paramConfService.getDossierDepotPdi();
       // Répertoire "depots PDI" du traitement
@@ -259,24 +311,6 @@ public class ProcessusEtlModeleRepository {
           throw new SecurityException("Impossible de créer le fichier " + targetFilePath);
         }
       }
-    }
-    //Ajout des paramètres
-    Map  mapParams = request.getParameterMap();
-    for(Object key : mapParams.keySet()){
-      String keyStr = (String)key;
-      String[] values = (String[])(mapParams.get(keyStr));
-      for(String  val : values){
-        if(keyStr.substring(0,5).equals("input")){
-          context.insertInto(PROCESSUS_ETL_PARAMETRE, PROCESSUS_ETL_PARAMETRE.PROCESSUS, PROCESSUS_ETL_PARAMETRE.PARAMETRE, PROCESSUS_ETL_PARAMETRE.VALEUR)
-              .values(idProcess
-                  ,Long.valueOf(keyStr.substring(5))
-                  ,val).execute();
-        }
-      }
-    }
-    return p;
-
   }
-
 
 }

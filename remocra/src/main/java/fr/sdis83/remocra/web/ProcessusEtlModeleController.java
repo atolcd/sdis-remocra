@@ -23,6 +23,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -136,6 +137,19 @@ public class ProcessusEtlModeleController {
   public ResponseEntity<java.lang.String> createProcessEtl( MultipartHttpServletRequest request) {
     try{
       ProcessusEtl p = processusEtlModeleRepository.createProcess(request);
+      return new SuccessErrorExtSerializer(true, "Le processus Etl  a été enregistrée").serialize();
+    }catch(Exception e){
+      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de l\'enregistrement du processus Etl").serialize();
+    }
+  }
+
+
+  @RequestMapping(value = "/withoutfile/{idmodele}", method = RequestMethod.POST, headers = "Accept=application/json")
+  @PreAuthorize("hasRight('CRISE_C')")
+  @Transactional
+  public ResponseEntity<java.lang.String> createProcess( HttpServletRequest request, final  @RequestBody String json) {
+    try{
+      ProcessusEtl p = processusEtlModeleRepository.createProcessWithoutFile(json);
       return new SuccessErrorExtSerializer(true, "Le processus Etl  a été enregistrée").serialize();
     }catch(Exception e){
       return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de l\'enregistrement du processus Etl").serialize();
