@@ -25,6 +25,7 @@ import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
+import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.model.Crise;
 import fr.sdis83.remocra.web.model.CriseDocument;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
@@ -69,8 +70,10 @@ public class CriseController {
                              final @RequestParam(value = "query", required = false) String query, @RequestParam(value = "sort", required = false) String sorts,
                              @RequestParam(value = "filter", required = false) String filters) {
     final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
+    final List<ItemSorting> sortList = ItemSorting.decodeJson(sorts);
 
-      return new AbstractExtListSerializer<Crise>("Crise retrieved.") {
+
+    return new AbstractExtListSerializer<Crise>("Crise retrieved.") {
 
       @Override
       protected JSONSerializer getJsonSerializer() {
@@ -88,7 +91,7 @@ public class CriseController {
 
       @Override
       protected List<Crise> getRecords() {
-        return criseRepository.getAll(itemFilterList, limit, start);
+        return criseRepository.getAll(itemFilterList, limit, start, sortList);
       }
 
       @Override

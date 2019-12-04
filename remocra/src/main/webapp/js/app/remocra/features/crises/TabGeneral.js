@@ -72,6 +72,7 @@ Ext.define('Sdis.Remocra.features.crises.TabGeneral', {
                       return record.getTypeCrise().get('nom');
               },
               filterable: true,
+              sortable: false,
               filter: {
                   xtype: 'combo',
                   filterName: 'typeCrise',
@@ -128,6 +129,7 @@ Ext.define('Sdis.Remocra.features.crises.TabGeneral', {
         },{
               text: 'Statut',
               dataIndex: 'typeCriseStatut',
+              sortable: false,
               align : 'center',
               renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                       return record.getTypeCriseStatut().get('nom');

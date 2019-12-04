@@ -12,7 +12,6 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.REPERTOIRE_LIEU;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_CRISE_STATUT;
 import static fr.sdis83.remocra.db.model.remocra.tables.Document.DOCUMENT;
-import static fr.sdis83.remocra.util.GeometryUtil.sridFromGeom;
 import static org.jooq.impl.DSL.row;
 
 import java.sql.SQLException;
@@ -27,10 +26,10 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.Order;
 
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
-import fr.sdis83.remocra.db.model.remocra.tables.CriseDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.OgcCouche;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlPlanificationParametre;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.RepertoireLieu;
@@ -40,9 +39,9 @@ import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.util.DocumentUtil;
-import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.deserialize.GeometryFactory;
 import fr.sdis83.remocra.web.message.ItemFilter;
+import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.model.Crise;
 import fr.sdis83.remocra.web.model.ProcessusEtlPlanification;
 import fr.sdis83.remocra.web.model.TypeCrise;
@@ -54,6 +53,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Result;
+import org.jooq.SortOrder;
 import org.jooq.impl.DSL;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.NameTokenizers;
@@ -100,9 +100,18 @@ public class CriseRepository {
     this.context = context;
   }
 
-  public List<Crise> getAll(List<ItemFilter> itemFilters, Integer limit , Integer start) {
+  public List<Crise> getAll(List<ItemFilter> itemFilters, Integer limit , Integer start, List<ItemSorting> itemSortings) {
     //dans le cas de fusion on recupère les crises en fonction de type et en eliminant la crise choisis
     Condition condition = this.getFilters(itemFilters);
+    ArrayList<javax.persistence.criteria.Order> orders = new ArrayList<Order>();
+    //Par défaut on tri par date activation DESC
+    String sortField = "activation";
+    SortOrder sortOrder = SortOrder.DESC;
+    for (ItemSorting itemSorting : itemSortings) {
+          sortField = itemSorting.getFieldName();
+          sortOrder = itemSorting.isDesc() ?  SortOrder.DESC : SortOrder.ASC;
+    }
+
     Result<Record> criseRecord = null;
     List<Crise> cr = new ArrayList<Crise>();
       criseRecord = context.select(CRISE.ID.as("criseId"), CRISE.ACTIVATION.as("criseActivation"), CRISE.NOM.as("criseNom"), CRISE.DESCRIPTION.as("criseDescription"),
@@ -113,7 +122,7 @@ public class CriseRepository {
           .from(CRISE)
           .join(TYPE_CRISE).on(TYPE_CRISE.ID.eq(CRISE.TYPE_CRISE))
           .join(TYPE_CRISE_STATUT).on(TYPE_CRISE_STATUT.ID.eq(CRISE.STATUT))
-          .where(condition).orderBy(CRISE.ACTIVATION).limit(limit).offset(start).fetch();
+          .where(condition).orderBy(CRISE.field(DSL.field(sortField)).sort(sortOrder)).limit(limit).offset(start).fetch();
 
     ModelMapper modelMapper = new ModelMapper();
     modelMapper.getConfiguration().addValueReader(new RecordValueReader());
