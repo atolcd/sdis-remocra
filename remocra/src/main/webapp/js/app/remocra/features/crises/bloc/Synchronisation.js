@@ -82,7 +82,7 @@ Ext.define('Sdis.Remocra.features.crises.bloc.Synchronisation', {
                                        }
                                    }
                                });
-                            win.fireEvent('beforerender', this);
+                               win.show();
 
                   }else {
                       grid = this.firstGrid;
@@ -233,7 +233,6 @@ Ext.define('Sdis.Remocra.features.crises.bloc.Synchronisation', {
                            panelFather.add({
                                xtype: 'fieldcontainer',
                                layout: 'hbox',
-                               itemId: 'temp',
                                fieldLabel:  data[i]['formulaireEtiquette'],
                                items: [{
                                 xtype: 'datefield',
