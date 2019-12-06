@@ -320,7 +320,7 @@ cd ~/projets/atolcd/sdis-remocra/docker/pdi-4.4-dkron
 docker build -t remocra-pdi-4.4-dkron .
 ```
 
-Si besoin, mettre en place le référentiel de traitement (voir plus haut)
+Si besoin, mettre en place le référentiel de traitement (voir plus haut).
 
 ### Exécution
 ```sh
@@ -407,4 +407,41 @@ docker run -it --rm \
   /dkron/dkron agent agent --server --bootstrap-expect=1 --node-name=jobs --tag="pdi=7.1"
 
  # http://localhost:8070
+```
+
+
+
+
+## Registry Atol CD
+
+[Les images du registry Atol CD](https://nexus3-ovh.priv.atolcd.com/#browse/search/docker=format%3Ddocker%20AND%20attributes.docker.imageName%3D*remocra*) sont constuites avec un utilisateur dédié 2000:2000 (UID/GID) :
+* docker-registry.priv.atolcd.com/atolcd/remocra-geoserver:latest
+* docker-registry.priv.atolcd.com/atolcd/remocra:latest
+* docker-registry.priv.atolcd.com/atolcd/remocra-pdi-4.4-dkron:latest
+* docker-registry.priv.atolcd.com/atolcd/remocra-pdi-dkron:latest
+
+Dans la composition des services, on utilise ces images plutôt que de les construire localement. Au préalable, on ajoute l'utilisateur 2000:2000 si nécessaire et on lui affecte les fichiers :
+```sh
+export REMOCRA_UID=2000
+export REMOCRA_GID=2000
+
+# Utilisateur et groupe
+id -g ${REMOCRA_GID} || sudo groupadd -g ${REMOCRA_GID} remocra
+id -u ${REMOCRA_UID} || sudo useradd remocra --uid ${REMOCRA_UID} --gid ${REMOCRA_GID} --groups ${REMOCRA_GID} --shell=/bin/nolog
+
+# Propriétaire des fichiers
+[ $(find ~/projets/atolcd/sdis-remocra/docker/.docker/ -not -path "*.docker/db/postgresql_data*" ! -user ${REMOCRA_UID} 2>/dev/null | wc -l) -gt 0 ] && \
+  echo "Changement propriétaire en ${REMOCRA_UID}:${REMOCRA_GID}" && \
+  sudo find ~/projets/atolcd/sdis-remocra/docker/.docker/ -not -path "*.docker/db/postgresql_data*" -exec chown ${REMOCRA_UID}:${REMOCRA_GID} {} \;
+
+# Lancement des services (on retire les lignes "build" et on référence les images du registry)
+cd ~/projets/atolcd/sdis-remocra/docker/
+export REMOCRA_VERSION="latest"
+cat docker-compose.yml | \
+  sed '/build: \.\/.*/d' | \
+  sed "s%image: remocra-geoserver%image: docker-registry.priv.atolcd.com/atolcd/remocra-geoserver:${REMOCRA_VERSION}%g" | \
+  sed "s%image: remocra-pdi-4.4-dkron%image: docker-registry.priv.atolcd.com/atolcd/remocra-pdi-4.4-dkron:${REMOCRA_VERSION}%g" | \
+  sed "s%image: remocra-pdi-dkron%image: docker-registry.priv.atolcd.com/atolcd/remocra-pdi-dkron:${REMOCRA_VERSION}%g" | \
+  sed "s%image: remocra%image: docker-registry.priv.atolcd.com/atolcd/remocra:${REMOCRA_VERSION}%g" | \
+  docker-compose -f - up
 ```

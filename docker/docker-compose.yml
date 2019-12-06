@@ -6,7 +6,7 @@ services:
   db: 
     container_name: remocra-db
     image: mdillon/postgis:11-alpine
-    #user: "${UID:-1000}:${GID:-1000}"
+    #user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
     ports:
       - "5432:5432"
     volumes:
@@ -28,7 +28,7 @@ services:
     container_name: remocra-geoserver
     build: ./geoserver
     image: remocra-geoserver
-    user: "${UID:-1000}:${GID:-1000}"
+    user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
     ports:
       - "8090:8080"
     volumes:
@@ -63,7 +63,7 @@ services:
     container_name: remocra
     build: ./remocra
     image: remocra
-    user: "${UID:-1000}:${GID:-1000}"
+    user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
     ports:
       - "8080:8080"
     volumes:
@@ -94,7 +94,7 @@ services:
     container_name: remocra-pdi-4.4-dkron
     build: ./pdi-4.4-dkron
     image: remocra-pdi-4.4-dkron
-    user: "${UID:-1000}:${GID:-1000}"
+    user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
     ports:
       - "8060:8080"
     volumes:
@@ -131,7 +131,7 @@ services:
     container_name: remocra-pdi-dkron
     build: ./pdi-dkron
     image: remocra-pdi-dkron
-    user: "${UID:-1000}:${GID:-1000}"
+    user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
     ports:
       - "8070:8080"
     volumes:
