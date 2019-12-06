@@ -28,8 +28,10 @@ ENV KETTLE_HOME                 /home/pdi
 ENV PENTAHO_METASTORE_FOLDER    /home/pdi/.pentaho/metastore
 ENV KETTLE_JNDI_ROOT            /home/pdi/simple-jndi
 
-# ENV PENTAHO_DI_JAVA_OPTIONS   "-DPENTAHO_METASTORE_FOLDER=/home/pdi/.pentaho"
-ENV PENTAHO_DI_JAVA_OPTIONS     "-Xms1024m -Xmx2048m -XX:MaxPermSize=256m -DPENTAHO_METASTORE_FOLDER=/home/pdi/.pentaho"
+ENV \
+    PDI_INITIAL_MEMORY="1G" \
+    PDI_MAXIMUM_MEMORY="2G" \
+    PDI_MAXIMUM_PERMSIZE="256m"
 
 WORKDIR ${KETTLE_HOME}
 

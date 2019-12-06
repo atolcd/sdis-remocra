@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# PENTAHO_DI_JAVA_OPTIONS
+export PENTAHO_DI_JAVA_OPTIONS="-Xms${PDI_INITIAL_MEMORY:-1G} -Xmx${PDI_MAXIMUM_MEMORY:-2G} -XX:MaxPermSize=${PDI_MAXIMUM_PERMSIZE:-256m} -DPENTAHO_METASTORE_FOLDER=/home/pdi/.pentaho"
+
 # Redéfition des accès à la base de données remocra
 
 # kettle.properties
