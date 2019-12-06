@@ -70,8 +70,8 @@ RUN set -x \
 RUN rm -f ${GEOSERVER_HOME}/webapps/geoserver/WEB-INF/lib/jai*.jar
 
 ENV \
-    INITIAL_MEMORY="2G" \
-    MAXIMUM_MEMORY="5G"
+    GEOSERVER_INITIAL_MEMORY="1G" \
+    GEOSERVER_MAXIMUM_MEMORY="2G"
 
 # ---------------
 # Non root user

@@ -25,6 +25,10 @@ RUN sed -i "s/<Connector port=\"8080\"/<Connector URIEncoding=\"utf-8\" relaxedQ
 
 COPY ext/remocra.war /usr/local/tomcat/webapps/
 
+ENV \
+    REMOCRA_INITIAL_MEMORY="1G" \
+    REMOCRA_MAXIMUM_MEMORY="2G"
+
 # ---------------
 # Non root user
 # ---------------
