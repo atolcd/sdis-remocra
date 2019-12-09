@@ -68,55 +68,6 @@ pipeline {
       }
     }
     // review : pas de push
-    stage('_Push docker-registry : COMMIT_TO_BUILD & latest') {
-      failFast true
-      parallel {
-        stage('Push remocra') {
-          steps {
-            script {
-              if (remocra_image) {
-                docker.withRegistry('https://docker-registry.priv.atolcd.com') {
-                  remocra_image.push('latest')
-                }
-              }
-            }
-          }
-        }
-        stage('Push geoserver') {
-          steps {
-            script {
-              if (geoserver_image) {
-                docker.withRegistry('https://docker-registry.priv.atolcd.com') {
-                  geoserver_image.push('latest')
-                }
-              }
-            }
-          }
-        }
-        stage('Push pdi-4.4-dkron') {
-          steps {
-            script {
-              if (pdi44dkron_image) {
-                docker.withRegistry('https://docker-registry.priv.atolcd.com') {
-                  pdi44dkron_image.push('latest')
-                }
-              }
-            }
-          }
-        }
-        stage('Push pdi-dkron') {
-          steps {
-            script {
-              if (pdidkron_image) {
-                docker.withRegistry('https://docker-registry.priv.atolcd.com') {
-                  pdidkron_image.push('latest')
-                }
-              }
-            }
-          }
-        }
-      }
-    }
     stage('Clean') {
       failFast true
       parallel {
