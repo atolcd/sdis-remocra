@@ -776,19 +776,21 @@ export default {
       }
     },
     createOSMLayer(layerDef) {
-      return new OSM(layerDef.name, layerDef.urls, {
-        code: layerDef.id,
-        visibility: layerDef.visibility,
-        opacity: layerDef.opacity,
-        projection: layerDef.projection,
-        sphericalMercator: layerDef.spherical_mercator,
-        wrapDateLine: layerDef.wrap_dateLine,
-        tileOptions: layerDef.tile_options,
-        attribution: "<a href='http://openstreetmap.org/'>OpenStreetMap</a>"
-      })
+      return new TileLayer({
+        source: new OSM(layerDef.name, layerDef.urls, {
+          code: layerDef.id,
+          visibility: layerDef.visibility,
+          opacity: layerDef.opacity,
+          projection: layerDef.projection,
+          sphericalMercator: layerDef.spherical_mercator,
+          wrapDateLine: layerDef.wrap_dateLine,
+          tileOptions: layerDef.tile_options,
+          attribution: "<a href='http://openstreetmap.org/'>OpenStreetMap</a>"
+        })
+      });
     },
     createWMSLayer(layerDef) {
-      let crossOriginValue = layerDef.url.indexOf(window.document.location.hostname) ? 'use-credentials' : 'anonymous'
+      let crossOriginValue = layerDef.url.indexOf(window.document.location.hostname) !== -1 ? 'use-credentials' : 'anonymous'
       var wmsLayer = new ImageLayer({
         source: new ImageWMS({
           url: layerDef.url,
