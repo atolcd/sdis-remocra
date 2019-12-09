@@ -8,6 +8,8 @@ node {
   // uid / gid de l'utilisateur Docker
   DOCKER_UID = 2000
   DOCKER_GID = 2000
+  // Version de Remocra
+  REMOCRA_VERSION=$(cat pom.xml | grep "<version" | sed 's%<version>%%g'| sed 's%</version>%%g' | sed 's% %%g')
 }
 pipeline {
   options {
@@ -74,7 +76,7 @@ pipeline {
         }
       }
     }
-    stage('Push docker-registry : COMMIT_TO_BUILD & latest') {
+    stage('Push docker-registry : REMOCRA_VERSION & latest') {
       failFast true
       parallel {
         stage('Push remocra') {
@@ -82,7 +84,7 @@ pipeline {
             script {
               if (remocra_image) {
                 docker.withRegistry('https://docker-registry.priv.atolcd.com') {
-                  remocra_image.push("${COMMIT_TO_BUILD}")
+                  remocra_image.push("${REMOCRA_VERSION}")
                   remocra_image.push('latest')
                 }
               }
@@ -94,7 +96,7 @@ pipeline {
             script {
               if (geoserver_image) {
                 docker.withRegistry('https://docker-registry.priv.atolcd.com') {
-                  geoserver_image.push("${COMMIT_TO_BUILD}")
+                  geoserver_image.push("${REMOCRA_VERSION}")
                   geoserver_image.push('latest')
                 }
               }
@@ -106,7 +108,7 @@ pipeline {
             script {
               if (pdi44dkron_image) {
                 docker.withRegistry('https://docker-registry.priv.atolcd.com') {
-                  pdi44dkron_image.push("${COMMIT_TO_BUILD}")
+                  pdi44dkron_image.push("${REMOCRA_VERSION}")
                   pdi44dkron_image.push('latest')
                 }
               }
@@ -118,7 +120,7 @@ pipeline {
             script {
               if (pdidkron_image) {
                 docker.withRegistry('https://docker-registry.priv.atolcd.com') {
-                  pdidkron_image.push("${COMMIT_TO_BUILD}")
+                  pdidkron_image.push("${REMOCRA_VERSION}")
                   pdidkron_image.push('latest')
                 }
               }
