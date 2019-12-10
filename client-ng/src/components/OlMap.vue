@@ -783,7 +783,7 @@ export default {
         }),
         code: layerDef.id,
         opacity: layerDef.opacity,
-        visibile: layerDef.visibility
+        visible: layerDef.visibility
       });
     },
     createWMSLayer(layerDef) {
