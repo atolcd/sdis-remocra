@@ -39,6 +39,7 @@ WORKDIR ${KETTLE_HOME}
 COPY Dockerfile ext/pdi-ce-4.4.0-stable.zip* ${KETTLE_HOME}/
 RUN set -x \
   && ([ -f ${KETTLE_HOME}/pdi-ce-4.4.0-stable.zip ] \
+    || wget -P ${KETTLE_HOME} -q https://nexus3-ovh.priv.atolcd.com/repository/raw-atolcd-pentaho/4.4.0/pdi-ce-4.4.0-stable.zip \
     || wget -P ${KETTLE_HOME} -q https://sourceforge.net/projects/pentaho/files/Data%20Integration/4.4.0-stable/pdi-ce-4.4.0-stable.zip) \
   && unzip -qo ${KETTLE_HOME}/pdi-ce-4.4.0-stable.zip -d ${KETTLE_HOME} \
   && mv ${KETTLE_HOME}/data-integration/* ${KETTLE_HOME} \
@@ -82,6 +83,7 @@ RUN set -x \
 COPY Dockerfile ext/dkron_${DKRON_VERSION}_linux_amd64.tar.gz* ${DKRON_HOME}/
 RUN set -x \
   && ([ -f ${DKRON_HOME}/dkron_${DKRON_VERSION}_linux_amd64.tar.gz ] \
+    || wget -P ${DKRON_HOME} -q https://nexus3-ovh.priv.atolcd.com/repository/dkron/dkron-2/dkron_2.0.1_linux_amd64.tar.gz \
     || wget -P ${DKRON_HOME} -q https://github.com/distribworks/dkron/releases/download/v${DKRON_VERSION}/dkron_${DKRON_VERSION}_linux_amd64.tar.gz) \
   && cd ${DKRON_HOME} \
   && tar -xzf dkron_${DKRON_VERSION}_linux_amd64.tar.gz \
