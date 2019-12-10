@@ -71,7 +71,7 @@ ENV PATH ${KETTLE_HOME}/kitchen.sh:$PATH
 # - exécution non root
 # ---------------
 
-ENV DKRON_VERSION 2.0.0-rc7
+ENV DKRON_VERSION 2.0.1
 ENV DKRON_HOME /dkron
 
 RUN set -x \

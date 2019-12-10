@@ -16,7 +16,7 @@ Certains fichiers sont téléchargés lors du build. Les builds répétés peuve
 )
 # pdi-4.4-dkron
 (
-  DKRON_VERSION=2.0.0-rc7 \
+  DKRON_VERSION=2.0.1 \
   cd ~/projets/atolcd/sdis-remocra/docker/pdi-4.4-dkron/ext \
   && wget https://sourceforge.net/projects/pentaho/files/Data%20Integration/4.4.0-stable/pdi-ce-4.4.0-stable.zip \
   && wget https://github.com/atolcd/sdis-remocra/releases/download/pentaho-4.4-remocra-deps-4da0f/pentaho-4.4-remocra-deps.zip \
@@ -24,7 +24,7 @@ Certains fichiers sont téléchargés lors du build. Les builds répétés peuve
 )
 # pdi-dkron
 (
-  DKRON_VERSION=2.0.0-rc7 \
+  DKRON_VERSION=2.0.1 \
   cd ~/projets/atolcd/sdis-remocra/docker/pdi-dkron/ext \
   && wget https://sourceforge.net/projects/pentaho/files/Data%20Integration/7.1/pdi-ce-7.1.0.0-12.zip \
   && wget https://github.com/atolcd/pentaho-gis-plugins/releases/download/v1.2.1/pentaho-gis-plugins-1.2.1-bin-7.zip \
