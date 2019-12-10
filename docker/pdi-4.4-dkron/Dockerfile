@@ -97,7 +97,6 @@ RUN mkdir -p ${KETTLE_HOME}/.kettle \
 
 USER pdi
 
-EXPOSE 8080
 VOLUME /var/remocra /home/pdi/.kettle/kettle.properties /home/pdi/remocra.properties /home/pdi/.kettle/repositories.xml /dkron/dkron.data
 
 ENV SHELL /bin/bash

@@ -30,12 +30,13 @@ services:
     image: remocra-geoserver
     user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
     ports:
-      - "8090:8080"
+      - "8090:8090"
     volumes:
       - .docker/var_remocra/geoserver_data:/var/remocra/geoserver_data
     environment:
-      GEOSERVER_DATA_DIR: /var/remocra/geoserver_data
-      GEOWEBCACHE_CACHE_DIR: /var/remocra/geoserver_data/gwc
+      GEOSERVER_PORT: ${GEOSERVER_PORT}
+      GEOSERVER_DATA_DIR: ${GEOSERVER_DATA_DIR}
+      GEOWEBCACHE_CACHE_DIR: ${GEOWEBCACHE_CACHE_DIR}
       GEOSERVER_INITIAL_MEMORY: ${GEOSERVER_INITIAL_MEMORY}
       GEOSERVER_MAXIMUM_MEMORY: ${GEOSERVER_MAXIMUM_MEMORY}
       # Accès à la base de données remocra
@@ -70,6 +71,7 @@ services:
       - .docker/var_remocra:/var/remocra
     environment:
       LANG: "fr_FR.UTF-8"
+      REMOCRA_PORT: ${REMOCRA_PORT}
       REMOCRA_INITIAL_MEMORY: ${REMOCRA_INITIAL_MEMORY}
       REMOCRA_MAXIMUM_MEMORY: ${REMOCRA_MAXIMUM_MEMORY}
       # Accès à la base de données remocra
@@ -96,7 +98,7 @@ services:
     image: remocra-pdi-4.4-dkron
     user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
     ports:
-      - "8060:8080"
+      - "8060:8060"
     volumes:
       - .docker/var_remocra:/var/remocra
       - .docker/jobs-common/kettle.properties:/home/pdi/.kettle/kettle.properties
@@ -137,7 +139,7 @@ services:
     image: remocra-pdi-dkron
     user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
     ports:
-      - "8070:8080"
+      - "8070:8070"
     volumes:
       - .docker/var_remocra:/var/remocra
       - .docker/jobs-common/kettle.properties:/home/pdi/.kettle/kettle.properties

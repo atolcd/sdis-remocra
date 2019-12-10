@@ -95,7 +95,7 @@ sed -i '/\\i 030_acces.sql/s/^/--/g' ../server/sdis-remocra/home/postgres/remocr
 
 # Mise à jour des paramètres
 docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -c "update remocra.param_conf set valeur='/home/pdi/remocra.properties' where cle='PDI_FICHIER_PARAMETRAGE'"
-docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -c "update remocra.param_conf set valeur='http://geoserver.sdisxx.fr:8080/geoserver' where cle='WMS_BASE_URL'"
+docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -c "update remocra.param_conf set valeur='http://geoserver.sdisxx.fr:8090/geoserver' where cle='WMS_BASE_URL'"
 ```
 
 ####  Cas 2 : à partir d'un dump (migration)
@@ -131,7 +131,7 @@ docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -f /usr/local/share/po
 
 # Mise à jour des paramètres
 docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -c "update remocra.param_conf set valeur='/home/pdi/remocra.properties' where cle='PDI_FICHIER_PARAMETRAGE'"
-docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -c "update remocra.param_conf set valeur='http://geoserver.sdisxx.fr:8080/geoserver' where cle='WMS_BASE_URL'"
+docker exec -it -e PGUSER=$PGUSER remocra-db psql remocra -c "update remocra.param_conf set valeur='http://geoserver.sdisxx.fr:8090/geoserver' where cle='WMS_BASE_URL'"
 
 docker up
 ```
@@ -350,7 +350,7 @@ docker run -it --rm \
   -v "$(pwd)/.docker/jobs-4.4/dkron_data":/dkron/dkron.data \
   --network docker_remocra --link remocra-db:postgis.sdisxx.fr \
   \
-  -p 8060:8080 \
+  -p 8060:8060 \
   --entrypoint="" \
   remocra-pdi-4.4-dkron \
   /dkron/dkron agent agent --server --bootstrap-expect=1 --node-name=jobs-4.4 --tag="pdi=4.4"
@@ -401,7 +401,7 @@ docker run -it --rm \
   -v "$(pwd)/.docker/jobs/dkron_data":/dkron/dkron.data \
   --network docker_remocra --link remocra-db:postgis.sdisxx.fr \
   \
-  -p 8070:8080 \
+  -p 8070:8070 \
   --entrypoint="" \
   remocra-pdi-dkron \
   /dkron/dkron agent agent --server --bootstrap-expect=1 --node-name=jobs --tag="pdi=7.1"

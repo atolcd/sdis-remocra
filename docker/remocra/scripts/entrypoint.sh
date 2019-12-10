@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Port
+sed -i "s/port=\".*\" protocol=\"HTTP\/1.1\"/port=\"${REMOCRA_PORT}\" protocol=\"HTTP\/1.1\"/" /usr/local/tomcat/conf/server.xml
+
 # Priorité au paramètre le plus à droite
 export REMOCRA_OPTS="\
   -Ddatabase.username=${POSTGRES_DB_USERNAME} \
