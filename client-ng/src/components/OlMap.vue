@@ -777,16 +777,13 @@ export default {
     },
     createOSMLayer(layerDef) {
       return new TileLayer({
-        source: new OSM(layerDef.name, layerDef.urls, {
-          code: layerDef.id,
-          visibility: layerDef.visibility,
-          opacity: layerDef.opacity,
-          projection: layerDef.projection,
-          sphericalMercator: layerDef.spherical_mercator,
-          wrapDateLine: layerDef.wrap_dateLine,
-          tileOptions: layerDef.tile_options,
-          attribution: "<a href='http://openstreetmap.org/'>OpenStreetMap</a>"
-        })
+        source: new OSM({
+          url: layerDef.url,
+          attributions: "<a href='http://openstreetmap.org/'>OpenStreetMap</a>"
+        }),
+        code: layerDef.id,
+        opacity: layerDef.opacity,
+        visibile: layerDef.visibility
       });
     },
     createWMSLayer(layerDef) {
