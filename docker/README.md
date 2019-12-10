@@ -287,7 +287,7 @@ curl -v http://localhost:8070/v1/jobs -XPOST -d '{
   }
 }'
 
-# Regénérer remocra.properties
+# Notification des indisponibilités temporaires
 curl -v http://localhost:8070/v1/jobs -XPOST -d '{
   "name": "notifier-indispo",
   "displayname": "Notifier indispo",
