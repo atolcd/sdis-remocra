@@ -651,7 +651,7 @@
 	) AS historique_crise_xml
 FROM
 	(SELECT * FROM remocra.crise WHERE id = ${CRISE_ID}) c
-	JOIN(
+	LEFT JOIN(
 		-- Messages par crise
 		SELECT
 			crise,
