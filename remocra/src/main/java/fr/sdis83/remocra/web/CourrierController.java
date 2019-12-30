@@ -221,10 +221,10 @@ public class CourrierController {
       Long idModele = Long.parseLong(request.getParameter("modele"));
       Map<String, String[]> mapParametres = request.getParameterMap();
       //Ouverture du modèle de courrier
-      String modeleOtt = courrierRepository.getNomModele(idModele);
-      InputStream textTplInputStream = new FileInputStream(new File(modeleOtt));
+      String cheminModele = courrierRepository.getNomModele(idModele);
+      InputStream textTplInputStream = new FileInputStream(new File(cheminModele));
 
-      //Récupération de la requète SQL correspondant au modèle (génère du XML)
+      //Récupération de la requête SQL correspondant au modèle (génère du XML)
       String xmlQuery = courrierRepository.getModeleXmlQuery(idModele, mapParametres);
       InputSource xmlSource = new InputSource(new StringReader(xmlQuery));
       NodeModel nodeModel = NodeModel.parse(xmlSource);
@@ -235,7 +235,9 @@ public class CourrierController {
       odtTemplate = documentTemplateFactory.getTemplate(textTplInputStream);
 
       //Création d'un dossier avec une clé aléatoire
-      File fichier = new File(modeleOtt);
+      String[] nomModeleTemp = cheminModele.split("/");
+      String nomModele = nomModeleTemp[nomModeleTemp.length-1];
+      File fichier = new File(nomModele);
       Document docOTT = DocumentUtil.getInstance().createNonPersistedDocument(Document.TypeDocument.COURRIER, fichier, paramConfService.getDossierCourriersExternes()+"/courrier_temp");
       FileOutputStream textFileOutputStream = new FileOutputStream(new File(docOTT.getRepertoire() + docOTT.getFichier()));
       //Association du modèle et du XML
@@ -272,14 +274,14 @@ public class CourrierController {
       HashMap<String, Object> mapParametres = new JSONDeserializer<HashMap<String, Object>>().deserialize(json);
 
       String codeCourrier = String.valueOf(mapParametres.get("codeCourrier"));
-
+      String nomCourrier = String.valueOf(mapParametres.get("nomCourrier"));
       //Déplacement du dossier+pdf dans dossier courriers
       File origine = new File(paramConfService.getDossierCourriersExternes()+"/courrier_temp/"+codeCourrier);
       File destination = new File(paramConfService.getDossierCourriersExternes()+"/"+codeCourrier);
       origine.renameTo(destination);
 
       //Insertion dans table document
-      courrierRepository.insertDocument(codeCourrier, String.valueOf(mapParametres.get("nomCourrier")));
+      courrierRepository.insertDocument(codeCourrier, nomCourrier);
 
       //Insertion dans table courrier_document
       ArrayList<Object> destinataires = new ArrayList<Object>();
@@ -293,7 +295,7 @@ public class CourrierController {
         courrierRepository.insertCourrierDocument(codeCourrier, nomDest, typeDest, idDest);
 
         //Insertion dans la table email
-        courrierRepository.insertEmail(nomDest, typeDest, idDest, codeCourrier);
+        courrierRepository.insertEmail(nomCourrier, nomDest, typeDest, idDest, codeCourrier);
 
       }
       return new SuccessErrorExtSerializer(true, "Succès de la notification du courrier").serialize();

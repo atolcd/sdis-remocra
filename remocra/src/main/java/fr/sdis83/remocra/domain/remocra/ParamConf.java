@@ -61,6 +61,7 @@ public class ParamConf {
         PDI_CHEMIN_MODELES("PDI_CHEMIN_MODELES", String.class),
         PDI_CHEMIN_SYNCHRO("PDI_CHEMIN_SYNCHRO", String.class),
         PDI_CHEMIN_TMP("PDI_CHEMIN_TMP", String.class),
+        PDI_CODE_SDIS("PDI_CODE_SDIS", String.class),
         PDI_CHEMIN_TRAITEMENT("PDI_CHEMIN_TRAITEMENT", String.class),
         PDI_DOSSIER_DEPOT("PDI_DOSSIER_DEPOT", String.class),
         PDI_DOSSIER_EXPORT_SDIS("PDI_DOSSIER_EXPORT_SDIS", String.class),

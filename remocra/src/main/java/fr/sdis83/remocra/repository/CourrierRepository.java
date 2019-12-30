@@ -138,13 +138,14 @@ public class CourrierRepository {
   /**
    * Insertion de la notification du courrier dans la table email
    */
-  public void insertEmail(String destinataire, String typeDest, String idDest, String codeCourrier){
+  public void insertEmail(String nomCourrier, String destinataire, String typeDest, String idDest, String codeCourrier){
     try{
+      String courrierNom = nomCourrier.split("\\.")[0];
       Long idDocument = context.select(DOCUMENT.ID).from(DOCUMENT).where(DOCUMENT.CODE.eq(codeCourrier)).fetchOne(DOCUMENT.ID);
       String codeLien = context.select(COURRIER_DOCUMENT.CODE).from(COURRIER_DOCUMENT)
                       .where(COURRIER_DOCUMENT.DOCUMENT.eq(idDocument).and(COURRIER_DOCUMENT.ID_DESTINATAIRE.eq(idDest))).fetchOne(COURRIER_DOCUMENT.CODE);
-      String corpsMail = context.select(EMAIL_MODELE.CORPS).from(EMAIL_MODELE).where(EMAIL_MODELE.CODE.eq("COURRIER_PAR_MAIL")).fetchOne(EMAIL_MODELE.CORPS);
-      String objetMail = context.select(EMAIL_MODELE.OBJET).from(EMAIL_MODELE).where(EMAIL_MODELE.CODE.eq("COURRIER_PAR_MAIL")).fetchOne(EMAIL_MODELE.OBJET);
+      String corpsMail = context.select(COURRIER_MODELE.MESSAGE_CORPS).from(COURRIER_MODELE).where(COURRIER_MODELE.CODE.eq(courrierNom)).fetchOne(COURRIER_MODELE.MESSAGE_CORPS);
+      String objetMail = context.select(COURRIER_MODELE.MESSAGE_OBJET).from(COURRIER_MODELE).where(COURRIER_MODELE.CODE.eq(courrierNom)).fetchOne(COURRIER_MODELE.MESSAGE_OBJET);
       String emailDestinataire = getMailDestinataire(idDest, typeDest);
       String nomExpediteur = context.select(PARAM_CONF.VALEUR).from(PARAM_CONF).where(PARAM_CONF.CLE.eq("PDI_SMTP_EME_NAME")).fetchOne(PARAM_CONF.VALEUR);
       String mailExpediteur = context.select(PARAM_CONF.VALEUR).from(PARAM_CONF).where(PARAM_CONF.CLE.eq("PDI_SMTP_EME_MAIL")).fetchOne(PARAM_CONF.VALEUR);
