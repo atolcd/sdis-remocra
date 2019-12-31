@@ -1,56 +1,58 @@
 <template>
-  <div id="Courrier"  :class="{'chargement': pdfLoaded}">
+  <div id="Courrier">
 		<!-- ================================================ Paramètres du document ========================================================= -->
-    <b-modal id="modalCourrier" ref="modalCourrier"  no-close-on-backdrop title="Génération de courrier" cancel-title="Annuler" ok-title="Aperçu" @ok="handleOk">
+    <b-modal id="modalCourrier" ref="modalCourrier"  no-close-on-backdrop title="Génération de courrier" cancel-title="Annuler" ok-title="Aperçu" @ok="handleOk" @close="fermeModifier" @cancel="fermeModifier">
     <form id='formCourrier' name='courrier' enctype="multipart/form-data" method="POST" ref="formCourrier">
 			<b-form-group>
 				<div class="row">
 					<div class="col-md-3 mt-1">
-						<label>Modèle :</label>
+						<label>Modèle</label>
 					</div>
 					<div class="col-md-9">
-						<b-form-select id="modele" size="sm" v-model="choixModele" :options="comboModele" @change="getParams"></b-form-select>
+						<b-form-select id="modele" size="md" v-model="choixModele" :options="comboModele" @change="getParams"></b-form-select>
 						<label class="description">{{this.choixModele.description}}</label>
 					</div>
 				</div>
 			</b-form-group>
-			<p v-if="params.length > 0">Veuillez renseigner les paramètres suivants :</p>
+			<p v-if="params.length > 0">Veuillez renseigner les paramètres suivants </p>
 			<p v-else-if="choixModele">Aucun paramètre pour cette requête</p>
 			<!--Début boucle for-->
 			<div v-for="(param, index) in params" :key="index">
-        <b-form-group v-if='param.formulaireTypeControle=="autocomplete"' :id="param.nom" inputType='autocomplete' :required="param.obligatoire" class="parametreModele" horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-          <search-process-param :ref="'searchinput'+param.id" :paramId="param.id"></search-process-param>
-        </b-form-group>
-        <b-form-group v-if='param.formulaireTypeControle=="combo"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-          <b-form-select size="sm" :id="param.nom" :required='param.obligatoire' class="form-control parametreModele">
-            <option v-for="(value, key) in getOption(param.id)" :key="key" :value='value.valeur' :selected='value.valeur==value.formulaireValeurDefaut'>
-              {{value.libelle}}
-            </option>
-          </b-form-select>
-        </b-form-group>
-        <b-form-group v-if='param.formulaireTypeControle=="checkbox"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-          <input type='checkbox' style="width:5%" :id="param.nom" :checked="param.formulaireValeurDefaut" inputType='checkbox' class="form-control parametreModele" />
-        </b-form-group>
-        <b-form-group v-if='param.formulaireTypeControle=="textfield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-          <b-form-input size="sm" type='text' :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' class="form-control parametreModele" />
-        </b-form-group>
-        <b-form-group v-if='param.formulaireTypeControle=="numberfield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-          <b-form-input size="sm" type="number" :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' :step='(param.typeValeur=="integer")?1:0.001' class="form-control parametreModele" />
-        </b-form-group>
-        <b-form-group v-if='param.formulaireTypeControle=="datefield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-          <b-form-input size="sm" type='date' :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' class="form-control parametreModele" />
-        </b-form-group>
-        <b-form-group v-if='param.formulaireTypeControle=="timefield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-          <b-form-input size="sm" type='time' :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' step='1' class="form-control parametreModele" />
-        </b-form-group>
-        <b-form-group v-if='param.formulaireTypeControle=="datetimefield"' :id="'input'+param.id" horizontal :label='param.formulaireEtiquette' inputType='datetimefield' class='parametreModele' :label-for="'input'+param.id">
-          <b-form-input size="sm" type='date' :id="param.nom" :value='param.formulaireValeurDefaut && param.formulaireValeurDefaut.split(" ")[0]' :required='param.obligatoire' class='form-control' />
-          <b-form-input size="sm" type='time' :id="param.nom" :value='param.formulaireValeurDefaut && param.formulaireValeurDefaut.split(" ")[1]' :required='param.obligatoire' step='1' class='form-control' />
-        </b-form-group>
+				<b-form-group v-if='param.formulaireTypeControle=="autocomplete"' :id="param.nom" inputType='autocomplete' :required="param.obligatoire" class="parametreModele" horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+					<search-process-param :ref="'searchinput'+param.id" :paramId="param.id"></search-process-param>
+				</b-form-group>
+				<b-form-group v-if='param.formulaireTypeControle=="combo"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+					<b-form-select size="md" :id="param.nom" :required='param.obligatoire' class="form-control parametreModele">
+						<option v-for="(value, key) in getOption(param.id)" :key="key" :value='value.valeur' :selected='value.valeur==value.formulaireValeurDefaut'>
+							{{value.libelle}}
+						</option>
+					</b-form-select>
+				</b-form-group>
+				<b-form-group v-if='param.formulaireTypeControle=="checkbox"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+					<input type='checkbox' style="width:5%" :id="param.nom" :checked="param.formulaireValeurDefaut" inputType='checkbox' class="form-control parametreModele" />
+				</b-form-group>
+				<b-form-group v-if='param.formulaireTypeControle=="textfield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+					<b-form-input size="md" type='text' :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' class="form-control parametreModele" />
+				</b-form-group>
+				<b-form-group v-if='param.formulaireTypeControle=="numberfield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+					<b-form-input size="md" type="number" :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' :step='(param.typeValeur=="integer")?1:0.001' class="form-control parametreModele" />
+				</b-form-group>
+				<b-form-group v-if='param.formulaireTypeControle=="datefield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+					<b-form-input size="md" type='date' :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' class="form-control parametreModele" />
+				</b-form-group>
+				<b-form-group v-if='param.formulaireTypeControle=="timefield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
+					<b-form-input size="md" type='time' :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' step='1' class="form-control parametreModele" />
+				</b-form-group>
+				<b-form-group v-if='param.formulaireTypeControle=="datetimefield"' :id="'input'+param.id" horizontal :label='param.formulaireEtiquette' inputType='datetimefield' class='parametreModele' :label-for="'input'+param.id">
+					<b-form-input size="md" type='date' :id="param.nom" :value='param.formulaireValeurDefaut && param.formulaireValeurDefaut.split(" ")[0]' :required='param.obligatoire' class='form-control' />
+					<b-form-input size="md" type='time' :id="param.nom" :value='param.formulaireValeurDefaut && param.formulaireValeurDefaut.split(" ")[1]' :required='param.obligatoire' step='1' class='form-control' />
+				</b-form-group>
+			</div>
+			<div class="text-center mt-3">
+					<b-spinner v-if='showApercu == true && pdfLoading == true' label="Chargement ..."></b-spinner>
 			</div>
     </form>
     </b-modal>
-
 
 			<!-- ================================================ Aperçu du document ========================================================= -->
 
@@ -149,7 +151,8 @@
 			</b-form-group>
     </b-modal>
 
-					<!-- ==================================== Pop up notifier ============================================ -->
+				<!-- ==================================== Pop up notifier ============================================ -->
+
 	<b-modal id="modalPopupNotif" ref="modalPopupNotif" no-close-on-backdrop
 		title="Succès de notification" centered ok-only ok-title="Fermer" @ok="fermeNotifier(); fermeApercu(); fermeModifier()" >
 			<b-form-group>
@@ -169,7 +172,6 @@
 <script>
   import axios from 'axios'
   import _ from 'lodash'
-  //import moment from 'moment'
 
 export default {
 	components: {
@@ -193,9 +195,10 @@ export default {
 
 			/************** Partie aperçu document *******************/
 
+			showApercu: false,
 			urlCourrier: "",
 			nomCourrier: "",
-			pdfLoaded: false,
+			pdfLoading: false,
 
 			/************** Partie notification ***********************/
 			filtre: null,
@@ -233,20 +236,21 @@ export default {
 			}
 		},
 
-		ouvreApercu(){
-			this.$refs.modalApercu.show();		
-		},
-
-		fermeApercu(){
-			this.$refs.modalApercu.hide();		
-		},
-
 		ouvreModifier(){
 			this.$refs.modalCourrier.show();
 		},
 
 		fermeModifier(){
-			this.$refs.modalCourrier.hide();
+			var element = document.getElementById("Courrier");
+			element.parentNode.removeChild(element);
+		},
+
+		ouvreApercu(){
+			this.$refs.modalApercu.show();
+		},
+
+		fermeApercu(){
+			this.$refs.modalApercu.hide();
 		},
 
 		ouvreNotifier(){
@@ -331,9 +335,9 @@ export default {
 		},
 		
 		getOption: function (id) {
-					return this.comboOptions.filter(function (value) {
-						return value.idChamp === id
-					})
+			return this.comboOptions.filter(function (value) {
+				return value.idChamp === id
+			})
 		},
 
 		telechargerCourrier() {
@@ -357,46 +361,50 @@ export default {
     },
 
 		handleOk(evt){
-		evt.preventDefault()
-      if (document.getElementById('formCourrier').checkValidity() === false) {
-        this.$notify({
-          group: 'remocra',
-          title: 'Génération de courrier',
-          type: 'warn',
-          text: 'Veuillez saisir les champs obligatoires'
-        })
-        document.getElementById('formCourrier').classList.add('was-validated')
-      } else {
-					let formData = new FormData()
-					formData.append("modele", this.choixModele.id)
-					_.forEach(evt.target.getElementsByClassName('parametreModele'), item => {
-          if (item.getAttribute('inputType') === 'datetimefield') {
-            var date = document.querySelector('input[id=' + item.id + 'date ]').value
-            var time = document.querySelector('input[id=' + item.id + 'time]').value
-            formData.append(item.id, date + ' ' + time)
-          } else if (item.getAttribute('inputType') === 'autocomplete') {
-            var autocomplete = this.$refs['search' + item.id][0]
-            formData.append(item.getAttribute('id'), autocomplete.selected !== null ? autocomplete.selected.id : autocomplete.searchInput)
-          } else if (item.getAttribute('inputType') === 'filefield') {
-            var rawValueParts = item.value.split('\\')
-            var value = rawValueParts[rawValueParts.length - 1]
-            formData.append(item.getAttribute('id'), value)
-          } else if (item.getAttribute('inputType') === 'checkbox') {
-            formData.append(item.getAttribute('id'), item.checked)
-          } else {
-            formData.append(item.getAttribute('id'), item.value)
-          }
-        })
-        for (var i = 0; i < this.files.length; i++) {
-          var file = this.files[i]
-          formData.append(file.id, file.file)
+			evt.preventDefault();
+			if(!this.choixModele == ""){
+				console.log("la : "+document.getElementById('formCourrier').checkValidity());
+				if (document.getElementById('formCourrier').checkValidity() === false) {
+					this.$notify({
+						group: 'remocra',
+						title: 'Génération de courrier',
+						type: 'warn',
+						text: 'Veuillez saisir les champs obligatoires'
+					})
+					document.getElementById('formCourrier').classList.add('was-validated')
+				} else {
+						let formData = new FormData()
+						formData.append("modele", this.choixModele.id)
+						_.forEach(evt.target.getElementsByClassName('parametreModele'), item => {
+						if (item.getAttribute('inputType') === 'datetimefield') {
+							var date = document.querySelector('input[id=' + item.id + 'date ]').value
+							var time = document.querySelector('input[id=' + item.id + 'time]').value
+							formData.append(item.id, date + ' ' + time)
+						} else if (item.getAttribute('inputType') === 'autocomplete') {
+							var autocomplete = this.$refs['search' + item.id][0]
+							formData.append(item.getAttribute('id'), autocomplete.selected !== null ? autocomplete.selected.id : autocomplete.searchInput)
+						} else if (item.getAttribute('inputType') === 'filefield') {
+							var rawValueParts = item.value.split('\\')
+							var value = rawValueParts[rawValueParts.length - 1]
+							formData.append(item.getAttribute('id'), value)
+						} else if (item.getAttribute('inputType') === 'checkbox') {
+							formData.append(item.getAttribute('id'), item.checked)
+						} else {
+							formData.append(item.getAttribute('id'), item.value)
+						}
+					})
+					for (var i = 0; i < this.files.length; i++) {
+						var file = this.files[i]
+						formData.append(file.id, file.file)
+					}
+					this.handleSubmitParams(formData)
 				}
-        this.handleSubmitParams(formData)
-      }
+			}
 		},
 
-		handleSubmitParams(formData) {
-			this.pdfLoaded = true;
+		handleSubmitParams(formData){
+			this.showApercu = true;
+			this.pdfLoading = true;
 			// Envoi des données
       axios.post('/remocra/courrier/generecourrier/' + this.choixModele.id, formData, {
         headers: {
@@ -408,7 +416,7 @@ export default {
 					this.nomCourrier = response.data.message.split("/")[1];
 					this.codeCourrier = response.data.message.split("/")[0];
 					this.ouvreApercu();
-					this.pdfLoaded=false;
+					this.pdfLoading=false;
         }
       }).catch(function(error) {
         console.error(error)
@@ -416,7 +424,6 @@ export default {
 		},
 		
 		initListeDestinataire() {
-
 			axios.get('/remocra/courrier/contacts',{
 				params: {
 					filter: JSON.stringify([
@@ -458,22 +465,24 @@ export default {
 		 * tabNotifierOui
 		 */
 		notificationCourrier(){
-			var datas = {
-				"codeCourrier": this.codeCourrier,
-				"nomCourrier": this.nomCourrier,
-				"destinataires": this.tabDestinataireNotifierOui
+			if(this.tabDestinataireNotifierOui.length != 0){
+				var datas = {
+					"codeCourrier": this.codeCourrier,
+					"nomCourrier": this.nomCourrier,
+					"destinataires": this.tabDestinataireNotifierOui
+				}
+				axios.post('/remocra/courrier/notifier', datas, {
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}).then((response) => {
+					if (response.data.success) {
+						this.$refs.modalPopupNotif.show();
+					}
+				}).catch(function(error) {
+					console.error(error)
+				})
 			}
-			axios.post('/remocra/courrier/notifier', datas, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then((response) => {
-        if (response.data.success) {
-					this.$refs.modalPopupNotif.show();
-        }
-      }).catch(function(error) {
-        console.error(error)
-      })
 
 		},
 
@@ -527,8 +536,6 @@ div.modal-dialog{
 }
 
 .chargement{
-  content: 'Chargement du courrier...';
-  margin-left: calc(50% - 67px);
   animation: opacity-anim 1s linear infinite;
 }
 

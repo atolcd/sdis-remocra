@@ -89,11 +89,11 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
                 href: 'hydrants/courrier',
                 lbl: 'Générer des courriers',
                 onclick: 'onClick="var d = document.createElement(\'div\');'+
-                         'document.body.appendChild(d);'+
-                          'var vueCourrier = window.remocraVue.buildCourrier(d, {});'+
-                          'vueCourrier.$options.bus.$on(\'closed\','+
-                           'Ext.bind(function(data) {vueCourrier.$el.remove();'+
-                           'vueCourrier.$destroy();}, this));"'
+                            'document.body.appendChild(d);'+
+                            'var vueCourrier = window.remocraVue.buildCourrier(d, {});'+
+                            'vueCourrier.$options.bus.$on(\'closed\','+
+                            'Ext.bind(function(data) {vueCourrier.$el.remove();'+
+                            'vueCourrier.$destroy();}, this));"'
             });
         //}
         
