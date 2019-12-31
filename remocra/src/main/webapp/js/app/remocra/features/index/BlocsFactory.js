@@ -76,6 +76,26 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
                 lbl: 'Accéder aux traitements'
             });
         }
+
+        //if (true) {
+            if (!Ext.isEmpty(blocHydrants.items)) {
+                blocHydrants.items.push({
+                    type: 'sep'
+                });
+            }
+            var d = document.createElement('div');
+            blocHydrants.items.push({
+                type: 'href',
+                href: 'hydrants/courrier',
+                lbl: 'Générer des courriers',
+                onclick: 'onClick="var d = document.createElement(\'div\');'+
+                         'document.body.appendChild(d);'+
+                          'var vueCourrier = window.remocraVue.buildCourrier(d, {});'+
+                          'vueCourrier.$options.bus.$on(\'closed\','+
+                           'Ext.bind(function(data) {vueCourrier.$el.remove();'+
+                           'vueCourrier.$destroy();}, this));"'
+            });
+        //}
         
         if (Ext.isEmpty(blocHydrants.items)) {
             return null;
