@@ -5,11 +5,11 @@
     <form id='formCourrier' name='courrier' enctype="multipart/form-data" method="POST" ref="formCourrier">
 			<b-form-group>
 				<div class="row">
-					<div class="col-md-3 mt-1">
+					<div class="col-md-3">
 						<label>Modèle</label>
 					</div>
-					<div class="col-md-9">
-						<b-form-select id="modele" size="md" v-model="choixModele" :options="comboModele" @change="getParams"></b-form-select>
+					<div class="col-md-9 mb-2">
+						<b-form-select id="modele" size="sm" v-model="choixModele" :options="comboModele" @change="getParams"></b-form-select>
 						<label class="description">{{this.choixModele.description}}</label>
 					</div>
 				</div>
@@ -22,7 +22,7 @@
 					<search-process-param :ref="'searchinput'+param.id" :paramId="param.id"></search-process-param>
 				</b-form-group>
 				<b-form-group v-if='param.formulaireTypeControle=="combo"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-					<b-form-select size="md" :id="param.nom" :required='param.obligatoire' class="form-control parametreModele">
+					<b-form-select size="sm" :id="param.nom" :required='param.obligatoire' class="form-control parametreModele">
 						<option v-for="(value, key) in getOption(param.id)" :key="key" :value='value.valeur' :selected='value.valeur==value.formulaireValeurDefaut'>
 							{{value.libelle}}
 						</option>
@@ -32,20 +32,20 @@
 					<input type='checkbox' style="width:5%" :id="param.nom" :checked="param.formulaireValeurDefaut" inputType='checkbox' class="form-control parametreModele" />
 				</b-form-group>
 				<b-form-group v-if='param.formulaireTypeControle=="textfield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-					<b-form-input size="md" type='text' :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' class="form-control parametreModele" />
+					<b-form-input size="sm" type='text' :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' class="form-control parametreModele" />
 				</b-form-group>
 				<b-form-group v-if='param.formulaireTypeControle=="numberfield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-					<b-form-input size="md" type="number" :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' :step='(param.typeValeur=="integer")?1:0.001' class="form-control parametreModele" />
+					<b-form-input size="sm" type="number" :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' :step='(param.typeValeur=="integer")?1:0.001' class="form-control parametreModele" />
 				</b-form-group>
 				<b-form-group v-if='param.formulaireTypeControle=="datefield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-					<b-form-input size="md" type='date' :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' class="form-control parametreModele" />
+					<b-form-input size="sm" type='date' :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' class="form-control parametreModele" />
 				</b-form-group>
 				<b-form-group v-if='param.formulaireTypeControle=="timefield"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-					<b-form-input size="md" type='time' :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' step='1' class="form-control parametreModele" />
+					<b-form-input size="sm" type='time' :id="param.nom" :value='param.formulaireValeurDefaut' :required='param.obligatoire' step='1' class="form-control parametreModele" />
 				</b-form-group>
 				<b-form-group v-if='param.formulaireTypeControle=="datetimefield"' :id="'input'+param.id" horizontal :label='param.formulaireEtiquette' inputType='datetimefield' class='parametreModele' :label-for="'input'+param.id">
-					<b-form-input size="md" type='date' :id="param.nom" :value='param.formulaireValeurDefaut && param.formulaireValeurDefaut.split(" ")[0]' :required='param.obligatoire' class='form-control' />
-					<b-form-input size="md" type='time' :id="param.nom" :value='param.formulaireValeurDefaut && param.formulaireValeurDefaut.split(" ")[1]' :required='param.obligatoire' step='1' class='form-control' />
+					<b-form-input size="sm" type='date' :id="param.nom" :value='param.formulaireValeurDefaut && param.formulaireValeurDefaut.split(" ")[0]' :required='param.obligatoire' class='form-control' />
+					<b-form-input size="sm" type='time' :id="param.nom" :value='param.formulaireValeurDefaut && param.formulaireValeurDefaut.split(" ")[1]' :required='param.obligatoire' step='1' class='form-control' />
 				</b-form-group>
 			</div>
 			<div class="text-center mt-3">
@@ -57,13 +57,9 @@
 			<!-- ================================================ Aperçu du document ========================================================= -->
 
     <b-modal id="modalApercu" class="text-center" ref="modalApercu" no-close-on-backdrop title="Aperçu du courrier" hide-footer>
-		<div id="pdf-toolbar">
-			<div class="row toolbar">
-			</div>
-			<div class="pdf">
-				<object type="application/pdf" :data="this.urlCourrier"
-						width="100%" height="100%"></object>
-			</div>
+		<div class="pdf">
+			<object type="application/pdf" :data="this.urlCourrier"
+					width="100%" height="100%"></object>
 		</div>
 		<b-form-group>
 			<div class="row justify-content-md-center mt-3" id="btnApercu">
@@ -87,53 +83,61 @@
 
 	<b-modal id="modalNotifier" ref="modalNotifier" no-close-on-backdrop title="Notification par mail" hide-footer>
 		<div class="row">
-			<div class="col-md-3 mt-1">
+			<div class="col-md-3">
 				<label>Recherche rapide :</label>
 			</div>
-		</div>
-		<div class="row">
 			<div class="col-md-9">
 				<b-form-input v-model="filtre" size="sm" @input="initListeDestinataire" id="filtre" placeholder="Recherche ..." >
 				</b-form-input>
 			</div>
 		</div>
 		<div class="row mt-2 ml-2">
-			<div class="col-md-3">
+			<div class="col-md-4 text-right">
 				<b-form-checkbox id="chkBoxOrganisme" v-model="filtreOrga" @input="initListeDestinataire"	name="chkBoxOrganisme">Organisme</b-form-checkbox>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-4 text-center">
 				<b-form-checkbox id="chkBoxUtilisateur" v-model="filtreUtil" @input="initListeDestinataire" name="chkBoxUtilisateur">Utilisateur</b-form-checkbox>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<b-form-checkbox id="chkBoxContact" v-model="filtreContact"	@input="initListeDestinataire" name="chkBoxContact">Contact</b-form-checkbox>
 			</div>
 		</div>
-		<div class="row mt-3">
-			<div class="col-md-8">
+		<div class="row mt-4">
+			<div class="col-md-6">
 				<label>Destinataires potentiels: </label>
 			</div>
-		</div>
-			<div class="row">
-				<div class="col-md-9">
-					<b-form-select class="select" id="select" multiple :options="tabDestinataireNotifierNon" v-model="ajouteDestinataire">
-					</b-form-select>
-				</div>
-				<div class="col-md-2 mt-4">
-					<b-button id="bouton" @click="addRight" variant="primary"> Ajouter </b-button>
+				<div class="col-md-6 overflow-auto">
+					<b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" size="sm" align="right" aria-controls="tabDestinataireNotifierNon">					
+					</b-pagination>
 				</div>
 			</div>
 			<div class="row">
-			<div class="col-md-12 mt-4">
+				<div class="col-md-12 tabNotif">			
+					<b-table  id="tabDestinataireNotifier" small responsive selectable select-mode="multi" @row-selected="onRowSelectedAjoute" :fields="fields"
+						:items="tabDestinataireNotifierNon" :per-page="perPage" :current-page="currentPage">
+					</b-table>
+				</div>
+			</div>
+			<div class="row mt-2">
+				<div class="col-md-6 text-right">
+					<b-button id="boutonUpDown" @click="addNotifierOui" variant="primary"><img id="arrow" src="/remocra/static/img/down-arrow.png"></b-button>
+				</div>
+				<div class="col-md-6">
+					<b-button id="boutonUpDown" @click="addNotifierNon" variant="primary"> <img id="arrow" src="/remocra/static/img/up-arrow.png"> </b-button>
+				</div>
+			</div>
+			<div class="row">
+			<div class="col-md-12 mt-2">
 				<label>Destinataires définitifs : </label>
 			</div>
 			</div>
 			<div class="row">
-				<div class="col-md-9">
-					<b-form-select class="select" id="select" multiple :options="tabDestinataireNotifierOui" v-model="retireDestinataire">
-					</b-form-select>
-				</div>
-				<div class="col-md-2 mt-4">
-					<b-button id="bouton" @click="addLeft" variant="danger"> Retirer </b-button>
+				<div class="col-md-12 tabNotif">
+					<template>
+						<b-table id="tabDestinataireNotifier" small responsive selectable select-mode="multi" @row-selected="onRowSelectedSupprime" :fields="fields"
+							:items="tabDestinataireNotifierOui">
+						</b-table>
+					</template>
 				</div>
 			</div>
 			<b-form-group>
@@ -211,7 +215,10 @@ export default {
 			retireDestinataire: [],
 			tabDestinataires:[],
 			tabDestinataireNotifierNon: [],
-			tabDestinataireNotifierOui: []
+			tabDestinataireNotifierOui: [],
+			fields: ['Type', 'Nom', 'Email', 'Fonction' ],
+			perPage: 100,
+			currentPage: 1,
     }
 	},
 	
@@ -219,6 +226,9 @@ export default {
   },
 
   computed: {
+		rows() {
+        return this.tabDestinataireNotifierNon.length
+      }
   },
 
   mounted: function(){
@@ -264,27 +274,26 @@ export default {
 			this.$refs.modalNotifier.hide();
 		},
 
+		onRowSelectedAjoute(items){
+			this.ajouteDestinataire = items;
+		},
 
-		addRight(){
+		onRowSelectedSupprime(items){
+			this.retireDestinataire = items;
+		},
+
+		addNotifierOui(){
 			for(var i = 0; i<this.ajouteDestinataire.length; i++){
-				for(var j = 0; j<this.tabDestinataireNotifierNon.length;j++){
-					if(this.ajouteDestinataire[i] == this.tabDestinataireNotifierNon[j].text){
-						this.tabDestinataireNotifierOui.push(this.tabDestinataireNotifierNon[j]);
-						this.tabDestinataireNotifierNon.splice(j,1);
-					}
-				}
+				this.tabDestinataireNotifierOui.push(this.ajouteDestinataire[i]);
+				this.tabDestinataireNotifierNon.splice(this.tabDestinataireNotifierNon.indexOf(this.ajouteDestinataire[i]),1);
 			}
 			this.ajouteDestinataire = [];
 		},
 
-		addLeft(){
+		addNotifierNon(){
 			for(var i = 0; i<this.retireDestinataire.length; i++){
-				for(var j = 0; j<this.tabDestinataireNotifierOui.length;j++){
-					if(this.retireDestinataire[i] == this.tabDestinataireNotifierOui[j].text){
-						this.tabDestinataireNotifierNon.push(this.tabDestinataireNotifierOui[j]);
-						this.tabDestinataireNotifierOui.splice(j,1);
-					}
-				}
+				this.tabDestinataireNotifierNon.push(this.retireDestinataire[i]);
+				this.tabDestinataireNotifierOui.splice(this.tabDestinataireNotifierOui.indexOf(this.retireDestinataire[i]),1);
 			}
 			this.retireDestinataire = [];
 		},
@@ -363,7 +372,6 @@ export default {
 		handleOk(evt){
 			evt.preventDefault();
 			if(!this.choixModele == ""){
-				console.log("la : "+document.getElementById('formCourrier').checkValidity());
 				if (document.getElementById('formCourrier').checkValidity() === false) {
 					this.$notify({
 						group: 'remocra',
@@ -440,19 +448,17 @@ export default {
 					_.forEach(contacts, contact => {
 						var contactSplit = contact.split(";");
             this.tabDestinataires.push({
-							'value' : {
-								'id': contactSplit[0],
-								'table': contactSplit[2],
-								'nom' : contactSplit[1],
-								'text': contactSplit[1]+" - "+contactSplit[2],
-
-							}
+							'id': contactSplit[1],
+							'Type': contactSplit[0],
+							'Nom' : contactSplit[2],
+							'Email' : contactSplit[3],
+							'Fonction' : contactSplit[4]
 					})
           });
         }).then(()=>{
 					var i =0;
 					for(i = 0; i<this.tabDestinataires.length; i++){
-						this.tabDestinataireNotifierNon.push(this.tabDestinataires[i].value);
+						this.tabDestinataireNotifierNon.push(this.tabDestinataires[i]);
 					}
 					this.destinatairesLoaded = true;
         }).catch(function(error) {
@@ -520,9 +526,6 @@ export default {
   padding-top: 0px;
 }
 
-div.modal-dialog{
-	width: 650px;
-}
 #modalPopupNotif .modal-content{
 	background-color: #e9e9e9 !important;
   font-size: 1rem;
@@ -532,7 +535,6 @@ div.modal-dialog{
 
 #modalPopupNotif .modal-body{
 	padding-bottom: 0px;
-
 }
 
 .chargement{
@@ -543,11 +545,20 @@ div.modal-dialog{
 	width: 115px;
 }
 
-#addLeft{
+#boutonUpDown{
+	width: 50px;
+	height: 40px;
+}
+
+#arrow{
+	vertical-align: center;
+}
+
+#addNotifierNon{
 	width: 38px;
 }
 
-#addRight{	
+#addNotifierOui{	
 	width: 38px;
 }
 
@@ -560,20 +571,31 @@ div.modal-dialog{
 	height: 500px;
 }
 
-#btnLR{
-	margin: auto;
-}
-
-#select{
-	height: 200px;
-}
-
-.row.toolbar{
-	margin: 0;
+.tabNotif .table-responsive{
+	max-height: 250px;
+	background-color: white;
+	font-size: 10pt;
 }
 
 .description{
 	font-size: 15px; 
+}
+
+.pagination{
+		margin-bottom: 0; 
+}
+
+#tabDestinataireNotifier tbody {
+    display:block;
+    max-height:200px;
+    overflow:auto;
+}
+
+#tabDestinataireNotifier thead, #tabDestinataireNotifier tbody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;
+		word-wrap: break-word;
 }
 
 </style>

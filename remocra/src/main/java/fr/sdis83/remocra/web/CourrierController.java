@@ -288,8 +288,8 @@ public class CourrierController {
       destinataires.addAll((ArrayList<Object>)mapParametres.get("destinataires"));
       for(Object dest : destinataires){
         String idDest = String.valueOf(((HashMap) dest).get("id"));
-        String typeDest = String.valueOf(((HashMap) dest).get("table"));
-        String nomDest = String.valueOf(((HashMap) dest).get("nom"));
+        String typeDest = String.valueOf(((HashMap) dest).get("Type"));
+        String nomDest = String.valueOf(((HashMap) dest).get("Nom"));
 
         //Insertion dans la table courrier_document
         courrierRepository.insertCourrierDocument(codeCourrier, nomDest, typeDest, idDest);

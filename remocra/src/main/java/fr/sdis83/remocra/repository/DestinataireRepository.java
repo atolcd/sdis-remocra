@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ORGANISME;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CONTACT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
+import static fr.sdis83.remocra.db.model.remocra.Tables.PROFIL_UTILISATEUR;
+
 import static org.jooq.impl.DSL.lower;
 
 
@@ -40,12 +42,14 @@ public class DestinataireRepository {
    */
   public List<String> getDestinataireOrganisme(Integer id, String filtre){
     List<String> destinataires = new ArrayList<String>();
-    Result<Record2<Long, String>> result = context.select(ORGANISME.ID, ORGANISME.NOM).from(ORGANISME)
+    Result<Record3<Long, String, String>> result = context.select(ORGANISME.ID, ORGANISME.NOM, ORGANISME.EMAIL_CONTACT).from(ORGANISME)
     .where(ORGANISME.ID.eq(Long.valueOf(id))
-    .and(lower(ORGANISME.NOM).like("%"+filtre.toLowerCase()+"%"))
+    .and(lower(ORGANISME.NOM).like("%"+filtre.toLowerCase()+"%")
+      .or(lower(ORGANISME.EMAIL_CONTACT).like("%"+filtre.toLowerCase()+"%")))
     .and(ORGANISME.EMAIL_CONTACT.isNotNull())).fetch();
     for(Record r : result){
-      destinataires.add(r.getValue(0)+";"+r.getValue(1)+";"+"ORGANISME");
+      //                            id                 nom               email             fonction
+      destinataires.add("ORGANISME;"+r.getValue(0)+";"+r.getValue(1)+";"+r.getValue(2)+";"+" ");
     }
     return destinataires;
   }
@@ -56,12 +60,13 @@ public class DestinataireRepository {
    */
   public List<String> getDesinataireContact(Integer id, String filtre){
     List<String> destinataires = new ArrayList<String>();
-    Result<Record3<Long, String, String>> result = context.select(CONTACT.ID, CONTACT.NOM, CONTACT.PRENOM)
+    Result<Record5<Long, String, String, String, String>> result = context.select(CONTACT.ID, CONTACT.NOM, CONTACT.PRENOM, CONTACT.EMAIL, CONTACT.FONCTION)
       .from(CONTACT).where(CONTACT.ID_APPARTENANCE.eq(String.valueOf(id))
       .and((lower(CONTACT.NOM).like("%"+filtre.toLowerCase()+"%"))
         .or(lower(CONTACT.PRENOM).like("%"+filtre.toLowerCase()+"%")))).fetch();
     for(Record r : result){
-      destinataires.add(r.getValue(0)+";"+r.getValue(1)+" "+r.getValue(2)+";"+"CONTACT");
+      //                            id                   nom                 prenom               email               fonction
+      destinataires.add("CONTACT;"+ r.getValue(0)+";"+r.getValue(1)+" "+r.getValue(2)+";"+r.getValue(3)+";"+r.getValue(4));
     }
     return destinataires;
   }
@@ -72,14 +77,18 @@ public class DestinataireRepository {
    */
   public List<String> getDestinataireUtilisateur(Integer id, String filtre){
     List<String> destinataires = new ArrayList<String>();
-    Result<Record3<Long, String, String>> result = context.select(UTILISATEUR.ID, UTILISATEUR.NOM, UTILISATEUR.PRENOM)
-      .from(UTILISATEUR).
-      where(UTILISATEUR.ORGANISME.eq(Long.valueOf(id))
+    Result<Record5<Long, String, String, String, String>> result = context.select(UTILISATEUR.ID, UTILISATEUR.NOM, UTILISATEUR.PRENOM, UTILISATEUR.EMAIL, PROFIL_UTILISATEUR.NOM)
+      .from(UTILISATEUR)
+      .join(PROFIL_UTILISATEUR).on(UTILISATEUR.PROFIL_UTILISATEUR.eq(PROFIL_UTILISATEUR.ID))
+      .where(UTILISATEUR.ORGANISME.eq(Long.valueOf(id))
       .and(UTILISATEUR.MESSAGE_REMOCRA)
       .and((lower(UTILISATEUR.NOM).like("%"+filtre.toLowerCase()+"%"))
-        .or(lower(UTILISATEUR.PRENOM).like("%"+filtre.toLowerCase()+"%")))).fetch();
+        .or(lower(UTILISATEUR.PRENOM).like("%"+filtre.toLowerCase()+"%"))
+        .or(lower(UTILISATEUR.EMAIL).like("%"+filtre.toLowerCase()+"%"))
+        )).fetch();
     for(Record r : result){
-      destinataires.add(r.getValue(0)+";"+r.getValue(1)+" "+r.getValue(2)+";"+"UTILISATEUR");
+      //                               id                 nom                 prenom               email               profil
+      destinataires.add("UTILISATEUR;"+r.getValue(0)+";"+r.getValue(1)+" "+r.getValue(2)+";"+r.getValue(3)+";"+r.getValue(4));
     }
     return destinataires;
   }
