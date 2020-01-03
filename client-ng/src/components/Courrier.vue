@@ -49,7 +49,14 @@
 				</b-form-group>
 			</div>
 			<div class="text-center mt-3">
-					<b-spinner v-if='showApercu == true && pdfLoading == true' label="Chargement ..."></b-spinner>
+					<b-spinner v-if='showApercu == true && pdfLoading == true' ></b-spinner>
+			</div>
+			<div class="row">
+				<div class="col-md-12 ">
+					<b-alert id="alertError" v-model="showErrorGeneration" size="sm" variant="danger" dismissible>
+						{{this.msgError}}
+					</b-alert>
+				</div>
 			</div>
     </form>
     </b-modal>
@@ -167,7 +174,6 @@
 				</div>
 			</b-form-group>
     </b-modal>
-
   </div>
 </template>
 
@@ -196,6 +202,8 @@ export default {
 			comboSite: [],
 			params: [],
 			files: [],
+			showErrorGeneration: false,
+			msgError: "",
 
 			/************** Partie aperçu document *******************/
 
@@ -223,6 +231,10 @@ export default {
 	},
 	
   props:{
+		thematique: {
+      type: String,
+      required: true
+    },
   },
 
   computed: {
@@ -299,7 +311,7 @@ export default {
 		},
 
 		initComboModele(){
-			axios.get('/remocra/courrier').then((response)=> {
+			axios.get('/remocra/courrier/'+this.thematique).then((response)=> {
 					var courriers = response.data.data;
 					_.forEach(courriers, courrier => {
             this.comboModele.push({
@@ -413,6 +425,7 @@ export default {
 		handleSubmitParams(formData){
 			this.showApercu = true;
 			this.pdfLoading = true;
+			var self = this;
 			// Envoi des données
       axios.post('/remocra/courrier/generecourrier/' + this.choixModele.id, formData, {
         headers: {
@@ -425,9 +438,12 @@ export default {
 					this.codeCourrier = response.data.message.split("/")[0];
 					this.ouvreApercu();
 					this.pdfLoading=false;
-        }
+        }				
       }).catch(function(error) {
-        console.error(error)
+				console.error(error)
+				self.pdfLoading = false;
+				self.showErrorGeneration = true;
+				self.msgError = "Erreur lors de la génération du courrier.";
       })
 		},
 		
@@ -597,5 +613,11 @@ export default {
     table-layout:fixed;
 		word-wrap: break-word;
 }
+
+#alertError {
+	margin-bottom: 0;
+	padding: .6rem;
+}
+
 
 </style>

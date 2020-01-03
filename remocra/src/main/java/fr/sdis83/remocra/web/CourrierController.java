@@ -73,9 +73,10 @@ public class CourrierController {
   private MessageDigestPasswordEncoder messageDigestPasswordEncoder;
 
 
-  @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/json")
+  @RequestMapping(value = "/{thematique}", method = RequestMethod.GET, headers = "Accept=application/json")
     //@PreAuthorize("hasRight('')")
-    public ResponseEntity<String> listJson(final @RequestParam(value = "page", required = false) Integer page,
+    public ResponseEntity<String> listJson(final @PathVariable("thematique") String thematique,
+                                           final @RequestParam(value = "page", required = false) Integer page,
                                            final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
                                            final @RequestParam(value = "sort", required = false) String sorts, final @RequestParam(value = "filter", required = false) String filters,
                                            final @RequestParam(value = "query", required = false) String query) {
@@ -97,7 +98,7 @@ public class CourrierController {
 
             @Override
             protected List<CourrierModele> getRecords() {
-                return courrierRepository.getAll();
+                return courrierRepository.getAllModeleByThematique(thematique);
             }
         }.serialize();
     }
@@ -263,7 +264,7 @@ public class CourrierController {
 
     }catch(Exception e){
       e.printStackTrace();
-      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la génération du courrier").serialize();
+      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la génération du courrier.").serialize();
     }
   }
 

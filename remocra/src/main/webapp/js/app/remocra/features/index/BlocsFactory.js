@@ -77,30 +77,35 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             });
         }
 
-        //if (true) {
+        if (Sdis.Remocra.Rights.hasRight('COURRIER_C')) {
             if (!Ext.isEmpty(blocHydrants.items)) {
                 blocHydrants.items.push({
                     type: 'sep'
                 });
             }
-            var d = document.createElement('div');
             blocHydrants.items.push({
                 type: 'href',
                 href: 'hydrants/courrier',
                 lbl: 'Générer des courriers',
-                onclick: 'onClick="var d = document.createElement(\'div\');'+
-                            'document.body.appendChild(d);'+
-                            'var vueCourrier = window.remocraVue.buildCourrier(d, {});'+
-                            'vueCourrier.$options.bus.$on(\'closed\','+
-                            'Ext.bind(function(data) {vueCourrier.$el.remove();'+
-                            'vueCourrier.$destroy();}, this));"'
+                onclick: 'onClick="Sdis.Remocra.features.index.BlocsFactory.createCourrierWindow();"'
             });
-        //}
+        }
         
         if (Ext.isEmpty(blocHydrants.items)) {
             return null;
         }
         return blocHydrants;
+    },
+
+    createCourrierWindow: function(){
+    var d = document.createElement('div');
+    document.body.appendChild(d);
+    var vueCourrier = window.remocraVue.buildCourrier(d, {thematique: 'POINTDEAU'});
+    vueCourrier.$options.bus.$on('closed',
+        Ext.bind(function(data) {
+            vueCourrier.$el.remove();
+            vueCourrier.$destroy();
+        }, this));
     },
 
     createAdressesBloc: function(title, icon, minHeight) {

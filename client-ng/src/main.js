@@ -116,14 +116,14 @@ const debitSimultaneFiche = function(el, data) {
 }
 
 //module de courrier
-const buildCourrier = function(el){
+const buildCourrier = function(el, data){
   var v = new Vue({
   el,
   bus: new Vue(),
   components: {
       Courrier
   },
-  template: "<Courrier />"
+  template: "<Courrier thematique="+data.thematique+" />"
   })
   return v
 }

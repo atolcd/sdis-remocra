@@ -213,6 +213,19 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
 
         }
 
+        if (Sdis.Remocra.Rights.hasRight('COURRIER_C')) {
+            this.editItems.push('Générer un courrier : ');
+            this.editItems.push({
+                xtype: 'button',
+                tooltip: 'Outil de génération de courriers',
+                text: '<span>Générer un courrier.</span>',
+                cls: 'new-courrier',
+                iconCls: 'new-courrierIcon',
+                itemId: 'newCourrierBtn',
+                disabled: false
+            });
+        }
+
 
         if (Sdis.Remocra.Rights.hasRight('HYDRANTS_EXPORT_NON_NUM_C')) {
             this.moreItems = [ { tooltip: 'Télécharger la liste des points d\'eau non numérotés', text: '<span>Télécharger</span>',

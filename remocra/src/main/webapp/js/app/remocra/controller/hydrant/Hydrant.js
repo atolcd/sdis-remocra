@@ -247,6 +247,11 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                     this.getTabMap().activateSpecificControl('deleteDebitSimultane', pressed);
                 }
             },
+
+            'crHydrantsMap #newCourrierBtn': {
+                click: this.showFicheCourrierFromMap
+            },
+
             // Fenêtre "affectation"
             'affectation': {
                 afterrender: this.afterShowAffectation
@@ -2422,6 +2427,17 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 });
             }
         }, this);
+      },
+
+      showFicheCourrierFromMap: function(){
+        var d = document.createElement('div');
+        d.setAttribute("id", "divCourrier");
+        document.body.appendChild(d);
+        var vueCourrier = window.remocraVue.buildCourrier(d, {thematique: 'POINTDEAU'});
+        vueCourrier.$options.bus.$on('closed',Ext.bind(function(data) {
+            vueCourrier.$el.remove();
+            vueCourrier.$destroy();
+        }, this));
       }
 
 });
