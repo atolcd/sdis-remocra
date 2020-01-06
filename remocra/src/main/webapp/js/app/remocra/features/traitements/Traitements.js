@@ -241,6 +241,46 @@ Ext.define('Sdis.Remocra.features.traitements.Traitements', {
                     });
                     break;
 
+                // Combo (Selection multiple) avec requête Saisie et requête de type "like" sur le libellé
+                case 'multicombo':
+                    var multiParamLstLikeDStore = new Ext.data.JsonStore({
+                        proxy : {
+                            format : 'json',
+                            type : 'rest',
+                            headers : { 'Accept' : 'application/json,application/xml', 'Content-Type' : 'application/json' },
+                            url : Sdis.Remocra.util.Util.withBaseUrl("../traitements/modtrtparalst/" + data[i]['formSourceDonnee']),
+                            reader : { type : 'json', root : 'data', totalProperty : 'total' }
+                        },
+                        idProperty : 'id',
+                        autoLoad : true,
+                        restful : true,
+                        fields : [ { name : 'id', type : 'integer' },
+                                   { name : 'libelle', type : 'string' }
+                        ]
+                    });
+                    panelFather.add({
+                        xtype: 'combo',
+                        itemId : 'param-'+data[i]['idparametre'],
+                        fieldLabel : data[i]['formEtiquette'],
+                        allowBlank : !data[i]['formObligatoire'],
+                        value : data[i]['formValeurDefaut'],
+                        // Propre à la combo
+                        store: paramLstLikeDStore,
+                        valueField: 'id',
+                        displayField: 'libelle',
+                        hiddenName : 'id',
+                        mode : 'remote',
+                        triggerAction : 'all',
+                        forceSelection: true,
+                        hideTrigger : false,
+                        editable : true,
+                        minChars: 1,
+                        width : 470,
+                        multiSelect: true,
+                        emptyText : "Sélectionner une valeur",
+                        labelWidth : 120
+                    });
+                    break;
                 // FileUpload
                 case 'fileuploadfield':
                     panelFather.add({
@@ -336,13 +376,19 @@ Ext.define('Sdis.Remocra.features.traitements.Traitements', {
         for (i = 0; i < this.tab_items.length; i++) {
             var comp = formP.getComponent(this.tab_items[i]);
             var value;
+            var rawValue;
             if (comp.xtype == 'datefield') {
                 value = Ext.Date.format(comp.getValue(), 'Y-m-d');
             } else if (comp.xtype == 'filefield') {
                 // Cas du fileupload : value peut être de la forme suivante (ex : Chrome) : C:\\fakepath\\R112815A.txt
-                var rawValue = comp.getValue();
+                rawValue = comp.getValue();
                 var rawValueParts = rawValue.split('\\');
                 value = rawValueParts[rawValueParts.length-1];
+            } else if (comp.xtype == 'combo' && comp.multiSelect) {
+                rawValue = comp.getValue();
+                if (rawValue.length > 0){
+                   value = rawValue.join(";");
+                }
             } else {
                 value = comp.getValue();
             }
