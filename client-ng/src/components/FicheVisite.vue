@@ -549,11 +549,16 @@ export default {
       this.indexCritere = -1;
       this.critereSuivant();
     },
+
     /**
      * En cas de changement de type de visite, on décoche toujouts la checkbox "Contrôle débit et pression"
+     * de plus, les anomalies reviennent à leur état initial
      */
     onTypeVisiteChange() {
       this.listeVisites[this.selectedRow].ctrl_debit_pression = false;
+      if (this.listeVisites.length > 1) {
+        this.listeVisites[this.selectedRow].anomalies = (this.listeVisites[1].anomalies) ? this.listeVisites[1].anomalies : [];
+      }
       this.indexCritere = -1;
       this.critereSuivant();
     },
