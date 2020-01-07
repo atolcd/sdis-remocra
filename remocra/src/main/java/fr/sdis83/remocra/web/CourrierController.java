@@ -32,6 +32,7 @@ import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import org.apache.commons.collections4.iterators.ListIteratorWrapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
 
 import freemarker.ext.dom.NodeModel;
@@ -74,7 +75,7 @@ public class CourrierController {
 
 
   @RequestMapping(value = "/{thematique}", method = RequestMethod.GET, headers = "Accept=application/json")
-    //@PreAuthorize("hasRight('')")
+    @PreAuthorize("hasRight('COURRIER_C')")
     public ResponseEntity<String> listJson(final @PathVariable("thematique") String thematique,
                                            final @RequestParam(value = "page", required = false) Integer page,
                                            final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,

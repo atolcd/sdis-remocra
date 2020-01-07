@@ -80,6 +80,7 @@ public class TypeDroit {
         HYDRANTS_VISITE_RECEP_D("hydrants.visite_recep_D"),
         DEBITS_SIMULTANES_C("debits_simultanes_C"),
         DEBITS_SIMULTANES_R("debits_simultanes_R"),
+        COURRIER_C("courrier_C"),
 
         // Module Permis
         PERMIS_R("permis_R"),

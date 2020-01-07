@@ -76,7 +76,11 @@ public class CourrierRepository {
 
   public List<CourrierModele> getAllModeleByThematique(String thematique) {
     List<CourrierModele> l = null;
-    l = context.select().from(COURRIER_MODELE).where(COURRIER_MODELE.THEMATIQUE.eq(Long.valueOf(thematique))).fetchInto(CourrierModele.class);
+    l = context.select().from(COURRIER_MODELE)
+            .join(COURRIER_MODELE_DROIT).on(COURRIER_MODELE.ID.eq(COURRIER_MODELE_DROIT.MODELE))
+            .where(COURRIER_MODELE.THEMATIQUE.eq(Long.valueOf(thematique))
+                    .and(COURRIER_MODELE_DROIT.PROFIL_DROIT.eq(utilisateurService.getCurrentUtilisateur().getProfilUtilisateur().getId()))
+            ).fetchInto(CourrierModele.class);
     return l;
   }
 
