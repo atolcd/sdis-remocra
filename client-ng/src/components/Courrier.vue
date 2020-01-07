@@ -1,11 +1,11 @@
 <template>
   <div id="Courrier">
 		<!-- ================================================ Paramètres du document ========================================================= -->
-    <b-modal id="modalCourrier" ref="modalCourrier"  no-close-on-backdrop title="Génération de courrier" cancel-title="Annuler" ok-title="Aperçu" @ok="handleOk" @close="fermeModifier" @cancel="fermeModifier">
+    <b-modal id="modalCourrier" ref="modalCourrier"  no-close-on-backdrop title="Génération de courrier" cancel-title="Annuler" ok-title="Aperçu" @ok="handleOk" @close="setModalVisibility('modalCourrier', false)" @cancel="setModalVisibility('modalCourrier', false)">
     <form id='formCourrier' name='courrier' enctype="multipart/form-data" method="POST" ref="formCourrier">
 			<b-form-group>
 				<div class="row">
-					<div class="col-md-3">
+					<div class="col-md-3 mt-1">
 						<label>Modèle</label>
 					</div>
 					<div class="col-md-9 mb-2">
@@ -69,18 +69,18 @@
 					width="100%" height="100%"></object>
 		</div>
 		<b-form-group>
-			<div class="row justify-content-md-center mt-3" id="btnApercu">
+			<div class="row justify-content-md-center mt-2" id="btnApercu">
 				<div class="col-md-3 text-center">
-					<b-button id="bouton" @click="fermeApercu" class="modifier">Modifier</b-button>
+					<b-button id="bouton" @click="setModalVisibility('modalApercu', false);" class="modifier">Modifier</b-button>
 				</div>
 				<div class="col-md-3 text-center">
 					<b-button id="bouton" @click="telechargerCourrier" variant="primary">Télécharger</b-button>
 				</div>
 				<div class="col-md-3 text-center">
-					<b-button id="bouton" @click="ouvreNotifier" class="notifier" variant="primary">Notifier</b-button>
+					<b-button id="bouton" @click="setModalVisibility('modalNotifier', true);" class="notifier" variant="primary">Notifier</b-button>
 				</div>
 				<div class="col-md-3 text-center">
-					<b-button id="bouton" @click="fermeApercu(); fermeModifier();" >Fermer</b-button>
+					<b-button id="bouton" @click="setModalVisibility('modalApercu', false); setModalVisibility('modalCourrier', false);" >Fermer</b-button>
 				</div>
 			</div>
 		</b-form-group>
@@ -90,8 +90,8 @@
 
 	<b-modal id="modalNotifier" ref="modalNotifier" no-close-on-backdrop title="Notification par mail" hide-footer>
 		<div class="row">
-			<div class="col-md-3">
-				<label>Recherche rapide :</label>
+			<div class="col-md-3 mt-1">
+				<label>Recherche rapide</label>
 			</div>
 			<div class="col-md-9">
 				<b-form-input v-model="filtre" size="sm" @input="initListeDestinataire" id="filtre" placeholder="Recherche ..." >
@@ -99,77 +99,77 @@
 			</div>
 		</div>
 		<div class="row mt-2 ml-2">
-			<div class="col-md-4 text-right">
+			<div class="col-md-5 text-right">
 				<b-form-checkbox id="chkBoxOrganisme" v-model="filtreOrga" @input="initListeDestinataire"	name="chkBoxOrganisme">Organisme</b-form-checkbox>
 			</div>
-			<div class="col-md-4 text-center">
+			<div class="col-md-3 text-center">
 				<b-form-checkbox id="chkBoxUtilisateur" v-model="filtreUtil" @input="initListeDestinataire" name="chkBoxUtilisateur">Utilisateur</b-form-checkbox>
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-3">
 				<b-form-checkbox id="chkBoxContact" v-model="filtreContact"	@input="initListeDestinataire" name="chkBoxContact">Contact</b-form-checkbox>
 			</div>
 		</div>
-		<div class="row mt-4">
+		<div class="row ">
 			<div class="col-md-6">
-				<label>Destinataires potentiels: </label>
+				<label>Destinataires potentiels </label>
 			</div>
-				<div class="col-md-6 overflow-auto">
-					<b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" size="sm" align="right" aria-controls="tabDestinataireNotifierNon">					
+		</div>
+		<div class="row">
+			<div class="col-md-12 tabNotifNon">
+				<b-table  id="tabDestinataireNotifier" small selectable select-mode="multi" @row-selected="onRowSelectedAjoute" :fields="fields"
+					:items="tabDestinataireNotifierNon" :per-page="perPage" :current-page="currentPageNon">
+				</b-table>
+			</div>
+		</div>
+		<div class="row mt-1">
+			<div class="col-md-6 text-right">
+				<b-button id="boutonUpDown" @click="addNotifierOui" variant="primary"><img id="arrow" src="/remocra/static/img/navigate-down-arrow.png"></b-button>
+			</div>
+			<div class="col-md-2">
+				<b-button id="boutonUpDown" @click="addNotifierNon" variant="primary"> <img id="arrow" src="/remocra/static/img/navigate-up-arrow.png"> </b-button>
+			</div>
+			<div class="col-md-4 overflow-auto">
+					<b-pagination v-model="currentPageNon" :total-rows="rowsNon" :per-page="perPage" size="sm" align="right" aria-controls="tabDestinataireNotifierNon">					
 					</b-pagination>
 				</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<label>Destinataires définitifs </label>
 			</div>
-			<div class="row">
-				<div class="col-md-12 tabNotif">			
-					<b-table  id="tabDestinataireNotifier" small responsive selectable select-mode="multi" @row-selected="onRowSelectedAjoute" :fields="fields"
-						:items="tabDestinataireNotifierNon" :per-page="perPage" :current-page="currentPage">
-					</b-table>
-				</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 tabNotifOui">
+				<b-table id="tabDestinataireNotifier" responsive small selectable select-mode="multi" @row-selected="onRowSelectedSupprime" :fields="fields"
+					:items="tabDestinataireNotifierOui" :per-page="perPage" :current-page="currentPageOui">
+				</b-table>
 			</div>
+		</div>
+		<div class="row">
+		</div>
+		<b-form-group>
 			<div class="row mt-2">
-				<div class="col-md-6 text-right">
-					<b-button id="boutonUpDown" @click="addNotifierOui" variant="primary"><img id="arrow" src="/remocra/static/img/down-arrow.png"></b-button>
+				<div class="col-md-4 text-right">
+					<b-button id="bouton" @click="setModalVisibility('modalNotifier', false);" class="retourApercu">Retour</b-button>
 				</div>
-				<div class="col-md-6">
-					<b-button id="boutonUpDown" @click="addNotifierNon" variant="primary"> <img id="arrow" src="/remocra/static/img/up-arrow.png"> </b-button>
+				<div class="col-md-4 text-center">
+					<b-button id="bouton" @click="notificationCourrier" class="notifier" variant="primary">Notifier</b-button>
 				</div>
-			</div>
-			<div class="row">
-			<div class="col-md-12 mt-2">
-				<label>Destinataires définitifs : </label>
-			</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12 tabNotif">
-					<template>
-						<b-table id="tabDestinataireNotifier" small responsive selectable select-mode="multi" @row-selected="onRowSelectedSupprime" :fields="fields"
-							:items="tabDestinataireNotifierOui">
-						</b-table>
-					</template>
+				<div class="col-md-4">
+					<b-button id="bouton" @click="setModalVisibility('modalNotifier', false); setModalVisibility('modalApercu', false); setModalVisibility('modalModifier', false)" >Fermer</b-button>
 				</div>
 			</div>
-			<b-form-group>
-				<div class="row justify-content-md-center mt-4">
-					<div class="col-md-3">
-						<b-button id="bouton" @click="fermeNotifier" class="retourApercu">Retour</b-button>
-					</div>
-					<div class="col-md-3">
-						<b-button id="bouton" @click="notificationCourrier" class="notifier" variant="primary">Notifier</b-button>
-					</div>
-					<div class="col-md-3">
-						<b-button id="bouton" @click="fermeNotifier(); fermeApercu(); fermeModifier()" >Fermer</b-button>
-					</div>
-				</div>
-			</b-form-group>
-    </b-modal>
+		</b-form-group>
+	</b-modal>
 
 				<!-- ==================================== Pop up notifier ============================================ -->
 
 	<b-modal id="modalPopupNotif" ref="modalPopupNotif" no-close-on-backdrop
-		title="Succès de notification" centered ok-only ok-title="Fermer" @ok="fermeNotifier(); fermeApercu(); fermeModifier()" >
+		title="Succès de notification" centered ok-only ok-title="Fermer" @ok="setModalVisibility('modalNotifier', false); setModalVisibility('modalApercu', false); setModalVisibility('modalModifier', false)" >
 			<b-form-group>
 				<div class="row">
 					<div class="col-md-12 text-center">
-						<label>La demande de notification à bien été prise en compte.</label>
+						<label>La demande de notification a bien été prise en compte.</label>
 					</div>
 				</div>
 			</b-form-group>
@@ -188,7 +188,6 @@ export default {
 		//pdf
 	},
 	name: 'Courrier',
-	
   data() {
     return {
 
@@ -225,11 +224,12 @@ export default {
 			tabDestinataireNotifierNon: [],
 			tabDestinataireNotifierOui: [],
 			fields: ['Type', 'Nom', 'Email', 'Fonction' ],
-			perPage: 100,
-			currentPage: 1,
+			perPage: 15,
+			currentPageNon: 1,
+			currentPageOui: 1,
     }
 	},
-	
+
   props:{
 		thematique: {
       type: String,
@@ -238,9 +238,9 @@ export default {
   },
 
   computed: {
-		rows() {
+		rowsNon() {
         return this.tabDestinataireNotifierNon.length
-      }
+		},
   },
 
   mounted: function(){
@@ -258,32 +258,22 @@ export default {
 			}
 		},
 
-		ouvreModifier(){
-			this.$refs.modalCourrier.show();
-		},
-
-		fermeModifier(){
-			var element = document.getElementById("Courrier");
-			element.parentNode.removeChild(element);
-		},
-
-		ouvreApercu(){
-			this.$refs.modalApercu.show();
-		},
-
-		fermeApercu(){
-			this.$refs.modalApercu.hide();
-		},
-
-		ouvreNotifier(){
-			if(!this.destinatairesLoaded){
-				this.initListeDestinataire();
+		setModalVisibility(modalName, visibility){
+			if(visibility == true){
+				if(modalName == "modalNotifier"){
+					if(!this.destinatairesLoaded){
+						this.initListeDestinataire();
+					}
+				}
+				this.$refs[modalName].show();
+			} else {
+				if(modalName == "modalModifier"){
+					var element = document.getElementById("Courrier");
+					element.parentNode.removeChild(element);
+				} else {
+					this.$refs[modalName].hide();
+				}
 			}
-			this.$refs.modalNotifier.show();
-		},
-
-		fermeNotifier(){
-			this.$refs.modalNotifier.hide();
 		},
 
 		onRowSelectedAjoute(items){
@@ -295,18 +285,18 @@ export default {
 		},
 
 		addNotifierOui(){
-			for(var i = 0; i<this.ajouteDestinataire.length; i++){
-				this.tabDestinataireNotifierOui.push(this.ajouteDestinataire[i]);
-				this.tabDestinataireNotifierNon.splice(this.tabDestinataireNotifierNon.indexOf(this.ajouteDestinataire[i]),1);
-			}
+			_.forEach(this.ajouteDestinataire, dest =>{
+				this.tabDestinataireNotifierOui.push(dest);
+				this.tabDestinataireNotifierNon.splice(this.tabDestinataireNotifierNon.indexOf(dest),1);
+			})
 			this.ajouteDestinataire = [];
 		},
 
 		addNotifierNon(){
-			for(var i = 0; i<this.retireDestinataire.length; i++){
-				this.tabDestinataireNotifierNon.push(this.retireDestinataire[i]);
-				this.tabDestinataireNotifierOui.splice(this.tabDestinataireNotifierOui.indexOf(this.retireDestinataire[i]),1);
-			}
+			_.forEach(this.retireDestinataire, dest =>{
+				this.tabDestinataireNotifierNon.push(dest);
+				this.tabDestinataireNotifierOui.splice(dest,1);
+			})
 			this.retireDestinataire = [];
 		},
 
@@ -436,7 +426,7 @@ export default {
 					this.urlCourrier = "/remocra/ext-courrier/courrier_temp/"+response.data.message;
 					this.nomCourrier = response.data.message.split("/")[1];
 					this.codeCourrier = response.data.message.split("/")[0];
-					this.ouvreApercu();
+					this.setModalVisibility('modalApercu', true);
 					this.pdfLoading=false;
         }				
       }).catch(function(error) {
@@ -516,34 +506,64 @@ export default {
 
 <style>
 
+#Courrier .modal-header{
+	padding: 0.3em 1em 0.4em 0.5em;
+}
+
+#Courrier .modal-footer{
+	padding: 0.3em 0.5em 0.3em 0;
+}
+
+#Courrier .modal-title{
+	font-size: 12pt;
+}
+
 #modalCourrier .modal-content{
-  background-color: #e9e9e9 !important;
-  font-size: 1rem;
+  background-color: #e9e9e9;
+  font-size: 11pt;
 	width: 650px;
   padding-bottom: 0px;
   padding-top: 0px;
 }
 
+#modalApercu .modal-dialog{
+	max-width: 50%;
+}
+
 #modalApercu .modal-content{
-  background-color: #e9e9e9 !important;
+  background-color: #e9e9e9;
   font-size: 1rem;
-	width: 650px;
+	width: 100%;
+	height: 100%
+}
+
+.pdf{
+	align-content: center;
+	height: 650px;
 }
 
 #modalApercu .modal-body{
 	padding: 5px;
 }
 
+#modalNotifier .modal-dialog{
+	max-width: 50%;
+}
+
+#modalNotifier .form-group{
+	margin-bottom: 0;
+}
+
 #modalNotifier .modal-content{
-  background-color: #e9e9e9 !important;
+  background-color: #e9e9e9;
   font-size: 1rem;
-	width: 650px;
+	width: 100%;
   padding-bottom: 0px;
   padding-top: 0px;
 }
 
 #modalPopupNotif .modal-content{
-	background-color: #e9e9e9 !important;
+	background-color: #e9e9e9;
   font-size: 1rem;
 	min-width: 650px;
 	padding-bottom: 0px;
@@ -561,13 +581,9 @@ export default {
 	width: 115px;
 }
 
-#boutonUpDown{
-	width: 50px;
-	height: 40px;
-}
-
-#arrow{
-	vertical-align: center;
+#tabDestinataireNotifier{
+	margin-bottom: 0;
+	background-color: white;
 }
 
 #addNotifierNon{
@@ -578,19 +594,26 @@ export default {
 	width: 38px;
 }
 
-#zoom{
-	width: 31px;
-}
-
-.pdf{
-	align-content: center;
-	height: 500px;
-}
-
-.tabNotif .table-responsive{
-	max-height: 250px;
-	background-color: white;
+.tabNotifNon{
+	height: 100%;
 	font-size: 10pt;
+}
+
+.tabNotifOui{
+	height: 100%;
+	font-size: 10pt;
+}
+
+.tabNotifOui .table-responsive{
+	max-height: 200px;
+}
+
+.tabNotifNon .table-sm th, .tabNotifNon .table-sm td{
+	padding: 0;
+}
+
+.tabNotifOui .table-sm th, .tabNotifOui .table-sm td{
+	padding: 0;
 }
 
 .description{
@@ -601,23 +624,9 @@ export default {
 		margin-bottom: 0; 
 }
 
-#tabDestinataireNotifier tbody {
-    display:block;
-    max-height:200px;
-    overflow:auto;
-}
-
-#tabDestinataireNotifier thead, #tabDestinataireNotifier tbody tr {
-    display:table;
-    width:100%;
-    table-layout:fixed;
-		word-wrap: break-word;
-}
-
 #alertError {
 	margin-bottom: 0;
 	padding: .6rem;
 }
-
 
 </style>
