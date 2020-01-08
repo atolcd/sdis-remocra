@@ -161,6 +161,14 @@ public class ParamConfService {
         return (String) this.getValue(ParamConfParam.PDI_CHEMIN_LOG);
     }
 
+    public String getPdiCheminPfxFile(){
+        return (String) this.getValue(ParamConfParam.PDI_PDF_SIGN_PFX_FILE);
+    }
+
+    public String getPdiPfxPassword(){
+        return (String)(this.getValue(ParamConfParam.PDI_PDF_SIGN_PFX_PASSWORD)).toString();
+    }
+
     public Integer getToleranceChargementMetres() {
         return (Integer) this.getValue(ParamConfParam.PERMIS_TOLERANCE_CHARGEMENT_METRES, 1000);
     }

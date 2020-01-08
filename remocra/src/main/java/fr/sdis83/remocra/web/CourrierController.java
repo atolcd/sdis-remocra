@@ -251,6 +251,11 @@ public class CourrierController {
       FileOutputStream pdfFileOutputStream = new FileOutputStream(new File(docOTT.getRepertoire() + nomPdf));
       DocumentUtil.getInstance().generePdf(textFileInputStream, pdfFileOutputStream);
 
+      //Signature du pdf
+      if(!paramConfService.getPdiCheminPfxFile().equals("") && !paramConfService.getPdiPfxPassword().equals("")){
+        DocumentUtil.getInstance().signPdf(docOTT.getRepertoire() + nomPdf, paramConfService.getPdiCheminPfxFile(), paramConfService.getPdiPfxPassword());
+      }
+
       //Suppression de l'ott
       File ott = new File(docOTT.getRepertoire() + docOTT.getFichier());
       ott.delete();

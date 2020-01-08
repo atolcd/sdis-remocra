@@ -1,13 +1,24 @@
 package fr.sdis83.remocra.util;
 
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
 import java.util.Date;
 import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfSignatureAppearance;
+import com.lowagie.text.pdf.PdfStamper;
 import fr.opensagres.xdocreport.converter.ConverterRegistry;
 import fr.opensagres.xdocreport.converter.ConverterTypeTo;
 import fr.opensagres.xdocreport.converter.IConverter;
@@ -313,6 +324,38 @@ public class DocumentUtil {
             out.close();
         }
         catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void signPdf(String cheminPdf, String cheminCertificat, String mdpCertificat){
+        try{
+            //Création d'un keyStore
+            KeyStore ks = KeyStore.getInstance("pkcs12");
+            //Chargement du certificat dans le store
+            ks.load(new FileInputStream(cheminCertificat), mdpCertificat.toCharArray());
+            String alias = (String)ks.aliases().nextElement();
+            //Récupération de la clé privée
+            PrivateKey key = (PrivateKey)ks.getKey(alias, mdpCertificat.toCharArray());
+            //Récupération de la chaine de certificats
+            Certificate[] chaine = ks.getCertificateChain(alias);
+
+            //Lecture du document
+            PdfReader pdfReader = new PdfReader(cheminPdf);
+            File outputFile = new File(cheminPdf.replace(".", "_signed."));
+
+            //Création du tampon de signature
+            PdfStamper pdfStamper = PdfStamper.createSignature(pdfReader, null, '\0', outputFile);
+            PdfSignatureAppearance sap = pdfStamper.getSignatureAppearance();
+            sap.setCrypto(key, chaine, null, PdfSignatureAppearance.SELF_SIGNED);
+            pdfStamper.setFormFlattening(true);
+            pdfStamper.close();
+
+            //Suppression du PDF signé et renommage pdf signé
+            new File(cheminPdf).delete();
+            outputFile.renameTo(new File(cheminPdf));
+
+        } catch (Exception e){
             e.printStackTrace();
         }
     }
