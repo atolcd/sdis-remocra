@@ -2,14 +2,21 @@ package fr.sdis83.remocra.repository;
 
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CourrierParametre;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CourrierModele;
-//import fr.sdis83.remocra.domain.remocra.CourrierModele;
 import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.web.message.ItemFilter;
-import org.jooq.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Types;
+import org.jooq.DSLContext;
 import org.jooq.Meta;
+import org.jooq.Record;
+import org.jooq.Result;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.NameTokenizers;
 import org.modelmapper.jooq.RecordValueReader;
@@ -22,7 +29,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import java.io.StringReader;
-import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,8 +44,21 @@ import net.sf.jooreports.templates.DocumentTemplate;
 import net.sf.jooreports.templates.DocumentTemplateFactory;
 import org.xml.sax.InputSource;
 
-import static fr.sdis83.remocra.db.model.remocra.Tables.*;
-import static org.jooq.impl.DSL.*;
+import static fr.sdis83.remocra.db.model.remocra.Tables.COURRIER_DOCUMENT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.COURRIER_MODELE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.COURRIER_MODELE_DROIT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.COURRIER_PARAMETRE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.DOCUMENT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.EMAIL;
+import static fr.sdis83.remocra.db.model.remocra.Tables.PARAM_CONF;
+import static fr.sdis83.remocra.db.model.remocra.Tables.ORGANISME;
+import static fr.sdis83.remocra.db.model.remocra.Tables.CONTACT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
+import static fr.sdis83.remocra.db.model.remocra.Tables.THEMATIQUE;
+
+
+
+//import static fr.sdis83.remocra.db.model.remocra.Tables.*;
 
 
 @Configuration
@@ -76,9 +95,13 @@ public class CourrierRepository {
 
   public List<CourrierModele> getAllModeleByThematique(String thematique) {
     List<CourrierModele> l = null;
-    l = context.select().from(COURRIER_MODELE)
+    l = context.select(COURRIER_MODELE.ID, COURRIER_MODELE.CODE, COURRIER_MODELE.LIBELLE, COURRIER_MODELE.DESCRIPTION,
+            COURRIER_MODELE.MODELE_OTT, COURRIER_MODELE.SOURCE_XML, COURRIER_MODELE.MESSAGE_OBJET,
+            COURRIER_MODELE.MESSAGE_CORPS, COURRIER_MODELE.THEMATIQUE)
+            .from(COURRIER_MODELE)
             .join(COURRIER_MODELE_DROIT).on(COURRIER_MODELE.ID.eq(COURRIER_MODELE_DROIT.MODELE))
-            .where(COURRIER_MODELE.THEMATIQUE.eq(Long.valueOf(thematique))
+            .join(THEMATIQUE).on(COURRIER_MODELE.THEMATIQUE.eq(THEMATIQUE.ID))
+            .where(THEMATIQUE.CODE.eq(thematique)
                     .and(COURRIER_MODELE_DROIT.PROFIL_DROIT.eq(utilisateurService.getCurrentUtilisateur().getProfilUtilisateur().getId()))
             ).fetchInto(CourrierModele.class);
     return l;
