@@ -3,9 +3,9 @@ package fr.sdis83.remocra.web;
 import java.util.List;
 
 import flexjson.JSONSerializer;
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.RepertoireLieu;
 import fr.sdis83.remocra.repository.RepertoireLieuRepository;
 import fr.sdis83.remocra.web.message.ItemFilter;
+import fr.sdis83.remocra.web.model.RepertoireLieu;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +32,7 @@ public class RepertoireLieuController {
                              @RequestParam(value = "filter", required = false) String filters) {
     final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
 
-    return new AbstractExtListSerializer<RepertoireLieu>("Repertoire Lieu retrieved.") {
+    return new AbstractExtListSerializer<fr.sdis83.remocra.web.model.RepertoireLieu>("Repertoire Lieu retrieved.") {
 
       @Override
       protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
@@ -42,8 +42,8 @@ public class RepertoireLieuController {
       }
 
       @Override
-      protected List<RepertoireLieu> getRecords() {
-        return repertoireLieuRepository.getAll(itemFilterList);
+      protected List<fr.sdis83.remocra.web.model.RepertoireLieu> getRecords() {
+        return repertoireLieuRepository.getAll(itemFilterList, query);
       }
 
       @Override
@@ -59,7 +59,7 @@ public class RepertoireLieuController {
   @PreAuthorize("hasRight('CRISE_C')")
   public ResponseEntity<String> listJson(final @PathVariable(value ="idCrise") Long id,  final @RequestParam(value = "query", required = false) String query) {
 
-    return new AbstractExtListSerializer<fr.sdis83.remocra.web.model.RepertoireLieu>("Repertoire Lieu retrieved.") {
+    return new AbstractExtListSerializer<RepertoireLieu>("Repertoire Lieu retrieved.") {
 
       @Override
       protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
@@ -69,7 +69,7 @@ public class RepertoireLieuController {
       }
 
       @Override
-      protected List<fr.sdis83.remocra.web.model.RepertoireLieu> getRecords() {
+      protected List<RepertoireLieu> getRecords() {
         return repertoireLieuRepository.getAllById(id, query);
       }
 

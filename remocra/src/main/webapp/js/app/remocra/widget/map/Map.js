@@ -275,6 +275,26 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
                     scope: this
                 }
             }),
+             // Zoom sur lieu
+                Ext.widget('combo', {
+                    store: Ext.create('Sdis.Remocra.store.RepertoireLieu'),
+                    queryMode: 'remote',
+                    displayField: 'convertedLibelle',
+                    valueField: 'id',
+                    triggerAction: "all",
+                    hideTrigger: true,
+                    typeAhead: true,
+                    minChars: 3,
+                    queryCaching: false, // Changement commune avec saisie identique : requête à rejouer quand-même
+
+                    allowBlank: true,
+                    itemId: 'lieuCombo',
+                    emptyText: 'Zoomer sur le lieu...', cls: 'zoom-voie', width: 170,
+                    listeners: {
+                        'select': this.onZoomToLieu,
+                        scope: this
+                    }
+                }),
             // Zoom sur tournée
             {
                 xtype: 'combo',
@@ -974,6 +994,10 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
     },
     onZoomToVoie: function(combo, records, opts) {
         // Zoom sur la voie
+        this.zoomToFirstRecord(records);
+    },
+    onZoomToLieu: function(combo, records, opts) {
+        // Zoom sur le lieu
         this.zoomToFirstRecord(records);
     },
     onZoomToTournee: function(combo, records, opts) {

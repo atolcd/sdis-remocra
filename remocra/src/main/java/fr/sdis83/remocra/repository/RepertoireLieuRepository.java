@@ -48,9 +48,36 @@ public class RepertoireLieuRepository {
     this.context = context;
   }
 
-  public List<RepertoireLieu> getAll(List<ItemFilter> itemFilters) {
-    List<RepertoireLieu> l = null;
-    l = context.select().from(REPERTOIRE_LIEU).fetchInto(RepertoireLieu.class);
+  public List<fr.sdis83.remocra.web.model.RepertoireLieu> getAll(List<ItemFilter> itemFilters, String query) {
+    List<fr.sdis83.remocra.web.model.RepertoireLieu> l = new ArrayList<fr.sdis83.remocra.web.model.RepertoireLieu>();
+    List<RepertoireLieu> repertoires = null;
+    repertoires = context.select().from(REPERTOIRE_LIEU).fetchInto(RepertoireLieu.class);
+    String sql = "";
+    for(int i =0; i<repertoires.size(); i++){
+      RepertoireLieu r = repertoires.get(i);
+      sql = sql +" SELECT "+ r.getSourceSqlLibelle()+" AS libelle, St_asewkt("+r.getSourceSqlValeur()+") AS geometrie, CAST('" +r.getLibelle().replaceAll("\'","\"")+"' as varchar) AS origine"+
+          " FROM("+ r.getSourceSql()+") AS rep"+r.getId()+
+          " WHERE lower("+r.getSourceSqlLibelle()+") like lower('%"+ query+"%')";
+      if (i  < repertoires.size()-1){
+        sql = sql+ " UNION ";
+      }if(i == repertoires.size()-1){
+        sql = sql + " limit 10";
+      }
+    }
+    Result<Record>result = context.fetch(sql);
+    for (Record r : result){
+      fr.sdis83.remocra.web.model.RepertoireLieu rep = new fr.sdis83.remocra.web.model.RepertoireLieu();
+      rep.setLibelle(String.valueOf(r.getValue("libelle")));
+      Geometry geom = null;
+      Integer srid = 2154;
+      String[] coord = String.valueOf(r.getValue("geometrie")).split(";");
+      srid = sridFromGeom(coord[0]);
+      geom = GeometryUtil.toGeometry(coord[1],srid);
+      rep.setGeometrie(geom);
+      rep.setOrigine(String.valueOf(r.getValue("origine")));
+      l.add(rep);
+
+    }
     return l;
   }
 

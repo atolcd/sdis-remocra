@@ -8,8 +8,13 @@ Ext.define('Sdis.Remocra.model.RepertoireLieu', {
         useNull: true
     }, {
         name: 'libelle',
-        type: 'string',
-        useNull: true
+        type: 'string'
+    }, {
+         name: 'convertedLibelle',
+         type: 'string',
+            convert: function(newValue, model) {
+                return model.get('libelle') + '  (' + model.get('origine')+')';
+            }
     }, {
         name: 'code',
         type: 'string',
@@ -22,6 +27,12 @@ Ext.define('Sdis.Remocra.model.RepertoireLieu', {
         type: 'string'
     }, {
         name: 'sourceSqlLibelle',
+        type: 'string'
+    }, {
+        name: 'geometrie',
+        type: 'string'
+    }, {
+        name: 'origine',
         type: 'string'
     }
 
