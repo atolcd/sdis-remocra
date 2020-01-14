@@ -265,7 +265,7 @@ Ext.define('Sdis.Remocra.features.traitements.Traitements', {
                         allowBlank : !data[i]['formObligatoire'],
                         value : data[i]['formValeurDefaut'],
                         // Propre à la combo
-                        store: paramLstLikeDStore,
+                        store: multiParamLstLikeDStore,
                         valueField: 'id',
                         displayField: 'libelle',
                         hiddenName : 'id',
