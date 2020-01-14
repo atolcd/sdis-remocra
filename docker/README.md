@@ -181,7 +181,7 @@ unzip -q var_remocra.zip -d ~/projets/atolcd/sdis-remocra/docker/.docker/var_rem
 cd ~/projets/atolcd/sdis-remocra/docker
 
 # Création des répertoires avec les droits adéquats
-mkdir -p .docker/var_remocra/{geoserver_data,html,layers,modeles,pdi/{kml,synchro,tmp,traitement_sdis}} \
+mkdir -p .docker/var_remocra/{geoserver_data,html,layers,modeles,pdi/{kml,synchro,tmp,traitements_sdis}} \
   .docker/jobs-common .docker/jobs-4.4/dkron_data .docker/jobs/dkron_data \
   && touch .docker/jobs-common/kettle.properties \
   && touch .docker/jobs-4.4/.kettle/repositories.xml \
