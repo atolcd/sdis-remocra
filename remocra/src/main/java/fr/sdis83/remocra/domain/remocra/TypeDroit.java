@@ -29,6 +29,8 @@ public class TypeDroit {
         TRAITEMENTS_C("traitements_C"),
         DOCUMENTS_R("documents_R"),
         DOCUMENTS_C("documents_C"),
+        ZOOM_LIEU_R("zoom.lieu_R"),
+
 
         // Module Alertes / adresses
         ADRESSES_C("adresses_C"),

@@ -25,7 +25,7 @@ public class RepertoireLieuController {
     private RepertoireLieuRepository repertoireLieuRepository;
 
   @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/xml")
-  @PreAuthorize("hasRight('CRISE_C')")
+  @PreAuthorize("hasRight('ZOOM_LIEU_R')")
   public ResponseEntity<String> listJson(final @RequestParam(value = "page", required = false) Integer page,
                              final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
                              final @RequestParam(value = "query", required = false) String query, @RequestParam(value = "sort", required = false) String sorts,
@@ -56,7 +56,7 @@ public class RepertoireLieuController {
   }
 
   @RequestMapping(value = "/{idCrise}", method = RequestMethod.GET, headers = "Accept=application/xml")
-  @PreAuthorize("hasRight('CRISE_C')")
+  @PreAuthorize("hasRight('ZOOM_LIEU_R')")
   public ResponseEntity<String> listJson(final @PathVariable(value ="idCrise") Long id,  final @RequestParam(value = "query", required = false) String query) {
 
     return new AbstractExtListSerializer<RepertoireLieu>("Repertoire Lieu retrieved.") {
