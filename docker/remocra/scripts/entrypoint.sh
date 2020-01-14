@@ -4,6 +4,9 @@ set -e
 # Port
 sed -i "s/port=\".*\" protocol=\"HTTP\/1.1\"/port=\"${REMOCRA_PORT}\" protocol=\"HTTP\/1.1\"/" /usr/local/tomcat/conf/server.xml
 
+REMOCRA_LOGFILE=${REMOCRA_LOGFILE:-/var/remocra/log/remocra.log}
+mkdir -p $(dirname ${REMOCRA_LOGFILE})
+
 # Priorité au paramètre le plus à droite
 export REMOCRA_OPTS="\
   -Ddatabase.username=${POSTGRES_DB_USERNAME} \
@@ -16,4 +19,5 @@ export REMOCRA_OPTS="\
   -Dfile.encoding=UTF8 -Djavax.servlet.request.encoding=UTF-8 -Djavax.servlet.response.encoding=UTF-8"
 export JAVA_OPTS="${REMOCRA_OPTS} ${JAVA_OPTS}"
 
-catalina.sh run
+catalina.sh run \
+    2>&1 | tee -a ${REMOCRA_LOGFILE}

@@ -38,6 +38,11 @@ RUN groupadd -g ${GID} remocra \
     && useradd -u ${UID} -g remocra remocra \
     && chown -R remocra /usr/local/tomcat \
     && chown -R remocra /scripts
+
+# Droits
+RUN mkdir -p /var/remocra/log \
+  && chown -R remocra:remocra /var/remocra/log
+
 USER remocra
 
 VOLUME /var/remocra

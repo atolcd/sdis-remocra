@@ -25,8 +25,8 @@ ENV LANG                        fr_FR.UTF-8
 ENV ENCODING                    UTF-8
 
 ENV KETTLE_HOME                 /home/pdi
-ENV PENTAHO_METASTORE_FOLDER    /home/pdi/.pentaho/metastore
-ENV KETTLE_JNDI_ROOT            /home/pdi/simple-jndi
+ENV PENTAHO_METASTORE_FOLDER    ${KETTLE_HOME}/.pentaho/metastore
+ENV KETTLE_JNDI_ROOT            ${KETTLE_HOME}/simple-jndi
 
 ENV \
     PDI_INITIAL_MEMORY="1G" \
@@ -99,13 +99,17 @@ RUN set -x \
 
 # Droits
 RUN mkdir -p ${KETTLE_HOME}/.kettle \
-  && chown -R pdi:pdi ${KETTLE_HOME} \
+  && mkdir -p /var/remocra/pdi/log \
+  && chown -R pdi:pdi /var/remocra \
   && chown -R pdi:pdi /scripts \
+  && chown -R pdi:pdi ${KETTLE_HOME} \
   && chown -R pdi:pdi ${DKRON_HOME}
 
 USER pdi
 
-VOLUME /var/remocra /home/pdi/.kettle/kettle.properties /home/pdi/remocra.properties /dkron/dkron.data
+VOLUME /var/remocra \
+  ${KETTLE_HOME}/.kettle/kettle.properties ${KETTLE_HOME}/remocra.properties \
+  ${DKRON_HOME}/dkron.data
 
 ENV SHELL /bin/bash
 WORKDIR ${DKRON_HOME}

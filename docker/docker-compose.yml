@@ -11,6 +11,7 @@ services:
       - "5432:5432"
     volumes:
       - .docker/db/postgresql_data:/var/lib/postgresql/data
+      - .docker/remocra/logs:/usr/local/tomcat/logs
     environment:
       POSTGRES_USER: ${POSTGRES_DB_USERNAME}
       POSTGRES_PASSWORD: ${POSTGRES_DB_PASSWORD}
@@ -74,6 +75,7 @@ services:
       REMOCRA_PORT: ${REMOCRA_PORT}
       REMOCRA_INITIAL_MEMORY: ${REMOCRA_INITIAL_MEMORY}
       REMOCRA_MAXIMUM_MEMORY: ${REMOCRA_MAXIMUM_MEMORY}
+      REMOCRA_LOGFILE: ${REMOCRA_LOGFILE}
       # Accès à la base de données remocra
       POSTGRES_DB_HOSTNAME: ${POSTGRES_DB_HOSTNAME}
       POSTGRES_DB_USERNAME: ${POSTGRES_DB_USERNAME}
@@ -121,6 +123,8 @@ services:
       DKRON_RPC_PORT: ${DKRON_44_RPC_PORT}
       DKRON_BIND_ADDR: ${DKRON_44_BIND_ADDR}
       DKRON_HTTP_ADDR: ${DKRON_44_HTTP_ADDR}
+      DKRON_LOGFILE: ${DKRON_44_LOGFILE}
+      DKRON_LOG_LEVEL: ${DKRON_44_LOG_LEVEL}
     depends_on:
       - db
     healthcheck:
@@ -161,6 +165,8 @@ services:
       DKRON_RPC_PORT: ${DKRON_RPC_PORT}
       DKRON_BIND_ADDR: ${DKRON_BIND_ADDR}
       DKRON_HTTP_ADDR: ${DKRON_HTTP_ADDR}
+      DKRON_LOGFILE: ${DKRON_LOGFILE}
+      DKRON_LOG_LEVEL: ${DKRON_LOG_LEVEL}
     depends_on:
       - db
       - jobs-4.4
