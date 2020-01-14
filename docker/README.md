@@ -287,6 +287,26 @@ curl -v http://localhost:8070/v1/jobs -XPOST -d '{
   }
 }'
 
+# Purger les anciens fichiers .TXT de PDI
+curl -v http://localhost:8070/v1/jobs -XPOST -d '{
+  "name": "purger-anciens-txt-pdi",
+  "displayname": "Purger les anciens fichiers .TXT de PDI",
+  "schedule": "0 50 23 * * *",
+  "owner": "",
+  "owner_email": "",
+  "disabled": false,
+  "tags": {
+    "pdi": "7.1:1"
+  },
+  "metadata": { },
+  "retries": 0,
+  "concurrency": "forbid",
+  "executor": "shell",
+  "executor_config": {
+    "command": "find /var/remocra/pdi/log/ -mtime +7 -name \"*.TXT\" -print -exec rm {} \\;"
+  }
+}'
+
 # Notification des indisponibilités temporaires
 curl -v http://localhost:8070/v1/jobs -XPOST -d '{
   "name": "notifier-indispo",
