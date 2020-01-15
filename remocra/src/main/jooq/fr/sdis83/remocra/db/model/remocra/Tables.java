@@ -14,8 +14,11 @@ import fr.sdis83.remocra.db.model.remocra.tables.BlocDocumentThematiques;
 import fr.sdis83.remocra.db.model.remocra.tables.CadastreParcelle;
 import fr.sdis83.remocra.db.model.remocra.tables.CadastreSection;
 import fr.sdis83.remocra.db.model.remocra.tables.Commune;
+import fr.sdis83.remocra.db.model.remocra.tables.Contact;
 import fr.sdis83.remocra.db.model.remocra.tables.CourrierDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.CourrierModele;
+import fr.sdis83.remocra.db.model.remocra.tables.CourrierModeleDroit;
+import fr.sdis83.remocra.db.model.remocra.tables.CourrierParametre;
 import fr.sdis83.remocra.db.model.remocra.tables.Crise;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseCommune;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseDocument;
@@ -211,6 +214,10 @@ public class Tables {
 	public static final Commune COMMUNE = fr.sdis83.remocra.db.model.remocra.tables.Commune.COMMUNE;
 
 	/**
+	 * The table remocra.contact
+	 */
+	public static final Contact CONTACT = fr.sdis83.remocra.db.model.remocra.tables.Contact.CONTACT;
+	/**
 	 * Courrier adressé à un destinataire unique référençant un document présent sur le système. Ce document peut donner lieu à un accusé de téléchargement
 	 */
 	public static final CourrierDocument COURRIER_DOCUMENT = fr.sdis83.remocra.db.model.remocra.tables.CourrierDocument.COURRIER_DOCUMENT;
@@ -221,12 +228,23 @@ public class Tables {
 	public static final CourrierModele COURRIER_MODELE = fr.sdis83.remocra.db.model.remocra.tables.CourrierModele.COURRIER_MODELE;
 
 	/**
-	 * Gestion de crise : Episode de crise pour lequel des informations ont été saisies dans REMOCRA
+	 * Profil de droit autorisé pour générer un courrier
+	 */
+	public static final CourrierModeleDroit COURRIER_MODELE_DROIT = fr.sdis83.remocra.db.model.remocra.tables.CourrierModeleDroit.COURRIER_MODELE_DROIT;
+
+	/**
+	 * The table remocra.courrier_parametre
+	 */
+	public static final CourrierParametre COURRIER_PARAMETRE = fr.sdis83.remocra.db.model.remocra.tables.CourrierParametre.COURRIER_PARAMETRE;
+
+	/**
+	 * Gestion de crise : Episode de crise pour lequelles des informations ont été saisies dans REMOCRA
 	 */
 	public static final Crise CRISE = fr.sdis83.remocra.db.model.remocra.tables.Crise.CRISE;
 
 	/**
 	 * Gestion de crise : commune associée à un épisode de crise. Permet de définir un territoire impacté. Les mises à jours de communes sont traçées sous formes d'évènements spécifiques
+	 * Gestion de crise : commune associée à un épisode de crise. Permet de définir un teritoire impacté. Les mises à jours de communes sont traçées sous formes d'évènements spécifiques
 	 */
 	public static final CriseCommune CRISE_COMMUNE = fr.sdis83.remocra.db.model.remocra.tables.CriseCommune.CRISE_COMMUNE;
 

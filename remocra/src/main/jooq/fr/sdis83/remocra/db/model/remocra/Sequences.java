@@ -66,6 +66,10 @@ public class Sequences {
 	public static final Sequence<Long> COMMUNE_ID_SEQ = new SequenceImpl<Long>("commune_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
+	 * The sequence <code>remocra.contact_id_seq</code>
+	 */
+	public static final Sequence<Long> CONTACT_ID_SEQ = new SequenceImpl<Long>("contact_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+	/**
 	 * The sequence <code>remocra.courrier_document_id_seq</code>
 	 */
 	public static final Sequence<Long> COURRIER_DOCUMENT_ID_SEQ = new SequenceImpl<Long>("courrier_document_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
@@ -75,6 +79,10 @@ public class Sequences {
 	 */
 	public static final Sequence<Long> COURRIER_MODELE_ID_SEQ = new SequenceImpl<Long>("courrier_modele_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
+	/**
+	 * The sequence <code>remocra.courrier_parametre_id_seq</code>
+	 */
+	public static final Sequence<Long> COURRIER_PARAMETRE_ID_SEQ = new SequenceImpl<Long>("courrier_parametre_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 	/**
 	 * The sequence <code>remocra.crise_document_id_seq</code>
 	 */

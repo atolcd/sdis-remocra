@@ -13,6 +13,7 @@ import java.util.List;
 import javax.annotation.Generated;
 
 import org.jooq.Field;
+import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Record;
 import org.jooq.Table;
@@ -35,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CourrierModele extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -871296732;
+	private static final long serialVersionUID = -707634127;
 
 	/**
 	 * The reference instance of <code>remocra.courrier_modele</code>
@@ -56,9 +57,9 @@ public class CourrierModele extends TableImpl<Record> {
 	public final TableField<Record, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaulted(true), this, "Identifiant interne autogénéré");
 
 	/**
-	 * The column <code>remocra.courrier_modele.categorie</code>. Code de catégorie permettant de regrouper les modèles de courriers entre eux. Issu de la métadonnée personnalisée "REMOCRA_CATEGORIE_MODELE" du fichier OTT
+	 * The column <code>remocra.courrier_modele.code</code>. Code de catégorie permettant de regrouper les modèles de courriers entre eux. Issu de la métadonnée personnalisée "REMOCRA_CATEGORIE_MODELE" du fichier OTT
 	 */
-	public final TableField<Record, String> CATEGORIE = createField("categorie", org.jooq.impl.SQLDataType.VARCHAR, this, "Code de catégorie permettant de regrouper les modèles de courriers entre eux. Issu de la métadonnée personnalisée \"REMOCRA_CATEGORIE_MODELE\" du fichier OTT");
+	public final TableField<Record, String> CODE = createField("code", org.jooq.impl.SQLDataType.VARCHAR, this, "Code de catégorie permettant de regrouper les modèles de courriers entre eux. Issu de la métadonnée personnalisée \"REMOCRA_CATEGORIE_MODELE\" du fichier OTT");
 
 	/**
 	 * The column <code>remocra.courrier_modele.libelle</code>. Libellé du modèle de courrier affiché dans les listes déroulantes. Issu de la métadonnée "Titre" du fichier OTT
@@ -79,6 +80,21 @@ public class CourrierModele extends TableImpl<Record> {
 	 * The column <code>remocra.courrier_modele.source_xml</code>. Requête SQL générant une structure XML exploitable par le modèle de courrier OTT via le language FreeMarker
 	 */
 	public final TableField<Record, String> SOURCE_XML = createField("source_xml", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Requête SQL générant une structure XML exploitable par le modèle de courrier OTT via le language FreeMarker");
+
+	/**
+	 * The column <code>remocra.courrier_modele.message_objet</code>.
+	 */
+	public final TableField<Record, String> MESSAGE_OBJET = createField("message_objet", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+
+	/**
+	 * The column <code>remocra.courrier_modele.message_corps</code>.
+	 */
+	public final TableField<Record, String> MESSAGE_CORPS = createField("message_corps", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+
+	/**
+	 * The column <code>remocra.courrier_modele.thematique</code>.
+	 */
+	public final TableField<Record, Long> THEMATIQUE = createField("thematique", org.jooq.impl.SQLDataType.BIGINT, this, "");
 
 	/**
 	 * Create a <code>remocra.courrier_modele</code> table reference
@@ -124,6 +140,14 @@ public class CourrierModele extends TableImpl<Record> {
 	@Override
 	public List<UniqueKey<Record>> getKeys() {
 		return Arrays.<UniqueKey<Record>>asList(Keys.COURRIER_MODELE_PKEY);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<ForeignKey<Record, ?>> getReferences() {
+		return Arrays.<ForeignKey<Record, ?>>asList(Keys.COURRIER_MODELE__COURRIER_MODELE_THEMATIQUE_FK);
 	}
 
 	/**

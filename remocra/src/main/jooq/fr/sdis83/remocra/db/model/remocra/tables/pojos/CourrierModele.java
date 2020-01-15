@@ -23,40 +23,52 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CourrierModele implements Serializable {
 
-	private static final long serialVersionUID = 1385225359;
+	private static final long serialVersionUID = 1877355096;
 
 	private Long   id;
-	private String categorie;
+	private String code;
 	private String libelle;
 	private String description;
 	private String modeleOtt;
 	private String sourceXml;
+	private String messageObjet;
+	private String messageCorps;
+	private Long   thematique;
 
 	public CourrierModele() {}
 
 	public CourrierModele(CourrierModele value) {
 		this.id = value.id;
-		this.categorie = value.categorie;
+		this.code = value.code;
 		this.libelle = value.libelle;
 		this.description = value.description;
 		this.modeleOtt = value.modeleOtt;
 		this.sourceXml = value.sourceXml;
+		this.messageObjet = value.messageObjet;
+		this.messageCorps = value.messageCorps;
+		this.thematique = value.thematique;
 	}
 
 	public CourrierModele(
 		Long   id,
-		String categorie,
+		String code,
 		String libelle,
 		String description,
 		String modeleOtt,
-		String sourceXml
+		String sourceXml,
+		String messageObjet,
+		String messageCorps,
+		Long   thematique
 	) {
 		this.id = id;
-		this.categorie = categorie;
+		this.code = code;
 		this.libelle = libelle;
 		this.description = description;
 		this.modeleOtt = modeleOtt;
 		this.sourceXml = sourceXml;
+		this.messageObjet = messageObjet;
+		this.messageCorps = messageCorps;
+		this.thematique = thematique;
 	}
 
 	public Long getId() {
@@ -68,12 +80,12 @@ public class CourrierModele implements Serializable {
 		return this;
 	}
 
-	public String getCategorie() {
-		return this.categorie;
+	public String getCode() {
+		return this.code;
 	}
 
-	public CourrierModele setCategorie(String categorie) {
-		this.categorie = categorie;
+	public CourrierModele setCode(String code) {
+		this.code = code;
 		return this;
 	}
 
@@ -110,6 +122,33 @@ public class CourrierModele implements Serializable {
 
 	public CourrierModele setSourceXml(String sourceXml) {
 		this.sourceXml = sourceXml;
+		return this;
+	}
+
+	public String getMessageObjet() {
+		return this.messageObjet;
+	}
+
+	public CourrierModele setMessageObjet(String messageObjet) {
+		this.messageObjet = messageObjet;
+		return this;
+	}
+
+	public String getMessageCorps() {
+		return this.messageCorps;
+	}
+
+	public CourrierModele setMessageCorps(String messageCorps) {
+		this.messageCorps = messageCorps;
+		return this;
+	}
+
+	public Long getThematique() {
+		return this.thematique;
+	}
+
+	public CourrierModele setThematique(Long thematique) {
+		this.thematique = thematique;
 		return this;
 	}
 }
