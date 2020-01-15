@@ -1,6 +1,5 @@
 package fr.sdis83.remocra.domain.remocra;
 
-
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -88,4 +87,32 @@ public class Organisme {
         return ids;
     }
 
+    /**
+     * Retourne la liste des organismes qui sont contenues ou superposés avec la zone de compétence
+     * de l'organisme passé en paramètre
+     */
+
+    public static ArrayList<Integer> getOrganismesZC(Long idOrganisme){
+
+        Query queryOrganismes = entityManager().createNativeQuery(
+                "   SELECT DISTINCT CAST(o.id AS INTEGER) FROM remocra.organisme o " +
+                "   JOIN remocra.zone_competence zc on zc.id = o.zone_competence " +
+                "   WHERE ST_Overlaps(( " +
+                                        "   SELECT geometrie " +
+                                        "   FROM remocra.zone_competence zc " +
+                                        "   WHERE zc.id in (SELECT CAST(zone_competence AS INTEGER) zone_competence" +
+                                                            "   FROM remocra.organisme"+
+                                                            "   WHERE id=:idOrganisme))"+
+                                        "   , zc.geometrie) "+
+                "   OR ST_Contains(( " +
+                                        "   SELECT geometrie " +
+                                        "   FROM remocra.zone_competence zc " +
+                                        "   WHERE zc.id in (SELECT CAST(zone_competence AS INTEGER) zone_competence" +
+                                                            "   FROM remocra.organisme"+
+                                                            "   WHERE id=:idOrganisme))"+
+                                        "   , zc.geometrie) "
+        ).setParameter("idOrganisme", idOrganisme);
+        ArrayList<Integer> idOrganismes = (ArrayList<Integer>) queryOrganismes.getResultList();
+        return idOrganismes;
+    }
 }

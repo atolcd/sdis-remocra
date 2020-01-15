@@ -1,13 +1,20 @@
 package fr.sdis83.remocra.web;
 
-import java.io.*;
-
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.*;
 
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
@@ -16,7 +23,7 @@ import flexjson.ObjectBinder;
 import flexjson.factories.IntegerObjectFactory;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CourrierParametre;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CourrierModele;
-import fr.sdis83.remocra.domain.remocra.Contact;
+
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
@@ -29,9 +36,7 @@ import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
-import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
-import org.apache.commons.collections4.iterators.ListIteratorWrapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
 
@@ -76,18 +81,7 @@ public class CourrierController {
 
   @RequestMapping(value = "/{thematique}", method = RequestMethod.GET, headers = "Accept=application/json")
     @PreAuthorize("hasRight('COURRIER_C')")
-    public ResponseEntity<String> listJson(final @PathVariable("thematique") String thematique,
-                                           final @RequestParam(value = "page", required = false) Integer page,
-                                           final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
-                                           final @RequestParam(value = "sort", required = false) String sorts, final @RequestParam(value = "filter", required = false) String filters,
-                                           final @RequestParam(value = "query", required = false) String query) {
-
-        final List<ItemSorting> sortList = ItemSorting.decodeJson(sorts);
-        final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
-
-        if (query != null && !query.isEmpty()) {
-            itemFilterList.add(new ItemFilter("query", query));
-        }
+    public ResponseEntity<String> listJson(final @PathVariable("thematique") String thematique) {
 
         return new AbstractExtListSerializer<CourrierModele>("fr.sdis83.remocra.domain.remocra.CourrierModele retrieved.") {
             @Override
@@ -105,6 +99,7 @@ public class CourrierController {
     }
 
     @RequestMapping(value = "/{code}")
+    @PreAuthorize("hasRight('COURRIER_C')")
     public void downloadCourrierDocument(@PathVariable("code") String code, HttpServletResponse response)
             throws IOException {
         String path = telechargementsService.getCourrierFilePathFromCode(code);
@@ -114,6 +109,7 @@ public class CourrierController {
     }
 
     @RequestMapping(value = "/show/{code}")
+    @PreAuthorize("hasRight('COURRIER_C')")
     public void showCourrierDocument(@PathVariable("code") String code, HttpServletResponse response)
             throws IOException {
         String path = telechargementsService.getCourrierFilePathFromCode(code);
@@ -126,6 +122,7 @@ public class CourrierController {
      * Retourne la liste des paramètres pour un modele de courrier.
     */
     @RequestMapping(value = "/courrierParams/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('COURRIER_C')")
     public ResponseEntity<java.lang.String> getCourrierParams(final @PathVariable("id") Long idModele) {
       return new AbstractExtListSerializer<CourrierParametre>("Paramètres Modèle Courrier retrieved.") {
         @Override
@@ -143,6 +140,7 @@ public class CourrierController {
      * Retourne la liste des valeurs pour un paramètre de type 'combo'.
     */
     @RequestMapping(value = "courriermodparalst/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('COURRIER_C')")
     public ResponseEntity<java.lang.String> getListComboModelCourrierLike(
             final @PathVariable("id") Long id,
             final @RequestParam(value = "query", required = false) String query,
@@ -164,41 +162,42 @@ public class CourrierController {
     }
 
   /**
-   * Retourne la liste destinataires potentiels d'un courrier.
+   * Retourne la liste des destinataires potentiels d'un courrier.
    */
   @RequestMapping(value = "/contacts", method = RequestMethod.GET, headers = "Accept=application/json")
-  public ResponseEntity<java.lang.String> getContactsCourrier(final @RequestParam(value = "filter", required = false) String json){
+  @PreAuthorize("hasRight('COURRIER_C')")
+  public ResponseEntity<java.lang.String> getContactsCourrier(final @RequestParam(value = "filter", required = false) String filters){
 
-    final List<HashMap<String, String>> listeFiltre = new JSONDeserializer<ArrayList<HashMap<String, String>>>().use(Integer.class, new IntegerObjectFactory() {
-      @SuppressWarnings("rawtypes")
-      @Override
-      public Object instantiate(ObjectBinder context, Object value, Type targetType, Class targetClass) {
-        return super.instantiate(context, value, targetType, targetClass).toString();
-      }
-    }).deserialize(json);
+    final List<ItemFilter> listeFiltre = ItemFilter.decodeJson(filters);
 
     return new AbstractExtListSerializer<String>(" retrieved.") {
 
       @Override
       protected List<String> getRecords() {
         try{
-          String filter = String.valueOf(listeFiltre.get(0));
-          if(filter.equals("null")){ filter = "";}
+          String filter = listeFiltre.get(0).getValue();
+          if(filter == null){ filter = "";}
           List<String> destinataires = new ArrayList<String>();
-          ArrayList<Integer> organismes = Organisme.getOrganismeAndChildren(Integer.parseInt(utilisateurService.getCurrentUtilisateur().getOrganisme().getId().toString()));
+          List<Integer> organismes = new ArrayList<Integer>();
+          if(listeFiltre.get(1).getValue().equals("true")){
+            organismes = Organisme.getOrganismesZC(utilisateurService.getCurrentUtilisateur().getOrganisme().getId());
+          } else{
+            organismes = destinataireRepository.getAllIdOrganismes();
+          }
+
           List<String> destinataireOrganisme = new ArrayList<String>();
           List<String> destinataireContact = new ArrayList<String>();
           List<String> destinataireUtilisateur = new ArrayList<String>();
 
           for(Integer orga : organismes){
-            if(String.valueOf(listeFiltre.get(1)).equals("true")){
-              destinataireOrganisme.addAll(destinataireRepository.getDestinataireOrganisme(orga, filter));
+            if(listeFiltre.get(2).getValue().equals("true")){
+              destinataireOrganisme.addAll(destinataireRepository.getDestinataireOrganisme(Long.valueOf(orga), filter));
             }
-            if(String.valueOf(listeFiltre.get(2)).equals("true")){
-              destinataireUtilisateur.addAll(destinataireRepository.getDestinataireUtilisateur(orga, filter));
+            if(listeFiltre.get(3).getValue().equals("true")){
+              destinataireUtilisateur.addAll(destinataireRepository.getDestinataireUtilisateur(Long.valueOf(orga), filter));
             }
-            if(String.valueOf(listeFiltre.get(3)).equals("true")){
-              destinataireContact.addAll(destinataireRepository.getDesinataireContact(orga, filter));
+            if(listeFiltre.get(4).getValue().equals("true")){
+              destinataireContact.addAll(destinataireRepository.getDesinataireContact(Long.valueOf(orga), filter));
             }
           }
 
@@ -217,15 +216,19 @@ public class CourrierController {
 
   //Génération du courrier a partir des informations du formulaire
   @RequestMapping(value = "generecourrier/{id}", method = RequestMethod.POST,  headers = "Content-Type=multipart/form-data")
+  @PreAuthorize("hasRight('COURRIER_C')")
   @Transactional
-  public ResponseEntity<java.lang.String> genereCourrier( MultipartHttpServletRequest request) {
+  public ResponseEntity<java.lang.String> genereCourrier( MultipartHttpServletRequest request, final @PathVariable(value = "id") Long idModele) {
     try{
-      Long idModele = Long.parseLong(request.getParameter("modele"));
       Map<String, String[]> mapParametres = request.getParameterMap();
       //Ouverture du modèle de courrier
       String cheminModele = courrierRepository.getNomModele(idModele);
-      InputStream textTplInputStream = new FileInputStream(new File(cheminModele));
-
+      InputStream textTplInputStream;
+      if (new File(cheminModele).exists()) {
+        textTplInputStream = new FileInputStream(new File(cheminModele));
+      } else{
+        return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la génération du courrier.").serialize();
+      }
       //Récupération de la requête SQL correspondant au modèle (génère du XML)
       String xmlQuery = courrierRepository.getModeleXmlQuery(idModele, mapParametres);
       InputSource xmlSource = new InputSource(new StringReader(xmlQuery));
@@ -275,6 +278,7 @@ public class CourrierController {
   }
 
   @RequestMapping(value = "notifier", method = RequestMethod.POST,  headers = "Accept=application/json")
+  @PreAuthorize("hasRight('COURRIER_C')")
   @Transactional
   public ResponseEntity<java.lang.String> notifierCourrier( final @RequestBody String json) {
     try{

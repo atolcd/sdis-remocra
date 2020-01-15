@@ -93,24 +93,30 @@
 			<div class="col-md-3 mt-1">
 				<label>Recherche rapide</label>
 			</div>
-			<div class="col-md-9">
+			<div class="col-md-5">
 				<b-form-input v-model="filtre" size="sm" @input="initListeDestinataire" id="filtre" placeholder="Recherche ..." >
 				</b-form-input>
 			</div>
+				<div class="col-md-4 mt-1 labelFiltreZC">
+				<b-form-checkbox id="chkBoxZoneComp" v-model="filtreZC" @input="initListeDestinataire"	name="chkBoxZoneComp">Restreindre à ma zone de compétence</b-form-checkbox>
+			</div>
 		</div>
-		<div class="row mt-2 ml-2">
-			<div class="col-md-5 text-right">
+		<div class="row mt-2">
+			<div class="col-md-4">
+				<label>Afficher les destinataires de type</label>
+			</div>
+			<div class="col-md-2">
 				<b-form-checkbox id="chkBoxOrganisme" v-model="filtreOrga" @input="initListeDestinataire"	name="chkBoxOrganisme">Organisme</b-form-checkbox>
 			</div>
-			<div class="col-md-3 text-center">
+			<div class="col-md-2">
 				<b-form-checkbox id="chkBoxUtilisateur" v-model="filtreUtil" @input="initListeDestinataire" name="chkBoxUtilisateur">Utilisateur</b-form-checkbox>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-2">
 				<b-form-checkbox id="chkBoxContact" v-model="filtreContact"	@input="initListeDestinataire" name="chkBoxContact">Contact</b-form-checkbox>
 			</div>
 		</div>
 		<div class="row ">
-			<div class="col-md-6">
+			<div class="col-md-6 mt-2">
 				<label>Destinataires potentiels </label>
 			</div>
 		</div>
@@ -213,6 +219,7 @@ export default {
 
 			/************** Partie notification ***********************/
 			filtre: null,
+			filtreZC: true,
 			filtreOrga: true,
 			filtreUtil: true,
 			filtreContact: true,
@@ -441,10 +448,16 @@ export default {
 			axios.get('/remocra/courrier/contacts',{
 				params: {
 					filter: JSON.stringify([
-					this.filtre,
-					this.filtreOrga,
-					this.filtreUtil,
-					this.filtreContact
+					{"property": "filtreString",
+					"value": this.filtre},
+					{"property": "filtreZC",
+					"value": this.filtreZC.toString()},
+					{"property": "filtreOrga",
+					"value": this.filtreOrga.toString()},
+					{"property": "filtreUtil",
+					"value": this.filtreUtil.toString()},
+					{"property": "filtreContact",
+					"value": this.filtreContact.toString()}
 					])
 				}
 				}).then((response)=> {
@@ -496,8 +509,7 @@ export default {
 				})
 			}
 
-		},
-
+		}
   }
 };
 </script>
