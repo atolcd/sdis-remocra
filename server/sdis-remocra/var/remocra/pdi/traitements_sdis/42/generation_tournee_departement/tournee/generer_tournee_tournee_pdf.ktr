@@ -203,8 +203,8 @@
     <connection>Remocra (Postgis)</connection>
     <sql>SELECT
 	&apos;${PDI_CHEMIN_MODELES}&#47;courrier&#47;sdis&#47;${PDI_CODE_SDIS}&#47;&apos; || cm.modele_ott AS fichier_modele_ott,
-	&apos;${PDI_CHEMIN_TOURNEES}&#47;&apos; || to_char(now(), &apos;YYYYMMDD&apos;) || &apos;&#47;tournees&#47;&apos; || t.nom || &apos;_TOURNEE.ODT&apos; AS fichier_odt,
-	&apos;${PDI_CHEMIN_TOURNEES}&#47;&apos; || to_char(now(), &apos;YYYYMMDD&apos;) || &apos;&#47;tournees&#47;&apos; || t.nom || &apos;_TOURNEE.PDF&apos; AS fichier_pdf
+	&apos;${PDI_CHEMIN_TOURNEES}&#47;&apos; || to_char(now(), &apos;YYYYMMDD&apos;) || &apos;&#47;tournees&#47;&apos; || REPLACE(t.nom, &apos;&#47;&apos;, &apos;_&apos;) || &apos;_TOURNEE.ODT&apos; AS fichier_odt,
+	&apos;${PDI_CHEMIN_TOURNEES}&#47;&apos; || to_char(now(), &apos;YYYYMMDD&apos;) || &apos;&#47;tournees&#47;&apos; || REPLACE(t.nom, &apos;&#47;&apos;, &apos;_&apos;) || &apos;_TOURNEE.PDF&apos; AS fichier_pdf
 FROM
 	${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.courrier_modele cm
 	JOIN remocra.tournee t ON 1=1 
