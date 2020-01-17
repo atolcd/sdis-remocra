@@ -79,8 +79,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>125</xloc>
-      <yloc>175</yloc>
+      <xloc>105</xloc>
+      <yloc>165</yloc>
       </entry>
     <entry>
       <name>Consolidation des infos de traçabilité PEI</name>
@@ -144,8 +144,8 @@ ORDER BY
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>944</xloc>
-      <yloc>176</yloc>
+      <xloc>1185</xloc>
+      <yloc>165</yloc>
       </entry>
     <entry>
       <name>Récupération des paramètres globaux</name>
@@ -159,8 +159,8 @@ ORDER BY
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>400</xloc>
-      <yloc>175</yloc>
+      <xloc>375</xloc>
+      <yloc>165</yloc>
       </entry>
     <entry>
       <name>Test connexion à Remocra</name>
@@ -176,8 +176,8 @@ ORDER BY
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>675</xloc>
-      <yloc>175</yloc>
+      <xloc>660</xloc>
+      <yloc>165</yloc>
       </entry>
     <entry>
       <name>Ecriture dans trace</name>
@@ -189,8 +189,155 @@ ORDER BY
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>675</xloc>
-      <yloc>325</yloc>
+      <xloc>660</xloc>
+      <yloc>315</yloc>
+      </entry>
+    <entry>
+      <name>Evaluer le nombre de lignes d&apos;une table</name>
+      <description/>
+      <type>EVAL_TABLE_CONTENT</type>
+      <connection>Remocra (Postgis)</connection>
+      <schemaname/>
+      <tablename/>
+      <success_condition>rows_count_equal</success_condition>
+      <limit>0</limit>
+      <is_custom_sql>Y</is_custom_sql>
+      <is_usevars>N</is_usevars>
+      <custom_sql>SELECT
+	now() AS date_message,
+	substring(h.numero from &apos;....$&apos;)AS num,
+	sgo_n.code_nature_sgo AS na_pt_code,
+	substr(h.insee,1,2) AS dep_num,
+	substr(h.insee,3,3) AS cod_insee,
+	CASE
+		WHEN h.dispo_terrestre = &apos;DISPO&apos; THEN &apos;DI&apos;
+		WHEN h.dispo_terrestre = &apos;NON_CONFORME&apos; THEN &apos;DP&apos;
+		WHEN h.dispo_terrestre = &apos;INDISPO&apos; THEN &apos;IN&apos;
+		ELSE &apos;?&apos;
+	END AS eta_pt_eau_cod,
+	cis.code AS cs_code,
+	COALESCE(thd.code,&apos;&apos;) AS statut,
+	substr(h.voie,1,32) AS adr_1,
+	substr(h.lieu_dit,1,32) AS adr_2,	
+	null::character varying AS cp,
+	substr(h.commune,1,26) AS ville,
+	null::character varying AS num_voie,
+	st_x(h.geometrie) AS coord_x,
+	st_y(h.geometrie) AS coord_y,
+	h.debit AS debit,
+	null::double precision	AS capacite,
+	null::double precision	AS diam_canal,
+	null::character varying AS cod_valid,
+	h.date_operation AS date_maj_remocra,
+	h.nom_operation AS type_maj,
+	carroy.idcarre200 AS carroyage
+FROM
+	tracabilite.hydrant h
+	JOIN remocra.type_hydrant_nature n ON(n.nom = h.nature)
+	LEFT JOIN remocra.type_hydrant_diametre d ON(d.nom = h.diametre)
+	LEFT JOIN remocra.type_hydrant_positionnement p ON(p.nom = h.positionnement)
+	LEFT JOIN remocra.type_hydrant_domaine thd ON thd.nom = h.domaine
+	LEFT JOIN (SELECT idcarre200, shape FROM remocra_referentiel.carre_200) carroy ON ST_Contains(carroy.shape, h.geometrie)
+	JOIN remocra_sgo.hydrant_nature sgo_n ON(sgo_n.code_nature_remocra = replace(n.code || &apos;_&apos; ||  COALESCE(d.code,&apos;_&apos;) || &apos;_&apos; || COALESCE(p.code,&apos;_&apos;),&apos;__&apos;,&apos;&apos;))
+	JOIN (SELECT
+			org.code,
+			zc.geometrie
+		FROM
+			remocra.organisme org
+			JOIN (SELECT id FROM remocra.type_organisme WHERE code = &apos;CIS_ADMINISTRATIF&apos;) torg ON (torg.id = org.type_organisme)
+			JOIN remocra.zone_competence zc ON(zc.id =  org.zone_competence)
+	) AS cis ON (cis.geometrie &amp;&amp; h.geometrie AND st_contains(cis.geometrie, h.geometrie))
+WHERE
+	h.date_operation &gt; (SELECT COALESCE(max(date_message),&apos;1900-01-01&apos;::timestamp without time zone) cis FROM remocra_sgo.hydrant_tracabilite) AND
+	(h.numero IS NULL OR h.numero = &apos;&apos; OR
+	insee IS NULL OR insee = &apos;&apos;)
+ORDER BY
+	h.date_operation DESC</custom_sql>
+      <add_rows_result>Y</add_rows_result>
+      <clear_result_rows>Y</clear_result_rows>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>900</xloc>
+      <yloc>165</yloc>
+      </entry>
+    <entry>
+      <name>message_erreur.ktr</name>
+      <description/>
+      <type>TRANS</type>
+      <specification_method>filename</specification_method>
+      <trans_object_id/>
+      <filename>${Internal.Job.Filename.Directory}&#47;message_erreur.ktr</filename>
+      <transname/>
+      <arg_from_previous>N</arg_from_previous>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <cluster>N</cluster>
+      <slave_server_name/>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>900</xloc>
+      <yloc>315</yloc>
+      </entry>
+    <entry>
+      <name>Envoi Courriel</name>
+      <description/>
+      <type>MAIL</type>
+      <server>${PDI_SMTP_URL}</server>
+      <port>${PDI_SMTP_PORT}</port>
+      <destination>${PDI_SMTP_ERR_MAIL}</destination>
+      <destinationCc/>
+      <destinationBCc/>
+      <replyto>${PDI_SMTP_EME_MAIL}</replyto>
+      <replytoname>${PDI_SMTP_EME_NAME}</replytoname>
+      <subject>REMOcRA - Blocage consolidation SGO</subject>
+      <include_date>N</include_date>
+      <contact_person/>
+      <contact_phone/>
+      <comment>Bonjour,&lt;br&#47;&gt;
+&lt;br&#47;&gt;
+Des données dans la table de tracabilité de REMOcRA bloquent la consolidation pour le SGO.&lt;br&#47;&gt;
+&lt;br&#47;&gt;
+Veuillez corriger ces données dans la table tracabilité.hydrant :&lt;br&#47;&gt;
+&lt;br&#47;&gt;
+${MESSAGE_ERREUR}
+</comment>
+      <include_files>N</include_files>
+      <zip_files>N</zip_files>
+      <zip_name/>
+      <use_auth>N</use_auth>
+      <use_secure_auth>N</use_secure_auth>
+      <auth_user/>
+      <auth_password>Encrypted </auth_password>
+      <only_comment>Y</only_comment>
+      <use_HTML>Y</use_HTML>
+      <use_Priority>N</use_Priority>
+      <encoding>UTF-8</encoding>
+      <priority>normal</priority>
+      <importance>normal</importance>
+      <secureconnectiontype>SSL</secureconnectiontype>
+      <replyToAddresses/>
+      <filetypes>      </filetypes>      <embeddedimages>
+      </embeddedimages>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>900</xloc>
+      <yloc>435</yloc>
       </entry>
   </entries>
   <hops>
@@ -214,6 +361,24 @@ ORDER BY
     </hop>
     <hop>
       <from>Test connexion à Remocra</from>
+      <to>Ecriture dans trace</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Test connexion à Remocra</from>
+      <to>Evaluer le nombre de lignes d&apos;une table</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Evaluer le nombre de lignes d&apos;une table</from>
       <to>Consolidation des infos de traçabilité PEI</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
@@ -222,20 +387,29 @@ ORDER BY
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Test connexion à Remocra</from>
-      <to>Ecriture dans trace</to>
+      <from>Evaluer le nombre de lignes d&apos;une table</from>
+      <to>message_erreur.ktr</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
       <evaluation>N</evaluation>
       <unconditional>N</unconditional>
     </hop>
+    <hop>
+      <from>message_erreur.ktr</from>
+      <to>Envoi Courriel</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
   </hops>
   <notepads>
     <notepad>
       <note>Consolidation des informations de traçabilité en vue d&apos;une exploitation par le SGO</note>
-      <xloc>125</xloc>
-      <yloc>100</yloc>
+      <xloc>105</xloc>
+      <yloc>90</yloc>
       <width>559</width>
       <heigth>30</heigth>
       <fontname/>
