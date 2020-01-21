@@ -97,6 +97,11 @@
 	<dependencies>
 		<!-- General dependencies for standard applications -->
 		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk16</artifactId>
+			<version>1.46</version>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.10</version>
@@ -576,11 +581,6 @@
 			<artifactId>fr.opensagres.xdocreport.converter.odt.odfdom</artifactId>
 			<version>2.0.2</version>
 		</dependency>
-		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk16</artifactId>
-			<version>1.46</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<finalName>remocra</finalName>
@@ -898,7 +898,6 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-			
 			<plugin>
 	            <groupId>com.googlecode.jslint4java</groupId>
 	            <artifactId>jslint4java-maven-plugin</artifactId>
@@ -1016,7 +1015,6 @@
 	                </options>
 	            </configuration>
      		</plugin>
-      
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -1092,8 +1090,11 @@
 							<database>
 								<name>org.jooq.util.postgres.PostgresDatabase</name>
 								<includes>.*</includes>
-								<excludes>information_schema.*|pg_catalog.*|remocra_referentiel.*|remocra_sgo.*|sdis_referentiel.*|schema_version|uuid.*</excludes>
-								<inputSchema>${db.schema}</inputSchema>
+								<schemata>
+									<schema>
+										<inputSchema>${db.schema}</inputSchema>
+									</schema>
+								</schemata>
 								<customTypes>
 									<customType>
 										<name>Instant</name>
@@ -1137,10 +1138,10 @@
 										<!-- .* pour gérer "without time zone", … -->
 										<types>time(\ .*)?</types>
 									</forcedType>
-                                    <forcedType>
-                                        <name>Geometry</name>
-                                        <!-- Associate that custom type with your binding. -->
-										<types>(geometry|GEOMETRY)</types>
+									<forcedType>
+										<name>Geometry</name>
+										<!-- Associate that custom type with your binding. -->
+										<expression>geometrie|remocra.requete_modele_selection.etendu</expression>
 									</forcedType>
 								</forcedTypes>
 							</database>
@@ -1226,6 +1227,5 @@
    		 		</plugins>
      		 </build>
 		</profile>
-		
 	</profiles>
 </project>
