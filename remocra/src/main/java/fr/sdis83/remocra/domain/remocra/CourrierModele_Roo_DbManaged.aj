@@ -9,8 +9,8 @@ import javax.validation.constraints.NotNull;
 
 privileged aspect CourrierModele_Roo_DbManaged {
     
-    @Column(name = "categorie")
-    private String CourrierModele.categorie;
+    @Column(name = "code")
+    private String CourrierModele.code;
     
     @Column(name = "libelle")
     @NotNull
@@ -27,12 +27,12 @@ privileged aspect CourrierModele_Roo_DbManaged {
     @NotNull
     private String CourrierModele.sourceXml;
     
-    public String CourrierModele.getCategorie() {
-        return categorie;
+    public String CourrierModele.getCode() {
+        return code;
     }
     
-    public void CourrierModele.setCategorie(String categorie) {
-        this.categorie = categorie;
+    public void CourrierModele.setCode(String code) {
+        this.code = code;
     }
     
     public String CourrierModele.getLibelle() {
