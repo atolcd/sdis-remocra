@@ -6,6 +6,8 @@ import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import fr.sdis83.remocra.domain.remocra.Utilisateur;
+import fr.sdis83.remocra.service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,9 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+    @Autowired
+    private UtilisateurService utilisateurService;
+
     public static final String DUMMY_RESPONSE_XML_OK = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><success><message>Opération réalisée avec succès</message></success>";
 
     /**
@@ -46,13 +51,15 @@ public class AuthController {
     public String login(@RequestParam String username, @RequestParam String password, HttpServletRequest request, HttpSession session) {
 
         // Si nouvel utilisateur alors on réinitialise la session.
-        if (session != null && !(AuthService.isUserAuthenticated() && AuthService.getCurrentUserIdentifiant().equals(username))) {
+        //On considère que le bon identifiant est celui qui vient de la base et non celui saisi par l'utilisateur
+        Utilisateur u  = utilisateurService.findUtilisateursWithoutCase(username);
+        if (session != null && !(AuthService.isUserAuthenticated() && AuthService.getCurrentUserIdentifiant().equals(u.getIdentifiant()))) {
             session.invalidate();
         }
         // Create a new session for the user.
         session = request.getSession(true);
 
-        String autResult = authService.authUser(username, password);
+        String autResult = authService.authUser(u.getIdentifiant(), password);
         // On utilise le redirect sinon le header Set-Cookie avec le nouveau
         // JSESSIONID n'est pas renseigné...
         if (autResult == null) {

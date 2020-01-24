@@ -69,7 +69,7 @@ public class UtilisateurService {
     @PreAuthorize("isAuthenticated()")
     public Utilisateur getCurrentUtilisateur() {
         String identifiant = AuthService.getCurrentUserIdentifiant();
-        Utilisateur utilisateur = Utilisateur.findUtilisateursByIdentifiant(identifiant).getSingleResult();
+        Utilisateur utilisateur = this.findUtilisateursWithoutCase(identifiant);
         // Même si les ManyToOne ne sont pas en cascade, il semble que le merge
         // soit quand même fait ... du coup on perd le mot de passe
         // utilisateur.setPassword("");
@@ -232,7 +232,7 @@ public class UtilisateurService {
 
     @Transactional
     public void newDemandeMdp(String identifiant) throws BusinessException {
-        Utilisateur utilisateur = Utilisateur.findUtilisateursByIdentifiant(identifiant).getSingleResult();
+        Utilisateur utilisateur = this.findUtilisateursWithoutCase(identifiant);
         DdeMdp demande = new DdeMdp();
 
         demande.setCode(messageDigestPasswordEncoder.encodePassword(new Date().getTime() + identifiant, null));
@@ -493,5 +493,15 @@ public class UtilisateurService {
         Predicate p = cpPath.in(results);
 
         return p;
+    }
+
+
+    /**
+     * find user without case sensitive
+     */
+    public Utilisateur findUtilisateursWithoutCase( String username) {
+        TypedQuery<Utilisateur> q = Utilisateur.entityManager().createQuery("SELECT u FROM Utilisateur AS u WHERE LOWER(u.identifiant) = :identifiant", Utilisateur.class);
+        q.setParameter("identifiant", username.toLowerCase());
+        return  q.getSingleResult();
     }
 }

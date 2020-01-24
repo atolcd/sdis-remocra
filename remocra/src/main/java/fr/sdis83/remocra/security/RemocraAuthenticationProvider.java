@@ -5,6 +5,7 @@ import fr.sdis83.remocra.domain.remocra.ProfilUtilisateur;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.ParamConfService;
+import fr.sdis83.remocra.service.UtilisateurService;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,9 @@ public class RemocraAuthenticationProvider extends AbstractUserDetailsAuthentica
 
     @Autowired
     private ProfileProvider provider;
+
+    @Autowired
+    private UtilisateurService utilisateurService;
 
     public void setProvider(ProfileProvider provider) {
         this.provider = provider;
@@ -110,7 +114,7 @@ public class RemocraAuthenticationProvider extends AbstractUserDetailsAuthentica
 
         try {
             logger.debug("Looking for user with identifiant : " + username);
-            Utilisateur targetUtilisateur = Utilisateur.findUtilisateursByIdentifiant(username).getSingleResult();
+            Utilisateur targetUtilisateur = utilisateurService.findUtilisateursWithoutCase(username);
 
             logger.debug("Found user with identifiant : " + username + " with id : " + targetUtilisateur.getId());
 
