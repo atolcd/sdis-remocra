@@ -36,8 +36,7 @@ drop function versionnement_dffd4df4df();
 SELECT pg_catalog.setval('remocra.type_droit_id_seq', (select max(id) from remocra.type_droit));
 
 INSERT INTO remocra.type_droit (code, description, nom, version, categorie)
-VALUES('HYDRANTS_ADRESSE_C', 'Créer, éditer l''adresse des PEI', 'hydrants.adresse_C', 1, 'Module PEI');
-VALUES('HYDRANTS_GESTIONNAIRE_C', 'Créer, éditer les gestionnaires des PEI', 'hydrants.gestionnaire_C', 1, 'Module PEI');
+  VALUES('HYDRANTS_ADRESSE_C', 'Créer, éditer l''adresse des PEI', 'hydrants.adresse_C', 1, 'Module PEI');
 
 DROP TABLE IF EXISTS remocra.type_reseau_alimentation CASCADE;
 CREATE TABLE remocra.type_reseau_alimentation
