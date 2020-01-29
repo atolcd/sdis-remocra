@@ -64,7 +64,7 @@
 			<!-- ================================================ Aperçu du document ========================================================= -->
 
     <b-modal id="modalApercu" class="text-center" ref="modalApercu" no-close-on-backdrop title="Aperçu du courrier" hide-footer>
-		<div class="pdf">
+		<div class="pdf" :key="refreshPdf">
 			<object type="application/pdf" :data="this.urlCourrier"
 					width="100%" height="100%"></object>
 		</div>
@@ -212,6 +212,7 @@ export default {
 
 			/************** Partie aperçu document *******************/
 
+			refreshPdf: 0,
 			showApercu: false,
 			urlCourrier: "",
 			nomCourrier: "",
@@ -257,6 +258,11 @@ export default {
 
   methods: {
 
+		//rafraichissment de la balise pdf 
+		refreshPdfFunc(){
+			this.refreshPdf += 1;
+		},
+
 		selectAllMethod(selectAll){
 			if(selectAll == true){
 				this.tabDestinataires = this.tabDestinataireNotifierNon;
@@ -273,6 +279,9 @@ export default {
 					}
 				}
 				this.$refs[modalName].show();
+				if(modalName == "modalApercu"){
+					this.refreshPdfFunc();
+				}
 			} else {
 				if(modalName == "modalModifier"){
 					var element = document.getElementById("Courrier");
@@ -327,6 +336,8 @@ export default {
 
 		//Récupère les paramètres du modèle de courrier selectionné
 		getParams() {
+			this.comboOptions = [];
+			this.params = [];
       if (this.choixModele !== null) {
         axios.get('/remocra/courrier/courrierParams/' + this.choixModele.id).then((response) => {
           this.params = _.sortBy(response.data.data, item => item.formulaireNumOrdre)
