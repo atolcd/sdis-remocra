@@ -1,0 +1,219 @@
+= SDIS Remocra - Module de création de courrier
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+:imagesdir: img
+
+:toc:
+
+:numbered:
+
+link:../../index{outfilesuffix}[Retour à l'accueil]
+
+link:../../Manuel%20administration{outfilesuffix}[Retour au manuel d'administration]
+
+'''
+
+Le module de courrier est une fonctionnalité réalisée dans le but de s’adapter à toutes les thématiques de l’application REMOcRA (Points d’eau, Obligations de débroussaillement, … ). Il s’agit donc d’un outil générique destiné à générer des documents différents, remplis dynamiquement avec des paramètres saisis par l’utilisateur. L’utilisateur pourra prévisualiser, modifier, télécharger et envoyer ce document aux destinataires de son choix.
+
+[NOTE]
+====
+L'outil de génération de courrier n'est actuellement disponible que pour le module de gestion des points d'eau. Il est présent sur la page d'accueil et sur l'onglet carte du module PEI; il devrait être disponible pour certains autres modules lors de prochaines versions.
+====
+
+== Principes de fonctionnement
+
+=== Référencement des modèles
+
+Le référencement des modèles suit le processus suivant :
+
+image::référencement_modèles.png[]
+
+Les modèles de courrier sont placés sur le serveur dans le dossier : *[PDI_CHEMIN_MODELES]/courrier/sdis/[CODE_SDIS]*.  Puis un traitement ETL nommé *“referencer_les_modeles_de_courrier”* va permettre de référencer ces modèles dans la base de données REMOCRA. Pour cela, un fichier xml de métadonnées doit être créé pour chaque modèle de courrier avec le nom du modèle.
+
+=== Création du fichier XML de métadonnées
+Le fichier XML permettant de référencer un modèle de courrier doit être encodé en UTF-8 et structuré de la manière suivante :
+
+image::graphe-xsd.png[]
+
+|===
+|Noeud|Description
+
+
+
+a|[source,xml]
+<modele>
+    <thematique>
+a|Thématique du courrier parmi les possibilités suivantes : 
+
+* DIVERS
+* POINTDEAU
+* ADRESSES
+* PERMIS
+* DFCI
+* RISQUES
+* CARTOTHEQUE
+* RCI
+* OLD
+
+a|[source,xml]
+<modele>
+    <code>
+        
+| Code permettant d'identifier de manière unique et pérenne un modèle de courrier
+
+a|[source,xml]
+<modele>
+    <libelle>
+        
+| Libellé affiché en liste déroulante lors du choix du modèle de courrier
+
+a|[source,xml]
+<modele>
+    <description>
+        
+| Description longue du modèle de courrier. 
+
+a|[source,xml]
+<modele>
+    <fichier>
+        
+| Nom du fichier modèle OTT. Il doit être situé dans la même arborescence que le fichier XML de métadonnée. 
+
+a|[source,xml]
+<modele>
+    <requete>
+        
+| Requête SQL d'extraction des données pour le modèle de courrier. Le résultat doit être au format XML dans un champ appelé xml.
+
+a|[source,xml]
+<modele>
+    <message>
+        <objet>
+| Objet du mail lors de la notification du courrier.
+
+a|[source,xml]
+<modele>
+    <message>
+        <corps>
+| Corps du mail lors de la notification du courrier.
+
+a|[source,xml]
+<modele>
+    <parametres>
+        <parametre>    
+| Paramètres exploités par la requête. Les valeurs de paramètres sont à renseigner par l'utilisateur avant l'execution de la requête.
+
+a|[source,xml]
+<modele>
+    <parametres>
+        <parametre>
+            <nom>    
+| Nom du paramètre. Sans espace ni caractère accentué. De préférence en majuscule. Doit correspondre exactement au paramètre correspondant dans la requête SQL.
+
+a|[source,xml]
+<modele>
+    <parametres>
+        <parametre>
+            <typeValeur>    
+a| Type de valeur attendue par la requête SQL. Seuls les types suivants sont autorisés :
+
+* character varying
+* integer
+* double precision
+* date
+* boolean
+
+a|[source,xml]
+<modele>
+    <parametres>
+        <parametre>
+            <obligatoire>    
+| La saisie d'une valeur pour le paramètre est obligatoire (true - false).
+
+a|[source,xml]
+<modele>
+    <parametres>
+        <parametre>
+            <sourceSQL champValeur="" champLibelle="">    
+a| Définition de la requête SQL éventuelle à exécuter sur la base de données REMOCRA pour fournir les informations facilitantou limitant la saisie de valeurs pour l'utilisateur. A renseigner dans un CDATA. A remplir dans le cas d'un champ de type 'combo'. 
+
+* *champValeur* : colonne de la requête SQL éventuelle contenant la valeur du paramètre.
+* *champLibelle* : colonne de la requête SQL éventuelle contenant le libellé associé à la valeur du paramètre.
+
+
+a|[source,xml]
+<modele>
+    <parametres>
+        <parametre>
+            <formulaire etiquette="" typeControle="">    
+a| Informations permettant de construire le formulaire de saisie.
+
+* *etiquette* correspond au nom au libellé qui sera affiché en face du champ à remplir.
+* *typeControle* est le type du champ de saisie. Seuls les types suivants sont acceptés :
+
+** checkbox
+** combo
+** textfield
+** numberfield
+** datefield
+** timefield
+** datetimefield
+
+a|[source,xml]
+<modele>
+    <parametres>
+        <parametre>
+            <valeurDefaut>    
+| Valeur par défaut proposée dans le champ de saisie.
+
+a|[source,xml]
+<modele>
+    <profils tousProfils="">
+         
+| Profils de droits autorisés à accèder au modèle. Si *tousProfils* est à true, tous les profils ont accès à ce modèle de courrier, sinon remplir le noeud suivant.
+
+a|[source,xml]
+<modele>
+    <profils tousProfils="false">
+        <profil>
+         
+| Nom du profil pouvant accèder au modèle.
+
+|========
+
+|===
+
+=== Génération des courriers
+
+La génération des courriers suit le processus suivant :
+
+image::génération_courrier.png[]
+
+Ce processus comporte deux parties : une systématique et une optionnelle dans le cas où l’utilisateur souhaite envoyer le courrier.
+Dans cette première partie, le modèle de document choisi va être fusionné avec les informations communiquées depuis l’interface client, puis il va être converti en PDF.
+Dans la deuxième partie, si un certificat PFX est répertorié dans la base de données, le document PDF va être signé, puis dans tous les cas sauvegardé sur le serveur dans le dossier /var/remocra/courriers et enfin archivé dans la base de données.
+
+== Utilisation du module
+
+Le module de génération de courrier est présent à plusieurs endroits de l’application (page d’accueil, carte de points d’eau, … ). Le premier écran de cette fonctionnalité est le suivant :
+
+image::Modifications.png[]
+
+L’utilisateur va choisir un modèle, puis plusieurs champs à remplir vont apparaître. Il s’agit des champs qui seront remplis dans le modèle de courrier. Puis lorsqu’on clique sur “Aperçu”, l’écran suivant s’affiche :
+
+image::Aperçu.png[]
+
+Il s’agit de la prévisualisation du courrier au format PDF généré. L’utilisateur va pouvoir consulter ce document, le modifier, le télécharger ou encore l’envoyer par mail (via un lien de téléchargement). Si il souhaite le modifier, il se retrouve sur l’écran précédent et effectue la modification des différents paramètres. Si l’utilisateur souhaite le télécharger, une pop-up va apparaître lui demandant s’il souhaite ouvrir avec un autre lecteur PDF ou télécharger le document. Si il souhaite l’envoyer par mail, il clique sur notifier ce qui ouvre l’écran suivant : 
+
+image::Notifier.png[]
+
+Sur cet écran, l’utilisateur va pouvoir choisir les destinataires du courrier. Il va sélectionner le(s) destinataire(s) potentiel(s) puis cliquer sur la flèche pointant vers le bas afin de les ajouter aux destinataires définitifs (il peut également les retirer en effectuant la manipulation inverse). Il peut également appliquer des filtres :
+
+* *Recherche rapide* :  recherche en fonction du nom du destinataire
+* *Restreindre à ma zone de compétence* : si coché, seul les destinataires présents sur la zone de compétence de l’utilisateur (et zone de compétences ayant une intersection) sont affichés, sinon tous les destinataires de l’application sont affichés.
+* *Organisme/Utilisateur/Contact* : si coché, les organismes/utilisateurs/contacts ayant une adresse mail sont affichés.
+
+Une fois les destinataires définitifs choisis, l’utilisateur clique sur “Notifier” et une pop-up s’affiche pour prévenir que la demande de notification à bien été prise en compte. Les destinataires vont recevoir un mél contenant le lien d'accès vers le fichier PDF généré. Un clic sur le lien permettra de télécharger et d'accuser la réception du document par le destinataire.

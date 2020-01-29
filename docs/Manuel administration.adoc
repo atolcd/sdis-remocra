@@ -40,3 +40,4 @@ link:index{outfilesuffix}[Retour à l'accueil]
 ** link:administration/Duree%20des%20sessions{outfilesuffix}[Durée des sessions]
 ** link:administration/Courriels{outfilesuffix}[Courriels] envoyés automatiquement
 ** link:administration/Lien%20Prevarisc{outfilesuffix}[Lien Prevarisc]
+** link:administration/module_courrier/Génération%20des%20courriers{outfilesuffix}[Module de courrier]
