@@ -15,6 +15,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.CadastreParcelle;
 import fr.sdis83.remocra.db.model.remocra.tables.CadastreSection;
 import fr.sdis83.remocra.db.model.remocra.tables.Commune;
 import fr.sdis83.remocra.db.model.remocra.tables.Contact;
+import fr.sdis83.remocra.db.model.remocra.tables.ContactRoles;
 import fr.sdis83.remocra.db.model.remocra.tables.CourrierDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.CourrierModele;
 import fr.sdis83.remocra.db.model.remocra.tables.CourrierModeleDroit;
@@ -31,6 +32,10 @@ import fr.sdis83.remocra.db.model.remocra.tables.CriseRepertoireLieu;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseSuivi;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseSuiviMessageModele;
 import fr.sdis83.remocra.db.model.remocra.tables.DdeMdp;
+import fr.sdis83.remocra.db.model.remocra.tables.DebitSimultane;
+import fr.sdis83.remocra.db.model.remocra.tables.DebitSimultaneDocument;
+import fr.sdis83.remocra.db.model.remocra.tables.DebitSimultaneHydrant;
+import fr.sdis83.remocra.db.model.remocra.tables.DebitSimultaneMesure;
 import fr.sdis83.remocra.db.model.remocra.tables.DelegationDeci;
 import fr.sdis83.remocra.db.model.remocra.tables.DepotDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.Document;
@@ -38,15 +43,21 @@ import fr.sdis83.remocra.db.model.remocra.tables.Droit;
 import fr.sdis83.remocra.db.model.remocra.tables.Email;
 import fr.sdis83.remocra.db.model.remocra.tables.EmailModele;
 import fr.sdis83.remocra.db.model.remocra.tables.ExportModele;
+import fr.sdis83.remocra.db.model.remocra.tables.Gestionnaire;
+import fr.sdis83.remocra.db.model.remocra.tables.GestionnaireSite;
 import fr.sdis83.remocra.db.model.remocra.tables.Hydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantAnomalies;
+import fr.sdis83.remocra.db.model.remocra.tables.HydrantAspiration;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantIndispoTemporaire;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantIndispoTemporaireHydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPena;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPibi;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPrescrit;
+import fr.sdis83.remocra.db.model.remocra.tables.HydrantReservoir;
+import fr.sdis83.remocra.db.model.remocra.tables.HydrantResume;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantTournees;
+import fr.sdis83.remocra.db.model.remocra.tables.HydrantVisite;
 import fr.sdis83.remocra.db.model.remocra.tables.Intervention;
 import fr.sdis83.remocra.db.model.remocra.tables.Metadonnee;
 import fr.sdis83.remocra.db.model.remocra.tables.Moyen;
@@ -87,10 +98,12 @@ import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleDroit;
 import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleParametre;
 import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleSelection;
 import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleSelectionDetail;
+import fr.sdis83.remocra.db.model.remocra.tables.Role;
+import fr.sdis83.remocra.db.model.remocra.tables.ServiceEaux;
+import fr.sdis83.remocra.db.model.remocra.tables.Site;
 import fr.sdis83.remocra.db.model.remocra.tables.SousTypeAlerteElt;
 import fr.sdis83.remocra.db.model.remocra.tables.SuiviPatches;
 import fr.sdis83.remocra.db.model.remocra.tables.Synchronisation;
-import fr.sdis83.remocra.db.model.remocra.tables.Temp;
 import fr.sdis83.remocra.db.model.remocra.tables.Thematique;
 import fr.sdis83.remocra.db.model.remocra.tables.Tournee;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeAlerteAno;
@@ -108,6 +121,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantAnomalie;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantAnomalieNature;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantAnomalieNatureSaisies;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantAspiration;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantCritere;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDiametre;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDiametreNatures;
@@ -118,6 +132,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMateriau;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantModele;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantNature;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantNatureDeci;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantNiveau;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantPositionnement;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantSaisie;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantVolConstate;
@@ -141,6 +156,8 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeRciOrigineAlerte;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromCategorie;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromFamille;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromPartition;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeReseauAlimentation;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeReseauCanalisation;
 import fr.sdis83.remocra.db.model.remocra.tables.Utilisateur;
 import fr.sdis83.remocra.db.model.remocra.tables.Voie;
 import fr.sdis83.remocra.db.model.remocra.tables.ZoneCompetence;
@@ -217,6 +234,12 @@ public class Tables {
 	 * The table remocra.contact
 	 */
 	public static final Contact CONTACT = fr.sdis83.remocra.db.model.remocra.tables.Contact.CONTACT;
+
+	/**
+	 * The table remocra.contact_roles
+	 */
+	public static final ContactRoles CONTACT_ROLES = fr.sdis83.remocra.db.model.remocra.tables.ContactRoles.CONTACT_ROLES;
+
 	/**
 	 * Courrier adressé à un destinataire unique référençant un document présent sur le système. Ce document peut donner lieu à un accusé de téléchargement
 	 */
@@ -238,13 +261,12 @@ public class Tables {
 	public static final CourrierParametre COURRIER_PARAMETRE = fr.sdis83.remocra.db.model.remocra.tables.CourrierParametre.COURRIER_PARAMETRE;
 
 	/**
-	 * Gestion de crise : Episode de crise pour lequelles des informations ont été saisies dans REMOCRA
+	 * Gestion de crise : Episode de crise pour lequel des informations ont été saisies dans REMOCRA
 	 */
 	public static final Crise CRISE = fr.sdis83.remocra.db.model.remocra.tables.Crise.CRISE;
 
 	/**
 	 * Gestion de crise : commune associée à un épisode de crise. Permet de définir un territoire impacté. Les mises à jours de communes sont traçées sous formes d'évènements spécifiques
-	 * Gestion de crise : commune associée à un épisode de crise. Permet de définir un teritoire impacté. Les mises à jours de communes sont traçées sous formes d'évènements spécifiques
 	 */
 	public static final CriseCommune CRISE_COMMUNE = fr.sdis83.remocra.db.model.remocra.tables.CriseCommune.CRISE_COMMUNE;
 
@@ -299,6 +321,26 @@ public class Tables {
 	public static final DdeMdp DDE_MDP = fr.sdis83.remocra.db.model.remocra.tables.DdeMdp.DDE_MDP;
 
 	/**
+	 * The table remocra.debit_simultane
+	 */
+	public static final DebitSimultane DEBIT_SIMULTANE = fr.sdis83.remocra.db.model.remocra.tables.DebitSimultane.DEBIT_SIMULTANE;
+
+	/**
+	 * The table remocra.debit_simultane_document
+	 */
+	public static final DebitSimultaneDocument DEBIT_SIMULTANE_DOCUMENT = fr.sdis83.remocra.db.model.remocra.tables.DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT;
+
+	/**
+	 * The table remocra.debit_simultane_hydrant
+	 */
+	public static final DebitSimultaneHydrant DEBIT_SIMULTANE_HYDRANT = fr.sdis83.remocra.db.model.remocra.tables.DebitSimultaneHydrant.DEBIT_SIMULTANE_HYDRANT;
+
+	/**
+	 * The table remocra.debit_simultane_mesure
+	 */
+	public static final DebitSimultaneMesure DEBIT_SIMULTANE_MESURE = fr.sdis83.remocra.db.model.remocra.tables.DebitSimultaneMesure.DEBIT_SIMULTANE_MESURE;
+
+	/**
 	 * Organisme REMOCRA de type "COMMUNE" délégant la compétence DECI à un organisme de type "EPCI"
 	 */
 	public static final DelegationDeci DELEGATION_DECI = fr.sdis83.remocra.db.model.remocra.tables.DelegationDeci.DELEGATION_DECI;
@@ -334,6 +376,16 @@ public class Tables {
 	public static final ExportModele EXPORT_MODELE = fr.sdis83.remocra.db.model.remocra.tables.ExportModele.EXPORT_MODELE;
 
 	/**
+	 * Gestionnaire de PEI
+	 */
+	public static final Gestionnaire GESTIONNAIRE = fr.sdis83.remocra.db.model.remocra.tables.Gestionnaire.GESTIONNAIRE;
+
+	/**
+	 * Gestionnaire de site de PEI
+	 */
+	public static final GestionnaireSite GESTIONNAIRE_SITE = fr.sdis83.remocra.db.model.remocra.tables.GestionnaireSite.GESTIONNAIRE_SITE;
+
+	/**
 	 * The table remocra.hydrant
 	 */
 	public static final Hydrant HYDRANT = fr.sdis83.remocra.db.model.remocra.tables.Hydrant.HYDRANT;
@@ -342,6 +394,11 @@ public class Tables {
 	 * The table remocra.hydrant_anomalies
 	 */
 	public static final HydrantAnomalies HYDRANT_ANOMALIES = fr.sdis83.remocra.db.model.remocra.tables.HydrantAnomalies.HYDRANT_ANOMALIES;
+
+	/**
+	 * Aspiration des PENA
+	 */
+	public static final HydrantAspiration HYDRANT_ASPIRATION = fr.sdis83.remocra.db.model.remocra.tables.HydrantAspiration.HYDRANT_ASPIRATION;
 
 	/**
 	 * The table remocra.hydrant_document
@@ -374,9 +431,24 @@ public class Tables {
 	public static final HydrantPrescrit HYDRANT_PRESCRIT = fr.sdis83.remocra.db.model.remocra.tables.HydrantPrescrit.HYDRANT_PRESCRIT;
 
 	/**
+	 * Réservoir pouvant alimenter un ou plusieurs hydrants
+	 */
+	public static final HydrantReservoir HYDRANT_RESERVOIR = fr.sdis83.remocra.db.model.remocra.tables.HydrantReservoir.HYDRANT_RESERVOIR;
+
+	/**
+	 * The table remocra.hydrant_resume
+	 */
+	public static final HydrantResume HYDRANT_RESUME = fr.sdis83.remocra.db.model.remocra.tables.HydrantResume.HYDRANT_RESUME;
+
+	/**
 	 * The table remocra.hydrant_tournees
 	 */
 	public static final HydrantTournees HYDRANT_TOURNEES = fr.sdis83.remocra.db.model.remocra.tables.HydrantTournees.HYDRANT_TOURNEES;
+
+	/**
+	 * Visite d'un hydrant
+	 */
+	public static final HydrantVisite HYDRANT_VISITE = fr.sdis83.remocra.db.model.remocra.tables.HydrantVisite.HYDRANT_VISITE;
 
 	/**
 	 * Table de synchronisation des interventions pour utilisation dans REMOcRA
@@ -579,6 +651,21 @@ public class Tables {
 	public static final RequeteModeleSelectionDetail REQUETE_MODELE_SELECTION_DETAIL = fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleSelectionDetail.REQUETE_MODELE_SELECTION_DETAIL;
 
 	/**
+	 * The table remocra.role
+	 */
+	public static final Role ROLE = fr.sdis83.remocra.db.model.remocra.tables.Role.ROLE;
+
+	/**
+	 * Service des eaux
+	 */
+	public static final ServiceEaux SERVICE_EAUX = fr.sdis83.remocra.db.model.remocra.tables.ServiceEaux.SERVICE_EAUX;
+
+	/**
+	 * Site de PEI
+	 */
+	public static final Site SITE = fr.sdis83.remocra.db.model.remocra.tables.Site.SITE;
+
+	/**
 	 * The table remocra.sous_type_alerte_elt
 	 */
 	public static final SousTypeAlerteElt SOUS_TYPE_ALERTE_ELT = fr.sdis83.remocra.db.model.remocra.tables.SousTypeAlerteElt.SOUS_TYPE_ALERTE_ELT;
@@ -592,11 +679,6 @@ public class Tables {
 	 * The table remocra.synchronisation
 	 */
 	public static final Synchronisation SYNCHRONISATION = fr.sdis83.remocra.db.model.remocra.tables.Synchronisation.SYNCHRONISATION;
-
-	/**
-	 * The table remocra.temp
-	 */
-	public static final Temp TEMP = fr.sdis83.remocra.db.model.remocra.tables.Temp.TEMP;
 
 	/**
 	 * The table remocra.thematique
@@ -684,6 +766,11 @@ public class Tables {
 	public static final TypeHydrantAnomalieNatureSaisies TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES = fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantAnomalieNatureSaisies.TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES;
 
 	/**
+	 * Type d'aspiration des hydrants
+	 */
+	public static final TypeHydrantAspiration TYPE_HYDRANT_ASPIRATION = fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantAspiration.TYPE_HYDRANT_ASPIRATION;
+
+	/**
 	 * The table remocra.type_hydrant_critere
 	 */
 	public static final TypeHydrantCritere TYPE_HYDRANT_CRITERE = fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantCritere.TYPE_HYDRANT_CRITERE;
@@ -732,6 +819,11 @@ public class Tables {
 	 * Statut du PEI (ex: privé, public, privé sous convention)
 	 */
 	public static final TypeHydrantNatureDeci TYPE_HYDRANT_NATURE_DECI = fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantNatureDeci.TYPE_HYDRANT_NATURE_DECI;
+
+	/**
+	 * Type de niveau des hydrants
+	 */
+	public static final TypeHydrantNiveau TYPE_HYDRANT_NIVEAU = fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantNiveau.TYPE_HYDRANT_NIVEAU;
 
 	/**
 	 * The table remocra.type_hydrant_positionnement
@@ -847,6 +939,16 @@ public class Tables {
 	 * The table remocra.type_rci_prom_partition
 	 */
 	public static final TypeRciPromPartition TYPE_RCI_PROM_PARTITION = fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromPartition.TYPE_RCI_PROM_PARTITION;
+
+	/**
+	 * Réseau d'alimentation des hydrants
+	 */
+	public static final TypeReseauAlimentation TYPE_RESEAU_ALIMENTATION = fr.sdis83.remocra.db.model.remocra.tables.TypeReseauAlimentation.TYPE_RESEAU_ALIMENTATION;
+
+	/**
+	 * Type de réseau d'alimentation des hydrants
+	 */
+	public static final TypeReseauCanalisation TYPE_RESEAU_CANALISATION = fr.sdis83.remocra.db.model.remocra.tables.TypeReseauCanalisation.TYPE_RESEAU_CANALISATION;
 
 	/**
 	 * The table remocra.utilisateur

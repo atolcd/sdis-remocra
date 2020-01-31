@@ -23,8 +23,8 @@ import org.jooq.impl.TableImpl;
 
 /**
  * Gestion de crise : commune associée à un épisode de crise. Permet de définir 
- * un teritoire impacté. Les mises à jours de communes sont traçées sous formes 
- * d'évènements spécifiques
+ * un territoire impacté. Les mises à jours de communes sont traçées sous 
+ * formes d'évènements spécifiques
  */
 @Generated(
 	value = {
@@ -36,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CriseCommune extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 1718171871;
+	private static final long serialVersionUID = -737491475;
 
 	/**
 	 * The reference instance of <code>remocra.crise_commune</code>
@@ -80,7 +80,7 @@ public class CriseCommune extends TableImpl<Record> {
 	}
 
 	private CriseCommune(String alias, Table<Record> aliased, Field<?>[] parameters) {
-		super(alias, Remocra.REMOCRA, aliased, parameters, "Gestion de crise : commune associée à un épisode de crise. Permet de définir un teritoire impacté. Les mises à jours de communes sont traçées sous formes d'évènements spécifiques");
+		super(alias, Remocra.REMOCRA, aliased, parameters, "Gestion de crise : commune associée à un épisode de crise. Permet de définir un territoire impacté. Les mises à jours de communes sont traçées sous formes d'évènements spécifiques");
 	}
 
 	/**

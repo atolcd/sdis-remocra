@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import fr.sdis83.remocra.db.converter.GeometryBinding;
 import fr.sdis83.remocra.db.converter.InstantConverter;
 import fr.sdis83.remocra.db.model.remocra.Keys;
@@ -23,12 +25,10 @@ import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
 import org.jooq.impl.TableImpl;
-import org.postgis.Geometry;
 
 
 /**
- * Evènement associé à une crise. Route inondée sur la RD 84 à la position 
- * ....
+ * Evènement associé à une crise. Route inondée sur la RD 84 à la position...
  */
 @Generated(
 	value = {
@@ -40,7 +40,7 @@ import org.postgis.Geometry;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CriseEvenement extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 437178070;
+	private static final long serialVersionUID = -710917484;
 
 	/**
 	 * The reference instance of <code>remocra.crise_evenement</code>
@@ -63,7 +63,7 @@ public class CriseEvenement extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.crise_evenement.geometrie</code>.
 	 */
-	public final TableField<Record, com.vividsolutions.jts.geom.Geometry> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "",new GeometryBinding());
+	public final TableField<Record, Geometry> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "", new GeometryBinding());
 
 	/**
 	 * The column <code>remocra.crise_evenement.nom</code>. Titre de l'évènement
@@ -71,9 +71,9 @@ public class CriseEvenement extends TableImpl<Record> {
 	public final TableField<Record, String> NOM = createField("nom", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Titre de l'évènement");
 
 	/**
-	 * The column <code>remocra.crise_evenement.description</code>. Information générale sur l'evènement (cause, autre information utile, etc.)
+	 * The column <code>remocra.crise_evenement.description</code>. Information générale sur l'évènement (cause, autre information utile, etc.)
 	 */
-	public final TableField<Record, String> DESCRIPTION = createField("description", org.jooq.impl.SQLDataType.VARCHAR, this, "Information générale sur l'evènement (cause, autre information utile, etc.)");
+	public final TableField<Record, String> DESCRIPTION = createField("description", org.jooq.impl.SQLDataType.VARCHAR, this, "Information générale sur l'évènement (cause, autre information utile, etc.)");
 
 	/**
 	 * The column <code>remocra.crise_evenement.constat</code>. Date et heure de constat du phénomène ou de l'action
@@ -144,7 +144,7 @@ public class CriseEvenement extends TableImpl<Record> {
 	}
 
 	private CriseEvenement(String alias, Table<Record> aliased, Field<?>[] parameters) {
-		super(alias, Remocra.REMOCRA, aliased, parameters, "Evènement associé à une crise. Route inondée sur la RD 84 à la position ....");
+		super(alias, Remocra.REMOCRA, aliased, parameters, "Evènement associé à une crise. Route inondée sur la RD 84 à la position...");
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class CriseEvenement extends TableImpl<Record> {
 	 */
 	@Override
 	public List<ForeignKey<Record, ?>> getReferences() {
-		return Arrays.<ForeignKey<Record, ?>>asList(Keys.CRISE_EVENEMENT__CRISE_EVENEMENT_CRISE_FK, Keys.CRISE_EVENEMENT__CRISE_EVENEMENT_NATURE_EVENEMENT_FK);
+		return Arrays.<ForeignKey<Record, ?>>asList(Keys.CRISE_EVENEMENT__CRISE_EVENEMENT_CRISE_FK, Keys.CRISE_EVENEMENT__CRISE_EVENEMENT_NATURE_EVENEMENT_FK, Keys.CRISE_EVENEMENT__CRISE_EVENEMENT_UTILISATEUR);
 	}
 
 	/**

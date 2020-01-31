@@ -37,7 +37,6 @@
 		<db.user>postgres</db.user>
 		<db.pass>postgres</db.pass>
 		<db.name>remocra</db.name>
-		<db.schema></db.schema>
 		<guice-persist-jooq.version>0.1.2</guice-persist-jooq.version>
 		<plugin.build-helper-maven-plugin>1.10</plugin.build-helper-maven-plugin>
 	</properties>
@@ -1070,6 +1069,9 @@
 					</configuration>
 				</plugin>
 				<plugin>
+					<!-- Exemple :
+						mvn clean jooq-codegen:generate
+					-->
 					<groupId>org.jooq</groupId>
 					<artifactId>jooq-codegen-maven</artifactId>
 					<version>${jooq.version}</version>
@@ -1092,7 +1094,16 @@
 								<includes>.*</includes>
 								<schemata>
 									<schema>
-										<inputSchema>${db.schema}</inputSchema>
+										<inputSchema>remocra</inputSchema>
+										<outputSchema>remocra</outputSchema>
+									</schema>
+									<schema>
+										<inputSchema>pdi</inputSchema>
+										<outputSchema>pdi</outputSchema>
+									</schema>
+									<schema>
+										<inputSchema>tracabilite</inputSchema>
+										<outputSchema>tracabilite</outputSchema>
 									</schema>
 								</schemata>
 								<customTypes>

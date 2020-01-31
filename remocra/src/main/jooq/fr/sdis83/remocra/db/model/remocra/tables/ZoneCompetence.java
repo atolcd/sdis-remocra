@@ -4,6 +4,9 @@
 package fr.sdis83.remocra.db.model.remocra.tables;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
+import fr.sdis83.remocra.db.converter.GeometryBinding;
 import fr.sdis83.remocra.db.model.remocra.Keys;
 import fr.sdis83.remocra.db.model.remocra.Remocra;
 
@@ -34,7 +37,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ZoneCompetence extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -526900794;
+	private static final long serialVersionUID = 2056450011;
 
 	/**
 	 * The reference instance of <code>remocra.zone_competence</code>
@@ -62,7 +65,7 @@ public class ZoneCompetence extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.zone_competence.geometrie</code>.
 	 */
-	public final TableField<Record, Object> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "");
+	public final TableField<Record, Geometry> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "", new GeometryBinding());
 
 	/**
 	 * The column <code>remocra.zone_competence.nom</code>.

@@ -10,7 +10,7 @@ import javax.annotation.Generated;
 
 
 /**
- * Profil de droit autorisé pour executer un processus ETL
+ * Profil de droit autorisé pour exécuter un processus ETL
  */
 @Generated(
 	value = {
@@ -22,7 +22,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProcessusEtlModeleDroit implements Serializable {
 
-	private static final long serialVersionUID = 1147510542;
+	private static final long serialVersionUID = -1985944566;
 
 	private Long modele;
 	private Long profilDroit;

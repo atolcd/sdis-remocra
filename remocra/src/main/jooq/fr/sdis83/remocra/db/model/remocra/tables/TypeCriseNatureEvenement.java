@@ -23,8 +23,8 @@ import org.jooq.impl.TableImpl;
 
 
 /**
- * Gestion de crise : Nature de l'évènement attaché à une catégorie (Ex:"Route 
- * barrée" pour la catégorie "Réseau routier")
+ * Gestion de crise : Nature de l'évènement attaché à une catégorie. Ex : 
+ * "Route barrée" pour la catégorie "Réseau routier"
  */
 @Generated(
 	value = {
@@ -36,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TypeCriseNatureEvenement extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -1086435455;
+	private static final long serialVersionUID = 1540977479;
 
 	/**
 	 * The reference instance of <code>remocra.type_crise_nature_evenement</code>
@@ -77,9 +77,9 @@ public class TypeCriseNatureEvenement extends TableImpl<Record> {
 	public final TableField<Record, String> TYPE_GEOMETRIE = createField("type_geometrie", org.jooq.impl.SQLDataType.VARCHAR, this, "Type de géométrie. Si non renseigné, type d'évènement non géolocalisable");
 
 	/**
-	 * The column <code>remocra.type_crise_nature_evenement.categorie_evenement</code>. Categorie d'évènement associée
+	 * The column <code>remocra.type_crise_nature_evenement.categorie_evenement</code>. Catégorie d'évènement associée
 	 */
-	public final TableField<Record, Long> CATEGORIE_EVENEMENT = createField("categorie_evenement", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "Categorie d'évènement associée");
+	public final TableField<Record, Long> CATEGORIE_EVENEMENT = createField("categorie_evenement", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "Catégorie d'évènement associée");
 
 	/**
 	 * Create a <code>remocra.type_crise_nature_evenement</code> table reference
@@ -100,7 +100,7 @@ public class TypeCriseNatureEvenement extends TableImpl<Record> {
 	}
 
 	private TypeCriseNatureEvenement(String alias, Table<Record> aliased, Field<?>[] parameters) {
-		super(alias, Remocra.REMOCRA, aliased, parameters, "Gestion de crise : Nature de l'évènement attaché à une catégorie (Ex:\"Route barrée\" pour la catégorie \"Réseau routier\")");
+		super(alias, Remocra.REMOCRA, aliased, parameters, "Gestion de crise : Nature de l'évènement attaché à une catégorie. Ex : \"Route barrée\" pour la catégorie \"Réseau routier\"");
 	}
 
 	/**

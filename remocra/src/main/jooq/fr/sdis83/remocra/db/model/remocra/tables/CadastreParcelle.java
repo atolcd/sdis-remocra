@@ -4,6 +4,9 @@
 package fr.sdis83.remocra.db.model.remocra.tables;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
+import fr.sdis83.remocra.db.converter.GeometryBinding;
 import fr.sdis83.remocra.db.model.remocra.Keys;
 import fr.sdis83.remocra.db.model.remocra.Remocra;
 
@@ -35,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CadastreParcelle extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -1322862956;
+	private static final long serialVersionUID = 418029375;
 
 	/**
 	 * The reference instance of <code>remocra.cadastre_parcelle</code>
@@ -58,7 +61,7 @@ public class CadastreParcelle extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.cadastre_parcelle.geometrie</code>. Géometrie de la parcelle cadastrale
 	 */
-	public final TableField<Record, Object> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "Géometrie de la parcelle cadastrale");
+	public final TableField<Record, Geometry> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "Géometrie de la parcelle cadastrale", new GeometryBinding());
 
 	/**
 	 * The column <code>remocra.cadastre_parcelle.numero</code>. Numéro d'identification de la parcelle

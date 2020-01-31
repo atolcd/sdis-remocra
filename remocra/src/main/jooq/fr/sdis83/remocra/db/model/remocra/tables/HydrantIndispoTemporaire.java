@@ -37,7 +37,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantIndispoTemporaire extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 2034131197;
+	private static final long serialVersionUID = -1928619406;
 
 	/**
 	 * The reference instance of <code>remocra.hydrant_indispo_temporaire</code>
@@ -56,16 +56,6 @@ public class HydrantIndispoTemporaire extends TableImpl<Record> {
 	 * The column <code>remocra.hydrant_indispo_temporaire.id</code>.
 	 */
 	public final TableField<Record, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaulted(true), this, "");
-
-	/**
-	 * The column <code>remocra.hydrant_indispo_temporaire.date_prev_debut</code>.
-	 */
-	public final TableField<Record, Instant> DATE_PREV_DEBUT = createField("date_prev_debut", org.jooq.impl.SQLDataType.TIMESTAMP, this, "", new InstantConverter());
-
-	/**
-	 * The column <code>remocra.hydrant_indispo_temporaire.date_prev_fin</code>.
-	 */
-	public final TableField<Record, Instant> DATE_PREV_FIN = createField("date_prev_fin", org.jooq.impl.SQLDataType.TIMESTAMP, this, "", new InstantConverter());
 
 	/**
 	 * The column <code>remocra.hydrant_indispo_temporaire.date_debut</code>.
@@ -101,6 +91,26 @@ public class HydrantIndispoTemporaire extends TableImpl<Record> {
 	 * The column <code>remocra.hydrant_indispo_temporaire.total_hydrants</code>.
 	 */
 	public final TableField<Record, Integer> TOTAL_HYDRANTS = createField("total_hydrants", org.jooq.impl.SQLDataType.INTEGER, this, "");
+
+	/**
+	 * The column <code>remocra.hydrant_indispo_temporaire.bascule_auto_indispo</code>.
+	 */
+	public final TableField<Record, Boolean> BASCULE_AUTO_INDISPO = createField("bascule_auto_indispo", org.jooq.impl.SQLDataType.BOOLEAN.defaulted(true), this, "");
+
+	/**
+	 * The column <code>remocra.hydrant_indispo_temporaire.bascule_auto_dispo</code>.
+	 */
+	public final TableField<Record, Boolean> BASCULE_AUTO_DISPO = createField("bascule_auto_dispo", org.jooq.impl.SQLDataType.BOOLEAN.defaulted(true), this, "");
+
+	/**
+	 * The column <code>remocra.hydrant_indispo_temporaire.mel_avant_indispo</code>.
+	 */
+	public final TableField<Record, Boolean> MEL_AVANT_INDISPO = createField("mel_avant_indispo", org.jooq.impl.SQLDataType.BOOLEAN.defaulted(true), this, "");
+
+	/**
+	 * The column <code>remocra.hydrant_indispo_temporaire.mel_avant_dispo</code>.
+	 */
+	public final TableField<Record, Boolean> MEL_AVANT_DISPO = createField("mel_avant_dispo", org.jooq.impl.SQLDataType.BOOLEAN.defaulted(true), this, "");
 
 	/**
 	 * Create a <code>remocra.hydrant_indispo_temporaire</code> table reference

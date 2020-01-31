@@ -4,6 +4,9 @@
 package fr.sdis83.remocra.db.model.remocra.tables;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
+import fr.sdis83.remocra.db.converter.GeometryBinding;
 import fr.sdis83.remocra.db.model.remocra.Keys;
 import fr.sdis83.remocra.db.model.remocra.Remocra;
 
@@ -36,7 +39,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Moyen extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -2117875338;
+	private static final long serialVersionUID = -1048526659;
 
 	/**
 	 * The reference instance of <code>remocra.moyen</code>
@@ -74,7 +77,7 @@ public class Moyen extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.moyen.geometrie</code>. Dernier emplacement connu du moyen
 	 */
-	public final TableField<Record, Object> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "Dernier emplacement connu du moyen");
+	public final TableField<Record, Geometry> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "Dernier emplacement connu du moyen", new GeometryBinding());
 
 	/**
 	 * Create a <code>remocra.moyen</code> table reference

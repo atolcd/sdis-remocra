@@ -4,6 +4,9 @@
 package fr.sdis83.remocra.db.model.remocra.tables;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
+import fr.sdis83.remocra.db.converter.GeometryBinding;
 import fr.sdis83.remocra.db.converter.InstantConverter;
 import fr.sdis83.remocra.db.model.remocra.Keys;
 import fr.sdis83.remocra.db.model.remocra.Remocra;
@@ -37,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Permis extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 1799441617;
+	private static final long serialVersionUID = 1797700534;
 
 	/**
 	 * The reference instance of <code>remocra.permis</code>
@@ -75,7 +78,7 @@ public class Permis extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.permis.geometrie</code>.
 	 */
-	public final TableField<Record, Object> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "");
+	public final TableField<Record, Geometry> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "", new GeometryBinding());
 
 	/**
 	 * The column <code>remocra.permis.nom</code>.

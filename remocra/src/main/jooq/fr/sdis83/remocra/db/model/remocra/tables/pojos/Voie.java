@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
@@ -22,15 +24,15 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Voie implements Serializable {
 
-	private static final long serialVersionUID = 1084837594;
+	private static final long serialVersionUID = 510376710;
 
-	private Long    id;
-	private Object  geometrie;
-	private String  motClassant;
-	private String  nom;
-	private String  source;
-	private Long    commune;
-	private Boolean actif;
+	private Long     id;
+	private Geometry geometrie;
+	private String   motClassant;
+	private String   nom;
+	private String   source;
+	private Long     commune;
+	private Boolean  actif;
 
 	public Voie() {}
 
@@ -45,13 +47,13 @@ public class Voie implements Serializable {
 	}
 
 	public Voie(
-		Long    id,
-		Object  geometrie,
-		String  motClassant,
-		String  nom,
-		String  source,
-		Long    commune,
-		Boolean actif
+		Long     id,
+		Geometry geometrie,
+		String   motClassant,
+		String   nom,
+		String   source,
+		Long     commune,
+		Boolean  actif
 	) {
 		this.id = id;
 		this.geometrie = geometrie;
@@ -71,11 +73,11 @@ public class Voie implements Serializable {
 		return this;
 	}
 
-	public Object getGeometrie() {
+	public Geometry getGeometrie() {
 		return this.geometrie;
 	}
 
-	public Voie setGeometrie(Object geometrie) {
+	public Voie setGeometrie(Geometry geometrie) {
 		this.geometrie = geometrie;
 		return this;
 	}

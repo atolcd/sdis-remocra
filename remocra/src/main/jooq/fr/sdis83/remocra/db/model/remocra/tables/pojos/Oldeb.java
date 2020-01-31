@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
@@ -23,23 +25,23 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Oldeb implements Serializable {
 
-	private static final long serialVersionUID = -473053982;
+	private static final long serialVersionUID = -1343949166;
 
-	private Long    id;
-	private Object  geometrie;
-	private String  section;
-	private String  parcelle;
-	private String  numVoie;
-	private String  voie;
-	private String  lieuDit;
-	private Integer volume;
-	private Integer largeurAcces;
-	private Boolean portailElectrique;
-	private String  codePortail;
-	private Boolean actif;
-	private Long    commune;
-	private Long    zoneUrbanisme;
-	private Long    acces;
+	private Long     id;
+	private Geometry geometrie;
+	private String   section;
+	private String   parcelle;
+	private String   numVoie;
+	private String   voie;
+	private String   lieuDit;
+	private Integer  volume;
+	private Integer  largeurAcces;
+	private Boolean  portailElectrique;
+	private String   codePortail;
+	private Boolean  actif;
+	private Long     commune;
+	private Long     zoneUrbanisme;
+	private Long     acces;
 
 	public Oldeb() {}
 
@@ -62,21 +64,21 @@ public class Oldeb implements Serializable {
 	}
 
 	public Oldeb(
-		Long    id,
-		Object  geometrie,
-		String  section,
-		String  parcelle,
-		String  numVoie,
-		String  voie,
-		String  lieuDit,
-		Integer volume,
-		Integer largeurAcces,
-		Boolean portailElectrique,
-		String  codePortail,
-		Boolean actif,
-		Long    commune,
-		Long    zoneUrbanisme,
-		Long    acces
+		Long     id,
+		Geometry geometrie,
+		String   section,
+		String   parcelle,
+		String   numVoie,
+		String   voie,
+		String   lieuDit,
+		Integer  volume,
+		Integer  largeurAcces,
+		Boolean  portailElectrique,
+		String   codePortail,
+		Boolean  actif,
+		Long     commune,
+		Long     zoneUrbanisme,
+		Long     acces
 	) {
 		this.id = id;
 		this.geometrie = geometrie;
@@ -104,11 +106,11 @@ public class Oldeb implements Serializable {
 		return this;
 	}
 
-	public Object getGeometrie() {
+	public Geometry getGeometrie() {
 		return this.geometrie;
 	}
 
-	public Oldeb setGeometrie(Object geometrie) {
+	public Oldeb setGeometrie(Geometry geometrie) {
 		this.geometrie = geometrie;
 		return this;
 	}

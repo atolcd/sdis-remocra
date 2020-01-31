@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
@@ -24,22 +26,22 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CriseEvenement implements Serializable {
 
-	private static final long serialVersionUID = 1597653062;
+	private static final long serialVersionUID = -1974909187;
 
-	private Long    id;
-	private Object  geometrie;
-	private String  nom;
-	private String  description;
-	private Instant constat;
-	private Instant redefinition;
-	private Instant cloture;
-	private String  origine;
-	private Integer importance;
-	private String  tags;
-	private Long    crise;
-	private Long    natureEvenement;
-	private Long    auteurEvenement;
-	private String  contexte;
+	private Long     id;
+	private Geometry geometrie;
+	private String   nom;
+	private String   description;
+	private Instant  constat;
+	private Instant  redefinition;
+	private Instant  cloture;
+	private String   origine;
+	private Integer  importance;
+	private String   tags;
+	private Long     crise;
+	private Long     natureEvenement;
+	private Long     auteurEvenement;
+	private String   contexte;
 
 	public CriseEvenement() {}
 
@@ -61,20 +63,20 @@ public class CriseEvenement implements Serializable {
 	}
 
 	public CriseEvenement(
-		Long    id,
-		Object  geometrie,
-		String  nom,
-		String  description,
-		Instant constat,
-		Instant redefinition,
-		Instant cloture,
-		String  origine,
-		Integer importance,
-		String  tags,
-		Long    crise,
-		Long    natureEvenement,
-		Long    auteurEvenement,
-		String  contexte
+		Long     id,
+		Geometry geometrie,
+		String   nom,
+		String   description,
+		Instant  constat,
+		Instant  redefinition,
+		Instant  cloture,
+		String   origine,
+		Integer  importance,
+		String   tags,
+		Long     crise,
+		Long     natureEvenement,
+		Long     auteurEvenement,
+		String   contexte
 	) {
 		this.id = id;
 		this.geometrie = geometrie;
@@ -101,11 +103,11 @@ public class CriseEvenement implements Serializable {
 		return this;
 	}
 
-	public Object getGeometrie() {
+	public Geometry getGeometrie() {
 		return this.geometrie;
 	}
 
-	public CriseEvenement setGeometrie(Object geometrie) {
+	public CriseEvenement setGeometrie(Geometry geometrie) {
 		this.geometrie = geometrie;
 		return this;
 	}

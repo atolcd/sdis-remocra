@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
@@ -24,14 +26,17 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantPrescrit implements Serializable {
 
-	private static final long serialVersionUID = 610890920;
+	private static final long serialVersionUID = 2091413958;
 
-	private Long    id;
-	private Instant datePrescrit;
-	private Integer debit;
-	private Object  geometrie;
-	private Integer nbPoteaux;
-	private Long    organisme;
+	private Long     id;
+	private Instant  datePrescrit;
+	private Integer  debit;
+	private Geometry geometrie;
+	private Integer  nbPoteaux;
+	private Long     organisme;
+	private String   commentaire;
+	private String   agent;
+	private String   numdossier;
 
 	public HydrantPrescrit() {}
 
@@ -42,15 +47,21 @@ public class HydrantPrescrit implements Serializable {
 		this.geometrie = value.geometrie;
 		this.nbPoteaux = value.nbPoteaux;
 		this.organisme = value.organisme;
+		this.commentaire = value.commentaire;
+		this.agent = value.agent;
+		this.numdossier = value.numdossier;
 	}
 
 	public HydrantPrescrit(
-		Long    id,
-		Instant datePrescrit,
-		Integer debit,
-		Object  geometrie,
-		Integer nbPoteaux,
-		Long    organisme
+		Long     id,
+		Instant  datePrescrit,
+		Integer  debit,
+		Geometry geometrie,
+		Integer  nbPoteaux,
+		Long     organisme,
+		String   commentaire,
+		String   agent,
+		String   numdossier
 	) {
 		this.id = id;
 		this.datePrescrit = datePrescrit;
@@ -58,6 +69,9 @@ public class HydrantPrescrit implements Serializable {
 		this.geometrie = geometrie;
 		this.nbPoteaux = nbPoteaux;
 		this.organisme = organisme;
+		this.commentaire = commentaire;
+		this.agent = agent;
+		this.numdossier = numdossier;
 	}
 
 	public Long getId() {
@@ -87,11 +101,11 @@ public class HydrantPrescrit implements Serializable {
 		return this;
 	}
 
-	public Object getGeometrie() {
+	public Geometry getGeometrie() {
 		return this.geometrie;
 	}
 
-	public HydrantPrescrit setGeometrie(Object geometrie) {
+	public HydrantPrescrit setGeometrie(Geometry geometrie) {
 		this.geometrie = geometrie;
 		return this;
 	}
@@ -111,6 +125,33 @@ public class HydrantPrescrit implements Serializable {
 
 	public HydrantPrescrit setOrganisme(Long organisme) {
 		this.organisme = organisme;
+		return this;
+	}
+
+	public String getCommentaire() {
+		return this.commentaire;
+	}
+
+	public HydrantPrescrit setCommentaire(String commentaire) {
+		this.commentaire = commentaire;
+		return this;
+	}
+
+	public String getAgent() {
+		return this.agent;
+	}
+
+	public HydrantPrescrit setAgent(String agent) {
+		this.agent = agent;
+		return this;
+	}
+
+	public String getNumdossier() {
+		return this.numdossier;
+	}
+
+	public HydrantPrescrit setNumdossier(String numdossier) {
+		this.numdossier = numdossier;
 		return this;
 	}
 }

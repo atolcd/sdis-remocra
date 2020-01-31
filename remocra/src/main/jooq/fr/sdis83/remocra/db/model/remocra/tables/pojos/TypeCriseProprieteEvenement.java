@@ -10,8 +10,8 @@ import javax.annotation.Generated;
 
 
 /**
- * Propriété complémentaire pouvant être renseigné lors de la création ou 
- * de la modification d'un évènement 
+ * Propriété complémentaire pouvant être renseignée lors de la création ou 
+ * de la modification d'un évènement
  */
 @Generated(
 	value = {
@@ -23,7 +23,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TypeCriseProprieteEvenement implements Serializable {
 
-	private static final long serialVersionUID = 1789632354;
+	private static final long serialVersionUID = -1665010159;
 
 	private Long    id;
 	private String  nom;

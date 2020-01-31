@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
@@ -23,13 +25,13 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Moyen implements Serializable {
 
-	private static final long serialVersionUID = 231604130;
+	private static final long serialVersionUID = -261970456;
 
-	private Long   id;
-	private Long   type;
-	private String nom;
-	private Long   intervention;
-	private Object geometrie;
+	private Long     id;
+	private Long     type;
+	private String   nom;
+	private Long     intervention;
+	private Geometry geometrie;
 
 	public Moyen() {}
 
@@ -42,11 +44,11 @@ public class Moyen implements Serializable {
 	}
 
 	public Moyen(
-		Long   id,
-		Long   type,
-		String nom,
-		Long   intervention,
-		Object geometrie
+		Long     id,
+		Long     type,
+		String   nom,
+		Long     intervention,
+		Geometry geometrie
 	) {
 		this.id = id;
 		this.type = type;
@@ -91,11 +93,11 @@ public class Moyen implements Serializable {
 		return this;
 	}
 
-	public Object getGeometrie() {
+	public Geometry getGeometrie() {
 		return this.geometrie;
 	}
 
-	public Moyen setGeometrie(Object geometrie) {
+	public Moyen setGeometrie(Geometry geometrie) {
 		this.geometrie = geometrie;
 		return this;
 	}

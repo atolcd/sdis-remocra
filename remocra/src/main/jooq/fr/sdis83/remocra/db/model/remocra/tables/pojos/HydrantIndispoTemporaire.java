@@ -24,11 +24,9 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantIndispoTemporaire implements Serializable {
 
-	private static final long serialVersionUID = -1762605138;
+	private static final long serialVersionUID = -862348530;
 
 	private Long    id;
-	private Instant datePrevDebut;
-	private Instant datePrevFin;
 	private Instant dateDebut;
 	private Instant dateFin;
 	private String  motif;
@@ -94,24 +92,6 @@ public class HydrantIndispoTemporaire implements Serializable {
 		this.id = id;
 		return this;
 	}
-
-	/*public Instant getDatePrevDebut() {
-		return this.datePrevDebut;
-	}
-
-	public HydrantIndispoTemporaire setDatePrevDebut(Instant datePrevDebut) {
-		this.datePrevDebut = datePrevDebut;
-		return this;
-	}
-
-	public Instant getDatePrevFin() {
-		return this.datePrevFin;
-	}
-
-	public HydrantIndispoTemporaire setDatePrevFin(Instant datePrevFin) {
-		this.datePrevFin = datePrevFin;
-		return this;
-	}*/
 
 	public Instant getDateDebut() {
 		return this.dateDebut;

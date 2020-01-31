@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
@@ -23,14 +25,14 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CriseDocument implements Serializable {
 
-	private static final long serialVersionUID = -1380178930;
+	private static final long serialVersionUID = -142624684;
 
-	private Long   id;
-	private String sousType;
-	private Long   document;
-	private Long   crise;
-	private Long   evenement;
-	private Object geometrie;
+	private Long     id;
+	private String   sousType;
+	private Long     document;
+	private Long     crise;
+	private Long     evenement;
+	private Geometry geometrie;
 
 	public CriseDocument() {}
 
@@ -44,12 +46,12 @@ public class CriseDocument implements Serializable {
 	}
 
 	public CriseDocument(
-		Long   id,
-		String sousType,
-		Long   document,
-		Long   crise,
-		Long   evenement,
-		Object geometrie
+		Long     id,
+		String   sousType,
+		Long     document,
+		Long     crise,
+		Long     evenement,
+		Geometry geometrie
 	) {
 		this.id = id;
 		this.sousType = sousType;
@@ -104,11 +106,11 @@ public class CriseDocument implements Serializable {
 		return this;
 	}
 
-	public Object getGeometrie() {
+	public Geometry getGeometrie() {
 		return this.geometrie;
 	}
 
-	public CriseDocument setGeometrie(Object geometrie) {
+	public CriseDocument setGeometrie(Geometry geometrie) {
 		this.geometrie = geometrie;
 		return this;
 	}

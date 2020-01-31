@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
@@ -24,26 +26,26 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Permis implements Serializable {
 
-	private static final long serialVersionUID = -1014146416;
+	private static final long serialVersionUID = -1192636720;
 
-	private Long    id;
-	private String  complement;
-	private Integer annee;
-	private Instant dateModification;
-	private Object  geometrie;
-	private String  nom;
-	private String  numero;
-	private String  observations;
-	private String  parcelleCadastrale;
-	private String  sectionCadastrale;
-	private Integer version;
-	private Long    avis;
-	private Long    commune;
-	private Long    instructeur;
-	private Long    interservice;
-	private Long    serviceInstructeur;
-	private String  voie;
-	private Instant datePermis;
+	private Long     id;
+	private String   complement;
+	private Integer  annee;
+	private Instant  dateModification;
+	private Geometry geometrie;
+	private String   nom;
+	private String   numero;
+	private String   observations;
+	private String   parcelleCadastrale;
+	private String   sectionCadastrale;
+	private Integer  version;
+	private Long     avis;
+	private Long     commune;
+	private Long     instructeur;
+	private Long     interservice;
+	private Long     serviceInstructeur;
+	private String   voie;
+	private Instant  datePermis;
 
 	public Permis() {}
 
@@ -69,24 +71,24 @@ public class Permis implements Serializable {
 	}
 
 	public Permis(
-		Long    id,
-		String  complement,
-		Integer annee,
-		Instant dateModification,
-		Object  geometrie,
-		String  nom,
-		String  numero,
-		String  observations,
-		String  parcelleCadastrale,
-		String  sectionCadastrale,
-		Integer version,
-		Long    avis,
-		Long    commune,
-		Long    instructeur,
-		Long    interservice,
-		Long    serviceInstructeur,
-		String  voie,
-		Instant datePermis
+		Long     id,
+		String   complement,
+		Integer  annee,
+		Instant  dateModification,
+		Geometry geometrie,
+		String   nom,
+		String   numero,
+		String   observations,
+		String   parcelleCadastrale,
+		String   sectionCadastrale,
+		Integer  version,
+		Long     avis,
+		Long     commune,
+		Long     instructeur,
+		Long     interservice,
+		Long     serviceInstructeur,
+		String   voie,
+		Instant  datePermis
 	) {
 		this.id = id;
 		this.complement = complement;
@@ -144,11 +146,11 @@ public class Permis implements Serializable {
 		return this;
 	}
 
-	public Object getGeometrie() {
+	public Geometry getGeometrie() {
 		return this.geometrie;
 	}
 
-	public Permis setGeometrie(Object geometrie) {
+	public Permis setGeometrie(Geometry geometrie) {
 		this.geometrie = geometrie;
 		return this;
 	}

@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
@@ -22,14 +24,14 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Commune implements Serializable {
 
-	private static final long serialVersionUID = -1044071155;
+	private static final long serialVersionUID = 2022331831;
 
-	private Long    id;
-	private Object  geometrie;
-	private String  insee;
-	private String  nom;
-	private Boolean pprif;
-	private String  code;
+	private Long     id;
+	private Geometry geometrie;
+	private String   insee;
+	private String   nom;
+	private Boolean  pprif;
+	private String   code;
 
 	public Commune() {}
 
@@ -43,12 +45,12 @@ public class Commune implements Serializable {
 	}
 
 	public Commune(
-		Long    id,
-		Object  geometrie,
-		String  insee,
-		String  nom,
-		Boolean pprif,
-		String  code
+		Long     id,
+		Geometry geometrie,
+		String   insee,
+		String   nom,
+		Boolean  pprif,
+		String   code
 	) {
 		this.id = id;
 		this.geometrie = geometrie;
@@ -67,11 +69,11 @@ public class Commune implements Serializable {
 		return this;
 	}
 
-	public Object getGeometrie() {
+	public Geometry getGeometrie() {
 		return this.geometrie;
 	}
 
-	public Commune setGeometrie(Object geometrie) {
+	public Commune setGeometrie(Geometry geometrie) {
 		this.geometrie = geometrie;
 		return this;
 	}

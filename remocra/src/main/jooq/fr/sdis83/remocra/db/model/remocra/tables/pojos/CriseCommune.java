@@ -11,8 +11,8 @@ import javax.annotation.Generated;
 
 /**
  * Gestion de crise : commune associée à un épisode de crise. Permet de définir 
- * un teritoire impacté. Les mises à jours de communes sont traçées sous formes 
- * d'évènements spécifiques
+ * un territoire impacté. Les mises à jours de communes sont traçées sous 
+ * formes d'évènements spécifiques
  */
 @Generated(
 	value = {
@@ -24,7 +24,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CriseCommune implements Serializable {
 
-	private static final long serialVersionUID = 1098813284;
+	private static final long serialVersionUID = 457752884;
 
 	private Long crise;
 	private Long commune;

@@ -4,6 +4,9 @@
 package fr.sdis83.remocra.db.model.remocra.tables;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
+import fr.sdis83.remocra.db.converter.GeometryBinding;
 import fr.sdis83.remocra.db.converter.InstantConverter;
 import fr.sdis83.remocra.db.model.remocra.Keys;
 import fr.sdis83.remocra.db.model.remocra.Remocra;
@@ -37,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Rci extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 979703137;
+	private static final long serialVersionUID = -1487440970;
 
 	/**
 	 * The reference instance of <code>remocra.rci</code>
@@ -105,7 +108,7 @@ public class Rci extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.rci.geometrie</code>.
 	 */
-	public final TableField<Record, Object> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "");
+	public final TableField<Record, Geometry> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "", new GeometryBinding());
 
 	/**
 	 * The column <code>remocra.rci.hygrometrie</code>.

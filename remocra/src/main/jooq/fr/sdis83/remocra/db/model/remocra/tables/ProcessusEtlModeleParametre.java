@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProcessusEtlModeleParametre extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -1780669255;
+	private static final long serialVersionUID = -127670067;
 
 	/**
 	 * The reference instance of <code>remocra.processus_etl_modele_parametre</code>
@@ -56,9 +56,9 @@ public class ProcessusEtlModeleParametre extends TableImpl<Record> {
 	public final TableField<Record, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaulted(true), this, "Identifiant interne");
 
 	/**
-	 * The column <code>remocra.processus_etl_modele_parametre.nom</code>. Nom du paramètre. Sans espace ni caractère accentué. De préférence en majuscule
+	 * The column <code>remocra.processus_etl_modele_parametre.nom</code>. Nom du paramètre. Sans espace ni caractère accentué. De préférence en majuscules
 	 */
-	public final TableField<Record, String> NOM = createField("nom", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Nom du paramètre. Sans espace ni caractère accentué. De préférence en majuscule");
+	public final TableField<Record, String> NOM = createField("nom", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Nom du paramètre. Sans espace ni caractère accentué. De préférence en majuscules");
 
 	/**
 	 * The column <code>remocra.processus_etl_modele_parametre.type_valeur</code>. Type de valeur attendue par la requête SQL

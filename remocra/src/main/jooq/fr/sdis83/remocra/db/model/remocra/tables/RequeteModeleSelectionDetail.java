@@ -4,6 +4,9 @@
 package fr.sdis83.remocra.db.model.remocra.tables;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
+import fr.sdis83.remocra.db.converter.GeometryBinding;
 import fr.sdis83.remocra.db.model.remocra.Keys;
 import fr.sdis83.remocra.db.model.remocra.Remocra;
 
@@ -35,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class RequeteModeleSelectionDetail extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 338205253;
+	private static final long serialVersionUID = 2091588112;
 
 	/**
 	 * The reference instance of <code>remocra.requete_modele_selection_detail</code>
@@ -63,7 +66,7 @@ public class RequeteModeleSelectionDetail extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.requete_modele_selection_detail.geometrie</code>. Géométrie des éléments sélectionnés
 	 */
-	public final TableField<Record, Object> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "Géométrie des éléments sélectionnés");
+	public final TableField<Record, Geometry> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "Géométrie des éléments sélectionnés", new GeometryBinding());
 
 	/**
 	 * Create a <code>remocra.requete_modele_selection_detail</code> table reference

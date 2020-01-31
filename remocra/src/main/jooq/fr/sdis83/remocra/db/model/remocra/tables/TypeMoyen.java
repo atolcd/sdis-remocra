@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TypeMoyen extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -1406559152;
+	private static final long serialVersionUID = -2096729988;
 
 	/**
 	 * The reference instance of <code>remocra.type_moyen</code>
@@ -50,24 +50,24 @@ public class TypeMoyen extends TableImpl<Record> {
 	}
 
 	/**
-	 * The column <code>remocra.type_moyen.id</code>.
+	 * The column <code>remocra.type_moyen.id</code>. Identifiant interne
 	 */
-	public final TableField<Record, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaulted(true), this, "");
+	public final TableField<Record, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaulted(true), this, "Identifiant interne");
 
 	/**
-	 * The column <code>remocra.type_moyen.actif</code>.
+	 * The column <code>remocra.type_moyen.actif</code>. Sélectionnable dans l'interface
 	 */
-	public final TableField<Record, Boolean> ACTIF = createField("actif", org.jooq.impl.SQLDataType.BOOLEAN.defaulted(true), this, "");
+	public final TableField<Record, Boolean> ACTIF = createField("actif", org.jooq.impl.SQLDataType.BOOLEAN.defaulted(true), this, "Sélectionnable dans l'interface");
 
 	/**
-	 * The column <code>remocra.type_moyen.code</code>.
+	 * The column <code>remocra.type_moyen.code</code>. Code du moyen. Facilite les échanges de données
 	 */
-	public final TableField<Record, String> CODE = createField("code", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "");
+	public final TableField<Record, String> CODE = createField("code", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Code du moyen. Facilite les échanges de données");
 
 	/**
-	 * The column <code>remocra.type_moyen.nom</code>.
+	 * The column <code>remocra.type_moyen.nom</code>. Libellé du type de moyen
 	 */
-	public final TableField<Record, String> NOM = createField("nom", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "");
+	public final TableField<Record, String> NOM = createField("nom", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Libellé du type de moyen");
 
 	/**
 	 * Create a <code>remocra.type_moyen</code> table reference

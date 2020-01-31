@@ -16,6 +16,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.CadastreParcelle;
 import fr.sdis83.remocra.db.model.remocra.tables.CadastreSection;
 import fr.sdis83.remocra.db.model.remocra.tables.Commune;
 import fr.sdis83.remocra.db.model.remocra.tables.Contact;
+import fr.sdis83.remocra.db.model.remocra.tables.ContactRoles;
 import fr.sdis83.remocra.db.model.remocra.tables.CourrierDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.CourrierModele;
 import fr.sdis83.remocra.db.model.remocra.tables.CourrierModeleDroit;
@@ -32,6 +33,10 @@ import fr.sdis83.remocra.db.model.remocra.tables.CriseRepertoireLieu;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseSuivi;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseSuiviMessageModele;
 import fr.sdis83.remocra.db.model.remocra.tables.DdeMdp;
+import fr.sdis83.remocra.db.model.remocra.tables.DebitSimultane;
+import fr.sdis83.remocra.db.model.remocra.tables.DebitSimultaneDocument;
+import fr.sdis83.remocra.db.model.remocra.tables.DebitSimultaneHydrant;
+import fr.sdis83.remocra.db.model.remocra.tables.DebitSimultaneMesure;
 import fr.sdis83.remocra.db.model.remocra.tables.DelegationDeci;
 import fr.sdis83.remocra.db.model.remocra.tables.DepotDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.Document;
@@ -39,15 +44,21 @@ import fr.sdis83.remocra.db.model.remocra.tables.Droit;
 import fr.sdis83.remocra.db.model.remocra.tables.Email;
 import fr.sdis83.remocra.db.model.remocra.tables.EmailModele;
 import fr.sdis83.remocra.db.model.remocra.tables.ExportModele;
+import fr.sdis83.remocra.db.model.remocra.tables.Gestionnaire;
+import fr.sdis83.remocra.db.model.remocra.tables.GestionnaireSite;
 import fr.sdis83.remocra.db.model.remocra.tables.Hydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantAnomalies;
+import fr.sdis83.remocra.db.model.remocra.tables.HydrantAspiration;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantIndispoTemporaire;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantIndispoTemporaireHydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPena;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPibi;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantPrescrit;
+import fr.sdis83.remocra.db.model.remocra.tables.HydrantReservoir;
+import fr.sdis83.remocra.db.model.remocra.tables.HydrantResume;
 import fr.sdis83.remocra.db.model.remocra.tables.HydrantTournees;
+import fr.sdis83.remocra.db.model.remocra.tables.HydrantVisite;
 import fr.sdis83.remocra.db.model.remocra.tables.Intervention;
 import fr.sdis83.remocra.db.model.remocra.tables.Metadonnee;
 import fr.sdis83.remocra.db.model.remocra.tables.Moyen;
@@ -88,10 +99,12 @@ import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleDroit;
 import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleParametre;
 import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleSelection;
 import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleSelectionDetail;
+import fr.sdis83.remocra.db.model.remocra.tables.Role;
+import fr.sdis83.remocra.db.model.remocra.tables.ServiceEaux;
+import fr.sdis83.remocra.db.model.remocra.tables.Site;
 import fr.sdis83.remocra.db.model.remocra.tables.SousTypeAlerteElt;
 import fr.sdis83.remocra.db.model.remocra.tables.SuiviPatches;
 import fr.sdis83.remocra.db.model.remocra.tables.Synchronisation;
-import fr.sdis83.remocra.db.model.remocra.tables.Temp;
 import fr.sdis83.remocra.db.model.remocra.tables.Thematique;
 import fr.sdis83.remocra.db.model.remocra.tables.Tournee;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeAlerteAno;
@@ -109,6 +122,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantAnomalie;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantAnomalieNature;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantAnomalieNatureSaisies;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantAspiration;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantCritere;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDiametre;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDiametreNatures;
@@ -119,6 +133,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMateriau;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantModele;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantNature;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantNatureDeci;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantNiveau;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantPositionnement;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantSaisie;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantVolConstate;
@@ -142,6 +157,8 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeRciOrigineAlerte;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromCategorie;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromFamille;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromPartition;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeReseauAlimentation;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeReseauCanalisation;
 import fr.sdis83.remocra.db.model.remocra.tables.Utilisateur;
 import fr.sdis83.remocra.db.model.remocra.tables.Voie;
 import fr.sdis83.remocra.db.model.remocra.tables.ZoneCompetence;
@@ -172,7 +189,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Remocra extends SchemaImpl {
 
-	private static final long serialVersionUID = -1867520938;
+	private static final long serialVersionUID = 1414972168;
 
 	/**
 	 * The reference instance of <code>remocra</code>
@@ -215,18 +232,27 @@ public class Remocra extends SchemaImpl {
 			Sequences.CRISE_SUIVI_ID_SEQ,
 			Sequences.CRISE_SUIVI_MESSAGE_MODELE_ID_SEQ,
 			Sequences.DDE_MDP_ID_SEQ,
+			Sequences.DEBIT_SIMULTANE_DOCUMENT_ID_SEQ,
+			Sequences.DEBIT_SIMULTANE_HYDRANT_ID_SEQ,
+			Sequences.DEBIT_SIMULTANE_ID_SEQ,
+			Sequences.DEBIT_SIMULTANE_MESURE_ID_SEQ,
 			Sequences.DEPOT_DOCUMENT_ID_SEQ,
 			Sequences.DOCUMENT_ID_SEQ,
 			Sequences.DROIT_ID_SEQ,
 			Sequences.EMAIL_ID_SEQ,
 			Sequences.EMAIL_MODELE_ID_SEQ,
 			Sequences.EXPORT_MODELE_ID_SEQ,
+			Sequences.GESTIONNAIRE_ID_SEQ,
+			Sequences.GESTIONNAIRE_SITE_ID_SEQ,
 			Sequences.HIBERNATE_SEQUENCE,
+			Sequences.HYDRANT_ASPIRATION_ID_SEQ,
 			Sequences.HYDRANT_DOCUMENT_ID_SEQ,
 			Sequences.HYDRANT_ID_SEQ,
 			Sequences.HYDRANT_INDISPO_TEMPORAIRE_ID_SEQ,
 			Sequences.HYDRANT_PRESCRIT_ID_SEQ,
+			Sequences.HYDRANT_RESERVOIR_ID_SEQ,
 			Sequences.HYDRANT_TOURNEES_ID_SEQ,
+			Sequences.HYDRANT_VISITE_ID_SEQ,
 			Sequences.INTERVENTION_ID_SEQ,
 			Sequences.METADONNEE_ID_SEQ,
 			Sequences.MOYEN_ID_SEQ,
@@ -256,10 +282,14 @@ public class Remocra extends SchemaImpl {
 			Sequences.RCI_DOCUMENT_ID_SEQ,
 			Sequences.RCI_ID_SEQ,
 			Sequences.REPERTOIRE_LIEU_ID_SEQ,
+			Sequences.REQUETE_FICHE_ID_SEQ,
 			Sequences.REQUETE_MODELE_ID_SEQ,
 			Sequences.REQUETE_MODELE_PARAMETRE_ID_SEQ,
 			Sequences.REQUETE_MODELE_SELECTION_DETAIL_ID_SEQ,
 			Sequences.REQUETE_MODELE_SELECTION_ID_SEQ,
+			Sequences.ROLE_ID_SEQ,
+			Sequences.SERVICE_EAUX_ID_SEQ,
+			Sequences.SITE_ID_SEQ,
 			Sequences.SOUS_TYPE_ALERTE_ELT_ID_SEQ,
 			Sequences.SYNCHRONISATION_ID_SEQ,
 			Sequences.THEMATIQUE_ID_SEQ,
@@ -275,6 +305,7 @@ public class Remocra extends SchemaImpl {
 			Sequences.TYPE_DROIT_ID_SEQ,
 			Sequences.TYPE_HYDRANT_ANOMALIE_ID_SEQ,
 			Sequences.TYPE_HYDRANT_ANOMALIE_NATURE_ID_SEQ,
+			Sequences.TYPE_HYDRANT_ASPIRATION_ID_SEQ,
 			Sequences.TYPE_HYDRANT_CRITERE_ID_SEQ,
 			Sequences.TYPE_HYDRANT_DIAMETRE_ID_SEQ,
 			Sequences.TYPE_HYDRANT_DOMAINE_ID_SEQ,
@@ -285,6 +316,7 @@ public class Remocra extends SchemaImpl {
 			Sequences.TYPE_HYDRANT_MODELE_ID_SEQ,
 			Sequences.TYPE_HYDRANT_NATURE_DECI_ID_SEQ,
 			Sequences.TYPE_HYDRANT_NATURE_ID_SEQ,
+			Sequences.TYPE_HYDRANT_NIVEAU_ID_SEQ,
 			Sequences.TYPE_HYDRANT_POSITIONNEMENT_ID_SEQ,
 			Sequences.TYPE_HYDRANT_SAISIE_ID_SEQ,
 			Sequences.TYPE_HYDRANT_VOL_CONSTATE_ID_SEQ,
@@ -308,6 +340,8 @@ public class Remocra extends SchemaImpl {
 			Sequences.TYPE_RCI_PROM_CATEGORIE_ID_SEQ,
 			Sequences.TYPE_RCI_PROM_FAMILLE_ID_SEQ,
 			Sequences.TYPE_RCI_PROM_PARTITION_ID_SEQ,
+			Sequences.TYPE_RESEAU_ALIMENTATION_ID_SEQ,
+			Sequences.TYPE_RESEAU_CANALISATION_ID_SEQ,
 			Sequences.UTILISATEUR_ID_SEQ,
 			Sequences.VOIE_ID_SEQ,
 			Sequences.ZONE_COMPETENCE_ID_SEQ,
@@ -334,6 +368,7 @@ public class Remocra extends SchemaImpl {
 			CadastreSection.CADASTRE_SECTION,
 			Commune.COMMUNE,
 			Contact.CONTACT,
+			ContactRoles.CONTACT_ROLES,
 			CourrierDocument.COURRIER_DOCUMENT,
 			CourrierModele.COURRIER_MODELE,
 			CourrierModeleDroit.COURRIER_MODELE_DROIT,
@@ -350,6 +385,10 @@ public class Remocra extends SchemaImpl {
 			CriseSuivi.CRISE_SUIVI,
 			CriseSuiviMessageModele.CRISE_SUIVI_MESSAGE_MODELE,
 			DdeMdp.DDE_MDP,
+			DebitSimultane.DEBIT_SIMULTANE,
+			DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT,
+			DebitSimultaneHydrant.DEBIT_SIMULTANE_HYDRANT,
+			DebitSimultaneMesure.DEBIT_SIMULTANE_MESURE,
 			DelegationDeci.DELEGATION_DECI,
 			DepotDocument.DEPOT_DOCUMENT,
 			Document.DOCUMENT,
@@ -357,15 +396,21 @@ public class Remocra extends SchemaImpl {
 			Email.EMAIL,
 			EmailModele.EMAIL_MODELE,
 			ExportModele.EXPORT_MODELE,
+			Gestionnaire.GESTIONNAIRE,
+			GestionnaireSite.GESTIONNAIRE_SITE,
 			Hydrant.HYDRANT,
 			HydrantAnomalies.HYDRANT_ANOMALIES,
+			HydrantAspiration.HYDRANT_ASPIRATION,
 			HydrantDocument.HYDRANT_DOCUMENT,
 			HydrantIndispoTemporaire.HYDRANT_INDISPO_TEMPORAIRE,
 			HydrantIndispoTemporaireHydrant.HYDRANT_INDISPO_TEMPORAIRE_HYDRANT,
 			HydrantPena.HYDRANT_PENA,
 			HydrantPibi.HYDRANT_PIBI,
 			HydrantPrescrit.HYDRANT_PRESCRIT,
+			HydrantReservoir.HYDRANT_RESERVOIR,
+			HydrantResume.HYDRANT_RESUME,
 			HydrantTournees.HYDRANT_TOURNEES,
+			HydrantVisite.HYDRANT_VISITE,
 			Intervention.INTERVENTION,
 			Metadonnee.METADONNEE,
 			Moyen.MOYEN,
@@ -406,10 +451,12 @@ public class Remocra extends SchemaImpl {
 			RequeteModeleParametre.REQUETE_MODELE_PARAMETRE,
 			RequeteModeleSelection.REQUETE_MODELE_SELECTION,
 			RequeteModeleSelectionDetail.REQUETE_MODELE_SELECTION_DETAIL,
+			Role.ROLE,
+			ServiceEaux.SERVICE_EAUX,
+			Site.SITE,
 			SousTypeAlerteElt.SOUS_TYPE_ALERTE_ELT,
 			SuiviPatches.SUIVI_PATCHES,
 			Synchronisation.SYNCHRONISATION,
-			Temp.TEMP,
 			Thematique.THEMATIQUE,
 			Tournee.TOURNEE,
 			TypeAlerteAno.TYPE_ALERTE_ANO,
@@ -427,6 +474,7 @@ public class Remocra extends SchemaImpl {
 			TypeHydrantAnomalie.TYPE_HYDRANT_ANOMALIE,
 			TypeHydrantAnomalieNature.TYPE_HYDRANT_ANOMALIE_NATURE,
 			TypeHydrantAnomalieNatureSaisies.TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES,
+			TypeHydrantAspiration.TYPE_HYDRANT_ASPIRATION,
 			TypeHydrantCritere.TYPE_HYDRANT_CRITERE,
 			TypeHydrantDiametre.TYPE_HYDRANT_DIAMETRE,
 			TypeHydrantDiametreNatures.TYPE_HYDRANT_DIAMETRE_NATURES,
@@ -437,6 +485,7 @@ public class Remocra extends SchemaImpl {
 			TypeHydrantModele.TYPE_HYDRANT_MODELE,
 			TypeHydrantNature.TYPE_HYDRANT_NATURE,
 			TypeHydrantNatureDeci.TYPE_HYDRANT_NATURE_DECI,
+			TypeHydrantNiveau.TYPE_HYDRANT_NIVEAU,
 			TypeHydrantPositionnement.TYPE_HYDRANT_POSITIONNEMENT,
 			TypeHydrantSaisie.TYPE_HYDRANT_SAISIE,
 			TypeHydrantVolConstate.TYPE_HYDRANT_VOL_CONSTATE,
@@ -460,6 +509,8 @@ public class Remocra extends SchemaImpl {
 			TypeRciPromCategorie.TYPE_RCI_PROM_CATEGORIE,
 			TypeRciPromFamille.TYPE_RCI_PROM_FAMILLE,
 			TypeRciPromPartition.TYPE_RCI_PROM_PARTITION,
+			TypeReseauAlimentation.TYPE_RESEAU_ALIMENTATION,
+			TypeReseauCanalisation.TYPE_RESEAU_CANALISATION,
 			Utilisateur.UTILISATEUR,
 			Voie.VOIE,
 			ZoneCompetence.ZONE_COMPETENCE,

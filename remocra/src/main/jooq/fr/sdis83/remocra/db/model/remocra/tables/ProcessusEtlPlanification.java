@@ -36,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProcessusEtlPlanification extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 924610292;
+	private static final long serialVersionUID = 1840450292;
 
 	/**
 	 * The reference instance of <code>remocra.processus_etl_planification</code>
@@ -72,9 +72,9 @@ public class ProcessusEtlPlanification extends TableImpl<Record> {
 	public final TableField<Record, String> CATEGORIE = createField("categorie", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Libellé de catégorie permettant de regrouper ou de filtrer les processus selon un thème");
 
 	/**
-	 * The column <code>remocra.processus_etl_planification.objet_concerne</code>. identifiant de l'objet associé à la planification (crise/hydrant...)
+	 * The column <code>remocra.processus_etl_planification.objet_concerne</code>. Identifiant de l'objet associé à la planification (crise/hydrant...)
 	 */
-	public final TableField<Record, Long> OBJET_CONCERNE = createField("objet_concerne", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "identifiant de l'objet associé à la planification (crise/hydrant...)");
+	public final TableField<Record, Long> OBJET_CONCERNE = createField("objet_concerne", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "Identifiant de l'objet associé à la planification (crise/hydrant...)");
 
 	/**
 	 * Create a <code>remocra.processus_etl_planification</code> table reference

@@ -23,7 +23,7 @@ import org.jooq.impl.TableImpl;
 
 /**
  * Gestion de crise : répertoire de lieux mobilisable dans le cadre d'une 
- * action "zoomer sur..". Associé à un épisode de crise
+ * action "Zoomer sur..". Associé à un épisode de crise
  */
 @Generated(
 	value = {
@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CriseRepertoireLieu extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -1001766131;
+	private static final long serialVersionUID = 1952279245;
 
 	/**
 	 * The reference instance of <code>remocra.crise_repertoire_lieu</code>
@@ -79,7 +79,7 @@ public class CriseRepertoireLieu extends TableImpl<Record> {
 	}
 
 	private CriseRepertoireLieu(String alias, Table<Record> aliased, Field<?>[] parameters) {
-		super(alias, Remocra.REMOCRA, aliased, parameters, "Gestion de crise : répertoire de lieux mobilisable dans le cadre d'une action \"zoomer sur..\". Associé à un épisode de crise");
+		super(alias, Remocra.REMOCRA, aliased, parameters, "Gestion de crise : répertoire de lieux mobilisable dans le cadre d'une action \"Zoomer sur..\". Associé à un épisode de crise");
 	}
 
 	/**

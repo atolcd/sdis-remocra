@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantPena extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -1726808698;
+	private static final long serialVersionUID = -673530362;
 
 	/**
 	 * The reference instance of <code>remocra.hydrant_pena</code>
@@ -93,6 +93,16 @@ public class HydrantPena extends TableImpl<Record> {
 	 * The column <code>remocra.hydrant_pena.q_appoint</code>.
 	 */
 	public final TableField<Record, Double> Q_APPOINT = createField("q_appoint", org.jooq.impl.SQLDataType.DOUBLE, this, "");
+
+	/**
+	 * The column <code>remocra.hydrant_pena.illimitee</code>. Indique si la capacite du PENA est illimitée
+	 */
+	public final TableField<Record, Boolean> ILLIMITEE = createField("illimitee", org.jooq.impl.SQLDataType.BOOLEAN.defaulted(true), this, "Indique si la capacite du PENA est illimitée");
+
+	/**
+	 * The column <code>remocra.hydrant_pena.incertaine</code>. Indique si la capacite du PENA est incertaine
+	 */
+	public final TableField<Record, Boolean> INCERTAINE = createField("incertaine", org.jooq.impl.SQLDataType.BOOLEAN.defaulted(true), this, "Indique si la capacite du PENA est incertaine");
 
 	/**
 	 * Create a <code>remocra.hydrant_pena</code> table reference

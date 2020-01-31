@@ -23,8 +23,8 @@ import org.jooq.impl.TableImpl;
 
 
 /**
- * Propriété complémentaire pouvant être renseigné lors de la création ou 
- * de la modification d'un évènement 
+ * Propriété complémentaire pouvant être renseignée lors de la création ou 
+ * de la modification d'un évènement
  */
 @Generated(
 	value = {
@@ -36,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TypeCriseProprieteEvenement extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -2076491517;
+	private static final long serialVersionUID = 256538455;
 
 	/**
 	 * The reference instance of <code>remocra.type_crise_propriete_evenement</code>
@@ -57,9 +57,9 @@ public class TypeCriseProprieteEvenement extends TableImpl<Record> {
 	public final TableField<Record, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaulted(true), this, "Identifiant interne");
 
 	/**
-	 * The column <code>remocra.type_crise_propriete_evenement.nom</code>. Nom de la propriété. Sans espace ni caractère spéciaux
+	 * The column <code>remocra.type_crise_propriete_evenement.nom</code>. Nom de la propriété. Sans espace ni caractère spécial
 	 */
-	public final TableField<Record, String> NOM = createField("nom", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Nom de la propriété. Sans espace ni caractère spéciaux");
+	public final TableField<Record, String> NOM = createField("nom", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Nom de la propriété. Sans espace ni caractère spécial");
 
 	/**
 	 * The column <code>remocra.type_crise_propriete_evenement.type_valeur</code>. Type de valeur attendue
@@ -130,7 +130,7 @@ public class TypeCriseProprieteEvenement extends TableImpl<Record> {
 	}
 
 	private TypeCriseProprieteEvenement(String alias, Table<Record> aliased, Field<?>[] parameters) {
-		super(alias, Remocra.REMOCRA, aliased, parameters, "Propriété complémentaire pouvant être renseigné lors de la création ou de la modification d'un évènement ");
+		super(alias, Remocra.REMOCRA, aliased, parameters, "Propriété complémentaire pouvant être renseignée lors de la création ou de la modification d'un évènement");
 	}
 
 	/**

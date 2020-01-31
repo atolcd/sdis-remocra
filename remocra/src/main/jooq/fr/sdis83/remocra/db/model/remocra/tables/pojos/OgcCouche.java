@@ -10,7 +10,7 @@ import javax.annotation.Generated;
 
 
 /**
- * Couche de donnée mobilisable sur un serveur de données OGC pour un protocole 
+ * Couche de données mobilisable sur un serveur de données OGC pour un protocole 
  * (service) donné
  */
 @Generated(
@@ -23,7 +23,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OgcCouche implements Serializable {
 
-	private static final long serialVersionUID = 1390202408;
+	private static final long serialVersionUID = -621128527;
 
 	private Long   id;
 	private String code;

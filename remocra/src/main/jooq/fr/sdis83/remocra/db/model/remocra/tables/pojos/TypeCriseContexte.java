@@ -10,7 +10,7 @@ import javax.annotation.Generated;
 
 
 /**
- * Gestion de crise : Type de contexte dans lequel est géré la crise. Deux 
+ * Gestion de crise : Type de contexte dans lequel est gérée la crise. Deux 
  * contextes cohabitent simultanément pour chaque épisode : "Opérationnel" 
  * et "Anticipation". Les données cartographiques associées peuvent varier 
  * en fonction du contexte de même que les types d'évenements à renseigner
@@ -25,7 +25,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TypeCriseContexte implements Serializable {
 
-	private static final long serialVersionUID = -1735363654;
+	private static final long serialVersionUID = 1440503709;
 
 	private Long    id;
 	private Boolean actif;

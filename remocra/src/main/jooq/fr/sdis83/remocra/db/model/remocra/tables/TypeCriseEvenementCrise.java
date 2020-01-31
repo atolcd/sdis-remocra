@@ -22,7 +22,7 @@ import org.jooq.impl.TableImpl;
 
 
 /**
- * Catégorie d'evènement mobilisable pour un type de crise
+ * Catégorie d'évènement mobilisable pour un type de crise
  */
 @Generated(
 	value = {
@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TypeCriseEvenementCrise extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -10435566;
+	private static final long serialVersionUID = -1901504254;
 
 	/**
 	 * The reference instance of <code>remocra.type_crise_evenement_crise</code>
@@ -50,9 +50,9 @@ public class TypeCriseEvenementCrise extends TableImpl<Record> {
 	}
 
 	/**
-	 * The column <code>remocra.type_crise_evenement_crise.categorie_evenement</code>. Identifiant de la categorie d'évènement
+	 * The column <code>remocra.type_crise_evenement_crise.categorie_evenement</code>. Identifiant de la catégorie d'évènement
 	 */
-	public final TableField<Record, Long> CATEGORIE_EVENEMENT = createField("categorie_evenement", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "Identifiant de la categorie d'évènement");
+	public final TableField<Record, Long> CATEGORIE_EVENEMENT = createField("categorie_evenement", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "Identifiant de la catégorie d'évènement");
 
 	/**
 	 * The column <code>remocra.type_crise_evenement_crise.type_crise</code>. Identifiant du type de crise
@@ -78,7 +78,7 @@ public class TypeCriseEvenementCrise extends TableImpl<Record> {
 	}
 
 	private TypeCriseEvenementCrise(String alias, Table<Record> aliased, Field<?>[] parameters) {
-		super(alias, Remocra.REMOCRA, aliased, parameters, "Catégorie d'evènement mobilisable pour un type de crise");
+		super(alias, Remocra.REMOCRA, aliased, parameters, "Catégorie d'évènement mobilisable pour un type de crise");
 	}
 
 	/**

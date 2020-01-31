@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
@@ -24,16 +26,16 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Alerte implements Serializable {
 
-	private static final long serialVersionUID = -2099617905;
+	private static final long serialVersionUID = -1487959115;
 
-	private Long    id;
-	private String  commentaire;
-	private Instant dateConstat;
-	private Instant dateModification;
-	private Boolean etat;
-	private Object  geometrie;
-	private Integer version;
-	private Long    rapporteur;
+	private Long     id;
+	private String   commentaire;
+	private Instant  dateConstat;
+	private Instant  dateModification;
+	private Boolean  etat;
+	private Geometry geometrie;
+	private Integer  version;
+	private Long     rapporteur;
 
 	public Alerte() {}
 
@@ -49,14 +51,14 @@ public class Alerte implements Serializable {
 	}
 
 	public Alerte(
-		Long    id,
-		String  commentaire,
-		Instant dateConstat,
-		Instant dateModification,
-		Boolean etat,
-		Object  geometrie,
-		Integer version,
-		Long    rapporteur
+		Long     id,
+		String   commentaire,
+		Instant  dateConstat,
+		Instant  dateModification,
+		Boolean  etat,
+		Geometry geometrie,
+		Integer  version,
+		Long     rapporteur
 	) {
 		this.id = id;
 		this.commentaire = commentaire;
@@ -113,11 +115,11 @@ public class Alerte implements Serializable {
 		return this;
 	}
 
-	public Object getGeometrie() {
+	public Geometry getGeometrie() {
 		return this.geometrie;
 	}
 
-	public Alerte setGeometrie(Object geometrie) {
+	public Alerte setGeometrie(Geometry geometrie) {
 		this.geometrie = geometrie;
 		return this;
 	}

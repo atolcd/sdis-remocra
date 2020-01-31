@@ -4,6 +4,9 @@
 package fr.sdis83.remocra.db.model.remocra.tables;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
+import fr.sdis83.remocra.db.converter.GeometryBinding;
 import fr.sdis83.remocra.db.model.remocra.Keys;
 import fr.sdis83.remocra.db.model.remocra.Remocra;
 
@@ -35,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Voie extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -869583186;
+	private static final long serialVersionUID = -1450877455;
 
 	/**
 	 * The reference instance of <code>remocra.voie</code>
@@ -58,7 +61,7 @@ public class Voie extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.voie.geometrie</code>.
 	 */
-	public final TableField<Record, Object> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "");
+	public final TableField<Record, Geometry> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "", new GeometryBinding());
 
 	/**
 	 * The column <code>remocra.voie.mot_classant</code>.

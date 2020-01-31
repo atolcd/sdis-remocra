@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
@@ -24,21 +26,21 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Intervention implements Serializable {
 
-	private static final long serialVersionUID = 142225751;
+	private static final long serialVersionUID = -510185697;
 
-	private Long    id;
-	private String  code;
-	private String  codeType;
-	private String  libelleType;
-	private Integer priorite;
-	private Instant dateCreation;
-	private Instant dateModification;
-	private Instant dateCloture;
-	private String  cloture;
-	private String  numVoie;
-	private String  voie;
-	private Long    commune;
-	private Object  geometrie;
+	private Long     id;
+	private String   code;
+	private String   codeType;
+	private String   libelleType;
+	private Integer  priorite;
+	private Instant  dateCreation;
+	private Instant  dateModification;
+	private Instant  dateCloture;
+	private String   cloture;
+	private String   numVoie;
+	private String   voie;
+	private Long     commune;
+	private Geometry geometrie;
 
 	public Intervention() {}
 
@@ -59,19 +61,19 @@ public class Intervention implements Serializable {
 	}
 
 	public Intervention(
-		Long    id,
-		String  code,
-		String  codeType,
-		String  libelleType,
-		Integer priorite,
-		Instant dateCreation,
-		Instant dateModification,
-		Instant dateCloture,
-		String  cloture,
-		String  numVoie,
-		String  voie,
-		Long    commune,
-		Object  geometrie
+		Long     id,
+		String   code,
+		String   codeType,
+		String   libelleType,
+		Integer  priorite,
+		Instant  dateCreation,
+		Instant  dateModification,
+		Instant  dateCloture,
+		String   cloture,
+		String   numVoie,
+		String   voie,
+		Long     commune,
+		Geometry geometrie
 	) {
 		this.id = id;
 		this.code = code;
@@ -196,11 +198,11 @@ public class Intervention implements Serializable {
 		return this;
 	}
 
-	public Object getGeometrie() {
+	public Geometry getGeometrie() {
 		return this.geometrie;
 	}
 
-	public Intervention setGeometrie(Object geometrie) {
+	public Intervention setGeometrie(Geometry geometrie) {
 		this.geometrie = geometrie;
 		return this;
 	}

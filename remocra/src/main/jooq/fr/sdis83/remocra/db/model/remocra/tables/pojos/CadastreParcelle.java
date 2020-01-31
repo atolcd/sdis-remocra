@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
@@ -22,12 +24,12 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CadastreParcelle implements Serializable {
 
-	private static final long serialVersionUID = 928650141;
+	private static final long serialVersionUID = 1201187479;
 
-	private Long   id;
-	private Object geometrie;
-	private String numero;
-	private Long   section;
+	private Long     id;
+	private Geometry geometrie;
+	private String   numero;
+	private Long     section;
 
 	public CadastreParcelle() {}
 
@@ -39,10 +41,10 @@ public class CadastreParcelle implements Serializable {
 	}
 
 	public CadastreParcelle(
-		Long   id,
-		Object geometrie,
-		String numero,
-		Long   section
+		Long     id,
+		Geometry geometrie,
+		String   numero,
+		Long     section
 	) {
 		this.id = id;
 		this.geometrie = geometrie;
@@ -59,11 +61,11 @@ public class CadastreParcelle implements Serializable {
 		return this;
 	}
 
-	public Object getGeometrie() {
+	public Geometry getGeometrie() {
 		return this.geometrie;
 	}
 
-	public CadastreParcelle setGeometrie(Object geometrie) {
+	public CadastreParcelle setGeometrie(Geometry geometrie) {
 		this.geometrie = geometrie;
 		return this;
 	}

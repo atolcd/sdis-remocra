@@ -22,7 +22,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantPena implements Serializable {
 
-	private static final long serialVersionUID = 634303182;
+	private static final long serialVersionUID = 1223365558;
 
 	private String  capacite;
 	private String  coorddfci;
@@ -33,6 +33,8 @@ public class HydrantPena implements Serializable {
 	private Long    positionnement;
 	private Long    volConstate;
 	private Double  qAppoint;
+	private Boolean illimitee;
+	private Boolean incertaine;
 
 	public HydrantPena() {}
 
@@ -46,6 +48,8 @@ public class HydrantPena implements Serializable {
 		this.positionnement = value.positionnement;
 		this.volConstate = value.volConstate;
 		this.qAppoint = value.qAppoint;
+		this.illimitee = value.illimitee;
+		this.incertaine = value.incertaine;
 	}
 
 	public HydrantPena(
@@ -57,7 +61,9 @@ public class HydrantPena implements Serializable {
 		Long    materiau,
 		Long    positionnement,
 		Long    volConstate,
-		Double  qAppoint
+		Double  qAppoint,
+		Boolean illimitee,
+		Boolean incertaine
 	) {
 		this.capacite = capacite;
 		this.coorddfci = coorddfci;
@@ -68,6 +74,8 @@ public class HydrantPena implements Serializable {
 		this.positionnement = positionnement;
 		this.volConstate = volConstate;
 		this.qAppoint = qAppoint;
+		this.illimitee = illimitee;
+		this.incertaine = incertaine;
 	}
 
 	public String getCapacite() {
@@ -148,6 +156,24 @@ public class HydrantPena implements Serializable {
 
 	public HydrantPena setQAppoint(Double qAppoint) {
 		this.qAppoint = qAppoint;
+		return this;
+	}
+
+	public Boolean getIllimitee() {
+		return this.illimitee;
+	}
+
+	public HydrantPena setIllimitee(Boolean illimitee) {
+		this.illimitee = illimitee;
+		return this;
+	}
+
+	public Boolean getIncertaine() {
+		return this.incertaine;
+	}
+
+	public HydrantPena setIncertaine(Boolean incertaine) {
+		this.incertaine = incertaine;
 		return this;
 	}
 }

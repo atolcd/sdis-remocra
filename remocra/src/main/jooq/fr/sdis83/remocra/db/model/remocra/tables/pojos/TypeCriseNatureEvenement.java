@@ -10,8 +10,8 @@ import javax.annotation.Generated;
 
 
 /**
- * Gestion de crise : Nature de l'évènement attaché à une catégorie (Ex:"Route 
- * barrée" pour la catégorie "Réseau routier")
+ * Gestion de crise : Nature de l'évènement attaché à une catégorie. Ex : 
+ * "Route barrée" pour la catégorie "Réseau routier"
  */
 @Generated(
 	value = {
@@ -23,7 +23,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TypeCriseNatureEvenement implements Serializable {
 
-	private static final long serialVersionUID = -649229246;
+	private static final long serialVersionUID = -935020679;
 
 	private Long    id;
 	private Boolean actif;

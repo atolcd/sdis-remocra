@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProcessusEtlStatut extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -1600242255;
+	private static final long serialVersionUID = -943055055;
 
 	/**
 	 * The reference instance of <code>remocra.processus_etl_statut</code>
@@ -55,9 +55,9 @@ public class ProcessusEtlStatut extends TableImpl<Record> {
 	public final TableField<Record, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaulted(true), this, "Identifiant interne");
 
 	/**
-	 * The column <code>remocra.processus_etl_statut.code</code>. Code du statut permettant de caracteriser l'état d'un processus
+	 * The column <code>remocra.processus_etl_statut.code</code>. Code du statut permettant de caractériser l'état d'un processus
 	 */
-	public final TableField<Record, String> CODE = createField("code", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Code du statut permettant de caracteriser l'état d'un processus");
+	public final TableField<Record, String> CODE = createField("code", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Code du statut permettant de caractériser l'état d'un processus");
 
 	/**
 	 * The column <code>remocra.processus_etl_statut.nom</code>. Libellé du statut

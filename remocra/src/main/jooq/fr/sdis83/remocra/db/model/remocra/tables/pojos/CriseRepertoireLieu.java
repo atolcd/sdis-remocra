@@ -11,7 +11,7 @@ import javax.annotation.Generated;
 
 /**
  * Gestion de crise : répertoire de lieux mobilisable dans le cadre d'une 
- * action "zoomer sur..". Associé à un épisode de crise
+ * action "Zoomer sur..". Associé à un épisode de crise
  */
 @Generated(
 	value = {
@@ -23,7 +23,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CriseRepertoireLieu implements Serializable {
 
-	private static final long serialVersionUID = -27372832;
+	private static final long serialVersionUID = 1567736512;
 
 	private Long crise;
 	private Long repertoireLieu;

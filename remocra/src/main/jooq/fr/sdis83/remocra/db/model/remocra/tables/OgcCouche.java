@@ -23,7 +23,7 @@ import org.jooq.impl.TableImpl;
 
 
 /**
- * Couche de donnée mobilisable sur un serveur de données OGC pour un protocole 
+ * Couche de données mobilisable sur un serveur de données OGC pour un protocole 
  * (service) donné
  */
 @Generated(
@@ -36,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OgcCouche extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 1570194335;
+	private static final long serialVersionUID = -1455345711;
 
 	/**
 	 * The reference instance of <code>remocra.ogc_couche</code>
@@ -57,9 +57,9 @@ public class OgcCouche extends TableImpl<Record> {
 	public final TableField<Record, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaulted(true), this, "Identifiant interne");
 
 	/**
-	 * The column <code>remocra.ogc_couche.code</code>. Code permettant d'identifier dans REMOCRA un layer de manière unique basé sur l'URL, le stype de service et le nom de la couche
+	 * The column <code>remocra.ogc_couche.code</code>. Code permettant d'identifier dans REMOCRA un layer de manière unique basé sur l'URL, le type de service et le nom de la couche
 	 */
-	public final TableField<Record, String> CODE = createField("code", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Code permettant d'identifier dans REMOCRA un layer de manière unique basé sur l'URL, le stype de service et le nom de la couche");
+	public final TableField<Record, String> CODE = createField("code", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Code permettant d'identifier dans REMOCRA un layer de manière unique basé sur l'URL, le type de service et le nom de la couche");
 
 	/**
 	 * The column <code>remocra.ogc_couche.nom</code>. Titre associé aux métadonnées de la couche
@@ -100,7 +100,7 @@ public class OgcCouche extends TableImpl<Record> {
 	}
 
 	private OgcCouche(String alias, Table<Record> aliased, Field<?>[] parameters) {
-		super(alias, Remocra.REMOCRA, aliased, parameters, "Couche de donnée mobilisable sur un serveur de données OGC pour un protocole (service) donné");
+		super(alias, Remocra.REMOCRA, aliased, parameters, "Couche de données mobilisable sur un serveur de données OGC pour un protocole (service) donné");
 	}
 
 	/**

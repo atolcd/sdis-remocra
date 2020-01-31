@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class OgcSource extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 286898276;
+	private static final long serialVersionUID = 1242054692;
 
 	/**
 	 * The reference instance of <code>remocra.ogc_source</code>
@@ -55,9 +55,9 @@ public class OgcSource extends TableImpl<Record> {
 	public final TableField<Record, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaulted(true), this, "Identifiant interne");
 
 	/**
-	 * The column <code>remocra.ogc_source.url</code>. Url d'accès au service. Doit fournir des informations en retour d'une requête de type getCapabilities sur un service de type WMS ou WMTS
+	 * The column <code>remocra.ogc_source.url</code>. Url d'accès au service. Doit fournir des informations en retour d'une requête de type GetCapabilities sur un service de type WMS ou WMTS
 	 */
-	public final TableField<Record, String> URL = createField("url", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Url d'accès au service. Doit fournir des informations en retour d'une requête de type getCapabilities sur un service de type WMS ou WMTS");
+	public final TableField<Record, String> URL = createField("url", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Url d'accès au service. Doit fournir des informations en retour d'une requête de type GetCapabilities sur un service de type WMS ou WMTS");
 
 	/**
 	 * Create a <code>remocra.ogc_source</code> table reference

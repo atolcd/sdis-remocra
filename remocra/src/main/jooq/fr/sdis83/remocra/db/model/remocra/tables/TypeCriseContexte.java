@@ -22,7 +22,7 @@ import org.jooq.impl.TableImpl;
 
 
 /**
- * Gestion de crise : Type de contexte dans lequel est géré la crise. Deux 
+ * Gestion de crise : Type de contexte dans lequel est gérée la crise. Deux 
  * contextes cohabitent simultanément pour chaque épisode : "Opérationnel" 
  * et "Anticipation". Les données cartographiques associées peuvent varier 
  * en fonction du contexte de même que les types d'évenements à renseigner
@@ -37,7 +37,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TypeCriseContexte extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 1954959637;
+	private static final long serialVersionUID = -642707217;
 
 	/**
 	 * The reference instance of <code>remocra.type_crise_contexte</code>
@@ -91,7 +91,7 @@ public class TypeCriseContexte extends TableImpl<Record> {
 	}
 
 	private TypeCriseContexte(String alias, Table<Record> aliased, Field<?>[] parameters) {
-		super(alias, Remocra.REMOCRA, aliased, parameters, "Gestion de crise : Type de contexte dans lequel est géré la crise. Deux contextes cohabitent simultanément pour chaque épisode : \"Opérationnel\" et \"Anticipation\". Les données cartographiques associées peuvent varier en fonction du contexte de même que les types d'évenements à renseigner");
+		super(alias, Remocra.REMOCRA, aliased, parameters, "Gestion de crise : Type de contexte dans lequel est gérée la crise. Deux contextes cohabitent simultanément pour chaque épisode : \"Opérationnel\" et \"Anticipation\". Les données cartographiques associées peuvent varier en fonction du contexte de même que les types d'évenements à renseigner");
 	}
 
 	/**

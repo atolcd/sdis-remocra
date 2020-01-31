@@ -10,7 +10,7 @@ import javax.annotation.Generated;
 
 
 /**
- * Catégorie d'evènement mobilisable pour un type de crise
+ * Catégorie d'évènement mobilisable pour un type de crise
  */
 @Generated(
 	value = {
@@ -22,7 +22,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TypeCriseEvenementCrise implements Serializable {
 
-	private static final long serialVersionUID = 2118508635;
+	private static final long serialVersionUID = 1695140695;
 
 	private Long categorieEvenement;
 	private Long typeCrise;

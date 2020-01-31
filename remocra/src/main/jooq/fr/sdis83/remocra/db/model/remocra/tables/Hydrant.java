@@ -4,6 +4,9 @@
 package fr.sdis83.remocra.db.model.remocra.tables;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
+import fr.sdis83.remocra.db.converter.GeometryBinding;
 import fr.sdis83.remocra.db.converter.InstantConverter;
 import fr.sdis83.remocra.db.model.remocra.Keys;
 import fr.sdis83.remocra.db.model.remocra.Remocra;
@@ -37,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 1889222023;
+	private static final long serialVersionUID = -789700063;
 
 	/**
 	 * The reference instance of <code>remocra.hydrant</code>
@@ -120,7 +123,7 @@ public class Hydrant extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.hydrant.geometrie</code>.
 	 */
-	public final TableField<Record, Object> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "");
+	public final TableField<Record, Geometry> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "", new GeometryBinding());
 
 	/**
 	 * The column <code>remocra.hydrant.lieu_dit</code>.
@@ -218,6 +221,46 @@ public class Hydrant extends TableImpl<Record> {
 	public final TableField<Record, Long> NATURE_DECI = createField("nature_deci", org.jooq.impl.SQLDataType.BIGINT.defaulted(true), this, "");
 
 	/**
+	 * The column <code>remocra.hydrant.numero_voie</code>. Numéro de voie (adresse)
+	 */
+	public final TableField<Record, Integer> NUMERO_VOIE = createField("numero_voie", org.jooq.impl.SQLDataType.INTEGER, this, "Numéro de voie (adresse)");
+
+	/**
+	 * The column <code>remocra.hydrant.suffixe_voie</code>. Suffixe de voie de l'adresse (bis, ter, etc)
+	 */
+	public final TableField<Record, String> SUFFIXE_VOIE = createField("suffixe_voie", org.jooq.impl.SQLDataType.VARCHAR, this, "Suffixe de voie de l'adresse (bis, ter, etc)");
+
+	/**
+	 * The column <code>remocra.hydrant.niveau</code>. Identifiant du type de niveau de l'hydrant
+	 */
+	public final TableField<Record, Long> NIVEAU = createField("niveau", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant du type de niveau de l'hydrant");
+
+	/**
+	 * The column <code>remocra.hydrant.gestionnaire</code>. Identifiant du gestionnaire de l'hydrant
+	 */
+	public final TableField<Record, Long> GESTIONNAIRE = createField("gestionnaire", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant du gestionnaire de l'hydrant");
+
+	/**
+	 * The column <code>remocra.hydrant.site</code>. Identifiant du site auquel appartient l'hydrant
+	 */
+	public final TableField<Record, Long> SITE = createField("site", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant du site auquel appartient l'hydrant");
+
+	/**
+	 * The column <code>remocra.hydrant.autorite_deci</code>. Identifiant de l'autorité de police DECI
+	 */
+	public final TableField<Record, Long> AUTORITE_DECI = createField("autorite_deci", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant de l'autorité de police DECI");
+
+	/**
+	 * The column <code>remocra.hydrant.en_face</code>.
+	 */
+	public final TableField<Record, Boolean> EN_FACE = createField("en_face", org.jooq.impl.SQLDataType.BOOLEAN.defaulted(true), this, "");
+
+	/**
+	 * The column <code>remocra.hydrant.date_crea</code>.
+	 */
+	public final TableField<Record, Instant> DATE_CREA = createField("date_crea", org.jooq.impl.SQLDataType.TIMESTAMP, this, "", new InstantConverter());
+
+	/**
 	 * Create a <code>remocra.hydrant</code> table reference
 	 */
 	public Hydrant() {
@@ -268,7 +311,7 @@ public class Hydrant extends TableImpl<Record> {
 	 */
 	@Override
 	public List<ForeignKey<Record, ?>> getReferences() {
-		return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT__FK51B8F028D2DA796C, Keys.HYDRANT__FK51B8F0285D29D8A8, Keys.HYDRANT__FK51B8F028D10A0428, Keys.HYDRANT__FK51B8F028374ADD52, Keys.HYDRANT__FK_ZONE_SPECIALE, Keys.HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION, Keys.HYDRANT__FK_NATURE_DECI);
+		return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT__FK51B8F028D2DA796C, Keys.HYDRANT__FK51B8F0285D29D8A8, Keys.HYDRANT__FK51B8F028D10A0428, Keys.HYDRANT__FK51B8F028374ADD52, Keys.HYDRANT__FK_ZONE_SPECIALE, Keys.HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION, Keys.HYDRANT__FK_NATURE_DECI, Keys.HYDRANT__FK_NIVEAU, Keys.HYDRANT__FK_SITE, Keys.HYDRANT__FK_AUTORITE_DECI);
 	}
 
 	/**

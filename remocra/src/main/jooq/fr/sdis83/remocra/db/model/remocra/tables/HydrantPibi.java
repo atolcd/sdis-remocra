@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantPibi extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 1995048428;
+	private static final long serialVersionUID = 1091016569;
 
 	/**
 	 * The reference instance of <code>remocra.hydrant_pibi</code>
@@ -75,9 +75,9 @@ public class HydrantPibi extends TableImpl<Record> {
 	public final TableField<Record, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
 	/**
-	 * The column <code>remocra.hydrant_pibi.diametre</code>.
+	 * The column <code>remocra.hydrant_pibi.diametre</code>. Diamètre des canalisation
 	 */
-	public final TableField<Record, Long> DIAMETRE = createField("diametre", org.jooq.impl.SQLDataType.BIGINT, this, "");
+	public final TableField<Record, Long> DIAMETRE = createField("diametre", org.jooq.impl.SQLDataType.BIGINT, this, "Diamètre des canalisation");
 
 	/**
 	 * The column <code>remocra.hydrant_pibi.gest_reseau</code>.
@@ -92,7 +92,7 @@ public class HydrantPibi extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.hydrant_pibi.renversable</code>.
 	 */
-	public final TableField<Record, Boolean> renversable = createField("renversable", org.jooq.impl.SQLDataType.BOOLEAN, this, "");
+	public final TableField<Record, Boolean> RENVERSABLE = createField("renversable", org.jooq.impl.SQLDataType.BOOLEAN, this, "");
 
 	/**
 	 * The column <code>remocra.hydrant_pibi.marque</code>.
@@ -113,6 +113,56 @@ public class HydrantPibi extends TableImpl<Record> {
 	 * The column <code>remocra.hydrant_pibi.pression_dyn_deb</code>.
 	 */
 	public final TableField<Record, Double> PRESSION_DYN_DEB = createField("pression_dyn_deb", org.jooq.impl.SQLDataType.DOUBLE, this, "");
+
+	/**
+	 * The column <code>remocra.hydrant_pibi.jumele</code>. Identifiant du PIBI jumelé
+	 */
+	public final TableField<Record, Long> JUMELE = createField("jumele", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant du PIBI jumelé");
+
+	/**
+	 * The column <code>remocra.hydrant_pibi.dispositif_inviolabilite</code>. Présence d'un dispositif d'inviolabilité
+	 */
+	public final TableField<Record, Boolean> DISPOSITIF_INVIOLABILITE = createField("dispositif_inviolabilite", org.jooq.impl.SQLDataType.BOOLEAN, this, "Présence d'un dispositif d'inviolabilité");
+
+	/**
+	 * The column <code>remocra.hydrant_pibi.reservoir</code>. Identifiant du réservoir alimentant l'hydrant
+	 */
+	public final TableField<Record, Long> RESERVOIR = createField("reservoir", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant du réservoir alimentant l'hydrant");
+
+	/**
+	 * The column <code>remocra.hydrant_pibi.service_eaux</code>. Organisme de type Service des eaux concerné
+	 */
+	public final TableField<Record, Long> SERVICE_EAUX = createField("service_eaux", org.jooq.impl.SQLDataType.BIGINT, this, "Organisme de type Service des eaux concerné");
+
+	/**
+	 * The column <code>remocra.hydrant_pibi.debit_renforce</code>. Caractère renforcé du débit
+	 */
+	public final TableField<Record, Boolean> DEBIT_RENFORCE = createField("debit_renforce", org.jooq.impl.SQLDataType.BOOLEAN, this, "Caractère renforcé du débit");
+
+	/**
+	 * The column <code>remocra.hydrant_pibi.type_reseau_canalisation</code>. Identifiant du type de canalisation du réseau
+	 */
+	public final TableField<Record, Long> TYPE_RESEAU_CANALISATION = createField("type_reseau_canalisation", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant du type de canalisation du réseau");
+
+	/**
+	 * The column <code>remocra.hydrant_pibi.type_reseau_alimentation</code>.
+	 */
+	public final TableField<Record, Long> TYPE_RESEAU_ALIMENTATION = createField("type_reseau_alimentation", org.jooq.impl.SQLDataType.BIGINT, this, "");
+
+	/**
+	 * The column <code>remocra.hydrant_pibi.diametre_canalisation</code>.
+	 */
+	public final TableField<Record, Integer> DIAMETRE_CANALISATION = createField("diametre_canalisation", org.jooq.impl.SQLDataType.INTEGER, this, "");
+
+	/**
+	 * The column <code>remocra.hydrant_pibi.surpresse</code>. Indique si le réseau est surpressé
+	 */
+	public final TableField<Record, Boolean> SURPRESSE = createField("surpresse", org.jooq.impl.SQLDataType.BOOLEAN, this, "Indique si le réseau est surpressé");
+
+	/**
+	 * The column <code>remocra.hydrant_pibi.additive</code>. Indique si le réseau est additivé
+	 */
+	public final TableField<Record, Boolean> ADDITIVE = createField("additive", org.jooq.impl.SQLDataType.BOOLEAN, this, "Indique si le réseau est additivé");
 
 	/**
 	 * Create a <code>remocra.hydrant_pibi</code> table reference
@@ -157,7 +207,7 @@ public class HydrantPibi extends TableImpl<Record> {
 	 */
 	@Override
 	public List<ForeignKey<Record, ?>> getReferences() {
-		return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT_PIBI__FKD60E21B7B34721EF, Keys.HYDRANT_PIBI__FKD60E21B7A5A0E880, Keys.HYDRANT_PIBI__FKD60E21B7CD9E6420, Keys.HYDRANT_PIBI__FKD60E21B7CF1BDF92, Keys.HYDRANT_PIBI__FKD60E21B7DDA2E3C4);
+		return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT_PIBI__FKD60E21B7B34721EF, Keys.HYDRANT_PIBI__FKD60E21B7A5A0E880, Keys.HYDRANT_PIBI__FKD60E21B7CD9E6420, Keys.HYDRANT_PIBI__FKD60E21B7CF1BDF92, Keys.HYDRANT_PIBI__FKD60E21B7DDA2E3C4, Keys.HYDRANT_PIBI__FK_JUMELE, Keys.HYDRANT_PIBI__FK_RESERVOIR, Keys.HYDRANT_PIBI__FK_SERVICE_EAUX, Keys.HYDRANT_PIBI__FK_TYPE_RESEAU_CANALISATION, Keys.HYDRANT_PIBI__FK_TYPE_RESEAU_ALIMENTATION);
 	}
 
 	/**

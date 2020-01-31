@@ -36,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class RepertoireLieu extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -374782366;
+	private static final long serialVersionUID = 1814726572;
 
 	/**
 	 * The reference instance of <code>remocra.repertoire_lieu</code>
@@ -57,9 +57,9 @@ public class RepertoireLieu extends TableImpl<Record> {
 	public final TableField<Record, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaulted(true), this, "Identifiant interne auto-généré");
 
 	/**
-	 * The column <code>remocra.repertoire_lieu.code</code>. Code permettant d'identifier de manière unique et pérenne le repertoire (ex : COMMUNE, LIEUX_DIT, HYDROGRAPHIE, CADASTRE)
+	 * The column <code>remocra.repertoire_lieu.code</code>. Code permettant d'identifier de manière unique et pérenne le repertoire. Ex : COMMUNE, LIEUX_DIT, HYDROGRAPHIE, CADASTRE
 	 */
-	public final TableField<Record, String> CODE = createField("code", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Code permettant d'identifier de manière unique et pérenne le repertoire (ex : COMMUNE, LIEUX_DIT, HYDROGRAPHIE, CADASTRE)");
+	public final TableField<Record, String> CODE = createField("code", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Code permettant d'identifier de manière unique et pérenne le repertoire. Ex : COMMUNE, LIEUX_DIT, HYDROGRAPHIE, CADASTRE");
 
 	/**
 	 * The column <code>remocra.repertoire_lieu.libelle</code>. Nom du répertoire de lieux : Ex Communes, Cours d'eau, Lieux-dits, Quartiers, Hameaux, etc.
@@ -77,9 +77,9 @@ public class RepertoireLieu extends TableImpl<Record> {
 	public final TableField<Record, String> SOURCE_SQL_VALEUR = createField("source_sql_valeur", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Colonne de la requête SQL contenant la position du lieu");
 
 	/**
-	 * The column <code>remocra.repertoire_lieu.source_sql_libelle</code>. Colonne de la requête SQL contenant le libellé associé à la position du lieu. La recherche s'effectue sur les valeurs contenues dans cette colonnes sous la forme LIKE%mon_texte%
+	 * The column <code>remocra.repertoire_lieu.source_sql_libelle</code>. Colonne de la requête SQL contenant le libellé associé à la position du lieu. La recherche s'effectue sur les valeurs contenues dans cette colonne sous la forme LIKE%mon_texte%
 	 */
-	public final TableField<Record, String> SOURCE_SQL_LIBELLE = createField("source_sql_libelle", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Colonne de la requête SQL contenant le libellé associé à la position du lieu. La recherche s'effectue sur les valeurs contenues dans cette colonnes sous la forme LIKE%mon_texte%");
+	public final TableField<Record, String> SOURCE_SQL_LIBELLE = createField("source_sql_libelle", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Colonne de la requête SQL contenant le libellé associé à la position du lieu. La recherche s'effectue sur les valeurs contenues dans cette colonne sous la forme LIKE%mon_texte%");
 
 	/**
 	 * Create a <code>remocra.repertoire_lieu</code> table reference

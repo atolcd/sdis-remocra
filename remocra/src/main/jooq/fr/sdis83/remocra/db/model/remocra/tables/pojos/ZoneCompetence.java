@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
@@ -22,12 +24,12 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ZoneCompetence implements Serializable {
 
-	private static final long serialVersionUID = -1335749603;
+	private static final long serialVersionUID = -713360355;
 
-	private Long   id;
-	private String code;
-	private Object geometrie;
-	private String nom;
+	private Long     id;
+	private String   code;
+	private Geometry geometrie;
+	private String   nom;
 
 	public ZoneCompetence() {}
 
@@ -39,10 +41,10 @@ public class ZoneCompetence implements Serializable {
 	}
 
 	public ZoneCompetence(
-		Long   id,
-		String code,
-		Object geometrie,
-		String nom
+		Long     id,
+		String   code,
+		Geometry geometrie,
+		String   nom
 	) {
 		this.id = id;
 		this.code = code;
@@ -68,11 +70,11 @@ public class ZoneCompetence implements Serializable {
 		return this;
 	}
 
-	public Object getGeometrie() {
+	public Geometry getGeometrie() {
 		return this.geometrie;
 	}
 
-	public ZoneCompetence setGeometrie(Object geometrie) {
+	public ZoneCompetence setGeometrie(Geometry geometrie) {
 		this.geometrie = geometrie;
 		return this;
 	}

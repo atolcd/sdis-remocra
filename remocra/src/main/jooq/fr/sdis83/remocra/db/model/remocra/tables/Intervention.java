@@ -4,6 +4,9 @@
 package fr.sdis83.remocra.db.model.remocra.tables;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
+import fr.sdis83.remocra.db.converter.GeometryBinding;
 import fr.sdis83.remocra.db.converter.InstantConverter;
 import fr.sdis83.remocra.db.model.remocra.Keys;
 import fr.sdis83.remocra.db.model.remocra.Remocra;
@@ -37,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Intervention extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 626104633;
+	private static final long serialVersionUID = 1347687520;
 
 	/**
 	 * The reference instance of <code>remocra.intervention</code>
@@ -115,7 +118,7 @@ public class Intervention extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.intervention.geometrie</code>. Géométrie de l'intervention
 	 */
-	public final TableField<Record, Object> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "Géométrie de l'intervention");
+	public final TableField<Record, Geometry> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "Géométrie de l'intervention", new GeometryBinding());
 
 	/**
 	 * Create a <code>remocra.intervention</code> table reference

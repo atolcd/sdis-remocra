@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
@@ -22,11 +24,11 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class RequeteModeleSelectionDetail implements Serializable {
 
-	private static final long serialVersionUID = -535053190;
+	private static final long serialVersionUID = 1055061370;
 
-	private Long   id;
-	private Long   selection;
-	private Object geometrie;
+	private Long     id;
+	private Long     selection;
+	private Geometry geometrie;
 
 	public RequeteModeleSelectionDetail() {}
 
@@ -37,9 +39,9 @@ public class RequeteModeleSelectionDetail implements Serializable {
 	}
 
 	public RequeteModeleSelectionDetail(
-		Long   id,
-		Long   selection,
-		Object geometrie
+		Long     id,
+		Long     selection,
+		Geometry geometrie
 	) {
 		this.id = id;
 		this.selection = selection;
@@ -64,11 +66,11 @@ public class RequeteModeleSelectionDetail implements Serializable {
 		return this;
 	}
 
-	public Object getGeometrie() {
+	public Geometry getGeometrie() {
 		return this.geometrie;
 	}
 
-	public RequeteModeleSelectionDetail setGeometrie(Object geometrie) {
+	public RequeteModeleSelectionDetail setGeometrie(Geometry geometrie) {
 		this.geometrie = geometrie;
 		return this;
 	}

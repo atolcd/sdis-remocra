@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
@@ -24,14 +26,14 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class RequeteModeleSelection implements Serializable {
 
-	private static final long serialVersionUID = 575470382;
+	private static final long serialVersionUID = -2063009724;
 
-	private Long    id;
-	private String  requete;
-	private Long    modele;
-	private Long    utilisateur;
-	private Instant date;
-	private Object  etendu;
+	private Long     id;
+	private String   requete;
+	private Long     modele;
+	private Long     utilisateur;
+	private Instant  date;
+	private Geometry etendu;
 
 	public RequeteModeleSelection() {}
 
@@ -45,12 +47,12 @@ public class RequeteModeleSelection implements Serializable {
 	}
 
 	public RequeteModeleSelection(
-		Long    id,
-		String  requete,
-		Long    modele,
-		Long    utilisateur,
-		Instant date,
-		Object  etendu
+		Long     id,
+		String   requete,
+		Long     modele,
+		Long     utilisateur,
+		Instant  date,
+		Geometry etendu
 	) {
 		this.id = id;
 		this.requete = requete;
@@ -105,11 +107,11 @@ public class RequeteModeleSelection implements Serializable {
 		return this;
 	}
 
-	public Object getEtendu() {
+	public Geometry getEtendu() {
 		return this.etendu;
 	}
 
-	public RequeteModeleSelection setEtendu(Object etendu) {
+	public RequeteModeleSelection setEtendu(Geometry etendu) {
 		this.etendu = etendu;
 		return this;
 	}

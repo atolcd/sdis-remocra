@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
@@ -22,14 +24,14 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AlerteElt implements Serializable {
 
-	private static final long serialVersionUID = -410893400;
+	private static final long serialVersionUID = 2056356388;
 
-	private Long    id;
-	private String  commentaire;
-	private Object  geometrie;
-	private Integer version;
-	private Long    alerte;
-	private Long    sousTypeAlerteElt;
+	private Long     id;
+	private String   commentaire;
+	private Geometry geometrie;
+	private Integer  version;
+	private Long     alerte;
+	private Long     sousTypeAlerteElt;
 
 	public AlerteElt() {}
 
@@ -43,12 +45,12 @@ public class AlerteElt implements Serializable {
 	}
 
 	public AlerteElt(
-		Long    id,
-		String  commentaire,
-		Object  geometrie,
-		Integer version,
-		Long    alerte,
-		Long    sousTypeAlerteElt
+		Long     id,
+		String   commentaire,
+		Geometry geometrie,
+		Integer  version,
+		Long     alerte,
+		Long     sousTypeAlerteElt
 	) {
 		this.id = id;
 		this.commentaire = commentaire;
@@ -76,11 +78,11 @@ public class AlerteElt implements Serializable {
 		return this;
 	}
 
-	public Object getGeometrie() {
+	public Geometry getGeometrie() {
 		return this.geometrie;
 	}
 
-	public AlerteElt setGeometrie(Object geometrie) {
+	public AlerteElt setGeometrie(Geometry geometrie) {
 		this.geometrie = geometrie;
 		return this;
 	}

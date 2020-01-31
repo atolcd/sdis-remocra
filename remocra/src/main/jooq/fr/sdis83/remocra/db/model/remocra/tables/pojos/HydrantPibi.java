@@ -22,7 +22,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantPibi implements Serializable {
 
-	private static final long serialVersionUID = 82919336;
+	private static final long serialVersionUID = -332836910;
 
 	private Integer debit;
 	private Integer debitMax;
@@ -37,6 +37,16 @@ public class HydrantPibi implements Serializable {
 	private Long    modele;
 	private Long    pena;
 	private Double  pressionDynDeb;
+	private Long    jumele;
+	private Boolean dispositifInviolabilite;
+	private Long    reservoir;
+	private Long    serviceEaux;
+	private Boolean debitRenforce;
+	private Long    typeReseauCanalisation;
+	private Long    typeReseauAlimentation;
+	private Integer diametreCanalisation;
+	private Boolean surpresse;
+	private Boolean additive;
 
 	public HydrantPibi() {}
 
@@ -54,6 +64,16 @@ public class HydrantPibi implements Serializable {
 		this.modele = value.modele;
 		this.pena = value.pena;
 		this.pressionDynDeb = value.pressionDynDeb;
+		this.jumele = value.jumele;
+		this.dispositifInviolabilite = value.dispositifInviolabilite;
+		this.reservoir = value.reservoir;
+		this.serviceEaux = value.serviceEaux;
+		this.debitRenforce = value.debitRenforce;
+		this.typeReseauCanalisation = value.typeReseauCanalisation;
+		this.typeReseauAlimentation = value.typeReseauAlimentation;
+		this.diametreCanalisation = value.diametreCanalisation;
+		this.surpresse = value.surpresse;
+		this.additive = value.additive;
 	}
 
 	public HydrantPibi(
@@ -69,7 +89,17 @@ public class HydrantPibi implements Serializable {
 		Long    marque,
 		Long    modele,
 		Long    pena,
-		Double  pressionDynDeb
+		Double  pressionDynDeb,
+		Long    jumele,
+		Boolean dispositifInviolabilite,
+		Long    reservoir,
+		Long    serviceEaux,
+		Boolean debitRenforce,
+		Long    typeReseauCanalisation,
+		Long    typeReseauAlimentation,
+		Integer diametreCanalisation,
+		Boolean surpresse,
+		Boolean additive
 	) {
 		this.debit = debit;
 		this.debitMax = debitMax;
@@ -84,6 +114,16 @@ public class HydrantPibi implements Serializable {
 		this.modele = modele;
 		this.pena = pena;
 		this.pressionDynDeb = pressionDynDeb;
+		this.jumele = jumele;
+		this.dispositifInviolabilite = dispositifInviolabilite;
+		this.reservoir = reservoir;
+		this.serviceEaux = serviceEaux;
+		this.debitRenforce = debitRenforce;
+		this.typeReseauCanalisation = typeReseauCanalisation;
+		this.typeReseauAlimentation = typeReseauAlimentation;
+		this.diametreCanalisation = diametreCanalisation;
+		this.surpresse = surpresse;
+		this.additive = additive;
 	}
 
 	public Integer getDebit() {
@@ -200,6 +240,96 @@ public class HydrantPibi implements Serializable {
 
 	public HydrantPibi setPressionDynDeb(Double pressionDynDeb) {
 		this.pressionDynDeb = pressionDynDeb;
+		return this;
+	}
+
+	public Long getJumele() {
+		return this.jumele;
+	}
+
+	public HydrantPibi setJumele(Long jumele) {
+		this.jumele = jumele;
+		return this;
+	}
+
+	public Boolean getDispositifInviolabilite() {
+		return this.dispositifInviolabilite;
+	}
+
+	public HydrantPibi setDispositifInviolabilite(Boolean dispositifInviolabilite) {
+		this.dispositifInviolabilite = dispositifInviolabilite;
+		return this;
+	}
+
+	public Long getReservoir() {
+		return this.reservoir;
+	}
+
+	public HydrantPibi setReservoir(Long reservoir) {
+		this.reservoir = reservoir;
+		return this;
+	}
+
+	public Long getServiceEaux() {
+		return this.serviceEaux;
+	}
+
+	public HydrantPibi setServiceEaux(Long serviceEaux) {
+		this.serviceEaux = serviceEaux;
+		return this;
+	}
+
+	public Boolean getDebitRenforce() {
+		return this.debitRenforce;
+	}
+
+	public HydrantPibi setDebitRenforce(Boolean debitRenforce) {
+		this.debitRenforce = debitRenforce;
+		return this;
+	}
+
+	public Long getTypeReseauCanalisation() {
+		return this.typeReseauCanalisation;
+	}
+
+	public HydrantPibi setTypeReseauCanalisation(Long typeReseauCanalisation) {
+		this.typeReseauCanalisation = typeReseauCanalisation;
+		return this;
+	}
+
+	public Long getTypeReseauAlimentation() {
+		return this.typeReseauAlimentation;
+	}
+
+	public HydrantPibi setTypeReseauAlimentation(Long typeReseauAlimentation) {
+		this.typeReseauAlimentation = typeReseauAlimentation;
+		return this;
+	}
+
+	public Integer getDiametreCanalisation() {
+		return this.diametreCanalisation;
+	}
+
+	public HydrantPibi setDiametreCanalisation(Integer diametreCanalisation) {
+		this.diametreCanalisation = diametreCanalisation;
+		return this;
+	}
+
+	public Boolean getSurpresse() {
+		return this.surpresse;
+	}
+
+	public HydrantPibi setSurpresse(Boolean surpresse) {
+		this.surpresse = surpresse;
+		return this;
+	}
+
+	public Boolean getAdditive() {
+		return this.additive;
+	}
+
+	public HydrantPibi setAdditive(Boolean additive) {
+		this.additive = additive;
 		return this;
 	}
 }

@@ -22,7 +22,7 @@ import org.jooq.impl.TableImpl;
 
 
 /**
- * Profil de droit autorisé pour executer un processus ETL
+ * Profil de droit autorisé pour exécuter un processus ETL
  */
 @Generated(
 	value = {
@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProcessusEtlModeleDroit extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 643232497;
+	private static final long serialVersionUID = -943460239;
 
 	/**
 	 * The reference instance of <code>remocra.processus_etl_modele_droit</code>
@@ -78,7 +78,7 @@ public class ProcessusEtlModeleDroit extends TableImpl<Record> {
 	}
 
 	private ProcessusEtlModeleDroit(String alias, Table<Record> aliased, Field<?>[] parameters) {
-		super(alias, Remocra.REMOCRA, aliased, parameters, "Profil de droit autorisé pour executer un processus ETL");
+		super(alias, Remocra.REMOCRA, aliased, parameters, "Profil de droit autorisé pour exécuter un processus ETL");
 	}
 
 	/**

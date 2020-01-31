@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
@@ -24,41 +26,49 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant implements Serializable {
 
-	private static final long serialVersionUID = 454540934;
+	private static final long serialVersionUID = -234136578;
 
-	private Long    id;
-	private String  agent1;
-	private String  agent2;
-	private Integer anneeFabrication;
-	private String  code;
-	private String  complement;
-	private Instant dateContr;
-	private Instant dateRecep;
-	private Instant dateReco;
-	private Instant dateVerif;
-	private String  dispoAdmin;
-	private String  dispoHbe;
-	private String  dispoTerrestre;
-	private Object  geometrie;
-	private String  lieuDit;
-	private String  numero;
-	private Integer numeroInterne;
-	private String  observation;
-	private Integer version;
-	private String  voie;
-	private String  voie2;
-	private Long    commune;
-	private Long    domaine;
-	private Long    nature;
-	private Instant dateModification;
-	private String  courrier;
-	private String  gestPointEau;
-	private Long    organisme;
-	private Instant dateGps;
-	private Long    zoneSpeciale;
-	private Instant dateAttestation;
-	private Long    utilisateurModification;
-	private Long    natureDeci;
+	private Long     id;
+	private String   agent1;
+	private String   agent2;
+	private Integer  anneeFabrication;
+	private String   code;
+	private String   complement;
+	private Instant  dateContr;
+	private Instant  dateRecep;
+	private Instant  dateReco;
+	private Instant  dateVerif;
+	private String   dispoAdmin;
+	private String   dispoHbe;
+	private String   dispoTerrestre;
+	private Geometry geometrie;
+	private String   lieuDit;
+	private String   numero;
+	private Integer  numeroInterne;
+	private String   observation;
+	private Integer  version;
+	private String   voie;
+	private String   voie2;
+	private Long     commune;
+	private Long     domaine;
+	private Long     nature;
+	private Instant  dateModification;
+	private String   courrier;
+	private String   gestPointEau;
+	private Long     organisme;
+	private Instant  dateGps;
+	private Long     zoneSpeciale;
+	private Instant  dateAttestation;
+	private Long     utilisateurModification;
+	private Long     natureDeci;
+	private Integer  numeroVoie;
+	private String   suffixeVoie;
+	private Long     niveau;
+	private Long     gestionnaire;
+	private Long     site;
+	private Long     autoriteDeci;
+	private Boolean  enFace;
+	private Instant  dateCrea;
 
 	public Hydrant() {}
 
@@ -96,42 +106,58 @@ public class Hydrant implements Serializable {
 		this.dateAttestation = value.dateAttestation;
 		this.utilisateurModification = value.utilisateurModification;
 		this.natureDeci = value.natureDeci;
+		this.numeroVoie = value.numeroVoie;
+		this.suffixeVoie = value.suffixeVoie;
+		this.niveau = value.niveau;
+		this.gestionnaire = value.gestionnaire;
+		this.site = value.site;
+		this.autoriteDeci = value.autoriteDeci;
+		this.enFace = value.enFace;
+		this.dateCrea = value.dateCrea;
 	}
 
 	public Hydrant(
-		Long    id,
-		String  agent1,
-		String  agent2,
-		Integer anneeFabrication,
-		String  code,
-		String  complement,
-		Instant dateContr,
-		Instant dateRecep,
-		Instant dateReco,
-		Instant dateVerif,
-		String  dispoAdmin,
-		String  dispoHbe,
-		String  dispoTerrestre,
-		Object  geometrie,
-		String  lieuDit,
-		String  numero,
-		Integer numeroInterne,
-		String  observation,
-		Integer version,
-		String  voie,
-		String  voie2,
-		Long    commune,
-		Long    domaine,
-		Long    nature,
-		Instant dateModification,
-		String  courrier,
-		String  gestPointEau,
-		Long    organisme,
-		Instant dateGps,
-		Long    zoneSpeciale,
-		Instant dateAttestation,
-		Long    utilisateurModification,
-		Long    natureDeci
+		Long     id,
+		String   agent1,
+		String   agent2,
+		Integer  anneeFabrication,
+		String   code,
+		String   complement,
+		Instant  dateContr,
+		Instant  dateRecep,
+		Instant  dateReco,
+		Instant  dateVerif,
+		String   dispoAdmin,
+		String   dispoHbe,
+		String   dispoTerrestre,
+		Geometry geometrie,
+		String   lieuDit,
+		String   numero,
+		Integer  numeroInterne,
+		String   observation,
+		Integer  version,
+		String   voie,
+		String   voie2,
+		Long     commune,
+		Long     domaine,
+		Long     nature,
+		Instant  dateModification,
+		String   courrier,
+		String   gestPointEau,
+		Long     organisme,
+		Instant  dateGps,
+		Long     zoneSpeciale,
+		Instant  dateAttestation,
+		Long     utilisateurModification,
+		Long     natureDeci,
+		Integer  numeroVoie,
+		String   suffixeVoie,
+		Long     niveau,
+		Long     gestionnaire,
+		Long     site,
+		Long     autoriteDeci,
+		Boolean  enFace,
+		Instant  dateCrea
 	) {
 		this.id = id;
 		this.agent1 = agent1;
@@ -166,6 +192,14 @@ public class Hydrant implements Serializable {
 		this.dateAttestation = dateAttestation;
 		this.utilisateurModification = utilisateurModification;
 		this.natureDeci = natureDeci;
+		this.numeroVoie = numeroVoie;
+		this.suffixeVoie = suffixeVoie;
+		this.niveau = niveau;
+		this.gestionnaire = gestionnaire;
+		this.site = site;
+		this.autoriteDeci = autoriteDeci;
+		this.enFace = enFace;
+		this.dateCrea = dateCrea;
 	}
 
 	public Long getId() {
@@ -285,11 +319,11 @@ public class Hydrant implements Serializable {
 		return this;
 	}
 
-	public Object getGeometrie() {
+	public Geometry getGeometrie() {
 		return this.geometrie;
 	}
 
-	public Hydrant setGeometrie(Object geometrie) {
+	public Hydrant setGeometrie(Geometry geometrie) {
 		this.geometrie = geometrie;
 		return this;
 	}
@@ -462,6 +496,78 @@ public class Hydrant implements Serializable {
 
 	public Hydrant setNatureDeci(Long natureDeci) {
 		this.natureDeci = natureDeci;
+		return this;
+	}
+
+	public Integer getNumeroVoie() {
+		return this.numeroVoie;
+	}
+
+	public Hydrant setNumeroVoie(Integer numeroVoie) {
+		this.numeroVoie = numeroVoie;
+		return this;
+	}
+
+	public String getSuffixeVoie() {
+		return this.suffixeVoie;
+	}
+
+	public Hydrant setSuffixeVoie(String suffixeVoie) {
+		this.suffixeVoie = suffixeVoie;
+		return this;
+	}
+
+	public Long getNiveau() {
+		return this.niveau;
+	}
+
+	public Hydrant setNiveau(Long niveau) {
+		this.niveau = niveau;
+		return this;
+	}
+
+	public Long getGestionnaire() {
+		return this.gestionnaire;
+	}
+
+	public Hydrant setGestionnaire(Long gestionnaire) {
+		this.gestionnaire = gestionnaire;
+		return this;
+	}
+
+	public Long getSite() {
+		return this.site;
+	}
+
+	public Hydrant setSite(Long site) {
+		this.site = site;
+		return this;
+	}
+
+	public Long getAutoriteDeci() {
+		return this.autoriteDeci;
+	}
+
+	public Hydrant setAutoriteDeci(Long autoriteDeci) {
+		this.autoriteDeci = autoriteDeci;
+		return this;
+	}
+
+	public Boolean getEnFace() {
+		return this.enFace;
+	}
+
+	public Hydrant setEnFace(Boolean enFace) {
+		this.enFace = enFace;
+		return this;
+	}
+
+	public Instant getDateCrea() {
+		return this.dateCrea;
+	}
+
+	public Hydrant setDateCrea(Instant dateCrea) {
+		this.dateCrea = dateCrea;
 		return this;
 	}
 }

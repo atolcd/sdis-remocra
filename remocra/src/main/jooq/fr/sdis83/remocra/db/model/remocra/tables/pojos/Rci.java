@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
@@ -24,43 +26,43 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Rci implements Serializable {
 
-	private static final long serialVersionUID = -728464896;
+	private static final long serialVersionUID = -824901996;
 
-	private Long    id;
-	private String  commentaireConclusions;
-	private String  complement;
-	private String  coorddfci;
-	private Instant dateIncendie;
-	private Instant dateModification;
-	private Integer directionVent;
-	private Integer forceVent;
-	private String  forcesOrdre;
-	private Boolean gelLieux;
-	private Object  geometrie;
-	private Integer hygrometrie;
-	private Integer indiceRothermel;
-	private String  pointEclosion;
-	private String  premierCos;
-	private String  premierEngin;
-	private Double  superficieFinale;
-	private Double  superficieReferent;
-	private Double  superficieSecours;
-	private Double  temperature;
-	private Boolean ventLocal;
-	private Integer version;
-	private String  voie;
-	private Long    categoriePromethee;
-	private Long    commune;
-	private Long    degreCertitude;
-	private Long    origineAlerte;
-	private Long    utilisateur;
-	private Instant gdh;
-	private Long    arriveeDdtmOnf;
-	private Long    arriveeSdis;
-	private Long    arriveeGendarmerie;
-	private Long    arriveePolice;
-	private Long    famillePromethee;
-	private Long    partitionPromethee;
+	private Long     id;
+	private String   commentaireConclusions;
+	private String   complement;
+	private String   coorddfci;
+	private Instant  dateIncendie;
+	private Instant  dateModification;
+	private Integer  directionVent;
+	private Integer  forceVent;
+	private String   forcesOrdre;
+	private Boolean  gelLieux;
+	private Geometry geometrie;
+	private Integer  hygrometrie;
+	private Integer  indiceRothermel;
+	private String   pointEclosion;
+	private String   premierCos;
+	private String   premierEngin;
+	private Double   superficieFinale;
+	private Double   superficieReferent;
+	private Double   superficieSecours;
+	private Double   temperature;
+	private Boolean  ventLocal;
+	private Integer  version;
+	private String   voie;
+	private Long     categoriePromethee;
+	private Long     commune;
+	private Long     degreCertitude;
+	private Long     origineAlerte;
+	private Long     utilisateur;
+	private Instant  gdh;
+	private Long     arriveeDdtmOnf;
+	private Long     arriveeSdis;
+	private Long     arriveeGendarmerie;
+	private Long     arriveePolice;
+	private Long     famillePromethee;
+	private Long     partitionPromethee;
 
 	public Rci() {}
 
@@ -103,41 +105,41 @@ public class Rci implements Serializable {
 	}
 
 	public Rci(
-		Long    id,
-		String  commentaireConclusions,
-		String  complement,
-		String  coorddfci,
-		Instant dateIncendie,
-		Instant dateModification,
-		Integer directionVent,
-		Integer forceVent,
-		String  forcesOrdre,
-		Boolean gelLieux,
-		Object  geometrie,
-		Integer hygrometrie,
-		Integer indiceRothermel,
-		String  pointEclosion,
-		String  premierCos,
-		String  premierEngin,
-		Double  superficieFinale,
-		Double  superficieReferent,
-		Double  superficieSecours,
-		Double  temperature,
-		Boolean ventLocal,
-		Integer version,
-		String  voie,
-		Long    categoriePromethee,
-		Long    commune,
-		Long    degreCertitude,
-		Long    origineAlerte,
-		Long    utilisateur,
-		Instant gdh,
-		Long    arriveeDdtmOnf,
-		Long    arriveeSdis,
-		Long    arriveeGendarmerie,
-		Long    arriveePolice,
-		Long    famillePromethee,
-		Long    partitionPromethee
+		Long     id,
+		String   commentaireConclusions,
+		String   complement,
+		String   coorddfci,
+		Instant  dateIncendie,
+		Instant  dateModification,
+		Integer  directionVent,
+		Integer  forceVent,
+		String   forcesOrdre,
+		Boolean  gelLieux,
+		Geometry geometrie,
+		Integer  hygrometrie,
+		Integer  indiceRothermel,
+		String   pointEclosion,
+		String   premierCos,
+		String   premierEngin,
+		Double   superficieFinale,
+		Double   superficieReferent,
+		Double   superficieSecours,
+		Double   temperature,
+		Boolean  ventLocal,
+		Integer  version,
+		String   voie,
+		Long     categoriePromethee,
+		Long     commune,
+		Long     degreCertitude,
+		Long     origineAlerte,
+		Long     utilisateur,
+		Instant  gdh,
+		Long     arriveeDdtmOnf,
+		Long     arriveeSdis,
+		Long     arriveeGendarmerie,
+		Long     arriveePolice,
+		Long     famillePromethee,
+		Long     partitionPromethee
 	) {
 		this.id = id;
 		this.commentaireConclusions = commentaireConclusions;
@@ -266,11 +268,11 @@ public class Rci implements Serializable {
 		return this;
 	}
 
-	public Object getGeometrie() {
+	public Geometry getGeometrie() {
 		return this.geometrie;
 	}
 
-	public Rci setGeometrie(Object geometrie) {
+	public Rci setGeometrie(Geometry geometrie) {
 		this.geometrie = geometrie;
 		return this;
 	}

@@ -4,6 +4,9 @@
 package fr.sdis83.remocra.db.model.remocra.tables;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
+import fr.sdis83.remocra.db.converter.GeometryBinding;
 import fr.sdis83.remocra.db.converter.InstantConverter;
 import fr.sdis83.remocra.db.model.remocra.Keys;
 import fr.sdis83.remocra.db.model.remocra.Remocra;
@@ -37,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantPrescrit extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -608518727;
+	private static final long serialVersionUID = -1897861514;
 
 	/**
 	 * The reference instance of <code>remocra.hydrant_prescrit</code>
@@ -70,7 +73,7 @@ public class HydrantPrescrit extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.hydrant_prescrit.geometrie</code>.
 	 */
-	public final TableField<Record, Object> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "");
+	public final TableField<Record, Geometry> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "", new GeometryBinding());
 
 	/**
 	 * The column <code>remocra.hydrant_prescrit.nb_poteaux</code>.
@@ -81,6 +84,21 @@ public class HydrantPrescrit extends TableImpl<Record> {
 	 * The column <code>remocra.hydrant_prescrit.organisme</code>.
 	 */
 	public final TableField<Record, Long> ORGANISME = createField("organisme", org.jooq.impl.SQLDataType.BIGINT, this, "");
+
+	/**
+	 * The column <code>remocra.hydrant_prescrit.commentaire</code>.
+	 */
+	public final TableField<Record, String> COMMENTAIRE = createField("commentaire", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+
+	/**
+	 * The column <code>remocra.hydrant_prescrit.agent</code>.
+	 */
+	public final TableField<Record, String> AGENT = createField("agent", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+
+	/**
+	 * The column <code>remocra.hydrant_prescrit.numdossier</code>.
+	 */
+	public final TableField<Record, String> NUMDOSSIER = createField("numdossier", org.jooq.impl.SQLDataType.VARCHAR, this, "");
 
 	/**
 	 * Create a <code>remocra.hydrant_prescrit</code> table reference
