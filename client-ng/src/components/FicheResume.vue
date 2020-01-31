@@ -62,7 +62,7 @@ export default {
   },
   mounted: function() {
     // On tente de charger le résumé spécifique à cette configuration. Sinon, on utilise la configuration par défaut
-    axios.get("ext-res/html/hydrants/resume/resume.html").then(response => {
+    axios.get("/remocra/ext-res/html/hydrants/resume/resume.html").then(response => {
       if (response) {
         this.useCustomResume = true;
         this.customResumeHTMLBuffer = response.data; // Stockage du contenu HTML en attendant la création du composant
