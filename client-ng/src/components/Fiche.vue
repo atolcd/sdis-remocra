@@ -273,6 +273,8 @@ export default {
               }
             })
           }
+        } else {
+          console.error('Traitement de la réponse : ', response)
         }
       }).catch(function(error) {
         console.error('Retrieving data ', error)
