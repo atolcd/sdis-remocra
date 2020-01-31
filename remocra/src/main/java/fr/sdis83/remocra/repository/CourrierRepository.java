@@ -56,11 +56,6 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.CONTACT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
 import static fr.sdis83.remocra.db.model.remocra.Tables.THEMATIQUE;
 
-
-
-//import static fr.sdis83.remocra.db.model.remocra.Tables.*;
-
-
 @Configuration
 public class CourrierRepository {
 
