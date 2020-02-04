@@ -227,7 +227,7 @@ public class CourrierController {
       if (new File(cheminModele).exists()) {
         textTplInputStream = new FileInputStream(new File(cheminModele));
       } else{
-        return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la génération du courrier.").serialize();
+        return new SuccessErrorExtSerializer(false, "Le modèle de courrier n'existe pas.").serialize();
       }
       //Récupération de la requête SQL correspondant au modèle (génère du XML)
       String xmlQuery = courrierRepository.getModeleXmlQuery(idModele, mapParametres);
@@ -292,27 +292,40 @@ public class CourrierController {
       origine.renameTo(destination);
 
       //Insertion dans table document
-      courrierRepository.insertDocument(codeCourrier, nomCourrier);
+
+      String erreurDocument = courrierRepository.insertDocument(codeCourrier, nomCourrier);
 
       //Insertion dans table courrier_document
       ArrayList<Object> destinataires = new ArrayList<Object>();
       destinataires.addAll((ArrayList<Object>)mapParametres.get("destinataires"));
+      String erreurCourrierDocument = "";
+      String erreurEmail = "";
       for(Object dest : destinataires){
         String idDest = String.valueOf(((HashMap) dest).get("id"));
         String typeDest = String.valueOf(((HashMap) dest).get("Type"));
         String nomDest = String.valueOf(((HashMap) dest).get("Nom"));
 
-        //Insertion dans la table courrier_document
-        courrierRepository.insertCourrierDocument(codeCourrier, nomDest, typeDest, idDest);
+        if(erreurDocument.equals("")) {
+          //Insertion dans la table courrier_document
+          erreurCourrierDocument = courrierRepository.insertCourrierDocument(codeCourrier, nomDest, typeDest, idDest);
+        }
 
-        //Insertion dans la table email
-        courrierRepository.insertEmail(nomCourrier, nomDest, typeDest, idDest, codeCourrier);
+        if(erreurDocument.equals("") && erreurCourrierDocument.equals("")) {
+          //Insertion dans la table email
+          erreurEmail = courrierRepository.insertEmail(nomCourrier, nomDest, typeDest, idDest, codeCourrier);
+        }
+      }
+
+      if(!erreurDocument.equals("") || !erreurCourrierDocument.equals("") || !erreurEmail.equals("")){
+        return new SuccessErrorExtSerializer(false, "Erreur : Une erreur est survenue lors de la notification du courrier." +
+                " Problème d'insertion dans la table "+erreurDocument+erreurCourrierDocument+erreurEmail).serialize();
+      } else{
+        return new SuccessErrorExtSerializer(true, "Succès de la demande de notification du courrier.").serialize();
 
       }
-      return new SuccessErrorExtSerializer(true, "Succès de la notification du courrier").serialize();
     }catch(Exception e){
       e.printStackTrace();
-      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la notification du courrier").serialize();
+      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la notification du courrier.").serialize();
     }
   }
 

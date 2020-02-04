@@ -20,6 +20,7 @@ import org.jooq.Result;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.NameTokenizers;
 import org.modelmapper.jooq.RecordValueReader;
+import org.postgresql.jdbc.PgSQLXML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -114,11 +115,8 @@ public class CourrierRepository {
       try {
         String query = context.select(COURRIER_MODELE.SOURCE_XML).from(COURRIER_MODELE).where(COURRIER_MODELE.ID.eq(idModele)).fetchOne(COURRIER_MODELE.SOURCE_XML);
         String queryFilled = fillXml(query, mapParametres);
-        Result<Record> result = context.fetch(queryFilled);
-        String resultXml = "";
-        for(Record r : result) {
-          resultXml = resultXml+r.getValue(0);
-        }
+        List<PgSQLXML> result = (List<PgSQLXML>)context.fetchValues(queryFilled);
+        String resultXml = result.get(0).getString();
         return resultXml;
 
       } catch(Exception e){
@@ -130,15 +128,17 @@ public class CourrierRepository {
   /**
    * Insertion du courrier dans la table document
    */
-  public void insertDocument(String code, String fichier){
+  public String insertDocument(String code, String fichier){
     try{
       int exist = context.fetchCount(context.select().from(DOCUMENT).where(DOCUMENT.CODE.eq(code)));
       if(exist == 0){
         int result = context.insertInto(DOCUMENT, DOCUMENT.CODE, DOCUMENT.FICHIER, DOCUMENT.REPERTOIRE, DOCUMENT.TYPE)
                 .values(code, fichier, paramConfService.getDossierCourriersExternes()+"/"+code+"/", "COURRIER").execute();
       }
+      return "";
     }catch(Exception e){
       e.printStackTrace();
+      return "remocra.document ";
     }
   }
 
@@ -146,21 +146,23 @@ public class CourrierRepository {
    * Insertion dans la table courrier_document
    * @param code code du dossier contenant le courrier
    */
-  public void insertCourrierDocument( String code, String nomDestinataire, String typeDestinataire, String idDestinataire){
+  public String insertCourrierDocument( String code, String nomDestinataire, String typeDestinataire, String idDestinataire){
     try{
       Long idDocument = context.select(DOCUMENT.ID).from(DOCUMENT).where(DOCUMENT.CODE.eq(code)).fetchOne(DOCUMENT.ID);
       int result = context.insertInto(COURRIER_DOCUMENT, COURRIER_DOCUMENT.DOCUMENT,
               COURRIER_DOCUMENT.NOM_DESTINATAIRE, COURRIER_DOCUMENT.TYPE_DESTINATAIRE, COURRIER_DOCUMENT.ID_DESTINATAIRE)
               .values(idDocument, nomDestinataire, typeDestinataire, idDestinataire).execute();
+      return "";
     }catch(Exception e){
       e.printStackTrace();
+      return "remocra.courrierDocument ";
     }
   }
 
   /**
    * Insertion de la notification du courrier dans la table email
    */
-  public void insertEmail(String nomCourrier, String destinataire, String typeDest, String idDest, String codeCourrier){
+  public String insertEmail(String nomCourrier, String destinataire, String typeDest, String idDest, String codeCourrier){
     try{
       String courrierNom = nomCourrier.split("\\.")[0];
       Long idDocument = context.select(DOCUMENT.ID).from(DOCUMENT).where(DOCUMENT.CODE.eq(codeCourrier)).fetchOne(DOCUMENT.ID);
@@ -171,11 +173,18 @@ public class CourrierRepository {
       String emailDestinataire = getMailDestinataire(idDest, typeDest);
       String nomExpediteur = context.select(PARAM_CONF.VALEUR).from(PARAM_CONF).where(PARAM_CONF.CLE.eq("PDI_SMTP_EME_NAME")).fetchOne(PARAM_CONF.VALEUR);
       String mailExpediteur = context.select(PARAM_CONF.VALEUR).from(PARAM_CONF).where(PARAM_CONF.CLE.eq("PDI_SMTP_EME_MAIL")).fetchOne(PARAM_CONF.VALEUR);
-      String corpsMailFilled = fillCorpsMail(corpsMail, codeLien);
+      String corpsMailFilled = "";
+      if(corpsMail != null && codeLien != null) {
+        corpsMailFilled = fillCorpsMail(corpsMail, codeLien);
+      } else {
+        return "remocra.email ";
+      }
       int result = context.insertInto(EMAIL, EMAIL.CORPS, EMAIL.DESTINATAIRE,EMAIL.DESTINATAIRE_EMAIL, EMAIL.EXPEDITEUR, EMAIL.EXPEDITEUR_EMAIL, EMAIL.OBJET)
               .values(corpsMailFilled, destinataire, emailDestinataire, nomExpediteur, mailExpediteur, objetMail).execute();
+      return "";
     }catch (Exception e){
       e.printStackTrace();
+      return "remocra.email ";
     }
   }
 

@@ -170,12 +170,12 @@
 
 				<!-- ==================================== Pop up notifier ============================================ -->
 
-	<b-modal id="modalPopupNotif" ref="modalPopupNotif" no-close-on-backdrop
-		title="Succès de notification" centered ok-only ok-title="Fermer" @ok="setModalVisibility('modalNotifier', false); setModalVisibility('modalApercu', false); setModalVisibility('modalModifier', false)" >
+	<b-modal id="modalPopupNotif" ref="modalPopupNotif" no-close-on-backdrop :header-bg-variant="styleHeaderNotif"
+		:title="titleNotif" centered ok-only ok-title="Fermer" @ok="setModalVisibility('modalNotifier', false); setModalVisibility('modalApercu', false); setModalVisibility('modalModifier', false)" >
 			<b-form-group>
 				<div class="row">
 					<div class="col-md-12 text-center">
-						<label>La demande de notification a bien été prise en compte.</label>
+						<label>{{this.retourNotification}}</label>
 					</div>
 				</div>
 			</b-form-group>
@@ -235,8 +235,11 @@ export default {
 			perPage: 15,
 			currentPageNon: 1,
 			currentPageOui: 1,
+			retourNotification: "",
+			titleNotif: "",
+			styleHeaderNotif: ""
     }
-	},
+  },
 
   props:{
 		thematique: {
@@ -311,7 +314,7 @@ export default {
 		addNotifierNon(){
 			_.forEach(this.retireDestinataire, dest =>{
 				this.tabDestinataireNotifierNon.push(dest);
-				this.tabDestinataireNotifierOui.splice(dest,1);
+				this.tabDestinataireNotifierOui.splice(this.tabDestinataireNotifierOui.indexOf(dest),1);
 			})
 			this.retireDestinataire = [];
 		},
@@ -512,14 +515,16 @@ export default {
 						'Content-Type': 'application/json'
 					}
 				}).then((response) => {
-					if (response.data.success) {
-						this.$refs.modalPopupNotif.show();
-					}
-				}).catch(function(error) {
-					console.error(error)
+                    this.titleNotif = "Succès de la notification";
+                    this.retourNotification = response.data.message;
+                    this.$refs.modalPopupNotif.show();
+				}).catch((error) => {
+                    this.titleNotif = "Echec de la notification"
+                    this.retourNotification = error.response.data.message;
+                    this.styleHeaderNotif = 'warning';
+                    this.$refs.modalPopupNotif.show();
 				})
 			}
-
 		}
   }
 };
