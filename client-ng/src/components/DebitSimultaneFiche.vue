@@ -201,7 +201,7 @@ export default {
   },
   props: {
     idDebitSimultane: {
-      type: Array,
+      type: String,
       required: false
     },
     // Liste des hydrants à prendre en compte lors de la création du débit simultané

@@ -67,7 +67,7 @@
           </li>
 
           <li>Débits simultanés
-            <a href="?module=debitsSimultanes&vitesseEau=2&listeHydrantsOnCreate=[24703,24701,24702]">création</a>, 
+            <a href="?module=debitsSimultanes&vitesseEau=2&listeHydrantsOnCreate=[854032,854537]">création</a>,
             <a href="?module=debitsSimultanes&id=20&vitesseEau=2">modification</a>
           </li>
  	  <li>Module de
@@ -129,9 +129,20 @@
           });
         } else if(params['module'] == 'debitsSimultanes' && params['listeHydrantsOnCreate']) {
           remocraVue.debitSimultaneFiche('#debitSimultaneFiche-container', {
-            listeHydrantsOnCreate: JSON.stringify(JSON.parse(params['listeHydrantsOnCreate'])),
             vitesseEau: params['vitesseEau'],
-            idDebitSimultane: null
+            idDebitSimultane: null,
+            dataOnCreate : {
+              diametreCanalisation: 100,
+              typeReseau: "Maillé",
+              site: "Emplacement",
+              hydrants: [{
+                id: 854032,
+                numero: "751130934"
+              }, {
+                id: 854537,
+                numero: "751130359"
+              }]
+            }
           });
         } else if (params['module']=='courrier'){
           remocraVue.buildCourrier('#courrier-container', {thematique: 'POINTDEAU'});
