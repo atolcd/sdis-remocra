@@ -1,0 +1,18 @@
+curl -v http://localhost:8070/v1/jobs -XPOST -d '{
+  "name": "purger_courrier_temp",
+  "displayname": "Purger courrier temp",
+  "schedule": "@daily",
+  "owner": "",
+  "owner_email": "",
+  "disabled": false,
+  "tags": {
+    "pdi": "7.1:1"
+  },
+  "metadata": { },
+  "retries": 0,
+  "concurrency": "forbid",
+  "executor": "shell",
+  "executor_config": {
+    "command": "/home/pdi/kitchen.sh -file:'var/remocra/modeles/processus_etl/commun/maintenance/purger_les_informations/purger_courrier_temp.kjb' -level:Error -param:'PDI_FICHIER_PARAMETRE=/home/pdi/remocra.properties' >> /var/remocra/pdi/log/remocra_purger_courrier_temp.log 2>&1"
+  }
+}'
