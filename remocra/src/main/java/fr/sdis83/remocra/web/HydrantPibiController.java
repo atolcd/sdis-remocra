@@ -49,6 +49,10 @@ public class HydrantPibiController {
                 // tournees
                 .include("data.tournees.id").include("data.tournees.nom")
                 .include( "data.utilisateurModification.id").include( "data.utilisateurModification.nom")
+                .include( "data.serviceEaux.id")
+                .include( "data.serviceEaux.nom")
+                .include( "data.serviceEaux.code")
+
 
             // photo associée
                 .include("data.photo")
@@ -60,6 +64,8 @@ public class HydrantPibiController {
                 .exclude( "data.organisme.zoneCompetence.geometrie")
                 .exclude( "data.utilisateurModification.*")
                 .exclude( "data.commune.geometrie")
+
+                .exclude("data.serviceEaux.*")
                 .exclude("data.jumele.*");
 
     }
