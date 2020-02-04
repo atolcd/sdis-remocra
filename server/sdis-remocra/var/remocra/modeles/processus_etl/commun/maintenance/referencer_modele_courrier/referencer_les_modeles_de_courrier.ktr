@@ -772,21 +772,6 @@ données du modèle de courrier</note>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>remocra.courrier_modele_droit</from>
-      <to>Erreur droit</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>remocra.courrier_parametre</from>
-      <to>Erreur paramètre</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>remocra.courrier_modele</from>
-      <to>Erreur modele</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Factice</from>
       <to>thematique id</to>
       <enabled>Y</enabled>
@@ -802,114 +787,6 @@ données du modèle de courrier</note>
       <enabled>Y</enabled>
     </hop>
   </order>
-  <step>
-    <name>Erreur droit</name>
-    <type>WriteToLog</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <loglevel>log_level_basic</loglevel>
-    <displayHeader>N</displayHeader>
-    <limitRows>N</limitRows>
-    <limitRowsNumber>1</limitRowsNumber>
-    <logmessage>Le droit d'accès au modèle n'a pas pu être inséré</logmessage>
-    <fields>
-      <field>
-        <name>filename</name>
-      </field>
-      <field>
-        <name>code_profil_droit</name>
-      </field>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>2115</xloc>
-      <yloc>765</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Erreur modele</name>
-    <type>WriteToLog</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <loglevel>log_level_basic</loglevel>
-    <displayHeader>N</displayHeader>
-    <limitRows>N</limitRows>
-    <limitRowsNumber>1</limitRowsNumber>
-    <logmessage>Le modèle de courrier n'a pas pu être inséré</logmessage>
-    <fields>
-      <field>
-        <name>filename</name>
-      </field>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1830</xloc>
-      <yloc>540</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Erreur paramètre</name>
-    <type>WriteToLog</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <loglevel>log_level_basic</loglevel>
-    <displayHeader>N</displayHeader>
-    <limitRows>Y</limitRows>
-    <limitRowsNumber>1</limitRowsNumber>
-    <logmessage>Le paramètre de configuration de modèle de courrier n'a pas pu être inséré</logmessage>
-    <fields>
-      <field>
-        <name>filename</name>
-      </field>
-      <field>
-        <name>nom</name>
-      </field>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>2040</xloc>
-      <yloc>30</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
   <step>
     <name>Factice</name>
     <type>Dummy</type>
@@ -972,7 +849,6 @@ données du modèle de courrier</note>
     <fields>
       <field>
         <name>filename</name>
-        <rename />
       </field>
       <field>
         <name>path</name>
@@ -1354,6 +1230,60 @@ données du modèle de courrier</note>
     <GUI>
       <xloc>1050</xloc>
       <yloc>540</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>chemin du modèle</name>
+    <type>Calculator</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <calculation>
+      <field_name>slash</field_name>
+      <calc_type>CONSTANT</calc_type>
+      <field_a>/</field_a>
+      <field_b />
+      <field_c />
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>Y</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <calculation>
+      <field_name>modele_ott</field_name>
+      <calc_type>ADD3</calc_type>
+      <field_a>modele_chemin</field_a>
+      <field_b>slash</field_b>
+      <field_c>modele_fichier</field_c>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1380</xloc>
+      <yloc>420</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2224,19 +2154,15 @@ données du modèle de courrier</note>
     <fields>
       <field>
         <name>modele_id</name>
-        <rename />
       </field>
       <field>
         <name>code_profil_droit_id</name>
-        <rename />
       </field>
       <field>
         <name>code_profil_droit</name>
-        <rename />
       </field>
       <field>
         <name>filename</name>
-        <rename />
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>
@@ -2267,43 +2193,33 @@ données du modèle de courrier</note>
     <fields>
       <field>
         <name>modele_id</name>
-        <rename />
       </field>
       <field>
         <name>nom</name>
-        <rename />
       </field>
       <field>
         <name>type_valeur</name>
-        <rename />
       </field>
       <field>
         <name>obligatoire</name>
-        <rename />
       </field>
       <field>
         <name>source_sql</name>
-        <rename />
       </field>
       <field>
         <name>source_sql_valeur</name>
-        <rename />
       </field>
       <field>
         <name>source_sql_libelle</name>
-        <rename />
       </field>
       <field>
         <name>formulaire_etiquette</name>
-        <rename />
       </field>
       <field>
         <name>formulaire_type_controle</name>
-        <rename />
       </field>
       <field>
         <name>formulaire_valeur_defaut</name>
-        <rename />
       </field>
       <field>
         <name>num_ordre</name>
@@ -2311,7 +2227,6 @@ données du modèle de courrier</note>
       </field>
       <field>
         <name>filename</name>
-        <rename />
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>
@@ -2342,7 +2257,6 @@ données du modèle de courrier</note>
     <fields>
       <field>
         <name>modele_id</name>
-        <rename />
       </field>
       <field>
         <name>thematiqueId</name>
@@ -2350,31 +2264,24 @@ données du modèle de courrier</note>
       </field>
       <field>
         <name>code</name>
-        <rename />
       </field>
       <field>
         <name>libelle</name>
-        <rename />
       </field>
       <field>
         <name>description</name>
-        <rename />
       </field>
       <field>
         <name>modele_ott</name>
-        <rename />
       </field>
       <field>
         <name>messageObjet</name>
-        <rename />
       </field>
       <field>
         <name>messageCorps</name>
-        <rename />
       </field>
       <field>
         <name>filename</name>
-        <rename />
       </field>
       <field>
         <name>requete</name>
@@ -2427,41 +2334,6 @@ données du modèle de courrier</note>
     </GUI>
   </step>
   <step>
-    <name>validation_xml</name>
-    <type>XSDValidator</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <xdsfilename>${PDI_CHEMIN_MODELES}/xsd/modeleCourrier.xsd</xdsfilename>
-    <xmlstream>filename</xmlstream>
-    <resultfieldname>valide</resultfieldname>
-    <addvalidationmsg>N</addvalidationmsg>
-    <validationmsgfield>ValidationMsgField</validationmsgfield>
-    <ifxmlunvalid />
-    <ifxmlvalid />
-    <outputstringfield>N</outputstringfield>
-    <xmlsourcefile>Y</xmlsourcefile>
-    <xsddefinedfield />
-    <xsdsource>filename</xsdsource>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>270</xloc>
-      <yloc>420</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
     <name>thematique id</name>
     <type>DBLookup</type>
     <description />
@@ -2509,8 +2381,8 @@ données du modèle de courrier</note>
     </GUI>
   </step>
   <step>
-    <name>chemin du modèle</name>
-    <type>Calculator</type>
+    <name>validation_xml</name>
+    <type>XSDValidator</type>
     <description />
     <distribute>Y</distribute>
     <custom_distribution />
@@ -2519,36 +2391,17 @@ données du modèle de courrier</note>
       <method>none</method>
       <schema_name />
     </partitioning>
-    <calculation>
-      <field_name>slash</field_name>
-      <calc_type>CONSTANT</calc_type>
-      <field_a>/</field_a>
-      <field_b />
-      <field_c />
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>Y</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
-    </calculation>
-    <calculation>
-      <field_name>modele_ott</field_name>
-      <calc_type>ADD3</calc_type>
-      <field_a>modele_chemin</field_a>
-      <field_b>slash</field_b>
-      <field_c>modele_fichier</field_c>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
-    </calculation>
+    <xdsfilename>${PDI_CHEMIN_MODELES}/xsd/modeleCourrier.xsd</xdsfilename>
+    <xmlstream>filename</xmlstream>
+    <resultfieldname>valide</resultfieldname>
+    <addvalidationmsg>N</addvalidationmsg>
+    <validationmsgfield>ValidationMsgField</validationmsgfield>
+    <ifxmlunvalid />
+    <ifxmlvalid />
+    <outputstringfield>N</outputstringfield>
+    <xmlsourcefile>Y</xmlsourcefile>
+    <xsddefinedfield />
+    <xsdsource>filename</xsdsource>
     <cluster_schema />
     <remotesteps>
       <input>
@@ -2557,7 +2410,7 @@ données du modèle de courrier</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1380</xloc>
+      <xloc>270</xloc>
       <yloc>420</yloc>
       <draw>Y</draw>
     </GUI>
@@ -2565,8 +2418,8 @@ données du modèle de courrier</note>
   <step_error_handling>
     <error>
       <source_step>remocra.courrier_modele</source_step>
-      <target_step>Erreur modele</target_step>
-      <is_enabled>Y</is_enabled>
+      <target_step />
+      <is_enabled>N</is_enabled>
       <nr_valuename />
       <descriptions_valuename />
       <fields_valuename />
@@ -2577,8 +2430,8 @@ données du modèle de courrier</note>
     </error>
     <error>
       <source_step>remocra.courrier_modele_droit</source_step>
-      <target_step>Erreur droit</target_step>
-      <is_enabled>Y</is_enabled>
+      <target_step />
+      <is_enabled>N</is_enabled>
       <nr_valuename />
       <descriptions_valuename />
       <fields_valuename />
@@ -2589,8 +2442,8 @@ données du modèle de courrier</note>
     </error>
     <error>
       <source_step>remocra.courrier_parametre</source_step>
-      <target_step>Erreur paramètre</target_step>
-      <is_enabled>Y</is_enabled>
+      <target_step />
+      <is_enabled>N</is_enabled>
       <nr_valuename />
       <descriptions_valuename />
       <fields_valuename />
