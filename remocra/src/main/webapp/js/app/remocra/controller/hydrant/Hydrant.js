@@ -1971,7 +1971,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                     if((JSON.parse(response.responseText).message) != "null"){
                         Ext.Msg.show({
                             title: 'Fin d\'indisponibilité temporaire',
-                            msg: JSON.parse(response.responseText).message
+                            msg: JSON.parse(response.responseText).message,
+                            buttons: Ext.Msg.OK,
+                            icon: Ext.MessageBox.WARNING
                         });
                     } else {return;}
                 } else {return;}

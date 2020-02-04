@@ -1334,10 +1334,12 @@ body.x-ie .x-btn-default-toolbar-small-icon-text-left .x-btn-inner {
 .listHydrant li:nth-child(odd) {margin-left:20px; background: #f4f4f4; }
 
 .listHydrant.listHydrantGrand {
-	height: 100px;
+	max-height: 200px;
+	min-height: 100px;
 	width: 200px;
-	margin-left: 30%;
+	margin-left: 25%;
 	text-align: center;
+	overflow-y: auto;
 }
 
 tr[class*="anomalie-"]:not([class*="anomalie-hbe-"]) > td:nth-child(2) {
