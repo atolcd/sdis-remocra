@@ -2257,6 +2257,10 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                                      id: hydrant.data.typeReseauNom
                                  };
 
+                                 if(dataCreation.diametreCanalisation === undefined || dataCreation.diametreCanalisation < hydrant.data.diametreCanalisation) {
+                                   dataCreation.diametreCanalisation = hydrant.data.diametreCanalisation;
+                                 }
+
                                  if(hydrant.data.codeNatureDeci){
                                      listeCodesDeci.push(hydrant.data.codeNatureDeci);
                                  }
