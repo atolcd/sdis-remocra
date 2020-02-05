@@ -12,30 +12,31 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
-import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.text.ParseException;
 
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
-import flexjson.ObjectBinder;
-import flexjson.factories.IntegerObjectFactory;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CourrierParametre;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CourrierModele;
 
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
+import fr.sdis83.remocra.domain.remocra.TypeDroit;
 import fr.sdis83.remocra.repository.CourrierRepository;
 import fr.sdis83.remocra.repository.DestinataireRepository;
+import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.TelechargementService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
+import fr.sdis83.remocra.web.model.CourrierDocumentModel;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
+import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
@@ -96,6 +97,44 @@ public class CourrierController {
                 return courrierRepository.getAllModeleByThematique(thematique);
             }
         }.serialize();
+    }
+
+    /**
+     *  Méthode d'accès aux courriers de l'utilisateur
+     */
+    @RequestMapping(value = "/courrierdocument", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('COURRIER_UTILISATEUR_R') or hasRight('COURRIER_ORGANISME_R') or hasRight('COURRIER_ADMIN_R')")
+    public ResponseEntity<String> courrierdocument(final @RequestParam(value = "page", required = false) Integer page,
+        final @RequestParam(value = "start", required = true) Integer start, final @RequestParam(value = "limit", required = true) Integer limit,
+        final @RequestParam(value = "sort", required = false) String sorts, final @RequestParam(value = "filter", required = false) String filters) {
+
+        final List<ItemSorting> sortList = ItemSorting.decodeJson(sorts);
+        final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
+
+        return new AbstractExtObjectSerializer<List<CourrierDocumentModel>>("Courriers retrieved.") {
+            @Override
+            protected List<CourrierDocumentModel> getRecord() {
+                return courrierRepository.getCourriersAccessibles(start, limit, itemFilterList);
+            }
+        }.serialize();
+    }
+
+    /**
+     *  Renvoie le nombre de courrier accessibles par l'utilisateur
+     */
+    @RequestMapping(value = "/courrierdocumentcount", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('COURRIER_UTILISATEUR_R') or hasRight('COURRIER_ORGANISME_R') or hasRight('COURRIER_ADMIN_R')")
+    public ResponseEntity<String> courrierdocumentCount(final @RequestParam(value = "page", required = false) Integer page,
+        final @RequestParam(value = "filter", required = false) String filters) {
+
+        final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
+
+        try{
+            int count = courrierRepository.getCourriersAccessiblesCount(itemFilterList);
+            return new SuccessErrorExtSerializer(true, String.valueOf(count)).serialize();
+        }catch(Exception e){
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
     }
 
     @RequestMapping(value = "/{code}")
@@ -300,7 +339,7 @@ public class CourrierController {
       String erreurCourrierDocument = "";
       String erreurEmail = "";
       for(Object dest : destinataires){
-        String idDest = String.valueOf(((HashMap) dest).get("id"));
+        Long idDest = Long.valueOf(String.valueOf(((HashMap) dest).get("id")));
         String typeDest = String.valueOf(((HashMap) dest).get("Type"));
         String nomDest = String.valueOf(((HashMap) dest).get("Nom"));
 

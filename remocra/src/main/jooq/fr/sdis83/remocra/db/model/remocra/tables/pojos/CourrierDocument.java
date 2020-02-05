@@ -25,14 +25,14 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CourrierDocument implements Serializable {
 
-	private static final long serialVersionUID = 1833914414;
+	private static final long serialVersionUID = 1801831096;
 
 	private Long    id;
 	private Long    document;
 	private String  code;
 	private String  nomDestinataire;
 	private String  typeDestinataire;
-	private String  idDestinataire;
+	private Long    idDestinataire;
 	private Instant accuse;
 
 	public CourrierDocument() {}
@@ -53,7 +53,7 @@ public class CourrierDocument implements Serializable {
 		String  code,
 		String  nomDestinataire,
 		String  typeDestinataire,
-		String  idDestinataire,
+		Long    idDestinataire,
 		Instant accuse
 	) {
 		this.id = id;
@@ -110,11 +110,11 @@ public class CourrierDocument implements Serializable {
 		return this;
 	}
 
-	public String getIdDestinataire() {
+	public Long getIdDestinataire() {
 		return this.idDestinataire;
 	}
 
-	public CourrierDocument setIdDestinataire(String idDestinataire) {
+	public CourrierDocument setIdDestinataire(Long idDestinataire) {
 		this.idDestinataire = idDestinataire;
 		return this;
 	}

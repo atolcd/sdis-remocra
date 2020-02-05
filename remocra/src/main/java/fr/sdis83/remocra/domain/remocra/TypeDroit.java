@@ -81,6 +81,9 @@ public class TypeDroit {
         DEBITS_SIMULTANES_C("debits_simultanes_C"),
         DEBITS_SIMULTANES_R("debits_simultanes_R"),
         COURRIER_C("courrier_C"),
+        COURRIER_UTILISATEUR_R("courrier_utilisateur_R"),
+        COURRIER_ORGANISME_R("courrier_organisme_R"),
+        COURRIER_ADMIN_R("courrier_admin_R"),
 
         // Module Permis
         PERMIS_R("permis_R"),

@@ -54,12 +54,22 @@ public class CourrierDocument {
     private TypeDestinataire typeDestinataire;
 
     @NotNull
-    private String idDestinataire;
+    private Long idDestinataire;
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
     @Column(name = "accuse", columnDefinition = "timestamp without time zone")
     private Date accuse;
+
+    @Column
+    private String objet;
+
+    @Column
+    private String reference;
+
+    @NotNull
+    @Column(name = "expediteur", columnDefinition = "character varying DEFAULT 'Application Remocra'")
+    private String expediteur;
 
     @DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
     Date getDateDoc() {

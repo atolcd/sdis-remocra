@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CourrierDocument extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -849165569;
+	private static final long serialVersionUID = 357623434;
 
 	/**
 	 * The reference instance of <code>remocra.courrier_document</code>
@@ -81,7 +81,7 @@ public class CourrierDocument extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.courrier_document.id_destinataire</code>. Identifiant du destinataire du courrier dans la base Remocra quand le type = ORGANISME ou UTILISATEUR
 	 */
-	public final TableField<Record, String> ID_DESTINATAIRE = createField("id_destinataire", org.jooq.impl.SQLDataType.VARCHAR, this, "Identifiant du destinataire du courrier dans la base Remocra quand le type = ORGANISME ou UTILISATEUR");
+	public final TableField<Record, Long> ID_DESTINATAIRE = createField("id_destinataire", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant du destinataire du courrier dans la base Remocra quand le type = ORGANISME ou UTILISATEUR");
 
 	/**
 	 * The column <code>remocra.courrier_document.accuse</code>. Date et heure d'accusé de téléchargement

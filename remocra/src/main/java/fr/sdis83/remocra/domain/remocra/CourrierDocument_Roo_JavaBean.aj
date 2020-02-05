@@ -49,11 +49,11 @@ privileged aspect CourrierDocument_Roo_JavaBean {
         this.typeDestinataire = typeDestinataire;
     }
     
-    public String CourrierDocument.getIdDestinataire() {
+    public Long CourrierDocument.getIdDestinataire() {
         return this.idDestinataire;
     }
     
-    public void CourrierDocument.setIdDestinataire(String idDestinataire) {
+    public void CourrierDocument.setIdDestinataire(Long idDestinataire) {
         this.idDestinataire = idDestinataire;
     }
     
@@ -64,5 +64,29 @@ privileged aspect CourrierDocument_Roo_JavaBean {
     public void CourrierDocument.setAccuse(Date accuse) {
         this.accuse = accuse;
     }
+
+    public String CourrierDocument.getObjet() {
+        return this.objet;
+    }
+
+    public void CourrierDocument.setObjet(String objet) {
+        this.objet = objet;
+    }
+
+    public String CourrierDocument.getReference() {
+        return this.reference;
+    }
+
+    public void CourrierDocument.setReference(String reference) {
+        this.reference = reference;
+    }
+    public String CourrierDocument.getExpediteur() {
+        return this.expediteur;
+    }
+
+    public void CourrierDocument.setExpediteur(String expediteur) {
+        this.expediteur = expediteur;
+    }
+
     
 }

@@ -1,20 +1,24 @@
 package fr.sdis83.remocra.repository;
 
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.CourrierParametre;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CourrierModele;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.CourrierParametre;
+import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
+import fr.sdis83.remocra.domain.remocra.TypeDroit;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
+import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.util.StatementFormat;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Types;
+import fr.sdis83.remocra.web.message.ItemFilter;
+import fr.sdis83.remocra.web.model.CourrierDocumentModel;
+import org.apache.log4j.Logger;
 import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Result;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.NameTokenizers;
+import org.modelmapper.jooq.RecordValueReader;
 import org.postgresql.jdbc.PgSQLXML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +26,13 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
+import javax.persistence.Query;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,6 +43,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static fr.sdis83.remocra.db.model.remocra.Tables.CONTACT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.COURRIER_DOCUMENT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.COURRIER_MODELE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.COURRIER_MODELE_DROIT;
@@ -41,9 +52,9 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.DOCUMENT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.EMAIL;
 import static fr.sdis83.remocra.db.model.remocra.Tables.PARAM_CONF;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ORGANISME;
-import static fr.sdis83.remocra.db.model.remocra.Tables.CONTACT;
-import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
+import static fr.sdis83.remocra.db.model.remocra.Tables.PARAM_CONF;
 import static fr.sdis83.remocra.db.model.remocra.Tables.THEMATIQUE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
 
 @Configuration
 public class CourrierRepository {
@@ -60,8 +71,13 @@ public class CourrierRepository {
   @Autowired
   private RequeteModeleRepository requeteModeleRepository;
 
+  @Autowired
+  private AuthoritiesUtil authUtils;
+
   @PersistenceContext
   private EntityManager entityManager;
+
+  private final Logger logger = Logger.getLogger(getClass());
 
   public CourrierRepository() {
 
@@ -89,6 +105,126 @@ public class CourrierRepository {
                     .and(COURRIER_MODELE_DROIT.PROFIL_DROIT.eq(utilisateurService.getCurrentUtilisateur().getProfilUtilisateur().getId()))
             ).fetchInto(CourrierModele.class);
     return l;
+  }
+
+
+    /**
+     * Information des courriers accessibles par l'utilisateur courant en fonction de ses droits
+     * @return Un objet JSON contenant les informations sur les courriers
+     */
+  public List<CourrierDocumentModel> getCourriersAccessibles(Integer start, Integer limit, List<ItemFilter> itemFilter) {
+
+    /* Niveau des droits d'accès de l'utilisateur courant
+     *  1 : Courriers propres uniquement
+     *  2 : Courriers propres, courriers de son organisme + courrier des organismes enfants
+     *  3 : Tous les courriers de l'application
+     */
+    int niveauDroits = 1;
+    if(authUtils.hasRight(TypeDroit.TypeDroitEnum.COURRIER_ADMIN_R)) {
+        niveauDroits = 3;
+    } else if(authUtils.hasRight(TypeDroit.TypeDroitEnum.COURRIER_ORGANISME_R)) {
+        niveauDroits = 2;
+    }
+
+    StringBuilder requete = this.getRequeteCourriersAccessibles(niveauDroits, itemFilter);
+
+    requete.append(" LIMIT "+limit+" OFFSET "+start);
+
+
+    List<CourrierDocumentModel> listeCourriers = new ArrayList<>();
+
+    Result<Record> records = context.resultQuery(requete.toString()).fetch();
+
+    ModelMapper modelMapper = new ModelMapper();
+    modelMapper.getConfiguration().addValueReader(new RecordValueReader());
+    modelMapper.getConfiguration().setSourceNameTokenizer(NameTokenizers.CAMEL_CASE);
+
+    for(Record r : records) {
+        listeCourriers.add(modelMapper.map(r, CourrierDocumentModel.class));
+    }
+
+    return listeCourriers;
+  }
+
+  private StringBuilder getRequeteCourriersAccessibles(Integer niveauDroits, List<ItemFilter> itemFilter) {
+    StringBuilder requete = new StringBuilder();
+
+    requete.append("SELECT cd.id as id, cd.document as document, cd.code as code, cd.nom_destinataire as nomDestinataire, cd.type_destinataire as typeDestinataire, "+
+                    "cd.id_destinataire as idDestinataire, cd.accuse as accuse, COALESCE(u.email, o.email_contact, c.email) as mail, d.date_doc as dateDoc " +
+                    "FROM remocra.courrier_document cd " +
+                    "JOIN remocra.document d ON d.id = cd.document "+
+                    "LEFT JOIN remocra.utilisateur u ON u.id = cd.id_destinataire AND type_destinataire = 'UTILISATEUR' "+
+                    "LEFT JOIN remocra.organisme o ON o.id = cd.id_destinataire AND type_destinataire = 'ORGANISME' "+
+                    "LEFT JOIN remocra.contact c ON c.id = cd.id_destinataire AND type_destinataire = 'CONTACT' WHERE ( ");
+
+
+
+    // Selon les droits de l'utilisateur, on détermine les clauses de la condition WHERE
+
+    StringBuilder conditionDroits = new StringBuilder();
+
+    // Droit de lire ses propes courriers -> on regade les courriers adressés au mail de l'utilisateur courant (utilisateur ou contact)
+    if(niveauDroits >= 1) {
+        conditionDroits.append("(UPPER(COALESCE(u.email, o.email_contact, c.email)) = UPPER('");
+        conditionDroits.append(utilisateurService.getCurrentUtilisateur().getEmail());
+        conditionDroits.append("')) ");
+    }
+
+    // Droit de lire les courriers de son organisme: en plus de lire ses courriers, lire ceux de son organisme + ceux de ses organismes enfants
+    if (niveauDroits >= 2) {
+        String listeOrganismes = (Organisme.getOrganismeAndChildren(utilisateurService.getCurrentUtilisateur().getOrganisme().getId().intValue())).toString();
+        conditionDroits.append(" OR (cd.type_destinataire = 'ORGANISME' AND cd.id_destinataire IN ");
+        conditionDroits.append(listeOrganismes.replace("[", "(").replace("]", ")"));
+        conditionDroits.append(" ) ");
+    }
+
+    // Droit de lire tous les courriers
+    if(niveauDroits == 3) {
+      conditionDroits.append(" OR TRUE");
+    }
+
+    requete.append(conditionDroits+" ) ");
+
+
+    // Mise en place des filtres
+    if (itemFilter!=null && itemFilter.size()>0) {
+        StringBuilder conditionFiltre = new StringBuilder();
+        conditionFiltre.append("true");
+        for(ItemFilter f : itemFilter) {
+            if ("document".equals(f.getFieldName())) {
+                conditionFiltre.append(" AND (cd.document = ").append(f.getValue()).append(") ");
+            } else if ("nomDestinataire".equals(f.getFieldName())) {
+                conditionFiltre.append(" AND (UPPER(cd.nom_destinataire) LIKE '%").append(f.getValue().toUpperCase()).append("%') ");
+            } else {
+                logger.info("CourrierRepository - critère de tri inconnu : " + f.getFieldName());
+            }
+        }
+        if(conditionFiltre.length() > 0) {
+            requete.append(" AND (").append(conditionFiltre.toString()).append(") ");
+        }
+    }
+
+    requete.append(" ORDER BY d.date_doc DESC ");
+
+    return requete;
+  }
+
+    /**
+     * Retourne le nombre de courriers accessibles par l'utilisateur courant
+     */
+  public Integer getCourriersAccessiblesCount(List<ItemFilter> itemFilter)
+  {
+    int niveauDroits = 1;
+    if(authUtils.hasRight(TypeDroit.TypeDroitEnum.COURRIER_ADMIN_R)) {
+        niveauDroits = 3;
+    } else if(authUtils.hasRight(TypeDroit.TypeDroitEnum.COURRIER_ORGANISME_R)) {
+        niveauDroits = 2;
+    }
+
+    StringBuilder count = new StringBuilder();
+    count.append("SELECT COUNT(*) FROM (").append(this.getRequeteCourriersAccessibles(niveauDroits, itemFilter)).append(") AS R");
+    Query query = entityManager.createNativeQuery(count.toString());
+    return Integer.valueOf(query.getSingleResult().toString());
   }
 
   //Retourne les paramètres d'un modèle de courrier
@@ -134,7 +270,7 @@ public class CourrierRepository {
    * Insertion dans la table courrier_document
    * @param code code du dossier contenant le courrier
    */
-  public String insertCourrierDocument( String code, String nomDestinataire, String typeDestinataire, String idDestinataire){
+  public String insertCourrierDocument( String code, String nomDestinataire, String typeDestinataire, Long idDestinataire){
     try{
       Long idDocument = context.select(DOCUMENT.ID).from(DOCUMENT).where(DOCUMENT.CODE.eq(code)).fetchOne(DOCUMENT.ID);
       int result = context.insertInto(COURRIER_DOCUMENT, COURRIER_DOCUMENT.DOCUMENT,
@@ -150,7 +286,7 @@ public class CourrierRepository {
   /**
    * Insertion de la notification du courrier dans la table email
    */
-  public String insertEmail(String nomCourrier, String destinataire, String typeDest, String idDest, String codeCourrier){
+  public String insertEmail(String nomCourrier, String destinataire, String typeDest, Long idDest, String codeCourrier){
     try{
       String courrierNom = nomCourrier.split("\\.")[0];
       Long idDocument = context.select(DOCUMENT.ID).from(DOCUMENT).where(DOCUMENT.CODE.eq(codeCourrier)).fetchOne(DOCUMENT.ID);
@@ -176,15 +312,15 @@ public class CourrierRepository {
     }
   }
 
-  public String getMailDestinataire(String idDest, String typeDest){
+  public String getMailDestinataire(Long idDest, String typeDest){
     String emailDest = "";
 
     if(typeDest.equals("ORGANISME")) {
-      emailDest = context.select(ORGANISME.EMAIL_CONTACT).from(ORGANISME).where(ORGANISME.ID.eq(Long.valueOf(idDest))).fetchOne(ORGANISME.EMAIL_CONTACT);
+      emailDest = context.select(ORGANISME.EMAIL_CONTACT).from(ORGANISME).where(ORGANISME.ID.eq(idDest)).fetchOne(ORGANISME.EMAIL_CONTACT);
     } else if(typeDest.equals("CONTACT")) {
-      emailDest = context.select(CONTACT.EMAIL).from(CONTACT).where(CONTACT.ID.eq(Long.valueOf(idDest))).fetchOne(CONTACT.EMAIL);
+      emailDest = context.select(CONTACT.EMAIL).from(CONTACT).where(CONTACT.ID.eq(idDest)).fetchOne(CONTACT.EMAIL);
     } else if(typeDest.equals("UTILISATEUR")) {
-      emailDest = context.select(UTILISATEUR.EMAIL).from(UTILISATEUR).where(UTILISATEUR.ID.eq(Long.valueOf(idDest))).fetchOne(UTILISATEUR.EMAIL);
+      emailDest = context.select(UTILISATEUR.EMAIL).from(UTILISATEUR).where(UTILISATEUR.ID.eq(idDest)).fetchOne(UTILISATEUR.EMAIL);
     }else {
       return null;
     }
