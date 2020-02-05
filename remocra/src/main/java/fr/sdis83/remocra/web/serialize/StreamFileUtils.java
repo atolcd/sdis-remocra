@@ -53,6 +53,8 @@ public class StreamFileUtils {
             contentType = "text/javascript";
         } else if ("html".equals(extension)) {
             contentType = "text/html";
+        } else if ("svg".equals(extension)) {
+            contentType = "image/svg+xml";
         } else {
             // On essaie de deviner
             contentType = new MimetypesFileTypeMap().getContentType(file);

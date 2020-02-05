@@ -94,11 +94,11 @@ public abstract class AbstractProxyResourcesController extends AbstractRemocraCo
 
     if (file.getName().endsWith(".htm")) {
       response.setContentType("text/html");
-    } if (file.getName().endsWith(".svg")) {
+    } else if (file.getName().endsWith(".svg")) {
       response.setContentType("image/svg+xml");
-    } if(file.getName().endsWith(".pdf")){
+    } else if(file.getName().endsWith(".pdf")){
       response.setContentType("application/pdf");
-    }else {
+    } else {
       String contentType = StreamFileUtils.getContentTypeFromFile(file);
       if (contentType != null) {
         response.setContentType(contentType);
