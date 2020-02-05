@@ -50,7 +50,6 @@ public class RequeteModeleController {
 
     final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
 
-    System.out.println(itemFilterList);
     return new AbstractExtListSerializer<RequeteModele>("RequeteModele retrieved.") {
 
       @Override
