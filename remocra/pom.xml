@@ -1088,7 +1088,6 @@
 								<records>false</records>
 								<fluentSetters>true</fluentSetters>
 							</generate>
-							<name>org.jooq.util.DefaultGenerator</name>
 							<database>
 								<name>org.jooq.util.postgres.PostgresDatabase</name>
 								<includes>.*</includes>
