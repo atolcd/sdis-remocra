@@ -288,10 +288,7 @@ public class CriseRepository {
       }
 
       //on fait un update pour déclencher le trigger et remplir la table crise suivi
-      context.update(CRISE)
-          .set(row(CRISE.NOM)
-              ,row(c.getNom()))
-          .where(CRISE.ID.eq(idCrise)).execute();
+      context.update(CRISE).set(CRISE.NOM, c.getNom()).where(CRISE.ID.eq(idCrise)).execute();
     }
 
     return c;
