@@ -13,7 +13,6 @@ node {
 }
 pipeline {
   options {
-    disableConcurrentBuilds()
     buildDiscarder(logRotator(numToKeepStr: '10'))
   }
   parameters {
@@ -32,7 +31,7 @@ pipeline {
           steps {
             script {
               docker.image('cvagner/docker-jdk-maven-sencha-cmd:8-3.6.3-3.0.2')
-                .inside("--name remocra-build -u ${user_id}:${group_id} -w /app -v ${pwd()}:/app -v /var/lib/jenkins:/var/maven -e HOME=/var/maven -e MAVEN_CONFIG=/var/maven/.m2 -e MAVEN_OPTS='-Duser.home=/var/maven'") {
+                .inside("-u ${user_id}:${group_id} -w /app -v ${pwd()}:/app -v /var/lib/jenkins:/var/maven -e HOME=/var/maven -e MAVEN_CONFIG=/var/maven/.m2 -e MAVEN_OPTS='-Duser.home=/var/maven'") {
                 sh 'mvn clean verify -P modeinfo-able -P update'
                 sh 'cp -r ./remocra/target/remocra.war ./docker/remocra/ext'
               }
