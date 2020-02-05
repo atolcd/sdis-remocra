@@ -9,7 +9,7 @@ node {
   DOCKER_UID = 2000
   DOCKER_GID = 2000
   // Version de Remocra
-  REMOCRA_VERSION=$(cat pom.xml | grep "<version" | sed 's%<version>%%g'| sed 's%</version>%%g' | sed 's% %%g')
+  REMOCRA_VERSION = sh(returnStdout: true, script: 'cat pom.xml | grep "<version" | sed "s%<version>%%g"| sed "s%</version>%%g" | sed "s% %%g"').trim()
 }
 pipeline {
   options {
