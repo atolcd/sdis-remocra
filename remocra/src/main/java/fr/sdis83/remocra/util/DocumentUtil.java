@@ -16,9 +16,9 @@ import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfSignatureAppearance;
-import com.lowagie.text.pdf.PdfStamper;
+/*import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfSignatureAppearance;
+import com.itextpdf.text.pdf.PdfStamper;*/
 import fr.opensagres.xdocreport.converter.ConverterRegistry;
 import fr.opensagres.xdocreport.converter.ConverterTypeTo;
 import fr.opensagres.xdocreport.converter.IConverter;
@@ -328,7 +328,7 @@ public class DocumentUtil {
         }
     }
 
-    public void signPdf(String cheminPdf, String cheminCertificat, String mdpCertificat){
+    /*public void signPdf(String cheminPdf, String cheminCertificat, String mdpCertificat){
         try{
             //Création d'un keyStore
             KeyStore ks = KeyStore.getInstance("pkcs12");
@@ -358,5 +358,5 @@ public class DocumentUtil {
         } catch (Exception e){
             e.printStackTrace();
         }
-    }
+    }*/
 }

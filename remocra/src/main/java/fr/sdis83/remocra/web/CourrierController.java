@@ -256,7 +256,8 @@ public class CourrierController {
 
       //Signature du pdf
       if(!paramConfService.getPdiCheminPfxFile().equals("") && !paramConfService.getPdiPfxPassword().equals("")){
-        DocumentUtil.getInstance().signPdf(docOTT.getRepertoire() + nomPdf, paramConfService.getPdiCheminPfxFile(), paramConfService.getPdiPfxPassword());
+        // todo : ajouter les dépendednces qu'il faut  
+        //DocumentUtil.getInstance().signPdf(docOTT.getRepertoire() + nomPdf, paramConfService.getPdiCheminPfxFile(), paramConfService.getPdiPfxPassword());
       }
 
       //Suppression de l'ott
