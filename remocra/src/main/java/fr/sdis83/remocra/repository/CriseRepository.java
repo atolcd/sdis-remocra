@@ -369,8 +369,8 @@ public class CriseRepository {
         }
         if(redefinition != null) {
           context.update(CRISE)
-              .set(row(CRISE.REDEFINITION)
-                  ,row(redefinition))
+              .set(CRISE.REDEFINITION
+                  ,redefinition)
               .where(CRISE.ID.eq(id)).execute();
         }
 

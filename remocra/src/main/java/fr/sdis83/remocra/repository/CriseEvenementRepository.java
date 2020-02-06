@@ -282,8 +282,8 @@ public class CriseEvenementRepository {
       }
 
       context.update(CRISE_EVENEMENT)
-          .set(row(CRISE_EVENEMENT.NOM)
-              ,row(c.getNom()))
+          .set(CRISE_EVENEMENT.NOM
+              ,c.getNom())
           .where(CRISE_EVENEMENT.ID.eq(Long.valueOf(idCriseEvent))).execute();
 
     }

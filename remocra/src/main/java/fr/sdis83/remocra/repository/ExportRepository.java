@@ -72,8 +72,8 @@ public class ExportRepository {
       } else if (ped.getAccuse() == null) {
         ped.setAccuse(new Instant());
         context.update(PROCESSUS_ETL_DOCUMENT)
-            .set(row(PROCESSUS_ETL_DOCUMENT.ACCUSE)
-                ,row(new Instant()))
+            .set(PROCESSUS_ETL_DOCUMENT.ACCUSE
+                ,new Instant())
             .where(PROCESSUS_ETL_DOCUMENT.ID.eq(ped.getId())).execute();
       }
       return true;
