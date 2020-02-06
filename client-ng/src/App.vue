@@ -60,7 +60,6 @@ export default {
 
 .gestcrise .modal-footer .btn-secondary {
   margin-left: .25rem;
-  position: absolute;
   width: 80px;
 }
 
