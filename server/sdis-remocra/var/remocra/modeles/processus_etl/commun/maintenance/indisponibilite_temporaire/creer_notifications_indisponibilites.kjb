@@ -948,7 +948,7 @@ WHERE h.dispo_terrestre = 'INDISPO'</custom_sql>
       <type>JOB</type>
       <specification_method>filename</specification_method>
       <job_object_id />
-      <filename>/media/roger/DATA/repo/sdis-remocra/server/sdis-remocra/var/remocra/modeles/processus_etl/commun/maintenance/indisponibilite_temporaire/notif_pei_reste_indispo/inserer_notif_pei_reste_indispo.kjb</filename>
+      <filename>${Internal.Entry.Current.Directory}/notif_pei_reste_indispo/inserer_notif_pei_reste_indispo.kjb</filename>
       <jobname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -1252,7 +1252,7 @@ WHERE h.dispo_terrestre = 'INDISPO'</custom_sql>
 Sinon on passe au fin d'indisponibilité directement.</note>
       <xloc>150</xloc>
       <yloc>75</yloc>
-      <width>338</width>
+      <width>354</width>
       <heigth>58</heigth>
       <fontname>Arial</fontname>
       <fontsize>10</fontsize>
@@ -1276,7 +1276,7 @@ Sinon on passe à l'enclenchement/levé de l'indispo auto et
 	aux PEI restés indisponible après cette levée auto.</note>
       <xloc>750</xloc>
       <yloc>195</yloc>
-      <width>350</width>
+      <width>354</width>
       <heigth>74</heigth>
       <fontname>Arial</fontname>
       <fontsize>10</fontsize>
