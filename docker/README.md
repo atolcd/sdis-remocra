@@ -20,7 +20,8 @@ Certains fichiers sont téléchargés lors du build. Les builds répétés peuve
   cd ~/projets/atolcd/sdis-remocra/docker/pdi-4.4-dkron/ext \
   && wget https://sourceforge.net/projects/pentaho/files/Data%20Integration/4.4.0-stable/pdi-ce-4.4.0-stable.zip \
   && wget https://github.com/atolcd/sdis-remocra/releases/download/pentaho-4.4-remocra-deps-4da0f/pentaho-4.4-remocra-deps.zip \
-  && wget https://github.com/distribworks/dkron/releases/download/v${DKRON_VERSION}/dkron_${DKRON_VERSION}_linux_amd64.tar.gz
+  && wget https://github.com/distribworks/dkron/releases/download/v${DKRON_VERSION}/dkron_${DKRON_VERSION}_linux_amd64.tar.gz \
+  && wget https://jdbc.postgresql.org/download/postgresql-42.2.10.jre7.jar
 )
 # pdi-dkron
 (
@@ -30,7 +31,8 @@ Certains fichiers sont téléchargés lors du build. Les builds répétés peuve
   && wget https://github.com/atolcd/pentaho-gis-plugins/releases/download/v1.2.1/pentaho-gis-plugins-1.2.1-bin-7.zip \
   && wget https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/home/postgres/pdi/libext/JDBC/ojdbc14.jar \
   && wget https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/home/postgres/pdi/libext/JDBC/orai18n.jar \
-  && wget https://github.com/distribworks/dkron/releases/download/v${DKRON_VERSION}/dkron_${DKRON_VERSION}_linux_amd64.tar.gz
+  && wget https://github.com/distribworks/dkron/releases/download/v${DKRON_VERSION}/dkron_${DKRON_VERSION}_linux_amd64.tar.gz \
+  && wget https://jdbc.postgresql.org/download/postgresql-42.2.10.jar
 )
 ```
 

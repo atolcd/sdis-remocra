@@ -60,9 +60,17 @@ RUN set -x \
 COPY Dockerfile ext/ojdbc14.jar* ext/orai18n.jar* ${KETTLE_HOME}/lib/
 RUN set -x \
   && ([ -f ${KETTLE_HOME}/lib/ojdbc14.jar ] \
-    || wget -P ${KETTLE_HOME} -q https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/home/postgres/pdi/libext/JDBC/ojdbc14.jar) \
+    || wget -P ${KETTLE_HOME}/lib -q https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/home/postgres/pdi/libext/JDBC/ojdbc14.jar) \
   && ([ -f ${KETTLE_HOME}/lib/orai18n.jar ] \
-    || wget -P ${KETTLE_HOME} -q https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/home/postgres/pdi/libext/JDBC/orai18n.jar) \
+    || wget -P ${KETTLE_HOME}/lib -q https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/home/postgres/pdi/libext/JDBC/orai18n.jar) \
+  && rm -f Dockerfile # cleaning
+
+# Mise à jour de JDBC driver
+RUN rm -f ${KETTLE_HOME}/lib/postgresql-*.jdbc*.jar
+COPY Dockerfile ext/postgresql-42.2.10.jar* ${KETTLE_HOME}/lib/
+RUN set -x \
+  && ([ -f ${KETTLE_HOME}/lib/postgresql-42.2.10.jar ] \
+    || wget -P ${KETTLE_HOME}/lib -q https://jdbc.postgresql.org/download/postgresql-42.2.10.jar) \
   && rm -f Dockerfile # cleaning
 
 ENV PATH ${KETTLE_HOME}/kitchen.sh:$PATH
