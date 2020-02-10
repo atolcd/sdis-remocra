@@ -22,6 +22,7 @@ Ext.require('Sdis.Remocra.features.hydrants.declahydrant.DeclaHydrantWindow');
 Ext.require('Sdis.Remocra.features.adresses.delib.DelibWindow');
 Ext.require('Sdis.Remocra.features.dfci.receptravaux.RecepTravauxWindow');
 Ext.require('Sdis.Remocra.features.hydrants.televerser.TeleverserHydrantWindow');
+Ext.require('Sdis.Remocra.features.courriers.Courriers');
 
 Ext.ns('Sdis.Remocra');
 Ext.define('Sdis.Remocra.controller.Router', {
@@ -147,6 +148,7 @@ Ext.define('Sdis.Remocra.controller.Router', {
 
         this.routes['admin'] = this.getAdmiRoutes();
         this.routes['profil'] = this.getProfilRoutes();
+        this.routes['courriers'] = this.getCourriersRoutes();
     },
     getGeneRoutes: function() {
         var routes = [];
@@ -360,6 +362,14 @@ Ext.define('Sdis.Remocra.controller.Router', {
         };
         routes['password'] = {
             xtype: 'crResetPassword'
+        };
+        return routes;
+    },
+
+    getCourriersRoutes: function() {
+        var routes = [];
+        routes['index'] = {
+            xtype: 'crCourriers'
         };
         return routes;
     }

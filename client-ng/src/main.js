@@ -7,6 +7,7 @@ import Contacts from './components/Contacts'
 import FicheIndisponibiliteTemporaire from './components/FicheIndisponibiliteTemporaire'
 import DebitSimultaneSelection from './components/DebitSimultaneSelection'
 import DebitSimultaneFiche from './components/DebitSimultaneFiche'
+import VisualisationCourriers from './components/VisualisationCourriers.vue'
 // import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import Courrier from './components/Courrier'
@@ -129,6 +130,19 @@ const buildCourrier = function(el, data){
   return v
 }
 
+//module de visualisation de courrier
+const visualisationCourriers = function(id){
+  var v = new Vue({
+    el: '#' + id,
+    bus: new Vue(),
+    components: {
+        VisualisationCourriers
+    },
+    template: "<VisualisationCourriers />"
+  })
+  return v
+}
+
 export {
   criseBuildMap,
   peiBuildFiche,
@@ -136,5 +150,6 @@ export {
   buildContacts,
   debitSimultaneSelection,
   debitSimultaneFiche,
-  buildCourrier
+  buildCourrier,
+  visualisationCourriers
 }
