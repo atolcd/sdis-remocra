@@ -56,6 +56,8 @@
         // Configuration du contenu
         thematiques : ['POINTDEAU','ADRESSES', 'PERMIS', 'DFCI', 'RISQUES', 'DIVERS']
     }, {
+      type: 'courriers'
+    }, {
         //profils : ,
         type : 'doc',
         title : 'Cartothèque',

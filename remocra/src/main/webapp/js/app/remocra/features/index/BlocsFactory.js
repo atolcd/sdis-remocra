@@ -471,6 +471,25 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
         };
     },
 
+    createCourriersBloc: function(title, icon, minHeight) {
+        if (!Sdis.Remocra.Rights.hasRight('COURRIER_UTILISATEUR_R')
+            && !Sdis.Remocra.Rights.hasRight('COURRIER_ORGANISME_R')
+            && !Sdis.Remocra.Rights.hasRight('COURRIER_GLOBAL_R')) {
+            return null;
+        }
+        return {
+            type: 'courriers',
+            minh: minHeight || this.randomHeight(),
+            title: title || 'Courriers',
+            img: icon || 'documents.png',
+            items: [{
+                type: 'href',
+                href: 'courriers',
+                lbl: 'Recherche de courrier'
+            }]
+        };
+    },
+
     createBloc: function(cfgBloc) {
         // Présenter ou non le bloc en fonction du profil
         // Profils (affichage du bloc ou non)
@@ -531,6 +550,8 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             fn = this.createAdministrationBloc;
         } else if (cfgBloc.type == 'cartographie') {
             fn = this.createCartographieBloc;
+        } else if (cfgBloc.type == 'courriers') {
+            fn = this.createCourriersBloc;
         }
         if (fn) {
             return Ext.bind(fn, this)(title, icon, minHeight);
