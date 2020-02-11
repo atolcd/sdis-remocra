@@ -16,6 +16,9 @@ RUN addgroup -g ${GID} -S pdi && \
 
 COPY scripts/* /scripts/
 
+#Variable d'environnement tz
+RUN apk add tzdata
+
 # ---------------
 # Pentaho Data Integration
 # ---------------
@@ -23,6 +26,7 @@ COPY scripts/* /scripts/
 # ENV
 ENV LANG                        fr_FR.UTF-8
 ENV ENCODING                    UTF-8
+ENV TZ                          Europe/Paris
 
 ENV KETTLE_HOME                 /home/pdi
 ENV PENTAHO_METASTORE_FOLDER    ${KETTLE_HOME}/.pentaho/metastore
