@@ -24,6 +24,8 @@ public class CourrierDocumentModel {
 
     private Date dateDoc;
 
+    private String nomDocument;
+
     public Long getId() {
         return id;
     }
@@ -94,5 +96,13 @@ public class CourrierDocumentModel {
 
     public void setDateDoc(Date dateDoc) {
         this.dateDoc = dateDoc;
+    }
+
+    public String getNomDocument() {
+        return nomDocument;
+    }
+
+    public void setNomDocument(String nomDocument) {
+        this.nomDocument = nomDocument;
     }
 }

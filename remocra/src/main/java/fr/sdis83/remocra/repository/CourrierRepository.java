@@ -150,7 +150,8 @@ public class CourrierRepository {
     StringBuilder requete = new StringBuilder();
 
     requete.append("SELECT cd.id as id, cd.document as document, cd.code as code, cd.nom_destinataire as nomDestinataire, cd.type_destinataire as typeDestinataire, "+
-                    "cd.id_destinataire as idDestinataire, cd.accuse as accuse, COALESCE(u.email, o.email_contact, c.email) as mail, d.date_doc as dateDoc " +
+                    "cd.id_destinataire as idDestinataire, cd.accuse as accuse, COALESCE(u.email, o.email_contact, c.email) as mail, d.date_doc as dateDoc, " +
+                    "d.fichier as nomDocument "+
                     "FROM remocra.courrier_document cd " +
                     "JOIN remocra.document d ON d.id = cd.document "+
                     "LEFT JOIN remocra.utilisateur u ON u.id = cd.id_destinataire AND type_destinataire = 'UTILISATEUR' "+
