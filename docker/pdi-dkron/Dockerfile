@@ -66,7 +66,7 @@ RUN set -x \
   && rm -f Dockerfile # cleaning
 
 # Mise à jour de JDBC driver
-RUN rm -f ${KETTLE_HOME}/lib/postgresql-*.jdbc*.jar
+RUN rm -f ${KETTLE_HOME}/lib/postgresql-*
 COPY Dockerfile ext/postgresql-42.2.10.jar* ${KETTLE_HOME}/lib/
 RUN set -x \
   && ([ -f ${KETTLE_HOME}/lib/postgresql-42.2.10.jar ] \

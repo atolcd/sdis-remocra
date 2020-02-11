@@ -59,7 +59,7 @@ RUN set -x \
 
 
 # Mise à jour de JDBC driver
-RUN rm -f ${KETTLE_HOME}/libext/JDBC/postgresql-*.jdbc*.jar
+RUN rm -f ${KETTLE_HOME}/libext/JDBC/postgresql-*
 COPY Dockerfile ext/postgresql-42.2.10.jre7.jar* ${KETTLE_HOME}/libext/JDBC/
 RUN set -x \
   && ([ -f ${KETTLE_HOME}/libext/JDBC/postgresql-42.2.10.jre7.jar ] \
