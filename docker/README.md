@@ -7,7 +7,7 @@ Certains fichiers sont téléchargés lors du build. Les builds répétés peuve
 ```sh
 # geoserver
 (
-  GS_VERSION=2.16.0
+  GS_VERSION=2.16.2
   cd ~/projets/atolcd/sdis-remocra/docker/geoserver/ext \
   && wget https://sourceforge.net/projects/geoserver/files/GeoServer/${GS_VERSION}/geoserver-${GS_VERSION}-bin.zip \
   && wget https://sourceforge.net/projects/geoserver/files/GeoServer/${GS_VERSION}/extensions/geoserver-${GS_VERSION}-querylayer-plugin.zip \

@@ -2,7 +2,7 @@ FROM openjdk:8
 
 LABEL maintainer="ATOL Conseils & Développements"
 
-ARG GS_VERSION=2.16.0
+ARG GS_VERSION=2.16.2
 
 # Trick copy or download (Docker must exists). Pattern :
 # COPY Dockerfile <resource>* <dest>/
