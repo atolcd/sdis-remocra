@@ -192,10 +192,25 @@ public class CourrierRepository {
         StringBuilder conditionFiltre = new StringBuilder();
         conditionFiltre.append("true");
         for(ItemFilter f : itemFilter) {
-            if ("document".equals(f.getFieldName())) {
+            if ("document".equalsIgnoreCase(f.getFieldName())) {
                 conditionFiltre.append(" AND (cd.document = ").append(f.getValue()).append(") ");
-            } else if ("nomDestinataire".equals(f.getFieldName())) {
+
+            } else if ("objet".equalsIgnoreCase(f.getFieldName())) {
+                conditionFiltre.append(" AND (UPPER(d.fichier) LIKE '%").append(f.getValue().toUpperCase()).append("%') ");
+
+            } else if ("nomDestinataire".equalsIgnoreCase(f.getFieldName())) {
                 conditionFiltre.append(" AND (UPPER(cd.nom_destinataire) LIKE '%").append(f.getValue().toUpperCase()).append("%') ");
+
+            } else if("accuse".equalsIgnoreCase(f.getFieldName())) {
+                if("true".equalsIgnoreCase(f.getValue())) {
+                    conditionFiltre.append(" AND cd.accuse IS NOT NULL ");
+                } else if("false".equalsIgnoreCase(f.getValue())) {
+                    conditionFiltre.append(" AND cd.accuse IS NULL ");
+                }
+            } else if("destinataire".equalsIgnoreCase(f.getFieldName())) {
+                conditionFiltre.append(" AND (UPPER(COALESCE(u.email, o.email_contact, c.email)) LIKE '%").append(f.getValue().toUpperCase()).append("%') ");
+            } else if("date".equalsIgnoreCase(f.getFieldName())) {
+                conditionFiltre.append(" AND (d.date_doc > '").append(f.getValue()).append("') ");
             } else {
                 logger.info("CourrierRepository - critère de tri inconnu : " + f.getFieldName());
             }
