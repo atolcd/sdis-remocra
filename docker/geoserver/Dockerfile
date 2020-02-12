@@ -11,6 +11,8 @@ ARG GS_VERSION=2.16.2
 ENV GEOSERVER_HOME=/var/lib/geoserver
 ENV GEOSERVER_DATA_DIR=/var/remocra/geoserver_data
 
+ENV TZ=Europe/Paris
+
 COPY scripts/* /scripts/
 
 # unzip

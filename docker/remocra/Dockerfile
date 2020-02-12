@@ -13,6 +13,7 @@ COPY scripts/* /scripts/
 
 # ENV
 ENV LANG fr_FR.UTF-8
+ENV TZ Europe/Paris
 
 RUN rm -rf /usr/local/tomcat/webapps/*
 
