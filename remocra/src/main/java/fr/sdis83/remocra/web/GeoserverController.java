@@ -20,6 +20,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.MethodNotSupportedException;
 import org.apache.http.impl.DefaultHttpRequestFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
@@ -54,6 +57,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -284,6 +288,9 @@ public class GeoserverController {
             // Exécution de la requête
             // --------------------
 
+            HttpParams httpParams = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpParams, 30000);
+            HttpConnectionParams.setSoTimeout(httpParams, 30000);
             DefaultHttpClient httpclient = new DefaultHttpClient();
             HttpResponse srcResponse = httpclient.execute(httpHost, targetRequest);
 
@@ -329,8 +336,11 @@ public class GeoserverController {
         } catch (MethodNotSupportedException e) {
             log.error("Proxy WMS : méthode invoquée non supportée", e);
             response.setStatus(500);
+        } catch (SocketTimeoutException e) {
+            log.error("Proxy WMS : erreur de timeout" + e.getMessage());
+            response.setStatus(500);
         } catch (IOException e) {
-            log.error("Proxy WMS : erreur d'entrée / sortie", e);
+            log.error("Proxy WMS : erreur d'entrée / sortie" + e.getMessage());
             response.setStatus(500);
         }
     }
