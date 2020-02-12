@@ -8,7 +8,7 @@
 
     <div class="row">
       <div class="col-md-12">
-        <table class="table table-striped table-sm table-bordered" id="tableCourriers">
+        <table class="table table-sm table-bordered" id="tableCourriers">
           <thead class="thead-light">
             <th scope="col">
               <p>Objet</p>
@@ -36,11 +36,11 @@
             </th>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in listeCourriers" :key="index">
+            <tr v-for="(item, index) in listeCourriers" :key="index" :class="getStripeStyle(item.document)">
               <td v-if="getRowSpan(index)" :rowSpan="getRowSpan(index)">{{item.nomDocument}}</td>
               <td v-if="getRowSpan(index)" :rowSpan="getRowSpan(index)"></td>
               <td v-if="getRowSpan(index)" :rowSpan="getRowSpan(index)">{{item.dateDoc | formatDate}}</td>
-              <td></td>
+              <td v-if="getRowSpan(index)" :rowSpan="getRowSpan(index)"></td>
               <td>{{item.mail}}</td>
               <td class="colAccuse"><img v-if="item.accuse" src="../assets/img/check.png" width="32" class="badge badge-pill badge-success" /></td>
             </tr>
@@ -187,6 +187,18 @@ export default {
       return null;
     },
 
+    /*
+     * Gestion des couleurs des lignes du tableau
+     * A cause des rowspan, la coloration automatique par Bootstrap ne fonctionne pas (lignes juxtaposées de même couleur)
+     * On doit passer par du javascript, les sélecteurs CSS nécessaires pour ce fix précis n'existent pas
+     */
+    getStripeStyle: function(document) {
+      if(_.indexOf(_.uniq(_.values(_.mapValues(this.listeCourriers, 'document'))), document) % 2){
+        return "stripeDark";
+      }
+      return "stripeLight";
+    },
+
     onFilterChange() {
       this.pageActuelle = 1;
       this.refreshCourriers();
@@ -216,6 +228,15 @@ h1 {
   padding-left: 2px;
   font-size: 16px;
 }
+
+.stripeLight {
+  background-color: #f8f9fa;
+}
+
+.stripeDark {
+  background-color: #e1e2e3;
+}
+
 #tableCourriers td {
   vertical-align : middle;
 }
