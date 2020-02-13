@@ -99,7 +99,6 @@ public class CourrierController {
     }
 
     @RequestMapping(value = "/{code}")
-    @PreAuthorize("hasRight('COURRIER_C')")
     public void downloadCourrierDocument(@PathVariable("code") String code, HttpServletResponse response)
             throws IOException {
         String path = telechargementsService.getCourrierFilePathFromCode(code);
@@ -109,7 +108,6 @@ public class CourrierController {
     }
 
     @RequestMapping(value = "/show/{code}")
-    @PreAuthorize("hasRight('COURRIER_C')")
     public void showCourrierDocument(@PathVariable("code") String code, HttpServletResponse response)
             throws IOException {
         String path = telechargementsService.getCourrierFilePathFromCode(code);
