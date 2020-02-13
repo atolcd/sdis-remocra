@@ -4,9 +4,10 @@ import fr.sdis83.remocra.db.model.remocra.tables.pojos.CourrierParametre;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CourrierModele;
 import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
+import fr.sdis83.remocra.util.StatementFormat;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
-import fr.sdis83.remocra.web.message.ItemFilter;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,12 +15,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
 import org.jooq.DSLContext;
-import org.jooq.Meta;
-import org.jooq.Record;
-import org.jooq.Result;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.NameTokenizers;
-import org.modelmapper.jooq.RecordValueReader;
 import org.postgresql.jdbc.PgSQLXML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,23 +22,16 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
-import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import net.sf.jooreports.templates.DocumentTemplate;
-import net.sf.jooreports.templates.DocumentTemplateFactory;
-import org.xml.sax.InputSource;
 
 import static fr.sdis83.remocra.db.model.remocra.Tables.COURRIER_DOCUMENT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.COURRIER_MODELE;
@@ -288,7 +276,7 @@ public class CourrierRepository {
       for (int j = 0; j < typeParametre.size(); j++) {
         //si le parametre de la requete correspond au parametre de json on le remplace par la valeur (les index preparedStatement commence par 1)
         if (requestParams.get(i).equals(typeParametre.get(j).get("nomparametre"))) {
-          this.setObject(preparedStatement,i+1, typeParametre.get(j));
+          StatementFormat.PreparedStatement(preparedStatement,i+1, typeParametre.get(j));
         }
       }
     }
@@ -297,38 +285,6 @@ public class CourrierRepository {
     lstResult = this.resultSetToArrayList(resultSet);
     connection.close();
     return lstResult;
-  }
-
-  public void setObject(PreparedStatement ps, int index ,HashMap parameterObj) throws ParseException, SQLException {
-
-    if (parameterObj.get("type").toString().equalsIgnoreCase("Byte")) {
-      ps.setInt(index, (Byte.valueOf(parameterObj.get("valeur").toString())));
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Character varying")) {
-
-      ps.setString(index,"'"+parameterObj.get("valeur").toString().replaceAll("'", "''")+"'");
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Double precision")) {
-      ps.setDouble(index, (Double.valueOf(parameterObj.get("valeur").toString())));
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Integer")) {
-      ps.setInt(index, (Integer.valueOf(parameterObj.get("valeur").toString())));
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Long")) {
-      ps.setLong(index, (Long.valueOf(parameterObj.get("valeur").toString())));
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("UUid")) {
-      ps.setLong(index, (Long.valueOf(parameterObj.get("valeur").toString())));
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Float")) {
-      ps.setFloat(index, ((Float.valueOf(parameterObj.get("valeur").toString()))));
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Date")) {
-      DateFormat format = new SimpleDateFormat("yyyy dd mm");
-      ps.setObject(index, "'"+parameterObj.get("valeur").toString()+"'");
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Time")) {
-      ps.setString(index,"'"+parameterObj.get("valeur").toString()+"'");
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Timestamp")) {
-      ps.setString(index,"'"+parameterObj.get("valeur").toString()+"'");
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Boolean")) {
-      //boolean x = parameterObj.get("valeur").toString().equalsIgnoreCase("true") ? true : false;
-      ps.setObject(index, parameterObj.get("valeur"), Types.BOOLEAN);
-    } else {
-      ps.setObject(index,parameterObj.get("valeur"));
-    }
   }
 
   public List resultSetToArrayList(ResultSet rs) throws SQLException{

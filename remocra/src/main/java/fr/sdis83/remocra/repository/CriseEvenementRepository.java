@@ -55,6 +55,7 @@ import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.util.GeometryUtil;
+import fr.sdis83.remocra.util.StatementFormat;
 import fr.sdis83.remocra.web.deserialize.GeometryFactory;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.model.CriseEvenement;
@@ -591,7 +592,7 @@ public class CriseEvenementRepository {
       for (int j = 0; j < typeParametre.size(); j++) {
         //si le parametre de la requete correspond au parametre de json on le remplace par la valeur (les index preparedStatement commence par 1)
         if (requestParams.get(i).equals(typeParametre.get(j).get("nomparametre"))) {
-          this.setObject(preparedStatement,i+1, typeParametre.get(j));
+          StatementFormat.PreparedStatement(preparedStatement,i+1, typeParametre.get(j));
         }
       }
     }
@@ -614,38 +615,6 @@ public class CriseEvenementRepository {
       list.add(row);
     }
     return list;
-  }
-
-  public void setObject(PreparedStatement ps, int index ,HashMap parameterObj) throws ParseException, SQLException {
-
-    if (parameterObj.get("type").toString().equalsIgnoreCase("Byte")) {
-      ps.setInt(index, (Byte.valueOf(parameterObj.get("valeur").toString())));
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Character varying")) {
-
-      ps.setString(index,"'"+parameterObj.get("valeur").toString().replaceAll("'", "''")+"'");
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Double precision")) {
-      ps.setDouble(index, (Double.valueOf(parameterObj.get("valeur").toString())));
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Integer")) {
-      ps.setInt(index, (Integer.valueOf(parameterObj.get("valeur").toString())));
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Long")) {
-      ps.setLong(index, (Long.valueOf(parameterObj.get("valeur").toString())));
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("UUid")) {
-      ps.setLong(index, (Long.valueOf(parameterObj.get("valeur").toString())));
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Float")) {
-      ps.setFloat(index, ((Float.valueOf(parameterObj.get("valeur").toString()))));
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Date")) {
-      DateFormat format = new SimpleDateFormat("yyyy dd mm");
-      ps.setObject(index, "'"+parameterObj.get("valeur").toString()+"'");
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Time")) {
-      ps.setString(index,"'"+parameterObj.get("valeur").toString()+"'");
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Timestamp")) {
-      ps.setString(index,"'"+parameterObj.get("valeur").toString()+"'");
-    } else if (parameterObj.get("type").toString().equalsIgnoreCase("Boolean")) {
-      //boolean x = parameterObj.get("valeur").toString().equalsIgnoreCase("true") ? true : false;
-      ps.setObject(index, parameterObj.get("valeur"), Types.BOOLEAN);
-    } else {
-      ps.setObject(index,parameterObj.get("valeur"));
-    }
   }
 
   public void addComplement(Long idCriseEvent, Map mapParams){
