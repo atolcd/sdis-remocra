@@ -114,7 +114,7 @@ public class CourrierController {
         return new AbstractExtObjectSerializer<List<CourrierDocumentModel>>("Courriers retrieved.") {
             @Override
             protected List<CourrierDocumentModel> getRecord() {
-                return courrierRepository.getCourriersAccessibles(start, limit, itemFilterList);
+                return courrierRepository.getCourriersAccessibles(start, limit, itemFilterList, sortList);
             }
         }.serialize();
     }
@@ -125,12 +125,13 @@ public class CourrierController {
     @RequestMapping(value = "/courrierdocumentcount", method = RequestMethod.GET, headers = "Accept=application/json")
     @PreAuthorize("hasRight('COURRIER_UTILISATEUR_R') or hasRight('COURRIER_ORGANISME_R') or hasRight('COURRIER_ADMIN_R')")
     public ResponseEntity<String> courrierdocumentCount(final @RequestParam(value = "page", required = false) Integer page,
-        final @RequestParam(value = "filter", required = false) String filters) {
+        final @RequestParam(value = "sort", required = false) String sorts, final @RequestParam(value = "filter", required = false) String filters) {
 
+        final List<ItemSorting> sortList = ItemSorting.decodeJson(sorts);
         final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
 
         try{
-            int count = courrierRepository.getCourriersAccessiblesCount(itemFilterList);
+            int count = courrierRepository.getCourriersAccessiblesCount(itemFilterList, sortList);
             return new SuccessErrorExtSerializer(true, String.valueOf(count)).serialize();
         }catch(Exception e){
             return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();

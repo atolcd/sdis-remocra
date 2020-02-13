@@ -11,6 +11,7 @@ import fr.sdis83.remocra.util.StatementFormat;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.web.message.ItemFilter;
+import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.model.CourrierDocumentModel;
 import org.apache.log4j.Logger;
 import org.jooq.DSLContext;
@@ -112,7 +113,7 @@ public class CourrierRepository {
      * Information des courriers accessibles par l'utilisateur courant en fonction de ses droits
      * @return Un objet JSON contenant les informations sur les courriers
      */
-  public List<CourrierDocumentModel> getCourriersAccessibles(Integer start, Integer limit, List<ItemFilter> itemFilter) {
+  public List<CourrierDocumentModel> getCourriersAccessibles(Integer start, Integer limit, List<ItemFilter> itemFilter, List<ItemSorting> sortList) {
 
     /* Niveau des droits d'accès de l'utilisateur courant
      *  1 : Courriers propres uniquement
@@ -126,7 +127,7 @@ public class CourrierRepository {
         niveauDroits = 2;
     }
 
-    StringBuilder requete = this.getRequeteCourriersAccessibles(niveauDroits, itemFilter);
+    StringBuilder requete = this.getRequeteCourriersAccessibles(niveauDroits, itemFilter, sortList);
 
     requete.append(" LIMIT "+limit+" OFFSET "+start);
 
@@ -146,7 +147,7 @@ public class CourrierRepository {
     return listeCourriers;
   }
 
-  private StringBuilder getRequeteCourriersAccessibles(Integer niveauDroits, List<ItemFilter> itemFilter) {
+  private StringBuilder getRequeteCourriersAccessibles(Integer niveauDroits, List<ItemFilter> itemFilter, List<ItemSorting> sortList) {
     StringBuilder requete = new StringBuilder();
 
     requete.append("SELECT cd.id as id, cd.document as document, cd.code as code, cd.nom_destinataire as nomDestinataire, cd.type_destinataire as typeDestinataire, "+
@@ -212,7 +213,7 @@ public class CourrierRepository {
             } else if("date".equalsIgnoreCase(f.getFieldName())) {
                 conditionFiltre.append(" AND (d.date_doc > '").append(f.getValue()).append("') ");
             } else {
-                logger.info("CourrierRepository - critère de tri inconnu : " + f.getFieldName());
+                logger.info("CourrierRepository - critère de filtre inconnu : " + f.getFieldName());
             }
         }
         if(conditionFiltre.length() > 0) {
@@ -220,7 +221,31 @@ public class CourrierRepository {
         }
     }
 
-    requete.append(" ORDER BY d.date_doc DESC ");
+    // Mise en place du critère de tri
+    if(!sortList.isEmpty()) {
+      ItemSorting sort = sortList.get(0); // On n'utilise qu'un seul critère à la fois par requête
+
+      if("date".equalsIgnoreCase(sort.getFieldName())) {
+          requete.append(" ORDER BY d.date_doc "+sort.getDirection()+" ");
+      } else if("objet".equalsIgnoreCase(sort.getFieldName())) {
+          requete.append(" ORDER BY UPPER(d.fichier) "+sort.getDirection()+" ");
+      } else if("destinataire".equalsIgnoreCase(sort.getFieldName())) {
+          requete.append(" ORDER BY UPPER(COALESCE(u.email, o.email_contact, c.email)) "+sort.getDirection()+" ");
+      } else {
+          logger.info("CourrierRepository - critère de tri inconnu : "+sort.getFieldName());
+          requete.append(" ORDER BY d.date_doc DESC ");
+      }
+
+        /*
+         * Si ce n'est pas déjà un tri par date, on rajoute quand même un tri par date
+         * Cela permet de garder les courriers groupés par document, ce qui n'est pas garanti si le critère de tri existe en doublon (ex: nom de fichier)
+         */
+      if(!"date".equalsIgnoreCase(sort.getFieldName())) {
+          requete.append(" , d.date_doc DESC ");
+      }
+    } else {
+        requete.append(" ORDER BY d.date_doc DESC ");
+    }
 
     return requete;
   }
@@ -228,7 +253,7 @@ public class CourrierRepository {
     /**
      * Retourne le nombre de courriers accessibles par l'utilisateur courant
      */
-  public Integer getCourriersAccessiblesCount(List<ItemFilter> itemFilter)
+  public Integer getCourriersAccessiblesCount(List<ItemFilter> itemFilter, List<ItemSorting> sortList)
   {
     int niveauDroits = 1;
     if(authUtils.hasRight(TypeDroit.TypeDroitEnum.COURRIER_ADMIN_R)) {
@@ -238,7 +263,7 @@ public class CourrierRepository {
     }
 
     StringBuilder count = new StringBuilder();
-    count.append("SELECT COUNT(*) FROM (").append(this.getRequeteCourriersAccessibles(niveauDroits, itemFilter)).append(") AS R");
+    count.append("SELECT COUNT(*) FROM (").append(this.getRequeteCourriersAccessibles(niveauDroits, itemFilter, sortList)).append(") AS R");
     Query query = entityManager.createNativeQuery(count.toString());
     return Integer.valueOf(query.getSingleResult().toString());
   }
