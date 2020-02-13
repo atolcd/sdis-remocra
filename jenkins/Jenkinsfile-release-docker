@@ -8,8 +8,6 @@ node {
   // uid / gid de l'utilisateur Docker
   DOCKER_UID = 2000
   DOCKER_GID = 2000
-  // Version de Remocra
-  REMOCRA_VERSION = sh(returnStdout: true, script: 'cat pom.xml | grep "<version" | sed "s%<version>%%g"| sed "s%</version>%%g" | sed "s% %%g"').trim()
 }
 pipeline {
   options {
@@ -24,6 +22,17 @@ pipeline {
   }
   agent any
   stages {
+    stage('Get version') {
+      steps {
+        script {
+          REMOCRA_GIT_VERSION = sh(returnStdout: true, script: 'git describe --all').trim()
+          REMOCRA_POM_VERSION = sh(returnStdout: true, script: 'cat pom.xml | grep "<version" | sed "s%<version>%%g"| sed "s%</version>%%g" | sed "s% %%g"').trim()
+          // On retient la version du pom
+          REMOCRA_VERSION = REMOCRA_POM_VERSION
+          echo "Version ( git , pom ) ➔ retained : ( ${REMOCRA_GIT_VERSION} , ${REMOCRA_POM_VERSION} ) ➔ ${REMOCRA_VERSION}"
+        }
+      }
+    }
     stage('Build') {
       failFast true
       parallel {
