@@ -138,13 +138,24 @@ public class CourrierController {
         }
     }
 
+    @RequestMapping(value = "/getdocument", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('COURRIER_UTILISATEUR_R') or hasRight('COURRIER_ORGANISME_R') or hasRight('COURRIER_ADMIN_R')")
+    public void getDocument(final @RequestParam(value = "code") String code, HttpServletResponse response)
+            throws IOException {
+        this.downloadCourrierDocument(code, response);
+    }
+
     @RequestMapping(value = "/{code}")
     public void downloadCourrierDocument(@PathVariable("code") String code, HttpServletResponse response)
             throws IOException {
         String path = telechargementsService.getCourrierFilePathFromCode(code);
         DocumentUtil.getInstance().downloadDocument(path, code, response);
-        // Accusé de réception
-        telechargementsService.setCourrierAccuseFromCode(code);
+
+        // Accusé de réception si le document a été trouvé: se baser juste sur le code ne garantit pas que l'utilisateur a bien récupéré le fichier
+        // Cas typique: document présent dans la base mais pas sur le disque
+        if(response.containsHeader("Content-Type")) {
+            telechargementsService.setCourrierAccuseFromCode(code);
+        }
     }
 
     @RequestMapping(value = "/show/{code}")

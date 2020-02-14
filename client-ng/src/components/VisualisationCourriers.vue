@@ -34,6 +34,9 @@
               <p>Accusé</p>
               <b-form-select v-model="filters.accuse" size="sm" placeholder='Tous' class="filter" :options="comboFilterAccuse" v-on:change="onFilterChange"></b-form-select>
             </th>
+            <th scope="col">
+              <p style="margin-bottom: 24px;">Action</p>
+            </th>
           </thead>
           <tbody :key="tableKey">
             <tr v-for="(item, index) in listeCourriers" :key="index" :class="getStripeStyle(item.document)">
@@ -43,6 +46,11 @@
               <td v-if="getRowSpan(index)" :rowSpan="getRowSpan(index)"></td>
               <td>{{item.mail}}</td>
               <td class="colAccuse"><img v-if="item.accuse" src="../assets/img/check.png" width="32" class="badge badge-pill badge-success" /></td>
+              <td class="colAction">
+                <div  @click="$refs.apercuDocument.visualisationDocument(item.code, item.nomDocument)">
+                  <img src="../assets/img/file-pdf-regular.svg" width="20" />
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -61,6 +69,8 @@
         ></b-pagination>
       </div>
     </div>
+
+    <ModalApercuDocument ref="apercuDocument" :listeCourriers="listeCourriers"></ModalApercuDocument>
   </div>
 </template>
 
@@ -70,8 +80,13 @@ import axios from 'axios'
 import moment from 'moment'
 import _ from 'lodash'
 
+import ModalApercuDocument from './ModalApercuDocument.vue'
+
 export default {
   name: 'visualisationCourriers',
+  components: {
+    ModalApercuDocument
+  },
   data() {
     return {
       nbCourriers: 0,
@@ -284,7 +299,7 @@ h1 {
   border: 1px solid #cbd5df;
 }
 
-#tableCourriers .colAccuse {
+#tableCourriers .colAccuse, #tableCourriers .colAction {
   text-align: center;
 }
 
@@ -305,4 +320,7 @@ h1 {
 .sortDesc {
   background-image: url(../assets/img/expand.svg);
 }
+
+
+
 </style>
