@@ -79,7 +79,7 @@ public class CourrierController {
   private MessageDigestPasswordEncoder messageDigestPasswordEncoder;
 
 
-  @RequestMapping(value = "/{thematique}", method = RequestMethod.GET, headers = "Accept=application/json")
+  @RequestMapping(value = "/with/{thematique}", method = RequestMethod.GET, headers = "Accept=application/json")
     @PreAuthorize("hasRight('COURRIER_C')")
     public ResponseEntity<String> listJson(final @PathVariable("thematique") String thematique) {
 

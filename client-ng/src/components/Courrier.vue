@@ -320,7 +320,7 @@ export default {
 		},
 
 		initComboModele(){
-			axios.get('/remocra/courrier/'+this.thematique).then((response)=> {
+			axios.get('/remocra/courrier/with/'+this.thematique).then((response)=> {
 					var courriers = response.data.data;
 					_.forEach(courriers, courrier => {
             this.comboModele.push({
