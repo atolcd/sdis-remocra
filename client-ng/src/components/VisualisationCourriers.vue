@@ -10,6 +10,10 @@
       <div class="col-md-12">
         <table class="table table-sm table-bordered table-fixed" id="tableCourriers">
           <thead class="thead-light">
+            <th scope="col" v-on:click="onSortChange('date')" :class="getSortStyle('date')">
+              <p>Date</p>
+              <b-form-select v-model="filters.date" size="sm" placeholder='Tous' class="filter" :options="comboFilterDate" v-on:change="onFilterChange"></b-form-select>
+            </th>
             <th scope="col" v-on:click="onSortChange('objet')" :class="getSortStyle('objet')">
               <p>Objet</p>
               <b-form-input v-model="filters.objet" size="sm" placeholder="Objet" class="filter" v-on:input="onFilterChange"></b-form-input>
@@ -17,10 +21,6 @@
             <th scope="col">
               <p>Référence</p>
               <b-form-input size="sm" placeholder="Référence" class="filter" ></b-form-input>
-            </th>
-            <th scope="col" v-on:click="onSortChange('date')" :class="getSortStyle('date')">
-              <p>Date</p>
-              <b-form-select v-model="filters.date" size="sm" placeholder='Tous' class="filter" :options="comboFilterDate" v-on:change="onFilterChange"></b-form-select>
             </th>
             <th scope="col">
               <p>Expéditeur</p>
@@ -40,9 +40,9 @@
           </thead>
           <tbody :key="tableKey">
             <tr v-for="(item, index) in listeCourriers" :key="index" :class="getStripeStyle(item.document)">
+              <td v-if="getRowSpan(index)" :rowSpan="getRowSpan(index)">{{item.dateDoc | formatDate}}</td>
               <td v-if="getRowSpan(index)" :rowSpan="getRowSpan(index)">{{item.nomDocument}}</td>
               <td v-if="getRowSpan(index)" :rowSpan="getRowSpan(index)"></td>
-              <td v-if="getRowSpan(index)" :rowSpan="getRowSpan(index)">{{item.dateDoc | formatDate}}</td>
               <td v-if="getRowSpan(index)" :rowSpan="getRowSpan(index)"></td>
               <td>{{item.mail}}</td>
               <td class="colAccuse"><img v-if="item.accuse" src="../assets/img/check.png" width="32" class="badge badge-pill badge-success" /></td>
@@ -90,7 +90,7 @@ export default {
   data() {
     return {
       nbCourriers: 0,
-      nbCourriersParPage: 15,
+      nbCourriersParPage: 20,
       pageActuelle: 1, // Pagination
       listeCourriers: [], // Liste des courriers de la page actuelle
       listeDocuments: [], // Liste des documents présents dans les courriers
@@ -295,12 +295,12 @@ h1 {
 }
 
 #tableCourriers td {
-  vertical-align : middle;
   border: 1px solid #cbd5df;
 }
 
 #tableCourriers .colAccuse, #tableCourriers .colAction {
   text-align: center;
+  vertical-align : middle;
 }
 
 #tableCourriers .colAccuse img {
