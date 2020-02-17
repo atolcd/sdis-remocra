@@ -656,7 +656,7 @@ WHERE id IN
 		INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id = it.statut AND tis.CODE = 'EN_COURS'
 		WHERE date_rappel_fin IS NULL AND
 			mel_avant_dispo AND
-			date_fin >= current_timestamp AND
+			date_fin &lt;= current_timestamp AND
 			date_fin >= current_timestamp - interval '${PDI_DELTA_NOTIF_INDISPO_FIN} hour'
 	)</sql>
       <useVariableSubstitution>T</useVariableSubstitution>
