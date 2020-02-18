@@ -681,7 +681,7 @@
       <name>Création archive Zip</name>
       <description />
       <type>ZIP_FILE</type>
-      <zipfilename>${PDI_PATH_FILES_EXPORT}/SIG/${DOSSIER_JOUR}.zip</zipfilename>
+      <zipfilename>${PDI_PATH_FILES_EXPORT}/SIG_${DOSSIER_JOUR}.zip</zipfilename>
       <compressionrate>1</compressionrate>
       <ifzipfileexists>2</ifzipfileexists>
       <wildcard />
