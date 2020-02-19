@@ -10,11 +10,11 @@
       <div class="col-md-12">
         <table class="table table-sm table-bordered table-fixed" id="tableCourriers">
           <thead class="thead-light">
-            <th scope="col" v-on:click="onSortChange('date')" :class="getSortStyle('date')">
+            <th scope="col" v-on:click="onSortChange('date', $event)" :class="getSortStyle('date')">
               <p>Date</p>
               <b-form-select v-model="filters.date" size="sm" placeholder='Tous' class="filter" :options="comboFilterDate" v-on:change="onFilterChange"></b-form-select>
             </th>
-            <th scope="col" v-on:click="onSortChange('objet')" :class="getSortStyle('objet')">
+            <th scope="col" v-on:click="onSortChange('objet', $event)" :class="getSortStyle('objet')">
               <p>Objet</p>
               <b-form-input v-model="filters.objet" size="sm" placeholder="Objet" class="filter" v-on:input="onFilterChange"></b-form-input>
             </th>
@@ -26,7 +26,7 @@
               <p>Expéditeur</p>
               <b-form-input size="sm" placeholder="Expéditeur" class="filter" ></b-form-input>
             </th>
-            <th scope="col" v-on:click="onSortChange('destinataire')" :class="getSortStyle('destinataire')">
+            <th scope="col" v-on:click="onSortChange('destinataire', $event)" :class="getSortStyle('destinataire')">
               <p>Destinataires</p>
               <b-form-input v-model="filters.destinataire" size="sm" placeholder="Destinataire" class="filter" v-on:input="onFilterChange"></b-form-input>
             </th>
@@ -233,16 +233,19 @@ export default {
       this.refreshCourriers();
     },
 
-    onSortChange(value) {
-      if(this.sorter.property == value) {
-        this.sorter.direction = (this.sorter.direction === 'ASC') ? 'DESC' : 'ASC';
-      } else {
-        this.sorter.direction = 'ASC';
-        this.sorter.property = value;
-      }
+    onSortChange(value, e) {
+      // Clic sur le filtre et non sur l'en-tête en lui-même
+      if(e.target.tagName == "P" || e.target.tagName == "TH") {
+        if(this.sorter.property == value) {
+          this.sorter.direction = (this.sorter.direction === 'ASC') ? 'DESC' : 'ASC';
+        } else {
+          this.sorter.direction = 'ASC';
+          this.sorter.property = value;
+        }
 
-      this.pageActuelle = 1;
-      this.refreshCourriers();
+        this.pageActuelle = 1;
+        this.refreshCourriers();
+      }
     },
 
     /**
