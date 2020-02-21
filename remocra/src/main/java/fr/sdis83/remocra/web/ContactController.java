@@ -27,7 +27,9 @@ public class ContactController {
 
             @Override
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
-                return new JSONSerializer().include("data.roles").exclude("data.roles.thematique","*.class");
+                return new JSONSerializer().include("data.roles")
+                        .exclude("data.roles.thematique", "data.roles.actif", "data.roles.version")
+                        .exclude("*.class");
             }
 
             @Override

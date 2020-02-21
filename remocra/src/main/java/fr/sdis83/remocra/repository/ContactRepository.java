@@ -8,6 +8,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Record4;
+import org.jooq.Result;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.NameTokenizers;
+import org.modelmapper.jooq.RecordValueReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,6 +23,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
 
 import static fr.sdis83.remocra.db.model.remocra.Tables.CONTACT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.CONTACT_ROLES;
+import static fr.sdis83.remocra.db.model.remocra.Tables.ROLE;
 
 @Configuration
 public class ContactRepository {
@@ -42,8 +50,30 @@ public class ContactRepository {
     id : identifiant de l'organisme ou du gestionnaire
   */
   public List<Contact> findAllContactById(String appartenance, String id) {
-    List<Contact> contacts = context.selectFrom(CONTACT).where(CONTACT.ID_APPARTENANCE.eq(id).and(CONTACT.APPARTENANCE.eq(appartenance))).fetchInto(Contact.class);
-    return contacts;
+    Result<Record> contactRecord = context.selectFrom(CONTACT).where(CONTACT.ID_APPARTENANCE.eq(id).and(CONTACT.APPARTENANCE.eq(appartenance))).fetch();
+
+    ModelMapper modelMapper = new ModelMapper();
+    modelMapper.getConfiguration().addValueReader(new RecordValueReader());
+    modelMapper.getConfiguration().setSourceNameTokenizer(NameTokenizers.CAMEL_CASE);
+
+    List<Contact> cr = new ArrayList<Contact>();
+
+    for (Record r : contactRecord){
+      Contact contact = modelMapper.map(r, Contact.class);
+
+      Result<Record4<Long,String,String,Long>> ro = context.select(ROLE.ID.as("id"), ROLE.NOM.as("nom"), ROLE.CODE.as("code"), ROLE.THEMATIQUE.as("thematique"))
+                        .from(CONTACT)
+                        .join(CONTACT_ROLES).on(CONTACT.ID.eq(CONTACT_ROLES.CONTACT).and(CONTACT.ID.eq(contact.getId())))
+                        .join(ROLE).on(CONTACT_ROLES.ROLES.eq(ROLE.ID)).fetch();
+
+      Set<Role> lstRoles = new HashSet<Role>();
+      for(Record role : ro) {
+          lstRoles.add(modelMapper.map(role, Role.class));
+      }
+      contact.setRoles(lstRoles);
+      cr.add(contact);
+    }
+    return cr;
   }
 
   @Transactional
