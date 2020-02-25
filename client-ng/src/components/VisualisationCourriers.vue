@@ -18,13 +18,13 @@
               <p>Objet</p>
               <b-form-input v-model="filters.objet" size="sm" placeholder="Objet" class="filter" v-on:input="onFilterChange"></b-form-input>
             </th>
-            <th scope="col">
+            <th scope="col" v-on:click="onSortChange('reference', $event)" :class="getSortStyle('reference')">
               <p>Référence</p>
-              <b-form-input size="sm" placeholder="Référence" class="filter" ></b-form-input>
+              <b-form-input size="sm" v-model="filters.reference" placeholder="Référence" class="filter" v-on:input="onFilterChange"></b-form-input>
             </th>
-            <th scope="col">
+            <th scope="col" v-on:click="onSortChange('expediteur', $event)" :class="getSortStyle('expediteur')">
               <p>Expéditeur</p>
-              <b-form-input size="sm" placeholder="Expéditeur" class="filter" ></b-form-input>
+              <b-form-input size="sm" v-model="filters.expediteur" placeholder="Expéditeur" class="filter" v-on:input="onFilterChange"></b-form-input>
             </th>
             <th scope="col" v-on:click="onSortChange('destinataire', $event)" :class="getSortStyle('destinataire')">
               <p>Destinataires</p>
@@ -41,9 +41,9 @@
           <tbody :key="tableKey">
             <tr v-for="(item, index) in listeCourriers" :key="index" :class="getStripeStyle(item.document)">
               <td v-if="getRowSpan(index)" :rowSpan="getRowSpan(index)">{{item.dateDoc | formatDate}}</td>
-              <td v-if="getRowSpan(index)" :rowSpan="getRowSpan(index)">{{item.nomDocument}}</td>
-              <td v-if="getRowSpan(index)" :rowSpan="getRowSpan(index)"></td>
-              <td v-if="getRowSpan(index)" :rowSpan="getRowSpan(index)"></td>
+              <td v-if="getRowSpan(index)" :rowSpan="getRowSpan(index)">{{item.objet}}</td>
+              <td v-if="getRowSpan(index)" :rowSpan="getRowSpan(index)">{{item.reference}}</td>
+              <td v-if="getRowSpan(index)" :rowSpan="getRowSpan(index)">{{item.expediteur}}</td>
               <td>{{item.mail}}</td>
               <td class="colAccuse"><img v-if="item.accuse" src="../assets/img/check.png" width="32" class="badge badge-pill badge-success" /></td>
               <td class="colAction">
@@ -99,7 +99,9 @@ export default {
         objet: '',
         accuse: '',
         destinataire: '',
-        date: ''
+        date: '',
+        reference: '',
+        expediteur: ''
       },
 
       comboFilterAccuse: [{

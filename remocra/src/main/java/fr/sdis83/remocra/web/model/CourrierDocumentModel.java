@@ -28,6 +28,12 @@ public class CourrierDocumentModel {
 
     private String codeDocument;
 
+    private String reference;
+
+    private String expediteur;
+
+    private String objet;
+
     public Long getId() {
         return id;
     }
@@ -114,5 +120,29 @@ public class CourrierDocumentModel {
 
     public void setCodeDocument(String codeDocument) {
         this.codeDocument = codeDocument;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public String getExpediteur() {
+        return expediteur;
+    }
+
+    public void setExpediteur(String expediteur) {
+        this.expediteur = expediteur;
+    }
+
+    public String getObjet() {
+        return objet;
+    }
+
+    public void setObjet(String objet) {
+        this.objet = objet;
     }
 }

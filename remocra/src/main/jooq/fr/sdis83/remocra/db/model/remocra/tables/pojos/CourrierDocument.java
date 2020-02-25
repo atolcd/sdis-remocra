@@ -25,7 +25,7 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CourrierDocument implements Serializable {
 
-	private static final long serialVersionUID = 1801831096;
+	private static final long serialVersionUID = 1489446584;
 
 	private Long    id;
 	private Long    document;
@@ -34,6 +34,9 @@ public class CourrierDocument implements Serializable {
 	private String  typeDestinataire;
 	private Long    idDestinataire;
 	private Instant accuse;
+	private String  objet;
+	private String  reference;
+	private String  expediteur;
 
 	public CourrierDocument() {}
 
@@ -45,6 +48,9 @@ public class CourrierDocument implements Serializable {
 		this.typeDestinataire = value.typeDestinataire;
 		this.idDestinataire = value.idDestinataire;
 		this.accuse = value.accuse;
+		this.objet = value.objet;
+		this.reference = value.reference;
+		this.expediteur = value.expediteur;
 	}
 
 	public CourrierDocument(
@@ -54,7 +60,10 @@ public class CourrierDocument implements Serializable {
 		String  nomDestinataire,
 		String  typeDestinataire,
 		Long    idDestinataire,
-		Instant accuse
+		Instant accuse,
+		String  objet,
+		String  reference,
+		String  expediteur
 	) {
 		this.id = id;
 		this.document = document;
@@ -63,6 +72,9 @@ public class CourrierDocument implements Serializable {
 		this.typeDestinataire = typeDestinataire;
 		this.idDestinataire = idDestinataire;
 		this.accuse = accuse;
+		this.objet = objet;
+		this.reference = reference;
+		this.expediteur = expediteur;
 	}
 
 	public Long getId() {
@@ -125,6 +137,33 @@ public class CourrierDocument implements Serializable {
 
 	public CourrierDocument setAccuse(Instant accuse) {
 		this.accuse = accuse;
+		return this;
+	}
+
+	public String getObjet() {
+		return this.objet;
+	}
+
+	public CourrierDocument setObjet(String objet) {
+		this.objet = objet;
+		return this;
+	}
+
+	public String getReference() {
+		return this.reference;
+	}
+
+	public CourrierDocument setReference(String reference) {
+		this.reference = reference;
+		return this;
+	}
+
+	public String getExpediteur() {
+		return this.expediteur;
+	}
+
+	public CourrierDocument setExpediteur(String expediteur) {
+		this.expediteur = expediteur;
 		return this;
 	}
 }

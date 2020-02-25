@@ -13,6 +13,9 @@ Ext.define('Sdis.Remocra.model.BlocCourrier', {
     }, {
         name : 'nomDocument',
         type : 'string'
+    }, {
+        name : 'objet',
+        type : 'string'
     } ],
 
     // Validations supplémentaires

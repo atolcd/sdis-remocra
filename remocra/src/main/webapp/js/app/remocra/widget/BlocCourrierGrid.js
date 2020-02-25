@@ -32,7 +32,7 @@ Ext.define('Sdis.Remocra.widget.BlocCourrierGrid', {
                 text: 'Titre',
                 xtype:'templatecolumn',
                 flex: 3,
-                tpl: '<a href="'+BASE_URL+'/../courrier/getdocumentfromcode/{codeDocument}" title="{description}" target="_blank">{nomDocument}</a>',
+                tpl: '<a href="'+BASE_URL+'/../courrier/getdocumentfromcode/{codeDocument}" target="_blank">{objet}</a>',
                 menuDisabled: true
             }, {
                 text: 'Date d envoi',

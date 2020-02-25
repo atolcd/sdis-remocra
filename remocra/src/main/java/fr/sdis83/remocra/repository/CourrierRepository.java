@@ -130,7 +130,7 @@ public class CourrierRepository {
     
     StringBuilder requete = new StringBuilder();
     if(distinct) {
-      requete.append("SELECT DISTINCT codeDocument, nomDocument, dateDoc FROM (");
+      requete.append("SELECT DISTINCT codeDocument, nomDocument, dateDoc, objet FROM (");
     }
 
     requete.append(this.getRequeteCourriersAccessibles(niveauDroits, itemFilter, sortList));
@@ -159,7 +159,8 @@ public class CourrierRepository {
   private StringBuilder getRequeteCourriersAccessibles(Integer niveauDroits, List<ItemFilter> itemFilter, List<ItemSorting> sortList) {
     StringBuilder requete = new StringBuilder();
 
-    requete.append("SELECT cd.id as id, cd.document as document, cd.code as code, cd.nom_destinataire as nomDestinataire, cd.type_destinataire as typeDestinataire, "+
+    requete.append("SELECT cd.id as id, cd.document as document, cd.code as code, cd.nom_destinataire as nomDestinataire, cd.type_destinataire as typeDestinataire, " +
+                    "cd.reference as reference, cd.objet as objet, cd.expediteur as expediteur, "+
                     "cd.id_destinataire as idDestinataire, cd.accuse as accuse, COALESCE(u.email, o.email_contact, c.email) as mail, d.date_doc as dateDoc, " +
                     "d.code as codeDocument, d.fichier as nomDocument "+
                     "FROM remocra.courrier_document cd " +
@@ -206,7 +207,7 @@ public class CourrierRepository {
                 conditionFiltre.append(" AND (cd.document = ").append(f.getValue()).append(") ");
 
             } else if ("objet".equalsIgnoreCase(f.getFieldName())) {
-                conditionFiltre.append(" AND (UPPER(d.fichier) LIKE '%").append(f.getValue().toUpperCase()).append("%') ");
+                conditionFiltre.append(" AND (UPPER(cd.objet) LIKE '%").append(f.getValue().toUpperCase()).append("%') ");
 
             } else if ("nomDestinataire".equalsIgnoreCase(f.getFieldName())) {
                 conditionFiltre.append(" AND (UPPER(cd.nom_destinataire) LIKE '%").append(f.getValue().toUpperCase()).append("%') ");
@@ -221,6 +222,10 @@ public class CourrierRepository {
                 conditionFiltre.append(" AND (UPPER(COALESCE(u.email, o.email_contact, c.email)) LIKE '%").append(f.getValue().toUpperCase()).append("%') ");
             } else if("date".equalsIgnoreCase(f.getFieldName())) {
                 conditionFiltre.append(" AND (d.date_doc > '").append(f.getValue()).append("') ");
+            } else if("reference".equalsIgnoreCase(f.getFieldName())) {
+                conditionFiltre.append(" AND (UPPER(cd.reference) LIKE '%").append(f.getValue().toUpperCase()).append("%') ");
+            } else if("expediteur".equalsIgnoreCase(f.getFieldName())) {
+                conditionFiltre.append(" AND (UPPER(cd.expediteur) LIKE '%").append(f.getValue().toUpperCase()).append("%') ");
             } else {
                 logger.info("CourrierRepository - critère de filtre inconnu : " + f.getFieldName());
             }
@@ -237,9 +242,13 @@ public class CourrierRepository {
       if("date".equalsIgnoreCase(sort.getFieldName())) {
           requete.append(" ORDER BY d.date_doc "+sort.getDirection()+" ");
       } else if("objet".equalsIgnoreCase(sort.getFieldName())) {
-          requete.append(" ORDER BY UPPER(d.fichier) "+sort.getDirection()+" ");
+          requete.append(" ORDER BY UPPER(cd.objet) "+sort.getDirection()+" ");
       } else if("destinataire".equalsIgnoreCase(sort.getFieldName())) {
           requete.append(" ORDER BY UPPER(COALESCE(u.email, o.email_contact, c.email)) "+sort.getDirection()+" ");
+      } else if("reference".equalsIgnoreCase(sort.getFieldName())) {
+          requete.append(" ORDER BY UPPER(cd.reference) "+sort.getDirection()+" ");
+      } else if("expediteur".equalsIgnoreCase(sort.getFieldName())) {
+          requete.append(" ORDER BY UPPER(cd.expediteur) "+sort.getDirection()+" ");
       } else {
           logger.info("CourrierRepository - critère de tri inconnu : "+sort.getFieldName());
           requete.append(" ORDER BY d.date_doc DESC ");
@@ -343,12 +352,12 @@ public class CourrierRepository {
    * Insertion dans la table courrier_document
    * @param code code du dossier contenant le courrier
    */
-  public String insertCourrierDocument( String code, String nomDestinataire, String typeDestinataire, Long idDestinataire){
+  public String insertCourrierDocument( String code, String nomDestinataire, String typeDestinataire, Long idDestinataire, String reference, String objet, String expediteur){
     try{
       Long idDocument = context.select(DOCUMENT.ID).from(DOCUMENT).where(DOCUMENT.CODE.eq(code)).fetchOne(DOCUMENT.ID);
       int result = context.insertInto(COURRIER_DOCUMENT, COURRIER_DOCUMENT.DOCUMENT,
-              COURRIER_DOCUMENT.NOM_DESTINATAIRE, COURRIER_DOCUMENT.TYPE_DESTINATAIRE, COURRIER_DOCUMENT.ID_DESTINATAIRE)
-              .values(idDocument, nomDestinataire, typeDestinataire, idDestinataire).execute();
+              COURRIER_DOCUMENT.NOM_DESTINATAIRE, COURRIER_DOCUMENT.TYPE_DESTINATAIRE, COURRIER_DOCUMENT.ID_DESTINATAIRE, COURRIER_DOCUMENT.REFERENCE, COURRIER_DOCUMENT.OBJET, COURRIER_DOCUMENT.EXPEDITEUR)
+              .values(idDocument, nomDestinataire, typeDestinataire, idDestinataire, reference, objet, expediteur).execute();
       return "";
     }catch(Exception e){
       e.printStackTrace();

@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CourrierDocument extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 357623434;
+	private static final long serialVersionUID = -1427898148;
 
 	/**
 	 * The reference instance of <code>remocra.courrier_document</code>
@@ -87,6 +87,21 @@ public class CourrierDocument extends TableImpl<Record> {
 	 * The column <code>remocra.courrier_document.accuse</code>. Date et heure d'accusé de téléchargement
 	 */
 	public final TableField<Record, Instant> ACCUSE = createField("accuse", org.jooq.impl.SQLDataType.TIMESTAMP, this, "Date et heure d'accusé de téléchargement", new InstantConverter());
+
+	/**
+	 * The column <code>remocra.courrier_document.objet</code>.
+	 */
+	public final TableField<Record, String> OBJET = createField("objet", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+
+	/**
+	 * The column <code>remocra.courrier_document.reference</code>.
+	 */
+	public final TableField<Record, String> REFERENCE = createField("reference", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+
+	/**
+	 * The column <code>remocra.courrier_document.expediteur</code>.
+	 */
+	public final TableField<Record, String> EXPEDITEUR = createField("expediteur", org.jooq.impl.SQLDataType.VARCHAR.nullable(false).defaulted(true), this, "");
 
 	/**
 	 * Create a <code>remocra.courrier_document</code> table reference

@@ -361,6 +361,8 @@ public class CourrierController {
 
       String codeCourrier = String.valueOf(mapParametres.get("codeCourrier"));
       String nomCourrier = String.valueOf(mapParametres.get("nomCourrier"));
+      String reference = String.valueOf(mapParametres.get("reference"));
+      String objet = String.valueOf(mapParametres.get("objet"));
       //Déplacement du dossier+pdf dans dossier courriers
       File origine = new File(paramConfService.getDossierCourriersExternes()+"/courrier_temp/"+codeCourrier);
       File destination = new File(paramConfService.getDossierCourriersExternes()+"/"+codeCourrier);
@@ -382,7 +384,8 @@ public class CourrierController {
 
         if(erreurDocument.equals("")) {
           //Insertion dans la table courrier_document
-          erreurCourrierDocument = courrierRepository.insertCourrierDocument(codeCourrier, nomDest, typeDest, idDest);
+          String organismeUtilisateur = utilisateurService.getCurrentUtilisateur().getOrganisme().getNom();
+          erreurCourrierDocument = courrierRepository.insertCourrierDocument(codeCourrier, nomDest, typeDest, idDest, reference, objet, organismeUtilisateur);
         }
 
         if(erreurDocument.equals("") && erreurCourrierDocument.equals("")) {
