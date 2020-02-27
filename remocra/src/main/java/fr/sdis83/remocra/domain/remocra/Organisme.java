@@ -88,7 +88,7 @@ public class Organisme {
     }
 
     /**
-     * Retourne la liste des organismes qui sont contenues ou superposés avec la zone de compétence
+     * Retourne la liste des organismes qui sont contenus ou superposés avec la zone de compétence
      * de l'organisme passé en paramètre
      */
 

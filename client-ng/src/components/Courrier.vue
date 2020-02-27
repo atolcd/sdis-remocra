@@ -486,44 +486,44 @@ export default {
     },
 
     initListeDestinataire() {
+      var types = [];
+      if(this.filtreOrga) { types.push("ORGANISME"); }
+      if(this.filtreUtil) { types.push("UTILISATEUR"); }
+      if(this.filtreContact) { types.push("CONTACT"); }
+
       axios.get('/remocra/courrier/contacts',{
         params: {
-          filter: JSON.stringify([
-          {"property": "filtreString",
-          "value": this.filtre},
-          {"property": "filtreZC",
-          "value": this.filtreZC.toString()},
-          {"property": "filtreOrga",
-          "value": this.filtreOrga.toString()},
-          {"property": "filtreUtil",
-          "value": this.filtreUtil.toString()},
-          {"property": "filtreContact",
-          "value": this.filtreContact.toString()}
-          ])
+          useZc: this.filtreZC,
+          listeTypes: JSON.stringify(types),
+          filter: JSON.stringify(
+            [{
+              "property": "filtreString",
+              "value": this.filtre
+            }]
+          )
         }
-        }).then((response)=> {
-          this.tabDestinataireNotifierNon = [];
-          this.tabDestinataires = [];
-          var contacts = response.data.data;
-          _.forEach(contacts, contact => {
-            var contactSplit = contact.split(";");
-            this.tabDestinataires.push({
-              'id': contactSplit[1],
-              'Type': contactSplit[0],
-              'Nom' : contactSplit[2],
-              'Email' : contactSplit[3],
-              'Fonction' : contactSplit[4]
-          })
+      }).then((response)=> {
+        this.tabDestinataireNotifierNon = [];
+        this.tabDestinataires = [];
+        var contacts = response.data.data;
+        _.forEach(contacts, contact => {
+          this.tabDestinataires.push({
+            'id': contact.id,
+            'Type': contact.type,
+            'Nom' : contact.nom,
+            'Email' : contact.email,
+            'Fonction' : contact.fonction
           });
-        }).then(()=>{
-          var i =0;
-          for(i = 0; i<this.tabDestinataires.length; i++){
-            this.tabDestinataireNotifierNon.push(this.tabDestinataires[i]);
-          }
-          this.destinatairesLoaded = true;
-        }).catch(function(error) {
-              console.error(error)
         });
+      }).then(()=>{
+        var i =0;
+        for(i = 0; i<this.tabDestinataires.length; i++){
+          this.tabDestinataireNotifierNon.push(this.tabDestinataires[i]);
+        }
+        this.destinatairesLoaded = true;
+      }).catch(function(error) {
+        console.error(error)
+      });
     },
 
     /**

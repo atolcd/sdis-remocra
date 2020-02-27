@@ -37,6 +37,7 @@ import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.model.CourrierDocumentModel;
+import fr.sdis83.remocra.web.model.DestinataireModel;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
@@ -240,50 +241,38 @@ public class CourrierController {
    */
   @RequestMapping(value = "/contacts", method = RequestMethod.GET, headers = "Accept=application/json")
   @PreAuthorize("hasRight('COURRIER_C')")
-  public ResponseEntity<java.lang.String> getContactsCourrier(final @RequestParam(value = "filter", required = false) String filters){
+  public ResponseEntity<String> getContactsCourrier(final @RequestParam(value = "filter", required = false) String filters, final @RequestParam(value = "useZc", required = false) boolean useZc,
+                                                    final @RequestParam(value = "listeTypes", required = true) String listeTypes){
 
     final List<ItemFilter> listeFiltre = ItemFilter.decodeJson(filters);
+    ArrayList<String> types = new JSONDeserializer<ArrayList<String>>().deserialize(listeTypes);
 
-    return new AbstractExtListSerializer<String>(" retrieved.") {
+    return new AbstractExtListSerializer<DestinataireModel>("Contacts retrieved.") {
 
       @Override
-      protected List<String> getRecords() {
-        try{
-          String filter = listeFiltre.get(0).getValue();
-          if(filter == null){ filter = "";}
-          List<String> destinataires = new ArrayList<String>();
-          List<Integer> organismes = new ArrayList<Integer>();
-          if(listeFiltre.get(1).getValue().equals("true")){
-            organismes = Organisme.getOrganismesZC(utilisateurService.getCurrentUtilisateur().getOrganisme().getId());
-          } else{
-            organismes = destinataireRepository.getAllIdOrganismes();
+      protected List<DestinataireModel> getRecords() {
+        String filter = "";
+        for(ItemFilter f : listeFiltre) {
+          if("filtreString".equalsIgnoreCase(f.getFieldName()) && f.getValue() != null) {
+            filter = f.getValue();
           }
+        }
 
-          List<String> destinataireOrganisme = new ArrayList<String>();
-          List<String> destinataireContact = new ArrayList<String>();
-          List<String> destinataireUtilisateur = new ArrayList<String>();
+        List<Integer> organismes = new ArrayList<Integer>();
+        organismes = (useZc) ? Organisme.getOrganismesZC(utilisateurService.getCurrentUtilisateur().getOrganisme().getId()) : destinataireRepository.getAllIdOrganismes();
 
-          for(Integer orga : organismes){
-            if(listeFiltre.get(2).getValue().equals("true")){
-              destinataireOrganisme.addAll(destinataireRepository.getDestinataireOrganisme(Long.valueOf(orga), filter));
-            }
-            if(listeFiltre.get(3).getValue().equals("true")){
-              destinataireUtilisateur.addAll(destinataireRepository.getDestinataireUtilisateur(Long.valueOf(orga), filter));
-            }
-            if(listeFiltre.get(4).getValue().equals("true")){
-              destinataireContact.addAll(destinataireRepository.getDesinataireContact(Long.valueOf(orga), filter));
-            }
+        List<DestinataireModel> destinataires = new ArrayList<DestinataireModel>();
+        for(String t : types) {
+          if("CONTACT".equalsIgnoreCase(t)) {
+            destinataires.addAll(destinataireRepository.getDestinataireContact(organismes, filter));
+          } else if("ORGANISME".equalsIgnoreCase(t)) {
+            destinataires.addAll(destinataireRepository.getDestinataireOrganisme(organismes, filter));
+          } else if("UTILISATEUR".equalsIgnoreCase(t)) {
+            destinataires.addAll(destinataireRepository.getDestinataireUtilisateur(organismes, filter));
           }
+        }
 
-          destinataires.addAll(destinataireOrganisme);
-          destinataires.addAll(destinataireContact);
-          destinataires.addAll(destinataireUtilisateur);
-
-          return destinataires;
-
-        } catch (Exception e) {
-          e.printStackTrace();
-        }return  null;
+        return destinataires;
       }
     }.serialize();
   }

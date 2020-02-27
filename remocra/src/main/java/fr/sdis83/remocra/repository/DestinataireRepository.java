@@ -1,11 +1,13 @@
 package fr.sdis83.remocra.repository;
 
+import fr.sdis83.remocra.web.model.DestinataireModel;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record3;
 import org.jooq.Record5;
 import org.jooq.Result;
+import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -41,6 +43,7 @@ public class DestinataireRepository {
   public  DestinataireRepository destinataireRepository(DSLContext context){
     return new DestinataireRepository(context);
   }
+
   public List<Integer> getAllIdOrganismes(){
     Result<Record1<Integer>> result = context.select(ORGANISME.ID.cast(SQLDataType.INTEGER)).from(ORGANISME).fetch();
     List<Integer> destinataires = new ArrayList<Integer>();
@@ -49,60 +52,47 @@ public class DestinataireRepository {
     }
     return destinataires;
   }
-  /**
-   * @param id identifiant d'un organisme
-   * @return liste de String au format <id;nom;"ORGANISME">
-   */
-  public List<String> getDestinataireOrganisme(Long id, String filtre){
-    List<String> destinataires = new ArrayList<String>();
-    Result<Record3<Long, String, String>> result = context.select(ORGANISME.ID, ORGANISME.NOM, ORGANISME.EMAIL_CONTACT).from(ORGANISME)
-    .where(ORGANISME.ID.eq(id)
-    .and(lower(ORGANISME.NOM).like("%"+filtre.toLowerCase()+"%")
-      .or(lower(ORGANISME.EMAIL_CONTACT).like("%"+filtre.toLowerCase()+"%")))
-    .and(ORGANISME.EMAIL_CONTACT.isNotNull())).fetch();
-    for(Record r : result){
-      //                            id                 nom               email             fonction
-      destinataires.add("ORGANISME;"+r.getValue(0)+";"+r.getValue(1)+";"+r.getValue(2)+";"+" ");
-    }
-    return destinataires;
-  }
 
   /**
-   * @param id identifiant d'un organisme
-   * @return liste de String au format <id,nom prenom,"CONTACT">
+   * @param idOrganismes Identifiants d'organismes
+   * @return liste de destinataires provenant de la table UTILISATEUR
    */
-  public List<String> getDesinataireContact(Long id, String filtre){
-    List<String> destinataires = new ArrayList<String>();
-    Result<Record5<Long, String, String, String, String>> result = context.select(CONTACT.ID, CONTACT.NOM, CONTACT.PRENOM, CONTACT.EMAIL, CONTACT.FONCTION)
-      .from(CONTACT).where(CONTACT.ID_APPARTENANCE.eq(String.valueOf(id))
-      .and((lower(CONTACT.NOM).like("%"+filtre.toLowerCase()+"%"))
-        .or(lower(CONTACT.PRENOM).like("%"+filtre.toLowerCase()+"%")))).fetch();
-    for(Record r : result){
-      //                            id                   nom                 prenom               email               fonction
-      destinataires.add("CONTACT;"+ r.getValue(0)+";"+r.getValue(1)+" "+r.getValue(2)+";"+r.getValue(3)+";"+r.getValue(4));
-    }
-    return destinataires;
-  }
-
-  /**
-   * @param id identifiant d'un organisme
-   * @return liste de String au format <id,nom prenom,"UTILISATEUR">
-   */
-  public List<String> getDestinataireUtilisateur(Long id, String filtre){
-    List<String> destinataires = new ArrayList<String>();
-    Result<Record5<Long, String, String, String, String>> result = context.select(UTILISATEUR.ID, UTILISATEUR.NOM, UTILISATEUR.PRENOM, UTILISATEUR.EMAIL, PROFIL_UTILISATEUR.NOM)
+  public List<DestinataireModel> getDestinataireUtilisateur(List<Integer> idOrganismes, String filtre) {
+    List<DestinataireModel> destinataires = context.select(UTILISATEUR.ID, DSL.concat(DSL.concat(UTILISATEUR.NOM, " "), UTILISATEUR.PRENOM).as("nom"), UTILISATEUR.EMAIL, PROFIL_UTILISATEUR.NOM.as("fonction"), DSL.val("Utilisateur").as("type"))
       .from(UTILISATEUR)
       .join(PROFIL_UTILISATEUR).on(UTILISATEUR.PROFIL_UTILISATEUR.eq(PROFIL_UTILISATEUR.ID))
-      .where(UTILISATEUR.ORGANISME.eq(id)
+      .where(UTILISATEUR.ORGANISME.in(idOrganismes)
       .and(UTILISATEUR.MESSAGE_REMOCRA)
       .and((lower(UTILISATEUR.NOM).like("%"+filtre.toLowerCase()+"%"))
-        .or(lower(UTILISATEUR.PRENOM).like("%"+filtre.toLowerCase()+"%"))
-        .or(lower(UTILISATEUR.EMAIL).like("%"+filtre.toLowerCase()+"%"))
-        )).fetch();
-    for(Record r : result){
-      //                               id                 nom                 prenom               email               profil
-      destinataires.add("UTILISATEUR;"+r.getValue(0)+";"+r.getValue(1)+" "+r.getValue(2)+";"+r.getValue(3)+";"+r.getValue(4));
-    }
+          .or(lower(UTILISATEUR.PRENOM).like("%"+filtre.toLowerCase()+"%"))
+          .or(lower(UTILISATEUR.EMAIL).like("%"+filtre.toLowerCase()+"%"))
+      )).fetchInto(DestinataireModel.class);
+    return destinataires;
+
+  }
+
+  /**
+   * @param idOrganismes Identifiants d'organismes
+   * @return liste de destinataires provenant de la table ORGANISME
+   */
+  public List<DestinataireModel> getDestinataireOrganisme(List<Integer> idOrganismes, String filtre){
+    List<DestinataireModel> destinataires = context.select(ORGANISME.ID, ORGANISME.NOM, ORGANISME.EMAIL_CONTACT.as("email"), DSL.val("Organisme").as("type")).from(ORGANISME)
+    .where(ORGANISME.ID.in(idOrganismes))
+    .and(lower(ORGANISME.NOM).like("%"+filtre.toLowerCase()+"%")
+      .or(lower(ORGANISME.EMAIL_CONTACT).like("%"+filtre.toLowerCase()+"%")))
+    .and(ORGANISME.EMAIL_CONTACT.isNotNull()).fetchInto(DestinataireModel.class);
+    return destinataires;
+  }
+
+  /**
+   * @param idOrganismes Identifiants d'organismes
+   * @return liste de destinataires provenant de la table CONTACT
+   */
+  public List<DestinataireModel> getDestinataireContact(List<Integer> idOrganismes, String filtre){
+    List<DestinataireModel> destinataires = context.select(CONTACT.ID, DSL.concat(DSL.concat(CONTACT.NOM, " "), CONTACT.PRENOM).as("nom"), CONTACT.EMAIL, CONTACT.FONCTION.as("function"), DSL.val("CONTACT").as("type"))
+      .from(CONTACT).where(CONTACT.ID_APPARTENANCE.in(idOrganismes)
+      .and((lower(CONTACT.NOM).like("%"+filtre.toLowerCase()+"%"))
+        .or(lower(CONTACT.PRENOM).like("%"+filtre.toLowerCase()+"%")))).fetchInto(DestinataireModel.class);
     return destinataires;
   }
 
