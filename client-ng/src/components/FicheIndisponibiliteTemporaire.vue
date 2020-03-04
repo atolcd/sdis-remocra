@@ -368,16 +368,23 @@ export default {
     },
     checkFormValidity() {
       this.etats.motif = (!this.value.motif == null || !this.value.motif == "") ? 'valid' : 'invalid';
+
       this.etats.typeDateIndispo = (this.value.typeDateIndispo != null) ? 'valid' : 'invalid';
+      this.etats.dateIndispo = null;
+      this.etats.heureIndispo = null;
       if (this.value.typeDateIndispo == "aPartirDu") {
         this.etats.dateIndispo = (this.value.dateIndispo != null) ? 'valid' : 'invalid';
         this.etats.heureIndispo = (this.value.heureIndispo != null) ? 'valid' : 'invalid';
       }
+
       this.etats.typeDateDispo = (this.value.typeDateDispo != null) ? 'valid' : 'invalid';
+      this.etats.dateDispo = null;
+      this.etats.heureDispo = null;
       if (this.value.typeDateDispo == "aPartirDu") {
         this.etats.dateDispo = (this.value.dateDispo != null) ? 'valid' : 'invalid';
         this.etats.heureDispo = (this.value.heureDispo != null) ? 'valid' : 'invalid';
       }
+
       this.etats.tabNumeroPeiConcernes = (this.value.tabNumeroPeiConcernes.length > 0) ? 'valid' : 'invalid';
       //Si l'utilisateur choisit date de début immédiat, on met la date et heure courante
       if (this.value.typeDateIndispo == "immediat") {
