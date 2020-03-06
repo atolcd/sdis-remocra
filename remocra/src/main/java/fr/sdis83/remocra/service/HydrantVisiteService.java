@@ -1,6 +1,7 @@
 package fr.sdis83.remocra.service;
 
 import com.vividsolutions.jts.geom.Geometry;
+import fr.sdis83.remocra.domain.utils.JSONMap;
 import fr.sdis83.remocra.web.deserialize.GeometryFactory;
 import flexjson.JSONDeserializer;
 import flexjson.transformer.DateTransformer;
@@ -82,7 +83,7 @@ public class HydrantVisiteService extends AbstractService<HydrantVisite> {
                 JSONDeserializer<HydrantVisite> deserializer = new JSONDeserializer<HydrantVisite>();
                 deserializer.use(null, this.cls).use(Date.class, RemocraDateHourTransformer.getInstance()).use(Geometry.class, new GeometryFactory()).use(Object.class,
                         new RemocraBeanObjectFactory(this.entityManager));
-                deserializer.deserializeInto(obj.toString(), visite);
+                deserializer.deserializeInto(JSONMap.fromMap(obj).toString(), visite);
 
                 /*
                  * "hack" pour gérer les valeurs "null" dans le json. Flexjson les
@@ -90,7 +91,7 @@ public class HydrantVisiteService extends AbstractService<HydrantVisite> {
                  * http://sourceforge.net/p/flexjson/bugs/32/
                  */
                 JSONDeserializer<Map<String, Object>> deserializer2 = new JSONDeserializer<Map<String, Object>>();
-                Map<String, Object> data = deserializer2.deserialize(obj.toString());
+                Map<String, Object> data = deserializer2.deserialize(JSONMap.fromMap(obj).toString());
                 Object nullObject = null;
                 if (data != null && data.size() > 0) {
                     for (String key : data.keySet()) {
@@ -137,7 +138,7 @@ public class HydrantVisiteService extends AbstractService<HydrantVisite> {
 
         Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(String.valueOf(obj.get("date")));
         obj.remove("date");
-        HydrantVisite attached = deserializer.deserialize(obj.toString());
+        HydrantVisite attached = deserializer.deserialize(JSONMap.fromMap(obj).toString());
 
         attached.setDate(date);
         

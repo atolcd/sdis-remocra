@@ -6,6 +6,7 @@ import fr.sdis83.remocra.domain.remocra.HydrantIndispoTemporaire;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantIndispoStatut;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.domain.remocra.ZoneCompetence;
+import fr.sdis83.remocra.domain.utils.JSONMap;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
@@ -269,7 +270,7 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
         }
 
         HydrantIndispoTemporaire indispo = new HydrantIndispoTemporaire();
-        indispo = deserializer.deserialize(obj.toString());
+        indispo = deserializer.deserialize(JSONMap.fromMap(obj).toString());
         
         if(idIndispoTemp != null){
             indispo.setId(idIndispoTemp);

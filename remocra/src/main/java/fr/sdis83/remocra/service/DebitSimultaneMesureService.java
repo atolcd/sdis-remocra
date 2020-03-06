@@ -2,12 +2,12 @@ package fr.sdis83.remocra.service;
 
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
-import fr.sdis83.remocra.domain.remocra.DebitSimultane;
 import fr.sdis83.remocra.domain.remocra.DebitSimultaneDocument;
 import fr.sdis83.remocra.domain.remocra.DebitSimultaneHydrant;
 import fr.sdis83.remocra.domain.remocra.DebitSimultaneMesure;
 import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.remocra.Hydrant;
+import fr.sdis83.remocra.domain.utils.JSONMap;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.web.deserialize.GeometryFactory;
@@ -23,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
@@ -34,7 +33,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 @Configuration
@@ -102,7 +100,7 @@ public class DebitSimultaneMesureService<T extends DebitSimultaneMesure> extends
                 JSONDeserializer<DebitSimultaneMesure> deserializer = new JSONDeserializer<DebitSimultaneMesure>();
                 deserializer.use(null, this.cls).use(Date.class, RemocraDateHourTransformer.getInstance()).use(Geometry.class, new GeometryFactory()).use(Object.class,
                         new RemocraBeanObjectFactory(this.entityManager));
-                deserializer.deserializeInto(obj.toString(), mesure);
+                deserializer.deserializeInto(JSONMap.fromMap(obj).toString(), mesure);
 
                 /*
                  * "hack" pour gérer les valeurs "null" dans le json. Flexjson les
@@ -110,7 +108,7 @@ public class DebitSimultaneMesureService<T extends DebitSimultaneMesure> extends
                  * http://sourceforge.net/p/flexjson/bugs/32/
                  */
                 JSONDeserializer<Map<String, Object>> deserializer2 = new JSONDeserializer<Map<String, Object>>();
-                Map<String, Object> data = deserializer2.deserialize(obj.toString());
+                Map<String, Object> data = deserializer2.deserialize(JSONMap.fromMap(obj).toString());
                 Object nullObject = null;
                 if (data != null && data.size() > 0) {
                     for (String key : data.keySet()) {
@@ -142,11 +140,10 @@ public class DebitSimultaneMesureService<T extends DebitSimultaneMesure> extends
         deserializer.use(null, this.cls).use(Date.class, RemocraDateHourTransformer.getInstance()).use(Geometry.class, new GeometryFactory()).use(Object.class,
                 new RemocraBeanObjectFactory(this.entityManager));
 
-
         Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(String.valueOf(obj.get("dateMesure")));
         obj.remove("dateMesure");
 
-        DebitSimultaneMesure attached = deserializer.deserialize(obj.toString());
+        DebitSimultaneMesure attached = deserializer.deserialize(JSONMap.fromMap(obj).toString());
 
         attached.setDateMesure(date);
         //attached.setHydrants(null);
