@@ -331,7 +331,16 @@ export default {
         //trop court
         this.alertErreurSaisie = this.secondesAlert;
       } else {
-        axios.get('/remocra/hydrants?limit=2&filter=[{"property":"numero", "value": "' + this.ajoutPei + '"}]').then((response) => {
+        axios.get('/remocra/hydrants', {
+          params: {
+            limit: 2,
+            filter: JSON.stringify([{
+                "property": "numero",
+                "value": this.ajoutPei
+              }
+            ])
+          }
+        }).then((response) => {
           this.tabCheckPeiExist = response.data.data;
           if (this.tabCheckPeiExist.length != 1) {
             //requête retourne plusieurs pei
