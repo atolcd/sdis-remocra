@@ -559,41 +559,6 @@
     </hop>
     <hop>
       <from>PEI indispo</from>
-      <to>contact CS indispo</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>contact CS indispo</from>
-      <to>element fixe message indispo</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Contact CS</from>
-      <to>contact CS indispo</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>PEI dispo</from>
-      <to>contact CS dispo</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>contact CS dispo</from>
-      <to>element fixe message dispo</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Contact CS</from>
-      <to>contact CS dispo</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>PEI indispo</from>
-      <to>contact SP DECI indispo</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>contact SP DECI</from>
       <to>contact SP DECI indispo</to>
       <enabled>Y</enabled>
     </hop>
@@ -603,13 +568,13 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>PEI dispo</from>
-      <to>contact SP DECI dispo</to>
+      <from>contact SP DECI</from>
+      <to>contact SP DECI indispo</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>contact SP DECI indispo</from>
-      <to>element fixe message indispo</to>
+      <from>PEI dispo</from>
+      <to>contact SP DECI dispo</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -623,12 +588,7 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>PEI indispo</from>
-      <to>contact AP indispo </to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>contact AP indispo </from>
+      <from>contact SP DECI indispo</from>
       <to>element fixe message indispo</to>
       <enabled>Y</enabled>
     </hop>
@@ -638,8 +598,18 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
+      <from>PEI indispo</from>
+      <to>contact AP indispo </to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
       <from>contact AP dispo</from>
       <to>element fixe message dispo</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>contact AP indispo </from>
+      <to>element fixe message indispo</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -697,7 +667,292 @@
       <to>dispos</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>PEI dispo</from>
+      <to>BPREV dispo</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>PEI indispo</from>
+      <to>BPREV indispo</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Contact Bureau PREVention</from>
+      <to>BPREV indispo</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Contact Bureau PREVention</from>
+      <to>BPREV dispo</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>BPREV dispo</from>
+      <to>element fixe message dispo</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>BPREV indispo</from>
+      <to>element fixe message indispo</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>PEI indispo</from>
+      <to>contact CS indispo</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Contact CS</from>
+      <to>contact CS indispo</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>PEI dispo</from>
+      <to>contact CS dispo</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Contact CS</from>
+      <to>contact CS dispo</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>contact CS indispo</from>
+      <to>Altération structure flux</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Altération structure flux</from>
+      <to>element fixe message indispo</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>contact CS dispo</from>
+      <to>Altération structure flux 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Altération structure flux 2</from>
+      <to>element fixe message dispo</to>
+      <enabled>Y</enabled>
+    </hop>
   </order>
+  <step>
+    <name>Altération structure flux</name>
+    <type>SelectValues</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <name>id_hydrant</name>
+      </field>
+      <field>
+        <name>commune_id</name>
+      </field>
+      <field>
+        <name>autorite_deci</name>
+      </field>
+      <field>
+        <name>sp_deci</name>
+      </field>
+      <field>
+        <name>commune</name>
+      </field>
+      <field>
+        <name>numero</name>
+      </field>
+      <field>
+        <name>voie</name>
+      </field>
+      <field>
+        <name>email_contact</name>
+      </field>
+      <field>
+        <name>nom_destinataire</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>544</xloc>
+      <yloc>80</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Altération structure flux 2</name>
+    <type>SelectValues</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <name>id_hydrant</name>
+      </field>
+      <field>
+        <name>commune_id</name>
+      </field>
+      <field>
+        <name>autorite_deci</name>
+      </field>
+      <field>
+        <name>sp_deci</name>
+      </field>
+      <field>
+        <name>commune</name>
+      </field>
+      <field>
+        <name>numero</name>
+      </field>
+      <field>
+        <name>voie</name>
+      </field>
+      <field>
+        <name>email_contact</name>
+      </field>
+      <field>
+        <name>nom_destinataire</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>544</xloc>
+      <yloc>576</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>BPREV dispo</name>
+    <type>JoinRows</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <cache_size>500</cache_size>
+    <main />
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue />
+        <function>=</function>
+        <rightvalue />
+      </condition>
+    </compare>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>480</xloc>
+      <yloc>448</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>BPREV indispo</name>
+    <type>JoinRows</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <cache_size>500</cache_size>
+    <main />
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue />
+        <function>=</function>
+        <rightvalue />
+      </condition>
+    </compare>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>480</xloc>
+      <yloc>240</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Contact Bureau PREVention</name>
+    <type>TableInput</type>
+    <description />
+    <distribute>N</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <connection>Remocra (Postgis)</connection>
+    <sql>SELECT u.email AS email_contact, u.prenom || ' ' || u.nom AS nom_destinataire
+FROM remocra.utilisateur u
+	INNER JOIN remocra.profil_utilisateur pu ON pu.id = u.profil_utilisateur  AND pu.code = 'BPREV'
+WHERE u.actif
+	AND message_remocra</sql>
+    <limit>0</limit>
+    <lookup />
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>480</xloc>
+      <yloc>336</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
   <step>
     <name>Contact CS</name>
     <type>TableInput</type>
@@ -710,11 +965,19 @@
       <schema_name />
     </partitioning>
     <connection>Remocra (Postgis)</connection>
-    <sql>SELECT zcc.commune_id, o.email_contact, o.nom AS nom_destinataire
-FROM remocra.organisme o
-    INNER JOIN remocra.type_organisme tor ON tor.id = o.type_organisme AND tor.code = 'CS'
+    <sql>WITH carre9 AS (
+	SELECT zc.id AS zone_competence, cs.email_contact, cs.nom AS nom_destinataire
+	FROM remocra_referentiel.carre c
+		JOIN remocra.organisme cs ON cs.id = c.cs
+		JOIN remocra.organisme refe ON refe.id = c.referent
+		JOIN remocra.zone_competence zc ON zc.id = refe.zone_competence 
+)
+SELECT DISTINCT zcc.commune_id AS id_commune, o.email_contact, o.nom_destinataire
+FROM carre9 o
 	INNER JOIN remocra.zone_competence_commune zcc ON zcc.zone_competence_id = o.zone_competence
-WHERE o.email_contact &lt;&gt; '' AND o.email_contact IS NOT NULL</sql>
+WHERE o.email_contact &lt;&gt; '' 
+	AND o.email_contact IS NOT NULL
+ORDER BY id_commune</sql>
     <limit>0</limit>
     <lookup />
     <execute_each_row>N</execute_each_row>
@@ -728,8 +991,8 @@ WHERE o.email_contact &lt;&gt; '' AND o.email_contact IS NOT NULL</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>150</xloc>
-      <yloc>330</yloc>
+      <xloc>144</xloc>
+      <yloc>320</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -770,8 +1033,8 @@ WHERE o.email_contact &lt;&gt; '' AND o.email_contact IS NOT NULL</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1230</xloc>
-      <yloc>510</yloc>
+      <xloc>1216</xloc>
+      <yloc>496</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -812,8 +1075,8 @@ WHERE o.email_contact &lt;&gt; '' AND o.email_contact IS NOT NULL</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1230</xloc>
-      <yloc>165</yloc>
+      <xloc>1216</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -836,8 +1099,8 @@ WHERE o.email_contact &lt;&gt; '' AND o.email_contact IS NOT NULL</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>750</xloc>
-      <yloc>345</yloc>
+      <xloc>736</xloc>
+      <yloc>336</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -907,8 +1170,8 @@ WHERE o.email_contact &lt;&gt; '' AND o.email_contact IS NOT NULL</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1725</xloc>
-      <yloc>345</yloc>
+      <xloc>1712</xloc>
+      <yloc>336</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -954,6 +1217,7 @@ FROM
   (SELECT h.id AS id_hydrant,
 	h.commune AS commune_id,
     h.autorite_deci,
+	h.sp_deci,
     c.nom AS commune,
     h.numero,
     h.voie
@@ -975,8 +1239,8 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
       </output>
     </remotesteps>
     <GUI>
-      <xloc>60</xloc>
-      <yloc>510</yloc>
+      <xloc>48</xloc>
+      <yloc>496</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1022,6 +1286,7 @@ FROM
   (SELECT h.id AS id_hydrant,
     h.commune AS commune_id,
     h.autorite_deci,
+	h.sp_deci,
     c.nom AS commune,
     h.numero,
     h.voie
@@ -1043,8 +1308,8 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
       </output>
     </remotesteps>
     <GUI>
-      <xloc>60</xloc>
-      <yloc>165</yloc>
+      <xloc>48</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1091,8 +1356,8 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1725</xloc>
-      <yloc>510</yloc>
+      <xloc>1712</xloc>
+      <yloc>496</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1140,8 +1405,8 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1110</xloc>
-      <yloc>510</yloc>
+      <xloc>1104</xloc>
+      <yloc>496</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1197,8 +1462,8 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1110</xloc>
-      <yloc>165</yloc>
+      <xloc>1104</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1234,8 +1499,8 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1575</xloc>
-      <yloc>510</yloc>
+      <xloc>1568</xloc>
+      <yloc>496</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1271,8 +1536,8 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1575</xloc>
-      <yloc>165</yloc>
+      <xloc>1568</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1308,8 +1573,8 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>420</xloc>
-      <yloc>330</yloc>
+      <xloc>352</xloc>
+      <yloc>336</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1355,8 +1620,8 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>420</xloc>
-      <yloc>435</yloc>
+      <xloc>352</xloc>
+      <yloc>448</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1402,14 +1667,14 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>420</xloc>
+      <xloc>352</xloc>
       <yloc>240</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
     <name>contact CS dispo</name>
-    <type>StreamLookup</type>
+    <type>JoinRows</type>
     <description />
     <distribute>Y</distribute>
     <custom_distribution />
@@ -1418,29 +1683,18 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
       <method>none</method>
       <schema_name />
     </partitioning>
-    <from>Contact CS</from>
-    <input_sorted>N</input_sorted>
-    <preserve_memory>Y</preserve_memory>
-    <sorted_list>N</sorted_list>
-    <integer_pair>N</integer_pair>
-    <lookup>
-      <key>
-        <name>commune_id</name>
-        <field>commune_id</field>
-      </key>
-      <value>
-        <name>email_contact</name>
-        <rename>email_contact</rename>
-        <default />
-        <type>String</type>
-      </value>
-      <value>
-        <name>nom_destinataire</name>
-        <rename>nom_destinataire</rename>
-        <default />
-        <type>String</type>
-      </value>
-    </lookup>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <cache_size>500</cache_size>
+    <main>Contact CS</main>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>commune_id</leftvalue>
+        <function>=</function>
+        <rightvalue>id_commune</rightvalue>
+      </condition>
+    </compare>
     <cluster_schema />
     <remotesteps>
       <input>
@@ -1449,14 +1703,14 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>150</xloc>
-      <yloc>585</yloc>
+      <xloc>144</xloc>
+      <yloc>576</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
     <name>contact CS indispo</name>
-    <type>StreamLookup</type>
+    <type>JoinRows</type>
     <description />
     <distribute>Y</distribute>
     <custom_distribution />
@@ -1465,29 +1719,18 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
       <method>none</method>
       <schema_name />
     </partitioning>
-    <from>Contact CS</from>
-    <input_sorted>N</input_sorted>
-    <preserve_memory>Y</preserve_memory>
-    <sorted_list>N</sorted_list>
-    <integer_pair>N</integer_pair>
-    <lookup>
-      <key>
-        <name>commune_id</name>
-        <field>commune_id</field>
-      </key>
-      <value>
-        <name>email_contact</name>
-        <rename>email_contact</rename>
-        <default />
-        <type>String</type>
-      </value>
-      <value>
-        <name>nom_destinataire</name>
-        <rename>nom_destinataire</rename>
-        <default />
-        <type>String</type>
-      </value>
-    </lookup>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <cache_size>500</cache_size>
+    <main>Contact CS</main>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>commune_id</leftvalue>
+        <function>=</function>
+        <rightvalue>id_commune</rightvalue>
+      </condition>
+    </compare>
     <cluster_schema />
     <remotesteps>
       <input>
@@ -1496,8 +1739,8 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>150</xloc>
-      <yloc>90</yloc>
+      <xloc>144</xloc>
+      <yloc>80</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1513,18 +1756,16 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
       <schema_name />
     </partitioning>
     <connection>Remocra (Postgis)</connection>
-    <sql>SELECT zcc.commune_id, cont.email AS email_contact, cont.prenom || ' ' || cont.nom AS nom_destinataire
+    <sql>SELECT o.id, cont.email AS email_contact, cont.prenom || ' ' || cont.nom AS nom_destinataire
 FROM remocra.contact cont 
 	LEFT JOIN remocra.contact_roles cc ON cc.contact = cont.id
 	INNER JOIN remocra.role r ON r.id = cc.roles AND r.code = '${ROLE_SP_DECI}'
 	INNER JOIN remocra.organisme o ON o.id::text = cont.id_appartenance
 	INNER JOIN remocra.type_organisme tor ON tor.id = o.type_organisme AND (tor.code = 'COMMUNE' OR tor.code = 'EPCI')
-	INNER JOIN remocra.zone_competence_commune zcc ON zcc.zone_competence_id = o.zone_competence
 WHERE cont.appartenance = 'ORGANISME'
 UNION
-SELECT DISTINCT zcc.commune_id, o.email_contact AS email_contact, o.nom AS nom_destinataire
+SELECT DISTINCT o.id, o.email_contact AS email_contact, o.nom AS nom_destinataire
 FROM remocra.organisme o
-	INNER JOIN remocra.zone_competence_commune zcc ON zcc.zone_competence_id = o.zone_competence
 	INNER JOIN remocra.type_organisme tor ON tor.id = o.type_organisme AND (tor.code = 'COMMUNE' OR tor.code = 'EPCI')
 WHERE o.id NOT IN (SELECT o.id
 	FROM remocra.organisme o
@@ -1544,8 +1785,8 @@ WHERE o.id NOT IN (SELECT o.id
       </output>
     </remotesteps>
     <GUI>
-      <xloc>270</xloc>
-      <yloc>330</yloc>
+      <xloc>256</xloc>
+      <yloc>320</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1567,8 +1808,8 @@ WHERE o.id NOT IN (SELECT o.id
     <integer_pair>N</integer_pair>
     <lookup>
       <key>
-        <name>commune_id</name>
-        <field>commune_id</field>
+        <name>sp_deci</name>
+        <field>id</field>
       </key>
       <value>
         <name>email_contact</name>
@@ -1591,8 +1832,8 @@ WHERE o.id NOT IN (SELECT o.id
       </output>
     </remotesteps>
     <GUI>
-      <xloc>270</xloc>
-      <yloc>510</yloc>
+      <xloc>256</xloc>
+      <yloc>496</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1614,8 +1855,8 @@ WHERE o.id NOT IN (SELECT o.id
     <integer_pair>N</integer_pair>
     <lookup>
       <key>
-        <name>commune_id</name>
-        <field>commune_id</field>
+        <name>sp_deci</name>
+        <field>id</field>
       </key>
       <value>
         <name>email_contact</name>
@@ -1638,8 +1879,8 @@ WHERE o.id NOT IN (SELECT o.id
       </output>
     </remotesteps>
     <GUI>
-      <xloc>270</xloc>
-      <yloc>165</yloc>
+      <xloc>256</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1672,8 +1913,8 @@ WHERE o.id NOT IN (SELECT o.id
       </output>
     </remotesteps>
     <GUI>
-      <xloc>750</xloc>
-      <yloc>510</yloc>
+      <xloc>736</xloc>
+      <yloc>496</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1706,8 +1947,8 @@ WHERE o.id NOT IN (SELECT o.id
       </output>
     </remotesteps>
     <GUI>
-      <xloc>750</xloc>
-      <yloc>165</yloc>
+      <xloc>736</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1742,8 +1983,8 @@ WHERE o.id NOT IN (SELECT o.id
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1020</xloc>
-      <yloc>510</yloc>
+      <xloc>1008</xloc>
+      <yloc>496</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1790,8 +2031,8 @@ WHERE o.id NOT IN (SELECT o.id
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1335</xloc>
-      <yloc>510</yloc>
+      <xloc>1328</xloc>
+      <yloc>496</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1888,8 +2129,8 @@ WHERE o.id NOT IN (SELECT o.id
       </output>
     </remotesteps>
     <GUI>
-      <xloc>555</xloc>
-      <yloc>510</yloc>
+      <xloc>544</xloc>
+      <yloc>496</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1986,8 +2227,8 @@ WHERE o.id NOT IN (SELECT o.id
       </output>
     </remotesteps>
     <GUI>
-      <xloc>555</xloc>
-      <yloc>165</yloc>
+      <xloc>544</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2070,8 +2311,8 @@ WHERE o.id NOT IN (SELECT o.id
       </output>
     </remotesteps>
     <GUI>
-      <xloc>900</xloc>
-      <yloc>510</yloc>
+      <xloc>896</xloc>
+      <yloc>496</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2154,8 +2395,8 @@ WHERE o.id NOT IN (SELECT o.id
       </output>
     </remotesteps>
     <GUI>
-      <xloc>900</xloc>
-      <yloc>165</yloc>
+      <xloc>896</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2190,8 +2431,8 @@ WHERE o.id NOT IN (SELECT o.id
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1020</xloc>
-      <yloc>165</yloc>
+      <xloc>1008</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2238,8 +2479,8 @@ WHERE o.id NOT IN (SELECT o.id
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1335</xloc>
-      <yloc>165</yloc>
+      <xloc>1328</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2274,8 +2515,8 @@ WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1440</xloc>
-      <yloc>345</yloc>
+      <xloc>1424</xloc>
+      <yloc>336</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2310,8 +2551,8 @@ WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1440</xloc>
-      <yloc>510</yloc>
+      <xloc>1424</xloc>
+      <yloc>496</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2346,8 +2587,8 @@ WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1440</xloc>
-      <yloc>165</yloc>
+      <xloc>1424</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2394,8 +2635,8 @@ WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1725</xloc>
-      <yloc>165</yloc>
+      <xloc>1712</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
