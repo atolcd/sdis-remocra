@@ -365,7 +365,9 @@ export default {
       this.hydrant.site = null;
       // En cas de changement de nature (passage de PUBLIC/CONVENTIONNE à PRIVE et inversement), on set le gestionnaire à null
       // De cette manière, si on passe de PUBLIC à CONVENTIONNE ou inversement, on laisse tel quel
-      if (this.hydrantRecord.natureDeci && (this.hydrant.natureDeci == this.idDeciPrive) != (this.hydrantRecord.natureDeci.id == this.idDeciPrive)) {
+      if(this.hydrantRecord.natureDeci && this.hydrantRecord.natureDeci.id === this.hydrant.natureDeci) {
+        this.hydrant.gestionnaire = this.hydrantRecord.gestionnaire;
+      } else {
         this.hydrant.gestionnaire = null;
       }
       //Si DECI privé, le gestionnaire est un privé
