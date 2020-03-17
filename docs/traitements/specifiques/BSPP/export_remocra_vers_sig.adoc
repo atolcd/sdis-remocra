@@ -104,7 +104,7 @@ Le fichier _"remocraXXXX.properties"_ doit contenir les informations suivantes :
 |====================
 |Description|Liste et état des points d'eau naturels et artificiels
 |Type de fichier|Fichier de forme ESRI Shapefile (.shp, .shx, .dbf)
-|Nom du fichier |pibi.shp
+|Nom du fichier |pena.shp
 |Encodage (DBF)|UTF-8
 |====================
 
