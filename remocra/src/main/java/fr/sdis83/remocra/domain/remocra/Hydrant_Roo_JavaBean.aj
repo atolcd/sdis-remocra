@@ -379,6 +379,14 @@ privileged aspect Hydrant_Roo_JavaBean {
        this.gestionnaire = gestionnaire;
     }
 
+    public Organisme Hydrant.getSpDeci() {
+        return this.spDeci;
+    }
+
+    public void Hydrant.setSpDeci(Organisme spDeci) {
+       this.spDeci = spDeci;
+    }
+
     public Site Hydrant.getSite() {
         return this.site;
     }

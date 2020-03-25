@@ -182,7 +182,7 @@ public class OrganismeController extends AbstractServiceableController<Organisme
     public ResponseEntity<String> getAvailableGestionnairePublic(final @RequestParam(value="geometrie") String geometrie) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Content-Type", "application/json;charset=utf-8");
-        return new ResponseEntity<String>(service.getAvailableOrganismes(geometrie, Arrays.asList("COMMUNE", "EPCI")).toString(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<String>(service.getAvailableOrganismes(geometrie, Arrays.asList("COMMUNE", "EPCI", "AUTRE_SERVICE_PUBLIC_DECI")).toString(), responseHeaders, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/contacts/{id}", method = RequestMethod.POST, headers = "Accept=application/json")

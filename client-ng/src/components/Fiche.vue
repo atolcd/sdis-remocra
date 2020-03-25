@@ -23,14 +23,21 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-5">
             <b-form-group label="Type de DECI" label-for="nature_deci" invalid-feedback="La nature DECI doit être renseignée" :state="etats.natureDeci" label-cols-md="5">
-              <b-form-select ref="natureDeci" v-model="hydrant.natureDeci" :options="comboDeci" size="sm" id="natureDeci" class="parametre" v-on:change="getComboGestionnaire" :state="etats.natureDeci"></b-form-select>
+              <b-form-select ref="natureDeci" v-model="hydrant.natureDeci" :options="comboDeci" size="sm" id="natureDeci" class="parametre" v-on:change="getPublicOrPrive" :state="etats.natureDeci"></b-form-select>
             </b-form-group>
           </div>
-          <div class="col-md-5">
-            <b-form-group label="Gestionnaire" label-for="gestionnaire" invalid-feedback="Le gestionnaire doit être renseigné" :state="etats.gestionnaire" label-cols-md="4">
-              <b-form-select id="gestionnaire" v-model="hydrant.gestionnaire" class="parametre" :options="sortCombo(ellipsis(comboGestionnaire))" size="sm" v-on:change="onGestionnaireChange" :state="etats.gestionnaire" required>
+          <div class="col-md-7">
+            <b-form-group label="Service Public DECI" label-for="spDeci" invalid-feedback="Le service public DECI doit être renseignée" :state="etats.spDeci" label-cols-md="5">
+              <b-form-select ref="spDeci" v-model="hydrant.spDeci" :options="comboSpDeci" size="sm" id="spDeci" class="parametre" :state="etats.spDeci" required></b-form-select>
+            </b-form-group>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-7" v-if="hydrant.natureDeci != idDeciPublic">
+            <b-form-group label="Gestionnaire" label-for="gestionnaire" invalid-feedback="Le gestionnaire doit être renseigné" :state="etats.gestionnaire" label-cols-md="3">
+              <b-form-select id="gestionnaire" v-model="hydrant.gestionnaire" class="parametre" :options="sortCombo(ellipsis(comboGestionnaire))" size="sm" v-on:change="onGestionnaireChange" :state="etats.gestionnaire">
               </b-form-select>
               <button class="gestionnaireBtn" @click="modifGestionnaire" v-if="hydrant.natureDeci == idDeciPrive && utilisateurDroits.indexOf('HYDRANTS_GESTIONNAIRE_C') != -1">
                 <img src="/remocra/static/img/pencil.png">
@@ -40,7 +47,7 @@
               </button>
             </b-form-group>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-6" v-if="hydrant.natureDeci != idDeciPublic">
             <b-form-group label="Site" label-for="site" label-cols-md="2">
               <b-form-select id="site" v-model="hydrant.site" class="parametre" :options="ellipsis(comboSite)" size="sm"></b-form-select>
             </b-form-group>
@@ -65,10 +72,11 @@
           <b-tab>
             <template slot="title"> Caractéristiques techniques <b-badge pill variant="danger" v-if="tabWarning.caracteristiquesTechniques">!</b-badge>
             </template>
-            <FicheCaracteristiquesPibi :hydrant="hydrant" :hydrantRecord="hydrantRecord" :listeNaturesDeci="listeNaturesDeci" :geometrie="geometrie" @getComboData="getComboData" @resolveForeignKey="resolveForeignKey" ref="fichePibi" :utilisateurDroits="utilisateurDroits"
-              v-if="hydrant.code=='PIBI' && dataLoaded">
+            <FicheCaracteristiquesPibi :hydrant="hydrant" :hydrantRecord="hydrantRecord" :listeNaturesDeci="listeNaturesDeci" :geometrie="geometrie" @getComboData="getComboData" @resolveForeignKey="resolveForeignKey" ref="fichePibi"
+              :utilisateurDroits="utilisateurDroits" v-if="hydrant.code=='PIBI' && dataLoaded">
             </FicheCaracteristiquesPibi>
-            <FicheCaracteristiquesPena :hydrant="hydrant" :hydrantRecord="hydrantRecord" @getComboData="getComboData" @resolveForeignKey="resolveForeignKey" :utilisateurDroits="utilisateurDroits" ref="fichePena" v-if="hydrant.code=='PENA' && dataLoaded">
+            <FicheCaracteristiquesPena :hydrant="hydrant" :hydrantRecord="hydrantRecord" @getComboData="getComboData" @resolveForeignKey="resolveForeignKey" :utilisateurDroits="utilisateurDroits" ref="fichePena"
+              v-if="hydrant.code=='PENA' && dataLoaded">
             </FicheCaracteristiquesPena>
           </b-tab>
           <!-- ================================== Onglet Visites ==================================-->
@@ -119,6 +127,7 @@ export default {
   data() {
     return {
       idDeciPrive: '',
+      idDeciPublic: '',
       hydrantRecord: {}, // Données initiales du PEI
       hydrant: {}, // Données actuelles du PEI
       utilisateurDroits: [],
@@ -126,6 +135,7 @@ export default {
       //ComboBox
       comboType: [],
       comboDeci: [],
+      comboSpDeci: [],
       comboGestionnaire: [],
       comboSite: [],
       comboAutoriteDeci: [],
@@ -141,7 +151,8 @@ export default {
         gestionnaire: null,
         nature: null,
         autoriteDeci: null,
-        natureDeci: null
+        natureDeci: null,
+        spDeci: null,
       }
     }
   },
@@ -190,18 +201,16 @@ export default {
         return c;
       }
     },
-
     /**
-      * Renvoie les données d'une combobox triées alphabétiqueement selon la valeur associée
-      * @param combo Un tableau d'objet contenant les options de la combobox
-      */
+     * Renvoie les données d'une combobox triées alphabétiqueement selon la valeur associée
+     * @param combo Un tableau d'objet contenant les options de la combobox
+     */
     sortCombo: function() {
       return function(combo) {
-        return combo.sort((a,b) => a.text.localeCompare(b.text));
+        return combo.sort((a, b) => a.text.localeCompare(b.text));
       }
     }
   },
-
   mounted: function() {
     this.$refs.modalFiche.show()
     loadProgressBar({
@@ -224,21 +233,19 @@ export default {
       }
     });
   },
-
   /**
-    * Désactivation des libellés lorsque le champ auquel il est lié est désactivé
-    * On est obligé de passer par du js, les sélecteurs CSS qui permettraient de faire ça ne ne sont pas encore supportés
-    */
+   * Désactivation des libellés lorsque le champ auquel il est lié est désactivé
+   * On est obligé de passer par du js, les sélecteurs CSS qui permettraient de faire ça ne ne sont pas encore supportés
+   */
   updated: function() {
     _.forEach(document.querySelectorAll('.form-group .col'), node => {
-      if(node.firstElementChild && node.firstElementChild.disabled == true) {
+      if (node.firstElementChild && node.firstElementChild.disabled == true) {
         node.parentElement.firstChild.classList.add("labelDisabled");
       } else {
         node.parentElement.firstChild.classList.remove("labelDisabled");
       }
     });
   },
-
   methods: {
     creation() {
       let self = this
@@ -249,6 +256,7 @@ export default {
         site: null,
         autoriteDeci: null,
         natureDeci: null,
+        spDeci: null,
         code: self.codeHydrant
       }
       self.hydrant = _.clone(self.hydrantRecord);
@@ -268,7 +276,7 @@ export default {
           if (self.newVisite === true) {
             self.$refs.visitesTab.activate()
             self.$root.$options.bus.$on('pei_visite_ready', () => {
-              if(!self.$refs.ficheVisite.createVisiteDisabled){ // Si l'utilisateur peut créer une visite
+              if (!self.$refs.ficheVisite.createVisiteDisabled) { // Si l'utilisateur peut créer une visite
                 self.$refs.ficheVisite.createVisite()
               }
             })
@@ -308,7 +316,7 @@ export default {
               libelle = "Président de " + item['nom'];
               break;
             case 'PREFECTURE':
-              libelle = "Préfet";
+              libelle = "Préfet de ";
               break;
             default:
               libelle = item['nom'];
@@ -320,7 +328,9 @@ export default {
         });
       }).then(axios.get('/remocra/typehydrantnaturedeci').then(response => { // Récupération des données de nature DECI
         self.listeNaturesDeci = response.data.data;
+        self.getPublicOrPrive()
         self.getComboGestionnaire();
+        self.getComboSpDeci();
       })).catch(function(error) {
         console.error('Retrieving combo data from /remocra/organismes/autoritepolicedeci/', error);
       })
@@ -360,49 +370,48 @@ export default {
         console.error('Retrieving combo data from ' + url, error);
       })
     },
-    getComboGestionnaire() {
+    getPublicOrPrive() {
+      this.idDeciPublic = this.listeNaturesDeci.filter(item => item.code === "PUBLIC")[0].id;
       this.idDeciPrive = this.listeNaturesDeci.filter(item => item.code === "PRIVE")[0].id;
+    },
+    getComboGestionnaire() {
       this.hydrant.site = null;
-      // En cas de changement de nature (passage de PUBLIC/CONVENTIONNE à PRIVE et inversement), on set le gestionnaire à null
-      // De cette manière, si on passe de PUBLIC à CONVENTIONNE ou inversement, on laisse tel quel
-      if(this.hydrantRecord.natureDeci && this.hydrantRecord.natureDeci.id === this.hydrant.natureDeci) {
-        this.hydrant.gestionnaire = this.hydrantRecord.gestionnaire;
-      } else {
-        this.hydrant.gestionnaire = null;
-      }
-      //Si DECI privé, le gestionnaire est un privé
-      if (this.hydrant.natureDeci == this.idDeciPrive) {
-        this.getComboData(this, 'comboGestionnaire', '/remocra/gestionnaire.json', null, 'id', 'nom', ' ');
-        this.onGestionnaireChange();
-      } else { // Si DECI publique ou conventionnée, le gestionnaire est un organisme de type COMMUNE ou EPCI
-        var self = this;
-        axios.get('/remocra/organismes/gestionnairepublic.json', {
-          params: {
-            geometrie: this.geometrie,
-            sort: JSON.stringify([{
-              "property": "nom",
-              "direction": "ASC"
-            }])
-          }
-        }).then(response => {
-          self.comboGestionnaire = [];
-          _.forEach(response.data, function(nature) {
-            self.comboGestionnaire.push({
-              text: nature.nom,
-              value: nature.id
-            })
-          });
-        }).then(self.onGestionnaireChange()).catch(function(error) {
-          console.error('Retrieving combo data from /remocra/organismes/gestionnairepublic/' + this.geometrie, error);
+      //Si DECI privé ou conventionne , le gestionnaire est un privé
+      this.getComboData(this, 'comboGestionnaire', '/remocra/gestionnaire.json', null, 'id', 'nom', ' ');
+      this.onGestionnaireChange();
+    },
+    getComboSpDeci() {
+      this.hydrant.gestionnaire = null;
+      // Si DECI publique , le gestionnaire est un organisme de type COMMUNE ou EPCI
+      var self = this;
+      axios.get('/remocra/organismes/gestionnairepublic.json', {
+        params: {
+          geometrie: this.geometrie,
+          sort: JSON.stringify([{
+            "property": "nom",
+            "direction": "ASC"
+          }])
+        }
+      }).then(response => {
+        self.comboSpDeci = [];
+        _.forEach(response.data, function(nature) {
+          self.comboSpDeci.push({
+            text: nature.nom,
+            value: nature.id
+          })
         });
-      }
+      }).then().catch(function(error) {
+        console.error('Retrieving combo data from /remocra/organismes/servicepublicDeci/' + this.geometrie, error);
+      });
     },
     /**
      * En cas de changement de nature DECI
      * On met à jour le gestionnaire et on transmet l'évènement aux caractéristiques du PIBI dont les champs dépendent de la nature
      */
     onNatureDeciChange() {
+      this.getPublicOrPrive();
       this.getComboGestionnaire();
+      this.getComboSpDeci();
       if (this.$refs.fichePibi) {
         this.$refs.fichePibi.onNatureDeciChange();
       }
@@ -468,7 +477,7 @@ export default {
      */
     checkFormValidity() {
       this.etats.numeroInterne = !this.idHydrant || (this.idHydrant && this.hydrant.numeroInterne.toString().length > 0) ? 'valid' : 'invalid';
-      this.etats.gestionnaire = (this.hydrant.gestionnaire !== null) ? 'valid' : 'invalid';
+      this.etats.spDeci = (this.hydrant.spDeci !== null) ? 'valid' : 'invalid';
       this.etats.nature = this.hydrant.nature ? 'valid' : 'invalid';
       this.etats.autoriteDeci = (this.hydrant.autoriteDeci !== null) ? 'valid' : 'invalid';
       this.etats.natureDeci = (this.hydrant.natureDeci !== null) ? 'valid' : 'invalid';

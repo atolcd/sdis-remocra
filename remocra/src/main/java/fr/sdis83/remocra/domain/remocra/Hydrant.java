@@ -220,6 +220,9 @@ public class Hydrant implements Featurable {
     private Long gestionnaire;
 
     @ManyToOne
+    private Organisme spDeci;
+
+    @ManyToOne
     private Site site;
 
     @ManyToOne
