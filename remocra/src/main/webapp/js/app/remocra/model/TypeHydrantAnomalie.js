@@ -6,6 +6,10 @@ Ext.define('Sdis.Remocra.model.TypeHydrantAnomalie', {
     extend: 'Sdis.Remocra.model.TypeReference',
 
     fields: [{
+        name: 'actif',
+        type: 'bool',
+        defaultValue: true
+    },{
         name: 'commentaire',
         type: 'string'
     },{
