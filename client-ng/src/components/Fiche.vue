@@ -29,25 +29,27 @@
             </b-form-group>
           </div>
           <div class="col-md-7">
-            <b-form-group label="Service Public DECI" label-for="spDeci" invalid-feedback="Le service public DECI doit être renseignée" :state="etats.spDeci" label-cols-md="5">
+            <b-form-group label="Service Public DECI" label-for="spDeci" invalid-feedback="Le service public DECI doit être renseignée" :state="etats.spDeci" label-cols-md="4">
               <b-form-select ref="spDeci" v-model="hydrant.spDeci" :options="comboSpDeci" size="sm" id="spDeci" class="parametre" :state="etats.spDeci" required></b-form-select>
             </b-form-group>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-7" v-if="hydrant.natureDeci != idDeciPublic">
-            <b-form-group label="Gestionnaire" label-for="gestionnaire" invalid-feedback="Le gestionnaire doit être renseigné" :state="etats.gestionnaire" label-cols-md="3">
+          <div class="col-md-10" v-if="hydrant.natureDeci != idDeciPublic">
+            <b-form-group label="Gestionnaire" label-for="gestionnaire" invalid-feedback="Le gestionnaire doit être renseigné" :state="etats.gestionnaire" label-cols-md="2">
               <b-form-select id="gestionnaire" v-model="hydrant.gestionnaire" class="parametre" :options="sortCombo(ellipsis(comboGestionnaire))" size="sm" v-on:change="onGestionnaireChange" :state="etats.gestionnaire">
               </b-form-select>
-              <button class="gestionnaireBtn" @click="modifGestionnaire" v-if="hydrant.natureDeci == idDeciPrive && utilisateurDroits.indexOf('HYDRANTS_GESTIONNAIRE_C') != -1">
+              <button class="gestionnaireBtn" @click="modifGestionnaire" v-if="utilisateurDroits.indexOf('HYDRANTS_GESTIONNAIRE_C') != -1">
                 <img src="/remocra/static/img/pencil.png">
               </button>
-              <button class="gestionnaireBtn addGest" @click="addGestionnaire" v-if="hydrant.natureDeci == idDeciPrive && utilisateurDroits.indexOf('HYDRANTS_GESTIONNAIRE_C') != -1">
+              <button class="gestionnaireBtn addGest" @click="addGestionnaire" v-if="utilisateurDroits.indexOf('HYDRANTS_GESTIONNAIRE_C') != -1">
                 <img src="/remocra/static/img/add.png">
               </button>
             </b-form-group>
           </div>
-          <div class="col-md-6" v-if="hydrant.natureDeci != idDeciPublic">
+        </div>
+        <div class="row">
+          <div class="col-md-10" v-if="hydrant.natureDeci != idDeciPublic">
             <b-form-group label="Site" label-for="site" label-cols-md="2">
               <b-form-select id="site" v-model="hydrant.site" class="parametre" :options="ellipsis(comboSite)" size="sm"></b-form-select>
             </b-form-group>
@@ -193,8 +195,8 @@ export default {
             value: item.value,
             text: item.text
           };
-          if (i.text.length > 35) {
-            i.text = i.text.substring(0, 35).concat("...");
+          if (i.text.length > 80) {
+            i.text = i.text.substring(0, 80).concat("...");
           }
           c.push(i);
         });
@@ -310,13 +312,13 @@ export default {
           var libelle;
           switch (item['typeOrganisme']) {
             case 'COMMUNE':
-              libelle = "Maire de " + item['nom'];
+              libelle = "Maire (" + item['nom'] + ")";
               break;
             case 'EPCI':
-              libelle = "Président de " + item['nom'];
+              libelle = "Président (" + item['nom'] + ")";
               break;
             case 'PREFECTURE':
-              libelle = "Préfet de ";
+              libelle = "Préfet (" + item['nom'] + ")";
               break;
             default:
               libelle = item['nom'];
@@ -329,7 +331,6 @@ export default {
       }).then(axios.get('/remocra/typehydrantnaturedeci').then(response => { // Récupération des données de nature DECI
         self.listeNaturesDeci = response.data.data;
         self.getPublicOrPrive()
-        self.getComboGestionnaire();
         self.getComboSpDeci();
       })).catch(function(error) {
         console.error('Retrieving combo data from /remocra/organismes/autoritepolicedeci/', error);
@@ -373,6 +374,11 @@ export default {
     getPublicOrPrive() {
       this.idDeciPublic = this.listeNaturesDeci.filter(item => item.code === "PUBLIC")[0].id;
       this.idDeciPrive = this.listeNaturesDeci.filter(item => item.code === "PRIVE")[0].id;
+      //si on est sur du privé ou conventionné on charge la combo gestionnaire
+      console.log(this.hydrant)
+      if (this.hydrant.natureDeci != this.idDeciPublic) {
+        this.getComboGestionnaire();
+      }
     },
     getComboGestionnaire() {
       this.hydrant.site = null;
@@ -381,7 +387,11 @@ export default {
       this.onGestionnaireChange();
     },
     getComboSpDeci() {
-      this.hydrant.gestionnaire = null;
+      if (this.hydrantRecord.natureDeci && this.hydrantRecord.natureDeci.id === this.hydrant.natureDeci) {
+        this.hydrant.spDeci = this.hydrantRecord.spDeci.id;
+      } else {
+        this.hydrant.spDeci = null;
+      }
       // Si DECI publique , le gestionnaire est un organisme de type COMMUNE ou EPCI
       var self = this;
       axios.get('/remocra/organismes/gestionnairepublic.json', {
@@ -410,7 +420,6 @@ export default {
      */
     onNatureDeciChange() {
       this.getPublicOrPrive();
-      this.getComboGestionnaire();
       this.getComboSpDeci();
       if (this.$refs.fichePibi) {
         this.$refs.fichePibi.onNatureDeciChange();
@@ -423,6 +432,8 @@ export default {
         this.$refs.fichePibi.updateComboJumelage(nature);
       }
       this.$refs.ficheVisite.onNatureChange();
+      this.hydrant.gestionnaire = null
+      this.hydrant.site = null
     },
     /**
      * Appelée lorsque l'on créé un gestionnaire grâce à la modale
@@ -581,6 +592,10 @@ export default {
           data[item.id] = item.value;
         }
       });
+      if (this.hydrant.natureDeci == this.idDeciPublic) {
+        data["gestionnaire"] = null
+        data["site"] = null
+      }
       data["geometrie"] = this.geometrie;
       if (!this.idHydrant) {
         data["numeroInterne"] = null;
