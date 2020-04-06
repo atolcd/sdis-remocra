@@ -374,28 +374,13 @@
       <limit>0</limit>
       <is_custom_sql>Y</is_custom_sql>
       <is_usevars>Y</is_usevars>
-      <custom_sql>WITH cis AS (
-  SELECT o.nom, zc.geometrie
-  FROM remocra.organisme o
-    JOIN remocra.zone_competence zc ON zc.id = o.zone_competence
-    JOIN remocra.type_organisme tor ON tor.id = o.type_organisme AND tor.code = 'CS'
-),
-organisme_courant AS (
-  SELECT o.nom, zc.geometrie
-  FROM remocra.organisme o
-    JOIN remocra.zone_competence zc ON zc.id = o.zone_competence
-  WHERE o.id = ${ORGANISME_ID}
-),
-carre9 AS (
-  SELECT nom, geometrie FROM organisme_courant
-  UNION
-  SELECT c.nom, c.geometrie
-  FROM cis c
-    JOIN organisme_courant oc ON ST_Touches(oc.geometrie, c.geometrie)
-  LIMIT 8
+      <custom_sql>WITH carre9 AS (
+	SELECT o.nom, zc.geometrie
+	FROM remocra_referentiel.carre c
+		JOIN remocra.organisme o ON o.id = c.cs
+		JOIN remocra.zone_competence zc ON zc.id = o.zone_competence 
+	WHERE c.referent = ${ORGANISME_ID}
 )
-
-
 SELECT DISTINCT h.id
 FROM remocra.hydrant h
 JOIN carre9 ON ST_Contains(carre9.geometrie, h.geometrie)
