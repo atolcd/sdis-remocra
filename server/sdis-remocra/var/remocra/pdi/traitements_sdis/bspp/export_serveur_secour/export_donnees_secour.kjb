@@ -391,40 +391,6 @@
       <yloc>128</yloc>
     </entry>
     <entry>
-      <name>Envoi fichiers avec SFTP</name>
-      <description />
-      <type>SFTPPUT</type>
-      <servername>${SERVEUR_CARTO_SECOUR_ADRESSE}</servername>
-      <serverport>${SERVEUR_CARTO_SECOUR_PORT}</serverport>
-      <username>${SERVEUR_CARTO_SECOUR_PORT_UTILISATEUR}</username>
-      <password>${SERVEUR_CARTO_SECOUR_PORT_PASSWORD}</password>
-      <sftpdirectory>/home/atolcd/shp/</sftpdirectory>
-      <localdirectory>${Internal.Job.Filename.Directory}/temp/</localdirectory>
-      <wildcard />
-      <copyprevious>N</copyprevious>
-      <copypreviousfiles>N</copypreviousfiles>
-      <addFilenameResut>N</addFilenameResut>
-      <usekeyfilename>N</usekeyfilename>
-      <keyfilename />
-      <keyfilepass>Encrypted </keyfilepass>
-      <compression>none</compression>
-      <proxyType />
-      <proxyHost />
-      <proxyPort />
-      <proxyUsername />
-      <proxyPassword>Encrypted </proxyPassword>
-      <createRemoteFolder>N</createRemoteFolder>
-      <aftersftpput>nothing</aftersftpput>
-      <destinationfolder />
-      <createdestinationfolder>N</createdestinationfolder>
-      <successWhenNoFile>N</successWhenNoFile>
-      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>960</xloc>
-      <yloc>128</yloc>
-    </entry>
-    <entry>
       <name>Créer un répertoire</name>
       <description />
       <type>CREATE_FOLDER</type>
@@ -434,6 +400,37 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>528</xloc>
+      <yloc>128</yloc>
+    </entry>
+    <entry>
+      <name>Envoi de fichiers via FTP</name>
+      <description />
+      <type>FTP_PUT</type>
+      <servername>${SERVEUR_CARTO_SECOUR_ADRESSE_FTP}</servername>
+      <serverport>${SERVEUR_CARTO_SECOUR_PORT_FTP}</serverport>
+      <username>${SERVEUR_CARTO_SECOUR_UTILISATEUR_FTP}</username>
+      <password>${SERVEUR_CARTO_SECOUR_PASSWORD_FTP}</password>
+      <remoteDirectory>/home/atolcd/shp/</remoteDirectory>
+      <localDirectory>${Internal.Job.Filename.Directory}/temp/</localDirectory>
+      <wildcard />
+      <binary>Y</binary>
+      <timeout>0</timeout>
+      <remove>Y</remove>
+      <only_new>N</only_new>
+      <active>N</active>
+      <control_encoding>ISO-8859-1</control_encoding>
+      <proxy_host />
+      <proxy_port />
+      <proxy_username />
+      <proxy_password>Encrypted </proxy_password>
+      <socksproxy_host />
+      <socksproxy_port>1080</socksproxy_port>
+      <socksproxy_username />
+      <socksproxy_password>Encrypted </socksproxy_password>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>960</xloc>
       <yloc>128</yloc>
     </entry>
   </entries>
@@ -466,15 +463,6 @@
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>creation_fichier_shp.ktr</from>
-      <to>Envoi fichiers avec SFTP</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
       <from>Variables spécifiques</from>
       <to>Créer un répertoire</to>
       <from_nr>0</from_nr>
@@ -491,6 +479,15 @@
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
       <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>creation_fichier_shp.ktr</from>
+      <to>Envoi de fichiers via FTP</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
     </hop>
   </hops>
   <notepads>
