@@ -122,11 +122,7 @@
                 <div :class="{'col-md-9':!isNew, 'col-md-12':isNew}">
                   <b-form-group label-cols-md="2">
                     <ul :class="{'itemPeiContainer':true, 'hidden':!this.mesures[this.selectedRow].listeHydrants.length}">
-                      <li v-for="item in sortedHydrants"
-                          v-bind:key="item.id"
-                          size="sm"
-                          :class="{'itemPei': true, 'bg-secondary':item.id==selectedPei, 'text-light':item.id==selectedPei}"
-                          @click="selectedPei = item.id">
+                      <li v-for="item in sortedHydrants" v-bind:key="item.id" size="sm" :class="{'itemPei': true, 'bg-secondary':item.id==selectedPei, 'text-light':item.id==selectedPei}" @click="selectedPei = item.id">
                         {{item.numero}}
                       </li>
                     </ul>
@@ -184,6 +180,7 @@ export default {
       selectedRow: null,
       newAttestationInputValue: null,
       hydrantsAdequats: [], // Tableau regroupant les hydrants pouvant faire partie de ce Débit Simultané
+      sortedHydrants: [],
       selectedPeiFromCombo: null,
       selectedPei: null,
       mesuresASupprimer: [],
@@ -266,33 +263,21 @@ export default {
      */
     userCanEdit: function() {
       return this.utilisateurDroits.indexOf('DEBITS_SIMULTANES_C') > -1;
-    },
-
-    /**
-      * Retourne les hydrants compris dans la mesure sélectionnée triés par leur numéro
-      */
-    sortedHydrants: function() {
-      if(this.mesures[this.selectedRow].listeHydrants.length > 0 && typeof this.mesures[this.selectedRow].listeHydrants[0] === "object") {
-        return this.mesures[this.selectedRow].listeHydrants.slice().sort((a,b) => (a.numero).localeCompare(b.numero))
-      }
-      return [];
     }
   },
-
   /**
-    * Désactivation des libellés lorsque le champ auquel il est lié est désactivé
-    * On est obligé de passer par du js, les sélecteurs CSS qui permettraient de faire ça ne ne sont pas encore supportés
-    */
+   * Désactivation des libellés lorsque le champ auquel il est lié est désactivé
+   * On est obligé de passer par du js, les sélecteurs CSS qui permettraient de faire ça ne ne sont pas encore supportés
+   */
   updated: function() {
     _.forEach(document.querySelectorAll('.form-group .col'), node => {
-      if(node.firstElementChild && node.firstElementChild.disabled) {
+      if (node.firstElementChild && node.firstElementChild.disabled) {
         node.parentElement.firstChild.classList.add("labelDisabled");
       } else {
         node.parentElement.firstChild.classList.remove("labelDisabled");
       }
     });
   },
-
   mounted: function() {
     this.$refs.modalDebitSimultane.show();
     loadProgressBar({
@@ -370,10 +355,8 @@ export default {
                   id: hydrant.hydrant.id,
                   numero: hydrant.hydrant.numero
                 });
-
                 // Le diamètre affiché est le plus gros diamètre de canalisation composant le débit simultané
                 this.diametreCanalisation = (hydrant.hydrant.diametreCanalisation > this.diametreCanalisation || this.diametreCanalisation === null) ? hydrant.hydrant.diametreCanalisation : this.diametreCanalisation
-
                 if (this.typeReseauImpose === null) {
                   this.typeReseauImpose = hydrant.hydrant.typeReseauAlimentation;
                 }
@@ -396,6 +379,9 @@ export default {
                   }, {
                     "property": "typeReseau",
                     "value": this.typeReseauImpose.id
+                  }, {
+                    "property": "debitSimultane",
+                    "value": "true"
                   }
                 ]),
                 limit: 100
@@ -456,6 +442,7 @@ export default {
           numero: pei.numero
         });
         this.selectedPeiFromCombo = null;
+        this.sortHydrants()
       }
     },
     /**
@@ -465,6 +452,7 @@ export default {
       if (this.selectedRow !== null && this.selectedPei !== null) {
         this.mesures[this.selectedRow].listeHydrants.splice(this.mesures[this.selectedRow].listeHydrants.findIndex(h => h.id == this.selectedPei), 1);
         this.selectedPei = null;
+        this.sortHydrants()
       }
     },
     /**
@@ -474,17 +462,15 @@ export default {
     onRowSelected(index) {
       if (this.selectedRow !== null) {
         this.mesures[this.selectedRow].newAttestation = this.newAttestationInputValue;
-
         this.newAttestationInputValue = this.mesures[index].newAttestation;
-
-        if(this.newAttestationInputValue === null){
+        if (this.newAttestationInputValue === null) {
           this.newAttestationInputValue = {
-            name : "Aucun fichier sélectionné"
+            name: "Aucun fichier sélectionné"
           }
         }
       }
-
       this.selectedRow = index;
+      this.sortHydrants()
     },
     createMesure() {
       var date = moment().format("YYYY-MM-DD HH:mm");
@@ -536,7 +522,7 @@ export default {
       if (this.userCanEdit) // Si l'utilisateur a les droits de modification: on passe à l'étape de validation
       {
         this.checkFormValidity().then(formValid => {
-          if(formValid) {
+          if (formValid) {
             this.handleSubmit();
           }
         })
@@ -556,7 +542,6 @@ export default {
       this.etats.date = 'valid';
       this.etats.time = 'valid';
       this.etats.debitMesure = 'valid';
-
       _.forEach(this.mesures, mesure => {
         if (!mesure.debitRequis || mesure.debitRequis.length == 0) {
           this.etats.debitRequis = 'invalid';
@@ -615,7 +600,6 @@ export default {
           }
         });
       }
-
       // Vérification de l'unicité du numéro de dossier au sein de la base
       return axios.get('/remocra/debitsimultane', {
         params: {
@@ -626,8 +610,7 @@ export default {
         }
       }).then(response => {
         var state = "valid";
-
-        if(response.data.data.length > 0) {
+        if (response.data.data.length > 0) {
           if (this.debitSimultane.id !== null && this.debitSimultane.id === response.data.data[0].id) {
             state = "valid";
           } else {
@@ -644,7 +627,6 @@ export default {
         return !this.hasInvalidState(this.etats);
       })
     },
-
     hasInvalidState(etats) {
       var hasInvalidState = false;
       for (var key in etats) {
@@ -713,6 +695,14 @@ export default {
           });
         });
       });
+    },
+    /**
+     * Retourne les hydrants compris dans la mesure sélectionnée triés par leur numéro
+     */
+    sortHydrants: function() {
+      if (this.mesures[this.selectedRow].listeHydrants.length > 0 && typeof this.mesures[this.selectedRow].listeHydrants[0] === "object") {
+        this.sortedHydrants = this.mesures[this.selectedRow].listeHydrants.slice().sort((a, b) => (a.numero).localeCompare(b.numero))
+      }
     }
   }
 };

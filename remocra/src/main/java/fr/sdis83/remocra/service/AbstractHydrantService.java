@@ -156,6 +156,12 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
             List<Long> resultList = itemTypedQuery.getResultList();
             Expression<Integer> idHydrant = from.get("id");
             predicat = !resultList.isEmpty() ? idHydrant.in(resultList) : predicat;
+        }else if("debitSimultane".equals(itemFilter.getFieldName())) {
+            TypedQuery<Long> itemTypedQuery= this.entityManager.createQuery("select distinct(h.id) " +
+                "from Hydrant h where h.id not in (select dsh.hydrant from DebitSimultaneHydrant dsh) ", Long.class);
+            List<Long> resultList = itemTypedQuery.getResultList();
+            Expression<Integer> idHydrant = from.get("id");
+            predicat = !resultList.isEmpty() ? idHydrant.in(resultList) : predicat;
         } else {
             return super.processFilterItem(itemQuery, parameters, from, itemFilter);
         }
