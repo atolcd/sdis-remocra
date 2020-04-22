@@ -28,7 +28,7 @@ public class JSONMap<K,V> extends HashMap<K,V> {
             if(entry.getValue() != null &&
                 !"true".equalsIgnoreCase(entry.getValue().toString())
                 && !"false".equalsIgnoreCase(entry.getValue().toString())
-                && entry.getValue().toString().matches(".*[a-zA-Z].*")) {
+                && entry.getValue().toString().matches(".*[a-zA-Z0-9].*")) {
               sb.append(QUOTE);
               sb.append(entry.getValue());
               sb.append(QUOTE);
