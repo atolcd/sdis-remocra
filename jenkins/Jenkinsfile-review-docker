@@ -26,6 +26,48 @@ pipeline {
         }
       }
     }
+    stage('Dependencies') {
+      failFast true
+      parallel {
+        stage('Dependencies geoserver') {
+          steps {
+            script {
+              withCredentials([usernameColonPassword(credentialsId: 'nexus3-jenkins', variable: 'NEXUS3_AUTH')]) {
+                sh '[ -f docker/geoserver/ext/geoserver-2.16.2-bin.zip ] || curl --user "$NEXUS3_AUTH" -o docker/geoserver/ext/geoserver-2.16.2-bin.zip https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/geoserver-2.16.2-bin.zip'
+                sh '[ -f docker/geoserver/ext/geoserver-2.16.2-querylayer-plugin.zip ] || curl --user "$NEXUS3_AUTH" -o docker/geoserver/ext/geoserver-2.16.2-querylayer-plugin.zip https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/geoserver-2.16.2-querylayer-plugin.zip'
+                sh '[ -f docker/geoserver/ext/jai-1_1_3-lib-linux-amd64.tar.gz ] || curl --user "$NEXUS3_AUTH" -o docker/geoserver/ext/jai-1_1_3-lib-linux-amd64.tar.gz https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/jai-1_1_3-lib-linux-amd64.tar.gz'
+                sh '[ -f docker/geoserver/ext/jai_imageio-1_1-lib-linux-amd64.tar.gz ] || curl --user "$NEXUS3_AUTH" -o docker/geoserver/ext/gjai_imageio-1_1-lib-linux-amd64.tar.gz https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/jai_imageio-1_1-lib-linux-amd64.tar.gz'
+              }
+            }
+          }
+        }
+        stage('Dependencies pdi-4.4-dkron') {
+          steps {
+            script {
+              withCredentials([usernameColonPassword(credentialsId: 'nexus3-jenkins', variable: 'NEXUS3_AUTH')]) {
+                sh '[ -f docker/pdi-4.4-dkron/ext/pdi-ce-4.4.0-stable.zip ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-4.4-dkron/ext/pdi-ce-4.4.0-stable.zip https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/pdi-ce-4.4.0-stable.zip'
+                sh '[ -f docker/pdi-4.4-dkron/ext/pentaho-4.4-remocra-deps.zip ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-4.4-dkron/ext/pentaho-4.4-remocra-deps.zip https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/pentaho-4.4-remocra-deps.zip'
+                sh '[ -f docker/pdi-4.4-dkron/ext/postgresql-42.2.10.jre7.jar ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-4.4-dkron/ext/postgresql-42.2.10.jre7.jar https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/postgresql-42.2.10.jre7.jar'
+                sh '[ -f docker/pdi-4.4-dkron/ext/dkron_2.1.1_linux_amd64.tar.gz ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-4.4-dkron/ext/dkron_2.1.1_linux_amd64.tar.gz https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/dkron_2.1.1_linux_amd64.tar.gz'
+              }
+            }
+          }
+        }
+        stage('Dependencies pdi-dkron') {
+          steps {
+            script {
+              withCredentials([usernameColonPassword(credentialsId: 'nexus3-jenkins', variable: 'NEXUS3_AUTH')]) {
+                sh '[ -f docker/pdi-dkron/ext/pdi-ce-7.1.0.0-12.zip ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-dkron/ext/pdi-ce-7.1.0.0-12.zip https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/pdi-ce-7.1.0.0-12.zip'
+                sh '[ -f docker/pdi-dkron/ext/pentaho-gis-plugins-1.2.1-bin-7.zip ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-dkron/ext/pentaho-gis-plugins-1.2.1-bin-7.zip https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/pentaho-gis-plugins-1.2.1-bin-7.zip'
+                sh '[ -f docker/pdi-dkron/ext/ojdbc14.jar ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-dkron/ext/ojdbc14.jar https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/ojdbc14.jar'
+                sh '[ -f docker/pdi-dkron/ext/orai18n.jar] || curl --user "$NEXUS3_AUTH" -o docker/pdi-dkron/ext/orai18n.jar https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/orai18n.jar'
+                sh '[ -f docker/pdi-dkron/ext/dkron_2.1.1_linux_amd64.tar.gz ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-dkron/ext/dkron_2.1.1_linux_amd64.tar.gz https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/dkron_2.1.1_linux_amd64.tar.gz'
+              }
+            }
+          }
+        }
+      }
+    }
     stage('Build') {
       failFast true
       parallel {
@@ -45,6 +87,15 @@ pipeline {
               )
             }
           }
+          post {
+            always {
+              script {
+                if (remocra_image) {
+                  sh "docker rmi -f ${remocra_image.id}"
+                }
+              }
+            }
+          }
         }
         stage('Build docker geoserver') {
           steps {
@@ -53,6 +104,15 @@ pipeline {
                 'atolcd/remocra-geoserver',
                 "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./docker/geoserver/Dockerfile ./docker/geoserver"
               )
+            }
+          }
+          post {
+            always {
+              script {
+                if (geoserver_image) {
+                  sh "docker rmi -f ${geoserver_image.id}"
+                }
+              }
             }
           }
         }
@@ -65,6 +125,15 @@ pipeline {
               )
             }
           }
+          post {
+            always {
+              script {
+                if (pdi44dkron_image) {
+                  sh "docker rmi -f ${pdi44dkron_image.id}"
+                }
+              }
+            }
+          }
         }
         stage('Build docker pdi-dkron') {
           steps {
@@ -75,56 +144,25 @@ pipeline {
               )
             }
           }
+          post {
+            always {
+              script {
+                if (pdidkron_image) {
+                  sh "docker rmi -f ${pdidkron_image.id}"
+                }
+              }
+            }
+          }
         }
       }
     }
+
     // review : pas de push
-    stage('Clean') {
-      failFast true
-      parallel {
-        stage('Clean workspace') {
-          steps {
-            sh 'git checkout -- .'
-            sh 'git clean -f -d -x -e client-ng/node_modules'
-          }
-        }
-        stage('Delete image remocra') {
-          steps {
-            script {
-              if (remocra_image) {
-                sh "docker rmi -f ${remocra_image.id}"
-              }
-            }
-          }
-        }
-        stage('Delete image geoserver') {
-          steps {
-            script {
-              if (geoserver_image) {
-                sh "docker rmi -f ${geoserver_image.id}"
-              }
-            }
-          }
-        }
-        stage('Delete image pdi-4.4-dkron') {
-          steps {
-            script {
-              if (pdi44dkron_image) {
-                sh "docker rmi -f ${pdi44dkron_image.id}"
-              }
-            }
-          }
-        }
-        stage('Delete image pdi-dkron') {
-          steps {
-            script {
-              if (remocra_image) {
-                sh "docker rmi -f ${pdidkron_image.id}"
-              }
-            }
-          }
-        }
-      }
+  }
+  post {
+    always {
+      sh 'git checkout -- .'
+      sh 'git clean -f -d -x -e client-ng/node_modules -e docker/geoserver/ext -e docker/pdi-4.4-dkron/ext -e docker/pdi-dkron/ext'
     }
   }
 }
