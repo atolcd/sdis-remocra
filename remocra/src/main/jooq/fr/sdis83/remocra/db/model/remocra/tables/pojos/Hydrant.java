@@ -26,7 +26,7 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant implements Serializable {
 
-	private static final long serialVersionUID = -234136578;
+	private static final long serialVersionUID = 130814054;
 
 	private Long     id;
 	private String   agent1;
@@ -69,6 +69,7 @@ public class Hydrant implements Serializable {
 	private Long     autoriteDeci;
 	private Boolean  enFace;
 	private Instant  dateCrea;
+	private Long     spDeci;
 
 	public Hydrant() {}
 
@@ -114,6 +115,7 @@ public class Hydrant implements Serializable {
 		this.autoriteDeci = value.autoriteDeci;
 		this.enFace = value.enFace;
 		this.dateCrea = value.dateCrea;
+		this.spDeci = value.spDeci;
 	}
 
 	public Hydrant(
@@ -157,7 +159,8 @@ public class Hydrant implements Serializable {
 		Long     site,
 		Long     autoriteDeci,
 		Boolean  enFace,
-		Instant  dateCrea
+		Instant  dateCrea,
+		Long     spDeci
 	) {
 		this.id = id;
 		this.agent1 = agent1;
@@ -200,6 +203,7 @@ public class Hydrant implements Serializable {
 		this.autoriteDeci = autoriteDeci;
 		this.enFace = enFace;
 		this.dateCrea = dateCrea;
+		this.spDeci = spDeci;
 	}
 
 	public Long getId() {
@@ -568,6 +572,15 @@ public class Hydrant implements Serializable {
 
 	public Hydrant setDateCrea(Instant dateCrea) {
 		this.dateCrea = dateCrea;
+		return this;
+	}
+
+	public Long getSpDeci() {
+		return this.spDeci;
+	}
+
+	public Hydrant setSpDeci(Long spDeci) {
+		this.spDeci = spDeci;
 		return this;
 	}
 }

@@ -171,6 +171,31 @@ public class Sequences {
 	public static final Sequence<Long> EMAIL_MODELE_ID_SEQ = new SequenceImpl<Long>("email_modele_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
+	 * The sequence <code>remocra.etude_communes_id_seq</code>
+	 */
+	public static final Sequence<Long> ETUDE_COMMUNES_ID_SEQ = new SequenceImpl<Long>("etude_communes_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.etude_documents_id_seq</code>
+	 */
+	public static final Sequence<Long> ETUDE_DOCUMENTS_ID_SEQ = new SequenceImpl<Long>("etude_documents_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.etude_hydrant_projet_id_seq</code>
+	 */
+	public static final Sequence<Long> ETUDE_HYDRANT_PROJET_ID_SEQ = new SequenceImpl<Long>("etude_hydrant_projet_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.etude_id_seq</code>
+	 */
+	public static final Sequence<Long> ETUDE_ID_SEQ = new SequenceImpl<Long>("etude_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.etude_organisme_seq</code>
+	 */
+	public static final Sequence<Long> ETUDE_ORGANISME_SEQ = new SequenceImpl<Long>("etude_organisme_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
 	 * The sequence <code>remocra.export_modele_id_seq</code>
 	 */
 	public static final Sequence<Long> EXPORT_MODELE_ID_SEQ = new SequenceImpl<Long>("export_modele_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
@@ -479,6 +504,16 @@ public class Sequences {
 	 * The sequence <code>remocra.type_droit_id_seq</code>
 	 */
 	public static final Sequence<Long> TYPE_DROIT_ID_SEQ = new SequenceImpl<Long>("type_droit_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.type_etude_id_seq</code>
+	 */
+	public static final Sequence<Long> TYPE_ETUDE_ID_SEQ = new SequenceImpl<Long>("type_etude_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>remocra.type_etude_statut_id_seq</code>
+	 */
+	public static final Sequence<Long> TYPE_ETUDE_STATUT_ID_SEQ = new SequenceImpl<Long>("type_etude_statut_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
 	 * The sequence <code>remocra.type_hydrant_anomalie_id_seq</code>

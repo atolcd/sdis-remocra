@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -789700063;
+	private static final long serialVersionUID = -1423551289;
 
 	/**
 	 * The reference instance of <code>remocra.hydrant</code>
@@ -261,6 +261,11 @@ public class Hydrant extends TableImpl<Record> {
 	public final TableField<Record, Instant> DATE_CREA = createField("date_crea", org.jooq.impl.SQLDataType.TIMESTAMP, this, "", new InstantConverter());
 
 	/**
+	 * The column <code>remocra.hydrant.sp_deci</code>. Identifiant du service publique DECI
+	 */
+	public final TableField<Record, Long> SP_DECI = createField("sp_deci", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant du service publique DECI");
+
+	/**
 	 * Create a <code>remocra.hydrant</code> table reference
 	 */
 	public Hydrant() {
@@ -311,7 +316,7 @@ public class Hydrant extends TableImpl<Record> {
 	 */
 	@Override
 	public List<ForeignKey<Record, ?>> getReferences() {
-		return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT__FK51B8F028D2DA796C, Keys.HYDRANT__FK51B8F0285D29D8A8, Keys.HYDRANT__FK51B8F028D10A0428, Keys.HYDRANT__FK51B8F028374ADD52, Keys.HYDRANT__FK_ZONE_SPECIALE, Keys.HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION, Keys.HYDRANT__FK_NATURE_DECI, Keys.HYDRANT__FK_NIVEAU, Keys.HYDRANT__FK_SITE, Keys.HYDRANT__FK_AUTORITE_DECI);
+		return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT__FK51B8F028D2DA796C, Keys.HYDRANT__FK51B8F0285D29D8A8, Keys.HYDRANT__FK51B8F028D10A0428, Keys.HYDRANT__FK51B8F028374ADD52, Keys.HYDRANT__FK_ZONE_SPECIALE, Keys.HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION, Keys.HYDRANT__FK_NATURE_DECI, Keys.HYDRANT__FK_NIVEAU, Keys.HYDRANT__FK_GESTIONNAIRE, Keys.HYDRANT__FK_SITE, Keys.HYDRANT__FK_AUTORITE_DECI, Keys.HYDRANT__FK_SP_DECI);
 	}
 
 	/**

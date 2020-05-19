@@ -42,6 +42,10 @@ import fr.sdis83.remocra.db.model.remocra.tables.Document;
 import fr.sdis83.remocra.db.model.remocra.tables.Droit;
 import fr.sdis83.remocra.db.model.remocra.tables.Email;
 import fr.sdis83.remocra.db.model.remocra.tables.EmailModele;
+import fr.sdis83.remocra.db.model.remocra.tables.Etude;
+import fr.sdis83.remocra.db.model.remocra.tables.EtudeCommunes;
+import fr.sdis83.remocra.db.model.remocra.tables.EtudeDocuments;
+import fr.sdis83.remocra.db.model.remocra.tables.EtudeHydrantProjet;
 import fr.sdis83.remocra.db.model.remocra.tables.ExportModele;
 import fr.sdis83.remocra.db.model.remocra.tables.Gestionnaire;
 import fr.sdis83.remocra.db.model.remocra.tables.GestionnaireSite;
@@ -117,6 +121,8 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseNatureEvenement;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseProprieteEvenement;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseStatut;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeDroit;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeEtude;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeEtudeStatut;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantAnomalie;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantAnomalieNature;
@@ -369,6 +375,26 @@ public class Tables {
 	 * The table remocra.email_modele
 	 */
 	public static final EmailModele EMAIL_MODELE = fr.sdis83.remocra.db.model.remocra.tables.EmailModele.EMAIL_MODELE;
+
+	/**
+	 * The table remocra.etude
+	 */
+	public static final Etude ETUDE = fr.sdis83.remocra.db.model.remocra.tables.Etude.ETUDE;
+
+	/**
+	 * The table remocra.etude_communes
+	 */
+	public static final EtudeCommunes ETUDE_COMMUNES = fr.sdis83.remocra.db.model.remocra.tables.EtudeCommunes.ETUDE_COMMUNES;
+
+	/**
+	 * The table remocra.etude_documents
+	 */
+	public static final EtudeDocuments ETUDE_DOCUMENTS = fr.sdis83.remocra.db.model.remocra.tables.EtudeDocuments.ETUDE_DOCUMENTS;
+
+	/**
+	 * The table remocra.etude_hydrant_projet
+	 */
+	public static final EtudeHydrantProjet ETUDE_HYDRANT_PROJET = fr.sdis83.remocra.db.model.remocra.tables.EtudeHydrantProjet.ETUDE_HYDRANT_PROJET;
 
 	/**
 	 * The table remocra.export_modele
@@ -744,6 +770,16 @@ public class Tables {
 	 * The table remocra.type_droit
 	 */
 	public static final TypeDroit TYPE_DROIT = fr.sdis83.remocra.db.model.remocra.tables.TypeDroit.TYPE_DROIT;
+
+	/**
+	 * The table remocra.type_etude
+	 */
+	public static final TypeEtude TYPE_ETUDE = fr.sdis83.remocra.db.model.remocra.tables.TypeEtude.TYPE_ETUDE;
+
+	/**
+	 * The table remocra.type_etude_statut
+	 */
+	public static final TypeEtudeStatut TYPE_ETUDE_STATUT = fr.sdis83.remocra.db.model.remocra.tables.TypeEtudeStatut.TYPE_ETUDE_STATUT;
 
 	/**
 	 * The table remocra.type_hydrant

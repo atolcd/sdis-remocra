@@ -22,6 +22,7 @@ Ext.require('Sdis.Remocra.features.hydrants.declahydrant.DeclaHydrantWindow');
 Ext.require('Sdis.Remocra.features.adresses.delib.DelibWindow');
 Ext.require('Sdis.Remocra.features.dfci.receptravaux.RecepTravauxWindow');
 Ext.require('Sdis.Remocra.features.hydrants.televerser.TeleverserHydrantWindow');
+Ext.require('Sdis.Remocra.features.hydrants.Planification');
 Ext.require('Sdis.Remocra.features.courriers.Courriers');
 
 Ext.ns('Sdis.Remocra');
@@ -280,6 +281,9 @@ Ext.define('Sdis.Remocra.controller.Router', {
         };
         routes['prescrits'] = {
             xtype: 'prescritsMap'
+        };
+        routes['planification'] = {
+            xtype: 'planification'
         };
         // Cas d'une description dynamique : si dépot délib, fenêtre
         routes['declahydrant'] = {

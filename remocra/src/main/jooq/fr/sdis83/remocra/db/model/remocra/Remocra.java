@@ -43,6 +43,10 @@ import fr.sdis83.remocra.db.model.remocra.tables.Document;
 import fr.sdis83.remocra.db.model.remocra.tables.Droit;
 import fr.sdis83.remocra.db.model.remocra.tables.Email;
 import fr.sdis83.remocra.db.model.remocra.tables.EmailModele;
+import fr.sdis83.remocra.db.model.remocra.tables.Etude;
+import fr.sdis83.remocra.db.model.remocra.tables.EtudeCommunes;
+import fr.sdis83.remocra.db.model.remocra.tables.EtudeDocuments;
+import fr.sdis83.remocra.db.model.remocra.tables.EtudeHydrantProjet;
 import fr.sdis83.remocra.db.model.remocra.tables.ExportModele;
 import fr.sdis83.remocra.db.model.remocra.tables.Gestionnaire;
 import fr.sdis83.remocra.db.model.remocra.tables.GestionnaireSite;
@@ -118,6 +122,8 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseNatureEvenement;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseProprieteEvenement;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeCriseStatut;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeDroit;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeEtude;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeEtudeStatut;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantAnomalie;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantAnomalieNature;
@@ -189,7 +195,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Remocra extends SchemaImpl {
 
-	private static final long serialVersionUID = 1414972168;
+	private static final long serialVersionUID = 141708578;
 
 	/**
 	 * The reference instance of <code>remocra</code>
@@ -241,6 +247,11 @@ public class Remocra extends SchemaImpl {
 			Sequences.DROIT_ID_SEQ,
 			Sequences.EMAIL_ID_SEQ,
 			Sequences.EMAIL_MODELE_ID_SEQ,
+			Sequences.ETUDE_COMMUNES_ID_SEQ,
+			Sequences.ETUDE_DOCUMENTS_ID_SEQ,
+			Sequences.ETUDE_HYDRANT_PROJET_ID_SEQ,
+			Sequences.ETUDE_ID_SEQ,
+			Sequences.ETUDE_ORGANISME_SEQ,
 			Sequences.EXPORT_MODELE_ID_SEQ,
 			Sequences.GESTIONNAIRE_ID_SEQ,
 			Sequences.GESTIONNAIRE_SITE_ID_SEQ,
@@ -303,6 +314,8 @@ public class Remocra extends SchemaImpl {
 			Sequences.TYPE_CRISE_PROPRIETE_EVENEMENT_ID_SEQ,
 			Sequences.TYPE_CRISE_STATUT_ID_SEQ,
 			Sequences.TYPE_DROIT_ID_SEQ,
+			Sequences.TYPE_ETUDE_ID_SEQ,
+			Sequences.TYPE_ETUDE_STATUT_ID_SEQ,
 			Sequences.TYPE_HYDRANT_ANOMALIE_ID_SEQ,
 			Sequences.TYPE_HYDRANT_ANOMALIE_NATURE_ID_SEQ,
 			Sequences.TYPE_HYDRANT_ASPIRATION_ID_SEQ,
@@ -395,6 +408,10 @@ public class Remocra extends SchemaImpl {
 			Droit.DROIT,
 			Email.EMAIL,
 			EmailModele.EMAIL_MODELE,
+			Etude.ETUDE,
+			EtudeCommunes.ETUDE_COMMUNES,
+			EtudeDocuments.ETUDE_DOCUMENTS,
+			EtudeHydrantProjet.ETUDE_HYDRANT_PROJET,
 			ExportModele.EXPORT_MODELE,
 			Gestionnaire.GESTIONNAIRE,
 			GestionnaireSite.GESTIONNAIRE_SITE,
@@ -470,6 +487,8 @@ public class Remocra extends SchemaImpl {
 			TypeCriseProprieteEvenement.TYPE_CRISE_PROPRIETE_EVENEMENT,
 			TypeCriseStatut.TYPE_CRISE_STATUT,
 			TypeDroit.TYPE_DROIT,
+			TypeEtude.TYPE_ETUDE,
+			TypeEtudeStatut.TYPE_ETUDE_STATUT,
 			TypeHydrant.TYPE_HYDRANT,
 			TypeHydrantAnomalie.TYPE_HYDRANT_ANOMALIE,
 			TypeHydrantAnomalieNature.TYPE_HYDRANT_ANOMALIE_NATURE,

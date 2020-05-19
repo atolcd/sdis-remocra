@@ -84,6 +84,7 @@ public class TypeDroit {
         COURRIER_UTILISATEUR_R("courrier_utilisateur_R"),
         COURRIER_ORGANISME_R("courrier_organisme_R"),
         COURRIER_ADMIN_R("courrier_admin_R"),
+        PLANIFIER_DECI("planifier_deci"),
 
         // Module Permis
         PERMIS_R("permis_R"),

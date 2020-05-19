@@ -22,6 +22,14 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
                 lbl: 'Gestion des points d\'eau'
             });
         }
+
+        if (Sdis.Remocra.Rights.hasRight('PLANIFIER_DECI')) {
+            blocHydrants.items.push({
+                type: 'href',
+                href: 'hydrants/planification',
+                lbl: 'Planification DECI'
+            });
+        }
         
         if (Sdis.Remocra.Rights.hasRight('HYDRANTS_PRESCRIT_R')
             || Sdis.Remocra.Rights.hasRight('HYDRANTS_PRESCRIT_C')) {

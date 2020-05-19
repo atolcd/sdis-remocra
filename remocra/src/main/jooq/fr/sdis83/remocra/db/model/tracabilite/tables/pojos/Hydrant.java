@@ -26,7 +26,7 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant implements Serializable {
 
-	private static final long serialVersionUID = -75827055;
+	private static final long serialVersionUID = 1648434189;
 
 	private Integer  id;
 	private Long     numTransac;
@@ -88,6 +88,7 @@ public class Hydrant implements Serializable {
 	private Boolean  illimitee;
 	private Boolean  incertaine;
 	private Boolean  enFace;
+	private String   spDeci;
 
 	public Hydrant() {}
 
@@ -152,6 +153,7 @@ public class Hydrant implements Serializable {
 		this.illimitee = value.illimitee;
 		this.incertaine = value.incertaine;
 		this.enFace = value.enFace;
+		this.spDeci = value.spDeci;
 	}
 
 	public Hydrant(
@@ -214,7 +216,8 @@ public class Hydrant implements Serializable {
 		Boolean  additive,
 		Boolean  illimitee,
 		Boolean  incertaine,
-		Boolean  enFace
+		Boolean  enFace,
+		String   spDeci
 	) {
 		this.id = id;
 		this.numTransac = numTransac;
@@ -276,6 +279,7 @@ public class Hydrant implements Serializable {
 		this.illimitee = illimitee;
 		this.incertaine = incertaine;
 		this.enFace = enFace;
+		this.spDeci = spDeci;
 	}
 
 	public Integer getId() {
@@ -815,6 +819,15 @@ public class Hydrant implements Serializable {
 
 	public Hydrant setEnFace(Boolean enFace) {
 		this.enFace = enFace;
+		return this;
+	}
+
+	public String getSpDeci() {
+		return this.spDeci;
+	}
+
+	public Hydrant setSpDeci(String spDeci) {
+		this.spDeci = spDeci;
 		return this;
 	}
 }

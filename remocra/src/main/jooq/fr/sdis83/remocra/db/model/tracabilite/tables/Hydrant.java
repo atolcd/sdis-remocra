@@ -39,7 +39,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 2044166369;
+	private static final long serialVersionUID = 946559616;
 
 	/**
 	 * The reference instance of <code>tracabilite.hydrant</code>
@@ -353,6 +353,11 @@ public class Hydrant extends TableImpl<Record> {
 	 * The column <code>tracabilite.hydrant.en_face</code>.
 	 */
 	public final TableField<Record, Boolean> EN_FACE = createField("en_face", org.jooq.impl.SQLDataType.BOOLEAN, this, "");
+
+	/**
+	 * The column <code>tracabilite.hydrant.sp_deci</code>. Identifiant service publique deci
+	 */
+	public final TableField<Record, String> SP_DECI = createField("sp_deci", org.jooq.impl.SQLDataType.VARCHAR, this, "Identifiant service publique deci");
 
 	/**
 	 * Create a <code>tracabilite.hydrant</code> table reference
