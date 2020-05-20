@@ -35,6 +35,7 @@
     <div id="contact-container"></div>
     <div id="ficheIndispoTemp-container"></div>
     <div id="debitSimultaneFiche-container"></div>
+    <div id="planificationDeci-container"></div>
 
   <div id="autre" style="display: none;">
       <h1>Remocra - Développements</h1>
@@ -70,9 +71,12 @@
             <a href="?module=debitsSimultanes&vitesseEau=2&listeHydrantsOnCreate=[854032,854537]">création</a>,
             <a href="?module=debitsSimultanes&id=20&vitesseEau=2">modification</a>
           </li>
- 	  <li>Module de
-            <a href="?module=courrier">courrier</a>
-	  </li>
+       	  <li>Module de
+                  <a href="?module=courrier">courrier</a>
+      	  </li>
+          <li>Module de
+                  <a href="?module=planificationDeci">Planification DECI</a>
+      	  </li>
 
         </ul>
         <b>❗ Exemples Crise :</b>
@@ -146,7 +150,9 @@
           });
         } else if (params['module']=='courrier'){
           remocraVue.buildCourrier('#courrier-container', {thematique: 'POINTDEAU'});
-        }else {
+        }else if (params['module']=='planificationDeci'){
+          remocraVue.planificationDeci('planificationDeci-container');
+        } else {
           document.getElementById('autre').style.display=''
         }
       } else {
