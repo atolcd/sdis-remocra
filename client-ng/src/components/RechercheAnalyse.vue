@@ -290,7 +290,6 @@ export default {
       }
     },
     getOption: function(nom) {
-      console.log(nom)
       return this.comboOptions.filter(function(value) {
         return value.nomChamp === nom
       })

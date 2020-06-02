@@ -375,7 +375,6 @@ export default {
       this.idDeciPublic = this.listeNaturesDeci.filter(item => item.code === "PUBLIC")[0].id;
       this.idDeciPrive = this.listeNaturesDeci.filter(item => item.code === "PRIVE")[0].id;
       //si on est sur du privé ou conventionné on charge la combo gestionnaire
-      console.log(this.hydrant)
       if (this.hydrant.natureDeci != this.idDeciPublic) {
         this.getComboGestionnaire();
       }

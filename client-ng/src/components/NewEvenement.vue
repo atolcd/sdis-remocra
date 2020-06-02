@@ -337,7 +337,6 @@ export default {
         }
         formData.append('origine', this.$refs.searchOrigine.origine && this.$refs.searchOrigine.origine !== null ? this.$refs.searchOrigine.origine : this.$refs.searchOrigine.searchText)
         formData.append('importance', this.form.importance)
-        console.log(this.form.interventionAssoc)
         formData.append('interventions', JSON.stringify(_.map(this.form.interventionAssoc, intervention => {
           return intervention
         })))
@@ -596,8 +595,6 @@ export default {
     },
     checkTimeConstat() {
       var input = document.getElementById("timeConstat")
-      console.log(this.timeMax)
-      console.log(this.form.time)
       if (this.form.constat == this.dateMin && this.form.time < this.timeMin) {
         input.setCustomValidity(" La date de constatation doit être égale ou postérieure à la date de création de la crise")
         input.reportValidity()
@@ -612,7 +609,6 @@ export default {
       axios.get('/remocra/intervention/' + criseId).then((response) => {
         if (response.data) {
           var criseInterventions = []
-          console.log(response.data)
           _.forEach(response.data.data, intervention => {
             var dateIntervention = moment(new Date(intervention.dateCreation), 'YYYY-MM-DD[T]HH:mm:ss[Z]').format('DD/MM/YYYY' + ' - ' + 'HH:mm')
             criseInterventions.push({
