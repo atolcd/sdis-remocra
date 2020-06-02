@@ -143,7 +143,6 @@ export default {
     isDeciPrivee: function() {
       return (this.listeNaturesDeci.length > 0) ? this.hydrant.natureDeci === this.listeNaturesDeci.filter(item => item.code === "PRIVE")[0].id : false;
     },
-
     modificationCaracteristiquesDisabled: function() {
       return this.utilisateurDroits.indexOf('HYDRANTS_MCO_C') == -1
     }
@@ -215,15 +214,15 @@ export default {
                 value: item.id
               });
             });
+            if (self.hydrantRecord.marque && self.hydrantRecord.marque.id != self.hydrant.marque) {
+              self.hydrant.modele = null;
+            } else {
+              self.hydrant.modele = (self.hydrantRecord.modele) ? self.hydrantRecord.modele.id : null;
+            }
           }
         }).catch(function(error) {
           console.error('Retrieving combo data from /remocra/typehydrantmarques ', error);
         });
-      }
-      if (this.hydrantRecord.marque && this.hydrantRecord.marque.id != this.hydrant.marque) {
-        this.hydrant.modele = null;
-      } else {
-        this.hydrant.modele = (this.hydrantRecord.modele) ? this.hydrantRecord.modele.id : null;
       }
     },
     checkFormValidity() {
