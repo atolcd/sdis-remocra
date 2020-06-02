@@ -43,7 +43,7 @@ public class HydrantVisiteController{
 
           @Override
           protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
-            serializer.exclude("*.class").exclude("data.hydrant").include("data.*").exclude("*.class");
+            serializer.include("data.*");
 
             return serializer;
           }
