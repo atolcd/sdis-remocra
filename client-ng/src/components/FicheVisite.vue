@@ -727,7 +727,6 @@ export default {
         var visite = this.listeVisites[0];
         data["agent1"] = visite.agent1;
         data["agent2"] = visite.agent2;
-
         // Mise à jour des dates de l'hydrant
         _.forEach(this.listeVisites, visite => {
           var dateCode = this.typesVisites[visite.type].code;
@@ -737,12 +736,10 @@ export default {
           }
         });
       }
-
       data["dateCrea"] = (dates.CREA) ? dates.CREA.format('YYYY-MM-DDTHH:mm:ss') : null;
       data["dateRecep"] = (dates.RECEP) ? dates.RECEP.format('YYYY-MM-DDTHH:mm:ss') : null;
       data["dateReco"] = (dates.RECO) ? dates.RECO.format('YYYY-MM-DDTHH:mm:ss') : null;
       data["dateContr"] = (dates.CTRL) ? dates.CTRL.format('YYYY-MM-DDTHH:mm:ss') : null;
-
       return data;
     },
     /**
@@ -750,7 +747,7 @@ export default {
      */
     prepareVisitesData(id) {
       _.forEach(this.listeVisites, function(item) {
-        item.anomalies = "'" + JSON.stringify(item.anomalies) + "'"; // Mise en forme des données d'anomalies pour le passage dans la BDD
+        item.anomalies = JSON.stringify(item.anomalies); // Mise en forme des données d'anomalies pour le passage dans la BDD
         item.hydrant = id;
       });
       return {

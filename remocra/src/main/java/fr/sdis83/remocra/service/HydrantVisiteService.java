@@ -77,8 +77,17 @@ public class HydrantVisiteService extends AbstractService<HydrantVisite> {
 
                 HydrantVisite visite = this.entityManager.find(this.cls, Long.valueOf(obj.get("id").toString()));
 
-                visite.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(String.valueOf(obj.get("date"))));
-                obj.remove("date");
+                if (obj.get("date") != null){
+                    Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(String.valueOf(obj.get("date")));
+                    obj.remove("date");
+                    visite.setDate(date);
+
+                }
+                if (obj.get("anomalies") != null){
+                    visite.setAnomalies(String.valueOf(obj.get("anomalies")));
+                    obj.remove("anomalies");
+
+                }
 
                 JSONDeserializer<HydrantVisite> deserializer = new JSONDeserializer<HydrantVisite>();
                 deserializer.use(null, this.cls).use(Date.class, RemocraDateHourTransformer.getInstance()).use(Geometry.class, new GeometryFactory()).use(Object.class,
@@ -136,11 +145,43 @@ public class HydrantVisiteService extends AbstractService<HydrantVisite> {
                 new RemocraBeanObjectFactory(this.entityManager));
 
 
-        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(String.valueOf(obj.get("date")));
-        obj.remove("date");
-        HydrantVisite attached = deserializer.deserialize(JSONMap.fromMap(obj).toString());
+        HydrantVisite attached = new HydrantVisite();
+        if (obj.get("date") != null){
+            Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(String.valueOf(obj.get("date")));
+            obj.remove("date");
+            attached.setDate(date);
 
-        attached.setDate(date);
+        }
+        if (obj.get("anomalies") != null){
+            attached.setAnomalies(String.valueOf(obj.get("anomalies")));
+            obj.remove("anomalies");
+
+        }
+
+
+        deserializer.deserializeInto(JSONMap.fromMap(obj).toString(), attached);
+
+        /*
+         * "hack" pour gérer les valeurs "null" dans le json. Flexjson les
+         * ignore, et ce bug connu sera corriger dans la v3.0 cf :
+         * http://sourceforge.net/p/flexjson/bugs/32/
+         */
+        JSONDeserializer<Map<String, Object>> deserializer2 = new JSONDeserializer<Map<String, Object>>();
+        Map<String, Object> data = deserializer2.deserialize(JSONMap.fromMap(obj).toString());
+        Object nullObject = null;
+        if (data != null && data.size() > 0) {
+            for (String key : data.keySet()) {
+                Object value = data.get(key);
+                if (value == null) {
+                    Method method = findSetter(attached, key);
+                    if (method != null) {
+                        method.invoke(attached, nullObject);
+                    }
+                }
+
+            }
+        }
+        // Fin "hack"
         
         this.setUpInformation(attached, files);
         this.entityManager.persist(attached);
