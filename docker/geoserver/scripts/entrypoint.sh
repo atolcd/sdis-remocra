@@ -13,7 +13,8 @@ make_hash() {
   (echo "digest1:" && java -classpath $(find $CLASSPATH -regex ".*jasypt-[0-9]\.[0-9]\.[0-9].*jar") org.jasypt.intf.cli.JasyptStringDigestCLI digest.sh algorithm=SHA-256 saltSizeBytes=16 iterations=100000 input="$NEW_PASSWORD" verbose=0) | tr -d '\n'
 }
 [ -n "${GEOSERVER_ADMIN_USER}" ] && sed -i "s/name=\"[^\"]*\"/name=\"${GEOSERVER_ADMIN_USER}\"/g" ${GEOSERVER_DATA_DIR}/security/usergroup/default/users.xml
-[ -n "${POSTGRES_DB_PASSWORD}" ] && PWD_HASH=$(make_hash $GEOSERVER_ADMIN_PASSWORD) && sed -i "s/password=\"[^\"]*\"/password=\"${PWD_HASH//\//\\/}\"/g" ${GEOSERVER_DATA_DIR}/security/usergroup/default/users.xml
+[ -n "${GEOSERVER_ADMIN_USER}" ] && sed -i "s/username=\"[^\"]*\"/username=\"${GEOSERVER_ADMIN_USER}\"/g" ${GEOSERVER_DATA_DIR}/security/role/default/roles.xml
+[ -n "${GEOSERVER_ADMIN_PASSWORD}" ] && PWD_HASH=$(make_hash $GEOSERVER_ADMIN_PASSWORD) && sed -i "s/password=\"[^\"]*\"/password=\"${PWD_HASH//\//\\/}\"/g" ${GEOSERVER_DATA_DIR}/security/usergroup/default/users.xml
 
 # Priorité au paramètre le plus à droite
 export GEOSERVER_OPTS=" \
