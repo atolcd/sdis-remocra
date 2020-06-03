@@ -2,7 +2,13 @@ package fr.sdis83.remocra.web.model;
 
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeEtude;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeEtudeStatut;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.Commune;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.Document;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.Organisme;
 import org.joda.time.Instant;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class Etude {
   private Long id;
@@ -18,6 +24,16 @@ public class Etude {
   private TypeEtude type;
 
   private TypeEtudeStatut statut;
+
+  private Organisme organisme;
+
+  private ArrayList<Commune> communes;
+
+  private ArrayList<Document> documents;
+
+  private Map<String, String> documentsNoms;
+
+  private boolean readOnly;
 
   public Long getId() {
     return id;
@@ -73,5 +89,45 @@ public class Etude {
 
   public void setStatut(TypeEtudeStatut statut) {
     this.statut = statut;
+  }
+
+  public ArrayList<Commune> getCommunes() {
+    return communes;
+  }
+
+  public void setCommunes(ArrayList<Commune> communes) {
+    this.communes = communes;
+  }
+
+  public ArrayList<Document> getDocuments() {
+    return documents;
+  }
+
+  public void setDocuments(ArrayList<Document> documents) {
+    this.documents = documents;
+  }
+
+  public Map<String, String> getDocumentsNoms() {
+    return documentsNoms;
+  }
+
+  public void setDocumentsNoms(Map<String, String> documentsNoms) {
+    this.documentsNoms = documentsNoms;
+  }
+
+  public Organisme getOrganisme() {
+    return organisme;
+  }
+
+  public void setOrganisme(Organisme organisme) {
+    this.organisme = organisme;
+  }
+
+  public boolean isReadOnly() {
+    return readOnly;
+  }
+
+  public void setReadOnly(boolean readOnly) {
+    this.readOnly = readOnly;
   }
 }

@@ -98,19 +98,19 @@ public class Organisme {
                 "   SELECT DISTINCT CAST(o.id AS INTEGER) FROM remocra.organisme o " +
                 "   JOIN remocra.zone_competence zc on zc.id = o.zone_competence " +
                 "   WHERE ST_Overlaps(( " +
-                                        "   SELECT geometrie " +
+                                        "   SELECT ST_buffer(geometrie,0) " +
                                         "   FROM remocra.zone_competence zc " +
                                         "   WHERE zc.id in (SELECT CAST(zone_competence AS INTEGER) zone_competence" +
                                                             "   FROM remocra.organisme"+
                                                             "   WHERE id=:idOrganisme))"+
-                                        "   , zc.geometrie) "+
+                                        "   , ST_buffer(zc.geometrie,0)) "+
                 "   OR ST_Contains(( " +
-                                        "   SELECT geometrie " +
+                                        "   SELECT ST_buffer(geometrie,0) " +
                                         "   FROM remocra.zone_competence zc " +
                                         "   WHERE zc.id in (SELECT CAST(zone_competence AS INTEGER) zone_competence" +
                                                             "   FROM remocra.organisme"+
                                                             "   WHERE id=:idOrganisme))"+
-                                        "   , zc.geometrie) "
+                                        "   , ST_buffer(zc.geometrie,0)) "
         ).setParameter("idOrganisme", idOrganisme);
         ArrayList<Integer> idOrganismes = (ArrayList<Integer>) queryOrganismes.getResultList();
         return idOrganismes;

@@ -4,6 +4,33 @@
       <h1 class="title">Planification DECI</h1>
     </div>
 
+    <div class="row" id="boutonsAction">
+      <div class="col-md-12">
+        <b-button variant="outline-primary"
+            @click="etudeAConfigurer = null"
+            v-b-modal.modalEtude>
+          <img src="../../assets/img/addFile.png" width="16"/>Créer
+        </b-button>
+
+        <b-button variant="outline-primary">
+          <img src="../../assets/img/folder-open.gif" width="16"/>Ouvrir
+        </b-button>
+
+        <b-button variant="outline-primary"
+            :disabled="selectedEtude == null"
+            @click="etudeAConfigurer = getSelectedEtude()"
+            v-b-modal.modalEtude >
+          <img src="../../assets/img/cog.png" width="16"/>Configurer
+        </b-button>
+
+        <b-button variant="outline-primary"
+            :disabled="selectedEtude == null"
+            @click="cloreEtude">
+          <img src="../../assets/img/decline.png" width="16"/>Clore
+        </b-button>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-md-12">
         <table class="table table-sm table-bordered table-fixed" id="tableEtudes">
@@ -33,12 +60,15 @@
             </th>
           </thead>
           <tbody :key="tableKey">
-            <tr v-for="(item, index) in listeEtudes" :key="index">
+            <tr v-for="(item, index) in listeEtudes"
+                :key="index"
+                @click="selectedEtude = (selectedEtude == item.id) ? null : item.id"
+                :class="{'bg-secondary':item.id==selectedEtude, 'text-light':item.id==selectedEtude}">
               <td>{{item.type.nom}}</td>
               <td>{{item.numero}}</td>
               <td>{{item.nom}}</td>
               <td>{{item.description}}</td>
-              <td>{{item.communes}}</td>
+              <td>{{item.communes | printCommunes}}</td>
               <td>{{item.statut.nom}}</td>
               <td>{{item.date_maj | printDate}}</td>
             </tr>
@@ -60,6 +90,12 @@
       </div>
     </div>
 
+    <ModalEtude ref="modalEtude"
+      :typeEtudes="typesEtude"
+      v-if="typesEtude.length > 0"
+      @refreshEtudes="refreshEtudes"
+      :etude="etudeAConfigurer"></ModalEtude>
+
   </div>
 </template>
 
@@ -69,8 +105,14 @@ import axios from 'axios'
 import moment from 'moment'
 import _ from 'lodash'
 
+import ModalEtude from './ModalEtude.vue'
+
 export default {
   name: 'planificationDeci',
+  components: {
+    ModalEtude
+  },
+
   data() {
     return {
       listeEtudes: [],
@@ -78,6 +120,9 @@ export default {
       nbEtudesParPage: 10,
       pageActuelle: 1, // Pagination
       tableKey: 0,
+      selectedEtude: null,
+
+      etudeAConfigurer: null,
 
       // Filtres en-tête datagrid
       filters: {
@@ -98,6 +143,16 @@ export default {
   filters : {
     printDate: function (value) {
       return moment(value).format('DD/MM/YYYY HH[h]mm');
+    },
+
+    printCommunes: function(communes) {
+      return communes.map(commune => commune.nom).toString().replace("[", "").replace("]", "").replace("\"", "").replace(",", ", ").trim();
+    }
+  },
+
+  computed: {
+    typesEtude : function() {
+      return this.comboFilterType.filter(r => r.value);
     }
   },
 
@@ -205,6 +260,30 @@ export default {
       }
       return "";
     },
+
+    getSelectedEtude() {
+      var etudes = this.listeEtudes.filter(e => e.id == this.selectedEtude);
+      if(etudes.length == 1){
+        return etudes[0];
+      }
+      return null;
+    },
+
+    cloreEtude() {
+      if(this.selectedEtude) {
+        axios.post('/remocra/etudes/clore/'+this.selectedEtude).then(() => {
+          this.selectedEtude = null;
+          this.refreshEtudes();
+        }).catch(() => {
+          this.$notify({
+            group: 'remocra',
+            type: 'error',
+            title: 'Erreur cloturation',
+            text: "Une erreur est survenue lors de la cloture de l'étude"
+          });
+        })
+      }
+    }
   }
 };
 </script>
@@ -222,6 +301,18 @@ export default {
   margin-top: 1rem;
   color: #7b7b7b;
   font-family: Helvetica, Arial !important
+}
+
+#boutonsAction {
+  margin-bottom: 20px;
+}
+
+#boutonsAction button {
+  margin-right: 10px;
+}
+
+#boutonsAction button img{
+  margin-right: 0.375rem;
 }
 
 #tableEtudes th p {
