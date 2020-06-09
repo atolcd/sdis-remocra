@@ -40,23 +40,23 @@
               <b-form-select v-model="filters.type" size="sm" placeholder='Tous' class="filter" :options="comboFilterType" v-on:change="onFilterChange"></b-form-select>
             </th>
             <th scope="col">
-              <p class="noFilter" v-on:click="onSortChange('numero', $event)" :class="getSortStyle('numero')">Numéro</p>
+              <p v-on:click="onSortChange('numero', $event)" :class="getSortStyle('numero')">Numéro</p>
             </th>
             <th scope="col" v-on:click="onSortChange('nom', $event)" :class="getSortStyle('nom')">
-              <p class="noFilter">Nom</p>
+              <p>Nom</p>
             </th>
             <th scope="col">
-              <p class="noFilter">Description</p>
+              <p>Description</p>
             </th>
             <th scope="col">
-              <p class="noFilter">Communes</p>
+              <p>Communes</p>
             </th>
             <th scope="col" v-on:click.self="onSortChange('statut', $event)" :class="getSortStyle('statut')">
               <p v-on:click.self="onSortChange('statut', $event)">Statut</p>
               <b-form-select v-model="filters.statut" size="sm" placeholder='Tous' class="filter" :options="comboFilterStatut" v-on:change="onFilterChange"></b-form-select>
             </th>
             <th scope="col" v-on:click="onSortChange('date_maj', $event)" :class="getSortStyle('date_maj')">
-              <p class="noFilter">Dernière mise à jour</p>
+              <p>Dernière mise à jour</p>
             </th>
           </thead>
           <tbody :key="tableKey">
@@ -67,7 +67,7 @@
               <td>{{item.type.nom}}</td>
               <td>{{item.numero}}</td>
               <td>{{item.nom}}</td>
-              <td>{{item.description}}</td>
+              <td class="colDescription" >{{item.description}}</td>
               <td>{{item.communes | printCommunes}}</td>
               <td>{{item.statut.nom}}</td>
               <td>{{item.date_maj | printDate}}</td>
@@ -315,9 +315,20 @@ export default {
   margin-right: 0.375rem;
 }
 
+#tableEtudes th{
+  vertical-align: top;
+}
+
+#tableEtudes th select{
+  height: 25px;
+  line-height: 18px;
+}
+
 #tableEtudes th p {
   padding-left: 2px;
   font-size: 16px;
+  margin-bottom: 3px;
+  margin-right: 32px;
 }
 
 #tableEtudes th:hover {
@@ -333,19 +344,22 @@ export default {
   background-color: #e1e2e3;
 }
 
+#tableEtudes tr {
+  background-color: white;
+}
+
 #tableEtudes td {
   border: 1px solid #cbd5df;
 }
 
+.colDescription {
+  max-width: 400px !important;
+}
 .filter {
   width: auto;
   height: calc(1.7em + 2px);
   padding-left: 2px;
   line-height: 1em;
-}
-
-.noFilter {
-  margin-bottom: 24px;
 }
 
 .sort {
@@ -360,4 +374,5 @@ export default {
 .sortDesc {
   background-image: url(../../assets/img/expand.svg);
 }
+
 </style>
