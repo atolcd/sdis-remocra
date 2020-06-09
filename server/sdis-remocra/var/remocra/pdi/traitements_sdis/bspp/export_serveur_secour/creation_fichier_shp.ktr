@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>creation_fichier_shp</name>
+    <name>transfert_pei</name>
     <description />
     <extended_description />
     <trans_version />
     <trans_type>Normal</trans_type>
+    <trans_status>0</trans_status>
     <directory>/</directory>
     <parameters>
     </parameters>
@@ -436,6 +437,57 @@
   <notepads>
   </notepads>
   <connection>
+    <name>Agaric</name>
+    <server>${BDD_CARTO_SECOUR_ADRESSE}</server>
+    <type>POSTGRESQL</type>
+    <access>Native</access>
+    <database>${BDD_CARTO_SECOUR_DBNAME}</database>
+    <port>${BDD_CARTO_SECOUR_PORT}</port>
+    <username>${BDD_CARTO_SECOUR_UTILISATEUR}</username>
+    <password>${BDD_CARTO_SECOUR_PASSWORD}</password>
+    <servername />
+    <data_tablespace />
+    <index_tablespace />
+    <attributes>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>${BDD_CARTO_SECOUR_PORT}</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
+    </attributes>
+  </connection>
+  <connection>
     <name>Remocra (Postgis)</name>
     <server>${REMOCRA_POSTGIS_DATABASE_HOST}</server>
     <type>POSTGRESQL</type>
@@ -489,52 +541,10 @@
   <order>
     <hop>
       <from>Données des PEI</from>
-      <to>Alimentation fichier SIG</to>
+      <to>Insertion dans table</to>
       <enabled>Y</enabled>
     </hop>
   </order>
-  <step>
-    <name>Alimentation fichier SIG</name>
-    <type>GisFileOutput</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <outputFormat>ESRI_SHP</outputFormat>
-    <fieldParams>
-	</fieldParams>
-    <fixedParams>
-      <param>
-        <key>FORCE_TO_2D</key>
-        <value>TRUE</value>
-      </param>
-      <param>
-        <key>ESRI_SHP_CREATE_PRJ</key>
-        <value>TRUE</value>
-      </param>
-    </fixedParams>
-    <outputFileName>${Internal.Job.Filename.Directory}/temp/pei.shp</outputFileName>
-    <geometryFieldName>geometrie</geometryFieldName>
-    <encoding>UTF-8</encoding>
-    <createFileAtEnd>N</createFileAtEnd>
-    <dataToServlet>N</dataToServlet>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>288</xloc>
-      <yloc>160</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
   <step>
     <name>Données des PEI</name>
     <type>TableInput</type>
@@ -609,6 +619,49 @@ LEFT JOIN (SELECT pena,count(*)>0 AS hauteur FROM remocra.hydrant_aspiration WHE
     </remotesteps>
     <GUI>
       <xloc>112</xloc>
+      <yloc>160</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Insertion dans table</name>
+    <type>TableOutput</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <connection>Agaric</connection>
+    <schema>public</schema>
+    <table>pei</table>
+    <commit>60000</commit>
+    <truncate>Y</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>N</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field />
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field />
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field />
+    <fields>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>320</xloc>
       <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>

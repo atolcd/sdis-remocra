@@ -4,13 +4,121 @@
   <description />
   <extended_description />
   <job_version />
+  <job_status>0</job_status>
   <directory>/</directory>
   <created_user>-</created_user>
   <created_date>2020/04/10 11:22:09.977</created_date>
   <modified_user>-</modified_user>
   <modified_date>2020/04/10 11:22:09.977</modified_date>
   <parameters>
-    </parameters>
+    <parameter>
+      <name>PDI_FICHIER_PARAMETRE</name>
+      <default_value />
+      <description />
+    </parameter>
+  </parameters>
+  <connection>
+    <name>Agaric</name>
+    <server>${BDD_CARTO_SECOUR_ADRESSE}</server>
+    <type>POSTGRESQL</type>
+    <access>Native</access>
+    <database>${BDD_CARTO_SECOUR_DBNAME}</database>
+    <port>${BDD_CARTO_SECOUR_PORT}</port>
+    <username>${BDD_CARTO_SECOUR_UTILISATEUR}</username>
+    <password>${BDD_CARTO_SECOUR_PASSWORD}</password>
+    <servername />
+    <data_tablespace />
+    <index_tablespace />
+    <attributes>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>${BDD_CARTO_SECOUR_PORT}</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
+    </attributes>
+  </connection>
+  <connection>
+    <name>Remocra (Postgis)</name>
+    <server>${REMOCRA_POSTGIS_DATABASE_HOST}</server>
+    <type>POSTGRESQL</type>
+    <access>Native</access>
+    <database>${REMOCRA_POSTGIS_DATABASE_NAME}</database>
+    <port>${REMOCRA_POSTGIS_DATABASE_PORT}</port>
+    <username>${REMOCRA_POSTGIS_DATABASE_USER_NAME}</username>
+    <password>${REMOCRA_POSTGIS_DATABASE_USER_PASSWORD}</password>
+    <servername />
+    <data_tablespace />
+    <index_tablespace />
+    <attributes>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>${REMOCRA_POSTGIS_DATABASE_PORT}</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
+    </attributes>
+  </connection>
   <slaveservers>
     </slaveservers>
   <job-log-table>
@@ -337,7 +445,7 @@
       <yloc>128</yloc>
     </entry>
     <entry>
-      <name>creation_fichier_shp.ktr</name>
+      <name>transfert_pei</name>
       <description />
       <type>TRANS</type>
       <specification_method>filename</specification_method>
@@ -369,33 +477,25 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>800</xloc>
+      <xloc>688</xloc>
       <yloc>128</yloc>
     </entry>
     <entry>
-      <name>Suppression fichiers</name>
+      <name>Vérification connexions</name>
       <description />
-      <type>DELETE_FILES</type>
-      <arg_from_previous>N</arg_from_previous>
-      <include_subfolders>N</include_subfolders>
-      <fields>
-        <field>
-          <name>${Internal.Job.Filename.Directory}/temp/</name>
-          <filemask />
-        </field>
-      </fields>
-      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>656</xloc>
-      <yloc>128</yloc>
-    </entry>
-    <entry>
-      <name>Créer un répertoire</name>
-      <description />
-      <type>CREATE_FOLDER</type>
-      <foldername>${Internal.Job.Filename.Directory}/temp/</foldername>
-      <fail_of_folder_exists>N</fail_of_folder_exists>
+      <type>CHECK_DB_CONNECTIONS</type>
+      <connections>
+        <connection>
+          <name>Remocra (Postgis)</name>
+          <waitfor>0</waitfor>
+          <waittime>millisecond</waittime>
+        </connection>
+        <connection>
+          <name>Agaric</name>
+          <waitfor>0</waitfor>
+          <waittime>millisecond</waittime>
+        </connection>
+      </connections>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
@@ -403,35 +503,45 @@
       <yloc>128</yloc>
     </entry>
     <entry>
-      <name>Envoi de fichiers via FTP</name>
+      <name>Envoi Courriel</name>
       <description />
-      <type>FTP_PUT</type>
-      <servername>${SERVEUR_CARTO_SECOUR_ADRESSE_FTP}</servername>
-      <serverport>${SERVEUR_CARTO_SECOUR_PORT_FTP}</serverport>
-      <username>${SERVEUR_CARTO_SECOUR_UTILISATEUR_FTP}</username>
-      <password>${SERVEUR_CARTO_SECOUR_PASSWORD_FTP}</password>
-      <remoteDirectory>/home/atolcd/shp/</remoteDirectory>
-      <localDirectory>${Internal.Job.Filename.Directory}/temp/</localDirectory>
-      <wildcard />
-      <binary>Y</binary>
-      <timeout>0</timeout>
-      <remove>Y</remove>
-      <only_new>N</only_new>
-      <active>N</active>
-      <control_encoding>ISO-8859-1</control_encoding>
-      <proxy_host />
-      <proxy_port />
-      <proxy_username />
-      <proxy_password>Encrypted </proxy_password>
-      <socksproxy_host />
-      <socksproxy_port>1080</socksproxy_port>
-      <socksproxy_username />
-      <socksproxy_password>Encrypted </socksproxy_password>
+      <type>MAIL</type>
+      <server>${PDI_SMTP_URL}</server>
+      <port>${PDI_SMTP_PORT}</port>
+      <destination>${SECOUR_NOTIF_ERREUR}</destination>
+      <destinationCc />
+      <destinationBCc />
+      <replyto>${PDI_SMTP_ERR_MAIL}</replyto>
+      <replytoname>${PDI_SMTP_EME_NAME}</replytoname>
+      <subject>Synchro Agaric - Erreur</subject>
+      <include_date>N</include_date>
+      <contact_person />
+      <contact_phone />
+      <comment>La synchro avec le serveur Agaric est en erreur</comment>
+      <include_files>N</include_files>
+      <zip_files>N</zip_files>
+      <zip_name />
+      <use_auth>N</use_auth>
+      <use_secure_auth>N</use_secure_auth>
+      <auth_user />
+      <auth_password>Encrypted </auth_password>
+      <only_comment>N</only_comment>
+      <use_HTML>N</use_HTML>
+      <use_Priority>N</use_Priority>
+      <encoding>UTF-8</encoding>
+      <priority>normal</priority>
+      <importance>normal</importance>
+      <sensitivity>normal</sensitivity>
+      <secureconnectiontype>SSL</secureconnectiontype>
+      <replyToAddresses />
+      <filetypes>      </filetypes>
+      <embeddedimages>
+      </embeddedimages>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>960</xloc>
-      <yloc>128</yloc>
+      <xloc>624</xloc>
+      <yloc>272</yloc>
     </entry>
   </entries>
   <hops>
@@ -454,17 +564,8 @@
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>Suppression fichiers</from>
-      <to>creation_fichier_shp.ktr</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>Y</unconditional>
-    </hop>
-    <hop>
       <from>Variables spécifiques</from>
-      <to>Créer un répertoire</to>
+      <to>Vérification connexions</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -472,21 +573,30 @@
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>Créer un répertoire</from>
-      <to>Suppression fichiers</to>
+      <from>Vérification connexions</from>
+      <to>transfert_pei</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
-      <unconditional>Y</unconditional>
+      <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>creation_fichier_shp.ktr</from>
-      <to>Envoi de fichiers via FTP</to>
+      <from>Vérification connexions</from>
+      <to>Envoi Courriel</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>transfert_pei</from>
+      <to>Envoi Courriel</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
       <unconditional>N</unconditional>
     </hop>
   </hops>
