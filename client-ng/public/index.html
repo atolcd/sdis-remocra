@@ -36,6 +36,7 @@
     <div id="ficheIndispoTemp-container"></div>
     <div id="debitSimultaneFiche-container"></div>
     <div id="planificationDeci-container"></div>
+    <div id="olMap-container"></div>
 
   <div id="autre" style="display: none;">
       <h1>Remocra - Développements</h1>
@@ -86,6 +87,10 @@
         <b>📒 Exemples Contacts :</b>
         <ul>
           <li><a href="?module=organismeContact&id=250&nom=Application Remocra">Ouverture d'un contact d'organisme</a></li>
+        </ul>
+        <b>OlMap</b>
+        <ul>
+          <li><a href="?module=olMap">Module OlMap base</a></li>
         </ul>
       </div>
     </div>
@@ -150,8 +155,10 @@
           });
         } else if (params['module']=='courrier'){
           remocraVue.buildCourrier('#courrier-container', {thematique: 'POINTDEAU'});
-        }else if (params['module']=='planificationDeci'){
+        } else if (params['module']=='planificationDeci'){
           remocraVue.planificationDeci('planificationDeci-container');
+        } else if (params['module']=='olMap'){
+          remocraVue.olMap('olMap-container');
         } else {
           document.getElementById('autre').style.display=''
         }

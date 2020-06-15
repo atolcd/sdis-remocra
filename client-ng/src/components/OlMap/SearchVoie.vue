@@ -1,6 +1,15 @@
 <template>
 <form v-on:submit.prevent>
-  <autocomplete :items="itemsFiltered" :disabled="disabled" v-model="item" :get-label="getLabel" :component-item='template' @change="onValueChanged" @item-selected="onValueChanged" @update-items="updateItems" :auto-select-one-item="false" :min-len="0">
+  <autocomplete :items="itemsFiltered"
+                :disabled="disabled"
+                v-model="item"
+                :get-label="getLabel"
+                :component-item='template'
+                @item-selected="onValueChanged"
+                @update-items="updateItems"
+                :auto-select-one-item="false"
+                :min-len="0"
+                placeholder="Saissez une voie">
   </autocomplete>
 </form>
 </template>
@@ -24,19 +33,11 @@ export default {
     }
   },
   props: {
-    geometrie: {
-      required: true,
-      type: String
-    },
     commune: {
-      required: true
+      required: false
     },
     defaultValue: {
       required: false,
-      type: String
-    },
-    attr: {
-      required: true,
       type: String
     },
     disabled: {
@@ -44,41 +45,47 @@ export default {
       type: Boolean
     }
   },
-  mounted: function() {
-    axios.get('/remocra/voies/mc.json', {
-      params: {
-        withgeom: false,
-        page: 1,
-        start: 0,
-        limit: 10,
-        filter: JSON.stringify([{
-          "property": "wkt",
-          "value": this.geometrie
-        }, {
-          "property": "communeId",
-          "value": this.commune
-        }])
-      }
-    }).then(response => {
-      _.forEach(response.data.data, voie => {
-        this.items.push(voie.nom);
-      })
-      this.itemsFiltered = _.clone(this.items, true);
-    }).then(() => {
-      if (this.defaultValue) {
-        this.item = this.defaultValue;
-      }
-    }).catch(function(error) {
-      console.error('Retrieving coordonnees from /remocra/voies/mc', error);
-    });
+
+  watch: {
+    commune: function(val) {
+      console.log("Set commune to "+val.nom);
+      this.refreshData();
+    }
   },
   methods: {
+
+    refreshData() {
+      this.items = [];
+      axios.get('/remocra/voies/mc.json', {
+        params: {
+          withgeom: false,
+          page: 1,
+          start: 0,
+          limit: 10,
+          filter: JSON.stringify([{
+            "property": "communeId",
+            "value": this.commune.id
+          }])
+        }
+      }).then(response => {
+        _.forEach(response.data.data, voie => {
+          this.items.push(voie.nom);
+        })
+        this.itemsFiltered = _.clone(this.items, true);
+      }).then(() => {
+        if (this.defaultValue) {
+          this.item = this.defaultValue;
+        }
+      }).catch(function(error) {
+        console.error('Retrieving coordonnees from /remocra/voies/mc', error);
+      });
+    },
     getLabel(item) {
       return item
     },
     onValueChanged(text) {
       this.item = text;
-      this.$emit('onVoieChange', this.attr, text);
+      this.$emit('onVoieSelected', text);
     },
     updateItems(text) {
       if (this.itemsFiltered) {

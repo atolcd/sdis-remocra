@@ -99,7 +99,7 @@
                           :key="index"
                           size="sm"
                           :class="{'itemCommune': true, 'bg-secondary':commune.id==selectedCommune, 'text-light':commune.id==selectedCommune}"
-                          @click="selectedCommune = (selectedCommune == commune.id) || readOnly ? null : commune.id">
+                          @click="selectedCommune = (selectedCommune == commune.id) || readOnly ? null : commune.id">
                          {{commune.nom}}
                        </p>
                      </div>
