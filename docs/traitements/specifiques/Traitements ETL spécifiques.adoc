@@ -78,6 +78,8 @@ include::66/notifier_cr_roi{outfilesuffix}[]
 
 include::66/notifier_pei_indispo{outfilesuffix}[]
 
+include::66/notifier_pei_attente_roi{outfilesuffix}[]
+
 === SDIS 77
 
 include::77/synchronisation_sig{outfilesuffix}[]

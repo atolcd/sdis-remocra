@@ -1,0 +1,34 @@
+==== DECI - Notifier les CIS des ROI à réaliser
+
+Ce traitement permet de notifier une fois par semaine les CIS des PEI en attente de ROI.
+
+
+===== Configuration
+Le fichier _"remocraXX.properties"_ doit contenir les informations suivantes :
+[width="100%",options="header"]
+|===================
+| Paramètre | Description
+| MODELE_MAIL_ATTENTE_ROI| Code du courrier de ROI à faire _(Exemple : `ROI_A_FAIRE`)_
+|===================
+
+===== Lancement et planification de la synchronisation
+```ssh
+curl -v http://localhost:8070/v1/jobs -XPOST -d '{
+  "name": "roi-a-faire",
+  "displayname": "Notifier les CIS des ROI à réaliser",
+  "schedule": "0 0 6 * * MON",
+  "owner": "",
+  "owner_email": "",
+  "disabled": false,
+  "tags": {
+    "pdi": "7.1:1"
+  },
+  "metadata": { },
+  "retries": 0,
+  "concurrency": "forbid",
+  "executor": "shell",
+  "executor_config": {
+    "command": "/home/pdi/kitchen.sh -file:/var/remocra/pdi/traitements_sdis/66/pei_attente_roi/notifier_pei_attente_roi.kjb -level:Error -param:PDI_FICHIER_PARAMETRE=/home/pdi/remocra.properties >> /var/remocra/pdi/log/remocra_notifier_pei_attente_roi.log 2>&1"
+  }
+}'
+```
