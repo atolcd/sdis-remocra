@@ -1,0 +1,36 @@
+
+==== DECI - Notifier les maires des compte-rendu des ROI
+
+Ce traitement permet de notifier une fois par semaine les maires des PEI ayant fait l'objet d'une ROI les X derniers jours.
+
+
+===== Configuration
+Le fichier _"remocraXX.properties"_ doit contenir les informations suivantes :
+[width="100%",options="header"]
+|===================
+| Paramètre | Description
+| ROLE_SP_DECI | Code du type de contact Service Public DECI _(Exemple : `SP_DECI`)_
+| CR_ROI_CODE_COURRIER | Code du courrier _(Exemple : `CR_ROI`)_
+|===================
+
+===== Lancement et planification de la synchronisation
+```ssh
+curl -v http://localhost:8070/v1/jobs -XPOST -d '{
+  "name": "cr-roi",
+  "displayname": "Notifier les maires des ROI",
+  "schedule": "0 0 6 * * MON",
+  "owner": "",
+  "owner_email": "",
+  "disabled": false,
+  "tags": {
+    "pdi": "7.1:1"
+  },
+  "metadata": { },
+  "retries": 0,
+  "concurrency": "forbid",
+  "executor": "shell",
+  "executor_config": {
+    "command": "/home/pdi/kitchen.sh -file:/var/remocra/pdi/traitements_sdis/66/notifier_cr_roi/notifier_cr_roi.kjb -level:Error -param:PDI_FICHIER_PARAMETRE=/home/pdi/remocra.properties >> /var/remocra/pdi/log/remocra_notifier_cr_roi.log 2>&1"
+  }
+}'
+```

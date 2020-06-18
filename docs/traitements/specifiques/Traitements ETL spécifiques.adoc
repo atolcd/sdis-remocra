@@ -72,6 +72,10 @@ include::42/deci_info_ROI_et_suppression_de_PEI{outfilesuffix}[]
 
 include::42/generation_tournee_departement{outfilesuffix}[]
 
+=== SDIS 66
+
+include::66/notifier_cr_roi{outfilesuffix}[]
+
 === SDIS 77
 
 include::77/synchronisation_sig{outfilesuffix}[]
