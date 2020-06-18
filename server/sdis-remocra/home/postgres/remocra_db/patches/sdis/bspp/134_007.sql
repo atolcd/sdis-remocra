@@ -392,7 +392,17 @@ BEGIN
 END; $$
 LANGUAGE plpgsql; 
 
+ALTER TABLE remocra.hydrant_pibi DISABLE TRIGGER trig_aui;
+ALTER TABLE remocra.hydrant_pibi DISABLE TRIGGER trig_bd;
+ALTER TABLE remocra.hydrant_pibi DISABLE TRIGGER trig_debit_pression;
+ALTER TABLE remocra.hydrant_pibi DISABLE TRIGGER trig_debit_pression_bspp;
+
 SELECT marque_modele();
+
+ALTER TABLE remocra.hydrant_pibi ENABLE TRIGGER trig_aui;
+ALTER TABLE remocra.hydrant_pibi ENABLE TRIGGER trig_bd;
+ALTER TABLE remocra.hydrant_pibi ENABLE TRIGGER trig_debit_pression;
+ALTER TABLE remocra.hydrant_pibi ENABLE TRIGGER trig_debit_pression_bspp;
 
 DROP FUNCTION marque_modele();
 
@@ -653,7 +663,7 @@ WHERE h.code = 'PENA'
 		SELECT hydrant
 		FROM remocra.hydrant_anomalies
 		WHERE anomalies IN (SELECT id FROM remocra.type_hydrant_anomalie WHERE code = 'NON_NORMALISE_NC')
-	)
+	);
 /* Ajout d'une aire d'aspiration et de l'ano NON CONFORME au PENA*/
 INSERT INTO remocra.hydrant_aspiration (numero, pena)
 SELECT '1', id
@@ -687,6 +697,6 @@ WHERE h.code = 'PENA'
 		SELECT hydrant
 		FROM remocra.hydrant_anomalies
 		WHERE anomalies IN (SELECT id FROM remocra.type_hydrant_anomalie WHERE code = 'NON_NORMALISE_NC')
-	)
+	);
 
 commit;
