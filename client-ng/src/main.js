@@ -10,6 +10,7 @@ import DebitSimultaneFiche from './components/DebitSimultaneFiche'
 import VisualisationCourriers from './components/VisualisationCourriers.vue'
 import PlanificationDeci from './components/planification_deci/index.vue'
 import OlMap from './components/OlMap/OlMap.vue'
+import OlMapEtude from './components/planification_deci/OlMapEtude.vue'
 // import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import Courrier from './components/Courrier'
@@ -169,6 +170,18 @@ const olMap = function(id){
   return v
 }
 
+const olMapEtude = function(id){
+  var v = new Vue({
+    el: '#' + id,
+    bus: new Vue(),
+    components: {
+        OlMapEtude
+    },
+    template: "<OlMapEtude idEtude=1 />"
+  })
+  return v
+}
+
 export {
   criseBuildMap,
   peiBuildFiche,
@@ -179,5 +192,6 @@ export {
   buildCourrier,
   visualisationCourriers,
   planificationDeci,
-  olMap
+  olMap,
+  olMapEtude
 }

@@ -37,6 +37,7 @@
     <div id="debitSimultaneFiche-container"></div>
     <div id="planificationDeci-container"></div>
     <div id="olMap-container"></div>
+    <div id="olMapEtude-container"></div>
 
   <div id="autre" style="display: none;">
       <h1>Remocra - Développements</h1>
@@ -91,6 +92,7 @@
         <b>OlMap</b>
         <ul>
           <li><a href="?module=olMap">Module OlMap base</a></li>
+          <li><a href="?module=olMapEtude">OlMap études</a></li>
         </ul>
       </div>
     </div>
@@ -159,6 +161,8 @@
           remocraVue.planificationDeci('planificationDeci-container');
         } else if (params['module']=='olMap'){
           remocraVue.olMap('olMap-container');
+        } else if (params['module']=='olMapEtude'){
+          remocraVue.olMapEtude('olMapEtude-container');
         } else {
           document.getElementById('autre').style.display=''
         }
