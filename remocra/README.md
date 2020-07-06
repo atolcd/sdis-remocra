@@ -129,6 +129,6 @@ Se référer à la [page dédiée](../docs/index.adoc) : manuel d'administration
 
 ## Licence
 
-Le SDIS du Var a décidé de faire bénéficier ses confrères de sa démarche en redistribuant gratuitement l'outil sous licence [Creative Commons by-nc-sa 4.0](https://github.com/atolcd/sdis-remocra/LICENSE.txt)
+Le SDIS du Var a décidé de faire bénéficier ses confrères de sa démarche en redistribuant gratuitement l'outil sous licence [Creative Commons by-nc-sa 4.0](https://github.com/atolcd/sdis-remocra/blob/master/LICENSE.txt)
 
 [Atol Conseils et Développements](http://www.atolcd.com), suivez-nous sur twitter [@atolcd](https://twitter.com/atolcd)
