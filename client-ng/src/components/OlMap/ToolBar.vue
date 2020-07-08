@@ -10,7 +10,7 @@
       <img :src="item.iconPath" width="16" height="16"/>
     </b-btn>
 
-    <div v-if="item.type == 'libelle'">{{item.text}}</div>
+    <div v-if="item.type == 'libelle'" class="libelle">{{item.text}}</div>
 
     <div v-if="item.type == 'separator'" class="separator"></div>
 
@@ -170,7 +170,11 @@ export default {
 
     // Mesures
     this.addToolBarItem({
-      type: "measures"
+      type: "measures",
+      name: "mesures",
+      onToggle: (state) => {
+        this.$root.$options.bus.$emit(eventTypes.OLMAP_MEASURES_TOGGLE, state);
+      }
     });
 
     // Bouton info
@@ -212,11 +216,6 @@ export default {
       }
 
       //console.log(item);
-    },
-
-    activateMeasureInteraction() {
-      //this.toggleButton('measureTools')
-      this.removeMeasureInteraction()
     },
 
     /**
@@ -295,15 +294,16 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  position: absolute;
   display: inline-flex;
   max-width: 75%;
   border: 1px solid rgb(210,210,210);
-  top: 45px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1;
   background-color: rgba(255,255,255,0.9);
+  padding-bottom: 2px;
+  padding-top: 1px;
 }
 
 #toolbar button {
@@ -324,5 +324,10 @@ export default {
   margin-right: 10px;
   width: 5px;
   height: 25px;
+}
+
+.libelle {
+  font-size: 14px;
+  white-space: nowrap;
 }
 </style>

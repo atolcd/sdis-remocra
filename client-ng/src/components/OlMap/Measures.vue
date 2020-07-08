@@ -1,23 +1,20 @@
 <template>
   <div>
-    <b-btn class=" text-start my-1 measure-container ctrl" id="measureTools" @click="activateMeasureInteraction"><img title="Outils de mesure" src="/remocra/static/img/ruler.png"></b-btn>
-    <b-popover class="dropdown-menu" placement="bottomright" ref='popovermesure' container="map" target="measureTools">
-      <div>
-        <b-btn class="dropdown-item" @click="activateMeasure('Distance')"><img src='/remocra/static/img/ruler.png'> Distance</b-btn>
-      </div>
-      <div>
-        <b-btn class="dropdown-item" @click="activateMeasure('Surface')"><img src='/remocra/static/img/ruler_square.png'> Surface</b-btn>
-      </div>
-    </b-popover>
+    <b-dropdown size="sm" :class="{'bg-transparent' : true, 'activrated' : toggleState}">
+      <template v-slot:button-content>
+        <b-btn id="measureTools" :class="{'activated': toggleState}"><img title="Outils de mesure" :src="getIcon()" width="16" height="16"></b-btn>
+      </template>
+    <b-dropdown-item href="#" @click="activateMeasure('Distance')" :class="{'activated' : selectedRuler == 'Distance'}"><img src='/remocra/static/img/ruler.png'> Distance</b-dropdown-item>
+    <b-dropdown-item href="#" @click="activateMeasure('Surface')" :class="{'activated' : selectedRuler == 'Surface'}"><img src='/remocra/static/img/ruler_square.png'> Surface</b-dropdown-item>
+  </b-dropdown>
   </div>
 </template>
 
 <script>
 
+import * as eventTypes from '../../bus/event-types.js'
 import OlOverlay from 'ol/Overlay.js'
-import OlInteractionDraw, {
-  createBox
-} from 'ol/interaction/Draw.js'
+import OlInteractionDraw from 'ol/interaction/Draw.js'
 import {
   getArea,
   getLength
@@ -28,7 +25,10 @@ export default {
   name: 'Measures',
   data() {
     return {
-      selectedRuler: null
+      selectedRuler: null,
+      measuringTool: null,
+      measuringToolOverlays: [],
+      toggleState: false
     }
   },
   props: {
@@ -38,67 +38,91 @@ export default {
     }
   },
 
+  created: function() {
+    this.$root.$options.bus.$on(eventTypes.OLMAP_MEASURES_TOGGLE, this.onToggle);
+  },
+
   mounted: function() {
 
   },
 
   methods: {
-    activateMeasureInteraction() {
-      console.log("activate");
-    },
 
     activateMeasure(type) {
-      console.log("Mesure "+type);
-      this.selectedRuler = type;
-      this.addMeasureInteraction();
+      if(this.selectedRuler !== null && this.selectedRuler != type) { // Outils de mesure activés, changement de type
+        this.removeMeasureInteraction();
+        this.selectedRuler = type;
+        this.addMeasureInteraction();
+      } else { // Activation des outils de mesure
+        this.selectedRuler = type;
+        this.$root.$options.bus.$emit(eventTypes.OLMAP_TOOLBAR_TOGGLEBUTTON, "mesures");
+      }
+    },
+
+    onToggle(state) {
+      if(state) {
+        this.addMeasureInteraction();
+      } else {
+        this.removeMeasureInteraction();
+      }
+      this.toggleState = state;
     },
 
     addMeasureInteraction() {
-      this.map.un('click', this.handleMapClick)
-      var measureTooltipElement = document.createElement('div')
-      measureTooltipElement.className = 'tooltip tooltip-measure'
-      let measureTooltip = new OlOverlay({
-        element: measureTooltipElement,
-        offset: [0, -15],
-        positioning: 'bottom-center'
-      })
-      this.map.addOverlay(measureTooltip)
-      var workingLayer = this.getLayerById('workingLayer')
+      var workingLayer = this.getLayerById('workingLayer');
       if (this.selectedRuler && this.selectedRuler !== null) {
         var type = this.selectedRuler === 'Surface' ? 'Polygon' : 'LineString'
       } else {
         return
       }
-      let measuringTool = new OlInteractionDraw({
+      this.measuringTool = new OlInteractionDraw({
         type: type,
         source: workingLayer.getSource()
-      })
-      var self = this
-      measuringTool.on('drawstart', function(event) {
-        // tooltipse
-        workingLayer.getSource().clear()
-        event.feature.on('change', function(event) {
+      });
+
+      this.measuringTool.on('drawstart', event => {
+        // Création tooltip
+        var measureTooltipElement = document.createElement('div');
+        measureTooltipElement.className = 'measureTooltip';
+        var measureTooltip = new OlOverlay({
+          element: measureTooltipElement,
+          offset: [0, -15],
+          positioning: 'bottom-center',
+        });
+        this.measuringToolOverlays.push(measureTooltip);
+        this.map.addOverlay(measureTooltip);
+
+        event.feature.on('change', event => {
           var geom = event.target.getGeometry()
           var output
           if (geom.getType() === 'Polygon') {
-            output = self.formatArea(geom)
+            output = this.formatArea(geom)
           } else if (geom.getType() === 'LineString') {
-            output = self.formatLength(geom)
+            output = this.formatLength(geom)
           }
-          measureTooltipElement.innerHTML = output
-          measureTooltip.setPosition(event.target.getGeometry().getLastCoordinate())
+          measureTooltipElement.innerHTML = output;
+          measureTooltip.setPosition(event.target.getGeometry().getLastCoordinate());
         })
       })
-      measuringTool.on('change:active', function(evt) {
+      this.measuringTool.on('change:active', function(evt) {
+
         if (evt.oldValue) {
-          // Nettoyage
           workingLayer.getSource().clear()
-          measureTooltip.setPosition([0, 0])
         }
       })
-      this.map.addInteraction(measuringTool)
-      this.measuringTool = measuringTool
-      this.measureTooltip = measureTooltip
+      this.map.addInteraction(this.measuringTool);
+
+    },
+
+    removeMeasureInteraction() {
+      this.map.removeInteraction(this.measuringTool);
+      _.forEach(this.measuringToolOverlays, ol => {
+        this.map.removeOverlay(ol);
+      })
+
+      this.selectedRuler = null;
+      var workingLayer = this.getLayerById('workingLayer');
+      workingLayer.getSource().clear();
     },
 
     formatLength(line) {
@@ -111,29 +135,7 @@ export default {
       }
       return output
     },
-    formatMultiLength(multiLine) {
-      var length = 0
-      _.forEach(multiLine.getLineStrings(), line => {
-        length = length + getLength(line)
-      })
-      var output
-      if (length > 100) {
-        output = Math.round((length / 1000) * 100) / 100 + ' ' + 'km'
-      } else {
-        output = Math.round(length * 100) / 100 + ' ' + 'm'
-      }
-      return output
-    },
-    formatRadius(circle) {
-      var radius = circle.getRadius()
-      var output
-      if (radius > 100) {
-        output = 'Rayon: ' + Math.round((radius / 1000) * 100) / 100 + ' km'
-      } else {
-        output = 'Rayon: ' + Math.round(radius * 100) / 100 + ' m'
-      }
-      return output
-    },
+
     formatArea(polygon) {
       var area = getArea(polygon)
       var output
@@ -152,27 +154,60 @@ export default {
       var i
       for (i = 0; i < this.map.getLayers().getLength(); i++) {
         var layer = this.map.getLayers().item(i)
-        if (layer.getProperties().code === id) {
+        if (layer.getProperties().code == id) {
           return layer
         }
       }
       return null
+    },
+
+    getIcon() {
+      if(this.selectedRuler === 'Surface') {
+        return "/remocra/static/img/ruler_square.png";
+      }
+      return "/remocra/static/img/ruler.png"
     }
   }
 };
 </script>
 
-<style scoped>
+<style>
 #measureTools {
   background: none;
   border: none;
+  margin-top: 0!important;
+  padding-bottom: 6px;
+  padding-top: 6px;
+}
+
+.btn-secondary:focus {
+  box-shadow: none !important;
+}
+
+.activated {
+  background-color: rgb(200,200,200) !important;
+}
+
+.dropdown {
+  max-height: 60px;
+  margin-right: 5px;
+}
+
+.dropdown-toggle {
+  background-color: transparent!important;
+  border: none!important;
+  padding: 0 0 0 0!important;
+}
+
+.dropdown-toggle::after{
+  border-top-color: black!important;
 }
 .dropdown-item {
   border: 1px solid transparent;
   border-radius: 3px;
 }
 
-.dropdown-item:hover {
+.dropdown-item:not(.selectedMeasureTool):hover {
   background-color: #e6e6e6;
   border-color: #9d9d9d;
   cursor: pointer;
@@ -230,5 +265,23 @@ export default {
 .geom-polygon:before {
   content: url('/remocra/static/img/pencil_polygone.png');
   margin-right: 7px;
+}
+
+.measureTooltip {
+  font-weight: bold;
+  position: relative;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  color: white;
+  padding: 10px 8px;
+  opacity: 5;
+  white-space: nowrap;
+  z-index: 1070;
+  display: block;
+  margin: 0;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  font-family: "Segoe UI",Roboto,"Helvetica Neue",Arial
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
   <div>
-  <OlMap ref="olMap">
+  <OlMap ref="olMap" :couchesJSONPath="'/remocra/ext-res/layers/etude.json'">
   </OlMap>
-  <ModalePeiProjet id="modalePeiProjet" :idEtude="28"></ModalePeiProjet>
+  <ModalePeiProjet id="modalePeiProjet" :idEtude="parseInt(idEtude)" :coordonnees="peiProjetCoordonnees"></ModalePeiProjet>
 </div>
 
 
@@ -11,12 +11,12 @@
 <script>
 import OlMap from '../OlMap/OlMap.vue'
 import ModalePeiProjet from './ModalePeiProjet.vue'
+import _ from 'lodash'
 
 import * as eventTypes from '../../bus/event-types.js'
 
-import OlInteractionDraw, {
-  createBox
-} from 'ol/interaction/Draw.js'
+import OlInteractionDraw from 'ol/interaction/Draw.js'
+
 export default {
   name: 'OlMapEtude',
   components: {
@@ -26,7 +26,6 @@ export default {
 
   props: {
     idEtude: {
-      type: Number,
       required: true
     }
   },
@@ -37,6 +36,7 @@ export default {
       toolBar: null,
 
       interactionAddPei: null,
+      peiProjetCoordonnees: null,
     }
   },
 
@@ -67,7 +67,8 @@ export default {
             var workingLayer = this.olMap.getLayerById('workingLayer');
             this.interactionAddPei = new OlInteractionDraw({
               type: 'Point',
-              source: workingLayer.getSource()
+              source: workingLayer.getSource(),
+              geometryName: "newPeiProjet"
             });
             this.olMap.map.addInteraction(this.interactionAddPei);
           } else {
@@ -85,12 +86,20 @@ export default {
   },
 
   methods: {
-    /**
+
+      /**
       * Clic sur la carte avec l'outil d'ajout de PEI projet activé
       */
     handleMapClickAddPei() {
-      this.$bvModal.show("modalePeiProjet");
       var workingLayer = this.olMap.getLayerById('workingLayer');
+      _.forEach(workingLayer.getSource().getFeatures(), feature => {
+        if(feature.getGeometryName() === 'newPeiProjet') {
+          this.peiProjetCoordonnees = feature.getGeometry().getCoordinates();
+          this.$nextTick(() => {
+            this.$bvModal.show("modalePeiProjet");
+          });
+        }
+      })
       workingLayer.getSource().clear()
     }
   }

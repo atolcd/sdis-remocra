@@ -48,7 +48,6 @@ export default {
 
   watch: {
     commune: function(val) {
-      console.log("Set commune to "+val.nom);
       this.refreshData();
     }
   },

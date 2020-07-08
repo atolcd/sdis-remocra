@@ -4,9 +4,17 @@
 
 
     <div id="map" class="map">
-      <slot name="toolbar" v-if="mapCreated">
-        <ToolBar :map="map" :olMap="this" @zoomToGeom="zoomToGeom" ref="toolBar"></ToolBar>
-      </slot>
+      <div>
+        <slot name="toolbar" v-if="mapCreated">
+          <ToolBar :map="map" :olMap="this" @zoomToGeom="zoomToGeom" ref="toolBar"></ToolBar>
+        </slot>
+      </div>
+
+      <div>
+        <slot name="couches" v-if="mapCreated">
+          <Couches :map="map" :couchesJSONPath="couchesJSONPath" ref="couches"></Couches>
+        </slot>
+      </div>
 
       <slot name="specifique"></slot>
     </div>
@@ -20,8 +28,6 @@
 import _ from 'lodash'
 import Map from 'ol/Map.js'
 import View from 'ol/View.js'
-import TileLayer from 'ol/layer/Tile.js'
-import OSM from 'ol/source/OSM.js'
 import {
   defaults as defaultControls
 } from 'ol/control.js'
@@ -29,21 +35,23 @@ import {
   register
 } from 'ol/proj/proj4.js'
 import proj4 from 'proj4'
-import OlLayerVector from 'ol/layer/Vector.js'
-import OlSourceVector from 'ol/source/Vector.js'
-import {
-  Circle as CircleStyle,
-  Fill,
-  Stroke,
-  Style
-} from 'ol/style.js'
 import ToolBar from './ToolBar.vue'
+import Couches from './Couches.vue'
 import WKT from 'ol/format/WKT.js'
 
 export default {
   name: 'OlMap',
   components: {
-    ToolBar
+    ToolBar,
+    Couches
+  },
+
+  props: {
+    couchesJSONPath: {
+      type: String,
+      required: false,
+      default: '/remocra/ext-res/layers/carte.json'
+    }
   },
 
   data() {
@@ -53,7 +61,6 @@ export default {
         default: {}
       },
       mapCreated: false,
-      etudeId: 25,
       sridL93: 2154,
       proj: null,
       epsgL93: null,
@@ -72,11 +79,6 @@ export default {
   mounted: function() {
     this.map = new Map({
       target: 'map',
-      layers: [
-        new TileLayer({
-          source: new OSM()
-        })
-      ],
       controls: defaultControls({
         rotate: false,
         zoom: false,
@@ -101,39 +103,10 @@ export default {
     this.mapCreated = true;
 
     _.delay(this.map.updateSize.bind(this.map), 10)
-    this.createWorkingLayer('workingLayer')
   },
 
   methods: {
-    createWorkingLayer(code) {
-      var source = new OlSourceVector()
-      var style = new Style({
-        fill: new Fill({
-          color: 'rgba(255, 255, 255, 0.2)'
-        }),
-        stroke: new Stroke({
-          color: 'blue',
-          width: 2
-        }),
-        image: new CircleStyle({
-          radius: 7,
-          fill: new Fill({
-            color: '#ffcc33'
-          })
-        })
-      })
-      var vectorLayer = new OlLayerVector({
-        name: code,
-        code: code,
-        source: source,
-        style: style,
-        visibility: true,
-        opacity: 1,
-        zIndex: 1000
-      })
-      this.map.addLayer(vectorLayer)
-      return vectorLayer
-    },
+
 
     // Zoom sur une géométrie donnée
     zoomToGeom(geometrie) {
@@ -164,26 +137,16 @@ export default {
         }
       }
       return null
-    }
+    },
+
+
   }
 };
 </script>
 
 <style scoped>
-.top_content {
-  position: absolute;
-  z-index: 900;
-  width: 45%;
-  right: 28%;
-  top: 10px;
-  background: #f4f4f4;
-  border-radius: 3px;
+#map {
+  width: 100%;
+  position: relative;
 }
-
-.text-start {
-  display: flex;
-  height: 16px;
-  align-items: center;
-}
-
 </style>
