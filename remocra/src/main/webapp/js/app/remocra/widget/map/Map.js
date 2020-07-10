@@ -366,7 +366,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
             // Zoom sur tournée
             items.push({
                 xtype: 'combo',
-                displayField: 'id',
+                displayField: 'nom',
                 valueField: 'id',
                 forceSelection: true,
                 minChars: 1,
