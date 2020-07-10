@@ -23,6 +23,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.min.css'
 import 'ol/ol.css'
 import 'v-autocomplete/dist/v-autocomplete.css'
+import _ from 'lodash'
 
 Vue.config.productionTip = false
 
@@ -71,7 +72,7 @@ const buildContacts = function(el, data) {
     components: {
       Contacts
     },
-    template: "<Contacts :id=" + data.id + " title='" + data.title + "' nom='" + data.nom + "' />"
+    template: "<Contacts :id=" + data.id + " title='" + data.title + "' nom='" + _.escape(data.nom) + "' />"
   })
   return v
 }
