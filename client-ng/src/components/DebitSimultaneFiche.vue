@@ -637,8 +637,11 @@ export default {
     handleSubmit() {
       var url = 'debitsimultane' + (this.debitSimultane.id == null ? '' : '/' + this.debitSimultane.id);
       var formData = new FormData();
-      this.debitSimultane.site = (this.debitSimultane.site) ? this.debitSimultane.site.id : null;
-      formData.append("debitSimultane", JSON.stringify(this.debitSimultane));
+      formData.append("debitSimultane", JSON.stringify({
+        id: this.debitSimultane.id,
+        site: (this.debitSimultane.site) ? this.debitSimultane.site.id : null,
+        numDossier: this.debitSimultane.numDossier
+      }));
       // Mise à jour du débit simultané
       axios.post(url, formData, {
         headers: {

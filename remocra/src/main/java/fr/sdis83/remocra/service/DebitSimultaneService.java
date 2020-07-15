@@ -92,7 +92,7 @@ public class DebitSimultaneService extends AbstractService<DebitSimultane>{
         Query query = entityManager
                 .createNativeQuery(
                         ("UPDATE remocra.debit_simultane SET geometrie = " +
-                            "(SELECT ST_SETSRID((ST_CENTROID(ST_UNION(geometrie)),2154) " +
+                            "(SELECT ST_SETSRID((ST_CENTROID(ST_UNION(geometrie))),2154) " +
                             "FROM remocra.debit_simultane_hydrant dsh " +
                             "JOIN remocra.hydrant h ON h.id=dsh.hydrant " +
                             "WHERE debit = " +
