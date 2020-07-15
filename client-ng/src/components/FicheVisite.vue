@@ -39,12 +39,12 @@
         <div class="row">
           <div class="col-md-6">
             <b-form-group label="Date " label-for="date" label-cols-md="3">
-              <b-form-input id="date" v-model="formattedDate[selectedRow]" type="date" size="sm" required></b-form-input>
+              <b-form-input id="date" v-model="formattedDate[selectedRow]" type="date" :max="dateMax" size="sm" required></b-form-input>
             </b-form-group>
           </div>
           <div class="col-md-6">
             <b-form-group label="Heure " label-for="heure" label-cols-md="3">
-              <b-form-input id="heure" v-model="formattedTime[selectedRow]" type="time" size="sm" required></b-form-input>
+              <b-form-input id="heure" v-model="formattedTime[selectedRow]" type="time" :max="timeMax" size="sm" required></b-form-input>
             </b-form-group>
           </div>
         </div>
@@ -154,9 +154,9 @@
 </template>
 
 <script>
+import moment from 'moment'
 import axios from 'axios'
 import _ from 'lodash'
-import moment from 'moment'
 export default {
   name: 'FicheVisite',
   data() {
@@ -182,7 +182,11 @@ export default {
         noSameDateTime: null,
         type: null
       },
-      dataLoaded: false
+      dataLoaded: false,
+
+      // Valeur maximales des données temporelles
+      dateMax: moment().format('YYYY-MM-DD'),
+      timeMax: moment().add(1, 'hours').format('HH:mm')
     }
   },
   props: {

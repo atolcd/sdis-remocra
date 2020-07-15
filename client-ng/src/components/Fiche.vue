@@ -386,7 +386,7 @@ export default {
       this.onGestionnaireChange();
     },
     getComboSpDeci() {
-      if (this.hydrantRecord.natureDeci && this.hydrantRecord.natureDeci.id === this.hydrant.natureDeci) {
+      if (this.hydrantRecord.natureDeci && this.hydrantRecord.spDeci && this.hydrantRecord.natureDeci.id === this.hydrant.natureDeci) {
         this.hydrant.spDeci = this.hydrantRecord.spDeci.id;
       } else {
         this.hydrant.spDeci = null;
