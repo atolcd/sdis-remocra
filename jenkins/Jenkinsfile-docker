@@ -127,7 +127,7 @@ pipeline {
           steps {
             script {
               if (remocra_image) {
-                docker.withRegistry('https://docker-registry.priv.atolcd.com') {
+                docker.withRegistry('https://client-docker-registry.atolcd.com') {
                   remocra_image.push('unstable')
                 }
               }
@@ -138,7 +138,7 @@ pipeline {
           steps {
             script {
               if (geoserver_image) {
-                docker.withRegistry('https://docker-registry.priv.atolcd.com') {
+                docker.withRegistry('https://client-docker-registry.atolcd.com') {
                   geoserver_image.push('unstable')
                 }
               }
@@ -149,7 +149,7 @@ pipeline {
           steps {
             script {
               if (pdi44dkron_image) {
-                docker.withRegistry('https://docker-registry.priv.atolcd.com') {
+                docker.withRegistry('https://client-docker-registry.atolcd.com') {
                   pdi44dkron_image.push('unstable')
                 }
               }
@@ -160,7 +160,7 @@ pipeline {
           steps {
             script {
               if (pdidkron_image) {
-                docker.withRegistry('https://docker-registry.priv.atolcd.com') {
+                docker.withRegistry('https://client-docker-registry.atolcd.com') {
                   pdidkron_image.push('unstable')
                 }
               }

@@ -134,7 +134,7 @@ pipeline {
           steps {
             script {
               if (remocra_image) {
-                docker.withRegistry('https://docker-registry.priv.atolcd.com') {
+                docker.withRegistry('https://client-docker-registry.atolcd.com') {
                   remocra_image.push("${REMOCRA_VERSION}")
                   remocra_image.push('latest')
                 }
@@ -146,7 +146,7 @@ pipeline {
           steps {
             script {
               if (geoserver_image) {
-                docker.withRegistry('https://docker-registry.priv.atolcd.com') {
+                docker.withRegistry('https://client-docker-registry.atolcd.com') {
                   geoserver_image.push("${REMOCRA_VERSION}")
                   geoserver_image.push('latest')
                 }
@@ -158,7 +158,7 @@ pipeline {
           steps {
             script {
               if (pdi44dkron_image) {
-                docker.withRegistry('https://docker-registry.priv.atolcd.com') {
+                docker.withRegistry('https://client-docker-registry.atolcd.com') {
                   pdi44dkron_image.push("${REMOCRA_VERSION}")
                   pdi44dkron_image.push('latest')
                 }
@@ -170,7 +170,7 @@ pipeline {
           steps {
             script {
               if (pdidkron_image) {
-                docker.withRegistry('https://docker-registry.priv.atolcd.com') {
+                docker.withRegistry('https://client-docker-registry.atolcd.com') {
                   pdidkron_image.push("${REMOCRA_VERSION}")
                   pdidkron_image.push('latest')
                 }
