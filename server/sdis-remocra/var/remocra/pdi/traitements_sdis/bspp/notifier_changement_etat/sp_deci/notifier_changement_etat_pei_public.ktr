@@ -538,16 +538,6 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>jointure dispo</from>
-      <to>construction mail dispo</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>jointure indispo</from>
-      <to>construction mail indispo</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>indispo</from>
       <to>Tri indispos</to>
       <enabled>Y</enabled>
@@ -615,11 +605,6 @@
     <hop>
       <from>contact AP</from>
       <to>contact AP dispo</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>element fixe message indispo</from>
-      <to>destinataire indispo ?</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -737,7 +722,127 @@
       <to>element fixe message dispo</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>jointure indispo</from>
+      <to>objet indispo</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>objet indispo</from>
+      <to>construction mail indispo</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>jointure dispo</from>
+      <to>objet dispo</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>objet dispo</from>
+      <to>construction mail dispo</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>poids anomalies</from>
+      <to>Recherche dans flux</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Recherche dans flux</from>
+      <to>anomalie trouvée</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>anomalie trouvée</from>
+      <to>Tri lignes</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Tri lignes</from>
+      <to>Agrégation anomalies</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>element fixe message indispo</from>
+      <to>Recherche anomalies</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Recherche anomalies</from>
+      <to>destinataire indispo ?</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Agrégation anomalies</from>
+      <to>Recherche anomalies</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>visite</from>
+      <to>séparation des anomalies</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>séparation des anomalies</from>
+      <to>espace</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>espace</from>
+      <to>string 2 int</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>string 2 int</from>
+      <to>Recherche dans flux</to>
+      <enabled>Y</enabled>
+    </hop>
   </order>
+  <step>
+    <name>Agrégation anomalies</name>
+    <type>GroupBy</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <all_rows>N</all_rows>
+    <ignore_aggregate>N</ignore_aggregate>
+    <field_ignore />
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>grp</prefix>
+    <add_linenr>N</add_linenr>
+    <linenr_fieldname />
+    <give_back_row>N</give_back_row>
+    <group>
+      <field>
+        <name>hydrant</name>
+      </field>
+    </group>
+    <fields>
+      <field>
+        <aggregate>anomalies</aggregate>
+        <subject>anomalie_texte</subject>
+        <type>CONCAT_COMMA</type>
+        <valuefield />
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>656</xloc>
+      <yloc>240</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
   <step>
     <name>Altération structure flux</name>
     <type>SelectValues</type>
@@ -772,6 +877,9 @@
         <name>voie</name>
       </field>
       <field>
+        <name>orga_modif</name>
+      </field>
+      <field>
         <name>email_contact</name>
       </field>
       <field>
@@ -788,7 +896,7 @@
     </remotesteps>
     <GUI>
       <xloc>544</xloc>
-      <yloc>80</yloc>
+      <yloc>288</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -826,6 +934,9 @@
         <name>voie</name>
       </field>
       <field>
+        <name>orga_modif</name>
+      </field>
+      <field>
         <name>email_contact</name>
       </field>
       <field>
@@ -842,7 +953,7 @@
     </remotesteps>
     <GUI>
       <xloc>544</xloc>
-      <yloc>576</yloc>
+      <yloc>784</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -878,7 +989,7 @@
     </remotesteps>
     <GUI>
       <xloc>480</xloc>
-      <yloc>448</yloc>
+      <yloc>656</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -914,7 +1025,7 @@
     </remotesteps>
     <GUI>
       <xloc>480</xloc>
-      <yloc>240</yloc>
+      <yloc>448</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -949,7 +1060,7 @@ WHERE u.actif
     </remotesteps>
     <GUI>
       <xloc>480</xloc>
-      <yloc>336</yloc>
+      <yloc>544</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -992,7 +1103,7 @@ ORDER BY id_commune</sql>
     </remotesteps>
     <GUI>
       <xloc>144</xloc>
-      <yloc>320</yloc>
+      <yloc>528</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1034,7 +1145,7 @@ ORDER BY id_commune</sql>
     </remotesteps>
     <GUI>
       <xloc>1216</xloc>
-      <yloc>496</yloc>
+      <yloc>704</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1076,7 +1187,7 @@ ORDER BY id_commune</sql>
     </remotesteps>
     <GUI>
       <xloc>1216</xloc>
-      <yloc>160</yloc>
+      <yloc>368</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1100,7 +1211,7 @@ ORDER BY id_commune</sql>
     </remotesteps>
     <GUI>
       <xloc>736</xloc>
-      <yloc>336</yloc>
+      <yloc>544</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1170,8 +1281,8 @@ ORDER BY id_commune</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1712</xloc>
-      <yloc>336</yloc>
+      <xloc>1808</xloc>
+      <yloc>544</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1187,12 +1298,13 @@ ORDER BY id_commune</sql>
       <schema_name />
     </partitioning>
     <connection>Remocra (Postgis)</connection>
-    <sql>WITH der_etat_indispo AS (
+    <sql>WITH line_der_etat_indispo AS (
 	-- Première date de bascule en indisponibilité après la
 	-- dernière date de disponibilité totale ou partielle connue
 	SELECT
 		h.id_hydrant,
-		MIN(h.date_operation) AS date_operation
+		MIN(h.date_operation) AS date_operation,
+		substring(auteur_modification from '^[A-Za-z1-9 ]*') AS orga_modif
 	FROM
 		tracabilite.hydrant h
 		JOIN (--Dernière date de disponibilite totale ou partielle connue 
@@ -1208,10 +1320,17 @@ ORDER BY id_commune</sql>
 	WHERE
 		dispo_terrestre = 'DISPO'
 	GROUP BY
-		h.id_hydrant
+		h.id_hydrant,auteur_modification
+),
+der_etat_indispo AS (
+	SELECT h.id_hydrant,
+		h.date_operation,
+		substring(h.auteur_modification from '^[A-Za-z1-9 ]*') AS orga_modif
+		FROM tracabilite.hydrant h
+			JOIN line_der_etat_indispo ldei ON ldei.id_hydrant = h.id_hydrant
+				AND h.date_operation = ldei.date_operation
 )
-
-SELECT h_indispo.*
+SELECT h_indispo.*, der_etat_indispo.orga_modif
 FROM
   -- Hydrants en état d'indisponibilité
   (SELECT h.id AS id_hydrant,
@@ -1240,7 +1359,7 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
     </remotesteps>
     <GUI>
       <xloc>48</xloc>
-      <yloc>496</yloc>
+      <yloc>704</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1256,7 +1375,7 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
       <schema_name />
     </partitioning>
     <connection>Remocra (Postgis)</connection>
-    <sql>WITH der_etat_indispo AS (
+    <sql>WITH line_der_etat_indispo AS (
 	-- Première date de bascule en indisponibilité après la
 	-- dernière date de disponibilité totale ou partielle connue
 	SELECT
@@ -1278,9 +1397,16 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
 		dispo_terrestre = 'INDISPO'
 	GROUP BY
 		h.id_hydrant
+),
+der_etat_indispo AS (
+	SELECT h.id_hydrant,
+		h.date_operation,
+		substring(h.auteur_modification from '^[A-Za-z1-9 ]*') AS orga_modif
+		FROM tracabilite.hydrant h
+			JOIN line_der_etat_indispo ldei ON ldei.id_hydrant = h.id_hydrant
+				AND h.date_operation = ldei.date_operation
 )
-
-SELECT h_indispo.*
+SELECT h_indispo.*, der_etat_indispo.orga_modif
 FROM
   -- Hydrants en état d'indisponibilité
   (SELECT h.id AS id_hydrant,
@@ -1309,7 +1435,93 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
     </remotesteps>
     <GUI>
       <xloc>48</xloc>
-      <yloc>160</yloc>
+      <yloc>368</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Recherche anomalies</name>
+    <type>StreamLookup</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <from>Agrégation anomalies</from>
+    <input_sorted>N</input_sorted>
+    <preserve_memory>Y</preserve_memory>
+    <sorted_list>N</sorted_list>
+    <integer_pair>N</integer_pair>
+    <lookup>
+      <key>
+        <name>id_hydrant</name>
+        <field>hydrant</field>
+      </key>
+      <value>
+        <name>anomalies</name>
+        <rename>anomalies</rename>
+        <default />
+        <type>String</type>
+      </value>
+    </lookup>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>656</xloc>
+      <yloc>368</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Recherche dans flux</name>
+    <type>StreamLookup</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <from>poids anomalies</from>
+    <input_sorted>N</input_sorted>
+    <preserve_memory>Y</preserve_memory>
+    <sorted_list>N</sorted_list>
+    <integer_pair>N</integer_pair>
+    <lookup>
+      <key>
+        <name>anomalie</name>
+        <field>id</field>
+      </key>
+      <key>
+        <name>code</name>
+        <field>code</field>
+      </key>
+      <value>
+        <name>nom</name>
+        <rename>anomalie_texte</rename>
+        <default />
+        <type>String</type>
+      </value>
+    </lookup>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>528</xloc>
+      <yloc>32</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1335,7 +1547,8 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
         <name>corps</name>
       </field>
       <field>
-        <name>objet</name>
+        <name>objet_final</name>
+        <rename>objet</rename>
       </field>
       <field>
         <name>expediteur</name>
@@ -1356,8 +1569,8 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1712</xloc>
-      <yloc>496</yloc>
+      <xloc>1808</xloc>
+      <yloc>704</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1406,7 +1619,7 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
     </remotesteps>
     <GUI>
       <xloc>1104</xloc>
-      <yloc>496</yloc>
+      <yloc>704</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1463,7 +1676,82 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
     </remotesteps>
     <GUI>
       <xloc>1104</xloc>
-      <yloc>160</yloc>
+      <yloc>368</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Tri lignes</name>
+    <type>SortRows</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory />
+    <compress>N</compress>
+    <compress_variable />
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>hydrant</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>656</xloc>
+      <yloc>144</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>anomalie trouvée</name>
+    <type>FilterRows</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <send_true_to>Tri lignes</send_true_to>
+    <send_false_to />
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>anomalie_texte</leftvalue>
+        <function>IS NOT NULL</function>
+        <rightvalue />
+      </condition>
+    </compare>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>656</xloc>
+      <yloc>32</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1499,8 +1787,8 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1568</xloc>
-      <yloc>496</yloc>
+      <xloc>1664</xloc>
+      <yloc>704</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1536,8 +1824,8 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1568</xloc>
-      <yloc>160</yloc>
+      <xloc>1664</xloc>
+      <yloc>368</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1574,7 +1862,7 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
     </remotesteps>
     <GUI>
       <xloc>352</xloc>
-      <yloc>336</yloc>
+      <yloc>544</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1621,7 +1909,7 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
     </remotesteps>
     <GUI>
       <xloc>352</xloc>
-      <yloc>448</yloc>
+      <yloc>656</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1668,7 +1956,7 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
     </remotesteps>
     <GUI>
       <xloc>352</xloc>
-      <yloc>240</yloc>
+      <yloc>448</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1704,7 +1992,7 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
     </remotesteps>
     <GUI>
       <xloc>144</xloc>
-      <yloc>576</yloc>
+      <yloc>784</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1740,7 +2028,7 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
     </remotesteps>
     <GUI>
       <xloc>144</xloc>
-      <yloc>80</yloc>
+      <yloc>288</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1786,7 +2074,7 @@ WHERE o.id NOT IN (SELECT o.id
     </remotesteps>
     <GUI>
       <xloc>256</xloc>
-      <yloc>320</yloc>
+      <yloc>528</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1833,7 +2121,7 @@ WHERE o.id NOT IN (SELECT o.id
     </remotesteps>
     <GUI>
       <xloc>256</xloc>
-      <yloc>496</yloc>
+      <yloc>704</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1880,7 +2168,7 @@ WHERE o.id NOT IN (SELECT o.id
     </remotesteps>
     <GUI>
       <xloc>256</xloc>
-      <yloc>160</yloc>
+      <yloc>368</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1914,7 +2202,7 @@ WHERE o.id NOT IN (SELECT o.id
     </remotesteps>
     <GUI>
       <xloc>736</xloc>
-      <yloc>496</yloc>
+      <yloc>704</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1948,7 +2236,7 @@ WHERE o.id NOT IN (SELECT o.id
     </remotesteps>
     <GUI>
       <xloc>736</xloc>
-      <yloc>160</yloc>
+      <yloc>368</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1973,6 +2261,9 @@ WHERE o.id NOT IN (SELECT o.id
       <field>
         <name>nom_destinataire</name>
       </field>
+      <field>
+        <name>orga_modif</name>
+      </field>
       <select_unspecified>N</select_unspecified>
     </fields>
     <cluster_schema />
@@ -1984,7 +2275,7 @@ WHERE o.id NOT IN (SELECT o.id
     </remotesteps>
     <GUI>
       <xloc>1008</xloc>
-      <yloc>496</yloc>
+      <yloc>704</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2022,6 +2313,12 @@ WHERE o.id NOT IN (SELECT o.id
         <type>CONCAT_STRING</type>
         <valuefield>&lt;/br></valuefield>
       </field>
+      <field>
+        <aggregate>orga_modif</aggregate>
+        <subject>orga_modif</subject>
+        <type>FIRST_INCL_NULL</type>
+        <valuefield />
+      </field>
     </fields>
     <cluster_schema />
     <remotesteps>
@@ -2032,7 +2329,7 @@ WHERE o.id NOT IN (SELECT o.id
     </remotesteps>
     <GUI>
       <xloc>1328</xloc>
-      <yloc>496</yloc>
+      <yloc>704</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2130,7 +2427,7 @@ WHERE o.id NOT IN (SELECT o.id
     </remotesteps>
     <GUI>
       <xloc>544</xloc>
-      <yloc>496</yloc>
+      <yloc>704</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2218,6 +2515,18 @@ WHERE o.id NOT IN (SELECT o.id
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
       </field>
+      <field>
+        <name>deux_points</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif>:</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
     </fields>
     <cluster_schema />
     <remotesteps>
@@ -2228,7 +2537,7 @@ WHERE o.id NOT IN (SELECT o.id
     </remotesteps>
     <GUI>
       <xloc>544</xloc>
-      <yloc>160</yloc>
+      <yloc>368</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2312,7 +2621,7 @@ WHERE o.id NOT IN (SELECT o.id
     </remotesteps>
     <GUI>
       <xloc>896</xloc>
-      <yloc>496</yloc>
+      <yloc>704</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2373,11 +2682,41 @@ WHERE o.id NOT IN (SELECT o.id
       <currency_symbol />
     </calculation>
     <calculation>
-      <field_name>indispo</field_name>
+      <field_name>indispo4</field_name>
       <calc_type>ADD3</calc_type>
       <field_a>indispo3</field_a>
       <field_b>parenthese_f</field_b>
       <field_c>fin</field_c>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>Y</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <calculation>
+      <field_name>indispo5</field_name>
+      <calc_type>ADD3</calc_type>
+      <field_a>indispo4</field_a>
+      <field_b>espace</field_b>
+      <field_c>deux_points</field_c>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>Y</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <calculation>
+      <field_name>indispo</field_name>
+      <calc_type>ADD</calc_type>
+      <field_a>indispo5</field_a>
+      <field_b>anomalies</field_b>
+      <field_c />
       <value_type>String</value_type>
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
@@ -2396,7 +2735,7 @@ WHERE o.id NOT IN (SELECT o.id
     </remotesteps>
     <GUI>
       <xloc>896</xloc>
-      <yloc>160</yloc>
+      <yloc>368</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2421,6 +2760,9 @@ WHERE o.id NOT IN (SELECT o.id
       <field>
         <name>nom_destinataire</name>
       </field>
+      <field>
+        <name>orga_modif</name>
+      </field>
       <select_unspecified>N</select_unspecified>
     </fields>
     <cluster_schema />
@@ -2432,7 +2774,7 @@ WHERE o.id NOT IN (SELECT o.id
     </remotesteps>
     <GUI>
       <xloc>1008</xloc>
-      <yloc>160</yloc>
+      <yloc>368</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2470,6 +2812,12 @@ WHERE o.id NOT IN (SELECT o.id
         <type>CONCAT_STRING</type>
         <valuefield>&lt;/br></valuefield>
       </field>
+      <field>
+        <aggregate>orga_modif</aggregate>
+        <subject>orga_modif</subject>
+        <type>FIRST_INCL_NULL</type>
+        <valuefield />
+      </field>
     </fields>
     <cluster_schema />
     <remotesteps>
@@ -2480,7 +2828,7 @@ WHERE o.id NOT IN (SELECT o.id
     </remotesteps>
     <GUI>
       <xloc>1328</xloc>
-      <yloc>160</yloc>
+      <yloc>368</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2516,7 +2864,7 @@ WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
     </remotesteps>
     <GUI>
       <xloc>1424</xloc>
-      <yloc>336</yloc>
+      <yloc>544</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2552,7 +2900,7 @@ WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
     </remotesteps>
     <GUI>
       <xloc>1424</xloc>
-      <yloc>496</yloc>
+      <yloc>704</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2588,7 +2936,240 @@ WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
     </remotesteps>
     <GUI>
       <xloc>1424</xloc>
-      <yloc>160</yloc>
+      <yloc>368</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>objet dispo</name>
+    <type>Calculator</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <calculation>
+      <field_name>parent_ouvr</field_name>
+      <calc_type>CONSTANT</calc_type>
+      <field_a>(modifié par : </field_a>
+      <field_b />
+      <field_c />
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>Y</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <calculation>
+      <field_name>parent_ferm</field_name>
+      <calc_type>CONSTANT</calc_type>
+      <field_a>)</field_a>
+      <field_b />
+      <field_c />
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>Y</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <calculation>
+      <field_name>space</field_name>
+      <calc_type>CONSTANT</calc_type>
+      <field_a> </field_a>
+      <field_b />
+      <field_c />
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>Y</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <calculation>
+      <field_name>objet_inter</field_name>
+      <calc_type>ADD3</calc_type>
+      <field_a>objet</field_a>
+      <field_b>space</field_b>
+      <field_c>parent_ouvr</field_c>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>Y</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <calculation>
+      <field_name>objet_final</field_name>
+      <calc_type>ADD3</calc_type>
+      <field_a>objet_inter</field_a>
+      <field_b>orga_modif</field_b>
+      <field_c>parent_ferm</field_c>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1536</xloc>
+      <yloc>704</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>objet indispo</name>
+    <type>Calculator</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <calculation>
+      <field_name>parent_ouvr</field_name>
+      <calc_type>CONSTANT</calc_type>
+      <field_a>(modifié par : </field_a>
+      <field_b />
+      <field_c />
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>Y</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <calculation>
+      <field_name>parent_ferm</field_name>
+      <calc_type>CONSTANT</calc_type>
+      <field_a>)</field_a>
+      <field_b />
+      <field_c />
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>Y</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <calculation>
+      <field_name>space</field_name>
+      <calc_type>CONSTANT</calc_type>
+      <field_a> </field_a>
+      <field_b />
+      <field_c />
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>Y</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <calculation>
+      <field_name>objet_inter</field_name>
+      <calc_type>ADD3</calc_type>
+      <field_a>objet</field_a>
+      <field_b>space</field_b>
+      <field_c>parent_ouvr</field_c>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>Y</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <calculation>
+      <field_name>objet_final</field_name>
+      <calc_type>ADD3</calc_type>
+      <field_a>objet_inter</field_a>
+      <field_b>orga_modif</field_b>
+      <field_c>parent_ferm</field_c>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask />
+      <decimal_symbol />
+      <grouping_symbol />
+      <currency_symbol />
+    </calculation>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1536</xloc>
+      <yloc>368</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>poids anomalies</name>
+    <type>TableInput</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <connection>Remocra (Postgis)</connection>
+    <sql>SELECT tha.id, tha.nom , thn.code 
+FROM remocra.type_hydrant_anomalie tha
+	JOIN remocra.type_hydrant_anomalie_nature than ON than.anomalie = tha.id 
+		AND than.val_indispo_terrestre = 5
+	JOIN remocra.type_hydrant_nature thn ON thn.id = than.nature</sql>
+    <limit>0</limit>
+    <lookup />
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>528</xloc>
+      <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2614,7 +3195,8 @@ WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
         <name>corps</name>
       </field>
       <field>
-        <name>objet</name>
+        <name>objet_final</name>
+        <rename>objet</rename>
       </field>
       <field>
         <name>expediteur</name>
@@ -2635,8 +3217,198 @@ WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1712</xloc>
-      <yloc>160</yloc>
+      <xloc>1808</xloc>
+      <yloc>368</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>visite</name>
+    <type>TableInput</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <connection>Remocra (Postgis)</connection>
+    <sql>WITH der_visite AS (
+	SELECT hydrant, MAX(date) AS date
+	FROM remocra.hydrant_visite
+	GROUP BY hydrant
+)
+SELECT hv.hydrant, REPLACE(REPLACE(hv.anomalies, '[',''), ']', '') anomalies, thn.code 
+FROM remocra.hydrant_visite hv
+	JOIN der_visite ON der_visite.hydrant = hv.hydrant
+		AND der_visite.date = hv.date
+	JOIN remocra.hydrant h ON h.id = hv.hydrant
+	JOIN remocra.type_hydrant_nature thn ON thn.id = h.nature
+ORDER BY hv.hydrant</sql>
+    <limit>0</limit>
+    <lookup />
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>80</xloc>
+      <yloc>32</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>séparation des anomalies</name>
+    <type>SplitFieldToRows3</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <splitfield>anomalies</splitfield>
+    <delimiter>,</delimiter>
+    <newfield>anomalie</newfield>
+    <rownum>N</rownum>
+    <rownum_field />
+    <resetrownumber>Y</resetrownumber>
+    <delimiter_is_regex>N</delimiter_is_regex>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>208</xloc>
+      <yloc>32</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>espace</name>
+    <type>StringOperations</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <in_stream_name>anomalie</in_stream_name>
+        <out_stream_name />
+        <trim_type>both</trim_type>
+        <lower_upper>none</lower_upper>
+        <padding_type>none</padding_type>
+        <pad_char />
+        <pad_len />
+        <init_cap>no</init_cap>
+        <mask_xml>none</mask_xml>
+        <digits>none</digits>
+        <remove_special_characters>none</remove_special_characters>
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>304</xloc>
+      <yloc>32</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>string 2 int</name>
+    <type>SelectValues</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <select_unspecified>N</select_unspecified>
+      <meta>
+        <name>hydrant</name>
+        <rename>hydrant</rename>
+        <type>None</type>
+        <length>15</length>
+        <precision>0</precision>
+        <conversion_mask />
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale />
+        <date_format_timezone />
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding />
+        <decimal_symbol />
+        <grouping_symbol />
+        <currency_symbol />
+        <storage_type />
+      </meta>
+      <meta>
+        <name>code</name>
+        <rename>code</rename>
+        <type>None</type>
+        <length>2147483647</length>
+        <precision>-2</precision>
+        <conversion_mask />
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale />
+        <date_format_timezone />
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding />
+        <decimal_symbol />
+        <grouping_symbol />
+        <currency_symbol />
+        <storage_type />
+      </meta>
+      <meta>
+        <name>anomalie</name>
+        <rename>anomalie</rename>
+        <type>Integer</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask />
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale />
+        <date_format_timezone />
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding />
+        <decimal_symbol />
+        <grouping_symbol />
+        <currency_symbol />
+        <storage_type />
+      </meta>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>400</xloc>
+      <yloc>32</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
