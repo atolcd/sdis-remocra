@@ -65,7 +65,7 @@
           limit=10
           :total-rows="nbCourriers"
           :per-page="nbCourriersParPage"
-          @change="refreshCourriers"
+          @input="refreshCourriers"
         ></b-pagination>
       </div>
     </div>
@@ -180,29 +180,22 @@ export default {
       var requeteSorts = [];
       requeteSorts.push(this.sorter);
 
-      // Récupération du nombre de courriers
-      axios.get('/remocra/courrier/courrierdocumentcount', {
+      let start = (this.pageActuelle - 1) * this.nbCourriersParPage;
+
+      // Récupération des données des courriers
+      axios.get('/remocra/courrier/courrierdocument?start='+start+'&limit='+this.nbCourriersParPage, {
         params: {
           "filter": JSON.stringify(requeteFiltres),
           "sort": JSON.stringify(requeteSorts)
         }
       }).then(response => {
-        this.nbCourriers = response.data.message;
-        let start = (this.pageActuelle - 1) * this.nbCourriersParPage;
-
-        // Récupération des données des courriers
-        axios.get('/remocra/courrier/courrierdocument?start='+start+'&limit='+this.nbCourriersParPage, {
-          params: {
-            "filter": JSON.stringify(requeteFiltres),
-            "sort": JSON.stringify(requeteSorts)
-          }
-        }).then(response => {
-          this.listeCourriers = response.data.data;
-          // Force le refresh de la table. La fréquence de tick de la réactivité est parfois trop lente et mène à des problème de style dans la table le temps que les
-          // changements soient détectés
-          this.tableKey++;
-        });
+        this.listeCourriers = response.data.data;
+        this.nbCourriers = response.data.total;
+        // Force le refresh de la table. La fréquence de tick de la réactivité est parfois trop lente et mène à des problème de style dans la table le temps que les
+        // changements soient détectés
+        this.tableKey++;
       });
+
     },
 
     /**

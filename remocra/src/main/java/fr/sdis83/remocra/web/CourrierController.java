@@ -122,7 +122,6 @@ public class CourrierController {
             @Override
             protected Long countRecords() {
                 return Long.valueOf(courrierRepository.getCourriersAccessiblesCount(distinct, itemFilterList, sortList));
-
             }
         }.serialize();
     }
