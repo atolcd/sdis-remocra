@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletResponse;
 
 import java.sql.SQLException;
@@ -25,6 +26,7 @@ import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
 import fr.sdis83.remocra.domain.remocra.TypeDroit;
+import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.repository.CourrierRepository;
 import fr.sdis83.remocra.repository.DestinataireRepository;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
@@ -105,16 +107,22 @@ public class CourrierController {
     @RequestMapping(value = "/courrierdocument", method = RequestMethod.GET, headers = "Accept=application/json")
     @PreAuthorize("hasRight('COURRIER_UTILISATEUR_R') or hasRight('COURRIER_ORGANISME_R') or hasRight('COURRIER_ADMIN_R')")
     public ResponseEntity<String> courrierdocument(final @RequestParam(value = "page", required = false) Integer page,
+        final @RequestParam(value = "distinct", required = false, defaultValue = "false") boolean distinct,
         final @RequestParam(value = "start", required = true) Integer start, final @RequestParam(value = "limit", required = true) Integer limit,
         final @RequestParam(value = "sort", required = false) String sorts, final @RequestParam(value = "filter", required = false) String filters) {
 
         final List<ItemSorting> sortList = ItemSorting.decodeJson(sorts);
         final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
 
-        return new AbstractExtObjectSerializer<List<CourrierDocumentModel>>("Courriers retrieved.") {
+        return new AbstractExtListSerializer<CourrierDocumentModel>("Courriers retrieved.") {
             @Override
-            protected List<CourrierDocumentModel> getRecord() {
-                return courrierRepository.getCourriersAccessibles(start, limit, itemFilterList, sortList);
+            protected List<CourrierDocumentModel> getRecords() throws BusinessException, AuthenticationException {
+                return courrierRepository.getCourriersAccessibles(distinct, start, limit, itemFilterList, sortList);
+            }
+            @Override
+            protected Long countRecords() {
+                return Long.valueOf(courrierRepository.getCourriersAccessiblesCount(distinct, itemFilterList, sortList));
+
             }
         }.serialize();
     }
@@ -125,13 +133,14 @@ public class CourrierController {
     @RequestMapping(value = "/courrierdocumentcount", method = RequestMethod.GET, headers = "Accept=application/json")
     @PreAuthorize("hasRight('COURRIER_UTILISATEUR_R') or hasRight('COURRIER_ORGANISME_R') or hasRight('COURRIER_ADMIN_R')")
     public ResponseEntity<String> courrierdocumentCount(final @RequestParam(value = "page", required = false) Integer page,
+        final @RequestParam(value = "distinct", required = false, defaultValue = "false") boolean distinct,
         final @RequestParam(value = "sort", required = false) String sorts, final @RequestParam(value = "filter", required = false) String filters) {
 
         final List<ItemSorting> sortList = ItemSorting.decodeJson(sorts);
         final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
 
         try{
-            int count = courrierRepository.getCourriersAccessiblesCount(itemFilterList, sortList);
+            int count = courrierRepository.getCourriersAccessiblesCount(distinct, itemFilterList, sortList);
             return new SuccessErrorExtSerializer(true, String.valueOf(count)).serialize();
         }catch(Exception e){
             return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
@@ -143,6 +152,23 @@ public class CourrierController {
     public void getDocument(final @RequestParam(value = "code") String code, HttpServletResponse response)
             throws IOException {
         this.downloadCourrierDocument(code, response);
+    }
+
+    /**
+     * Retourne un document à partir de son code. Un accusé est ensuite mis pour tous les courriers liés à ce document
+     * @param code Le code du document
+     */
+    @RequestMapping(value = "/getdocumentfromcode/{code}", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('COURRIER_UTILISATEUR_R') or hasRight('COURRIER_ORGANISME_R') or hasRight('COURRIER_ADMIN_R')")
+    public void getDocumentFromCode(final @PathVariable(value = "code") String code, HttpServletResponse response)
+        throws IOException {
+
+        String path = telechargementsService.getRemocraFilePathFromCode(code);
+        DocumentUtil.getInstance().downloadDocument(path, code, response);
+
+        if(response.containsHeader("Content-Type")) {
+            courrierRepository.setAccuseForDocumentCode(code);
+        }
     }
 
     @RequestMapping(value = "/{code}")

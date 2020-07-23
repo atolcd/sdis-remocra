@@ -56,7 +56,10 @@
         // Configuration du contenu
         thematiques : ['POINTDEAU','ADRESSES', 'PERMIS', 'DFCI', 'RISQUES', 'DIVERS']
     }, {
-      type: 'courriers'
+        type: 'courriers',
+        icon : 'documents.png',
+        pageSize: 10,
+        minHeight: 320
     }, {
         //profils : ,
         type : 'doc',

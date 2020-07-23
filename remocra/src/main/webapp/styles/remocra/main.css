@@ -241,7 +241,7 @@ a:hover {
 /*.index-bloc a:hover, .x-grid-row .x-grid-cell a:hover {*/
 	color: #323232;
 }
-.index-bloc div, .index-bloc .x-toolbar .x-toolbar-text, .remocra-cmp .blocdocumentgrid div {
+.index-bloc div, .index-bloc .x-toolbar .x-toolbar-text, .remocra-cmp .blocdocumentgrid div, .bloccourriergrid div {
     color: #525252;
     font-size: 15px;
 }
@@ -263,6 +263,37 @@ a:hover {
 	position: absolute;
 	width: 265px;
 	right: 0px;
+}
+
+#indexpri .bloccourriergrid {
+	display: block;
+	float: right;
+	margin-right: 84px;
+	width: -webkit-calc(100% - 120px);
+	width: calc(100% - 120px);
+	margin-right: 10px;
+}
+
+.bloccourriergrid {
+	position: absolute;
+	width: 265px;
+	right: 0px;
+}
+
+.blocCourrierNbDocs {
+	display: block;
+	margin: 0 auto 10px auto;
+	width: 200px;
+	color: blue;
+	font-size: 16px;
+}
+
+.blocCourrierLien {
+    display: block;
+    position: absolute;
+    bottom: 15px;
+    left: 45%;
+    transform: translate(-50%);
 }
 
 .linkbutton a {

@@ -26,6 +26,8 @@ public class CourrierDocumentModel {
 
     private String nomDocument;
 
+    private String codeDocument;
+
     public Long getId() {
         return id;
     }
@@ -104,5 +106,13 @@ public class CourrierDocumentModel {
 
     public void setNomDocument(String nomDocument) {
         this.nomDocument = nomDocument;
+    }
+
+    public String getCodeDocument() {
+        return codeDocument;
+    }
+
+    public void setCodeDocument(String codeDocument) {
+        this.codeDocument = codeDocument;
     }
 }

@@ -24,6 +24,7 @@ import org.postgresql.jdbc.PgSQLXML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -113,7 +114,7 @@ public class CourrierRepository {
      * Information des courriers accessibles par l'utilisateur courant en fonction de ses droits
      * @return Un objet JSON contenant les informations sur les courriers
      */
-  public List<CourrierDocumentModel> getCourriersAccessibles(Integer start, Integer limit, List<ItemFilter> itemFilter, List<ItemSorting> sortList) {
+  public List<CourrierDocumentModel> getCourriersAccessibles(Boolean distinct, Integer start, Integer limit, List<ItemFilter> itemFilter, List<ItemSorting> sortList) {
 
     /* Niveau des droits d'accès de l'utilisateur courant
      *  1 : Courriers propres uniquement
@@ -126,9 +127,17 @@ public class CourrierRepository {
     } else if(authUtils.hasRight(TypeDroit.TypeDroitEnum.COURRIER_ORGANISME_R)) {
         niveauDroits = 2;
     }
+    
+    StringBuilder requete = new StringBuilder();
+    if(distinct) {
+      requete.append("SELECT DISTINCT codeDocument, nomDocument, dateDoc FROM (");
+    }
 
-    StringBuilder requete = this.getRequeteCourriersAccessibles(niveauDroits, itemFilter, sortList);
+    requete.append(this.getRequeteCourriersAccessibles(niveauDroits, itemFilter, sortList));
 
+    if(distinct) {
+      requete.append(" ) AS R ORDER BY dateDoc DESC ");
+    }
     requete.append(" LIMIT "+limit+" OFFSET "+start);
 
 
@@ -152,7 +161,7 @@ public class CourrierRepository {
 
     requete.append("SELECT cd.id as id, cd.document as document, cd.code as code, cd.nom_destinataire as nomDestinataire, cd.type_destinataire as typeDestinataire, "+
                     "cd.id_destinataire as idDestinataire, cd.accuse as accuse, COALESCE(u.email, o.email_contact, c.email) as mail, d.date_doc as dateDoc, " +
-                    "d.fichier as nomDocument "+
+                    "d.code as codeDocument, d.fichier as nomDocument "+
                     "FROM remocra.courrier_document cd " +
                     "JOIN remocra.document d ON d.id = cd.document "+
                     "LEFT JOIN remocra.utilisateur u ON u.id = cd.id_destinataire AND type_destinataire = 'UTILISATEUR' "+
@@ -253,7 +262,7 @@ public class CourrierRepository {
     /**
      * Retourne le nombre de courriers accessibles par l'utilisateur courant
      */
-  public Integer getCourriersAccessiblesCount(List<ItemFilter> itemFilter, List<ItemSorting> sortList)
+  public Integer getCourriersAccessiblesCount(Boolean distinct, List<ItemFilter> itemFilter, List<ItemSorting> sortList)
   {
     int niveauDroits = 1;
     if(authUtils.hasRight(TypeDroit.TypeDroitEnum.COURRIER_ADMIN_R)) {
@@ -263,9 +272,32 @@ public class CourrierRepository {
     }
 
     StringBuilder count = new StringBuilder();
-    count.append("SELECT COUNT(*) FROM (").append(this.getRequeteCourriersAccessibles(niveauDroits, itemFilter, sortList)).append(") AS R");
+    count.append("SELECT COUNT(*) FROM (");
+    if(distinct) {
+        count.append("SELECT DISTINCT codeDocument FROM (");
+    }
+    count.append(this.getRequeteCourriersAccessibles(niveauDroits, itemFilter, sortList)).append(") AS R");
+    if(distinct) {
+        count.append(") AS R2");
+    }
     Query query = entityManager.createNativeQuery(count.toString());
     return Integer.valueOf(query.getSingleResult().toString());
+  }
+
+    /**
+     * Met un accusé pour tous les courriers contenant un fichier spécifique
+     * @param code Le code du document contenu dans les fichiers
+     */
+  @Transactional
+  public void setAccuseForDocumentCode(String code) {
+
+      entityManager.createNativeQuery("UPDATE remocra.courrier_document AS cd " +
+              "SET accuse = NOW() " +
+              "FROM remocra.document as d " +
+              "WHERE d.id = cd.document " +
+              "AND d.code = :code")
+            .setParameter("code", code)
+            .executeUpdate();
   }
 
   //Retourne les paramètres d'un modèle de courrier

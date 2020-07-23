@@ -1,5 +1,6 @@
 Ext.require('Sdis.Remocra.widget.LightPaging');
 Ext.require('Sdis.Remocra.widget.BlocDocumentGrid');
+Ext.require('Sdis.Remocra.widget.BlocCourrierGrid');
 
 Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
     singleton: true,
@@ -471,7 +472,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
         };
     },
 
-    createCourriersBloc: function(title, icon, minHeight) {
+    createCourriersBloc: function(title, icon, minHeight, pageSize) {
         if (!Sdis.Remocra.Rights.hasRight('COURRIER_UTILISATEUR_R')
             && !Sdis.Remocra.Rights.hasRight('COURRIER_ORGANISME_R')
             && !Sdis.Remocra.Rights.hasRight('COURRIER_GLOBAL_R')) {
@@ -482,11 +483,44 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             minh: minHeight || this.randomHeight(),
             title: title || 'Courriers',
             img: icon || 'documents.png',
-            items: [{
-                type: 'href',
-                href: 'courriers',
-                lbl: 'Recherche de courrier'
-            }]
+            onBlocRender: function(cmp, eOpts) {
+                var store = Ext.create('Sdis.Remocra.store.BlocCourrier', {
+                    autoLoad: true,
+                    pageSize: 1,
+                    filters: [{
+                        property : 'accuse',
+                        value : 'false'
+                    }]
+                });
+
+                store.on('load', function(store) {
+                    cmp.insert(0, {
+                        xtype: 'label',
+                        cls: 'blocCourrierNbDocs',
+                        html: '<b>'+store.getTotalCount()+'</b> nouveaux courriers'
+                    });
+
+                    if(store.getTotalCount()) {
+                        cmp.add({
+                            xtype : 'crBlocCourrierGrid',
+                            pageSize: pageSize
+                        });
+                    } else {
+                        cmp.setHeight(150);
+                    }
+                });
+
+                cmp.add({
+                    xtype: 'component',
+                    cls: 'blocCourrierLien',
+                    autoEl: {
+                        tag: 'a',
+                        href: '#courriers',
+                        html: 'Recherche de courrier'
+                    }
+                });
+
+            }
         };
     },
 
@@ -524,6 +558,10 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             return this.createDocBloc(title, icon, minHeight, cfgBloc.pageSize, cfgBloc.thematiques, cfgBloc.profils);
         }
 
+        if(cfgBloc.type == 'courriers') {
+            return this.createCourriersBloc(title, icon, minHeight, cfgBloc.pageSize);
+        }
+
         // Autres blocs : uniquement config commune
         var fn = null;
         if (cfgBloc.type == 'hydrants') {
@@ -550,8 +588,6 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             fn = this.createAdministrationBloc;
         } else if (cfgBloc.type == 'cartographie') {
             fn = this.createCartographieBloc;
-        } else if (cfgBloc.type == 'courriers') {
-            fn = this.createCourriersBloc;
         }
         if (fn) {
             return Ext.bind(fn, this)(title, icon, minHeight);
