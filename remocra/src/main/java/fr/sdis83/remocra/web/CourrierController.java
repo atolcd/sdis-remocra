@@ -341,7 +341,7 @@ public class CourrierController {
     }
   }
 
-  @RequestMapping(value = "notifier", method = RequestMethod.POST,  headers = "Accept=application/json")
+  @RequestMapping(value = "notifier", method = RequestMethod.POST,  headers = "Accept=application/json;charset=utf-8")
   @PreAuthorize("hasRight('COURRIER_C')")
   @Transactional
   public ResponseEntity<java.lang.String> notifierCourrier( final @RequestBody String json) {
@@ -352,6 +352,7 @@ public class CourrierController {
       String nomCourrier = String.valueOf(mapParametres.get("nomCourrier"));
       String reference = String.valueOf(mapParametres.get("reference"));
       String objet = String.valueOf(mapParametres.get("objet"));
+      String codeModele = String.valueOf(mapParametres.get("codeModele"));
       //Déplacement du dossier+pdf dans dossier courriers
       File origine = new File(paramConfService.getDossierCourriersExternes()+"/courrier_temp/"+codeCourrier);
       File destination = new File(paramConfService.getDossierCourriersExternes()+"/"+codeCourrier);
@@ -368,7 +369,7 @@ public class CourrierController {
       String erreurEmail = "";
       for(Object dest : destinataires){
         Long idDest = Long.valueOf(String.valueOf(((HashMap) dest).get("id")));
-        String typeDest = String.valueOf(((HashMap) dest).get("Type"));
+        String typeDest = String.valueOf(((HashMap) dest).get("Type")).toUpperCase();
         String nomDest = String.valueOf(((HashMap) dest).get("Nom"));
 
         if(erreurDocument.equals("")) {
@@ -379,7 +380,7 @@ public class CourrierController {
 
         if(erreurDocument.equals("") && erreurCourrierDocument.equals("")) {
           //Insertion dans la table email
-          erreurEmail = courrierRepository.insertEmail(nomCourrier, nomDest, typeDest, idDest, codeCourrier);
+          erreurEmail = courrierRepository.insertEmail(codeModele, nomDest, typeDest, idDest, codeCourrier);
         }
       }
 

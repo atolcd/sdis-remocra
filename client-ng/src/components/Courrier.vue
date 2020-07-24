@@ -347,7 +347,8 @@ export default {
             'value': {
               'id': courrier.id,
               'description': courrier.description,
-              'libelle': courrier.libelle
+              'libelle': courrier.libelle,
+              'code': courrier.code
             },
             'text': courrier.libelle
           })
@@ -537,11 +538,12 @@ export default {
           "nomCourrier": this.nomCourrier,
           "destinataires": this.tabDestinataireNotifierOui,
           "reference": this.reference,
+          "codeModele": this.choixModele.code,
           "objet": this.objet
         }
-        axios.post('/remocra/courrier/notifier', datas, {
+        axios.post('/remocra/courrier/notifier', JSON.stringify(datas), {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json;charset=utf-8'
           }
         }).then((response) => {
                     this.titleNotif = "Succès de la notification";
