@@ -49,7 +49,7 @@ ADD COLUMN expediteur CHARACTER VARYING NOT NULL DEFAULT 'Application Remocra';
 
 COMMENT ON COLUMN remocra.courrier_document.objet IS 'Objet du courrier';
 COMMENT ON COLUMN remocra.courrier_document.reference IS 'Reference du courrier';
-COMMENT ON COLUMN remocra.expediteur.reference IS 'Expéditeur du courrier';
+COMMENT ON COLUMN remocra.courrier_document.expediteur IS 'Expéditeur du courrier';
 
 
 -- Contenu réel du patch fin
