@@ -1,6 +1,6 @@
 <template>
 <div :class="{ 'Fiche': true, 'mode-visite': newVisite, 'loading': !dataLoaded }">
-  <b-modal id="modalFiche" ref="modalFiche" :title="title" no-close-on-backdrop ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="close()" :ok-disabled="!dataLoaded">
+  <b-modal id="modalFiche" ref="modalFiche" :title="title" no-close-on-backdrop ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="close()" :ok-disabled="!dataLoaded" no-stacking>
     <form id='formFiche' name='fiche' enctype="multipart/form-data" method="POST" ref="formFiche">
       <!-- ================================== En-tête du formulaire ==================================-->
       <div id="entete" class="entete form-group">
