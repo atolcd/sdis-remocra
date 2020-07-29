@@ -273,7 +273,7 @@ export default {
           //Résolution des clés étrangères
           self.hydrant = _.clone(self.hydrantRecord, true);
           self.dataLoaded = true;
-          self.resolveForeignKey(['nature', 'site', 'autoriteDeci', 'natureDeci']);
+          self.resolveForeignKey(['nature', 'site', 'autoriteDeci', 'natureDeci', 'gestionnaire']);
           self.createCombo();
           if (self.newVisite === true) {
             self.$refs.visitesTab.activate()
@@ -330,7 +330,7 @@ export default {
         });
       }).then(axios.get('/remocra/typehydrantnaturedeci').then(response => { // Récupération des données de nature DECI
         self.listeNaturesDeci = response.data.data;
-        self.getPublicOrPrive()
+        self.getPublicOrPrive(true)
         self.getComboSpDeci();
       })).catch(function(error) {
         console.error('Retrieving combo data from /remocra/organismes/autoritepolicedeci/', error);
@@ -371,16 +371,19 @@ export default {
         console.error('Retrieving combo data from ' + url, error);
       })
     },
-    getPublicOrPrive() {
+    getPublicOrPrive(init) {
       this.idDeciPublic = this.listeNaturesDeci.filter(item => item.code === "PUBLIC")[0].id;
       this.idDeciPrive = this.listeNaturesDeci.filter(item => item.code === "PRIVE")[0].id;
       //si on est sur du privé ou conventionné on charge la combo gestionnaire
       if (this.hydrant.natureDeci != this.idDeciPublic) {
-        this.getComboGestionnaire();
+        this.getComboGestionnaire(init);
       }
     },
-    getComboGestionnaire() {
-      this.hydrant.site = null;
+    getComboGestionnaire(init) {
+      if(!init) {
+        this.hydrant.site = null;
+      }
+
       //Si DECI privé ou conventionne , le gestionnaire est un privé
       this.getComboData(this, 'comboGestionnaire', '/remocra/gestionnaire.json', null, 'id', 'nom', ' ');
       this.onGestionnaireChange();
@@ -418,7 +421,7 @@ export default {
      * On met à jour le gestionnaire et on transmet l'évènement aux caractéristiques du PIBI dont les champs dépendent de la nature
      */
     onNatureDeciChange() {
-      this.getPublicOrPrive();
+      this.getPublicOrPrive(false);
       this.getComboSpDeci();
       if (this.$refs.fichePibi) {
         this.$refs.fichePibi.onNatureDeciChange();
@@ -462,11 +465,13 @@ export default {
             "direction": "ASC"
           }])
         }, 'id', 'nom', 'Aucun');
-      }
-      if (this.hydrantRecord.gestionnaire != this.hydrant.gestionnaire) {
-        this.hydrant.site = null;
       } else {
+        this.comboSite = this.comboSite.filter(i => i.value == null);
+      }
+      if (this.hydrantRecord.gestionnaire && this.hydrantRecord.gestionnaire.id == this.hydrant.gestionnaire) {
         this.hydrant.site = (this.hydrantRecord.site) ? this.hydrantRecord.site.id : null;
+      } else {
+        this.hydrant.site = null;
       }
     },
     /**

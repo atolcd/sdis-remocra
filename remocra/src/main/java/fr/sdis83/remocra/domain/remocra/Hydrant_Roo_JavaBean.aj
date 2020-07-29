@@ -371,11 +371,11 @@ privileged aspect Hydrant_Roo_JavaBean {
        this.niveau = niveau;
     }
 
-    public Long Hydrant.getGestionnaire() {
+    public Gestionnaire Hydrant.getGestionnaire() {
         return this.gestionnaire;
     }
 
-    public void Hydrant.setGestionnaire(Long gestionnaire) {
+    public void Hydrant.setGestionnaire(Gestionnaire gestionnaire) {
        this.gestionnaire = gestionnaire;
     }
 

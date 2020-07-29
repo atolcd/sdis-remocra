@@ -216,8 +216,8 @@ public class Hydrant implements Featurable {
     @ManyToOne
     private TypeHydrantNiveau niveau;
 
-    @Column
-    private Long gestionnaire;
+    @ManyToOne
+    private Gestionnaire gestionnaire;
 
     @ManyToOne
     private Organisme spDeci;
