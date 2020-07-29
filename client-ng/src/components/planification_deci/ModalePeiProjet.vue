@@ -281,7 +281,7 @@ export default {
 
     handleAddPeiProjet() {
       var formData = new FormData();
-      var coords = OlProj.transform(this.coordonnees, 'EPSG:3857', 'EPSG:4326');
+      var coords = OlProj.transform(this.coordonnees, 'EPSG:3857', 'EPSG:2154');
       formData.append("peiProjet", JSON.stringify({
         type: this.type,
         deci: this.deci,

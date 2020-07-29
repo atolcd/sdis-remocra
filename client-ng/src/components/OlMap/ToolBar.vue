@@ -2,7 +2,7 @@
 <div id="toolbar">
   <div v-for="(item, index) in toolbarItem" :key="index">
     <b-btn v-if="item.type == 'button'"
-            :class="{'activeBtn' : (activeButton == item.name && item.name != null) }"
+            :class="{'activeBtn' : (activeButton == item.name && item.name != null) && !isButtonDisabled(item.name) }"
             @click="item.onClick"
             :title="item.title"
             :disabled="isButtonDisabled(item.name)"
@@ -63,12 +63,16 @@ export default {
       //itemDisabled: {},
       activeButton: null,
       commune: null,
+      coucheActive: null,
+      eventHandlers: []
     }
   },
 
   created() {
+    var self = this;
     this.$root.$options.bus.$on(eventTypes.OLMAP_TOOLBAR_ADDTOOLBARITEM, this.addToolBarItem);
     this.$root.$options.bus.$on(eventTypes.OLMAP_TOOLBAR_TOGGLEBUTTON, this.toggleButton);
+    this.$root.$options.bus.$on(eventTypes.OLMAP_COUCHES_UPDATECOUCHEACTIVE, (code) => this.coucheActive = code);
     // Définition de la vue courante comme première vue de la navigation
     let view = this.map.getView();
     this.navigation.stack.push({
@@ -185,8 +189,47 @@ export default {
       title: "Obtenir des informations sur un point de la carte",
       onClick: () => {
         this.toggleButton("Infos");
+      },
+      onToggle: (state) => {
+        if(!self.eventHandlers['clickInfo']) {
+          self.eventHandlers['clickInfo'] = (e) => {
+            self.$root.$options.bus.$emit(eventTypes.OLMAP_COUCHES_GETFEATUREFROMPOINT, e.coordinate);
+          };
+        }
+
+        if(state) {
+          this.map.on("click", self.eventHandlers['clickInfo']);
+        } else {
+          this.map.un("click", self.eventHandlers['clickInfo']);
+        }
+      },
+      disabled: () => {
+        return this.coucheActive == null;
       }
     });
+
+    this.addToolBarItem({
+      type: "button",
+      name: "selectionPoint",
+      iconPath: "/remocra/static/img/pencil_point.png",
+      onClick: () => {
+        this.toggleButton("selectionPoint");
+      },
+      onToggle: (state) => {
+        var handleMapClickSelectionPoint= function() {
+
+        };
+
+        if(state) {
+          this.map.on("click", handleMapClickSelectionPoint);
+        } else {
+          this.map.un("click", handleMapClickSelectionPoint);
+        }
+      },
+      disabled: () => {
+        return this.coucheActive == null;
+      },
+    }),
 
     // Fullscreen
     this.addToolBarItem({

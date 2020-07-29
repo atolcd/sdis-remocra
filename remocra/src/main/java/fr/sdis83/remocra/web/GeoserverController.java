@@ -73,7 +73,7 @@ public class GeoserverController {
 
     public static enum RequestType {
         // txt
-        GetCapabilities, GetFeatureInfo, DescribeLayer,
+        GetCapabilities, GetFeatureInfo, DescribeLayer, GetFeature,
         // bin
         GetMap, GetLegendGraphic;
     }
@@ -140,6 +140,17 @@ public class GeoserverController {
      * @param params Paramètres. Par défaut, reprend les paramètres de la requête courante.
      */
     @RequestMapping("/**")
+    public void proxy(HttpServletRequest request, HttpServletResponse response, String geoserverPath, Map<String, String> params) {
+        // Vérification Type de requête
+        if (isWms(request)) {
+            this.proxyWms(request, response, geoserverPath, params);
+        } else if(isWfs(request)) {
+            this.proxyWfs(request, response, geoserverPath, params);
+        } else {
+            log.info("Proxy : service interdit (seulement wms ou wfs)");
+            response.setStatus(403);
+        }
+    }
     public void proxyWms(HttpServletRequest request, HttpServletResponse response, String geoserverPath, Map<String, String> params) {
         // /remocra/geoserver/** -> /geoserver/**
 
@@ -170,12 +181,6 @@ public class GeoserverController {
             URI targetUri = new UrlResource(targetURL).getURI();
             HttpHost httpHost = new HttpHost(targetUri.getHost(), targetUri.getPort(), targetUri.getScheme());
             log.info("Proxy WMS : targetURL : " + targetURL);
-
-            // Vérification WMS
-            if (!isWms(request)) {
-                log.info("Proxy WMS : service interdit (seulement wms)");
-                response.setStatus(403);
-            }
 
             String workspace = getWorkspace(request);
             RequestType requestType = getRequestType(request);
@@ -345,6 +350,204 @@ public class GeoserverController {
         }
     }
 
+    public void proxyWfs(HttpServletRequest request, HttpServletResponse response, String geoserverPath, Map<String, String> params) {
+        // /remocra/geoserver/** -> /geoserver/**
+        if (params == null || params.isEmpty()) {
+            params = getMapParamsFromRequest(request);
+        }
+
+        // --------------------
+        // Préparation de la requête
+        // --------------------
+
+        try {
+            geoserverPath = geoserverPath!=null ? geoserverPath : request.getServletPath().replaceFirst("/geoserver/", "");
+            if (geoserverPath.endsWith("layers/reload")) {
+                reloadLayers();
+                return;
+            } else if (geoserverPath.endsWith("layers")) {
+                response.setContentType("application/json;charset=utf-8");
+                response.setStatus(HttpStatus.OK.value());
+                response.getWriter().write(readLayers().getBody());
+                response.flushBuffer();
+                return;
+            }
+            String wmsBaseUrl = paramConfService.getWmsBaseUrl();
+            String targetURL = paramConfService.getWmsBaseUrl() + (wmsBaseUrl.endsWith("/") ? "" : "/") + geoserverPath;
+
+            // Récupération de l'URL cible
+            URI targetUri = new UrlResource(targetURL).getURI();
+            HttpHost httpHost = new HttpHost(targetUri.getHost(), targetUri.getPort(), targetUri.getScheme());
+            log.info("Proxy WFS : targetURL : " + targetURL);
+
+            String workspace = getWorkspace(request);
+            RequestType requestType = getRequestType(request);
+
+            // Vérification des autorisations
+            AccessLevel accessLevel = getAccessLevel(request, response, workspace, requestType);
+            if (accessLevel == AccessLevel.NONE) {
+                return;
+            }
+
+            // Nouvelle URL cible
+            UriComponentsBuilder b = UriComponentsBuilder.fromHttpUrl(targetURL);
+
+            String inputCQLParamValue = null;
+            String inputViewparamsParamValue = null;
+            String inputRemocraZcParamValue = null;
+
+            // Paramètres supplémentaires éventuels
+            for (Map.Entry<String, String> param : params.entrySet()) {
+                String paramName = param.getKey();
+                String paramValue = param.getValue();
+                if ((RequestType.GetMap == requestType || RequestType.GetFeatureInfo == requestType) && "CQL_FILTER".equalsIgnoreCase(paramName)) {
+                    // Traitement particulier du CQL Filter pour le GetMap
+                    inputCQLParamValue = paramValue;
+                } else if (RequestType.GetMap == requestType && "viewparams".equalsIgnoreCase(paramName)) {
+                    // Traitement particulier du paramètre viewparams pour le GetMap
+                    inputViewparamsParamValue = paramValue;
+                } else if (RequestType.GetMap == requestType && "remocra_zc".equalsIgnoreCase(paramName)) {
+                    // On retient ce paramètre pour le GetMap
+                    inputRemocraZcParamValue = paramValue;
+                } else {
+                    b.replaceQueryParam(paramName, paramValue);
+                }
+            }
+
+            // GetFeatureInfo : pour la mise en forme ultérieure
+            if (RequestType.GetFeatureInfo == requestType) {
+                // On force le format
+                b.replaceQueryParam("INFO_FORMAT");
+                b.replaceQueryParam("info_format", "application/vnd.ogc.gml/3.1.1");
+            }
+
+            // GetMap : filtre sur la zone de compétence si nécessaire
+            if (RequestType.GetMap == requestType || RequestType.GetFeatureInfo == requestType) {
+                String idZone = null;
+                if ("true".equals(inputRemocraZcParamValue) || accessLevel == AccessLevel.AUTH_ZONE) {
+                    idZone = utilisateurService.getCurrentZoneCompetenceId().toString();
+                }
+                // Action de la zone de compétence viewparams
+                if ("true".equals(inputRemocraZcParamValue)) {
+                    // Ajout de la variable viewparams
+                    String viewparamsZc = "ZC_ID:" + idZone;
+                    b.replaceQueryParam("viewparams",
+                            (inputViewparamsParamValue != null && inputViewparamsParamValue.length() > 0
+                                    ? inputViewparamsParamValue + (inputViewparamsParamValue.endsWith(";") ? "" : ";") : "") + viewparamsZc);
+                } else if (inputViewparamsParamValue!=null) {
+                    b.replaceQueryParam("viewparams", inputViewparamsParamValue);
+                }
+                String[] layers = getParameterOrLowerOrUpperCase(request, "LAYERS").split(",");
+                StringBuffer fullCQLFilter = new StringBuffer();
+                if (RequestType.GetMap == requestType && accessLevel == AccessLevel.AUTH_ZONE) {
+                    // Exemple avec deux couches (clause INCLUDE si couche non
+                    // filtrée) :
+                    // &CQL_FILTER=INCLUDE;WITHIN(geometrie,(querySingle('remocra:zone_competence','geometrie','id=26')))
+                    // On passe par l'id avec des doubles quotes car mot réservé.
+                    // C'est plus sûr qu'en passant par une chaine de caractères (code=VAR par exemple)
+                    fullCQLFilter.append("INTERSECTS(geometrie,(querySingle('remocra:zone_competence','geometrie','\"id\"=" + idZone + "')))");
+                }
+                if (inputCQLParamValue != null) {
+                    if (fullCQLFilter.length()>0) {
+                        fullCQLFilter.append(" and (").append(inputCQLParamValue).append(")");
+                    } else {
+                        fullCQLFilter.append(inputCQLParamValue);
+                    }
+                }
+                if (fullCQLFilter.length()>0) {
+                    // On répète autant de fois la clause qu'il y a de couches
+                    String repeatedCqlFilterValue = StringUtils.repeat(fullCQLFilter.toString(), ";", layers.length);
+                    if (repeatedCqlFilterValue.length()>0) {
+                        b.replaceQueryParam("CQL_FILTER", repeatedCqlFilterValue);
+                    }
+                }
+            }
+
+            String targetURLWithFilter = b.build().encode().toUriString();
+            log.info("Proxy WFS : targetURLWithFilter : " + targetURLWithFilter);
+            HttpRequest targetRequest = new DefaultHttpRequestFactory().newHttpRequest(request.getMethod(), targetURLWithFilter);
+
+            // Entêtes
+            @SuppressWarnings("unchecked")
+            Enumeration<String> headerNames = request.getHeaderNames();
+            while (headerNames.hasMoreElements()) {
+                String headerName = headerNames.nextElement();
+                if ("authorization".equalsIgnoreCase(headerName)) {
+                    // Pour éviter de propager l'authentification Remocra vers
+                    // le GeoServer
+                    continue;
+                }
+                targetRequest.setHeader(headerName, request.getHeader(headerName));
+            }
+
+            // Réponse traitée txt => pas de zip
+            if (RequestType.GetFeatureInfo == requestType || RequestType.GetCapabilities == requestType) {
+                // On désire un résultat non compressé (pas de gzip, deflate,
+                // etc.), sans quoi il faut le traiter ultérieurement
+                targetRequest.setHeader("Accept-Encoding", "");
+            }
+
+            // --------------------
+            // Exécution de la requête
+            // --------------------
+
+            HttpParams httpParams = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpParams, 30000);
+            HttpConnectionParams.setSoTimeout(httpParams, 30000);
+            DefaultHttpClient httpclient = new DefaultHttpClient();
+            HttpResponse srcResponse = httpclient.execute(httpHost, targetRequest);
+
+            // --------------------
+            // Traitement de la réponse
+            // --------------------
+
+            // Entêtes
+            Header[] headers = srcResponse.getAllHeaders();
+            for (Header header : headers) {
+                response.setHeader(header.getName(), header.getValue());
+                if ("Content-Type".equalsIgnoreCase(header.getName())) {
+                    response.setContentType(header.getValue());
+                }
+            }
+
+            InputStream is = srcResponse.getEntity().getContent();
+            OutputStream os = response.getOutputStream();
+
+            try {
+                if (RequestType.GetCapabilities == requestType) {
+                    manageCapabilities(is, os, workspace);
+                } else if (RequestType.GetFeatureInfo == requestType) {
+                    manageFeatureInfo(is, os);
+                } else {
+                    // Retour direct (image ou autre)
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = is.read(buffer)) != -1) {
+                        os.write(buffer, 0, bytesRead);
+                    }
+                }
+            } catch (TransformerException e) {
+                log.error("Proxy WFS : erreur de transformation", e);
+            } catch (IOException e) {
+                log.error("Proxy WFS : erreur d'entrée / sortie", e);
+            } catch (Exception e) {
+                log.error("Proxy WFS : autre erreur", e);
+            } finally {
+                os.flush();
+                os.close();
+            }
+        } catch (MethodNotSupportedException e) {
+            log.error("Proxy WFS : méthode invoquée non supportée", e);
+            response.setStatus(500);
+        } catch (SocketTimeoutException e) {
+            log.error("Proxy WFS : erreur de timeout" + e.getMessage());
+            response.setStatus(500);
+        } catch (IOException e) {
+            log.error("Proxy WFS : erreur d'entrée / sortie" + e.getMessage());
+            response.setStatus(500);
+        }
+    }
+
     public static Map<String, String> getMapParamsFromRequest(HttpServletRequest request) {
         Map<String, String> params = new HashMap<String, String>();
         @SuppressWarnings("unchecked")
@@ -362,6 +565,13 @@ public class GeoserverController {
         String[] splittedPath = geoserverPath.split("/");
         String servicePath = splittedPath[splittedPath.length - 1];
         return "wms".equalsIgnoreCase(servicePath) || ("ows".equalsIgnoreCase(servicePath) && "wms".equalsIgnoreCase(getParameterOrLowerOrUpperCase(request, "SERVICE")));
+    }
+
+    boolean isWfs(HttpServletRequest request) {
+        String geoserverPath = request.getServletPath();
+        String[] splittedPath = geoserverPath.split("/");
+        String servicePath = splittedPath[splittedPath.length - 1];
+        return "wfs".equalsIgnoreCase(servicePath) || ("wfs".equalsIgnoreCase(servicePath) && "wfs".equalsIgnoreCase(getParameterOrLowerOrUpperCase(request, "SERVICE")));
     }
 
     String getWorkspace(HttpServletRequest request) {
@@ -382,6 +592,8 @@ public class GeoserverController {
             return RequestType.GetLegendGraphic;
         } else if ("GetMap".equalsIgnoreCase(requestParam)) {
             return RequestType.GetMap;
+        } else if ("GetFeature".equalsIgnoreCase(requestParam)) {
+            return RequestType.GetFeature;
         }
         return null;
     }
@@ -389,7 +601,7 @@ public class GeoserverController {
     AccessLevel getAccessLevel(HttpServletRequest request, HttpServletResponse response, String workspace, RequestType requestType) {
         // Vérification des autorisations
         if (!(requestType == RequestType.GetCapabilities || requestType == RequestType.GetFeatureInfo || requestType == RequestType.GetMap
-                || requestType == RequestType.GetLegendGraphic)) {
+                || requestType == RequestType.GetLegendGraphic || requestType == RequestType.GetFeature)) {
             log.info("Proxy WMS : " + requestType + " non permis");
             response.setStatus(403);
             return AccessLevel.NONE;
@@ -400,7 +612,7 @@ public class GeoserverController {
             response.setStatus(403);
             return AccessLevel.NONE;
         }
-        if ((requestType == RequestType.GetMap || requestType == RequestType.GetFeatureInfo)
+        if ((requestType == RequestType.GetMap || requestType == RequestType.GetFeatureInfo || requestType == RequestType.GetFeature)
                 && AccessLevel.NONE == (accessLevel = getMoreRestrictedLayersAccessLevel(workspace, getParameterOrLowerOrUpperCase(request, "LAYERS")))) {
             log.info("Proxy WMS : " + requestType + " sur couche non accessible");
             response.setStatus(403);

@@ -16,7 +16,7 @@
             <div class="layerItem">
               <div>
                 <b-form-checkbox @change="layer.set('visible', $event)" :checked="layer.get('visible')">
-                  <span @click="$event.preventDefault();coucheActive=layer.get('code')">{{layer.get('libelle')}}</span>
+                  <span @click="onSelectedCouche($event, layer)">{{layer.get('libelle')}}</span>
                 </b-form-checkbox>
               </div>
               <div>
@@ -85,6 +85,8 @@ import {get as getProjection} from 'ol/proj';
 import {getWidth} from 'ol/extent';
 import WMTS from 'ol/source/WMTS';
 import OSM from 'ol/source/OSM.js'
+import GeoJSON from 'ol/format/GeoJSON.js'
+import * as OlProj from 'ol/proj'
 
 import {
   Circle as CircleStyle,
@@ -115,8 +117,10 @@ export default {
     }
   },
 
+
   created() {
     this.$root.$options.bus.$on(eventTypes.OLMAP_COUCHES_ADDLAYER, this.addLayer);
+    this.$root.$options.bus.$on(eventTypes.OLMAP_COUCHES_GETFEATUREFROMPOINT, this.getFeatureFromPoint);
   },
 
   mounted: function() {
@@ -197,6 +201,8 @@ export default {
         layer = this.createIgnlayer(layerDef);
       } else if(layerDef.type == "osm") {
         layer = this.createOSMLayer(layerDef);
+      } else if(layerDef.type == "wfs") {
+        layer = this.createWFSLayer(layerDef);
       }
 
       if(layer) {
@@ -238,6 +244,26 @@ export default {
         zIndex: 100
       });
       return wmsLayer
+    },
+
+    createWFSLayer(layerDef) {
+      var sourceWFS = new OlSourceVector({
+        url: layerDef.url+'?service=WFS&' +
+        'version=1.1.0&request=GetFeature&typename='+ layerDef.layer +
+        '&outputFormat=application/json',
+        format: new GeoJSON(),
+        serverType: 'geoserver'
+      });
+
+      return new OlLayerVector({
+        source: sourceWFS,
+        code: layerDef.id,
+        libelle: layerDef.libelle,
+        legende: layerDef.legende,
+        layer: layerDef.layers,
+        groupe: layerDef.groupe,
+        zIndex: 110
+      });
     },
 
     // Création du fond de carte OpenStreetMap
@@ -315,6 +341,46 @@ export default {
       })
       return vectorLayer
     },
+
+    onSelectedCouche(event, layer) {
+      event.preventDefault();
+      if(this.coucheActive != layer.get('code')) {
+        this.coucheActive = layer.get('code');
+      } else {
+        this.coucheActive = null;
+      }
+      this.$root.$options.bus.$emit(eventTypes.OLMAP_COUCHES_UPDATECOUCHEACTIVE, this.coucheActive);
+    },
+
+    /**
+      * Retourne la feature située à un point donné
+      */
+    getFeatureFromPoint(coordonnees) {
+      coordonnees = OlProj.transform(coordonnees, 'EPSG:3857', 'EPSG:2154');
+      var radius = Math.abs(20-this.map.getView().getZoom())
+      var layer = _.find(this.layers, l => l.get('code') == this.coucheActive);
+      axios.get('/remocra/geoserver/remocra/wfs', {
+        params: {
+          service: 'wfs',
+          version: '2.0.0',
+          request: 'GetFeature',
+          typeNames: layer.get('layer'),
+          outputFormat: 'application/json',
+          cql_filter: ("DWithin(geometrie,POINT("+coordonnees[0]+" "+coordonnees[1]+"),"+radius+", meters)")
+        }
+      }).then(response => {
+        if(response.data && response.data.totalFeatures > 0) {
+          this.$root.$options.bus.$emit(eventTypes.OLMAP_SHOW_MODALEINFO, response.data.features[0]);
+        }
+      }).catch(() => {
+        this.$notify({
+          group: 'remocra',
+          type: 'error',
+          title: 'Récupération des données',
+          text: "Requête WFS: impossible de récupérer les features à cet endroit"
+        });
+      })
+    }
   }
 }
 </script>

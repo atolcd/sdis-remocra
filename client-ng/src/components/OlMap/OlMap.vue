@@ -17,9 +17,9 @@
       </div>
 
       <slot name="specifique"></slot>
+
+      <ModaleInfo id="modaleInfo" :feature="modaleInfoFeature"></ModaleInfo>
     </div>
-
-
   </b-container>
 </template>
 
@@ -37,13 +37,16 @@ import {
 import proj4 from 'proj4'
 import ToolBar from './ToolBar.vue'
 import Couches from './Couches.vue'
+import ModaleInfo from './ModaleInfo.vue'
 import WKT from 'ol/format/WKT.js'
+import * as eventTypes from '../../bus/event-types.js'
 
 export default {
   name: 'OlMap',
   components: {
     ToolBar,
-    Couches
+    Couches,
+    ModaleInfo
   },
 
   props: {
@@ -71,10 +74,18 @@ export default {
         6252690.054919669
       ],
       workingLayer: null,
-
+      modaleInfoFeature: null
     }
   },
 
+  created: function() {
+    this.$root.$options.bus.$on(eventTypes.OLMAP_SHOW_MODALEINFO, (feature) => {
+      this.modaleInfoFeature = feature;
+      this.$nextTick(() => {
+        this.$bvModal.show("modaleInfo");
+      });
+    });
+  },
 
   mounted: function() {
     this.map = new Map({
