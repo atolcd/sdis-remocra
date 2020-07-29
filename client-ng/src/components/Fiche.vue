@@ -442,11 +442,14 @@ export default {
      * @param values Les données du gestionnaire créé (transmises par le composant ModalGestionnaire)
      */
     onGestionnaireCreated(values) {
+      // Création : ajout du gestionnaire dans la combo
       if ((_.findIndex(this.comboGestionnaire, o => o.value == values.id) == -1)) {
         this.comboGestionnaire.push({
           text: values.nom,
           value: values.id
         });
+      } else { // Modification : mise à jour du nom pour le gestionnaire déjà sélectionné
+        _.find(this.comboGestionnaire, o => o.value == values.id).text = values.nom;
       }
       this.hydrant.gestionnaire = values.id
     },
