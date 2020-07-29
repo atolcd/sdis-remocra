@@ -1165,13 +1165,13 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         return model;
     },
 
-    showFicheHydrant: function(typeHydrantCode, id, controle) {
+    showFicheHydrant: function(typeHydrantCode, id, controle, button) {
         var model = this.getModelFromTypeHydrantCode(typeHydrantCode);
         if (model != null) {
             model.load(id, {
                 scope: this,
                 success: function(record) {
-                    this.showFiche(record, controle);
+                    this.showFiche(record, controle, button);
                 }
             });
         }
@@ -1209,7 +1209,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 hydrant.raw.commune = win.commune.raw;
             }
             win.close();
-            this.showFiche(hydrant, false);
+            this.showFiche(hydrant, false, button);
 
         }
     },
@@ -1220,6 +1220,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     },
 
     showFicheHydrantFromMap: function(button) {
+        button.setDisabled(true);
         var controle = button.itemId === 'editInfoBtnNoCtrl' ? false : true ;
         var features = this.getSelectedFeatures();
         if (features.length == 1) {
@@ -1569,11 +1570,11 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     },
 
     showFicheHydrantFromGrid: function(button) {
-
+        button.setDisabled(true);
         var controle = button.itemId === 'openWithoutCtrl' ? false : true ;
         var hydrant = this.getSelectedHydrant();
         if (hydrant) {
-            this.showFicheHydrant(hydrant.get('code'), hydrant.getId(), controle);
+            this.showFicheHydrant(hydrant.get('code'), hydrant.getId(), controle, button);
         }
     },
 
@@ -2099,28 +2100,32 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             });
         }
      },
-      showFiche: function(hydrant, controle) {
-              var codeHydrant = (hydrant.get('code') == 'PIBI' ? 'PIBI' : 'PENA');
-              var geometrie = hydrant.data.geometrie;
-              var idHydrant = hydrant.data.id;
-              var title = idHydrant ?
-              codeHydrant + " n° " + hydrant.data.numero + " - " + hydrant.data.nomCommune.replace(/'/g, ' ')
-              : 'Nouveau ' + codeHydrant;
-              var d = document.createElement('div');
-              var id = "show-fiche-"+(++Ext.AbstractComponent.AUTO_ID);
-              d.id=id;
-              document.body.appendChild(d);
-               var vueFiche = window.remocraVue.peiBuildFiche(d, {
-                         id: idHydrant, code: codeHydrant, geometrie: geometrie, newVisite: controle, title: title
-                     });
-               vueFiche.$options.bus.$on('pei_modified', Ext.bind(function(data) {
-                       this.hydrantsChanged();
-               }, this));
+      showFiche: function(hydrant, controle, button) {
+          var codeHydrant = (hydrant.get('code') == 'PIBI' ? 'PIBI' : 'PENA');
+          var geometrie = hydrant.data.geometrie;
+          var idHydrant = hydrant.data.id;
+          var title = idHydrant ?
+          codeHydrant + " n° " + hydrant.data.numero + " - " + hydrant.data.nomCommune.replace(/'/g, ' ')
+          : 'Nouveau ' + codeHydrant;
+          var d = document.createElement('div');
+          var id = "show-fiche-"+(++Ext.AbstractComponent.AUTO_ID);
+          d.id=id;
+          document.body.appendChild(d);
+           var vueFiche = window.remocraVue.peiBuildFiche(d, {
+                     id: idHydrant, code: codeHydrant, geometrie: geometrie, newVisite: controle, title: title
+                 });
+           vueFiche.$options.bus.$on('pei_modified', Ext.bind(function(data) {
+                   this.hydrantsChanged();
+           }, this));
 
-               vueFiche.$options.bus.$on('closed', Ext.bind(function(data) {
-                       vueFiche.$el.remove();
-                       vueFiche.$destroy();
-               }, this));
+           var self = this;
+           vueFiche.$options.bus.$on('closed', Ext.bind(function(data) {
+               vueFiche.$el.remove();
+               vueFiche.$destroy();
+               if(button) {
+                    button.setDisabled(false);
+               }
+           }, this));
       },
 
       showFicheIndispoTempFromMap: function(){
