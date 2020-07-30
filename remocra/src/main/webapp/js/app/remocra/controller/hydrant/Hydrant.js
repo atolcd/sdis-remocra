@@ -1209,7 +1209,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 hydrant.raw.commune = win.commune.raw;
             }
             win.close();
-            this.showFiche(hydrant, false, button);
+            this.showFiche(hydrant, false);
 
         }
     },
@@ -1224,7 +1224,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         var controle = button.itemId === 'editInfoBtnNoCtrl' ? false : true ;
         var features = this.getSelectedFeatures();
         if (features.length == 1) {
-            this.showFicheHydrant(features[0].data.typeHydrantCode, features[0].fid, controle);
+            this.showFicheHydrant(features[0].data.typeHydrantCode, features[0].fid, controle, button);
         }
 
     },
