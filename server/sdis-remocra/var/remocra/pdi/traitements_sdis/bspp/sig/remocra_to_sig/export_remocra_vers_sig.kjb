@@ -364,8 +364,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>45</xloc>
-      <yloc>120</yloc>
+      <xloc>32</xloc>
+      <yloc>128</yloc>
     </entry>
     <entry>
       <name>Génération pena.shp</name>
@@ -400,8 +400,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1185</xloc>
-      <yloc>120</yloc>
+      <xloc>1184</xloc>
+      <yloc>128</yloc>
     </entry>
     <entry>
       <name>Verif connexion DB Remocra</name>
@@ -417,8 +417,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>750</xloc>
-      <yloc>120</yloc>
+      <xloc>736</xloc>
+      <yloc>128</yloc>
     </entry>
     <entry>
       <name>Write To Log</name>
@@ -430,8 +430,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>750</xloc>
-      <yloc>255</yloc>
+      <xloc>736</xloc>
+      <yloc>256</yloc>
     </entry>
     <entry>
       <name>Récupération des paramètres spécifiques</name>
@@ -445,8 +445,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>525</xloc>
-      <yloc>120</yloc>
+      <xloc>512</xloc>
+      <yloc>128</yloc>
     </entry>
     <entry>
       <name>Récupération des paramètres globaux</name>
@@ -461,7 +461,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>240</xloc>
-      <yloc>120</yloc>
+      <yloc>128</yloc>
     </entry>
     <entry>
       <name>Success</name>
@@ -470,8 +470,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>60</xloc>
-      <yloc>585</yloc>
+      <xloc>352</xloc>
+      <yloc>784</yloc>
     </entry>
     <entry>
       <name>Génération pibi.shp</name>
@@ -506,8 +506,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1185</xloc>
-      <yloc>585</yloc>
+      <xloc>1184</xloc>
+      <yloc>592</yloc>
     </entry>
     <entry>
       <name>Delete file pena_anomalie.shp</name>
@@ -518,8 +518,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1185</xloc>
-      <yloc>360</yloc>
+      <xloc>1184</xloc>
+      <yloc>368</yloc>
     </entry>
     <entry>
       <name>Delete file pena_anomalie.shx</name>
@@ -530,7 +530,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1185</xloc>
+      <xloc>1184</xloc>
       <yloc>480</yloc>
     </entry>
     <entry>
@@ -542,8 +542,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>780</xloc>
-      <yloc>585</yloc>
+      <xloc>768</xloc>
+      <yloc>592</yloc>
     </entry>
     <entry>
       <name>Delete file pibi_anomalie.shx</name>
@@ -554,8 +554,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>600</xloc>
-      <yloc>585</yloc>
+      <xloc>592</xloc>
+      <yloc>592</yloc>
     </entry>
     <entry>
       <name>Génération pena_anomalie</name>
@@ -590,7 +590,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1185</xloc>
+      <xloc>1184</xloc>
       <yloc>240</yloc>
     </entry>
     <entry>
@@ -626,8 +626,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>975</xloc>
-      <yloc>585</yloc>
+      <xloc>960</xloc>
+      <yloc>592</yloc>
     </entry>
     <entry>
       <name>répertoire temp</name>
@@ -638,8 +638,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1065</xloc>
-      <yloc>120</yloc>
+      <xloc>1056</xloc>
+      <yloc>128</yloc>
     </entry>
     <entry>
       <name>variables_traitement.ktr</name>
@@ -674,8 +674,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>930</xloc>
-      <yloc>120</yloc>
+      <xloc>928</xloc>
+      <yloc>128</yloc>
     </entry>
     <entry>
       <name>Création archive Zip</name>
@@ -702,8 +702,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>435</xloc>
-      <yloc>585</yloc>
+      <xloc>80</xloc>
+      <yloc>592</yloc>
     </entry>
     <entry>
       <name>Suppression de répertoires</name>
@@ -720,8 +720,80 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
+      <xloc>80</xloc>
+      <yloc>784</yloc>
+    </entry>
+    <entry>
+      <name>export_ds_shp.ktr</name>
+      <description />
+      <type>TRANS</type>
+      <specification_method>filename</specification_method>
+      <trans_object_id />
+      <filename>${Internal.Entry.Current.Directory}/export_ds_shp.ktr</filename>
+      <transname />
+      <arg_from_previous>N</arg_from_previous>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile />
+      <logext />
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <cluster>N</cluster>
+      <slave_server_name />
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <logging_remote_work>N</logging_remote_work>
+      <run_configuration>Pentaho local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>400</xloc>
+      <yloc>592</yloc>
+    </entry>
+    <entry>
+      <name>export_ds_hydrant_csv.ktr</name>
+      <description />
+      <type>TRANS</type>
+      <specification_method>filename</specification_method>
+      <trans_object_id />
+      <filename>${Internal.Entry.Current.Directory}/export_ds_hydrant_csv.ktr</filename>
+      <transname />
+      <arg_from_previous>N</arg_from_previous>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile />
+      <logext />
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <cluster>N</cluster>
+      <slave_server_name />
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <logging_remote_work>N</logging_remote_work>
+      <run_configuration>Pentaho local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
       <xloc>240</xloc>
-      <yloc>585</yloc>
+      <yloc>592</yloc>
     </entry>
   </entries>
   <hops>
@@ -843,15 +915,6 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Delete file pibi_anomalie.shx</from>
-      <to>Création archive Zip</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>Y</unconditional>
-    </hop>
-    <hop>
       <from>Verif connexion DB Remocra</from>
       <to>variables_traitement.ktr</to>
       <from_nr>0</from_nr>
@@ -877,6 +940,33 @@
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
       <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>Delete file pibi_anomalie.shx</from>
+      <to>export_ds_shp.ktr</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>export_ds_shp.ktr</from>
+      <to>export_ds_hydrant_csv.ktr</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>export_ds_hydrant_csv.ktr</from>
+      <to>Création archive Zip</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
     </hop>
   </hops>
   <notepads>
