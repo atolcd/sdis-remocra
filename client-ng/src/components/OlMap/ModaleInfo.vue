@@ -23,7 +23,6 @@ export default {
 
   props: {
     feature: {
-      required: true,
       type: Object
     },
   },

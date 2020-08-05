@@ -37,12 +37,23 @@ import Measures from './Measures.vue'
 import SearchVoie from './SearchVoie.vue'
 
 import _ from 'lodash'
+
+import Circle from 'ol/geom/Circle'
+import Feature from 'ol/Feature'
+import * as OlProj from 'ol/proj'
+import DragPan from 'ol/interaction/DragPan'
+import DragBox from 'ol/interaction/DragBox'
+import Style from 'ol/style/Style'
+import Stroke from 'ol/style/Stroke'
+import Point from 'ol/geom/Point'
+import CircleStyle from 'ol/style/Circle'
+
 export default {
   name: 'ToolBar',
   components: {
     SearchCommune,
     SearchVoie,
-    Measures
+    Measures,
   },
   props: {
     map: {
@@ -64,7 +75,8 @@ export default {
       activeButton: null,
       commune: null,
       coucheActive: null,
-      eventHandlers: []
+      eventHandlers: [],
+      selectedFeatures: [] // Liste des features actuellement sélectionnées
     }
   },
 
@@ -72,7 +84,11 @@ export default {
     var self = this;
     this.$root.$options.bus.$on(eventTypes.OLMAP_TOOLBAR_ADDTOOLBARITEM, this.addToolBarItem);
     this.$root.$options.bus.$on(eventTypes.OLMAP_TOOLBAR_TOGGLEBUTTON, this.toggleButton);
-    this.$root.$options.bus.$on(eventTypes.OLMAP_COUCHES_UPDATECOUCHEACTIVE, (code) => this.coucheActive = code);
+    this.$root.$options.bus.$on(eventTypes.OLMAP_COUCHES_UPDATECOUCHEACTIVE, (code) => {
+      this.coucheActive = code;
+      this.onSelectFeatures(null, true);
+    });
+    this.$root.$options.bus.$on(eventTypes.OLMAP_ONSELECTFEATURES, this.onSelectFeatures);
     // Définition de la vue courante comme première vue de la navigation
     let view = this.map.getView();
     this.navigation.stack.push({
@@ -193,7 +209,7 @@ export default {
       onToggle: (state) => {
         if(!self.eventHandlers['clickInfo']) {
           self.eventHandlers['clickInfo'] = (e) => {
-            self.$root.$options.bus.$emit(eventTypes.OLMAP_COUCHES_GETFEATUREFROMPOINT, e.coordinate);
+            self.$root.$options.bus.$emit(eventTypes.OLMAP_COUCHES_GETFEATURESFROMPOINT, eventTypes.OLMAP_SHOW_MODALEINFO , e.coordinate);
           };
         }
 
@@ -211,19 +227,70 @@ export default {
     this.addToolBarItem({
       type: "button",
       name: "selectionPoint",
-      iconPath: "/remocra/static/img/pencil_point.png",
+      iconPath: "/remocra/static/img/selection_point.png",
       onClick: () => {
         this.toggleButton("selectionPoint");
       },
       onToggle: (state) => {
-        var handleMapClickSelectionPoint= function() {
+        if(!self.eventHandlers['clickSelection']) {
+          self.eventHandlers['clickSelection'] = (e) => {
+            self.$root.$options.bus.$emit(eventTypes.OLMAP_COUCHES_GETFEATURESFROMPOINT, eventTypes.OLMAP_ONSELECTFEATURES, e.coordinate);
+          };
+        }
 
-        };
+        if(!self.eventHandlers['dragSelection']) {
+          self.eventHandlers['dragSelection'] = (e) => {
+            self.$root.$options.bus.$emit(eventTypes.OLMAP_COUCHES_GETFEATURESFROMBBOX, eventTypes.OLMAP_ONSELECTFEATURES, e.getGeometry().getExtent());
+          };
+        }
+
+        /** On supprime l'interaction de drag pour le remplacer par un autre
+          * La nouvelle interaction pourra avoir une condition pour se déclencher (clic + ctrl) si l'outil est activé
+          * Si il y a également une interaction DragBox, elle est aussi marquée pour suppression
+          */
+        var dropInteraction =  [];
+        _.forEach(this.map.getInteractions().getArray(), interaction => {
+          if(interaction.constructor.name == "DragPan" || interaction.constructor.name == "DragBox") {
+            dropInteraction.push(interaction);
+          }
+        });
+        _.forEach(dropInteraction, interaction => {
+          this.map.removeInteraction(interaction);
+        });
 
         if(state) {
-          this.map.on("click", handleMapClickSelectionPoint);
+          // DragPan avec appui sur touche CTRL
+          this.map.addInteraction(new DragPan({
+            condition: function(event) {
+              return event.originalEvent.ctrlKey
+            }
+          }));
+
+          // DragBox pour la sélection des features
+          var dragBox = new DragBox({
+            condition: function(event) {
+              return !event.originalEvent.ctrlKey
+            },
+            style: new Style({
+              stroke: new Stroke({
+                color: [0, 0, 255, 1]
+              })
+            }),
+            minArea: 25
+          });
+          dragBox.on('boxend', () => {
+            self.eventHandlers['dragSelection'](dragBox);
+          });
+
+          this.map.addInteraction(dragBox);
+
+          this.map.on("click", self.eventHandlers['clickSelection']);
+          this.selectedFeatures = [];
+          this.onSelectFeatures();
         } else {
-          this.map.un("click", handleMapClickSelectionPoint);
+          // DragPan sans condition
+          this.map.addInteraction(new DragPan());
+          this.map.un("click", self.eventHandlers['clickSelection']);
         }
       },
       disabled: () => {
@@ -326,6 +393,54 @@ export default {
         }
       }
     },
+
+    /**
+      * Fonction appelée lors de la sélection/déselection de features
+      * Si des features sont nouvellement sélectionnées, elles sont ajoutées à la liste de la sélection
+      * Si des features étaient déjà sélectionnées, elles seront retirées de la liste de la sélection
+      * @param features Tableau des features venant d'être sélectionnées
+      * @param reset Boolean, vide le tableau de sélection actuel si TRUE
+      */
+    onSelectFeatures(features, reset) {
+      if(reset) {
+        this.selectedFeatures = [];
+      }
+
+      var featuresToRemove = [];
+      _.forEach(features, f => {
+        if(!_.find(this.selectedFeatures, function(o) { return o.id == f.id})) {
+          this.selectedFeatures.push(f);
+        } else {
+          featuresToRemove.push(f);
+        }
+      });
+
+      // Retrait des features sélectionnées étant déjà sélectionnées à l'état précédent
+      _.forEach(featuresToRemove, ftr => {
+        _.remove(this.selectedFeatures, function(o) { return o.id == ftr.id});
+      });
+
+      // Mise à jour sur la carte de la sélection
+      var selectionLayer = this.getLayerById('selectionLayer');
+      selectionLayer.getSource().clear();
+      _.forEach(this.selectedFeatures, feature => {
+        var circle = new Feature(new Circle(
+            OlProj.transform(feature.geometry.coordinates, 'EPSG:2154', 'EPSG:3857'),
+        ));
+
+        circle.setStyle(new Style({
+          geometry: new Point(OlProj.transform(feature.geometry.coordinates, 'EPSG:2154', 'EPSG:3857')),
+          image: new CircleStyle({
+            radius: 12,
+            stroke: new Stroke({
+              color: 'blue',
+              width: 2
+            }),
+          }),
+        }));
+        selectionLayer.getSource().addFeature(circle);
+      })
+    }
 
   }
 }

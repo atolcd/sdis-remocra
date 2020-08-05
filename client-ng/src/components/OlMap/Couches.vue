@@ -89,8 +89,6 @@ import GeoJSON from 'ol/format/GeoJSON.js'
 import * as OlProj from 'ol/proj'
 
 import {
-  Circle as CircleStyle,
-  Fill,
   Stroke,
   Style
 } from 'ol/style.js'
@@ -120,14 +118,14 @@ export default {
 
   created() {
     this.$root.$options.bus.$on(eventTypes.OLMAP_COUCHES_ADDLAYER, this.addLayer);
-    this.$root.$options.bus.$on(eventTypes.OLMAP_COUCHES_GETFEATUREFROMPOINT, this.getFeatureFromPoint);
+    this.$root.$options.bus.$on(eventTypes.OLMAP_COUCHES_GETFEATURESFROMPOINT, this.getFeaturesFromPoint);
+    this.$root.$options.bus.$on(eventTypes.OLMAP_COUCHES_GETFEATURESFROMBBOX, this.getFeaturesFromBBOX);
   },
 
   mounted: function() {
     //this.dragElement(document.getElementById("draggable"));
-
-    var l = this.createWorkingLayer('workingLayer');
-    this.map.addLayer(l);
+    this.map.addLayer(this.createWorkingLayer('workingLayer'));
+    this.map.addLayer(this.createWorkingLayer('selectionLayer'));
 
     axios.get(this.couchesJSONPath).then(response => {
       if(response) {
@@ -315,18 +313,9 @@ export default {
     createWorkingLayer(code) {
       var source = new OlSourceVector()
       var style = new Style({
-        fill: new Fill({
-          color: 'rgba(255, 255, 255, 0.2)'
-        }),
         stroke: new Stroke({
           color: 'blue',
           width: 2
-        }),
-        image: new CircleStyle({
-          radius: 7,
-          fill: new Fill({
-            color: '#ffcc33'
-          })
         })
       })
       var vectorLayer = new OlLayerVector({
@@ -354,8 +343,10 @@ export default {
 
     /**
       * Retourne la feature située à un point donné
+      * @param evtRetour L'évènement auquel renvoyer le résultat
+      * @param coordonnées Les coordonnées du point
       */
-    getFeatureFromPoint(coordonnees) {
+    getFeaturesFromPoint(evtRetour, coordonnees) {
       coordonnees = OlProj.transform(coordonnees, 'EPSG:3857', 'EPSG:2154');
       var radius = Math.abs(20-this.map.getView().getZoom())
       var layer = _.find(this.layers, l => l.get('code') == this.coucheActive);
@@ -370,7 +361,7 @@ export default {
         }
       }).then(response => {
         if(response.data && response.data.totalFeatures > 0) {
-          this.$root.$options.bus.$emit(eventTypes.OLMAP_SHOW_MODALEINFO, response.data.features[0]);
+          this.$root.$options.bus.$emit(evtRetour, response.data.features);
         }
       }).catch(() => {
         this.$notify({
@@ -379,6 +370,25 @@ export default {
           title: 'Récupération des données',
           text: "Requête WFS: impossible de récupérer les features à cet endroit"
         });
+      })
+    },
+
+    getFeaturesFromBBOX(evtRetour, bbox) {
+      bbox = OlProj.transformExtent(bbox, 'EPSG:3857', 'EPSG:2154');
+      var layer = _.find(this.layers, l => l.get('code') == this.coucheActive);
+      axios.get('/remocra/geoserver/remocra/wfs', {
+        params: {
+          service: 'wfs',
+          version: '2.0.0',
+          request: 'GetFeature',
+          typeNames: layer.get('layer'),
+          outputFormat: 'application/json',
+          bbox: bbox.toString()
+        }
+      }).then(response => {
+        if(response.data.totalFeatures > 0) {
+          this.$root.$options.bus.$emit(evtRetour, response.data.features);
+        }
       })
     }
   }

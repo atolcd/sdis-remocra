@@ -32,6 +32,9 @@ import {
   defaults as defaultControls
 } from 'ol/control.js'
 import {
+  defaults as defaultInteractions
+} from 'ol/interaction.js'
+import {
   register
 } from 'ol/proj/proj4.js'
 import proj4 from 'proj4'
@@ -79,8 +82,8 @@ export default {
   },
 
   created: function() {
-    this.$root.$options.bus.$on(eventTypes.OLMAP_SHOW_MODALEINFO, (feature) => {
-      this.modaleInfoFeature = feature;
+    this.$root.$options.bus.$on(eventTypes.OLMAP_SHOW_MODALEINFO, (features) => {
+      this.modaleInfoFeature = features[0];
       this.$nextTick(() => {
         this.$bvModal.show("modaleInfo");
       });
@@ -98,6 +101,9 @@ export default {
         attributionOptions: {
           collapsible: false
         }
+      }),
+      interactions: defaultInteractions({
+        dragPan: true
       }),
       view: new View({
         projection: 'EPSG:3857',
@@ -148,9 +154,7 @@ export default {
         }
       }
       return null
-    },
-
-
+    }
   }
 };
 </script>
