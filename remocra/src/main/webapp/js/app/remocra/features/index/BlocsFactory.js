@@ -442,6 +442,21 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
         };
     },
 
+    createDashboardBloc: function(title, icon, minHeight, content) {
+        return {
+            type: 'dashboard',
+            minh: minHeight || this.randomHeight(),
+            title: title || 'Tableau de bord',
+            items: [{
+                    type: 'html',
+                   content: '<div><a href="#dashboard">' +
+                   '<img style="max-width: 500px;" src="ext-res/images/remocra/blocs/dashboard.gif">' +
+                   '</a></div>'
+            }]
+        };
+    },
+
+
     createDocBloc: function(title, icon, minHeight, pageSize, thematiques, profils) {
         if (!Sdis.Remocra.Rights.hasRight('DOCUMENTS_R')) {
             return null;
@@ -599,6 +614,8 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             fn = this.createAdministrationBloc;
         } else if (cfgBloc.type == 'cartographie') {
             fn = this.createCartographieBloc;
+        }else if (cfgBloc.type == 'dashboard') {
+            fn = this.createDashboardBloc;
         }
         if (fn) {
             return Ext.bind(fn, this)(title, icon, minHeight);
