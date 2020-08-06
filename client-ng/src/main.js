@@ -11,6 +11,7 @@ import VisualisationCourriers from './components/VisualisationCourriers.vue'
 import PlanificationDeci from './components/planification_deci/index.vue'
 import OlMap from './components/OlMap/OlMap.vue'
 import OlMapEtude from './components/planification_deci/OlMapEtude.vue'
+import Dashboard from './components/Dashboard'
 // import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import Courrier from './components/Courrier'
@@ -182,6 +183,19 @@ const olMapEtude = function(id){
   return v
 }
 
+//module de dashboard
+const buildDashboard = function(el, data){
+  var v = new Vue({
+  el,
+  bus: new Vue(),
+  components: {
+      Dashboard
+  },
+  template: "<Dashboard />"
+  })
+  return v
+}
+
 export {
   criseBuildMap,
   peiBuildFiche,
@@ -193,5 +207,6 @@ export {
   visualisationCourriers,
   planificationDeci,
   olMap,
-  olMapEtude
+  olMapEtude,
+  buildDashboard
 }
