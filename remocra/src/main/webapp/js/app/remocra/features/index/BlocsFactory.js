@@ -443,6 +443,9 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
     },
 
     createDashboardBloc: function(title, icon, minHeight, content) {
+        if (!Sdis.Remocra.Rights.hasRight('DASHBOARD_R')) {
+            return null;
+        }
         return {
             type: 'dashboard',
             minh: minHeight || this.randomHeight(),

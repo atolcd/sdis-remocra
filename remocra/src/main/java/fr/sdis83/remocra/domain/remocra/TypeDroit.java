@@ -112,7 +112,11 @@ public class TypeDroit {
         CRISE_D("crise_D"),
 
         // Module Cartographie
-        CARTOGRAPHIES_C("cartographies_C");
+        CARTOGRAPHIES_C("cartographies_C"),
+
+        //Accès au tableau de board
+        DASHBOARD_R("dashboard_R");
+
 
         private final String value;
 
