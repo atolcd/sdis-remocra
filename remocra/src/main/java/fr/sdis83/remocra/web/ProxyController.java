@@ -17,6 +17,13 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import fr.sdis83.remocra.domain.remocra.ProfilDroit;
+import fr.sdis83.remocra.domain.remocra.Utilisateur;
+import fr.sdis83.remocra.exception.BusinessException;
+import fr.sdis83.remocra.service.ParamConfService;
+import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.service.ZoneCompetenceService;
+import fr.sdis83.remocra.util.GeometryUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
@@ -28,20 +35,16 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import fr.sdis83.remocra.domain.remocra.ProfilDroit;
-import fr.sdis83.remocra.domain.remocra.ZoneCompetence;
-import fr.sdis83.remocra.exception.BusinessException;
-import fr.sdis83.remocra.service.ParamConfService;
-import fr.sdis83.remocra.service.UtilisateurService;
-import fr.sdis83.remocra.service.ZoneCompetenceService;
-import fr.sdis83.remocra.util.GeometryUtil;
 
 @RequestMapping("/proxy")
 @Controller
@@ -95,7 +98,6 @@ public class ProxyController {
         try {
             // On décode l'URL (gestion des accents, des &, etc.)
             url = URLDecoder.decode(url, "utf-8");
-
             log.info("Proxy init vers : " + url);
 
             // --------------------
@@ -109,7 +111,6 @@ public class ProxyController {
             // Récupération de l'URL cible
             URI targetUri = new UrlResource(url).getURI();
             HttpHost httpHost = new HttpHost(targetUri.getHost(), targetUri.getPort(), targetUri.getScheme());
-
             // Paramètres supplémentaires éventuels (hors url)
             @SuppressWarnings("unchecked")
             Enumeration<String> paramNames = request.getParameterNames();
@@ -133,7 +134,6 @@ public class ProxyController {
                 String headerName = headerNames.nextElement();
                 targetRequest.setHeader(headerName, request.getHeader(headerName));
             }
-
             // --------------------
             // Exécution de la requête
             // --------------------
@@ -389,4 +389,26 @@ public class ProxyController {
         }
         return false;
     }
+
+    @RequestMapping(value = "/redash")
+    @PreAuthorize("hasRight('DASHBOARD_R')")
+    public ResponseEntity<Object> redirectToRedashlUrl() {
+            //TODO: parametrer le dashboardLink dans les paramconf
+            String dashboardLink = "http://localhost:5000/public/dashboards/8iNgMuNDcyBw4zP9P779hBSPaMmWUrbvQEcYVsnG?org_slug";
+            //TODO: isPublic?
+            boolean isPublic = false;
+            Long zoneCompetence = isPublic ? null : utilisateurService.getCurrentZoneCompetenceId();
+            Utilisateur u = utilisateurService.getCurrentUtilisateur();
+            URI redash = UriComponentsBuilder
+            // Ajout des paramètres par défaut
+            .fromUriString(dashboardLink)
+            .queryParam("p_utilisateur",u.getId())
+            .queryParam("p_zone_competence",zoneCompetence)
+                  .queryParam("p_organisme",u.getOrganisme().getId())
+                .build().toUri();
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setLocation(redash);
+            return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+        }
+
 }
