@@ -1,6 +1,6 @@
 <template>
 <form v-on:submit.prevent>
-  <autocomplete ref="autocomplete" :input-attrs="{ placeholder: 'Sélectionnez une commune...' }" v-model="selected" :items="results" :get-label="getLabel" :component-item='communeTemplate' :auto-select-one-item="false" @update-items="search"
+  <autocomplete ref="autocomplete" class="inputCommune" :input-attrs="{ placeholder: 'Commune' }" v-model="selected" :items="results" :get-label="getLabel" :component-item='communeTemplate' :auto-select-one-item="false" @update-items="search"
     @item-selected="communeSelected" v-on:change="onChange"/>
 </form>
 </template>
@@ -59,4 +59,11 @@ export default {
 </script>
 
 <style>
+.inputCommune {
+  min-width: 100px;
+}
+
+.v-autocomplete-list {
+  min-width: 200px !important;
+}
 </style>

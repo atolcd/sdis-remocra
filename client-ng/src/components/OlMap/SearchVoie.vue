@@ -9,7 +9,8 @@
                 @update-items="updateItems"
                 :auto-select-one-item="false"
                 :min-len="0"
-                placeholder="Saissez une voie">
+                placeholder="Voie"
+                class="inputVoie">
   </autocomplete>
 </form>
 </template>
@@ -47,7 +48,7 @@ export default {
   },
 
   watch: {
-    commune: function(val) {
+    commune: function() {
       this.refreshData();
     }
   },
@@ -96,6 +97,10 @@ export default {
 </script>
 
 <style>
+.inputVoie {
+  min-width: 100px;
+}
+
 .v-autocomplete-list {
   z-index: 99999;
   border: 1px solid #dee2e6;

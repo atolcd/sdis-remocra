@@ -248,15 +248,8 @@ export default {
           * La nouvelle interaction pourra avoir une condition pour se déclencher (clic + ctrl) si l'outil est activé
           * Si il y a également une interaction DragBox, elle est aussi marquée pour suppression
           */
-        var dropInteraction =  [];
-        _.forEach(this.map.getInteractions().getArray(), interaction => {
-          if(interaction.constructor.name == "DragPan" || interaction.constructor.name == "DragBox") {
-            dropInteraction.push(interaction);
-          }
-        });
-        _.forEach(dropInteraction, interaction => {
-          this.map.removeInteraction(interaction);
-        });
+        this.removeMapInteraction(DragPan);
+        this.removeMapInteraction(DragBox);
 
         if(state) {
           // DragPan avec appui sur touche CTRL
@@ -308,6 +301,15 @@ export default {
 
   },
 
+  destroyed() {
+    this.eventHandlers = [];
+    this.removeMapInteraction(DragBox);
+    this.$root.$options.bus.$off(eventTypes.OLMAP_TOOLBAR_ADDTOOLBARITEM);
+    this.$root.$options.bus.$off(eventTypes.OLMAP_TOOLBAR_TOGGLEBUTTON);
+    this.$root.$options.bus.$off(eventTypes.OLMAP_COUCHES_UPDATECOUCHEACTIVE);
+    this.$root.$options.bus.$off(eventTypes.OLMAP_ONSELECTFEATURES);
+  },
+
   methods: {
     /**
       * Ajoute un item dans la toolbar. Le type doit être précisé afin de savoir quel composant charger (voir template)
@@ -324,8 +326,6 @@ export default {
       } else {
         this.toolbarItem.push(item);
       }
-
-      //console.log(item);
     },
 
     /**
@@ -440,6 +440,24 @@ export default {
         }));
         selectionLayer.getSource().addFeature(circle);
       })
+    },
+
+    /**
+      * Retire les interactions de la map
+      * @param interactionClass la classe de l'interaction
+      * Comme le code est compilé, on passe en paramètre directement la classe et non pas un string contenant le nom de la classe:
+      *   il est impossible de déterminer le nom de la classe, celui-ci étant modifié lors de la compilation
+      */
+    removeMapInteraction(interactionClass) {
+      var dropInteraction = null;
+      _.forEach(this.map.getInteractions().getArray(), interaction => {
+        if(interaction.constructor.name == interactionClass.name) {
+          dropInteraction = interaction;
+        }
+      });
+      if(dropInteraction){
+        this.map.removeInteraction(dropInteraction);
+      }
     }
 
   }

@@ -1,101 +1,115 @@
 <template>
   <div id="planificationDeci" class="container-fluid">
-    <div class="row">
-      <h1 class="title">Planification DECI</h1>
+    <div v-if="showMap">
+      <b-button variant="outline-primary"
+          @click="showMap = false"
+          class="buttonRetour">
+        <img src="../../assets/img/resultset_previous.png" width="16"/>Quitter l'étude
+      </b-button>
+
+      <OlMapEtude :idEtude="selectedEtude"></OlMapEtude>
     </div>
 
-    <div class="row" id="boutonsAction">
-      <div class="col-md-12">
-        <b-button variant="outline-primary"
-            @click="etudeAConfigurer = null"
-            v-b-modal.modalEtude>
-          <img src="../../assets/img/addFile.png" width="16"/>Créer
-        </b-button>
+    <div v-else>
+      <div class="row">
+        <h1 class="title">Planification DECI</h1>
+      </div>
 
-        <b-button variant="outline-primary">
-          <img src="../../assets/img/folder-open.gif" width="16"/>Ouvrir
-        </b-button>
+      <div class="row" id="boutonsAction">
+        <div class="col-md-12">
+          <b-button variant="outline-primary"
+              @click="etudeAConfigurer = null"
+              v-b-modal.modalEtude>
+            <img src="../../assets/img/addFile.png" width="16"/>Créer
+          </b-button>
 
-        <b-button variant="outline-primary"
+          <b-button variant="outline-primary"
             :disabled="selectedEtude == null"
-            @click="etudeAConfigurer = getSelectedEtude()"
-            v-b-modal.modalEtude >
-          <img src="../../assets/img/cog.png" width="16"/>Configurer
-        </b-button>
+            @click="showMap = true">
+            <img src="../../assets/img/folder-open.gif" width="16"/>Ouvrir
+          </b-button>
 
-        <b-button variant="outline-primary"
-            :disabled="selectedEtude == null"
-            @click="cloreEtude">
-          <img src="../../assets/img/decline.png" width="16"/>Clore
-        </b-button>
+          <b-button variant="outline-primary"
+              :disabled="selectedEtude == null"
+              @click="etudeAConfigurer = getSelectedEtude()"
+              v-b-modal.modalEtude >
+            <img src="../../assets/img/cog.png" width="16"/>Configurer
+          </b-button>
+
+          <b-button variant="outline-primary"
+              :disabled="selectedEtude == null"
+              @click="cloreEtude">
+            <img src="../../assets/img/decline.png" width="16"/>Clore
+          </b-button>
+        </div>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-12">
-        <table class="table table-sm table-bordered table-fixed" id="tableEtudes">
-          <thead class="thead-light">
-            <th scope="col" v-on:click.self="onSortChange('type', $event)" :class="getSortStyle('type')">
-              <p v-on:click.self="onSortChange('type', $event)">Type</p>
-              <b-form-select v-model="filters.type" size="sm" placeholder='Tous' class="filter" :options="comboFilterType" v-on:change="onFilterChange"></b-form-select>
-            </th>
-            <th scope="col">
-              <p v-on:click="onSortChange('numero', $event)" :class="getSortStyle('numero')">Numéro</p>
-            </th>
-            <th scope="col" v-on:click="onSortChange('nom', $event)" :class="getSortStyle('nom')">
-              <p>Nom</p>
-            </th>
-            <th scope="col">
-              <p>Description</p>
-            </th>
-            <th scope="col">
-              <p>Communes</p>
-            </th>
-            <th scope="col" v-on:click.self="onSortChange('statut', $event)" :class="getSortStyle('statut')">
-              <p v-on:click.self="onSortChange('statut', $event)">Statut</p>
-              <b-form-select v-model="filters.statut" size="sm" placeholder='Tous' class="filter" :options="comboFilterStatut" v-on:change="onFilterChange"></b-form-select>
-            </th>
-            <th scope="col" v-on:click="onSortChange('date_maj', $event)" :class="getSortStyle('date_maj')">
-              <p>Dernière mise à jour</p>
-            </th>
-          </thead>
-          <tbody :key="tableKey">
-            <tr v-for="(item, index) in listeEtudes"
-                :key="index"
-                @click="selectedEtude = (selectedEtude == item.id) ? null : item.id"
-                :class="{'bg-secondary':item.id==selectedEtude, 'text-light':item.id==selectedEtude}">
-              <td>{{item.type.nom}}</td>
-              <td>{{item.numero}}</td>
-              <td>{{item.nom}}</td>
-              <td class="colDescription" >{{item.description}}</td>
-              <td>{{item.communes | printCommunes}}</td>
-              <td>{{item.statut.nom}}</td>
-              <td>{{item.date_maj | printDate}}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table table-sm table-bordered table-fixed" id="tableEtudes">
+            <thead class="thead-light">
+              <th scope="col" v-on:click.self="onSortChange('type', $event)" :class="getSortStyle('type')">
+                <p v-on:click.self="onSortChange('type', $event)">Type</p>
+                <b-form-select v-model="filters.type" size="sm" placeholder='Tous' class="filter" :options="comboFilterType" v-on:change="onFilterChange"></b-form-select>
+              </th>
+              <th scope="col">
+                <p v-on:click="onSortChange('numero', $event)" :class="getSortStyle('numero')">Numéro</p>
+              </th>
+              <th scope="col" v-on:click="onSortChange('nom', $event)" :class="getSortStyle('nom')">
+                <p>Nom</p>
+              </th>
+              <th scope="col">
+                <p>Description</p>
+              </th>
+              <th scope="col">
+                <p>Communes</p>
+              </th>
+              <th scope="col" v-on:click.self="onSortChange('statut', $event)" :class="getSortStyle('statut')">
+                <p v-on:click.self="onSortChange('statut', $event)">Statut</p>
+                <b-form-select v-model="filters.statut" size="sm" placeholder='Tous' class="filter" :options="comboFilterStatut" v-on:change="onFilterChange"></b-form-select>
+              </th>
+              <th scope="col" v-on:click="onSortChange('date_maj', $event)" :class="getSortStyle('date_maj')">
+                <p>Dernière mise à jour</p>
+              </th>
+            </thead>
+            <tbody :key="tableKey">
+              <tr v-for="(item, index) in listeEtudes"
+                  :key="index"
+                  @click="selectedEtude = (selectedEtude == item.id) ? null : item.id"
+                  :class="{'bg-secondary':item.id==selectedEtude, 'text-light':item.id==selectedEtude}">
+                <td>{{item.type.nom}}</td>
+                <td>{{item.numero}}</td>
+                <td>{{item.nom}}</td>
+                <td class="colDescription" >{{item.description}}</td>
+                <td>{{item.communes | printCommunes}}</td>
+                <td>{{item.statut.nom}}</td>
+                <td>{{item.date_maj | printDate}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-3 offset-md-9">
-        <b-pagination
-          v-model="pageActuelle"
-          align="right"
-          limit=10
-          :total-rows="nbEtudes"
-          :per-page="nbEtudesParPage"
-          @input="refreshEtudes"
-        ></b-pagination>
+      <div class="row">
+        <div class="col-md-3 offset-md-9">
+          <b-pagination
+            v-model="pageActuelle"
+            align="right"
+            limit=10
+            :total-rows="nbEtudes"
+            :per-page="nbEtudesParPage"
+            @input="refreshEtudes"
+          ></b-pagination>
+        </div>
       </div>
+
+      <ModalEtude ref="modalEtude"
+        :typeEtudes="typesEtude"
+        v-if="typesEtude.length > 0"
+        @refreshEtudes="refreshEtudes"
+        :etude="etudeAConfigurer"></ModalEtude>
+
     </div>
-
-    <ModalEtude ref="modalEtude"
-      :typeEtudes="typesEtude"
-      v-if="typesEtude.length > 0"
-      @refreshEtudes="refreshEtudes"
-      :etude="etudeAConfigurer"></ModalEtude>
-
   </div>
 </template>
 
@@ -106,11 +120,13 @@ import moment from 'moment'
 import _ from 'lodash'
 
 import ModalEtude from './ModalEtude.vue'
+import OlMapEtude from './OlMapEtude'
 
 export default {
   name: 'planificationDeci',
   components: {
-    ModalEtude
+    ModalEtude,
+    OlMapEtude
   },
 
   data() {
@@ -123,6 +139,7 @@ export default {
       selectedEtude: null,
 
       etudeAConfigurer: null,
+      showMap: false,
 
       // Filtres en-tête datagrid
       filters: {
@@ -375,4 +392,8 @@ export default {
   background-image: url(../../assets/img/expand.svg);
 }
 
+.buttonRetour {
+  margin-bottom: 15px;
+  margin-left: 15px;
+}
 </style>

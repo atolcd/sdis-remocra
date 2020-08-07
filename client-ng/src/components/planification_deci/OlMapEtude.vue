@@ -1,6 +1,6 @@
 <template>
   <div>
-  <OlMap ref="olMap" :couchesJSONPath="'/remocra/ext-res/layers/etude.json'">
+  <OlMap ref="olMap" :couchesJSONPath="'/remocra/ext-res/layers/etude.json'" :couchesViewParams="couchesViewParams" >
   </OlMap>
   <ModalePeiProjet id="modalePeiProjet" :idEtude="parseInt(idEtude)" :coordonnees="peiProjetCoordonnees"></ModalePeiProjet>
 </div>
@@ -37,6 +37,11 @@ export default {
 
       interactionAddPei: null,
       peiProjetCoordonnees: null,
+
+      couchesViewParams: [{
+        layer: "etude_hydrant_projet",
+        value: "idEtude:"+this.idEtude
+      }]
     }
   },
 
@@ -44,7 +49,6 @@ export default {
     this.olMap = this.$refs['olMap'];
     this.toolBar = this.$refs['olMap'].$refs['toolBar'];
     this.$nextTick(() => {
-
       this.$root.$options.bus.$emit(eventTypes.OLMAP_TOOLBAR_ADDTOOLBARITEM, {
         type: "separator",
       });

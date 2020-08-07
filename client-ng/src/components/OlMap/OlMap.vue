@@ -12,7 +12,7 @@
 
       <div>
         <slot name="couches" v-if="mapCreated">
-          <Couches :map="map" :couchesJSONPath="couchesJSONPath" ref="couches"></Couches>
+          <Couches :map="map" :couchesJSONPath="couchesJSONPath" :couchesViewParams="couchesViewParams" ref="couches"></Couches>
         </slot>
       </div>
 
@@ -57,6 +57,10 @@ export default {
       type: String,
       required: false,
       default: '/remocra/ext-res/layers/carte.json'
+    },
+    couchesViewParams: {
+      type: Array,
+      required: false
     }
   },
 
@@ -88,6 +92,10 @@ export default {
         this.$bvModal.show("modaleInfo");
       });
     });
+  },
+
+  destroyed() {
+    this.$root.$options.bus.$off(eventTypes.OLMAP_SHOW_MODALEINFO);
   },
 
   mounted: function() {

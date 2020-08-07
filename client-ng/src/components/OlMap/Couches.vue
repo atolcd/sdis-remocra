@@ -104,6 +104,11 @@ export default {
     couchesJSONPath: {
       required: true,
       type: String
+    },
+
+    couchesViewParams: {
+      required: false,
+      type: Array
     }
   },
   data() {
@@ -120,6 +125,12 @@ export default {
     this.$root.$options.bus.$on(eventTypes.OLMAP_COUCHES_ADDLAYER, this.addLayer);
     this.$root.$options.bus.$on(eventTypes.OLMAP_COUCHES_GETFEATURESFROMPOINT, this.getFeaturesFromPoint);
     this.$root.$options.bus.$on(eventTypes.OLMAP_COUCHES_GETFEATURESFROMBBOX, this.getFeaturesFromBBOX);
+  },
+
+  destroyed() {
+    this.$root.$options.bus.$off(eventTypes.OLMAP_COUCHES_ADDLAYER);
+    this.$root.$options.bus.$off(eventTypes.OLMAP_COUCHES_GETFEATURESFROMPOINT);
+    this.$root.$options.bus.$off(eventTypes.OLMAP_COUCHES_GETFEATURESFROMBBOX);
   },
 
   mounted: function() {
@@ -220,12 +231,14 @@ export default {
 
     createWMSLayer(layerDef) {
       let crossOriginValue = layerDef.url.indexOf(window.document.location.hostname) !== -1 ? 'use-credentials' : 'anonymous'
+      var viewParams = _.find(this.couchesViewParams, f => f.layer == layerDef.id);
       var wmsLayer = new ImageLayer({
         source: new ImageWMS({
           url: layerDef.url,
           crossOrigin: crossOriginValue,
           params: {
-            LAYERS: layerDef.layers
+            LAYERS: layerDef.layers,
+            VIEWPARAMS: (viewParams) ? viewParams.value : null
           }
         }),
         code: layerDef.id,
@@ -350,6 +363,7 @@ export default {
       coordonnees = OlProj.transform(coordonnees, 'EPSG:3857', 'EPSG:2154');
       var radius = Math.abs(20-this.map.getView().getZoom())
       var layer = _.find(this.layers, l => l.get('code') == this.coucheActive);
+      var viewParams = _.find(this.couchesViewParams, f => f.layer == layer.get('code'));
       axios.get('/remocra/geoserver/remocra/wfs', {
         params: {
           service: 'wfs',
@@ -357,7 +371,8 @@ export default {
           request: 'GetFeature',
           typeNames: layer.get('layer'),
           outputFormat: 'application/json',
-          cql_filter: ("DWithin(geometrie,POINT("+coordonnees[0]+" "+coordonnees[1]+"),"+radius+", meters)")
+          cql_filter: ("DWithin(geometrie,POINT("+coordonnees[0]+" "+coordonnees[1]+"),"+radius+", meters)"),
+          viewparams: (viewParams) ? viewParams.value : null
         }
       }).then(response => {
         if(response.data && response.data.totalFeatures > 0) {
@@ -376,6 +391,7 @@ export default {
     getFeaturesFromBBOX(evtRetour, bbox) {
       bbox = OlProj.transformExtent(bbox, 'EPSG:3857', 'EPSG:2154');
       var layer = _.find(this.layers, l => l.get('code') == this.coucheActive);
+      var viewParams = _.find(this.couchesViewParams, f => f.layer == layer.get('code'));
       axios.get('/remocra/geoserver/remocra/wfs', {
         params: {
           service: 'wfs',
@@ -383,7 +399,8 @@ export default {
           request: 'GetFeature',
           typeNames: layer.get('layer'),
           outputFormat: 'application/json',
-          bbox: bbox.toString()
+          bbox: bbox.toString(),
+          viewparams: (viewParams) ? viewParams.value : null
         }
       }).then(response => {
         if(response.data.totalFeatures > 0) {
