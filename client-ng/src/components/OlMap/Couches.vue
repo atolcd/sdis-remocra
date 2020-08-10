@@ -125,12 +125,14 @@ export default {
     this.$root.$options.bus.$on(eventTypes.OLMAP_COUCHES_ADDLAYER, this.addLayer);
     this.$root.$options.bus.$on(eventTypes.OLMAP_COUCHES_GETFEATURESFROMPOINT, this.getFeaturesFromPoint);
     this.$root.$options.bus.$on(eventTypes.OLMAP_COUCHES_GETFEATURESFROMBBOX, this.getFeaturesFromBBOX);
+    this.$root.$options.bus.$on(eventTypes.OLMAP_COUCHES_REFRESHLAYER, this.refreshLayer);
   },
 
   destroyed() {
     this.$root.$options.bus.$off(eventTypes.OLMAP_COUCHES_ADDLAYER);
     this.$root.$options.bus.$off(eventTypes.OLMAP_COUCHES_GETFEATURESFROMPOINT);
     this.$root.$options.bus.$off(eventTypes.OLMAP_COUCHES_GETFEATURESFROMBBOX);
+    this.$root.$options.bus.$off(eventTypes.OLMAP_COUCHES_REFRESHLAYER);
   },
 
   mounted: function() {
@@ -145,6 +147,8 @@ export default {
           this.addLayer(layer);
         })
       }
+    }).then(() => {
+      this.map.addLayer(this.createWorkingLayer('deplacementLayer'));
     });
   },
 
@@ -407,6 +411,15 @@ export default {
           this.$root.$options.bus.$emit(evtRetour, response.data.features);
         }
       })
+    },
+
+    refreshLayer(layerCode) {
+      var layer = _.find(this.layers, l => l.get('code') == layerCode);
+      if(layer) {
+        layer.getSource().updateParams({
+          time: Date.now()
+        });
+      }
     }
   }
 }

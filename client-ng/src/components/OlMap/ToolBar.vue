@@ -47,6 +47,7 @@ import Style from 'ol/style/Style'
 import Stroke from 'ol/style/Stroke'
 import Point from 'ol/geom/Point'
 import CircleStyle from 'ol/style/Circle'
+import MouseWheelZoom from 'ol/interaction/MouseWheelZoom';
 
 export default {
   name: 'ToolBar',
@@ -77,6 +78,13 @@ export default {
       coucheActive: null,
       eventHandlers: [],
       selectedFeatures: [] // Liste des features actuellement sélectionnées
+    }
+  },
+
+  watch: {
+    // En cas de changement dans la sélection, on envoie un évènement pour informer les autres composants
+    selectedFeatures: function() {
+      this.$root.$options.bus.$emit(eventTypes.OLMAP_TOOLBAR_UPDATESELECTEDFEATURES, this.selectedFeatures);
     }
   },
 
@@ -224,6 +232,7 @@ export default {
       }
     });
 
+    // Bouton de sélection
     this.addToolBarItem({
       type: "button",
       name: "selectionPoint",
@@ -276,13 +285,14 @@ export default {
           });
 
           this.map.addInteraction(dragBox);
+          this.map.addInteraction(new MouseWheelZoom());
 
           this.map.on("click", self.eventHandlers['clickSelection']);
-          this.selectedFeatures = [];
-          this.onSelectFeatures();
+          this.onSelectFeatures(null, true);
         } else {
           // DragPan sans condition
           this.map.addInteraction(new DragPan());
+          this.map.addInteraction(new MouseWheelZoom());
           this.map.un("click", self.eventHandlers['clickSelection']);
         }
       },
@@ -419,6 +429,7 @@ export default {
       _.forEach(featuresToRemove, ftr => {
         _.remove(this.selectedFeatures, function(o) { return o.id == ftr.id});
       });
+      this.selectedFeatures = _.clone(this.selectedFeatures, true); // Nécessaire pour le déclenchement du watch de Vuejs
 
       // Mise à jour sur la carte de la sélection
       var selectionLayer = this.getLayerById('selectionLayer');

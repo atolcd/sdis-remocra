@@ -32,3 +32,5 @@ export const OLMAP_COUCHES_GETFEATURESFROMPOINT = 'olmap_couches_getfeaturesfrom
 export const OLMAP_COUCHES_GETFEATURESFROMBBOX = 'olmap_couches_getfeaturesfrombbox'
 export const OLMAP_SHOW_MODALEINFO = 'olmap_show_modaleinfo'
 export const OLMAP_ONSELECTFEATURES = 'olmap_onselectfeatures'
+export const OLMAP_TOOLBAR_UPDATESELECTEDFEATURES = 'olmap_toolbar_updateselectedfeatures'
+export const OLMAP_COUCHES_REFRESHLAYER = 'olmap_couches_refreshlayer'

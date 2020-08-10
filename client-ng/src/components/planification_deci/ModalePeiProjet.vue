@@ -109,6 +109,7 @@ import axios from 'axios'
 import _ from 'lodash'
 
 import * as OlProj from 'ol/proj'
+import * as eventTypes from '../../bus/event-types.js'
 
 export default {
   name: 'ModalPeiProjet',
@@ -152,6 +153,11 @@ export default {
 
     coordonnees: {
       required: true
+    },
+
+    idHydrantProjet: {
+      type: Number,
+      required: false
     }
   },
 
@@ -223,6 +229,34 @@ export default {
           });
         }
       });
+
+      if(this.idHydrantProjet) {
+        axios.get("http://localhost:8080/remocra/etudehydrantprojet", {
+          params: {
+            filter: JSON.stringify([{
+              "property": "id",
+              "value": this.idHydrantProjet
+            }])
+          }
+        }).then(response => {
+          if(response.data) {
+            var hydrant = response.data.data[0];
+            this.type = hydrant.type;
+            this.deci = (hydrant.type_deci) ? hydrant.type_deci.id : null;
+            this.capacite = hydrant.capacite;
+            this.diametreNominal = (hydrant.diametre_nominal) ? hydrant.diametre_nominal.id : null;
+            this.diametreCanalisation = hydrant.diametre_canalisation;
+            this.debit = hydrant.debit;
+          }
+        }).catch(() => {
+          this.$notify({
+            group: 'remocra',
+            type: 'error',
+            title: 'Récupération des données',
+            text: "Impossible de récupérer les PEI projet de l'étude"
+          });
+        })
+      }
     },
 
     onTypeSelected() {
@@ -275,7 +309,11 @@ export default {
     handleOk(bvModalEvt) {
       bvModalEvt.preventDefault();
       if(this.checkFormValidity()) {
-        this.handleAddPeiProjet();
+        if(this.idHydrantProjet) {
+          this.handleEditPeiProjet();
+        } else {
+          this.handleAddPeiProjet();
+        }
       }
     },
 
@@ -304,6 +342,35 @@ export default {
           type: 'error',
           title: 'Création de l\'hydrant projet',
           text: "Une erreur est survenue lors de la création de l'hydrant projet"
+        });
+      }).then(() => {
+        this.$bvModal.hide("modalePeiProjet");
+        this.$root.$options.bus.$emit(eventTypes.OLMAP_COUCHES_REFRESHLAYER, 'etude_hydrant_projet');
+      })
+    },
+
+    handleEditPeiProjet() {
+      var formData = new FormData();
+      formData.append("peiProjet", JSON.stringify({
+        id: this.idHydrantProjet,
+        type: this.type,
+        deci: this.deci,
+        diametreNominal: this.diametreNominal,
+        diametreCanalisation: this.diametreCanalisation,
+        capacite: this.capacite,
+        debit: this.debit
+      }));
+      // Envoi au serveur
+      axios.post('/remocra/etudehydrantprojet/update', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).catch(() => {
+        this.$notify({
+          group: 'remocra',
+          type: 'error',
+          title: 'Envoi des données',
+          text: "La modification du PEI projet a échouée"
         });
       }).then(() => {
         this.$bvModal.hide("modalePeiProjet");

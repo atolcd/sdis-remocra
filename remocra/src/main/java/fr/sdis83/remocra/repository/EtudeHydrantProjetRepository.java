@@ -129,7 +129,12 @@ public class EtudeHydrantProjetRepository {
   }
 
   public Condition getFilters(List<ItemFilter> itemFilters){
+    ItemFilter id = ItemFilter.getFilter(itemFilters, "id");
+
     Condition condition = DSL.trueCondition();
+    if (id != null) {
+      condition = condition.and(ETUDE_HYDRANT_PROJET.ID.eq(Long.valueOf(id.getValue())));
+    }
     return condition;
   }
 
@@ -156,5 +161,43 @@ public class EtudeHydrantProjetRepository {
       .set(ETUDE_HYDRANT_PROJET.GEOMETRIE, geom)
       .set(ETUDE_HYDRANT_PROJET.ETUDE, new Long(obj.get("idEtude").toString())).returning(ETUDE_HYDRANT_PROJET.ID).fetchOne().getValue(ETUDE.ID);
     return idPeiProjet;
+  }
+
+  public void updatePeiProjet(String json) {
+    HashMap<String, Object> obj = new JSONDeserializer<HashMap<String, Object>>().deserialize(json);
+
+    Long diametreNominal = (obj.get("diametreNominal") != null) ? new Long(obj.get("diametreNominal").toString()) : null;
+    Integer diametreCanalisation = (obj.get("diametreCanalisation") != null) ? Integer.valueOf(obj.get("diametreCanalisation").toString()) : null;
+    Integer capacite = (obj.get("capacite") != null) ? Integer.valueOf(obj.get("capacite").toString()) : null;
+    Integer debit = (obj.get("debit") != null) ? Integer.valueOf(obj.get("debit").toString()) : null;
+
+    context.update(ETUDE_HYDRANT_PROJET)
+      .set(ETUDE_HYDRANT_PROJET.TYPE_DECI, new Long(obj.get("deci").toString()))
+      .set(ETUDE_HYDRANT_PROJET.TYPE, obj.get("type").toString())
+      .set(ETUDE_HYDRANT_PROJET.DIAMETRE_NOMINAL, diametreNominal)
+      .set(ETUDE_HYDRANT_PROJET.DIAMETRE_CANALISATION, diametreCanalisation)
+      .set(ETUDE_HYDRANT_PROJET.CAPACITE, capacite)
+      .set(ETUDE_HYDRANT_PROJET.DEBIT, debit)
+      .where(ETUDE_HYDRANT_PROJET.ID.eq(new Long(obj.get("id").toString()))).execute();
+  }
+
+  public void deletePeiProjet(String json) {
+      HashMap<String, Object> obj = new JSONDeserializer<HashMap<String, Object>>().deserialize(json);
+      context.delete(ETUDE_HYDRANT_PROJET)
+          .where(ETUDE_HYDRANT_PROJET.ID.eq(new Long(obj.get("id").toString()))).execute();
+
+  }
+
+  public void updateGeometrie(String json) throws CRSException, IllegalCoordinateException {
+    HashMap<String, Object> obj = new JSONDeserializer<HashMap<String, Object>>().deserialize(json);
+
+    Double longitude = (obj.get("longitude") != null) ? Double.valueOf(obj.get("longitude").toString()) : null;
+    Double latitude = (obj.get("latitude") != null) ? Double.valueOf(obj.get("latitude").toString()) : null;
+
+    Geometry geom = GeometryUtil.createPoint(longitude, latitude, "2154", "2154");
+    context.update(ETUDE_HYDRANT_PROJET)
+      .set(ETUDE_HYDRANT_PROJET.GEOMETRIE, geom)
+      .where(ETUDE_HYDRANT_PROJET.ID.eq(new Long(obj.get("id").toString()))).execute();
+
   }
 }

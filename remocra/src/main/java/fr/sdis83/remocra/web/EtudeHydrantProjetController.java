@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -71,6 +72,47 @@ public class EtudeHydrantProjetController {
     }catch(Exception e){
       e.printStackTrace();
       return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la création du PEi projet").serialize();
+    }
+  }
+
+  @RequestMapping(value = "/update", method = RequestMethod.POST,  headers = "Content-Type=multipart/form-data")
+  @PreAuthorize("hasRight('PLANIFIER_DECI')")
+  @Transactional
+  public ResponseEntity<String> updatePeiProjet(MultipartHttpServletRequest request) {
+    try {
+      String json = request.getParameter("peiProjet");
+
+      etudeHydrantProjetRepository.updatePeiProjet(json);
+      return new SuccessErrorExtSerializer(true, "Le pei projet a bien été mis à jour.").serialize();
+    }catch(Exception e){
+      e.printStackTrace();
+      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la création du PEI projet").serialize();
+    }
+  }
+
+  @PreAuthorize("hasRight('PLANIFIER_DECI')")
+  @RequestMapping(value = "", method = RequestMethod.DELETE, headers = "Accept=application/json")
+  public ResponseEntity<java.lang.String> delete(final @RequestBody String json) {
+      try {
+          etudeHydrantProjetRepository.deletePeiProjet(json);
+          return new SuccessErrorExtSerializer(true, "PEI projet supprimé").serialize();
+      } catch (Exception e) {
+          return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+      }
+  }
+
+  @PreAuthorize("hasRight('PLANIFIER_DECI')")
+  @RequestMapping(value = "/updategeometrie", method = RequestMethod.POST, headers = "Accept=application/json")
+  @Transactional
+  public ResponseEntity<String> updateGeometrie(MultipartHttpServletRequest request) {
+    try {
+      String json = request.getParameter("peiProjet");
+
+      etudeHydrantProjetRepository.updateGeometrie(json);
+      return new SuccessErrorExtSerializer(true, "Le pei projet a bien été déplacé.").serialize();
+    }catch(Exception e){
+      e.printStackTrace();
+      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors du déplacement du PEI projet").serialize();
     }
   }
 }
