@@ -94,7 +94,6 @@ export default {
     this.$root.$options.bus.$on(eventTypes.OLMAP_TOOLBAR_TOGGLEBUTTON, this.toggleButton);
     this.$root.$options.bus.$on(eventTypes.OLMAP_COUCHES_UPDATECOUCHEACTIVE, (code) => {
       this.coucheActive = code;
-      this.onSelectFeatures(null, true);
     });
     this.$root.$options.bus.$on(eventTypes.OLMAP_ONSELECTFEATURES, this.onSelectFeatures);
     // Définition de la vue courante comme première vue de la navigation
@@ -300,6 +299,20 @@ export default {
         return this.coucheActive == null;
       },
     }),
+
+    // Purge sélection
+    this.addToolBarItem({
+      iconPath: "/remocra/static/img/selection_clear.png",
+      type: "button",
+      name: "purgeSelection",
+      title: "Purger la sélection",
+      onClick: () => {
+        this.onSelectFeatures(null, true);
+      },
+      disabled: () => {
+        return this.selectedFeatures.length == 0
+      }
+    });
 
     // Fullscreen
     this.addToolBarItem({
