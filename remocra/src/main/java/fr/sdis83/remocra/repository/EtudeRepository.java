@@ -1,5 +1,6 @@
 package fr.sdis83.remocra.repository;
 
+import static fr.sdis83.remocra.db.model.couverture_hydraulique.Tables.RESEAU;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ETUDE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ETUDE_COMMUNES;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ETUDE_DOCUMENTS;
@@ -26,6 +27,7 @@ import javax.persistence.criteria.Order;
 
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.db.model.couverture_hydraulique.CouvertureHydraulique;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Organisme;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeEtude;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeEtudeStatut;
@@ -179,6 +181,10 @@ public class EtudeRepository {
       listeEtudes.add(etude);
       etude.setDocumentsNoms(documentsNoms);
 
+      // On vérifie la présence d'un réseau importé
+      Integer nbReseauImportes = context.select(RESEAU.ID.count()).from(RESEAU).where(RESEAU.ETUDE.eq(Long.valueOf(r.getValue("id").toString()))).fetchOneInto(Integer.class);
+      etude.setReseauImporte((nbReseauImportes > 0) ? true : false);
+
       // On détermine si l'étude peut être modifiée ou non
       etude.setReadOnly((organismesAppartenance.contains(organisme.getId().intValue()) ? false : true));
     }
@@ -201,6 +207,7 @@ public class EtudeRepository {
   public Condition getFilters(List<ItemFilter> itemFilters, ArrayList<Integer> organismesZC){
     ItemFilter type = ItemFilter.getFilter(itemFilters, "type");
     ItemFilter statut = ItemFilter.getFilter(itemFilters,"statut");
+    ItemFilter id = ItemFilter.getFilter(itemFilters,"id");
 
     Condition condition = DSL.trueCondition();
     if (type != null) {
@@ -208,6 +215,9 @@ public class EtudeRepository {
     }
     if (statut != null) {
       condition = condition.and(TYPE_ETUDE_STATUT.CODE.eq(statut.getValue()));
+    }
+    if (id != null) {
+      condition = condition.and(ETUDE.ID.eq(Long.valueOf(id.getValue())));
     }
 
     long idOrganismeUtilisateur = utilisateurService.getCurrentUtilisateur().getOrganisme().getId();

@@ -24,7 +24,7 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Etude implements Serializable {
 
-	private static final long serialVersionUID = -706667987;
+	private static final long serialVersionUID = -500030461;
 
 	private Long    id;
 	private Long    type;
@@ -32,8 +32,8 @@ public class Etude implements Serializable {
 	private String  numero;
 	private String  nom;
 	private String  description;
-	private Long    statut;
 	private Long    organisme;
+	private Long    statut;
 
 	public Etude() {}
 
@@ -44,8 +44,8 @@ public class Etude implements Serializable {
 		this.numero = value.numero;
 		this.nom = value.nom;
 		this.description = value.description;
-		this.statut = value.statut;
 		this.organisme = value.organisme;
+		this.statut = value.statut;
 	}
 
 	public Etude(
@@ -55,8 +55,8 @@ public class Etude implements Serializable {
 		String  numero,
 		String  nom,
 		String  description,
-		Long    statut,
-		Long    organisme
+		Long    organisme,
+		Long    statut
 	) {
 		this.id = id;
 		this.type = type;
@@ -64,8 +64,8 @@ public class Etude implements Serializable {
 		this.numero = numero;
 		this.nom = nom;
 		this.description = description;
-		this.statut = statut;
 		this.organisme = organisme;
+		this.statut = statut;
 	}
 
 	public Long getId() {
@@ -122,21 +122,21 @@ public class Etude implements Serializable {
 		return this;
 	}
 
-	public Long getStatut() {
-		return this.statut;
-	}
-
-	public Etude setStatut(Long statut) {
-		this.statut = statut;
-		return this;
-	}
-
 	public Long getOrganisme() {
 		return this.organisme;
 	}
 
 	public Etude setOrganisme(Long organisme) {
 		this.organisme = organisme;
+		return this;
+	}
+
+	public Long getStatut() {
+		return this.statut;
+	}
+
+	public Etude setStatut(Long statut) {
+		this.statut = statut;
 		return this;
 	}
 }

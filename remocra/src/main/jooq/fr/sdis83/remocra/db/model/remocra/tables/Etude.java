@@ -37,7 +37,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Etude extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -159800078;
+	private static final long serialVersionUID = -185991707;
 
 	/**
 	 * The reference instance of <code>remocra.etude</code>
@@ -83,14 +83,14 @@ public class Etude extends TableImpl<Record> {
 	public final TableField<Record, String> DESCRIPTION = createField("description", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "");
 
 	/**
+	 * The column <code>remocra.etude.organisme</code>.
+	 */
+	public final TableField<Record, Long> ORGANISME = createField("organisme", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaulted(true), this, "");
+
+	/**
 	 * The column <code>remocra.etude.statut</code>.
 	 */
 	public final TableField<Record, Long> STATUT = createField("statut", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
-
-	/**
-	 * The column <code>remocra.etude.organisme</code>.
-	 */
-	public final TableField<Record, Long> ORGANISME = createField("organisme", org.jooq.impl.SQLDataType.BIGINT.defaulted(true), this, "");
 
 	/**
 	 * Create a <code>remocra.etude</code> table reference
@@ -143,7 +143,7 @@ public class Etude extends TableImpl<Record> {
 	 */
 	@Override
 	public List<ForeignKey<Record, ?>> getReferences() {
-		return Arrays.<ForeignKey<Record, ?>>asList(Keys.ETUDE__FK_TYPE, Keys.ETUDE__FK_STATUT, Keys.ETUDE__FK_ORGANISME);
+		return Arrays.<ForeignKey<Record, ?>>asList(Keys.ETUDE__FK_TYPE, Keys.ETUDE__FK_ORGANISME, Keys.ETUDE__FK_STATUT);
 	}
 
 	/**

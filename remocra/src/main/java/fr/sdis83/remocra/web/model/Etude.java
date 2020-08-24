@@ -35,6 +35,8 @@ public class Etude {
 
   private boolean readOnly;
 
+  private boolean reseauImporte;
+
   public Long getId() {
     return id;
   }
@@ -129,5 +131,13 @@ public class Etude {
 
   public void setReadOnly(boolean readOnly) {
     this.readOnly = readOnly;
+  }
+
+  public boolean getReseauImporte() {
+    return reseauImporte;
+  }
+
+  public void setReseauImporte(boolean reseauImporte) {
+    this.reseauImporte = reseauImporte;
   }
 }

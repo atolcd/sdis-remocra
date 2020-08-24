@@ -120,6 +120,20 @@ export default {
     }
   },
 
+  watch: {
+
+    // Modification des viewparams d'une couche après sa création
+    couchesViewParams: function(newValue) {
+      _.forEach(newValue, viewParam => {
+        var layer = this.layers.filter(f => f.get('code') == viewParam.layer)[0];
+        if(layer.get('wms_layer')) {
+          layer.getSource().updateParams({
+            VIEWPARAMS: viewParam.value
+          });
+        }
+      })
+    }
+  },
 
   created() {
     this.$root.$options.bus.$on(eventTypes.OLMAP_COUCHES_ADDLAYER, this.addLayer);
@@ -149,6 +163,8 @@ export default {
       }
     }).then(() => {
       this.map.addLayer(this.createWorkingLayer('deplacementLayer'));
+    }).then(() => {
+      this.$root.$options.bus.$emit(eventTypes.OLMAP_COUCHES_ONLAYERSLOADED, this.layers);
     });
   },
 
@@ -256,7 +272,8 @@ export default {
         legende: layerDef.legende,
         layer: layerDef.layers,
         groupe: layerDef.groupe,
-        zIndex: 100
+        zIndex: layerDef.zIndex,
+        viewParamCode: layerDef.viewParamCode
       });
       return wmsLayer
     },
@@ -277,7 +294,7 @@ export default {
         legende: layerDef.legende,
         layer: layerDef.layers,
         groupe: layerDef.groupe,
-        zIndex: 110
+        zIndex: layerDef.zIndex
       });
     },
 
@@ -413,12 +430,27 @@ export default {
       })
     },
 
+    /**
+      * Met à jour les couches
+      * Lié à @event OLMAP_COUCHES_REFRESHLAYER
+      * @param layerCode Le code de la couche à mettre à jour. Si non fourni, toutes les couches seront mises à jour
+      */
     refreshLayer(layerCode) {
-      var layer = _.find(this.layers, l => l.get('code') == layerCode);
-      if(layer) {
-        layer.getSource().updateParams({
-          time: Date.now()
-        });
+      if(layerCode) {
+        var layer = _.find(this.layers, l => l.get('code') == layerCode);
+        if(layer) {
+          layer.getSource().updateParams({
+            time: Date.now()
+          });
+        }
+      } else {
+        _.forEach(this.layers, l => {
+          if(l.getSource && l.getSource().updateParams) {
+            l.getSource().updateParams({
+              time: Date.now()
+            });
+          }
+        })
       }
     }
   }

@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class EtudeHydrantProjet extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -1920838023;
+	private static final long serialVersionUID = -733871965;
 
 	/**
 	 * The reference instance of <code>remocra.etude_hydrant_projet</code>
@@ -149,7 +149,7 @@ public class EtudeHydrantProjet extends TableImpl<Record> {
 	 */
 	@Override
 	public List<ForeignKey<Record, ?>> getReferences() {
-		return Arrays.<ForeignKey<Record, ?>>asList(Keys.ETUDE_HYDRANT_PROJET__ETUDE_HYDRANT_PROJET_ETUDE, Keys.ETUDE_HYDRANT_PROJET__ETUDE_HYDRANT_PROJET_TYPE_DECI, Keys.ETUDE_HYDRANT_PROJET__ETUDE_HYDRANT_PROJET_DIAMETRE_NOMINAL);
+		return Arrays.<ForeignKey<Record, ?>>asList(Keys.ETUDE_HYDRANT_PROJET__FK_ETUDE, Keys.ETUDE_HYDRANT_PROJET__FK_TYPE_DECI, Keys.ETUDE_HYDRANT_PROJET__FK_DIAMETRE_NOMINAL);
 	}
 
 	/**

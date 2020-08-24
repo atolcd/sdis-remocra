@@ -1109,6 +1109,10 @@
 										<inputSchema>tracabilite</inputSchema>
 										<outputSchema>tracabilite</outputSchema>
 									</schema>
+									<schema>
+										<inputSchema>couverture_hydraulique</inputSchema>
+										<outputSchema>couverture_hydraulique</outputSchema>
+									</schema>
 								</schemata>
 								<customTypes>
 									<customType>
