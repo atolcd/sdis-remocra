@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
@@ -41,6 +42,9 @@ public class DebitSimultane implements Featurable {
     @NotNull
     @Column(name = "numdossier")
     private String numDossier;
+
+    @OneToMany(mappedBy = "debitSimultane")
+    private Set<DebitSimultaneMesure> mesures;
 
     @Override
     public Feature toFeature() {

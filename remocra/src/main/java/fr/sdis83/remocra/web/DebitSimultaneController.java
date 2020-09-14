@@ -55,9 +55,12 @@ public class DebitSimultaneController {
 
       @Override
       protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
-        serializer.include("data.*");
-
-        return serializer;
+        serializer.include("data.mesures.hydrants.hydrant.id")
+                        .include("data.mesures.hydrants.hydrant.numero")
+                        .include("data.mesures.hydrants.hydrant.diametreCanalisation")
+                        .include("data.mesures.hydrants.hydrant.typeReseauAlimentation.*")
+                        .exclude("data.mesures.hydrants.*");
+        return serializer.exclude("data.actif").exclude("*.class");
       }
 
       @Override
@@ -101,9 +104,19 @@ public class DebitSimultaneController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
     @PreAuthorize("hasRight('DEBITS_SIMULTANES_R')")
-    public ResponseEntity<java.lang.String> getDebitSimultane(final @PathVariable("id") Long id) {
-
+    public ResponseEntity<java.lang.String> getDebitSimultane(final @PathVariable("id") Long id, @RequestParam(value = "sort", required = false) String sorts) {
+        final List<ItemSorting> itemSortList = ItemSorting.decodeJson(sorts);
         return new AbstractExtObjectSerializer<DebitSimultane>("fr.sdis83.remocra.domain.remocra.DebitSimultane retrieved.") {
+            @Override
+            protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+              serializer.include("data.mesures.hydrants.hydrant.id")
+                        .include("data.mesures.hydrants.hydrant.numero")
+                        .include("data.mesures.hydrants.hydrant.diametreCanalisation")
+                        .include("data.mesures.hydrants.hydrant.typeReseauAlimentation.*")
+                        .exclude("data.mesures.hydrants.*");
+
+              return serializer;
+            }
 
             @Override
             protected DebitSimultane getRecord() {

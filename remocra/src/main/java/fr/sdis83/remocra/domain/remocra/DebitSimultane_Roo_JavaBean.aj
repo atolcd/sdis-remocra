@@ -48,5 +48,13 @@ privileged aspect DebitSimultane_Roo_JavaBean {
     public void DebitSimultane.setNumDossier(String numDossier) {
         this.numDossier = numDossier;
     }
+
+    public Set<DebitSimultaneMesure> DebitSimultane.getMesures() {
+        return this.mesures;
+    }
+
+    public void DebitSimultane.setMesures(Set<DebitSimultaneMesure> mesures) {
+        this.mesures = mesures;
+    }
     
 }
