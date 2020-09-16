@@ -31,7 +31,7 @@ public class AuthoritiesUtil {
             }
 
             AccessRight ar = (AccessRight) grantedAuthority;
-            if (ar.getKey().equals(typeDroitEnum)) {
+            if (ar.getKey() != null && ar.getKey().equals(typeDroitEnum)) {
                 logger.debug(" Found right : " + typeDroitEnum.getValue());
                 return true;
             }

@@ -379,11 +379,11 @@ public class UtilisateurService {
 
         Predicate p = cBuilder.disjunction(); // ne renvoi rien par defaut.
 
-        if (authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ALL_R)) {
+        if (authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ALL_R) || authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ALL_C)) {
             // Tous les utilisateurs
             p = cBuilder.or(cBuilder.conjunction());
 
-        } else if (authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_R)) {
+        } else if (authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_R) || authUtils.hasRight(TypeDroitEnum.UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_C)) {
             // Utilisateurs du même organisme
             p = cBuilder.or(p, cBuilder.equal(utilisateurPath.join("organisme").get("id"), currentUtilisateur.getOrganisme().getId()));
 

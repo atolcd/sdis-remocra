@@ -31,7 +31,9 @@ Ext.define('Sdis.Remocra.features.admin.Admin', {
             });
         }
         if (Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ALL_C')
-            || Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_C')) {
+            || Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ALL_R')
+            || Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_C')
+            || Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_R')) {
             var prefix = Sdis.Remocra.Rights.hasRight('REFERENTIELS_C') ? '7 : ' : '';
             data.push(['adminUtilisateur', prefix + 'Utilisateurs', 'utilisateurs', '#000000']);
             panels.push({
@@ -181,6 +183,15 @@ Ext.define('Sdis.Remocra.features.admin.Admin', {
         contentPanel.items.items.forEach(function(item){
              if(item.itemId === "adminOrganisme") {
                item.down("toolbar").getComponent("organismeContact").show();
+             }
+
+             // Grid utilisateur: on ne permet que la consultation si l'utilisateur n'a
+             // pas les droits d'édition
+             else if(item.itemId === "adminUtilisateur") {
+                if(!Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ALL_C') && !Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_C')) {
+                   item.down("toolbar").getComponent("addBtn").hide();
+                }
+
              }
 
         });

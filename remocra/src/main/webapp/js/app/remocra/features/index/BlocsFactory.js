@@ -389,6 +389,9 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
              });
         }
         if (Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ALL_C')
+            || Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ALL_R')
+            || Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_C')
+            || Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_R')
             || Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_C')) {
             items.push({
                 type: 'href',

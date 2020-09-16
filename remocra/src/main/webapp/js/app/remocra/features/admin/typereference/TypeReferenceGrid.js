@@ -58,7 +58,6 @@ Ext.define('Sdis.Remocra.features.admin.typereference.TypeReferenceGrid', {
             }
         }
     },
-    
     constructor: function(config) {
         config = config || {};
         
@@ -68,7 +67,6 @@ Ext.define('Sdis.Remocra.features.admin.typereference.TypeReferenceGrid', {
                 this.statics().columns.code, this.statics().columns.nom, this.statics().columns.actif
             ]
         });
-        
         this.callParent([config]);
         
         if (this.store.getCount()<1) {
@@ -81,6 +79,7 @@ Ext.define('Sdis.Remocra.features.admin.typereference.TypeReferenceGrid', {
     ],
     tbar:[{
         text: 'Ajouter',
+        itemId: 'addBtn',
         tooltip: 'ajouter un nouvel élément',
         iconCls: 'add',
         handler: function() {

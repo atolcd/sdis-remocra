@@ -216,7 +216,30 @@ Ext.define('Sdis.Remocra.features.admin.typereference.UtilisateurGrid', {
         this.callParent([config]);
         Sdis.Remocra.network.CurrentUtilisateurStore.getCurrentUtilisateur(this, function(user) {
         // Filtrage des profils (cas de la première édition)
-          this.editingPlugin.addListener('beforeedit', function(roweditor, e, eOpts){
+            this.editingPlugin.addListener('beforeedit', function(roweditor, e, eOpts){
+
+            // Gestion du droit de modification
+            var sameOrganisme = null;
+
+            // Aucun droit de modification (utilisateur organisme ou global) => pas de modification possible
+            if(!(Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ALL_C') || Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_C'))) {
+                return false;
+            }
+
+            // Droit de modification sur les utilisateurs de son organisme mais pas sur les autres => on check l'organisme de l'utilisateur cible
+            else if(!Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ALL_C') && Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_C')) {
+                Sdis.Remocra.network.CurrentUtilisateurStore.getCurrentUtilisateur(this, function(user) {
+                    if(user.data.organismeId != e.record.data.organismeId) {
+                        sameOrganisme = false;
+                    }
+                });
+            }
+
+            if(sameOrganisme != null && !sameOrganisme) {
+                return false;
+            }
+            // Sinon, on autorise la modification globale
+
             var profilsCombo = this.editingPlugin.editor.getComponent('profilUtilisateurId');
             var utilisateurRecord = e.record;
             var typeOrganismeId = utilisateurRecord.phantom?null:utilisateurRecord.getOrganisme().get('typeOrganismeId');
