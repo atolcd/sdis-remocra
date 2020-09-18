@@ -112,7 +112,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <b-form-group label="Débit retenu (m3/h)" label-for="debitRetenu" label-cols-md="6" invalid-feedback="Le débit retenu doit être renseigné" :state="etats.debitRetenu">
-                    <b-form-select id="debitRetenu" v-model="mesures[selectedRow].debitRetenu" :options="comboDebitRetenu" size="sm" :disabled="!userCanEdit" required></b-form-select>
+                    <b-form-select id="debitRetenu" v-model="mesures[selectedRow].debitRetenu" :options="comboDebitRetenu" size="sm" :disabled="mesures[selectedRow].irv || !userCanEdit"></b-form-select>
                   </b-form-group>
                 </div>
               </div>
@@ -413,6 +413,7 @@ export default {
     onIRVChecked(value) {
       if (value) {
         this.mesures[this.selectedRow].debitMesure = null;
+        this.mesures[this.selectedRow].debitRetenu = null;
       } else {
         this.mesures[this.selectedRow].debitMesure = (this.diametreCanalisation !== null) ? this.debitSimultaneCalcule : 0;
       }
@@ -572,7 +573,7 @@ export default {
           this.etats.time = 'invalid';
           invalidMesure = mesure;
         }
-        if (mesure.debitRetenu === null) {
+        if(mesure.debitRetenu === null && !mesure.irv) {
           this.etats.debitRetenu = 'invalid';
           invalidMesure = mesure;
         }
