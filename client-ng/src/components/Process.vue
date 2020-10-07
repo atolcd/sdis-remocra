@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalProcess" ref="modal" title="Processus Etl" no-close-on-backdrop ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
+  <b-modal id="modalProcess" ref="modal" title="Processus Etl" no-close-on-backdrop ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields" :ok-disabled="selected == null">
     <b-form-group horizontal label="Choix du Processus:" label-for="process">
       <b-form-select id="process" v-model="selected" :options="options" class="mb-3" @input="getParams" />
     </b-form-group>
@@ -47,6 +47,9 @@
             <label class="custom-file-label" v-for="(file,key) in getFile(param.id)" :key="key">{{file.file.name}}</label>
           </div>
         </b-form-group>
+        <b-form-group v-if='param.formulaireTypeControle=="hiddenfield"'>
+          <input type="text" :id="param.id" :nom="param.nom" inputType='hiddenfield' class="parametreProcess"/>
+        </b-form-group>
       </div>
     </form>
   </b-modal>
@@ -62,6 +65,15 @@ export default {
   components: {
     SearchProcessParam
   },
+
+  props: {
+    categorieProcess: {
+      type: String,
+      required: false,
+      default: 'GESTION_CRISE'
+    }
+  },
+
   data() {
     return {
       selected: null,
@@ -73,10 +85,11 @@ export default {
     }
   },
   methods: {
-    showModal() {
+    showModal(hiddenValues) {
+      this.hiddenValues = hiddenValues;
       var jsonFilters = JSON.stringify([{
         property: 'categorie',
-        value: 'GESTION_CRISE'
+        value: this.categorieProcess
       }])
       axios.get('/remocra/processusetlmodele', {
         params: {
@@ -89,7 +102,7 @@ export default {
               'id': item.id,
               'description': item.description
             },
-            'text': item.code
+            'text': item.libelle
           })
         })
       }).catch(function(error) {
@@ -133,6 +146,8 @@ export default {
             formData.append(item.getAttribute('id'), value)
           } else if (item.getAttribute('inputType') === 'checkbox') {
             formData.append(item.getAttribute('id'), item.checked)
+          } else if(item.getAttribute('inputType') === 'hiddenfield') {
+            formData.append('input'+item.getAttribute('id'), this.hiddenValues[item.getAttribute('nom')])
           } else {
             formData.append(item.getAttribute('id'), item.value)
           }
@@ -212,5 +227,9 @@ export default {
 <style scoped>
 >>>input {
   width: 100%;
+}
+
+input[inputType="hiddenfield"] {
+  display: none;
 }
 </style>

@@ -9,6 +9,9 @@
   </OlMap>
 
   <ModalePeiProjet id="modalePeiProjet" :idEtude="parseInt(idEtude)" :coordonnees="peiProjetCoordonnees" :idHydrantProjet="selectedHydrantProjet"></ModalePeiProjet>
+
+  <Process ref="process" :categorieProcess="'COUVERTURE_HYDRAULIQUE'"></Process>
+
   <b-modal id="modaleDeletePeiProjet" title="Suppression d'un PEI projet" ok-title="Supprimer" cancel-title="Annuler" @ok="deleteHydrantProjet" ok-variant="danger">
     <p class="my-4">Etes-vous certain de vouloir supprimer ce PEI ?</p>
   </b-modal>
@@ -18,6 +21,7 @@
           ok-title="Commun"
           cancel-title="Importé"
           ok-variant="primary"
+          cancel-variant="primary"
           @ok="calculCouvertureHydraulique(false)"
           @cancel="calculCouvertureHydraulique(true)"
           centered
@@ -32,6 +36,7 @@
 <script>
 import OlMap from '../OlMap/OlMap.vue'
 import ModalePeiProjet from './ModalePeiProjet.vue'
+import Process from '../Process.vue'
 import _ from 'lodash'
 import axios from 'axios'
 
@@ -50,7 +55,8 @@ export default {
   name: 'OlMapEtude',
   components: {
     OlMap,
-    ModalePeiProjet
+    ModalePeiProjet,
+    Process
   },
 
   props: {
@@ -67,6 +73,8 @@ export default {
     return {
       olMap : null,
       toolBar: null,
+
+      processHiddenValues: [],
 
       interactionAddPei: null,
       interactionMovePei: null,
@@ -100,6 +108,7 @@ export default {
   mounted: function() {
     this.olMap = this.$refs['olMap'];
     this.toolBar = this.$refs['olMap'].$refs['toolBar'];
+    this.processHiddenValues["ID_OBJET"] = this.idEtude;
     this.$nextTick(() => {
       this.$root.$options.bus.$emit(eventTypes.OLMAP_TOOLBAR_ADDTOOLBARITEM, {
         type: "separator",
@@ -258,8 +267,6 @@ export default {
         title: "lancer une simulation",
         name: "startSimulation",
         onClick: () => {
-          this.disableToolbar = true;
-          this.spinnerMap = true;
           if(this.reseauImporte) {
             this.$bvModal.show("modaleChoixReseau");
           } else {
@@ -299,6 +306,20 @@ export default {
         },
         disabled: () => {
           return this.disableToolbar;
+        }
+      });
+
+      this.$root.$options.bus.$emit(eventTypes.OLMAP_TOOLBAR_ADDTOOLBARITEM, {
+        type: "separator",
+      });
+
+      this.$root.$options.bus.$emit(eventTypes.OLMAP_TOOLBAR_ADDTOOLBARITEM, {
+        iconPath: "/remocra/static/img/cog.png",
+        type: "button",
+        title: "Lancer un traitement",
+        name: "lancerTraitement",
+        onClick: () => {
+          this.$refs.process.showModal(this.processHiddenValues);
         }
       });
 
@@ -396,6 +417,8 @@ export default {
     },
 
     calculCouvertureHydraulique(reseauImporte) {
+      this.spinnerMap = true;
+      this.disableToolbar = true;
       var hydrants = _.map(this.selectedFeatures.filter(f => f.id.startsWith("v_hydrant_pibi") || f.id.startsWith("v_hydrant_penai")),'properties.id');
       var projets = _.map(this.selectedFeatures.filter(f => f.id.startsWith("etude_hydrant_projet")), 'properties.id');
 
@@ -413,8 +436,13 @@ export default {
       }).then(() => {
         this.disableToolbar = false;
         this.spinnerMap = false;
-        this.$root.$options.bus.$emit(eventTypes.OLMAP_COUCHES_REFRESHLAYER);
-      })
+        this.$nextTick(() => {
+          this.$root.$options.bus.$emit(eventTypes.OLMAP_COUCHES_REFRESHLAYER);
+        });
+      }).catch(() => {
+        this.disableToolbar = false;
+        this.spinnerMap = false;
+      });
     }
   }
 };
