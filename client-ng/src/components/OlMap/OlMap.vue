@@ -172,4 +172,8 @@ export default {
   width: 100%;
   position: relative;
 }
+
+#map.fullscreen{
+  height: 100%;
+}
 </style>

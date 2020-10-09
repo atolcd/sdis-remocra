@@ -403,16 +403,31 @@ export default {
     },
 
     GoInFullscreen: function() {
-      var elem = document.getElementById("olMap")
+      var elem = document.getElementById("olMap");
+
+      var exitHandler = function() {
+        if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
+          document.getElementById("map").classList.remove("fullscreen");
+        }
+      };
+
       if (document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled) {
         if (elem.requestFullscreen) {
-          elem.requestFullscreen()
+          elem.requestFullscreen();
+          document.getElementById("map").classList.add("fullscreen");
+          document.addEventListener('fullscreenchange', exitHandler);
         } else if (elem.webkitRequestFullscreen) {
-          elem.webkitRequestFullscreen()
+          elem.webkitRequestFullscreen();
+          document.getElementById("map").classList.add("fullscreen");
+          document.addEventListener('fullscreenchange', exitHandler);
         } else if (elem.mozRequestFullScreen) {
-          elem.mozRequestFullScreen()
+          elem.mozRequestFullScreen();
+          document.getElementById("map").classList.add("fullscreen");
+          document.addEventListener('fullscreenchange', exitHandler);
         } else if (elem.msRequestFullscreen) {
-          elem.msRequestFullscreen()
+          elem.msRequestFullscreen();
+          document.getElementById("map").classList.add("fullscreen");
+          document.addEventListener('fullscreenchange', exitHandler);
         }
       }
     },
