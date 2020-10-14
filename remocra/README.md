@@ -27,7 +27,7 @@ Installer :
 
 Docker est exploité pour :
 * créer un serveur de données PostgreSQL et un serveur cartographique GeoServer de développements
-* compiler / exécuter l'application via un conteneur qui contient les outils à utiliser : une [jdk 1.7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html), [maven 3](https://maven.apache.org/) et [sencha-cmd 3.0.2](https://docs.sencha.com/cmd/)
+* compiler / exécuter l'application via un conteneur qui contient les outils à utiliser : une [jdk 1.8](https://www.oracle.com/fr/java/technologies/javase/javase-jdk8-downloads.html), [maven 3](https://maven.apache.org/) et [sencha-cmd 3.0.2](https://docs.sencha.com/cmd/)
 
 Récupérer les sources du projet :
 
@@ -81,7 +81,7 @@ docker run --rm \
   -v "/var/remocra/layers":/var/remocra/layers \
   --link dbdocker_postgres_1:postgis.sdisxx.fr --link dbdocker_geoserver_1:geoserver.sdisxx.fr \
   -v ~/.m2:/var/maven/.m2 -e MAVEN_CONFIG=/var/maven/.m2 -e MAVEN_OPTS="-Duser.home=/var/maven" -e "npm_config_cache=npm-cache" \
-  cvagner/docker-jdk-maven-sencha-cmd:7-3.6.1-3.0.2 \
+  cvagner/docker-jdk-maven-sencha-cmd:8-3.6.3-3.0.2 \
   \
   mvn tomcat7:run -Dclient-ng.dir=client-ng/dist/remocra/static -Ddatabase.url=jdbc:postgresql://postgis.sdisxx.fr:5432/remocra
 ```
