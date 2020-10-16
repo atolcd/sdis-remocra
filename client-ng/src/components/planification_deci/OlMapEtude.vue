@@ -116,7 +116,7 @@ export default {
 
       this.$root.$options.bus.$emit(eventTypes.OLMAP_TOOLBAR_ADDTOOLBARITEM, {
         type: "libelle",
-        text: "PEI Projets"
+        text: "PEI en projet"
       });
 
       // Bouton d'ajout des hydrants projet

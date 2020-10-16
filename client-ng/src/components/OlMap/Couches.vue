@@ -9,7 +9,7 @@
       <p v-b-toggle.accordionCouches>Couches</p>
     </b-card-header>
     <b-card-text>
-      <b-collapse id="accordionCouches" visible role="tabpanel">
+      <b-collapse id="accordionCouches" visible role="tabpanel" accordion="accordionCouchesLegende">
         <div v-for="(groupe, indexGroup) in layersGroups" :key="indexGroup">
           <p class="layerGroup">{{groupe}}</p>
           <div v-for="(layer, index) in getSortedLayers(groupe)" :key="index" :class="{'selectedLayer':layer.get('code') == coucheActive}">
@@ -50,7 +50,7 @@
       <p v-b-toggle.accordionLegende>Légende</p>
     </b-card-header>
     <b-card-text>
-      <b-collapse id="accordionLegende" role="tabpanel">
+      <b-collapse id="accordionLegende" role="tabpanel" accordion="accordionCouchesLegende">
         <div v-for="(layer, index) in layers" :key="index">
           <div v-if="layer.get('legende') && layer.get('legende').visible">
             <div v-if="layer.get('legende').type == 'getLegendGraphic'">
@@ -469,6 +469,8 @@ export default {
   z-index: 1;
   display: inline-flex;
   flex-direction: column;
+  max-height: 88%;
+  overflow-y: scroll;
 }
 
 .card-header {

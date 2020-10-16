@@ -511,7 +511,7 @@ export default {
   justify-content: center;
   position: absolute;
   display: inline-flex;
-  max-width: 75%;
+  max-width: 95%;
   border: 1px solid rgb(210,210,210);
   left: 50%;
   transform: translateX(-50%);
