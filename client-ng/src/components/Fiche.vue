@@ -1,6 +1,13 @@
 <template>
 <div :class="{ 'Fiche': true, 'mode-visite': newVisite, 'loading': !dataLoaded }">
-  <b-modal id="modalFiche" ref="modalFiche" :title="title" no-close-on-backdrop ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="close()" :ok-disabled="!dataLoaded">
+  <modal name="modalFiche"  :draggable="true" id="modalFiche"  ref="modalFiche" classes="modalFiche" @closed="close()"
+    :reset="true"
+    width="50%"
+    height="auto">
+    <header class="modal-header"><h5 class="modal-title">{{title}}</h5>
+    <div slot="top-right">
+     <button type="button" aria-label="Close" @click="$modal.hide('modalFiche')" class="close">×</button>
+    </div></header>
     <form id='formFiche' name='fiche' enctype="multipart/form-data" method="POST" ref="formFiche">
       <!-- ================================== En-tête du formulaire ==================================-->
       <div id="entete" class="entete form-group">
@@ -96,10 +103,14 @@
         </b-tabs>
       </div>
     </form>
+    <div class="modal-footer">
+        <b-button size="sm" type="reset" variant="secondary" @click="$modal.hide('modalFiche')">Annuler</b-button>
+        <b-button size="sm" type="submit" variant="primary" @click="handleOk" :disabled="!dataLoaded">Valider</b-button>
+      </div>
     <ModalGestionnairePrive v-on:modalGestionnaireValues="onGestionnaireCreated" ref="modalGestionnairePrive"></ModalGestionnairePrive>
     <notifications group="remocra" position="top right" animation-type="velocity" :duration="3000" />
-  </b-modal>
-</div>
+  </modal>
+  </div>
 </template>
 
 <script>
@@ -214,14 +225,18 @@ export default {
     }
   },
   mounted: function() {
-    this.$refs.modalFiche.show()
+    //this.$refs.modalFiche.show()
+    this.$modal.show('modalFiche', {
+        title: 'Information' })
     loadProgressBar({
-      parent: "#formFiche",
+      parent: "#modalFiche",
       showSpinner: false
     })
     var self = this;
     // Récupération des droits de l'utilisateur courant
     axios.get('/remocra/utilisateurs/current/xml').then(response => {
+                console.log("response")
+
       var xmlDoc = (new DOMParser()).parseFromString(response.data, "text/xml");
       self.utilisateurDroits = [];
       _.forEach(xmlDoc.getElementsByTagName("right"), function(item) {
@@ -661,10 +676,9 @@ export default {
               id: id,
               numero: numero
             })
-            if (self.$refs.modalFiche) {
-              self.$refs.modalFiche.hide()
-            }
-          });
+             if (self.$refs.modalFiche) {
+                self.$modal.hide('modalFiche')
+           }});
         }).catch(function(error) {
           console.error('postEvent', error)
         })
@@ -745,15 +759,19 @@ label {
   margin-bottom: 2px;
 }
 
-#modalFiche .modal-content {
-  width: max-content;
-  left: 50%;
-  transform: translate(-50%);
+.vm--modal {
   background-color: #e9e9e9 !important;
+  padding: 10px;
+}
+#modalFiche .modal-content {
+ width: max-content;
+ left: 50%;
+ transform: translate(-50%);
+ background-color: #e9e9e9 !important;
 }
 
-#modalFiche .modal-backdrop {
-  opacity: 0;
+.modal-footer {
+  justify-content: center;
 }
 
 .gestionnaireBtn {
@@ -791,4 +809,5 @@ label {
 .labelDisabled {
   color: #6c757d !important;
 }
+
 </style>

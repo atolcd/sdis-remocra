@@ -29,12 +29,14 @@ import 'bootstrap-vue/dist/bootstrap-vue.min.css'
 import 'ol/ol.css'
 import 'v-autocomplete/dist/v-autocomplete.css'
 import _ from 'lodash'
+import VModal from 'vue-js-modal'
 
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
 Vue.use(rate)
 Vue.use(Popover)
+Vue.use(VModal)
 Vue.use(Notifications, {
   velocity
 })
