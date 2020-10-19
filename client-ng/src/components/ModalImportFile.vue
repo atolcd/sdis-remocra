@@ -1,6 +1,13 @@
 <template>
 <div id="modalFile">
-  <b-modal ref="modalImportFile" title="Importer un fichier" no-close-on-backdrop ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
+  <modal ref="modalImportFile" :draggable="true" name="modalImportFile"  @before-close="clearFields"
+   :reset="true"
+    width="50%"
+    height="auto">
+     <header class="modal-header"><h5 class="modal-title">Importer un fichier</h5>
+    <div slot="top-right">
+     <button type="button" aria-label="Close" @click="$modal.hide('modalImportFile')" class="close">×</button>
+    </div></header>
     <form @submit.stop.prevent="handleSubmit">
       <b-form-group horizontal label="Fichier:" label-for="inputFichier">
         <div class="custom-file b-form-file">
@@ -68,7 +75,11 @@
         </div>
       </fieldset>
     </form>
-  </b-modal>
+     <div class="modal-footer">
+        <b-button size="sm" type="reset" variant="secondary" @click="$modal.hide('modalImportFile')">Annuler</b-button>
+        <b-button size="sm" type="submit" variant="primary" @click="handleOk" >Valider</b-button>
+      </div>
+  </modal>
 </div>
 </template>
 
@@ -204,7 +215,7 @@ export default {
   methods: {
     // ouverture de la fenêtre modale
     openModal: function() {
-      this.$refs.modalImportFile.show()
+      this.$modal.show('modalImportFile')
       this.createMapPreview()
     },
     // sélection du fichier saisi dans l'input
@@ -589,7 +600,7 @@ export default {
       }
       this.nbGpx++
       this.$parent.modalImportFileValider(donnees)
-      this.$refs.modalImportFile.hide()
+      this.$modal.hide('modalImportFile')
     },
     // création d'une couche lors de la présence d'un fichier GeoJson
     creationCoucheJson: function(evt) {
@@ -636,7 +647,7 @@ export default {
       }
       this.nbGeojson++
       this.$parent.modalImportFileValider(donnees)
-      this.$refs.modalImportFile.hide()
+      this.$modal.hide('modalImportFile')
     },
     // création d'une couche lors de la présence d'un fichier Kml
     creationCoucheKml: function(evt) {
@@ -689,7 +700,7 @@ export default {
       }
       this.nbKml++
       this.$parent.modalImportFileValider(donnees)
-      this.$refs.modalImportFile.hide()
+      this.$modal.hide('modalImportFile')
     },
     // création de la map de prévisualisation
     createMapPreview: function() {
@@ -909,5 +920,8 @@ legend {
   position: initial;
   z-index: 0;
   opacity: 1;
+}
+.modal-footer{
+  justify-content: center;
 }
 </style>
