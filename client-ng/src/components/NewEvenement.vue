@@ -1,7 +1,13 @@
 <template>
 <div>
-  <b-modal :id="'modalEvent'+criseId" ref="modal" :title="title" ok-title="Valider" no-close-on-backdrop cancel-title="Annuler" @ok="handleOk" @hidden="clearFields">
-    <b-tabs id="tabsNewEvenement" ref="tabs" v-model="tabIndex">
+  <modal :name="'modalEvent'+criseId" :id="'modalEvent'+criseId" :draggable="true"  @before-close="clearFields"
+  :reset="true"
+    width="50%"
+    height="auto">
+       <header class="modal-header"><h5 class="modal-title">{{title}}</h5>
+    <div slot="top-right">
+     <button type="button" aria-label="Close" @click="$modal.hide('modalEvent'+criseId)" class="close">×</button>
+    </div></header>    <b-tabs id="tabsNewEvenement" ref="tabs" v-model="tabIndex">
       <b-tab title="Général" active>
         <form :id="'formEvent'+criseId" class="needs-validation" @submit.stop.prevent="handleSubmit">
           <b-form-group horizontal label="Type:" label-for="typeEvent">
@@ -92,7 +98,11 @@
         </b-form-group>
       </b-tab>
     </b-tabs>
-  </b-modal>
+     <div class="modal-footer">
+        <b-button size="sm" type="reset" variant="secondary" @click="$modal.hide('modalEvent'+criseId)">Annuler</b-button>
+        <b-button size="sm" type="submit" variant="primary" @click="handleOk" >Valider</b-button>
+      </div>
+  </modal>
 </div>
 </template>
 
@@ -182,7 +192,7 @@ export default {
       this.$root.$emit('bv::hide::popover')
       this.title = 'Nouvel évènement'
       this.showTabComplement()
-      this.$refs.modal.show()
+      this.$modal.show('modalEvent'+this.criseId)
     },
     createCartoEvent(criseId, natureId, wktfeaturegeom) {
       this.showInterventions = true
@@ -197,7 +207,7 @@ export default {
           this.disableNatures = true
           this.title = 'Nouvel évènement'
           this.showTabComplement()
-          this.$refs.modal.show()
+          this.$modal.show('modalEvent'+ criseId)
         }
       }).catch(function(error) {
         console.error('nature évenement', error)
@@ -258,7 +268,7 @@ export default {
       }
       this.$root.$emit('bv::hide::popover')
       this.title = 'Modification d\'événement'
-      this.$refs.modal.show()
+      this.$modal.show('modalEvent'+criseId)
     },
     clearFields() {
       // todo instancier les data en null et faire un reset
@@ -405,7 +415,7 @@ export default {
             this.$root.$options.bus.$emit(eventTypes.LOAD_DOCUMENTS, criseId)
             this.$root.$options.bus.$emit(eventTypes.LOAD_FILTERS, criseId)
             this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, criseId)
-            this.$refs.modal.hide()
+            this.$modal.hide('modalEvent'+criseId)
           }
         }).catch(function(error) {
           console.error('putEvent', error)
@@ -423,7 +433,7 @@ export default {
             this.$root.$options.bus.$emit(eventTypes.LOAD_DOCUMENTS, criseId)
             this.$root.$options.bus.$emit(eventTypes.LOAD_FILTERS, criseId)
             this.$root.$options.bus.$emit(eventTypes.REFRESH_MAP, criseId)
-            this.$refs.modal.hide()
+            this.$modal.hide('modalEvent'+criseId)
           }
         }).catch(function(error) {
           console.error('postEvent', error)
@@ -641,5 +651,8 @@ export default {
 
 .mt-3 img {
   margin-right: 10px;
+}
+.modal-footer {
+  justify-content: center;
 }
 </style>
