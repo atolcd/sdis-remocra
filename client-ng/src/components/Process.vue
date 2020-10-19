@@ -1,6 +1,13 @@
 <template>
 <div>
-  <b-modal id="modalProcess" ref="modal" title="Processus Etl" no-close-on-backdrop ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="clearFields" :ok-disabled="selected == null">
+  <modal id="modalProcess" name="modalProcess" :draggable="true"   @before-close="clearFields"
+   :reset="true"
+    width="50%"
+    height="auto" >
+     <header class="modal-header"><h5 class="modal-title">Processus Etl</h5>
+    <div slot="top-right">
+     <button type="button" aria-label="Close" @click="$modal.hide('modalProcess')" class="close">×</button>
+    </div></header>
     <b-form-group horizontal label="Choix du Processus:" label-for="process">
       <b-form-select id="process" v-model="selected" :options="options" class="mb-3" @input="getParams" />
     </b-form-group>
@@ -52,7 +59,11 @@
         </b-form-group>
       </div>
     </form>
-  </b-modal>
+      <div class="modal-footer">
+        <b-button size="sm" type="reset" variant="secondary" @click="$modal.hide('modalProcess')">Annuler</b-button>
+        <b-button size="sm" type="submit" variant="primary" @click="handleOk" >Valider</b-button>
+      </div>
+  </modal>
 </div>
 </template>
 
@@ -102,7 +113,7 @@ export default {
               'id': item.id,
               'description': item.description
             },
-            'text': item.libelle
+            'text': item.code
           })
         })
       }).catch(function(error) {
@@ -231,5 +242,8 @@ export default {
 
 input[inputType="hiddenfield"] {
   display: none;
+}
+.modal-footer{
+  justify-content: center;
 }
 </style>
