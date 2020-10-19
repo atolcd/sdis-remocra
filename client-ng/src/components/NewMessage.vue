@@ -1,6 +1,13 @@
 <template>
 <div>
-  <b-modal id="modalMessage" ref="modal" title="Nouveau message" no-close-on-backdrop ok-title="Valider" cancel-title="Annuler" :ok-disabled="disableOk" @ok="handleOk" @hidden="clearFields">
+  <modal id="modalMessage" :draggable="true" name="modalMessage" @before-close="clearFields"
+   :reset="true"
+    width="50%"
+    height="auto">
+       <header class="modal-header"><h5 class="modal-title">Nouveau message</h5>
+    <div slot="top-right">
+     <button type="button" aria-label="Close" @click="$modal.hide('modalMessage')" class="close">×</button>
+    </div></header>
     <form :id="'formMessage'+criseId" @submit.stop.prevent="handleSubmit" class="needs-validation">
       <b-form-group horizontal label="Objet:" label-for="objet">
         <b-form-input id="objetMessage" required v-model="form.objet" class="form-control">
@@ -28,7 +35,11 @@
         </b-form-textarea>
       </b-form-group>
     </form>
-  </b-modal>
+     <div class="modal-footer">
+        <b-button size="sm" type="reset" variant="secondary" @click="$modal.hide('modalMessage')">Annuler</b-button>
+        <b-button size="sm" type="submit" variant="primary" @click="handleOk" >Valider</b-button>
+      </div>
+  </modal>
 </div>
 </template>
 
@@ -67,7 +78,7 @@ export default {
     showModal(criseId, evenementId) {
       this.criseId = criseId
       this.evenementId = evenementId
-      this.$refs.modal.show()
+      this.$modal.show('modalMessage')
       this.$root.$emit('bv::hide::popover')
     },
     clearFields() {
@@ -115,7 +126,7 @@ export default {
           this.$root.$options.bus.$emit(eventTypes.LOAD_EVENEMENTS, {
             crise: criseId
           })
-          this.$refs.modal.hide()
+          this.$modal.hide('modalMessage')
         }
       }).catch(function(error) {
         console.error('postEvent', error)
@@ -135,5 +146,8 @@ export default {
 
 >>>button.Rate__star {
   color: #fff;
+}
+.modal-footer{
+  justify-content: center;
 }
 </style>
