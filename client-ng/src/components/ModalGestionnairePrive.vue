@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalGestionnairePrive" title="Gestionnaire de PEI privé" cancel-title="Annuler" ok-title="Valider" ref="modalGestionnairePrive" @ok="handleOk">
+  <b-modal id="modalGestionnairePrive" title="Gestionnaire de PEI privé" no-close-on-backdrop cancel-title="Annuler" ok-title="Valider" ref="modalGestionnairePrive" @ok="handleOk">
     <form ref="formGestionnairePrive" id="formGestionnairePrive">
       <div class="row">
         <div class="col-md-6">
@@ -436,10 +436,6 @@ export default {
   color: #7B7B7B;
   font-size: 20px;
   font-family: sans-serif, arial, verdana;
-}
-
-#modalGestionnaire .modal-backdrop.show {
-  opacity: 0;
 }
 
 #formGestionnairePrive {
