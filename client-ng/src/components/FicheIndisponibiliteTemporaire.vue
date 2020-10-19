@@ -1,6 +1,13 @@
 <template>
 <div id="FicheIndisponibiliteTemporaire">
-  <b-modal id="modalFicheIndispo" ref="modalFicheIndispo" no-close-on-backdrop :title="this.title" ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @hidden="close()">
+  <modal :draggable="true" id="modalFicheIndispo" name="modalFicheIndispo" ref="modalFicheIndispo"
+   :reset="true"
+    width="50%"
+    height="auto">
+       <header class="modal-header"><h5 class="modal-title">{{title}}</h5>
+    <div slot="top-right">
+     <button type="button" aria-label="Close" @click="$modal.hide('modalFicheIndispo')" class="close">×</button>
+    </div></header>
     <form id='formFicheIndispoTemp' name='fiche' enctype="multipart/form-data" method="POST" ref="formFicheIndispoTemp">
       <!-- ================================== Partie Mise en indisponibilité ==================================-->
       <div class="title">Mise en indisponibilité</div>
@@ -100,7 +107,11 @@
         </div>
       </div>
     </form>
-  </b-modal>
+    <div class="modal-footer">
+        <b-button size="sm" type="reset" variant="secondary" @click="$modal.hide('modalFicheIndispo')">Annuler</b-button>
+        <b-button size="sm" type="submit" variant="primary" @click="handleOk" >Valider</b-button>
+      </div>
+  </modal>
 </div>
 </template>
 
@@ -200,7 +211,7 @@ export default {
       this.initFicheIndispoTemp();
     }
     this.$nextTick(() => {
-      this.$refs.modalFicheIndispo.show();
+      this.$modal.show('modalFicheIndispo');
     })
   },
   methods: {
@@ -477,7 +488,7 @@ export default {
           'Accept': 'application/json'
         }
       }).then(function() {
-        self.$refs.modalFicheIndispo.hide()
+        self.$modal.hide('modalFicheIndispo')
       }).catch(function(error) {
         console.error(error)
       });
@@ -495,7 +506,6 @@ export default {
 .modal-title {
   font-size: 1.3rem;
 }
-
 #modalFicheIndispo .modal-content {
   background-color: #e9e9e9 !important;
   font-size: 1rem;
@@ -513,6 +523,7 @@ export default {
   background-color: #e9e9e9 !important;
   font-size: 1rem;
   padding: 10px;
+  justify-content: center;
 }
 
 .title {
