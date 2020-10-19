@@ -306,6 +306,11 @@
 					<xs:documentation>Champ de saisie de type "Téléversement de fichier"</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="hiddenfield">
+				<xs:annotation>
+					<xs:documentation>Champ de saisie de type caché</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modele>
+	<categorie>COUVERTURE_HYDRAULIQUE</categorie>
+	<code>IMPORTER_GEOM_ETUDE</code>
+	<libelle>Import les données géométriques spécifiques</libelle>
+	<description>Import ou mise à jour des données de réseau routier et de batiment spécifique à l'étude</description>
+	<fichier>importer_geom_etude.kjb</fichier>
+	<priorite>3</priorite>
+	<messageSucces>
+		<objet>REMOCRA : Import des données d'étude réalisé</objet>
+		<corps><![CDATA[
+		<p>Bonjour [UTILISATEUR_PRENOM] [UTILISATEUR_NOM],</p>
+		<p>Votre import de données pour une étude a été réalisé.<br/>Vous pouvez consulter les données sur l'application REMOCRA</p>
+		]]></corps>
+	</messageSucces>
+	<messageEchec>
+		<objet>REMOCRA : Echec de l'import des données d'étude</objet>
+		<corps><![CDATA[
+		<p>Bonjour [UTILISATEUR_PRENOM] [UTILISATEUR_NOM],</p>
+		<p>Votre import de données pour une étude n'a pas pu être réalisé.<br/>Vous pouvez tenter un nouvel import et contacter le SDIS en cas de nouvel échec</p>
+		]]></corps>
+	</messageEchec>
+	<parametres>
+        <parametre>
+			<nom>FICHIER_RESEAU</nom>
+			<typeValeur>character varying</typeValeur>
+			<obligatoire>false</obligatoire>
+			<formulaire etiquette="Fichier du réseau routier" typeControle="filefield"/>
+        </parametre>
+        <parametre>
+			<nom>FICHIER_BATIMENT</nom>
+			<typeValeur>character varying</typeValeur>
+			<obligatoire>false</obligatoire>
+			<formulaire etiquette="Fichier des batiments" typeControle="filefield"/>
+		</parametre>
+	<parametre>
+			<nom>ID_OBJET</nom>
+			<typeValeur>integer</typeValeur>
+			<obligatoire>true</obligatoire>
+			<formulaire etiquette="id objet" typeControle="hiddenfield"/>
+		</parametre>
+	</parametres>
+	<profils tousProfils="true"/>
+	<planification/>
+</modele>
