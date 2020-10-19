@@ -1,11 +1,22 @@
 <template>
 <div>
   <!-- Modal Component -->
-  <b-modal :id="'modalCard'+crise" ref="modal" no-close-on-backdrop title="Carte horodatée" ok-title="Valider" cancel-title="Annuler" @ok="handleOk" @shown="clearName">
+  <modal :id="'modalCard'+crise" :name="'modalCard'+crise" @before-close="clearName" :draggable="true"
+   :reset="true"
+    width="50%"
+    height="auto">
+       <header class="modal-header"><h5 class="modal-title">Carte horodatée</h5>
+    <div slot="top-right">
+     <button type="button" aria-label="Close" @click="$modal.hide('modalCard'+crise)" class="close">×</button>
+    </div></header>
     <form @submit.stop.prevent="handleSubmit">
       <b-form-input type="text" placeholder="Saisir le titre de la carte" v-model="name"></b-form-input>
     </form>
-  </b-modal>
+    <div class="modal-footer">
+        <b-button size="sm" type="reset" variant="secondary" @click="$modal.hide('modalCard'+crise)">Annuler</b-button>
+        <b-button size="sm" type="submit" variant="primary" @click="handleOk" >Valider</b-button>
+      </div>
+  </modal>
 </div>
 </template>
 
@@ -31,7 +42,7 @@ export default {
     makeCard(canvas, extent) {
       this.canvas = canvas
       this.extent = extent
-      this.$refs.modal.show()
+      this.$modal.show('modalCard'+this.crise)
     },
     handleOk(evt) {
       // Prevent modal from closing
@@ -76,7 +87,7 @@ export default {
         }).catch(function(error) {
           console.error('postEvent', error)
         })
-        self.$refs.modal.hide()
+        self.$modal.hide('modalCard'+criseId)
       }, 'image/png')
     }
   }
