@@ -1,7 +1,15 @@
 <template>
   <div id="Courrier">
     <!-- ================================================ Paramètres du document ========================================================= -->
-    <b-modal id="modalCourrier" ref="modalCourrier"  no-close-on-backdrop title="Génération de courrier" cancel-title="Annuler" ok-title="Aperçu" @ok="handleOk" @close="setModalVisibility('modalCourrier', false)" @cancel="setModalVisibility('modalCourrier', false)">
+    <modal id="modalCourrier" name="modalCourrier" @closed="close()"
+   :reset="true"
+   :draggable="true"
+    width="50%"
+    height="auto">
+       <header class="modal-header"><h5 class="modal-title">Génération de courrier</h5>
+    <div slot="top-right">
+     <button type="button" aria-label="Close" @click="$modal.hide('modalCourrier')" class="close">×</button>
+    </div></header>
     <form id='formCourrier' name='courrier' enctype="multipart/form-data" method="POST" ref="formCourrier">
       <b-form-group>
         <div class="row">
@@ -77,7 +85,11 @@
         </div>
       </div>
     </form>
-    </b-modal>
+    <div class="modal-footer">
+        <b-button size="sm" type="reset" variant="secondary" @click="$modal.hide('modalCourrier')">Annuler</b-button>
+        <b-button size="sm" type="submit" variant="primary" @click="handleOk" >Aperçu</b-button>
+      </div>
+    </modal>
 
       <!-- ================================================ Aperçu du document ========================================================= -->
 
@@ -275,7 +287,7 @@ export default {
   },
 
   mounted: function(){
-    this.$refs.modalCourrier.show();
+    this.$modal.show('modalCourrier');
     this.initComboModele();
   },
 
@@ -309,7 +321,9 @@ export default {
         if(modalName == "modalModifier"){
           var element = document.getElementById("Courrier");
           element.parentNode.removeChild(element);
-        } else {
+        } else if (modalName == "modalCourrier"){
+           this.$modal.hide('modalCourrier');
+        }else {
           this.$refs[modalName].hide();
         }
       }
@@ -556,7 +570,11 @@ export default {
                     this.$refs.modalPopupNotif.show();
         })
       }
+    }, 
+    close(){
+      this.$root.$options.bus.$emit('closed')
     }
+    
   }
 };
 </script>
