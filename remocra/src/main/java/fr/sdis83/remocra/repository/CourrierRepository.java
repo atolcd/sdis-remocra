@@ -6,6 +6,7 @@ import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
 import fr.sdis83.remocra.domain.remocra.TypeDroit;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
+import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.util.StatementFormat;
 import fr.sdis83.remocra.service.ParamConfService;
@@ -95,8 +96,9 @@ public class CourrierRepository {
   }
 
 
-  public List<CourrierModele> getAllModeleByThematique(String thematique) {
+  public List<CourrierModele> getAllModeleByThematique(String thematique) throws BusinessException {
     List<CourrierModele> l = null;
+    //System.out.println(utilisateurService.getCurrentUtilisateur().getProfilUtilisateur().getId());
     l = context.select(COURRIER_MODELE.ID, COURRIER_MODELE.CODE, COURRIER_MODELE.LIBELLE, COURRIER_MODELE.DESCRIPTION,
             COURRIER_MODELE.MODELE_OTT, COURRIER_MODELE.SOURCE_XML, COURRIER_MODELE.MESSAGE_OBJET,
             COURRIER_MODELE.MESSAGE_CORPS, COURRIER_MODELE.THEMATIQUE)
@@ -104,7 +106,7 @@ public class CourrierRepository {
             .join(COURRIER_MODELE_DROIT).on(COURRIER_MODELE.ID.eq(COURRIER_MODELE_DROIT.MODELE))
             .join(THEMATIQUE).on(COURRIER_MODELE.THEMATIQUE.eq(THEMATIQUE.ID))
             .where(THEMATIQUE.CODE.eq(thematique)
-                    .and(COURRIER_MODELE_DROIT.PROFIL_DROIT.eq(utilisateurService.getCurrentUtilisateur().getProfilUtilisateur().getId()))
+                    .and(COURRIER_MODELE_DROIT.PROFIL_DROIT.eq(utilisateurService.getCurrentProfilDroit().getId()))
             ).fetchInto(CourrierModele.class);
     return l;
   }

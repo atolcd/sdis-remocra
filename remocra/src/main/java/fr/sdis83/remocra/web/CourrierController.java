@@ -96,7 +96,7 @@ public class CourrierController {
             }
 
             @Override
-            protected List<CourrierModele> getRecords() {
+            protected List<CourrierModele> getRecords() throws BusinessException {
                 return courrierRepository.getAllModeleByThematique(thematique);
             }
         }.serialize();
