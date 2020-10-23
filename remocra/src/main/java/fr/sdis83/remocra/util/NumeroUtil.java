@@ -12,7 +12,7 @@ import javax.persistence.Query;
 public class NumeroUtil {
 
     public enum MethodeNumerotation {
-        M_09, M_77, M_83, M_86, M_89, M_42, M_78
+        M_09, M_77, M_83, M_86, M_89, M_42, M_78, M_66
     }
 
     public static MethodeNumerotation getHydrantNumerotationMethode() {
@@ -72,6 +72,8 @@ public class NumeroUtil {
                 return NumeroUtil.computeNumero89(hydrant);
             case M_78:
                 return NumeroUtil.computeNumero78(hydrant);
+            case M_66:
+                return NumeroUtil.computeNumero66(hydrant);
             default:
                 return NumeroUtil.computeNumero83(hydrant);
         }
@@ -125,6 +127,26 @@ public class NumeroUtil {
         sb.append(hydrant.getCommune().getInsee());
         sb.append("_");
         return sb.append(hydrant.getNumeroInterne().toString()).toString();
+    }
+
+      /**
+     * <code insee commune>_<numéro interne><P(pour les PEI privés)>
+     * <p>
+     * Exemple : 89043_12P
+     *
+     * @param hydrant
+     * @return
+     */
+    protected static String computeNumero66(Hydrant hydrant) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(hydrant.getCommune().getInsee());
+        sb.append("_");
+        sb.append(hydrant.getNumeroInterne().toString());
+        if("PRIVE".equals(hydrant.getCodeNatureDeci())){
+            sb.append("P");
+        }
+        return sb.toString();
     }
 
     /**
