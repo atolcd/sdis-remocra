@@ -39,12 +39,12 @@
         <div class="row">
           <div class="col-md-6">
             <b-form-group label="Date " label-for="date" label-cols-md="3">
-              <b-form-input id="date" v-model="formattedDate[selectedRow]" type="date" :max="dateMax" size="sm" required></b-form-input>
+              <b-form-input id="date" v-model="formattedDate[selectedRow]" type="date" :max="dateMax" size="sm" :state="etats.time" required></b-form-input>
             </b-form-group>
           </div>
           <div class="col-md-6">
             <b-form-group label="Heure " label-for="heure" label-cols-md="3">
-              <b-form-input id="heure" v-model="formattedTime[selectedRow]" type="time" :max="timeMax" size="sm" required></b-form-input>
+              <b-form-input id="heure" v-model="formattedTime[selectedRow]" type="time" size="sm" :state="etats.time" required></b-form-input>
             </b-form-group>
           </div>
         </div>
@@ -661,6 +661,19 @@ export default {
             })
           } else {
             tabDates.push(date);
+          }
+
+          // Si une visite est à une date future, on bloque la validation
+          this.etats.noFutureDate = 'valid';
+          if(moment(this.dateMax+" "+this.timeMax).diff(moment(date)) < 0) {
+            this.etats.date = 'invalid';
+            this.etats.time = 'invalid';
+            this.$notify({
+              group: 'remocra',
+              title: 'Saisie invalide',
+              type: 'error',
+              text: 'Une visite est renseignée à une date future'
+            })
           }
         })
       }
