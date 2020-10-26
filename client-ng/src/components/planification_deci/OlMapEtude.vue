@@ -5,29 +5,29 @@
       <div class="text-center">
         <b-spinner v-if="spinnerMap" id="spinner" variant="primary"></b-spinner>
       </div>
-    </template>
-  </OlMap>
 
-  <ModalePeiProjet id="modalePeiProjet" :idEtude="parseInt(idEtude)" :coordonnees="peiProjetCoordonnees" :idHydrantProjet="selectedHydrantProjet"></ModalePeiProjet>
+      <ModalePeiProjet id="modalePeiProjet" :idEtude="parseInt(idEtude)" :coordonnees="peiProjetCoordonnees" :idHydrantProjet="selectedHydrantProjet"></ModalePeiProjet>
 
   <Process ref="process" :categorieProcess="'COUVERTURE_HYDRAULIQUE'"></Process>
 
-  <b-modal id="modaleDeletePeiProjet" title="Suppression d'un PEI projet" ok-title="Supprimer" cancel-title="Annuler" @ok="deleteHydrantProjet" ok-variant="danger">
-    <p class="my-4">Etes-vous certain de vouloir supprimer ce PEI ?</p>
-  </b-modal>
+      <b-modal id="modaleDeletePeiProjet" title="Suppression d'un PEI projet" ok-title="Supprimer" cancel-title="Annuler" @ok="deleteHydrantProjet" ok-variant="danger">
+        <p class="my-4">Etes-vous certain de vouloir supprimer ce PEI ?</p>
+      </b-modal>
 
-  <b-modal id="modaleChoixReseau"
-          title="Choix du reseau"
-          ok-title="Commun"
-          cancel-title="Importé"
-          ok-variant="primary"
-          cancel-variant="primary"
-          @ok="calculCouvertureHydraulique(false)"
-          @cancel="calculCouvertureHydraulique(true)"
-          centered
-          no-close-on-backdrop>
-    <p class="my-4 modalContent">Souhaitez-vous calculer la couverture hydraulique de cet hydrant sur le réseau routier commun ou sur le réseau routier précédemment importé ?</p>
-  </b-modal>
+      <b-modal id="modaleChoixReseau"
+              title="Choix du reseau"
+              ok-title="Commun"
+              cancel-title="Importé"
+              ok-variant="primary"
+              cancel-variant="primary"
+              @ok="calculCouvertureHydraulique(false)"
+              @cancel="calculCouvertureHydraulique(true)"
+              centered
+              no-close-on-backdrop>
+        <p class="my-4 modalContent">Souhaitez-vous calculer la couverture hydraulique de cet hydrant sur le réseau routier commun ou sur le réseau routier précédemment importé ?</p>
+      </b-modal>
+    </template>
+  </OlMap>
 </div>
 
 
@@ -449,10 +449,6 @@ export default {
 </script>
 
 <style scoped>
-.test {
-  color: green !important;
-}
-
 #spinner {
   position: absolute;
   z-index: 100000;

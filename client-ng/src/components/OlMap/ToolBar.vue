@@ -24,7 +24,7 @@
 
     <Measures v-if="item.type == 'measures'" :map="map"></Measures>
 
-    <b-btn v-if="item.type == 'fullscreen'" @click="GoInFullscreen" title="Plein écran"><img src="/remocra/static/img/fullscreen.svg"></b-btn>
+    <b-btn v-if="item.type == 'fullscreen'" @click="toggleFullscreen" title="Plein écran"><img src="/remocra/static/img/fullscreen.svg"></b-btn>
 
   </div>
 </div>
@@ -402,8 +402,9 @@ export default {
       return null
     },
 
-    GoInFullscreen: function() {
+    toggleFullscreen: function() {
       var elem = document.getElementById("olMap");
+      var fullscreenEnabled = _.indexOf(document.getElementById("map").classList, 'fullscreen') > -1;
 
       var exitHandler = function() {
         if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
@@ -411,7 +412,11 @@ export default {
         }
       };
 
-      if (document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled) {
+      if(fullscreenEnabled) {
+        document.exitFullscreen();
+      }
+
+      else if (document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled) {
         if (elem.requestFullscreen) {
           elem.requestFullscreen();
           document.getElementById("map").classList.add("fullscreen");
