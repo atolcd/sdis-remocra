@@ -51,16 +51,19 @@
     </b-card-header>
     <b-card-text>
       <b-collapse id="accordionLegende" role="tabpanel" accordion="accordionCouchesLegende">
-        <div v-for="(layer, index) in layers" :key="index">
-          <div v-if="layer.get('legende') && layer.get('legende').visible">
-            <div v-if="layer.get('legende').type == 'getLegendGraphic'">
-              <p class="legendeLibelle">{{layer.get("libelle")}}</p>
-              <img :src="'/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER='+layer.get('layer')" alt="legende"/>
-            </div>
+        <div v-for="(groupe, indexGroup) in legendeLayersGroup" :key="indexGroup">
+          <p class="layerGroup">{{groupe}}</p>
+          <div v-for="(layer, index) in getSortedLayers(groupe)" :key="index" class="layerItemLegende">
+            <div v-if="layer.get('legende') && layer.get('legende').visible">
+              <div v-if="layer.get('legende').type == 'getLegendGraphic'">
+                <p class="legendeLibelle">{{layer.get("libelle")}}</p>
+                <img :src="'/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER='+layer.get('layer')" alt="legende"/>
+              </div>
 
-            <div v-if="layer.get('legende') && layer.get('legende').type == 'url'">
-              <p class="legendeLibelle">{{layer.get("libelle")}}</p>
-              <img :src="require('../../assets/img/'+layer.get('legende').src)" alt="legende" />
+              <div v-if="layer.get('legende') && layer.get('legende').type == 'url'">
+                <p class="legendeLibelle">{{layer.get("libelle")}}</p>
+                <img :src="require('../../assets/img/'+layer.get('legende').src)" alt="legende" />
+              </div>
             </div>
           </div>
         </div>
@@ -132,6 +135,28 @@ export default {
           });
         }
       })
+    }
+  },
+
+  computed: {
+    /**
+      * Retourne les groupes de couches à afficher dans la Légende
+      * Si un groupe ne contient pas au moins une couche à afficher (ex: fonds de plans), il n'est pas retourné par la fonction
+      */
+    legendeLayersGroup: function() {
+      var groupes = [];
+      _.forEach(this.layersGroups, groupe => {
+        var show = false;
+        _.forEach(this.getSortedLayers(groupe), layer => {
+          if(layer.get('legende')) {
+            show = true;
+          }
+        });
+        if(show) {
+          groupes.push(groupe);
+        }
+      });
+      return groupes;
     }
   },
 
@@ -486,11 +511,13 @@ export default {
   padding-left: 0;
 }
 
+.layerGroup {
+  font-weight: bold;
+}
 .layerGroup, .legendeLibelle {
   margin-bottom: 0px;
   margin-left: 8px;
   margin-top: 10px;
-  font-weight: 500;
 }
 .layerItem {
   display: flex;
@@ -533,5 +560,9 @@ export default {
 
 .slidecontainer {
   width: 100%;
+}
+
+.layerItemLegende {
+  padding-left: 10px;
 }
 </style>
