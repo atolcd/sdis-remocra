@@ -63,6 +63,7 @@ include::BSPP/creer_demandes_indispos{outfilesuffix}[]
 === SDIS 21
 
 include::21/notifier_pei_suppr{outfilesuffix}[]
+include::21/notifier_pei_indispo{outfilesuffix}[]
 
 === SDIS 42
 

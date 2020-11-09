@@ -1,0 +1,37 @@
+==== DECI - Notifier les maires des PEI indisponibles
+
+Ce traitement permet de notifier deux fois par jour les maires des PEI indisponibles sur leur territoire avec copie au CIS.
+
+
+===== Configuration
+Le fichier _"remocraXX.properties"_ doit contenir les informations suivantes :
+[width="100%",options="header"]
+|===================
+| Paramètre | Description
+| PDI_PEI_INDISPO_MODELE_TRAITEMENT_ID | Identifiant du traitement de génération de courrier
+| PDI_PEI_INDISPO_COURRIER | Code du courrier à utiliser _(Exemple : `CREATION_PEI`)_
+| PDI_PEI_INDISPO_PROFIL_USER_RESPONSABLE | Code du profil utilisateur du CS à notifier _(Exemple : `CIS`)_
+| INTERVAL_INDISPO | Interval de temps sur lequel on vérifie les nouvelles indisponibilités _(Exemple : `12`)_
+|===================
+
+===== Lancement et planification de la synchronisation
+```ssh
+curl -v http://localhost:8070/v1/jobs -XPOST -d '{
+  "name": "pei-indispo",
+  "displayname": "Notifier les maires des PEI indispos",
+  "schedule": "0 0 0,12 * * *",
+  "owner": "",
+  "owner_email": "",
+  "disabled": false,
+  "tags": {
+    "pdi": "7.1:1"
+  },
+  "metadata": { },
+  "retries": 0,
+  "concurrency": "forbid",
+  "executor": "shell",
+  "executor_config": {
+    "command": "/home/pdi/kitchen.sh -file:/var/remocra/pdi/traitements_sdis/21/notifier_pei_indispo/notifier_pei_indispo.kjb -level:Error -param:PDI_FICHIER_PARAMETRE=/home/pdi/remocra.properties >> /var/remocra/pdi/log/remocra_notifier_pei_indispo.log 2>&1"
+  }
+}'
+```
