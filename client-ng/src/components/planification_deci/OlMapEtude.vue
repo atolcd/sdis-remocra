@@ -46,10 +46,12 @@ import OlInteractionDraw from 'ol/interaction/Draw.js'
 import * as OlProj from 'ol/proj'
 import Point from 'ol/geom/Point'
 import Feature from 'ol/Feature'
+import MultiLineString from 'ol/geom/MultiLineString';
 import Circle from 'ol/geom/Circle'
-import {Style, Circle as CircleStyle, Stroke} from 'ol/style'
+import {Style, Circle as CircleStyle, Stroke, Text, Fill} from 'ol/style'
 import Translate from 'ol/interaction/Translate'
 import Collection from 'ol/Collection'
+import WKT from 'ol/format/WKT'
 
 export default {
   name: 'OlMapEtude',
@@ -78,6 +80,7 @@ export default {
 
       interactionAddPei: null,
       interactionMovePei: null,
+      interactionClosestPei: null,
       peiProjetCoordonnees: null,
       featureMovePei: null,
 
@@ -262,6 +265,37 @@ export default {
       });
 
       this.$root.$options.bus.$emit(eventTypes.OLMAP_TOOLBAR_ADDTOOLBARITEM, {
+        iconPath: "/remocra/static/img/peiPlusProche.png",
+        type: "button",
+        title: "Trouver le PEI le plus proche",
+        name: "peiPlusProche",
+        onClick: () => {
+          this.$root.$options.bus.$emit(eventTypes.OLMAP_TOOLBAR_TOGGLEBUTTON, "peiPlusProche");
+        },
+        onToggle: (state) => {
+          var workingLayer = this.olMap.getLayerById('workingLayer');
+          workingLayer.getSource().clear();
+          if(state) {
+            this.olMap.map.on("click", this.handleMapClickFindClosestPei);
+
+            this.interactionClosestPei = new OlInteractionDraw({
+              type: 'Point',
+              source: workingLayer.getSource(),
+              geometryName: "closestPei"
+            });
+            this.olMap.map.addInteraction(this.interactionClosestPei);
+          } else {
+            this.olMap.map.removeInteraction(this.interactionClosestPei);
+            this.olMap.map.un("click", this.handleMapClickFindClosestPei);
+          }
+
+        },
+        disabled: () => {
+          return this.disableToolbar;
+        }
+      });
+
+      this.$root.$options.bus.$emit(eventTypes.OLMAP_TOOLBAR_ADDTOOLBARITEM, {
         iconPath: "/remocra/static/img/create.png",
         type: "button",
         title: "lancer une simulation",
@@ -383,6 +417,50 @@ export default {
       workingLayer.getSource().clear()
     },
 
+    /**
+      * Clic sur la carte pour trouver le PEI le plus proche
+      */
+    handleMapClickFindClosestPei() {
+      var workingLayer = this.olMap.getLayerById('workingLayer');
+      _.forEach(workingLayer.getSource().getFeatures(), feature => {
+        if(feature.getGeometryName() === 'closestPei') {
+          var coordsClic = OlProj.transform(feature.getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:2154');
+          var formData = new FormData();
+          formData.append("data", JSON.stringify({
+            idEtude: this.idEtude,
+            longitude: coordsClic[0],
+            latitude: coordsClic[1]
+          }));
+          axios.post('/remocra/couverturehydraulique/closestPei', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }).then(response => {
+            if(response.data && response.data.data) {
+
+              workingLayer.getSource().clear();
+              var wktChemin = response.data.data.wktGeometrieChemin;
+              var wktPei = response.data.data.wktGeometriePei;
+              var distance = response.data.data.distance;
+
+              // Affichage des features
+              this.cheminPlusCourtFeaturePei(workingLayer, wktPei, distance);
+              this.cheminPlusCourtFeatureChemin(workingLayer, wktChemin);
+              this.cheminPlusCourtFeatureClic(workingLayer, coordsClic);
+            }
+          }).catch(() => {
+            this.$notify({
+              group: 'remocra',
+              type: 'error',
+              title: 'Calcul des données',
+              text: "Impossible de trouver le PEI le plus proche"
+            });
+          })
+        }
+      })
+      workingLayer.getSource().clear()
+    },
+
     deleteHydrantProjet() {
       axios.delete('/remocra/etudehydrantprojet/', {
         data: {
@@ -443,6 +521,76 @@ export default {
         this.disableToolbar = false;
         this.spinnerMap = false;
       });
+    },
+
+    cheminPlusCourtFeaturePei(workingLayer, wktPei, distance) {
+      var featurePei = (new WKT()).readFeature(wktPei, {
+        dataProjection: 'EPSG:2154',
+        featureProjection: 'EPSG:3857',
+      });
+
+      var circle = new Feature(new Circle(
+          featurePei.get('geometry').flatCoordinates
+      ));
+
+      circle.setStyle(new Style({
+        geometry: new Point(featurePei.get('geometry').flatCoordinates),
+        image: new CircleStyle({
+          radius: 12,
+          stroke: new Stroke({
+            color: '#f01f18',
+            width: 3
+          })
+        }),
+        text: new Text({
+          font: '16px Calibri,sans-serif',
+          overflow: true,
+          fill: new Fill({
+            color: 'white',
+          }),
+          text: Math.round(distance)+" m",
+          offsetY: -20,
+          stroke: new Stroke({color: 'black', width: 2})
+        })
+      }));
+
+      workingLayer.getSource().addFeature(circle);
+    },
+
+    cheminPlusCourtFeatureChemin(workingLayer, wktChemin) {
+      var featureChemin = (new WKT()).readFeature(wktChemin);
+      var path = new Feature({
+        geometry: new MultiLineString(featureChemin.getGeometry().getCoordinates()).transform('EPSG:2154','EPSG:3857'),
+        name: 'chemin'
+      });
+
+      path.setStyle(new Style({
+        stroke: new Stroke({
+          color: '#f01f18',
+          width: 3
+        })
+      }));
+
+      workingLayer.getSource().addFeature(path);
+    },
+
+    cheminPlusCourtFeatureClic(workingLayer, coordsClic) {
+      var pointClic = new Feature(new Point(OlProj.transform(coordsClic, 'EPSG:2154', 'EPSG:3857')));
+      pointClic.setStyle(new Style({
+        geometry: new Point(OlProj.transform(coordsClic, 'EPSG:2154', 'EPSG:3857')),
+        image: new CircleStyle({
+          radius: 6,
+          stroke: new Stroke({
+            color: 'black',
+            width: 2
+          }),
+          fill: new Fill({
+            color: 'white'
+          })
+        })
+      }));
+
+      workingLayer.getSource().addFeature(pointClic);
     }
   }
 };

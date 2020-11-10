@@ -1,7 +1,11 @@
 package fr.sdis83.remocra.web;
 
 import fr.sdis83.remocra.repository.CouvertureHydrauliqueRepository;
+import fr.sdis83.remocra.web.model.PlusProchePei;
+import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
+import org.cts.IllegalCoordinateException;
+import org.cts.crs.CRSException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,5 +50,28 @@ public class CouvertureHydrauliqueController {
       } catch (Exception e) {
           return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
       }
+  }
+
+  @PreAuthorize("hasRight('PLANIFIER_DECI')")
+  @RequestMapping(value = "/closestPei", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
+  @Transactional(noRollbackFor = Exception.class)
+  public ResponseEntity<String> closestPei(MultipartHttpServletRequest request) {
+
+    String json = request.getParameter("data");
+
+    return new AbstractExtObjectSerializer<PlusProchePei>("Contacts retrieved.") {
+      @Override
+      protected PlusProchePei getRecord() {
+        try {
+          return couvertureHydrauliqueRepository.closestPei(json);
+        } catch (CRSException e) {
+          e.printStackTrace();
+          return null;
+        } catch (IllegalCoordinateException e) {
+          e.printStackTrace();
+          return null;
+        }
+      }
+    }.serialize();
   }
 }

@@ -319,6 +319,10 @@ public class ParamConfService {
         return (String) this.getValue(ParamConfParam.COMPLEXITE_PASSWORD, "libre");
     }
 
+    public Integer getDeciDistanceMaxParcours() {
+        return (Integer) this.getValue(ParamConfParam.DECI_DISTANCE_MAX_PARCOURS, 300);
+    }
+
     @Transactional
     public ParamConf update(ParamConf record) {
         log.info("updateParamConf : " + record.getCle());

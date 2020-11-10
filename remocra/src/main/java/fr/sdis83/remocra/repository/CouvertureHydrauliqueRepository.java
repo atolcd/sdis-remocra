@@ -1,6 +1,12 @@
 package fr.sdis83.remocra.repository;
 
+import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.service.ParamConfService;
+import fr.sdis83.remocra.util.GeometryUtil;
+import fr.sdis83.remocra.web.model.PlusProchePei;
+import org.cts.IllegalCoordinateException;
+import org.cts.crs.CRSException;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +29,10 @@ public class CouvertureHydrauliqueRepository {
 
   @Autowired
   JpaTransactionManager transactionManager;
+
+  @Autowired
+  ParamConfService paramConfService;
+
 
   @PersistenceContext
   private EntityManager entityManager;
@@ -76,6 +86,37 @@ public class CouvertureHydrauliqueRepository {
   public void deleteCouverture(Long idEtude) {
     context.deleteFrom(COUVERTURE_HYDRAULIQUE_PEI).where(COUVERTURE_HYDRAULIQUE_PEI.ETUDE.eq(idEtude)).execute();
     context.deleteFrom(COUVERTURE_HYDRAULIQUE_ZONAGE).where(COUVERTURE_HYDRAULIQUE_ZONAGE.ETUDE.eq(idEtude)).execute();
+  }
+
+  public PlusProchePei closestPei(String json) throws CRSException, IllegalCoordinateException {
+    HashMap<String, Object> obj = new JSONDeserializer<HashMap<String, Object>>().deserialize(json);
+    Double longitude = (obj.get("longitude") != null) ? Double.valueOf(obj.get("longitude").toString()) : null;
+    Double latitude = (obj.get("latitude") != null) ? Double.valueOf(obj.get("latitude").toString()) : null;
+
+    Integer distanceMaxParcours = paramConfService.getDeciDistanceMaxParcours();
+
+    Geometry geom = GeometryUtil.createPoint(longitude, latitude, "2154", "2154");
+    String query = "SELECT pei, chemin, dist FROM couverture_hydraulique.plus_proche_pei(ST_GeomFromText('"+geom.toText()+"', 2154), "+distanceMaxParcours+", NULL)";
+
+    Object[] result = (Object[]) entityManager.createNativeQuery(query).getSingleResult();
+
+    Long idPei = Long.valueOf(result[0].toString());
+    String geometrieChemin = (result[1] != null) ? result[1].toString() : null;
+    String distance = (result[2] != null) ? result[2].toString() : null;
+
+    if(idPei != null && idPei > -1) {
+      String q = "SELECT ST_AsText(geometrie) " +
+                      "FROM couverture_hydraulique.pei WHERE id = "+idPei;
+      String wktGeomPei = entityManager.createNativeQuery(q).getSingleResult().toString();
+      PlusProchePei p = new PlusProchePei();
+      Geometry geomPei = GeometryUtil.toGeometry(wktGeomPei, 2154);
+
+      p.setWktGeometriePei(geomPei.toText());
+      p.setWktGeometrieChemin(geometrieChemin);
+      p.setDistance(Double.valueOf(distance));
+      return p;
+    }
+    return null;
   }
 
 }

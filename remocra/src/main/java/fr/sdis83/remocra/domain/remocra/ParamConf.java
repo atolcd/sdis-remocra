@@ -145,7 +145,9 @@ public class ParamConf {
         PDI_LDAP_ADMIN_DN("PDI_LDAP_ADMIN_DN", String.class),
         PDI_LDAP_ADMIN_PASSWORD("PDI_LDAP_ADMIN_PASSWORD", Password.class),
         PDI_LDAP_USER_BASE_NAME("PDI_LDAP_USER_BASE_NAME", String.class),
-        PDI_LDAP_USER_FILTER("PDI_LDAP_USER_FILTER", String.class);
+        PDI_LDAP_USER_FILTER("PDI_LDAP_USER_FILTER", String.class),
+        //DECI
+        DECI_DISTANCE_MAX_PARCOURS("DECI_DISTANCE_MAX_PARCOURS", Integer.class);
 
 
 
