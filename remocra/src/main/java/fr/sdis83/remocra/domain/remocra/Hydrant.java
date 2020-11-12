@@ -243,10 +243,11 @@ public class Hydrant implements Featurable {
         feature.addProperty("nomCommune", this.getNomCommune());
         feature.addProperty("internalId", this.getId());
         feature.addProperty("tournees", this.getTourneesId());
-	    feature.addProperty("nomNatureDeci", this.getNomNatureDeci());
-	    feature.addProperty("codeNatureDeci", this.getCodeNatureDeci());
-	    feature.addProperty("siteId", this.getSiteId());
-	    feature.addProperty("siteNom", this.getSiteNom());
+        feature.addProperty("nom tournées", this.getTourneesNom());
+	      feature.addProperty("nomNatureDeci", this.getNomNatureDeci());
+	      feature.addProperty("codeNatureDeci", this.getCodeNatureDeci());
+	      feature.addProperty("siteId", this.getSiteId());
+	      feature.addProperty("siteNom", this.getSiteNom());
 
         // PIBI
         String diametreCode = null;
@@ -302,6 +303,16 @@ public class Hydrant implements Featurable {
             ArrayList liste = new ArrayList<String>();
             for (Tournee t : this.getTournees())
                 liste.add(t.getId().toString());
+            return liste.toString();
+        }
+        return null;
+    }
+
+    public String getTourneesNom() {
+        if(this.getTournees() != null && !this.getTournees().isEmpty()) {
+            ArrayList liste = new ArrayList<String>();
+            for (Tournee t : this.getTournees())
+                liste.add(t.getNom().toString());
             return liste.toString();
         }
         return null;
