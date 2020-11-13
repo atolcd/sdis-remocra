@@ -1,6 +1,16 @@
 <template>
 <form v-on:submit.prevent>
-  <autocomplete :items="itemsFiltered" :disabled="disabled" v-model="item" :get-label="getLabel" :component-item='template' @change="onValueChanged" @item-selected="onValueChanged" @update-items="updateItems" :auto-select-one-item="false" :min-len="0">
+  <autocomplete :items="itemsFiltered"
+                :disabled="disabled"
+                v-model="item"
+                :get-label="getLabel"
+                :component-item='template'
+                @change="onValueChanged"
+                @item-selected="onValueChanged"
+                @update-items="updateItems"
+                :auto-select-one-item="false"
+                :min-len="0"
+                :key="componentKey">
   </autocomplete>
 </form>
 </template>
@@ -21,6 +31,7 @@ export default {
       items: [],
       itemsFiltered: null,
       template: VoieTemplate,
+      componentKey: 0
     }
   },
   props: {
@@ -67,6 +78,7 @@ export default {
     }).then(() => {
       if (this.defaultValue) {
         this.item = this.defaultValue;
+        this.componentKey += 1;
       }
     }).catch(function(error) {
       console.error('Retrieving coordonnees from /remocra/voies/mc', error);
