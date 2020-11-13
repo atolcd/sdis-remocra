@@ -101,13 +101,25 @@ Exemples :
 
 Méthode :
 
-* *<code insee commune><numéro interne>
+* *<code insee commune><numéro interne>*
 * <numéro interne> sur 5 chiffres (préfixe consituté de 0 si nécessaire ou 'A' si le domaine est 'AUTOROUTE')
 
 Exemples :
 
 * [.underline]#7800300001# : PEI numéro 1 de la commune de Ablis
 * [.underline]#78003A0009# : PEI numéro 9 sur autouroute de la commune de Ablis
+
+=== 21 ===
+
+Méthode :
+
+* *<code insee commune>_<numéro interne>* sans espace
+* <numéro interne> sur 4 chiffres (préfixe consituté de 0 si nécessaire)
+
+Exemples :
+
+* [.underline]#21231_1893# : PEI numéro 1893 de la commune de Dijon
+* [.underline]#21295_0088# : PEI numéro 88 de la commune de Gevrey-Chambertin
 
 == Numéro interne ==
 

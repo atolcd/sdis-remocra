@@ -12,7 +12,7 @@ import javax.persistence.Query;
 public class NumeroUtil {
 
     public enum MethodeNumerotation {
-        M_09, M_77, M_83, M_86, M_89, M_42, M_78, M_66
+        M_09, M_77, M_83, M_86, M_89, M_42, M_78, M_66, M_21
     }
 
     public static MethodeNumerotation getHydrantNumerotationMethode() {
@@ -74,6 +74,8 @@ public class NumeroUtil {
                 return NumeroUtil.computeNumero78(hydrant);
             case M_66:
                 return NumeroUtil.computeNumero66(hydrant);
+            case M_21:
+                return NumeroUtil.computeNumero21(hydrant);
             default:
                 return NumeroUtil.computeNumero83(hydrant);
         }
@@ -212,6 +214,24 @@ public class NumeroUtil {
         StringBuilder sb = new StringBuilder();
         sb.append(codeZS != null ? codeZS : hydrant.getCommune().getInsee());
         return sb.append(" ").append(hydrant.getNumeroInterne()).toString();
+    }
+
+
+    /**
+     * <code insee commune>_<numéro interne>
+     * <p>
+     * Exemple : 86194_99947
+     *
+     * @param hydrant
+     * @return
+     */
+    protected static String computeNumero21(Hydrant hydrant) {
+        String codeZS = hydrant.getZoneSpeciale() == null ? null : hydrant.getZoneSpeciale().getCode();
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(codeZS != null ? codeZS : hydrant.getCommune().getInsee());
+        return sb.append(String.format("_%04d", hydrant.getNumeroInterne())).toString();
     }
 
     // ******************************
