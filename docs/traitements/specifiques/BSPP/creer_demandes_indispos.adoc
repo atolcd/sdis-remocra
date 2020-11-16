@@ -9,7 +9,7 @@ Le fichier _"remocraXXXX.properties"_ doit contenir les informations suivantes :
 |===================
 | Paramètre | Description
 | PDI_INDISPO_CARRE9_MODELE_TRAITEMENT_ID | Identifiant du traitement de génération du listing _ex : 31_
-| MODELE_COURRIER_INDISPO_CARRE9	| Nom du document modèle de génération du listing (fichier de type OTT) _ex :_ `INDISPO_CARRE9.OTT`
+| MODELE_COURRIER_INDISPO_CARRE9	| Code du document modèle de génération du listing _ex :_ `INDISPO_CARRE9`
 |===================
 
 [WARNING]
