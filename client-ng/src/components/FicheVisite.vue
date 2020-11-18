@@ -185,8 +185,7 @@ export default {
       dataLoaded: false,
 
       // Valeur maximales des données temporelles
-      dateMax: moment().format('YYYY-MM-DD'),
-      timeMax: moment().add(1, 'hours').format('HH:mm')
+      dateMax: moment().format('YYYY-MM-DD')
     }
   },
   props: {
@@ -665,7 +664,8 @@ export default {
 
           // Si une visite est à une date future, on bloque la validation
           this.etats.noFutureDate = 'valid';
-          if(moment(this.dateMax+" "+this.timeMax).diff(moment(date)) < 0) {
+          var timeMax = moment().format('HH:mm');
+          if(moment(this.dateMax+" "+timeMax).diff(moment(date)) < 0) {
             this.etats.date = 'invalid';
             this.etats.time = 'invalid';
             this.$notify({
