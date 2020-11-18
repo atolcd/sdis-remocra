@@ -613,6 +613,14 @@ export default {
         this.checkFormValidity().then((response) => {
           if (response) {
             this.handleSubmit(url);
+          } else if(this.newVisite){ // Mode modification, visite rapide et form non valide
+            this.$notify({
+              group: 'remocra',
+              type: 'error',
+              title: 'Création de visite impossible',
+              text: "Les informations de l'hydrant sélectionné ne sont pas valides. Veuillez les corriger via la fiche PEI avant de saisir des visites",
+              duration: 5000
+            });
           }
         });
       } else if (this.checkFormValidity()) {
