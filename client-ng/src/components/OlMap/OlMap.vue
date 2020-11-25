@@ -162,6 +162,17 @@ export default {
         }
       }
       return null
+    },
+
+    getLayers() {
+      if (!this.map || !this.map.getLayers) {
+        return null
+      }
+      var layers = [];
+      for (var i = 0; i < this.map.getLayers().getLength(); i++) {
+        layers.push(this.map.getLayers().item(i))
+      }
+      return layers
     }
   }
 };

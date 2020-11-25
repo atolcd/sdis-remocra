@@ -93,7 +93,10 @@ export default {
       selectedFeatures: [],
       selectedHydrantProjet: null,
       spinnerMap: false,
-      disableToolbar: false
+      disableToolbar: false,
+
+      // Couches dont les features sont compatibles avec le calcul de la couverture hydraulique
+      couchesCouvertureHydrauliqueCompatibles: []
     }
   },
 
@@ -314,7 +317,7 @@ export default {
 
           var disabled = this.selectedFeatures.length == 0 || this.interactionMovePei !== null;
           _.forEach(this.selectedFeatures, f => {
-            if(!f.id.startsWith("etude_hydrant_projet") && !f.id.startsWith("v_hydrant_pibi") && !f.id.startsWith("v_hydrant_pena")) {
+            if(_.indexOf(this.couchesCouvertureHydrauliqueCompatibles, f.layer) == -1) {
               disabled = true;
             }
           })
@@ -490,6 +493,13 @@ export default {
             layer: l.get('code'),
             value: "idEtude:"+this.idEtude
           });
+        }
+
+        /** On détermine sur quelles couchent les features peuvent êtres sélectionnées pour le calcul
+        de la couverture hydraulique. La couche doit, dans ses propriétés,
+        avoir la valeur "couverture_hydraulique_compatible" à TRUE **/
+        if(l.get('properties') && l.get('properties').couverture_hydraulique_compatible) {
+          this.couchesCouvertureHydrauliqueCompatibles.push(l.get('code'));
         }
       })
     },

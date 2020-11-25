@@ -452,6 +452,7 @@ export default {
       var featuresToRemove = [];
       _.forEach(features, f => {
         if(!_.find(this.selectedFeatures, function(o) { return o.id == f.id})) {
+          f.layer = this.coucheActive
           this.selectedFeatures.push(f);
         } else {
           featuresToRemove.push(f);

@@ -298,7 +298,8 @@ export default {
         layer: layerDef.layers,
         groupe: layerDef.groupe,
         zIndex: layerDef.zIndex,
-        viewParamCode: layerDef.viewParamCode
+        viewParamCode: layerDef.viewParamCode,
+        properties: layerDef.properties
       });
       return wmsLayer
     },
@@ -319,7 +320,8 @@ export default {
         legende: layerDef.legende,
         layer: layerDef.layers,
         groupe: layerDef.groupe,
-        zIndex: layerDef.zIndex
+        zIndex: layerDef.zIndex,
+        properties: layerDef.properties
       });
     },
 
@@ -330,7 +332,8 @@ export default {
         libelle: layerDef.libelle,
         groupe: layerDef.groupe,
         code: layerDef.id,
-        zIndex: layerDef.zIndex
+        zIndex: layerDef.zIndex,
+        properties: layerDef.properties
       });
     },
 
@@ -364,7 +367,8 @@ export default {
         libelle: layerDef.libelle,
         groupe: layerDef.groupe,
         code: layerDef.id,
-        zIndex: layerDef.zIndex
+        zIndex: layerDef.zIndex,
+        properties: layerDef.properties
       });
       return IGNLayer;
     },
