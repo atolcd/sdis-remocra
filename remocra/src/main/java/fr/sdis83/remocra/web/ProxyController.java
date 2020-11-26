@@ -393,15 +393,12 @@ public class ProxyController {
     @RequestMapping(value = "/redash")
     @PreAuthorize("hasRight('DASHBOARD_R')")
     public ResponseEntity<Object> redirectToRedashlUrl() {
-            //TODO: parametrer le dashboardLink dans les paramconf
-            String dashboardLink = "http://localhost:5000/public/dashboards/8iNgMuNDcyBw4zP9P779hBSPaMmWUrbvQEcYVsnG?org_slug";
-            //TODO: isPublic?
-            boolean isPublic = false;
-            Long zoneCompetence = isPublic ? null : utilisateurService.getCurrentZoneCompetenceId();
+            String dashboardURL = paramConfService.getDashboardBaseUrl();
+            Long zoneCompetence = utilisateurService.getCurrentZoneCompetenceId();
             Utilisateur u = utilisateurService.getCurrentUtilisateur();
             URI redash = UriComponentsBuilder
             // Ajout des paramètres par défaut
-            .fromUriString(dashboardLink)
+            .fromUriString(dashboardURL)
             .queryParam("p_utilisateur",u.getId())
             .queryParam("p_zone_competence",zoneCompetence)
                   .queryParam("p_organisme",u.getOrganisme().getId())

@@ -323,6 +323,10 @@ public class ParamConfService {
         return (Integer) this.getValue(ParamConfParam.DECI_DISTANCE_MAX_PARCOURS, 300);
     }
 
+    public String getDashboardBaseUrl() {
+        return (String) this.getValue(ParamConfParam.DASHBOARD_BASE_URL, "http://localhost:5000/");
+    }
+
     @Transactional
     public ParamConf update(ParamConf record) {
         log.info("updateParamConf : " + record.getCle());
