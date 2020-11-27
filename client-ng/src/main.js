@@ -66,7 +66,7 @@ const peiBuildFiche = function(el, data) {
     components: {
       Fiche
     },
-    template: "<Fiche  title='" + data.title + "' :newVisite=" + data.newVisite + " :idHydrant=" + data.id + " codeHydrant=" + data.code + "  geometrie='" + data.geometrie + "' />"
+    template: "<Fiche  title='" + data.title + "' :showHistorique=" +data.showHistorique+ " :newVisite=" + data.newVisite + " :idHydrant=" + data.id + " codeHydrant=" + data.code + "  geometrie='" + data.geometrie + "' />"
   })
   return v
 }

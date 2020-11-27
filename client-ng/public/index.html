@@ -58,7 +58,7 @@
             <a href="?module=hydrant&code=PENA&geometrie=POINT%20(651812%206862842)">PENA</a>
           </li>
           <li>Ouverture fiche de
-            <a href="?module=hydrant&id=226678&code=PIBI&geometrie=POINT%20(651812%206862842)">PIBI</a>, de
+            <a href="?module=hydrant&id=226678&code=PIBI&geometrie=POINT%20(651812%206862842)&showHistorique=true">PIBI</a>, de
             <a href="?module=hydrant&id=267796&code=PENA">PENA</a>
           </li>
           <li>Nouvelle visite de
@@ -111,6 +111,7 @@
           remocraVue.peiBuildFiche('#fichepei-container', {
             newVisite: params['newVisite']?params['newVisite']=='true':null,
             id: Number(params['id']), code: params['code'],
+            showHistorique: params['showHistorique'] ? params['showHistorique'] =='true' : null,
             geometrie: params['geometrie']?decodeURIComponent(params['geometrie']):null, title:'PEI - Mise à jour'
           });
         } else if (params['module']=='hydrant' && params['geometrie'] && params['code']) {

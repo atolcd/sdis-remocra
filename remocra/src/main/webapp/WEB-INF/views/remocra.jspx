@@ -95,6 +95,7 @@
 			var COMPLEXITE_PASSWORD = '${complexite_password}';
 
 			var VITESSE_EAU = '${vitesse_eau}';
+			var SHOW_HISTORIQUE = '${show_historique}';
 		</script>
 	</head>
 

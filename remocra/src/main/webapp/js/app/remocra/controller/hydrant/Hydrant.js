@@ -2112,7 +2112,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
           d.id=id;
           document.body.appendChild(d);
            var vueFiche = window.remocraVue.peiBuildFiche(d, {
-                     id: idHydrant, code: codeHydrant, geometrie: geometrie, newVisite: controle, title: title
+                     id: idHydrant, code: codeHydrant, geometrie: geometrie, newVisite: controle, title: title, showHistorique: SHOW_HISTORIQUE
                  });
            vueFiche.$options.bus.$on('pei_modified', Ext.bind(function(data) {
                    this.hydrantsChanged();

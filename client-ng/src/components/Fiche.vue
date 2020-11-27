@@ -68,6 +68,9 @@
           <b-tab active title="Résumé" v-if="hydrant.id !== null">
             <FicheResume ref="ficheResume" :hydrantRecord="hydrantRecord" v-if="dataLoaded">
             </FicheResume>
+          <div class="small" v-if="loaded">
+            <bar-chart :chartdata="chartdata" :options="{title:'Débit (m³/h)', background:'green'}" :styles="{height: '250px', width:'90%'}"/>
+          </div>
           </b-tab>
           <!-- ================================== Onglet Localisation ==================================-->
           <b-tab>
@@ -126,9 +129,12 @@ import FicheCaracteristiquesPena from './FicheCaracteristiquesPena.vue'
 import FicheVisite from './FicheVisite.vue'
 import FicheDocument from './FicheDocument.vue'
 import FicheResume from './FicheResume.vue'
+import BarChart from './utils/BarChart.js'
+
 export default {
   name: 'Fiche',
   components: {
+    BarChart,
     ModalGestionnairePrive,
     FicheLocalisation,
     FicheCaracteristiquesPibi,
@@ -166,8 +172,9 @@ export default {
         autoriteDeci: null,
         natureDeci: null,
         spDeci: null,
-      }
-    }
+      },
+    loaded: false,
+    chartdata: {} }
   },
   props: {
     newVisite: {
@@ -189,6 +196,10 @@ export default {
     title: {
       type: String,
       required: true
+    },
+    showHistorique: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -232,11 +243,10 @@ export default {
       parent: "#modalFiche",
       showSpinner: false
     })
+    //TODO déplacer la charte
     var self = this;
     // Récupération des droits de l'utilisateur courant
     axios.get('/remocra/utilisateurs/current/xml').then(response => {
-                console.log("response")
-
       var xmlDoc = (new DOMParser()).parseFromString(response.data, "text/xml");
       self.utilisateurDroits = [];
       _.forEach(xmlDoc.getElementsByTagName("right"), function(item) {
@@ -249,6 +259,7 @@ export default {
         self.creation()
       }
     });
+
   },
   /**
    * Désactivation des libellés lorsque le champ auquel il est lié est désactivé
@@ -290,6 +301,7 @@ export default {
           self.dataLoaded = true;
           self.resolveForeignKey(['nature', 'site', 'autoriteDeci', 'natureDeci', 'gestionnaire']);
           self.createCombo();
+          self.getHistorique(self.idHydrant)
           if (self.newVisite === true) {
             self.$refs.visitesTab.activate()
             self.$root.$options.bus.$on('pei_visite_ready', () => {
@@ -305,6 +317,22 @@ export default {
         console.error('Retrieving data ', error)
       })
     },
+    getHistorique(id){
+      this.loaded = false
+      if(this.showHistorique){
+        axios.get('/remocra/hydrantspibi/histoverifhydrauforchart/'+id).then(response => {
+          if(response.data){
+              this.chartdata.labels =  response.data.data.labels;
+              this.chartdata.values =  response.data.data.values;
+              this.loaded = true
+            }
+        }).catch(function(error) {
+            console.error(error);
+        })
+      }
+    },
+
+
     // Résolution des clés étrangères
     resolveForeignKey(clesEtrangeres) {
       _.forEach(clesEtrangeres, function(item) {
@@ -809,5 +837,11 @@ label {
 .labelDisabled {
   color: #6c757d !important;
 }
-
+ .small {
+   display: block;
+    height: 250px;
+    margin-top: 20px;
+    width: 80%;
+    margin-left: 10%;
+  }
 </style>

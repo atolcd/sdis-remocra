@@ -1,5 +1,6 @@
 package fr.sdis83.remocra.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import javax.persistence.criteria.Root;
 
 import flexjson.JSONDeserializer;
 import fr.sdis83.remocra.domain.remocra.HydrantVisite;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +35,7 @@ import fr.sdis83.remocra.domain.remocra.HydrantPena;
 import fr.sdis83.remocra.domain.remocra.HydrantPibi;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
+import fr.sdis83.remocra.web.model.HistoriqueModel;
 
 @Configuration
 public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
@@ -176,13 +179,24 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
             return null;
         }
     }
-    public List<Object> getHistoVerifHydrauForChart(Long id) {
+    public HistoriqueModel getHistoVerifHydrauForChart(Long id) {
         Integer limit = paramConfService.getHydrantNombreHistorique();
         if (limit != 0) {
             try {
-                List<Object> l = entityManager.createNativeQuery("select * from (select distinct on (cast (date_contr as date)) date_contr as dc, debit as d, debit_max as dm, pression as p, pression_dyn as pd, pression_dyn_deb as pdd" +
-                    "                    from tracabilite.hydrant h WHERE h.id_hydrant = "+id+" AND (cast (date_contr as date)IS NOT NULL) order by  (cast (date_contr as date)) desc) t  limit " + limit).getResultList();
-                return l;
+
+                List<Object[]> l = entityManager.createNativeQuery("select TO_CHAR(cast(t.date as DATE), 'dd/mm/yyyy'), t.debit from (select  distinct date, debit "+
+                " From remocra.hydrant_visite hv WHERE hv.hydrant = "+id+" AND hv.type = (SELECT id FROM remocra.type_hydrant_saisie ths WHERE ths.code LIKE 'CTRL')"+
+                " AND date IS NOT NULL AND debit  IS NOT NULL ORDER BY date ASC limit "+limit+") t").getResultList();
+                List labels = new ArrayList();
+                List  values= new ArrayList();
+                for(Object[] o : l){
+                    labels.add(o[0].toString());
+                    values.add(o[1].toString());
+                }
+                HistoriqueModel hm = new HistoriqueModel();
+                hm.setLabels(labels);
+                hm.setValues(values);
+                return hm;
             } catch (Exception ex) {
                 //Pas d'historique
                 return null;

@@ -164,7 +164,7 @@ public class RemocraController {
         // Vitesse de l'eau dans le réseau retenue par le SDIS
         model.addAttribute("vitesse_eau", paramConfService.getVitesseEau());
 
-
+        model.addAttribute("show_historique", paramConfService.getHydrantNombreHistorique() > 0);
 
         return "remocra";
     }

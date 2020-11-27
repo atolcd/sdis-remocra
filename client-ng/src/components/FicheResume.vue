@@ -45,6 +45,9 @@ import {
 import Vue from 'vue'
 export default {
   name: 'FicheResume',
+  component(){
+   chart
+  },
   data() {
     return {
       useCustomResume: null,

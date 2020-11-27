@@ -3,6 +3,7 @@ package fr.sdis83.remocra.web;
 import java.util.List;
 import java.util.Map;
 
+import fr.sdis83.remocra.web.model.HistoriqueModel;
 import org.hibernate.exception.ConstraintViolationException;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -217,12 +218,16 @@ public class HydrantPibiController {
     @PreAuthorize("hasRight('HYDRANTS_R')")
     public ResponseEntity<java.lang.String> getHistoVerifHydrauForChart(final @PathVariable Long id) {
 
-        return new AbstractExtObjectSerializer<List<Object>>("Hydrant Pibi historique vérification hydraulique retrieved.") {
+        return new AbstractExtObjectSerializer<HistoriqueModel>("Hydrant Pibi historique vérification hydraulique retrieved.") {
             @Override
-            protected List<Object> getRecord() {
+            protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+              return serializer.exclude("*.class")
+                  .include("data.*").include("total").include("message");
+                }
+            @Override
+            protected HistoriqueModel getRecord() {
                 return hydrantPibiService.getHistoVerifHydrauForChart(id);
             }
-
         }.serialize();
     }
 
