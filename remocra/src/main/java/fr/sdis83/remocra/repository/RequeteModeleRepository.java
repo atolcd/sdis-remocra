@@ -336,12 +336,10 @@ public class RequeteModeleRepository {
 
   @Transactional
   public String getEtendu(Long id) {
-    Object geom = context.select(REQUETE_MODELE_SELECTION.ETENDU).from(REQUETE_MODELE_SELECTION).where(REQUETE_MODELE_SELECTION.ID.eq(id)).fetchOne(REQUETE_MODELE_SELECTION.ETENDU);
-    if(geom != null){
-      String geometrie =  geom.toString();
-      return geometrie;
-    }
-    return null;
+    Query q = entityManager.createNativeQuery("select st_asEWKT(etendu) from remocra.requete_modele_selection where id= :id ");
+    q.setParameter("id" ,id);
+    String geom = q.getSingleResult().toString();
+    return geom != null ? geom : null;
   }
 
   @Transactional
