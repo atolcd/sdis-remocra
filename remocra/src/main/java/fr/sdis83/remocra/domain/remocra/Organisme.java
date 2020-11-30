@@ -93,24 +93,10 @@ public class Organisme {
      */
 
     public static ArrayList<Integer> getOrganismesZC(Long idOrganisme){
-
         Query queryOrganismes = entityManager().createNativeQuery(
-                "   SELECT DISTINCT CAST(o.id AS INTEGER) FROM remocra.organisme o " +
-                "   JOIN remocra.zone_competence zc on zc.id = o.zone_competence " +
-                "   WHERE ST_Overlaps(( " +
-                                        "   SELECT ST_buffer(geometrie,0) " +
-                                        "   FROM remocra.zone_competence zc " +
-                                        "   WHERE zc.id in (SELECT CAST(zone_competence AS INTEGER) zone_competence" +
-                                                            "   FROM remocra.organisme"+
-                                                            "   WHERE id=:idOrganisme))"+
-                                        "   , ST_buffer(zc.geometrie,0)) "+
-                "   OR ST_Contains(( " +
-                                        "   SELECT ST_buffer(geometrie,0) " +
-                                        "   FROM remocra.zone_competence zc " +
-                                        "   WHERE zc.id in (SELECT CAST(zone_competence AS INTEGER) zone_competence" +
-                                                            "   FROM remocra.organisme"+
-                                                            "   WHERE id=:idOrganisme))"+
-                                        "   , ST_buffer(zc.geometrie,0)) "
+                " SELECT DISTINCT organisme_contenu_id " +
+                " FROM remocra.zone_competence_organisme " +
+                " WHERE organisme_id = :idOrganisme "
         ).setParameter("idOrganisme", idOrganisme);
         ArrayList<Integer> idOrganismes = (ArrayList<Integer>) queryOrganismes.getResultList();
         return idOrganismes;
