@@ -186,7 +186,7 @@ const olMapEtude = function(id){
 }
 
 //module de dashboard
-const buildDashboard = function(el, data){
+const buildDashboard = function(el){
   var v = new Vue({
   el,
   bus: new Vue(),

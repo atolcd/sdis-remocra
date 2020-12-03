@@ -37,6 +37,6 @@ Ext.define('Sdis.Remocra.features.dashboard.Dashboard', {
         var id = "dashboard-"+(++Ext.AbstractComponent.AUTO_ID);
         d.id=id;
         document.getElementById("dashboard").appendChild(d);
-        var vueDashboard = window.remocraVue.buildDashboard(d, { });
+        var vueDashboard = window.remocraVue.buildDashboard(d);
     }
 });
