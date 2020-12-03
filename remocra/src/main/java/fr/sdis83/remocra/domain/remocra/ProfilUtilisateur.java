@@ -28,6 +28,9 @@ public class ProfilUtilisateur implements ITypeReferenceNomActif {
 
     @NotNull
     private String code;
+    
+    @Column(name = "url_dashboard")
+    private String urlDashboard;
 
     @NotNull
     @Column(columnDefinition = "boolean default true")
@@ -36,4 +39,14 @@ public class ProfilUtilisateur implements ITypeReferenceNomActif {
     @NotNull
     @ManyToOne
     private TypeOrganisme typeOrganisme;
+
+    public String getUrlDashboard() {
+        return this.urlDashboard;
+    }
+
+    public void setUrlDashboard(String urlDashboard) {
+        this.urlDashboard = urlDashboard;
+
+    }
+
 }

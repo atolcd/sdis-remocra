@@ -114,7 +114,7 @@ public class TypeDroit {
         // Module Cartographie
         CARTOGRAPHIES_C("cartographies_C"),
 
-        //Accès au tableau de board
+        //Accès au tableau de bord
         DASHBOARD_R("dashboard_R");
 
 

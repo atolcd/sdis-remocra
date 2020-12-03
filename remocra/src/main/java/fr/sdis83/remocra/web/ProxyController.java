@@ -393,12 +393,13 @@ public class ProxyController {
     @RequestMapping(value = "/redash")
     @PreAuthorize("hasRight('DASHBOARD_R')")
     public ResponseEntity<Object> redirectToRedashlUrl() {
-            String dashboardURL = paramConfService.getDashboardBaseUrl();
+            //String dashboardUrl = paramConfService.getDashboardBaseUrl();
             Long zoneCompetence = utilisateurService.getCurrentZoneCompetenceId();
             Utilisateur u = utilisateurService.getCurrentUtilisateur();
+            String dashboardUrl = u.getProfilUtilisateur().getUrlDashboard();
             URI redash = UriComponentsBuilder
             // Ajout des paramètres par défaut
-            .fromUriString(dashboardURL)
+            .fromUriString(dashboardUrl)
             .queryParam("p_utilisateur",u.getId())
             .queryParam("p_zone_competence",zoneCompetence)
                   .queryParam("p_organisme",u.getOrganisme().getId())
@@ -407,5 +408,4 @@ public class ProxyController {
             httpHeaders.setLocation(redash);
             return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
         }
-
 }

@@ -6,6 +6,7 @@ Ext.require('Sdis.Remocra.store.ProfilOrganisme');
 Ext.require('Sdis.Remocra.features.admin.typereference.OrganismeGrid');
 Ext.require('Sdis.Remocra.features.admin.typereference.UtilisateurGrid');
 Ext.require('Sdis.Remocra.features.admin.typereference.ProfilGrid');
+Ext.require('Sdis.Remocra.features.admin.typereference.ProfilUtilisateurGrid');
 Ext.require('Sdis.Remocra.features.admin.typereference.AdminDroit');
 Ext.require('Sdis.Remocra.features.admin.typereference.ProfilDroitGrid');
 Ext.require('Sdis.Remocra.features.admin.typereference.ProfilOrganismeUtilisateurDroitGrid');
@@ -74,7 +75,7 @@ Ext.define('Sdis.Remocra.features.admin.Admin', {
                 xtype: 'crAdminTypeReference',
                 itemId: 'adminProfilUtilisateur',
                 grid: {
-                    xtype: 'crAdminProfilGrid',
+                    xtype: 'crAdminProfilUtilisateurGrid',
                     modelType: 'Sdis.Remocra.model.ProfilUtilisateur',
                     store: Ext.create('Sdis.Remocra.store.ProfilUtilisateur', {
                         remoteFilter: true,

@@ -22,13 +22,14 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProfilUtilisateur implements Serializable {
 
-	private static final long serialVersionUID = 2085580560;
+	private static final long serialVersionUID = -662148315;
 
 	private Long    id;
 	private String  nom;
 	private Long    typeOrganisme;
 	private Boolean actif;
 	private String  code;
+	private String  urlDashboard;
 
 	public ProfilUtilisateur() {}
 
@@ -38,6 +39,7 @@ public class ProfilUtilisateur implements Serializable {
 		this.typeOrganisme = value.typeOrganisme;
 		this.actif = value.actif;
 		this.code = value.code;
+		this.urlDashboard = value.urlDashboard;
 	}
 
 	public ProfilUtilisateur(
@@ -45,13 +47,15 @@ public class ProfilUtilisateur implements Serializable {
 		String  nom,
 		Long    typeOrganisme,
 		Boolean actif,
-		String  code
+		String  code,
+		String  urlDashboard
 	) {
 		this.id = id;
 		this.nom = nom;
 		this.typeOrganisme = typeOrganisme;
 		this.actif = actif;
 		this.code = code;
+		this.urlDashboard = urlDashboard;
 	}
 
 	public Long getId() {
@@ -96,6 +100,15 @@ public class ProfilUtilisateur implements Serializable {
 
 	public ProfilUtilisateur setCode(String code) {
 		this.code = code;
+		return this;
+	}
+
+	public String getUrlDashboard() {
+		return this.urlDashboard;
+	}
+
+	public ProfilUtilisateur setUrlDashboard(String urlDashboard) {
+		this.urlDashboard = urlDashboard;
 		return this;
 	}
 }

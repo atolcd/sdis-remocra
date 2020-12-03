@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProfilUtilisateur extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 174544277;
+	private static final long serialVersionUID = 526438782;
 
 	/**
 	 * The reference instance of <code>remocra.profil_utilisateur</code>
@@ -74,6 +74,11 @@ public class ProfilUtilisateur extends TableImpl<Record> {
 	 * The column <code>remocra.profil_utilisateur.code</code>.
 	 */
 	public final TableField<Record, String> CODE = createField("code", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "");
+
+	/**
+	 * The column <code>remocra.profil_utilisateur.url_dashboard</code>.
+	 */
+	public final TableField<Record, String> URL_DASHBOARD = createField("url_dashboard", org.jooq.impl.SQLDataType.VARCHAR, this, "");
 
 	/**
 	 * Create a <code>remocra.profil_utilisateur</code> table reference
