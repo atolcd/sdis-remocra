@@ -9,6 +9,7 @@ import fr.sdis83.remocra.db.model.couverture_hydraulique.tables.Batiments;
 import fr.sdis83.remocra.db.model.couverture_hydraulique.tables.CouvertureHydrauliquePei;
 import fr.sdis83.remocra.db.model.couverture_hydraulique.tables.CouvertureHydrauliqueZonage;
 import fr.sdis83.remocra.db.model.couverture_hydraulique.tables.Pei;
+import fr.sdis83.remocra.db.model.couverture_hydraulique.tables.PlusProchePei;
 import fr.sdis83.remocra.db.model.couverture_hydraulique.tables.Reseau;
 import fr.sdis83.remocra.db.model.couverture_hydraulique.tables.Sommet;
 import fr.sdis83.remocra.db.model.couverture_hydraulique.tables.TempDistances;
@@ -38,7 +39,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CouvertureHydraulique extends SchemaImpl {
 
-	private static final long serialVersionUID = -2034717297;
+	private static final long serialVersionUID = -918934995;
 
 	/**
 	 * The reference instance of <code>couverture_hydraulique</code>
@@ -61,7 +62,7 @@ public class CouvertureHydraulique extends SchemaImpl {
 
 	private final List<Sequence<?>> getSequences0() {
 		return Arrays.<Sequence<?>>asList(
-			Sequences.BATIMENT_ID_SEQ,
+			Sequences.BATIMENTS_ID_SEQ,
 			Sequences.PEI_ID_SEQ,
 			Sequences.RESEAU_ID_SEQ,
 			Sequences.SOMMET_ID_SEQ);
@@ -80,6 +81,7 @@ public class CouvertureHydraulique extends SchemaImpl {
 			CouvertureHydrauliquePei.COUVERTURE_HYDRAULIQUE_PEI,
 			CouvertureHydrauliqueZonage.COUVERTURE_HYDRAULIQUE_ZONAGE,
 			Pei.PEI,
+			PlusProchePei.PLUS_PROCHE_PEI,
 			Reseau.RESEAU,
 			Sommet.SOMMET,
 			TempDistances.TEMP_DISTANCES,

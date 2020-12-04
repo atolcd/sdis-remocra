@@ -42,6 +42,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.Document;
 import fr.sdis83.remocra.db.model.remocra.tables.Droit;
 import fr.sdis83.remocra.db.model.remocra.tables.Email;
 import fr.sdis83.remocra.db.model.remocra.tables.EmailModele;
+import fr.sdis83.remocra.db.model.remocra.tables.EmailSave;
 import fr.sdis83.remocra.db.model.remocra.tables.Etude;
 import fr.sdis83.remocra.db.model.remocra.tables.EtudeCommunes;
 import fr.sdis83.remocra.db.model.remocra.tables.EtudeDocuments;
@@ -225,6 +226,7 @@ public class Keys {
 	public static final Identity<Record, Long> IDENTITY_DROIT = Identities0.IDENTITY_DROIT;
 	public static final Identity<Record, Long> IDENTITY_EMAIL = Identities0.IDENTITY_EMAIL;
 	public static final Identity<Record, Long> IDENTITY_EMAIL_MODELE = Identities0.IDENTITY_EMAIL_MODELE;
+	public static final Identity<Record, Long> IDENTITY_EMAIL_SAVE = Identities0.IDENTITY_EMAIL_SAVE;
 	public static final Identity<Record, Long> IDENTITY_ETUDE = Identities0.IDENTITY_ETUDE;
 	public static final Identity<Record, Long> IDENTITY_ETUDE_COMMUNES = Identities0.IDENTITY_ETUDE_COMMUNES;
 	public static final Identity<Record, Long> IDENTITY_ETUDE_DOCUMENTS = Identities0.IDENTITY_ETUDE_DOCUMENTS;
@@ -799,6 +801,7 @@ public class Keys {
 		public static Identity<Record, Long> IDENTITY_DROIT = createIdentity(Droit.DROIT, Droit.DROIT.ID);
 		public static Identity<Record, Long> IDENTITY_EMAIL = createIdentity(Email.EMAIL, Email.EMAIL.ID);
 		public static Identity<Record, Long> IDENTITY_EMAIL_MODELE = createIdentity(EmailModele.EMAIL_MODELE, EmailModele.EMAIL_MODELE.ID);
+		public static Identity<Record, Long> IDENTITY_EMAIL_SAVE = createIdentity(EmailSave.EMAIL_SAVE, EmailSave.EMAIL_SAVE.ID);
 		public static Identity<Record, Long> IDENTITY_ETUDE = createIdentity(Etude.ETUDE, Etude.ETUDE.ID);
 		public static Identity<Record, Long> IDENTITY_ETUDE_COMMUNES = createIdentity(EtudeCommunes.ETUDE_COMMUNES, EtudeCommunes.ETUDE_COMMUNES.ID);
 		public static Identity<Record, Long> IDENTITY_ETUDE_DOCUMENTS = createIdentity(EtudeDocuments.ETUDE_DOCUMENTS, EtudeDocuments.ETUDE_DOCUMENTS.ID);

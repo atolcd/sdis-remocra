@@ -42,6 +42,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.Document;
 import fr.sdis83.remocra.db.model.remocra.tables.Droit;
 import fr.sdis83.remocra.db.model.remocra.tables.Email;
 import fr.sdis83.remocra.db.model.remocra.tables.EmailModele;
+import fr.sdis83.remocra.db.model.remocra.tables.EmailSave;
 import fr.sdis83.remocra.db.model.remocra.tables.Etude;
 import fr.sdis83.remocra.db.model.remocra.tables.EtudeCommunes;
 import fr.sdis83.remocra.db.model.remocra.tables.EtudeDocuments;
@@ -375,6 +376,11 @@ public class Tables {
 	 * The table remocra.email_modele
 	 */
 	public static final EmailModele EMAIL_MODELE = fr.sdis83.remocra.db.model.remocra.tables.EmailModele.EMAIL_MODELE;
+
+	/**
+	 * The table remocra.email_save
+	 */
+	public static final EmailSave EMAIL_SAVE = fr.sdis83.remocra.db.model.remocra.tables.EmailSave.EMAIL_SAVE;
 
 	/**
 	 * The table remocra.etude

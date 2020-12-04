@@ -8,12 +8,15 @@ import fr.sdis83.remocra.db.model.couverture_hydraulique.tables.Batiments;
 import fr.sdis83.remocra.db.model.couverture_hydraulique.tables.CouvertureHydrauliquePei;
 import fr.sdis83.remocra.db.model.couverture_hydraulique.tables.CouvertureHydrauliqueZonage;
 import fr.sdis83.remocra.db.model.couverture_hydraulique.tables.Pei;
+import fr.sdis83.remocra.db.model.couverture_hydraulique.tables.PlusProchePei;
 import fr.sdis83.remocra.db.model.couverture_hydraulique.tables.Reseau;
 import fr.sdis83.remocra.db.model.couverture_hydraulique.tables.Sommet;
 import fr.sdis83.remocra.db.model.couverture_hydraulique.tables.TempDistances;
 import fr.sdis83.remocra.db.model.couverture_hydraulique.tables.Voieslaterales;
 
 import javax.annotation.Generated;
+
+import org.jooq.Field;
 
 
 /**
@@ -30,42 +33,61 @@ import javax.annotation.Generated;
 public class Tables {
 
 	/**
-	 * The table couverture_hydraulique.batiments
+	 * Représentation schématique des bâtiments d'une étude
 	 */
 	public static final Batiments BATIMENTS = fr.sdis83.remocra.db.model.couverture_hydraulique.tables.Batiments.BATIMENTS;
 
 	/**
-	 * The table couverture_hydraulique.couverture_hydraulique_pei
+	 * Couverture hydraulique d'un pei
 	 */
 	public static final CouvertureHydrauliquePei COUVERTURE_HYDRAULIQUE_PEI = fr.sdis83.remocra.db.model.couverture_hydraulique.tables.CouvertureHydrauliquePei.COUVERTURE_HYDRAULIQUE_PEI;
 
 	/**
-	 * The table couverture_hydraulique.couverture_hydraulique_zonage
+	 * Couverture hydraulique résultante de la simulation. Il s'agit de la couverture totale issue de toutes les couvertures hydrauliques de la table couverture_hydraulique.couverture_hydraulique_pei
 	 */
 	public static final CouvertureHydrauliqueZonage COUVERTURE_HYDRAULIQUE_ZONAGE = fr.sdis83.remocra.db.model.couverture_hydraulique.tables.CouvertureHydrauliqueZonage.COUVERTURE_HYDRAULIQUE_ZONAGE;
 
 	/**
-	 * The table couverture_hydraulique.pei
+	 * Hydrants de la couverture hydraulique
 	 */
 	public static final Pei PEI = fr.sdis83.remocra.db.model.couverture_hydraulique.tables.Pei.PEI;
 
 	/**
-	 * The table couverture_hydraulique.reseau
+	 * The table couverture_hydraulique.plus_proche_pei
+	 */
+	public static final PlusProchePei PLUS_PROCHE_PEI = fr.sdis83.remocra.db.model.couverture_hydraulique.tables.PlusProchePei.PLUS_PROCHE_PEI;
+
+	/**
+	 * Get <code>couverture_hydraulique.plus_proche_pei</code> as a field
+	 */
+	public static PlusProchePei PLUS_PROCHE_PEI(Object geomclic, Integer distanceMaxParcours, Integer idreseauimporte) {
+		return PlusProchePei.PLUS_PROCHE_PEI.call(geomclic, distanceMaxParcours, idreseauimporte);
+	}
+
+	/**
+	 * Get <code>couverture_hydraulique.plus_proche_pei</code> as a field
+	 */
+	public static PlusProchePei PLUS_PROCHE_PEI(Field<Object> geomclic, Field<Integer> distanceMaxParcours, Field<Integer> idreseauimporte) {
+		return PlusProchePei.PLUS_PROCHE_PEI.call(geomclic, distanceMaxParcours, idreseauimporte);
+	}
+
+	/**
+	 * Réseau routier de la couverture hydraulique
 	 */
 	public static final Reseau RESEAU = fr.sdis83.remocra.db.model.couverture_hydraulique.tables.Reseau.RESEAU;
 
 	/**
-	 * The table couverture_hydraulique.sommet
+	 * Sommet utilisée lors du parcours de graph. Chaque sommet réprésente un début, une fin ou une intersection entre des voies du réseau routier. 
 	 */
 	public static final Sommet SOMMET = fr.sdis83.remocra.db.model.couverture_hydraulique.tables.Sommet.SOMMET;
 
 	/**
-	 * The table couverture_hydraulique.temp_distances
+	 * Table permettant de stocker les informations nécessaire au parcours de graph; basé sur l'algorithme de Dijkstra
 	 */
 	public static final TempDistances TEMP_DISTANCES = fr.sdis83.remocra.db.model.couverture_hydraulique.tables.TempDistances.TEMP_DISTANCES;
 
 	/**
-	 * The table couverture_hydraulique.voieslaterales
+	 * Résultante de la fonction couverture_hydraulique.voiesLaterales()
 	 */
 	public static final Voieslaterales VOIESLATERALES = fr.sdis83.remocra.db.model.couverture_hydraulique.tables.Voieslaterales.VOIESLATERALES;
 }

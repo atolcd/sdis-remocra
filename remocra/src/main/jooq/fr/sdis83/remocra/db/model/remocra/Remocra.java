@@ -43,6 +43,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.Document;
 import fr.sdis83.remocra.db.model.remocra.tables.Droit;
 import fr.sdis83.remocra.db.model.remocra.tables.Email;
 import fr.sdis83.remocra.db.model.remocra.tables.EmailModele;
+import fr.sdis83.remocra.db.model.remocra.tables.EmailSave;
 import fr.sdis83.remocra.db.model.remocra.tables.Etude;
 import fr.sdis83.remocra.db.model.remocra.tables.EtudeCommunes;
 import fr.sdis83.remocra.db.model.remocra.tables.EtudeDocuments;
@@ -195,7 +196,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Remocra extends SchemaImpl {
 
-	private static final long serialVersionUID = 141708578;
+	private static final long serialVersionUID = -126225168;
 
 	/**
 	 * The reference instance of <code>remocra</code>
@@ -247,6 +248,7 @@ public class Remocra extends SchemaImpl {
 			Sequences.DROIT_ID_SEQ,
 			Sequences.EMAIL_ID_SEQ,
 			Sequences.EMAIL_MODELE_ID_SEQ,
+			Sequences.EMAIL_SAVE_ID_SEQ,
 			Sequences.ETUDE_COMMUNES_ID_SEQ,
 			Sequences.ETUDE_DOCUMENTS_ID_SEQ,
 			Sequences.ETUDE_HYDRANT_PROJET_ID_SEQ,
@@ -408,6 +410,7 @@ public class Remocra extends SchemaImpl {
 			Droit.DROIT,
 			Email.EMAIL,
 			EmailModele.EMAIL_MODELE,
+			EmailSave.EMAIL_SAVE,
 			Etude.ETUDE,
 			EtudeCommunes.ETUDE_COMMUNES,
 			EtudeDocuments.ETUDE_DOCUMENTS,

@@ -26,9 +26,9 @@ import org.jooq.impl.SequenceImpl;
 public class Sequences {
 
 	/**
-	 * The sequence <code>couverture_hydraulique.batiment_id_seq</code>
+	 * The sequence <code>couverture_hydraulique.batiments_id_seq</code>
 	 */
-	public static final Sequence<Integer> BATIMENT_ID_SEQ = new SequenceImpl<Integer>("batiment_id_seq", CouvertureHydraulique.COUVERTURE_HYDRAULIQUE, org.jooq.impl.SQLDataType.INTEGER.nullable(false));
+	public static final Sequence<Integer> BATIMENTS_ID_SEQ = new SequenceImpl<Integer>("batiments_id_seq", CouvertureHydraulique.COUVERTURE_HYDRAULIQUE, org.jooq.impl.SQLDataType.INTEGER.nullable(false));
 
 	/**
 	 * The sequence <code>couverture_hydraulique.pei_id_seq</code>
