@@ -51,30 +51,24 @@
 		<repository>
 			<id>spring-maven-release</id>
 			<name>Spring Maven Release Repository</name>
-			<url>http://maven.springframework.org/release</url>
+			<url>https://maven.springframework.org/release</url>
 		</repository>
 		<repository>
 			<id>spring-maven-milestone</id>
 			<name>Spring Maven Milestone Repository</name>
-			<url>http://maven.springframework.org/milestone</url>
+			<url>https://maven.springframework.org/milestone</url>
 		</repository>
 		<repository>
 			<id>spring-roo-repository</id>
 			<name>Spring Roo Repository</name>
 			<url>http://spring-roo-repository.springsource.org/release</url>
 		</repository>
-		<!--repository>
-			<id>OSGEO GeoTools repo</id>
-			<url>http://download.osgeo.org/webdav/geotools</url>
-		</repository-->
 		<repository>
 			<id>Hibernate Spatial repo</id>
 			<url>http://www.hibernatespatial.org/repository</url>
 		</repository>
-		<repository>
-			<id>boundless</id>
-			<url>http://repo.boundlessgeo.com/main/</url>
-		</repository>
+
+
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
