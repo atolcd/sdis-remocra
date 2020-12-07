@@ -507,8 +507,21 @@ export default {
     calculCouvertureHydraulique(reseauImporte) {
       this.spinnerMap = true;
       this.disableToolbar = true;
-      var hydrants = _.map(this.selectedFeatures.filter(f => f.id.startsWith("v_hydrant_pibi") || f.id.startsWith("v_hydrant_penai")),'properties.id');
-      var projets = _.map(this.selectedFeatures.filter(f => f.id.startsWith("etude_hydrant_projet")), 'properties.id');
+
+      var hydrants = [];
+      var projets = [];
+
+      // On détermine, selon la couche depuis laquelle elles sont sélectionnées, si les features représentent des
+      // hydrants existants ou des hydrants projets. L'information est récupérable depuis les properties de la couche
+      var layers = this.olMap.getLayers().filter(l => l.get('properties') && l.get('properties').couverture_hydraulique_compatible);
+      _.forEach(this.selectedFeatures, f => {
+        var layer = layers.filter(l => l.get('code') == f.layer)[0];
+        if(layer.get('properties').couverture_hydraulique_type_pei == 'HYDRANT') {
+          hydrants.push(f.properties.id);
+        } else if(layer.get('properties').couverture_hydraulique_type_pei == 'PROJET') {
+          projets.push(f.properties.id);
+        }
+      });
 
       var formData = new FormData();
 
