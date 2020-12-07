@@ -261,8 +261,8 @@ BEGIN
 
       -- Si c'est la voie de départ, il n'y a aucune occurence dans la table temp_distances. On récupère néanmoins son ID afin de pouvoir déterminer les voies partant à sa gauche et à sa droite
       IF courantRecord IS NULL THEN SELECT id INTO voieCourante FROM couverture_hydraulique.reseau WHERE pei_troncon = depart; END IF;
- noeudCourant, idReseauImporte;
-      PERFORM couverture_hydraulique.voiesLaterales(COALESCE(courantRecord.voie, voieCourante), noeudCourant, idReseauImporte);
+
+	  PERFORM couverture_hydraulique.voiesLaterales(COALESCE(courantRecord.voie, voieCourante), noeudCourant, idReseauImporte);
       SELECT voie FROM couverture_hydraulique.voiesLaterales WHERE gauche INTO voieGauche;
       SELECT voie FROM couverture_hydraulique.voiesLaterales WHERE droite INTO voieDroite;
 
