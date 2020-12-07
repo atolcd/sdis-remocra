@@ -33,7 +33,7 @@ drop function versionnement_dffd4df4df();
 --------------------------------------------------
 -- Contenu réel du patch début
 
-ALTER TABLE profil_utilisateur ADD COLUMN url_dashboard VARCHAR ;
+ALTER TABLE remocra.profil_utilisateur ADD COLUMN url_dashboard VARCHAR ;
 
 COMMENT ON COLUMN remocra.profil_utilisateur.url_dashboard IS 'url du tableau de bord';
 
