@@ -70,7 +70,7 @@ BEGIN
   LEFT JOIN remocra.etude_hydrant_projet ehp ON ehp.id = p.identifiant AND p.type = 'PROJET'
   LEFT JOIN remocra.hydrant_pibi hp ON hp.id = p.identifiant AND p.type = 'HYDRANT'
   LEFT JOIN remocra.type_hydrant_diametre thd ON thd.id = COALESCE(hp.diametre, ehp.diametre_nominal)
-  WHERE thd.code = 'DIAM150' AND chp.etude IS NOT DISTINCT FROM idEtude AND hp.jumele IS NOT NULL
+  WHERE (thd.code = 'DIAM150' OR hp.jumele IS NOT NULL) AND chp.etude IS NOT DISTINCT FROM idEtude
   )::int[]);
   
   -- Tracé du risque courant faible
