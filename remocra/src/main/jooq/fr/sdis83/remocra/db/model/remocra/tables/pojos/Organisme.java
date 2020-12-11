@@ -22,7 +22,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Organisme implements Serializable {
 
-	private static final long serialVersionUID = 1940344733;
+	private static final long serialVersionUID = 1566580432;
 
 	private Long    id;
 	private Boolean actif;
@@ -34,6 +34,8 @@ public class Organisme implements Serializable {
 	private Long    typeOrganisme;
 	private Long    zoneCompetence;
 	private Long    organismeParent;
+	private String  password;
+	private String  salt;
 
 	public Organisme() {}
 
@@ -48,6 +50,8 @@ public class Organisme implements Serializable {
 		this.typeOrganisme = value.typeOrganisme;
 		this.zoneCompetence = value.zoneCompetence;
 		this.organismeParent = value.organismeParent;
+		this.password = value.password;
+		this.salt = value.salt;
 	}
 
 	public Organisme(
@@ -60,7 +64,9 @@ public class Organisme implements Serializable {
 		Long    profilOrganisme,
 		Long    typeOrganisme,
 		Long    zoneCompetence,
-		Long    organismeParent
+		Long    organismeParent,
+		String  password,
+		String salt
 	) {
 		this.id = id;
 		this.actif = actif;
@@ -72,6 +78,8 @@ public class Organisme implements Serializable {
 		this.typeOrganisme = typeOrganisme;
 		this.zoneCompetence = zoneCompetence;
 		this.organismeParent = organismeParent;
+		this.password = password;
+		this.salt = salt;
 	}
 
 	public Long getId() {
@@ -161,6 +169,24 @@ public class Organisme implements Serializable {
 
 	public Organisme setOrganismeParent(Long organismeParent) {
 		this.organismeParent = organismeParent;
+		return this;
+	}
+
+	public String getPassword() {
+		return this.password;
+	}
+
+	public Organisme setPassword(String password) {
+		this.password = password;
+		return this;
+	}
+
+	public String getSalt() {
+		return this.salt;
+	}
+
+	public Organisme setSalt(String salt) {
+		this.salt = salt;
 		return this;
 	}
 }

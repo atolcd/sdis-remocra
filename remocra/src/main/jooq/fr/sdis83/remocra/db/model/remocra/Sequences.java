@@ -121,6 +121,11 @@ public class Sequences {
 	public static final Sequence<Long> CRISE_SUIVI_MESSAGE_MODELE_ID_SEQ = new SequenceImpl<Long>("crise_suivi_message_modele_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
+	 * The sequence <code>remocra.dde_api_id_seq</code>
+	 */
+	public static final Sequence<Integer> DDE_API_ID_SEQ = new SequenceImpl<Integer>("dde_api_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.INTEGER.nullable(false));
+
+	/**
 	 * The sequence <code>remocra.dde_mdp_id_seq</code>
 	 */
 	public static final Sequence<Long> DDE_MDP_ID_SEQ = new SequenceImpl<Long>("dde_mdp_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));

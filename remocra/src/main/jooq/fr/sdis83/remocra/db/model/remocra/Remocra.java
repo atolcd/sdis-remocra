@@ -32,6 +32,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.CriseIntervention;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseRepertoireLieu;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseSuivi;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseSuiviMessageModele;
+import fr.sdis83.remocra.db.model.remocra.tables.DdeApi;
 import fr.sdis83.remocra.db.model.remocra.tables.DdeMdp;
 import fr.sdis83.remocra.db.model.remocra.tables.DebitSimultane;
 import fr.sdis83.remocra.db.model.remocra.tables.DebitSimultaneDocument;
@@ -196,7 +197,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Remocra extends SchemaImpl {
 
-	private static final long serialVersionUID = -126225168;
+	private static final long serialVersionUID = 119153522;
 
 	/**
 	 * The reference instance of <code>remocra</code>
@@ -238,6 +239,7 @@ public class Remocra extends SchemaImpl {
 			Sequences.CRISE_INDICATEUR_ID_SEQ,
 			Sequences.CRISE_SUIVI_ID_SEQ,
 			Sequences.CRISE_SUIVI_MESSAGE_MODELE_ID_SEQ,
+			Sequences.DDE_API_ID_SEQ,
 			Sequences.DDE_MDP_ID_SEQ,
 			Sequences.DEBIT_SIMULTANE_DOCUMENT_ID_SEQ,
 			Sequences.DEBIT_SIMULTANE_HYDRANT_ID_SEQ,
@@ -399,6 +401,7 @@ public class Remocra extends SchemaImpl {
 			CriseRepertoireLieu.CRISE_REPERTOIRE_LIEU,
 			CriseSuivi.CRISE_SUIVI,
 			CriseSuiviMessageModele.CRISE_SUIVI_MESSAGE_MODELE,
+			DdeApi.DDE_API,
 			DdeMdp.DDE_MDP,
 			DebitSimultane.DEBIT_SIMULTANE,
 			DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT,

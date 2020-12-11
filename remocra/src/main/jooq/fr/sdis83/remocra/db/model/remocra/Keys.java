@@ -31,6 +31,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.CriseIntervention;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseRepertoireLieu;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseSuivi;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseSuiviMessageModele;
+import fr.sdis83.remocra.db.model.remocra.tables.DdeApi;
 import fr.sdis83.remocra.db.model.remocra.tables.DdeMdp;
 import fr.sdis83.remocra.db.model.remocra.tables.DebitSimultane;
 import fr.sdis83.remocra.db.model.remocra.tables.DebitSimultaneDocument;
@@ -216,6 +217,7 @@ public class Keys {
 	public static final Identity<Record, Long> IDENTITY_CRISE_INDICATEUR = Identities0.IDENTITY_CRISE_INDICATEUR;
 	public static final Identity<Record, Long> IDENTITY_CRISE_SUIVI = Identities0.IDENTITY_CRISE_SUIVI;
 	public static final Identity<Record, Long> IDENTITY_CRISE_SUIVI_MESSAGE_MODELE = Identities0.IDENTITY_CRISE_SUIVI_MESSAGE_MODELE;
+	public static final Identity<Record, Integer> IDENTITY_DDE_API = Identities0.IDENTITY_DDE_API;
 	public static final Identity<Record, Long> IDENTITY_DDE_MDP = Identities0.IDENTITY_DDE_MDP;
 	public static final Identity<Record, Long> IDENTITY_DEBIT_SIMULTANE = Identities0.IDENTITY_DEBIT_SIMULTANE;
 	public static final Identity<Record, Long> IDENTITY_DEBIT_SIMULTANE_DOCUMENT = Identities0.IDENTITY_DEBIT_SIMULTANE_DOCUMENT;
@@ -372,6 +374,7 @@ public class Keys {
 	public static final UniqueKey<Record> CRISE_SUIVI_PKEY = UniqueKeys0.CRISE_SUIVI_PKEY;
 	public static final UniqueKey<Record> CRISE_SUIVI_MESSAGE_MODELE_PKEY = UniqueKeys0.CRISE_SUIVI_MESSAGE_MODELE_PKEY;
 	public static final UniqueKey<Record> CRISE_SUIVI_MESSAGE_MODELE_CODE_KEY = UniqueKeys0.CRISE_SUIVI_MESSAGE_MODELE_CODE_KEY;
+	public static final UniqueKey<Record> DDE_API_PKEY = UniqueKeys0.DDE_API_PKEY;
 	public static final UniqueKey<Record> DDE_MDP_PKEY = UniqueKeys0.DDE_MDP_PKEY;
 	public static final UniqueKey<Record> DDE_MDP_CODE_KEY = UniqueKeys0.DDE_MDP_CODE_KEY;
 	public static final UniqueKey<Record> DEBIT_SIMULTANE_PKEY = UniqueKeys0.DEBIT_SIMULTANE_PKEY;
@@ -598,6 +601,7 @@ public class Keys {
 	public static final ForeignKey<Record, Record> CRISE_REPERTOIRE_LIEU__CRISE_REPERTOIRE_LIEU_REPERTOIRE_LIEU_FK = ForeignKeys0.CRISE_REPERTOIRE_LIEU__CRISE_REPERTOIRE_LIEU_REPERTOIRE_LIEU_FK;
 	public static final ForeignKey<Record, Record> CRISE_SUIVI__CRISE_SUIVI_CRISE_FK = ForeignKeys0.CRISE_SUIVI__CRISE_SUIVI_CRISE_FK;
 	public static final ForeignKey<Record, Record> CRISE_SUIVI__CRISE_SUIVI_EVENEMENT_FK = ForeignKeys0.CRISE_SUIVI__CRISE_SUIVI_EVENEMENT_FK;
+	public static final ForeignKey<Record, Record> DDE_API__FK_ORGANISME_DDE_API = ForeignKeys0.DDE_API__FK_ORGANISME_DDE_API;
 	public static final ForeignKey<Record, Record> DDE_MDP__FK5A4FDE5FA98055B2 = ForeignKeys0.DDE_MDP__FK5A4FDE5FA98055B2;
 	public static final ForeignKey<Record, Record> DEBIT_SIMULTANE__FK_SITE = ForeignKeys0.DEBIT_SIMULTANE__FK_SITE;
 	public static final ForeignKey<Record, Record> DEBIT_SIMULTANE_DOCUMENT__FK_DOCUMENT = ForeignKeys0.DEBIT_SIMULTANE_DOCUMENT__FK_DOCUMENT;
@@ -791,6 +795,7 @@ public class Keys {
 		public static Identity<Record, Long> IDENTITY_CRISE_INDICATEUR = createIdentity(CriseIndicateur.CRISE_INDICATEUR, CriseIndicateur.CRISE_INDICATEUR.ID);
 		public static Identity<Record, Long> IDENTITY_CRISE_SUIVI = createIdentity(CriseSuivi.CRISE_SUIVI, CriseSuivi.CRISE_SUIVI.ID);
 		public static Identity<Record, Long> IDENTITY_CRISE_SUIVI_MESSAGE_MODELE = createIdentity(CriseSuiviMessageModele.CRISE_SUIVI_MESSAGE_MODELE, CriseSuiviMessageModele.CRISE_SUIVI_MESSAGE_MODELE.ID);
+		public static Identity<Record, Integer> IDENTITY_DDE_API = createIdentity(DdeApi.DDE_API, DdeApi.DDE_API.ID);
 		public static Identity<Record, Long> IDENTITY_DDE_MDP = createIdentity(DdeMdp.DDE_MDP, DdeMdp.DDE_MDP.ID);
 		public static Identity<Record, Long> IDENTITY_DEBIT_SIMULTANE = createIdentity(DebitSimultane.DEBIT_SIMULTANE, DebitSimultane.DEBIT_SIMULTANE.ID);
 		public static Identity<Record, Long> IDENTITY_DEBIT_SIMULTANE_DOCUMENT = createIdentity(DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT, DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT.ID);
@@ -945,6 +950,7 @@ public class Keys {
 		public static final UniqueKey<Record> CRISE_SUIVI_PKEY = createUniqueKey(CriseSuivi.CRISE_SUIVI, CriseSuivi.CRISE_SUIVI.ID);
 		public static final UniqueKey<Record> CRISE_SUIVI_MESSAGE_MODELE_PKEY = createUniqueKey(CriseSuiviMessageModele.CRISE_SUIVI_MESSAGE_MODELE, CriseSuiviMessageModele.CRISE_SUIVI_MESSAGE_MODELE.ID);
 		public static final UniqueKey<Record> CRISE_SUIVI_MESSAGE_MODELE_CODE_KEY = createUniqueKey(CriseSuiviMessageModele.CRISE_SUIVI_MESSAGE_MODELE, CriseSuiviMessageModele.CRISE_SUIVI_MESSAGE_MODELE.CODE);
+		public static final UniqueKey<Record> DDE_API_PKEY = createUniqueKey(DdeApi.DDE_API, DdeApi.DDE_API.ID);
 		public static final UniqueKey<Record> DDE_MDP_PKEY = createUniqueKey(DdeMdp.DDE_MDP, DdeMdp.DDE_MDP.ID);
 		public static final UniqueKey<Record> DDE_MDP_CODE_KEY = createUniqueKey(DdeMdp.DDE_MDP, DdeMdp.DDE_MDP.CODE);
 		public static final UniqueKey<Record> DEBIT_SIMULTANE_PKEY = createUniqueKey(DebitSimultane.DEBIT_SIMULTANE, DebitSimultane.DEBIT_SIMULTANE.ID);
@@ -1169,6 +1175,7 @@ public class Keys {
 		public static final ForeignKey<Record, Record> CRISE_REPERTOIRE_LIEU__CRISE_REPERTOIRE_LIEU_REPERTOIRE_LIEU_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.REPERTOIRE_LIEU_PKEY, CriseRepertoireLieu.CRISE_REPERTOIRE_LIEU, CriseRepertoireLieu.CRISE_REPERTOIRE_LIEU.REPERTOIRE_LIEU);
 		public static final ForeignKey<Record, Record> CRISE_SUIVI__CRISE_SUIVI_CRISE_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.CRISE_PKEY, CriseSuivi.CRISE_SUIVI, CriseSuivi.CRISE_SUIVI.CRISE);
 		public static final ForeignKey<Record, Record> CRISE_SUIVI__CRISE_SUIVI_EVENEMENT_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.CRISE_EVENEMENT_PKEY, CriseSuivi.CRISE_SUIVI, CriseSuivi.CRISE_SUIVI.EVENEMENT);
+		public static final ForeignKey<Record, Record> DDE_API__FK_ORGANISME_DDE_API = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, DdeApi.DDE_API, DdeApi.DDE_API.ORGANISME);
 		public static final ForeignKey<Record, Record> DDE_MDP__FK5A4FDE5FA98055B2 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.UTILISATEUR_PKEY, DdeMdp.DDE_MDP, DdeMdp.DDE_MDP.UTILISATEUR);
 		public static final ForeignKey<Record, Record> DEBIT_SIMULTANE__FK_SITE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.SITE_PKEY, DebitSimultane.DEBIT_SIMULTANE, DebitSimultane.DEBIT_SIMULTANE.SITE);
 		public static final ForeignKey<Record, Record> DEBIT_SIMULTANE_DOCUMENT__FK_DOCUMENT = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.DOCUMENT_PKEY, DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT, DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT.DOCUMENT, DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT.DOCUMENT);

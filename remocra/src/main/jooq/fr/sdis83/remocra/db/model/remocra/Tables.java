@@ -31,6 +31,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.CriseIntervention;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseRepertoireLieu;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseSuivi;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseSuiviMessageModele;
+import fr.sdis83.remocra.db.model.remocra.tables.DdeApi;
 import fr.sdis83.remocra.db.model.remocra.tables.DdeMdp;
 import fr.sdis83.remocra.db.model.remocra.tables.DebitSimultane;
 import fr.sdis83.remocra.db.model.remocra.tables.DebitSimultaneDocument;
@@ -321,6 +322,11 @@ public class Tables {
 	 * Gestion de crise : modèle de message à utiliser pour le suivi de crise. Utilisé notament par REMOCRA dans le cadre de la création automatique de messages suite à des actions utilisateurs
 	 */
 	public static final CriseSuiviMessageModele CRISE_SUIVI_MESSAGE_MODELE = fr.sdis83.remocra.db.model.remocra.tables.CriseSuiviMessageModele.CRISE_SUIVI_MESSAGE_MODELE;
+
+	/**
+	 * The table remocra.dde_api
+	 */
+	public static final DdeApi DDE_API = fr.sdis83.remocra.db.model.remocra.tables.DdeApi.DDE_API;
 
 	/**
 	 * The table remocra.dde_mdp

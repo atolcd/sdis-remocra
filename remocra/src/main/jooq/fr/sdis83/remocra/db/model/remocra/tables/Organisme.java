@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Organisme extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 124944394;
+	private static final long serialVersionUID = -1328304939;
 
 	/**
 	 * The reference instance of <code>remocra.organisme</code>
@@ -99,6 +99,16 @@ public class Organisme extends TableImpl<Record> {
 	 * The column <code>remocra.organisme.organisme_parent</code>.
 	 */
 	public final TableField<Record, Long> ORGANISME_PARENT = createField("organisme_parent", org.jooq.impl.SQLDataType.BIGINT, this, "");
+
+	/**
+	 * The column <code>remocra.organisme.clef_api</code>.
+	 */
+	public final TableField<Record, String> PASSWORD = createField("password", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+
+	/**
+	 * The column <code>remocra.organisme.clef_api</code>.
+	 */
+	public final TableField<Record, String> SALT = createField("salt", org.jooq.impl.SQLDataType.VARCHAR, this, "");
 
 	/**
 	 * Create a <code>remocra.organisme</code> table reference
