@@ -122,5 +122,36 @@ Ext.define('Sdis.Remocra.features.admin.typereference.TypeReferenceGrid', {
 
 
           }
+    },
+    {
+        text: 'Créer un accès à l\'API',
+        tooltip: 'Générer un accès à l\'API REMOCRA pour l\'organisme',
+        itemId: 'organismeAPI',
+        hidden: true,
+        handler: function() {
+            var gridPanel = this.findParentByType('crAdminTypeReferenceGrid');
+            var record = gridPanel.getSelectionModel().getSelection();
+            if (record != null && Ext.isArray(record)) {
+                record = record[0];
+                Ext.Ajax.request({
+                    url: Sdis.Remocra.util.Util.withBaseUrl('../accesAPIOrganisme/'+record.get('id')),
+                    method: 'POST',
+                    scope: this,
+                    callback: function(param, success, response) {
+                        if(success){
+                            var res = Ext.decode(response.responseText);
+                            Sdis.Remocra.util.Msg.msg(res.message);
+                        }else {
+                            Ext.Msg.show({
+                                title: 'Génération de clef d\'API',
+                                msg: Ext.decode(response.responseText).message,
+                                buttons: Ext.Msg.OK,
+                                icon: Ext.Msg.WARNING
+                            });
+                        }
+                    }
+                });
+            }
+        }
     }]
 });
