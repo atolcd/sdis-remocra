@@ -130,6 +130,7 @@ export default {
         iconPath: "/remocra/static/img/pencil.png",
         type: "button",
         name: "addPei",
+        title: "Ajouter un pei",
         onClick: () => {
           this.$root.$options.bus.$emit(eventTypes.OLMAP_TOOLBAR_TOGGLEBUTTON, "addPei");
         },

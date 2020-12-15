@@ -55,41 +55,51 @@ export default {
   methods: {
 
     refreshData() {
-      this.items = [];
-      axios.get('/remocra/voies/mc.json', {
-        params: {
-          withgeom: false,
-          page: 1,
-          start: 0,
-          limit: 10,
-          filter: JSON.stringify([{
-            "property": "communeId",
-            "value": this.commune.id
-          }])
-        }
-      }).then(response => {
-        _.forEach(response.data.data, voie => {
-          this.items.push(voie.nom);
-        })
-        this.itemsFiltered = _.clone(this.items, true);
-      }).then(() => {
-        if (this.defaultValue) {
-          this.item = this.defaultValue;
-        }
-      }).catch(function(error) {
-        console.error('Retrieving coordonnees from /remocra/voies/mc', error);
-      });
+      if(this.commune !== null) {
+        this.items = [];
+        axios.get('/remocra/voies/mc.json', {
+          params: {
+            withgeom: true,
+            page: 1,
+            start: 0,
+            limit: 10,
+            filter: JSON.stringify([{
+              "property": "communeId",
+              "value": this.commune.id
+            }])
+          }
+        }).then(response => {
+          _.forEach(response.data.data, voie => {
+            this.items.push({
+              nom: voie.nom,
+              geometrie: voie.geometrie
+            });
+          })
+          this.itemsFiltered = _.clone(this.items, true);
+        }).then(() => {
+          if (this.defaultValue) {
+            this.item = this.defaultValue;
+          }
+        }).catch(function(error) {
+          console.error('Retrieving coordonnees from /remocra/voies/mc', error);
+        });
+      } else {
+        this.item = null;
+      }
     },
+
     getLabel(item) {
-      return item
+      return item ? item.nom : ''
     },
-    onValueChanged(text) {
-      this.item = text;
-      this.$emit('onVoieSelected', text);
+
+    onValueChanged(voie) {
+      this.item = voie;
+      this.$emit('onVoieSelected', voie);
     },
+
     updateItems(text) {
       if (this.itemsFiltered) {
-        this.itemsFiltered = this.items.filter(item => (text) ? item.toUpperCase().indexOf(text.toUpperCase()) !== -1 : true);
+        this.itemsFiltered = this.items.filter(item => (text) ? item.nom.toUpperCase().indexOf(text.toUpperCase()) !== -1 : true);
       }
     }
   }

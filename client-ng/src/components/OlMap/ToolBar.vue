@@ -15,7 +15,7 @@
     <div v-if="item.type == 'separator'" class="separator"></div>
 
     <SearchCommune v-if="item.type == 'searchCommune'"
-       @communeSelected="item.onCommuneSelected" class="customComponent"></SearchCommune>
+       @communeSelected="item.onCommuneSelected" @communeInputChange="item.onCommuneChanged" class="customComponent"></SearchCommune>
 
     <SearchVoie v-if="item.type == 'searchVoie'"
                 :commune="commune"
@@ -168,22 +168,10 @@ export default {
       onCommuneSelected: (commune) => {
         this.$emit('zoomToGeom', commune.geometrie);
         this.commune = commune;
-        if (!this.navigation.btns) {
-          let view = this.map.getView()
-          //  Retrait des éléments "suivants" (cas "Zoom précédent" puis "Zoom manuel") et ajout du nouvel état
-          this.navigation.stack.splice(this.navigation.idx + 1, this.navigation.stack.length - (this.navigation.idx + 1), {
-            zoom: view.getZoom(),
-            center: view.getCenter(),
-            rotation: view.getRotation()
-          })
-          //  On limite à 10 entrées
-          if (this.navigation.stack.length > 9) {
-            this.navigation.stack.shift()
-          } else {
-            this.navigation.idx++
-          }
-        }
-        this.navigation.btns = false
+        this.updateNavigation();
+      },
+      onCommuneChanged: () => {
+        this.commune = null;
       }
     });
 
@@ -191,7 +179,8 @@ export default {
     this.addToolBarItem({
       type: "searchVoie",
       onVoieSelected: (voie) => {
-        console.log(voie);
+        this.$emit('zoomToGeom', voie.geometrie);
+        this.updateNavigation();
       }
     })
 
@@ -503,6 +492,26 @@ export default {
       if(dropInteraction){
         this.map.removeInteraction(dropInteraction);
       }
+    },
+
+    // Met à jour les données de navigation (Vue précédente/suivante)
+    updateNavigation() {
+      if (!this.navigation.btns) {
+        let view = this.map.getView()
+        //  Retrait des éléments "suivants" (cas "Zoom précédent" puis "Zoom manuel") et ajout du nouvel état
+        this.navigation.stack.splice(this.navigation.idx + 1, this.navigation.stack.length - (this.navigation.idx + 1), {
+          zoom: view.getZoom(),
+          center: view.getCenter(),
+          rotation: view.getRotation()
+        })
+        //  On limite à 10 entrées
+        if (this.navigation.stack.length > 9) {
+          this.navigation.stack.shift()
+        } else {
+          this.navigation.idx++
+        }
+      }
+      this.navigation.btns = false
     }
 
   }

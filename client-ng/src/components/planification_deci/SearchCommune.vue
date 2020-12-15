@@ -1,7 +1,14 @@
 <template>
 <form v-on:submit.prevent>
-  <autocomplete ref="autocomplete" :input-attrs="{ placeholder: 'Sélectionnez une commune...' }" v-model="selected" :items="results" :get-label="getLabel" :component-item='communeTemplate' :auto-select-one-item="false" @update-items="search"
-    @item-selected="communeSelected" v-on:change="onChange"/>
+  <autocomplete ref="autocomplete"
+                :input-attrs="{ placeholder: 'Sélectionnez une commune...' }"
+                v-model="selected"
+                :items="results"
+                :get-label="getLabel"
+                :component-item='communeTemplate'
+                :auto-select-one-item="false"
+                @update-items="search"
+                @item-selected="communeSelected" />
 </form>
 </template>
 
@@ -31,7 +38,9 @@ export default {
     getLabel(item) {
       return item ? item.nom : ''
     },
+
     search(text) {
+      this.$emit('communeInputChange');
       axios.get('/remocra/communes/nom', {
         params: {
           "query": text,
@@ -45,17 +54,15 @@ export default {
         console.error('communes', error)
       })
     },
+
     communeSelected(commune) {
       this.selected = commune;
       this.$emit('communeSelected');
     },
+
     reset() {
       this.selected = null;
       this.results = [];
-    },
-
-    onChange() {
-      this.$emit('communeInputChange');
     },
 
     getSelected() {
