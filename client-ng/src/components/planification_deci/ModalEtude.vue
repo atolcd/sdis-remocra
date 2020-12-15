@@ -319,7 +319,7 @@ export default {
 
     checkFormValidity() {
 
-      this.etats.numero = 'valid';
+      this.etats.numero = 'invalid';
       this.etats.nom = this.nom && this.nom.length > 0 ? 'valid' : 'invalid';
       this.etats.description = this.description && this.description.length > 0 ? 'valid' : 'invalid';
 
@@ -337,10 +337,9 @@ export default {
             this.etats.numero = 'invalid';
             return !this.hasInvalidState(this.etats);
           }
+          this.etats.numero = 'valid';
           return !this.hasInvalidState(this.etats);
         });
-      } else if(!this.etude && (this.numero && this.numero.length == 0)){
-        this.etats.numero = 'invalid';
       }
       return !this.hasInvalidState(this.etats);
     },
