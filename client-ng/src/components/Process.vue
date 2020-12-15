@@ -119,7 +119,7 @@ export default {
       }).catch(function(error) {
         console.error('message', error)
       })
-      this.$refs.modal.show()
+      this.$modal.show('modalProcess')
     },
     clearFields() {
       this.selected = null
