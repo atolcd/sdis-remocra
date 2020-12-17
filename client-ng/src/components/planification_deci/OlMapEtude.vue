@@ -66,9 +66,16 @@ export default {
       required: true
     },
 
+    // Booléen indiquant si il existe un réseau spécifique à cette étude
     reseauImporte: {
       type: Boolean
     },
+
+    // Indique si l'étude est close. Dans ce cas, on désactive les contrôles pouvant modifier l'étude
+    isClosed: {
+      required: true,
+      type: Boolean
+    }
   },
 
   data() {
@@ -151,7 +158,7 @@ export default {
 
         },
         disabled: () => {
-          return this.disableToolbar;
+          return this.disableToolbar || this.isClosed;
         }
       });
 
@@ -168,7 +175,7 @@ export default {
           });
         },
         disabled: () => {
-          return !(this.selectedFeatures.length == 1 && this.selectedFeatures[0].id.startsWith("etude_hydrant_projet")) || this.disableToolbar
+          return !(this.selectedFeatures.length == 1 && this.selectedFeatures[0].id.startsWith("etude_hydrant_projet")) || this.disableToolbar || this.isClosed
         }
       });
 
@@ -241,7 +248,7 @@ export default {
           }
         },
         disabled: () => {
-          return !(this.selectedFeatures.length == 1 && this.selectedFeatures[0].id.startsWith("etude_hydrant_projet")) || this.disableToolbar
+          return !(this.selectedFeatures.length == 1 && this.selectedFeatures[0].id.startsWith("etude_hydrant_projet")) || this.disableToolbar || this.isClosed
         }
       });
 
@@ -255,7 +262,7 @@ export default {
           this.$bvModal.show("modaleDeletePeiProjet");
         },
         disabled: () => {
-          return !(this.selectedFeatures.length == 1 && this.selectedFeatures[0].id.startsWith("etude_hydrant_projet")) || this.interactionMovePei !== null || this.disableToolbar
+          return !(this.selectedFeatures.length == 1 && this.selectedFeatures[0].id.startsWith("etude_hydrant_projet")) || this.interactionMovePei !== null || this.disableToolbar || this.isClosed
         }
       });
 
@@ -312,7 +319,7 @@ export default {
           }
         },
         disabled: () => {
-          if(this.disableToolbar) {
+          if(this.disableToolbar || this.isClosed) {
             return true;
           }
 
@@ -343,7 +350,7 @@ export default {
           });
         },
         disabled: () => {
-          return this.disableToolbar;
+          return this.disableToolbar || this.isClosed;
         }
       });
 
@@ -358,6 +365,9 @@ export default {
         name: "lancerTraitement",
         onClick: () => {
           this.$refs.process.showModal(this.processHiddenValues);
+        },
+        disabled: () => {
+          return this.disableToolbar || this.isClosed;
         }
       });
 

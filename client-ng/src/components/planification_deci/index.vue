@@ -7,7 +7,7 @@
         <img src="../../assets/img/resultset_previous.png" width="16"/>Quitter l'étude
       </b-button>
 
-      <OlMapEtude :idEtude="selectedEtude" :reseauImporte="selectedEtudeReseauImporte"></OlMapEtude>
+      <OlMapEtude :idEtude="selectedEtude" :reseauImporte="selectedEtudeReseauImporte" :isClosed="selectedEtudeStatut == 'TERMINEE'"></OlMapEtude>
     </div>
 
     <div v-else>
@@ -75,7 +75,7 @@
             <tbody :key="tableKey">
               <tr v-for="(item, index) in listeEtudes"
                   :key="index"
-                  @click="selectedEtude = (selectedEtude == item.id) ? null : item.id; selectedEtudeReseauImporte = item.reseauImporte"
+                  @click="selectedEtude = (selectedEtude == item.id) ? null : item.id; selectedEtudeReseauImporte = item.reseauImporte; selectedEtudeStatut = item.statut.code;"
                   :class="{'bg-secondary':item.id==selectedEtude, 'text-light':item.id==selectedEtude}">
                 <td>{{item.type.nom}}</td>
                 <td>{{item.numero}}</td>
@@ -138,6 +138,7 @@ export default {
       tableKey: 0,
       selectedEtude: null,
       selectedEtudeReseauImporte: null,
+      selectedEtudeStatut: null,
 
       etudeAConfigurer: null,
       showMap: false,
