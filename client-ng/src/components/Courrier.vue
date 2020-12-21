@@ -448,7 +448,7 @@ export default {
         } else {
             let formData = new FormData()
             formData.append("modele", this.choixModele.id)
-            _.forEach(evt.target.getElementsByClassName('parametreModele'), item => {
+            _.forEach(document.getElementsByClassName('parametreModele'), item => {
             if (item.getAttribute('inputType') === 'datetimefield') {
               var date = document.querySelector('input[id=' + item.id + 'date ]').value
               var time = document.querySelector('input[id=' + item.id + 'time]').value

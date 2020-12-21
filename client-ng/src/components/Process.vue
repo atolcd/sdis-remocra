@@ -143,7 +143,7 @@ export default {
         let formData = new FormData()
         formData.append('processus', this.selected.id)
         formData.append('priorite', 3)
-        _.forEach(evt.target.getElementsByClassName('parametreProcess'), item => {
+        _.forEach(document.getElementsByClassName('parametreProcess'), item => {
           if (item.getAttribute('inputType') === 'datetimefield') {
             var date = document.querySelector('input[id=' + item.id + 'date ]').value
             var time = document.querySelector('input[id=' + item.id + 'time]').value

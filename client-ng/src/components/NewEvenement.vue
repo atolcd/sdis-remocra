@@ -364,7 +364,7 @@ export default {
           })))
         }
         // formulaire complementaire
-        _.forEach(evt.target.getElementsByClassName('parametreComplement'), item => {
+        _.forEach(document.getElementsByClassName('parametreComplement'), item => {
           if (item.getAttribute('inputType') === 'datetimefield') {
             var date = document.querySelector('input[id=' + item.id + 'date ]').value
             var time = document.querySelector('input[id=' + item.id + 'time]').value
