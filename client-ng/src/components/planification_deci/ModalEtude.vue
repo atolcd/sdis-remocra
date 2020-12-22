@@ -319,7 +319,7 @@ export default {
 
     checkFormValidity() {
 
-      this.etats.numero = 'invalid';
+      this.etats.numero = (this.etude) ? 'valid' : 'invalid';
       this.etats.nom = this.nom && this.nom.length > 0 ? 'valid' : 'invalid';
       this.etats.description = this.description && this.description.length > 0 ? 'valid' : 'invalid';
 
