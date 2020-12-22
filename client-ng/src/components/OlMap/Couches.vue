@@ -61,8 +61,8 @@
               </div>
 
               <div v-if="layer.get('legende') && layer.get('legende').type == 'url'" class='legendeItem'>
-                <img :src="require('../../assets/img/'+layer.get('legende').src)" alt="legende" />
-                <p class="legendeLibelle">{{layer.get("libelle")}}</p>
+                <img :src="'/remocra/ext-res/layers/legendes/'+layer.get('legende').src" alt="legende" />
+                <p class="legendeLibelle" v-if="layer.get('legende').libelle != false">{{layer.get("libelle")}}</p>
               </div>
             </div>
           </div>
