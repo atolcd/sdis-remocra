@@ -1,0 +1,14 @@
+{
+  "resourcePackages": ["fr.sdis83.remocra.web.s"],
+  "prettyPrint": true,
+  "cacheTTL": 0,
+  "ignoredRoutes": [],
+  "openAPI": {
+    "info": {
+      "version": "0.1",
+      "title": "API - REMOCRA",
+      "description": "Cette <b>spécification OpenAPI</b> permet de découvrir / consommer l'API HTTP de l'application REMOCRA"
+    }
+  },
+  "modelConverterClasses": ["fr.sdis83.remocra.openapi.converter.ModelConverter"]
+}

@@ -1,0 +1,10 @@
+target
+.vagrant
+.project
+.classpath
+.factorypath
+.settings
+dist/api-remocra-*.zip
+.idea
+*.iml
+.nvmrc
