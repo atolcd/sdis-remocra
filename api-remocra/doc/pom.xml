@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>fr.sdis83.remocra</groupId>
+    <artifactId>api-remocra-parent</artifactId>
+    <version>0.1</version>
+  </parent>
+
+  <artifactId>api-remocra-doc</artifactId>
+  <name>api-remocra-doc</name>
+
+  <packaging>pom</packaging>
+
+  <properties>
+    <!-- Workaround for: https://issues.apache.org/jira/browse/MRESOURCES-99 -->
+    <timestamp>${maven.build.timestamp}</timestamp>
+    <maven.build.timestamp.format>dd MMMM yyyy</maven.build.timestamp.format>
+
+    <plugin.maven-resources.version>3.1.0</plugin.maven-resources.version>
+    <plugin.asciidoctor-maven-plugin.version>1.5.6</plugin.asciidoctor-maven-plugin.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>fr.sdis83.remocra</groupId>
+      <artifactId>api-remocra-api</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${plugin.maven-resources.version}</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/docs/asciidoc</directory>
+                  <filtering>true</filtering>
+                  <targetPath>asciidoc</targetPath>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.asciidoctor</groupId>
+        <artifactId>asciidoctor-maven-plugin</artifactId>
+        <version>${plugin.asciidoctor-maven-plugin.version}</version>
+
+        <configuration>
+          <sourceDirectory>target/asciidoc</sourceDirectory>
+          <outputDirectory>target/documentation</outputDirectory>
+          <!-- Attributes common to all output formats -->
+          <attributes>
+            <pagenums/>
+            <toc>right</toc>
+            <icons>font</icons>
+            <idprefix/>
+            <idseparator>-</idseparator>
+            <sourcedir>${project.build.sourceDirectory}</sourcedir>
+          </attributes>
+          <backend>html</backend>
+          <!-- coderay/highlight.js, WARNING callout bullets don't yet work with CodeRay -->
+          <sourceHighlighter>highlight.js</sourceHighlighter>
+        </configuration>
+
+        <executions>
+          <execution>
+            <id>generate-html-index</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>process-asciidoc</goal>
+            </goals>
+            <configuration>
+              <sourceDocumentName>index.adoc</sourceDocumentName>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <appendAssemblyId>false</appendAssemblyId>
+          <descriptors>
+            <descriptor>src/main/assembly/doc.xml</descriptor>
+          </descriptors>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

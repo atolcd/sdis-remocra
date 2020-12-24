@@ -375,6 +375,12 @@
               </executions>
               <configuration>
                 <mainClass>fr.sdis83.remocra.WebApp</mainClass>
+                <systemProperties>
+                  <systemProperty>
+                    <key>api-remocra.http.doc-path</key>
+                    <value>doc/target</value>
+                  </systemProperty>
+                </systemProperties>
               </configuration>
             </plugin>
           </plugins>
@@ -385,6 +391,7 @@
 
   <modules>
     <module>api</module>
+    <module>doc</module>
   </modules>
 
 </project>

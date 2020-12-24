@@ -1,0 +1,18 @@
+<assembly>
+  <id>api-remocra-doc-dist</id>
+  <formats>
+    <format>dir</format>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <fileSets>
+    <fileSet>
+      <directory>${project.basedir}/target/documentation</directory>
+      <outputDirectory>documentation</outputDirectory>
+      <includes>
+        <include>**/*.html</include>
+        <include>**/*.png</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+</assembly>

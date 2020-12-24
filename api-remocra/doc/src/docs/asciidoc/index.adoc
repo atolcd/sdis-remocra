@@ -1,0 +1,19 @@
+= Manuel d'administration
+API -REMOCRA
+v${project.version}, ${timestamp}
+
+//État : Document à finaliser
+
+:experimental:
+:icons: font
+
+:toc:
+
+<<<
+
+include::include/historique.adoc[]
+
+<<<
+
+:numbered:
+
