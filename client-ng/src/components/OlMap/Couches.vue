@@ -498,7 +498,7 @@ export default {
   z-index: 1;
   display: inline-flex;
   flex-direction: column;
-  max-height: 88%;
+  max-height: 85%;
   overflow-y: scroll;
 }
 
@@ -557,6 +557,8 @@ export default {
 
 #accordionLegende img {
   margin-left: 10px;
+  padding-right: 10px;
+  overflow-x: scroll;
 }
 
 .legendeItem {

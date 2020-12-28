@@ -534,6 +534,7 @@ export default {
   background-color: rgba(255,255,255,0.9);
   padding-bottom: 2px;
   padding-top: 1px;
+  overflow-x: scroll;
 }
 
 #toolbar button {

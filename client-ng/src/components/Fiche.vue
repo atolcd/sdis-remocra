@@ -2,7 +2,7 @@
 <div :class="{ 'Fiche': true, 'mode-visite': newVisite, 'loading': !dataLoaded }">
   <modal name="modalFiche"  :draggable="true" id="modalFiche"  ref="modalFiche" classes="modalFiche" @closed="close()"
     :reset="true"
-    width="50%"
+    width="70%"
     height="auto">
     <header class="modal-header"><h5 class="modal-title">{{title}}</h5>
     <div slot="top-right">
@@ -799,6 +799,7 @@ label {
   background-color: #e9e9e9 !important;
   padding: 10px;
 }
+
 #modalFiche .modal-content {
  width: max-content;
  left: 50%;
@@ -820,6 +821,11 @@ label {
   background-color: #fff;
   border: 1px solid #ced4da;
   border-radius: .25rem;
+}
+
+.vm--modal.modalFiche {
+  max-height: 90%;
+  overflow-y: scroll;
 }
 
 #modalFiche .addGest {
