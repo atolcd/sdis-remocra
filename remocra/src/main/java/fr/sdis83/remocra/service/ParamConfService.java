@@ -327,6 +327,10 @@ public class ParamConfService {
         return (String) this.getValue(ParamConfParam.DASHBOARD_BASE_URL, "http://localhost:5000/");
     }
 
+    public String getProcessOfflineUser() {
+        return (String) this.getValue(ParamConfParam.PROCESS_OFFLINE_USER, "remocra-adm-app");
+    }
+
     @Transactional
     public ParamConf update(ParamConf record) {
         log.info("updateParamConf : " + record.getCle());

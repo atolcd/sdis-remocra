@@ -148,9 +148,8 @@ public class ParamConf {
         PDI_LDAP_USER_FILTER("PDI_LDAP_USER_FILTER", String.class),
         //DECI
         DECI_DISTANCE_MAX_PARCOURS("DECI_DISTANCE_MAX_PARCOURS", Integer.class),
-        DASHBOARD_BASE_URL("DASHBOARD_BASE_URL", String.class);
-
-
+        DASHBOARD_BASE_URL("DASHBOARD_BASE_URL", String.class),
+        PROCESS_OFFLINE_USER("PROCESS_OFFLINE_USER", String.class);
 
         private final String cle;
         private final Class cl;

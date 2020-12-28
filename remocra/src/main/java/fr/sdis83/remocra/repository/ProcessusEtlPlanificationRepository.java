@@ -16,8 +16,10 @@ import javax.persistence.PersistenceContext;
 
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlPlanification;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlPlanificationParametre;
+import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.jobs.ProcessEtlJob;
 import fr.sdis83.remocra.quartz.QuartzScheduler;
+import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import org.apache.log4j.Logger;
 import org.joda.time.Instant;
@@ -52,6 +54,10 @@ public class ProcessusEtlPlanificationRepository {
 
   @Autowired
   private UtilisateurService utilisateurService;
+
+  @Autowired
+  private ParamConfService paramConfService;
+
 
   public ProcessusEtlPlanificationRepository() {
 
@@ -171,7 +177,10 @@ public class ProcessusEtlPlanificationRepository {
       try {
         JobDataMap j = new JobDataMap();
         j.put("repository", this);
-        Long idUtilisateur = 143l;//utilisateurService.getCurrentUtilisateur().getId();
+        // On relance les process avec le user hors ligne
+        String userName = paramConfService.getProcessOfflineUser();
+        Utilisateur u = utilisateurService.findUtilisateursWithoutCase(userName);
+        Long idUtilisateur = u.getId();
         j.put("idUtilisateur", idUtilisateur);
         JobDetail job = JobBuilder.newJob(ProcessEtlJob.class).withIdentity("processusEtlJob"+index, "group"+index).usingJobData(j).build();
         //((ProcessEtlJob)job).setProcessusEtlPlanificationRepository(this);
