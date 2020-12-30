@@ -1,0 +1,48 @@
+# --------------------
+# Build artefacts
+# --------------------
+FROM maven:3-jdk-11 as api-builder
+WORKDIR /app
+USER root
+ENV HOME /var/maven
+ENV MAVEN_CONFIG /var/maven/.m2
+ENV MAVEN_OPTS -Duser.home=/var/maven
+COPY api /app/api
+COPY doc /app/doc
+COPY pom.xml /app
+RUN mvn clean package -DskipTests
+
+# --------------------
+# Build runnable image
+# --------------------
+# --------------------
+# Build runnable image
+# --------------------
+FROM openjdk:11-jre
+RUN apt-get update -y && apt-get upgrade -y && apt-get install htop nano -y && rm -rf /var/lib/apt/lists/*
+
+ENV LANG fr_FR.UTF-8
+ENV TZ Europe/Paris
+ENV INITIAL_MEMORY="500m"
+ENV MAXIMUM_MEMORY="1g"
+ENV MAXIMUM_RAM="2g"
+
+WORKDIR /app
+COPY dist/entrypoint.sh .
+COPY --from=api-builder  /app/api/target/lib/*.jar lib/
+COPY --from=api-builder  /app/api/target/api-remocra-api*.jar lib/
+COPY --from=api-builder  /app/doc/target/documentation doc/documentation/
+
+# Non root user
+ARG UID=1000
+ARG GID=1000
+RUN groupadd -g ${GID} remocra \
+    && useradd -u ${UID} -g remocra remocra \
+    && chown -R remocra /app
+USER remocra
+
+EXPOSE 8881
+VOLUME /app/config
+VOLUME /app/log
+
+ENTRYPOINT ["/app/entrypoint.sh"]

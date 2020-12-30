@@ -195,13 +195,6 @@
       <scope>compile</scope>
     </dependency>
 
-    <!-- Mail -->
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-email</artifactId>
-      <version>1.5</version>
-    </dependency>
-
     <!-- test -->
     <dependency>
       <groupId>junit</groupId>
@@ -338,6 +331,21 @@
             </target>
           </generator>
         </configuration>
+      </plugin>
+      <plugin>
+        <!-- Generates target/lib/* -->
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
