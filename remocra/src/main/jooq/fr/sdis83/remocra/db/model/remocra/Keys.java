@@ -112,6 +112,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.SuiviPatches;
 import fr.sdis83.remocra.db.model.remocra.tables.Synchronisation;
 import fr.sdis83.remocra.db.model.remocra.tables.Thematique;
 import fr.sdis83.remocra.db.model.remocra.tables.Tournee;
+import fr.sdis83.remocra.db.model.remocra.tables.TransfertsAutomatises;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeAlerteAno;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeAlerteElt;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeCrise;
@@ -285,6 +286,7 @@ public class Keys {
 	public static final Identity<Record, Long> IDENTITY_SYNCHRONISATION = Identities0.IDENTITY_SYNCHRONISATION;
 	public static final Identity<Record, Long> IDENTITY_THEMATIQUE = Identities0.IDENTITY_THEMATIQUE;
 	public static final Identity<Record, Long> IDENTITY_TOURNEE = Identities0.IDENTITY_TOURNEE;
+	public static final Identity<Record, Integer> IDENTITY_TRANSFERTS_AUTOMATISES = Identities0.IDENTITY_TRANSFERTS_AUTOMATISES;
 	public static final Identity<Record, Long> IDENTITY_TYPE_ALERTE_ANO = Identities0.IDENTITY_TYPE_ALERTE_ANO;
 	public static final Identity<Record, Long> IDENTITY_TYPE_ALERTE_ELT = Identities0.IDENTITY_TYPE_ALERTE_ELT;
 	public static final Identity<Record, Long> IDENTITY_TYPE_CRISE = Identities0.IDENTITY_TYPE_CRISE;
@@ -481,6 +483,7 @@ public class Keys {
 	public static final UniqueKey<Record> THEMATIQUE_CODE_KEY = UniqueKeys0.THEMATIQUE_CODE_KEY;
 	public static final UniqueKey<Record> TOURNEE_PKEY = UniqueKeys0.TOURNEE_PKEY;
 	public static final UniqueKey<Record> NOM_AFFECTATION = UniqueKeys0.NOM_AFFECTATION;
+	public static final UniqueKey<Record> TRANSFERTS_AUTOMATISES_PKEY = UniqueKeys0.TRANSFERTS_AUTOMATISES_PKEY;
 	public static final UniqueKey<Record> TYPE_ALERTE_ANO_PKEY = UniqueKeys0.TYPE_ALERTE_ANO_PKEY;
 	public static final UniqueKey<Record> TYPE_ALERTE_ELT_PKEY = UniqueKeys0.TYPE_ALERTE_ELT_PKEY;
 	public static final UniqueKey<Record> TYPE_CRISE_PKEY = UniqueKeys0.TYPE_CRISE_PKEY;
@@ -747,6 +750,7 @@ public class Keys {
 	public static final ForeignKey<Record, Record> SYNCHRONISATION__FK43A80607D27676E2 = ForeignKeys0.SYNCHRONISATION__FK43A80607D27676E2;
 	public static final ForeignKey<Record, Record> TOURNEE__FKBC630036DBF82B2F = ForeignKeys0.TOURNEE__FKBC630036DBF82B2F;
 	public static final ForeignKey<Record, Record> TOURNEE__FKBC6300366F3F65FB = ForeignKeys0.TOURNEE__FKBC6300366F3F65FB;
+	public static final ForeignKey<Record, Record> TRANSFERTS_AUTOMATISES__FK_ORGANISME_TRANSFERTS_AUTOMATISES = ForeignKeys0.TRANSFERTS_AUTOMATISES__FK_ORGANISME_TRANSFERTS_AUTOMATISES;
 	public static final ForeignKey<Record, Record> TYPE_CRISE_EVENEMENT_CRISE__TYPE_CRISE_EVENEMENT_CRISE_CATEGORIE_EVENEMENT_FK = ForeignKeys0.TYPE_CRISE_EVENEMENT_CRISE__TYPE_CRISE_EVENEMENT_CRISE_CATEGORIE_EVENEMENT_FK;
 	public static final ForeignKey<Record, Record> TYPE_CRISE_EVENEMENT_CRISE__TYPE_CRISE_EVENEMENT_CRISE_TYPE_CRISE_FK = ForeignKeys0.TYPE_CRISE_EVENEMENT_CRISE__TYPE_CRISE_EVENEMENT_CRISE_TYPE_CRISE_FK;
 	public static final ForeignKey<Record, Record> TYPE_CRISE_EVENEMENT_DROIT__TYPE_CRISE_EVENEMENT_DROIT_CATEGORIE_EVENEMENT_FK = ForeignKeys0.TYPE_CRISE_EVENEMENT_DROIT__TYPE_CRISE_EVENEMENT_DROIT_CATEGORIE_EVENEMENT_FK;
@@ -863,6 +867,7 @@ public class Keys {
 		public static Identity<Record, Long> IDENTITY_SYNCHRONISATION = createIdentity(Synchronisation.SYNCHRONISATION, Synchronisation.SYNCHRONISATION.ID);
 		public static Identity<Record, Long> IDENTITY_THEMATIQUE = createIdentity(Thematique.THEMATIQUE, Thematique.THEMATIQUE.ID);
 		public static Identity<Record, Long> IDENTITY_TOURNEE = createIdentity(Tournee.TOURNEE, Tournee.TOURNEE.ID);
+		public static Identity<Record, Integer> IDENTITY_TRANSFERTS_AUTOMATISES = createIdentity(TransfertsAutomatises.TRANSFERTS_AUTOMATISES, TransfertsAutomatises.TRANSFERTS_AUTOMATISES.ID);
 		public static Identity<Record, Long> IDENTITY_TYPE_ALERTE_ANO = createIdentity(TypeAlerteAno.TYPE_ALERTE_ANO, TypeAlerteAno.TYPE_ALERTE_ANO.ID);
 		public static Identity<Record, Long> IDENTITY_TYPE_ALERTE_ELT = createIdentity(TypeAlerteElt.TYPE_ALERTE_ELT, TypeAlerteElt.TYPE_ALERTE_ELT.ID);
 		public static Identity<Record, Long> IDENTITY_TYPE_CRISE = createIdentity(TypeCrise.TYPE_CRISE, TypeCrise.TYPE_CRISE.ID);
@@ -1057,6 +1062,7 @@ public class Keys {
 		public static final UniqueKey<Record> THEMATIQUE_CODE_KEY = createUniqueKey(Thematique.THEMATIQUE, Thematique.THEMATIQUE.CODE);
 		public static final UniqueKey<Record> TOURNEE_PKEY = createUniqueKey(Tournee.TOURNEE, Tournee.TOURNEE.ID);
 		public static final UniqueKey<Record> NOM_AFFECTATION = createUniqueKey(Tournee.TOURNEE, Tournee.TOURNEE.NOM, Tournee.TOURNEE.AFFECTATION);
+		public static final UniqueKey<Record> TRANSFERTS_AUTOMATISES_PKEY = createUniqueKey(TransfertsAutomatises.TRANSFERTS_AUTOMATISES, TransfertsAutomatises.TRANSFERTS_AUTOMATISES.ID);
 		public static final UniqueKey<Record> TYPE_ALERTE_ANO_PKEY = createUniqueKey(TypeAlerteAno.TYPE_ALERTE_ANO, TypeAlerteAno.TYPE_ALERTE_ANO.ID);
 		public static final UniqueKey<Record> TYPE_ALERTE_ELT_PKEY = createUniqueKey(TypeAlerteElt.TYPE_ALERTE_ELT, TypeAlerteElt.TYPE_ALERTE_ELT.ID);
 		public static final UniqueKey<Record> TYPE_CRISE_PKEY = createUniqueKey(TypeCrise.TYPE_CRISE, TypeCrise.TYPE_CRISE.ID);
@@ -1321,6 +1327,7 @@ public class Keys {
 		public static final ForeignKey<Record, Record> SYNCHRONISATION__FK43A80607D27676E2 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.THEMATIQUE_PKEY, Synchronisation.SYNCHRONISATION, Synchronisation.SYNCHRONISATION.THEMATIQUE);
 		public static final ForeignKey<Record, Record> TOURNEE__FKBC630036DBF82B2F = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, Tournee.TOURNEE, Tournee.TOURNEE.AFFECTATION);
 		public static final ForeignKey<Record, Record> TOURNEE__FKBC6300366F3F65FB = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.UTILISATEUR_PKEY, Tournee.TOURNEE, Tournee.TOURNEE.RESERVATION);
+		public static final ForeignKey<Record, Record> TRANSFERTS_AUTOMATISES__FK_ORGANISME_TRANSFERTS_AUTOMATISES = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_ORGANISME_PKEY, TransfertsAutomatises.TRANSFERTS_AUTOMATISES, TransfertsAutomatises.TRANSFERTS_AUTOMATISES.TYPE_ORGANISME);
 		public static final ForeignKey<Record, Record> TYPE_CRISE_EVENEMENT_CRISE__TYPE_CRISE_EVENEMENT_CRISE_CATEGORIE_EVENEMENT_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_CRISE_CATEGORIE_EVENEMENT_PKEY, TypeCriseEvenementCrise.TYPE_CRISE_EVENEMENT_CRISE, TypeCriseEvenementCrise.TYPE_CRISE_EVENEMENT_CRISE.CATEGORIE_EVENEMENT);
 		public static final ForeignKey<Record, Record> TYPE_CRISE_EVENEMENT_CRISE__TYPE_CRISE_EVENEMENT_CRISE_TYPE_CRISE_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_CRISE_PKEY, TypeCriseEvenementCrise.TYPE_CRISE_EVENEMENT_CRISE, TypeCriseEvenementCrise.TYPE_CRISE_EVENEMENT_CRISE.TYPE_CRISE);
 		public static final ForeignKey<Record, Record> TYPE_CRISE_EVENEMENT_DROIT__TYPE_CRISE_EVENEMENT_DROIT_CATEGORIE_EVENEMENT_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_CRISE_CATEGORIE_EVENEMENT_PKEY, TypeCriseEvenementDroit.TYPE_CRISE_EVENEMENT_DROIT, TypeCriseEvenementDroit.TYPE_CRISE_EVENEMENT_DROIT.CATEGORIE_EVENEMENT);

@@ -22,7 +22,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Organisme implements Serializable {
 
-	private static final long serialVersionUID = 1566580432;
+	private static final long serialVersionUID = -42082087;
 
 	private Long    id;
 	private Boolean actif;
@@ -66,7 +66,7 @@ public class Organisme implements Serializable {
 		Long    zoneCompetence,
 		Long    organismeParent,
 		String  password,
-		String salt
+		String  salt
 	) {
 		this.id = id;
 		this.actif = actif;

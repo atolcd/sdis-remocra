@@ -471,6 +471,11 @@ public class Sequences {
 	public static final Sequence<Long> TOURNEE_ID_SEQ = new SequenceImpl<Long>("tournee_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
+	 * The sequence <code>remocra.transferts_automatises_id_seq</code>
+	 */
+	public static final Sequence<Integer> TRANSFERTS_AUTOMATISES_ID_SEQ = new SequenceImpl<Integer>("transferts_automatises_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.INTEGER.nullable(false));
+
+	/**
 	 * The sequence <code>remocra.type_alerte_ano_id_seq</code>
 	 */
 	public static final Sequence<Long> TYPE_ALERTE_ANO_ID_SEQ = new SequenceImpl<Long>("type_alerte_ano_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));

@@ -24,7 +24,7 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DdeApi implements Serializable {
 
-	private static final long serialVersionUID = -1840511545;
+	private static final long serialVersionUID = 1121242524;
 
 	private Integer id;
 	private Long    organisme;
@@ -39,7 +39,7 @@ public class DdeApi implements Serializable {
 		this.organisme = value.organisme;
 		this.code = value.code;
 		this.dateDemande = value.dateDemande;
-		this.utilise = utilise;
+		this.utilise = value.utilise;
 	}
 
 	public DdeApi(

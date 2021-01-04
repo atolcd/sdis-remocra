@@ -113,6 +113,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.SuiviPatches;
 import fr.sdis83.remocra.db.model.remocra.tables.Synchronisation;
 import fr.sdis83.remocra.db.model.remocra.tables.Thematique;
 import fr.sdis83.remocra.db.model.remocra.tables.Tournee;
+import fr.sdis83.remocra.db.model.remocra.tables.TransfertsAutomatises;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeAlerteAno;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeAlerteElt;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeCrise;
@@ -197,7 +198,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Remocra extends SchemaImpl {
 
-	private static final long serialVersionUID = 119153522;
+	private static final long serialVersionUID = 649151613;
 
 	/**
 	 * The reference instance of <code>remocra</code>
@@ -309,6 +310,7 @@ public class Remocra extends SchemaImpl {
 			Sequences.SYNCHRONISATION_ID_SEQ,
 			Sequences.THEMATIQUE_ID_SEQ,
 			Sequences.TOURNEE_ID_SEQ,
+			Sequences.TRANSFERTS_AUTOMATISES_ID_SEQ,
 			Sequences.TYPE_ALERTE_ANO_ID_SEQ,
 			Sequences.TYPE_ALERTE_ELT_ID_SEQ,
 			Sequences.TYPE_CRISE_CATEGORIE_EVENEMENT_ID_SEQ,
@@ -482,6 +484,7 @@ public class Remocra extends SchemaImpl {
 			Synchronisation.SYNCHRONISATION,
 			Thematique.THEMATIQUE,
 			Tournee.TOURNEE,
+			TransfertsAutomatises.TRANSFERTS_AUTOMATISES,
 			TypeAlerteAno.TYPE_ALERTE_ANO,
 			TypeAlerteElt.TYPE_ALERTE_ELT,
 			TypeCrise.TYPE_CRISE,

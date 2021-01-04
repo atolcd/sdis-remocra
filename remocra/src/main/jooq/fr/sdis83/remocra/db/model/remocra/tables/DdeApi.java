@@ -21,7 +21,6 @@ import org.jooq.Record;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
-import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 
@@ -38,7 +37,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DdeApi extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -780097736;
+	private static final long serialVersionUID = 1903580857;
 
 	/**
 	 * The reference instance of <code>remocra.dde_api</code>
@@ -76,8 +75,7 @@ public class DdeApi extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.dde_api.utilise</code>.
 	 */
-	public final TableField<Record, Boolean> UTILISE = createField("utilise", SQLDataType.BOOLEAN, this, "");
-
+	public final TableField<Record, Boolean> UTILISE = createField("utilise", org.jooq.impl.SQLDataType.BOOLEAN.defaulted(true), this, "");
 
 	/**
 	 * Create a <code>remocra.dde_api</code> table reference

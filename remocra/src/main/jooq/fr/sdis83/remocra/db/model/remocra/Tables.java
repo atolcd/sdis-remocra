@@ -112,6 +112,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.SuiviPatches;
 import fr.sdis83.remocra.db.model.remocra.tables.Synchronisation;
 import fr.sdis83.remocra.db.model.remocra.tables.Thematique;
 import fr.sdis83.remocra.db.model.remocra.tables.Tournee;
+import fr.sdis83.remocra.db.model.remocra.tables.TransfertsAutomatises;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeAlerteAno;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeAlerteElt;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeCrise;
@@ -727,6 +728,11 @@ public class Tables {
 	 * The table remocra.tournee
 	 */
 	public static final Tournee TOURNEE = fr.sdis83.remocra.db.model.remocra.tables.Tournee.TOURNEE;
+
+	/**
+	 * The table remocra.transferts_automatises
+	 */
+	public static final TransfertsAutomatises TRANSFERTS_AUTOMATISES = fr.sdis83.remocra.db.model.remocra.tables.TransfertsAutomatises.TRANSFERTS_AUTOMATISES;
 
 	/**
 	 * The table remocra.type_alerte_ano
