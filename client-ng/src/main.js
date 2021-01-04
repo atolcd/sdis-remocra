@@ -12,6 +12,8 @@ import PlanificationDeci from './components/planification_deci/index.vue'
 import OlMap from './components/OlMap/OlMap.vue'
 import OlMapEtude from './components/planification_deci/OlMapEtude.vue'
 import Dashboard from './components/Dashboard'
+import TransfertsAutomatises from './components/TransfertsAutomatises.vue'
+
 // import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import Courrier from './components/Courrier'
@@ -198,7 +200,20 @@ const buildDashboard = function(el){
   return v
 }
 
+const transfertsAutomatises = function(id){
+  var v = new Vue({
+    el: '#' + id,
+    bus: new Vue(),
+    components: {
+        TransfertsAutomatises
+    },
+    template: "<TransfertsAutomatises />"
+  })
+  return v
+}
+
 export {
+  transfertsAutomatises,
   criseBuildMap,
   peiBuildFiche,
   indispoTempBuildFiche,
@@ -211,4 +226,5 @@ export {
   olMap,
   olMapEtude,
   buildDashboard
+  
 }

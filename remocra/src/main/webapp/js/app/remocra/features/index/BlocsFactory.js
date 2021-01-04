@@ -417,6 +417,17 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
                lbl: 'Les documents'
            });
         }
+
+        //Gestion des accès
+        items.push({
+            type: 'sep'
+        });
+        items.push({
+            type: 'href',
+            href: 'transfertsAutomatises',
+            lbl: 'Les transferts automatisés'
+        });
+
         if (items.length<1) {
             return null;
         }
