@@ -12,6 +12,7 @@ import fr.sdis83.remocra.web.exceptions.WebApplicationExceptionMapper;
 import fr.sdis83.remocra.web.s.ApplicationEndpoint;
 import fr.sdis83.remocra.web.s.OpenApiEndpoint;
 import fr.sdis83.remocra.web.s.PeiEndpoint;
+import fr.sdis83.remocra.web.s.ReferentielsCommunsEndpoint;
 
 
 import java.util.Set;
@@ -23,18 +24,19 @@ public static final String READ_DEFAULTLIMIT = "100";
 
 @Override
 public Set<Class<?> > getClasses() {
-        return ImmutableSet.of(
-                // ExceptionMapper
-                JsonMappingExceptionMapper.class, ValidationExceptionMapper.class,
-                ClientErrorExceptionMapper.class,
-                WebApplicationExceptionMapper.class, ApplicationSecurityExceptionMapper.class,
-                UnhandledExceptionMapper.class,
-                // Providers
-                JacksonJsonProvider.class, InstantParamConverterProvider.class,
-                // Services
-                OpenApiEndpoint.class,
-                ApplicationEndpoint.class,
-                PeiEndpoint.class
-                );
+  return ImmutableSet.of(
+    // ExceptionMapper
+    JsonMappingExceptionMapper.class, ValidationExceptionMapper.class,
+    ClientErrorExceptionMapper.class,
+    WebApplicationExceptionMapper.class, ApplicationSecurityExceptionMapper.class,
+    UnhandledExceptionMapper.class,
+    // Providers
+    JacksonJsonProvider.class, InstantParamConverterProvider.class,
+    // Services
+    OpenApiEndpoint.class,
+    ApplicationEndpoint.class,
+    PeiEndpoint.class,
+    ReferentielsCommunsEndpoint.class
+  );
 }
 }
