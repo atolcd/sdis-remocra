@@ -13,6 +13,7 @@ import fr.sdis83.remocra.web.s.ApplicationEndpoint;
 import fr.sdis83.remocra.web.s.OpenApiEndpoint;
 import fr.sdis83.remocra.web.s.PeiEndpoint;
 import fr.sdis83.remocra.web.s.ReferentielsCommunsEndpoint;
+import fr.sdis83.remocra.web.s.ReferentielsDeciEndpoint;
 
 
 import java.util.Set;
@@ -36,7 +37,8 @@ public Set<Class<?> > getClasses() {
     OpenApiEndpoint.class,
     ApplicationEndpoint.class,
     PeiEndpoint.class,
-    ReferentielsCommunsEndpoint.class
+    ReferentielsCommunsEndpoint.class,
+    ReferentielsDeciEndpoint.class
   );
 }
 }
