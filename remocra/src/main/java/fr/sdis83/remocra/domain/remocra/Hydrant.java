@@ -231,6 +231,9 @@ public class Hydrant implements Featurable {
     @Column(name="en_face")
     private Boolean enFace;
 
+    @ManyToOne
+    private Organisme maintenanceDeci;
+
     // Autre
     @Override
     public Feature toFeature() {

@@ -2,6 +2,7 @@ package fr.sdis83.remocra.web;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import fr.sdis83.remocra.util.ExceptionUtils;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
+import org.jooq.tools.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -195,5 +197,21 @@ public class OrganismeController extends AbstractServiceableController<Organisme
         } catch (Exception e) {
             return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
         }
+    }
+
+    /**
+     * Renvoie un objet JSON contenant les données des organismes de maintenance et CTP
+     * Les organismes acceptés sont les services des eaux et les prestataires de services dont la zone de compétence comprend le PEI
+     * @param geometrie La géométrie (de type POINT) du PEI
+     * @return Les données au format JSON
+     */
+    @RequestMapping(value = "/maintenancedeci", method = RequestMethod.GET, headers = "Accept=application/json")
+    public ResponseEntity<String> getOrganismesMaintenance(@RequestParam(value="geometrie") String geometrie) {
+        return new AbstractExtObjectSerializer<JSONArray>("fr.sdis83.remocra.domain.remocra.getOrganismesMaintenance retrieved.") {
+            @Override
+            protected JSONArray getRecord() {
+                return service.getAvailableOrganismes(geometrie, Arrays.asList("SERVICEEAUX", "PRESTATAIRE_TECHNIQUE"));
+            }
+        }.serialize();
     }
 }

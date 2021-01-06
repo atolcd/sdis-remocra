@@ -410,5 +410,12 @@ privileged aspect Hydrant_Roo_JavaBean {
     public void Hydrant.setEnFace(Boolean enFace) {
        this.enFace = enFace;
     }
-    
+
+    public Organisme Hydrant.getMaintenanceDeci() {
+        return this.maintenanceDeci;
+    }
+
+    public void Hydrant.setMaintenanceDeci(Organisme maintenanceDeci) {
+       this.maintenanceDeci = maintenanceDeci;
+    }
 }

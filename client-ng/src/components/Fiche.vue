@@ -42,6 +42,13 @@
           </div>
         </div>
         <div class="row">
+          <div class="col-md-7">
+            <b-form-group label="Maintenance et CTP" label-for="maintenance_deci" :state="etats.maintenanceDeci" label-cols-md="3">
+              <b-form-select ref="maintenanceDeci" v-model="hydrant.maintenanceDeci" :options="comboMaintenanceDeci" size="sm" id="maintenanceDeci" class="parametre" :state="etats.maintenanceDeci"></b-form-select>
+            </b-form-group>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-md-10" v-if="hydrant.natureDeci != idDeciPublic">
             <b-form-group label="Gestionnaire" label-for="gestionnaire" invalid-feedback="Le gestionnaire doit être renseigné" :state="etats.gestionnaire" label-cols-md="2">
               <b-form-select id="gestionnaire" v-model="hydrant.gestionnaire" class="parametre" :options="sortCombo(ellipsis(comboGestionnaire))" size="sm" v-on:change="onGestionnaireChange" :state="etats.gestionnaire">
@@ -159,6 +166,7 @@ export default {
       comboSite: [],
       comboAutoriteDeci: [],
       listeNaturesDeci: [],
+      comboMaintenanceDeci: [],
       tabWarning: {
         localisation: false,
         caracteristiquesTechniques: false,
@@ -172,6 +180,7 @@ export default {
         autoriteDeci: null,
         natureDeci: null,
         spDeci: null,
+        maintenanceDeci: null
       },
     loaded: false,
     chartdata: {} }
@@ -285,7 +294,8 @@ export default {
         autoriteDeci: null,
         natureDeci: null,
         spDeci: null,
-        code: self.codeHydrant
+        code: self.codeHydrant,
+        maintenanceDeci: null
       }
       self.hydrant = _.clone(self.hydrantRecord);
       self.dataLoaded = true;
@@ -299,7 +309,7 @@ export default {
           //Résolution des clés étrangères
           self.hydrant = _.clone(self.hydrantRecord, true);
           self.dataLoaded = true;
-          self.resolveForeignKey(['nature', 'site', 'autoriteDeci', 'natureDeci', 'gestionnaire']);
+          self.resolveForeignKey(['nature', 'site', 'autoriteDeci', 'natureDeci', 'gestionnaire', 'maintenanceDeci']);
           self.createCombo();
           self.getHistorique(self.idHydrant)
           if (self.newVisite === true) {
@@ -378,6 +388,9 @@ export default {
       })).catch(function(error) {
         console.error('Retrieving combo data from /remocra/organismes/autoritepolicedeci/', error);
       })
+      //On récupère les organismes de maintenance et CTP
+      this.getComboData(this, 'comboMaintenanceDeci', '/remocra/organismes/maintenancedeci',
+      { 'geometrie' : this.geometrie}, 'id', 'nom', ' ');
     },
     /**
      * Récupère les données des combobox
@@ -542,6 +555,7 @@ export default {
       this.etats.nature = this.hydrant.nature ? 'valid' : 'invalid';
       this.etats.autoriteDeci = (this.hydrant.autoriteDeci !== null) ? 'valid' : 'invalid';
       this.etats.natureDeci = (this.hydrant.natureDeci !== null) ? 'valid' : 'invalid';
+      this.etats.maintenanceDeci = 'valid';
       this.tabWarning = {
         localisation: false,
         caracteristiquesTechniques: false,
