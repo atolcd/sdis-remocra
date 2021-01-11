@@ -10,6 +10,7 @@ import fr.sdis83.remocra.web.exceptions.UnhandledExceptionMapper;
 import fr.sdis83.remocra.web.exceptions.ValidationExceptionMapper;
 import fr.sdis83.remocra.web.exceptions.WebApplicationExceptionMapper;
 import fr.sdis83.remocra.web.s.ApplicationEndpoint;
+import fr.sdis83.remocra.web.s.DeciHydrantVisitesEndpoint;
 import fr.sdis83.remocra.web.s.OpenApiEndpoint;
 import fr.sdis83.remocra.web.s.PeiEndpoint;
 import fr.sdis83.remocra.web.s.ReferentielsCommunsEndpoint;
@@ -42,7 +43,8 @@ public Set<Class<?> > getClasses() {
     ReferentielsCommunsEndpoint.class,
     ReferentielsDeciEndpoint.class,
     ReferentielsDeciPenaEndpoint.class,
-    ReferentielsDeciPibiEndpoint.class
+    ReferentielsDeciPibiEndpoint.class,
+    DeciHydrantVisitesEndpoint.class
   );
 }
 }
