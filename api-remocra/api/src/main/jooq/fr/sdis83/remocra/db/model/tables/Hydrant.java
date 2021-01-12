@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant extends TableImpl<Record> {
 
-    private static final long serialVersionUID = -74654184;
+    private static final long serialVersionUID = 33454054;
 
     /**
      * The reference instance of <code>remocra.hydrant</code>
@@ -269,6 +269,11 @@ public class Hydrant extends TableImpl<Record> {
     public final TableField<Record, Long> SP_DECI = createField("sp_deci", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant du service publique DECI");
 
     /**
+     * The column <code>remocra.hydrant.maintenance_deci</code>.
+     */
+    public final TableField<Record, Long> MAINTENANCE_DECI = createField("maintenance_deci", org.jooq.impl.SQLDataType.BIGINT, this, "");
+
+    /**
      * Create a <code>remocra.hydrant</code> table reference
      */
     public Hydrant() {
@@ -346,7 +351,7 @@ public class Hydrant extends TableImpl<Record> {
      */
     @Override
     public List<ForeignKey<Record, ?>> getReferences() {
-        return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT__FK51B8F028D2DA796C, Keys.HYDRANT__FK51B8F0285D29D8A8, Keys.HYDRANT__FK51B8F028D10A0428, Keys.HYDRANT__FK51B8F028374ADD52, Keys.HYDRANT__FK_ZONE_SPECIALE, Keys.HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION, Keys.HYDRANT__FK_NATURE_DECI, Keys.HYDRANT__FK_NIVEAU, Keys.HYDRANT__FK_GESTIONNAIRE, Keys.HYDRANT__FK_SITE, Keys.HYDRANT__FK_AUTORITE_DECI, Keys.HYDRANT__FK_SP_DECI);
+        return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT__FK51B8F028D2DA796C, Keys.HYDRANT__FK51B8F0285D29D8A8, Keys.HYDRANT__FK51B8F028D10A0428, Keys.HYDRANT__FK51B8F028374ADD52, Keys.HYDRANT__FK_ZONE_SPECIALE, Keys.HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION, Keys.HYDRANT__FK_NATURE_DECI, Keys.HYDRANT__FK_NIVEAU, Keys.HYDRANT__FK_GESTIONNAIRE, Keys.HYDRANT__FK_SITE, Keys.HYDRANT__FK_AUTORITE_DECI, Keys.HYDRANT__FK_SP_DECI, Keys.HYDRANT__FK_MAINTENANCE_DECI_ORGANISME);
     }
 
     public Commune commune() {
@@ -395,6 +400,10 @@ public class Hydrant extends TableImpl<Record> {
 
     public Organisme hydrant_FkSpDeci() {
         return new Organisme(this, Keys.HYDRANT__FK_SP_DECI);
+    }
+
+    public Organisme hydrant_FkMaintenanceDeciOrganisme() {
+        return new Organisme(this, Keys.HYDRANT__FK_MAINTENANCE_DECI_ORGANISME);
     }
 
     /**
