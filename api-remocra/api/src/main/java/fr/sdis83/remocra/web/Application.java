@@ -11,6 +11,7 @@ import fr.sdis83.remocra.web.exceptions.ValidationExceptionMapper;
 import fr.sdis83.remocra.web.exceptions.WebApplicationExceptionMapper;
 import fr.sdis83.remocra.web.s.ApplicationEndpoint;
 import fr.sdis83.remocra.web.s.OpenApiEndpoint;
+import fr.sdis83.remocra.web.s.PeiEndpoint;
 
 
 import java.util.Set;
@@ -32,7 +33,8 @@ public Set<Class<?> > getClasses() {
                 JacksonJsonProvider.class, InstantParamConverterProvider.class,
                 // Services
                 OpenApiEndpoint.class,
-                ApplicationEndpoint.class
+                ApplicationEndpoint.class,
+                PeiEndpoint.class
                 );
 }
 }
