@@ -60,6 +60,15 @@ RUN set -x \
   && rm -f ${KETTLE_HOME}/pentaho-gis-plugins-1.2.1-bin-7.zip \
   && rm -f Dockerfile # cleaning
 
+# Plugin DOC
+COPY Dockerfile ext/pentaho-doc-plugins-1.0.0-bin-7.zip* ${KETTLE_HOME}/
+RUN set -x \
+  && ([ -f ${KETTLE_HOME}/pentaho-doc-plugins-1.0.0-bin-7.zip ] \
+    || wget -P ${KETTLE_HOME} -q https://github.com/atolcd/pentaho-doc-plugins/releases/download/v1.0.0/pentaho-doc-plugins-1.0.0-bin-7.zip) \
+  && unzip ${KETTLE_HOME}/pentaho-doc-plugins-1.0.0-bin-7.zip -d ${KETTLE_HOME}/plugins \
+  && rm -f ${KETTLE_HOME}/pentaho-doc-plugins-1.0.0-bin-7.zip \
+  && rm -f Dockerfile # cleaning
+
 # Oracle
 COPY Dockerfile ext/ojdbc8.jar* ext/orai18n.jar* ${KETTLE_HOME}/lib/
 RUN set -x \
