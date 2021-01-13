@@ -2,13 +2,18 @@ package fr.sdis83.remocra.web.s;
 
 import fr.sdis83.remocra.repository.HydrantVisitesRepository;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
+import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteForm;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springframework.http.HttpStatus;
 
 import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -40,6 +45,23 @@ public class DeciHydrantVisitesEndpoint {
 
     try {
       return Response.ok(hydrantVisitesRepository.getAll(numero, contexte, date, derniereOnly, start, limit), MediaType.APPLICATION_JSON).build();
+    } catch(ResponseException e) {
+      return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
+    }
+  }
+
+  @POST
+  @Path("/visites")
+  @Operation(summary = "Ajoute une visite à un hydrant", tags = {"DECI - Hydrant - Visites"})
+  @ApiResponse(responseCode = "201", description = "Visite créée avec succès")
+  @ApiResponse(responseCode = "400", description = "Erreur à la saisie")
+  @PermitAll
+  public Response addVisite(
+    @Parameter(description = "Informations de la visite", required = true) @NotNull HydrantVisiteForm form
+  ) throws ResponseException {
+    try {
+      hydrantVisitesRepository.addVisite(form);
+      return Response.status(HttpStatus.CREATED.value()).build();
     } catch(ResponseException e) {
       return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
     }
