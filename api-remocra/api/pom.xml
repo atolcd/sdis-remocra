@@ -25,6 +25,7 @@
     <db.user>postgres</db.user>
     <db.pass>postgres</db.pass>
     <db.name>remocra</db.name>
+    <db.schema>remocra</db.schema>
   </properties>
 
   <dependencies>
@@ -212,6 +213,16 @@
       <artifactId>mockito-all</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>5.0.7.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-annotations</artifactId>
+      <version>1.5.20</version>
+    </dependency>
 
   </dependencies>
 
@@ -323,7 +334,7 @@
             </database>
             <target>
               <packageName>fr.sdis83.remocra.db.model</packageName>
-              <directory>${basedir}/src/main/jooq</directory>
+              <directory>${basedir}/api/src/main/jooq</directory>
             </target>
           </generator>
         </configuration>
