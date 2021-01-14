@@ -56,4 +56,18 @@ public class PeiEndpoint {
             return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
         }
     }
+
+    @GET
+    @Path("/{numero}/caracteristiques")
+    @Operation(summary = "Retourne les informations d'un pei", tags = {"Pei"})
+    @PermitAll
+    public Response getPeiCaracteristiques(
+            final @Parameter(description = "Numéro du pei") @PathParam("numero") String numero
+    ) throws JsonProcessingException {
+        try {
+            return Response.ok(peiRepository.getPeiCaracteristiques(numero), MediaType.APPLICATION_JSON).build();
+        } catch (ResponseException e){
+            return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
+        }
+    }
 }

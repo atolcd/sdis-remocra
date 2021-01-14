@@ -2,10 +2,13 @@ package fr.sdis83.remocra.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.sdis83.remocra.db.model.tables.Hydrant;
 import fr.sdis83.remocra.db.model.tables.Organisme;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
 import fr.sdis83.remocra.web.model.pei.PeiModel;
 import fr.sdis83.remocra.web.model.pei.PeiSpecifiqueModel;
+import fr.sdis83.remocra.web.model.pei.PenaModel;
+import fr.sdis83.remocra.web.model.pei.PibiModel;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -24,9 +27,14 @@ import static fr.sdis83.remocra.db.model.Tables.HYDRANT_VISITE;
 import static fr.sdis83.remocra.db.model.Tables.ORGANISME;
 import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_DIAMETRE;
 import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_DOMAINE;
+import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_MARQUE;
+import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_MATERIAU;
+import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_MODELE;
 import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_NATURE;
 import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_NATURE_DECI;
 import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_NIVEAU;
+import static fr.sdis83.remocra.db.model.Tables.TYPE_RESEAU_ALIMENTATION;
+import static fr.sdis83.remocra.db.model.Tables.TYPE_RESEAU_CANALISATION;
 
 
 public class PeiRepository {
@@ -160,5 +168,70 @@ public class PeiRepository {
 
 
 
+    }
+
+    public String getPeiCaracteristiques(String numero) throws JsonProcessingException, ResponseException {
+
+        if(peiExist(numero)){
+            String typePei = context.select(HYDRANT.CODE)
+                    .from(HYDRANT)
+                    .where(HYDRANT.NUMERO.equalIgnoreCase(numero))
+                    .fetchOneInto(String.class);
+
+            if(typePei.equalsIgnoreCase("PIBI")){
+                return getPibiCaracteristiques(numero);
+            } else{
+                return getPenaCaracteristiques(numero);
+            }
+        } else {
+            throw new ResponseException(HttpStatus.BAD_REQUEST, "Le numéro spécifié ne correspond à aucun hydrant");
+        }
+
+    }
+
+    public String getPibiCaracteristiques(String numero) throws JsonProcessingException {
+
+        Hydrant pibiJumele = HYDRANT.as("pibiJumele");
+
+        PibiModel pibi = context.select(
+                pibiJumele.NUMERO.as("jumelage"),
+                TYPE_HYDRANT_DIAMETRE.NOM.as("diametre"),
+                HYDRANT_PIBI.DISPOSITIF_INVIOLABILITE.as("iniolabilite"),
+                HYDRANT_PIBI.RENVERSABLE.as("renversable"),
+                TYPE_HYDRANT_MARQUE.NOM.as("marque"),
+                TYPE_HYDRANT_MODELE.NOM.as("modele"),
+                HYDRANT.ANNEE_FABRICATION.as("anneeFabrication"),
+                TYPE_RESEAU_ALIMENTATION.NOM.as("natureReseau"),
+                TYPE_RESEAU_CANALISATION.NOM.as("natureCanalisation"),
+                HYDRANT_PIBI.SURPRESSE.as("reseauSurpresse"),
+                HYDRANT_PIBI.ADDITIVE.as("reseauAdditive")
+        ).from(HYDRANT_PIBI)
+                .leftJoin(HYDRANT).on(HYDRANT.ID.eq(HYDRANT_PIBI.ID))
+                .leftJoin(pibiJumele).on(pibiJumele.ID.eq(HYDRANT_PIBI.JUMELE))
+                .leftJoin(TYPE_HYDRANT_DIAMETRE).on(TYPE_HYDRANT_DIAMETRE.ID.eq(HYDRANT_PIBI.DIAMETRE))
+                .leftJoin(TYPE_HYDRANT_MARQUE).on(TYPE_HYDRANT_MARQUE.ID.eq(HYDRANT_PIBI.MARQUE))
+                .leftJoin(TYPE_HYDRANT_MODELE).on(TYPE_HYDRANT_MODELE.ID.eq(HYDRANT_PIBI.MODELE))
+                .leftJoin(TYPE_RESEAU_ALIMENTATION).on(TYPE_RESEAU_ALIMENTATION.ID.eq(HYDRANT_PIBI.TYPE_RESEAU_ALIMENTATION))
+                .leftJoin(TYPE_RESEAU_CANALISATION).on(TYPE_RESEAU_CANALISATION.ID.eq(HYDRANT_PIBI.TYPE_RESEAU_CANALISATION))
+                .where(HYDRANT.NUMERO.eq(numero))
+                .fetchOneInto(PibiModel.class);
+        return new ObjectMapper().writeValueAsString(pibi);
+    }
+
+    public String getPenaCaracteristiques(String numero) throws JsonProcessingException {
+        PenaModel pena = context.select(
+                HYDRANT_PENA.ILLIMITEE.as("capaciteIllimitee"),
+                HYDRANT_PENA.INCERTAINE.as("ressourceIncertaine"),
+                HYDRANT_PENA.CAPACITE.as("capacite"),
+                HYDRANT_PENA.Q_APPOINT.as("debitAppoint"),
+                TYPE_HYDRANT_MATERIAU.CODE.as("codeMateriau"),
+                HYDRANT_PENA.HBE.as("equipeHBE")
+        ).from(HYDRANT_PENA)
+                .leftJoin(HYDRANT).on(HYDRANT.ID.eq(HYDRANT_PENA.ID))
+                .leftJoin(TYPE_HYDRANT_MATERIAU).on(TYPE_HYDRANT_MATERIAU.ID.eq(HYDRANT_PENA.MATERIAU))
+                .where(HYDRANT.NUMERO.eq(numero))
+                .fetchAnyInto(PenaModel.class);
+
+        return new ObjectMapper().writeValueAsString(pena);
     }
 }
