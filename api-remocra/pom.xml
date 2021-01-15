@@ -380,10 +380,6 @@
                     <key>api-remocra.http.doc-path</key>
                     <value>doc/target</value>
                   </systemProperty>
-                  <systemProperty>
-                    <key>api-remocra.http.client-path</key>
-                    <value>client/dist</value>
-                  </systemProperty>
                 </systemProperties>
               </configuration>
             </plugin>
@@ -396,8 +392,6 @@
   <modules>
     <module>api</module>
     <module>doc</module>
-    <module>client</module>
-
   </modules>
 
 </project>
