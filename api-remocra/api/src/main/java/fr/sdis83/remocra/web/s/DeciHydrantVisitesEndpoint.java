@@ -67,4 +67,16 @@ public class DeciHydrantVisitesEndpoint {
     }
   }
 
+  @GET
+  @Path("/visites/{idVisite}")
+  @Operation(summary = "Retourne les détails d'une visite", tags = {"DECI - Hydrant - Visites"})
+  @PermitAll
+  public Response getHydrantVisiteSpecifique(
+    final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,
+    final @Parameter(description = "Identifiant de la visite") @PathParam("idVisite") String idVisite
+  ) throws IOException {
+
+    return Response.ok(hydrantVisitesRepository.getHydrantVisiteSpecifique(numero, idVisite), MediaType.APPLICATION_JSON).build();
+  }
+
 }

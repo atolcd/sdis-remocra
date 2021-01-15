@@ -1,6 +1,7 @@
 package fr.sdis83.remocra.repository;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,6 +10,7 @@ import fr.sdis83.remocra.db.model.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
 import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteForm;
 import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteModel;
+import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteSpecifiqueModel;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -83,6 +85,57 @@ public class HydrantVisitesRepository {
     }
   }
 
+  public String getHydrantVisiteSpecifique(String numero, String idVisite) throws IOException {
+
+    // Récupération des données
+    HydrantVisiteSpecifiqueModel visiteData = context
+      .select(HYDRANT_VISITE.DATE.as("date"), HYDRANT_VISITE.AGENT1.as("agent1"), HYDRANT_VISITE.AGENT2.as("agent2"),
+        HYDRANT_VISITE.CTRL_DEBIT_PRESSION.as("ctrlDebitPression"), TYPE_HYDRANT_SAISIE.NOM.as("contexte"),
+        HYDRANT_VISITE.DEBIT.as("debit"), HYDRANT_VISITE.DEBIT_MAX.as("debitMax"), HYDRANT_VISITE.PRESSION.as("pression"),
+        HYDRANT_VISITE.PRESSION_DYN.as("pressionDyn"), HYDRANT_VISITE.PRESSION_DYN_DEB.as("pressionDynDeb"),
+        HYDRANT_VISITE.OBSERVATIONS.as("observations"), HYDRANT_VISITE.ID.as("identifiant"))
+      .from(HYDRANT_VISITE)
+      .join(TYPE_HYDRANT_SAISIE).on(TYPE_HYDRANT_SAISIE.ID.eq(HYDRANT_VISITE.TYPE))
+      .join(HYDRANT).on(HYDRANT.ID.eq(HYDRANT_VISITE.HYDRANT))
+      .where(HYDRANT.NUMERO.eq(numero.toUpperCase()).and(HYDRANT_VISITE.ID.eq(Long.valueOf(idVisite))))
+      .fetchOneInto(HydrantVisiteSpecifiqueModel.class);
+
+    // Si la visite existe bien, on met en forme les données des anomalies
+    if(visiteData != null) {
+      HydrantVisite visite = context
+        .selectFrom(HYDRANT_VISITE)
+        .where(HYDRANT_VISITE.ID.eq(Long.valueOf(visiteData.getIdentifiant())))
+        .fetchOneInto(HydrantVisite.class);
+
+      // Anomalies constatées => Anomalies présentes à cette visite
+      List<String> anomaliesConstatees = new ArrayList<String>();
+      for (String a : this.getListeAnomalies(visite.getId().toString())) {
+        anomaliesConstatees.add(a);
+      }
+      visiteData.setAnomaliesConstatees(anomaliesConstatees);
+
+      HydrantVisite visitePrecedente = context
+        .selectFrom(HYDRANT_VISITE)
+        .where(HYDRANT_VISITE.DATE.lessThan(visite.getDate()).and(HYDRANT_VISITE.HYDRANT.eq(visite.getHydrant())))
+        .orderBy(HYDRANT_VISITE.DATE.desc())
+        .limit(1)
+        .fetchOneInto(HydrantVisite.class);
+
+      // Anomalies contrôlées => Anomalies présentes à cette visite + Anomalies présentes à la visite précédente non présentes à cette visite
+      List<String> anomaliesControlees = new ArrayList<String>(anomaliesConstatees);
+      if (visitePrecedente != null) {
+        for (String anomalie : this.getListeAnomalies(visitePrecedente.getId().toString())) {
+          if (visiteData.getAnomaliesConstatees().indexOf(anomalie) == -1) {
+            anomaliesControlees.add(anomalie);
+          }
+        }
+      }
+      visiteData.setAnomaliesControlees(anomaliesControlees);
+    }
+
+    return new ObjectMapper().writeValueAsString(visiteData);
+  }
+
   private Integer count() {
     return context.fetchCount(HYDRANT_VISITE);
   }
@@ -113,6 +166,8 @@ public class HydrantVisitesRepository {
       .from(HYDRANT_VISITE)
       .where(HYDRANT_VISITE.ID.eq(Long.valueOf(idVisite)))
       .fetchOneInto(String.class);
+
+    if(listeId == null) return new ArrayList<String>();
 
     // Modification du format
     ObjectMapper mapper = new ObjectMapper();
