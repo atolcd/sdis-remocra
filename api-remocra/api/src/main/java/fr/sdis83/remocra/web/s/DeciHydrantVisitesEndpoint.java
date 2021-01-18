@@ -3,6 +3,7 @@ package fr.sdis83.remocra.web.s;
 import fr.sdis83.remocra.repository.HydrantVisitesRepository;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
 import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteForm;
+import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteSpecifiqueForm;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -77,6 +78,25 @@ public class DeciHydrantVisitesEndpoint {
   ) throws IOException {
 
     return Response.ok(hydrantVisitesRepository.getHydrantVisiteSpecifique(numero, idVisite), MediaType.APPLICATION_JSON).build();
+  }
+
+  @POST
+  @Path("/visites/{idVisite}")
+  @Operation(summary = "Modifie une visite spécifique", tags = {"DECI - Hydrant - Visites"})
+  @ApiResponse(responseCode = "200", description = "Visite modifiée avec succès")
+  @ApiResponse(responseCode = "400", description = "Erreur à la saisie")
+  @PermitAll
+  public Response editVisite(
+    final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,
+    final @Parameter(description = "Identifiant de la visite") @PathParam("idVisite") String idVisite,
+    @Parameter(description = "Informations de la visite", required = true) @NotNull HydrantVisiteSpecifiqueForm form
+  ) throws ResponseException {
+    try {
+      hydrantVisitesRepository.editVisite(numero, idVisite, form);
+      return Response.ok().build();
+    } catch(ResponseException e) {
+      return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
+    }
   }
 
 }

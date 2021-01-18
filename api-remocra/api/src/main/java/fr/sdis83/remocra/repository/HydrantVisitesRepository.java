@@ -10,6 +10,7 @@ import fr.sdis83.remocra.db.model.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
 import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteForm;
 import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteModel;
+import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteSpecifiqueForm;
 import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteSpecifiqueModel;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -436,5 +437,159 @@ public class HydrantVisitesRepository {
       e.printStackTrace();
     }
     throw new ResponseException(HttpStatus.INTERNAL_SERVER_ERROR, "Une erreur est survenue lors de l'ajout de la visite");
+  }
+
+  public void editVisite(String numero, String idVisite, HydrantVisiteSpecifiqueForm form) throws ResponseException {
+    HydrantVisite visite = context
+      .select(HYDRANT_VISITE.fields())
+      .from(HYDRANT_VISITE)
+      .join(HYDRANT).on(HYDRANT.ID.eq(HYDRANT_VISITE.HYDRANT))
+      .where(HYDRANT_VISITE.ID.eq(Long.valueOf(idVisite)).and(HYDRANT.NUMERO.equalIgnoreCase(numero)))
+      .fetchOneInto(HydrantVisite.class);
+
+    if(visite == null) {
+      throw new ResponseException(HttpStatus.BAD_REQUEST, "Aucune visite avec cet identifiant n'a été trouvée pour le numéro d'hydant spécifié");
+    }
+
+    // On vérifie qu'il s'agit bien de la visite la plus récente
+    HydrantVisite visitePlusRecente = context
+      .select()
+      .from(HYDRANT_VISITE)
+      .where(HYDRANT_VISITE.HYDRANT.eq(visite.getHydrant()).and(HYDRANT_VISITE.DATE.greaterThan(visite.getDate())))
+      .fetchOneInto(HydrantVisite.class);
+
+    if(visitePlusRecente != null) {
+      throw new ResponseException(HttpStatus.BAD_REQUEST, "Modification de la visite impossible : une visite plus récente est présente");
+    }
+
+    // Vérification des anomalies
+    Long natureHydrant = context
+        .select(TYPE_HYDRANT_NATURE.ID)
+        .from(TYPE_HYDRANT_NATURE)
+        .join(HYDRANT).on(HYDRANT.NATURE.eq(TYPE_HYDRANT_NATURE.ID))
+        .where(HYDRANT.ID.eq(visite.getHydrant()))
+        .fetchOneInto(Long.class);
+
+    String codeTypeVisite = context
+      .select(TYPE_HYDRANT_SAISIE.CODE)
+      .from(TYPE_HYDRANT_SAISIE)
+      .where(TYPE_HYDRANT_SAISIE.ID.eq(visite.getType()))
+      .fetchOneInto(String.class);
+
+    ArrayList<String> anomaliesControlees = new ArrayList<String>();
+    ArrayList<String> anomaliesConstatees = new ArrayList<String>();
+    for(String s : form.anomaliesControlees()) {
+      anomaliesControlees.add(s.toUpperCase());
+    }
+
+    for(String s : form.anomaliesConstatees()) {
+      anomaliesConstatees.add(s.toUpperCase());
+    }
+
+    this.checkAnomalies(natureHydrant, codeTypeVisite, anomaliesControlees, anomaliesConstatees);
+
+    // Conversion anomalies contrôlées et constatées Liste de code => liste d'id
+    List<Long> anomaliesConstateesIds = context
+      .select(TYPE_HYDRANT_ANOMALIE.ID)
+      .from(TYPE_HYDRANT_ANOMALIE)
+      .where(TYPE_HYDRANT_ANOMALIE.CODE.in(anomaliesConstatees))
+      .fetchInto(Long.class);
+
+    String codeHydrant = context
+      .select(HYDRANT.CODE)
+      .from(HYDRANT)
+      .where(HYDRANT.ID.eq(visite.getHydrant()))
+      .fetchOneInto(String.class);
+
+    // Si débit et pression renseignés alors que ce n'est pas une visite CDP, on met les attributs à NULL
+    Integer debit = null;
+    Integer debitMax = null;
+    Double pression = null;
+    Double pressionDyn = null;
+    Double pressionDynDeb = null;
+    boolean ctrlDebitPression = false;
+    if(codeTypeVisite.toUpperCase().equals("CTRL") && codeHydrant.equals("PIBI")) {
+      if(form.debit() != null && form.debit() < 0) throw new ResponseException(HttpStatus.BAD_REQUEST, "Le débit ne peut être inférieur à 0");
+      if(form.debitMax() != null && form.debitMax() < 0) throw new ResponseException(HttpStatus.BAD_REQUEST, "Le débit maximum ne peut être inférieur à 0");
+      if(form.pression() != null && form.pression() < 0) throw new ResponseException(HttpStatus.BAD_REQUEST, "La pression ne peut être inférieure à 0");
+      if(form.pressionDynamique() != null && form.pressionDynamique() < 0) throw new ResponseException(HttpStatus.BAD_REQUEST, "La pression dynamique ne peut être inférieure à 0");
+      if(form.pressionDynamiqueDebitMax() != null && form.pressionDynamiqueDebitMax() < 0) throw new ResponseException(HttpStatus.BAD_REQUEST, "La pression dynamique au débit maximum ne peut être inférieure à 0");
+
+      debit = form.debit();
+      debitMax = form.debitMax();
+      pression = form.pression();
+      pressionDyn = form.pressionDynamique();
+      pressionDynDeb = form.pressionDynamiqueDebitMax();
+      if(debit >= 0 || debitMax >= 0 || pression >= 0 || pressionDyn >= 0 || pressionDynDeb >= 0) {
+        ctrlDebitPression = true;
+      }
+    }
+
+    // Mise à jour de la visite en base
+    context.update(HYDRANT_VISITE)
+    .set(HYDRANT_VISITE.CTRL_DEBIT_PRESSION, ctrlDebitPression)
+    .set(HYDRANT_VISITE.AGENT1, form.agent1())
+    .set(HYDRANT_VISITE.AGENT2, form.agent2())
+    .set(HYDRANT_VISITE.DEBIT, debit)
+    .set(HYDRANT_VISITE.DEBIT_MAX, debitMax)
+    .set(HYDRANT_VISITE.PRESSION, pression)
+    .set(HYDRANT_VISITE.PRESSION_DYN, pressionDyn)
+    .set(HYDRANT_VISITE.PRESSION_DYN_DEB, pressionDynDeb)
+    .set(HYDRANT_VISITE.ANOMALIES, anomaliesConstateesIds.toString())
+    .set(HYDRANT_VISITE.OBSERVATIONS, form.observations())
+    .where(HYDRANT_VISITE.ID.eq(visite.getId()))
+    .execute();
+
+    // Si visite CTRL, on remonte les infos débit/pression dans l'hydrant
+    if(ctrlDebitPression) {
+      context.update(HYDRANT_PIBI)
+        .set(HYDRANT_PIBI.DEBIT, debit)
+        .set(HYDRANT_PIBI.DEBIT_MAX, debitMax)
+        .set(HYDRANT_PIBI.PRESSION, pression)
+        .set(HYDRANT_PIBI.PRESSION_DYN, pressionDyn)
+        .set(HYDRANT_PIBI.PRESSION_DYN_DEB, pressionDynDeb)
+        .where(HYDRANT_PIBI.ID.eq(visite.getHydrant()))
+        .execute();
+    }
+  }
+
+  /**
+   * Vérifie que les anomalies contrôlées et constatées sont bien compatibles avec le type de visite spécifié, ainsi que
+   * la cohérence entre les anomalies constatées et contrôlées
+   * @param idTypeHydrantNature Identifiant du type de saisie
+   * @param codeTypeVisite Code du type de visite
+   * @param controlees Liste de code des anomalies contrôlées
+   * @param constatees Liste de code des anomalies constatées
+   * @throws ResponseException
+   */
+  private void checkAnomalies(Long idTypeHydrantNature, String codeTypeVisite, ArrayList<String> controlees, ArrayList<String> constatees) throws ResponseException {
+    String natureHydrant = context
+        .select(TYPE_HYDRANT_NATURE.CODE)
+        .from(TYPE_HYDRANT_NATURE)
+        .where(TYPE_HYDRANT_NATURE.ID.eq(idTypeHydrantNature))
+        .fetchOneInto(String.class);
+
+    int nbAnomaliesChecked = context
+      .selectCount()
+      .from(TYPE_HYDRANT_ANOMALIE)
+      .join(TYPE_HYDRANT_ANOMALIE_NATURE).on(TYPE_HYDRANT_ANOMALIE_NATURE.ANOMALIE.eq(TYPE_HYDRANT_ANOMALIE.ID))
+      .join(TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES).on(TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES.TYPE_HYDRANT_ANOMALIE_NATURE.eq(TYPE_HYDRANT_ANOMALIE_NATURE.ID))
+      .join(TYPE_HYDRANT_SAISIE).on(TYPE_HYDRANT_SAISIE.ID.eq(TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES.SAISIES))
+      .join(TYPE_HYDRANT_NATURE).on(TYPE_HYDRANT_ANOMALIE_NATURE.NATURE.eq(TYPE_HYDRANT_NATURE.ID))
+      .where(TYPE_HYDRANT_SAISIE.CODE.eq(codeTypeVisite.toUpperCase())
+        .and(TYPE_HYDRANT_NATURE.CODE.eq(natureHydrant))
+        .and(TYPE_HYDRANT_ANOMALIE.CODE.in(controlees)))
+      .fetchOneInto(Integer.class);
+
+    if(nbAnomaliesChecked != controlees.size()) {
+      throw new ResponseException(HttpStatus.BAD_REQUEST, "Une ou plusieurs anomalies contrôlées n'existent pas où ne sont pas disponibles pour" +
+        "une visite de type "+codeTypeVisite.toUpperCase());
+    }
+
+    for(String s : constatees) {
+      if(controlees.indexOf(s) == -1) {
+        throw new ResponseException(HttpStatus.BAD_REQUEST, "Une ou plusieurs anomalies on été marquées constatées sans avoir été contrôlées");
+      }
+    }
   }
 }
