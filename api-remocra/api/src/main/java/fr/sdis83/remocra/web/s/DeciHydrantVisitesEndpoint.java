@@ -13,6 +13,7 @@ import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -93,6 +94,24 @@ public class DeciHydrantVisitesEndpoint {
   ) throws ResponseException {
     try {
       hydrantVisitesRepository.editVisite(numero, idVisite, form);
+      return Response.ok().build();
+    } catch(ResponseException e) {
+      return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
+    }
+  }
+
+  @DELETE
+  @Path("/visites/{idVisite}")
+  @Operation(summary = "Supprime une visite spécifique", tags = {"DECI - Hydrant - Visites"})
+  @ApiResponse(responseCode = "200", description = "Visite supprimée avec succès")
+  @ApiResponse(responseCode = "400", description = "Erreur à la saisie")
+  @PermitAll
+  public Response deleteVisite(
+    final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,
+    final @Parameter(description = "Identifiant de la visite") @PathParam("idVisite") String idVisite
+  ) throws ResponseException {
+    try {
+      hydrantVisitesRepository.deleteVisite(numero, idVisite);
       return Response.ok().build();
     } catch(ResponseException e) {
       return Response.status(e.getStatusCode()).entity(e.getMessage()).build();

@@ -592,4 +592,107 @@ public class HydrantVisitesRepository {
       }
     }
   }
+
+  public void deleteVisite(String numero, String idVisite) throws ResponseException {
+    HydrantVisite visite = context
+      .select(HYDRANT_VISITE.fields())
+      .from(HYDRANT_VISITE)
+      .join(HYDRANT).on(HYDRANT.ID.eq(HYDRANT_VISITE.HYDRANT))
+      .where(HYDRANT_VISITE.ID.eq(Long.valueOf(idVisite)).and(HYDRANT.NUMERO.equalIgnoreCase(numero)))
+      .fetchOneInto(HydrantVisite.class);
+
+    if(visite == null) {
+      throw new ResponseException(HttpStatus.BAD_REQUEST, "Aucune visite avec cet identifiant n'a été trouvée pour le numéro d'hydant spécifié");
+    }
+
+    // On vérifie qu'il s'agit bien de la visite la plus récente
+    HydrantVisite visitePlusRecente = context
+      .select()
+      .from(HYDRANT_VISITE)
+      .where(HYDRANT_VISITE.HYDRANT.eq(visite.getHydrant()).and(HYDRANT_VISITE.DATE.greaterThan(visite.getDate())))
+      .fetchOneInto(HydrantVisite.class);
+
+    if(visitePlusRecente != null) {
+      throw new ResponseException(HttpStatus.BAD_REQUEST, "Modification de la visite impossible : une visite plus récente est présente");
+    }
+
+    // On récupère la visite la plus récente du même type que celle à supprimer (si elle existe)
+    HydrantVisite visitePlusRecenteMemeType = context
+      .selectFrom(HYDRANT_VISITE)
+      .where(HYDRANT_VISITE.HYDRANT.eq(visite.getHydrant())
+        .and(HYDRANT_VISITE.TYPE.eq(visite.getType()))
+        .and(HYDRANT_VISITE.ID.isDistinctFrom(visite.getId())))
+      .orderBy(HYDRANT_VISITE.DATE.desc())
+      .limit(1)
+      .fetchOneInto(HydrantVisite.class);
+
+    String codeVisite = context
+      .select(TYPE_HYDRANT_SAISIE.CODE)
+      .from(TYPE_HYDRANT_SAISIE)
+      .join(HYDRANT_VISITE).on(HYDRANT_VISITE.TYPE.eq(TYPE_HYDRANT_SAISIE.ID))
+      .where(HYDRANT_VISITE.ID.eq(visite.getId()))
+      .fetchOneInto(String.class);
+
+
+
+    // Si on supprime une visite de contrôle, et qu'il en existe encore une, on reprend les valeurs de cette dernière
+    if(visite.getCtrlDebitPression()) {
+      Integer debit = null;
+      Integer debitMax = null;
+      Double pression = null;
+      Double pressionDyn = null;
+      Double pressionDynDeb = null;
+      if(visitePlusRecenteMemeType != null && visitePlusRecenteMemeType.getCtrlDebitPression()) {
+        debit = visitePlusRecenteMemeType.getDebit();
+        debitMax = visitePlusRecenteMemeType.getDebitMax();
+        pression = visitePlusRecenteMemeType.getPression();
+        pressionDyn = visitePlusRecenteMemeType.getPressionDyn();
+        pressionDynDeb = visitePlusRecenteMemeType.getPressionDynDeb();
+      }
+      context.update(HYDRANT_PIBI)
+        .set(HYDRANT_PIBI.DEBIT, debit)
+        .set(HYDRANT_PIBI.DEBIT_MAX, debitMax)
+        .set(HYDRANT_PIBI.PRESSION, pression)
+        .set(HYDRANT_PIBI.PRESSION_DYN, pressionDyn)
+        .set(HYDRANT_PIBI.PRESSION_DYN_DEB, pressionDynDeb)
+        .where(HYDRANT_PIBI.ID.eq(visite.getHydrant()))
+        .execute();
+    }
+
+    // On met à jour la date dans la table hydrant
+    TableField<Record, Instant> field = null;
+    switch(codeVisite) {
+      case "CREA":
+        field = HYDRANT.DATE_CREA;
+        break;
+
+      case "RECEP":
+        field = HYDRANT.DATE_RECEP;
+        break;
+
+      case "RECO":
+        field = HYDRANT.DATE_RECO;
+        break;
+
+      case "CTRL":
+        field = HYDRANT.DATE_CONTR;
+        break;
+    }
+
+    if(field != null) {
+      Instant date = null;
+      if(visitePlusRecenteMemeType != null) {
+        date = visitePlusRecenteMemeType.getDate();
+      }
+      context.update(HYDRANT)
+        .set(field, date)
+        .where(HYDRANT.ID.eq(visite.getHydrant()))
+        .execute();
+    }
+
+    // Suppression effective de la visite
+    context.deleteFrom(HYDRANT_VISITE)
+      .where(HYDRANT_VISITE.ID.eq(visite.getId()))
+      .execute();
+  }
 }
