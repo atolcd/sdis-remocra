@@ -1,6 +1,6 @@
 package fr.sdis83.remocra.web.model.referentielsCommuns;
 
-public class VoiesModel {
+public class NameModel {
 
   String nom;
 

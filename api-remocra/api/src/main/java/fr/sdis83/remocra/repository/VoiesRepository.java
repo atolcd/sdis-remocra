@@ -2,7 +2,7 @@ package fr.sdis83.remocra.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.sdis83.remocra.web.model.referentielsCommuns.VoiesModel;
+import fr.sdis83.remocra.web.model.referentielsCommuns.NameModel;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -26,14 +26,14 @@ public class VoiesRepository {
 
     Condition condition = this.getConditions(nom);
 
-    List<VoiesModel> list = context
+    List<NameModel> list = context
       .select(VOIE.NOM)
       .from(VOIE)
       .join(COMMUNE).on(COMMUNE.ID.eq(VOIE.COMMUNE))
       .where(condition.and(COMMUNE.INSEE.eq(insee)))
       .limit((limit == null || limit < 0) ? this.count() : limit)
       .offset((start == null || start < 0) ? 0 : start)
-      .fetchInto(VoiesModel.class);
+      .fetchInto(NameModel.class);
 
     return new ObjectMapper().writeValueAsString(list);
   }
