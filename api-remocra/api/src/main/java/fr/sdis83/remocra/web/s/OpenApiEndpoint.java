@@ -47,7 +47,7 @@ public Response showOpenApi() {
                                 + "<html>\n"
                                 + "<head>\n"
                                 + "  <meta charset=\"UTF-8\">\n"
-                                + "  <title>Bee technologies - API</title>\n"
+                                + "  <title>API REMOcRA</title>\n"
                                 + "  <link rel=\"stylesheet\" type=\"text/css\""
                                 + " href=\"//unpkg.com/swagger-ui-dist@3/swagger-ui.css\">\n"
                                 + "  <script"
