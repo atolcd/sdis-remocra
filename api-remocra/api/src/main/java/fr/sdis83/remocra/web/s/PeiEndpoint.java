@@ -3,15 +3,18 @@ package fr.sdis83.remocra.web.s;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.sdis83.remocra.repository.PeiRepository;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
+import fr.sdis83.remocra.web.model.pei.PeiForm;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 
 import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -70,4 +73,20 @@ public class PeiEndpoint {
             return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
         }
     }
+
+    @PUT
+    @Path("/{numero}/caracteristiques")
+    @Operation(summary = "Met à jour les informations d'un pei", tags = {"Pei"})
+    @PermitAll
+    public Response updatePeiCaracteristiques(
+            @Parameter(description = "Numéro du pei") @PathParam("numero") String numero,
+            @NotNull @Parameter(description = "Informations du pei") PeiForm peiForm
+    ) {
+        try{
+            return Response.ok(peiRepository.updatePeiCaracteristiques(numero, peiForm)).build();
+        } catch (ResponseException e){
+            return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
+        }
+    }
+
 }

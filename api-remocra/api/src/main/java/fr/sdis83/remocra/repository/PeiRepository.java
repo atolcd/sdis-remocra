@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.sdis83.remocra.db.model.tables.Hydrant;
 import fr.sdis83.remocra.db.model.tables.Organisme;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
+import fr.sdis83.remocra.web.model.pei.PeiForm;
 import fr.sdis83.remocra.web.model.pei.PeiModel;
 import fr.sdis83.remocra.web.model.pei.PeiSpecifiqueModel;
 import fr.sdis83.remocra.web.model.pei.PenaModel;
@@ -12,6 +13,10 @@ import fr.sdis83.remocra.web.model.pei.PibiModel;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
+import org.jooq.Record;
+import org.jooq.UpdateSetFirstStep;
+import org.jooq.UpdateSetMoreStep;
+import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 import org.springframework.http.HttpStatus;
 
@@ -233,5 +238,256 @@ public class PeiRepository {
                 .fetchAnyInto(PenaModel.class);
 
         return new ObjectMapper().writeValueAsString(pena);
+    }
+
+    public String updatePeiCaracteristiques(String numero, PeiForm peiform) throws ResponseException {
+
+        if(peiExist(numero)){
+            String typePei = context.select(HYDRANT.CODE)
+                    .from(HYDRANT)
+                    .where(HYDRANT.NUMERO.eq(numero))
+                    .fetchOneInto(String.class);
+
+            if(typePei.equalsIgnoreCase("PIBI")){
+                return updatePibiCaracteristiques(numero, peiform);
+            } else{
+                return updatePenaCaracteristiques(numero, peiform);
+            }
+        }
+        else {
+            throw new ResponseException(HttpStatus.INTERNAL_SERVER_ERROR, "Le numéro spécifié ne correspond à aucun hydrant");
+        }
+    }
+
+    public String updatePibiCaracteristiques(String numero, PeiForm peiForm) throws ResponseException {
+        try{
+            if(peiForm.peiJumele() != null){
+                jumelagePei(numero, peiForm.peiJumele());
+            }
+
+            UpdateSetFirstStep<Record> update = context.update(HYDRANT_PIBI);
+
+            UpdateSetMoreStep<Record> sets = null;
+
+            if(peiForm.codeDiametre() != null){
+                Integer idDiametre = context.select(TYPE_HYDRANT_DIAMETRE.ID)
+                        .from(TYPE_HYDRANT_DIAMETRE)
+                        .where(TYPE_HYDRANT_DIAMETRE.CODE.eq(peiForm.codeDiametre()))
+                        .fetchOneInto(Integer.class);
+                if(idDiametre != null) {
+                    sets = update.set(HYDRANT_PIBI.DIAMETRE_CANALISATION, idDiametre);
+                } else {
+                    throw new ResponseException(HttpStatus.METHOD_NOT_ALLOWED, "Le code du diamètre saisi ne correspond à aucune valeur connue");
+                }
+            } else{
+                sets = update.set(HYDRANT_PIBI.DIAMETRE_CANALISATION, (Integer) null);
+            }
+
+            if(peiForm.codeMarque() != null){
+                Long idMarque = context.select(TYPE_HYDRANT_MARQUE.ID)
+                        .from(TYPE_HYDRANT_MARQUE)
+                        .where(TYPE_HYDRANT_MARQUE.CODE.eq(peiForm.codeMarque()))
+                        .fetchOneInto(Long.class);
+                if(idMarque != null){
+                    sets.set(HYDRANT_PIBI.MARQUE, idMarque);
+                }else {
+                    throw new ResponseException(HttpStatus.METHOD_NOT_ALLOWED, "Le code de marque saisi ne correspond à aucune valeur connue");
+                }
+            } else {
+                sets.set(HYDRANT_PIBI.MARQUE, (Long) null);
+            }
+
+            if(peiForm.codeModele() != null){
+                Long idModele = context.select(TYPE_HYDRANT_MODELE.ID)
+                        .from(TYPE_HYDRANT_MODELE)
+                        .where(TYPE_HYDRANT_MODELE.CODE.eq(peiForm.codeModele()))
+                        .fetchOneInto(Long.class);
+                if(idModele != null){
+                    sets.set(HYDRANT_PIBI.MODELE, idModele);
+                }else {
+                    throw new ResponseException(HttpStatus.METHOD_NOT_ALLOWED, "Le code de modèle saisi ne correspond à aucune valeur connue");
+                }
+            }else {
+                sets.set(HYDRANT_PIBI.MODELE, (Long) null);
+            }
+
+            if(peiForm.codeNatureReseau() != null){
+                Long idNatureReseau = context.select(TYPE_RESEAU_ALIMENTATION.ID)
+                        .from(TYPE_RESEAU_ALIMENTATION)
+                        .where(TYPE_RESEAU_ALIMENTATION.CODE.eq(peiForm.codeNatureReseau()))
+                        .fetchOneInto(Long.class);
+                if(idNatureReseau != null){
+                    sets.set(HYDRANT_PIBI.TYPE_RESEAU_ALIMENTATION, idNatureReseau);
+                } else {
+                    throw new ResponseException(HttpStatus.METHOD_NOT_ALLOWED, "Le code de nature du réseau saisi ne correspond à aucune valeur connue");
+                }
+            }else {
+                sets.set(HYDRANT_PIBI.TYPE_RESEAU_ALIMENTATION, (Long) null);
+            }
+
+            if(peiForm.codeNatureCanalisation() != null){
+                Long idNatureCanalisation = context.select(TYPE_RESEAU_CANALISATION.ID)
+                        .from(TYPE_RESEAU_CANALISATION)
+                        .where(TYPE_RESEAU_CANALISATION.CODE.eq(peiForm.codeNatureCanalisation()))
+                        .fetchOneInto(Long.class);
+
+                if(idNatureCanalisation != null){
+                    sets.set(HYDRANT_PIBI.TYPE_RESEAU_CANALISATION, idNatureCanalisation);
+                }else {
+                    throw new ResponseException(HttpStatus.METHOD_NOT_ALLOWED, "Le code de nature de canalisation saisi ne correspond à aucune valeur connue");
+                }
+            } else {
+                sets.set(HYDRANT_PIBI.TYPE_RESEAU_CANALISATION, (Long) null);
+            }
+
+            sets.set(HYDRANT_PIBI.DISPOSITIF_INVIOLABILITE, peiForm.inviolabilite())
+                    .set(HYDRANT_PIBI.RENVERSABLE, peiForm.renversable())
+                    .set(HYDRANT_PIBI.SURPRESSE, peiForm.reseauSurpresse())
+                    .set(HYDRANT_PIBI.ADDITIVE, peiForm.reseauAdditive())
+                    .from(HYDRANT)
+                    .where(HYDRANT_PIBI.ID.eq(HYDRANT.ID))
+                    .and(HYDRANT.NUMERO.eq(numero)).execute();
+
+            context.update(HYDRANT)
+                    .set(HYDRANT.ANNEE_FABRICATION, peiForm.anneeFabrication())
+                    .where(HYDRANT.NUMERO.eq(numero))
+                    .execute();
+
+            return "PIBI mis à jour avec succès";
+
+        }catch (DataAccessException e){
+            e.printStackTrace();
+            throw new ResponseException(HttpStatus.INTERNAL_SERVER_ERROR, "Une erreur est survenue lors de la mise à jour de l'hydrant");
+        }catch (ResponseException e){
+            e.printStackTrace();
+            throw new ResponseException(HttpStatus.valueOf(e.getStatusCode()),e.getMessage());
+        }
+    }
+
+    public String updatePenaCaracteristiques(String numero, PeiForm peiForm) throws ResponseException {
+        try {
+            Long codeMateriau = context.select(TYPE_HYDRANT_MATERIAU.ID)
+                    .from(TYPE_HYDRANT_MATERIAU)
+                    .where(TYPE_HYDRANT_MATERIAU.CODE.eq(peiForm.codeMateriau()))
+                    .fetchOneInto(Long.class);
+
+            UpdateSetFirstStep<Record> update = context.update(HYDRANT_PENA);
+
+            UpdateSetMoreStep<Record> sets = null;
+
+            if(codeMateriau != null) {
+                sets = update.set(HYDRANT_PENA.MATERIAU, codeMateriau);
+            } else {
+                throw new ResponseException(HttpStatus.METHOD_NOT_ALLOWED, "Le code de matériau saisi ne correspond à aucune valeur connue");
+            }
+
+            sets.set(HYDRANT_PENA.ILLIMITEE, peiForm.capaciteIllimitee())
+                    .set(HYDRANT_PENA.INCERTAINE, peiForm.ressourceIncertaine())
+                    .set(HYDRANT_PENA.CAPACITE, peiForm.capacite())
+                    .set(HYDRANT_PENA.Q_APPOINT, peiForm.debitAppoint())
+                    .set(HYDRANT_PENA.HBE, peiForm.equipeHBE())
+                    .from(HYDRANT)
+                    .where(HYDRANT_PENA.ID.eq(HYDRANT.ID))
+                    .and(HYDRANT.NUMERO.eq(numero))
+                    .execute();
+
+            return "PENA mis à jour avec succès";
+
+        }catch (DataAccessException e){
+            e.printStackTrace();
+            throw new ResponseException(HttpStatus.INTERNAL_SERVER_ERROR, "Une erreur est survenue lors de la mise à jour de l'hydrant");
+        }catch (ResponseException e){
+            e.printStackTrace();
+            throw new ResponseException(HttpStatus.valueOf(e.getStatusCode()),e.getMessage());
+        }
+    }
+
+    /*
+        Fonction qui met en place le jumelage entre deux pei
+     */
+    public void jumelagePei(String numero, String numeroJumeau) throws ResponseException {
+
+        Long idPeiJumeau = context.select(HYDRANT.ID)
+                .from(HYDRANT)
+                .where(HYDRANT.NUMERO.eq(numeroJumeau))
+                .fetchOneInto(Long.class);
+
+        if(idPeiJumeau != null){
+            Hydrant h1 = HYDRANT.as("h1");
+            Hydrant h2 = HYDRANT.as("h2");
+
+            Field<Object> distance = DSL.field("(st_distance(h1.geometrie, h2.geometrie) < 25)");
+
+            boolean distanceOk = context.select(distance)
+                    .from(h1, h2)
+                    .where(h1.NUMERO.eq(numero))
+                    .and(h2.NUMERO.eq(numeroJumeau))
+                    .fetchOneInto(Boolean.class);
+
+            /*
+            On regarde si les PEI sont des BI et s'ils sont distant de 25m max
+            Si c'est la cas, on défait le jumelage existant si au moins l'un d'eux est déjà jumelé avec un autre PIBI
+            et on met en place le jumelage
+            */
+            if(distanceOk && peiBi(numero) && peiBi(numeroJumeau)){
+                //On récupère l'identifiant du pei
+                Long idPei = context.select(HYDRANT.ID)
+                        .from(HYDRANT)
+                        .where(HYDRANT.NUMERO.eq(numero))
+                        .fetchOneInto(Long.class);
+
+                //On défait les jumelage sur les pei
+                defaitJumelage(idPei);
+                defaitJumelage(idPeiJumeau);
+
+                //On ajoute le jumelage au pei
+                context.update(HYDRANT_PIBI)
+                        .set(HYDRANT_PIBI.JUMELE, idPeiJumeau)
+                        .where(HYDRANT_PIBI.ID.eq(idPei))
+                        .execute();
+
+                //On ajoute le jumelage au peiJumeau
+                context.update(HYDRANT_PIBI)
+                        .set(HYDRANT_PIBI.JUMELE, idPei)
+                        .where(HYDRANT_PIBI.ID.eq(idPeiJumeau))
+                        .execute();
+            } else {
+                throw new ResponseException(HttpStatus.METHOD_NOT_ALLOWED, "Le jumelage entre les deux hydrants renseignés n'est pas possible. " +
+                        "La distance entre les deux hydrants doit être inféreure à 25 mètres, et les hydrants doivent être de nature BI");
+            }
+        } else {
+            throw new ResponseException(HttpStatus.BAD_REQUEST, "Le numéro de PEI jumelé saisi ne correspond à aucun hydrant connu");
+        }
+    }
+
+    /*
+        Retourne true si le pei est de nature BI
+     */
+    public boolean peiBi(String numero){
+        return context.select(DSL.field(TYPE_HYDRANT_NATURE.CODE.eq("BI")))
+                .from(TYPE_HYDRANT_NATURE)
+                .join(HYDRANT).on(HYDRANT.NATURE.eq(TYPE_HYDRANT_NATURE.ID))
+                .where(HYDRANT.NUMERO.eq(numero))
+                .fetchOneInto(Boolean.class);
+    }
+
+    /*
+        Défait le jumelage d'un pei s'il en possède un
+    */
+    public void defaitJumelage(Long idPei){
+        Long idAncienJumeau = context.select(HYDRANT_PIBI.JUMELE)
+                .from(HYDRANT_PIBI)
+                .where(HYDRANT_PIBI.ID.eq(idPei))
+                .fetchOneInto(Long.class);
+
+        if(idAncienJumeau != null){
+            context.update(HYDRANT_PIBI)
+                    .set(HYDRANT_PIBI.JUMELE, (Long) null)
+                    .where(HYDRANT_PIBI.ID.eq(idAncienJumeau)).execute();
+
+            context.update(HYDRANT_PIBI)
+                    .set(HYDRANT_PIBI.JUMELE, (Long) null)
+                    .where(HYDRANT_PIBI.ID.eq(idPei)).execute();
+        }
     }
 }
