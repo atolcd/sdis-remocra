@@ -54,7 +54,7 @@ public class DeciHydrantVisitesEndpoint {
 
   @POST
   @Path("/visites")
-  @Operation(summary = "Ajoute une visite à un hydrant", tags = {"DECI - Hydrant - Visites"})
+  @Operation(summary = "Ajoute une visite à un PEI", tags = {"DECI - Hydrant - Visites"})
   @ApiResponse(responseCode = "201", description = "Visite créée avec succès")
   @ApiResponse(responseCode = "400", description = "Erreur à la saisie")
   @PermitAll

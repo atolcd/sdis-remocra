@@ -277,7 +277,7 @@ public class HydrantVisitesRepository {
         .fetchOneInto(Integer.class);
 
       if(nbAnomaliesChecked != anomaliesControlees.size()) {
-        throw new ResponseException(HttpStatus.BAD_REQUEST, "Une ou plusieurs anomalies contrôlées n'existent pas où ne sont pas disponibles pour" +
+        throw new ResponseException(HttpStatus.BAD_REQUEST, "Une ou plusieurs anomalies contrôlées n'existent pas où ne sont pas disponibles pour " +
           "une visite de type "+form.contexte().toUpperCase());
       }
 
@@ -582,7 +582,7 @@ public class HydrantVisitesRepository {
       .fetchOneInto(Integer.class);
 
     if(nbAnomaliesChecked != controlees.size()) {
-      throw new ResponseException(HttpStatus.BAD_REQUEST, "Une ou plusieurs anomalies contrôlées n'existent pas où ne sont pas disponibles pour" +
+      throw new ResponseException(HttpStatus.BAD_REQUEST, "Une ou plusieurs anomalies contrôlées n'existent pas où ne sont pas disponibles pour " +
         "une visite de type "+codeTypeVisite.toUpperCase());
     }
 

@@ -32,14 +32,14 @@ public class PeiEndpoint {
 
     @GET
     @Path("")
-    @Operation(summary = "Retourne la liste des pei", tags = {"Pei"})
+    @Operation(summary = "Retourne la liste des PEI", tags = {"PEI"})
     @PermitAll
     public String getPei(
-            final @Parameter(description = "Nombre maximum de résultats à retourner (maximum fixé à 500 résultats)")
+            final @Parameter(description = "Nombre maximum de résultats à retourner (maximum fixé à 200 résultats)")
                 @QueryParam("limit") @Max(value=200) @DefaultValue("200") Integer limit,
             final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start,
-            final @Parameter(description = "Numéro INSEE de la commune où se trouve le pei") @QueryParam("insee") String insee,
-            final @Parameter(description = "Type du pei : PIBI ou PENA") @QueryParam("type") String type,
+            final @Parameter(description = "Numéro INSEE de la commune où se trouve le PEI") @QueryParam("insee") String insee,
+            final @Parameter(description = "Type du PEI : PIBI ou PENA") @QueryParam("type") String type,
             final @Parameter(description = "Nature de l'hydrant") @QueryParam("nature") String nature,
             final @Parameter(description = "Nature DECI de l'hydrant") @QueryParam("natureDECI") String natureDECI
     ) throws JsonProcessingException {
@@ -48,10 +48,10 @@ public class PeiEndpoint {
 
     @GET
     @Path("/{numero}")
-    @Operation(summary = "Retourne les informations d'un pei", tags = {"Pei"})
+    @Operation(summary = "Retourne les informations d'un PEI", tags = {"PEI"})
     @PermitAll
     public Response getPeiSpecifique(
-            final @Parameter(description = "Numéro du pei") @PathParam("numero") String numero
+            final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero
     ) throws JsonProcessingException {
         try {
             return Response.ok(peiRepository.getPeiSpecifique(numero)).build();
@@ -62,10 +62,10 @@ public class PeiEndpoint {
 
     @GET
     @Path("/{numero}/caracteristiques")
-    @Operation(summary = "Retourne les informations d'un pei", tags = {"Pei"})
+    @Operation(summary = "Retourne les informations d'un PEI", tags = {"PEI"})
     @PermitAll
     public Response getPeiCaracteristiques(
-            final @Parameter(description = "Numéro du pei") @PathParam("numero") String numero
+            final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero
     ) throws JsonProcessingException {
         try {
             return Response.ok(peiRepository.getPeiCaracteristiques(numero), MediaType.APPLICATION_JSON).build();
@@ -76,11 +76,11 @@ public class PeiEndpoint {
 
     @PUT
     @Path("/{numero}/caracteristiques")
-    @Operation(summary = "Met à jour les informations d'un pei", tags = {"Pei"})
+    @Operation(summary = "Met à jour les informations d'un PEI", tags = {"PEI"})
     @PermitAll
     public Response updatePeiCaracteristiques(
-            @Parameter(description = "Numéro du pei") @PathParam("numero") String numero,
-            @NotNull @Parameter(description = "Informations du pei") PeiForm peiForm
+            @Parameter(description = "Numéro du PEI") @PathParam("PEI") String numero,
+            @NotNull @Parameter(description = "Informations du PEI") PeiForm peiForm
     ) {
         try{
             return Response.ok(peiRepository.updatePeiCaracteristiques(numero, peiForm)).build();

@@ -77,7 +77,7 @@ public class ReferentielsDeciPibiEndpoint {
   @Operation(summary = "Retourne la liste des anomalies pour un PIBI", tags = {"DECI - PIBI"})
   @PermitAll
   public String getRefentielNaturesAnomalies(
-    final @Parameter(description = "Nature du PENA") @PathParam("codeNature") String codeNature,
+    final @Parameter(description = "Nature du PIBI") @PathParam("codeNature") String codeNature,
     final @Parameter(description = "Contexte (code) de la visite") @QueryParam("contexteVisite") String contexteVisite,
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
     final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start
