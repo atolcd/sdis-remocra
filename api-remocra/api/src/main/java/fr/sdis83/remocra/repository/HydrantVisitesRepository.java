@@ -185,7 +185,7 @@ public class HydrantVisitesRepository {
     return listeCodes;
   }
 
-  public HydrantVisite addVisite(HydrantVisiteForm form) throws ResponseException {
+  public HydrantVisite addVisite(String numero, HydrantVisiteForm form) throws ResponseException {
     try {
 
       // On vérifie que la date est bien au bon format
@@ -209,7 +209,7 @@ public class HydrantVisitesRepository {
       Hydrant hydrant = context
         .select()
         .from(HYDRANT)
-        .where(HYDRANT.NUMERO.eq(form.hydrantNumero()))
+        .where(HYDRANT.NUMERO.equalIgnoreCase(numero))
         .fetchOneInto(Hydrant.class);
       if(hydrant == null) {
         throw new ResponseException(HttpStatus.BAD_REQUEST, "Le numéro spécifié ne correspond à aucun hydrant");
@@ -332,7 +332,7 @@ public class HydrantVisitesRepository {
         .select(HYDRANT_VISITE.ANOMALIES)
         .from(HYDRANT_VISITE)
         .join(HYDRANT).on(HYDRANT_VISITE.HYDRANT.eq(HYDRANT.ID))
-        .where(HYDRANT.NUMERO.eq(form.hydrantNumero()))
+        .where(HYDRANT.NUMERO.equalIgnoreCase(numero))
         .orderBy(HYDRANT_VISITE.DATE.desc())
         .limit(1)
         .fetchOneInto(String.class);

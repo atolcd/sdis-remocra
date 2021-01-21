@@ -59,10 +59,11 @@ public class DeciHydrantVisitesEndpoint {
   @ApiResponse(responseCode = "400", description = "Erreur à la saisie")
   @PermitAll
   public Response addVisite(
+    final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,
     @Parameter(description = "Informations de la visite", required = true) @NotNull HydrantVisiteForm form
   ) throws ResponseException {
     try {
-      hydrantVisitesRepository.addVisite(form);
+      hydrantVisitesRepository.addVisite(numero, form);
       return Response.status(HttpStatus.CREATED.value()).build();
     } catch(ResponseException e) {
       return Response.status(e.getStatusCode()).entity(e.getMessage()).build();

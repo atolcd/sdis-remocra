@@ -21,9 +21,6 @@ public interface HydrantVisiteForm {
   @JsonProperty(required = true)
   String contexte();
 
-  @JsonProperty(required = true)
-  String hydrantNumero();
-
   @JsonProperty
   @Nullable
   String agent1();
