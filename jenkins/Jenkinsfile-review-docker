@@ -153,6 +153,25 @@ pipeline {
             }
           }
         }
+        stage('Build docker api-remocra') {
+          steps {
+            script {
+              apiremocra_image = docker.build(
+                'atolcd/remocra-api-remocra',
+                "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./api-remocra/dist/Dockerfile-image ./api-remocra/"
+              )
+            }
+          }
+          post {
+            always {
+              script {
+                if (apiremocra_image) {
+                  sh "docker rmi -f ${apiremocra_image.id}"
+                }
+              }
+            }
+          }
+        }
       }
     }
 
