@@ -104,6 +104,11 @@ export default {
       type: Object
     },
 
+    cleIgn: {
+      type: String,
+      required: false
+    },
+
     couchesJSONPath: {
       required: true,
       type: String
@@ -356,7 +361,7 @@ export default {
 
       var IGNLayer = new TileLayer({
         source: new WMTS({
-          url: 'https://wxs.ign.fr/pratique/geoportail/wmts',
+          url: 'https://wxs.ign.fr/'+this.cleIgn+'/geoportail/wmts',
           layer: layerDef.ignLayer,
           matrixSet: 'PM',
           format: 'image/jpeg',

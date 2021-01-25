@@ -1,6 +1,6 @@
 <template>
   <div>
-  <OlMap ref="olMap" :couchesJSONPath="'/remocra/ext-res/layers/etude.json'" :couchesViewParams="couchesViewParams">
+  <OlMap ref="olMap" :cleIgn="cleIgn" :couchesJSONPath="'/remocra/ext-res/layers/etude.json'" :couchesViewParams="couchesViewParams">
     <template #specifique>
       <div class="text-center">
         <b-spinner v-if="spinnerMap" id="spinner" variant="primary"></b-spinner>
@@ -64,6 +64,11 @@ export default {
   props: {
     idEtude: {
       required: true
+    },
+
+    cleIgn: {
+      type: String,
+      required: false
     },
 
     // Booléen indiquant si il existe un réseau spécifique à cette étude

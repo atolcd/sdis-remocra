@@ -12,7 +12,7 @@
 
       <div>
         <slot name="couches" v-if="mapCreated">
-          <Couches :map="map" :couchesJSONPath="couchesJSONPath" :couchesViewParams="couchesViewParams" ref="couches"></Couches>
+          <Couches :map="map" :cleIgn="cleIgn" :couchesJSONPath="couchesJSONPath" :couchesViewParams="couchesViewParams" ref="couches"></Couches>
         </slot>
       </div>
 
@@ -53,6 +53,10 @@ export default {
   },
 
   props: {
+    cleIgn: {
+      type: String,
+      required: false
+    },
     couchesJSONPath: {
       type: String,
       required: false,

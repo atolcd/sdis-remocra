@@ -8,7 +8,7 @@ Ext.define('Sdis.Remocra.features.hydrants.Planification', {
     listeners: {
         'afterrender': function(){
             if(Ext.isDefined(window.remocraVue)) {
-                this.vuePlanificationDeci = remocraVue.planificationDeci(this.id);
+                this.vuePlanificationDeci = remocraVue.planificationDeci(this.id, REMOCRA_IGN_KEYS);
             } else {
                 console.log('PlanificationDeci : remocraVue undefined');
             }

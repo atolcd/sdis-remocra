@@ -151,14 +151,14 @@ const visualisationCourriers = function(id){
   return v
 }
 
-const planificationDeci = function(id){
+const planificationDeci = function(id, cleIgn){
   var v = new Vue({
     el: '#' + id,
     bus: new Vue(),
     components: {
         PlanificationDeci
     },
-    template: "<PlanificationDeci />"
+    template: "<PlanificationDeci cleIgn="+cleIgn+" />"
   })
   return v
 }

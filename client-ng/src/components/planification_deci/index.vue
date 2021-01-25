@@ -7,7 +7,7 @@
         <img src="../../assets/img/resultset_previous.png" width="16"/>Quitter l'étude
       </b-button>
 
-      <OlMapEtude :idEtude="selectedEtude" :reseauImporte="selectedEtudeReseauImporte" :isClosed="selectedEtudeStatut == 'TERMINEE'"></OlMapEtude>
+      <OlMapEtude :cleIgn="cleIgn" :idEtude="selectedEtude" :reseauImporte="selectedEtudeReseauImporte" :isClosed="selectedEtudeStatut == 'TERMINEE'"></OlMapEtude>
     </div>
 
     <div v-else>
@@ -156,6 +156,13 @@ export default {
 
       comboFilterType: [],
       comboFilterStatut: [],
+    }
+  },
+
+  props: {
+    cleIgn: {
+      type: String,
+      required: false
     }
   },
 
