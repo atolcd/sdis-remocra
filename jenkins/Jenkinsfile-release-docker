@@ -187,6 +187,18 @@ pipeline {
             }
           }
         }
+        stage('Push api-remocra') {
+          steps {
+            script {
+              if (apiremocra_image) {
+                docker.withRegistry("${REGISTRY_DOCKER}") {
+                  apiremocra_image.push("${REMOCRA_VERSION}")
+                  apiremocra_image.push('latest')
+                }
+              }
+            }
+          }
+        }
       }
     }
     stage('Clean') {
@@ -224,6 +236,15 @@ pipeline {
             script {
               if (remocra_image) {
                 sh "docker rmi -f ${pdidkron_image.id}"
+              }
+            }
+          }
+        }
+        stage('Delete image api-remocra') {
+          steps {
+            script {
+              if (apiremocra_image) {
+                sh "docker rmi -f ${apiremocra_image.id}"
               }
             }
           }
