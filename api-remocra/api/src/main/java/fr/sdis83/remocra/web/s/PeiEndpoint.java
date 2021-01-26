@@ -79,7 +79,7 @@ public class PeiEndpoint {
     @Operation(summary = "Met à jour les informations d'un PEI", tags = {"PEI"})
     @PermitAll
     public Response updatePeiCaracteristiques(
-            @Parameter(description = "Numéro du PEI") @PathParam("PEI") String numero,
+            @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,
             @NotNull @Parameter(description = "Informations du PEI") PeiForm peiForm
     ) {
         try{
