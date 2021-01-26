@@ -24,7 +24,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 
-@Path("/api/deci/pei/{numero}")
+@Path("/api/deci/pei/{numero}/visites")
 @Produces("application/json; charset=UTF-8")
 @Consumes(MediaType.APPLICATION_JSON)
 public class DeciHydrantVisitesEndpoint {
@@ -33,7 +33,7 @@ public class DeciHydrantVisitesEndpoint {
   HydrantVisitesRepository hydrantVisitesRepository;
 
   @GET
-  @Path("/visites")
+  @Path("")
   @Operation(summary = "Retourne les visites d'un PEI", tags = {"DECI - Hydrant - Visites"})
   @PermitAll
   public Response getHydrantVisites(
@@ -53,7 +53,7 @@ public class DeciHydrantVisitesEndpoint {
   }
 
   @POST
-  @Path("/visites")
+  @Path("")
   @Operation(summary = "Ajoute une visite à un PEI", tags = {"DECI - Hydrant - Visites"})
   @ApiResponse(responseCode = "201", description = "Visite créée avec succès")
   @ApiResponse(responseCode = "400", description = "Erreur à la saisie")
@@ -71,7 +71,7 @@ public class DeciHydrantVisitesEndpoint {
   }
 
   @GET
-  @Path("/visites/{idVisite}")
+  @Path("/{idVisite}")
   @Operation(summary = "Retourne les détails d'une visite", tags = {"DECI - Hydrant - Visites"})
   @PermitAll
   public Response getHydrantVisiteSpecifique(
@@ -83,7 +83,7 @@ public class DeciHydrantVisitesEndpoint {
   }
 
   @POST
-  @Path("/visites/{idVisite}")
+  @Path("/{idVisite}")
   @Operation(summary = "Modifie une visite spécifique", tags = {"DECI - Hydrant - Visites"})
   @ApiResponse(responseCode = "200", description = "Visite modifiée avec succès")
   @ApiResponse(responseCode = "400", description = "Erreur à la saisie")
@@ -102,7 +102,7 @@ public class DeciHydrantVisitesEndpoint {
   }
 
   @DELETE
-  @Path("/visites/{idVisite}")
+  @Path("/{idVisite}")
   @Operation(summary = "Supprime une visite spécifique", tags = {"DECI - Hydrant - Visites"})
   @ApiResponse(responseCode = "200", description = "Visite supprimée avec succès")
   @ApiResponse(responseCode = "400", description = "Erreur à la saisie")
