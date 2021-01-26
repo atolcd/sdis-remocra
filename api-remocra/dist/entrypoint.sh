@@ -4,6 +4,16 @@ cd $(dirname $0)
 
 # TODO see -XX:MaxRAM=...
 
+# Used in log4j2.xml
+export LOG_DIR=${LOG_DIR:-/app/log}
+mkdir -p "$LOG_DIR"
+
+export GCLOG_DIR=${GCLOG_DIR:-${LOG_DIR}/gc}
+mkdir -p "$GCLOG_DIR"
+
+export CONFIG_DIR=${CONFIG_DIR:-/app/config/}
+mkdir -p "$CONFIG_DIR"
+
 GC_OPTS="-XX:+DisableExplicitGC -XX:+ScavengeBeforeFullGC"
 GC_LOG_OPTS="-Xlog:gc*:file=${GCLOG_DIR}/api-remocra-gc.log::filecount=10,filesize=1024"
 JAVA_OPTS="$JAVA_OPTS -Dorg.jboss.logging.provider=slf4j"
