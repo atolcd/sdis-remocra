@@ -33,6 +33,19 @@ COPY --from=api-builder  /app/api/target/lib/*.jar lib/
 COPY --from=api-builder  /app/api/target/api-remocra-api*.jar lib/
 COPY --from=api-builder  /app/doc/target/documentation doc/documentation/
 
+VOLUME /app/log
+VOLUME /app/config
+
+# Used in log4j2.xml
+ENV LOG_DIR=${LOG_DIR:-/app/log}
+RUN mkdir -p ${LOG_DIR}
+
+ENV GCLOG_DIR=${GCLOG_DIR:-${LOG_DIR}/gc}
+RUN mkdir -p ${GCLOG_DIR}
+
+ENV CONFIG_DIR=${CONFIG_DIR:-/app/config}
+RUN mkdir -p ${CONFIG_DIR}
+
 # Non root user
 ARG UID=1000
 ARG GID=1000
@@ -42,7 +55,5 @@ RUN groupadd -g ${GID} remocra \
 USER remocra
 
 EXPOSE 8881
-VOLUME /app/config
-VOLUME /app/log
 
 ENTRYPOINT ["/app/entrypoint.sh"]

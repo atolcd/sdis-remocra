@@ -97,7 +97,7 @@ services:
   api:
     container_name: remocra-api
     image: remocra-api
-    user: "${REMOCRA_UID:-root}:${REMOCRA_GID:-root}"
+    user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
     build:
       context: ../api-remocra/
       dockerfile: ./dist/Dockerfile-image
