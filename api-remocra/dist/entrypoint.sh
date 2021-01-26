@@ -14,6 +14,8 @@ mkdir -p "$GCLOG_DIR"
 export CONFIG_DIR=${CONFIG_DIR:-/app/config/}
 mkdir -p "$CONFIG_DIR"
 
+chown -R remocra:remocra /app
+ 
 GC_OPTS="-XX:+DisableExplicitGC -XX:+ScavengeBeforeFullGC"
 GC_LOG_OPTS="-Xlog:gc*:file=${GCLOG_DIR}/api-remocra-gc.log::filecount=10,filesize=1024"
 JAVA_OPTS="$JAVA_OPTS -Dorg.jboss.logging.provider=slf4j"

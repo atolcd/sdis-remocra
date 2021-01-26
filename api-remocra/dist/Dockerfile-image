@@ -43,6 +43,8 @@ USER remocra
 
 EXPOSE 8881
 
+RUN mkdir /app/log  && chown -R remocra:remocra /app/log
+RUN mkdir /app/config  && chown -R remocra:remocra /app/config
 VOLUME /app/log
 VOLUME /app/config
 
