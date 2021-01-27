@@ -38,7 +38,7 @@ public class ReferentielsDeciPenaEndpoint {
 
   @GET
   @Path("/naturesPEI")
-  @Operation(summary = "Retourne la liste des natures possibles pour un PENA", tags = {"DECI - PENA"})
+  @Operation(summary = "Retourne la liste des natures possibles pour un PENA", tags = {"DECI - Référentiels PENA"})
   @PermitAll
   public String getRefentielNaturesPEI(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
@@ -50,7 +50,7 @@ public class ReferentielsDeciPenaEndpoint {
 
   @GET
   @Path("/naturesMateriau")
-  @Operation(summary = "Retourne la liste des matériaux pour un PENA", tags = {"DECI - PENA"})
+  @Operation(summary = "Retourne la liste des matériaux pour un PENA", tags = {"DECI - Référentiels PENA"})
   @PermitAll
   public String getRefentielNaturesMateriau(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
@@ -62,7 +62,7 @@ public class ReferentielsDeciPenaEndpoint {
 
   @GET
   @Path("/naturesAspiration")
-  @Operation(summary = "Retourne la liste des aspirations possibles pour un PENA", tags = {"DECI - PENA"})
+  @Operation(summary = "Retourne la liste des aspirations possibles pour un PENA", tags = {"DECI - Référentiels PENA"})
   @PermitAll
   public String getRefentielNaturesAspiration(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
@@ -74,7 +74,7 @@ public class ReferentielsDeciPenaEndpoint {
 
   @GET
   @Path("{codeNature}/naturesAnomalies")
-  @Operation(summary = "Retourne la liste des anomalies pour un PENA", tags = {"DECI - PENA"})
+  @Operation(summary = "Retourne la liste des anomalies pour un PENA", tags = {"DECI - Référentiels PENA"})
   @PermitAll
   public String getRefentielNaturesAnomalies(
     final @Parameter(description = "Nature du PENA") @PathParam("codeNature") String codeNature,

@@ -49,7 +49,7 @@ public class ReferentielsDeciPibiEndpoint {
 
   @GET
   @Path("/naturesPEI")
-  @Operation(summary = "Retourne la liste des natures possibles pour un PIBI", tags = {"DECI - PIBI"})
+  @Operation(summary = "Retourne la liste des natures possibles pour un PIBI", tags = {"DECI - Référentiels PIBI"})
   @PermitAll
   public String getRefentielNaturesPEI(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
@@ -61,7 +61,7 @@ public class ReferentielsDeciPibiEndpoint {
 
   @GET
   @Path("/diametres/{codeNature}")
-  @Operation(summary = "Retourne la liste des diamètres possibles pour une nature de PIBI", tags = {"DECI - PIBI"})
+  @Operation(summary = "Retourne la liste des diamètres possibles pour une nature de PIBI", tags = {"DECI - Référentiels PIBI"})
   @PermitAll
   public String getRefentielDiametres(
     final @Parameter(description = "Code de nature PIBI") @PathParam("codeNature") String codeNature,
@@ -74,7 +74,7 @@ public class ReferentielsDeciPibiEndpoint {
 
   @GET
   @Path("{codeNature}/naturesAnomalies")
-  @Operation(summary = "Retourne la liste des anomalies pour un PIBI", tags = {"DECI - PIBI"})
+  @Operation(summary = "Retourne la liste des anomalies pour un PIBI", tags = {"DECI - Référentiels PIBI"})
   @PermitAll
   public String getRefentielNaturesAnomalies(
     final @Parameter(description = "Nature du PIBI") @PathParam("codeNature") String codeNature,
@@ -88,7 +88,7 @@ public class ReferentielsDeciPibiEndpoint {
 
   @GET
   @Path("/marques")
-  @Operation(summary = "Retourne la liste des marques possibles pour un PIBI", tags = {"DECI - PIBI"})
+  @Operation(summary = "Retourne la liste des marques possibles pour un PIBI", tags = {"DECI - Référentiels PIBI"})
   @PermitAll
   public String getRefentielMarques(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
@@ -100,7 +100,7 @@ public class ReferentielsDeciPibiEndpoint {
 
   @GET
   @Path("/modeles")
-  @Operation(summary = "Retourne la liste des modèles possibles pour un PIBI", tags = {"DECI - PIBI"})
+  @Operation(summary = "Retourne la liste des modèles possibles pour un PIBI", tags = {"DECI - Référentiels PIBI"})
   @PermitAll
   public String getRefentielModeles(
     final @Parameter(description = "Code de la marque") @QueryParam("codeMarque") String codeMarque,
@@ -113,7 +113,7 @@ public class ReferentielsDeciPibiEndpoint {
 
   @GET
   @Path("/naturesReseau")
-  @Operation(summary = "Retourne la liste des natures de réseau d'alimentation", tags = {"DECI - PIBI"})
+  @Operation(summary = "Retourne la liste des natures de réseau d'alimentation", tags = {"DECI - Référentiels PIBI"})
   @PermitAll
   public String getRefentielNaturesReseau(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
@@ -125,7 +125,7 @@ public class ReferentielsDeciPibiEndpoint {
 
   @GET
   @Path("/naturesCanalisation")
-  @Operation(summary = "Retourne la liste des natures de réseau de canalisation", tags = {"DECI - PIBI"})
+  @Operation(summary = "Retourne la liste des natures de réseau de canalisation", tags = {"DECI - Référentiels PIBI"})
   @PermitAll
   public String getRefentielNaturesCanalisation(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,

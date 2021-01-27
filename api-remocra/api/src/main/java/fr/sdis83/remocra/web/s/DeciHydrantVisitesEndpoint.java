@@ -34,7 +34,7 @@ public class DeciHydrantVisitesEndpoint {
 
   @GET
   @Path("")
-  @Operation(summary = "Retourne les visites d'un PEI", tags = {"DECI - Hydrant - Visites"})
+  @Operation(summary = "Retourne les visites d'un PEI", tags = {"DECI - Visites"})
   @PermitAll
   public Response getHydrantVisites(
     final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,
@@ -54,7 +54,7 @@ public class DeciHydrantVisitesEndpoint {
 
   @POST
   @Path("")
-  @Operation(summary = "Ajoute une visite à un PEI", tags = {"DECI - Hydrant - Visites"})
+  @Operation(summary = "Ajoute une visite à un PEI", tags = {"DECI - Visites"})
   @ApiResponse(responseCode = "201", description = "Visite créée avec succès")
   @ApiResponse(responseCode = "400", description = "Erreur à la saisie")
   @PermitAll
@@ -72,7 +72,7 @@ public class DeciHydrantVisitesEndpoint {
 
   @GET
   @Path("/{idVisite}")
-  @Operation(summary = "Retourne les détails d'une visite", tags = {"DECI - Hydrant - Visites"})
+  @Operation(summary = "Retourne les détails d'une visite", tags = {"DECI - Visites"})
   @PermitAll
   public Response getHydrantVisiteSpecifique(
     final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,
@@ -84,7 +84,7 @@ public class DeciHydrantVisitesEndpoint {
 
   @POST
   @Path("/{idVisite}")
-  @Operation(summary = "Modifie une visite spécifique", tags = {"DECI - Hydrant - Visites"})
+  @Operation(summary = "Modifie une visite spécifique", tags = {"DECI - Visites"})
   @ApiResponse(responseCode = "200", description = "Visite modifiée avec succès")
   @ApiResponse(responseCode = "400", description = "Erreur à la saisie")
   @PermitAll
@@ -103,7 +103,7 @@ public class DeciHydrantVisitesEndpoint {
 
   @DELETE
   @Path("/{idVisite}")
-  @Operation(summary = "Supprime une visite spécifique", tags = {"DECI - Hydrant - Visites"})
+  @Operation(summary = "Supprime une visite spécifique", tags = {"DECI - Visites"})
   @ApiResponse(responseCode = "200", description = "Visite supprimée avec succès")
   @ApiResponse(responseCode = "400", description = "Erreur à la saisie")
   @PermitAll

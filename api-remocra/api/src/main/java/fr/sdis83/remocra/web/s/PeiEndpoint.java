@@ -32,7 +32,7 @@ public class PeiEndpoint {
 
     @GET
     @Path("")
-    @Operation(summary = "Retourne la liste des PEI", tags = {"PEI"})
+    @Operation(summary = "Retourne la liste des PEI", tags = {"DECI - Points d'Eau Incendie"})
     @PermitAll
     public String getPei(
             final @Parameter(description = "Nombre maximum de résultats à retourner (maximum fixé à 200 résultats)")
@@ -48,7 +48,7 @@ public class PeiEndpoint {
 
     @GET
     @Path("/{numero}")
-    @Operation(summary = "Retourne les informations d'un PEI", tags = {"PEI"})
+    @Operation(summary = "Retourne les informations d'un PEI", tags = {"DECI - Points d'Eau Incendie"})
     @PermitAll
     public Response getPeiSpecifique(
             final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero
@@ -62,7 +62,7 @@ public class PeiEndpoint {
 
     @GET
     @Path("/{numero}/caracteristiques")
-    @Operation(summary = "Retourne les informations d'un PEI", tags = {"PEI"})
+    @Operation(summary = "Retourne les informations d'un PEI", tags = {"DECI - Points d'Eau Incendie"})
     @PermitAll
     public Response getPeiCaracteristiques(
             final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero
@@ -76,7 +76,7 @@ public class PeiEndpoint {
 
     @PUT
     @Path("/{numero}/caracteristiques")
-    @Operation(summary = "Met à jour les informations d'un PEI", tags = {"PEI"})
+    @Operation(summary = "Met à jour les informations d'un PEI", tags = {"DECI - Points d'Eau Incendie"})
     @PermitAll
     public Response updatePeiCaracteristiques(
             @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,

@@ -32,7 +32,7 @@ public class ReferentielsDeciEndpoint {
 
   @GET
   @Path("/naturesDECI")
-  @Operation(summary = "Retourne la liste des natures DECI possibles pour un PEI", tags = {"DECI - Référentiels"})
+  @Operation(summary = "Retourne la liste des natures DECI possibles pour un PEI", tags = {"DECI - Référentiels communs"})
   @PermitAll
   public String getRefentielNaturesDECI(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
@@ -44,7 +44,7 @@ public class ReferentielsDeciEndpoint {
 
   @GET
   @Path("/niveaux")
-  @Operation(summary = "Retourne la liste des natures DECI possibles pour un PEI", tags = {"DECI - Référentiels"})
+  @Operation(summary = "Retourne la liste des natures DECI possibles pour un PEI", tags = {"DECI - Référentiels communs"})
   @PermitAll
   public String getRefentielNiveaux(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
@@ -56,7 +56,7 @@ public class ReferentielsDeciEndpoint {
 
   @GET
   @Path("/domaines")
-  @Operation(summary = "Retourne la liste des domaines possibles pour un PEI", tags = {"DECI - Référentiels"})
+  @Operation(summary = "Retourne la liste des domaines possibles pour un PEI", tags = {"DECI - Référentiels communs"})
   @PermitAll
   public String getRefentielDomaines(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
