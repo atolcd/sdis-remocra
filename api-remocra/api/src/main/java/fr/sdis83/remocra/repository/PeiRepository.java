@@ -272,7 +272,7 @@ public class PeiRepository {
             if(peiForm.codeDiametre() != null){
                 Integer idDiametre = context.select(TYPE_HYDRANT_DIAMETRE.ID)
                         .from(TYPE_HYDRANT_DIAMETRE)
-                        .where(TYPE_HYDRANT_DIAMETRE.CODE.eq(peiForm.codeDiametre()))
+                        .where(TYPE_HYDRANT_DIAMETRE.CODE.eq(peiForm.codeDiametre().toUpperCase()))
                         .fetchOneInto(Integer.class);
                 if(idDiametre != null) {
                     sets = update.set(HYDRANT_PIBI.DIAMETRE_CANALISATION, idDiametre);
@@ -286,7 +286,7 @@ public class PeiRepository {
             if(peiForm.codeMarque() != null){
                 Long idMarque = context.select(TYPE_HYDRANT_MARQUE.ID)
                         .from(TYPE_HYDRANT_MARQUE)
-                        .where(TYPE_HYDRANT_MARQUE.CODE.eq(peiForm.codeMarque()))
+                        .where(TYPE_HYDRANT_MARQUE.CODE.eq(peiForm.codeMarque().toUpperCase()))
                         .fetchOneInto(Long.class);
                 if(idMarque != null){
                     sets.set(HYDRANT_PIBI.MARQUE, idMarque);
@@ -300,7 +300,7 @@ public class PeiRepository {
             if(peiForm.codeModele() != null){
                 Long idModele = context.select(TYPE_HYDRANT_MODELE.ID)
                         .from(TYPE_HYDRANT_MODELE)
-                        .where(TYPE_HYDRANT_MODELE.CODE.eq(peiForm.codeModele()))
+                        .where(TYPE_HYDRANT_MODELE.CODE.eq(peiForm.codeModele().toUpperCase()))
                         .fetchOneInto(Long.class);
                 if(idModele != null){
                     sets.set(HYDRANT_PIBI.MODELE, idModele);
@@ -314,7 +314,7 @@ public class PeiRepository {
             if(peiForm.codeNatureReseau() != null){
                 Long idNatureReseau = context.select(TYPE_RESEAU_ALIMENTATION.ID)
                         .from(TYPE_RESEAU_ALIMENTATION)
-                        .where(TYPE_RESEAU_ALIMENTATION.CODE.eq(peiForm.codeNatureReseau()))
+                        .where(TYPE_RESEAU_ALIMENTATION.CODE.eq(peiForm.codeNatureReseau().toUpperCase()))
                         .fetchOneInto(Long.class);
                 if(idNatureReseau != null){
                     sets.set(HYDRANT_PIBI.TYPE_RESEAU_ALIMENTATION, idNatureReseau);
@@ -328,7 +328,7 @@ public class PeiRepository {
             if(peiForm.codeNatureCanalisation() != null){
                 Long idNatureCanalisation = context.select(TYPE_RESEAU_CANALISATION.ID)
                         .from(TYPE_RESEAU_CANALISATION)
-                        .where(TYPE_RESEAU_CANALISATION.CODE.eq(peiForm.codeNatureCanalisation()))
+                        .where(TYPE_RESEAU_CANALISATION.CODE.eq(peiForm.codeNatureCanalisation().toUpperCase()))
                         .fetchOneInto(Long.class);
 
                 if(idNatureCanalisation != null){
@@ -368,7 +368,7 @@ public class PeiRepository {
         try {
             Long codeMateriau = context.select(TYPE_HYDRANT_MATERIAU.ID)
                     .from(TYPE_HYDRANT_MATERIAU)
-                    .where(TYPE_HYDRANT_MATERIAU.CODE.eq(peiForm.codeMateriau()))
+                    .where(TYPE_HYDRANT_MATERIAU.CODE.eq(peiForm.codeMateriau().toUpperCase()))
                     .fetchOneInto(Long.class);
 
             UpdateSetFirstStep<Record> update = context.update(HYDRANT_PENA);
