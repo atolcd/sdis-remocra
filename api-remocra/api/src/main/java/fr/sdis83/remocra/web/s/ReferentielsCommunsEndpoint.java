@@ -3,7 +3,6 @@ package fr.sdis83.remocra.web.s;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.sdis83.remocra.repository.CommunesRepository;
 import fr.sdis83.remocra.repository.OrganismesRepository;
-import fr.sdis83.remocra.repository.TypeHydrantSaisieRepository;
 import fr.sdis83.remocra.repository.TypeOrganismesRepository;
 import fr.sdis83.remocra.repository.VoiesRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,9 +34,6 @@ public class ReferentielsCommunsEndpoint {
 
   @Inject
   OrganismesRepository organismesRepository;
-
-  @Inject
-  TypeHydrantSaisieRepository typeHydrantSaisieRepository;
 
   @GET
   @Path("/naturesOrganismes")
@@ -90,17 +86,5 @@ public class ReferentielsCommunsEndpoint {
   ) throws JsonProcessingException {
 
     return organismesRepository.getAll(codeNature, start, limit);
-  }
-
-  @GET
-  @Path("/visites")
-  @Operation(summary = "Retourne la liste des types de visite disponibles", tags = {"Référentiels communs"})
-  @PermitAll
-  public String getRefentielVisites(
-    final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
-    final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start
-  ) throws JsonProcessingException {
-
-    return typeHydrantSaisieRepository.getAll(start, limit);
   }
 }

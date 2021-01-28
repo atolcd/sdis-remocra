@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.sdis83.remocra.repository.TypeHydrantDomaineRepository;
 import fr.sdis83.remocra.repository.TypeHydrantNatureDeciRepository;
 import fr.sdis83.remocra.repository.TypeHydrantNiveauRepository;
+import fr.sdis83.remocra.repository.TypeHydrantSaisieRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 
@@ -29,6 +30,9 @@ public class ReferentielsDeciEndpoint {
 
   @Inject
   TypeHydrantDomaineRepository typeHydrantDomaineRepository;
+
+  @Inject
+  TypeHydrantSaisieRepository typeHydrantSaisieRepository;
 
   @GET
   @Path("/naturesDECI")
@@ -64,6 +68,18 @@ public class ReferentielsDeciEndpoint {
   ) throws JsonProcessingException {
 
     return typeHydrantDomaineRepository.getAll(start, limit);
+  }
+
+  @GET
+  @Path("/naturesVisites")
+  @Operation(summary = "Retourne la liste des types de visite disponibles", tags = {"DECI - Référentiels communs"})
+  @PermitAll
+  public String getRefentielVisites(
+    final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
+    final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start
+  ) throws JsonProcessingException {
+
+    return typeHydrantSaisieRepository.getAll(start, limit);
   }
 }
 
