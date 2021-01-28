@@ -4,27 +4,45 @@ public class PeiModel {
 
     String insee;
 
-    String numero;
+    String idSdis;
+
+    String idGestion;
+
+    String nomGest;
 
     String refTerr;
 
     String typePei;
 
+    String typeRd;
+
     String diamPei;
+
+    String diamCana;
+
+    String sourcePei;
 
     String statut;
 
-    String voie;
+    String nomEtab;
 
-    int pressDyn;
+    String situation;
 
-    int pressStat;
+    Integer pressDyn;
 
-    int debit;
+    Integer pressStat;
 
-    int volume;
+    Integer debit;
+
+    Integer volume;
+
+    Boolean disponible;
+
+    String dateDispo;
 
     String dateMes;
+
+    String dateMaj;
 
     String dateCt;
 
@@ -38,6 +56,8 @@ public class PeiModel {
 
     Double lat;
 
+    String prec;
+
     public String getInsee() {
         return insee;
     }
@@ -46,12 +66,28 @@ public class PeiModel {
         this.insee = insee;
     }
 
-    public String getNumero() {
-        return numero;
+    public String getIdSdis() {
+        return idSdis;
     }
 
-    public void setNumero(String numero) {
-        this.numero = numero;
+    public void setIdSdis(String idSdis) {
+        this.idSdis = idSdis;
+    }
+
+    public String getIdGestion() {
+        return idGestion;
+    }
+
+    public void setIdGestion(String idGestion) {
+        this.idGestion = idGestion;
+    }
+
+    public String getNomGest() {
+        return nomGest;
+    }
+
+    public void setNomGest(String nomGest) {
+        this.nomGest = nomGest;
     }
 
     public String getRefTerr() {
@@ -70,12 +106,36 @@ public class PeiModel {
         this.typePei = typePei;
     }
 
+    public String getTypeRd() {
+        return typeRd;
+    }
+
+    public void setTypeRd(String typeRd) {
+        this.typeRd = typeRd;
+    }
+
     public String getDiamPei() {
         return diamPei;
     }
 
     public void setDiamPei(String diamPei) {
         this.diamPei = diamPei;
+    }
+
+    public String getDiamCana() {
+        return diamCana;
+    }
+
+    public void setDiamCana(String diamCana) {
+        this.diamCana = diamCana;
+    }
+
+    public String getSourcePei() {
+        return sourcePei;
+    }
+
+    public void setSourcePei(String sourcePei) {
+        this.sourcePei = sourcePei;
     }
 
     public String getStatut() {
@@ -86,44 +146,68 @@ public class PeiModel {
         this.statut = statut;
     }
 
-    public String getVoie() {
-        return voie;
+    public String getNomEtab() {
+        return nomEtab;
     }
 
-    public void setVoie(String voie) {
-        this.voie = voie;
+    public void setNomEtab(String nomEtab) {
+        this.nomEtab = nomEtab;
     }
 
-    public int getPressDyn() {
+    public String getSituation() {
+        return situation;
+    }
+
+    public void setSituation(String situation) {
+        this.situation = situation;
+    }
+
+    public Integer getPressDyn() {
         return pressDyn;
     }
 
-    public void setPressDyn(int pressDyn) {
+    public void setPressDyn(Integer pressDyn) {
         this.pressDyn = pressDyn;
     }
 
-    public int getPressStat() {
+    public Integer getPressStat() {
         return pressStat;
     }
 
-    public void setPressStat(int pressStat) {
+    public void setPressStat(Integer pressStat) {
         this.pressStat = pressStat;
     }
 
-    public int getDebit() {
+    public Integer getDebit() {
         return debit;
     }
 
-    public void setDebit(int debit) {
+    public void setDebit(Integer debit) {
         this.debit = debit;
     }
 
-    public int getVolume() {
+    public Integer getVolume() {
         return volume;
     }
 
-    public void setVolume(int volume) {
+    public void setVolume(Integer volume) {
         this.volume = volume;
+    }
+
+    public Boolean getDisponible() {
+        return disponible;
+    }
+
+    public void setDisponible(Boolean disponible) {
+        this.disponible = disponible;
+    }
+
+    public String getDateDispo() {
+        return dateDispo;
+    }
+
+    public void setDateDispo(String dateDispo) {
+        this.dateDispo = dateDispo.substring(0,16).replace('T', ' ');
     }
 
     public String getDateMes() {
@@ -131,7 +215,15 @@ public class PeiModel {
     }
 
     public void setDateMes(String dateMes) {
-        this.dateMes = dateMes;
+        this.dateMes = dateMes.substring(0,16).replace('T', ' ');
+    }
+
+    public String getDateMaj() {
+        return dateMaj;
+    }
+
+    public void setDateMaj(String dateMaj) {
+        this.dateMaj = dateMaj.substring(0,16).replace('T', ' ');
     }
 
     public String getDateCt() {
@@ -139,7 +231,7 @@ public class PeiModel {
     }
 
     public void setDateCt(String dateCt) {
-        this.dateCt = dateCt;
+        this.dateCt = dateCt.substring(0,16).replace('T', ' ');
     }
 
     public String getDateRo() {
@@ -147,7 +239,7 @@ public class PeiModel {
     }
 
     public void setDateRo(String dateRo) {
-        this.dateRo = dateRo;
+        this.dateRo = dateRo.substring(0,16).replace('T', ' ');
     }
 
     public Double getX() {
@@ -180,5 +272,13 @@ public class PeiModel {
 
     public void setLat(Double lat) {
         this.lat = lat;
+    }
+
+    public String getPrec() {
+        return prec;
+    }
+
+    public void setPrec(String prec) {
+        this.prec = prec;
     }
 }

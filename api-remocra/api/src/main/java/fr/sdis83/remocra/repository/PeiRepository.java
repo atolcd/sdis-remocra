@@ -14,6 +14,8 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.Result;
+import org.jooq.Select;
 import org.jooq.UpdateSetFirstStep;
 import org.jooq.UpdateSetMoreStep;
 import org.jooq.exception.DataAccessException;
@@ -30,6 +32,7 @@ import static fr.sdis83.remocra.db.model.Tables.HYDRANT_PENA;
 import static fr.sdis83.remocra.db.model.Tables.HYDRANT_PIBI;
 import static fr.sdis83.remocra.db.model.Tables.HYDRANT_VISITE;
 import static fr.sdis83.remocra.db.model.Tables.ORGANISME;
+import static fr.sdis83.remocra.db.model.Tables.SITE;
 import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_DIAMETRE;
 import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_DOMAINE;
 import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_MARQUE;
@@ -67,24 +70,38 @@ public class PeiRepository {
         Field<Object> LONG = DSL.field("round(st_x(st_transform(hydrant.geometrie, 4326))::numeric, 8)").as("lon");
         Field<Object> LAT = DSL.field("round(st_y(st_transform(hydrant.geometrie, 4326))::numeric, 8)").as("lat");
 
-        List<PeiModel> list = context.select(
-            HYDRANT.NUMERO,
+        List<PeiModel> list = context
+            .select(
             COMMUNE.INSEE,
+            HYDRANT.NUMERO.as("idSdis"),
+            DSL.field("''::text").as("idGestion"),
+            ORGANISME.NOM.as("nomGest"),
             HYDRANT.NUMERO_INTERNE.as("refTerr"),
-            TYPE_HYDRANT_NATURE.CODE.as("typePei"),
-            TYPE_HYDRANT_DIAMETRE.CODE.as("diamPei"),
-            TYPE_HYDRANT_DOMAINE.NOM.as("statut"),
-            HYDRANT.VOIE,
-            HYDRANT_PIBI.PRESSION.as("pressStat"),
+            DSL.replace(TYPE_HYDRANT_NATURE.CODE.cast(String.class), "CI_FIXE", "CI").as("typePei"),
+            DSL.field("''::text").as("typeRd"),
+            TYPE_HYDRANT_DIAMETRE.NOM.as("diamPei"),
+            HYDRANT_PIBI.DIAMETRE_CANALISATION.as("diamCana"),
+            TYPE_HYDRANT_NATURE.NOM.as("sourcePei"),
+            DSL.lower(DSL.replace(TYPE_HYDRANT_DOMAINE.NOM, "é", "e")).as("statut"),
+            SITE.NOM.as("nomEtab"),
+            HYDRANT.VOIE.as("situation"),
             HYDRANT_PIBI.PRESSION_DYN.as("pressDyn"),
+            HYDRANT_PIBI.PRESSION.as("pressStat"),
             HYDRANT_PIBI.DEBIT.as("debit"),
-            HYDRANT.DATE_RECEP.as("dateMes"),
-            HYDRANT.DATE_CONTR.as("dateCt"),
-            HYDRANT.DATE_RECO.as("dateRo"),
+            HYDRANT_PENA.VOL_CONSTATE.as("volume"),
+            DSL.when(HYDRANT.DISPO_TERRESTRE.eq("DISPO")
+                    .or(HYDRANT.DISPO_TERRESTRE.eq("NON_CONFORME")),true)
+                .otherwise(false).as("disponible"),
+            DSL.field("''::text").as("dateDispo"),
+            DSL.toDate(HYDRANT.DATE_RECEP.cast(String.class), "YYYY-MM-DD").as("dateMes"),
+            DSL.toDate(HYDRANT.DATE_MODIFICATION.cast(String.class), "YYYY-MM-DD").as("dateMaj"),
+            DSL.toDate(HYDRANT.DATE_CONTR.cast(String.class), "YYYY-MM-DD").as("dateCt"),
+            DSL.toDate(HYDRANT.DATE_RECO.cast(String.class), "YYYY-MM-DD").as("dateRo"),
             X,
             Y,
             LONG,
-            LAT
+            LAT,
+            DSL.field("''::text").as("prec")
         ).from(HYDRANT)
         .leftJoin(COMMUNE).on(COMMUNE.ID.eq(HYDRANT.COMMUNE))
         .leftJoin(TYPE_HYDRANT_NATURE).on(TYPE_HYDRANT_NATURE.ID.eq(HYDRANT.NATURE))
@@ -93,12 +110,15 @@ public class PeiRepository {
         .leftJoin(TYPE_HYDRANT_DOMAINE).on(TYPE_HYDRANT_DOMAINE.ID.eq(HYDRANT.DOMAINE))
         .leftJoin(HYDRANT_PENA).on(HYDRANT_PENA.ID.eq(HYDRANT.ID))
         .leftJoin(TYPE_HYDRANT_NATURE_DECI).on(TYPE_HYDRANT_NATURE_DECI.ID.eq(HYDRANT.NATURE_DECI))
+        .leftJoin(SITE).on(SITE.ID.eq(HYDRANT.SITE))
+        .leftJoin(ORGANISME).on(ORGANISME.ID.eq(HYDRANT_PIBI.SERVICE_EAUX))
         .where(condition)
         .limit((limit == null || limit < 0) ? this.count() : limit)
         .offset((start == null || start < 0) ? 0 : start)
         .fetchInto(PeiModel.class);
         return new ObjectMapper().writeValueAsString(list);
     }
+
 
     private Integer count() {
         return context.fetchCount(HYDRANT);
@@ -169,10 +189,6 @@ public class PeiRepository {
         } else {
             throw new ResponseException(HttpStatus.BAD_REQUEST, "Le numéro spécifié ne correspond à aucun hydrant");
         }
-
-
-
-
     }
 
     public String getPeiCaracteristiques(String numero) throws JsonProcessingException, ResponseException {
