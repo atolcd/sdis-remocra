@@ -515,7 +515,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
     createCourriersBloc: function(title, icon, minHeight, pageSize) {
         if (!Sdis.Remocra.Rights.hasRight('COURRIER_UTILISATEUR_R')
             && !Sdis.Remocra.Rights.hasRight('COURRIER_ORGANISME_R')
-            && !Sdis.Remocra.Rights.hasRight('COURRIER_GLOBAL_R')) {
+            && !Sdis.Remocra.Rights.hasRight('COURRIER_ADMIN_R')) {
             return null;
         }
         return {
