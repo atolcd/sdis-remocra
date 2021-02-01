@@ -19,7 +19,7 @@ declare
 begin
     -- Métadonnées du patch
     numero_patch := 145;
-    description_patch :='Génération d\'accès API Organisme';
+    description_patch :='Génération d''accès API Organisme';
 
     -- Vérification
     if (select numero_patch-1 != (select max(numero) from remocra.suivi_patches)) then
@@ -87,8 +87,6 @@ SELECT id FROM remocra.type_organisme;
 
 INSERT INTO remocra.type_organisme(code, nom) VALUES ('PRESTATAIRE_TECHNIQUE', 'Prestataire technique');
 UPDATE remocra.type_organisme SET nom = 'Service des eaux' WHERE code = 'SERVICEEAUX';
-
-ALTER TABLE remocra.hydrant ADD maintenance_deci bigint CONSTRAINT fk_maintenance_deci_organisme FOREIGN KEY (maintenance_deci);
 
 ALTER TABLE remocra.hydrant ADD maintenance_deci bigint,
 ADD CONSTRAINT fk_maintenance_deci_organisme FOREIGN KEY (maintenance_deci) REFERENCES remocra.organisme(id);
