@@ -1,6 +1,7 @@
 package fr.sdis83.remocra.web;
 
 import com.google.common.collect.ImmutableSet;
+import fr.sdis83.remocra.authn.JWTAuthFilter;
 import fr.sdis83.remocra.resteasy.providers.InstantParamConverterProvider;
 import fr.sdis83.remocra.resteasy.providers.JacksonJsonProvider;
 import fr.sdis83.remocra.web.exceptions.ApplicationSecurityExceptionMapper;
@@ -10,6 +11,7 @@ import fr.sdis83.remocra.web.exceptions.UnhandledExceptionMapper;
 import fr.sdis83.remocra.web.exceptions.ValidationExceptionMapper;
 import fr.sdis83.remocra.web.exceptions.WebApplicationExceptionMapper;
 import fr.sdis83.remocra.web.s.DeciHydrantVisitesEndpoint;
+import fr.sdis83.remocra.web.s.JWTAuthEndpoint;
 import fr.sdis83.remocra.web.s.OpenApiEndpoint;
 import fr.sdis83.remocra.web.s.PeiEndpoint;
 import fr.sdis83.remocra.web.s.ReferentielsCommunsEndpoint;
@@ -28,6 +30,8 @@ public static final String READ_DEFAULTLIMIT = "100";
 @Override
 public Set<Class<?> > getClasses() {
   return ImmutableSet.of(
+    // Authentication and Authorizations
+    JWTAuthFilter.class,
     // ExceptionMapper
     JsonMappingExceptionMapper.class, ValidationExceptionMapper.class,
     ClientErrorExceptionMapper.class,
@@ -36,6 +40,7 @@ public Set<Class<?> > getClasses() {
     // Providers
     JacksonJsonProvider.class, InstantParamConverterProvider.class,
     // Services
+    JWTAuthEndpoint.class,
     OpenApiEndpoint.class,
     PeiEndpoint.class,
     ReferentielsCommunsEndpoint.class,

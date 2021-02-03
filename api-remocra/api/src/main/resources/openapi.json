@@ -8,7 +8,21 @@
       "version": "0.1",
       "title": "API - REMOCRA",
       "description": "Cette <b>spécification OpenAPI</b> permet de découvrir / consommer l'API HTTP de l'application REMOCRA"
-    }
+    },
+    "components": {
+      "securitySchemes": {
+        "jwt": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      }
+    },
+    "security": [
+      {
+        "jwt": []
+      }
+    ]
   },
   "modelConverterClasses": ["fr.sdis83.remocra.openapi.converter.ModelConverter"]
 }

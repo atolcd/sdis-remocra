@@ -7,6 +7,7 @@ import com.google.inject.persist.PersistService;
 import com.google.inject.servlet.ServletModule;
 import com.typesafe.config.Config;
 import fr.sdis83.remocra.app.AppModule;
+import fr.sdis83.remocra.authn.AuthnModule;
 import fr.sdis83.remocra.db.DatabaseModule;
 import fr.sdis83.remocra.http.HttpServer;
 import fr.sdis83.remocra.http.HttpServerWebappModule;
@@ -72,6 +73,7 @@ private List<AbstractModule> getModules(final Config config) throws Throwable {
 
         // Common modules
         res.add(new ServletModule());
+        res.add(AuthnModule.create(config.getConfig("api-remocra.authn")));
         res.add(DatabaseModule.create(config.getConfig("api-remocra.database")));
         res.add(JvmModule.create(config.getConfig("api-remocra.jvm")));
         res.add(AppModule.create(config.getConfig("api-remocra.app")));

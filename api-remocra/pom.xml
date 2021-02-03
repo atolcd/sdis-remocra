@@ -41,6 +41,7 @@
     <freemarker-version>2.3.28</freemarker-version>
     <velocity-version>1.7</velocity-version>
     <swagger-jaxrs2.version>2.0.8</swagger-jaxrs2.version>
+    <jjwt.version>0.11.2</jjwt.version>
 
     <plugin.exec-maven-plugin.version>1.6.0</plugin.exec-maven-plugin.version>
     <plugin.assembly.version>3.1.1</plugin.assembly.version>
@@ -329,6 +330,23 @@
         <groupId>com.github.jknack</groupId>
         <artifactId>handlebars-helpers</artifactId>
         <version>${handlebars.version}</version>
+      </dependency>
+
+      <!-- JWT -->
+      <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-api</artifactId>
+        <version>${jjwt.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-impl</artifactId>
+        <version>${jjwt.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-jackson</artifactId>
+        <version>${jjwt.version}</version>
       </dependency>
 
     </dependencies>
