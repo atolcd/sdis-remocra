@@ -142,6 +142,22 @@ public class GeoserverController {
     @RequestMapping("/**")
     public void proxy(HttpServletRequest request, HttpServletResponse response, String geoserverPath, Map<String, String> params) {
         // Vérification Type de requête
+        geoserverPath = geoserverPath!=null ? geoserverPath : request.getServletPath().replaceFirst("/geoserver/", "");
+        if (geoserverPath.endsWith("layers/reload")) {
+            reloadLayers();
+            return;
+        } else if (geoserverPath.endsWith("layers")) {
+            try {
+                response.setContentType("application/json;charset=utf-8");
+                response.setStatus(HttpStatus.OK.value());
+                response.getWriter().write(readLayers().getBody());
+                response.flushBuffer();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+
         if (isWms(request)) {
             this.proxyWms(request, response, geoserverPath, params);
         } else if(isWfs(request)) {
@@ -163,17 +179,6 @@ public class GeoserverController {
         // --------------------
 
         try {
-            geoserverPath = geoserverPath!=null ? geoserverPath : request.getServletPath().replaceFirst("/geoserver/", "");
-            if (geoserverPath.endsWith("layers/reload")) {
-                reloadLayers();
-                return;
-            } else if (geoserverPath.endsWith("layers")) {
-                response.setContentType("application/json;charset=utf-8");
-                response.setStatus(HttpStatus.OK.value());
-                response.getWriter().write(readLayers().getBody());
-                response.flushBuffer();
-                return;
-            }
             String wmsBaseUrl = paramConfService.getWmsBaseUrl();
             String targetURL = paramConfService.getWmsBaseUrl() + (wmsBaseUrl.endsWith("/") ? "" : "/") + geoserverPath;
 
@@ -361,17 +366,6 @@ public class GeoserverController {
         // --------------------
 
         try {
-            geoserverPath = geoserverPath!=null ? geoserverPath : request.getServletPath().replaceFirst("/geoserver/", "");
-            if (geoserverPath.endsWith("layers/reload")) {
-                reloadLayers();
-                return;
-            } else if (geoserverPath.endsWith("layers")) {
-                response.setContentType("application/json;charset=utf-8");
-                response.setStatus(HttpStatus.OK.value());
-                response.getWriter().write(readLayers().getBody());
-                response.flushBuffer();
-                return;
-            }
             String wmsBaseUrl = paramConfService.getWmsBaseUrl();
             String targetURL = paramConfService.getWmsBaseUrl() + (wmsBaseUrl.endsWith("/") ? "" : "/") + geoserverPath;
 
