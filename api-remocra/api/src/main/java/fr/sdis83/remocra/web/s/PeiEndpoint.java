@@ -1,14 +1,18 @@
 package fr.sdis83.remocra.web.s;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import fr.sdis83.remocra.repository.PeiRepository;
+import fr.sdis83.remocra.authn.CurrentUser;
+import fr.sdis83.remocra.authn.UserInfo;
+import fr.sdis83.remocra.authn.UserRoles;
+import fr.sdis83.remocra.usecase.pei.PeiUseCase;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
 import fr.sdis83.remocra.web.model.pei.PeiForm;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 
-import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -27,66 +31,69 @@ import javax.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 public class PeiEndpoint {
 
+    @Inject @CurrentUser
+    Provider<UserInfo> currentUser;
+
     @Inject
-    PeiRepository peiRepository;
+    PeiUseCase peiUseCase;
 
     @GET
     @Path("")
     @Operation(summary = "Retourne la liste des PEI", tags = {"DECI - Points d'Eau Incendie"})
-    @PermitAll
-    public String getPei(
-            final @Parameter(description = "Nombre maximum de résultats à retourner (maximum fixé à 200 résultats)")
-                @QueryParam("limit") @Max(value=200) @DefaultValue("200") Integer limit,
-            final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start,
-            final @Parameter(description = "Numéro INSEE de la commune où se trouve le PEI") @QueryParam("insee") String insee,
-            final @Parameter(description = "Type du PEI : PIBI ou PENA") @QueryParam("type") String type,
-            final @Parameter(description = "Nature de l'hydrant") @QueryParam("nature") String nature,
-            final @Parameter(description = "Nature DECI de l'hydrant") @QueryParam("natureDECI") String natureDECI
-    ) throws JsonProcessingException {
-        return peiRepository.getAll(insee, type, nature, natureDECI, limit, start);
+    @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
+    public Response getPei(
+      final @Parameter(description = "Nombre maximum de résultats à retourner (maximum fixé à 200 résultats)")
+          @QueryParam("limit") @Max(value=200) @DefaultValue("200") Integer limit,
+      final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start,
+      final @Parameter(description = "Numéro INSEE de la commune où se trouve le PEI") @QueryParam("insee") String insee,
+      final @Parameter(description = "Type du PEI : PIBI ou PENA") @QueryParam("type") String type,
+      final @Parameter(description = "Nature de l'hydrant") @QueryParam("nature") String nature,
+      final @Parameter(description = "Nature DECI de l'hydrant") @QueryParam("natureDECI") String natureDECI
+    ) {
+      return Response.ok(this.peiUseCase.getAll(insee, type, nature, natureDECI, limit, start)).build();
     }
 
     @GET
     @Path("/{numero}")
     @Operation(summary = "Retourne les informations d'un PEI", tags = {"DECI - Points d'Eau Incendie"})
-    @PermitAll
+    @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
     public Response getPeiSpecifique(
-            final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero
+      final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero
     ) throws JsonProcessingException {
-        try {
-            return Response.ok(peiRepository.getPeiSpecifique(numero)).build();
-        } catch (ResponseException e){
-            return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
-        }
+      try {
+        return Response.ok(peiUseCase.getPeiSpecifique(numero)).build();
+      } catch (ResponseException e){
+        return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
+      }
     }
 
     @GET
     @Path("/{numero}/caracteristiques")
     @Operation(summary = "Retourne les informations d'un PEI", tags = {"DECI - Points d'Eau Incendie"})
-    @PermitAll
+    @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
     public Response getPeiCaracteristiques(
-            final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero
+      final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero
     ) throws JsonProcessingException {
-        try {
-            return Response.ok(peiRepository.getPeiCaracteristiques(numero), MediaType.APPLICATION_JSON).build();
-        } catch (ResponseException e){
-            return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
-        }
+      try {
+        return Response.ok(peiUseCase.getPeiCaracteristiques(numero), MediaType.APPLICATION_JSON).build();
+      } catch (ResponseException e) {
+        return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
+      }
     }
 
     @PUT
     @Path("/{numero}/caracteristiques")
     @Operation(summary = "Met à jour les informations d'un PEI", tags = {"DECI - Points d'Eau Incendie"})
-    @PermitAll
+    @RolesAllowed({UserRoles.RoleTypes.TRANSMETTRE})
     public Response updatePeiCaracteristiques(
-            @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,
-            @NotNull @Parameter(description = "Informations du PEI") PeiForm peiForm
+      @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,
+      @NotNull @Parameter(description = "Informations du PEI") PeiForm peiForm
     ) {
-        try{
-            return Response.ok(peiRepository.updatePeiCaracteristiques(numero, peiForm)).build();
-        } catch (ResponseException e){
-            return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
-        }
+      try {
+        return Response.ok(peiUseCase.updatePeiCaracteristiques(numero, peiForm)).build();
+      } catch (ResponseException e) {
+        return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
+      }
     }
 
 }

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.sdis83.remocra.db.model.tables.Hydrant;
 import fr.sdis83.remocra.db.model.tables.Organisme;
+import fr.sdis83.remocra.db.model.tables.pojos.HydrantPena;
+import fr.sdis83.remocra.db.model.tables.pojos.HydrantPibi;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
 import fr.sdis83.remocra.web.model.pei.PeiForm;
 import fr.sdis83.remocra.web.model.pei.PeiModel;
@@ -13,12 +15,6 @@ import fr.sdis83.remocra.web.model.pei.PibiModel;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
-import org.jooq.Record;
-import org.jooq.Result;
-import org.jooq.Select;
-import org.jooq.UpdateSetFirstStep;
-import org.jooq.UpdateSetMoreStep;
-import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 import org.springframework.http.HttpStatus;
 
@@ -53,24 +49,26 @@ public class PeiRepository {
         this.context = context;
     }
 
+    /**
+     * Indique si le PEI spécifié existe bien en base
+     * @param numero Le numéro du PEI
+     */
     public boolean peiExist(String numero){
-        Long idPei = context.select(HYDRANT.ID)
-                .from(HYDRANT)
-                .where(HYDRANT.NUMERO.equalIgnoreCase(numero))
-                .fetchOneInto(Long.class);
-
-        return idPei != null;
+      return context.fetchExists(context.select(HYDRANT.ID)
+        .from(HYDRANT)
+        .where(HYDRANT.NUMERO.equalIgnoreCase(numero)));
     }
 
-    public String getAll(String insee, String type, String codeNature, String natureDeci, Integer limit, Integer start) throws JsonProcessingException {
-        Condition condition = this.getConditions(insee, type, codeNature, natureDeci);
+    public List<PeiModel> getAll(String insee, String type, String codeNature, String natureDeci, Integer limit, Integer start,
+     Long userId, String userTypeOrganisme) {
+        Condition condition = this.getConditions(insee, type, codeNature, natureDeci, userId, userTypeOrganisme);
 
         Field<Object> X = DSL.field("round(st_x(hydrant.geometrie)::numeric, 2)").as("x");
         Field<Object> Y = DSL.field("round(st_y(hydrant.geometrie)::numeric, 2)").as("y");
         Field<Object> LONG = DSL.field("round(st_x(st_transform(hydrant.geometrie, 4326))::numeric, 8)").as("lon");
         Field<Object> LAT = DSL.field("round(st_y(st_transform(hydrant.geometrie, 4326))::numeric, 8)").as("lat");
 
-        List<PeiModel> list = context
+        return context
             .select(
             COMMUNE.INSEE,
             HYDRANT.NUMERO.as("idSdis"),
@@ -116,98 +114,111 @@ public class PeiRepository {
         .limit((limit == null || limit < 0) ? this.count() : limit)
         .offset((start == null || start < 0) ? 0 : start)
         .fetchInto(PeiModel.class);
-        return new ObjectMapper().writeValueAsString(list);
     }
-
 
     private Integer count() {
         return context.fetchCount(HYDRANT);
     }
 
-    private Condition getConditions(String insee, String type, String codeNature, String natureDeci){
-        Condition condition = DSL.trueCondition();
-        if(insee != null){
-            condition = condition.and(COMMUNE.INSEE.eq(insee.toUpperCase()));
-        }
-        if(type != null){
-            condition = condition.and(HYDRANT.CODE.eq(type.toUpperCase()));
-        }
-        if (codeNature != null) {
-            condition = condition.and(TYPE_HYDRANT_NATURE.CODE.eq(codeNature.toUpperCase()));
-        }
-        if (natureDeci != null) {
-            condition = condition.and(TYPE_HYDRANT_NATURE_DECI.CODE.eq(natureDeci.toUpperCase()));
-        }
-        return condition;
+    private Condition getConditions(String insee, String type, String codeNature, String natureDeci, Long userId, String userTypeOrganisme){
+      Condition condition = DSL.trueCondition();
+      if(insee != null){
+          condition = condition.and(COMMUNE.INSEE.eq(insee.toUpperCase()));
+      }
+      if(type != null){
+          condition = condition.and(HYDRANT.CODE.eq(type.toUpperCase()));
+      }
+      if (codeNature != null) {
+          condition = condition.and(TYPE_HYDRANT_NATURE.CODE.eq(codeNature.toUpperCase()));
+      }
+      if (natureDeci != null) {
+          condition = condition.and(TYPE_HYDRANT_NATURE_DECI.CODE.eq(natureDeci.toUpperCase()));
+      }
+
+      // Conditions de récupération des PEI par rapport à l'organisme de l'utilisateur courant;
+      Condition conditionOrganisme = DSL.falseCondition();
+
+      // L'organisme est la maintenance DECI de l'hydrant
+      if("SERVICEEAUX".equalsIgnoreCase(userTypeOrganisme)
+        || "PRESTATAIRE_TECHNIQUE".equalsIgnoreCase(userTypeOrganisme)
+        || "COMMUNE".equalsIgnoreCase(userTypeOrganisme)
+        || "EPCI".equalsIgnoreCase(userTypeOrganisme)) {
+        conditionOrganisme = conditionOrganisme.or(HYDRANT.MAINTENANCE_DECI.eq(userId));
+      }
+
+      // L'organisme est le service public DECI de l'hydrant
+      if("COMMUNE".equalsIgnoreCase(userTypeOrganisme)
+        || "EPCI".equalsIgnoreCase(userTypeOrganisme)) {
+        conditionOrganisme = conditionOrganisme.or(HYDRANT.SP_DECI.eq(userId));
+      }
+
+
+      // L'organisme est le service des eaux de l'hydrant
+      if("SERVICEEAUX".equalsIgnoreCase(userTypeOrganisme)) {
+        conditionOrganisme = conditionOrganisme.or(HYDRANT_PIBI.SERVICE_EAUX.eq(userId));
+      }
+
+      return conditionOrganisme.and((condition));
     }
 
-    public String getPeiSpecifique(String numero) throws JsonProcessingException, ResponseException {
-        Organisme autoritePolice = ORGANISME.as("autoritePolice");
-        Organisme servicePublicDeci = ORGANISME.as("servicePublicDeci");
+    public PeiSpecifiqueModel getPeiSpecifique(String numero) {
 
-        Field<Object> X = DSL.field("round(st_x(hydrant.geometrie)::numeric, 2)").as("x");
-        Field<Object> Y = DSL.field("round(st_y(hydrant.geometrie)::numeric, 2)").as("y");
+      Organisme autoritePolice = ORGANISME.as("autoritePolice");
+      Organisme servicePublicDeci = ORGANISME.as("servicePublicDeci");
+
+      Field<Object> X = DSL.field("round(st_x(hydrant.geometrie)::numeric, 2)").as("x");
+      Field<Object> Y = DSL.field("round(st_y(hydrant.geometrie)::numeric, 2)").as("y");
 
 
-        PeiSpecifiqueModel pei = context.select(
-                HYDRANT.NUMERO.as("numero"),
-                HYDRANT.CODE.as("type"),
-                TYPE_HYDRANT_NATURE.CODE.as("nature"),
-                autoritePolice.NOM.as("organismeAutoritePolice"),
-                servicePublicDeci.NOM.as("organismeServicePublicDeci"),
-                HYDRANT.MAINTENANCE_DECI.as("organismeTechnique"),
-                TYPE_HYDRANT_NATURE_DECI.CODE.as("natureDeci"),
-                X,
-                Y,
-                COMMUNE.NOM.as("commune"),
-                HYDRANT.SUFFIXE_VOIE.as("suffixe"),
-                HYDRANT.EN_FACE.as("enFace"),
-                TYPE_HYDRANT_NIVEAU.CODE.as("niveau"),
-                TYPE_HYDRANT_DOMAINE.CODE.as("domaine"),
-                HYDRANT.VOIE.as("voie"),
-                HYDRANT.VOIE2.as("carrefour"),
-                HYDRANT.LIEU_DIT.as("lieuDit"),
-                HYDRANT.COMPLEMENT.as("complement"),
-                HYDRANT.DATE_MODIFICATION.as("dateDerniereModification"),
-                DSL.greatest(HYDRANT.DATE_CONTR, HYDRANT.DATE_RECEP, HYDRANT.DATE_RECO, HYDRANT.DATE_VERIF).as("dateDerniereVisite"),
-                HYDRANT.DISPO_TERRESTRE.as("dispoTerrestre"),
-                HYDRANT.DISPO_HBE.as("dispoAerienne")
+      return context.select(
+        HYDRANT.NUMERO.as("numero"),
+        HYDRANT.CODE.as("type"),
+        TYPE_HYDRANT_NATURE.CODE.as("nature"),
+        autoritePolice.NOM.as("organismeAutoritePolice"),
+        servicePublicDeci.NOM.as("organismeServicePublicDeci"),
+        HYDRANT.MAINTENANCE_DECI.as("organismeTechnique"),
+        TYPE_HYDRANT_NATURE_DECI.CODE.as("natureDeci"),
+        X,
+        Y,
+        COMMUNE.NOM.as("commune"),
+        HYDRANT.SUFFIXE_VOIE.as("suffixe"),
+        HYDRANT.EN_FACE.as("enFace"),
+        TYPE_HYDRANT_NIVEAU.CODE.as("niveau"),
+        TYPE_HYDRANT_DOMAINE.CODE.as("domaine"),
+        HYDRANT.VOIE.as("voie"),
+        HYDRANT.VOIE2.as("carrefour"),
+        HYDRANT.LIEU_DIT.as("lieuDit"),
+        HYDRANT.COMPLEMENT.as("complement"),
+        HYDRANT.DATE_MODIFICATION.as("dateDerniereModification"),
+        DSL.greatest(HYDRANT.DATE_CONTR, HYDRANT.DATE_RECEP, HYDRANT.DATE_RECO, HYDRANT.DATE_VERIF).as("dateDerniereVisite"),
+        HYDRANT.DISPO_TERRESTRE.as("dispoTerrestre"),
+        HYDRANT.DISPO_HBE.as("dispoAerienne")
 
-        ).from(HYDRANT)
-                .leftJoin(TYPE_HYDRANT_NATURE).on(TYPE_HYDRANT_NATURE.ID.eq(HYDRANT.NATURE))
-                .leftJoin(autoritePolice).on(autoritePolice.ID.eq(HYDRANT.ORGANISME))
-                .leftJoin(servicePublicDeci).on(servicePublicDeci.ID.eq(HYDRANT.AUTORITE_DECI))
-                .leftJoin(TYPE_HYDRANT_NATURE_DECI).on(TYPE_HYDRANT_NATURE_DECI.ID.eq(HYDRANT.NATURE_DECI))
-                .leftJoin(COMMUNE).on(COMMUNE.ID.eq(HYDRANT.COMMUNE))
-                .leftJoin(TYPE_HYDRANT_NIVEAU).on(TYPE_HYDRANT_NIVEAU.ID.eq(HYDRANT.NIVEAU))
-                .leftJoin(TYPE_HYDRANT_DOMAINE).on(TYPE_HYDRANT_DOMAINE.ID.eq(HYDRANT.DOMAINE))
-                .where(HYDRANT.NUMERO.eq(numero))
-                .fetchOneInto(PeiSpecifiqueModel.class);
-
-        if(pei != null){
-            return new ObjectMapper().writeValueAsString(pei);
-        } else {
-            throw new ResponseException(HttpStatus.BAD_REQUEST, "Le numéro spécifié ne correspond à aucun hydrant");
-        }
+      ).from(HYDRANT)
+        .leftJoin(TYPE_HYDRANT_NATURE).on(TYPE_HYDRANT_NATURE.ID.eq(HYDRANT.NATURE))
+        .leftJoin(autoritePolice).on(autoritePolice.ID.eq(HYDRANT.ORGANISME))
+        .leftJoin(servicePublicDeci).on(servicePublicDeci.ID.eq(HYDRANT.AUTORITE_DECI))
+        .leftJoin(TYPE_HYDRANT_NATURE_DECI).on(TYPE_HYDRANT_NATURE_DECI.ID.eq(HYDRANT.NATURE_DECI))
+        .leftJoin(COMMUNE).on(COMMUNE.ID.eq(HYDRANT.COMMUNE))
+        .leftJoin(TYPE_HYDRANT_NIVEAU).on(TYPE_HYDRANT_NIVEAU.ID.eq(HYDRANT.NIVEAU))
+        .leftJoin(TYPE_HYDRANT_DOMAINE).on(TYPE_HYDRANT_DOMAINE.ID.eq(HYDRANT.DOMAINE))
+        .leftJoin(HYDRANT_PIBI).on(HYDRANT_PIBI.ID.eq(HYDRANT.ID))
+        .where(HYDRANT.NUMERO.eq(numero))
+        .fetchOneInto(PeiSpecifiqueModel.class);
     }
 
-    public String getPeiCaracteristiques(String numero) throws JsonProcessingException, ResponseException {
+    public String getPeiCaracteristiques(String numero) throws JsonProcessingException {
+      String typePei = context
+        .select(HYDRANT.CODE)
+        .from(HYDRANT)
+        .where(HYDRANT.NUMERO.equalIgnoreCase(numero))
+        .fetchOneInto(String.class);
 
-        if(peiExist(numero)){
-            String typePei = context.select(HYDRANT.CODE)
-                    .from(HYDRANT)
-                    .where(HYDRANT.NUMERO.equalIgnoreCase(numero))
-                    .fetchOneInto(String.class);
-
-            if(typePei.equalsIgnoreCase("PIBI")){
-                return getPibiCaracteristiques(numero);
-            } else{
-                return getPenaCaracteristiques(numero);
-            }
-        } else {
-            throw new ResponseException(HttpStatus.BAD_REQUEST, "Le numéro spécifié ne correspond à aucun hydrant");
-        }
-
+      if(typePei.equalsIgnoreCase("PIBI")){
+          return getPibiCaracteristiques(numero);
+      } else{
+          return getPenaCaracteristiques(numero);
+      }
     }
 
     public String getPibiCaracteristiques(String numero) throws JsonProcessingException {
@@ -256,172 +267,42 @@ public class PeiRepository {
         return new ObjectMapper().writeValueAsString(pena);
     }
 
-    public String updatePeiCaracteristiques(String numero, PeiForm peiform) throws ResponseException {
+    public void updatePibiCaracteristiques(HydrantPibi hydrantPibi, Integer anneeFabrication) throws ResponseException {
+      context.update(HYDRANT_PIBI)
+        .set(HYDRANT_PIBI.DIAMETRE_CANALISATION, hydrantPibi.getDiametreCanalisation())
+        .set(HYDRANT_PIBI.MARQUE, hydrantPibi.getMarque())
+        .set(HYDRANT_PIBI.MODELE, hydrantPibi.getModele())
+        .set(HYDRANT_PIBI.TYPE_RESEAU_ALIMENTATION, hydrantPibi.getTypeReseauAlimentation())
+        .set(HYDRANT_PIBI.TYPE_RESEAU_CANALISATION, hydrantPibi.getTypeReseauCanalisation())
+        .set(HYDRANT_PIBI.DISPOSITIF_INVIOLABILITE, hydrantPibi.getDispositifInviolabilite())
+        .set(HYDRANT_PIBI.RENVERSABLE, hydrantPibi.getRenversable())
+        .set(HYDRANT_PIBI.SURPRESSE, hydrantPibi.getRenversable())
+        .set(HYDRANT_PIBI.ADDITIVE, hydrantPibi.getAdditive())
+        .where(HYDRANT_PIBI.ID.eq(hydrantPibi.getId()))
+        .execute();
 
-        if(peiExist(numero)){
-            String typePei = context.select(HYDRANT.CODE)
-                    .from(HYDRANT)
-                    .where(HYDRANT.NUMERO.eq(numero))
-                    .fetchOneInto(String.class);
-
-            if(typePei.equalsIgnoreCase("PIBI")){
-                return updatePibiCaracteristiques(numero, peiform);
-            } else{
-                return updatePenaCaracteristiques(numero, peiform);
-            }
-        }
-        else {
-            throw new ResponseException(HttpStatus.INTERNAL_SERVER_ERROR, "Le numéro spécifié ne correspond à aucun hydrant");
-        }
+      context.update(HYDRANT)
+        .set(HYDRANT.ANNEE_FABRICATION, anneeFabrication)
+        .where(HYDRANT.ID.eq(hydrantPibi.getId()))
+        .execute();
     }
 
-    public String updatePibiCaracteristiques(String numero, PeiForm peiForm) throws ResponseException {
-        try{
-            if(peiForm.peiJumele() != null){
-                jumelagePei(numero, peiForm.peiJumele());
-            }
-
-            UpdateSetFirstStep<Record> update = context.update(HYDRANT_PIBI);
-
-            UpdateSetMoreStep<Record> sets = null;
-
-            if(peiForm.codeDiametre() != null){
-                Integer idDiametre = context.select(TYPE_HYDRANT_DIAMETRE.ID)
-                        .from(TYPE_HYDRANT_DIAMETRE)
-                        .where(TYPE_HYDRANT_DIAMETRE.CODE.eq(peiForm.codeDiametre().toUpperCase()))
-                        .fetchOneInto(Integer.class);
-                if(idDiametre != null) {
-                    sets = update.set(HYDRANT_PIBI.DIAMETRE_CANALISATION, idDiametre);
-                } else {
-                    throw new ResponseException(HttpStatus.METHOD_NOT_ALLOWED, "Le code du diamètre saisi ne correspond à aucune valeur connue");
-                }
-            } else{
-                sets = update.set(HYDRANT_PIBI.DIAMETRE_CANALISATION, (Integer) null);
-            }
-
-            if(peiForm.codeMarque() != null){
-                Long idMarque = context.select(TYPE_HYDRANT_MARQUE.ID)
-                        .from(TYPE_HYDRANT_MARQUE)
-                        .where(TYPE_HYDRANT_MARQUE.CODE.eq(peiForm.codeMarque().toUpperCase()))
-                        .fetchOneInto(Long.class);
-                if(idMarque != null){
-                    sets.set(HYDRANT_PIBI.MARQUE, idMarque);
-                }else {
-                    throw new ResponseException(HttpStatus.METHOD_NOT_ALLOWED, "Le code de marque saisi ne correspond à aucune valeur connue");
-                }
-            } else {
-                sets.set(HYDRANT_PIBI.MARQUE, (Long) null);
-            }
-
-            if(peiForm.codeModele() != null){
-                Long idModele = context.select(TYPE_HYDRANT_MODELE.ID)
-                        .from(TYPE_HYDRANT_MODELE)
-                        .where(TYPE_HYDRANT_MODELE.CODE.eq(peiForm.codeModele().toUpperCase()))
-                        .fetchOneInto(Long.class);
-                if(idModele != null){
-                    sets.set(HYDRANT_PIBI.MODELE, idModele);
-                }else {
-                    throw new ResponseException(HttpStatus.METHOD_NOT_ALLOWED, "Le code de modèle saisi ne correspond à aucune valeur connue");
-                }
-            }else {
-                sets.set(HYDRANT_PIBI.MODELE, (Long) null);
-            }
-
-            if(peiForm.codeNatureReseau() != null){
-                Long idNatureReseau = context.select(TYPE_RESEAU_ALIMENTATION.ID)
-                        .from(TYPE_RESEAU_ALIMENTATION)
-                        .where(TYPE_RESEAU_ALIMENTATION.CODE.eq(peiForm.codeNatureReseau().toUpperCase()))
-                        .fetchOneInto(Long.class);
-                if(idNatureReseau != null){
-                    sets.set(HYDRANT_PIBI.TYPE_RESEAU_ALIMENTATION, idNatureReseau);
-                } else {
-                    throw new ResponseException(HttpStatus.METHOD_NOT_ALLOWED, "Le code de nature du réseau saisi ne correspond à aucune valeur connue");
-                }
-            }else {
-                sets.set(HYDRANT_PIBI.TYPE_RESEAU_ALIMENTATION, (Long) null);
-            }
-
-            if(peiForm.codeNatureCanalisation() != null){
-                Long idNatureCanalisation = context.select(TYPE_RESEAU_CANALISATION.ID)
-                        .from(TYPE_RESEAU_CANALISATION)
-                        .where(TYPE_RESEAU_CANALISATION.CODE.eq(peiForm.codeNatureCanalisation().toUpperCase()))
-                        .fetchOneInto(Long.class);
-
-                if(idNatureCanalisation != null){
-                    sets.set(HYDRANT_PIBI.TYPE_RESEAU_CANALISATION, idNatureCanalisation);
-                }else {
-                    throw new ResponseException(HttpStatus.METHOD_NOT_ALLOWED, "Le code de nature de canalisation saisi ne correspond à aucune valeur connue");
-                }
-            } else {
-                sets.set(HYDRANT_PIBI.TYPE_RESEAU_CANALISATION, (Long) null);
-            }
-
-            sets.set(HYDRANT_PIBI.DISPOSITIF_INVIOLABILITE, peiForm.inviolabilite())
-                    .set(HYDRANT_PIBI.RENVERSABLE, peiForm.renversable())
-                    .set(HYDRANT_PIBI.SURPRESSE, peiForm.reseauSurpresse())
-                    .set(HYDRANT_PIBI.ADDITIVE, peiForm.reseauAdditive())
-                    .from(HYDRANT)
-                    .where(HYDRANT_PIBI.ID.eq(HYDRANT.ID))
-                    .and(HYDRANT.NUMERO.eq(numero)).execute();
-
-            context.update(HYDRANT)
-                    .set(HYDRANT.ANNEE_FABRICATION, peiForm.anneeFabrication())
-                    .where(HYDRANT.NUMERO.eq(numero))
-                    .execute();
-
-            return "PIBI mis à jour avec succès";
-
-        }catch (DataAccessException e){
-            e.printStackTrace();
-            throw new ResponseException(HttpStatus.INTERNAL_SERVER_ERROR, "Une erreur est survenue lors de la mise à jour de l'hydrant");
-        }catch (ResponseException e){
-            e.printStackTrace();
-            throw new ResponseException(HttpStatus.valueOf(e.getStatusCode()),e.getMessage());
-        }
-    }
-
-    public String updatePenaCaracteristiques(String numero, PeiForm peiForm) throws ResponseException {
-        try {
-            Long codeMateriau = context.select(TYPE_HYDRANT_MATERIAU.ID)
-                    .from(TYPE_HYDRANT_MATERIAU)
-                    .where(TYPE_HYDRANT_MATERIAU.CODE.eq(peiForm.codeMateriau().toUpperCase()))
-                    .fetchOneInto(Long.class);
-
-            UpdateSetFirstStep<Record> update = context.update(HYDRANT_PENA);
-
-            UpdateSetMoreStep<Record> sets = null;
-
-            if(codeMateriau != null) {
-                sets = update.set(HYDRANT_PENA.MATERIAU, codeMateriau);
-            } else {
-                throw new ResponseException(HttpStatus.METHOD_NOT_ALLOWED, "Le code de matériau saisi ne correspond à aucune valeur connue");
-            }
-
-            sets.set(HYDRANT_PENA.ILLIMITEE, peiForm.capaciteIllimitee())
-                    .set(HYDRANT_PENA.INCERTAINE, peiForm.ressourceIncertaine())
-                    .set(HYDRANT_PENA.CAPACITE, peiForm.capacite())
-                    .set(HYDRANT_PENA.Q_APPOINT, peiForm.debitAppoint())
-                    .set(HYDRANT_PENA.HBE, peiForm.equipeHBE())
-                    .from(HYDRANT)
-                    .where(HYDRANT_PENA.ID.eq(HYDRANT.ID))
-                    .and(HYDRANT.NUMERO.eq(numero))
-                    .execute();
-
-            return "PENA mis à jour avec succès";
-
-        }catch (DataAccessException e){
-            e.printStackTrace();
-            throw new ResponseException(HttpStatus.INTERNAL_SERVER_ERROR, "Une erreur est survenue lors de la mise à jour de l'hydrant");
-        }catch (ResponseException e){
-            e.printStackTrace();
-            throw new ResponseException(HttpStatus.valueOf(e.getStatusCode()),e.getMessage());
-        }
+    public void updatePenaCaracteristiques(HydrantPena hydrantPena) throws ResponseException {
+      context.update(HYDRANT_PENA)
+        .set(HYDRANT_PENA.MATERIAU, hydrantPena.getMateriau())
+        .set(HYDRANT_PENA.ILLIMITEE, hydrantPena.getIllimitee())
+        .set(HYDRANT_PENA.INCERTAINE, hydrantPena.getIncertaine())
+        .set(HYDRANT_PENA.CAPACITE, hydrantPena.getCapacite())
+        .set(HYDRANT_PENA.Q_APPOINT, hydrantPena.getQAppoint())
+        .set(HYDRANT_PENA.HBE, hydrantPena.getHbe())
+        .where(HYDRANT_PENA.ID.eq(hydrantPena.getId()))
+        .execute();
     }
 
     /*
         Fonction qui met en place le jumelage entre deux pei
      */
-    public void jumelagePei(String numero, String numeroJumeau) throws ResponseException {
+    public String jumelagePei(String numero, String numeroJumeau) {
 
         Long idPeiJumeau = context.select(HYDRANT.ID)
                 .from(HYDRANT)
@@ -467,12 +348,13 @@ public class PeiRepository {
                         .set(HYDRANT_PIBI.JUMELE, idPei)
                         .where(HYDRANT_PIBI.ID.eq(idPeiJumeau))
                         .execute();
+                return null;
             } else {
-                throw new ResponseException(HttpStatus.METHOD_NOT_ALLOWED, "Le jumelage entre les deux hydrants renseignés n'est pas possible. " +
-                        "La distance entre les deux hydrants doit être inféreure à 25 mètres, et les hydrants doivent être de nature BI");
+                return "Le jumelage entre les deux hydrants renseignés n'est pas possible. " +
+                        "La distance entre les deux hydrants doit être inféreure à 25 mètres, et les hydrants doivent être de nature BI";
             }
         } else {
-            throw new ResponseException(HttpStatus.BAD_REQUEST, "Le numéro de PEI jumelé saisi ne correspond à aucun hydrant connu");
+            return "Le numéro de PEI jumelé saisi ne correspond à aucun hydrant connu";
         }
     }
 
