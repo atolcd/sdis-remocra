@@ -1,6 +1,7 @@
 package fr.sdis83.remocra.web.s;
 
-import fr.sdis83.remocra.repository.HydrantVisitesRepository;
+import fr.sdis83.remocra.authn.UserRoles;
+import fr.sdis83.remocra.usecase.visites.HydrantVisitesUseCase;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
 import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteForm;
 import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteSpecifiqueForm;
@@ -9,7 +10,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
 
-import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -31,12 +32,12 @@ import java.io.IOException;
 public class DeciHydrantVisitesEndpoint {
 
   @Inject
-  HydrantVisitesRepository hydrantVisitesRepository;
+  HydrantVisitesUseCase hydrantVisitesUseCase;
 
   @GET
   @Path("")
   @Operation(summary = "Retourne les visites d'un PEI", tags = {"DECI - Visites"})
-  @PermitAll
+  @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getHydrantVisites(
     final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,
     final @Parameter(description = "Code du contexte de visite") @QueryParam("contexte") String contexte,
@@ -45,10 +46,9 @@ public class DeciHydrantVisitesEndpoint {
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
     final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start
   ) throws IOException {
-
     try {
-      return Response.ok(hydrantVisitesRepository.getAll(numero, contexte, date, derniereOnly, start, limit), MediaType.APPLICATION_JSON).build();
-    } catch(ResponseException e) {
+      return Response.ok(this.hydrantVisitesUseCase.getAll(numero, contexte, date, derniereOnly, start, limit)).build();
+    } catch (ResponseException e) {
       return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
     }
   }
@@ -58,13 +58,13 @@ public class DeciHydrantVisitesEndpoint {
   @Operation(summary = "Ajoute une visite à un PEI", tags = {"DECI - Visites"})
   @ApiResponse(responseCode = "201", description = "Visite créée avec succès")
   @ApiResponse(responseCode = "400", description = "Erreur à la saisie")
-  @PermitAll
+  @RolesAllowed({UserRoles.RoleTypes.TRANSMETTRE})
   public Response addVisite(
     final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,
     @Parameter(description = "Informations de la visite", required = true) @NotNull HydrantVisiteForm form
   ) throws ResponseException {
     try {
-      hydrantVisitesRepository.addVisite(numero, form);
+      this.hydrantVisitesUseCase.addVisite(numero, form);
       return Response.status(HttpStatus.CREATED.value()).build();
     } catch(ResponseException e) {
       return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
@@ -74,13 +74,16 @@ public class DeciHydrantVisitesEndpoint {
   @GET
   @Path("/{idVisite}")
   @Operation(summary = "Retourne les détails d'une visite", tags = {"DECI - Visites"})
-  @PermitAll
+  @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getHydrantVisiteSpecifique(
     final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,
     final @Parameter(description = "Identifiant de la visite") @PathParam("idVisite") String idVisite
   ) throws IOException {
-
-    return Response.ok(hydrantVisitesRepository.getHydrantVisiteSpecifique(numero, idVisite), MediaType.APPLICATION_JSON).build();
+    try {
+      return Response.ok(this.hydrantVisitesUseCase.getHydrantVisiteSpecifique(numero, idVisite), MediaType.APPLICATION_JSON).build();
+    } catch (ResponseException e) {
+      return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
+    }
   }
 
   @PUT
@@ -88,15 +91,15 @@ public class DeciHydrantVisitesEndpoint {
   @Operation(summary = "Modifie une visite spécifique", tags = {"DECI - Visites"})
   @ApiResponse(responseCode = "200", description = "Visite modifiée avec succès")
   @ApiResponse(responseCode = "400", description = "Erreur à la saisie")
-  @PermitAll
+  @RolesAllowed({UserRoles.RoleTypes.TRANSMETTRE})
   public Response editVisite(
     final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,
     final @Parameter(description = "Identifiant de la visite") @PathParam("idVisite") String idVisite,
     @Parameter(description = "Informations de la visite", required = true) @NotNull HydrantVisiteSpecifiqueForm form
   ) throws ResponseException {
     try {
-      hydrantVisitesRepository.editVisite(numero, idVisite, form);
-      return Response.ok().build();
+      this.hydrantVisitesUseCase.editVisite(numero, idVisite, form);
+      return Response.ok("Visite modifiée avec succès").build();
     } catch(ResponseException e) {
       return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
     }
@@ -107,13 +110,13 @@ public class DeciHydrantVisitesEndpoint {
   @Operation(summary = "Supprime une visite spécifique", tags = {"DECI - Visites"})
   @ApiResponse(responseCode = "200", description = "Visite supprimée avec succès")
   @ApiResponse(responseCode = "400", description = "Erreur à la saisie")
-  @PermitAll
+  @RolesAllowed({UserRoles.RoleTypes.TRANSMETTRE})
   public Response deleteVisite(
     final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,
     final @Parameter(description = "Identifiant de la visite") @PathParam("idVisite") String idVisite
   ) throws ResponseException {
     try {
-      hydrantVisitesRepository.deleteVisite(numero, idVisite);
+      this.hydrantVisitesUseCase.deleteVisite(numero, idVisite);
       return Response.ok().build();
     } catch(ResponseException e) {
       return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
