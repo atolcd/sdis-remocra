@@ -8,7 +8,6 @@ import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteSpecifiqueForm;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import org.springframework.http.HttpStatus;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -65,7 +64,7 @@ public class DeciHydrantVisitesEndpoint {
   ) throws ResponseException {
     try {
       this.hydrantVisitesUseCase.addVisite(numero, form);
-      return Response.status(HttpStatus.CREATED.value()).build();
+      return Response.status(Response.Status.CREATED).build();
     } catch(ResponseException e) {
       return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
     }

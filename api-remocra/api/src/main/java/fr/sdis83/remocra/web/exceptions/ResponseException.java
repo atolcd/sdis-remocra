@@ -1,18 +1,18 @@
 package fr.sdis83.remocra.web.exceptions;
 
-import org.springframework.http.HttpStatus;
+import javax.ws.rs.core.Response;
 
 public class ResponseException extends Exception {
 
-  private HttpStatus status;
+  private Response.Status status;
 
-  public ResponseException(HttpStatus status, String msg) {
+  public ResponseException(Response.Status status, String msg) {
     super(msg);
     this.status = status;
   }
 
   public Integer getStatusCode() {
-    return this.status.value();
+    return this.status.getStatusCode();
   }
 
 }

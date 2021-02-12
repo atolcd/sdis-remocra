@@ -16,9 +16,9 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.impl.DSL;
-import org.springframework.http.HttpStatus;
 
 import javax.inject.Inject;
+import javax.ws.rs.core.Response;
 
 import java.util.List;
 
