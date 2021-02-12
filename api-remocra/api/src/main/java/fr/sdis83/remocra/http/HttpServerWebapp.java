@@ -75,7 +75,6 @@ public void start() throws Exception {
         final File tmpdir = Files.createTempDirectory("jetty").toFile();
         tmpdir.deleteOnExit();
         context.setAttribute(ServletContext.TEMPDIR, tmpdir);
-        context.setBaseResource(new ClassLoaderResource());
         server.setHandler(context);
 
         // Configure DefaultServlet cache

@@ -11,7 +11,6 @@ import fr.sdis83.remocra.authn.AuthnModule;
 import fr.sdis83.remocra.db.DatabaseModule;
 import fr.sdis83.remocra.http.HttpServer;
 import fr.sdis83.remocra.http.HttpServerWebappModule;
-import fr.sdis83.remocra.http.client.HttpClientModule;
 
 import fr.sdis83.remocra.jvm.JvmInitializer;
 import fr.sdis83.remocra.jvm.JvmModule;
@@ -78,7 +77,6 @@ private List<AbstractModule> getModules(final Config config) throws Throwable {
         res.add(JvmModule.create(config.getConfig("api-remocra.jvm")));
         res.add(AppModule.create(config.getConfig("api-remocra.app")));
         res.add(HttpServerWebappModule.create(config.getConfig("api-remocra.http")));
-        res.add(HttpClientModule.create(config.getConfig("api-remocra.http-client")));
         return res;
 }
 

@@ -2,7 +2,6 @@ package fr.sdis83.remocra.web;
 
 import com.google.common.collect.ImmutableSet;
 import fr.sdis83.remocra.authn.JWTAuthFilter;
-import fr.sdis83.remocra.resteasy.providers.InstantParamConverterProvider;
 import fr.sdis83.remocra.resteasy.providers.JacksonJsonProvider;
 import fr.sdis83.remocra.web.exceptions.ApplicationSecurityExceptionMapper;
 import fr.sdis83.remocra.web.exceptions.ClientErrorExceptionMapper;
@@ -38,7 +37,7 @@ public Set<Class<?> > getClasses() {
     WebApplicationExceptionMapper.class, ApplicationSecurityExceptionMapper.class,
     UnhandledExceptionMapper.class,
     // Providers
-    JacksonJsonProvider.class, InstantParamConverterProvider.class,
+    JacksonJsonProvider.class,
     // Services
     JWTAuthEndpoint.class,
     OpenApiEndpoint.class,
