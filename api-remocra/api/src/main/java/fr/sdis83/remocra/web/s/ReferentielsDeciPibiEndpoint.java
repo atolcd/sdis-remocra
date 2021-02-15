@@ -1,6 +1,7 @@
 package fr.sdis83.remocra.web.s;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import fr.sdis83.remocra.authn.UserRoles;
 import fr.sdis83.remocra.repository.TypeHydrantDiametreRepository;
 import fr.sdis83.remocra.repository.TypeHydrantMarqueRepository;
 import fr.sdis83.remocra.repository.TypeHydrantModeleRepository;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -20,6 +22,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/api/deci/referentiel/pibi")
 @Produces("application/json; charset=UTF-8")
@@ -50,88 +53,88 @@ public class ReferentielsDeciPibiEndpoint {
   @GET
   @Path("/naturesPEI")
   @Operation(summary = "Retourne la liste des natures possibles pour un PIBI", tags = {"DECI - Référentiels PIBI"})
-  @PermitAll
-  public String getRefentielNaturesPEI(
+  @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
+  public Response getRefentielNaturesPEI(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
     final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start
   ) throws JsonProcessingException {
 
-    return typeHydrantNatureRepository.getAll("PIBI", start, limit);
+    return Response.ok(typeHydrantNatureRepository.getAll("PIBI", start, limit)).build();
   }
 
   @GET
   @Path("/diametres/{codeNature}")
   @Operation(summary = "Retourne la liste des diamètres possibles pour une nature de PIBI", tags = {"DECI - Référentiels PIBI"})
-  @PermitAll
-  public String getRefentielDiametres(
+  @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
+  public Response getRefentielDiametres(
     final @Parameter(description = "Code de nature PIBI") @PathParam("codeNature") String codeNature,
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
     final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start
   ) throws JsonProcessingException {
 
-    return typeHydrantDiametreRepository.getAll(codeNature, start, limit);
+    return Response.ok(typeHydrantDiametreRepository.getAll(codeNature, start, limit)).build();
   }
 
   @GET
   @Path("{codeNature}/naturesAnomalies")
   @Operation(summary = "Retourne la liste des anomalies pour un PIBI", tags = {"DECI - Référentiels PIBI"})
-  @PermitAll
-  public String getRefentielNaturesAnomalies(
+  @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
+  public Response getRefentielNaturesAnomalies(
     final @Parameter(description = "Nature du PIBI") @PathParam("codeNature") String codeNature,
     final @Parameter(description = "Contexte (code) de la visite") @QueryParam("contexteVisite") String contexteVisite,
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
     final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start
   ) throws JsonProcessingException {
 
-    return typeHydrantNatureAnomalieRepository.getAll(codeNature, contexteVisite, "PIBI", start, limit);
+    return Response.ok(typeHydrantNatureAnomalieRepository.getAll(codeNature, contexteVisite, "PIBI", start, limit)).build();
   }
 
   @GET
   @Path("/marques")
   @Operation(summary = "Retourne la liste des marques possibles pour un PIBI", tags = {"DECI - Référentiels PIBI"})
-  @PermitAll
-  public String getRefentielMarques(
+  @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
+  public Response getRefentielMarques(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
     final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start
   ) throws JsonProcessingException {
 
-    return typeHydrantMarqueRepository.getAll(start, limit);
+    return Response.ok(typeHydrantMarqueRepository.getAll(start, limit)).build();
   }
 
   @GET
   @Path("/modeles")
   @Operation(summary = "Retourne la liste des modèles possibles pour un PIBI", tags = {"DECI - Référentiels PIBI"})
-  @PermitAll
-  public String getRefentielModeles(
+  @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
+  public Response getRefentielModeles(
     final @Parameter(description = "Code de la marque") @QueryParam("codeMarque") String codeMarque,
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
     final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start
   ) throws JsonProcessingException {
 
-    return typeHydrantModeleRepository.getAll(codeMarque, start, limit);
+    return Response.ok(typeHydrantModeleRepository.getAll(codeMarque, start, limit)).build();
   }
 
   @GET
   @Path("/naturesReseau")
   @Operation(summary = "Retourne la liste des natures de réseau d'alimentation", tags = {"DECI - Référentiels PIBI"})
-  @PermitAll
-  public String getRefentielNaturesReseau(
+  @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
+  public Response getRefentielNaturesReseau(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
     final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start
   ) throws JsonProcessingException {
 
-    return typeReseauAlimentationRepository.getAll(start, limit);
+    return Response.ok(typeReseauAlimentationRepository.getAll(start, limit)).build();
   }
 
   @GET
   @Path("/naturesCanalisation")
   @Operation(summary = "Retourne la liste des natures de réseau de canalisation", tags = {"DECI - Référentiels PIBI"})
-  @PermitAll
-  public String getRefentielNaturesCanalisation(
+  @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
+  public Response getRefentielNaturesCanalisation(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
     final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start
   ) throws JsonProcessingException {
 
-    return typeReseauCanalisationRepository.getAll(start, limit);
+    return Response.ok(typeReseauCanalisationRepository.getAll(start, limit)).build();
   }
 }
