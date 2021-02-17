@@ -16,16 +16,30 @@ link:../index{outfilesuffix}[Retour à l'accueil]
 
 On part d'un serveur Debian/Utbuntu vierge:
 
-Créer le répertoire d'accueil des éléments d'installation : `mkdir /livraison`
+* Créer le répertoire d'accueil des éléments d'installation :
+[source,sh]
+----
+mkdir /livraison
+----
 
-Créer le répertoire d'accueil des éléments de docker : `mkdir /etc/docker_remocra`
+* Créer le répertoire d'accueil des éléments de docker :
+[source,sh]
+----
+mkdir /etc/docker_remocra
+----
 
-Déposer les scripts du répertoire _vagrantV2_ :
+* Affecter les droits à l'utilisateur remocra:
+[source,sh]
+----
+chown -R remocra:remocra /etc/docker_remocra
+----
 
-* _vagrantV2/docker_ =>  _/etc/docker_remocra_
-* _vagrantV2/livraison_ => _/livraison_
+* Déposer les scripts du répertoire _vagrantV2_ :
 
-Rendre les scripts exécutables :
+** _vagrantV2/docker_ =>  _/etc/docker_remocra_
+** _vagrantV2/livraison_ => _/livraison_
+
+* Rendre les scripts exécutables :
 
 [source,sh]
 ----
@@ -34,13 +48,31 @@ chmod u+x /etc/docker_remocra/*.sh
 ----
 
 == Lancement de l'installation ==
-
-* Lancer l'installation : `/livraison/launcher.sh 2>&1 | tee /livraison/launcher.log`
+* Adapter le script launcher.sh
+[source,sh]
+----
+export POSTGRES_DB_PASSWORD=${POSTGRES_DB_PASSWORD:-xxxxxxx}
+export REMOCRA_DB_PASSWORD=${REMOCRA_DB_PASSWORD:-xxxxxx}
+----
+* Lancer l'installation :
+[source,sh]
+----
+/livraison/launcher.sh 2>&1 | tee /livraison/launcher.log
+----
 
 == Restauration des bases de données ==
-* Créer la base remocra `createdb remocra -E UTF8 remocra`
-* Créer l'utilisateur remocra `psql remocra -c "CREATE user remocra WITH SUPERUSER ENCRYPTED PASSWORD '${REMOCRA_DB_PASSWORD:-xxxxx}'"`;
-* Dans le cas d'upgrade : Restaurer le backup2.5 préalablement préparé // TODO lien vers le script d'upgrade
+* Créer l'utilisateur remocra
+[source,sh]
+----
+psql -c "CREATE user remocra WITH SUPERUSER ENCRYPTED PASSWORD '${REMOCRA_DB_PASSWORD:-xxxxx}'";
+----
+
+* Créer la base remocra
+[source,sh]
+----
+createdb remocra -E UTF8 remocra
+----
+* Dans le cas d'upgrade : Restaurer le backup2.5 préalablement préparé
 
 [source,sh]
 ----
@@ -50,17 +82,20 @@ pg_restore -d remocra -U remocra '/livraison/db/remocra-2.5.backup'
 * Restaurer remocra_ref_pdi (à récupérer dans le depot github)
 [source,sh]
 ----
-pg_restore -d remocra_ref_pdi -U remocra 'home/postgres/pdi_db/000_remocra_pdi_all.sql'
+createdb remocra_ref_pdi -E UTF8 remocra
+psql -d remocra_ref_pdi -U remocra -f '/livraison/db/000_remocra_pdi_all.sql'
 ----
 
 * Récupérer les patches du /home/postgres/remocra_db et jouer les patches manquants 
 
- Ex: `psql -d remocra  -f '/home/postgres/remocra_db/patches/134/134.sql'`
- 
+ Ex: `PVERSION=103 && psql -h localhost -d remocra -f "/home/postgres/remocra_db/patches/$PVERSION/$PVERSION.sql"`
+
+== En cas de migration v1 -> v2 ==
 * Jouer le script de montée de données (dans le cas de migration) 
 
 [source,sh]
 ----
+psql -d remocra -f '/livraison/montee_donnees.sql'
 psql remocra -c "update remocra.param_conf set valeur='/home/pdi/remocra.properties' where cle='PDI_FICHIER_PARAMETRAGE'"
 psql remocra -c "update remocra.param_conf set valeur='http://localhost:8090/geoserver' where cle='WMS_BASE_URL'"
 ----
@@ -72,20 +107,24 @@ psql remocra -c "update remocra.param_conf set valeur='http://localhost:8090/geo
    `/var/remocra/modeles/processus_etl` 
    `/var/remocra/modeles/xsd`
 
-* récupérer kettle.properties  de `/home/postgres/.kettle/kettle.properties`
-* récupérer repositories.xml  de `/home/postgres/.kettle/repositories.xml`
-* récupérer remocra.properties  de `/home/postgres/remocra_pdi/remocra.properties`
+* récupérer les fichiers suivants  :
+** kettle.properties  de `/home/postgres/.kettle/kettle.properties`
+** repositories.xml  de `/home/postgres/pdi/repositories.xml`
+** remocra.properties  de `/home/postgres/remocra_pdi/remocra.properties`
 
-[source,sh]
-----
-mv /kettle.properties  /etc/docker_remocra/.docker/jobs-common/
-mv /remocra.properties  /etc/docker_remocra/.docker/jobs-common/
-mv /repositories.xml  /etc/docker_remocra/.docker/jobs-4.4/.ketlle/
-----
+== Images docker ==
+
+* Déposer les fichiers  kettle.properties/ repositories.xml / remocra.properties dans /etc/docker_remocra
 
 * Se connecter au docker registry afin de récupérer les images docker (Le login/mot de passe sont fournis par atol)
  
  `docker login client-docker-registry.atolcd.com`
+
+* Vérifier les variables d'environnement dans  :
+** remocra.properties
+** repositories.xml
+** kettle.properties
+** remocra.env
  
 * Lancer le script /etc/docker-remocra/build_containers.sh
 

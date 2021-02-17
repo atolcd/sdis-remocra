@@ -234,7 +234,7 @@ pipeline {
         stage('Delete image pdi-dkron') {
           steps {
             script {
-              if (remocra_image) {
+              if (pdidkron_image) {
                 sh "docker rmi -f ${pdidkron_image.id}"
               }
             }
