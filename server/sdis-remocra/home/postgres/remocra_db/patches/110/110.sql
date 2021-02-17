@@ -79,9 +79,9 @@ CREATE TABLE remocra.intervention
   CONSTRAINT fk_intervention_commune FOREIGN KEY (commune)
     REFERENCES remocra.commune (id) MATCH SIMPLE
     ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT enforce_dims_geometrie CHECK (ndims(geometrie) = 2),
+  CONSTRAINT enforce_dims_geometrie CHECK (st_ndims(geometrie) = 2),
   CONSTRAINT enforce_geotype_geometrie CHECK (geometrytype(geometrie) = 'POINT'::text),
-  CONSTRAINT enforce_srid_geometrie CHECK (srid(geometrie) = 2154)
+  CONSTRAINT enforce_srid_geometrie CHECK (st_srid(geometrie) = 2154)
 );
 
 COMMENT ON TABLE remocra.intervention
@@ -118,9 +118,9 @@ CREATE TABLE remocra.moyen
   CONSTRAINT fk_moyen_intervention FOREIGN KEY (intervention)
     REFERENCES remocra.intervention (id) MATCH SIMPLE
     ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT enforce_dims_geometrie CHECK (ndims(geometrie) = 2),
+  CONSTRAINT enforce_dims_geometrie CHECK (st_ndims(geometrie) = 2),
   CONSTRAINT enforce_geotype_geometrie CHECK (geometrytype(geometrie) = 'POINT'::text),
-  CONSTRAINT enforce_srid_geometrie CHECK (srid(geometrie) = 2154)
+  CONSTRAINT enforce_srid_geometrie CHECK (st_srid(geometrie) = 2154)
 );
 
 COMMENT ON TABLE remocra.moyen
