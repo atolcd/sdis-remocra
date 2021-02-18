@@ -38,7 +38,7 @@ public class ReferentielsDeciEndpoint {
 
   @GET
   @Path("/naturesDECI")
-  @Operation(summary = "Retourne la liste des natures DECI possibles pour un PEI", tags = {"DECI - Référentiels communs"})
+  @Operation(summary = "Retourne les types de DECI applicables sur les PEI (publique, privée, privée sous convention). Attention la nature DECI peut être différente du domaine", tags = {"DECI - Référentiels communs"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielNaturesDECI(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
@@ -50,7 +50,7 @@ public class ReferentielsDeciEndpoint {
 
   @GET
   @Path("/niveaux")
-  @Operation(summary = "Retourne la liste des natures DECI possibles pour un PEI", tags = {"DECI - Référentiels communs"})
+  @Operation(summary = "Retourne les valeurs de positionnement par rapport au sol possibles pour un PEI", tags = {"DECI - Référentiels communs"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielNiveaux(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
@@ -62,7 +62,9 @@ public class ReferentielsDeciEndpoint {
 
   @GET
   @Path("/domaines")
-  @Operation(summary = "Retourne la liste des domaines possibles pour un PEI", tags = {"DECI - Référentiels communs"})
+  @Operation(summary = "Retourne les natures domaniales des terrains sur lesquels les PEI sont localisés " +
+    "(domanial, privé, militaire, etc.). Attention la nature du domaine peut être différente de " +
+    "la nature de la DECI", tags = {"DECI - Référentiels communs"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielDomaines(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
@@ -74,7 +76,10 @@ public class ReferentielsDeciEndpoint {
 
   @GET
   @Path("/naturesVisites")
-  @Operation(summary = "Retourne la liste des types de visite disponibles", tags = {"DECI - Référentiels communs"})
+  @Operation(summary = "Retourne les types (contexte) de visites possibles sur les PEI. Les contextes sont définis par type " +
+    "d'organisme. Un service des eaux ne pourra par exemple pas renseigner des visites de type Contrôle Technique Périodique " +
+    "(CTP) ou Reconnaissance (ROI ou ROP)  mais pourra renseigner des visites non programmées (NP). Les contextes déterminent " +
+    "également la liste des anomalies pouvant être constatées sur une nature de PEI", tags = {"DECI - Référentiels communs"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielVisites(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,

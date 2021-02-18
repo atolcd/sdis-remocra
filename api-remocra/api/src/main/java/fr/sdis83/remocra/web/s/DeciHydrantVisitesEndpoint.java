@@ -35,7 +35,11 @@ public class DeciHydrantVisitesEndpoint {
 
   @GET
   @Path("")
-  @Operation(summary = "Retourne les visites d'un PEI", tags = {"DECI - Visites"})
+  @Operation(summary = "Retourne les visites associées à un PEI. Une visite correspond à une séance terrain auprès d'un PEI à " +
+    "une date donnée dans un contexte périodique (contrôle technique périodique, reconnaissance opérationnelle périodique) ou " +
+    "non (reconnaissance initiale, intervention). Chaque visite permet, selon son type de récolter de l'information sur le PEI " +
+    "(mesure de débit et de pression, présence d'anomalies empêchant le fonctionnement,etc) qui conditionnent la disponibilité " +
+    "du PEI", tags = {"DECI - Visites"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getHydrantVisites(
     final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,
@@ -54,7 +58,9 @@ public class DeciHydrantVisitesEndpoint {
 
   @POST
   @Path("")
-  @Operation(summary = "Ajoute une visite à un PEI", tags = {"DECI - Visites"})
+  @Operation(summary = "Ajoute une visite à un PEI en précisant notamment le contexte, une liste de points contrôlés et une " +
+    "liste d'anomalies éventuellement constatées. Des mesures de débit et de pression peuvent également être transmises dans le" +
+    " cas d'un contexte \"Contrôle Technique Périodique\"", tags = {"DECI - Visites"})
   @ApiResponse(responseCode = "201", description = "Visite créée avec succès")
   @ApiResponse(responseCode = "400", description = "Erreur à la saisie")
   @RolesAllowed({UserRoles.RoleTypes.TRANSMETTRE})
@@ -72,7 +78,7 @@ public class DeciHydrantVisitesEndpoint {
 
   @GET
   @Path("/{idVisite}")
-  @Operation(summary = "Retourne les détails d'une visite", tags = {"DECI - Visites"})
+  @Operation(summary = "Retourne l'information détaillée d'une visite spécifique dont les éventuelles informations de débit et pressions", tags = {"DECI - Visites"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getHydrantVisiteSpecifique(
     final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,
@@ -87,7 +93,7 @@ public class DeciHydrantVisitesEndpoint {
 
   @PUT
   @Path("/{idVisite}")
-  @Operation(summary = "Modifie une visite spécifique", tags = {"DECI - Visites"})
+  @Operation(summary = "Modifie les informations relatives à une visite spécifique dont les éventuelles informations de débit et pressions dans le cas d’un CTP", tags = {"DECI - Visites"})
   @ApiResponse(responseCode = "200", description = "Visite modifiée avec succès")
   @ApiResponse(responseCode = "400", description = "Erreur à la saisie")
   @RolesAllowed({UserRoles.RoleTypes.TRANSMETTRE})

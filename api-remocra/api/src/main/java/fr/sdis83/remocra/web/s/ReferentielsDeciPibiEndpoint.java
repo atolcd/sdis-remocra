@@ -52,7 +52,7 @@ public class ReferentielsDeciPibiEndpoint {
 
   @GET
   @Path("/naturesPEI")
-  @Operation(summary = "Retourne la liste des natures possibles pour un PIBI", tags = {"DECI - Référentiels PIBI"})
+  @Operation(summary = "Retourne les natures de PEI possibles pour les PEI de type PIBI", tags = {"DECI - Référentiels PIBI"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielNaturesPEI(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
@@ -64,7 +64,7 @@ public class ReferentielsDeciPibiEndpoint {
 
   @GET
   @Path("/diametres/{codeNature}")
-  @Operation(summary = "Retourne la liste des diamètres possibles pour une nature de PIBI", tags = {"DECI - Référentiels PIBI"})
+  @Operation(summary = "Retourne les diamètres de demi-raccord possibles une nature de PIBI", tags = {"DECI - Référentiels PIBI"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielDiametres(
     final @Parameter(description = "Code de nature PIBI") @PathParam("codeNature") String codeNature,
@@ -77,7 +77,8 @@ public class ReferentielsDeciPibiEndpoint {
 
   @GET
   @Path("{codeNature}/naturesAnomalies")
-  @Operation(summary = "Retourne la liste des anomalies pour un PIBI", tags = {"DECI - Référentiels PIBI"})
+  @Operation(summary = "Retourne les types d'anomalies pouvant être constatées pour une nature de PIBI et un contexte " +
+    "(type de visite) spécifiques", tags = {"DECI - Référentiels PIBI"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielNaturesAnomalies(
     final @Parameter(description = "Nature du PIBI") @PathParam("codeNature") String codeNature,
@@ -91,7 +92,7 @@ public class ReferentielsDeciPibiEndpoint {
 
   @GET
   @Path("/marques")
-  @Operation(summary = "Retourne la liste des marques possibles pour un PIBI", tags = {"DECI - Référentiels PIBI"})
+  @Operation(summary = "Retourne les marques susceptibles d'équiper le parc de PIBI", tags = {"DECI - Référentiels PIBI"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielMarques(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
@@ -103,7 +104,7 @@ public class ReferentielsDeciPibiEndpoint {
 
   @GET
   @Path("/modeles")
-  @Operation(summary = "Retourne la liste des modèles possibles pour un PIBI", tags = {"DECI - Référentiels PIBI"})
+  @Operation(summary = "Retourne les modèles susceptibles d'équiper le parc de PIBI", tags = {"DECI - Référentiels PIBI"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielModeles(
     final @Parameter(description = "Code de la marque") @QueryParam("codeMarque") String codeMarque,
@@ -116,7 +117,7 @@ public class ReferentielsDeciPibiEndpoint {
 
   @GET
   @Path("/naturesReseau")
-  @Operation(summary = "Retourne la liste des natures de réseau d'alimentation", tags = {"DECI - Référentiels PIBI"})
+  @Operation(summary = "Retourne les types de réseau d'alimentation en eau pouvant alimenter les PIBI", tags = {"DECI - Référentiels PIBI"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielNaturesReseau(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
@@ -128,7 +129,7 @@ public class ReferentielsDeciPibiEndpoint {
 
   @GET
   @Path("/naturesCanalisation")
-  @Operation(summary = "Retourne la liste des natures de réseau de canalisation", tags = {"DECI - Référentiels PIBI"})
+  @Operation(summary = "Retourne les matériaux pouvant constituer les canalisations", tags = {"DECI - Référentiels PIBI"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielNaturesCanalisation(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,

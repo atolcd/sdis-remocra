@@ -39,7 +39,17 @@ public class PeiEndpoint {
 
     @GET
     @Path("")
-    @Operation(summary = "Retourne la liste des PEI", tags = {"DECI - Points d'Eau Incendie"})
+    @Operation(summary = "Retourne la liste des PEI en lien avec l'organisme associé à la clef d'accès d’API. Le lien est " +
+      "établ au sein de l'application REMOCRA par association entre un point d'eau et les types d’organismes suivants :\n" +
+      "*Autorité de police* \n" +
+      "*Service Public DECI* \n" +
+      "*Prestataire Technique pour le compte du Service Public DECI* \n" +
+      "*Service des eaux en charge de la distribution de l'eau pour les équipements sous pression (BI et PI)* \n" +
+      "Les PEI se répartissent selon leur type (PIBI pour les équipements reliés à réseau d'eau sous pression, PENA pour les " +
+      "autres ressources), leur nature (PIBI : Poteau (PI) ou borne (BI). PENA : Point d'aspiration , citerne, etc.) et le type " +
+      "de DECI (publique, privée, privée sous convention). Les caractéristiques techniques et les procédures applicables varient" +
+      " en fonction de ces critères de répartition.\n" +
+      "La structure de donnée retournée est conforme au modèle de donnée minimal défini par l'AFIGEO\n", tags = {"DECI - Points d'Eau Incendie"})
     @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
     public Response getPei(
       final @Parameter(description = "Nombre maximum de résultats à retourner (maximum fixé à 200 résultats)")
@@ -55,7 +65,7 @@ public class PeiEndpoint {
 
     @GET
     @Path("/{numero}")
-    @Operation(summary = "Retourne les informations d'un PEI", tags = {"DECI - Points d'Eau Incendie"})
+    @Operation(summary = "Retourne les informations communes à tout type de PEI d'un PEI spécifique", tags = {"DECI - Points d'Eau Incendie"})
     @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
     public Response getPeiSpecifique(
       final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero
@@ -69,7 +79,7 @@ public class PeiEndpoint {
 
     @GET
     @Path("/{numero}/caracteristiques")
-    @Operation(summary = "Retourne les informations d'un PEI", tags = {"DECI - Points d'Eau Incendie"})
+    @Operation(summary = "Retourne les caractéristiques techniques propres au PEI et à son type (PIBI ou PENA)", tags = {"DECI - Points d'Eau Incendie"})
     @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
     public Response getPeiCaracteristiques(
       final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero
@@ -83,7 +93,7 @@ public class PeiEndpoint {
 
     @PUT
     @Path("/{numero}/caracteristiques")
-    @Operation(summary = "Met à jour les informations d'un PEI", tags = {"DECI - Points d'Eau Incendie"})
+    @Operation(summary = "Modifie les caractéristiques techniques propres au PEI et à son type (PIBI ou PENA)", tags = {"DECI - Points d'Eau Incendie"})
     @RolesAllowed({UserRoles.RoleTypes.TRANSMETTRE})
     public Response updatePeiCaracteristiques(
       @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,

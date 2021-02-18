@@ -40,7 +40,7 @@ public class ReferentielsDeciPenaEndpoint {
 
   @GET
   @Path("/naturesPEI")
-  @Operation(summary = "Retourne la liste des natures possibles pour un PENA", tags = {"DECI - Référentiels PENA"})
+  @Operation(summary = "Retourne les natures de PEI possibles pour les PEI de type PENA", tags = {"DECI - Référentiels PENA"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielNaturesPEI(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
@@ -52,7 +52,7 @@ public class ReferentielsDeciPenaEndpoint {
 
   @GET
   @Path("/naturesMateriau")
-  @Operation(summary = "Retourne la liste des matériaux pour un PENA", tags = {"DECI - Référentiels PENA"})
+  @Operation(summary = "Retourne les matériaux possibles pour les PEI de type PENA", tags = {"DECI - Référentiels PENA"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielNaturesMateriau(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
@@ -64,7 +64,7 @@ public class ReferentielsDeciPenaEndpoint {
 
   /*@GET
   @Path("/naturesAspiration")
-  @Operation(summary = "Retourne la liste des aspirations possibles pour un PENA", tags = {"DECI - Référentiels PENA"})
+  @Operation(summary = "Retourne les types de dispositif d'aspiration possibles pour les aires d'aspiration associées aux PENA", tags = {"DECI - Référentiels PENA"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielNaturesAspiration(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
@@ -76,7 +76,9 @@ public class ReferentielsDeciPenaEndpoint {
 
   @GET
   @Path("{codeNature}/naturesAnomalies")
-  @Operation(summary = "Retourne la liste des anomalies pour un PENA", tags = {"DECI - Référentiels PENA"})
+  @Operation(summary = "Retourne les types d'anomalies pouvant être constatées pour une nature de PENA (ex : Envasement " +
+    "excessif peut s'appliquer à un point d'eau naturel mais pas à une citerne) et à un contexte (type de visite) " +
+    "spécifiques", tags = {"DECI - Référentiels PENA"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielNaturesAnomalies(
     final @Parameter(description = "Nature du PENA") @PathParam("codeNature") String codeNature,

@@ -39,7 +39,7 @@ public class ReferentielsCommunsEndpoint {
 
   @GET
   @Path("/naturesOrganismes")
-  @Operation(summary = "Retourne la liste des natures d'organismes", tags = {"Référentiels communs"})
+  @Operation(summary = "Retourne les types d'organismes susceptibles d'exploiter REMOCRA", tags = {"Référentiels communs"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielNatureOrganismes(
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
@@ -79,7 +79,7 @@ public class ReferentielsCommunsEndpoint {
 
   @GET
   @Path("/organismes")
-  @Operation(summary = "Retourne la liste des organismes", tags = {"Référentiels communs"})
+  @Operation(summary = "Retourne les organismes susceptibles d'exploiter REMOCRA (utilisateurs nommés avec accès à l'interface applicative ou exploitation de l'API)", tags = {"Référentiels communs"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielOrganismes(
     final @Parameter(description = "Code de la nature de l'organisme") @QueryParam("codeNature") String codeNature,
