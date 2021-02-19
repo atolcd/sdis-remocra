@@ -305,7 +305,7 @@ curl -v http://localhost:8070/v1/jobs -XPOST -d '{
   "concurrency": "forbid",
   "executor": "shell",
   "executor_config": {
-    "command": "find /var/remocra/pdi/log/ -mtime +7 -name \"*.TXT\" -print -exec rm {} \\;"
+    "command": "find /var/remocra/pdi/log/ -mtime +7 -name \"*.TXT\" -print -delete"
   }
 }'
 

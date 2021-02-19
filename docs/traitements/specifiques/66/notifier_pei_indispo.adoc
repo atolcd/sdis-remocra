@@ -18,7 +18,7 @@ Le fichier _"remocraXX.properties"_ doit contenir les informations suivantes :
 curl -v http://localhost:8070/v1/jobs -XPOST -d '{
   "name": "pei-indispo",
   "displayname": "Notifier les maires des PEI indisponibles",
-  "schedule": "0 0 7 1 1/1 ? *",
+  "schedule": "0 0 7 1 * *",
   "owner": "",
   "owner_email": "",
   "disabled": false,
