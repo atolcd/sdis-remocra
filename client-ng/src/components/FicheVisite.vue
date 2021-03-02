@@ -665,6 +665,7 @@ export default {
           // Si une visite est à une date future, on bloque la validation
           this.etats.noFutureDate = 'valid';
           var timeMax = moment().format('HH:mm');
+          this.dateMax = moment().format('YYYY-MM-DD');
           if(moment(this.dateMax+" "+timeMax).diff(moment(date)) < 0) {
             this.etats.date = 'invalid';
             this.etats.time = 'invalid';
