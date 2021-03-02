@@ -744,11 +744,13 @@ export default {
       this.$root.$options.bus.$emit('closed')
     },
     addGestionnaire(evt) {
-      this.$refs.modalGestionnairePrive.editGestionnaire(null);
+      var appartenance = (this.listeNaturesDeci.filter(item => item.code === "PRIVE")[0].id == this.hydrant.natureDeci) ? "GESTIONNAIRE" : "ORGANISME";
+      this.$refs.modalGestionnairePrive.editGestionnaire(null, appartenance);
       evt.preventDefault()
     },
     modifGestionnaire(evt) {
-      this.$refs.modalGestionnairePrive.editGestionnaire(this.hydrant.gestionnaire);
+      var appartenance = (this.listeNaturesDeci.filter(item => item.code === "PRIVE")[0].id == this.hydrant.natureDeci) ? "GESTIONNAIRE" : "ORGANISME";
+      this.$refs.modalGestionnairePrive.editGestionnaire(this.hydrant.gestionnaire, appartenance);
       evt.preventDefault()
     }
   }

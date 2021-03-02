@@ -75,10 +75,11 @@ public class GestionnaireController {
         try {
             String gestionnaire = request.getParameter("gestionnaire");
             String contactsJson = request.getParameter("contacts");
+            String appartenance = request.getParameter("appartenance");
 
             final Gestionnaire attached = service.create(gestionnaire, null);
 
-            contactRepository.createContactsFromJson(contactsJson, "GESTIONNAIRE", attached.getId());
+            contactRepository.createContactsFromJson(contactsJson, appartenance, attached.getId());
 
 
             return new AbstractExtObjectSerializer<Gestionnaire>("Gestionnaire created") {
@@ -99,9 +100,10 @@ public class GestionnaireController {
         try {
             String gestionnaire = request.getParameter("gestionnaire");
             String contactsJson = request.getParameter("contacts");
+            String appartenance = request.getParameter("appartenance");
 
             final Gestionnaire attached = service.update(id , gestionnaire, null);
-            contactRepository.updateContactsFromJson(contactsJson, "GESTIONNAIRE",id);
+            contactRepository.updateContactsFromJson(contactsJson, appartenance,id);
 
             return new AbstractExtObjectSerializer<Gestionnaire>("Gestionnaire created") {
                 @Override

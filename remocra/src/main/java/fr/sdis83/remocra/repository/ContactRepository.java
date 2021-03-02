@@ -54,7 +54,7 @@ public class ContactRepository {
 
     ModelMapper modelMapper = new ModelMapper();
     modelMapper.getConfiguration().addValueReader(new RecordValueReader());
-    modelMapper.getConfiguration().setSourceNameTokenizer(NameTokenizers.CAMEL_CASE);
+    modelMapper.getConfiguration().setSourceNameTokenizer(NameTokenizers.UNDERSCORE);
 
     List<Contact> cr = new ArrayList<Contact>();
 
@@ -94,7 +94,7 @@ public class ContactRepository {
     ArrayList<HashMap<String, Object>> contacts = jsonContacts == null || jsonContacts.isEmpty() ? new ArrayList<HashMap<String, Object>>()
             : new JSONDeserializer<ArrayList<HashMap<String, Object>>>().deserialize(jsonContacts);
     //Les contact existants déjà en base
-    List<Contact> lc = findAllContactById("ORGANISME", String.valueOf(idAppartenance));
+    List<Contact> lc = findAllContactById(appartenance, String.valueOf(idAppartenance));
 
     List<Long> contactToSave = new ArrayList();
 

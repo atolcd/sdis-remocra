@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RequestMapping("/contact")
 @Controller
@@ -22,7 +23,8 @@ public class ContactController {
     ContactRepository contactRepository;
 
     @RequestMapping(value = "/{idappartenance}", method = RequestMethod.GET,headers = "Accept=application/json")
-    public ResponseEntity<String> listJson(@PathVariable("idappartenance") final String idappartenance) {
+    public ResponseEntity<String> listJson(@PathVariable("idappartenance") final String idappartenance,
+       final @RequestParam(value = "appartenance", required = false) String appartenance) {
         return new AbstractExtListSerializer<Contact>("fr.sdis83.remocra.domain.remocra.Contact retrieved.") {
 
             @Override
@@ -34,7 +36,7 @@ public class ContactController {
 
             @Override
             protected List<Contact> getRecords() {
-                return contactRepository.findAllContactById("ORGANISME",idappartenance);
+                return contactRepository.findAllContactById(appartenance,idappartenance);
             }
 
         }.serialize();

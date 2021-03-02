@@ -140,6 +140,7 @@ export default {
   components: {},
   data() {
     return {
+      typeAppartenance: '',
       context: "CREATION",
       indexOfSelected: 0,
       selected: null,
@@ -215,7 +216,8 @@ export default {
   },
 
   methods: {
-    editGestionnaire(id) {
+    editGestionnaire(id, typeAppartenance) {
+      this.typeAppartenance = typeAppartenance;
       if (id != null) {
         //modification
         this.idGestionnaire = id;
@@ -225,7 +227,11 @@ export default {
         }).catch(function(error) {
           console.log(error);
         })
-        axios.get("/remocra/contact/" + id).then(response => {
+        axios.get("/remocra/contact/" + id, {
+          params: {
+            appartenance: this.typeAppartenance
+          }
+        }).then(response => {
           //La liste des roles corresponds aux ids
           this.contacts = response.data.data
           _.forEach(this.contacts, contact => {
@@ -312,7 +318,8 @@ export default {
         actif: true,
         version: 1
       }));
-      formData.append('contacts', JSON.stringify(this.contacts))
+      formData.append('contacts', JSON.stringify(this.contacts));
+      formData.append('appartenance', this.typeAppartenance);
       var url = this.idGestionnaire !== null ? '/remocra/gestionnaire/' + this.idGestionnaire : '/remocra/gestionnaire';
       axios.post(url, formData).then(response => {
         this.$emit('modalGestionnaireValues', response.data.data); //On envoie les données au parent
@@ -334,7 +341,7 @@ export default {
           _.forEach(this.contacts, contact => {
             if (contact.index === this.index) {
               contact.id = this.idContact != null ? this.idContact : null,
-                contact.appartenance = 'GESTIONNAIRE',
+                contact.appartenance = this.typeAppartenance,
                 contact.id_appartenance = '1',
                 contact.numeroVoie = this.numeroVoie,
                 contact.suffixeVoie = this.suffixeVoie,
@@ -357,7 +364,7 @@ export default {
           this.contacts.push({
             index: this.index,
             id: this.idContact != null ? this.idContact : null,
-            appartenance: 'GESTIONNAIRE',
+            appartenance: this.typeAppartenance,
             id_appartenance: '1',
             numeroVoie: this.numeroVoie,
             suffixeVoie: this.suffixeVoie,
