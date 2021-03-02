@@ -3,7 +3,7 @@
   <b-card
     style="max-width: 20rem;"
     class="mb-2"
-    id="draggable"
+    id="cardCouches"
   >
     <b-card-header class="bg-transparent">
       <p v-b-toggle.accordionCouches>Couches</p>
@@ -45,6 +45,7 @@
   <b-card
       style="max-width: 20rem;"
       class="mb-2"
+      id="cardLegende"
     >
     <b-card-header class="bg-transparent">
       <p v-b-toggle.accordionLegende>Légende</p>
@@ -180,7 +181,7 @@ export default {
   },
 
   mounted: function() {
-    //this.dragElement(document.getElementById("draggable"));
+    //this.dragElement(document.getElementById("cardCouche"));
     this.map.addLayer(this.createWorkingLayer('workingLayer'));
     this.map.addLayer(this.createWorkingLayer('selectionLayer'));
 
@@ -505,6 +506,13 @@ export default {
   flex-direction: column;
   max-height: 85%;
   overflow-y: scroll;
+}
+
+#cardCouches, #cardLegende {
+  overflow-y: scroll;
+  overflow-x: clip;
+  max-height: 500px !important;
+  overscroll-behavior: contain;
 }
 
 .card-header {
