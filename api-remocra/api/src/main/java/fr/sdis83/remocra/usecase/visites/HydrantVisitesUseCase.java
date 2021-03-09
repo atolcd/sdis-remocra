@@ -67,7 +67,7 @@ public class HydrantVisitesUseCase {
       try {
         date = simpleDateFormat.parse(dateString);
       } catch (ParseException e) {
-        throw new ResponseException(Response.Status.METHOD_NOT_ALLOWED, "La date spécifiée n'existe pas ou ne respecte pas le format YYYY-MM-DD hh:mm");
+        throw new ResponseException(Response.Status.BAD_REQUEST, "La date spécifiée n'existe pas ou ne respecte pas le format YYYY-MM-DD hh:mm");
       }
     }
 
@@ -106,7 +106,7 @@ public class HydrantVisitesUseCase {
         .fetchOneInto(Long.class);
 
       if(idTypeVisite == null) {
-        throw new ResponseException(Response.Status.METHOD_NOT_ALLOWED, "Le type de visite spécifié n'existe pas");
+        throw new ResponseException(Response.Status.BAD_REQUEST, "Le type de visite spécifié n'existe pas");
       }
 
       // Récupération de l'hydrant
@@ -127,7 +127,7 @@ public class HydrantVisitesUseCase {
         .fetchOneInto(Integer.class);
 
       if(nbVisistesMemeHeure > 0) {
-        throw new ResponseException(Response.Status.BAD_REQUEST, "Une visite est déjà présente à cette date pour cet hydrant");
+        throw new ResponseException(Response.Status.METHOD_NOT_ALLOWED, "Une visite est déjà présente à cette date pour cet hydrant");
       }
 
       /**
@@ -144,11 +144,11 @@ public class HydrantVisitesUseCase {
         .fetchOneInto(Integer.class);
 
       if(nbVisites == 0 && !form.contexte().toUpperCase().equals("CREA")) {
-        throw new ResponseException(Response.Status.BAD_REQUEST, "Le contexte de visite doit être de type CREA (première visite du PEI)");
+        throw new ResponseException(Response.Status.METHOD_NOT_ALLOWED, "Le contexte de visite doit être de type CREA (première visite du PEI)");
       } else if(nbVisites == 1 && !form.contexte().toUpperCase().equals("RECEP")) {
-        throw new ResponseException(Response.Status.BAD_REQUEST, "Le contexte de visite doit être de type RECEP (deuxième visite du PEI)");
+        throw new ResponseException(Response.Status.METHOD_NOT_ALLOWED, "Le contexte de visite doit être de type RECEP (deuxième visite du PEI)");
       } else if(nbVisites > 1 && (!form.contexte().toUpperCase().equals("NP") && !form.contexte().toUpperCase().equals("RECO") && !form.contexte().toUpperCase().equals("CTRL"))) {
-        throw new ResponseException(Response.Status.BAD_REQUEST, "Une visite de type "+form.contexte().toUpperCase()+" existe déjà. Veuillez utiliser une visite de type NP, RECO ou CTRL");
+        throw new ResponseException(Response.Status.METHOD_NOT_ALLOWED, "Une visite de type "+form.contexte().toUpperCase()+" existe déjà. Veuillez utiliser une visite de type NP, RECO ou CTRL");
       }
 
       ArrayList<String> anomaliesControlees = new ArrayList<String>();
@@ -298,7 +298,7 @@ public class HydrantVisitesUseCase {
       .fetchOneInto(HydrantVisite.class);
 
     if(visitePlusRecente != null) {
-      throw new ResponseException(Response.Status.BAD_REQUEST, "Modification de la visite impossible : une visite plus récente est présente");
+      throw new ResponseException(Response.Status.METHOD_NOT_ALLOWED, "Modification de la visite impossible : une visite plus récente est présente");
     }
 
     // Vérification des anomalies
@@ -418,7 +418,7 @@ public class HydrantVisitesUseCase {
       .fetchOneInto(HydrantVisite.class);
 
     if(visitePlusRecente != null) {
-      throw new ResponseException(Response.Status.BAD_REQUEST, "Modification de la visite impossible : une visite plus récente est présente");
+      throw new ResponseException(Response.Status.METHOD_NOT_ALLOWED, "Modification de la visite impossible : une visite plus récente est présente");
     }
 
     this.hydrantVisitesRepository.deleteVisite(visite, codeVisite);
@@ -459,7 +459,7 @@ public class HydrantVisitesUseCase {
 
     for(String s : constatees) {
       if(controlees.indexOf(s) == -1) {
-        throw new ResponseException(Response.Status.BAD_REQUEST, "Une ou plusieurs anomalies on été marquées constatées sans avoir été contrôlées");
+        throw new ResponseException(Response.Status.METHOD_NOT_ALLOWED, "Une ou plusieurs anomalies on été marquées constatées sans avoir été contrôlées");
       }
     }
   }
