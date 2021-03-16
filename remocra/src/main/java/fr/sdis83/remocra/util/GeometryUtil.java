@@ -144,7 +144,7 @@ public class GeometryUtil {
             st = cx.createStatement();
             st.execute(
                     "select coordonnee_complete from remocra_referentiel.carro_dfci where sous_type = 'CARRES INTRA 2x2 KM' and st_dwithin (geometrie, st_transform(st_geomfromtext('"
-                            + geom.toText() + "', " + geom.getSRID() + "), '2154'), 0) = true");
+                            + geom.toText() + "', " + geom.getSRID() + "), 2154), 0) = true");
             rs = st.getResultSet();
             rs.next();
             return rs.getString("coordonnee_complete");
