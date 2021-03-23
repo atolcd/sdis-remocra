@@ -580,7 +580,7 @@
 	q_appoint AS q_appoin,
 	thm.nom AS materiau,
 	CASE WHEN hp.hbe THEN 1 ELSE 0 END AS hbe,
-	h.date_modification AS date_maj,
+	COALESCE(h.date_modification, '1970-01-01'::date) AS date_maj,
 	h.geometrie 
 FROM remocra.hydrant AS h 
 	INNER JOIN remocra.hydrant_pena AS hp ON (hp.id=h.id)

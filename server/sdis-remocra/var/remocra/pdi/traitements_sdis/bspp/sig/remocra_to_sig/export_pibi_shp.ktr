@@ -542,8 +542,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>330</xloc>
-      <yloc>120</yloc>
+      <xloc>288</xloc>
+      <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -603,7 +603,7 @@
 	hp.pression_dyn_deb AS presdyde,
 	hp.pression,
 	h.observation AS observat,
-	h.date_modification AS date_maj,
+	COALESCE(h.date_modification, '1970-01-01'::date) AS date_maj,
 	h.geometrie 
 FROM remocra.hydrant AS h 
 	INNER JOIN remocra.hydrant_pibi AS hp ON (hp.id=h.id)
@@ -637,8 +637,8 @@ FROM remocra.hydrant AS h
       </output>
     </remotesteps>
     <GUI>
-      <xloc>105</xloc>
-      <yloc>120</yloc>
+      <xloc>112</xloc>
+      <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
