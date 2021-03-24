@@ -28,6 +28,8 @@ import java.util.Date;
 import java.util.List;
 
 import static fr.sdis83.remocra.db.model.Tables.HYDRANT;
+import static fr.sdis83.remocra.db.model.Tables.HYDRANT_ANOMALIES;
+import static fr.sdis83.remocra.db.model.Tables.HYDRANT_PENA;
 import static fr.sdis83.remocra.db.model.Tables.HYDRANT_PIBI;
 import static fr.sdis83.remocra.db.model.Tables.HYDRANT_VISITE;
 import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_ANOMALIE;
@@ -263,12 +265,45 @@ public class HydrantVisitesUseCase {
       visite.setAnomalies(anomaliesIds.toString());
       visite.setObservations(form.observations());
 
-      return this.hydrantVisitesRepository.addVisite(visite);
+      HydrantVisite newVisite = this.hydrantVisitesRepository.addVisite(visite);
+      this.launchTriggerAnomalies(hydrant.getId());
+      return newVisite;
 
     } catch (ParseException e) {
       throw new ResponseException(Response.Status.BAD_REQUEST, "La date spécifiée n'existe pas ou ne respecte pas le format YYYY-MM-DD hh:mm");
     } catch (IOException e) {
       throw new ResponseException(Response.Status.INTERNAL_SERVER_ERROR, "Une erreur interne est survenue lors de l'ajout de la visite");
+    }
+  }
+
+  private void launchTriggerAnomalies(Long hydrantId) throws IOException {
+    HydrantVisite visitePlusRecente = context
+      .select()
+      .from(HYDRANT_VISITE)
+      .where(HYDRANT_VISITE.HYDRANT.eq(hydrantId))
+      .orderBy(HYDRANT_VISITE.DATE.desc())
+      .limit(1)
+      .fetchOneInto(HydrantVisite.class);
+
+    // Suppression des anomalies enregistrées de cet hydrant
+    context
+      .deleteFrom(HYDRANT_ANOMALIES)
+      .where(HYDRANT_ANOMALIES.HYDRANT.eq(hydrantId))
+      .execute();
+
+    // Ajout des anomalies de la visite la plus récente
+    if(visitePlusRecente != null && visitePlusRecente.getAnomalies() != null)  {
+      ObjectMapper mapper = new ObjectMapper();
+      TypeReference<ArrayList<Long>> typeRef = new TypeReference<ArrayList<Long>>() {};
+      ArrayList<Long> anomalies = mapper.readValue(visitePlusRecente.getAnomalies(), typeRef);
+
+      for(Long anomalie : anomalies) {
+        context
+          .insertInto(HYDRANT_ANOMALIES)
+          .set(HYDRANT_ANOMALIES.HYDRANT, hydrantId)
+          .set(HYDRANT_ANOMALIES.ANOMALIES, anomalie)
+          .execute();
+      }
     }
   }
 
@@ -380,6 +415,11 @@ public class HydrantVisitesUseCase {
     visite.setObservations(form.observations());
 
     this.hydrantVisitesRepository.editVisite(visite);
+    try {
+      this.launchTriggerAnomalies(visite.getHydrant());
+    } catch (IOException e) {
+      throw new ResponseException(Response.Status.INTERNAL_SERVER_ERROR, "Un problème est survenu lors du calcul de l'indisponibilité du PEI");
+    }
   }
 
   @Transactional
@@ -422,6 +462,11 @@ public class HydrantVisitesUseCase {
     }
 
     this.hydrantVisitesRepository.deleteVisite(visite, codeVisite);
+    try {
+      this.launchTriggerAnomalies(visite.getHydrant());
+    } catch (IOException e) {
+      throw new ResponseException(Response.Status.INTERNAL_SERVER_ERROR, "Un problème est survenu lors du calcul de l'indisponibilité du PEI");
+    }
   }
 
   /**
