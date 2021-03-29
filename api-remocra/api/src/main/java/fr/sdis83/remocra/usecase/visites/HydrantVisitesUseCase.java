@@ -142,7 +142,7 @@ public class HydrantVisitesUseCase {
       Integer nbVisites = context
         .selectCount()
         .from(HYDRANT_VISITE)
-        .where(HYDRANT_VISITE.HYDRANT.eq(hydrant.getId()))
+        .where(HYDRANT_VISITE.HYDRANT.eq(hydrant.getId()).and(HYDRANT_VISITE.DATE.lessThan(dateVisite.toInstant())))
         .fetchOneInto(Integer.class);
 
       if(nbVisites == 0 && !form.contexte().toUpperCase().equals("CREA")) {
