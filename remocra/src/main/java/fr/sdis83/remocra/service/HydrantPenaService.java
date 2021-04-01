@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.sql.DataSource;
 
 import fr.sdis83.remocra.domain.remocra.HydrantVisite;
@@ -56,6 +57,12 @@ public class HydrantPenaService extends AbstractHydrantService<HydrantPena> {
 
     @Transactional
     public boolean delete(Long id) throws Exception {
+        // On supprime les aspirations associés
+        Query query = entityManager
+                .createNativeQuery(
+                        ("DELETE FROM remocra.hydrant_aspiration WHERE pena = :id"))
+                .setParameter("id", id);
+        query.executeUpdate();
         List<HydrantVisite> listeVisites = HydrantVisite.findHydrantVisitesByHydrant(id);
         for(HydrantVisite visite : listeVisites) {
             visite.remove();
