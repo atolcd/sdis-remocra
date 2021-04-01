@@ -84,8 +84,8 @@ Ext.define('Sdis.Remocra.model.Utilisateur', {
     } ],
    
     validations: [
-        {type: 'length', field: 'identifiant', min: 3},
-        {type: 'length', field: 'nom', min: 3},
+        {type: 'length', field: 'identifiant', min: 2},
+        {type: 'length', field: 'nom', min: 2},
         {type: 'length', field: 'email', min: 5},
         {type: 'format', field: 'email', matcher: /^(\w+)([\-+.][\w]+)*@(\w[\-\w]*\.){1,5}([A-Za-z]){2,6}$/},
         {type: 'presence', field: 'profilUtilisateurId'},
