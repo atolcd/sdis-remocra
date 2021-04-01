@@ -470,6 +470,8 @@ export default {
             var file = this.files[i]
             formData.append(file.id, file.file)
           }
+          //On ajoute Systématiquement la reference
+          formData.append("REFERENCE", this.reference)
           this.handleSubmitParams(formData)
         }
       }
