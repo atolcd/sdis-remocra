@@ -222,14 +222,14 @@ Ext.define('Sdis.Remocra.features.admin.typereference.UtilisateurGrid', {
             var sameOrganisme = null;
 
             // Aucun droit de modification (utilisateur organisme ou global) => pas de modification possible
-            if(!(Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ALL_C') || Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_C'))) {
+            if(!(Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ALL_C') || Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_C'))) {
                 return false;
             }
 
             // Droit de modification sur les utilisateurs de son organisme mais pas sur les autres => on check l'organisme de l'utilisateur cible
             else if(!Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ALL_C') && Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ORGANISME_UTILISATEUR_C')) {
                 Sdis.Remocra.network.CurrentUtilisateurStore.getCurrentUtilisateur(this, function(user) {
-                    if(user.data.organismeId != e.record.data.organismeId) {
+                    if(e.record.phantom === false && user.data.organismeId != e.record.data.organismeId) {
                         sameOrganisme = false;
                     }
                 });
