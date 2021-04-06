@@ -131,6 +131,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
                  queryMode: 'remote',
                  triggerAction: "all",
                  typeAhead: true,
+                 minChars: 3,
                  store: {
                      storeId: 'communeIndispo',
                      model: 'Sdis.Remocra.model.Commune',
