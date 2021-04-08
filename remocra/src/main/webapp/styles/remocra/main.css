@@ -562,6 +562,7 @@ strong {
 .olControlAttribution {
 	bottom: 3px;
 	left: 5px;
+	z-index: 999 !important;
 }
 .olControlAttribution a {
 	float:left;
@@ -578,6 +579,7 @@ strong {
 	opacity: 0.7;
 	filter: alpha(opacity=70);
 	right: 5px;
+	z-index: 999 !important;
 }
 .olControlScaleLine {
 	bottom: 5px;
