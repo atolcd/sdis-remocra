@@ -24,7 +24,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Reseau implements Serializable {
 
-	private static final long serialVersionUID = 152575622;
+	private static final long serialVersionUID = -1872437506;
 
 	private Integer  id;
 	private Geometry geometrie;
@@ -33,8 +33,8 @@ public class Reseau implements Serializable {
 	private Integer  peiTroncon;
 	private Boolean  traversable;
 	private Boolean  sensUnique;
-	private Integer  niveau;
 	private Long     etude;
+	private Integer  niveau;
 
 	public Reseau() {}
 
@@ -46,8 +46,8 @@ public class Reseau implements Serializable {
 		this.peiTroncon = value.peiTroncon;
 		this.traversable = value.traversable;
 		this.sensUnique = value.sensUnique;
-		this.niveau = value.niveau;
 		this.etude = value.etude;
+		this.niveau = value.niveau;
 	}
 
 	public Reseau(
@@ -58,8 +58,8 @@ public class Reseau implements Serializable {
 		Integer  peiTroncon,
 		Boolean  traversable,
 		Boolean  sensUnique,
-		Integer  niveau,
-		Long     etude
+		Long     etude,
+		Integer  niveau
 	) {
 		this.id = id;
 		this.geometrie = geometrie;
@@ -68,8 +68,8 @@ public class Reseau implements Serializable {
 		this.peiTroncon = peiTroncon;
 		this.traversable = traversable;
 		this.sensUnique = sensUnique;
-		this.niveau = niveau;
 		this.etude = etude;
+		this.niveau = niveau;
 	}
 
 	public Integer getId() {
@@ -135,21 +135,21 @@ public class Reseau implements Serializable {
 		return this;
 	}
 
-	public Integer getNiveau() {
-		return this.niveau;
-	}
-
-	public Reseau setNiveau(Integer niveau) {
-		this.niveau = niveau;
-		return this;
-	}
-
 	public Long getEtude() {
 		return this.etude;
 	}
 
 	public Reseau setEtude(Long etude) {
 		this.etude = etude;
+		return this;
+	}
+
+	public Integer getNiveau() {
+		return this.niveau;
+	}
+
+	public Reseau setNiveau(Integer niveau) {
+		this.niveau = niveau;
 		return this;
 	}
 }

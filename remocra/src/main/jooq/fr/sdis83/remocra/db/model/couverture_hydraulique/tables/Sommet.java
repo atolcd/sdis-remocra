@@ -39,7 +39,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Sommet extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 1472537799;
+	private static final long serialVersionUID = -783552288;
 
 	/**
 	 * The reference instance of <code>couverture_hydraulique.sommet</code>
@@ -112,7 +112,7 @@ public class Sommet extends TableImpl<Record> {
 	 */
 	@Override
 	public List<UniqueKey<Record>> getKeys() {
-		return Arrays.<UniqueKey<Record>>asList(Keys.SOMMET_PKEY, Keys.SOMMET_GEOMETRIE_KEY);
+		return Arrays.<UniqueKey<Record>>asList(Keys.SOMMET_PKEY);
 	}
 
 	/**

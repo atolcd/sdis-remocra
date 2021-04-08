@@ -43,7 +43,6 @@ import fr.sdis83.remocra.db.model.remocra.tables.Document;
 import fr.sdis83.remocra.db.model.remocra.tables.Droit;
 import fr.sdis83.remocra.db.model.remocra.tables.Email;
 import fr.sdis83.remocra.db.model.remocra.tables.EmailModele;
-import fr.sdis83.remocra.db.model.remocra.tables.EmailSave;
 import fr.sdis83.remocra.db.model.remocra.tables.Etude;
 import fr.sdis83.remocra.db.model.remocra.tables.EtudeCommunes;
 import fr.sdis83.remocra.db.model.remocra.tables.EtudeDocuments;
@@ -229,7 +228,6 @@ public class Keys {
 	public static final Identity<Record, Long> IDENTITY_DROIT = Identities0.IDENTITY_DROIT;
 	public static final Identity<Record, Long> IDENTITY_EMAIL = Identities0.IDENTITY_EMAIL;
 	public static final Identity<Record, Long> IDENTITY_EMAIL_MODELE = Identities0.IDENTITY_EMAIL_MODELE;
-	public static final Identity<Record, Long> IDENTITY_EMAIL_SAVE = Identities0.IDENTITY_EMAIL_SAVE;
 	public static final Identity<Record, Long> IDENTITY_ETUDE = Identities0.IDENTITY_ETUDE;
 	public static final Identity<Record, Long> IDENTITY_ETUDE_COMMUNES = Identities0.IDENTITY_ETUDE_COMMUNES;
 	public static final Identity<Record, Long> IDENTITY_ETUDE_DOCUMENTS = Identities0.IDENTITY_ETUDE_DOCUMENTS;
@@ -641,6 +639,7 @@ public class Keys {
 	public static final ForeignKey<Record, Record> HYDRANT__FK_SITE = ForeignKeys0.HYDRANT__FK_SITE;
 	public static final ForeignKey<Record, Record> HYDRANT__FK_AUTORITE_DECI = ForeignKeys0.HYDRANT__FK_AUTORITE_DECI;
 	public static final ForeignKey<Record, Record> HYDRANT__FK_SP_DECI = ForeignKeys0.HYDRANT__FK_SP_DECI;
+	public static final ForeignKey<Record, Record> HYDRANT__FK_MAINTENANCE_DECI_ORGANISME = ForeignKeys0.HYDRANT__FK_MAINTENANCE_DECI_ORGANISME;
 	public static final ForeignKey<Record, Record> HYDRANT_ANOMALIES__FK5E56B38A50004FC = ForeignKeys0.HYDRANT_ANOMALIES__FK5E56B38A50004FC;
 	public static final ForeignKey<Record, Record> HYDRANT_ANOMALIES__FK5E56B38A1C51B70D = ForeignKeys0.HYDRANT_ANOMALIES__FK5E56B38A1C51B70D;
 	public static final ForeignKey<Record, Record> HYDRANT_ASPIRATION__FK_TYPE_ASPIRATION = ForeignKeys0.HYDRANT_ASPIRATION__FK_TYPE_ASPIRATION;
@@ -810,7 +809,6 @@ public class Keys {
 		public static Identity<Record, Long> IDENTITY_DROIT = createIdentity(Droit.DROIT, Droit.DROIT.ID);
 		public static Identity<Record, Long> IDENTITY_EMAIL = createIdentity(Email.EMAIL, Email.EMAIL.ID);
 		public static Identity<Record, Long> IDENTITY_EMAIL_MODELE = createIdentity(EmailModele.EMAIL_MODELE, EmailModele.EMAIL_MODELE.ID);
-		public static Identity<Record, Long> IDENTITY_EMAIL_SAVE = createIdentity(EmailSave.EMAIL_SAVE, EmailSave.EMAIL_SAVE.ID);
 		public static Identity<Record, Long> IDENTITY_ETUDE = createIdentity(Etude.ETUDE, Etude.ETUDE.ID);
 		public static Identity<Record, Long> IDENTITY_ETUDE_COMMUNES = createIdentity(EtudeCommunes.ETUDE_COMMUNES, EtudeCommunes.ETUDE_COMMUNES.ID);
 		public static Identity<Record, Long> IDENTITY_ETUDE_DOCUMENTS = createIdentity(EtudeDocuments.ETUDE_DOCUMENTS, EtudeDocuments.ETUDE_DOCUMENTS.ID);
@@ -1218,6 +1216,7 @@ public class Keys {
 		public static final ForeignKey<Record, Record> HYDRANT__FK_SITE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.SITE_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.SITE);
 		public static final ForeignKey<Record, Record> HYDRANT__FK_AUTORITE_DECI = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.AUTORITE_DECI);
 		public static final ForeignKey<Record, Record> HYDRANT__FK_SP_DECI = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.SP_DECI);
+		public static final ForeignKey<Record, Record> HYDRANT__FK_MAINTENANCE_DECI_ORGANISME = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.MAINTENANCE_DECI);
 		public static final ForeignKey<Record, Record> HYDRANT_ANOMALIES__FK5E56B38A50004FC = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.HYDRANT_PKEY, HydrantAnomalies.HYDRANT_ANOMALIES, HydrantAnomalies.HYDRANT_ANOMALIES.HYDRANT);
 		public static final ForeignKey<Record, Record> HYDRANT_ANOMALIES__FK5E56B38A1C51B70D = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_ANOMALIE_PKEY, HydrantAnomalies.HYDRANT_ANOMALIES, HydrantAnomalies.HYDRANT_ANOMALIES.ANOMALIES);
 		public static final ForeignKey<Record, Record> HYDRANT_ASPIRATION__FK_TYPE_ASPIRATION = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_ASPIRATION_PKEY, HydrantAspiration.HYDRANT_ASPIRATION, HydrantAspiration.HYDRANT_ASPIRATION.TYPE_ASPIRATION);

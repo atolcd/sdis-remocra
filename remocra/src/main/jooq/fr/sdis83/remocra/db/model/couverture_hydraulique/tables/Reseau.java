@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Reseau extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 1785233407;
+	private static final long serialVersionUID = 1407711939;
 
 	/**
 	 * The reference instance of <code>couverture_hydraulique.reseau</code>
@@ -89,14 +89,14 @@ public class Reseau extends TableImpl<Record> {
 	public final TableField<Record, Boolean> SENS_UNIQUE = createField("sens_unique", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false).defaulted(true), this, "Indique si la voie est à sens unique. Le sens est celui de la digitalisation de la géométrie");
 
 	/**
-	 * The column <code>couverture_hydraulique.reseau.niveau</code>. Niveau de la voie (ex: -1 pour un tunnel, 1 pour un pont, etc) si celle-ci est au-dessus ou en dessous du réseau routier
-	 */
-	public final TableField<Record, Integer> NIVEAU = createField("niveau", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaulted(true), this, "Niveau de la voie (ex: -1 pour un tunnel, 1 pour un pont, etc) si celle-ci est au-dessus ou en dessous du réseau routier");
-
-	/**
 	 * The column <code>couverture_hydraulique.reseau.etude</code>.
 	 */
 	public final TableField<Record, Long> ETUDE = createField("etude", org.jooq.impl.SQLDataType.BIGINT, this, "");
+
+	/**
+	 * The column <code>couverture_hydraulique.reseau.niveau</code>. Niveau de la voie (ex: -1 pour un tunnel, 1 pour un pont, etc) si celle-ci est au-dessus ou en dessous du réseau routier
+	 */
+	public final TableField<Record, Integer> NIVEAU = createField("niveau", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaulted(true), this, "Niveau de la voie (ex: -1 pour un tunnel, 1 pour un pont, etc) si celle-ci est au-dessus ou en dessous du réseau routier");
 
 	/**
 	 * Create a <code>couverture_hydraulique.reseau</code> table reference

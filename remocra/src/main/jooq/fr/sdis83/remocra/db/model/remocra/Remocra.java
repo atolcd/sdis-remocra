@@ -44,7 +44,6 @@ import fr.sdis83.remocra.db.model.remocra.tables.Document;
 import fr.sdis83.remocra.db.model.remocra.tables.Droit;
 import fr.sdis83.remocra.db.model.remocra.tables.Email;
 import fr.sdis83.remocra.db.model.remocra.tables.EmailModele;
-import fr.sdis83.remocra.db.model.remocra.tables.EmailSave;
 import fr.sdis83.remocra.db.model.remocra.tables.Etude;
 import fr.sdis83.remocra.db.model.remocra.tables.EtudeCommunes;
 import fr.sdis83.remocra.db.model.remocra.tables.EtudeDocuments;
@@ -172,6 +171,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.Utilisateur;
 import fr.sdis83.remocra.db.model.remocra.tables.Voie;
 import fr.sdis83.remocra.db.model.remocra.tables.ZoneCompetence;
 import fr.sdis83.remocra.db.model.remocra.tables.ZoneCompetenceCommune;
+import fr.sdis83.remocra.db.model.remocra.tables.ZoneCompetenceOrganisme;
 import fr.sdis83.remocra.db.model.remocra.tables.ZoneSpeciale;
 
 import java.util.ArrayList;
@@ -198,7 +198,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Remocra extends SchemaImpl {
 
-	private static final long serialVersionUID = 649151613;
+	private static final long serialVersionUID = 582849581;
 
 	/**
 	 * The reference instance of <code>remocra</code>
@@ -251,7 +251,6 @@ public class Remocra extends SchemaImpl {
 			Sequences.DROIT_ID_SEQ,
 			Sequences.EMAIL_ID_SEQ,
 			Sequences.EMAIL_MODELE_ID_SEQ,
-			Sequences.EMAIL_SAVE_ID_SEQ,
 			Sequences.ETUDE_COMMUNES_ID_SEQ,
 			Sequences.ETUDE_DOCUMENTS_ID_SEQ,
 			Sequences.ETUDE_HYDRANT_PROJET_ID_SEQ,
@@ -415,7 +414,6 @@ public class Remocra extends SchemaImpl {
 			Droit.DROIT,
 			Email.EMAIL,
 			EmailModele.EMAIL_MODELE,
-			EmailSave.EMAIL_SAVE,
 			Etude.ETUDE,
 			EtudeCommunes.ETUDE_COMMUNES,
 			EtudeDocuments.ETUDE_DOCUMENTS,
@@ -543,6 +541,7 @@ public class Remocra extends SchemaImpl {
 			Voie.VOIE,
 			ZoneCompetence.ZONE_COMPETENCE,
 			ZoneCompetenceCommune.ZONE_COMPETENCE_COMMUNE,
+			ZoneCompetenceOrganisme.ZONE_COMPETENCE_ORGANISME,
 			ZoneSpeciale.ZONE_SPECIALE);
 	}
 }

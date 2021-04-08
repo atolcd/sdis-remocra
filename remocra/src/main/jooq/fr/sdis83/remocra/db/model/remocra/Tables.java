@@ -43,7 +43,6 @@ import fr.sdis83.remocra.db.model.remocra.tables.Document;
 import fr.sdis83.remocra.db.model.remocra.tables.Droit;
 import fr.sdis83.remocra.db.model.remocra.tables.Email;
 import fr.sdis83.remocra.db.model.remocra.tables.EmailModele;
-import fr.sdis83.remocra.db.model.remocra.tables.EmailSave;
 import fr.sdis83.remocra.db.model.remocra.tables.Etude;
 import fr.sdis83.remocra.db.model.remocra.tables.EtudeCommunes;
 import fr.sdis83.remocra.db.model.remocra.tables.EtudeDocuments;
@@ -171,6 +170,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.Utilisateur;
 import fr.sdis83.remocra.db.model.remocra.tables.Voie;
 import fr.sdis83.remocra.db.model.remocra.tables.ZoneCompetence;
 import fr.sdis83.remocra.db.model.remocra.tables.ZoneCompetenceCommune;
+import fr.sdis83.remocra.db.model.remocra.tables.ZoneCompetenceOrganisme;
 import fr.sdis83.remocra.db.model.remocra.tables.ZoneSpeciale;
 
 import javax.annotation.Generated;
@@ -383,11 +383,6 @@ public class Tables {
 	 * The table remocra.email_modele
 	 */
 	public static final EmailModele EMAIL_MODELE = fr.sdis83.remocra.db.model.remocra.tables.EmailModele.EMAIL_MODELE;
-
-	/**
-	 * The table remocra.email_save
-	 */
-	public static final EmailSave EMAIL_SAVE = fr.sdis83.remocra.db.model.remocra.tables.EmailSave.EMAIL_SAVE;
 
 	/**
 	 * The table remocra.etude
@@ -1023,6 +1018,11 @@ public class Tables {
 	 * The table remocra.zone_competence_commune
 	 */
 	public static final ZoneCompetenceCommune ZONE_COMPETENCE_COMMUNE = fr.sdis83.remocra.db.model.remocra.tables.ZoneCompetenceCommune.ZONE_COMPETENCE_COMMUNE;
+
+	/**
+	 * Vue des zones de compétence des organismes
+	 */
+	public static final ZoneCompetenceOrganisme ZONE_COMPETENCE_ORGANISME = fr.sdis83.remocra.db.model.remocra.tables.ZoneCompetenceOrganisme.ZONE_COMPETENCE_ORGANISME;
 
 	/**
 	 * The table remocra.zone_speciale

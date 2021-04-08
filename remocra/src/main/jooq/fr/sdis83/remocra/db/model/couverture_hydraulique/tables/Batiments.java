@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Batiments extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 1551832260;
+	private static final long serialVersionUID = -265075654;
 
 	/**
 	 * The reference instance of <code>couverture_hydraulique.batiments</code>
@@ -103,7 +103,7 @@ public class Batiments extends TableImpl<Record> {
 	 */
 	@Override
 	public UniqueKey<Record> getPrimaryKey() {
-		return Keys.BATIMENTS_PKEY;
+		return Keys.BATIMENT_PKEY;
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class Batiments extends TableImpl<Record> {
 	 */
 	@Override
 	public List<UniqueKey<Record>> getKeys() {
-		return Arrays.<UniqueKey<Record>>asList(Keys.BATIMENTS_PKEY);
+		return Arrays.<UniqueKey<Record>>asList(Keys.BATIMENT_PKEY);
 	}
 
 	/**

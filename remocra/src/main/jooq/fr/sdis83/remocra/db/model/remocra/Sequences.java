@@ -176,11 +176,6 @@ public class Sequences {
 	public static final Sequence<Long> EMAIL_MODELE_ID_SEQ = new SequenceImpl<Long>("email_modele_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
-	 * The sequence <code>remocra.email_save_id_seq</code>
-	 */
-	public static final Sequence<Long> EMAIL_SAVE_ID_SEQ = new SequenceImpl<Long>("email_save_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
-
-	/**
 	 * The sequence <code>remocra.etude_communes_id_seq</code>
 	 */
 	public static final Sequence<Long> ETUDE_COMMUNES_ID_SEQ = new SequenceImpl<Long>("etude_communes_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
