@@ -3,6 +3,7 @@ package fr.sdis83.remocra.web;
 import java.util.List;
 import java.util.Map;
 
+import fr.sdis83.remocra.repository.HydrantRepository;
 import fr.sdis83.remocra.web.model.HistoriqueModel;
 import org.hibernate.exception.ConstraintViolationException;
 import org.jboss.logging.Logger;
@@ -42,6 +43,9 @@ public class HydrantPibiController {
 
     @Autowired
     private HydrantPibiService hydrantPibiService;
+
+    @Autowired
+    private HydrantRepository hydrantRepository;
 
     protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
         return serializer
@@ -164,6 +168,32 @@ public class HydrantPibiController {
             return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
         }
         return new SuccessErrorExtSerializer(false, "Hydrant Pena inexistant", HttpStatus.NOT_FOUND).serialize();
+    }
+
+    @RequestMapping(value = "/createHydrant", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
+    @PreAuthorize("hasRight('HYDRANTS_C') or hasRight('HYDRANTS_RECONNAISSANCE_C') or hasRight('HYDRANTS_CONTROLE_C')")
+    public ResponseEntity<java.lang.String> createHydrantFiche(MultipartHttpServletRequest request) {
+      String json = request.getParameter("hydrant");
+      Map<String, MultipartFile> files = request.getFileMap();
+      try {
+        this.hydrantRepository.createHydrantFromFiche(json, "PIBI", files);
+        return new SuccessErrorExtSerializer(true, "PIBI créé avec succès").serialize();
+      } catch (Exception e) {
+        return new SuccessErrorExtSerializer(false, e.getMessage(), HttpStatus.BAD_REQUEST).serialize();
+      }
+    }
+
+    @RequestMapping(value = "/updateHydrant/{id}", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
+    @PreAuthorize("hasRight('HYDRANTS_C') or hasRight('HYDRANTS_RECONNAISSANCE_C') or hasRight('HYDRANTS_CONTROLE_C')")
+    public ResponseEntity<java.lang.String> updateHydrantFiche(final @PathVariable Long id, MultipartHttpServletRequest request) {
+      String json = request.getParameter("hydrant");
+      Map<String, MultipartFile> files = request.getFileMap();
+      try {
+        this.hydrantRepository.updateHydrantFromFiche(id, json, "PIBI", files);
+        return new SuccessErrorExtSerializer(true, "PIBI mis à jour avec succès").serialize();
+      } catch (Exception e) {
+        return new SuccessErrorExtSerializer(false, e.getMessage(), HttpStatus.BAD_REQUEST).serialize();
+      }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")

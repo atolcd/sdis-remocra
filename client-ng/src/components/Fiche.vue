@@ -622,7 +622,7 @@ export default {
           url = '/remocra/hydrantspena'
         }
       }
-      url = url + (this.hydrant.id == null ? '' : '/' + this.hydrant.id);
+      url = url + (this.hydrant.id == null ? '/createHydrant' : '/updateHydrant/' + this.hydrant.id);
       if (this.hydrant.id) { // PEI déjà en base -> on attend le retour de la requête faite au serveur pour éviter les doublons de numéro de PEI
         this.checkFormValidity().then((response) => {
           if (response) {
@@ -679,61 +679,39 @@ export default {
         let file = fichiers[i].data;
         formData.append('files[' + i + ']', file)
       }
-      var self = this
-      axios.post('/remocra/hydrants/getUpdatedCoordonnees', this.$refs.ficheLocalisation.getLocalisationData()).then(function(response) { // Une fois la maj faite, on met à jour le reste des données
-        data["geometrie"] = response.data.message;
-        //On ajoute en plus les données de débit/pression issues des visites (si éligibles)
-        data = _.merge(data, self.$refs.ficheVisite.updateDataFromLastVisite());
-        formData.append("hydrant", JSON.stringify(data));
-      }).then(function() { // On met à jour le PEI
-        axios.post(url, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }).then(function(response) { // Une fois le PEI mis à jour, on peut récupérer son id et mettre à jour les aspirations
-          var id = response.data.data.id;
-          let numero = response.data.data.numero;
-          var requests = []
-          if (id !== null) {
-            if (self.$refs.fichePena) {
-              var aspirationData = self.$refs.fichePena.prepareAspirationData(id);
-              requests.push(axios.post('/remocra/hydrantaspiration/updatemany', JSON.parse(aspirationData.aspirations)).catch(function(error) {
-                console.error('postEvent', error)
-              }))
-              requests.push(axios.delete('/remocra/hydrantaspiration/', {
-                data: aspirationData.aspirationsDel
-              }).catch(function(error) {
-                console.error('postEvent', error)
-              }))
-            }
-            // Simultanément, MAj des visites
-            var visiteData = self.$refs.ficheVisite.prepareVisitesData(id);
-            requests.push(axios.post('/remocra/hydrantvisite/updatemany', JSON.parse(visiteData.visites)).catch(function(error) {
-              console.error('postEvent', error)
-            }))
-            requests.push(axios.delete('/remocra/hydrantvisite', {
-              data: visiteData.visitesDel
-            }).catch(function(error) {
-              console.error('postEvent', error)
-            }))
-          }
-          axios.all(requests).then(function() {
-            loadProgressBar({
-              parent: "head",
-              showSpinner: false
-            });
-            self.$root.$options.bus.$emit('pei_modified', {
-              id: id,
-              numero: numero
-            })
-             if (self.$refs.modalFiche) {
-                self.$modal.hide('modalFiche')
-           }});
-        }).catch(function(error) {
-          console.error('postEvent', error)
-        })
-      }).catch(function(error) {
-        console.log(error);
+
+      // Ajout des données de géométrie
+      data["geometrie"] = JSON.stringify(this.$refs.ficheLocalisation.getLocalisationData());
+
+      // Ajout des données des aspirations
+      if(this.$refs.fichePena) {
+        data["aspirations"] = JSON.stringify(this.$refs.fichePena.prepareAspirationData());
+      }
+
+      // Ajout des données des visites
+      data["visites"] = JSON.stringify(this.$refs.ficheVisite.prepareVisitesData());
+
+      formData.append("hydrant", JSON.stringify(data));
+
+      axios.post(url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(() => {
+        this.$root.$options.bus.$emit('pei_modified')
+        if (this.$refs.modalFiche) {
+          this.$modal.hide('modalFiche')
+        }
+
+      }).catch(error => {
+        if(error && !error.success) {
+          this.$notify({
+            group: 'remocra',
+            title: 'Saisie invalide',
+            type: 'error',
+            text: error.response.data.message
+          })
+        }
       });
     },
     close() {

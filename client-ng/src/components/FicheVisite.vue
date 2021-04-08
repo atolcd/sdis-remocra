@@ -696,99 +696,20 @@ export default {
       }
       return this.etats;
     },
-    /**
-     * Renvoie les données d'anomalies, de débit et pression afin d'être passé en paramètre de la requête de mise à jour du PEI
-     * Fonction appelée par le composant parent lors de la récupération des données du PEI
-     */
-    updateDataFromLastVisite() {
-      // On réunit les deux champs date et time de chaque visite en une seule donnée formattée correctement pour le serveur
-      _.forEach(this.listeVisites, (visite, index) => {
-        visite.date = this.formattedDate[index] + " " + this.formattedTime[index] + ":00";
-      }, this);
-      var data = {};
-      this.listeVisites.sort(function(a, b) {
-        return new Date(b.date) - new Date(a.date);
-      });
 
-      var dates = {
-        CREA : null,
-        CTRL : null,
-        RECEP : null,
-        RECO : null
-      }
-
-      /**
-       * On parcourt toutes les visites, de la plus récente à la plus ancienne afin de trouver la première qui ne soit pas de type "non programmée"
-       * Ses anomalies sont les anomalies du PEI => on fait remonter ces données dans les data envoyées pour la mise à jour du PEI
-       */
-      if (this.listeVisites.length > 0 && this.anomaliesRequeteResult) {
-        data["anomalies"] = (this.listeVisites[0].anomalies) ? this.anomaliesRequeteResult.filter(item => this.listeVisites[0].anomalies.indexOf(item.id) != -1) : null;
-      }
-      //Gestion de l'indisponibilité temporaire
-      if (_.findIndex(_.flattenDeep(this.hydrant.anomalies), ['code', 'INDISPONIBILITE_TEMP']) != -1) {
-        data["anomalies"] = _.concat(data["anomalies"], this.hydrant.anomalies.filter(item => item.code == 'INDISPONIBILITE_TEMP'));
-      }
-      /** On recherche la visite de type contrôle technique périodique débit pression la plus récente
-       * Ce sont ses valeurs de débit et pression que prendront les attributs éponymes du PEI
-       * Si il n'y a pas ce type de visite, on prend les valeurs de débit pression de la visite de ROI (si elle existe et que les données sont renseignées)
-       * Si il n'y a pas de visite de réception, on regarde les valeurs de la visite de réception (suivant les mêmes critères)
-       *
-       * Si aucune visite n'est trouvée, les valeurs sont nulles
-       */
-      if (this.hydrant.code == "PIBI" && this.listeVisites.length > 0) {
-        var found = false;
-        for (var i = 0; i < this.listeVisites.length && !found; i++) {
-          if ((this.typesVisites[this.listeVisites[i].type].code === "CTRL" || this.typesVisites[this.listeVisites[i].type].code === "RECEP" || this.typesVisites[this.listeVisites[i].type].code === "CREA") && this.listeVisites[i]
-            .ctrl_debit_pression) {
-            var item = this.listeVisites[i];
-            data["debit"] = typeof(Number(item.debit)) === 'number' ? item.debit : null;
-            data["debitMax"] = typeof(Number(item.debitMax)) === 'number' ? item.debitMax : null;
-            data["pression"] = typeof(Number(item.pression)) === 'number' ? item.pression : null;
-            data["pressionDyn"] = typeof(Number(item.pressionDyn)) === 'number' ? item.pressionDyn : null;
-            data["pressionDynDeb"] = typeof(Number(item.pressionDynDeb)) === 'number' ? item.pressionDynDeb : null;
-            found = true;
-          }
-        }
-        if (!found) {
-          data["debit"] = null;
-          data["debitMax"] = null;
-          data["pression"] = null;
-          data["pressionDyn"] = null;
-          data["pressionDynDeb"] = null;
-        }
-      }
-      if (this.listeVisites && this.listeVisites.length > 0) {
-        var visite = this.listeVisites[0];
-        data["agent1"] = visite.agent1;
-        data["agent2"] = visite.agent2;
-        // Mise à jour des dates de l'hydrant
-        _.forEach(this.listeVisites, visite => {
-          var dateCode = this.typesVisites[visite.type].code;
-          var dateMoment = moment(new Date(visite.date), 'DD/MM/YYYY[T]HH:mm:ss[Z]');
-          if(dates[dateCode] == null || dateMoment.diff(dates[dateCode]) > 0) {
-            dates[dateCode] = dateMoment;
-          }
-        });
-      }
-      data["dateCrea"] = (dates.CREA) ? dates.CREA.format('YYYY-MM-DDTHH:mm:ss') : null;
-      data["dateRecep"] = (dates.RECEP) ? dates.RECEP.format('YYYY-MM-DDTHH:mm:ss') : null;
-      data["dateReco"] = (dates.RECO) ? dates.RECO.format('YYYY-MM-DDTHH:mm:ss') : null;
-      data["dateContr"] = (dates.CTRL) ? dates.CTRL.format('YYYY-MM-DDTHH:mm:ss') : null;
-      return data;
-    },
     /**
      * Envoi les informations de mise à jour des visites au serveur
      */
-    prepareVisitesData(id) {
-      _.forEach(this.listeVisites, function(item) {
-        item.anomalies = JSON.stringify(item.anomalies); // Mise en forme des données d'anomalies pour le passage dans la BDD
-        item.hydrant = id;
-      });
+    prepareVisitesData() {
+      var newVisite = null;
+      if(this.createVisiteDisabled) {
+        newVisite = this.listeVisites[0];
+        newVisite.date = this.formattedDate[0] + " " + this.formattedTime[0] + ":00";
+      }
+
       return {
-        'visites': JSON.stringify(this.listeVisites, function(key, value) {
-          return value === "" ? null : value
-        }),
-        'visitesDel': this.visitesASupprimer
+        'addVisite': JSON.stringify(newVisite),
+        'deleteVisite' : this.visitesASupprimer
       }
     }
   }

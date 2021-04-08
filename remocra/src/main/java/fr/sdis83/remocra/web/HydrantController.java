@@ -280,6 +280,13 @@ public class HydrantController {
         }
     }
 
+    /**
+     * @deprecated
+     * Transforme des coordonnées JSON (latitude/longitude) en géométrie de type Point
+     * Actuellement utilisé uniquement par la fiche PEI, a retirer une fois toute la fiche sera passée en JOOQ
+     * @param json Les coordonnées du PEI
+     * @return Géoémtrie de type Point
+     */
     @RequestMapping(value = "/getUpdatedCoordonnees", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<java.lang.String> updateCoordonnees(final @RequestBody String json){
         try {

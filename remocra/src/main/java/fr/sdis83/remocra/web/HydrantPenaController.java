@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import fr.sdis83.remocra.repository.HydrantRepository;
 import org.hibernate.exception.ConstraintViolationException;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,9 @@ public class HydrantPenaController {
 
     @Autowired
     private HydrantPibiService hydrantPibiService;
+
+    @Autowired
+    private HydrantRepository hydrantRepository;
 
     @Autowired
     DataSource dataSource;
@@ -96,6 +100,32 @@ public class HydrantPenaController {
             e.printStackTrace();
             return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
         }
+    }
+
+    @RequestMapping(value = "/createHydrant", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
+    @PreAuthorize("hasRight('HYDRANTS_C') or hasRight('HYDRANTS_RECONNAISSANCE_C') or hasRight('HYDRANTS_CONTROLE_C')")
+    public ResponseEntity<java.lang.String> createHydrantFiche(MultipartHttpServletRequest request) {
+      String json = request.getParameter("hydrant");
+      Map<String, MultipartFile> files = request.getFileMap();
+      try {
+        this.hydrantRepository.createHydrantFromFiche(json, "PENA", files);
+        return new SuccessErrorExtSerializer(true, "PENA créé avec succès").serialize();
+      } catch (Exception e) {
+        return new SuccessErrorExtSerializer(false, e.getMessage(), HttpStatus.BAD_REQUEST).serialize();
+      }
+    }
+
+    @RequestMapping(value = "/updateHydrant/{id}", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
+    @PreAuthorize("hasRight('HYDRANTS_C') or hasRight('HYDRANTS_RECONNAISSANCE_C') or hasRight('HYDRANTS_CONTROLE_C')")
+    public ResponseEntity<java.lang.String> updateHydrantFiche(final @PathVariable Long id, MultipartHttpServletRequest request) {
+      String json = request.getParameter("hydrant");
+      Map<String, MultipartFile> files = request.getFileMap();
+      try {
+        this.hydrantRepository.updateHydrantFromFiche(id, json, "PENA", files);
+        return new SuccessErrorExtSerializer(true, "PENA mis à jour avec succès").serialize();
+      } catch (Exception e) {
+        return new SuccessErrorExtSerializer(false, e.getMessage(), HttpStatus.BAD_REQUEST).serialize();
+      }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")

@@ -243,16 +243,12 @@ export default {
       });
       return this.etats;
     },
-    prepareAspirationData(idPena) {
-      _.forEach(this.listeAspirations, function(aspiration) {
-        aspiration.pena = idPena;
-        aspiration.version = 1
-      });
+    prepareAspirationData() {
       return {
-        'aspirations': JSON.stringify(this.listeAspirations, function(key, value) {
+        'addAspirations': JSON.stringify(this.listeAspirations, function(key, value) {
           return value === "" ? null : value
         }),
-        'aspirationsDel': this.aspirationsASupprimer
+        'deleteAspirations': this.aspirationsASupprimer
       }
     }
   }
