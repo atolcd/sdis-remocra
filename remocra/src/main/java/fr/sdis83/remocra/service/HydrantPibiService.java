@@ -186,7 +186,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
 
                 List<Object[]> l = entityManager.createNativeQuery("select TO_CHAR(cast(t.date as DATE), 'dd/mm/yyyy'), t.debit from (select  distinct date, debit "+
                 " From remocra.hydrant_visite hv WHERE hv.hydrant = "+id+" AND hv.type = (SELECT id FROM remocra.type_hydrant_saisie ths WHERE ths.code LIKE 'CTRL')"+
-                " AND date IS NOT NULL AND debit  IS NOT NULL ORDER BY date ASC limit "+limit+") t").getResultList();
+                " AND date IS NOT NULL AND debit  IS NOT NULL ORDER BY date DESC limit "+limit+") t").getResultList();
                 List labels = new ArrayList();
                 List  values= new ArrayList();
                 for(Object[] o : l){
