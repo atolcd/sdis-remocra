@@ -177,7 +177,7 @@ export default {
       });
     }).then(() => {
       if (this.hydrant.nature !== null) {
-        this.updateComboDiametres(this.hydrantRecord.nature.nom);
+        this.updateComboDiametres(this.hydrantRecord.nature.code);
         this.hydrant.diametre = (this.hydrantRecord.diametre) ? this.hydrantRecord.diametre.id : null;
       }
     }).catch(function(error) {
