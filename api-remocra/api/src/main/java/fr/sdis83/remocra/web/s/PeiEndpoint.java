@@ -100,7 +100,7 @@ public class PeiEndpoint {
       @NotNull @Parameter(description = "Informations du PEI") PeiForm peiForm
     ) {
       try {
-        return Response.ok(peiUseCase.updatePeiCaracteristiques(numero, peiForm)).build();
+        return Response.ok(peiUseCase.updatePeiCaracteristiques(numero, peiForm), MediaType.APPLICATION_JSON).build();
       } catch (ResponseException e) {
         return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
       }

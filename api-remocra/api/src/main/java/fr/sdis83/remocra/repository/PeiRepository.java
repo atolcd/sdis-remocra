@@ -223,20 +223,20 @@ public class PeiRepository {
 
     public String getPibiCaracteristiques(String numero) throws JsonProcessingException {
 
-        Hydrant pibiJumele = HYDRANT.as("pibiJumele");
-
-        PibiModel pibi = context.select(
+      Hydrant pibiJumele = HYDRANT.as("pibiJumele");
+      PibiModel pibi = context.select(
                 pibiJumele.NUMERO.as("jumelage"),
-                TYPE_HYDRANT_DIAMETRE.NOM.as("diametre"),
-                HYDRANT_PIBI.DISPOSITIF_INVIOLABILITE.as("iniolabilite"),
+                TYPE_HYDRANT_DIAMETRE.CODE.as("diametre"),
+                HYDRANT_PIBI.DISPOSITIF_INVIOLABILITE.as("inviolabilite"), // TODO : fix typo
                 HYDRANT_PIBI.RENVERSABLE.as("renversable"),
-                TYPE_HYDRANT_MARQUE.NOM.as("marque"),
-                TYPE_HYDRANT_MODELE.NOM.as("modele"),
+                TYPE_HYDRANT_MARQUE.CODE.as("marque"),
+                TYPE_HYDRANT_MODELE.CODE.as("modele"),
                 HYDRANT.ANNEE_FABRICATION.as("anneeFabrication"),
-                TYPE_RESEAU_ALIMENTATION.NOM.as("natureReseau"),
-                TYPE_RESEAU_CANALISATION.NOM.as("natureCanalisation"),
+                TYPE_RESEAU_ALIMENTATION.CODE.as("natureReseau"),
+                TYPE_RESEAU_CANALISATION.CODE.as("natureCanalisation"),
                 HYDRANT_PIBI.SURPRESSE.as("reseauSurpresse"),
-                HYDRANT_PIBI.ADDITIVE.as("reseauAdditive")
+                HYDRANT_PIBI.ADDITIVE.as("reseauAdditive"),
+                HYDRANT_PIBI.DIAMETRE_CANALISATION.as("diametreCanalisation")
         ).from(HYDRANT_PIBI)
                 .leftJoin(HYDRANT).on(HYDRANT.ID.eq(HYDRANT_PIBI.ID))
                 .leftJoin(pibiJumele).on(pibiJumele.ID.eq(HYDRANT_PIBI.JUMELE))
@@ -269,6 +269,7 @@ public class PeiRepository {
 
     public void updatePibiCaracteristiques(HydrantPibi hydrantPibi, Integer anneeFabrication) throws ResponseException {
       context.update(HYDRANT_PIBI)
+        .set(HYDRANT_PIBI.DIAMETRE, hydrantPibi.getDiametre())
         .set(HYDRANT_PIBI.DIAMETRE_CANALISATION, hydrantPibi.getDiametreCanalisation())
         .set(HYDRANT_PIBI.MARQUE, hydrantPibi.getMarque())
         .set(HYDRANT_PIBI.MODELE, hydrantPibi.getModele())

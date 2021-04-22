@@ -24,6 +24,8 @@ public class PibiModel {
 
     boolean reseauAdditive;
 
+    Integer diametreCanalisation;
+
     public String getJumelage() {
         return jumelage;
     }
@@ -110,5 +112,13 @@ public class PibiModel {
 
     public void setReseauAdditive(boolean reseauAdditive) {
         this.reseauAdditive = reseauAdditive;
+    }
+
+    public Integer getDiametreCanalisation() {
+        return diametreCanalisation;
+    }
+
+    public void setDiametreCanalisation(Integer diametreCanalisation) {
+        this.diametreCanalisation = diametreCanalisation;
     }
 }

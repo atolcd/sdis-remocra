@@ -44,6 +44,10 @@ public interface PeiForm {
 
     @JsonProperty
     @Nullable
+    Integer diametreCanalisation();
+
+    @JsonProperty
+    @Nullable
     String peiJumele();
 
     @JsonProperty

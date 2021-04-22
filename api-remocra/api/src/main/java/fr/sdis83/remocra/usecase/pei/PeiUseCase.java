@@ -6,6 +6,8 @@ import fr.sdis83.remocra.authn.CurrentUser;
 import fr.sdis83.remocra.authn.UserInfo;
 import fr.sdis83.remocra.db.model.tables.pojos.HydrantPena;
 import fr.sdis83.remocra.db.model.tables.pojos.HydrantPibi;
+import fr.sdis83.remocra.db.model.tables.pojos.TypeHydrantMarque;
+import fr.sdis83.remocra.db.model.tables.pojos.TypeHydrantModele;
 import fr.sdis83.remocra.repository.PeiRepository;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
 import fr.sdis83.remocra.web.model.pei.PeiForm;
@@ -56,34 +58,33 @@ public class PeiUseCase {
     if(this.isPeiAccessible(numero)) {
       PeiSpecifiqueModel pei = peiRepository.getPeiSpecifique(numero);
       if(pei == null) {
-        throw new ResponseException(Response.Status.BAD_REQUEST, "Le numéro spécifié ne correspond à aucun hydrant");
+        throw new ResponseException(Response.Status.BAD_REQUEST, "1000 : Le numéro spécifié ne correspond à aucun hydrant");
       }
       return peiRepository.getPeiSpecifique(numero);
     } else {
-      throw new ResponseException(Response.Status.FORBIDDEN, "Le numéro spécifié ne correspond à aucun hydrant qui vous est accessible");
+      throw new ResponseException(Response.Status.FORBIDDEN, "1300 : Le numéro spécifié ne correspond à aucun hydrant qui vous est accessible");
     }
   }
 
   public String getPeiCaracteristiques(String numero) throws ResponseException, JsonProcessingException {
     if(!this.peiRepository.peiExist(numero)) {
-     throw new ResponseException(Response.Status.BAD_REQUEST, "Le numéro spécifié ne correspond à aucun hydrant");
+     throw new ResponseException(Response.Status.BAD_REQUEST, "1000 : Le numéro spécifié ne correspond à aucun hydrant");
     }
 
     if(!this.isPeiAccessible(numero)) {
-       throw new ResponseException(Response.Status.FORBIDDEN, "Le numéro spécifié ne correspond à aucun hydrant qui vous est accessible");
+       throw new ResponseException(Response.Status.FORBIDDEN, "1300 : Le numéro spécifié ne correspond à aucun hydrant qui vous est accessible");
     }
 
     return peiRepository.getPeiCaracteristiques(numero);
   }
 
   public String updatePeiCaracteristiques(String numero, PeiForm peiform) throws ResponseException {
-
     if(!this.peiRepository.peiExist(numero)) {
-     throw new ResponseException(Response.Status.BAD_REQUEST, "Le numéro spécifié ne correspond à aucun hydrant");
+     throw new ResponseException(Response.Status.BAD_REQUEST, "1000 : Le numéro spécifié ne correspond à aucun hydrant");
     }
 
     if(!this.userCanEditPei(numero) || !this.isPeiAccessible(numero)) {
-       throw new ResponseException(Response.Status.FORBIDDEN, "Le numéro spécifié ne correspond à aucun hydrant qui vous est accessible");
+       throw new ResponseException(Response.Status.FORBIDDEN, "1300 : Le numéro spécifié ne correspond à aucun hydrant qui vous est accessible");
     }
 
     String typePei = context.select(HYDRANT.CODE)
@@ -108,7 +109,6 @@ public class PeiUseCase {
           throw new ResponseException(Response.Status.METHOD_NOT_ALLOWED, error);
         }
       }
-
       HydrantPibi hydrantPibi = context
         .select(HYDRANT_PIBI.fields())
         .from(HYDRANT_PIBI)
@@ -116,7 +116,7 @@ public class PeiUseCase {
         .where(HYDRANT.NUMERO.equalIgnoreCase(numero))
         .fetchOneInto(HydrantPibi.class);
 
-      Integer idDiametre = null;
+      Long idDiametre = null;
       Long idMarque = null;
       Long idModele = null;
       Long idNatureReseau = null;
@@ -126,12 +126,12 @@ public class PeiUseCase {
         idDiametre = context.select(TYPE_HYDRANT_DIAMETRE.ID)
           .from(TYPE_HYDRANT_DIAMETRE)
           .where(TYPE_HYDRANT_DIAMETRE.CODE.eq(peiForm.codeDiametre().toUpperCase()))
-          .fetchOneInto(Integer.class);
+          .fetchOneInto(Long.class);
         if(idDiametre == null) {
-          throw new ResponseException(Response.Status.BAD_REQUEST, "Le code du diamètre saisi ne correspond à aucune valeur connue");
+          throw new ResponseException(Response.Status.BAD_REQUEST, "1001 : Le code du diamètre saisi ne correspond à aucune valeur connue");
         }
       }
-      hydrantPibi.setDiametreCanalisation(idDiametre);
+      hydrantPibi.setDiametre(idDiametre);
 
       if(peiForm.codeMarque() != null){
         idMarque = context.select(TYPE_HYDRANT_MARQUE.ID)
@@ -139,18 +139,29 @@ public class PeiUseCase {
           .where(TYPE_HYDRANT_MARQUE.CODE.eq(peiForm.codeMarque().toUpperCase()))
           .fetchOneInto(Long.class);
         if(idMarque == null){
-          throw new ResponseException(Response.Status.BAD_REQUEST, "Le code de marque saisi ne correspond à aucune valeur connue");
+          throw new ResponseException(Response.Status.BAD_REQUEST, "1002 : Le code de marque saisi ne correspond à aucune valeur connue");
+        } else {
+          hydrantPibi.setModele(null); // Changement de marque => on met le modèle à null
         }
       }
       hydrantPibi.setMarque(idMarque);
 
       if(peiForm.codeModele() != null){
-        idModele = context.select(TYPE_HYDRANT_MODELE.ID)
+        TypeHydrantModele modele = context.select(TYPE_HYDRANT_MODELE.fields())
           .from(TYPE_HYDRANT_MODELE)
-          .where(TYPE_HYDRANT_MODELE.CODE.eq(peiForm.codeModele().toUpperCase()))
-          .fetchOneInto(Long.class);
-        if(idModele == null){
-          throw new ResponseException(Response.Status.BAD_REQUEST, "Le code de modèle saisi ne correspond à aucune valeur connue");
+          .where(TYPE_HYDRANT_MODELE.CODE.upper().eq(peiForm.codeModele().toUpperCase()))
+          .fetchOneInto(TypeHydrantModele.class);
+
+        if(modele == null){
+          throw new ResponseException(Response.Status.BAD_REQUEST, "1003 : Le code de modèle saisi ne correspond à aucune valeur connue");
+        }
+
+        idModele = modele.getId();
+
+        Long marque = (peiForm.codeMarque() != null) ? idMarque : hydrantPibi.getMarque();
+
+        if(!modele.getMarque().equals(marque)) {
+          throw new ResponseException(Response.Status.BAD_REQUEST, "1008 : Le code de modèle saisi n'appartient pas à la marque renseignée");
         }
       }
       hydrantPibi.setModele(idModele);
@@ -161,7 +172,7 @@ public class PeiUseCase {
           .where(TYPE_RESEAU_ALIMENTATION.CODE.eq(peiForm.codeNatureReseau().toUpperCase()))
           .fetchOneInto(Long.class);
         if(idNatureReseau == null){
-            throw new ResponseException(Response.Status.BAD_REQUEST, "Le code de nature du réseau saisi ne correspond à aucune valeur connue");
+            throw new ResponseException(Response.Status.BAD_REQUEST, "1004 : Le code de nature du réseau saisi ne correspond à aucune valeur connue");
         }
       }
       hydrantPibi.setTypeReseauAlimentation(idNatureReseau);
@@ -172,7 +183,7 @@ public class PeiUseCase {
           .where(TYPE_RESEAU_CANALISATION.CODE.eq(peiForm.codeNatureCanalisation().toUpperCase()))
           .fetchOneInto(Long.class);
         if(idNatureCanalisation == null){
-          throw new ResponseException(Response.Status.BAD_REQUEST, "Le code de nature de canalisation saisi ne correspond à aucune valeur connue");
+          throw new ResponseException(Response.Status.BAD_REQUEST, "1005 : Le code de nature de canalisation saisi ne correspond à aucune valeur connue");
         }
       }
       hydrantPibi.setTypeReseauCanalisation(idNatureCanalisation);
@@ -181,11 +192,12 @@ public class PeiUseCase {
       hydrantPibi.setRenversable(peiForm.renversable());
       hydrantPibi.setSurpresse(peiForm.reseauSurpresse());
       hydrantPibi.setAdditive(peiForm.reseauAdditive());
+      hydrantPibi.setDiametreCanalisation(peiForm.diametreCanalisation());
 
       peiRepository.updatePibiCaracteristiques(hydrantPibi, peiForm.anneeFabrication());
       return "PIBI mis à jour avec succès";
-    } catch (DataAccessException | ResponseException e){
-      throw new ResponseException(Response.Status.INTERNAL_SERVER_ERROR, "Une erreur est survenue lors de la mise à jour de l'hydrant");
+    } catch (DataAccessException e){
+      throw new ResponseException(Response.Status.INTERNAL_SERVER_ERROR, "1301 : Une erreur est survenue lors de la mise à jour de l'hydrant");
     }
   }
 
@@ -197,7 +209,7 @@ public class PeiUseCase {
         .fetchOneInto(Long.class);
 
       if(codeMateriau == null) {
-        throw new ResponseException(Response.Status.BAD_REQUEST, "Le code de matériau saisi ne correspond à aucune valeur connue");
+        throw new ResponseException(Response.Status.BAD_REQUEST, "1006 : Le code de matériau saisi ne correspond à aucune valeur connue");
       }
 
       HydrantPena hydrantPena = context
@@ -217,8 +229,8 @@ public class PeiUseCase {
       peiRepository.updatePenaCaracteristiques(hydrantPena);
       return "PENA mis à jour avec succès";
 
-    } catch (DataAccessException | ResponseException e){
-      throw new ResponseException(Response.Status.INTERNAL_SERVER_ERROR, "Une erreur est survenue lors de la mise à jour de l'hydrant");
+    } catch (DataAccessException e){
+      throw new ResponseException(Response.Status.INTERNAL_SERVER_ERROR, "1301 : Une erreur est survenue lors de la mise à jour de l'hydrant");
     }
 
   }
