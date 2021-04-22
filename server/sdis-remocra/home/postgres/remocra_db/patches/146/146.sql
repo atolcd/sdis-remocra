@@ -49,3 +49,4 @@ GRANT SELECT ON TABLE remocra_sgo.hydrant TO sgo_template;
 --------------------------------------------------
 
 commit;
+
