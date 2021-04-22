@@ -14,7 +14,7 @@ privileged aspect Rci_Roo_Jpa_ActiveRecord {
     @PersistenceContext
     transient EntityManager Rci.entityManager;
     
-    public static final List<String> Rci.fieldNames4OrderClauseFilter = java.util.Arrays.asList("SERIALIZER", "id", "dateModification", "utilisateur", "dateIncendie", "origineAlerte", "commune", "voie", "complement", "geometrie", "jsonGeometrie", "coordDFCI", "arriveeDdtmOnf", "arriveeSdis", "arriveeGendarmerie", "arriveePolice", "pointEclosion", "gdh", "ventLocal", "hygrometrie", "directionVent", "temperature", "forceVent", "indiceRothermel", "superficieSecours", "superficieReferent", "superficieFinale", "premierEngin", "premierCos", "forcesOrdre", "gelLieux", "categoriePromethee", "partitionPromethee", "famillePromethee", "degreCertitude", "commentaireConclusions", "rciDocuments");
+    public static final List<String> Rci.fieldNames4OrderClauseFilter = java.util.Arrays.asList("SERIALIZER", "id", "dateModification", "utilisateur", "dateIncendie", "origineAlerte", "commune", "voie", "complement", "geometrie", "jsonGeometrie", "coordDFCI", "arriveeDdtmOnf", "arriveeSdis", "arriveeGendarmerie", "arriveePolice", "pointEclosion", "gdh", "ventLocal", "hygrometrie", "directionVent", "temperature", "forceVent", "indiceRothermel", "superficieSecours", "superficieReferent", "superficieFinale", "premierEngin", "premierCos", "forcesOrdre", "gelLieux", "categoriePromethee", "partitionPromethee", "famillePromethee", "risqueMeteo", "degreCertitude", "commentaireConclusions", "rciDocuments");
     
     public static final EntityManager Rci.entityManager() {
         EntityManager em = new Rci().entityManager;

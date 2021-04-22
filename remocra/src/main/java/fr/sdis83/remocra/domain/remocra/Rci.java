@@ -150,6 +150,9 @@ public class Rci implements Featurable {
     private TypeRciPromFamille famillePromethee;
 
     @ManyToOne
+    private TypeRciRisqueMeteo risqueMeteo;
+
+    @ManyToOne
     private TypeRciDegreCertitude degreCertitude;
 
     private String commentaireConclusions;

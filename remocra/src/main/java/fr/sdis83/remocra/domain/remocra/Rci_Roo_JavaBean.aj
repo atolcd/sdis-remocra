@@ -11,6 +11,7 @@ import fr.sdis83.remocra.domain.remocra.TypeRciDegreCertitude;
 import fr.sdis83.remocra.domain.remocra.TypeRciOrigineAlerte;
 import fr.sdis83.remocra.domain.remocra.TypeRciPromCategorie;
 import fr.sdis83.remocra.domain.remocra.TypeRciPromFamille;
+import fr.sdis83.remocra.domain.remocra.TypeRciRisqueMeteo;
 import fr.sdis83.remocra.domain.remocra.TypeRciPromPartition;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import java.util.Date;
@@ -281,6 +282,15 @@ privileged aspect Rci_Roo_JavaBean {
     public void Rci.setFamillePromethee(TypeRciPromFamille famillePromethee) {
         this.famillePromethee = famillePromethee;
     }
+
+    public TypeRciRisqueMeteo Rci.getRisqueMeteo() {
+        return this.risqueMeteo;
+    }
+
+    public void Rci.setRisqueMeteo(TypeRciRisqueMeteo risqueMeteo) {
+        this.risqueMeteo = risqueMeteo;
+    }
+
     
     public TypeRciDegreCertitude Rci.getDegreCertitude() {
         return this.degreCertitude;
