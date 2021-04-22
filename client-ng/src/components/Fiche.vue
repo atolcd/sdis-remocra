@@ -75,8 +75,64 @@
           <b-tab active title="Résumé" v-if="hydrant.id !== null">
             <FicheResume ref="ficheResume" :hydrantRecord="hydrantRecord" v-if="dataLoaded">
             </FicheResume>
-          <div class="small" v-if="loaded">
+          <div class="small" v-if="hydrant.code=='PIBI' && histoLoaded">
             <bar-chart :chartdata="chartdata" :options="{title:'Débit (m³/h)', background:'green'}" :styles="{height: '250px', width:'90%'}"/>
+          </div>
+          <div  v-if="hydrant.code=='PIBI' && histoLoaded">
+             <table class="table table-striped table-sm table-bordered">
+               <thead class="thead-light">
+                 <th scope="col">Date de contrôle</th>
+                 <th scope="col">Débit</th>
+                 <th scope="col">Pression dynamique <br/> à 60m³ (bar)</th>
+                 <th scope="col">Débit max (m³/h)</th>
+                 <th scope="col">Pression dynamique au débit max (bar)</th>
+                 <th scope="col">Pression statique (bar)</th>
+
+               </thead>
+               <tbody>
+                 <tr v-for="(item, index) in items" :key="index">
+                   <td>
+                     {{datetimeFormatee(item.dateControle)}}
+                   </td>
+                   <td>
+                     {{item.debitNM1}}
+                   </td>
+                   <td>
+                     {{item.pressionDynNM1}}
+                   </td>
+                   <td>
+                     {{item.debitMaxNM1}}
+                   </td>
+                   <td>
+                     {{item.pressionDynDebNM1}}
+                   </td>
+                   <td>
+                     {{item.pressionNM1}}
+                   </td>
+                 </tr>
+                 <tr>
+                 <td>
+                  {{"Moyene"}}
+                 </td>
+                 <td>
+                  {{moyenneDebitNM1}}
+                 </td>
+                 <td>
+                  {{moyennePressionDynNM1}}
+                 </td>
+                 <td>
+                  {{moyenneDebitMaxNM1}}
+                 </td>
+                 <td>
+                  {{moyennePressionDynDebNM1}}
+                 </td>
+                 <td>
+                  {{moyennePressionNM1}}
+                 </td>
+                 </tr>
+               </tbody>
+             </table>
+
           </div>
           </b-tab>
           <!-- ================================== Onglet Localisation ==================================-->
@@ -137,6 +193,7 @@ import FicheVisite from './FicheVisite.vue'
 import FicheDocument from './FicheDocument.vue'
 import FicheResume from './FicheResume.vue'
 import BarChart from './utils/BarChart.js'
+import moment from 'moment'
 
 export default {
   name: 'Fiche',
@@ -182,8 +239,40 @@ export default {
         spDeci: null,
         maintenanceDeci: null
       },
-    loaded: false,
-    chartdata: {} }
+    histoLoaded: false,
+    chartdata: {},
+      fields: [
+               {
+                   key: 'dateControle',
+                   label: 'Date de contrôle',
+               },
+               {
+                   key: 'debitNM1',
+                   label: 'Débit',
+               },
+               {
+                   key: 'pressionDynNM1',
+                   label: 'Pression dynamique à 60m³ (bar)',
+               },
+               {
+                  key: 'debitMaxNM1',
+                  label: 'Débit max (m³/h)',
+               },
+               {
+                  key: 'pressionDynDebNM1',
+                  label: 'Pression dynamique au débit max (bar)',
+               },
+               {
+                  key: 'pressionNM1',
+                  label: 'Pression statique (bar)',
+               },
+             ],
+             items: [],
+             moyenneDebitNM1: null,
+             moyennePressionDynNM1: null,
+             moyenneDebitMaxNM1: null,
+             moyennePressionDynDebNM1: null,
+             moyennePressionNM1: null }
   },
   props: {
     newVisite: {
@@ -242,7 +331,15 @@ export default {
       return function(combo) {
         return combo.sort((a, b) => a.text.localeCompare(b.text));
       }
-    }
+    },
+    /**
+     * Date au format dd/MM/yyyy pour l'affichage dans la datagrid des visites
+     */
+    datetimeFormatee: function() {
+      return function(datetime) {
+        return moment(datetime, "YYYY-MM-DD").format('DD/MM/YYYY')
+      }
+    },
   },
   mounted: function() {
     //this.$refs.modalFiche.show()
@@ -308,10 +405,11 @@ export default {
           self.hydrantRecord = response.data.data;
           //Résolution des clés étrangères
           self.hydrant = _.clone(self.hydrantRecord, true);
-          self.dataLoaded = true;
+          self.getHistoriqueForChart(self.idHydrant)
+          self.getHistoriqueForGrid(self.idHydrant)
           self.resolveForeignKey(['nature', 'site', 'autoriteDeci', 'natureDeci', 'gestionnaire', 'maintenanceDeci']);
           self.createCombo();
-          self.getHistorique(self.idHydrant)
+          self.dataLoaded = true;
           if (self.newVisite === true) {
             self.$refs.visitesTab.activate()
             self.$root.$options.bus.$on('pei_visite_ready', () => {
@@ -327,15 +425,36 @@ export default {
         console.error('Retrieving data ', error)
       })
     },
-    getHistorique(id){
-      this.loaded = false
+    getHistoriqueForChart(id){
       if(this.showHistorique){
         axios.get('/remocra/hydrantspibi/histoverifhydrauforchart/'+id).then(response => {
           if(response.data){
               this.chartdata.labels =  response.data.data.labels;
               this.chartdata.values =  response.data.data.values;
-              this.loaded = true
+              this.histoLoaded = true;
             }
+        }).catch(function(error) {
+            console.error(error);
+        })
+      }
+    },
+    getHistoriqueForGrid(id){
+      if(this.showHistorique){
+        axios.get('/remocra/hydrantspibi/histoverifhydrauforgrid/'+id).then(response => {
+          if(response.data){
+             _.forEach(response.data.data, data=> {
+                this.items.push({'dateControle':data[0] && data[0]!== null? data[0] : '-', 'debitNM1': data[1] && data[1]!== null? data[1] : '-',
+                 'debitMaxNM1': data[2]&& data[2]!== null? data[2] : '-', 'pressionNM1': data[3]&& data[3]!== null? data[3] : '-',
+                     'pressionDynNM1': data[4]&& data[4]!== null? data[4] : '-', 'pressionDynDebNM1': data[5]&& data[5]!== null? data[5] : '-'});
+             })
+                let moyennes = this.items
+                this.moyenneDebitNM1 = _.meanBy(moyennes, function(o) { return o.debitNM1 && o.debitNM1 !== '-'  ? o.debitNM1 : 0 ; });
+                this.moyennePressionDynNM1 = _.meanBy(moyennes, function(o) { return o.pressionDynNM1 && o.pressionDynNM1 !== '-' ? o.pressionDynNM1: 0 ;} );
+                this.moyenneDebitMaxNM1 = _.meanBy(moyennes,function(o) { return o.debitMaxNM1 && o.debitMaxNM1 !== '-'? o.debitMaxNM1 : 0 ;});
+                this.moyennePressionDynDebNM1 = _.meanBy(moyennes, function(o) { return o.pressionDynDebNM1  && o.pressionDynDebNM1 !== '-' ? o.pressionDynDebNM1 : 0 ;});
+                this.moyennePressionNM1 = _.meanBy(moyennes, function(o) { return o.pressionNM1 && o.pressionNM1 !== '-' ? o.pressionNM1 : 0;});
+                this.histoLoaded = true;
+          }
         }).catch(function(error) {
             console.error(error);
         })

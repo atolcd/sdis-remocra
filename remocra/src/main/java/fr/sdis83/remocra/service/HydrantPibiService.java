@@ -205,6 +205,23 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
             return null;
         }
     }
+    public List<Object> getHistoVerifHydrauForGrid(Long id) {
+        Integer limit = paramConfService.getHydrantNombreHistorique();
+        if (limit != 0) {
+            try {
+                List<Object> l = entityManager.createNativeQuery(
+                        "select  distinct date, debit, pression, pression_dyn, pression_dyn_deb" +
+                                " From remocra.hydrant_visite hv WHERE hv.hydrant = "+id+" AND hv.type IN (SELECT id FROM remocra.type_hydrant_saisie ths WHERE ths.code LIKE 'CTRL' OR ths.code LIKE 'CREA')"+
+                                " AND date IS NOT NULL AND debit IS NOT NULL ORDER BY date DESC limit " + limit).getResultList();
+                return l;
+            } catch (Exception ex) {
+                //Pas d'historique
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
 
     @Transactional
     public boolean launchTrigger(Long id) throws Exception {

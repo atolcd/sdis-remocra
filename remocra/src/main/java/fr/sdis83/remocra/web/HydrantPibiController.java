@@ -266,6 +266,19 @@ public class HydrantPibiController {
         }.serialize();
     }
 
+    @RequestMapping(value = "/histoverifhydrauforgrid/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('HYDRANTS_R')")
+    public ResponseEntity<java.lang.String> getHistoVerifHydrauForGrid(final @PathVariable Long id) {
+
+        return new AbstractExtObjectSerializer<List<Object>>("Hydrant Pibi historique vérification hydraulique retrieved.") {
+            @Override
+            protected List<Object> getRecord() {
+                return hydrantPibiService.getHistoVerifHydrauForGrid(id);
+            }
+
+        }.serialize();
+    }
+
     @RequestMapping(value = "/findjumelage", method = RequestMethod.GET, headers = "Accept=application/json")
     @PreAuthorize("hasRight('HYDRANTS_R')")
     public ResponseEntity<java.lang.String> findjumelage(final @RequestParam(value="geometrie") String geometrie) {
