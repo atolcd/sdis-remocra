@@ -479,7 +479,7 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>1.4</version>
+			<version>2.7</version>
 		</dependency>
 
 		<!-- Surcharge la version pour utiliser la dernière -->
