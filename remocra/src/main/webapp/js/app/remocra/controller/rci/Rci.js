@@ -5,6 +5,7 @@ Ext.require('Sdis.Remocra.store.Commune');
 Ext.require('Sdis.Remocra.store.Voie');
 Ext.require('Sdis.Remocra.store.Rci');
 Ext.require('Sdis.Remocra.store.TypeRciOrigineAlerte');
+Ext.require('Sdis.Remocra.store.TypeRciRisqueMeteo');
 Ext.require('Sdis.Remocra.store.TypeRciPromCategorie');
 Ext.require('Sdis.Remocra.store.TypeRciPromFamille');
 Ext.require('Sdis.Remocra.store.TypeRciPromPartition');
@@ -13,7 +14,7 @@ Ext.require('Sdis.Remocra.store.TypeRciDegreCertitude');
 Ext.define('Sdis.Remocra.controller.rci.Rci', {
     extend: 'Ext.app.Controller',
 
-    stores: ['Commune', 'Voie', 'Rci', 'TypeRciOrigineAlerte', 'TypeRciPromCategorie', 'TypeRciPromFamille', 'TypeRciPromPartition', 'TypeRciDegreCertitude'],
+    stores: ['Commune', 'Voie', 'Rci', 'TypeRciOrigineAlerte', 'TypeRciRisqueMeteo', 'TypeRciPromCategorie', 'TypeRciPromFamille', 'TypeRciPromPartition', 'TypeRciDegreCertitude'],
 
     refs: [{
         ref: 'rci',
@@ -409,6 +410,7 @@ Ext.define('Sdis.Remocra.controller.rci.Rci', {
         record.setPartitionPromethee(null);
         record.setFamillePromethee(null);
         record.setDegreCertitude(null);
+        record.setRisqueMeteo(null);
         return record;
     },
 

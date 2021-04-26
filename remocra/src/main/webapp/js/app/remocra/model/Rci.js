@@ -1,6 +1,7 @@
 Ext.require('Sdis.Remocra.network.RemocraRest');
 Ext.require('Sdis.Remocra.model.TypeRciDegreCertitude');
 Ext.require('Sdis.Remocra.model.TypeRciOrigineAlerte');
+Ext.require('Sdis.Remocra.model.TypeRciRisqueMeteo');
 Ext.require('Sdis.Remocra.model.TypeRciPromCategorie');
 Ext.require('Sdis.Remocra.model.RciDocument');
 
@@ -186,7 +187,15 @@ Ext.define('Sdis.Remocra.model.Rci', {
         setterName : 'setFamillePromethee',
         associatedName : 'FamillePromethee',
         persist : true
-    }, {
+    },{
+        type : 'belongsTo',
+        model : 'Sdis.Remocra.model.TypeRciRisqueMeteo',
+        associationKey : 'risqueMeteo',
+        getterName : 'getRisqueMeteo',
+        setterName : 'setRisqueMeteo',
+        associatedName : 'RisqueMeteo',
+        persist : true
+    },{
         type : 'belongsTo',
         model : 'Sdis.Remocra.model.TypeRciDegreCertitude',
         associationKey : 'degreCertitude',

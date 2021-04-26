@@ -2,6 +2,7 @@ Ext.require('Sdis.Remocra.store.Commune');
 Ext.require('Sdis.Remocra.store.Voie');
 Ext.require('Sdis.Remocra.store.Rci');
 Ext.require('Sdis.Remocra.store.TypeRciOrigineAlerte');
+Ext.require('Sdis.Remocra.store.TypeRciRisqueMeteo');
 Ext.require('Sdis.Remocra.store.TypeRciPromCategorie');
 Ext.require('Sdis.Remocra.store.TypeRciPromFamille');
 Ext.require('Sdis.Remocra.store.TypeRciPromPartition');
@@ -10,7 +11,7 @@ Ext.require('Sdis.Remocra.store.TypeRciDegreCertitude');
 Ext.define('Sdis.Remocra.controller.rci.Fiche', {
     extend: 'Ext.app.Controller',
 
-    stores: ['Commune', 'Voie', 'Rci', 'TypeRciOrigineAlerte', 'TypeRciPromCategorie',
+    stores: ['Commune', 'Voie', 'Rci', 'TypeRciOrigineAlerte', 'TypeRciRisqueMeteo', 'TypeRciPromCategorie',
              'TypeRciPromFamille', 'TypeRciPromPartition', 'TypeRciDegreCertitude'],
 
     refs: [{
@@ -436,6 +437,11 @@ Ext.define('Sdis.Remocra.controller.rci.Fiche', {
             cboPartition.setValue(null);
             cboCategorie.setValue(null);
         }
+        // RisqueMeteo
+        if (fiche.record.getRisqueMeteo()) {
+            var cboRisque = fiche.queryById('risqueMeteo');
+            cboRisque.select(fiche.record.getRisqueMeteo());
+        }
         
         // Utilisateur
         fiche.queryById('info').setFieldLabel(this.msgEntete(fiche.record));
@@ -550,6 +556,7 @@ Ext.define('Sdis.Remocra.controller.rci.Fiche', {
         record.setPartitionPromethee(this.getValueModelCbo(fiche, 'partitionPromethee'));
         record.setFamillePromethee(this.getValueModelCbo(fiche, 'famillePromethee'));
         record.setDegreCertitude(this.getValueModelCbo(fiche, 'degreCertitude'));
+        record.setRisqueMeteo(this.getValueModelCbo(fiche, 'risqueMeteo'));
 
         // Cas spécial de la géométrie
         record.set('geometrie', fiche.record.get('geometrie'));

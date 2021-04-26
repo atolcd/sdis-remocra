@@ -505,5 +505,17 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Constatations', {
         queryMode : 'local',
         itemId : 'gelLieux',
         name : 'gelLieux'
-    }]
+    }, {
+        xtype : 'combo',
+        fieldLabel : 'Risque Météo',
+        store : 'TypeRciRisqueMeteo',
+        displayField : 'nom',
+        valueField : 'id',
+        forceSelection : true,
+        editable : false,
+        queryMode : 'local',
+        itemId : 'risqueMeteo',
+        name : 'risqueMeteo',
+        allowBlank : false
+    }    ]
 });
