@@ -49,7 +49,7 @@ public class TypeHydrantNatureAnomalieRepository {
   }
 
   private Integer count() {
-    return context.fetchCount(TYPE_HYDRANT_ANOMALIE);
+    return 999;
   }
 
   public Condition getConditions(String contexteVisite){
