@@ -66,8 +66,7 @@ pipeline {
               withCredentials([usernameColonPassword(credentialsId: 'nexus3-jenkins', variable: 'NEXUS3_AUTH')]) {
                 sh '[ -f docker/pdi-dkron/ext/pdi-ce-7.1.0.0-12.zip ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-dkron/ext/pdi-ce-7.1.0.0-12.zip https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/pdi-ce-7.1.0.0-12.zip'
                 sh '[ -f docker/pdi-dkron/ext/pentaho-gis-plugins-1.2.1-bin-7.zip ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-dkron/ext/pentaho-gis-plugins-1.2.1-bin-7.zip https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/pentaho-gis-plugins-1.2.1-bin-7.zip'
-                sh '[ -f docker/pdi-dkron/ext/ojdbc14.jar ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-dkron/ext/ojdbc14.jar https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/ojdbc14.jar'
-                sh '[ -f docker/pdi-dkron/ext/orai18n.jar] || curl --user "$NEXUS3_AUTH" -o docker/pdi-dkron/ext/orai18n.jar https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/orai18n.jar'
+                sh '[ -f docker/pdi-dkron/ext/ojdbc8.jar ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-dkron/ext/ojdbc8.jar https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/ojdbc8.jar'
                 sh '[ -f docker/pdi-dkron/ext/dkron_2.1.1_linux_amd64.tar.gz ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-dkron/ext/dkron_2.1.1_linux_amd64.tar.gz https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/dkron_2.1.1_linux_amd64.tar.gz'
               }
             }

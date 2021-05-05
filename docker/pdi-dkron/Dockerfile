@@ -74,8 +74,6 @@ COPY Dockerfile ext/ojdbc8.jar* ext/orai18n.jar* ${KETTLE_HOME}/lib/
 RUN set -x \
   && ([ -f ${KETTLE_HOME}/lib/ojdbc8.jar ] \
     || wget -P ${KETTLE_HOME}/lib -q https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/home/postgres/pdi/libext/JDBC/ojdbc8.jar) \
-  && ([ -f ${KETTLE_HOME}/lib/orai18n.jar ] \
-    || wget -P ${KETTLE_HOME}/lib -q https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/home/postgres/pdi/libext/JDBC/orai18n.jar) \
   && rm -f Dockerfile # cleaning
 
 # Mise à jour de JDBC driver
