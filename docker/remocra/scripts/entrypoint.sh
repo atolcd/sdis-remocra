@@ -4,6 +4,9 @@ set -e
 # Port
 sed -i "s/port=\".*\" protocol=\"HTTP\/1.1\"/port=\"${REMOCRA_PORT}\" protocol=\"HTTP\/1.1\"/" /usr/local/tomcat/conf/server.xml
 
+#Durée de Session (minutes)
+sed -i "s/<session-timeout>.*<\/session-timeout>/<session-timeout>${REMOCRA_SESSION_MIN}<\/session-timeout>/g" /usr/local/tomcat/webapps/remocra/WEB-INF/web.xml
+
 REMOCRA_LOGFILE=${REMOCRA_LOGFILE:-/var/remocra/log/remocra.log}
 mkdir -p $(dirname ${REMOCRA_LOGFILE})
 
