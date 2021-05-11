@@ -67,6 +67,10 @@
 			<id>Hibernate Spatial repo</id>
 			<url>http://www.hibernatespatial.org/repository</url>
 		</repository>
+		<repository>
+			<id>boundless</id>
+			<url>http://repo.boundlessgeo.com/main/</url>
+		</repository>
 
 
 	</repositories>
