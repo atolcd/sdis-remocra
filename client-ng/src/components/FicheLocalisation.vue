@@ -133,22 +133,26 @@ export default {
   mounted: function() {
     this.$emit('resolveForeignKey', ['commune', 'domaine', 'niveau'])
     // Récupération des communes selon la position du PEI
-    // La première commune est automatiquement sélectionnée
-    var self = this
+    // les communes sont triées de la plus proche à la plus éloignée
     axios.get('/remocra/communes/xy', {
       params: {
         wkt: this.geometrie,
         srid: 2154,
       },
     }).then(response => {
-      _.forEach(response.data.data, function(item) {
-        self.comboCommune.push({
+      _.forEach(response.data.data, item => {
+        this.comboCommune.push({
           text: item.nom,
           value: item.id,
         })
       })
-      if (self.comboCommune.length > 0) {
-        self.hydrant.commune = self.comboCommune[0].value
+
+      // La première commune est automatiquement sélectionnée si l'hydrant n'en a aucune ou si celle déjà renseignée n'est pas présente dans la liste
+      if(this.comboCommune.length > 0) {
+        var indexCommuneRecord = _.findIndex(this.comboCommune, c => {return c.value == this.hydrant.commune});
+        if(this.hydrant.commune == null || indexCommuneRecord == -1) {
+          this.hydrant.commune = this.comboCommune[0].value
+        }
       }
     })
     this.$emit('getComboData', this, 'comboDomaine', '/remocra/typehydrantdomaines.json', null, 'id', 'nom')
