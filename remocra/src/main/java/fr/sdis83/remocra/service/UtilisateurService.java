@@ -504,4 +504,14 @@ public class UtilisateurService {
         q.setParameter("identifiant", username.toLowerCase());
         return  q.getSingleResult();
     }
+
+    /**
+     * find dashboard url
+     */
+    public String getDashboardId() {
+        Utilisateur utilisateur = getCurrentUtilisateur();
+        String url = utilisateur.getProfilUtilisateur().getUrlDashboard();
+        String dashboardId = url.split("dashboards/")[1].split("\\?org")[0];
+        return  dashboardId;
+    }
 }

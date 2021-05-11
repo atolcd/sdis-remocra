@@ -286,4 +286,19 @@ public class UtilisateurController {
         }
         return new SuccessErrorExtSerializer(true, "Le mot de passe a été mis à jour").serialize();
     }
+
+    /**
+     * Récupération du dashboard Id
+     *
+     * @return
+     */
+    @RequestMapping(value = "/dashboard", method = RequestMethod.GET, headers = "Accept=application/json")
+    public ResponseEntity<String> getDashboardId() {
+        try {
+            String dashboardId = utilisateurService.getDashboardId();
+            return new ResponseEntity<String>(dashboardId, HttpStatus.OK);
+        } catch (Exception e) {
+            return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la récupération du  tableau de bord").serialize();
+        }
+    }
 }
