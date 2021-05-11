@@ -44,6 +44,7 @@ Ext.define('Sdis.Remocra.model.TypeHydrantAnomalie', {
     },
 
     getInfoByNature: function(nature) {
-        return this.anomalieNatures().findRecord('nature', nature);
+        var record  = this.anomalieNatures().findRecord('nature', nature, 0, false, true, true);
+        return record;
     }
 });
