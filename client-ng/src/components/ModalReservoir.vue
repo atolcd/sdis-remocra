@@ -20,7 +20,9 @@ export default {
   name: 'Modalreservoir',
   data() {
     return {
-      reservoir: {},
+      reservoir: {
+        capacite: 0
+      },
       etats: {
         nom: null,
         capacite: null
@@ -29,24 +31,41 @@ export default {
   },
   mounted: function() {
     this.reservoir.nom = ""
-    this.reservoir.capacite = ""
+    this.reservoir.capacite = 0
   },
   methods: {
     checkFormValidity() {
-      const valid = this.$refs.formReservoir.checkValidity()
-      this.etats.nom = this.reservoir.nom.length ? 'valid' : 'invalid';
-      this.etats.capacite = this.reservoir.capacite >= 0 ? 'valid' : 'invalid';
-      return valid
+      this.$refs.formReservoir.checkValidity();
+      this.etats.nom = this.reservoir.nom.length > 0 ? 'valid' : 'invalid';
+      this.etats.capacite = this.reservoir.capacite >= 0 && /^[0-9]+$/.test(this.reservoir.capacite)? 'valid' : 'invalid';
+      return !this.hasInvalidState(this.etats);
     },
+
+    /**
+     * Vérifie si le formulaire a des champs invalides
+     * En pratique, les modules vueJS enfants ce module renvoient leur état après un appel à leur fonction checkFormValidity()
+     * @param etats L'objet "etats" des champs d'un module
+     * @return TRUE si le champ présente des champs invalides, FALSE sinon
+     */
+    hasInvalidState(etats) {
+      var hasInvalidState = false;
+      for (var key in etats) {
+        hasInvalidState = hasInvalidState || etats[key] == "invalid";
+      }
+      return hasInvalidState;
+    },
+
     resetModal() {
       this.$refs.formReservoir.reset()
-      this.etats.nom = null;
-      this.etats.capacite = null;
+      this.etats.nom = "";
+      this.etats.capacite = 0;
     },
+
     handleOk(bvModalEvt) {
       bvModalEvt.preventDefault()
       this.handleSubmit()
     },
+
     handleSubmit() {
       if (!this.checkFormValidity()) {
         return;
