@@ -34,7 +34,7 @@
         </div>
       </div>
     </div>
-    <div :class="{ 'col-md-7': !newVisite, 'col-md-12': newVisite }" v-if="selectedRow != null && comboTypeVisitesFiltered.length > 0">
+    <div :class="{ 'col-md-7': !newVisite, 'col-md-12': newVisite }" v-if="selectedRow != null">
       <div :class="listeVisites[selectedRow].id !== undefined ? 'notActive' : ''">
         <div class="row">
           <div class="col-md-6">
@@ -51,7 +51,7 @@
         <div class="row">
           <div class="col-md-6">
             <b-form-group label="Type" label-for="type" label-cols-md="3">
-              <b-form-select id="type" v-model="listeVisites[selectedRow].type" :options="comboTypeVisitesFiltered" size="sm" v-on:change="onTypeVisiteChange" invalid-feedback="Un type de visite doit être renseigné" :state="etats.type" required>
+              <b-form-select id="type" v-model="listeVisites[selectedRow].type" :options="getComboVisites(selectedRow)" size="sm" v-on:change="onTypeVisiteChange" invalid-feedback="Un type de visite doit être renseigné" :state="etats.type" required>
               </b-form-select>
             </b-form-group>
           </div>
@@ -623,6 +623,23 @@ export default {
       this.indexCritere = -1;
       this.critereSuivant();
     },
+
+    /**
+      * Retourne la combo à utiliser pour les types de visites
+      * @param selectedRow L'index de la visite
+      */
+    getComboVisites(selectedRow) {
+      var visite = this.listeVisites[selectedRow];
+
+      // Nouvelle visite : on retourne la combo des types filtrés selon les droits dont l'utilisateur dispose
+      if(visite != null && visite.id == undefined) {
+        return this.comboTypeVisitesFiltered;
+      }
+
+      // Ancienne visite: quelque soient les droits de l'utilisateur, on utilise la combo standart
+      return this.comboTypeVisites;
+    },
+
     checkFormValidity() {
       var regexDate = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
       var regexTime = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
