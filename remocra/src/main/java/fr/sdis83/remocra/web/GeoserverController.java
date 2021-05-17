@@ -59,6 +59,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.SocketTimeoutException;
 import java.net.URI;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -317,7 +318,7 @@ public class GeoserverController {
                 }
             }
 
-            InputStream is = srcResponse.getEntity().getContent();
+            InputStream is = new URL(targetURLWithFilter).openStream();
             OutputStream os = response.getOutputStream();
 
             try {
@@ -504,7 +505,7 @@ public class GeoserverController {
                 }
             }
 
-            InputStream is = srcResponse.getEntity().getContent();
+            InputStream is = new URL(targetURLWithFilter).openStream();
             OutputStream os = response.getOutputStream();
 
             try {
