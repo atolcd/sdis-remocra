@@ -17,6 +17,7 @@
         <div class="col-md-4">
           <p class="title">Disponibilité</p>
           <p v-if="data.hydrant.dispo_terrestre === 'DISPO'" class="bg-success rounded-lg dispo text-light font-weight-bolder">OUI</p>
+          <p v-else-if="data.hydrant.dispo_terrestre === 'NON_CONFORME'" class="bg-warning rounded-lg dispo dispoLg text-light font-weight-bolder">NON CONFORME</p>
           <p v-else class="bg-danger rounded-lg dispo text-light font-weight-bolder">NON</p>
         </div>
       </div>
@@ -80,7 +81,7 @@ export default {
     /**
      * Récupération des données depuis le serveur
      * La réponse est un String contenant le document XML de réponse
-     * Les données sont ensuite parsées en JSON 
+     * Les données sont ensuite parsées en JSON
      */
     loadData: function() {
       axios.get("/remocra/hydrantResume/" + this.hydrantRecord.id + "?useDefault=" + !this.useCustomResume).then(response => {
@@ -92,7 +93,7 @@ export default {
           if (this.data.anomalie && !Array.isArray(this.data.anomalie)) {
             this.data.anomalie = [this.data.anomalie];
           }
-          // Création d'un composant à la volée. Le HTML sera compilé comme template Vue.js 
+          // Création d'un composant à la volée. Le HTML sera compilé comme template Vue.js
           this.customResumeComponent = Vue.component('resume', {
             template: this.customResumeHTMLBuffer,
             data: () => {
@@ -128,5 +129,9 @@ export default {
   width: 50px;
   padding: 3px 10px 3px 10px;
   text-align: center
+}
+
+.dispoLg {
+  width: 120px !important;
 }
 </style>
