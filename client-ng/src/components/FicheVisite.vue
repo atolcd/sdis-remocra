@@ -239,8 +239,7 @@ export default {
       if (!this.listeVisites[this.selectedRow].type) {
         return true;
       }
-      return this.hydrant.code != "PIBI" || this.selectedRow == null || (this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CTRL" && this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CREA" && this.typesVisites[
-        this.listeVisites[this.selectedRow].type].code != "RECEP");
+      return this.hydrant.code != "PIBI" || this.selectedRow == null || (this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CTRL" && this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CREA");
     },
     /** Le bouton "Nouvelle visite" est désactivé ou non en fonction des droits de l'utilisateur
      * Les droits sont en fonction des types de visite qui dépend du nombre de visites déjà effectuées
