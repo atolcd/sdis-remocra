@@ -129,6 +129,21 @@ Les caracteristiques suivantes sont valables pour les différents fichiers ci-de
 |nom|Texte|Oui|Unique|Libellé affiché en liste déroulante dans les interfaces de Remocra
 |====================
 
+===== Matériaux des canalisation du réseau des PIBI
+
+[width="75%" options="no-header"cols="<s,"]
+|====================
+|Nom du fichier à fournir|type_hydrant_canalisation.csv
+|Description|Liste des matériaux des réseaux d'eau pour un PI/BI
+|====================
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Contraintes|Description
+|code|Texte|Oui|Unique|Code utilisé dans les échanges
+|nom|Texte|Oui|Unique|Libellé affiché en liste déroulante dans les interfaces de Remocra
+|====================
+
 ===== Type de matériau pour les PENA
 
 [width="75%" options="no-header"cols="<s,"]
@@ -156,6 +171,20 @@ Les caracteristiques suivantes sont valables pour les différents fichiers ci-de
 |====================
 |Nom du champ|Type|Obligatoire|Contraintes|Description
 |code|Texte|Oui|Unique|Code utilisé dans les échanges
+|nom|Texte|Oui|Unique|Libellé affiché en liste déroulante dans les interfaces de Remocra
+|====================
+
+===== Type des aires d'aspiration pour les PENA
+
+[width="75%" options="no-header"cols="<s,"]
+|====================
+|Nom du fichier à fournir|type_hydrant_aspiration.csv
+|Description|Liste des types d'aire d'aspiration
+|====================
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Contraintes|Description
 |nom|Texte|Oui|Unique|Libellé affiché en liste déroulante dans les interfaces de Remocra
 |====================
 
@@ -340,6 +369,38 @@ include::references/type_hydrant_anomalie_impose.csv[]
 |incert|Entier||0 = Non, 1 = Oui|Indique si la ressource en eau est incertaine
 |====================
 
+===== Aires d'aspiration - Fichier cartographique
+
+[width="50%"options="no-header" cols="<s,"]
+|====================
+|Type de fichier|Fichier de forme ESRI Shapefile (.shp, .shx, .dbf)
+|Nom du fichier à fournir|pena.shp
+|Encodage (DBF)|UTF-8
+|====================
+
+====== Géométrie
+
+[width="50%"options="no-header" cols="<s,"]
+|====================
+|Type de géométrie|Ponctuel
+|Dimension|2D
+|Système de coordonnées|Lambert 93 (EPSG:2154)
+|====================
+
+====== Attributs
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Contraintes|Description
+|num|Texte|Oui|Unicite tous PEI confondus |Numéro complet du PEI. Ex : 77402_0045.
+|numero|Texte|||Numéro de l'aire d'aspiration
+|norm|Booléen|||L'aire d'aspiration est normalisée
+|haut|Booléen|||L'aire d'aspiration est à une hauteur > 3m
+|t_asp|Texte|||Code du type d'aire d'aspiration
+|dep|Booléen|||L'aire d'aspiration est déportée
+|pena|Texte|||Numéro du PENA de l'aire d'aspiration
+|====================
+
 ===== Association des anomalies aux PEI
 
 [width="75%" options="no-header"cols="<s,"]
@@ -371,6 +432,64 @@ REMOCRA permet de gérer des tournées (groupes de PEI) par organisme. Par exemp
 |code_organisme|Texte|Oui||Organisme auquel est rattachée la tournée. Utiliser le code de l'organisme présent dans le fichier organisme.csv
 |numero_tournee|Entier|Oui||Numéro de tournée associant les PEI entre eux
 |nom_tournee|Texte|Oui||Nom de tournée associant les PEI entre eux
+|====================
+
+===== Gestionnaires
+[width="75%" options="no-header"cols="<s,"]
+|====================
+|Nom du fichier à fournir|gestionnaire.csv
+|Description|Gestionnaires des PEI privés
+|====================
+
+REMOCRA permet d'associer des gestionnaires aux PEI privés.
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Contraintes|Description
+|code|Texte|Oui||Numéro SIREN de l'organisme
+|nom|Texte|Oui||Nom du gestionnaire
+|====================
+
+===== Type de contact
+[width="75%" options="no-header"cols="<s,"]
+|====================
+|Nom du fichier à fournir|type_contact.csv
+|Description|Type de contact pour les gestionnaires et les organismes
+|====================
+
+REMOCRA permet des contacts aux gestionnaires et aux organismes. Il est possible de qualifier ses contacts.
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Contraintes|Description
+|code|Texte|Oui||Code du type de contact.
+|nom|Texte|Oui||Nom du type de contact
+|====================
+
+===== Contact
+[width="75%" options="no-header"cols="<s,"]
+|====================
+|Nom du fichier à fournir|contact_gestionnaire.csv
+|Description|Contact des gestionnaires
+|====================
+
+[width="100%",options="header"]
+|====================
+|Nom du champ|Type|Obligatoire|Contraintes|Description
+|code|Texte|Oui||Code du gestionnaire.
+|fonction|Texte|Non||Fonction du contact
+|civilite|Texte|Oui||Civilité du contact (M ou MME)
+|nom|Texte|Oui||Nom du contact
+|prenom|Texte|Oui||Prénom du contact
+|numero_voie|Texte|Non||Numéro de voie de l'adresse du contact
+|suffixe_voie|Texte|Non||Suffixe de la voie de l'adresse (BIS,TER,A)
+|lieu_dit|Texte|Non||Lieu-dit du contact
+|voie|Texte|Oui||Voie de l'adresse du contact
+|code_postal|Texte|Oui||Code postal de l'adresse du contact
+|ville|Texte|Oui||Ville du contact
+|pays|Texte|Oui||Pays du contact
+|telephone|Texte|Non||Téléphone du contact
+|email|Texte|Oui||Email du contact
 |====================
 
 === Paramétrage des règles de calcul des disponibilités des PEI

@@ -121,6 +121,7 @@ L'organisme constitue une structure utilisatrice de REMOCRA à travers les utili
 |type_organisme|Texte|Oui|Valeurs admises * :  CONSEIL-GENERAL, DDT, COMMUNE, CT, CIS, SDIS, GEST-HYDRANT, MILITAIRE, ONF, GENDARMERIE, POLICE, ETSPUBLIC, PREFECTURE 
 |Code du type d'organisme
 |email_contact|Texte|||Email utilisé par défaut pour la notification des courriers DECI. Doit donc être renseigné pour les organismes du type "COMMUNE" ou "CT" si ces fonctionnalités sont exploitées.
+|parent|Texte|Non||Code de l'organisme parent.
 |====================
 
 _*Utiliser prioritairement ces valeurs. Créer de nouveaux codes pour les types d'organisme absents._
