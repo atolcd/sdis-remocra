@@ -522,7 +522,7 @@ ORDER BY hydrant</sql>
    traca.auteur_modification AS created_user, to_char(h.date_modification, &apos;DD&#47;MM&#47;YYYY&apos;) AS last_edited_date,
    COALESCE(u.nom,&apos; &apos;) || &apos; &apos; || COALESCE(u.prenom, &apos; &apos;) AS last_edited_user, to_char(now(), &apos;DD&#47;MM&#47;YYYY&apos;) AS Date_Extraction,
    COALESCE ((SELECT this.nom FROM remocra.hydrant_indispo_temporaire as hit INNER JOIN remocra.hydrant_indispo_temporaire_hydrant hith ON (hit.id=hith.indisponibilite) INNER JOIN remocra.type_hydrant_indispo_statut this ON (this.id=hit.statut) WHERE hith.hydrant=h.id ORDER BY date_fin DESC, statut LIMIT 1), &apos;&apos;) as ETAT_TMP_PEI,
-   array_to_string(array(  (SELECT &apos;Du &apos; || to_char(date_prev_debut, &apos;DD&#47;MM&#47;YYYY&apos;) || &apos; au &apos; || to_char(date_prev_fin, &apos;DD&#47;MM&#47;YYYY&apos;) FROM remocra.hydrant_indispo_temporaire as hit INNER JOIN remocra.hydrant_indispo_temporaire_hydrant hith ON (hit.id=hith.indisponibilite) WHERE hith.hydrant=h.id AND hit.statut = 2 ORDER BY date_prev_debut)  ),&apos;,&apos;) as DATES_TMP_PREVU,
+   &apos;&apos; as DATES_TMP_PREVU,
    (SELECT to_char(min(date_debut), &apos;DD&#47;MM&#47;YYYY&apos;) FROM remocra.hydrant_indispo_temporaire as hit INNER JOIN remocra.hydrant_indispo_temporaire_hydrant hith ON (hit.id=hith.indisponibilite) WHERE hith.hydrant=h.id AND hit.statut = 1) as DATE_DEB_TMP,
    (SELECT COUNT(0) FROM remocra.hydrant_indispo_temporaire as hit INNER JOIN remocra.hydrant_indispo_temporaire_hydrant hith ON (hit.id=hith.indisponibilite) WHERE hith.hydrant=h.id AND hit.statut = 1) as NBR_TMP_ACTIF   
 FROM remocra.hydrant h
@@ -545,7 +545,7 @@ SELECT DISTINCT ON (h.id) h.id, substr(substr(h.numero,1,5) || &apos;_&apos; || 
    traca.auteur_modification AS created_user, to_char(h.date_modification, &apos;DD&#47;MM&#47;YYYY&apos;) AS last_edited_date,
    COALESCE(u.nom,&apos; &apos;) || &apos; &apos; || COALESCE(u.prenom, &apos; &apos;) AS last_edited_user, to_char(now(), &apos;DD&#47;MM&#47;YYYY&apos;) AS Date_Extraction,
    COALESCE ((SELECT this.nom FROM remocra.hydrant_indispo_temporaire as hit INNER JOIN remocra.hydrant_indispo_temporaire_hydrant hith ON (hit.id=hith.indisponibilite) INNER JOIN remocra.type_hydrant_indispo_statut this ON (this.id=hit.statut) WHERE hith.hydrant=h.id ORDER BY date_fin DESC, statut LIMIT 1), &apos;&apos;) as ETAT_TMP_PEI,
-   array_to_string(array(   (SELECT &apos;Du &apos; || to_char(date_prev_debut, &apos;DD&#47;MM&#47;YYYY&apos;) || &apos; au &apos; || to_char(date_prev_fin, &apos;DD&#47;MM&#47;YYYY&apos;) FROM remocra.hydrant_indispo_temporaire as hit INNER JOIN remocra.hydrant_indispo_temporaire_hydrant hith ON (hit.id=hith.indisponibilite) WHERE hith.hydrant=h.id AND hit.statut = 2 ORDER BY date_prev_debut)  ),&apos;,&apos;) as DATES_TMP_PREVU,
+   &apos;&apos; as DATES_TMP_PREVU,
    (SELECT to_char(min(date_debut), &apos;DD&#47;MM&#47;YYYY&apos;) FROM remocra.hydrant_indispo_temporaire as hit INNER JOIN remocra.hydrant_indispo_temporaire_hydrant hith ON (hit.id=hith.indisponibilite) WHERE hith.hydrant=h.id AND hit.statut = 1) as DATE_DEB_TMP,
    (SELECT COUNT(0) FROM remocra.hydrant_indispo_temporaire as hit INNER JOIN remocra.hydrant_indispo_temporaire_hydrant hith ON (hit.id=hith.indisponibilite) WHERE hith.hydrant=h.id AND hit.statut = 1) as NBR_TMP_ACTIF
 FROM remocra.hydrant h
