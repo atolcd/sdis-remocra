@@ -71,7 +71,7 @@
 pour insertion du traitement</note>
       <xloc>288</xloc>
       <yloc>32</yloc>
-      <width>160</width>
+      <width>182</width>
       <heigth>42</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -93,7 +93,7 @@ pour insertion du traitement</note>
 modèle de courrier pour le traitement</note>
       <xloc>80</xloc>
       <yloc>416</yloc>
-      <width>210</width>
+      <width>238</width>
       <heigth>42</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -115,7 +115,7 @@ modèle de courrier pour le traitement</note>
 utilisateur émetteur du courrier</note>
       <xloc>688</xloc>
       <yloc>704</yloc>
-      <width>206</width>
+      <width>229</width>
       <heigth>42</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -137,7 +137,7 @@ utilisateur émetteur du courrier</note>
 des paramètres</note>
       <xloc>688</xloc>
       <yloc>240</yloc>
-      <width>169</width>
+      <width>187</width>
       <heigth>42</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -158,7 +158,7 @@ des paramètres</note>
       <note>Insertion des paramètres du traitement</note>
       <xloc>720</xloc>
       <yloc>32</yloc>
-      <width>216</width>
+      <width>249</width>
       <heigth>26</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -180,7 +180,7 @@ des paramètres</note>
 de mise en avant des ROI et de suppression</note>
       <xloc>848</xloc>
       <yloc>416</yloc>
-      <width>241</width>
+      <width>275</width>
       <heigth>42</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -605,8 +605,8 @@ WHERE nom = ?
       <fail_on_multiple>N</fail_on_multiple>
       <eat_row_on_failure>N</eat_row_on_failure>
       <key>
-        <name>fichier_ott</name>
-        <field>modele_ott</field>
+        <name>code</name>
+        <field>code</field>
         <condition>=</condition>
         <name2/>
       </key>
@@ -637,7 +637,7 @@ WHERE nom = ?
            </partitioning>
     <fields>
       <field>
-        <name>fichier_ott</name>
+        <name>code</name>
         <variable>${PDI_DECI_ROI_SUPPR_COURRIER}</variable>
         <type>String</type>
         <format/>

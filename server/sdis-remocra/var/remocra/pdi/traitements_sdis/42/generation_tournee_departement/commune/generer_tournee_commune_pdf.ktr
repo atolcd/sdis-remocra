@@ -202,14 +202,14 @@
            </partitioning>
     <connection>Remocra (Postgis)</connection>
     <sql>SELECT
-	&apos;${PDI_CHEMIN_MODELES}&#47;courrier&#47;sdis&#47;${PDI_CODE_SDIS}&#47;&apos; || cm.modele_ott AS fichier_modele_ott,
+	cm.modele_ott AS fichier_modele_ott,
 	&apos;${PDI_CHEMIN_TOURNEES}&#47;&apos; || to_char(now(), &apos;YYYYMMDD&apos;) || &apos;&#47;communes&#47;&apos; || c.nom || &apos;_TOURNEE.ODT&apos; AS fichier_odt,
 	&apos;${PDI_CHEMIN_TOURNEES}&#47;&apos; || to_char(now(), &apos;YYYYMMDD&apos;) || &apos;&#47;communes&#47;&apos; || c.nom || &apos;_TOURNEE.PDF&apos; AS fichier_pdf
 FROM
 	${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.courrier_modele cm
 	JOIN remocra.commune c ON 1=1 
 WHERE
-	cm.id = ${MODELE_COURRIER_COMMUNE_ID} AND c.id = ${COMMUNE_ID}</sql>
+	cm.code = &apos;${MODELE_COURRIER_COMMUNE_CODE}&apos; AND c.id = ${COMMUNE_ID}</sql>
     <limit>0</limit>
     <lookup/>
     <execute_each_row>N</execute_each_row>

@@ -74,7 +74,7 @@ indispo sur l&apos;interval définit
 par le paramètre PDI_INDISPO_INTERVAL</note>
       <xloc>16</xloc>
       <yloc>240</yloc>
-      <width>227</width>
+      <width>255</width>
       <heigth>74</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -96,7 +96,7 @@ par le paramètre PDI_INDISPO_INTERVAL</note>
 si il y a délégation</note>
       <xloc>208</xloc>
       <yloc>112</yloc>
-      <width>208</width>
+      <width>231</width>
       <heigth>42</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -120,7 +120,7 @@ Sinon, on récupère les infos de
  l&apos;organisme délégué unique</note>
       <xloc>416</xloc>
       <yloc>240</yloc>
-      <width>247</width>
+      <width>274</width>
       <heigth>74</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -142,7 +142,7 @@ Sinon, on récupère les infos de
 pour insertion du traitement</note>
       <xloc>896</xloc>
       <yloc>112</yloc>
-      <width>160</width>
+      <width>182</width>
       <heigth>42</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -164,7 +164,7 @@ pour insertion du traitement</note>
 pour le traitement</note>
       <xloc>864</xloc>
       <yloc>288</yloc>
-      <width>227</width>
+      <width>252</width>
       <heigth>42</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -186,7 +186,7 @@ pour le traitement</note>
 modèle de courrier pour le traitement</note>
       <xloc>704</xloc>
       <yloc>496</yloc>
-      <width>210</width>
+      <width>238</width>
       <heigth>42</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -208,7 +208,7 @@ modèle de courrier pour le traitement</note>
 des organisme pour le traitement</note>
       <xloc>896</xloc>
       <yloc>592</yloc>
-      <width>238</width>
+      <width>265</width>
       <heigth>42</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -230,7 +230,7 @@ des organisme pour le traitement</note>
 utilisateur émetteur du courrier</note>
       <xloc>1248</xloc>
       <yloc>880</yloc>
-      <width>206</width>
+      <width>229</width>
       <heigth>42</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -252,7 +252,7 @@ utilisateur émetteur du courrier</note>
 des paramètres</note>
       <xloc>1296</xloc>
       <yloc>320</yloc>
-      <width>169</width>
+      <width>187</width>
       <heigth>42</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -273,7 +273,7 @@ des paramètres</note>
       <note>Insertion des paramètres du traitement</note>
       <xloc>1328</xloc>
       <yloc>112</yloc>
-      <width>216</width>
+      <width>249</width>
       <heigth>26</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -295,7 +295,7 @@ des paramètres</note>
 de mise en avant des nouveau PEI indispo</note>
       <xloc>1472</xloc>
       <yloc>688</yloc>
-      <width>232</width>
+      <width>265</width>
       <heigth>42</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
@@ -916,8 +916,8 @@ WHERE nom = ?
       <fail_on_multiple>N</fail_on_multiple>
       <eat_row_on_failure>N</eat_row_on_failure>
       <key>
-        <name>fichier_ott</name>
-        <field>modele_ott</field>
+        <name>code</name>
+        <field>code</field>
         <condition>=</condition>
         <name2/>
       </key>
@@ -994,7 +994,7 @@ WHERE nom = ?
            </partitioning>
     <fields>
       <field>
-        <name>fichier_ott</name>
+        <name>code</name>
         <variable>${PDI_INDISPO_COURRIER}</variable>
         <type>String</type>
         <format/>

@@ -107,7 +107,7 @@
 FROM
 	${PDI_POSTGRESQL_NOM_SCHEMA_REMOCRA}.courrier_modele
 WHERE
-	id = ${MODELE_COURRIER_TOURNEE_ID}</sql>
+	code = &apos;${MODELE_COURRIER_TOURNEE_CODE}&apos;</sql>
     <limit>0</limit>
     <lookup/>
     <execute_each_row>N</execute_each_row>
