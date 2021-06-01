@@ -23,7 +23,7 @@
                  label-cols-lg="3"
                  label="Numéro"
                  label-for="numero"
-                 invalid-feedback="Numéro manquant ou déjà attribué"
+                 :invalid-feedback="numeroErrorMsg"
                  >
                   <b-form-input id="numero" v-model="numero" :state="etats.numero" required :readOnly="etude !== null"></b-form-input>
                 </b-form-group>
@@ -201,7 +201,8 @@ export default {
         numero: null,
         nom: null,
         description: null
-      }
+      },
+      numeroErrorMsg: null
     }
   },
 
@@ -243,6 +244,7 @@ export default {
         nom: null,
         description: null
       };
+      this.numeroErrorMsg = null;
 
       this.disableAjoutCommuneBouton = true;
       this.showInvalidCommune = false;
@@ -324,7 +326,10 @@ export default {
       this.etats.description = this.description && this.description.length > 0 ? 'valid' : 'invalid';
 
       // On vérifie que le numéro de l'étude n'est pas un doublon (création seulement)
-      if (!this.etude && this.numero && this.numero.length > 0) {
+      if(!this.etude && (this.numero == null || this.numero.length == 0)) {
+        this.numeroErrorMsg = "Numéro manquant";
+      }
+      else if (!this.etude && this.numero && this.numero.length > 0) {
         return axios.get('/remocra/etudes/checknumero.json?numero='+this.numero).catch(() => {
           this.$notify({
             group: 'remocra',
@@ -335,6 +340,7 @@ export default {
         }).then((response) => {
           if(!response.data || !response.data.data) {
             this.etats.numero = 'invalid';
+            this.numeroErrorMsg = "Numéro déjà attribué";
             return !this.hasInvalidState(this.etats);
           }
           this.etats.numero = 'valid';
