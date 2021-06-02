@@ -121,6 +121,18 @@ Exemples :
 * [.underline]#21231_1893# : PEI numéro 1893 de la commune de Dijon
 * [.underline]#21295_0088# : PEI numéro 88 de la commune de Gevrey-Chambertin
 
+=== 49 ===
+
+Méthode :
+
+* *<numéro interne>*
+* <numéro interne> sur 5 chiffres
+
+Exemples :
+
+* [.underline]#74298#
+* [.underline]#1265#
+
 == Numéro interne ==
 
 === 77 ===
@@ -138,3 +150,7 @@ Exemples :
 === 78 ===
 
 * Dernier numéro disponible au-dessous de 100000 au sein de la commune
+
+=== 49 ===
+
+* Dernier numéro disponible sans aucune contrainte (commun à tout le département)

@@ -12,7 +12,7 @@ import javax.persistence.Query;
 public class NumeroUtil {
 
     public enum MethodeNumerotation {
-        M_09, M_77, M_83, M_86, M_89, M_42, M_78, M_66, M_21
+        M_09, M_77, M_83, M_86, M_89, M_42, M_78, M_66, M_21, M_49
     }
 
     public static MethodeNumerotation getHydrantNumerotationMethode() {
@@ -30,7 +30,7 @@ public class NumeroUtil {
     }
 
     public enum MethodeNumerotationInterne {
-        M_77, M_83, M_86, M_42, M_78
+        M_77, M_83, M_86, M_42, M_78, M_49
     }
 
     public static MethodeNumerotationInterne getHydrantNumerotationInterneMethode() {
@@ -76,6 +76,8 @@ public class NumeroUtil {
                 return NumeroUtil.computeNumero66(hydrant);
             case M_21:
                 return NumeroUtil.computeNumero21(hydrant);
+            case M_49:
+                return NumeroUtil.computeNumero49(hydrant);
             default:
                 return NumeroUtil.computeNumero83(hydrant);
         }
@@ -234,6 +236,17 @@ public class NumeroUtil {
         return sb.append(String.format("_%04d", hydrant.getNumeroInterne())).toString();
     }
 
+    /**
+     * <code <numéro interne> (sans contrainte)
+     * Exemple : 7280
+     *
+     * @param hydrant
+     * @return
+     */
+    protected static String computeNumero49(Hydrant hydrant) {
+        return hydrant.getNumeroInterne().toString();
+    }
+
     // ******************************
     // ** Zone spéciale
     // ******************************
@@ -302,6 +315,8 @@ public class NumeroUtil {
                 return NumeroUtil.computeNumeroInterne86(hydrant);
             case M_78:
                 return NumeroUtil.computeNumeroInterne78(hydrant);
+            case M_49:
+                return NumeroUtil.computeNumeroInterne49(hydrant);
             default:
                 return NumeroUtil.computeNumeroInterne83(hydrant);
         }
@@ -428,5 +443,25 @@ public class NumeroUtil {
             numInterne = 99999;
         }
         return numInterne;
+    }
+
+    /**
+     * Premier numéro interne disponible, sans remplissage
+     */
+    public static Integer computeNumeroInterne49(Hydrant hydrant) {
+        // Retour du numéro interne s'il existe
+        if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
+            return hydrant.getNumeroInterne();
+        }
+        Integer numInterne = null;
+        try {
+            // Dernier numéro interne dispo sans contrainte particulière
+            Query query = Hydrant.entityManager().createNativeQuery("select max(numero_interne) from remocra.hydrant");
+            numInterne = Integer.valueOf(query.getSingleResult().toString()) + 1;
+        } catch (Exception e) {
+            numInterne = 99999;
+        }
+        return numInterne;
+
     }
 }
