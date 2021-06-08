@@ -54,7 +54,7 @@ INSERT INTO remocra.type_rci_risque_meteo(code,nom) VALUES ('TS','Très sévère
 INSERT INTO remocra.type_rci_risque_meteo(code,nom) VALUES ('E','Extrème');
 
 alter table remocra.rci add column risque_meteo bigint;
-alter table only remocra.rci add constraint fk_rci_risque_meteo foreign key (risque_meteo) references type_rci_risque_meteo(id) match simple on update cascade on delete cascade;
+alter table only remocra.rci add constraint fk_rci_risque_meteo foreign key (risque_meteo) references remocra.type_rci_risque_meteo(id) match simple on update cascade on delete cascade;
 
 
 

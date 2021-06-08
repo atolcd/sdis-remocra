@@ -68,7 +68,7 @@ INSERT
     OR
 UPDATE
     ON
-    remocra.hydrant_pena FOR EACH ROW EXECUTE PROCEDURE trg_calcul_indispo();
+    remocra.hydrant_pena FOR EACH ROW EXECUTE PROCEDURE remocra.trg_calcul_indispo();
 
 -- Contenu réel du patch fin
 --------------------------------------------------
