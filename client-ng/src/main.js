@@ -18,9 +18,7 @@ import TransfertsAutomatises from './components/TransfertsAutomatises.vue'
 import BootstrapVue from 'bootstrap-vue'
 import Courrier from './components/Courrier'
 import rate from 'vue-rate'
-import {
-  Popover
-} from 'bootstrap-vue/es/components'
+import { BPopover } from 'bootstrap-vue'
 import InputTag from 'vue-input-tag'
 import Notifications from 'vue-notification'
 import velocity from 'velocity-animate'
@@ -37,12 +35,13 @@ Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
 Vue.use(rate)
-Vue.use(Popover)
 Vue.use(VModal)
 Vue.use(Notifications, {
   velocity
 })
 Vue.component('input-tag', InputTag)
+Vue.component('b-popover', BPopover)
+
 
 // Crise
 const criseBuildMap = function(id, idCrise) {
