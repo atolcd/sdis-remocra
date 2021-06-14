@@ -4,6 +4,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantPibi;
 import fr.sdis83.remocra.util.JSONUtil;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -67,10 +68,9 @@ public class HydrantPibiRepository {
 
     // On met en place le jumelage
     if(pibi.getJumele() != null) {
-
       // Si le PEI était déjà jumellé, on retire le jumelage
       context.update(HYDRANT_PIBI)
-        .set(HYDRANT_PIBI.JUMELE, DSL.val(null))
+        .set(HYDRANT_PIBI.JUMELE, DSL.val(null, SQLDataType.BIGINT))
         .where(HYDRANT_PIBI.JUMELE.eq(pibi.getJumele()))
         .execute();
 
