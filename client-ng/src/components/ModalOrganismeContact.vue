@@ -203,7 +203,11 @@ export default {
         //modification
         this.idOrganisme = id;
         this.nomOrganisme = nom;
-        axios.get("/remocra/contact/" + id).then(response => {
+        axios.get("/remocra/contact/" + id, {
+          params: {
+            appartenance: 'ORGANISME'
+          }
+        }).then(response => {
           //La liste des roles corresponds aux ids
           this.contacts = response.data.data
           _.forEach(this.contacts, contact => {
@@ -356,6 +360,7 @@ export default {
       this.appartenance = this.nomOrganisme
       this.index = this.selected[0].index
       this.idContact = this.selected[0].id
+      this.numeroVoie = this.selected[0].numeroVoie
       this.suffixeVoie = this.selected[0].suffixeVoie
       this.voie = this.selected[0].voie
       this.lieuDit = this.selected[0].lieuDit
