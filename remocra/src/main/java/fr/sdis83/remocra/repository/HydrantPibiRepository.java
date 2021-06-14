@@ -94,6 +94,7 @@ public class HydrantPibiRepository {
       .set(HYDRANT_PIBI.RESERVOIR, pibi.getReservoir())
       .set(HYDRANT_PIBI.SURPRESSE, pibi.getSurpresse())
       .set(HYDRANT_PIBI.ADDITIVE, pibi.getAdditive())
+      .set(HYDRANT_PIBI.DIAMETRE_CANALISATION, pibi.getDiametreCanalisation())
       .where(HYDRANT_PIBI.ID.eq(pibi.getId()))
       .execute();
 
