@@ -110,25 +110,25 @@
                      {{item.pressionNM1}}
                    </td>
                  </tr>
-                 <tr>
-                 <td>
-                  {{"Moyene"}}
-                 </td>
-                 <td>
-                  {{moyenneDebitNM1}}
-                 </td>
-                 <td>
-                  {{moyennePressionDynNM1}}
-                 </td>
-                 <td>
-                  {{moyenneDebitMaxNM1}}
-                 </td>
-                 <td>
-                  {{moyennePressionDynDebNM1}}
-                 </td>
-                 <td>
-                  {{moyennePressionNM1}}
-                 </td>
+                 <tr v-if="items.length > 0">
+                   <td>
+                    {{"Moyene"}}
+                   </td>
+                   <td>
+                    {{moyenneDebitNM1}}
+                   </td>
+                   <td>
+                    {{moyennePressionDynNM1}}
+                   </td>
+                   <td>
+                    {{moyenneDebitMaxNM1}}
+                   </td>
+                   <td>
+                    {{moyennePressionDynDebNM1}}
+                   </td>
+                   <td>
+                    {{moyennePressionNM1}}
+                   </td>
                  </tr>
                </tbody>
              </table>
