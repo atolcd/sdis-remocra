@@ -14,8 +14,8 @@
         <div class="row">
           <div class="col-md-12">
             <button class="btn btn-outline-primary" @click.prevent @click="createContact">Ajouter</button>
-            <button class="btn btn-outline-info suppr" @click.prevent @click="modifContact">Modifier</button>
-            <button class="btn btn-outline-danger suppr" @click.prevent @click="deleteContact">Supprimer</button>
+            <button class="btn btn-outline-info suppr" @click.prevent @click="modifContact" :disabled="nothingSelected">Modifier</button>
+            <button class="btn btn-outline-danger suppr" @click.prevent @click="deleteContact" :disabled="nothingSelected">Supprimer</button>
           </div>
         </div>
       </b-form-group>
@@ -193,6 +193,16 @@ export default {
       totalRows: 1
     }
   },
+
+  computed: {
+    /**
+      * Retourne TRUE si aucune ligne n'est sélectionnée
+      */
+    nothingSelected() {
+      return this.selected === null || this.selected.length === 0;
+    }
+  },
+
   mounted: function() {
     //la taille du tableau
     this.totalRows = 2
