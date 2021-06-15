@@ -55,15 +55,14 @@ public class PeiUseCase {
   }
 
   public PeiSpecifiqueModel getPeiSpecifique(String numero) throws ResponseException {
-    if(this.isPeiAccessible(numero)) {
-      PeiSpecifiqueModel pei = peiRepository.getPeiSpecifique(numero);
-      if(pei == null) {
-        throw new ResponseException(Response.Status.BAD_REQUEST, "1000 : Le numéro spécifié ne correspond à aucun hydrant");
-      }
-      return peiRepository.getPeiSpecifique(numero);
-    } else {
-      throw new ResponseException(Response.Status.FORBIDDEN, "1300 : Le numéro spécifié ne correspond à aucun hydrant qui vous est accessible");
+    if(!this.peiRepository.peiExist(numero)) {
+     throw new ResponseException(Response.Status.BAD_REQUEST, "1000 : Le numéro spécifié ne correspond à aucun hydrant");
     }
+
+    if(!this.isPeiAccessible(numero)) {
+       throw new ResponseException(Response.Status.FORBIDDEN, "1300 : Le numéro spécifié ne correspond à aucun hydrant qui vous est accessible");
+    }
+    return peiRepository.getPeiSpecifique(numero);
   }
 
   public String getPeiCaracteristiques(String numero) throws ResponseException, JsonProcessingException {
