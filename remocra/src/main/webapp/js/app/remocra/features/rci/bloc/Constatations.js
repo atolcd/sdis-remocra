@@ -430,7 +430,6 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Constatations', {
         itemId : 'forceVent',
         name : 'forceVent'
     }, {
-        colspan : 2,
         xtype : 'combo',
         fieldLabel : 'Indice ROTHERMEL',
         store : new Ext.data.SimpleStore({
@@ -446,6 +445,18 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Constatations', {
         queryMode : 'local',
         itemId : 'indiceRothermel',
         name : 'indiceRothermel'
+    }, {
+        xtype : 'combo',
+        fieldLabel : 'Risque Météo',
+        store : 'TypeRciRisqueMeteo',
+        displayField : 'nom',
+        valueField : 'id',
+        forceSelection : true,
+        editable : false,
+        queryMode : 'local',
+        itemId : 'risqueMeteo',
+        name : 'risqueMeteo',
+        allowBlank : false
     }, {
         colspan : 2,
         xtype : 'displayfield',
@@ -505,17 +516,5 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Constatations', {
         queryMode : 'local',
         itemId : 'gelLieux',
         name : 'gelLieux'
-    }, {
-        xtype : 'combo',
-        fieldLabel : 'Risque Météo',
-        store : 'TypeRciRisqueMeteo',
-        displayField : 'nom',
-        valueField : 'id',
-        forceSelection : true,
-        editable : false,
-        queryMode : 'local',
-        itemId : 'risqueMeteo',
-        name : 'risqueMeteo',
-        allowBlank : false
-    }    ]
+    }]
 });
