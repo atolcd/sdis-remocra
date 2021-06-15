@@ -394,6 +394,7 @@ export default {
       this.appartenance = this.nomGestionnaire
       this.index = this.selected[0].index
       this.idContact = this.selected[0].id
+      this.numeroVoie = this.selected[0].numeroVoie
       this.suffixeVoie = this.selected[0].suffixeVoie
       this.voie = this.selected[0].voie
       this.lieuDit = this.selected[0].lieuDit
