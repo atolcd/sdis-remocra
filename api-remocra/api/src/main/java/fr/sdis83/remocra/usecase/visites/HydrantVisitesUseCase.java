@@ -8,6 +8,7 @@ import fr.sdis83.remocra.authn.UserInfo;
 import fr.sdis83.remocra.db.model.tables.pojos.Hydrant;
 import fr.sdis83.remocra.db.model.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.repository.HydrantVisitesRepository;
+import fr.sdis83.remocra.repository.PeiRepository;
 import fr.sdis83.remocra.usecase.pei.PeiUseCase;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
 import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteForm;
@@ -44,6 +45,9 @@ public class HydrantVisitesUseCase {
   HydrantVisitesRepository hydrantVisitesRepository;
 
   @Inject
+  PeiRepository peiRepository;
+
+  @Inject
   PeiUseCase peiUseCase;
 
   @Inject @CurrentUser
@@ -56,10 +60,23 @@ public class HydrantVisitesUseCase {
         this.context = context;
     }
 
-  public List<HydrantVisiteModel> getAll(String numero, String contexte, String dateString, Boolean derniereOnly, Integer start, Integer limit) throws ResponseException, IOException {
-    if(!this.peiUseCase.isPeiAccessible(numero)) {
-      throw new ResponseException(Response.Status.FORBIDDEN, "1300 : L'hydrant spécifié ne vous est pas accessible");
+  /**
+   * Valide les droits
+   * @param numero
+   * @throws ResponseException
+   */
+  private void checkPeiValidity(String numero, boolean modificationEnabled) throws ResponseException {
+    if(!this.peiRepository.peiExist(numero)) {
+     throw new ResponseException(Response.Status.BAD_REQUEST, "1000 : Le numéro spécifié ne correspond à aucun hydrant");
     }
+
+    if((!this.peiUseCase.userCanEditPei(numero) && modificationEnabled) || !this.peiUseCase.isPeiAccessible(numero)) {
+       throw new ResponseException(Response.Status.FORBIDDEN, "1300 : Le numéro spécifié ne correspond à aucun hydrant qui vous est accessible");
+    }
+  }
+
+  public List<HydrantVisiteModel> getAll(String numero, String contexte, String dateString, Boolean derniereOnly, Integer start, Integer limit) throws ResponseException, IOException {
+    this.checkPeiValidity(numero, false);
 
     Date date = null;
     if(dateString != null) {
@@ -77,18 +94,15 @@ public class HydrantVisitesUseCase {
   }
 
   public String getHydrantVisiteSpecifique(String numero, String idVisite) throws IOException, ResponseException {
-    if(!this.peiUseCase.isPeiAccessible(numero)) {
-      throw new ResponseException(Response.Status.FORBIDDEN, "1300 : L'hydrant spécifié ne vous est pas accessible");
-    }
+    this.checkPeiValidity(numero, false);
     return this.hydrantVisitesRepository.getHydrantVisiteSpecifique(numero, idVisite);
   }
 
 
   @Transactional
   public HydrantVisite addVisite(String numero, HydrantVisiteForm form) throws ResponseException {
-    if(!this.peiUseCase.isPeiAccessible(numero)) {
-      throw new ResponseException(Response.Status.FORBIDDEN, "1300 : L'hydrant spécifié ne vous est pas accessible");
-    }
+
+    this.checkPeiValidity(numero, true);
 
     try {
 
@@ -310,9 +324,7 @@ public class HydrantVisitesUseCase {
   @Transactional
   public void editVisite(String numero, String idVisite, HydrantVisiteSpecifiqueForm form) throws ResponseException {
 
-    if(!this.peiUseCase.isPeiAccessible(numero)) {
-      throw new ResponseException(Response.Status.FORBIDDEN, "1300 : L'hydrant spécifié ne vous est pas accessible");
-    }
+    this.checkPeiValidity(numero, true);
 
     HydrantVisite visite = context
       .select(HYDRANT_VISITE.fields())
@@ -424,9 +436,7 @@ public class HydrantVisitesUseCase {
 
   @Transactional
   public void deleteVisite(String numero, String idVisite) throws ResponseException {
-    if(!this.peiUseCase.isPeiAccessible(numero)) {
-      throw new ResponseException(Response.Status.FORBIDDEN, "1300 : L'hydrant spécifié ne vous est pas accessible");
-    }
+    this.checkPeiValidity(numero, true);
 
     HydrantVisite visite = context
       .select(HYDRANT_VISITE.fields())
