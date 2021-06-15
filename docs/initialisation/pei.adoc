@@ -374,7 +374,7 @@ include::references/type_hydrant_anomalie_impose.csv[]
 [width="50%"options="no-header" cols="<s,"]
 |====================
 |Type de fichier|Fichier de forme ESRI Shapefile (.shp, .shx, .dbf)
-|Nom du fichier à fournir|pena.shp
+|Nom du fichier à fournir|pena_aire_aspi.shp
 |Encodage (DBF)|UTF-8
 |====================
 
