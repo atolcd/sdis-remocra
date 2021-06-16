@@ -359,7 +359,8 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
                     listeners: {
                         'select': this.onZoomToLieu,
                         scope: this
-                    }
+                    },
+                    hidden: !Sdis.Remocra.Rights.hasRight('ZOOM_LIEU_R')
                 }));
             }
 
