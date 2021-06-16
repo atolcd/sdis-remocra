@@ -127,6 +127,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
             dataIndex: 'dateReco',
             align: 'center',
             renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                value = (record.data.dateReco != null) ? record.data.dateReco : record.data.dateRecep;
                 if (value != null) {
                     var dateFutur = (record.get('codeNatureDeci') === 'PRIVE') ?
                                     Ext.Date.add(value, Ext.Date.DAY, cfg.delai_rnvl_reco_prive) :
