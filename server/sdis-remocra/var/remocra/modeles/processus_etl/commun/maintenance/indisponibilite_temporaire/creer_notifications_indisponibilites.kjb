@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <job>
   <name>creer_notifications_indisponibilites</name>
-  <description />
-  <extended_description />
-  <job_version />
+  <description/>
+  <extended_description/>
+  <job_version/>
   <job_status>0</job_status>
   <directory>/</directory>
   <created_user>-</created_user>
@@ -13,8 +13,8 @@
   <parameters>
     <parameter>
       <name>PDI_FICHIER_PARAMETRE</name>
-      <default_value />
-      <description />
+      <default_value/>
+      <description/>
     </parameter>
   </parameters>
   <connection>
@@ -26,9 +26,9 @@
     <port>${REMOCRA_POSTGIS_DATABASE_PORT}</port>
     <username>${REMOCRA_POSTGIS_DATABASE_USER_NAME}</username>
     <password>${REMOCRA_POSTGIS_DATABASE_USER_PASSWORD}</password>
-    <servername />
-    <data_tablespace />
-    <index_tablespace />
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
     <attributes>
       <attribute>
         <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
@@ -71,12 +71,12 @@
   <slaveservers>
     </slaveservers>
   <job-log-table>
-    <connection />
-    <schema />
-    <table />
-    <size_limit_lines />
-    <interval />
-    <timeout_days />
+    <connection/>
+    <schema/>
+    <table/>
+    <size_limit_lines/>
+    <interval/>
+    <timeout_days/>
     <field>
       <id>ID_JOB</id>
       <enabled>Y</enabled>
@@ -184,10 +184,10 @@
     </field>
   </job-log-table>
   <jobentry-log-table>
-    <connection />
-    <schema />
-    <table />
-    <timeout_days />
+    <connection/>
+    <schema/>
+    <table/>
+    <timeout_days/>
     <field>
       <id>ID_BATCH</id>
       <enabled>Y</enabled>
@@ -275,10 +275,10 @@
     </field>
   </jobentry-log-table>
   <channel-log-table>
-    <connection />
-    <schema />
-    <table />
-    <timeout_days />
+    <connection/>
+    <schema/>
+    <table/>
+    <timeout_days/>
     <field>
       <id>ID_BATCH</id>
       <enabled>Y</enabled>
@@ -341,12 +341,13 @@
     </field>
   </channel-log-table>
   <pass_batchid>N</pass_batchid>
-  <shared_objects_file />
+  <shared_objects_file/>
   <entries>
     <entry>
       <name>START</name>
-      <description />
+      <description/>
       <type>SPECIAL</type>
+      <attributes/>
       <start>Y</start>
       <dummy>N</dummy>
       <repeat>N</repeat>
@@ -360,13 +361,15 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>45</xloc>
-      <yloc>165</yloc>
+      <xloc>32</xloc>
+      <yloc>176</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>recuperation_variables</name>
-      <description />
+      <description/>
       <type>SET_VARIABLES</type>
+      <attributes/>
       <replacevars>Y</replacevars>
       <filename>${PDI_FICHIER_PARAMETRE}</filename>
       <file_variable_type>JVM</file_variable_type>
@@ -375,178 +378,192 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>195</xloc>
-      <yloc>165</yloc>
+      <xloc>192</xloc>
+      <yloc>176</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>creer_requete_utilisateur</name>
-      <description />
+      <description/>
       <type>TRANS</type>
+      <attributes/>
       <specification_method>filename</specification_method>
-      <trans_object_id />
+      <trans_object_id/>
       <filename>${Internal.Entry.Current.Directory}/commun/creer_requete_utilisateur.ktr</filename>
-      <transname />
+      <transname/>
       <arg_from_previous>Y</arg_from_previous>
       <params_from_previous>Y</params_from_previous>
       <exec_per_row>N</exec_per_row>
       <clear_rows>N</clear_rows>
       <clear_files>N</clear_files>
       <set_logfile>N</set_logfile>
-      <logfile />
-      <logext />
+      <logfile/>
+      <logext/>
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Basic</loglevel>
       <cluster>N</cluster>
-      <slave_server_name />
+      <slave_server_name/>
       <set_append_logfile>N</set_append_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <create_parent_folder>N</create_parent_folder>
       <logging_remote_work>N</logging_remote_work>
-      <run_configuration />
+      <run_configuration/>
+      <suppress_result_data>N</suppress_result_data>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
         <parameter>
           <name>fichier_requete</name>
-          <stream_name />
+          <stream_name/>
           <value>${Internal.Entry.Current.Directory}/notif_debut/requete_debut_indispo.csv</value>
         </parameter>
       </parameters>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>420</xloc>
-      <yloc>285</yloc>
+      <xloc>416</xloc>
+      <yloc>288</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>inserer_notif_debut_indispo</name>
-      <description />
+      <description/>
       <type>JOB</type>
+      <attributes/>
       <specification_method>filename</specification_method>
-      <job_object_id />
+      <job_object_id/>
       <filename>${Internal.Entry.Current.Directory}/notif_debut/inserer_notif_debut_indispo.kjb</filename>
-      <jobname />
+      <jobname/>
+      <directory/>
       <arg_from_previous>Y</arg_from_previous>
       <params_from_previous>Y</params_from_previous>
       <exec_per_row>Y</exec_per_row>
       <set_logfile>N</set_logfile>
-      <logfile />
-      <logext />
+      <logfile/>
+      <logext/>
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Nothing</loglevel>
-      <slave_server_name />
+      <slave_server_name/>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <expand_remote_job>N</expand_remote_job>
       <create_parent_folder>N</create_parent_folder>
       <pass_export>N</pass_export>
+      <run_configuration/>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
         <parameter>
           <name>destinataire_email</name>
           <stream_name>destinataire_email</stream_name>
-          <value />
+          <value/>
         </parameter>
         <parameter>
           <name>destinataire</name>
           <stream_name>destinataire</stream_name>
-          <value />
+          <value/>
         </parameter>
         <parameter>
           <name>xml</name>
           <stream_name>xml</stream_name>
-          <value />
+          <value/>
         </parameter>
       </parameters>
       <set_append_logfile>N</set_append_logfile>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>420</xloc>
-      <yloc>540</yloc>
+      <xloc>416</xloc>
+      <yloc>544</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>creer_requete_utilisateur 2</name>
-      <description />
+      <description/>
       <type>TRANS</type>
+      <attributes/>
       <specification_method>filename</specification_method>
-      <trans_object_id />
+      <trans_object_id/>
       <filename>${Internal.Entry.Current.Directory}/commun/creer_requete_utilisateur.ktr</filename>
-      <transname />
+      <transname/>
       <arg_from_previous>Y</arg_from_previous>
       <params_from_previous>Y</params_from_previous>
       <exec_per_row>N</exec_per_row>
       <clear_rows>N</clear_rows>
       <clear_files>N</clear_files>
       <set_logfile>N</set_logfile>
-      <logfile />
-      <logext />
+      <logfile/>
+      <logext/>
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Basic</loglevel>
       <cluster>N</cluster>
-      <slave_server_name />
+      <slave_server_name/>
       <set_append_logfile>N</set_append_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <create_parent_folder>N</create_parent_folder>
       <logging_remote_work>N</logging_remote_work>
-      <run_configuration />
+      <run_configuration/>
+      <suppress_result_data>N</suppress_result_data>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
         <parameter>
           <name>fichier_requete</name>
-          <stream_name />
+          <stream_name/>
           <value>${Internal.Entry.Current.Directory}/notif_fin/requete_fin_indispo.csv</value>
         </parameter>
       </parameters>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>615</xloc>
-      <yloc>30</yloc>
+      <xloc>608</xloc>
+      <yloc>32</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>inserer_notif_fin_indispo</name>
-      <description />
+      <description/>
       <type>JOB</type>
+      <attributes/>
       <specification_method>filename</specification_method>
-      <job_object_id />
+      <job_object_id/>
       <filename>${Internal.Entry.Current.Directory}/notif_fin/inserer_notif_fin_indispo.kjb</filename>
-      <jobname />
+      <jobname/>
+      <directory/>
       <arg_from_previous>Y</arg_from_previous>
       <params_from_previous>Y</params_from_previous>
       <exec_per_row>Y</exec_per_row>
       <set_logfile>N</set_logfile>
-      <logfile />
-      <logext />
+      <logfile/>
+      <logext/>
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Nothing</loglevel>
-      <slave_server_name />
+      <slave_server_name/>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <expand_remote_job>N</expand_remote_job>
       <create_parent_folder>N</create_parent_folder>
       <pass_export>N</pass_export>
+      <run_configuration/>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
         <parameter>
           <name>destinataire_email</name>
           <stream_name>destinataire_email</stream_name>
-          <value />
+          <value/>
         </parameter>
         <parameter>
           <name>destinataire</name>
           <stream_name>destinataire</stream_name>
-          <value />
+          <value/>
         </parameter>
         <parameter>
           <name>xml</name>
           <stream_name>xml</stream_name>
-          <value />
+          <value/>
         </parameter>
       </parameters>
       <set_append_logfile>N</set_append_logfile>
@@ -554,15 +571,17 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>960</xloc>
-      <yloc>30</yloc>
+      <yloc>32</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>verification_notif_debut</name>
-      <description />
+      <description/>
       <type>EVAL_TABLE_CONTENT</type>
+      <attributes/>
       <connection>Remocra (Postgis)</connection>
-      <schemaname />
-      <tablename />
+      <schemaname/>
+      <tablename/>
       <success_condition>rows_count_greater</success_condition>
       <limit>0</limit>
       <is_custom_sql>Y</is_custom_sql>
@@ -583,13 +602,15 @@ WHERE
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>420</xloc>
-      <yloc>165</yloc>
+      <xloc>416</xloc>
+      <yloc>176</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>mise_a_jour_debut_indispo_notifie</name>
-      <description />
+      <description/>
       <type>SQL</type>
+      <attributes/>
       <sql>UPDATE remocra.hydrant_indispo_temporaire
 SET date_rappel_debut = current_timestamp
 WHERE id IN 
@@ -604,22 +625,24 @@ WHERE id IN
 	)</sql>
       <useVariableSubstitution>T</useVariableSubstitution>
       <sqlfromfile>F</sqlfromfile>
-      <sqlfilename />
+      <sqlfilename/>
       <sendOneStatement>T</sendOneStatement>
       <connection>Remocra (Postgis)</connection>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>615</xloc>
-      <yloc>540</yloc>
+      <xloc>608</xloc>
+      <yloc>544</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>verification_notif_fin</name>
-      <description />
+      <description/>
       <type>EVAL_TABLE_CONTENT</type>
+      <attributes/>
       <connection>Remocra (Postgis)</connection>
-      <schemaname />
-      <tablename />
+      <schemaname/>
+      <tablename/>
       <success_condition>rows_count_greater</success_condition>
       <limit>0</limit>
       <is_custom_sql>Y</is_custom_sql>
@@ -640,13 +663,15 @@ WHERE
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>615</xloc>
-      <yloc>165</yloc>
+      <xloc>608</xloc>
+      <yloc>176</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>mise_a_jour_fin_indispo_notifie</name>
-      <description />
+      <description/>
       <type>SQL</type>
+      <attributes/>
       <sql>UPDATE remocra.hydrant_indispo_temporaire
 SET date_rappel_fin = current_timestamp
 WHERE id IN 
@@ -656,96 +681,104 @@ WHERE id IN
 		INNER JOIN remocra.type_hydrant_indispo_statut tis ON tis.id = it.statut AND tis.CODE = 'EN_COURS'
 		WHERE date_rappel_fin IS NULL AND
 			mel_avant_dispo AND
-			date_fin &lt;= current_timestamp AND
-			date_fin >= current_timestamp - interval '${PDI_DELTA_NOTIF_INDISPO_FIN} hour'
+			date_fin >= current_timestamp AND
+			date_fin &lt;= current_timestamp + interval '${PDI_DELTA_NOTIF_INDISPO_FIN} hour'
 	)</sql>
       <useVariableSubstitution>T</useVariableSubstitution>
       <sqlfromfile>F</sqlfromfile>
-      <sqlfilename />
+      <sqlfilename/>
       <sendOneStatement>F</sendOneStatement>
       <connection>Remocra (Postgis)</connection>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1140</xloc>
-      <yloc>30</yloc>
+      <xloc>1136</xloc>
+      <yloc>32</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>recuperer_liste_destinataire</name>
-      <description />
+      <description/>
       <type>TRANS</type>
+      <attributes/>
       <specification_method>filename</specification_method>
-      <trans_object_id />
+      <trans_object_id/>
       <filename>${Internal.Entry.Current.Directory}/commun/recuperer_liste_destinataire.ktr</filename>
-      <transname />
+      <transname/>
       <arg_from_previous>Y</arg_from_previous>
       <params_from_previous>Y</params_from_previous>
       <exec_per_row>N</exec_per_row>
       <clear_rows>N</clear_rows>
       <clear_files>N</clear_files>
       <set_logfile>N</set_logfile>
-      <logfile />
-      <logext />
+      <logfile/>
+      <logext/>
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Basic</loglevel>
       <cluster>N</cluster>
-      <slave_server_name />
+      <slave_server_name/>
       <set_append_logfile>N</set_append_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <create_parent_folder>N</create_parent_folder>
       <logging_remote_work>N</logging_remote_work>
-      <run_configuration />
+      <run_configuration/>
+      <suppress_result_data>N</suppress_result_data>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
       </parameters>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>420</xloc>
-      <yloc>405</yloc>
+      <xloc>416</xloc>
+      <yloc>416</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>recuperer_liste_destinataire 2</name>
-      <description />
+      <description/>
       <type>TRANS</type>
+      <attributes/>
       <specification_method>filename</specification_method>
-      <trans_object_id />
+      <trans_object_id/>
       <filename>${Internal.Entry.Current.Directory}/commun/recuperer_liste_destinataire.ktr</filename>
-      <transname />
+      <transname/>
       <arg_from_previous>Y</arg_from_previous>
       <params_from_previous>Y</params_from_previous>
       <exec_per_row>N</exec_per_row>
       <clear_rows>N</clear_rows>
       <clear_files>N</clear_files>
       <set_logfile>N</set_logfile>
-      <logfile />
-      <logext />
+      <logfile/>
+      <logext/>
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Basic</loglevel>
       <cluster>N</cluster>
-      <slave_server_name />
+      <slave_server_name/>
       <set_append_logfile>N</set_append_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <create_parent_folder>N</create_parent_folder>
       <logging_remote_work>N</logging_remote_work>
-      <run_configuration />
+      <run_configuration/>
+      <suppress_result_data>N</suppress_result_data>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
       </parameters>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>795</xloc>
-      <yloc>30</yloc>
+      <xloc>784</xloc>
+      <yloc>32</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>Bascule auto</name>
-      <description />
+      <description/>
       <type>SQL</type>
+      <attributes/>
       <sql>/*** Insertion de l'anomalies INDISPONIBILITE_TEMP pour les PEI concernés par une bascule auto ****/
 INSERT INTO remocra.hydrant_anomalies (hydrant, anomalies)
 SELECT DISTINCT h.id AS hydrant, tha.id AS anomalies
@@ -799,19 +832,21 @@ WHERE hydrant IN (
 	anomalies = (SELECT id FROM remocra.type_hydrant_anomalie WHERE code = 'INDISPONIBILITE_TEMP');</sql>
       <useVariableSubstitution>F</useVariableSubstitution>
       <sqlfromfile>F</sqlfromfile>
-      <sqlfilename />
+      <sqlfilename/>
       <sendOneStatement>T</sendOneStatement>
       <connection>Remocra (Postgis)</connection>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1140</xloc>
-      <yloc>165</yloc>
+      <xloc>1136</xloc>
+      <yloc>176</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>cloture auto</name>
-      <description />
+      <description/>
       <type>SQL</type>
+      <attributes/>
       <sql>/*** Bascule de l'indispo temporaire à terminée ****/
 UPDATE remocra.hydrant_indispo_temporaire
 SET statut = (SELECT id FROM remocra.type_hydrant_indispo_statut WHERE code = 'TERMINE')
@@ -824,22 +859,24 @@ WHERE id IN (
 );</sql>
       <useVariableSubstitution>F</useVariableSubstitution>
       <sqlfromfile>F</sqlfromfile>
-      <sqlfilename />
+      <sqlfilename/>
       <sendOneStatement>T</sendOneStatement>
       <connection>Remocra (Postgis)</connection>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1140</xloc>
-      <yloc>540</yloc>
+      <xloc>1136</xloc>
+      <yloc>544</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>verification_pei_reste_indispo</name>
-      <description />
+      <description/>
       <type>EVAL_TABLE_CONTENT</type>
+      <attributes/>
       <connection>Remocra (Postgis)</connection>
-      <schemaname />
-      <tablename />
+      <schemaname/>
+      <tablename/>
       <success_condition>rows_count_greater</success_condition>
       <limit>0</limit>
       <is_custom_sql>Y</is_custom_sql>
@@ -862,133 +899,144 @@ WHERE h.dispo_terrestre = 'INDISPO'</custom_sql>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1140</xloc>
-      <yloc>300</yloc>
+      <xloc>1136</xloc>
+      <yloc>304</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>creer_requete_utilisateur 3</name>
-      <description />
+      <description/>
       <type>TRANS</type>
+      <attributes/>
       <specification_method>filename</specification_method>
-      <trans_object_id />
+      <trans_object_id/>
       <filename>${Internal.Entry.Current.Directory}/commun/creer_requete_utilisateur.ktr</filename>
-      <transname />
+      <transname/>
       <arg_from_previous>Y</arg_from_previous>
       <params_from_previous>Y</params_from_previous>
       <exec_per_row>N</exec_per_row>
       <clear_rows>N</clear_rows>
       <clear_files>N</clear_files>
       <set_logfile>N</set_logfile>
-      <logfile />
-      <logext />
+      <logfile/>
+      <logext/>
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Basic</loglevel>
       <cluster>N</cluster>
-      <slave_server_name />
+      <slave_server_name/>
       <set_append_logfile>N</set_append_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <create_parent_folder>N</create_parent_folder>
       <logging_remote_work>N</logging_remote_work>
       <run_configuration>Pentaho local</run_configuration>
+      <suppress_result_data>N</suppress_result_data>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
         <parameter>
           <name>fichier_requete</name>
-          <stream_name />
+          <stream_name/>
           <value>${Internal.Entry.Current.Directory}/notif_pei_reste_indispo/requete_pei_reste_indispo.csv</value>
         </parameter>
       </parameters>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1365</xloc>
-      <yloc>300</yloc>
+      <xloc>1360</xloc>
+      <yloc>304</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>recuperer_liste_destinataire 3</name>
-      <description />
+      <description/>
       <type>TRANS</type>
+      <attributes/>
       <specification_method>filename</specification_method>
-      <trans_object_id />
+      <trans_object_id/>
       <filename>${Internal.Entry.Current.Directory}/commun/recuperer_liste_destinataire.ktr</filename>
-      <transname />
+      <transname/>
       <arg_from_previous>Y</arg_from_previous>
       <params_from_previous>Y</params_from_previous>
       <exec_per_row>N</exec_per_row>
       <clear_rows>N</clear_rows>
       <clear_files>N</clear_files>
       <set_logfile>N</set_logfile>
-      <logfile />
-      <logext />
+      <logfile/>
+      <logext/>
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Basic</loglevel>
       <cluster>N</cluster>
-      <slave_server_name />
+      <slave_server_name/>
       <set_append_logfile>N</set_append_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <create_parent_folder>N</create_parent_folder>
       <logging_remote_work>N</logging_remote_work>
       <run_configuration>Pentaho local</run_configuration>
+      <suppress_result_data>N</suppress_result_data>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
       </parameters>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1365</xloc>
-      <yloc>420</yloc>
+      <xloc>1360</xloc>
+      <yloc>432</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>inserer_notif_pei_reste_indispo.kjb</name>
-      <description />
+      <description/>
       <type>JOB</type>
+      <attributes/>
       <specification_method>filename</specification_method>
-      <job_object_id />
+      <job_object_id/>
       <filename>${Internal.Entry.Current.Directory}/notif_pei_reste_indispo/inserer_notif_pei_reste_indispo.kjb</filename>
-      <jobname />
+      <jobname/>
+      <directory/>
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
       <exec_per_row>Y</exec_per_row>
       <set_logfile>N</set_logfile>
-      <logfile />
-      <logext />
+      <logfile/>
+      <logext/>
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Nothing</loglevel>
-      <slave_server_name />
+      <slave_server_name/>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <expand_remote_job>N</expand_remote_job>
       <create_parent_folder>N</create_parent_folder>
       <pass_export>N</pass_export>
+      <run_configuration/>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
         <parameter>
           <name>destinataire_email</name>
           <stream_name>destinataire_email</stream_name>
-          <value />
+          <value/>
         </parameter>
         <parameter>
           <name>destinataire</name>
           <stream_name>destinataire</stream_name>
-          <value />
+          <value/>
         </parameter>
         <parameter>
           <name>xml</name>
           <stream_name>xml</stream_name>
-          <value />
+          <value/>
         </parameter>
       </parameters>
       <set_append_logfile>N</set_append_logfile>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1365</xloc>
-      <yloc>540</yloc>
+      <xloc>1360</xloc>
+      <yloc>544</yloc>
+      <attributes_kjc/>
     </entry>
   </entries>
   <hops>
@@ -1250,8 +1298,8 @@ WHERE h.dispo_terrestre = 'INDISPO'</custom_sql>
       <note>Si il y a des notifications de début d'indisponibilité, 
 	on récupère les destinataires et on génère les mail.
 Sinon on passe au fin d'indisponibilité directement.</note>
-      <xloc>150</xloc>
-      <yloc>75</yloc>
+      <xloc>144</xloc>
+      <yloc>80</yloc>
       <width>354</width>
       <heigth>58</heigth>
       <fontname>Arial</fontname>
@@ -1274,8 +1322,8 @@ Sinon on passe au fin d'indisponibilité directement.</note>
 	on récupère les destinataires et on génère les mail.
 Sinon on passe à l'enclenchement/levé de l'indispo auto et
 	aux PEI restés indisponible après cette levée auto.</note>
-      <xloc>750</xloc>
-      <yloc>195</yloc>
+      <xloc>736</xloc>
+      <yloc>208</yloc>
       <width>354</width>
       <heigth>74</heigth>
       <fontname>Arial</fontname>
@@ -1297,11 +1345,11 @@ Sinon on passe à l'enclenchement/levé de l'indispo auto et
       <note>Si des PEI sont restés indispo après la levé de l'anomalie,
 	on récupère les destinataires et on génère les mails.
 Sinon on cloture l'indispo temporaire directement</note>
-      <xloc>780</xloc>
-      <yloc>405</yloc>
-      <width>349</width>
-      <heigth>58</heigth>
-      <fontname />
+      <xloc>768</xloc>
+      <yloc>416</yloc>
+      <width>387</width>
+      <heigth>61</heigth>
+      <fontname/>
       <fontsize>-1</fontsize>
       <fontbold>N</fontbold>
       <fontitalic>N</fontitalic>
