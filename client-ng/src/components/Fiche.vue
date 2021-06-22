@@ -75,10 +75,10 @@
           <b-tab active title="Résumé" v-if="hydrant.id !== null">
             <FicheResume ref="ficheResume" :hydrantRecord="hydrantRecord" v-if="dataLoaded">
             </FicheResume>
-          <div class="small" v-if="hydrant.code=='PIBI' && histoLoaded">
+          <div class="small" v-if="hydrant.code=='PIBI' && histoChartLoaded">
             <bar-chart :chartdata="chartdata" :options="{title:'Débit (m³/h)', background:'green'}" :styles="{height: '250px', width:'90%'}"/>
           </div>
-          <div  v-if="hydrant.code=='PIBI' && histoLoaded">
+          <div  v-if="hydrant.code=='PIBI' && histoGridLoaded">
              <table class="table table-striped table-sm table-bordered">
                <thead class="thead-light">
                  <th scope="col">Date de contrôle</th>
@@ -115,19 +115,19 @@
                     {{"Moyene"}}
                    </td>
                    <td>
-                    {{moyenneDebitNM1}}
+                    {{moyenneDebitNM1 | decimalTwoDigit}}
                    </td>
                    <td>
-                    {{moyennePressionDynNM1}}
+                    {{moyennePressionDynNM1 | decimalTwoDigit}}
                    </td>
                    <td>
-                    {{moyenneDebitMaxNM1}}
+                    {{moyenneDebitMaxNM1 | decimalTwoDigit}}
                    </td>
                    <td>
-                    {{moyennePressionDynDebNM1}}
+                    {{moyennePressionDynDebNM1 | decimalTwoDigit}}
                    </td>
                    <td>
-                    {{moyennePressionNM1}}
+                    {{moyennePressionNM1 | decimalTwoDigit}}
                    </td>
                  </tr>
                </tbody>
@@ -239,7 +239,8 @@ export default {
         spDeci: null,
         maintenanceDeci: null
       },
-    histoLoaded: false,
+    histoChartLoaded: false,
+    histoGridLoaded: false,
     chartdata: {},
       fields: [
                {
@@ -341,6 +342,13 @@ export default {
       }
     },
   },
+
+  filters : {
+    decimalTwoDigit(value) {
+      return Math.round(value * 100) / 100;
+    }
+  },
+
   mounted: function() {
     //this.$refs.modalFiche.show()
     this.$modal.show('modalFiche', {
@@ -429,9 +437,9 @@ export default {
       if(this.showHistorique){
         axios.get('/remocra/hydrantspibi/histoverifhydrauforchart/'+id).then(response => {
           if(response.data){
-              this.chartdata.labels =  response.data.data.labels;
-              this.chartdata.values =  response.data.data.values;
-              this.histoLoaded = true;
+              this.chartdata.labels =  _.reverse(response.data.data.labels);
+              this.chartdata.values =  _.reverse(response.data.data.values);
+              this.histoChartLoaded = true;
             }
         }).catch(function(error) {
             console.error(error);
@@ -453,7 +461,7 @@ export default {
                 this.moyenneDebitMaxNM1 = _.meanBy(moyennes,function(o) { return o.debitMaxNM1 && o.debitMaxNM1 !== '-'? o.debitMaxNM1 : 0 ;});
                 this.moyennePressionDynDebNM1 = _.meanBy(moyennes, function(o) { return o.pressionDynDebNM1  && o.pressionDynDebNM1 !== '-' ? o.pressionDynDebNM1 : 0 ;});
                 this.moyennePressionNM1 = _.meanBy(moyennes, function(o) { return o.pressionNM1 && o.pressionNM1 !== '-' ? o.pressionNM1 : 0;});
-                this.histoLoaded = true;
+                this.histoGridLoaded = true;
           }
         }).catch(function(error) {
             console.error(error);
