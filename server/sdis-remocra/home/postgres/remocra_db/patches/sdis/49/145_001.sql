@@ -28,7 +28,7 @@ BEGIN
 	where p_rec.id = h.id;
 
 	-- Ajout des anomalies
-    if(p_diametre_nom = '80' and p_nature_code = 'PI') then
+    if(p_diametre_nom = '80' and (p_nature_code = 'PI' or p_nature_code = 'BI')) then
 	    if (p_rec.debit is null OR p_rec.debit >= 30) then -- cas de creation et reception sans anomalies
             perform remocra.calcul_indispo(p_rec.id);
         elsif (p_rec.debit < 15) then
@@ -154,8 +154,6 @@ UPDATE remocra.param_conf
 SET valeur = '24'
 WHERE cle = 'PDI_DELTA_NOTIF_INDISPO_FIN';
 
-begin;
-
 -- Insertions des requêtes personnalisées pour les PIBI et les PENA
 INSERT INTO remocra.hydrant_resume(libelle, code, source_sql) VALUES
 
@@ -174,6 +172,7 @@ FROM
 			xmlelement(name "complement", h.complement),
 			xmlelement(name "debit_renforce", h.debit_renforce),
 			xmlelement(name "grosDebit", h.grosDebit),
+			xmlelement(name "debit", h.debit),
 			xmlelement(name "dispo_terrestre", h.dispo_terrestre),
 			xmlelement(name "jumele", h.jumele),
 			xmlelement(name "nature", h.nature)
@@ -185,14 +184,14 @@ FROM
 			hp.debit_renforce,
 			h.dispo_terrestre,
 			th.code AS nature,
-			CASE WHEN thn.code = ''PI'' AND hp.diametre IS NOT NULL AND CAST(thd.nom AS INTEGER) = 150 THEN TRUE
+			CASE WHEN thn.code = ''PI'' AND hp.diametre IS NOT NULL AND thd.code = ''DIAM150'' THEN TRUE
 				WHEN thn.code = ''BI'' AND hp.jumele >= 0 THEN TRUE
 				ELSE FALSE
 			END AS grosDebit,
 			CASE WHEN hp.jumele >= 0 THEN h2.numero
 				ELSE NULL
-			END as jumele
-
+			END as jumele,
+			hp.debit||'' m3/h'' AS debit
 		FROM 	remocra.hydrant h
 			JOIN remocra.commune c on h.commune=c.id
 			JOIN remocra.hydrant_pibi hp on hp.id=h.id
@@ -202,7 +201,7 @@ FROM
 			-- Jumelage
 			LEFT JOIN remocra.hydrant_pibi hp2 on hp2.id=hp.jumele
 			LEFT JOIN remocra.hydrant h2 on h2.id=hp2.id
-		WHERE 	h.id=:id)
+		WHERE 	h.id=${HYDRANT_ID})
 		AS h) as hydrant,
 
 	(SELECT
@@ -217,7 +216,7 @@ FROM
 			JOIN remocra.type_hydrant_anomalie tha on tha.id = ha.anomalies
 			JOIN remocra.type_hydrant_anomalie_nature than on than.anomalie=tha.id
 			JOIN remocra.hydrant h on h.id=ha.hydrant
-		WHERE 	ha.hydrant=:id
+		WHERE 	ha.hydrant=${HYDRANT_ID}
 			AND than.nature = h.nature)
 		as a) as anomalies,
 
@@ -232,8 +231,8 @@ FROM
 			JOIN remocra.type_organisme typeO on typeO.id=o.type_organisme
 			LEFT JOIN remocra.tournee t on t.affectation=o.id
 			LEFT JOIN remocra.hydrant_tournees ht on ht.tournees=t.id
-		WHERE typeO.code = ''CS''
-			AND ht.hydrant=:id
+		WHERE typeO.code = ''CIS''
+			AND ht.hydrant=${HYDRANT_ID}
 		ORDER BY o.nom) as c) as cstc;'),
 -- PENA
 ('Requête personnalisée PENA', 'RESUME_PENA', 'SELECT CAST(xmlelement(name "data",
@@ -259,8 +258,8 @@ FROM
 			h.complement,
 			h.dispo_terrestre,
 			th.code AS nature,
-			CASE WHEN thn.code = ''CI_FIXE'' AND hp.illimitee THEN ''Illimitée''
-				WHEN thn.code = ''CI_FIXE''  AND ((NOT hp.illimitee OR hp.illimitee IS NULL) AND hp.capacite IS NOT NULL AND CAST(NULLIF(TRIM(hp.capacite), '''') AS Integer) IS NOT NULL AND CAST(NULLIF(TRIM(hp.capacite), '''') AS Integer) > -1 ) then hp.capacite|| ''m3''
+			CASE WHEN hp.illimitee THEN ''Illimitée''
+				WHEN ((NOT hp.illimitee OR hp.illimitee IS NULL) AND hp.capacite IS NOT NULL AND CAST(NULLIF(TRIM(hp.capacite), '''') AS Integer) IS NOT NULL AND CAST(NULLIF(TRIM(hp.capacite), '''') AS Integer) > -1 ) then hp.capacite|| ''m3''
 				ELSE NULL
 			END as capacite,
 
@@ -268,7 +267,7 @@ FROM
 				FROM remocra.hydrant h
 				JOIN remocra.hydrant_pena hp on hp.id=h.id
 				JOIN remocra.hydrant_aspiration ha on h.id=ha.pena
-				WHERE h.id=:id) AS aspirations
+				WHERE h.id=${HYDRANT_ID}) AS aspirations
 
 		FROM 	remocra.hydrant h
 			JOIN remocra.commune c on h.commune=c.id
@@ -276,7 +275,7 @@ FROM
 			JOIN remocra.type_hydrant th on th.id=thn.type_hydrant
 			-- PENA
 			JOIN remocra.hydrant_pena hp on hp.id=h.id
-		WHERE 	h.id=:id)
+		WHERE 	h.id=${HYDRANT_ID})
 		AS h) as hydrant,
 
 	(SELECT
@@ -291,7 +290,7 @@ FROM
 			JOIN remocra.type_hydrant_anomalie tha on tha.id = ha.anomalies
 			JOIN remocra.type_hydrant_anomalie_nature than on than.anomalie=tha.id
 			JOIN remocra.hydrant h on h.id=ha.hydrant
-		WHERE 	ha.hydrant=:id
+		WHERE 	ha.hydrant=${HYDRANT_ID}
 			AND than.nature = h.nature)
 		as a) as anomalies,
 
@@ -306,9 +305,8 @@ FROM
 			JOIN remocra.type_organisme typeO on typeO.id=o.type_organisme
 			LEFT JOIN remocra.tournee t on t.affectation=o.id
 			LEFT JOIN remocra.hydrant_tournees ht on ht.tournees=t.id
-		WHERE typeO.code = ''CS''
-			AND ht.hydrant=:id
+		WHERE typeO.code = ''CIS''
+			AND ht.hydrant=${HYDRANT_ID}
 		ORDER BY o.nom) as c) as cstc;');
-commit;
 
 COMMIT;
