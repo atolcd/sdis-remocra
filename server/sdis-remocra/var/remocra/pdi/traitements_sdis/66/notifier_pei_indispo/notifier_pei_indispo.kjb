@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <job>
   <name>notifier_pei_indispo</name>
-  <description />
-  <extended_description />
-  <job_version />
+  <description/>
+  <extended_description/>
+  <job_version/>
   <job_status>0</job_status>
   <directory>/</directory>
   <created_user>-</created_user>
@@ -13,8 +13,8 @@
   <parameters>
     <parameter>
       <name>PDI_FICHIER_PARAMETRE</name>
-      <default_value />
-      <description />
+      <default_value/>
+      <description/>
     </parameter>
   </parameters>
   <connection>
@@ -26,9 +26,9 @@
     <port>${REMOCRA_POSTGIS_DATABASE_PORT}</port>
     <username>${REMOCRA_POSTGIS_DATABASE_USER_NAME}</username>
     <password>${REMOCRA_POSTGIS_DATABASE_USER_PASSWORD}</password>
-    <servername />
-    <data_tablespace />
-    <index_tablespace />
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
     <attributes>
       <attribute>
         <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
@@ -71,12 +71,12 @@
   <slaveservers>
     </slaveservers>
   <job-log-table>
-    <connection />
-    <schema />
-    <table />
-    <size_limit_lines />
-    <interval />
-    <timeout_days />
+    <connection/>
+    <schema/>
+    <table/>
+    <size_limit_lines/>
+    <interval/>
+    <timeout_days/>
     <field>
       <id>ID_JOB</id>
       <enabled>Y</enabled>
@@ -184,10 +184,10 @@
     </field>
   </job-log-table>
   <jobentry-log-table>
-    <connection />
-    <schema />
-    <table />
-    <timeout_days />
+    <connection/>
+    <schema/>
+    <table/>
+    <timeout_days/>
     <field>
       <id>ID_BATCH</id>
       <enabled>Y</enabled>
@@ -275,10 +275,10 @@
     </field>
   </jobentry-log-table>
   <channel-log-table>
-    <connection />
-    <schema />
-    <table />
-    <timeout_days />
+    <connection/>
+    <schema/>
+    <table/>
+    <timeout_days/>
     <field>
       <id>ID_BATCH</id>
       <enabled>Y</enabled>
@@ -341,12 +341,13 @@
     </field>
   </channel-log-table>
   <pass_batchid>N</pass_batchid>
-  <shared_objects_file />
+  <shared_objects_file/>
   <entries>
     <entry>
       <name>START</name>
-      <description />
+      <description/>
       <type>SPECIAL</type>
+      <attributes/>
       <start>Y</start>
       <dummy>N</dummy>
       <repeat>N</repeat>
@@ -362,11 +363,13 @@
       <nr>0</nr>
       <xloc>176</xloc>
       <yloc>176</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>Variables globales</name>
-      <description />
+      <description/>
       <type>SET_VARIABLES</type>
+      <attributes/>
       <replacevars>Y</replacevars>
       <filename>${PDI_FICHIER_PARAMETRE}</filename>
       <file_variable_type>JVM</file_variable_type>
@@ -377,11 +380,13 @@
       <nr>0</nr>
       <xloc>304</xloc>
       <yloc>176</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>Variables spécifiques</name>
-      <description />
+      <description/>
       <type>SET_VARIABLES</type>
+      <attributes/>
       <replacevars>Y</replacevars>
       <filename>${Internal.Job.Filename.Directory}/../remocra66.properties</filename>
       <file_variable_type>JVM</file_variable_type>
@@ -392,14 +397,16 @@
       <nr>0</nr>
       <xloc>448</xloc>
       <yloc>176</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>commune avec PEI indispo</name>
-      <description />
+      <description/>
       <type>EVAL_TABLE_CONTENT</type>
+      <attributes/>
       <connection>Remocra (Postgis)</connection>
-      <schemaname />
-      <tablename />
+      <schemaname/>
+      <tablename/>
       <success_condition>rows_count_greater</success_condition>
       <limit>0</limit>
       <is_custom_sql>Y</is_custom_sql>
@@ -409,57 +416,62 @@ FROM remocra.hydrant h
 	JOIN remocra.commune c ON c.id = h.commune
 	JOIN remocra.organisme o ON o.code = c.insee 
 WHERE h.dispo_terrestre = 'INDISPO'</custom_sql>
-      <add_rows_result>N</add_rows_result>
+      <add_rows_result>Y</add_rows_result>
       <clear_result_rows>Y</clear_result_rows>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>608</xloc>
       <yloc>176</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>Succès tâche</name>
-      <description />
+      <description/>
       <type>SUCCESS</type>
+      <attributes/>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>608</xloc>
       <yloc>304</yloc>
+      <attributes_kjc/>
     </entry>
     <entry>
       <name>notifier_pei_indispo.ktr</name>
-      <description />
+      <description/>
       <type>TRANS</type>
+      <attributes/>
       <specification_method>filename</specification_method>
-      <trans_object_id />
+      <trans_object_id/>
       <filename>${Internal.Entry.Current.Directory}/notifier_pei_indispo.ktr</filename>
-      <transname />
+      <transname/>
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
       <exec_per_row>Y</exec_per_row>
       <clear_rows>N</clear_rows>
       <clear_files>N</clear_files>
       <set_logfile>N</set_logfile>
-      <logfile />
-      <logext />
+      <logfile/>
+      <logext/>
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Basic</loglevel>
       <cluster>N</cluster>
-      <slave_server_name />
+      <slave_server_name/>
       <set_append_logfile>N</set_append_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
       <create_parent_folder>N</create_parent_folder>
       <logging_remote_work>N</logging_remote_work>
       <run_configuration>Pentaho local</run_configuration>
+      <suppress_result_data>N</suppress_result_data>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
         <parameter>
           <name>ORGANISME_ID</name>
           <stream_name>organisme_id</stream_name>
-          <value />
+          <value/>
         </parameter>
       </parameters>
       <parallel>N</parallel>
@@ -467,6 +479,7 @@ WHERE h.dispo_terrestre = 'INDISPO'</custom_sql>
       <nr>0</nr>
       <xloc>784</xloc>
       <yloc>176</yloc>
+      <attributes_kjc/>
     </entry>
   </entries>
   <hops>
