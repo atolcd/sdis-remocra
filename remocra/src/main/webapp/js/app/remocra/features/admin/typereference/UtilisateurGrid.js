@@ -57,7 +57,7 @@ Ext.define('Sdis.Remocra.features.admin.typereference.UtilisateurGrid', {
         config = config || {};
         var deferredApplyFilter = Ext.Function.createBuffered(function() {
             this.headerFilterPlugin.applyFilters();
-        }, 200, this);
+        }, 600, this);
         
         // Ajout des définitions des colonnes si elles ne sont pas déjà définies
         var typeRefGridCols = Sdis.Remocra.features.admin.typereference.TypeReferenceGrid.columns;

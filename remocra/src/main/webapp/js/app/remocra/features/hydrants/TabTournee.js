@@ -63,7 +63,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabTournee', {
 
         var deferredApplyFilter = Ext.Function.createBuffered(function() {
             headerfilter.applyFilters();
-        }, 200);
+        }, 800);
 
         me.columns = [{
             text: 'Tournée',
