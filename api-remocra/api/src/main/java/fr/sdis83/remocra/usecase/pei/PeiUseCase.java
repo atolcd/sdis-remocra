@@ -146,20 +146,26 @@ public class PeiUseCase {
       hydrantPibi.setMarque(idMarque);
 
       if(peiForm.codeModele() != null){
-        TypeHydrantModele modele = context.select(TYPE_HYDRANT_MODELE.fields())
+        List<TypeHydrantModele> modeles = context.select(TYPE_HYDRANT_MODELE.fields())
           .from(TYPE_HYDRANT_MODELE)
           .where(TYPE_HYDRANT_MODELE.CODE.upper().eq(peiForm.codeModele().toUpperCase()))
-          .fetchOneInto(TypeHydrantModele.class);
+          .fetchInto(TypeHydrantModele.class);
 
-        if(modele == null){
+        if(modeles.size() == 0){
           throw new ResponseException(Response.Status.BAD_REQUEST, "1003 : Le code de modèle saisi ne correspond à aucune valeur connue");
         }
 
-        idModele = modele.getId();
-
         Long marque = (peiForm.codeMarque() != null) ? idMarque : hydrantPibi.getMarque();
+        boolean matchFound = false;
+        for(TypeHydrantModele modele : modeles) {
+          if(modele.getMarque().equals(marque)) {
+            idModele = modele.getId();
+            matchFound = true;
+          }
+        }
 
-        if(!modele.getMarque().equals(marque)) {
+        // Parmis les modèles retournés, aucun ne correspond à la marque renseignée
+        if(!matchFound) {
           throw new ResponseException(Response.Status.BAD_REQUEST, "1008 : Le code de modèle saisi n'appartient pas à la marque renseignée");
         }
       }
