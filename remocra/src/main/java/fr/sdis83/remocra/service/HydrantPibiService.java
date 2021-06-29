@@ -210,7 +210,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
         if (limit != 0) {
             try {
                 List<Object> l = entityManager.createNativeQuery(
-                        "select  distinct date, debit, pression, pression_dyn, pression_dyn_deb" +
+                        "select  distinct date, debit, debit_max, pression, pression_dyn, pression_dyn_deb" +
                                 " From remocra.hydrant_visite hv WHERE hv.hydrant = "+id+" AND hv.type IN (SELECT id FROM remocra.type_hydrant_saisie ths WHERE ths.code LIKE 'CTRL' OR ths.code LIKE 'CREA')"+
                                 " AND date IS NOT NULL AND debit IS NOT NULL ORDER BY date DESC limit " + limit).getResultList();
                 return l;
