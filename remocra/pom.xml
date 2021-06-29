@@ -559,6 +559,11 @@
 			<version>20180130</version>
 		</dependency>
 		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.31</version>
+		</dependency>
+		<dependency>
 			<groupId>net.sf.jodreports</groupId>
 			<artifactId>jodreports</artifactId>
 			<version>2.4.0</version>
