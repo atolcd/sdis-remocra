@@ -427,19 +427,19 @@ include::references/type_hydrant_anomalie_impose.csv[]
 [width="100%",options="header"]
 |====================
 |Nom du champ|Type|Obligatoire|Description
-|hydrant|Texte|Oui|Numéro du PEI|
-|date|Date|Oui|Date et heure où a été effectué la visite|
-|type|Texte|Oui|Type de la visite (valeurs possibles : CREA, RECEP, RECO, CTRL, NP)|
-|ctrl_debit_pression|Booléen|Oui|La visite de réception ou le controle technique périodique comprenne un mesure de débits/pressions|
-|agent1|Texte|Oui|Agent responsable de la visite|
-|agent2|Texte|Oui|Agent accompagnant de la visite|
-|debit|Entier|Non|Débit mesuré|
-|debit_max|Entier|Non|Débit max mesuré|
-|pression|Numérique|Non|Pression statique mesurée|
-|pression_dyn|Numérique|Non|Pression dynamique à 60m3 mesurée|
-|pression_dyn_deb|Numérique|Non|Pression dynamique au débit max mesurée|
-|anomalies|Texte|Non|Liste des codes d'anomalie dans type_hydrant_anomalie.csv séparés par un \||
-|observations|Texte|Non|Observation libre effectué par les agents lors de la visite|
+|hydrant|Texte|Oui|Numéro du PEI
+|date|Date|Oui|Date et heure où a été effectué la visite
+|type|Texte|Oui|Type de la visite. Valeurs possibles : CREA (Visite de réception), RECEP (Reconnaissance Opérationnelle Initiale), RECO (Reconnaissance Opérationnelle Périodique), CTRL (Contrôle Technique Périodique), NP (visite non programmée)
+|ctrl_debit_pression|Booléen|Oui|La visite de réception ou le controle technique périodique comprenne un mesure de débits/pressions
+|agent1|Texte|Oui|Agent responsable de la visite
+|agent2|Texte|Oui|Agent accompagnant de la visite
+|debit|Entier|Non|Débit mesuré
+|debit_max|Entier|Non|Débit max mesuré
+|pression|Numérique|Non|Pression statique mesurée
+|pression_dyn|Numérique|Non|Pression dynamique à 60m3 mesurée
+|pression_dyn_deb|Numérique|Non|Pression dynamique au débit max mesurée
+|anomalies|Texte|Non|Liste des codes d'anomalie dans type_hydrant_anomalie.csv séparés par un \|
+|observations|Texte|Non|Observation libre effectué par les agents lors de la visite
 |====================
 
 Dans Remocra, tous les PEI doivent au minimum avoir une visite de réception (CREA) et une reconnaissance opérationnel initiale (RECP).
