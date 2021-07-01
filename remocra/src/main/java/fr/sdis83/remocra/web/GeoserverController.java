@@ -317,8 +317,7 @@ public class GeoserverController {
                     response.setContentType(header.getValue());
                 }
             }
-
-            InputStream is = new URL(targetURLWithFilter).openStream();
+            InputStream is = (RequestType.GetCapabilities == requestType) ? new URL(targetURLWithFilter).openStream() :srcResponse.getEntity().getContent();
             OutputStream os = response.getOutputStream();
 
             try {
@@ -505,7 +504,7 @@ public class GeoserverController {
                 }
             }
 
-            InputStream is = new URL(targetURLWithFilter).openStream();
+            InputStream is = (RequestType.GetCapabilities == requestType) ? new URL(targetURLWithFilter).openStream() :srcResponse.getEntity().getContent();
             OutputStream os = response.getOutputStream();
 
             try {
