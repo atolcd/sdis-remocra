@@ -70,6 +70,13 @@ RUN set -x \
     || wget -P ${KETTLE_HOME}/libext/JDBC -q https://jdbc.postgresql.org/download/postgresql-42.2.10.jre7.jar) \
   && rm -f Dockerfile # cleaning
 
+# MySql
+COPY Dockerfile ext/mysql-connector-java-8.0.25.jar* ext/mysql-connector-java-8.0.25.jar* ${KETTLE_HOME}/lib/
+RUN set -x \
+  && ([ -f ${KETTLE_HOME}/lib/mysql-connector-java-8.0.25.jar ] \
+    || wget -P ${KETTLE_HOME}/lib -q https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/home/postgres/pdi/libext/JDBC/mysql-connector-java-8.0.25.jar) \
+  && rm -f Dockerfile # cleaning
+
 ENV PATH ${KETTLE_HOME}/kitchen.sh:$PATH
 
 # Pour exécution standalone
