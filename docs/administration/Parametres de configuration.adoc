@@ -597,3 +597,9 @@ Méthodes disponibles pour la symbologie des PEI : link:../pei/Symbologie_PEI{ou
 === PDI_PURGE_TRAITEMENT_JOURS ===
 * Nombre de jours avant suppression des traitements réalisés par Remocra
 * Par défaut : ```1```
+
+=== PROCESS_OFFLINE_USER ===
+
+* Identifiant de l'utilisateur utilisé comme créeateur des processus ETl
+* Par défaut : ```remocra-adm-app```
+

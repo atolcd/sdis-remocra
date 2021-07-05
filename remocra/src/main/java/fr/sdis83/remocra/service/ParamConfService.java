@@ -7,6 +7,7 @@ import fr.sdis83.remocra.domain.utils.Password;
 import fr.sdis83.remocra.util.NumeroUtil;
 import fr.sdis83.remocra.util.NumeroUtil.MethodeNumerotation;
 import org.apache.log4j.Logger;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,13 +21,18 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.Arrays;
 
 @Configuration
 public class ParamConfService {
 
     private final Logger log = Logger.getLogger(getClass());
 
+    @Bean
+    public ParamConfService paramConfService() { return new ParamConfService();
+    }
+    public ParamConfService() {
+
+    }
     protected Object getValue(ParamConfParam pcp, Object defaultValue) {
         Object result = getValue(pcp);
         return result == null ? defaultValue : result;

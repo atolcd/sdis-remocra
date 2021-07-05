@@ -120,9 +120,11 @@
         <constructor-arg index="6"><null /></constructor-arg>
         <constructor-arg index="7"><null /></constructor-arg>
     </bean>
-
+    <!-- On crée le bean processusEtlPlanificationRepository pour déclencher quartz au démarrage -->
+    <bean id="paramConfService" class="fr.sdis83.remocra.service.ParamConfService"></bean>
     <bean id="processusEtlPlanificationRepository" class="fr.sdis83.remocra.repository.ProcessusEtlPlanificationRepository">
-        <constructor-arg ref="dsl" />
+        <constructor-arg index="0" ref="dsl"/>
+        <constructor-arg index="1" ref="paramConfService"/>
     </bean>
 
 </beans>

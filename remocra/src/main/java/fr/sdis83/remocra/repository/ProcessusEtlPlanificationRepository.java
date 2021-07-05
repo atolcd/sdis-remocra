@@ -1,45 +1,40 @@
 package fr.sdis83.remocra.repository;
 
-import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL;
-import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL_PARAMETRE;
-import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL_PLANIFICATION;
-import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL_PLANIFICATION_PARAMETRE;
-import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL_STATUT;
-import static org.quartz.CronScheduleBuilder.cronSchedule;
-
-import java.text.ParseException;
-import java.util.List;
-import java.util.logging.Level;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlPlanification;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlPlanificationParametre;
-import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.jobs.ProcessEtlJob;
-import fr.sdis83.remocra.quartz.QuartzScheduler;
 import fr.sdis83.remocra.service.ParamConfService;
-import fr.sdis83.remocra.service.UtilisateurService;
 import org.apache.log4j.Logger;
 import org.joda.time.Instant;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
+import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.impl.matchers.GroupMatcher;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
-import org.quartz.impl.StdSchedulerFactory;
-import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.text.ParseException;
+import java.util.List;
+import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL;
+import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL_PARAMETRE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL_PLANIFICATION;
+import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL_PLANIFICATION_PARAMETRE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.PROCESSUS_ETL_STATUT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
+
+import static org.quartz.CronScheduleBuilder.cronSchedule;
 
 @Configuration
 public class ProcessusEtlPlanificationRepository {
@@ -53,10 +48,7 @@ public class ProcessusEtlPlanificationRepository {
 
 
   @Autowired
-  private UtilisateurService utilisateurService;
-
-  @Autowired
-  private ParamConfService paramConfService;
+  ParamConfService paramConfService;
 
 
   public ProcessusEtlPlanificationRepository() {
@@ -67,12 +59,13 @@ public class ProcessusEtlPlanificationRepository {
   private EntityManager entityManager;
 
   @Bean
-  public ProcessusEtlPlanificationRepository processusEtlPlanificationRepository(DSLContext context) throws SchedulerException {
-    return new ProcessusEtlPlanificationRepository(context);
+  public ProcessusEtlPlanificationRepository processusEtlPlanificationRepository(DSLContext context,ParamConfService paramConfService) throws SchedulerException {
+    return new ProcessusEtlPlanificationRepository(context , paramConfService);
   }
 
-  public ProcessusEtlPlanificationRepository(DSLContext context) throws SchedulerException {
+  public ProcessusEtlPlanificationRepository(DSLContext context, ParamConfService paramConfService ) throws SchedulerException {
     this.context = context;
+    this.paramConfService = paramConfService;
     try{
       List<ProcessusEtlPlanification> newPlannifs = this.getAll();
       scheduleJobs(newPlannifs);
@@ -179,8 +172,7 @@ public class ProcessusEtlPlanificationRepository {
         j.put("repository", this);
         // On relance les process avec le user hors ligne
         String userName = paramConfService.getProcessOfflineUser();
-        Utilisateur u = utilisateurService.findUtilisateursWithoutCase(userName);
-        Long idUtilisateur = u.getId();
+        Long idUtilisateur = findOfflineUser(userName);
         j.put("idUtilisateur", idUtilisateur);
         JobDetail job = JobBuilder.newJob(ProcessEtlJob.class).withIdentity("processusEtlJob"+index, "group"+index).usingJobData(j).build();
         //((ProcessEtlJob)job).setProcessusEtlPlanificationRepository(this);
@@ -203,6 +195,14 @@ public class ProcessusEtlPlanificationRepository {
 
   @Transactional
   public void deletePlanifs(Long id) {
-     context.select().from(PROCESSUS_ETL_PLANIFICATION).where(PROCESSUS_ETL_PLANIFICATION.OBJET_CONCERNE.eq(id)).fetchInto(ProcessusEtlPlanification.class);
+     context.deleteFrom(PROCESSUS_ETL_PLANIFICATION).where(PROCESSUS_ETL_PLANIFICATION.OBJET_CONCERNE.eq(id));
+  }
+
+  /**
+   * find user without case sensitive
+   */
+  public Long findOfflineUser( String username) {
+    Long id = context.select(UTILISATEUR.ID).from(UTILISATEUR).where(UTILISATEUR.IDENTIFIANT.lower().eq(username.toLowerCase())).fetchOne(UTILISATEUR.ID);
+    return id;
   }
 }
