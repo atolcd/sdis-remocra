@@ -34,6 +34,7 @@ drop function versionnement_dffd4df4df();
 -- Contenu réel du patch début
 
 CREATE ROLE sgo_template NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOLOGIN;
+GRANT CONNECT ON DATABASE remocra TO sgo_template;
 GRANT USAGE ON SCHEMA remocra TO sgo_template;
 GRANT SELECT ON TABLE remocra.hydrant TO sgo_template;
 GRANT SELECT ON TABLE remocra.hydrant_pibi TO sgo_template;
