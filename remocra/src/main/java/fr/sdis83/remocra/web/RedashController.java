@@ -5,9 +5,12 @@ import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.service.ZoneCompetenceService;
 import org.apache.http.*;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.DefaultHttpRequestFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +26,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 @RequestMapping("/redash")
 @Controller
@@ -64,9 +69,22 @@ public class RedashController {
                     .queryParam("p_organisme",u.getOrganisme().getId())
                     .build();
             String targetURL = c.toUriString();
+            JSONObject json = new JSONObject();
+            Map<String, String> params = new HashMap<>();
+            params.put("p_utilisateur",String.valueOf(u.getId()));
+            params.put("p_zone_competence", String.valueOf(zoneCompetence));
+            params.put("p_organisme",String.valueOf(u.getOrganisme().getId()));
+            json.put("parameters",params );
+            StringEntity parameters = new StringEntity(json.toString());
 
             log.info("Proxy corr vers : " + targetURL);
             HttpRequest targetRequest = new DefaultHttpRequestFactory().newHttpRequest(request.getMethod(), targetURL);
+            if (targetURL.contains("/results")){
+                HttpPost postTargetRequest = new HttpPost(targetURL);
+                postTargetRequest.setEntity(parameters);
+                targetRequest = postTargetRequest;
+            }
+
             // Entêtes
             @SuppressWarnings("unchecked")
             Enumeration<String> headerNames = request.getHeaderNames();
