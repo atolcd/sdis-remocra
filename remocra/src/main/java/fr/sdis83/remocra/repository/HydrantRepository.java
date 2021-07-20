@@ -87,7 +87,7 @@ public class HydrantRepository {
     // Données de l'hydrant
     Hydrant h = new Hydrant();
     h.setId(id);
-    h.setNumeroInterne(hydrant.getNumeroInterne());
+    h.setNumeroInterne(JSONUtil.getInteger(data, "numeroInterne"));
     h.setNature(JSONUtil.getLong(data, "nature"));
     h.setNatureDeci(JSONUtil.getLong(data, "natureDeci"));
     h.setAutoriteDeci(JSONUtil.getLong(data, "autoriteDeci"));
