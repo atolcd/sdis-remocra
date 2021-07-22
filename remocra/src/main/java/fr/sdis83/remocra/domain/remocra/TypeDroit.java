@@ -115,7 +115,12 @@ public class TypeDroit {
         CARTOGRAPHIES_C("cartographies_C"),
 
         //Accès au tableau de bord
-        DASHBOARD_R("dashboard_R");
+        DASHBOARD_R("dashboard_R"),
+
+        // API
+        APP_ADMINISTRER("app_administrer"),
+        APP_TRANSFERTS_AUTOMATISES("app_transferts_automatises");
+
 
 
         private final String value;

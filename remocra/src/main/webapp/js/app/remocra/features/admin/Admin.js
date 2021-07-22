@@ -184,7 +184,9 @@ Ext.define('Sdis.Remocra.features.admin.Admin', {
         contentPanel.items.items.forEach(function(item){
              if(item.itemId === "adminOrganisme") {
                item.down("toolbar").getComponent("organismeContact").show();
-               item.down("toolbar").getComponent("organismeAPI").show();
+               if(Sdis.Remocra.Rights.hasRight('APP_ADMINISTRER')) {
+                item.down("toolbar").getComponent("organismeAPI").show();
+               }
              }
 
              // Grid utilisateur: on ne permet que la consultation si l'utilisateur n'a
