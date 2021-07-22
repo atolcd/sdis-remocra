@@ -96,7 +96,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
                 type: 'href',
                 href: 'hydrants/courrier',
                 lbl: 'Générer des courriers',
-                onclick: 'onClick="Sdis.Remocra.features.index.BlocsFactory.createCourrierWindow();"'
+                onclick: 'onClick="Sdis.Remocra.features.index.BlocsFactory.createCourrierWindow(\'POINTDEAU\');"'
             });
         }
         
@@ -106,10 +106,10 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
         return blocHydrants;
     },
 
-    createCourrierWindow: function(){
+    createCourrierWindow: function(thematique){
     var d = document.createElement('div');
     document.body.appendChild(d);
-    var vueCourrier = window.remocraVue.buildCourrier(d, {thematique: 'POINTDEAU'});
+    var vueCourrier = window.remocraVue.buildCourrier(d, {thematique: thematique});
     vueCourrier.$options.bus.$on('closed',
         Ext.bind(function(data) {
             vueCourrier.$el.remove();
@@ -288,6 +288,20 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
                 type: 'href',
                 href: 'traitements/index/application/7',
                 lbl: 'Accéder aux traitements'
+            });
+        }
+
+        if (Sdis.Remocra.Rights.hasRight('COURRIER_C')) {
+            if (!Ext.isEmpty(bloc.items)) {
+                bloc.items.push({
+                    type: 'sep'
+                });
+            }
+            bloc.items.push({
+                type: 'href',
+                href: 'traitements/courrier',
+                lbl: 'Générer des courriers',
+                onclick: 'onClick="Sdis.Remocra.features.index.BlocsFactory.createCourrierWindow(\'RCI\');"'
             });
         }
         return bloc;
