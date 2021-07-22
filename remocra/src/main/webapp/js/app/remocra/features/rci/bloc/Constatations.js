@@ -455,8 +455,7 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Constatations', {
         editable : false,
         queryMode : 'local',
         itemId : 'risqueMeteo',
-        name : 'risqueMeteo',
-        allowBlank : false
+        name : 'risqueMeteo'
     }, {
         colspan : 2,
         xtype : 'displayfield',
