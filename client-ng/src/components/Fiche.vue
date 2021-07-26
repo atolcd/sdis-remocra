@@ -400,7 +400,8 @@ export default {
         natureDeci: null,
         spDeci: null,
         code: self.codeHydrant,
-        maintenanceDeci: null
+        maintenanceDeci: null,
+        enFace: false
       }
       self.hydrant = _.clone(self.hydrantRecord);
       self.dataLoaded = true;
