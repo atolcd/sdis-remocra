@@ -61,7 +61,13 @@ public class TourneeController {
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
                 return serializer
                     // anomalies
-                    .include("data.hydrantCount").exclude("data.affectation.zoneCompetence.geometrie").exclude("data.reservation.organisme.zoneCompetence.geometrie");
+                    .include("data.hydrantCount")
+                    .exclude("data.affectation.zoneCompetence.geometrie")
+                    .exclude("data.reservation.organisme.zoneCompetence.geometrie")
+                    .exclude("data.affectation.organismeParent.zoneCompetence.geometrie")
+                    .exclude("data.affectation.organismeParent.profilOrganisme.typeOrganisme.typeOrganismeParent")
+                    .exclude("data.affectation.organismeParent.typeOrganisme.typeOrganismeParent.typeOrganismeParent")
+                    .exclude("data.affectation.organismeParent.organismeParent");
             }
             @Override
             protected List<Tournee> getRecords() {
