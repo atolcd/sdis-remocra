@@ -18,7 +18,7 @@ declare
     description_patch varchar;
 begin
     -- Métadonnées du patch
-    numero_patch := 151;
+    numero_patch := 152;
     description_patch := 'Déplacement du droit pour les recherches et analyses dans la catégories Général';
 
     -- Vérification
