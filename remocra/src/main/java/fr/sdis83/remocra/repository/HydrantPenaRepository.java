@@ -58,7 +58,7 @@ public class HydrantPenaRepository {
 
     HydrantPena pena = new HydrantPena();
     pena.setId(id);
-    pena.setIllimitee(JSONUtil.getBoolean(data, "illimite"));
+    pena.setIllimitee(JSONUtil.getBoolean(data, "illimitee"));
     pena.setIncertaine(JSONUtil.getBoolean(data, "incertaine"));
     pena.setCapacite(JSONUtil.getString(data, "capacite"));
     pena.setQAppoint(JSONUtil.getDouble(data, "QAppoint"));
@@ -87,10 +87,9 @@ public class HydrantPenaRepository {
     } catch (IllegalCoordinateException e) {
       e.printStackTrace();
     }
-
     HydrantPena pena = new HydrantPena();
     pena.setId(id);
-    pena.setIllimitee(JSONUtil.getBoolean(data, "illimite"));
+    pena.setIllimitee(JSONUtil.getBoolean(data, "illimitee"));
     pena.setIncertaine(JSONUtil.getBoolean(data, "incertaine"));
     pena.setCapacite(JSONUtil.getString(data, "capacite"));
     pena.setQAppoint(JSONUtil.getDouble(data, "QAppoint"));
