@@ -114,7 +114,7 @@ public class HydrantVisiteRepository {
    * @param visiteData Les identifiants des visites à supprimer
    */
   public void deleteVisiteFromFiche(Long id, String visiteData) throws IOException {
-    if(visiteData != null && !"null".equals(visiteData)) {
+    if(visiteData != null && !"null".equals(visiteData) && !"[]".equals(visiteData)) {
       ArrayList<Long> listeVisite = objectMapper.readValue(visiteData.toString(), new TypeReference<ArrayList<Long>>(){});
       Collections.sort(listeVisite); // On trie par id
       Collections.reverse(listeVisite); // On commence par les visites les plus récentes

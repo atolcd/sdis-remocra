@@ -38,6 +38,37 @@ public class HydrantPenaRepository {
   }
 
   /**
+   * Créé un PENA depuis les informations transmises par la fiche PEI
+   * @param id L'identifiant de l'hydrant
+   * @param data Les données du PENA
+   * @return Le PENA contenant ses nouvelles informations
+   */
+  public HydrantPena createHydrantPenaFromFiche(Long id, Map<String, Object> data) throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    Map<String, Object> aspirationsData = objectMapper.readValue(data.get("aspirations").toString(), new TypeReference<Map<String,Object>>(){});
+
+    try {
+      this.hydrantAspirationRepository.addHydrantAspirationFromFiche(id, aspirationsData.get("addAspirations").toString());
+      this.hydrantAspirationRepository.deleteHydrantAspirationsFromFiche(id, aspirationsData.get("deleteAspirations").toString());
+    } catch (CRSException e) {
+      e.printStackTrace();
+    } catch (IllegalCoordinateException e) {
+      e.printStackTrace();
+    }
+
+    HydrantPena pena = new HydrantPena();
+    pena.setId(id);
+    pena.setIllimitee(JSONUtil.getBoolean(data, "illimite"));
+    pena.setIncertaine(JSONUtil.getBoolean(data, "incertaine"));
+    pena.setCapacite(JSONUtil.getString(data, "capacite"));
+    pena.setQAppoint(JSONUtil.getDouble(data, "QAppoint"));
+    pena.setMateriau(JSONUtil.getLong(data, "materiau"));
+    pena.setHbe(JSONUtil.getBoolean(data, "hbe"));
+
+    return this.createHydrantPena(pena);
+  }
+
+  /**
    * Met à jour un PENA depuis les informations transmises par la fiche PEI
    * @param id L'identifiant de l'hydrant
    * @param data Les données du PENA
@@ -93,13 +124,22 @@ public class HydrantPenaRepository {
 
   /**
    * Créé un PENA en base
-   * @param id L'identifiant de l'hydrant
-   * @return L'identifiant du PENA créé
    */
-  public Long createHydrantPena(Long id) {
-    return context
+  private HydrantPena createHydrantPena(HydrantPena pena) {
+    context
       .insertInto(HYDRANT_PENA)
-      .set(HYDRANT_PENA.ID, id)
-      .returning(HYDRANT_PENA.ID).fetchOne().getValue(HYDRANT_PENA.ID);
+      .set(HYDRANT_PENA.ID, pena.getId())
+      .set(HYDRANT_PENA.ILLIMITEE, pena.getIllimitee())
+      .set(HYDRANT_PENA.INCERTAINE, pena.getIncertaine())
+      .set(HYDRANT_PENA.CAPACITE, pena.getCapacite())
+      .set(HYDRANT_PENA.Q_APPOINT, pena.getQAppoint())
+      .set(HYDRANT_PENA.MATERIAU, pena.getMateriau())
+      .set(HYDRANT_PENA.HBE, pena.getHbe())
+      .execute();
+
+    return context
+      .selectFrom(HYDRANT_PENA)
+      .where(HYDRANT_PENA.ID.eq(pena.getId()))
+      .fetchOneInto(HydrantPena.class);
   }
 }

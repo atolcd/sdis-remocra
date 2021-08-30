@@ -32,6 +32,33 @@ public class HydrantPibiRepository {
   }
 
   /**
+   * Créé un PIBI depuis les informations transmises par la fiche PEI
+   * @param id L'identifiant de l'hydrant
+   * @param data Les données du PIBI
+   * @return Le PIBI contenant ses nouvelles informations
+   */
+  public HydrantPibi createHydrantPibiFromFiche(Long id, Map<String, Object> data) {
+    HydrantPibi pibi = new HydrantPibi();
+    pibi.setId(id);
+    pibi.setDiametre(JSONUtil.getLong(data, "diametre"));
+    pibi.setDispositifInviolabilite(JSONUtil.getBoolean(data, "dispositif_inviolabilite"));
+    pibi.setRenversable(JSONUtil.getBoolean(data, "renversable"));
+    pibi.setJumele(JSONUtil.getLong(data, "jumele"));
+    pibi.setMarque(JSONUtil.getLong(data, "marque"));
+    pibi.setModele(JSONUtil.getLong(data, "modele"));
+    pibi.setServiceEaux(JSONUtil.getLong(data, "serviceEaux"));
+    pibi.setTypeReseauAlimentation(JSONUtil.getLong(data, "typeReseauAlimentation"));
+    pibi.setDebitRenforce(JSONUtil.getBoolean(data, "debitRenforce"));
+    pibi.setTypeReseauCanalisation(JSONUtil.getLong(data, "typeReseauCanalisation"));
+    pibi.setDiametreCanalisation(JSONUtil.getInteger(data, "diametreCanalisation"));
+    pibi.setReservoir(JSONUtil.getLong(data, "reservoir"));
+    pibi.setSurpresse(JSONUtil.getBoolean(data, "surpresse"));
+    pibi.setAdditive(JSONUtil.getBoolean(data, "additive"));
+
+    return this.createHydrantPibi(pibi);
+  }
+
+  /**
    * Met à jour un PIBI depuis les informations transmises par la fiche PEI
    * @param id L'identifiant de l'hydrant
    * @param data Les données du PIBI
@@ -106,13 +133,30 @@ public class HydrantPibiRepository {
 
   /**
    * Créé un PIBI en base
-   * @param id L'identifiant de l'hydrant
-   * @return L'identifiant du PIBI créé
    */
-  public Long createHydrantPibi(Long id) {
-    return context
+  private HydrantPibi createHydrantPibi(HydrantPibi pibi) {
+    context
       .insertInto(HYDRANT_PIBI)
-      .set(HYDRANT_PIBI.ID, id)
-      .returning(HYDRANT_PIBI.ID).fetchOne().getValue(HYDRANT_PIBI.ID);
+      .set(HYDRANT_PIBI.ID, pibi.getId())
+      .set(HYDRANT_PIBI.DIAMETRE, pibi.getDiametre())
+      .set(HYDRANT_PIBI.DISPOSITIF_INVIOLABILITE, pibi.getDispositifInviolabilite())
+      .set(HYDRANT_PIBI.RENVERSABLE, pibi.getRenversable())
+      .set(HYDRANT_PIBI.JUMELE, pibi.getJumele())
+      .set(HYDRANT_PIBI.MARQUE, pibi.getMarque())
+      .set(HYDRANT_PIBI.MODELE, pibi.getModele())
+      .set(HYDRANT_PIBI.SERVICE_EAUX, pibi.getServiceEaux())
+      .set(HYDRANT_PIBI.TYPE_RESEAU_ALIMENTATION, pibi.getTypeReseauAlimentation())
+      .set(HYDRANT_PIBI.DEBIT_RENFORCE, pibi.getDebitRenforce())
+      .set(HYDRANT_PIBI.TYPE_RESEAU_CANALISATION, pibi.getTypeReseauCanalisation())
+      .set(HYDRANT_PIBI.RESERVOIR, pibi.getReservoir())
+      .set(HYDRANT_PIBI.SURPRESSE, pibi.getSurpresse())
+      .set(HYDRANT_PIBI.ADDITIVE, pibi.getAdditive())
+      .set(HYDRANT_PIBI.DIAMETRE_CANALISATION, pibi.getDiametreCanalisation())
+      .execute();
+
+    return context
+      .selectFrom(HYDRANT_PIBI)
+      .where(HYDRANT_PIBI.ID.eq(pibi.getId()))
+      .fetchOneInto(HydrantPibi.class);
   }
 }
