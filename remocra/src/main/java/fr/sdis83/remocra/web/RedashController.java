@@ -101,6 +101,10 @@ public class RedashController {
 
             DefaultHttpClient httpclient = new DefaultHttpClient();
             HttpResponse srcResponse = httpclient.execute(httpHost, targetRequest);
+
+            // Statut
+            response.setStatus(srcResponse.getStatusLine().getStatusCode());
+
             // Entêtes
             Header[] headers = srcResponse.getAllHeaders();
             for (Header header : headers) {
