@@ -21,6 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -40,9 +41,6 @@ public class RedashController {
 
     @Autowired
     private ParamConfService paramConfService;
-
-    @Autowired
-    private ZoneCompetenceService zoneCompetenceService;
 
     @RequestMapping(value = "/**")
     @PreAuthorize("hasRight('DASHBOARD_R')")
@@ -79,6 +77,7 @@ public class RedashController {
 
             log.info("Proxy corr vers : " + targetURL);
             HttpRequest targetRequest = new DefaultHttpRequestFactory().newHttpRequest(request.getMethod(), targetURL);
+            //Ajouter les paramètres dans le bodyrequest en cas de post
             if (targetURL.contains("/results")){
                 HttpPost postTargetRequest = new HttpPost(targetURL);
                 postTargetRequest.setEntity(parameters);
@@ -112,21 +111,19 @@ public class RedashController {
             // Traitement de la réponse
             // --------------------
             InputStream is = null;
-            if(srcResponse.getEntity() != null){
-               is = srcResponse.getEntity().getContent();
-            }
-
             OutputStream os = response.getOutputStream();
 
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = is.read(buffer)) != -1) {
-                os.write(buffer, 0, bytesRead);
+            if(srcResponse.getEntity() != null){
+               is = srcResponse.getEntity().getContent();
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = is.read(buffer)) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                }
             }
+
             os.flush();
             os.close();
-
-            // On a déjà traité la réponse si bien qu'on ne retourne rien.
 
         } catch (MethodNotSupportedException e) {
             log.error("La méthode invoquée n'est pas supportée", e);
