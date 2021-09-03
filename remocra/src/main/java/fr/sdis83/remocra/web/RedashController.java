@@ -114,21 +114,16 @@ public class RedashController {
             // --------------------
             // Traitement de la réponse
             // --------------------
-            InputStream is = null;
-            OutputStream os = response.getOutputStream();
-
-            if(srcResponse.getEntity() != null){
-               is = srcResponse.getEntity().getContent();
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = is.read(buffer)) != -1) {
-                    os.write(buffer, 0, bytesRead);
+            if(srcResponse.getEntity() != null) {
+                try (InputStream is = srcResponse.getEntity().getContent(); OutputStream os = response.getOutputStream()){
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = is.read(buffer)) != -1) {
+                        os.write(buffer, 0, bytesRead);
+                    }
+                    os.flush();
                 }
             }
-
-            os.flush();
-            os.close();
-
         } catch (MethodNotSupportedException e) {
             log.error("La méthode invoquée n'est pas supportée", e);
             response.setStatus(500);
