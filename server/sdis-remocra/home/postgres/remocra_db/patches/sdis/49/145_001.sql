@@ -29,9 +29,9 @@ BEGIN
 
 	-- Ajout des anomalies
     if(p_diametre_nom = '80' and (p_nature_code = 'PI' or p_nature_code = 'BI')) then
-	    if (p_rec.debit is null OR p_rec.debit >= 30) then -- cas de creation et reception sans anomalies
+	    if (p_rec.debit >= 30) then -- cas de creation et reception sans anomalies
             perform remocra.calcul_indispo(p_rec.id);
-        elsif (p_rec.debit < 15) then
+        elsif (p_rec.debit is null OR p_rec.debit < 15) then
             select id into p_anomalie_id from remocra.type_hydrant_anomalie where code = 'DEBIT_INSUFF';
             insert into remocra.hydrant_anomalies (hydrant,anomalies) values (p_rec.id, p_anomalie_id);
         elsif (p_rec.debit < 30) then
@@ -39,9 +39,9 @@ BEGIN
             insert into remocra.hydrant_anomalies (hydrant,anomalies) values (p_rec.id, p_anomalie_id);
         end if;
     elsif(p_diametre_nom = '100' and (p_nature_code = 'PI' or p_nature_code = 'BI')) then
-        if (p_rec.debit is null OR p_rec.debit >= 60) then -- cas de creation et reception sans anomalies
+        if (p_rec.debit >= 60) then -- cas de creation et reception sans anomalies
             perform remocra.calcul_indispo(p_rec.id);
-        elsif (p_rec.debit < 30) then
+        elsif (p_rec.debit is null OR p_rec.debit < 30) then
             select id into p_anomalie_id from remocra.type_hydrant_anomalie where code = 'DEBIT_INSUFF';
             insert into remocra.hydrant_anomalies (hydrant,anomalies) values (p_rec.id, p_anomalie_id);
         elsif (p_rec.debit < 60) then
@@ -49,9 +49,9 @@ BEGIN
             insert into remocra.hydrant_anomalies (hydrant,anomalies) values (p_rec.id, p_anomalie_id);
         end if;
     elsif(p_diametre_nom = '150' and (p_nature_code = 'PI' or p_nature_code = 'BI')) then
-        if (p_rec.debit is null OR p_rec.debit >= 120) then -- cas de creation et reception sans anomalies
+        if (p_rec.debit >= 120) then -- cas de creation et reception sans anomalies
             perform remocra.calcul_indispo(p_rec.id);
-        elsif (p_rec.debit < 30) then
+        elsif (p_rec.debit is null OR p_rec.debit < 30) then
             select id into p_anomalie_id from remocra.type_hydrant_anomalie where code = 'DEBIT_INSUFF';
             insert into remocra.hydrant_anomalies (hydrant,anomalies) values (p_rec.id, p_anomalie_id);
         elsif (p_rec.debit < 120) then
