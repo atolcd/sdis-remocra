@@ -5,7 +5,7 @@ LABEL maintainer="ATOL Conseils & Développements"
 # curl
 RUN set -e \
     && apt-get -y update \
-    && apt-get install -y curl htop \
+    && apt-get install -y curl unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -24,7 +24,10 @@ RUN sed -i "s/<Connector port=\"8080\"/<Connector URIEncoding=\"utf-8\" relaxedQ
 # Eventuellement mapper ce fichier en volume
 # RUN sed -i "s/<ConnectorURIEncoding=\"utf-8\"/<Connector secure=\"true\" scheme=\"https\" proxyPort=\"443\" URIEncoding=\"utf-8\"/" /usr/local/tomcat/conf/server.xml
 
-COPY ext/remocra.war /usr/local/tomcat/webapps/
+COPY ext/remocra.war /usr/local/tomcat/webapps
+
+RUN cd /usr/local/tomcat/webapps && unzip remocra.war -d remocra
+
 
 ENV \
     REMOCRA_INITIAL_MEMORY="1G" \
