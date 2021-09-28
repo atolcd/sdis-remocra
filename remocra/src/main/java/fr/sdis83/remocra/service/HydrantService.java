@@ -11,11 +11,7 @@ import java.util.Map;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import javax.sql.DataSource;
 
 import flexjson.JSONSerializer;
@@ -23,6 +19,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import fr.sdis83.remocra.domain.remocra.Organisme;
+import fr.sdis83.remocra.web.message.ItemFilter;
 import org.apache.log4j.Logger;
 import org.cts.IllegalCoordinateException;
 import org.cts.crs.CRSException;
@@ -534,6 +531,37 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
 
 
         return sb.toString();
+    }
+
+    public List<Order> makeOrders(Root<Hydrant> from, List<ItemSorting> itemSortings, List<ItemFilter> itemFilters) {
+        ArrayList<Order> orders = new ArrayList<Order>();
+        CriteriaBuilder cBuilder = this.getCriteriaBuilder();
+        boolean absOrderFieldName = false;
+        if (itemSortings != null && !itemSortings.isEmpty()) {
+            for (ItemSorting itemSorting : itemSortings) {
+                if (!this.processItemSortings(orders, itemSorting, cBuilder, from)) {
+                    Path<?> field = from.get(itemSorting.getFieldName());
+                    if(itemSorting.isDesc()) {
+                        if("numero".equals(itemSorting.getFieldName())) {
+                            orders.add(cBuilder.desc(cBuilder.length(from.get(itemSorting.getFieldName()))));
+                        }
+                        orders.add(cBuilder.desc(field));
+                    } else {
+                        if("numero".equals(itemSorting.getFieldName())) {
+                            orders.add(cBuilder.asc(cBuilder.length(from.get(itemSorting.getFieldName()))));
+                        }
+                        orders.add(cBuilder.asc(field));
+                    }
+                }
+                if (getAbsOrderFieldName().equals(itemSorting.getFieldName())) {
+                    absOrderFieldName = true;
+                }
+            }
+        }
+        if (!absOrderFieldName) {
+            orders.add(cBuilder.asc(from.get(getAbsOrderFieldName())));
+        }
+        return orders;
     }
 
 }
