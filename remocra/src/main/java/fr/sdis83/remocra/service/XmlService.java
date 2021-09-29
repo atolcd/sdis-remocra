@@ -628,7 +628,7 @@ public class XmlService {
         hydrantXML.setDateAttestation(hydrant.getDateAttestation());
         hydrantXML.setCodeNatureDeci(hydrant.getNatureDeci() != null ? hydrant.getNatureDeci().getCode() : "");
         hydrantXML.setAdresse((hydrant.getNumeroVoie() != null ? hydrant.getNumeroVoie() : "") + " " +
-            (hydrant.getSuffixeVoie() != null ? hydrant.getSuffixeVoie() : "") +" "+ hydrant.getVoie() + (hydrant.getEnFace()? " (En face)" : "") + '\n' + hydrant.getNomCommune());
+            (hydrant.getSuffixeVoie() != null ? hydrant.getSuffixeVoie() : "") +" "+ hydrant.getVoie() + (hydrant.getEnFace() != null && hydrant.getEnFace()? " (En face)" : "") + '\n' + hydrant.getNomCommune());
         hydrantXML.setCodeNatureDeci(hydrant.getNatureDeci() != null ? hydrant.getNatureDeci().getCode() : "");
         ItemFilter f = new ItemFilter("hydrant",String.valueOf(hydrant.getId()));
         List<ItemFilter> itemFilterList = new ArrayList<ItemFilter>();
