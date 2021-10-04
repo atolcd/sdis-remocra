@@ -702,7 +702,8 @@ export default {
      */
     prepareVisitesData() {
       var newVisite = null;
-      if(this.createVisiteDisabled) {
+      // Si visite sans id présente en 1ere position => nouvelle visite
+      if(this.listeVisites.length > 0 && !this.listeVisites[0].id) {
         newVisite = this.listeVisites[0];
         newVisite.date = this.formattedDate[0] + " " + this.formattedTime[0] + ":00";
       }
