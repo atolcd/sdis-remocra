@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS remocra.dde_api(
         REFERENCES remocra.organisme (id)
         MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+ALTER TABLE remocra.dde_api OWNER TO remocra;
 
 --Modèle de mail
 INSERT INTO remocra.email_modele (code, corps, objet, version) VALUES (
@@ -81,6 +82,8 @@ CREATE TABLE IF NOT EXISTS remocra.transferts_automatises(
         REFERENCES remocra.type_organisme (id)
         MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+ALTER TABLE remocra.transferts_automatises OWNER TO remocra;
+
 
 INSERT INTO remocra.transferts_automatises(type_organisme)
 SELECT id FROM remocra.type_organisme;
