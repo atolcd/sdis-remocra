@@ -80,7 +80,25 @@ privileged aspect Commune_Remocra_SortFilter {
             itemTypedQuery.setParameter("distanceZone", Double.valueOf(0));
         }
 
-        return itemTypedQuery.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+        List<Commune> communes = itemTypedQuery.getResultList();
+
+        // Si on a un match exact sur le nom, on retourne ce résultat en premier
+        if("nom".equals(itemSorting.getFieldName())) {
+            Commune commune = null;
+            for(Commune c : communes) {
+                if(nomQuery.toLowerCase().equals(c.nom.toLowerCase())) {
+                    commune = c;
+                }
+            }
+            if(commune != null) {
+                communes.remove(communes.indexOf(commune));
+                communes.add(0,commune);
+            }
+        }
+
+        int start = (firstResult < 0) ? 0 : (firstResult > communes.size()-1) ? communes.size()-1 : firstResult;
+        int stop = (firstResult+maxResults > communes.size()) ? communes.size() : firstResult+maxResults;
+        return communes.subList(start, stop);
     }
 
     /**
