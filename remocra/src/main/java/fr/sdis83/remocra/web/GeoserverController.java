@@ -681,7 +681,9 @@ public class GeoserverController {
             Node onlineResourceNode = onlineResourceNodes.item(onlineResourceIdx);
             Element onlineElement = (Element) onlineResourceNode;
             onlineElement.setAttribute("xlink:href", rewriteUrl(onlineElement.getAttribute("xlink:href")));
-            onlineElement.setAttribute("href", rewriteUrl(onlineElement.getAttribute("href")));
+            if(onlineElement.getAttribute("href").toString().length() > 0) {
+                onlineElement.setAttribute("href", rewriteUrl(onlineElement.getAttribute("href")));
+            }
         }
     }
 
