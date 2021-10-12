@@ -133,7 +133,6 @@ Ext.define('Sdis.Remocra.controller.hydrant.Requetage', {
                             type : 'rest',
                             headers : { 'Accept' : 'application/json,application/xml', 'Content-Type' : 'application/json' },
                             url : Sdis.Remocra.util.Util.withBaseUrl("../requetemodele/reqmodparalst/" + data[i]['id']),
-                            extraParams : {query: data[i]['formulaireValeurDefaut']},
                             reader : { type : 'json', root : 'data', totalProperty : 'total' }
                         },
                         idProperty : 'id',
