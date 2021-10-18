@@ -486,12 +486,20 @@
         <attribute>${REMOCRA_POSTGIS_DATABASE_PORT}</attribute>
       </attribute>
       <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
         <code>QUOTE_ALL_FIELDS</code>
         <attribute>N</attribute>
       </attribute>
       <attribute>
         <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
         <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>N</attribute>
       </attribute>
       <attribute>
         <code>USE_POOLING</code>
@@ -648,11 +656,6 @@
     <hop>
       <from>insertion utilisateurs</from>
       <to>ignore4</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>mise à jour utilisateur</from>
-      <to>ignore5</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -1747,31 +1750,6 @@ if (listGroupRemocraP.length > 0) {
     </GUI>
   </step>
   <step>
-    <name>ignore5</name>
-    <type>Dummy</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1275</xloc>
-      <yloc>505</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
     <name>insert / update</name>
     <type>FilterRows</type>
     <description/>
@@ -1902,9 +1880,9 @@ if (listGroupRemocraP.length > 0) {
       <schema_name/>
     </partitioning>
     <connection>Remocra (Postgis)</connection>
-    <skip_lookup>N</skip_lookup>
+    <skip_lookup>Y</skip_lookup>
     <commit>100</commit>
-    <use_batch>Y</use_batch>
+    <use_batch>N</use_batch>
     <error_ignored>N</error_ignored>
     <ignore_flag_field/>
     <lookup>
@@ -2035,7 +2013,7 @@ if (listGroupRemocraP.length > 0) {
           </condition>
           <condition>
             <negated>N</negated>
-            <operator>AND</operator>
+            <operator>OR</operator>
             <leftvalue>profil</leftvalue>
             <function>IS NULL</function>
             <rightvalue/>
@@ -2204,8 +2182,8 @@ if (listGroupRemocraP.length > 0) {
     </error>
     <error>
       <source_step>mise à jour utilisateur</source_step>
-      <target_step>ignore5</target_step>
-      <is_enabled>Y</is_enabled>
+      <target_step/>
+      <is_enabled>N</is_enabled>
       <nr_valuename/>
       <descriptions_valuename/>
       <fields_valuename/>
