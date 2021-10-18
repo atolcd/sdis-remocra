@@ -3,6 +3,7 @@ package fr.sdis83.remocra.repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantAnomalie;
 import fr.sdis83.remocra.util.JSONUtil;
 import org.joda.time.Instant;
 import org.jooq.DSLContext;
@@ -21,6 +22,7 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_ANOMALIES;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PIBI;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_VISITE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_SAISIE;
 
 @Configuration
@@ -302,11 +304,18 @@ public class HydrantVisiteRepository {
       .orderBy(HYDRANT_VISITE.DATE.desc())
       .limit(1)
       .fetchOneInto(HydrantVisite.class);
-    // Suppression des anomalies enregistrées de cet hydrant
+
+    TypeHydrantAnomalie indispoTemporaire = context
+      .selectFrom(TYPE_HYDRANT_ANOMALIE)
+      .where(TYPE_HYDRANT_ANOMALIE.CODE.eq("INDISPONIBILITE_TEMP"))
+      .fetchOneInto(TypeHydrantAnomalie.class);
+
+    // Suppression des anomalies (hors indispo temporaires) enregistrées de cet hydrant
     context
       .deleteFrom(HYDRANT_ANOMALIES)
-      .where(HYDRANT_ANOMALIES.HYDRANT.eq(idhydrant))
+      .where(HYDRANT_ANOMALIES.HYDRANT.eq(idhydrant).and(HYDRANT_ANOMALIES.ANOMALIES.notEqual(indispoTemporaire.getId())))
       .execute();
+
     // Ajout des anomalies de la visite la plus récente
     if(visitePlusRecente != null && visitePlusRecente.getAnomalies() != null)  {
       ObjectMapper mapper = new ObjectMapper();

@@ -7,6 +7,7 @@ import fr.sdis83.remocra.authn.CurrentUser;
 import fr.sdis83.remocra.authn.UserInfo;
 import fr.sdis83.remocra.db.model.tables.pojos.Hydrant;
 import fr.sdis83.remocra.db.model.tables.pojos.HydrantVisite;
+import fr.sdis83.remocra.db.model.tables.pojos.TypeHydrantAnomalie;
 import fr.sdis83.remocra.repository.HydrantVisitesRepository;
 import fr.sdis83.remocra.repository.PeiRepository;
 import fr.sdis83.remocra.usecase.pei.PeiUseCase;
@@ -299,10 +300,15 @@ public class HydrantVisitesUseCase {
       .limit(1)
       .fetchOneInto(HydrantVisite.class);
 
-    // Suppression des anomalies enregistrées de cet hydrant
+    TypeHydrantAnomalie indispoTemporaire = context
+      .selectFrom(TYPE_HYDRANT_ANOMALIE)
+      .where(TYPE_HYDRANT_ANOMALIE.CODE.eq("INDISPONIBILITE_TEMP"))
+      .fetchOneInto(TypeHydrantAnomalie.class);
+
+    // Suppression des anomalies (hors indispo temporaires) enregistrées de cet hydrant
     context
       .deleteFrom(HYDRANT_ANOMALIES)
-      .where(HYDRANT_ANOMALIES.HYDRANT.eq(hydrantId))
+      .where(HYDRANT_ANOMALIES.HYDRANT.eq(hydrantId).and(HYDRANT_ANOMALIES.ANOMALIES.notEqual(indispoTemporaire.getId())))
       .execute();
 
     // Ajout des anomalies de la visite la plus récente
