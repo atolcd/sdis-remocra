@@ -21,6 +21,7 @@ import javax.persistence.criteria.Root;
 import fr.sdis83.remocra.domain.remocra.Hydrant;
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,10 +31,15 @@ import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.apache.commons.lang3.StringUtils.isNumeric;
+
 @Configuration
 public class TourneeService extends AbstractService<Tournee> {
 
     private final Logger logger = Logger.getLogger(getClass());
+
+    @Autowired
+    private UtilisateurService utilisateurService;
 
     public TourneeService() {
         super(Tournee.class);
@@ -59,8 +65,30 @@ public class TourneeService extends AbstractService<Tournee> {
             predicat = cBuilder.like(cBuilder.concat("", cpPath), "%"+ itemFilter.getValue() + "%");
         } else if ("affectation".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.join("affectation").get("id");
-            ArrayList<Integer> ids = Organisme.getOrganismeAndChildren(Integer.valueOf(itemFilter.getValue()));
-            predicat = cBuilder.isTrue(cpPath.in(ids));
+            if(isNumeric(itemFilter.getValue())) {
+                // Si numérique, filtre sur organisme + organismes enfants
+                ArrayList<Integer> ids = Organisme.getOrganismeAndChildren(Integer.valueOf(itemFilter.getValue()));
+
+                // Ajout d'un id négatif car cette version d'hibernate gère mal le cas où le tableau est vide avec le IN
+                ids.add(-1);
+
+                predicat = cBuilder.isTrue(cpPath.in(ids));
+            } else {
+                // Si texte, filtre sur organisme + organismes enfants de k'utilisateur courant + nom
+                Long userOrganismeId = utilisateurService.getCurrentUtilisateur().getOrganisme().getId();
+                ArrayList<Integer> ids = Organisme.getOrganismeAndChildren(userOrganismeId.intValue());
+
+                String sql = "SELECT id FROM remocra.organisme WHERE id IN (:ids) AND UPPER(nom) LIKE UPPER('%"+ itemFilter.getValue() +"%')";
+                Query query = entityManager.createNativeQuery(sql);
+                query.setParameter("ids", ids);
+                List<BigInteger> idOrganismes = query.getResultList();
+
+                // Ajout d'un id négatif car cette version d'hibernate gère mal le cas où le tableau est vide avec le IN
+                idOrganismes.add(new BigInteger("-1"));
+
+                predicat = cBuilder.isTrue(cpPath.in(idOrganismes));
+            }
+
         } else if ("hydrantCount".equals(itemFilter.getFieldName())) {
             Expression<Collection<String>> hydrants = from.get("hydrants");
             predicat = cBuilder.equal(cBuilder.size(hydrants), itemFilter.getValue());

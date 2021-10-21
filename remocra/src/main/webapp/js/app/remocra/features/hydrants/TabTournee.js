@@ -98,6 +98,14 @@ Ext.define('Sdis.Remocra.features.hydrants.TabTournee', {
             dataIndex: 'affectation',
             renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                 return record.affectationBelongsToInstance.data.nom;
+            },
+            filter: {
+                xtype: 'textfield',
+                emptyText: 'Nom...',
+                hideTrigger: true,
+                listeners: {
+                    change: deferredApplyFilter
+                }
             }
         },{
             text: 'Synchronisé',
