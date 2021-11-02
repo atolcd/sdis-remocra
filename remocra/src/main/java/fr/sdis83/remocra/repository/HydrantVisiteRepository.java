@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantAnomalie;
+import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.util.JSONUtil;
 import org.joda.time.Instant;
 import org.jooq.DSLContext;
@@ -30,6 +31,9 @@ public class HydrantVisiteRepository {
 
   @Autowired
   DSLContext context;
+
+  @Autowired
+  UtilisateurService utilisateurService;
 
   private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -102,6 +106,8 @@ public class HydrantVisiteRepository {
       visite.setPressionDynDeb(JSONUtil.getDouble(data, "pressionDynDeb"));
       visite.setAnomalies(JSONUtil.getString(data, "anomalies"));
       visite.setObservations(JSONUtil.getString(data, "observations"));
+      visite.setUtilisateurModification(utilisateurService.getCurrentUtilisateur().getId());
+      visite.setAuteurModificationFlag("USER");
 
      HydrantVisite newVisite = this.addVisite(visite);
      this.launchTriggerAnomalies(id);
@@ -156,6 +162,8 @@ public class HydrantVisiteRepository {
       .set(HYDRANT_VISITE.PRESSION_DYN_DEB, visite.getPressionDynDeb())
       .set(HYDRANT_VISITE.ANOMALIES, visite.getAnomalies())
       .set(HYDRANT_VISITE.OBSERVATIONS, visite.getObservations())
+      .set(HYDRANT_VISITE.UTILISATEUR_MODIFICATION, visite.getUtilisateurModification())
+      .set(HYDRANT_VISITE.AUTEUR_MODIFICATION_FLAG, visite.getAuteurModificationFlag())
       .returning(HYDRANT_VISITE.ID).fetchOne().getValue(HYDRANT_VISITE.ID);
 
     // Si la visite ajoutée est la plus récente de son type, on fait remonter sa date dans l'hydrant (si type != Non programmée)

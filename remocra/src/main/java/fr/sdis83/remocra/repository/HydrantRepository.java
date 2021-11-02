@@ -107,8 +107,8 @@ public class HydrantRepository {
     h.setComplement(JSONUtil.getString(data, "complement"));
     h.setAnneeFabrication(JSONUtil.getInteger(data, "anneeFabrication"));
     h.setGeometrie(geom);
-    h.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme().getId());
     h.setUtilisateurModification(utilisateurService.getCurrentUtilisateur().getId());
+    h.setAuteurModificationFlag("USER");
     h.setDateModification(new Instant());
 
     this.updateHydrant(h);
@@ -187,8 +187,8 @@ public class HydrantRepository {
     h.setComplement(JSONUtil.getString(data, "complement"));
     h.setAnneeFabrication(JSONUtil.getInteger(data, "anneeFabrication"));
     h.setGeometrie(geom);
-    h.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme().getId());
     h.setUtilisateurModification(utilisateurService.getCurrentUtilisateur().getId());
+    h.setAuteurModificationFlag("USER");
     h.setDateModification(new Instant());
 
     Long id = this.createHydrant(h);
@@ -261,6 +261,7 @@ public class HydrantRepository {
       .set(HYDRANT.DATE_MODIFICATION, h.getDateModification())
       .set(HYDRANT.ORGANISME, h.getOrganisme())
       .set(HYDRANT.UTILISATEUR_MODIFICATION, h.getUtilisateurModification())
+      .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, h.getAuteurModificationFlag())
       .returning(HYDRANT.ID).fetchOne().getValue(HYDRANT.ID);
 
     return id;
@@ -303,6 +304,7 @@ public class HydrantRepository {
       .set(HYDRANT.DATE_MODIFICATION, h.getDateModification())
       .set(HYDRANT.ORGANISME, h.getOrganisme())
       .set(HYDRANT.UTILISATEUR_MODIFICATION, h.getUtilisateurModification())
+      .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, h.getAuteurModificationFlag())
       .where(HYDRANT.ID.eq(h.getId()))
       .execute();
 
