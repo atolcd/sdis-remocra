@@ -5,6 +5,7 @@ package fr.sdis83.remocra.db.model.tracabilite;
 
 
 import fr.sdis83.remocra.db.model.tracabilite.tables.Hydrant;
+import fr.sdis83.remocra.db.model.tracabilite.tables.HydrantVisite;
 
 import javax.annotation.Generated;
 
@@ -26,4 +27,9 @@ public class Tables {
 	 * The table tracabilite.hydrant
 	 */
 	public static final Hydrant HYDRANT = fr.sdis83.remocra.db.model.tracabilite.tables.Hydrant.HYDRANT;
+
+	/**
+	 * The table tracabilite.hydrant_visite
+	 */
+	public static final HydrantVisite HYDRANT_VISITE = fr.sdis83.remocra.db.model.tracabilite.tables.HydrantVisite.HYDRANT_VISITE;
 }

@@ -5,9 +5,11 @@ package fr.sdis83.remocra.db.model.tracabilite;
 
 
 import fr.sdis83.remocra.db.model.tracabilite.tables.Hydrant;
+import fr.sdis83.remocra.db.model.tracabilite.tables.HydrantVisite;
 
 import javax.annotation.Generated;
 
+import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Record;
 import org.jooq.UniqueKey;
@@ -33,6 +35,7 @@ public class Keys {
 	// -------------------------------------------------------------------------
 
 	public static final Identity<Record, Integer> IDENTITY_HYDRANT = Identities0.IDENTITY_HYDRANT;
+	public static final Identity<Record, Long> IDENTITY_HYDRANT_VISITE = Identities0.IDENTITY_HYDRANT_VISITE;
 
 	// -------------------------------------------------------------------------
 	// UNIQUE and PRIMARY KEY definitions
@@ -44,6 +47,8 @@ public class Keys {
 	// FOREIGN KEY definitions
 	// -------------------------------------------------------------------------
 
+	public static final ForeignKey<Record, Record> HYDRANT__FK_UTILISATEUR = ForeignKeys0.HYDRANT__FK_UTILISATEUR;
+	public static final ForeignKey<Record, Record> HYDRANT__FK_ORGANISME = ForeignKeys0.HYDRANT__FK_ORGANISME;
 
 	// -------------------------------------------------------------------------
 	// [#1459] distribute members to avoid static initialisers > 64kb
@@ -51,9 +56,15 @@ public class Keys {
 
 	private static class Identities0 extends AbstractKeys {
 		public static Identity<Record, Integer> IDENTITY_HYDRANT = createIdentity(Hydrant.HYDRANT, Hydrant.HYDRANT.ID);
+		public static Identity<Record, Long> IDENTITY_HYDRANT_VISITE = createIdentity(HydrantVisite.HYDRANT_VISITE, HydrantVisite.HYDRANT_VISITE.ID);
 	}
 
 	private static class UniqueKeys0 extends AbstractKeys {
 		public static final UniqueKey<Record> HYDRANT_PKEY = createUniqueKey(Hydrant.HYDRANT, Hydrant.HYDRANT.ID);
+	}
+
+	private static class ForeignKeys0 extends AbstractKeys {
+		public static final ForeignKey<Record, Record> HYDRANT__FK_UTILISATEUR = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.UTILISATEUR_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.UTILISATEUR_MODIFICATION);
+		public static final ForeignKey<Record, Record> HYDRANT__FK_ORGANISME = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, Hydrant.HYDRANT, Hydrant.HYDRANT.ORGANISME);
 	}
 }

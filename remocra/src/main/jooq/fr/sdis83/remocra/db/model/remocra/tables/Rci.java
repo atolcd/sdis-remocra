@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Rci extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -1487440970;
+	private static final long serialVersionUID = 1837499119;
 
 	/**
 	 * The reference instance of <code>remocra.rci</code>
@@ -231,6 +231,11 @@ public class Rci extends TableImpl<Record> {
 	public final TableField<Record, Long> PARTITION_PROMETHEE = createField("partition_promethee", org.jooq.impl.SQLDataType.BIGINT, this, "");
 
 	/**
+	 * The column <code>remocra.rci.risque_meteo</code>.
+	 */
+	public final TableField<Record, Long> RISQUE_METEO = createField("risque_meteo", org.jooq.impl.SQLDataType.BIGINT, this, "");
+
+	/**
 	 * Create a <code>remocra.rci</code> table reference
 	 */
 	public Rci() {
@@ -281,7 +286,7 @@ public class Rci extends TableImpl<Record> {
 	 */
 	@Override
 	public List<ForeignKey<Record, ?>> getReferences() {
-		return Arrays.<ForeignKey<Record, ?>>asList(Keys.RCI__FK1B8583FB5F1FE, Keys.RCI__FK1B858D2DA796C, Keys.RCI__FK1B85821870359, Keys.RCI__FK1B85838423EE7, Keys.RCI__FK1B858A98055B2, Keys.RCI__FK1B858A9234C5C, Keys.RCI__FK1B858A9C54D11, Keys.RCI__FK1B858A9CC1BBB, Keys.RCI__FK1B858A9948AA1, Keys.RCI__FK_RCI_FAMILLE_PROMETHEE, Keys.RCI__FK_RCI_PARTITION_PROMETHEE);
+		return Arrays.<ForeignKey<Record, ?>>asList(Keys.RCI__FK1B8583FB5F1FE, Keys.RCI__FK1B858D2DA796C, Keys.RCI__FK1B85821870359, Keys.RCI__FK1B85838423EE7, Keys.RCI__FK1B858A98055B2, Keys.RCI__FK1B858A9234C5C, Keys.RCI__FK1B858A9C54D11, Keys.RCI__FK1B858A9CC1BBB, Keys.RCI__FK1B858A9948AA1, Keys.RCI__FK_RCI_FAMILLE_PROMETHEE, Keys.RCI__FK_RCI_PARTITION_PROMETHEE, Keys.RCI__FK_RCI_RISQUE_METEO);
 	}
 
 	/**

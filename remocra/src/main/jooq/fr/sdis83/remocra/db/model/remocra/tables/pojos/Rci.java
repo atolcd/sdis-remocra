@@ -26,7 +26,7 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Rci implements Serializable {
 
-	private static final long serialVersionUID = -824901996;
+	private static final long serialVersionUID = 2075793890;
 
 	private Long     id;
 	private String   commentaireConclusions;
@@ -63,6 +63,7 @@ public class Rci implements Serializable {
 	private Long     arriveePolice;
 	private Long     famillePromethee;
 	private Long     partitionPromethee;
+	private Long     risqueMeteo;
 
 	public Rci() {}
 
@@ -102,6 +103,7 @@ public class Rci implements Serializable {
 		this.arriveePolice = value.arriveePolice;
 		this.famillePromethee = value.famillePromethee;
 		this.partitionPromethee = value.partitionPromethee;
+		this.risqueMeteo = value.risqueMeteo;
 	}
 
 	public Rci(
@@ -139,7 +141,8 @@ public class Rci implements Serializable {
 		Long     arriveeGendarmerie,
 		Long     arriveePolice,
 		Long     famillePromethee,
-		Long     partitionPromethee
+		Long     partitionPromethee,
+		Long     risqueMeteo
 	) {
 		this.id = id;
 		this.commentaireConclusions = commentaireConclusions;
@@ -176,6 +179,7 @@ public class Rci implements Serializable {
 		this.arriveePolice = arriveePolice;
 		this.famillePromethee = famillePromethee;
 		this.partitionPromethee = partitionPromethee;
+		this.risqueMeteo = risqueMeteo;
 	}
 
 	public Long getId() {
@@ -490,6 +494,15 @@ public class Rci implements Serializable {
 
 	public Rci setPartitionPromethee(Long partitionPromethee) {
 		this.partitionPromethee = partitionPromethee;
+		return this;
+	}
+
+	public Long getRisqueMeteo() {
+		return this.risqueMeteo;
+	}
+
+	public Rci setRisqueMeteo(Long risqueMeteo) {
+		this.risqueMeteo = risqueMeteo;
 		return this;
 	}
 }

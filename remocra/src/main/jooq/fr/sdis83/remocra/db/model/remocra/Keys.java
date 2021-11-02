@@ -164,6 +164,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeRciOrigineAlerte;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromCategorie;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromFamille;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromPartition;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeRciRisqueMeteo;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeReseauAlimentation;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeReseauCanalisation;
 import fr.sdis83.remocra.db.model.remocra.tables.Utilisateur;
@@ -333,6 +334,7 @@ public class Keys {
 	public static final Identity<Record, Long> IDENTITY_TYPE_RCI_PROM_CATEGORIE = Identities0.IDENTITY_TYPE_RCI_PROM_CATEGORIE;
 	public static final Identity<Record, Long> IDENTITY_TYPE_RCI_PROM_FAMILLE = Identities0.IDENTITY_TYPE_RCI_PROM_FAMILLE;
 	public static final Identity<Record, Long> IDENTITY_TYPE_RCI_PROM_PARTITION = Identities0.IDENTITY_TYPE_RCI_PROM_PARTITION;
+	public static final Identity<Record, Long> IDENTITY_TYPE_RCI_RISQUE_METEO = Identities0.IDENTITY_TYPE_RCI_RISQUE_METEO;
 	public static final Identity<Record, Long> IDENTITY_TYPE_RESEAU_ALIMENTATION = Identities0.IDENTITY_TYPE_RESEAU_ALIMENTATION;
 	public static final Identity<Record, Long> IDENTITY_TYPE_RESEAU_CANALISATION = Identities0.IDENTITY_TYPE_RESEAU_CANALISATION;
 	public static final Identity<Record, Long> IDENTITY_UTILISATEUR = Identities0.IDENTITY_UTILISATEUR;
@@ -548,6 +550,9 @@ public class Keys {
 	public static final UniqueKey<Record> TYPE_RCI_PROM_CATEGORIE_PKEY = UniqueKeys0.TYPE_RCI_PROM_CATEGORIE_PKEY;
 	public static final UniqueKey<Record> TYPE_RCI_PROM_FAMILLE_PKEY = UniqueKeys0.TYPE_RCI_PROM_FAMILLE_PKEY;
 	public static final UniqueKey<Record> TYPE_RCI_PROM_PARTITION_PKEY = UniqueKeys0.TYPE_RCI_PROM_PARTITION_PKEY;
+	public static final UniqueKey<Record> TYPE_RCI_RISQUE_METEO_PKEY = UniqueKeys0.TYPE_RCI_RISQUE_METEO_PKEY;
+	public static final UniqueKey<Record> TYPE_RCI_RISQUE_METEO_CODE_KEY = UniqueKeys0.TYPE_RCI_RISQUE_METEO_CODE_KEY;
+	public static final UniqueKey<Record> TYPE_RCI_RISQUE_METEO_NOM_KEY = UniqueKeys0.TYPE_RCI_RISQUE_METEO_NOM_KEY;
 	public static final UniqueKey<Record> TYPE_RESEAU_ALIMENTATION_PKEY = UniqueKeys0.TYPE_RESEAU_ALIMENTATION_PKEY;
 	public static final UniqueKey<Record> TYPE_RESEAU_CANALISATION_PKEY = UniqueKeys0.TYPE_RESEAU_CANALISATION_PKEY;
 	public static final UniqueKey<Record> UTILISATEUR_PKEY = UniqueKeys0.UTILISATEUR_PKEY;
@@ -668,6 +673,8 @@ public class Keys {
 	public static final ForeignKey<Record, Record> HYDRANT_TOURNEES__HYDRANT_TOURNEES_TOURNEES = ForeignKeys0.HYDRANT_TOURNEES__HYDRANT_TOURNEES_TOURNEES;
 	public static final ForeignKey<Record, Record> HYDRANT_VISITE__FK_HYDRANT = ForeignKeys0.HYDRANT_VISITE__FK_HYDRANT;
 	public static final ForeignKey<Record, Record> HYDRANT_VISITE__FK_TYPE = ForeignKeys0.HYDRANT_VISITE__FK_TYPE;
+	public static final ForeignKey<Record, Record> HYDRANT_VISITE__FK_UTILISATEUR = ForeignKeys0.HYDRANT_VISITE__FK_UTILISATEUR;
+	public static final ForeignKey<Record, Record> HYDRANT_VISITE__FK_ORGANISME = ForeignKeys0.HYDRANT_VISITE__FK_ORGANISME;
 	public static final ForeignKey<Record, Record> INTERVENTION__FK_INTERVENTION_COMMUNE = ForeignKeys0.INTERVENTION__FK_INTERVENTION_COMMUNE;
 	public static final ForeignKey<Record, Record> METADONNEE__FK507E37B0D27676E2 = ForeignKeys0.METADONNEE__FK507E37B0D27676E2;
 	public static final ForeignKey<Record, Record> MOYEN__FK_MOYEN_TYPE_MOYEN = ForeignKeys0.MOYEN__FK_MOYEN_TYPE_MOYEN;
@@ -735,6 +742,7 @@ public class Keys {
 	public static final ForeignKey<Record, Record> RCI__FK1B858A9948AA1 = ForeignKeys0.RCI__FK1B858A9948AA1;
 	public static final ForeignKey<Record, Record> RCI__FK_RCI_FAMILLE_PROMETHEE = ForeignKeys0.RCI__FK_RCI_FAMILLE_PROMETHEE;
 	public static final ForeignKey<Record, Record> RCI__FK_RCI_PARTITION_PROMETHEE = ForeignKeys0.RCI__FK_RCI_PARTITION_PROMETHEE;
+	public static final ForeignKey<Record, Record> RCI__FK_RCI_RISQUE_METEO = ForeignKeys0.RCI__FK_RCI_RISQUE_METEO;
 	public static final ForeignKey<Record, Record> RCI_DOCUMENT__FK6C6E2D2236F0130A = ForeignKeys0.RCI_DOCUMENT__FK6C6E2D2236F0130A;
 	public static final ForeignKey<Record, Record> RCI_DOCUMENT__FK6C6E2D224556CB5C = ForeignKeys0.RCI_DOCUMENT__FK6C6E2D224556CB5C;
 	public static final ForeignKey<Record, Record> REQUETE_MODELE_DROIT__REQUETE_MODELE_DROIT_REQUETE_MODELE = ForeignKeys0.REQUETE_MODELE_DROIT__REQUETE_MODELE_DROIT_REQUETE_MODELE;
@@ -914,6 +922,7 @@ public class Keys {
 		public static Identity<Record, Long> IDENTITY_TYPE_RCI_PROM_CATEGORIE = createIdentity(TypeRciPromCategorie.TYPE_RCI_PROM_CATEGORIE, TypeRciPromCategorie.TYPE_RCI_PROM_CATEGORIE.ID);
 		public static Identity<Record, Long> IDENTITY_TYPE_RCI_PROM_FAMILLE = createIdentity(TypeRciPromFamille.TYPE_RCI_PROM_FAMILLE, TypeRciPromFamille.TYPE_RCI_PROM_FAMILLE.ID);
 		public static Identity<Record, Long> IDENTITY_TYPE_RCI_PROM_PARTITION = createIdentity(TypeRciPromPartition.TYPE_RCI_PROM_PARTITION, TypeRciPromPartition.TYPE_RCI_PROM_PARTITION.ID);
+		public static Identity<Record, Long> IDENTITY_TYPE_RCI_RISQUE_METEO = createIdentity(TypeRciRisqueMeteo.TYPE_RCI_RISQUE_METEO, TypeRciRisqueMeteo.TYPE_RCI_RISQUE_METEO.ID);
 		public static Identity<Record, Long> IDENTITY_TYPE_RESEAU_ALIMENTATION = createIdentity(TypeReseauAlimentation.TYPE_RESEAU_ALIMENTATION, TypeReseauAlimentation.TYPE_RESEAU_ALIMENTATION.ID);
 		public static Identity<Record, Long> IDENTITY_TYPE_RESEAU_CANALISATION = createIdentity(TypeReseauCanalisation.TYPE_RESEAU_CANALISATION, TypeReseauCanalisation.TYPE_RESEAU_CANALISATION.ID);
 		public static Identity<Record, Long> IDENTITY_UTILISATEUR = createIdentity(Utilisateur.UTILISATEUR, Utilisateur.UTILISATEUR.ID);
@@ -1127,6 +1136,9 @@ public class Keys {
 		public static final UniqueKey<Record> TYPE_RCI_PROM_CATEGORIE_PKEY = createUniqueKey(TypeRciPromCategorie.TYPE_RCI_PROM_CATEGORIE, TypeRciPromCategorie.TYPE_RCI_PROM_CATEGORIE.ID);
 		public static final UniqueKey<Record> TYPE_RCI_PROM_FAMILLE_PKEY = createUniqueKey(TypeRciPromFamille.TYPE_RCI_PROM_FAMILLE, TypeRciPromFamille.TYPE_RCI_PROM_FAMILLE.ID);
 		public static final UniqueKey<Record> TYPE_RCI_PROM_PARTITION_PKEY = createUniqueKey(TypeRciPromPartition.TYPE_RCI_PROM_PARTITION, TypeRciPromPartition.TYPE_RCI_PROM_PARTITION.ID);
+		public static final UniqueKey<Record> TYPE_RCI_RISQUE_METEO_PKEY = createUniqueKey(TypeRciRisqueMeteo.TYPE_RCI_RISQUE_METEO, TypeRciRisqueMeteo.TYPE_RCI_RISQUE_METEO.ID);
+		public static final UniqueKey<Record> TYPE_RCI_RISQUE_METEO_CODE_KEY = createUniqueKey(TypeRciRisqueMeteo.TYPE_RCI_RISQUE_METEO, TypeRciRisqueMeteo.TYPE_RCI_RISQUE_METEO.CODE);
+		public static final UniqueKey<Record> TYPE_RCI_RISQUE_METEO_NOM_KEY = createUniqueKey(TypeRciRisqueMeteo.TYPE_RCI_RISQUE_METEO, TypeRciRisqueMeteo.TYPE_RCI_RISQUE_METEO.NOM);
 		public static final UniqueKey<Record> TYPE_RESEAU_ALIMENTATION_PKEY = createUniqueKey(TypeReseauAlimentation.TYPE_RESEAU_ALIMENTATION, TypeReseauAlimentation.TYPE_RESEAU_ALIMENTATION.ID);
 		public static final UniqueKey<Record> TYPE_RESEAU_CANALISATION_PKEY = createUniqueKey(TypeReseauCanalisation.TYPE_RESEAU_CANALISATION, TypeReseauCanalisation.TYPE_RESEAU_CANALISATION.ID);
 		public static final UniqueKey<Record> UTILISATEUR_PKEY = createUniqueKey(Utilisateur.UTILISATEUR, Utilisateur.UTILISATEUR.ID);
@@ -1245,6 +1257,8 @@ public class Keys {
 		public static final ForeignKey<Record, Record> HYDRANT_TOURNEES__HYDRANT_TOURNEES_TOURNEES = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TOURNEE_PKEY, HydrantTournees.HYDRANT_TOURNEES, HydrantTournees.HYDRANT_TOURNEES.TOURNEES);
 		public static final ForeignKey<Record, Record> HYDRANT_VISITE__FK_HYDRANT = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.HYDRANT_PKEY, HydrantVisite.HYDRANT_VISITE, HydrantVisite.HYDRANT_VISITE.HYDRANT);
 		public static final ForeignKey<Record, Record> HYDRANT_VISITE__FK_TYPE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_SAISIE_PKEY, HydrantVisite.HYDRANT_VISITE, HydrantVisite.HYDRANT_VISITE.TYPE);
+		public static final ForeignKey<Record, Record> HYDRANT_VISITE__FK_UTILISATEUR = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.UTILISATEUR_PKEY, HydrantVisite.HYDRANT_VISITE, HydrantVisite.HYDRANT_VISITE.UTILISATEUR_MODIFICATION);
+		public static final ForeignKey<Record, Record> HYDRANT_VISITE__FK_ORGANISME = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, HydrantVisite.HYDRANT_VISITE, HydrantVisite.HYDRANT_VISITE.ORGANISME);
 		public static final ForeignKey<Record, Record> INTERVENTION__FK_INTERVENTION_COMMUNE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.COMMUNE_PKEY, Intervention.INTERVENTION, Intervention.INTERVENTION.COMMUNE);
 		public static final ForeignKey<Record, Record> METADONNEE__FK507E37B0D27676E2 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.THEMATIQUE_PKEY, Metadonnee.METADONNEE, Metadonnee.METADONNEE.THEMATIQUE);
 		public static final ForeignKey<Record, Record> MOYEN__FK_MOYEN_TYPE_MOYEN = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_MOYEN_PKEY, Moyen.MOYEN, Moyen.MOYEN.TYPE);
@@ -1312,6 +1326,7 @@ public class Keys {
 		public static final ForeignKey<Record, Record> RCI__FK1B858A9948AA1 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.UTILISATEUR_PKEY, Rci.RCI, Rci.RCI.ARRIVEE_POLICE);
 		public static final ForeignKey<Record, Record> RCI__FK_RCI_FAMILLE_PROMETHEE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_RCI_PROM_FAMILLE_PKEY, Rci.RCI, Rci.RCI.FAMILLE_PROMETHEE);
 		public static final ForeignKey<Record, Record> RCI__FK_RCI_PARTITION_PROMETHEE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_RCI_PROM_PARTITION_PKEY, Rci.RCI, Rci.RCI.PARTITION_PROMETHEE);
+		public static final ForeignKey<Record, Record> RCI__FK_RCI_RISQUE_METEO = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_RCI_RISQUE_METEO_PKEY, Rci.RCI, Rci.RCI.RISQUE_METEO);
 		public static final ForeignKey<Record, Record> RCI_DOCUMENT__FK6C6E2D2236F0130A = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.DOCUMENT_PKEY, RciDocument.RCI_DOCUMENT, RciDocument.RCI_DOCUMENT.DOCUMENT);
 		public static final ForeignKey<Record, Record> RCI_DOCUMENT__FK6C6E2D224556CB5C = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.RCI_PKEY, RciDocument.RCI_DOCUMENT, RciDocument.RCI_DOCUMENT.RCI);
 		public static final ForeignKey<Record, Record> REQUETE_MODELE_DROIT__REQUETE_MODELE_DROIT_REQUETE_MODELE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.REQUETE_MODELE_PKEY, RequeteModeleDroit.REQUETE_MODELE_DROIT, RequeteModeleDroit.REQUETE_MODELE_DROIT.REQUETE_MODELE);

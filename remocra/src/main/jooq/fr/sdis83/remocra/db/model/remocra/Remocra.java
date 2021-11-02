@@ -165,6 +165,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeRciOrigineAlerte;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromCategorie;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromFamille;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromPartition;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeRciRisqueMeteo;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeReseauAlimentation;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeReseauCanalisation;
 import fr.sdis83.remocra.db.model.remocra.tables.Utilisateur;
@@ -198,7 +199,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Remocra extends SchemaImpl {
 
-	private static final long serialVersionUID = 582849581;
+	private static final long serialVersionUID = -1351958855;
 
 	/**
 	 * The reference instance of <code>remocra</code>
@@ -358,6 +359,7 @@ public class Remocra extends SchemaImpl {
 			Sequences.TYPE_RCI_PROM_CATEGORIE_ID_SEQ,
 			Sequences.TYPE_RCI_PROM_FAMILLE_ID_SEQ,
 			Sequences.TYPE_RCI_PROM_PARTITION_ID_SEQ,
+			Sequences.TYPE_RCI_RISQUE_METEO_ID_SEQ,
 			Sequences.TYPE_RESEAU_ALIMENTATION_ID_SEQ,
 			Sequences.TYPE_RESEAU_CANALISATION_ID_SEQ,
 			Sequences.UTILISATEUR_ID_SEQ,
@@ -535,6 +537,7 @@ public class Remocra extends SchemaImpl {
 			TypeRciPromCategorie.TYPE_RCI_PROM_CATEGORIE,
 			TypeRciPromFamille.TYPE_RCI_PROM_FAMILLE,
 			TypeRciPromPartition.TYPE_RCI_PROM_PARTITION,
+			TypeRciRisqueMeteo.TYPE_RCI_RISQUE_METEO,
 			TypeReseauAlimentation.TYPE_RESEAU_ALIMENTATION,
 			TypeReseauCanalisation.TYPE_RESEAU_CANALISATION,
 			Utilisateur.UTILISATEUR,

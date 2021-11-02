@@ -29,4 +29,9 @@ public class Sequences {
 	 * The sequence <code>tracabilite.hydrant_id_seq</code>
 	 */
 	public static final Sequence<Long> HYDRANT_ID_SEQ = new SequenceImpl<Long>("hydrant_id_seq", Tracabilite.TRACABILITE, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
+	 * The sequence <code>tracabilite.hydrant_visite_id_seq</code>
+	 */
+	public static final Sequence<Long> HYDRANT_VISITE_ID_SEQ = new SequenceImpl<Long>("hydrant_visite_id_seq", Tracabilite.TRACABILITE, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 }

@@ -37,7 +37,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantVisite extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -39115591;
+	private static final long serialVersionUID = 1586680994;
 
 	/**
 	 * The reference instance of <code>remocra.hydrant_visite</code>
@@ -123,6 +123,21 @@ public class HydrantVisite extends TableImpl<Record> {
 	public final TableField<Record, String> OBSERVATIONS = createField("observations", org.jooq.impl.SQLDataType.VARCHAR, this, "");
 
 	/**
+	 * The column <code>remocra.hydrant_visite.utilisateur_modification</code>.
+	 */
+	public final TableField<Record, Long> UTILISATEUR_MODIFICATION = createField("utilisateur_modification", org.jooq.impl.SQLDataType.BIGINT, this, "");
+
+	/**
+	 * The column <code>remocra.hydrant_visite.organisme</code>.
+	 */
+	public final TableField<Record, Long> ORGANISME = createField("organisme", org.jooq.impl.SQLDataType.BIGINT, this, "");
+
+	/**
+	 * The column <code>remocra.hydrant_visite.auteur_modification_flag</code>.
+	 */
+	public final TableField<Record, String> AUTEUR_MODIFICATION_FLAG = createField("auteur_modification_flag", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+
+	/**
 	 * Create a <code>remocra.hydrant_visite</code> table reference
 	 */
 	public HydrantVisite() {
@@ -173,7 +188,7 @@ public class HydrantVisite extends TableImpl<Record> {
 	 */
 	@Override
 	public List<ForeignKey<Record, ?>> getReferences() {
-		return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT_VISITE__FK_HYDRANT, Keys.HYDRANT_VISITE__FK_TYPE);
+		return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT_VISITE__FK_HYDRANT, Keys.HYDRANT_VISITE__FK_TYPE, Keys.HYDRANT_VISITE__FK_UTILISATEUR, Keys.HYDRANT_VISITE__FK_ORGANISME);
 	}
 
 	/**

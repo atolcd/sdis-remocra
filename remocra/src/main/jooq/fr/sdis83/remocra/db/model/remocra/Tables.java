@@ -164,6 +164,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeRciOrigineAlerte;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromCategorie;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromFamille;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromPartition;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeRciRisqueMeteo;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeReseauAlimentation;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeReseauCanalisation;
 import fr.sdis83.remocra.db.model.remocra.tables.Utilisateur;
@@ -988,6 +989,11 @@ public class Tables {
 	 * The table remocra.type_rci_prom_partition
 	 */
 	public static final TypeRciPromPartition TYPE_RCI_PROM_PARTITION = fr.sdis83.remocra.db.model.remocra.tables.TypeRciPromPartition.TYPE_RCI_PROM_PARTITION;
+
+	/**
+	 * Risque météo lié constaté
+	 */
+	public static final TypeRciRisqueMeteo TYPE_RCI_RISQUE_METEO = fr.sdis83.remocra.db.model.remocra.tables.TypeRciRisqueMeteo.TYPE_RCI_RISQUE_METEO;
 
 	/**
 	 * Réseau d'alimentation des hydrants

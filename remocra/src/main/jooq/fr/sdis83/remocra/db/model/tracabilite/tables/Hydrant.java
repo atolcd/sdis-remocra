@@ -18,6 +18,7 @@ import javax.annotation.Generated;
 
 import org.joda.time.Instant;
 import org.jooq.Field;
+import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Record;
 import org.jooq.Table;
@@ -39,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 946559616;
+	private static final long serialVersionUID = -224623852;
 
 	/**
 	 * The reference instance of <code>tracabilite.hydrant</code>
@@ -360,6 +361,21 @@ public class Hydrant extends TableImpl<Record> {
 	public final TableField<Record, String> SP_DECI = createField("sp_deci", org.jooq.impl.SQLDataType.VARCHAR, this, "Identifiant service publique deci");
 
 	/**
+	 * The column <code>tracabilite.hydrant.utilisateur_modification</code>.
+	 */
+	public final TableField<Record, Long> UTILISATEUR_MODIFICATION = createField("utilisateur_modification", org.jooq.impl.SQLDataType.BIGINT, this, "");
+
+	/**
+	 * The column <code>tracabilite.hydrant.organisme</code>.
+	 */
+	public final TableField<Record, Long> ORGANISME = createField("organisme", org.jooq.impl.SQLDataType.BIGINT, this, "");
+
+	/**
+	 * The column <code>tracabilite.hydrant.auteur_modification_flag</code>.
+	 */
+	public final TableField<Record, String> AUTEUR_MODIFICATION_FLAG = createField("auteur_modification_flag", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+
+	/**
 	 * Create a <code>tracabilite.hydrant</code> table reference
 	 */
 	public Hydrant() {
@@ -403,6 +419,14 @@ public class Hydrant extends TableImpl<Record> {
 	@Override
 	public List<UniqueKey<Record>> getKeys() {
 		return Arrays.<UniqueKey<Record>>asList(Keys.HYDRANT_PKEY);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<ForeignKey<Record, ?>> getReferences() {
+		return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT__FK_UTILISATEUR, Keys.HYDRANT__FK_ORGANISME);
 	}
 
 	/**

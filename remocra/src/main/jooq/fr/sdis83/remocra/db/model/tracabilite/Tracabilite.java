@@ -6,6 +6,7 @@ package fr.sdis83.remocra.db.model.tracabilite;
 
 import fr.sdis83.remocra.db.model.tracabilite.Sequences;
 import fr.sdis83.remocra.db.model.tracabilite.tables.Hydrant;
+import fr.sdis83.remocra.db.model.tracabilite.tables.HydrantVisite;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +32,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tracabilite extends SchemaImpl {
 
-	private static final long serialVersionUID = -1390478009;
+	private static final long serialVersionUID = -1808848564;
 
 	/**
 	 * The reference instance of <code>tracabilite</code>
@@ -54,7 +55,8 @@ public class Tracabilite extends SchemaImpl {
 
 	private final List<Sequence<?>> getSequences0() {
 		return Arrays.<Sequence<?>>asList(
-			Sequences.HYDRANT_ID_SEQ);
+			Sequences.HYDRANT_ID_SEQ,
+			Sequences.HYDRANT_VISITE_ID_SEQ);
 	}
 
 	@Override
@@ -66,6 +68,7 @@ public class Tracabilite extends SchemaImpl {
 
 	private final List<Table<?>> getTables0() {
 		return Arrays.<Table<?>>asList(
-			Hydrant.HYDRANT);
+			Hydrant.HYDRANT,
+			HydrantVisite.HYDRANT_VISITE);
 	}
 }

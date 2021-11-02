@@ -711,6 +711,11 @@ public class Sequences {
 	public static final Sequence<Long> TYPE_RCI_PROM_PARTITION_ID_SEQ = new SequenceImpl<Long>("type_rci_prom_partition_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
+	 * The sequence <code>remocra.type_rci_risque_meteo_id_seq</code>
+	 */
+	public static final Sequence<Long> TYPE_RCI_RISQUE_METEO_ID_SEQ = new SequenceImpl<Long>("type_rci_risque_meteo_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+	/**
 	 * The sequence <code>remocra.type_reseau_alimentation_id_seq</code>
 	 */
 	public static final Sequence<Long> TYPE_RESEAU_ALIMENTATION_ID_SEQ = new SequenceImpl<Long>("type_reseau_alimentation_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));

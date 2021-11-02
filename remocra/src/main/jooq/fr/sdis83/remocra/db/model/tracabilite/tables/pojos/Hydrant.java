@@ -26,7 +26,7 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant implements Serializable {
 
-	private static final long serialVersionUID = 1648434189;
+	private static final long serialVersionUID = 679988139;
 
 	private Integer  id;
 	private Long     numTransac;
@@ -89,6 +89,9 @@ public class Hydrant implements Serializable {
 	private Boolean  incertaine;
 	private Boolean  enFace;
 	private String   spDeci;
+	private Long     utilisateurModification;
+	private Long     organisme;
+	private String   auteurModificationFlag;
 
 	public Hydrant() {}
 
@@ -154,6 +157,9 @@ public class Hydrant implements Serializable {
 		this.incertaine = value.incertaine;
 		this.enFace = value.enFace;
 		this.spDeci = value.spDeci;
+		this.utilisateurModification = value.utilisateurModification;
+		this.organisme = value.organisme;
+		this.auteurModificationFlag = value.auteurModificationFlag;
 	}
 
 	public Hydrant(
@@ -217,7 +223,10 @@ public class Hydrant implements Serializable {
 		Boolean  illimitee,
 		Boolean  incertaine,
 		Boolean  enFace,
-		String   spDeci
+		String   spDeci,
+		Long     utilisateurModification,
+		Long     organisme,
+		String   auteurModificationFlag
 	) {
 		this.id = id;
 		this.numTransac = numTransac;
@@ -280,6 +289,9 @@ public class Hydrant implements Serializable {
 		this.incertaine = incertaine;
 		this.enFace = enFace;
 		this.spDeci = spDeci;
+		this.utilisateurModification = utilisateurModification;
+		this.organisme = organisme;
+		this.auteurModificationFlag = auteurModificationFlag;
 	}
 
 	public Integer getId() {
@@ -828,6 +840,33 @@ public class Hydrant implements Serializable {
 
 	public Hydrant setSpDeci(String spDeci) {
 		this.spDeci = spDeci;
+		return this;
+	}
+
+	public Long getUtilisateurModification() {
+		return this.utilisateurModification;
+	}
+
+	public Hydrant setUtilisateurModification(Long utilisateurModification) {
+		this.utilisateurModification = utilisateurModification;
+		return this;
+	}
+
+	public Long getOrganisme() {
+		return this.organisme;
+	}
+
+	public Hydrant setOrganisme(Long organisme) {
+		this.organisme = organisme;
+		return this;
+	}
+
+	public String getAuteurModificationFlag() {
+		return this.auteurModificationFlag;
+	}
+
+	public Hydrant setAuteurModificationFlag(String auteurModificationFlag) {
+		this.auteurModificationFlag = auteurModificationFlag;
 		return this;
 	}
 }
