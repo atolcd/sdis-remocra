@@ -344,7 +344,7 @@
             </database>
             <target>
               <packageName>fr.sdis83.remocra.db.model</packageName>
-              <directory>${basedir}/api/src/main/jooq</directory>
+              <directory>${basedir}/src/main/jooq</directory>
             </target>
           </generator>
         </configuration>
