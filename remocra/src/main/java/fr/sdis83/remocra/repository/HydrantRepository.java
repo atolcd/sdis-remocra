@@ -83,6 +83,10 @@ public class HydrantRepository {
     // Données de l'hydrant
     Hydrant h = new Hydrant();
     h.setId(id);
+
+    // Reprise du numéro, ne sera changé que si les conditions sont réunies (pas de numéro interne ou renumérotation activée)
+    h.setNumero(hydrant.getNumero());
+
     h.setNumeroInterne(JSONUtil.getInteger(data, "numeroInterne"));
     h.setNature(JSONUtil.getLong(data, "nature"));
     h.setNatureDeci(JSONUtil.getLong(data, "natureDeci"));
@@ -268,7 +272,11 @@ public class HydrantRepository {
    * @return L'hydrant mis à jour
    */
   private Hydrant updateHydrant(Hydrant h) {
-    h = NumeroUtilRepository.setCodeZoneSpecAndNumeros(h, h.getCode());
+
+
+    if((h.getNumeroInterne() == null || h.getNumeroInterne() <= 0) || paramConfService.getHydrantRenumerotationActivation()) {
+      h = NumeroUtilRepository.setCodeZoneSpecAndNumeros(h, h.getCode());
+    }
 
     context.update(HYDRANT)
       .set(HYDRANT.NUMERO, h.getNumero())
