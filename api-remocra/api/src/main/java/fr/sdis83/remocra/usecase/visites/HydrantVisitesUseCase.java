@@ -439,8 +439,7 @@ public class HydrantVisitesUseCase {
       throw new ResponseException(Response.Status.INTERNAL_SERVER_ERROR, "Une erreur interne est survenue lors du calcul de l'indisponibilité du PEI");
     }
   }
-
-  @Transactional
+  
   public void deleteVisite(String numero, String idVisite) throws ResponseException {
     this.checkPeiValidity(numero, true);
 

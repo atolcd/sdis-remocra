@@ -1,6 +1,8 @@
 package fr.sdis83.remocra.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.sdis83.remocra.authn.CurrentUser;
+import fr.sdis83.remocra.authn.UserInfo;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteModel;
 import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteSpecifiqueModel;
@@ -11,6 +13,7 @@ import org.jooq.TableField;
 import org.jooq.impl.DSL;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -26,6 +29,9 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_SAISIE;
 public class HydrantVisitesRepository {
 
   private final DSLContext context;
+
+  @Inject @CurrentUser
+  Provider<UserInfo> currentUser;
 
   @Inject
   public HydrantVisitesRepository(DSLContext context) {
@@ -171,6 +177,8 @@ public class HydrantVisitesRepository {
       .set(HYDRANT_VISITE.PRESSION_DYN_DEB, visite.getPressionDynDeb())
       .set(HYDRANT_VISITE.ANOMALIES, visite.getAnomalies())
       .set(HYDRANT_VISITE.OBSERVATIONS, visite.getObservations())
+      .set(HYDRANT_VISITE.ORGANISME, this.currentUser.get().userId())
+      .set(HYDRANT_VISITE.AUTEUR_MODIFICATION_FLAG, "API")
       .returning(HYDRANT_VISITE.ID).fetchOne().getValue(HYDRANT_VISITE.ID);
 
     // Si la visite ajoutée est la plus récente de son type, on fait remonter sa date dans l'hydrant (si type != Non programmée)
@@ -211,6 +219,8 @@ public class HydrantVisitesRepository {
       if(field != null) {
         context.update(HYDRANT)
           .set(field, visite.getDate())
+          .set(HYDRANT.ORGANISME, this.currentUser.get().userId())
+          .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, "API")
           .where(HYDRANT.ID.eq(visite.getHydrant()))
           .execute();
       }
@@ -246,6 +256,8 @@ public class HydrantVisitesRepository {
     .set(HYDRANT_VISITE.PRESSION_DYN_DEB, visite.getPressionDynDeb())
     .set(HYDRANT_VISITE.ANOMALIES, visite.getAnomalies())
     .set(HYDRANT_VISITE.OBSERVATIONS, visite.getObservations())
+    .set(HYDRANT_VISITE.ORGANISME, this.currentUser.get().userId())
+    .set(HYDRANT_VISITE.AUTEUR_MODIFICATION_FLAG, "API")
     .where(HYDRANT_VISITE.ID.eq(visite.getId()))
     .execute();
 
@@ -324,9 +336,18 @@ public class HydrantVisitesRepository {
       }
       context.update(HYDRANT)
         .set(field, date)
+        .set(HYDRANT.ORGANISME, this.currentUser.get().userId())
+        .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, "API")
         .where(HYDRANT.ID.eq(visite.getHydrant()))
         .execute();
     }
+
+    // Update pour le suivi des modifications, afin que la tracabilité retrouve l'auteur des modifs une fois le trigger déclenché par le DELETE
+    context.update(HYDRANT_VISITE)
+      .set(HYDRANT.ORGANISME, this.currentUser.get().userId())
+      .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, "API")
+      .where(HYDRANT_VISITE.ID.eq(visite.getId()))
+      .execute();
 
     // Suppression effective de la visite
     context.deleteFrom(HYDRANT_VISITE)

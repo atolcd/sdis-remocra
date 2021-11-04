@@ -2,6 +2,8 @@ package fr.sdis83.remocra.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.sdis83.remocra.authn.CurrentUser;
+import fr.sdis83.remocra.authn.UserInfo;
 import fr.sdis83.remocra.db.model.remocra.tables.Hydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.Organisme;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantPena;
@@ -18,6 +20,7 @@ import org.jooq.Field;
 import org.jooq.impl.DSL;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.ws.rs.core.Response;
 
 import java.util.List;
@@ -44,6 +47,10 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_RESEAU_CANALISATION
 public class PeiRepository {
 
     private final DSLContext context;
+
+    @Inject @CurrentUser
+    Provider<UserInfo> currentUser;
+
     @Inject
     public PeiRepository(DSLContext context) {
         this.context = context;
@@ -284,6 +291,8 @@ public class PeiRepository {
 
       context.update(HYDRANT)
         .set(HYDRANT.ANNEE_FABRICATION, anneeFabrication)
+        .set(HYDRANT.ORGANISME, this.currentUser.get().userId())
+        .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, "API")
         .where(HYDRANT.ID.eq(hydrantPibi.getId()))
         .execute();
     }
@@ -296,6 +305,8 @@ public class PeiRepository {
         .set(HYDRANT_PENA.CAPACITE, hydrantPena.getCapacite())
         .set(HYDRANT_PENA.Q_APPOINT, hydrantPena.getQAppoint())
         .set(HYDRANT_PENA.HBE, hydrantPena.getHbe())
+        .set(HYDRANT.ORGANISME, this.currentUser.get().userId())
+        .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, "API")
         .where(HYDRANT_PENA.ID.eq(hydrantPena.getId()))
         .execute();
     }
