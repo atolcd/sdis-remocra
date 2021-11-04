@@ -3,7 +3,7 @@ package fr.sdis83.remocra.repository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static fr.sdis83.remocra.db.model.Tables.TYPE_ORGANISME;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_ORGANISME;
 
 import fr.sdis83.remocra.web.model.referentielsCommuns.ReferentielModel;
 import org.jooq.DSLContext;

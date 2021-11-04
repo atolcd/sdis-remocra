@@ -8,10 +8,10 @@ import org.jooq.DSLContext;
 import javax.inject.Inject;
 import java.util.List;
 
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_DIAMETRE;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_DIAMETRE_NATURES;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_NATURE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_DIAMETRE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_DIAMETRE_NATURES;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE;
 
 public class TypeHydrantDiametreRepository {
 

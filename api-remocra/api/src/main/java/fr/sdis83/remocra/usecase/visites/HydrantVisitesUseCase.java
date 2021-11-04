@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.persist.Transactional;
 import fr.sdis83.remocra.authn.CurrentUser;
 import fr.sdis83.remocra.authn.UserInfo;
-import fr.sdis83.remocra.db.model.tables.pojos.Hydrant;
-import fr.sdis83.remocra.db.model.tables.pojos.HydrantVisite;
-import fr.sdis83.remocra.db.model.tables.pojos.TypeHydrantAnomalie;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantAnomalie;
 import fr.sdis83.remocra.repository.HydrantVisitesRepository;
 import fr.sdis83.remocra.repository.PeiRepository;
 import fr.sdis83.remocra.usecase.pei.PeiUseCase;
@@ -29,16 +29,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static fr.sdis83.remocra.db.model.Tables.HYDRANT;
-import static fr.sdis83.remocra.db.model.Tables.HYDRANT_ANOMALIES;
-import static fr.sdis83.remocra.db.model.Tables.HYDRANT_PENA;
-import static fr.sdis83.remocra.db.model.Tables.HYDRANT_PIBI;
-import static fr.sdis83.remocra.db.model.Tables.HYDRANT_VISITE;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_ANOMALIE;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_ANOMALIE_NATURE;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_NATURE;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_SAISIE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_ANOMALIES;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PENA;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PIBI;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_VISITE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE_NATURE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_SAISIE;
 
 public class HydrantVisitesUseCase {
 

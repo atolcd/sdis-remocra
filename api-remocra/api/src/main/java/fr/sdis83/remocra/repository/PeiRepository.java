@@ -2,10 +2,10 @@ package fr.sdis83.remocra.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.sdis83.remocra.db.model.tables.Hydrant;
-import fr.sdis83.remocra.db.model.tables.Organisme;
-import fr.sdis83.remocra.db.model.tables.pojos.HydrantPena;
-import fr.sdis83.remocra.db.model.tables.pojos.HydrantPibi;
+import fr.sdis83.remocra.db.model.remocra.tables.Hydrant;
+import fr.sdis83.remocra.db.model.remocra.tables.Organisme;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantPena;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantPibi;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
 import fr.sdis83.remocra.web.model.pei.PeiForm;
 import fr.sdis83.remocra.web.model.pei.PeiModel;
@@ -22,23 +22,23 @@ import javax.ws.rs.core.Response;
 
 import java.util.List;
 
-import static fr.sdis83.remocra.db.model.Tables.COMMUNE;
-import static fr.sdis83.remocra.db.model.Tables.HYDRANT;
-import static fr.sdis83.remocra.db.model.Tables.HYDRANT_PENA;
-import static fr.sdis83.remocra.db.model.Tables.HYDRANT_PIBI;
-import static fr.sdis83.remocra.db.model.Tables.HYDRANT_VISITE;
-import static fr.sdis83.remocra.db.model.Tables.ORGANISME;
-import static fr.sdis83.remocra.db.model.Tables.SITE;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_DIAMETRE;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_DOMAINE;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_MARQUE;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_MATERIAU;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_MODELE;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_NATURE;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_NATURE_DECI;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_NIVEAU;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_RESEAU_ALIMENTATION;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_RESEAU_CANALISATION;
+import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PENA;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PIBI;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_VISITE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.ORGANISME;
+import static fr.sdis83.remocra.db.model.remocra.Tables.SITE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_DIAMETRE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_DOMAINE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_MARQUE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_MATERIAU;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_MODELE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE_DECI;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NIVEAU;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_RESEAU_ALIMENTATION;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_RESEAU_CANALISATION;
 
 
 public class PeiRepository {

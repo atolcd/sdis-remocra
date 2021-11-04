@@ -16,9 +16,9 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static fr.sdis83.remocra.db.model.Tables.ORGANISME;
-import static fr.sdis83.remocra.db.model.Tables.TRANSFERTS_AUTOMATISES;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_ORGANISME;
+import static fr.sdis83.remocra.db.model.remocra.Tables.ORGANISME;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TRANSFERTS_AUTOMATISES;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_ORGANISME;
 
 public class OrganismesRepository {
 

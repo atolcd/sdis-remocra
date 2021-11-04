@@ -1,7 +1,7 @@
 package fr.sdis83.remocra.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.sdis83.remocra.db.model.tables.pojos.HydrantVisite;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteModel;
 import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteSpecifiqueModel;
 import org.jooq.Condition;
@@ -17,11 +17,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static fr.sdis83.remocra.db.model.Tables.HYDRANT;
-import static fr.sdis83.remocra.db.model.Tables.HYDRANT_PIBI;
-import static fr.sdis83.remocra.db.model.Tables.HYDRANT_VISITE;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_ANOMALIE;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_SAISIE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PIBI;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_VISITE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_SAISIE;
 
 public class HydrantVisitesRepository {
 

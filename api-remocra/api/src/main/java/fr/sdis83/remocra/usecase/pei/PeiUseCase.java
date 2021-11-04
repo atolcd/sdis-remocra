@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.inject.persist.Transactional;
 import fr.sdis83.remocra.authn.CurrentUser;
 import fr.sdis83.remocra.authn.UserInfo;
-import fr.sdis83.remocra.db.model.tables.pojos.HydrantPena;
-import fr.sdis83.remocra.db.model.tables.pojos.HydrantPibi;
-import fr.sdis83.remocra.db.model.tables.pojos.TypeHydrantMarque;
-import fr.sdis83.remocra.db.model.tables.pojos.TypeHydrantModele;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantPena;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantPibi;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantMarque;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantModele;
 import fr.sdis83.remocra.repository.PeiRepository;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
 import fr.sdis83.remocra.web.model.pei.PeiForm;
@@ -24,15 +24,15 @@ import javax.ws.rs.core.Response;
 
 import java.util.List;
 
-import static fr.sdis83.remocra.db.model.Tables.HYDRANT;
-import static fr.sdis83.remocra.db.model.Tables.HYDRANT_PENA;
-import static fr.sdis83.remocra.db.model.Tables.HYDRANT_PIBI;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_DIAMETRE;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_MARQUE;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_MATERIAU;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_MODELE;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_RESEAU_ALIMENTATION;
-import static fr.sdis83.remocra.db.model.Tables.TYPE_RESEAU_CANALISATION;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PENA;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PIBI;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_DIAMETRE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_MARQUE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_MATERIAU;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_MODELE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_RESEAU_ALIMENTATION;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_RESEAU_CANALISATION;
 
 public class PeiUseCase {
 

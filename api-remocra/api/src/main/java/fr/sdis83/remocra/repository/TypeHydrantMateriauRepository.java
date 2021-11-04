@@ -8,7 +8,7 @@ import org.jooq.DSLContext;
 import javax.inject.Inject;
 import java.util.List;
 
-import static fr.sdis83.remocra.db.model.Tables.TYPE_HYDRANT_MATERIAU;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_MATERIAU;
 
 public class TypeHydrantMateriauRepository {
 

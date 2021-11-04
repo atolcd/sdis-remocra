@@ -2,7 +2,6 @@ package fr.sdis83.remocra.web.s;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.sdis83.remocra.authn.UserRoles;
-import fr.sdis83.remocra.db.model.tables.TypeHydrantMateriau;
 import fr.sdis83.remocra.repository.TypeHydrantAspirationRepository;
 import fr.sdis83.remocra.repository.TypeHydrantMateriauRepository;
 import fr.sdis83.remocra.repository.TypeHydrantNatureAnomalieRepository;

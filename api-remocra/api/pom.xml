@@ -324,7 +324,12 @@
               <!--excludes>public.*|schema_version|uuid.*</excludes-->
               <schemata>
                   <schema>
-                      <inputSchema>${db.schema}</inputSchema>
+                      <inputSchema>remocra</inputSchema>
+                      <outputSchema>remocra</outputSchema>
+                  </schema>
+                  <schema>
+                    <inputSchema>tracabilite</inputSchema>
+                    <outputSchema>tracabilite</outputSchema>
                   </schema>
               </schemata>
 
