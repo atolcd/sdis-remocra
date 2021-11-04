@@ -68,4 +68,12 @@ public class HydrantVisite {
     @Column
     private String observations;
 
+    @ManyToOne
+    private Utilisateur utilisateurModification;
+
+    @ManyToOne
+    private Organisme organisme;
+
+    @Column
+    private String auteurModificationFlag;
 }

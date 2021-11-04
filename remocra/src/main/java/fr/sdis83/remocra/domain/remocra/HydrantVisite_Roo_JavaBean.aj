@@ -121,5 +121,28 @@ privileged aspect HydrantVisite_Roo_JavaBean {
         this.observations = observations;
     }
 
+    public Utilisateur HydrantVisite.getUtilisateurModification() {
+        return this.utilisateurModification;
+    }
+
+    public void HydrantVisite.setUtilisateurModification(Utilisateur utilisateurModification) {
+        this.utilisateurModification = utilisateurModification;
+    }
+
+    public Organisme HydrantVisite.getOrganisme() {
+        return this.organisme;
+    }
+
+    public void HydrantVisite.setOrganisme(Organisme organisme) {
+        this.organisme = organisme;
+    }
+
+    public String HydrantVisite.getAuteurModificationFlag() {
+        return this.auteurModificationFlag;
+    }
+
+    public void HydrantVisite.setAuteurModificationFlag(String auteurModificationFlag) {
+        this.auteurModificationFlag = auteurModificationFlag;
+    }
     
 }

@@ -149,6 +149,9 @@ public class Hydrant implements Featurable {
     @ManyToOne
     private Utilisateur utilisateurModification;
 
+    @Column
+    private String auteurModificationFlag;
+
     // Localisation
 
     @Column

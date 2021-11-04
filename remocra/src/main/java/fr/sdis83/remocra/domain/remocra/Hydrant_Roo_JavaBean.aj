@@ -418,4 +418,12 @@ privileged aspect Hydrant_Roo_JavaBean {
     public void Hydrant.setMaintenanceDeci(Organisme maintenanceDeci) {
        this.maintenanceDeci = maintenanceDeci;
     }
+
+    public String Hydrant.getAuteurModificationFlag() {
+        return this.auteurModificationFlag;
+    }
+
+    public void Hydrant.setAuteurModificationFlag(String auteurModificationFlag) {
+        this.auteurModificationFlag = auteurModificationFlag;
+    }
 }

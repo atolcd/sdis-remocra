@@ -71,6 +71,7 @@ import fr.sdis83.remocra.domain.remocra.TypeHydrantNatureDeci;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantPositionnement;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantSaisie;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantVolConstate;
+import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.exception.AnomalieException;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.exception.SQLBusinessException;
@@ -1112,9 +1113,8 @@ public class XmlService {
         // On redéfinit le code, la zone spéciale éventuelle, le numéro interne
         // et le numéro
         NumeroUtil.setCodeZoneSpecAndNumeros(hydrant);
-
-        // On attache l'organisme de l'utilisateur courant
-        hydrant.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme());
+        hydrant.setUtilisateurModification(Utilisateur.findUtilisateur(this.utilisateurService.getCurrentUtilisateur().getId()));
+        hydrant.setAuteurModificationFlag("USER");
 
         // Sauvegarde
         hydrant = hydrant.merge();
@@ -1147,6 +1147,8 @@ public class XmlService {
                     .executeUpdate();
         }
         hv.setHydrant(hydrant);
+        hv.setUtilisateurModification(Utilisateur.findUtilisateur(this.utilisateurService.getCurrentUtilisateur().getId()));
+        hv.setAuteurModificationFlag("USER");
         hv.merge();
     }
 
