@@ -27,11 +27,13 @@ import java.util.List;
 
 import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_ANOMALIES;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PENA;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PIBI;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_VISITE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ORGANISME;
 import static fr.sdis83.remocra.db.model.remocra.Tables.SITE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_DIAMETRE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_DOMAINE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_MARQUE;
@@ -177,7 +179,7 @@ public class PeiRepository {
       Field<Object> Y = DSL.field("round(st_y(hydrant.geometrie)::numeric, 2)").as("y");
 
 
-      return context.select(
+      PeiSpecifiqueModel pei = context.select(
         HYDRANT.NUMERO.as("numero"),
         HYDRANT.CODE.as("type"),
         TYPE_HYDRANT_NATURE.CODE.as("nature"),
@@ -192,8 +194,10 @@ public class PeiRepository {
         HYDRANT.EN_FACE.as("enFace"),
         TYPE_HYDRANT_NIVEAU.CODE.as("niveau"),
         TYPE_HYDRANT_DOMAINE.CODE.as("domaine"),
+        HYDRANT.NUMERO_VOIE.as("numeroVoie"),
         HYDRANT.VOIE.as("voie"),
         HYDRANT.VOIE2.as("carrefour"),
+        HYDRANT.SUFFIXE_VOIE.as("suffixeVoie"),
         HYDRANT.LIEU_DIT.as("lieuDit"),
         HYDRANT.COMPLEMENT.as("complement"),
         HYDRANT.DATE_MODIFICATION.as("dateDerniereModification"),
@@ -212,6 +216,16 @@ public class PeiRepository {
         .leftJoin(HYDRANT_PIBI).on(HYDRANT_PIBI.ID.eq(HYDRANT.ID))
         .where(HYDRANT.NUMERO.eq(numero))
         .fetchOneInto(PeiSpecifiqueModel.class);
+
+      Integer nbIndispoTemp = context.selectCount()
+        .from(HYDRANT_ANOMALIES)
+        .join(TYPE_HYDRANT_ANOMALIE).on(TYPE_HYDRANT_ANOMALIE.ID.eq(HYDRANT_ANOMALIES.ANOMALIES))
+        .join(HYDRANT).on(HYDRANT.ID.eq(HYDRANT_ANOMALIES.HYDRANT))
+        .where(HYDRANT.NUMERO.eq(pei.getNumero()).and(TYPE_HYDRANT_ANOMALIE.CODE.equalIgnoreCase("INDISPONIBILITE_TEMP")))
+        .fetchOneInto(Integer.class);
+      pei.setIndispoTemporaire((nbIndispoTemp > 0) ? true : false);
+
+      return pei;
     }
 
     public String getPeiCaracteristiques(String numero) throws JsonProcessingException {

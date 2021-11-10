@@ -31,7 +31,11 @@ public class PeiSpecifiqueModel {
 
     String domaine;
 
+    Integer numeroVoie;
+
     String voie;
+
+    String suffixeVoie;
 
     String carrefour;
 
@@ -46,6 +50,8 @@ public class PeiSpecifiqueModel {
     boolean dispoTerrestre;
 
     boolean dispoAerienne;
+
+    boolean indispoTemporaire;
 
     public String getNumero() {
         return numero;
@@ -159,12 +165,28 @@ public class PeiSpecifiqueModel {
         this.domaine = domaine;
     }
 
+    public Integer getNumeroVoie() {
+        return numeroVoie;
+    }
+
+    public void setNumeroVoie(Integer numeroVoie) {
+        this.numeroVoie = numeroVoie;
+    }
+
     public String getVoie() {
         return voie;
     }
 
     public void setVoie(String voie) {
         this.voie = voie;
+    }
+
+    public String getSuffixeVoie() {
+        return suffixeVoie;
+    }
+
+    public void setSuffixeVoie(String suffixeVoie) {
+        this.suffixeVoie = suffixeVoie;
     }
 
     public String getCarrefour() {
@@ -221,5 +243,13 @@ public class PeiSpecifiqueModel {
 
     public void setDispoAerienne(boolean dispoAerienne) {
         this.dispoAerienne = dispoAerienne;
+    }
+
+    public boolean isIndispoTemporaire() {
+        return indispoTemporaire;
+    }
+
+    public void setIndispoTemporaire(boolean indispoTemporaire) {
+        this.indispoTemporaire = indispoTemporaire;
     }
 }
