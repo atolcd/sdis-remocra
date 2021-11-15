@@ -554,7 +554,7 @@ FROM remocra.hydrant h
    LEFT JOIN remocra.type_hydrant_domaine thdo ON thdo.id = h.domaine
    LEFT JOIN remocra.type_hydrant_nature thn ON thn.id = h.nature
    LEFT JOIN remocra.type_hydrant_positionnement thp ON thp.id = hpe.positionnement
-   LEFT JOIN remocra_sgo.hydrant_nature hn ON hn.code_nature_remocra = COALESCE(thn.code, &apos; &apos;) || COALESCE( &apos;_&apos; || thp.code, &apos;&apos;)
+   LEFT JOIN remocra_sgo.hydrant_nature hn ON hn.code_nature_remocra = COALESCE(thn.code, &apos; &apos;)
    LEFT JOIN (SELECT id_hydrant, date_operation, auteur_modification FROM tracabilite.hydrant WHERE nom_operation = &apos;INSERT&apos;) AS traca ON traca.id_hydrant = h.id
    LEFT JOIN (SELECT idcarre200, shape FROM remocra_referentiel.carre_200) carroy ON ST_Contains(carroy.shape, h.geometrie)
    LEFT JOIN remocra.utilisateur u ON u.id = h.utilisateur_modification;</sql>
