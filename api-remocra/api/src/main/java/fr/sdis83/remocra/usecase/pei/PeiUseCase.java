@@ -1,38 +1,55 @@
 package fr.sdis83.remocra.usecase.pei;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.inject.persist.Transactional;
 import fr.sdis83.remocra.authn.CurrentUser;
 import fr.sdis83.remocra.authn.UserInfo;
+import fr.sdis83.remocra.db.model.remocra.tables.Organisme;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantPena;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantPibi;
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantMarque;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantModele;
+import fr.sdis83.remocra.db.model.tracabilite.Tables;
+import fr.sdis83.remocra.db.model.tracabilite.tables.Hydrant;
+import fr.sdis83.remocra.db.model.tracabilite.tables.HydrantVisite;
 import fr.sdis83.remocra.repository.PeiRepository;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
+import fr.sdis83.remocra.web.model.pei.PeiDiffModel;
 import fr.sdis83.remocra.web.model.pei.PeiForm;
 import fr.sdis83.remocra.web.model.pei.PeiModel;
 import fr.sdis83.remocra.web.model.pei.PeiSpecifiqueModel;
+import fr.sdis83.remocra.web.serializer.PeiDiffModelSerializer;
 import org.jooq.DSLContext;
 import org.jooq.Record3;
 import org.jooq.SelectConditionStep;
 import org.jooq.exception.DataAccessException;
+import org.jooq.impl.DSL;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.ws.rs.core.Response;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PENA;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PIBI;
+import static fr.sdis83.remocra.db.model.remocra.Tables.ORGANISME;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_DIAMETRE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_MARQUE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_MATERIAU;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_MODELE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_RESEAU_ALIMENTATION;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_RESEAU_CANALISATION;
+import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
 
 public class PeiUseCase {
 
@@ -316,5 +333,78 @@ public class PeiUseCase {
       return true;
     }
     return false;
+  }
+
+  /**
+   * Retourne les PEI ayant subit une modification depuis une date spécifique
+   * @param dateString La date format YYYY-MM-DD hh:mm à partir de laquelle les changements on du avoir lieu
+   * @return
+   */
+  public String diff(String dateString) throws ResponseException {
+
+    Date date = null;
+    if(dateString != null) {
+      String pattern = "yyyy-MM-dd HH:mm:ss";
+      SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+      simpleDateFormat.setLenient(false);
+      try {
+        date = simpleDateFormat.parse(dateString);
+      } catch (ParseException e) {
+        throw new ResponseException(Response.Status.BAD_REQUEST, "1010 : La date spécifiée n'existe pas ou ne respecte pas le format YYYY-MM-DD hh:mm:ss");
+      }
+    } else {
+      throw new ResponseException(Response.Status.BAD_REQUEST, "1010 : La date spécifiée n'existe pas ou ne respecte pas le format YYYY-MM-DD hh:mm:ss");
+    }
+
+    Organisme organisme = ORGANISME.as("organisme");
+    Organisme organismeUtilisateur = ORGANISME.as("organismeUtilisateur");
+    Hydrant tracabiliteHydrant = Tables.HYDRANT.as("tracabiliteHydrant");
+    HydrantVisite tracabiliteHydrantVisite = Tables.HYDRANT_VISITE.as("tracabiliteHydrantVisite");
+
+    // Données de tracabilite.hydrant
+    List<PeiDiffModel> listeCarac = context.select(tracabiliteHydrant.NUMERO, tracabiliteHydrant.DATE_OPERATION.as("dateModification"),
+      tracabiliteHydrant.NOM_OPERATION.as("operation"), DSL.concat(UTILISATEUR.NOM, DSL.val(" "), UTILISATEUR.PRENOM).as("utilisateurModification"),
+      organismeUtilisateur.NOM.as("utilisateurModificationOrganisme"), organisme.NOM.as("organismeModification"),
+      tracabiliteHydrant.AUTEUR_MODIFICATION_FLAG.as("auteurModificationFlag"), DSL.val("CARACTERISTIQUES").as("type")
+    )
+    .from(tracabiliteHydrant)
+    .leftJoin(UTILISATEUR).on(UTILISATEUR.ID.eq(tracabiliteHydrant.UTILISATEUR_MODIFICATION))
+    .leftJoin(organismeUtilisateur).on(organismeUtilisateur.ID.eq(UTILISATEUR.ORGANISME))
+    .leftJoin(organisme).on(organisme.ID.eq(tracabiliteHydrant.ORGANISME))
+    .where(tracabiliteHydrant.DATE_OPERATION.greaterOrEqual(date.toInstant()).and(tracabiliteHydrant.NUMERO.isNotNull()))
+    .fetchInto(PeiDiffModel.class);
+
+    // Données de tracabilité.hydrant_visite
+    List<PeiDiffModel> listeVisite = context.select(HYDRANT.NUMERO, tracabiliteHydrantVisite.DATE_OPERATION.as("dateModification"),
+        tracabiliteHydrantVisite.NOM_OPERATION.as("operation"), DSL.concat(UTILISATEUR.NOM, DSL.val(" "), UTILISATEUR.PRENOM).as("utilisateurModification"),
+        organismeUtilisateur.NOM.as("utilisateurModificationOrganisme"), organisme.NOM.as("organismeModification"),
+        tracabiliteHydrantVisite.AUTEUR_MODIFICATION_FLAG.as("auteurModificationFlag"), DSL.val("VISITES").as("type"))
+      .from(tracabiliteHydrantVisite)
+      .join(HYDRANT).on(HYDRANT.ID.eq(tracabiliteHydrantVisite.HYDRANT))
+      .leftJoin(UTILISATEUR).on(UTILISATEUR.ID.eq(tracabiliteHydrantVisite.UTILISATEUR_MODIFICATION))
+      .leftJoin(organismeUtilisateur).on(organismeUtilisateur.ID.eq(UTILISATEUR.ORGANISME))
+      .leftJoin(organisme).on(organisme.ID.eq(tracabiliteHydrantVisite.ORGANISME))
+      .where(tracabiliteHydrantVisite.DATE_OPERATION.greaterOrEqual(date.toInstant()).and(HYDRANT.NUMERO.isNotNull()))
+      .fetchInto(PeiDiffModel.class);
+
+    ObjectMapper mapper = new ObjectMapper();
+    ArrayList<String> listeDiff = new ArrayList<String>();
+
+    for(PeiDiffModel p : Stream.concat(listeCarac.stream(), listeVisite.stream()).collect(Collectors.toList())) {
+      if(this.isPeiAccessible(p.getNumero()) || ("CARACTERISTIQUES".equals(p.getType()) && "DELETE".equals(p.getOperation()))) {
+
+        SimpleModule module = new SimpleModule("PeiDiffModelSerializer", new Version(1, 0, 0, null, null, null));
+        module.addSerializer(PeiDiffModel.class, new PeiDiffModelSerializer());
+        mapper.registerModule(module);
+        try {
+          String jsonPei = mapper.writeValueAsString(p);
+          listeDiff.add(jsonPei);
+        } catch (JsonProcessingException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+
+    return listeDiff.toString();
   }
 }
