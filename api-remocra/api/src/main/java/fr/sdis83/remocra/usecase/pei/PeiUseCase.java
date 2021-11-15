@@ -44,9 +44,11 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PENA;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PIBI;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ORGANISME;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_DIAMETRE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_DIAMETRE_NATURES;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_MARQUE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_MATERIAU;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_MODELE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_RESEAU_ALIMENTATION;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_RESEAU_CANALISATION;
 import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
@@ -132,6 +134,11 @@ public class PeiUseCase {
         .where(HYDRANT.NUMERO.equalIgnoreCase(numero))
         .fetchOneInto(HydrantPibi.class);
 
+      fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant pei = context.select(HYDRANT.fields())
+        .from(HYDRANT)
+        .where(HYDRANT.NUMERO.equalIgnoreCase(numero))
+        .fetchOneInto(fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant.class);
+
       Long idDiametre = null;
       Long idMarque = null;
       Long idModele = null;
@@ -145,6 +152,16 @@ public class PeiUseCase {
           .fetchOneInto(Long.class);
         if(idDiametre == null) {
           throw new ResponseException(Response.Status.BAD_REQUEST, "1001 : Le code du diamètre saisi ne correspond à aucune valeur connue");
+        }
+
+        Integer nbNatures = context.selectCount()
+          .from(TYPE_HYDRANT_DIAMETRE)
+          .join(TYPE_HYDRANT_DIAMETRE_NATURES).on(TYPE_HYDRANT_DIAMETRE_NATURES.TYPE_HYDRANT_DIAMETRE.eq(TYPE_HYDRANT_DIAMETRE.ID))
+          .join(TYPE_HYDRANT_NATURE).on(TYPE_HYDRANT_NATURE.ID.eq(TYPE_HYDRANT_DIAMETRE_NATURES.NATURES))
+          .where(TYPE_HYDRANT_NATURE.ID.eq(pei.getNature()).and(TYPE_HYDRANT_DIAMETRE.ID.eq(idDiametre)))
+          .fetchOneInto(Integer.class);
+        if(nbNatures == 0) {
+          throw new ResponseException(Response.Status.BAD_REQUEST, "1101 : Le diamètre nominal renseigné par EDP n'est pas accepté dans Remocra pour un PEI de cette nature");
         }
       }
       hydrantPibi.setDiametre(idDiametre);
