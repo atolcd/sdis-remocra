@@ -134,7 +134,6 @@ public class HydrantVisiteRepository {
           .join(HYDRANT).on(HYDRANT.ID.eq(HYDRANT_VISITE.HYDRANT))
           .where(HYDRANT_VISITE.ID.eq(Long.valueOf(idVisite)).and(HYDRANT.ID.eq(id)))
           .fetchOneInto(HydrantVisite.class);
-
         this.deleteVisite(visite);
       }
       this.launchTriggerAnomalies(id);
@@ -204,7 +203,7 @@ public class HydrantVisiteRepository {
           .execute();
       }
       // Si c'est de plus un contrôle débit pression, on fait remonter ses infos dans la table hydrant_pibi.
-      if(visite.getCtrlDebitPression()) {
+      if(visite.getCtrlDebitPression() != null && visite.getCtrlDebitPression()) {
         context.update(HYDRANT_PIBI)
           .set(HYDRANT_PIBI.DEBIT, visite.getDebit())
           .set(HYDRANT_PIBI.DEBIT_MAX, visite.getDebitMax())
@@ -246,7 +245,7 @@ public class HydrantVisiteRepository {
       .fetchOneInto(HydrantVisite.class);
 
     // Si on supprime une visite de contrôle, et qu'il en existe encore une, on reprend les valeurs de cette dernière
-    if(visite.getCtrlDebitPression()) {
+    if(visite.getCtrlDebitPression() != null && visite.getCtrlDebitPression()) {
       Integer debit = null;
       Integer debitMax = null;
       Double pression = null;
