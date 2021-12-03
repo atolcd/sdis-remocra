@@ -450,9 +450,9 @@ export default {
             formData.append("modele", this.choixModele.id)
             _.forEach(document.getElementsByClassName('parametreModele'), item => {
             if (item.getAttribute('inputType') === 'datetimefield') {
-              var date = document.querySelector('input[id=' + item.id + 'date ]').value
-              var time = document.querySelector('input[id=' + item.id + 'time]').value
-              formData.append(item.id, date + ' ' + time)
+              var date = item.querySelector('input[type=date]').value;
+              var time = item.querySelector('input[type=time]').value;
+              formData.append(item.id, date + ' ' + time);
             } else if (item.getAttribute('inputType') === 'autocomplete') {
               var autocomplete = this.$refs['search' + item.id][0]
               formData.append(item.getAttribute('id'), autocomplete.selected !== null ? autocomplete.selected.id : autocomplete.searchInput)
@@ -572,11 +572,11 @@ export default {
                     this.$refs.modalPopupNotif.show();
         })
       }
-    }, 
+    },
     close(){
       this.$root.$options.bus.$emit('closed')
     }
-    
+
   }
 };
 </script>
