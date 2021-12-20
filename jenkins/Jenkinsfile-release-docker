@@ -11,6 +11,7 @@ node {
 }
 pipeline {
   options {
+    disableConcurrentBuilds()
     buildDiscarder(logRotator(numToKeepStr: '10'))
   }
   parameters {
@@ -24,7 +25,9 @@ pipeline {
     // registry Docker
     string(name: 'REGISTRY_DOCKER', defaultValue: 'https://client-docker-registry.atolcd.com', description: 'Registry de destination (NEXUS)')
   }
-  agent any
+  agent {
+    label 'release'
+  }
   stages {
     stage('Get version') {
       steps {

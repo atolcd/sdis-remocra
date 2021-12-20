@@ -1,6 +1,10 @@
 #!/usr/bin/env groovy
 
 pipeline {
+  options {
+    disableConcurrentBuilds()
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+  }
   agent {
     label 'release'
   }
