@@ -771,6 +771,11 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 this.getTabHydrant().headerFilterPlugin.fields.dateContr.setValue(0);
                 this.getTabHydrant().headerFilterPlugin.fields.dateReco.setValue(0);
                 this.getTabHydrant().headerFilterPlugin.fields.numero.setValue(null);
+                this.getTabHydrant().headerFilterPlugin.fields.nomCommune.setValue(null);
+                this.getTabHydrant().headerFilterPlugin.fields.adresse.setValue(null);
+                this.getTabHydrant().headerFilterPlugin.fields.dispoTerrestre.setValue(0);
+                this.getTabHydrant().headerFilterPlugin.fields.nomNatureDeci.setValue(null);
+
                 var cbo = this.getTabHydrant().headerFilterPlugin.fields.tournee;
                 cbo.getStore().load({
                     scope: this,
