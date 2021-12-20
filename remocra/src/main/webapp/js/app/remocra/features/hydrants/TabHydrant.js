@@ -88,6 +88,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
                 minChars: 1,
                 queryMode: 'remote',
                 typeAhead: true,
+                pageSize: 50,
                 store: {
                     model: 'Sdis.Remocra.model.Tournee',
                     listeners: {

@@ -59,7 +59,7 @@ public class TourneeService extends AbstractService<Tournee> {
             predicat = cBuilder.equal(cpPath, itemFilter.getValue());
         } else if ("query".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.get("nom");
-            predicat = cBuilder.like(cBuilder.concat("", cpPath), itemFilter.getValue() + "%");
+            predicat = cBuilder.like(cBuilder.concat("", cBuilder.upper(cpPath)), itemFilter.getValue().toUpperCase() + "%");
         } else if ("nom".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.get("nom");
             predicat = cBuilder.like(cBuilder.concat("", cpPath), "%"+ itemFilter.getValue() + "%");
@@ -71,7 +71,6 @@ public class TourneeService extends AbstractService<Tournee> {
 
                 // Ajout d'un id négatif car cette version d'hibernate gère mal le cas où le tableau est vide avec le IN
                 ids.add(-1);
-
                 predicat = cBuilder.isTrue(cpPath.in(ids));
             } else {
                 // Si texte, filtre sur organisme + organismes enfants de k'utilisateur courant + nom
@@ -158,10 +157,11 @@ public class TourneeService extends AbstractService<Tournee> {
     @Transactional
     public String getNomTournee(Hydrant h, Long organisme){
         String nom = null;
-        String sql = "SELECT nom FROM remocra.tournee t where t.affectation =:organisme and t.id in (SELECT tournees FROM remocra.hydrant_tournees ht where ht.hydrant =:id) ";
+        String sql = "SELECT COALESCE(string_agg(nom, ', '), '') FROM remocra.tournee t where t.affectation in(:organismes) and " +
+          "t.id in (SELECT tournees FROM remocra.hydrant_tournees ht where ht.hydrant =:id) ";
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter("id",h.getId());
-        query.setParameter("organisme", organisme);
+        query.setParameter("organismes", Organisme.getOrganismeAndChildren(organisme.intValue()));
         if(query.getResultList().size() != 0){
            nom = String.valueOf(query.getResultList().get(0));
         }
