@@ -7,7 +7,31 @@ pipeline {
   }
   agent any
   stages {
-    stage('Build') {
+    stage('Build client-ng') {
+      agent {
+        docker {
+          image 'node:10'
+          args '-v "/var/lib/jenkins/.npmrc:/home/node/.npmrc:ro"'
+          reuseNode true
+        }
+      }
+      environment {
+        NPM_CONFIG_CACHE = "${env.WORKSPACE}/.npm"
+      }
+      steps {
+        dir('client-ng') {
+          sh 'sed -i "s@https://registry.npmjs.org/@$(npm config get registry)@" package-lock.json'
+          sh 'npm install'
+          sh 'npm run build'
+        }
+      }
+      post {
+        always {
+          sh 'rm -rf client-ng/node_modules/'
+        }
+      }
+    }
+    stage('Build remocra') {
       agent {
         docker {
           image 'cvagner/docker-jdk-maven-sencha-cmd:8-3.6.3-3.0.2'
@@ -15,28 +39,23 @@ pipeline {
           reuseNode true
         }
       }
-      environment {
-        // Force HOME for npm
-        HOME = "${env.WORKSPACE}"
-      }
       steps {
-        // Run the maven build (mvn is in the PATH in the Docker image)
-        sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U clean"
-        sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U verify -P modeinfo-able -P update"
-        sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U verify -P modeinfo-able -P install"
+        sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U -ntp -Dskip.installnodenpm -Dskip.npm verify -P modeinfo-able -P update"
+        sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U -ntp -Dskip.installnodenpm -Dskip.npm verify -P modeinfo-able -P install"
+        sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U -ntp -Dskip.installnodenpm -Dskip.npm clean"
       }
-      post {
-        success {
-          archiveArtifacts allowEmptyArchive: true, artifacts: 'remocra/target/*.war', fingerprint: true
-          archiveArtifacts allowEmptyArchive: true, artifacts: 'dist/target/*.zip', fingerprint: true
-        }
-        unstable {
-          archiveArtifacts allowEmptyArchive: true, artifacts: 'remocra/target/*.war', fingerprint: true
-          archiveArtifacts allowEmptyArchive: true, artifacts: 'dist/target/*.zip', fingerprint: true
-        }
-        always {
-          sh "git checkout -- ."
-        }
+    }
+    post {
+      success {
+        archiveArtifacts allowEmptyArchive: true, artifacts: 'remocra/target/*.war', fingerprint: true
+        archiveArtifacts allowEmptyArchive: true, artifacts: 'dist/target/*.zip', fingerprint: true
+      }
+      unstable {
+        archiveArtifacts allowEmptyArchive: true, artifacts: 'remocra/target/*.war', fingerprint: true
+        archiveArtifacts allowEmptyArchive: true, artifacts: 'dist/target/*.zip', fingerprint: true
+      }
+      always {
+        sh "git checkout -- ."
       }
     }
   }

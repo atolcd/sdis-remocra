@@ -8,13 +8,32 @@ pipeline {
   agent {
     label 'release'
   }
-  environment {
-    NEXUS_REPO = 'https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/zip'
-    // Force HOME for npm
-    HOME = "${env.WORKSPACE}"
-  }
   stages {
-    stage('Clean and build') {
+    stage('Build client-ng') {
+      agent {
+        docker {
+          image 'node:10'
+          args '-v "/var/lib/jenkins/.npmrc:/home/node/.npmrc:ro"'
+          reuseNode true
+        }
+      }
+      environment {
+        NPM_CONFIG_CACHE = "${env.WORKSPACE}/.npm"
+      }
+      steps {
+        dir('client-ng') {
+          sh 'sed -i "s@https://registry.npmjs.org/@$(npm config get registry)@" package-lock.json'
+          sh 'npm install'
+          sh 'npm run build'
+        }
+      }
+      post {
+        always {
+          sh 'rm -rf client-ng/node_modules/'
+        }
+      }
+    }
+    stage('Build remocra') {
       agent {
         docker {
           image 'cvagner/docker-jdk-maven-sencha-cmd:8-3.6.3-3.0.2'
@@ -22,11 +41,13 @@ pipeline {
           reuseNode true
         }
       }
+      environment {
+        NEXUS_REPO = 'https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/zip'
+      }
       stages {
         stage("Clean") {
           steps {
-            // Run the maven build (mvn is in the PATH in the Docker image)
-            sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U clean"
+            sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U -ntp -Dskip.installnodenpm -Dskip.npm clean"
           }
         }
         stage("Build update") {
@@ -36,7 +57,7 @@ pipeline {
             }
           }
           steps {
-            sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U verify -P modeinfo-able -P update"
+            sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U -ntp -Dskip.installnodenpm -Dskip.npm verify -P modeinfo-able -P update"
           }
         }
         stage("Build install") {
@@ -46,22 +67,22 @@ pipeline {
             }
           }
           steps {
-            sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U verify -P modeinfo-able -P install"
+            sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U -ntp -Dskip.installnodenpm -Dskip.npm verify -P modeinfo-able -P install"
           }
         }
       }
-      post {
-        success {
-          // → Archivage
-          archiveArtifacts allowEmptyArchive: false, artifacts: 'dist/target/*.zip', fingerprint: true
-          // → Nexus
-          withCredentials([usernameColonPassword(credentialsId: 'nexus3-jenkins', variable: 'NEXUS3_AUTH')]) {
-            sh 'find dist/target -name *.zip -type f -exec basename {} \\; | xargs -I{} curl -v --user "$NEXUS3_AUTH" -T dist/target/{} "$NEXUS_REPO/{}"'
-          }
+    }
+    post {
+      success {
+        // → Archivage
+        archiveArtifacts allowEmptyArchive: false, artifacts: 'dist/target/*.zip', fingerprint: true
+        // → Nexus
+        withCredentials([usernameColonPassword(credentialsId: 'nexus3-jenkins', variable: 'NEXUS3_AUTH')]) {
+          sh 'find dist/target -name *.zip -type f -exec basename {} \\; | xargs -I{} curl -v --user "$NEXUS3_AUTH" -T dist/target/{} "$NEXUS_REPO/{}"'
         }
-        always {
-          sh "git checkout -- ."
-        }
+      }
+      always {
+        sh "git checkout -- ."
       }
     }
   }

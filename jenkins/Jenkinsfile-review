@@ -5,23 +5,43 @@ pipeline {
     disableConcurrentBuilds()
     buildDiscarder(logRotator(numToKeepStr: '10'))
   }
-  agent {
-    docker {
-      label 'docker'
-      image 'cvagner/docker-jdk-maven-sencha-cmd:8-3.6.3-3.0.2'
-      args '-v /var/lib/jenkins/.m2/settings.xml:/tmp/settings.xml:ro'
-      reuseNode true
-    }
-  }
+  agent any
   stages {
-    stage('Build') {
+    stage('Build client-ng') {
+      agent {
+        docker {
+          image 'node:10'
+          args '-v "/var/lib/jenkins/.npmrc:/home/node/.npmrc:ro"'
+          reuseNode true
+        }
+      }
       environment {
-        // Force HOME for npm
-        HOME = "${env.WORKSPACE}"
+        NPM_CONFIG_CACHE = "${env.WORKSPACE}/.npm"
       }
       steps {
-        // Run the maven build (mvn is in the PATH in the Docker image)
-        sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U clean verify -P modeinfo-able"
+        dir('client-ng') {
+          sh 'sed -i "s@https://registry.npmjs.org/@$(npm config get registry)@" package-lock.json'
+          sh 'npm install'
+          sh 'npm run build'
+        }
+      }
+      post {
+        always {
+          sh 'rm -rf client-ng/node_modules/'
+        }
+      }
+    }
+    stage('Build remocra') {
+      agent {
+        docker {
+          label 'docker'
+          image 'cvagner/docker-jdk-maven-sencha-cmd:8-3.6.3-3.0.2'
+          args '-v /var/lib/jenkins/.m2/settings.xml:/tmp/settings.xml:ro'
+          reuseNode true
+        }
+      }
+      steps {
+        sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U -ntp -Dskip.installnodenpm -Dskip.npm verify clean verify -P modeinfo-able"
       }
       post {
         always {
