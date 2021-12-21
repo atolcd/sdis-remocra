@@ -113,7 +113,8 @@ Ext.define('Sdis.Remocra.features.hydrants.Affectation', {
             allowBlank: false,
             disabled: true,
             name: 'tournee',
-            width: 220
+            width: 220,
+            minChars: 3
         }]
     }],
 
