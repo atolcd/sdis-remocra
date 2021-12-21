@@ -28,7 +28,7 @@
       </b-form-group>
     </div>
     <div class="col-md-6">
-      <b-form-group label="Domaine" label-for="domaine" invalid-feedback="Le domaine doit être renseigné" :state="etats.domaine" label-cols-md="2">
+      <b-form-group label="Domaine" label-for="domaine" invalid-feedback="Le domaine doit être renseigné" :state="etats.domaine" label-cols-md="2" class="requiredInput">
         <b-form-select id="domaine" v-model="hydrant.domaine" class="parametre" :options="comboDomaine" size="sm" :state="etats.domaine" required :disabled="modificationAdresseDisabled"></b-form-select>
       </b-form-group>
     </div>
@@ -55,7 +55,7 @@
   </div>
   <div class="row">
     <div class="col-md-6">
-      <b-form-group label="Voie" label-for="voie" invalid-feedback="La voie doit être renseignée" :state="etats.voie" label-cols-md="2" v-if="typeof hydrant.commune == 'number'">
+      <b-form-group label="Voie" label-for="voie" invalid-feedback="La voie doit être renseignée" :state="etats.voie" label-cols-md="2" v-if="typeof hydrant.commune == 'number'" class="requiredInput">
         <SearchVoie id="voie" :commune="hydrant.commune" :geometrie="geometrie" :defaultValue="hydrant.voie" @onVoieChange="onVoieChange" :disabled="modificationAdresseDisabled" attr="voie" class="parametre autocomplete"></SearchVoie>
       </b-form-group>
     </div>

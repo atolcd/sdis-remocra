@@ -19,24 +19,24 @@
             </b-form-group>
           </div>
           <div class="col-md-3">
-            <b-form-group label="Nature" label-for="nature" invalid-feedback="La nature doit être renseignée" :state="etats.nature" label-cols-md="4">
+            <b-form-group label="Nature" label-for="nature" invalid-feedback="La nature doit être renseignée" :state="etats.nature" label-cols-md="4" class="requiredInput">
               <b-form-select id="nature" v-model="hydrant.nature" class="parametre" :options="comboType" size="sm" :state="etats.nature" v-on:change="onNatureChange" required></b-form-select>
             </b-form-group>
           </div>
           <div class="col-md-6">
-            <b-form-group label="Autorité de police DECI" label-for="autoriteDeci" invalid-feedback="L'autorité de police DECI doit être renseignée" :state="etats.autoriteDeci" label-cols-md="5">
+            <b-form-group label="Autorité de police DECI" label-for="autoriteDeci" invalid-feedback="L'autorité de police DECI doit être renseignée" :state="etats.autoriteDeci" label-cols-md="5" class="requiredInput">
               <b-form-select id="autoriteDeci" v-model="hydrant.autoriteDeci" class="parametre" :options="ellipsis(comboAutoriteDeci)" size="sm" :state="etats.autoriteDeci" required></b-form-select>
             </b-form-group>
           </div>
         </div>
         <div class="row">
           <div class="col-md-5">
-            <b-form-group label="Type de DECI" label-for="nature_deci" invalid-feedback="La nature DECI doit être renseignée" :state="etats.natureDeci" label-cols-md="5">
+            <b-form-group label="Type de DECI" label-for="nature_deci" invalid-feedback="La nature DECI doit être renseignée" :state="etats.natureDeci" label-cols-md="5" class="requiredInput">
               <b-form-select ref="natureDeci" v-model="hydrant.natureDeci" :options="comboDeci" size="sm" id="natureDeci" class="parametre" v-on:change="getPublicOrPrive" :state="etats.natureDeci"></b-form-select>
             </b-form-group>
           </div>
           <div class="col-md-7">
-            <b-form-group label="Service Public DECI" label-for="spDeci" invalid-feedback="Le service public DECI doit être renseignée" :state="etats.spDeci" label-cols-md="4">
+            <b-form-group label="Service Public DECI" label-for="spDeci" invalid-feedback="Le service public DECI doit être renseignée" :state="etats.spDeci" label-cols-md="4" class="requiredInput">
               <b-form-select ref="spDeci" v-model="hydrant.spDeci" :options="comboSpDeci" size="sm" id="spDeci" class="parametre" :state="etats.spDeci" required></b-form-select>
             </b-form-group>
           </div>
@@ -979,5 +979,11 @@ label {
     margin-top: 20px;
     width: 80%;
     margin-left: 10%;
-  }
+}
+
+.form-group.requiredInput > label:after {
+    content: " *";
+    font-size: 16px;
+    color:  red;
+}
 </style>
