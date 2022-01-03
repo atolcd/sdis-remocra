@@ -1,15 +1,8 @@
 #!/usr/bin/env groovy
 library "atolcd-jenkins"
-def user_id
-def group_id
-node {
-  // uid / gid de l'utilisateur courant
-  user_id = sh(returnStdout: true, script: 'id -u').trim()
-  group_id = sh(returnStdout: true, script: 'id -g').trim()
-  // uid / gid de l'utilisateur Docker
-  DOCKER_UID = 2000
-  DOCKER_GID = 2000
-}
+// uid / gid de l'utilisateur Docker
+def DOCKER_UID = 2000
+def DOCKER_GID = 2000
 pipeline {
   options {
     disableConcurrentBuilds()
