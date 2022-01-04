@@ -85,6 +85,7 @@ public class TypeDroit {
         COURRIER_ORGANISME_R("courrier_organisme_R"),
         COURRIER_ADMIN_R("courrier_admin_R"),
         PLANIFIER_DECI("planifier_deci"),
+        IMPORT_CTP("import_ctp"),
 
         // Module Permis
         PERMIS_R("permis_R"),
