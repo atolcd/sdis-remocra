@@ -19,4 +19,5 @@ cat docker-compose.yml | \
   sed "s%image: remocra-pdi-4.4-dkron%image: client-docker-registry.atolcd.com/atolcd/remocra-pdi-4.4-dkron:${REMOCRA_VERSION}%g" | \
   sed "s%image: remocra-pdi-dkron%image: client-docker-registry.atolcd.com/atolcd/remocra-pdi-dkron:${REMOCRA_VERSION}%g" | \
   sed "s%image: remocra%image: client-docker-registry.atolcd.com/atolcd/remocra:${REMOCRA_VERSION}%g" | \
+  sed "s%image: remocra-api%image: client-docker-registry.atolcd.com/atolcd/remocra-api-remocra:${REMOCRA_VERSION}%g" | \
   docker-compose -f - up  --remove-orphans -d
