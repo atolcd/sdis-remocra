@@ -160,7 +160,7 @@ services:
     depends_on:
       - db
     healthcheck:
-      test: curl --fail -s http://localhost:8080/dashboard/ || exit 1
+      test: curl --fail -s http://localhost:8060/dashboard/ || exit 1
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -203,7 +203,7 @@ services:
       - db
       - jobs-4.4
     healthcheck:
-      test: curl --fail -s http://localhost:8080/dashboard/ || exit 1
+      test: curl --fail -s http://localhost:8070/dashboard/ || exit 1
       interval: 1m30s
       timeout: 10s
       retries: 3
