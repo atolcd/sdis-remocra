@@ -121,8 +121,96 @@ services:
       interval: 1m30s
       timeout: 10s
       retries: 3
-    network_mode: host
-            
+    networks:
+      remocra:
+        aliases:
+          - api.sdisxx.fr
+
+  jobs-4.4:
+    container_name: remocra-pdi-4.4-dkron
+    build: ./pdi-4.4-dkron
+    image: remocra-pdi-4.4-dkron
+    user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
+    ports:
+      - "8060:8060"
+    volumes:
+      - .docker/var_remocra:/var/remocra
+      - .docker/jobs-common/kettle.properties:/home/pdi/.kettle/kettle.properties
+      - .docker/jobs-common/remocra.properties:/home/pdi/remocra.properties
+      - .docker/jobs-4.4/.kettle/repositories.xml:/home/pdi/.kettle/repositories.xml
+      - .docker/jobs-4.4/dkron_data:/dkron/dkron.data
+    environment:
+      # Accès à la base de données remocra
+      POSTGRES_DB_HOSTNAME: ${POSTGRES_DB_HOSTNAME}
+      POSTGRES_DB_USERNAME: ${POSTGRES_DB_USERNAME}
+      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
+      # PDI
+      PDI_INITIAL_MEMORY: ${PDI_44_INITIAL_MEMORY}
+      PDI_MAXIMUM_MEMORY: ${PDI_44_MAXIMUM_MEMORY}
+      PDI_MAXIMUM_PERMSIZE: ${PDI_44_MAXIMUM_PERMSIZE}
+      # Agent dkron
+      DKRON_JOIN: ${DKRON_44_JOIN}
+      DKRON_NODE_NAME: ${DKRON_44_NODE_NAME}
+      DKRON_TAG: ${DKRON_44_TAG}
+      DKRON_RPC_PORT: ${DKRON_44_RPC_PORT}
+      DKRON_BIND_ADDR: ${DKRON_44_BIND_ADDR}
+      DKRON_HTTP_ADDR: ${DKRON_44_HTTP_ADDR}
+      DKRON_LOGFILE: ${DKRON_44_LOGFILE}
+      DKRON_LOG_LEVEL: ${DKRON_44_LOG_LEVEL}
+    depends_on:
+      - db
+    healthcheck:
+      test: curl --fail -s http://localhost:8080/dashboard/ || exit 1
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    networks:
+      remocra:
+        aliases:
+          - jobs-44.sdisxx.fr
+
+  jobs:
+    container_name: remocra-pdi-dkron
+    build: ./pdi-dkron
+    image: remocra-pdi-dkron
+    user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
+    ports:
+      - "8070:8070"
+    volumes:
+      - .docker/var_remocra:/var/remocra
+      - .docker/jobs-common/kettle.properties:/home/pdi/.kettle/kettle.properties
+      - .docker/jobs-common/remocra.properties:/home/pdi/remocra.properties
+      - .docker/jobs/dkron_data:/dkron/dkron.data
+    environment:
+      # Accès à la base de données remocra
+      POSTGRES_DB_HOSTNAME: ${POSTGRES_DB_HOSTNAME}
+      POSTGRES_DB_USERNAME: ${POSTGRES_DB_USERNAME}
+      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
+      # PDI
+      PDI_INITIAL_MEMORY: ${PDI_44_INITIAL_MEMORY}
+      PDI_MAXIMUM_MEMORY: ${PDI_44_MAXIMUM_MEMORY}
+      PDI_MAXIMUM_PERMSIZE: ${PDI_44_MAXIMUM_PERMSIZE}
+      # Agent dkron
+      DKRON_JOIN: ${DKRON_JOIN}
+      DKRON_NODE_NAME: ${DKRON_NODE_NAME}
+      DKRON_TAG: ${DKRON_TAG}
+      DKRON_RPC_PORT: ${DKRON_RPC_PORT}
+      DKRON_BIND_ADDR: ${DKRON_BIND_ADDR}
+      DKRON_HTTP_ADDR: ${DKRON_HTTP_ADDR}
+      DKRON_LOGFILE: ${DKRON_LOGFILE}
+      DKRON_LOG_LEVEL: ${DKRON_LOG_LEVEL}
+    depends_on:
+      - db
+      - jobs-4.4
+    healthcheck:
+      test: curl --fail -s http://localhost:8080/dashboard/ || exit 1
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    networks:
+      remocra:
+        aliases:
+          - jobs.sdisxx.fr
 
 networks:
   remocra:
