@@ -28,17 +28,21 @@ mkdir /livraison
 mkdir /etc/docker_remocra
 ----
 
+* Récupérer le /var/remocra
+
+* Déposer les fichiers du répertoire _vagrantV2_ :
+
+** _vagrantV2/docker_ =>  _/etc/docker_remocra_
+** _vagrantV2/livraison_ => _/livraison_
+** _var/remocra_ => _/var/remocra
+
 * Affecter les droits à l'utilisateur remocra:
 [source,sh]
 ----
 chown -R remocra:remocra /etc/docker_remocra
+chown -R remocra:remocra /var/remocra
+
 ----
-
-* Déposer les scripts du répertoire _vagrantV2_ :
-
-** _vagrantV2/docker_ =>  _/etc/docker_remocra_
-** _vagrantV2/livraison_ => _/livraison_
-
 * Rendre les scripts exécutables :
 
 [source,sh]
@@ -48,7 +52,7 @@ chmod u+x /etc/docker_remocra/*.sh
 ----
 
 == Lancement de l'installation ==
-* Adapter le script launcher.sh
+* Adapter le script /livraison/launcher.sh
 [source,sh]
 ----
 export POSTGRES_DB_PASSWORD=${POSTGRES_DB_PASSWORD:-xxxxxxx}
@@ -64,7 +68,10 @@ export REMOCRA_DB_PASSWORD=${REMOCRA_DB_PASSWORD:-xxxxxx}
 * Créer l'utilisateur remocra
 [source,sh]
 ----
-psql -c "CREATE user remocra WITH SUPERUSER ENCRYPTED PASSWORD '${REMOCRA_DB_PASSWORD:-xxxxx}'";
+su postgres
+psql -c "CREATE user remocra WITH SUPERUSER ENCRYPTED PASSWORD '${REMOCRA_DB_PASSWORD:-xxxxxx}'";
+psql -c "CREATE ROLE user_template NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOLOGIN";
+psql -c "CREATE ROLE sgo_template NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOLOGIN";
 ----
 
 * Créer la base remocra
