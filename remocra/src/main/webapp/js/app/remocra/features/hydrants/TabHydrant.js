@@ -35,7 +35,13 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
             tooltip: 'Ouvrir la fiche du point d\'eau',
             iconCls: 'edit-infoIcon',
             disabled: true
-        },'->',{
+        },{
+            text: 'Import CTP',
+            itemId: 'importCTP',
+            tooltip: 'Importer un fichier CTP',
+            iconCls: 'add',
+            disabled: false
+         },'->',{
             text: 'Supprimer',
             iconCls: 'deleteIcon',
             itemId: 'deleteHydrant',

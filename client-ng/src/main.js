@@ -14,6 +14,7 @@ import OlMapEtude from './components/planification_deci/OlMapEtude.vue'
 import Dashboard from './components/Dashboard'
 import TransfertsAutomatises from './components/TransfertsAutomatises.vue'
 import ModalSaisieVisite from './components/tournee/ModalSaisieVisite.vue'
+import ModalImportCTP from './components/ModalImportCTP.vue'
 
 // import router from './router'
 import BootstrapVue from 'bootstrap-vue'
@@ -224,6 +225,19 @@ const modalSaisieVisite = function(id, data){
   return v
 }
 
+// Module Import fichiers CTP
+const modalImportCTP = function(el) {
+  var v = new Vue({
+    el,
+    bus: new Vue(),
+    components: {
+      ModalImportCTP
+    },
+    template: "<ModalImportCTP/>"
+  })
+  return v
+}
+
 export {
   transfertsAutomatises,
   criseBuildMap,
@@ -238,5 +252,6 @@ export {
   olMap,
   olMapEtude,
   buildDashboard,
-  modalSaisieVisite
+  modalSaisieVisite,
+  modalImportCTP
 }

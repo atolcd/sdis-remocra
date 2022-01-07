@@ -294,6 +294,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             'crHydrantsHydrant #deleteHydrant': {
                 click: this.deleteHydrantFromGrid
             },
+            'crHydrantsHydrant #importCTP': {
+               click: this.showImportCTPDialog
+            },
             // Fenêtre "choix type hydrant"
             'sdischoice[name=choiceTypeHydrant]': {
                 close: this.onCloseChoiceTypeHydrant
@@ -1691,7 +1694,13 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             this.showFicheHydrant(hydrant.get('code'), hydrant.getId(), controle, button);
         }
     },
-
+    showImportCTPDialog: function(button) {
+        var d = document.createElement('div');
+        var id = "show-importCTPDialog-"+(++Ext.AbstractComponent.AUTO_ID);
+        d.id=id;
+        document.body.appendChild(d);
+        var vueImportCTP = window.remocraVue.modalImportCTP(d, {});
+    },
     onLocateHydrantFromGrid: function() {
         this.onLocateHydrant(this.getSelectedHydrant());
     },
