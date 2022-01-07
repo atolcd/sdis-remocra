@@ -212,5 +212,63 @@ services:
         aliases:
           - jobs.sdisxx.fr
 
+  redash-server:
+    container_name: remocra-redash
+    image: client-docker-registry.atolcd.com/atolcd/redash-viz:9.0.5
+    user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
+    command: server
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    healthcheck:
+      test: wget -q --spider http://localhost:5000/remocra/redash || exit 1
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    networks:
+      remocra:
+        aliases:
+            - redash.sdisxx.fr
+
+  redash-scheduler:
+    container_name: remocra-scheduler
+    image: client-docker-registry.atolcd.com/atolcd/redash-viz:9.0.5
+    user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
+    command: scheduler
+    env_file:
+      - .env
+    networks:
+      remocra:
+        aliases:
+          - worker.sdisxx.fr
+
+  redash-worker:
+    container_name: remocra-worker
+    image: client-docker-registry.atolcd.com/atolcd/redash-viz:9.0.5
+    user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
+    command: worker
+    env_file:
+      - .env
+    networks:
+      remocra:
+        aliases:
+          - worker.sdisxx.fr
+
+  redis:
+    container_name: remocra-redis
+    image: redis:latest
+    healthcheck:
+      test: [ "CMD", "redis-cli","ping || exit 1" ]
+      interval: 5m
+      timeout: 30s
+      retries: 3
+    networks:
+      remocra:
+        aliases:
+          - redis.sdisxx.fr
 networks:
   remocra:
