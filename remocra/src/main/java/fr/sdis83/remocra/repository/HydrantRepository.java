@@ -108,6 +108,7 @@ public class HydrantRepository {
     h.setAnneeFabrication(JSONUtil.getInteger(data, "anneeFabrication"));
     h.setGeometrie(geom);
     h.setUtilisateurModification(utilisateurService.getCurrentUtilisateur().getId());
+    h.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme().getId());
     h.setAuteurModificationFlag("USER");
     h.setDateModification(new Instant());
 
@@ -188,6 +189,7 @@ public class HydrantRepository {
     h.setAnneeFabrication(JSONUtil.getInteger(data, "anneeFabrication"));
     h.setGeometrie(geom);
     h.setUtilisateurModification(utilisateurService.getCurrentUtilisateur().getId());
+    h.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme().getId());
     h.setAuteurModificationFlag("USER");
     h.setDateModification(new Instant());
 

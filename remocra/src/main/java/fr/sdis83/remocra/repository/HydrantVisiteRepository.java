@@ -107,6 +107,7 @@ public class HydrantVisiteRepository {
       visite.setAnomalies(JSONUtil.getString(data, "anomalies"));
       visite.setObservations(JSONUtil.getString(data, "observations"));
       visite.setUtilisateurModification(utilisateurService.getCurrentUtilisateur().getId());
+      visite.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme().getId());
       visite.setAuteurModificationFlag("USER");
 
      HydrantVisite newVisite = this.addVisite(visite);
@@ -162,6 +163,7 @@ public class HydrantVisiteRepository {
       .set(HYDRANT_VISITE.ANOMALIES, visite.getAnomalies())
       .set(HYDRANT_VISITE.OBSERVATIONS, visite.getObservations())
       .set(HYDRANT_VISITE.UTILISATEUR_MODIFICATION, visite.getUtilisateurModification())
+      .set(HYDRANT_VISITE.ORGANISME, visite.getOrganisme())
       .set(HYDRANT_VISITE.AUTEUR_MODIFICATION_FLAG, visite.getAuteurModificationFlag())
       .returning(HYDRANT_VISITE.ID).fetchOne().getValue(HYDRANT_VISITE.ID);
 
