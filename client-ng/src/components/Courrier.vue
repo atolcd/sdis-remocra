@@ -450,9 +450,10 @@ export default {
             formData.append("modele", this.choixModele.id)
             _.forEach(document.getElementsByClassName('parametreModele'), item => {
             if (item.getAttribute('inputType') === 'datetimefield') {
+              var identifiant = item.querySelector('input').id;
               var date = item.querySelector('input[type=date]').value;
               var time = item.querySelector('input[type=time]').value;
-              formData.append(item.id, date + ' ' + time);
+              formData.append(identifiant, date + ' ' + time);
             } else if (item.getAttribute('inputType') === 'autocomplete') {
               var autocomplete = this.$refs['search' + item.id][0]
               formData.append(item.getAttribute('id'), autocomplete.selected !== null ? autocomplete.selected.id : autocomplete.searchInput)
