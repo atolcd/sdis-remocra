@@ -62,7 +62,7 @@ public class TourneeService extends AbstractService<Tournee> {
             predicat = cBuilder.like(cBuilder.concat("", cBuilder.upper(cpPath)), itemFilter.getValue().toUpperCase() + "%");
         } else if ("nom".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.get("nom");
-            predicat = cBuilder.like(cBuilder.concat("", cpPath), "%"+ itemFilter.getValue() + "%");
+            predicat = cBuilder.like(cBuilder.concat("", cBuilder.upper(cpPath)), "%"+ itemFilter.getValue().toUpperCase() + "%");
         } else if ("affectation".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.join("affectation").get("id");
             if(isNumeric(itemFilter.getValue())) {
