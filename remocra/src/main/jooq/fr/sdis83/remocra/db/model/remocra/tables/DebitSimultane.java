@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DebitSimultane extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -1686917744;
+	private static final long serialVersionUID = 944772689;
 
 	/**
 	 * The reference instance of <code>remocra.debit_simultane</code>
@@ -61,7 +61,7 @@ public class DebitSimultane extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.debit_simultane.site</code>.
 	 */
-	public final TableField<Record, Long> SITE = createField("site", org.jooq.impl.SQLDataType.BIGINT, this, "");
+	public final TableField<Record, Long> SITE = createField("site", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
 	/**
 	 * The column <code>remocra.debit_simultane.geometrie</code>.

@@ -134,6 +134,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantCritere;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDiametre;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDiametreNatures;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDomaine;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantImportctpErreur;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantIndispoStatut;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMarque;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMateriau;
@@ -304,6 +305,7 @@ public class Keys {
 	public static final Identity<Record, Long> IDENTITY_TYPE_HYDRANT_CRITERE = Identities0.IDENTITY_TYPE_HYDRANT_CRITERE;
 	public static final Identity<Record, Long> IDENTITY_TYPE_HYDRANT_DIAMETRE = Identities0.IDENTITY_TYPE_HYDRANT_DIAMETRE;
 	public static final Identity<Record, Long> IDENTITY_TYPE_HYDRANT_DOMAINE = Identities0.IDENTITY_TYPE_HYDRANT_DOMAINE;
+	public static final Identity<Record, Integer> IDENTITY_TYPE_HYDRANT_IMPORTCTP_ERREUR = Identities0.IDENTITY_TYPE_HYDRANT_IMPORTCTP_ERREUR;
 	public static final Identity<Record, Long> IDENTITY_TYPE_HYDRANT_INDISPO_STATUT = Identities0.IDENTITY_TYPE_HYDRANT_INDISPO_STATUT;
 	public static final Identity<Record, Long> IDENTITY_TYPE_HYDRANT_MARQUE = Identities0.IDENTITY_TYPE_HYDRANT_MARQUE;
 	public static final Identity<Record, Long> IDENTITY_TYPE_HYDRANT_MATERIAU = Identities0.IDENTITY_TYPE_HYDRANT_MATERIAU;
@@ -892,6 +894,7 @@ public class Keys {
 		public static Identity<Record, Long> IDENTITY_TYPE_HYDRANT_CRITERE = createIdentity(TypeHydrantCritere.TYPE_HYDRANT_CRITERE, TypeHydrantCritere.TYPE_HYDRANT_CRITERE.ID);
 		public static Identity<Record, Long> IDENTITY_TYPE_HYDRANT_DIAMETRE = createIdentity(TypeHydrantDiametre.TYPE_HYDRANT_DIAMETRE, TypeHydrantDiametre.TYPE_HYDRANT_DIAMETRE.ID);
 		public static Identity<Record, Long> IDENTITY_TYPE_HYDRANT_DOMAINE = createIdentity(TypeHydrantDomaine.TYPE_HYDRANT_DOMAINE, TypeHydrantDomaine.TYPE_HYDRANT_DOMAINE.ID);
+		public static Identity<Record, Integer> IDENTITY_TYPE_HYDRANT_IMPORTCTP_ERREUR = createIdentity(TypeHydrantImportctpErreur.TYPE_HYDRANT_IMPORTCTP_ERREUR, TypeHydrantImportctpErreur.TYPE_HYDRANT_IMPORTCTP_ERREUR.ID);
 		public static Identity<Record, Long> IDENTITY_TYPE_HYDRANT_INDISPO_STATUT = createIdentity(TypeHydrantIndispoStatut.TYPE_HYDRANT_INDISPO_STATUT, TypeHydrantIndispoStatut.TYPE_HYDRANT_INDISPO_STATUT.ID);
 		public static Identity<Record, Long> IDENTITY_TYPE_HYDRANT_MARQUE = createIdentity(TypeHydrantMarque.TYPE_HYDRANT_MARQUE, TypeHydrantMarque.TYPE_HYDRANT_MARQUE.ID);
 		public static Identity<Record, Long> IDENTITY_TYPE_HYDRANT_MATERIAU = createIdentity(TypeHydrantMateriau.TYPE_HYDRANT_MATERIAU, TypeHydrantMateriau.TYPE_HYDRANT_MATERIAU.ID);
@@ -1194,10 +1197,10 @@ public class Keys {
 		public static final ForeignKey<Record, Record> DDE_API__FK_ORGANISME_DDE_API = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, DdeApi.DDE_API, DdeApi.DDE_API.ORGANISME);
 		public static final ForeignKey<Record, Record> DDE_MDP__FK5A4FDE5FA98055B2 = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.UTILISATEUR_PKEY, DdeMdp.DDE_MDP, DdeMdp.DDE_MDP.UTILISATEUR);
 		public static final ForeignKey<Record, Record> DEBIT_SIMULTANE__FK_SITE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.SITE_PKEY, DebitSimultane.DEBIT_SIMULTANE, DebitSimultane.DEBIT_SIMULTANE.SITE);
-		public static final ForeignKey<Record, Record> DEBIT_SIMULTANE_DOCUMENT__FK_DOCUMENT = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.DOCUMENT_PKEY, DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT, DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT.DOCUMENT, DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT.DOCUMENT);
+		public static final ForeignKey<Record, Record> DEBIT_SIMULTANE_DOCUMENT__FK_DOCUMENT = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.DOCUMENT_PKEY, DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT, DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT.DOCUMENT);
 		public static final ForeignKey<Record, Record> DEBIT_SIMULTANE_DOCUMENT__FK_DEBIT_SIMULTANE_MESURE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.DEBIT_SIMULTANE_MESURE_PKEY, DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT, DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT.DEBIT_SIMULTANE_MESURE);
 		public static final ForeignKey<Record, Record> DEBIT_SIMULTANE_HYDRANT__FK_DEBIT = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.DEBIT_SIMULTANE_MESURE_PKEY, DebitSimultaneHydrant.DEBIT_SIMULTANE_HYDRANT, DebitSimultaneHydrant.DEBIT_SIMULTANE_HYDRANT.DEBIT);
-		public static final ForeignKey<Record, Record> DEBIT_SIMULTANE_HYDRANT__FK_HDYRANT = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.HYDRANT_PKEY, DebitSimultaneHydrant.DEBIT_SIMULTANE_HYDRANT, DebitSimultaneHydrant.DEBIT_SIMULTANE_HYDRANT.HYDRANT, DebitSimultaneHydrant.DEBIT_SIMULTANE_HYDRANT.HYDRANT);
+		public static final ForeignKey<Record, Record> DEBIT_SIMULTANE_HYDRANT__FK_HDYRANT = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.HYDRANT_PKEY, DebitSimultaneHydrant.DEBIT_SIMULTANE_HYDRANT, DebitSimultaneHydrant.DEBIT_SIMULTANE_HYDRANT.HYDRANT);
 		public static final ForeignKey<Record, Record> DEBIT_SIMULTANE_MESURE__FK_DEBIT_SIMULTANE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.DEBIT_SIMULTANE_PKEY, DebitSimultaneMesure.DEBIT_SIMULTANE_MESURE, DebitSimultaneMesure.DEBIT_SIMULTANE_MESURE.DEBIT_SIMULTANE);
 		public static final ForeignKey<Record, Record> DELEGATION_DECI__DELEGATION_DECI_COMMUNE_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_CODE_KEY, DelegationDeci.DELEGATION_DECI, DelegationDeci.DELEGATION_DECI.ORGANISME_COMMUNE);
 		public static final ForeignKey<Record, Record> DELEGATION_DECI__DELEGATION_DECI_EPCI_FK = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_CODE_KEY, DelegationDeci.DELEGATION_DECI, DelegationDeci.DELEGATION_DECI.ORGANISME_EPCI);

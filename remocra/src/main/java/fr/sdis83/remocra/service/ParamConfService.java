@@ -262,6 +262,10 @@ public class ParamConfService {
         return (Boolean) this.getValue(ParamConfParam.HYDRANT_ZOOM_NUMERO, false);
     }
 
+    public Integer getHydrantDeplacementDistWarn() {
+        return (Integer) this.getValue(ParamConfParam.HYDRANT_DEPLACEMENT_DIST_WARN, 10);
+    }
+
     public MethodeNumerotation getHydrantNumerotationMethode() {
         return NumeroUtil.getHydrantNumerotationMethode();
     }

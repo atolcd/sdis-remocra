@@ -158,6 +158,8 @@ public class RemocraController {
         // Autoriser le zoom sur les adresses adresse.data.gouv.fr
         model.addAttribute("hydrant_zoom_numero", paramConfService.getHydrantZoomNumero());
 
+        model.addAttribute("hydrant_deplacement_dist_warn", paramConfService.getHydrantDeplacementDistWarn());
+
         // Définit la complexité du mot de passe
         model.addAttribute("complexite_password", paramConfService.getComplexitePassword());
 

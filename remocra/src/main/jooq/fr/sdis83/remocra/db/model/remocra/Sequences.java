@@ -561,6 +561,11 @@ public class Sequences {
 	public static final Sequence<Long> TYPE_HYDRANT_ID_SEQ = new SequenceImpl<Long>("type_hydrant_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
+	 * The sequence <code>remocra.type_hydrant_importctp_erreur_id_seq</code>
+	 */
+	public static final Sequence<Integer> TYPE_HYDRANT_IMPORTCTP_ERREUR_ID_SEQ = new SequenceImpl<Integer>("type_hydrant_importctp_erreur_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.INTEGER.nullable(false));
+
+	/**
 	 * The sequence <code>remocra.type_hydrant_indispo_statut_id_seq</code>
 	 */
 	public static final Sequence<Long> TYPE_HYDRANT_INDISPO_STATUT_ID_SEQ = new SequenceImpl<Long>("type_hydrant_indispo_statut_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));

@@ -39,7 +39,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CouvertureHydraulique extends SchemaImpl {
 
-	private static final long serialVersionUID = -1775653590;
+	private static final long serialVersionUID = -918934995;
 
 	/**
 	 * The reference instance of <code>couverture_hydraulique</code>
@@ -62,7 +62,7 @@ public class CouvertureHydraulique extends SchemaImpl {
 
 	private final List<Sequence<?>> getSequences0() {
 		return Arrays.<Sequence<?>>asList(
-			Sequences.BATIMENT_ID_SEQ,
+			Sequences.BATIMENTS_ID_SEQ,
 			Sequences.PEI_ID_SEQ,
 			Sequences.RESEAU_ID_SEQ,
 			Sequences.SOMMET_ID_SEQ);

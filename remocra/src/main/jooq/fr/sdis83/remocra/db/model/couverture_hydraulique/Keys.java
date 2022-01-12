@@ -47,12 +47,13 @@ public class Keys {
 	// UNIQUE and PRIMARY KEY definitions
 	// -------------------------------------------------------------------------
 
-	public static final UniqueKey<Record> BATIMENT_PKEY = UniqueKeys0.BATIMENT_PKEY;
+	public static final UniqueKey<Record> BATIMENTS_PKEY = UniqueKeys0.BATIMENTS_PKEY;
 	public static final UniqueKey<Record> COUVERTURE_HYDRAULIQUE_PEI_PKEY = UniqueKeys0.COUVERTURE_HYDRAULIQUE_PEI_PKEY;
 	public static final UniqueKey<Record> COUVERTURE_HYDRAULIQUE_ZONAGE_PKEY = UniqueKeys0.COUVERTURE_HYDRAULIQUE_ZONAGE_PKEY;
 	public static final UniqueKey<Record> PEI_PKEY = UniqueKeys0.PEI_PKEY;
 	public static final UniqueKey<Record> RESEAU_PKEY = UniqueKeys0.RESEAU_PKEY;
 	public static final UniqueKey<Record> SOMMET_PKEY = UniqueKeys0.SOMMET_PKEY;
+	public static final UniqueKey<Record> SOMMET_GEOMETRIE_KEY = UniqueKeys0.SOMMET_GEOMETRIE_KEY;
 
 	// -------------------------------------------------------------------------
 	// FOREIGN KEY definitions
@@ -76,12 +77,13 @@ public class Keys {
 	}
 
 	private static class UniqueKeys0 extends AbstractKeys {
-		public static final UniqueKey<Record> BATIMENT_PKEY = createUniqueKey(Batiments.BATIMENTS, Batiments.BATIMENTS.ID);
+		public static final UniqueKey<Record> BATIMENTS_PKEY = createUniqueKey(Batiments.BATIMENTS, Batiments.BATIMENTS.ID);
 		public static final UniqueKey<Record> COUVERTURE_HYDRAULIQUE_PEI_PKEY = createUniqueKey(CouvertureHydrauliquePei.COUVERTURE_HYDRAULIQUE_PEI, CouvertureHydrauliquePei.COUVERTURE_HYDRAULIQUE_PEI.PEI, CouvertureHydrauliquePei.COUVERTURE_HYDRAULIQUE_PEI.ETUDE, CouvertureHydrauliquePei.COUVERTURE_HYDRAULIQUE_PEI.DISTANCE);
 		public static final UniqueKey<Record> COUVERTURE_HYDRAULIQUE_ZONAGE_PKEY = createUniqueKey(CouvertureHydrauliqueZonage.COUVERTURE_HYDRAULIQUE_ZONAGE, CouvertureHydrauliqueZonage.COUVERTURE_HYDRAULIQUE_ZONAGE.LABEL, CouvertureHydrauliqueZonage.COUVERTURE_HYDRAULIQUE_ZONAGE.ETUDE);
 		public static final UniqueKey<Record> PEI_PKEY = createUniqueKey(Pei.PEI, Pei.PEI.ID);
 		public static final UniqueKey<Record> RESEAU_PKEY = createUniqueKey(Reseau.RESEAU, Reseau.RESEAU.ID);
 		public static final UniqueKey<Record> SOMMET_PKEY = createUniqueKey(Sommet.SOMMET, Sommet.SOMMET.ID);
+		public static final UniqueKey<Record> SOMMET_GEOMETRIE_KEY = createUniqueKey(Sommet.SOMMET, Sommet.SOMMET.GEOMETRIE);
 	}
 
 	private static class ForeignKeys0 extends AbstractKeys {

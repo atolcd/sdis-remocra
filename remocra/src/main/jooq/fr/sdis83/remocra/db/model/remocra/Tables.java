@@ -79,6 +79,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteAnomalie;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteSuite;
 import fr.sdis83.remocra.db.model.remocra.tables.Organisme;
+import fr.sdis83.remocra.db.model.remocra.tables.PId;
 import fr.sdis83.remocra.db.model.remocra.tables.ParamConf;
 import fr.sdis83.remocra.db.model.remocra.tables.Permis;
 import fr.sdis83.remocra.db.model.remocra.tables.PermisDocument;
@@ -134,6 +135,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantCritere;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDiametre;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDiametreNatures;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDomaine;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantImportctpErreur;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantIndispoStatut;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMarque;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMateriau;
@@ -566,6 +568,11 @@ public class Tables {
 	public static final Organisme ORGANISME = fr.sdis83.remocra.db.model.remocra.tables.Organisme.ORGANISME;
 
 	/**
+	 * The table remocra.p_id
+	 */
+	public static final PId P_ID = fr.sdis83.remocra.db.model.remocra.tables.PId.P_ID;
+
+	/**
 	 * The table remocra.param_conf
 	 */
 	public static final ParamConf PARAM_CONF = fr.sdis83.remocra.db.model.remocra.tables.ParamConf.PARAM_CONF;
@@ -839,6 +846,11 @@ public class Tables {
 	 * The table remocra.type_hydrant_domaine
 	 */
 	public static final TypeHydrantDomaine TYPE_HYDRANT_DOMAINE = fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDomaine.TYPE_HYDRANT_DOMAINE;
+
+	/**
+	 * The table remocra.type_hydrant_importctp_erreur
+	 */
+	public static final TypeHydrantImportctpErreur TYPE_HYDRANT_IMPORTCTP_ERREUR = fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantImportctpErreur.TYPE_HYDRANT_IMPORTCTP_ERREUR;
 
 	/**
 	 * Statut de l'indisponibilité

@@ -15,9 +15,7 @@ import fr.sdis83.remocra.db.model.pdi.tables.VueCommuneOldeb;
 import fr.sdis83.remocra.db.model.pdi.tables.VueCommuneOuIntercoOne;
 import fr.sdis83.remocra.db.model.pdi.tables.VueCommunes;
 import fr.sdis83.remocra.db.model.pdi.tables.VueFamillesPromethee;
-import fr.sdis83.remocra.db.model.pdi.tables.VueModeleCourrierFicheTourneeTournee;
 import fr.sdis83.remocra.db.model.pdi.tables.VueModeleCourrierHydrantsNonDispo;
-import fr.sdis83.remocra.db.model.pdi.tables.VueModeleCourrierIndispos;
 import fr.sdis83.remocra.db.model.pdi.tables.VueModeleCourrierInformationTournee;
 import fr.sdis83.remocra.db.model.pdi.tables.VueModeleCourrierRapportTournee;
 import fr.sdis83.remocra.db.model.pdi.tables.VueModeleExport;
@@ -26,7 +24,6 @@ import fr.sdis83.remocra.db.model.pdi.tables.VueOrganismeCis;
 import fr.sdis83.remocra.db.model.pdi.tables.VuePermisEtats;
 import fr.sdis83.remocra.db.model.pdi.tables.VueProfilSdis;
 import fr.sdis83.remocra.db.model.pdi.tables.VueTelechargements;
-import fr.sdis83.remocra.db.model.pdi.tables.VueTournees;
 import fr.sdis83.remocra.db.model.pdi.tables.VueUtilisateurs;
 import fr.sdis83.remocra.db.model.pdi.tables.VueZoneCompetence;
 
@@ -102,19 +99,9 @@ public class Tables {
 	public static final VueFamillesPromethee VUE_FAMILLES_PROMETHEE = fr.sdis83.remocra.db.model.pdi.tables.VueFamillesPromethee.VUE_FAMILLES_PROMETHEE;
 
 	/**
-	 * The table pdi.vue_modele_courrier_fiche_tournee_tournee
-	 */
-	public static final VueModeleCourrierFicheTourneeTournee VUE_MODELE_COURRIER_FICHE_TOURNEE_TOURNEE = fr.sdis83.remocra.db.model.pdi.tables.VueModeleCourrierFicheTourneeTournee.VUE_MODELE_COURRIER_FICHE_TOURNEE_TOURNEE;
-
-	/**
 	 * The table pdi.vue_modele_courrier_hydrants_non_dispo
 	 */
 	public static final VueModeleCourrierHydrantsNonDispo VUE_MODELE_COURRIER_HYDRANTS_NON_DISPO = fr.sdis83.remocra.db.model.pdi.tables.VueModeleCourrierHydrantsNonDispo.VUE_MODELE_COURRIER_HYDRANTS_NON_DISPO;
-
-	/**
-	 * The table pdi.vue_modele_courrier_indispos
-	 */
-	public static final VueModeleCourrierIndispos VUE_MODELE_COURRIER_INDISPOS = fr.sdis83.remocra.db.model.pdi.tables.VueModeleCourrierIndispos.VUE_MODELE_COURRIER_INDISPOS;
 
 	/**
 	 * The table pdi.vue_modele_courrier_information_tournee
@@ -155,11 +142,6 @@ public class Tables {
 	 * The table pdi.vue_telechargements
 	 */
 	public static final VueTelechargements VUE_TELECHARGEMENTS = fr.sdis83.remocra.db.model.pdi.tables.VueTelechargements.VUE_TELECHARGEMENTS;
-
-	/**
-	 * The table pdi.vue_tournees
-	 */
-	public static final VueTournees VUE_TOURNEES = fr.sdis83.remocra.db.model.pdi.tables.VueTournees.VUE_TOURNEES;
 
 	/**
 	 * The table pdi.vue_utilisateurs

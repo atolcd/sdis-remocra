@@ -472,6 +472,10 @@ Méthodes disponibles pour la symbologie des PEI : link:../pei/Symbologie_PEI{ou
 * Autorise l'utilisateur à effectuer des zoom sur des adresses via l'API adresse.data.gouv.fr
 * Par défaut : ```false```
 
+=== HYDRANT_DEPLACEMENT_DIST_WARN ===
+* Distance de déplacement minimale pour laquelle afficher un avertissement lors de l''import de Contrôles Techniques Périodiques
+* Par défaut : ```10```
+
 === NIVEAU_TRACABILITE ===
 * Niveau de traçabilité des points d'eau (valeurs admises : organisme , utilisateur)
 * Par défaut : ```organisme```

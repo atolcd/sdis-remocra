@@ -43,7 +43,7 @@ public class Tables {
 	public static final CouvertureHydrauliquePei COUVERTURE_HYDRAULIQUE_PEI = fr.sdis83.remocra.db.model.couverture_hydraulique.tables.CouvertureHydrauliquePei.COUVERTURE_HYDRAULIQUE_PEI;
 
 	/**
-	 * The table couverture_hydraulique.couverture_hydraulique_zonage
+	 * Couverture hydraulique résultante de la simulation. Il s'agit de la couverture totale issue de toutes les couvertures hydrauliques de la table couverture_hydraulique.couverture_hydraulique_pei
 	 */
 	public static final CouvertureHydrauliqueZonage COUVERTURE_HYDRAULIQUE_ZONAGE = fr.sdis83.remocra.db.model.couverture_hydraulique.tables.CouvertureHydrauliqueZonage.COUVERTURE_HYDRAULIQUE_ZONAGE;
 

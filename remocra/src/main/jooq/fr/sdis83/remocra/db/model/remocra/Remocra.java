@@ -80,6 +80,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteAnomalie;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteSuite;
 import fr.sdis83.remocra.db.model.remocra.tables.Organisme;
+import fr.sdis83.remocra.db.model.remocra.tables.PId;
 import fr.sdis83.remocra.db.model.remocra.tables.ParamConf;
 import fr.sdis83.remocra.db.model.remocra.tables.Permis;
 import fr.sdis83.remocra.db.model.remocra.tables.PermisDocument;
@@ -135,6 +136,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantCritere;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDiametre;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDiametreNatures;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDomaine;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantImportctpErreur;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantIndispoStatut;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMarque;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMateriau;
@@ -199,7 +201,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Remocra extends SchemaImpl {
 
-	private static final long serialVersionUID = -1351958855;
+	private static final long serialVersionUID = 1082291988;
 
 	/**
 	 * The reference instance of <code>remocra</code>
@@ -329,6 +331,7 @@ public class Remocra extends SchemaImpl {
 			Sequences.TYPE_HYDRANT_DIAMETRE_ID_SEQ,
 			Sequences.TYPE_HYDRANT_DOMAINE_ID_SEQ,
 			Sequences.TYPE_HYDRANT_ID_SEQ,
+			Sequences.TYPE_HYDRANT_IMPORTCTP_ERREUR_ID_SEQ,
 			Sequences.TYPE_HYDRANT_INDISPO_STATUT_ID_SEQ,
 			Sequences.TYPE_HYDRANT_MARQUE_ID_SEQ,
 			Sequences.TYPE_HYDRANT_MATERIAU_ID_SEQ,
@@ -452,6 +455,7 @@ public class Remocra extends SchemaImpl {
 			OldebVisiteDocument.OLDEB_VISITE_DOCUMENT,
 			OldebVisiteSuite.OLDEB_VISITE_SUITE,
 			Organisme.ORGANISME,
+			PId.P_ID,
 			ParamConf.PARAM_CONF,
 			Permis.PERMIS,
 			PermisDocument.PERMIS_DOCUMENT,
@@ -507,6 +511,7 @@ public class Remocra extends SchemaImpl {
 			TypeHydrantDiametre.TYPE_HYDRANT_DIAMETRE,
 			TypeHydrantDiametreNatures.TYPE_HYDRANT_DIAMETRE_NATURES,
 			TypeHydrantDomaine.TYPE_HYDRANT_DOMAINE,
+			TypeHydrantImportctpErreur.TYPE_HYDRANT_IMPORTCTP_ERREUR,
 			TypeHydrantIndispoStatut.TYPE_HYDRANT_INDISPO_STATUT,
 			TypeHydrantMarque.TYPE_HYDRANT_MARQUE,
 			TypeHydrantMateriau.TYPE_HYDRANT_MATERIAU,
