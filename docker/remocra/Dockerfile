@@ -26,7 +26,7 @@ RUN sed -i "s/<Connector port=\"8080\"/<Connector URIEncoding=\"utf-8\" relaxedQ
 
 COPY ext/remocra.war /usr/local/tomcat/webapps
 
-RUN cd /usr/local/tomcat/webapps && unzip remocra.war -d remocra
+RUN cd /usr/local/tomcat/webapps && unzip remocra.war -d remocra && rm remocra.war
 
 
 ENV \
