@@ -1,4 +1,4 @@
-FROM tomcat:7.0.96-jdk8-openjdk-slim
+FROM tomcat:7.0.109-jdk8-openjdk-slim
 
 LABEL maintainer="ATOL Conseils & Développements"
 
