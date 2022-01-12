@@ -2,30 +2,52 @@ package fr.sdis83.remocra.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.vividsolutions.jts.geom.Point;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantAnomalie;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantImportctpErreur;
 import fr.sdis83.remocra.domain.remocra.Document;
+import fr.sdis83.remocra.domain.remocra.HydrantVisite;
+import fr.sdis83.remocra.domain.remocra.TypeDroit;
+import fr.sdis83.remocra.exception.ImportCTPException;
+import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.service.HydrantService;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.util.JSONUtil;
-import fr.sdis83.remocra.util.NumeroUtil;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
 import org.joda.time.Instant;
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 
+import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.DOCUMENT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_DOCUMENT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_VISITE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_IMPORTCTP_ERREUR;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_SAISIE;
+import static org.apache.poi.ss.usermodel.Row.MissingCellPolicy.RETURN_BLANK_AS_NULL;
 
 @Configuration
 public class HydrantRepository {
@@ -53,6 +75,9 @@ public class HydrantRepository {
 
   @PersistenceContext
   protected EntityManager entityManager;
+
+  @Autowired
+  private AuthoritiesUtil authUtils;
 
   public HydrantRepository() {
   }
@@ -314,6 +339,277 @@ public class HydrantRepository {
       .selectFrom(HYDRANT)
       .where(HYDRANT.ID.eq(h.getId()))
       .fetchOneInto(Hydrant.class);
+  }
+
+  /**
+   * Lors de l'mport des visites CTP via un fichier .xls ou .xlsx, vérifie la validité des données
+   * @param file Le fichier importé
+   * @return String Le résultat de la vérification au format JSON
+   */
+  public String importCTP(MultipartFile file) {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectNode data = mapper.createObjectNode();
+    ArrayNode arrayResultatVerifications = mapper.createArrayNode();
+
+    // Erreur a retourner en cas de problème avec le fichier
+    ObjectNode erreurFichier = mapper.createObjectNode();
+    erreurFichier.put("numero_ligne", 0);
+    erreurFichier.put("insee", "");
+    erreurFichier.put("numeroInterne", "");
+    erreurFichier.put("dateCtp", "");
+    erreurFichier.put("bilan_style", "ERREUR");
+
+    boolean lecturePossible = true;
+    HSSFWorkbook workbook = null;
+
+    // Gestion erreur fichier illisible
+    try {
+      workbook = new HSSFWorkbook(file.getInputStream());
+    } catch(Exception e) {
+      TypeHydrantImportctpErreur erreur = context.selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
+        .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq("ERR_FICHIER_INNAC"))
+        .fetchOneInto(TypeHydrantImportctpErreur.class);
+      erreurFichier.put("bilan", erreur.getMessage());
+      arrayResultatVerifications.add(erreurFichier);
+      lecturePossible = false;
+    }
+
+    // Gestion erreur feuille n°2 (sur laquelle se trouve les données) n'existe pas
+    HSSFSheet sheet = null;
+    try {
+      if(lecturePossible) {
+        sheet = workbook.getSheetAt(1);
+      }
+    } catch(Exception e) {
+        TypeHydrantImportctpErreur erreur = context.selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
+          .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq("ERR_ONGLET_ABS"))
+          .fetchOneInto(TypeHydrantImportctpErreur.class);
+        erreurFichier.put("bilan", erreur.getMessage());
+        arrayResultatVerifications.add(erreurFichier);
+        lecturePossible = false;
+    }
+
+    // Lecture des valeurs
+    if(lecturePossible) {
+      for(int nbLigne = 4; nbLigne < sheet.getPhysicalNumberOfRows(); nbLigne++) {
+        ObjectNode resultatVerification = null;
+        try {
+          resultatVerification = this.checkLineValidity(sheet.getRow(nbLigne));
+          resultatVerification.put("numero_ligne", nbLigne + 1);
+          arrayResultatVerifications.add(resultatVerification);
+
+        } catch (ImportCTPException e) { // Interception d'une erreur : on arrête les vérifications et on indique la cause
+          resultatVerification = e.getData();
+          TypeHydrantImportctpErreur erreur = context.selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
+            .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq(e.getCodeErreur()))
+            .fetchOneInto(TypeHydrantImportctpErreur.class);
+          resultatVerification.put("bilan", erreur.getMessage());
+          resultatVerification.put("bilan_style", erreur.getType());
+          resultatVerification.put("numero_ligne", nbLigne + 1);
+          resultatVerification.remove("warnings");
+          arrayResultatVerifications.add(resultatVerification);
+        }
+      }
+    }
+    data.set("bilanVerifications", arrayResultatVerifications);
+    return data.toString();
+  }
+
+  /**
+   * Lors de l'import des visites CTP, vérifie la validité d'une ligne donnée
+   * @param row La ligne contenant toutes les cellules requises
+   * @return ObjectNode un object JSON contenant les résultat de la validation pour cette ligne
+   * @throws ImportCTPException En cas de donnée incorrecte, déclenche une exception gérée et traitée par la fonction parente
+   */
+  private ObjectNode checkLineValidity(Row row) throws ImportCTPException {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectNode data = mapper.createObjectNode();
+    ArrayNode arrayWarnings = mapper.createArrayNode();
+    data.put("bilan", "CT Validé");
+    data.put("bilan_style", "OK");
+
+    Integer xls_codeSdis = (int)row.getCell(0, RETURN_BLANK_AS_NULL).getNumericCellValue();
+    String xls_commune = row.getCell(1, RETURN_BLANK_AS_NULL).getStringCellValue();
+    String xls_insee = row.getCell(2, RETURN_BLANK_AS_NULL).getStringCellValue();
+    Integer xls_numeroInterne = (int)row.getCell(3, RETURN_BLANK_AS_NULL).getNumericCellValue();
+
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+    data.put("insee", xls_insee);
+    data.put("numeroInterne", xls_numeroInterne);
+
+    // Vérification si l'hydrant renseigné correspond bien à l'hydrant en base
+    Hydrant h = context.select(HYDRANT.fields())
+      .from(HYDRANT)
+      .join(COMMUNE).on(COMMUNE.ID.eq(HYDRANT.COMMUNE))
+      .where(COMMUNE.INSEE.eq(xls_insee)).and(HYDRANT.NUMERO_INTERNE.eq(xls_numeroInterne))
+      .fetchOneInto(Hydrant.class);
+
+    if(h == null || (h.getId() != xls_codeSdis.longValue())) {
+      throw new ImportCTPException("ERR_MAUVAIS_NUM_PEI", data);
+    }
+
+    // On vérifie si le PEI est bien dans la zone de compétence de l'utilisateur
+    Boolean dansZoneCompetence = context.resultQuery("SELECT ST_CONTAINS(zc.geometrie, h.geometrie) " +
+        "FROM remocra.zone_competence zc " +
+        "JOIN remocra.hydrant h on h.id = {0}" +
+        "WHERE zc.id = {1};",
+      h.getId(),
+      this.utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getId()).fetchOneInto(Boolean.class);
+
+    if(dansZoneCompetence == null || !dansZoneCompetence) {
+      throw new ImportCTPException("ERR_DEHORS_ZC", data);
+    }
+
+    // Si la visite CTP n'est pas renseignée (si tous les champs composant les informations de la visite sont vides)
+    boolean ctpRenseigne = false;
+    for(int i = 9; i < 18; i++) {
+      if(row.getCell(i) != null && row.getCell(i).getCellType() != CellType.BLANK) {
+        ctpRenseigne = true;
+      }
+    }
+    if(!ctpRenseigne) {
+      // On passe par un throw car à ce stade on a déjà toutes les infos que l'on souhaite afficher
+      // On n'a pas besoin de continuer les vérifications
+      throw new ImportCTPException("INFO_IGNORE", data);
+    }
+
+    // Vérifications au niveau de la date
+    if(row.getCell(9) == null || row.getCell(9).getCellType() == CellType.BLANK) {
+      throw new ImportCTPException("ERR_DATE_MANQ", data);
+    }
+
+    Date xls_dateCtp = null;
+    try {
+      xls_dateCtp = row.getCell(9).getDateCellValue();
+    }catch(Exception e) {
+      throw new ImportCTPException("ERR_FORMAT_DATE", data);
+    }
+
+    if(xls_dateCtp.after(new Date())) {
+      throw new ImportCTPException("ERR_DATE_POST", data);
+    }
+
+    Integer nbVisite = context.selectCount()
+        .from(HYDRANT_VISITE)
+          .join(TYPE_HYDRANT_SAISIE).on(HYDRANT_VISITE.TYPE.eq(TYPE_HYDRANT_SAISIE.ID))
+        .where(HYDRANT_VISITE.HYDRANT.eq(h.getId()).and(TYPE_HYDRANT_SAISIE.CODE.eq("CTRL")).and(HYDRANT_VISITE.CTRL_DEBIT_PRESSION)
+          .and(HYDRANT_VISITE.DATE.greaterThan(new Instant(xls_dateCtp)))).fetchOneInto(Integer.class);
+    if(nbVisite > 0) {
+      String str = context.select(TYPE_HYDRANT_IMPORTCTP_ERREUR.MESSAGE)
+        .from(TYPE_HYDRANT_IMPORTCTP_ERREUR)
+        .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq("WARN_DATE_ANTE"))
+        .fetchOneInto(String.class);
+      arrayWarnings.add(str);
+    }
+
+
+    data.put("dateCtp", formatter.format(xls_dateCtp));
+
+    if(row.getCell(10) == null || row.getCell(10).getCellType() == CellType.BLANK) {
+      throw new ImportCTPException("ERR_AGENT1_ABS", data);
+    }
+
+    Integer xls_debit = null;
+    try {
+      if(row.getCell(12) != null && row.getCell(12).getCellType() != CellType.BLANK) { // Si une valeur est renseignée
+        xls_debit = (int) row.getCell(12).getNumericCellValue();
+
+        if(row.getCell(12).getNumericCellValue() % 1 != 0) { // Si on a réalisé une troncature lors de la lecture de la valeur
+          TypeHydrantImportctpErreur info = context.selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
+            .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq("INFO_TRONC_DEBIT"))
+            .fetchOneInto(TypeHydrantImportctpErreur.class);
+          data.put("bilan", info.getMessage());
+          data.put("bilan_style", info.getType());
+        }
+        if (xls_debit < 0) {
+          throw new Exception();
+        }
+      }
+    } catch(Exception e) {
+      throw new ImportCTPException("ERR_FORMAT_DEBIT", data);
+    }
+
+    Double xls_pression = null;
+    try {
+      if(row.getCell(11) != null && row.getCell(11).getCellType() != CellType.BLANK) { // Si une valeur est renseignée
+        xls_pression = row.getCell(11).getNumericCellValue();
+        if (xls_pression < 0) {
+          throw new Exception();
+        }
+      }
+    } catch(Exception e) {
+      throw new ImportCTPException("ERR_FORMAT_PRESS", data);
+    }
+
+    if(xls_pression != null && xls_pression > 20.0) {
+      throw new ImportCTPException("ERR_PRESS_ELEVEE", data);
+    }
+
+    String warningDebitPression = null;
+    if(xls_pression == null && xls_debit == null) {
+      warningDebitPression = "WARN_DEB_PRESS_VIDE";
+    } else if (xls_pression == null) {
+      warningDebitPression = "WARN_PRESS_VIDE";
+    } else if (xls_debit == null) {
+      warningDebitPression = "WARN_DEBIT_VIDE";
+    }
+
+    if(warningDebitPression != null) {
+      String str = context.select(TYPE_HYDRANT_IMPORTCTP_ERREUR.MESSAGE)
+        .from(TYPE_HYDRANT_IMPORTCTP_ERREUR)
+        .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq(warningDebitPression))
+        .fetchOneInto(String.class);
+      arrayWarnings.add(str);
+    }
+
+
+    /* Si l'utilisateur a le droit de déplacer un PEI, on affiche un warning si la distance de déplacement est supérieure
+       a la distance renseignée dans les paramètres de l'application */
+    if(this.authUtils.hasRight(TypeDroit.TypeDroitEnum.HYDRANTS_DEPLACEMENT_C)) {
+      String latitude = null;
+      String longitude = null;
+      try {
+        latitude = row.getCell(5).getStringCellValue();
+        longitude = row.getCell(6).getStringCellValue();
+        if(!latitude.matches("([+-]?\\d+\\.?\\d+)\\s*") || !longitude.matches("([+-]?\\d+\\.?\\d+)\\s*")) {
+          throw new Exception();
+        }
+      } catch(Exception e) {
+        throw new ImportCTPException("ERR_COORD_GPS", data);
+      }
+
+      Integer distance = context.resultQuery("SELECT ST_DISTANCE(ST_SetSRID(ST_MakePoint({0}, {1}),2154), h.geometrie) " +
+          "FROM remocra.hydrant h " +
+          "WHERE h.id = {2};",
+        Double.parseDouble(longitude), Double.parseDouble(latitude), h.getId()).fetchOneInto(Integer.class);
+
+      if(distance > this.paramConfService.getHydrantDeplacementDistWarn()) {
+        String str = context.select(TYPE_HYDRANT_IMPORTCTP_ERREUR.MESSAGE)
+          .from(TYPE_HYDRANT_IMPORTCTP_ERREUR)
+          .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq("WARN_DEPLACEMENT"))
+          .fetchOneInto(String.class);
+        arrayWarnings.add(str);
+      }
+    }
+
+    //Vérifications anomalies
+    for(int i = 13; i < 17; i++) {
+      if(row.getCell(i) != null && row.getCell(i).getCellType() != CellType.BLANK) {
+        String xls_anomalie = row.getCell(i).getStringCellValue();
+        String code = xls_anomalie.substring(xls_anomalie.indexOf('_')+1);
+        TypeHydrantAnomalie anomalie = context.selectFrom(TYPE_HYDRANT_ANOMALIE)
+          .where(TYPE_HYDRANT_ANOMALIE.CODE.upper().eq(code.toUpperCase()))
+          .fetchOneInto(TypeHydrantAnomalie.class);
+        if(anomalie == null) {
+          throw new ImportCTPException("ERR_ANO_INCONNU", data);
+        }
+      }
+    }
+    if(arrayWarnings.size() > 0) {
+      data.set("warnings", arrayWarnings);
+      data.put("bilan_style", "WARNING");
+    }
+    return data;
   }
 
 }

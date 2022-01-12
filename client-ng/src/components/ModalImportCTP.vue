@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'ModalImportCTP',
   data() {
@@ -47,7 +49,16 @@ export default {
       this.handleSubmit()
     },
     handleSubmit() {
-
+      if(this.fileToImport == null) return;
+      var formData = new FormData();
+      formData.append('file', this.fileToImport);
+      axios.post('/remocra/hydrants/importctp', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(response => {
+        var bilanVerifications = JSON.parse(response.data.message);
+      })
     }
   }
 };

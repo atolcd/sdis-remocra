@@ -7,9 +7,11 @@ import java.util.Map;
 
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.domain.remocra.Tournee;
+import fr.sdis83.remocra.repository.HydrantRepository;
 import fr.sdis83.remocra.service.TourneeService;
 import fr.sdis83.remocra.util.ExceptionUtils;
 import fr.sdis83.remocra.util.GeometryUtil;
+import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +40,8 @@ import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import fr.sdis83.remocra.web.serialize.transformer.GeometryTransformer;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 
 @RequestMapping("/hydrants")
@@ -55,6 +59,11 @@ public class HydrantController {
 
     @Autowired
     private UtilisateurService serviceUtilisateur;
+
+    @Autowired
+    private HydrantRepository hydrantRepository;
+
+    private final Logger logger = Logger.getLogger(getClass());
 
     @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/json")
     @PreAuthorize("hasRight('HYDRANTS_R')")
@@ -310,6 +319,15 @@ public class HydrantController {
         }
     }
 
-
-
+    @RequestMapping(value = "/importctp", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
+    public ResponseEntity<java.lang.String> importCtp(MultipartHttpServletRequest request){
+        try {
+            MultipartFile mf = request.getFile("file");
+            String result = this.hydrantRepository.importCTP(mf);
+            return new SuccessErrorExtSerializer(true, result).serialize();
+        } catch (Exception e) {
+            this.logger.error(e.getMessage(), e);
+            return new SuccessErrorExtSerializer(false, "Problème survenu lors de l'import CTP'").serialize();
+        }
+    }
 }
