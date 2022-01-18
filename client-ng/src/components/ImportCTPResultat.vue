@@ -2,7 +2,7 @@
 <div>
   <b-modal id="importCTPResultat" size="lg"  v-bind:title="fullTitle" centered ref="importCTPResultat" @show="resetModal" @hidden="resetModal">
     <div id="tableScrollResCTP">
-      <table class="table table-striped table-sm table-bordered">
+      <table class="table table-sm table-bordered">
         <thead class="thead-light">
           <th scope="col">N°Ligne</th>
           <th scope="col">Code Inssee</th>
@@ -48,6 +48,9 @@
 </template>
 
 <script>
+import _ from 'lodash'
+import axios from 'axios'
+
 export default {
   name: 'ImportCTPResultat',
   data() {
@@ -57,16 +60,12 @@ export default {
        nbCTValidesWarn: null,
        nbCTRejetes: null,
        nbCTRejetesNR: null,
-       fullTitle: null
+       fullTitle: null,
+       dataVisites: []
     }
   },
-  mounted: function() {
-    //
-  },
+
   methods: {
-    resetModal() {
-      //
-    },
     loadData(bilanVerifications, fileName) {
       this.items = bilanVerifications;
       this.fullTitle = "Résultat du contrôle du fichier : " + fileName;
@@ -74,6 +73,7 @@ export default {
       this.nbCTValidesWarn =  this.items.filter(bilanVerif => bilanVerif.bilan_style == "WARNING").length;
       this.nbCTRejetes =  this.items.filter(bilanVerif => bilanVerif.bilan_style == "ERREUR" || bilanVerif.bilan_style == "INFO").length;
       this.nbCTRejetesNR = this.items.filter(bilanVerif => bilanVerif.bilan_style == "INFO").length;
+      this.dataVisites = _.filter(_.map(bilanVerifications, 'dataVisite'), o => o != null);
     },
     exportResultat() {
       var csvContent = "data:text/csv;charset=utf-8,"
@@ -103,7 +103,15 @@ export default {
       return item.bilan;
     },
     importControle() {
-      // TODO
+      var formData = new FormData();
+      formData.append('visites', JSON.stringify(this.dataVisites));
+      axios.post('/remocra/hydrants/importctp', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(() => {
+        this.$bvModal.hide('importCTPResultat');
+      })
     }
   }
 };

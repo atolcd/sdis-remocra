@@ -55,7 +55,7 @@ export default {
       if(this.fileToImport == null) return;
       var formData = new FormData();
       formData.append('file', this.fileToImport);
-      axios.post('/remocra/hydrants/importctp', formData, {
+      axios.post('/remocra/hydrants/importctpverification', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

@@ -1,15 +1,16 @@
 package fr.sdis83.remocra.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.vividsolutions.jts.geom.Point;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantAnomalie;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantImportctpErreur;
 import fr.sdis83.remocra.domain.remocra.Document;
-import fr.sdis83.remocra.domain.remocra.HydrantVisite;
 import fr.sdis83.remocra.domain.remocra.TypeDroit;
 import fr.sdis83.remocra.exception.ImportCTPException;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
@@ -26,6 +27,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.joda.time.Instant;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +37,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
@@ -45,6 +48,8 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_DOCUMENT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_VISITE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE_NATURE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_IMPORTCTP_ERREUR;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_SAISIE;
 import static org.apache.poi.ss.usermodel.Row.MissingCellPolicy.RETURN_BLANK_AS_NULL;
@@ -437,6 +442,9 @@ public class HydrantRepository {
     data.put("insee", xls_insee);
     data.put("numeroInterne", xls_numeroInterne);
 
+    ObjectNode dataVisite = mapper.createObjectNode();
+    SimpleDateFormat formatterDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");
+
     // Vérification si l'hydrant renseigné correspond bien à l'hydrant en base
     Hydrant h = context.select(HYDRANT.fields())
       .from(HYDRANT)
@@ -505,9 +513,13 @@ public class HydrantRepository {
 
     data.put("dateCtp", formatter.format(xls_dateCtp));
 
+    String xls_agent1 = null;
     if(row.getCell(10) == null || row.getCell(10).getCellType() == CellType.BLANK) {
       throw new ImportCTPException("ERR_AGENT1_ABS", data);
+    } else {
+      xls_agent1 = row.getCell(10).getStringCellValue();
     }
+
 
     Integer xls_debit = null;
     try {
@@ -590,9 +602,15 @@ public class HydrantRepository {
           .fetchOneInto(String.class);
         arrayWarnings.add(str);
       }
+
+      dataVisite.put("latitude", latitude);
+      dataVisite.put("longitude", longitude);
     }
 
     //Vérifications anomalies
+    ArrayList<Long> id_anomalies = new ArrayList<Long>();
+
+    // On récupère les identifiants des anomalies inscrites dans le fichier
     for(int i = 13; i < 17; i++) {
       if(row.getCell(i) != null && row.getCell(i).getCellType() != CellType.BLANK) {
         String xls_anomalie = row.getCell(i).getStringCellValue();
@@ -603,8 +621,58 @@ public class HydrantRepository {
         if(anomalie == null) {
           throw new ImportCTPException("ERR_ANO_INCONNU", data);
         }
+        id_anomalies.add(anomalie.getId());
       }
     }
+
+    // On récupère les anomalies de la visite précédente qui ne sont pas possibles pour un contexte CTP
+    HydrantVisite derniereVisite = context
+      .selectFrom(HYDRANT_VISITE)
+      .where(HYDRANT_VISITE.HYDRANT.eq(h.getId())).and(HYDRANT_VISITE.DATE.lessThan(new Instant(xls_dateCtp)))
+      .orderBy(HYDRANT_VISITE.DATE.desc()).limit(1).fetchOneInto(HydrantVisite.class);
+    if(derniereVisite != null && derniereVisite.getAnomalies() != null && derniereVisite.getAnomalies().length() > 0) {
+      String[] strArrayAnomalies = derniereVisite.getAnomalies().replaceAll("\\[", "").replaceAll("]", "").replaceAll(" ", "").split(",");
+      ArrayList<Long> idAnomaliesDerniereVisite = new ArrayList<Long>();
+
+      // Récupération de toutes les anomalies possibles pour ce contexte
+      ArrayList<Long> idAnomaliesCTP = (ArrayList<Long>) context
+        .select(TYPE_HYDRANT_ANOMALIE.ID)
+        .from(TYPE_HYDRANT_ANOMALIE)
+        .join(TYPE_HYDRANT_ANOMALIE_NATURE).on(TYPE_HYDRANT_ANOMALIE_NATURE.ANOMALIE.eq(TYPE_HYDRANT_ANOMALIE.ID))
+        .join(TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES).on(TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES.TYPE_HYDRANT_ANOMALIE_NATURE.eq(TYPE_HYDRANT_ANOMALIE_NATURE.ID))
+        .join(TYPE_HYDRANT_SAISIE).on(TYPE_HYDRANT_SAISIE.ID.eq(TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES.SAISIES))
+        .where(TYPE_HYDRANT_SAISIE.CODE.equalIgnoreCase("CTRL"))
+        .fetchInto(Long.class);
+
+      for(String s : strArrayAnomalies) {
+        Long l = Long.parseLong(s);
+        // Si une anomalie est trouvée et n'existe pas pour le contexte CTP, on la reprends de la visite précédente
+        if(idAnomaliesCTP.indexOf(l) == -1) {
+          id_anomalies.add(l);
+        }
+
+      }
+    }
+
+    ArrayNode arrayAnomalies = mapper.createArrayNode();
+    for(Long i : id_anomalies) {
+      arrayAnomalies.add(i);
+    }
+
+    /**
+     * Ajout des données de la visite à ajouter aux informations JSON
+     * Ces données ont déjà été vérifiées ici, il n'y a pas besoin de dupliquer les vérifications avant l'ajout en base
+     */
+    dataVisite.set("anomalies", arrayAnomalies);
+    dataVisite.put("date", formatterDateTime.format(xls_dateCtp));
+    dataVisite.put("hydrant", h.getId());
+    dataVisite.put("agent1", xls_agent1);
+    dataVisite.put("debit", xls_debit);
+    dataVisite.put("pression", xls_pression);
+    dataVisite.put("observation", row.getCell(18).getStringCellValue());
+
+    data.set("dataVisite", dataVisite);
+
     if(arrayWarnings.size() > 0) {
       data.set("warnings", arrayWarnings);
       data.put("bilan_style", "WARNING");

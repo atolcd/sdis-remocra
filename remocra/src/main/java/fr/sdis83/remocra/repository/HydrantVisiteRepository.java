@@ -3,6 +3,10 @@ package fr.sdis83.remocra.repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantAnomalie;
 import fr.sdis83.remocra.service.UtilisateurService;
@@ -93,7 +97,6 @@ public class HydrantVisiteRepository {
         throw new Exception("Une visite de type "+typeVisite.toUpperCase()+" existe déjà. Veuillez utiliser une visite de type NP, RECO ou CTRL");
       }
 
-
       visite.setHydrant(id);
       visite.setAgent1(JSONUtil.getString(data, "agent1"));
       visite.setAgent2(JSONUtil.getString(data, "agent2"));
@@ -118,6 +121,43 @@ public class HydrantVisiteRepository {
      return newVisite;
     }
     return null;
+  }
+
+  public void addVisiteFromImportCtp(String visitesData) throws IOException {
+    ArrayList<Map<String, Object>> data = objectMapper.readValue(visitesData.toString(), new TypeReference<ArrayList<Map<String, Object>>>() {});
+    Long typeVisite = context
+      .select(TYPE_HYDRANT_SAISIE.ID)
+      .from(TYPE_HYDRANT_SAISIE)
+      .where(TYPE_HYDRANT_SAISIE.CODE.equalIgnoreCase("CTRL"))
+      .fetchOneInto(Long.class);
+
+    for(Map<String, Object> visite : data) {
+      HydrantVisite v = new HydrantVisite();
+      v.setHydrant(JSONUtil.getLong(visite, "hydrant"));
+      v.setDate(JSONUtil.getInstant(visite, "date"));
+      v.setAgent1(JSONUtil.getString(visite, "agent1"));
+      v.setDebit(JSONUtil.getInteger(visite, "debit"));
+      v.setPression(JSONUtil.getDouble(visite, "pression"));
+      v.setObservations(JSONUtil.getString(visite, "observation"));
+      v.setHydrant(JSONUtil.getLong(visite, "hydrant"));
+      v.setType(typeVisite);
+
+      HydrantVisite newVisite = this.addVisite(v);
+
+      // Si données de longitude/latitude fournies, on déplace le PEI
+      Double latitude = JSONUtil.getDouble(visite, "latitude");
+      Double longitude = JSONUtil.getDouble(visite, "longitude");
+      if(latitude != null && longitude != null) {
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 2154);
+        Point p = geometryFactory.createPoint(new Coordinate(longitude, latitude));
+        context.update(HYDRANT)
+          .set(HYDRANT.GEOMETRIE, p)
+          .where(HYDRANT.ID.eq(JSONUtil.getLong(visite, "hydrant")))
+          .execute();
+      }
+
+      this.launchTriggerAnomalies(JSONUtil.getLong(visite,"hydrant"));
+    }
   }
 
   /**

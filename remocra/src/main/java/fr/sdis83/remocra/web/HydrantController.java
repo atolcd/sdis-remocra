@@ -8,6 +8,7 @@ import java.util.Map;
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.domain.remocra.Tournee;
 import fr.sdis83.remocra.repository.HydrantRepository;
+import fr.sdis83.remocra.repository.HydrantVisiteRepository;
 import fr.sdis83.remocra.service.TourneeService;
 import fr.sdis83.remocra.util.ExceptionUtils;
 import fr.sdis83.remocra.util.GeometryUtil;
@@ -62,6 +63,9 @@ public class HydrantController {
 
     @Autowired
     private HydrantRepository hydrantRepository;
+
+    @Autowired
+    private HydrantVisiteRepository hydrantVisiteRepository;
 
     private final Logger logger = Logger.getLogger(getClass());
 
@@ -319,12 +323,24 @@ public class HydrantController {
         }
     }
 
-    @RequestMapping(value = "/importctp", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
-    public ResponseEntity<java.lang.String> importCtp(MultipartHttpServletRequest request){
+    @RequestMapping(value = "/importctpverification", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
+    public ResponseEntity<java.lang.String> importCtpVerification(MultipartHttpServletRequest request){
         try {
             MultipartFile mf = request.getFile("file");
             String result = this.hydrantRepository.importCTP(mf);
             return new SuccessErrorExtSerializer(true, result).serialize();
+        } catch (Exception e) {
+            this.logger.error(e.getMessage(), e);
+            return new SuccessErrorExtSerializer(false, "Problème survenu lors de la verification de l'import CTP'").serialize();
+        }
+    }
+
+    @RequestMapping(value = "/importctp", method = RequestMethod.POST, headers = "Accept=application/json")
+    public ResponseEntity<java.lang.String> importCtp(MultipartHttpServletRequest request){
+        try {
+            String json = request.getParameter("visites");
+            this.hydrantVisiteRepository.addVisiteFromImportCtp(json);
+            return new SuccessErrorExtSerializer(true, "").serialize();
         } catch (Exception e) {
             this.logger.error(e.getMessage(), e);
             return new SuccessErrorExtSerializer(false, "Problème survenu lors de l'import CTP'").serialize();
