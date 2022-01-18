@@ -53,7 +53,7 @@ SELECT CAST(xmlelement(name "data",
       hp.debit_renforce,
       h.dispo_terrestre,
       th.code AS nature,
-      hp.diametre,
+      thd.nom AS diametre,
       h.lieu_dit,
       eind.date_indispo
     FROM
@@ -92,7 +92,7 @@ SELECT CAST(xmlelement(name "data",
       JOIN remocra.type_organisme typeO on typeO.id=o.type_organisme
       LEFT JOIN remocra.tournee t on t.affectation=o.id
       LEFT JOIN remocra.hydrant_tournees ht on ht.tournees=t.id
-    WHERE typeO.code = ''CENTRE''
+    WHERE typeO.code = ''CASERNE''
       AND ht.hydrant=${HYDRANT_ID}
     ORDER BY o.nom) as c) as cstc,
   (SELECT
@@ -123,7 +123,7 @@ SELECT CAST(xmlelement(name "data",
        hit.motif
      FROM remocra.hydrant_indispo_temporaire hit
      join remocra.hydrant_indispo_temporaire_hydrant hith on (hit.id = hith.indisponibilite)
-     where hit.date_debut < now() and (hit.date_fin > now() or hit.date_fin is not null)
+     where hit.date_debut < now() and (hit.date_fin > now() or hit.date_fin is null)
      AND hith.hydrant=${HYDRANT_ID}
     ) as it
   ) as indispoTemp;');
@@ -182,7 +182,6 @@ SELECT CAST(xmlelement(name "data",
         WHEN thn.code = ''CI_FIXE''  AND ((NOT hp.illimitee OR hp.illimitee IS NULL) AND hp.capacite IS NOT NULL AND CAST(NULLIF(TRIM(hp.capacite), '''') AS Integer) IS NOT NULL AND CAST(NULLIF(TRIM(hp.capacite), '''') AS Integer) > -1 ) then hp.capacite|| ''m3''
         ELSE NULL
       END as capacite,
-
       (SELECT COUNT(ha)
         FROM remocra.hydrant h
         JOIN remocra.hydrant_pena hp on hp.id=h.id
@@ -225,7 +224,7 @@ SELECT CAST(xmlelement(name "data",
       JOIN remocra.type_organisme typeO on typeO.id=o.type_organisme
       LEFT JOIN remocra.tournee t on t.affectation=o.id
       LEFT JOIN remocra.hydrant_tournees ht on ht.tournees=t.id
-    WHERE typeO.code = ''CENTRE''
+    WHERE typeO.code = ''CASERNE''
       AND ht.hydrant=${HYDRANT_ID}
     ORDER BY o.nom) as c) as cstc,
   (SELECT
@@ -256,7 +255,7 @@ SELECT CAST(xmlelement(name "data",
        hit.motif
      from remocra.hydrant_indispo_temporaire hit
      join remocra.hydrant_indispo_temporaire_hydrant hith on (hit.id = hith.indisponibilite)
-     where hit.date_debut < now() and (hit.date_fin > now() or hit.date_fin is not null)
+     where hit.date_debut < now() and (hit.date_fin > now() or hit.date_fin is null)
      AND hith.hydrant=${HYDRANT_ID}
     ) as it
   ) as indispoTemp;');
