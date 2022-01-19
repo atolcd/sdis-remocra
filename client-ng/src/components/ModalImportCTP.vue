@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalImportCTP" title="Import fichier CTP" centered ref="modalImportCTP" @show="resetModal" @hidden="resetModal">
+  <b-modal id="modalImportCTP" title="Import fichier CTP" centered ref="modalImportCTP">
     <form ref="formImportCTP">
        <b-form-group
        id="fieldset-horizontal"
@@ -24,14 +24,19 @@
       <b-button size="sm" type="submit" variant="primary" @click="handleOk" :disabled="!fileToImport">Valider</b-button>
     </template>
   </b-modal>
+  <ImportCTPResultat id="importCTPResultat" ref="importCTPResultat"> </ImportCTPResultat>
 </div>
 </template>
 
 <script>
 import axios from 'axios'
+import ImportCTPResultat from './ImportCTPResultat.vue'
 
 export default {
   name: 'ModalImportCTP',
+  components : {
+    ImportCTPResultat
+  },
   data() {
     return {
        fileToImport: null,
@@ -41,14 +46,12 @@ export default {
     this.$refs.modalImportCTP.show();
   },
   methods: {
-    resetModal() {
-      this.$refs.formImportCTP.reset();
-    },
     handleOk(bvModalEvt) {
-      bvModalEvt.preventDefault()
-      this.handleSubmit()
+      bvModalEvt.preventDefault();
+      this.handleSubmit();
     },
     handleSubmit() {
+      this.$refs.modalImportCTP.hide();
       if(this.fileToImport == null) return;
       var formData = new FormData();
       formData.append('file', this.fileToImport);
@@ -57,7 +60,9 @@ export default {
           'Content-Type': 'multipart/form-data'
         }
       }).then(response => {
-        var bilanVerifications = JSON.parse(response.data.message);
+        var data = JSON.parse(response.data.message);
+        this.$refs.importCTPResultat.loadData(data.bilanVerifications, this.fileToImport.name);
+        this.$bvModal.show("importCTPResultat");
       })
     }
   }
