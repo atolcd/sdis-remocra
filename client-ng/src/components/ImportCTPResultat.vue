@@ -76,7 +76,31 @@ export default {
       this.nbCTRejetesNR = this.items.filter(bilanVerif => bilanVerif.bilan_style == "INFO").length;
     },
     exportResultat() {
-      // TODO
+      var csvContent = "data:text/csv;charset=utf-8,"
+      csvContent+= "N°Ligne;Code Insee;N° du PEI;Date du CT;Bilan du contrôle\n";
+      var rows = [];
+      _.forEach(this.items, item => {
+        var row = [item.numero_ligne, item.insee, item.numeroInterne, item.dateCtp ? item.dateCtp : "", this.getBilan(item)];
+        rows.push(row);
+      });
+      // transforme les données en CSV
+      rows.forEach(function (row) {
+        row.forEach(function (v) {
+          csvContent += '"' + (new String(v).replace(/"/g, '""')) + '";';
+          });
+        csvContent += "\n";
+      });
+      const data = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", data);
+      link.setAttribute("download", "exportResultatControle.csv");
+      link.click();
+    },
+    getBilan(item) {
+      if(item.warnings) {
+        return item.warnings.join('\n');
+      }
+      return item.bilan;
     },
     importControle() {
       // TODO
@@ -113,5 +137,4 @@ export default {
 .OK {
   background-color: #5cb85c;
 }
-
 </style>
