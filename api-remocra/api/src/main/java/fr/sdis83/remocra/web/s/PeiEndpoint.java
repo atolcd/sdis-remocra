@@ -111,7 +111,7 @@ public class PeiEndpoint {
     @Operation(summary = "Liste des PEI ayant subit une modification( ajout, modification ou suppression) postérieure à la date passée en paramètre", tags = {"DECI - Points d'Eau Incendie"})
     @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
     public Response diff(
-      final @Parameter(description = "Date à partir de laquelle retourner les résultats, format YYYY-MM-DD hh:mm", required = true) @QueryParam("date") String date
+      final @Parameter(description = "Date à partir de laquelle retourner les résultats, format YYYY-MM-DD hh:mm:ss", required = true) @QueryParam("date") String date
     ) {
       try {
         return Response.ok(peiUseCase.diff(date), MediaType.APPLICATION_JSON).build();
