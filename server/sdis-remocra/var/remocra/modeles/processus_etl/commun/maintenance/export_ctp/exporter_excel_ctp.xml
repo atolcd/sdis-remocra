@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modele>
+	<categorie>EXPORT_EXCEL_CTP</categorie>
+	<code>EXPORT_EXCEL_CTP</code>
+	<libelle>Exporter le fichier Excel de CTP</libelle>
+	<description>Exporte le fichier Excel pour renseigner les résultats d'un CTP</description>
+	<fichier>exporter_excel_ctp.kjb</fichier>
+	<priorite>3</priorite>
+	<messageSucces>
+		<objet>REMOCRA : Fichier Excel pour le Contrôle technique</objet>
+		<corps><![CDATA[
+		<p>Bonjour [UTILISATEUR_PRENOM] [UTILISATEUR_NOM],</p>
+		<p>Vous trouverez <a href="[DOCUMENT_URL]">ici</a> le fichier Excel à remplir pour importer le contrôle technique périodique de votre territoire.</p>
+		]]>		</corps>
+	</messageSucces>
+	<messageEchec>
+		<objet>REMOCRA : Echec de l'import des données d'étude</objet>
+		<corps><![CDATA[
+		<p>Bonjour [UTILISATEUR_PRENOM] [UTILISATEUR_NOM],</p>
+		<p>L'export du fichier Excel n'a pas pu être réalisé.<br/>Vous pouvez tenter un nouvel export et contacter le SDIS en cas de nouvel échec</p>
+		]]>		</corps>
+	</messageEchec>
+	<parametres>
+		<parametre>
+			<nom>ORGANISME_ID</nom>
+			<typeValeur>integer</typeValeur>
+			<obligatoire>true</obligatoire>
+			<sourceSQL champValeur = "id" champLibelle = "nom">
+				<![CDATA[SELECT id, nom FROM remocra.organisme ORDER BY nom]]>
+			</sourceSQL>
+			<formulaire etiquette="Organisme de l'utilisateur" typeControle="combo"/>
+		</parametre>
+		<parametre>
+			<nom>COMMUNE_ID</nom>
+			<typeValeur>integer</typeValeur>
+			<obligatoire>true</obligatoire>
+			<sourceSQL champValeur = "id" champLibelle = "nom">
+				<![CDATA[SELECT -1 AS id, 'Toutes' AS nom, NULL AS tricol
+				UNION
+				SELECT id, nom, nom FROM remocra.commune
+				ORDER BY 3 NULLS FIRST]]>
+			</sourceSQL>
+			<formulaire etiquette="Commune" typeControle="combo"/>
+		</parametre>
+		<parametre>
+			<nom>FILTRE</nom>
+			<typeValeur>character varying</typeValeur>
+			<obligatoire>false</obligatoire>
+			<formulaire etiquette="Filtre" typeControle="textfield"/>
+		</parametre>
+	</parametres>
+	<profils tousProfils="true"/>
+	<planification/>
+</modele>
