@@ -309,13 +309,13 @@
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>generer_nom_fichier.ktr</name>
+      <name>traiter_params.ktr</name>
       <description/>
       <type>TRANS</type>
       <attributes/>
       <specification_method>filename</specification_method>
       <trans_object_id/>
-      <filename>${Internal.Entry.Current.Directory}/generer_nom_fichier.ktr</filename>
+      <filename>${Internal.Entry.Current.Directory}/traiter_params.ktr</filename>
       <transname/>
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -343,7 +343,64 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>288</xloc>
+      <xloc>352</xloc>
+      <yloc>192</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>Suppression fichier</name>
+      <description/>
+      <type>DELETE_FILE</type>
+      <attributes/>
+      <filename>${PDI_CHEMIN_TMP}/${PROCESSUS_CODE}/${FILENAME}.xlsx</filename>
+      <fail_if_file_not_exists>N</fail_if_file_not_exists>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>512</xloc>
+      <yloc>192</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>Déplacement de fichiers</name>
+      <description/>
+      <type>MOVE_FILES</type>
+      <attributes/>
+      <move_empty_folders>N</move_empty_folders>
+      <arg_from_previous>N</arg_from_previous>
+      <include_subfolders>N</include_subfolders>
+      <add_result_filesname>N</add_result_filesname>
+      <destination_is_a_file>Y</destination_is_a_file>
+      <create_destination_folder>N</create_destination_folder>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <SpecifyFormat>N</SpecifyFormat>
+      <date_time_format/>
+      <nr_errors_less_than>10</nr_errors_less_than>
+      <success_condition>success_if_no_errors</success_condition>
+      <AddDateBeforeExtension>N</AddDateBeforeExtension>
+      <DoNotKeepFolderStructure>N</DoNotKeepFolderStructure>
+      <iffileexists>do_nothing</iffileexists>
+      <destinationFolder/>
+      <ifmovedfileexists>do_nothing</ifmovedfileexists>
+      <moved_date_time_format/>
+      <create_move_to_folder>N</create_move_to_folder>
+      <add_moved_date>N</add_moved_date>
+      <add_moved_time>N</add_moved_time>
+      <SpecifyMoveFormat>N</SpecifyMoveFormat>
+      <AddMovedDateBeforeExtension>N</AddMovedDateBeforeExtension>
+      <simulate>N</simulate>
+      <fields>
+        <field>
+          <source_filefolder>${PDI_CHEMIN_TMP}/${PROCESSUS_CODE}/new_${FILENAME}.xlsx</source_filefolder>
+          <destination_filefolder>${PDI_CHEMIN_TMP}/${PROCESSUS_CODE}/${FILENAME}.xlsx</destination_filefolder>
+          <wildcard/>
+        </field>
+      </fields>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>672</xloc>
       <yloc>192</yloc>
       <attributes_kjc/>
     </entry>
@@ -351,12 +408,30 @@
   <hops>
     <hop>
       <from>Start</from>
-      <to>generer_nom_fichier.ktr</to>
+      <to>traiter_params.ktr</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
       <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>traiter_params.ktr</from>
+      <to>Suppression fichier</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Suppression fichier</from>
+      <to>Déplacement de fichiers</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
     </hop>
   </hops>
   <notepads>

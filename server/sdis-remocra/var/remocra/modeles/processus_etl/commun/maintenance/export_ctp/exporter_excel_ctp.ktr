@@ -430,7 +430,7 @@
     <created_date>2022/01/17 10:30:39.290</created_date>
     <modified_user>-</modified_user>
     <modified_date>2022/01/17 10:30:39.290</modified_date>
-    <key_for_session_key/>
+    <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
@@ -492,6 +492,21 @@
       <to>Alimentation fichier Excel (xlsx)</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>Alimentation fichier Excel (xlsx)</from>
+      <to>Identification dernière ligne</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Identification dernière ligne</from>
+      <to>Filtrage lignes</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Filtrage lignes</from>
+      <to>mise_a_jour_anomalies.ktr</to>
+      <enabled>Y</enabled>
+    </hop>
   </order>
   <step>
     <name>Alimentation fichier Excel (xlsx)</name>
@@ -519,7 +534,7 @@
     <add_to_result_filenames>Y</add_to_result_filenames>
     <file>
       <name>${PDI_CHEMIN_TMP}/${PROCESSUS_CODE}/${FILENAME}</name>
-      <extention>xls</extention>
+      <extention>xlsx</extention>
       <do_not_open_newfile_init>N</do_not_open_newfile_init>
       <split>N</split>
       <add_date>N</add_date>
@@ -539,7 +554,7 @@
     <template>
       <enabled>Y</enabled>
       <sheet_enabled>N</sheet_enabled>
-      <filename>${PDI_CHEMIN_MODELES}/xls/template.xls</filename>
+      <filename>${PDI_CHEMIN_MODELES}/xls/sdis/${PDI_CODE_SDIS}/template.xlsx</filename>
       <sheetname/>
       <hidden>N</hidden>
     </template>
@@ -662,7 +677,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>512</xloc>
+      <xloc>416</xloc>
       <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
@@ -689,6 +704,7 @@
 	thnd.nom AS "Statut PEI",
 	trim(BOTH FROM concat(thn.nom, ' ', thd.nom)) AS "Type"
 FROM remocra.hydrant h
+	JOIN remocra.hydrant_pibi hp ON hp.id = h.id
 	JOIN remocra.commune c ON c.id = h.commune
 	JOIN remocra.type_hydrant_nature_deci thnd ON thnd.id = h.nature_deci
 	JOIN remocra.type_hydrant_nature thn ON thn.id = h.nature
@@ -696,7 +712,7 @@ FROM remocra.hydrant h
 	LEFT JOIN remocra.zone_competence zc ON zc.id = o.zone_competence
 	LEFT JOIN remocra.hydrant_pibi hpi ON hpi.id = h.id
 	LEFT JOIN remocra.type_hydrant_diametre thd ON thd.id = hpi.diametre
-WHERE (c.id = ${COMMUNE_ID} OR -1 = ${COMMUNE_ID})
+WHERE (c.id = ${idCommune} OR -1 = ${idCommune})
 	AND h.geometrie @ zc.geometrie
 	AND St_Contains(zc.geometrie, h.geometrie)
 ORDER BY c.nom, h.numero_interne </sql>
@@ -924,7 +940,132 @@ ORDER BY c.nom, h.numero_interne </sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>240</xloc>
+      <xloc>144</xloc>
+      <yloc>144</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Filtrage lignes</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <send_true_to/>
+    <send_false_to/>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>result</leftvalue>
+        <function>=</function>
+        <rightvalue/>
+        <value>
+          <name>constant</name>
+          <type>Boolean</type>
+          <text>Y</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask/>
+        </value>
+      </condition>
+    </compare>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>832</xloc>
+      <yloc>144</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Identification dernière ligne</name>
+    <type>DetectLastRow</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <resultfieldname>result</resultfieldname>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>640</xloc>
+      <yloc>144</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>mise_a_jour_anomalies.ktr</name>
+    <type>TransExecutor</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <specification_method>filename</specification_method>
+    <trans_object_id/>
+    <trans_name/>
+    <filename>${Internal.Entry.Current.Directory}/mise_a_jour_anomalies.ktr</filename>
+    <directory_path/>
+    <group_size>1</group_size>
+    <group_field/>
+    <group_time/>
+    <parameters>
+      <inherit_all_vars>Y</inherit_all_vars>
+    </parameters>
+    <execution_result_target_step/>
+    <execution_time_field>ExecutionTime</execution_time_field>
+    <execution_result_field>ExecutionResult</execution_result_field>
+    <execution_errors_field>ExecutionNrErrors</execution_errors_field>
+    <execution_lines_read_field>ExecutionLinesRead</execution_lines_read_field>
+    <execution_lines_written_field>ExecutionLinesWritten</execution_lines_written_field>
+    <execution_lines_input_field>ExecutionLinesInput</execution_lines_input_field>
+    <execution_lines_output_field>ExecutionLinesOutput</execution_lines_output_field>
+    <execution_lines_rejected_field>ExecutionLinesRejected</execution_lines_rejected_field>
+    <execution_lines_updated_field>ExecutionLinesUpdated</execution_lines_updated_field>
+    <execution_lines_deleted_field>ExecutionLinesDeleted</execution_lines_deleted_field>
+    <execution_files_retrieved_field>ExecutionFilesRetrieved</execution_files_retrieved_field>
+    <execution_exit_status_field>ExecutionExitStatus</execution_exit_status_field>
+    <execution_log_text_field>ExecutionLogText</execution_log_text_field>
+    <execution_log_channelid_field>ExecutionLogChannelId</execution_log_channelid_field>
+    <result_rows_target_step/>
+    <result_files_target_step/>
+    <result_files_file_name_field>FileName</result_files_file_name_field>
+    <executors_output_step/>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1040</xloc>
       <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>generer_nom_fichier</name>
+    <name>mise_a_jour_anomalies</name>
     <description/>
     <extended_description/>
     <trans_version/>
@@ -9,61 +9,6 @@
     <trans_status>0</trans_status>
     <directory>/</directory>
     <parameters>
-      <parameter>
-        <name>adresse</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>dateContr</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>dateReco</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>dispoHbe</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>dispoTerrestre</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>idCommune</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>natureNom</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>nomNatureDeci</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>nomTournee</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>numero</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>numeroInterne</name>
-        <default_value/>
-        <description/>
-      </parameter>
     </parameters>
     <log>
       <trans-log-table>
@@ -483,9 +428,9 @@
     <clusterschemas>
     </clusterschemas>
     <created_user>-</created_user>
-    <created_date>2022/01/17 14:14:07.848</created_date>
+    <created_date>2022/03/10 09:51:11.592</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2022/01/17 14:14:07.848</modified_date>
+    <modified_date>2022/03/10 09:51:11.592</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
@@ -544,44 +489,34 @@
   </connection>
   <order>
     <hop>
-      <from>date</from>
-      <to>formatage date</to>
+      <from>Extraction des anomalies</from>
+      <to>Alimentation fichier Excel (xlsx)</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>nom</from>
-      <to>Produit cartésien</to>
+      <from>Alimentation fichier Excel (xlsx)</from>
+      <to>Ajout séquence</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Produit cartésien</from>
-      <to>nom du fichier</to>
+      <from>Ajout séquence</from>
+      <to>Identification dernière ligne</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>formatage date</from>
-      <to>date en string</to>
+      <from>Identification dernière ligne</from>
+      <to>Filtrage lignes</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>date en string</from>
-      <to>Produit cartésien</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>nom du fichier</from>
-      <to>exporter_excel_ctp.ktr</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>nom du fichier</from>
-      <to>Création variables</to>
+      <from>Filtrage lignes</from>
+      <to>mise_a_jour_plage_ano.ktr</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <step>
-    <name>Produit cartésien</name>
-    <type>JoinRows</type>
+    <name>Ajout séquence</name>
+    <type>Sequence</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -590,18 +525,16 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <cache_size>500</cache_size>
-    <main/>
-    <compare>
-      <condition>
-        <negated>N</negated>
-        <leftvalue/>
-        <function>=</function>
-        <rightvalue/>
-      </condition>
-    </compare>
+    <valuename>nb_ano</valuename>
+    <use_database>N</use_database>
+    <connection>Remocra</connection>
+    <schema/>
+    <seqname>SEQ_</seqname>
+    <use_counter>Y</use_counter>
+    <counter_name/>
+    <start_at>1</start_at>
+    <increment_by>1</increment_by>
+    <max_value>999999999</max_value>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -611,14 +544,14 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>656</xloc>
-      <yloc>240</yloc>
+      <xloc>784</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>date</name>
-    <type>SystemInfo</type>
+    <name>Alimentation fichier Excel (xlsx)</name>
+    <type>TypeExitExcelWriterStep</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -627,10 +560,69 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
+    <header>N</header>
+    <footer>N</footer>
+    <makeSheetActive>N</makeSheetActive>
+    <rowWritingMethod>overwrite</rowWritingMethod>
+    <startingCell>A2</startingCell>
+    <appendOmitHeader>N</appendOmitHeader>
+    <appendOffset>0</appendOffset>
+    <appendEmpty>0</appendEmpty>
+    <rowWritingMethod>overwrite</rowWritingMethod>
+    <forceFormulaRecalculation>N</forceFormulaRecalculation>
+    <leaveExistingStylesUnchanged>N</leaveExistingStylesUnchanged>
+    <appendLines>N</appendLines>
+    <add_to_result_filenames>Y</add_to_result_filenames>
+    <file>
+      <name>${PDI_CHEMIN_TMP}/${PROCESSUS_CODE}/${FILENAME}</name>
+      <extention>xlsx</extention>
+      <do_not_open_newfile_init>N</do_not_open_newfile_init>
+      <split>N</split>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <SpecifyFormat>N</SpecifyFormat>
+      <date_time_format/>
+      <sheetname>anomalies</sheetname>
+      <autosizecolums>N</autosizecolums>
+      <stream_data>N</stream_data>
+      <protect_sheet>N</protect_sheet>
+      <password>Encrypted </password>
+      <protected_by/>
+      <splitevery>0</splitevery>
+      <if_file_exists>reuse</if_file_exists>
+      <if_sheet_exists>reuse</if_sheet_exists>
+    </file>
+    <template>
+      <enabled>N</enabled>
+      <sheet_enabled>N</sheet_enabled>
+      <filename/>
+      <sheetname/>
+      <hidden>N</hidden>
+    </template>
     <fields>
       <field>
-        <name>date</name>
-        <type>system date (fixed)</type>
+        <name>code</name>
+        <type>String</type>
+        <format/>
+        <title/>
+        <titleStyleCell/>
+        <styleCell/>
+        <commentField/>
+        <commentAuthorField/>
+        <formula>N</formula>
+        <hyperlinkField/>
+      </field>
+      <field>
+        <name>nom</name>
+        <type>String</type>
+        <format/>
+        <title/>
+        <titleStyleCell/>
+        <styleCell/>
+        <commentField/>
+        <commentAuthorField/>
+        <formula>N</formula>
+        <hyperlinkField/>
       </field>
     </fields>
     <attributes/>
@@ -642,14 +634,14 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>128</xloc>
-      <yloc>240</yloc>
+      <xloc>544</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>date en string</name>
-    <type>SelectValues</type>
+    <name>Extraction des anomalies</name>
+    <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -658,26 +650,68 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <fields>
-      <select_unspecified>N</select_unspecified>
-      <meta>
-        <name>date</name>
-        <rename>date</rename>
+    <connection>Remocra</connection>
+    <sql>SELECT DISTINCT tha.code, tha.nom
+FROM remocra.type_hydrant_anomalie tha
+	JOIN remocra.type_hydrant_anomalie_nature than ON than.anomalie = tha.id
+	JOIN remocra.type_hydrant_anomalie_nature_saisies thans ON thans.type_hydrant_anomalie_nature = than.id
+	JOIN remocra.type_hydrant_saisie ths ON ths.id = thans.saisies
+		AND ths.code = 'CTRL'
+WHERE tha.critere IS NOT NULL</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+    <cached_row_meta_active>N</cached_row_meta_active>
+    <row-meta>
+      <value-meta>
         <type>String</type>
-        <length>-2</length>
-        <precision>-2</precision>
-        <conversion_mask/>
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale/>
-        <date_format_timezone/>
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding/>
-        <decimal_symbol/>
-        <grouping_symbol/>
+        <storagetype>normal</storagetype>
+        <name>code</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>Extraction des anomalies</origin>
+        <comments>code</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
         <currency_symbol/>
-        <storage_type/>
-      </meta>
-    </fields>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>nom</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>Extraction des anomalies</origin>
+        <comments>nom</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+    </row-meta>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -687,13 +721,83 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>448</xloc>
-      <yloc>240</yloc>
+      <xloc>272</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>exporter_excel_ctp.ktr</name>
+    <name>Filtrage lignes</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <send_true_to/>
+    <send_false_to/>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>result</leftvalue>
+        <function>=</function>
+        <rightvalue/>
+        <value>
+          <name>constant</name>
+          <type>Boolean</type>
+          <text>Y</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask/>
+        </value>
+      </condition>
+    </compare>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>944</xloc>
+      <yloc>304</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Identification dernière ligne</name>
+    <type>DetectLastRow</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <resultfieldname>result</resultfieldname>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>944</xloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>mise_a_jour_plage_ano.ktr</name>
     <type>TransExecutor</type>
     <description/>
     <distribute>Y</distribute>
@@ -706,15 +810,15 @@
     <specification_method>filename</specification_method>
     <trans_object_id/>
     <trans_name/>
-    <filename>${Internal.Entry.Current.Directory}/exporter_excel_ctp.ktr</filename>
+    <filename>${Internal.Entry.Current.Directory}/mise_a_jour_plage_ano.ktr</filename>
     <directory_path/>
     <group_size>1</group_size>
     <group_field/>
     <group_time/>
     <parameters>
       <variablemapping>
-        <variable>FILENAME</variable>
-        <field>nom_fichier</field>
+        <variable>NB_ANO</variable>
+        <field>nb_ano</field>
         <input/>
       </variablemapping>
       <inherit_all_vars>Y</inherit_all_vars>
@@ -747,179 +851,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1024</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>formatage date</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <select_unspecified>N</select_unspecified>
-      <meta>
-        <name>date</name>
-        <rename>date</rename>
-        <type>Date</type>
-        <length>-2</length>
-        <precision>-2</precision>
-        <conversion_mask>yyyy-MM-dd</conversion_mask>
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale/>
-        <date_format_timezone/>
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding/>
-        <decimal_symbol/>
-        <grouping_symbol/>
-        <currency_symbol/>
-        <storage_type/>
-      </meta>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>256</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>nom</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>Remocra</connection>
-    <sql>SELECT DISTINCT CASE WHEN ${idCommune} &lt;&gt; -1 THEN c.nom ELSE o.nom END
-FROM remocra.commune c, remocra.organisme o
-WHERE (c.id = ${idCommune} OR -1 = ${idCommune}) AND o.id = ${ORGANISME_ID}</sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>Y</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
-    <cached_row_meta_active>N</cached_row_meta_active>
-    <row-meta/>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>656</xloc>
-      <yloc>80</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>nom du fichier</name>
-    <type>Calculator</type>
-    <description/>
-    <distribute>N</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <failIfNoFile>Y</failIfNoFile>
-    <calculation>
-      <field_name>separateur</field_name>
-      <calc_type>CONSTANT</calc_type>
-      <field_a>_</field_a>
-      <field_b/>
-      <field_c/>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>Y</remove>
-      <conversion_mask/>
-      <decimal_symbol/>
-      <grouping_symbol/>
-      <currency_symbol/>
-    </calculation>
-    <calculation>
-      <field_name>nom_fichier</field_name>
-      <calc_type>ADD3</calc_type>
-      <field_a>date</field_a>
-      <field_b>separateur</field_b>
-      <field_c>nom</field_c>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask/>
-      <decimal_symbol/>
-      <grouping_symbol/>
-      <currency_symbol/>
-    </calculation>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>848</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Création variables</name>
-    <type>SetVariable</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <field_name>nom_fichier</field_name>
-        <variable_name>FILENAME</variable_name>
-        <variable_type>JVM</variable_type>
-        <default_value/>
-      </field>
-    </fields>
-    <use_formatting>Y</use_formatting>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>848</xloc>
-      <yloc>384</yloc>
+      <xloc>944</xloc>
+      <yloc>432</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

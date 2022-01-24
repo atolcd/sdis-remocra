@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>generer_nom_fichier</name>
+    <name>mise_a_jour_plage_ano</name>
     <description/>
     <extended_description/>
     <trans_version/>
@@ -10,57 +10,7 @@
     <directory>/</directory>
     <parameters>
       <parameter>
-        <name>adresse</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>dateContr</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>dateReco</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>dispoHbe</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>dispoTerrestre</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>idCommune</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>natureNom</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>nomNatureDeci</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>nomTournee</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>numero</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>numeroInterne</name>
+        <name>NB_ANO</name>
         <default_value/>
         <description/>
       </parameter>
@@ -483,105 +433,24 @@
     <clusterschemas>
     </clusterschemas>
     <created_user>-</created_user>
-    <created_date>2022/01/17 14:14:07.848</created_date>
+    <created_date>2022/03/10 16:43:11.220</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2022/01/17 14:14:07.848</modified_date>
+    <modified_date>2022/03/10 16:43:11.220</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
   </notepads>
-  <connection>
-    <name>Remocra</name>
-    <server>${REMOCRA_POSTGIS_DATABASE_HOST}</server>
-    <type>POSTGRESQL</type>
-    <access>Native</access>
-    <database>${REMOCRA_POSTGIS_DATABASE_NAME}</database>
-    <port>${REMOCRA_POSTGIS_DATABASE_PORT}</port>
-    <username>${REMOCRA_POSTGIS_DATABASE_USER_NAME}</username>
-    <password>${REMOCRA_POSTGIS_DATABASE_USER_PASSWORD}</password>
-    <servername/>
-    <data_tablespace/>
-    <index_tablespace/>
-    <attributes>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>IS_CLUSTERED</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>PORT_NUMBER</code>
-        <attribute>${REMOCRA_POSTGIS_DATABASE_PORT}</attribute>
-      </attribute>
-      <attribute>
-        <code>PRESERVE_RESERVED_WORD_CASE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>QUOTE_ALL_FIELDS</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>USE_POOLING</code>
-        <attribute>N</attribute>
-      </attribute>
-    </attributes>
-  </connection>
   <order>
     <hop>
-      <from>date</from>
-      <to>formatage date</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>nom</from>
-      <to>Produit cartésien</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Produit cartésien</from>
-      <to>nom du fichier</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>formatage date</from>
-      <to>date en string</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>date en string</from>
-      <to>Produit cartésien</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>nom du fichier</from>
-      <to>exporter_excel_ctp.ktr</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>nom du fichier</from>
-      <to>Création variables</to>
+      <from>Génération lignes</from>
+      <to>Création de classe java</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <step>
-    <name>Produit cartésien</name>
-    <type>JoinRows</type>
+    <name>Création de classe java</name>
+    <type>UserDefinedJavaClass</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -590,18 +459,70 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <cache_size>500</cache_size>
-    <main/>
-    <compare>
-      <condition>
-        <negated>N</negated>
-        <leftvalue/>
-        <function>=</function>
-        <rightvalue/>
-      </condition>
-    </compare>
+    <definitions>
+      <definition>
+        <class_type>TRANSFORM_CLASS</class_type>
+        <class_name>Processor</class_name>
+        <class_source>import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import org.apache.poi.ss.usermodel.Name;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws KettleException {
+  if (first) {
+    first = false;
+	//Chargement du fichier
+    String filename = getVariable("PDI_CHEMIN_TMP", "") + "/"+getVariable("PROCESSUS_CODE", "")+"/"+getVariable("FILENAME", "")+".xlsx";
+	String newFilename = getVariable("PDI_CHEMIN_TMP", "") + "/"+getVariable("PROCESSUS_CODE", "")+"/new_"+getVariable("FILENAME", "")+".xlsx";
+
+	try {
+		//FileInputStream file = new FileInputStream(new File(filename));
+    	XSSFWorkbook workbook = new XSSFWorkbook(new File(filename));
+
+    	//Récupération de la plage nommée contenant la liste des anomalies possibles
+    	int namedCellIdx = workbook.getNameIndex("ANOMALIES");
+    	Name aNamedCell = workbook.getNameAt(namedCellIdx);
+
+    	//Modification de la plage nommée);
+    	aNamedCell.setRefersToFormula("anomalies!$C$1:$C$"+getVariable("NB_ANO", ""));
+
+    	//Ecriture du nouveau fichier
+    	workbook.write(new FileOutputStream(new File(newFilename)));
+	}
+	catch (Exception e){
+		logBasic(e.toString());
+	}
+  }
+
+  Object[] r = getRow();
+
+  if (r == null) {
+    setOutputDone();
+    return false;
+  }
+
+  // It is always safest to call createOutputRow() to ensure that your output row's Object[] is large
+  // enough to handle any new fields you are creating in this step.
+  r = createOutputRow(r, data.outputRowMeta.size());
+
+
+  // Send the row on to the next step.
+  putRow(data.outputRowMeta, r);
+
+  return true;
+}
+</class_source>
+      </definition>
+    </definitions>
+    <fields>
+    </fields>
+    <clear_result_fields>N</clear_result_fields>
+    <info_steps/>
+    <target_steps/>
+    <usage_parameters/>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -611,14 +532,14 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>656</xloc>
-      <yloc>240</yloc>
+      <xloc>320</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>date</name>
-    <type>SystemInfo</type>
+    <name>Génération lignes</name>
+    <type>RowGenerator</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -629,10 +550,23 @@
     </partitioning>
     <fields>
       <field>
-        <name>date</name>
-        <type>system date (fixed)</type>
+        <name>a</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>a</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
       </field>
     </fields>
+    <limit>1</limit>
+    <never_ending>N</never_ending>
+    <interval_in_ms>5000</interval_in_ms>
+    <row_time_field>now</row_time_field>
+    <last_time_field>FiveSecondsAgo</last_time_field>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -643,283 +577,7 @@
     </remotesteps>
     <GUI>
       <xloc>128</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>date en string</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <select_unspecified>N</select_unspecified>
-      <meta>
-        <name>date</name>
-        <rename>date</rename>
-        <type>String</type>
-        <length>-2</length>
-        <precision>-2</precision>
-        <conversion_mask/>
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale/>
-        <date_format_timezone/>
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding/>
-        <decimal_symbol/>
-        <grouping_symbol/>
-        <currency_symbol/>
-        <storage_type/>
-      </meta>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>448</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>exporter_excel_ctp.ktr</name>
-    <type>TransExecutor</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <specification_method>filename</specification_method>
-    <trans_object_id/>
-    <trans_name/>
-    <filename>${Internal.Entry.Current.Directory}/exporter_excel_ctp.ktr</filename>
-    <directory_path/>
-    <group_size>1</group_size>
-    <group_field/>
-    <group_time/>
-    <parameters>
-      <variablemapping>
-        <variable>FILENAME</variable>
-        <field>nom_fichier</field>
-        <input/>
-      </variablemapping>
-      <inherit_all_vars>Y</inherit_all_vars>
-    </parameters>
-    <execution_result_target_step/>
-    <execution_time_field>ExecutionTime</execution_time_field>
-    <execution_result_field>ExecutionResult</execution_result_field>
-    <execution_errors_field>ExecutionNrErrors</execution_errors_field>
-    <execution_lines_read_field>ExecutionLinesRead</execution_lines_read_field>
-    <execution_lines_written_field>ExecutionLinesWritten</execution_lines_written_field>
-    <execution_lines_input_field>ExecutionLinesInput</execution_lines_input_field>
-    <execution_lines_output_field>ExecutionLinesOutput</execution_lines_output_field>
-    <execution_lines_rejected_field>ExecutionLinesRejected</execution_lines_rejected_field>
-    <execution_lines_updated_field>ExecutionLinesUpdated</execution_lines_updated_field>
-    <execution_lines_deleted_field>ExecutionLinesDeleted</execution_lines_deleted_field>
-    <execution_files_retrieved_field>ExecutionFilesRetrieved</execution_files_retrieved_field>
-    <execution_exit_status_field>ExecutionExitStatus</execution_exit_status_field>
-    <execution_log_text_field>ExecutionLogText</execution_log_text_field>
-    <execution_log_channelid_field>ExecutionLogChannelId</execution_log_channelid_field>
-    <result_rows_target_step/>
-    <result_files_target_step/>
-    <result_files_file_name_field>FileName</result_files_file_name_field>
-    <executors_output_step/>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1024</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>formatage date</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <select_unspecified>N</select_unspecified>
-      <meta>
-        <name>date</name>
-        <rename>date</rename>
-        <type>Date</type>
-        <length>-2</length>
-        <precision>-2</precision>
-        <conversion_mask>yyyy-MM-dd</conversion_mask>
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale/>
-        <date_format_timezone/>
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding/>
-        <decimal_symbol/>
-        <grouping_symbol/>
-        <currency_symbol/>
-        <storage_type/>
-      </meta>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>256</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>nom</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>Remocra</connection>
-    <sql>SELECT DISTINCT CASE WHEN ${idCommune} &lt;&gt; -1 THEN c.nom ELSE o.nom END
-FROM remocra.commune c, remocra.organisme o
-WHERE (c.id = ${idCommune} OR -1 = ${idCommune}) AND o.id = ${ORGANISME_ID}</sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>Y</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
-    <cached_row_meta_active>N</cached_row_meta_active>
-    <row-meta/>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>656</xloc>
-      <yloc>80</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>nom du fichier</name>
-    <type>Calculator</type>
-    <description/>
-    <distribute>N</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <failIfNoFile>Y</failIfNoFile>
-    <calculation>
-      <field_name>separateur</field_name>
-      <calc_type>CONSTANT</calc_type>
-      <field_a>_</field_a>
-      <field_b/>
-      <field_c/>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>Y</remove>
-      <conversion_mask/>
-      <decimal_symbol/>
-      <grouping_symbol/>
-      <currency_symbol/>
-    </calculation>
-    <calculation>
-      <field_name>nom_fichier</field_name>
-      <calc_type>ADD3</calc_type>
-      <field_a>date</field_a>
-      <field_b>separateur</field_b>
-      <field_c>nom</field_c>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask/>
-      <decimal_symbol/>
-      <grouping_symbol/>
-      <currency_symbol/>
-    </calculation>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>848</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Création variables</name>
-    <type>SetVariable</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <field_name>nom_fichier</field_name>
-        <variable_name>FILENAME</variable_name>
-        <variable_type>JVM</variable_type>
-        <default_value/>
-      </field>
-    </fields>
-    <use_formatting>Y</use_formatting>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>848</xloc>
-      <yloc>384</yloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

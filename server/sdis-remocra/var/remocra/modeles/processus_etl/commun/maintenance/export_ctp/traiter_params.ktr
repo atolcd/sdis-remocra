@@ -1,69 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>generer_nom_fichier</name>
+    <name>traiter_params</name>
     <description/>
     <extended_description/>
     <trans_version/>
     <trans_type>Normal</trans_type>
-    <trans_status>0</trans_status>
     <directory>/</directory>
     <parameters>
-      <parameter>
-        <name>adresse</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>dateContr</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>dateReco</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>dispoHbe</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>dispoTerrestre</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>idCommune</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>natureNom</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>nomNatureDeci</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>nomTournee</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>numero</name>
-        <default_value/>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>numeroInterne</name>
-        <default_value/>
-        <description/>
-      </parameter>
     </parameters>
     <log>
       <trans-log-table>
@@ -483,105 +427,59 @@
     <clusterschemas>
     </clusterschemas>
     <created_user>-</created_user>
-    <created_date>2022/01/17 14:14:07.848</created_date>
+    <created_date>2022/03/09 14:58:59.182</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2022/01/17 14:14:07.848</modified_date>
+    <modified_date>2022/03/09 14:58:59.182</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
   </notepads>
-  <connection>
-    <name>Remocra</name>
-    <server>${REMOCRA_POSTGIS_DATABASE_HOST}</server>
-    <type>POSTGRESQL</type>
-    <access>Native</access>
-    <database>${REMOCRA_POSTGIS_DATABASE_NAME}</database>
-    <port>${REMOCRA_POSTGIS_DATABASE_PORT}</port>
-    <username>${REMOCRA_POSTGIS_DATABASE_USER_NAME}</username>
-    <password>${REMOCRA_POSTGIS_DATABASE_USER_PASSWORD}</password>
-    <servername/>
-    <data_tablespace/>
-    <index_tablespace/>
-    <attributes>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>IS_CLUSTERED</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>PORT_NUMBER</code>
-        <attribute>${REMOCRA_POSTGIS_DATABASE_PORT}</attribute>
-      </attribute>
-      <attribute>
-        <code>PRESERVE_RESERVED_WORD_CASE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>QUOTE_ALL_FIELDS</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>USE_POOLING</code>
-        <attribute>N</attribute>
-      </attribute>
-    </attributes>
-  </connection>
   <order>
     <hop>
-      <from>date</from>
-      <to>formatage date</to>
+      <from>Récupération filtres</from>
+      <to>Décomposition des filtres</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>nom</from>
-      <to>Produit cartésien</to>
+      <from>Décomposition des filtres</from>
+      <to>suppression filtres</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Produit cartésien</from>
-      <to>nom du fichier</to>
+      <from>suppression filtres</from>
+      <to>Décomposition filtre</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>formatage date</from>
-      <to>date en string</to>
+      <from>Décomposition filtre</from>
+      <to>Recherche dans flux</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>date en string</from>
-      <to>Produit cartésien</to>
+      <from>Génération données (grille)</from>
+      <to>Recherche dans flux</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>nom du fichier</from>
-      <to>exporter_excel_ctp.ktr</to>
+      <from>Recherche dans flux</from>
+      <to>Remplacer valeur nulle</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>nom du fichier</from>
-      <to>Création variables</to>
+      <from>Remplacer valeur nulle</from>
+      <to>Dénormalisation ligne</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Dénormalisation ligne</from>
+      <to>generer_nom_fichier.ktr</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <step>
-    <name>Produit cartésien</name>
-    <type>JoinRows</type>
+    <name>Décomposition des filtres</name>
+    <type>SplitFieldToRows3</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -590,18 +488,13 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <cache_size>500</cache_size>
-    <main/>
-    <compare>
-      <condition>
-        <negated>N</negated>
-        <leftvalue/>
-        <function>=</function>
-        <rightvalue/>
-      </condition>
-    </compare>
+    <splitfield>filtres</splitfield>
+    <delimiter>;</delimiter>
+    <newfield>filtre</newfield>
+    <rownum>N</rownum>
+    <rownum_field/>
+    <resetrownumber>Y</resetrownumber>
+    <delimiter_is_regex>N</delimiter_is_regex>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -611,14 +504,14 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>656</xloc>
-      <yloc>240</yloc>
+      <xloc>304</xloc>
+      <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>date</name>
-    <type>SystemInfo</type>
+    <name>Décomposition filtre</name>
+    <type>FieldSplitter</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -627,10 +520,39 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
+    <splitfield>filtre</splitfield>
+    <delimiter>:</delimiter>
+    <enclosure/>
     <fields>
       <field>
-        <name>date</name>
-        <type>system date (fixed)</type>
+        <name>param</name>
+        <id/>
+        <idrem>N</idrem>
+        <type>String</type>
+        <format/>
+        <group/>
+        <decimal/>
+        <currency/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <nullif/>
+        <ifnull/>
+        <trimtype>none</trimtype>
+      </field>
+      <field>
+        <name>value</name>
+        <id/>
+        <idrem>N</idrem>
+        <type>String</type>
+        <format/>
+        <group/>
+        <decimal/>
+        <currency/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <nullif/>
+        <ifnull/>
+        <trimtype>none</trimtype>
       </field>
     </fields>
     <attributes/>
@@ -642,14 +564,14 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>128</xloc>
-      <yloc>240</yloc>
+      <xloc>720</xloc>
+      <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>date en string</name>
-    <type>SelectValues</type>
+    <name>Dénormalisation ligne</name>
+    <type>Denormaliser</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -658,25 +580,164 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
+    <key_field>name</key_field>
+    <group>
+        </group>
     <fields>
-      <select_unspecified>N</select_unspecified>
-      <meta>
-        <name>date</name>
-        <rename>date</rename>
-        <type>String</type>
-        <length>-2</length>
-        <precision>-2</precision>
-        <conversion_mask/>
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale/>
-        <date_format_timezone/>
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding/>
-        <decimal_symbol/>
-        <grouping_symbol/>
-        <currency_symbol/>
-        <storage_type/>
-      </meta>
+      <field>
+        <field_name>value</field_name>
+        <key_value>numero</key_value>
+        <target_name>numero</target_name>
+        <target_type>String</target_type>
+        <target_format/>
+        <target_length>-1</target_length>
+        <target_precision>-1</target_precision>
+        <target_decimal_symbol/>
+        <target_grouping_symbol/>
+        <target_currency_symbol/>
+        <target_null_string/>
+        <target_aggregation_type>-</target_aggregation_type>
+      </field>
+      <field>
+        <field_name>value</field_name>
+        <key_value>nomTournee</key_value>
+        <target_name>nomTournee</target_name>
+        <target_type>String</target_type>
+        <target_format/>
+        <target_length>-1</target_length>
+        <target_precision>-1</target_precision>
+        <target_decimal_symbol/>
+        <target_grouping_symbol/>
+        <target_currency_symbol/>
+        <target_null_string/>
+        <target_aggregation_type>-</target_aggregation_type>
+      </field>
+      <field>
+        <field_name>value</field_name>
+        <key_value>natureNom</key_value>
+        <target_name>natureNom</target_name>
+        <target_type>String</target_type>
+        <target_format/>
+        <target_length>-1</target_length>
+        <target_precision>-1</target_precision>
+        <target_decimal_symbol/>
+        <target_grouping_symbol/>
+        <target_currency_symbol/>
+        <target_null_string/>
+        <target_aggregation_type>-</target_aggregation_type>
+      </field>
+      <field>
+        <field_name>value</field_name>
+        <key_value>dateReco</key_value>
+        <target_name>dateReco</target_name>
+        <target_type>String</target_type>
+        <target_format/>
+        <target_length>-1</target_length>
+        <target_precision>-1</target_precision>
+        <target_decimal_symbol/>
+        <target_grouping_symbol/>
+        <target_currency_symbol/>
+        <target_null_string/>
+        <target_aggregation_type>-</target_aggregation_type>
+      </field>
+      <field>
+        <field_name>value</field_name>
+        <key_value>dateContr</key_value>
+        <target_name>dateContr</target_name>
+        <target_type>String</target_type>
+        <target_format/>
+        <target_length>-1</target_length>
+        <target_precision>-1</target_precision>
+        <target_decimal_symbol/>
+        <target_grouping_symbol/>
+        <target_currency_symbol/>
+        <target_null_string/>
+        <target_aggregation_type>-</target_aggregation_type>
+      </field>
+      <field>
+        <field_name>value</field_name>
+        <key_value>dispoTerrestre</key_value>
+        <target_name>dispoTerrestre</target_name>
+        <target_type>String</target_type>
+        <target_format/>
+        <target_length>-1</target_length>
+        <target_precision>-1</target_precision>
+        <target_decimal_symbol/>
+        <target_grouping_symbol/>
+        <target_currency_symbol/>
+        <target_null_string/>
+        <target_aggregation_type>-</target_aggregation_type>
+      </field>
+      <field>
+        <field_name>value</field_name>
+        <key_value>dispoHbe</key_value>
+        <target_name>dispoHbe</target_name>
+        <target_type>String</target_type>
+        <target_format/>
+        <target_length>-1</target_length>
+        <target_precision>-1</target_precision>
+        <target_decimal_symbol/>
+        <target_grouping_symbol/>
+        <target_currency_symbol/>
+        <target_null_string/>
+        <target_aggregation_type>-</target_aggregation_type>
+      </field>
+      <field>
+        <field_name>value</field_name>
+        <key_value>idCommune</key_value>
+        <target_name>idCommune</target_name>
+        <target_type>String</target_type>
+        <target_format/>
+        <target_length>-1</target_length>
+        <target_precision>-1</target_precision>
+        <target_decimal_symbol/>
+        <target_grouping_symbol/>
+        <target_currency_symbol/>
+        <target_null_string/>
+        <target_aggregation_type>-</target_aggregation_type>
+      </field>
+      <field>
+        <field_name>value</field_name>
+        <key_value>nomNatureDeci</key_value>
+        <target_name>nomNatureDeci</target_name>
+        <target_type>String</target_type>
+        <target_format/>
+        <target_length>-1</target_length>
+        <target_precision>-1</target_precision>
+        <target_decimal_symbol/>
+        <target_grouping_symbol/>
+        <target_currency_symbol/>
+        <target_null_string/>
+        <target_aggregation_type>-</target_aggregation_type>
+      </field>
+      <field>
+        <field_name>value</field_name>
+        <key_value>adresse</key_value>
+        <target_name>adresse</target_name>
+        <target_type>String</target_type>
+        <target_format/>
+        <target_length>-1</target_length>
+        <target_precision>-1</target_precision>
+        <target_decimal_symbol/>
+        <target_grouping_symbol/>
+        <target_currency_symbol/>
+        <target_null_string/>
+        <target_aggregation_type>-</target_aggregation_type>
+      </field>
+      <field>
+        <field_name>value</field_name>
+        <key_value>numeroInterne</key_value>
+        <target_name>numeroInterne</target_name>
+        <target_type>String</target_type>
+        <target_format/>
+        <target_length>-1</target_length>
+        <target_precision>-1</target_precision>
+        <target_decimal_symbol/>
+        <target_grouping_symbol/>
+        <target_currency_symbol/>
+        <target_null_string/>
+        <target_aggregation_type>-</target_aggregation_type>
+      </field>
     </fields>
     <attributes/>
     <cluster_schema/>
@@ -687,13 +748,208 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>448</xloc>
-      <yloc>240</yloc>
+      <xloc>1088</xloc>
+      <yloc>352</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>exporter_excel_ctp.ktr</name>
+    <name>Génération données (grille)</name>
+    <type>DataGrid</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>name</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+        <field_null_if/>
+      </field>
+    </fields>
+    <data>
+      <line>
+        <item>numero</item>
+      </line>
+      <line>
+        <item>nomTournee</item>
+      </line>
+      <line>
+        <item>natureNom</item>
+      </line>
+      <line>
+        <item>dateReco</item>
+      </line>
+      <line>
+        <item>dateContr</item>
+      </line>
+      <line>
+        <item>dispoTerrestre</item>
+      </line>
+      <line>
+        <item>dispoHbe</item>
+      </line>
+      <line>
+        <item>idCommune</item>
+      </line>
+      <line>
+        <item>nomNatureDeci</item>
+      </line>
+      <line>
+        <item>adresse</item>
+      </line>
+      <line>
+        <item>numeroInterne</item>
+      </line>
+    </data>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>928</xloc>
+      <yloc>112</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Recherche dans flux</name>
+    <type>StreamLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <from>Décomposition filtre</from>
+    <input_sorted>N</input_sorted>
+    <preserve_memory>Y</preserve_memory>
+    <sorted_list>N</sorted_list>
+    <integer_pair>N</integer_pair>
+    <lookup>
+      <key>
+        <name>name</name>
+        <field>param</field>
+      </key>
+      <value>
+        <name>value</name>
+        <rename>value</rename>
+        <default/>
+        <type>None</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>928</xloc>
+      <yloc>224</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Remplacer valeur nulle</name>
+    <type>IfNull</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <replaceAllByValue/>
+    <replaceAllMask/>
+    <selectFields>Y</selectFields>
+    <selectValuesType>N</selectValuesType>
+    <setEmptyStringAll>N</setEmptyStringAll>
+    <valuetypes>
+      </valuetypes>
+    <fields>
+      <field>
+        <name>value</name>
+        <value>-1</value>
+        <mask/>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1088</xloc>
+      <yloc>224</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Récupération filtres</name>
+    <type>GetVariable</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>filtres</name>
+        <variable>${FILTRE}</variable>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>112</xloc>
+      <yloc>224</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>generer_nom_fichier.ktr</name>
     <type>TransExecutor</type>
     <description/>
     <distribute>Y</distribute>
@@ -706,15 +962,65 @@
     <specification_method>filename</specification_method>
     <trans_object_id/>
     <trans_name/>
-    <filename>${Internal.Entry.Current.Directory}/exporter_excel_ctp.ktr</filename>
+    <filename>${Internal.Entry.Current.Directory}/generer_nom_fichier.ktr</filename>
     <directory_path/>
     <group_size>1</group_size>
     <group_field/>
     <group_time/>
     <parameters>
       <variablemapping>
-        <variable>FILENAME</variable>
-        <field>nom_fichier</field>
+        <variable>adresse</variable>
+        <field>adresse</field>
+        <input/>
+      </variablemapping>
+      <variablemapping>
+        <variable>dateContr</variable>
+        <field>dateContr</field>
+        <input/>
+      </variablemapping>
+      <variablemapping>
+        <variable>dateReco</variable>
+        <field>dateReco</field>
+        <input/>
+      </variablemapping>
+      <variablemapping>
+        <variable>dispoHbe</variable>
+        <field>dispoHbe</field>
+        <input/>
+      </variablemapping>
+      <variablemapping>
+        <variable>dispoTerrestre</variable>
+        <field>dispoTerrestre</field>
+        <input/>
+      </variablemapping>
+      <variablemapping>
+        <variable>idCommune</variable>
+        <field>idCommune</field>
+        <input/>
+      </variablemapping>
+      <variablemapping>
+        <variable>natureNom</variable>
+        <field>natureNom</field>
+        <input/>
+      </variablemapping>
+      <variablemapping>
+        <variable>nomNatureDeci</variable>
+        <field>nomNatureDeci</field>
+        <input/>
+      </variablemapping>
+      <variablemapping>
+        <variable>nomTournee</variable>
+        <field>nomTournee</field>
+        <input/>
+      </variablemapping>
+      <variablemapping>
+        <variable>numero</variable>
+        <field>numero</field>
+        <input/>
+      </variablemapping>
+      <variablemapping>
+        <variable>numeroInterne</variable>
+        <field>numeroInterne</field>
         <input/>
       </variablemapping>
       <inherit_all_vars>Y</inherit_all_vars>
@@ -747,13 +1053,13 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1024</xloc>
-      <yloc>240</yloc>
+      <xloc>1088</xloc>
+      <yloc>480</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>formatage date</name>
+    <name>suppression filtres</name>
     <type>SelectValues</type>
     <description/>
     <distribute>Y</distribute>
@@ -765,23 +1071,9 @@
     </partitioning>
     <fields>
       <select_unspecified>N</select_unspecified>
-      <meta>
-        <name>date</name>
-        <rename>date</rename>
-        <type>Date</type>
-        <length>-2</length>
-        <precision>-2</precision>
-        <conversion_mask>yyyy-MM-dd</conversion_mask>
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale/>
-        <date_format_timezone/>
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding/>
-        <decimal_symbol/>
-        <grouping_symbol/>
-        <currency_symbol/>
-        <storage_type/>
-      </meta>
+      <remove>
+        <name>filtres</name>
+      </remove>
     </fields>
     <attributes/>
     <cluster_schema/>
@@ -792,134 +1084,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>256</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>nom</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>Remocra</connection>
-    <sql>SELECT DISTINCT CASE WHEN ${idCommune} &lt;&gt; -1 THEN c.nom ELSE o.nom END
-FROM remocra.commune c, remocra.organisme o
-WHERE (c.id = ${idCommune} OR -1 = ${idCommune}) AND o.id = ${ORGANISME_ID}</sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>Y</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
-    <cached_row_meta_active>N</cached_row_meta_active>
-    <row-meta/>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>656</xloc>
-      <yloc>80</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>nom du fichier</name>
-    <type>Calculator</type>
-    <description/>
-    <distribute>N</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <failIfNoFile>Y</failIfNoFile>
-    <calculation>
-      <field_name>separateur</field_name>
-      <calc_type>CONSTANT</calc_type>
-      <field_a>_</field_a>
-      <field_b/>
-      <field_c/>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>Y</remove>
-      <conversion_mask/>
-      <decimal_symbol/>
-      <grouping_symbol/>
-      <currency_symbol/>
-    </calculation>
-    <calculation>
-      <field_name>nom_fichier</field_name>
-      <calc_type>ADD3</calc_type>
-      <field_a>date</field_a>
-      <field_b>separateur</field_b>
-      <field_c>nom</field_c>
-      <value_type>String</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <remove>N</remove>
-      <conversion_mask/>
-      <decimal_symbol/>
-      <grouping_symbol/>
-      <currency_symbol/>
-    </calculation>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>848</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Création variables</name>
-    <type>SetVariable</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <field_name>nom_fichier</field_name>
-        <variable_name>FILENAME</variable_name>
-        <variable_type>JVM</variable_type>
-        <default_value/>
-      </field>
-    </fields>
-    <use_formatting>Y</use_formatting>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>848</xloc>
-      <yloc>384</yloc>
+      <xloc>496</xloc>
+      <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

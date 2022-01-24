@@ -157,3 +157,22 @@ curl -v http://localhost:8070/v1/jobs -XPOST -d '{
     "command": "/home/pdi/kitchen.sh -rep:ref_pdi_remocra -dir:maintenance/zone_competence_commune -job:actualisation_zone_competence_commune -user:admin -pass:admin -level:Error -param:PDI_FICHIER_PARAMETRE=/home/pdi/remocra.properties >> /var/remocra/pdi/log/remocra_zone_competence_commune.log 2>&1"
   }
 }'
+
+# Traiter les demandes V2
+curl -v http://localhost:8070/v1/jobs -XPOST -d '{
+  "name": "traiter-demande-2",
+  "displayname": "Traiter demandes V2",
+  "schedule": "@every 2m",
+  "owner": "",
+  "owner_email": "",
+  "tags": {
+    "pdi": "7.1:1"
+  },
+  "metadata": null,
+  "retries": 0,
+  "concurrency": "forbid",
+  "executor": "shell",
+  "executor_config": {
+    "command": "/home/pdi/kitchen.sh -file:/var/remocra/modeles/processus_etl/commun/modeles_de_processus_et_executions/executer_les_processus_etl/executer_les_processus_etl.kjb -level:Error -param:PDI_FICHIER_PARAMETRE=/home/pdi/remocra.properties >> /var/remocra/pdi/log/remocra_traiter_demande_2.log 2>&1"
+  }
+}'
