@@ -115,7 +115,7 @@ pipeline {
                 }
               }
               steps {
-                sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U -ntp -Dskip.installnodenpm -Dskip.npm clean verify -P update"
+                sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U -ntp -Dskip.installnodenpm -Dskip.npm clean verify -P modeinfo-able -P update"
                 sh 'cp -r ./remocra/target/remocra.war ./docker/remocra/ext'
               }
             }
