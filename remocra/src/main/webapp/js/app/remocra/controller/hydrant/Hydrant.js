@@ -420,6 +420,10 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         if (!Sdis.Remocra.Rights.hasRight('INDISPOS_D')) {
            fiche.down('crHydrantsIndispo #deleteIndispo').hide();
         }
+
+        if (!Sdis.Remocra.Rights.hasRight('IMPORT_CTP')) {
+           fiche.down('crHydrantsHydrant #importCTP').hide();
+        }
     },
 
     /***************************************************************************
