@@ -41,7 +41,14 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
             tooltip: 'Importer un fichier CTP',
             iconCls: 'add',
             disabled: false
-         },'->',{
+         },{
+            text: 'Export CTP',
+            itemId: 'exportCTP',
+            tooltip: 'export CTP au format Excel',
+            iconCls: 'add',
+            disabled: false
+         },
+         '->',{
             text: 'Supprimer',
             iconCls: 'deleteIcon',
             itemId: 'deleteHydrant',

@@ -297,6 +297,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             'crHydrantsHydrant #importCTP': {
                click: this.showImportCTPDialog
             },
+            'crHydrantsHydrant #exportCTP': {
+               click: this.exportCTP
+            },
             // Fenêtre "choix type hydrant"
             'sdischoice[name=choiceTypeHydrant]': {
                 close: this.onCloseChoiceTypeHydrant
@@ -420,9 +423,11 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         if (!Sdis.Remocra.Rights.hasRight('INDISPOS_D')) {
            fiche.down('crHydrantsIndispo #deleteIndispo').hide();
         }
-
         if (!Sdis.Remocra.Rights.hasRight('IMPORT_CTP')) {
            fiche.down('crHydrantsHydrant #importCTP').hide();
+        }
+        if (!Sdis.Remocra.Rights.hasRight('IMPORT_CTP')) {
+           fiche.down('crHydrantsHydrant #exportCTP').hide();
         }
     },
 
@@ -1704,6 +1709,49 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         d.id=id;
         document.body.appendChild(d);
         var vueImportCTP = window.remocraVue.modalImportCTP(d, {});
+    },
+    exportCTP: function(button) {
+       var tabHydrants = button.ownerCt.ownerCt;
+       var headerFilters = tabHydrants.getHeaderFilters();
+       var filters = headerFilters.items;
+       var params = "";
+       var i;
+       for (i=0; i < filters.length; i++) {
+          if(filters[i].value != null && filters[i].value != "") {
+            if(params != "") {
+               params += ";" + filters[i].property + ":" + filters[i].value ;
+            } else {
+               params += filters[i].property + ":" + filters[i].value;
+            }
+          }
+       }
+        // on change le nom du paramètre nomCommune -> idCommune
+        params = params.replace("nomCommune", "idCommune");
+        Sdis.Remocra.network.CurrentUtilisateurStore.getCurrentUtilisateur(this, function(user) {
+            // On enregistre la demande de traitement
+            Ext.Ajax.request({
+                url: Sdis.Remocra.util.Util.withBaseUrl('../processusetlmodele/EXPORT_EXCEL_CTP'),
+                method: 'POST',
+                jsonData: {
+                    priorite : "1",
+                    FILTRE :  params,
+                    ORGANISME_ID : user.data.organismeId
+                },
+                scope: this,
+                callback: function(param, success, response) {
+                    if(success) {
+                        Ext.MessageBox.show({ title : 'Demande de traitement',
+                            msg : 'Votre demande d\'extraction est en cours de traitement.\n Un message électronique vous informera de l\'issue du traitement.',
+                            buttons : Ext.Msg.OK,
+                            icon : Ext.MessageBox.INFO });
+                    } else {
+                        Ext.MessageBox.show({ title : this.title, msg : 'Un problème est survenu lors de l\'enregistrement des paramètres.',
+                            buttons : Ext.Msg.OK,
+                            icon : Ext.MessageBox.ERROR });
+                    }
+                }
+            });
+        });
     },
     onLocateHydrantFromGrid: function() {
         this.onLocateHydrant(this.getSelectedHydrant());
