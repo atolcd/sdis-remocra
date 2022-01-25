@@ -14,10 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Types;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -282,4 +279,38 @@ public class ProcessusEtlModeleRepository {
       }
   }
 
+  /**
+   * Permet d'insérer une demande de traitement : table processus_etl + processus_etl_parametre
+   * @param codeProcess : code du traitement (processur_etl_modele)
+   * @param json : json contenant les paramètres du traitement (processur_etl_modele_paraùetre) ainsi que la priorité
+   * @return
+   */
+  public ProcessusEtl createProcess(String codeProcess, String json)  {
+    Long idModele  = context.select(PROCESSUS_ETL_MODELE.ID).from(PROCESSUS_ETL_MODELE).where(PROCESSUS_ETL_MODELE.CODE.eq(codeProcess)).fetchOne().value1();
+    Map mapParams = new JSONDeserializer<Map>().deserialize(json);
+    ProcessusEtl p  = new ProcessusEtl();
+    //Ajout du processusEtl
+    Instant t = new Instant();
+    Integer prior  = Integer.valueOf(String.valueOf(mapParams.get("priorite")));
+    Utilisateur u = utilisateurService.getCurrentUtilisateur();
+    context.insertInto(PROCESSUS_ETL, PROCESSUS_ETL.MODELE, PROCESSUS_ETL.STATUT, PROCESSUS_ETL.UTILISATEUR, PROCESSUS_ETL.PRIORITE, PROCESSUS_ETL.DEMANDE)
+            .values(idModele
+                    ,context.select(PROCESSUS_ETL_STATUT.ID).from(PROCESSUS_ETL_STATUT).where(PROCESSUS_ETL_STATUT.CODE.eq("A")).fetchOne().value1()
+                    ,Long.valueOf(u.getId())
+                    ,prior
+                    ,t).execute();
+    Long idProcess  = context.select(DSL.max((Tables.PROCESSUS_ETL.ID))).from(Tables.PROCESSUS_ETL).fetchOne().value1();
+    //Ajout des paramètres
+    for(Object key : mapParams.keySet()) {
+      String keyStr = (String)key;
+      // la priorite n'est pas un paramètre
+      if (!"priorite".equalsIgnoreCase(keyStr)) {
+        Long idParam = context.select(PROCESSUS_ETL_MODELE_PARAMETRE.ID).from(PROCESSUS_ETL_MODELE_PARAMETRE).where(PROCESSUS_ETL_MODELE_PARAMETRE.NOM.eq(keyStr)).fetchOne().value1();
+        String val = String.valueOf(mapParams.get(keyStr));
+        context.insertInto(PROCESSUS_ETL_PARAMETRE, PROCESSUS_ETL_PARAMETRE.PROCESSUS, PROCESSUS_ETL_PARAMETRE.PARAMETRE, PROCESSUS_ETL_PARAMETRE.VALEUR)
+                .values(idProcess, idParam, val).execute();
+      }
+    }
+    return p;
+  }
 }

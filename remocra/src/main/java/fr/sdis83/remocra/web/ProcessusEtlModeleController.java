@@ -155,4 +155,15 @@ public class ProcessusEtlModeleController {
       return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de l\'enregistrement du processus Etl").serialize();
     }
   }
+
+  @RequestMapping(value = "/{codeProcess}", method = RequestMethod.POST, headers = "Accept=application/json")
+  @Transactional
+  public ResponseEntity<java.lang.String> createProcess(final  @RequestBody String json, final @PathVariable("codeProcess") String codeProcess) {
+    try{
+      ProcessusEtl p = processusEtlModeleRepository.createProcess(codeProcess, json);
+      return new SuccessErrorExtSerializer(true, "Le processus Etl  a été enregistrée").serialize();
+    } catch(Exception e) {
+      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de l\'enregistrement du processus Etl").serialize();
+    }
+  }
 }
