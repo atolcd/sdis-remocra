@@ -19,6 +19,7 @@ import javax.persistence.criteria.Subquery;
 
 import fr.sdis83.remocra.util.GeometryUtil;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -131,9 +132,20 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
             Expression<Character> cpDispo = from.get("dispoHbe");
             predicat = !resultList.isEmpty() ? cBuilder.and(cpID.in(resultList) ,
                     cBuilder.equal(cpDispo, Hydrant.Disponibilite.valueOf(itemFilter.getValue()))): predicat;
-        } else if("nomCommune".equals(itemFilter.getFieldName())){
-            Expression<String> cpPath = from.join("commune", JoinType.LEFT).get("nom");
-            predicat = cBuilder.like(cBuilder.upper(cpPath), "%" + itemFilter.getValue().toUpperCase(Locale.FRANCE) + "%");
+        } else if("nomCommune".equals(itemFilter.getFieldName())) {
+            /**
+             * A cause de l'utilisation hybride du champ commune, le serveur peut récupérer deux données différentes sur le même path
+             * selon le type de donnée fourni :
+             *  - Un nombre entier (identifiant) lors d'une sélection dans la combo
+             *  - Une chaîne de caratères (nom) lors de la saisie de texte dans la combo
+             */
+            if(StringUtils.isNumeric(itemFilter.getValue())) {
+                Expression<Integer> cpPath = from.join("commune").get("id");
+                predicat = cBuilder.equal(cpPath, itemFilter.getValue());
+            } else {
+                Expression<String> cpPath = from.join("commune", JoinType.LEFT).get("nom");
+                predicat = cBuilder.like(cBuilder.upper(cpPath), "%" + itemFilter.getValue().toUpperCase(Locale.FRANCE) + "%");
+            }
         } else if("nomNatureDeci".equals(itemFilter.getFieldName())){
             Expression<Integer> cpPath = from.join("natureDeci").get("id");
             predicat = cBuilder.equal(cpPath, itemFilter.getValue());
