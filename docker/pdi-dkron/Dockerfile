@@ -77,10 +77,10 @@ RUN set -x \
   && rm -f Dockerfile # cleaning
 
 # MySql
-COPY Dockerfile ext/mysql-connector-java-8.0.25.jar* ext/mysql-connector-java-8.0.25.jar* ${KETTLE_HOME}/lib/
+COPY Dockerfile ext/mysql-connector-java-5.1.49.jar* ext/mysql-connector-java-5.1.49.jar* ${KETTLE_HOME}/lib/
 RUN set -x \
-  && ([ -f ${KETTLE_HOME}/lib/mysql-connector-java-8.0.25.jar ] \
-    || wget -P ${KETTLE_HOME}/lib -q https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/home/postgres/pdi/libext/JDBC/mysql-connector-java-8.0.25.jar) \
+  && ([ -f ${KETTLE_HOME}/lib/mysql-connector-java-5.1.49.jar ] \
+    || wget -P ${KETTLE_HOME}/lib -q https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/home/postgres/pdi/libext/JDBC/mysql-connector-java-5.1.49.jar) \
   && rm -f Dockerfile # cleaning
 
 # Mise à jour de JDBC driver
