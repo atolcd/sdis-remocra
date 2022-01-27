@@ -96,7 +96,8 @@ privileged aspect Commune_Remocra_SortFilter {
             }
         }
 
-        int start = (firstResult < 0) ? 0 : (firstResult > communes.size()-1) ? communes.size()-1 : firstResult;
+
+        int start = (firstResult < 0 || communes.size() == 0) ? 0 : (firstResult > communes.size()-1) ? communes.size()-1 : firstResult;
         int stop = (firstResult+maxResults > communes.size()) ? communes.size() : firstResult+maxResults;
         return communes.subList(start, stop);
     }
