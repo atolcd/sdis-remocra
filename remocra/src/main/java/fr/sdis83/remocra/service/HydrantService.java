@@ -533,6 +533,7 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
         return sb.toString();
     }
 
+    @Override
     public List<Order> makeOrders(Root<Hydrant> from, List<ItemSorting> itemSortings, List<ItemFilter> itemFilters) {
         ArrayList<Order> orders = new ArrayList<Order>();
         CriteriaBuilder cBuilder = this.getCriteriaBuilder();
@@ -541,24 +542,24 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
             for (ItemSorting itemSorting : itemSortings) {
                 if (!this.processItemSortings(orders, itemSorting, cBuilder, from)) {
                     Path<?> field = from.get(itemSorting.getFieldName());
-                    if(itemSorting.isDesc()) {
-                        if("numero".equals(itemSorting.getFieldName())) {
+                    if("numero".equals(itemSorting.getFieldName())) {
+                        if(itemSorting.isDesc()) {
                             orders.add(cBuilder.desc(cBuilder.length(from.get(itemSorting.getFieldName()))));
-                        }
-                        orders.add(cBuilder.desc(field));
-                    } else {
-                        if("numero".equals(itemSorting.getFieldName())) {
+                            orders.add(cBuilder.desc(field));
+                        } else {
                             orders.add(cBuilder.asc(cBuilder.length(from.get(itemSorting.getFieldName()))));
+                            orders.add(cBuilder.asc(field));
                         }
-                        orders.add(cBuilder.asc(field));
                     }
+                    orders.add(itemSorting.isDesc() ? cBuilder.desc(field) : cBuilder.asc(field));
                 }
-                if (getAbsOrderFieldName().equals(itemSorting.getFieldName())) {
+                if (getAbsOrderFieldName().equals(itemSorting.getFieldName())) { // Flag si le numero ne fait pas partie des critères de tri
                     absOrderFieldName = true;
                 }
             }
         }
-        if (!absOrderFieldName) {
+        if (!absOrderFieldName) { // Si aucun critère de tri fourni pour le numero, on trie par ordre naturel
+            orders.add(cBuilder.asc(cBuilder.length(from.get(getAbsOrderFieldName()))));
             orders.add(cBuilder.asc(from.get(getAbsOrderFieldName())));
         }
         return orders;
