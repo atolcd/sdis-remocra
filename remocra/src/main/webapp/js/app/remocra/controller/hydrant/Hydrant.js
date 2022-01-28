@@ -767,14 +767,19 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     updateHydrant: function(extraParams) {
         if (extraParams) {
             if (extraParams.tournee) {
-                this.getTabHydrant().headerFilterPlugin.fields.nature.setValue(null);
-                this.getTabHydrant().headerFilterPlugin.fields.dateContr.setValue(0);
-                this.getTabHydrant().headerFilterPlugin.fields.dateReco.setValue(0);
-                this.getTabHydrant().headerFilterPlugin.fields.numero.setValue(null);
-                this.getTabHydrant().headerFilterPlugin.fields.nomCommune.setValue(null);
-                this.getTabHydrant().headerFilterPlugin.fields.adresse.setValue(null);
-                this.getTabHydrant().headerFilterPlugin.fields.dispoTerrestre.setValue(0);
-                this.getTabHydrant().headerFilterPlugin.fields.nomNatureDeci.setValue(null);
+
+                var fields = this.getTabHydrant().headerFilterPlugin.fields.nature;
+                if(fields.nature) { fields.nature.setValue(null);}
+                if(fields.dateContr) { fields.dateContr.setValue(0);}
+                if(fields.dateReco) { fields.dateReco.setValue(0);}
+                if(fields.numero) { fields.numero.setValue(null);}
+                if(fields.nomCommune) { fields.nomCommune.setValue(null);}
+                if(fields.dispoTerrestre) { fields.dispoTerrestre.setValue(0);}
+                if(fields.nomNatureDeci) { fields.nomNatureDeci.setValue(null);}
+                if(fields.numeroInterne) { fields.numeroInterne.setValue(null);}
+                if(fields.adresse) { fields.adresse.setValue(null);}
+                if(fields.nomNatureDeci) { fields.nomNatureDeci.setValue(null);}
+                if(fields.dispoHbe) { fields.dispoHbe.setValue(0);}
 
                 var cbo = this.getTabHydrant().headerFilterPlugin.fields.tournee;
                 cbo.getStore().load({
