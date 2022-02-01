@@ -65,16 +65,23 @@ public class CouvertureHydrauliqueRepository {
       condition.append("OR (identifiant IN ("+listeProjets+") AND type = 'PROJET')");
     }
 
+    // Récupération des isodistances
+    ArrayList<Integer> distances = new ArrayList<Integer>();
+    for(String s : paramConfService.getDeciIsodistances().replaceAll(" ", "").split(",")) {
+      distances.add(Integer.parseInt(s));
+    }
+
     // Ajout des jonctions
     entityManager.createNativeQuery("SELECT couverture_hydraulique.inserer_jonction_pei(id, 25, "+reseauImporte+") " +
             "FROM couverture_hydraulique.pei "+condition).getResultList();
 
     // Parcours du graphe
-    entityManager.createNativeQuery("SELECT couverture_hydraulique.parcours_couverture_hydraulique(id, "+idEtude+", "+reseauImporte+") " +
+    entityManager.createNativeQuery("SELECT couverture_hydraulique.parcours_couverture_hydraulique(id, "+idEtude+", "
+      +reseauImporte+", array"+distances+") " +
             "FROM couverture_hydraulique.pei " + condition).getResultList();
 
     // Zonage
-    entityManager.createNativeQuery("SELECT couverture_hydraulique.couverture_hydraulique_zonage("+idEtude+")").getResultList();
+    entityManager.createNativeQuery("SELECT couverture_hydraulique.couverture_hydraulique_zonage("+idEtude+", array"+distances+")").getResultList();
 
     // Retrait des jonctions
     entityManager.createNativeQuery("SELECT couverture_hydraulique.retirer_jonction_pei(r.pei_troncon) " +

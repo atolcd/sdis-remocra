@@ -603,3 +603,13 @@ Méthodes disponibles pour la symbologie des PEI : link:../pei/Symbologie_PEI{ou
 * Identifiant de l'utilisateur utilisé comme créeateur des processus ETl
 * Par défaut : ```remocra-adm-app```
 
+== Planification DECI ==
+
+=== DECI_ISODISTANCES ===
+* Isodistances à parcourir lors de la création de la couverture hydraulique
+* Nombres entiers par ordre croissant, séparés par des virgules
+* Par défaut : ```100, 150, 300, 350```
+
+=== DECI_DISTANCE_MAX_PARCOURS ===
+* Distance maximum de parcours sur le réseau routier lors du calcul de la couverture hydraulique
+* Par défaut : ```300```

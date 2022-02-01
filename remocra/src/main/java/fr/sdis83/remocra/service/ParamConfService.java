@@ -329,6 +329,10 @@ public class ParamConfService {
         return (Integer) this.getValue(ParamConfParam.DECI_DISTANCE_MAX_PARCOURS, 300);
     }
 
+    public String getDeciIsodistances() {
+        return (String) this.getValue(ParamConfParam.DECI_ISODISTANCES, "100,150,300,350");
+    }
+
     public String getDashboardBaseUrl() {
         return (String) this.getValue(ParamConfParam.DASHBOARD_BASE_URL, "http://localhost:5000/");
     }
