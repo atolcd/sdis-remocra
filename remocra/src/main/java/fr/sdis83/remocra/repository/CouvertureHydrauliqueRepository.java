@@ -107,7 +107,7 @@ public class CouvertureHydrauliqueRepository {
 
     Object[] result = (Object[]) entityManager.createNativeQuery(query).getSingleResult();
 
-    Long idPei = Long.valueOf(result[0].toString());
+    Long idPei = (result[0] != null && result[0].toString() != null) ? Long.valueOf(result[0].toString()) : null;
     String geometrieChemin = (result[1] != null) ? result[1].toString() : null;
     String distance = (result[2] != null) ? result[2].toString() : null;
 
