@@ -150,14 +150,14 @@ const visualisationCourriers = function(id){
   return v
 }
 
-const planificationDeci = function(id, cleIgn){
+const planificationDeci = function(id, cleIgn, bounds){
   var v = new Vue({
     el: '#' + id,
     bus: new Vue(),
     components: {
         PlanificationDeci
     },
-    template: "<PlanificationDeci cleIgn="+cleIgn+" />"
+    template: "<PlanificationDeci cleIgn="+cleIgn+" bounds="+bounds+" />"
   })
   return v
 }
@@ -225,5 +225,5 @@ export {
   olMap,
   olMapEtude,
   buildDashboard
-  
+
 }

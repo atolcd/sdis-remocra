@@ -66,6 +66,11 @@ export default {
       required: true
     },
 
+    bounds : {
+      type: String,
+      required: false
+    },
+
     cleIgn: {
       type: String,
       required: false
@@ -125,6 +130,16 @@ export default {
 
   mounted: function() {
     this.olMap = this.$refs['olMap'];
+    // Si un extent a été fourni, on centre la map dessus
+    if(this.bounds != null) {
+      var srid = this.bounds.split(";")[0];
+      var extent = [];
+      _.forEach((this.bounds.split(";")[1]).split(","), n => {
+        extent.push(Number(n));
+      });
+      this.olMap.map.getView().fit(OlProj.transformExtent(extent, srid, 'EPSG:3857'));
+    }
+
     this.toolBar = this.$refs['olMap'].$refs['toolBar'];
     this.processHiddenValues["ID_OBJET"] = this.idEtude;
     this.$nextTick(() => {

@@ -7,7 +7,11 @@
         <img src="../../assets/img/resultset_previous.png" width="16"/>Quitter l'étude
       </b-button>
 
-      <OlMapEtude :cleIgn="cleIgn" :idEtude="selectedEtude" :reseauImporte="selectedEtudeReseauImporte" :isClosed="selectedEtudeStatut == 'TERMINEE'"></OlMapEtude>
+      <OlMapEtude :cleIgn="cleIgn"
+                  :idEtude="selectedEtude"
+                  :reseauImporte="selectedEtudeReseauImporte"
+                  :isClosed="selectedEtudeStatut == 'TERMINEE'"
+                  :bounds="bounds"></OlMapEtude>
     </div>
 
     <div v-else>
@@ -161,6 +165,11 @@ export default {
 
   props: {
     cleIgn: {
+      type: String,
+      required: false
+    },
+
+    bounds : {
       type: String,
       required: false
     }
