@@ -216,7 +216,8 @@ public class HydrantVisitesUseCase {
         pression = form.pression();
         pressionDyn = form.pressionDynamique();
         pressionDynDeb = form.pressionDynamiqueDebitMax();
-        if(debit >= 0 || debitMax >= 0 || pression >= 0 || pressionDyn >= 0 || pressionDynDeb >= 0) {
+        if((debit != null && debit >= 0) || (debitMax != null && debitMax >= 0) || (pression != null && pression >= 0) ||
+          (pressionDyn != null && pressionDyn >= 0) || (pressionDynDeb != null && pressionDynDeb >= 0)) {
           ctrlDebitPression = true;
         }
       }
