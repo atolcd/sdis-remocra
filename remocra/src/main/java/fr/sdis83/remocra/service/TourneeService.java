@@ -57,9 +57,16 @@ public class TourneeService extends AbstractService<Tournee> {
         if ("id".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.get("id");
             predicat = cBuilder.equal(cpPath, itemFilter.getValue());
-        } else if ("query".equals(itemFilter.getFieldName())) {
-            Expression<String> cpPath = from.get("nom");
-            predicat = cBuilder.like(cBuilder.concat("", cBuilder.upper(cpPath)), itemFilter.getValue().toUpperCase() + "%");
+        } else if ("query".equals(itemFilter.getFieldName())) { // Recherche sur le nom de la tournée OU le nom de l'organisme
+            Expression<String> cpPath = from.get("id");
+            String sql = "SELECT t.id from remocra.tournee t " +
+              "JOIN remocra.organisme o ON o.id = t.affectation " +
+              "WHERE UPPER(t.nom) LIKE UPPER('%"+itemFilter.getValue()+"%') OR UPPER(o.nom) LIKE UPPER('%"+itemFilter.getValue()+"%');";
+
+            Query query = entityManager.createNativeQuery(sql);
+            List<BigInteger> idTournees = query.getResultList();
+
+            predicat = cBuilder.isTrue(cpPath.in(idTournees));
         } else if ("nom".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.get("nom");
             predicat = cBuilder.like(cBuilder.concat("", cBuilder.upper(cpPath)), "%"+ itemFilter.getValue().toUpperCase() + "%");
