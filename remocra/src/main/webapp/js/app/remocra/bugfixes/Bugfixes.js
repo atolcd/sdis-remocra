@@ -380,3 +380,73 @@ Ext.Element.prototype.toggleDisplay = function(expand, animate) {
         this.addCls('remocra-collapse');
     }
 };
+
+/**
+*  Patch permettant d'éviter la propagation de l'événement
+*  Solution : pour les types d'événements définis (supportedPassiveTypes), sur l'addEventListener, on surcharge l'événement
+*  en ajoutant la propriété 'passive' à false.
+*  Sources : https://github.com/zzarcon/default-passive-events
+**/
+function eventListenerOptionsSupported () {
+  var supported = false;
+
+    try {
+      var opts = Object.defineProperty({}, 'passive', {
+        get : function () {
+          supported = true;
+        }
+     });
+
+    window.addEventListener('test', null, opts);
+    window.removeEventListener('test', null, opts);
+  } catch (e) {}
+
+  return supported;
+}
+
+var defaultOptions = {
+  passive: false,
+  capture: false
+};
+var supportedPassiveTypes = [
+  'scroll', 'wheel',
+  'touchstart', 'touchmove', 'touchenter', 'touchend', 'touchleave',
+  'mouseout', 'mouseleave', 'mouseup', 'mousedown', 'mousemove', 'mouseenter', 'mousewheel', 'mouseover'
+];
+function getDefaultPassiveOption (passive, eventName) {
+  if (passive !== undefined) {
+    return passive;
+  }
+
+  return supportedPassiveTypes.indexOf(eventName) === -1 ? false : defaultOptions.passive;
+}
+
+function getWritableOptions (options) {
+  var passiveDescriptor = Object.getOwnPropertyDescriptor(options, 'passive');
+
+  return passiveDescriptor && passiveDescriptor.writable !== true && passiveDescriptor.set === undefined
+    ? Object.assign({}, options)
+    : options;
+}
+
+function overwriteAddEvent (superMethod) {
+  EventTarget.prototype.addEventListener = function (type, listener, options) {
+    var usesListenerOptions = typeof options === 'object' && options !== null;
+    var useCapture          = usesListenerOptions ? options.capture : options;
+
+    options         = usesListenerOptions ? getWritableOptions(options) : {};
+    options.passive = getDefaultPassiveOption(options.passive, type);
+    options.capture = useCapture === undefined ? defaultOptions.capture : useCapture;
+
+    superMethod.call(this, type, listener, options);
+  };
+
+  EventTarget.prototype.addEventListener._original = superMethod;
+}
+
+var supportsPassive = eventListenerOptionsSupported();
+
+if (supportsPassive) {
+  var addEvent = EventTarget.prototype.addEventListener;
+  overwriteAddEvent(addEvent);
+}
