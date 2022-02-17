@@ -47,12 +47,8 @@
         <b-form-group v-if='param.formulaireTypeControle=="autocomplete"' :id="param.nom" inputType='autocomplete' :required="param.obligatoire" class="parametreModele" horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
           <search-process-param :ref="'searchinput'+param.id" :paramId="param.id"></search-process-param>
         </b-form-group>
-        <b-form-group v-if='param.formulaireTypeControle=="combo"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
-          <b-form-select size="sm" :id="param.nom" :required='param.obligatoire' class="form-control parametreModele">
-            <option v-for="(value, key) in getOption(param.id)" :key="key" :value='value.valeur' :selected='value.valeur==value.formulaireValeurDefaut'>
-              {{value.libelle}}
-            </option>
-          </b-form-select>
+        <b-form-group v-if='param.formulaireTypeControle=="combo"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id" :required='param.obligatoire'>
+          <AutoCompleteComponent :id="param.id" :ref="'autocomplete'+param.id" :options="getOption(param.id)" class="parametreModele" inputType='combo'></AutoCompleteComponent>
         </b-form-group>
         <b-form-group v-if='param.formulaireTypeControle=="checkbox"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
           <input type='checkbox' style="width:5%" :id="param.nom" :checked="param.formulaireValeurDefaut" inputType='checkbox' class="form-control parametreModele" />
@@ -218,10 +214,11 @@
 <script>
   import axios from 'axios'
   import _ from 'lodash'
+  import AutoCompleteComponent from './Autocomplete/AutoCompleteComponent.vue'
 
 export default {
   components: {
-    //pdf
+    AutoCompleteComponent
   },
   name: 'Courrier',
   data() {
@@ -463,6 +460,9 @@ export default {
               formData.append(item.getAttribute('id'), value)
             } else if (item.getAttribute('inputType') === 'checkbox') {
               formData.append(item.getAttribute('id'), item.checked)
+            } else if (item.getAttribute('inputType') === 'combo') {
+              var combo = this.$refs['autocomplete' + item.getAttribute('id')][0];
+              formData.append(item.getAttribute('id'), combo.selected !== null ? combo.selected.valeur : null);
             } else {
               formData.append(item.getAttribute('id'), item.value)
             }
