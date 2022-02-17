@@ -292,12 +292,23 @@ public class HydrantVisitesRepository {
       Double pression = null;
       Double pressionDyn = null;
       Double pressionDynDeb = null;
-      if(visitePlusRecenteMemeType != null && visitePlusRecenteMemeType.getCtrlDebitPression()) {
-        debit = visitePlusRecenteMemeType.getDebit();
-        debitMax = visitePlusRecenteMemeType.getDebitMax();
-        pression = visitePlusRecenteMemeType.getPression();
-        pressionDyn = visitePlusRecenteMemeType.getPressionDyn();
-        pressionDynDeb = visitePlusRecenteMemeType.getPressionDynDeb();
+
+      HydrantVisite visiteDebitPressionPlusRecente = context
+        .selectFrom(HYDRANT_VISITE)
+        .where(HYDRANT_VISITE.HYDRANT.eq(visite.getHydrant())
+          .and(HYDRANT_VISITE.TYPE.eq(visite.getType()))
+          .and(HYDRANT_VISITE.ID.isDistinctFrom(visite.getId())))
+        .and(HYDRANT_VISITE.CTRL_DEBIT_PRESSION.isTrue())
+        .orderBy(HYDRANT_VISITE.DATE.desc())
+        .limit(1)
+        .fetchOneInto(HydrantVisite.class);
+
+      if(visiteDebitPressionPlusRecente != null && visiteDebitPressionPlusRecente.getCtrlDebitPression()) {
+        debit = visiteDebitPressionPlusRecente.getDebit();
+        debitMax = visiteDebitPressionPlusRecente.getDebitMax();
+        pression = visiteDebitPressionPlusRecente.getPression();
+        pressionDyn = visiteDebitPressionPlusRecente.getPressionDyn();
+        pressionDynDeb = visiteDebitPressionPlusRecente.getPressionDynDeb();
       }
       context.update(HYDRANT_PIBI)
         .set(HYDRANT_PIBI.DEBIT, debit)
