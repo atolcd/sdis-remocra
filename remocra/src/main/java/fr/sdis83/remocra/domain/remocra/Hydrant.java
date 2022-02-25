@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -237,6 +238,10 @@ public class Hydrant implements Featurable {
     @ManyToOne
     private Organisme maintenanceDeci;
 
+    @OneToMany(mappedBy = "hydrant", cascade = CascadeType.ALL)
+    @OrderBy("date desc")
+    private Set<HydrantVisite> visites;
+
     // Autre
     @Override
     public Feature toFeature() {
@@ -250,10 +255,11 @@ public class Hydrant implements Featurable {
         feature.addProperty("internalId", this.getId());
         feature.addProperty("tournees", this.getTourneesId());
         feature.addProperty("nom tournées", this.getTourneesNom());
-	      feature.addProperty("nomNatureDeci", this.getNomNatureDeci());
-	      feature.addProperty("codeNatureDeci", this.getCodeNatureDeci());
-	      feature.addProperty("siteId", this.getSiteId());
-	      feature.addProperty("siteNom", this.getSiteNom());
+        feature.addProperty("nomNatureDeci", this.getNomNatureDeci());
+        feature.addProperty("codeNatureDeci", this.getCodeNatureDeci());
+        feature.addProperty("siteId", this.getSiteId());
+        feature.addProperty("siteNom", this.getSiteNom());
+        feature.addProperty("gestionnaireNom", this.getGestionnaireNom());
 
         // PIBI
         String diametreCode = null;
@@ -358,6 +364,13 @@ public class Hydrant implements Featurable {
     public String getSiteNom(){
         if(this.getSite() != null) {
             return this.getSite().getNom();
+        }
+        return null;
+    }
+
+    public String getGestionnaireNom(){
+        if(this.getGestionnaire() != null) {
+            return this.getGestionnaire().getNom();
         }
         return null;
     }

@@ -43,6 +43,10 @@ Ext.define('Sdis.Remocra.features.hydrants.TabTournee', {
             text: 'Renommer la tournée',
             itemId: 'renameTournee',
             disabled: true
+        },{
+            text: 'Saisir la visite',
+            itemId: 'saisirVisite',
+            disabled: true
         },'->',{
             text: 'Supprimer',
             iconCls: 'deleteIcon',

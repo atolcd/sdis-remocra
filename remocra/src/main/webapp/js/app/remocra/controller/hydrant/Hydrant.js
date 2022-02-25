@@ -159,6 +159,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             'crHydrantsTournee #deleteTournee': {
                 click: this.deleteTournee
             },
+            'crHydrantsTournee #saisirVisite': {
+                click: this.saisirVisite
+            },
             'crHydrantsTournee #cancelReservation': {
                 click: this.cancelReservation
             },
@@ -382,6 +385,13 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         if (!Sdis.Remocra.Rights.hasRight('TOURNEE_POURCENTAGE_C')) {
              fiche.down('crHydrantsTournee #finaliseTournee').hide();
              fiche.down('crHydrantsTournee #resetTournee').hide();
+        }
+        if (!Sdis.Remocra.Rights.hasRight('HYDRANTS_CONTROLE_C')
+        && !Sdis.Remocra.Rights.hasRight('HYDRANTS_RECEPTION_C')
+        && !Sdis.Remocra.Rights.hasRight('HYDRANTS_RECONNAISSANCE_C')
+        && !Sdis.Remocra.Rights.hasRight('HYDRANTS_CREATION_C')
+        && !Sdis.Remocra.Rights.hasRight('HYDRANTS_ANOMALIES_C')) {
+            fiche.down('crHydrantsTournee #saisirVisite');
         }
         if (!Sdis.Remocra.Rights.hasRight('TOURNEE_RESERVATION_D')) {
             fiche.down('crHydrantsTournee #cancelReservation').hide();
@@ -995,6 +1005,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         tabTournee.queryById('deleteTournee').setDisabled(records.length == 0);
         tabTournee.queryById('resetTournee').setDisabled(records.length == 0);
         tabTournee.queryById('renameTournee').setDisabled(records.length == 0);
+        tabTournee.queryById('saisirVisite').setDisabled(records.length == 0);
         tabTournee.queryById('finaliseTournee').setDisabled(records.length == 0);
         tabTournee.queryById('cancelReservation').setDisabled(records.length == 0 || records[0].get('reservation') == null);
         if (tabTournee.length > 0) {
@@ -1107,6 +1118,20 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 }
             }, this);
         }
+    },
+
+    saisirVisite: function() {
+
+      var tournee = this.getSelectedTournee();
+      if (Ext.isDefined(window.remocraVue)) {
+        var d = document.createElement('div');
+        var id = "show-modalSaisieVisite-"+(++Ext.AbstractComponent.AUTO_ID);
+        d.id=id;
+        document.body.appendChild(d);
+        var vueSaisieVisite = window.remocraVue.modalSaisieVisite(d, {tournee: tournee.data});
+      } else {
+        console.log('Client : remocraVue undefined');
+      }
     },
 
     cancelReservation: function() {

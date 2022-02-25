@@ -426,4 +426,12 @@ privileged aspect Hydrant_Roo_JavaBean {
     public void Hydrant.setAuteurModificationFlag(String auteurModificationFlag) {
         this.auteurModificationFlag = auteurModificationFlag;
     }
+
+    public Set<HydrantVisite> Hydrant.getVisites() {
+        return this.visites;
+    }
+
+    public void Hydrant.setVisites(Set<HydrantVisite> visites) {
+        this.visites = visites;
+    }
 }

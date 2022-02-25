@@ -13,6 +13,7 @@ import OlMap from './components/OlMap/OlMap.vue'
 import OlMapEtude from './components/planification_deci/OlMapEtude.vue'
 import Dashboard from './components/Dashboard'
 import TransfertsAutomatises from './components/TransfertsAutomatises.vue'
+import ModalSaisieVisite from './components/tournee/ModalSaisieVisite.vue'
 
 // import router from './router'
 import BootstrapVue from 'bootstrap-vue'
@@ -211,6 +212,18 @@ const transfertsAutomatises = function(id){
   return v
 }
 
+const modalSaisieVisite = function(id, data){
+  var v = new Vue({
+    el: id,
+    bus: new Vue(),
+    components: {
+        ModalSaisieVisite
+    },
+    template: "<ModalSaisieVisite tournee='"+JSON.stringify(data.tournee)+"' />"
+  })
+  return v
+}
+
 export {
   transfertsAutomatises,
   criseBuildMap,
@@ -224,6 +237,6 @@ export {
   planificationDeci,
   olMap,
   olMapEtude,
-  buildDashboard
-
+  buildDashboard,
+  modalSaisieVisite
 }
