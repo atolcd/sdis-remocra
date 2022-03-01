@@ -434,4 +434,12 @@ privileged aspect Hydrant_Roo_JavaBean {
     public void Hydrant.setVisites(Set<HydrantVisite> visites) {
         this.visites = visites;
     }
+
+    public Date Hydrant.getDateChangementDispoTerrestre() {
+        return this.dateChangementDispoTerrestre;
+    }
+
+    public void Hydrant.setDateChangementDispoTerrestre(Date dateChangementDispoTerrestre) {
+        this.dateChangementDispoTerrestre = dateChangementDispoTerrestre;
+    }
 }

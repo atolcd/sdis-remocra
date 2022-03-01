@@ -97,6 +97,7 @@
                         <p v-if="item.dispoTerrestre === 'DISPO'" class="bg-success rounded-lg text-light font-weight-bolder dispo">Disponible</p>
                         <p v-else-if="item.dispoTerrestre === 'NON_CONFORME'" class="bg-warning rounded-lg dispo dispoLg text-light">Non conforme</p>
                         <p v-else class="bg-danger rounded-lg text-light font-weight-bolder dispo">Indisponible</p>
+                        <span v-if="item.dateChangementDispoTerrestre != null">({{ item.dateChangementDispoTerrestre | printDate }})</span>
                       </td>
                       <td>
                         <div class="onoffswitch">
@@ -508,7 +509,6 @@ export default {
 </script>
 
 <style scoped>
-
 .ModalSaisieVisite.loading .modal-body::after {
   content: 'Récupération des données...';
   margin-left: calc(50% - 67px);

@@ -242,6 +242,18 @@ public class Hydrant implements Featurable {
     @OrderBy("date desc")
     private Set<HydrantVisite> visites;
 
+    // Date du dernier changement de disponibilité terreste
+    @Formula("(select min(th.date_operation) " +
+      "from tracabilite.hydrant th " +
+      "where th.id_hydrant = id and th.date_operation > (" +
+      "select max(th.date_operation) " +
+      "from tracabilite.hydrant th " +
+      "join remocra.hydrant h on h.id = th.id_hydrant " +
+      "where th.id_hydrant = id and th.dispo_terrestre != h.dispo_terrestre))")
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
+    private Date dateChangementDispoTerrestre;
+
     // Autre
     @Override
     public Feature toFeature() {
