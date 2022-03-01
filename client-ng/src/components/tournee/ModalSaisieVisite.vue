@@ -5,10 +5,11 @@
              no-close-on-backdrop
              :title="this.modalTitle"
              ok-title="Valider"
+             :ok-only="this.showErreurs"
              cancel-title="Annuler"
              size="xl"
              @ok="handleOk">
-      <div v-if="this.dataTournee !== null">
+      <div v-if="this.dataTournee !== null && !this.showErreurs">
         <form>
           <div class="row">
             <div class="col-md-4">
@@ -121,6 +122,32 @@
         </form>
 
       </div>
+      <div v-else-if="this.showErreurs">
+        <b-alert variant="warning" show>
+          <p>La totalité des visites n'a pas pu être enregistré par Remocra <br />
+            Veuillez trouver ci-dessous la liste des PEI concernés et la raison pour laquelle la visite n'a pas pu être renseignée<br />
+            Merci de renseigner la visite manuellement pour chacun de ces PEI
+          </p>
+        </b-alert>
+        <div id="tableScroll">
+          <table class="table table-striped table-sm table-bordered" id="tableErreurs">
+            <thead class="thead-light">
+              <th scope="col">PEI</th>
+              <th scope="col">Motif de refus</th>
+            </thead>
+            <tbody>
+              <tr v-for="(erreur, index) in this.erreurs" :key="index">
+                <td>
+                  {{hydrants.filter(h => h.id == erreur.id)[0].numero}}
+                </td>
+                <td>
+                  {{erreur.message}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </b-modal>
 
     <ModalPointsSpecifiques v-on:saisiePointsSpecifiques="saisiePointsSpecifiques"
@@ -170,6 +197,9 @@ export default {
       anomalies: [],
       anomaliesCriteres: [],
 
+      showErreurs: false,
+      erreurs: null,
+
       formDate: null,
       formTime: null,
       formTypeVisite: null,
@@ -212,6 +242,8 @@ export default {
     this.modalTitle = this.dataTournee.nom+" ("+this.dataTournee.hydrantCount+")";
     this.anomaliesCriteres = [];
     this.anomalies = [];
+    this.showErreurs = false;
+    this.erreurs = null;
 
     this.recuperationHydrants();
     this.$refs.modalSaisieVisite.show();
@@ -368,8 +400,72 @@ export default {
 
     handleOk: function(evt) {
       evt.preventDefault();
-      if(this.checkFormValidity()) { // Si le formulaire est valide, on envoie les données au serveur
-        // TODO : envoi des données au serveur
+      if (this.showErreurs) { // Si on est déjà sur l'interface de récap des erreurs, on ferme simplement la modale
+        this.$nextTick(() => {
+          this.$refs.modalSaisieVisite.hide();
+        })
+      } else if(this.checkFormValidity()) { // Si le formulaire est valide, on envoie les données au serveur
+        var data = [];
+        _.forEach(this.hydrants, h => {
+          var dataHydrant = {
+            idHydrant: h.id,
+            agent1: this.formAgent1,
+            agent2: this.formAgent2,
+            date: moment(this.formDate + " " + this.formTime).format("YYYY-MM-DD HH:mm:ss"),
+            type: this.formTypeVisite,
+            ctrl_debit_pression: this.formCtrlDebitPression,
+            debit: null,
+            debitMax: null,
+            pression: null,
+            pressionDyn: null,
+            pressionDynDeb: null,
+            anomalies: [],
+            observations: null
+          };
+
+          // Si des données spécifiques ont pu être renseignées
+          if(!h.raz && h.newVisite != null) {
+            dataHydrant.observations = h.newVisite.observations;
+            dataHydrant.anomalies = h.newVisite.anomalies;
+
+            // Si des données de débit/pression ont pu être renseignées
+            if(this.formCtrlDebitPression) {
+              dataHydrant.debit = h.newVisite.debit;
+              dataHydrant.debitMax = h.newVisite.debitMax;
+              dataHydrant.pression = h.newVisite.pression;
+              dataHydrant.pressionDyn = h.newVisite.pressionDyn;
+              dataHydrant.pressionDynDeb = h.newVisite.pressionDynDeb;
+            }
+          }
+          data.push(dataHydrant);
+        });
+
+        axios.post('/remocra/tournees/saisievisite', JSON.stringify(data), {
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          }
+        }).then(response => {
+          if(response.data.message != null && response.data.message.length > 0 && response.data.message != "[]") {
+            this.erreurs = JSON.parse(response.data.message);
+            this.showErreurs = true;
+            this.$notify({
+              group: 'remocra',
+              title: 'Saisie invalide',
+              type: 'warn',
+              text: 'Remocra n\'a pas pu enregistrer la totalité des visites'
+            })
+          } else {
+            this.$nextTick(() => { //Fermeture manuelle de la modale
+              this.$refs.modalSaisieVisite.hide();
+              this.$notify({
+                group: 'remocra',
+                title: 'Visites sauvegardées',
+                type: 'success',
+                text: 'Les visites ont bien été enregistrées'
+              })
+            })
+          }
+        });
       }
     },
 

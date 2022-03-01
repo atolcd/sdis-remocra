@@ -5,6 +5,7 @@ import java.util.List;
 
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.domain.remocra.Hydrant;
+import fr.sdis83.remocra.repository.HydrantVisiteRepository;
 import fr.sdis83.remocra.util.ExceptionUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +37,9 @@ public class TourneeController {
 
     @Autowired
     private UtilisateurService utilisateurService;
+
+    @Autowired
+    private HydrantVisiteRepository hydrantVisiteRepository;
 
     @RequestMapping(value = "", headers = "Accept=application/json")
     @PreAuthorize("hasRight('TOURNEE_R')")
@@ -184,6 +189,16 @@ public class TourneeController {
 
             sb.append("</ul>");
             return new SuccessErrorExtSerializer(true, sb.toString()).serialize();
+        } catch (Exception e) {
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
+    }
+
+    @RequestMapping(value = "/saisievisite", method = RequestMethod.POST, headers = "Accept=application/json")
+    public ResponseEntity<java.lang.String> saisievisite(final @RequestBody String json) {
+        try {
+            String str = hydrantVisiteRepository.addVisiteFromTournee(json);
+            return new SuccessErrorExtSerializer(true, str).serialize();
         } catch (Exception e) {
             return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
         }

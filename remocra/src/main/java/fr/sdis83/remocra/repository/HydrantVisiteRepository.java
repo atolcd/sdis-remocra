@@ -2,6 +2,7 @@ package fr.sdis83.remocra.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantAnomalie;
 import fr.sdis83.remocra.service.UtilisateurService;
@@ -115,6 +116,30 @@ public class HydrantVisiteRepository {
      return newVisite;
     }
     return null;
+  }
+
+  /**
+   * Ajoute des visites aux hydrants depuis la saisie de visite d'une tournéee
+   * @param json La liste de toutes les visites à ajouter
+   * @return Un tableau JSON vide si toutes les visites ont été ajoutées, un tableau contenant la raison du rejet le cas échéant
+   */
+  public String addVisiteFromTournee(String json) throws IOException {
+    ArrayList<String> resultats = new ArrayList<String>();
+    ArrayList<Map<String, Object>> data = objectMapper.readValue(json.toString(), new TypeReference<ArrayList<Map<String, Object>>>() {});
+    for(Map<String, Object> hydrantData : data) {
+      Long idHydrant = JSONUtil.getLong(hydrantData, "idHydrant");
+      try {
+        // On réutilise la même fonction que lors de la création d'une visite depuis la fiche PEI, les vérifications sont identiques
+        this.addVisiteFromFiche(idHydrant, objectMapper.writeValueAsString(hydrantData));
+      } catch (Exception e) {
+        // Erreur survenue lors de l'ajout : on renvoie la raison de l'erreur au client
+        ObjectNode erreur = objectMapper.createObjectNode();
+        erreur.put("id", idHydrant);
+        erreur.put("message", e.getMessage());
+        resultats.add(erreur.toString());
+      }
+    }
+    return resultats.toString();
   }
 
   /**
