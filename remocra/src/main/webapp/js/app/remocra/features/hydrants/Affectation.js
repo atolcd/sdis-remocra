@@ -46,6 +46,7 @@ Ext.define('Sdis.Remocra.features.hydrants.Affectation', {
                     remoteSort: true,
                     remoteFilter: false,
                     autoLoad: true,
+                    sorters: ['nom'],
                     pageSize: 999
                 },
                 pageSize: false, // bizarrerie ExtJS
