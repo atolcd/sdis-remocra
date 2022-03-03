@@ -111,12 +111,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabTournee', {
                     change: deferredApplyFilter
                 }
             }
-        },{
-            text: 'Synchronisé',
-            xtype: 'datecolumn',
-            format: 'd/m/Y',
-            dataIndex: 'lastSync'
-        },{
+        }, {
             text: 'Etat %',
             dataIndex: 'etat',
             renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
