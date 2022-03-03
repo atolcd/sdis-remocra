@@ -53,6 +53,12 @@ Ext.define('Sdis.Remocra.features.hydrants.TabTournee', {
             tooltip: 'Outil de génération de courriers',
             iconCls: 'new-courrierIcon',
             disabled: false
+        }, {
+            text: 'Télécharger la carte des tournées',
+            itemId: 'downloadMapTournee',
+            tooltip: 'Télécharger la carte des tournées',
+            iconCls: 'download-atlasIcon',
+            disabled: true
         },
         '->',{
             text: 'Supprimer',

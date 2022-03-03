@@ -168,6 +168,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             'crHydrantsTournee #newCourrierBtn': {
                 click: this.showFicheCourrierFromMap
             },
+            'crHydrantsTournee #downloadMapTournee': {
+                click: this.downloadMapTournee
+            },
             // Onglet "Localisation" (la carte)
             'crHydrantsMap': {
                 layersadded: this.initControlMap,
@@ -1011,6 +1014,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         tabTournee.queryById('saisirVisite').setDisabled(records.length == 0);
         tabTournee.queryById('finaliseTournee').setDisabled(records.length == 0);
         tabTournee.queryById('cancelReservation').setDisabled(records.length == 0 || records[0].get('reservation') == null);
+        tabTournee.queryById('downloadMapTournee').setDisabled(records.length == 0);
         if (tabTournee.length > 0) {
             this.lastTournee = tabTournee[0];
         }
@@ -1155,6 +1159,26 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         },this);
     },
 
+    downloadMapTournee: function() {
+        var tournee = this.getSelectedTournee();
+        var bounds = Sdis.Remocra.util.Util.getBounds(tournee.get('geometrie'));
+        var params = {
+           LAYERS : 'remocra:TOURNEE',
+           TRANSPARENT :'true',
+           SERVICE : 'wms',
+           REQUEST : 'GetMap',
+           STYLES : '',
+           FORMAT : 'application/pdf',
+           SRS : 'EPSG:900913',
+           BBOX : bounds.toBBOX(),
+           VIEWPARAMS : "tourne_id:" + tournee.getId(),
+           WIDTH: 2389,
+           HEIGHT: 1050
+        };
+       var url =  Sdis.Remocra.util.Util.withBaseUrl('../geoserver/remocra/wms');
+       url += "?"+Ext.Object.toQueryString(params);
+       window.location = url;
+    },
     /***************************************************************************
      * Onglet "Localisation" (la Carte)
      **************************************************************************/
