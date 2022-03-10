@@ -133,6 +133,17 @@ Exemples :
 * [.underline]#74298#
 * [.underline]#1265#
 
+=== 95 ===
+Méthode :
+
+* *<code insee commune>.<numéro interne>*
+* <numéro interne> sur 5 chiffres (préfixe consituté de 0 si nécessaire)
+
+Exemples :
+
+* [.underline]#95462.00069# : PEI numéro 69 de la commune de OMERVILLE
+* [.underline]#95258.00169# : PEI numéro 169 de la commune de FROUVILLE
+
 == Numéro interne ==
 
 === 77 ===
@@ -154,3 +165,7 @@ Exemples :
 === 49 ===
 
 * Dernier numéro disponible sans aucune contrainte (commun à tout le département)
+
+=== 95 ===
+* Dernier numéro disponible supérieur ou égal 1000 pour les PEI Privé ou Privé sous convention
+* Dernier numéro disponible inférieur à 1000 pour les PEI Public

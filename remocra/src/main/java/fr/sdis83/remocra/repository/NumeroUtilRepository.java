@@ -37,7 +37,7 @@ public class NumeroUtilRepository {
   }
 
   public enum MethodeNumerotation {
-        M_09, M_77, M_83, M_86, M_89, M_42, M_78, M_66, M_21, M_49, M_38
+        M_09, M_77, M_83, M_86, M_89, M_42, M_78, M_66, M_21, M_49, M_38, M_95
     }
 
     public static NumeroUtilRepository.MethodeNumerotation getHydrantNumerotationMethode() {
@@ -55,7 +55,7 @@ public class NumeroUtilRepository {
     }
 
     public enum MethodeNumerotationInterne {
-        M_77, M_83, M_86, M_42, M_78, M_49
+        M_77, M_83, M_86, M_42, M_78, M_49, M_95
     }
 
     public static NumeroUtilRepository.MethodeNumerotationInterne getHydrantNumerotationInterneMethode() {
@@ -105,6 +105,8 @@ public class NumeroUtilRepository {
                 return NumeroUtilRepository.computeNumero49(hydrant);
             case M_38:
                 return NumeroUtilRepository.computeNumero38(hydrant);
+            case M_95:
+                return NumeroUtilRepository.computeNumero95(hydrant);
             default:
                 return NumeroUtilRepository.computeNumero83(hydrant);
         }
@@ -266,6 +268,21 @@ public class NumeroUtilRepository {
     }
 
     /**
+     * <code insee commune (5 caractères)>.<numéro interne (5 caractères)>
+     * <p>
+     * Exemple : 95000-00001
+     *
+     * @param hydrant
+     * @return
+     */
+    protected static String computeNumero95(Hydrant hydrant) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getHydrantCommune(hydrant).getInsee());
+        sb.append(".");
+        return sb.append(String.format("%05d", hydrant.getNumeroInterne())).toString();
+    }
+
+    /**
      * <Code nature pour les PIBI ou les RI, PN pour les autres> <code commune>
      * <numéro interne>
      * <p>
@@ -362,7 +379,7 @@ public class NumeroUtilRepository {
         hydrant.setZoneSpeciale((zp != null) ? zp.getId() : null);
 
         // Si création : attribution d'un nouveau numéro interne
-      Integer numInterne = NumeroUtilRepository.computeNumeroInterne(hydrant);
+        Integer numInterne = NumeroUtilRepository.computeNumeroInterne(hydrant);
         if (hydrant.getNumeroInterne() == null || hydrant.getNumeroInterne().intValue() < 1) {
             hydrant.setNumeroInterne(numInterne);
         }
@@ -394,6 +411,8 @@ public class NumeroUtilRepository {
                 return NumeroUtilRepository.computeNumeroInterne78(hydrant);
             case M_49:
                 return NumeroUtilRepository.computeNumeroInterne49(hydrant);
+            case M_95:
+                return NumeroUtilRepository.computeNumeroInterne95(hydrant);
             default:
                 return NumeroUtilRepository.computeNumeroInterne83(hydrant);
         }
@@ -522,6 +541,38 @@ public class NumeroUtilRepository {
         }
         return numInterne;
 
+    }
+
+    protected static Integer computeNumeroInterne95(Hydrant hydrant) {
+        // Retour du numéro interne s'il existe
+        if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
+            return hydrant.getNumeroInterne();
+        }
+        Integer numInterne = null;
+        try {
+            String codeNature = context.select(TYPE_HYDRANT_NATURE_DECI.CODE)
+                    .from(TYPE_HYDRANT_NATURE_DECI)
+                    .where(TYPE_HYDRANT_NATURE_DECI.ID.eq(hydrant.getNatureDeci()))
+                    .fetchOneInto(String.class);
+            if("PRIVE".equals(codeNature) || "CONVENTIONNE".equals(codeNature) ){
+                numInterne = context.select(DSL.max(HYDRANT.NUMERO_INTERNE))
+                        .from(HYDRANT)
+                        .where(HYDRANT.COMMUNE.eq(hydrant.getCommune()))
+                        .and(HYDRANT.NUMERO_INTERNE.greaterOrEqual(new Integer(1000)))
+                        .fetchOneInto(Integer.class);
+                numInterne++;
+            } else {
+                numInterne = context.select(DSL.max(HYDRANT.NUMERO_INTERNE))
+                        .from(HYDRANT)
+                        .where(HYDRANT.COMMUNE.eq(hydrant.getCommune()))
+                        .and(HYDRANT.NUMERO_INTERNE.lessThan(new Integer(1000)))
+                        .fetchOneInto(Integer.class);
+                numInterne++;
+            }
+        } catch (Exception e) {
+            numInterne = 99999;
+        }
+        return numInterne;
     }
 
     private static ZoneSpeciale getHydrantZoneSpeciale(Hydrant h) {
