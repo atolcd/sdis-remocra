@@ -47,15 +47,6 @@ public class HydrantPenaRepository {
     ObjectMapper objectMapper = new ObjectMapper();
     Map<String, Object> aspirationsData = objectMapper.readValue(data.get("aspirations").toString(), new TypeReference<Map<String,Object>>(){});
 
-    try {
-      this.hydrantAspirationRepository.addHydrantAspirationFromFiche(id, aspirationsData.get("addAspirations").toString());
-      this.hydrantAspirationRepository.deleteHydrantAspirationsFromFiche(id, aspirationsData.get("deleteAspirations").toString());
-    } catch (CRSException e) {
-      e.printStackTrace();
-    } catch (IllegalCoordinateException e) {
-      e.printStackTrace();
-    }
-
     HydrantPena pena = new HydrantPena();
     pena.setId(id);
     pena.setIllimitee(JSONUtil.getBoolean(data, "illimitee"));
@@ -65,7 +56,17 @@ public class HydrantPenaRepository {
     pena.setMateriau(JSONUtil.getLong(data, "materiau"));
     pena.setHbe(JSONUtil.getBoolean(data, "hbe"));
 
-    return this.createHydrantPena(pena);
+    HydrantPena record = this.createHydrantPena(pena);
+    try {
+      this.hydrantAspirationRepository.addHydrantAspirationFromFiche(id, aspirationsData.get("addAspirations").toString());
+      this.hydrantAspirationRepository.deleteHydrantAspirationsFromFiche(id, aspirationsData.get("deleteAspirations").toString());
+    } catch (CRSException e) {
+      e.printStackTrace();
+    } catch (IllegalCoordinateException e) {
+      e.printStackTrace();
+    }
+    return record;
+
   }
 
   /**
