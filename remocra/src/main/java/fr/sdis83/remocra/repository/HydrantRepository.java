@@ -510,6 +510,15 @@ public class HydrantRepository {
       arrayWarnings.add(str);
     }
 
+    // On vérifie que le PEI dispose de ses deux premières visites (réception et ROI) pour pouvoir lui adjoindre une visite CTP
+    nbVisite = context.selectCount()
+        .from(HYDRANT_VISITE)
+        .where(HYDRANT_VISITE.HYDRANT.eq(h.getId()))
+        .fetchOneInto(Integer.class);
+    if(nbVisite < 2) {
+      throw new ImportCTPException("ERR_VISITES_MANQUANTES", data);
+    }
+
 
     data.put("dateCtp", formatter.format(xls_dateCtp));
 
