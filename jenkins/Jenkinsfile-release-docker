@@ -1,4 +1,5 @@
 #!/usr/bin/env groovy
+library "atolcd-jenkins"
 def user_id
 def group_id
 node {
@@ -41,39 +42,33 @@ pipeline {
       parallel {
         stage('Dependencies geoserver') {
           steps {
-            script {
-              withCredentials([usernameColonPassword(credentialsId: 'nexus3-jenkins', variable: 'NEXUS3_AUTH')]) {
-                sh '[ -f docker/geoserver/ext/geoserver-2.16.2-bin.zip ] || curl --user "$NEXUS3_AUTH" -o docker/geoserver/ext/geoserver-2.16.2-bin.zip https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/geoserver-2.16.2-bin.zip'
-                sh '[ -f docker/geoserver/ext/geoserver-2.16.2-querylayer-plugin.zip ] || curl --user "$NEXUS3_AUTH" -o docker/geoserver/ext/geoserver-2.16.2-querylayer-plugin.zip https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/geoserver-2.16.2-querylayer-plugin.zip'
-                sh '[ -f docker/geoserver/ext/jai-1_1_3-lib-linux-amd64.tar.gz ] || curl --user "$NEXUS3_AUTH" -o docker/geoserver/ext/jai-1_1_3-lib-linux-amd64.tar.gz https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/jai-1_1_3-lib-linux-amd64.tar.gz'
-                sh '[ -f docker/geoserver/ext/jai_imageio-1_1-lib-linux-amd64.tar.gz ] || curl --user "$NEXUS3_AUTH" -o docker/geoserver/ext/gjai_imageio-1_1-lib-linux-amd64.tar.gz https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/jai_imageio-1_1-lib-linux-amd64.tar.gz'
-              }
-            }
+            downloadRawNexus(repository: 'sdis-remocra', outputDir: 'docker/geoserver/ext/', onlyIfAbsent: true, remoteFiles: [
+              'ext/geoserver-2.16.2-bin.zip',
+              'ext/geoserver-2.16.2-querylayer-plugin.zip',
+              'ext/jai-1_1_3-lib-linux-amd64.tar.gz',
+              'ext/jai_imageio-1_1-lib-linux-amd64.tar.gz',
+            ])
           }
         }
         stage('Dependencies pdi-4.4-dkron') {
           steps {
-            script {
-              withCredentials([usernameColonPassword(credentialsId: 'nexus3-jenkins', variable: 'NEXUS3_AUTH')]) {
-                sh '[ -f docker/pdi-4.4-dkron/ext/pdi-ce-4.4.0-stable.zip ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-4.4-dkron/ext/pdi-ce-4.4.0-stable.zip https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/pdi-ce-4.4.0-stable.zip'
-                sh '[ -f docker/pdi-4.4-dkron/ext/pentaho-4.4-remocra-deps.zip ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-4.4-dkron/ext/pentaho-4.4-remocra-deps.zip https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/pentaho-4.4-remocra-deps.zip'
-                sh '[ -f docker/pdi-4.4-dkron/ext/postgresql-42.2.10.jre7.jar ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-4.4-dkron/ext/postgresql-42.2.10.jre7.jar https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/postgresql-42.2.10.jre7.jar'
-                sh '[ -f docker/pdi-4.4-dkron/ext/dkron_2.1.1_linux_amd64.tar.gz ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-4.4-dkron/ext/dkron_2.1.1_linux_amd64.tar.gz https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/dkron_2.1.1_linux_amd64.tar.gz'
-              }
-            }
+            downloadRawNexus(repository: 'sdis-remocra', outputDir: 'docker/pdi-4.4-dkron/ext/', onlyIfAbsent: true, remoteFiles: [
+              'ext/pdi-ce-4.4.0-stable.zip',
+              'ext/pentaho-4.4-remocra-deps.zip',
+              'ext/postgresql-42.2.10.jre7.jar',
+              'ext/dkron_2.1.1_linux_amd64.tar.gz',
+            ])
           }
         }
         stage('Dependencies pdi-dkron') {
           steps {
-            script {
-              withCredentials([usernameColonPassword(credentialsId: 'nexus3-jenkins', variable: 'NEXUS3_AUTH')]) {
-                sh '[ -f docker/pdi-dkron/ext/pdi-ce-7.1.0.0-12.zip ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-dkron/ext/pdi-ce-7.1.0.0-12.zip https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/pdi-ce-7.1.0.0-12.zip'
-                sh '[ -f docker/pdi-dkron/ext/pentaho-gis-plugins-1.2.1-bin-7.zip ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-dkron/ext/pentaho-gis-plugins-1.2.1-bin-7.zip https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/pentaho-gis-plugins-1.2.1-bin-7.zip'
-                sh '[ -f docker/pdi-dkron/ext/ojdbc8.jar ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-dkron/ext/ojdbc8.jar https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/ojdbc8.jar'
-                sh '[ -f docker/pdi-dkron/ext/dkron_2.1.1_linux_amd64.tar.gz ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-dkron/ext/dkron_2.1.1_linux_amd64.tar.gz https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/dkron_2.1.1_linux_amd64.tar.gz'
-                sh '[ -f docker/pdi-dkron/ext/jtds-1.3.1.jar ] || curl --user "$NEXUS3_AUTH" -o docker/pdi-dkron/ext/jtds-1.3.1.jar https://nexus3-ovh.priv.atolcd.com/repository/sdis-remocra/ext/jtds-1.3.1.jar'
-              }
-            }
+            downloadRawNexus(repository: 'sdis-remocra', outputDir: 'docker/pdi-dkron/ext/', onlyIfAbsent: true, remoteFiles: [
+              'ext/pdi-ce-7.1.0.0-12.zip',
+              'ext/pentaho-gis-plugins-1.2.1-bin-7.zip',
+              'ext/ojdbc8.jar',
+              'ext/dkron_2.1.1_linux_amd64.tar.gz',
+              'ext/jtds-1.3.1.jar',
+            ])
           }
         }
       }
@@ -84,21 +79,14 @@ pipeline {
         stage('Build docker remocra') {
           stages {
             stage('Build client-ng') {
-              agent {
-                docker {
-                  image 'node:10'
-                  args '-v "/var/lib/jenkins/.npmrc:/home/node/.npmrc:ro"'
-                  reuseNode true
-                }
-              }
-              environment {
-                NPM_CONFIG_CACHE = "${env.WORKSPACE}/.npm"
-              }
               steps {
-                dir('client-ng') {
-                  sh 'sed -i "s@https://registry.npmjs.org/@$(npm config get registry)@" package-lock.json'
-                  sh 'npm install'
-                  sh 'npm run build'
+                nodejsInsideDocker(imageVersion: '10') {
+                  dir('client-ng') {
+                    sh '''
+                      npm install
+                      npm run build
+                      '''
+                  }
                 }
               }
               post {
@@ -108,16 +96,13 @@ pipeline {
               }
             }
             stage('Build remocra') {
-              agent {
-                docker {
-                  image 'cvagner/docker-jdk-maven-sencha-cmd:8-3.6.3-3.0.2'
-                  args '-v /var/lib/jenkins/.m2/settings.xml:/tmp/settings.xml:ro'
-                  reuseNode true
-                }
-              }
               steps {
-                sh "mvn -e -Duser.home=${env.WORKSPACE} -s /tmp/settings.xml -U -ntp -Dskip.installnodenpm -Dskip.npm clean verify -P modeinfo-able -P update"
-                sh 'cp -r ./remocra/target/remocra.war ./docker/remocra/ext'
+                mavenInsideDocker(imageName: 'cvagner/docker-jdk-maven-sencha-cmd', imageVersion: '8-3.6.3-3.0.2') {
+                  sh '''
+                    mvn -e -U -ntp -Dskip.installnodenpm -Dskip.npm clean verify -P modeinfo-able -P update
+                    cp -r ./remocra/target/remocra.war ./docker/remocra/ext
+                    '''
+                }
               }
             }
             stage('Build docker remocra') {
@@ -292,8 +277,10 @@ pipeline {
   }
   post {
     always {
-      sh 'git checkout -- .'
-      sh 'git clean -f -d -x -e .m2/ -e .npm/ -e docker/geoserver/ext -e docker/pdi-4.4-dkron/ext -e docker/pdi-dkron/ext'
+      sh '''
+        git checkout -- .
+        git clean -f -d -x -e .m2/ -e .cache/npm/ -e docker/geoserver/ext -e docker/pdi-4.4-dkron/ext -e docker/pdi-dkron/ext
+        '''
     }
   }
 }
