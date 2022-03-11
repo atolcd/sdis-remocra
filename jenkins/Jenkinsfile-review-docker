@@ -17,6 +17,11 @@ pipeline {
   }
   agent any
   stages {
+    stage('Validate Jenkinsfiles') {
+      steps {
+        validateJenkinsfiles findFiles(glob: 'jenkins/*', excludes: 'jenkins/jenkinsfile-review-docker')
+      }
+    }
     stage('Get version') {
       steps {
         script {
