@@ -38,6 +38,13 @@
       </b-form-group>
     </div>
   </div>
+  <div class="row">
+    <div class="col-md-4">
+      <b-form-group label="Numéro SCP" label-for="numeroSCP" label-cols-md="4">
+        <b-form-input id="numeroSCP" v-model="hydrant.numeroSCP" class="parametre" type="text" size="sm"></b-form-input>
+      </b-form-group>
+    </div>
+  </div>
   <div class="title">Réseau</div>
   <div class="row">
     <div class="col-md-4">

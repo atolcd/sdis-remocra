@@ -54,6 +54,7 @@ public class HydrantPibiRepository {
     pibi.setReservoir(JSONUtil.getLong(data, "reservoir"));
     pibi.setSurpresse(JSONUtil.getBoolean(data, "surpresse"));
     pibi.setAdditive(JSONUtil.getBoolean(data, "additive"));
+    pibi.setNumeroscp(JSONUtil.getString(data, "numeroSCP"));
 
     return this.createHydrantPibi(pibi);
   }
@@ -82,6 +83,7 @@ public class HydrantPibiRepository {
     pibi.setReservoir(JSONUtil.getLong(data, "reservoir"));
     pibi.setSurpresse(JSONUtil.getBoolean(data, "surpresse"));
     pibi.setAdditive(JSONUtil.getBoolean(data, "additive"));
+    pibi.setNumeroscp(JSONUtil.getString(data, "numeroSCP"));
 
     return this.updateHydrantPibi(pibi);
   }
@@ -122,6 +124,7 @@ public class HydrantPibiRepository {
       .set(HYDRANT_PIBI.SURPRESSE, pibi.getSurpresse())
       .set(HYDRANT_PIBI.ADDITIVE, pibi.getAdditive())
       .set(HYDRANT_PIBI.DIAMETRE_CANALISATION, pibi.getDiametreCanalisation())
+      .set(HYDRANT_PIBI.NUMEROSCP, pibi.getNumeroscp())
       .where(HYDRANT_PIBI.ID.eq(pibi.getId()))
       .execute();
 
@@ -152,6 +155,7 @@ public class HydrantPibiRepository {
       .set(HYDRANT_PIBI.SURPRESSE, pibi.getSurpresse())
       .set(HYDRANT_PIBI.ADDITIVE, pibi.getAdditive())
       .set(HYDRANT_PIBI.DIAMETRE_CANALISATION, pibi.getDiametreCanalisation())
+      .set(HYDRANT_PIBI.NUMEROSCP, pibi.getNumeroscp())
       .execute();
 
     return context
