@@ -37,7 +37,7 @@ public class NumeroUtilRepository {
   }
 
   public enum MethodeNumerotation {
-        M_09, M_77, M_83, M_86, M_89, M_42, M_78, M_66, M_21, M_49, M_38, M_95
+        M_09, M_77, M_83, M_86, M_89, M_42, M_78, M_66, M_21, M_49, M_38, M_95, M_91
     }
 
     public static NumeroUtilRepository.MethodeNumerotation getHydrantNumerotationMethode() {
@@ -55,7 +55,7 @@ public class NumeroUtilRepository {
     }
 
     public enum MethodeNumerotationInterne {
-        M_77, M_83, M_86, M_42, M_78, M_49, M_95
+        M_77, M_83, M_86, M_42, M_78, M_49, M_95, M_91
     }
 
     public static NumeroUtilRepository.MethodeNumerotationInterne getHydrantNumerotationInterneMethode() {
@@ -107,6 +107,8 @@ public class NumeroUtilRepository {
                 return NumeroUtilRepository.computeNumero38(hydrant);
             case M_95:
                 return NumeroUtilRepository.computeNumero95(hydrant);
+            case M_91:
+                return NumeroUtilRepository.computeNumero91(hydrant);
             default:
                 return NumeroUtilRepository.computeNumero83(hydrant);
         }
@@ -283,6 +285,20 @@ public class NumeroUtilRepository {
     }
 
     /**
+     * <code insee commune (5 caractères)>-<numéro interne>
+     * <p>
+     * Exemple : 91377-311
+     *
+     * @param hydrant
+     * @return
+     */
+    protected static String computeNumero91(Hydrant hydrant) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getHydrantCommune(hydrant).getInsee());
+        sb.append("-");
+        return sb.append(hydrant.getNumeroInterne()).toString();
+    }
+    /**
      * <Code nature pour les PIBI ou les RI, PN pour les autres> <code commune>
      * <numéro interne>
      * <p>
@@ -402,6 +418,8 @@ public class NumeroUtilRepository {
     public static Integer computeNumeroInterne(Hydrant hydrant) {
         switch (getHydrantNumerotationInterneMethode()) {
             case M_77:
+            // Même numérotation interne que le 77
+            case M_91:
                 return NumeroUtilRepository.computeNumeroInterne77(hydrant);
             case M_42:
                 return NumeroUtilRepository.computeNumeroInterne42(hydrant);

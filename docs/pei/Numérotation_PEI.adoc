@@ -144,6 +144,18 @@ Exemples :
 * [.underline]#95462.00069# : PEI numéro 69 de la commune de OMERVILLE
 * [.underline]#95258.00169# : PEI numéro 169 de la commune de FROUVILLE
 
+=== 91 ===
+
+Méthode :
+
+* *<code insee commune>-<numéro interne>*
+* <numéro interne> sans préfixe
+
+Exemples :
+
+* [.underline]#93049-69# : PEI numéro 69 de la commune de NEUILLY-PLAISANCE
+* [.underline]#93050-169# : PEI numéro 169 de la commune de NEUILLY-SUR-MARNE
+
 == Numéro interne ==
 
 === 77 ===
@@ -169,3 +181,6 @@ Exemples :
 === 95 ===
 * Dernier numéro disponible supérieur ou égal 1000 pour les PEI Privé ou Privé sous convention
 * Dernier numéro disponible inférieur à 1000 pour les PEI Public
+
+=== 91 ===
+* Premier numéro disponible au sein de la commune
