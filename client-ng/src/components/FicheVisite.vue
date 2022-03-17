@@ -335,8 +335,10 @@ export default {
       if (!this.listeVisites[this.selectedRow] || this.listeVisites[this.selectedRow].type == null || this.anomaliesCriteres[this.indexCritere] == null) {
         return [];
       }
-      return this.anomalies.filter(item => item.indispo[this.hydrant.nature] != null && item.critereCode == this.anomaliesCriteres[this.indexCritere].code && item.indispo[this.hydrant.nature].saisies.indexOf(this.typesVisites[this.listeVisites[this
+      var anosFiltered = this.anomalies.filter(item => item.indispo[this.hydrant.nature] != null && item.critereCode == this.anomaliesCriteres[this.indexCritere].code && item.indispo[this.hydrant.nature].saisies.indexOf(this.typesVisites[this.listeVisites[this
         .selectedRow].type].code) > -1);
+      // On trie sur le nom de l'anomalie
+      return _.sortBy(anosFiltered, ['nom']);
     }
   },
   mounted: function() {
