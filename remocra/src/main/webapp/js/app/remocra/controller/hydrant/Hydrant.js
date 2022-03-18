@@ -165,6 +165,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             'crHydrantsTournee #cancelReservation': {
                 click: this.cancelReservation
             },
+            'crHydrantsTournee #newCourrierBtn': {
+                click: this.showFicheCourrierFromMap
+            },
             // Onglet "Localisation" (la carte)
             'crHydrantsMap': {
                 layersadded: this.initControlMap,

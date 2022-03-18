@@ -47,7 +47,14 @@ Ext.define('Sdis.Remocra.features.hydrants.TabTournee', {
             text: 'Saisir la visite',
             itemId: 'saisirVisite',
             disabled: true
-        },'->',{
+        },{
+            text: 'Générer un courrier',
+            itemId: 'newCourrierBtn',
+            tooltip: 'Outil de génération de courriers',
+            iconCls: 'new-courrierIcon',
+            disabled: false
+        },
+        '->',{
             text: 'Supprimer',
             iconCls: 'deleteIcon',
             itemId: 'deleteTournee',
