@@ -81,7 +81,8 @@ public class UtilisateurController {
             @Override
             protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
                 return serializer
-                    .exclude( "data.organisme.zoneCompetence.geometrie");
+                  .include("data.organisme.organismeParent.id", "data.organisme.organismeParent.nom", "data.organisme.organismeParent.code")
+                    .exclude( "data.organisme.zoneCompetence.geometrie", "data.organisme.organismeParent.*");
 
             }
 
