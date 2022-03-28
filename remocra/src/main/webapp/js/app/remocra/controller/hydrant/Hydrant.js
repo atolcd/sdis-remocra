@@ -796,7 +796,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         if (extraParams) {
             if (extraParams.tournee) {
 
-                var fields = this.getTabHydrant().headerFilterPlugin.fields.nature;
+                var fields = this.getTabHydrant().headerFilterPlugin.fields;
                 if(fields.nature) { fields.nature.setValue(null);}
                 if(fields.dateContr) { fields.dateContr.setValue(0);}
                 if(fields.dateReco) { fields.dateReco.setValue(0);}
