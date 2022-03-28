@@ -112,7 +112,7 @@
                  </tr>
                  <tr v-if="items.length > 0">
                    <td>
-                    {{"Moyene"}}
+                    {{"Moyenne"}}
                    </td>
                    <td>
                     {{moyenneDebitNM1 | decimalTwoDigit}}
