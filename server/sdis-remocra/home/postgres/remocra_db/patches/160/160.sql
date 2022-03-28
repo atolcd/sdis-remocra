@@ -33,7 +33,7 @@ drop function versionnement_dffd4df4df();
 --------------------------------------------------
 -- Contenu réel du patch début
 
-UPDATE remocra.param_conf SET cle = 'DECI_ISODISTANCES' CHERE cle = 'PLANIFICATION_DECI_ISODISTANCES';
+UPDATE remocra.param_conf SET cle = 'DECI_ISODISTANCES' WHERE cle = 'PLANIFICATION_DECI_ISODISTANCES';
 
 
 -- Contenu réel du patch fin
