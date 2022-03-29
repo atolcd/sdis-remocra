@@ -587,14 +587,11 @@ public class HydrantRepository {
     /* Si l'utilisateur a le droit de déplacer un PEI, on affiche un warning si la distance de déplacement est supérieure
        a la distance renseignée dans les paramètres de l'application */
     if(this.authUtils.hasRight(TypeDroit.TypeDroitEnum.HYDRANTS_DEPLACEMENT_C)) {
-      String latitude = null;
-      String longitude = null;
+      Double latitude = null;
+      Double longitude = null;
       try {
-        latitude = row.getCell(5).getStringCellValue();
-        longitude = row.getCell(6).getStringCellValue();
-        if(!latitude.matches("([+-]?\\d+\\.?\\d+)\\s*") || !longitude.matches("([+-]?\\d+\\.?\\d+)\\s*")) {
-          throw new Exception();
-        }
+        latitude = this.readCoord(row.getCell(5));
+        longitude = this.readCoord(row.getCell(6));
       } catch(Exception e) {
         throw new ImportCTPException("ERR_COORD_GPS", data);
       }
@@ -602,7 +599,7 @@ public class HydrantRepository {
       Integer distance = context.resultQuery("SELECT ST_DISTANCE(ST_SetSRID(ST_MakePoint({0}, {1}),2154), h.geometrie) " +
           "FROM remocra.hydrant h " +
           "WHERE h.id = {2};",
-        Double.parseDouble(longitude), Double.parseDouble(latitude), h.getId()).fetchOneInto(Integer.class);
+        longitude, latitude, h.getId()).fetchOneInto(Integer.class);
 
       if(distance > this.paramConfService.getHydrantDeplacementDistWarn()) {
         String str = context.select(TYPE_HYDRANT_IMPORTCTP_ERREUR.MESSAGE)
@@ -687,6 +684,29 @@ public class HydrantRepository {
       data.put("bilan_style", "WARNING");
     }
     return data;
+  }
+
+  /**
+   * Lit une coordonnée depuis une cellule
+   * La coordonnée doit être au format décimal point ou virgule
+   * @param c La cellule contentant la donnée
+   * @return La valeur de la coordonnée de type Double
+   * @throws Exception La valeur ne respecte pas le format attendu
+   */
+  Double readCoord(Cell c) throws Exception {
+    if(c.getCellType() == CellType.NUMERIC) {
+     return c.getNumericCellValue();
+    }
+
+    if(c.getCellType() != CellType.STRING) {
+      throw new Exception();
+    }
+
+    String str_cell = c.getStringCellValue().replaceAll(",", ".");
+    if (!str_cell.matches("([+-]?\\d+\\.?\\d+)\\s*")) {
+      throw new Exception();
+    }
+    return Double.parseDouble(str_cell);
   }
 
 }
