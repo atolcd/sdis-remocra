@@ -141,6 +141,8 @@ public class HydrantVisiteRepository {
       v.setObservations(JSONUtil.getString(visite, "observation"));
       v.setHydrant(JSONUtil.getLong(visite, "hydrant"));
       v.setType(typeVisite);
+      v.setCtrlDebitPression(v.getDebit() != null && v.getPression() != null);
+      v.setAnomalies(JSONUtil.getString(visite, "anomalies"));
 
       HydrantVisite newVisite = this.addVisite(v);
 
