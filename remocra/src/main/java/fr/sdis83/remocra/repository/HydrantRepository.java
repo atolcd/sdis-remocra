@@ -370,6 +370,7 @@ public class HydrantRepository {
     // Gestion erreur fichier illisible
     try {
       workbook = new HSSFWorkbook(file.getInputStream());
+      workbook.setMissingCellPolicy(RETURN_BLANK_AS_NULL);
     } catch(Exception e) {
       TypeHydrantImportctpErreur erreur = context.selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
         .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq("ERR_FICHIER_INNAC"))
@@ -399,10 +400,12 @@ public class HydrantRepository {
       for(int nbLigne = 4; nbLigne < sheet.getPhysicalNumberOfRows(); nbLigne++) {
         ObjectNode resultatVerification = null;
         try {
-          resultatVerification = this.checkLineValidity(sheet.getRow(nbLigne));
-          resultatVerification.put("numero_ligne", nbLigne + 1);
-          arrayResultatVerifications.add(resultatVerification);
-
+          Row r = sheet.getRow(nbLigne);
+          if(r.getFirstCellNum() == 0) { // Evite de traiter la ligne "fantôme" détectée par la librairie à cause des combo des anomalies
+            resultatVerification = this.checkLineValidity(r);
+            resultatVerification.put("numero_ligne", nbLigne + 1);
+            arrayResultatVerifications.add(resultatVerification);
+          }
         } catch (ImportCTPException e) { // Interception d'une erreur : on arrête les vérifications et on indique la cause
           resultatVerification = e.getData();
           TypeHydrantImportctpErreur erreur = context.selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
@@ -433,10 +436,10 @@ public class HydrantRepository {
     data.put("bilan", "CT Validé");
     data.put("bilan_style", "OK");
 
-    Integer xls_codeSdis = (int)row.getCell(0, RETURN_BLANK_AS_NULL).getNumericCellValue();
-    String xls_commune = row.getCell(1, RETURN_BLANK_AS_NULL).getStringCellValue();
-    String xls_insee = row.getCell(2, RETURN_BLANK_AS_NULL).getStringCellValue();
-    Integer xls_numeroInterne = (int)row.getCell(3, RETURN_BLANK_AS_NULL).getNumericCellValue();
+    Integer xls_codeSdis = (int)row.getCell(0).getNumericCellValue();
+    String xls_commune = row.getCell(1).getStringCellValue();
+    String xls_insee = row.getCell(2).getStringCellValue();
+    Integer xls_numeroInterne = (int)row.getCell(3).getNumericCellValue();
 
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     data.put("insee", xls_insee);
@@ -620,7 +623,7 @@ public class HydrantRepository {
     for(int i = 13; i < 17; i++) {
       if(row.getCell(i) != null && row.getCell(i).getCellType() != CellType.BLANK) {
         String xls_anomalie = row.getCell(i).getStringCellValue();
-        String code = xls_anomalie.substring(xls_anomalie.indexOf('_')+1);
+        String code = xls_anomalie.substring(xls_anomalie.indexOf('-')+2);
         TypeHydrantAnomalie anomalie = context.selectFrom(TYPE_HYDRANT_ANOMALIE)
           .where(TYPE_HYDRANT_ANOMALIE.CODE.upper().eq(code.toUpperCase()))
           .fetchOneInto(TypeHydrantAnomalie.class);
@@ -665,6 +668,8 @@ public class HydrantRepository {
       arrayAnomalies.add(i);
     }
 
+    String observation = (row.getLastCellNum()-1 >= 18) ? row.getCell(18).getStringCellValue() : null;
+
     /**
      * Ajout des données de la visite à ajouter aux informations JSON
      * Ces données ont déjà été vérifiées ici, il n'y a pas besoin de dupliquer les vérifications avant l'ajout en base
@@ -675,7 +680,7 @@ public class HydrantRepository {
     dataVisite.put("agent1", xls_agent1);
     dataVisite.put("debit", xls_debit);
     dataVisite.put("pression", xls_pression);
-    dataVisite.put("observation", row.getCell(18).getStringCellValue());
+    dataVisite.put("observation", observation);
 
     data.set("dataVisite", dataVisite);
 
