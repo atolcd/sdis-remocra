@@ -488,15 +488,13 @@ export default {
           'Accept': 'application/json'
         }
       }).then(function() {
-        self.$modal.hide('modalFicheIndispo')
+        self.$modal.hide('modalFicheIndispo');
+        self.$root.$options.bus.$emit('indispo_tmp_created');
       }).catch(function(error) {
         console.error(error)
       });
-    },
-    close() {
-      this.$root.$options.bus.$emit('closed');
     }
-  },
+  }
 };
 </script>
 

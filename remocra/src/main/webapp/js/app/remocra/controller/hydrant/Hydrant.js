@@ -885,6 +885,11 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             if(debitsSimultanesLayer) {
                 debitsSimultanesLayer.redraw(true);
             }
+
+            var hydrantLayerDep = this.getTabMap().getLayerByCode("hydrantLayerDep");
+            if(hydrantLayerDep) {
+                hydrantLayerDep.redraw(true);
+            }
         }
     },
 
@@ -2216,10 +2221,11 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         document.body.appendChild(d);
         var vueFicheIndispo = window.remocraVue.indispoTempBuildFiche(d, {idIndispoTemp: idIndispoTemp, tabIdPeiSelected: tabIdPeiSelected, tabNumPeiSelected: tabNumPeiSelected});
 
-        vueFicheIndispo.$options.bus.$on('closed', Ext.bind(function(data) {
+        vueFicheIndispo.$options.bus.$on('indispo_tmp_created', Ext.bind(function(data) {
             vueFicheIndispo.$el.remove();
             vueFicheIndispo.$destroy();
-            }, this));
+            this.refreshMap();
+        }, this));
       },
 
       showFicheIndispoTempFromGrid: function(){
@@ -2231,11 +2237,11 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         document.body.appendChild(d);
         var vueFicheIndispo = window.remocraVue.indispoTempBuildFiche(d, {idIndispoTemp: idIndispoTemp, tabIdPeiSelected: null, tabNumPeiSelected: null});
 
-        vueFicheIndispo.$options.bus.$on('closed', Ext.bind(function(data) {
+        vueFicheIndispo.$options.bus.$on('indispo_tmp_created', Ext.bind(function(data) {
             vueFicheIndispo.$el.remove();
             vueFicheIndispo.$destroy();
             this.getTabIndispo().getStore().load();
-            }, this));
+        }, this));
     },
 
     onProlongerIndispo: function(){
