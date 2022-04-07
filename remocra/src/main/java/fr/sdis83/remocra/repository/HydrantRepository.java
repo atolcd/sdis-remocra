@@ -19,11 +19,12 @@ import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.util.JSONUtil;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.joda.time.Instant;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -365,11 +366,11 @@ public class HydrantRepository {
     erreurFichier.put("bilan_style", "ERREUR");
 
     boolean lecturePossible = true;
-    HSSFWorkbook workbook = null;
+    Workbook workbook = null;
 
     // Gestion erreur fichier illisible
     try {
-      workbook = new HSSFWorkbook(file.getInputStream());
+      workbook = WorkbookFactory.create(file.getInputStream());
       workbook.setMissingCellPolicy(RETURN_BLANK_AS_NULL);
     } catch(Exception e) {
       TypeHydrantImportctpErreur erreur = context.selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
@@ -381,7 +382,7 @@ public class HydrantRepository {
     }
 
     // Gestion erreur feuille n°2 (sur laquelle se trouve les données) n'existe pas
-    HSSFSheet sheet = null;
+    Sheet sheet = null;
     try {
       if(lecturePossible) {
         sheet = workbook.getSheetAt(1);
