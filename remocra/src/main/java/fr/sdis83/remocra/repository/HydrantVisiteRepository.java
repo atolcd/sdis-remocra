@@ -10,7 +10,10 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantAnomalie;
 import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.util.JSONUtil;
+import org.cts.IllegalCoordinateException;
+import org.cts.crs.CRSException;
 import org.joda.time.Instant;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -123,7 +126,7 @@ public class HydrantVisiteRepository {
     return null;
   }
 
-  public void addVisiteFromImportCtp(String visitesData) throws IOException {
+  public void addVisiteFromImportCtp(String visitesData) throws IOException, IllegalCoordinateException, CRSException {
     ArrayList<Map<String, Object>> data = objectMapper.readValue(visitesData.toString(), new TypeReference<ArrayList<Map<String, Object>>>() {});
     Long typeVisite = context
       .select(TYPE_HYDRANT_SAISIE.ID)
@@ -151,7 +154,8 @@ public class HydrantVisiteRepository {
       Double longitude = JSONUtil.getDouble(visite, "longitude");
       if(latitude != null && longitude != null) {
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 2154);
-        Point p = geometryFactory.createPoint(new Coordinate(longitude, latitude));
+        double[] coordsLambert93 = GeometryUtil.transformCordinate(longitude, latitude, "4326", "2154");
+        Point p = geometryFactory.createPoint(new Coordinate(coordsLambert93[0], coordsLambert93[1]));
         context.update(HYDRANT)
           .set(HYDRANT.GEOMETRIE, p)
           .where(HYDRANT.ID.eq(JSONUtil.getLong(visite, "hydrant")))

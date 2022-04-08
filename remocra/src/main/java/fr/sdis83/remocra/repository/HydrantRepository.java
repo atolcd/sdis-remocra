@@ -600,7 +600,7 @@ public class HydrantRepository {
         throw new ImportCTPException("ERR_COORD_GPS", data);
       }
 
-      Integer distance = context.resultQuery("SELECT ST_DISTANCE(ST_SetSRID(ST_MakePoint({0}, {1}),2154), h.geometrie) " +
+      Integer distance = context.resultQuery("SELECT ST_DISTANCE(ST_transform(ST_SetSRID(ST_MakePoint({0}, {1}),4326), 2154), h.geometrie) " +
           "FROM remocra.hydrant h " +
           "WHERE h.id = {2};",
         longitude, latitude, h.getId()).fetchOneInto(Integer.class);
