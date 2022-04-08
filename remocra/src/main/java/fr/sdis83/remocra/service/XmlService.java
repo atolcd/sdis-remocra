@@ -708,10 +708,10 @@ public class XmlService {
         hydrantPenaXML.setCoordDFCI(hydrantPena.getCoordDFCI());
 
         hydrantPenaXML.setCapacite(hydrantPena.getCapacite());
-        hydrantPenaXML.setIllimitee(hydrantPena.getIllimitee());
+        hydrantPenaXML.setIllimitee(hydrantPena.getIllimitee() != null ? hydrantPena.getIllimitee().booleanValue() : false);
         hydrantPenaXML.setAspirations(hydrantPena.getAspirations());
         hydrantPenaXML.setDispoHbe(hydrantPena.getDispoHbe() != null ? hydrantPena.getDispoHbe().toString() : "");
-        hydrantPenaXML.setHbe(hydrantPena.getHbe().booleanValue());
+        hydrantPenaXML.setHbe(hydrantPena.getHbe() != null ? hydrantPena.getHbe().booleanValue() : false);
 
         if (hydrantPenaXML instanceof HydrantCiterneEnterre) {
             fillHydrantCiterne((HydrantCiterneEnterre) hydrantPenaXML, hydrantPena);
