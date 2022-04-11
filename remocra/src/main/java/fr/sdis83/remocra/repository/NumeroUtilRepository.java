@@ -281,7 +281,7 @@ public class NumeroUtilRepository {
         StringBuilder sb = new StringBuilder();
         sb.append(getHydrantCommune(hydrant).getInsee());
         sb.append(".");
-        return sb.append(String.format("%05d", hydrant.getNumeroInterne())).toString();
+        return sb.append(String.format("%04d", hydrant.getNumeroInterne())).toString();
     }
 
     /**
@@ -572,23 +572,24 @@ public class NumeroUtilRepository {
                     .from(TYPE_HYDRANT_NATURE_DECI)
                     .where(TYPE_HYDRANT_NATURE_DECI.ID.eq(hydrant.getNatureDeci()))
                     .fetchOneInto(String.class);
-            if("PRIVE".equals(codeNature) || "CONVENTIONNE".equals(codeNature) ){
-                numInterne = context.select(DSL.max(HYDRANT.NUMERO_INTERNE))
-                        .from(HYDRANT)
-                        .where(HYDRANT.COMMUNE.eq(hydrant.getCommune()))
-                        .and(HYDRANT.NUMERO_INTERNE.greaterOrEqual(new Integer(1000)))
+            if ("PRIVE".equals(codeNature) || "CONVENTIONNE".equals(codeNature) ) {
+                numInterne = context
+                        .resultQuery("select remocra.nextNumeroInterne(null, null, {0}, {1}, {2}, {3}, true)",
+                                (hydrant.getZoneSpeciale() == null) ? hydrant.getCommune() : DSL.val(null, SQLDataType.BIGINT),
+                                (hydrant.getZoneSpeciale() != null) ? hydrant.getZoneSpeciale() : DSL.val(null, SQLDataType.BIGINT),
+                                1000, 9999)
                         .fetchOneInto(Integer.class);
-                numInterne++;
+
             } else {
-                numInterne = context.select(DSL.max(HYDRANT.NUMERO_INTERNE))
-                        .from(HYDRANT)
-                        .where(HYDRANT.COMMUNE.eq(hydrant.getCommune()))
-                        .and(HYDRANT.NUMERO_INTERNE.lessThan(new Integer(1000)))
+                numInterne = context
+                        .resultQuery("select remocra.nextNumeroInterne(null, null, {0}, {1}, null, {2}, true)",
+                                (hydrant.getZoneSpeciale() == null) ? hydrant.getCommune() : DSL.val(null, SQLDataType.BIGINT),
+                                (hydrant.getZoneSpeciale() != null) ? hydrant.getZoneSpeciale() : DSL.val(null, SQLDataType.BIGINT),
+                                999)
                         .fetchOneInto(Integer.class);
-                numInterne++;
             }
         } catch (Exception e) {
-            numInterne = 99999;
+            numInterne = 9999;
         }
         return numInterne;
     }
