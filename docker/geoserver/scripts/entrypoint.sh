@@ -22,7 +22,9 @@ export GEOSERVER_OPTS=" \
   -Djava.awt.headless=true -server -Xms${GEOSERVER_INITIAL_MEMORY:-1G} -Xmx${GEOSERVER_MAXIMUM_MEMORY:-2G} \
   -Duser.timezone='Europe/Paris' \
   -Dfile.encoding=UTF8 -Djavax.servlet.request.encoding=UTF-8 -Djavax.servlet.response.encoding=UTF-8 \
-  -Dorg.geotools.referencing.forceXY=true -Dorg.geotools.shapefile.datetime=true -Dorg.geotools.shapefile.datetime=true"
+  -Dorg.geotools.referencing.forceXY=true -Dorg.geotools.shapefile.datetime=true -Dorg.geotools.shapefile.datetime=true \
+  -DGEOSERVER_CSRF_WHITELIST= ${GEOSERVER_CSRF_WHITELIST:-localhost} \
+  -DGEOSERVER_CSRF_DISABLED= ${GEOSERVER_CSRF_DISABLED:-false}"
 export JAVA_OPTS="${GEOSERVER_OPTS} ${JAVA_OPTS}"
 
 # Démarrage de GeoServer
