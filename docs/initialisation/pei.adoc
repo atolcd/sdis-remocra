@@ -392,13 +392,12 @@ include::references/type_hydrant_anomalie_impose.csv[]
 [width="100%",options="header"]
 |====================
 |Nom du champ|Type|Obligatoire|Contraintes|Description
-|num|Texte|Oui|Unicite tous PEI confondus |Numéro complet du PEI. Ex : 77402_0045.
 |numero|Texte|||Numéro de l'aire d'aspiration
 |norm|Booléen|||L'aire d'aspiration est normalisée
 |haut|Booléen|||L'aire d'aspiration est à une hauteur > 3m
 |t_asp|Texte|||Code du type d'aire d'aspiration
 |dep|Booléen|||L'aire d'aspiration est déportée
-|pena|Texte|||Numéro du PENA de l'aire d'aspiration
+|pena|Texte|||Numéro du PENA de l'aire d'aspiration. Ex : 77402_0045.
 |====================
 
 ===== Association des anomalies aux PEI
