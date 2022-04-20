@@ -48,7 +48,7 @@
           <search-process-param :ref="'searchinput'+param.id" :paramId="param.id"></search-process-param>
         </b-form-group>
         <b-form-group v-if='param.formulaireTypeControle=="combo"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id" :required='param.obligatoire'>
-          <AutoCompleteComponent :id="param.id" :ref="'autocomplete'+param.id" :options="getOption(param.id)" class="parametreModele" inputType='combo'></AutoCompleteComponent>
+          <AutoCompleteComponent :id="param.id" :ref="'autocomplete'+param.id" :nom="param.nom" :options="getOption(param.id)" class="parametreModele" inputType='combo'></AutoCompleteComponent>
         </b-form-group>
         <b-form-group v-if='param.formulaireTypeControle=="checkbox"' horizontal :label='param.formulaireEtiquette' :label-for="'input'+param.id">
           <input type='checkbox' style="width:5%" :id="param.nom" :checked="param.formulaireValeurDefaut" inputType='checkbox' class="form-control parametreModele" />
@@ -389,6 +389,7 @@ export default {
                 _.forEach(response.data.data, option => {
                   var o = {
                     idChamp: param.id,
+                    nom: param.nom,
                     valeur: option[param.sourceSqlValeur],
                     libelle: option[param.sourceSqlLibelle],
                     obligatoire: param.obligatoire,
@@ -462,7 +463,7 @@ export default {
               formData.append(item.getAttribute('id'), item.checked)
             } else if (item.getAttribute('inputType') === 'combo') {
               var combo = this.$refs['autocomplete' + item.getAttribute('id')][0];
-              formData.append(item.getAttribute('id'), combo.selected !== null ? combo.selected.valeur : null);
+              formData.append(item.getAttribute('nom'), combo.selected !== null ? combo.selected.valeur : null);
             } else {
               formData.append(item.getAttribute('id'), item.value)
             }
