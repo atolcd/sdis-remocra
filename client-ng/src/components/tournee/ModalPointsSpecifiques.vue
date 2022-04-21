@@ -192,6 +192,9 @@ export default {
 
       } else if (this.hydrant.visites && this.hydrant.visites.length > 0) { // Si première ouverture de l'interface pour ce PEI, on reprend les anomalies de la visite la plus récente
         this.formAnomalies = JSON.parse(this.hydrant.visites[0].anomalies);
+        if(this.formAnomalies === null) {
+          this.formAnomalies = [];
+        }
       }
 
       this.$refs.modalPointsSpecifiques.show();
