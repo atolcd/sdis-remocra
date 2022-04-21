@@ -65,7 +65,7 @@
                     <th scope="col">Date de la dernière ROP</th>
                     <th scope="col">Date de la dernière CTP</th>
                     <th scope="col">Etat</th>
-                    <th scope="col" class="colRAZ"></th>
+                    <th scope="col" class="colRAS"></th>
                   </thead>
                   <tbody>
                     <tr v-for="(item, index) in this.sortedHydrants" :key="index">
@@ -100,19 +100,22 @@
                         <span v-if="item.dateChangementDispoTerrestre != null">({{ item.dateChangementDispoTerrestre | printDate }})</span>
                       </td>
                       <td>
-                        <div class="onoffswitch">
-                          <input type="checkbox" class="onoffswitch-checkbox" :id="'switchRAS-'+item.id" v-model="item.raz">
-                          <label class="onoffswitch-label" :for="'switchRAS-'+item.id">
-                            <span class="onoffswitch-inner"></span>
-                            <span class="onoffswitch-switch"></span>
-                          </label>
-                        </div>
-                        <b-button variant="primary"
-                                  v-if="!item.raz"
-                                  @click="onClickPointsSpecifiques(item)"
-                                  class="boutonMesures"
-                                  :disabled="formTypeVisite === null">Mesures / Points d'attention
-                        </b-button>
+                        <b-form inline>
+                          <div class="onoffswitch">
+                            <input type="checkbox" class="onoffswitch-checkbox" :id="'switchRAS-'+_uid+'-'+item.id" v-model="item.ras">
+                            <label class="onoffswitch-label" :for="'switchRAS-'+_uid+'-'+item.id">
+                              <span class="onoffswitch-inner"></span>
+                              <span class="onoffswitch-switch"></span>
+                            </label>
+                          </div>
+
+                          <b-button variant="primary"
+                                    @click="onClickPointsSpecifiques(item)"
+                                    size="sm"
+                                    class="boutonMesures"
+                                    :disabled="formTypeVisite === null || item.ras">Mesures / anomalies
+                          </b-button>
+                        </b-form>
                       </td>
                     </tr>
                   </tbody>
@@ -266,7 +269,7 @@ export default {
         this.hydrants = response.data.data;
         _.forEach(this.hydrants, h => {
           var index = _.findIndex(this.hydrants, function(o) { return o.id == h.id; })
-          this.$set(this.hydrants[index], 'raz', true);
+          this.$set(this.hydrants[index], 'ras', false);
 
           _.forEach(h.visites, v => {
             v.date = moment(v.date);
@@ -425,7 +428,7 @@ export default {
           };
 
           // Si des données spécifiques ont pu être renseignées
-          if(!h.raz && h.newVisite != null) {
+          if(!h.ras && h.newVisite != null) {
             dataHydrant.observations = h.newVisite.observations;
             dataHydrant.anomalies = h.newVisite.anomalies;
 
@@ -525,91 +528,59 @@ export default {
   padding-left: 25px;
 }
 
-.colRAZ {
+.colRAS {
   width: 260px;
 }
 
 .onoffswitch {
-  position: relative;
-  width: 75px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+  position: relative; width: 62px;
+  -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
 }
-
 .onoffswitch-checkbox {
-  display: none;
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
-
 .onoffswitch-label {
-  display: block;
-  overflow: hidden;
-  cursor: pointer;
-  border: 2px solid #999999;
-  border-radius: 22px;
+  display: block; overflow: hidden; cursor: pointer;
+  border: 2px solid #999999; border-radius: 21px;
 }
-
 .onoffswitch-inner {
-  display: block;
-  width: 200%;
-  margin-left: -100%;
+  display: block; width: 200%; margin-left: -100%;
   transition: margin 0.3s ease-in 0s;
 }
-
-.onoffswitch-inner:before,
-.onoffswitch-inner:after {
-  display: block;
-  float: left;
-  width: 50%;
-  height: 26px;
-  padding: 0;
-  line-height: 26px;
-  font-size: 14px;
-  color: white;
-  font-family: Trebuchet, Arial, sans-serif;
-  font-weight: bold;
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+  display: block; float: left; width: 50%; height: 25px; padding: 0; line-height: 25px;
+  font-size: 11px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
   box-sizing: border-box;
 }
-
 .onoffswitch-inner:before {
-  content: "RAZ";
+  content: "RAS";
   padding-left: 10px;
-  background-color: #007ABC;
-  color: #FFFFFF;
+  background-color: #0275D8; color: #FFFFFF;
 }
-
 .onoffswitch-inner:after {
-  content: "RAZ";
+  content: "RAS";
   padding-right: 10px;
-  background-color: #EEEEEE;
-  color: #999999;
+  background-color: #EEEEEE; color: #999999;
   text-align: right;
 }
-
 .onoffswitch-switch {
-  display: block;
-  width: 14px;
-  margin: 6px;
-  height: 14px;
+  display: block; width: 11px; margin: 7px;
   background: #FFFFFF;
-  position: absolute;
-  top: 2px;
-  bottom: 0;
-  right: 45px;
-  border: 2px solid #999999;
-  border-radius: 22px;
+  position: absolute; top: 0; bottom: 0;
+  right: 33px;
+  border: 2px solid #999999; border-radius: 21px;
   transition: all 0.3s ease-in 0s;
 }
-
-.onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-inner {
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
   margin-left: 0;
 }
-
-.onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-switch {
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
   right: 0px;
 }
 
 .boutonMesures {
-  width: 250px;
+  margin-left: 5px;
 }
 </style>
