@@ -5,11 +5,11 @@
              no-close-on-backdrop
              :title="this.modalTitle"
              ok-title="Valider"
-             :ok-only="this.showErreurs"
+             :ok-only="this.showResults"
              cancel-title="Annuler"
              size="xl"
              @ok="handleOk">
-      <div v-if="this.dataTournee !== null && !this.showErreurs">
+      <div v-if="this.dataTournee !== null && !this.showResults">
         <form>
           <div class="row">
             <div class="col-md-4">
@@ -126,31 +126,37 @@
         </form>
 
       </div>
-      <div v-else-if="this.showErreurs">
-        <b-alert variant="warning" show>
-          <p>La totalité des visites n'a pas pu être enregistré par Remocra <br />
-            Veuillez trouver ci-dessous la liste des PEI concernés et la raison pour laquelle la visite n'a pas pu être renseignée<br />
-            Merci de renseigner la visite manuellement pour chacun de ces PEI
-          </p>
-        </b-alert>
-        <div id="tableScroll">
-          <table class="table table-striped table-sm table-bordered" id="tableErreurs">
-            <thead class="thead-light">
-              <th scope="col">PEI</th>
-              <th scope="col">Motif de refus</th>
-            </thead>
-            <tbody>
-              <tr v-for="(erreur, index) in this.erreurs" :key="index">
-                <td>
-                  {{hydrants.filter(h => h.id == erreur.id)[0].numero}}
-                </td>
-                <td>
-                  {{erreur.message}}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      <div v-else-if="this.showResults">
+        <div v-if="this.showErreurs">
+          <b-alert variant="warning" show>
+            <p>La totalité des visites n'a pas pu être enregistré par Remocra <br />
+              Veuillez trouver ci-dessous la liste des PEI concernés et la raison pour laquelle la visite n'a pas pu être renseignée<br />
+              Merci de renseigner la visite manuellement pour chacun de ces PEI
+            </p>
+          </b-alert>
+          <div id="tableScroll">
+            <table class="table table-striped table-sm table-bordered" id="tableErreurs">
+              <thead class="thead-light">
+                <th scope="col">PEI</th>
+                <th scope="col">Motif de refus</th>
+              </thead>
+              <tbody>
+                <tr v-for="(erreur, index) in this.erreurs" :key="index">
+                  <td>
+                    {{hydrants.filter(h => h.id == erreur.id)[0].numero}}
+                  </td>
+                  <td>
+                    {{erreur.message}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+
+        <p>Nombre de PEI à RAS : {{this.getNbPeiRAS}}</p>
+        <p>Nombre de PEI avec des anomalies : {{this.getNbPeiAnomalies}}</p>
+        <p v-if="!ctrlDebitPressionDisabled">Nombre de PEI sans mesure débit/pression : {{this.getNbPeiSansCDP}}</p>
       </div>
     </b-modal>
 
@@ -202,6 +208,7 @@ export default {
       anomaliesCriteres: [],
 
       showErreurs: false,
+      showResults: false,
       erreurs: null,
 
       formDate: null,
@@ -232,6 +239,24 @@ export default {
 
       var typeVisite = this.comboTypesVisite.filter(a => a.value === this.formTypeVisite)[0].code;
       return (typeVisite === "CREA" || typeVisite === "CTRL") ? false : true;
+    },
+
+    // Nombre de PEI sans rien à signaler
+    getNbPeiRAS: function() {
+      return this.hydrants.filter(h => h.ras == true).length;
+    },
+
+    // Nombre de PEI avec des anomalies renseignées
+    getNbPeiAnomalies: function() {
+      return this.hydrants.filter(h => h.newVisite != null
+        && h.newVisite.anomalies != null
+        && h.newVisite.anomalies.length > 0).length;
+    },
+
+    // Nombre de PEI sans saisie de mesure de débit/pression
+    getNbPeiSansCDP: function() {
+      return this.hydrants.filter(h => h.newVisite == null || (h.newVisite.debit == null && h.newVisite.debitMax == null &&
+        h.newVisite.pression == null && h.newVisite.pressionDyn == null && h.newVisite.pressionDynDeb == null)).length;
     }
   },
 
@@ -247,6 +272,7 @@ export default {
     this.anomaliesCriteres = [];
     this.anomalies = [];
     this.showErreurs = false;
+    this.showResults = false;
     this.erreurs = null;
 
     this.recuperationHydrants();
@@ -404,7 +430,7 @@ export default {
 
     handleOk: function(evt) {
       evt.preventDefault();
-      if (this.showErreurs) { // Si on est déjà sur l'interface de récap des erreurs, on ferme simplement la modale
+      if (this.showResults) { // Si on est déjà sur l'interface de récap des erreurs ou des résultats, on ferme simplement la modale
         this.$nextTick(() => {
           this.$refs.modalSaisieVisite.hide();
         })
@@ -452,6 +478,7 @@ export default {
           if(response.data.message != null && response.data.message.length > 0 && response.data.message != "[]") {
             this.erreurs = JSON.parse(response.data.message);
             this.showErreurs = true;
+            this.showResults = true;
             this.$notify({
               group: 'remocra',
               title: 'Saisie invalide',
@@ -460,7 +487,7 @@ export default {
             })
           } else {
             this.$nextTick(() => { //Fermeture manuelle de la modale
-              this.$refs.modalSaisieVisite.hide();
+              this.showResults = true;
               this.$notify({
                 group: 'remocra',
                 title: 'Visites sauvegardées',
