@@ -36,7 +36,8 @@ Ext.define('Sdis.Remocra.features.prescrits.FichePrescrit', {
                 xtype: 'datefield',
                 fieldLabel: 'Date',
                 name: 'datePrescrit',
-                format: 'd/m/Y'
+                format: 'd/m/Y',
+                maxValue : new Date()
             }, {
                 xtype: 'textfield',
                 fieldLabel: 'Agent',
