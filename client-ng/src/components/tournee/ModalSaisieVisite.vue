@@ -34,7 +34,7 @@
 
           <div class="row">
             <div class="col-md-4 checkbox-align">
-              <b-form-checkbox id="ctrl_debit_pression" v-model="formCtrlDebitPression" :disabled="ctrlDebitPressionDisabled" size="sm"> Contrôle débit pression (CDP)
+              <b-form-checkbox :id="ctrl_debit_pression+'-'+_uid" v-model="formCtrlDebitPression" :disabled="ctrlDebitPressionDisabled" size="sm"> Contrôle débit pression (CDP)
               </b-form-checkbox>
             </div>
 
