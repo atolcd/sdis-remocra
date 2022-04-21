@@ -583,4 +583,8 @@ export default {
 .boutonMesures {
   margin-left: 5px;
 }
+
+#tableScroll {
+  overflow-x: scroll;
+}
 </style>
