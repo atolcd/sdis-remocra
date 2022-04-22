@@ -24,7 +24,7 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantVisite implements Serializable {
 
-	private static final long serialVersionUID = 692887929;
+	private static final long serialVersionUID = -1028922601;
 
 	private Long    id;
 	private Long    hydrant;
@@ -43,6 +43,8 @@ public class HydrantVisite implements Serializable {
 	private Long    utilisateurModification;
 	private Long    organisme;
 	private String  auteurModificationFlag;
+	private Integer debitAutre;
+	private Double  pressionDynAutre;
 
 	public HydrantVisite() {}
 
@@ -64,6 +66,8 @@ public class HydrantVisite implements Serializable {
 		this.utilisateurModification = value.utilisateurModification;
 		this.organisme = value.organisme;
 		this.auteurModificationFlag = value.auteurModificationFlag;
+		this.debitAutre = value.debitAutre;
+		this.pressionDynAutre = value.pressionDynAutre;
 	}
 
 	public HydrantVisite(
@@ -83,7 +87,9 @@ public class HydrantVisite implements Serializable {
 		String  observations,
 		Long    utilisateurModification,
 		Long    organisme,
-		String  auteurModificationFlag
+		String  auteurModificationFlag,
+		Integer debitAutre,
+		Double  pressionDynAutre
 	) {
 		this.id = id;
 		this.hydrant = hydrant;
@@ -102,6 +108,8 @@ public class HydrantVisite implements Serializable {
 		this.utilisateurModification = utilisateurModification;
 		this.organisme = organisme;
 		this.auteurModificationFlag = auteurModificationFlag;
+		this.debitAutre = debitAutre;
+		this.pressionDynAutre = pressionDynAutre;
 	}
 
 	public Long getId() {
@@ -254,6 +262,24 @@ public class HydrantVisite implements Serializable {
 
 	public HydrantVisite setAuteurModificationFlag(String auteurModificationFlag) {
 		this.auteurModificationFlag = auteurModificationFlag;
+		return this;
+	}
+
+	public Integer getDebitAutre() {
+		return this.debitAutre;
+	}
+
+	public HydrantVisite setDebitAutre(Integer debitAutre) {
+		this.debitAutre = debitAutre;
+		return this;
+	}
+
+	public Double getPressionDynAutre() {
+		return this.pressionDynAutre;
+	}
+
+	public HydrantVisite setPressionDynAutre(Double pressionDynAutre) {
+		this.pressionDynAutre = pressionDynAutre;
 		return this;
 	}
 }

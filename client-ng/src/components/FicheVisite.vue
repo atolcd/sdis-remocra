@@ -93,6 +93,14 @@
                 <b-form-group label="Pression statique (bar) :" label-for="pression" label-cols-md="6">
                   <b-form-input id="pression" v-model.number="listeVisites[selectedRow].pression" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
                 </b-form-group>
+                <div class="debitDynAutre">
+                  <b-form-group label="Débit à une autre pression dynamique* (m3/h) :" label-for="debitAutre" label-cols-md="6">
+                    <b-form-input id="debitAutre" v-model="listeVisites[selectedRow].debitAutre" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
+                  </b-form-group>
+                  <b-form-group label="*Pression dynamique (bar) :" label-for="pressionDynAutre" label-cols-md="6">
+                    <b-form-input id="pressionDynAutre" v-model.number="listeVisites[selectedRow].pressionDynAutre" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
+                  </b-form-group>
+                </div>
               </div>
             </b-tab>
             <b-tab class="anomalies-tab" title="Points d'attention">
@@ -577,6 +585,8 @@ export default {
         item.pression = null;
         item.pressionDyn = null;
         item.pressionDynDeb = null;
+        item.debitAutre = null;
+        item.pressionDynAutre = null;
       }
     },
     /**
@@ -779,5 +789,11 @@ export default {
   content: 'Initialisation visites...';
   margin-left: calc(50% - 72px);
   animation: opacity-anim 1s linear infinite;
+}
+
+.debitDynAutre {
+  border-style: solid;
+  border-width: 1px;
+  padding-top: 5px;
 }
 </style>

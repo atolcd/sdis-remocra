@@ -144,5 +144,12 @@ privileged aspect HydrantVisite_Roo_JavaBean {
     public void HydrantVisite.setAuteurModificationFlag(String auteurModificationFlag) {
         this.auteurModificationFlag = auteurModificationFlag;
     }
-    
+
+    public Integer HydrantVisite.getDebitAutre() {
+        return this.debitAutre;
+    }
+
+    public Double HydrantVisite.getPressionDynAutre() {
+        return this.pressionDynAutre;
+    }
 }

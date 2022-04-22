@@ -110,6 +110,8 @@ public class HydrantVisiteRepository {
       visite.setUtilisateurModification(utilisateurService.getCurrentUtilisateur().getId());
       visite.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme().getId());
       visite.setAuteurModificationFlag("USER");
+      visite.setDebitAutre(JSONUtil.getInteger(data, "debitAutre"));
+      visite.setPressionDynAutre(JSONUtil.getDouble(data, "pressionDynAutre"));
 
      HydrantVisite newVisite = this.addVisite(visite);
      this.launchTriggerAnomalies(id);
@@ -190,6 +192,8 @@ public class HydrantVisiteRepository {
       .set(HYDRANT_VISITE.UTILISATEUR_MODIFICATION, visite.getUtilisateurModification())
       .set(HYDRANT_VISITE.ORGANISME, visite.getOrganisme())
       .set(HYDRANT_VISITE.AUTEUR_MODIFICATION_FLAG, visite.getAuteurModificationFlag())
+      .set(HYDRANT_VISITE.DEBIT_AUTRE, visite.getDebitAutre())
+      .set(HYDRANT_VISITE.PRESSION_DYN_AUTRE, visite.getPressionDynAutre())
       .returning(HYDRANT_VISITE.ID).fetchOne().getValue(HYDRANT_VISITE.ID);
 
     // Si la visite ajoutée est la plus récente de son type, on fait remonter sa date dans l'hydrant (si type != Non programmée)
@@ -237,6 +241,8 @@ public class HydrantVisiteRepository {
           .set(HYDRANT_PIBI.PRESSION, visite.getPression())
           .set(HYDRANT_PIBI.PRESSION_DYN, visite.getPressionDyn())
           .set(HYDRANT_PIBI.PRESSION_DYN_DEB, visite.getPressionDynDeb())
+          .set(HYDRANT_PIBI.DEBIT_AUTRE, visite.getDebitAutre())
+          .set(HYDRANT_PIBI.PRESSION_DYN_AUTRE, visite.getPressionDynAutre().doubleValue())
           .where(HYDRANT_PIBI.ID.eq(visite.getHydrant()))
           .execute();
       }
@@ -278,6 +284,8 @@ public class HydrantVisiteRepository {
       Double pression = null;
       Double pressionDyn = null;
       Double pressionDynDeb = null;
+      Integer debitAutre = null;
+      Double pressionDynAutre = null;
 
       HydrantVisite visiteDebitPressionPlusRecente = context
         .selectFrom(HYDRANT_VISITE)
@@ -295,6 +303,8 @@ public class HydrantVisiteRepository {
         pression = visiteDebitPressionPlusRecente.getPression();
         pressionDyn = visiteDebitPressionPlusRecente.getPressionDyn();
         pressionDynDeb = visiteDebitPressionPlusRecente.getPressionDynDeb();
+        debitAutre = visiteDebitPressionPlusRecente.getDebitAutre();
+        pressionDynAutre = visiteDebitPressionPlusRecente.getPressionDynAutre();
       }
       context.update(HYDRANT_PIBI)
         .set(HYDRANT_PIBI.DEBIT, debit)
@@ -302,6 +312,8 @@ public class HydrantVisiteRepository {
         .set(HYDRANT_PIBI.PRESSION, pression)
         .set(HYDRANT_PIBI.PRESSION_DYN, pressionDyn)
         .set(HYDRANT_PIBI.PRESSION_DYN_DEB, pressionDynDeb)
+        .set(HYDRANT_PIBI.DEBIT_AUTRE, debitAutre)
+        .set(HYDRANT_PIBI.PRESSION_DYN_AUTRE, pressionDynAutre)
         .where(HYDRANT_PIBI.ID.eq(visite.getHydrant()))
         .execute();
     }

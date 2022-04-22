@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantPibi extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 1091016569;
+	private static final long serialVersionUID = 1908121608;
 
 	/**
 	 * The reference instance of <code>remocra.hydrant_pibi</code>
@@ -163,6 +163,16 @@ public class HydrantPibi extends TableImpl<Record> {
 	 * The column <code>remocra.hydrant_pibi.additive</code>. Indique si le réseau est additivé
 	 */
 	public final TableField<Record, Boolean> ADDITIVE = createField("additive", org.jooq.impl.SQLDataType.BOOLEAN, this, "Indique si le réseau est additivé");
+
+	/**
+	 * The column <code>remocra.hydrant_pibi.debit_autre</code>.
+	 */
+	public final TableField<Record, Integer> DEBIT_AUTRE = createField("debit_autre", org.jooq.impl.SQLDataType.INTEGER, this, "");
+
+	/**
+	 * The column <code>remocra.hydrant_pibi.pression_dyn_autre</code>.
+	 */
+	public final TableField<Record, Double> PRESSION_DYN_AUTRE = createField("pression_dyn_autre", org.jooq.impl.SQLDataType.DOUBLE, this, "");
 
 	/**
 	 * Create a <code>remocra.hydrant_pibi</code> table reference

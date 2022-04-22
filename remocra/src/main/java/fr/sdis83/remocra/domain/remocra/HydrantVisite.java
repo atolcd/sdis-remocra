@@ -76,4 +76,10 @@ public class HydrantVisite {
 
     @Column
     private String auteurModificationFlag;
+
+    @Column
+    private Integer debitAutre;
+
+    @Column
+    private Double pressionDynAutre;
 }
