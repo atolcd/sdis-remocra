@@ -49,7 +49,7 @@ private ExportRepository exportRepository;
 
 
   @RequestMapping(value = "/{code}")
-  @PreAuthorize("hasRight('TRAITEMENTS_C')")
+  @PreAuthorize("hasRight('TRAITEMENTS_C') or hasRight('IMPORT_CTP')")
   public void downloadExportDocument(@PathVariable("code") String code, HttpServletResponse response)
       throws IOException {
     String path = exportRepository.getExportFilePathFromCode(code);
