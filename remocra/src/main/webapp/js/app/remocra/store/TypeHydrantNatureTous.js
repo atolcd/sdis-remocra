@@ -13,5 +13,11 @@ Ext.define('Sdis.Remocra.store.TypeHydrantNatureTous', {
                 store.add(record);
             });
         }
-    }
+    },
+    sorters: [
+        {
+            property: 'nom',
+            direction: 'ASC'
+        }
+    ]
 });
