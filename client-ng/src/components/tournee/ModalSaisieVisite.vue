@@ -40,7 +40,7 @@
 
             <div class="col-md-4">
               <b-form-group label="Agent 1" label-for="agent1" label-cols-md="4">
-                <b-form-input id="agent1" v-model="formAgent1" type="text" size="sm"></b-form-input>
+                <b-form-input id="agent1" v-model="formAgent1" type="text" size="sm" :state="etats.agent1" required></b-form-input>
               </b-form-group>
             </div>
 
@@ -221,7 +221,8 @@ export default {
       etats: {
         date: null,
         time: null,
-        typeVisite: null
+        typeVisite: null,
+        agent1: null
       }
 
     }
@@ -497,6 +498,13 @@ export default {
             })
           }
         });
+      } else {
+           this.$notify({
+            group: 'remocra',
+            title: 'Saisie invalide',
+            type: 'warn',
+            text: 'Veuillez saisir les champs obligatoires'
+          })
       }
     },
 
@@ -527,6 +535,7 @@ export default {
       }
 
       this.etats.typeVisite = (this.formTypeVisite == null) ? 'invalid' : 'valid';
+      this.etats.agent1 = (this.formAgent1 == null || this.formAgent1 == "" ) ? 'invalid' : 'valid';
 
       var hasInvalidState = false;
       for (var key in this.etats) {
@@ -612,6 +621,8 @@ export default {
 }
 
 #tableScroll {
+  max-height: 550px;
+  overflow-y: auto;
   overflow-x: scroll;
 }
 </style>
