@@ -535,7 +535,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
             });
         } else {
             bounds.transform("epsg:2154", this.map.getProjection());
-            this.map.zoomToExtent(bounds, true);
+            this.map.zoomToExtent(bounds);
         }
     },
 
