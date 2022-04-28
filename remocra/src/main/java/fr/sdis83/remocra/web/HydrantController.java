@@ -97,7 +97,10 @@ public class HydrantController {
                 return new JSONSerializer()
                         .include("data.id", "data.numero", "data.natureNom", "data.natureCode","data.dateRecep", "data.nomTournee", "data.code", "data.dateReco", "data.dateContr", "data.hbe",
                                 "data.jsonGeometrie", "data.dispoHbe","data.indispoTemp","data.dispoTerrestre", "data.debit", "data.commune.id", "data.nomCommune", "data.natureDeci.id",  "data.spDeci.id", "data.nomNatureDeci",
-                          "data.codeNatureDeci", "data.adresse", "data.numeroInterne", "data.gestionnaireNom", "data.nature.id", "data.visites.*", "data.dateChangementDispoTerrestre").exclude("data.*", "*.class")
+                          "data.codeNatureDeci", "data.adresse", "data.numeroInterne", "data.gestionnaireNom", "data.nature.id", "data.dateChangementDispoTerrestre",
+                                "data.visites.agent1", "data.visites.agent2", "data.visites.anomalies", "data.visites.auteurModificationFlag", "data.visites.ctrl_debit_pression",
+                        "data.visites.date", "data.visites.debit", "data.visites.debitMax", "data.visites.id", "data.visites.observations", "data.visites.pression", "data.visites.pressionDyn",
+                        "data.visites.pressionDynDeb", "data.visites.type.*").exclude( "data.*", "*.class", "data.visites.organisme.*", "data.visites.utilisateurModification.*")
                         .transform(new GeometryTransformer(), Geometry.class);
             }
 
