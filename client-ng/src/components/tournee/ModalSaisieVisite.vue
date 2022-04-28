@@ -308,6 +308,7 @@ export default {
 
       axios.get('/remocra/typehydrantanomalies.json').then(response => {
         // On met en forme les données depuis le résultat de la requête (on utilise ici un controller déjà existant)
+        var listAnomalies = [];
         _.forEach(response.data.data, item => {
 
           if(item.actif){
@@ -337,9 +338,10 @@ export default {
               }) == -1) {
               this.anomaliesCriteres.push(item.critere);
             }
-            this.anomalies.push(a);
+            listAnomalies.push(a);
           }
         });
+        this.anomalies = _.sortBy(listAnomalies, ['nom']);
 
         this.anomaliesCriteres.sort(function(a, b) {
           return a.id - b.id;
