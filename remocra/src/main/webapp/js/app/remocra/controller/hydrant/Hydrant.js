@@ -1174,7 +1174,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
            REQUEST : 'GetMap',
            STYLES : '',
            FORMAT : 'application/pdf',
-           SRS : 'EPSG:900913',
+           SRS : 'EPSG:2154',
            BBOX : bounds.toBBOX(),
            VIEWPARAMS : "tourne_id:" + tournee.getId(),
            WIDTH: 2389,
@@ -1182,7 +1182,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         };
        var url =  Sdis.Remocra.util.Util.withBaseUrl('../geoserver/remocra/wms');
        url += "?"+Ext.Object.toQueryString(params);
-       window.location = url;
+       window.open(url);
     },
     /***************************************************************************
      * Onglet "Localisation" (la Carte)
