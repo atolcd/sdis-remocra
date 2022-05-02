@@ -1709,6 +1709,12 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         d.id=id;
         document.body.appendChild(d);
         var vueImportCTP = window.remocraVue.modalImportCTP(d, {});
+        vueImportCTP.$options.bus.$on('closed', Ext.bind(function(data) {
+            vueImportCTP.$el.remove();
+            vueImportCTP.$destroy();
+            this.getTabHydrant().getStore().load();
+        }, this));
+
     },
     exportCTP: function(button) {
        var tabHydrants = button.ownerCt.ownerCt;

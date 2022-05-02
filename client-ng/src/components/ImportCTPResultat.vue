@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="importCTPResultat" size="lg"  v-bind:title="fullTitle" centered ref="importCTPResultat" @show="resetModal" @hidden="resetModal">
+  <b-modal id="importCTPResultat" size="lg"  v-bind:title="fullTitle" centered ref="importCTPResultat"  @hidden="close">
     <div id="tableScrollResCTP">
       <table class="table table-sm table-bordered">
         <thead class="thead-light">
@@ -80,7 +80,8 @@ export default {
       this.dataVisites = _.filter(_.map(bilanVerifications, 'dataVisite'), o => o != null);
     },
     exportResultat() {
-      var csvContent = "N°Ligne;Code Insee;N° du PEI;Date du CT;Bilan du contrôle\n";
+      var csvContent = "data:text/csv;charset=utf-8,"
+      csvContent+= "N°Ligne;Code Insee;N° du PEI;Date du CT;Bilan du contrôle\n";
       var rows = [];
       _.forEach(this.items, item => {
         var row = [item.numero_ligne, item.insee, item.numeroInterne, item.dateCtp ? item.dateCtp : "", this.getBilan(item)];
@@ -127,6 +128,9 @@ export default {
           text: "Une erreur est survenue lors de l'import des CT valides"
         });
       });
+    },
+    close() {
+      this.$root.$options.bus.$emit('closed')
     }
   }
 };
