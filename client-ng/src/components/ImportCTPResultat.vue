@@ -76,8 +76,7 @@ export default {
       this.dataVisites = _.filter(_.map(bilanVerifications, 'dataVisite'), o => o != null);
     },
     exportResultat() {
-      var csvContent = "data:text/csv;charset=utf-8,"
-      csvContent+= "N°Ligne;Code Insee;N° du PEI;Date du CT;Bilan du contrôle\n";
+      var csvContent = "N°Ligne;Code Insee;N° du PEI;Date du CT;Bilan du contrôle\n";
       var rows = [];
       _.forEach(this.items, item => {
         var row = [item.numero_ligne, item.insee, item.numeroInterne, item.dateCtp ? item.dateCtp : "", this.getBilan(item)];
@@ -92,7 +91,8 @@ export default {
       });
       const data = encodeURI(csvContent);
       const link = document.createElement("a");
-      link.setAttribute("href", data);
+      // UTF-8 avec BOM
+      link.setAttribute("href", "data:text/csv;charset=utf-8,%EF%BB%BF" + data);
       link.setAttribute("download", "exportResultatControle.csv");
       link.click();
     },
