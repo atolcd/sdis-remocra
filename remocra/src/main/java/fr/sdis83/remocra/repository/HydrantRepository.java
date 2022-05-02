@@ -1,7 +1,6 @@
 package fr.sdis83.remocra.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -19,6 +18,7 @@ import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.util.JSONUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -27,8 +27,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.joda.time.Instant;
 import org.jooq.DSLContext;
-import org.jooq.impl.DSL;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,11 +34,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Map;
 
 import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
@@ -386,6 +382,9 @@ public class HydrantRepository {
     try {
       if(lecturePossible) {
         sheet = workbook.getSheetAt(1);
+        if (sheet == null || !"Saisies_resultats_CT".equals(sheet.getSheetName())) {
+          throw new Exception("ERR_ONGLET_ABS");
+        }
       }
     } catch(Exception e) {
         TypeHydrantImportctpErreur erreur = context.selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
@@ -655,11 +654,14 @@ public class HydrantRepository {
         .fetchInto(Long.class);
 
       for(String s : strArrayAnomalies) {
-        Long l = Long.parseLong(s);
-        // Si une anomalie est trouvée et n'existe pas pour le contexte CTP, on la reprends de la visite précédente
-        if(idAnomaliesCTP.indexOf(l) == -1) {
-          id_anomalies.add(l);
+        if(StringUtils.isNotEmpty(s)){
+          Long l = Long.parseLong(s);
+          // Si une anomalie est trouvée et n'existe pas pour le contexte CTP, on la reprends de la visite précédente
+          if(idAnomaliesCTP.indexOf(l) == -1) {
+            id_anomalies.add(l);
+          }
         }
+
 
       }
     }
