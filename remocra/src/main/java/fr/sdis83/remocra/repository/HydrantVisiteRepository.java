@@ -142,7 +142,6 @@ public class HydrantVisiteRepository {
       v.setDebit(JSONUtil.getInteger(visite, "debit"));
       v.setPression(JSONUtil.getDouble(visite, "pression"));
       v.setObservations(JSONUtil.getString(visite, "observation"));
-      v.setHydrant(JSONUtil.getLong(visite, "hydrant"));
       v.setType(typeVisite);
       v.setCtrlDebitPression(v.getDebit() != null && v.getPression() != null);
       v.setAnomalies(JSONUtil.getString(visite, "anomalies"));
@@ -163,6 +162,14 @@ public class HydrantVisiteRepository {
       }
 
       this.launchTriggerAnomalies(JSONUtil.getLong(visite,"hydrant"));
+
+      // launch trigger pibi pour calcul d'indispo
+      if(newVisite.getCtrlDebitPression() != null && newVisite.getCtrlDebitPression()) {
+        context.update(HYDRANT_PIBI)
+                .set(HYDRANT_PIBI.ID, newVisite.getHydrant())
+                .where(HYDRANT_PIBI.ID.eq(newVisite.getHydrant()))
+                .execute();
+      }
     }
   }
 
