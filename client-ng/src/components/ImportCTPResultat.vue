@@ -43,6 +43,7 @@
       <b-button size="sm" type="submit" variant="primary" @click="importControle">Importer les contrôles techniques valides</b-button>
       <b-button size="sm" type="reset"  variant="secondary" @click="$bvModal.hide('importCTPResultat')">Annuler</b-button>
     </template>
+    <notifications group="remocra" position="top right" animation-type="velocity" :duration="3000" />
   </b-modal>
 </div>
 </template>
@@ -50,6 +51,9 @@
 <script>
 import _ from 'lodash'
 import axios from 'axios'
+import {
+  loadProgressBar
+} from 'axios-progress-bar'
 
 export default {
   name: 'ImportCTPResultat',
@@ -105,13 +109,24 @@ export default {
     importControle() {
       var formData = new FormData();
       formData.append('visites', JSON.stringify(this.dataVisites));
+      loadProgressBar({
+        parent: "#importCTPResultat",
+        showSpinner: false
+      });
       axios.post('/remocra/hydrants/importctp', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       }).then(() => {
         this.$bvModal.hide('importCTPResultat');
-      })
+      }).catch((error) => {
+        this.$notify({
+          group: 'remocra',
+          type: 'error',
+          title: 'Erreur',
+          text: "Une erreur est survenue lors de l'import des CT valides"
+        });
+      });
     }
   }
 };

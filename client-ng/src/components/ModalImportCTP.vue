@@ -23,6 +23,7 @@
       <b-button size="sm" type="reset" variant="secondary" @click="$bvModal.hide('modalImportCTP')">Annuler</b-button>
       <b-button size="sm" type="submit" variant="primary" @click="handleOk" :disabled="!fileToImport">Valider</b-button>
     </template>
+    <notifications group="remocra" position="top right" animation-type="velocity" :duration="3000" />
   </b-modal>
   <ImportCTPResultat id="importCTPResultat" ref="importCTPResultat"> </ImportCTPResultat>
 </div>
@@ -31,6 +32,9 @@
 <script>
 import axios from 'axios'
 import ImportCTPResultat from './ImportCTPResultat.vue'
+import {
+  loadProgressBar
+} from 'axios-progress-bar'
 
 export default {
   name: 'ModalImportCTP',
@@ -39,7 +43,7 @@ export default {
   },
   data() {
     return {
-       fileToImport: null,
+       fileToImport: null
     }
   },
   mounted: function() {
@@ -51,10 +55,13 @@ export default {
       this.handleSubmit();
     },
     handleSubmit() {
-      this.$refs.modalImportCTP.hide();
       if(this.fileToImport == null) return;
       var formData = new FormData();
       formData.append('file', this.fileToImport);
+      loadProgressBar({
+        parent: "#modalImportCTP",
+        showSpinner: false
+      });
       axios.post('/remocra/hydrants/importctpverification', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -62,8 +69,16 @@ export default {
       }).then(response => {
         var data = JSON.parse(response.data.message);
         this.$refs.importCTPResultat.loadData(data.bilanVerifications, this.fileToImport.name);
+        this.$refs.modalImportCTP.hide();
         this.$bvModal.show("importCTPResultat");
-      })
+      }).catch((error) => {
+        this.$notify({
+          group: 'remocra',
+          type: 'error',
+          title: 'Erreur',
+          text: "Une erreur est survenue lors de l'import CTP"
+        });
+      });
     }
   }
 };
