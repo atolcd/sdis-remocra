@@ -465,7 +465,7 @@ public class HydrantRepository {
         "JOIN remocra.hydrant h on h.id = {0}" +
         "WHERE zc.id = {1};",
       h.getId(),
-      this.utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getId()).fetchOneInto(Boolean.class);
+      this.utilisateurService.getCurrentZoneCompetenceId()).fetchOneInto(Boolean.class);
 
     if(dansZoneCompetence == null || !dansZoneCompetence) {
       throw new ImportCTPException("ERR_DEHORS_ZC", data);
