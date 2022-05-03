@@ -9,6 +9,8 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantAnomalie;
+import fr.sdis83.remocra.domain.remocra.TypeDroit;
+import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.util.JSONUtil;
@@ -42,6 +44,9 @@ public class HydrantVisiteRepository {
 
   @Autowired
   UtilisateurService utilisateurService;
+
+  @Autowired
+  private AuthoritiesUtil authUtils;
 
   private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -151,7 +156,7 @@ public class HydrantVisiteRepository {
       // Si données de longitude/latitude fournies, on déplace le PEI
       Double latitude = JSONUtil.getDouble(visite, "latitude");
       Double longitude = JSONUtil.getDouble(visite, "longitude");
-      if(latitude != null && longitude != null) {
+      if(latitude != null && longitude != null && this.authUtils.hasRight(TypeDroit.TypeDroitEnum.HYDRANTS_DEPLACEMENT_CTP_C)) {
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 2154);
         double[] coordsLambert93 = GeometryUtil.transformCordinate(longitude, latitude, "4326", "2154");
         Point p = geometryFactory.createPoint(new Coordinate(coordsLambert93[0], coordsLambert93[1]));
