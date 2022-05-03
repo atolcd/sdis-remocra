@@ -40,7 +40,7 @@
     </div>
     <template #modal-footer="">
       <b-button size="sm" type="submit" variant="primary" @click="exportResultat">Exporter le résultat du controle des données</b-button>
-      <b-button size="sm" type="submit" variant="primary" @click="importControle">Importer les contrôles techniques valides</b-button>
+      <b-button size="sm" type="submit" variant="primary" @click="importControle" :disabled="nbCTValides === 0">Importer les contrôles techniques valides</b-button>
       <b-button size="sm" type="reset"  variant="secondary" @click="$bvModal.hide('importCTPResultat')">Annuler</b-button>
     </template>
     <notifications group="remocra" position="top right" animation-type="velocity" :duration="3000" />
