@@ -1202,7 +1202,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
            SERVICE : 'wms',
            REQUEST : 'GetMap',
            STYLES : '',
-           FORMAT : 'application/pdf',
+           FORMAT : 'image/png',
            SRS : 'EPSG:2154',
            BBOX : bounds.toBBOX(),
            VIEWPARAMS : "tourne_id:" + tournee.getId(),
