@@ -522,6 +522,16 @@ public class HydrantRepository {
       throw new ImportCTPException("ERR_VISITES_MANQUANTES", data);
     }
 
+    // On vérifie si il n'y pas de visite à la même date et heure
+    nbVisite = context.selectCount()
+            .from(HYDRANT_VISITE)
+            .join(TYPE_HYDRANT_SAISIE).on(HYDRANT_VISITE.TYPE.eq(TYPE_HYDRANT_SAISIE.ID))
+            .where(HYDRANT_VISITE.HYDRANT.eq(h.getId()).and(TYPE_HYDRANT_SAISIE.CODE.eq("CTRL")).and(HYDRANT_VISITE.CTRL_DEBIT_PRESSION)
+                    .and(HYDRANT_VISITE.DATE.eq(new Instant(xls_dateCtp)))).fetchOneInto(Integer.class);
+
+    if(nbVisite > 0) {
+      throw new ImportCTPException("ERR_VISITE_EXISTANTE", data);
+    }
 
     data.put("dateCtp", formatter.format(xls_dateCtp));
 

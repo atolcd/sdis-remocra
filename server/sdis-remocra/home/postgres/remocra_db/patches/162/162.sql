@@ -35,7 +35,7 @@ drop function versionnement_dffd4df4df();
 
 CREATE TABLE remocra.type_hydrant_importctp_erreur (
   id serial,
-  code CHARACTER VARYING,
+  code CHARACTER VARYING UNIQUE,
   libelle CHARACTER VARYING,
   type CHARACTER VARYING,
   message CHARACTER VARYING
@@ -64,7 +64,8 @@ INSERT INTO remocra.type_hydrant_importctp_erreur(code, libelle, type, message) 
 ('WARN_DEB_PRESS_VIDE', 'Date remplie mais débit/pression vide', 'WARNING', 'Sans mesures (Q et Pstat), le CT n''est pas recevable mais sera intégré comme contrôle fonctionnel (CF)'),
 ('INFO_TRONC_DEBIT', 'Troncature de la valeur saisie (décimal renseigné)', 'INFO', 'Débit avec décimale : la valeur du débit sera arrondie à l''unité inférieure'),
 ('ERR_ANO_INCONNU', 'Anomalies inconnues', 'ERREUR', 'Au moins une anomalie renseignée est inconnue'),
-('ERR_VISITES_MANQUANTES', 'Visites manquantes', 'ERREUR', 'Le PEI ne dispose pas de visite de réception et de visite de reconnaissance opérationnelle initiale');
+('ERR_VISITES_MANQUANTES', 'Visites manquantes', 'ERREUR', 'Le PEI ne dispose pas de visite de réception et de visite de reconnaissance opérationnelle initiale'),
+('ERR_VISITE_EXISTANTE', 'ERR_VISITE_EXISTANTE', 'ERREUR', 'Une visite existe déjà pour un PEI à une même date et heure');
 
 INSERT INTO remocra.param_conf(cle, description, valeur, version, nomgroupe) VALUES
 ('HYDRANT_DEPLACEMENT_DIST_WARN', 'Distance de déplacement minimale pour laquelle afficher un avertissement lors de l''import de Contrôles Techniques Périodiques', 10, 1, 'Points d''eau');
