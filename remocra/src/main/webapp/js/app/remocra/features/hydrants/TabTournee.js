@@ -125,7 +125,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabTournee', {
                 }
             }
         }, {
-            text: 'Etat %',
+            text: 'Etat % (Appli mobile)',
             dataIndex: 'etat',
             renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                 if (value != null) {
