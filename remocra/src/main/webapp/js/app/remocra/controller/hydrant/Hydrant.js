@@ -1167,6 +1167,35 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     downloadMapTournee: function() {
         var tournee = this.getSelectedTournee();
         var bounds = Sdis.Remocra.util.Util.getBounds(tournee.get('geometrie'));
+        var Xmin = bounds.left;
+        var Xmax = bounds.right;
+        var Ymin = bounds.bottom;
+        var Ymax = bounds.top;
+        // définir le mode paysage/portrait
+        var mode = Xmax - Xmin > Ymax - Ymin  ? "paysage" : "portrait";
+        // calcul des centroids
+        var Xcentroid = (Xmin+Xmax) /2;
+        var Ycentroid = (Ymin+Ymax) /2;
+        // recalcul des XY
+        if ( mode == "paysage" ) {
+            Xmax += 10;
+            Xmin += 10;
+            var Y = (Xmax - Xmin) * 0.78;
+            Ymax = Ycentroid + Y/2;
+            Ymin = Ycentroid - Y/2;
+        }else {
+           Ymax = Ymax + 10;
+           Ymin = Ymin + 10;
+           var X = (Ymax - Ymin) * 0.78;
+           Xmax = Xcentroid + X/2;
+           Xmin = Xcentroid - X/2;
+        }
+        //redefinition du bbox
+        bounds.left = Xmin;
+        bounds.right = Xmax;
+        bounds.bottom = Ymin;
+        bounds.top = Ymax;
+
         var params = {
            LAYERS : 'remocra:TOURNEE',
            TRANSPARENT :'true',
@@ -1177,8 +1206,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
            SRS : 'EPSG:2154',
            BBOX : bounds.toBBOX(),
            VIEWPARAMS : "tourne_id:" + tournee.getId(),
-           WIDTH: 2389,
-           HEIGHT: 1050
+           WIDTH: mode == "paysage" ?  3307 : 2339,
+           HEIGHT: mode == "paysage" ?  2339 : 3307
         };
        var url =  Sdis.Remocra.util.Util.withBaseUrl('../geoserver/remocra/wms');
        url += "?"+Ext.Object.toQueryString(params);
