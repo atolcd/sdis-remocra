@@ -438,7 +438,7 @@ public class HydrantRepository {
 
     Integer xls_codeSdis = (int)row.getCell(0).getNumericCellValue();
     String xls_commune = row.getCell(1).getStringCellValue();
-    String xls_insee = row.getCell(2).getStringCellValue();
+    String xls_insee = this.getStringValueFromCell(row.getCell(2));
     Integer xls_numeroInterne = (int)row.getCell(3).getNumericCellValue();
 
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -727,4 +727,20 @@ public class HydrantRepository {
     return Double.parseDouble(str_cell);
   }
 
+  /**
+   * Pour pallier au problème quand une cellule est formattée à la saisie  par Excel automatiquement
+   * au format Numéric et qu'il est attendu un String (Ex : code Insee)
+   *
+   * @param c
+   * @return
+   */
+  private String getStringValueFromCell(Cell c) {
+    if(c.getCellType() == CellType.STRING) {
+      return c.getStringCellValue();
+    }
+    if(c.getCellType() == CellType.NUMERIC) {
+      return String.valueOf((int)c.getNumericCellValue());
+    }
+    return null;
+  }
 }
