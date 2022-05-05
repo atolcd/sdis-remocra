@@ -242,7 +242,7 @@ public class HydrantVisiteRepository {
           .set(HYDRANT_PIBI.PRESSION_DYN, visite.getPressionDyn())
           .set(HYDRANT_PIBI.PRESSION_DYN_DEB, visite.getPressionDynDeb())
           .set(HYDRANT_PIBI.DEBIT_AUTRE, visite.getDebitAutre())
-          .set(HYDRANT_PIBI.PRESSION_DYN_AUTRE, visite.getPressionDynAutre().doubleValue())
+          .set(HYDRANT_PIBI.PRESSION_DYN_AUTRE, visite.getPressionDynAutre())
           .where(HYDRANT_PIBI.ID.eq(visite.getHydrant()))
           .execute();
       }
