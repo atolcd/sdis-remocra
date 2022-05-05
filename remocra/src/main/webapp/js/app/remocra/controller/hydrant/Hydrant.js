@@ -1178,14 +1178,14 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         var Ycentroid = (Ymin+Ymax) /2;
         // recalcul des XY
         if ( mode == "paysage" ) {
-            Xmax += 10;
-            Xmin += 10;
+            Xmax += 50;
+            Xmin -= 50;
             var Y = (Xmax - Xmin) * 0.78;
             Ymax = Ycentroid + Y/2;
             Ymin = Ycentroid - Y/2;
         }else {
-           Ymax = Ymax + 10;
-           Ymin = Ymin + 10;
+           Ymax += 50;
+           Ymin -= 50;
            var X = (Ymax - Ymin) * 0.78;
            Xmax = Xcentroid + X/2;
            Xmin = Xcentroid - X/2;
