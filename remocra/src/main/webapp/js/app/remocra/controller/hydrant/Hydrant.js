@@ -1176,19 +1176,37 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         // calcul des centroids
         var Xcentroid = (Xmin+Xmax) /2;
         var Ycentroid = (Ymin+Ymax) /2;
+        var X = 0;
+        var Y = 0;
         // recalcul des XY
         if ( mode == "paysage" ) {
             Xmax += 50;
             Xmin -= 50;
-            var Y = (Xmax - Xmin) * 0.78;
+            Y = (Xmax - Xmin) * 0.78;
             Ymax = Ycentroid + Y/2;
             Ymin = Ycentroid - Y/2;
+            //Si le nouveau Y est inférieur à celui d'origine on recalcul le X à la place
+            if (Ymax - Ymin < bounds.top - bounds.bottom) {
+                Ymin = bounds.bottom - 50;
+                Ymax = bounds.top + 50;
+                X = (Ymax - Ymin) * 1.41;
+                Xmax = Xcentroid + X/2;
+                Xmin = Xcentroid - X/2;
+            }
         }else {
            Ymax += 50;
            Ymin -= 50;
-           var X = (Ymax - Ymin) * 0.78;
+           X = (Ymax - Ymin) * 0.78;
            Xmax = Xcentroid + X/2;
            Xmin = Xcentroid - X/2;
+           //Si le nouveau X est inférieur à celui d'origine on recalcul le Y à la place
+           if (Xmax - Xmin < bounds.right - bounds.left) {
+            Xmin = bounds.left - 50;
+            Xmax = bounds.right + 50;
+            Y = (Xmax - Xmin) * 1.41;
+            Ymax = Ycentroid + Y/2;
+            Ymin = Ycentroid - Y/2;
+        }
         }
         //redefinition du bbox
         bounds.left = Xmin;
