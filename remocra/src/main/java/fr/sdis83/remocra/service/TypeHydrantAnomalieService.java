@@ -2,6 +2,7 @@ package fr.sdis83.remocra.service;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
@@ -48,6 +49,10 @@ public class TypeHydrantAnomalieService extends AbstractService<TypeHydrantAnoma
             t.getSaisies().clear();
         }
         attached.getAnomalieNatures().clear();
+    }
+
+    public boolean checkCodeExist(String code) {
+             return  TypeHydrantAnomalie.findTypeHydrantAnomaliesByCode(code).getResultList().size() != 0;
     }
 
 }

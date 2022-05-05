@@ -182,6 +182,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Admin', {
 
     addAnomalie: function() {
         w = this.getEditAnomalie();
+        w.title = "Ajouter une anomalie";
         w.loadRecord(Ext.create('Sdis.Remocra.model.TypeHydrantAnomalie'));
         w.show();
     },

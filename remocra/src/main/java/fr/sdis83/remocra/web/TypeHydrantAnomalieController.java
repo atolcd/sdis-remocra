@@ -1,7 +1,12 @@
 package fr.sdis83.remocra.web;
 
 import java.util.List;
+import java.util.Map;
 
+import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtl;
+import fr.sdis83.remocra.service.XmlService;
+import org.jooq.tools.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,6 +76,15 @@ public class TypeHydrantAnomalieController {
     public ResponseEntity<java.lang.String> create(final @RequestBody String json) {
         try {
             final TypeHydrantAnomalie attached = service.create(json, null);
+            if (StringUtils.isEmpty(attached.getCode())) {
+                String code = null;
+               do {
+                   code = attached.getNom().replaceAll("[^a-zA-Z0-9]", "").toUpperCase().substring(0, attached.getNom().length() > 5 ? 4 : attached.getNom().length()) + Math.round(Math.random() * 1000);
+                   attached.setCode(code);
+                   attached.flush();
+               } while (!service.checkCodeExist(attached.getCode()));
+
+            }
             return new AbstractExtObjectSerializer<TypeHydrantAnomalie>("TypeHydrantAnomalie created") {
                 @Override
                 protected TypeHydrantAnomalie getRecord() throws BusinessException {
