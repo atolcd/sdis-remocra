@@ -33,10 +33,10 @@
       </table>
     </div>
     <div class="col-md-5">
-        <p align="right">Nombre de CT valides : {{nbCTValides}}</p>
-        <p align="right">Nombre de CT valides avec avertissements : {{nbCTValidesWarn}}</p>
-        <p align="right">Nombre de CT rejetés : {{nbCTRejetes}}</p>
-        <p align="right">Nombre de CT rejetés car non renseignés : {{nbCTRejetesNR}}</p>
+        <p align="left">Nombre de CT valides : {{nbCTValides}}</p>
+        <p align="left">Dont : {{nbCTValidesWarn}} CT valides avec avertissements</p>
+        <p align="left">Nombre de CT rejetés : {{nbCTRejetes}}</p>
+        <p align="left">Dont : {{nbCTRejetesNR}}  CT rejetés car non renseignés</p>
     </div>
     <template #modal-footer="">
       <b-button size="sm" type="submit" variant="primary" @click="exportResultat">Exporter le résultat du controle des données</b-button>
