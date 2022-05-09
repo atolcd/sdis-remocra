@@ -19,7 +19,7 @@ declare
 begin
     -- Métadonnées du patch
     numero_patch := 164;
-    description_patch :='Droit de déplacement des hydrants à partir d\'import CTP';
+    description_patch :='Droit de déplacement des hydrants à partir d''import CTP';
 
     -- Vérification
     if (select numero_patch-1 != (select max(numero) from remocra.suivi_patches)) then
@@ -34,7 +34,7 @@ drop function versionnement_dffd4df4df();
 -- Contenu réel du patch début
 
 INSERT INTO remocra.type_droit(code, description, nom, version, categorie) VALUES
-('HYDRANTS_DEPLACEMENT_CTP_C', 'Modification des coordonnées dans l''import CTP', 'hydrants.deplacement_ctp_C', 1, 'Module PEI'),
+('HYDRANTS_DEPLACEMENT_CTP_C', 'Modification des coordonnées dans l''import CTP', 'hydrants.deplacement_ctp_C', 1, 'Module PEI');
 -- Contenu réel du patch fin
 --------------------------------------------------
 
