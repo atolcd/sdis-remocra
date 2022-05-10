@@ -33,21 +33,7 @@ drop function versionnement_dffd4df4df();
 --------------------------------------------------
 -- Contenu réel du patch début
 
-INSERT INTO remocra.type_hydrant_importctp_erreur(code, libelle, type, message) VALUES
-('ERR_VISITES_MANQUANTES', 'Visites manquantes', 'ERREUR', 'Le PEI ne dispose pas de visite de réception et de visite de reconnaissance opérationnelle initiale');
-
-UPDATE remocra.type_hydrant_importctp_erreur SET message = 'Erreur adresse' WHERE code = 'ERR_MAUVAIS_EXT';
-UPDATE remocra.type_hydrant_importctp_erreur SET message = 'Le déplacement d’un PEI est limité, supprimez l’ancien PEI et créer un nouveau PEI' WHERE code = 'WARN_DEPLACEMENT';
-UPDATE remocra.type_hydrant_importctp_erreur SET message = 'Coordonnées incompatibles au format annoncé' WHERE code = 'ERR_COORD_GPS';
-UPDATE remocra.type_hydrant_importctp_erreur SET message = 'DECIsère : la date du CT doit doitdit être renseignée' WHERE code = 'ERR_DATE_MANQ';
-UPDATE remocra.type_hydrant_importctp_erreur SET message = 'DECIsère : l''organisme doit être renseigné' WHERE code = 'ERR_AGENT1_ABS';
-UPDATE remocra.type_hydrant_importctp_erreur SET message = 'La pression statique est obligatoire' WHERE code = 'WARN_PRESS_VIDE';
-UPDATE remocra.type_hydrant_importctp_erreur SET message = 'Erreur de saisie pression trop élevée' WHERE code = 'ERR_PRESS_ELEVEE';
-UPDATE remocra.type_hydrant_importctp_erreur SET message = 'Débit obligatoire (à 1b sinon au débit max)' WHERE code = 'WARN_DEBIT_VIDE';
-UPDATE remocra.type_hydrant_importctp_erreur SET message = 'Sans mesures (Q et P), le CT n’est pas recevable' WHERE code = 'WARN_DEB_PRESS_VIDE';
-UPDATE remocra.type_hydrant_importctp_erreur SET message = 'Le débit doit être un nombre entier' WHERE code = 'INFO_TRONC_DEBIT';
-
-
+-- Patch blanc pour ne pas réécrire l'arbre git, les modifications portées par ce patch ont été appliquées au patch précécent
 
 -- Contenu réel du patch fin
 --------------------------------------------------
