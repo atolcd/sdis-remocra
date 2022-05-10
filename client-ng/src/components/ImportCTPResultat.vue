@@ -120,7 +120,7 @@ export default {
         }
       }).then(() => {
         this.$bvModal.hide('importCTPResultat');
-      }).catch((error) => {
+      }).catch(() => {
         this.$notify({
           group: 'remocra',
           type: 'error',

@@ -71,7 +71,7 @@ export default {
         this.$refs.importCTPResultat.loadData(data.bilanVerifications, this.fileToImport.name);
         this.$refs.modalImportCTP.hide();
         this.$bvModal.show("importCTPResultat");
-      }).catch((error) => {
+      }).catch(() => {
         this.$notify({
           group: 'remocra',
           type: 'error',
