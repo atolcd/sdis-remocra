@@ -5,6 +5,7 @@
              no-close-on-backdrop
              :title="this.modalTitle"
              ok-title="Valider"
+             :ok-disabled="!saisieMesuresAnomaliesCompleted"
              :ok-only="this.showResults"
              cancel-title="Annuler"
              size="xl"
@@ -61,10 +62,10 @@
                     <th scope="col">Type</th>
                     <th scope="col">Domaine</th>
                     <th scope="col">Propriétaire</th>
-                    <th scope="col">Anomalies</th>
+                    <th scope="col">Etat</th>
                     <th scope="col">Date de la dernière ROP</th>
                     <th scope="col">Date de la dernière CTP</th>
-                    <th scope="col">Etat</th>
+                    <th scope="col">Anomalies</th>
                     <th scope="col" class="colRAS"></th>
                   </thead>
                   <tbody>
@@ -85,7 +86,10 @@
                         {{item.gestionnaireNom }}
                       </td>
                       <td>
-                        {{ getVisiteRecenteAnomalies(item.visites) }}
+                        <p v-if="item.dispoTerrestre === 'DISPO'" class="bg-success rounded-lg text-light font-weight-bolder dispo">Disponible</p>
+                        <p v-else-if="item.dispoTerrestre === 'NON_CONFORME'" class="bg-warning rounded-lg dispo dispoLg text-light">Non conforme</p>
+                        <p v-else class="bg-danger rounded-lg text-light font-weight-bolder dispo">Indisponible</p>
+                        <span v-if="item.dateChangementDispoTerrestre != null">({{ item.dateChangementDispoTerrestre | printDate }})</span>
                       </td>
                       <td>
                         {{ ((item.dateReco) ? item.dateReco : item.dateRecep) | printDate }}
@@ -94,10 +98,7 @@
                         {{ ((item.dateContr) ? item.dateContr : item.dateCrea) | printDate }}
                       </td>
                       <td>
-                        <p v-if="item.dispoTerrestre === 'DISPO'" class="bg-success rounded-lg text-light font-weight-bolder dispo">Disponible</p>
-                        <p v-else-if="item.dispoTerrestre === 'NON_CONFORME'" class="bg-warning rounded-lg dispo dispoLg text-light">Non conforme</p>
-                        <p v-else class="bg-danger rounded-lg text-light font-weight-bolder dispo">Indisponible</p>
-                        <span v-if="item.dateChangementDispoTerrestre != null">({{ item.dateChangementDispoTerrestre | printDate }})</span>
+                        {{ getVisiteRecenteAnomalies(item.visites) }}
                       </td>
                       <td>
                         <b-form inline>
@@ -108,8 +109,7 @@
                               <span class="onoffswitch-switch"></span>
                             </label>
                           </div>
-
-                          <b-button variant="primary"
+                          <b-button :variant="item.ras ? 'primary' : item.variant"
                                     @click="onClickPointsSpecifiques(item)"
                                     size="sm"
                                     class="boutonMesures"
@@ -224,7 +224,6 @@ export default {
         typeVisite: null,
         agent1: null
       }
-
     }
   },
 
@@ -258,6 +257,21 @@ export default {
     getNbPeiSansCDP: function() {
       return this.hydrants.filter(h => h.newVisite == null || (h.newVisite.debit == null && h.newVisite.debitMax == null &&
         h.newVisite.pression == null && h.newVisite.pressionDyn == null && h.newVisite.pressionDynDeb == null)).length;
+    },
+
+    saisieMesuresAnomaliesCompleted: function() {
+      if (this.hydrants != null) {
+        return this.hydrants.filter(h =>
+          h.ras == true
+          || (
+            h.newVisite != null &&
+            ((h.newVisite.anomalies != null && h.newVisite.anomalies.length > 0 )
+              || h.newVisite.debit != null || h.newVisite.debitMax != null
+               || h.newVisite.pression != null || h.newVisite.pressionDyn != null || h.newVisite.pressionDynDeb != null
+            ))
+        ).length == this.hydrants.length;
+      }
+      return false;
     }
   },
 
@@ -297,7 +311,7 @@ export default {
         _.forEach(this.hydrants, h => {
           var index = _.findIndex(this.hydrants, function(o) { return o.id == h.id; })
           this.$set(this.hydrants[index], 'ras', false);
-
+          this.$set(this.hydrants[index], 'variant', 'warning');
           _.forEach(h.visites, v => {
             v.date = moment(v.date);
           });
@@ -422,13 +436,22 @@ export default {
       var newVisite = {
         anomalies: data.anomalies,
         observations: data.observations,
-        debit: data.debit,
-        debitMax: data.debitMax,
-        pression: data.pression,
-        pressionDyn: data.pressionDyn,
-        pressionDynDeb: data.pressionDynDeb
+        debit: data.debit == "" ? null : data.debit,
+        debitMax: data.debitMax == "" ? null : data.debitMax,
+        pression: data.pression == "" ? null : data.pression,
+        pressionDyn: data.pressionDyn == "" ? null : data.pressionDyn,
+        pressionDynDeb: data.pressionDynDeb == "" ? null : data.pressionDynDeb
       };
-      hydrant.newVisite = newVisite;
+
+      this.$set(hydrant, 'newVisite', newVisite);
+
+      // Gestion de la couleur du bouton "Mesures /anomalies"
+      if (newVisite.anomalies.length > 0 ||
+        newVisite.debit != null || newVisite.debitMax != null || newVisite.pression != null || newVisite.pressionDyn != null || newVisite.pressionDynDeb != null) {
+        hydrant.variant = "primary";
+      } else {
+        hydrant.variant = "warning";
+      }
     },
 
     handleOk: function(evt) {
