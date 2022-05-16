@@ -73,6 +73,7 @@ public class RedashController {
             params.put("p_zone_competence", String.valueOf(zoneCompetence));
             params.put("p_organisme",String.valueOf(u.getOrganisme().getId()));
             json.put("parameters",params );
+            json.put("max_age", 600);
             StringEntity parameters = new StringEntity(json.toString());
 
             log.info("Proxy corr vers : " + targetURL);
