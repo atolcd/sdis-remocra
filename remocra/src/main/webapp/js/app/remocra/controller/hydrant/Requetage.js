@@ -78,7 +78,6 @@ Ext.define('Sdis.Remocra.controller.hydrant.Requetage', {
         var i;
         for (i = 0; i < data.length; i++) {
             var typeControle = data[i]['formulaireTypeControle'];
-
             switch (typeControle) {
                 // Static Combo
                 case 'staticcombo':
@@ -125,9 +124,10 @@ Ext.define('Sdis.Remocra.controller.hydrant.Requetage', {
                     break;
 
                 // Combo avec requête Saisie et requête de type "like" sur le libellé
+                case 'combo-autocomplete':
                 case 'combo':
                     var paramLstLikeDStore = new Ext.data.JsonStore({
-                        autoLoad: true,
+                        autoLoad: typeControle == 'combo-autocomplete' ? false : true,
                         proxy : {
                             format : 'json',
                             type : 'rest',
@@ -136,7 +136,6 @@ Ext.define('Sdis.Remocra.controller.hydrant.Requetage', {
                             reader : { type : 'json', root : 'data', totalProperty : 'total' }
                         },
                         idProperty : 'id',
-                        //autoLoad : true,
                         restful : true,
                         fields : [ { name : data[i]['sourceSqlValeur'], type : 'string' },
                                    { name : data[i]['sourceSqlLibelle'], type : 'string' }
@@ -158,9 +157,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Requetage', {
                         mode : 'remote',
                         triggerAction : 'all',
                         forceSelection: true,
-                        hideTrigger : false,
+                        hideTrigger : typeControle == 'combo-autocomplete'? true : false,
                         editable : true,
-                        minChars: 1,
+                        minChars: typeControle == 'combo-autocomplete' ? '3' : '1',
                         emptyText : "Sélectionner une valeur",
                         name : data[i]['nom']
                     });
