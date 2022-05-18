@@ -169,12 +169,10 @@ public class HydrantVisiteRepository {
       this.launchTriggerAnomalies(JSONUtil.getLong(visite,"hydrant"));
 
       // launch trigger pibi pour calcul d'indispo
-      if(newVisite.getCtrlDebitPression() != null && newVisite.getCtrlDebitPression()) {
-        context.update(HYDRANT_PIBI)
-                .set(HYDRANT_PIBI.ID, newVisite.getHydrant())
-                .where(HYDRANT_PIBI.ID.eq(newVisite.getHydrant()))
-                .execute();
-      }
+      context.update(HYDRANT_PIBI)
+        .set(HYDRANT_PIBI.ID, newVisite.getHydrant())
+        .where(HYDRANT_PIBI.ID.eq(newVisite.getHydrant()))
+        .execute();
     }
   }
 
