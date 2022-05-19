@@ -275,12 +275,17 @@ public class Hydrant implements Featurable {
 
         // PIBI
         String diametreCode = null;
+        Double pression = null;
         if (this instanceof HydrantPibi) {
+            //Diametre
             TypeHydrantDiametre thd = ((HydrantPibi)this).getDiametre();
             if (thd!=null) {
                 diametreCode = thd.getCode();
             }
+            //Pression
+            pression = ((HydrantPibi)this).getPression();
         }
+        feature.addProperty("pression", pression);
         feature.addProperty("diametre", diametreCode);
         // PENA
         String positionnementCode = null;
