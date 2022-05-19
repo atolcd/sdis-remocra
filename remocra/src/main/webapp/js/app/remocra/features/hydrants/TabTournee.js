@@ -44,21 +44,21 @@ Ext.define('Sdis.Remocra.features.hydrants.TabTournee', {
             itemId: 'renameTournee',
             disabled: true
         },{
-            text: 'Saisir la visite',
-            itemId: 'saisirVisite',
-            disabled: true
-        },{
-            text: 'Générer un courrier',
+            text: 'Générer document',
             itemId: 'newCourrierBtn',
             tooltip: 'Outil de génération de courriers',
             iconCls: 'new-courrierIcon',
             disabled: false
-        }, {
+        },{
             text: 'Télécharger la carte des tournées',
             itemId: 'downloadMapTournee',
             tooltip: 'Télécharger la carte des tournées',
             iconCls: 'download-atlasIcon',
             disabled: true
+        },{
+          text: 'Saisir la visite',
+          itemId: 'saisirVisite',
+          disabled: true
         },
         '->',{
             text: 'Supprimer',
