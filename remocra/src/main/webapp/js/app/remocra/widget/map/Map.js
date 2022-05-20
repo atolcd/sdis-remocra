@@ -770,7 +770,9 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
             SLD: layerDef.sld,
             transparent: true,
             // Zone de compétence fournie dans les viewparams côté serveur (ZC_ID)
-            'remocra_zc': layerDef['zc']===true?true:undefined
+            'remocra_zc': layerDef['zc']===true?true:undefined,
+            // On passe l'id de l'organimse de l'utilisateur côté serveur (ORGANISME_ID)
+            'remocra_organisme': layerDef['filterOrga'] === true ? true : undefined
         }, {
             code: layerDef.id,
             singleTile: true,

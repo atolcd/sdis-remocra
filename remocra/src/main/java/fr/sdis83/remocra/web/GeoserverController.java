@@ -203,6 +203,7 @@ public class GeoserverController {
             String inputCQLParamValue = null;
             String inputViewparamsParamValue = null;
             String inputRemocraZcParamValue = null;
+            String inputRemocraOrganismeIdParamValue = null;
 
             // Paramètres supplémentaires éventuels
             for (Map.Entry<String, String> param : params.entrySet()) {
@@ -217,6 +218,9 @@ public class GeoserverController {
                 } else if (RequestType.GetMap == requestType && "remocra_zc".equalsIgnoreCase(paramName)) {
                     // On retient ce paramètre pour le GetMap
                     inputRemocraZcParamValue = paramValue;
+                } else if (RequestType.GetMap == requestType && "remocra_organisme".equalsIgnoreCase(paramName)) {
+                    // On retient ce paramètre pour le GetMap
+                    inputRemocraOrganismeIdParamValue  = paramValue;
                 } else {
                     b.replaceQueryParam(paramName, paramValue);
                 }
@@ -232,8 +236,12 @@ public class GeoserverController {
             // GetMap : filtre sur la zone de compétence si nécessaire
             if (RequestType.GetMap == requestType || RequestType.GetFeatureInfo == requestType) {
                 String idZone = null;
+                String organismeId = null;
                 if ("true".equals(inputRemocraZcParamValue) || accessLevel == AccessLevel.AUTH_ZONE) {
                     idZone = utilisateurService.getCurrentZoneCompetenceId().toString();
+                }
+                if ("true".equals(inputRemocraOrganismeIdParamValue) || accessLevel == AccessLevel.AUTH_ZONE) {
+                    organismeId = utilisateurService.getCurrentUtilisateur().getOrganisme().getId().toString();
                 }
                 // Action de la zone de compétence viewparams
                 if ("true".equals(inputRemocraZcParamValue)) {
@@ -242,9 +250,18 @@ public class GeoserverController {
                     b.replaceQueryParam("viewparams",
                             (inputViewparamsParamValue != null && inputViewparamsParamValue.length() > 0
                                     ? inputViewparamsParamValue + (inputViewparamsParamValue.endsWith(";") ? "" : ";") : "") + viewparamsZc);
-                } else if (inputViewparamsParamValue!=null) {
+                }
+                if ("true".equals(inputRemocraOrganismeIdParamValue)) {
+                    // Ajout de la variable viewparams
+                    String viewparamsOrganId = "ORGANISME_ID:" + organismeId;
+                    b.replaceQueryParam("viewparams",
+                            (inputViewparamsParamValue != null && inputViewparamsParamValue.length() > 0
+                                    ? inputViewparamsParamValue + (inputViewparamsParamValue.endsWith(";") ? "" : ";") : "") + viewparamsOrganId);
+                }
+                if (!"true".equals(inputRemocraZcParamValue) &&  !"true".equals(inputRemocraOrganismeIdParamValue)  && inputViewparamsParamValue!=null) {
                     b.replaceQueryParam("viewparams", inputViewparamsParamValue);
                 }
+
                 String[] layers = getParameterOrLowerOrUpperCase(request, "LAYERS").split(",");
                 StringBuffer fullCQLFilter = new StringBuffer();
                 if (RequestType.GetMap == requestType && accessLevel == AccessLevel.AUTH_ZONE) {
@@ -418,6 +435,7 @@ public class GeoserverController {
             // GetMap : filtre sur la zone de compétence si nécessaire
             if (RequestType.GetMap == requestType || RequestType.GetFeatureInfo == requestType) {
                 String idZone = null;
+
                 if ("true".equals(inputRemocraZcParamValue) || accessLevel == AccessLevel.AUTH_ZONE) {
                     idZone = utilisateurService.getCurrentZoneCompetenceId().toString();
                 }
