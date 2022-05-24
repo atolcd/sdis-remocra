@@ -172,6 +172,11 @@
 					<xs:documentation>Champ de saisie de type "Liste déroulante"</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="combo-autocomplete">
+				<xs:annotation>
+					<xs:documentation>Champ de saisie de type "Liste déroulante avec autocompletion"</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="datefield">
 				<xs:annotation>
 					<xs:documentation>Champ de saisie de type "Calendrier"</xs:documentation>
