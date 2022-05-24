@@ -459,6 +459,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         this.getTabMap().hydrantLayer.events.on({
             'featureselected': this.onSelectedFeatureChange,
             'featureunselected': this.onSelectedFeatureChange,
+            'featuresremoved': this.onSelectedFeatureChange,
             scope: this
         });
 
