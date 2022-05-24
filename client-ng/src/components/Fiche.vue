@@ -1,6 +1,6 @@
 <template>
 <div :class="{ 'Fiche': true, 'mode-visite': newVisite, 'loading': !dataLoaded }">
-  <modal name="modalFiche"  :no-close-on-backdrop="true" :draggable="true" id="modalFiche"  ref="modalFiche" classes="modalFiche" @closed="close()"
+  <modal name="modalFiche"  :clickToClose="false" :draggable="true" id="modalFiche"  ref="modalFiche" classes="modalFiche" @closed="close()"
     :reset="true"
     width="50%"
     height="auto">
