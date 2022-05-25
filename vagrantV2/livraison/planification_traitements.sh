@@ -147,14 +147,14 @@ curl -v http://localhost:8070/v1/jobs -XPOST -d '{
   "owner_email": "",
   "disabled": false,
   "tags": {
-    "pdi": "4.4:1"
+    "pdi": "7.1:1"
   },
   "metadata": null,
   "retries": 0,
   "concurrency": "forbid",
   "executor": "shell",
   "executor_config": {
-    "command": "/home/pdi/kitchen.sh -rep:ref_pdi_remocra -dir:maintenance/zone_competence_commune -job:actualisation_zone_competence_commune -user:admin -pass:admin -level:Error -param:PDI_FICHIER_PARAMETRE=/home/pdi/remocra.properties >> /var/remocra/pdi/log/remocra_zone_competence_commune.log 2>&1"
+    "command": "/home/pdi/kitchen.sh -file:/var/remocra/modeles/processus_etl/commun/maintenance/actualiser_zone_competence_commune/actualisation_zone_competence_commune.kjb -level:Error -param:PDI_FICHIER_PARAMETRE=/home/pdi/remocra.properties >> /var/remocra/pdi/log/remocra_zone_competence_commune.log 2>&1"
   }
 }'
 
