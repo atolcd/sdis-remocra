@@ -1,0 +1,98 @@
+= SDIS Remocra - Notes de version
+
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+
+:experimental:
+:icons: font
+
+:toc:
+
+link:index{outfilesuffix}[Retour à l'accueil]
+
+'''
+== v2.2.3
+=== Fonctionnalités
+* Divers
+** Ajout du conteneur Redash au fichier docker-compose pour déploiement techniques des tableaux de bord.
+* Module DECI
+** Ajout des méthodes de numérotation pour les SDIS 91 et 95.
+** Ajout d'un bouton pour généré une carte de la tournée sélectionée (mise en place d'une couche aggrégée `remocra:TOURNEE` nécessaire).
+** Ajout d'une interface de saisie de tournée en un seul écran. (Evolution commandée par le SDMIS).
+** Ajout d'un module d'export/import de fichier Excel pour la saisie de CTP (Evolution commandée par le SDIS 38).
+** Ajout d'un couple débit/pression.
+** Ajout du type liste déroulante avec autocomplétion pour les recherches et analyses afin d'améliorer le chargement de l'interface.
+** Ajout d'un filtre sur les organisme dans le tableau de l'onglet `Tournée`.
+
+
+=== Ajustements
+* Divers
+** Mise à jour d'éléments pour le build et le lancement des conteneurs.
+** Mise à jour de la documentation d'installation / exploitation.
+* Module DECI
+** Reprise du numéro SCP supprimé lors du passage en V2.
+** Suppression de la colonne synchronisé dans le tableau des tournées.
+** Tri des anomalies par ordre alphabétique dans l'interface de saisie de visite.
+** Attribution de PEI à une tournée existante : recherche par nom de tournée et/ou nom de l'organisme dans la liste déroulante des tournées existantes.
+** Ajout du bouton de génération de courriers/documents dans l'onglet `Tournées`.
+** Tri de nature de PEI par ordre alphabétique.
+** Ajout de la mention `(Appli mobile)` dans la colonne `Etat %` du tableau des tournées.
+** Recherche de commune par liste déroulante dans le tableau de l'onglet `Points d'eau`.
+** Blocage de la fermeture de la fiche PEI lors du clic en dehors de la fenêtre.
+** Impossibilité d'instruire un PEI prescrit dans le futur.
+* Génération de courrier
+** Remplacement des listes déroulante par des listes avec auto-complétion.
+* Administration
+** Amélioration des performences du chargement des utilisateurs.
+
+=== Fix
+* API
+** Fix récupération des valeurs de débit/pression lors de la suppression d'une visite.
+* Module DECI
+** Création de PENA avec des aires d'aspiration.
+** Correction de `Moyene` en `Moyenne` dans le tableau récapitulatif des débits/pressions de la fiche résumée.
+** Mise à jour de la carte suite à l'ajout/suppresion d'une indispo temporaire et du changement de nature d'un PEI.
+** Gestion des booléen pour la synchro de l'application tablette.
+* Divers
+** Fix du scroll de la page au zoom avec la molette de la sourie sur les cartes.
+
+=== Mise à jour
+* Appliquer les patchs jusqu'au numéro 164 (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches[Disponible ici]).
+* Livrer les éléments de l'archive présente https://github.com/atolcd/sdis-remocra/releases/download/v2.2.3/remocra.zip[ici] dans `/var/remocra`.
+* Personnaliser le fichier `/var/remocra/modeles/xls/template.xlsx` dans le dossier `/var/remocra/modeles/xls/sdis/[NUMERO_DEPARTEMENT]/template.xlsx`
+* Référencer le traitement `Traiter demandes V2` dans dKron (https://github.com/atolcd/sdis-remocra/blob/master/vagrantV2/livraison/planification_traitements.sh[script présent ici]).
+* Créer une couche aggrégée `remocra:TOURNEE`.
+
+
+
+== v2.1.8.3
+=== Fonctionnalités
+
+* Module DECI
+** Ajout d'astérisques sur les champs obligatoires de la fiche PEI.
+** Filtre sur les organismes dans l'onglet `Tournées` du module DECI.
+* Administration
+** Ajout de la variable d'environnement `REMOCRA_SESSION_MIN` au conteneur Remocra pour gérer la durée d'un session Remocra.
+
+=== Ajustements
+
+* Module DECI
+** Déclenchement de la recherche de la tournée à partir de 3 caractères (accès rapide, affectation à une tournée).
+** Remise à zéro des filtres de l'onglet `Point d'eau` lors du clique sur `Lister les points d'eau` dans l'onglet `Tournées`.
+** Tri des PEI par ordre naturel (1,2,3 plutôt que 1,10,11,12,2,20).
+* Couverture hydraulique
+** Séparation du calcul des isodistances et du calcul de couverture des risques.
+
+=== Fix
+
+* Module DECI
+** Les tournées des organismes enfants apparaissent dans la colonne `Tournée` de l'onglet `Point d'eau` du module DECI. En cas de multiple tournées, le nom des tournée est séparés par une virgule.
+* Génération de courrier
+** Correction de l'utilisation des champs `date/heure` dans le formulaire de génération des courriers.
+* Couvertuture hydraulique
+** Fix calcul du PEI le plus proche.
+** Centrage de la carte sur la zone de compétence de l'utilisateur courant.
+
+=== Mise à jour
+* Application des patch jusqu'au numéro 159.
+* Ajouter la variable d'environement `REMOCRA_SESSION_MIN` au ficher `/etc/docker_remocra/.env`.
+* Passer la variable d'environement `REMOCRA_SESSION_MIN` au conteneur en mettant à jour le fichier `/etc/docker_remocra/docker-compose.yml` comme link:../docker/docker-compose.yml[ici]
