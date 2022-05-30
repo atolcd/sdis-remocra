@@ -393,6 +393,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         }
         if (!Sdis.Remocra.Rights.hasRight('TOURNEE_C')) {
             fiche.down('crHydrantsTournee #deleteTournee').hide();
+            fiche.down('crHydrantsTournee #renameTournee').hide();
         }
         if (!Sdis.Remocra.Rights.hasRight('TOURNEE_POURCENTAGE_C')) {
              fiche.down('crHydrantsTournee #finaliseTournee').hide();
