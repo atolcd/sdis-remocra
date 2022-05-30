@@ -178,12 +178,15 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                     disabled: true
                 });
             }
-
             if(Sdis.Remocra.Rights.hasRight('DEBITS_SIMULTANES_R')) {
+                let text;
+                Sdis.Remocra.Rights.hasRight('DEBITS_SIMULTANES_C')
+                    ? text ='Consulter / Saisir une mesure'
+                    : text = 'Consulter'
                 this.editItems.push({
                     xtype: 'button',
-                    tooltip: 'Saisir une mesure',
-                    text: '<span>Saisir mesure</span>',
+                    tooltip: text,
+                    text: '<span>'+text+'</span>',
                     cls: 'edit-info',
                     iconCls: 'edit-infoIcon',
                     itemId: 'saisirMesureBtn',
