@@ -21,6 +21,14 @@
           </div>
         </div>
         <div class="row">
+          <div class="col-md-2 mb-3 mt-1">
+            <label>Observation :</label>
+          </div>
+          <div class="col-md-10">
+            <b-form-textarea type="text" v-model="value.observation" id="observation" size="sm"></b-form-input>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-md-4">
             <b-form-radio v-model="value.typeDateIndispo" value="immediat" :state="etats.typeDateIndispo" v-on:change="desactiveDateTimeIndispo" name="radioIndispo" required>Immédiate</b-form-radio>
           </div>
@@ -159,6 +167,7 @@ export default {
       value: {
         //Partie indispo
         motif: null,
+        observation: null,
         typeDateIndispo: 'immediat',
         dateIndispo: null,
         heureIndispo: null,
@@ -232,6 +241,7 @@ export default {
         this.value.heureIndispo = dateTimeDebut[1].substr(0, 5)
         this.melAvantIndispo = indispoTemp.melAvantIndispo
         this.basculeAutoIndispo = indispoTemp.basculeAutoIndispo
+        this.value.observation = indispoTemp.observation;
         if (indispoTemp.dateFin != null) {
           this.value.typeDateDispo = 'aPartirDu'
           var dateTimeFin = indispoTemp.dateFin.split('T')
@@ -479,7 +489,8 @@ export default {
         "melAvantDispo": this.melAvantDispo,
         "tabIdPeiConcernes": this.value.tabIdPeiConcernes,
         "totalHydrants": this.value.tabNumeroPeiConcernes.length,
-        "statut": null
+        "statut": null,
+        "observation" : this.value.observation
       };
       //On envoie les données du formulaires au serveur
       var self = this

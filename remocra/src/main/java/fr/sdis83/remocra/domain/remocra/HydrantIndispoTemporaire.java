@@ -77,7 +77,9 @@ public class HydrantIndispoTemporaire {
 
     @Column(name="mel_avant_dispo")
     private boolean melAvantDispo;
-    
+
+    @Column(name = "observation")
+    private String observation;
     /*@Temporal(TemporalType.TIMESTAMP)
     //@DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
     private Date datePrevDebut;

@@ -116,5 +116,11 @@ privileged aspect HydrantIndispoTemporaire_Roo_JavaBean {
         this.melAvantDispo = melAvantDispo;
     }
 
+    public String HydrantIndispoTemporaire.getObservation() {
+        return this.observation;
+    }
 
+    public void HydrantIndispoTemporaire.setObservation(String observation) {
+        this.observation = observation;
+    }
 }

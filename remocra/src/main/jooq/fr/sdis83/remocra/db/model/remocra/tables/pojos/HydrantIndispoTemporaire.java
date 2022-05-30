@@ -24,7 +24,7 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantIndispoTemporaire implements Serializable {
 
-	private static final long serialVersionUID = -862348530;
+	private static final long serialVersionUID = -687685948;
 
 	private Long    id;
 	private Instant dateDebut;
@@ -38,6 +38,7 @@ public class HydrantIndispoTemporaire implements Serializable {
 	private Boolean basculeAutoDispo;
 	private Boolean melAvantIndispo;
 	private Boolean melAvantDispo;
+	private String  observation;
 
 	public HydrantIndispoTemporaire() {}
 
@@ -54,6 +55,7 @@ public class HydrantIndispoTemporaire implements Serializable {
 		this.basculeAutoDispo = value.basculeAutoDispo;
 		this.melAvantIndispo = value.melAvantIndispo;
 		this.melAvantDispo = value.melAvantDispo;
+		this.observation = value.observation;
 	}
 
 	public HydrantIndispoTemporaire(
@@ -68,7 +70,8 @@ public class HydrantIndispoTemporaire implements Serializable {
 		Boolean basculeAutoIndispo,
 		Boolean basculeAutoDispo,
 		Boolean melAvantIndispo,
-		Boolean melAvantDispo
+		Boolean melAvantDispo,
+		String  observation
 	) {
 		this.id = id;
 		this.dateDebut = dateDebut;
@@ -82,6 +85,7 @@ public class HydrantIndispoTemporaire implements Serializable {
 		this.basculeAutoDispo = basculeAutoDispo;
 		this.melAvantIndispo = melAvantIndispo;
 		this.melAvantDispo = melAvantDispo;
+		this.observation = observation;
 	}
 
 	public Long getId() {
@@ -189,6 +193,15 @@ public class HydrantIndispoTemporaire implements Serializable {
 
 	public HydrantIndispoTemporaire setMelAvantDispo(Boolean melAvantDispo) {
 		this.melAvantDispo = melAvantDispo;
+		return this;
+	}
+
+	public String getObservation() {
+		return this.observation;
+	}
+
+	public HydrantIndispoTemporaire setObservation(String observation) {
+		this.observation = observation;
 		return this;
 	}
 }
