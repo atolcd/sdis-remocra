@@ -858,6 +858,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
     },
 
     highlightSelection: function(extraParams){
+
         var self = this;
         clearTimeout(this.timeoutHighlight);
         this.highlightLayer.removeAllFeatures();
@@ -882,9 +883,15 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
         }
         else if(extraParams.t){
             // PEIs d'une tournée
+            var tourneeId = extraParams.t;
             this.hydrantLayer.features.forEach(function(item){
-                if(item.attributes.tournees !== null && item.attributes.tournees.indexOf(extraParams.t) != -1){
-                    self.highlightLayer.addFeatures(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(item.geometry.x, item.geometry.y)));
+                if(item.attributes.tournees !== null) {
+                    var tournees = item.attributes.tournees;
+                    tournees = tournees.replaceAll('[','');
+                    tournees = tournees.replaceAll(']','');
+                    if(tournees == tourneeId) {
+                      self.highlightLayer.addFeatures(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(item.geometry.x, item.geometry.y)));
+                    }
                 }
             });
             self.clearHighlightLayerDelayed();
