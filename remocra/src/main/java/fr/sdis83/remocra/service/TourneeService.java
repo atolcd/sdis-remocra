@@ -59,14 +59,19 @@ public class TourneeService extends AbstractService<Tournee> {
             predicat = cBuilder.equal(cpPath, itemFilter.getValue());
         } else if ("query".equals(itemFilter.getFieldName())) { // Recherche sur le nom de la tournée OU le nom de l'organisme
             Expression<String> cpPath = from.get("id");
+            String sanitizedValue = itemFilter.getValue().replaceAll("'", "''").replaceAll("\"", "\\\"");
             String sql = "SELECT t.id from remocra.tournee t " +
-              "JOIN remocra.organisme o ON o.id = t.affectation " +
-              "WHERE UPPER(t.nom) LIKE UPPER('%"+itemFilter.getValue()+"%') OR UPPER(o.nom) LIKE UPPER('%"+itemFilter.getValue()+"%');";
+              "LEFT JOIN remocra.organisme o ON o.id = t.affectation " +
+              "WHERE UPPER(t.nom) LIKE UPPER('%"+sanitizedValue+"%') OR UPPER(o.nom) LIKE UPPER('%"+sanitizedValue+"%');";
 
             Query query = entityManager.createNativeQuery(sql);
             List<BigInteger> idTournees = query.getResultList();
 
-            predicat = cBuilder.isTrue(cpPath.in(idTournees));
+            if(idTournees.size() > 0) {
+                predicat = cBuilder.isTrue(cpPath.in(idTournees));
+            } else {
+                predicat = cBuilder.equal(from.get("id"), -1);
+            }
         } else if ("nom".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.get("nom");
             predicat = cBuilder.like(cBuilder.concat("", cBuilder.upper(cpPath)), "%"+ itemFilter.getValue().toUpperCase() + "%");
