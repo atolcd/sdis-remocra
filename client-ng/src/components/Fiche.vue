@@ -484,7 +484,7 @@ export default {
           "property": "typeHydrantCode",
           "value": this.codeHydrant
         }])
-      }, 'id', 'nom');
+      }, 'id', 'nom', null, ['code']);
       this.getComboData(this, 'comboDeci', '/remocra/typehydrantnaturedeci.json', null, 'id', 'nom');
       //Combo de l'autorité DECI: on modifie le texte affiché en fonction du type d'organisme
       var self = this;
@@ -527,8 +527,9 @@ export default {
      * @param champValeur Indique parmis les données récupérées le champ de valeur
      * @param champTexte Indique parmis les données récupérées le champ texte à afficher dans la combo
      * @param optionVide Si indiqué, ajoute en première position une option vide valant null avec un texte configurable
+     * @param champsSupplementaires Champs supplémentaires à récupéer des données du serveur
      */
-    getComboData(context, attribut, url, params = {}, champValeur, champTexte, optionVide) {
+    getComboData(context, attribut, url, params = {}, champValeur, champTexte, optionVide, champsSupplementaires = []) {
       context[attribut] = [];
       let allParams = _.defaults(params, {
         "sort": JSON.stringify([{
@@ -540,11 +541,17 @@ export default {
         params: allParams
       }).then(response => {
         _.forEach(response.data.data, function(item) {
-          context[attribut].push({
+          var o = {
             text: item[champTexte],
             value: item[champValeur]
+          };
+          _.forEach(champsSupplementaires, c => {
+            o[c] = item[c];
           });
+
+          context[attribut].push(o);
         });
+
         if (optionVide) {
           context[attribut].unshift({
             text: optionVide,
@@ -613,7 +620,7 @@ export default {
     },
     onNatureChange(value) {
       if (this.$refs.fichePibi) {
-        let nature = this.comboType.filter(item => item.value === value)[0].text;
+        let nature = this.comboType.filter(item => item.value === value)[0].code;
         this.$refs.fichePibi.updateComboDiametres(nature);
         this.$refs.fichePibi.updateComboJumelage(nature);
       }
