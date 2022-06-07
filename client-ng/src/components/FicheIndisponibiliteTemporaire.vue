@@ -318,7 +318,7 @@ export default {
       axios.get('/remocra/hydrants', { // Récupération des mesures effectuées
         params: {
           filter: JSON.stringify([{
-            "property": "numero",
+            "property": "numeroEqual",
             "value": this.value.tabNumeroPeiConcernes[0]
           }]),
         }
@@ -348,15 +348,14 @@ export default {
       if (this.value.tabNumeroPeiConcernes.includes(this.ajoutPei)) {
         //déja présent
         this.alertDejaExistant = this.secondesAlert;
-      } else if (this.ajoutPei.length < 5) {
+      } else if (this.ajoutPei.length < 1) {
         //trop court
         this.alertErreurSaisie = this.secondesAlert;
       } else {
         axios.get('/remocra/hydrants', {
           params: {
-            limit: 2,
             filter: JSON.stringify([{
-                "property": "numero",
+                "property": "numeroEqual",
                 "value": this.ajoutPei
               }
             ])
@@ -383,7 +382,7 @@ export default {
       axios.get('/remocra/hydrants', { // Récupération des mesures effectuées
         params: {
           filter: JSON.stringify([{
-            "property": "numero",
+            "property": "numeroEqual",
             "value": pei
           }]),
         }

@@ -100,6 +100,9 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
         } else if ("numero".equals(itemFilter.getFieldName()) || "query".equals(itemFilter.getFieldName())) {
             Expression<String> cpPath = from.get("numero");
             predicat = cBuilder.like(cpPath, "%" + itemFilter.getValue().toUpperCase(Locale.FRANCE) + "%");
+        } else if ("numeroEqual".equals(itemFilter.getFieldName())) {
+            Expression<String> cpPath = from.get("numero");
+            predicat = cBuilder.equal(cpPath, itemFilter.getValue().toUpperCase(Locale.FRANCE));
         } else if ("dateReco".equals(itemFilter.getFieldName())) {
             Expression<Date> cpPath = from.get("dateReco");
             Integer nbMonths = Integer.valueOf(itemFilter.getValue());
