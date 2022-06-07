@@ -1,13 +1,23 @@
 package fr.sdis83.remocra.web;
 
-import java.io.StringWriter;
-import java.util.List;
-
+import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONSerializer;
-import fr.sdis83.remocra.domain.remocra.Hydrant;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant;
+import fr.sdis83.remocra.domain.remocra.Tournee;
+import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
+import fr.sdis83.remocra.domain.utils.RemocraInstantTransformer;
 import fr.sdis83.remocra.repository.HydrantVisiteRepository;
+import fr.sdis83.remocra.repository.TourneeRepository;
+import fr.sdis83.remocra.service.TourneeService;
+import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.util.ExceptionUtils;
+import fr.sdis83.remocra.web.message.ItemFilter;
+import fr.sdis83.remocra.web.message.ItemSorting;
+import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
+import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
+import fr.sdis83.remocra.web.serialize.transformer.GeometryTransformer;
 import org.hibernate.exception.ConstraintViolationException;
+import org.joda.time.Instant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,13 +30,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import fr.sdis83.remocra.domain.remocra.Tournee;
-import fr.sdis83.remocra.service.TourneeService;
-import fr.sdis83.remocra.service.UtilisateurService;
-import fr.sdis83.remocra.web.message.ItemFilter;
-import fr.sdis83.remocra.web.message.ItemSorting;
-import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
-import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
+import java.io.StringWriter;
+import java.util.Date;
+import java.util.List;
 
 @RequestMapping("/tournees")
 @Controller
@@ -40,6 +46,9 @@ public class TourneeController {
 
     @Autowired
     private HydrantVisiteRepository hydrantVisiteRepository;
+
+    @Autowired
+    private TourneeRepository tourneeRepository;
 
     @RequestMapping(value = "", headers = "Accept=application/json")
     @PreAuthorize("hasRight('TOURNEE_R')")
@@ -192,6 +201,27 @@ public class TourneeController {
         } catch (Exception e) {
             return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
         }
+    }
+
+    @RequestMapping(value = "/gethydrants/{id}", headers = "Accept=application/json")
+    @PreAuthorize("hasRight('TOURNEE_R') and hasRight('HYDRANTS_R')")
+    public ResponseEntity<java.lang.String> getHydrants(@PathVariable("id") Long id) {
+        return new AbstractExtListSerializer<Hydrant>("Hydrants tournee retrieved.") {
+            @Override
+            protected JSONSerializer getJsonSerializer() {
+                return new JSONSerializer().exclude("*.class").transform(new GeometryTransformer(), Geometry.class)
+                  .transform(RemocraDateHourTransformer.getInstance(), Date.class).transform(new RemocraInstantTransformer(), Instant.class)
+                  .include("data.*");
+            }
+            @Override
+            protected List<Hydrant> getRecords() {
+                return tourneeRepository.getHydrants(id);
+            }
+            @Override
+            protected Long countRecords() {
+                return Long.valueOf(tourneeRepository.countHydrants(id));
+            }
+        }.serialize();
     }
 
     @RequestMapping(value = "/saisievisite", method = RequestMethod.POST, headers = "Accept=application/json")

@@ -860,7 +860,6 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
     },
 
     highlightSelection: function(extraParams){
-
         var self = this;
         clearTimeout(this.timeoutHighlight);
         this.highlightLayer.removeAllFeatures();
@@ -886,14 +885,28 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
         else if(extraParams.t){
             // PEIs d'une tournée
             var tourneeId = extraParams.t;
-            this.hydrantLayer.features.forEach(function(item){
-                if(item.attributes.tournees !== null) {
-                    var tournees = item.attributes.tournees;
-                    tournees = tournees.replaceAll('[','');
-                    tournees = tournees.replaceAll(']','');
-                    if(tournees == tourneeId) {
-                      self.highlightLayer.addFeatures(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(item.geometry.x, item.geometry.y)));
-                    }
+            Ext.Ajax.request({
+                url: Sdis.Remocra.util.Util.withBaseUrl('../tournees/gethydrants/'+tourneeId),
+                method: 'GET',
+                scope: this,
+                async: false,
+                callback: function(param, success, response) {
+                    var res = Ext.decode(response.responseText).data;
+                    res.forEach(function(hydrant) {
+
+                      // Récupération des coordonnées format Lambert93
+                      var coords = hydrant.geometrie.replace("POINT (", "").replace(")", "");
+                      var x = coords.substring(0, coords.indexOf(" "));
+                      var y = coords.substring(coords.indexOf(" ") +1);
+
+                      // Conversion des coordonnées au format pseudo-mercator
+                      var point = new OpenLayers.LonLat(x, y).transform(
+                          new OpenLayers.Projection("EPSG:2154"),
+                          new OpenLayers.Projection("EPSG:3857")
+                      );
+
+                      self.highlightLayer.addFeatures(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(point.lon, point.lat)));
+                    });
                 }
             });
             self.clearHighlightLayerDelayed();

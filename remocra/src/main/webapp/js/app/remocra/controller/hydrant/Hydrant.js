@@ -786,6 +786,16 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 this.getTabMap().centerToPoint(extraParams.x, extraParams.y);
 
         }else if (extraParams.bounds) {
+
+            if (this.getTabMap().map.layers.length <= 1) {
+                // Les cartes ne sont pas encore chargé, on décale à plus tard
+                self.getTabMap().on('layersadded', function() {
+                    self.getTabMap().highlightSelection(extraParams);
+                }, this, {
+                    single: true
+                });
+            }
+
             var params = extraParams.bounds.split(',');
             if (params.length == 4) {
                 var bounds = new OpenLayers.Bounds(params);
