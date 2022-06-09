@@ -2,6 +2,7 @@ package fr.sdis83.remocra.repository;
 
 import fr.sdis83.remocra.authn.CurrentUser;
 import fr.sdis83.remocra.authn.UserInfo;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantIndispoTemporaire;
 import fr.sdis83.remocra.usecase.pei.PeiUseCase;
 import fr.sdis83.remocra.web.model.indispotemporaire.IndispoTemporaireModel;
 import fr.sdis83.remocra.web.model.pei.PeiModel;
@@ -92,6 +93,38 @@ public class IndispoTemporaireRepository {
       condition = condition.and(ORGANISME.CODE.equalIgnoreCase(organismeApi));
     }
     return condition;
+  }
+
+  public HydrantIndispoTemporaire addIndispoTemporaire(HydrantIndispoTemporaire indispo, List<String> hydrants) {
+
+    Long idIndispo = context.insertInto(HYDRANT_INDISPO_TEMPORAIRE)
+      .set(HYDRANT_INDISPO_TEMPORAIRE.DATE_DEBUT, indispo.getDateDebut())
+      .set(HYDRANT_INDISPO_TEMPORAIRE.DATE_FIN, indispo.getDateFin())
+      .set(HYDRANT_INDISPO_TEMPORAIRE.MOTIF, indispo.getMotif())
+      .set(HYDRANT_INDISPO_TEMPORAIRE.STATUT, indispo.getStatut())
+      .set(HYDRANT_INDISPO_TEMPORAIRE.TOTAL_HYDRANTS, hydrants.size())
+      .set(HYDRANT_INDISPO_TEMPORAIRE.BASCULE_AUTO_INDISPO, indispo.getBasculeAutoIndispo())
+      .set(HYDRANT_INDISPO_TEMPORAIRE.BASCULE_AUTO_DISPO, indispo.getBasculeAutoDispo())
+      .set(HYDRANT_INDISPO_TEMPORAIRE.MEL_AVANT_INDISPO, indispo.getMelAvantIndispo())
+      .set(HYDRANT_INDISPO_TEMPORAIRE.MEL_AVANT_DISPO, indispo.getMelAvantDispo())
+      .set(HYDRANT_INDISPO_TEMPORAIRE.ORGANISME_API, currentUser.get().userId())
+      .returning(HYDRANT_INDISPO_TEMPORAIRE.ID).fetchOne().getValue(HYDRANT_INDISPO_TEMPORAIRE.ID);
+
+    for(String numero : hydrants) {
+      Long idHydrant = context.select(HYDRANT.ID)
+        .from(HYDRANT)
+        .where(HYDRANT.NUMERO.equalIgnoreCase(numero))
+        .fetchOneInto(Long.class);
+
+      context.insertInto(HYDRANT_INDISPO_TEMPORAIRE_HYDRANT)
+        .set(HYDRANT_INDISPO_TEMPORAIRE_HYDRANT.INDISPONIBILITE, idIndispo)
+        .set(HYDRANT_INDISPO_TEMPORAIRE_HYDRANT.HYDRANT, idHydrant)
+        .execute();
+    }
+
+    return context.selectFrom(HYDRANT_INDISPO_TEMPORAIRE)
+      .where(HYDRANT_INDISPO_TEMPORAIRE.ID.eq(idIndispo))
+      .fetchOneInto(HydrantIndispoTemporaire.class);
   }
 
 
