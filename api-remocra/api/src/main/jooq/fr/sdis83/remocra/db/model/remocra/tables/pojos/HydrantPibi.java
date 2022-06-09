@@ -22,7 +22,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantPibi implements Serializable {
 
-    private static final long serialVersionUID = 762205448;
+    private static final long serialVersionUID = -1583758730;
 
     private Integer debit;
     private Integer debitMax;
@@ -47,6 +47,8 @@ public class HydrantPibi implements Serializable {
     private Integer diametreCanalisation;
     private Boolean surpresse;
     private Boolean additive;
+    private Integer debitAutre;
+    private Double  pressionDynAutre;
 
     public HydrantPibi() {}
 
@@ -74,6 +76,8 @@ public class HydrantPibi implements Serializable {
         this.diametreCanalisation = value.diametreCanalisation;
         this.surpresse = value.surpresse;
         this.additive = value.additive;
+        this.debitAutre = value.debitAutre;
+        this.pressionDynAutre = value.pressionDynAutre;
     }
 
     public HydrantPibi(
@@ -99,7 +103,9 @@ public class HydrantPibi implements Serializable {
         Long    typeReseauAlimentation,
         Integer diametreCanalisation,
         Boolean surpresse,
-        Boolean additive
+        Boolean additive,
+        Integer debitAutre,
+        Double  pressionDynAutre
     ) {
         this.debit = debit;
         this.debitMax = debitMax;
@@ -124,6 +130,8 @@ public class HydrantPibi implements Serializable {
         this.diametreCanalisation = diametreCanalisation;
         this.surpresse = surpresse;
         this.additive = additive;
+        this.debitAutre = debitAutre;
+        this.pressionDynAutre = pressionDynAutre;
     }
 
     public Integer getDebit() {
@@ -333,6 +341,24 @@ public class HydrantPibi implements Serializable {
         return this;
     }
 
+    public Integer getDebitAutre() {
+        return this.debitAutre;
+    }
+
+    public HydrantPibi setDebitAutre(Integer debitAutre) {
+        this.debitAutre = debitAutre;
+        return this;
+    }
+
+    public Double getPressionDynAutre() {
+        return this.pressionDynAutre;
+    }
+
+    public HydrantPibi setPressionDynAutre(Double pressionDynAutre) {
+        this.pressionDynAutre = pressionDynAutre;
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("HydrantPibi (");
@@ -360,6 +386,8 @@ public class HydrantPibi implements Serializable {
         sb.append(", ").append(diametreCanalisation);
         sb.append(", ").append(surpresse);
         sb.append(", ").append(additive);
+        sb.append(", ").append(debitAutre);
+        sb.append(", ").append(pressionDynAutre);
 
         sb.append(")");
         return sb.toString();

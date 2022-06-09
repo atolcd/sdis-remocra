@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantIndispoTemporaire extends TableImpl<Record> {
 
-    private static final long serialVersionUID = -870368333;
+    private static final long serialVersionUID = 118785320;
 
     /**
      * The reference instance of <code>remocra.hydrant_indispo_temporaire</code>
@@ -116,6 +116,11 @@ public class HydrantIndispoTemporaire extends TableImpl<Record> {
      * The column <code>remocra.hydrant_indispo_temporaire.mel_avant_dispo</code>.
      */
     public final TableField<Record, Boolean> MEL_AVANT_DISPO = createField("mel_avant_dispo", org.jooq.impl.SQLDataType.BOOLEAN.defaultValue(org.jooq.impl.DSL.field("false", org.jooq.impl.SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>remocra.hydrant_indispo_temporaire.organisme_api</code>. Identifiant de l'organisme ayant créé cette indispo temporaire via l'API (s'il y a lieu)
+     */
+    public final TableField<Record, Long> ORGANISME_API = createField("organisme_api", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant de l'organisme ayant créé cette indispo temporaire via l'API (s'il y a lieu)");
 
     /**
      * Create a <code>remocra.hydrant_indispo_temporaire</code> table reference
@@ -195,11 +200,15 @@ public class HydrantIndispoTemporaire extends TableImpl<Record> {
      */
     @Override
     public List<ForeignKey<Record, ?>> getReferences() {
-        return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT_INDISPO_TEMPORAIRE__FK_HYDRANT_INDISPO_TEMPORAIRE_STATUT);
+        return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT_INDISPO_TEMPORAIRE__FK_HYDRANT_INDISPO_TEMPORAIRE_STATUT, Keys.HYDRANT_INDISPO_TEMPORAIRE__FK_ORGANISME_API);
     }
 
     public TypeHydrantIndispoStatut typeHydrantIndispoStatut() {
         return new TypeHydrantIndispoStatut(this, Keys.HYDRANT_INDISPO_TEMPORAIRE__FK_HYDRANT_INDISPO_TEMPORAIRE_STATUT);
+    }
+
+    public Organisme organisme() {
+        return new Organisme(this, Keys.HYDRANT_INDISPO_TEMPORAIRE__FK_ORGANISME_API);
     }
 
     /**

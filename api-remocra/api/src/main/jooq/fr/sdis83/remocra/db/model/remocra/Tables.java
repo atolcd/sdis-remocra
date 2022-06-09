@@ -134,6 +134,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantCritere;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDiametre;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDiametreNatures;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDomaine;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantImportctpErreur;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantIndispoStatut;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMarque;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMateriau;
@@ -839,6 +840,11 @@ public class Tables {
      * The table <code>remocra.type_hydrant_domaine</code>.
      */
     public static final TypeHydrantDomaine TYPE_HYDRANT_DOMAINE = fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDomaine.TYPE_HYDRANT_DOMAINE;
+
+    /**
+     * The table <code>remocra.type_hydrant_importctp_erreur</code>.
+     */
+    public static final TypeHydrantImportctpErreur TYPE_HYDRANT_IMPORTCTP_ERREUR = fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantImportctpErreur.TYPE_HYDRANT_IMPORTCTP_ERREUR;
 
     /**
      * Statut de l'indisponibilité

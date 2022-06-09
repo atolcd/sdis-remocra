@@ -23,7 +23,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantIndispoTemporaire implements Serializable {
 
-    private static final long serialVersionUID = -147014183;
+    private static final long serialVersionUID = -1301387975;
 
     private Long    id;
     private Instant dateDebut;
@@ -37,6 +37,7 @@ public class HydrantIndispoTemporaire implements Serializable {
     private Boolean basculeAutoDispo;
     private Boolean melAvantIndispo;
     private Boolean melAvantDispo;
+    private Long    organismeApi;
 
     public HydrantIndispoTemporaire() {}
 
@@ -53,6 +54,7 @@ public class HydrantIndispoTemporaire implements Serializable {
         this.basculeAutoDispo = value.basculeAutoDispo;
         this.melAvantIndispo = value.melAvantIndispo;
         this.melAvantDispo = value.melAvantDispo;
+        this.organismeApi = value.organismeApi;
     }
 
     public HydrantIndispoTemporaire(
@@ -67,7 +69,8 @@ public class HydrantIndispoTemporaire implements Serializable {
         Boolean basculeAutoIndispo,
         Boolean basculeAutoDispo,
         Boolean melAvantIndispo,
-        Boolean melAvantDispo
+        Boolean melAvantDispo,
+        Long    organismeApi
     ) {
         this.id = id;
         this.dateDebut = dateDebut;
@@ -81,6 +84,7 @@ public class HydrantIndispoTemporaire implements Serializable {
         this.basculeAutoDispo = basculeAutoDispo;
         this.melAvantIndispo = melAvantIndispo;
         this.melAvantDispo = melAvantDispo;
+        this.organismeApi = organismeApi;
     }
 
     public Long getId() {
@@ -191,6 +195,15 @@ public class HydrantIndispoTemporaire implements Serializable {
         return this;
     }
 
+    public Long getOrganismeApi() {
+        return this.organismeApi;
+    }
+
+    public HydrantIndispoTemporaire setOrganismeApi(Long organismeApi) {
+        this.organismeApi = organismeApi;
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("HydrantIndispoTemporaire (");
@@ -207,6 +220,7 @@ public class HydrantIndispoTemporaire implements Serializable {
         sb.append(", ").append(basculeAutoDispo);
         sb.append(", ").append(melAvantIndispo);
         sb.append(", ").append(melAvantDispo);
+        sb.append(", ").append(organismeApi);
 
         sb.append(")");
         return sb.toString();

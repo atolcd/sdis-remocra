@@ -135,6 +135,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantCritere;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDiametre;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDiametreNatures;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDomaine;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantImportctpErreur;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantIndispoStatut;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMarque;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMateriau;
@@ -200,7 +201,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Remocra extends SchemaImpl {
 
-    private static final long serialVersionUID = -1058823421;
+    private static final long serialVersionUID = 206516865;
 
     /**
      * The reference instance of <code>remocra</code>
@@ -858,6 +859,11 @@ public class Remocra extends SchemaImpl {
     public final TypeHydrantDomaine TYPE_HYDRANT_DOMAINE = fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDomaine.TYPE_HYDRANT_DOMAINE;
 
     /**
+     * The table <code>remocra.type_hydrant_importctp_erreur</code>.
+     */
+    public final TypeHydrantImportctpErreur TYPE_HYDRANT_IMPORTCTP_ERREUR = fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantImportctpErreur.TYPE_HYDRANT_IMPORTCTP_ERREUR;
+
+    /**
      * Statut de l'indisponibilité
      */
     public final TypeHydrantIndispoStatut TYPE_HYDRANT_INDISPO_STATUT = fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantIndispoStatut.TYPE_HYDRANT_INDISPO_STATUT;
@@ -1184,6 +1190,7 @@ public class Remocra extends SchemaImpl {
             Sequences.TYPE_HYDRANT_DIAMETRE_ID_SEQ,
             Sequences.TYPE_HYDRANT_DOMAINE_ID_SEQ,
             Sequences.TYPE_HYDRANT_ID_SEQ,
+            Sequences.TYPE_HYDRANT_IMPORTCTP_ERREUR_ID_SEQ,
             Sequences.TYPE_HYDRANT_INDISPO_STATUT_ID_SEQ,
             Sequences.TYPE_HYDRANT_MARQUE_ID_SEQ,
             Sequences.TYPE_HYDRANT_MATERIAU_ID_SEQ,
@@ -1362,6 +1369,7 @@ public class Remocra extends SchemaImpl {
             TypeHydrantDiametre.TYPE_HYDRANT_DIAMETRE,
             TypeHydrantDiametreNatures.TYPE_HYDRANT_DIAMETRE_NATURES,
             TypeHydrantDomaine.TYPE_HYDRANT_DOMAINE,
+            TypeHydrantImportctpErreur.TYPE_HYDRANT_IMPORTCTP_ERREUR,
             TypeHydrantIndispoStatut.TYPE_HYDRANT_INDISPO_STATUT,
             TypeHydrantMarque.TYPE_HYDRANT_MARQUE,
             TypeHydrantMateriau.TYPE_HYDRANT_MATERIAU,

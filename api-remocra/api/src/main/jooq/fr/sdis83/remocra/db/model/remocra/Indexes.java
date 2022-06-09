@@ -132,6 +132,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantCritere;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDiametre;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDiametreNatures;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantDomaine;
+import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantImportctpErreur;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantIndispoStatut;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMarque;
 import fr.sdis83.remocra.db.model.remocra.tables.TypeHydrantMateriau;
@@ -517,6 +518,7 @@ public class Indexes {
     public static final Index TYPE_HYDRANT_DIAMETRE_PKEY = Indexes0.TYPE_HYDRANT_DIAMETRE_PKEY;
     public static final Index TYPE_HYDRANT_DIAMETRE_NATURES_PKEY = Indexes0.TYPE_HYDRANT_DIAMETRE_NATURES_PKEY;
     public static final Index TYPE_HYDRANT_DOMAINE_PKEY = Indexes0.TYPE_HYDRANT_DOMAINE_PKEY;
+    public static final Index TYPE_HYDRANT_IMPORTCTP_ERREUR_CODE_KEY = Indexes0.TYPE_HYDRANT_IMPORTCTP_ERREUR_CODE_KEY;
     public static final Index TYPE_HYDRANT_INDISPO_STATUT_PKEY = Indexes0.TYPE_HYDRANT_INDISPO_STATUT_PKEY;
     public static final Index TYPE_HYDRANT_MARQUE_PKEY = Indexes0.TYPE_HYDRANT_MARQUE_PKEY;
     public static final Index TYPE_HYDRANT_MATERIAU_PKEY = Indexes0.TYPE_HYDRANT_MATERIAU_PKEY;
@@ -905,6 +907,7 @@ public class Indexes {
         public static Index TYPE_HYDRANT_DIAMETRE_PKEY = Internal.createIndex("type_hydrant_diametre_pkey", TypeHydrantDiametre.TYPE_HYDRANT_DIAMETRE, new OrderField[] { TypeHydrantDiametre.TYPE_HYDRANT_DIAMETRE.ID }, true);
         public static Index TYPE_HYDRANT_DIAMETRE_NATURES_PKEY = Internal.createIndex("type_hydrant_diametre_natures_pkey", TypeHydrantDiametreNatures.TYPE_HYDRANT_DIAMETRE_NATURES, new OrderField[] { TypeHydrantDiametreNatures.TYPE_HYDRANT_DIAMETRE_NATURES.TYPE_HYDRANT_DIAMETRE, TypeHydrantDiametreNatures.TYPE_HYDRANT_DIAMETRE_NATURES.NATURES }, true);
         public static Index TYPE_HYDRANT_DOMAINE_PKEY = Internal.createIndex("type_hydrant_domaine_pkey", TypeHydrantDomaine.TYPE_HYDRANT_DOMAINE, new OrderField[] { TypeHydrantDomaine.TYPE_HYDRANT_DOMAINE.ID }, true);
+        public static Index TYPE_HYDRANT_IMPORTCTP_ERREUR_CODE_KEY = Internal.createIndex("type_hydrant_importctp_erreur_code_key", TypeHydrantImportctpErreur.TYPE_HYDRANT_IMPORTCTP_ERREUR, new OrderField[] { TypeHydrantImportctpErreur.TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE }, true);
         public static Index TYPE_HYDRANT_INDISPO_STATUT_PKEY = Internal.createIndex("type_hydrant_indispo_statut_pkey", TypeHydrantIndispoStatut.TYPE_HYDRANT_INDISPO_STATUT, new OrderField[] { TypeHydrantIndispoStatut.TYPE_HYDRANT_INDISPO_STATUT.ID }, true);
         public static Index TYPE_HYDRANT_MARQUE_PKEY = Internal.createIndex("type_hydrant_marque_pkey", TypeHydrantMarque.TYPE_HYDRANT_MARQUE, new OrderField[] { TypeHydrantMarque.TYPE_HYDRANT_MARQUE.ID }, true);
         public static Index TYPE_HYDRANT_MATERIAU_PKEY = Internal.createIndex("type_hydrant_materiau_pkey", TypeHydrantMateriau.TYPE_HYDRANT_MATERIAU, new OrderField[] { TypeHydrantMateriau.TYPE_HYDRANT_MATERIAU.ID }, true);
