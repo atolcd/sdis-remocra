@@ -44,9 +44,9 @@ public class IndispoTemporaireRepository {
     this.context = context;
   }
 
-  public List<IndispoTemporaireModel> getAll(String organismeApi, Integer limit, Integer start) {
+  public List<IndispoTemporaireModel> getAll(String organismeApi, String hydrant, String statut, Integer limit, Integer start) {
 
-    Condition condition = this.getConditions(organismeApi);
+    Condition condition = this.getConditions(organismeApi, hydrant, statut);
     List<IndispoTemporaireModel> liste = context.select(HYDRANT_INDISPO_TEMPORAIRE.ID.as("identifiant"),
         HYDRANT_INDISPO_TEMPORAIRE.DATE_DEBUT.as("date_debut"),
         HYDRANT_INDISPO_TEMPORAIRE.DATE_FIN.as("date_fin"),
@@ -86,11 +86,24 @@ public class IndispoTemporaireRepository {
     return context.fetchCount(HYDRANT_INDISPO_TEMPORAIRE);
   }
 
-  private Condition getConditions(String organismeApi) {
+  private Condition getConditions(String organismeApi, String hydrant, String statut) {
     Condition condition = DSL.trueCondition();
 
     if(organismeApi != null) {
       condition = condition.and(ORGANISME.CODE.equalIgnoreCase(organismeApi));
+    }
+
+    if(hydrant != null) {
+      List<Long> listeIT = context.selectDistinct(HYDRANT_INDISPO_TEMPORAIRE_HYDRANT.INDISPONIBILITE)
+        .from(HYDRANT_INDISPO_TEMPORAIRE_HYDRANT)
+        .join(HYDRANT).on(HYDRANT.ID.eq(HYDRANT_INDISPO_TEMPORAIRE_HYDRANT.HYDRANT))
+        .where(HYDRANT.NUMERO.equalIgnoreCase(hydrant))
+        .fetchInto(Long.class);
+      condition = condition.and(HYDRANT_INDISPO_TEMPORAIRE.ID.in(listeIT));
+    }
+
+    if(statut != null) {
+      condition = condition.and(TYPE_HYDRANT_INDISPO_STATUT.CODE.equalIgnoreCase(statut));
     }
     return condition;
   }

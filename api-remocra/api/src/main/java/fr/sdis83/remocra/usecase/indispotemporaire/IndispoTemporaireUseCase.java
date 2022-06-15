@@ -45,8 +45,8 @@ public class IndispoTemporaireUseCase {
     this.context = context;
   }
 
-  public List<IndispoTemporaireModel> getAll(String organismeApi, Integer limit, Integer start) {
-    return this.indispoTemporaireRepository.getAll(organismeApi, limit, start);
+  public List<IndispoTemporaireModel> getAll(String organismeApi, String hydrant, String statut, Integer limit, Integer start) {
+    return this.indispoTemporaireRepository.getAll(organismeApi, hydrant, statut, limit, start);
   }
 
   public HydrantIndispoTemporaire addIndispoTemporaire(IndispoTemporaireForm indispoForm) throws ResponseException {

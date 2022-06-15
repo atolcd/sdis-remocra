@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -36,13 +37,15 @@ public class DeciHydrantIndispoTemporaireEndpoint {
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getIndispoTemporaire(
     final @Parameter(description = "Code de l'organisme API étant à l'origine de l'indisponibilité temporaire") @QueryParam("organismeApi") String organismeAPI,
+    final @Parameter(description = "Ne renvoie que les indisponibilités temporaires liées à cet hydrant") @QueryParam("numeroHydrant") String hydrant,
+    final @Parameter(description = "Code du statut de l'indisponibilité temporaire") @QueryParam("statut") String statut,
     final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
     final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start
   ) throws IOException {
-    return Response.ok(this.indispoTemporaireUseCase.getAll(organismeAPI, limit, start)).build();
+    return Response.ok(this.indispoTemporaireUseCase.getAll(organismeAPI, hydrant, statut, limit, start)).build();
   }
 
-  @PUT
+  @POST
   @Path("")
   @Operation(summary = "Ajoute une nouvelle indisponibilité temporaire", tags = {"DECI - Indispo temporaire"})
   @RolesAllowed({UserRoles.RoleTypes.TRANSMETTRE})
