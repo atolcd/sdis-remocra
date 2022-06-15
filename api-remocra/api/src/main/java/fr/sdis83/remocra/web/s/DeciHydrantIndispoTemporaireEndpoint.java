@@ -3,10 +3,13 @@ package fr.sdis83.remocra.web.s;
 import fr.sdis83.remocra.authn.UserRoles;
 import fr.sdis83.remocra.usecase.indispotemporaire.IndispoTemporaireUseCase;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
+import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteSpecifiqueForm;
 import fr.sdis83.remocra.web.model.indispotemporaire.IndispoTemporaireForm;
+import fr.sdis83.remocra.web.model.indispotemporaire.IndispoTemporaireSpecifiqueForm;
 import fr.sdis83.remocra.web.model.pei.PeiForm;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -55,6 +58,24 @@ public class DeciHydrantIndispoTemporaireEndpoint {
     try {
       return Response.ok(indispoTemporaireUseCase.addIndispoTemporaire(indispoForm), MediaType.APPLICATION_JSON).build();
     } catch (ResponseException e) {
+      return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
+    }
+  }
+
+  @PUT
+  @Path("/{idIndisponibiliteTemporaire}")
+  @Operation(summary = "Modifie les informations relatives à une indisponibilité temporaire", tags = {"DECI - Indispo temporaire"})
+  @ApiResponse(responseCode = "200", description = "Indisponibilité temporaire modifiée avec succès")
+  @ApiResponse(responseCode = "400", description = "Erreur à la saisie")
+  @RolesAllowed({UserRoles.RoleTypes.TRANSMETTRE})
+  public Response editIndispoTemporaire(
+    final @Parameter(description = "Identifiant de la visite") @PathParam("idIndisponibiliteTemporaire") String idIndispo,
+    @Parameter(description = "Informations d'indisponibilite temporaire", required = true) @NotNull IndispoTemporaireSpecifiqueForm form
+  ) throws ResponseException {
+    try {
+      this.indispoTemporaireUseCase.editIndispoTemporaire(idIndispo, form);
+      return Response.ok("Indisponibilité temporaire modifiée avec succès").build();
+    } catch(ResponseException e) {
       return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
     }
   }

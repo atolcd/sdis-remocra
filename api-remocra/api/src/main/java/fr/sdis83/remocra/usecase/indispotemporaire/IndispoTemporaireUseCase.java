@@ -10,6 +10,7 @@ import fr.sdis83.remocra.usecase.pei.PeiUseCase;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
 import fr.sdis83.remocra.web.model.indispotemporaire.IndispoTemporaireForm;
 import fr.sdis83.remocra.web.model.indispotemporaire.IndispoTemporaireModel;
+import fr.sdis83.remocra.web.model.indispotemporaire.IndispoTemporaireSpecifiqueForm;
 import fr.sdis83.remocra.web.model.pei.PeiModel;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -108,6 +109,56 @@ public class IndispoTemporaireUseCase {
       throw new ResponseException(Response.Status.BAD_REQUEST, "3001 : Une date spécifiée n'existe pas ou ne respecte pas le format YYYY-MM-DD hh:mm");
     }
 
+  }
+
+  public void editIndispoTemporaire(String idIndispo, IndispoTemporaireSpecifiqueForm indispoForm) throws ResponseException {
+    Long id = Long.valueOf(idIndispo);
+    if(!this.isIndispoTemporaireAccessible(id)) {
+      throw new ResponseException(Response.Status.FORBIDDEN, "3103 : L'indisponibilité temporaire demandée n'existe pas ou ne vous est pas accessible");
+    }
+
+    HydrantIndispoTemporaire indispo = context
+      .selectFrom(HYDRANT_INDISPO_TEMPORAIRE)
+      .where(HYDRANT_INDISPO_TEMPORAIRE.ID.eq(id))
+      .fetchOneInto(HydrantIndispoTemporaire.class);
+
+    fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantIndispoStatut statut = context
+      .select(TYPE_HYDRANT_INDISPO_STATUT.ID)
+      .from(TYPE_HYDRANT_INDISPO_STATUT)
+      .where(TYPE_HYDRANT_INDISPO_STATUT.CODE.equalIgnoreCase(indispoForm.statut()))
+      .fetchOneInto(TypeHydrantIndispoStatut.class);
+    if(statut == null) {
+      throw new ResponseException(Response.Status.BAD_REQUEST, "3000 : Le statut de l'indisponibilité temporaire ne correspond à aucune valeur connue");
+    }
+
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+    indispo.setStatut(statut.getId());
+
+    try {
+      // Vérifications sur les dates
+      if(indispoForm.date_debut() != null) {
+        Date d = simpleDateFormat.parse(indispoForm.date_debut());
+        indispo.setDateDebut(simpleDateFormat.parse(indispoForm.date_debut()).toInstant());
+      }
+
+      if(indispoForm.date_fin() != null) {
+        indispo.setDateFin(simpleDateFormat.parse(indispoForm.date_fin()).toInstant());
+      }
+
+      if(indispo.getDateDebut() != null && indispo.getDateFin() != null && !indispo.getDateDebut().isBefore(indispo.getDateFin())) {
+        throw new ResponseException(Response.Status.BAD_REQUEST, "3100 : La date de fin ne peut être égale ou antérieure à la date de début");
+      }
+
+      indispo.setMotif(indispoForm.motif());
+      indispo.setBasculeAutoIndispo(indispoForm.bascule_auto_indispo());
+      indispo.setBasculeAutoDispo(indispoForm.bascule_auto_dispo());
+      indispo.setMelAvantIndispo(indispoForm.mel_avant_indispo());
+      indispo.setMelAvantDispo(indispoForm.mel_avant_dispo());
+      this.indispoTemporaireRepository.editIndispoTemporaie(indispo);
+    } catch (ParseException e) {
+      throw new ResponseException(Response.Status.BAD_REQUEST, "3001 : Une date spécifiée n'existe pas ou ne respecte pas le format YYYY-MM-DD hh:mm");
+    }
   }
 
   /**

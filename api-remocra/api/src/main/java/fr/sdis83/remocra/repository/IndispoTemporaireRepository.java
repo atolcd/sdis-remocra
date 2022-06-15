@@ -140,5 +140,20 @@ public class IndispoTemporaireRepository {
       .fetchOneInto(HydrantIndispoTemporaire.class);
   }
 
+  public void editIndispoTemporaie(HydrantIndispoTemporaire indispo) {
+    context.update(HYDRANT_INDISPO_TEMPORAIRE)
+      .set(HYDRANT_INDISPO_TEMPORAIRE.DATE_DEBUT, indispo.getDateDebut())
+      .set(HYDRANT_INDISPO_TEMPORAIRE.DATE_FIN, indispo.getDateFin())
+      .set(HYDRANT_INDISPO_TEMPORAIRE.MOTIF, indispo.getMotif())
+      .set(HYDRANT_INDISPO_TEMPORAIRE.STATUT, indispo.getStatut())
+      .set(HYDRANT_INDISPO_TEMPORAIRE.BASCULE_AUTO_DISPO, indispo.getBasculeAutoDispo())
+      .set(HYDRANT_INDISPO_TEMPORAIRE.BASCULE_AUTO_INDISPO, indispo.getBasculeAutoIndispo())
+      .set(HYDRANT_INDISPO_TEMPORAIRE.MEL_AVANT_DISPO, indispo.getMelAvantDispo())
+      .set(HYDRANT_INDISPO_TEMPORAIRE.MEL_AVANT_INDISPO, indispo.getMelAvantIndispo())
+      .set(HYDRANT_INDISPO_TEMPORAIRE.ORGANISME_API, currentUser.get().userId())
+      .where(HYDRANT_INDISPO_TEMPORAIRE.ID.eq(indispo.getId()))
+      .execute();
+  }
+
 
 }
