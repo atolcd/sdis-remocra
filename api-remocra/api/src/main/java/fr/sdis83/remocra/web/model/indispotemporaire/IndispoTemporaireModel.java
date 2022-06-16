@@ -45,7 +45,7 @@ public class IndispoTemporaireModel {
     }
 
     public void setDate_debut(String date_debut) {
-      this.date_debut = date_debut;
+      this.date_debut = (date_debut != null) ? date_debut.substring(0,16).replace('T', ' ') : null;
     }
 
     public String getDate_fin() {
@@ -53,7 +53,7 @@ public class IndispoTemporaireModel {
     }
 
     public void setDate_fin(String date_fin) {
-      this.date_fin = date_fin;
+      this.date_fin = (date_fin != null) ?date_fin.substring(0,16).replace('T', ' ') : null;
     }
 
     public String getMotif() {
@@ -69,7 +69,7 @@ public class IndispoTemporaireModel {
     }
 
     public void setDate_rappel_debut(String date_rappel_debut) {
-      this.date_rappel_debut = date_rappel_debut;
+      this.date_rappel_debut = (date_rappel_debut != null) ? date_rappel_debut.substring(0,16).replace('T', ' ') : null;
     }
 
     public String getDate_rappel_fin() {
@@ -77,7 +77,7 @@ public class IndispoTemporaireModel {
     }
 
     public void setDate_rappel_fin(String date_rappel_fin) {
-      this.date_rappel_fin = date_rappel_fin;
+      this.date_rappel_fin = (date_rappel_fin != null) ? date_rappel_fin.substring(0,16).replace('T', ' ') : null;
     }
 
     public String getStatut() {

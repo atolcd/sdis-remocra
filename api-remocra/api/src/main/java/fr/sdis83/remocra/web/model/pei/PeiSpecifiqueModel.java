@@ -47,9 +47,9 @@ public class PeiSpecifiqueModel {
 
     String dateDerniereVisite;
 
-    boolean dispoTerrestre;
+    String dispoTerrestre;
 
-    boolean dispoAerienne;
+    String dispoAerienne;
 
     boolean indispoTemporaire;
 
@@ -229,19 +229,19 @@ public class PeiSpecifiqueModel {
         this.dateDerniereVisite = dateDerniereVisite;
     }
 
-    public boolean isDispoTerrestre() {
+    public String getDispoTerrestre() {
         return dispoTerrestre;
     }
 
-    public void setDispoTerrestre(boolean dispoTerrestre) {
+    public void setDispoTerrestre(String dispoTerrestre) {
         this.dispoTerrestre = dispoTerrestre;
     }
 
-    public boolean isDispoAerienne() {
+    public String getDispoAerienne() {
         return dispoAerienne;
     }
 
-    public void setDispoAerienne(boolean dispoAerienne) {
+    public void setDispoAerienne(String dispoAerienne) {
         this.dispoAerienne = dispoAerienne;
     }
 

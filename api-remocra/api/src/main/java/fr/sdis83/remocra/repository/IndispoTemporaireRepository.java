@@ -69,6 +69,10 @@ public class IndispoTemporaireRepository {
       .fetchInto(IndispoTemporaireModel.class);
 
     for(IndispoTemporaireModel m : liste) {
+      m.setDate_debut(m.getDate_debut());
+      m.setDate_fin(m.getDate_fin());
+      m.setDate_rappel_debut(m.getDate_rappel_debut());
+      m.setDate_rappel_fin(m.getDate_rappel_fin());
       List<String> hydrants = context
         .select(HYDRANT.NUMERO)
         .from(HYDRANT)
