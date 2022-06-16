@@ -203,7 +203,7 @@
            </partitioning>
     <connection>Remocra (Postgis)</connection>
     <sql>SELECT
-	&apos;${PDI_CHEMIN_MODELES}&#47;courrier&#47;sdis&#47;${PDI_CODE_SDIS}&#47;&apos; || cm.modele_ott AS fichier_modele_ott,
+	cm.modele_ott AS fichier_modele_ott,
 	&apos;${PDI_CHEMIN_TRAITEMENT}&#47;${TRAITEMENT_DOSSIER_NUMERO}&#47;&apos; || c.nom || &apos;_TOURNEE.ODT&apos; AS fichier_odt,
 	&apos;${PDI_CHEMIN_TRAITEMENT}&#47;${TRAITEMENT_DOSSIER_NUMERO}&#47;&apos; || c.nom || &apos;_TOURNEE.PDF&apos; AS fichier_pdf
 FROM
