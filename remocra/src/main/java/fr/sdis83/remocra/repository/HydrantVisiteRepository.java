@@ -14,6 +14,7 @@ import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.util.JSONUtil;
+import java.util.List;
 import org.cts.IllegalCoordinateException;
 import org.cts.crs.CRSException;
 import org.joda.time.Instant;
@@ -418,15 +419,17 @@ public class HydrantVisiteRepository {
       .limit(1)
       .fetchOneInto(HydrantVisite.class);
 
-    TypeHydrantAnomalie indispoTemporaire = context
-      .selectFrom(TYPE_HYDRANT_ANOMALIE)
-      .where(TYPE_HYDRANT_ANOMALIE.CODE.eq("INDISPONIBILITE_TEMP"))
-      .fetchOneInto(TypeHydrantAnomalie.class);
+    List<Long> idAnomalieSysteme = context
+      .select(TYPE_HYDRANT_ANOMALIE.ID)
+            .from(TYPE_HYDRANT_ANOMALIE)
+      .where(TYPE_HYDRANT_ANOMALIE.CRITERE.isNull())
+      .fetchInto(Long.class);
+
 
     // Suppression des anomalies (hors indispo temporaires) enregistrées de cet hydrant
     context
       .deleteFrom(HYDRANT_ANOMALIES)
-      .where(HYDRANT_ANOMALIES.HYDRANT.eq(idhydrant).and(HYDRANT_ANOMALIES.ANOMALIES.notEqual(indispoTemporaire.getId())))
+      .where(HYDRANT_ANOMALIES.HYDRANT.eq(idhydrant).and(HYDRANT_ANOMALIES.ANOMALIES.notIn(idAnomalieSysteme)))
       .execute();
 
     // Ajout des anomalies de la visite la plus récente
