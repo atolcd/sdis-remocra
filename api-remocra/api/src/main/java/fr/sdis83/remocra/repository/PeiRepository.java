@@ -201,7 +201,7 @@ public class PeiRepository {
         HYDRANT.LIEU_DIT.as("lieuDit"),
         HYDRANT.COMPLEMENT.as("complement"),
         HYDRANT.DATE_MODIFICATION.as("dateDerniereModification"),
-        DSL.greatest(HYDRANT.DATE_CONTR, HYDRANT.DATE_RECEP, HYDRANT.DATE_RECO, HYDRANT.DATE_VERIF).as("dateDerniereVisite"),
+        DSL.greatest(HYDRANT.DATE_CONTR, HYDRANT.DATE_RECEP, HYDRANT.DATE_RECO, HYDRANT.DATE_CREA).as("dateDerniereVisite"),
         HYDRANT.DISPO_TERRESTRE.as("dispoTerrestre"),
         HYDRANT.DISPO_HBE.as("dispoAerienne")
 
