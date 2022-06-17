@@ -470,6 +470,7 @@ export default {
             date: moment(this.formDate + " " + this.formTime).format("YYYY-MM-DD HH:mm:ss"),
             type: this.formTypeVisite,
             ctrl_debit_pression: this.formCtrlDebitPression,
+            ras: true,
             debit: null,
             debitMax: null,
             pression: null,
@@ -481,6 +482,7 @@ export default {
 
           // Si des données spécifiques ont pu être renseignées
           if(!h.ras && h.newVisite != null) {
+            dataHydrant.ras = false
             dataHydrant.observations = h.newVisite.observations;
             dataHydrant.anomalies = h.newVisite.anomalies;
 

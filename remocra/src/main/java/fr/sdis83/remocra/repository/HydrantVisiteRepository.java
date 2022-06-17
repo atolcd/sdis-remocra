@@ -8,13 +8,14 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite;
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantAnomalie;
 import fr.sdis83.remocra.domain.remocra.TypeDroit;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.util.JSONUtil;
+
 import java.util.List;
+
 import org.cts.IllegalCoordinateException;
 import org.cts.crs.CRSException;
 import org.joda.time.Instant;
@@ -66,6 +67,7 @@ public class HydrantVisiteRepository {
 
   /**
    * Ajoute une visite à un hydrant existant
+   *
    * @param id identifiant du PEI. On suppose le PEI existant
    * @param visiteData données de la visite au format JSON
    */
@@ -103,7 +105,7 @@ public class HydrantVisiteRepository {
       } else if(nbVisites == 1 && !typeVisite.toUpperCase().equals("RECEP")) {
         throw new Exception("Le contexte de visite doit être de type RECEP (deuxième visite du PEI)");
       } else if(nbVisites > 1 && (!typeVisite.toUpperCase().equals("NP") && !typeVisite.toUpperCase().equals("RECO") && !typeVisite.equals("CTRL"))) {
-        throw new Exception("Une visite de type "+typeVisite.toUpperCase()+" existe déjà. Veuillez utiliser une visite de type NP, RECO ou CTRL");
+        throw new Exception("Une visite de type " + typeVisite.toUpperCase() + " existe déjà. Veuillez utiliser une visite de type NP, RECO ou CTRL");
       }
 
       visite.setHydrant(id);
@@ -124,10 +126,9 @@ public class HydrantVisiteRepository {
       visite.setAuteurModificationFlag("USER");
       visite.setDebitAutre(JSONUtil.getInteger(data, "debitAutre"));
       visite.setPressionDynAutre(JSONUtil.getDouble(data, "pressionDynAutre"));
-
-     HydrantVisite newVisite = this.addVisite(visite);
-     this.launchTriggerAnomalies(id);
-     return newVisite;
+      HydrantVisite newVisite = this.addVisite(visite);
+      this.launchTriggerAnomalies(id);
+      return newVisite;
     }
     return null;
   }
@@ -167,7 +168,7 @@ public class HydrantVisiteRepository {
           .execute();
       }
 
-      this.launchTriggerAnomalies(JSONUtil.getLong(visite,"hydrant"));
+      this.launchTriggerAnomalies(JSONUtil.getLong(visite, "hydrant"));
 
       // launch trigger pibi pour calcul d'indispo
       context.update(HYDRANT_PIBI)
@@ -179,36 +180,122 @@ public class HydrantVisiteRepository {
 
   /**
    * Ajoute des visites aux hydrants depuis la saisie de visite d'une tournéee
-   * @param json La liste de toutes les visites à ajouter
+   *
+   * @param visiteData La liste de toutes les visites à ajouter
    * @return Un tableau JSON vide si toutes les visites ont été ajoutées, un tableau contenant la raison du rejet le cas échéant
    */
-  public String addVisiteFromTournee(String json) throws IOException {
+  public String addVisiteFromTournee(String visiteData) throws Exception {
     ArrayList<String> resultats = new ArrayList<String>();
-    ArrayList<Map<String, Object>> data = objectMapper.readValue(json.toString(), new TypeReference<ArrayList<Map<String, Object>>>() {});
-    for(Map<String, Object> hydrantData : data) {
-      Long idHydrant = JSONUtil.getLong(hydrantData, "idHydrant");
-      try {
-        // On réutilise la même fonction que lors de la création d'une visite depuis la fiche PEI, les vérifications sont identiques
-        this.addVisiteFromFiche(idHydrant, objectMapper.writeValueAsString(hydrantData));
-      } catch (Exception e) {
-        // Erreur survenue lors de l'ajout : on renvoie la raison de l'erreur au client
-        ObjectNode erreur = objectMapper.createObjectNode();
-        erreur.put("id", idHydrant);
-        erreur.put("message", e.getMessage());
-        resultats.add(erreur.toString());
+    if(visiteData != null && !"null".equals(visiteData)) {
+      ArrayList<Map<String, Object>> data = objectMapper.readValue(visiteData.toString(), new TypeReference<ArrayList<Map<String, Object>>>() {});
+      for(Map<String, Object> hydrantData : data) {
+        Long idHydrant = JSONUtil.getLong(hydrantData, "idHydrant");
+        try {
+          HydrantVisite visite = new HydrantVisite();
+
+          // On regarde si la visite est la seule à cette date sur cet hydrant
+          Integer nbVisistesMemeHeure = context
+            .selectCount()
+            .from(HYDRANT_VISITE)
+            .where(HYDRANT_VISITE.HYDRANT.eq(idHydrant).and(HYDRANT_VISITE.DATE.equal(JSONUtil.getInstant(hydrantData, "date"))))
+            .fetchOneInto(Integer.class);
+          if(nbVisistesMemeHeure > 0) {
+            throw new Exception("Une visite est déjà présente à cette date pour cet hydrant");
+          }
+          // On vérifie que le type de visite est bon
+          Integer nbVisites = context
+            .selectCount()
+            .from(HYDRANT_VISITE)
+            .where(HYDRANT_VISITE.HYDRANT.eq(idHydrant))
+            .fetchOneInto(Integer.class);
+
+          String typeVisite = context
+            .select(TYPE_HYDRANT_SAISIE.CODE)
+            .from(TYPE_HYDRANT_SAISIE)
+            .where(TYPE_HYDRANT_SAISIE.ID.eq(JSONUtil.getLong(hydrantData, "type")))
+            .fetchOneInto(String.class);
+
+          if(nbVisites == 0 && !typeVisite.toUpperCase().equals("CREA")) {
+            throw new Exception("Le contexte de visite doit être de type CREA (première visite du PEI)");
+          } else if(nbVisites == 1 && !typeVisite.toUpperCase().equals("RECEP")) {
+            throw new Exception("Le contexte de visite doit être de type RECEP (deuxième visite du PEI)");
+          } else if(nbVisites > 1 && (!typeVisite.toUpperCase().equals("NP") && !typeVisite.toUpperCase().equals("RECO") && !typeVisite.equals("CTRL"))) {
+            throw new Exception("Une visite de type " + typeVisite.toUpperCase() + " existe déjà. Veuillez utiliser une visite de type NP, RECO ou CTRL");
+          }
+          //On ajoute les valeurs qui ne concernent pas le debit pression avant de vérifier pour alléger le code
+          visite.setHydrant(idHydrant);
+          visite.setAgent1(JSONUtil.getString(hydrantData, "agent1"));
+          visite.setAgent2(JSONUtil.getString(hydrantData, "agent2"));
+          visite.setDate(JSONUtil.getInstant(hydrantData, "date"));
+          visite.setType(JSONUtil.getLong(hydrantData, "type"));
+          visite.setCtrlDebitPression(JSONUtil.getBoolean(hydrantData, "ctrl_debit_pression"));
+          visite.setAnomalies(JSONUtil.getString(hydrantData, "anomalies"));
+          visite.setObservations(JSONUtil.getString(hydrantData, "observations"));
+          visite.setUtilisateurModification(utilisateurService.getCurrentUtilisateur().getId());
+          visite.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme().getId());
+          visite.setAuteurModificationFlag("USER");
+
+          if(Boolean.TRUE.equals(JSONUtil.getBoolean(hydrantData, "ras"))) {
+
+            // Si le boutton RAS est coché on récupère les données de la dernière visite
+            HydrantVisite visiteDebitPressionPlusRecente = this.getLastCDP(visite);
+
+            visite.setDebit(visiteDebitPressionPlusRecente.getDebit());
+            visite.setDebitMax(visiteDebitPressionPlusRecente.getDebitMax());
+            visite.setPression(visiteDebitPressionPlusRecente.getPression());
+            visite.setPressionDyn(visiteDebitPressionPlusRecente.getPressionDyn());
+            visite.setPressionDynDeb(visiteDebitPressionPlusRecente.getPressionDynDeb());
+            visite.setDebitAutre(visiteDebitPressionPlusRecente.getDebitAutre());
+            visite.setPressionDynAutre(visiteDebitPressionPlusRecente.getPressionDynAutre());
+          } else {
+            visite.setDebit(JSONUtil.getInteger(hydrantData, "debit"));
+            visite.setDebitMax(JSONUtil.getInteger(hydrantData, "debitMax"));
+            visite.setPression(JSONUtil.getDouble(hydrantData, "pression"));
+            visite.setPressionDyn(JSONUtil.getDouble(hydrantData, "pressionDyn"));
+            visite.setPressionDynDeb(JSONUtil.getDouble(hydrantData, "pressionDynDeb"));
+            visite.setDebitAutre(JSONUtil.getInteger(hydrantData, "debitAutre"));
+            visite.setPressionDynAutre(JSONUtil.getDouble(hydrantData, "pressionDynAutre"));
+          }
+          this.addVisite(visite);
+        } catch (Exception e) {
+          // Erreur survenue lors de l'ajout : on renvoie la raison de l'erreur au client
+          ObjectNode erreur = objectMapper.createObjectNode();
+          erreur.put("id", idHydrant);
+          erreur.put("message", e.getMessage());
+          resultats.add(erreur.toString());
+        }
       }
     }
     return resultats.toString();
   }
 
   /**
+   * Renvoie la dernière visite CDP de l'hydrant qui n'est pas la visite en cours
+   *
+   * @param visite
+   * @return
+   */
+  private HydrantVisite getLastCDP(HydrantVisite visite) {
+    return context
+      .selectFrom(HYDRANT_VISITE)
+      .where(HYDRANT_VISITE.HYDRANT.eq(visite.getHydrant())
+        .and(HYDRANT_VISITE.TYPE.eq(visite.getType()))
+        .and(HYDRANT_VISITE.ID.isDistinctFrom(visite.getId())))
+      .and(HYDRANT_VISITE.CTRL_DEBIT_PRESSION.isTrue())
+      .orderBy(HYDRANT_VISITE.DATE.desc())
+      .limit(1)
+      .fetchOneInto(HydrantVisite.class);
+  }
+
+  /**
    * Supprime les visites d'un pei
+   *
    * @param id L'identifiant du PEI
    * @param visiteData Les identifiants des visites à supprimer
    */
   public void deleteVisiteFromFiche(Long id, String visiteData) throws IOException {
     if(visiteData != null && !"null".equals(visiteData) && !"[]".equals(visiteData)) {
-      ArrayList<Long> listeVisite = objectMapper.readValue(visiteData.toString(), new TypeReference<ArrayList<Long>>(){});
+      ArrayList<Long> listeVisite = objectMapper.readValue(visiteData.toString(), new TypeReference<ArrayList<Long>>() {});
       Collections.sort(listeVisite); // On trie par id
       Collections.reverse(listeVisite); // On commence par les visites les plus récentes
 
@@ -228,6 +315,7 @@ public class HydrantVisiteRepository {
 
   /**
    * Ajoute une visite à la base
+   *
    * @param visite Les informations de la visite
    * @return la visite créée
    */
@@ -314,16 +402,17 @@ public class HydrantVisiteRepository {
 
   /**
    * Supprime une visite de la base
+   *
    * @param visite Infos de la visite
    */
   private void deleteVisite(HydrantVisite visite) {
 
     String codeVisite = context
-          .select(TYPE_HYDRANT_SAISIE.CODE)
-          .from(TYPE_HYDRANT_SAISIE)
-          //.join(HYDRANT_VISITE).on(HYDRANT_VISITE.TYPE.eq(TYPE_HYDRANT_SAISIE.ID))
-          .where(TYPE_HYDRANT_SAISIE.ID.eq(visite.getType()))
-          .fetchOneInto(String.class);
+      .select(TYPE_HYDRANT_SAISIE.CODE)
+      .from(TYPE_HYDRANT_SAISIE)
+      //.join(HYDRANT_VISITE).on(HYDRANT_VISITE.TYPE.eq(TYPE_HYDRANT_SAISIE.ID))
+      .where(TYPE_HYDRANT_SAISIE.ID.eq(visite.getType()))
+      .fetchOneInto(String.class);
 
     HydrantVisite visitePlusRecenteMemeType = context
       .selectFrom(HYDRANT_VISITE)
@@ -343,17 +432,7 @@ public class HydrantVisiteRepository {
       Double pressionDynDeb = null;
       Integer debitAutre = null;
       Double pressionDynAutre = null;
-
-      HydrantVisite visiteDebitPressionPlusRecente = context
-        .selectFrom(HYDRANT_VISITE)
-        .where(HYDRANT_VISITE.HYDRANT.eq(visite.getHydrant())
-          .and(HYDRANT_VISITE.TYPE.eq(visite.getType()))
-          .and(HYDRANT_VISITE.ID.isDistinctFrom(visite.getId())))
-          .and(HYDRANT_VISITE.CTRL_DEBIT_PRESSION.isTrue())
-        .orderBy(HYDRANT_VISITE.DATE.desc())
-        .limit(1)
-        .fetchOneInto(HydrantVisite.class);
-
+      HydrantVisite visiteDebitPressionPlusRecente = getLastCDP(visite);
       if(visiteDebitPressionPlusRecente != null && visiteDebitPressionPlusRecente.getCtrlDebitPression()) {
         debit = visiteDebitPressionPlusRecente.getDebit();
         debitMax = visiteDebitPressionPlusRecente.getDebitMax();
@@ -408,6 +487,7 @@ public class HydrantVisiteRepository {
 
   /**
    * Déclenche le trigger pour calculer la disponibilité du PEI
+   *
    * @param idhydrant L'identifiant du PEI
    */
   private void launchTriggerAnomalies(Long idhydrant) throws IOException {
@@ -421,7 +501,7 @@ public class HydrantVisiteRepository {
 
     List<Long> idAnomalieSysteme = context
       .select(TYPE_HYDRANT_ANOMALIE.ID)
-            .from(TYPE_HYDRANT_ANOMALIE)
+      .from(TYPE_HYDRANT_ANOMALIE)
       .where(TYPE_HYDRANT_ANOMALIE.CRITERE.isNull())
       .fetchInto(Long.class);
 
@@ -433,7 +513,7 @@ public class HydrantVisiteRepository {
       .execute();
 
     // Ajout des anomalies de la visite la plus récente
-    if(visitePlusRecente != null && visitePlusRecente.getAnomalies() != null)  {
+    if(visitePlusRecente != null && visitePlusRecente.getAnomalies() != null) {
       ObjectMapper mapper = new ObjectMapper();
       TypeReference<ArrayList<Long>> typeRef = new TypeReference<ArrayList<Long>>() {};
       ArrayList<Long> anomalies = mapper.readValue(visitePlusRecente.getAnomalies(), typeRef);
