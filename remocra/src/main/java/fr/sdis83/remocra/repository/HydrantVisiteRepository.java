@@ -235,9 +235,10 @@ public class HydrantVisiteRepository {
           visite.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme().getId());
           visite.setAuteurModificationFlag("USER");
 
-          if(Boolean.TRUE.equals(JSONUtil.getBoolean(hydrantData, "ras"))) {
+          if(Boolean.TRUE.equals(JSONUtil.getBoolean(hydrantData, "ras")) && visite.getCtrlDebitPression()) {
 
             // Si le boutton RAS est coché on récupère les données de la dernière visite
+            //ET que c'est bien un ctrl_debit_pression
             HydrantVisite visiteDebitPressionPlusRecente = this.getLastCDP(visite);
 
             visite.setDebit(visiteDebitPressionPlusRecente.getDebit());
@@ -257,6 +258,7 @@ public class HydrantVisiteRepository {
             visite.setPressionDynAutre(JSONUtil.getDouble(hydrantData, "pressionDynAutre"));
           }
           this.addVisite(visite);
+          this.launchTriggerAnomalies(idHydrant);
         } catch (Exception e) {
           // Erreur survenue lors de l'ajout : on renvoie la raison de l'erreur au client
           ObjectNode erreur = objectMapper.createObjectNode();
@@ -273,7 +275,7 @@ public class HydrantVisiteRepository {
    * Renvoie la dernière visite CDP de l'hydrant qui n'est pas la visite en cours
    *
    * @param visite
-   * @return
+   * @return HydrantVisite
    */
   private HydrantVisite getLastCDP(HydrantVisite visite) {
     return context
