@@ -184,88 +184,21 @@ public class HydrantVisiteRepository {
    * @param visiteData La liste de toutes les visites à ajouter
    * @return Un tableau JSON vide si toutes les visites ont été ajoutées, un tableau contenant la raison du rejet le cas échéant
    */
-  public String addVisiteFromTournee(String visiteData) throws Exception {
+
+  public String addVisiteFromTournee(String json) throws IOException {
     ArrayList<String> resultats = new ArrayList<String>();
-    if(visiteData != null && !"null".equals(visiteData)) {
-      ArrayList<Map<String, Object>> data = objectMapper.readValue(visiteData.toString(), new TypeReference<ArrayList<Map<String, Object>>>() {});
-      for(Map<String, Object> hydrantData : data) {
-        Long idHydrant = JSONUtil.getLong(hydrantData, "idHydrant");
-        try {
-          HydrantVisite visite = new HydrantVisite();
-
-          // On regarde si la visite est la seule à cette date sur cet hydrant
-          Integer nbVisistesMemeHeure = context
-            .selectCount()
-            .from(HYDRANT_VISITE)
-            .where(HYDRANT_VISITE.HYDRANT.eq(idHydrant).and(HYDRANT_VISITE.DATE.equal(JSONUtil.getInstant(hydrantData, "date"))))
-            .fetchOneInto(Integer.class);
-          if(nbVisistesMemeHeure > 0) {
-            throw new Exception("Une visite est déjà présente à cette date pour cet hydrant");
-          }
-          // On vérifie que le type de visite est bon
-          Integer nbVisites = context
-            .selectCount()
-            .from(HYDRANT_VISITE)
-            .where(HYDRANT_VISITE.HYDRANT.eq(idHydrant))
-            .fetchOneInto(Integer.class);
-
-          String typeVisite = context
-            .select(TYPE_HYDRANT_SAISIE.CODE)
-            .from(TYPE_HYDRANT_SAISIE)
-            .where(TYPE_HYDRANT_SAISIE.ID.eq(JSONUtil.getLong(hydrantData, "type")))
-            .fetchOneInto(String.class);
-
-          if(nbVisites == 0 && !typeVisite.toUpperCase().equals("CREA")) {
-            throw new Exception("Le contexte de visite doit être de type CREA (première visite du PEI)");
-          } else if(nbVisites == 1 && !typeVisite.toUpperCase().equals("RECEP")) {
-            throw new Exception("Le contexte de visite doit être de type RECEP (deuxième visite du PEI)");
-          } else if(nbVisites > 1 && (!typeVisite.toUpperCase().equals("NP") && !typeVisite.toUpperCase().equals("RECO") && !typeVisite.equals("CTRL"))) {
-            throw new Exception("Une visite de type " + typeVisite.toUpperCase() + " existe déjà. Veuillez utiliser une visite de type NP, RECO ou CTRL");
-          }
-          //On ajoute les valeurs qui ne concernent pas le debit pression avant de vérifier pour alléger le code
-          visite.setHydrant(idHydrant);
-          visite.setAgent1(JSONUtil.getString(hydrantData, "agent1"));
-          visite.setAgent2(JSONUtil.getString(hydrantData, "agent2"));
-          visite.setDate(JSONUtil.getInstant(hydrantData, "date"));
-          visite.setType(JSONUtil.getLong(hydrantData, "type"));
-          visite.setCtrlDebitPression(JSONUtil.getBoolean(hydrantData, "ctrl_debit_pression"));
-          visite.setAnomalies(JSONUtil.getString(hydrantData, "anomalies"));
-          visite.setObservations(JSONUtil.getString(hydrantData, "observations"));
-          visite.setUtilisateurModification(utilisateurService.getCurrentUtilisateur().getId());
-          visite.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme().getId());
-          visite.setAuteurModificationFlag("USER");
-
-          if(Boolean.TRUE.equals(JSONUtil.getBoolean(hydrantData, "ras")) && visite.getCtrlDebitPression()) {
-
-            // Si le boutton RAS est coché on récupère les données de la dernière visite
-            //ET que c'est bien un ctrl_debit_pression
-            HydrantVisite visiteDebitPressionPlusRecente = this.getLastCDP(visite);
-
-            visite.setDebit(visiteDebitPressionPlusRecente.getDebit());
-            visite.setDebitMax(visiteDebitPressionPlusRecente.getDebitMax());
-            visite.setPression(visiteDebitPressionPlusRecente.getPression());
-            visite.setPressionDyn(visiteDebitPressionPlusRecente.getPressionDyn());
-            visite.setPressionDynDeb(visiteDebitPressionPlusRecente.getPressionDynDeb());
-            visite.setDebitAutre(visiteDebitPressionPlusRecente.getDebitAutre());
-            visite.setPressionDynAutre(visiteDebitPressionPlusRecente.getPressionDynAutre());
-          } else {
-            visite.setDebit(JSONUtil.getInteger(hydrantData, "debit"));
-            visite.setDebitMax(JSONUtil.getInteger(hydrantData, "debitMax"));
-            visite.setPression(JSONUtil.getDouble(hydrantData, "pression"));
-            visite.setPressionDyn(JSONUtil.getDouble(hydrantData, "pressionDyn"));
-            visite.setPressionDynDeb(JSONUtil.getDouble(hydrantData, "pressionDynDeb"));
-            visite.setDebitAutre(JSONUtil.getInteger(hydrantData, "debitAutre"));
-            visite.setPressionDynAutre(JSONUtil.getDouble(hydrantData, "pressionDynAutre"));
-          }
-          this.addVisite(visite);
-          this.launchTriggerAnomalies(idHydrant);
-        } catch (Exception e) {
-          // Erreur survenue lors de l'ajout : on renvoie la raison de l'erreur au client
-          ObjectNode erreur = objectMapper.createObjectNode();
-          erreur.put("id", idHydrant);
-          erreur.put("message", e.getMessage());
-          resultats.add(erreur.toString());
-        }
+    ArrayList<Map<String, Object>> data = objectMapper.readValue(json.toString(), new TypeReference<ArrayList<Map<String, Object>>>() {});
+    for(Map<String, Object> hydrantData : data) {
+      Long idHydrant = JSONUtil.getLong(hydrantData, "idHydrant");
+      try {
+        // On réutilise la même fonction que lors de la création d'une visite depuis la fiche PEI, les vérifications sont identiques
+        this.addVisiteFromFiche(idHydrant, objectMapper.writeValueAsString(hydrantData));
+      } catch (Exception e) {
+        // Erreur survenue lors de l'ajout : on renvoie la raison de l'erreur au client
+        ObjectNode erreur = objectMapper.createObjectNode();
+        erreur.put("id", idHydrant);
+        erreur.put("message", e.getMessage());
+        resultats.add(erreur.toString());
       }
     }
     return resultats.toString();
