@@ -822,7 +822,7 @@ WHERE hydrant IN (
 				JOIN remocra.hydrant_indispo_temporaire it ON it.id = ith.indisponibilite
 				JOIN remocra.type_hydrant_indispo_statut tis ON tis.id = it.statut AND tis.code = 'EN_COURS'
 			WHERE it.date_debut &lt;= current_timestamp AND
-				it.date_fin > current_timestamp
+				(it.date_fin > current_timestamp OR it.date_fin IS NULL)
 			GROUP BY h.id
 		) AS count_indispo ON count_indispo.hydrant = h.id
 	WHERE it.bascule_auto_dispo AND
