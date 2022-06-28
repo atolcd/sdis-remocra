@@ -70,6 +70,7 @@ public class HydrantPibiRepository {
     HydrantPibi pibi = new HydrantPibi();
     pibi.setId(id);
     pibi.setDiametre(JSONUtil.getLong(data, "diametre"));
+    pibi.setDebitNominal(JSONUtil.getInteger(data, "debitNominal"));
     pibi.setDispositifInviolabilite(JSONUtil.getBoolean(data, "dispositif_inviolabilite"));
     pibi.setRenversable(JSONUtil.getBoolean(data, "renversable"));
     pibi.setJumele(JSONUtil.getLong(data, "jumele"));
@@ -111,6 +112,7 @@ public class HydrantPibiRepository {
 
     context.update(HYDRANT_PIBI)
       .set(HYDRANT_PIBI.DIAMETRE, pibi.getDiametre())
+      .set(HYDRANT_PIBI.DEBIT_NOMINAL, pibi.getDebitNominal())
       .set(HYDRANT_PIBI.DISPOSITIF_INVIOLABILITE, pibi.getDispositifInviolabilite())
       .set(HYDRANT_PIBI.RENVERSABLE, pibi.getRenversable())
       .set(HYDRANT_PIBI.JUMELE, pibi.getJumele())

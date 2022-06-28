@@ -81,26 +81,19 @@
                 <b-form-group label="Débit à 1 bar (m3/h) :" label-for="debit" label-cols-md="6">
                   <b-form-input id="debit" v-model="listeVisites[selectedRow].debit" type="number" size="sm" :disabled="!saisieDebitPression"></b-form-input>
                 </b-form-group>
-                <b-form-group label="Pression dynamique à 60 m3 (bar) :" label-for="pressionDyn" label-cols-md="6">
+                <!-- Si le debit nominal est renseigné on l'affiche sinon on affiche juste 'pression dynamique' -->
+                <b-form-group
+                :label="this.hydrant.debitNominal!==null ?
+                'Pression dynamique au débit nominal de ' + this.hydrant.debitNominal +' m3 (en bar)':
+                'Pression dynamique au débit nominal (en bar)'"
+                label-for="pressionDyn"
+                label-cols-md="6"
+                >
                   <b-form-input id="pressionDyn" v-model="listeVisites[selectedRow].pressionDyn" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
-                </b-form-group>
-                <b-form-group label="Débit max (m3/h) :" label-for="debitMax" label-cols-md="6">
-                  <b-form-input id="debitMax" v-model="listeVisites[selectedRow].debitMax" type="number" size="sm" :disabled="!saisieDebitPression"></b-form-input>
-                </b-form-group>
-                <b-form-group label="Pression dynamique au débit max (bar) :" label-for="pressionDynDeb" label-cols-md="6">
-                  <b-form-input id="pressionDynDeb" v-model="listeVisites[selectedRow].pressionDynDeb" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
                 </b-form-group>
                 <b-form-group label="Pression statique (bar) :" label-for="pression" label-cols-md="6">
                   <b-form-input id="pression" v-model.number="listeVisites[selectedRow].pression" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
                 </b-form-group>
-                <div class="debitDynAutre">
-                  <b-form-group label="Débit à une autre pression dynamique* (m3/h) :" label-for="debitAutre" label-cols-md="6">
-                    <b-form-input id="debitAutre" v-model="listeVisites[selectedRow].debitAutre" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
-                  </b-form-group>
-                  <b-form-group label="*Pression dynamique (bar) :" label-for="pressionDynAutre" label-cols-md="6">
-                    <b-form-input id="pressionDynAutre" v-model.number="listeVisites[selectedRow].pressionDynAutre" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
-                  </b-form-group>
-                </div>
               </div>
             </b-tab>
             <b-tab class="anomalies-tab" title="Points d'attention">

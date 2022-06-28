@@ -20,6 +20,11 @@
         <b-form-select id="jumele" v-model="hydrant.jumele" class="parametre" :options="comboJumele" size="sm" :disabled="modificationCaracteristiquesDisabled"></b-form-select>
       </b-form-group>
     </div>
+    <div class="col-md-4">
+      <b-form-group label="Débit nominal" label-for="debitNominal" label-cols-md="6">
+        <b-form-input id="debitNominal" v-model="hydrant.debitNominal" class="parametre" type="number" size="sm" :disabled="modificationCaracteristiquesDisabled"></b-form-input>
+      </b-form-group>
+    </div>
   </div>
   <div class="row">
     <div class="col-md-4">
