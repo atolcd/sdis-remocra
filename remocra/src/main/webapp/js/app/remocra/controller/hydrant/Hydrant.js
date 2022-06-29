@@ -1179,46 +1179,65 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     downloadMapTournee: function() {
         var tournee = this.getSelectedTournee();
         var bounds = Sdis.Remocra.util.Util.getBounds(tournee.get('geometrie'));
-        var Xmin = bounds.left;
-        var Xmax = bounds.right;
-        var Ymin = bounds.bottom;
-        var Ymax = bounds.top;
+        var Xmin = bounds.left - 50 ;
+        var Xmax = bounds.right + 50;
+        var Ymin = bounds.bottom - 50;
+        var Ymax = bounds.top + 50;
         // définir le mode paysage/portrait
         var mode = Xmax - Xmin > Ymax - Ymin  ? "paysage" : "portrait";
         // calcul des centroids
+        var X = (Xmin-Xmax);
+        var Y = (Ymin-Ymax);
         var Xcentroid = (Xmin+Xmax) /2;
         var Ycentroid = (Ymin+Ymax) /2;
-        var X = 0;
-        var Y = 0;
         // recalcul des XY
         if ( mode == "paysage" ) {
-            Xmax += 50;
-            Xmin -= 50;
-            Y = (Xmax - Xmin) * 0.78;
-            Ymax = Ycentroid + Y/2;
-            Ymin = Ycentroid - Y/2;
+
+            Y = X * 0.7070;
             //Si le nouveau Y est inférieur à celui d'origine on recalcul le X à la place
             if (Ymax - Ymin < bounds.top - bounds.bottom) {
-                Ymin = bounds.bottom - 50;
-                Ymax = bounds.top + 50;
-                X = (Ymax - Ymin) * 1.41;
+
+                X = Y * 1.4142;
+                Xmax = Xcentroid + X/2;
+                Xmin = Xcentroid - X/2;
+            }else { //sinon on recalcul le Ymax et le Ymin
+                Ymax = Ycentroid + Y/2;
+                Ymin = Ycentroid - Y/2;
+            }
+            //Si l'un des deux et inférieur a la taille minimum on applique redimenssionne a la taille mini
+            if(X<685 || Y<534){
+                X=685;
+                Y=534;
+                Ymax = Ycentroid + Y/2;
+                Ymin = Ycentroid - Y/2;
                 Xmax = Xcentroid + X/2;
                 Xmin = Xcentroid - X/2;
             }
         }else {
-           Ymax += 50;
-           Ymin -= 50;
-           X = (Ymax - Ymin) * 0.78;
-           Xmax = Xcentroid + X/2;
-           Xmin = Xcentroid - X/2;
+
+           X = Y * 0.7070;
+
            //Si le nouveau X est inférieur à celui d'origine on recalcul le Y à la place
            if (Xmax - Xmin < bounds.right - bounds.left) {
-            Xmin = bounds.left - 50;
-            Xmax = bounds.right + 50;
-            Y = (Xmax - Xmin) * 1.41;
-            Ymax = Ycentroid + Y/2;
-            Ymin = Ycentroid - Y/2;
-        }
+
+                Y = X * 1.4142;
+
+                Ymax = Ycentroid + Y/2;
+                Ymin = Ycentroid - Y/2;
+            }else{ //sinon on recalcul le Xmax et le Xmin
+                Xmax = Xcentroid + X/2;
+                Xmin = Xcentroid - X/2;
+            }
+
+            //Si l'un des deux et inférieur a la taille minimum on applique redimenssionne a la taille mini
+            if(X<534 || Y<685){
+                X=534;
+                Y=685;
+                Ymax = Ycentroid + Y/2;
+                Ymin = Ycentroid - Y/2;
+                Xmax = Xcentroid + X/2;
+                Xmin = Xcentroid - X/2;
+            }
         }
         //redefinition du bbox
         bounds.left = Xmin;
@@ -1236,8 +1255,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
            SRS : 'EPSG:2154',
            BBOX : bounds.toBBOX(),
            VIEWPARAMS : "tourne_id:" + tournee.getId(),
-           WIDTH: mode == "paysage" ?  3307 : 2339,
-           HEIGHT: mode == "paysage" ?  2339 : 3307
+           WIDTH: mode == "paysage" ?  1170 : 827,
+           HEIGHT: mode == "paysage" ?  827 : 1170
         };
        var url =  Sdis.Remocra.util.Util.withBaseUrl('../geoserver/remocra/wms');
        url += "?"+Ext.Object.toQueryString(params);
