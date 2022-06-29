@@ -10,8 +10,8 @@ docker exec -it -e PGUSER=postgres remocra-upgrade-db createdb remocra -E UTF8 r
 docker exec -it -e PGUSER=postgres remocra-upgrade-db psql remocra -c "CREATE EXTENSION postgis;";
 docker exec -it -e PGUSER=postgres remocra-upgrade-db psql remocra -f /usr/local/share/postgresql/contrib/postgis-2.5/legacy.sql;
 # si besoin :
-docker exec -it -e PGUSER=postgres remocra-upgrade-db psql remocra -c "drop function ndims(geometry) cascade;";
-docker exec -it -e PGUSER=postgres remocra-upgrade-db psql remocra -c "drop function srid(geometry) cascade;";
+#docker exec -it -e PGUSER=postgres remocra-upgrade-db psql remocra -c "drop function ndims(geometry) cascade;";
+#docker exec -it -e PGUSER=postgres remocra-upgrade-db psql remocra -c "drop function srid(geometry) cascade;";
 docker exec -it remocra-upgrade-db apk add perl;
 docker exec -it -e PGUSER=postgres remocra-upgrade-db bash -c "perl /usr/local/share/postgresql/contrib/postgis-2.5/postgis_restore.pl /var/lib/postgresql/remocra-1.5.backup | psql remocra 2> /var/lib/postgresql/errors.txt";
 docker exec -it remocra-upgrade-db cat /var/lib/postgresql/errors.txt;
