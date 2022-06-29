@@ -25,7 +25,7 @@
             <label>Observation :</label>
           </div>
           <div class="col-md-10">
-            <b-form-textarea type="text" v-model="value.observation" id="observation" size="sm"></b-form-input>
+            <b-form-textarea type="text" v-model="value.observation" id="observation" size="sm"></b-form-textarea>
           </div>
         </div>
         <div class="row">
