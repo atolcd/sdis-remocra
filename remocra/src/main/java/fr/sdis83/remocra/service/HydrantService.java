@@ -438,6 +438,8 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
         }
         h.setDateGps(null);
         h.setDateModification(new Date());
+        h.setUtilisateurModification(utilisateurService.getCurrentUtilisateur());
+        h.setAuteurModificationFlag("USER");
         point.setSRID(srid);
         h.setGeometrie(point);
         h.persist();
