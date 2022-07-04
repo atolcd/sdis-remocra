@@ -179,10 +179,9 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                 });
             }
             if(Sdis.Remocra.Rights.hasRight('DEBITS_SIMULTANES_R')) {
-                let text;
-                Sdis.Remocra.Rights.hasRight('DEBITS_SIMULTANES_C')
-                    ? text ='Consulter / Saisir une mesure'
-                    : text = 'Consulter'
+                var text = Sdis.Remocra.Rights.hasRight('DEBITS_SIMULTANES_C')
+                ? 'Consulter / Saisir une mesure'
+                : 'Consulter';
                 this.editItems.push({
                     xtype: 'button',
                     tooltip: text,
