@@ -1,4 +1,4 @@
-Ext.require(['Sdis.Remocra.store.Hydrant']);
+Ext.require(['Sdis.Remocra.store.HydrantRecord']);
 Ext.require('Ext.ux.grid.plugin.HeaderFilters');
 
 Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
@@ -11,7 +11,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
     enableColumnResize: false,
     enableColumnMove: false,    
     
-    store: 'Hydrant',
+    store: 'HydrantRecord',
     height: 500,
     forceFit: true,
     dockedItems: [{
@@ -56,7 +56,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
         }]
     },{
         xtype: 'pagingtoolbar',
-        store: 'Hydrant',
+        store: 'HydrantRecord',
         dock: 'bottom',
         displayInfo: true
     },{

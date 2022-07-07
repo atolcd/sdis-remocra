@@ -12,6 +12,7 @@ import fr.sdis83.remocra.repository.HydrantVisiteRepository;
 import fr.sdis83.remocra.service.TourneeService;
 import fr.sdis83.remocra.util.ExceptionUtils;
 import fr.sdis83.remocra.util.GeometryUtil;
+import fr.sdis83.remocra.web.model.HydrantRecord;
 import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -348,5 +349,50 @@ public class HydrantController {
             this.logger.error(e.getMessage(), e);
             return new SuccessErrorExtSerializer(false, "Problème survenu lors de l'import CTP'").serialize();
         }
+    }
+
+    @RequestMapping(value = "/records", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('HYDRANTS_R')")
+    public ResponseEntity<java.lang.String> listRecords(final @RequestParam(value = "page", required = false) Integer page,
+                                                     final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
+                                                     final @RequestParam(value = "sort", required = false) String sorts, final @RequestParam(value = "filter", required = false) String filters,
+                                                     final @RequestParam(value = "query", required = false) String query) {
+
+        final List<ItemSorting> sortList = ItemSorting.decodeJson(sorts);
+        final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
+
+        if (query != null && !query.isEmpty()) {
+            itemFilterList.add(new ItemFilter("query", query));
+        }
+
+        // Comptage : zone de compétence simplifiée pour accélérer le calcul
+        final List<ItemFilter> itemFilterCountList = new LinkedList<ItemFilter>();
+        itemFilterCountList.addAll(itemFilterList);
+        itemFilterCountList.add(new ItemFilter("zoneCompetenceSimplified", "true"));
+
+        itemFilterList.add(new ItemFilter("zoneCompetence", "true"));
+
+        return new AbstractExtListSerializer<HydrantRecord>("fr.sdis83.remocra.domain.remocra.Hydrant retrieved.") {
+
+            @Override
+            protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+                return new JSONSerializer()
+                        .exclude( "*.class")
+                        .transform(new GeometryTransformer(), Geometry.class);
+            }
+
+            @Override
+            protected List<HydrantRecord> getRecords() {
+                List<HydrantRecord> l = hydrantRepository.getAll(itemFilterList, limit, start, sortList);
+                return l;
+            }
+
+            @Override
+            protected Long countRecords() {
+                Long total = Long.valueOf(hydrantRepository.countHydrants(itemFilterCountList));
+                return total;
+            }
+
+        }.serialize();
     }
 }

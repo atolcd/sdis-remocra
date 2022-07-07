@@ -64,7 +64,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabAccesRapide', {
             mode: 'remote',
             typeAhead: true,
             store: {
-                model: 'Sdis.Remocra.model.Hydrant'
+                model: 'Sdis.Remocra.model.HydrantRecord'
             },
             name: 'numHydrant'
         },{

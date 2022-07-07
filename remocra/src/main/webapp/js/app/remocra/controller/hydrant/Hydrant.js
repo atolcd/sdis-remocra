@@ -2,11 +2,13 @@ Ext.require('Sdis.Remocra.store.Commune');
 Ext.require('Sdis.Remocra.model.Voie');
 Ext.require('Sdis.Remocra.model.HydrantIndispoTemporaire');
 Ext.require('Sdis.Remocra.store.Hydrant');
+Ext.require('Sdis.Remocra.store.HydrantRecord');
 Ext.require('Sdis.Remocra.store.Tournee');
 Ext.require('Sdis.Remocra.store.TypeHydrant');
 Ext.require('Sdis.Remocra.store.Organisme');
 Ext.require('Sdis.Remocra.store.TypeHydrantNature');
 Ext.require('Sdis.Remocra.model.Hydrant');
+Ext.require('Sdis.Remocra.model.HydrantRecord');
 Ext.require('Sdis.Remocra.model.HydrantPena');
 Ext.require('Sdis.Remocra.model.HydrantPibi');
 Ext.require('Sdis.Remocra.store.Commune');
@@ -41,7 +43,7 @@ Ext.require('Sdis.Remocra.features.hydrants.ListerPeiIndispo');
 Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     extend: 'Ext.app.Controller',
 
-    stores: ['Tournee','Commune','Voie','Hydrant','TypeHydrant','Organisme','Commune', 'Voie', 'Hydrant', 'TypeHydrant',
+    stores: ['Tournee','Commune','Voie','Hydrant','TypeHydrant','Organisme','Commune', 'Voie', 'HydrantRecord', 'TypeHydrant',
      'TypeHydrantAnomalie', 'TypeHydrantDiametre', 'TypeHydrantDomaine','TypeHydrantNature', 'TypeHydrantNatureTous',
       'TypeHydrantVolConstate','TypeHydrantMarque', 'Utilisateur', 'TypeHydrantPositionnement', 'TypeHydrantMateriau','TypeHydrantNatureDeci',
        'TypeHydrantNatureDeciTous'],
