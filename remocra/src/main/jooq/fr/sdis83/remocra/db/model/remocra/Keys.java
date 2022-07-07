@@ -517,6 +517,7 @@ public class Keys {
 	public static final UniqueKey<Record> TYPE_HYDRANT_DIAMETRE_PKEY = UniqueKeys0.TYPE_HYDRANT_DIAMETRE_PKEY;
 	public static final UniqueKey<Record> TYPE_HYDRANT_DIAMETRE_NATURES_PKEY = UniqueKeys0.TYPE_HYDRANT_DIAMETRE_NATURES_PKEY;
 	public static final UniqueKey<Record> TYPE_HYDRANT_DOMAINE_PKEY = UniqueKeys0.TYPE_HYDRANT_DOMAINE_PKEY;
+	public static final UniqueKey<Record> TYPE_HYDRANT_IMPORTCTP_ERREUR_CODE_KEY = UniqueKeys0.TYPE_HYDRANT_IMPORTCTP_ERREUR_CODE_KEY;
 	public static final UniqueKey<Record> TYPE_HYDRANT_INDISPO_STATUT_PKEY = UniqueKeys0.TYPE_HYDRANT_INDISPO_STATUT_PKEY;
 	public static final UniqueKey<Record> TYPE_HYDRANT_MARQUE_PKEY = UniqueKeys0.TYPE_HYDRANT_MARQUE_PKEY;
 	public static final UniqueKey<Record> TYPE_HYDRANT_MATERIAU_PKEY = UniqueKeys0.TYPE_HYDRANT_MATERIAU_PKEY;
@@ -654,6 +655,7 @@ public class Keys {
 	public static final ForeignKey<Record, Record> HYDRANT_DOCUMENT__FK5B90BF5236F0130A = ForeignKeys0.HYDRANT_DOCUMENT__FK5B90BF5236F0130A;
 	public static final ForeignKey<Record, Record> HYDRANT_DOCUMENT__FK5B90BF5250004FC = ForeignKeys0.HYDRANT_DOCUMENT__FK5B90BF5250004FC;
 	public static final ForeignKey<Record, Record> HYDRANT_INDISPO_TEMPORAIRE__FK_HYDRANT_INDISPO_TEMPORAIRE_STATUT = ForeignKeys0.HYDRANT_INDISPO_TEMPORAIRE__FK_HYDRANT_INDISPO_TEMPORAIRE_STATUT;
+	public static final ForeignKey<Record, Record> HYDRANT_INDISPO_TEMPORAIRE__FK_ORGANISME_API = ForeignKeys0.HYDRANT_INDISPO_TEMPORAIRE__FK_ORGANISME_API;
 	public static final ForeignKey<Record, Record> HYDRANT_INDISPO_TEMPORAIRE_HYDRANT__FK_HYDRANT_INDISPO_TEMPORAIRE_HYDRANT_INDISPONIBILITE = ForeignKeys0.HYDRANT_INDISPO_TEMPORAIRE_HYDRANT__FK_HYDRANT_INDISPO_TEMPORAIRE_HYDRANT_INDISPONIBILITE;
 	public static final ForeignKey<Record, Record> HYDRANT_INDISPO_TEMPORAIRE_HYDRANT__FK_HYDRANT_INDISPO_TEMPORAIRE_HYDRANT_HYDRANT = ForeignKeys0.HYDRANT_INDISPO_TEMPORAIRE_HYDRANT__FK_HYDRANT_INDISPO_TEMPORAIRE_HYDRANT_HYDRANT;
 	public static final ForeignKey<Record, Record> HYDRANT_PENA__FKD60E141FB34721EF = ForeignKeys0.HYDRANT_PENA__FKD60E141FB34721EF;
@@ -1104,6 +1106,7 @@ public class Keys {
 		public static final UniqueKey<Record> TYPE_HYDRANT_DIAMETRE_PKEY = createUniqueKey(TypeHydrantDiametre.TYPE_HYDRANT_DIAMETRE, TypeHydrantDiametre.TYPE_HYDRANT_DIAMETRE.ID);
 		public static final UniqueKey<Record> TYPE_HYDRANT_DIAMETRE_NATURES_PKEY = createUniqueKey(TypeHydrantDiametreNatures.TYPE_HYDRANT_DIAMETRE_NATURES, TypeHydrantDiametreNatures.TYPE_HYDRANT_DIAMETRE_NATURES.TYPE_HYDRANT_DIAMETRE, TypeHydrantDiametreNatures.TYPE_HYDRANT_DIAMETRE_NATURES.NATURES);
 		public static final UniqueKey<Record> TYPE_HYDRANT_DOMAINE_PKEY = createUniqueKey(TypeHydrantDomaine.TYPE_HYDRANT_DOMAINE, TypeHydrantDomaine.TYPE_HYDRANT_DOMAINE.ID);
+		public static final UniqueKey<Record> TYPE_HYDRANT_IMPORTCTP_ERREUR_CODE_KEY = createUniqueKey(TypeHydrantImportctpErreur.TYPE_HYDRANT_IMPORTCTP_ERREUR, TypeHydrantImportctpErreur.TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE);
 		public static final UniqueKey<Record> TYPE_HYDRANT_INDISPO_STATUT_PKEY = createUniqueKey(TypeHydrantIndispoStatut.TYPE_HYDRANT_INDISPO_STATUT, TypeHydrantIndispoStatut.TYPE_HYDRANT_INDISPO_STATUT.ID);
 		public static final UniqueKey<Record> TYPE_HYDRANT_MARQUE_PKEY = createUniqueKey(TypeHydrantMarque.TYPE_HYDRANT_MARQUE, TypeHydrantMarque.TYPE_HYDRANT_MARQUE.ID);
 		public static final UniqueKey<Record> TYPE_HYDRANT_MATERIAU_PKEY = createUniqueKey(TypeHydrantMateriau.TYPE_HYDRANT_MATERIAU, TypeHydrantMateriau.TYPE_HYDRANT_MATERIAU.ID);
@@ -1239,6 +1242,7 @@ public class Keys {
 		public static final ForeignKey<Record, Record> HYDRANT_DOCUMENT__FK5B90BF5236F0130A = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.DOCUMENT_PKEY, HydrantDocument.HYDRANT_DOCUMENT, HydrantDocument.HYDRANT_DOCUMENT.DOCUMENT);
 		public static final ForeignKey<Record, Record> HYDRANT_DOCUMENT__FK5B90BF5250004FC = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.HYDRANT_PKEY, HydrantDocument.HYDRANT_DOCUMENT, HydrantDocument.HYDRANT_DOCUMENT.HYDRANT);
 		public static final ForeignKey<Record, Record> HYDRANT_INDISPO_TEMPORAIRE__FK_HYDRANT_INDISPO_TEMPORAIRE_STATUT = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_INDISPO_STATUT_PKEY, HydrantIndispoTemporaire.HYDRANT_INDISPO_TEMPORAIRE, HydrantIndispoTemporaire.HYDRANT_INDISPO_TEMPORAIRE.STATUT);
+		public static final ForeignKey<Record, Record> HYDRANT_INDISPO_TEMPORAIRE__FK_ORGANISME_API = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, HydrantIndispoTemporaire.HYDRANT_INDISPO_TEMPORAIRE, HydrantIndispoTemporaire.HYDRANT_INDISPO_TEMPORAIRE.ORGANISME_API);
 		public static final ForeignKey<Record, Record> HYDRANT_INDISPO_TEMPORAIRE_HYDRANT__FK_HYDRANT_INDISPO_TEMPORAIRE_HYDRANT_INDISPONIBILITE = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.HYDRANT_INDISPO_TEMPORAIRE_PKEY, HydrantIndispoTemporaireHydrant.HYDRANT_INDISPO_TEMPORAIRE_HYDRANT, HydrantIndispoTemporaireHydrant.HYDRANT_INDISPO_TEMPORAIRE_HYDRANT.INDISPONIBILITE);
 		public static final ForeignKey<Record, Record> HYDRANT_INDISPO_TEMPORAIRE_HYDRANT__FK_HYDRANT_INDISPO_TEMPORAIRE_HYDRANT_HYDRANT = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.HYDRANT_PKEY, HydrantIndispoTemporaireHydrant.HYDRANT_INDISPO_TEMPORAIRE_HYDRANT, HydrantIndispoTemporaireHydrant.HYDRANT_INDISPO_TEMPORAIRE_HYDRANT.HYDRANT);
 		public static final ForeignKey<Record, Record> HYDRANT_PENA__FKD60E141FB34721EF = createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.HYDRANT_PKEY, HydrantPena.HYDRANT_PENA, HydrantPena.HYDRANT_PENA.ID);

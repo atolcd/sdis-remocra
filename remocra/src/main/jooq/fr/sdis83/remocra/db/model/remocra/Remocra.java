@@ -80,7 +80,6 @@ import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteAnomalie;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteSuite;
 import fr.sdis83.remocra.db.model.remocra.tables.Organisme;
-import fr.sdis83.remocra.db.model.remocra.tables.PId;
 import fr.sdis83.remocra.db.model.remocra.tables.ParamConf;
 import fr.sdis83.remocra.db.model.remocra.tables.Permis;
 import fr.sdis83.remocra.db.model.remocra.tables.PermisDocument;
@@ -201,7 +200,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Remocra extends SchemaImpl {
 
-	private static final long serialVersionUID = 1082291988;
+	private static final long serialVersionUID = 1807504047;
 
 	/**
 	 * The reference instance of <code>remocra</code>
@@ -455,7 +454,6 @@ public class Remocra extends SchemaImpl {
 			OldebVisiteDocument.OLDEB_VISITE_DOCUMENT,
 			OldebVisiteSuite.OLDEB_VISITE_SUITE,
 			Organisme.ORGANISME,
-			PId.P_ID,
 			ParamConf.PARAM_CONF,
 			Permis.PERMIS,
 			PermisDocument.PERMIS_DOCUMENT,

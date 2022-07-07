@@ -22,7 +22,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantPibi implements Serializable {
 
-	private static final long serialVersionUID = 5182524;
+	private static final long serialVersionUID = 562546812;
 
 	private Integer debit;
 	private Integer debitMax;
@@ -49,6 +49,7 @@ public class HydrantPibi implements Serializable {
 	private Boolean additive;
 	private Integer debitAutre;
 	private Double  pressionDynAutre;
+	private Integer debitNominal;
 
 	public HydrantPibi() {}
 
@@ -78,6 +79,7 @@ public class HydrantPibi implements Serializable {
 		this.additive = value.additive;
 		this.debitAutre = value.debitAutre;
 		this.pressionDynAutre = value.pressionDynAutre;
+		this.debitNominal = value.debitNominal;
 	}
 
 	public HydrantPibi(
@@ -105,7 +107,8 @@ public class HydrantPibi implements Serializable {
 		Boolean surpresse,
 		Boolean additive,
 		Integer debitAutre,
-		Double  pressionDynAutre
+		Double  pressionDynAutre,
+		Integer debitNominal
 	) {
 		this.debit = debit;
 		this.debitMax = debitMax;
@@ -132,6 +135,7 @@ public class HydrantPibi implements Serializable {
 		this.additive = additive;
 		this.debitAutre = debitAutre;
 		this.pressionDynAutre = pressionDynAutre;
+		this.debitNominal = debitNominal;
 	}
 
 	public Integer getDebit() {
@@ -356,6 +360,15 @@ public class HydrantPibi implements Serializable {
 
 	public HydrantPibi setPressionDynAutre(Double pressionDynAutre) {
 		this.pressionDynAutre = pressionDynAutre;
+		return this;
+	}
+
+	public Integer getDebitNominal() {
+		return this.debitNominal;
+	}
+
+	public HydrantPibi setDebitNominal(Integer debitNominal) {
+		this.debitNominal = debitNominal;
 		return this;
 	}
 }

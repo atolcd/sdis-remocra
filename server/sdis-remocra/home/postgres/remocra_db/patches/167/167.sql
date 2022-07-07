@@ -18,8 +18,8 @@ declare
     description_patch varchar;
 begin
     -- Métadonnées du patch
-    numero_patch := 166;
-    description_patch := 'Ajout colonne observation sur la table hydrant_indispo_temporaire';
+    numero_patch := 167;
+    description_patch :='Ajout colonne debit_nominal Table hydrant PIBI';
 
     -- Vérification
     if (select numero_patch-1 != (select max(numero) from remocra.suivi_patches)) then
@@ -33,9 +33,8 @@ drop function versionnement_dffd4df4df();
 --------------------------------------------------
 -- Contenu réel du patch début
 
-ALTER TABLE remocra.hydrant_indispo_temporaire
-ADD COLUMN observation CHARACTER VARYING NULL;
-
+ALTER TABLE remocra.hydrant_pibi
+ADD COLUMN debit_nominal int;
 
 -- Contenu réel du patch fin
 --------------------------------------------------

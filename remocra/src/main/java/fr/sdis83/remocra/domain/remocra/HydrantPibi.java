@@ -19,12 +19,12 @@ public class HydrantPibi extends Hydrant {
 
     /*
      * private static String typeHydrant = "PIBI";
-     * 
+     *
      * public HydrantPibi() { this.code = typeHydrant; }
-     * 
+     *
      * @Override public String getCode() { this.code = typeHydrant; return
      * super.getCode(); }
-     * 
+     *
      * @Override public void setCode(String arg0) { super.setCode(typeHydrant);
      * }
      */
@@ -34,6 +34,9 @@ public class HydrantPibi extends Hydrant {
 
     @Column
     private Integer debit;
+
+    @Column
+    private Integer debitNominal;
 
     @Column
     private Integer debitMax;
@@ -99,6 +102,7 @@ public class HydrantPibi extends Hydrant {
         Feature feature = super.toFeature();
         feature.addProperty("debit", this.getDebit());
         feature.addProperty("debitMax", this.getDebitMax());
+        feature.addProperty("debitNominal", this.getDebitNominal());
         feature.addProperty("typeReseau", this.getTypeReseauId());
         feature.addProperty("typeReseauNom", this.getTypeReseauNom());
         feature.addProperty("diametreCanalisation", this.diametreCanalisation);
@@ -108,10 +112,10 @@ public class HydrantPibi extends Hydrant {
     }
 
     public Long getTypeReseauId() {
-         if(this.getTypeReseauAlimentation() != null) {
+        if(this.getTypeReseauAlimentation() != null) {
             return this.getTypeReseauAlimentation().getId();
-         }
-         return null;
+        }
+        return null;
     }
 
     public String getDiametreNom(){

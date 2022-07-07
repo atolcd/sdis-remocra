@@ -37,7 +37,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantIndispoTemporaire extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -1560788345;
+	private static final long serialVersionUID = -1887784587;
 
 	/**
 	 * The reference instance of <code>remocra.hydrant_indispo_temporaire</code>
@@ -113,6 +113,11 @@ public class HydrantIndispoTemporaire extends TableImpl<Record> {
 	public final TableField<Record, Boolean> MEL_AVANT_DISPO = createField("mel_avant_dispo", org.jooq.impl.SQLDataType.BOOLEAN.defaulted(true), this, "");
 
 	/**
+	 * The column <code>remocra.hydrant_indispo_temporaire.organisme_api</code>. Identifiant de l'organisme ayant créé cette indispo temporaire via l'API (s'il y a lieu)
+	 */
+	public final TableField<Record, Long> ORGANISME_API = createField("organisme_api", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant de l'organisme ayant créé cette indispo temporaire via l'API (s'il y a lieu)");
+
+	/**
 	 * The column <code>remocra.hydrant_indispo_temporaire.observation</code>.
 	 */
 	public final TableField<Record, String> OBSERVATION = createField("observation", org.jooq.impl.SQLDataType.VARCHAR, this, "");
@@ -168,7 +173,7 @@ public class HydrantIndispoTemporaire extends TableImpl<Record> {
 	 */
 	@Override
 	public List<ForeignKey<Record, ?>> getReferences() {
-		return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT_INDISPO_TEMPORAIRE__FK_HYDRANT_INDISPO_TEMPORAIRE_STATUT);
+		return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT_INDISPO_TEMPORAIRE__FK_HYDRANT_INDISPO_TEMPORAIRE_STATUT, Keys.HYDRANT_INDISPO_TEMPORAIRE__FK_ORGANISME_API);
 	}
 
 	/**

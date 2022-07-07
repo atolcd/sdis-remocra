@@ -7,6 +7,9 @@ package fr.sdis83.remocra.db.model.remocra.tables;
 import fr.sdis83.remocra.db.model.remocra.Keys;
 import fr.sdis83.remocra.db.model.remocra.Remocra;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.annotation.Generated;
 
 import org.jooq.Field;
@@ -14,6 +17,7 @@ import org.jooq.Identity;
 import org.jooq.Record;
 import org.jooq.Table;
 import org.jooq.TableField;
+import org.jooq.UniqueKey;
 import org.jooq.impl.TableImpl;
 
 
@@ -30,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TypeHydrantImportctpErreur extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 297336210;
+	private static final long serialVersionUID = -1590745002;
 
 	/**
 	 * The reference instance of <code>remocra.type_hydrant_importctp_erreur</code>
@@ -98,6 +102,14 @@ public class TypeHydrantImportctpErreur extends TableImpl<Record> {
 	@Override
 	public Identity<Record, Integer> getIdentity() {
 		return Keys.IDENTITY_TYPE_HYDRANT_IMPORTCTP_ERREUR;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<UniqueKey<Record>> getKeys() {
+		return Arrays.<UniqueKey<Record>>asList(Keys.TYPE_HYDRANT_IMPORTCTP_ERREUR_CODE_KEY);
 	}
 
 	/**

@@ -24,7 +24,7 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantIndispoTemporaire implements Serializable {
 
-	private static final long serialVersionUID = -687685948;
+	private static final long serialVersionUID = 519547896;
 
 	private Long    id;
 	private Instant dateDebut;
@@ -38,6 +38,7 @@ public class HydrantIndispoTemporaire implements Serializable {
 	private Boolean basculeAutoDispo;
 	private Boolean melAvantIndispo;
 	private Boolean melAvantDispo;
+	private Long    organismeApi;
 	private String  observation;
 
 	public HydrantIndispoTemporaire() {}
@@ -55,6 +56,7 @@ public class HydrantIndispoTemporaire implements Serializable {
 		this.basculeAutoDispo = value.basculeAutoDispo;
 		this.melAvantIndispo = value.melAvantIndispo;
 		this.melAvantDispo = value.melAvantDispo;
+		this.organismeApi = value.organismeApi;
 		this.observation = value.observation;
 	}
 
@@ -71,6 +73,7 @@ public class HydrantIndispoTemporaire implements Serializable {
 		Boolean basculeAutoDispo,
 		Boolean melAvantIndispo,
 		Boolean melAvantDispo,
+		Long    organismeApi,
 		String  observation
 	) {
 		this.id = id;
@@ -85,6 +88,7 @@ public class HydrantIndispoTemporaire implements Serializable {
 		this.basculeAutoDispo = basculeAutoDispo;
 		this.melAvantIndispo = melAvantIndispo;
 		this.melAvantDispo = melAvantDispo;
+		this.organismeApi = organismeApi;
 		this.observation = observation;
 	}
 
@@ -193,6 +197,15 @@ public class HydrantIndispoTemporaire implements Serializable {
 
 	public HydrantIndispoTemporaire setMelAvantDispo(Boolean melAvantDispo) {
 		this.melAvantDispo = melAvantDispo;
+		return this;
+	}
+
+	public Long getOrganismeApi() {
+		return this.organismeApi;
+	}
+
+	public HydrantIndispoTemporaire setOrganismeApi(Long organismeApi) {
+		this.organismeApi = organismeApi;
 		return this;
 	}
 

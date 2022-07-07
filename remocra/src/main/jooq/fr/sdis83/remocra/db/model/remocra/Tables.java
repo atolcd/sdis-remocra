@@ -79,7 +79,6 @@ import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteAnomalie;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteSuite;
 import fr.sdis83.remocra.db.model.remocra.tables.Organisme;
-import fr.sdis83.remocra.db.model.remocra.tables.PId;
 import fr.sdis83.remocra.db.model.remocra.tables.ParamConf;
 import fr.sdis83.remocra.db.model.remocra.tables.Permis;
 import fr.sdis83.remocra.db.model.remocra.tables.PermisDocument;
@@ -566,11 +565,6 @@ public class Tables {
 	 * The table remocra.organisme
 	 */
 	public static final Organisme ORGANISME = fr.sdis83.remocra.db.model.remocra.tables.Organisme.ORGANISME;
-
-	/**
-	 * The table remocra.p_id
-	 */
-	public static final PId P_ID = fr.sdis83.remocra.db.model.remocra.tables.PId.P_ID;
 
 	/**
 	 * The table remocra.param_conf

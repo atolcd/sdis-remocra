@@ -187,5 +187,11 @@ privileged aspect HydrantPibi_Roo_JavaBean {
         this.additive = additive;
     }
 
-    
+        public Integer HydrantPibi.getDebitNominal() {
+            return this.debitNominal;
+        }
+        public void HydrantPibi.setDebitNominal(Integer debitNominal) {
+            this.debitNominal = debitNominal;
+        }
+
 }

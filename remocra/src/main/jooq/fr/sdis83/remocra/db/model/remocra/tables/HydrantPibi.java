@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantPibi extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 1908121608;
+	private static final long serialVersionUID = -1609269621;
 
 	/**
 	 * The reference instance of <code>remocra.hydrant_pibi</code>
@@ -165,14 +165,19 @@ public class HydrantPibi extends TableImpl<Record> {
 	public final TableField<Record, Boolean> ADDITIVE = createField("additive", org.jooq.impl.SQLDataType.BOOLEAN, this, "Indique si le réseau est additivé");
 
 	/**
-	 * The column <code>remocra.hydrant_pibi.debit_autre</code>.
+	 * The column <code>remocra.hydrant_pibi.debit_autre</code>. Débit à une autre pression dynamique (m3/h)
 	 */
-	public final TableField<Record, Integer> DEBIT_AUTRE = createField("debit_autre", org.jooq.impl.SQLDataType.INTEGER, this, "");
+	public final TableField<Record, Integer> DEBIT_AUTRE = createField("debit_autre", org.jooq.impl.SQLDataType.INTEGER, this, "Débit à une autre pression dynamique (m3/h)");
 
 	/**
-	 * The column <code>remocra.hydrant_pibi.pression_dyn_autre</code>.
+	 * The column <code>remocra.hydrant_pibi.pression_dyn_autre</code>. Pression dynamique (bar)
 	 */
-	public final TableField<Record, Double> PRESSION_DYN_AUTRE = createField("pression_dyn_autre", org.jooq.impl.SQLDataType.DOUBLE, this, "");
+	public final TableField<Record, Double> PRESSION_DYN_AUTRE = createField("pression_dyn_autre", org.jooq.impl.SQLDataType.DOUBLE, this, "Pression dynamique (bar)");
+
+	/**
+	 * The column <code>remocra.hydrant_pibi.debit_nominal</code>.
+	 */
+	public final TableField<Record, Integer> DEBIT_NOMINAL = createField("debit_nominal", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
 	 * Create a <code>remocra.hydrant_pibi</code> table reference
