@@ -283,7 +283,7 @@ export default {
 
   mounted: function() {
     this.dataTournee = JSON.parse(this.tournee);
-    this.modalTitle = this.dataTournee.nom+" ("+this.dataTournee.hydrantCount+")";
+    this.modalTitle = _.unescape(this.dataTournee.nom)+" ("+this.dataTournee.hydrantCount+")";
     this.anomaliesCriteres = [];
     this.anomalies = [];
     this.showErreurs = false;

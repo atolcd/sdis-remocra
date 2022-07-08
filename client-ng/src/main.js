@@ -220,7 +220,7 @@ const modalSaisieVisite = function(id, data){
     components: {
         ModalSaisieVisite
     },
-    template: "<ModalSaisieVisite tournee='"+JSON.stringify(data.tournee)+"' />"
+    template: "<ModalSaisieVisite tournee='"+_.escape(JSON.stringify(data.tournee))+"' />"
   })
   return v
 }
