@@ -14,7 +14,12 @@ link:../index{outfilesuffix}[Retour à l'accueil]
 '''
 == Livraison ==
 
-On part d'un serveur Debian/Utbuntu vierge:
+On part d'un serveur Debian/Ubuntu vierge. Les fichiers à récupérer le sont depuis ce repo github.
+Ce fichier décrit pas à pas une installation remocra où tous les composants sont situés sur un même
+serveur
+
+Sur une machine Debian 11, la version de PostGIS utilisée (2.5) n'est plus disponible.
+Il est nécessaire dans ce cas d'installer la version 3.3
 
 * Créer le répertoire d'accueil des éléments d'installation :
 [source,sh]
@@ -34,7 +39,19 @@ mkdir /etc/docker_remocra
 
 ** _vagrantV2/docker_ =>  _/etc/docker_remocra_
 ** _vagrantV2/livraison_ => _/livraison_
-** _var/remocra_ => _/var/remocra
+** _server/sdis_remocra/var/remocra_ => _/var/remocra_ (depuis le repos interne ou un serveur existant)
+
+* Récupérer les dossiers nécessaires à la base de donnée dans le dossier _livraison_ :
+** /server/sdis-remocra/home/postgres/remocra_db
+** /server/sdis-remocra/home/postgres/pdi_db
+
+* Créer l'utilisateur applicatif remocra. Cet utilisateur doit impérativement avoir son UID et GID à 2000 (valeurs avec
+lesquelles l'image docker a été générée par AtolCD)
+[source,sh]
+----
+groupadd -g 2000 remocra
+useradd -u 2000 -g remocra remocra
+----
 
 * Affecter les droits à l'utilisateur remocra:
 [source,sh]
@@ -48,11 +65,10 @@ chown -R remocra:remocra /var/remocra
 [source,sh]
 ----
 chmod u+x /livraison/*.sh
-chmod u+x /etc/docker_remocra/*.sh
 ----
 
 == Lancement de l'installation ==
-* Adapter le script /livraison/launcher.sh
+* Adapter le script /livraison/launcher.sh afin d'indiquer des mots de passe pour les users *postgres* et *remocra* de la base de données
 [source,sh]
 ----
 export POSTGRES_DB_PASSWORD=${POSTGRES_DB_PASSWORD:-xxxxxxx}
@@ -61,11 +77,13 @@ export REMOCRA_DB_PASSWORD=${REMOCRA_DB_PASSWORD:-xxxxxx}
 * Lancer l'installation :
 [source,sh]
 ----
-/livraison/launcher.sh 2>&1 | tee /livraison/launcher.log
+/livraison/launcher[ForDebian/ForUbuntu].sh 2>&1 | tee /livraison/launcher[ForDebian/ForUbuntu].log
 ----
+*Attention : dans le cas d'un Debian 11, adapter le script _install_base_debian.sh_ afin d'installer
+la version 3.3 de PostGIS*
 
 == Restauration des bases de données ==
-* Créer l'utilisateur remocra
+* Créer l'utilisateur remocra ainsi que les rôles template (adapter la première ligne comme à l'étape ci-dessus)
 [source,sh]
 ----
 su postgres
@@ -74,50 +92,29 @@ psql -c "CREATE ROLE user_template NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT
 psql -c "CREATE ROLE sgo_template NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOLOGIN";
 ----
 
-* Créer la base remocra
+* Créer la base remocra et initialiser les données (l'utilisation d'un dump est également possible)
 [source,sh]
 ----
 createdb remocra -E UTF8 remocra
+cd /livraison/remocra_db
+psql -h localhost -U remocra -d remocra -f '000_remocra_all.sql'
 ----
-* Dans le cas d'upgrade : Restaurer le backup2.5 préalablement préparé
 
+* Vérifier que la base est bien à jour
 [source,sh]
 ----
-su postgres
-pg_restore -d remocra -U remocra '/livraison/db/remocra-2.5.backup'
+psql -h localhost -U remocra -d remocra -c "SELECT max(numero) FROM remocra.suivi_patches";
 ----
+
+Si le numéro qui s'affiche n'est pas le numéro du patch le plus récent disponible, passer les patches
+manquants *dans l'ordre* situés dans `/livraison/remocra_db/patches`
+
 * Restaurer remocra_ref_pdi (à récupérer dans le depot github)
 [source,sh]
 ----
 createdb remocra_ref_pdi -E UTF8 remocra
-psql -d remocra_ref_pdi -U remocra -f '/livraison/db/000_remocra_pdi_all.sql'
+psql -d remocra_ref_pdi -U remocra -f '/livraison/remocra_pdi/000_remocra_pdi_all.sql'
 ----
-
-* Récupérer les patches du /home/postgres/remocra_db et jouer les patches manquants 
-
- Ex: `PVERSION=103 && psql -h localhost -d remocra -f "/home/postgres/remocra_db/patches/$PVERSION/$PVERSION.sql"`
-
-== En cas de migration v1 -> v2 ==
-* Jouer le script de montée de données (dans le cas de migration) 
-
-[source,sh]
-----
-psql -d remocra -f '/livraison/montee_donnees.sql'
-psql remocra -c "update remocra.param_conf set valeur='/home/pdi/remocra.properties' where cle='PDI_FICHIER_PARAMETRAGE'"
-psql remocra -c "update remocra.param_conf set valeur='http://localhost:8090/geoserver' where cle='WMS_BASE_URL'"
-----
-
-* Récupérer le contenu de /var/remocra de l'ancien serveur 
-
-* Récupérer les fichiers suivants du depot github 
-
-   `/var/remocra/modeles/processus_etl` 
-   `/var/remocra/modeles/xsd`
-
-* récupérer les fichiers suivants  :
-** kettle.properties  de `/home/postgres/.kettle/kettle.properties`
-** repositories.xml  de `/home/postgres/pdi/repositories.xml`
-** remocra.properties  de `/home/postgres/remocra_pdi/remocra.properties`
 
 == Images docker ==
 
@@ -125,14 +122,30 @@ psql remocra -c "update remocra.param_conf set valeur='http://localhost:8090/geo
 
 * Se connecter au docker registry afin de récupérer les images docker (Le login/mot de passe sont fournis par atol)
  
- `docker login client-docker-registry.atolcd.com`
+[source,sh]
+----
+ docker login client-docker-registry.atolcd.com
+----
 
 * Vérifier les variables d'environnement dans  :
 ** remocra.properties
 ** repositories.xml
 ** kettle.properties
-** remocra.env
+** .env
+
+* Vérifier les paramètres renseignés dans la table remocra.param_conf. Une partie de ces paramètres écraseront les valeurs présentes dans le fichier remocra.properties lors du lancement des containers des jobs PDI afin que la configuration depuis l'interface remocra impacte les autres containers
  
-* Lancer le script /etc/docker-remocra/build_containers.sh
+* Démarrer les containers docker
+[source,sh]
+----
+cd /etc/docker_remocra
+docker-compose up -d
+----
 
 * Lancer le script /livraison/planification_traitements.sh (à adapter par SDIS)
+
+== Pour aller plus loin ==
+
+* Vérifier le bon fonctionnement de GeoServer: base à interroger, protocoles à utiliser (WMS, WFS, etc)
+
+* Mettre en place la link:../administration/Page%20d%20accueil%20privee{outfilesuffix}[page d'accueil privée]

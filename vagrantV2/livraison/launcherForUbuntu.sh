@@ -30,5 +30,4 @@ export REMOCRA_DB_PASSWORD=${REMOCRA_DB_PASSWORD:-xxxxxx}
 find /livraison/ -type f -name '*.sh' -exec chmod u+x '{}' \+
 # Base + remocra
 /livraison/install_base_ubuntu.sh
-/livraison/upgrade_db.sh
 

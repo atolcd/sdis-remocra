@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="60" shutdownHook="disable">
+  <Appenders>
+    <Async name="AsyncLogFile">
+      <AppenderRef ref="LogFile" />
+    </Async>
+    <RollingFile name="LogFile"
+      fileName="${env:LOG_DIR}/api-remocra.log"
+      filePattern="${env:LOG_DIR}/api-remocra-%d{yyyy-MM-dd}-%i.log.gz">
+      <PatternLayout>
+        <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+      </PatternLayout>
+      <Policies>
+        <TimeBasedTriggeringPolicy />
+        <SizeBasedTriggeringPolicy size="5 GB" />
+      </Policies>
+      <DefaultRolloverStrategy>
+        <Delete basePath="${env:LOG_DIR}" maxDepth="1">
+          <IfFileName glob="*.log.gz" />
+          <IfLastModified age="6d" />
+        </Delete>
+      </DefaultRolloverStrategy>
+    </RollingFile>
+
+    <Async name="AsyncSTDOUT">
+      <AppenderRef ref="STDOUT" />
+    </Async>
+    <Console name="STDOUT" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d %p %c{1.} [%t] %m%n"/>
+    </Console>
+  </Appenders>
+
+  <Loggers>
+    <Root level="info">
+      <AppenderRef ref="AsyncLogFile" />
+      <AppenderRef ref="AsyncSTDOUT" />
+    </Root>
+  </Loggers>
+</Configuration>

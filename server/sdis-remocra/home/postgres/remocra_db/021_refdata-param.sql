@@ -82,7 +82,7 @@ INSERT INTO param_conf (cle, description, valeur, version) VALUES ('PDI_CHEMIN_L
 INSERT INTO param_conf (cle, description, valeur, version) VALUES ('PDI_CHEMIN_MODELES', 'Dossier de stockage des modèles de documents utilisés par l''ETL Pentaho Data Integration', '/var/remocra/modeles', 1);
 INSERT INTO param_conf (cle, description, valeur, version) VALUES ('PDI_CHEMIN_TMP', 'Dossier de travail temporaire de l''ETL Pentaho Data Integration', '/var/remocra/pdi/tmp', 1);
 INSERT INTO param_conf (cle, description, valeur, version) VALUES ('PDI_CHEMIN_TRAITEMENT', 'Dossier de stockage des documents produits par l''ETL Pentaho Data Integration à proposer en téléchargement', '/var/remocra/pdi/export', 1);
-INSERT INTO param_conf (cle, description, valeur, version) VALUES ('PDI_FICHIER_PARAMETRAGE', 'Chemin et nom complet du fichier de configuration de l''ETL Pentaho Data Integration', '/home/postgres/remocra_pdi/remocra.properties', 1);
+INSERT INTO param_conf (cle, description, valeur, version) VALUES ('PDI_FICHIER_PARAMETRAGE', 'Chemin et nom complet du fichier de configuration de l''ETL Pentaho Data Integration', '/home/pdi/remocra.properties', 1);
 INSERT INTO param_conf (cle, description, valeur, version) VALUES ('PDI_METADATA_FILTRE_CQL', 'Filtre à utiliser pour la récupération des métadonnées', 'OrganisationName like ''%''', 1);
 INSERT INTO param_conf (cle, description, valeur, version) VALUES ('PDI_METADATA_FILTRE_MAX', 'Nombre d''enregistrements maximum à retourner', '20', 1);
 INSERT INTO param_conf (cle, description, valeur, version) VALUES ('PDI_METADATA_URL_FICHE_COMPLETE', 'URL d''accès aux fiches de métadonnées HTML du CRIGE PACA', '', 1);

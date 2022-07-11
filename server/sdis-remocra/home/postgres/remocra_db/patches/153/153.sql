@@ -33,8 +33,6 @@ drop function versionnement_dffd4df4df();
 --------------------------------------------------
 -- Contenu réel du patch début
 
-
-CREATE ROLE user_template NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOLOGIN;
 GRANT CONNECT ON DATABASE remocra TO user_template;
 GRANT USAGE ON SCHEMA remocra TO user_template;
 GRANT USAGE ON SCHEMA remocra_referentiel TO user_template;

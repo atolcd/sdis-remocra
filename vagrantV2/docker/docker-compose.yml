@@ -6,13 +6,12 @@ services:
 
   geoserver:
     container_name: remocra-geoserver
-    build: ./geoserver
-    image: remocra-geoserver
-    user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
+    image: client-docker-registry.atolcd.com/atolcd/remocra-geoserver:${REMOCRA_VERSION}
+    user: "${REMOCRA_UID:-2000}:${REMOCRA_GID:-2000}"
     ports:
       - "8090:8090"
     volumes:
-      - .docker/var_remocra/geoserver_data:/var/remocra/geoserver_data
+      - /var/remocra/geoserver_data:/var/remocra/geoserver_data
     environment:
       GEOSERVER_PORT: ${GEOSERVER_PORT}
       GEOSERVER_DATA_DIR: ${GEOSERVER_DATA_DIR}
@@ -33,26 +32,23 @@ services:
       interval: 1m30s
       timeout: 10s
       retries: 3
-    networks:
-      remocra:
-        aliases:
-          - geoserver.sdisxx.fr
+    network_mode: host
 
   remocra:
     container_name: remocra
-    build: ./remocra
-    image: remocra
-    user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
+    image: client-docker-registry.atolcd.com/atolcd/remocra:${REMOCRA_VERSION}
+    user: "${REMOCRA_UID:-2000}:${REMOCRA_GID:-2000}"
     ports:
       - "8080:8080"
     volumes:
-      - .docker/var_remocra:/var/remocra
+      - /var/remocra:/var/remocra
     environment:
       LANG: "fr_FR.UTF-8"
       REMOCRA_PORT: ${REMOCRA_PORT}
       REMOCRA_INITIAL_MEMORY: ${REMOCRA_INITIAL_MEMORY}
       REMOCRA_MAXIMUM_MEMORY: ${REMOCRA_MAXIMUM_MEMORY}
       REMOCRA_LOGFILE: ${REMOCRA_LOGFILE}
+      REMOCRA_SESSION_MIN: ${REMOCRA_SESSION_MIN}
       # Accès à la base de données remocra
       POSTGRES_DB_HOSTNAME: ${POSTGRES_DB_HOSTNAME}
       POSTGRES_DB_USERNAME: ${POSTGRES_DB_USERNAME}
@@ -64,15 +60,12 @@ services:
       interval: 1m30s
       timeout: 10s
       retries: 3
-    networks:
-      remocra:
-        aliases:
-          - remocra.sdisxx.fr
-
+    network_mode: host
+    
   api:
     container_name: remocra-api
     image: remocra-api
-    user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
+    user: "${REMOCRA_UID:-2000}:${REMOCRA_GID:-2000}"
     build:
       context: ../api-remocra/
       dockerfile: ./dist/Dockerfile-image
@@ -93,23 +86,19 @@ services:
       interval: 1m30s
       timeout: 10s
       retries: 3
-    networks:
-      remocra:
-        aliases:
-          - api.sdisxx.fr
+    network_mode: host
 
   jobs-4.4:
     container_name: remocra-pdi-4.4-dkron
-    build: ./pdi-4.4-dkron
-    image: remocra-pdi-4.4-dkron
-    user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
+    image: client-docker-registry.atolcd.com/atolcd/remocra-pdi-4.4-dkron:${REMOCRA_VERSION}
+    user: "${REMOCRA_UID:-2000}:${REMOCRA_GID:-2000}"
     ports:
       - "8060:8060"
     volumes:
-      - .docker/var_remocra:/var/remocra
-      - .docker/jobs-common/kettle.properties:/home/pdi/.kettle/kettle.properties
-      - .docker/jobs-common/remocra.properties:/home/pdi/remocra.properties
-      - .docker/jobs-4.4/.kettle/repositories.xml:/home/pdi/.kettle/repositories.xml
+      - /var/remocra:/var/remocra
+      - /etc/docker_remocra/kettle.properties:/home/pdi/.kettle/kettle.properties
+      - /etc/docker_remocra/remocra.properties:/home/pdi/remocra.properties
+      - /etc/docker_remocra/repositories.xml:/home/pdi/.kettle/repositories.xml
       - .docker/jobs-4.4/dkron_data:/dkron/dkron.data
     environment:
       # Accès à la base de données remocra
@@ -134,22 +123,18 @@ services:
       interval: 1m30s
       timeout: 10s
       retries: 3
-    networks:
-      remocra:
-        aliases:
-          - jobs-44.sdisxx.fr
+    network_mode: host
 
   jobs:
     container_name: remocra-pdi-dkron
-    build: ./pdi-dkron
-    image: remocra-pdi-dkron
-    user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
+    image: client-docker-registry.atolcd.com/atolcd/remocra-pdi-dkron:${REMOCRA_VERSION}
+    user: "${REMOCRA_UID:-2000}:${REMOCRA_GID:-2000}"
     ports:
       - "8070:8070"
     volumes:
-      - .docker/var_remocra:/var/remocra
-      - .docker/jobs-common/kettle.properties:/home/pdi/.kettle/kettle.properties
-      - .docker/jobs-common/remocra.properties:/home/pdi/remocra.properties
+      - /var/remocra:/var/remocra
+      - /etc/docker_remocra/kettle.properties:/home/pdi/.kettle/kettle.properties
+      - /etc/docker_remocra/remocra.properties:/home/pdi/remocra.properties
       - .docker/jobs/dkron_data:/dkron/dkron.data
     environment:
       # Accès à la base de données remocra
@@ -176,10 +161,28 @@ services:
       interval: 1m30s
       timeout: 10s
       retries: 3
-    networks:
-      remocra:
-        aliases:
-          - jobs.sdisxx.fr
+    network_mode: host
 
-networks:
-  remocra:
+  api:
+    container_name: remocra-api
+    image: client-docker-registry.atolcd.com/atolcd/remocra-api-remocra:${REMOCRA_VERSION}
+    user: "${REMOCRA_UID:-2000}:${REMOCRA_GID:-2000}"
+    volumes:
+      - ./api/log:/app/log
+      - ./api/config:/app/config
+    environment:
+      POSTGRES_DB_SERVERNAME: ${POSTGRES_DB_SERVERNAME:-localhost}
+      POSTGRES_DB_USERNAME: ${POSTGRES_DB_USERNAME}
+      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
+      POSTGRES_DB_PORT: ${POSTGRES_DB_PORT}
+      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
+      API_REMOCRA_HTTP_PORT: ${API_REMOCRA_HTTP_PORT}
+    ports:
+      - "8881:8881"
+    healthcheck:
+      test: curl --fail -s http://localhost:8881/openapi/ || exit 1
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    restart: always
+    network_mode: host
