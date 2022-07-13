@@ -100,7 +100,7 @@ public class HydrantController {
                           "data.codeNatureDeci", "data.adresse", "data.numeroInterne", "data.gestionnaireNom", "data.nature.id", "data.dateChangementDispoTerrestre",
                                 "data.visites.agent1", "data.visites.agent2", "data.visites.anomalies", "data.visites.auteurModificationFlag", "data.visites.ctrl_debit_pression",
                         "data.visites.date", "data.visites.debit", "data.visites.debitMax", "data.visites.id", "data.visites.observations", "data.visites.pression", "data.visites.pressionDyn",
-                        "data.visites.pressionDynDeb", "data.visites.type.*").exclude( "data.*", "*.class", "data.visites.organisme.*", "data.visites.utilisateurModification.*")
+                        "data.visites.pressionDynDeb", "data.visites.type.*", "data.dateChangementDispoTerrestre", "data.commune.insee").exclude( "data.*", "*.class", "data.visites.organisme.*", "data.visites.utilisateurModification.*")
                         .transform(new GeometryTransformer(), Geometry.class);
             }
 

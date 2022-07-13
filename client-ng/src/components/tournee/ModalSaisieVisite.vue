@@ -229,7 +229,12 @@ export default {
 
   computed: {
     sortedHydrants: function() {
-      return _.sortBy(this.hydrants, ['numero'])
+
+      return _.sortBy(this.hydrants,[function(o) {
+
+        return o.commune.insee, o.numeroInterne;
+
+        }])
     },
 
     ctrlDebitPressionDisabled: function() {
