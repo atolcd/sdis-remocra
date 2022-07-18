@@ -1186,8 +1186,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         // définir le mode paysage/portrait
         var mode = Xmax - Xmin > Ymax - Ymin  ? "paysage" : "portrait";
         // calcul des centroids
-        var X = (Xmin-Xmax);
-        var Y = (Ymin-Ymax);
+        var X = (Xmax-Xmin);
+        var Y = (Ymax-Ymin);
         var Xcentroid = (Xmin+Xmax) /2;
         var Ycentroid = (Ymin+Ymax) /2;
         // recalcul des XY
@@ -1255,8 +1255,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
            SRS : 'EPSG:2154',
            BBOX : bounds.toBBOX(),
            VIEWPARAMS : "tourne_id:" + tournee.getId(),
-           WIDTH: mode == "paysage" ?  1170 : 827,
-           HEIGHT: mode == "paysage" ?  827 : 1170
+           WIDTH: mode == "paysage" ?  1150 : 827,
+           HEIGHT: mode == "paysage" ?  805 : 1170
         };
        var url =  Sdis.Remocra.util.Util.withBaseUrl('../geoserver/remocra/wms');
        url += "?"+Ext.Object.toQueryString(params);
