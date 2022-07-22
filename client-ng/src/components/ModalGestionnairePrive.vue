@@ -108,7 +108,7 @@
         </div>
         <div class="col-md-6">
           <b-form-group label="Email" label-for="mail" invalid-feedback="L'adresse mail est absente ou invalide" label-cols-md="2">
-            <b-form-input id="mail" v-model="email" size="sm" type="email" pattern="^\w+([.-.+]*\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$" required></b-form-input>
+            <b-form-input id="mail" v-model="email" size="sm" type="email" pattern="^\w+([.-.+\-]*\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$" required></b-form-input>
           </b-form-group>
         </div>
       </div>
