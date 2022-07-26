@@ -23,7 +23,7 @@
   <div class="title">Adresse</div>
   <div class="row">
     <div class="col-md-6">
-      <b-form-group label="Commune" label-for="commune" invalid-feedback="La commune doit être renseignée" :state="etats.commune" label-cols-md="3">
+      <b-form-group label="Commune" label-for="commune" invalid-feedback="La commune doit être renseignée" :state="etats.commune" label-cols-md="3" class="requiredInput">
         <b-form-select id="commune" v-model="hydrant.commune" class="parametre" :options="comboCommune" size="sm" :state="etats.commune" required :disabled="modificationAdresseDisabled"></b-form-select>
       </b-form-group>
     </div>
