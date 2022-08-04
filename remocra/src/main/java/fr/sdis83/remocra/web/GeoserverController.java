@@ -347,15 +347,18 @@ public class GeoserverController {
                     byte[] buffer = new byte[1024];
                     int bytesRead;
                     while ((bytesRead = is.read(buffer)) != -1) {
-                        os.write(buffer, 0, bytesRead);
+                        try{
+                            os.write(buffer, 0, bytesRead);
+                        } catch(IOException e) { }
+
                     }
                 }
             } catch (TransformerException e) {
-                log.error("Proxy WMS : erreur de transformation", e);
+                log.error("Proxy WMS : erreur de transformation ", e);
             } catch (IOException e) {
-                log.error("Proxy WMS : erreur d'entrée / sortie", e);
+                log.error("Proxy WMS : erreur d'entrée / sortie ", e);
             } catch (Exception e) {
-                log.error("Proxy WMS : autre erreur", e);
+                log.error("Proxy WMS : autre erreur ", e);
             } finally {
                 os.flush();
                 os.close();
