@@ -71,7 +71,11 @@ export default {
         var file = window.URL.createObjectURL(new Blob([response.data]), {type: 'application/pdf'});
         this.pdfData = file;
         // Ajout front-end de l'accusé
-        this.listeCourriers.filter(item => item.code === code)[0].accuse = moment().format("YYYY-MM-DD HH:mm:ss");
+        var courrier = this.listeCourriers.filter(item => item.code === code)[0];
+        if (courrier.utilisateurDestinataire){
+
+          courrier.accuse = moment().format("YYYY-MM-DD HH:mm:ss");
+        }
       }).catch(() => {
         this.errorLoadPdf = true;
       })

@@ -34,6 +34,8 @@ public class CourrierDocumentModel {
 
     private String objet;
 
+    private Boolean isUtilisateurDestinataire;
+
     public Long getId() {
         return id;
     }
@@ -144,5 +146,13 @@ public class CourrierDocumentModel {
 
     public void setObjet(String objet) {
         this.objet = objet;
+    }
+
+    public Boolean getUtilisateurDestinataire() {
+        return isUtilisateurDestinataire;
+    }
+
+    public void setUtilisateurDestinataire(Boolean utilisateurDestinataire) {
+        isUtilisateurDestinataire = utilisateurDestinataire;
     }
 }

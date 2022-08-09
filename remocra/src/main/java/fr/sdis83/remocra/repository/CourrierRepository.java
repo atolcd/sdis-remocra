@@ -152,7 +152,23 @@ public class CourrierRepository {
     modelMapper.getConfiguration().setSourceNameTokenizer(NameTokenizers.CAMEL_CASE);
 
     for(Record r : records) {
-        listeCourriers.add(modelMapper.map(r, CourrierDocumentModel.class));
+      CourrierDocumentModel cd = modelMapper.map(r, CourrierDocumentModel.class);
+
+      Utilisateur u = utilisateurService.getCurrentUtilisateur();
+      Long idUtilisateur = u.getId();
+      Long idOrganisme = u.getOrganisme().getId();
+      Long idDestinataire = cd.getIdDestinataire();
+      String typeDestinataire = cd.getTypeDestinataire();
+      if(
+        (idUtilisateur == idDestinataire && "UTILISATEUR".equalsIgnoreCase(typeDestinataire)) ||
+          (idOrganisme == idDestinataire && "ORGANISME".equalsIgnoreCase(typeDestinataire))
+      ) {
+        cd.setUtilisateurDestinataire(true);
+      }else{
+        cd.setUtilisateurDestinataire(false);
+
+      }
+      listeCourriers.add(cd);
     }
 
     return listeCourriers;
