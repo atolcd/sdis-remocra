@@ -93,11 +93,14 @@ Ext.define('Sdis.Remocra.model.HydrantIndispoTemporaire', {
                                 // Rien
                                 return null;
                             }
+    },{
+        name : 'hydrantsTooltip',
+        type : 'string'
     }
    ],
     associations : [ {
         type : 'hasMany',
-        model : 'Sdis.Remocra.model.Hydrant',
+        model : 'Sdis.Remocra.model.HydrantRecord',
         associationKey : 'hydrants',
         name : 'hydrants',
         persist : true
@@ -113,7 +116,7 @@ Ext.define('Sdis.Remocra.model.HydrantIndispoTemporaire', {
 
     proxy : {
         type : 'remocra.rest',
-        url : Sdis.Remocra.util.Util.withBaseUrl('../indisponibilites')
+        url : Sdis.Remocra.util.Util.withBaseUrl('../indisponibilites/records')
     }
 
 });

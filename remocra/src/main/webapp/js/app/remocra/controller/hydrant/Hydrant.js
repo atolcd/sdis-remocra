@@ -103,7 +103,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         this.tplHydrant = new Ext.Template("hydrants/hydrants/num/{numero}");
         this.tplBounds = new Ext.Template("hydrants/localisation/bounds/{bounds}");
         this.tplBoundsTournee = new Ext.Template("hydrants/localisation/bounds/{bounds}/t/{idTournee}");
-        this.tplBoundsIndispo = new Ext.Template("hydrants/localisation/bounds/{bounds}/i/{idIndispo}");
+        this.tplBoundsIndispo = new Ext.Template("hydrants/localisation/bounds/{bounds}/i/{idIndispo}/h/{hydrants}");
 
         this.lastTournee = null;
 
@@ -2234,9 +2234,11 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
               });
           } else {
               var bounds = Sdis.Remocra.util.Util.getBounds(indispo.get('geometrie'));
+              console.log(indispo.get('hydrantsTooltip').replace(/<\/?[^>]+(>|$)/g, ";"));
               Sdis.Remocra.util.Util.changeHash(this.tplBoundsIndispo.apply({
                   bounds: bounds.toBBOX(),
-                  idIndispo: indispo.internalId
+                  idIndispo: indispo.internalId,
+                  hydrants: indispo.get('hydrantsTooltip').replace(/<\/?[^>]+(>|$)/g, ";").replaceAll(";;", ";")
               }));
           }
     },

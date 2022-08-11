@@ -14,10 +14,12 @@ import fr.sdis83.remocra.domain.remocra.TypeHydrantIndispoStatut;
 import fr.sdis83.remocra.domain.remocra.ZoneCompetence;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.exception.BusinessException;
+import fr.sdis83.remocra.repository.HydrantIndispoTemporaireRepository;
 import fr.sdis83.remocra.service.IndisponibiliteTemporaireService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
+import fr.sdis83.remocra.web.model.HydrantIndispoTemporaireRecord;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
@@ -43,6 +45,9 @@ public class IndisponibiliteTemporaireController  {
 
     @Autowired
     private UtilisateurService utilisateurService;
+
+    @Autowired
+    private HydrantIndispoTemporaireRepository hydrantIndispoTemporaireRepository;
 
     protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
         serializer
@@ -92,6 +97,40 @@ public class IndisponibiliteTemporaireController  {
                 return indisponibiliteTemporaireService.getIndisponibilitesCount(itemFilterList);
             }
 
+        }.serialize();
+    }
+
+    @RequestMapping(value = "/records", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('INDISPOS_R')")
+    public ResponseEntity<String> listRecords(final @RequestParam(value = "page", required = false) Integer page,
+                                           final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
+                                           final @RequestParam(value = "sort", required = false) String sorts, final @RequestParam(value = "filter", required = false) String filters,
+                                           final @RequestParam(value = "query", required = false) String query) {
+
+        final List<ItemSorting> sortList = ItemSorting.decodeJson(sorts);
+        final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
+
+        if (query != null && !query.isEmpty()) {
+            itemFilterList.add(new ItemFilter("query", query));
+        }
+        if (sortList.isEmpty()) {
+            sortList.add(new ItemSorting("dateDebut", "ASC"));
+        }
+
+        return new AbstractExtListSerializer<HydrantIndispoTemporaireRecord>("fr.sdis83.remocra.domain.remocra.HydrantIndispoTemporaire retrieved.") {
+            @Override
+            protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+                serializer
+                  .include("data.hydrants.id").include("data.hydrants.numero").include("data.geometrie").include("data.statut.*")
+                  .include("data.hydrants.jsonGeometrie").include("data.hydrants.natureDeci").include("data.hydrants.commune.id");
+                return serializer.include("total").include("message").exclude("data.hydrants.*");
+            }
+
+            @Override
+            protected List<HydrantIndispoTemporaireRecord> getRecords() {
+                List<HydrantIndispoTemporaireRecord> l = hydrantIndispoTemporaireRepository.getAll(itemFilterList, limit, start, sortList);
+                return l;
+            }
         }.serialize();
     }
 
@@ -188,22 +227,6 @@ public class IndisponibiliteTemporaireController  {
         try {
             indisponibiliteTemporaireService.delete(id);
             return new SuccessErrorExtSerializer(true, "Indisponibilité temporaire supprimée").serialize();
-        } catch (Exception e) {
-            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
-        }
-    }
-
-    @RequestMapping(value = "/getHydrantsIndispo/{id}", headers = "Accept=application/json")
-    @PreAuthorize("hasRight('INDISPOS_R') and hasRight('HYDRANTS_R')")
-    public ResponseEntity<java.lang.String> getHydrantsIndispo(@PathVariable("id") Long id) {
-        try {
-            StringBuffer sb = new StringBuffer("<ul>");
-            HydrantIndispoTemporaire selected = HydrantIndispoTemporaire.findHydrantIndispoTemporaire(id);
-            for(Hydrant h : selected.getHydrants()) {
-                sb.append("<li>").append(h.getNumero()).append("</li>");
-            }
-            sb.append("</ul>");
-            return new SuccessErrorExtSerializer(true, sb.toString()).serialize();
         } catch (Exception e) {
             return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
         }

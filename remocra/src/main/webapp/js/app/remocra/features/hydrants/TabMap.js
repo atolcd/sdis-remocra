@@ -865,22 +865,13 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
         this.highlightLayer.removeAllFeatures();
         if(extraParams.i){
             // PEIs d'une indisponibilité temporaire
-            Ext.Ajax.request({
-                url: Sdis.Remocra.util.Util.withBaseUrl('../indisponibilites/getHydrantsIndispo/'+extraParams.i),
-                method: 'GET',
-                scope: this,
-                async: false,
-                callback: function(param, success, response) {
-                    var res = Ext.decode(response.responseText).message;
-                    var peiIndispo = res.replace(/<\/?[^>]+(>|$)/g, ";").split(';'); //On récupère la liste des PEI sans le formatage HTML
-                    this.hydrantLayer.features.forEach(function(item){
-                        if(peiIndispo.indexOf(item.attributes.numero) != -1){
-                            self.highlightLayer.addFeatures(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(item.geometry.x, item.geometry.y)));
-                        }
-                    });
-                    self.clearHighlightLayerDelayed();
+            var peiIndispo = extraParams.h.split(';'); //On récupère la liste des PEI
+            this.hydrantLayer.features.forEach(function(item){
+                if(peiIndispo.indexOf(item.attributes.numero) != -1){
+                    self.highlightLayer.addFeatures(new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(item.geometry.x, item.geometry.y)));
                 }
             });
+            self.clearHighlightLayerDelayed();
         }
         else if(extraParams.t){
             // PEIs d'une tournée

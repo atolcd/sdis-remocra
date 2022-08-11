@@ -1,6 +1,7 @@
 package fr.sdis83.remocra.web.model;
 
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.Commune;
+//import fr.sdis83.remocra.db.model.remocra.tables.pojos.Commune;
+import com.vividsolutions.jts.geom.Geometry;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Organisme;
 import fr.sdis83.remocra.domain.remocra.Hydrant;
 import fr.sdis83.remocra.domain.remocra.Tournee;
@@ -20,7 +21,7 @@ public class HydrantRecord {
 
     private String code;
 
-    private Commune commune;
+    private CommuneRecord commune;
 
     public String getCode() {
         return code;
@@ -34,6 +35,8 @@ public class HydrantRecord {
     private Date dateContr;
 
     private String jsonGeometrie;
+
+    private String wktGeometrie;
 
     public String getJsonGeometrie() {
         return jsonGeometrie;
@@ -92,6 +95,8 @@ public class HydrantRecord {
 
     private Organisme organisme;
 
+    private Geometry geometrie;
+
     public String getNatureNom() {
         return natureNom;
     }
@@ -134,11 +139,11 @@ public class HydrantRecord {
     }
 
 
-    public Commune getCommune() {
+    public CommuneRecord getCommune() {
         return commune;
     }
 
-    public void setCommune(Commune commune) {
+    public void setCommune(CommuneRecord commune) {
         this.commune = commune;
     }
 
@@ -206,5 +211,19 @@ public class HydrantRecord {
         this.nature = nature;
     }
 
+    public Geometry getGeometrie() {
+        return geometrie;
+    }
 
+    public void setGeometrie(Geometry geometrie) {
+        this.geometrie = geometrie;
+    }
+
+    public String getWktGeometrie() {
+        return wktGeometrie;
+    }
+
+    public void setWktGeometrie(String wktGeometrie) {
+        this.wktGeometrie = wktGeometrie;
+    }
 }

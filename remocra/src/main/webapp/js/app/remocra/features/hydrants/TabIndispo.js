@@ -186,19 +186,10 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
         ,{
             text: 'Points d\'eau',
             align : 'center',
-            dataIndex: 'countHydrant',
+            dataIndex: 'totalHydrants',
             sortable: false,
             renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                Ext.Ajax.request({
-                    url: Sdis.Remocra.util.Util.withBaseUrl('../indisponibilites/getHydrantsIndispo/'+record.internalId),
-                    method: 'GET',
-                    scope: this,
-                    async: false,
-                    callback: function(param, success, response) {
-                        var res = Ext.decode(response.responseText);
-                        metaData.tdAttr = 'data-qtip="' + res.message + '"';
-                    }
-                });
+                metaData.tdAttr = 'data-qtip="' + record.raw.hydrantsTooltip + '"';
                 return value;
             }
         }];
