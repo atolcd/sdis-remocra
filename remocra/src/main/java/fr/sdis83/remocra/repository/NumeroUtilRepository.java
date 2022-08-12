@@ -358,8 +358,10 @@ public class NumeroUtilRepository {
      */
     public static ZoneSpeciale computeZoneSpeciale(Hydrant hydrant) {
         try {
-            return context.selectFrom(ZONE_SPECIALE)
-              .where(ZONE_SPECIALE.GEOMETRIE.isNotNull().and("ST_DISTANCE({0}, {1}) <= 0", hydrant.getGeometrie().toText(), ZONE_SPECIALE.GEOMETRIE))
+            return context.select(ZONE_SPECIALE.fields())
+              .from(ZONE_SPECIALE)
+              .join(HYDRANT).on(HYDRANT.ID.eq(hydrant.getId()))
+              .where(ZONE_SPECIALE.GEOMETRIE.isNotNull().and("ST_DISTANCE({0}, {1}) <= 0", HYDRANT.GEOMETRIE, ZONE_SPECIALE.GEOMETRIE))
               .limit(1)
               .fetchOneInto(ZoneSpeciale.class);
         } catch (Exception e) {
