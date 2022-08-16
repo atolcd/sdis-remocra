@@ -19,6 +19,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import fr.sdis83.remocra.domain.remocra.Organisme;
+import fr.sdis83.remocra.repository.NumeroUtilRepository;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import org.apache.log4j.Logger;
 import org.cts.IllegalCoordinateException;
@@ -379,14 +380,13 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
         String code = thn.getTypeHydrant().getCode();
         Commune c = entityManager.getReference(Commune.class, commune);
 
-        // Hydrant et données nécessaires a minima
-        Hydrant hydrantToCheckNumDispo = "PIBI".equals(code) ? new HydrantPibi() : new HydrantPena();
-        hydrantToCheckNumDispo.setZoneSpeciale(zs);
+        fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant hydrantToCheckNumDispo = new fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant();
+        hydrantToCheckNumDispo.setZoneSpeciale((zs != null) ? zs.getId() : null);
         hydrantToCheckNumDispo.setCode(code);
-        hydrantToCheckNumDispo.setNature(thn);
-        hydrantToCheckNumDispo.setCommune(c);
+        hydrantToCheckNumDispo.setNature(thn.getId());
+        hydrantToCheckNumDispo.setCommune(c.getId());
         hydrantToCheckNumDispo.setNumeroInterne(num);
-        String numero = NumeroUtil.computeNumero(hydrantToCheckNumDispo);
+        String numero = NumeroUtilRepository.computeNumero(hydrantToCheckNumDispo);
         Long numeroUsageCount = countFindHydrantsByNumero(numero, id);
         return numeroUsageCount.longValue() > 0 ? "Le numéro " + numero + " est déjà attribué" : "";
     }
