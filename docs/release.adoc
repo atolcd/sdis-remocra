@@ -10,6 +10,67 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
+
+== v2.2.4
+
+=== Fonctionnalités
+* Géoserveur
+** Ajout d'une variable d'environnement pour la configuration CFRS
+* Ajout d'un champ *observation* pour les indisponibilités temporaires
+* Ajout d'un champ *débit nominal* pour les PIBI
+
+=== Ajustements
+* Optimisations
+** Optimisation de la récupération des informations des visites (grille PEI, fiche PEI)
+** Optimisation de la récupération des informations des hydrants (grille PEI, onglet carto)
+** Optimsiation de la récupération des informations des indisponibilités temporaires (grille indisponibilités temporaires)
+* Carte des tournées : ajout d'un zoom minimum pour l'impression de la carte
+* Tournées : le bouton "renommer la tournée" n'est plus affiché si l'utilisateur n'a pas les droits
+* Tournées : Lors de la localisation, mise en évidence de l'emplacement de la totalité des PEI composant la tournée
+* Débits simultanés : le bouton "Saisir une visite" n'est plus affiché si l'utilisateur n'a pas les droits
+* Zone de compétence des communes précalculées : réduction des zones de compétence afin d'éviter les chevauchements
+* Interface gestionnaire privé : les adresses mail des contacts peuvent désormais contenir des tirets
+* Fiche PEI : la commune est correctement indiqué comme étant un champ obligatoire du formulaire
+* Courriers : L'accusé de réception n'est plus déclenché lors de l'ouverture des courriers par un utilisateur appartenant à un organisme parent du destinataire
+* Création d'un champ précalculé pour la date de dernier changement de disponibilité terrestre
+
+=== Fix
+* Module PEI
+** Fix des outils d'édition restant actifs alors que le PEI était déselectionné dans l'interface cartographique
+** Fix liste déroulante des diamètres de la fiche PEI qui ne contenait aucune donnée
+** La zone spéciale n'était plus prise en compte lors de la numérotation du PEI
+** L'auteur des modifications n'était pas correctement repris dans la table de tracabilité en cas de déplacement d'un PEI
+
+* Tournées
+** Correction d'un message d'erreur lors du filtrage des tournées
+** Fix saisie de visite non opérationnel si le nom de la tournée comporte une apostrophe
+** Fix mauvais tri des hydrants au sein des tournées
+** Fix erreur lors du filtrage par nom de tournée
+
+* Indisponibilités temporaires
+** Recherche permise sur les numéros de PEI ayant moins de 3 caractères
+** Certaines indisponibilités n'étaient pas renvoyées par le serveur
+** Fix suppression des anomalies système d'un hydrant lors de la levée d'une indispo temporaires. Ce cas ne se présentait que lorsque l'hydrant avait encore au moins 1 indispo temporaire d'active sans date de fin précisée
+
+=== Modifications spécifiques
+* SDIS 95
+** Règle de calcul de débit/pression
+** Correction règle de numérotation
+
+* SDIS 42
+** Patch d'initialisation du module Adresses
+
+* SDIS 49
+** Correctif du traitement de génération par lot
+
+=== Mise à jour
+* Indiquer la valeur de version `2.2.4` dans le script build_containers.sh
+* Appliquer les patchs jusqu'au numéro 169 (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches[Disponibles ici]).
+** Si concerné, appliquer également les patches spécifiques en respectant l'ordre numérique des patches https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis[selon votre code SDIS]
+* En cas de configuration https://docs.geoserver.org/latest/en/user/security/webadmin/csrf.html[CSRF] de Geoserveur
+** Ajouter la variable d'environement `GEOSERVER_CSRF_WHITELIST` au ficher `/etc/docker_remocra/.env`.
+** Ajouter la variable d'environement `GEOSERVER_CSRF_DISABLED` au ficher `/etc/docker_remocra/.env`.
+
 == v2.2.3
 === Fonctionnalités
 * Divers
