@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -1717923374;
+	private static final long serialVersionUID = -2040950844;
 
 	/**
 	 * The reference instance of <code>remocra.hydrant</code>
@@ -274,6 +274,11 @@ public class Hydrant extends TableImpl<Record> {
 	 * The column <code>remocra.hydrant.auteur_modification_flag</code>.
 	 */
 	public final TableField<Record, String> AUTEUR_MODIFICATION_FLAG = createField("auteur_modification_flag", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+
+	/**
+	 * The column <code>remocra.hydrant.date_changement_dispo_terrestre</code>. Date du dernier changement d'état
+	 */
+	public final TableField<Record, Instant> DATE_CHANGEMENT_DISPO_TERRESTRE = createField("date_changement_dispo_terrestre", org.jooq.impl.SQLDataType.TIMESTAMP, this, "Date du dernier changement d'état", new InstantConverter());
 
 	/**
 	 * Create a <code>remocra.hydrant</code> table reference
