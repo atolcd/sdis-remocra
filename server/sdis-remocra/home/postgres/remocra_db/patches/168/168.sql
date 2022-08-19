@@ -71,11 +71,18 @@ $function$
 ;
 
 --Lancement de l'update (ça peut etre TRES LONG !!!)
-alter table remocra.hydrant disable trigger all;
+ALTER TABLE remocra.hydrant DISABLE TRIGGER trig_aui;
+ALTER TABLE remocra.hydrant DISABLE TRIGGER trig_bd;
+ALTER TABLE remocra.hydrant DISABLE TRIGGER trig_hydrant_couverture;
+
 UPDATE remocra.hydrant
 SET date_changement_dispo_terrestre = init_date_changement_etat(id)
 ;
-alter table remocra.hydrant enable trigger all;
+
+ALTER TABLE remocra.hydrant ENABLE TRIGGER trig_aui;
+ALTER TABLE remocra.hydrant ENABLE TRIGGER trig_bd;
+ALTER TABLE remocra.hydrant ENABLE TRIGGER trig_hydrant_couverture;
+
 --Suppression de la fonction car nous n'en aurons plus besoin
 DROP FUNCTION IF EXISTS remocra.init_date_changement_etat();
 --MISE A JOUR DE TOUT LES HYDRANT DEJA PRESENT EN BASE fin
