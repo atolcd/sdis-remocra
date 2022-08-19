@@ -847,7 +847,7 @@ public class HydrantRepository {
     String condition = "1 = 1";
     for (ItemFilter itemFilter : itemFilters) {
       if ("tournee".equals(itemFilter.getFieldName())) {
-        condition+=" idTournee = "  + Long.valueOf(itemFilter.getValue());
+        condition+=" and idTournee = "  + Long.valueOf(itemFilter.getValue());
       } else if ("zoneCompetenceSimplified".equals(itemFilter.getFieldName())){
         Long zoneCompetenceId = utilisateurService.getCurrentZoneCompetenceId();
         condition += " and h.geometrie @ (select st_simplify(zc.geometrie ,1) from remocra.zone_competence zc where  id ="  + zoneCompetenceId + ")" ;
