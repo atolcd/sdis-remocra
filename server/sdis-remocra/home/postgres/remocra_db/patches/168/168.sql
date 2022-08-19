@@ -39,6 +39,47 @@ drop function versionnement_dffd4df4df();
   COMMENT ON COLUMN remocra.hydrant.date_changement_dispo_terrestre IS 'Date du dernier changement d''état';
 -- Ajout du champs dans la table hydrant fin
 
+
+--MISE A JOUR DE TOUT LES HYDRANT DEJA PRESENT EN BASE début
+
+--Fonction de récupération de la dernière date de changement.
+--Si pas de changement récupération de la date d'insert en BDD
+--Si toujours pas alors date du jour
+create or replace function init_date_changement_etat(idHydrant bigint)
+  RETURNS timestamp without time zone
+  LANGUAGE plpgsql
+  AS $function$
+  declare
+  dateChangement timestamp without time zone;
+  begin
+    select COALESCE(
+		(select t2.date_operation
+		from tracabilite.hydrant t1
+		 join remocra.hydrant h on h.id = idHydrant
+		left join tracabilite.hydrant t2 on t2.id_hydrant = idHydrant and t2.dispo_terrestre = h.dispo_terrestre and t2.date_operation > t1.date_operation
+		where t1.dispo_terrestre != h.dispo_terrestre and t1.id_hydrant = idHydrant
+		order by t1.date_operation desc, t2.date_operation asc limit 1), 
+
+	  (select min(date_operation)
+		from tracabilite.hydrant
+		where id_hydrant = idHydrant), 
+
+	  NOW()) into dateChangement;
+	  return dateChangement;
+  end;
+$function$
+;
+
+--Lancement de l'update (ça peut etre TRES LONG !!!)
+alter table remocra.hydrant disable trigger all;
+UPDATE remocra.hydrant
+SET date_changement_dispo_terrestre = init_date_changement_etat(id)
+;
+alter table remocra.hydrant enable trigger all;
+--Suppression de la fonction car nous n'en aurons plus besoin
+DROP FUNCTION IF EXISTS remocra.init_date_changement_etat();
+--MISE A JOUR DE TOUT LES HYDRANT DEJA PRESENT EN BASE fin
+
 -- Création du trigger et de la fonction qui remplira les champs date_changement_dispo_terrestre début
   CREATE OR REPLACE FUNCTION remocra.trg_date_changement_dispo_terrestre()
     RETURNS trigger
@@ -70,49 +111,6 @@ drop function versionnement_dffd4df4df();
     ON
     remocra.hydrant FOR EACH ROW EXECUTE PROCEDURE remocra.trg_date_changement_dispo_terrestre();
 -- Création du trigger et de la fonction qui remplira les champs date_changement_dispo_terrestre FIN
-
-
---MISE A JOUR DE TOUT LES HYDRANT DEJA PRESENT EN BASE début
-
---Fonction de récupération de la dernière date de changement.
---Si pas de changement récupération de la date d'insert en BDD
---Si toujours pas alors date du jour
-create or replace function init_date_changement_etat(idHydrant bigint)
-  RETURNS timestamp without time zone
-  LANGUAGE plpgsql
-  AS $function$
-  declare
-  dateChangement timestamp without time zone;
-  begin
-    select min(t.date_operation) into dateChangement
-    from tracabilite.hydrant t
-    where t.id_hydrant = idHydrant and date_operation > (
-      select max(t2.date_operation)
-      from tracabilite.hydrant t2
-      where t2.id_hydrant = idHydrant and t.dispo_terrestre != t2.dispo_terrestre
-    );
-
-    if dateChangement is null then
-      dateChangement = coalesce(
-        (select min(date_operation)
-        from tracabilite.hydrant
-        where id_hydrant = idHydrant),
-        NOW()
-      );
-    end if;
-
-    return dateChangement;
-  end;
-$function$
-;
-
---Lancement de l'update (ça peut etre TRES LONG !!!)
-UPDATE remocra.hydrant
-SET date_changement_dispo_terrestre = init_date_changement_etat(id)
-;
---Suppression de la fonction car nous n'en aurons plus besoin
-DROP FUNCTION IF EXISTS remocra.init_date_changement_etat();
---MISE A JOUR DE TOUT LES HYDRANT DEJA PRESENT EN BASE fin
 
 -- Contenu réel du patch fin
 --------------------------------------------------
