@@ -74,8 +74,8 @@ public class TelechargementService {
             if (cd == null) {
                 return false;
             } else if (cd.getAccuse() == null &&
-              ((idUtilisateur==idDestinataire && "UTILISATEUR".equalsIgnoreCase(typeDestinataire)) ||
-                (idOrganisme==idDestinataire && "ORGANISME".equalsIgnoreCase(typeDestinataire)))) {
+              ((idUtilisateur.equals(idDestinataire) && "UTILISATEUR".equalsIgnoreCase(typeDestinataire)) ||
+                (idOrganisme.equals(idDestinataire) && "ORGANISME".equalsIgnoreCase(typeDestinataire)))) {
                 cd.setAccuse(new Date());
                 cd.persist();
             }

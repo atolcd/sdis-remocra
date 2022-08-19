@@ -160,8 +160,8 @@ public class CourrierRepository {
       Long idDestinataire = cd.getIdDestinataire();
       String typeDestinataire = cd.getTypeDestinataire();
       if(
-        (idUtilisateur == idDestinataire && "UTILISATEUR".equalsIgnoreCase(typeDestinataire)) ||
-          (idOrganisme == idDestinataire && "ORGANISME".equalsIgnoreCase(typeDestinataire))
+        (idUtilisateur.equals(idDestinataire) && "UTILISATEUR".equalsIgnoreCase(typeDestinataire)) ||
+          (idOrganisme.equals(idDestinataire) && "ORGANISME".equalsIgnoreCase(typeDestinataire))
       ) {
         cd.setUtilisateurDestinataire(true);
       }else{
