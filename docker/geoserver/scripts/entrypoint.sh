@@ -23,8 +23,8 @@ export GEOSERVER_OPTS=" \
   -Duser.timezone='Europe/Paris' \
   -Dfile.encoding=UTF8 -Djavax.servlet.request.encoding=UTF-8 -Djavax.servlet.response.encoding=UTF-8 \
   -Dorg.geotools.referencing.forceXY=true -Dorg.geotools.shapefile.datetime=true -Dorg.geotools.shapefile.datetime=true \
-  -DGEOSERVER_CSRF_WHITELIST= ${GEOSERVER_CSRF_WHITELIST:-localhost} \
-  -DGEOSERVER_CSRF_DISABLED= ${GEOSERVER_CSRF_DISABLED:-false}"
+  -DGEOSERVER_CSRF_WHITELIST=${GEOSERVER_CSRF_WHITELIST:-localhost} \
+  -DGEOSERVER_CSRF_DISABLED=${GEOSERVER_CSRF_DISABLED:-false}"
 export JAVA_OPTS="${GEOSERVER_OPTS} ${JAVA_OPTS}"
 
 # Démarrage de GeoServer
