@@ -4,16 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
-import fr.sdis83.remocra.db.model.remocra.tables.Tournee;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantAnomalie;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantImportctpErreur;
-import fr.sdis83.remocra.domain.remocra.Commune;
 import fr.sdis83.remocra.domain.remocra.Document;
-import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.domain.remocra.TypeDroit;
 import fr.sdis83.remocra.exception.ImportCTPException;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
@@ -21,11 +17,9 @@ import fr.sdis83.remocra.service.HydrantService;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.util.DocumentUtil;
-import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.util.JSONUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
-import fr.sdis83.remocra.web.model.Crise;
 import fr.sdis83.remocra.web.model.HydrantRecord;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -37,12 +31,10 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.joda.time.DateTime;
 import org.joda.time.Instant;
 import org.joda.time.Period;
-import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.SortOrder;
-import org.jooq.impl.DSL;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.NameTokenizers;
 import org.modelmapper.jooq.RecordValueReader;
@@ -54,18 +46,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.ParameterExpression;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Subquery;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -81,7 +63,6 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE_NA
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_IMPORTCTP_ERREUR;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_SAISIE;
-import static java.lang.Boolean.TRUE;
 import static org.apache.poi.ss.usermodel.Row.MissingCellPolicy.RETURN_BLANK_AS_NULL;
 
 @Configuration
@@ -611,7 +592,8 @@ public class HydrantRepository {
     Double xls_pression = null;
     try {
       if (row.getCell(11) != null && row.getCell(11).getCellType() != CellType.BLANK) { // Si une valeur est renseignée
-        xls_pression = row.getCell(11).getNumericCellValue();
+
+          xls_pression = this.getNumericValueFromCell(row.getCell(11));
         if (xls_pression < 0) {
           throw new Exception();
         }
@@ -648,8 +630,8 @@ public class HydrantRepository {
       Double latitude = null;
       Double longitude = null;
       try {
-        latitude = this.readCoord(row.getCell(5));
-        longitude = this.readCoord(row.getCell(6));
+        latitude = this.getNumericValueFromCell(row.getCell(5));
+        longitude = this.getNumericValueFromCell(row.getCell(6));
       } catch (Exception e) {
         throw new ImportCTPException("ERR_COORD_GPS", data);
       }
@@ -750,14 +732,14 @@ public class HydrantRepository {
   }
 
   /**
-   * Lit une coordonnée depuis une cellule
-   * La coordonnée doit être au format décimal point ou virgule
+   * Lit un nombre réel depuis une cellule
+   * La valeur doit être au format décimal point ou virgule
    *
    * @param c La cellule contentant la donnée
    * @return La valeur de la coordonnée de type Double
    * @throws Exception La valeur ne respecte pas le format attendu
    */
-  Double readCoord(Cell c) throws Exception {
+  Double getNumericValueFromCell(Cell c) throws Exception {
     if (c.getCellType() == CellType.NUMERIC) {
       return c.getNumericCellValue();
     }
