@@ -320,20 +320,19 @@ public class NumeroUtilRepository {
             sb.append(codeNature).append(" ");
 
             /**
-             * TODO : vérifier avec le SDIS 83 si il y a besoin de garder ce comportement
-             * champ pena non accessible depuis la nouvelle fiche, non pris en compte lors de la création du PEI
+             * Non pris en compte lors de la création du PEI
              * (numérotation intervenant avant ajout en base dans hydrant_pibi
             */
 
-            if(hydrant.getId() != null) {
-                HydrantPibi pibi = context.selectFrom(HYDRANT_PIBI)
-                        .where(HYDRANT_PIBI.ID.eq(hydrant.getId()))
-                        .fetchOneInto(HydrantPibi.class);
+            Long idReservoir = context.select(HYDRANT_PIBI.RESERVOIR)
+              .from(HYDRANT_PIBI)
+              .where(HYDRANT_PIBI.ID.eq(hydrant.getId()))
+              .fetchOneInto(Long.class);
 
-                if (pibi.getPena() != null && !"PA".equals(codeNature)) {
-                    // Pibi lié à un Pena : on double le code zone ou commune
-                    sb.append(codeZS != null ? codeZS : getHydrantCommune(hydrant).getCode()).append(" ");
-                }
+            // Si le PIBI est lié à un réservoir, on double le code commune
+            if(idReservoir != null) {
+              sb.append(codeZS != null ? codeZS : getHydrantCommune(hydrant).getCode()).append(" ");
+            } else {
             }
 
         } else if ("RI".equals(codeNature)) {
