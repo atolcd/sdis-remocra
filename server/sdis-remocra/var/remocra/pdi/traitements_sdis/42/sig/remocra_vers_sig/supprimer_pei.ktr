@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>delete_hydrant_from_sig.ktr</name>
+    <name>supprimer_pei</name>
     <description />
     <extended_description />
     <trans_version />
     <trans_type>Normal</trans_type>
-    <trans_status>0</trans_status>
     <directory>/</directory>
     <parameters>
     </parameters>
@@ -428,14 +427,65 @@
     <clusterschemas>
     </clusterschemas>
     <created_user>-</created_user>
-    <created_date>2017/12/20 15:01:20.526</created_date>
-    <modified_user>admin</modified_user>
-    <modified_date>2017/12/20 16:22:56.153</modified_date>
+    <created_date>2022/08/30 11:32:16.171</created_date>
+    <modified_user>-</modified_user>
+    <modified_date>2022/08/30 11:32:16.171</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
   </notepads>
+  <connection>
+    <name>Remocra</name>
+    <server>${REMOCRA_POSTGIS_DATABASE_HOST}</server>
+    <type>POSTGRESQL</type>
+    <access>Native</access>
+    <database>${REMOCRA_POSTGIS_DATABASE_NAME}</database>
+    <port>${REMOCRA_POSTGIS_DATABASE_PORT}</port>
+    <username>${REMOCRA_POSTGIS_DATABASE_USER_NAME}</username>
+    <password>${REMOCRA_POSTGIS_DATABASE_USER_PASSWORD}</password>
+    <servername />
+    <data_tablespace />
+    <index_tablespace />
+    <attributes>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>${REMOCRA_POSTGIS_DATABASE_PORT}</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
+    </attributes>
+  </connection>
   <connection>
     <name>SDIS</name>
     <server>${PDI_SIG_DATABASE_HOST}</server>
@@ -449,10 +499,6 @@
     <data_tablespace />
     <index_tablespace />
     <attributes>
-      <attribute>
-        <code>EXTRA_OPTION_POSTGRESQL.stringtype</code>
-        <attribute>unspecified</attribute>
-      </attribute>
       <attribute>
         <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
         <attribute>N</attribute>
@@ -470,12 +516,20 @@
         <attribute>${PDI_SIG_DATABASE_PORT}</attribute>
       </attribute>
       <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
         <code>QUOTE_ALL_FIELDS</code>
         <attribute>N</attribute>
       </attribute>
       <attribute>
         <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
-        <attribute>N</attribute>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>Y</attribute>
       </attribute>
       <attribute>
         <code>USE_POOLING</code>
@@ -485,14 +539,49 @@
   </connection>
   <order>
     <hop>
-      <from>Get rows from result</from>
-      <to>Execute SQL script</to>
+      <from>Données SIG</from>
+      <to>Recherche dans flux</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Filtrage lignes</from>
+      <to>Suppression dans sig_hydrant_aspiration</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Recherche dans flux</from>
+      <to>Filtrage lignes</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>données remocra</from>
+      <to>Recherche dans flux</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Données SIG 2</from>
+      <to>Recherche dans flux 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Filtrage lignes 2</from>
+      <to>Suppression dans table sig_hydrant_pression</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Recherche dans flux 2</from>
+      <to>Filtrage lignes 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>données remocra 2</from>
+      <to>Recherche dans flux 2</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <step>
-    <name>Execute SQL script</name>
-    <type>ExecSQL</type>
+    <name>Données SIG</name>
+    <type>TableInput</type>
     <description />
     <distribute>Y</distribute>
     <custom_distribution />
@@ -502,25 +591,14 @@
       <schema_name />
     </partitioning>
     <connection>SDIS</connection>
-    <execute_each_row>Y</execute_each_row>
-    <single_statement>N</single_statement>
-    <replace_variables>Y</replace_variables>
-    <quoteString>N</quoteString>
-    <sql>DELETE FROM public.sig_hydrant_aspiration WHERE id_remocra = '?';
-DELETE FROM public.sig_hydrant_pression WHERE id_remocra = '?';</sql>
-    <set_params>N</set_params>
-    <insert_field />
-    <update_field />
-    <delete_field />
-    <read_field />
-    <arguments>
-      <argument>
-        <name>numero_hydrant_to_del</name>
-      </argument>
-      <argument>
-        <name>numero_hydrant_to_del</name>
-      </argument>
-    </arguments>
+    <sql>SELECT ID_REMOCRA as "ID_INTERNE"
+FROM public.sig_hydrant_aspiration
+ORDER BY ID_INTERNE</sql>
+    <limit>0</limit>
+    <lookup />
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
     <cluster_schema />
     <remotesteps>
       <input>
@@ -529,14 +607,14 @@ DELETE FROM public.sig_hydrant_pression WHERE id_remocra = '?';</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>380</xloc>
-      <yloc>145</yloc>
+      <xloc>96</xloc>
+      <yloc>352</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Get rows from result</name>
-    <type>RowsFromResult</type>
+    <name>Filtrage lignes</name>
+    <type>FilterRows</type>
     <description />
     <distribute>Y</distribute>
     <custom_distribution />
@@ -545,14 +623,16 @@ DELETE FROM public.sig_hydrant_pression WHERE id_remocra = '?';</sql>
       <method>none</method>
       <schema_name />
     </partitioning>
-    <fields>
-      <field>
-        <name>numero_hydrant_to_del</name>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-    </fields>
+    <send_true_to />
+    <send_false_to />
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>ID_INTERNE_REM</leftvalue>
+        <function>IS NULL</function>
+        <rightvalue />
+      </condition>
+    </compare>
     <cluster_schema />
     <remotesteps>
       <input>
@@ -561,8 +641,297 @@ DELETE FROM public.sig_hydrant_pression WHERE id_remocra = '?';</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>164</xloc>
-      <yloc>145</yloc>
+      <xloc>272</xloc>
+      <yloc>240</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Recherche dans flux</name>
+    <type>StreamLookup</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <from>données remocra</from>
+    <input_sorted>N</input_sorted>
+    <preserve_memory>Y</preserve_memory>
+    <sorted_list>N</sorted_list>
+    <integer_pair>N</integer_pair>
+    <lookup>
+      <key>
+        <name>ID_INTERNE</name>
+        <field>ID_INTERNE</field>
+      </key>
+      <value>
+        <name>ID_INTERNE</name>
+        <rename>ID_INTERNE_REM</rename>
+        <default />
+        <type>None</type>
+      </value>
+    </lookup>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>96</xloc>
+      <yloc>240</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Suppression dans sig_hydrant_aspiration</name>
+    <type>Delete</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <connection>SDIS</connection>
+    <commit>100</commit>
+    <lookup>
+      <schema>public</schema>
+      <table>sig_hydrant_aspiration</table>
+      <key>
+        <name>ID_INTERNE</name>
+        <field>ID_INTERNE</field>
+        <condition>=</condition>
+        <name2 />
+      </key>
+    </lookup>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>480</xloc>
+      <yloc>240</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>données remocra</name>
+    <type>TableInput</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <connection>Remocra</connection>
+    <sql>
+SELECT h.id AS "ID_INTERNE"
+FROM remocra.hydrant h 
+ORDER BY h.id</sql>
+    <limit>0</limit>
+    <lookup />
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>96</xloc>
+      <yloc>112</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Données SIG 2</name>
+    <type>TableInput</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <connection>SDIS</connection>
+    <sql>SELECT ID_REMOCRA as "ID_INTERNE"
+FROM public.sig_hydrant_pression
+ORDER BY ID_INTERNE</sql>
+    <limit>0</limit>
+    <lookup />
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>768</xloc>
+      <yloc>352</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Filtrage lignes 2</name>
+    <type>FilterRows</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <send_true_to />
+    <send_false_to />
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>ID_INTERNE_REM</leftvalue>
+        <function>IS NULL</function>
+        <rightvalue />
+      </condition>
+    </compare>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>944</xloc>
+      <yloc>240</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Recherche dans flux 2</name>
+    <type>StreamLookup</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <from>données remocra</from>
+    <input_sorted>N</input_sorted>
+    <preserve_memory>Y</preserve_memory>
+    <sorted_list>N</sorted_list>
+    <integer_pair>N</integer_pair>
+    <lookup>
+      <key>
+        <name>ID_INTERNE</name>
+        <field>ID_INTERNE</field>
+      </key>
+      <value>
+        <name>ID_INTERNE</name>
+        <rename>ID_INTERNE_REM</rename>
+        <default />
+        <type>None</type>
+      </value>
+    </lookup>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>768</xloc>
+      <yloc>240</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Suppression dans table sig_hydrant_pression</name>
+    <type>Delete</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <connection>SDIS</connection>
+    <commit>100</commit>
+    <lookup>
+      <schema>public</schema>
+      <table>sig_hydrant_pression</table>
+      <key>
+        <name>ID_INTERNE</name>
+        <field>ID_INTERNE</field>
+        <condition>=</condition>
+        <name2 />
+      </key>
+    </lookup>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1184</xloc>
+      <yloc>240</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>données remocra 2</name>
+    <type>TableInput</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <connection>Remocra</connection>
+    <sql>
+SELECT h.id AS "ID_INTERNE"
+FROM remocra.hydrant h 
+ORDER BY h.id</sql>
+    <limit>0</limit>
+    <lookup />
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>768</xloc>
+      <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
