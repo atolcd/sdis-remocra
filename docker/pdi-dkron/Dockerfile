@@ -83,6 +83,15 @@ RUN set -x \
     || wget -P ${KETTLE_HOME}/lib -q https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/home/postgres/pdi/libext/JDBC/mysql-connector-java-5.1.49.jar) \
   && rm -f Dockerfile # cleaning
 
+# MSSql
+COPY Dockerfile ext/jtds-1.3.1.jar* ext/jtds-1.3.1.jar* ${KETTLE_HOME}/lib/
+RUN set -x \
+  && ([ -f ${KETTLE_HOME}/lib/jtds-1.3.1.jar ] \
+    || wget -P ${KETTLE_HOME} -q https://kumisystems.dl.sourceforge.net/project/jtds/jtds/1.3.1/jtds-1.3.1-dist.zip) \
+  && unzip ${KETTLE_HOME}/jtds-1.3.1-dist.zip -d ${KETTLE_HOME}/lib \
+  && rm -f ${KETTLE_HOME}/jtds-1.3.1-dist.zip \
+  && rm -f Dockerfile # cleaning
+
 # Mise à jour de JDBC driver
 RUN rm -f ${KETTLE_HOME}/lib/postgresql-*
 COPY Dockerfile ext/postgresql-42.2.10.jar* ${KETTLE_HOME}/lib/
