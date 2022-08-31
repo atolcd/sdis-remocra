@@ -87,9 +87,9 @@ RUN set -x \
 COPY Dockerfile ext/jtds-1.3.1.jar* ext/jtds-1.3.1.jar* ${KETTLE_HOME}/lib/
 RUN set -x \
   && ([ -f ${KETTLE_HOME}/lib/jtds-1.3.1.jar ] \
-    || wget -P ${KETTLE_HOME} -q https://kumisystems.dl.sourceforge.net/project/jtds/jtds/1.3.1/jtds-1.3.1-dist.zip) \
+    || (wget -P ${KETTLE_HOME} -q https://kumisystems.dl.sourceforge.net/project/jtds/jtds/1.3.1/jtds-1.3.1-dist.zip \
   && unzip ${KETTLE_HOME}/jtds-1.3.1-dist.zip -d ${KETTLE_HOME}/lib \
-  && rm -f ${KETTLE_HOME}/jtds-1.3.1-dist.zip \
+  && rm -f ${KETTLE_HOME}/jtds-1.3.1-dist.zip)) \
   && rm -f Dockerfile # cleaning
 
 # Mise à jour de JDBC driver
