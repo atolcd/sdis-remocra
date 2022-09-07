@@ -79,7 +79,6 @@ public class HydrantController {
 
         final List<ItemSorting> sortList = ItemSorting.decodeJson(sorts);
         final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
-
         if (query != null && !query.isEmpty()) {
             itemFilterList.add(new ItemFilter("query", query));
         }
@@ -362,7 +361,7 @@ public class HydrantController {
         final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
 
         if (query != null && !query.isEmpty()) {
-            itemFilterList.add(new ItemFilter("query", query));
+            itemFilterList.add(new ItemFilter("numero", query));
         }
 
         // Comptage : zone de compétence simplifiée pour accélérer le calcul
