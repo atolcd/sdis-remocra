@@ -61,6 +61,8 @@ public class HydrantRecord {
     private String numero;
     private String nomTournee;
 
+    private Integer indispoTemp;
+
     public Disponibilite getDispoTerrestre() {
         return dispoTerrestre;
     }
@@ -225,5 +227,13 @@ public class HydrantRecord {
 
     public void setWktGeometrie(String wktGeometrie) {
         this.wktGeometrie = wktGeometrie;
+    }
+
+    public Integer getIndispoTemp() {
+        return indispoTemp;
+    }
+
+    public void setIndispoTemp(Integer indispoTemp) {
+        this.indispoTemp = indispoTemp;
     }
 }
