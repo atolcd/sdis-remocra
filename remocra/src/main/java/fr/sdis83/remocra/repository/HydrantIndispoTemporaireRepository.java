@@ -191,4 +191,25 @@ public class HydrantIndispoTemporaireRepository {
     }
     return geom;
   }
+
+  public long countHydrantsIndispoTemp(List<ItemFilter> itemFilters) {
+    Long zc = utilisateurService.getCurrentZoneCompetenceId();
+
+    String condition = this.getFilters(itemFilters);
+    StringBuffer sbReq = new StringBuffer("SELECT count(*) as total")
+            .append(" FROM remocra.hydrant_indispo_temporaire hit")
+            .append(" JOIN remocra.type_hydrant_indispo_statut this on this.id = hit.statut")
+            .append(" WHERE")
+            .append(" " + condition)
+
+            // Filtrage par zone de compétence systématique
+            .append(" AND hit.id in (")
+            .append("SELECT indisponibilite FROM remocra.hydrant_indispo_temporaire_hydrant hith ")
+            .append(" WHERE hith.hydrant in(")
+            .append(" SELECT h.id FROM remocra.hydrant h WHERE h.commune in(")
+            .append("SELECT zcc.commune_id FROM remocra.zone_competence_commune zcc WHERE zcc.zone_competence_id ="+zc)
+            .append(" )))");
+
+    return (Long) context.fetchOne(sbReq.toString()).getValue("total");
+  }
 }

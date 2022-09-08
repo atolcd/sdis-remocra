@@ -131,6 +131,11 @@ public class IndisponibiliteTemporaireController  {
                 List<HydrantIndispoTemporaireRecord> l = hydrantIndispoTemporaireRepository.getAll(itemFilterList, limit, start, sortList);
                 return l;
             }
+
+            @Override
+            protected Long countRecords() throws BusinessException {
+                return hydrantIndispoTemporaireRepository.countHydrantsIndispoTemp(itemFilterList);
+            }
         }.serialize();
     }
 
