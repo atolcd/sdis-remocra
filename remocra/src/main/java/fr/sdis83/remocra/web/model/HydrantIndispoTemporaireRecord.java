@@ -29,9 +29,9 @@ public class HydrantIndispoTemporaireRecord {
 
   private boolean basculeAutoDispo;
 
-  private boolean mailAvantIndispo;
+  private boolean melAvantIndispo;
 
-  private boolean mailAvantDispo;
+  private boolean melAvantDispo;
 
   private String observation;
 
@@ -123,20 +123,20 @@ public class HydrantIndispoTemporaireRecord {
     this.basculeAutoDispo = basculeAutoDispo;
   }
 
-  public boolean isMailAvantIndispo() {
-    return mailAvantIndispo;
+  public boolean isMelAvantIndispo() {
+    return melAvantIndispo;
   }
 
-  public void setMailAvantIndispo(boolean mailAvantIndispo) {
-    this.mailAvantIndispo = mailAvantIndispo;
+  public void setMelAvantIndispo(boolean melAvantIndispo) {
+    this.melAvantIndispo = melAvantIndispo;
   }
 
-  public boolean isMailAvantDispo() {
-    return mailAvantDispo;
+  public boolean isMelAvantDispo() {
+    return melAvantDispo;
   }
 
-  public void setMailAvantDispo(boolean mailAvantDispo) {
-    this.mailAvantDispo = mailAvantDispo;
+  public void setMelAvantDispo(boolean melAvantDispo) {
+    this.melAvantDispo = melAvantDispo;
   }
 
   public String getObservation() {
