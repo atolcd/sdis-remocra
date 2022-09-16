@@ -269,6 +269,11 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
             obj.remove("dateFin");
         }
 
+        // Problème champ observation (les retours chariot posent problème
+        // Provoque erreur lors de l'appel  : indispo = deserializer.deserialize(JSONMap.fromMap(obj).toString());
+        String observation = (String) obj.get("observation");
+        obj.remove("observation");
+
         HydrantIndispoTemporaire indispo = new HydrantIndispoTemporaire();
         indispo = deserializer.deserialize(JSONMap.fromMap(obj).toString());
         
@@ -279,6 +284,7 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
 
         indispo.setDateDebut(dateDebut);
         indispo.setDateFin(dateFin);
+        indispo.setObservation(observation);
 
         //Définition du statut
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

@@ -67,7 +67,7 @@ public class HydrantIndispoTemporaireRepository {
     StringBuffer sbReq = new StringBuffer("SELECT hit.id, hit.date_debut as dateDebut, hit.date_fin as dateFin, hit.motif,")
       .append(" hit.date_rappel_debut as dateRappelDebut, hit.date_rappel_fin as dateRappelFin, hit.total_hydrants as totalHydrants,")
       .append(" hit.bascule_auto_indispo as basculeAutoIndispo, hit.bascule_auto_dispo as basculeAutoDispo, hit.mel_avant_indispo as melAvantIndispo,")
-      .append(" hit.mel_avant_dispo as melAvantDispo, hit.observation, hit.statut, ")
+      .append(" hit.mel_avant_dispo as melAvantDispo, hit.observation, hit.statut, hit.observation, ")
       .append("(SELECT c.nom FROM remocra.hydrant_indispo_temporaire hit2")
         .append(" JOIN remocra.hydrant_indispo_temporaire_hydrant hith2 ON hith2.indisponibilite = hit2.id")
         .append(" JOIN remocra.hydrant h2 on h2.id = hith2.hydrant")
