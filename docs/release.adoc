@@ -11,6 +11,28 @@ link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
 
+== v2.2.4.2
+
+=== Modifications spécifiques
+* SDIS 42
+
+** La correspondance entre les PEI remocra et SIG se fait désormais sur l'identifiant (
+et non plus le numéro). Le cas de la suppression a été remplacé pour reprendre ce qui a été fait pour le 38
+
+=== FIX
+
+* Recherche par hydrant onglet accès rapide
+* Pagination des indisponibilités temporaires
+* L'indispo temporaire qui n'apparaissait plus dans l'onglet "Point d’eau" (bandeau rouge barré jaune) apparait a nouveau
+* Ajout du champ 'observation' lors de la récupération des indsipos temporaires
+
+== v2.2.4.1
+
+=== Ajustements
+
+* Ajout des drivers "MSSql" pour les synchronisation LDAP
+
+
 == v2.2.4
 
 === Fonctionnalités
