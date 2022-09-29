@@ -1274,7 +1274,95 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         };
        var url =  Sdis.Remocra.util.Util.withBaseUrl('../geoserver/remocra/wms');
        url += "?"+Ext.Object.toQueryString(params);
-       window.open(url);
+
+       Sdis.Remocra.util.Msg.msg('Génération de carte', 'La carte de la tournée est en cours de génération', 5);
+       Ext.Loader.loadScript({url:'https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js', scope:this, onLoad: function(){
+         var jsPDFLib = window.jspdf;
+
+         var imageCollection = loadImages(
+           ["rose_des_vents", "logo_sdis"],
+           ["ext-res/images/remocra/tournees_recop/rose_des_vents.png", "ext-res/images/remocra/tournees_recop/logo_sdis.png"],
+             function() {
+
+               var d = new Date();
+               var currentDate = d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear();
+
+               // Avec jspdf, les mesures et positions sur le document sont en mm et non pas en pixels
+               var heightPiedPage = 15;
+               var heightEnTete = 15;
+               var heightPage;
+               var widthPage;
+
+               if(mode == "paysage") {
+                 heightPage = 210;
+                 widthPage = 297;
+               } else {
+                 heightPage = 297;
+                 widthPage = 210;
+               }
+
+                 // On recalcule la hauteur effective de l'image en prenant en compte l'en-tête et le pied de page
+                 params.HEIGHT = (heightPage - heightEnTete - heightPiedPage) * params.HEIGHT / heightPage;
+
+                 var img = new Image();
+                 img.onload = function() { // Image récupérée depuis Geoserver
+                   var doc = new jsPDFLib.jsPDF((mode == "paysage") ? 'l' : 'p', 'mm', 'a4');
+                   doc.text(tournee.get("nom"), 5, heightEnTete/2, {
+                     baseline: "middle",
+                     align: "left"
+                   });
+
+                   doc.text("Points d'eau : "+tournee.get("hydrantCount"), widthPage - 5, heightEnTete/2, {
+                     baseline: "middle",
+                     align: "right"
+                   });
+
+                   doc.addImage(img, 'PNG', 0, heightEnTete, widthPage, (heightPage - heightEnTete - heightPiedPage));
+
+                   var roseVentsSize = 30;
+                   var roseVentsPosY = heightPage - heightPiedPage - roseVentsSize - 5;
+                   doc.addImage(imageCollection["rose_des_vents"], 'PNG', 5, roseVentsPosY, roseVentsSize, roseVentsSize);
+
+                   var imageLogo = imageCollection["logo_sdis"];
+                   doc.addImage(imageLogo, 'PNG', 0, (heightPage-heightPiedPage), imageLogo.width*(heightPiedPage)/imageLogo.height, heightPiedPage);
+
+                   doc.setFontSize(9);
+                   doc.text("Document à usage interne uniquement. Généré le "+currentDate, widthPage/2, (heightPage-(heightPiedPage/2)), {
+                     baseline : "middle",
+                     align: "center"
+                   });
+
+                   doc.setFontSize(11);
+                   var echelle = Math.ceil((bounds.right - bounds.left) / (widthPage/10));
+                   doc.text("Echelle 1:"+echelle, widthPage - 5, (heightPage-(heightPiedPage/2)), {
+                      baseline : "middle",
+                      align: "right"
+                   });
+
+                   doc.output('dataurlnewwindow');
+                 };
+                 img.src = url;
+             }
+         );
+
+          // Charge les images et fait appel au callback une fois toutes les images récupérées
+         function loadImages(names, files, onAllLoaded) {
+             var i = 0, numLoading = names.length;
+             var onload = function() {
+               --numLoading;
+               if(numLoading === 0) {
+                 onAllLoaded();
+               }
+             };
+             var images = {};
+             while (i < names.length) {
+                 var img = images[names[i]] = new Image();
+                 img.src = files[i++];
+                 img.onload = onload;
+             }
+             return images;
+         }
+       }, onError: function(){console.log('onerror');} });
     },
     /***************************************************************************
      * Onglet "Localisation" (la Carte)
