@@ -11,6 +11,13 @@ link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
 
+== v2.2.4.3
+
+=== FIX
+
+* Module Point d'eau : fix des hydrants appartenant à plusieurs tournées qui étaient comptés plusieurs fois dans le total des points d'eau
+* Module Point d'eau : fix des tri sur les colonnes n'agissant que sur les PEI de la page actuelle et non pas sur la totalité des PEI
+
 == v2.2.4.2
 
 === Modifications spécifiques
