@@ -5,7 +5,7 @@ Ext.define('Sdis.Remocra.store.HydrantRecord', {
     storeId: 'HydrantRecord',
 
     model: 'Sdis.Remocra.model.HydrantRecord',
-    remoteSort: false,
+    remoteSort: true,
     remoteFilter: true,
     pageSize: 15
 });
