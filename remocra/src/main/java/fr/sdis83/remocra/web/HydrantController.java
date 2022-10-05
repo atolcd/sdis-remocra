@@ -364,11 +364,6 @@ public class HydrantController {
             itemFilterList.add(new ItemFilter("numero", query));
         }
 
-        // Comptage : zone de compétence simplifiée pour accélérer le calcul
-        final List<ItemFilter> itemFilterCountList = new LinkedList<ItemFilter>();
-        itemFilterCountList.addAll(itemFilterList);
-        itemFilterCountList.add(new ItemFilter("zoneCompetenceSimplified", "true"));
-
         itemFilterList.add(new ItemFilter("zoneCompetence", "true"));
 
         return new AbstractExtListSerializer<HydrantRecord>("fr.sdis83.remocra.domain.remocra.Hydrant retrieved.") {
@@ -388,7 +383,7 @@ public class HydrantController {
 
             @Override
             protected Long countRecords() {
-                Long total = Long.valueOf(hydrantRepository.countHydrants(itemFilterCountList));
+                Long total = Long.valueOf(hydrantRepository.countHydrants(itemFilterList));
                 return total;
             }
 

@@ -10,6 +10,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantAnomalie;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantImportctpErreur;
 import fr.sdis83.remocra.domain.remocra.Document;
+import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.domain.remocra.TypeDroit;
 import fr.sdis83.remocra.exception.ImportCTPException;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
@@ -783,13 +784,11 @@ public class HydrantRepository {
     }
 
     Result<Record> hydrantRecord = null;
+
+    String orgAndChildren = StringUtils.join(Organisme.getOrganismeAndChildren(utilisateurService.getCurrentUtilisateur().getOrganisme().getId().intValue()).toArray(), ",");
+
     List<HydrantRecord> hr = new ArrayList<HydrantRecord>();
-    StringBuffer sbReq = new StringBuffer( "WITH tournee AS ( SELECT h.id AS hydrant, string_agg(t.nom, ' ,') AS nom, t.id as idTournee")
-            .append(" FROM remocra.hydrant h")
-            .append(" JOIN remocra.hydrant_tournees ht ON ht.hydrant = h.id")
-            .append(" JOIN remocra.tournee t ON t.id = ht.tournees AND t.affectation = " + utilisateurService.getCurrentUtilisateur().getOrganisme().getId())
-            .append(" GROUP BY h.id, t.id)")
-            .append(" select h.id  as  id , h.code as code, ST_AsGeoJSON(h.geometrie) as jsonGeometrie, h.numero as numero, h.date_contr as dateContr,")
+    StringBuffer sbReq = new StringBuffer( "select h.id  as  id , h.code as code, ST_AsGeoJSON(h.geometrie) as jsonGeometrie, h.numero as numero, h.date_contr as dateContr,")
             .append(" case when char_length(h.voie)>0 and char_length(h.voie2)>0 then h.voie || ' - ' || h.voie2 else voie end as adresse,")
             .append(" h.dispo_terrestre as dispoTerrestre,")
             .append(" h.dispo_hbe as dispoHbe,")
@@ -797,14 +796,13 @@ public class HydrantRepository {
             .append(" c.nom as nomCommune,")
             .append(" thnd.nom as nomNatureDeci,")
             .append(" thn.nom as natureNom,")
-            .append(" t.idTournee as idTournee,")
-            .append(" t.nom as nomTournee,")
+            .append(" (SELECT COALESCE(string_agg(nom, ', ' order by nom), '') FROM remocra.tournee t where t.affectation in ("+orgAndChildren+") and ")
+            .append(" t.id in (SELECT tournees FROM remocra.hydrant_tournees ht where ht.hydrant = h.id)) as nomTournee,")
             .append(" (select count(*) from remocra.hydrant_anomalies ha where ha.hydrant = h.id AND ha.anomalies = (select tha.id from remocra.type_hydrant_anomalie tha where tha.code = 'INDISPONIBILITE_TEMP')) as indispoTemp")
             .append(" from remocra.hydrant h")
             .append(" join remocra.commune c on c.id = h.commune")
             .append(" join remocra.type_hydrant_nature_deci thnd on thnd.id = h.nature_deci")
             .append(" join remocra.type_hydrant_nature thn on thn.id = h.nature")
-            .append(" left join tournee t ON t.hydrant = h.id")
             .append(" where")
             .append(" " + condition)
             .append("order By ")
@@ -830,10 +828,7 @@ public class HydrantRepository {
     String condition = "1 = 1";
     for (ItemFilter itemFilter : itemFilters) {
       if ("tournee".equals(itemFilter.getFieldName())) {
-        condition+=" and idTournee = "  + Long.valueOf(itemFilter.getValue());
-      } else if ("zoneCompetenceSimplified".equals(itemFilter.getFieldName())){
-        Long zoneCompetenceId = utilisateurService.getCurrentZoneCompetenceId();
-        condition += " and h.geometrie @ (select st_simplify(zc.geometrie ,1) from remocra.zone_competence zc where  id ="  + zoneCompetenceId + ")" ;
+        condition+=" and h.id in  (select hydrant from remocra.hydrant_tournees where tournees = "  + Long.valueOf(itemFilter.getValue()) +")";
       } else if ("zoneCompetence".equals(itemFilter.getFieldName())) {
         Long zoneCompetenceId = utilisateurService.getCurrentZoneCompetenceId();
         condition += " and st_contains((select st_simplify(zc.geometrie ,1) from remocra.zone_competence zc where  id ="  +zoneCompetenceId + " ), h.geometrie)" ;
@@ -899,17 +894,11 @@ public class HydrantRepository {
   @Transactional
   public long countHydrants(List<ItemFilter> itemFilters) {
     String condition = this.getFilters(itemFilters);
-    StringBuffer sbReq = new StringBuffer( "WITH tournee AS ( SELECT h.id AS hydrant, string_agg(t.nom, ' ,') AS nom, t.id as idTournee")
-            .append(" FROM remocra.hydrant h")
-            .append(" JOIN remocra.hydrant_tournees ht ON ht.hydrant = h.id")
-            .append(" JOIN remocra.tournee t ON t.id = ht.tournees AND t.affectation = " + utilisateurService.getCurrentUtilisateur().getOrganisme().getId())
-            .append(" GROUP BY h.id, t.id)")
-            .append(" select count(h.id) as  total")
+    StringBuffer sbReq = new StringBuffer( " select count(h.id) as  total")
             .append(" from remocra.hydrant h")
             .append(" join remocra.commune c on c.id = h.commune")
             .append(" join remocra.type_hydrant_nature_deci thnd on thnd.id = h.nature_deci")
             .append(" join remocra.type_hydrant_nature thn on thn.id = h.nature")
-            .append(" left join tournee t on t.hydrant = h.id")
             .append(" where")
             .append(" " + condition);
 
