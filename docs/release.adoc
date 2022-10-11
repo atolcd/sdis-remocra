@@ -11,6 +11,19 @@ link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
 
+== v2.2.4.4
+
+=== FIX
+
+* Couverture hydraulique : correction du tracé de la couverture sur les voies non traversables et à sens unique
+* Module Point d'eau : correction calcul du total des hydrants dans le tableau
+* Module Point d'eau : correction des filtres sur la colonne Tournée non fonctionnels
+
+=== Mise à jour
+
+* Indiquer la valeur de version `2.2.4` dans le script build_containers.sh
+* Appliquer les patchs jusqu'au numéro 170 (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches[Disponibles ici]).
+
 == v2.2.4.3
 
 === FIX
