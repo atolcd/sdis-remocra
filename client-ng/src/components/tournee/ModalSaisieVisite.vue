@@ -412,9 +412,24 @@ export default {
       var str = "";
       _.forEach(JSON.parse(anomalies), idAno => {
         // On croise avec les données des anomalies pour retrouver le nom depuis l'id
-        var nomAnomalie = this.anomalies.filter(a => a.id === idAno)[0].nom;
-        str += (str !== "") ? ", "+nomAnomalie : ""+nomAnomalie;
-      })
+        var anomaliesFound = this.anomalies.filter(a => a.id === idAno);
+        if(anomaliesFound.length === 0) { // Gestion des anomalies si celles-ci sont attribuées mais désactivées
+         this.$nextTick(() => {
+           this.$notify({
+            group: 'remocra',
+            title: 'Aucune anomalie trouvée',
+            type: 'error',
+            text: 'Un PEI dispose d\'une anomalie ayant l\'identifiant '+idAno+' ne disposant pas de correspondance. L\'anomalie a peut-être été supprimée de la base ou désactivée',
+            duration: 6000
+          });
+        });
+        this.dataTournee = null;
+        } else {
+          var nomAnomalie = anomaliesFound[0].nom;
+          str += (str !== "") ? ", "+nomAnomalie : ""+nomAnomalie;
+        }
+
+      });
       return str;
     },
 
