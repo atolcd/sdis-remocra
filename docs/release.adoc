@@ -11,6 +11,18 @@ link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
 
+== v2.2.4.5
+
+=== Fonctionnalités
+
+* Mise en forme de la carte issue de la génération de la carte des tournées
+
+=== Mise à jour
+
+* Indiquer la valeur de version `2.2.4.5` dans le script build_containers.sh
+* Récupérer les images mises à disposition https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/var/remocra/html/images/remocra/tournees_recop[ici] et les placer dans le
+dossier `/var/remocra/html/images/remocra/tournees_recop/` (à créer s'il n'existe pas, en donnant les droits à l'utilisateur applicatif). Les images sont personnalisables 
+
 == v2.2.4.4
 
 === FIX
@@ -21,7 +33,7 @@ link:index{outfilesuffix}[Retour à l'accueil]
 
 === Mise à jour
 
-* Indiquer la valeur de version `2.2.4` dans le script build_containers.sh
+* Indiquer la valeur de version `2.2.4.4` dans le script build_containers.sh
 * Appliquer les patchs jusqu'au numéro 170 (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches[Disponibles ici]).
 
 == v2.2.4.3
