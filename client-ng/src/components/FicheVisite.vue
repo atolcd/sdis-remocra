@@ -132,9 +132,9 @@
               </div>
             </b-tab>
             <b-tab title="Observations">
-              <div class="row" :class="listeVisites[selectedRow].id !== undefined ? 'notActive' : ''">
+              <div class="row">
                 <div class="col-md-12">
-                  <b-form-textarea id="observations" v-model="listeVisites[selectedRow].observations" placeholder="Observations..." rows="3" size="sm" max-rows="6">
+                  <b-form-textarea :readonly="listeVisites[selectedRow].id !== undefined" id="observations" v-model="listeVisites[selectedRow].observations" placeholder="Observations..." rows="3" size="sm" max-rows="6" >
                   </b-form-textarea>
                 </div>
               </div>
