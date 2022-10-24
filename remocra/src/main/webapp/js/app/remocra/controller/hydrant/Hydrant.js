@@ -1341,7 +1341,10 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                       align: "right"
                    });
 
-                   doc.output('dataurlnewwindow');
+                   doc.setProperties({
+                       title: tournee.get("nom")
+                   });
+                   window.open(doc.output('bloburi'));
                  };
                  img.src = url;
              }
