@@ -32,7 +32,7 @@ public class TypeHydrantNatureAnomalieRepository {
     Condition condition = this.getConditions(contexteVisite);
 
     List<TypeHydrantAnomalieModel> list = context
-      .selectDistinct(TYPE_HYDRANT_ANOMALIE.CODE, TYPE_HYDRANT_ANOMALIE.NOM, TYPE_HYDRANT_SAISIE.CODE.as("contexte"))
+      .selectDistinct(TYPE_HYDRANT_ANOMALIE.CODE,TYPE_HYDRANT_ANOMALIE_NATURE.VAL_INDISPO_TERRESTRE, TYPE_HYDRANT_ANOMALIE.NOM, TYPE_HYDRANT_SAISIE.CODE.as("contexte"))
       .from(TYPE_HYDRANT_ANOMALIE)
       .join(TYPE_HYDRANT_ANOMALIE_NATURE).on(TYPE_HYDRANT_ANOMALIE_NATURE.ANOMALIE.eq(TYPE_HYDRANT_ANOMALIE.ID))
       .join(TYPE_HYDRANT_NATURE).on(TYPE_HYDRANT_NATURE.ID.eq(TYPE_HYDRANT_ANOMALIE_NATURE.NATURE))

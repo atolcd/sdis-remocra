@@ -26,7 +26,17 @@ public class TypeHydrantAnomalieModel {
     this.contexte = contexte;
   }
 
+  public Integer getValIndispoTerrestre() {
+    return valIndispoTerrestre;
+  }
+
+  public void setValIndispoTerrestre(Integer valIndispoTerrestre) {
+    this.valIndispoTerrestre = valIndispoTerrestre;
+  }
+
   String code;
+
+  Integer valIndispoTerrestre;
 
   String nom;
 
