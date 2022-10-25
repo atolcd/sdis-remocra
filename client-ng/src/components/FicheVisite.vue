@@ -78,22 +78,37 @@
           <b-tabs fill content-class="mt-3" active-nav-item-class="text-primary">
             <b-tab title="Mesures" active :disabled="!saisieDebitPression">
               <div :class="listeVisites[selectedRow].id !== undefined ? 'notActive' : ''">
-                <b-form-group label="Débit à 1 bar (m3/h) :" label-for="debit" label-cols-md="6">
-                  <b-form-input id="debit" v-model="listeVisites[selectedRow].debit" type="number" size="sm" :disabled="!saisieDebitPression"></b-form-input>
-                </b-form-group>
+                <div class="row">
+                  <div class="col-md-9">
+                    <b-form-group label="Débit à 1 bar (m3/h) :" label-for="debit" label-cols-md="5"  >
+                        <b-form-input id="debit" v-model="listeVisites[selectedRow].debit" type="number" size="sm" :disabled="!saisieDebitPression"></b-form-input>
+                    </b-form-group>
+                  </div>
+                  <p class="col-sm-3">{{this.getDerniereValeurDebitPression("debit")}}</p>
+                </div>
                 <!-- Si le debit nominal est renseigné on l'affiche sinon on affiche juste 'pression dynamique' -->
-                <b-form-group
-                :label="this.hydrant.debitNominal!==null ?
-                'Pression dynamique au débit nominal de ' + this.hydrant.debitNominal +' m3 (en bar)':
-                'Pression dynamique au débit nominal (en bar)'"
-                label-for="pressionDyn"
-                label-cols-md="6"
-                >
-                  <b-form-input id="pressionDyn" v-model="listeVisites[selectedRow].pressionDyn" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
-                </b-form-group>
-                <b-form-group label="Pression statique (bar) :" label-for="pression" label-cols-md="6">
-                  <b-form-input id="pression" v-model.number="listeVisites[selectedRow].pression" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
-                </b-form-group>
+                <div class="row">
+                  <div class="col-md-9">
+                    <b-form-group
+                    :label="this.hydrant.debitNominal!==null ?
+                    'Pression dynamique au débit nominal de ' + this.hydrant.debitNominal +' m3 (en bar)':
+                    'Pression dynamique au débit nominal (en bar)'"
+                    label-for="pressionDyn"
+                    label-cols-md="5"
+                    >
+                      <b-form-input id="pressionDyn" v-model="listeVisites[selectedRow].pressionDyn" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
+                    </b-form-group>
+                  </div>
+                  <p class="col-sm-3">{{this.getDerniereValeurDebitPression("pressionDyn")}}</p>
+                </div>
+                <div class="row">
+                  <div class="col-md-9">
+                    <b-form-group label="Pression statique (bar) :" label-for="pression" label-cols-md="5">
+                      <b-form-input id="pression" v-model.number="listeVisites[selectedRow].pression" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
+                    </b-form-group>
+                  </div>
+                  <p class="col-sm-3">{{this.getDerniereValeurDebitPression("pression")}}</p>
+                </div>
               </div>
             </b-tab>
             <b-tab class="anomalies-tab" title="Points d'attention">
@@ -717,7 +732,24 @@ export default {
         'addVisite': JSON.stringify(newVisite),
         'deleteVisite' : this.visitesASupprimer
       }
-    }
+    },
+
+    /**
+     * Permet de récupérer les anciennes valeurs saisies (débit et pression)
+     * @param nomValeur : libellé de l'ancienne valeur à récupérer
+     */
+     getDerniereValeurDebitPression(nomValeur) {
+      // On vérifie s'il s'agit d'une visite en cours de création
+      // Si ce n'est pas le cas, on affiche pas l'ancienne valeur
+      if(this.listeVisites[this.selectedRow].id === undefined){
+        for(var i = 1; i  < this.listeVisites.length -1; i++) {
+          if(this.listeVisites[i].ctrl_debit_pression) {
+            return "(Ancienne valeur saisie : "+this.listeVisites[i][nomValeur]+")"
+          }
+        }
+      }
+      return null
+    },
   }
 };
 </script>
