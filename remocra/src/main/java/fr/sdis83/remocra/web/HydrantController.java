@@ -366,6 +366,10 @@ public class HydrantController {
 
         itemFilterList.add(new ItemFilter("zoneCompetence", "true"));
 
+        // Par défaut, ajoute un tri sur le numéro aux éventuels critères de tri passés en paramètre
+        sortList.add(new ItemSorting("numero", "ASC"));
+
+
         return new AbstractExtListSerializer<HydrantRecord>("fr.sdis83.remocra.domain.remocra.Hydrant retrieved.") {
 
             @Override

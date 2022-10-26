@@ -35,7 +35,6 @@ import org.joda.time.Period;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
-import org.jooq.SortOrder;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.NameTokenizers;
 import org.modelmapper.jooq.RecordValueReader;
@@ -49,6 +48,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -774,13 +774,15 @@ public class HydrantRepository {
   }
 
   public List<HydrantRecord> getAll(List<ItemFilter> itemFilters, Integer limit, Integer start, List<ItemSorting> itemSortings) {
-   String condition = this.getFilters(itemFilters);
-    //Par défaut on tri par id  DESC
-    String sortField = "id";
-    SortOrder sortOrder = SortOrder.DESC;
-    for (ItemSorting itemSorting : itemSortings) {
-      sortField = itemSorting.getFieldName();
-      sortOrder = itemSorting.isDesc() ? SortOrder.DESC : SortOrder.ASC;
+    String condition = this.getFilters(itemFilters);
+
+    String sortFields = "numero";
+    if(itemSortings.size() > 0) {
+      Collection<String> listOrderFields = new ArrayList<String>();
+      for(ItemSorting item : itemSortings) {
+        listOrderFields.add(item.getFieldName()+" "+item.getDirection());
+      }
+      sortFields = StringUtils.join(listOrderFields.toArray(), ",");
     }
 
     Result<Record> hydrantRecord = null;
@@ -803,14 +805,11 @@ public class HydrantRepository {
             .append(" join remocra.commune c on c.id = h.commune")
             .append(" join remocra.type_hydrant_nature_deci thnd on thnd.id = h.nature_deci")
             .append(" join remocra.type_hydrant_nature thn on thn.id = h.nature")
-            .append(" where")
-            .append(" " + condition)
-            .append("order By ")
-            .append(" " + sortField)
-            .append(" " + sortOrder)
+            .append(" where "+condition)
+            .append(" order by "+sortFields)
             .append(" limit " + limit)
             .append(" offset " + start);
-    
+
     hydrantRecord = context.fetch(sbReq.toString());
 
     ModelMapper modelMapper = new ModelMapper();
