@@ -476,6 +476,13 @@ Méthodes disponibles pour la symbologie des PEI : link:../pei/Symbologie_PEI{ou
 * Distance de déplacement minimale pour laquelle afficher un avertissement lors de l''import de Contrôles Techniques Périodiques
 * Par défaut : ```10```
 
+=== HYDRANT_GENERATION_CARTE_TOURNEE ===
+* Active le module de génération de carte des tournées dans le module Point d'eau
+* Le module de génération nécessite qu'une https://geoserver-pdf.readthedocs.io/en/stable/webadmin/data/layergroups.html[aggrégation de couche] nommée ```TOURNEE``` soit configurée sur le serveur Geoserver. Il est recommandé que l'aggrégation de couche contienne a minima :
+** Un fond de plan
+** La couche des hydrants. Le module enverra l'identifiant de la tournée via le https://docs.geoserver.org/stable/en/user/data/database/sqlview.html#parameterizing-sql-views[VIEWPARAM] ```tournee_id``` permettant de discriminer les hydrants à retourner
+* Par défaut : ```false```
+
 === NIVEAU_TRACABILITE ===
 * Niveau de traçabilité des points d'eau (valeurs admises : organisme , utilisateur)
 * Par défaut : ```organisme```

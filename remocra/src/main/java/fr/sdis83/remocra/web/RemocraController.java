@@ -160,6 +160,8 @@ public class RemocraController {
 
         model.addAttribute("hydrant_deplacement_dist_warn", paramConfService.getHydrantDeplacementDistWarn());
 
+        model.addAttribute("hydrant_generation_carte_tournee", paramConfService.getHydrantGenerationCarteTournee());
+
         // Définit la complexité du mot de passe
         model.addAttribute("complexite_password", paramConfService.getComplexitePassword());
 

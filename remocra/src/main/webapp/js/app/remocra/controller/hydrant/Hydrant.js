@@ -1264,7 +1264,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
            FORMAT : 'image/png',
            SRS : 'EPSG:2154',
            BBOX : bounds.toBBOX(),
-           VIEWPARAMS : "tourne_id:" + tournee.getId(),
+           VIEWPARAMS : "tournee_id:" + tournee.getId(),
            WIDTH: mode == "paysage" ?  1150 : 827,
            HEIGHT: mode == "paysage" ?  805 : 1170
         };

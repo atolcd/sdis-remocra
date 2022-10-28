@@ -54,7 +54,8 @@ Ext.define('Sdis.Remocra.features.hydrants.TabTournee', {
             itemId: 'downloadMapTournee',
             tooltip: 'Télécharger la carte des tournées',
             iconCls: 'download-atlasIcon',
-            disabled: true
+            disabled: true,
+            hidden: !HYDRANT_GENERATION_CARTE_TOURNEE
         },{
           text: 'Saisir la visite',
           itemId: 'saisirVisite',

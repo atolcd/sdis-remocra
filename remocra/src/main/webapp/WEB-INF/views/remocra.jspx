@@ -88,6 +88,7 @@
 			var HYDRANT_HIGHLIGHT_DUREE = ${hydrant_highlight_duree};
 			var HYDRANT_COLONNES = ${hydrant_colonnes};
 			var HYDRANT_ZOOM_NUMERO = ${hydrant_zoom_numero};
+			var HYDRANT_GENERATION_CARTE_TOURNEE = ${hydrant_generation_carte_tournee}
 			var REMOCRA_DEFAULT_ORIENTATION = { x : '${orientationX}', y : '${orientationY}' };
 
 			var COORDONNEES_FORMAT_AFFICHAGE = '${coordonnees_format_affichage}';

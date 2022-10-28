@@ -278,6 +278,10 @@ public class ParamConfService {
         return (Boolean) this.getValue(ParamConfParam.HYDRANT_RENUMEROTATION_ACTIVATION, true);
     }
 
+    public Boolean getHydrantGenerationCarteTournee() {
+        return (Boolean) this.getValue(ParamConfParam.HYDRANT_GENERATION_CARTE_TOURNEE, false);
+    }
+
 
     public String getEmailDepotDelib() {
         return (String) this.getValue(ParamConfParam.EMAIL_DEST_DEPOT_DELIB);
