@@ -1208,9 +1208,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         if ( mode == "paysage" ) {
 
             Y = X * 0.7070;
-            //Si le nouveau Y est inférieur à celui d'origine on recalcul le X à la place
-            if (Ymax - Ymin < bounds.top - bounds.bottom) {
-
+            //Si le nouveau Y est inférieur à celui d'origine on recalcule le X à la place
+            if (Y < bounds.top - bounds.bottom) {
                 X = Y * 1.4142;
                 Xmax = Xcentroid + X/2;
                 Xmin = Xcentroid - X/2;
@@ -1218,7 +1217,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 Ymax = Ycentroid + Y/2;
                 Ymin = Ycentroid - Y/2;
             }
-            //Si l'un des deux et inférieur a la taille minimum on applique redimenssionne a la taille mini
+            //Si l'un des deux et inférieur à la taille minimum on redimensionne à la taille mini
             if(X<685 || Y<534){
                 X=685;
                 Y=534;
@@ -1230,12 +1229,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         }else {
 
            X = Y * 0.7070;
-
-           //Si le nouveau X est inférieur à celui d'origine on recalcul le Y à la place
-           if (Xmax - Xmin < bounds.right - bounds.left) {
-
+           //Si le nouveau X est inférieur à celui d'origine on recalcule le Y à la place
+           if (X < bounds.right - bounds.left) {
                 Y = X * 1.4142;
-
                 Ymax = Ycentroid + Y/2;
                 Ymin = Ycentroid - Y/2;
             }else{ //sinon on recalcul le Xmax et le Xmin
@@ -1243,7 +1239,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 Xmin = Xcentroid - X/2;
             }
 
-            //Si l'un des deux et inférieur a la taille minimum on applique redimenssionne a la taille mini
+            //Si l'un des deux et inférieur à la taille minimum on redimensionne à la taille mini
             if(X<534 || Y<685){
                 X=534;
                 Y=685;
@@ -1312,7 +1308,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                      align: "left"
                    });
 
-                   doc.text("Points d'eau : "+tournee.get("hydrantCount"), widthPage - 5, heightEnTete/2, {
+                   doc.text("Nb points d'eau : "+tournee.get("hydrantCount"), widthPage - 5, heightEnTete/2, {
                      baseline: "middle",
                      align: "right"
                    });
@@ -1326,8 +1322,14 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                    var imageLogo = imageCollection["logo_sdis"];
                    doc.addImage(imageLogo, 'PNG', 0, (heightPage-heightPiedPage), imageLogo.width*(heightPiedPage)/imageLogo.height, heightPiedPage);
 
-                   doc.setFontSize(9);
-                   doc.text("Document à usage interne uniquement. Généré le "+currentDate, widthPage/2, (heightPage-(heightPiedPage/2)), {
+                   doc.setFontSize(12);
+                   doc.text("Tournée de reconnaissance opérationnelle des points d’eau incendie", widthPage/2,  (heightPage-(heightPiedPage/2) - 3), {
+                    baseline : "middle",
+                    align: "center"
+                  });
+
+                  doc.setFontSize(9);
+                   doc.text("Document à usage interne uniquement - Généré le "+currentDate, widthPage/2, (heightPage-(heightPiedPage/2) + 3), {
                      baseline : "middle",
                      align: "center"
                    });
