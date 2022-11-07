@@ -79,7 +79,7 @@
 			var REMOCRA_USR_ORGANISME = '${organisme}';
 			var REMOCRA_USR_RIGHTS = ${userRights};
 			
-			var REMOCRA_ENTETE_MESSAGE = '${message_entete}';
+			var REMOCRA_ENTETE_MESSAGE = '<spring:escapeBody htmlEscape="false" javaScriptEscape="true">${message_entete}</spring:escapeBody>';
 			var REMOCRA_MENTION_CNIL = '${mention_cnil}';
 			
 			var HYDRANT_CFG = '${hydrant_cfg}';
