@@ -1,12 +1,10 @@
 package fr.sdis83.remocra.web;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import fr.sdis83.remocra.domain.remocra.Organisme;
-import fr.sdis83.remocra.domain.remocra.Tournee;
 import fr.sdis83.remocra.repository.HydrantRepository;
 import fr.sdis83.remocra.repository.HydrantVisiteRepository;
 import fr.sdis83.remocra.service.TourneeService;
@@ -256,7 +254,7 @@ public class HydrantController {
             if (!result) {
                 return new SuccessErrorExtSerializer(result, "Déplacement du point d'eau non autorisé").serialize();
             }
-            hydrantService.deplacer(id, point, srid);
+            hydrantRepository.deplacer(id, point, srid);
         } catch (Exception e) {
             return new SuccessErrorExtSerializer(false, "Problème survenu lors du déplacement du point d'eau").serialize();
         }
