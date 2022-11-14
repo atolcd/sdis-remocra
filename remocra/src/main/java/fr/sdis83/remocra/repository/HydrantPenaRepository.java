@@ -113,13 +113,11 @@ public class HydrantPenaRepository {
       .set(HYDRANT_PENA.Q_APPOINT, pena.getQAppoint())
       .set(HYDRANT_PENA.MATERIAU, pena.getMateriau())
       .set(HYDRANT_PENA.HBE, pena.getHbe())
+      .set(HYDRANT_PENA.COORDDFCI, pena.getCoorddfci())
       .where(HYDRANT_PENA.ID.eq(pena.getId()))
       .execute();
 
-    return context
-      .selectFrom(HYDRANT_PENA)
-      .where(HYDRANT_PENA.ID.eq(pena.getId()))
-      .fetchOneInto(HydrantPena.class);
+    return this.getById(pena.getId());
   }
 
   /**
@@ -137,9 +135,25 @@ public class HydrantPenaRepository {
       .set(HYDRANT_PENA.HBE, pena.getHbe())
       .execute();
 
-    return context
-      .selectFrom(HYDRANT_PENA)
-      .where(HYDRANT_PENA.ID.eq(pena.getId()))
-      .fetchOneInto(HydrantPena.class);
+    return this.getById(pena.getId());
+  }
+
+  public HydrantPena getById(Long id) {
+    return context.selectFrom(HYDRANT_PENA).where(HYDRANT_PENA.ID.eq(id)).fetchOneInto(HydrantPena.class);
+  }
+
+  /**
+   * Met à jour coorDdfci
+   * @param id identifiant du PENA
+   * @param coorDdfci nouvelle valeur
+   * @return l'hydrant modifié
+   */
+  public HydrantPena updateCoorDdfci(Long id, String coorDdfci) {
+    context.update(HYDRANT_PENA)
+            .set(HYDRANT_PENA.COORDDFCI, coorDdfci)
+            .where(HYDRANT_PENA.ID.eq(id))
+            .execute();
+
+    return this.getById(id);
   }
 }

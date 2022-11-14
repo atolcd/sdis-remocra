@@ -12,7 +12,6 @@ import java.util.Map;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
-import javax.sql.DataSource;
 
 import flexjson.JSONSerializer;
 import com.vividsolutions.jts.geom.Coordinate;
@@ -34,14 +33,11 @@ import com.vividsolutions.jts.geom.Point;
 import flexjson.JSONDeserializer;
 import fr.sdis83.remocra.domain.remocra.Commune;
 import fr.sdis83.remocra.domain.remocra.Hydrant;
-import fr.sdis83.remocra.domain.remocra.HydrantPena;
-import fr.sdis83.remocra.domain.remocra.HydrantPibi;
 import fr.sdis83.remocra.domain.remocra.Tournee;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantNature;
 import fr.sdis83.remocra.domain.remocra.ZoneSpeciale;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.util.GeometryUtil;
-import fr.sdis83.remocra.util.NumeroUtil;
 import fr.sdis83.remocra.web.message.ItemSorting;
 
 @Configuration
@@ -50,8 +46,6 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
     @Autowired
     private UtilisateurService utilisateurService;
 
-    @Autowired
-    DataSource dataSource;
 
     public HydrantService() {
         super(Hydrant.class);
@@ -424,36 +418,6 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
                 .setParameter("zoneCompetence",
                         utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie());
         return query.getResultList();
-    }
-
-    // Point
-    @Transactional
-    public void deplacer(Long id, Point point, Integer srid)
-            throws CRSException, IllegalCoordinateException, BusinessException {
-        Hydrant h = Hydrant.findHydrant(id);
-        if (h == null) {
-            BusinessException e = new BusinessException("L'hydrant n'existe pas en base");
-            logger.error(e.getMessage());
-            throw e;
-        }
-        h.setDateGps(null);
-        h.setDateModification(new Date());
-        h.setUtilisateurModification(utilisateurService.getCurrentUtilisateur());
-        h.setAuteurModificationFlag("USER");
-        point.setSRID(srid);
-        h.setGeometrie(point);
-        h.persist();
-
-        if (h instanceof HydrantPena) {
-            HydrantPena hp = (HydrantPena) h;
-            try {
-                String coordDFCI = GeometryUtil.findCoordDFCIFromGeom(dataSource, point);
-                hp.setCoordDFCI(coordDFCI);
-                hp.merge();
-            } catch (Exception e) {
-                logger.debug("Problème lors de la requête sur la table remocra_referentiel.carro_dfci", e);
-            }
-        }
     }
 
     /**

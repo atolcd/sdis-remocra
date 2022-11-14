@@ -9,26 +9,32 @@ import fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantAnomalie;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantImportctpErreur;
+import fr.sdis83.remocra.domain.remocra.Commune;
 import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.domain.remocra.TypeDroit;
+import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.exception.ImportCTPException;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.service.HydrantService;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.util.DocumentUtil;
+import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.util.JSONUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.model.HydrantRecord;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.cts.IllegalCoordinateException;
+import org.cts.crs.CRSException;
 import org.joda.time.DateTime;
 import org.joda.time.Instant;
 import org.joda.time.Period;
@@ -46,6 +52,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.sql.DataSource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -90,11 +97,21 @@ public class HydrantRepository {
   @Autowired
   UtilisateurService utilisateurService;
 
+  @Autowired
+  DataSource dataSource;
+
   @PersistenceContext
   protected EntityManager entityManager;
 
   @Autowired
   private AuthoritiesUtil authUtils;
+
+  public static final String AUTEUR_MODIFICATION_FLAG = "USER";
+  public static final String TYPE_HYDRANT_PENA = "PENA";
+  public static final String TYPE_HYDRANT_PIBI = "PIBI";
+
+
+  private final Logger logger = Logger.getLogger(getClass());
 
   public HydrantRepository() {
   }
@@ -118,7 +135,7 @@ public class HydrantRepository {
     Map<String, Object> geometrieData = objectMapper.readValue(data.get("geometrie").toString(), new TypeReference<Map<String, Object>>() {
     });
 
-    Hydrant hydrant = context.selectFrom(HYDRANT).where(HYDRANT.ID.eq(id)).fetchOneInto(Hydrant.class);
+    Hydrant hydrant = this.getById(id);
     if (hydrant == null) {
       throw new Exception("Le pei spécifié n'existe pas");
     }
@@ -154,7 +171,7 @@ public class HydrantRepository {
     h.setGeometrie(geom);
     h.setUtilisateurModification(utilisateurService.getCurrentUtilisateur().getId());
     h.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme().getId());
-    h.setAuteurModificationFlag("USER");
+    h.setAuteurModificationFlag(AUTEUR_MODIFICATION_FLAG);
     h.setDateModification(new Instant());
 
     this.updateHydrant(h);
@@ -164,9 +181,9 @@ public class HydrantRepository {
     this.hydrantVisiteRepository.addVisiteFromFiche(id, visitesData.get("addVisite").toString());
 
     // Caractéristiques techniques
-    if ("PIBI".equalsIgnoreCase(typeHydrant)) {
+    if (TYPE_HYDRANT_PIBI.equalsIgnoreCase(typeHydrant)) {
       this.hydrantPibiRepository.updateHydrantPibiFromFiche(id, data);
-    } else if ("PENA".equalsIgnoreCase(typeHydrant)) {
+    } else if (TYPE_HYDRANT_PENA.equalsIgnoreCase(typeHydrant)) {
       this.hydrantPenaRepository.updateHydrantPenaFromFiche(id, data);
     }
 
@@ -239,14 +256,14 @@ public class HydrantRepository {
     h.setGeometrie(geom);
     h.setUtilisateurModification(utilisateurService.getCurrentUtilisateur().getId());
     h.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme().getId());
-    h.setAuteurModificationFlag("USER");
+    h.setAuteurModificationFlag(AUTEUR_MODIFICATION_FLAG);
     h.setDateModification(new Instant());
 
     Long id = this.createHydrant(h);
 
-    if ("PIBI".equalsIgnoreCase(typeHydrant)) {
+    if (TYPE_HYDRANT_PIBI.equalsIgnoreCase(typeHydrant)) {
       this.hydrantPibiRepository.createHydrantPibiFromFiche(id, data);
-    } else if ("PENA".equalsIgnoreCase(typeHydrant)) {
+    } else if (TYPE_HYDRANT_PENA.equalsIgnoreCase(typeHydrant)) {
       this.hydrantPenaRepository.createHydrantPenaFromFiche(id, data);
     }
 
@@ -361,10 +378,7 @@ public class HydrantRepository {
             .where(HYDRANT.ID.eq(h.getId()))
             .execute();
 
-    return context
-            .selectFrom(HYDRANT)
-            .where(HYDRANT.ID.eq(h.getId()))
-            .fetchOneInto(Hydrant.class);
+    return this.getById(h.getId());
   }
 
   /**
@@ -902,5 +916,64 @@ public class HydrantRepository {
             .append(" " + condition);
 
     return (Long) context.fetchOne(sbReq.toString()).getValue("total");
+  }
+
+  public Hydrant getById(Long id) {
+    return context.selectFrom(HYDRANT).where(HYDRANT.ID.eq(id)).fetchOneInto(Hydrant.class);
+  }
+
+  /**
+   * Permet d'update la position d'un hydrant en prenant en compte le changement de commune s'il y a.
+   * @param id identifiant de l'hydrant
+   * @param point la position de l'hydrant
+   * @param srid
+   * @return l'hydrant modifié
+   * @throws BusinessException
+   */
+  private Hydrant updateHydrantDeplacement(Long id, Point point, Integer srid) throws BusinessException {
+    Hydrant h = this.getById(id);
+    if (h == null) {
+      BusinessException e = new BusinessException("L'hydrant n'existe pas en base");
+      throw e;
+    }
+
+    h.setDateGps(null);
+    h.setDateModification(new Instant());
+    h.setUtilisateurModification(utilisateurService.getCurrentUtilisateur().getId());
+    h.setAuteurModificationFlag(AUTEUR_MODIFICATION_FLAG);
+    h.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme().getId());
+    point.setSRID(srid);
+    h.setGeometrie(point);
+
+    // Gestion de la commune
+    List<Commune> listeCommune = Commune.findCommunesByPoint(srid, point.toString());
+    if(!listeCommune.isEmpty()) {
+      h.setCommune(listeCommune.get(0).getId());
+    }
+    return this.updateHydrant(h);
+  }
+
+  /**
+   * Permet de déplacer un hydrant depuis la carte
+   * @param id
+   * @param point
+   * @param srid
+   * @throws CRSException
+   * @throws IllegalCoordinateException
+   * @throws BusinessException
+   */
+  public void deplacer(Long id, Point point, Integer srid)
+          throws CRSException, IllegalCoordinateException, BusinessException {
+    fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant h =
+            this.updateHydrantDeplacement(id, point, srid);
+
+    if(TYPE_HYDRANT_PENA.equalsIgnoreCase(h.getCode())) {
+      try {
+        String coordDFCI = GeometryUtil.findCoordDFCIFromGeom(dataSource, point);
+        hydrantPenaRepository.updateCoorDdfci(id, coordDFCI);
+      } catch (Exception e) {
+          logger.debug("Problème lors de la requête sur la table remocra_referentiel.carro_dfci", e);
+      }
+    }
   }
 }
