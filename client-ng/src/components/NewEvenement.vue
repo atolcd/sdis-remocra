@@ -191,7 +191,7 @@ export default {
       this.showInterventions = false
       this.$root.$emit('bv::hide::popover')
       this.title = 'Nouvel évènement'
-      this.showTabComplement()
+      this.loadComplement()
       this.$modal.show('modalEvent'+this.criseId)
     },
     createCartoEvent(criseId, natureId, wktfeaturegeom) {
@@ -206,7 +206,7 @@ export default {
           this.form.type = response.data.data[0].id
           this.disableNatures = true
           this.title = 'Nouvel évènement'
-          this.showTabComplement()
+          this.loadComplement()
           this.$modal.show('modalEvent'+ criseId)
         }
       }).catch(function(error) {
