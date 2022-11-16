@@ -18,7 +18,7 @@ declare
     description_patch varchar;
 begin
     -- Métadonnées du patch
-    numero_patch := 171;
+    numero_patch := 172;
     description_patch := 'Traçabilité : Changement auteur modif';
 
     -- Vérification
