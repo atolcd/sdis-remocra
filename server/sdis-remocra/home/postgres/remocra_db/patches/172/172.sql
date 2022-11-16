@@ -138,7 +138,7 @@ SET auteur_modification =
     ELSE auteur_modif.auteur
   END
 FROM auteur_modif
-WHERE auteur_modif.visite = hv.id
+WHERE auteur_modif.visite = hv.id;
 
 
 
@@ -154,7 +154,7 @@ id_hydrant, numero, geometrie, insee, commune, lieu_dit, voie, carrefour, comple
 hbe, positionnement, materiau, vol_constate, capacite,
 diametre, debit, debit_max, pression, pression_dyn, marque, modele, pression_dyn_deb, domaine,
 nature_deci, numero_voie, suffixe_voie, niveau, gestionnaire, site, autorite_deci, en_face, jumele, dispositif_inviolabilite, reservoir, service_eaux, debit_renforce, type_reseau_canalisation, type_reseau_alimentation, diametre_canalisation, surpresse, additive, illimitee, incertaine, sp_deci,
-utilisateur_modification, organisme, COALESCE(auteur_modification_flag, 'ETL'))
+utilisateur_modification, organisme, auteur_modification_flag)
 SELECT
 txid_current() ,p_operation,  now() as date_operation,
 h.id, h.numero, h.geometrie, c.insee, c.nom, h.lieu_dit, h.voie, h.voie2, h.complement, h.agent1, h.agent2, h.date_recep, h.date_reco, h.date_contr, h.date_verif, h.dispo_terrestre, h.dispo_hbe, n.nom,  th.nom, array_agg(anomalie.nom), h.observation,
@@ -301,7 +301,7 @@ CASE
   ELSE auteur_modif.auteur
 END
 FROM auteur_modif
-WHERE auteur_modif.traca_hydrant = h.id
+WHERE auteur_modif.traca_hydrant = h.id;
 
 -- Contenu réel du patch fin
 --------------------------------------------------
