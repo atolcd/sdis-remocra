@@ -3,7 +3,6 @@ package fr.sdis83.remocra.web;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
-import fr.sdis83.remocra.service.ZoneCompetenceService;
 import org.apache.http.*;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -21,7 +20,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -35,6 +33,9 @@ import java.util.Map;
 public class RedashController {
 
     private final Logger log = Logger.getLogger(getClass());
+
+    // Toutes les deux minutes, on refresh les éléments du dashboard
+    private static final int NB_SECONDES_REFRESH = 120;
 
     @Autowired
     private UtilisateurService utilisateurService;
@@ -65,6 +66,7 @@ public class RedashController {
             UriComponents c = b.queryParam("p_utilisateur",u.getId())
                     .queryParam("p_zone_competence",zoneCompetence)
                     .queryParam("p_organisme",u.getOrganisme().getId())
+                    .queryParam("refresh", NB_SECONDES_REFRESH)
                     .build();
             String targetURL = c.toUriString();
             JSONObject json = new JSONObject();
@@ -72,8 +74,9 @@ public class RedashController {
             params.put("p_utilisateur",String.valueOf(u.getId()));
             params.put("p_zone_competence", String.valueOf(zoneCompetence));
             params.put("p_organisme",String.valueOf(u.getOrganisme().getId()));
+            params.put("refresh",String.valueOf(NB_SECONDES_REFRESH));
             json.put("parameters",params );
-            json.put("max_age", 600);
+            json.put("max_age", 120);
             StringEntity parameters = new StringEntity(json.toString());
 
             log.info("Proxy corr vers : " + targetURL);
