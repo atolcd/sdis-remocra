@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -301,15 +302,15 @@ public class HydrantVisitesUseCase {
       .limit(1)
       .fetchOneInto(HydrantVisite.class);
 
-    TypeHydrantAnomalie indispoTemporaire = context
+    Collection<TypeHydrantAnomalie> anomaliesSysteme = context
       .selectFrom(TYPE_HYDRANT_ANOMALIE)
-      .where(TYPE_HYDRANT_ANOMALIE.CODE.eq("INDISPONIBILITE_TEMP"))
-      .fetchOneInto(TypeHydrantAnomalie.class);
+      .where(TYPE_HYDRANT_ANOMALIE.CRITERE.isNull())
+      .fetchInto(TypeHydrantAnomalie.class);
 
-    // Suppression des anomalies (hors indispo temporaires) enregistrées de cet hydrant
+    // Suppression des anomalies (hors anomalies système) enregistrées de cet hydrant
     context
       .deleteFrom(HYDRANT_ANOMALIES)
-      .where(HYDRANT_ANOMALIES.HYDRANT.eq(hydrantId).and(HYDRANT_ANOMALIES.ANOMALIES.notEqual(indispoTemporaire.getId())))
+      .where(HYDRANT_ANOMALIES.HYDRANT.eq(hydrantId).and(HYDRANT_ANOMALIES.ANOMALIES.notIn(anomaliesSysteme)))
       .execute();
 
     // Ajout des anomalies de la visite la plus récente
