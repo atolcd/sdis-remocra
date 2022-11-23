@@ -11,6 +11,44 @@ link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
 
+== v2.2.4.6
+
+=== Fonctionnalités
+
+* Affiche les valeurs de la dernière visite lors de la saisie d'une nouvelle visite de contrôle débit et pression
+
+=== Modifications spécifiques
+
+* SDIS 95
+** Met en place la synchronisation avec le SGO
+
+* SDIS 53
+** Ajoute des règles spécifiques pour définir les PEI en anomalie
+
+=== FIX
+
+* Traçabilité
+** Prend en compte les organismes
+
+* Points d'eau
+** Corrige le tri par défaut de la liste
+** Alerte si un PEI a une anomalie désactivée en base lors de la saisie de visite en masse
+** Renumérote automatiquement le PEI et lui affecte la bonne commune lors d'un déplacement
+** Corrige le téléchargement de la carte des tournées sous Chrome
+** Ajoute le scroll du champ "Observations" dans la fiche PEI
+
+* Tournées
+** Modifie les styles et l'affichage
+
+* Accueil
+** Gère les caractères spéciaux dans les messages d'en-tête
+
+=== Mise à jour
+
+* Indiquer la valeur de version `2.2.4.6` dans le script build_containers.sh
+* Appliquer les patchs jusqu'au numéro 173 (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches[Disponibles ici]).
+** Si concerné, appliquer également les patches spécifiques en respectant l'ordre numérique des patches https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis[selon votre code SDIS]
+
 == v2.2.4.5
 
 === Fonctionnalités
