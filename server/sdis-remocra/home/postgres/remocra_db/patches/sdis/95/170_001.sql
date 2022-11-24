@@ -22,4 +22,5 @@ JOIN remocra.type_hydrant_anomalie tha ON tha.id = ha.anomalies
 JOIN remocra_sgo.anomalies a ON a.code_anomalie_remocra = tha.code;
 
 GRANT SELECT ON remocra_sgo.hydrant_anomalies TO systeletl;
-GRANT UPDATE (code_anomalie_sgo) ON TABLE remocra_sgo.hydrant_anomalies TO systeletl;
+GRANT SELECT ON remocra_sgo.anomalies TO systeletl;
+GRANT UPDATE (code_anomalie_sgo) ON TABLE remocra_sgo.anomalies TO systeletl;
