@@ -867,9 +867,9 @@ public class HydrantRepository {
         if (nbMonths > 0) {
           datePrive = datePrive.plus(Period.months(nbMonths));
           datePublic = datePublic.plus(Period.months(nbMonths));
-          if(nbMonths != 0) {
-            condition += " and case when thnd.code = 'PRIVE' then h.date_reco <= '" + datePrive.toDate() + "'::date else h.date_reco <='" + datePublic.toDate() + "'::date end";
-          }
+        }
+        if(nbMonths != 0) {
+          condition += " and case when thnd.code = 'PRIVE' then h.date_reco <= '" + datePrive.toDate() + "'::date else h.date_reco <='" + datePublic.toDate() + "'::date end";
         }
       } else if ("dateContr".equals(itemFilter.getFieldName())) {
         Integer nbMonths = Integer.valueOf(itemFilter.getValue());
