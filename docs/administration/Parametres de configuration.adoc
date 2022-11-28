@@ -483,6 +483,12 @@ Méthodes disponibles pour la symbologie des PEI : link:../pei/Symbologie_PEI{ou
 ** La couche des hydrants. Le module enverra l'identifiant de la tournée via le https://docs.geoserver.org/stable/en/user/data/database/sqlview.html#parameterizing-sql-views[VIEWPARAM] ```tournee_id``` permettant de discriminer les hydrants à retourner
 * Par défaut : ```false```
 
+=== HYDRANT_METHODE_TRI_ALPHANUMERIQUE ===
+* Détermine le tri effectué sur le numéro des PEI au sein de l'application
+** Si coché, effectue un tri alphanumérique plus adapté aux SDIS ayant une numérotation basée sur des caractère alphabétiques
+** Le tri naturel est plus adapté aux SDIS ayant une numérotation basée sur des caractères numériques
+* Par défaut : ```false```
+
 === NIVEAU_TRACABILITE ===
 * Niveau de traçabilité des points d'eau (valeurs admises : organisme , utilisateur)
 * Par défaut : ```organisme```

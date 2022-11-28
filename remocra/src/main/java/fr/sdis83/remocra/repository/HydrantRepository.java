@@ -790,11 +790,24 @@ public class HydrantRepository {
   public List<HydrantRecord> getAll(List<ItemFilter> itemFilters, Integer limit, Integer start, List<ItemSorting> itemSortings) {
     String condition = this.getFilters(itemFilters);
 
-    String sortFields = "numero";
+    boolean triAlphaNumerique = this.paramConfService.getHydrantMethodeTriAlphanumerique();
+
+    String sortFields = (triAlphaNumerique) ? "numero ASC" : "length(numero) ASC, numero ASC"; // Critères de tri par défaut si aucun renseigné
+
     if(itemSortings.size() > 0) {
       Collection<String> listOrderFields = new ArrayList<String>();
+      boolean hasNumero = false;
       for(ItemSorting item : itemSortings) {
+        if("numero".equals(item.getFieldName())) {
+          hasNumero = true;
+          if(!triAlphaNumerique) { // Un tri sur le numéro se transforme automatiquement en tri naturel (sauf paramétrage contraire)
+            listOrderFields.add("length(numero) "+item.getDirection());
+          }
+        }
         listOrderFields.add(item.getFieldName()+" "+item.getDirection());
+      }
+      if(!hasNumero) {
+        listOrderFields.add(sortFields);
       }
       sortFields = StringUtils.join(listOrderFields.toArray(), ",");
     }
