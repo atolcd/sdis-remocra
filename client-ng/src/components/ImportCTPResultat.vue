@@ -40,7 +40,7 @@
     </div>
     <template #modal-footer="">
       <b-button size="sm" type="submit" variant="primary" @click="exportResultat">Exporter le résultat du controle des données</b-button>
-      <b-button size="sm" type="submit" variant="primary" @click="importControle" :disabled="nbCTValides === 0">Importer les contrôles techniques valides</b-button>
+      <b-button size="sm" type="submit" variant="primary" @click="importControle" :disabled="nbCTValides === 0 || importDejaFait">Importer les contrôles techniques valides</b-button>
       <b-button size="sm" type="reset"  variant="secondary" @click="$bvModal.hide('importCTPResultat')">Annuler</b-button>
     </template>
     <notifications group="remocra" position="top right" animation-type="velocity" :duration="3000" />
@@ -65,7 +65,8 @@ export default {
        nbCTRejetes: null,
        nbCTRejetesNR: null,
        fullTitle: null,
-       dataVisites: []
+       dataVisites: [],
+       importDejaFait: false,
     }
   },
 
@@ -108,6 +109,9 @@ export default {
       return item.bilan;
     },
     importControle() {
+      // On précise que l'import des CTP a déjà été fait pour éviter que l'utilisateur réimporte les CTP valides
+      this.importDejaFait = true
+
       var formData = new FormData();
       formData.append('visites', JSON.stringify(this.dataVisites));
       loadProgressBar({
