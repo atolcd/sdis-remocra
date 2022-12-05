@@ -1,10 +1,12 @@
+DROP VIEW IF EXISTS remocra_sgo.hydrant;
+
 CREATE OR REPLACE VIEW remocra_sgo.hydrant
 AS SELECT h.numero AS "NUMERO_POINT_EAU",
           h.numero AS "NOM_POINT_EAU",
           nat.code_nature_sgo AS "NUMERO_TYPE_POINT_EAU",
           NULL::character varying AS "NUMERO_LIEU",
     NULL::integer AS "NUMERO_DANS_RUE",
-    NULL::integer AS "PRECISIONS_DANS_RUE",
+    h.complement::varchar(255) AS "PRECISIONS_DANS_RUE",
     NULL::character varying AS "NUMERO_ESCALIER",
     NULL::character varying AS "NUMERO_ETAGE",
     hpibi.pression AS "PRESSION",
