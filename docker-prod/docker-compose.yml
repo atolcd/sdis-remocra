@@ -1,0 +1,209 @@
+version: '3.3'
+
+services:
+
+  geoserver:
+    container_name: remocra-geoserver
+    image: client-docker-registry.atolcd.com/atolcd/remocra-geoserver:${REMOCRA_VERSION}
+    user: "${REMOCRA_UID:-2000}:${REMOCRA_GID:-2000}"
+    ports:
+      - "8090:8090"
+    volumes:
+      - /var/remocra/geoserver_data:/var/remocra/geoserver_data
+    environment:
+      GEOSERVER_PORT: ${GEOSERVER_PORT}
+      GEOSERVER_DATA_DIR: ${GEOSERVER_DATA_DIR}
+      GEOWEBCACHE_CACHE_DIR: ${GEOWEBCACHE_CACHE_DIR}
+      GEOSERVER_INITIAL_MEMORY: ${GEOSERVER_INITIAL_MEMORY}
+      GEOSERVER_MAXIMUM_MEMORY: ${GEOSERVER_MAXIMUM_MEMORY}
+      # Accès à la base de données remocra
+      POSTGRES_DB_HOSTNAME: ${POSTGRES_DB_HOSTNAME}
+      POSTGRES_DB_USERNAME: ${POSTGRES_DB_USERNAME}
+      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
+      # Credentials GeoServer
+      GEOSERVER_ADMIN_USER: ${GEOSERVER_ADMIN_USERNAME}
+      GEOSERVER_ADMIN_PASSWORD: ${GEOSERVER_ADMIN_PASSWORD}
+      # Paramètres supplémentaires JVM
+      #JAVA_OPTS:
+    healthcheck:
+      test: curl --fail -s http://localhost:8090/geoserver/web/ || exit 1
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    network_mode: host
+
+  remocra:
+    container_name: remocra
+    image: client-docker-registry.atolcd.com/atolcd/remocra:${REMOCRA_VERSION}
+    user: "${REMOCRA_UID:-2000}:${REMOCRA_GID:-2000}"
+    ports:
+      - "8080:8080"
+    volumes:
+      - /var/remocra:/var/remocra
+    environment:
+      LANG: "fr_FR.UTF-8"
+      REMOCRA_PORT: ${REMOCRA_PORT}
+      REMOCRA_INITIAL_MEMORY: ${REMOCRA_INITIAL_MEMORY}
+      REMOCRA_MAXIMUM_MEMORY: ${REMOCRA_MAXIMUM_MEMORY}
+      REMOCRA_LOGFILE: ${REMOCRA_LOGFILE}
+      REMOCRA_SESSION_MIN: ${REMOCRA_SESSION_MIN}
+      # Accès à la base de données remocra
+      POSTGRES_DB_HOSTNAME: ${POSTGRES_DB_HOSTNAME}
+      POSTGRES_DB_USERNAME: ${POSTGRES_DB_USERNAME}
+      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
+      # Paramètres supplémentaires JVM
+      #JAVA_OPTS:
+    healthcheck:
+      test: curl --fail -s http://localhost:8080/remocra/ || exit 1
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    network_mode: host
+
+  jobs-4.4:
+    container_name: remocra-pdi-4.4-dkron
+    image: client-docker-registry.atolcd.com/atolcd/remocra-pdi-4.4-dkron:${REMOCRA_VERSION}
+    user: "${REMOCRA_UID:-2000}:${REMOCRA_GID:-2000}"
+    ports:
+      - "8060:8060"
+    volumes:
+      - /var/remocra:/var/remocra
+      - /etc/docker_remocra/kettle.properties:/home/pdi/.kettle/kettle.properties
+      - /etc/docker_remocra/remocra.properties:/home/pdi/remocra.properties
+      - /etc/docker_remocra/repositories.xml:/home/pdi/.kettle/repositories.xml
+      - .docker/jobs-4.4/dkron_data:/dkron/dkron.data
+    environment:
+      # Accès à la base de données remocra
+      POSTGRES_DB_HOSTNAME: ${POSTGRES_DB_HOSTNAME}
+      POSTGRES_DB_USERNAME: ${POSTGRES_DB_USERNAME}
+      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
+      # PDI
+      PDI_INITIAL_MEMORY: ${PDI_44_INITIAL_MEMORY}
+      PDI_MAXIMUM_MEMORY: ${PDI_44_MAXIMUM_MEMORY}
+      PDI_MAXIMUM_PERMSIZE: ${PDI_44_MAXIMUM_PERMSIZE}
+      # Agent dkron
+      DKRON_JOIN: ${DKRON_44_JOIN}
+      DKRON_NODE_NAME: ${DKRON_44_NODE_NAME}
+      DKRON_TAG: ${DKRON_44_TAG}
+      DKRON_RPC_PORT: ${DKRON_44_RPC_PORT}
+      DKRON_BIND_ADDR: ${DKRON_44_BIND_ADDR}
+      DKRON_HTTP_ADDR: ${DKRON_44_HTTP_ADDR}
+      DKRON_LOGFILE: ${DKRON_44_LOGFILE}
+      DKRON_LOG_LEVEL: ${DKRON_44_LOG_LEVEL}
+    healthcheck:
+      test: curl --fail -s http://localhost:8060/dashboard/ || exit 1
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    network_mode: host
+
+  jobs:
+    container_name: remocra-pdi-dkron
+    image: client-docker-registry.atolcd.com/atolcd/remocra-pdi-dkron:${REMOCRA_VERSION}
+    user: "${REMOCRA_UID:-2000}:${REMOCRA_GID:-2000}"
+    ports:
+      - "8070:8070"
+    volumes:
+      - /var/remocra:/var/remocra
+      - /etc/docker_remocra/kettle.properties:/home/pdi/.kettle/kettle.properties
+      - /etc/docker_remocra/remocra.properties:/home/pdi/remocra.properties
+      - .docker/jobs/dkron_data:/dkron/dkron.data
+    environment:
+      # Accès à la base de données remocra
+      POSTGRES_DB_HOSTNAME: ${POSTGRES_DB_HOSTNAME}
+      POSTGRES_DB_USERNAME: ${POSTGRES_DB_USERNAME}
+      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
+      # PDI
+      PDI_INITIAL_MEMORY: ${PDI_44_INITIAL_MEMORY}
+      PDI_MAXIMUM_MEMORY: ${PDI_44_MAXIMUM_MEMORY}
+      PDI_MAXIMUM_PERMSIZE: ${PDI_44_MAXIMUM_PERMSIZE}
+      # Agent dkron
+      DKRON_JOIN: ${DKRON_JOIN}
+      DKRON_NODE_NAME: ${DKRON_NODE_NAME}
+      DKRON_TAG: ${DKRON_TAG}
+      DKRON_RPC_PORT: ${DKRON_RPC_PORT}
+      DKRON_BIND_ADDR: ${DKRON_BIND_ADDR}
+      DKRON_HTTP_ADDR: ${DKRON_HTTP_ADDR}
+      DKRON_LOGFILE: ${DKRON_LOGFILE}
+      DKRON_LOG_LEVEL: ${DKRON_LOG_LEVEL}
+    depends_on:
+      - jobs-4.4
+    healthcheck:
+      test: curl --fail -s http://localhost:8070/dashboard/ || exit 1
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    network_mode: host
+
+  api:
+    container_name: remocra-api
+    image: client-docker-registry.atolcd.com/atolcd/remocra-api-remocra:${REMOCRA_VERSION}
+    user: "${REMOCRA_UID:-2000}:${REMOCRA_GID:-2000}"
+    volumes:
+      - ./api/log:/app/log
+      - ./api/config:/app/config
+    environment:
+      POSTGRES_DB_SERVERNAME: ${POSTGRES_DB_SERVERNAME:-localhost}
+      POSTGRES_DB_USERNAME: ${POSTGRES_DB_USERNAME}
+      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
+      POSTGRES_DB_PORT: ${POSTGRES_DB_PORT}
+      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
+      API_REMOCRA_HTTP_PORT: ${API_REMOCRA_HTTP_PORT}
+    ports:
+      - "8881:8881"
+    healthcheck:
+      test: curl --fail -s http://localhost:8881/openapi/ || exit 1
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    restart: always
+    network_mode: host
+
+  redash-server:
+    container_name: remocra-redash-server
+    image: client-docker-registry.atolcd.com/atolcd/redash-viz:${REDASH_VERSION}
+    user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
+    command: server
+    depends_on:
+      - redis
+    env_file:
+      - redash.env
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: wget -q --spider http://localhost:5000/remocra/redash || exit 1
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    network_mode: host
+
+
+  redash-scheduler:
+    container_name: remocra-redash-scheduler
+    image: client-docker-registry.atolcd.com/atolcd/redash-viz:${REDASH_VERSION}
+    user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
+    env_file:
+      - redash.env
+    command: scheduler
+    network_mode: host
+
+
+  redash-worker:
+    container_name: remocra-redash-worker
+    image: client-docker-registry.atolcd.com/atolcd/redash-viz:${REDASH_VERSION}
+    user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
+    env_file:
+      - redash.env
+    command: worker
+    network_mode: host
+
+
+  redis:
+    container_name: remocra-redash-redis
+    image: redis:latest
+    healthcheck:
+      test: [ "CMD", "redis-cli","ping || exit 1" ]
+      interval: 1m30s
+      timeout: 30s
+      retries: 3
+    network_mode: host
