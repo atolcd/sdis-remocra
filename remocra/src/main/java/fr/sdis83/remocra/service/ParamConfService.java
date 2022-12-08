@@ -422,8 +422,8 @@ public class ParamConfService {
             return LdapMethod.NONE;
         }
 
-        String userFilter = getLdapUserFilter();
-        if (userFilter == null || userFilter.isEmpty()) {
+        String userBaseName = getLdapUserBaseName();
+        if (userBaseName == null || userBaseName.isEmpty()) {
             // Authentification LDAP basée sur couple username/password
             // Possible si dn utilisatetur = identifiant remocra
             return LdapMethod.SIMPLE;
@@ -432,8 +432,8 @@ public class ParamConfService {
         // Etape de recherche de l'utilisateur pour obtenir son DN
         String dn = getLdapAdminDn();
         String password = getLdapAdminPassword();
-        String userBaseName = getLdapUserBaseName();
-        if (dn == null || dn.isEmpty() || password == null || password.isEmpty() || userBaseName == null || userBaseName.isEmpty()) {
+        String userFilter = getLdapUserFilter();
+        if (dn == null || dn.isEmpty() || password == null || password.isEmpty() || userFilter == null || userFilter.isEmpty()) {
             // Il manque les informations de connexion administrateur
             return LdapMethod.NONE;
         }
@@ -462,11 +462,11 @@ public class ParamConfService {
     }
 
     public String getLdapUserBaseName() {
-        return (String) this.getValue(ParamConfParam.PDI_LDAP_USER_BASE_NAME, "(&(objectclass=user)(sAMAccountName=[USERNAME]))");
+        return (String) this.getValue(ParamConfParam.PDI_LDAP_USER_BASE_NAME);
     }
 
     public String getLdapUserFilter() {
-        return (String) this.getValue(ParamConfParam.PDI_LDAP_USER_FILTER);
+        return (String) this.getValue(ParamConfParam.PDI_LDAP_USER_FILTER, "(&(objectclass=user)(sAMAccountName=[USERNAME]))");
     }
 
     public String getLdapUrl() {
