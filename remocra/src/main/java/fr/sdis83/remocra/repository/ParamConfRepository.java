@@ -21,6 +21,12 @@ public class ParamConfRepository {
         return new ParamConfRepository(context);
     }
 
+    // Clés possibles
+    public final static String DOSSIER_ROOT = "1_DOSSIER_ROOT";
+    public final static String DOSSIER_INTEGRATION = "2_DOSSIER_INTEGRATION";
+    public final static String DOSSIER_SAUVEGARDE_DOCUMENTS = "3_DOSSIER_SAUVEGARDE_DOCUMENTS";
+
+
     ParamConfRepository(DSLContext context) {
         this.context = context;
     }

@@ -61,6 +61,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.DOCUMENT;
@@ -989,5 +990,11 @@ public class HydrantRepository {
           logger.debug("Problème lors de la requête sur la table remocra_referentiel.carro_dfci", e);
       }
     }
+  }
+
+  public Long getIdHydrantByNumero(String numero) {
+    return context.select(HYDRANT.ID).from(HYDRANT)
+            .where(HYDRANT.NUMERO.eq(numero))
+            .fetchOneInto(Long.class);
   }
 }

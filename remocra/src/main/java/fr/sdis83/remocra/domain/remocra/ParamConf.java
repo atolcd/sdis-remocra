@@ -1,14 +1,14 @@
 package fr.sdis83.remocra.domain.remocra;
 
-import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
-
 import fr.sdis83.remocra.domain.utils.Password;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.tostring.RooToString;
+
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @RooJavaBean
 @RooToString
@@ -154,7 +154,10 @@ public class ParamConf {
         DECI_DISTANCE_MAX_PARCOURS("DECI_DISTANCE_MAX_PARCOURS", Integer.class),
         DECI_ISODISTANCES("DECI_ISODISTANCES", String.class),
         DASHBOARD_BASE_URL("DASHBOARD_BASE_URL", String.class),
-        PROCESS_OFFLINE_USER("PROCESS_OFFLINE_USER", String.class);
+        PROCESS_OFFLINE_USER("PROCESS_OFFLINE_USER", String.class),
+        DOSSIER_ROOT ("1_DOSSIER_ROOT", String.class),
+        DOSSIER_INTEGRATION ("2_DOSSIER_INTEGRATION", String.class),
+        DOSSIER_SAUVEGARDE_DOCUMENTS("3_DOSSIER_SAUVEGARDE_DOCUMENTS", String.class);
 
         private final String cle;
         private final Class cl;

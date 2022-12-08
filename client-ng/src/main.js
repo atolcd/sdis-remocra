@@ -13,6 +13,7 @@ import OlMap from './components/OlMap/OlMap.vue'
 import OlMapEtude from './components/planification_deci/OlMapEtude.vue'
 import Dashboard from './components/Dashboard'
 import TransfertsAutomatises from './components/TransfertsAutomatises.vue'
+import ImportDocuments from './components/ImportDocuments.vue'
 import ModalSaisieVisite from './components/tournee/ModalSaisieVisite.vue'
 import ModalImportCTP from './components/ModalImportCTP.vue'
 
@@ -238,6 +239,18 @@ const modalImportCTP = function(el) {
   return v
 }
 
+const importDocuments = function(id) {
+  var v = new Vue({
+    el: '#' + id,
+    bus: new Vue(),
+    components: {
+      ImportDocuments
+    },
+    template: "<ImportDocuments/>"
+  })
+  return v
+}
+
 export {
   transfertsAutomatises,
   criseBuildMap,
@@ -253,5 +266,6 @@ export {
   olMapEtude,
   buildDashboard,
   modalSaisieVisite,
-  modalImportCTP
+  modalImportCTP,
+  importDocuments,
 }

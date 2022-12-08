@@ -409,6 +409,17 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
                  href: 'admin/index/elt/organismes',
                  lbl: 'Les organismes'
              });
+             items.push({
+                 type: 'sep'
+             });
+             items.push({
+                type: 'href',
+                href: 'importDocuments',
+                lbl: 'Importer des documents'
+            });
+            items.push({
+                type: 'sep'
+            });
         }
         if (Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ALL_C')
             || Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ALL_R')
