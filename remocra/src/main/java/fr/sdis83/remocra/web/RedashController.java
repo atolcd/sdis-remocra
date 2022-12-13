@@ -66,7 +66,6 @@ public class RedashController {
             UriComponents c = b.queryParam("p_utilisateur",u.getId())
                     .queryParam("p_zone_competence",zoneCompetence)
                     .queryParam("p_organisme",u.getOrganisme().getId())
-                    .queryParam("refresh", NB_SECONDES_REFRESH)
                     .build();
             String targetURL = c.toUriString();
             JSONObject json = new JSONObject();
@@ -74,9 +73,8 @@ public class RedashController {
             params.put("p_utilisateur",String.valueOf(u.getId()));
             params.put("p_zone_competence", String.valueOf(zoneCompetence));
             params.put("p_organisme",String.valueOf(u.getOrganisme().getId()));
-            params.put("refresh",String.valueOf(NB_SECONDES_REFRESH));
             json.put("parameters",params );
-            json.put("max_age", 120);
+            json.put("max_age", NB_SECONDES_REFRESH);
             StringEntity parameters = new StringEntity(json.toString());
 
             log.info("Proxy corr vers : " + targetURL);
