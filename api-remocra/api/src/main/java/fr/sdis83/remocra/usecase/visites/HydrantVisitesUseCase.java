@@ -302,10 +302,11 @@ public class HydrantVisitesUseCase {
       .limit(1)
       .fetchOneInto(HydrantVisite.class);
 
-    Collection<TypeHydrantAnomalie> anomaliesSysteme = context
-      .selectFrom(TYPE_HYDRANT_ANOMALIE)
+    Collection<Long> anomaliesSysteme = context
+      .select(TYPE_HYDRANT_ANOMALIE.ID)
+      .from(TYPE_HYDRANT_ANOMALIE)
       .where(TYPE_HYDRANT_ANOMALIE.CRITERE.isNull())
-      .fetchInto(TypeHydrantAnomalie.class);
+      .fetchInto(Long.class);
 
     // Suppression des anomalies (hors anomalies système) enregistrées de cet hydrant
     context
