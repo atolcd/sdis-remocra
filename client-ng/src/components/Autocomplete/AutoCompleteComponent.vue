@@ -80,10 +80,11 @@ export default {
 .v-autocomplete .v-autocomplete-list {
   text-align: left;
   border: 1px solid #eee;
-  overflow-y: visible;
+  overflow-y: scroll;
   z-index: 1500;
   display: block;
-  position:fixed;
+  position: absolute;
+  max-height: 150px;
 }
 
 .v-autocomplete .v-autocomplete-list .v-autocomplete-list-item {
