@@ -156,6 +156,19 @@ Exemples :
 * [.underline]#93049-69# : PEI numéro 69 de la commune de NEUILLY-PLAISANCE
 * [.underline]#93050-169# : PEI numéro 169 de la commune de NEUILLY-SUR-MARNE
 
+=== 01 ===
+
+Méthode :
+
+* *<code insee commune>_<numéro interne>*
+* <numéro interne>  étant composé de 3 chiffres
+
+Exemples :
+
+* [.underline]#01304_002# : PEI numéro 2 sur la commune de Pont-d'Ain
+* [.underline]#01290_045# : PEI numéro 45 sur la commune de Pérouges
+
+
 == Numéro interne ==
 
 === 77 ===

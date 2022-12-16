@@ -12,7 +12,7 @@ import javax.persistence.Query;
 public class NumeroUtil {
 
     public enum MethodeNumerotation {
-        M_09, M_77, M_83, M_86, M_89, M_42, M_78, M_66, M_21, M_49, M_38
+        M_01, M_09, M_21, M_38, M_42, M_49, M_66, M_77, M_78, M_83, M_86, M_89
     }
 
     public static MethodeNumerotation getHydrantNumerotationMethode() {
@@ -30,7 +30,7 @@ public class NumeroUtil {
     }
 
     public enum MethodeNumerotationInterne {
-        M_77, M_83, M_86, M_42, M_78, M_49
+        M_42, M_49, M_77, M_78, M_83, M_86,
     }
 
     public static MethodeNumerotationInterne getHydrantNumerotationInterneMethode() {
@@ -59,30 +59,49 @@ public class NumeroUtil {
      */
     public static String computeNumero(Hydrant hydrant) {
         switch (getHydrantNumerotationMethode()) {
+            case M_01:
+                return  NumeroUtil.computeNumero01(hydrant);
             case M_09:
                 return NumeroUtil.computeNumero09(hydrant);
-            case M_77:
-                return NumeroUtil.computeNumero77(hydrant);
-            case M_86:
-                return NumeroUtil.computeNumero86(hydrant);
-            case M_89:
-                return NumeroUtil.computeNumero89(hydrant);
-            // même methode que 89
-            case M_42:
-                return NumeroUtil.computeNumero89(hydrant);
-            case M_78:
-                return NumeroUtil.computeNumero78(hydrant);
-            case M_66:
-                return NumeroUtil.computeNumero66(hydrant);
             case M_21:
                 return NumeroUtil.computeNumero21(hydrant);
-            case M_49:
-                return NumeroUtil.computeNumero49(hydrant);
             case M_38:
                 return NumeroUtil.computeNumero38(hydrant);
+            case M_42:
+            case M_89:
+                return NumeroUtil.computeNumero89(hydrant);
+            case M_49:
+                return NumeroUtil.computeNumero49(hydrant);
+            case M_66:
+                return NumeroUtil.computeNumero66(hydrant);
+            case M_77:
+                return NumeroUtil.computeNumero77(hydrant);
+            case M_78:
+                return NumeroUtil.computeNumero78(hydrant);
+            case M_86:
+                return NumeroUtil.computeNumero86(hydrant);
+            case M_83:
             default:
                 return NumeroUtil.computeNumero83(hydrant);
         }
+    }
+
+    /**
+     * <code insee commune>_<numéro interne>
+     * avec le numéro interne composé de 3 chiffres
+     * Exemple : 01346_095
+     *
+     * @param hydrant
+     * @return
+     */
+    protected static String computeNumero01(Hydrant hydrant) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(hydrant.getCommune().getInsee());
+        sb.append("_");
+
+        // On l'adapte pour faire en sorte d'avoir 3 chiffres
+        return sb.append(String.format("%03d", hydrant.getNumeroInterne())).toString();
     }
 
     /**
@@ -324,16 +343,17 @@ public class NumeroUtil {
      */
     public static Integer computeNumeroInterne(Hydrant hydrant) {
         switch (getHydrantNumerotationInterneMethode()) {
-            case M_77:
-                return NumeroUtil.computeNumeroInterne77(hydrant);
             case M_42:
                 return NumeroUtil.computeNumeroInterne42(hydrant);
-            case M_86:
-                return NumeroUtil.computeNumeroInterne86(hydrant);
-            case M_78:
-                return NumeroUtil.computeNumeroInterne78(hydrant);
             case M_49:
                 return NumeroUtil.computeNumeroInterne49(hydrant);
+            case M_77:
+                return NumeroUtil.computeNumeroInterne77(hydrant);
+            case M_78:
+                return NumeroUtil.computeNumeroInterne78(hydrant);
+            case M_86:
+                return NumeroUtil.computeNumeroInterne86(hydrant);
+            case M_83:
             default:
                 return NumeroUtil.computeNumeroInterne83(hydrant);
         }
