@@ -2,19 +2,22 @@
 <div>
   <b-modal id="modalGestionnairePrive" title="Gestionnaire de PEI privé" no-close-on-backdrop cancel-title="Annuler" ok-title="Valider" ref="modalGestionnairePrive" @ok="handleOk">
     <form ref="formGestionnairePrive" id="formGestionnairePrive">
-      <div class="row">
-        <div class="col-md-6">
-          <b-form-group label="Nom" label-cols-md="2" label-for="inputNom" invalid-feedback="Le nom du gestionnaire est manquant">
-            <b-form-input id="inputNom" v-model="nomGestionnaire" required>
-            </b-form-input>
-          </b-form-group>
-        </div>
-        <div class="col-md-6">
-          <b-form-group label="SIREN" label-cols-md="2" label-for="inputCode" invalid-feedback="Le code du gestionnaire est manquant">
-            <b-form-input id="inputCode" v-model="codeGestionnaire" required>
-            </b-form-input>
-          </b-form-group>
-        </div>
+      <div class="col-md-6">
+        <button class="btn btn-outline-primary" @click.prevent @click="deleteGestionnaire" :disabled="this.idGestionnaire === null" >Supprimer ce gestionnaire</button>
+      </div>
+      <p class="col-md-6 result" id="result">
+      </p>
+      <div class="col-md-6">
+        <b-form-group label="Nom" label-cols-md="2" label-for="inputNom" invalid-feedback="Le nom du gestionnaire est manquant">
+          <b-form-input id="inputNom" v-model="nomGestionnaire" required>
+          </b-form-input>
+        </b-form-group>
+      </div>
+      <div class="col-md-6">
+        <b-form-group label="SIREN" label-cols-md="2" label-for="inputCode" invalid-feedback="Le code du gestionnaire est manquant">
+          <b-form-input id="inputCode" v-model="codeGestionnaire" required>
+          </b-form-input>
+        </b-form-group>
       </div>
       <b-form-group label="Contacts:" label-cols-md="2">
         <div class="row">
@@ -389,6 +392,17 @@ export default {
     deleteContact() {
       this.contacts = _.remove(this.contacts, o => o.id != this.selected[0].id)
     },
+
+    deleteGestionnaire() {
+      axios.delete('/remocra/gestionnaire/delete/'+ this.idGestionnaire ).then(() => {
+        this.$refs.modalGestionnairePrive.hide();
+
+      }).catch(function(error) {
+          console.error('deleteGestionnaire', error);
+          document.getElementById('result').innerText =  error.response.data.message;
+        });
+    },
+
     modifContact() {
       this.context = "MODIFICATION"
       this.appartenance = this.nomGestionnaire
@@ -483,5 +497,10 @@ export default {
 
 .suppr {
   margin-left: 30px;
+}
+
+.result {
+  color: red;
+  padding: 10px;
 }
 </style>

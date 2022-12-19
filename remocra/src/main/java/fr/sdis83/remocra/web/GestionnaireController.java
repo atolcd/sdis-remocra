@@ -10,9 +10,11 @@ import fr.sdis83.remocra.domain.remocra.Gestionnaire;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.repository.ContactRepository;
 import fr.sdis83.remocra.service.GestionnaireService;
+import fr.sdis83.remocra.usecase.gestionnaire.DeleteGestionnaireUseCase;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,6 +32,11 @@ public class GestionnaireController {
 
     @Autowired
     ContactRepository contactRepository;
+
+    @Autowired
+    DeleteGestionnaireUseCase deleteGestionnaireUseCase;
+
+    private final Logger logger = Logger.getLogger(getClass());
 
     public JSONSerializer decorateSerializer(JSONSerializer serializer) {
         return serializer.exclude("data.actif").exclude("*.class");
@@ -113,6 +120,18 @@ public class GestionnaireController {
             }.serialize();
         } catch (Exception e) {
             e.printStackTrace();
+            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+        }
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+    @PreAuthorize("hasRight('HYDRANTS_GESTIONNAIRE_C')")
+    public ResponseEntity<java.lang.String> delete(@PathVariable("id") Long id) {
+        try {
+            deleteGestionnaireUseCase.execute(id);
+            return new SuccessErrorExtSerializer(true, "Gestionnaire supprimé").serialize();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
             return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
         }
     }
