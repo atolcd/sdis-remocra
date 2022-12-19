@@ -2,21 +2,21 @@
 <transformation>
   <info>
     <name>notifier_changement_etat_pei_public</name>
-    <description />
-    <extended_description />
-    <trans_version />
+    <description/>
+    <extended_description/>
+    <trans_version/>
     <trans_type>Normal</trans_type>
     <directory>/</directory>
     <parameters>
     </parameters>
     <log>
       <trans-log-table>
-        <connection />
-        <schema />
-        <table />
-        <size_limit_lines />
-        <interval />
-        <timeout_days />
+        <connection/>
+        <schema/>
+        <table/>
+        <size_limit_lines/>
+        <interval/>
+        <timeout_days/>
         <field>
           <id>ID_BATCH</id>
           <enabled>Y</enabled>
@@ -41,37 +41,37 @@
           <id>LINES_READ</id>
           <enabled>Y</enabled>
           <name>LINES_READ</name>
-          <subject />
+          <subject/>
         </field>
         <field>
           <id>LINES_WRITTEN</id>
           <enabled>Y</enabled>
           <name>LINES_WRITTEN</name>
-          <subject />
+          <subject/>
         </field>
         <field>
           <id>LINES_UPDATED</id>
           <enabled>Y</enabled>
           <name>LINES_UPDATED</name>
-          <subject />
+          <subject/>
         </field>
         <field>
           <id>LINES_INPUT</id>
           <enabled>Y</enabled>
           <name>LINES_INPUT</name>
-          <subject />
+          <subject/>
         </field>
         <field>
           <id>LINES_OUTPUT</id>
           <enabled>Y</enabled>
           <name>LINES_OUTPUT</name>
-          <subject />
+          <subject/>
         </field>
         <field>
           <id>LINES_REJECTED</id>
           <enabled>Y</enabled>
           <name>LINES_REJECTED</name>
-          <subject />
+          <subject/>
         </field>
         <field>
           <id>ERRORS</id>
@@ -125,11 +125,11 @@
         </field>
       </trans-log-table>
       <perf-log-table>
-        <connection />
-        <schema />
-        <table />
-        <interval />
-        <timeout_days />
+        <connection/>
+        <schema/>
+        <table/>
+        <interval/>
+        <timeout_days/>
         <field>
           <id>ID_BATCH</id>
           <enabled>Y</enabled>
@@ -207,10 +207,10 @@
         </field>
       </perf-log-table>
       <channel-log-table>
-        <connection />
-        <schema />
-        <table />
-        <timeout_days />
+        <connection/>
+        <schema/>
+        <table/>
+        <timeout_days/>
         <field>
           <id>ID_BATCH</id>
           <enabled>Y</enabled>
@@ -273,10 +273,10 @@
         </field>
       </channel-log-table>
       <step-log-table>
-        <connection />
-        <schema />
-        <table />
-        <timeout_days />
+        <connection/>
+        <schema/>
+        <table/>
+        <timeout_days/>
         <field>
           <id>ID_BATCH</id>
           <enabled>Y</enabled>
@@ -349,10 +349,10 @@
         </field>
       </step-log-table>
       <metrics-log-table>
-        <connection />
-        <schema />
-        <table />
-        <timeout_days />
+        <connection/>
+        <schema/>
+        <table/>
+        <timeout_days/>
         <field>
           <id>ID_BATCH</id>
           <enabled>Y</enabled>
@@ -401,9 +401,9 @@
       </metrics-log-table>
     </log>
     <maxdate>
-      <connection />
-      <table />
-      <field />
+      <connection/>
+      <table/>
+      <field/>
       <offset>0.0</offset>
       <maxdiff>0.0</maxdiff>
     </maxdate>
@@ -414,7 +414,7 @@
     <feedback_shown>Y</feedback_shown>
     <feedback_size>50000</feedback_size>
     <using_thread_priorities>Y</using_thread_priorities>
-    <shared_objects_file />
+    <shared_objects_file/>
     <capture_step_performance>N</capture_step_performance>
     <step_performance_capturing_delay>1000</step_performance_capturing_delay>
     <step_performance_capturing_size_limit>100</step_performance_capturing_size_limit>
@@ -444,9 +444,9 @@
     <port>${REMOCRA_POSTGIS_DATABASE_PORT}</port>
     <username>${REMOCRA_POSTGIS_DATABASE_USER_NAME}</username>
     <password>${REMOCRA_POSTGIS_DATABASE_USER_PASSWORD}</password>
-    <servername />
-    <data_tablespace />
-    <index_tablespace />
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
     <attributes>
       <attribute>
         <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
@@ -786,21 +786,21 @@
   <step>
     <name>Agrégation anomalies</name>
     <type>GroupBy</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <all_rows>N</all_rows>
     <ignore_aggregate>N</ignore_aggregate>
-    <field_ignore />
+    <field_ignore/>
     <directory>%%java.io.tmpdir%%</directory>
     <prefix>grp</prefix>
     <add_linenr>N</add_linenr>
-    <linenr_fieldname />
+    <linenr_fieldname/>
     <give_back_row>N</give_back_row>
     <group>
       <field>
@@ -812,10 +812,11 @@
         <aggregate>anomalies</aggregate>
         <subject>anomalie_texte</subject>
         <type>CONCAT_COMMA</type>
-        <valuefield />
+        <valuefield/>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -831,48 +832,63 @@
   <step>
     <name>Altération structure flux</name>
     <type>SelectValues</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <fields>
       <field>
         <name>id_hydrant</name>
+        <rename/>
       </field>
       <field>
         <name>commune_id</name>
+        <rename/>
       </field>
       <field>
         <name>autorite_deci</name>
+        <rename/>
       </field>
       <field>
         <name>sp_deci</name>
+        <rename/>
       </field>
       <field>
         <name>commune</name>
+        <rename/>
       </field>
       <field>
         <name>numero</name>
+        <rename/>
       </field>
       <field>
         <name>voie</name>
+        <rename/>
+      </field>
+      <field>
+        <name>deci</name>
+        <rename/>
       </field>
       <field>
         <name>orga_modif</name>
+        <rename/>
       </field>
       <field>
         <name>email_contact</name>
+        <rename/>
       </field>
       <field>
         <name>nom_destinataire</name>
+        <rename/>
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -888,48 +904,63 @@
   <step>
     <name>Altération structure flux 2</name>
     <type>SelectValues</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <fields>
       <field>
         <name>id_hydrant</name>
+        <rename/>
       </field>
       <field>
         <name>commune_id</name>
+        <rename/>
       </field>
       <field>
         <name>autorite_deci</name>
+        <rename/>
       </field>
       <field>
         <name>sp_deci</name>
+        <rename/>
       </field>
       <field>
         <name>commune</name>
+        <rename/>
       </field>
       <field>
         <name>numero</name>
+        <rename/>
       </field>
       <field>
         <name>voie</name>
+        <rename/>
+      </field>
+      <field>
+        <name>deci</name>
+        <rename/>
       </field>
       <field>
         <name>orga_modif</name>
+        <rename/>
       </field>
       <field>
         <name>email_contact</name>
+        <rename/>
       </field>
       <field>
         <name>nom_destinataire</name>
+        <rename/>
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -945,27 +976,28 @@
   <step>
     <name>BPREV dispo</name>
     <type>JoinRows</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <directory>%%java.io.tmpdir%%</directory>
     <prefix>out</prefix>
     <cache_size>500</cache_size>
-    <main />
+    <main/>
     <compare>
       <condition>
         <negated>N</negated>
-        <leftvalue />
+        <leftvalue/>
         <function>=</function>
-        <rightvalue />
+        <rightvalue/>
       </condition>
     </compare>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -981,27 +1013,28 @@
   <step>
     <name>BPREV indispo</name>
     <type>JoinRows</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <directory>%%java.io.tmpdir%%</directory>
     <prefix>out</prefix>
     <cache_size>500</cache_size>
-    <main />
+    <main/>
     <compare>
       <condition>
         <negated>N</negated>
-        <leftvalue />
+        <leftvalue/>
         <function>=</function>
-        <rightvalue />
+        <rightvalue/>
       </condition>
     </compare>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1017,13 +1050,13 @@
   <step>
     <name>Contact Bureau PREVention</name>
     <type>TableInput</type>
-    <description />
+    <description/>
     <distribute>N</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <connection>Remocra (Postgis)</connection>
     <sql>SELECT u.email AS email_contact, u.prenom || ' ' || u.nom AS nom_destinataire
@@ -1032,11 +1065,14 @@ FROM remocra.utilisateur u
 WHERE u.actif
 	AND message_remocra</sql>
     <limit>0</limit>
-    <lookup />
+    <lookup/>
     <execute_each_row>N</execute_each_row>
     <variables_active>N</variables_active>
     <lazy_conversion_active>N</lazy_conversion_active>
-    <cluster_schema />
+    <cached_row_meta_active>N</cached_row_meta_active>
+    <row-meta/>
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1052,13 +1088,13 @@ WHERE u.actif
   <step>
     <name>Contact CS</name>
     <type>TableInput</type>
-    <description />
+    <description/>
     <distribute>N</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <connection>Remocra (Postgis)</connection>
     <sql>WITH carre9 AS (
@@ -1075,11 +1111,14 @@ WHERE o.email_contact &lt;&gt; ''
 	AND o.email_contact IS NOT NULL
 ORDER BY id_commune</sql>
     <limit>0</limit>
-    <lookup />
+    <lookup/>
     <execute_each_row>N</execute_each_row>
     <variables_active>Y</variables_active>
     <lazy_conversion_active>N</lazy_conversion_active>
-    <cluster_schema />
+    <cached_row_meta_active>N</cached_row_meta_active>
+    <row-meta/>
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1095,18 +1134,18 @@ ORDER BY id_commune</sql>
   <step>
     <name>Dédoublonnage dispo</name>
     <type>Unique</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <count_rows>N</count_rows>
-    <count_field />
+    <count_field/>
     <reject_duplicate_row>Y</reject_duplicate_row>
-    <error_description />
+    <error_description/>
     <fields>
       <field>
         <name>email_contact</name>
@@ -1121,7 +1160,8 @@ ORDER BY id_commune</sql>
         <case_insensitive>Y</case_insensitive>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1137,18 +1177,18 @@ ORDER BY id_commune</sql>
   <step>
     <name>Dédoublonnage indispo</name>
     <type>Unique</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <count_rows>N</count_rows>
-    <count_field />
+    <count_field/>
     <reject_duplicate_row>Y</reject_duplicate_row>
-    <error_description />
+    <error_description/>
     <fields>
       <field>
         <name>email_contact</name>
@@ -1163,7 +1203,8 @@ ORDER BY id_commune</sql>
         <case_insensitive>Y</case_insensitive>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1179,15 +1220,16 @@ ORDER BY id_commune</sql>
   <step>
     <name>Factice</name>
     <type>Dummy</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1203,13 +1245,13 @@ ORDER BY id_commune</sql>
   <step>
     <name>Insertion mail</name>
     <type>TableOutput</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <connection>Remocra (Postgis)</connection>
     <schema>remocra</schema>
@@ -1220,14 +1262,14 @@ ORDER BY id_commune</sql>
     <use_batch>Y</use_batch>
     <specify_fields>Y</specify_fields>
     <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field />
+    <partitioning_field/>
     <partitioning_daily>N</partitioning_daily>
     <partitioning_monthly>Y</partitioning_monthly>
     <tablename_in_field>N</tablename_in_field>
-    <tablename_field />
+    <tablename_field/>
     <tablename_in_table>Y</tablename_in_table>
     <return_keys>N</return_keys>
-    <return_field />
+    <return_field/>
     <fields>
       <field>
         <column_name>corps</column_name>
@@ -1258,7 +1300,8 @@ ORDER BY id_commune</sql>
         <stream_name>ar</stream_name>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1274,13 +1317,13 @@ ORDER BY id_commune</sql>
   <step>
     <name>PEI dispo</name>
     <type>TableInput</type>
-    <description />
+    <description/>
     <distribute>N</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <connection>Remocra (Postgis)</connection>
     <sql>WITH line_der_etat_indispo AS (
@@ -1324,18 +1367,208 @@ FROM
 	h.sp_deci,
     c.nom AS commune,
     h.numero,
-    h.voie
+	h.voie,
+   thnd.nom AS deci
   FROM  remocra.hydrant h
     JOIN remocra.commune c ON c.id = h.commune
+    JOIN remocra.remocra.type_hydrant_nature_deci thnd ON thnd.id = h.nature_deci
   WHERE  dispo_terrestre = 'DISPO') AS h_indispo
   JOIN der_etat_indispo ON der_etat_indispo.id_hydrant = h_indispo.id_hydrant
 WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_CHANGEMENT_ETAT_PEI_PUBLIC} minutes'</sql>
     <limit>0</limit>
-    <lookup />
+    <lookup/>
     <execute_each_row>N</execute_each_row>
     <variables_active>Y</variables_active>
     <lazy_conversion_active>N</lazy_conversion_active>
-    <cluster_schema />
+    <cached_row_meta_active>N</cached_row_meta_active>
+    <row-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>id_hydrant</name>
+        <length>15</length>
+        <precision>0</precision>
+        <origin>PEI dispo</origin>
+        <comments>id_hydrant</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>commune_id</name>
+        <length>15</length>
+        <precision>0</precision>
+        <origin>PEI dispo</origin>
+        <comments>commune_id</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>autorite_deci</name>
+        <length>15</length>
+        <precision>0</precision>
+        <origin>PEI dispo</origin>
+        <comments>autorite_deci</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>sp_deci</name>
+        <length>15</length>
+        <precision>0</precision>
+        <origin>PEI dispo</origin>
+        <comments>sp_deci</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>commune</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>PEI dispo</origin>
+        <comments>commune</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>numero</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>PEI dispo</origin>
+        <comments>numero</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>deci</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>PEI dispo</origin>
+        <comments>deci</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>orga_modif</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>PEI dispo</origin>
+        <comments>orga_modif</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+    </row-meta>
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1351,13 +1584,13 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
   <step>
     <name>PEI indispo</name>
     <type>TableInput</type>
-    <description />
+    <description/>
     <distribute>N</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <connection>Remocra (Postgis)</connection>
     <sql>WITH line_der_etat_indispo AS (
@@ -1400,18 +1633,231 @@ FROM
 	h.sp_deci,
     c.nom AS commune,
     h.numero,
-    h.voie
+	h.voie,
+    thnd.nom AS deci
   FROM  remocra.hydrant h
     JOIN remocra.commune c ON c.id = h.commune
+    JOIN remocra.type_hydrant_nature_deci thnd ON thnd.id = h.nature_deci
   WHERE  dispo_terrestre = 'INDISPO') AS h_indispo
   JOIN der_etat_indispo ON der_etat_indispo.id_hydrant = h_indispo.id_hydrant
 WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_CHANGEMENT_ETAT_PEI_PUBLIC} minutes'</sql>
     <limit>0</limit>
-    <lookup />
+    <lookup/>
     <execute_each_row>N</execute_each_row>
     <variables_active>Y</variables_active>
     <lazy_conversion_active>N</lazy_conversion_active>
-    <cluster_schema />
+    <cached_row_meta_active>N</cached_row_meta_active>
+    <row-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>id_hydrant</name>
+        <length>15</length>
+        <precision>0</precision>
+        <origin>PEI indispo</origin>
+        <comments>id_hydrant</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>commune_id</name>
+        <length>15</length>
+        <precision>0</precision>
+        <origin>PEI indispo</origin>
+        <comments>commune_id</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>autorite_deci</name>
+        <length>15</length>
+        <precision>0</precision>
+        <origin>PEI indispo</origin>
+        <comments>autorite_deci</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>sp_deci</name>
+        <length>15</length>
+        <precision>0</precision>
+        <origin>PEI indispo</origin>
+        <comments>sp_deci</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>commune</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>PEI indispo</origin>
+        <comments>commune</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>numero</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>PEI indispo</origin>
+        <comments>numero</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>voie</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>PEI indispo</origin>
+        <comments>voie</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>deci</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>PEI indispo</origin>
+        <comments>deci</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>orga_modif</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>PEI indispo</origin>
+        <comments>orga_modif</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+    </row-meta>
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1419,7 +1865,7 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
       </output>
     </remotesteps>
     <GUI>
-      <xloc>48</xloc>
+      <xloc>32</xloc>
       <yloc>368</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1427,13 +1873,13 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
   <step>
     <name>Recherche anomalies</name>
     <type>StreamLookup</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <from>Agrégation anomalies</from>
     <input_sorted>N</input_sorted>
@@ -1448,11 +1894,12 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
       <value>
         <name>anomalies</name>
         <rename>anomalies</rename>
-        <default />
+        <default/>
         <type>String</type>
       </value>
     </lookup>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1468,13 +1915,13 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
   <step>
     <name>Recherche dans flux</name>
     <type>StreamLookup</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <from>poids anomalies</from>
     <input_sorted>N</input_sorted>
@@ -1493,11 +1940,12 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
       <value>
         <name>nom</name>
         <rename>anomalie_texte</rename>
-        <default />
+        <default/>
         <type>String</type>
       </value>
     </lookup>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1513,13 +1961,13 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
   <step>
     <name>Select values</name>
     <type>SelectValues</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <fields>
       <field>
@@ -1546,7 +1994,8 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1562,20 +2011,20 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
   <step>
     <name>Tri dispos</name>
     <type>SortRows</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <directory>%%java.io.tmpdir%%</directory>
     <prefix>out</prefix>
     <sort_size>1000000</sort_size>
-    <free_memory />
+    <free_memory/>
     <compress>N</compress>
-    <compress_variable />
+    <compress_variable/>
     <unique_rows>N</unique_rows>
     <fields>
       <field>
@@ -1595,7 +2044,8 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
         <presorted>N</presorted>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1611,20 +2061,20 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
   <step>
     <name>Tri indispos</name>
     <type>SortRows</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <directory>%%java.io.tmpdir%%</directory>
     <prefix>out</prefix>
     <sort_size>1000000</sort_size>
-    <free_memory />
+    <free_memory/>
     <compress>N</compress>
-    <compress_variable />
+    <compress_variable/>
     <unique_rows>N</unique_rows>
     <fields>
       <field>
@@ -1652,7 +2102,8 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
         <presorted>N</presorted>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1668,20 +2119,20 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
   <step>
     <name>Tri lignes</name>
     <type>SortRows</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <directory>%%java.io.tmpdir%%</directory>
     <prefix>out</prefix>
     <sort_size>1000000</sort_size>
-    <free_memory />
+    <free_memory/>
     <compress>N</compress>
-    <compress_variable />
+    <compress_variable/>
     <unique_rows>N</unique_rows>
     <fields>
       <field>
@@ -1693,7 +2144,8 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
         <presorted>N</presorted>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1709,25 +2161,26 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
   <step>
     <name>anomalie trouvée</name>
     <type>FilterRows</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <send_true_to>Tri lignes</send_true_to>
-    <send_false_to />
+    <send_false_to/>
     <compare>
       <condition>
         <negated>N</negated>
         <leftvalue>anomalie_texte</leftvalue>
         <function>IS NOT NULL</function>
-        <rightvalue />
+        <rightvalue/>
       </condition>
     </compare>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1741,30 +2194,70 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
     </GUI>
   </step>
   <step>
-    <name>construction mail dispo</name>
-    <type>ReplaceString</type>
-    <description />
+    <name>anomalies</name>
+    <type>TableInput</type>
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
+    </partitioning>
+    <connection>Remocra (Postgis)</connection>
+    <sql>SELECT ha.hydrant, ha.anomalies, thn.code 
+FROM remocra.hydrant_anomalies ha
+	JOIN remocra.hydrant h ON h.id = ha.hydrant
+	JOIN remocra.type_hydrant_nature thn ON thn.id = h.nature
+ORDER BY ha.hydrant</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+    <cached_row_meta_active>N</cached_row_meta_active>
+    <row-meta/>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>384</xloc>
+      <yloc>32</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>construction mail dispo</name>
+    <type>ReplaceString</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
     </partitioning>
     <fields>
       <field>
         <in_stream_name>corps</in_stream_name>
-        <out_stream_name />
+        <out_stream_name/>
         <use_regex>no</use_regex>
         <replace_string>[LISTE_PEI]</replace_string>
-        <replace_by_string />
+        <replace_by_string/>
         <set_empty_string>N</set_empty_string>
         <replace_field_by_string>dispos</replace_field_by_string>
         <whole_word>no</whole_word>
         <case_sensitive>no</case_sensitive>
+        <is_unicode>no</is_unicode>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1780,28 +2273,30 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
   <step>
     <name>construction mail indispo</name>
     <type>ReplaceString</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <fields>
       <field>
         <in_stream_name>corps</in_stream_name>
-        <out_stream_name />
+        <out_stream_name/>
         <use_regex>no</use_regex>
         <replace_string>[LISTE_PEI]</replace_string>
-        <replace_by_string />
+        <replace_by_string/>
         <set_empty_string>N</set_empty_string>
         <replace_field_by_string>indispos</replace_field_by_string>
         <whole_word>no</whole_word>
         <case_sensitive>no</case_sensitive>
+        <is_unicode>no</is_unicode>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1817,13 +2312,13 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
   <step>
     <name>contact AP</name>
     <type>TableInput</type>
-    <description />
+    <description/>
     <distribute>N</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <connection>Remocra (Postgis)</connection>
     <sql>SELECT DISTINCT o.id AS organisme_id, cont.email AS email_contact, cont.prenom || ' ' || cont.nom AS nom_destinataire
@@ -1834,11 +2329,14 @@ FROM remocra.contact cont
 	INNER JOIN remocra.zone_competence_commune zcc ON zcc.zone_competence_id = o.zone_competence
 WHERE cont.appartenance = 'ORGANISME'</sql>
     <limit>0</limit>
-    <lookup />
+    <lookup/>
     <execute_each_row>N</execute_each_row>
     <variables_active>Y</variables_active>
     <lazy_conversion_active>N</lazy_conversion_active>
-    <cluster_schema />
+    <cached_row_meta_active>N</cached_row_meta_active>
+    <row-meta/>
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1854,13 +2352,13 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
   <step>
     <name>contact AP dispo</name>
     <type>StreamLookup</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <from>contact AP</from>
     <input_sorted>N</input_sorted>
@@ -1875,17 +2373,18 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
       <value>
         <name>email_contact</name>
         <rename>email_contact</rename>
-        <default />
+        <default/>
         <type>String</type>
       </value>
       <value>
         <name>nom_destinataire</name>
         <rename>nom_destinataire</rename>
-        <default />
+        <default/>
         <type>String</type>
       </value>
     </lookup>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1901,13 +2400,13 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
   <step>
     <name>contact AP indispo </name>
     <type>StreamLookup</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <from>contact AP</from>
     <input_sorted>N</input_sorted>
@@ -1922,17 +2421,18 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
       <value>
         <name>email_contact</name>
         <rename>email_contact</rename>
-        <default />
+        <default/>
         <type>String</type>
       </value>
       <value>
         <name>nom_destinataire</name>
         <rename>nom_destinataire</rename>
-        <default />
+        <default/>
         <type>String</type>
       </value>
     </lookup>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1948,13 +2448,13 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
   <step>
     <name>contact CS dispo</name>
     <type>JoinRows</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <directory>%%java.io.tmpdir%%</directory>
     <prefix>out</prefix>
@@ -1968,7 +2468,8 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
         <rightvalue>id_commune</rightvalue>
       </condition>
     </compare>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1984,13 +2485,13 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
   <step>
     <name>contact CS indispo</name>
     <type>JoinRows</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <directory>%%java.io.tmpdir%%</directory>
     <prefix>out</prefix>
@@ -2004,7 +2505,8 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
         <rightvalue>id_commune</rightvalue>
       </condition>
     </compare>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -2020,13 +2522,13 @@ WHERE cont.appartenance = 'ORGANISME'</sql>
   <step>
     <name>contact SP DECI</name>
     <type>TableInput</type>
-    <description />
+    <description/>
     <distribute>N</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <connection>Remocra (Postgis)</connection>
     <sql>SELECT o.id, cont.email AS email_contact, cont.prenom || ' ' || cont.nom AS nom_destinataire
@@ -2046,11 +2548,14 @@ WHERE o.id NOT IN (SELECT o.id
 		INNER JOIN remocra.contact_roles cc ON cc.contact = cont.id
 		INNER JOIN remocra.role r ON r.id = cc.roles AND r.code = '${ROLE_SP_DECI}')</sql>
     <limit>0</limit>
-    <lookup />
+    <lookup/>
     <execute_each_row>N</execute_each_row>
     <variables_active>Y</variables_active>
     <lazy_conversion_active>N</lazy_conversion_active>
-    <cluster_schema />
+    <cached_row_meta_active>N</cached_row_meta_active>
+    <row-meta/>
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -2066,13 +2571,13 @@ WHERE o.id NOT IN (SELECT o.id
   <step>
     <name>contact SP DECI dispo</name>
     <type>StreamLookup</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <from>contact SP DECI</from>
     <input_sorted>N</input_sorted>
@@ -2087,17 +2592,18 @@ WHERE o.id NOT IN (SELECT o.id
       <value>
         <name>email_contact</name>
         <rename>email_contact</rename>
-        <default />
+        <default/>
         <type>String</type>
       </value>
       <value>
         <name>nom_destinataire</name>
         <rename>nom_destinataire</rename>
-        <default />
+        <default/>
         <type>String</type>
       </value>
     </lookup>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -2113,13 +2619,13 @@ WHERE o.id NOT IN (SELECT o.id
   <step>
     <name>contact SP DECI indispo</name>
     <type>StreamLookup</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <from>contact SP DECI</from>
     <input_sorted>N</input_sorted>
@@ -2134,17 +2640,18 @@ WHERE o.id NOT IN (SELECT o.id
       <value>
         <name>email_contact</name>
         <rename>email_contact</rename>
-        <default />
+        <default/>
         <type>String</type>
       </value>
       <value>
         <name>nom_destinataire</name>
         <rename>nom_destinataire</rename>
-        <default />
+        <default/>
         <type>String</type>
       </value>
     </lookup>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -2160,13 +2667,13 @@ WHERE o.id NOT IN (SELECT o.id
   <step>
     <name>destinataire dispo ?</name>
     <type>FilterRows</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <send_true_to>formatage dispo</send_true_to>
     <send_false_to>Factice</send_false_to>
@@ -2175,10 +2682,11 @@ WHERE o.id NOT IN (SELECT o.id
         <negated>N</negated>
         <leftvalue>email_contact</leftvalue>
         <function>IS NOT NULL</function>
-        <rightvalue />
+        <rightvalue/>
       </condition>
     </compare>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -2194,13 +2702,13 @@ WHERE o.id NOT IN (SELECT o.id
   <step>
     <name>destinataire indispo ?</name>
     <type>FilterRows</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <send_true_to>formatage indispo</send_true_to>
     <send_false_to>Factice</send_false_to>
@@ -2209,10 +2717,11 @@ WHERE o.id NOT IN (SELECT o.id
         <negated>N</negated>
         <leftvalue>email_contact</leftvalue>
         <function>IS NOT NULL</function>
-        <rightvalue />
+        <rightvalue/>
       </condition>
     </compare>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -2228,13 +2737,13 @@ WHERE o.id NOT IN (SELECT o.id
   <step>
     <name>dispo</name>
     <type>SelectValues</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <fields>
       <field>
@@ -2251,7 +2760,8 @@ WHERE o.id NOT IN (SELECT o.id
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -2267,21 +2777,21 @@ WHERE o.id NOT IN (SELECT o.id
   <step>
     <name>dispos</name>
     <type>GroupBy</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <all_rows>N</all_rows>
     <ignore_aggregate>N</ignore_aggregate>
-    <field_ignore />
+    <field_ignore/>
     <directory>%%java.io.tmpdir%%</directory>
     <prefix>grp</prefix>
     <add_linenr>N</add_linenr>
-    <linenr_fieldname />
+    <linenr_fieldname/>
     <give_back_row>N</give_back_row>
     <group>
       <field>
@@ -2302,10 +2812,11 @@ WHERE o.id NOT IN (SELECT o.id
         <aggregate>orga_modif</aggregate>
         <subject>orga_modif</subject>
         <type>FIRST_INCL_NULL</type>
-        <valuefield />
+        <valuefield/>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -2321,22 +2832,22 @@ WHERE o.id NOT IN (SELECT o.id
   <step>
     <name>element fixe message dispo</name>
     <type>Constant</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <fields>
       <field>
         <name>debut</name>
         <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <nullif>Le PEI n° </nullif>
         <length>-1</length>
         <precision>-1</precision>
@@ -2345,10 +2856,10 @@ WHERE o.id NOT IN (SELECT o.id
       <field>
         <name>virgule</name>
         <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <nullif>, </nullif>
         <length>-1</length>
         <precision>-1</precision>
@@ -2357,10 +2868,10 @@ WHERE o.id NOT IN (SELECT o.id
       <field>
         <name>fin</name>
         <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <nullif>, est &lt;b>&lt;u>DISPONIBLE&lt;/b>&lt;/u></nullif>
         <length>-1</length>
         <precision>-1</precision>
@@ -2369,10 +2880,10 @@ WHERE o.id NOT IN (SELECT o.id
       <field>
         <name>espace</name>
         <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <nullif> </nullif>
         <length>-1</length>
         <precision>-1</precision>
@@ -2381,10 +2892,10 @@ WHERE o.id NOT IN (SELECT o.id
       <field>
         <name>parenthese_o</name>
         <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <nullif>(</nullif>
         <length>-1</length>
         <precision>-1</precision>
@@ -2393,17 +2904,18 @@ WHERE o.id NOT IN (SELECT o.id
       <field>
         <name>parenthese_f</name>
         <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <nullif>)</nullif>
         <length>-1</length>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -2419,22 +2931,22 @@ WHERE o.id NOT IN (SELECT o.id
   <step>
     <name>element fixe message indispo</name>
     <type>Constant</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <fields>
       <field>
         <name>debut</name>
         <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <nullif>ATTENTION, le PEI n° </nullif>
         <length>-1</length>
         <precision>-1</precision>
@@ -2443,10 +2955,10 @@ WHERE o.id NOT IN (SELECT o.id
       <field>
         <name>virgule</name>
         <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <nullif>, </nullif>
         <length>-1</length>
         <precision>-1</precision>
@@ -2455,10 +2967,10 @@ WHERE o.id NOT IN (SELECT o.id
       <field>
         <name>fin</name>
         <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <nullif>, est &lt;b>&lt;u>INDISPONIBLE&lt;/b>&lt;/u></nullif>
         <length>-1</length>
         <precision>-1</precision>
@@ -2467,10 +2979,10 @@ WHERE o.id NOT IN (SELECT o.id
       <field>
         <name>espace</name>
         <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <nullif> </nullif>
         <length>-1</length>
         <precision>-1</precision>
@@ -2479,10 +2991,10 @@ WHERE o.id NOT IN (SELECT o.id
       <field>
         <name>parenthese_o</name>
         <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <nullif>(</nullif>
         <length>-1</length>
         <precision>-1</precision>
@@ -2491,10 +3003,10 @@ WHERE o.id NOT IN (SELECT o.id
       <field>
         <name>parenthese_f</name>
         <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <nullif>)</nullif>
         <length>-1</length>
         <precision>-1</precision>
@@ -2503,17 +3015,18 @@ WHERE o.id NOT IN (SELECT o.id
       <field>
         <name>deux_points</name>
         <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <nullif>:</nullif>
         <length>-1</length>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -2529,14 +3042,15 @@ WHERE o.id NOT IN (SELECT o.id
   <step>
     <name>formatage dispo</name>
     <type>Calculator</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
+    <failIfNoFile>N</failIfNoFile>
     <calculation>
       <field_name>dispo1</field_name>
       <calc_type>ADD3</calc_type>
@@ -2547,10 +3061,10 @@ WHERE o.id NOT IN (SELECT o.id
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>Y</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
     <calculation>
       <field_name>dispo2</field_name>
@@ -2562,10 +3076,10 @@ WHERE o.id NOT IN (SELECT o.id
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>Y</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
     <calculation>
       <field_name>dispo3</field_name>
@@ -2577,10 +3091,10 @@ WHERE o.id NOT IN (SELECT o.id
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>Y</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
     <calculation>
       <field_name>dispo</field_name>
@@ -2592,12 +3106,13 @@ WHERE o.id NOT IN (SELECT o.id
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>N</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -2613,14 +3128,15 @@ WHERE o.id NOT IN (SELECT o.id
   <step>
     <name>formatage indispo</name>
     <type>Calculator</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
+    <failIfNoFile>N</failIfNoFile>
     <calculation>
       <field_name>indispo1</field_name>
       <calc_type>ADD3</calc_type>
@@ -2631,10 +3147,10 @@ WHERE o.id NOT IN (SELECT o.id
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>Y</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
     <calculation>
       <field_name>indispo2</field_name>
@@ -2646,10 +3162,10 @@ WHERE o.id NOT IN (SELECT o.id
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>Y</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
     <calculation>
       <field_name>indispo3</field_name>
@@ -2661,10 +3177,10 @@ WHERE o.id NOT IN (SELECT o.id
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>Y</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
     <calculation>
       <field_name>indispo4</field_name>
@@ -2676,10 +3192,10 @@ WHERE o.id NOT IN (SELECT o.id
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>Y</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
     <calculation>
       <field_name>indispo5</field_name>
@@ -2691,27 +3207,28 @@ WHERE o.id NOT IN (SELECT o.id
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>Y</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
     <calculation>
       <field_name>indispo</field_name>
       <calc_type>ADD</calc_type>
       <field_a>indispo5</field_a>
       <field_b>anomalies</field_b>
-      <field_c />
+      <field_c/>
       <value_type>String</value_type>
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>N</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -2727,13 +3244,13 @@ WHERE o.id NOT IN (SELECT o.id
   <step>
     <name>indispo</name>
     <type>SelectValues</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <fields>
       <field>
@@ -2750,7 +3267,8 @@ WHERE o.id NOT IN (SELECT o.id
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -2766,21 +3284,21 @@ WHERE o.id NOT IN (SELECT o.id
   <step>
     <name>indispos</name>
     <type>GroupBy</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <all_rows>N</all_rows>
     <ignore_aggregate>N</ignore_aggregate>
-    <field_ignore />
+    <field_ignore/>
     <directory>%%java.io.tmpdir%%</directory>
     <prefix>grp</prefix>
     <add_linenr>N</add_linenr>
-    <linenr_fieldname />
+    <linenr_fieldname/>
     <give_back_row>N</give_back_row>
     <group>
       <field>
@@ -2801,10 +3319,11 @@ WHERE o.id NOT IN (SELECT o.id
         <aggregate>orga_modif</aggregate>
         <subject>orga_modif</subject>
         <type>FIRST_INCL_NULL</type>
-        <valuefield />
+        <valuefield/>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -2820,13 +3339,13 @@ WHERE o.id NOT IN (SELECT o.id
   <step>
     <name>info_mail</name>
     <type>TableInput</type>
-    <description />
+    <description/>
     <distribute>N</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <connection>Remocra (Postgis)</connection>
     <sql>SELECT corps,objet,
@@ -2836,11 +3355,14 @@ WHERE o.id NOT IN (SELECT o.id
 FROM remocra.email_modele
 WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
     <limit>0</limit>
-    <lookup />
+    <lookup/>
     <execute_each_row>N</execute_each_row>
     <variables_active>Y</variables_active>
     <lazy_conversion_active>N</lazy_conversion_active>
-    <cluster_schema />
+    <cached_row_meta_active>N</cached_row_meta_active>
+    <row-meta/>
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -2856,27 +3378,28 @@ WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
   <step>
     <name>jointure dispo</name>
     <type>JoinRows</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <directory>%%java.io.tmpdir%%</directory>
     <prefix>out</prefix>
     <cache_size>500</cache_size>
-    <main />
+    <main/>
     <compare>
       <condition>
         <negated>N</negated>
-        <leftvalue />
+        <leftvalue/>
         <function>=</function>
-        <rightvalue />
+        <rightvalue/>
       </condition>
     </compare>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -2892,27 +3415,28 @@ WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
   <step>
     <name>jointure indispo</name>
     <type>JoinRows</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <directory>%%java.io.tmpdir%%</directory>
     <prefix>out</prefix>
     <cache_size>500</cache_size>
-    <main />
+    <main/>
     <compare>
       <condition>
         <negated>N</negated>
-        <leftvalue />
+        <leftvalue/>
         <function>=</function>
-        <rightvalue />
+        <rightvalue/>
       </condition>
     </compare>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -2928,58 +3452,59 @@ WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
   <step>
     <name>objet dispo</name>
     <type>Calculator</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
+    <failIfNoFile>N</failIfNoFile>
     <calculation>
       <field_name>parent_ouvr</field_name>
       <calc_type>CONSTANT</calc_type>
       <field_a>(modifié par : </field_a>
-      <field_b />
-      <field_c />
+      <field_b/>
+      <field_c/>
       <value_type>String</value_type>
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>Y</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
     <calculation>
       <field_name>parent_ferm</field_name>
       <calc_type>CONSTANT</calc_type>
       <field_a>)</field_a>
-      <field_b />
-      <field_c />
+      <field_b/>
+      <field_c/>
       <value_type>String</value_type>
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>Y</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
     <calculation>
       <field_name>space</field_name>
       <calc_type>CONSTANT</calc_type>
       <field_a> </field_a>
-      <field_b />
-      <field_c />
+      <field_b/>
+      <field_c/>
       <value_type>String</value_type>
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>Y</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
     <calculation>
       <field_name>objet_inter</field_name>
@@ -2991,10 +3516,10 @@ WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>Y</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
     <calculation>
       <field_name>objet_final</field_name>
@@ -3006,12 +3531,13 @@ WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>N</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -3027,58 +3553,59 @@ WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
   <step>
     <name>objet indispo</name>
     <type>Calculator</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
+    <failIfNoFile>N</failIfNoFile>
     <calculation>
       <field_name>parent_ouvr</field_name>
       <calc_type>CONSTANT</calc_type>
       <field_a>(modifié par : </field_a>
-      <field_b />
-      <field_c />
+      <field_b/>
+      <field_c/>
       <value_type>String</value_type>
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>Y</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
     <calculation>
       <field_name>parent_ferm</field_name>
       <calc_type>CONSTANT</calc_type>
       <field_a>)</field_a>
-      <field_b />
-      <field_c />
+      <field_b/>
+      <field_c/>
       <value_type>String</value_type>
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>Y</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
     <calculation>
       <field_name>space</field_name>
       <calc_type>CONSTANT</calc_type>
       <field_a> </field_a>
-      <field_b />
-      <field_c />
+      <field_b/>
+      <field_c/>
       <value_type>String</value_type>
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>Y</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
     <calculation>
       <field_name>objet_inter</field_name>
@@ -3090,10 +3617,10 @@ WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>Y</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
     <calculation>
       <field_name>objet_final</field_name>
@@ -3105,12 +3632,13 @@ WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
       <remove>N</remove>
-      <conversion_mask />
-      <decimal_symbol />
-      <grouping_symbol />
-      <currency_symbol />
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
     </calculation>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -3126,13 +3654,13 @@ WHERE code = '${MODELE_MAIL_CHANGEMENT_ETAT}'</sql>
   <step>
     <name>poids anomalies</name>
     <type>TableInput</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <connection>Remocra (Postgis)</connection>
     <sql>SELECT tha.id, tha.nom , thn.code 
@@ -3141,11 +3669,14 @@ FROM remocra.type_hydrant_anomalie tha
 		AND than.val_indispo_terrestre = 5
 	JOIN remocra.type_hydrant_nature thn ON thn.id = than.nature</sql>
     <limit>0</limit>
-    <lookup />
+    <lookup/>
     <execute_each_row>N</execute_each_row>
     <variables_active>N</variables_active>
     <lazy_conversion_active>N</lazy_conversion_active>
-    <cluster_schema />
+    <cached_row_meta_active>N</cached_row_meta_active>
+    <row-meta/>
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -3161,13 +3692,13 @@ FROM remocra.type_hydrant_anomalie tha
   <step>
     <name>valeurs mail</name>
     <type>SelectValues</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <fields>
       <field>
@@ -3194,7 +3725,8 @@ FROM remocra.type_hydrant_anomalie tha
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -3207,44 +3739,10 @@ FROM remocra.type_hydrant_anomalie tha
       <draw>Y</draw>
     </GUI>
   </step>
-  <step>
-    <name>anomalies</name>
-    <type>TableInput</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <connection>Remocra (Postgis)</connection>
-    <sql>SELECT ha.hydrant, ha.anomalies, thn.code 
-FROM remocra.hydrant_anomalies ha
-	JOIN remocra.hydrant h ON h.id = ha.hydrant
-	JOIN remocra.type_hydrant_nature thn ON thn.id = h.nature
-ORDER BY ha.hydrant</sql>
-    <limit>0</limit>
-    <lookup />
-    <execute_each_row>N</execute_each_row>
-    <variables_active>N</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>384</xloc>
-      <yloc>32</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
   <step_error_handling>
   </step_error_handling>
   <slave-step-copy-partition-distribution>
   </slave-step-copy-partition-distribution>
   <slave_transformation>N</slave_transformation>
+  <attributes/>
 </transformation>
