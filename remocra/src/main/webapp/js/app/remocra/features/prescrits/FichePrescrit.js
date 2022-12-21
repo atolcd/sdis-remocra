@@ -24,7 +24,7 @@ Ext.define('Sdis.Remocra.features.prescrits.FichePrescrit', {
             border: false,
             items: [ {
                 xtype: 'numberfield',
-                fieldLabel: 'Nombre de poteaux',
+                fieldLabel: 'Nombre de PEI',
                 name: 'nbPoteaux',
                 allowDecimals: false
             }, {

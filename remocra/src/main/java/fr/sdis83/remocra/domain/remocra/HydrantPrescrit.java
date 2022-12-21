@@ -65,7 +65,7 @@ public class HydrantPrescrit implements Featurable {
     public Feature toFeature() {
         Feature feature = new Feature(this.id, this.getJsonGeometrie());
         feature.addProperty("Date ", this.getDatePrescrit());
-        feature.addProperty("Nombre de poteaux", this.getNbPoteaux());
+        feature.addProperty("Nombre de PEI", this.getNbPoteaux());
         feature.addProperty("debit", this.getDebit());
         feature.addProperty("agent", this.getAgent());
         feature.addProperty("commentaire", this.getCommentaire());
