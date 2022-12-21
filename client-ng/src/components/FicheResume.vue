@@ -112,12 +112,13 @@ export default {
 };
 </script>
 
+
 <style scoped>
 .observation {
   text-decoration: underline;
 }
 
-.anomalieBloquante {
+>>> .anomalieBloquante {
   font-weight: bold;
 }
 
