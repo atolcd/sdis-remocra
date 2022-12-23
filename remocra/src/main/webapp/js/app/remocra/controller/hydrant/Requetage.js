@@ -119,7 +119,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Requetage', {
                         name : data[i]['nom']
                     });
                      var comboLstD = Ext.ComponentQuery.query('#param-'+data[i]['id'])[0];
-                     this.setDefaultValue(comboLstD);
+                     this.setDefaultValue(comboLstD, data[i]['formulaireValeurDefaut'], data[i]['sourceSqlValeur']);
 
                     break;
 
@@ -164,7 +164,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Requetage', {
                         name : data[i]['nom']
                     });
                     var comboLstLike = Ext.ComponentQuery.query('#param-'+data[i]['id'])[0];
-                    this.setDefaultValue(comboLstLike);
+                    this.setDefaultValue(comboLstLike, data[i]['formulaireValeurDefaut'], data[i]['sourceSqlValeur']);
                     break;
                 // DateField
                 case 'datefield':
@@ -274,11 +274,19 @@ Ext.define('Sdis.Remocra.controller.hydrant.Requetage', {
 
     },
 
-    setDefaultValue : function(combo){
+    setDefaultValue : function(combo, valeurDefaut, valueField){
           combo.store.on('load', function(store, records, successful, eOpts) {
-              if (records.length>0) {
-                  this.setValue(records[0]);
-              }
+            // On prend en compte la valeur par défaut s'il y en a une
+            defaultValue = records.find(function(i) {
+                return i.data[valueField] === valeurDefaut;
+            });
+
+            if(defaultValue !== undefined) {
+                this.setValue(defaultValue);
+            }
+            else if (records.length>0) {
+                this.setValue(records[0]);
+            }
           }, combo, {single: true});
     },
 
