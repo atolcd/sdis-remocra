@@ -293,6 +293,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
             'crHydrantsHydrant #newHydrant': {
                 click: this.onFeatureAdded
             },
+            'crHydrantsHydrant #clearFilters': {
+                click: this.clearHeaderFilters
+            },
             'crHydrantsHydrant #deleteHydrant': {
                 click: this.deleteHydrantFromGrid
             },
@@ -1396,6 +1399,10 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
                 Sdis.Remocra.util.Msg.msg('Hydrant', 'Vous ne possédez pas les autorisations nécessaires pour créer un hydrant sur cette zone', 3);
             }
         });
+    },
+
+    clearHeaderFilters: function() {
+        this.getTabHydrant().clearHeaderFilters();
     },
 
     onCloseChoiceTypeHydrant: function(win) {
