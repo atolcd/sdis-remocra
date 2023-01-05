@@ -12,10 +12,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,12 +25,12 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.RequeteModele;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.RequeteModeleParametre;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.RequeteModeleSelection;
 import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
-import fr.sdis83.remocra.domain.remocra.ZoneCompetence;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.util.StatementFormat;
@@ -275,8 +272,9 @@ public class RequeteModeleRepository {
   @Transactional
   public int insertDetail(String rs, Long lastRmd) throws SQLException {
     String geom =  rs.split(";")[1];
-    Query query = entityManager.createNativeQuery("INSERT INTO remocra.requete_modele_selection_detail (selection,geometrie) SELECT :selection, (select st_geometryfromtext(:geometrie, 2154))")
-    .setParameter("selection", lastRmd).setParameter("geometrie",geom);
+    Query query = entityManager.createNativeQuery("INSERT INTO remocra.requete_modele_selection_detail (selection,geometrie) SELECT :selection, (select st_geometryfromtext(:geometrie, :srid))")
+    .setParameter("selection", lastRmd).setParameter("geometrie",geom)
+    .setParameter("srid", GlobalConstants.SRID_2154);
     return query.executeUpdate();
   }
 
@@ -294,15 +292,17 @@ public class RequeteModeleRepository {
     //Si la requête est spatiale on insère les détails
     if(spatial) {
       //On insere les détails de la selection
-      Query q = entityManager.createNativeQuery("INSERT INTO remocra.requete_modele_selection_detail (selection, geometrie ) SELECT :id, ST_GeomFromText(wkt, 2154) FROM ("+s.toString()+") AS selection")
-          .setParameter("id", id);
+      Query q = entityManager.createNativeQuery("INSERT INTO remocra.requete_modele_selection_detail (selection, geometrie ) SELECT :id, ST_GeomFromText(wkt, :srid) FROM ("+s.toString()+") AS selection")
+          .setParameter("id", id)
+          .setParameter("srid", GlobalConstants.SRID_2154);;
       int r = q.executeUpdate();
 
       //On update le champ étendu
       if(r != 0){
-       Query query = entityManager.createNativeQuery("UPDATE remocra.requete_modele_selection SET etendu = (SELECT st_setsrid(CAST(st_extent(geometrie) AS Geometry),2154) " +
+       Query query = entityManager.createNativeQuery("UPDATE remocra.requete_modele_selection SET etendu = (SELECT st_setsrid(CAST(st_extent(geometrie) AS Geometry), :srid) " +
                   "FROM remocra.requete_modele_selection_detail WHERE selection = :id) WHERE id = :id")
-                  .setParameter("id",id);
+                  .setParameter("id",id)
+                  .setParameter("srid", GlobalConstants.SRID_2154);
           query.executeUpdate();
       }
 

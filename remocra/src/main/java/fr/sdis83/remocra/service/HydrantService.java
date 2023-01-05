@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +16,7 @@ import flexjson.JSONSerializer;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.repository.NumeroUtilRepository;
 import fr.sdis83.remocra.web.message.ItemFilter;
@@ -362,8 +362,10 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
 
             String codeZS = (String) entityManager
                     .createNativeQuery("select code from remocra.zone_speciale "
-                            + "where ST_GeomFromText(:geometrie,2154) && geometrie and st_distance(ST_GeomFromText(:geometrie,2154), geometrie)<=0")
-                    .setParameter("geometrie", geometrie).getSingleResult();
+                            + "where ST_GeomFromText(:geometrie,:srid) && geometrie and st_distance(ST_GeomFromText(:geometrie,:srid), geometrie)<=0")
+                    .setParameter("geometrie", geometrie)
+                    .setParameter("srid", GlobalConstants.SRID_2154)
+                    .getSingleResult();
             zs = ZoneSpeciale.findZoneSpecialesByCode(codeZS).getSingleResult();
 
         } catch (Exception e) {
@@ -404,8 +406,9 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
     public List<Hydrant> findHydrantsByBBOX(String bbox) {
         TypedQuery<Hydrant> query = entityManager
                 .createQuery(
-                        "SELECT o FROM Hydrant o where dwithin (geometrie, transform(:filter, 2154), 0) = true and dwithin (geometrie, :zoneCompetence, 0) = true",
+                        "SELECT o FROM Hydrant o where dwithin (geometrie, transform(:filter, :srid), 0) = true and dwithin (geometrie, :zoneCompetence, 0) = true",
                         Hydrant.class)
+                .setParameter("srid", GlobalConstants.SRID_2154)
                 .setParameter("filter", GeometryUtil.geometryFromBBox(bbox)).setParameter("zoneCompetence",
                         utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie());
         return query.getResultList();
@@ -438,9 +441,9 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
         double longitude;
         double latitude;
 
-        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 2154);
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_2154);
         //Si les données sont déjà en Lambert 93, on peut mettre à jour
-        if(srid == 2154){
+        if(srid == GlobalConstants.SRID_2154){
             longitude = Double.parseDouble(items.get("longitude").toString());
             latitude = Double.parseDouble(items.get("latitude").toString());
 
@@ -456,7 +459,7 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
                 longitude = Double.parseDouble(items.get("longitude").toString());
                 latitude = Double.parseDouble(items.get("latitude").toString());
             }
-            double[] coordonneConvert = GeometryUtil.transformCordinate(longitude, latitude, items.get("systeme").toString(), "2154");
+            double[] coordonneConvert = GeometryUtil.transformCordinate(longitude, latitude, items.get("systeme").toString(), GlobalConstants.SRID_2154.toString());
             longitude = BigDecimal.valueOf(coordonneConvert[0]).setScale(0, RoundingMode.HALF_UP).intValue();
             latitude = BigDecimal.valueOf(coordonneConvert[1]).setScale(0, RoundingMode.HALF_UP).intValue();
             Point p = geometryFactory.createPoint(new Coordinate(longitude, latitude));

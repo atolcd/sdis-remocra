@@ -22,7 +22,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,6 +38,7 @@ import javax.persistence.PersistenceContext;
 
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.converter.InstantConverter;
 import fr.sdis83.remocra.db.model.remocra.Tables;
 import fr.sdis83.remocra.db.model.remocra.tables.CriseDocument;
@@ -192,12 +192,12 @@ public class CriseEvenementRepository {
         "join remocra.type_crise_nature_evenement as tce " +
         "on ce.nature_evenement = tce.id "
         // Si le point fait partie de la géometrie d'une crise
-        + "where ce.crise = "+crise+" and (ST_Contains(geometrie,ST_Transform(ST_SetSRID(ST_makePoint(" + point + ")," + projection + "), 2154)) = true "
+        + "where ce.crise = "+crise+" and (ST_Contains(geometrie,ST_Transform(ST_SetSRID(ST_makePoint(" + point + ")," + projection + "), "+ GlobalConstants.SRID_2154 +")) = true "
         // Et que la crise est dans la zone de compétence de
         // l'utilisateur connecté
-        + "or st_distance(geometrie ,ST_Transform(ST_SetSRID(ST_makePoint(" + point + ")," + projection + "), 2154)) < 100 "
+        + "or st_distance(geometrie ,ST_Transform(ST_SetSRID(ST_makePoint(" + point + ")," + projection + "), "+ GlobalConstants.SRID_2154 +")) < 100 "
 
-        + "and st_dwithin(geometrie, st_geomfromtext('"+utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie()+"', 2154), 0) = true)";
+        + "and st_dwithin(geometrie, st_geomfromtext('"+utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie()+"', "+ GlobalConstants.SRID_2154 +"), 0) = true)";
 
     List<CriseEvenement> l = new ArrayList<CriseEvenement>();
     Result<Record> result = context.fetch(qlString);
@@ -242,9 +242,8 @@ public class CriseEvenementRepository {
     c.setAuteurEvenement(utilisateurService.getCurrentUtilisateur().getId());
     Geometry geom = null;
     if(request.getParameter("geometrie") != null){
-      Integer srid = 2154;
       String[] coord = request.getParameter("geometrie").split(";");
-      srid = sridFromGeom(coord[0]);
+      Integer srid = sridFromGeom(coord[0]);
       geom = GeometryUtil.toGeometry(coord[1],srid);
     }
     if(request.getParameter("cloture") != null){

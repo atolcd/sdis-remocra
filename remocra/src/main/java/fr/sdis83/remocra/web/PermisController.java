@@ -2,6 +2,7 @@ package fr.sdis83.remocra.web;
 
 import java.util.List;
 
+import fr.sdis83.remocra.GlobalConstants;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -106,7 +107,7 @@ public class PermisController extends AbstractRemocraController {
 
             @Override
             protected List<Permis> getRecords() {
-                int srid = 2154;
+                int srid = GlobalConstants.SRID_2154;
                 int firstResult = 0;
                 int maxResults = 10;
                 Geometry geom = utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie();
@@ -152,7 +153,7 @@ public class PermisController extends AbstractRemocraController {
             final @RequestParam int fileCounter) {
         try {
             Permis record = Permis.fromJsonToPermis(jsonPermis);
-            record.getGeometrie().setSRID(2154);
+            record.getGeometrie().setSRID(GlobalConstants.SRID_2154);
             checkZoneCompetence(record.getGeometrie());
             if (!id.equals(record.getId())) {
                 logger.error("Requête non valide : idUrl = " + id + " est different de " + record.getId());

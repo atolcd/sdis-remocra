@@ -2,6 +2,7 @@ package fr.sdis83.remocra.repository;
 
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantDiametre;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantNatureDeci;
 import fr.sdis83.remocra.util.GeometryUtil;
@@ -27,15 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static fr.sdis83.remocra.db.model.remocra.Tables.ETUDE;
-import static fr.sdis83.remocra.db.model.remocra.Tables.ETUDE_HYDRANT_PROJET;
-import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_DIAMETRE;
-import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE_DECI;
+import static fr.sdis83.remocra.db.model.remocra.Tables.*;
 
 @Configuration
 
@@ -149,7 +146,7 @@ public class EtudeHydrantProjetRepository {
     Double longitude = (obj.get("longitude") != null) ? Double.valueOf(obj.get("longitude").toString()) : null;
     Double latitude = (obj.get("latitude") != null) ? Double.valueOf(obj.get("latitude").toString()) : null;
 
-    Geometry geom = GeometryUtil.createPoint(longitude, latitude, "2154", "2154");
+    Geometry geom = GeometryUtil.createPoint(longitude, latitude, GlobalConstants.SRID_2154.toString(), GlobalConstants.SRID_2154.toString());
 
     long idPeiProjet = context.insertInto(ETUDE_HYDRANT_PROJET)
       .set(ETUDE_HYDRANT_PROJET.TYPE_DECI, new Long(obj.get("deci").toString()))
@@ -194,7 +191,7 @@ public class EtudeHydrantProjetRepository {
     Double longitude = (obj.get("longitude") != null) ? Double.valueOf(obj.get("longitude").toString()) : null;
     Double latitude = (obj.get("latitude") != null) ? Double.valueOf(obj.get("latitude").toString()) : null;
 
-    Geometry geom = GeometryUtil.createPoint(longitude, latitude, "2154", "2154");
+    Geometry geom = GeometryUtil.createPoint(longitude, latitude, GlobalConstants.SRID_2154.toString(), GlobalConstants.SRID_2154.toString());
     context.update(ETUDE_HYDRANT_PROJET)
       .set(ETUDE_HYDRANT_PROJET.GEOMETRIE, geom)
       .where(ETUDE_HYDRANT_PROJET.ID.eq(new Long(obj.get("id").toString()))).execute();

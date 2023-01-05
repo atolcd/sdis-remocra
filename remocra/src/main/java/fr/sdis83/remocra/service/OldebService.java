@@ -23,6 +23,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 
+import fr.sdis83.remocra.GlobalConstants;
 import org.apache.log4j.Logger;
 import org.cts.IllegalCoordinateException;
 import org.cts.crs.CRSException;
@@ -580,7 +581,7 @@ public class OldebService extends AbstractService<Oldeb> {
     public Oldeb setUpInformation(Oldeb attached, Map<String, MultipartFile> files, Object... params) throws Exception {
 
         // Géométrie
-        attached.getGeometrie().setSRID(2154);
+        attached.getGeometrie().setSRID(GlobalConstants.SRID_2154);
         Geometry geom = attached.getGeometrie();
         geom = GeometryUtil.getMultiGeometry(geom);
         attached.setGeometrie(geom);
@@ -630,7 +631,7 @@ public class OldebService extends AbstractService<Oldeb> {
     public List<Oldeb> findOldebsByPoint(String point, String projection) {
         String qlString = "select o FROM Oldeb o "
                 // Si le point fait partie de la géometrie d'une Oldeb
-                + "where ST_Contains(geometrie,ST_Transform(ST_SetSRID(ST_makePoint(" + point + ")," + projection + "),2154)) = true " + "and o.actif = true "
+                + "where ST_Contains(geometrie,ST_Transform(ST_SetSRID(ST_makePoint(" + point + ")," + projection + "),"+ GlobalConstants.SRID_2154 +")) = true " + "and o.actif = true "
                 // Et que l'oldeb est dans la zone de compétence de
                 // l'utilisateur connecté
                 + "and dwithin(geometrie, :zoneCompetence, 0) = true";

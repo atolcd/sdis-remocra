@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.persistence.TypedQuery;
 
+import fr.sdis83.remocra.GlobalConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,14 +38,17 @@ public class HydrantPrescritService extends AbstractService<HydrantPrescrit> {
     public List<HydrantPrescrit> findHydrantPrescritsByBBOX(String bbox) {
         TypedQuery<HydrantPrescrit> query = entityManager
                 .createQuery(
-                        "SELECT o FROM HydrantPrescrit o where contains (transform(:filter, 2154), geometrie) = true and contains (:zoneCompetence, geometrie) = true",
+                        "SELECT o FROM HydrantPrescrit o " +
+                                "where contains (transform(:filter, :srid), geometrie) = true " +
+                                "and contains (:zoneCompetence, geometrie) = true",
                         HydrantPrescrit.class)
                 .setParameter(
                         "filter",
                         GeometryUtil.geometryFromBBox(bbox))
                 .setParameter(
                         "zoneCompetence",
-                        utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie());
+                        utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence().getGeometrie())
+                .setParameter("srid", GlobalConstants.SRID_2154);
         return query.getResultList();
     }
 
@@ -52,7 +56,7 @@ public class HydrantPrescritService extends AbstractService<HydrantPrescrit> {
     @Override
     public HydrantPrescrit setUpInformation(HydrantPrescrit attached, Map<String, MultipartFile> files, Object... params) throws Exception {
         // traitement géométrie
-        attached.getGeometrie().setSRID(2154);
+        attached.getGeometrie().setSRID(GlobalConstants.SRID_2154);
         if (attached.getOrganisme() == null) {
             attached.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme());
         }

@@ -4,9 +4,8 @@ package fr.sdis83.remocra.db.converter;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
-import com.vividsolutions.jts.io.WKBWriter;
-import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKTWriter;
+import fr.sdis83.remocra.GlobalConstants;
 import org.jooq.Binding;
 import org.jooq.BindingGetResultSetContext;
 import org.jooq.BindingGetSQLInputContext;
@@ -87,7 +86,7 @@ public abstract class AbstractGeometryBinding<T extends Geometry> implements Bin
       ctx.render().visit(DSL.val(value)).sql("::geometry");
       return;
     }
-    ctx.render().sql("ST_GeomFromText(").visit(DSL.val(value)).sql(", 2154)");
+    ctx.render().sql("ST_GeomFromText(").visit(DSL.val(value)).sql(","+ GlobalConstants.SRID_2154 +")");
   }
 
   // Registering BLOB types for JDBC CallableStatement OUT parameters

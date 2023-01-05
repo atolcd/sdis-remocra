@@ -1,5 +1,6 @@
 package fr.sdis83.remocra.repository;
 
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantPibi;
 import fr.sdis83.remocra.util.JSONUtil;
@@ -24,6 +25,7 @@ public class HydrantPibiRepository {
 
   private static final String BI = "BI";
   private static final Integer DISTANCE_MINIMAL_JUMELAGE = 25;
+  private static final String SRID = "SRID="+ GlobalConstants.SRID_2154 +";";
 
   @Autowired
   DSLContext context;
@@ -191,7 +193,7 @@ public class HydrantPibiRepository {
             .on(HYDRANT.ID.eq(HYDRANT_PIBI.ID))
             .where("ST_DISTANCE({0}, {1}) < {2}",
                     HYDRANT.GEOMETRIE,
-                    "SRID=2154;"+geometrie,
+                    SRID+geometrie,
                     DISTANCE_MINIMAL_JUMELAGE)
             .and(TYPE_HYDRANT_NATURE.CODE.eq(BI))
             .and(HYDRANT_PIBI.JUMELE.isNull())

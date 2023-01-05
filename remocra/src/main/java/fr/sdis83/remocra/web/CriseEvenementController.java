@@ -351,9 +351,8 @@ public class CriseEvenementController {
         try {
             Map<String, Object> wkt = new JSONDeserializer<HashMap<String, Object>>().use(Geometry.class, new GeometryFactory()).deserialize(json);
             Geometry geom = null;
-            Integer srid = 2154;
             String[] coord = String.valueOf(wkt.get("geometrie")).split(";");
-            srid = sridFromGeom(coord[0]);
+            Integer srid = sridFromGeom(coord[0]);
             geom = GeometryUtil.toGeometry(coord[1], srid);
             Boolean result = zoneCompetenceService.check(coord[1], srid, utilisateurService.getCurrentZoneCompetenceId());
             //Boolean isClos = criseEvenementRepository.getClos(id);

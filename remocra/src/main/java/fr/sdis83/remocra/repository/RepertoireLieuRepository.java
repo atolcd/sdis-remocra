@@ -1,15 +1,5 @@
 package fr.sdis83.remocra.repository;
 
-import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_REPERTOIRE_LIEU;
-import static fr.sdis83.remocra.db.model.remocra.Tables.REPERTOIRE_LIEU;
-import static fr.sdis83.remocra.util.GeometryUtil.sridFromGeom;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import com.vividsolutions.jts.geom.Geometry;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.RepertoireLieu;
 import fr.sdis83.remocra.util.GeometryUtil;
@@ -22,6 +12,15 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.List;
+
+import static fr.sdis83.remocra.db.model.remocra.Tables.CRISE_REPERTOIRE_LIEU;
+import static fr.sdis83.remocra.db.model.remocra.Tables.REPERTOIRE_LIEU;
+import static fr.sdis83.remocra.util.GeometryUtil.sridFromGeom;
 
 @Configuration
 public class RepertoireLieuRepository {
@@ -69,10 +68,9 @@ public class RepertoireLieuRepository {
       fr.sdis83.remocra.web.model.RepertoireLieu rep = new fr.sdis83.remocra.web.model.RepertoireLieu();
       rep.setLibelle(String.valueOf(r.getValue("libelle")));
       Geometry geom = null;
-      Integer srid = 2154;
       String[] coord = String.valueOf(r.getValue("geometrie")).split(";");
-      srid = sridFromGeom(coord[0]);
-      geom = GeometryUtil.toGeometry(coord[1],srid);
+      Integer srid = sridFromGeom(coord[0]);
+      geom = GeometryUtil.toGeometry(coord[1], srid);
       rep.setGeometrie(geom);
       rep.setOrigine(String.valueOf(r.getValue("origine")));
       l.add(rep);
@@ -108,9 +106,8 @@ public class RepertoireLieuRepository {
       fr.sdis83.remocra.web.model.RepertoireLieu rep = new fr.sdis83.remocra.web.model.RepertoireLieu();
       rep.setLibelle(String.valueOf(r.getValue("libelle")));
       Geometry geom = null;
-      Integer srid = 2154;
       String[] coord = String.valueOf(r.getValue("geometrie")).split(";");
-      srid = sridFromGeom(coord[0]);
+      Integer srid = sridFromGeom(coord[0]);
       geom = GeometryUtil.toGeometry(coord[1],srid);
       rep.setGeometrie(geom);
       rep.setOrigine(String.valueOf(r.getValue("origine")));

@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.repository.HydrantRepository;
 import fr.sdis83.remocra.repository.HydrantVisiteRepository;
@@ -275,11 +276,11 @@ public class HydrantController {
                                                                  final @RequestParam(value = "degres", required = false, defaultValue = "true") boolean degres){
         try {
             // Lambert 83, on renvoie les coordonnées existantes
-            if(srid == 2154){
+            if(srid == GlobalConstants.SRID_2154){
                 return new SuccessErrorExtSerializer(true, longitude+","+latitude).serialize();
             }
             else{
-                double[] coordonneConvert = GeometryUtil.transformCordinate(longitude, latitude, "2154", srid.toString());
+                double[] coordonneConvert = GeometryUtil.transformCordinate(longitude, latitude, GlobalConstants.SRID_2154.toString(), srid.toString());
 
                 //Si on a choisi le système WGS84 et qu'on ne souhaite pas l'exprimer en degrés décimaux, on le convertit en degrés minutes secondes
                 if(srid == 4326 && !degres){

@@ -30,6 +30,7 @@ import javax.persistence.criteria.Order;
 
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.OgcCouche;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlPlanificationParametre;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.RepertoireLieu;
@@ -141,7 +142,7 @@ public class CriseRepository {
   }
   public String getExtentById (Long id) {
     String extent = null;
-    String sql = "SELECT St_AsEwkt(St_transform(St_SetSrid(CAST(St_Extent(geometrie) AS Geometry),2154),3857)) AS geometrie FROM remocra.commune WHERE id IN(SELECT commune FROM remocra.crise_commune WHERE crise ="+ id+")";
+    String sql = "SELECT St_AsEwkt(St_transform(St_SetSrid(CAST(St_Extent(geometrie) AS Geometry),"+ GlobalConstants.SRID_2154 +"),3857)) AS geometrie FROM remocra.commune WHERE id IN(SELECT commune FROM remocra.crise_commune WHERE crise ="+ id+")";
     Result<Record> result = context.fetch(sql);
     extent = String.valueOf(result.getValue(0,"geometrie"));
     return extent;

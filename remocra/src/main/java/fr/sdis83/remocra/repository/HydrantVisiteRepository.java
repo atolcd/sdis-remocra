@@ -7,6 +7,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.domain.remocra.TypeDroit;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
@@ -159,8 +160,8 @@ public class HydrantVisiteRepository {
       Double latitude = JSONUtil.getDouble(visite, "latitude");
       Double longitude = JSONUtil.getDouble(visite, "longitude");
       if(latitude != null && longitude != null && this.authUtils.hasRight(TypeDroit.TypeDroitEnum.HYDRANTS_DEPLACEMENT_CTP_C)) {
-        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 2154);
-        double[] coordsLambert93 = GeometryUtil.transformCordinate(longitude, latitude, "4326", "2154");
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_2154);
+        double[] coordsLambert93 = GeometryUtil.transformCordinate(longitude, latitude, "4326", GlobalConstants.SRID_2154.toString());
         Point p = geometryFactory.createPoint(new Coordinate(coordsLambert93[0], coordsLambert93[1]));
         context.update(HYDRANT)
           .set(HYDRANT.GEOMETRIE, p)

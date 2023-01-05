@@ -1,10 +1,7 @@
 package fr.sdis83.remocra.domain.remocra;
 
-import java.awt.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -14,13 +11,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.util.Feature;
 import fr.sdis83.remocra.util.GeometryUtil;
 import org.cts.IllegalCoordinateException;
 import org.cts.crs.CRSException;
 import org.hibernate.annotations.Type;
 import org.springframework.roo.addon.javabean.RooJavaBean;
-import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 
 import com.vividsolutions.jts.geom.Point;
@@ -72,7 +69,7 @@ public class HydrantAspiration {
         if(this.getGeometrie() == null)
             return null;
         Point p = this.getGeometrie();
-        double[] coordonneConvert = GeometryUtil.transformCordinate(p.getX(), p.getY(), "2154", "4326");
+        double[] coordonneConvert = GeometryUtil.transformCordinate(p.getX(), p.getY(), GlobalConstants.SRID_2154.toString(), "4326");
         double longitude = BigDecimal.valueOf(coordonneConvert[0]).setScale(5, RoundingMode.HALF_UP).doubleValue();
         return longitude;
     }
@@ -81,7 +78,7 @@ public class HydrantAspiration {
         if(this.getGeometrie() == null)
             return null;
         Point p = this.getGeometrie();
-        double[] coordonneConvert = GeometryUtil.transformCordinate(p.getX(), p.getY(), "2154", "4326");
+        double[] coordonneConvert = GeometryUtil.transformCordinate(p.getX(), p.getY(), GlobalConstants.SRID_2154.toString(), "4326");
         double latitude = BigDecimal.valueOf(coordonneConvert[1]).setScale(5, RoundingMode.HALF_UP).doubleValue();
         return latitude;
     }

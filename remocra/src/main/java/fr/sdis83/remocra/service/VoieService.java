@@ -16,6 +16,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import fr.sdis83.remocra.GlobalConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -70,7 +71,7 @@ public class VoieService {
 
         // Valeur pour les paramètres (si besoin)
         if (wktFilter != null) {
-            String wktValue = "SRID=2154;" + wktFilter.getValue();
+            String wktValue = "SRID="+ GlobalConstants.SRID_2154 +";" + wktFilter.getValue();
             itemTypedQuery.setParameter((Parameter) wktOrderParam, wktValue);
             itemTypedQuery.setParameter((Parameter) parameters.get("WKT_PARAM"), wktValue);
             itemTypedQuery.setParameter((Parameter) parameters.get("DIST_PARAM"), paramConfService.getToleranceVoiesMetres());

@@ -2,6 +2,7 @@ package fr.sdis83.remocra.web;
 
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.service.ZoneCompetenceService;
@@ -83,7 +84,7 @@ public class HydrantPrescritController extends AbstractServiceableController<Hyd
     @PreAuthorize("hasRight('HYDRANTS_PRESCRIT_C')")
     public ResponseEntity<java.lang.String> update(@PathVariable Long id, @RequestBody String json) {
         HydrantPrescrit current = new JSONDeserializer<HydrantPrescrit>().use( null, HydrantPrescrit.class ).use(Date.class, RemocraDateHourTransformer.getInstance()).use(Geometry.class, new GeometryFactory()).deserialize(json);
-        current.getGeometrie().setSRID(2154);
+        current.getGeometrie().setSRID(GlobalConstants.SRID_2154);
         if(zoneCompetenceService.check(current.getGeometrie(), serviceUtilisateur.getCurrentZoneCompetenceId())){
             return this.doUpdate(id, json);
         }
@@ -97,7 +98,7 @@ public class HydrantPrescritController extends AbstractServiceableController<Hyd
     @PreAuthorize("hasRight('HYDRANTS_PRESCRIT_C')")
     public ResponseEntity<String> create(@RequestBody String json) {
         HydrantPrescrit current = new JSONDeserializer<HydrantPrescrit>().use( null, HydrantPrescrit.class ).use(Date.class, RemocraDateHourTransformer.getInstance()).use(Geometry.class, new GeometryFactory()).deserialize(json);
-        current.getGeometrie().setSRID(2154);
+        current.getGeometrie().setSRID(GlobalConstants.SRID_2154);
         if(zoneCompetenceService.check(current.getGeometrie(), serviceUtilisateur.getCurrentZoneCompetenceId())){
             return this.doCreate(json);
         }

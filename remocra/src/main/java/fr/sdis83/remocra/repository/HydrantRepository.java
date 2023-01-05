@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.vividsolutions.jts.geom.Point;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantAnomalie;
@@ -651,10 +652,10 @@ public class HydrantRepository {
         throw new ImportCTPException("ERR_COORD_GPS", data);
       }
 
-      Integer distance = context.resultQuery("SELECT ST_DISTANCE(ST_transform(ST_SetSRID(ST_MakePoint({0}, {1}),4326), 2154), h.geometrie) " +
+      Integer distance = context.resultQuery("SELECT ST_DISTANCE(ST_transform(ST_SetSRID(ST_MakePoint({0}, {1}),4326), {2}), h.geometrie) " +
                       "FROM remocra.hydrant h " +
-                      "WHERE h.id = {2};",
-              longitude, latitude, h.getId()).fetchOneInto(Integer.class);
+                      "WHERE h.id = {3};",
+              longitude, latitude, GlobalConstants.SRID_2154, h.getId()).fetchOneInto(Integer.class);
 
       if (distance > this.paramConfService.getHydrantDeplacementDistWarn()) {
         String str = context.select(TYPE_HYDRANT_IMPORTCTP_ERREUR.MESSAGE)

@@ -2,6 +2,7 @@ package fr.sdis83.remocra.service;
 
 import java.util.Date;
 
+import fr.sdis83.remocra.GlobalConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,7 @@ public class PermisService {
 
     @Transactional
     public void setUpToDateInfo(Permis permis) {
-        permis.getGeometrie().setSRID(2154);
+        permis.getGeometrie().setSRID(GlobalConstants.SRID_2154);
         permis.setDateModification(new Date());
         permis.setInstructeur(utilisateurService.getCurrentUtilisateur());
     }

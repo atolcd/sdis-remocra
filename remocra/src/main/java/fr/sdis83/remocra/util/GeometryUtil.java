@@ -1,16 +1,5 @@
 package fr.sdis83.remocra.util;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -22,6 +11,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.Commune;
 import fr.sdis83.remocra.exception.BusinessException;
 import org.cts.CRSFactory;
@@ -33,6 +23,16 @@ import org.cts.op.CoordinateOperation;
 import org.cts.op.CoordinateOperationFactory;
 import org.cts.registry.EPSGRegistry;
 import org.jboss.logging.Logger;
+
+import javax.sql.DataSource;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GeometryUtil {
 
@@ -69,11 +69,11 @@ public class GeometryUtil {
             return null;
         }
         Envelope env = geometry.getEnvelopeInternal();
-        return String.format("EPSG:2154;%s,%s,%s,%s", env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY());
+        return String.format("EPSG:"+ GlobalConstants.SRID_2154 +";%s,%s,%s,%s", env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY());
     }
 
     public static Integer sridFromBBox(String bbox) {
-        Integer srid = 2154;
+        Integer srid = GlobalConstants.SRID_2154;
         if (bbox != null) {
             String[] coord = bbox.split(",");
             if (coord.length == 5) {
@@ -113,7 +113,7 @@ public class GeometryUtil {
 
     public static Point createPoint(double longitude, double latitude, String projFrom, String projTo) throws CRSException, IllegalCoordinateException {
         double[] coord = transformCordinate(longitude, latitude, projFrom, projTo);
-        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 2154);
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_2154);
         return geometryFactory.createPoint(new Coordinate(coord[0], coord[1]));
     }
 
@@ -144,7 +144,7 @@ public class GeometryUtil {
             st = cx.createStatement();
             st.execute(
                     "select coordonnee_complete from remocra_referentiel.carro_dfci where sous_type = 'CARRES INTRA 2x2 KM' and st_dwithin (geometrie, st_transform(st_geomfromtext('"
-                            + geom.toText() + "', " + geom.getSRID() + "), 2154), 0) = true");
+                            + geom.toText() + "', " + geom.getSRID() + "), "+ GlobalConstants.SRID_2154 +"), 0) = true");
             rs = st.getResultSet();
             rs.next();
             return rs.getString("coordonnee_complete");

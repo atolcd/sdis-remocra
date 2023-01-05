@@ -2,6 +2,7 @@ package fr.sdis83.remocra.repository;
 
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.model.PlusProchePei;
@@ -102,8 +103,8 @@ public class CouvertureHydrauliqueRepository {
 
     Integer distanceMaxParcours = paramConfService.getDeciDistanceMaxParcours();
 
-    Geometry geom = GeometryUtil.createPoint(longitude, latitude, "2154", "2154");
-    String query = "SELECT pei, chemin, dist FROM couverture_hydraulique.plus_proche_pei(ST_GeomFromText('"+geom.toText()+"', 2154), "+distanceMaxParcours+", NULL)";
+    Geometry geom = GeometryUtil.createPoint(longitude, latitude, GlobalConstants.SRID_2154.toString(), GlobalConstants.SRID_2154.toString());
+    String query = "SELECT pei, chemin, dist FROM couverture_hydraulique.plus_proche_pei(ST_GeomFromText('"+geom.toText()+"', "+ GlobalConstants.SRID_2154 +"), "+distanceMaxParcours+", NULL)";
 
     Object[] result = (Object[]) entityManager.createNativeQuery(query).getSingleResult();
 
@@ -116,7 +117,7 @@ public class CouvertureHydrauliqueRepository {
                       "FROM couverture_hydraulique.pei WHERE id = "+idPei;
       String wktGeomPei = entityManager.createNativeQuery(q).getSingleResult().toString();
       PlusProchePei p = new PlusProchePei();
-      Geometry geomPei = GeometryUtil.toGeometry(wktGeomPei, 2154);
+      Geometry geomPei = GeometryUtil.toGeometry(wktGeomPei, GlobalConstants.SRID_2154);
 
       p.setWktGeometriePei(geomPei.toText());
       p.setWktGeometrieChemin(geometrieChemin);

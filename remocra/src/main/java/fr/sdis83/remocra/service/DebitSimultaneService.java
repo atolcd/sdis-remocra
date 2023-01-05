@@ -1,13 +1,14 @@
 package fr.sdis83.remocra.service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.GlobalConstants;
+import fr.sdis83.remocra.domain.remocra.DebitSimultane;
+import fr.sdis83.remocra.web.message.ItemFilter;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,27 +17,11 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.sql.DataSource;
-
-import flexjson.JSONDeserializer;
-import flexjson.JSONSerializer;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
-import fr.sdis83.remocra.domain.remocra.DebitSimultane;
-import fr.sdis83.remocra.domain.remocra.Hydrant;
-import fr.sdis83.remocra.domain.remocra.Tournee;
-import fr.sdis83.remocra.util.GeometryUtil;
-import fr.sdis83.remocra.web.message.ItemFilter;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 @Configuration
@@ -77,7 +62,7 @@ public class DebitSimultaneService extends AbstractService<DebitSimultane>{
 
     public List<DebitSimultane> getDebitSimultaneFromLonLat(Double lon, Double lat, Integer srid, Integer distance){
         TypedQuery<DebitSimultane> query = entityManager
-                .createQuery("SELECT o FROM DebitSimultane o where st_distance(geometrie, ST_Transform(ST_SetSRID(ST_makePoint(:lon, :lat), :srid), 2154)) < :distance",
+                .createQuery("SELECT o FROM DebitSimultane o where st_distance(geometrie, ST_Transform(ST_SetSRID(ST_makePoint(:lon, :lat), :srid), :srid)) < :distance",
                         DebitSimultane.class)
                 .setParameter("lon", lon)
                 .setParameter("lat", lat)
@@ -92,7 +77,7 @@ public class DebitSimultaneService extends AbstractService<DebitSimultane>{
         Query query = entityManager
                 .createNativeQuery(
                         ("UPDATE remocra.debit_simultane SET geometrie = " +
-                            "(SELECT ST_SETSRID((ST_CENTROID(ST_UNION(geometrie))),2154) " +
+                            "(SELECT ST_SETSRID((ST_CENTROID(ST_UNION(geometrie))),:srid) " +
                             "FROM remocra.debit_simultane_hydrant dsh " +
                             "JOIN remocra.hydrant h ON h.id=dsh.hydrant " +
                             "WHERE debit = " +
@@ -103,7 +88,8 @@ public class DebitSimultaneService extends AbstractService<DebitSimultane>{
                                 "ORDER BY dsm.date_mesure DESC " +
                                 "LIMIT 1)) " +
                             "WHERE id=:idDebitSimultane"))
-                .setParameter("idDebitSimultane", id);
+                .setParameter("idDebitSimultane", id)
+                .setParameter("srid", GlobalConstants.SRID_2154);
         query.executeUpdate();
     }
 

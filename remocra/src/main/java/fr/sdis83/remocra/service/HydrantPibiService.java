@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.Parameter;
 import javax.persistence.Query;
@@ -18,11 +17,9 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.HydrantVisite;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,7 +79,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
     protected void manageParameters(Query query, Map<String, Object> parameters, List<ItemFilter> itemFilters) {
         ItemFilter wktFilter = ItemFilter.getFilter(itemFilters, "wkt");
         if (wktFilter != null) {
-            String wktValue = "SRID=2154;" + wktFilter.getValue();
+            String wktValue = "SRID="+ GlobalConstants.SRID_2154 +";" + wktFilter.getValue();
             query.setParameter((Parameter) parameters.get("WKT_PARAM"), wktValue);
             query.setParameter((Parameter) parameters.get("DIST_PARAM"), paramConfService.getToleranceAssociationCiternePIMetres());
         }
@@ -103,7 +100,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
     protected void processQuery(TypedQuery<?> itemTypedQuery, List<ItemSorting> itemSortings, List<ItemFilter> itemFilters, List<Order> orders, Predicate[] predicates) {
         ItemFilter wktFilter = ItemFilter.getFilter(itemFilters, "wkt");
         if (orders != null && wktFilter != null) {
-            String wktValue = "SRID=2154;" + wktFilter.getValue();
+            String wktValue = "SRID="+ GlobalConstants.SRID_2154 +";" + wktFilter.getValue();
             itemTypedQuery.setParameter("wkt", wktValue);
         }
 

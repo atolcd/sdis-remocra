@@ -14,6 +14,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
 
+import fr.sdis83.remocra.GlobalConstants;
 import org.apache.log4j.Logger;
 import org.cts.IllegalCoordinateException;
 import org.cts.crs.CRSException;
@@ -79,8 +80,11 @@ public class RciService extends AbstractService<Rci> {
 
     public List<Rci> findByBBOX(String bbox) {
         // Pas de restriction au territoire de compétence
-        TypedQuery<Rci> query = entityManager.createQuery("SELECT o FROM Rci o where contains (transform(:filter, 2154), geometrie) = true", Rci.class).setParameter("filter",
-                GeometryUtil.geometryFromBBox(bbox));
+        TypedQuery<Rci> query = entityManager.createQuery(
+                "SELECT o FROM Rci o where contains (transform(:filter, :srid), geometrie) = true", Rci.class)
+                .setParameter("filter",
+                    GeometryUtil.geometryFromBBox(bbox))
+                .setParameter("srid", GlobalConstants.SRID_2154);
         return query.getResultList();
     }
 
@@ -95,7 +99,7 @@ public class RciService extends AbstractService<Rci> {
     public Rci setUpInformation(Rci attached, Map<String, MultipartFile> files, Object... params) throws Exception {
 
         // Géométrie
-        attached.getGeometrie().setSRID(2154);
+        attached.getGeometrie().setSRID(GlobalConstants.SRID_2154);
 
         // Coordonnées DFCI
         try {

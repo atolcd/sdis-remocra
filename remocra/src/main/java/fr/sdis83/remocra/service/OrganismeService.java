@@ -1,8 +1,14 @@
 package fr.sdis83.remocra.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import fr.sdis83.remocra.GlobalConstants;
+import fr.sdis83.remocra.domain.remocra.Organisme;
+import fr.sdis83.remocra.web.message.ItemFilter;
+import fr.sdis83.remocra.web.message.ItemSorting;
+import org.apache.log4j.Logger;
+import org.jooq.tools.json.JSONArray;
+import org.jooq.tools.json.JSONObject;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -11,16 +17,9 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
-import org.apache.log4j.Logger;
-import org.jooq.tools.json.JSONArray;
-import org.jooq.tools.json.JSONObject;
-import org.springframework.context.annotation.Configuration;
-
-import fr.sdis83.remocra.domain.remocra.Organisme;
-import fr.sdis83.remocra.web.message.ItemFilter;
-import fr.sdis83.remocra.web.message.ItemSorting;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Configuration
 public class OrganismeService extends AbstractService<Organisme> {
@@ -126,9 +125,10 @@ public class OrganismeService extends AbstractService<Organisme> {
               "FROM remocra.organisme o " +
               "JOIN remocra.zone_competence zc ON (zc.id = o.zone_competence) " +
               "JOIN remocra.type_organisme t ON t.id=o.type_organisme " +
-              "WHERE (ST_Intersects(ST_GeomFromText(:geometrie, 2154), zc.geometrie)) AND (o.type_organisme IN " +
+              "WHERE (ST_Intersects(ST_GeomFromText(:geometrie, :srid), zc.geometrie)) AND (o.type_organisme IN " +
                 "(SELECT id FROM remocra.type_organisme WHERE code IN (:typeOrganismes) ))")
               .setParameter("geometrie", geometrie)
+              .setParameter("srid", GlobalConstants.SRID_2154)
               .setParameter("typeOrganismes", organismesAcceptes);
 
         JSONArray json = new JSONArray();

@@ -17,6 +17,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.util.GeometryUtil;
 
 import org.apache.commons.lang3.StringUtils;
@@ -167,7 +168,7 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
         } else if("near".equals(itemFilter.getFieldName())) {
             TypedQuery<Long> itemTypedQuery= this.entityManager.createQuery("select distinct(h.id) " +
                     "from Hydrant h " +
-                    "where ST_Distance(h.geometrie, st_pointFromText('"+ itemFilter.getValue().toString()+ "', 2154)) < 500", Long.class);
+                    "where ST_Distance(h.geometrie, st_pointFromText('"+ itemFilter.getValue().toString()+ "'," + GlobalConstants.SRID_2154 +")) < 500", Long.class);
             List<Long> resultList = itemTypedQuery.getResultList();
             Expression<Integer> idHydrant = from.get("id");
             predicat = !resultList.isEmpty() ? idHydrant.in(resultList) : predicat;
@@ -202,7 +203,7 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
     @Override
     public T setUpInformation(T attached, Map<String, MultipartFile> files, Object... params) throws Exception {
         // traitement géométrie
-        attached.getGeometrie().setSRID(2154);
+        attached.getGeometrie().setSRID(GlobalConstants.SRID_2154);
 
         // date de modification
         attached.setDateModification(new Date());

@@ -3,6 +3,7 @@ package fr.sdis83.remocra.web;
 import java.util.Date;
 import java.util.List;
 
+import fr.sdis83.remocra.GlobalConstants;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -73,7 +74,7 @@ public class AdressesController extends AbstractRemocraController {
             Geometry[] geometries = new Geometry[alerte.getAlerteElts().size()];
             int j = 0;
             for (AlerteElt elt : alerte.getAlerteElts()) {
-                elt.getGeometrie().setSRID(2154);
+                elt.getGeometrie().setSRID(GlobalConstants.SRID_2154);
                 geometries[j++] = elt.getGeometrie();
                 elt.setAlerte(alerte);
 
@@ -83,7 +84,7 @@ public class AdressesController extends AbstractRemocraController {
                 }
             }
             Point centroid = new GeometryCollection(geometries, new GeometryFactory()).getCentroid();
-            centroid.setSRID(2154);
+            centroid.setSRID(GlobalConstants.SRID_2154);
             alerte.setGeometrie(centroid);
 
             // Récupération des fichiers

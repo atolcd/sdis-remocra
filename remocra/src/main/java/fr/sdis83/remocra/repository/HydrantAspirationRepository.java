@@ -6,6 +6,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantAspiration;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.util.JSONUtil;
@@ -69,11 +70,11 @@ public class HydrantAspirationRepository {
         Double latitude = JSONUtil.getDouble(a, "latitude");
 
         if(longitude != null && latitude != null) {
-          double[] coordonneConvert = GeometryUtil.transformCordinate(longitude, latitude, "4326", "2154");
+          double[] coordonneConvert = GeometryUtil.transformCordinate(longitude, latitude, "4326", GlobalConstants.SRID_2154.toString());
           int lon = BigDecimal.valueOf(coordonneConvert[0]).setScale(0, RoundingMode.HALF_UP).intValue();
           int lat = BigDecimal.valueOf(coordonneConvert[1]).setScale(0, RoundingMode.HALF_UP).intValue();
 
-          GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 2154);
+          GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_2154);
           Point p = geometryFactory.createPoint(new Coordinate(lon, lat));
           aspiration.setGeometrie(p);
         }

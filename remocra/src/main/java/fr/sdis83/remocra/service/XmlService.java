@@ -4,7 +4,6 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -28,7 +27,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.xml.bind.JAXBException;
 
-import flexjson.JSON;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.HydrantVisite;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.xml.HydrantAspirationIndetermine;
@@ -671,7 +670,7 @@ public class XmlService {
         hydrantXML.setAnomalies(lstAnomaliexXML);
 
         if (hydrant.getGeometrie() != null) {
-            double[] coordonneConvert = GeometryUtil.transformCordinate(hydrant.getGeometrie().getX(), hydrant.getGeometrie().getY(), "2154", "4326");
+            double[] coordonneConvert = GeometryUtil.transformCordinate(hydrant.getGeometrie().getX(), hydrant.getGeometrie().getY(), GlobalConstants.SRID_2154.toString(), "4326");
             hydrantXML.setCoordonnee(new Coordonnee(coordonneConvert[0], coordonneConvert[1]));
         }
 
@@ -746,7 +745,7 @@ public class XmlService {
                 } else {
                     hydrantPena = new fr.sdis83.remocra.domain.remocra.HydrantPena();
                     Coordonnee coordonnee = hydrant.getCoordonnee();
-                    Point point = GeometryUtil.createPoint(coordonnee.getLongitude(), coordonnee.getLatitude(), "4326", "2154");
+                    Point point = GeometryUtil.createPoint(coordonnee.getLongitude(), coordonnee.getLatitude(), "4326", GlobalConstants.SRID_2154.toString());
                     hydrantPena.setGeometrie(point);
                     hydrantPena.setDateGps(null);
                 }
@@ -770,7 +769,7 @@ public class XmlService {
                 } else {
                     hydrantPibi = new fr.sdis83.remocra.domain.remocra.HydrantPibi();
                     Coordonnee coordonnee = hydrant.getCoordonnee();
-                    Point point = GeometryUtil.createPoint(coordonnee.getLongitude(), coordonnee.getLatitude(), "4326", "2154");
+                    Point point = GeometryUtil.createPoint(coordonnee.getLongitude(), coordonnee.getLatitude(), "4326", GlobalConstants.SRID_2154.toString());
                     hydrantPibi.setGeometrie(point);
                     hydrantPibi.setDateGps(null);
                 }
