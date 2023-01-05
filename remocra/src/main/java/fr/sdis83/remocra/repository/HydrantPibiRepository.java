@@ -1,20 +1,29 @@
 package fr.sdis83.remocra.repository;
 
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantPibi;
 import fr.sdis83.remocra.util.JSONUtil;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
 import java.util.Map;
 
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PIBI;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE;
 
 @Configuration
 public class HydrantPibiRepository {
+
+  private static final String BI = "BI";
+  private static final Integer DISTANCE_MINIMAL_JUMELAGE = 25;
 
   @Autowired
   DSLContext context;
@@ -164,5 +173,38 @@ public class HydrantPibiRepository {
       .selectFrom(HYDRANT_PIBI)
       .where(HYDRANT_PIBI.ID.eq(pibi.getId()))
       .fetchOneInto(HydrantPibi.class);
+  }
+
+  /**
+   * Permet de trouver tous les hydrants éligibles pour un jumelage situés autour d'une géométrie donnée
+   * Le jumelage est possible si deux hydrants de type BI se trouvent à moins de DISTANCE_MINIMAL_JUMELAGE mètres l'un de l'autre
+   * @param geometrie La géométrie du PEI dont on recherche les jumelages possibles
+   * @return Un objet JSON contenant l'identifiant et le numéro des hydrant pouvant être utilisés pour le jumelage
+   */
+  public JSONObject findJumelage(String geometrie){
+    JSONArray data = new JSONArray();
+    List<Hydrant> liste = context.select(HYDRANT.ID, HYDRANT.NUMERO)
+            .from(HYDRANT)
+            .join(TYPE_HYDRANT_NATURE)
+            .on(TYPE_HYDRANT_NATURE.ID.eq(HYDRANT.NATURE))
+            .join(HYDRANT_PIBI)
+            .on(HYDRANT.ID.eq(HYDRANT_PIBI.ID))
+            .where("ST_DISTANCE({0}, {1}) < {2}",
+                    HYDRANT.GEOMETRIE,
+                    "SRID=2154;"+geometrie,
+                    DISTANCE_MINIMAL_JUMELAGE)
+            .and(TYPE_HYDRANT_NATURE.CODE.eq(BI))
+            .and(HYDRANT_PIBI.JUMELE.isNull())
+            .fetchInto(Hydrant.class);
+
+    for(Hydrant hydrant: liste){
+      JSONObject obj = new JSONObject();
+      obj.put("id", hydrant.getId().toString());
+      obj.put("numero", hydrant.getNumero());
+      data.put(obj);
+    }
+    JSONObject json = new JSONObject();
+    json.put("data", data);
+    return json;
   }
 }

@@ -3,6 +3,7 @@ package fr.sdis83.remocra.web;
 import java.util.List;
 import java.util.Map;
 
+import fr.sdis83.remocra.repository.HydrantPibiRepository;
 import fr.sdis83.remocra.repository.HydrantRepository;
 import fr.sdis83.remocra.web.model.HistoriqueModel;
 import org.hibernate.exception.ConstraintViolationException;
@@ -46,6 +47,10 @@ public class HydrantPibiController {
 
     @Autowired
     private HydrantRepository hydrantRepository;
+
+
+    @Autowired
+    private HydrantPibiRepository hydrantPibiRepository;
 
     protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
         return serializer
@@ -284,7 +289,7 @@ public class HydrantPibiController {
     public ResponseEntity<java.lang.String> findjumelage(final @RequestParam(value="geometrie") String geometrie) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Content-Type", "application/json;charset=utf-8");
-        return new ResponseEntity<String>(hydrantPibiService.findJumelage(geometrie).toString(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<String>(hydrantPibiRepository.findJumelage(geometrie).toString(), responseHeaders, HttpStatus.OK);
     }
 
 }

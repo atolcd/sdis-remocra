@@ -232,34 +232,6 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
         return true;
    }
 
-    /**
-     * Permet de trouver tous les hydrants éligibles pour un jumelage situés autour d'une géométrie donnée
-     * Le jumelage est possible si deux hydrants de type BI se trouvent à moins de 25 mètres l'un de l'autre
-     * @param geometrie La géométrie du PEI dont on recherche les jumelages possibles
-     * @return Un objet JSON contenant l'identifiant et le numéro des hydrant pouvant être utilisés pour le jumelage
-     */
-    public JSONObject findJumelage(String geometrie){
-        JSONArray data = new JSONArray();
-        List<Object[]> liste = entityManager.createNativeQuery(
-                    "SELECT h.id, h.numero " +
-                            "FROM remocra.hydrant h " +
-                            "JOIN remocra.type_hydrant_nature tn ON tn.id = h.nature " +
-                            "JOIN remocra.hydrant_pibi hp on h.id=hp.id "+
-                            "WHERE ST_Distance(h.geometrie, :geometrie) < 25  " +
-                            "AND tn.nom = 'BI' AND hp.jumele IS NULL")
-            .setParameter("geometrie", "SRID=2154;"+geometrie.toString())
-            .getResultList();
-        for(Object[] o : liste){
-            JSONObject obj = new JSONObject();
-            obj.put("id", Long.parseLong(o[0].toString()));
-            obj.put("numero", o[1].toString());
-            data.put(obj);
-        }
-        JSONObject json = new JSONObject();
-        json.put("data", data);
-        return json;
-    }
-
     @Transactional
     public boolean delete(Long id) throws Exception {
         List<HydrantVisite> listeVisites = HydrantVisite.findHydrantVisitesByHydrant(id);
