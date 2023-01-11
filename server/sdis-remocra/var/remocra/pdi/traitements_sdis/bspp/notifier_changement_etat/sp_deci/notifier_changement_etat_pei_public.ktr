@@ -843,47 +843,36 @@
     <fields>
       <field>
         <name>id_hydrant</name>
-        <rename/>
       </field>
       <field>
         <name>commune_id</name>
-        <rename/>
       </field>
       <field>
         <name>autorite_deci</name>
-        <rename/>
       </field>
       <field>
         <name>sp_deci</name>
-        <rename/>
       </field>
       <field>
         <name>commune</name>
-        <rename/>
       </field>
       <field>
         <name>numero</name>
-        <rename/>
       </field>
       <field>
         <name>voie</name>
-        <rename/>
       </field>
       <field>
         <name>deci</name>
-        <rename/>
       </field>
       <field>
         <name>orga_modif</name>
-        <rename/>
       </field>
       <field>
         <name>email_contact</name>
-        <rename/>
       </field>
       <field>
         <name>nom_destinataire</name>
-        <rename/>
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>
@@ -915,47 +904,36 @@
     <fields>
       <field>
         <name>id_hydrant</name>
-        <rename/>
       </field>
       <field>
         <name>commune_id</name>
-        <rename/>
       </field>
       <field>
         <name>autorite_deci</name>
-        <rename/>
       </field>
       <field>
         <name>sp_deci</name>
-        <rename/>
       </field>
       <field>
         <name>commune</name>
-        <rename/>
       </field>
       <field>
         <name>numero</name>
-        <rename/>
       </field>
       <field>
         <name>voie</name>
-        <rename/>
       </field>
       <field>
         <name>deci</name>
-        <rename/>
       </field>
       <field>
         <name>orga_modif</name>
-        <rename/>
       </field>
       <field>
         <name>email_contact</name>
-        <rename/>
       </field>
       <field>
         <name>nom_destinataire</name>
-        <rename/>
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>
@@ -1310,7 +1288,7 @@ ORDER BY id_commune</sql>
     </remotesteps>
     <GUI>
       <xloc>1808</xloc>
-      <yloc>544</yloc>
+      <yloc>528</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1371,7 +1349,7 @@ FROM
    thnd.nom AS deci
   FROM  remocra.hydrant h
     JOIN remocra.commune c ON c.id = h.commune
-    JOIN remocra.remocra.type_hydrant_nature_deci thnd ON thnd.id = h.nature_deci
+    JOIN remocra.type_hydrant_nature_deci thnd ON thnd.id = h.nature_deci
   WHERE  dispo_terrestre = 'DISPO') AS h_indispo
   JOIN der_etat_indispo ON der_etat_indispo.id_hydrant = h_indispo.id_hydrant
 WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_CHANGEMENT_ETAT_PEI_PUBLIC} minutes'</sql>
@@ -1505,6 +1483,29 @@ WHERE der_etat_indispo.date_operation > current_timestamp - interval '${PERIODE_
         <precision>-1</precision>
         <origin>PEI dispo</origin>
         <comments>numero</comments>
+        <conversion_Mask/>
+        <decimal_symbol>,</decimal_symbol>
+        <grouping_symbol> </grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>fr_FR</date_format_locale>
+        <date_format_timezone>Europe/Paris</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>voie</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>PEI dispo</origin>
+        <comments>voie</comments>
         <conversion_Mask/>
         <decimal_symbol>,</decimal_symbol>
         <grouping_symbol> </grouping_symbol>
@@ -2913,6 +2914,30 @@ WHERE o.id NOT IN (SELECT o.id
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
       </field>
+      <field>
+        <name>parenthese_o_deci</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>(</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+      <field>
+        <name>parenthese_f_deci</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>)</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
     </fields>
     <attributes/>
     <cluster_schema/>
@@ -3013,6 +3038,30 @@ WHERE o.id NOT IN (SELECT o.id
         <set_empty_string>N</set_empty_string>
       </field>
       <field>
+        <name>parenthese_o_deci</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>(</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+      <field>
+        <name>parenthese_f_deci</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>)</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+      <field>
         <name>deux_points</name>
         <type>String</type>
         <format/>
@@ -3097,11 +3146,41 @@ WHERE o.id NOT IN (SELECT o.id
       <currency_symbol/>
     </calculation>
     <calculation>
-      <field_name>dispo</field_name>
+      <field_name>dispo4</field_name>
       <calc_type>ADD3</calc_type>
       <field_a>dispo3</field_a>
       <field_b>parenthese_f</field_b>
-      <field_c>fin</field_c>
+      <field_c>parenthese_o_deci</field_c>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>Y</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>dispo5</field_name>
+      <calc_type>ADD3</calc_type>
+      <field_a>dispo4</field_a>
+      <field_b>deci</field_b>
+      <field_c>parenthese_f_deci</field_c>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>Y</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>dispo</field_name>
+      <calc_type>ADD</calc_type>
+      <field_a>dispo5</field_a>
+      <field_b>fin</field_b>
+      <field_c/>
       <value_type>String</value_type>
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
@@ -3187,7 +3266,7 @@ WHERE o.id NOT IN (SELECT o.id
       <calc_type>ADD3</calc_type>
       <field_a>indispo3</field_a>
       <field_b>parenthese_f</field_b>
-      <field_c>fin</field_c>
+      <field_c>espace</field_c>
       <value_type>String</value_type>
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
@@ -3201,6 +3280,36 @@ WHERE o.id NOT IN (SELECT o.id
       <field_name>indispo5</field_name>
       <calc_type>ADD3</calc_type>
       <field_a>indispo4</field_a>
+      <field_b>parenthese_o_deci</field_b>
+      <field_c>deci</field_c>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>Y</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>indispo6</field_name>
+      <calc_type>ADD3</calc_type>
+      <field_a>indispo5</field_a>
+      <field_b>parenthese_f_deci</field_b>
+      <field_c>fin</field_c>
+      <value_type>String</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>Y</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>indispo7</field_name>
+      <calc_type>ADD3</calc_type>
+      <field_a>indispo6</field_a>
       <field_b>espace</field_b>
       <field_c>deux_points</field_c>
       <value_type>String</value_type>
@@ -3214,10 +3323,10 @@ WHERE o.id NOT IN (SELECT o.id
     </calculation>
     <calculation>
       <field_name>indispo</field_name>
-      <calc_type>ADD</calc_type>
-      <field_a>indispo5</field_a>
-      <field_b>anomalies</field_b>
-      <field_c/>
+      <calc_type>ADD3</calc_type>
+      <field_a>indispo7</field_a>
+      <field_b>espace</field_b>
+      <field_c>anomalies</field_c>
       <value_type>String</value_type>
       <value_length>-1</value_length>
       <value_precision>-1</value_precision>
