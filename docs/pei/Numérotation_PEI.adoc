@@ -168,6 +168,18 @@ Exemples :
 * [.underline]#01304_002# : PEI numéro 2 sur la commune de Pont-d'Ain
 * [.underline]#01290_045# : PEI numéro 45 sur la commune de Pérouges
 
+=== 14 ===
+
+Méthode :
+
+* *<code insee>_<numéro interne>*
+* <numéro interne>  étant composé de 4 chiffres
+* code insee : 2 chiffres espace 3 chiffres
+
+Exemples :
+
+* [.underline]#14 118 0001# : PEI numéro 1 sur la commune de Caen
+* [.underline]#14 001 1245# : PEI numéro 1245 sur la commune de Ablon
 
 == Numéro interne ==
 

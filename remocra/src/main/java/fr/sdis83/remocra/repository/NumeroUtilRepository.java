@@ -36,7 +36,7 @@ public class NumeroUtilRepository {
   }
 
     public enum MethodeNumerotation {
-        M_01, M_09, M_21, M_38, M_42, M_49, M_66, M_77, M_78, M_83, M_86, M_89, M_91, M_95
+        M_01, M_09, M_14, M_21, M_38, M_42, M_49, M_66, M_77, M_78, M_83, M_86, M_89, M_91, M_95
     }
 
     public static NumeroUtilRepository.MethodeNumerotation getHydrantNumerotationMethode() {
@@ -87,6 +87,8 @@ public class NumeroUtilRepository {
                 return  NumeroUtilRepository.computeNumero01(hydrant);
             case M_09:
                 return NumeroUtilRepository.computeNumero09(hydrant);
+            case M_14:
+                return NumeroUtilRepository.computeNumero14(hydrant);
             case M_21:
                 return NumeroUtilRepository.computeNumero21(hydrant);
             case M_38:
@@ -113,6 +115,29 @@ public class NumeroUtilRepository {
                 return NumeroUtilRepository.computeNumero83(hydrant);
         }
     }
+
+    /**
+     * <insee numero_interne>
+     * avec un espace dans insee et le numero interne sur 4 chiffres
+     * Exemple : 14 118 0001
+     *
+     * @param hydrant
+     * @return
+     */
+    protected static String computeNumero14(Hydrant hydrant) {
+        StringBuilder sb = new StringBuilder();
+
+        String insee = getHydrantCommune(hydrant).getInsee();
+
+        // On ajoute l'espace
+        sb.append(insee.substring(0, 2) + " " + insee.substring(2, 5));
+        sb.append(" ");
+
+        // On l'adapte pour faire en sorte d'avoir 4 chiffres
+        return sb.append(String.format("%04d", hydrant.getNumeroInterne())).toString();
+    }
+
+
 
     /**
      * <code insee commune>_<numéro interne>
