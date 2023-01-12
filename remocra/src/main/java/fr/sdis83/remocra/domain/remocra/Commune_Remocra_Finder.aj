@@ -17,6 +17,11 @@ privileged aspect Commune_Remocra_Finder {
 
     @SuppressWarnings("unchecked")
     public static List<Commune> Commune.findCommunesByPoint(int srid, String wktPoint) {
+        return findCommunesByPointWithDelta(srid, wktPoint, 0L);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static List<Commune> Commune.findCommunesByPointWithDelta(int srid, String wktPoint, Long delta) {
         WKTReader fromText = new WKTReader();
         Geometry filter = null;
         try {
@@ -44,10 +49,13 @@ privileged aspect Commune_Remocra_Finder {
         String depClause = "c.insee like '" + dep + "' and ";
 
         EntityManager em = Commune.entityManager();
-        Query query = em.createQuery("select c from Commune c where " + depClause + " dwithin(c.geometrie, transform(:filter, 2154), 0) = true", Commune.class);
+        Query query = em.createQuery("select c from Commune c where "
+            + depClause
+            + " dwithin(c.geometrie, transform(:filter, 2154), :delta) = true order by st_distance(c.geometrie, transform(:filter, 2154)) asc",
+            Commune.class);
         query.setParameter("filter", filter);
+        query.setParameter("delta", delta);
 
         return query.getResultList();
     }
-
 }

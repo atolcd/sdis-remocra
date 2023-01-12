@@ -7,6 +7,7 @@ import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.repository.CommuneRepository;
 import fr.sdis83.remocra.repository.OrganismeRepository;
 import fr.sdis83.remocra.repository.ParamConfRepository;
+import fr.sdis83.remocra.service.ParamConfService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,8 @@ public class CommuneController {
     private ParamConfRepository paramConfRepository;
     @Autowired
     private OrganismeRepository organismeRepository;
+    @Autowired
+    private ParamConfService paramConfService;
 
     private final Logger logger = Logger.getLogger(getClass());
 
@@ -107,7 +110,8 @@ public class CommuneController {
 
             @Override
             protected List<Commune> getRecords() {
-                return Commune.findCommunesByPoint(srid, wkt);
+                Long delta = paramConfService.getHydrantToleranceCommuneMetres();
+                return Commune.findCommunesByPointWithDelta(srid, wkt, delta);
             }
 
         }.serialize();
