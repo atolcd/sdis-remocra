@@ -6,6 +6,7 @@ CREATE OR REPLACE FUNCTION remocra.calcul_debit_pression_01(id_hydrant bigint)
  RETURNS void
  LANGUAGE plpgsql
 AS $function$
+
 DECLARE
 	p_anomalie_id integer;
 	p_rec remocra.hydrant_pibi%ROWTYPE;
@@ -31,12 +32,11 @@ BEGIN
 	-- Ajout des anomalies DEBIT
 
    -- Q ≥ 30 m3 / h ===> pas d'anomalie
-	if (p_rec.debit is null
-		OR (p_rec.debit >= 30 AND p_rec.diametre = p_diametre_id))
+	if (p_rec.debit >= 30 AND p_rec.diametre = p_diametre_id)
 	then
 	    perform remocra.calcul_indispo(p_rec.id);
-	--  Q  < 30 m3 / h ===> INDISPO
-	elsif (p_rec.debit < 30 AND p_rec.diametre = p_diametre_id)
+	--  Q  < 30 m3 / h ou non renseigné ===> INDISPO
+	elsif ((p_rec.debit < 30 or p_rec.debit is null) AND p_rec.diametre = p_diametre_id)
 	then
 		select id into p_anomalie_id from remocra.type_hydrant_anomalie where code = 'DEBIT_INSUFF';
 		insert into remocra.hydrant_anomalies (hydrant,anomalies) values (p_rec.id, p_anomalie_id);
@@ -58,8 +58,8 @@ BEGIN
 	then
 		select id into p_anomalie_id from remocra.type_hydrant_anomalie where code = 'DEBIT_INSUFF_NC';
 		insert into remocra.hydrant_anomalies (hydrant,anomalies) values (p_rec.id, p_anomalie_id);
-	--  Q ≤ 29 m3 / h ===> INDISPO
-	elsif ((p_rec.debit < 30 AND p_rec.diametre = p_diametre_id))
+	--  Q < 30 m3 / h ou non renseigné ===> INDISPO
+	elsif ((p_rec.debit < 30 or p_rec.debit is null)AND p_rec.diametre = p_diametre_id)
 	then
 		select id into p_anomalie_id from remocra.type_hydrant_anomalie where code = 'DEBIT_INSUFF';
 		insert into remocra.hydrant_anomalies (hydrant,anomalies) values (p_rec.id, p_anomalie_id);
@@ -72,8 +72,7 @@ BEGIN
 	-- Ajout des anomalies DEBIT
 
    -- Q ≥ 120 m3 / h ===> pas d'anomalie
-	if (p_rec.debit is null
-		OR (p_rec.debit >= 120 AND p_rec.diametre = p_diametre_id))
+	if (p_rec.debit >= 120 AND p_rec.diametre = p_diametre_id)
 	then
 	    perform remocra.calcul_indispo(p_rec.id);
 	-- 30 m3 / h ≤  Q  ≤ 119 m3 / h ===> NON_CONFORME
@@ -81,11 +80,11 @@ BEGIN
 	then
 		select id into p_anomalie_id from remocra.type_hydrant_anomalie where code = 'DEBIT_INSUFF_NC';
 		insert into remocra.hydrant_anomalies (hydrant,anomalies) values (p_rec.id, p_anomalie_id);
-	--  Q < 30 m3 / h ===> INDISPO
-	elsif ((p_rec.debit < 30 AND p_rec.diametre = p_diametre_id))
+	--  Q < 30 m3 / h ou non renseigné ===> INDISPO
+	elsif ((p_rec.debit is null OR p_rec.debit < 30) AND p_rec.diametre = p_diametre_id)
 	then
 		select id into p_anomalie_id from remocra.type_hydrant_anomalie where code = 'DEBIT_INSUFF';
-		insert into remocra.hydrant_anomalies (hydrant,anomalies) values (p_rec.id, p_anomalie_id);
+		insert into remocra.hydrant_anomalies (hydrant, anomalies) values (p_rec.id, p_anomalie_id);
 	end if;
 
 
@@ -128,7 +127,7 @@ UPDATE
 ---------PENA-------------
 --------------------------
 CREATE
-OR REPLACE FUNCTION remocra.calcul_volume_01(id_hydrant bigint) RETURNS VOID LANGUAGE plpgsql AS $ FUNCTION $ DECLARE p_anomalie_id INTEGER;
+OR REPLACE FUNCTION remocra.calcul_volume_01(id_hydrant bigint) RETURNS VOID LANGUAGE plpgsql AS $FUNCTION$ DECLARE p_anomalie_id INTEGER;
 
 p_rec remocra.hydrant_pena % ROWTYPE;
 
@@ -155,6 +154,7 @@ BEGIN
         INSERT INTO
             remocra.hydrant_anomalies (hydrant, anomalies)
         VALUES
+            (p_rec.id, p_anomalie_id)
     END IF;
 
     perform remocra.calcul_indispo(p_rec.id);
@@ -164,7 +164,7 @@ END;
 $FUNCTION$;
 
 CREATE
-OR REPLACE FUNCTION remocra.trg_calcul_volume_01() RETURNS TRIGGER LANGUAGE plpgsql AS $ FUNCTION $ DECLARE p_rec RECORD;
+OR REPLACE FUNCTION remocra.trg_calcul_volume_01() RETURNS TRIGGER LANGUAGE plpgsql AS $FUNCTION$ DECLARE p_rec RECORD;
 
 BEGIN
     IF (TG_OP = 'DELETE')
