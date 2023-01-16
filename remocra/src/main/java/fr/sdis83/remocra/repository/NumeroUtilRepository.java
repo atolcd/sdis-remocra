@@ -36,7 +36,7 @@ public class NumeroUtilRepository {
   }
 
     public enum MethodeNumerotation {
-        M_01, M_09, M_14, M_21, M_38, M_42, M_49, M_66, M_77, M_78, M_83, M_86, M_89, M_91, M_95
+        M_01, M_09, M_14, M_21, M_38, M_39, M_42, M_49, M_66, M_77, M_78, M_83, M_86, M_89, M_91, M_95
     }
 
     public static NumeroUtilRepository.MethodeNumerotation getHydrantNumerotationMethode() {
@@ -54,7 +54,7 @@ public class NumeroUtilRepository {
     }
 
     public enum MethodeNumerotationInterne {
-        M_42, M_49, M_77, M_78, M_83, M_86, M_91, M_95
+        M_39, M_42, M_49, M_77, M_78, M_83, M_86, M_91, M_95
     }
 
     public static NumeroUtilRepository.MethodeNumerotationInterne getHydrantNumerotationInterneMethode() {
@@ -93,6 +93,8 @@ public class NumeroUtilRepository {
                 return NumeroUtilRepository.computeNumero21(hydrant);
             case M_38:
                 return NumeroUtilRepository.computeNumero38(hydrant);
+            case M_39:
+                return NumeroUtilRepository.computeNumero39(hydrant);
             case M_42:
             case M_89:
                 return NumeroUtilRepository.computeNumero89(hydrant);
@@ -173,6 +175,27 @@ public class NumeroUtilRepository {
 
         sb.append(codeZS != null ? codeZS : getHydrantCommune(hydrant).getInsee());
         return sb.append(String.format("%03d", hydrant.getNumeroInterne())).toString();
+    }
+
+    /**
+     * <code nature><code insee commune>.<numéro interne>
+     * avec le numéro interne sur 5 chiffres
+     * avec le code nature égal à P, B, A ou N
+     * Exemple : P39473.00001, A39199.21547
+     *
+     * @param hydrant
+     * @return
+     */
+    protected static String computeNumero39(Hydrant hydrant) {
+        StringBuilder sb = new StringBuilder();
+        String codeNature = context.select(TYPE_HYDRANT_NATURE.CODE)
+                .from(TYPE_HYDRANT_NATURE)
+                .where(TYPE_HYDRANT_NATURE.ID.eq(hydrant.getNature()))
+                .fetchOneInto(String.class);
+        sb.append(codeNature);
+        sb.append(getHydrantCommune(hydrant).getInsee());
+        sb.append(".");
+        return sb.append(String.format("%05d", hydrant.getNumeroInterne())).toString();
     }
 
     /**
@@ -462,6 +485,8 @@ public class NumeroUtilRepository {
      */
     public static Integer computeNumeroInterne(Hydrant hydrant) {
         switch (getHydrantNumerotationInterneMethode()) {
+            case M_39:
+                return NumeroUtilRepository.computeNumeroInterne39(hydrant);
             case M_42:
                 return NumeroUtilRepository.computeNumeroInterne42(hydrant);
             case M_49:
@@ -479,6 +504,33 @@ public class NumeroUtilRepository {
                 return NumeroUtilRepository.computeNumeroInterne83(hydrant);
         }
     }
+
+    /**
+     * Pour le 39, le numéro interne est un identifiant relatif par rapport à la nature de l'hydrant
+     * @param hydrant
+     * @return numéro interne
+     */
+    public static Integer computeNumeroInterne39(Hydrant hydrant) {
+        // Retour du numéro interne s'il existe
+        if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
+            return hydrant.getNumeroInterne();
+        }
+        Integer numInterne = null;
+        try {
+            // On va cherche le numéro interne le plus grand en fonction de la nature du PEI
+            numInterne = context.select(DSL.max(HYDRANT.NUMERO_INTERNE))
+                    .from(HYDRANT)
+                    .where(HYDRANT.NATURE.eq(hydrant.getNature()))
+                    .and(HYDRANT.COMMUNE.eq(hydrant.getCommune()))
+                    .fetchOneInto(Integer.class);
+            // On prend le suivant
+            numInterne ++;
+        } catch (Exception e) {
+            numInterne = 99999;
+        }
+        return numInterne  ;
+    }
+
 
     public static Integer computeNumeroInterne77(Hydrant hydrant) {
         // Retour du numéro interne s'il existe

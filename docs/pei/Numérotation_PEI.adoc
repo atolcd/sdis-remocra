@@ -181,7 +181,26 @@ Exemples :
 * [.underline]#14 118 0001# : PEI numéro 1 sur la commune de Caen
 * [.underline]#14 001 1245# : PEI numéro 1245 sur la commune de Ablon
 
+=== 39 ===
+
+Méthode :
+
+* *<code nature><code insee>.<numéro interne>*
+* avec le code nature égal à P, B, A ou N
+* avec le numéro interne sur 5 chiffres
+
+Exemples :
+
+* [.underline]#P39478.00175# : Poteau incendie numéro 175 positionné sur la commune de Saint-Claude
+* [.underline]#B39478.00145# : Bouche incendie numéro 145 positionné sur la commune de Saint-Claude
+* [.underline]#A39513.00001# : Aire artificielle numéro 1 positionné sur la commune de Sermange
+* [.underline]#N39397.00025# : Aire naturelle numéro 25 positionné sur la commune d'Orgelet
+
 == Numéro interne ==
+
+=== 39 ===
+
+* Premier numéro disponible en fonction de la nature de l'hydrant
 
 === 77 ===
 
