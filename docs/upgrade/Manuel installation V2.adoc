@@ -12,14 +12,25 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:../index{outfilesuffix}[Retour à l'accueil]
 
 '''
+
+== Préambule ==
+L'utilisation de REMOcRA derrière un VPN est fortement recommandée car la stack technique comporte des composants vieillissants voire non maintenus, pouvant comporter des failles de sécurité.
+
+Les prérequis actuels pour l'installation d'un REMOcRA sur une seule machine sont les suivants
+
+* Nombre de cpu : 8
+* Mémoire vive : 8Go
+* Espace disque : >= 50Go
+* OS : Debian 10 ou Ubuntu 20.04
+* Serveur vierge avec un accès ssh (droits *root*)
+
+Attention, en cas d'installation sur une Debian 11, une adaptation des scripts de livraison est à prévoir car le paquet postgis en version 2.5 n'est plus téléchargeable depuis les dépôts officiels, il faut donc basculer sur une version 3.3 (et donc un postgres 15) ; les effets de bord sont à qualifier
+
 == Livraison ==
 
 On part d'un serveur Debian/Ubuntu vierge. Les fichiers à récupérer le sont depuis ce repo github.
 Ce fichier décrit pas à pas une installation remocra où tous les composants sont situés sur un même
 serveur
-
-Sur une machine Debian 11, la version de PostGIS utilisée (2.5) n'est plus disponible.
-Il est nécessaire dans ce cas d'installer la version 3.3
 
 * Créer le répertoire d'accueil des éléments d'installation :
 [source,sh]

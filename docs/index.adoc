@@ -53,9 +53,9 @@ image::https://www.atolcd.com/fileadmin/Images_pages_menu/Open_Source/Remocra/he
 
 *```🖧``` Exploitation*
 
-* link:exploitation/Manuel%20installation{outfilesuffix}[Manuel d'installation]
+* link:exploitation/Manuel%20installation{outfilesuffix}[Manuel d'installation V1 (obsolète)]
 * link:exploitation/Manuel%20mise%20a%20jour{outfilesuffix}[Manuel de mise à jour]
-* link:exploitation/Manuel%20exploitation{outfilesuffix}[Manuel d'exploitation]
+* link:exploitation/Manuel%20exploitation{outfilesuffix}[Manuel d'exploitation V1 (obsolète)]
 * link:upgrade/Manuel%20installation%20V2{outfilesuffix}[Manuel d'installation V2]
 * link:upgrade/Manuel%20exploitation%20V2{outfilesuffix}[Manuel d'exploitation V2]
 
