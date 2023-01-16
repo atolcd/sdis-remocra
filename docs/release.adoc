@@ -11,6 +11,61 @@ link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
 
+
+== v2.2.5
+
+=== Fonctionnalités
+
+* Ajoute un bouton pour effacer les filtres dans la liste des PEI
+* Améliore l'architecture docker
+* Ajoute la possibilité d'importer des documents reliés à des PEI
+
+
+=== Modifications spécifiques
+
+* SDIS 01
+** Ajoute des règles spécifiques pour définir les PEI en anomalie
+** Mise à jour de la méthode de numérotation
+
+* SDIS 14
+** Mise à jour de la méthode de numérotation
+
+* SDIS 39
+** Mise à jour de la méthode de numérotation + de  la méthode de numérotation interne
+** Ajoute des règles spécifiques pour définir les PEI en anomalie
+
+=== FIX
+
+* Requêtes personnalisées
+** Prend en compte la valeur par défaut spécifiée
+
+* Fiche PEI
+** Corrige le tri par défaut de la liste
+** Permet la modification de la commune d'un PEI
+** Corrige le jumelage des PEI en s'appuyant sur le code 'BI' dans la nature
+** Permet la suppression d'un gestionnaire non utilisé
+** Remet les anomalies bloquantes en gras dans la fiche résumé
+** Corrige les filtres "Prochaine reconnaissance" et "Prochain contrôle"
+** Corrige l'affichage des listes déroulantes
+
+* Gestion de crise
+** Corrige l'affichage de l'onglet "complément"
+
+* Autres
+** Correction du libellé "poteau" dans les hydrants prescrits
+** Corrige le mauvais auteur de modification indiqué suite à une saisie de visite
+** Mise en indispo des PEI non effective après transmission des données de débit/pression
+** Désactive le bouton import CTP après la première utilisation pour éviter les visites doublons
+** S'appuie sur la zone de compétence de l'utilisateur pour afficher la liste des communes
+
+
+=== Mise à jour
+
+* Indiquer la valeur de version `2.2.5` dans le fichier .env (ou remocra.env)
+* Appliquer les patchs jusqu'au numéro 177 (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches[Disponibles ici]).
+** Si concerné, appliquer également les patches spécifiques en respectant l'ordre numérique des patches https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis[selon votre code SDIS]
+
+
 == v2.2.4.6
 
 === Fonctionnalités
