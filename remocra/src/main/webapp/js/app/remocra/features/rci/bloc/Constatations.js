@@ -448,14 +448,30 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Constatations', {
     }, {
         xtype : 'combo',
         fieldLabel : 'Risque Météo',
-        store : 'TypeRciRisqueMeteo',
+        store : {
+            autoLoad: true,
+            xtype: 'crTypeRciRisqueMeteo',
+            model: 'Sdis.Remocra.model.TypeRciRisqueMeteo',
+            listeners: {
+                load: function(store, records, successful, opt) {
+                    store.insert(0, [Ext.create('Sdis.Remocra.model.TypeRciRisqueMeteo', {id: null, nom: 'Non renseigné'})]);
+                    store.sort('id', 'ASC');
+                    var combo = Ext.getCmp('risqueMeteo');
+                    if (combo.value === undefined || combo.value === null)  {
+                        combo.select(combo.store.data.items.filter(function(v) { return v.data.id === null; })[0]);
+                    }
+                }
+            }
+        },
+        value: null,
         displayField : 'nom',
         valueField : 'id',
         forceSelection : true,
         editable : false,
         queryMode : 'local',
         itemId : 'risqueMeteo',
-        name : 'risqueMeteo'
+        name : 'risqueMeteo',
+        id : 'risqueMeteo'
     }, {
         colspan : 2,
         xtype : 'displayfield',
