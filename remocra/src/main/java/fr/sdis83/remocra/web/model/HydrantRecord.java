@@ -1,9 +1,7 @@
 package fr.sdis83.remocra.web.model;
 
-//import fr.sdis83.remocra.db.model.remocra.tables.pojos.Commune;
 import com.vividsolutions.jts.geom.Geometry;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Organisme;
-import fr.sdis83.remocra.domain.remocra.Hydrant;
 import fr.sdis83.remocra.domain.remocra.Tournee;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantNature;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantNatureDeci;
@@ -33,6 +31,7 @@ public class HydrantRecord {
 
     private Date dateReco;
     private Date dateContr;
+    private Date dateRecep;
 
     private String jsonGeometrie;
 
@@ -163,6 +162,14 @@ public class HydrantRecord {
 
     public void setDateContr(Date dateContr) {
         this.dateContr = dateContr;
+    }
+
+    public Date getDateRecep() {
+        return dateRecep;
+    }
+
+    public void setDateRecep(Date dateRecep) {
+        this.dateRecep = dateRecep;
     }
 
     public Integer getNumeroInterne() {

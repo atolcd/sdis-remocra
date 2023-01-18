@@ -824,6 +824,7 @@ public class HydrantRepository {
             .append(" h.dispo_terrestre as dispoTerrestre,")
             .append(" h.dispo_hbe as dispoHbe,")
             .append(" h.date_reco as dateReco, h.numero_interne as numeroInterne,")
+            .append(" h.date_recep as dateRecep,")
             .append(" c.nom as nomCommune,")
             .append(" thnd.nom as nomNatureDeci,")
             .append(" thn.nom as natureNom,")
