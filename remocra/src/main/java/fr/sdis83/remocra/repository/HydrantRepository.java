@@ -864,25 +864,26 @@ public class HydrantRepository {
         condition += " and upper(h.numero) like '%" + itemFilter.getValue().toUpperCase(Locale.FRANCE) + "%' ";
       } else if ("dateReco".equals(itemFilter.getFieldName())) {
         Integer nbMonths = Integer.valueOf(itemFilter.getValue());
-        DateTime datePrive = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementRecoPrive()));
-        DateTime datePublic = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementRecoPublic()));
-        if (nbMonths > 0) {
-          datePrive = datePrive.plus(Period.months(nbMonths));
-          datePublic = datePublic.plus(Period.months(nbMonths));
-        }
         if(nbMonths != 0) {
-          condition += " and case when thnd.code = 'PRIVE' then h.date_reco <= '" + datePrive.toDate() + "'::date else h.date_reco <='" + datePublic.toDate() + "'::date end";
-        }
+          final DateTime datePrive = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementRecoPrive()));
+          final DateTime datePublic = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementRecoPublic()));
+          if (nbMonths > 0) {
+            condition += " and case when thnd.code = 'PRIVE' then h.date_reco <= '" + datePrive.plus(Period.months(nbMonths)).toDate() + "'::date and h.date_reco >= '" + datePrive.toDate() + "'::date" +
+                " else h.date_reco <='" + datePublic.plus(Period.months(nbMonths)).toDate() + "'::date and h.date_reco >= '" + datePublic.toDate() + "'::date end";
+          } else {
+            condition += " and case when thnd.code = 'PRIVE' then h.date_reco <= '" + datePrive.toDate() + "'::date else h.date_reco <='" + datePublic.toDate() + "'::date end";
+          }}
       } else if ("dateContr".equals(itemFilter.getFieldName())) {
         Integer nbMonths = Integer.valueOf(itemFilter.getValue());
-        DateTime datePrive = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementCtrlPrive()));
-        DateTime datePublic = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementCtrlPublic()));
-        if (nbMonths > 0) {
-          datePrive = datePrive.plus(Period.months(nbMonths));
-          datePublic = datePublic.plus(Period.months(nbMonths));
-        }
         if(nbMonths != 0) {
-          condition += " and case when thnd.code = 'PRIVE' then h.date_contr <= '" + datePrive.toDate() + "'::date else h.date_contr <='" + datePublic.toDate() + "'::date end";
+          final DateTime datePrive = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementCtrlPrive()));
+          final DateTime datePublic = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementCtrlPublic()));
+          if (nbMonths > 0) {
+            condition += " and case when thnd.code = 'PRIVE' then h.date_contr <= '" + datePrive.plus(Period.months(nbMonths)).toDate() + "'::date and h.date_contr >= '" + datePrive.toDate() + "'::date" +
+                " else h.date_contr <='" + datePublic.plus(Period.months(nbMonths)).toDate() + "'::date and h.date_contr >= '" + datePublic.toDate() + "'::date end";
+          } else {
+            condition += " and case when thnd.code = 'PRIVE' then h.date_contr <= '" + datePrive.toDate() + "'::date else h.date_contr <='" + datePublic.toDate() + "'::date end";
+          }
         }
       } else if ("nature".equals(itemFilter.getFieldName())) {
         condition += " and h.nature = " + Long.valueOf(itemFilter.getValue());
