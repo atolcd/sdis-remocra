@@ -12,6 +12,7 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.CONTACT_ROLES;
 import static fr.sdis83.remocra.db.model.remocra.Tables.GESTIONNAIRE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.GESTIONNAIRE_SITE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.SITE;
 
 @Configuration
 public class GestionnaireRepository {
@@ -75,6 +76,16 @@ public class GestionnaireRepository {
                 .and(CONTACT.ID_APPARTENANCE.eq(idGestionnaire.toString()))
                 .execute();
     }
+    /**
+     * Supprime le site
+     * @param idGestionnaire
+     */
+    public void deleteSite(Long idGestionnaire) {
+        context.deleteFrom(SITE)
+                .where(SITE.GESTIONNAIRE_SITE.eq(idGestionnaire))
+                .execute();
+    }
+
 
 
     /**
