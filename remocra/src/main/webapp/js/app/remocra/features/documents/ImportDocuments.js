@@ -3,7 +3,7 @@ Ext.define('Sdis.Remocra.features.documents.ImportDocuments', {
     alias: 'widget.crImportDocuments',
 
     vueImportDocuments  : null,
-    id : "show-importDocuments-"+(++Ext.AbstractComponent.AUTO_ID),
+    id : "importDocuments",
 
     listeners: {
         'afterrender': function(){
@@ -15,7 +15,6 @@ Ext.define('Sdis.Remocra.features.documents.ImportDocuments', {
         },
         'beforedestroy': function() {
             this.vueImportDocuments.$el.remove();
-            this.vueImportDocuments.$destroy();
         }
     },
 
