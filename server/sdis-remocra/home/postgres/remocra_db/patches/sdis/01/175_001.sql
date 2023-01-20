@@ -49,8 +49,7 @@ BEGIN
 	-- Ajout des anomalies DEBIT
 
    -- Q ≥ 60 m3 / h ===> pas d'anomalie
-	if (p_rec.debit is null
-		OR (p_rec.debit >= 60 AND p_rec.diametre = p_diametre_id))
+	if (p_rec.debit >= 60 AND p_rec.diametre = p_diametre_id)
 	then perform remocra.calcul_indispo(p_rec.id);
 
 	-- 30 m3 / h ≤  Q  ≤ 59 m3 / h ===> NON_CONFORME
