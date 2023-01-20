@@ -56,6 +56,18 @@ public class GestionnaireRepository {
     }
 
     /**
+     * Récupère tous les gestionnaires site d'un gestionnaire
+     * @param idGestionnaire
+     * @return la liste des identifiants des contacts
+     */
+    public List<Long> getGestionnaireSite(Long idGestionnaire) {
+        return context.select(GESTIONNAIRE_SITE.ID).from(GESTIONNAIRE_SITE)
+                .where(GESTIONNAIRE_SITE.GESTIONNAIRE.eq(idGestionnaire))
+                .fetchInto(Long.class);
+    }
+
+
+    /**
      * Supprime les liens entre les contacts et les rôles
      * @param listIdContact
      */
@@ -78,11 +90,11 @@ public class GestionnaireRepository {
     }
     /**
      * Supprime le site
-     * @param idGestionnaire
+     * @param listIdGestionnaireSite
      */
-    public void deleteSite(Long idGestionnaire) {
+    public void deleteSite(List<Long> listIdGestionnaireSite) {
         context.deleteFrom(SITE)
-                .where(SITE.GESTIONNAIRE_SITE.eq(idGestionnaire))
+                .where(SITE.GESTIONNAIRE_SITE.in(listIdGestionnaireSite))
                 .execute();
     }
 

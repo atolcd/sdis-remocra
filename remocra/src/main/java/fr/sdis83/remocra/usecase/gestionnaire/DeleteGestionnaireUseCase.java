@@ -36,7 +36,8 @@ public class DeleteGestionnaireUseCase {
         gestionnaireRepository.getContactGestionnaire(idGestionnaire);
 
         // Puis, le site
-        gestionnaireRepository.deleteSite(idGestionnaire);
+        List<Long> listIdGestionnaireSite = gestionnaireRepository.getGestionnaireSite(idGestionnaire);
+        gestionnaireRepository.deleteSite(listIdGestionnaireSite);
 
         // Puis, le gestionnaire site
         gestionnaireRepository.deleteGestionnaireSite(idGestionnaire);
