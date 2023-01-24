@@ -574,13 +574,15 @@
   'SRID=2154;' || st_astext(h.geometrie) AS geometrie,
   (SELECT CASE WHEN (coalesce(h.dispo_terrestre,'')  = 'DISPO' ) THEN 'DI' ELSE 'IN' END) as etat_pei,
   CAST(h.numero_interne AS varchar) AS num_hydrant,
-  h.id AS id_remocra
+  h.id AS id_remocra,
+  thnd.code AS type_deci
 FROM remocra.hydrant AS h
 INNER JOIN remocra.hydrant_pibi AS hi ON (h.id=hi.id)
 LEFT JOIN remocra.commune AS c ON (c.id=h.commune)
 LEFT JOIN remocra.type_hydrant_domaine AS thd ON (thd.id=h.domaine)
 LEFT JOIN remocra.type_hydrant_nature AS thn ON(thn.id=h.nature)
 LEFT JOIN remocra.type_hydrant_diametre AS thdi ON (thdi.id=hi.diametre)
+LEFT JOIN remocra.type_hydrant_nature_deci AS thnd ON(thnd.id=h.nature_deci)
 WHERE h.date_recep IS NOT NULL;</sql>
     <limit>0</limit>
     <lookup />
@@ -722,6 +724,11 @@ WHERE h.date_recep IS NOT NULL;</sql>
         <name>id_remocra</name>
         <rename>id_remocra</rename>
         <update>N</update>
+      </value>
+      <value>
+        <name>type_deci</name>
+        <rename>type_deci</rename>
+        <update>Y</update>
       </value>
     </lookup>
     <cluster_schema />
