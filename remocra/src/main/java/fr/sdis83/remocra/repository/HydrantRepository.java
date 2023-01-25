@@ -911,7 +911,7 @@ public class HydrantRepository {
       } else if ("codeNatureDeci".equals(itemFilter.getFieldName())) {
 
       } else if ("adresse".equals(itemFilter.getFieldName())) {
-        condition += " and lower(h.voie || ' - ' || h.voie2) like '%" +  itemFilter.getValue().toLowerCase() + "%' or lower(h.voie)  like '%" + itemFilter.getValue().toLowerCase()  + "%'";
+        condition += " and (lower(h.voie || ' - ' || h.voie2) like '%" +  itemFilter.getValue().toLowerCase() + "%' or lower(h.voie)  like '%" + itemFilter.getValue().toLowerCase()  + "%')";
       } else if ("numeroInterne".equals(itemFilter.getFieldName())) {
         condition += " and h.numero_interne = " + Integer.valueOf(itemFilter.getValue());
       } else {
