@@ -62,11 +62,12 @@ public class DebitSimultaneService extends AbstractService<DebitSimultane>{
 
     public List<DebitSimultane> getDebitSimultaneFromLonLat(Double lon, Double lat, Integer srid, Integer distance){
         TypedQuery<DebitSimultane> query = entityManager
-                .createQuery("SELECT o FROM DebitSimultane o where st_distance(geometrie, ST_Transform(ST_SetSRID(ST_makePoint(:lon, :lat), :srid), :srid)) < :distance",
+                .createQuery("SELECT o FROM DebitSimultane o where st_distance(geometrie, ST_Transform(ST_SetSRID(ST_makePoint(:lon, :lat), :srid), :geomsrid)) < :distance",
                         DebitSimultane.class)
                 .setParameter("lon", lon)
                 .setParameter("lat", lat)
                 .setParameter("srid", srid)
+                .setParameter("geomsrid", GlobalConstants.SRID_2154)
                 .setParameter("distance", distance);
         return query.getResultList();
     }
