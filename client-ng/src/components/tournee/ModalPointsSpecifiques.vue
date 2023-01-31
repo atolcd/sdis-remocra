@@ -21,12 +21,6 @@
                  <b-form-group label="Pression dynamique à 60 ㎥ (bar) :" label-for="pressionDyn" label-cols-md="6">
                    <b-form-input id="pressionDyn" v-model="pressionDyn" type="number" step="any" size="sm"></b-form-input>
                  </b-form-group>
-                 <b-form-group label="Débit max (㎥/h) :" label-for="debitMax" label-cols-md="6">
-                   <b-form-input id="debitMax" v-model="debitMax" type="number" size="sm"></b-form-input>
-                 </b-form-group>
-                 <b-form-group label="Pression dynamique au débit max (bar) :" label-for="pressionDynDeb" label-cols-md="6">
-                   <b-form-input id="pressionDynDeb" v-model="pressionDynDeb" type="number" step="any" size="sm"></b-form-input>
-                 </b-form-group>
                  <b-form-group label="Pression statique (bar) :" label-for="pression" label-cols-md="6">
                    <b-form-input id="pression" v-model.number="pression" type="number" step="any" size="sm"></b-form-input>
                  </b-form-group>
