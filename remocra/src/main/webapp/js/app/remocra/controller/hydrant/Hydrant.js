@@ -1007,10 +1007,10 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
         if (!Ext.isEmpty(allValues.commune)) {
             rec = this.getTabAccess().getForm().findField('commune').findRecordByValue(allValues.commune);
             if (rec != null) {
-                bounds = rec.get('bbox').replace(/\|/g, ',');
+                bounds = Sdis.Remocra.util.Util.getBounds(rec.get('geometrie'));
                 this.clearAccess();
                 Sdis.Remocra.util.Util.changeHash(this.tplBounds.apply({
-                    bounds: bounds
+                    bounds: bounds.toBBOX()
                 }));
             }
         } else {

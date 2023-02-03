@@ -98,7 +98,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabAccesRapide', {
                    'Content-Type': 'application/json'
                },
                url: Sdis.Remocra.util.Util.withBaseUrl('../communes/nom'),
-               extraParams: {withgeom:false},
+               extraParams: {withgeom:true},
                reader: {
                    type: 'json',
                    root: 'data'
