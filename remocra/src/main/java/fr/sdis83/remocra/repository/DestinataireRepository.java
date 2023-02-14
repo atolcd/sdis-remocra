@@ -4,8 +4,6 @@ import fr.sdis83.remocra.web.model.DestinataireModel;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
-import org.jooq.Record3;
-import org.jooq.Record5;
 import org.jooq.Result;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
@@ -63,6 +61,7 @@ public class DestinataireRepository {
       .join(PROFIL_UTILISATEUR).on(UTILISATEUR.PROFIL_UTILISATEUR.eq(PROFIL_UTILISATEUR.ID))
       .where(UTILISATEUR.ORGANISME.in(idOrganismes)
       .and(UTILISATEUR.MESSAGE_REMOCRA)
+      .and(UTILISATEUR.ACTIF.isTrue())
       .and((lower(UTILISATEUR.NOM).like("%"+filtre.toLowerCase()+"%"))
           .or(lower(UTILISATEUR.PRENOM).like("%"+filtre.toLowerCase()+"%"))
           .or(lower(UTILISATEUR.EMAIL).like("%"+filtre.toLowerCase()+"%"))
@@ -80,7 +79,8 @@ public class DestinataireRepository {
     .where(ORGANISME.ID.in(idOrganismes))
     .and(lower(ORGANISME.NOM).like("%"+filtre.toLowerCase()+"%")
       .or(lower(ORGANISME.EMAIL_CONTACT).like("%"+filtre.toLowerCase()+"%")))
-    .and(ORGANISME.EMAIL_CONTACT.isNotNull()).fetchInto(DestinataireModel.class);
+    .and(ORGANISME.EMAIL_CONTACT.isNotNull())
+    .and(ORGANISME.ACTIF.isTrue()).fetchInto(DestinataireModel.class);
     return destinataires;
   }
 
