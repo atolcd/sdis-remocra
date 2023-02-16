@@ -107,10 +107,9 @@ image:legende_77.png[]
 ** <nature> : _pi_, _bi_ ou _pa_
 ** _<debit> :
 *** pour les PI et BI uniquement
-*** __low_ si debitRetenu <30
-*** __med_ si debitRetenu < 60
+*** __low_ si _debit_ < 30
+*** __med_ si _debit_ < 60
 *** __high_ sinon
-*** avec debitRetenu : _debitMax_ si renseigné, _debit_ sinon
 ** _indispo si indisponible
 ** _on : pour les élements sélectionnés
 

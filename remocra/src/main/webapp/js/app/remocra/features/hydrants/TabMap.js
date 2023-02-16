@@ -581,7 +581,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
                             file += 'pa';
                         } else {
                             file += (feature.data['nature'] == 'PI' ? 'pi' : 'bi');
-                            var debitRetenu = (feature.data['debitMax']!=null)?feature.data['debitMax']:feature.data['debit'];
+                            var debitRetenu = feature.data['debit'];
                             if (debitRetenu < 30) {
                                 file += '_low';
                             } else if (debitRetenu < 60) {
