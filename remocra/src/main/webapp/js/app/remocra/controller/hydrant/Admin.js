@@ -175,6 +175,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Admin', {
                 },
                 'LECT': {
                     text: 'Le'
+                },
+                'NP': {
+                    text: 'Np'
                 }
             }
         });
