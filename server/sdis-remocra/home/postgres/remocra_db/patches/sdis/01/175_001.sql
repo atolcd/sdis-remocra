@@ -27,8 +27,8 @@ BEGIN
     );
 
 
-    -- CONTROLE DEBIT POUR LES DIAM80
-    SELECT id into p_diametre_id FROM remocra.type_hydrant_diametre WHERE code LIKE 'DIAM80';
+    -- CONTROLE DEBIT POUR LES DIAM80 et DIAM70
+    SELECT id into p_diametre_id FROM remocra.type_hydrant_diametre WHERE code LIKE 'DIAM80' OR code LIKE 'DIAM70';
 	-- Ajout des anomalies DEBIT
 
    -- Q ≥ 30 m3 / h ===> pas d'anomalie
@@ -85,8 +85,6 @@ BEGIN
 		select id into p_anomalie_id from remocra.type_hydrant_anomalie where code = 'DEBIT_INSUFF';
 		insert into remocra.hydrant_anomalies (hydrant, anomalies) values (p_rec.id, p_anomalie_id);
 	end if;
-
-
 
 	perform remocra.calcul_indispo(p_rec.id);
 END;
