@@ -524,7 +524,7 @@ public class NumeroUtilRepository {
                     .and(HYDRANT.COMMUNE.eq(hydrant.getCommune()))
                     .fetchOneInto(Integer.class);
             // On prend le suivant
-            numInterne ++;
+            numInterne = numInterne != null ? numInterne ++ : 1;
         } catch (Exception e) {
             numInterne = 99999;
         }
