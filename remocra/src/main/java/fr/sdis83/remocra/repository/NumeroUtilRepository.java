@@ -506,7 +506,9 @@ public class NumeroUtilRepository {
     }
 
     /**
-     * Pour le 39, le numéro interne est un identifiant relatif par rapport à la nature de l'hydrant
+     * Pour le 39, le numéro interne est un identifiant relatif calulé  en fonction
+     * * de la nature de l'hydrant
+     * * et de la commune
      * @param hydrant
      * @return numéro interne
      */
@@ -517,14 +519,12 @@ public class NumeroUtilRepository {
         }
         Integer numInterne = null;
         try {
-            // On va cherche le numéro interne le plus grand en fonction de la nature du PEI
-            numInterne = context.select(DSL.max(HYDRANT.NUMERO_INTERNE))
-                    .from(HYDRANT)
-                    .where(HYDRANT.NATURE.eq(hydrant.getNature()))
-                    .and(HYDRANT.COMMUNE.eq(hydrant.getCommune()))
-                    .fetchOneInto(Integer.class);
-            // On prend le suivant
-            numInterne = numInterne != null ? numInterne ++ : 1;
+            numInterne = context
+                .resultQuery("select remocra.nextNumeroInterne(null, {0}, {1}, null, true)",
+                        DSL.val(hydrant.getNature(), SQLDataType.BIGINT),
+                        DSL.val(hydrant.getCommune(), SQLDataType.BIGINT))
+                .fetchOneInto(Integer.class);
+
         } catch (Exception e) {
             numInterne = 99999;
         }
