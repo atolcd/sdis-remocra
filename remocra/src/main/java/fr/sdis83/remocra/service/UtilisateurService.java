@@ -39,6 +39,8 @@ import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.security.RemocraAuthenticationProvider;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
+import fr.sdis83.remocra.repository.UtilisateurRepository;
+import fr.sdis83.remocra.GlobalConstants;
 
 @Configuration
 public class UtilisateurService {
@@ -62,6 +64,10 @@ public class UtilisateurService {
 
     @Autowired
     private MessageDigestPasswordEncoder messageDigestPasswordEncoder;
+
+    @Autowired
+    private UtilisateurRepository utilisateurRepository;
+
 
     public UtilisateurService() {
     }
@@ -513,5 +519,17 @@ public class UtilisateurService {
         String url = utilisateur.getProfilUtilisateur().getUrlDashboard();
         String dashboardId = url.split("dashboards/")[1].split("\\?org")[0];
         return  dashboardId;
+    }
+
+    /**
+     * Return true si le mot de passe de l'utilisateur vient de LDAP
+     */
+    public Boolean isLdapPassword(String identifiant) {
+        if(GlobalConstants.LDAP_PASSWORD
+                .equalsIgnoreCase(utilisateurRepository.getPasswordUtilisateur(identifiant))) {
+            return true;
+        }
+
+        return false;
     }
 }

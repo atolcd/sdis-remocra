@@ -141,18 +141,10 @@ Ext.define('Sdis.Remocra.auth.AuthPanel', {
             errorPanel.setVisible(false);
         }
     },
-    
-    passwordForgotten: function() {
-        var loginF = this.getComponent('form').getComponent('loginF');
-        if (loginF.isValid() !== true) {
-            this.showHideErrorMsg("Merci de renseigner votre nom d'utilisateur");
-            return;
-        }
-        
-        var login = loginF.getValue();
-        Ext.Msg.confirm('Authentification', 'Confirmez vous la demande de réinitialisation de mot de passe pour "'+login+'" ?'
-            + '<br/><p style="margin-top:10px;margin-left:20px;font-style:italic;color:#a9a9a9;">'
-            + 'En choississant "Oui", vous recevrez un courriel qui vous permettra de modifier votre mot de passe.</p>', function(btn) {
+    popUpDemandeResetMdp: function(login) {
+       Ext.Msg.confirm('Authentification', 'Confirmez vous la demande de réinitialisation de mot de passe pour "'+login+'" ?'
+        + '<br/><p style="margin-top:10px;margin-left:20px;font-style:italic;color:#a9a9a9;">'
+        + 'En choississant "Oui", vous recevrez un courriel qui vous permettra de modifier votre mot de passe.</p>', function(btn) {
             if (btn == "yes"){
                 Ext.Ajax.request({
                     url: Sdis.Remocra.util.Util.withBaseUrl('../utilisateurs/lostpassword'),
@@ -169,7 +161,7 @@ Ext.define('Sdis.Remocra.auth.AuthPanel', {
                                 msg: 'Impossible de réaliser la demande avec cet identifiant.',
                                 buttons: Ext.Msg.OK,
                                 icon: Ext.MessageBox.ERROR
-                             });
+                            });
                         } else {
                             Ext.MessageBox.show({
                                 title: 'Authentification',
@@ -183,5 +175,43 @@ Ext.define('Sdis.Remocra.auth.AuthPanel', {
                 });
             }
         }, this);
+    },
+    passwordForgotten: function() {
+        var loginF = this.getComponent('form').getComponent('loginF');
+        if (loginF.isValid() !== true) {
+            this.showHideErrorMsg("Merci de renseigner votre nom d'utilisateur");
+            return;
+        }
+
+        var login = loginF.getValue();
+
+        // 2 possibilités :
+        // --> cas 1 : Utilisateur Remocra, on lui permet de changer son mot de passe
+        // --> cas 2 : Utilisateur LDAP, on interdit la modification du mot de passe
+        Ext.Ajax.request({
+            url: Sdis.Remocra.util.Util.withBaseUrl('../utilisateurs/ldapPassword'),
+            method: 'GET',
+            params: {
+                identifiant: login
+            },
+            scope: this,
+            callback: function(options, success, response) {
+                var jsResp = Ext.decode(response.responseText);
+
+                // Si le mot de passe n'est pas LDAP
+                if (!jsResp) {
+                    this.popUpDemandeResetMdp(login);
+                }
+                // SI LDAP
+                else if (jsResp == true)  {
+                    Ext.MessageBox.show({
+                        title: 'Utilisateur non autorisé',
+                        msg: 'Veuillez contacter votre SDIS pour changer votre mot de passe.',
+                        buttons: Ext.Msg.OK,
+                        icon: Ext.MessageBox.INFO
+                    });
+                }
+            }
+        });
     }
 });

@@ -302,4 +302,19 @@ public class UtilisateurController {
             return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la récupération du  tableau de bord").serialize();
         }
     }
+
+    /**
+     * Permet de savoir s'il s'agit d'un utilisateur LDAP ou remocra
+     * @param identifiant de l'utilisateur
+     * @return true si c'est un utilisateur LDAP sinon false
+     */
+    @RequestMapping(value = "/ldapPassword", method = RequestMethod.GET, headers = "Accept=application/json")
+    public ResponseEntity<String> isLdapPassword(final @RequestParam(value = "identifiant", required = true) String identifiant) {
+        try {
+            Boolean isLdapPassword = utilisateurService.isLdapPassword(identifiant);
+            return new ResponseEntity(isLdapPassword.toString(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new SuccessErrorExtSerializer(false, "Erreur lors du changement de la récupération du mdp").serialize();
+        }
+    }
 }
