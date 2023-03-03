@@ -130,18 +130,18 @@ p_rec remocra.hydrant_pena % ROWTYPE;
 
 BEGIN
     -- Suppression des anomalies sur le volume
-	delete from remocra.hydrant_anomalies where hydrant=id_hydrant and anomalies in
-	(
-	    select id
-	    from remocra.type_hydrant_anomalie
-	    where code = 'VOLUME_INSUFF'
+    delete from remocra.hydrant_anomalies where hydrant=id_hydrant and anomalies in
+    (
+        select id
+        from remocra.type_hydrant_anomalie
+        where code = 'VOLUME_INSUFF'
     );
 
 
     SELECT * INTO p_rec FROM remocra.hydrant_pena WHERE id = id_hydrant;
 
     -- Volume < 30 ===> indispo
-    IF (p_rec.capacite < 30) THEN
+    IF (p_rec.capacite IS NOT NULL AND p_rec.capacite <> ''  AND p_rec.capacite::int < 30)THEN
         SELECT
             id INTO p_anomalie_id
         FROM
@@ -151,7 +151,7 @@ BEGIN
         INSERT INTO
             remocra.hydrant_anomalies (hydrant, anomalies)
         VALUES
-            (p_rec.id, p_anomalie_id)
+            (p_rec.id, p_anomalie_id);
     END IF;
 
     perform remocra.calcul_indispo(p_rec.id);
