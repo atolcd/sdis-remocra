@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'ModalSaisieVisite' : true, 'loading': !dataLoaded }">
+  <div :class="{'ModalSaisieVisite' : true, 'loading': !(dataLoaded && anomaliesLoaded) }">
     <b-modal id="modalSaisieVisite"
              ref="modalSaisieVisite"
              no-close-on-backdrop
@@ -10,7 +10,7 @@
              cancel-title="Annuler"
              size="xl"
              @ok="handleOk">
-      <div v-if="this.dataTournee !== null && !this.showResults">
+      <div v-if="this.dataTournee !== null && dataLoaded && anomaliesLoaded && !this.showResults">
         <form>
           <div class="row">
             <div class="col-md-4">
@@ -200,6 +200,7 @@ export default {
       dataTournee: null,
       modalTitle: '',
       dataLoaded: false,
+      anomaliesLoaded: false,
       dateMax: moment().format('YYYY-MM-DD'),
       utilisateurDroits: null,
       hydrants: null,
@@ -365,6 +366,8 @@ export default {
         this.anomaliesCriteres.sort(function(a, b) {
           return a.id - b.id;
         });
+
+        this.anomaliesLoaded = true;
       })
 
       // Récupération des droits de l'utilisateur courant et des types de visite
