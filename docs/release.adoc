@@ -10,7 +10,31 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
+== v2.2.5.1
 
+=== Fonctionnalité
+* Interdit la modification de mot de passe depuis l'interface Remocra si l'utilisateur vient de LDAP
+* Prend en compte si les utilisateurs ou organismes sont actifs pour les notifier
+* Affiche les anomalies avec les visites non programmées
+
+
+=== FIX
+* Corrige le chargement de la fiche débit simultané
+* Corrige le zoom vers une commune dans l'accès rapide
+* Supprime 2 champs en saisie visite/tournée
+* Change la méthode de numérotation 83 pour prendre en compte le débit et non le débit max
+* Permet de supprimer la valeur du champ "Risque Météo" pour la mettre à null
+* Corrige l'absence de calcul de la prochaine date de ROP
+
+=== Modifications spécifiques
+
+* SDIS 01
+** Création d'une vue personnalisée
+** Corrige la méthode débit pression
+
+* SDIS 39
+** Corrige la création des hydrants
+** Corrige la méthode calcul_volume
 
 == v2.2.5
 
