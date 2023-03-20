@@ -54,7 +54,7 @@ public class NumeroUtilRepository {
     }
 
     public enum MethodeNumerotationInterne {
-        M_39, M_42, M_49, M_77, M_78, M_83, M_86, M_91, M_95
+        M_01, M_39, M_42, M_49, M_77, M_78, M_83, M_86, M_91, M_95
     }
 
     public static NumeroUtilRepository.MethodeNumerotationInterne getHydrantNumerotationInterneMethode() {
@@ -485,6 +485,8 @@ public class NumeroUtilRepository {
      */
     public static Integer computeNumeroInterne(Hydrant hydrant) {
         switch (getHydrantNumerotationInterneMethode()) {
+            case M_01:
+                return NumeroUtilRepository.computeNumeroInterne01(hydrant);
             case M_39:
                 return NumeroUtilRepository.computeNumeroInterne39(hydrant);
             case M_42:
@@ -503,6 +505,26 @@ public class NumeroUtilRepository {
             default:
                 return NumeroUtilRepository.computeNumeroInterne83(hydrant);
         }
+    }
+
+    public static Integer computeNumeroInterne01(Hydrant hydrant) {
+      // Retour du numéro interne s'il existe
+      if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
+        return hydrant.getNumeroInterne();
+      }
+      Integer numInterne = null;
+      try {
+        // Incrementation automatique de numero interne
+        numInterne = context.select(DSL.coalesce(DSL.max(HYDRANT.NUMERO_INTERNE), 0))
+            .from(HYDRANT)
+            .where(HYDRANT.COMMUNE.eq(hydrant.getCommune()))
+            .fetchOneInto(Integer.class);
+        // On prend le suivant
+        numInterne++;
+      } catch (Exception e) {
+        numInterne = 99999;
+      }
+      return numInterne;
     }
 
     /**
@@ -530,7 +552,6 @@ public class NumeroUtilRepository {
         }
         return numInterne  ;
     }
-
 
     public static Integer computeNumeroInterne77(Hydrant hydrant) {
         // Retour du numéro interne s'il existe
