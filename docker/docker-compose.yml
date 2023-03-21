@@ -101,7 +101,7 @@ services:
     user: "${REMOCRA_UID:-1000}:${REMOCRA_GID:-1000}"
     build:
       context: ../api-remocra/
-      dockerfile: ./dist/Dockerfile-image
+      dockerfile: ./dist/Dockerfile
     volumes:
       - ../api-remocra/dist/example/log:/app/log
       - ../api-remocra/dist/example/config:/app/config

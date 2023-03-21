@@ -132,14 +132,29 @@ pipeline {
           }
         }
         stage('Build docker api-remocra') {
-          steps {
-            dockerBuildAndPublish("client-docker-registry.atolcd.com/atolcd/remocra-api-remocra:unstable",
-              buildDir: 'api-remocra',
-              dockerfile: 'api-remocra/dist/Dockerfile-image',
-              buildArgs: [
-                UID: DOCKER_UID,
-                GID: DOCKER_GID
-              ])
+          stages {
+            stage('Build api-remocra') {
+              steps {
+                dir('api-remocra') {
+                  mavenInsideDocker(imageVersion: '3-jdk-11') {
+                    sh '''
+                      mvn -e -U -ntp clean verify
+                      '''
+                  }
+                }
+              }
+            }
+            stage('Build docker api-remocra') {
+              steps {
+                dockerBuildAndPublish("client-docker-registry.atolcd.com/atolcd/remocra-api-remocra:unstable",
+                  buildDir: 'api-remocra',
+                  dockerfile: 'api-remocra/dist/Dockerfile',
+                  buildArgs: [
+                    UID: DOCKER_UID,
+                    GID: DOCKER_GID
+                  ])
+              }
+            }
           }
         }
       }

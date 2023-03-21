@@ -128,14 +128,29 @@ pipeline {
           }
         }
         stage('Build docker api-remocra') {
-          steps {
-            dockerBuildAndRemove(
-              dockerfile: 'api-remocra/dist/Dockerfile-image',
-              buildDir: 'api-remocra',
-              buildArgs: [
-                UID: DOCKER_UID,
-                GID: DOCKER_GID
-              ])
+          stages {
+            stage('Build api-remocra') {
+              steps {
+                dir('api-remocra') {
+                  mavenInsideDocker(imageVersion: '3-jdk-11') {
+                    sh '''
+                      mvn -e -U -ntp clean verify
+                      '''
+                  }
+                }
+              }
+            }
+            stage('Build docker api-remocra') {
+              steps {
+                dockerBuildAndRemove(
+                  buildDir: 'api-remocra',
+                  dockerfile: 'api-remocra/dist/Dockerfile',
+                  buildArgs: [
+                    UID: DOCKER_UID,
+                    GID: DOCKER_GID
+                  ])
+              }
+            }
           }
         }
       }
