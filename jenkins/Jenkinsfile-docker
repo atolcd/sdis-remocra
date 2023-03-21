@@ -91,134 +91,44 @@ pipeline {
             }
             stage('Build docker remocra') {
               steps {
-                script {
-                  remocra_image = docker.build(
-                          'atolcd/remocra',
-                          "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./docker/remocra/Dockerfile ./docker/remocra"
-                  )
-                }
+                dockerBuildAndPublish(imageName: "client-docker-registry.atolcd.com/atolcd/remocra:unstable",
+                  buildDir: 'docker/remocra',
+                  buildArgs: [
+                    UID: DOCKER_UID,
+                    GID: DOCKER_GID
+                  ])
               }
             }
           }
         }
         stage('Build docker geoserver') {
           steps {
-            script {
-              geoserver_image = docker.build(
-                'atolcd/remocra-geoserver',
-                "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./docker/geoserver/Dockerfile ./docker/geoserver"
-              )
-            }
+            dockerBuildAndPublish(imageName: "client-docker-registry.atolcd.com/atolcd/remocra-geoserver:unstable",
+              buildDir: 'docker/geoserver',
+              buildArgs: [
+                UID: DOCKER_UID,
+                GID: DOCKER_GID
+              ])
           }
         }
         stage('Build docker pdi-4.4-dkron') {
           steps {
-            script {
-              pdi44dkron_image = docker.build(
-                'atolcd/remocra-pdi-4.4-dkron',
-                "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./docker/pdi-4.4-dkron/Dockerfile ./docker/pdi-4.4-dkron"
-              )
-            }
+            dockerBuildAndPublish(imageName: "client-docker-registry.atolcd.com/atolcd/remocra-pdi-4.4-dkron:unstable",
+              buildDir: 'docker/pdi-4.4-dkron',
+              buildArgs: [
+                UID: DOCKER_UID,
+                GID: DOCKER_GID
+              ])
           }
         }
         stage('Build docker pdi-dkron') {
           steps {
-            script {
-              pdidkron_image = docker.build(
-                'atolcd/remocra-pdi-dkron',
-                "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./docker/pdi-dkron/Dockerfile ./docker/pdi-dkron"
-              )
-            }
-          }
-        }
-      }
-    }
-    stage('Push docker-registry unstable') {
-      failFast true
-      parallel {
-        stage('Push remocra') {
-          steps {
-            script {
-              if (remocra_image) {
-                docker.withRegistry('https://client-docker-registry.atolcd.com') {
-                  remocra_image.push('unstable')
-                }
-              }
-            }
-          }
-        }
-        stage('Push geoserver') {
-          steps {
-            script {
-              if (geoserver_image) {
-                docker.withRegistry('https://client-docker-registry.atolcd.com') {
-                  geoserver_image.push('unstable')
-                }
-              }
-            }
-          }
-        }
-        stage('Push pdi-4.4-dkron') {
-          steps {
-            script {
-              if (pdi44dkron_image) {
-                docker.withRegistry('https://client-docker-registry.atolcd.com') {
-                  pdi44dkron_image.push('unstable')
-                }
-              }
-            }
-          }
-        }
-        stage('Push pdi-dkron') {
-          steps {
-            script {
-              if (pdidkron_image) {
-                docker.withRegistry('https://client-docker-registry.atolcd.com') {
-                  pdidkron_image.push('unstable')
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    stage('Clean') {
-      failFast true
-      parallel {
-        stage('Delete image remocra') {
-          steps {
-            script {
-              if (remocra_image) {
-                sh "docker rmi -f ${remocra_image.id}"
-              }
-            }
-          }
-        }
-        stage('Delete image geoserver') {
-          steps {
-            script {
-              if (geoserver_image) {
-                sh "docker rmi -f ${geoserver_image.id}"
-              }
-            }
-          }
-        }
-        stage('Delete image pdi-4.4-dkron') {
-          steps {
-            script {
-              if (pdi44dkron_image) {
-                sh "docker rmi -f ${pdi44dkron_image.id}"
-              }
-            }
-          }
-        }
-        stage('Delete image pdi-dkron') {
-          steps {
-            script {
-              if (pdidkron_image) {
-                sh "docker rmi -f ${pdidkron_image.id}"
-              }
-            }
+            dockerBuildAndPublish(imageName: "client-docker-registry.atolcd.com/atolcd/remocra-pdi-dkron:unstable",
+              buildDir: 'docker/pdi-dkron',
+              buildArgs: [
+                UID: DOCKER_UID,
+                GID: DOCKER_GID
+              ])
           }
         }
       }

@@ -1,5 +1,8 @@
 #!/usr/bin/env groovy
 library "atolcd-jenkins"
+// uid / gid de l'utilisateur Docker
+def DOCKER_UID = 2000
+def DOCKER_GID = 2000
 pipeline {
   options {
     disableConcurrentBuilds()
@@ -8,25 +11,13 @@ pipeline {
   parameters {
     // Version de l'application
     string(name: 'COMMIT_TO_BUILD', defaultValue: 'master', description: 'Commit, branche ou tag')
-    // uid / gid de l'utilisateur Docker
-    string(name: 'DOCKER_UID', defaultValue: '2000', description: 'Identifiant de l\'utilisateur Docker')
-    string(name: 'DOCKER_GID', defaultValue: '2000', description: 'Identifiant du groupe de l\'utilisateur Docker')
     // Version de l'application
     string(name: 'REMOCRA_VERSION', description: 'Version du package')
-    // registry Docker
-    string(name: 'REGISTRY_DOCKER', defaultValue: 'https://client-docker-registry.atolcd.com', description: 'Registry de destination (NEXUS)')
   }
   agent {
     label 'release'
   }
   stages {
-    stage('Get version') {
-      steps {
-        script {
-          echo "Version  ( ${REMOCRA_VERSION})"
-        }
-      }
-    }
     stage('Dependencies') {
       failFast true
       parallel {
@@ -97,169 +88,60 @@ pipeline {
             }
             stage('Build docker remocra') {
               steps {
-                script {
-                  remocra_image = docker.build(
-                          'atolcd/remocra',
-                          "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./docker/remocra/Dockerfile ./docker/remocra"
-                  )
-                }
+                dockerBuildAndPublish(imageName: "client-docker-registry.atolcd.com/atolcd/remocra:$REMOCRA_VERSION",
+                  buildDir: 'docker/remocra',
+                  buildArgs: [
+                    UID: DOCKER_UID,
+                    GID: DOCKER_GID
+                  ],
+                  extraTags: [ 'latest' ])
               }
             }
           }
         }
         stage('Build docker geoserver') {
           steps {
-            script {
-              geoserver_image = docker.build(
-                'atolcd/remocra-geoserver',
-                "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./docker/geoserver/Dockerfile ./docker/geoserver"
-              )
-            }
+            dockerBuildAndPublish(imageName: "client-docker-registry.atolcd.com/atolcd/remocra-geoserver:$REMOCRA_VERSION",
+              buildDir: 'docker/geoserver',
+              buildArgs: [
+                UID: DOCKER_UID,
+                GID: DOCKER_GID
+              ],
+              extraTags: [ 'latest' ])
           }
         }
         stage('Build docker pdi-4.4-dkron') {
           steps {
-            script {
-              pdi44dkron_image = docker.build(
-                'atolcd/remocra-pdi-4.4-dkron',
-                "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./docker/pdi-4.4-dkron/Dockerfile ./docker/pdi-4.4-dkron"
-              )
-            }
+            dockerBuildAndPublish(imageName: "client-docker-registry.atolcd.com/atolcd/remocra-pdi-4.4-dkron:$REMOCRA_VERSION",
+              buildDir: 'docker/pdi-4.4-dkron',
+              buildArgs: [
+                UID: DOCKER_UID,
+                GID: DOCKER_GID
+              ],
+              extraTags: [ 'latest' ])
           }
         }
         stage('Build docker pdi-dkron') {
           steps {
-            script {
-              pdidkron_image = docker.build(
-                'atolcd/remocra-pdi-dkron',
-                "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./docker/pdi-dkron/Dockerfile ./docker/pdi-dkron"
-              )
-            }
+            dockerBuildAndPublish(imageName: "client-docker-registry.atolcd.com/atolcd/remocra-pdi-dkron:$REMOCRA_VERSION",
+              buildDir: 'docker/pdi-dkron',
+              buildArgs: [
+                UID: DOCKER_UID,
+                GID: DOCKER_GID
+              ],
+              extraTags: [ 'latest' ])
           }
         }
         stage('Build docker api-remocra') {
           steps {
-            script {
-              apiremocra_image = docker.build(
-                'atolcd/remocra-api-remocra',
-                "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./api-remocra/dist/Dockerfile-image ./api-remocra/"
-              )
-            }
-          }
-        }
-      }
-    }
-    stage('Push docker-registry : REMOCRA_VERSION & latest') {
-      failFast true
-      parallel {
-        stage('Push remocra') {
-          steps {
-            script {
-              if (remocra_image) {
-                docker.withRegistry("${REGISTRY_DOCKER}") {
-                  remocra_image.push("${REMOCRA_VERSION}")
-                  remocra_image.push('latest')
-                }
-              }
-            }
-          }
-        }
-        stage('Push geoserver') {
-          steps {
-            script {
-              if (geoserver_image) {
-                docker.withRegistry("${REGISTRY_DOCKER}") {
-                  geoserver_image.push("${REMOCRA_VERSION}")
-                  geoserver_image.push('latest')
-                }
-              }
-            }
-          }
-        }
-        stage('Push pdi-4.4-dkron') {
-          steps {
-            script {
-              if (pdi44dkron_image) {
-                docker.withRegistry("${REGISTRY_DOCKER}") {
-                  pdi44dkron_image.push("${REMOCRA_VERSION}")
-                  pdi44dkron_image.push('latest')
-                }
-              }
-            }
-          }
-        }
-        stage('Push pdi-dkron') {
-          steps {
-            script {
-              if (pdidkron_image) {
-                docker.withRegistry("${REGISTRY_DOCKER}") {
-                  pdidkron_image.push("${REMOCRA_VERSION}")
-                  pdidkron_image.push('latest')
-                }
-              }
-            }
-          }
-        }
-        stage('Push api-remocra') {
-          steps {
-            script {
-              if (apiremocra_image) {
-                docker.withRegistry("${REGISTRY_DOCKER}") {
-                  apiremocra_image.push("${REMOCRA_VERSION}")
-                  apiremocra_image.push('latest')
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    stage('Clean') {
-      failFast true
-      parallel {
-        stage('Delete image remocra') {
-          steps {
-            script {
-              if (remocra_image) {
-                sh "docker rmi -f ${remocra_image.id}"
-              }
-            }
-          }
-        }
-        stage('Delete image geoserver') {
-          steps {
-            script {
-              if (geoserver_image) {
-                sh "docker rmi -f ${geoserver_image.id}"
-              }
-            }
-          }
-        }
-        stage('Delete image pdi-4.4-dkron') {
-          steps {
-            script {
-              if (pdi44dkron_image) {
-                sh "docker rmi -f ${pdi44dkron_image.id}"
-              }
-            }
-          }
-        }
-        stage('Delete image pdi-dkron') {
-          steps {
-            script {
-              if (pdidkron_image) {
-                sh "docker rmi -f ${pdidkron_image.id}"
-              }
-            }
-          }
-        }
-        stage('Delete image api-remocra') {
-          steps {
-            script {
-              if (apiremocra_image) {
-                sh "docker rmi -f ${apiremocra_image.id}"
-              }
-            }
+            dockerBuildAndPublish(imageName: "client-docker-registry.atolcd.com/atolcd/remocra-api-remocra:$REMOCRA_VERSION",
+              dockerfile: 'api-remocra/dist/Dockerfile-image',
+              buildDir: 'api-remocra',
+              buildArgs: [
+                UID: DOCKER_UID,
+                GID: DOCKER_GID
+              ],
+              extraTags: [ 'latest' ])
           }
         }
       }

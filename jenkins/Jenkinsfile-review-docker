@@ -60,21 +60,11 @@ pipeline {
             }
             stage('Build docker remocra') {
               steps {
-                script {
-                  remocra_image = docker.build(
-                          'atolcd/remocra',
-                          "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./docker/remocra/Dockerfile ./docker/remocra"
-                  )
-                }
-              }
-              post {
-                always {
-                  script {
-                    if (remocra_image) {
-                      sh "docker rmi -f ${remocra_image.id}"
-                    }
-                  }
-                }
+                dockerBuildAndRemove(buildDir: 'docker/remocra',
+                  buildArgs: [
+                    UID: DOCKER_UID,
+                    GID: DOCKER_GID
+                  ])
               }
             }
           }
@@ -91,21 +81,11 @@ pipeline {
               'ext/jai-1_1_3-lib-linux-amd64.tar.gz',
               'ext/jai_imageio-1_1-lib-linux-amd64.tar.gz',
             ])
-            script {
-              geoserver_image = docker.build(
-                'atolcd/remocra-geoserver',
-                "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./docker/geoserver/Dockerfile ./docker/geoserver"
-              )
-            }
-          }
-          post {
-            always {
-              script {
-                if (geoserver_image) {
-                  sh "docker rmi -f ${geoserver_image.id}"
-                }
-              }
-            }
+            dockerBuildAndRemove(buildDir: 'docker/geoserver',
+              buildArgs: [
+                UID: DOCKER_UID,
+                GID: DOCKER_GID
+              ])
           }
         }
         stage('Build docker pdi-4.4-dkron') {
@@ -120,21 +100,11 @@ pipeline {
               'ext/postgresql-42.2.10.jre7.jar',
               'ext/dkron_2.1.1_linux_amd64.tar.gz',
             ])
-            script {
-              pdi44dkron_image = docker.build(
-                'atolcd/remocra-pdi-4.4-dkron',
-                "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./docker/pdi-4.4-dkron/Dockerfile ./docker/pdi-4.4-dkron"
-              )
-            }
-          }
-          post {
-            always {
-              script {
-                if (pdi44dkron_image) {
-                  sh "docker rmi -f ${pdi44dkron_image.id}"
-                }
-              }
-            }
+            dockerBuildAndRemove(buildDir: 'docker/pdi-4.4-dkron',
+              buildArgs: [
+                UID: DOCKER_UID,
+                GID: DOCKER_GID
+              ])
           }
         }
         stage('Build docker pdi-dkron') {
@@ -150,46 +120,26 @@ pipeline {
               'ext/dkron_2.1.1_linux_amd64.tar.gz',
               'ext/jtds-1.3.1.jar',
             ])
-            script {
-              pdidkron_image = docker.build(
-                'atolcd/remocra-pdi-dkron',
-                "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./docker/pdi-dkron/Dockerfile ./docker/pdi-dkron"
-              )
-            }
-          }
-          post {
-            always {
-              script {
-                if (pdidkron_image) {
-                  sh "docker rmi -f ${pdidkron_image.id}"
-                }
-              }
-            }
+            dockerBuildAndRemove(buildDir: 'docker/pdi-dkron',
+              buildArgs: [
+                UID: DOCKER_UID,
+                GID: DOCKER_GID
+              ])
           }
         }
         stage('Build docker api-remocra') {
           steps {
-            script {
-              apiremocra_image = docker.build(
-                'atolcd/remocra-api-remocra',
-                "--build-arg UID=${DOCKER_UID} --build-arg GID=${DOCKER_GID} --force-rm -f ./api-remocra/dist/Dockerfile-image ./api-remocra/"
-              )
-            }
-          }
-          post {
-            always {
-              script {
-                if (apiremocra_image) {
-                  sh "docker rmi -f ${apiremocra_image.id}"
-                }
-              }
-            }
+            dockerBuildAndRemove(
+              dockerfile: 'api-remocra/dist/Dockerfile-image',
+              buildDir: 'api-remocra',
+              buildArgs: [
+                UID: DOCKER_UID,
+                GID: DOCKER_GID
+              ])
           }
         }
       }
     }
-
-    // review : pas de push
   }
   post {
     always {
