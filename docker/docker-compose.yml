@@ -104,7 +104,7 @@ services:
       dockerfile: ./dist/Dockerfile
     volumes:
       - ../api-remocra/dist/example/log:/app/log
-      - ../api-remocra/dist/example/config:/app/config
+      - ../api-remocra/dist/example/config:/app/config:ro
     environment:
       POSTGRES_DB_SERVERNAME: ${POSTGRES_DB_SERVERNAME:-localhost}
       POSTGRES_DB_USERNAME: ${POSTGRES_DB_USERNAME}
