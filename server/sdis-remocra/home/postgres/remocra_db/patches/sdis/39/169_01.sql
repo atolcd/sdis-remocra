@@ -178,6 +178,7 @@ WHERE
 -- 119 m3 ≥ Q ≥ 60 m3 ===> non conforme
 IF
 (
+    p_rec.capacite IS NOT NULL AND p_rec.capacite <> '' AND
     p_rec.capacite::int >= 60
     AND p_rec.capacite::int < 120
 ) THEN
@@ -198,7 +199,7 @@ VALUES (p_rec.id,
         p_anomalie_id);
 -- Q < 60 ===> INDISPO
 ELSEIF
-(p_rec.capacite::int < 60) THEN
+(p_rec.capacite IS NOT NULL AND p_rec.capacite <> '' AND p_rec.capacite::int < 60) THEN
 SELECT
     id
 INTO
