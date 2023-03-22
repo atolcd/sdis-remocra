@@ -26,6 +26,7 @@ Ext.require('Sdis.Remocra.features.hydrants.televerser.TeleverserHydrantWindow')
 Ext.require('Sdis.Remocra.features.hydrants.Planification');
 Ext.require('Sdis.Remocra.features.courriers.Courriers');
 Ext.require('Sdis.Remocra.features.documents.ImportDocuments');
+Ext.require('Sdis.Remocra.features.gestionnaires.ManageGestionnaires');
 Ext.require('Sdis.Remocra.features.organismes.OrganismesAPI');
 Ext.require('Sdis.Remocra.features.transfertsAutomatises.TransfertsAutomatises');
 
@@ -156,6 +157,7 @@ Ext.define('Sdis.Remocra.controller.Router', {
         this.routes['profil'] = this.getProfilRoutes();
         this.routes['courriers'] = this.getCourriersRoutes();
         this.routes['importDocuments'] = this.getImportDocumentsRoutes();
+        this.routes['manageGestionnaires'] = this.getManageGestionnairesRoutes();
         this.routes['organismesAPI'] = this.getOrganismesAPIRoutes();
         this.routes['transfertsAutomatises'] = this.getTransfertsAutomatisesRoutes();
     },
@@ -401,7 +403,15 @@ Ext.define('Sdis.Remocra.controller.Router', {
         return routes;
     },
 
-     getOrganismesAPIRoutes: function() {
+    getManageGestionnairesRoutes: function() {
+        var routes = [];
+        routes['index'] = {
+            xtype: 'crManageGestionnaires'
+        };
+        return routes;
+    },
+
+    getOrganismesAPIRoutes: function() {
         var routes = [];
         routes['index'] = {
             xtype: 'crOrganismesAPI'

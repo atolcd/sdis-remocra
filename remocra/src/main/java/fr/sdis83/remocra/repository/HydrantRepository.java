@@ -1001,4 +1001,11 @@ public class HydrantRepository {
             .where(HYDRANT.NUMERO.eq(numero))
             .fetchOneInto(Long.class);
   }
+
+  public void updateHydrantGestionnaire(Long idHydrant, Long newGestionnaireId){
+    context.update(HYDRANT)
+            .set(HYDRANT.GESTIONNAIRE, newGestionnaireId)
+            .where(HYDRANT.ID.eq(idHydrant))
+            .execute();
+  }
 }

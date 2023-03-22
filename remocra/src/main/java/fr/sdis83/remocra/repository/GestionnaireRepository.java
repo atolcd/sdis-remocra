@@ -1,5 +1,7 @@
 package fr.sdis83.remocra.repository;
 
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.Contact;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.Gestionnaire;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -41,6 +43,75 @@ public class GestionnaireRepository {
                 .from(HYDRANT)
                 .where(HYDRANT.GESTIONNAIRE.eq(idGestionnaire))
                 .fetchInto(String.class);
+    }
+
+    /**
+     * Retourne la liste des id d'hydrants d'un gestionnaire
+     * @param idGestionnaire
+     * @return une liste des id d'hydrants
+     */
+    public List<Long> getIdHydrantWithIdGestionnaire(Long idGestionnaire) {
+        return context.selectDistinct(HYDRANT.ID)
+                .from(HYDRANT)
+                .where(HYDRANT.GESTIONNAIRE.eq(idGestionnaire))
+                .fetchInto(Long.class);
+    }
+
+    /**
+     * Récupère un gestionnaire
+     * @param idGestionnaire
+     * @return un pojo gestionnaire
+     **/
+    public Gestionnaire getGestionnaire(Long idGestionnaire) {
+        return context.selectFrom(GESTIONNAIRE)
+                .where(GESTIONNAIRE.ID.eq(idGestionnaire))
+                .fetchOneInto(Gestionnaire.class);
+    }
+
+    /**
+     * Retourne la liste des identifiants gestionnaire
+     * @return une liste de Long d'idGestionnaire
+     */
+    public List<Long> getGestionnaireIds() {
+        return context.selectDistinct(GESTIONNAIRE.ID)
+                .from(GESTIONNAIRE)
+                .orderBy(GESTIONNAIRE.ID)
+                .fetchInto(Long.class);
+    }
+
+    /**
+     * Retourne la liste des identifiants gestionnaire
+     * @return une liste de Long d'idGestionnaire
+     */
+    public List<String> getGestionnaireCodes() {
+        return context.selectDistinct(GESTIONNAIRE.CODE)
+                .from(GESTIONNAIRE)
+                .fetchInto(String.class);
+    }
+
+    /**
+     * Créé un gestionnaire
+     * @param gestionnaire
+     **/
+    public void createGestionnaire(Gestionnaire gestionnaire) {
+        context.insertInto(GESTIONNAIRE,
+                GESTIONNAIRE.NOM, GESTIONNAIRE.CODE, GESTIONNAIRE.ACTIF, GESTIONNAIRE.VERSION)
+                .values(gestionnaire.getNom(), gestionnaire.getCode(), gestionnaire.getActif(), gestionnaire.getVersion())
+                .execute();
+    }
+
+    /**
+     * Met à jour un gestionnaire
+     * @param idGestionnaire gestionnaire
+     **/
+    public void updateGestionnaire(Long idGestionnaire, Gestionnaire gestionnaire){
+        context.update(GESTIONNAIRE)
+                .set(GESTIONNAIRE.NOM, gestionnaire.getNom())
+                .set(GESTIONNAIRE.CODE, gestionnaire.getCode())
+                .set(GESTIONNAIRE.ACTIF, gestionnaire.getActif())
+                .set(GESTIONNAIRE.VERSION, gestionnaire.getVersion())
+                .where(GESTIONNAIRE.ID.eq(idGestionnaire))
+                .execute();
     }
 
     /**
@@ -119,6 +190,4 @@ public class GestionnaireRepository {
                 .where(GESTIONNAIRE.ID.eq(idGestionnaire))
                 .execute();
     }
-
-
 }

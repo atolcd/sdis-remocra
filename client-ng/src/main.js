@@ -16,6 +16,7 @@ import TransfertsAutomatises from './components/TransfertsAutomatises.vue'
 import ImportDocuments from './components/ImportDocuments.vue'
 import ModalSaisieVisite from './components/tournee/ModalSaisieVisite.vue'
 import ModalImportCTP from './components/ModalImportCTP.vue'
+import ManageGestionnaires from './components/ManageGestionnaires.vue'
 
 // import router from './router'
 import BootstrapVue from 'bootstrap-vue'
@@ -251,6 +252,18 @@ const importDocuments = function(id) {
   return v
 }
 
+const manageGestionnaires = function(id) {
+  var v = new Vue({
+    el: '#' + id,
+    bus: new Vue(),
+    components: {
+      ManageGestionnaires
+    },
+    template: "<ManageGestionnaires/>"
+  })
+  return v
+}
+
 export {
   transfertsAutomatises,
   criseBuildMap,
@@ -268,4 +281,5 @@ export {
   modalSaisieVisite,
   modalImportCTP,
   importDocuments,
+  manageGestionnaires,
 }
