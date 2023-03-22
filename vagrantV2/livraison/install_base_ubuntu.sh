@@ -35,7 +35,7 @@ set -e
     systemctl start postgresql
     sleep 10
     # Mot de passe rôle postgres
-    su postgres -c "psql -c \"alter user postgres encrypted password '${POSTGRES_DB_PASSWORD}'\" postgres" 
+    su postgres -c "psql -c \"alter user postgres encrypted password '${USER_POSTGRES_DB_PASSWORD}'\" postgres"
   }
   install_postgis(){
       cd /root

@@ -24,7 +24,7 @@ if ( ! (whoami | grep root > /dev/null) ); then
   sudo su
 fi
 ### Base de données
-export POSTGRES_DB_PASSWORD=${POSTGRES_DB_PASSWORD:-xxxxxxx}
+export USER_POSTGRES_DB_PASSWORD=${USER_POSTGRES_DB_PASSWORD:-xxxxxxx}
 export REMOCRA_DB_PASSWORD=${REMOCRA_DB_PASSWORD:-xxxxxx}
 ### Courriels (par PDI)
 find /livraison/ -type f -name '*.sh' -exec chmod u+x '{}' \+
