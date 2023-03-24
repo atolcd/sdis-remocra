@@ -10,6 +10,19 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
+== v2.2.5.2
+
+=== Fix
+* Corrige l'affichage des saisies de visites en masse lorsque le profil utilisateur n'est pas admin
+
+=== Modifications spécifiques
+* SDIS 01
+** Met en place une méthode de numérotation du numéro interne (patch 177_002.sql à passer)
+
+* SDIS 14
+** Met en place la méthode calcul_debit_pression (Patch 177_001.sql à passer)
+
+
 == v2.2.5.1
 
 === Fonctionnalité
