@@ -53,12 +53,6 @@
             <b-form-group label="Gestionnaire" label-for="gestionnaire" invalid-feedback="Le gestionnaire doit être renseigné" :state="etats.gestionnaire" label-cols-md="2">
               <b-form-select id="gestionnaire" v-model="hydrant.gestionnaire" class="parametre" :options="sortCombo(ellipsis(comboGestionnaire))" size="sm" v-on:change="onGestionnaireChange" :state="etats.gestionnaire">
               </b-form-select>
-              <button class="gestionnaireBtn" @click="modifGestionnaire" v-if="utilisateurDroits.indexOf('HYDRANTS_GESTIONNAIRE_C') != -1">
-                <img src="/remocra/static/img/pencil.png">
-              </button>
-              <button class="gestionnaireBtn addGest" @click="addGestionnaire" v-if="utilisateurDroits.indexOf('HYDRANTS_GESTIONNAIRE_C') != -1">
-                <img src="/remocra/static/img/add.png">
-              </button>
             </b-form-group>
           </div>
         </div>
@@ -173,7 +167,6 @@
         <b-button size="sm" type="reset" variant="secondary" @click="$modal.hide('modalFiche')">Annuler</b-button>
         <b-button size="sm" type="submit" variant="primary" @click="handleOk" :disabled="!dataLoaded">Valider</b-button>
       </div>
-    <ModalGestionnairePrive v-on:modalGestionnaireValues="onGestionnaireCreated" ref="modalGestionnairePrive"></ModalGestionnairePrive>
     <notifications group="remocra" position="top right" animation-type="velocity" :duration="3000" />
   </modal>
   </div>
@@ -185,7 +178,6 @@ import {
   loadProgressBar
 } from 'axios-progress-bar'
 import _ from 'lodash'
-import ModalGestionnairePrive from './ModalGestionnairePrive.vue'
 import FicheLocalisation from './FicheLocalisation.vue'
 import FicheCaracteristiquesPibi from './FicheCaracteristiquesPibi.vue'
 import FicheCaracteristiquesPena from './FicheCaracteristiquesPena.vue'
@@ -199,7 +191,6 @@ export default {
   name: 'Fiche',
   components: {
     BarChart,
-    ModalGestionnairePrive,
     FicheLocalisation,
     FicheCaracteristiquesPibi,
     FicheCaracteristiquesPena,
@@ -856,16 +847,6 @@ export default {
       });
       this.$root.$options.bus.$emit('closed')
     },
-    addGestionnaire(evt) {
-      var appartenance = (this.listeNaturesDeci.filter(item => item.code === "PRIVE")[0].id == this.hydrant.natureDeci) ? "GESTIONNAIRE" : "ORGANISME";
-      this.$refs.modalGestionnairePrive.editGestionnaire(null, appartenance);
-      evt.preventDefault()
-    },
-    modifGestionnaire(evt) {
-      var appartenance = (this.listeNaturesDeci.filter(item => item.code === "PRIVE")[0].id == this.hydrant.natureDeci) ? "GESTIONNAIRE" : "ORGANISME";
-      this.$refs.modalGestionnairePrive.editGestionnaire(this.hydrant.gestionnaire, appartenance);
-      evt.preventDefault()
-    }
   }
 };
 </script>
