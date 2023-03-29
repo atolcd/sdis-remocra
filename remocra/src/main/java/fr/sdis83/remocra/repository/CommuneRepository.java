@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 import org.jooq.DSLContext;
 import org.jooq.SortField;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,13 +56,8 @@ public class CommuneRepository {
       order.add(COMMUNE.NOM.desc());
     }
     return context
-        .selectDistinct(
-            COMMUNE.ID,
-            COMMUNE.NOM,
-            COMMUNE.CODE,
-            COMMUNE.INSEE,
-            COMMUNE.GEOMETRIE,
-            COMMUNE.NOM.length())
+        .select(COMMUNE.fields())
+        .distinctOn(COMMUNE.NOM.length(), COMMUNE.NOM)
         .from(COMMUNE)
         .join(ZONE_COMPETENCE_COMMUNE)
         .on(COMMUNE.ID.eq(ZONE_COMPETENCE_COMMUNE.COMMUNE_ID))
@@ -69,9 +65,12 @@ public class CommuneRepository {
         .on(ZONE_COMPETENCE_COMMUNE.ZONE_COMPETENCE_ID.eq(ZONE_COMPETENCE.ID))
         .join(ORGANISME)
         .on(ORGANISME.ZONE_COMPETENCE.eq(ZONE_COMPETENCE.ID))
-        .leftOuterJoin(UTILISATEUR)
+        .join(UTILISATEUR)
         .on(UTILISATEUR.ORGANISME.eq(ORGANISME.ID))
-        .where(UTILISATEUR.ORGANISME.in(organismes))
+        // Si on a pas d'organisme, c'est-à-dire pas d'utilisateur connecté et que la page est
+        // ouverte au public
+        // on ne fitre pas en fonction des organismes
+        .where(organismes != null ? UTILISATEUR.ORGANISME.in(organismes) : DSL.trueCondition())
         .and(COMMUNE.NOM.upper().like("%" + query.toUpperCase() + "%"))
         .and(COMMUNE.INSEE.like(insee))
         .orderBy(order)

@@ -15,6 +15,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,12 +68,17 @@ public class CommuneController {
       protected List<fr.sdis83.remocra.db.model.remocra.tables.pojos.Commune> getRecords() {
         // On récupère les organismes accessibles à l'utilisateur (son organisme et les enfants de
         // cet organisme)
-        fr.sdis83.remocra.db.model.remocra.tables.pojos.Organisme organismeUtilisateur =
-            organismeRepository.getOrganismeWithIdUser(
-                utilisateurService.getCurrentUtilisateur().getId());
+        SecurityContext sc = SecurityContextHolder.getContext();
+        Authentication aut = sc.getAuthentication();
+        List<Integer> organismes = null;
 
-        List<Integer> organismes =
-            Organisme.getOrganismeAndChildren(organismeUtilisateur.getId().intValue());
+        // Si on n'a pas d'utilisateur connecté, on ne va pas chercher les organismes
+        if (aut != null && aut.isAuthenticated() && !"anonymousUser".equals(aut.getPrincipal())) {
+          fr.sdis83.remocra.db.model.remocra.tables.pojos.Organisme organismeUtilisateur =
+              organismeRepository.getOrganismeWithIdUser(
+                  utilisateurService.getCurrentUtilisateur().getId());
+          organismes = Organisme.getOrganismeAndChildren(organismeUtilisateur.getId().intValue());
+        }
 
         // On va regarder pour filtrer sur uniquement les communes du département puisqu'il est
         // possible pour des raisons métier d'avoir les communes limitrophes d'autres départements
