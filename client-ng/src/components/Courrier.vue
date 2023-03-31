@@ -124,22 +124,27 @@
         <b-form-input v-model="filtre" size="sm" @input="initListeDestinataire" id="filtre" placeholder="Recherche ..." >
         </b-form-input>
       </div>
-        <div class="col-md-4 mt-1 labelFiltreZC">
-        <b-form-checkbox id="chkBoxZoneComp" v-model="filtreZC" @input="initListeDestinataire"  name="chkBoxZoneComp">Restreindre à ma zone de compétence</b-form-checkbox>
+      <div class="col-md-4 mt-1">
+        <b-form-checkbox id="chkBoxRechStricte" v-model="filtreStrict" @input="initListeDestinataire" title="Les résultats commencent par ..." name="chkBoxRechStricte">Recherche stricte</b-form-checkbox>
       </div>
     </div>
+    <div class="row" style="margin-left:0; padding-top: 0.5rem!important;">
+      <b-form-checkbox id="chkBoxZoneComp" v-model="filtreZC" @input="initListeDestinataire" title="Restreint la recherche à votre zone de compétence" name="chkBoxZoneComp">Restreindre à ma zone de compétence</b-form-checkbox>
+    </div>
     <div class="row mt-2">
-      <div class="col-md-4">
+      <div class="col-md-4 FiltreTitre">
         <label>Afficher les destinataires de type</label>
       </div>
-      <div class="col-md-2">
-        <b-form-checkbox id="chkBoxOrganisme" v-model="filtreOrga" @input="initListeDestinataire"  name="chkBoxOrganisme">Organisme</b-form-checkbox>
+      <div class="col-md-2 FiltreCkbox">
+        <b-form-checkbox id="chkBoxUtilisateur" v-model="filtreUtil" @input="initListeDestinataire" title="Retourne les utilisateurs" name="chkBoxUtilisateur">Utilisateur</b-form-checkbox>
       </div>
-      <div class="col-md-2">
-        <b-form-checkbox id="chkBoxUtilisateur" v-model="filtreUtil" @input="initListeDestinataire" name="chkBoxUtilisateur">Utilisateur</b-form-checkbox>
+      <div class="col-md-3 FiltreCkbox">
+        <b-form-checkbox id="chkBoxOrganisme" v-model="filtreOrga" @input="initListeDestinataire" title="Retourne les organismes" name="chkBoxOrganisme">Organisme</b-form-checkbox>
+          <b-form-checkbox v-if="!filtreOrga" disabled id="chkBoxOrgaContact" v-model="filtreOrgaContact" @input="initListeDestinataire" title="Retourne les contacts des organismes" name="chkBoxOrgaContact"> Contacts Organisme</b-form-checkbox>
+          <b-form-checkbox v-else id="chkBoxOrgaContact" v-model="filtreOrgaContact" @input="initListeDestinataire" title="Retourne les contacts des organismes" name="chkBoxOrgaContact" > Contacts Organisme </b-form-checkbox>
       </div>
-      <div class="col-md-2">
-        <b-form-checkbox id="chkBoxContact" v-model="filtreContact"  @input="initListeDestinataire" name="chkBoxContact">Contact</b-form-checkbox>
+      <div class="col-md-3 FiltreCkbox">
+        <b-form-checkbox id="chkBoxGestContact" v-model="filtreGestContact" @input="initListeDestinataire" title="Retourne les contacts des gestionnaires" name="chkBoxGestContact">Contacts Gestionnaire</b-form-checkbox>
       </div>
     </div>
     <div class="row ">
@@ -153,6 +158,9 @@
           :items="tabDestinataireNotifierNon" :per-page="perPage" :current-page="currentPageNon">
         </b-table>
       </div>
+    </div>
+    <div class="row msgAlreadyInDiv">
+      <span id="msgAlreadyIn" style="display:none">Adresse mail déjà dans la liste des destinataires</span>
     </div>
     <div class="row mt-1">
       <div class="col-md-6 text-right">
@@ -224,7 +232,6 @@ export default {
   name: 'Courrier',
   data() {
     return {
-
       codeCourrier : "",
       /************* Partie paramètres document ****************/
       comboModele: [],
@@ -250,15 +257,16 @@ export default {
 
       /************** Partie notification ***********************/
       filtre: null,
+      filtreStrict: false,
       filtreZC: true,
-      filtreOrga: true,
       filtreUtil: true,
-      filtreContact: true,
+      filtreOrga: true,
+      filtreOrgaContact: true,
+      filtreGestContact: true,
       selectAll: false,
       destinatairesLoaded: false,
       ajouteDestinataire: [],
       retireDestinataire: [],
-      tabDestinataires:[],
       tabDestinataireNotifierNon: [],
       tabDestinataireNotifierOui: [],
       fields: ['Type', 'Nom', 'Email', 'Fonction' ],
@@ -296,14 +304,6 @@ export default {
       this.refreshPdf += 1;
     },
 
-    selectAllMethod(selectAll){
-      if(selectAll == true){
-        this.tabDestinataires = this.tabDestinataireNotifierNon;
-      } else {
-        this.tabDestinataires =[];
-      }
-    },
-
     setModalVisibility(modalName, visibility){
       if(visibility == true){
         if(modalName == "modalNotifier"){
@@ -337,8 +337,17 @@ export default {
 
     addNotifierOui(){
       _.forEach(this.ajouteDestinataire, dest =>{
-        this.tabDestinataireNotifierOui.push(dest);
-        this.tabDestinataireNotifierNon.splice(this.tabDestinataireNotifierNon.indexOf(dest),1);
+        if(!this.tabDestinataireNotifierOui.filter(e => e.Email === dest.Email).length>0){
+          this.tabDestinataireNotifierOui.push(dest);
+          this.tabDestinataireNotifierNon.splice(this.tabDestinataireNotifierNon.indexOf(dest),1);
+        }else{
+          var msgAlreadyInElement = document.getElementById("msgAlreadyIn");
+          msgAlreadyInElement.style="display:bloc";
+          setTimeout(function(){
+            msgAlreadyInElement.style="display:none";
+          },2000)
+        }
+        
       })
       this.ajouteDestinataire = [];
     },
@@ -507,12 +516,16 @@ export default {
 
     initListeDestinataire() {
       var types = [];
-      if(this.filtreOrga) { types.push("ORGANISME"); }
       if(this.filtreUtil) { types.push("UTILISATEUR"); }
-      if(this.filtreContact) { types.push("CONTACT"); }
+      if(this.filtreOrga) { 
+        types.push("ORGANISME");
+        if(this.filtreOrgaContact) { types.push("CONTACT_ORGANISME"); }
+      }else{ this.filtreOrgaContact = false }
+      if(this.filtreGestContact) { types.push("CONTACT_GESTIONNAIRE"); }
 
       axios.get('/remocra/courrier/contacts',{
         params: {
+          strict: this.filtreStrict,
           useZc: this.filtreZC,
           listeTypes: JSON.stringify(types),
           filter: JSON.stringify(
@@ -520,14 +533,13 @@ export default {
               "property": "filtreString",
               "value": this.filtre
             }]
-          )
+          ),
         }
       }).then((response)=> {
         this.tabDestinataireNotifierNon = [];
-        this.tabDestinataires = [];
         var contacts = response.data.data;
         _.forEach(contacts, contact => {
-          this.tabDestinataires.push({
+          this.tabDestinataireNotifierNon.push({
             'id': contact.id,
             'Type': contact.type,
             'Nom' : contact.nom,
@@ -535,12 +547,6 @@ export default {
             'Fonction' : contact.fonction
           });
         });
-      }).then(()=>{
-        var i =0;
-        for(i = 0; i<this.tabDestinataires.length; i++){
-          this.tabDestinataireNotifierNon.push(this.tabDestinataires[i]);
-        }
-        this.destinatairesLoaded = true;
       }).catch(function(error) {
         console.error(error)
       });
@@ -713,5 +719,16 @@ export default {
 
 .vm--modal.modalCourrier{
   overflow: visible!important;
+}
+
+.FiltreTitre{
+  padding-right: 0;
+}
+.FiltreCkbox{
+  padding: 0;
+}
+
+.msgAlreadyInDiv{
+  justify-content: center;
 }
 </style>

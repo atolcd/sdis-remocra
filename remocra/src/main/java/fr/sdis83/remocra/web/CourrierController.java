@@ -241,9 +241,10 @@ public class CourrierController {
    */
   @RequestMapping(value = "/contacts", method = RequestMethod.GET, headers = "Accept=application/json")
   @PreAuthorize("hasRight('COURRIER_C')")
-  public ResponseEntity<String> getContactsCourrier(final @RequestParam(value = "filter", required = false) String filters, final @RequestParam(value = "useZc", required = false) boolean useZc,
-                                                    final @RequestParam(value = "listeTypes", required = true) String listeTypes){
-
+  public ResponseEntity<String> getContactsCourrier(final @RequestParam(value = "filter", required = false) String filters,
+                                                    final @RequestParam(value = "useZc", required = false) boolean useZc,
+                                                    final @RequestParam(value = "listeTypes", required = true) String listeTypes,
+                                                    final @RequestParam(value = "strict", required = true) boolean strict){
     final List<ItemFilter> listeFiltre = ItemFilter.decodeJson(filters);
     ArrayList<String> types = new JSONDeserializer<ArrayList<String>>().deserialize(listeTypes);
 
@@ -263,12 +264,14 @@ public class CourrierController {
 
         List<DestinataireModel> destinataires = new ArrayList<DestinataireModel>();
         for(String t : types) {
-          if("CONTACT".equalsIgnoreCase(t)) {
-            destinataires.addAll(destinataireRepository.getDestinataireContact(organismes, filter));
+          if("CONTACT_ORGANISME".equalsIgnoreCase(t)) {
+            destinataires.addAll(destinataireRepository.getDestinataireContactOrganisme(organismes, filter, strict));
           } else if("ORGANISME".equalsIgnoreCase(t)) {
-            destinataires.addAll(destinataireRepository.getDestinataireOrganisme(organismes, filter));
+            destinataires.addAll(destinataireRepository.getDestinataireOrganisme(organismes, filter, strict));
           } else if("UTILISATEUR".equalsIgnoreCase(t)) {
-            destinataires.addAll(destinataireRepository.getDestinataireUtilisateur(organismes, filter));
+            destinataires.addAll(destinataireRepository.getDestinataireUtilisateur(organismes, filter, strict));
+          } else if("CONTACT_GESTIONNAIRE".equalsIgnoreCase(t)) {
+            destinataires.addAll(destinataireRepository.getDestinataireContactGestionnaire(filter, strict));
           }
         }
 
