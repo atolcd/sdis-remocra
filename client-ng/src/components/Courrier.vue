@@ -5,7 +5,8 @@
    :reset="true"
    :draggable="true"
     width="50%"
-    height="auto">
+    height="auto"
+    classes="modalCourrier">
        <header class="modal-header"><h5 class="modal-title">Génération de courrier</h5>
     <div slot="top-right">
      <button type="button" aria-label="Close" @click="$modal.hide('modalCourrier')" class="close">×</button>
@@ -710,4 +711,7 @@ export default {
   padding: .6rem;
 }
 
+.vm--modal.modalCourrier{
+  overflow: visible!important;
+}
 </style>
