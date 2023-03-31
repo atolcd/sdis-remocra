@@ -10,8 +10,8 @@
                 :get-label="getLabel"
                 :component-item='template'
                 :auto-select-one-item="false"
-                @update-items="search"
-                @item-selected="onItemSelected" />
+                @change="search"
+                @item-selected="onItemSelected"/>
 </form>
 </template>
 
