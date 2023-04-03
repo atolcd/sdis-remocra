@@ -6,7 +6,8 @@ import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import fr.sdis83.remocra.domain.remocra.Utilisateur;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.Utilisateur;
+import fr.sdis83.remocra.repository.UtilisateurRepository;
 import fr.sdis83.remocra.service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,9 @@ public class AuthController {
     @Autowired
     private UtilisateurService utilisateurService;
 
+    @Autowired
+    public UtilisateurRepository utilisateurRepository;
+
     public static final String DUMMY_RESPONSE_XML_OK = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><success><message>Opération réalisée avec succès</message></success>";
 
     /**
@@ -52,14 +56,15 @@ public class AuthController {
 
         // Si nouvel utilisateur alors on réinitialise la session.
         //On considère que le bon identifiant est celui qui vient de la base et non celui saisi par l'utilisateur
-        Utilisateur u  = utilisateurService.findUtilisateursWithoutCase(username);
-        if (session != null && !(AuthService.isUserAuthenticated() && AuthService.getCurrentUserIdentifiant().equals(u.getIdentifiant()))) {
+        Utilisateur utilisateur = utilisateurRepository.findUtilisateurWithoutCase(username);
+        if(utilisateur==null){ return "redirect:/auth/login/failure"; }
+        if (session != null && !(AuthService.isUserAuthenticated() && AuthService.getCurrentUserIdentifiant().equals(utilisateur.getIdentifiant()))) {
             session.invalidate();
         }
         // Create a new session for the user.
         session = request.getSession(true);
 
-        String autResult = authService.authUser(u.getIdentifiant(), password);
+        String autResult = authService.authUser(utilisateur.getIdentifiant(), password);
         // On utilise le redirect sinon le header Set-Cookie avec le nouveau
         // JSESSIONID n'est pas renseigné...
         if (autResult == null) {

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Utilisateur;
 import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
+import static org.jooq.impl.DSL.lower;
 
 @Configuration
 public class UtilisateurRepository {
@@ -26,6 +27,18 @@ public class UtilisateurRepository {
 
     UtilisateurRepository(DSLContext context) {
         this.context = context;
+    }
+
+
+    /**
+     * Récupère un utilisateur en fonction de l'identifiant de connexion
+     * @param username de connexion de l'utilisateur
+     * @return le username issue de la base s'il existe
+     */
+    public Utilisateur findUtilisateurWithoutCase(String username){
+        return context.selectFrom(UTILISATEUR)
+                .where(UTILISATEUR.IDENTIFIANT.equalIgnoreCase(username))
+                .fetchOneInto(Utilisateur.class);
     }
 
 
