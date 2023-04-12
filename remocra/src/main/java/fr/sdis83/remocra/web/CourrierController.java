@@ -282,6 +282,7 @@ public class CourrierController {
   @PreAuthorize("hasRight('COURRIER_C')")
   @Transactional
   public ResponseEntity<java.lang.String> genereCourrier( MultipartHttpServletRequest request, final @PathVariable(value = "id") Long idModele) {
+      String erreur = "";
     try{
       Map<String, String[]> mapParametres = request.getParameterMap();
       //Ouverture du modèle de courrier
@@ -335,10 +336,14 @@ public class CourrierController {
 
       return new SuccessErrorExtSerializer(true, docOTT.getCode()+File.separator+nomPdf).serialize();
 
-    }catch(Exception e){
-      e.printStackTrace();
-      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la génération du courrier.").serialize();
+    } catch (NullPointerException npe ) {
+        npe.printStackTrace();
+        erreur = "Erreur lors de l'exécution de la requête : NullPointerException. La requête ne renvoie aucune ligne avec les données saisies.";
+    } catch(Exception e){
+        e.printStackTrace();
+        erreur = "Erreur lors du remplissage du template: un noeud xml est manquant. Peut venir d'une donnée manquante dans la base de données.";
     }
+      return new SuccessErrorExtSerializer(false, erreur).serialize();
   }
 
   @RequestMapping(value = "notifier", method = RequestMethod.POST,  headers = "Accept=application/json;charset=utf-8")

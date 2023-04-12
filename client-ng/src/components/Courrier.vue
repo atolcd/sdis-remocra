@@ -500,7 +500,7 @@ export default {
         console.error(error)
         self.pdfLoading = false;
         self.showErrorGeneration = true;
-        self.msgError = "Erreur lors de la génération du courrier.";
+        self.msgError = error.response.data.message;
       })
     },
 
