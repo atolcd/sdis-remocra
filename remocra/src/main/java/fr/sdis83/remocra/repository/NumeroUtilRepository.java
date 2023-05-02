@@ -118,28 +118,6 @@ public class NumeroUtilRepository {
         }
     }
 
-    /**
-     * <insee numero_interne>
-     * avec un espace dans insee et le numero interne sur 4 chiffres
-     * Exemple : 14 118 0001
-     *
-     * @param hydrant
-     * @return
-     */
-    protected static String computeNumero14(Hydrant hydrant) {
-        StringBuilder sb = new StringBuilder();
-
-        String insee = getHydrantCommune(hydrant).getInsee();
-
-        // On ajoute l'espace
-        sb.append(insee.substring(0, 2) + " " + insee.substring(2, 5));
-        sb.append(" ");
-
-        // On l'adapte pour faire en sorte d'avoir 4 chiffres
-        return sb.append(String.format("%04d", hydrant.getNumeroInterne())).toString();
-    }
-
-
 
     /**
      * <code insee commune>_<numéro interne>
@@ -159,10 +137,10 @@ public class NumeroUtilRepository {
         return sb.append(String.format("%03d", hydrant.getNumeroInterne())).toString();
     }
 
-
     /**
-     * <code insee commune><numéro interne> sans espace
-     * <p>
+     * <code insee commune><numéro interne>
+     * sans espace
+     * sur 3 chiffres
      * Exemple : 09122012
      *
      * @param hydrant
@@ -172,15 +150,69 @@ public class NumeroUtilRepository {
         String codeZS = (getHydrantZoneSpeciale(hydrant) != null) ? getHydrantZoneSpeciale(hydrant).getCode() : null;
 
         StringBuilder sb = new StringBuilder();
-
         sb.append(codeZS != null ? codeZS : getHydrantCommune(hydrant).getInsee());
         return sb.append(String.format("%03d", hydrant.getNumeroInterne())).toString();
+    }
+
+    /**
+     * <insee> <numero_interne>
+     * avec un espace dans insee et le numero interne sur 4 chiffres
+     * Exemple : 14 118 0001
+     *
+     * @param hydrant
+     * @return
+     */
+    protected static String computeNumero14(Hydrant hydrant) {
+        StringBuilder sb = new StringBuilder();
+
+        String insee = getHydrantCommune(hydrant).getInsee();
+
+        // On ajoute l'espace
+        sb.append(insee.substring(0, 2) + " " + insee.substring(2, 5));
+        sb.append(" ");
+
+        // On l'adapte pour faire en sorte d'avoir 4 chiffres
+        return sb.append(String.format("%04d", hydrant.getNumeroInterne())).toString();
+    }
+
+    /**
+     * <code insee commune>_<numéro interne>
+     * avec numéro interne sur 4 chiffres
+     * Exemple : 86194_9994
+     *
+     * @param hydrant
+     * @return
+     */
+    protected static String computeNumero21(Hydrant hydrant) {
+        String codeZS = (getHydrantZoneSpeciale(hydrant) != null) ? getHydrantZoneSpeciale(hydrant).getCode() : null;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(codeZS != null ? codeZS : getHydrantCommune(hydrant).getInsee());
+        return sb.append(String.format("_%04d", hydrant.getNumeroInterne())).toString();
+    }
+
+    /**
+     * <code insee commune>-<numéro interne>
+     * avec insee sur 5 chiffres
+     * avec num-interne sur 4 chiffres
+     * et un tiret (-) entre les deux
+     * Exemple : 86194-99947
+     *
+     * @param hydrant
+     * @return
+     */
+    protected static String computeNumero38(Hydrant hydrant) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getHydrantCommune(hydrant).getInsee());
+        sb.append("-");
+        return sb.append(String.format("%04d", hydrant.getNumeroInterne())).toString();
     }
 
     /**
      * <code nature><code insee commune>.<numéro interne>
      * avec le numéro interne sur 5 chiffres
      * avec le code nature égal à P, B, A ou N
+     * avec un point (.) entre insee et num_interne
      * Exemple : P39473.00001, A39199.21547
      *
      * @param hydrant
@@ -199,8 +231,43 @@ public class NumeroUtilRepository {
     }
 
     /**
+     * <numéro interne> (sans contrainte)
+     * Exemple : 1 ou 17280
+     *
+     * @param hydrant
+     * @return
+     */
+    protected static String computeNumero49(Hydrant hydrant) {
+        return hydrant.getNumeroInterne().toString();
+    }
+
+    /**
+     * <code insee commune>_<numéro interne>(<P>)
+     * Avec P à la fin pour PEI privé
+     * Exemple : 89043_12P
+     *
+     * @param hydrant
+     * @return
+     */
+    protected static String computeNumero66(Hydrant hydrant) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(getHydrantCommune(hydrant).getInsee());
+        sb.append("_");
+        sb.append(hydrant.getNumeroInterne().toString());
+        String codeNature = context.select(TYPE_HYDRANT_NATURE_DECI.CODE)
+                .from(TYPE_HYDRANT_NATURE_DECI)
+                .where(TYPE_HYDRANT_NATURE_DECI.ID.eq(hydrant.getNatureDeci()))
+                .fetchOneInto(String.class);
+        if("PRIVE".equals(codeNature)){
+            sb.append("P");
+        }
+        return sb.toString();
+    }
+
+    /**
      * <code insee commune><numéro interne> sans espace
-     * <p>
+     * avec num_intern sur 4 chiffres
      * Exemple : 772880012
      *
      * @param hydrant
@@ -213,6 +280,77 @@ public class NumeroUtilRepository {
 
         sb.append(codeZS != null ? codeZS : getHydrantCommune(hydrant).getInsee());
         return sb.append(String.format("%04d", hydrant.getNumeroInterne())).toString();
+    }
+
+    /**
+     * <code insee commune><numéro interne> ou <code insee commune>A<numéro interne>
+     * sans espace
+     * avec num_interne sur 4 chiffres pour Autoroutes
+     * sinon num_interne sur 5 chiffres
+     * Exemple : 8904300012 ou  89043A0012 pour les Autoroutes
+     *
+     * @param hydrant
+     * @return
+     */
+    protected static String computeNumero78(Hydrant hydrant) {
+        StringBuilder sb = new StringBuilder();
+        String codeDomaine = context.select(TYPE_HYDRANT_DOMAINE.CODE)
+                .from(TYPE_HYDRANT_DOMAINE)
+                .where(TYPE_HYDRANT_DOMAINE.ID.eq(hydrant.getDomaine()))
+                .fetchOneInto(String.class);
+        sb.append(getHydrantCommune(hydrant).getInsee());
+        if("AUTOROUTE".equals(codeDomaine)){
+            sb.append("A");
+            return sb.append(String.format("%04d", hydrant.getNumeroInterne())).toString();
+        }
+        return sb.append(String.format("%05d", hydrant.getNumeroInterne())).toString();
+    }
+
+    /**
+     * <Code nature pour les PIBI ou les RI, PN pour les autres> <code commune>
+     * <numéro interne>
+     * <p>
+     * Exemple : PI TLN 12
+     *
+     * @param hydrant
+     * @return
+     */
+    protected static String computeNumero83(Hydrant hydrant) {
+        String codeZS = (getHydrantZoneSpeciale(hydrant) != null) ? getHydrantZoneSpeciale(hydrant).getCode() : null;
+        StringBuilder sb = new StringBuilder();
+
+        String codeNature = context.select(TYPE_HYDRANT_NATURE.CODE)
+                .from(TYPE_HYDRANT_NATURE)
+                .where(TYPE_HYDRANT_NATURE.ID.eq(hydrant.getNature()))
+                .fetchOneInto(String.class);
+
+        if ("PIBI".equals(hydrant.getCode())) {
+            sb.append(codeNature).append(" ");
+
+            /**
+             * Non pris en compte lors de la création du PEI
+             * (numérotation intervenant avant ajout en base dans hydrant_pibi
+             */
+
+            Long idReservoir = context.select(HYDRANT_PIBI.RESERVOIR)
+                    .from(HYDRANT_PIBI)
+                    .where(HYDRANT_PIBI.ID.eq(hydrant.getId()))
+                    .fetchOneInto(Long.class);
+
+            // Si le PIBI est lié à un réservoir, on double le code commune
+            if(idReservoir != null) {
+                sb.append(codeZS != null ? codeZS : getHydrantCommune(hydrant).getCode()).append(" ");
+            } else {
+            }
+
+        } else if ("RI".equals(codeNature)) {
+            sb.append("RI ");
+        } else {
+            sb.append("PN ");
+        }
+
+        sb.append(codeZS != null ? codeZS : getHydrantCommune(hydrant).getCode());
+        return sb.append(" ").append(hydrant.getNumeroInterne()).toString();
     }
 
     /**
@@ -248,112 +386,8 @@ public class NumeroUtilRepository {
     }
 
     /**
-     * <code insee commune>0 ou A<numéro interne>
-     * <p>
-     * Exemple : 8904300012 ou  89043A0012 pour les Autoroutes
-     *
-     * @param hydrant
-     * @return
-     */
-    protected static String computeNumero78(Hydrant hydrant) {
-        StringBuilder sb = new StringBuilder();
-        String codeDomaine = context.select(TYPE_HYDRANT_DOMAINE.CODE)
-                .from(TYPE_HYDRANT_DOMAINE)
-                .where(TYPE_HYDRANT_DOMAINE.ID.eq(hydrant.getDomaine()))
-                .fetchOneInto(String.class);
-        sb.append(getHydrantCommune(hydrant).getInsee());
-        if("AUTOROUTE".equals(codeDomaine)){
-            sb.append("A");
-            return sb.append(String.format("%04d", hydrant.getNumeroInterne())).toString();
-        }
-        return sb.append(String.format("%05d", hydrant.getNumeroInterne())).toString();
-    }
-
-    /**
-     * <code insee commune>_<numéro interne><P(pour les PEI privés)>
-     * <p>
-     * Exemple : 89043_12P
-     *
-     * @param hydrant
-     * @return
-     */
-    protected static String computeNumero66(Hydrant hydrant) {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(getHydrantCommune(hydrant).getInsee());
-        sb.append("_");
-        sb.append(hydrant.getNumeroInterne().toString());
-        String codeNature = context.select(TYPE_HYDRANT_NATURE_DECI.CODE)
-                .from(TYPE_HYDRANT_NATURE_DECI)
-                .where(TYPE_HYDRANT_NATURE_DECI.ID.eq(hydrant.getNatureDeci()))
-                .fetchOneInto(String.class);
-        if("PRIVE".equals(codeNature)){
-            sb.append("P");
-        }
-        return sb.toString();
-    }
-
-    /**
-     * <code insee commune>_<numéro interne> (sur 4 chiffres)
-     * <p>
-     * Exemple : 86194_99947
-     *
-     * @param hydrant
-     * @return
-     */
-    protected static String computeNumero21(Hydrant hydrant) {
-        String codeZS = (getHydrantZoneSpeciale(hydrant) != null) ? getHydrantZoneSpeciale(hydrant).getCode() : null;
-
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(codeZS != null ? codeZS : getHydrantCommune(hydrant).getInsee());
-        return sb.append(String.format("_%04d", hydrant.getNumeroInterne())).toString();
-    }
-
-    /**
-     * <code <numéro interne> (sans contrainte)
-     * Exemple : 7280
-     *
-     * @param hydrant
-     * @return
-     */
-    protected static String computeNumero49(Hydrant hydrant) {
-        return hydrant.getNumeroInterne().toString();
-    }
-
-    /**
-     * <code insee commune (5 caractères)>-<numéro interne (4 caractères)>
-     * <p>
-     * Exemple : 86194-99947
-     *
-     * @param hydrant
-     * @return
-     */
-    protected static String computeNumero38(Hydrant hydrant) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getHydrantCommune(hydrant).getInsee());
-        sb.append("-");
-        return sb.append(String.format("%04d", hydrant.getNumeroInterne())).toString();
-    }
-
-    /**
-     * <code insee commune (5 caractères)>.<numéro interne (5 caractères)>
-     * <p>
-     * Exemple : 95000-00001
-     *
-     * @param hydrant
-     * @return
-     */
-    protected static String computeNumero95(Hydrant hydrant) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getHydrantCommune(hydrant).getInsee());
-        sb.append(".");
-        return sb.append(String.format("%04d", hydrant.getNumeroInterne())).toString();
-    }
-
-    /**
-     * <code insee commune (5 caractères)>-<numéro interne>
-     * <p>
+     * <code insee commune>-<numéro interne>
+     * avec un tiret (-) entre les deux
      * Exemple : 91377-311
      *
      * @param hydrant
@@ -365,51 +399,21 @@ public class NumeroUtilRepository {
         sb.append("-");
         return sb.append(hydrant.getNumeroInterne()).toString();
     }
+
     /**
-     * <Code nature pour les PIBI ou les RI, PN pour les autres> <code commune>
-     * <numéro interne>
-     * <p>
-     * Exemple : PI TLN 12
+     * <code insee commune>.<numéro interne>
+     * avec num_interne sur 4 chiffres
+     * et un tiret (-) entre les deux
+     * Exemple : 95000-0001
      *
      * @param hydrant
      * @return
      */
-    protected static String computeNumero83(Hydrant hydrant) {
-        String codeZS = (getHydrantZoneSpeciale(hydrant) != null) ? getHydrantZoneSpeciale(hydrant).getCode() : null;
+    protected static String computeNumero95(Hydrant hydrant) {
         StringBuilder sb = new StringBuilder();
-
-        String codeNature = context.select(TYPE_HYDRANT_NATURE.CODE)
-                .from(TYPE_HYDRANT_NATURE)
-                .where(TYPE_HYDRANT_NATURE.ID.eq(hydrant.getNature()))
-                .fetchOneInto(String.class);
-
-        if ("PIBI".equals(hydrant.getCode())) {
-            sb.append(codeNature).append(" ");
-
-            /**
-             * Non pris en compte lors de la création du PEI
-             * (numérotation intervenant avant ajout en base dans hydrant_pibi
-            */
-
-            Long idReservoir = context.select(HYDRANT_PIBI.RESERVOIR)
-              .from(HYDRANT_PIBI)
-              .where(HYDRANT_PIBI.ID.eq(hydrant.getId()))
-              .fetchOneInto(Long.class);
-
-            // Si le PIBI est lié à un réservoir, on double le code commune
-            if(idReservoir != null) {
-              sb.append(codeZS != null ? codeZS : getHydrantCommune(hydrant).getCode()).append(" ");
-            } else {
-            }
-
-        } else if ("RI".equals(codeNature)) {
-            sb.append("RI ");
-        } else {
-            sb.append("PN ");
-        }
-
-        sb.append(codeZS != null ? codeZS : getHydrantCommune(hydrant).getCode());
-        return sb.append(" ").append(hydrant.getNumeroInterne()).toString();
+        sb.append(getHydrantCommune(hydrant).getInsee());
+        sb.append(".");
+        return sb.append(String.format("%04d", hydrant.getNumeroInterne())).toString();
     }
 
     // ******************************
@@ -486,27 +490,32 @@ public class NumeroUtilRepository {
     public static Integer computeNumeroInterne(Hydrant hydrant) {
         switch (getHydrantNumerotationInterneMethode()) {
             case M_01:
+            case M_42:
+            case M_78:
                 return NumeroUtilRepository.computeNumeroInterne01(hydrant);
             case M_39:
                 return NumeroUtilRepository.computeNumeroInterne39(hydrant);
-            case M_42:
-                return NumeroUtilRepository.computeNumeroInterne42(hydrant);
             case M_49:
                 return NumeroUtilRepository.computeNumeroInterne49(hydrant);
             case M_77:
             case M_91:
                 return NumeroUtilRepository.computeNumeroInterne77(hydrant);
-            case M_78:
-                return NumeroUtilRepository.computeNumeroInterne78(hydrant);
             case M_86:
                 return NumeroUtilRepository.computeNumeroInterne86(hydrant);
             case M_95:
                 return NumeroUtilRepository.computeNumeroInterne95(hydrant);
+            case M_83:
             default:
                 return NumeroUtilRepository.computeNumeroInterne83(hydrant);
         }
     }
 
+    /**
+     * numéro interne en fonction de la commune
+     * max +1 => pas de remplissage
+     * @param hydrant
+     * @return
+     */
     public static Integer computeNumeroInterne01(Hydrant hydrant) {
       // Retour du numéro interne s'il existe
       if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
@@ -528,9 +537,7 @@ public class NumeroUtilRepository {
     }
 
     /**
-     * Pour le 39, le numéro interne est un identifiant relatif calulé  en fonction
-     * * de la nature de l'hydrant
-     * * et de la commune
+     * numéro interne en fonction de la nature de l'hydrant et de la commune
      * @param hydrant
      * @return numéro interne
      */
@@ -553,6 +560,32 @@ public class NumeroUtilRepository {
         return numInterne  ;
     }
 
+    /**
+     * Premier numéro interne disponible
+     * max +1 => pas de remplissage
+     */
+    public static Integer computeNumeroInterne49(Hydrant hydrant) {
+        // Retour du numéro interne s'il existe
+        if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
+            return hydrant.getNumeroInterne();
+        }
+        Integer numInterne = null;
+        try {
+            numInterne = context.select(DSL.max(HYDRANT.NUMERO_INTERNE))
+                    .from(HYDRANT)
+                    .fetchOneInto(Integer.class);
+            numInterne++;
+        } catch (Exception e) {
+            numInterne = 99999;
+        }
+        return numInterne;
+    }
+
+    /**
+     * numéro interne en fonction de la commune ou zone spéciale
+     * @param hydrant
+     * @return
+     */
     public static Integer computeNumeroInterne77(Hydrant hydrant) {
         // Retour du numéro interne s'il existe
         if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
@@ -573,47 +606,12 @@ public class NumeroUtilRepository {
         return numInterne;
     }
 
-    public static Integer computeNumeroInterne42(Hydrant hydrant) {
-        // Retour du numéro interne s'il existe
-        if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
-            return hydrant.getNumeroInterne();
-        }
-        Integer numInterne = null;
-        try {
-            // Incrementation automatique de numero interne
-            numInterne = context.select(DSL.max(HYDRANT.NUMERO_INTERNE))
-              .from(HYDRANT)
-              .where(HYDRANT.COMMUNE.eq(hydrant.getCommune()))
-              .fetchOneInto(Integer.class);
-            // On prend le suivant
-            numInterne ++;
-        } catch (Exception e) {
-            numInterne = 99999;
-        }
-        return numInterne  ;
-    }
-
-    public static Integer computeNumeroInterne78(Hydrant hydrant) {
-        // Retour du numéro interne s'il existe
-        if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
-            return hydrant.getNumeroInterne();
-        }
-        Integer numInterne = null;
-        try {
-            // Incrementation automatique de numero interne
-            numInterne = context.select(DSL.max(HYDRANT.NUMERO_INTERNE))
-              .from(HYDRANT)
-              .where(HYDRANT.COMMUNE.eq(hydrant.getCommune()))
-              .fetchOneInto(Integer.class);
-
-            // On prend le suivant
-            numInterne ++;
-        } catch (Exception e) {
-            numInterne = 99999;
-        }
-        return numInterne  ;
-    }
-
+    /**
+     * numéro interne en fonction du type hydrant nature et de la commune ou zone spéciale
+     * max +1 => pas de remplissage
+     * @param hydrant
+     * @return
+     */
     public static Integer computeNumeroInterne83(Hydrant hydrant) {
         // Retour du numéro interne s'il existe
         if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
@@ -642,6 +640,11 @@ public class NumeroUtilRepository {
         return numInterne;
     }
 
+    /**
+     * SDIS inconnu
+     * @param hydrant
+     * @return
+     */
     public static Integer computeNumeroInterne86(Hydrant hydrant) {
         // Retour du numéro interne s'il existe
         if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
@@ -658,26 +661,11 @@ public class NumeroUtilRepository {
     }
 
     /**
-     * Premier numéro interne disponible, sans remplissage
+     * numéro interne en fonction de la commune ou zone speciale ET nature DECI
+     * max +1 => pas de remplissage
+     * @param hydrant
+     * @return
      */
-    public static Integer computeNumeroInterne49(Hydrant hydrant) {
-        // Retour du numéro interne s'il existe
-        if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
-            return hydrant.getNumeroInterne();
-        }
-        Integer numInterne = null;
-        try {
-            numInterne = context.select(DSL.max(HYDRANT.NUMERO_INTERNE))
-              .from(HYDRANT)
-              .fetchOneInto(Integer.class);
-            numInterne++;
-        } catch (Exception e) {
-            numInterne = 99999;
-        }
-        return numInterne;
-
-    }
-
     protected static Integer computeNumeroInterne95(Hydrant hydrant) {
         // Retour du numéro interne s'il existe
         if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
@@ -710,6 +698,7 @@ public class NumeroUtilRepository {
         }
         return numInterne;
     }
+
 
     private static ZoneSpeciale getHydrantZoneSpeciale(Hydrant h) {
       return context.selectFrom(ZONE_SPECIALE)
