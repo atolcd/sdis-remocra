@@ -36,7 +36,7 @@ public class NumeroUtilRepository {
   }
 
     public enum MethodeNumerotation {
-        M_01, M_09, M_14, M_21, M_38, M_39, M_42, M_49, M_66, M_77, M_78, M_83, M_86, M_89, M_91, M_95
+        M_01, M_09, M_14, M_21, M_38, M_39, M_42, M_49, M_61, M_66, M_77, M_78, M_83, M_86, M_89, M_91, M_95
     }
 
     public static NumeroUtilRepository.MethodeNumerotation getHydrantNumerotationMethode() {
@@ -54,7 +54,7 @@ public class NumeroUtilRepository {
     }
 
     public enum MethodeNumerotationInterne {
-        M_01, M_39, M_42, M_49, M_77, M_78, M_83, M_86, M_91, M_95
+        M_01, M_39, M_42, M_49, M_61, M_77, M_78, M_83, M_86, M_91, M_95
     }
 
     public static NumeroUtilRepository.MethodeNumerotationInterne getHydrantNumerotationInterneMethode() {
@@ -84,6 +84,7 @@ public class NumeroUtilRepository {
     public static String computeNumero(Hydrant hydrant) {
         switch (getHydrantNumerotationMethode()) {
             case M_01:
+            case M_61:
                 return  NumeroUtilRepository.computeNumero01(hydrant);
             case M_09:
                 return NumeroUtilRepository.computeNumero09(hydrant);
@@ -491,6 +492,7 @@ public class NumeroUtilRepository {
         switch (getHydrantNumerotationInterneMethode()) {
             case M_01:
             case M_42:
+            case M_61:
             case M_78:
                 return NumeroUtilRepository.computeNumeroInterne01(hydrant);
             case M_39:
