@@ -5,8 +5,11 @@ import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.jooq.SortField;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.ArrayList;
 
 import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ZONE_COMPETENCE;
@@ -49,7 +52,20 @@ public class CommuneRepository {
             boolean asc,
             int limit,
             int offset) {
-        return context.selectDistinct(COMMUNE.fields())
+        // On prend en compte la longueur pour éviter que les communes à 2 caractères n'apparaissent pas
+        Collection<SortField<?>> order = new ArrayList();
+        if(asc) {
+            order.add(COMMUNE.NOM.length().asc());
+            order.add(COMMUNE.NOM.asc());
+        } else {
+            order.add(COMMUNE.NOM.desc());
+        }
+        return context.selectDistinct(
+                    COMMUNE.NOM,
+                    COMMUNE.CODE,
+                    COMMUNE.INSEE,
+                    COMMUNE.GEOMETRIE,
+                    COMMUNE.NOM.length())
                 .from(COMMUNE)
                 .join(ZONE_COMPETENCE_COMMUNE)
                 .on(COMMUNE.ID.eq(ZONE_COMPETENCE_COMMUNE.COMMUNE_ID))
@@ -62,7 +78,7 @@ public class CommuneRepository {
                 .where(UTILISATEUR.ORGANISME.in(organismes))
                 .and(COMMUNE.NOM.upper().like("%"+query.toUpperCase()+"%"))
                 .and(COMMUNE.INSEE.like(insee))
-                .orderBy(asc ? COMMUNE.NOM.asc() : COMMUNE.NOM.desc())
+                .orderBy(order)
                 .limit(limit)
                 .offset(offset)
                 .fetchInto(Commune.class);
