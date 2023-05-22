@@ -2,10 +2,6 @@ FROM openjdk:7-jdk-alpine
 
 LABEL maintainer="ATOL Conseils & Développements"
 
-# Trick copy or download (Docker must exists). Pattern :
-# COPY Dockerfile <resource>* <dest>/
-# RUN ([ -f <dest>/<resource> ] || wget -P <dest> -q <>/<resource-part-url><resource>) && rm -f Dockerfile
-
 # ---------------
 # Non root user
 # ---------------
@@ -40,42 +36,28 @@ ENV \
 WORKDIR ${KETTLE_HOME}
 
 # PDI
-COPY Dockerfile ext/pdi-ce-4.4.0-stable.zip* ${KETTLE_HOME}/
-RUN set -x \
-  && ([ -f ${KETTLE_HOME}/pdi-ce-4.4.0-stable.zip ] \
-    || wget -P ${KETTLE_HOME} -q https://sourceforge.net/projects/pentaho/files/Data%20Integration/4.4.0-stable/pdi-ce-4.4.0-stable.zip) \
-  && unzip -qo ${KETTLE_HOME}/pdi-ce-4.4.0-stable.zip -d ${KETTLE_HOME} \
+# https://sourceforge.net/projects/pentaho/files/Data%20Integration/4.4.0-stable/pdi-ce-4.4.0-stable.zip
+RUN --mount=type=bind,source=ext/pdi-ce-4.4.0-stable.zip,target=/tmp/ \
+  unzip -qo /tmp/pdi-ce-4.4.0-stable.zip -d ${KETTLE_HOME} \
   && mv ${KETTLE_HOME}/data-integration/* ${KETTLE_HOME} \
   && rmdir ${KETTLE_HOME}/data-integration \
-  && rm -f ${KETTLE_HOME}/pdi-ce-4.4.0-stable.zip \
   && chmod +x ${KETTLE_HOME}/*.sh \
   && sed -i "s/-cp \$CLASSPATH/-cp \$CLASSPATH -Dfile\.encoding=utf8/g" ${KETTLE_HOME}/kitchen.sh \
-  && rm -f Dockerfile # cleaning
-
-# Dépendances PDI 4.4
-COPY Dockerfile ext/pentaho-4.4-remocra-deps.zip* ${KETTLE_HOME}/
-RUN set -x \
-  && ([ -f ${KETTLE_HOME}/pentaho-4.4-remocra-deps.zip ] \
-    || wget -P ${KETTLE_HOME} -q https://github.com/atolcd/sdis-remocra/releases/download/pentaho-4.4-remocra-deps-4da0f/pentaho-4.4-remocra-deps.zip) \
-  && unzip ${KETTLE_HOME}/pentaho-4.4-remocra-deps.zip -d ${KETTLE_HOME} \
-  && rm -f ${KETTLE_HOME}/pentaho-4.4-remocra-deps.zip \
-  && rm -f Dockerfile # cleaning
-
+  # Sera mis à jour juste après
+  && rm -f ${KETTLE_HOME}/libext/JDBC/postgresql-*
 
 # Mise à jour de JDBC driver
-RUN rm -f ${KETTLE_HOME}/libext/JDBC/postgresql-*
-COPY Dockerfile ext/postgresql-42.2.10.jre7.jar* ${KETTLE_HOME}/libext/JDBC/
-RUN set -x \
-  && ([ -f ${KETTLE_HOME}/libext/JDBC/postgresql-42.2.10.jre7.jar ] \
-    || wget -P ${KETTLE_HOME}/libext/JDBC -q https://jdbc.postgresql.org/download/postgresql-42.2.10.jre7.jar) \
-  && rm -f Dockerfile # cleaning
+# https://jdbc.postgresql.org/download/postgresql-42.2.10.jre7.jar
+COPY Dockerfile ext/postgresql-42.2.10.jre7.jar ${KETTLE_HOME}/libext/JDBC/
+
+# Dépendances PDI 4.4
+# https://github.com/atolcd/sdis-remocra/releases/download/pentaho-4.4-remocra-deps-4da0f/pentaho-4.4-remocra-deps.zip
+RUN --mount=type=bind,source=ext/pentaho-4.4-remocra-deps.zip,target=/tmp/\
+  unzip /tmp/pentaho-4.4-remocra-deps.zip -d ${KETTLE_HOME}
 
 # MySql
-COPY Dockerfile ext/mysql-connector-java-5.1.49.jar* ext/mysql-connector-java-5.1.49.jar* ${KETTLE_HOME}/lib/
-RUN set -x \
-  && ([ -f ${KETTLE_HOME}/lib/mysql-connector-java-5.1.49.jar ] \
-    || wget -P ${KETTLE_HOME}/lib -q https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/home/postgres/pdi/libext/JDBC/mysql-connector-java-5.1.49.jar) \
-  && rm -f Dockerfile # cleaning
+# https://raw.githubusercontent.com/atolcd/sdis-remocra/master/server/sdis-remocra/home/postgres/pdi/libext/JDBC/mysql-connector-java-5.1.49.jar
+COPY ext/mysql-connector-java-5.1.49.jar ${KETTLE_HOME}/lib/
 
 ENV PATH ${KETTLE_HOME}/kitchen.sh:$PATH
 
@@ -99,23 +81,13 @@ RUN set -x \
   && apk add --update $buildDeps \
   && rm -rf /var/cache/apk/*
 
-COPY Dockerfile ext/dkron_${DKRON_VERSION}_linux_amd64.tar.gz* ${DKRON_HOME}/
-RUN set -x \
-  && ([ -f ${DKRON_HOME}/dkron_${DKRON_VERSION}_linux_amd64.tar.gz ] \
-    || wget -P ${DKRON_HOME} -q https://github.com/distribworks/dkron/releases/download/v${DKRON_VERSION}/dkron_${DKRON_VERSION}_linux_amd64.tar.gz) \
-  && cd ${DKRON_HOME} \
-  && tar -xzf dkron_${DKRON_VERSION}_linux_amd64.tar.gz \
-  && rm ${DKRON_HOME}/dkron_${DKRON_VERSION}_linux_amd64.tar.gz \
-  && rm -f Dockerfile # cleaning
-
+# https://github.com/distribworks/dkron/releases/download/v${DKRON_VERSION}/dkron_${DKRON_VERSION}_linux_amd64.tar.gz
+RUN --mount=type=bind,source=ext/dkron_${DKRON_VERSION}_linux_amd64.tar.gz,target=/tmp/ \
+  tar -xzf /tmp/dkron_${DKRON_VERSION}_linux_amd64.tar.gz -C ${DKRON_HOME}
 
 # Droits
-RUN mkdir -p ${KETTLE_HOME}/.kettle \
-  && mkdir -p /var/remocra/pdi/log \
-  && chown -R pdi:pdi /var/remocra \
-  && chown -R pdi:pdi /scripts \
-  && chown -R pdi:pdi ${KETTLE_HOME} \
-  && chown -R pdi:pdi ${DKRON_HOME}
+RUN mkdir -p ${KETTLE_HOME}/.kettle /var/remocra/pdi/log \
+  && chmod a+rw ${KETTLE_HOME}/.kettle /var/remocra/pdi/log
 
 USER pdi
 
