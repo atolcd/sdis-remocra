@@ -82,7 +82,7 @@ chmod u+x /livraison/*.sh
 * Adapter le script /livraison/launcher.sh afin d'indiquer des mots de passe pour les users *postgres* et *remocra* de la base de données
 [source,sh]
 ----
-export POSTGRES_DB_PASSWORD=${POSTGRES_DB_PASSWORD:-xxxxxxx}
+export USER_POSTGRES_DB_PASSWORD=${USER_POSTGRES_DB_PASSWORD:-xxxxxxx}
 export REMOCRA_DB_PASSWORD=${REMOCRA_DB_PASSWORD:-xxxxxx}
 ----
 * Lancer l'installation :
@@ -152,6 +152,11 @@ psql -d remocra_ref_pdi -U remocra -f '/livraison/remocra_pdi/000_remocra_pdi_al
 cd /etc/docker_remocra
 docker-compose up -d
 ----
+
+CAUTION: Après avoir lancé les conteneurs, il se peut que le répertoire /etc/docker_remocra/.docker ait été créé en `root`, auquel cas les conteneurs ne démarreront pas. Vérifier et exécuter un `chown remocra: /etc/docker_remocra.docker` en cas de besoin
+
+
+
 
 * Lancer le script /livraison/planification_traitements.sh (à adapter par SDIS)
 
