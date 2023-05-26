@@ -871,7 +871,8 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     deleteHydrant: function(id, typeHydrant, config) {
         var model = this.getModelFromTypeHydrantCode(typeHydrant);
         if (model != null) {
-            Ext.Msg.confirm('Suppression point d\'eau', 'Confirmez-vous la suppression du point d\'eau ?', function(buttonId) {
+            Ext.Msg.confirm('Suppression point d\'eau', '<b>Le point d\'eau sera supprimé de REMOcRA.</b>'+
+                '<br/><br/>Confirmez-vous la suppression du point d\'eau ?', function(buttonId) {
                 if (buttonId == 'yes') {
                     var hydrant = Ext.create(model, {
                         id: id
