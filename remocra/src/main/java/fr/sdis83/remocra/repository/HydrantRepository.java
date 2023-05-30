@@ -333,6 +333,7 @@ public class HydrantRepository {
             .set(HYDRANT.ORGANISME, h.getOrganisme())
             .set(HYDRANT.UTILISATEUR_MODIFICATION, h.getUtilisateurModification())
             .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, h.getAuteurModificationFlag())
+            .set(HYDRANT.ZONE_SPECIALE, h.getZoneSpeciale())
             .returning(HYDRANT.ID).fetchOne().getValue(HYDRANT.ID);
 
     return id;
@@ -377,6 +378,7 @@ public class HydrantRepository {
             .set(HYDRANT.ORGANISME, h.getOrganisme())
             .set(HYDRANT.UTILISATEUR_MODIFICATION, h.getUtilisateurModification())
             .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, h.getAuteurModificationFlag())
+            .set(HYDRANT.ZONE_SPECIALE, h.getZoneSpeciale())
             .where(HYDRANT.ID.eq(h.getId()))
             .execute();
 

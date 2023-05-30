@@ -11,6 +11,9 @@ import org.jooq.impl.SQLDataType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PIBI;
@@ -36,7 +39,7 @@ public class NumeroUtilRepository {
   }
 
     public enum MethodeNumerotation {
-        M_01, M_09, M_14, M_21, M_38, M_39, M_42, M_49, M_61, M_66, M_77, M_78, M_83, M_86, M_89, M_91, M_95
+        M_01, M_09, M_14, M_21, M_38, M_39, M_42, M_49, M_53, M_61, M_66, M_77, M_78, M_83, M_86, M_89, M_91, M_95
     }
 
     public static NumeroUtilRepository.MethodeNumerotation getHydrantNumerotationMethode() {
@@ -54,7 +57,7 @@ public class NumeroUtilRepository {
     }
 
     public enum MethodeNumerotationInterne {
-        M_01, M_39, M_42, M_49, M_61, M_77, M_78, M_83, M_86, M_91, M_95
+        M_01, M_39, M_42, M_49, M_53, M_61, M_77, M_78, M_83, M_86, M_91, M_95
     }
 
     public static NumeroUtilRepository.MethodeNumerotationInterne getHydrantNumerotationInterneMethode() {
@@ -101,6 +104,8 @@ public class NumeroUtilRepository {
                 return NumeroUtilRepository.computeNumero89(hydrant);
             case M_49:
                 return NumeroUtilRepository.computeNumero49(hydrant);
+            case M_53:
+                return NumeroUtilRepository.computeNumero53(hydrant);
             case M_66:
                 return NumeroUtilRepository.computeNumero66(hydrant);
             case M_77:
@@ -240,6 +245,117 @@ public class NumeroUtilRepository {
      */
     protected static String computeNumero49(Hydrant hydrant) {
         return hydrant.getNumeroInterne().toString();
+    }
+
+    /**
+     * <Nature PEI><code insee commune><numéro interne> sans espace
+     * <p>
+     * Exemple :
+     *
+     * @param hydrant
+     * @return
+     */
+    protected static String computeNumero53(Hydrant hydrant) {
+        /* <NATURE PEI> */
+        String codeNature = context.select(TYPE_HYDRANT_NATURE.CODE)
+                .from(TYPE_HYDRANT_NATURE)
+                .where(TYPE_HYDRANT_NATURE.ID.eq(hydrant.getNature()))
+                .fetchOneInto(String.class);
+
+        /* <CODE INSEE COMMUNE> */
+        List<String> listInseeCommunesFusionnee = Arrays.asList("53185","53137","53255","53228","53017","53161","53124","53029","53062","53097","53104","53136","53249");
+        String codeInsee = getHydrantCommune(hydrant).getInsee();
+        Integer numIntern = null;
+        String suffixe = "";
+        // Si la commune est une commune fusionnée -> utilisation Insee ancienne commune
+        if(listInseeCommunesFusionnee.contains(codeInsee)){
+            codeInsee = context.selectDistinct(COMMUNE.INSEE)
+                    .from(COMMUNE)
+                    .leftOuterJoin(HYDRANT).on(HYDRANT.COMMUNE.eq(COMMUNE.ID))
+                    .where(COMMUNE.INSEE.like("%_old"))
+                    .and("ST_Contains({0}, st_pointfromtext({1},2154))", COMMUNE.GEOMETRIE, hydrant.getGeometrie().toString())
+                    .fetchOneInto(String.class);
+            codeInsee = codeInsee.replace("_old","");
+        }
+        String natureDeci = context.select(TYPE_HYDRANT_NATURE_DECI.CODE)
+                .from(TYPE_HYDRANT_NATURE_DECI)
+                .where(TYPE_HYDRANT_NATURE_DECI.ID.eq(hydrant.getNatureDeci()))
+                .fetchOneInto(String.class);
+        numIntern = hydrant.getNumeroInterne();
+
+        /* <SUFFIXE> */
+        if("PIBI".equalsIgnoreCase(hydrant.getCode())) {
+            if ("53130".equalsIgnoreCase(codeInsee)) { // Laval
+                String codeZoneSpeciale = getHydrantZoneSpeciale(hydrant).getCode();
+                if (codeZoneSpeciale != null && "PRIVE".equalsIgnoreCase(natureDeci)) {
+                    switch (codeZoneSpeciale) {
+                        case "SECTEUR LAVAL 1": // Secteur 1
+                            suffixe = "S1";
+                            break;
+                        case "SECTEUR LAVAL 2":
+                            suffixe = "S2";
+                            break;
+                        case "SECTEUR LAVAL 3":
+                            suffixe = "S3";
+                            break;
+                        case "SECTEUR LAVAL 4":
+                            suffixe = "S4";
+                            break;
+                        case "SECTEUR LAVAL 5":
+                            suffixe = "S5";
+                            break;
+                        case "SECTEUR LAVAL 6":
+                            suffixe = "S6";
+                            break;
+                        case "SECTEUR LAVAL 7":
+                            suffixe = "S7";
+                            break;
+                        case "SECTEUR LAVAL 8":
+                            suffixe = "S8";
+                            break;
+                    }
+                }
+            } else if ("53054".equalsIgnoreCase(codeInsee)) { // Changé
+                String codeZoneSpeciale = getHydrantZoneSpeciale(hydrant).getCode();
+                if (codeZoneSpeciale != null) {
+                    switch (codeZoneSpeciale) {
+                        case "SECTEUR CHANGE RIVE DROITE": // Rive droite
+                            suffixe = "D";
+                            break;
+                        case "SECTEUR CHANGE RIVE GAUCHE": // Rive gauche
+                            suffixe = "D";
+                            break;
+                        case "SECTEUR CHANGE 1":
+                            suffixe = "S1";
+                            break;
+                        case "SECTEUR CHANGE 2":
+                            if ("PRIVE".equalsIgnoreCase(natureDeci)) {
+                                suffixe = "S2";
+                            }
+                            break;
+                        case "SECTEUR CHANGE PRIVE":
+                            if ("PRIVE".equalsIgnoreCase(natureDeci)) {
+                                suffixe = "P";
+                            }
+                            break;
+                    }
+                }
+            } else if ("PRIVE".equalsIgnoreCase(natureDeci)) {
+                suffixe = "P";
+            }
+        }
+
+        /* Construction Numéro PEI */
+        StringBuilder sb = new StringBuilder();
+        sb.append(codeNature);
+        sb.append(codeInsee);
+        if (numIntern.toString().length() == 4){
+            sb.append(String.format("%04d", numIntern).toString());
+        } else {
+            sb.append(String.format("%03d", numIntern).toString());
+        }
+        sb.append(suffixe);
+        return sb.toString();
     }
 
     /**
@@ -430,11 +546,10 @@ public class NumeroUtilRepository {
     public static ZoneSpeciale computeZoneSpeciale(Hydrant hydrant) {
         try {
             return context.select(ZONE_SPECIALE.fields())
-              .from(ZONE_SPECIALE)
-              .join(HYDRANT).on(HYDRANT.ID.eq(hydrant.getId()))
-              .where(ZONE_SPECIALE.GEOMETRIE.isNotNull().and("ST_DISTANCE({0}, {1}) <= 0", HYDRANT.GEOMETRIE, ZONE_SPECIALE.GEOMETRIE))
-              .limit(1)
-              .fetchOneInto(ZoneSpeciale.class);
+                    .from(ZONE_SPECIALE)
+                    .where("ST_Contains({0}, st_pointfromtext({1},2154))", ZONE_SPECIALE.GEOMETRIE, hydrant.getGeometrie().toString())
+                    .limit(1)
+                    .fetchOneInto(ZoneSpeciale.class);
         } catch (Exception e) {
             return null;
         }
@@ -499,6 +614,8 @@ public class NumeroUtilRepository {
                 return NumeroUtilRepository.computeNumeroInterne39(hydrant);
             case M_49:
                 return NumeroUtilRepository.computeNumeroInterne49(hydrant);
+            case M_53:
+                return NumeroUtilRepository.computeNumeroInterne53(hydrant);
             case M_77:
             case M_91:
                 return NumeroUtilRepository.computeNumeroInterne77(hydrant);
@@ -579,6 +696,129 @@ public class NumeroUtilRepository {
             numInterne++;
         } catch (Exception e) {
             numInterne = 99999;
+        }
+        return numInterne;
+    }
+
+    /**
+     * numéro interne en fonction du code, de la nature_deci, de la commune ou de la zone spéciale si renseignée
+     * complète les trous
+     * @param hydrant
+     * @return
+     */
+    public static Integer computeNumeroInterne53(Hydrant hydrant) {
+        // Retour du numéro interne s'il existe
+        if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
+            return hydrant.getNumeroInterne();
+        }
+        Integer numInterne = null;
+        String insee = getHydrantCommune(hydrant).getInsee();
+        try{
+            if ("PIBI".equalsIgnoreCase(hydrant.getCode())) {
+                if ("53130".equalsIgnoreCase(insee)) { // Laval
+                    String codeZoneSpeciale = getHydrantZoneSpeciale(hydrant).getCode();
+                    if (codeZoneSpeciale != null) {
+                        switch (codeZoneSpeciale) {
+                            case "SECTEUR LAVAL 1": // Secteur 1
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 100, 199);
+                                return numInterne;
+                            case "SECTEUR LAVAL 2":
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 200, 299);
+                                return numInterne;
+                            case "SECTEUR LAVAL 3":
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 300, 399);
+                                return numInterne;
+                            case "SECTEUR LAVAL 4":
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 400, 499);
+                                return numInterne;
+                            case "SECTEUR LAVAL 5":
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 500, 599);
+                                return numInterne;
+                            case "SECTEUR LAVAL 6":
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 600, 701);
+                                if (numInterne == 700) {
+                                    numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 6001, 6999); // reprise de la numérotation à partir de 6001 car plus de 100 PEI sur le secteur
+                                }
+                                return numInterne;
+                            case "SECTEUR LAVAL 7":
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 700, 799);
+                                return numInterne;
+                            case "SECTEUR LAVAL 8":
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 800, 899);
+                                return numInterne;
+                        }
+                    }
+                } else if ("53054".equalsIgnoreCase(insee)) { // Changé
+                    String codeZoneSpeciale = getHydrantZoneSpeciale(hydrant).getCode();
+                    if (codeZoneSpeciale != null) {
+                        switch (codeZoneSpeciale) {
+                            case "SECTEUR CHANGE 1":
+                                numInterne = computeNumeroInterne53Public(hydrant, 100, 199);
+                                return numInterne;
+                            case "SECTEUR CHANGE 2":
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 200, 299);
+                                return numInterne;
+                            case "SECTEUR CHANGE PRIVE":
+                            case "SECTEUR CHANGE RIVE DROITE":
+                            case "SECTEUR CHANGE RIVE GAUCHE":
+                                numInterne = computeNumeroInterne53Private(hydrant);
+                                return numInterne;
+                        }
+                    }
+                } else if ("53140".equalsIgnoreCase(insee)) { // Louverne
+                    String codeZoneSpeciale = getHydrantZoneSpeciale(hydrant).getCode();
+                    if (codeZoneSpeciale.equalsIgnoreCase("SECTEUR LOUVERNE 2")) {
+                        numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 200, 299);
+                        return numInterne;
+                    }
+                } else {
+                    numInterne = computeNumeroInterne53Private(hydrant);
+                }
+            } else {
+                numInterne = computeNumeroInterne53Private(hydrant);
+            }
+        } catch (Exception e) {
+            numInterne = 99999;
+        }
+        return numInterne;
+    }
+    public static Integer computeNumeroInterne53ZoneSpeciale(Hydrant hydrant, int startRange, int stopRange) {
+        String natureDeci = context.select(TYPE_HYDRANT_NATURE_DECI.CODE)
+                .from(TYPE_HYDRANT_NATURE_DECI)
+                .where(TYPE_HYDRANT_NATURE_DECI.ID.eq(hydrant.getNatureDeci()))
+                .fetchOneInto(String.class);
+        if("PRIVE".equalsIgnoreCase(natureDeci)){
+            return computeNumeroInterne53Private(hydrant);
+        }else {
+            return computeNumeroInterne53Public(hydrant, startRange, stopRange);
+        }
+    }
+    private static Integer computeNumeroInterne53Public(Hydrant hydrant, int startRange, int stopRange) {
+        Integer numInterne = null;
+        numInterne = context.resultQuery("select remocra.nextNumeroInterne(null, {0}, {1}, {2}, {3}, {4}, {5}, true)",
+                        DSL.val(hydrant.getCode(), SQLDataType.VARCHAR),
+                        DSL.val(hydrant.getNatureDeci(), SQLDataType.BIGINT),
+                        (hydrant.getZoneSpeciale() == null) ? hydrant.getCommune() : DSL.val(null, SQLDataType.BIGINT),
+                        (hydrant.getZoneSpeciale() != null) ? hydrant.getZoneSpeciale() : DSL.val(null, SQLDataType.BIGINT),
+                        startRange,
+                        stopRange)
+                .fetchOneInto(Integer.class);
+        return numInterne;
+    }
+    private static Integer computeNumeroInterne53Private(Hydrant hydrant) {
+        Integer numInterne = null;
+        if ("PIBI".equalsIgnoreCase(hydrant.getCode())){
+            numInterne = context.resultQuery("select remocra.nextNumeroInterne(null, {0}, {1}, {2}, {3}, null, null, true)",
+                            DSL.val(hydrant.getCode(), SQLDataType.VARCHAR),
+                            DSL.val(hydrant.getNatureDeci(), SQLDataType.BIGINT),
+                            (hydrant.getZoneSpeciale() == null) ? hydrant.getCommune() : DSL.val(null, SQLDataType.BIGINT),
+                            (hydrant.getZoneSpeciale() != null) ? hydrant.getZoneSpeciale() : DSL.val(null, SQLDataType.BIGINT))
+                    .fetchOneInto(Integer.class);
+        } else {
+            numInterne = context.resultQuery("select remocra.nextNumeroInterne(null, {0}, null, {1}, null, null, null, true)",
+                            DSL.val(hydrant.getCode(), SQLDataType.VARCHAR),
+                            hydrant.getCommune())
+                    .fetchOneInto(Integer.class);
         }
         return numInterne;
     }

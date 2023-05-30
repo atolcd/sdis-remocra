@@ -12,6 +12,9 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
 import flexjson.JSONSerializer;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -382,6 +385,17 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
         hydrantToCheckNumDispo.setNature(thn.getId());
         hydrantToCheckNumDispo.setCommune(c.getId());
         hydrantToCheckNumDispo.setNumeroInterne(num);
+
+        WKTReader fromText = new WKTReader();
+        Geometry convertedGeometry = null;
+        try {
+            convertedGeometry = fromText.read(geometrie);
+            convertedGeometry.setSRID(GlobalConstants.SRID_2154);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        hydrantToCheckNumDispo.setGeometrie((Geometry) convertedGeometry);
+
         String numero = NumeroUtilRepository.computeNumero(hydrantToCheckNumDispo);
         Long numeroUsageCount = countFindHydrantsByNumero(numero, id);
         return numeroUsageCount.longValue() > 0 ? "Le numéro " + numero + " est déjà attribué" : "";
