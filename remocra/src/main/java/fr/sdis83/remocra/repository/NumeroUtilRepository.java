@@ -263,20 +263,9 @@ public class NumeroUtilRepository {
                 .fetchOneInto(String.class);
 
         /* <CODE INSEE COMMUNE> */
-        List<String> listInseeCommunesFusionnee = Arrays.asList("53185","53137","53255","53228","53017","53161","53124","53029","53062","53097","53104","53136","53249");
         String codeInsee = getHydrantCommune(hydrant).getInsee();
         Integer numIntern = null;
         String suffixe = "";
-        // Si la commune est une commune fusionnée -> utilisation Insee ancienne commune
-        if(listInseeCommunesFusionnee.contains(codeInsee)){
-            codeInsee = context.selectDistinct(COMMUNE.INSEE)
-                    .from(COMMUNE)
-                    .leftOuterJoin(HYDRANT).on(HYDRANT.COMMUNE.eq(COMMUNE.ID))
-                    .where(COMMUNE.INSEE.like("%_old"))
-                    .and("ST_Contains({0}, st_pointfromtext({1},2154))", COMMUNE.GEOMETRIE, hydrant.getGeometrie().toString())
-                    .fetchOneInto(String.class);
-            codeInsee = codeInsee.replace("_old","");
-        }
         String natureDeci = context.select(TYPE_HYDRANT_NATURE_DECI.CODE)
                 .from(TYPE_HYDRANT_NATURE_DECI)
                 .where(TYPE_HYDRANT_NATURE_DECI.ID.eq(hydrant.getNatureDeci()))
@@ -709,31 +698,31 @@ public class NumeroUtilRepository {
                     if (codeZoneSpeciale != null) {
                         switch (codeZoneSpeciale) {
                             case "SECTEUR LAVAL 1": // Secteur 1
-                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 100, 199);
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 101, 199);
                                 return numInterne;
                             case "SECTEUR LAVAL 2":
-                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 200, 299);
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 201, 299);
                                 return numInterne;
                             case "SECTEUR LAVAL 3":
-                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 300, 399);
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 301, 399);
                                 return numInterne;
                             case "SECTEUR LAVAL 4":
-                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 400, 499);
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 401, 499);
                                 return numInterne;
                             case "SECTEUR LAVAL 5":
-                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 500, 599);
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 501, 599);
                                 return numInterne;
                             case "SECTEUR LAVAL 6":
-                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 600, 701);
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 601, 701);
                                 if (numInterne == 700) {
                                     numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 6001, 6999); // reprise de la numérotation à partir de 6001 car plus de 100 PEI sur le secteur
                                 }
                                 return numInterne;
                             case "SECTEUR LAVAL 7":
-                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 700, 799);
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 701, 799);
                                 return numInterne;
                             case "SECTEUR LAVAL 8":
-                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 800, 899);
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 801, 899);
                                 return numInterne;
                         }
                     }
@@ -742,10 +731,10 @@ public class NumeroUtilRepository {
                     if (codeZoneSpeciale != null) {
                         switch (codeZoneSpeciale) {
                             case "SECTEUR CHANGE 1":
-                                numInterne = computeNumeroInterne53Public(hydrant, 100, 199);
+                                numInterne = computeNumeroInterne53Public(hydrant, 101, 199);
                                 return numInterne;
                             case "SECTEUR CHANGE 2":
-                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 200, 299);
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 201, 299);
                                 return numInterne;
                             case "SECTEUR CHANGE PRIVE":
                             case "SECTEUR CHANGE RIVE DROITE":
@@ -755,15 +744,19 @@ public class NumeroUtilRepository {
                         }
                     }
                 } else if ("53140".equalsIgnoreCase(insee)) { // Louverne
-                    String codeZoneSpeciale = getHydrantZoneSpeciale(hydrant).getCode();
-                    if (codeZoneSpeciale.equalsIgnoreCase("SECTEUR LOUVERNE 2")) {
-                        numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 200, 299);
-                        return numInterne;
+                    ZoneSpeciale codeZoneSpeciale = getHydrantZoneSpeciale(hydrant);
+                    if (codeZoneSpeciale!=null) {
+                        if (codeZoneSpeciale.getCode().equalsIgnoreCase("SECTEUR LOUVERNE 2")) {
+                            numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 201, 299);
+                            return numInterne;
+                        }
+                    }else{ // PIBI à Louverne mais hors zone spéciale
+                        numInterne = computeNumeroInterne53Private(hydrant);
                     }
-                } else {
+                } else { // PIBI hors communes spéciale
                     numInterne = computeNumeroInterne53Private(hydrant);
                 }
-            } else {
+            } else { // PENA
                 numInterne = computeNumeroInterne53Private(hydrant);
             }
         } catch (Exception e) {
