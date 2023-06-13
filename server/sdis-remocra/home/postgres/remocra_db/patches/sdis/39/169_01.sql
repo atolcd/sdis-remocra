@@ -111,7 +111,8 @@ END;
 $FUNCTION$;
 
 CREATE OR REPLACE
-FUNCTION remocra.trg_calcul_debit_pression_39() RETURNS TRIGGER LANGUAGE plpgsql AS $FUNCTION$
+FUNCTION remocra.trg_calcul_debit_pression_39() RETURNS TRIGGER
+LANGUAGE plpgsql AS $FUNCTION$
 DECLARE
 p_rec RECORD;
 
@@ -140,8 +141,10 @@ UPDATE
 --------------------------
 ---------PENA-------------
 --------------------------
-CREATE OR REPLACE
-FUNCTION remocra.calcul_volume_39(id_hydrant bigint) RETURNS VOID LANGUAGE plpgsql AS $FUNCTION$
+CREATE OR REPLACE FUNCTION remocra.calcul_volume_39(id_hydrant bigint)
+ RETURNS void
+ LANGUAGE plpgsql
+AS $function$
 DECLARE
 p_anomalie_id INTEGER;
 
@@ -153,7 +156,7 @@ DELETE
 FROM
     remocra.hydrant_anomalies
 WHERE
-        hydrant = p_rec.id
+        hydrant = id_hydrant
   AND anomalies IN (
     SELECT
         id
@@ -176,52 +179,53 @@ WHERE
         id = id_hydrant;
 -- Q ≥ 120 m3 ===> pas d'anomalie
 -- 119 m3 ≥ Q ≥ 60 m3 ===> non conforme
-IF
-(
-    p_rec.capacite IS NOT NULL AND p_rec.capacite <> '' AND
-    p_rec.capacite::int >= 60
-    AND p_rec.capacite::int < 120
-) THEN
-SELECT
-    id
-INTO
-    p_anomalie_id
-FROM
-    remocra.type_hydrant_anomalie
-WHERE
-        code = 'VOLUME_INSUFF_NC';
+    IF
+    (
+        p_rec.capacite IS NOT NULL AND p_rec.capacite <> ''  and
+        p_rec.capacite::int >= 60
+        AND p_rec.capacite::int < 120
+    ) THEN
+        SELECT
+            id
+        INTO
+            p_anomalie_id
+        FROM
+            remocra.type_hydrant_anomalie
+        WHERE
+                code = 'VOLUME_INSUFF_NC';
 
-INSERT
-INTO
-    remocra.hydrant_anomalies (hydrant,
-                               anomalies)
-VALUES (p_rec.id,
-        p_anomalie_id);
--- Q < 60 ===> INDISPO
-ELSEIF
-(p_rec.capacite IS NOT NULL AND p_rec.capacite <> '' AND p_rec.capacite::int < 60) THEN
-SELECT
-    id
-INTO
-    p_anomalie_id
-FROM
-    remocra.type_hydrant_anomalie
-WHERE
-        code = 'VOLUME_INSUFF';
+        INSERT
+        INTO
+            remocra.hydrant_anomalies (hydrant,
+                                       anomalies)
+        VALUES (id_hydrant,
+                p_anomalie_id);
+    -- Q < 60 ===> INDISPO
+    ELSEIF
+    (p_rec.capacite IS NOT NULL AND p_rec.capacite <> '' and p_rec.capacite::int < 60) THEN
+        SELECT
+            id
+        INTO
+            p_anomalie_id
+        FROM
+            remocra.type_hydrant_anomalie
+        WHERE
+                code = 'VOLUME_INSUFF';
 
-INSERT
-INTO
-    remocra.hydrant_anomalies (hydrant,
-                               anomalies)
-VALUES (p_rec.id,
-        p_anomalie_id);
-END IF;
+        INSERT
+        INTO
+            remocra.hydrant_anomalies (hydrant,
+                                       anomalies)
+        VALUES (id_hydrant,
+                p_anomalie_id);
+    END IF;
 
-PERFORM
-remocra.calcul_indispo(p_rec.id);
+    PERFORM
+    remocra.calcul_indispo(p_rec.id);
 END;
 
-$FUNCTION$;
+$function$
+;
 
 CREATE OR REPLACE
 FUNCTION remocra.trg_calcul_volume_39() RETURNS TRIGGER LANGUAGE plpgsql AS $FUNCTION$
