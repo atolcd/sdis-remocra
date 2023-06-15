@@ -444,21 +444,10 @@ public class NumeroUtilRepository {
         if ("PIBI".equals(hydrant.getCode())) {
             sb.append(codeNature).append(" ");
 
-            /**
-             * Non pris en compte lors de la création du PEI
-             * (numérotation intervenant avant ajout en base dans hydrant_pibi
+            /*
+              TODO prendre en compte les PI liés à une citerne :
+               doubler le code de la ZS ou de la commune (ticket #177596)
              */
-
-            Long idReservoir = context.select(HYDRANT_PIBI.RESERVOIR)
-                    .from(HYDRANT_PIBI)
-                    .where(HYDRANT_PIBI.ID.eq(hydrant.getId()))
-                    .fetchOneInto(Long.class);
-
-            // Si le PIBI est lié à un réservoir, on double le code commune
-            if(idReservoir != null) {
-                sb.append(codeZS != null ? codeZS : getHydrantCommune(hydrant).getCode()).append(" ");
-            } else {
-            }
 
         } else if ("RI".equals(codeNature)) {
             sb.append("RI ");
