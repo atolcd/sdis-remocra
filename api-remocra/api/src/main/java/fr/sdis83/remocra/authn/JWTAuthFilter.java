@@ -2,7 +2,7 @@ package fr.sdis83.remocra.authn;
 
 import com.google.inject.Inject;
 import fr.sdis83.remocra.repository.OrganismesRepository;
-import fr.sdis83.remocra.usecase.authn.JWTAuthUser;
+import fr.sdis83.remocra.usecase.authn.AuthCommun;
 import fr.sdis83.remocra.web.model.ImmutableExceptionResponse;
 import fr.sdis83.remocra.web.model.authn.OrganismeModel;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -11,7 +11,6 @@ import java.lang.reflect.Method;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import javax.annotation.Priority;
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
@@ -37,7 +36,7 @@ public class JWTAuthFilter implements ContainerRequestFilter {
 
   @Inject javax.inject.Provider<OrganismesRepository> organismeRepository;
 
-  @Inject javax.inject.Provider<JWTAuthUser> authUser;
+  @Inject javax.inject.Provider<AuthCommun> authCommunProvider;
 
   @Override
   public void filter(ContainerRequestContext requestContext) {
@@ -46,7 +45,7 @@ public class JWTAuthFilter implements ContainerRequestFilter {
             requestContext.getProperty("org.jboss.resteasy.core.ResourceMethodInvoker");
     Method method = methodInvoker.getMethod();
 
-    if (method.isAnnotationPresent(PermitAll.class)) {
+    if (method.isAnnotationPresent(PermitAll.class) || method.isAnnotationPresent(AuthDevice.class)) {
       return;
     }
     if (method.isAnnotationPresent(DenyAll.class)) {
@@ -74,7 +73,7 @@ public class JWTAuthFilter implements ContainerRequestFilter {
     String username = null;
     String errorMsg = null;
     try {
-      username = authUser.get().readToken(jws);
+      username = authCommunProvider.get().readToken(jws);
     } catch (ExpiredJwtException e) {
       errorMsg = "Token has expired";
     } catch (JwtException e) {

@@ -2,6 +2,7 @@ package fr.sdis83.remocra.web;
 
 import com.google.common.collect.ImmutableSet;
 import fr.sdis83.remocra.authn.JWTAuthFilter;
+import fr.sdis83.remocra.authn.MobileAuthFilter;
 import fr.sdis83.remocra.resteasy.providers.JacksonJsonProvider;
 import fr.sdis83.remocra.web.exceptions.ApplicationSecurityExceptionMapper;
 import fr.sdis83.remocra.web.exceptions.ClientErrorExceptionMapper;
@@ -9,6 +10,8 @@ import fr.sdis83.remocra.web.exceptions.JsonMappingExceptionMapper;
 import fr.sdis83.remocra.web.exceptions.UnhandledExceptionMapper;
 import fr.sdis83.remocra.web.exceptions.ValidationExceptionMapper;
 import fr.sdis83.remocra.web.exceptions.WebApplicationExceptionMapper;
+import fr.sdis83.remocra.web.mobile.MobileAuthEndpoint;
+import fr.sdis83.remocra.web.mobile.MobileReferentielEndpoint;
 import fr.sdis83.remocra.web.s.DeciHydrantIndispoTemporaireEndpoint;
 import fr.sdis83.remocra.web.s.DeciHydrantVisitesEndpoint;
 import fr.sdis83.remocra.web.s.JWTAuthEndpoint;
@@ -48,7 +51,12 @@ public Set<Class<?> > getClasses() {
     ReferentielsDeciPenaEndpoint.class,
     ReferentielsDeciPibiEndpoint.class,
     DeciHydrantVisitesEndpoint.class,
-    DeciHydrantIndispoTemporaireEndpoint.class
+    DeciHydrantIndispoTemporaireEndpoint.class,
+
+    // Mobile
+    MobileAuthFilter.class,
+    MobileAuthEndpoint.class,
+    MobileReferentielEndpoint.class
   );
 }
 }

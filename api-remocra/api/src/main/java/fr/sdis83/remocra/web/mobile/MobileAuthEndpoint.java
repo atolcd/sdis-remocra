@@ -1,0 +1,51 @@
+package fr.sdis83.remocra.web.mobile;
+
+import com.google.inject.Inject;
+import fr.sdis83.remocra.usecase.authn.JWTAuthUser;
+import fr.sdis83.remocra.usecase.authn.MobileAuthUser;
+import io.swagger.v3.oas.annotations.Parameter;
+import javax.annotation.security.PermitAll;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+@Path("/mobile/authentication")
+@Produces("application/json; charset=UTF-8")
+public class MobileAuthEndpoint {
+
+  @Inject
+  MobileAuthUser mobileAuthUser;
+
+  @Path("/login")
+  @POST
+  @PermitAll
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  public Response authenticateMobile(
+      @Parameter(description = "username", required = true) @FormParam("username") @NotNull String username,
+      @Parameter(description = "password", required = true) @FormParam("password") @NotNull String password
+  ) throws Exception {
+    JWTAuthUser.Response res = mobileAuthUser.authenticateMobile(username, password);
+    if (res.status() == JWTAuthUser.Status.OK) {
+      return Response.ok(
+          new LoginResponse(username, res.token().get())
+      ).build();
+    }
+    throw new NotAuthorizedException("Unauthorized");
+  }
+
+  static class LoginResponse {
+    public final String username;
+    public final String token;
+
+    public LoginResponse(String username, String token) {
+      this.username = username;
+      this.token = token;
+    }
+  }
+}
