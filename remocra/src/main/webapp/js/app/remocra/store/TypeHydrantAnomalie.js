@@ -6,9 +6,9 @@ Ext.define('Sdis.Remocra.store.TypeHydrantAnomalie', {
 
     model: 'Sdis.Remocra.model.TypeHydrantAnomalie',
     autoLoad: true,
-    groupField: 'critere_nom',
+    groupField: 'critere_code',
     sorters: [{
-        property: 'nom',
+        property: 'code',
         direction: 'ASC'
     }]
 });

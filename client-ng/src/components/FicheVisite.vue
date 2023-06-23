@@ -455,9 +455,8 @@ export default {
         }
       });
 
-      self.anomaliesCriteres.sort(function(a, b) {
-        return a.id - b.id;
-      });
+      this.anomaliesCriteres.sort((a, b) => (a.code > b.code) ? 1 : -1)
+
       if (this.selectedRow >= 0) {
         this.critereSuivant();
       }

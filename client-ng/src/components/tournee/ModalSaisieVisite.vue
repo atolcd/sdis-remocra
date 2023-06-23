@@ -363,9 +363,7 @@ export default {
         });
         this.anomalies = _.sortBy(listAnomalies, ['nom']);
 
-        this.anomaliesCriteres.sort(function(a, b) {
-          return a.id - b.id;
-        });
+        this.anomaliesCriteres.sort((a, b) => (a.code > b.code) ? 1 : -1)
 
         this.anomaliesLoaded = true;
       })

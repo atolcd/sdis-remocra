@@ -205,7 +205,7 @@ Ext.define('Sdis.Remocra.widget.Anomalie', {
         var me = this;
         if (!store.isGrouped()) {
 
-            store.group('critere_nom');
+            store.group('critere_code');
 
         }
         me.mixins.bindable.bindStore.apply(me, arguments);

@@ -33,8 +33,8 @@ public class TypeHydrantAnomalieService extends AbstractService<TypeHydrantAnoma
 
     @Override
     protected boolean processItemSortings(ArrayList<Order> orders, ItemSorting itemSorting, CriteriaBuilder cBuilder, Root<TypeHydrantAnomalie> from) {
-        if ("critere_nom".equals(itemSorting.getFieldName())) {
-            Expression<String> cpPath = from.join("critere", JoinType.LEFT).get("nom");
+        if ("critere_code".equals(itemSorting.getFieldName())) {
+            Expression<String> cpPath = from.join("critere", JoinType.LEFT).get("code");
             orders.add(itemSorting.isDesc() ? cBuilder.desc(cpPath) : cBuilder.asc(cpPath));
             return true;
         }

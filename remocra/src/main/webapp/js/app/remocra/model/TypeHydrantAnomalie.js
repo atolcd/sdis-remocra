@@ -16,11 +16,11 @@ Ext.define('Sdis.Remocra.model.TypeHydrantAnomalie', {
         name: 'critere',
         type: 'fk'
     },{
-        name: 'critere_nom',
+        name: 'critere_code',
         type: 'string',
         mapping:function(data, reader) {
-            if (data['critere'] ) {
-                return data['critere']['nom'];
+            if (data['critere']) {
+                return data['critere']['code'] + " - " +  data['critere']['nom'] ;
             }
             return '-';
         },
