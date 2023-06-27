@@ -10,6 +10,29 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
+== v2.2.5.3
+
+=== Evolution
+* Change le message de suppression d'un hydrant (#169927)
+* Trie les anomalies en fonction du code sur tous les écran où elles apparaissent (#177434)
+
+=== Fix
+* Corrige l'affichage des listes déroulantes coupées notamment dans les courriers (#173098)
+* Corrige la mise à jour d'une liste déroulante après vidage (#173099)
+* Corrige la recherche de communes en prenant en compte la longueur (#177595)
+* Affiche un message d'erreur si l'identifiant est incorrect (#173407)
+
+=== Modifications spécifiques
+* SDIS 61
+** Met en place une méthode de numérotation
+
+* SDIS 14
+** Mise en place d'une table spécifique pour les courriers (outil de mesure)
+
+* SDIS 83
+** Numérotation : ne double plus le code de la commune ou de la zone spéciale si le PEI a un réservoir (#177596)
+
+
 == v2.2.5.2
 
 === Fix
