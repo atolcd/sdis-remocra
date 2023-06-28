@@ -61,6 +61,7 @@ public class CommuneRepository {
             order.add(COMMUNE.NOM.desc());
         }
         return context.selectDistinct(
+                    COMMUNE.ID,
                     COMMUNE.NOM,
                     COMMUNE.CODE,
                     COMMUNE.INSEE,
