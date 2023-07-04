@@ -39,4 +39,17 @@ public class UtilisateursRepository {
                                 .build()
                 );
     }
+
+  /**
+   * Retourne l'id de l'organisme de l'utilisateur
+   * @param idUtilisateur
+   * @return idOrganisme
+   */
+  public Long getOrganisme(Long idUtilisateur) {
+    return context
+            .select(UTILISATEUR.ORGANISME)
+            .from(UTILISATEUR)
+            .where(UTILISATEUR.ID.eq(idUtilisateur))
+            .fetchOneInto(Long.class);
+  }
 }

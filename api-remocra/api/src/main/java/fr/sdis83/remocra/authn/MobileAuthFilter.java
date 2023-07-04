@@ -1,6 +1,7 @@
 package fr.sdis83.remocra.authn;
 
 import com.google.inject.Inject;
+import fr.sdis83.remocra.repository.UtilisateursRepository;
 import fr.sdis83.remocra.usecase.authn.AuthCommun;
 import fr.sdis83.remocra.web.model.ImmutableExceptionResponse;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -36,6 +37,10 @@ public class MobileAuthFilter implements ContainerRequestFilter {
 
     @Inject
     javax.inject.Provider<AuthCommun> authCommunProvider;
+
+
+    @Inject
+    javax.inject.Provider<UtilisateursRepository> utilisateursRepositoryProvider;
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
@@ -92,7 +97,7 @@ public class MobileAuthFilter implements ContainerRequestFilter {
             return;
         }
 
-        final UserInfo userInfo = ImmutableUserInfo.of(0L, username, Collections.emptyList(), username, 0L);
+        final UserInfo userInfo = ImmutableUserInfo.of(utilisateursRepositoryProvider.get().getByUsername(username).id(), username, Collections.emptyList(), username, 0L);
         final UserPrincipal principal =
                 new UserPrincipal() {
                     @Override

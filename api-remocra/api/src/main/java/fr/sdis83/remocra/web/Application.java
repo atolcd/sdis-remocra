@@ -12,6 +12,7 @@ import fr.sdis83.remocra.web.exceptions.ValidationExceptionMapper;
 import fr.sdis83.remocra.web.exceptions.WebApplicationExceptionMapper;
 import fr.sdis83.remocra.web.mobile.MobileAuthEndpoint;
 import fr.sdis83.remocra.web.mobile.MobileReferentielEndpoint;
+import fr.sdis83.remocra.web.mobile.syncho.SynchroEndpoint;
 import fr.sdis83.remocra.web.s.DeciHydrantIndispoTemporaireEndpoint;
 import fr.sdis83.remocra.web.s.DeciHydrantVisitesEndpoint;
 import fr.sdis83.remocra.web.s.JWTAuthEndpoint;
@@ -56,7 +57,9 @@ public Set<Class<?> > getClasses() {
     // Mobile
     MobileAuthFilter.class,
     MobileAuthEndpoint.class,
-    MobileReferentielEndpoint.class
+    MobileReferentielEndpoint.class,
+    SynchroEndpoint.class
+
   );
 }
 }
