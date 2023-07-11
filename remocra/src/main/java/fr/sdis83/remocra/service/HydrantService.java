@@ -20,6 +20,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import fr.sdis83.remocra.GlobalConstants;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantNatureDeci;
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.repository.NumeroUtilRepository;
 import fr.sdis83.remocra.web.message.ItemFilter;
@@ -345,7 +346,7 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
         return result;
     }
 
-    public String checkDispo(Long id, Long nature, Long commune, Integer num, String geometrie) {
+    public String checkDispo(Long id, Long nature, Long commune, Integer num, String geometrie, Long nature_deci) {
         if (num == null) {
             return null;
         }
@@ -378,6 +379,7 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
         TypeHydrantNature thn = entityManager.getReference(TypeHydrantNature.class, nature);
         String code = thn.getTypeHydrant().getCode();
         Commune c = entityManager.getReference(Commune.class, commune);
+        TypeHydrantNatureDeci thnd = entityManager.getReference(TypeHydrantNatureDeci.class, nature_deci);
 
         fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant hydrantToCheckNumDispo = new fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant();
         hydrantToCheckNumDispo.setZoneSpeciale((zs != null) ? zs.getId() : null);
@@ -385,6 +387,7 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
         hydrantToCheckNumDispo.setNature(thn.getId());
         hydrantToCheckNumDispo.setCommune(c.getId());
         hydrantToCheckNumDispo.setNumeroInterne(num);
+        hydrantToCheckNumDispo.setNatureDeci(thnd.getId());
 
         WKTReader fromText = new WKTReader();
         Geometry convertedGeometry = null;
