@@ -7,6 +7,7 @@ import fr.sdis83.remocra.web.model.ImmutableExceptionResponse;
 import fr.sdis83.remocra.web.model.authn.OrganismeModel;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
+
 import java.lang.reflect.Method;
 import java.security.Principal;
 import java.util.List;
@@ -24,6 +25,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.jboss.resteasy.core.ResourceMethodInvoker;
 import org.slf4j.Logger;
@@ -35,15 +37,17 @@ public class JWTAuthFilter implements ContainerRequestFilter {
 
   private static final Logger logger = LoggerFactory.getLogger(JWTAuthFilter.class);
 
-  @Inject javax.inject.Provider<OrganismesRepository> organismeRepository;
+  @Inject
+  javax.inject.Provider<OrganismesRepository> organismeRepository;
 
-  @Inject javax.inject.Provider<JWTAuthUser> authUser;
+  @Inject
+  javax.inject.Provider<JWTAuthUser> authUser;
 
   @Override
   public void filter(ContainerRequestContext requestContext) {
     ResourceMethodInvoker methodInvoker =
-        (ResourceMethodInvoker)
-            requestContext.getProperty("org.jboss.resteasy.core.ResourceMethodInvoker");
+            (ResourceMethodInvoker)
+                    requestContext.getProperty("org.jboss.resteasy.core.ResourceMethodInvoker");
     Method method = methodInvoker.getMethod();
 
     if (method.isAnnotationPresent(PermitAll.class)) {
@@ -64,9 +68,9 @@ public class JWTAuthFilter implements ContainerRequestFilter {
     String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
     if (authorizationHeader == null || authorizationHeader.length() < 8) {
       requestContext.abortWith(
-          Response.status(401)
-              .entity("Authorization header is missing")
-              .build());
+              Response.status(401)
+                      .entity("Authorization header is missing")
+                      .build());
       return;
     }
     String jws = authorizationHeader.substring("Bearer".length()).trim();
@@ -83,20 +87,20 @@ public class JWTAuthFilter implements ContainerRequestFilter {
     }
     if (errorMsg != null) {
       requestContext.abortWith(
-          Response.status(401)
-              .entity(ImmutableExceptionResponse.of(Optional.ofNullable(errorMsg)))
-              .build());
+              Response.status(401)
+                      .entity(ImmutableExceptionResponse.of(Optional.ofNullable(errorMsg)))
+                      .build());
       return;
     }
 
     if (username == null || username.isEmpty()) {
       logger.info("Authentication subject is missing.");
       requestContext.abortWith(
-          Response.status(401)
-              .entity(
-                  ImmutableExceptionResponse.of(
-                      Optional.ofNullable("Authentication subject is missing.")))
-              .build());
+              Response.status(401)
+                      .entity(
+                              ImmutableExceptionResponse.of(
+                                      Optional.ofNullable("Authentication subject is missing.")))
+                      .build());
       return;
     }
 
@@ -104,79 +108,86 @@ public class JWTAuthFilter implements ContainerRequestFilter {
     if (o == null) {
       logger.info("Authentication failed for " + username + ".");
       requestContext.abortWith(
-          Response.status(401)
-              .type(MediaType.APPLICATION_JSON)
-              .entity(
-                  ImmutableExceptionResponse.of(
-                      Optional.ofNullable(username + " account not found.")))
-              .build());
+              Response.status(401)
+                      .type(MediaType.APPLICATION_JSON)
+                      .entity(
+                              ImmutableExceptionResponse.of(
+                                      Optional.ofNullable(username + " account not found.")))
+                      .build());
       return;
     }
 
     final UserInfo userInfo = ImmutableUserInfo.of(o.getId(), o.getEmail(), o.getRoles(), o.getType(), o.getTypeId());
     final UserPrincipal principal =
-        new UserPrincipal() {
-          @Override
-          public String getName() {
-            return userInfo.username();
-          }
+            new UserPrincipal() {
+              @Override
+              public String getName() {
+                return userInfo.username();
+              }
 
-          @Override
-          public Long getUserId() {
-            return userInfo.userId();
-          }
+              @Override
+              public Long getUserId() {
+                return userInfo.userId();
+              }
 
-          @Override
-          public UserInfo getUserInfo() {
-            return userInfo;
-          }
+              @Override
+              public UserInfo getUserInfo() {
+                return userInfo;
+              }
 
-          @Override
-          public List<UserRoles> roles() {
-            return userInfo.roles();
-          }
+              @Override
+              public List<UserRoles> roles() {
+                return userInfo.roles();
+              }
 
-          @Override
-          public String type() { return userInfo.type();}
+              @Override
+              public String type() {
+                return userInfo.type();
+              }
 
-          @Override
-          public Long typeId() {
-            return userInfo.typeId();
-          }
-        };
+              @Override
+              public Long typeId() {
+                return userInfo.typeId();
+              }
+            };
 
     final SecurityContext oldSC = requestContext.getSecurityContext();
     requestContext.setSecurityContext(
-        new SecurityContext() {
-          @Override
-          public Principal getUserPrincipal() {
-            return principal;
-          }
+            new SecurityContext() {
+              @Override
+              public Principal getUserPrincipal() {
+                return principal;
+              }
 
-          @Override
-          public boolean isUserInRole(String role) {
-            return userInfo.roles().toString().equals(role) || oldSC.isUserInRole(role);
-          }
+              @Override
+              public boolean isUserInRole(String role) {
+                return userInfo.roles().toString().equals(role) || oldSC.isUserInRole(role);
+              }
 
-          @Override
-          public boolean isSecure() {
-            return oldSC.isSecure();
-          }
+              @Override
+              public boolean isSecure() {
+                return oldSC.isSecure();
+              }
 
-          @Override
-          public String getAuthenticationScheme() {
-            return null;
-          }
-        });
+              @Override
+              public String getAuthenticationScheme() {
+                return null;
+              }
+            });
+
+    // Si l'organisme utilisateur est administrateur, on bypass tout le reste
+    if (userInfo.roles().contains(UserRoles.ADMINISTRER)) {
+      return;
+    }
 
     RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
     boolean hasRight = false;
-    for(UserRoles r : userInfo.roles()) {
-      if(ArrayUtils.contains(rolesAnnotation.value(), r.toString())) {
+    for (UserRoles r : userInfo.roles()) {
+      if (ArrayUtils.contains(rolesAnnotation.value(), r.toString())) {
         hasRight = true;
       }
     }
-    if(!hasRight) {
+    if (!hasRight) {
       logger.info("Authorizations failed for {}.", username);
       requestContext.abortWith(Response.status(403).type(MediaType.APPLICATION_JSON).build());
     }
