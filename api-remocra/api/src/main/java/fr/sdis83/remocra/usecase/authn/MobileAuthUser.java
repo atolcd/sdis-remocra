@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import fr.sdis83.remocra.repository.UtilisateursRepository;
 import fr.sdis83.remocra.repository.UtilisateurModel;
 import org.immutables.value.Value;
+import fr.sdis83.remocra.authn.CompatibleVersions;
 
 @Value.Enclosing
 public class MobileAuthUser {
@@ -12,14 +13,21 @@ public class MobileAuthUser {
     private final UtilisateursRepository utilisateursRepository;
     private final AuthCommun authCommun;
 
+    private final CompatibleVersions compatibleVersions;
+
     @Inject
-    public MobileAuthUser(LdapUsecase ldapUsecase, UtilisateursRepository utilisateursRepository, AuthCommun authCommun) {
+    public MobileAuthUser(LdapUsecase ldapUsecase, UtilisateursRepository utilisateursRepository, AuthCommun authCommun, CompatibleVersions compatibleVersions) {
+
         this.ldapUsecase = ldapUsecase;
         this.utilisateursRepository = utilisateursRepository;
         this.authCommun = authCommun;
+        this.compatibleVersions = compatibleVersions;
     }
 
-    public ImmutableJWTAuthUser.Response authenticateMobile(String username, String password) throws Exception {
+    public ImmutableJWTAuthUser.Response authenticateMobile(String username, String password, String versionName) throws Exception {
+
+        // Avant tout, on check si la version correspond, sinon on empêche la connexion
+        compatibleVersions.checkCompat(versionName);
 
         // On cherche l'utilisateur en base
         UtilisateurModel user = utilisateursRepository.getByUsername(username);

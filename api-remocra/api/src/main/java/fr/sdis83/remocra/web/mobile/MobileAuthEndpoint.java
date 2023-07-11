@@ -27,10 +27,11 @@ public class MobileAuthEndpoint {
   @PermitAll
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   public Response authenticateMobile(
-      @Parameter(description = "username", required = true) @FormParam("username") @NotNull String username,
-      @Parameter(description = "password", required = true) @FormParam("password") @NotNull String password
+      @FormParam("username") @NotNull String username,
+      @FormParam("password") @NotNull String password,
+      @FormParam("versionName") @NotNull String versionName
   ) throws Exception {
-    JWTAuthUser.Response res = mobileAuthUser.authenticateMobile(username, password);
+    JWTAuthUser.Response res = mobileAuthUser.authenticateMobile(username, password, versionName);
     if (res.status() == JWTAuthUser.Status.OK) {
       return Response.ok(
           new LoginResponse(username, res.token().get())
