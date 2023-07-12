@@ -553,7 +553,7 @@ public class PeiUseCase {
             .collect(Collectors.toMap(HydrantAccessibilite::getNumero, Function.identity()));
     List<String> listeDiff = new ArrayList<>();
     for (PeiDiffModel p : diffs) {
-      if (mapAccessibilite.get(p.getNumero()).isAccessible()
+      if (mapAccessibilite.get(p.getNumero()) != null && mapAccessibilite.get(p.getNumero()).isAccessible()
               || ("CARACTERISTIQUES".equals(p.getType()) && "DELETE".equals(p.getOperation()))) {
 
         try {
