@@ -32,11 +32,12 @@ import org.jooq.tools.StringUtils;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.ws.rs.core.Response;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -488,15 +489,13 @@ public class PeiUseCase {
    * @return String les PEI en question au format JSON
    */
   public String diff(String dateString) throws ResponseException {
-
-    Date date = null;
+    ZonedDateTime moment;
     if (dateString != null) {
       String pattern = "yyyy-MM-dd HH:mm:ss";
-      SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-      simpleDateFormat.setLenient(false);
       try {
-        date = simpleDateFormat.parse(dateString);
-      } catch (ParseException e) {
+        // on passe par un ZoneDateTime pour gérer la différence de fuseau, en BDD on est sur de l'UTC
+        moment = ZonedDateTime.parse(dateString, DateTimeFormatter.ofPattern(pattern).withZone(ZoneId.systemDefault()));
+      } catch (DateTimeParseException dtpe) {
         throw new ResponseException(Response.Status.BAD_REQUEST, "1010 : La date spécifiée n'existe pas ou ne respecte pas le format YYYY-MM-DD hh:mm:ss");
       }
     } else {
@@ -518,7 +517,7 @@ public class PeiUseCase {
             .leftJoin(UTILISATEUR).on(UTILISATEUR.ID.eq(tracabiliteHydrant.UTILISATEUR_MODIFICATION))
             .leftJoin(organismeUtilisateur).on(organismeUtilisateur.ID.eq(UTILISATEUR.ORGANISME))
             .leftJoin(organisme).on(organisme.ID.eq(tracabiliteHydrant.ORGANISME))
-            .where(tracabiliteHydrant.DATE_OPERATION.greaterOrEqual(date.toInstant()).and(tracabiliteHydrant.NUMERO.isNotNull()))
+            .where(tracabiliteHydrant.DATE_OPERATION.greaterOrEqual(moment.toInstant()).and(tracabiliteHydrant.NUMERO.isNotNull()))
             .fetchInto(PeiDiffModel.class);
 
     // Données de tracabilité.hydrant_visite
@@ -531,7 +530,7 @@ public class PeiUseCase {
             .leftJoin(UTILISATEUR).on(UTILISATEUR.ID.eq(tracabiliteHydrantVisite.UTILISATEUR_MODIFICATION))
             .leftJoin(organismeUtilisateur).on(organismeUtilisateur.ID.eq(UTILISATEUR.ORGANISME))
             .leftJoin(organisme).on(organisme.ID.eq(tracabiliteHydrantVisite.ORGANISME))
-            .where(tracabiliteHydrantVisite.DATE_OPERATION.greaterOrEqual(date.toInstant()).and(HYDRANT.NUMERO.isNotNull()))
+            .where(tracabiliteHydrantVisite.DATE_OPERATION.greaterOrEqual(moment.toInstant()).and(HYDRANT.NUMERO.isNotNull()))
             .fetchInto(PeiDiffModel.class);
 
     ObjectMapper mapper = new ObjectMapper();
