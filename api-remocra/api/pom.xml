@@ -233,6 +233,12 @@
       <artifactId>swagger-annotations</artifactId>
       <version>1.5.20</version>
     </dependency>
+      <dependency>
+          <groupId>com.vividsolutions</groupId>
+          <artifactId>jts</artifactId>
+          <version>1.12</version>
+          <scope>compile</scope>
+      </dependency>
 
   </dependencies>
 

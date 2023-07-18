@@ -9,7 +9,6 @@ import fr.sdis83.remocra.db.model.remocra.tables.Organisme;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantPena;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantPibi;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
-import fr.sdis83.remocra.web.model.pei.PeiForm;
 import fr.sdis83.remocra.web.model.pei.PeiModel;
 import fr.sdis83.remocra.web.model.pei.PeiSpecifiqueModel;
 import fr.sdis83.remocra.web.model.pei.PenaModel;
@@ -21,7 +20,6 @@ import org.jooq.impl.DSL;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
-import javax.ws.rs.core.Response;
 
 import java.util.List;
 
@@ -30,7 +28,6 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_ANOMALIES;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PENA;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PIBI;
-import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_VISITE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ORGANISME;
 import static fr.sdis83.remocra.db.model.remocra.Tables.SITE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE;

@@ -15,29 +15,36 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT;
 
 public class TypeHydrantNatureRepository {
 
-  private final DSLContext context;
+    private final DSLContext context;
 
-  @Inject
-  public TypeHydrantNatureRepository(DSLContext context) {
-    this.context = context;
-  }
-
-  public String getAll(String codeTypeHydrant, Integer start, Integer limit) throws JsonProcessingException {
-
-      List<ReferentielModel> list = context
-        .select(TYPE_HYDRANT_NATURE.CODE, TYPE_HYDRANT_NATURE.NOM)
-        .from(TYPE_HYDRANT_NATURE)
-        .join(TYPE_HYDRANT).on(TYPE_HYDRANT.ID.eq(TYPE_HYDRANT_NATURE.TYPE_HYDRANT))
-        .where(TYPE_HYDRANT.CODE.eq(codeTypeHydrant.toUpperCase()))
-        .limit((limit == null || limit < 0) ? this.count() : limit)
-        .offset((start == null || start < 0) ? 0 : start)
-        .fetchInto(ReferentielModel.class);
-
-      return new ObjectMapper().writeValueAsString(list);
+    @Inject
+    public TypeHydrantNatureRepository(DSLContext context) {
+        this.context = context;
     }
 
-  private Integer count() {
-    return context.fetchCount(TYPE_HYDRANT_NATURE);
-  }
+    public String getAll(String codeTypeHydrant, Integer start, Integer limit) throws JsonProcessingException {
+
+        List<ReferentielModel> list = context
+                .select(TYPE_HYDRANT_NATURE.CODE, TYPE_HYDRANT_NATURE.NOM)
+                .from(TYPE_HYDRANT_NATURE)
+                .join(TYPE_HYDRANT).on(TYPE_HYDRANT.ID.eq(TYPE_HYDRANT_NATURE.TYPE_HYDRANT))
+                .where(TYPE_HYDRANT.CODE.eq(codeTypeHydrant.toUpperCase()))
+                .limit((limit == null || limit < 0) ? this.count() : limit)
+                .offset((start == null || start < 0) ? 0 : start)
+                .fetchInto(ReferentielModel.class);
+
+        return new ObjectMapper().writeValueAsString(list);
+    }
+
+    private Integer count() {
+        return context.fetchCount(TYPE_HYDRANT_NATURE);
+    }
+
+    public Long getCodeNature(String code) {
+        return context.select(TYPE_HYDRANT_NATURE.ID)
+                .from(TYPE_HYDRANT_NATURE)
+                .where(TYPE_HYDRANT_NATURE.CODE.eq(code))
+                .fetchOneInto(Long.class);
+    }
 
 }
