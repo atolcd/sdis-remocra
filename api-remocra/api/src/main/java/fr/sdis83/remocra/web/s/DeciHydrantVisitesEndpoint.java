@@ -119,7 +119,7 @@ public class DeciHydrantVisitesEndpoint {
   public Response deleteVisite(
     final @Parameter(description = "Numéro du PEI") @PathParam("numero") String numero,
     final @Parameter(description = "Identifiant de la visite") @PathParam("idVisite") String idVisite
-  ) throws ResponseException {
+  ) {
     try {
       this.hydrantVisitesUseCase.deleteVisite(numero, idVisite);
       return Response.ok().build();

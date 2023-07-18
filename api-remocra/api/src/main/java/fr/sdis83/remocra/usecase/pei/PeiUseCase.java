@@ -15,6 +15,8 @@ import fr.sdis83.remocra.db.model.tracabilite.Tables;
 import fr.sdis83.remocra.db.model.tracabilite.tables.Hydrant;
 import fr.sdis83.remocra.db.model.tracabilite.tables.HydrantVisite;
 import fr.sdis83.remocra.repository.PeiRepository;
+import fr.sdis83.remocra.usecase.utils.DateUtils;
+import fr.sdis83.remocra.usecase.utils.UseCaseUtils;
 import fr.sdis83.remocra.util.GlobalConstants;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
 import fr.sdis83.remocra.web.model.pei.PeiDiffModel;
@@ -355,14 +357,14 @@ public class PeiUseCase {
       throw new IllegalArgumentException("null argument given : listPei");
     }
 
-    Long userId = currentUser.get().userId();
-    String userType = currentUser.get().type();
+    UseCaseUtils.OrganismeIdType organisme = new UseCaseUtils.OrganismeIdType(currentUser.get().userId(), currentUser.get().type());
+
 
     return context.select(HYDRANT.ID, HYDRANT.NUMERO, HYDRANT.MAINTENANCE_DECI, HYDRANT.SP_DECI, HYDRANT_PIBI.SERVICE_EAUX)
             .from(HYDRANT)
             .leftJoin(HYDRANT_PIBI).on(HYDRANT_PIBI.ID.eq(HYDRANT.ID))
             .where(listPei.isEmpty() ? DSL.noCondition() : HYDRANT.NUMERO.in(listPei))
-            .fetch(new RecordMapper<Record5<Long, String, Long, Long, Long>, HydrantAccessibilite>() {
+            .fetch(new RecordMapper<>() {
               @Override
               public HydrantAccessibilite map(Record5<Long, String, Long, Long, Long> record) {
                 return new HydrantAccessibilite(
@@ -376,68 +378,18 @@ public class PeiUseCase {
               }
 
               private boolean computeAccessibilite(Record5<Long, String, Long, Long, Long> record) {
-                return isApiAdmin(userType)
-                        || isMaintenanceDECI(record.value3(), userId, userType)
-                        || isServicePublicDECI(record.value4(), userId, userType)
-                        || isServiceEaux(record.value5(), userId, userType);
+                return UseCaseUtils.isApiAdmin(organisme)
+                        || UseCaseUtils.isMaintenanceDECI(record.value3(), organisme)
+                        || UseCaseUtils.isServicePublicDECI(record.value4(), organisme)
+                        || UseCaseUtils.isServiceEaux(record.value5(), organisme);
 
               }
             });
   }
 
-  /**
-   * Fonction utilitaire permettant de savoir si l'organisme est la maintenance DECI du PEI
-   *
-   * @param hydrantMaintenanceDeciId Id de l'organisme reponsable de la "maintenance DECI"
-   * @param userId                   id de l'organisme utilisant l'API
-   * @param userType                 type de l'organisme utilisant l'API
-   * @return boolean
-   */
-  public static boolean isMaintenanceDECI(Long hydrantMaintenanceDeciId, Long userId, String userType) {
-    return hydrantMaintenanceDeciId != null && hydrantMaintenanceDeciId.equals(userId) && (
-            GlobalConstants.SERVICE_EAUX.equalsIgnoreCase(userType)
-                    || GlobalConstants.PRESTATAIRE_TECHNIQUE.equalsIgnoreCase(userType)
-                    || GlobalConstants.COMMUNE.equalsIgnoreCase(userType)
-                    || GlobalConstants.EPCI.equalsIgnoreCase(userType)
-    );
-  }
 
-  /**
-   * Fonction utilitaire permettant de savoir si l'organisme est le service public DECI du PEI
-   *
-   * @param hydrantServicePublicDeciId Id de l'organisme public marqué comme "service public DECI"
-   * @param userId                     id de l'organisme utilisant l'API
-   * @param userType                   type de l'organisme utilisant l'API
-   * @return boolean
-   */
-  public boolean isServicePublicDECI(Long hydrantServicePublicDeciId, Long userId, String userType) {
-    return hydrantServicePublicDeciId != null && hydrantServicePublicDeciId.equals(userId) && (GlobalConstants.COMMUNE.equalsIgnoreCase(userType)
-            || GlobalConstants.EPCI.equalsIgnoreCase(userType));
-  }
 
-  /**
-   * Fonction utilitaire permettant de savoir si l'organisme est le service des eaux du PEI
-   *
-   * @param hydrantServiceEauxId Id du service des eaux du PEI
-   * @param userId               id de l'organisme utilisant l'API
-   * @param userType             type de l'organisme utilisant l'API
-   * @return boolean
-   */
-  public boolean isServiceEaux(Long hydrantServiceEauxId, Long userId, String userType) {
-    return hydrantServiceEauxId != null && hydrantServiceEauxId.equals(userId) && GlobalConstants.SERVICE_EAUX.equalsIgnoreCase(userType);
-  }
 
-  /**
-   * Vérifie si l'organisme connecté est le profil API_ADMIN
-   * TODO implémenter
-   *
-   * @param userType String
-   * @return boolean
-   */
-  public boolean isApiAdmin(String userType) {
-    // Not yet implemented
-    return false;
-  }
 
   /**
    * Détermine si le PEI spécifié est accessible à l'utilisateur courant
@@ -458,24 +410,23 @@ public class PeiUseCase {
    */
   public boolean userCanEditPei(String numero) {
 
-    Long userId = currentUser.get().userId();
-    String userType = currentUser.get().type();
+    UseCaseUtils.OrganismeIdType organisme = new UseCaseUtils.OrganismeIdType(currentUser.get().userId(), currentUser.get().type());
 
-    if (isApiAdmin(userType)) {
+    if (UseCaseUtils.isApiAdmin(organisme)) {
       return true;
     }
 
     HydrantAccessibilite hydrantAccessibilite = listHydrantsAccessibilite(Collections.singletonList(numero)).get(0);
 
-    if (isApiAdmin(userType)) {
+    if (UseCaseUtils.isApiAdmin(organisme)) {
       return true;
     }
 
-    if (isMaintenanceDECI(hydrantAccessibilite.getMaintenanceDECI(), userId, userType)) {
+    if (UseCaseUtils.isMaintenanceDECI(hydrantAccessibilite.getMaintenanceDECI(),organisme)) {
       return true;
     }
 
-    if (isServicePublicDECI(hydrantAccessibilite.getServicePublicDECI(), userId, userType)) {
+    if (UseCaseUtils.isServicePublicDECI(hydrantAccessibilite.getServicePublicDECI(), organisme)) {
       return true;
     }
 
@@ -489,16 +440,18 @@ public class PeiUseCase {
    * @return String les PEI en question au format JSON
    */
   public String diff(String dateString) throws ResponseException {
-    ZonedDateTime moment;
+    ZonedDateTime moment = null;
+    boolean valide = true;
     if (dateString != null) {
-      String pattern = "yyyy-MM-dd HH:mm:ss";
       try {
-        // on passe par un ZoneDateTime pour gérer la différence de fuseau, en BDD on est sur de l'UTC
-        moment = ZonedDateTime.parse(dateString, DateTimeFormatter.ofPattern(pattern).withZone(ZoneId.systemDefault()));
+        moment = DateUtils.getMoment(dateString);
       } catch (DateTimeParseException dtpe) {
-        throw new ResponseException(Response.Status.BAD_REQUEST, "1010 : La date spécifiée n'existe pas ou ne respecte pas le format YYYY-MM-DD hh:mm:ss");
+        valide = false;
       }
     } else {
+      valide = false;
+    }
+    if (!valide) {
       throw new ResponseException(Response.Status.BAD_REQUEST, "1010 : La date spécifiée n'existe pas ou ne respecte pas le format YYYY-MM-DD hh:mm:ss");
     }
 

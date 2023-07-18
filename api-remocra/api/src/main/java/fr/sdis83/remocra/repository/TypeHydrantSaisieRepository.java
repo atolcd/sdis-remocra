@@ -2,7 +2,7 @@ package fr.sdis83.remocra.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.sdis83.remocra.web.model.referentielsCommuns.NameModel;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantSaisie;
 import fr.sdis83.remocra.web.model.referentielsCommuns.ReferentielModel;
 import org.jooq.DSLContext;
 
@@ -22,16 +22,30 @@ public class TypeHydrantSaisieRepository {
 
   public String getAll(Integer start, Integer limit) throws JsonProcessingException {
 
-      List<ReferentielModel> list = context
-        .selectFrom(TYPE_HYDRANT_SAISIE)
-        .limit((limit == null || limit < 0) ? this.count() : limit)
-        .offset((start == null || start < 0) ? 0 : start)
-        .fetchInto(ReferentielModel.class);
+    List<ReferentielModel> list = context
+            .selectFrom(TYPE_HYDRANT_SAISIE)
+            .limit((limit == null || limit < 0) ? this.count() : limit)
+            .offset((start == null || start < 0) ? 0 : start)
+            .fetchInto(ReferentielModel.class);
 
-      return new ObjectMapper().writeValueAsString(list);
-    }
+    return new ObjectMapper().writeValueAsString(list);
+  }
 
   private Integer count() {
     return context.fetchCount(TYPE_HYDRANT_SAISIE);
+  }
+
+  public TypeHydrantSaisie getByCode(String codeTypeVisite) {
+    return context
+            .selectFrom(TYPE_HYDRANT_SAISIE)
+            .where(TYPE_HYDRANT_SAISIE.CODE.equalIgnoreCase(codeTypeVisite))
+            .fetchOneInto(TypeHydrantSaisie.class);
+  }
+
+  public TypeHydrantSaisie getById(Long id) {
+    return context
+            .selectFrom(TYPE_HYDRANT_SAISIE)
+            .where(TYPE_HYDRANT_SAISIE.ID.eq(id))
+            .fetchOneInto(TypeHydrantSaisie.class);
   }
 }
