@@ -426,4 +426,16 @@ public class PeiRepository {
             .where(HYDRANT.ID.eq(id))
             .fetchOneInto(Hydrant.class);
   }
+
+  /**
+   * Retourne les identifiants de communes associés à la liste des numéros de PEI passée en paramètre
+   * @param listNumeroPei List<String>
+   * @return List<Long>
+   */
+  public List<Long> getDistinctIdsCommuneFromListPei(List<String> listNumeroPei) {
+    return context.selectDistinct(HYDRANT.COMMUNE)
+            .from(HYDRANT)
+            .where(HYDRANT.NUMERO.in(listNumeroPei))
+            .fetchInto(Long.class);
+  }
 }

@@ -352,7 +352,7 @@ public class PeiUseCase {
    * @param listPei List<String> (Pei.numero)
    * @return List<HydrantAccessibilite>
    */
-  protected List<HydrantAccessibilite> listHydrantsAccessibilite(List<String> listPei) {
+  public List<HydrantAccessibilite> listHydrantsAccessibilite(List<String> listPei) {
     if (listPei == null) {
       throw new IllegalArgumentException("null argument given : listPei");
     }

@@ -4,14 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.sdis83.remocra.web.model.referentielsCommuns.ReferentielModel;
 import org.jooq.Condition;
-import org.jooq.impl.DSL;
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 
 import javax.inject.Inject;
 import java.util.List;
 
 import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
-
 
 public class CommunesRepository {
 
@@ -27,11 +26,11 @@ public class CommunesRepository {
     Condition condition = this.getConditions(insee, commune);
 
     List<ReferentielModel> list = context
-      .selectFrom(COMMUNE)
-      .where(condition)
-      .limit((limit == null || limit < 0) ? this.count() : limit)
-      .offset((start == null || start < 0) ? 0 : start)
-      .fetchInto(ReferentielModel.class);
+            .selectFrom(COMMUNE)
+            .where(condition)
+            .limit((limit == null || limit < 0) ? this.count() : limit)
+            .offset((start == null || start < 0) ? 0 : start)
+            .fetchInto(ReferentielModel.class);
 
     return new ObjectMapper().writeValueAsString(list);
   }
@@ -40,17 +39,16 @@ public class CommunesRepository {
     return context.fetchCount(COMMUNE);
   }
 
-  private Condition getConditions(String insee, String commune){
+  private Condition getConditions(String insee, String commune) {
 
     Condition condition = DSL.trueCondition();
     if (insee != null) {
       condition = condition.and(COMMUNE.CODE.eq(insee));
     }
     if (commune != null) {
-      condition = condition.and(COMMUNE.NOM.like("%"+commune.toUpperCase()+"%"));
+      condition = condition.and(COMMUNE.NOM.like("%" + commune.toUpperCase() + "%"));
     }
     return condition;
   }
-
 
 }
