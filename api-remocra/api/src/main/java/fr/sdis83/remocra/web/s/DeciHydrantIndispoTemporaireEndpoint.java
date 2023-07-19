@@ -69,7 +69,7 @@ public class DeciHydrantIndispoTemporaireEndpoint {
   @ApiResponse(responseCode = "400", description = "Erreur à la saisie")
   @RolesAllowed({UserRoles.RoleTypes.TRANSMETTRE})
   public Response editIndispoTemporaire(
-    final @Parameter(description = "Identifiant de la visite") @PathParam("idIndisponibiliteTemporaire") String idIndispo,
+    final @Parameter(description = "Identifiant de l'indisponibilité temporaire)") @PathParam("idIndisponibiliteTemporaire") String idIndispo,
     @Parameter(description = "Informations d'indisponibilite temporaire", required = true) @NotNull IndispoTemporaireSpecifiqueForm form
   ) throws ResponseException {
     try {
