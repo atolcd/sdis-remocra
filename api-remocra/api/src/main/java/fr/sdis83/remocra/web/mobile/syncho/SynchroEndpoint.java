@@ -1,10 +1,13 @@
 package fr.sdis83.remocra.web.mobile.syncho;
 
 import fr.sdis83.remocra.authn.AuthDevice;
+
 import javax.inject.Provider;
+
 import fr.sdis83.remocra.authn.CurrentUser;
 import fr.sdis83.remocra.authn.UserInfo;
 import com.google.inject.Inject;
+
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -21,6 +24,13 @@ import fr.sdis83.remocra.web.model.referentiel.ContactModel;
 import fr.sdis83.remocra.web.model.referentiel.GestionnaireModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactRoleModel;
 
+import fr.sdis83.remocra.web.model.mobilemodel.ImmutableHydrantVisiteModel;
+
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -151,7 +161,7 @@ public class SynchroEndpoint {
             @FormParam("codeGestionnaire")
             String codeGestionnaire
     ) {
-        if(!synchroUseCase.getDroit(currentUser.get().userId(),
+        if (!synchroUseCase.getDroit(currentUser.get().userId(),
                 TypeDroitsPourMobile.CREATION_GESTIONNAIRE_MOBILE.getCodeDroitMobile())) {
             return accessDenied(TypeDroitsPourMobile.CREATION_GESTIONNAIRE_MOBILE);
         }
@@ -202,7 +212,7 @@ public class SynchroEndpoint {
             @FormParam("pays")
             String paysContact
     ) {
-        if(!synchroUseCase.getDroit(currentUser.get().userId(),
+        if (!synchroUseCase.getDroit(currentUser.get().userId(),
                 TypeDroitsPourMobile.CREATION_GESTIONNAIRE_MOBILE.getCodeDroitMobile())) {
             return accessDenied(TypeDroitsPourMobile.CREATION_GESTIONNAIRE_MOBILE);
         }
@@ -240,11 +250,65 @@ public class SynchroEndpoint {
             @FormParam("idRoleRemocra")
             Long idRoleRemocra
     ) {
-        if(!synchroUseCase.getDroit(currentUser.get().userId(),
+        if (!synchroUseCase.getDroit(currentUser.get().userId(),
                 TypeDroitsPourMobile.CREATION_GESTIONNAIRE_MOBILE.getCodeDroitMobile())) {
             return accessDenied(TypeDroitsPourMobile.CREATION_GESTIONNAIRE_MOBILE);
         }
 
         return synchroUseCase.insertContactRole(idContact, idRoleRemocra);
+    }
+
+    @AuthDevice
+    @Path("/synchrohydrantvisite")
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response synchroHydrantVisite(
+            @FormParam("idHydrantVisite")
+            UUID idHydrantVisite,
+            @FormParam("idHydrant")
+            Long idHydrant,
+            @FormParam("date")
+            String date,
+            @FormParam("idTypeVisite")
+            Long idTypeVisite,
+            @FormParam("ctrDebitPression")
+            boolean ctrDebitPression,
+            @FormParam("agent1")
+            String agent1,
+            @FormParam("agent2")
+            String agent2,
+            @FormParam("debit")
+            int debit,
+            @FormParam("pression")
+            double pression,
+            @FormParam("pressionDyn")
+            double pressionDyn,
+            @FormParam("observations")
+            String observations
+    ) {
+        // Gestion de la date
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        ZonedDateTime moment;
+        try {
+            moment = ZonedDateTime.parse(date, DateTimeFormatter.ofPattern(pattern).withZone(ZoneId.systemDefault()));
+        } catch (DateTimeParseException dtpe) {
+            return Response.serverError().entity("Le format de la date est incorrect : " + date).build();
+        }
+
+        return synchroUseCase.insertVisite(
+                ImmutableHydrantVisiteModel.builder()
+                        .idHydrantVisite(idHydrantVisite)
+                        .idHydrant(idHydrant)
+                        .date(moment)
+                        .idTypeVisite(idTypeVisite)
+                        .ctrDebitPression(ctrDebitPression)
+                        .agent1(agent1)
+                        .agent2(agent2)
+                        .debit(debit)
+                        .pression(pression)
+                        .pressionDyn(pressionDyn)
+                        .observations(observations)
+                        .build()
+        );
     }
 }

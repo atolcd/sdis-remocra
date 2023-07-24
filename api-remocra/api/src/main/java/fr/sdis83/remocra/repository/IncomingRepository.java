@@ -7,7 +7,7 @@ import com.vividsolutions.jts.io.WKTReader;
 import fr.sdis83.remocra.web.model.referentiel.HydrantModel;
 import fr.sdis83.remocra.web.model.referentiel.GestionnaireModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactModel;
-import fr.sdis83.remocra.web.model.referentiel.ContactRoleModel;
+import fr.sdis83.remocra.web.model.mobilemodel.HydrantVisiteModel;
 import org.jooq.DSLContext;
 
 import javax.inject.Inject;
@@ -17,6 +17,7 @@ import static fr.sdis83.remocra.db.model.incoming.Tables.NEW_HYDRANT;
 import static fr.sdis83.remocra.db.model.incoming.Tables.GESTIONNAIRE;
 import static fr.sdis83.remocra.db.model.incoming.Tables.CONTACT;
 import static fr.sdis83.remocra.db.model.incoming.Tables.CONTACT_ROLE;
+import static fr.sdis83.remocra.db.model.incoming.Tables.HYDRANT_VISITE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.VOIE;
 
@@ -159,6 +160,25 @@ public class IncomingRepository {
                 context.insertInto(CONTACT_ROLE)
                         .set(CONTACT_ROLE.ID_CONTACT, idContact)
                         .set(CONTACT_ROLE.ID_ROLE, idRole)
+                        .onConflictDoNothing()
+                        .execute()
+        );
+    }
+
+    public int insertVisite(HydrantVisiteModel hydrantVisiteModel) {
+        return transactionManager.transactionResult(() ->
+                context.insertInto(HYDRANT_VISITE)
+                        .set(HYDRANT_VISITE.ID_HYDRANT_VISITE, hydrantVisiteModel.idHydrantVisite())
+                        .set(HYDRANT_VISITE.ID_HYDRANT, hydrantVisiteModel.idHydrant())
+                        .set(HYDRANT_VISITE.AGENT1_HYDRANT_VISITE, hydrantVisiteModel.agent1())
+                        .set(HYDRANT_VISITE.AGENT2_HYDRANT_VISITE, hydrantVisiteModel.agent2())
+                        .set(HYDRANT_VISITE.CTRL_DEBIT_PRESSION, hydrantVisiteModel.ctrDebitPression())
+                        .set(HYDRANT_VISITE.DATE_HYDRANT_VISITE, hydrantVisiteModel.date().toInstant())
+                        .set(HYDRANT_VISITE.DEBIT_HYDRANT_VISITE, hydrantVisiteModel.debit())
+                        .set(HYDRANT_VISITE.PRESSION_HYDRANT_VISITE, hydrantVisiteModel.pression())
+                        .set(HYDRANT_VISITE.PRESSION_DYN_HYDRANT_VISITE, hydrantVisiteModel.pressionDyn())
+                        .set(HYDRANT_VISITE.OBSERVATIONS_HYDRANT_VISITE, hydrantVisiteModel.observations())
+                        .set(HYDRANT_VISITE.ID_TYPE_HYDRANT_SAISIE, hydrantVisiteModel.idTypeVisite())
                         .onConflictDoNothing()
                         .execute()
         );

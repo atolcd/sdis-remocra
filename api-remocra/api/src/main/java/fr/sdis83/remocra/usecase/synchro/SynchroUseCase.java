@@ -6,11 +6,13 @@ import fr.sdis83.remocra.repository.IncomingRepository;
 import fr.sdis83.remocra.repository.TypeDroitRepository;
 import fr.sdis83.remocra.repository.TypeHydrantNatureDeciRepository;
 import fr.sdis83.remocra.repository.TypeHydrantNatureRepository;
+import fr.sdis83.remocra.web.model.mobilemodel.HydrantVisiteModel;
 import fr.sdis83.remocra.web.model.referentiel.HydrantModel;
 import fr.sdis83.remocra.repository.GestionnaireRepository;
 import fr.sdis83.remocra.web.model.referentiel.GestionnaireModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactModel;
-import fr.sdis83.remocra.web.model.referentiel.ContactRoleModel;
+import fr.sdis83.remocra.repository.PeiRepository;
+import fr.sdis83.remocra.repository.TypeHydrantSaisieRepository;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -22,6 +24,11 @@ public class SynchroUseCase {
 
     @Inject
     TypeDroitRepository typeDroitRepository;
+    @Inject
+    PeiRepository peiRepository;
+
+    @Inject
+    TypeHydrantSaisieRepository typeHydrantSaisieRepository;
 
     @Inject
     TypeHydrantNatureDeciRepository typeHydrantNatureDeciRepository;
@@ -38,12 +45,16 @@ public class SynchroUseCase {
                           TypeDroitRepository typeDroitRepository,
                           TypeHydrantNatureDeciRepository typeHydrantNatureDeciRepository,
                           TypeHydrantNatureRepository typeHydrantNatureRepository,
-                          GestionnaireRepository gestionnaireRepository) {
+                          GestionnaireRepository gestionnaireRepository,
+                          PeiRepository peiRepository,
+                          TypeHydrantSaisieRepository typeHydrantSaisieRepository) {
         this.incomingRepository = incomingRepository;
         this.typeDroitRepository = typeDroitRepository;
         this.typeHydrantNatureDeciRepository = typeHydrantNatureDeciRepository;
         this.typeHydrantNatureRepository = typeHydrantNatureRepository;
         this.gestionnaireRepository = gestionnaireRepository;
+        this.typeHydrantSaisieRepository = typeHydrantSaisieRepository;
+        this.peiRepository = peiRepository;
     }
 
     /**
@@ -195,6 +206,57 @@ public class SynchroUseCase {
         } catch (Exception e) {
             return Response.serverError().entity(error).build();
         }
+    }
+
+    /**
+     * Permet d'insérer une visite dans le schéma incoming
+     *
+     * @param hydrantVisiteModel
+     * @return
+     */
+    public Response insertVisite(HydrantVisiteModel hydrantVisiteModel) {
+        // Si les données ne sont pas valides, on retourne l'erreur concernée
+        String erreur = checkError(hydrantVisiteModel);
+        if (erreur != null) {
+            return Response.serverError().entity(erreur).build();
+        }
+
+        Response serverErrorBuild = Response.serverError().entity("Impossible de créer la visite pour l'hydrant "
+                + hydrantVisiteModel.idHydrant() + " dans incoming.").build();
+        try {
+            int result = incomingRepository.insertVisite(hydrantVisiteModel);
+            switch(result) {
+                case 1:
+                    return Response.ok().entity("La visite " + hydrantVisiteModel.idHydrantVisite()
+                            + " a été inséré dans incoming.").build();
+                case 0:
+                    return Response.ok().entity("La visite " + hydrantVisiteModel.idHydrantVisite()
+                            + " est déjà dans le schéma incoming.").build();
+                default:
+                    return serverErrorBuild;
+            }
+        } catch (Exception e) {
+            return serverErrorBuild;
+        }
+    }
+
+    /**
+     * Vérifie si les données que l'on va insérer sont dans le bon état
+     *
+     * @param hydrantVisiteModel
+     * @return
+     */
+    private String checkError(HydrantVisiteModel hydrantVisiteModel) {
+        // On vérifie que le type saisie est bon
+        if (hydrantVisiteModel.idTypeVisite() == null) {
+            return "Le type de visite n'hésite pas en base : " + hydrantVisiteModel.idTypeVisite();
+        }
+
+        // On regarde si l'hydrant est bien dans la base de données REMOcRA
+        if (!peiRepository.peiExist(hydrantVisiteModel.idHydrant())) {
+            return "L'hydrant avec l'identifiant " + hydrantVisiteModel.idHydrant() + " n'existe pas";
+        }
+        return null;
     }
 
     private String checkErrorContactRole(UUID idContact, Long idRole) {

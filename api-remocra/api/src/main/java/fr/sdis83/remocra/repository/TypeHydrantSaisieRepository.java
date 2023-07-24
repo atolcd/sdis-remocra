@@ -34,4 +34,12 @@ public class TypeHydrantSaisieRepository {
   private Integer count() {
     return context.fetchCount(TYPE_HYDRANT_SAISIE);
   }
+
+
+  public Long getTypeSaisie(String code) {
+    return context.select(TYPE_HYDRANT_SAISIE.ID)
+            .from(TYPE_HYDRANT_SAISIE)
+            .where(TYPE_HYDRANT_SAISIE.CODE.eq(code))
+            .fetchOneInto(Long.class);
+  }
 }

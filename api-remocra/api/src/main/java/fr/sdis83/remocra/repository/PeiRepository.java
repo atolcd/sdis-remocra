@@ -411,4 +411,9 @@ public class PeiRepository {
                     .where(HYDRANT_PIBI.ID.eq(idPei)).execute();
         }
     }
+
+    public boolean peiExist(Long idHydrant) {
+       return context.fetchExists(context.selectFrom(HYDRANT)
+                .where(HYDRANT.ID.eq(idHydrant)));
+    }
 }
