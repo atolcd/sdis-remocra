@@ -23,7 +23,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantIndispoTemporaire implements Serializable {
 
-    private static final long serialVersionUID = -1301387975;
+    private static final long serialVersionUID = 241326122;
 
     private Long    id;
     private Instant dateDebut;
@@ -38,6 +38,7 @@ public class HydrantIndispoTemporaire implements Serializable {
     private Boolean melAvantIndispo;
     private Boolean melAvantDispo;
     private Long    organismeApi;
+    private String  observation;
 
     public HydrantIndispoTemporaire() {}
 
@@ -55,6 +56,7 @@ public class HydrantIndispoTemporaire implements Serializable {
         this.melAvantIndispo = value.melAvantIndispo;
         this.melAvantDispo = value.melAvantDispo;
         this.organismeApi = value.organismeApi;
+        this.observation = value.observation;
     }
 
     public HydrantIndispoTemporaire(
@@ -70,7 +72,8 @@ public class HydrantIndispoTemporaire implements Serializable {
         Boolean basculeAutoDispo,
         Boolean melAvantIndispo,
         Boolean melAvantDispo,
-        Long    organismeApi
+        Long    organismeApi,
+        String  observation
     ) {
         this.id = id;
         this.dateDebut = dateDebut;
@@ -85,6 +88,7 @@ public class HydrantIndispoTemporaire implements Serializable {
         this.melAvantIndispo = melAvantIndispo;
         this.melAvantDispo = melAvantDispo;
         this.organismeApi = organismeApi;
+        this.observation = observation;
     }
 
     public Long getId() {
@@ -204,6 +208,15 @@ public class HydrantIndispoTemporaire implements Serializable {
         return this;
     }
 
+    public String getObservation() {
+        return this.observation;
+    }
+
+    public HydrantIndispoTemporaire setObservation(String observation) {
+        this.observation = observation;
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("HydrantIndispoTemporaire (");
@@ -221,6 +234,7 @@ public class HydrantIndispoTemporaire implements Serializable {
         sb.append(", ").append(melAvantIndispo);
         sb.append(", ").append(melAvantDispo);
         sb.append(", ").append(organismeApi);
+        sb.append(", ").append(observation);
 
         sb.append(")");
         return sb.toString();

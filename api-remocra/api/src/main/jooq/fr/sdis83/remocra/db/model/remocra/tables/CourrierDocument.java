@@ -43,7 +43,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CourrierDocument extends TableImpl<Record> {
 
-    private static final long serialVersionUID = 178659330;
+    private static final long serialVersionUID = -1100866312;
 
     /**
      * The reference instance of <code>remocra.courrier_document</code>
@@ -94,19 +94,19 @@ public class CourrierDocument extends TableImpl<Record> {
     public final TableField<Record, Instant> ACCUSE = createField("accuse", org.jooq.impl.SQLDataType.TIMESTAMP, this, "Date et heure d'accusé de téléchargement", new TimestampToInstantConverter());
 
     /**
-     * The column <code>remocra.courrier_document.objet</code>.
+     * The column <code>remocra.courrier_document.objet</code>. Objet du courrier
      */
-    public final TableField<Record, String> OBJET = createField("objet", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+    public final TableField<Record, String> OBJET = createField("objet", org.jooq.impl.SQLDataType.VARCHAR, this, "Objet du courrier");
 
     /**
-     * The column <code>remocra.courrier_document.reference</code>.
+     * The column <code>remocra.courrier_document.reference</code>. Reference du courrier
      */
-    public final TableField<Record, String> REFERENCE = createField("reference", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+    public final TableField<Record, String> REFERENCE = createField("reference", org.jooq.impl.SQLDataType.VARCHAR, this, "Reference du courrier");
 
     /**
-     * The column <code>remocra.courrier_document.expediteur</code>.
+     * The column <code>remocra.courrier_document.expediteur</code>. Expéditeur du courrier
      */
-    public final TableField<Record, String> EXPEDITEUR = createField("expediteur", org.jooq.impl.SQLDataType.VARCHAR.nullable(false).defaultValue(org.jooq.impl.DSL.field("'Application Remocra'::character varying", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<Record, String> EXPEDITEUR = createField("expediteur", org.jooq.impl.SQLDataType.VARCHAR.nullable(false).defaultValue(org.jooq.impl.DSL.field("'Application Remocra'::character varying", org.jooq.impl.SQLDataType.VARCHAR)), this, "Expéditeur du courrier");
 
     /**
      * Create a <code>remocra.courrier_document</code> table reference

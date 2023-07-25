@@ -23,7 +23,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant implements Serializable {
 
-    private static final long serialVersionUID = -337881679;
+    private static final long serialVersionUID = -1032275891;
 
     private Long    id;
     private String  agent1;
@@ -69,6 +69,7 @@ public class Hydrant implements Serializable {
     private Long    spDeci;
     private Long    maintenanceDeci;
     private String  auteurModificationFlag;
+    private Instant dateChangementDispoTerrestre;
 
     public Hydrant() {}
 
@@ -117,6 +118,7 @@ public class Hydrant implements Serializable {
         this.spDeci = value.spDeci;
         this.maintenanceDeci = value.maintenanceDeci;
         this.auteurModificationFlag = value.auteurModificationFlag;
+        this.dateChangementDispoTerrestre = value.dateChangementDispoTerrestre;
     }
 
     public Hydrant(
@@ -163,7 +165,8 @@ public class Hydrant implements Serializable {
         Instant dateCrea,
         Long    spDeci,
         Long    maintenanceDeci,
-        String  auteurModificationFlag
+        String  auteurModificationFlag,
+        Instant dateChangementDispoTerrestre
     ) {
         this.id = id;
         this.agent1 = agent1;
@@ -209,6 +212,7 @@ public class Hydrant implements Serializable {
         this.spDeci = spDeci;
         this.maintenanceDeci = maintenanceDeci;
         this.auteurModificationFlag = auteurModificationFlag;
+        this.dateChangementDispoTerrestre = dateChangementDispoTerrestre;
     }
 
     public Long getId() {
@@ -617,6 +621,15 @@ public class Hydrant implements Serializable {
         return this;
     }
 
+    public Instant getDateChangementDispoTerrestre() {
+        return this.dateChangementDispoTerrestre;
+    }
+
+    public Hydrant setDateChangementDispoTerrestre(Instant dateChangementDispoTerrestre) {
+        this.dateChangementDispoTerrestre = dateChangementDispoTerrestre;
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Hydrant (");
@@ -665,6 +678,7 @@ public class Hydrant implements Serializable {
         sb.append(", ").append(spDeci);
         sb.append(", ").append(maintenanceDeci);
         sb.append(", ").append(auteurModificationFlag);
+        sb.append(", ").append(dateChangementDispoTerrestre);
 
         sb.append(")");
         return sb.toString();

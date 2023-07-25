@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantIndispoTemporaire extends TableImpl<Record> {
 
-    private static final long serialVersionUID = 118785320;
+    private static final long serialVersionUID = -2107452273;
 
     /**
      * The reference instance of <code>remocra.hydrant_indispo_temporaire</code>
@@ -121,6 +121,11 @@ public class HydrantIndispoTemporaire extends TableImpl<Record> {
      * The column <code>remocra.hydrant_indispo_temporaire.organisme_api</code>. Identifiant de l'organisme ayant créé cette indispo temporaire via l'API (s'il y a lieu)
      */
     public final TableField<Record, Long> ORGANISME_API = createField("organisme_api", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant de l'organisme ayant créé cette indispo temporaire via l'API (s'il y a lieu)");
+
+    /**
+     * The column <code>remocra.hydrant_indispo_temporaire.observation</code>.
+     */
+    public final TableField<Record, String> OBSERVATION = createField("observation", org.jooq.impl.SQLDataType.VARCHAR, this, "");
 
     /**
      * Create a <code>remocra.hydrant_indispo_temporaire</code> table reference
