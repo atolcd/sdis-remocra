@@ -331,6 +331,10 @@
                     <inputSchema>tracabilite</inputSchema>
                     <outputSchema>tracabilite</outputSchema>
                   </schema>
+                <schema>
+                  <inputSchema>incoming</inputSchema>
+                  <outputSchema>incoming</outputSchema>
+                </schema>
               </schemata>
 
               <forcedTypes>

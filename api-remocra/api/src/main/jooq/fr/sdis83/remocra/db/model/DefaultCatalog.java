@@ -4,6 +4,7 @@
 package fr.sdis83.remocra.db.model;
 
 
+import fr.sdis83.remocra.db.model.incoming.Incoming;
 import fr.sdis83.remocra.db.model.remocra.Remocra;
 import fr.sdis83.remocra.db.model.tracabilite.Tracabilite;
 
@@ -30,12 +31,17 @@ import org.jooq.impl.CatalogImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DefaultCatalog extends CatalogImpl {
 
-    private static final long serialVersionUID = 991578267;
+    private static final long serialVersionUID = -1969493021;
 
     /**
      * The reference instance of <code></code>
      */
     public static final DefaultCatalog DEFAULT_CATALOG = new DefaultCatalog();
+
+    /**
+     * The schema <code>incoming</code>.
+     */
+    public final Incoming INCOMING = fr.sdis83.remocra.db.model.incoming.Incoming.INCOMING;
 
     /**
      * The schema <code>remocra</code>.
@@ -63,6 +69,7 @@ public class DefaultCatalog extends CatalogImpl {
 
     private final List<Schema> getSchemas0() {
         return Arrays.<Schema>asList(
+            Incoming.INCOMING,
             Remocra.REMOCRA,
             Tracabilite.TRACABILITE);
     }
