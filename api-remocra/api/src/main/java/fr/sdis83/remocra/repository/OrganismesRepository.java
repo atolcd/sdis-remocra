@@ -3,12 +3,11 @@ package fr.sdis83.remocra.repository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.sdis83.remocra.authn.UserRoles;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.TransfertsAutomatises;
 import fr.sdis83.remocra.web.model.authn.OrganismeModel;
 import fr.sdis83.remocra.web.model.referentielsCommuns.OrganismesModel;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Record2;
-import org.jooq.SelectConditionStep;
 import org.jooq.impl.DSL;
 
 import javax.inject.Inject;
@@ -70,17 +69,22 @@ public class OrganismesRepository {
     if(o != null) {
       List<UserRoles> roles = new ArrayList<UserRoles>();
 
-      SelectConditionStep<Record2<Boolean, Boolean>> permissions = context
-        .select(TRANSFERTS_AUTOMATISES.RECUPERER, TRANSFERTS_AUTOMATISES.TRANSMETTRE)
-        .from(TRANSFERTS_AUTOMATISES)
-        .where(TRANSFERTS_AUTOMATISES.TYPE_ORGANISME.eq(o.getTypeId()));
+      TransfertsAutomatises transfertsAutomatises =
+              context
+                      .selectFrom(TRANSFERTS_AUTOMATISES)
+                      .where(TRANSFERTS_AUTOMATISES.TYPE_ORGANISME.eq(o.getTypeId()))
+                      .fetchOneInto(TransfertsAutomatises.class);
 
-      if(permissions.fetchOne(TRANSFERTS_AUTOMATISES.RECUPERER).booleanValue()) {
+      if(transfertsAutomatises.getRecuperer()) {
         roles.add(UserRoles.RECEVOIR);
       }
 
-      if(permissions.fetchOne(TRANSFERTS_AUTOMATISES.TRANSMETTRE).booleanValue()) {
+      if(transfertsAutomatises.getTransmettre()) {
         roles.add(UserRoles.TRANSMETTRE);
+      }
+
+      if(transfertsAutomatises.getAdministrer()) {
+        roles.add(UserRoles.ADMINISTRER);
       }
 
       o.setRoles(roles);

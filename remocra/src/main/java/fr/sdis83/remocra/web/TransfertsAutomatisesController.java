@@ -40,6 +40,19 @@ public class TransfertsAutomatisesController {
         }.serialize();
     }
 
+    @RequestMapping(value = "/updateadmin/{id}", method = RequestMethod.POST, headers = "Accept=application/json")
+    public ResponseEntity<java.lang.String> updateAdministrer(@PathVariable Long id, @RequestBody String json) {
+        try{
+            HashMap<String, Object> param = new JSONDeserializer<HashMap<String, Object>>().deserialize(json);
+            transfertsAutomatisesRepository.updateAdministrer(id, (Boolean)param.get("value"));
+            return new SuccessErrorExtSerializer(true, "Accès modifiés avec succès").serialize();
+        } catch (Exception e){
+            e.printStackTrace();
+            return new SuccessErrorExtSerializer(false, "Erreur dans la modification des accès").serialize();
+        }
+
+    }
+
     @RequestMapping(value = "/updatepost/{id}", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<java.lang.String> updateTransmettre(@PathVariable Long id, @RequestBody String json) {
         try{

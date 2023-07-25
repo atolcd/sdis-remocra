@@ -4,6 +4,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record4;
 import org.jooq.Record5;
+import org.jooq.Record6;
 import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +37,7 @@ public class TransfertsAutomatisesRepository {
     }
 
     public List<Map<String,Object>> getTypesOrganismeAcces(){
-        Result<Record5<Integer, Boolean, Boolean, Long, String>> result = context.select(TRANSFERTS_AUTOMATISES.ID, TRANSFERTS_AUTOMATISES.TRANSMETTRE,
+        Result<Record6<Integer, Boolean, Boolean, Boolean, Long, String>> result = context.select(TRANSFERTS_AUTOMATISES.ID, TRANSFERTS_AUTOMATISES.ADMINISTRER, TRANSFERTS_AUTOMATISES.TRANSMETTRE,
                         TRANSFERTS_AUTOMATISES.RECUPERER, TYPE_ORGANISME.ID.as("organisme_id"), TYPE_ORGANISME.NOM)
                 .from(TRANSFERTS_AUTOMATISES)
                 .join(TYPE_ORGANISME)
@@ -48,6 +49,7 @@ public class TransfertsAutomatisesRepository {
         for(Record record : result){
             Map<String, Object> map = new HashMap<>();
             map.put("id",record.getValue("id"));
+            map.put("administrer",record.getValue("administrer"));
             map.put("transmettre",record.getValue("transmettre"));
             map.put("recuperer",record.getValue("recuperer"));
             map.put("nom",record.getValue("nom"));
@@ -56,6 +58,12 @@ public class TransfertsAutomatisesRepository {
             listeTransfertsAutomatises.add(map);
         }
         return listeTransfertsAutomatises;
+    }
+
+    public void updateAdministrer(Long id, Boolean value){
+        context.update(TRANSFERTS_AUTOMATISES)
+                .set(TRANSFERTS_AUTOMATISES.ADMINISTRER, value)
+                .where(TRANSFERTS_AUTOMATISES.TYPE_ORGANISME.eq(id)).execute();
     }
 
     public void updateTransmettre(Long id, Boolean value){

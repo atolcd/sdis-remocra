@@ -18,6 +18,9 @@
               <th>
                 <p>Transmettre à REMOcRA</p>
               </th>
+              <th>
+                <p>Administrer REMOcRA</p>
+              </th>
             </thead>
             <tbody :key="tableKey">
             <tr v-for="(item, index) in listeTypesOrganismes" :key="index" >
@@ -29,6 +32,10 @@
               <td>
                  <b-form-checkbox :checked="item.transmettre" @change="changeAccesTransmettre(item.organisme_id, item.transmettre)">
                 </b-form-checkbox>
+              </td>
+              <td>
+                 <b-form-checkbox :checked="item.administrer" @change="changeAccesAdministrer(item.organisme_id, item.administrer)">
+                 </b-form-checkbox>
               </td>
             </tr>
           </tbody>
@@ -63,6 +70,30 @@ export default {
         if(response.data){
           this.listeTypesOrganismes = response.data.data;
         }
+      });
+    },
+
+    changeAccesAdministrer(id, value){
+      axios.post('/remocra/transfertsautomatises/updateadmin/'+id, 
+      JSON.stringify({"value": !value}),
+      {
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        }
+      }
+      ).then(response => {
+        if(response.data.error){
+          this.$notify({
+            group: 'remocra',
+            type: 'error',
+            title: 'Erreur',
+            text: "Erreur lors de la modification des accès",
+            duration: 5000
+          });
+        }
+        this.getAccesOrganisme()
+      }).catch(error => {
+        console.error(error);
       });
     },
 
