@@ -13,6 +13,7 @@ import fr.sdis83.remocra.web.model.referentiel.GestionnaireModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactModel;
 import fr.sdis83.remocra.repository.PeiRepository;
 import fr.sdis83.remocra.repository.TypeHydrantSaisieRepository;
+import fr.sdis83.remocra.repository.TypeHydrantAnomalieRepository;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -36,9 +37,12 @@ public class SynchroUseCase {
     @Inject
     TypeHydrantNatureRepository typeHydrantNatureRepository;
 
-
     @Inject
     GestionnaireRepository gestionnaireRepository;
+
+    @Inject
+    TypeHydrantAnomalieRepository typeHydrantAnomalieRepository;
+
 
     @Inject
     public SynchroUseCase(IncomingRepository incomingRepository,
@@ -46,8 +50,9 @@ public class SynchroUseCase {
                           TypeHydrantNatureDeciRepository typeHydrantNatureDeciRepository,
                           TypeHydrantNatureRepository typeHydrantNatureRepository,
                           GestionnaireRepository gestionnaireRepository,
+                          TypeHydrantSaisieRepository typeHydrantSaisieRepository,
                           PeiRepository peiRepository,
-                          TypeHydrantSaisieRepository typeHydrantSaisieRepository) {
+                          TypeHydrantAnomalieRepository typeHydrantAnomalieRepository) {
         this.incomingRepository = incomingRepository;
         this.typeDroitRepository = typeDroitRepository;
         this.typeHydrantNatureDeciRepository = typeHydrantNatureDeciRepository;
@@ -55,6 +60,7 @@ public class SynchroUseCase {
         this.gestionnaireRepository = gestionnaireRepository;
         this.typeHydrantSaisieRepository = typeHydrantSaisieRepository;
         this.peiRepository = peiRepository;
+        this.typeHydrantAnomalieRepository = typeHydrantAnomalieRepository;
     }
 
     /**
@@ -273,7 +279,7 @@ public class SynchroUseCase {
     }
 
     private Response gestionResult(int result, String inserer, String dejaEnBase, String error) {
-        switch(result) {
+        switch (result) {
             case 1:
                 return Response.ok().entity(inserer).build();
             case 0:
@@ -281,5 +287,45 @@ public class SynchroUseCase {
             default:
                 return Response.serverError().entity(error).build();
         }
+    }
+
+    public Response insertHydrantVisiteAnomalie(UUID idHydrantVisite, Long idAnomalie) {
+
+        String erreur = checkErrorAnomalies(idHydrantVisite, idAnomalie);
+        if(erreur != null) {
+            return Response.serverError().entity(erreur).build();
+        }
+
+        String error = "Impossible d'ajouter le lien entre l'anomalie "+ idAnomalie + " et la visite "
+                + idHydrantVisite +" dans incoming.";
+        try {
+            int result =incomingRepository.insertHydrantVisiteAnomalie(idHydrantVisite, idAnomalie);
+
+            return gestionResult(
+                    result,
+                    "Le lien entre l'anomalie "+ idAnomalie + " et la visite "
+                            + idHydrantVisite + " a été inséré dans incoming.",
+                    "Le lien entre l'anomalie "+ idAnomalie + " et la visite "
+                             + idHydrantVisite + " est déjà dans le schéma incoming.",
+                    error
+            );
+
+        } catch (Exception e) {
+            return Response.serverError().entity(error).build();
+        }
+
+    }
+
+    private String checkErrorAnomalies(UUID idHydrantVisite, Long idTypeAnomalie) {
+
+        if(!incomingRepository.checkHydrantVisiteExist(idHydrantVisite)) {
+            return "Impossible de trouver la visite " + idHydrantVisite +" dans incoming.";
+        }
+
+        if(idTypeAnomalie == null) {
+            return "Impossible de trouver l'anomalie : l'anomalie " + idTypeAnomalie +" n'exite pas.";
+        }
+
+        return null;
     }
 }

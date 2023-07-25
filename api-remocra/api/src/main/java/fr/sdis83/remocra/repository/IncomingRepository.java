@@ -18,6 +18,7 @@ import static fr.sdis83.remocra.db.model.incoming.Tables.GESTIONNAIRE;
 import static fr.sdis83.remocra.db.model.incoming.Tables.CONTACT;
 import static fr.sdis83.remocra.db.model.incoming.Tables.CONTACT_ROLE;
 import static fr.sdis83.remocra.db.model.incoming.Tables.HYDRANT_VISITE;
+import static fr.sdis83.remocra.db.model.incoming.Tables.HYDRANT_VISITE_ANOMALIE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.VOIE;
 
@@ -179,6 +180,23 @@ public class IncomingRepository {
                         .set(HYDRANT_VISITE.PRESSION_DYN_HYDRANT_VISITE, hydrantVisiteModel.pressionDyn())
                         .set(HYDRANT_VISITE.OBSERVATIONS_HYDRANT_VISITE, hydrantVisiteModel.observations())
                         .set(HYDRANT_VISITE.ID_TYPE_HYDRANT_SAISIE, hydrantVisiteModel.idTypeVisite())
+                        .onConflictDoNothing()
+                        .execute()
+        );
+    }
+
+    public boolean checkHydrantVisiteExist(UUID idHydrantVisite) {
+        return context.fetchExists(
+                context.selectFrom(HYDRANT_VISITE)
+                        .where(HYDRANT_VISITE.ID_HYDRANT_VISITE.eq(idHydrantVisite))
+        );
+    }
+
+    public int insertHydrantVisiteAnomalie(UUID idHydrantVisite, Long idAnomalie) {
+        return transactionManager.transactionResult(() ->
+                context.insertInto(HYDRANT_VISITE_ANOMALIE)
+                        .set(HYDRANT_VISITE_ANOMALIE.ID_HYDRANT_VISITE, idHydrantVisite)
+                        .set(HYDRANT_VISITE_ANOMALIE.ID_ANOMALIE, idAnomalie)
                         .onConflictDoNothing()
                         .execute()
         );

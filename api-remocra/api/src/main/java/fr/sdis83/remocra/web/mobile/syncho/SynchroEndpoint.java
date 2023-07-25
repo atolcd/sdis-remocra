@@ -22,8 +22,6 @@ import fr.sdis83.remocra.repository.ParamConfRepository;
 import fr.sdis83.remocra.web.model.referentiel.HydrantModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactModel;
 import fr.sdis83.remocra.web.model.referentiel.GestionnaireModel;
-import fr.sdis83.remocra.web.model.referentiel.ContactRoleModel;
-
 import fr.sdis83.remocra.web.model.mobilemodel.ImmutableHydrantVisiteModel;
 
 import java.time.ZoneId;
@@ -310,5 +308,18 @@ public class SynchroEndpoint {
                         .observations(observations)
                         .build()
         );
+    }
+
+    @AuthDevice
+    @Path("/synchrohydrantvisiteanomalie")
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response synchroHydrantVisiteAnomalies(
+            @FormParam("idHydrantVisite")
+            UUID idHydrantVisite,
+            @FormParam("idAnomalie")
+            Long idAnomalie
+    ) {
+        return synchroUseCase.insertHydrantVisiteAnomalie(idHydrantVisite, idAnomalie);
     }
 }
