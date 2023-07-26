@@ -11,12 +11,15 @@ import fr.sdis83.remocra.web.model.referentiel.HydrantModel;
 import fr.sdis83.remocra.repository.GestionnaireRepository;
 import fr.sdis83.remocra.web.model.referentiel.GestionnaireModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactModel;
+import fr.sdis83.remocra.web.model.mobilemodel.TourneeModel;
 import fr.sdis83.remocra.repository.PeiRepository;
 import fr.sdis83.remocra.repository.TypeHydrantSaisieRepository;
 import fr.sdis83.remocra.repository.TypeHydrantAnomalieRepository;
+import fr.sdis83.remocra.repository.TourneeRepository;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class SynchroUseCase {
@@ -43,6 +46,9 @@ public class SynchroUseCase {
     @Inject
     TypeHydrantAnomalieRepository typeHydrantAnomalieRepository;
 
+    @Inject
+    TourneeRepository tourneeRepository;
+
 
     @Inject
     public SynchroUseCase(IncomingRepository incomingRepository,
@@ -52,7 +58,8 @@ public class SynchroUseCase {
                           GestionnaireRepository gestionnaireRepository,
                           TypeHydrantSaisieRepository typeHydrantSaisieRepository,
                           PeiRepository peiRepository,
-                          TypeHydrantAnomalieRepository typeHydrantAnomalieRepository) {
+                          TypeHydrantAnomalieRepository typeHydrantAnomalieRepository,
+                          TourneeRepository tourneeRepository) {
         this.incomingRepository = incomingRepository;
         this.typeDroitRepository = typeDroitRepository;
         this.typeHydrantNatureDeciRepository = typeHydrantNatureDeciRepository;
@@ -61,6 +68,7 @@ public class SynchroUseCase {
         this.typeHydrantSaisieRepository = typeHydrantSaisieRepository;
         this.peiRepository = peiRepository;
         this.typeHydrantAnomalieRepository = typeHydrantAnomalieRepository;
+        this.tourneeRepository = tourneeRepository;
     }
 
     /**
@@ -324,6 +332,40 @@ public class SynchroUseCase {
 
         if(idTypeAnomalie == null) {
             return "Impossible de trouver l'anomalie : l'anomalie " + idTypeAnomalie +" n'exite pas.";
+        }
+
+        return null;
+    }
+
+    public Response insertTournee(TourneeModel tourneeModel, Long idUtilisateur) {
+        String erreur = checkErrorTournee(tourneeModel, idUtilisateur);
+        if(erreur != null) {
+            return Response.serverError().entity(erreur).build();
+        }
+
+        String error = "Impossible d'ajouter la tournée "+ tourneeModel.idRemocra() + " dans incoming.";
+        try {
+            int result = incomingRepository.insertTournee(tourneeModel);
+
+            return gestionResult(
+                    result,
+                    "La tournée "+ tourneeModel.idRemocra() + " a été inséré dans incoming.",
+                    "La tournée "+ tourneeModel.idRemocra() + " est déjà dans le schéma incoming.",
+                    error
+            );
+
+        } catch (Exception e) {
+            return Response.serverError().entity(error).build();
+        }
+    }
+
+    private String checkErrorTournee(TourneeModel tourneeModel, Long idUtilisateur) {
+        if(!tourneeRepository.checkExist(tourneeModel.idRemocra())) {
+            return "Impossible de trouver la tournée " + tourneeModel.idRemocra() +" dans REMOcRA.";
+        }
+
+        if(!Objects.equals(tourneeRepository.getReservation(tourneeModel.idRemocra()), idUtilisateur)) {
+            return "L'utilisateur qui envoie la tournée "+ tourneeModel.idRemocra() + " n'est pas celui qui l'a réservée.";
         }
 
         return null;

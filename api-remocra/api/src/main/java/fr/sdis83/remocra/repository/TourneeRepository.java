@@ -98,4 +98,19 @@ public class TourneeRepository {
                     .execute()
         );
     }
+
+    public boolean checkExist(Long idTournee) {
+        return context.fetchExists(
+                context.selectFrom(TOURNEE)
+                        .where(TOURNEE.ID.eq(idTournee))
+        );
+    }
+
+    public Long getReservation(Long idTournee) {
+        return context.select(TOURNEE.RESERVATION)
+                .from(TOURNEE)
+                .where(TOURNEE.ID.eq(idTournee))
+                .fetchOneInto(Long.class);
+    }
+
 }

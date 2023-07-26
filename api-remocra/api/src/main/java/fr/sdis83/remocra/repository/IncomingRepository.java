@@ -8,6 +8,7 @@ import fr.sdis83.remocra.web.model.referentiel.HydrantModel;
 import fr.sdis83.remocra.web.model.referentiel.GestionnaireModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactModel;
 import fr.sdis83.remocra.web.model.mobilemodel.HydrantVisiteModel;
+import fr.sdis83.remocra.web.model.mobilemodel.TourneeModel;
 import org.jooq.DSLContext;
 
 import javax.inject.Inject;
@@ -19,6 +20,7 @@ import static fr.sdis83.remocra.db.model.incoming.Tables.CONTACT;
 import static fr.sdis83.remocra.db.model.incoming.Tables.CONTACT_ROLE;
 import static fr.sdis83.remocra.db.model.incoming.Tables.HYDRANT_VISITE;
 import static fr.sdis83.remocra.db.model.incoming.Tables.HYDRANT_VISITE_ANOMALIE;
+import static fr.sdis83.remocra.db.model.incoming.Tables.TOURNEE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.VOIE;
 
@@ -197,6 +199,16 @@ public class IncomingRepository {
                 context.insertInto(HYDRANT_VISITE_ANOMALIE)
                         .set(HYDRANT_VISITE_ANOMALIE.ID_HYDRANT_VISITE, idHydrantVisite)
                         .set(HYDRANT_VISITE_ANOMALIE.ID_ANOMALIE, idAnomalie)
+                        .onConflictDoNothing()
+                        .execute()
+        );
+    }
+
+    public int insertTournee(TourneeModel tourneeModel) {
+        return transactionManager.transactionResult(() ->
+                context.insertInto(TOURNEE)
+                        .set(TOURNEE.ID_TOURNEE_REMOCRA, tourneeModel.idRemocra())
+                        .set(TOURNEE.NOM_TOURNEE, tourneeModel.nom())
                         .onConflictDoNothing()
                         .execute()
         );

@@ -28,6 +28,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import fr.sdis83.remocra.web.model.mobilemodel.ImmutableTourneeModel;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -321,5 +322,23 @@ public class SynchroEndpoint {
             Long idAnomalie
     ) {
         return synchroUseCase.insertHydrantVisiteAnomalie(idHydrantVisite, idAnomalie);
+    }
+
+    @AuthDevice
+    @Path("/synchrotournee")
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response synchroTournee(
+           @FormParam("idTourneeRemocra")
+           Long idTourneeRemocra,
+           @FormParam("nom")
+           String nom
+    ) {
+        return synchroUseCase.insertTournee(
+                ImmutableTourneeModel.builder()
+                        .idRemocra(idTourneeRemocra)
+                        .nom(nom)
+                        .build(),
+            currentUser.get().userId());
     }
 }
