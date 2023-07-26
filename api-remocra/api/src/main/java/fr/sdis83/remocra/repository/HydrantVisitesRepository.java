@@ -163,6 +163,12 @@ public class HydrantVisitesRepository {
   }
 
   public HydrantVisite addVisite(HydrantVisite visite) {
+    return addVisite(visite, this.currentUser.get().userId());
+  }
+
+  public HydrantVisite addVisite(HydrantVisite visite, Long organismeId) {
+    String auteurModificationFlag =  visite.getAuteurModificationFlag() == null ? "API"
+            : visite.getAuteurModificationFlag();
     Long idVisite = context.insertInto(HYDRANT_VISITE)
       .set(HYDRANT_VISITE.HYDRANT, visite.getHydrant())
       .set(HYDRANT_VISITE.DATE, visite.getDate())
@@ -177,8 +183,8 @@ public class HydrantVisitesRepository {
       .set(HYDRANT_VISITE.PRESSION_DYN_DEB, visite.getPressionDynDeb())
       .set(HYDRANT_VISITE.ANOMALIES, visite.getAnomalies())
       .set(HYDRANT_VISITE.OBSERVATIONS, visite.getObservations())
-      .set(HYDRANT_VISITE.ORGANISME, this.currentUser.get().userId())
-      .set(HYDRANT_VISITE.AUTEUR_MODIFICATION_FLAG, "API")
+      .set(HYDRANT_VISITE.ORGANISME, organismeId)
+      .set(HYDRANT_VISITE.AUTEUR_MODIFICATION_FLAG, auteurModificationFlag)
       .returning(HYDRANT_VISITE.ID).fetchOne().getValue(HYDRANT_VISITE.ID);
 
     // Si la visite ajoutée est la plus récente de son type, on fait remonter sa date dans l'hydrant (si type != Non programmée)
@@ -220,7 +226,9 @@ public class HydrantVisitesRepository {
         context.update(HYDRANT)
           .set(field, visite.getDate())
           .set(HYDRANT.ORGANISME, this.currentUser.get().userId())
-          .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, "API")
+          .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, auteurModificationFlag)
+          .set(HYDRANT.AGENT1, visite.getAgent1())
+          .set(HYDRANT.AGENT2, visite.getAgent2())
           .where(HYDRANT.ID.eq(visite.getHydrant()))
           .execute();
       }

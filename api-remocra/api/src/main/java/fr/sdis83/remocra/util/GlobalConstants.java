@@ -48,4 +48,19 @@ public class GlobalConstants {
             return libelle;
         }
     }
+
+    public enum AuteurModificationFlag {
+        API("API"),
+        MOBILE("MOBILE");
+
+        private final String auteurModificationFlag;
+
+        AuteurModificationFlag(String auteurModificationFlag ) {
+            this.auteurModificationFlag = auteurModificationFlag;
+        }
+
+        public String getAuteurModificationFlag() {
+            return auteurModificationFlag;
+        }
+    }
 }

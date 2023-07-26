@@ -3,8 +3,11 @@ package fr.sdis83.remocra.repository;
 import fr.sdis83.remocra.web.model.mobilemodel.ImmutableTourneeModel;
 import fr.sdis83.remocra.web.model.mobilemodel.TourneeModel;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -111,6 +114,14 @@ public class TourneeRepository {
                 .from(TOURNEE)
                 .where(TOURNEE.ID.eq(idTournee))
                 .fetchOneInto(Long.class);
+    }
+
+    public void setTourneesFinies(List<Long> idsTournee) {
+        context.update(TOURNEE)
+                .set(TOURNEE.RESERVATION, DSL.val(null, SQLDataType.BIGINT))
+                .set(TOURNEE.ETAT, 100)
+                .where(TOURNEE.ID.in(idsTournee))
+                .execute();
     }
 
 }

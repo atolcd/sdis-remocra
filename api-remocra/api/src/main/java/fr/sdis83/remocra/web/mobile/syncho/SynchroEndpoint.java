@@ -13,17 +13,16 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import fr.sdis83.remocra.repository.ParamConfRepository;
-import fr.sdis83.remocra.web.model.referentiel.HydrantModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactModel;
-import fr.sdis83.remocra.web.model.referentiel.GestionnaireModel;
 import fr.sdis83.remocra.web.model.mobilemodel.ImmutableHydrantVisiteModel;
 
+import java.io.IOException;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -36,6 +35,7 @@ import java.util.UUID;
 
 import fr.sdis83.remocra.usecase.tournee.TourneeUseCase;
 import fr.sdis83.remocra.usecase.synchro.SynchroUseCase;
+import fr.sdis83.remocra.usecase.synchro.ValideIncomingMobile;
 import fr.sdis83.remocra.repository.UtilisateursRepository;
 
 import static fr.sdis83.remocra.repository.TypeDroitRepository.TypeDroitsPourMobile;
@@ -54,6 +54,9 @@ public class SynchroEndpoint {
 
     @Inject
     SynchroUseCase synchroUseCase;
+
+    @Inject
+    ValideIncomingMobile valideIncomingMobile;
 
 
     @Inject
@@ -337,8 +340,21 @@ public class SynchroEndpoint {
         return synchroUseCase.insertTournee(
                 ImmutableTourneeModel.builder()
                         .idRemocra(idTourneeRemocra)
+                        .affectation(currentUser.get().userId())
                         .nom(nom)
                         .build(),
             currentUser.get().userId());
+    }
+
+    @AuthDevice
+    @Path("/incomingtoremocra")
+    @PUT
+    public Response incomingToRemocra() {
+        try {
+            valideIncomingMobile.execute(currentUser.get().userId());
+            return Response.ok().build();
+        } catch (Exception e) {
+            return Response.serverError().entity(e.getMessage()).build();
+        }
     }
 }

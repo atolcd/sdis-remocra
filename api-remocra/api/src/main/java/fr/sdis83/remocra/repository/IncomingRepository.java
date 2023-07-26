@@ -13,6 +13,7 @@ import org.jooq.DSLContext;
 
 import javax.inject.Inject;
 import java.util.UUID;
+import java.util.List;
 
 import static fr.sdis83.remocra.db.model.incoming.Tables.NEW_HYDRANT;
 import static fr.sdis83.remocra.db.model.incoming.Tables.GESTIONNAIRE;
@@ -23,6 +24,13 @@ import static fr.sdis83.remocra.db.model.incoming.Tables.HYDRANT_VISITE_ANOMALIE
 import static fr.sdis83.remocra.db.model.incoming.Tables.TOURNEE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.VOIE;
+import fr.sdis83.remocra.db.model.incoming.tables.pojos.Tournee;
+import fr.sdis83.remocra.db.model.incoming.tables.pojos.NewHydrant;
+import fr.sdis83.remocra.db.model.incoming.tables.pojos.HydrantVisite;
+import fr.sdis83.remocra.db.model.incoming.tables.pojos.HydrantVisiteAnomalie;
+import fr.sdis83.remocra.db.model.incoming.tables.pojos.Gestionnaire;
+import fr.sdis83.remocra.db.model.incoming.tables.pojos.Contact;
+import fr.sdis83.remocra.db.model.incoming.tables.pojos.ContactRole;
 
 public class IncomingRepository {
     private final DSLContext context;
@@ -117,6 +125,7 @@ public class IncomingRepository {
                         .set(GESTIONNAIRE.ID_GESTIONNAIRE_REMOCRA, idRemocra)
                         .set(GESTIONNAIRE.CODE_GESTIONNAIRE, codeGestionnaire)
                         .set(GESTIONNAIRE.NOM_GESTIONNAIRE, nomGestionnaire)
+                        .onConflictDoNothing()
                         .execute()
         );
     }
@@ -143,6 +152,7 @@ public class IncomingRepository {
                         .set(CONTACT.NUMERO_VOIE_CONTACT, contactModel.getNumeroVoie())
                         .set(CONTACT.SUFFIXE_VOIE_CONTACT, contactModel.getSuffixeVoie())
                         .set(CONTACT.VOIE_CONTACT, contactModel.getVoie())
+                        .set(CONTACT.LIEU_DIT_CONTACT, contactModel.getLieuDit())
                         .set(CONTACT.PAYS_CONTACT, contactModel.getPays())
                         .set(CONTACT.EMAIL_CONTACT, contactModel.getEmail())
                         .set(CONTACT.TELEPHONE_CONTACT, contactModel.getTelephone())
@@ -212,5 +222,82 @@ public class IncomingRepository {
                         .onConflictDoNothing()
                         .execute()
         );
+    }
+
+    public Tournee getIncomingTourneeById(Long idTournee) {
+        return context.selectFrom(TOURNEE)
+                .where(TOURNEE.ID_TOURNEE_REMOCRA.eq(idTournee))
+                .fetchOneInto(Tournee.class);
+    }
+
+    public List<Tournee> getTournees() {
+        return context.selectFrom(TOURNEE)
+                .fetchInto(Tournee.class);
+    }
+
+    public List<NewHydrant> getIncomingNewHydrant() {
+        return context.selectFrom(NEW_HYDRANT)
+                .fetchInto(NewHydrant.class);
+    }
+
+    public void deleteNewHydrant(UUID idNewHydrant) {
+        context.deleteFrom(NEW_HYDRANT)
+                .where(NEW_HYDRANT.ID_NEW_HYDRANT.eq(idNewHydrant))
+                .execute();
+    }
+
+    public List<HydrantVisite> getHydrantVisite(List<Long> listIdHydrant) {
+        return context.selectFrom(HYDRANT_VISITE)
+                .where(HYDRANT_VISITE.ID_HYDRANT.in(listIdHydrant))
+                .fetchInto(HydrantVisite.class);
+    }
+
+    public List<HydrantVisiteAnomalie> getHydrantVisiteAnomalie(List<UUID> listIdHydrantVisite) {
+        return context.selectFrom(HYDRANT_VISITE_ANOMALIE)
+                .where(HYDRANT_VISITE_ANOMALIE.ID_HYDRANT_VISITE.in(listIdHydrantVisite))
+                .fetchInto(HydrantVisiteAnomalie.class);
+    }
+
+    public void updateIdRemocraGestionnaire(Long idRemocra, UUID idGestionnaire) {
+        context.update(GESTIONNAIRE)
+                .set(GESTIONNAIRE.ID_GESTIONNAIRE_REMOCRA, idRemocra)
+                .where(GESTIONNAIRE.ID_GESTIONNAIRE.eq(idGestionnaire))
+                .execute();
+    }
+
+    public List<Gestionnaire> getGestionnaires() {
+        return context.selectFrom(GESTIONNAIRE)
+                .fetchInto(Gestionnaire.class);
+    }
+
+    public List<Contact> getContacts() {
+        return context.selectFrom(CONTACT)
+                .fetchInto(Contact.class);
+    }
+
+    public List<ContactRole> getContactsRoles() {
+        return context.selectFrom(CONTACT_ROLE)
+                .fetchInto(ContactRole.class);
+    }
+
+    public void deleteGestionnaire() {
+        context.deleteFrom(GESTIONNAIRE).execute();
+    }
+
+    public void deleteContact() {
+        context.deleteFrom(CONTACT).execute();
+    }
+    public void deleteContactRole() {
+        context.deleteFrom(CONTACT_ROLE).execute();
+    }
+
+    public void deleteTournee() {
+        context.deleteFrom(TOURNEE).execute();
+    }
+    public void deleteHydrantVisiteAnomalie() {
+        context.deleteFrom(HYDRANT_VISITE_ANOMALIE).execute();
+    }
+    public void deleteHydrantVisite() {
+        context.deleteFrom(HYDRANT_VISITE).execute();
     }
 }

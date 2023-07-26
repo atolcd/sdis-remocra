@@ -293,7 +293,7 @@ public class HydrantVisitesUseCase {
     }
   }
 
-  private void launchTriggerAnomalies(Long hydrantId) throws IOException {
+  public void launchTriggerAnomalies(Long hydrantId) throws IOException {
     HydrantVisite visitePlusRecente = context
       .select()
       .from(HYDRANT_VISITE)

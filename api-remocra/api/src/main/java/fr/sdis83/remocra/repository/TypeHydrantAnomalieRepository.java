@@ -4,6 +4,9 @@ import org.jooq.DSLContext;
 
 import javax.inject.Inject;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantAnomalie;
+
+import java.util.List;
 
 public class TypeHydrantAnomalieRepository {
     private final DSLContext context;
@@ -18,5 +21,11 @@ public class TypeHydrantAnomalieRepository {
                 .from(TYPE_HYDRANT_ANOMALIE)
                 .where(TYPE_HYDRANT_ANOMALIE.CODE.eq(code))
                 .fetchOneInto(Long.class);
+    }
+
+    public List<TypeHydrantAnomalie> getAllWithCritere() {
+        return context.selectFrom(TYPE_HYDRANT_ANOMALIE)
+                .where(TYPE_HYDRANT_ANOMALIE.CRITERE.isNotNull())
+                .fetchInto(TypeHydrantAnomalie.class);
     }
 }

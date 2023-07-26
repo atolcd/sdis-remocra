@@ -29,4 +29,10 @@ public class ParamConfRepository {
                 .where(PARAM_CONF.CLE.eq(CREATION_PEI_MOBILE))
                 .fetchOneInto(ParamConfModel.class);
     }
+    
+    public ParamConfModel getByCle(String cle) {
+        return context.selectFrom(PARAM_CONF)
+                .where(PARAM_CONF.CLE.eq(cle))
+                .fetchOneInto(ParamConfModel.class);
+    }
 }

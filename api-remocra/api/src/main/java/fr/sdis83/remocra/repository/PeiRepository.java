@@ -416,4 +416,43 @@ public class PeiRepository {
        return context.fetchExists(context.selectFrom(HYDRANT)
                 .where(HYDRANT.ID.eq(idHydrant)));
     }
+
+    public Long insertHydrant(fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant h) {
+        return context.insertInto(HYDRANT)
+                .set(HYDRANT.NUMERO, h.getNumero())
+                .set(HYDRANT.NUMERO_INTERNE, h.getNumeroInterne())
+                .set(HYDRANT.CODE, h.getCode())
+                .set(HYDRANT.NATURE, h.getNature())
+                .set(HYDRANT.NATURE_DECI, h.getNatureDeci())
+                .set(HYDRANT.COMMUNE, h.getCommune())
+                .set(HYDRANT.VOIE, h.getVoie())
+                .set(HYDRANT.VOIE2, h.getVoie2())
+                .set(HYDRANT.LIEU_DIT, h.getLieuDit())
+                .set(HYDRANT.GEOMETRIE, h.getGeometrie())
+                .set(HYDRANT.ORGANISME, h.getOrganisme())
+                .set(HYDRANT.UTILISATEUR_MODIFICATION, h.getUtilisateurModification())
+                .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, h.getAuteurModificationFlag())
+                .onConflict(HYDRANT.NUMERO)
+                .doNothing()
+                .returning(HYDRANT.ID)
+                .fetchOne()
+                .getValue(HYDRANT.ID);
+    }
+
+    public int insertPena(Long idHydrantPena) {
+        return context.insertInto(HYDRANT_PENA)
+                .set(HYDRANT_PENA.ID, idHydrantPena)
+                .execute();
+    }
+    public int insertPibi(Long idHydrantPibi) {
+        return context.insertInto(HYDRANT_PIBI)
+                .set(HYDRANT_PIBI.ID, idHydrantPibi)
+                .execute();
+    }
+
+    public void deleteHydrant(Long idHydrant) {
+        context.deleteFrom(HYDRANT)
+                .where(HYDRANT.ID.eq(idHydrant))
+                .execute();
+    }
 }
