@@ -7,6 +7,10 @@ import fr.sdis83.remocra.repository.TypeDroitRepository;
 import fr.sdis83.remocra.repository.TypeHydrantNatureDeciRepository;
 import fr.sdis83.remocra.repository.TypeHydrantNatureRepository;
 import fr.sdis83.remocra.web.model.referentiel.HydrantModel;
+import fr.sdis83.remocra.repository.GestionnaireRepository;
+import fr.sdis83.remocra.web.model.referentiel.GestionnaireModel;
+import fr.sdis83.remocra.web.model.referentiel.ContactModel;
+import fr.sdis83.remocra.web.model.referentiel.ContactRoleModel;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -27,25 +31,31 @@ public class SynchroUseCase {
 
 
     @Inject
+    GestionnaireRepository gestionnaireRepository;
+
+    @Inject
     public SynchroUseCase(IncomingRepository incomingRepository,
                           TypeDroitRepository typeDroitRepository,
                           TypeHydrantNatureDeciRepository typeHydrantNatureDeciRepository,
-                          TypeHydrantNatureRepository typeHydrantNatureRepository) {
+                          TypeHydrantNatureRepository typeHydrantNatureRepository,
+                          GestionnaireRepository gestionnaireRepository) {
         this.incomingRepository = incomingRepository;
         this.typeDroitRepository = typeDroitRepository;
         this.typeHydrantNatureDeciRepository = typeHydrantNatureDeciRepository;
         this.typeHydrantNatureRepository = typeHydrantNatureRepository;
+        this.gestionnaireRepository = gestionnaireRepository;
     }
 
     /**
      * Permet de spécifier si l'utilisateur peut créer un hydrant
+     *
      * @return
      */
-    public boolean getDroit(Long currentUserId) {
-        // On vérifie que l'utilisateur a bien les droits pour créer des points d'eau depuis l'appli mobile
+    public boolean getDroit(Long currentUserId, String typeDroit) {
+        // On vérifie que l'utilisateur a bien le droit spécifié
         List<String> droits = typeDroitRepository.getDroitsUtilisateurMobile(currentUserId);
 
-        if (!droits.contains(TypeDroitRepository.TypeDroitsPourMobile.CREATION_PEI_MOBILE.codeDroitMobile)) {
+        if (!droits.contains(typeDroit)) {
             return false;
         }
         return true;
@@ -54,6 +64,7 @@ public class SynchroUseCase {
 
     /**
      * Permet en fonction de s'il s'agit d'un PIBI ou d'un PENA de l'ajouter en base
+     *
      */
     public Response insertHydrant(UUID idHydrant,
                                   UUID idGestionnaire,
@@ -72,7 +83,6 @@ public class SynchroUseCase {
         Long idCommune = incomingRepository.getCommuneWithGeometrie(geometrieHydrant);
 
         String nomVoie = incomingRepository.getVoie(geometrieHydrant);
-
 
         // Puis, on finit en faisant un insert
         String error = "Impossible d'insérer l'hydrant " + idHydrant + " dans incoming.";
@@ -97,6 +107,107 @@ public class SynchroUseCase {
         } catch(Exception e) {
             return Response.serverError().entity(error).build();
         }
+    }
+
+
+    public Response insertGestionnaire(Long idRemocra, String codeGestionnaire, String nomGestionnaire, UUID idGestionnaire) {
+        String erreur = checkErrorGestionnaire(idRemocra);
+        if (erreur != null) {
+            return Response.serverError().entity(erreur).build();
+        }
+
+        String error = "Impossible d'insérer le gestionnaire "
+                + idGestionnaire + " dans incoming.";
+        try {
+            int result = incomingRepository.insertGestionnaire(idRemocra, codeGestionnaire, nomGestionnaire, idGestionnaire);
+
+            return gestionResult(result,
+                    "Le gestionnaire " + idGestionnaire + " a été inséré dans incoming.",
+                    "Le gestionnaire " + idGestionnaire+ " est déjà dans le schéma incoming.",
+                    error
+            );
+
+        } catch (Exception e) {
+            return Response.serverError().entity(error).build();
+        }
+    }
+
+    private String checkErrorGestionnaire(Long idRemocra) {
+        // On vérifie que idRemocra pointe bien vers un gestionnaire existant s'il n'est pas nul
+        if (idRemocra != null && !gestionnaireRepository.checkExist(idRemocra)) {
+            return "Le gestionnaire avec l'id " + idRemocra + " n'existe pas dans REMOcRA.";
+        }
+
+        return null;
+    }
+
+    public Response insertContact(ContactModel contactModel, UUID idContact, UUID idGestionnaire) {
+        String erreur = checkErrorContact(contactModel, idContact, idGestionnaire);
+        if (erreur != null) {
+            return Response.serverError().entity(erreur).build();
+        }
+
+        String error = "Impossible d'insérer le contact " + idContact + " dans incoming.";
+        try {
+            int result = incomingRepository.insertContact(contactModel, idContact, idGestionnaire);
+            return gestionResult(result,
+                    "Le contact " + idContact + " a été inséré dans incoming.",
+                    "Le contact " + idContact+ " est déjà dans le schéma incoming.",
+                    error
+            );
+        } catch (Exception e) {
+           return Response.serverError().entity(error).build();
+        }
+    }
+
+    private String checkErrorContact(ContactModel contactModel, UUID idContact, UUID idGestionnaire) {
+        if (contactModel.getIdRemocra() != null
+                && !gestionnaireRepository.checkContactExist(contactModel.getIdRemocra())) {
+            return "Le contact " + contactModel.getIdRemocra() + " n'existe pas.";
+        }
+
+        // GESTIONNAIRE
+        if (!incomingRepository.checkGestionnaireExist(idGestionnaire)) {
+            return "Le gestionnaire " + idGestionnaire + " associé au contact " +
+                   idContact + " n'existe pas.";
+        }
+        return null;
+    }
+
+    public Response insertContactRole(UUID idContact, Long idRole) {
+        String erreur = checkErrorContactRole(idContact, idRole);
+        if (erreur != null) {
+            return Response.serverError().entity(erreur).build();
+        }
+
+        String error = "Impossible d'insérer le contact_role "
+                + idContact + " - " + idRole
+                + " dans incoming.";
+
+        try {
+            int result = incomingRepository.insertContactRole(idContact, idRole);
+            return gestionResult(result,
+                    "Le contactRole " + idContact + " - " + idRole +" a été inséré dans incoming.",
+                    "Le contactRole "+ idContact + " - " + idRole +" est déjà dans le schéma incoming.",
+                    error
+            );
+
+        } catch (Exception e) {
+            return Response.serverError().entity(error).build();
+        }
+    }
+
+    private String checkErrorContactRole(UUID idContact, Long idRole) {
+        if (!gestionnaireRepository.checkRoleExist(idRole)) {
+            return "Le role avec l'id " + idRole + " n'existe pas.";
+        }
+
+        // Contact
+        if (!incomingRepository.checkContactExist(idContact)) {
+            return "Le contact " + idContact + " associé au rôle " +
+                    idRole + " n'existe pas.";
+        }
+        return null;
     }
 
     private Response gestionResult(int result, String inserer, String dejaEnBase, String error) {

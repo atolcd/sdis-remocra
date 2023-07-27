@@ -5,12 +5,18 @@ import org.jooq.impl.DSL;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 import fr.sdis83.remocra.web.model.referentiel.HydrantModel;
+import fr.sdis83.remocra.web.model.referentiel.GestionnaireModel;
+import fr.sdis83.remocra.web.model.referentiel.ContactModel;
+import fr.sdis83.remocra.web.model.referentiel.ContactRoleModel;
 import org.jooq.DSLContext;
 
 import javax.inject.Inject;
 import java.util.UUID;
 
 import static fr.sdis83.remocra.db.model.incoming.Tables.NEW_HYDRANT;
+import static fr.sdis83.remocra.db.model.incoming.Tables.GESTIONNAIRE;
+import static fr.sdis83.remocra.db.model.incoming.Tables.CONTACT;
+import static fr.sdis83.remocra.db.model.incoming.Tables.CONTACT_ROLE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.VOIE;
 
@@ -98,5 +104,63 @@ public class IncomingRepository {
                         VOIE.GEOMETRIE,
                         geometrie.toText())
                 .fetchOneInto(String.class);
+    }
+
+    public int insertGestionnaire(Long idRemocra, String codeGestionnaire, String nomGestionnaire, UUID idGestionnaire) {
+        return transactionManager.transactionResult(() ->
+                context.insertInto(GESTIONNAIRE)
+                        .set(GESTIONNAIRE.ID_GESTIONNAIRE, idGestionnaire)
+                        .set(GESTIONNAIRE.ID_GESTIONNAIRE_REMOCRA, idRemocra)
+                        .set(GESTIONNAIRE.CODE_GESTIONNAIRE, codeGestionnaire)
+                        .set(GESTIONNAIRE.NOM_GESTIONNAIRE, nomGestionnaire)
+                        .execute()
+        );
+    }
+
+    public boolean checkGestionnaireExist(UUID idGestionnaire) {
+        return context.fetchExists(
+                context.selectFrom(GESTIONNAIRE)
+                        .where(GESTIONNAIRE.ID_GESTIONNAIRE.eq(idGestionnaire))
+        );
+    }
+
+    public int insertContact(ContactModel contactModel, UUID idContact, UUID idGestionnaire) {
+        return transactionManager.transactionResult(() ->
+                context.insertInto(CONTACT)
+                        .set(CONTACT.ID_CONTACT, idContact)
+                        .set(CONTACT.ID_CONTACT_REMOCRA, contactModel.getIdRemocra())
+                        .set(CONTACT.ID_GESTIONNAIRE, idGestionnaire)
+                        .set(CONTACT.FONCTION_CONTACT, contactModel.getFonction())
+                        .set(CONTACT.CIVILITE_CONTACT, contactModel.getCivilite())
+                        .set(CONTACT.NOM_CONTACT, contactModel.getNom())
+                        .set(CONTACT.PRENOM_CONTACT, contactModel.getPrenom())
+                        .set(CONTACT.CODE_POSTAL_CONTACT, contactModel.getCodePostal())
+                        .set(CONTACT.VILLE_CONTACT, contactModel.getVille())
+                        .set(CONTACT.NUMERO_VOIE_CONTACT, contactModel.getNumeroVoie())
+                        .set(CONTACT.SUFFIXE_VOIE_CONTACT, contactModel.getSuffixeVoie())
+                        .set(CONTACT.VOIE_CONTACT, contactModel.getVoie())
+                        .set(CONTACT.PAYS_CONTACT, contactModel.getPays())
+                        .set(CONTACT.EMAIL_CONTACT, contactModel.getEmail())
+                        .set(CONTACT.TELEPHONE_CONTACT, contactModel.getTelephone())
+                        .onConflictDoNothing()
+                        .execute()
+        );
+    }
+
+    public boolean checkContactExist(UUID idContact) {
+        return context.fetchExists(
+                context.selectFrom(CONTACT)
+                        .where(CONTACT.ID_CONTACT.eq(idContact))
+        );
+    }
+
+    public int insertContactRole(UUID idContact, Long idRole) {
+        return transactionManager.transactionResult(() ->
+                context.insertInto(CONTACT_ROLE)
+                        .set(CONTACT_ROLE.ID_CONTACT, idContact)
+                        .set(CONTACT_ROLE.ID_ROLE, idRole)
+                        .onConflictDoNothing()
+                        .execute()
+        );
     }
 }

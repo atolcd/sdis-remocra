@@ -52,10 +52,14 @@ public class TypeDroitRepository {
         CREATION_PEI_MOBILE("CREATION_PEI_MOBILE"),
         CREATION_GESTIONNAIRE_MOBILE("CREATION_GESTIONNAIRE_MOBILE");
 
-        public String codeDroitMobile;
+        private String codeDroitMobile;
 
         TypeDroitsPourMobile(String codeDroitMobile) {
             this.codeDroitMobile = codeDroitMobile;
+        }
+
+        public String getCodeDroitMobile() {
+            return codeDroitMobile;
         }
     }
 

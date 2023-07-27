@@ -18,6 +18,24 @@ public class ContactModel {
   String telephone;
   String email;
 
+  public ContactModel(Long idRemocra, Long idRemocraGestionnaire, String fonction, String civilite, String nom, String prenom, String numeroVoie, String voie, String suffixeVoie, String lieuDit, String codePostal, String ville, String pays, String telephone, String email) {
+    this.idRemocra = idRemocra;
+    this.idRemocraGestionnaire = idRemocraGestionnaire;
+    this.fonction = fonction;
+    this.civilite = civilite;
+    this.nom = nom;
+    this.prenom = prenom;
+    this.numeroVoie = numeroVoie;
+    this.voie = voie;
+    this.suffixeVoie = suffixeVoie;
+    this.lieuDit = lieuDit;
+    this.codePostal = codePostal;
+    this.ville = ville;
+    this.pays = pays;
+    this.telephone = telephone;
+    this.email = email;
+  }
+
   public Long getIdRemocra() {
     return idRemocra;
   }

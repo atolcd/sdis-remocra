@@ -17,6 +17,9 @@ import javax.ws.rs.core.Response;
 
 import fr.sdis83.remocra.repository.ParamConfRepository;
 import fr.sdis83.remocra.web.model.referentiel.HydrantModel;
+import fr.sdis83.remocra.web.model.referentiel.ContactModel;
+import fr.sdis83.remocra.web.model.referentiel.GestionnaireModel;
+import fr.sdis83.remocra.web.model.referentiel.ContactRoleModel;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -25,6 +28,8 @@ import java.util.UUID;
 import fr.sdis83.remocra.usecase.tournee.TourneeUseCase;
 import fr.sdis83.remocra.usecase.synchro.SynchroUseCase;
 import fr.sdis83.remocra.repository.UtilisateursRepository;
+
+import static fr.sdis83.remocra.repository.TypeDroitRepository.TypeDroitsPourMobile;
 
 
 @Path("/mobile/synchro")
@@ -98,9 +103,10 @@ public class SynchroEndpoint {
             @FormParam("idNature")
             Long idNature
     ) {
-        if(!synchroUseCase.getDroit(currentUser.get().userId()) ||
+        if(!synchroUseCase.getDroit(currentUser.get().userId(),
+                TypeDroitsPourMobile.CREATION_PEI_MOBILE.getCodeDroitMobile()) ||
                 paramConfRepository.getCreationPeiAppMobile().getValeur().equals("false")) {
-            return accessDenied();
+            return accessDenied(TypeDroitsPourMobile.CREATION_PEI_MOBILE);
         }
 
         return synchroUseCase.insertHydrant(
@@ -115,9 +121,130 @@ public class SynchroEndpoint {
         );
     }
 
-    private Response accessDenied() {
+    private Response accessDenied(TypeDroitsPourMobile typeDroit) {
+        String s = "";
+        switch (typeDroit) {
+            case CREATION_PEI_MOBILE:
+                s = "L'utilisateur " + currentUser.get().userId() + " n'a pas les droits de création de PEI.";
+                break;
+            case CREATION_GESTIONNAIRE_MOBILE:
+                s = "L'utilisateur " + currentUser.get().userId() + " n'a pas les droits de création / modifications de gestionnaires.";
+                break;
+        }
+
         return Response.serverError()
-                .entity("L'utilisateur "+currentUser.get().userId() + " n'a pas les droits de création de PEI.")
+                .entity(s)
                 .build();
+    }
+
+    @AuthDevice
+    @Path("/gestionnaires")
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response getGestionnaire(
+            @FormParam("idGestionnaire")
+            UUID idGestionnaire,
+            @FormParam("idRemocra")
+            Long idRemocra,
+            @FormParam("nomGestionnaire")
+            String nomGestionnaire,
+            @FormParam("codeGestionnaire")
+            String codeGestionnaire
+    ) {
+        if(!synchroUseCase.getDroit(currentUser.get().userId(),
+                TypeDroitsPourMobile.CREATION_GESTIONNAIRE_MOBILE.getCodeDroitMobile())) {
+            return accessDenied(TypeDroitsPourMobile.CREATION_GESTIONNAIRE_MOBILE);
+        }
+
+        return synchroUseCase.insertGestionnaire(
+                idRemocra,
+                codeGestionnaire,
+                nomGestionnaire,
+                idGestionnaire
+        );
+    }
+
+    @AuthDevice
+    @Path("/contacts")
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response getContact(
+            @FormParam("idContact")
+            UUID idContact,
+            @FormParam("idRemocra")
+            Long idRemocra,
+            @FormParam("idGestionnaire")
+            UUID idGestionnaire,
+            @FormParam("nom")
+            String nomContact,
+            @FormParam("prenom")
+            String prenomContact,
+            @FormParam("fonction")
+            String fonctionContact,
+            @FormParam("civilite")
+            String civiliteContact,
+            @FormParam("codePostal")
+            String codePostalContact,
+            @FormParam("voie")
+            String voieContact,
+            @FormParam("suffixeVoie")
+            String suffixeVoieContact,
+            @FormParam("numeroVoie")
+            String numeroVoieContact,
+            @FormParam("lieuDit")
+            String lieuDitContact,
+            @FormParam("telephone")
+            String telephoneContact,
+            @FormParam("email")
+            String emailContact,
+            @FormParam("ville")
+            String villeContact,
+            @FormParam("pays")
+            String paysContact
+    ) {
+        if(!synchroUseCase.getDroit(currentUser.get().userId(),
+                TypeDroitsPourMobile.CREATION_GESTIONNAIRE_MOBILE.getCodeDroitMobile())) {
+            return accessDenied(TypeDroitsPourMobile.CREATION_GESTIONNAIRE_MOBILE);
+        }
+
+        return synchroUseCase.insertContact(
+                new ContactModel(
+                        idRemocra,
+                        null,
+                        nomContact,
+                        prenomContact,
+                        civiliteContact,
+                        fonctionContact,
+                        codePostalContact,
+                        voieContact,
+                        numeroVoieContact,
+                        suffixeVoieContact,
+                        villeContact,
+                        lieuDitContact,
+                        paysContact,
+                        telephoneContact,
+                        emailContact),
+                idContact,
+                idGestionnaire
+
+        );
+    }
+
+    @AuthDevice
+    @Path("/contactsrole")
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response getContactRole(
+            @FormParam("idContact")
+            UUID idContact,
+            @FormParam("idRoleRemocra")
+            Long idRoleRemocra
+    ) {
+        if(!synchroUseCase.getDroit(currentUser.get().userId(),
+                TypeDroitsPourMobile.CREATION_GESTIONNAIRE_MOBILE.getCodeDroitMobile())) {
+            return accessDenied(TypeDroitsPourMobile.CREATION_GESTIONNAIRE_MOBILE);
+        }
+
+        return synchroUseCase.insertContactRole(idContact, idRoleRemocra);
     }
 }
