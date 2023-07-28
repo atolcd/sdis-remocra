@@ -46,7 +46,7 @@ Ext.define('Sdis.Remocra.widget.BlocDocumentGrid', {
                 text: 'Titre',
                 xtype:'templatecolumn',
                 flex: 3,
-                tpl: '<a href="'+BASE_URL+'/../telechargement/document/{code}" title="{description}" target="_blank">{titre}</a>',
+                tpl: '<a href="'+BASE_URL+'/../telechargement/document/{code}" title="{description}" target="_blank" data-qtip="{titre}">{titre}</a>',
                 menuDisabled: true
             }, {
                 text: 'Mise à jour',
