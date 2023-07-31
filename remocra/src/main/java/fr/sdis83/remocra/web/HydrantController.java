@@ -223,8 +223,9 @@ public class HydrantController {
     @PreAuthorize("hasRight('HYDRANTS_R')")
     public ResponseEntity<java.lang.String> checkDispo(final @RequestParam(value = "id", required = false) Long id,
             final @RequestParam(value = "nature", required = false) Long nature, final @RequestParam(value = "commune", required = false) Long codeCommune,
-            final @RequestParam(value = "num", required = false) String num, final @RequestParam(value = "geometrie", required = false) String geometrie) {
-        String message = hydrantService.checkDispo(id, nature, codeCommune, (num == null || num.isEmpty() ? null : Integer.valueOf(num)), geometrie);
+            final @RequestParam(value = "num", required = false) String num, final @RequestParam(value = "geometrie", required = false) String geometrie,
+            final @RequestParam(value = "nature_deci", required = false) Long nature_deci) {
+        String message = hydrantService.checkDispo(id, nature, codeCommune, (num == null || num.isEmpty() ? null : Integer.valueOf(num)), geometrie, nature_deci);
         return new SuccessErrorExtSerializer(message == null || message.isEmpty(), message).serialize();
 
     }
