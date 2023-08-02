@@ -3,7 +3,7 @@ package fr.sdis83.remocra.web.model.pei;
 import java.util.Date;
 
 public class PeiDiffModel {
-
+  Long idHydrant;
   String numero;
 
   Date dateModification;
@@ -82,5 +82,13 @@ public class PeiDiffModel {
 
   public void setType(String type) {
     this.type = type;
+  }
+
+  public Long getIdHydrant() {
+    return idHydrant;
+  }
+
+  public void setIdHydrant(Long idHydrant) {
+    this.idHydrant = idHydrant;
   }
 }

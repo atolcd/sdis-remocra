@@ -27,6 +27,7 @@ public class PeiDiffModelSerializer extends StdSerializer<PeiDiffModel> {
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     jsonGenerator.writeStartObject();
+    jsonGenerator.writeNumberField("idHydrant", pei.getIdHydrant());
     jsonGenerator.writeStringField("numero", pei.getNumero());
     jsonGenerator.writeStringField("dateModification", dateFormat.format(pei.getDateModification()));
     jsonGenerator.writeStringField("operation", pei.getOperation());

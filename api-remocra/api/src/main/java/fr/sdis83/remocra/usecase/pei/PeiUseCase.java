@@ -429,7 +429,6 @@ public class PeiUseCase {
     if (UseCaseUtils.isServicePublicDECI(hydrantAccessibilite.getServicePublicDECI(), organisme)) {
       return true;
     }
-
     return false;
   }
 
@@ -461,7 +460,7 @@ public class PeiUseCase {
     HydrantVisite tracabiliteHydrantVisite = Tables.HYDRANT_VISITE.as("tracabiliteHydrantVisite");
 
     // Données de tracabilite.hydrant
-    List<PeiDiffModel> listeCarac = context.select(tracabiliteHydrant.NUMERO, tracabiliteHydrant.DATE_OPERATION.as("dateModification"),
+    List<PeiDiffModel> listeCarac = context.select(tracabiliteHydrant.ID_HYDRANT.as("idHydrant"), tracabiliteHydrant.NUMERO, tracabiliteHydrant.DATE_OPERATION.as("dateModification"),
                     tracabiliteHydrant.NOM_OPERATION.as("operation"), DSL.concat(UTILISATEUR.NOM, DSL.val(" "), UTILISATEUR.PRENOM).as("utilisateurModification"),
                     organismeUtilisateur.NOM.as("utilisateurModificationOrganisme"), organisme.NOM.as("organismeModification"),
                     tracabiliteHydrant.AUTEUR_MODIFICATION_FLAG.as("auteurModificationFlag"), DSL.val("CARACTERISTIQUES").as("type")
@@ -474,7 +473,7 @@ public class PeiUseCase {
             .fetchInto(PeiDiffModel.class);
 
     // Données de tracabilité.hydrant_visite
-    List<PeiDiffModel> listeVisite = context.select(HYDRANT.NUMERO, tracabiliteHydrantVisite.DATE_OPERATION.as("dateModification"),
+    List<PeiDiffModel> listeVisite = context.select(HYDRANT.ID.as("idHydrant"), HYDRANT.NUMERO, tracabiliteHydrantVisite.DATE_OPERATION.as("dateModification"),
                     tracabiliteHydrantVisite.NOM_OPERATION.as("operation"), DSL.concat(UTILISATEUR.NOM, DSL.val(" "), UTILISATEUR.PRENOM).as("utilisateurModification"),
                     organismeUtilisateur.NOM.as("utilisateurModificationOrganisme"), organisme.NOM.as("organismeModification"),
                     tracabiliteHydrantVisite.AUTEUR_MODIFICATION_FLAG.as("auteurModificationFlag"), DSL.val("VISITES").as("type"))
