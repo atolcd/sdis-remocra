@@ -3,6 +3,7 @@ package fr.sdis83.remocra.repository;
 import com.vividsolutions.jts.geom.Geometry;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.RepertoireLieu;
 import fr.sdis83.remocra.util.GeometryUtil;
+import fr.sdis83.remocra.web.model.RepertoireLieuData;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -38,16 +39,15 @@ public class RepertoireLieuRepository {
     this.context = context;
   }
 
-  public List<fr.sdis83.remocra.web.model.RepertoireLieu> getAll(String query) {
-
+  public List<RepertoireLieuData> getAll(String query) {
     List<RepertoireLieu> repertoires = context.selectFrom(REPERTOIRE_LIEU).fetchInto(RepertoireLieu.class);
-    return getListRepertoireLieu(query, repertoires);
+    return getRepertoireLieuData(query, repertoires);
   }
 
-  private List<fr.sdis83.remocra.web.model.RepertoireLieu> getListRepertoireLieu(String query, List<RepertoireLieu> repertoires) {
+  private List<RepertoireLieuData> getRepertoireLieuData(String query, List<RepertoireLieu> repertoires) {
 
     //TODO  vérifier que query est protégé contre l'injection
-    List<fr.sdis83.remocra.web.model.RepertoireLieu> listRepertoireLieu = new ArrayList<>();
+    List<RepertoireLieuData> listRepertoireLieu = new ArrayList<>();
     StringBuilder sql = new StringBuilder();
 
     for(int i =0; i<repertoires.size(); i++){
@@ -74,7 +74,7 @@ public class RepertoireLieuRepository {
 
     Result<Record> result = context.fetch(sql.toString());
     for (Record r : result){
-      fr.sdis83.remocra.web.model.RepertoireLieu rep = new fr.sdis83.remocra.web.model.RepertoireLieu();
+      RepertoireLieuData rep = new RepertoireLieuData();
       rep.setLibelle(String.valueOf(r.getValue("libelle")));
       String[] coord = String.valueOf(r.getValue("geometrie")).split(";");
       Integer srid = sridFromGeom(coord[0]);
@@ -87,14 +87,15 @@ public class RepertoireLieuRepository {
     return listRepertoireLieu;
   }
 
-  public List<fr.sdis83.remocra.web.model.RepertoireLieu> getAllById(Long id, String query) {
+  public List<RepertoireLieuData> getAllById(Long id, String query) {
+
 
     List<RepertoireLieu> repertoires = context.selectFrom(REPERTOIRE_LIEU)
         .where(REPERTOIRE_LIEU.ID.in(DSL.select(CRISE_REPERTOIRE_LIEU.REPERTOIRE_LIEU)
             .from(CRISE_REPERTOIRE_LIEU)
             .where(CRISE_REPERTOIRE_LIEU.CRISE.eq(id)))).fetchInto(RepertoireLieu.class);
 
-    return getListRepertoireLieu(query, repertoires);
+    return getRepertoireLieuData(query, repertoires);
   }
   public int count() {
     return context.fetchCount(context.select().from(REPERTOIRE_LIEU));
