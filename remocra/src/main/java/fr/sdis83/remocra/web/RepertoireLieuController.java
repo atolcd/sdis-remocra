@@ -43,7 +43,7 @@ public class RepertoireLieuController {
 
       @Override
       protected List<fr.sdis83.remocra.web.model.RepertoireLieu> getRecords() {
-        return repertoireLieuRepository.getAll(itemFilterList, query);
+        return repertoireLieuRepository.getAll(query);
       }
 
       @Override
