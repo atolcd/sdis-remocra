@@ -46,25 +46,33 @@ public class RepertoireLieuRepository {
 
   private List<RepertoireLieuData> getRepertoireLieuData(String query, List<RepertoireLieu> repertoires) {
 
-    //TODO  vérifier que query est protégé contre l'injection
     List<RepertoireLieuData> listRepertoireLieu = new ArrayList<>();
     StringBuilder sql = new StringBuilder();
 
+    String queryReplace = query
+            //Replace des ' par '' pour les echapper en postgres
+            .replace("'", "''")
+            //Replace des espaces pas des % pour permettre une recherche du type :
+            // "aire gen voyag gorr" pour trouver "aire d'accueil des gens du voyage - GORRON  (Lieu-dit)"
+            .replace(' ', '%');
+
     for(int i =0; i<repertoires.size(); i++){
-      RepertoireLieu r = repertoires.get(i);
+      RepertoireLieu repertoireLieu = repertoires.get(i);
+
       sql.append(" SELECT ")
-              .append(r.getSourceSqlLibelle())
+              .append(repertoireLieu.getSourceSqlLibelle())
               .append(" AS libelle, St_asewkt(")
-              .append(r.getSourceSqlValeur())
+              .append(repertoireLieu.getSourceSqlValeur())
               .append(") AS geometrie, CAST('")
-              .append(r.getLibelle().replaceAll("'", "\""))
+              .append(repertoireLieu.getLibelle().replaceAll("'", "\""))
               .append("' as varchar) AS origine")
-              .append(" FROM(").append(r.getSourceSql())
-              .append(") AS rep").append(r.getId())
-              .append(" WHERE lower(")
-              .append(r.getSourceSqlLibelle())
-              .append(") like lower('%")
-              .append(query).append("%')");
+              .append(" FROM(").append(repertoireLieu.getSourceSql())
+              .append(") AS rep").append(repertoireLieu.getId())
+              .append(" WHERE ")
+              .append(repertoireLieu.getSourceSqlLibelle())
+              .append(" ILIKE '%")
+              .append(queryReplace)
+              .append("%'");
       if (i  < repertoires.size()-1){
         sql.append(" UNION ");
       }if(i == repertoires.size()-1){
@@ -88,7 +96,6 @@ public class RepertoireLieuRepository {
   }
 
   public List<RepertoireLieuData> getAllById(Long id, String query) {
-
 
     List<RepertoireLieu> repertoires = context.selectFrom(REPERTOIRE_LIEU)
         .where(REPERTOIRE_LIEU.ID.in(DSL.select(CRISE_REPERTOIRE_LIEU.REPERTOIRE_LIEU)
