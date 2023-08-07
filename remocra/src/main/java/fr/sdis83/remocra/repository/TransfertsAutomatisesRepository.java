@@ -1,11 +1,6 @@
 package fr.sdis83.remocra.repository;
 
 import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.Record4;
-import org.jooq.Record5;
-import org.jooq.Record6;
-import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +22,7 @@ public class TransfertsAutomatisesRepository {
     public TransfertsAutomatisesRepository() {
     }
 
+
     @Bean
     public TransfertsAutomatisesRepository transfertsAutomatisesRepository(DSLContext context) {
         return new TransfertsAutomatisesRepository(context);
@@ -37,44 +33,48 @@ public class TransfertsAutomatisesRepository {
     }
 
     public List<Map<String,Object>> getTypesOrganismeAcces(){
-        Result<Record6<Integer, Boolean, Boolean, Boolean, Long, String>> result = context.select(TRANSFERTS_AUTOMATISES.ID, TRANSFERTS_AUTOMATISES.ADMINISTRER, TRANSFERTS_AUTOMATISES.TRANSMETTRE,
-                        TRANSFERTS_AUTOMATISES.RECUPERER, TYPE_ORGANISME.ID.as("organisme_id"), TYPE_ORGANISME.NOM)
+        List<TypeOrganismeAcces> listeTypeOrganismeAcces =
+                context.select( TRANSFERTS_AUTOMATISES.ID,
+                                TRANSFERTS_AUTOMATISES.ADMINISTRER,
+                                TRANSFERTS_AUTOMATISES.TRANSMETTRE,
+                                TRANSFERTS_AUTOMATISES.RECUPERER,
+                                TYPE_ORGANISME.ID.as("organismeId"),
+                                TYPE_ORGANISME.NOM.as("organismeNom"))
                 .from(TRANSFERTS_AUTOMATISES)
                 .join(TYPE_ORGANISME)
                 .on(TRANSFERTS_AUTOMATISES.TYPE_ORGANISME.eq(TYPE_ORGANISME.ID))
                 .orderBy(TYPE_ORGANISME.NOM)
-                .fetch();
+                .fetchInto(TypeOrganismeAcces.class);
 
         List<Map<String,Object>> listeTransfertsAutomatises = new ArrayList<>();
-        for(Record record : result){
+        for(TypeOrganismeAcces typeOrganismeAcces : listeTypeOrganismeAcces){
             Map<String, Object> map = new HashMap<>();
-            map.put("id",record.getValue("id"));
-            map.put("administrer",record.getValue("administrer"));
-            map.put("transmettre",record.getValue("transmettre"));
-            map.put("recuperer",record.getValue("recuperer"));
-            map.put("nom",record.getValue("nom"));
-            map.put("organisme_id",record.getValue("organisme_id"));
-
+            map.put("id",typeOrganismeAcces.getId());
+            map.put("administrer",typeOrganismeAcces.getAdministrer());
+            map.put("transmettre",typeOrganismeAcces.getTransmettre());
+            map.put("recuperer",typeOrganismeAcces.getRecuperer());
+            map.put("nom",typeOrganismeAcces.getOrganismeNom());
+            map.put("organisme_id",typeOrganismeAcces.getOrganismeId());
             listeTransfertsAutomatises.add(map);
         }
         return listeTransfertsAutomatises;
     }
 
-    public void updateAdministrer(Long id, Boolean value){
+    public void updateAdministrer(Long idTypeOrganisme, Boolean value) {
         context.update(TRANSFERTS_AUTOMATISES)
                 .set(TRANSFERTS_AUTOMATISES.ADMINISTRER, value)
-                .where(TRANSFERTS_AUTOMATISES.TYPE_ORGANISME.eq(id)).execute();
+                .where(TRANSFERTS_AUTOMATISES.TYPE_ORGANISME.eq(idTypeOrganisme)).execute();
     }
 
-    public void updateTransmettre(Long id, Boolean value){
+    public void updateTransmettre(Long idTypeOrganisme, Boolean value) {
         context.update(TRANSFERTS_AUTOMATISES)
                 .set(TRANSFERTS_AUTOMATISES.TRANSMETTRE, value)
-                .where(TRANSFERTS_AUTOMATISES.TYPE_ORGANISME.eq(id)).execute();
+                .where(TRANSFERTS_AUTOMATISES.TYPE_ORGANISME.eq(idTypeOrganisme)).execute();
     }
 
-    public void updateRecuperer(Long id, Boolean value){
+    public void updateRecuperer(Long idTypeOrganisme, Boolean value) {
         context.update(TRANSFERTS_AUTOMATISES)
                 .set(TRANSFERTS_AUTOMATISES.RECUPERER, value)
-                .where(TRANSFERTS_AUTOMATISES.TYPE_ORGANISME.eq(id)).execute();
+                .where(TRANSFERTS_AUTOMATISES.TYPE_ORGANISME.eq(idTypeOrganisme)).execute();
     }
 }
