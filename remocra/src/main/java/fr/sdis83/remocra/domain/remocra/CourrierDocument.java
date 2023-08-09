@@ -30,7 +30,7 @@ import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 public class CourrierDocument {
 
     public enum TypeDestinataire {
-        ORGANISME, UTILISATEUR, AUTRE
+        ORGANISME, UTILISATEUR, AUTRE, CONTACT
     }
 
     @Id
