@@ -10,6 +10,23 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
+== v2.2.5.4
+
+=== Evolution
+* Ajoute une info bulle sur les documents de la page d'accueil (#184857)
+* Ajoute un type Admin pour l'API (#176642)
+
+=== Fix
+* Corrige la fonctionnalité "Zoomer sur un lieu" (#185142)
+* Corrige la fonctionnalité "Retirer un point d'eau" dans les indisponibilités temporaires (#183955)
+* Optimise le point d'API trop lent (#182646)
+* Corrige la lecture des courriers depuis l'extérieur du SDIS (#177720)
+
+=== Mise à jour
+
+* Indiquer la valeur de version `2.2.5.4` dans le fichier .env (ou remocra.env)
+* Appliquer le patch 178 (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches[Disponibles ici]).
+
 == v2.2.5.3
 
 === Evolution
