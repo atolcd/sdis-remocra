@@ -31,6 +31,13 @@ public class MobileAuthEndpoint {
     return Response.ok().build();
   }
 
+  @Path("/check")
+  @PUT
+  @PermitAll
+  public Response checkUrl() {
+    return Response.ok().build();
+  }
+
 
   @Path("/login")
   @POST
