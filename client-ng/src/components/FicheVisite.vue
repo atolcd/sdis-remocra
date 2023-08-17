@@ -56,7 +56,7 @@
             </b-form-group>
           </div>
           <div class="col-md-6 vertical-bottom">
-            <b-form-checkbox id="ctrl_debit_pression" v-model="listeVisites[selectedRow].ctrl_debit_pression" v-on:change="onCtrlDebitPressionChecked" :disabled="ctrlDebitPressionDisabled" size="sm"> Contrôle débit et pression (CDP)
+            <b-form-checkbox id="ctrl_debit_pression" v-model="listeVisites[selectedRow].ctrl_debit_pression" :disabled="ctrlDebitPressionDisabled" size="sm"> Contrôle débit et pression (CDP)
             </b-form-checkbox>
           </div>
         </div>
@@ -81,10 +81,10 @@
                 <div class="row">
                   <div class="col-md-9">
                     <b-form-group label="Débit à 1 bar (m3/h) :" label-for="debit" label-cols-md="5"  >
-                        <b-form-input id="debit" v-model="listeVisites[selectedRow].debit" type="number" size="sm" :disabled="!saisieDebitPression"></b-form-input>
+                        <b-form-input id="debit" v-model.number="listeVisites[selectedRow].debit" type="number" size="sm" :disabled="!saisieDebitPression"></b-form-input>
                     </b-form-group>
                   </div>
-                  <p class="col-sm-3">{{this.getDerniereValeurDebitPression("debit")}}</p>
+                  <p class="col-sm-3">{{this.getDerniereValeurDebitPression("debit", false)}}</p>
                 </div>
                 <!-- Si le debit nominal est renseigné on l'affiche sinon on affiche juste 'pression dynamique' -->
                 <div class="row">
@@ -96,10 +96,10 @@
                     label-for="pressionDyn"
                     label-cols-md="5"
                     >
-                      <b-form-input id="pressionDyn" v-model="listeVisites[selectedRow].pressionDyn" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
+                      <b-form-input id="pressionDyn" v-model.number="listeVisites[selectedRow].pressionDyn" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
                     </b-form-group>
                   </div>
-                  <p class="col-sm-3">{{this.getDerniereValeurDebitPression("pressionDyn")}}</p>
+                  <p class="col-sm-3">{{this.getDerniereValeurDebitPression("pressionDyn", false)}}</p>
                 </div>
                 <div class="row">
                   <div class="col-md-9">
@@ -107,7 +107,7 @@
                       <b-form-input id="pression" v-model.number="listeVisites[selectedRow].pression" type="number" step="any" size="sm" :disabled="!saisieDebitPression"></b-form-input>
                     </b-form-group>
                   </div>
-                  <p class="col-sm-3">{{this.getDerniereValeurDebitPression("pression")}}</p>
+                  <p class="col-sm-3">{{this.getDerniereValeurDebitPression("pression", false)}}</p>
                 </div>
               </div>
             </b-tab>
@@ -257,6 +257,7 @@ export default {
       }
       return this.hydrant.code != "PIBI" || this.selectedRow == null || (this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CTRL" && this.typesVisites[this.listeVisites[this.selectedRow].type].code != "CREA");
     },
+
     /** Le bouton "Nouvelle visite" est désactivé ou non en fonction des droits de l'utilisateur
      * Les droits sont en fonction des types de visite qui dépend du nombre de visites déjà effectuées
      */
@@ -501,13 +502,18 @@ export default {
         type: typeVisite,
         date: moment().format("YYYY-MM-DD HH:mm"),
         anomalies: anomalies,
-        ctrl_debit_pression: false
+        ctrl_debit_pression: false,
       }
       this.listeVisites.unshift(visite);
       var splitDate = visite.date.split(" ");
       this.formattedDate.unshift(splitDate[0]);
       this.formattedTime.unshift(splitDate[1]);
       this.onRowSelected(0); // Sélection automatique de la visite créée
+      // on va chercher les anciennes valeurs pour les mettre par défaut
+      //important d'aller les chercher aprés le this.onRowSelected(0).
+      visite.debit = this.getDerniereValeurDebitPression("debit", true);
+      visite.pression = this.getDerniereValeurDebitPression("pression", true);
+      visite.pressionDyn = this.getDerniereValeurDebitPression("pressionDyn", true);
       this.indexCritere = -1;
       this.critereSuivant();
     },
@@ -580,21 +586,6 @@ export default {
       }
       this.indexCritere = -1;
       this.critereSuivant();
-    },
-    /**
-     * En cas de désactivation de la case "Contrôle débit et pression", on vide les champs correspondant au débit et à la pression
-     */
-    onCtrlDebitPressionChecked(value) {
-      if (!value) {
-        var item = this.listeVisites[this.selectedRow];
-        item.debit = null;
-        item.debitMax = null;
-        item.pression = null;
-        item.pressionDyn = null;
-        item.pressionDynDeb = null;
-        item.debitAutre = null;
-        item.pressionDynAutre = null;
-      }
     },
     /**
      * Lors d'un clic sur le bouton "Suivant" de la sélection des anomalies
@@ -678,6 +669,14 @@ export default {
         if (visite.type === null) {
           this.etats.type = 'invalid';
         }
+        //si contrôle débit n'est pas coché on reset les valeurs débit pression
+        //ça permet de supprimer les valeurs qui auraient pu être affectées avant de décocher
+        //la case.
+        if(!visite.ctrl_debit_pression){
+          visite.debit = null;
+          visite.pression = null;
+          visite.pressionDyn = null;
+        }
       });
       // Si deux visites sont à des dates et heures identiques, on affiche une alerte et on bloque la validation
       if (this.listeVisites.length > 0) {
@@ -735,15 +734,20 @@ export default {
 
     /**
      * Permet de récupérer les anciennes valeurs saisies (débit et pression)
-     * @param nomValeur : libellé de l'ancienne valeur à récupérer
+     * @param nomValeur : string de l'ancienne valeur à récupérer
+     * @param isJustValue : boolean true si on veut juste la valeur false si on veut le message avec
      */
-     getDerniereValeurDebitPression(nomValeur) {
+     getDerniereValeurDebitPression(nomValeur, isJustValue) {
       // On vérifie s'il s'agit d'une visite en cours de création
       // Si ce n'est pas le cas, on affiche pas l'ancienne valeur
-      if(this.listeVisites[this.selectedRow].id === undefined){
+      if( this.listeVisites[this.selectedRow].id === undefined ){
         for(var i = 1; i  < this.listeVisites.length -1; i++) {
           if(this.listeVisites[i].ctrl_debit_pression) {
-            return "(Ancienne valeur saisie : "+this.listeVisites[i][nomValeur]+")"
+            if(isJustValue){
+             return this.listeVisites[i][nomValeur]
+            }else{
+              return "(Ancienne valeur saisie : "+this.listeVisites[i][nomValeur]+")"
+            }
           }
         }
       }
