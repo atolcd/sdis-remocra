@@ -15,6 +15,13 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_CRITERE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE_DECI;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_SAISIE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.PARAM_CONF;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_DROIT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.DROIT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
+import static fr.sdis83.remocra.db.model.remocra.Tables.PROFIL_UTILISATEUR;
+import static fr.sdis83.remocra.db.model.remocra.Tables.PROFIL_DROIT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.PROFIL_ORGANISME_UTILISATEUR_DROIT;
 import fr.sdis83.remocra.web.model.referentiel.CommuneModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactRoleModel;
@@ -30,6 +37,9 @@ import fr.sdis83.remocra.web.model.referentiel.TypeHydrantModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantNatureDeciModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantNatureModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantSaisieModel;
+import fr.sdis83.remocra.web.model.authn.ParamConfModel;
+import fr.sdis83.remocra.web.model.mobilemodel.TypeDroitModel;
+
 import java.util.List;
 import javax.inject.Inject;
 import org.jooq.DSLContext;
@@ -40,6 +50,7 @@ import org.jooq.impl.DSL;
 public class ReferentielRepository {
 
   private final DSLContext context;
+  private final String NOM_GROUPE_MOBILE = "Mobile";
 
   @Inject
   public ReferentielRepository(DSLContext context) {
@@ -241,5 +252,29 @@ public class ReferentielRepository {
             TYPE_HYDRANT_SAISIE.ACTIF)
         .from(TYPE_HYDRANT_SAISIE)
         .fetchInto(TypeHydrantSaisieModel.class);
+  }
+
+  public List<ParamConfModel> getParamConfMobileList() {
+    return context.selectFrom(PARAM_CONF)
+            .where(PARAM_CONF.NOMGROUPE.eq(NOM_GROUPE_MOBILE))
+            .fetchInto(ParamConfModel.class);
+  }
+
+  public List<TypeDroitModel> getTypeDroitMobileList(Long idUtilisateur) {
+    return context.select(TYPE_DROIT.ID, TYPE_DROIT.CODE, TYPE_DROIT.CATEGORIE)
+            .from(TYPE_DROIT)
+            .join(DROIT)
+            .on(DROIT.TYPE_DROIT.eq(TYPE_DROIT.ID))
+            .join(PROFIL_DROIT)
+            .on(PROFIL_DROIT.ID.eq(DROIT.PROFIL_DROIT))
+            .join(PROFIL_ORGANISME_UTILISATEUR_DROIT)
+            .on(PROFIL_ORGANISME_UTILISATEUR_DROIT.PROFIL_DROIT.eq(PROFIL_DROIT.ID))
+            .join(PROFIL_UTILISATEUR)
+            .on(PROFIL_UTILISATEUR.ID.eq(PROFIL_ORGANISME_UTILISATEUR_DROIT.PROFIL_UTILISATEUR))
+            .join(UTILISATEUR)
+            .on(UTILISATEUR.PROFIL_UTILISATEUR.eq(PROFIL_UTILISATEUR.ID))
+            .where(TYPE_DROIT.CATEGORIE.eq(NOM_GROUPE_MOBILE))
+            .and(UTILISATEUR.ID.eq(idUtilisateur))
+            .fetchInto(TypeDroitModel.class);
   }
 }
