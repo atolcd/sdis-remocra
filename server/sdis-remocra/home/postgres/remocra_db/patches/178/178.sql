@@ -16,10 +16,10 @@ declare
 begin
     -- Métadonnées du patch
     numero_patch := 178;
-    description_patch := 'Ajout d''un rôle dans la table de transferts_automatises pour une administration générale;
+    description_patch := 'Ajout d''un rôle dans la table de transferts_automatises pour une administration générale';
     -- Vérification
     if (select numero_patch-1 != (select max(numero) from remocra.suivi_patches)) then
-        raise exception 'Le numéro de patch requis n''est pas le bon. Dernier appliqué : %, en cours : %', (select max(numero) from remocra.suivi_patches), numero_patch; end if;
+        raise exception 'Le numéro de patch requis nest pas le bon. Dernier appliqué : %, en cours : %', (select max(numero) from remocra.suivi_patches), numero_patch; end if;
     -- Suivi
     insert into remocra.suivi_patches(numero, description) values(numero_patch, description_patch);
 end $body$;
