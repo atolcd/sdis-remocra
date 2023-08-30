@@ -9,6 +9,8 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_ANOMALIES;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ROLE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE_NATURE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_CRITERE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE_DECI;
@@ -21,6 +23,8 @@ import fr.sdis83.remocra.web.model.referentiel.HydrantAnomalieModel;
 import fr.sdis83.remocra.web.model.referentiel.HydrantModel;
 import fr.sdis83.remocra.web.model.referentiel.RoleModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantAnomalieModel;
+import fr.sdis83.remocra.web.model.referentiel.TypeHydrantAnomalieNatureModel;
+import fr.sdis83.remocra.web.model.referentiel.TypeHydrantAnomalieNatureSaisieModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantCritereModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantNatureDeciModel;
@@ -184,7 +188,39 @@ public class ReferentielRepository {
             TYPE_HYDRANT_ANOMALIE.ACTIF)
         .from(TYPE_HYDRANT_ANOMALIE)
         .where(TYPE_HYDRANT_ANOMALIE.CRITERE.isNotNull())
+        .and(TYPE_HYDRANT_ANOMALIE.ID.in(context.selectDistinct(TYPE_HYDRANT_ANOMALIE_NATURE.ANOMALIE).from(TYPE_HYDRANT_ANOMALIE_NATURE)))
         .fetchInto(TypeHydrantAnomalieModel.class);
+  }
+
+  public List<TypeHydrantAnomalieNatureModel> getTypeHydrantAnomalieNatureList() {
+    return context
+        .select(TYPE_HYDRANT_ANOMALIE_NATURE.ID.as("idRemocra"),
+            TYPE_HYDRANT_ANOMALIE_NATURE.ANOMALIE.as("idTypeHydrantAnomalie"),
+            TYPE_HYDRANT_ANOMALIE_NATURE.NATURE.as("idTypeHydrantNature"),
+            TYPE_HYDRANT_ANOMALIE_NATURE.VAL_INDISPO_TERRESTRE,
+            TYPE_HYDRANT_ANOMALIE_NATURE.VAL_INDISPO_HBE,
+            TYPE_HYDRANT_ANOMALIE_NATURE.VAL_INDISPO_ADMIN)
+        .from(TYPE_HYDRANT_ANOMALIE_NATURE)
+        .where(TYPE_HYDRANT_ANOMALIE_NATURE.ANOMALIE.in(
+            context.selectDistinct(TYPE_HYDRANT_ANOMALIE.ID)
+                .from(TYPE_HYDRANT_ANOMALIE)
+                .where(TYPE_HYDRANT_ANOMALIE.CRITERE.isNotNull())))
+        .fetchInto(TypeHydrantAnomalieNatureModel.class);
+  }
+
+  public List<TypeHydrantAnomalieNatureSaisieModel> getTypeHydrantAnomalieNatureSaisieList() {
+    return context
+        .select(TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES.TYPE_HYDRANT_ANOMALIE_NATURE.as("idTypeHydrantAnomalieNature"),
+            TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES.SAISIES.as("idTypeHydrantSaisie"))
+        .from(TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES)
+        .where(TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES.TYPE_HYDRANT_ANOMALIE_NATURE.in(
+            context.selectDistinct(TYPE_HYDRANT_ANOMALIE_NATURE.ID)
+                .from(TYPE_HYDRANT_ANOMALIE_NATURE)
+                .where(TYPE_HYDRANT_ANOMALIE_NATURE.ANOMALIE.in(
+                    context.selectDistinct(TYPE_HYDRANT_ANOMALIE.ID)
+                        .from(TYPE_HYDRANT_ANOMALIE)
+                        .where(TYPE_HYDRANT_ANOMALIE.CRITERE.isNotNull())))))
+        .fetchInto(TypeHydrantAnomalieNatureSaisieModel.class);
   }
 
   public List<TypeHydrantCritereModel> getTypeHydrantCritereList() {

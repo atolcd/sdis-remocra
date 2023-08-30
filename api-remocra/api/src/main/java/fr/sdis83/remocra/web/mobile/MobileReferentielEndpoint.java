@@ -10,10 +10,12 @@ import fr.sdis83.remocra.web.model.referentiel.HydrantAnomalieModel;
 import fr.sdis83.remocra.web.model.referentiel.HydrantModel;
 import fr.sdis83.remocra.web.model.referentiel.RoleModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantAnomalieModel;
+import fr.sdis83.remocra.web.model.referentiel.TypeHydrantAnomalieNatureModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantCritereModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantNatureDeciModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantNatureModel;
+import fr.sdis83.remocra.web.model.referentiel.TypeHydrantAnomalieNatureSaisieModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantSaisieModel;
 import java.util.List;
 import javax.inject.Inject;
@@ -49,6 +51,8 @@ public class MobileReferentielEndpoint {
             referentielRepository.getTypeHydrantNatureList(),
             referentielRepository.getTypeHydrantNatureDeciList(),
             referentielRepository.getTypeHydrantAnomalieList(),
+            referentielRepository.getTypeHydrantAnomalieNatureList(),
+            referentielRepository.getTypeHydrantAnomalieNatureSaisieList(),
             referentielRepository.getTypeHydrantCritereList(),
             referentielRepository.getTypeHydrantSaisieList()
         )
@@ -67,6 +71,8 @@ public class MobileReferentielEndpoint {
     public final List<TypeHydrantNatureModel> typesHydrantNature;
     public final List<TypeHydrantNatureDeciModel> typesHydrantNatureDeci;
     public final List<TypeHydrantAnomalieModel> typesHydrantAnomalie;
+    public final List<TypeHydrantAnomalieNatureModel> typesHydrantAnomalieNature;
+    public final List<TypeHydrantAnomalieNatureSaisieModel> typesHydrantAnomalieNatureSaisie;
     public final List<TypeHydrantCritereModel> typesHydrantCritere;
     public final List<TypeHydrantSaisieModel> typesHydrantSaisie;
 
@@ -81,6 +87,8 @@ public class MobileReferentielEndpoint {
                                List<TypeHydrantNatureModel> typesHydrantNature,
                                List<TypeHydrantNatureDeciModel> typesHydrantNatureDeci,
                                List<TypeHydrantAnomalieModel> typesHydrantAnomalie,
+                               List<TypeHydrantAnomalieNatureModel> typesHydrantAnomalieNature,
+                               List<TypeHydrantAnomalieNatureSaisieModel> typesHydrantAnomalieNatureSaisie,
                                List<TypeHydrantCritereModel> typesHydrantCritere,
                                List<TypeHydrantSaisieModel> typesHydrantSaisie) {
       this.communes = communes;
@@ -94,6 +102,8 @@ public class MobileReferentielEndpoint {
       this.typesHydrantNature = typesHydrantNature;
       this.typesHydrantNatureDeci = typesHydrantNatureDeci;
       this.typesHydrantAnomalie = typesHydrantAnomalie;
+      this.typesHydrantAnomalieNature = typesHydrantAnomalieNature;
+      this.typesHydrantAnomalieNatureSaisie = typesHydrantAnomalieNatureSaisie;
       this.typesHydrantCritere = typesHydrantCritere;
       this.typesHydrantSaisie = typesHydrantSaisie;
     }
