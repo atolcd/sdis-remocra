@@ -8,7 +8,6 @@ import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.Principal;
-import java.util.UUID;
 import javax.inject.Provider;
 import javax.ws.rs.core.SecurityContext;
 import org.immutables.value.Value;
@@ -24,6 +23,8 @@ public class AuthnModule extends AbstractModule {
     String issuer();
 
     int expirationSec();
+
+    int mobileExpirationMin();
   }
 
   public static AuthnModule create(Config config) {
@@ -33,6 +34,7 @@ public class AuthnModule extends AbstractModule {
             .key(key)
             .issuer(config.getString("issuer"))
             .expirationSec(config.getInt("expirationSec"))
+            .mobileExpirationMin(config.getInt("mobileExpirationMin"))
             .build());
   }
 

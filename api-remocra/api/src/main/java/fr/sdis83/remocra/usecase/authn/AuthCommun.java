@@ -5,16 +5,14 @@ import fr.sdis83.remocra.authn.AuthnModule;
 import fr.sdis83.remocra.authn.JWTAuthFilter;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import org.immutables.value.Value;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
-import java.util.Optional;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AuthCommun {
 
@@ -51,7 +49,7 @@ public class AuthCommun {
                         //
                         .setIssuer(settings.issuer())
                         .setSubject(username)
-                        .setExpiration(Date.from(Instant.now().plusSeconds(settings.expirationSec())))
+                        .setExpiration(Date.from(Instant.now().plus(Duration.ofMinutes(settings.mobileExpirationMin()))))
                         .setIssuedAt(new Date())
                         .setId(UUID.randomUUID().toString())
                         //
