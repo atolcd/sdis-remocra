@@ -70,7 +70,7 @@
 			var REMOCRA_INIT_BOUNDS = '${initBounds}';
 			var REMOCRA_IGN_KEYS = ${clesIgn};
 			var REMOCRA_MAXINACTIVEINTERVAL_SEC = ${maxInactiveIntervalSec};
-			var REMOCRA_MAP_TOOLBAR_MASQUEE = false;
+			var REMOCRA_MAP_TOOLBAR_MASQUEE = true;
 			var REMOCRA_USR_IDENTIFIANT = '<c:if test="${pageContext['request'].userPrincipal != null}">
 				<c:set var="username" value="${pageContext['request'].userPrincipal.principal.username}" />
 				<c:out value="${username}"/>
@@ -78,10 +78,8 @@
 			var REMOCRA_USR_PROFIL_DROIT = '${userProfilDroit}';
 			var REMOCRA_USR_ORGANISME = '${organisme}';
 			var REMOCRA_USR_RIGHTS = ${userRights};
-			
 			var REMOCRA_ENTETE_MESSAGE = '<spring:escapeBody htmlEscape="false" javaScriptEscape="true">${message_entete}</spring:escapeBody>';
 			var REMOCRA_MENTION_CNIL = '${mention_cnil}';
-			
 			var HYDRANT_CFG = '${hydrant_cfg}';
 			var HYDRANT_SYMBOLOGIE = '${hydrant_symbologie}';
 			var HYDRANT_VISITE_RAPIDE = ${hydrant_visite_rapide};
@@ -90,11 +88,8 @@
 			var HYDRANT_ZOOM_NUMERO = ${hydrant_zoom_numero};
 			var HYDRANT_GENERATION_CARTE_TOURNEE = ${hydrant_generation_carte_tournee}
 			var REMOCRA_DEFAULT_ORIENTATION = { x : '${orientationX}', y : '${orientationY}' };
-
 			var COORDONNEES_FORMAT_AFFICHAGE = '${coordonnees_format_affichage}';
-
 			var COMPLEXITE_PASSWORD = '${complexite_password}';
-
 			var VITESSE_EAU = '${vitesse_eau}';
 			var SHOW_HISTORIQUE = '${show_historique}';
 		</script>
