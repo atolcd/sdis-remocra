@@ -315,7 +315,9 @@ public class NumeroUtilRepository {
                             suffixe = "D";
                             break;
                         case "SECTEUR CHANGE 1":
-                            suffixe = "S1";
+                            if ("PRIVE".equalsIgnoreCase(natureDeci)) {
+                                suffixe = "S1";
+                            }
                             break;
                         case "SECTEUR CHANGE 2":
                             if ("PRIVE".equalsIgnoreCase(natureDeci)) {
@@ -731,7 +733,7 @@ public class NumeroUtilRepository {
                     if (codeZoneSpeciale != null) {
                         switch (codeZoneSpeciale) {
                             case "SECTEUR CHANGE 1":
-                                numInterne = computeNumeroInterne53Public(hydrant, 101, 199);
+                                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 101, 199);
                                 return numInterne;
                             case "SECTEUR CHANGE 2":
                                 numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 201, 299);
