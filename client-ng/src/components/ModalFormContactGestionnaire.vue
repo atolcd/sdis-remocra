@@ -232,7 +232,7 @@
                 }))
                 formData.append('role', this.contactRoles)
                 var url = this.idContact !== null ? '/remocra/contact/updateContact/'+this.idContact : '/remocra/contact/createContact';
-                axios.post(url, formData).then(response => {
+                axios.post(url, formData).then(() => {
                     this.$emit('contactUpdate'); // confirme au parent qu'il y a eu un changement en base
                     this.$nextTick(() => {
                         this.resetFormContact();
