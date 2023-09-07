@@ -2,7 +2,7 @@ package fr.sdis83.remocra.web.model;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-public class RepertoireLieu {
+public class RepertoireLieuData {
 
   private String libelle;
 

@@ -76,6 +76,11 @@ public class TransfertsAutomatises extends TableImpl<Record> {
     public final TableField<Record, Boolean> TRANSMETTRE = createField("transmettre", org.jooq.impl.SQLDataType.BOOLEAN.defaultValue(org.jooq.impl.DSL.field("false", org.jooq.impl.SQLDataType.BOOLEAN)), this, "");
 
     /**
+     * The column <code>remocra.transferts_automatises.administrer</code>.
+     */
+    public final TableField<Record, Boolean> ADMINISTRER = createField("administrer", org.jooq.impl.SQLDataType.BOOLEAN.defaultValue(org.jooq.impl.DSL.field("false", org.jooq.impl.SQLDataType.BOOLEAN)), this, "");
+
+    /**
      * Create a <code>remocra.transferts_automatises</code> table reference
      */
     public TransfertsAutomatises() {

@@ -63,4 +63,28 @@ public class GlobalConstants {
             return auteurModificationFlag;
         }
     }
+  /**
+   * Enumération des types de visite, avec
+   * <ul>
+   *   <li>Le code tel que représenté en BDD</li>
+   *   <li>Le libellé à titre informatif</li>
+   * </ul>
+   */
+  public enum TypeVisite {
+    CREATION("CREA", "Création"),
+    RECEPTION("RECEP", "Réception"),
+    RECONNAISSANCE("RECO",  "Reconnaissance"),
+    CONTROLE("CTRL", "Contrôle"),
+    NON_PROGRAMMEE("NP", "Non programmée");
+
+    private final String codeTypeVisite;
+    private final String libelleTypeVisite;
+
+    TypeVisite(String code, String libelle) {
+      codeTypeVisite = code;
+      libelleTypeVisite = libelle;
+    }
+    public String getCode() { return codeTypeVisite; }
+    public String getLibelle() { return libelleTypeVisite; }
+  }
 }

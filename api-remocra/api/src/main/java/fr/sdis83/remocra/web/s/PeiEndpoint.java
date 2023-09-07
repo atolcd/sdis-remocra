@@ -108,13 +108,13 @@ public class PeiEndpoint {
 
     @GET
     @Path("/diff")
-    @Operation(summary = "Liste des PEI ayant subit une modification (ajout, modification ou suppression) postérieure à la date passée en paramètre", tags = {"DECI - Points d'Eau Incendie"})
+    @Operation(summary = "Liste des PEI ayant subit une modification (ajout, modification ou suppression) postérieure au *moment* passée en paramètre", tags = {"DECI - Points d'Eau Incendie"})
     @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
     public Response diff(
-      final @Parameter(description = "Date à partir de laquelle retourner les résultats, format YYYY-MM-DD hh:mm:ss", required = true) @QueryParam("date") String date
+      final @Parameter(description = "Moment à partir duquel retourner les résultats, format YYYY-MM-DD hh:mm:ss", required = true) @QueryParam("moment") String moment
     ) {
       try {
-        return Response.ok(peiUseCase.diff(date), MediaType.APPLICATION_JSON).build();
+        return Response.ok(peiUseCase.diff(moment), MediaType.APPLICATION_JSON).build();
       } catch (ResponseException e) {
         return Response.status(e.getStatusCode()).entity(e.getMessage()).build();
       }

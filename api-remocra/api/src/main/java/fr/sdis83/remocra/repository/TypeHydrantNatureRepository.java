@@ -2,6 +2,7 @@ package fr.sdis83.remocra.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantNature;
 import fr.sdis83.remocra.web.model.referentielsCommuns.ReferentielModel;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -10,6 +11,7 @@ import org.jooq.impl.DSL;
 import javax.inject.Inject;
 import java.util.List;
 
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT;
 
@@ -46,5 +48,12 @@ public class TypeHydrantNatureRepository {
                 .where(TYPE_HYDRANT_NATURE.CODE.eq(code))
                 .fetchOneInto(Long.class);
     }
+
+  public TypeHydrantNature getById(Long id) {
+    return context
+            .selectFrom(TYPE_HYDRANT_NATURE)
+            .where(TYPE_HYDRANT_NATURE.ID.eq(id))
+            .fetchOneInto(TypeHydrantNature.class);
+  }
 
 }

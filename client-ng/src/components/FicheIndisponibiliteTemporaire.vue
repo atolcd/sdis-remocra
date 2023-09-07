@@ -96,8 +96,8 @@
         </div>
         <div class="row">
           <div class="col-md-8 mt-2">
-            <b-form-select multiple v-model="peiSelected" v-on:change="disableRetirer" :options="value.tabNumeroPeiConcernes" :state="etats.tabNumeroPeiConcernes" class="form-control" id="selectPei">
-            </b-form-select>
+            <b-form-checkbox-group class= "liste_pei" v-model="peiSelected" v-on:change="disableRetirer" :options="value.tabNumeroPeiConcernes" :state="etats.tabNumeroPeiConcernes" id="selectPei">
+            </b-form-checkbox-group>
           </div>
           <div class="mt-2 ml-1">
             <b-button id="retirer" :disabled="boolRetirer" v-on:click="supprimePeiSelect" size="sm" variant="danger"> Retirer </b-button>
@@ -111,6 +111,7 @@
             <b-alert :show="alertDateHeure" dismissible @dismissed="alertDateHeure=0" variant="danger" size="sm">La date de fin est antérieure à la date de début</b-alert>
             <b-alert :show="alertDebutAvantCourant" dismissible @dismissed="alertDebutAvantCourant=0" variant="danger" size="sm">La date de début est antérieure à la date d'aujourd'hui</b-alert>
             <b-alert :show="alertFormInvalid" dismissible @dismissed="alertFormInvalid=0" variant="danger" size="sm">Certains champs ne sont pas remplis correctement</b-alert>
+            <b-alert :show="alertNbPei" dismissible @dismissed="alertNbPei=0" variant="danger" size="sm">Au moins un hydrant doit être renseigné</b-alert>
           </div>
         </div>
       </div>
@@ -163,6 +164,7 @@ export default {
       alertFormInvalid: 0,
       alertDateHeure: 0,
       alertDebutAvantCourant: 0,
+      alertNbPei: 0,
       erreurDate: false,
       value: {
         //Partie indispo
@@ -335,11 +337,11 @@ export default {
     },
     supprimePeiSelect() {
       if (this.value.tabNumeroPeiConcernes.length > 1) {
-        for (var i = 0; i < this.value.tabNumeroPeiConcernes.length; i++) {
-          if (this.value.tabNumeroPeiConcernes[i] == this.peiSelected[0]) {
-            this.value.tabNumeroPeiConcernes.splice(i, 1);
-            this.value.tabIdPeiConcernes.splice(i, 1);
-          }
+        if(this.value.tabNumeroPeiConcernes.length === this.peiSelected.length) {
+          this.alertNbPei = this.secondesAlert
+        } else {
+          this.value.tabNumeroPeiConcernes =
+            this.value.tabNumeroPeiConcernes.filter((el) => !this.peiSelected.includes(el) );
         }
       }
     },
@@ -548,5 +550,10 @@ export default {
 
 #retirer {
   width: 85px;
+}
+
+.liste_pei {
+  background-color: white !important;
+  padding: 10px;
 }
 </style>

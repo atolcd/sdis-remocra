@@ -28,6 +28,7 @@ public class TransfertsAutomatises implements Serializable {
     private Long    typeOrganisme;
     private Boolean recuperer;
     private Boolean transmettre;
+    private Boolean administrer;
 
     public TransfertsAutomatises() {}
 
@@ -36,18 +37,21 @@ public class TransfertsAutomatises implements Serializable {
         this.typeOrganisme = value.typeOrganisme;
         this.recuperer = value.recuperer;
         this.transmettre = value.transmettre;
+        this.administrer = value.administrer;
     }
 
     public TransfertsAutomatises(
         Integer id,
         Long    typeOrganisme,
         Boolean recuperer,
-        Boolean transmettre
+        Boolean transmettre,
+        Boolean administrer
     ) {
         this.id = id;
         this.typeOrganisme = typeOrganisme;
         this.recuperer = recuperer;
         this.transmettre = transmettre;
+        this.administrer = administrer;
     }
 
     public Integer getId() {
@@ -86,6 +90,15 @@ public class TransfertsAutomatises implements Serializable {
         return this;
     }
 
+    public Boolean getAdministrer() {
+        return this.administrer;
+    }
+
+    public TransfertsAutomatises setAdministrer(Boolean administrer) {
+        this.administrer = administrer;
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("TransfertsAutomatises (");
@@ -94,6 +107,7 @@ public class TransfertsAutomatises implements Serializable {
         sb.append(", ").append(typeOrganisme);
         sb.append(", ").append(recuperer);
         sb.append(", ").append(transmettre);
+        sb.append(", ").append(administrer);
 
         sb.append(")");
         return sb.toString();

@@ -323,7 +323,7 @@ public class CourrierController {
 
       //Signature du pdf
       if(!paramConfService.getPdiCheminPfxFile().equals("") && !paramConfService.getPdiPfxPassword().equals("")){
-        // todo : ajouter les dépendednces qu'il faut  
+        // todo : ajouter les dépendances qu'il faut
         //DocumentUtil.getInstance().signPdf(docOTT.getRepertoire() + nomPdf, paramConfService.getPdiCheminPfxFile(), paramConfService.getPdiPfxPassword());
       }
 

@@ -90,7 +90,8 @@ public class RequeteModeleRepository {
       l = context.select().from(REQUETE_MODELE)
           .leftOuterJoin(REQUETE_MODELE_DROIT)
           .on(REQUETE_MODELE.ID.eq(REQUETE_MODELE_DROIT.REQUETE_MODELE))
-          .where(REQUETE_MODELE_DROIT.PROFIL_DROIT.eq(utilisateurService.getCurrentProfilDroit().getId()).and(REQUETE_MODELE.CATEGORIE.eq(categorie))).fetchInto(RequeteModele.class);
+          .where(REQUETE_MODELE_DROIT.PROFIL_DROIT.eq(utilisateurService.getCurrentProfilDroit().getId()).and(REQUETE_MODELE.CATEGORIE.eq(categorie)))
+              .orderBy(REQUETE_MODELE.LIBELLE).fetchInto(RequeteModele.class);
     } catch (BusinessException e) {
       e.printStackTrace();
     }

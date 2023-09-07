@@ -4,11 +4,14 @@ import org.jooq.EnumType;
 
 public enum UserRoles {
   RECEVOIR(RoleTypes.RECEVOIR),
-  TRANSMETTRE(RoleTypes.TRANSMETTRE);
+  TRANSMETTRE(RoleTypes.TRANSMETTRE),
 
-  public class RoleTypes{
+  ADMINISTRER(RoleTypes.ADMINISTRER);
+
+  public class RoleTypes {
     public static final String RECEVOIR = "RECEVOIR";
     public static final String TRANSMETTRE = "TRANSMETTRE";
+    public static final String ADMINISTRER = "ADMINISTRER";
   }
 
   private final String label;
