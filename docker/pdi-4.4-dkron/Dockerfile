@@ -37,7 +37,7 @@ WORKDIR ${KETTLE_HOME}
 
 # PDI
 # https://sourceforge.net/projects/pentaho/files/Data%20Integration/4.4.0-stable/pdi-ce-4.4.0-stable.zip
-RUN --mount=type=bind,source=ext/pdi-ce-4.4.0-stable.zip,target=/tmp/ \
+RUN --mount=type=bind,source=ext/pdi-ce-4.4.0-stable.zip,target=/tmp/pdi-ce-4.4.0-stable.zip \
   unzip -qo /tmp/pdi-ce-4.4.0-stable.zip -d ${KETTLE_HOME} \
   && mv ${KETTLE_HOME}/data-integration/* ${KETTLE_HOME} \
   && rmdir ${KETTLE_HOME}/data-integration \
@@ -48,11 +48,11 @@ RUN --mount=type=bind,source=ext/pdi-ce-4.4.0-stable.zip,target=/tmp/ \
 
 # Mise à jour de JDBC driver
 # https://jdbc.postgresql.org/download/postgresql-42.2.10.jre7.jar
-COPY Dockerfile ext/postgresql-42.2.10.jre7.jar ${KETTLE_HOME}/libext/JDBC/
+COPY ext/postgresql-42.2.10.jre7.jar ${KETTLE_HOME}/libext/JDBC/
 
 # Dépendances PDI 4.4
 # https://github.com/atolcd/sdis-remocra/releases/download/pentaho-4.4-remocra-deps-4da0f/pentaho-4.4-remocra-deps.zip
-RUN --mount=type=bind,source=ext/pentaho-4.4-remocra-deps.zip,target=/tmp/\
+RUN --mount=type=bind,source=ext/pentaho-4.4-remocra-deps.zip,target=/tmp/pentaho-4.4-remocra-deps.zip \
   unzip /tmp/pentaho-4.4-remocra-deps.zip -d ${KETTLE_HOME}
 
 # MySql
@@ -82,8 +82,9 @@ RUN set -x \
   && rm -rf /var/cache/apk/*
 
 # https://github.com/distribworks/dkron/releases/download/v${DKRON_VERSION}/dkron_${DKRON_VERSION}_linux_amd64.tar.gz
-RUN --mount=type=bind,source=ext/dkron_${DKRON_VERSION}_linux_amd64.tar.gz,target=/tmp/ \
-  tar -xzf /tmp/dkron_${DKRON_VERSION}_linux_amd64.tar.gz -C ${DKRON_HOME}
+RUN --mount=type=bind,source=ext/dkron_${DKRON_VERSION}_linux_amd64.tar.gz,target=/tmp/dkron_${DKRON_VERSION}_linux_amd64.tar.gz \
+  mkdir -p ${DKRON_HOME} \
+  && tar -xzf /tmp/dkron_${DKRON_VERSION}_linux_amd64.tar.gz -C ${DKRON_HOME}
 
 # Droits
 RUN mkdir -p ${KETTLE_HOME}/.kettle /var/remocra/pdi/log \

@@ -37,13 +37,13 @@ WORKDIR ${KETTLE_HOME}
 
 # PDI
 # https://sourceforge.net/projects/pentaho/files/Data%20Integration/7.1/pdi-ce-7.1.0.0-12.zip
-RUN --mount=type=bind,source=ext/pdi-ce-7.1.0.0-12.zip,target=/tmp/ \
+RUN --mount=type=bind,source=ext/pdi-ce-7.1.0.0-12.zip,target=/tmp/pdi-ce-7.1.0.0-12.zip \
   unzip -qo /tmp/pdi-ce-7.1.0.0-12.zip -d ${KETTLE_HOME} \
   && mv ${KETTLE_HOME}/data-integration/* ${KETTLE_HOME} \
   && rmdir ${KETTLE_HOME}/data-integration \
   && chmod +x ${KETTLE_HOME}/*.sh \
   # Sera mis à jour juste après
-  rm -f ${KETTLE_HOME}/lib/postgresql-*
+  && rm -f ${KETTLE_HOME}/lib/postgresql-*
 
 # Mise à jour de JDBC driver
 # https://jdbc.postgresql.org/download/postgresql-42.2.10.jar
@@ -51,12 +51,12 @@ COPY ext/postgresql-42.2.10.jar ${KETTLE_HOME}/lib/
 
 # Plugin GIS
 # https://github.com/atolcd/pentaho-gis-plugins/releases/download/v1.2.1/pentaho-gis-plugins-1.2.1-bin-7.zip
-RUN --mount=type=bind,source=ext/pentaho-gis-plugins-1.2.1-bin-7.zip,target=/tmp/ \
+RUN --mount=type=bind,source=ext/pentaho-gis-plugins-1.2.1-bin-7.zip,target=/tmp/pentaho-gis-plugins-1.2.1-bin-7.zip \
   unzip /tmp/pentaho-gis-plugins-1.2.1-bin-7.zip -d ${KETTLE_HOME}/plugins
 
 # Plugin DOC
 # https://github.com/atolcd/pentaho-doc-plugins/releases/download/v1.0.0/pentaho-doc-plugins-1.0.0-bin-7.zip
-RUN --mount=type=bind,source=ext/pentaho-doc-plugins-1.0.0-bin-7.zip,target=/tmp/ \
+RUN --mount=type=bind,source=ext/pentaho-doc-plugins-1.0.0-bin-7.zip,target=/tmp/pentaho-doc-plugins-1.0.0-bin-7.zip \
   unzip /tmp/pentaho-doc-plugins-1.0.0-bin-7.zip -d ${KETTLE_HOME}/plugins
 
 # Oracle
@@ -69,7 +69,7 @@ COPY ext/mysql-connector-java-5.1.49.jar ${KETTLE_HOME}/lib/
 
 # MSSql
 # https://kumisystems.dl.sourceforge.net/project/jtds/jtds/1.3.1/jtds-1.3.1-dist.zip
-COPY Dockerfile ext/jtds-1.3.1.jar ext/jtds-1.3.1.jar ${KETTLE_HOME}/lib/
+COPY ext/jtds-1.3.1.jar ext/jtds-1.3.1.jar ${KETTLE_HOME}/lib/
 
 ENV PATH ${KETTLE_HOME}/kitchen.sh:$PATH
 
@@ -94,8 +94,9 @@ RUN set -x \
   && rm -rf /var/cache/apk/*
 
 # https://github.com/distribworks/dkron/releases/download/v${DKRON_VERSION}/dkron_${DKRON_VERSION}_linux_amd64.tar.gz
-RUN --mount=type=bind,source=ext/dkron_${DKRON_VERSION}_linux_amd64.tar.gz,target=/tmp/ \
-  tar -xzf dkron_${DKRON_VERSION}_linux_amd64.tar.gz -C ${DKRON_HOME}
+RUN --mount=type=bind,source=ext/dkron_${DKRON_VERSION}_linux_amd64.tar.gz,target=/tmp/dkron_${DKRON_VERSION}_linux_amd64.tar.gz \
+  mkdir -p ${DKRON_HOME} \
+  && tar -xzf /tmp/dkron_${DKRON_VERSION}_linux_amd64.tar.gz -C ${DKRON_HOME}
 
 # Droits
 RUN mkdir -p ${KETTLE_HOME}/.kettle /var/remocra/pdi/log \

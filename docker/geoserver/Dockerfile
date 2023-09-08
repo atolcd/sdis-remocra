@@ -20,14 +20,14 @@ RUN set -e \
 
 # GeoServer
 # https://sourceforge.net/projects/geoserver/files/GeoServer/${GS_VERSION}/geoserver-${GS_VERSION}-bin.zip
-RUN --mount=bind,source=ext/geoserver-${GS_VERSION}-bin.zip,target=/tmp/ \
+RUN --mount=type=bind,source=ext/geoserver-${GS_VERSION}-bin.zip,target=/tmp/geoserver-${GS_VERSION}-bin.zip \
   set -x \
   && unzip -qn /tmp/geoserver-${GS_VERSION}-bin.zip -d $(dirname "$GEOSERVER_HOME") \
   && mv -f $(dirname "$GEOSERVER_HOME")/geoserver-${GS_VERSION} $GEOSERVER_HOME
 
 # Plugin querylayer
 # https://sourceforge.net/projects/geoserver/files/GeoServer/${GS_VERSION}/extensions/geoserver-${GS_VERSION}-querylayer-plugin.zip
-RUN --mount=bind,source=ext/geoserver-${GS_VERSION}-querylayer-plugin.zip,target=/tmp/ \
+RUN --mount=type=bind,source=ext/geoserver-${GS_VERSION}-querylayer-plugin.zip,target=/tmp/geoserver-${GS_VERSION}-querylayer-plugin.zip \
   set -x \
   && unzip -qn /tmp/geoserver-*-querylayer-plugin.zip -d ${GEOSERVER_HOME}/webapps/geoserver/WEB-INF/lib/ \
   && rm -f ${GEOSERVER_HOME}/webapps/geoserver/WEB-INF/lib/jai*.jar
@@ -36,14 +36,14 @@ RUN --mount=bind,source=ext/geoserver-${GS_VERSION}-querylayer-plugin.zip,target
 
 # JAI
 # https://download.java.net/media/jai/builds/release/1_1_3/jai-1_1_3-lib-linux-amd64.tar.gz
-RUN --mount=bind,source=ext/ext/jai-1_1_3-lib-linux-amd64.tar.gz,target=/tmp/ \
+RUN --mount=type=bind,source=ext/jai-1_1_3-lib-linux-amd64.tar.gz,target=/tmp/jai-1_1_3-lib-linux-amd64.tar.gz \
   set -x \
   && tar -xzf /tmp/jai-1_1_3-lib-linux-amd64.tar.gz --strip-components=2 -C "$JAVA_HOME/jre/lib/ext/" --wildcards '*/lib/*.jar' \
   && tar -xzf /tmp/jai-1_1_3-lib-linux-amd64.tar.gz --strip-components=2 -C "$JAVA_HOME/jre/lib/amd64/" --wildcards '*/lib/*.so'
 
 # JAI Image I/O
 # https://download.java.net/media/jai-imageio/builds/release/1.1/jai_imageio-1_1-lib-linux-amd64.tar.gz
-RUN --mount=bind,source=ext/jai_imageio-1_1-lib-linux-amd64.tar.gz,target=/tmp/ \
+RUN --mount=type=bind,source=ext/jai_imageio-1_1-lib-linux-amd64.tar.gz,target=/tmp/jai_imageio-1_1-lib-linux-amd64.tar.gz \
   set -x \
   && tar -xzf /tmp/jai_imageio-1_1-lib-linux-amd64.tar.gz --strip-components=2 -C "$JAVA_HOME/jre/lib/ext/" --wildcards '*/lib/*.jar' \
   && tar -xzf /tmp/jai_imageio-1_1-lib-linux-amd64.tar.gz --strip-components=2 -C "$JAVA_HOME/jre/lib/amd64/" --wildcards '*/lib/*.so'
