@@ -17,6 +17,9 @@ import fr.sdis83.remocra.web.model.referentiel.TypeHydrantNatureDeciModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantNatureModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantAnomalieNatureSaisieModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantSaisieModel;
+import io.swagger.v3.oas.annotations.Operation;
+import fr.sdis83.remocra.util.GlobalConstants;
+
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -36,6 +39,7 @@ public class MobileReferentielEndpoint {
 
   @GET
   @Path("/")
+  @Operation(summary = "Retourne le référentiel pour l'application mobile", tags = {GlobalConstants.REMOCRA_MOBILE_TAG}, hidden = true)
   @AuthDevice
   public Response getReferentiel() {
     return Response.ok(

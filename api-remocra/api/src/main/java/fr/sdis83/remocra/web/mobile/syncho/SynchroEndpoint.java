@@ -19,6 +19,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import fr.sdis83.remocra.repository.ParamConfRepository;
+import fr.sdis83.remocra.util.GlobalConstants;
 import fr.sdis83.remocra.web.model.referentiel.ContactModel;
 import fr.sdis83.remocra.web.model.mobilemodel.ImmutableHydrantVisiteModel;
 
@@ -37,6 +38,7 @@ import fr.sdis83.remocra.usecase.tournee.TourneeUseCase;
 import fr.sdis83.remocra.usecase.synchro.SynchroUseCase;
 import fr.sdis83.remocra.usecase.synchro.ValideIncomingMobile;
 import fr.sdis83.remocra.repository.UtilisateursRepository;
+import io.swagger.v3.oas.annotations.Operation;
 
 import static fr.sdis83.remocra.repository.TypeDroitRepository.TypeDroitsPourMobile;
 
@@ -70,6 +72,7 @@ public class SynchroEndpoint {
 
     @AuthDevice
     @Path("/tourneesdispos")
+    @Operation(summary = "Récupère les tournées disponibles", tags = {GlobalConstants.REMOCRA_MOBILE_TAG}, hidden = true)
     @GET
     public Response getTourneesDispos() {
         // on va chercher l'organisme de l'utilisateur connecté
@@ -83,6 +86,7 @@ public class SynchroEndpoint {
 
     @AuthDevice
     @Path("/reservertournees")
+    @Operation(summary = "Réserve les tournées disponibles", tags = {GlobalConstants.REMOCRA_MOBILE_TAG}, hidden = true)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @POST
     public Response reserverTournees(
@@ -95,6 +99,7 @@ public class SynchroEndpoint {
 
     @AuthDevice
     @Path("/createhydrant")
+    @Operation(summary = "Ajoute les hydrants créés dans incoming", tags = {GlobalConstants.REMOCRA_MOBILE_TAG}, hidden = true)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @POST
     public Response createHydrant(
@@ -151,6 +156,7 @@ public class SynchroEndpoint {
 
     @AuthDevice
     @Path("/gestionnaires")
+    @Operation(summary = "Ajoute / modifie les gestionnaires dans incoming", tags = {GlobalConstants.REMOCRA_MOBILE_TAG}, hidden = true)
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response getGestionnaire(
@@ -178,6 +184,7 @@ public class SynchroEndpoint {
 
     @AuthDevice
     @Path("/contacts")
+    @Operation(summary = "Ajoute / modifie les contacts dans incoming", tags = {GlobalConstants.REMOCRA_MOBILE_TAG}, hidden = true)
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response getContact(
@@ -244,6 +251,7 @@ public class SynchroEndpoint {
 
     @AuthDevice
     @Path("/contactsrole")
+    @Operation(summary = "Ajoute / modifie les contacts rôles dans incoming", tags = {GlobalConstants.REMOCRA_MOBILE_TAG}, hidden = true)
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response getContactRole(
@@ -262,6 +270,7 @@ public class SynchroEndpoint {
 
     @AuthDevice
     @Path("/synchrohydrantvisite")
+    @Operation(summary = "Ajoute les hydrants visites dans incoming", tags = {GlobalConstants.REMOCRA_MOBILE_TAG}, hidden = true)
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response synchroHydrantVisite(
@@ -316,6 +325,7 @@ public class SynchroEndpoint {
 
     @AuthDevice
     @Path("/synchrohydrantvisiteanomalie")
+    @Operation(summary = "Ajoute les anomalies des visites créées dans incoming", tags = {GlobalConstants.REMOCRA_MOBILE_TAG}, hidden = true)
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response synchroHydrantVisiteAnomalies(
@@ -329,6 +339,7 @@ public class SynchroEndpoint {
 
     @AuthDevice
     @Path("/synchrotournee")
+    @Operation(summary = "Met à jour les tournées dans incoming", tags = {GlobalConstants.REMOCRA_MOBILE_TAG}, hidden = true)
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response synchroTournee(
@@ -348,6 +359,7 @@ public class SynchroEndpoint {
 
     @AuthDevice
     @Path("/incomingtoremocra")
+    @Operation(summary = "Met les informations de incoming vers REMOcRA", tags = {GlobalConstants.REMOCRA_MOBILE_TAG}, hidden = true)
     @PUT
     public Response incomingToRemocra() {
         try {

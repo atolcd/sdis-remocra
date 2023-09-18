@@ -4,6 +4,9 @@ import com.google.inject.Inject;
 import fr.sdis83.remocra.authn.AuthDevice;
 import fr.sdis83.remocra.usecase.authn.JWTAuthUser;
 import fr.sdis83.remocra.usecase.authn.MobileAuthUser;
+import fr.sdis83.remocra.util.GlobalConstants;
+import io.swagger.v3.oas.annotations.Operation;
+
 import javax.annotation.security.PermitAll;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -24,6 +27,7 @@ public class MobileAuthEndpoint {
   MobileAuthUser mobileAuthUser;
 
   @Path("/token")
+  @Operation(summary = "Check le token", tags = {GlobalConstants.REMOCRA_MOBILE_TAG}, hidden = true)
   @PUT
   @AuthDevice
   public Response checkToken() {
@@ -32,6 +36,7 @@ public class MobileAuthEndpoint {
   }
 
   @Path("/check")
+  @Operation(summary = "Check url", tags = {GlobalConstants.REMOCRA_MOBILE_TAG}, hidden = true)
   @PUT
   @PermitAll
   public Response checkUrl() {
@@ -40,6 +45,7 @@ public class MobileAuthEndpoint {
 
 
   @Path("/login")
+  @Operation(summary = "Permet de se connecter à l'application mobile", tags = {GlobalConstants.REMOCRA_MOBILE_TAG}, hidden = true)
   @POST
   @PermitAll
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)

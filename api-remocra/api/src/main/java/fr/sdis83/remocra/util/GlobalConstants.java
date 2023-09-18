@@ -28,6 +28,11 @@ public class GlobalConstants {
    */
   public static final String API_ADMIN = "API_ADMIN";
 
+  /**
+  * Tag pour les endpoints de l'application mobile
+  */
+  public static final String REMOCRA_MOBILE_TAG = "REMOcRA Mobile";
+
     public enum TypeHydrant {
         PIBI("PIBI", "PIBI"),
         PENA("PENA", "PENA");
