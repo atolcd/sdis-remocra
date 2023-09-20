@@ -102,7 +102,8 @@ public class ReferentielRepository {
         )
         .from(HYDRANT_ANOMALIES)
         .where(HYDRANT_ANOMALIES.ANOMALIES.in(context.selectDistinct(TYPE_HYDRANT_ANOMALIE.ID).from(TYPE_HYDRANT_ANOMALIE)
-            .where(TYPE_HYDRANT_ANOMALIE.CRITERE.isNotNull())))
+            .where(TYPE_HYDRANT_ANOMALIE.CRITERE.isNotNull())
+            .and(TYPE_HYDRANT_ANOMALIE.ID.in(context.selectDistinct(TYPE_HYDRANT_ANOMALIE_NATURE.ANOMALIE).from(TYPE_HYDRANT_ANOMALIE_NATURE)))))
         .fetchInto(HydrantAnomalieModel.class);
   }
 
