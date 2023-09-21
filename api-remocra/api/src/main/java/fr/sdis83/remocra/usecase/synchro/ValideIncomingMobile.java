@@ -205,6 +205,11 @@ public class ValideIncomingMobile {
     for (Gestionnaire gestionnaire : gestionnaires) {
       if (gestionnaire.getIdGestionnaireRemocra() == null) {
         // C'est une création
+        logger.info(
+            "CREATION GESTIONNAIRE : "
+                + gestionnaire.getCodeGestionnaire()
+                + ", "
+                + gestionnaire.getNomGestionnaire());
         Long idGestionnaireCree =
             gestionnaireRepository.insertGestionnaire(
                 new fr.sdis83.remocra.db.model.remocra.tables.pojos.Gestionnaire(
@@ -220,6 +225,11 @@ public class ValideIncomingMobile {
 
       } else {
         // C'est un update
+        logger.info(
+            "UPDATE GESTIONNAIRE : "
+                + gestionnaire.getCodeGestionnaire()
+                + ", "
+                + gestionnaire.getNomGestionnaire());
         gestionnaireRepository.updateGestionnaire(
             new fr.sdis83.remocra.db.model.remocra.tables.pojos.Gestionnaire(
                 gestionnaire.getIdGestionnaireRemocra(),
@@ -252,6 +262,12 @@ public class ValideIncomingMobile {
 
       if (contact.getIdContactRemocra() == null) {
         // C'est une création
+
+        logger.info(
+            "CREATION CONTACT : "
+                + contact.getNomContact()
+                + ", idGestionnaire = "
+                + idAppartenance);
         Long idContact =
             gestionnaireRepository.insertContact(
                 new fr.sdis83.remocra.db.model.remocra.tables.pojos.Contact(
@@ -277,6 +293,8 @@ public class ValideIncomingMobile {
 
       } else {
         // C'est un update
+        logger.info(
+            "UPDATE CONTACT : " + contact.getNomContact() + ", idGestionnaire = " + idAppartenance);
         gestionnaireRepository.updateContact(
             new fr.sdis83.remocra.db.model.remocra.tables.pojos.Contact(
                 contact.getIdContactRemocra(),
@@ -353,6 +371,7 @@ public class ValideIncomingMobile {
         anomaliesToString = "[" + String.join(",", anomaliesId) + "]";
       }
 
+      logger.info("CREATION VISITE : idHydrant " + hydrantVisite.getIdHydrant());
       hydrantVisitesRepository.addVisite(
           new fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite(
               null,

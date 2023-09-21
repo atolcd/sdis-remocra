@@ -18,8 +18,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import javax.ws.rs.core.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SynchroUseCase {
+  private static final Logger logger = LoggerFactory.getLogger(SynchroUseCase.class);
+
   @Inject IncomingRepository incomingRepository;
 
   @Inject TypeDroitRepository typeDroitRepository;
@@ -93,6 +97,11 @@ public class SynchroUseCase {
     Long idCommune = incomingRepository.getCommuneWithGeometrie(geometrieHydrant);
 
     String nomVoie = incomingRepository.getVoie(geometrieHydrant);
+    if (idCommune == null) {
+      String errorCommune = "Impossible d'insérer l'hydrant : il n'est sur aucune commune connue.";
+      logger.error(errorCommune);
+      return Response.serverError().entity(errorCommune).build();
+    }
 
     // Puis, on finit en faisant un insert
     String error = "Impossible d'insérer l'hydrant " + idHydrant + " dans incoming.";
@@ -115,6 +124,7 @@ public class SynchroUseCase {
           "L'hydrant " + idHydrant + " est déjà dans le schéma incoming.",
           error);
     } catch (Exception e) {
+      logger.error(error);
       return Response.serverError().entity(error).build();
     }
   }
@@ -139,6 +149,7 @@ public class SynchroUseCase {
           error);
 
     } catch (Exception e) {
+      logger.error(error);
       return Response.serverError().entity(error).build();
     }
   }
@@ -155,6 +166,7 @@ public class SynchroUseCase {
   public Response insertContact(ContactModel contactModel, UUID idContact, UUID idGestionnaire) {
     String erreur = checkErrorContact(contactModel, idContact, idGestionnaire);
     if (erreur != null) {
+      logger.error(erreur);
       return Response.serverError().entity(erreur).build();
     }
 
@@ -167,6 +179,7 @@ public class SynchroUseCase {
           "Le contact " + idContact + " est déjà dans le schéma incoming.",
           error);
     } catch (Exception e) {
+      logger.error(error);
       return Response.serverError().entity(error).build();
     }
   }
@@ -191,6 +204,7 @@ public class SynchroUseCase {
   public Response insertContactRole(UUID idContact, Long idRole) {
     String erreur = checkErrorContactRole(idContact, idRole);
     if (erreur != null) {
+      logger.error(erreur);
       return Response.serverError().entity(erreur).build();
     }
 
@@ -206,6 +220,7 @@ public class SynchroUseCase {
           error);
 
     } catch (Exception e) {
+      logger.error(error);
       return Response.serverError().entity(error).build();
     }
   }
@@ -220,37 +235,36 @@ public class SynchroUseCase {
     // Si les données ne sont pas valides, on retourne l'erreur concernée
     String erreur = checkError(hydrantVisiteModel);
     if (erreur != null) {
+      logger.error(erreur);
       return Response.serverError().entity(erreur).build();
     }
 
-    Response serverErrorBuild =
-        Response.serverError()
-            .entity(
-                "Impossible de créer la visite pour l'hydrant "
-                    + hydrantVisiteModel.idHydrant()
-                    + " dans incoming.")
-            .build();
+    String error =
+        "Impossible de créer la visite pour l'hydrant "
+            + hydrantVisiteModel.idHydrant()
+            + " dans incoming.";
+    Response serverErrorBuild = Response.serverError().entity(error).build();
     try {
       int result = incomingRepository.insertVisite(hydrantVisiteModel);
       switch (result) {
         case 1:
-          return Response.ok()
-              .entity(
-                  "La visite "
-                      + hydrantVisiteModel.idHydrantVisite()
-                      + " a été inséré dans incoming.")
-              .build();
+          String inserer =
+              "La visite " + hydrantVisiteModel.idHydrantVisite() + " a été inséré dans incoming.";
+          logger.info(inserer);
+          return Response.ok().entity(inserer).build();
         case 0:
-          return Response.ok()
-              .entity(
-                  "La visite "
-                      + hydrantVisiteModel.idHydrantVisite()
-                      + " est déjà dans le schéma incoming.")
-              .build();
+          String dejaEnBase =
+              "La visite "
+                  + hydrantVisiteModel.idHydrantVisite()
+                  + " est déjà dans le schéma incoming.";
+          logger.warn(dejaEnBase);
+          return Response.ok().entity(dejaEnBase).build();
         default:
+          logger.error(error);
           return serverErrorBuild;
       }
     } catch (Exception e) {
+      logger.error(error);
       return serverErrorBuild;
     }
   }
@@ -289,10 +303,13 @@ public class SynchroUseCase {
   private Response gestionResult(int result, String inserer, String dejaEnBase, String error) {
     switch (result) {
       case 1:
+        logger.info(inserer);
         return Response.ok().entity(inserer).build();
       case 0:
+        logger.warn(dejaEnBase);
         return Response.ok().entity(dejaEnBase).build();
       default:
+        logger.error(error);
         return Response.serverError().entity(error).build();
     }
   }
@@ -301,6 +318,7 @@ public class SynchroUseCase {
 
     String erreur = checkErrorAnomalies(idHydrantVisite, idAnomalie);
     if (erreur != null) {
+      logger.error(erreur);
       return Response.serverError().entity(erreur).build();
     }
 
@@ -348,6 +366,7 @@ public class SynchroUseCase {
   public Response insertTournee(TourneeModel tourneeModel, Long idUtilisateur) {
     String erreur = checkErrorTournee(tourneeModel, idUtilisateur);
     if (erreur != null) {
+      logger.error(erreur);
       return Response.serverError().entity(erreur).build();
     }
 
@@ -363,6 +382,7 @@ public class SynchroUseCase {
           error);
 
     } catch (Exception e) {
+      logger.error(error);
       return Response.serverError().entity(error).build();
     }
   }
