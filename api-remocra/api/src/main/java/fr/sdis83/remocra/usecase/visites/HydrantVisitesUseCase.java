@@ -1,5 +1,7 @@
 package fr.sdis83.remocra.usecase.visites;
 
+import static fr.sdis83.remocra.util.GlobalConstants.TypeVisite;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.persist.Transactional;
@@ -24,88 +26,71 @@ import fr.sdis83.remocra.web.exceptions.ResponseException;
 import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteForm;
 import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteModel;
 import fr.sdis83.remocra.web.model.deci.pei.HydrantVisiteSpecifiqueForm;
-import org.jooq.DSLContext;
-import org.jooq.Record2;
-import org.jooq.SelectConditionStep;
-
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
-import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_ANOMALIES;
-import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PENA;
-import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PIBI;
-import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_VISITE;
-import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE;
-import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE_NATURE;
-import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES;
-import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE;
-import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_SAISIE;
-
-import static fr.sdis83.remocra.util.GlobalConstants.TypeVisite;
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.ws.rs.core.Response;
+import org.jooq.DSLContext;
 
 public class HydrantVisitesUseCase {
 
-  @Inject
-  HydrantVisitesRepository hydrantVisitesRepository;
+  @Inject HydrantVisitesRepository hydrantVisitesRepository;
 
-  @Inject
-  TypeHydrantSaisieRepository typeHydrantSaisieRepository;
+  @Inject TypeHydrantSaisieRepository typeHydrantSaisieRepository;
 
-  @Inject
-  PeiRepository peiRepository;
+  @Inject PeiRepository peiRepository;
 
-  @Inject
-  PeiUseCase peiUseCase;
+  @Inject PeiUseCase peiUseCase;
 
-  @Inject
-  TypeHydrantAnomalieRepository typeHydrantAnomalieRepository;
+  @Inject TypeHydrantAnomalieRepository typeHydrantAnomalieRepository;
 
-  @Inject
-  TypeHydrantNatureRepository typeHydrantNatureRepository;
+  @Inject TypeHydrantNatureRepository typeHydrantNatureRepository;
 
-  @Inject
-  HydrantAnomalieRepository hydrantAnomalieRepository;
+  @Inject HydrantAnomalieRepository hydrantAnomalieRepository;
 
-  @Inject
-  @CurrentUser
-  Provider<UserInfo> currentUser;
+  @Inject @CurrentUser Provider<UserInfo> currentUser;
 
   private final DSLContext context;
 
   @Inject
   public HydrantVisitesUseCase(DSLContext context) {
-        this.context = context;
-    }
+    this.context = context;
+  }
 
   /**
    * Valide les droits
    *
    * @param numero String
    */
-  private void checkPeiValidity(String numero, boolean modificationEnabled) throws ResponseException {
+  private void checkPeiValidity(String numero, boolean modificationEnabled)
+      throws ResponseException {
     if (!this.peiRepository.peiExist(numero)) {
-      throw new ResponseException(Response.Status.BAD_REQUEST, "1000 : Le numéro spécifié ne correspond à aucun hydrant");
+      throw new ResponseException(
+          Response.Status.BAD_REQUEST, "1000 : Le numéro spécifié ne correspond à aucun hydrant");
     }
 
-    if ((!this.peiUseCase.userCanEditPei(numero) && modificationEnabled) || !this.peiUseCase.isPeiAccessible(numero)) {
-      throw new ResponseException(Response.Status.FORBIDDEN, "1300 : Le numéro spécifié ne correspond à aucun hydrant qui vous est accessible");
+    if ((!this.peiUseCase.userCanEditPei(numero) && modificationEnabled)
+        || !this.peiUseCase.isPeiAccessible(numero)) {
+      throw new ResponseException(
+          Response.Status.FORBIDDEN,
+          "1300 : Le numéro spécifié ne correspond à aucun hydrant qui vous est accessible");
     }
   }
 
-  public List<HydrantVisiteModel> getAll(String numero, String contexte, String dateString, Boolean derniereOnly, Integer start, Integer limit) throws ResponseException, IOException {
+  public List<HydrantVisiteModel> getAll(
+      String numero,
+      String contexte,
+      String dateString,
+      Boolean derniereOnly,
+      Integer start,
+      Integer limit)
+      throws ResponseException, IOException {
     this.checkPeiValidity(numero, false);
 
     ZonedDateTime moment = null;
@@ -113,14 +98,18 @@ public class HydrantVisitesUseCase {
       try {
         moment = DateUtils.getMoment(dateString);
       } catch (DateTimeParseException e) {
-        throw new ResponseException(Response.Status.BAD_REQUEST, "2000 : La date spécifiée n'existe pas ou ne respecte pas le format YYYY-MM-DD hh:mm");
+        throw new ResponseException(
+            Response.Status.BAD_REQUEST,
+            "2000 : La date spécifiée n'existe pas ou ne respecte pas le format YYYY-MM-DD hh:mm");
       }
     }
 
-    return this.hydrantVisitesRepository.getAll(numero, contexte, moment, derniereOnly, start, limit);
+    return this.hydrantVisitesRepository.getAll(
+        numero, contexte, moment, derniereOnly, start, limit);
   }
 
-  public String getHydrantVisiteSpecifique(String numero, String idVisite) throws IOException, ResponseException {
+  public String getHydrantVisiteSpecifique(String numero, String idVisite)
+      throws IOException, ResponseException {
     this.checkPeiValidity(numero, false);
     return this.hydrantVisitesRepository.getHydrantVisiteSpecifique(numero, idVisite);
   }
@@ -133,30 +122,38 @@ public class HydrantVisitesUseCase {
     try {
       momentVisite = DateUtils.getMoment(form.date());
     } catch (DateTimeParseException dtpe) {
-      throw new ResponseException(Response.Status.BAD_REQUEST, "2000 : La date spécifiée n'existe pas ou ne respecte pas le format YYYY-MM-DD hh:mm");
+      throw new ResponseException(
+          Response.Status.BAD_REQUEST,
+          "2000 : La date spécifiée n'existe pas ou ne respecte pas le format YYYY-MM-DD hh:mm");
     }
 
     try {
       HydrantVisite visite = new HydrantVisite();
 
       // On vérifie que le code de visite correspond bien à une visite
-      TypeHydrantSaisie typeVisite = typeHydrantSaisieRepository.getByCode(form.contexte().toUpperCase());
+      TypeHydrantSaisie typeVisite =
+          typeHydrantSaisieRepository.getByCode(form.contexte().toUpperCase());
 
       if (typeVisite == null) {
-        throw new ResponseException(Response.Status.BAD_REQUEST, "2001 : Le type de visite spécifié n'existe pas");
+        throw new ResponseException(
+            Response.Status.BAD_REQUEST, "2001 : Le type de visite spécifié n'existe pas");
       }
 
       // Récupération de l'hydrant
       Hydrant hydrant = peiRepository.getByNumero(numero);
       if (hydrant == null) {
-        throw new ResponseException(Response.Status.BAD_REQUEST, "1000 : Le numéro spécifié ne correspond à aucun hydrant");
+        throw new ResponseException(
+            Response.Status.BAD_REQUEST, "1000 : Le numéro spécifié ne correspond à aucun hydrant");
       }
 
       // On vérifie qu'il n'existe pas déjà une visite au même moment
-      Integer nbVisitesMemeHeure = hydrantVisitesRepository.getNbVisites(hydrant.getId(), momentVisite);
+      Integer nbVisitesMemeHeure =
+          hydrantVisitesRepository.getNbVisites(hydrant.getId(), momentVisite);
 
       if (nbVisitesMemeHeure > 0) {
-        throw new ResponseException(Response.Status.METHOD_NOT_ALLOWED, "2100 : Une visite est déjà présente à ce moment pour cet hydrant");
+        throw new ResponseException(
+            Response.Status.METHOD_NOT_ALLOWED,
+            "2100 : Une visite est déjà présente à ce moment pour cet hydrant");
       }
 
       /*
@@ -165,17 +162,27 @@ public class HydrantVisitesUseCase {
        * 1 visite => visite de reconnaissance opérationnelle initiale (RECEP)
        * > 1 visites : tous les autres types (NP, RECO, CTRL)
        */
-      Integer nbVisites = hydrantVisitesRepository.getNbVisitesBefore(hydrant.getId(), momentVisite);
+      Integer nbVisites =
+          hydrantVisitesRepository.getNbVisitesBefore(hydrant.getId(), momentVisite);
 
       if (nbVisites == 0 && !form.contexte().equalsIgnoreCase(TypeVisite.CREATION.getCode())) {
-        throw new ResponseException(Response.Status.METHOD_NOT_ALLOWED, "2101 : Le contexte de visite doit être de type CREA (première visite du PEI)");
-      }  else if (nbVisites == 1 && !form.contexte().equalsIgnoreCase(TypeVisite.RECEPTION.getCode())) {
-        throw new ResponseException(Response.Status.METHOD_NOT_ALLOWED, "2102 : Le contexte de visite doit être de type RECEP (deuxième visite du PEI)");
-      } else if (nbVisites > 1 &&
-              Stream.of(TypeVisite.NON_PROGRAMMEE, TypeVisite.RECONNAISSANCE, TypeVisite.CONTROLE)
-                      .map(TypeVisite::getCode)
-                      .noneMatch(it -> it.equalsIgnoreCase(form.contexte()))) {
-        throw new ResponseException(Response.Status.METHOD_NOT_ALLOWED, "2103 : Une visite de type " + form.contexte().toUpperCase() + " existe déjà. Veuillez utiliser une visite de type NP, RECO ou CTRL");
+        throw new ResponseException(
+            Response.Status.METHOD_NOT_ALLOWED,
+            "2101 : Le contexte de visite doit être de type CREA (première visite du PEI)");
+      } else if (nbVisites == 1
+          && !form.contexte().equalsIgnoreCase(TypeVisite.RECEPTION.getCode())) {
+        throw new ResponseException(
+            Response.Status.METHOD_NOT_ALLOWED,
+            "2102 : Le contexte de visite doit être de type RECEP (deuxième visite du PEI)");
+      } else if (nbVisites > 1
+          && Stream.of(TypeVisite.NON_PROGRAMMEE, TypeVisite.RECONNAISSANCE, TypeVisite.CONTROLE)
+              .map(TypeVisite::getCode)
+              .noneMatch(it -> it.equalsIgnoreCase(form.contexte()))) {
+        throw new ResponseException(
+            Response.Status.METHOD_NOT_ALLOWED,
+            "2103 : Une visite de type "
+                + form.contexte().toUpperCase()
+                + " existe déjà. Veuillez utiliser une visite de type NP, RECO ou CTRL");
       }
 
       List<String> anomaliesControlees = new ArrayList<>();
@@ -188,38 +195,55 @@ public class HydrantVisitesUseCase {
         anomaliesConstatees.add(s.toUpperCase());
       }
 
-      if (!this.isTypeVisiteAllowed(new HydrantMaintenanceSP(hydrant.getMaintenanceDeci(), hydrant.getSpDeci()), typeVisite.getCode())) {
-        throw new ResponseException(Response.Status.FORBIDDEN, "2200 : Ce type de visite n'est pas accessible pour votre organisme sur cet hydrant");
+      if (!this.isTypeVisiteAllowed(
+          new HydrantMaintenanceSP(hydrant.getMaintenanceDeci(), hydrant.getSpDeci()),
+          typeVisite.getCode())) {
+        throw new ResponseException(
+            Response.Status.FORBIDDEN,
+            "2200 : Ce type de visite n'est pas accessible pour votre organisme sur cet hydrant");
       }
 
-      this.checkAnomalies(hydrant.getNature(), typeVisite.getCode(), anomaliesControlees, anomaliesConstatees);
+      this.checkAnomalies(
+          hydrant.getNature(), typeVisite.getCode(), anomaliesControlees, anomaliesConstatees);
 
-      // Si débit et pression renseignés alors que ce n'est pas une visite CDP, on met les attributs à NULL
+      // Si débit et pression renseignés alors que ce n'est pas une visite CDP, on met les attributs
+      // à NULL
       Integer debit = null;
       Integer debitMax = null;
       Double pression = null;
       Double pressionDyn = null;
       Double pressionDynDeb = null;
       boolean ctrlDebitPression = false;
-      if (form.contexte().equalsIgnoreCase(TypeVisite.CONTROLE.getCode()) && hydrant.getCode().equals("PIBI")) {
+      if (form.contexte().equalsIgnoreCase(TypeVisite.CONTROLE.getCode())
+          && hydrant.getCode().equals("PIBI")) {
         if (form.debit() != null && form.debit() < 0)
-          throw new ResponseException(Response.Status.BAD_REQUEST, "2105 : Le débit ne peut être inférieur à 0");
+          throw new ResponseException(
+              Response.Status.BAD_REQUEST, "2105 : Le débit ne peut être inférieur à 0");
         if (form.debitMax() != null && form.debitMax() < 0)
-          throw new ResponseException(Response.Status.BAD_REQUEST, "2106 : Le débit maximum ne peut être inférieur à 0");
+          throw new ResponseException(
+              Response.Status.BAD_REQUEST, "2106 : Le débit maximum ne peut être inférieur à 0");
         if (form.pression() != null && form.pression() < 0)
-          throw new ResponseException(Response.Status.BAD_REQUEST, "2107 : La pression ne peut être inférieure à 0");
+          throw new ResponseException(
+              Response.Status.BAD_REQUEST, "2107 : La pression ne peut être inférieure à 0");
         if (form.pressionDynamique() != null && form.pressionDynamique() < 0)
-          throw new ResponseException(Response.Status.BAD_REQUEST, "2108 : La pression dynamique ne peut être inférieure à 0");
+          throw new ResponseException(
+              Response.Status.BAD_REQUEST,
+              "2108 : La pression dynamique ne peut être inférieure à 0");
         if (form.pressionDynamiqueDebitMax() != null && form.pressionDynamiqueDebitMax() < 0)
-          throw new ResponseException(Response.Status.BAD_REQUEST, "2109 : La pression dynamique au débit maximum ne peut être inférieure à 0");
+          throw new ResponseException(
+              Response.Status.BAD_REQUEST,
+              "2109 : La pression dynamique au débit maximum ne peut être inférieure à 0");
 
         debit = form.debit();
         debitMax = form.debitMax();
         pression = form.pression();
         pressionDyn = form.pressionDynamique();
         pressionDynDeb = form.pressionDynamiqueDebitMax();
-        if ((debit != null && debit >= 0) || (debitMax != null && debitMax >= 0) || (pression != null && pression >= 0) ||
-                (pressionDyn != null && pressionDyn >= 0) || (pressionDynDeb != null && pressionDynDeb >= 0)) {
+        if ((debit != null && debit >= 0)
+            || (debitMax != null && debitMax >= 0)
+            || (pression != null && pression >= 0)
+            || (pressionDyn != null && pressionDyn >= 0)
+            || (pressionDynDeb != null && pressionDynDeb >= 0)) {
           ctrlDebitPression = true;
         }
       }
@@ -231,15 +255,15 @@ public class HydrantVisitesUseCase {
 
       // Conversion anomalies contrôlées et constatées Liste de code => liste d'id
       List<Long> anomaliesControleesIds =
-              typesAnomalies.stream()
-                      .filter(it -> anomaliesControlees.contains(it.getCode()))
-                      .map(TypeHydrantAnomalie::getId)
-                      .collect(Collectors.toList());
+          typesAnomalies.stream()
+              .filter(it -> anomaliesControlees.contains(it.getCode()))
+              .map(TypeHydrantAnomalie::getId)
+              .collect(Collectors.toList());
       List<Long> anomaliesConstateesIds =
-              typesAnomalies.stream()
-                      .filter(it -> anomaliesConstatees.contains(it.getCode()))
-                      .map(TypeHydrantAnomalie::getId)
-                      .collect(Collectors.toList());
+          typesAnomalies.stream()
+              .filter(it -> anomaliesConstatees.contains(it.getCode()))
+              .map(TypeHydrantAnomalie::getId)
+              .collect(Collectors.toList());
 
       // Récupération des anomalies de la visite précédente
 
@@ -247,8 +271,7 @@ public class HydrantVisitesUseCase {
       // On reprend les anomalies précédentes qui n'ont pas été contrôlées
       if (anomaliesLastVisite != null) {
         ObjectMapper mapper = new ObjectMapper();
-        TypeReference<List<Long>> typeRef = new TypeReference<>() {
-        };
+        TypeReference<List<Long>> typeRef = new TypeReference<>() {};
         List<Long> anomaliesPrecedentes = mapper.readValue(anomaliesLastVisite, typeRef);
 
         for (Long l : anomaliesPrecedentes) {
@@ -258,7 +281,8 @@ public class HydrantVisitesUseCase {
         }
       }
 
-      // On ajoute les anomalies contrôlées et constatées pour obtenir la liste des anomalies de cette visite
+      // On ajoute les anomalies contrôlées et constatées pour obtenir la liste des anomalies de
+      // cette visite
       anomaliesIds.addAll(anomaliesConstateesIds);
 
       visite.setHydrant(hydrant.getId());
@@ -279,7 +303,9 @@ public class HydrantVisitesUseCase {
       this.launchTriggerAnomalies(hydrant.getId());
 
     } catch (IOException e) {
-      throw new ResponseException(Response.Status.INTERNAL_SERVER_ERROR, "Une erreur interne est survenue lors de l'ajout de la visite");
+      throw new ResponseException(
+          Response.Status.INTERNAL_SERVER_ERROR,
+          "Une erreur interne est survenue lors de l'ajout de la visite");
     }
   }
 
@@ -291,38 +317,50 @@ public class HydrantVisitesUseCase {
     // Ajout des anomalies de la visite la plus récente
     if (latestVisite != null && latestVisite.getAnomalies() != null) {
       ObjectMapper mapper = new ObjectMapper();
-      TypeReference<ArrayList<Long>> typeRef = new TypeReference<>() {
-      };
+      TypeReference<ArrayList<Long>> typeRef = new TypeReference<>() {};
       List<Long> anomalies = mapper.readValue(latestVisite.getAnomalies(), typeRef);
 
-      anomalies.forEach(anomalieId -> hydrantAnomalieRepository.insertAnomalie(hydrantId, anomalieId));
+      anomalies.forEach(
+          anomalieId -> hydrantAnomalieRepository.insertAnomalie(hydrantId, anomalieId));
     }
   }
 
   @Transactional
-  public void editVisite(String numero, String idVisite, HydrantVisiteSpecifiqueForm form) throws ResponseException {
+  public void editVisite(String numero, String idVisite, HydrantVisiteSpecifiqueForm form)
+      throws ResponseException {
 
     this.checkPeiValidity(numero, true);
 
-    HydrantVisite visite = hydrantVisitesRepository.getFromIdNumeroPei(Long.valueOf(idVisite), numero);
+    HydrantVisite visite =
+        hydrantVisitesRepository.getFromIdNumeroPei(Long.valueOf(idVisite), numero);
     if (visite == null) {
-      throw new ResponseException(Response.Status.BAD_REQUEST, "2003 : Aucune visite avec cet identifiant n'a été trouvée pour le numéro d'hydrant spécifié");
+      throw new ResponseException(
+          Response.Status.BAD_REQUEST,
+          "2003 : Aucune visite avec cet identifiant n'a été trouvée pour le numéro d'hydrant spécifié");
     }
 
     // On vérifie qu'il s'agit bien de la visite la plus récente
-    HydrantVisite visitePlusRecente = hydrantVisitesRepository.getVisitePlusRecente(visite.getHydrant(), visite.getDate());
+    HydrantVisite visitePlusRecente =
+        hydrantVisitesRepository.getVisitePlusRecente(visite.getHydrant(), visite.getDate());
     if (visitePlusRecente != null) {
-      throw new ResponseException(Response.Status.METHOD_NOT_ALLOWED, "2110 : Modification de la visite impossible : une visite plus récente est présente");
+      throw new ResponseException(
+          Response.Status.METHOD_NOT_ALLOWED,
+          "2110 : Modification de la visite impossible : une visite plus récente est présente");
     }
 
     Hydrant hydrant = peiRepository.getById(visite.getHydrant());
     Long natureHydrant = hydrant.getNature();
 
     TypeHydrantSaisie typeVisite = typeHydrantSaisieRepository.getById(visite.getType());
-    HydrantMaintenanceSP hydrantMaintenanceSP = new HydrantMaintenanceSP(hydrant.getMaintenanceDeci(), hydrant.getSpDeci());
+    HydrantMaintenanceSP hydrantMaintenanceSP =
+        new HydrantMaintenanceSP(hydrant.getMaintenanceDeci(), hydrant.getSpDeci());
 
     if (!this.isTypeVisiteAllowed(hydrantMaintenanceSP, typeVisite.getCode())) {
-      throw new ResponseException(Response.Status.FORBIDDEN, "2201 : Votre organisme n'est pas autorisé à modifier une visite de type " + typeVisite.getCode() + " sur cet hydrant");
+      throw new ResponseException(
+          Response.Status.FORBIDDEN,
+          "2201 : Votre organisme n'est pas autorisé à modifier une visite de type "
+              + typeVisite.getCode()
+              + " sur cet hydrant");
     }
 
     List<String> anomaliesControlees = new ArrayList<>();
@@ -335,18 +373,20 @@ public class HydrantVisitesUseCase {
       anomaliesConstatees.add(s.toUpperCase());
     }
 
-    this.checkAnomalies(natureHydrant, typeVisite.getCode(), anomaliesControlees, anomaliesConstatees);
+    this.checkAnomalies(
+        natureHydrant, typeVisite.getCode(), anomaliesControlees, anomaliesConstatees);
 
     List<TypeHydrantAnomalie> typesAnomalies = typeHydrantAnomalieRepository.getAll();
 
     // Conversion anomalies contrôlées et constatées Liste de code => liste d'id
     List<Long> anomaliesConstateesIds =
-            typesAnomalies.stream()
-                    .filter(it -> anomaliesConstatees.contains(it.getCode()))
-                    .map(TypeHydrantAnomalie::getId)
-                    .collect(Collectors.toList());
+        typesAnomalies.stream()
+            .filter(it -> anomaliesConstatees.contains(it.getCode()))
+            .map(TypeHydrantAnomalie::getId)
+            .collect(Collectors.toList());
 
-    // Si débit et pression renseignés alors que ce n'est pas une visite CDP, on met les attributs à NULL
+    // Si débit et pression renseignés alors que ce n'est pas une visite CDP, on met les attributs à
+    // NULL
     Integer debit = null;
     Integer debitMax = null;
     Double pression = null;
@@ -354,17 +394,24 @@ public class HydrantVisitesUseCase {
     Double pressionDynDeb = null;
     boolean ctrlDebitPression = false;
     if (TypeVisite.CONTROLE.getCode().equalsIgnoreCase(typeVisite.getCode())
-            && GlobalConstants.TypeHydrant.PIBI.getCode().equalsIgnoreCase(hydrant.getCode())) {
+        && GlobalConstants.TypeHydrant.PIBI.getCode().equalsIgnoreCase(hydrant.getCode())) {
       if (form.debit() != null && form.debit() < 0)
-        throw new ResponseException(Response.Status.BAD_REQUEST, "2105 : Le débit ne peut être inférieur à 0");
+        throw new ResponseException(
+            Response.Status.BAD_REQUEST, "2105 : Le débit ne peut être inférieur à 0");
       if (form.debitMax() != null && form.debitMax() < 0)
-        throw new ResponseException(Response.Status.BAD_REQUEST, "2106 : Le débit maximum ne peut être inférieur à 0");
+        throw new ResponseException(
+            Response.Status.BAD_REQUEST, "2106 : Le débit maximum ne peut être inférieur à 0");
       if (form.pression() != null && form.pression() < 0)
-        throw new ResponseException(Response.Status.BAD_REQUEST, "2107 : La pression ne peut être inférieure à 0");
+        throw new ResponseException(
+            Response.Status.BAD_REQUEST, "2107 : La pression ne peut être inférieure à 0");
       if (form.pressionDynamique() != null && form.pressionDynamique() < 0)
-        throw new ResponseException(Response.Status.BAD_REQUEST, "2108 : La pression dynamique ne peut être inférieure à 0");
+        throw new ResponseException(
+            Response.Status.BAD_REQUEST,
+            "2108 : La pression dynamique ne peut être inférieure à 0");
       if (form.pressionDynamiqueDebitMax() != null && form.pressionDynamiqueDebitMax() < 0)
-        throw new ResponseException(Response.Status.BAD_REQUEST, "2109 : La pression dynamique au débit maximum ne peut être inférieure à 0");
+        throw new ResponseException(
+            Response.Status.BAD_REQUEST,
+            "2109 : La pression dynamique au débit maximum ne peut être inférieure à 0");
 
       debit = form.debit();
       debitMax = form.debitMax();
@@ -391,66 +438,92 @@ public class HydrantVisitesUseCase {
     try {
       this.launchTriggerAnomalies(visite.getHydrant());
     } catch (IOException e) {
-      throw new ResponseException(Response.Status.INTERNAL_SERVER_ERROR, "Une erreur interne est survenue lors du calcul de l'indisponibilité du PEI");
+      throw new ResponseException(
+          Response.Status.INTERNAL_SERVER_ERROR,
+          "Une erreur interne est survenue lors du calcul de l'indisponibilité du PEI");
     }
   }
 
   public void deleteVisite(String numero, String idVisite) throws ResponseException {
     this.checkPeiValidity(numero, true);
 
-    HydrantVisite visite = hydrantVisitesRepository.getFromIdNumeroPei(Long.valueOf(idVisite), numero);
+    HydrantVisite visite =
+        hydrantVisitesRepository.getFromIdNumeroPei(Long.valueOf(idVisite), numero);
 
     if (visite == null) {
-      throw new ResponseException(Response.Status.BAD_REQUEST, "2003 : Aucune visite avec cet identifiant n'a été trouvée pour le numéro d'hydrant spécifié");
+      throw new ResponseException(
+          Response.Status.BAD_REQUEST,
+          "2003 : Aucune visite avec cet identifiant n'a été trouvée pour le numéro d'hydrant spécifié");
     }
 
     TypeHydrantSaisie typeVisite = typeHydrantSaisieRepository.getById(visite.getType());
 
     Hydrant hydrant = peiRepository.getById(visite.getHydrant());
-    HydrantMaintenanceSP hydrantMaintenanceSP = new HydrantMaintenanceSP(hydrant.getMaintenanceDeci(), hydrant.getSpDeci());
+    HydrantMaintenanceSP hydrantMaintenanceSP =
+        new HydrantMaintenanceSP(hydrant.getMaintenanceDeci(), hydrant.getSpDeci());
 
     if (!this.isTypeVisiteAllowed(hydrantMaintenanceSP, typeVisite.getCode())) {
-      throw new ResponseException(Response.Status.FORBIDDEN, "2201 : Votre organisme n'est pas autorisé à modifier une visite de type " + typeVisite.getCode() + " sur cet hydrant");
+      throw new ResponseException(
+          Response.Status.FORBIDDEN,
+          "2201 : Votre organisme n'est pas autorisé à modifier une visite de type "
+              + typeVisite.getCode()
+              + " sur cet hydrant");
     }
 
     // On vérifie qu'il s'agit bien de la visite la plus récente
-    HydrantVisite visitePlusRecente = hydrantVisitesRepository.getVisitePlusRecente(visite.getHydrant(), visite.getDate());
+    HydrantVisite visitePlusRecente =
+        hydrantVisitesRepository.getVisitePlusRecente(visite.getHydrant(), visite.getDate());
 
     if (visitePlusRecente != null) {
-      throw new ResponseException(Response.Status.METHOD_NOT_ALLOWED, "2110 : Modification de la visite impossible : une visite plus récente est présente");
+      throw new ResponseException(
+          Response.Status.METHOD_NOT_ALLOWED,
+          "2110 : Modification de la visite impossible : une visite plus récente est présente");
     }
 
     this.hydrantVisitesRepository.deleteVisite(visite, typeVisite.getCode());
     try {
       this.launchTriggerAnomalies(visite.getHydrant());
     } catch (IOException e) {
-      throw new ResponseException(Response.Status.INTERNAL_SERVER_ERROR, "Une erreur interne est survenue lors du calcul de l'indisponibilité du PEI");
+      throw new ResponseException(
+          Response.Status.INTERNAL_SERVER_ERROR,
+          "Une erreur interne est survenue lors du calcul de l'indisponibilité du PEI");
     }
   }
 
   /**
-   * Vérifie que les anomalies contrôlées et constatées sont bien compatibles avec le type de visite spécifié, ainsi que
-   * la cohérence entre les anomalies constatées et contrôlées
+   * Vérifie que les anomalies contrôlées et constatées sont bien compatibles avec le type de visite
+   * spécifié, ainsi que la cohérence entre les anomalies constatées et contrôlées
    *
    * @param idTypeHydrantNature Identifiant du type de saisie
-   * @param codeTypeVisite      Code du type de visite
-   * @param controlees          Liste de code des anomalies contrôlées
-   * @param constatees          Liste de code des anomalies constatées
+   * @param codeTypeVisite Code du type de visite
+   * @param controlees Liste de code des anomalies contrôlées
+   * @param constatees Liste de code des anomalies constatées
    * @throws ResponseException
    */
-  private void checkAnomalies(Long idTypeHydrantNature, String
-          codeTypeVisite, List<String> controlees, List<String> constatees) throws ResponseException {
+  private void checkAnomalies(
+      Long idTypeHydrantNature,
+      String codeTypeVisite,
+      List<String> controlees,
+      List<String> constatees)
+      throws ResponseException {
     TypeHydrantNature typeHydrantNature = typeHydrantNatureRepository.getById(idTypeHydrantNature);
 
-    int nbAnomaliesChecked = typeHydrantAnomalieRepository.getNbAnomaliesChecked(codeTypeVisite, typeHydrantNature.getCode(), controlees);
+    int nbAnomaliesChecked =
+        typeHydrantAnomalieRepository.getNbAnomaliesChecked(
+            codeTypeVisite, typeHydrantNature.getCode(), controlees);
     if (nbAnomaliesChecked != controlees.size()) {
-      throw new ResponseException(Response.Status.BAD_REQUEST, "2002 : Une ou plusieurs anomalies contrôlées n'existent pas ou ne sont pas disponibles pour " +
-              "une visite de type " + codeTypeVisite.toUpperCase());
+      throw new ResponseException(
+          Response.Status.BAD_REQUEST,
+          "2002 : Une ou plusieurs anomalies contrôlées n'existent pas ou ne sont pas disponibles pour "
+              + "une visite de type "
+              + codeTypeVisite.toUpperCase());
     }
 
     for (String s : constatees) {
       if (!controlees.contains(s)) {
-        throw new ResponseException(Response.Status.METHOD_NOT_ALLOWED, "2104 : Une ou plusieurs anomalies ont été marquées constatées sans avoir été contrôlées");
+        throw new ResponseException(
+            Response.Status.METHOD_NOT_ALLOWED,
+            "2104 : Une ou plusieurs anomalies ont été marquées constatées sans avoir été contrôlées");
       }
     }
   }
@@ -474,28 +547,28 @@ public class HydrantVisitesUseCase {
   }
 
   /**
-   * Indique si l'utilisateur a les droits de modification sur la visite d'un PEI
-   * La règle est la suivante:
-   * - Si utilisateur est le service des eaux (seulement) de l'hydrant => Visites NP uniquement
-   * - Si l'utilisateur est la maintenance DECI Ou le service public => Visites NP, CTRL et CREA uniquement
-   * A ce stade, on considère que la vérification de l'accessibilité de l'hydrant a déjà été faite
+   * Indique si l'utilisateur a les droits de modification sur la visite d'un PEI La règle est la
+   * suivante: - Si utilisateur est le service des eaux (seulement) de l'hydrant => Visites NP
+   * uniquement - Si l'utilisateur est la maintenance DECI Ou le service public => Visites NP, CTRL
+   * et CREA uniquement A ce stade, on considère que la vérification de l'accessibilité de l'hydrant
+   * a déjà été faite
    *
    * @param maintenanceSP HydrantMaintenanceSP
-   * @param codeVisite    String
+   * @param codeVisite String
    * @return boolean
    */
   private boolean isTypeVisiteAllowed(HydrantMaintenanceSP maintenanceSP, String codeVisite) {
     if (Stream.of(TypeVisite.NON_PROGRAMMEE, TypeVisite.CONTROLE, TypeVisite.CREATION)
-            .map(TypeVisite::getCode)
-            .filter(it -> it.equalsIgnoreCase(codeVisite))
-            .findAny()
-            .isEmpty()
-    ) {
+        .map(TypeVisite::getCode)
+        .filter(it -> it.equalsIgnoreCase(codeVisite))
+        .findAny()
+        .isEmpty()) {
       // Type de visite non permis par l'API
       return false;
     }
 
-    UseCaseUtils.OrganismeIdType organisme = new UseCaseUtils.OrganismeIdType(currentUser.get().userId(), currentUser.get().type());
+    UseCaseUtils.OrganismeIdType organisme =
+        new UseCaseUtils.OrganismeIdType(currentUser.get().userId(), currentUser.get().type());
 
     // L'admin peut tout modifier
     if (UseCaseUtils.isApiAdmin(organisme)) {
@@ -503,11 +576,11 @@ public class HydrantVisitesUseCase {
     }
 
     // Type CTRL ou CREA
-    if (TypeVisite.CONTROLE.getCode().equalsIgnoreCase(codeVisite) || TypeVisite.CREATION.getCode().equalsIgnoreCase(codeVisite)) {
+    if (TypeVisite.CONTROLE.getCode().equalsIgnoreCase(codeVisite)
+        || TypeVisite.CREATION.getCode().equalsIgnoreCase(codeVisite)) {
 
-      return (
-              UseCaseUtils.isServicePublicDECI(maintenanceSP.getServicePublicDeci(), organisme)
-                      || UseCaseUtils.isMaintenanceDECI(maintenanceSP.getMaintenanceDeci(), organisme));
+      return (UseCaseUtils.isServicePublicDECI(maintenanceSP.getServicePublicDeci(), organisme)
+          || UseCaseUtils.isMaintenanceDECI(maintenanceSP.getMaintenanceDeci(), organisme));
     }
 
     // Sinon c'est de type NP, donc toujours autorisé sur les PEI accessibles

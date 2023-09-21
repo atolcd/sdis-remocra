@@ -1,14 +1,13 @@
 package fr.sdis83.remocra.web.model;
 
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeEtude;
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeEtudeStatut;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Commune;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Document;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Organisme;
-import org.joda.time.Instant;
-
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeEtude;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeEtudeStatut;
 import java.util.ArrayList;
 import java.util.Map;
+import org.joda.time.Instant;
 
 public class Etude {
   private Long id;

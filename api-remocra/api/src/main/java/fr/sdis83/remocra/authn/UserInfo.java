@@ -2,9 +2,7 @@ package fr.sdis83.remocra.authn;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import java.util.List;
-import java.util.UUID;
 import org.immutables.value.Value;
 
 @Value.Immutable

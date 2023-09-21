@@ -9,5 +9,4 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooToString
 @RooJpaActiveRecord(versionField = "", table = "courrier_modele", schema = "remocra")
 @RooDbManaged(automaticallyDelete = true)
-public class CourrierModele {
-}
+public class CourrierModele {}

@@ -6,12 +6,12 @@ import org.springframework.roo.addon.json.RooJson;
 @RooJson
 @RooJavaBean
 public class RemocraVueCombo {
-    private String id;
+  private String id;
 
-    private String libelle;
+  private String libelle;
 
-    public RemocraVueCombo(String id, String libelle) {
-        this.id = id;
-        this.libelle = libelle;
-    }
+  public RemocraVueCombo(String id, String libelle) {
+    this.id = id;
+    this.libelle = libelle;
+  }
 }

@@ -14,5 +14,4 @@ public class ResponseException extends Exception {
   public Integer getStatusCode() {
     return this.status.getStatusCode();
   }
-
 }

@@ -1,12 +1,9 @@
 package fr.sdis83.remocra.web.model;
 
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlPlanificationParametre;
 import java.util.List;
 
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlModele;
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlPlanificationParametre;
-
 public class ProcessusEtlPlanification {
-
 
   private Long id;
 
@@ -19,7 +16,6 @@ public class ProcessusEtlPlanification {
   private Long objetConcerne;
 
   private List<ProcessusEtlPlanificationParametre> processusEtlPlanificationParametres;
-
 
   public Long getId() {
     return id;
@@ -65,7 +61,8 @@ public class ProcessusEtlPlanification {
     return processusEtlPlanificationParametres;
   }
 
-  public void setProcessusEtlPlanificationParametres(List<ProcessusEtlPlanificationParametre> processusEtlPlanificationParametres) {
+  public void setProcessusEtlPlanificationParametres(
+      List<ProcessusEtlPlanificationParametre> processusEtlPlanificationParametres) {
     this.processusEtlPlanificationParametres = processusEtlPlanificationParametres;
   }
 }

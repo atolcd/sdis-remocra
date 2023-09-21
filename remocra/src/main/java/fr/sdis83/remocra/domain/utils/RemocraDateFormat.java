@@ -4,12 +4,11 @@ import java.text.SimpleDateFormat;
 
 public class RemocraDateFormat extends SimpleDateFormat {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public static final String FORMAT = "dd/MM/yyyy";
+  public static final String FORMAT = "dd/MM/yyyy";
 
-    public RemocraDateFormat() {
-        super(FORMAT);
-    }
-
+  public RemocraDateFormat() {
+    super(FORMAT);
+  }
 }

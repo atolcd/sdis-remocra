@@ -4,10 +4,10 @@ import java.util.List;
 
 public class HistoriqueModel {
 
-   private List labels;
-   private List values;
+  private List labels;
+  private List values;
 
-   public List getLabels() {
+  public List getLabels() {
     return labels;
   }
 
@@ -20,6 +20,6 @@ public class HistoriqueModel {
   }
 
   public void setValues(List values) {
-    this.values= values;
+    this.values = values;
   }
 }

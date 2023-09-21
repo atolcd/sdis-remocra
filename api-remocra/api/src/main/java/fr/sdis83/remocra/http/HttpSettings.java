@@ -4,7 +4,7 @@ import org.immutables.value.Value;
 
 @Value.Immutable
 public interface HttpSettings {
-int port();
+  int port();
 
-int gracefulStopTime();
+  int gracefulStopTime();
 }

@@ -6,8 +6,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RequeteModeleService extends AbstractService<RequeteModele> {
 
-    public RequeteModeleService() {
-        super(RequeteModele.class);
-    }
-
+  public RequeteModeleService() {
+    super(RequeteModele.class);
+  }
 }

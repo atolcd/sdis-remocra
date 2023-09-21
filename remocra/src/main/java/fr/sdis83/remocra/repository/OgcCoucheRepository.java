@@ -2,13 +2,11 @@ package fr.sdis83.remocra.repository;
 
 import static fr.sdis83.remocra.db.model.remocra.Tables.OGC_COUCHE;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.OgcCouche;
 import fr.sdis83.remocra.web.message.ItemFilter;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +17,11 @@ import org.springframework.context.annotation.Configuration;
 public class OgcCoucheRepository {
   private final Logger logger = Logger.getLogger(getClass());
 
+  @Autowired DSLContext context;
 
-  @Autowired
-  DSLContext context;
+  public OgcCoucheRepository() {}
 
-
-  public OgcCoucheRepository() {
-
-  }
-
-  @PersistenceContext
-  private EntityManager entityManager;
+  @PersistenceContext private EntityManager entityManager;
 
   @Bean
   public OgcCoucheRepository ogcCoucheRepository(DSLContext context) {
@@ -52,9 +44,12 @@ public class OgcCoucheRepository {
 
   public List<OgcCouche> getByService(Long id) {
     List<OgcCouche> l = null;
-    l = context.select().from(OGC_COUCHE).where(OGC_COUCHE.OGC_SERVICE.eq(id)).fetchInto(OgcCouche.class);
+    l =
+        context
+            .select()
+            .from(OGC_COUCHE)
+            .where(OGC_COUCHE.OGC_SERVICE.eq(id))
+            .fetchInto(OgcCouche.class);
     return l;
   }
-
-
 }

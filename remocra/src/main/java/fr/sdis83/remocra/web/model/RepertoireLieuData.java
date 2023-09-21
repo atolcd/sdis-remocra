@@ -10,7 +10,6 @@ public class RepertoireLieuData {
 
   private String origine;
 
-
   public String getLibelle() {
     return libelle;
   }

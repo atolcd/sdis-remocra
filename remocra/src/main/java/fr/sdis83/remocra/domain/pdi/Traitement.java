@@ -1,4 +1,5 @@
 package fr.sdis83.remocra.domain.pdi;
+
 import java.util.Date;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -19,25 +20,25 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJavaBean
 @RooJpaActiveRecord(versionField = "", table = "traitement", schema = "pdi")
 @RooDbManaged(automaticallyDelete = true)
-@RooToString(excludeFields = { "traitementParametres", "idmodele", "idstatut", "traitementCcs" })
+@RooToString(excludeFields = {"traitementParametres", "idmodele", "idstatut", "traitementCcs"})
 public class Traitement {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idtraitement")
-    private Integer idtraitement;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "idtraitement")
+  private Integer idtraitement;
 
-    @Column(name = "demande")
-    @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "MM")
-    private Date demande;
+  @Column(name = "demande")
+  @NotNull
+  @Temporal(TemporalType.TIMESTAMP)
+  @DateTimeFormat(style = "MM")
+  private Date demande;
 
-    @Column(name = "execution")
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "MM")
-    private Date execution;
+  @Column(name = "execution")
+  @Temporal(TemporalType.TIMESTAMP)
+  @DateTimeFormat(style = "MM")
+  private Date execution;
 
-    @OneToMany(mappedBy = "idtraitement", cascade = CascadeType.ALL)
-    private Set<TraitementParametre> traitementParametres;
+  @OneToMany(mappedBy = "idtraitement", cascade = CascadeType.ALL)
+  private Set<TraitementParametre> traitementParametres;
 }

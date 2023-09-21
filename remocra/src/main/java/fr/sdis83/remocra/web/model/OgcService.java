@@ -1,12 +1,9 @@
 package fr.sdis83.remocra.web.model;
 
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.OgcCouche;
 import java.util.List;
 
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.OgcCouche;
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlPlanificationParametre;
-
 public class OgcService {
-
 
   private Long id;
 
@@ -19,7 +16,6 @@ public class OgcService {
   private Long ogcSource;
 
   private List<OgcCouche> ogcCouches;
-
 
   public Long getId() {
     return id;

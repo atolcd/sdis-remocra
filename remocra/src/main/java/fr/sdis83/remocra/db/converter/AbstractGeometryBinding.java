@@ -1,11 +1,13 @@
 package fr.sdis83.remocra.db.converter;
 
-
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKTWriter;
 import fr.sdis83.remocra.GlobalConstants;
+import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.sql.Types;
 import org.jooq.Binding;
 import org.jooq.BindingGetResultSetContext;
 import org.jooq.BindingGetSQLInputContext;
@@ -17,13 +19,7 @@ import org.jooq.BindingSetStatementContext;
 import org.jooq.Converter;
 import org.jooq.impl.DSL;
 
-import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
-import java.sql.Types;
-
-/**
- * Binding Jooq pour les géométries.
- */
+/** Binding Jooq pour les géométries. */
 public abstract class AbstractGeometryBinding<T extends Geometry> implements Binding<Object, T> {
 
   private final WKBReader reader;
@@ -31,9 +27,7 @@ public abstract class AbstractGeometryBinding<T extends Geometry> implements Bin
 
   private final Class<T> geometryClass;
 
-  /**
-   * Constructeur par défaut.
-   */
+  /** Constructeur par défaut. */
   public AbstractGeometryBinding(Class<T> geometryClass) {
     // TODO: inject this
     reader = new WKBReader();
@@ -86,14 +80,16 @@ public abstract class AbstractGeometryBinding<T extends Geometry> implements Bin
       ctx.render().visit(DSL.val(value)).sql("::geometry");
       return;
     }
-    ctx.render().sql("ST_GeomFromText(").visit(DSL.val(value)).sql(","+ GlobalConstants.SRID_2154 +")");
+    ctx.render()
+        .sql("ST_GeomFromText(")
+        .visit(DSL.val(value))
+        .sql("," + GlobalConstants.SRID_2154 + ")");
   }
 
   // Registering BLOB types for JDBC CallableStatement OUT parameters
   @Override
   public void register(BindingRegisterContext<T> ctx) throws SQLException {
-    ctx.statement()
-        .registerOutParameter(ctx.index(), Types.BLOB);
+    ctx.statement().registerOutParameter(ctx.index(), Types.BLOB);
   }
 
   // Converting the Geometry to a byte[] value and setting that on a JDBC PreparedStatement
@@ -125,5 +121,4 @@ public abstract class AbstractGeometryBinding<T extends Geometry> implements Bin
   public void get(BindingGetSQLInputContext<T> ctx) throws SQLException {
     throw new SQLFeatureNotSupportedException();
   }
-
 }

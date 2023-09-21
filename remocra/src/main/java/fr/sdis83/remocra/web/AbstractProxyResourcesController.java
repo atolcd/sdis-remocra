@@ -2,28 +2,25 @@ package fr.sdis83.remocra.web;
 
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.web.serialize.StreamFileUtils;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * Proxy vers des ressources sur disque. Si le fichier concerné
- * sur disque n'existe pas (paramètre DOSSIER_RESSOURCES_EXTERNES), le proxy
- * essaie de retourner le fichier du répertoire "webapp" s'il est trouvé, une
- * erreur 404 sinon.
+ * Proxy vers des ressources sur disque. Si le fichier concerné sur disque n'existe pas (paramètre
+ * DOSSIER_RESSOURCES_EXTERNES), le proxy essaie de retourner le fichier du répertoire "webapp" s'il
+ * est trouvé, une erreur 404 sinon.
  *
- * Surcharge + ajout des annotations : @RequestMapping("/ext-res") et @Controller
+ * <p>Surcharge + ajout des annotations : @RequestMapping("/ext-res") et @Controller
  */
 public abstract class AbstractProxyResourcesController extends AbstractRemocraController {
 
@@ -35,20 +32,20 @@ public abstract class AbstractProxyResourcesController extends AbstractRemocraCo
   // Exemple : "/var/remocra/html"
   abstract String getFileBasePath();
 
-  @Autowired
-  ApplicationContext appplicationContext;
+  @Autowired ApplicationContext appplicationContext;
 
   /**
-   * Retourne une ressource dans le flux. Si la ressource externe existe,
-   * c'est elle qui est transmise. Sinon on essaie de transmettre la ressource
-   * équivalente du dossier encapsulé dans l'application (webapp/**).
+   * Retourne une ressource dans le flux. Si la ressource externe existe, c'est elle qui est
+   * transmise. Sinon on essaie de transmettre la ressource équivalente du dossier encapsulé dans
+   * l'application (webapp/**).
    *
    * @param request
    * @param response
    * @throws IOException
    */
   @RequestMapping(value = "/**")
-  public void proxExtResource(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void proxExtResource(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
     String partialPath = request.getRequestURI().replaceAll(getUriBasePath(), "");
     File file = getFile(partialPath);
     showDocument(file, response);
@@ -57,8 +54,7 @@ public abstract class AbstractProxyResourcesController extends AbstractRemocraCo
   /**
    * Retourne le fichier trouvé.
    *
-   * @param partialPath
-   *            chemin partiel. Doit commencer par /
+   * @param partialPath chemin partiel. Doit commencer par /
    * @return
    */
   protected File getFile(String partialPath) {
@@ -96,7 +92,7 @@ public abstract class AbstractProxyResourcesController extends AbstractRemocraCo
       response.setContentType("text/html");
     } else if (file.getName().endsWith(".svg")) {
       response.setContentType("image/svg+xml");
-    } else if(file.getName().endsWith(".pdf")){
+    } else if (file.getName().endsWith(".pdf")) {
       response.setContentType("application/pdf");
     } else {
       String contentType = StreamFileUtils.getContentTypeFromFile(file);

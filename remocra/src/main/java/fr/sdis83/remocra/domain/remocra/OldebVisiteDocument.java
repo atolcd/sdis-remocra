@@ -6,7 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.roo.addon.javabean.RooJavaBean;
@@ -20,26 +19,26 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJpaActiveRecord(versionField = "")
 public class OldebVisiteDocument {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
 
-    @NotNull
-    @ManyToOne(optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private OldebVisite visite;
+  @NotNull
+  @ManyToOne(optional = false)
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  private OldebVisite visite;
 
-    @NotNull
-    @ManyToOne(optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Document document;
+  @NotNull
+  @ManyToOne(optional = false)
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  private Document document;
 
-    public String getTitre() {
-        return document.getFichier();
-    }
+  public String getTitre() {
+    return document.getFichier();
+  }
 
-    public String getCode() {
-        return document.getCode();
-    }
+  public String getCode() {
+    return document.getCode();
+  }
 }

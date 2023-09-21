@@ -6,8 +6,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class GestionnaireService extends AbstractService<Gestionnaire> {
 
-    public GestionnaireService() {
-        super(Gestionnaire.class);
-    }
-
+  public GestionnaireService() {
+    super(Gestionnaire.class);
+  }
 }

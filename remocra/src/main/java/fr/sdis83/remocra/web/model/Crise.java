@@ -1,16 +1,13 @@
 package fr.sdis83.remocra.web.model;
 
-import java.util.List;
-
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.OgcCouche;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.RepertoireLieu;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Utilisateur;
 import fr.sdis83.remocra.domain.remocra.Commune;
+import java.util.List;
 import org.joda.time.Instant;
 
-
 public class Crise {
-
 
   private Long id;
 
@@ -58,9 +55,6 @@ public class Crise {
 
   private List<OgcCouche> ogcCouchesAnt;
 
-
-
-
   public TypeCrise getTypeCrise() {
     return typeCrise;
   }
@@ -84,7 +78,6 @@ public class Crise {
   public void setAuteurCrise(Utilisateur auteurCrise) {
     this.auteurCrise = auteurCrise;
   }
-
 
   public String getNom() {
     return nom;
@@ -131,7 +124,8 @@ public class Crise {
     return processusEtlPlanifications;
   }
 
-  public void setProcessusEtlPlanifications(List<ProcessusEtlPlanification> processusEtlPlanifications) {
+  public void setProcessusEtlPlanifications(
+      List<ProcessusEtlPlanification> processusEtlPlanifications) {
     this.processusEtlPlanifications = processusEtlPlanifications;
   }
 
@@ -166,5 +160,4 @@ public class Crise {
   public void setOgcCouchesOp(List<OgcCouche> ogcCouchesOp) {
     this.ogcCouchesOp = ogcCouchesOp;
   }
-
 }

@@ -8,29 +8,32 @@ import org.immutables.value.Value;
 @Value.Enclosing
 public class AppModule extends AbstractModule {
 
-@Value.Immutable
-interface Settings {
-String title();
+  @Value.Immutable
+  interface Settings {
+    String title();
 
-String version();
-}
+    String version();
+  }
 
-public static AppModule create(Config config) {
-        return new AppModule(ImmutableAppModule.Settings.builder().title(config.getString("title"))
-                             .version(config.getString("version")).build());
-}
+  public static AppModule create(Config config) {
+    return new AppModule(
+        ImmutableAppModule.Settings.builder()
+            .title(config.getString("title"))
+            .version(config.getString("version"))
+            .build());
+  }
 
-private final Settings settings;
+  private final Settings settings;
 
-public AppModule(Settings settings) {
-        this.settings = settings;
-}
+  public AppModule(Settings settings) {
+    this.settings = settings;
+  }
 
-@Override
-protected void configure() {
-        bind(javax.ws.rs.core.Application.class).to(Application.class);
+  @Override
+  protected void configure() {
+    bind(javax.ws.rs.core.Application.class).to(Application.class);
 
-        bind(String.class).annotatedWith(ApplicationTitle.class).toInstance(settings.title());
-        bind(String.class).annotatedWith(ApplicationVersion.class).toInstance(settings.version());
-}
+    bind(String.class).annotatedWith(ApplicationTitle.class).toInstance(settings.title());
+    bind(String.class).annotatedWith(ApplicationVersion.class).toInstance(settings.version());
+  }
 }

@@ -1,25 +1,24 @@
 package fr.sdis83.remocra.xml;
 
 import java.util.ArrayList;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "marques")
 public class LstMarques {
 
-    private ArrayList<Marque> marques;
+  private ArrayList<Marque> marques;
 
-    public LstMarques() {
-        //
-    }
+  public LstMarques() {
+    //
+  }
 
-    @XmlElement(name = "marque")
-    public ArrayList<Marque> getMarques() {
-        return marques;
-    }
+  @XmlElement(name = "marque")
+  public ArrayList<Marque> getMarques() {
+    return marques;
+  }
 
-    public void setMarques(ArrayList<Marque> marques) {
-        this.marques = marques;
-    }
+  public void setMarques(ArrayList<Marque> marques) {
+    this.marques = marques;
+  }
 }

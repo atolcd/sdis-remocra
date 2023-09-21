@@ -1,9 +1,6 @@
 package fr.sdis83.remocra.web.model;
 
 import com.vividsolutions.jts.geom.Geometry;
-import fr.sdis83.remocra.domain.remocra.Hydrant;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

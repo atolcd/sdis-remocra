@@ -20,10 +20,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 @Controller
 public class CouvertureHydrauliqueController {
 
-  @Autowired
-  private CouvertureHydrauliqueRepository couvertureHydrauliqueRepository;
+  @Autowired private CouvertureHydrauliqueRepository couvertureHydrauliqueRepository;
 
-  @RequestMapping(value = "/calcul", method = RequestMethod.POST,  headers = "Content-Type=multipart/form-data")
+  @RequestMapping(
+      value = "/calcul",
+      method = RequestMethod.POST,
+      headers = "Content-Type=multipart/form-data")
   @PreAuthorize("hasRight('PLANIFIER_DECI')")
   @Transactional
   public ResponseEntity<String> calcul(MultipartHttpServletRequest request) {
@@ -33,27 +35,34 @@ public class CouvertureHydrauliqueController {
       String etude = request.getParameter("etude");
       String useReseauImporte = request.getParameter("reseauImporte");
 
-      couvertureHydrauliqueRepository.calcul(hydrantsExistants, hydrantsProjet, etude, useReseauImporte);
-      return new SuccessErrorExtSerializer(true, "La couverture hydraulique a bien été tracée").serialize();
-    }catch(Exception e){
+      couvertureHydrauliqueRepository.calcul(
+          hydrantsExistants, hydrantsProjet, etude, useReseauImporte);
+      return new SuccessErrorExtSerializer(true, "La couverture hydraulique a bien été tracée")
+          .serialize();
+    } catch (Exception e) {
       e.printStackTrace();
-      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors du calcul de la couverture hydraulique").serialize();
+      return new SuccessErrorExtSerializer(
+              false, "Une erreur est survenue lors du calcul de la couverture hydraulique")
+          .serialize();
     }
   }
 
   @PreAuthorize("hasRight('PLANIFIER_DECI')")
   @RequestMapping(value = "", method = RequestMethod.DELETE, headers = "Accept=application/json")
   public ResponseEntity<java.lang.String> delete(final @RequestBody String etude) {
-      try {
-          couvertureHydrauliqueRepository.deleteCouverture(Long.valueOf(etude));
-          return new SuccessErrorExtSerializer(true, "Couverture hydraulique effacée").serialize();
-      } catch (Exception e) {
-          return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
-      }
+    try {
+      couvertureHydrauliqueRepository.deleteCouverture(Long.valueOf(etude));
+      return new SuccessErrorExtSerializer(true, "Couverture hydraulique effacée").serialize();
+    } catch (Exception e) {
+      return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+    }
   }
 
   @PreAuthorize("hasRight('PLANIFIER_DECI')")
-  @RequestMapping(value = "/closestPei", method = RequestMethod.POST, headers = "Content-Type=multipart/form-data")
+  @RequestMapping(
+      value = "/closestPei",
+      method = RequestMethod.POST,
+      headers = "Content-Type=multipart/form-data")
   @Transactional(noRollbackFor = Exception.class)
   public ResponseEntity<String> closestPei(MultipartHttpServletRequest request) {
 

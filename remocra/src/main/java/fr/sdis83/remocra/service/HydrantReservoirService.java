@@ -6,8 +6,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class HydrantReservoirService extends AbstractService<HydrantReservoir> {
 
-    public HydrantReservoirService() {
-        super(HydrantReservoir.class);
-    }
-
+  public HydrantReservoirService() {
+    super(HydrantReservoir.class);
+  }
 }

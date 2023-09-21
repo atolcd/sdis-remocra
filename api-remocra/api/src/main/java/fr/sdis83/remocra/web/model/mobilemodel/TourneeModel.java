@@ -2,26 +2,24 @@ package fr.sdis83.remocra.web.model.mobilemodel;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.immutables.value.Value;
-
-import javax.annotation.Nullable;
 import java.util.List;
+import javax.annotation.Nullable;
+import org.immutables.value.Value;
 
 @Value.Immutable
 @JsonSerialize(as = ImmutableTourneeModel.class)
 @JsonDeserialize(as = ImmutableTourneeModel.class)
 public interface TourneeModel {
 
-    Long idRemocra();
+  Long idRemocra();
 
-    Long affectation();
+  Long affectation();
 
-    String nom();
+  String nom();
 
-    @Nullable
-    Long reservation();
+  @Nullable
+  Long reservation();
 
-    @Nullable
-    List<Long> listeHydrant();
-
+  @Nullable
+  List<Long> listeHydrant();
 }

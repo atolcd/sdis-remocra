@@ -5,45 +5,51 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class TypeOrganismeAcces {
 
-    private Long id;
-    private Boolean recuperer;
-    private Boolean transmettre;
-    private Boolean administrer;
-    private Long organismeId;
-    private String organismeNom;
+  private Long id;
+  private Boolean recuperer;
+  private Boolean transmettre;
+  private Boolean administrer;
+  private Long organismeId;
+  private String organismeNom;
 
-    public TypeOrganismeAcces() {
-    }
+  public TypeOrganismeAcces() {}
 
-    public TypeOrganismeAcces(Long id, Boolean recuperer, Boolean transmettre, Boolean administrer, Long organismeId, String organismeNom) {
-        this.id = id;
-        this.recuperer = recuperer;
-        this.transmettre = transmettre;
-        this.administrer = administrer;
-        this.organismeId = organismeId;
-        this.organismeNom = organismeNom;
-    }
-    public Long getId() {
-        return id;
-    }
+  public TypeOrganismeAcces(
+      Long id,
+      Boolean recuperer,
+      Boolean transmettre,
+      Boolean administrer,
+      Long organismeId,
+      String organismeNom) {
+    this.id = id;
+    this.recuperer = recuperer;
+    this.transmettre = transmettre;
+    this.administrer = administrer;
+    this.organismeId = organismeId;
+    this.organismeNom = organismeNom;
+  }
 
-    public Boolean getRecuperer() {
-        return recuperer;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public Boolean getTransmettre() {
-        return transmettre;
-    }
+  public Boolean getRecuperer() {
+    return recuperer;
+  }
 
-    public Boolean getAdministrer() {
-        return administrer;
-    }
+  public Boolean getTransmettre() {
+    return transmettre;
+  }
 
-    public Long getOrganismeId() {
-        return organismeId;
-    }
+  public Boolean getAdministrer() {
+    return administrer;
+  }
 
-    public String getOrganismeNom() {
-        return organismeNom;
-    }
+  public Long getOrganismeId() {
+    return organismeId;
+  }
+
+  public String getOrganismeNom() {
+    return organismeNom;
+  }
 }

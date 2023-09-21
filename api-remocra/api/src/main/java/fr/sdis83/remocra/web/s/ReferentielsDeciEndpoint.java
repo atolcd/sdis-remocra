@@ -8,7 +8,6 @@ import fr.sdis83.remocra.repository.TypeHydrantNiveauRepository;
 import fr.sdis83.remocra.repository.TypeHydrantSaisieRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -24,69 +23,83 @@ import javax.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ReferentielsDeciEndpoint {
 
-  @Inject
-  TypeHydrantNatureDeciRepository typeHydrantNatureDeci;
+  @Inject TypeHydrantNatureDeciRepository typeHydrantNatureDeci;
 
-  @Inject
-  TypeHydrantNiveauRepository typeHydrantNiveauRepository;
+  @Inject TypeHydrantNiveauRepository typeHydrantNiveauRepository;
 
-  @Inject
-  TypeHydrantDomaineRepository typeHydrantDomaineRepository;
+  @Inject TypeHydrantDomaineRepository typeHydrantDomaineRepository;
 
-  @Inject
-  TypeHydrantSaisieRepository typeHydrantSaisieRepository;
+  @Inject TypeHydrantSaisieRepository typeHydrantSaisieRepository;
 
   @GET
   @Path("/naturesDECI")
-  @Operation(summary = "Retourne les types de DECI applicables sur les PEI (publique, privée, privée sous convention). Attention la nature DECI peut être différente du domaine", tags = {"DECI - Référentiels communs"})
+  @Operation(
+      summary =
+          "Retourne les types de DECI applicables sur les PEI (publique, privée, privée sous convention). Attention la nature DECI peut être différente du domaine",
+      tags = {"DECI - Référentiels communs"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielNaturesDECI(
-    final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
-    final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start
-  ) throws JsonProcessingException {
+      final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit")
+          Integer limit,
+      final @Parameter(description = "Retourne les informations à partir de la n-ième ligne")
+          @QueryParam("start") Integer start)
+      throws JsonProcessingException {
 
     return Response.ok(typeHydrantNatureDeci.getAll(start, limit)).build();
   }
 
   @GET
   @Path("/niveaux")
-  @Operation(summary = "Retourne les valeurs de positionnement par rapport au sol possibles pour un PEI", tags = {"DECI - Référentiels communs"})
+  @Operation(
+      summary = "Retourne les valeurs de positionnement par rapport au sol possibles pour un PEI",
+      tags = {"DECI - Référentiels communs"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielNiveaux(
-    final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
-    final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start
-  ) throws JsonProcessingException {
+      final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit")
+          Integer limit,
+      final @Parameter(description = "Retourne les informations à partir de la n-ième ligne")
+          @QueryParam("start") Integer start)
+      throws JsonProcessingException {
 
     return Response.ok(typeHydrantNiveauRepository.getAll(start, limit)).build();
   }
 
   @GET
   @Path("/domaines")
-  @Operation(summary = "Retourne les natures domaniales des terrains sur lesquels les PEI sont localisés " +
-    "(domanial, privé, militaire, etc.). Attention la nature du domaine peut être différente de " +
-    "la nature de la DECI", tags = {"DECI - Référentiels communs"})
+  @Operation(
+      summary =
+          "Retourne les natures domaniales des terrains sur lesquels les PEI sont localisés "
+              + "(domanial, privé, militaire, etc.). Attention la nature du domaine peut être différente de "
+              + "la nature de la DECI",
+      tags = {"DECI - Référentiels communs"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielDomaines(
-    final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
-    final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start
-  ) throws JsonProcessingException {
+      final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit")
+          Integer limit,
+      final @Parameter(description = "Retourne les informations à partir de la n-ième ligne")
+          @QueryParam("start") Integer start)
+      throws JsonProcessingException {
 
     return Response.ok(typeHydrantDomaineRepository.getAll(start, limit)).build();
   }
 
   @GET
   @Path("/naturesVisites")
-  @Operation(summary = "Retourne les types (contexte) de visites possibles sur les PEI. Les contextes sont définis par type " +
-    "d'organisme. Un service des eaux ne pourra par exemple pas renseigner des visites de type Contrôle Technique Périodique " +
-    "(CTP) ou Reconnaissance (ROI ou ROP)  mais pourra renseigner des visites non programmées (NP). Les contextes déterminent " +
-    "également la liste des anomalies pouvant être constatées sur une nature de PEI", tags = {"DECI - Référentiels communs"})
+  @Operation(
+      summary =
+          "Retourne les types (contexte) de visites possibles sur les PEI. Les contextes sont définis par type "
+              + "d'organisme. Un service des eaux ne pourra par exemple pas renseigner des visites de type Contrôle Technique Périodique "
+              + "(CTP) ou Reconnaissance (ROI ou ROP)  mais pourra renseigner des visites non programmées (NP). Les contextes déterminent "
+              + "également la liste des anomalies pouvant être constatées sur une nature de PEI",
+      tags = {"DECI - Référentiels communs"})
   @RolesAllowed({UserRoles.RoleTypes.RECEVOIR})
   public Response getRefentielVisites(
-    final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit") Integer limit,
-    final @Parameter(description = "Retourne les informations à partir de la n-ième ligne") @QueryParam("start") Integer start
-  ) throws JsonProcessingException {
+      final @Parameter(description = "Nombre maximum de résultats à retourner") @QueryParam("limit")
+          Integer limit,
+      final @Parameter(description = "Retourne les informations à partir de la n-ième ligne")
+          @QueryParam("start") Integer start)
+      throws JsonProcessingException {
 
     return Response.ok(typeHydrantSaisieRepository.getAll(start, limit)).build();
   }
 }
-

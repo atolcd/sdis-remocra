@@ -2,11 +2,10 @@ package fr.sdis83.remocra.web.model.indispotemporaire;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.immutables.value.Value;
-
+import java.util.List;
 import javax.annotation.Nullable;
 import javax.ws.rs.DefaultValue;
-import java.util.List;
+import org.immutables.value.Value;
 
 @Value.Immutable
 @JsonDeserialize(as = ImmutableIndispoTemporaireForm.class)
@@ -46,5 +45,4 @@ public interface IndispoTemporaireForm {
   @JsonProperty
   @DefaultValue("true")
   List<String> hydrants();
-
 }

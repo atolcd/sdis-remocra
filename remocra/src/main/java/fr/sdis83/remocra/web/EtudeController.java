@@ -12,6 +12,9 @@ import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import fr.sdis83.remocra.web.serialize.transformer.GeometryTransformer;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import org.joda.time.Instant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,33 +28,33 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 @RequestMapping("/etudes")
 @Controller
 public class EtudeController {
 
-  @Autowired
-  private EtudeRepository etudeRepository;
+  @Autowired private EtudeRepository etudeRepository;
 
   @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/xml")
   @PreAuthorize("hasRight('PLANIFIER_DECI')")
-  public ResponseEntity<String> listJson(final @RequestParam(value = "page", required = false) Integer page,
-                             final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
-                             final @RequestParam(value = "query", required = false) String query, @RequestParam(value = "sort", required = false) String sorts,
-                             @RequestParam(value = "filter", required = false) String filters) {
+  public ResponseEntity<String> listJson(
+      final @RequestParam(value = "page", required = false) Integer page,
+      final @RequestParam(value = "start", required = false) Integer start,
+      final @RequestParam(value = "limit", required = false) Integer limit,
+      final @RequestParam(value = "query", required = false) String query,
+      @RequestParam(value = "sort", required = false) String sorts,
+      @RequestParam(value = "filter", required = false) String filters) {
     final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
     final List<ItemSorting> sortList = ItemSorting.decodeJson(sorts);
-
 
     return new AbstractExtListSerializer<Etude>("Etude retrieved.") {
 
       @Override
       protected JSONSerializer getJsonSerializer() {
-        return new JSONSerializer().exclude("*.class").transform(new GeometryTransformer(), Geometry.class)
-                .transform(RemocraDateHourTransformer.getInstance(), Date.class).transform(new RemocraInstantTransformer(), Instant.class)
+        return new JSONSerializer()
+            .exclude("*.class")
+            .transform(new GeometryTransformer(), Geometry.class)
+            .transform(RemocraDateHourTransformer.getInstance(), Date.class)
+            .transform(new RemocraInstantTransformer(), Instant.class)
             .include("data.*");
       }
 
@@ -64,17 +67,21 @@ public class EtudeController {
       protected Long countRecords() {
         return Long.valueOf(etudeRepository.count(itemFilterList));
       }
-
     }.serialize();
   }
 
   /**
    * Vérifie si une étude existe déjà avec le numéro passé en paramètre
+   *
    * @return TRUE si le numéro n'est pas utilisé, FALSE sinon
    */
-  @RequestMapping(value = "/checknumero", method = RequestMethod.GET, headers = "Accept=application/json")
+  @RequestMapping(
+      value = "/checknumero",
+      method = RequestMethod.GET,
+      headers = "Accept=application/json")
   @PreAuthorize("hasRight('PLANIFIER_DECI')")
-  public ResponseEntity<java.lang.String> checknumero(final @RequestParam(value = "numero", required = false) String numero) {
+  public ResponseEntity<java.lang.String> checknumero(
+      final @RequestParam(value = "numero", required = false) String numero) {
     return new AbstractExtObjectSerializer<Boolean>("Vérification du numéro effectuée") {
       @Override
       protected Boolean getRecord() {
@@ -83,7 +90,10 @@ public class EtudeController {
     }.serialize();
   }
 
-  @RequestMapping(value = "", method = RequestMethod.POST,  headers = "Content-Type=multipart/form-data")
+  @RequestMapping(
+      value = "",
+      method = RequestMethod.POST,
+      headers = "Content-Type=multipart/form-data")
   @PreAuthorize("hasRight('PLANIFIER_DECI')")
   @Transactional
   public ResponseEntity<java.lang.String> addEtude(MultipartHttpServletRequest request) {
@@ -92,15 +102,20 @@ public class EtudeController {
       Map<String, MultipartFile> files = request.getFileMap();
 
       long idEtude = etudeRepository.addEtude(json);
-        etudeRepository.addDocuments(files, idEtude);
+      etudeRepository.addDocuments(files, idEtude);
       return new SuccessErrorExtSerializer(true, "L'étude a bien été ajoutée.").serialize();
-    }catch(Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
-      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la création de l'étude.").serialize();
+      return new SuccessErrorExtSerializer(
+              false, "Une erreur est survenue lors de la création de l'étude.")
+          .serialize();
     }
   }
 
-  @RequestMapping(value = "/editEtude", method = RequestMethod.POST,  headers = "Content-Type=multipart/form-data")
+  @RequestMapping(
+      value = "/editEtude",
+      method = RequestMethod.POST,
+      headers = "Content-Type=multipart/form-data")
   @PreAuthorize("hasRight('PLANIFIER_DECI')")
   @Transactional
   public ResponseEntity<java.lang.String> editEtude(MultipartHttpServletRequest request) {
@@ -113,23 +128,29 @@ public class EtudeController {
       etudeRepository.addDocuments(files, idEtude);
       etudeRepository.removeDocuments(removedDocuments, idEtude);
       return new SuccessErrorExtSerializer(true, "L'étude a bien été modifiée.").serialize();
-    }catch(Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
-      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la création de l'étude.").serialize();
+      return new SuccessErrorExtSerializer(
+              false, "Une erreur est survenue lors de la création de l'étude.")
+          .serialize();
     }
   }
 
-  @RequestMapping(value = "/clore/{id}", method = RequestMethod.POST,  headers = "Accept=application/json")
+  @RequestMapping(
+      value = "/clore/{id}",
+      method = RequestMethod.POST,
+      headers = "Accept=application/json")
   @PreAuthorize("hasRight('PLANIFIER_DECI')")
   @Transactional
   public ResponseEntity<java.lang.String> cloreEtude(final @PathVariable(value = "id") Long id) {
     try {
       etudeRepository.cloreEtude(id);
       return new SuccessErrorExtSerializer(true, "L'étude a bien été close.").serialize();
-    }catch(Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
-      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la création de l'étude.").serialize();
+      return new SuccessErrorExtSerializer(
+              false, "Une erreur est survenue lors de la création de l'étude.")
+          .serialize();
     }
   }
-
 }

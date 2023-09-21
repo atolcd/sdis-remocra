@@ -4,49 +4,49 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class Commune {
 
-    private String insee;
+  private String insee;
 
-    private String nom;
+  private String nom;
 
-    private String code;
+  private String code;
 
-    public Commune() {
-        //
-    }
+  public Commune() {
+    //
+  }
 
-    public Commune(String code, String nom, String insee) {
-        this.code = code;
-        this.nom = nom;
-        this.insee = insee;
-    }
+  public Commune(String code, String nom, String insee) {
+    this.code = code;
+    this.nom = nom;
+    this.insee = insee;
+  }
 
-    public String getInsee() {
-        return insee;
-    }
+  public String getInsee() {
+    return insee;
+  }
 
-    public void setInsee(String insee) {
-        this.insee = insee;
-    }
+  public void setInsee(String insee) {
+    this.insee = insee;
+  }
 
-    @XmlElement(name = "libelle")
-    public String getNom() {
-        return nom;
-    }
+  @XmlElement(name = "libelle")
+  public String getNom() {
+    return nom;
+  }
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
+  public void setNom(String nom) {
+    this.nom = nom;
+  }
 
-    public String getCode() {
-        return code;
-    }
+  public String getCode() {
+    return code;
+  }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+  public void setCode(String code) {
+    this.code = code;
+  }
 
-    @Override
-    public String toString() {
-        return nom + " " + code + " " + insee;
-    }
+  @Override
+  public String toString() {
+    return nom + " " + code + " " + insee;
+  }
 }

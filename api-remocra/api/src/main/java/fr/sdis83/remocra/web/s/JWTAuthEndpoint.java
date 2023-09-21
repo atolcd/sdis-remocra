@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-
 import javax.annotation.security.PermitAll;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -29,34 +28,33 @@ import javax.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 public class JWTAuthEndpoint {
 
-  @Inject
-  JWTAuthUser authUserUseCase;
+  @Inject JWTAuthUser authUserUseCase;
 
   @Path("/jwt")
   @POST
   @Operation(
-    summary = "Authenticates a user",
-    tags = {"Authentication"},
-    responses = {
-      @ApiResponse(
-        responseCode = "200",
-        description = "Returns a signed JSON Web Token (jwt)",
-        headers = {
-          @Header(
-            name = AUTHORIZATION,
-            schema = @Schema(type = "string"),
-            description = "Bearer &lt;signed jwt&gt;")
-        }),
-      @ApiResponse(
-        responseCode = "401",
-        description = "Unauthorized",
-        content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
-    })
+      summary = "Authenticates a user",
+      tags = {"Authentication"},
+      responses = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Returns a signed JSON Web Token (jwt)",
+            headers = {
+              @Header(
+                  name = AUTHORIZATION,
+                  schema = @Schema(type = "string"),
+                  description = "Bearer &lt;signed jwt&gt;")
+            }),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized",
+            content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+      })
   @PermitAll
   public Response authenticate(
       @Parameter(description = "Email", required = true) @QueryParam("email") @NotNull String email,
-      @Parameter(description = "Password", required = true) @HeaderParam("X-Password") @NotNull String password
-  ) {
+      @Parameter(description = "Password", required = true) @HeaderParam("X-Password") @NotNull
+          String password) {
     JWTAuthUser.Response res = authUserUseCase.authenticate(email, password);
     if (res.status() == JWTAuthUser.Status.OK) {
       return Response.ok().header(AUTHORIZATION, "Bearer " + res.token().get()).build();

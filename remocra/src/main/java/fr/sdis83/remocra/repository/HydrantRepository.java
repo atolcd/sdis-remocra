@@ -1,5 +1,17 @@
 package fr.sdis83.remocra.repository;
 
+import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.DOCUMENT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_DOCUMENT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_VISITE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE_NATURE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_IMPORTCTP_ERREUR;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_SAISIE;
+import static org.apache.poi.ss.usermodel.Row.MissingCellPolicy.RETURN_BLANK_AS_NULL;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -26,6 +38,16 @@ import fr.sdis83.remocra.util.JSONUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.model.HydrantRecord;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.sql.DataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
@@ -51,72 +73,36 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.sql.DataSource;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
-import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
-import static fr.sdis83.remocra.db.model.remocra.Tables.DOCUMENT;
-import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
-import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_DOCUMENT;
-import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_VISITE;
-import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE;
-import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE_NATURE;
-import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES;
-import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_IMPORTCTP_ERREUR;
-import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_SAISIE;
-import static org.apache.poi.ss.usermodel.Row.MissingCellPolicy.RETURN_BLANK_AS_NULL;
-
 @Configuration
 public class HydrantRepository {
 
-  @Autowired
-  DSLContext context;
+  @Autowired DSLContext context;
 
-  @Autowired
-  HydrantVisiteRepository hydrantVisiteRepository;
+  @Autowired HydrantVisiteRepository hydrantVisiteRepository;
 
-  @Autowired
-  HydrantPibiRepository hydrantPibiRepository;
+  @Autowired HydrantPibiRepository hydrantPibiRepository;
 
-  @Autowired
-  HydrantPenaRepository hydrantPenaRepository;
+  @Autowired HydrantPenaRepository hydrantPenaRepository;
 
-  @Autowired
-  HydrantService hydrantService;
+  @Autowired HydrantService hydrantService;
 
-  @Autowired
-  ParamConfService paramConfService;
+  @Autowired ParamConfService paramConfService;
 
-  @Autowired
-  UtilisateurService utilisateurService;
+  @Autowired UtilisateurService utilisateurService;
 
-  @Autowired
-  DataSource dataSource;
+  @Autowired DataSource dataSource;
 
-  @PersistenceContext
-  protected EntityManager entityManager;
+  @PersistenceContext protected EntityManager entityManager;
 
-  @Autowired
-  private AuthoritiesUtil authUtils;
+  @Autowired private AuthoritiesUtil authUtils;
 
   public static final String AUTEUR_MODIFICATION_FLAG = "USER";
   public static final String TYPE_HYDRANT_PENA = "PENA";
   public static final String TYPE_HYDRANT_PIBI = "PIBI";
 
-
   private final Logger logger = Logger.getLogger(getClass());
 
-  public HydrantRepository() {
-  }
+  public HydrantRepository() {}
 
   @Bean
   public HydrantRepository hydrantRepository(DSLContext context) {
@@ -127,15 +113,19 @@ public class HydrantRepository {
     this.context = context;
   }
 
-  public void updateHydrantFromFiche(Long id, String jsonData, String typeHydrant, Map<String, MultipartFile> files) throws Exception {
+  public void updateHydrantFromFiche(
+      Long id, String jsonData, String typeHydrant, Map<String, MultipartFile> files)
+      throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
 
-    Map<String, Object> data = objectMapper.readValue(jsonData, new TypeReference<Map<String, Object>>() {
-    });
-    Map<String, Object> visitesData = objectMapper.readValue(data.get("visites").toString(), new TypeReference<Map<String, Object>>() {
-    });
-    Map<String, Object> geometrieData = objectMapper.readValue(data.get("geometrie").toString(), new TypeReference<Map<String, Object>>() {
-    });
+    Map<String, Object> data =
+        objectMapper.readValue(jsonData, new TypeReference<Map<String, Object>>() {});
+    Map<String, Object> visitesData =
+        objectMapper.readValue(
+            data.get("visites").toString(), new TypeReference<Map<String, Object>>() {});
+    Map<String, Object> geometrieData =
+        objectMapper.readValue(
+            data.get("geometrie").toString(), new TypeReference<Map<String, Object>>() {});
 
     Hydrant hydrant = this.getById(id);
     if (hydrant == null) {
@@ -148,7 +138,8 @@ public class HydrantRepository {
     Hydrant h = new Hydrant();
     h.setId(id);
 
-    // Reprise du numéro, ne sera changé que si les conditions sont réunies (pas de numéro interne ou renumérotation activée)
+    // Reprise du numéro, ne sera changé que si les conditions sont réunies (pas de numéro interne
+    // ou renumérotation activée)
     h.setNumero(hydrant.getNumero());
 
     h.setNumeroInterne(JSONUtil.getInteger(data, "numeroInterne"));
@@ -179,7 +170,8 @@ public class HydrantRepository {
     this.updateHydrant(h);
 
     // Visites
-    this.hydrantVisiteRepository.deleteVisiteFromFiche(id, visitesData.get("deleteVisite").toString());
+    this.hydrantVisiteRepository.deleteVisiteFromFiche(
+        id, visitesData.get("deleteVisite").toString());
     this.hydrantVisiteRepository.addVisiteFromFiche(id, visitesData.get("addVisite").toString());
 
     // Caractéristiques techniques
@@ -194,44 +186,55 @@ public class HydrantRepository {
     if (files != null && !files.isEmpty()) {
       for (MultipartFile file : files.values()) {
         if (!file.isEmpty()) {
-          Document d = DocumentUtil.getInstance().createNonPersistedDocument(Document.TypeDocument.HYDRANT, file, paramConfService.getDossierDocHydrant());
+          Document d =
+              DocumentUtil.getInstance()
+                  .createNonPersistedDocument(
+                      Document.TypeDocument.HYDRANT, file, paramConfService.getDossierDocHydrant());
           String sousType = DocumentUtil.getInstance().getSousType(file);
 
-          Long idDoc = context.insertInto(DOCUMENT)
+          Long idDoc =
+              context
+                  .insertInto(DOCUMENT)
                   .set(DOCUMENT.CODE, d.getCode())
                   .set(DOCUMENT.DATE_DOC, new Instant(d.getDateDoc()))
                   .set(DOCUMENT.FICHIER, d.getFichier())
                   .set(DOCUMENT.REPERTOIRE, d.getRepertoire())
                   .set(DOCUMENT.TYPE, d.getType().toString())
-                  .returning(DOCUMENT.ID).fetchOne().getValue(DOCUMENT.ID);
+                  .returning(DOCUMENT.ID)
+                  .fetchOne()
+                  .getValue(DOCUMENT.ID);
 
-          context.insertInto(HYDRANT_DOCUMENT)
-                  .set(HYDRANT_DOCUMENT.HYDRANT, id)
-                  .set(HYDRANT_DOCUMENT.DOCUMENT, idDoc)
-                  .execute();
+          context
+              .insertInto(HYDRANT_DOCUMENT)
+              .set(HYDRANT_DOCUMENT.HYDRANT, id)
+              .set(HYDRANT_DOCUMENT.DOCUMENT, idDoc)
+              .execute();
         }
       }
     }
   }
 
   /**
-   * Créé un hydrant depuis les informations passées par la fiche PEI
-   * Une fois l'hydrant créé, on transmet les informations à la fonction d'update
+   * Créé un hydrant depuis les informations passées par la fiche PEI Une fois l'hydrant créé, on
+   * transmet les informations à la fonction d'update
    *
-   * @param jsonData    Les données du PEI
+   * @param jsonData Les données du PEI
    * @param typeHydrant Le type de PEI
-   * @param files       Les fichiers du PEI
+   * @param files Les fichiers du PEI
    */
-  public void createHydrantFromFiche(String jsonData, String typeHydrant, Map<String, MultipartFile> files) throws Exception {
+  public void createHydrantFromFiche(
+      String jsonData, String typeHydrant, Map<String, MultipartFile> files) throws Exception {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    Map<String, Object> data = objectMapper.readValue(jsonData, new TypeReference<Map<String, Object>>() {
-    });
-    Map<String, Object> visitesData = objectMapper.readValue(data.get("visites").toString(), new TypeReference<Map<String, Object>>() {
-    });
-    Map<String, Object> geometrieData = objectMapper.readValue(data.get("geometrie").toString(), new TypeReference<Map<String, Object>>() {
-    });
+    Map<String, Object> data =
+        objectMapper.readValue(jsonData, new TypeReference<Map<String, Object>>() {});
+    Map<String, Object> visitesData =
+        objectMapper.readValue(
+            data.get("visites").toString(), new TypeReference<Map<String, Object>>() {});
+    Map<String, Object> geometrieData =
+        objectMapper.readValue(
+            data.get("geometrie").toString(), new TypeReference<Map<String, Object>>() {});
 
     Point geom = this.hydrantService.coordonneesToPoint(geometrieData.toString());
 
@@ -269,7 +272,8 @@ public class HydrantRepository {
       this.hydrantPenaRepository.createHydrantPenaFromFiche(id, data);
     }
 
-    this.hydrantVisiteRepository.deleteVisiteFromFiche(id, visitesData.get("deleteVisite").toString());
+    this.hydrantVisiteRepository.deleteVisiteFromFiche(
+        id, visitesData.get("deleteVisite").toString());
     this.hydrantVisiteRepository.addVisiteFromFiche(id, visitesData.get("addVisite").toString());
 
     // Documents
@@ -277,21 +281,29 @@ public class HydrantRepository {
     if (files != null && !files.isEmpty()) {
       for (MultipartFile file : files.values()) {
         if (!file.isEmpty()) {
-          Document d = DocumentUtil.getInstance().createNonPersistedDocument(Document.TypeDocument.HYDRANT, file, paramConfService.getDossierDocHydrant());
+          Document d =
+              DocumentUtil.getInstance()
+                  .createNonPersistedDocument(
+                      Document.TypeDocument.HYDRANT, file, paramConfService.getDossierDocHydrant());
           String sousType = DocumentUtil.getInstance().getSousType(file);
 
-          Long idDoc = context.insertInto(DOCUMENT)
+          Long idDoc =
+              context
+                  .insertInto(DOCUMENT)
                   .set(DOCUMENT.CODE, d.getCode())
                   .set(DOCUMENT.DATE_DOC, new Instant(d.getDateDoc()))
                   .set(DOCUMENT.FICHIER, d.getFichier())
                   .set(DOCUMENT.REPERTOIRE, d.getRepertoire())
                   .set(DOCUMENT.TYPE, d.getType().toString())
-                  .returning(DOCUMENT.ID).fetchOne().getValue(DOCUMENT.ID);
+                  .returning(DOCUMENT.ID)
+                  .fetchOne()
+                  .getValue(DOCUMENT.ID);
 
-          context.insertInto(HYDRANT_DOCUMENT)
-                  .set(HYDRANT_DOCUMENT.HYDRANT, id)
-                  .set(HYDRANT_DOCUMENT.DOCUMENT, idDoc)
-                  .execute();
+          context
+              .insertInto(HYDRANT_DOCUMENT)
+              .set(HYDRANT_DOCUMENT.HYDRANT, id)
+              .set(HYDRANT_DOCUMENT.DOCUMENT, idDoc)
+              .execute();
         }
       }
     }
@@ -305,7 +317,8 @@ public class HydrantRepository {
   private Long createHydrant(Hydrant h) {
     h = NumeroUtilRepository.setCodeZoneSpecAndNumeros(h, h.getCode());
 
-    Long id = context
+    Long id =
+        context
             .insertInto(HYDRANT)
             .set(HYDRANT.NUMERO, h.getNumero())
             .set(HYDRANT.NUMERO_INTERNE, h.getNumeroInterne())
@@ -334,7 +347,9 @@ public class HydrantRepository {
             .set(HYDRANT.UTILISATEUR_MODIFICATION, h.getUtilisateurModification())
             .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, h.getAuteurModificationFlag())
             .set(HYDRANT.ZONE_SPECIALE, h.getZoneSpeciale())
-            .returning(HYDRANT.ID).fetchOne().getValue(HYDRANT.ID);
+            .returning(HYDRANT.ID)
+            .fetchOne()
+            .getValue(HYDRANT.ID);
 
     return id;
   }
@@ -347,40 +362,41 @@ public class HydrantRepository {
    */
   private Hydrant updateHydrant(Hydrant h) {
 
-
-    if ((h.getNumeroInterne() == null || h.getNumeroInterne() <= 0) || paramConfService.getHydrantRenumerotationActivation()) {
+    if ((h.getNumeroInterne() == null || h.getNumeroInterne() <= 0)
+        || paramConfService.getHydrantRenumerotationActivation()) {
       h = NumeroUtilRepository.setCodeZoneSpecAndNumeros(h, h.getCode());
     }
 
-    context.update(HYDRANT)
-            .set(HYDRANT.NUMERO, h.getNumero())
-            .set(HYDRANT.NUMERO_INTERNE, h.getNumeroInterne())
-            .set(HYDRANT.NATURE, h.getNature())
-            .set(HYDRANT.NATURE_DECI, h.getNatureDeci())
-            .set(HYDRANT.AUTORITE_DECI, h.getAutoriteDeci())
-            .set(HYDRANT.SP_DECI, h.getSpDeci())
-            .set(HYDRANT.MAINTENANCE_DECI, h.getMaintenanceDeci())
-            .set(HYDRANT.GESTIONNAIRE, h.getGestionnaire())
-            .set(HYDRANT.SITE, h.getSite())
-            .set(HYDRANT.SUFFIXE_VOIE, h.getSuffixeVoie())
-            .set(HYDRANT.COMMUNE, h.getCommune())
-            .set(HYDRANT.DOMAINE, h.getDomaine())
-            .set(HYDRANT.NUMERO_VOIE, h.getNumeroVoie())
-            .set(HYDRANT.EN_FACE, h.getEnFace())
-            .set(HYDRANT.NIVEAU, h.getNiveau())
-            .set(HYDRANT.VOIE, h.getVoie())
-            .set(HYDRANT.VOIE2, h.getVoie2())
-            .set(HYDRANT.LIEU_DIT, h.getLieuDit())
-            .set(HYDRANT.COMPLEMENT, h.getComplement())
-            .set(HYDRANT.ANNEE_FABRICATION, h.getAnneeFabrication())
-            .set(HYDRANT.GEOMETRIE, h.getGeometrie())
-            .set(HYDRANT.DATE_MODIFICATION, h.getDateModification())
-            .set(HYDRANT.ORGANISME, h.getOrganisme())
-            .set(HYDRANT.UTILISATEUR_MODIFICATION, h.getUtilisateurModification())
-            .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, h.getAuteurModificationFlag())
-            .set(HYDRANT.ZONE_SPECIALE, h.getZoneSpeciale())
-            .where(HYDRANT.ID.eq(h.getId()))
-            .execute();
+    context
+        .update(HYDRANT)
+        .set(HYDRANT.NUMERO, h.getNumero())
+        .set(HYDRANT.NUMERO_INTERNE, h.getNumeroInterne())
+        .set(HYDRANT.NATURE, h.getNature())
+        .set(HYDRANT.NATURE_DECI, h.getNatureDeci())
+        .set(HYDRANT.AUTORITE_DECI, h.getAutoriteDeci())
+        .set(HYDRANT.SP_DECI, h.getSpDeci())
+        .set(HYDRANT.MAINTENANCE_DECI, h.getMaintenanceDeci())
+        .set(HYDRANT.GESTIONNAIRE, h.getGestionnaire())
+        .set(HYDRANT.SITE, h.getSite())
+        .set(HYDRANT.SUFFIXE_VOIE, h.getSuffixeVoie())
+        .set(HYDRANT.COMMUNE, h.getCommune())
+        .set(HYDRANT.DOMAINE, h.getDomaine())
+        .set(HYDRANT.NUMERO_VOIE, h.getNumeroVoie())
+        .set(HYDRANT.EN_FACE, h.getEnFace())
+        .set(HYDRANT.NIVEAU, h.getNiveau())
+        .set(HYDRANT.VOIE, h.getVoie())
+        .set(HYDRANT.VOIE2, h.getVoie2())
+        .set(HYDRANT.LIEU_DIT, h.getLieuDit())
+        .set(HYDRANT.COMPLEMENT, h.getComplement())
+        .set(HYDRANT.ANNEE_FABRICATION, h.getAnneeFabrication())
+        .set(HYDRANT.GEOMETRIE, h.getGeometrie())
+        .set(HYDRANT.DATE_MODIFICATION, h.getDateModification())
+        .set(HYDRANT.ORGANISME, h.getOrganisme())
+        .set(HYDRANT.UTILISATEUR_MODIFICATION, h.getUtilisateurModification())
+        .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, h.getAuteurModificationFlag())
+        .set(HYDRANT.ZONE_SPECIALE, h.getZoneSpeciale())
+        .where(HYDRANT.ID.eq(h.getId()))
+        .execute();
 
     return this.getById(h.getId());
   }
@@ -412,7 +428,9 @@ public class HydrantRepository {
       workbook = WorkbookFactory.create(file.getInputStream());
       workbook.setMissingCellPolicy(RETURN_BLANK_AS_NULL);
     } catch (Exception e) {
-      TypeHydrantImportctpErreur erreur = context.selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
+      TypeHydrantImportctpErreur erreur =
+          context
+              .selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
               .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq("ERR_FICHIER_INNAC"))
               .fetchOneInto(TypeHydrantImportctpErreur.class);
       erreurFichier.put("bilan", erreur.getMessage());
@@ -430,7 +448,9 @@ public class HydrantRepository {
         }
       }
     } catch (Exception e) {
-      TypeHydrantImportctpErreur erreur = context.selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
+      TypeHydrantImportctpErreur erreur =
+          context
+              .selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
               .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq("ERR_ONGLET_ABS"))
               .fetchOneInto(TypeHydrantImportctpErreur.class);
       erreurFichier.put("bilan", erreur.getMessage());
@@ -444,15 +464,21 @@ public class HydrantRepository {
         ObjectNode resultatVerification = null;
         try {
           Row r = sheet.getRow(nbLigne);
-          if (r.getFirstCellNum() == 0) { // Evite de traiter la ligne "fantôme" détectée par la librairie à cause des combo des anomalies
+          if (r.getFirstCellNum()
+              == 0) { // Evite de traiter la ligne "fantôme" détectée par la librairie à cause des
+            // combo des anomalies
             resultatVerification = this.checkLineValidity(r);
             resultatVerification.put("numero_ligne", nbLigne + 1);
             arrayResultatVerifications.add(resultatVerification);
           }
         } catch (
-                ImportCTPException e) { // Interception d'une erreur : on arrête les vérifications et on indique la cause
+            ImportCTPException
+                e) { // Interception d'une erreur : on arrête les vérifications et on indique la
+          // cause
           resultatVerification = e.getData();
-          TypeHydrantImportctpErreur erreur = context.selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
+          TypeHydrantImportctpErreur erreur =
+              context
+                  .selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
                   .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq(e.getCodeErreur()))
                   .fetchOneInto(TypeHydrantImportctpErreur.class);
           resultatVerification.put("bilan", erreur.getMessage());
@@ -472,7 +498,8 @@ public class HydrantRepository {
    *
    * @param row La ligne contenant toutes les cellules requises
    * @return ObjectNode un object JSON contenant les résultat de la validation pour cette ligne
-   * @throws ImportCTPException En cas de donnée incorrecte, déclenche une exception gérée et traitée par la fonction parente
+   * @throws ImportCTPException En cas de donnée incorrecte, déclenche une exception gérée et
+   *     traitée par la fonction parente
    */
   private ObjectNode checkLineValidity(Row row) throws ImportCTPException {
     ObjectMapper mapper = new ObjectMapper();
@@ -494,10 +521,14 @@ public class HydrantRepository {
     SimpleDateFormat formatterDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");
 
     // Vérification si l'hydrant renseigné correspond bien à l'hydrant en base
-    Hydrant h = context.select(HYDRANT.fields())
+    Hydrant h =
+        context
+            .select(HYDRANT.fields())
             .from(HYDRANT)
-            .join(COMMUNE).on(COMMUNE.ID.eq(HYDRANT.COMMUNE))
-            .where(COMMUNE.INSEE.eq(xls_insee)).and(HYDRANT.NUMERO_INTERNE.eq(xls_numeroInterne))
+            .join(COMMUNE)
+            .on(COMMUNE.ID.eq(HYDRANT.COMMUNE))
+            .where(COMMUNE.INSEE.eq(xls_insee))
+            .and(HYDRANT.NUMERO_INTERNE.eq(xls_numeroInterne))
             .fetchOneInto(Hydrant.class);
 
     if (h == null || (h.getId() != xls_codeSdis.longValue())) {
@@ -505,18 +536,22 @@ public class HydrantRepository {
     }
 
     // On vérifie si le PEI est bien dans la zone de compétence de l'utilisateur
-    Boolean dansZoneCompetence = context.resultQuery("SELECT ST_CONTAINS(zc.geometrie, h.geometrie) " +
-                    "FROM remocra.zone_competence zc " +
-                    "JOIN remocra.hydrant h on h.id = {0}" +
-                    "WHERE zc.id = {1};",
-            h.getId(),
-            this.utilisateurService.getCurrentZoneCompetenceId()).fetchOneInto(Boolean.class);
+    Boolean dansZoneCompetence =
+        context
+            .resultQuery(
+                "SELECT ST_CONTAINS(zc.geometrie, h.geometrie) "
+                    + "FROM remocra.zone_competence zc "
+                    + "JOIN remocra.hydrant h on h.id = {0}"
+                    + "WHERE zc.id = {1};",
+                h.getId(), this.utilisateurService.getCurrentZoneCompetenceId())
+            .fetchOneInto(Boolean.class);
 
     if (dansZoneCompetence == null || !dansZoneCompetence) {
       throw new ImportCTPException("ERR_DEHORS_ZC", data);
     }
 
-    // Si la visite CTP n'est pas renseignée (si tous les champs composant les informations de la visite sont vides)
+    // Si la visite CTP n'est pas renseignée (si tous les champs composant les informations de la
+    // visite sont vides)
     boolean ctpRenseigne = false;
     for (int i = 9; i < 18; i++) {
       if (row.getCell(i) != null && row.getCell(i).getCellType() != CellType.BLANK) {
@@ -545,21 +580,35 @@ public class HydrantRepository {
       throw new ImportCTPException("ERR_DATE_POST", data);
     }
 
-    Integer nbVisite = context.selectCount()
+    Integer nbVisite =
+        context
+            .selectCount()
             .from(HYDRANT_VISITE)
-            .join(TYPE_HYDRANT_SAISIE).on(HYDRANT_VISITE.TYPE.eq(TYPE_HYDRANT_SAISIE.ID))
-            .where(HYDRANT_VISITE.HYDRANT.eq(h.getId()).and(TYPE_HYDRANT_SAISIE.CODE.eq("CTRL")).and(HYDRANT_VISITE.CTRL_DEBIT_PRESSION)
-                    .and(HYDRANT_VISITE.DATE.greaterThan(new Instant(xls_dateCtp)))).fetchOneInto(Integer.class);
+            .join(TYPE_HYDRANT_SAISIE)
+            .on(HYDRANT_VISITE.TYPE.eq(TYPE_HYDRANT_SAISIE.ID))
+            .where(
+                HYDRANT_VISITE
+                    .HYDRANT
+                    .eq(h.getId())
+                    .and(TYPE_HYDRANT_SAISIE.CODE.eq("CTRL"))
+                    .and(HYDRANT_VISITE.CTRL_DEBIT_PRESSION)
+                    .and(HYDRANT_VISITE.DATE.greaterThan(new Instant(xls_dateCtp))))
+            .fetchOneInto(Integer.class);
     if (nbVisite > 0) {
-      String str = context.select(TYPE_HYDRANT_IMPORTCTP_ERREUR.MESSAGE)
+      String str =
+          context
+              .select(TYPE_HYDRANT_IMPORTCTP_ERREUR.MESSAGE)
               .from(TYPE_HYDRANT_IMPORTCTP_ERREUR)
               .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq("WARN_DATE_ANTE"))
               .fetchOneInto(String.class);
       arrayWarnings.add(str);
     }
 
-    // On vérifie que le PEI dispose de ses deux premières visites (réception et ROI) pour pouvoir lui adjoindre une visite CTP
-    nbVisite = context.selectCount()
+    // On vérifie que le PEI dispose de ses deux premières visites (réception et ROI) pour pouvoir
+    // lui adjoindre une visite CTP
+    nbVisite =
+        context
+            .selectCount()
             .from(HYDRANT_VISITE)
             .where(HYDRANT_VISITE.HYDRANT.eq(h.getId()))
             .fetchOneInto(Integer.class);
@@ -568,11 +617,20 @@ public class HydrantRepository {
     }
 
     // On vérifie si il n'y pas de visite à la même date et heure
-    nbVisite = context.selectCount()
+    nbVisite =
+        context
+            .selectCount()
             .from(HYDRANT_VISITE)
-            .join(TYPE_HYDRANT_SAISIE).on(HYDRANT_VISITE.TYPE.eq(TYPE_HYDRANT_SAISIE.ID))
-            .where(HYDRANT_VISITE.HYDRANT.eq(h.getId()).and(TYPE_HYDRANT_SAISIE.CODE.eq("CTRL")).and(HYDRANT_VISITE.CTRL_DEBIT_PRESSION)
-                    .and(HYDRANT_VISITE.DATE.eq(new Instant(xls_dateCtp)))).fetchOneInto(Integer.class);
+            .join(TYPE_HYDRANT_SAISIE)
+            .on(HYDRANT_VISITE.TYPE.eq(TYPE_HYDRANT_SAISIE.ID))
+            .where(
+                HYDRANT_VISITE
+                    .HYDRANT
+                    .eq(h.getId())
+                    .and(TYPE_HYDRANT_SAISIE.CODE.eq("CTRL"))
+                    .and(HYDRANT_VISITE.CTRL_DEBIT_PRESSION)
+                    .and(HYDRANT_VISITE.DATE.eq(new Instant(xls_dateCtp))))
+            .fetchOneInto(Integer.class);
 
     if (nbVisite > 0) {
       throw new ImportCTPException("ERR_VISITE_EXISTANTE", data);
@@ -587,14 +645,17 @@ public class HydrantRepository {
       xls_agent1 = row.getCell(10).getStringCellValue();
     }
 
-
     Integer xls_debit = null;
     try {
-      if (row.getCell(12) != null && row.getCell(12).getCellType() != CellType.BLANK) { // Si une valeur est renseignée
+      if (row.getCell(12) != null
+          && row.getCell(12).getCellType() != CellType.BLANK) { // Si une valeur est renseignée
         xls_debit = (int) row.getCell(12).getNumericCellValue();
 
-        if (row.getCell(12).getNumericCellValue() % 1 != 0) { // Si on a réalisé une troncature lors de la lecture de la valeur
-          TypeHydrantImportctpErreur info = context.selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
+        if (row.getCell(12).getNumericCellValue() % 1
+            != 0) { // Si on a réalisé une troncature lors de la lecture de la valeur
+          TypeHydrantImportctpErreur info =
+              context
+                  .selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
                   .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq("INFO_TRONC_DEBIT"))
                   .fetchOneInto(TypeHydrantImportctpErreur.class);
           data.put("bilan", info.getMessage());
@@ -610,9 +671,10 @@ public class HydrantRepository {
 
     Double xls_pression = null;
     try {
-      if (row.getCell(11) != null && row.getCell(11).getCellType() != CellType.BLANK) { // Si une valeur est renseignée
+      if (row.getCell(11) != null
+          && row.getCell(11).getCellType() != CellType.BLANK) { // Si une valeur est renseignée
 
-          xls_pression = this.getNumericValueFromCell(row.getCell(11));
+        xls_pression = this.getNumericValueFromCell(row.getCell(11));
         if (xls_pression < 0) {
           throw new Exception();
         }
@@ -635,16 +697,17 @@ public class HydrantRepository {
     }
 
     if (warningDebitPression != null) {
-      String str = context.select(TYPE_HYDRANT_IMPORTCTP_ERREUR.MESSAGE)
+      String str =
+          context
+              .select(TYPE_HYDRANT_IMPORTCTP_ERREUR.MESSAGE)
               .from(TYPE_HYDRANT_IMPORTCTP_ERREUR)
               .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq(warningDebitPression))
               .fetchOneInto(String.class);
       arrayWarnings.add(str);
     }
 
-
     /* Si l'utilisateur a le droit de déplacer un PEI, on affiche un warning si la distance de déplacement est supérieure
-       a la distance renseignée dans les paramètres de l'application */
+    a la distance renseignée dans les paramètres de l'application */
     if (this.authUtils.hasRight(TypeDroit.TypeDroitEnum.HYDRANTS_DEPLACEMENT_C)) {
       Double latitude = null;
       Double longitude = null;
@@ -655,13 +718,19 @@ public class HydrantRepository {
         throw new ImportCTPException("ERR_COORD_GPS", data);
       }
 
-      Integer distance = context.resultQuery("SELECT ST_DISTANCE(ST_transform(ST_SetSRID(ST_MakePoint({0}, {1}),4326), {2}), h.geometrie) " +
-                      "FROM remocra.hydrant h " +
-                      "WHERE h.id = {3};",
-              longitude, latitude, GlobalConstants.SRID_2154, h.getId()).fetchOneInto(Integer.class);
+      Integer distance =
+          context
+              .resultQuery(
+                  "SELECT ST_DISTANCE(ST_transform(ST_SetSRID(ST_MakePoint({0}, {1}),4326), {2}), h.geometrie) "
+                      + "FROM remocra.hydrant h "
+                      + "WHERE h.id = {3};",
+                  longitude, latitude, GlobalConstants.SRID_2154, h.getId())
+              .fetchOneInto(Integer.class);
 
       if (distance > this.paramConfService.getHydrantDeplacementDistWarn()) {
-        String str = context.select(TYPE_HYDRANT_IMPORTCTP_ERREUR.MESSAGE)
+        String str =
+            context
+                .select(TYPE_HYDRANT_IMPORTCTP_ERREUR.MESSAGE)
                 .from(TYPE_HYDRANT_IMPORTCTP_ERREUR)
                 .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq("WARN_DEPLACEMENT"))
                 .fetchOneInto(String.class);
@@ -672,7 +741,7 @@ public class HydrantRepository {
       dataVisite.put("longitude", longitude);
     }
 
-    //Vérifications anomalies
+    // Vérifications anomalies
     ArrayList<Long> id_anomalies = new ArrayList<Long>();
 
     // On récupère les identifiants des anomalies inscrites dans le fichier
@@ -680,7 +749,9 @@ public class HydrantRepository {
       if (row.getCell(i) != null && row.getCell(i).getCellType() != CellType.BLANK) {
         String xls_anomalie = row.getCell(i).getStringCellValue();
         String code = xls_anomalie.substring(xls_anomalie.indexOf('-') + 2);
-        TypeHydrantAnomalie anomalie = context.selectFrom(TYPE_HYDRANT_ANOMALIE)
+        TypeHydrantAnomalie anomalie =
+            context
+                .selectFrom(TYPE_HYDRANT_ANOMALIE)
                 .where(TYPE_HYDRANT_ANOMALIE.CODE.upper().eq(code.toUpperCase()))
                 .fetchOneInto(TypeHydrantAnomalie.class);
         if (anomalie == null) {
@@ -690,35 +761,54 @@ public class HydrantRepository {
       }
     }
 
-    // On récupère les anomalies de la visite précédente qui ne sont pas possibles pour un contexte CTP
-    HydrantVisite derniereVisite = context
+    // On récupère les anomalies de la visite précédente qui ne sont pas possibles pour un contexte
+    // CTP
+    HydrantVisite derniereVisite =
+        context
             .selectFrom(HYDRANT_VISITE)
-            .where(HYDRANT_VISITE.HYDRANT.eq(h.getId())).and(HYDRANT_VISITE.DATE.lessThan(new Instant(xls_dateCtp)))
-            .orderBy(HYDRANT_VISITE.DATE.desc()).limit(1).fetchOneInto(HydrantVisite.class);
-    if (derniereVisite != null && derniereVisite.getAnomalies() != null && derniereVisite.getAnomalies().length() > 0) {
-      String[] strArrayAnomalies = derniereVisite.getAnomalies().replaceAll("\\[", "").replaceAll("]", "").replaceAll(" ", "").split(",");
+            .where(HYDRANT_VISITE.HYDRANT.eq(h.getId()))
+            .and(HYDRANT_VISITE.DATE.lessThan(new Instant(xls_dateCtp)))
+            .orderBy(HYDRANT_VISITE.DATE.desc())
+            .limit(1)
+            .fetchOneInto(HydrantVisite.class);
+    if (derniereVisite != null
+        && derniereVisite.getAnomalies() != null
+        && derniereVisite.getAnomalies().length() > 0) {
+      String[] strArrayAnomalies =
+          derniereVisite
+              .getAnomalies()
+              .replaceAll("\\[", "")
+              .replaceAll("]", "")
+              .replaceAll(" ", "")
+              .split(",");
       ArrayList<Long> idAnomaliesDerniereVisite = new ArrayList<Long>();
 
       // Récupération de toutes les anomalies possibles pour ce contexte
-      ArrayList<Long> idAnomaliesCTP = (ArrayList<Long>) context
-              .select(TYPE_HYDRANT_ANOMALIE.ID)
-              .from(TYPE_HYDRANT_ANOMALIE)
-              .join(TYPE_HYDRANT_ANOMALIE_NATURE).on(TYPE_HYDRANT_ANOMALIE_NATURE.ANOMALIE.eq(TYPE_HYDRANT_ANOMALIE.ID))
-              .join(TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES).on(TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES.TYPE_HYDRANT_ANOMALIE_NATURE.eq(TYPE_HYDRANT_ANOMALIE_NATURE.ID))
-              .join(TYPE_HYDRANT_SAISIE).on(TYPE_HYDRANT_SAISIE.ID.eq(TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES.SAISIES))
-              .where(TYPE_HYDRANT_SAISIE.CODE.equalIgnoreCase("CTRL"))
-              .fetchInto(Long.class);
+      ArrayList<Long> idAnomaliesCTP =
+          (ArrayList<Long>)
+              context
+                  .select(TYPE_HYDRANT_ANOMALIE.ID)
+                  .from(TYPE_HYDRANT_ANOMALIE)
+                  .join(TYPE_HYDRANT_ANOMALIE_NATURE)
+                  .on(TYPE_HYDRANT_ANOMALIE_NATURE.ANOMALIE.eq(TYPE_HYDRANT_ANOMALIE.ID))
+                  .join(TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES)
+                  .on(
+                      TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES.TYPE_HYDRANT_ANOMALIE_NATURE.eq(
+                          TYPE_HYDRANT_ANOMALIE_NATURE.ID))
+                  .join(TYPE_HYDRANT_SAISIE)
+                  .on(TYPE_HYDRANT_SAISIE.ID.eq(TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES.SAISIES))
+                  .where(TYPE_HYDRANT_SAISIE.CODE.equalIgnoreCase("CTRL"))
+                  .fetchInto(Long.class);
 
       for (String s : strArrayAnomalies) {
         if (StringUtils.isNotEmpty(s)) {
           Long l = Long.parseLong(s);
-          // Si une anomalie est trouvée et n'existe pas pour le contexte CTP, on la reprends de la visite précédente
+          // Si une anomalie est trouvée et n'existe pas pour le contexte CTP, on la reprends de la
+          // visite précédente
           if (idAnomaliesCTP.indexOf(l) == -1) {
             id_anomalies.add(l);
           }
         }
-
-
       }
     }
 
@@ -727,11 +817,12 @@ public class HydrantRepository {
       arrayAnomalies.add(i);
     }
 
-    String observation = (row.getLastCellNum() - 1 >= 18) ? row.getCell(18).getStringCellValue() : null;
+    String observation =
+        (row.getLastCellNum() - 1 >= 18) ? row.getCell(18).getStringCellValue() : null;
 
     /**
-     * Ajout des données de la visite à ajouter aux informations JSON
-     * Ces données ont déjà été vérifiées ici, il n'y a pas besoin de dupliquer les vérifications avant l'ajout en base
+     * Ajout des données de la visite à ajouter aux informations JSON Ces données ont déjà été
+     * vérifiées ici, il n'y a pas besoin de dupliquer les vérifications avant l'ajout en base
      */
     dataVisite.set("anomalies", arrayAnomalies);
     dataVisite.put("date", formatterDateTime.format(xls_dateCtp));
@@ -751,8 +842,7 @@ public class HydrantRepository {
   }
 
   /**
-   * Lit un nombre réel depuis une cellule
-   * La valeur doit être au format décimal point ou virgule
+   * Lit un nombre réel depuis une cellule La valeur doit être au format décimal point ou virgule
    *
    * @param c La cellule contentant la donnée
    * @return La valeur de la coordonnée de type Double
@@ -775,7 +865,7 @@ public class HydrantRepository {
   }
 
   /**
-   * Pour pallier au problème quand une cellule est formattée à la saisie  par Excel automatiquement
+   * Pour pallier au problème quand une cellule est formattée à la saisie par Excel automatiquement
    * au format Numéric et qu'il est attendu un String (Ex : code Insee)
    *
    * @param c
@@ -791,26 +881,31 @@ public class HydrantRepository {
     return null;
   }
 
-  public List<HydrantRecord> getAll(List<ItemFilter> itemFilters, Integer limit, Integer start, List<ItemSorting> itemSortings) {
+  public List<HydrantRecord> getAll(
+      List<ItemFilter> itemFilters, Integer limit, Integer start, List<ItemSorting> itemSortings) {
     String condition = this.getFilters(itemFilters);
 
     boolean triAlphaNumerique = this.paramConfService.getHydrantMethodeTriAlphanumerique();
 
-    String sortFields = (triAlphaNumerique) ? "numero ASC" : "length(numero) ASC, numero ASC"; // Critères de tri par défaut si aucun renseigné
+    String sortFields =
+        (triAlphaNumerique)
+            ? "numero ASC"
+            : "length(numero) ASC, numero ASC"; // Critères de tri par défaut si aucun renseigné
 
-    if(itemSortings.size() > 0) {
+    if (itemSortings.size() > 0) {
       Collection<String> listOrderFields = new ArrayList<String>();
       boolean hasNumero = false;
-      for(ItemSorting item : itemSortings) {
-        if("numero".equals(item.getFieldName())) {
+      for (ItemSorting item : itemSortings) {
+        if ("numero".equals(item.getFieldName())) {
           hasNumero = true;
-          if(!triAlphaNumerique) { // Un tri sur le numéro se transforme automatiquement en tri naturel (sauf paramétrage contraire)
-            listOrderFields.add("length(numero) "+item.getDirection());
+          if (!triAlphaNumerique) { // Un tri sur le numéro se transforme automatiquement en tri
+            // naturel (sauf paramétrage contraire)
+            listOrderFields.add("length(numero) " + item.getDirection());
           }
         }
-        listOrderFields.add(item.getFieldName()+" "+item.getDirection());
+        listOrderFields.add(item.getFieldName() + " " + item.getDirection());
       }
-      if(!hasNumero) {
+      if (!hasNumero) {
         listOrderFields.add(sortFields);
       }
       sortFields = StringUtils.join(listOrderFields.toArray(), ",");
@@ -818,11 +913,19 @@ public class HydrantRepository {
 
     Result<Record> hydrantRecord = null;
 
-    String orgAndChildren = StringUtils.join(Organisme.getOrganismeAndChildren(utilisateurService.getCurrentUtilisateur().getOrganisme().getId().intValue()).toArray(), ",");
+    String orgAndChildren =
+        StringUtils.join(
+            Organisme.getOrganismeAndChildren(
+                    utilisateurService.getCurrentUtilisateur().getOrganisme().getId().intValue())
+                .toArray(),
+            ",");
 
     List<HydrantRecord> hr = new ArrayList<HydrantRecord>();
-    StringBuffer sbReq = new StringBuffer( "select h.id  as  id , h.code as code, ST_AsGeoJSON(h.geometrie) as jsonGeometrie, h.numero as numero, h.date_contr as dateContr,")
-            .append(" case when char_length(h.voie)>0 and char_length(h.voie2)>0 then h.voie || ' - ' || h.voie2 else voie end as adresse,")
+    StringBuffer sbReq =
+        new StringBuffer(
+                "select h.id  as  id , h.code as code, ST_AsGeoJSON(h.geometrie) as jsonGeometrie, h.numero as numero, h.date_contr as dateContr,")
+            .append(
+                " case when char_length(h.voie)>0 and char_length(h.voie2)>0 then h.voie || ' - ' || h.voie2 else voie end as adresse,")
             .append(" h.dispo_terrestre as dispoTerrestre,")
             .append(" h.dispo_hbe as dispoHbe,")
             .append(" h.date_reco as dateReco, h.numero_interne as numeroInterne,")
@@ -830,15 +933,20 @@ public class HydrantRepository {
             .append(" c.nom as nomCommune,")
             .append(" thnd.nom as nomNatureDeci,")
             .append(" thn.nom as natureNom,")
-            .append(" (SELECT COALESCE(string_agg(nom, ', ' order by nom), '') FROM remocra.tournee t where t.affectation in ("+orgAndChildren+") and ")
-            .append(" t.id in (SELECT tournees FROM remocra.hydrant_tournees ht where ht.hydrant = h.id)) as nomTournee,")
-            .append(" (select count(*) from remocra.hydrant_anomalies ha where ha.hydrant = h.id AND ha.anomalies = (select tha.id from remocra.type_hydrant_anomalie tha where tha.code = 'INDISPONIBILITE_TEMP')) as indispoTemp")
+            .append(
+                " (SELECT COALESCE(string_agg(nom, ', ' order by nom), '') FROM remocra.tournee t where t.affectation in ("
+                    + orgAndChildren
+                    + ") and ")
+            .append(
+                " t.id in (SELECT tournees FROM remocra.hydrant_tournees ht where ht.hydrant = h.id)) as nomTournee,")
+            .append(
+                " (select count(*) from remocra.hydrant_anomalies ha where ha.hydrant = h.id AND ha.anomalies = (select tha.id from remocra.type_hydrant_anomalie tha where tha.code = 'INDISPONIBILITE_TEMP')) as indispoTemp")
             .append(" from remocra.hydrant h")
             .append(" join remocra.commune c on c.id = h.commune")
             .append(" join remocra.type_hydrant_nature_deci thnd on thnd.id = h.nature_deci")
             .append(" join remocra.type_hydrant_nature thn on thn.id = h.nature")
-            .append(" where "+condition)
-            .append(" order by "+sortFields)
+            .append(" where " + condition)
+            .append(" order by " + sortFields)
             .append(" limit " + limit)
             .append(" offset " + start);
 
@@ -852,40 +960,85 @@ public class HydrantRepository {
       hr.add(hydrant);
     }
     return hr;
-
   }
 
   public String getFilters(List<ItemFilter> itemFilters) {
     String condition = "1 = 1";
     for (ItemFilter itemFilter : itemFilters) {
       if ("tournee".equals(itemFilter.getFieldName())) {
-        condition+=" and h.id in  (select hydrant from remocra.hydrant_tournees where tournees = "  + Long.valueOf(itemFilter.getValue()) +")";
+        condition +=
+            " and h.id in  (select hydrant from remocra.hydrant_tournees where tournees = "
+                + Long.valueOf(itemFilter.getValue())
+                + ")";
       } else if ("zoneCompetence".equals(itemFilter.getFieldName())) {
         Long zoneCompetenceId = utilisateurService.getCurrentZoneCompetenceId();
-        condition += " and st_contains((select st_simplify(zc.geometrie ,1) from remocra.zone_competence zc where  id ="  +zoneCompetenceId + " ), h.geometrie)" ;
-      }  else if ("numero".equals(itemFilter.getFieldName())) {
-        condition += " and upper(h.numero) like '%" + itemFilter.getValue().toUpperCase(Locale.FRANCE) + "%' ";
+        condition +=
+            " and st_contains((select st_simplify(zc.geometrie ,1) from remocra.zone_competence zc where  id ="
+                + zoneCompetenceId
+                + " ), h.geometrie)";
+      } else if ("numero".equals(itemFilter.getFieldName())) {
+        condition +=
+            " and upper(h.numero) like '%"
+                + itemFilter.getValue().toUpperCase(Locale.FRANCE)
+                + "%' ";
       } else if ("dateReco".equals(itemFilter.getFieldName())) {
         Integer nbMonths = Integer.valueOf(itemFilter.getValue());
-        if(nbMonths != 0) {
-          final DateTime datePrive = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementRecoPrive()));
-          final DateTime datePublic = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementRecoPublic()));
+        if (nbMonths != 0) {
+          final DateTime datePrive =
+              new DateTime()
+                  .minus(Period.days(paramConfService.getHydrantRenouvellementRecoPrive()));
+          final DateTime datePublic =
+              new DateTime()
+                  .minus(Period.days(paramConfService.getHydrantRenouvellementRecoPublic()));
           if (nbMonths > 0) {
-            condition += " and case when thnd.code = 'PRIVE' then h.date_reco <= '" + datePrive.plus(Period.months(nbMonths)).toDate() + "'::date and h.date_reco >= '" + datePrive.toDate() + "'::date" +
-                " else h.date_reco <='" + datePublic.plus(Period.months(nbMonths)).toDate() + "'::date and h.date_reco >= '" + datePublic.toDate() + "'::date end";
+            condition +=
+                " and case when thnd.code = 'PRIVE' then h.date_reco <= '"
+                    + datePrive.plus(Period.months(nbMonths)).toDate()
+                    + "'::date and h.date_reco >= '"
+                    + datePrive.toDate()
+                    + "'::date"
+                    + " else h.date_reco <='"
+                    + datePublic.plus(Period.months(nbMonths)).toDate()
+                    + "'::date and h.date_reco >= '"
+                    + datePublic.toDate()
+                    + "'::date end";
           } else {
-            condition += " and case when thnd.code = 'PRIVE' then h.date_reco <= '" + datePrive.toDate() + "'::date else h.date_reco <='" + datePublic.toDate() + "'::date end";
-          }}
+            condition +=
+                " and case when thnd.code = 'PRIVE' then h.date_reco <= '"
+                    + datePrive.toDate()
+                    + "'::date else h.date_reco <='"
+                    + datePublic.toDate()
+                    + "'::date end";
+          }
+        }
       } else if ("dateContr".equals(itemFilter.getFieldName())) {
         Integer nbMonths = Integer.valueOf(itemFilter.getValue());
-        if(nbMonths != 0) {
-          final DateTime datePrive = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementCtrlPrive()));
-          final DateTime datePublic = new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementCtrlPublic()));
+        if (nbMonths != 0) {
+          final DateTime datePrive =
+              new DateTime()
+                  .minus(Period.days(paramConfService.getHydrantRenouvellementCtrlPrive()));
+          final DateTime datePublic =
+              new DateTime()
+                  .minus(Period.days(paramConfService.getHydrantRenouvellementCtrlPublic()));
           if (nbMonths > 0) {
-            condition += " and case when thnd.code = 'PRIVE' then h.date_contr <= '" + datePrive.plus(Period.months(nbMonths)).toDate() + "'::date and h.date_contr >= '" + datePrive.toDate() + "'::date" +
-                " else h.date_contr <='" + datePublic.plus(Period.months(nbMonths)).toDate() + "'::date and h.date_contr >= '" + datePublic.toDate() + "'::date end";
+            condition +=
+                " and case when thnd.code = 'PRIVE' then h.date_contr <= '"
+                    + datePrive.plus(Period.months(nbMonths)).toDate()
+                    + "'::date and h.date_contr >= '"
+                    + datePrive.toDate()
+                    + "'::date"
+                    + " else h.date_contr <='"
+                    + datePublic.plus(Period.months(nbMonths)).toDate()
+                    + "'::date and h.date_contr >= '"
+                    + datePublic.toDate()
+                    + "'::date end";
           } else {
-            condition += " and case when thnd.code = 'PRIVE' then h.date_contr <= '" + datePrive.toDate() + "'::date else h.date_contr <='" + datePublic.toDate() + "'::date end";
+            condition +=
+                " and case when thnd.code = 'PRIVE' then h.date_contr <= '"
+                    + datePrive.toDate()
+                    + "'::date else h.date_contr <='"
+                    + datePublic.toDate()
+                    + "'::date end";
           }
         }
       } else if ("nature".equals(itemFilter.getFieldName())) {
@@ -894,27 +1047,33 @@ public class HydrantRepository {
         // Exemples de valeur : 'PI,PA' ou 'PI' ou ''
 
       } else if ("dispoTerrestre".equals(itemFilter.getFieldName())) {
-         condition += " and h.dispo_terrestre like '" + itemFilter.getValue() +"'";
+        condition += " and h.dispo_terrestre like '" + itemFilter.getValue() + "'";
       } else if ("dispoHbe".equals(itemFilter.getFieldName())) {
-        condition += " and h.dispo_hbe like '" + itemFilter.getValue() +"'";
+        condition += " and h.dispo_hbe like '" + itemFilter.getValue() + "'";
       } else if ("nomCommune".equals(itemFilter.getFieldName())) {
         /**
-         * A cause de l'utilisation hybride du champ commune, le serveur peut récupérer deux données différentes sur le même path
-         * selon le type de donnée fourni :
-         *  - Un nombre entier (identifiant) lors d'une sélection dans la combo
-         *  - Une chaîne de caratères (nom) lors de la saisie de texte dans la combo
+         * A cause de l'utilisation hybride du champ commune, le serveur peut récupérer deux données
+         * différentes sur le même path selon le type de donnée fourni : - Un nombre entier
+         * (identifiant) lors d'une sélection dans la combo - Une chaîne de caratères (nom) lors de
+         * la saisie de texte dans la combo
          */
-        if(StringUtils.isNumeric(itemFilter.getValue())) {
+        if (StringUtils.isNumeric(itemFilter.getValue())) {
           condition += " and c.id = " + Long.valueOf(itemFilter.getValue());
         } else {
-         condition += " and upper(c.nom) like '%" + itemFilter.getValue().toUpperCase(Locale.FRANCE) + "%'";
+          condition +=
+              " and upper(c.nom) like '%" + itemFilter.getValue().toUpperCase(Locale.FRANCE) + "%'";
         }
       } else if ("nomNatureDeci".equals(itemFilter.getFieldName())) {
         condition += " and h.nature_deci = " + Long.valueOf(itemFilter.getValue());
       } else if ("codeNatureDeci".equals(itemFilter.getFieldName())) {
 
       } else if ("adresse".equals(itemFilter.getFieldName())) {
-        condition += " and (lower(h.voie || ' - ' || h.voie2) like '%" +  itemFilter.getValue().toLowerCase() + "%' or lower(h.voie)  like '%" + itemFilter.getValue().toLowerCase()  + "%')";
+        condition +=
+            " and (lower(h.voie || ' - ' || h.voie2) like '%"
+                + itemFilter.getValue().toLowerCase()
+                + "%' or lower(h.voie)  like '%"
+                + itemFilter.getValue().toLowerCase()
+                + "%')";
       } else if ("numeroInterne".equals(itemFilter.getFieldName())) {
         condition += " and h.numero_interne = " + Integer.valueOf(itemFilter.getValue());
       } else {
@@ -923,10 +1082,12 @@ public class HydrantRepository {
     }
     return condition;
   }
+
   @Transactional
   public long countHydrants(List<ItemFilter> itemFilters) {
     String condition = this.getFilters(itemFilters);
-    StringBuffer sbReq = new StringBuffer( " select count(h.id) as  total")
+    StringBuffer sbReq =
+        new StringBuffer(" select count(h.id) as  total")
             .append(" from remocra.hydrant h")
             .append(" join remocra.commune c on c.id = h.commune")
             .append(" join remocra.type_hydrant_nature_deci thnd on thnd.id = h.nature_deci")
@@ -942,14 +1103,17 @@ public class HydrantRepository {
   }
 
   /**
-   * Permet d'update la position d'un hydrant en prenant en compte le changement de commune s'il y a.
+   * Permet d'update la position d'un hydrant en prenant en compte le changement de commune s'il y
+   * a.
+   *
    * @param id identifiant de l'hydrant
    * @param point la position de l'hydrant
    * @param srid
    * @return l'hydrant modifié
    * @throws BusinessException
    */
-  private Hydrant updateHydrantDeplacement(Long id, Point point, Integer srid) throws BusinessException {
+  private Hydrant updateHydrantDeplacement(Long id, Point point, Integer srid)
+      throws BusinessException {
     Hydrant h = this.getById(id);
     if (h == null) {
       BusinessException e = new BusinessException("L'hydrant n'existe pas en base");
@@ -966,7 +1130,7 @@ public class HydrantRepository {
 
     // Gestion de la commune
     List<Commune> listeCommune = Commune.findCommunesByPoint(srid, point.toString());
-    if(!listeCommune.isEmpty()) {
+    if (!listeCommune.isEmpty()) {
       h.setCommune(listeCommune.get(0).getId());
     }
     return this.updateHydrant(h);
@@ -974,6 +1138,7 @@ public class HydrantRepository {
 
   /**
    * Permet de déplacer un hydrant depuis la carte
+   *
    * @param id
    * @param point
    * @param srid
@@ -982,30 +1147,33 @@ public class HydrantRepository {
    * @throws BusinessException
    */
   public void deplacer(Long id, Point point, Integer srid)
-          throws CRSException, IllegalCoordinateException, BusinessException {
+      throws CRSException, IllegalCoordinateException, BusinessException {
     fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant h =
-            this.updateHydrantDeplacement(id, point, srid);
+        this.updateHydrantDeplacement(id, point, srid);
 
-    if(TYPE_HYDRANT_PENA.equalsIgnoreCase(h.getCode())) {
+    if (TYPE_HYDRANT_PENA.equalsIgnoreCase(h.getCode())) {
       try {
         String coordDFCI = GeometryUtil.findCoordDFCIFromGeom(dataSource, point);
         hydrantPenaRepository.updateCoorDdfci(id, coordDFCI);
       } catch (Exception e) {
-          logger.debug("Problème lors de la requête sur la table remocra_referentiel.carro_dfci", e);
+        logger.debug("Problème lors de la requête sur la table remocra_referentiel.carro_dfci", e);
       }
     }
   }
 
   public Long getIdHydrantByNumero(String numero) {
-    return context.select(HYDRANT.ID).from(HYDRANT)
-            .where(HYDRANT.NUMERO.eq(numero))
-            .fetchOneInto(Long.class);
+    return context
+        .select(HYDRANT.ID)
+        .from(HYDRANT)
+        .where(HYDRANT.NUMERO.eq(numero))
+        .fetchOneInto(Long.class);
   }
 
-  public void updateHydrantGestionnaire(Long idHydrant, Long newGestionnaireId){
-    context.update(HYDRANT)
-            .set(HYDRANT.GESTIONNAIRE, newGestionnaireId)
-            .where(HYDRANT.ID.eq(idHydrant))
-            .execute();
+  public void updateHydrantGestionnaire(Long idHydrant, Long newGestionnaireId) {
+    context
+        .update(HYDRANT)
+        .set(HYDRANT.GESTIONNAIRE, newGestionnaireId)
+        .where(HYDRANT.ID.eq(idHydrant))
+        .execute();
   }
 }

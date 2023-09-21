@@ -16,60 +16,58 @@
 package fr.sdis83.remocra.util;
 
 import java.lang.reflect.InvocationTargetException;
-
 import javax.servlet.ServletException;
 
-//import net.sourceforge.htmlunit.corejs.javascript.WrappedException;
+// import net.sourceforge.htmlunit.corejs.javascript.WrappedException;
 
 public class ExceptionUtils {
-    /**
-     * Return a reasonable guess about the exception cause, removing any
-     * exception that is only meant as a wrapper
-     */
-    public static Throwable getNestedException(Throwable e) {
-        if (e == null) {
-            return null;
-        }
-        Throwable lastVisited = null;
-        while (e != lastVisited) {
-            lastVisited = e;
-            if (e instanceof InvocationTargetException) {
-                e = ((InvocationTargetException) e).getTargetException();
-                // } else if (e instanceof WrappedException) {
-                // e = e.getCause();
-            } else if (e instanceof ServletException) {
-                e = ((ServletException) e).getRootCause();
-            }
-            if (e == null) {
-                e = lastVisited;
-                break;
-            }
-        }
-        return e;
+  /**
+   * Return a reasonable guess about the exception cause, removing any exception that is only meant
+   * as a wrapper
+   */
+  public static Throwable getNestedException(Throwable e) {
+    if (e == null) {
+      return null;
     }
+    Throwable lastVisited = null;
+    while (e != lastVisited) {
+      lastVisited = e;
+      if (e instanceof InvocationTargetException) {
+        e = ((InvocationTargetException) e).getTargetException();
+        // } else if (e instanceof WrappedException) {
+        // e = e.getCause();
+      } else if (e instanceof ServletException) {
+        e = ((ServletException) e).getRootCause();
+      }
+      if (e == null) {
+        e = lastVisited;
+        break;
+      }
+    }
+    return e;
+  }
 
-    /**
-     * Return the nested exception with the expected exception class
-     * 
-     * @param e
-     *            the exception to start the search
-     * @param expectedClass
-     *            the expected class.
-     * @return the nested exception with the expected class, null if none
-     */
-    @SuppressWarnings("unchecked")
-    public static <T extends Throwable> T getNestedExceptionWithClass(Throwable e, Class<T> expectedClass) {
-        while (e != null && !expectedClass.isAssignableFrom(e.getClass())) {
-            if (e instanceof InvocationTargetException) {
-                e = ((InvocationTargetException) e).getTargetException();
-                // } else if (e instanceof WrappedException) {
-                // e = e.getCause();
-            } else if (e instanceof ServletException) {
-                e = ((ServletException) e).getRootCause();
-            } else {
-                e = e.getCause();
-            }
-        }
-        return (T) e;
+  /**
+   * Return the nested exception with the expected exception class
+   *
+   * @param e the exception to start the search
+   * @param expectedClass the expected class.
+   * @return the nested exception with the expected class, null if none
+   */
+  @SuppressWarnings("unchecked")
+  public static <T extends Throwable> T getNestedExceptionWithClass(
+      Throwable e, Class<T> expectedClass) {
+    while (e != null && !expectedClass.isAssignableFrom(e.getClass())) {
+      if (e instanceof InvocationTargetException) {
+        e = ((InvocationTargetException) e).getTargetException();
+        // } else if (e instanceof WrappedException) {
+        // e = e.getCause();
+      } else if (e instanceof ServletException) {
+        e = ((ServletException) e).getRootCause();
+      } else {
+        e = e.getCause();
+      }
     }
+    return (T) e;
+  }
 }

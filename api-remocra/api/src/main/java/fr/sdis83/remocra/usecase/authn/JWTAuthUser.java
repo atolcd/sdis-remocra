@@ -3,10 +3,8 @@ package fr.sdis83.remocra.usecase.authn;
 import com.google.inject.Inject;
 import fr.sdis83.remocra.repository.OrganismesRepository;
 import fr.sdis83.remocra.web.model.authn.OrganismeModel;
-import org.immutables.value.Value;
-
 import java.util.Optional;
-
+import org.immutables.value.Value;
 
 @Value.Enclosing
 public class JWTAuthUser {
@@ -28,12 +26,12 @@ public class JWTAuthUser {
     }
     String encodedPassword = authCommun.encodePassword(password, user.getSalt());
 
-   if (user.getPassword().equals(encodedPassword)) {
-     return ImmutableJWTAuthUser.Response.builder()
-             .status(Status.OK)
-             .token(authCommun.generateToken(user.getEmail()))
-             .build();
-   }
+    if (user.getPassword().equals(encodedPassword)) {
+      return ImmutableJWTAuthUser.Response.builder()
+          .status(Status.OK)
+          .token(authCommun.generateToken(user.getEmail()))
+          .build();
+    }
 
     return ImmutableJWTAuthUser.Response.builder().status(Status.BAD_CREDENTIALS).build();
   }
@@ -51,6 +49,4 @@ public class JWTAuthUser {
     NOT_FOUND,
     BAD_CREDENTIALS
   }
-
-
 }

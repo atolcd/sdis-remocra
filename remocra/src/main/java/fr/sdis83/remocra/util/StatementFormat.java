@@ -10,13 +10,14 @@ import java.util.HashMap;
 
 public class StatementFormat {
 
-  public static void PreparedStatement(PreparedStatement ps, int index , HashMap parameterObj) throws ParseException, SQLException {
+  public static void PreparedStatement(PreparedStatement ps, int index, HashMap parameterObj)
+      throws ParseException, SQLException {
 
     if (parameterObj.get("type").toString().equalsIgnoreCase("Byte")) {
       ps.setInt(index, (Byte.valueOf(parameterObj.get("valeur").toString())));
     } else if (parameterObj.get("type").toString().equalsIgnoreCase("Character varying")) {
 
-      ps.setString(index,parameterObj.get("valeur").toString());
+      ps.setString(index, parameterObj.get("valeur").toString());
     } else if (parameterObj.get("type").toString().equalsIgnoreCase("Double precision")) {
       ps.setDouble(index, (Double.valueOf(parameterObj.get("valeur").toString())));
     } else if (parameterObj.get("type").toString().equalsIgnoreCase("Integer")) {
@@ -33,12 +34,12 @@ public class StatementFormat {
     } else if (parameterObj.get("type").toString().equalsIgnoreCase("Time")) {
       ps.setString(index, parameterObj.get("valeur").toString());
     } else if (parameterObj.get("type").toString().equalsIgnoreCase("Timestamp")) {
-      ps.setString(index,parameterObj.get("valeur").toString());
+      ps.setString(index, parameterObj.get("valeur").toString());
     } else if (parameterObj.get("type").toString().equalsIgnoreCase("Boolean")) {
-      //boolean x = parameterObj.get("valeur").toString().equalsIgnoreCase("true") ? true : false;
+      // boolean x = parameterObj.get("valeur").toString().equalsIgnoreCase("true") ? true : false;
       ps.setObject(index, parameterObj.get("valeur"), Types.BOOLEAN);
     } else {
-      ps.setObject(index,parameterObj.get("valeur"));
+      ps.setObject(index, parameterObj.get("valeur"));
     }
   }
 }

@@ -2,14 +2,8 @@ package fr.sdis83.remocra.web.model.deci.pei;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiParam;
-import io.swagger.v3.oas.annotations.Parameter;
-import org.immutables.value.Value;
-
 import javax.annotation.Nullable;
-import javax.validation.constraints.NotNull;
-import java.util.UUID;
+import org.immutables.value.Value;
 
 @Value.Immutable
 @JsonDeserialize(as = ImmutableHydrantVisiteForm.class)
@@ -58,6 +52,4 @@ public interface HydrantVisiteForm {
   @JsonProperty
   @Nullable
   String observations();
-
 }
-

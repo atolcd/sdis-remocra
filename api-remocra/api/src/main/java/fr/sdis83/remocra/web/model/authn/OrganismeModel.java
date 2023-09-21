@@ -1,7 +1,6 @@
 package fr.sdis83.remocra.web.model.authn;
 
 import fr.sdis83.remocra.authn.UserRoles;
-
 import java.util.List;
 
 public class OrganismeModel {

@@ -16,42 +16,54 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class AccesAPIOrganismeController {
 
-    @Autowired
-    AccesAPIOrganismeRepository accesAPIOrganismeRepository;
+  @Autowired AccesAPIOrganismeRepository accesAPIOrganismeRepository;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST,  headers = "Accept=application/json;charset=utf-8")
-    @Transactional
-    public ResponseEntity<String> newDdeApi(@PathVariable("id") Long idOrganisme) {
-        try{
-            accesAPIOrganismeRepository.newDdeApi(idOrganisme);
-            return new SuccessErrorExtSerializer(true, "La demande d'accès à l'API a bien été prise en compte. Un mail va être envoyé à l'adresse renseignée.").serialize();
-        }catch(Exception e){
-            e.printStackTrace();
-            return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de la demande d'accès à l'API").serialize();
-        }
+  @RequestMapping(
+      value = "/{id}",
+      method = RequestMethod.POST,
+      headers = "Accept=application/json;charset=utf-8")
+  @Transactional
+  public ResponseEntity<String> newDdeApi(@PathVariable("id") Long idOrganisme) {
+    try {
+      accesAPIOrganismeRepository.newDdeApi(idOrganisme);
+      return new SuccessErrorExtSerializer(
+              true,
+              "La demande d'accès à l'API a bien été prise en compte. Un mail va être envoyé à l'adresse renseignée.")
+          .serialize();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new SuccessErrorExtSerializer(
+              false, "Une erreur est survenue lors de la demande d'accès à l'API")
+          .serialize();
     }
+  }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
-    public ResponseEntity<String> getCodeValidity(@PathVariable("id") String codeAPIOrganisme) {
-        return new AbstractExtObjectSerializer<Boolean>("fr.sdis83.remocra.domain.remocra.AccesAPIOrganismeController retrieved.") {
+  @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+  public ResponseEntity<String> getCodeValidity(@PathVariable("id") String codeAPIOrganisme) {
+    return new AbstractExtObjectSerializer<Boolean>(
+        "fr.sdis83.remocra.domain.remocra.AccesAPIOrganismeController retrieved.") {
 
-            @Override
-            protected Boolean getRecord() {
-                return accesAPIOrganismeRepository.getCodeValidity(codeAPIOrganisme);
-            }
+      @Override
+      protected Boolean getRecord() {
+        return accesAPIOrganismeRepository.getCodeValidity(codeAPIOrganisme);
+      }
+    }.serialize();
+  }
 
-        }.serialize();
+  @RequestMapping(
+      value = "password/{code}",
+      method = RequestMethod.POST,
+      headers = "Accept=application/json;charset=utf-8")
+  @Transactional
+  public ResponseEntity<String> setPassword(
+      @PathVariable("code") String code, @RequestHeader("pwd") String password) {
+    try {
+      accesAPIOrganismeRepository.setPasswordOrganisme(code, password);
+      return new SuccessErrorExtSerializer(true, "Le mot de passe a été enregistré avec succès.")
+          .serialize();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
     }
-
-    @RequestMapping(value = "password/{code}", method = RequestMethod.POST,  headers = "Accept=application/json;charset=utf-8")
-    @Transactional
-    public ResponseEntity<String> setPassword(@PathVariable("code") String code, @RequestHeader("pwd") String password) {
-        try{
-            accesAPIOrganismeRepository.setPasswordOrganisme(code, password);
-            return new SuccessErrorExtSerializer(true, "Le mot de passe a été enregistré avec succès.").serialize();
-        }catch(Exception e){
-            e.printStackTrace();
-            return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
-        }
-    }
+  }
 }

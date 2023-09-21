@@ -39,6 +39,11 @@
 		<db.name>remocra</db.name>
 		<guice-persist-jooq.version>0.1.2</guice-persist-jooq.version>
 		<plugin.build-helper-maven-plugin>1.10</plugin.build-helper-maven-plugin>
+<!--		Spotless-->
+<!--		2.31.0+ requiert jdk 11-->
+		<spotless.version>2.30.0</spotless.version>
+<!--		1.7 maximum pour compatibilité JDK 8-->
+		<googlejavaformat.version>1.7</googlejavaformat.version>
 	</properties>
 	<repositories>
 		<!-- Local repository -->
@@ -608,6 +613,29 @@
 	<build>
 		<finalName>remocra</finalName>
 		<plugins>
+<!--			Spotless-->
+			<plugin>
+				<groupId>com.diffplug.spotless</groupId>
+				<artifactId>spotless-maven-plugin</artifactId>
+				<version>${spotless.version}</version>
+
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<phase>verify</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<java>
+						<googleJavaFormat>
+							<version>${googlejavaformat.version}</version>
+						</googleJavaFormat>
+						<removeUnusedImports />
+					</java>
+				</configuration>
+			</plugin>
 			<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>

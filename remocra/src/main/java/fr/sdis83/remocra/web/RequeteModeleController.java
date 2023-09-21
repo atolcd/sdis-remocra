@@ -1,12 +1,5 @@
 package fr.sdis83.remocra.web;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import flexjson.JSONException;
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.RequeteModele;
@@ -18,6 +11,12 @@ import fr.sdis83.remocra.repository.RequeteModeleRepository;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.jooq.tools.json.JSONArray;
 import org.jooq.tools.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,20 +32,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class RequeteModeleController {
 
+  @Autowired private RequeteModeleRepository requeteModeleRepository;
 
-    @Autowired
-    private RequeteModeleRepository requeteModeleRepository;
-
-  @Autowired
-  private RequeteModeleParametereRepository requeteModeleParametereRepository;
+  @Autowired private RequeteModeleParametereRepository requeteModeleParametereRepository;
 
   @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/xml")
   @PreAuthorize("hasRight('HYDRANTS_ANALYSE_C')")
-  public ResponseEntity<java.lang.String> listJson(final @RequestParam(value = "page", required = false) Integer page,
-                                                   final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
-                                                   final @RequestParam(value = "query", required = false) String query, @RequestParam(value = "sort", required = false) String sorts,
-                                                   @RequestParam(value = "filter", required = false) String filters) {
-
+  public ResponseEntity<java.lang.String> listJson(
+      final @RequestParam(value = "page", required = false) Integer page,
+      final @RequestParam(value = "start", required = false) Integer start,
+      final @RequestParam(value = "limit", required = false) Integer limit,
+      final @RequestParam(value = "query", required = false) String query,
+      @RequestParam(value = "sort", required = false) String sorts,
+      @RequestParam(value = "filter", required = false) String filters) {
 
     final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
 
@@ -66,10 +64,8 @@ public class RequeteModeleController {
 
       @Override
       protected Long countRecords() {
-        return
-           Long.valueOf(requeteModeleRepository.count());
+        return Long.valueOf(requeteModeleRepository.count());
       }
-
     }.serialize();
   }
 
@@ -79,11 +75,15 @@ public class RequeteModeleController {
    * @param idModele
    * @return
    */
-  @RequestMapping(value = "requetemodelparam/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+  @RequestMapping(
+      value = "requetemodelparam/{id}",
+      method = RequestMethod.GET,
+      headers = "Accept=application/json")
   @PreAuthorize("hasRight('HYDRANTS_ANALYSE_C')")
   public ResponseEntity<java.lang.String> getmodelParams(final @PathVariable("id") Long idModele) {
 
-    return new AbstractExtListSerializer<RequeteModeleParametre>("Paramètres Modeles Requete retrieved.") {
+    return new AbstractExtListSerializer<RequeteModeleParametre>(
+        "Paramètres Modeles Requete retrieved.") {
 
       @Override
       protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
@@ -96,10 +96,8 @@ public class RequeteModeleController {
 
         return requeteModeleParametereRepository.getByRequeteModele(idModele);
       }
-
     }.serialize();
   }
-
 
   /**
    * Retourne la liste des valeurs pour un paramètre de type 'combo'.
@@ -107,11 +105,14 @@ public class RequeteModeleController {
    * @param id
    * @return
    */
-  @RequestMapping(value = "reqmodparalst/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+  @RequestMapping(
+      value = "reqmodparalst/{id}",
+      method = RequestMethod.GET,
+      headers = "Accept=application/json")
   @PreAuthorize("hasRight('HYDRANTS_ANALYSE_C')")
   public ResponseEntity<java.lang.String> getListComboModeleRequeteLike(
       final @PathVariable("id") Long id,
-      final @RequestParam(value = "query", required = false) String query){
+      final @RequestParam(value = "query", required = false) String query) {
 
     return new AbstractExtListSerializer<RemocraVueCombo>(" retrieved.") {
 
@@ -123,41 +124,48 @@ public class RequeteModeleController {
           e.printStackTrace();
         } catch (ParseException e) {
           e.printStackTrace();
-        }return  null;
+        }
+        return null;
       }
-
     }.serialize();
   }
 
-  @RequestMapping(value = "/{idmodele}", method = RequestMethod.POST, headers = "Accept=application/json")
+  @RequestMapping(
+      value = "/{idmodele}",
+      method = RequestMethod.POST,
+      headers = "Accept=application/json")
   @PreAuthorize("hasRight('HYDRANTS_ANALYSE_C')")
-  public ResponseEntity<java.lang.String> createrequest(final @PathVariable("idmodele") Integer idmodele, final @RequestParam("jsonValeurs") String json) throws BusinessException, IOException, SQLException, ParseException {
+  public ResponseEntity<java.lang.String> createrequest(
+      final @PathVariable("idmodele") Integer idmodele,
+      final @RequestParam("jsonValeurs") String json)
+      throws BusinessException, IOException, SQLException, ParseException {
 
     try {
-    String s = this.listmap_to_json_string(requeteModeleRepository.executeRequest(Long.valueOf(idmodele), json));
-    if (s != null) {
-      return new SuccessErrorExtSerializer(true, s).serialize();
-    } else {
-      return new SuccessErrorExtSerializer(false, "Problème lors de la création de la requête !").serialize();
+      String s =
+          this.listmap_to_json_string(
+              requeteModeleRepository.executeRequest(Long.valueOf(idmodele), json));
+      if (s != null) {
+        return new SuccessErrorExtSerializer(true, s).serialize();
+      } else {
+        return new SuccessErrorExtSerializer(false, "Problème lors de la création de la requête !")
+            .serialize();
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
     }
-
-  } catch (Exception e) {
-    e.printStackTrace();
-    return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
-  }
   }
 
-
-  public String listmap_to_json_string(List<HashMap> list)
-  {
-    JSONArray json_arr=new JSONArray();
+  public String listmap_to_json_string(List<HashMap> list) {
+    JSONArray json_arr = new JSONArray();
     for (Map<String, Object> map : list) {
-      JSONObject json_obj=new JSONObject();
+      JSONObject json_obj = new JSONObject();
       for (Map.Entry<String, Object> entry : map.entrySet()) {
         String key = entry.getKey();
         Object value = entry.getValue();
         try {
-          json_obj.put(key,value);
+          json_obj.put(key, value);
         } catch (JSONException e) {
           // TODO Auto-generated catch block
           e.printStackTrace();
@@ -168,49 +176,50 @@ public class RequeteModeleController {
     return json_arr.toString();
   }
 
-
   /**
    * Retourne la liste des records à mettre dans le tableau des données
    *
    * @param id
    * @return
    */
-  @RequestMapping(value = "reqmodresult/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+  @RequestMapping(
+      value = "reqmodresult/{id}",
+      method = RequestMethod.GET,
+      headers = "Accept=application/json")
   @PreAuthorize("hasRight('HYDRANTS_ANALYSE_C')")
-  public ResponseEntity<java.lang.String> getListofResults(final @PathVariable("id") Long id,final @RequestParam(value = "page", required = false) Integer page,
-                                                           final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
-                                                           final @RequestParam(value = "query", required = false) String query, @RequestParam(value = "sort", required = false) String sorts,
-                                                           @RequestParam(value = "filter", required = false) String filters){
+  public ResponseEntity<java.lang.String> getListofResults(
+      final @PathVariable("id") Long id,
+      final @RequestParam(value = "page", required = false) Integer page,
+      final @RequestParam(value = "start", required = false) Integer start,
+      final @RequestParam(value = "limit", required = false) Integer limit,
+      final @RequestParam(value = "query", required = false) String query,
+      @RequestParam(value = "sort", required = false) String sorts,
+      @RequestParam(value = "filter", required = false) String filters) {
 
-   //On rejoue la requete pour récupérer les résultats
+    // On rejoue la requete pour récupérer les résultats
     return new AbstractExtListSerializer<Object>("retrieved") {
 
       @Override
       protected List<Object> getRecords() {
         try {
-          return requeteModeleRepository.getResults(id,start,limit);
+          return requeteModeleRepository.getResults(id, start, limit);
         } catch (SQLException e) {
           e.printStackTrace();
         }
         return null;
       }
-
 
       @Override
       protected Long countRecords() {
         try {
-          return
-              Long.valueOf(requeteModeleRepository.countRecords(id));
+          return Long.valueOf(requeteModeleRepository.countRecords(id));
         } catch (SQLException e) {
           e.printStackTrace();
         }
         return null;
       }
-
     }.serialize();
   }
-
-
 
   /**
    * retourne l'etendu pour calculer la bbox.
@@ -218,18 +227,27 @@ public class RequeteModeleController {
    * @param id
    * @return
    */
-  @RequestMapping(value = "reqmodetendu/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+  @RequestMapping(
+      value = "reqmodetendu/{id}",
+      method = RequestMethod.GET,
+      headers = "Accept=application/json")
   @PreAuthorize("hasRight('HYDRANTS_ANALYSE_C')")
-  public ResponseEntity<String> getEtendu(final @PathVariable("id") Long id, final @RequestParam(value = "page", required = false) Integer page,
-                                          final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
-                                          final @RequestParam(value = "query", required = false) String query, @RequestParam(value = "sort", required = false) String sorts,
-                                          @RequestParam(value = "filter", required = false) String filters){
+  public ResponseEntity<String> getEtendu(
+      final @PathVariable("id") Long id,
+      final @RequestParam(value = "page", required = false) Integer page,
+      final @RequestParam(value = "start", required = false) Integer start,
+      final @RequestParam(value = "limit", required = false) Integer limit,
+      final @RequestParam(value = "query", required = false) String query,
+      @RequestParam(value = "sort", required = false) String sorts,
+      @RequestParam(value = "filter", required = false) String filters) {
     try {
       String s = String.valueOf(requeteModeleRepository.getEtendu(id));
       if (s != null) {
         return new SuccessErrorExtSerializer(true, String.valueOf(s)).serialize();
       } else {
-        return new SuccessErrorExtSerializer(false, "Problème lors de la récupération de l'emprise géographique!").serialize();
+        return new SuccessErrorExtSerializer(
+                false, "Problème lors de la récupération de l'emprise géographique!")
+            .serialize();
       }
 
     } catch (Exception e) {
@@ -239,13 +257,15 @@ public class RequeteModeleController {
   }
 
   /**
-   *
    * Purger la Sélection
    *
    * @param id
    * @return
    */
-  @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+  @RequestMapping(
+      value = "/{id}",
+      method = RequestMethod.DELETE,
+      headers = "Accept=application/json")
   @PreAuthorize("hasRight('HYDRANTS_ANALYSE_C')")
   public ResponseEntity<java.lang.String> delete(@PathVariable("id") Long id) {
     try {
@@ -255,5 +275,4 @@ public class RequeteModeleController {
       return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
     }
   }
-
 }

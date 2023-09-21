@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
@@ -12,25 +11,24 @@ import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
-@RooJpaActiveRecord(finders = { "findExportModeleByCode" })
+@RooJpaActiveRecord(finders = {"findExportModeleByCode"})
 @RooJson
 public class ExportModele {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
 
-    private String categorie;
+  private String categorie;
 
-    private String code;
+  private String code;
 
-    private String libelle;
+  private String libelle;
 
-    private String description;
+  private String description;
 
-    private String sourceSql;
+  private String sourceSql;
 
-    private boolean spatial;
-
+  private boolean spatial;
 }

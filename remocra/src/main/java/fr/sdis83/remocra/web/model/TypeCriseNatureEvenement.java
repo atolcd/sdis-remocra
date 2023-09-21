@@ -8,11 +8,9 @@ public class TypeCriseNatureEvenement {
 
   private String code;
 
-
   private Boolean actif;
 
   private String typeGeometrie;
-
 
   public Long getId() {
     return id;
@@ -53,6 +51,4 @@ public class TypeCriseNatureEvenement {
   public void setTypeGeometrie(String typeGeometrie) {
     this.typeGeometrie = typeGeometrie;
   }
-
-
 }

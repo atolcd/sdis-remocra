@@ -1,27 +1,20 @@
 package fr.sdis83.remocra.web.model;
 
-import java.util.List;
-
-import com.vividsolutions.jts.geom.Geometry;
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.Document;
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.OgcCouche;
 import org.joda.time.Instant;
 
 public class CriseDocument {
 
-
-  private Long   id;
+  private Long id;
   private String sousType;
-  private Long   crise;
-  private Long   evenement;
+  private Long crise;
+  private Long evenement;
   private String geometrie;
-  private String  code;
+  private String code;
   private Instant date;
-  private String  fichier;
-  private String  repertoire;
-  private String  type;
+  private String fichier;
+  private String repertoire;
+  private String type;
   private Instant dateDoc;
-
 
   public Long getId() {
     return id;
@@ -38,8 +31,6 @@ public class CriseDocument {
   public void setSousType(String sousType) {
     this.sousType = sousType;
   }
-
-
 
   public Long getCrise() {
     return crise;

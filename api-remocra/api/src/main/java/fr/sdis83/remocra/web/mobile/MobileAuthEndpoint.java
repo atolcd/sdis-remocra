@@ -6,7 +6,6 @@ import fr.sdis83.remocra.usecase.authn.JWTAuthUser;
 import fr.sdis83.remocra.usecase.authn.MobileAuthUser;
 import fr.sdis83.remocra.util.GlobalConstants;
 import io.swagger.v3.oas.annotations.Operation;
-
 import javax.annotation.security.PermitAll;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -23,11 +22,13 @@ import javax.ws.rs.core.Response;
 @Produces("application/json; charset=UTF-8")
 public class MobileAuthEndpoint {
 
-  @Inject
-  MobileAuthUser mobileAuthUser;
+  @Inject MobileAuthUser mobileAuthUser;
 
   @Path("/token")
-  @Operation(summary = "Check le token", tags = {GlobalConstants.REMOCRA_MOBILE_TAG}, hidden = true)
+  @Operation(
+      summary = "Check le token",
+      tags = {GlobalConstants.REMOCRA_MOBILE_TAG},
+      hidden = true)
   @PUT
   @AuthDevice
   public Response checkToken() {
@@ -36,29 +37,32 @@ public class MobileAuthEndpoint {
   }
 
   @Path("/check")
-  @Operation(summary = "Check url", tags = {GlobalConstants.REMOCRA_MOBILE_TAG}, hidden = true)
+  @Operation(
+      summary = "Check url",
+      tags = {GlobalConstants.REMOCRA_MOBILE_TAG},
+      hidden = true)
   @PUT
   @PermitAll
   public Response checkUrl() {
     return Response.ok().build();
   }
 
-
   @Path("/login")
-  @Operation(summary = "Permet de se connecter à l'application mobile", tags = {GlobalConstants.REMOCRA_MOBILE_TAG}, hidden = true)
+  @Operation(
+      summary = "Permet de se connecter à l'application mobile",
+      tags = {GlobalConstants.REMOCRA_MOBILE_TAG},
+      hidden = true)
   @POST
   @PermitAll
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   public Response authenticateMobile(
       @FormParam("username") @NotNull String username,
       @FormParam("password") @NotNull String password,
-      @FormParam("versionName") @NotNull String versionName
-  ) throws Exception {
+      @FormParam("versionName") @NotNull String versionName)
+      throws Exception {
     JWTAuthUser.Response res = mobileAuthUser.authenticateMobile(username, password, versionName);
     if (res.status() == JWTAuthUser.Status.OK) {
-      return Response.ok(
-          new LoginResponse(username, res.token().get())
-      ).build();
+      return Response.ok(new LoginResponse(username, res.token().get())).build();
     }
     throw new NotAuthorizedException("Unauthorized");
   }

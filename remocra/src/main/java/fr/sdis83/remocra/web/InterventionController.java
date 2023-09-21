@@ -1,13 +1,12 @@
 package fr.sdis83.remocra.web;
 
-import java.util.List;
-
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Intervention;
 import fr.sdis83.remocra.repository.InterventionRepository;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,16 +22,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class InterventionController {
 
-
-    @Autowired
-    private InterventionRepository interventionRepository;
+  @Autowired private InterventionRepository interventionRepository;
 
   @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/xml")
   @PreAuthorize("hasRight('CRISE_R')")
-  public ResponseEntity<String> listJson(final @RequestParam(value = "page", required = false) Integer page,
-                             final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
-                             final @RequestParam(value = "query", required = false) String query, @RequestParam(value = "sort", required = false) String sorts,
-                             @RequestParam(value = "filter", required = false) String filters) {
+  public ResponseEntity<String> listJson(
+      final @RequestParam(value = "page", required = false) Integer page,
+      final @RequestParam(value = "start", required = false) Integer start,
+      final @RequestParam(value = "limit", required = false) Integer limit,
+      final @RequestParam(value = "query", required = false) String query,
+      @RequestParam(value = "sort", required = false) String sorts,
+      @RequestParam(value = "filter", required = false) String filters) {
     final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
 
     return new AbstractExtListSerializer<Intervention>("Intervention retrieved.") {
@@ -51,13 +51,10 @@ public class InterventionController {
 
       @Override
       protected Long countRecords() {
-        return
-            Long.valueOf(interventionRepository.count());
+        return Long.valueOf(interventionRepository.count());
       }
-
     }.serialize();
   }
-
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
   @PreAuthorize("hasRight('CRISE_R')")
@@ -75,22 +72,24 @@ public class InterventionController {
 
         return interventionRepository.getByCrise(idCrise);
       }
-
     }.serialize();
   }
 
-  @RequestMapping(value = "/indicateur", method = RequestMethod.GET, headers = "Accept=application/xml")
-  public ResponseEntity<java.lang.String> indicateurXml(final @RequestParam(value="code") String code) {
+  @RequestMapping(
+      value = "/indicateur",
+      method = RequestMethod.GET,
+      headers = "Accept=application/xml")
+  public ResponseEntity<java.lang.String> indicateurXml(
+      final @RequestParam(value = "code") String code) {
     HttpHeaders responseHeaders = new HttpHeaders();
     responseHeaders.add("Content-Type", "application/json;charset=utf-8");
     String xmlDoc = interventionRepository.getXmlIndicateur(code);
-    if(xmlDoc != null) {
+    if (xmlDoc != null) {
       return new ResponseEntity<String>(xmlDoc.toString(), responseHeaders, HttpStatus.OK);
+    } else {
+      return new SuccessErrorExtSerializer(
+              false, "Une erreur est survenue lors de l'exécution de la requête")
+          .serialize();
     }
-    else {
-      return new SuccessErrorExtSerializer(false, "Une erreur est survenue lors de l'exécution de la requête").serialize();
-    }
-
   }
-
 }

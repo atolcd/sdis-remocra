@@ -2,10 +2,9 @@ package fr.sdis83.remocra.web.model.indispotemporaire;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.immutables.value.Value;
-
 import javax.annotation.Nullable;
 import javax.ws.rs.DefaultValue;
+import org.immutables.value.Value;
 
 @Value.Immutable
 @JsonDeserialize(as = ImmutableIndispoTemporaireSpecifiqueForm.class)
@@ -41,5 +40,4 @@ public interface IndispoTemporaireSpecifiqueForm {
   @JsonProperty
   @DefaultValue("true")
   Boolean mel_avant_dispo();
-
 }

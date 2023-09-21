@@ -26,6 +26,10 @@
     <db.pass>postgres</db.pass>
     <db.name>remocra</db.name>
     <db.schema>remocra</db.schema>
+    <!--    Spotless-->
+    <spotless.version>2.39.0</spotless.version>
+    <googleJavaFormat.version>1.17.0</googleJavaFormat.version>
+
   </properties>
 
   <dependencies>
@@ -392,6 +396,30 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+
+
+
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>${spotless.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>verify</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <java>
+            <googleJavaFormat>
+              <version>${googleJavaFormat.version}</version>
+            </googleJavaFormat>
+            <removeUnusedImports />
+          </java>
+        </configuration>
       </plugin>
     </plugins>
   </build>

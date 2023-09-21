@@ -18,7 +18,22 @@ public class ContactModel {
   String telephone;
   String email;
 
-  public ContactModel(Long idRemocra, Long idRemocraGestionnaire, String fonction, String civilite, String nom, String prenom, String numeroVoie, String voie, String suffixeVoie, String lieuDit, String codePostal, String ville, String pays, String telephone, String email) {
+  public ContactModel(
+      Long idRemocra,
+      Long idRemocraGestionnaire,
+      String fonction,
+      String civilite,
+      String nom,
+      String prenom,
+      String numeroVoie,
+      String voie,
+      String suffixeVoie,
+      String lieuDit,
+      String codePostal,
+      String ville,
+      String pays,
+      String telephone,
+      String email) {
     this.idRemocra = idRemocra;
     this.idRemocraGestionnaire = idRemocraGestionnaire;
     this.fonction = fonction;

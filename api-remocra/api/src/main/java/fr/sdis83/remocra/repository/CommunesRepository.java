@@ -1,16 +1,15 @@
 package fr.sdis83.remocra.repository;
 
+import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.sdis83.remocra.web.model.referentielsCommuns.ReferentielModel;
+import java.util.List;
+import javax.inject.Inject;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
-
-import javax.inject.Inject;
-import java.util.List;
-
-import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
 
 public class CommunesRepository {
 
@@ -21,11 +20,13 @@ public class CommunesRepository {
     this.context = context;
   }
 
-  public String getAll(String insee, String commune, Integer start, Integer limit) throws JsonProcessingException {
+  public String getAll(String insee, String commune, Integer start, Integer limit)
+      throws JsonProcessingException {
 
     Condition condition = this.getConditions(insee, commune);
 
-    List<ReferentielModel> list = context
+    List<ReferentielModel> list =
+        context
             .selectFrom(COMMUNE)
             .where(condition)
             .limit((limit == null || limit < 0) ? this.count() : limit)
@@ -50,5 +51,4 @@ public class CommunesRepository {
     }
     return condition;
   }
-
 }

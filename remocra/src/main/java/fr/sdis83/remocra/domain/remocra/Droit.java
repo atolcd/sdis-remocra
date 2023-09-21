@@ -9,7 +9,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
-
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.roo.addon.javabean.RooJavaBean;
@@ -20,24 +19,22 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJavaBean
 @RooToString
 @RooJson
-@RooJpaActiveRecord(finders = { "findDroitsByProfilDroitEquals" })
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "profil_droit", "type_droit" }) })
+@RooJpaActiveRecord(finders = {"findDroitsByProfilDroitEquals"})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"profil_droit", "type_droit"})})
 public class Droit {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
 
-    @Version
-    @Column(name = "version", columnDefinition = "INTEGER default 1")
-    private Integer version;
+  @Version
+  @Column(name = "version", columnDefinition = "INTEGER default 1")
+  private Integer version;
 
-    @ManyToOne(optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private ProfilDroit profilDroit;
+  @ManyToOne(optional = false)
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  private ProfilDroit profilDroit;
 
-    @NotNull
-    @ManyToOne
-    private TypeDroit typeDroit;
+  @NotNull @ManyToOne private TypeDroit typeDroit;
 }

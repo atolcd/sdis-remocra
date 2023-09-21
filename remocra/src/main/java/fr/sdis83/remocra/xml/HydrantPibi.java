@@ -3,166 +3,166 @@ package fr.sdis83.remocra.xml;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
-@XmlSeeAlso({ HydrantPi.class, HydrantBi.class, HydrantPa.class })
+@XmlSeeAlso({HydrantPi.class, HydrantBi.class, HydrantPa.class})
 public abstract class HydrantPibi extends Hydrant {
 
-    public static final String CODE_NATURE_PI = "PI";
-    public static final String CODE_NATURE_BI = "BI";
-    public static final String CODE_NATURE_PA = "PA";
+  public static final String CODE_NATURE_PI = "PI";
+  public static final String CODE_NATURE_BI = "BI";
+  public static final String CODE_NATURE_PA = "PA";
 
-    public HydrantPibi() {
-        //
-    }
+  public HydrantPibi() {
+    //
+  }
 
-    private Integer debit;
+  private Integer debit;
 
-    private Integer debitMax;
+  private Integer debitMax;
 
-    private Double pression;
+  private Double pression;
 
-    private Double pressionDyn;
-    
-    private Double pressionDynDeb;
+  private Double pressionDyn;
 
-    private String gestReseau;
+  private Double pressionDynDeb;
 
-    private String numeroSCP;
+  private String gestReseau;
 
-    private Boolean renversable;
+  private String numeroSCP;
 
-    private String codeMarque;
+  private Boolean renversable;
 
-    private String codeModele;
+  private String codeMarque;
 
-    private String codeDiametre;
+  private String codeModele;
 
-    private String codePena;
+  private String codeDiametre;
 
-    private String jumele;
+  private String codePena;
 
-    private Boolean grosDebit;
+  private String jumele;
 
-    private Boolean debitRenforce;
+  private Boolean grosDebit;
 
-    public Integer getDebit() {
-        return debit;
-    }
+  private Boolean debitRenforce;
 
-    public void setDebit(Integer debit) {
-        this.debit = debit;
-    }
+  public Integer getDebit() {
+    return debit;
+  }
 
-    public Integer getDebitMax() {
-        return debitMax;
-    }
+  public void setDebit(Integer debit) {
+    this.debit = debit;
+  }
 
-    public void setDebitMax(Integer debitMax) {
-        this.debitMax = debitMax;
-    }
+  public Integer getDebitMax() {
+    return debitMax;
+  }
 
-    public Double getPression() {
-        return pression;
-    }
+  public void setDebitMax(Integer debitMax) {
+    this.debitMax = debitMax;
+  }
 
-    public void setPression(Double pression) {
-        this.pression = pression;
-    }
+  public Double getPression() {
+    return pression;
+  }
 
-    public Double getPressionDyn() {
-        return pressionDyn;
-    }
+  public void setPression(Double pression) {
+    this.pression = pression;
+  }
 
-    public void setPressionDyn(Double pressionDyn) {
-        this.pressionDyn = pressionDyn;
-    }
+  public Double getPressionDyn() {
+    return pressionDyn;
+  }
 
-    public String getGestReseau() {
-        return gestReseau;
-    }
+  public void setPressionDyn(Double pressionDyn) {
+    this.pressionDyn = pressionDyn;
+  }
 
-    public void setGestReseau(String gestReseau) {
-        this.gestReseau = gestReseau;
-    }
+  public String getGestReseau() {
+    return gestReseau;
+  }
 
-    public String getNumeroSCP() {
-        return numeroSCP;
-    }
+  public void setGestReseau(String gestReseau) {
+    this.gestReseau = gestReseau;
+  }
 
-    public void setNumeroSCP(String numeroSCP) {
-        this.numeroSCP = numeroSCP;
-    }
+  public String getNumeroSCP() {
+    return numeroSCP;
+  }
 
-    // Phase de transition
-    @XmlElement(name = "choc")
-    public Boolean getRenversable() {
-        return renversable;
-    }
+  public void setNumeroSCP(String numeroSCP) {
+    this.numeroSCP = numeroSCP;
+  }
 
-    public void setRenversable(Boolean renversable) {
-        this.renversable = renversable;
-    }
+  // Phase de transition
+  @XmlElement(name = "choc")
+  public Boolean getRenversable() {
+    return renversable;
+  }
 
-    public String getCodeMarque() {
-        return codeMarque;
-    }
+  public void setRenversable(Boolean renversable) {
+    this.renversable = renversable;
+  }
 
-    public void setCodeMarque(String codeMarque) {
-        this.codeMarque = codeMarque;
-    }
+  public String getCodeMarque() {
+    return codeMarque;
+  }
 
-    public String getCodeModele() {
-        return codeModele;
-    }
+  public void setCodeMarque(String codeMarque) {
+    this.codeMarque = codeMarque;
+  }
 
-    public void setCodeModele(String codeModele) {
-        this.codeModele = codeModele;
-    }
+  public String getCodeModele() {
+    return codeModele;
+  }
 
-    public String getCodeDiametre() {
-        return codeDiametre;
-    }
+  public void setCodeModele(String codeModele) {
+    this.codeModele = codeModele;
+  }
 
-    public void setCodeDiametre(String codeDiametre) {
-        this.codeDiametre = codeDiametre;
-    }
+  public String getCodeDiametre() {
+    return codeDiametre;
+  }
 
-    public String getCodePena() {
-        return codePena;
-    }
+  public void setCodeDiametre(String codeDiametre) {
+    this.codeDiametre = codeDiametre;
+  }
 
-    public void setCodePena(String codePena) {
-        this.codePena = codePena;
-    }
-    
-    public Double getPressionDynDeb() {
-        return pressionDynDeb;
-    }
+  public String getCodePena() {
+    return codePena;
+  }
 
-    public void setPressionDynDeb(Double pressionDynDeb) {
-        this.pressionDynDeb = pressionDynDeb;
-    }
+  public void setCodePena(String codePena) {
+    this.codePena = codePena;
+  }
 
-    public Boolean getGrosDebit() {
-        return grosDebit;
-    }
+  public Double getPressionDynDeb() {
+    return pressionDynDeb;
+  }
 
-    public void setGrosDebit(Boolean grosDebit) {
-        this.grosDebit = grosDebit;
-    }
+  public void setPressionDynDeb(Double pressionDynDeb) {
+    this.pressionDynDeb = pressionDynDeb;
+  }
 
-    public String getJumele() {
-        return jumele;
-    }
+  public Boolean getGrosDebit() {
+    return grosDebit;
+  }
 
-    public void setJumele(String jumele) {
-        this.jumele = jumele;
-    }
+  public void setGrosDebit(Boolean grosDebit) {
+    this.grosDebit = grosDebit;
+  }
 
-    public Boolean getDebitRenforce() {
-        return debitRenforce;
-    }
+  public String getJumele() {
+    return jumele;
+  }
 
-    public void setDebitRenforce(Boolean debitRenforce) {
-        this.debitRenforce = debitRenforce;
-    }
+  public void setJumele(String jumele) {
+    this.jumele = jumele;
+  }
+
+  public Boolean getDebitRenforce() {
+    return debitRenforce;
+  }
+
+  public void setDebitRenforce(Boolean debitRenforce) {
+    this.debitRenforce = debitRenforce;
+  }
 }

@@ -8,7 +8,7 @@ public class RemocraInstantTransformer extends AbstractTransformer {
   @Override
   public void transform(Object o) {
     if (o instanceof Instant) {
-       Instant i = (Instant) o;
+      Instant i = (Instant) o;
       getContext().writeQuoted(String.valueOf(i));
     }
   }

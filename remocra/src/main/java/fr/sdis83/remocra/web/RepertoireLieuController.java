@@ -1,12 +1,11 @@
 package fr.sdis83.remocra.web;
 
-import java.util.List;
-
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.repository.RepertoireLieuRepository;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.model.RepertoireLieuData;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,16 +19,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class RepertoireLieuController {
 
-
-    @Autowired
-    private RepertoireLieuRepository repertoireLieuRepository;
+  @Autowired private RepertoireLieuRepository repertoireLieuRepository;
 
   @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/xml")
   @PreAuthorize("hasRight('ZOOM_LIEU_R')")
-  public ResponseEntity<String> listJson(final @RequestParam(value = "page", required = false) Integer page,
-                             final @RequestParam(value = "start", required = false) Integer start, final @RequestParam(value = "limit", required = false) Integer limit,
-                             final @RequestParam(value = "query", required = false) String query, @RequestParam(value = "sort", required = false) String sorts,
-                             @RequestParam(value = "filter", required = false) String filters) {
+  public ResponseEntity<String> listJson(
+      final @RequestParam(value = "page", required = false) Integer page,
+      final @RequestParam(value = "start", required = false) Integer start,
+      final @RequestParam(value = "limit", required = false) Integer limit,
+      final @RequestParam(value = "query", required = false) String query,
+      @RequestParam(value = "sort", required = false) String sorts,
+      @RequestParam(value = "filter", required = false) String filters) {
     final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
 
     return new AbstractExtListSerializer<RepertoireLieuData>("Repertoire Lieu retrieved.") {
@@ -48,16 +48,19 @@ public class RepertoireLieuController {
 
       @Override
       protected Long countRecords() {
-        return
-            Long.valueOf(repertoireLieuRepository.count());
+        return Long.valueOf(repertoireLieuRepository.count());
       }
-
     }.serialize();
   }
 
-  @RequestMapping(value = "/{idCrise}", method = RequestMethod.GET, headers = "Accept=application/xml")
+  @RequestMapping(
+      value = "/{idCrise}",
+      method = RequestMethod.GET,
+      headers = "Accept=application/xml")
   @PreAuthorize("hasRight('ZOOM_LIEU_R')")
-  public ResponseEntity<String> listJson(final @PathVariable(value ="idCrise") Long id,  final @RequestParam(value = "query", required = false) String query) {
+  public ResponseEntity<String> listJson(
+      final @PathVariable(value = "idCrise") Long id,
+      final @RequestParam(value = "query", required = false) String query) {
 
     return new AbstractExtListSerializer<RepertoireLieuData>("Repertoire Lieu retrieved.") {
 
@@ -72,10 +75,6 @@ public class RepertoireLieuController {
       protected List<RepertoireLieuData> getRecords() {
         return repertoireLieuRepository.getAllById(id, query);
       }
-
     }.serialize();
   }
-
-
-
 }

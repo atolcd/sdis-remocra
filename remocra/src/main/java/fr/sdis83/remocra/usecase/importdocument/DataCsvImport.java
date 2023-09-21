@@ -4,23 +4,21 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DataCsvImport {
-    private String document;
-    private String numeroHydrant;
+  private String document;
+  private String numeroHydrant;
 
-    public DataCsvImport() {
+  public DataCsvImport() {}
 
-    }
+  public DataCsvImport(String document, String numeroHydrant) {
+    this.document = document;
+    this.numeroHydrant = numeroHydrant;
+  }
 
-    public DataCsvImport(String document, String numeroHydrant) {
-        this.document = document;
-        this.numeroHydrant = numeroHydrant;
-    }
+  public String getDocument() {
+    return document;
+  }
 
-    public String getDocument() {
-        return document;
-    }
-
-    public String getNumeroHydrant() {
-        return numeroHydrant;
-    }
+  public String getNumeroHydrant() {
+    return numeroHydrant;
+  }
 }

@@ -8,9 +8,7 @@ public class TypeCriseStatut {
 
   private String code;
 
-
   private Boolean actif;
-
 
   public Long getId() {
     return id;

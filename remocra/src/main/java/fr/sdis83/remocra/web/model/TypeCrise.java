@@ -1,4 +1,5 @@
 package fr.sdis83.remocra.web.model;
+
 public class TypeCrise {
 
   private Long id;
@@ -7,9 +8,7 @@ public class TypeCrise {
 
   private String code;
 
-
   private Boolean actif;
-
 
   public Long getId() {
     return id;

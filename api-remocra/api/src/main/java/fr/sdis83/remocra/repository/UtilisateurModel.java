@@ -1,21 +1,20 @@
 package fr.sdis83.remocra.repository;
 
-import org.immutables.value.Value;
 import javax.annotation.Nullable;
+import org.immutables.value.Value;
 
 @Value.Immutable
 public interface UtilisateurModel {
-    Long id();
+  Long id();
 
-    String identifiant();
+  String identifiant();
 
-    String password();
+  String password();
 
-    @Nullable
-    String salt();
+  @Nullable
+  String salt();
 
-    boolean actif();
+  boolean actif();
 
-    String email();
-
+  String email();
 }

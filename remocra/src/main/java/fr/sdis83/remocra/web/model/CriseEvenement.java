@@ -1,7 +1,5 @@
 package fr.sdis83.remocra.web.model;
 
-import java.util.List;
-
 import com.vividsolutions.jts.geom.Geometry;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseEvenementComplement;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CriseSuivi;
@@ -9,11 +7,10 @@ import fr.sdis83.remocra.db.model.remocra.tables.pojos.Intervention;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Utilisateur;
 import fr.sdis83.remocra.util.Featurable;
 import fr.sdis83.remocra.util.Feature;
+import java.util.List;
 import org.joda.time.Instant;
 
-
 public class CriseEvenement implements Featurable {
-
 
   private Long id;
 
@@ -172,9 +169,6 @@ public class CriseEvenement implements Featurable {
   public void setInterventions(List<Intervention> interventions) {
     this.interventions = interventions;
   }
-
-
-
 
   @Override
   public Feature toFeature() {

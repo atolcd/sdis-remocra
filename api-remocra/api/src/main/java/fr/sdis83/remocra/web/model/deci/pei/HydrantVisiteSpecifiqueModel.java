@@ -53,7 +53,7 @@ public class HydrantVisiteSpecifiqueModel {
   }
 
   public void setDate(String date) {
-    this.date = date.substring(0,16).replace('T', ' ');
+    this.date = date.substring(0, 16).replace('T', ' ');
   }
 
   public String getAgent1() {

@@ -1,25 +1,24 @@
 package fr.sdis83.remocra.xml;
 
 import java.util.ArrayList;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "communes")
 public class LstCommunes {
 
-    private ArrayList<Commune> communes;
+  private ArrayList<Commune> communes;
 
-    public LstCommunes() {
-        //
-    }
+  public LstCommunes() {
+    //
+  }
 
-    @XmlElement(name = "commune")
-    public ArrayList<Commune> getCommunes() {
-        return communes;
-    }
+  @XmlElement(name = "commune")
+  public ArrayList<Commune> getCommunes() {
+    return communes;
+  }
 
-    public void setCommunes(ArrayList<Commune> communes) {
-        this.communes = communes;
-    }
+  public void setCommunes(ArrayList<Commune> communes) {
+    this.communes = communes;
+  }
 }

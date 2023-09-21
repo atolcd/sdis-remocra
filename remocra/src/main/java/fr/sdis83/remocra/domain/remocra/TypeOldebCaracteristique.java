@@ -1,7 +1,6 @@
 package fr.sdis83.remocra.domain.remocra;
 
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,7 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
@@ -20,26 +18,26 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooToString
 public class TypeOldebCaracteristique {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id")
+  private Long id;
 
-    @ManyToMany(mappedBy = "typeOldebCaracteristiques")
-    private Set<Oldeb> oldebs;
+  @ManyToMany(mappedBy = "typeOldebCaracteristiques")
+  private Set<Oldeb> oldebs;
 
-    @ManyToOne
-    @JoinColumn(name = "categorie", referencedColumnName = "id", nullable = false)
-    private TypeOldebCategorieCaracteristique categorie;
+  @ManyToOne
+  @JoinColumn(name = "categorie", referencedColumnName = "id", nullable = false)
+  private TypeOldebCategorieCaracteristique categorie;
 
-    @Column(name = "actif")
-    private Boolean actif;
+  @Column(name = "actif")
+  private Boolean actif;
 
-    @Column(name = "code")
-    @NotNull
-    private String code;
+  @Column(name = "code")
+  @NotNull
+  private String code;
 
-    @Column(name = "nom")
-    @NotNull
-    private String nom;
+  @Column(name = "nom")
+  @NotNull
+  private String nom;
 }

@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlType(name = HydrantPena.CODE_NATURE_PU)
 public class HydrantPuisard extends HydrantPena {
-    public HydrantPuisard() {
-        super.setCodeNature(HydrantPena.CODE_NATURE_PU);
-    }
+  public HydrantPuisard() {
+    super.setCodeNature(HydrantPena.CODE_NATURE_PU);
+  }
 }

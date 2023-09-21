@@ -6,7 +6,10 @@ import fr.sdis83.remocra.web.serialize.transformer.DroitTransformer;
 
 public class AccessRightSerializer extends JSONSerializer {
 
-    public AccessRightSerializer() {
-        include("permissions").exclude("*.class").exclude("authority").transform(new DroitTransformer(), Droit.class);
-    }
+  public AccessRightSerializer() {
+    include("permissions")
+        .exclude("*.class")
+        .exclude("authority")
+        .transform(new DroitTransformer(), Droit.class);
+  }
 }

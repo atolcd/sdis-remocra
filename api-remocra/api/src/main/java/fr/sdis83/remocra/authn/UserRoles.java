@@ -1,7 +1,5 @@
 package fr.sdis83.remocra.authn;
 
-import org.jooq.EnumType;
-
 public enum UserRoles {
   RECEVOIR(RoleTypes.RECEVOIR),
   TRANSMETTRE(RoleTypes.TRANSMETTRE),

@@ -8,47 +8,47 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigValue;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.jooq.SQLDialect;
-
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+import javax.sql.DataSource;
+import org.jooq.SQLDialect;
 
 public class DatabaseModule extends AbstractModule {
 
-public static DatabaseModule create(Config config) throws IOException {
-        return new DatabaseModule(SQLDialect.valueOf(config.getString("sql-dialect").toUpperCase(Locale.US)),
-                                  toProperties(config.withoutPath("sql-dialect")));
-}
+  public static DatabaseModule create(Config config) throws IOException {
+    return new DatabaseModule(
+        SQLDialect.valueOf(config.getString("sql-dialect").toUpperCase(Locale.US)),
+        toProperties(config.withoutPath("sql-dialect")));
+  }
 
-private final SQLDialect sqlDialect;
-private final Properties properties = new Properties();
+  private final SQLDialect sqlDialect;
+  private final Properties properties = new Properties();
 
-public DatabaseModule(SQLDialect sqlDialect, Properties properties) {
-        this.sqlDialect = sqlDialect;
-        this.properties.putAll(properties);
-}
+  public DatabaseModule(SQLDialect sqlDialect, Properties properties) {
+    this.sqlDialect = sqlDialect;
+    this.properties.putAll(properties);
+  }
 
-@Override
-protected void configure() {
-        install(new JooqPersistModule());
-        bind(DataSource.class).to(HikariDataSource.class);
-        bind(SQLDialect.class).toInstance(this.sqlDialect);
-}
+  @Override
+  protected void configure() {
+    install(new JooqPersistModule());
+    bind(DataSource.class).to(HikariDataSource.class);
+    bind(SQLDialect.class).toInstance(this.sqlDialect);
+  }
 
-@Provides
-@Singleton
-HikariDataSource provideHikariDataSource() {
-        return new HikariDataSource(new HikariConfig(properties));
-}
+  @Provides
+  @Singleton
+  HikariDataSource provideHikariDataSource() {
+    return new HikariDataSource(new HikariConfig(properties));
+  }
 
-private static Properties toProperties(Config config) {
-        Properties properties = new Properties();
-        for (Map.Entry<String, ConfigValue> entry : config.entrySet()) {
-                properties.put(entry.getKey(), entry.getValue().unwrapped().toString());
-        }
-        return properties;
-}
+  private static Properties toProperties(Config config) {
+    Properties properties = new Properties();
+    for (Map.Entry<String, ConfigValue> entry : config.entrySet()) {
+      properties.put(entry.getKey(), entry.getValue().unwrapped().toString());
+    }
+    return properties;
+  }
 }
