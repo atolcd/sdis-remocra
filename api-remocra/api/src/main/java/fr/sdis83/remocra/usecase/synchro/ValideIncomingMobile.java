@@ -24,6 +24,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,6 +112,14 @@ public class ValideIncomingMobile {
     List<NewHydrant> listNewHydrant = incomingRepository.getIncomingNewHydrant();
 
     for (NewHydrant newHydrant : listNewHydrant) {
+      Optional<Gestionnaire> gestionnaireHydrant =
+          gestionnaires.stream()
+              .filter(it -> it.getIdGestionnaire() == newHydrant.getIdGestionnaire())
+              .findFirst();
+      Long idGestionnaire = null;
+      if (gestionnaireHydrant.isPresent()) {
+        idGestionnaire = gestionnaireHydrant.get().getIdGestionnaireRemocra();
+      }
       Hydrant hydrantTemp =
           new Hydrant(
               null,
@@ -126,7 +135,7 @@ public class ValideIncomingMobile {
               null,
               null,
               null,
-              newHydrant.getGeometrie(),
+              null,
               null,
               null,
               null,
@@ -149,11 +158,7 @@ public class ValideIncomingMobile {
               null,
               null,
               null,
-              gestionnaires.stream()
-                  .filter(it -> it.getIdGestionnaire() == newHydrant.getIdGestionnaire())
-                  .findFirst()
-                  .get()
-                  .getIdGestionnaireRemocra(),
+              idGestionnaire,
               null,
               null,
               null,
@@ -165,7 +170,7 @@ public class ValideIncomingMobile {
 
       numeroUtilRepository.setCodeZoneSpecAndNumeros(hydrantTemp, newHydrant.getCodeNewHydrant());
 
-      Long idHydrant = peiRepository.insertHydrant(hydrantTemp);
+      Long idHydrant = peiRepository.insertHydrant(hydrantTemp, newHydrant.getGeometrie());
 
       if (idHydrant == null) {
         logger.error("Impossible de créer le point d'eau " + newHydrant.getIdNewHydrant());

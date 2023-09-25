@@ -9,6 +9,8 @@ import static fr.sdis83.remocra.db.model.incoming.Tables.NEW_HYDRANT;
 import static fr.sdis83.remocra.db.model.incoming.Tables.TOURNEE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.VOIE;
+import static fr.sdis83.remocra.util.GlobalConstants.SRID_2154;
+import static fr.sdis83.remocra.util.GlobalConstants.SRID_4326;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
@@ -61,7 +63,11 @@ public class IncomingRepository {
                         DSL.field(
                             "st_transform(st_setsrid(ST_GeomFromText('"
                                 + geometrie.toText()
-                                + "'), 4326), 2154)"))
+                                + "'), "
+                                + SRID_4326
+                                + "), "
+                                + SRID_2154
+                                + ")"))
                 .set(NEW_HYDRANT.CODE_NEW_HYDRANT, code)
                 .set(NEW_HYDRANT.ID_COMMUNE, idCommune)
                 .set(NEW_HYDRANT.VOIE_NEW_HYDRANT, nomVoie)
@@ -86,7 +92,7 @@ public class IncomingRepository {
     Geometry geometry = null;
     try {
       geometry = fromText.read(wkt);
-      geometry.setSRID(2154);
+      geometry.setSRID(SRID_2154);
     } catch (ParseException e) {
       throw new RuntimeException("Not a WKT string:" + wkt);
     }
@@ -104,8 +110,13 @@ public class IncomingRepository {
         .select(COMMUNE.ID)
         .from(COMMUNE)
         .where(
-            "ST_CONTAINS({0}, st_transform(st_setsrid(ST_GeomFromText({1}), 4326), 2154))",
-            COMMUNE.GEOMETRIE, geometrie.toText())
+            "ST_CONTAINS({0}, st_transform(st_setsrid(ST_GeomFromText({1}), "
+                + SRID_4326
+                + "), "
+                + SRID_2154
+                + "))",
+            COMMUNE.GEOMETRIE,
+            geometrie.toText())
         .fetchOneInto(Long.class);
   }
 
@@ -114,8 +125,13 @@ public class IncomingRepository {
         .select(VOIE.NOM)
         .from(VOIE)
         .where(
-            "ST_CONTAINS({0}, st_transform(st_setsrid(ST_GeomFromText({1}), 4326), 2154))",
-            VOIE.GEOMETRIE, geometrie.toText())
+            "ST_CONTAINS({0}, st_transform(st_setsrid(ST_GeomFromText({1}), "
+                + SRID_4326
+                + "), "
+                + SRID_2154
+                + "))",
+            VOIE.GEOMETRIE,
+            geometrie.toText())
         .fetchOneInto(String.class);
   }
 

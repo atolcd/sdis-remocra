@@ -18,6 +18,7 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE_DECI
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NIVEAU;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_RESEAU_ALIMENTATION;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_RESEAU_CANALISATION;
+import static fr.sdis83.remocra.util.GlobalConstants.SRID_2154;
 import static fr.sdis83.remocra.util.GlobalConstants.TypeHydrant;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -497,7 +498,8 @@ public class PeiRepository {
     return context.fetchExists(context.selectFrom(HYDRANT).where(HYDRANT.ID.eq(idHydrant)));
   }
 
-  public Long insertHydrant(fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant h) {
+  public Long insertHydrant(
+      fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant h, Object geometry) {
     return context
         .insertInto(HYDRANT)
         .set(HYDRANT.NUMERO, h.getNumero())
@@ -509,7 +511,15 @@ public class PeiRepository {
         .set(HYDRANT.VOIE, h.getVoie())
         .set(HYDRANT.VOIE2, h.getVoie2())
         .set(HYDRANT.LIEU_DIT, h.getLieuDit())
-        .set(HYDRANT.GEOMETRIE, h.getGeometrie())
+        .set(
+            HYDRANT.GEOMETRIE,
+            (Object)
+                DSL.field(
+                    "ST_setsrid(ST_GeomFromText(st_asText('"
+                        + geometry
+                        + "')), "
+                        + SRID_2154
+                        + ")"))
         .set(HYDRANT.ORGANISME, h.getOrganisme())
         .set(HYDRANT.UTILISATEUR_MODIFICATION, h.getUtilisateurModification())
         .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, h.getAuteurModificationFlag())

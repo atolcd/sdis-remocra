@@ -88,4 +88,7 @@ public class GlobalConstants {
       return libelleTypeVisite;
     }
   }
+
+  public static final Integer SRID_2154 = 2154;
+  public static final Integer SRID_4326 = 4326;
 }
