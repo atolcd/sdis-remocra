@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.ws.rs.core.Response;
 
 public class TourneeUseCase {
   @Inject TourneeRepository tourneeRepository;
@@ -68,6 +69,16 @@ public class TourneeUseCase {
         List<TourneeModel> tourneesReservees, List<TourneeModel> tourneesNonReservees) {
       this.tourneesReservees = tourneesReservees;
       this.tourneesNonReservees = tourneesNonReservees;
+    }
+  }
+
+  public Response annuleReservation(Long idTournee, Long idUtilisateur) {
+    boolean estAnnulee = tourneeRepository.annuleReservation(idTournee, idUtilisateur);
+
+    if (estAnnulee) {
+      return Response.ok().entity("Annulation de la réservation de la tournée réussie").build();
+    } else {
+      return Response.serverError().entity("Impossible d'annuler la réservation").build();
     }
   }
 }

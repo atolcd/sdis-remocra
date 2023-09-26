@@ -127,4 +127,17 @@ public class TourneeRepository {
         .where(TOURNEE.ID.in(idsTournee))
         .execute();
   }
+
+  public boolean annuleReservation(Long idTournee, Long idUtilisateur) {
+    int res =
+        transactionManager.transactionResult(
+            () ->
+                context
+                    .update(TOURNEE)
+                    .set(TOURNEE.RESERVATION, DSL.val(null, SQLDataType.BIGINT))
+                    .where(TOURNEE.ID.eq(idTournee))
+                    .and(TOURNEE.RESERVATION.eq(idUtilisateur))
+                    .execute());
+    return res == 1;
+  }
 }

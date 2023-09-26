@@ -85,6 +85,18 @@ public class SynchroEndpoint {
   }
 
   @AuthDevice
+  @Path("/annulereservation")
+  @Operation(
+      summary = "Annule la réservation d'une tournée",
+      tags = {GlobalConstants.REMOCRA_MOBILE_TAG},
+      hidden = true)
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  @POST
+  public Response annuleReservationTournee(@FormParam("idTournee") @NotNull Long idTournee) {
+    return tourneeUseCase.annuleReservation(idTournee, currentUser.get().userId());
+  }
+
+  @AuthDevice
   @Path("/createhydrant")
   @Operation(
       summary = "Ajoute les hydrants créés dans incoming",
