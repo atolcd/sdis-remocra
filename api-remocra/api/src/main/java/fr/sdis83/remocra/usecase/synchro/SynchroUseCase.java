@@ -15,7 +15,6 @@ import fr.sdis83.remocra.web.model.mobilemodel.HydrantVisiteModel;
 import fr.sdis83.remocra.web.model.mobilemodel.TourneeModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactModel;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
@@ -392,8 +391,7 @@ public class SynchroUseCase {
       return "Impossible de trouver la tournée " + tourneeModel.idRemocra() + " dans REMOcRA.";
     }
 
-    if (!Objects.equals(
-        tourneeRepository.getReservation(tourneeModel.idRemocra()), idUtilisateur)) {
+    if (!tourneeRepository.getReservation(tourneeModel.idRemocra()).equals(idUtilisateur)) {
       return "L'utilisateur qui envoie la tournée "
           + tourneeModel.idRemocra()
           + " n'est pas celui qui l'a réservée.";

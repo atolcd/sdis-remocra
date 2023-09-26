@@ -72,12 +72,11 @@ public class ValideIncomingMobile {
 
   public void execute(Long currentUserId) throws IOException {
     // On s'occupe des gestionnaires avec leurs contacts en premier
-    List<Gestionnaire> gestionnaires = incomingRepository.getGestionnaires();
-    gestionGestionnaire(gestionnaires);
-    gestionContact(gestionnaires);
+    gestionGestionnaire();
+    gestionContact();
 
     // On continue par insérer les hydrants qui peuvent utiliser les gestionnaires
-    gestionHydrant(currentUserId, gestionnaires);
+    gestionHydrant(currentUserId);
 
     // Pour toutes les tournées
     List<Tournee> tournees = incomingRepository.getTournees();
@@ -107,7 +106,9 @@ public class ValideIncomingMobile {
     incomingRepository.deleteTournee();
   }
 
-  private void gestionHydrant(Long currentUserId, List<Gestionnaire> gestionnaires) {
+  private void gestionHydrant(Long currentUserId) {
+    List<Gestionnaire> gestionnaires = incomingRepository.getGestionnaires();
+
     // On intègre en premier les nouveaux hydrants
     List<NewHydrant> listNewHydrant = incomingRepository.getIncomingNewHydrant();
 
@@ -205,8 +206,8 @@ public class ValideIncomingMobile {
     }
   }
 
-  private void gestionGestionnaire(List<Gestionnaire> gestionnaires) {
-
+  private void gestionGestionnaire() {
+    List<Gestionnaire> gestionnaires = incomingRepository.getGestionnaires();
     for (Gestionnaire gestionnaire : gestionnaires) {
       if (gestionnaire.getIdGestionnaireRemocra() == null) {
         // C'est une création
@@ -246,7 +247,8 @@ public class ValideIncomingMobile {
     }
   }
 
-  private void gestionContact(List<Gestionnaire> gestionnaires) {
+  private void gestionContact() {
+    List<Gestionnaire> gestionnaires = incomingRepository.getGestionnaires();
     List<Contact> contacts = incomingRepository.getContacts();
     List<ContactRole> contactWithRoles = incomingRepository.getContactsRoles();
 
