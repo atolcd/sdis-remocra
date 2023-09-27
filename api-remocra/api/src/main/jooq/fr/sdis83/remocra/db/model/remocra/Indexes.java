@@ -78,6 +78,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteSuite;
 import fr.sdis83.remocra.db.model.remocra.tables.Organisme;
 import fr.sdis83.remocra.db.model.remocra.tables.ParamConf;
+import fr.sdis83.remocra.db.model.remocra.tables.Parametre;
 import fr.sdis83.remocra.db.model.remocra.tables.Permis;
 import fr.sdis83.remocra.db.model.remocra.tables.PermisDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtl;
@@ -390,6 +391,7 @@ public class Indexes {
     public static final Index ORGANISME_TYPE_ORGANISME_IDX = Indexes0.ORGANISME_TYPE_ORGANISME_IDX;
     public static final Index ORGANISME_ZONE_COMPETENCE_IDX = Indexes0.ORGANISME_ZONE_COMPETENCE_IDX;
     public static final Index PARAM_CONF_PKEY = Indexes0.PARAM_CONF_PKEY;
+    public static final Index PK_PARAMETRE = Indexes0.PK_PARAMETRE;
     public static final Index PERMIS_AVIS_IDX = Indexes0.PERMIS_AVIS_IDX;
     public static final Index PERMIS_COMMUNE_IDX = Indexes0.PERMIS_COMMUNE_IDX;
     public static final Index PERMIS_GEOMETRIE_IDX = Indexes0.PERMIS_GEOMETRIE_IDX;
@@ -779,6 +781,7 @@ public class Indexes {
         public static Index ORGANISME_TYPE_ORGANISME_IDX = Internal.createIndex("organisme_type_organisme_idx", Organisme.ORGANISME, new OrderField[] { Organisme.ORGANISME.TYPE_ORGANISME }, false);
         public static Index ORGANISME_ZONE_COMPETENCE_IDX = Internal.createIndex("organisme_zone_competence_idx", Organisme.ORGANISME, new OrderField[] { Organisme.ORGANISME.ZONE_COMPETENCE }, false);
         public static Index PARAM_CONF_PKEY = Internal.createIndex("param_conf_pkey", ParamConf.PARAM_CONF, new OrderField[] { ParamConf.PARAM_CONF.CLE }, true);
+        public static Index PK_PARAMETRE = Internal.createIndex("pk_parametre", Parametre.PARAMETRE, new OrderField[] { Parametre.PARAMETRE.CLE_PARAMETRE }, true);
         public static Index PERMIS_AVIS_IDX = Internal.createIndex("permis_avis_idx", Permis.PERMIS, new OrderField[] { Permis.PERMIS.AVIS }, false);
         public static Index PERMIS_COMMUNE_IDX = Internal.createIndex("permis_commune_idx", Permis.PERMIS, new OrderField[] { Permis.PERMIS.COMMUNE }, false);
         public static Index PERMIS_GEOMETRIE_IDX = Internal.createIndex("permis_geometrie_idx", Permis.PERMIS, new OrderField[] { Permis.PERMIS.GEOMETRIE }, false);

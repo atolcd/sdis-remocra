@@ -80,6 +80,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteSuite;
 import fr.sdis83.remocra.db.model.remocra.tables.Organisme;
 import fr.sdis83.remocra.db.model.remocra.tables.ParamConf;
+import fr.sdis83.remocra.db.model.remocra.tables.Parametre;
 import fr.sdis83.remocra.db.model.remocra.tables.Permis;
 import fr.sdis83.remocra.db.model.remocra.tables.PermisDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtl;
@@ -444,6 +445,7 @@ public class Keys {
 	public static final UniqueKey<Record> ORGANISME_PKEY = UniqueKeys0.ORGANISME_PKEY;
 	public static final UniqueKey<Record> ORGANISME_CODE_KEY = UniqueKeys0.ORGANISME_CODE_KEY;
 	public static final UniqueKey<Record> PARAM_CONF_PKEY = UniqueKeys0.PARAM_CONF_PKEY;
+	public static final UniqueKey<Record> PK_PARAMETRE = UniqueKeys0.PK_PARAMETRE;
 	public static final UniqueKey<Record> PERMIS_PKEY = UniqueKeys0.PERMIS_PKEY;
 	public static final UniqueKey<Record> PERMIS_DOCUMENT_PKEY = UniqueKeys0.PERMIS_DOCUMENT_PKEY;
 	public static final UniqueKey<Record> PROCESSUS_ETL_PKEY = UniqueKeys0.PROCESSUS_ETL_PKEY;
@@ -1033,6 +1035,7 @@ public class Keys {
 		public static final UniqueKey<Record> ORGANISME_PKEY = createUniqueKey(Organisme.ORGANISME, Organisme.ORGANISME.ID);
 		public static final UniqueKey<Record> ORGANISME_CODE_KEY = createUniqueKey(Organisme.ORGANISME, Organisme.ORGANISME.CODE);
 		public static final UniqueKey<Record> PARAM_CONF_PKEY = createUniqueKey(ParamConf.PARAM_CONF, ParamConf.PARAM_CONF.CLE);
+		public static final UniqueKey<Record> PK_PARAMETRE = createUniqueKey(Parametre.PARAMETRE, Parametre.PARAMETRE.CLE_PARAMETRE);
 		public static final UniqueKey<Record> PERMIS_PKEY = createUniqueKey(Permis.PERMIS, Permis.PERMIS.ID);
 		public static final UniqueKey<Record> PERMIS_DOCUMENT_PKEY = createUniqueKey(PermisDocument.PERMIS_DOCUMENT, PermisDocument.PERMIS_DOCUMENT.ID);
 		public static final UniqueKey<Record> PROCESSUS_ETL_PKEY = createUniqueKey(ProcessusEtl.PROCESSUS_ETL, ProcessusEtl.PROCESSUS_ETL.ID);

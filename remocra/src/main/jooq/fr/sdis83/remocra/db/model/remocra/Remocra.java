@@ -81,6 +81,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteSuite;
 import fr.sdis83.remocra.db.model.remocra.tables.Organisme;
 import fr.sdis83.remocra.db.model.remocra.tables.ParamConf;
+import fr.sdis83.remocra.db.model.remocra.tables.Parametre;
 import fr.sdis83.remocra.db.model.remocra.tables.Permis;
 import fr.sdis83.remocra.db.model.remocra.tables.PermisDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtl;
@@ -200,7 +201,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Remocra extends SchemaImpl {
 
-	private static final long serialVersionUID = 1807504047;
+	private static final long serialVersionUID = -2144647167;
 
 	/**
 	 * The reference instance of <code>remocra</code>
@@ -455,6 +456,7 @@ public class Remocra extends SchemaImpl {
 			OldebVisiteSuite.OLDEB_VISITE_SUITE,
 			Organisme.ORGANISME,
 			ParamConf.PARAM_CONF,
+			Parametre.PARAMETRE,
 			Permis.PERMIS,
 			PermisDocument.PERMIS_DOCUMENT,
 			ProcessusEtl.PROCESSUS_ETL,

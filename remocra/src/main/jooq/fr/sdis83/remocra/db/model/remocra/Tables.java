@@ -80,6 +80,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.OldebVisiteSuite;
 import fr.sdis83.remocra.db.model.remocra.tables.Organisme;
 import fr.sdis83.remocra.db.model.remocra.tables.ParamConf;
+import fr.sdis83.remocra.db.model.remocra.tables.Parametre;
 import fr.sdis83.remocra.db.model.remocra.tables.Permis;
 import fr.sdis83.remocra.db.model.remocra.tables.PermisDocument;
 import fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtl;
@@ -570,6 +571,11 @@ public class Tables {
 	 * The table remocra.param_conf
 	 */
 	public static final ParamConf PARAM_CONF = fr.sdis83.remocra.db.model.remocra.tables.ParamConf.PARAM_CONF;
+
+	/**
+	 * The table remocra.parametre
+	 */
+	public static final Parametre PARAMETRE = fr.sdis83.remocra.db.model.remocra.tables.Parametre.PARAMETRE;
 
 	/**
 	 * The table remocra.permis
