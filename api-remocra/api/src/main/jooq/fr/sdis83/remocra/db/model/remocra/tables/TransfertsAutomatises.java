@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TransfertsAutomatises extends TableImpl<Record> {
 
-    private static final long serialVersionUID = 892451985;
+    private static final long serialVersionUID = 112593698;
 
     /**
      * The reference instance of <code>remocra.transferts_automatises</code>

@@ -22,7 +22,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TransfertsAutomatises implements Serializable {
 
-    private static final long serialVersionUID = 1965048393;
+    private static final long serialVersionUID = 1117555463;
 
     private Integer id;
     private Long    typeOrganisme;
