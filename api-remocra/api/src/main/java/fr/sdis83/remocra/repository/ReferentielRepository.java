@@ -23,6 +23,7 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE_DECI
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_SAISIE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
 
+import fr.sdis83.remocra.util.GlobalConstants;
 import fr.sdis83.remocra.web.model.authn.ParamConfModel;
 import fr.sdis83.remocra.web.model.mobilemodel.TypeDroitModel;
 import fr.sdis83.remocra.web.model.referentiel.CommuneModel;
@@ -280,6 +281,7 @@ public class ReferentielRepository {
             TYPE_HYDRANT_SAISIE.NOM,
             TYPE_HYDRANT_SAISIE.ACTIF)
         .from(TYPE_HYDRANT_SAISIE)
+        .where(TYPE_HYDRANT_SAISIE.CODE.ne(GlobalConstants.TypeVisite.LECTURE.getCode()))
         .fetchInto(TypeHydrantSaisieModel.class);
   }
 

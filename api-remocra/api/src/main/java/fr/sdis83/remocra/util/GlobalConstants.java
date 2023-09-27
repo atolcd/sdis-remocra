@@ -66,6 +66,7 @@ public class GlobalConstants {
    * </ul>
    */
   public enum TypeVisite {
+    LECTURE("LECT", "Lecture"),
     CREATION("CREA", "Création"),
     RECEPTION("RECEP", "Réception"),
     RECONNAISSANCE("RECO", "Reconnaissance"),
