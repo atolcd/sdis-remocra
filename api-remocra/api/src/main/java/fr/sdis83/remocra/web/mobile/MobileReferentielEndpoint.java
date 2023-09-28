@@ -3,7 +3,9 @@ package fr.sdis83.remocra.web.mobile;
 import fr.sdis83.remocra.authn.AuthDevice;
 import fr.sdis83.remocra.authn.CurrentUser;
 import fr.sdis83.remocra.authn.UserInfo;
+import fr.sdis83.remocra.repository.ParametreRepository;
 import fr.sdis83.remocra.repository.ReferentielRepository;
+import fr.sdis83.remocra.repository.UtilisateursRepository;
 import fr.sdis83.remocra.util.GlobalConstants;
 import fr.sdis83.remocra.web.model.authn.ParamConfModel;
 import fr.sdis83.remocra.web.model.mobilemodel.TypeDroitModel;
@@ -39,6 +41,8 @@ import javax.ws.rs.core.Response;
 public class MobileReferentielEndpoint {
 
   @Inject ReferentielRepository referentielRepository;
+  @Inject UtilisateursRepository utilisateursRepository;
+  @Inject ParametreRepository parametreRepository;
 
   @Inject @CurrentUser Provider<UserInfo> currentUser;
 
@@ -50,6 +54,7 @@ public class MobileReferentielEndpoint {
       hidden = true)
   @AuthDevice
   public Response getReferentiel() {
+    Long idUtilisateur = currentUser.get().userId();
     return Response.ok(
             new ReferentielResponse(
                 referentielRepository.getCommuneList(),
@@ -68,7 +73,11 @@ public class MobileReferentielEndpoint {
                 referentielRepository.getTypeHydrantCritereList(),
                 referentielRepository.getTypeHydrantSaisieList(),
                 referentielRepository.getParamConfMobileList(),
-                referentielRepository.getTypeDroitMobileList(currentUser.get().userId())))
+                referentielRepository.getTypeDroitMobileList(idUtilisateur),
+                parametreRepository
+                    .getParametre(GlobalConstants.GESTION_AGENT)
+                    .getValeurParametre(),
+                utilisateursRepository.getNomPrenom(idUtilisateur)))
         .build();
   }
 
@@ -89,8 +98,11 @@ public class MobileReferentielEndpoint {
     public final List<TypeHydrantCritereModel> typesHydrantCritere;
     public final List<TypeHydrantSaisieModel> typesHydrantSaisie;
     public final List<ParamConfModel> paramsConf;
-
     public final List<TypeDroitModel> typesDroit;
+
+    // Renvoie la méthode de gestion des Agents
+    public final String gestionAgents;
+    public final String utilisateurConnecte;
 
     public ReferentielResponse(
         List<CommuneModel> communes,
@@ -109,7 +121,9 @@ public class MobileReferentielEndpoint {
         List<TypeHydrantCritereModel> typesHydrantCritere,
         List<TypeHydrantSaisieModel> typesHydrantSaisie,
         List<ParamConfModel> paramsConf,
-        List<TypeDroitModel> typesDroit) {
+        List<TypeDroitModel> typesDroit,
+        String gestionAgents,
+        String utilisateurConnecte) {
       this.communes = communes;
       this.hydrants = hydrants;
       this.hydrantsAnomalies = hydrantsAnomalies;
@@ -127,6 +141,8 @@ public class MobileReferentielEndpoint {
       this.typesHydrantSaisie = typesHydrantSaisie;
       this.paramsConf = paramsConf;
       this.typesDroit = typesDroit;
+      this.gestionAgents = gestionAgents;
+      this.utilisateurConnecte = utilisateurConnecte;
     }
   }
 }

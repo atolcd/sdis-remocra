@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
+import org.jooq.impl.DSL;
 
 public class UtilisateursRepository {
 
@@ -52,5 +53,18 @@ public class UtilisateursRepository {
         .from(UTILISATEUR)
         .where(UTILISATEUR.ID.eq(idUtilisateur))
         .fetchOneInto(Long.class);
+  }
+
+  /**
+   * Retourne le nom et prénom de l'utilisateur
+   *
+   * @param idUtilisateur : id de l'utilisateur
+   */
+  public String getNomPrenom(Long idUtilisateur) {
+    return context
+        .select(DSL.concat(UTILISATEUR.NOM, DSL.val(" "), UTILISATEUR.PRENOM))
+        .from(UTILISATEUR)
+        .where(UTILISATEUR.ID.eq(idUtilisateur))
+        .fetchOneInto(String.class);
   }
 }

@@ -106,4 +106,7 @@ public class GlobalConstants {
       return typeDocument;
     }
   }
+
+  /** Clé de la table "Parametre" pour la gestion des agents dans l'application mobile */
+  public static final String GESTION_AGENT = "GESTION_AGENT";
 }
