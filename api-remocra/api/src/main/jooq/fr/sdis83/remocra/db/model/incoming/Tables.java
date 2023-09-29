@@ -7,6 +7,7 @@ package fr.sdis83.remocra.db.model.incoming;
 import fr.sdis83.remocra.db.model.incoming.tables.Contact;
 import fr.sdis83.remocra.db.model.incoming.tables.ContactRole;
 import fr.sdis83.remocra.db.model.incoming.tables.Gestionnaire;
+import fr.sdis83.remocra.db.model.incoming.tables.HydrantPhoto;
 import fr.sdis83.remocra.db.model.incoming.tables.HydrantVisite;
 import fr.sdis83.remocra.db.model.incoming.tables.HydrantVisiteAnomalie;
 import fr.sdis83.remocra.db.model.incoming.tables.NewHydrant;
@@ -42,6 +43,11 @@ public class Tables {
      * The table <code>incoming.gestionnaire</code>.
      */
     public static final Gestionnaire GESTIONNAIRE = fr.sdis83.remocra.db.model.incoming.tables.Gestionnaire.GESTIONNAIRE;
+
+    /**
+     * The table <code>incoming.hydrant_photo</code>.
+     */
+    public static final HydrantPhoto HYDRANT_PHOTO = fr.sdis83.remocra.db.model.incoming.tables.HydrantPhoto.HYDRANT_PHOTO;
 
     /**
      * The table <code>incoming.hydrant_visite</code>.

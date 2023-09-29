@@ -7,6 +7,7 @@ package fr.sdis83.remocra.db.model.incoming;
 import fr.sdis83.remocra.db.model.incoming.tables.Contact;
 import fr.sdis83.remocra.db.model.incoming.tables.ContactRole;
 import fr.sdis83.remocra.db.model.incoming.tables.Gestionnaire;
+import fr.sdis83.remocra.db.model.incoming.tables.HydrantPhoto;
 import fr.sdis83.remocra.db.model.incoming.tables.HydrantVisite;
 import fr.sdis83.remocra.db.model.incoming.tables.HydrantVisiteAnomalie;
 import fr.sdis83.remocra.db.model.incoming.tables.NewHydrant;
@@ -46,6 +47,7 @@ public class Keys {
     public static final UniqueKey<Record> CONTACT_PKEY = UniqueKeys0.CONTACT_PKEY;
     public static final UniqueKey<Record> CONTACT_ROLE_PKEY = UniqueKeys0.CONTACT_ROLE_PKEY;
     public static final UniqueKey<Record> GESTIONNAIRE_PKEY = UniqueKeys0.GESTIONNAIRE_PKEY;
+    public static final UniqueKey<Record> HYDRANT_PHOTO_PKEY = UniqueKeys0.HYDRANT_PHOTO_PKEY;
     public static final UniqueKey<Record> HYDRANT_VISITE_PKEY = UniqueKeys0.HYDRANT_VISITE_PKEY;
     public static final UniqueKey<Record> HYDRANT_ANOMALIE_PKEY = UniqueKeys0.HYDRANT_ANOMALIE_PKEY;
     public static final UniqueKey<Record> NEW_HYDRANT_PKEY = UniqueKeys0.NEW_HYDRANT_PKEY;
@@ -58,6 +60,7 @@ public class Keys {
     public static final ForeignKey<Record, Record> CONTACT__CONTACT_ID_GESTIONNAIRE_FKEY = ForeignKeys0.CONTACT__CONTACT_ID_GESTIONNAIRE_FKEY;
     public static final ForeignKey<Record, Record> CONTACT_ROLE__CONTACT_ROLE_ID_ROLE_FKEY = ForeignKeys0.CONTACT_ROLE__CONTACT_ROLE_ID_ROLE_FKEY;
     public static final ForeignKey<Record, Record> CONTACT_ROLE__CONTACT_ROLE_ID_CONTACT_FKEY = ForeignKeys0.CONTACT_ROLE__CONTACT_ROLE_ID_CONTACT_FKEY;
+    public static final ForeignKey<Record, Record> HYDRANT_PHOTO__HYDRANT_PHOTO_ID_HYDRANT_HYDRANT_PHOTO_FKEY = ForeignKeys0.HYDRANT_PHOTO__HYDRANT_PHOTO_ID_HYDRANT_HYDRANT_PHOTO_FKEY;
     public static final ForeignKey<Record, Record> HYDRANT_VISITE__HYDRANT_VISITE_ID_HYDRANT_FKEY = ForeignKeys0.HYDRANT_VISITE__HYDRANT_VISITE_ID_HYDRANT_FKEY;
     public static final ForeignKey<Record, Record> HYDRANT_VISITE__HYDRANT_VISITE_ID_TYPE_HYDRANT_SAISIE_FKEY = ForeignKeys0.HYDRANT_VISITE__HYDRANT_VISITE_ID_TYPE_HYDRANT_SAISIE_FKEY;
     public static final ForeignKey<Record, Record> HYDRANT_VISITE_ANOMALIE__HYDRANT_VISITE_ANOMALIE_ID_HYDRANT_VISITE_FKEY = ForeignKeys0.HYDRANT_VISITE_ANOMALIE__HYDRANT_VISITE_ANOMALIE_ID_HYDRANT_VISITE_FKEY;
@@ -74,6 +77,7 @@ public class Keys {
         public static final UniqueKey<Record> CONTACT_PKEY = Internal.createUniqueKey(Contact.CONTACT, "contact_pkey", Contact.CONTACT.ID_CONTACT);
         public static final UniqueKey<Record> CONTACT_ROLE_PKEY = Internal.createUniqueKey(ContactRole.CONTACT_ROLE, "contact_role_pkey", ContactRole.CONTACT_ROLE.ID_ROLE, ContactRole.CONTACT_ROLE.ID_CONTACT);
         public static final UniqueKey<Record> GESTIONNAIRE_PKEY = Internal.createUniqueKey(Gestionnaire.GESTIONNAIRE, "gestionnaire_pkey", Gestionnaire.GESTIONNAIRE.ID_GESTIONNAIRE);
+        public static final UniqueKey<Record> HYDRANT_PHOTO_PKEY = Internal.createUniqueKey(HydrantPhoto.HYDRANT_PHOTO, "hydrant_photo_pkey", HydrantPhoto.HYDRANT_PHOTO.ID_HYDRANT_PHOTO);
         public static final UniqueKey<Record> HYDRANT_VISITE_PKEY = Internal.createUniqueKey(HydrantVisite.HYDRANT_VISITE, "hydrant_visite_pkey", HydrantVisite.HYDRANT_VISITE.ID_HYDRANT_VISITE);
         public static final UniqueKey<Record> HYDRANT_ANOMALIE_PKEY = Internal.createUniqueKey(HydrantVisiteAnomalie.HYDRANT_VISITE_ANOMALIE, "hydrant_anomalie_pkey", HydrantVisiteAnomalie.HYDRANT_VISITE_ANOMALIE.ID_HYDRANT_VISITE, HydrantVisiteAnomalie.HYDRANT_VISITE_ANOMALIE.ID_ANOMALIE);
         public static final UniqueKey<Record> NEW_HYDRANT_PKEY = Internal.createUniqueKey(NewHydrant.NEW_HYDRANT, "new_hydrant_pkey", NewHydrant.NEW_HYDRANT.ID_NEW_HYDRANT);
@@ -84,6 +88,7 @@ public class Keys {
         public static final ForeignKey<Record, Record> CONTACT__CONTACT_ID_GESTIONNAIRE_FKEY = Internal.createForeignKey(fr.sdis83.remocra.db.model.incoming.Keys.GESTIONNAIRE_PKEY, Contact.CONTACT, "contact__contact_id_gestionnaire_fkey", Contact.CONTACT.ID_GESTIONNAIRE);
         public static final ForeignKey<Record, Record> CONTACT_ROLE__CONTACT_ROLE_ID_ROLE_FKEY = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ROLE_PKEY, ContactRole.CONTACT_ROLE, "contact_role__contact_role_id_role_fkey", ContactRole.CONTACT_ROLE.ID_ROLE);
         public static final ForeignKey<Record, Record> CONTACT_ROLE__CONTACT_ROLE_ID_CONTACT_FKEY = Internal.createForeignKey(fr.sdis83.remocra.db.model.incoming.Keys.CONTACT_PKEY, ContactRole.CONTACT_ROLE, "contact_role__contact_role_id_contact_fkey", ContactRole.CONTACT_ROLE.ID_CONTACT);
+        public static final ForeignKey<Record, Record> HYDRANT_PHOTO__HYDRANT_PHOTO_ID_HYDRANT_HYDRANT_PHOTO_FKEY = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.HYDRANT_PKEY, HydrantPhoto.HYDRANT_PHOTO, "hydrant_photo__hydrant_photo_id_hydrant_hydrant_photo_fkey", HydrantPhoto.HYDRANT_PHOTO.ID_HYDRANT_HYDRANT_PHOTO);
         public static final ForeignKey<Record, Record> HYDRANT_VISITE__HYDRANT_VISITE_ID_HYDRANT_FKEY = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.HYDRANT_PKEY, HydrantVisite.HYDRANT_VISITE, "hydrant_visite__hydrant_visite_id_hydrant_fkey", HydrantVisite.HYDRANT_VISITE.ID_HYDRANT);
         public static final ForeignKey<Record, Record> HYDRANT_VISITE__HYDRANT_VISITE_ID_TYPE_HYDRANT_SAISIE_FKEY = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_SAISIE_PKEY, HydrantVisite.HYDRANT_VISITE, "hydrant_visite__hydrant_visite_id_type_hydrant_saisie_fkey", HydrantVisite.HYDRANT_VISITE.ID_TYPE_HYDRANT_SAISIE);
         public static final ForeignKey<Record, Record> HYDRANT_VISITE_ANOMALIE__HYDRANT_VISITE_ANOMALIE_ID_HYDRANT_VISITE_FKEY = Internal.createForeignKey(fr.sdis83.remocra.db.model.incoming.Keys.HYDRANT_VISITE_PKEY, HydrantVisiteAnomalie.HYDRANT_VISITE_ANOMALIE, "hydrant_visite_anomalie__hydrant_visite_anomalie_id_hydrant_visite_fkey", HydrantVisiteAnomalie.HYDRANT_VISITE_ANOMALIE.ID_HYDRANT_VISITE);

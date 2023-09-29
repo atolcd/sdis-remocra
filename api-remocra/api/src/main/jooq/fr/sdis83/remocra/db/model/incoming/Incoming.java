@@ -8,6 +8,7 @@ import fr.sdis83.remocra.db.model.DefaultCatalog;
 import fr.sdis83.remocra.db.model.incoming.tables.Contact;
 import fr.sdis83.remocra.db.model.incoming.tables.ContactRole;
 import fr.sdis83.remocra.db.model.incoming.tables.Gestionnaire;
+import fr.sdis83.remocra.db.model.incoming.tables.HydrantPhoto;
 import fr.sdis83.remocra.db.model.incoming.tables.HydrantVisite;
 import fr.sdis83.remocra.db.model.incoming.tables.HydrantVisiteAnomalie;
 import fr.sdis83.remocra.db.model.incoming.tables.NewHydrant;
@@ -37,7 +38,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Incoming extends SchemaImpl {
 
-    private static final long serialVersionUID = 1121155335;
+    private static final long serialVersionUID = 134105400;
 
     /**
      * The reference instance of <code>incoming</code>
@@ -58,6 +59,11 @@ public class Incoming extends SchemaImpl {
      * The table <code>incoming.gestionnaire</code>.
      */
     public final Gestionnaire GESTIONNAIRE = fr.sdis83.remocra.db.model.incoming.tables.Gestionnaire.GESTIONNAIRE;
+
+    /**
+     * The table <code>incoming.hydrant_photo</code>.
+     */
+    public final HydrantPhoto HYDRANT_PHOTO = fr.sdis83.remocra.db.model.incoming.tables.HydrantPhoto.HYDRANT_PHOTO;
 
     /**
      * The table <code>incoming.hydrant_visite</code>.
@@ -107,6 +113,7 @@ public class Incoming extends SchemaImpl {
             Contact.CONTACT,
             ContactRole.CONTACT_ROLE,
             Gestionnaire.GESTIONNAIRE,
+            HydrantPhoto.HYDRANT_PHOTO,
             HydrantVisite.HYDRANT_VISITE,
             HydrantVisiteAnomalie.HYDRANT_VISITE_ANOMALIE,
             NewHydrant.NEW_HYDRANT,

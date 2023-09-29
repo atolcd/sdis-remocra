@@ -7,6 +7,7 @@ package fr.sdis83.remocra.db.model.incoming;
 import fr.sdis83.remocra.db.model.incoming.tables.Contact;
 import fr.sdis83.remocra.db.model.incoming.tables.ContactRole;
 import fr.sdis83.remocra.db.model.incoming.tables.Gestionnaire;
+import fr.sdis83.remocra.db.model.incoming.tables.HydrantPhoto;
 import fr.sdis83.remocra.db.model.incoming.tables.HydrantVisite;
 import fr.sdis83.remocra.db.model.incoming.tables.HydrantVisiteAnomalie;
 import fr.sdis83.remocra.db.model.incoming.tables.NewHydrant;
@@ -39,6 +40,7 @@ public class Indexes {
     public static final Index CONTACT_PKEY = Indexes0.CONTACT_PKEY;
     public static final Index CONTACT_ROLE_PKEY = Indexes0.CONTACT_ROLE_PKEY;
     public static final Index GESTIONNAIRE_PKEY = Indexes0.GESTIONNAIRE_PKEY;
+    public static final Index HYDRANT_PHOTO_PKEY = Indexes0.HYDRANT_PHOTO_PKEY;
     public static final Index HYDRANT_VISITE_PKEY = Indexes0.HYDRANT_VISITE_PKEY;
     public static final Index HYDRANT_ANOMALIE_PKEY = Indexes0.HYDRANT_ANOMALIE_PKEY;
     public static final Index NEW_HYDRANT_PKEY = Indexes0.NEW_HYDRANT_PKEY;
@@ -52,6 +54,7 @@ public class Indexes {
         public static Index CONTACT_PKEY = Internal.createIndex("contact_pkey", Contact.CONTACT, new OrderField[] { Contact.CONTACT.ID_CONTACT }, true);
         public static Index CONTACT_ROLE_PKEY = Internal.createIndex("contact_role_pkey", ContactRole.CONTACT_ROLE, new OrderField[] { ContactRole.CONTACT_ROLE.ID_ROLE, ContactRole.CONTACT_ROLE.ID_CONTACT }, true);
         public static Index GESTIONNAIRE_PKEY = Internal.createIndex("gestionnaire_pkey", Gestionnaire.GESTIONNAIRE, new OrderField[] { Gestionnaire.GESTIONNAIRE.ID_GESTIONNAIRE }, true);
+        public static Index HYDRANT_PHOTO_PKEY = Internal.createIndex("hydrant_photo_pkey", HydrantPhoto.HYDRANT_PHOTO, new OrderField[] { HydrantPhoto.HYDRANT_PHOTO.ID_HYDRANT_PHOTO }, true);
         public static Index HYDRANT_VISITE_PKEY = Internal.createIndex("hydrant_visite_pkey", HydrantVisite.HYDRANT_VISITE, new OrderField[] { HydrantVisite.HYDRANT_VISITE.ID_HYDRANT_VISITE }, true);
         public static Index HYDRANT_ANOMALIE_PKEY = Internal.createIndex("hydrant_anomalie_pkey", HydrantVisiteAnomalie.HYDRANT_VISITE_ANOMALIE, new OrderField[] { HydrantVisiteAnomalie.HYDRANT_VISITE_ANOMALIE.ID_HYDRANT_VISITE, HydrantVisiteAnomalie.HYDRANT_VISITE_ANOMALIE.ID_ANOMALIE }, true);
         public static Index NEW_HYDRANT_PKEY = Internal.createIndex("new_hydrant_pkey", NewHydrant.NEW_HYDRANT, new OrderField[] { NewHydrant.NEW_HYDRANT.ID_NEW_HYDRANT }, true);
