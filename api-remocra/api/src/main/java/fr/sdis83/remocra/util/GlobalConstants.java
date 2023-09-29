@@ -91,4 +91,19 @@ public class GlobalConstants {
 
   public static final Integer SRID_2154 = 2154;
   public static final Integer SRID_4326 = 4326;
+
+  public static final String DOSSIER_DOC_HYDRANT = "DOSSIER_DOC_HYDRANT";
+
+  public enum TypeDocument {
+    TYPE_DOCUMENT_HYDRANT("HYDRANT");
+    private final String typeDocument;
+
+    TypeDocument(String typeDocument) {
+      this.typeDocument = typeDocument;
+    }
+
+    public String getTypeDocument() {
+      return typeDocument;
+    }
+  }
 }

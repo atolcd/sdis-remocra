@@ -3,6 +3,7 @@ package fr.sdis83.remocra.repository;
 import static fr.sdis83.remocra.db.model.incoming.Tables.CONTACT;
 import static fr.sdis83.remocra.db.model.incoming.Tables.CONTACT_ROLE;
 import static fr.sdis83.remocra.db.model.incoming.Tables.GESTIONNAIRE;
+import static fr.sdis83.remocra.db.model.incoming.Tables.HYDRANT_PHOTO;
 import static fr.sdis83.remocra.db.model.incoming.Tables.HYDRANT_VISITE;
 import static fr.sdis83.remocra.db.model.incoming.Tables.HYDRANT_VISITE_ANOMALIE;
 import static fr.sdis83.remocra.db.model.incoming.Tables.NEW_HYDRANT;
@@ -18,6 +19,7 @@ import com.vividsolutions.jts.io.WKTReader;
 import fr.sdis83.remocra.db.model.incoming.tables.pojos.Contact;
 import fr.sdis83.remocra.db.model.incoming.tables.pojos.ContactRole;
 import fr.sdis83.remocra.db.model.incoming.tables.pojos.Gestionnaire;
+import fr.sdis83.remocra.db.model.incoming.tables.pojos.HydrantPhoto;
 import fr.sdis83.remocra.db.model.incoming.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.db.model.incoming.tables.pojos.HydrantVisiteAnomalie;
 import fr.sdis83.remocra.db.model.incoming.tables.pojos.NewHydrant;
@@ -25,6 +27,7 @@ import fr.sdis83.remocra.db.model.incoming.tables.pojos.Tournee;
 import fr.sdis83.remocra.web.model.mobilemodel.HydrantVisiteModel;
 import fr.sdis83.remocra.web.model.mobilemodel.TourneeModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactModel;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import javax.inject.Inject;
@@ -204,7 +207,7 @@ public class IncomingRepository {
                 .set(HYDRANT_VISITE.AGENT1_HYDRANT_VISITE, hydrantVisiteModel.agent1())
                 .set(HYDRANT_VISITE.AGENT2_HYDRANT_VISITE, hydrantVisiteModel.agent2())
                 .set(HYDRANT_VISITE.CTRL_DEBIT_PRESSION, hydrantVisiteModel.ctrDebitPression())
-                .set(HYDRANT_VISITE.DATE_HYDRANT_VISITE, hydrantVisiteModel.date().toInstant())
+                .set(HYDRANT_VISITE.DATE_HYDRANT_VISITE, hydrantVisiteModel.date())
                 .set(HYDRANT_VISITE.DEBIT_HYDRANT_VISITE, hydrantVisiteModel.debit())
                 .set(HYDRANT_VISITE.PRESSION_HYDRANT_VISITE, hydrantVisiteModel.pression())
                 .set(HYDRANT_VISITE.PRESSION_DYN_HYDRANT_VISITE, hydrantVisiteModel.pressionDyn())
@@ -284,6 +287,32 @@ public class IncomingRepository {
         .execute();
   }
 
+  public int insertHydrantPhoto(Long idHydrant, String path, Instant moment, String nomPhoto) {
+    return transactionManager.transactionResult(
+        () ->
+            context
+                .insertInto(HYDRANT_PHOTO)
+                .set(HYDRANT_PHOTO.ID_HYDRANT_PHOTO, UUID.randomUUID())
+                .set(HYDRANT_PHOTO.ID_HYDRANT_HYDRANT_PHOTO, idHydrant)
+                .set(HYDRANT_PHOTO.PATH_HYDRANT_PHOTO, path)
+                .set(HYDRANT_PHOTO.DATE_HYDRANT_PHOTO, moment)
+                .set(HYDRANT_PHOTO.NOM_HYDRANT_PHOTO, nomPhoto)
+                .onConflictDoNothing()
+                .execute());
+  }
+
+  public boolean checkExist(Long idHydrant, String path) {
+    return context.fetchExists(
+        context
+            .selectFrom(HYDRANT_PHOTO)
+            .where(HYDRANT_PHOTO.ID_HYDRANT_HYDRANT_PHOTO.eq(idHydrant))
+            .and(HYDRANT_PHOTO.PATH_HYDRANT_PHOTO.eq(path)));
+  }
+
+  public List<HydrantPhoto> getListHydrantPhoto() {
+    return context.selectFrom(HYDRANT_PHOTO).fetchInto(HydrantPhoto.class);
+  }
+
   public List<Gestionnaire> getGestionnaires() {
     return context.selectFrom(GESTIONNAIRE).fetchInto(Gestionnaire.class);
   }
@@ -318,5 +347,9 @@ public class IncomingRepository {
 
   public void deleteHydrantVisite() {
     context.deleteFrom(HYDRANT_VISITE).execute();
+  }
+
+  public void deleteHydrantPhoto() {
+    context.deleteFrom(HYDRANT_PHOTO).execute();
   }
 }

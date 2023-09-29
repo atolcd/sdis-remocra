@@ -16,6 +16,7 @@ import fr.sdis83.remocra.web.model.mobilemodel.ImmutableHydrantVisiteModel;
 import fr.sdis83.remocra.web.model.mobilemodel.ImmutableTourneeModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactModel;
 import io.swagger.v3.oas.annotations.Operation;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,6 +24,8 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.UUID;
 import javax.inject.Provider;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -31,6 +34,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -258,14 +262,9 @@ public class SynchroEndpoint {
       @FormParam("pression") double pression,
       @FormParam("pressionDyn") double pressionDyn,
       @FormParam("observations") String observations) {
-    // Gestion de la date
-    String pattern = "yyyy-MM-dd HH:mm:ss";
-    ZonedDateTime moment;
-    try {
-      moment =
-          ZonedDateTime.parse(
-              date, DateTimeFormatter.ofPattern(pattern).withZone(ZoneId.systemDefault()));
-    } catch (DateTimeParseException dtpe) {
+
+    Instant moment = ensureMoment(date);
+    if (moment == null) {
       return Response.serverError().entity("Le format de la date est incorrect : " + date).build();
     }
 
@@ -332,5 +331,44 @@ public class SynchroEndpoint {
     } catch (Exception e) {
       return Response.serverError().entity(e.getMessage()).build();
     }
+  }
+
+  @AuthDevice
+  @Path("/synchrohydrantphoto")
+  @Operation(
+      summary = "Sauvegarde des photos hydrant dans incoming",
+      tags = {GlobalConstants.REMOCRA_MOBILE_TAG},
+      hidden = true)
+  @POST
+  @Consumes(MediaType.MULTIPART_FORM_DATA)
+  public Response saveHydrantPhoto(
+      @FormParam("idHydrant") Long idHydrant,
+      @FormParam("datePhoto") String datePhoto,
+      @Context HttpServletRequest httpServletRequest)
+      throws Exception {
+    Instant moment = ensureMoment(datePhoto);
+    if (moment == null) {
+      return Response.serverError()
+          .entity("Le format de la date est incorrect : " + datePhoto)
+          .build();
+    }
+    Part partPhoto = httpServletRequest.getPart("photo");
+    byte[] photoBytes = partPhoto.getInputStream().readAllBytes();
+
+    return synchroUseCase.insertHydrantPhoto(
+        idHydrant, moment, photoBytes, partPhoto.getSubmittedFileName());
+  }
+
+  private Instant ensureMoment(String date) {
+    String pattern = "yyyy-MM-dd HH:mm:ss";
+    ZonedDateTime moment;
+    try {
+      moment =
+          ZonedDateTime.parse(
+              date, DateTimeFormatter.ofPattern(pattern).withZone(ZoneId.systemDefault()));
+    } catch (DateTimeParseException dtpe) {
+      return null;
+    }
+    return moment.toInstant();
   }
 }

@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.vividsolutions.jts.geom.Geometry;
 import fr.sdis83.remocra.repository.GestionnaireRepository;
 import fr.sdis83.remocra.repository.IncomingRepository;
+import fr.sdis83.remocra.repository.ParamConfRepository;
 import fr.sdis83.remocra.repository.PeiRepository;
 import fr.sdis83.remocra.repository.TourneeRepository;
 import fr.sdis83.remocra.repository.TypeDroitRepository;
@@ -11,9 +12,16 @@ import fr.sdis83.remocra.repository.TypeHydrantAnomalieRepository;
 import fr.sdis83.remocra.repository.TypeHydrantNatureDeciRepository;
 import fr.sdis83.remocra.repository.TypeHydrantNatureRepository;
 import fr.sdis83.remocra.repository.TypeHydrantSaisieRepository;
+import fr.sdis83.remocra.util.GlobalConstants;
 import fr.sdis83.remocra.web.model.mobilemodel.HydrantVisiteModel;
 import fr.sdis83.remocra.web.model.mobilemodel.TourneeModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactModel;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Path;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import javax.ws.rs.core.Response;
@@ -39,6 +47,7 @@ public class SynchroUseCase {
   @Inject TypeHydrantAnomalieRepository typeHydrantAnomalieRepository;
 
   @Inject TourneeRepository tourneeRepository;
+  @Inject ParamConfRepository paramConfRepository;
 
   @Inject
   public SynchroUseCase(
@@ -50,7 +59,8 @@ public class SynchroUseCase {
       TypeHydrantSaisieRepository typeHydrantSaisieRepository,
       PeiRepository peiRepository,
       TypeHydrantAnomalieRepository typeHydrantAnomalieRepository,
-      TourneeRepository tourneeRepository) {
+      TourneeRepository tourneeRepository,
+      ParamConfRepository paramConfRepository) {
     this.incomingRepository = incomingRepository;
     this.typeDroitRepository = typeDroitRepository;
     this.typeHydrantNatureDeciRepository = typeHydrantNatureDeciRepository;
@@ -60,6 +70,7 @@ public class SynchroUseCase {
     this.peiRepository = peiRepository;
     this.typeHydrantAnomalieRepository = typeHydrantAnomalieRepository;
     this.tourneeRepository = tourneeRepository;
+    this.paramConfRepository = paramConfRepository;
   }
 
   /**
@@ -398,5 +409,65 @@ public class SynchroUseCase {
     }
 
     return null;
+  }
+
+  /**
+   * S'assure que le répertoire existe en le créant si besoin.
+   *
+   * @param repertoire
+   * @return
+   * @throws SecurityException si le répertoire n'a pas pu être créé
+   */
+  public File ensureDirectory(String repertoire) throws SecurityException {
+    File dir = new File(repertoire);
+    if (!dir.exists()) {
+      // Créer le répertoire
+      if (!dir.mkdirs()) {
+        throw new SecurityException("Impossible de créer le répertoire " + repertoire);
+      }
+    }
+    return dir;
+  }
+
+  private void saveFileToHD(byte[] photoBytes, String repertoire, String fichier) {
+    // Création du répertoire d'accueil si nécessaire
+    File depotDir = ensureDirectory(repertoire);
+
+    String targetFilePath = depotDir + File.separator + fichier;
+    if (depotDir.canWrite()) {
+      try (OutputStream outStream = new FileOutputStream(targetFilePath)) {
+        outStream.write(photoBytes);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    } else {
+      throw new SecurityException("Impossible de créer le fichier " + targetFilePath);
+    }
+  }
+
+  public Response insertHydrantPhoto(
+      Long idHydrant, Instant moment, byte[] photoBytes, String nomPhoto) throws Exception {
+    // On enregistre sur le disque
+    String code = idHydrant.toString() + moment.toString();
+    String path =
+        Path.of(paramConfRepository.getByCle(GlobalConstants.DOSSIER_DOC_HYDRANT).getValeur(), code)
+            .toString();
+
+    String dejaEnBase = "L'hydrantPhoto est déjà dans le schéma incoming.";
+    // Si la photo n'existe pas, alors on l'insert
+    if (incomingRepository.checkExist(idHydrant, path)) {
+      logger.warn(dejaEnBase);
+      return Response.ok().entity(dejaEnBase).build();
+    }
+
+    saveFileToHD(photoBytes, path, nomPhoto);
+
+    // Puis on sauvegarde dans incoming
+    int res = incomingRepository.insertHydrantPhoto(idHydrant, path, moment, nomPhoto);
+    return gestionResult(
+        res,
+        "L'hydrantPhoto a bien été inséré un hydrantPhoto dans incoming.",
+        dejaEnBase,
+        "Impossible d'insérer un hydrantPhoto dans incoming.");
   }
 }

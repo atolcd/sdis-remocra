@@ -2,7 +2,7 @@ package fr.sdis83.remocra.web.model.mobilemodel;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.UUID;
 import javax.annotation.Nullable;
 import org.immutables.value.Value;
@@ -15,7 +15,7 @@ public interface HydrantVisiteModel {
 
   Long idHydrant();
 
-  ZonedDateTime date();
+  Instant date();
 
   Long idTypeVisite();
 

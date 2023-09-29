@@ -4,11 +4,13 @@ import com.google.inject.Inject;
 import fr.sdis83.remocra.db.model.incoming.tables.pojos.Contact;
 import fr.sdis83.remocra.db.model.incoming.tables.pojos.ContactRole;
 import fr.sdis83.remocra.db.model.incoming.tables.pojos.Gestionnaire;
+import fr.sdis83.remocra.db.model.incoming.tables.pojos.HydrantPhoto;
 import fr.sdis83.remocra.db.model.incoming.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.db.model.incoming.tables.pojos.HydrantVisiteAnomalie;
 import fr.sdis83.remocra.db.model.incoming.tables.pojos.NewHydrant;
 import fr.sdis83.remocra.db.model.incoming.tables.pojos.Tournee;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant;
+import fr.sdis83.remocra.repository.DocumentsRepository;
 import fr.sdis83.remocra.repository.GestionnaireRepository;
 import fr.sdis83.remocra.repository.HydrantVisitesRepository;
 import fr.sdis83.remocra.repository.IncomingRepository;
@@ -47,6 +49,7 @@ public class ValideIncomingMobile {
   @Inject NumeroUtilRepository numeroUtilRepository;
 
   @Inject UtilisateursRepository utilisateursRepository;
+  @Inject DocumentsRepository documentsRepository;
 
   public static final String APPARTENANCE_GESTIONNAIRE = "GESTIONNAIRE";
 
@@ -59,7 +62,8 @@ public class ValideIncomingMobile {
       TypeHydrantAnomalieRepository typeHydrantAnomalieRepository,
       HydrantVisitesUseCase hydrantVisitesUseCase,
       GestionnaireRepository gestionnaireRepository,
-      NumeroUtilRepository numeroUtilRepository) {
+      NumeroUtilRepository numeroUtilRepository,
+      DocumentsRepository documentsRepository) {
     this.incomingRepository = incomingRepository;
     this.peiRepository = peiRepository;
     this.tourneeRepository = tourneeRepository;
@@ -68,6 +72,7 @@ public class ValideIncomingMobile {
     this.hydrantVisitesUseCase = hydrantVisitesUseCase;
     this.gestionnaireRepository = gestionnaireRepository;
     this.numeroUtilRepository = numeroUtilRepository;
+    this.documentsRepository = documentsRepository;
   }
 
   public void execute(Long currentUserId) throws IOException {
@@ -92,6 +97,9 @@ public class ValideIncomingMobile {
           }
         });
 
+    // Puis les photos
+    gestionHydrantPhoto();
+
     // Tournée finie, on la passe à terminer et on la supprime de incoming
     tourneeRepository.setTourneesFinies(idsTournees);
 
@@ -103,7 +111,32 @@ public class ValideIncomingMobile {
     // On a fini, on supprime les hydrants visite, les tournees
     incomingRepository.deleteHydrantVisiteAnomalie();
     incomingRepository.deleteHydrantVisite();
+    incomingRepository.deleteHydrantPhoto();
     incomingRepository.deleteTournee();
+  }
+
+  private void gestionHydrantPhoto() {
+    List<HydrantPhoto> hydrantPhotos = incomingRepository.getListHydrantPhoto();
+    for (HydrantPhoto photo : hydrantPhotos) {
+      // Le code est le nom du dossier
+      String path = photo.getPathHydrantPhoto();
+      String code = path.split("/")[path.split("/").length - 1];
+      if (code == null) {
+        logger.error("Impossible de créer le document car le code est nul.");
+        continue;
+      }
+      logger.info(
+          "CREATION DOCUMENT : "
+              + photo.getNomHydrantPhoto()
+              + " (idHydrant : "
+              + photo.getIdHydrantHydrantPhoto()
+              + ")");
+      Long idDocument =
+          documentsRepository.insertDocumentTypeHydrant(
+              path, code, photo.getDateHydrantPhoto(), photo.getNomHydrantPhoto());
+
+      documentsRepository.insertHydrantDocument(photo.getIdHydrantHydrantPhoto(), idDocument);
+    }
   }
 
   private void gestionHydrant(Long currentUserId) {
