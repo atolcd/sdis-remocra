@@ -116,7 +116,11 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
         },{
             text: 'Motif',
             dataIndex: 'motif',
-            align : 'center'
+            align : 'center',
+            renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                metaData.tdAttr = 'data-qtip="' + record.raw.motif + '"';
+                return value;
+            }
         },{
              text: 'Commune',
              align : 'center',
