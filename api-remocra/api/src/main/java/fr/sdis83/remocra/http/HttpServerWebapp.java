@@ -1,10 +1,5 @@
 package fr.sdis83.remocra.http;
 
-import static javax.servlet.DispatcherType.ASYNC;
-import static javax.servlet.DispatcherType.ERROR;
-import static javax.servlet.DispatcherType.FORWARD;
-import static javax.servlet.DispatcherType.INCLUDE;
-import static javax.servlet.DispatcherType.REQUEST;
 import static org.eclipse.jetty.servlet.ServletContextHandler.SECURITY;
 import static org.eclipse.jetty.servlet.ServletContextHandler.SESSIONS;
 
@@ -13,9 +8,9 @@ import com.google.inject.servlet.GuiceFilter;
 import fr.sdis83.remocra.resteasy.GuiceInjectorFactory;
 import java.io.File;
 import java.nio.file.Files;
-import java.util.EnumSet;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Application;
 import org.eclipse.jetty.server.ForwardedRequestCustomizer;
@@ -27,7 +22,7 @@ import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.jboss.resteasy.plugins.server.servlet.Filter30Dispatcher;
+import org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher;
 import org.jboss.resteasy.spi.ResteasyDeployment;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
@@ -100,9 +95,11 @@ public class HttpServerWebapp implements HttpServer {
 
     // Resteasy
     context.setInitParameter("resteasy.logger.type", "SLF4J");
-    final FilterHolder resteasy = new FilterHolder(Filter30Dispatcher.class);
+    final ServletHolder resteasy = new ServletHolder("API", HttpServlet30Dispatcher.class);
     resteasy.setAsyncSupported(true);
-    context.addFilter(resteasy, "/*", EnumSet.of(REQUEST, ASYNC, ERROR, FORWARD, INCLUDE));
+    resteasy.getRegistration().setMultipartConfig(new MultipartConfigElement("./tmp"));
+
+    context.addServlet(resteasy, "/*");
 
     // Resteasy + Guice
     final ResteasyProviderFactory providerFactory = new ResteasyProviderFactory();
