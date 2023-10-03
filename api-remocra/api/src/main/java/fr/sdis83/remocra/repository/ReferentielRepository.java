@@ -7,6 +7,8 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.DROIT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.GESTIONNAIRE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_ANOMALIES;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PENA;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PIBI;
 import static fr.sdis83.remocra.db.model.remocra.Tables.PARAM_CONF;
 import static fr.sdis83.remocra.db.model.remocra.Tables.PROFIL_DROIT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.PROFIL_ORGANISME_UTILISATEUR_DROIT;
@@ -23,6 +25,7 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE_DECI
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_SAISIE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
 
+import fr.sdis83.remocra.enums.PeiCaracteristique;
 import fr.sdis83.remocra.util.GlobalConstants;
 import fr.sdis83.remocra.web.model.authn.ParamConfModel;
 import fr.sdis83.remocra.web.model.mobilemodel.TypeDroitModel;
@@ -41,10 +44,18 @@ import fr.sdis83.remocra.web.model.referentiel.TypeHydrantModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantNatureDeciModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantNatureModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantSaisieModel;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import org.jooq.DSLContext;
 import org.jooq.Field;
+import org.jooq.Record;
+import org.jooq.RecordHandler;
+import org.jooq.SelectOnConditionStep;
 import org.jooq.impl.DSL;
 
 public class ReferentielRepository {
@@ -309,5 +320,185 @@ public class ReferentielRepository {
         .where(TYPE_DROIT.CATEGORIE.eq(NOM_GROUPE_MOBILE))
         .and(UTILISATEUR.ID.eq(idUtilisateur))
         .fetchInto(TypeDroitModel.class);
+  }
+
+  /**
+   * Construit une Map des caractéristiques désirées pour les PEI ; On *veut* conserver l'ordre des
+   * caractéristiques pour affichage dans l'appli mobile.
+   */
+  public Map<Long, List<PeiCaracteristiquePojo>> getPeiCaracteristiques(
+      List<PeiCaracteristique> pibiSelectedFields, List<PeiCaracteristique> penaSelectedFields) {
+
+    // Les PIBI
+    SelectOnConditionStep<Record> onClausePibi =
+        context
+            .select(buildSelectFields(pibiSelectedFields))
+            .from(HYDRANT)
+            .innerJoin(HYDRANT_PIBI)
+            .on(HYDRANT.ID.eq(HYDRANT_PIBI.ID));
+    onClausePibi = buildJoinClauses(pibiSelectedFields, onClausePibi);
+
+    Map<Long, List<PeiCaracteristiquePojo>> mapPeiCaracteristiques =
+        new HashMap<>(fetchAndMapResults(pibiSelectedFields, onClausePibi));
+
+    // Les PENA
+    SelectOnConditionStep<Record> onClausePena =
+        context
+            .select(buildSelectFields(penaSelectedFields))
+            .from(HYDRANT)
+            .innerJoin(HYDRANT_PENA)
+            .on(HYDRANT.ID.eq(HYDRANT_PENA.ID));
+    onClausePena = buildJoinClauses(pibiSelectedFields, onClausePena);
+
+    mapPeiCaracteristiques.putAll(fetchAndMapResults(pibiSelectedFields, onClausePena));
+
+    return mapPeiCaracteristiques;
+  }
+
+  /**
+   * Construit un Set des Fields qu'on a besoin de projeter
+   *
+   * @param selectedFields List<PeiCaracteristique>
+   * @return Set<Field<?>>
+   */
+  private Set<Field<?>> buildSelectFields(List<PeiCaracteristique> selectedFields) {
+    Set<Field<?>> fieldsToSelect = new HashSet<>();
+    // On a besoin de l'ID pour construire la map à retourner
+    fieldsToSelect.add(HYDRANT.ID);
+    for (PeiCaracteristique selectedField : selectedFields) {
+      // à chaque objet correspond un champ en base
+      fieldsToSelect.add(getFieldFromCaracteristique(selectedField));
+    }
+    return fieldsToSelect;
+  }
+
+  /**
+   * Fetch les résultats de la requête, et map les résultats dans une Map<idHydrant,
+   * List<PeiCaracteristiquePojo>>
+   *
+   * @param selectedFields List<PeiCaracteristique>
+   * @param onClause SelectOnConditionStep
+   * @return Map<Long, List<PeiCaracteristiquePojo>>
+   */
+  private Map<Long, List<PeiCaracteristiquePojo>> fetchAndMapResults(
+      List<PeiCaracteristique> selectedFields, SelectOnConditionStep<Record> onClause) {
+    Map<Long, List<PeiCaracteristiquePojo>> mapPeiCaracteristiques = new HashMap<>();
+    onClause.fetchInto(
+        (RecordHandler<Record>)
+            record -> {
+              List<PeiCaracteristiquePojo> peiCaracteristiques =
+                  selectedFields.stream()
+                      .map(
+                          caracteristique -> {
+                            Object value = record.get(getFieldFromCaracteristique(caracteristique));
+                            return new PeiCaracteristiquePojo(caracteristique, value);
+                          })
+                      .collect(Collectors.toList());
+
+              mapPeiCaracteristiques.put(record.get(HYDRANT.ID), peiCaracteristiques);
+            });
+    return mapPeiCaracteristiques;
+  }
+
+  /**
+   * Construit les clauses "INNER JOIN" à rajouter à la requête en fonction des champs voulus por
+   * l'utilisateur. <br>
+   * S'assure qu'on n'a qu'une seule fois la même jointure
+   *
+   * @param selectedFields List<PeiCaracteristique>
+   * @param onClausePibi SelectOnConditionStep
+   * @return SelectOnConditionStep (mis à jour)
+   */
+  private static SelectOnConditionStep<Record> buildJoinClauses(
+      List<PeiCaracteristique> selectedFields, SelectOnConditionStep<Record> onClausePibi) {
+    boolean jointureNature = false;
+    for (PeiCaracteristique caracteristique : selectedFields) {
+      switch (caracteristique) {
+          // Valeurs communes aux 2 types
+        case TYPE_PEI:
+          if (!jointureNature) {
+            onClausePibi =
+                onClausePibi
+                    .innerJoin(TYPE_HYDRANT_NATURE)
+                    .on(HYDRANT.NATURE.eq(TYPE_HYDRANT_NATURE.ID));
+            jointureNature = true;
+          }
+          onClausePibi =
+              onClausePibi
+                  .innerJoin(TYPE_HYDRANT)
+                  .on(TYPE_HYDRANT_NATURE.TYPE_HYDRANT.eq(TYPE_HYDRANT.ID));
+          break;
+        case NATURE_PEI:
+          if (!jointureNature) {
+            onClausePibi =
+                onClausePibi
+                    .innerJoin(TYPE_HYDRANT_NATURE)
+                    .on(HYDRANT.NATURE.eq(TYPE_HYDRANT_NATURE.ID));
+            jointureNature = true;
+          }
+          break;
+          // Valeurs spécifiques aux PIBI
+
+          // Valeurs spécifiques aux PENA
+
+      }
+    }
+    return onClausePibi;
+  }
+
+  /**
+   * Retourne le FIELD associé à la valeur d'un {@link PeiCaracteristique}
+   *
+   * @param caracteristique PeiCaracteristique
+   * @return Field<?>
+   */
+  private Field<?> getFieldFromCaracteristique(PeiCaracteristique caracteristique) {
+    switch (caracteristique) {
+        // Valeurs communes aux 2 types
+      case TYPE_PEI:
+        return TYPE_HYDRANT.NOM;
+      case NATURE_PEI:
+        return TYPE_HYDRANT_NATURE.NOM;
+      case AUTORITE_POLICE:
+        return null;
+      case TYPE_DECI:
+        // TODO Pas sûr !
+        return HYDRANT.NATURE_DECI;
+      case SERVICE_PUBLIC:
+      case MAINTENANCE_CTP:
+        return null;
+
+      case COMPLEMENT:
+        return HYDRANT.COMPLEMENT;
+      case DATE_RECEPTION:
+        return HYDRANT.DATE_RECEP;
+        // Valeurs spécifiques aux PIBI
+      case DIAMETRE_NOMINAL:
+        return HYDRANT_PIBI.DIAMETRE;
+        // Valeurs spécifiques aux PENA
+    }
+    throw new IllegalArgumentException("Valeur '" + caracteristique + "' non prévue");
+  }
+
+  /**
+   * Classe permettant de représenter un type d'attribut (défini par PeiCaracteristique) et la
+   * valeur concernée (value)
+   */
+  public static class PeiCaracteristiquePojo {
+    private final PeiCaracteristique caracteristique;
+    private final Object value;
+
+    public PeiCaracteristique getCaracteristique() {
+      return caracteristique;
+    }
+
+    public Object getValue() {
+      return value;
+    }
+
+    public PeiCaracteristiquePojo(PeiCaracteristique caracteristique, Object value) {
+      this.caracteristique = caracteristique;
+      this.value = value;
+    }
   }
 }

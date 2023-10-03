@@ -6,6 +6,7 @@ import fr.sdis83.remocra.authn.UserInfo;
 import fr.sdis83.remocra.repository.ParametreRepository;
 import fr.sdis83.remocra.repository.ReferentielRepository;
 import fr.sdis83.remocra.repository.UtilisateursRepository;
+import fr.sdis83.remocra.usecase.referentiel.PeiCaracteristiquesUseCase;
 import fr.sdis83.remocra.util.GlobalConstants;
 import fr.sdis83.remocra.web.model.authn.ParamConfModel;
 import fr.sdis83.remocra.web.model.mobilemodel.TypeDroitModel;
@@ -26,6 +27,7 @@ import fr.sdis83.remocra.web.model.referentiel.TypeHydrantNatureModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantSaisieModel;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.ws.rs.Consumes;
@@ -43,6 +45,8 @@ public class MobileReferentielEndpoint {
   @Inject ReferentielRepository referentielRepository;
   @Inject UtilisateursRepository utilisateursRepository;
   @Inject ParametreRepository parametreRepository;
+
+  @Inject PeiCaracteristiquesUseCase peiCaracteristiquesUseCase;
 
   @Inject @CurrentUser Provider<UserInfo> currentUser;
 
@@ -77,7 +81,8 @@ public class MobileReferentielEndpoint {
                 parametreRepository
                     .getParametre(GlobalConstants.GESTION_AGENT)
                     .getValeurParametre(),
-                utilisateursRepository.getNomPrenom(idUtilisateur)))
+                utilisateursRepository.getNomPrenom(idUtilisateur),
+                peiCaracteristiquesUseCase.getPeiCaracteristiques()))
         .build();
   }
 
@@ -103,6 +108,7 @@ public class MobileReferentielEndpoint {
     // Renvoie la méthode de gestion des Agents
     public final String gestionAgents;
     public final String utilisateurConnecte;
+    public final Map<Long, String> peiCaracteristiques;
 
     public ReferentielResponse(
         List<CommuneModel> communes,
@@ -123,7 +129,8 @@ public class MobileReferentielEndpoint {
         List<ParamConfModel> paramsConf,
         List<TypeDroitModel> typesDroit,
         String gestionAgents,
-        String utilisateurConnecte) {
+        String utilisateurConnecte,
+        Map<Long, String> peiCaracteristiques) {
       this.communes = communes;
       this.hydrants = hydrants;
       this.hydrantsAnomalies = hydrantsAnomalies;
@@ -143,6 +150,7 @@ public class MobileReferentielEndpoint {
       this.typesDroit = typesDroit;
       this.gestionAgents = gestionAgents;
       this.utilisateurConnecte = utilisateurConnecte;
+      this.peiCaracteristiques = peiCaracteristiques;
     }
   }
 }

@@ -5,12 +5,14 @@ import static fr.sdis83.remocra.db.model.remocra.tables.Parametre.PARAMETRE;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Parametre;
 import java.util.Map;
 import java.util.Set;
+import javax.inject.Inject;
 import org.jooq.DSLContext;
 
 public class ParametreRepository {
 
   private final DSLContext context;
 
+  @Inject
   public ParametreRepository(DSLContext context) {
     this.context = context;
   }

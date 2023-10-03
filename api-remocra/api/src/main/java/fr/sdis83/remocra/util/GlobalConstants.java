@@ -110,4 +110,9 @@ public class GlobalConstants {
 
   /** Clé de la table "Parametre" pour la gestion des agents dans l'application mobile */
   public static final String GESTION_AGENT = "GESTION_AGENT";
+
+  /** Paramètres utilisés dans le cadre de l'appli mobile */
+  public static final String PARAMETRE_CARACTERISTIQUE_PIBI = "CARACTERISTIQUE_PIBI";
+
+  public static final String PARAMETRE_CARACTERISTIQUE_PENA = "CARACTERISTIQUE_PENA";
 }
