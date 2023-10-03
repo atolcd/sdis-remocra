@@ -38,7 +38,7 @@ CREATE TYPE remocra.type_gestion_agent AS ENUM (
 
 INSERT INTO remocra.parametre (cle_parametre, valeur_parametre, description_parametre, type_parametre, categorie_parametre)
 VALUES ('GESTION_AGENT', 'UTILISATEUR_CONNECTE_OBLIGATOIRE', 'Paramètre permettant de spécifier comment les champs "Agent 1" et "Agent 2" doivent être remplis dans l''application mobile' ,
-'STRING',  'MOBILE')
+'STRING',  'MOBILE');
 
 -- Contenu réel du patch fin
 --------------------------------------------------
