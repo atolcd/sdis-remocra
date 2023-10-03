@@ -1160,6 +1160,10 @@
 										<inputSchema>couverture_hydraulique</inputSchema>
 										<outputSchema>couverture_hydraulique</outputSchema>
 									</schema>
+									<schema>
+										<inputSchema>incoming</inputSchema>
+										<outputSchema>incoming</outputSchema>
+									</schema>
 								</schemata>
 								<customTypes>
 									<customType>
