@@ -171,6 +171,31 @@ public class GestionnaireController {
     }.serialize();
   }
 
+  /**
+   * Retourne la liste des gestionnaire.code non null qui n'appartiennent pas au gestionnaire fourni
+   *
+   * @param id
+   * @return
+   */
+  @RequestMapping(
+      value = "/listeGestionnaireCodes/{id}",
+      method = RequestMethod.GET,
+      headers = "Accept=application/json")
+  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  public ResponseEntity<String> getGestionnaireCodes(@PathVariable("id") Long id) {
+    return new AbstractExtListSerializer<String>("Get Other Gestionnaires' codes") {
+      @Override
+      protected List<String> getRecords() throws BusinessException {
+        return gestionnaireRepository.getOtherGestionnaireCodes(id);
+      }
+    }.serialize();
+  }
+
+  /**
+   * Retourne la liste des gestionnaire.code non null
+   *
+   * @return
+   */
   @RequestMapping(
       value = "/listeGestionnaireCodes",
       method = RequestMethod.GET,

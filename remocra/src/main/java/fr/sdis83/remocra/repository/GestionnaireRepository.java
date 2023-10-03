@@ -10,6 +10,7 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.SITE;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Gestionnaire;
 import java.util.List;
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -84,12 +85,27 @@ public class GestionnaireRepository {
   }
 
   /**
-   * Retourne la liste des identifiants gestionnaire
+   * Retourne la liste des codes gestionnaire n'appartenant pas au gestionnaire spécifié
    *
-   * @return une liste de Long d'idGestionnaire
+   * @return une liste de String de code Gestionnaire (SIREN)
+   */
+  public List<String> getOtherGestionnaireCodes(Long idGestionnaire) {
+    return context
+        .selectDistinct(GESTIONNAIRE.CODE)
+        .from(GESTIONNAIRE)
+        .where(GESTIONNAIRE.CODE.isNotNull())
+        .and(
+            idGestionnaire == null ? DSL.trueCondition() : GESTIONNAIRE.ID.notEqual(idGestionnaire))
+        .fetchInto(String.class);
+  }
+
+  /**
+   * Retourne la liste des codes gestionnaire
+   *
+   * @return une liste de String de code Gestionnaire (SIREN)
    */
   public List<String> getGestionnaireCodes() {
-    return context.selectDistinct(GESTIONNAIRE.CODE).from(GESTIONNAIRE).fetchInto(String.class);
+    return getOtherGestionnaireCodes(null);
   }
 
   /**

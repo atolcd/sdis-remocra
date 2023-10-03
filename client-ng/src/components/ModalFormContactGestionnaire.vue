@@ -85,7 +85,8 @@
                     <div class="cellMail"> 
                         <a>E-mail *</a>
                         <b-form-group label-for="mail" invalid-feedback="L'adresse mail est absente ou invalide">
-                            <b-form-input id="mail" v-model="email" size="sm" type="email" required></b-form-input> // Utilise les rêgles d'HTML5
+                            <b-form-input id="mail" v-model="email" size="sm" type="email" required placeholder="default@example.com"></b-form-input>
+                            <!-- Utilise les rêgles d'HTML5 -->
                         </b-form-group>
                     </div>
                     <div class="cellContacter"> 

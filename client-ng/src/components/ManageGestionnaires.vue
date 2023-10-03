@@ -11,14 +11,14 @@
         </div>
         <div>
             <a>
-                <button class="btnAction addG" @click="createGestionnaire"><img src="/remocra/static/img/add.png"> Ajouter un gestionnaire</button>
+                <button class="btnAction addG" @click="createGestionnaire()"><img src="/remocra/static/img/add.png"> Ajouter un gestionnaire</button>
             </a>
             <div class=divTabGestionnaire>
-                <b-table id="tabGestionnaire" :fields="fields" :items="filteredResultGestionnaire" :per-page="perPage" :current-page="currentPage" small hover bordered striped>
+                <b-table id="tabGestionnaire" :fields="fields" :sort-by.sync="sortBy" :items="filteredResultGestionnaire" :per-page="perPage" :current-page="currentPage" small hover bordered striped>
                     <template slot="top-row" slot-scope="{fields}"> <!-- Contenu première ligne : input recherche -->
                         <td v-for="field in fields" :key="field.key">
-                            <input v-if="field.key=='gestionnaire.nom'" id="inputNomGestionnaire" v-on:keyup="filtering()" :placeholder="'Rechercher par '+field.label">
-                            <input v-else-if="field.key=='gestionnaire.code'" id="inputCodeGestionnaire" v-on:keyup="filtering()" :placeholder="'Rechercher par '+field.label">
+                            <input v-if="field.key=='gestionnaire.nom'" id="inputNomGestionnaire" v-on:keyup="filtering()" :placeholder="'Rechercher par '+field.label" class="w-100">
+                            <input v-else-if="field.key=='gestionnaire.code'" id="inputCodeGestionnaire" v-on:keyup="filtering()" :placeholder="'Rechercher par '+field.label" class="w-100">
                             <div v-else-if="field.key=='contact'" id="selectContactFilter">
                                 <select v-on:click="filtering()" id="selectBoxContact">
                                     <option selected value=''> Ne pas filtrer </option>
@@ -94,6 +94,8 @@
 
                 perPage:13,
                 currentPage:1,
+                sortBy:'gestionnaire.nom',
+
                 
                 idGestionnaire:'',
                 nomGestionnaire:'',
@@ -248,7 +250,6 @@
     .delG{border: solid #c4050a;background-color: #c4050a45;}
     .delG:hover{color: #c4050a;background-color: #fff;}
 
-    #inputNomGestionnaire, #inputCodeGestionnaire{width:100%;}
     select#selectBoxContact{min-width:75%!important;margin:unset;height:22px;}
     li#listHydrantSuppr{list-style: disc;}
 
