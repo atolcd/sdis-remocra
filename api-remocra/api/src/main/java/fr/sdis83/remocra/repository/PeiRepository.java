@@ -511,6 +511,7 @@ public class PeiRepository {
         .set(HYDRANT.VOIE, h.getVoie())
         .set(HYDRANT.VOIE2, h.getVoie2())
         .set(HYDRANT.LIEU_DIT, h.getLieuDit())
+        .set(HYDRANT.GESTIONNAIRE, h.getGestionnaire())
         .set(
             HYDRANT.GEOMETRIE,
             (Object)

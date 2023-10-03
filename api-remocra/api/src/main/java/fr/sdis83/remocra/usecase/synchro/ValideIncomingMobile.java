@@ -148,7 +148,7 @@ public class ValideIncomingMobile {
     for (NewHydrant newHydrant : listNewHydrant) {
       Optional<Gestionnaire> gestionnaireHydrant =
           gestionnaires.stream()
-              .filter(it -> it.getIdGestionnaire() == newHydrant.getIdGestionnaire())
+              .filter(it -> it.getIdGestionnaire().equals(newHydrant.getIdGestionnaire()))
               .findFirst();
       Long idGestionnaire = null;
       if (gestionnaireHydrant.isPresent()) {
