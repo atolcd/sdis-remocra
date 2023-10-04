@@ -24,7 +24,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantVisite implements Serializable {
 
-    private static final long serialVersionUID = 699532936;
+    private static final long serialVersionUID = 735209010;
 
     private UUID    idHydrantVisite;
     private Long    idHydrant;
@@ -37,6 +37,7 @@ public class HydrantVisite implements Serializable {
     private Double  pressionHydrantVisite;
     private Double  pressionDynHydrantVisite;
     private String  observationsHydrantVisite;
+    private Boolean hasAnomalieChanges;
 
     public HydrantVisite() {}
 
@@ -52,6 +53,7 @@ public class HydrantVisite implements Serializable {
         this.pressionHydrantVisite = value.pressionHydrantVisite;
         this.pressionDynHydrantVisite = value.pressionDynHydrantVisite;
         this.observationsHydrantVisite = value.observationsHydrantVisite;
+        this.hasAnomalieChanges = value.hasAnomalieChanges;
     }
 
     public HydrantVisite(
@@ -65,7 +67,8 @@ public class HydrantVisite implements Serializable {
         Integer debitHydrantVisite,
         Double  pressionHydrantVisite,
         Double  pressionDynHydrantVisite,
-        String  observationsHydrantVisite
+        String  observationsHydrantVisite,
+        Boolean hasAnomalieChanges
     ) {
         this.idHydrantVisite = idHydrantVisite;
         this.idHydrant = idHydrant;
@@ -78,6 +81,7 @@ public class HydrantVisite implements Serializable {
         this.pressionHydrantVisite = pressionHydrantVisite;
         this.pressionDynHydrantVisite = pressionDynHydrantVisite;
         this.observationsHydrantVisite = observationsHydrantVisite;
+        this.hasAnomalieChanges = hasAnomalieChanges;
     }
 
     public UUID getIdHydrantVisite() {
@@ -179,6 +183,15 @@ public class HydrantVisite implements Serializable {
         return this;
     }
 
+    public Boolean getHasAnomalieChanges() {
+        return this.hasAnomalieChanges;
+    }
+
+    public HydrantVisite setHasAnomalieChanges(Boolean hasAnomalieChanges) {
+        this.hasAnomalieChanges = hasAnomalieChanges;
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("HydrantVisite (");
@@ -194,6 +207,7 @@ public class HydrantVisite implements Serializable {
         sb.append(", ").append(pressionHydrantVisite);
         sb.append(", ").append(pressionDynHydrantVisite);
         sb.append(", ").append(observationsHydrantVisite);
+        sb.append(", ").append(hasAnomalieChanges);
 
         sb.append(")");
         return sb.toString();

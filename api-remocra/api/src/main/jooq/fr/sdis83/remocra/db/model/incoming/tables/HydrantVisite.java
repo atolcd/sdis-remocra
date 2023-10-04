@@ -44,7 +44,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class HydrantVisite extends TableImpl<Record> {
 
-    private static final long serialVersionUID = 1361842266;
+    private static final long serialVersionUID = 1876080093;
 
     /**
      * The reference instance of <code>incoming.hydrant_visite</code>
@@ -113,6 +113,11 @@ public class HydrantVisite extends TableImpl<Record> {
      * The column <code>incoming.hydrant_visite.observations_hydrant_visite</code>.
      */
     public final TableField<Record, String> OBSERVATIONS_HYDRANT_VISITE = createField("observations_hydrant_visite", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+
+    /**
+     * The column <code>incoming.hydrant_visite.has_anomalie_changes</code>.
+     */
+    public final TableField<Record, Boolean> HAS_ANOMALIE_CHANGES = createField("has_anomalie_changes", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false).defaultValue(org.jooq.impl.DSL.field("false", org.jooq.impl.SQLDataType.BOOLEAN)), this, "");
 
     /**
      * Create a <code>incoming.hydrant_visite</code> table reference
