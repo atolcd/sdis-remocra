@@ -12,6 +12,7 @@ import fr.sdis83.remocra.db.model.incoming.tables.pojos.Tournee;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant;
 import fr.sdis83.remocra.repository.DocumentsRepository;
 import fr.sdis83.remocra.repository.GestionnaireRepository;
+import fr.sdis83.remocra.repository.HydrantAnomalieRepository;
 import fr.sdis83.remocra.repository.HydrantVisitesRepository;
 import fr.sdis83.remocra.repository.IncomingRepository;
 import fr.sdis83.remocra.repository.NumeroUtilRepository;
@@ -50,6 +51,7 @@ public class ValideIncomingMobile {
 
   @Inject UtilisateursRepository utilisateursRepository;
   @Inject DocumentsRepository documentsRepository;
+  @Inject HydrantAnomalieRepository hydrantAnomalieRepository;
 
   public static final String APPARTENANCE_GESTIONNAIRE = "GESTIONNAIRE";
 
@@ -63,7 +65,8 @@ public class ValideIncomingMobile {
       HydrantVisitesUseCase hydrantVisitesUseCase,
       GestionnaireRepository gestionnaireRepository,
       NumeroUtilRepository numeroUtilRepository,
-      DocumentsRepository documentsRepository) {
+      DocumentsRepository documentsRepository,
+      HydrantAnomalieRepository hydrantAnomalieRepository) {
     this.incomingRepository = incomingRepository;
     this.peiRepository = peiRepository;
     this.tourneeRepository = tourneeRepository;
@@ -73,6 +76,7 @@ public class ValideIncomingMobile {
     this.gestionnaireRepository = gestionnaireRepository;
     this.numeroUtilRepository = numeroUtilRepository;
     this.documentsRepository = documentsRepository;
+    this.hydrantAnomalieRepository = hydrantAnomalieRepository;
   }
 
   public void execute(Long currentUserId) throws IOException {
@@ -399,16 +403,24 @@ public class ValideIncomingMobile {
                 .collect(Collectors.toList()));
 
     for (HydrantVisite hydrantVisite : listHydrantVisite) {
-      List<String> anomaliesId =
-          listeHydrantAnomalie.stream()
-              .filter(it -> it.getIdHydrantVisite().equals(hydrantVisite.getIdHydrantVisite()))
-              .map(it -> it.getIdAnomalie().toString())
-              .collect(Collectors.toList());
+      List<Long> anomaliesId;
+      if (!hydrantVisite.getHasAnomalieChanges()) {
+        // Les anomalies n'ont pas changé, on va donc chercher les dernières en base
+        anomaliesId =
+            hydrantAnomalieRepository.getAnomalieIdNonSysteme(hydrantVisite.getIdHydrant());
+      } else {
+        anomaliesId =
+            listeHydrantAnomalie.stream()
+                .filter(it -> it.getIdHydrantVisite().equals(hydrantVisite.getIdHydrantVisite()))
+                .map(it -> it.getIdAnomalie())
+                .collect(Collectors.toList());
+      }
 
       String anomaliesToString = null;
       if (!anomaliesId.isEmpty()) {
-        // On construit la chaîne "[ID_ANOMALIE_1, ID_ANOMALIE_2]"
-        anomaliesToString = "[" + String.join(",", anomaliesId) + "]";
+        // On construit la chaîne "[ID_ANOMALIE_1,ID_ANOMALIE_2]"
+        anomaliesToString =
+            "[" + anomaliesId.stream().map(String::valueOf).collect(Collectors.joining(",")) + "]";
       }
 
       logger.info("CREATION VISITE : idHydrant " + hydrantVisite.getIdHydrant());

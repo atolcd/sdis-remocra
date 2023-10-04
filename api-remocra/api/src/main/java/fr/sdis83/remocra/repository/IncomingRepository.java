@@ -197,7 +197,7 @@ public class IncomingRepository {
                 .execute());
   }
 
-  public int insertVisite(HydrantVisiteModel hydrantVisiteModel) {
+  public int insertVisite(HydrantVisiteModel hydrantVisiteModel, Boolean hasAnomalieChanges) {
     return transactionManager.transactionResult(
         () ->
             context
@@ -213,6 +213,7 @@ public class IncomingRepository {
                 .set(HYDRANT_VISITE.PRESSION_DYN_HYDRANT_VISITE, hydrantVisiteModel.pressionDyn())
                 .set(HYDRANT_VISITE.OBSERVATIONS_HYDRANT_VISITE, hydrantVisiteModel.observations())
                 .set(HYDRANT_VISITE.ID_TYPE_HYDRANT_SAISIE, hydrantVisiteModel.idTypeVisite())
+                .set(HYDRANT_VISITE.HAS_ANOMALIE_CHANGES, hasAnomalieChanges)
                 .onConflictDoNothing()
                 .execute());
   }

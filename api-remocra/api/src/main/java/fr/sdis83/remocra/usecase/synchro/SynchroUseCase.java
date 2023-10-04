@@ -241,7 +241,7 @@ public class SynchroUseCase {
    * @param hydrantVisiteModel
    * @return
    */
-  public Response insertVisite(HydrantVisiteModel hydrantVisiteModel) {
+  public Response insertVisite(HydrantVisiteModel hydrantVisiteModel, boolean hasAnomalieChanges) {
     // Si les données ne sont pas valides, on retourne l'erreur concernée
     String erreur = checkError(hydrantVisiteModel);
     if (erreur != null) {
@@ -255,7 +255,7 @@ public class SynchroUseCase {
             + " dans incoming.";
     Response serverErrorBuild = Response.serverError().entity(error).build();
     try {
-      int result = incomingRepository.insertVisite(hydrantVisiteModel);
+      int result = incomingRepository.insertVisite(hydrantVisiteModel, hasAnomalieChanges);
       switch (result) {
         case 1:
           String inserer =

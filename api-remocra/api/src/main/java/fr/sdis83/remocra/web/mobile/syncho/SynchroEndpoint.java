@@ -261,7 +261,8 @@ public class SynchroEndpoint {
       @FormParam("debit") int debit,
       @FormParam("pression") double pression,
       @FormParam("pressionDyn") double pressionDyn,
-      @FormParam("observations") String observations) {
+      @FormParam("observations") String observations,
+      @FormParam("hasAnomalieChanges") boolean hasAnomalieChanges) {
 
     Instant moment = ensureMoment(date);
     if (moment == null) {
@@ -281,7 +282,8 @@ public class SynchroEndpoint {
             .pression(pression)
             .pressionDyn(pressionDyn)
             .observations(observations)
-            .build());
+            .build(),
+        hasAnomalieChanges);
   }
 
   @AuthDevice
