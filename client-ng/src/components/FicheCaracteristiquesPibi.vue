@@ -104,6 +104,7 @@
 import axios from 'axios'
 import _ from 'lodash'
 import ModalReservoir from './ModalReservoir.vue'
+import { ESPACE_VIDE_FORMULAIRE } from '../GlobalConstants.js'
 export default {
   name: 'FicheCaracteristiquesPibi',
   components: {
@@ -164,16 +165,12 @@ export default {
   },
   mounted: function() {
     this.$emit('resolveForeignKey', ['diametre', 'marque', 'modele', 'typeReseauAlimentation', 'typeReseauCanalisation', 'reservoir', 'serviceEaux', 'jumele']);
-    this.$emit('getComboData', this, 'comboMarque', '/remocra/typehydrantmarques.json', null, 'id', 'nom');
+    this.$emit('getComboData', this, 'comboMarque', '/remocra/typehydrantmarques.json', null, 'id', 'nom', ESPACE_VIDE_FORMULAIRE);
     this.$emit('getComboData', this, 'comboServiceEaux', '/remocra/organismes.json', {
-      "filter": JSON.stringify([{
-        "property": "typeOrganismeCode",
-        "value": "SERVICEEAUX"
-      }])
-    }, 'id', 'nom');
-    this.$emit('getComboData', this, 'comboTypeReseauAlimentation', '/remocra/typereseaualimentation.json', null, 'id', 'nom');
-    this.$emit('getComboData', this, 'comboTypeReseauCanalisation', '/remocra/typereseaucanalisation.json', null, 'id', 'nom');
-    this.$emit('getComboData', this, 'comboReservoir', '/remocra/reservoir.json', null, 'id', 'nom', 'Aucun');
+      "filter": JSON.stringify([{"property": "typeOrganismeCode", "value": "SERVICEEAUX"}])}, 'id', 'nom', ESPACE_VIDE_FORMULAIRE);
+    this.$emit('getComboData', this, 'comboTypeReseauAlimentation', '/remocra/typereseaualimentation.json', null, 'id', 'nom', ESPACE_VIDE_FORMULAIRE);
+    this.$emit('getComboData', this, 'comboTypeReseauCanalisation', '/remocra/typereseaucanalisation.json', null, 'id', 'nom', ESPACE_VIDE_FORMULAIRE);
+    this.$emit('getComboData', this, 'comboReservoir', '/remocra/reservoir.json', null, 'id', 'nom', ESPACE_VIDE_FORMULAIRE);
     axios.get('/remocra/typehydrantdiametres.json').then(response => {
       this.listeDiametres = [];
       _.forEach(response.data.data, item => {
@@ -207,7 +204,7 @@ export default {
       var self = this;
       this.comboModele = [];
       self.comboModele.push({
-        text: 'Aucun',
+        text: ESPACE_VIDE_FORMULAIRE,
         value: null
       });
       if (this.hydrant.marque) {
@@ -302,7 +299,11 @@ export default {
      */
     updateComboDiametres(code) {
       this.hydrant.diametre = null;
-      this.comboDiametre = this.listeDiametres.filter(item => item.natures.indexOf(code) !== -1);
+      this.comboDiametre = this.listeDiametres.filter(item => item.natures.indexOf(code) !== -1)
+      this.comboDiametre.unshift({
+            text: ESPACE_VIDE_FORMULAIRE,
+            value: null
+          });
     }
   }
 };

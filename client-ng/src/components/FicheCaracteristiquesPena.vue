@@ -86,6 +86,8 @@
 <script>
 import axios from 'axios'
 import _ from 'lodash'
+import { ESPACE_VIDE_FORMULAIRE } from '../GlobalConstants.js'
+
 export default {
   name: 'FichePena',
   data() {
@@ -128,7 +130,7 @@ export default {
 
   mounted: function() {
     this.$emit('resolveForeignKey', ['materiau']);
-    this.$emit('getComboData', this, 'comboMateriau', '/remocra/typehydrantmateriaus.json', null, 'id', 'nom');
+    this.$emit('getComboData', this, 'comboMateriau', '/remocra/typehydrantmateriaus.json', null, 'id', 'nom', ESPACE_VIDE_FORMULAIRE);
     this.$emit('getComboData', this, 'comboTypeAspiration', '/remocra/typehydrantaspiration.json', null, 'id', 'nom');
     this.aspirationsASupprimer = [];
     // Si  l'hydrant a un identifiant, c'est une modification. Dans ce cas, on charge les aspirations existantes si elles existent
