@@ -50,7 +50,17 @@ Ext.define('Sdis.Remocra.model.Rci', {
     }, {
         name : 'ventLocal',
         type : 'boolean',
-        useNull : true
+        convert: function (v, record){ // v = nouvelle valeur, sert a convertir un int en boolean
+            if(v == 1){
+                return true;
+            } else if(v == 0){
+                   return false;
+               } else if(v == -1 || v == null){
+                    return null;
+               }
+        },
+        useNull : true,
+        allowNull : true
     }, {
         name : 'hygrometrie',
         type : 'int',
@@ -58,6 +68,12 @@ Ext.define('Sdis.Remocra.model.Rci', {
     }, {
         name : 'directionVent',
         type : 'string',
+        convert: function (v, record){
+            if (v == 'none'){
+                return null;
+            }
+            return v;
+        },
         useNull : true
     }, {
         name : 'temperature',
@@ -98,7 +114,17 @@ Ext.define('Sdis.Remocra.model.Rci', {
     }, {
         name : 'gelLieux',
         type : 'boolean',
-        useNull : true
+        convert: function (v, record){ // v = nouvelle valeur, sert a convertir un int en boolean
+            if(v == 1){
+                return true;
+            } else if(v == 0){
+                   return false;
+               } else if(v == -1 || v == null){
+                    return null;
+               }
+        },
+        useNull : true,
+        allowNull : true
     }, {
         name : 'commentaireConclusions',
         type : 'string',

@@ -21,25 +21,57 @@ Ext.define('Sdis.Remocra.features.rci.bloc.CauseResultats', {
     items : [ {
         xtype : 'combo',
         fieldLabel : 'Prométhée famille',
-        store : 'TypeRciPromFamille',
+        store : {
+            autoLoad: true,
+            xtype: 'crTypeRciPromFamille',
+            model: 'Sdis.Remocra.model.TypeRciPromFamille',
+            listeners: {
+                load: function(store, records, successful, opt) {
+                    store.insert(0, [Ext.create('Sdis.Remocra.model.TypeRciPromFamille', {id: null, nom: 'Non renseigné'})]);
+                    store.sort('id', 'ASC');
+                    var combo = Ext.getCmp('famillePromethee');
+                    if (combo.value === undefined || combo.value === null)  {
+                        combo.select(combo.store.data.items.filter(function(v) { return v.data.id === null; })[0]);
+                    }
+                }
+            }
+        },
+        value: null,
         displayField : 'nom',
         valueField : 'id',
         forceSelection : true,
         editable : false,
         queryMode : 'local',
         itemId : 'famillePromethee',
-        name : 'famillePromethee'
+        name : 'famillePromethee',
+        id : 'famillePromethee'
     }, {
         xtype : 'combo',
         fieldLabel : 'Degré de certitude',
-        store : 'TypeRciDegreCertitude',
+        store : {
+            autoLoad: true,
+            xtype: 'crTypeRciDegreCertitude',
+            model: 'Sdis.Remocra.model.TypeRciDegreCertitude',
+            listeners: {
+                load: function(store, records, successful, opt) {
+                    store.insert(0, [Ext.create('Sdis.Remocra.model.TypeRciDegreCertitude', {id: null, nom: 'Non renseigné'})]);
+                    store.sort('id', 'ASC');
+                    var combo = Ext.getCmp('degreCertitude');
+                    if (combo.value === undefined || combo.value === null)  {
+                        combo.select(combo.store.data.items.filter(function(v) { return v.data.id === null; })[0]);
+                    }
+                }
+            }
+        },
+        value: null,
         displayField : 'nom',
         valueField : 'id',
         forceSelection : true,
         editable : false,
         queryMode : 'local',
         itemId : 'degreCertitude',
-        name : 'degreCertitude'
+        name : 'degreCertitude',
+        id : 'degreCertitude'
     }, {
         colspan : 2,
         xtype : 'combo',

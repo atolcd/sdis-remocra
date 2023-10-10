@@ -377,7 +377,7 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Constatations', {
         fieldLabel : 'Vent local',
         store : new Ext.data.SimpleStore({
             fields: ['value', 'display'],
-            data : [[true, 'Oui'], [false, 'Non']]
+            data : [[-1, 'N/A'], [1, 'Oui'], [0, 'Non']]
         }),
         displayField : 'display',
         valueField : 'value',
@@ -401,7 +401,7 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Constatations', {
         fieldLabel : 'Direction',
         store : new Ext.data.SimpleStore({
             fields: ['value', 'display'],
-            data : [['N', 'Nord'], ['S', 'Sud'], ['E', 'Est'], ['O', 'Ouest'],
+            data : [['none', 'N/A'],['N', 'Nord'], ['S', 'Sud'], ['E', 'Est'], ['O', 'Ouest'],
                     ['NE', 'Nord-Est'], ['NO', 'Nord-Ouest'], ['SE', 'Sud-Est'],
                     ['SO', 'Sud-Ouest']]
         }),
@@ -522,7 +522,7 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Constatations', {
         fieldLabel : 'Gel des lieux',
         store : new Ext.data.SimpleStore({
             fields: ['value', 'display'],
-            data : [[true, 'Oui'], [false, 'Non']]
+            data : [[-1, 'N/A'], [1, 'Oui'], [0, 'Non']]
         }),
         displayField : 'display',
         valueField : 'value',

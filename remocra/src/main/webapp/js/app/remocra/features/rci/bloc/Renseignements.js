@@ -116,6 +116,7 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Renseignements', {
         editable: false,
         forceSelection: false,
         store: {
+            value: null,
             type: 'utilisateur',
             autoLoad: true,
             remoteFilter: true,
@@ -128,12 +129,22 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Renseignements', {
                 {'property':'organismeTypeCodes', value:'DDTM%ONF'},
                 {'property':'hasRight', value:'RCI_C'},
                 {'property':'dnasp', value:'true'}],
-            pageSize: 15
-        },
-        pageSize: true, // bizarrerie ExtJS
-        itemId : 'arriveeDdtmOnf',
-        name : 'arriveeDdtmOnf'
-    }, {
+            pageSize: 15,
+            listeners: {
+                load: function(store, records, successful, opt) {
+                    store.insert(0, [Ext.create('Sdis.Remocra.model.Utilisateur', {id: null, nom: "fictifChampVide"})]);
+                    var combo = Ext.getCmp('arriveeDdtmOnf');
+                    if (combo.value === undefined || combo.value === null) {
+                        combo.select(combo.store.data.items.filter(function(v) { return v.data.id === null; })[0]);
+                    }
+                }
+            }
+       },
+       pageSize: true, // bizarrerie ExtJS
+       itemId : 'arriveeDdtmOnf',
+       name : 'arriveeDdtmOnf',
+       id : 'arriveeDdtmOnf'
+       }, {
         xtype: 'combo',
         fieldLabel : 'SDIS',
         queryMode: 'remote',
@@ -142,6 +153,7 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Renseignements', {
         editable: false,
         forceSelection: false,
         store: {
+            value: null,
             type: 'utilisateur',
             autoLoad: true,
             remoteFilter: true,
@@ -154,11 +166,21 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Renseignements', {
                 {'property':'organismeTypeCodes', value:'SDIS%CIS%CIS-ETAPE-1%CIS-ETAPE-2'},
                 {'property':'hasRight', value:'RCI_C'},
                 {'property':'dnasp', value:'true'}],
-            pageSize: 15
+            pageSize: 15,
+            listeners: {
+                load: function(store, records, successful, opt) {
+                    store.insert(0, [Ext.create('Sdis.Remocra.model.Utilisateur', {id: null, nom: "fictifChampVide"})]);
+                    var combo = Ext.getCmp('arriveeSdis');
+                    if (combo.value === undefined || combo.value === null) {
+                        combo.select(combo.store.data.items.filter(function(v) { return v.data.id === null; })[0]);
+                    }
+                }
+            }
         },
         pageSize: true, // bizarrerie ExtJS
         itemId : 'arriveeSdis',
-        name : 'arriveeSdis'
+        name : 'arriveeSdis',
+        id : 'arriveeSdis'
     }, {
         xtype: 'combo',
         fieldLabel : 'Gendarmerie',
@@ -168,6 +190,7 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Renseignements', {
         editable: false,
         forceSelection: false,
         store: {
+            value: null,
             type: 'utilisateur',
             autoLoad: true,
             remoteFilter: true,
@@ -180,11 +203,21 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Renseignements', {
                 {'property':'organismeTypeCodes', value:'GENDARMERIE'},
                 {'property':'hasRight', value:'RCI_C'},
                 {'property':'dnasp', value:'true'}],
-            pageSize: 15
+            pageSize: 15,
+            listeners: {
+                load: function(store, records, successful, opt) {
+                    store.insert(0, [Ext.create('Sdis.Remocra.model.Utilisateur', {id: null, nom: "fictifChampVide"})]);
+                    var combo = Ext.getCmp('arriveeGendarmerie');
+                    if (combo.value === undefined || combo.value === null) {
+                        combo.select(combo.store.data.items.filter(function(v) { return v.data.id === null; })[0]);
+                    }
+                }
+            }
         },
         pageSize: true, // bizarrerie ExtJS
         itemId : 'arriveeGendarmerie',
-        name : 'arriveeGendarmerie'
+        name : 'arriveeGendarmerie',
+        id : 'arriveeGendarmerie'
     }, {
         xtype: 'combo',
         fieldLabel : 'Police',
@@ -194,6 +227,7 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Renseignements', {
         editable: false,
         forceSelection: false,
         store: {
+            value: null,
             type: 'utilisateur',
             autoLoad: true,
             remoteFilter: true,
@@ -206,10 +240,20 @@ Ext.define('Sdis.Remocra.features.rci.bloc.Renseignements', {
                 {'property':'organismeTypeCodes', value:'POLICE'},
                 {'property':'hasRight', value:'RCI_C'},
                 {'property':'dnasp', value:'true'}],
-            pageSize: 15
+            pageSize: 15,
+            listeners: {
+                load: function(store, records, successful, opt) {
+                    store.insert(0, [Ext.create('Sdis.Remocra.model.Utilisateur', {id: null, nom: "fictifChampVide"})]);
+                    var combo = Ext.getCmp('arriveePolice');
+                    if (combo.value === undefined || combo.value === null) {
+                        combo.select(combo.store.data.items.filter(function(v) { return v.data.id === null; })[0]);
+                    }
+                }
+            }
         },
         pageSize: true, // bizarrerie ExtJS
         itemId : 'arriveePolice',
-        name : 'arriveePolice'
+        name : 'arriveePolice',
+        id : 'arriveePolice'
     }]
 });

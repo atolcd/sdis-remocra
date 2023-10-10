@@ -464,11 +464,34 @@ Ext.define('Sdis.Remocra.controller.rci.Fiche', {
             arriveePolice.select(fiche.record.getArriveePolice());
         }
 
+        // Vent Local
+        if (fiche.record.get('ventLocal') === true){
+            fiche.queryById('ventLocal').setValue(1);
+        } else if (fiche.record.get('ventLocal') === false){
+            fiche.queryById('ventLocal').setValue(0);
+        } else if(fiche.record.get('ventLocal') === null ) {
+            fiche.queryById('ventLocal').setValue(-1);
+        }
+
+        // Direction
+        if (fiche.record.get('directionVent') == null) {
+            fiche.queryById('directionVent').setValue('none');
+        }
+
         // Indice Rothermel
         if (fiche.record.get('indiceRothermel') == null) {
             fiche.queryById('indiceRothermel').setValue(-1);
         }
-        
+
+        // Gel des lieux
+        if (fiche.record.get('gelLieux') === true) {
+            fiche.queryById('gelLieux').setValue(1);
+        } else if (fiche.record.get('gelLieux') === false) {
+            fiche.queryById('gelLieux').setValue(0);
+        } else if(fiche.record.get('gelLieux') === null ) {
+            fiche.queryById('gelLieux').setValue(-1);
+        }
+
         // Date incendie
         var dateIncendie = fiche.record.get('dateIncendie');
         if (dateIncendie) {

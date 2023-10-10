@@ -61,6 +61,9 @@ Ext.define('Sdis.Remocra.model.Utilisateur', {
             }
         },
         { name: 'prenomNomIdentifiant', convert : function(v, record){
+                if(record.get('id') == null && record.get('nom') == 'fictifChampVide'){
+                    return 'Non renseigné';
+                }
                 return record.get('prenom') + ' ' + record.get('nom') + ' (' + record.get('identifiant') + ')';
             }
         }
