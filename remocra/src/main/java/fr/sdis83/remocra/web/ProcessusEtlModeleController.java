@@ -1,13 +1,13 @@
 package fr.sdis83.remocra.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import flexjson.JSONSerializer;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtl;
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlModele;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlModeleParametre;
 import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
 import fr.sdis83.remocra.repository.ProcessusEtlModeleParametereRepository;
 import fr.sdis83.remocra.repository.ProcessusEtlModeleRepository;
-import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import java.sql.SQLException;
@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -33,10 +34,11 @@ public class ProcessusEtlModeleController {
   @Autowired private ProcessusEtlModeleRepository processusEtlModeleRepository;
 
   @Autowired private ProcessusEtlModeleParametereRepository processusEtlModeleParametereRepository;
+  private ObjectMapper objectMapper = new ObjectMapper();
 
   @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/xml")
   @PreAuthorize("hasRight('CRISE_C')")
-  public ResponseEntity<String> listJson(
+  public ResponseEntity<String> getListModeleCrise(
       final @RequestParam(value = "page", required = false) Integer page,
       final @RequestParam(value = "start", required = false) Integer start,
       final @RequestParam(value = "limit", required = false) Integer limit,
@@ -44,27 +46,37 @@ public class ProcessusEtlModeleController {
       @RequestParam(value = "sort", required = false) String sorts,
       @RequestParam(value = "filter", required = false) String filters) {
 
-    final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
+    try {
+      String str =
+          objectMapper.writeValueAsString(
+              processusEtlModeleRepository.getAll(GlobalConstants.CATEGORIE_CRISE));
+      return new ResponseEntity<>(str, HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 
-    return new AbstractExtListSerializer<ProcessusEtlModele>("ProcessusEtlModele retrieved.") {
-
-      @Override
-      protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
-        serializer.include("data.*");
-
-        return serializer.include("total").include("message");
-      }
-
-      @Override
-      protected List<ProcessusEtlModele> getRecords() {
-        return processusEtlModeleRepository.getAll(itemFilterList);
-      }
-
-      @Override
-      protected Long countRecords() {
-        return Long.valueOf(processusEtlModeleRepository.count());
-      }
-    }.serialize();
+  @RequestMapping(
+      value = "planificationdeci",
+      method = RequestMethod.GET,
+      headers = "Accept=application/xml")
+  @PreAuthorize("hasRight('PLANIFIER_DECI')")
+  public ResponseEntity<String> getListModeleDeci(
+      final @RequestParam(value = "page", required = false) Integer page,
+      final @RequestParam(value = "start", required = false) Integer start,
+      final @RequestParam(value = "limit", required = false) Integer limit,
+      final @RequestParam(value = "query", required = false) String query,
+      @RequestParam(value = "sort", required = false) String sorts,
+      @RequestParam(value = "filter", required = false) String filters) {
+    try {
+      String str =
+          objectMapper.writeValueAsString(
+              processusEtlModeleRepository.getAll(
+                  GlobalConstants.CATEGORIE_COUVERTURE_HYDRAULIQUE));
+      return new ResponseEntity<>(str, HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**

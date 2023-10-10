@@ -70,6 +70,7 @@
 <script>
 import axios from 'axios'
 import SearchProcessParam from './SearchProcessParam.vue'
+import * as GlobalConstants from '../GlobalConstants.js'
 import _ from 'lodash'
 export default {
   name: 'Process',
@@ -98,16 +99,10 @@ export default {
   methods: {
     showModal(hiddenValues) {
       this.hiddenValues = hiddenValues;
-      var jsonFilters = JSON.stringify([{
-        property: 'categorie',
-        value: this.categorieProcess
-      }])
-      axios.get('/remocra/processusetlmodele', {
-        params: {
-          filter: jsonFilters
-        }
+      let entry =  this.categorieProcess === GlobalConstants.COUVERTURE_HYDRAULIQUE ? "/planificationdeci" : ""
+      axios.get('/remocra/processusetlmodele'+ entry, {
       }).then((response) => {
-        _.forEach(response.data.data, item => {
+        _.forEach(response.data, item => {
           this.options.push({
             'value': {
               'id': item.id,

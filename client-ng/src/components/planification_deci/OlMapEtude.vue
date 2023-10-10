@@ -8,7 +8,7 @@
 
       <ModalePeiProjet id="modalePeiProjet" :idEtude="parseInt(idEtude)" :coordonnees="peiProjetCoordonnees" :idHydrantProjet="selectedHydrantProjet"></ModalePeiProjet>
 
-      <Process ref="process" :categorieProcess="'COUVERTURE_HYDRAULIQUE'"></Process>
+      <Process ref="process" :categorieProcess=categorieProcess></Process>
 
       <b-modal id="modaleDeletePeiProjet" title="Suppression d'un PEI projet" ok-title="Supprimer" cancel-title="Annuler" @ok="deleteHydrantProjet" ok-variant="danger">
         <p class="my-4">Etes-vous certain de vouloir supprimer ce PEI ?</p>
@@ -37,6 +37,7 @@
 import OlMap from '../OlMap/OlMap.vue'
 import ModalePeiProjet from './ModalePeiProjet.vue'
 import Process from '../Process.vue'
+import * as GlobalConstants from '../../GlobalConstants.js'
 import _ from 'lodash'
 import axios from 'axios'
 
@@ -92,6 +93,8 @@ export default {
     return {
       olMap : null,
       toolBar: null,
+
+      categorieProcess: GlobalConstants.COUVERTURE_HYDRAULIQUE,
 
       processHiddenValues: [],
 

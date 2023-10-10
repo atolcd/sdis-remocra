@@ -17,7 +17,6 @@ import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.util.StatementFormat;
-import fr.sdis83.remocra.web.message.ItemFilter;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -68,36 +67,26 @@ public class ProcessusEtlModeleRepository {
     this.context = context;
   }
 
-  public List<ProcessusEtlModele> getAll(List<ItemFilter> itemFilters) {
-    String categorie = null;
-    // On filtre par rapport aux catégories (POINTDEAU,DFCI,...)
-    if (itemFilters != null && !itemFilters.isEmpty()) {
-      for (ItemFilter itemFilter : itemFilters) {
-        if ("categorie".equals(itemFilter.getFieldName())) {
-          categorie = itemFilter.getValue();
-        }
-      }
-    }
-
-    // On récupere les processusEtls en fonction des profils
-    List<ProcessusEtlModele> l = null;
+  public List<ProcessusEtlModele> getAll(String categorie) {
     try {
-      l =
-          context
-              .select()
-              .from(PROCESSUS_ETL_MODELE)
-              .leftOuterJoin(PROCESSUS_ETL_MODELE_DROIT)
-              .on(PROCESSUS_ETL_MODELE.ID.eq(PROCESSUS_ETL_MODELE_DROIT.MODELE))
-              .where(
-                  PROCESSUS_ETL_MODELE_DROIT
-                      .PROFIL_DROIT
-                      .eq(utilisateurService.getCurrentProfilDroit().getId())
-                      .and(PROCESSUS_ETL_MODELE.CATEGORIE.eq(categorie)))
-              .fetchInto(ProcessusEtlModele.class);
+      return context
+          .select()
+          .from(PROCESSUS_ETL_MODELE)
+          .leftOuterJoin(PROCESSUS_ETL_MODELE_DROIT)
+          .on(PROCESSUS_ETL_MODELE.ID.eq(PROCESSUS_ETL_MODELE_DROIT.MODELE))
+          .where(
+              PROCESSUS_ETL_MODELE_DROIT
+                  .PROFIL_DROIT
+                  .eq(utilisateurService.getCurrentProfilDroit().getId())
+                  .and(
+                      categorie == null
+                          ? DSL.trueCondition()
+                          : PROCESSUS_ETL_MODELE.CATEGORIE.eq(categorie)))
+          .fetchInto(ProcessusEtlModele.class);
     } catch (BusinessException e) {
       e.printStackTrace();
     }
-    return l;
+    return null;
   }
 
   public int count() {
