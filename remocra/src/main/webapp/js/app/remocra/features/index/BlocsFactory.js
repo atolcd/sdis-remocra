@@ -428,6 +428,14 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             items.push({
                 type: 'sep'
             });
+            items.push({
+                type: 'href',
+                href: 'manageInfosPeiMobile',
+                lbl: 'Gestion des infos PEI mobile'
+            });
+            items.push({
+                type: 'sep'
+            });
         }
         if (Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ALL_C')
             || Sdis.Remocra.Rights.hasRight('UTILISATEUR_FILTER_ALL_R')
