@@ -443,9 +443,14 @@ export default {
         axios.get('/remocra/hydrantspibi/histoverifhydrauforgrid/'+id).then(response => {
           if(response.data){
              _.forEach(response.data.data, data=> {
-                this.items.push({'dateControle':data[0] && data[0]!== null? data[0] : '-', 'debitNM1': data[1] && data[1]!== null? data[1] : '-',
-                 'debitMaxNM1': data[2]&& data[2]!== null? data[2] : '-', 'pressionNM1': data[3]&& data[3]!== null? data[3] : '-',
-                     'pressionDynNM1': data[4]&& data[4]!== null? data[4] : '-', 'pressionDynDebNM1': data[5]&& data[5]!== null? data[5] : '-'});
+                this.items.push(
+                  {'dateControle':data[0]!== undefined && data[0]!== null? data[0] : '-',
+                  'debitNM1': data[1]!== undefined && data[1]!== null? data[1] : '-',
+                  'debitMaxNM1': data[2]!== undefined && data[2]!== null? data[2] : '-',
+                  'pressionNM1': data[3]!== undefined && data[3]!== null? data[3] : '-',
+                  'pressionDynNM1': data[4]!== undefined && data[4]!== null? data[4] : '-',
+                  'pressionDynDebNM1': data[5]!== undefined && data[5]!== null? data[5] : '-'}
+                );
              })
                 let moyennes = this.items
                 this.moyenneDebitNM1 = _.meanBy(moyennes, function(o) { return o.debitNM1 && o.debitNM1 !== '-'  ? o.debitNM1 : 0 ; });
