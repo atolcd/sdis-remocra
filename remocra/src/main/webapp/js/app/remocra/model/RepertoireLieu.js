@@ -10,16 +10,6 @@ Ext.define('Sdis.Remocra.model.RepertoireLieu', {
         name: 'libelle',
         type: 'string'
     }, {
-         name: 'convertedLibelle',
-         type: 'string',
-            convert: function(newValue, model) {
-                return model.get('libelle') + '  (' + model.get('origine')+')';
-            }
-    }, {
-        name: 'code',
-        type: 'string',
-        useNull: true
-    }, {
         name: 'sourceSql',
         type: 'string'
     }, {
@@ -28,17 +18,9 @@ Ext.define('Sdis.Remocra.model.RepertoireLieu', {
     }, {
         name: 'sourceSqlLibelle',
         type: 'string'
-    }, {
-        name: 'geometrie',
-        type: 'string'
-    }, {
-        name: 'origine',
-        type: 'string'
-    }
-
-    ],
+    }],
     proxy: {
         type: 'remocra.rest',
-        url: Sdis.Remocra.util.Util.withBaseUrl('../repertoirelieu')
+        url: Sdis.Remocra.util.Util.withBaseUrl('../repertoirelieu/records')
     }
 });

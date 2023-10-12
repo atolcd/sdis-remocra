@@ -1,6 +1,7 @@
 package fr.sdis83.remocra.web;
 
 import flexjson.JSONSerializer;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.RepertoireLieu;
 import fr.sdis83.remocra.repository.RepertoireLieuRepository;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.model.RepertoireLieuData;
@@ -36,19 +37,12 @@ public class RepertoireLieuController {
 
       @Override
       protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
-        serializer.include("data.*");
-
         return serializer.include("total").include("message");
       }
 
       @Override
       protected List<RepertoireLieuData> getRecords() {
         return repertoireLieuRepository.getAll(query);
-      }
-
-      @Override
-      protected Long countRecords() {
-        return Long.valueOf(repertoireLieuRepository.count());
       }
     }.serialize();
   }
@@ -74,6 +68,33 @@ public class RepertoireLieuController {
       @Override
       protected List<RepertoireLieuData> getRecords() {
         return repertoireLieuRepository.getAllById(id, query);
+      }
+    }.serialize();
+  }
+
+  @RequestMapping(
+      value = "/records",
+      method = RequestMethod.GET,
+      headers = "Accept=application/xml")
+  @PreAuthorize("hasRight('CRISE_C')")
+  public ResponseEntity<String> listRecords() {
+    return new AbstractExtListSerializer<RepertoireLieu>("Repertoire Lieu retrieved.") {
+
+      @Override
+      protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+        serializer.include("data.*");
+
+        return serializer.include("total").include("message");
+      }
+
+      @Override
+      protected List<RepertoireLieu> getRecords() {
+        return repertoireLieuRepository.getAll();
+      }
+
+      @Override
+      protected Long countRecords() {
+        return Long.valueOf(repertoireLieuRepository.count());
       }
     }.serialize();
   }

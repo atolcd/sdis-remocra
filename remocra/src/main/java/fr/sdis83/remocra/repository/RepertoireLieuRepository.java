@@ -34,10 +34,12 @@ public class RepertoireLieuRepository {
     this.context = context;
   }
 
+  public List<RepertoireLieu> getAll() {
+    return context.selectFrom(REPERTOIRE_LIEU).fetchInto(RepertoireLieu.class);
+  }
+
   public List<RepertoireLieuData> getAll(String query) {
-    List<RepertoireLieu> repertoires =
-        context.selectFrom(REPERTOIRE_LIEU).fetchInto(RepertoireLieu.class);
-    return getRepertoireLieuData(query, repertoires);
+    return getRepertoireLieuData(query, getAll());
   }
 
   private List<RepertoireLieuData> getRepertoireLieuData(

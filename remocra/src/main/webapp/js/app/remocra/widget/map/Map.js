@@ -343,7 +343,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
 
                 // Zoom sur lieu
                 Ext.widget('combo', {
-                    store: Ext.create('Sdis.Remocra.store.RepertoireLieu'),
+                    store: Ext.create('Sdis.Remocra.store.RepertoireLieuData'),
                     queryMode: 'remote',
                     displayField: 'convertedLibelle',
                     valueField: 'id',
