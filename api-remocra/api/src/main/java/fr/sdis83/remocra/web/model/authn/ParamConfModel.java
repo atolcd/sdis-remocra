@@ -12,6 +12,15 @@ public class ParamConfModel {
   public Integer version;
   public String nomgroupe;
 
+  public ParamConfModel(
+      String cle, @Nullable String description, String valeur, Integer version, String nomgroupe) {
+    this.cle = cle;
+    this.description = description;
+    this.valeur = valeur;
+    this.version = version;
+    this.nomgroupe = nomgroupe;
+  }
+
   public String getCle() {
     return cle;
   }

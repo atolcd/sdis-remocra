@@ -59,6 +59,12 @@ public class MobileReferentielEndpoint {
   @AuthDevice
   public Response getReferentiel() {
     Long idUtilisateur = currentUser.get().userId();
+
+    String agent =
+        parametreRepository.getParametre(GlobalConstants.GESTION_AGENT).getValeurParametre();
+    List<ParamConfModel> paramsConf = referentielRepository.getParamConfMobileList();
+    paramsConf.add(new ParamConfModel(GlobalConstants.GESTION_AGENT, null, agent, 1, "Mobile"));
+
     return Response.ok(
             new ReferentielResponse(
                 referentielRepository.getCommuneList(),
@@ -76,11 +82,8 @@ public class MobileReferentielEndpoint {
                 referentielRepository.getTypeHydrantAnomalieNatureSaisieList(),
                 referentielRepository.getTypeHydrantCritereList(),
                 referentielRepository.getTypeHydrantSaisieList(),
-                referentielRepository.getParamConfMobileList(),
+                paramsConf,
                 referentielRepository.getTypeDroitMobileList(idUtilisateur),
-                parametreRepository
-                    .getParametre(GlobalConstants.GESTION_AGENT)
-                    .getValeurParametre(),
                 utilisateursRepository.getNomPrenom(idUtilisateur),
                 peiCaracteristiquesUseCase.getPeiCaracteristiques()))
         .build();
@@ -104,9 +107,6 @@ public class MobileReferentielEndpoint {
     public final List<TypeHydrantSaisieModel> typesHydrantSaisie;
     public final List<ParamConfModel> paramsConf;
     public final List<TypeDroitModel> typesDroit;
-
-    // Renvoie la méthode de gestion des Agents
-    public final String gestionAgents;
     public final String utilisateurConnecte;
     public final Map<Long, String> peiCaracteristiques;
 
@@ -128,7 +128,6 @@ public class MobileReferentielEndpoint {
         List<TypeHydrantSaisieModel> typesHydrantSaisie,
         List<ParamConfModel> paramsConf,
         List<TypeDroitModel> typesDroit,
-        String gestionAgents,
         String utilisateurConnecte,
         Map<Long, String> peiCaracteristiques) {
       this.communes = communes;
@@ -148,7 +147,6 @@ public class MobileReferentielEndpoint {
       this.typesHydrantSaisie = typesHydrantSaisie;
       this.paramsConf = paramsConf;
       this.typesDroit = typesDroit;
-      this.gestionAgents = gestionAgents;
       this.utilisateurConnecte = utilisateurConnecte;
       this.peiCaracteristiques = peiCaracteristiques;
     }
