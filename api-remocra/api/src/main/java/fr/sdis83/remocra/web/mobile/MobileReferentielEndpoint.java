@@ -6,11 +6,11 @@ import fr.sdis83.remocra.authn.UserInfo;
 import fr.sdis83.remocra.repository.ParametreRepository;
 import fr.sdis83.remocra.repository.ReferentielRepository;
 import fr.sdis83.remocra.repository.UtilisateursRepository;
+import fr.sdis83.remocra.usecase.referentiel.BuildAdresseCompleteUseCase;
 import fr.sdis83.remocra.usecase.referentiel.PeiCaracteristiquesUseCase;
 import fr.sdis83.remocra.util.GlobalConstants;
 import fr.sdis83.remocra.web.model.authn.ParamConfModel;
 import fr.sdis83.remocra.web.model.mobilemodel.TypeDroitModel;
-import fr.sdis83.remocra.web.model.referentiel.CommuneModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactRoleModel;
 import fr.sdis83.remocra.web.model.referentiel.GestionnaireModel;
@@ -45,6 +45,7 @@ public class MobileReferentielEndpoint {
   @Inject ReferentielRepository referentielRepository;
   @Inject UtilisateursRepository utilisateursRepository;
   @Inject ParametreRepository parametreRepository;
+  @Inject BuildAdresseCompleteUseCase buildAdresseCompleteUseCase;
 
   @Inject PeiCaracteristiquesUseCase peiCaracteristiquesUseCase;
 
@@ -67,8 +68,7 @@ public class MobileReferentielEndpoint {
 
     return Response.ok(
             new ReferentielResponse(
-                referentielRepository.getCommuneList(),
-                referentielRepository.getHydrantList(),
+                buildAdresseCompleteUseCase.execute(referentielRepository.getHydrantList()),
                 referentielRepository.getHydrantAnomalieList(),
                 referentielRepository.getGestionnaireList(),
                 referentielRepository.getContactList(),
@@ -90,7 +90,6 @@ public class MobileReferentielEndpoint {
   }
 
   static class ReferentielResponse {
-    public final List<CommuneModel> communes;
     public final List<HydrantModel> hydrants;
     public final List<HydrantAnomalieModel> hydrantsAnomalies;
     public final List<GestionnaireModel> gestionnaires;
@@ -111,7 +110,6 @@ public class MobileReferentielEndpoint {
     public final Map<Long, String> peiCaracteristiques;
 
     public ReferentielResponse(
-        List<CommuneModel> communes,
         List<HydrantModel> hydrants,
         List<HydrantAnomalieModel> hydrantsAnomalies,
         List<GestionnaireModel> gestionnaires,
@@ -130,7 +128,6 @@ public class MobileReferentielEndpoint {
         List<TypeDroitModel> typesDroit,
         String utilisateurConnecte,
         Map<Long, String> peiCaracteristiques) {
-      this.communes = communes;
       this.hydrants = hydrants;
       this.hydrantsAnomalies = hydrantsAnomalies;
       this.gestionnaires = gestionnaires;

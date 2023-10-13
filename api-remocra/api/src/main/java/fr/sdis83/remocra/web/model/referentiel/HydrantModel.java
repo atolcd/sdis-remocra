@@ -13,11 +13,14 @@ public class HydrantModel {
   Double lat;
   String numero;
   String code;
-  Long idCommune;
+  String adresseComplete;
+  String nomCommune;
+  String codeCommune;
   String complement;
   String voie;
   String voie2;
   String suffixeVoie;
+  String numeroVoie;
   String lieuDit;
   String observation;
   Long idRemocraGestionnaire;
@@ -94,6 +97,14 @@ public class HydrantModel {
     this.lat = lat;
   }
 
+  public String getAdresseComplete() {
+    return adresseComplete;
+  }
+
+  public void setAdresseComplete(String adresseComplete) {
+    this.adresseComplete = adresseComplete;
+  }
+
   public String getNumero() {
     return numero;
   }
@@ -110,60 +121,44 @@ public class HydrantModel {
     this.code = code;
   }
 
-  public Long getIdCommune() {
-    return idCommune;
-  }
-
-  public void setIdCommune(Long idCommune) {
-    this.idCommune = idCommune;
-  }
-
-  public String getComplement() {
-    return complement;
-  }
-
-  public void setComplement(String complement) {
-    this.complement = complement;
-  }
-
-  public String getVoie() {
-    return voie;
-  }
-
-  public void setVoie(String voie) {
-    this.voie = voie;
-  }
-
-  public String getVoie2() {
-    return voie2;
-  }
-
-  public void setVoie2(String voie2) {
-    this.voie2 = voie2;
-  }
-
-  public String getSuffixeVoie() {
-    return suffixeVoie;
-  }
-
-  public void setSuffixeVoie(String suffixeVoie) {
-    this.suffixeVoie = suffixeVoie;
-  }
-
-  public String getLieuDit() {
-    return lieuDit;
-  }
-
-  public void setLieuDit(String lieuDit) {
-    this.lieuDit = lieuDit;
-  }
-
   public String getObservation() {
     return observation;
   }
 
   public void setObservation(String observation) {
     this.observation = observation;
+  }
+
+  public String getNomCommune() {
+    return nomCommune;
+  }
+
+  public String getCodeCommune() {
+    return codeCommune;
+  }
+
+  public String getComplement() {
+    return complement;
+  }
+
+  public String getVoie() {
+    return voie;
+  }
+
+  public String getVoie2() {
+    return voie2;
+  }
+
+  public String getSuffixeVoie() {
+    return suffixeVoie;
+  }
+
+  public String getLieuDit() {
+    return lieuDit;
+  }
+
+  public String getNumeroVoie() {
+    return numeroVoie;
   }
 
   public Long getIdRemocraGestionnaire() {

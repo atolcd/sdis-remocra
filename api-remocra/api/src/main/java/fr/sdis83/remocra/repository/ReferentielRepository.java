@@ -97,14 +97,19 @@ public class ReferentielRepository {
             LAT,
             HYDRANT.NUMERO,
             HYDRANT.CODE,
-            HYDRANT.COMMUNE.as("idCommune"),
+            HYDRANT.NUMERO_VOIE,
             HYDRANT.VOIE,
             HYDRANT.VOIE2,
             HYDRANT.SUFFIXE_VOIE,
+            HYDRANT.COMPLEMENT,
+            COMMUNE.NOM.as("nomCommune"),
+            COMMUNE.CODE.as("codeCommune"),
             HYDRANT.LIEU_DIT,
             HYDRANT.OBSERVATION,
             HYDRANT.GESTIONNAIRE.as("idRemocraGestionnaire"))
         .from(HYDRANT)
+        .join(COMMUNE)
+        .on(COMMUNE.ID.eq(HYDRANT.COMMUNE))
         .fetchInto(HydrantModel.class);
   }
 
