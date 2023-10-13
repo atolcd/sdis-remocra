@@ -711,7 +711,7 @@ export default {
       }
       // On vérifie que le numéro de PEI n'est pas un doublon
       if (this.hydrant.id) {
-        return axios.post('/remocra/hydrants/checkdispo.json?id=' + this.hydrant.id + '&nature=' + this.hydrant.nature + '&commune=' + this.hydrant.commune + '&num=' + this.hydrant.numeroInterne + '&geometrie=' + this.geometrie).then(() => {
+        return axios.post('/remocra/hydrants/checkdispo.json?id=' + this.hydrant.id + '&nature=' + this.hydrant.nature + '&commune=' + this.hydrant.commune + '&num=' + this.hydrant.numeroInterne + '&geometrie=' + this.geometrie + '&nature_deci=' + this.hydrant.natureDeci).then(() => {
           return isFormValid;
         }).catch((error) => {
           this.$notify({
