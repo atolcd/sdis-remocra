@@ -7,6 +7,7 @@ import fr.sdis83.remocra.repository.ParametreRepository;
 import fr.sdis83.remocra.repository.ReferentielRepository;
 import fr.sdis83.remocra.repository.UtilisateursRepository;
 import fr.sdis83.remocra.usecase.referentiel.BuildAdresseCompleteUseCase;
+import fr.sdis83.remocra.usecase.referentiel.GetTypeVisiteUtilisateur;
 import fr.sdis83.remocra.usecase.referentiel.PeiCaracteristiquesUseCase;
 import fr.sdis83.remocra.util.GlobalConstants;
 import fr.sdis83.remocra.web.model.authn.ParamConfModel;
@@ -28,6 +29,7 @@ import fr.sdis83.remocra.web.model.referentiel.TypeHydrantSaisieModel;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.ws.rs.Consumes;
@@ -46,8 +48,8 @@ public class MobileReferentielEndpoint {
   @Inject UtilisateursRepository utilisateursRepository;
   @Inject ParametreRepository parametreRepository;
   @Inject BuildAdresseCompleteUseCase buildAdresseCompleteUseCase;
-
   @Inject PeiCaracteristiquesUseCase peiCaracteristiquesUseCase;
+  @Inject GetTypeVisiteUtilisateur getTypeVisiteUtilisateur;
 
   @Inject @CurrentUser Provider<UserInfo> currentUser;
 
@@ -66,6 +68,10 @@ public class MobileReferentielEndpoint {
     List<ParamConfModel> paramsConf = referentielRepository.getParamConfMobileList();
     paramsConf.add(new ParamConfModel(GlobalConstants.GESTION_AGENT, null, agent, 1, "Mobile"));
 
+    List<TypeHydrantSaisieModel> typeVisiteUtilisateur =
+        getTypeVisiteUtilisateur.execute(
+            idUtilisateur, referentielRepository.getTypeHydrantSaisieList());
+
     return Response.ok(
             new ReferentielResponse(
                 buildAdresseCompleteUseCase.execute(referentielRepository.getHydrantList()),
@@ -79,9 +85,12 @@ public class MobileReferentielEndpoint {
                 referentielRepository.getTypeHydrantNatureDeciList(),
                 referentielRepository.getTypeHydrantAnomalieList(),
                 referentielRepository.getTypeHydrantAnomalieNatureList(),
-                referentielRepository.getTypeHydrantAnomalieNatureSaisieList(),
+                referentielRepository.getTypeHydrantAnomalieNatureSaisieList(
+                    typeVisiteUtilisateur.stream()
+                        .map(TypeHydrantSaisieModel::getIdRemocra)
+                        .collect(Collectors.toList())),
                 referentielRepository.getTypeHydrantCritereList(),
-                referentielRepository.getTypeHydrantSaisieList(),
+                typeVisiteUtilisateur,
                 paramsConf,
                 referentielRepository.getTypeDroitMobileList(idUtilisateur),
                 utilisateursRepository.getNomPrenom(idUtilisateur),

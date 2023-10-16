@@ -257,7 +257,8 @@ public class ReferentielRepository {
         .fetchInto(TypeHydrantAnomalieNatureModel.class);
   }
 
-  public List<TypeHydrantAnomalieNatureSaisieModel> getTypeHydrantAnomalieNatureSaisieList() {
+  public List<TypeHydrantAnomalieNatureSaisieModel> getTypeHydrantAnomalieNatureSaisieList(
+      List<Long> listIdTypeSaisie) {
     return context
         .select(
             TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES.TYPE_HYDRANT_ANOMALIE_NATURE.as(
@@ -275,6 +276,7 @@ public class ReferentielRepository {
                                 .selectDistinct(TYPE_HYDRANT_ANOMALIE.ID)
                                 .from(TYPE_HYDRANT_ANOMALIE)
                                 .where(TYPE_HYDRANT_ANOMALIE.CRITERE.isNotNull())))))
+        .and(TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES.SAISIES.in(listIdTypeSaisie))
         .fetchInto(TypeHydrantAnomalieNatureSaisieModel.class);
   }
 
