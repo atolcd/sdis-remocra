@@ -1,11 +1,14 @@
 <template>
   <div id="planificationDeci" class="container-fluid">
     <div v-if="showMap">
-      <b-button variant="outline-primary"
-          @click="showMap = false"
-          class="buttonRetour">
-        <img src="../../assets/img/resultset_previous.png" width="16"/>Quitter l'étude
-      </b-button>
+      <div class="entete">
+          <b-button variant="outline-primary"
+              @click="showMap = false"
+              class="buttonRetour">
+            <img src="../../assets/img/resultset_previous.png" width="16"/>Quitter l'étude
+          </b-button>
+        <div class="title"> {{ getSelectedEtude().nom }}</div>
+      </div>
 
       <OlMapEtude :cleIgn="cleIgn"
                   :idEtude="selectedEtude"
@@ -411,7 +414,12 @@ export default {
 }
 
 .buttonRetour {
-  margin-bottom: 15px;
   margin-left: 15px;
+  margin-right: 30px;
+}
+.entete {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
 }
 </style>
