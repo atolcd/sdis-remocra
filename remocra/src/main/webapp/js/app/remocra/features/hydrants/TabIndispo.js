@@ -11,11 +11,11 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
 
     store: {type: 'crIndispos'},
 
-    enableColumnResize: false,
-    enableColumnMove: false,
+    enableColumnResize: true,
+    enableColumnMove: true,
     
     height: 500,
-    forceFit: true,
+    forceFit: false,
     dockedItems: [{
         xtype: 'toolbar',
         dock: 'top',
@@ -71,13 +71,15 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
             align : 'center',
             dataIndex: 'dateDebut',
             xtype: 'datecolumn',
-            format:'d/m/y'+' à '+'H:i:s'
+            format:'d/m/y'+' à '+'H:i:s',
+            width: '8%'
         },{
             text: 'Date de fin',
             align : 'center',
             dataIndex: 'dateFin',
             xtype: 'datecolumn',
-            format:'d/m/y'+' à '+'H:i:s'
+            format:'d/m/y'+' à '+'H:i:s',
+            width: '8%'
         },{
             text: 'Statut',
             dataIndex: 'statut',
@@ -111,8 +113,8 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
                     }
                 }
             },
-            sortable: false
-
+            sortable: false,
+            flex: 1
         },{
             text: 'Motif',
             dataIndex: 'motif',
@@ -120,7 +122,9 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
             renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
                 metaData.tdAttr = 'data-qtip="' + record.raw.motif + '"';
                 return value;
-            }
+            },
+            width: '18%',
+            flex: 1
         },{
              text: 'Commune',
              align : 'center',
@@ -153,7 +157,8 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
                         headerfilter.applyFilters();
                     }
                 }
-             }
+             },
+             flex: 1
         }
         ,{
             text: 'Mise en <br /> indisponibilité automatique',
@@ -178,16 +183,14 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
             xtype: 'booleancolumn',
             trueText: 'Oui',
             falseText: 'Non'
-        }
-        ,{
+        },{
             text: 'Notifier avant <br /> remise en disponibilité',
             align : 'center',
             dataIndex: 'melAvantDispo',
             xtype: 'booleancolumn',
             trueText: 'Oui',
             falseText: 'Non'
-        }     
-        ,{
+        },{
             text: 'Points d\'eau',
             align : 'center',
             dataIndex: 'totalHydrants',
@@ -196,6 +199,17 @@ Ext.define('Sdis.Remocra.features.hydrants.TabIndispo', {
                 metaData.tdAttr = 'data-qtip="' + record.raw.hydrantsTooltip + '"';
                 return value;
             }
+        },{
+             text: 'Observations',
+             dataIndex: 'observation',
+             align : 'center',
+             renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+                 tooltipContent = record.raw.observation != null ? record.raw.observation : '';
+                 metaData.tdAttr = 'data-qtip="' + tooltipContent + '"';
+                 return value;
+             },
+             width: '18%',
+             flex: 1
         }];
 
         this.callParent(arguments);

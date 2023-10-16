@@ -96,6 +96,9 @@ Ext.define('Sdis.Remocra.model.HydrantIndispoTemporaire', {
     },{
         name : 'hydrantsTooltip',
         type : 'string'
+    },{
+        name : 'observation',
+        type : 'string'
     }
    ],
     associations : [ {

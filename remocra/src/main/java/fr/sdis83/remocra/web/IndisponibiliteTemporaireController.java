@@ -63,7 +63,8 @@ public class IndisponibiliteTemporaireController {
         .include("data.basculeAutoIndispo")
         .include("data.basculeAutoDispo")
         .include("data.melAvantIndispo")
-        .include("data.melAvantDispo");
+        .include("data.melAvantDispo")
+        .include("data.observation");
 
     return serializer.include("total").include("message").exclude("data.hydrants.*");
   }
@@ -113,7 +114,8 @@ public class IndisponibiliteTemporaireController {
             .include("data.basculeAutoIndispo")
             .include("data.basculeAutoDispo")
             .include("data.melAvantIndispo")
-            .include("data.melAvantDispo");
+            .include("data.melAvantDispo")
+            .include("data.observation");
         return serializer.include("total").include("message").exclude("data.hydrants.*");
       }
 
