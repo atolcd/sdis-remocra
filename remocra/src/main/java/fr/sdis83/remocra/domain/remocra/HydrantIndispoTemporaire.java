@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.springframework.roo.addon.javabean.RooJavaBean;
@@ -28,7 +29,8 @@ import org.springframework.roo.addon.tostring.RooToString;
 public class HydrantIndispoTemporaire {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "indispo_temp_seq")
+  @SequenceGenerator(name = "indispo_temp_seq", sequenceName = "hydrant_indispo_temporaire_id_seq")
   @Column(name = "id")
   private Long id;
 

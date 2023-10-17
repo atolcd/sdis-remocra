@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -19,7 +20,8 @@ import org.springframework.roo.addon.tostring.RooToString;
 public class TypeOldebAnomalie {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "type_oldeb_anomalie_seq")
+  @SequenceGenerator(name = "type_oldeb_anomalie_seq", sequenceName = "type_oldeb_anomalie_id_seq")
   @Column(name = "id")
   private Long id;
 
