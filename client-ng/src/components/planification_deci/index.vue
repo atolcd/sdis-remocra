@@ -1,7 +1,7 @@
 <template>
   <div id="planificationDeci" class="container-fluid">
     <div v-if="showMap">
-      <div class="entete">
+      <div class="enteteEtude">
           <b-button variant="outline-primary"
               @click="showMap = false"
               class="buttonRetour">
@@ -417,7 +417,7 @@ export default {
   margin-left: 15px;
   margin-right: 30px;
 }
-.entete {
+.enteteEtude {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
