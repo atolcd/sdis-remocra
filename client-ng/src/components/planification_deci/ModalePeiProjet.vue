@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-modal id="modalePeiProjet" title="PEI Projet" size="lg" cancel-title="Annuler" ok-title="Valider" ref="modal" @show="resetModal" @ok="handleOk">
+  <b-modal id="modalePeiProjet" title="PEI Projet" size="lg" cancel-title="Annuler" ok-title="Valider" ref="modal" @ok="handleOk">
     <form ref="formPeiprojet">
       <div class="row">
         <div class="col-md-6">
@@ -111,6 +111,9 @@ import _ from 'lodash'
 import * as OlProj from 'ol/proj'
 import * as eventTypes from '../../bus/event-types.js'
 
+const VALID = "valid";
+const INVALID = "invalid";
+
 export default {
   name: 'ModalPeiProjet',
 
@@ -160,24 +163,9 @@ export default {
       required: false
     }
   },
-
   methods: {
-    resetModal() {
-      this.type = null;
-      this.deci = null;
-      this.capacite = null;
-      this.diametreNominal = null;
-      this.diametreCanalisation = null;
-      this.debit = null;
-      this.etats = {
-        type: null,
-        deci: null,
-        diametreNominal: null,
-        diametreCanalisation: null,
-        capacite: null,
-        debit: null
-      };
-
+    initModal(idHydrantProjet) {
+      this.idHydrantProjet = idHydrantProjet;
       // Combo Types
       this.comboTypes = [{
         value: "PIBI",
@@ -231,7 +219,7 @@ export default {
       });
 
       if(this.idHydrantProjet) {
-        axios.get("http://localhost:8080/remocra/etudehydrantprojet", {
+        axios.get("/remocra/etudehydrantprojet", {
           params: {
             filter: JSON.stringify([{
               "property": "id",
@@ -256,7 +244,11 @@ export default {
             text: "Impossible de récupérer les PEI projet de l'étude"
           });
         })
+      } else {
+        // Sinon c'est une création, on init toutes les valeurs à null
+        this.initValues();
       }
+      this.$bvModal.show("modalePeiProjet");
     },
 
     onTypeSelected() {
@@ -274,22 +266,48 @@ export default {
       };
     },
 
-    checkFormValidity() {
-      this.etats = _.mapValues(this.etats, () => 'valid');
+    /**
+     * Permet d'initialiser toutes les valeurs à null
+     */
+    initValues() {
+      this.type = null;
+      this.deci = null;
+      this.onTypeSelected();
+    },
 
-      this.etats.type = (this.type == null) ? "invalid" : "valid";
-      this.etats.deci = (this.deci == null) ? "invalid" : "valid";
+    checkFormValidity() {
+      this.etats = _.mapValues(this.etats, () => VALID);
+
+      this.etats.type = this.checkIfNull(this.type);
+      this.etats.deci = this.checkIfNull(this.deci);
 
       if (this.type == "PIBI") {
-        this.etats.diametreNominal = (this.diametreNominal == null) ? "invalid" : "valid";
-        this.etats.diametreCanalisation = (this.diametreCanalisation == null) ? "invalid" : "valid";
+        this.etats.diametreNominal = this.checkIfNull(this.diametreNominal);
+        this.etats.diametreCanalisation = this.checkIfNull(this.diametreCanalisation);
       } else if (this.type == "reserve") {
-        this.etats.debit = (this.debit == null && this.debit > 0) ? "invalid" : "valid";
-        this.etats.capacite = (this.capacite == null && this.capacite > 0) ? "invalid" : "valid";
+        this.etats.debit = this.checkIfNullOrNegatif(this.debit);
+        this.etats.capacite = this.checkIfNullOrNegatif(this.capacite) ;
       } else if (this.type == "PA") {
-        this.etats.debit = (this.debit == null && this.debit > 0) ? "invalid" : "valid";
+        this.etats.debit = this.checkIfNullOrNegatif(this.debit);
       }
+
       return !this.hasInvalidState(this.etats) && this.$refs['formPeiprojet'].checkValidity();
+    },
+
+    /**
+     * Renvoie 'invalid' si le paramètre est null sinon 'valid'
+     * @param value : la valeur du formulaire
+     */
+     checkIfNull(value) {
+      return (value == null) ? INVALID : VALID;
+    },
+
+    /**
+     * Renvoie 'invalid' si le paramètre est null ou négatif sinon 'valid'
+     * @param value : la valeur du formulaire
+     */
+    checkIfNullOrNegatif(value) {
+      return (value == null || value < 0) ? INVALID : VALID;
     },
 
     /**
@@ -301,7 +319,7 @@ export default {
     hasInvalidState(etats) {
       var hasInvalidState = false;
       for (var key in etats) {
-        hasInvalidState = hasInvalidState || etats[key] == "invalid";
+        hasInvalidState = hasInvalidState || etats[key] == INVALID;
       }
       return hasInvalidState;
     },

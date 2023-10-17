@@ -6,7 +6,8 @@
         <b-spinner v-if="spinnerMap" id="spinner" variant="primary"></b-spinner>
       </div>
 
-      <ModalePeiProjet id="modalePeiProjet" :idEtude="parseInt(idEtude)" :coordonnees="peiProjetCoordonnees" :idHydrantProjet="selectedHydrantProjet"></ModalePeiProjet>
+      <ModalePeiProjet ref="modalePeiProjet" id="modalePeiProjet" :idEtude="parseInt(idEtude)" :coordonnees="peiProjetCoordonnees" :idHydrantProjet="idHydrantProjet">
+      </ModalePeiProjet>
 
       <Process ref="process" :categorieProcess=categorieProcess></Process>
 
@@ -93,9 +94,9 @@ export default {
     return {
       olMap : null,
       toolBar: null,
-
+      
       categorieProcess: GlobalConstants.COUVERTURE_HYDRAULIQUE,
-
+      idHydrantProjet: null,
       processHiddenValues: [],
 
       interactionAddPei: null,
@@ -192,9 +193,10 @@ export default {
         title: "Modifier un pei",
         name: "modificationPei",
         onClick: () => {
-          this.selectedHydrantProjet = this.selectedFeatures[0].properties.id;
+          // L'identifiant est de la forme etude_hydrant_projet.id, donc on split
+          this.idHydrantProjet = this.selectedFeatures[0].id.split('.')[1];
           this.$nextTick(() => {
-            this.$bvModal.show("modalePeiProjet");
+            this.$refs.modalePeiProjet.initModal(this.idHydrantProjet);
           });
         },
         disabled: () => {
@@ -412,7 +414,8 @@ export default {
         if(feature.getGeometryName() === 'newPeiProjet') {
           this.peiProjetCoordonnees = feature.getGeometry().getCoordinates();
           this.$nextTick(() => {
-            this.$bvModal.show("modalePeiProjet");
+            this.idHydrantProjet = null;
+            this.$refs.modalePeiProjet.initModal(null);
           });
         }
       })
