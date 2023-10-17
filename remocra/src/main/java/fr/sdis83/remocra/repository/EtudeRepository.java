@@ -11,6 +11,7 @@ import static fr.sdis83.remocra.db.model.remocra.tables.Commune.COMMUNE;
 import static fr.sdis83.remocra.db.model.remocra.tables.Document.DOCUMENT;
 
 import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Organisme;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeEtude;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeEtudeStatut;
@@ -432,5 +433,30 @@ public class EtudeRepository {
             .where(TYPE_ETUDE_STATUT.CODE.eq("TERMINEE"))
             .fetchOneInto(Long.class);
     context.update(ETUDE).set(ETUDE.STATUT, idTypeEtudeStatut).where(ETUDE.ID.eq(id)).execute();
+  }
+
+  /**
+   * Permet de récupérer l'emprise géographique d'une étude
+   *
+   * @param idEtude
+   * @return
+   */
+  public String getEtenduEtude(Long idEtude) {
+    return context
+        .select(
+            DSL.field(
+                    "St_AsEwkt(St_transform(St_SetSrid(CAST(St_Extent("
+                        + COMMUNE.GEOMETRIE
+                        + ") as Geometry), "
+                        + GlobalConstants.SRID_2154
+                        + "), 3857))")
+                .as("geometrie"))
+        .from(ETUDE)
+        .join(ETUDE_COMMUNES)
+        .on(ETUDE.ID.eq(ETUDE_COMMUNES.ETUDE))
+        .join(COMMUNE)
+        .on(COMMUNE.ID.eq(ETUDE_COMMUNES.COMMUNE))
+        .where(ETUDE.ID.eq(idEtude))
+        .fetchOneInto(String.class);
   }
 }

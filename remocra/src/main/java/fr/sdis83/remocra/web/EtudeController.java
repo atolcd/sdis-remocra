@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import org.joda.time.Instant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -109,6 +110,22 @@ public class EtudeController {
       return new SuccessErrorExtSerializer(
               false, "Une erreur est survenue lors de la création de l'étude.")
           .serialize();
+    }
+  }
+
+  @RequestMapping(
+      value = "/etendu/{idEtude}",
+      method = RequestMethod.GET,
+      headers = "Accept=application/json")
+  @PreAuthorize("hasRight('PLANIFIER_DECI')")
+  public ResponseEntity<String> getEtendu(final @PathVariable("idEtude") Long idEtude) {
+    try {
+
+      return new ResponseEntity(etudeRepository.getEtenduEtude(idEtude), HttpStatus.OK);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResponseEntity(
+          "Impossible de récupérer l'emprise géographique ", HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

@@ -134,15 +134,24 @@ export default {
 
   mounted: function() {
     this.olMap = this.$refs['olMap'];
-    // Si un extent a été fourni, on centre la map dessus
-    if(this.bounds != null) {
-      var srid = this.bounds.split(";")[0];
-      var extent = [];
-      _.forEach((this.bounds.split(";")[1]).split(","), n => {
-        extent.push(Number(n));
-      });
-      this.olMap.map.getView().fit(OlProj.transformExtent(extent, srid, 'EPSG:3857'));
-    }
+    axios.get('/remocra/etudes/etendu/' + this.idEtude).then(response => {
+      // Si on a une ou plusieurs communes, on zoom dessus
+      if(response.data != null && response.data != ''){
+        var sridBounds = response.data.split(';')
+        var bounds = sridBounds[1]
+        var feature = new WKT().readGeometry(bounds)
+        this.extent = feature.getExtent()
+        this.olMap.map.getView().fit(this.extent)
+      } else if(this.bounds != null) {
+        // Sinon, on prend en compte le bounds si on a une valeur
+          var srid = this.bounds.split(";")[0];
+          var extent = [];
+          _.forEach((this.bounds.split(";")[1]).split(","), n => {
+            extent.push(Number(n));
+          });
+          this.olMap.map.getView().fit(OlProj.transformExtent(extent, srid, 'EPSG:3857'));
+      }
+    });
 
     this.toolBar = this.$refs['olMap'].$refs['toolBar'];
     this.processHiddenValues["ID_OBJET"] = this.idEtude;
