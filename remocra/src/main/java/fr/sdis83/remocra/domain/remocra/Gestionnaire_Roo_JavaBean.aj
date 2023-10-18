@@ -15,15 +15,7 @@ privileged aspect Gestionnaire_Roo_JavaBean {
     public void Gestionnaire.setId(Long id) {
         this.id = id;
     }
-    
-    public Integer Gestionnaire.getVersion() {
-        return this.version;
-    }
-    
-    public void Gestionnaire.setVersion(Integer version) {
-        this.version = version;
-    }
-    
+
     public String Gestionnaire.getNom() {
         return this.nom;
     }

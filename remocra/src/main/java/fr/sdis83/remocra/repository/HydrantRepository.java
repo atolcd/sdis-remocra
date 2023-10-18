@@ -149,7 +149,7 @@ public class HydrantRepository {
     h.setSpDeci(JSONUtil.getLong(data, "spDeci"));
     h.setMaintenanceDeci(JSONUtil.getLong(data, "maintenanceDeci"));
     h.setGestionnaire(JSONUtil.getLong(data, "gestionnaire"));
-    h.setSite(JSONUtil.getLong(data, "site"));
+    h.setGestionnaireSite(JSONUtil.getLong(data, "gestionnaire_site"));
     h.setSuffixeVoie(JSONUtil.getString(data, "suffixeVoie"));
     h.setCommune(JSONUtil.getLong(data, "commune"));
     h.setDomaine(JSONUtil.getLong(data, "domaine"));
@@ -246,7 +246,7 @@ public class HydrantRepository {
     h.setSpDeci(JSONUtil.getLong(data, "spDeci"));
     h.setMaintenanceDeci(JSONUtil.getLong(data, "maintenanceDeci"));
     h.setGestionnaire(JSONUtil.getLong(data, "gestionnaire"));
-    h.setSite(JSONUtil.getLong(data, "site"));
+    h.setGestionnaireSite(JSONUtil.getLong(data, "gestionnaire_site"));
     h.setSuffixeVoie(JSONUtil.getString(data, "suffixeVoie"));
     h.setCommune(JSONUtil.getLong(data, "commune"));
     h.setDomaine(JSONUtil.getLong(data, "domaine"));
@@ -329,7 +329,7 @@ public class HydrantRepository {
             .set(HYDRANT.SP_DECI, h.getSpDeci())
             .set(HYDRANT.MAINTENANCE_DECI, h.getMaintenanceDeci())
             .set(HYDRANT.GESTIONNAIRE, h.getGestionnaire())
-            .set(HYDRANT.SITE, h.getSite())
+            .set(HYDRANT.GESTIONNAIRE_SITE, h.getGestionnaireSite())
             .set(HYDRANT.SUFFIXE_VOIE, h.getSuffixeVoie())
             .set(HYDRANT.COMMUNE, h.getCommune())
             .set(HYDRANT.DOMAINE, h.getDomaine())
@@ -377,7 +377,7 @@ public class HydrantRepository {
         .set(HYDRANT.SP_DECI, h.getSpDeci())
         .set(HYDRANT.MAINTENANCE_DECI, h.getMaintenanceDeci())
         .set(HYDRANT.GESTIONNAIRE, h.getGestionnaire())
-        .set(HYDRANT.SITE, h.getSite())
+        .set(HYDRANT.GESTIONNAIRE_SITE, h.getGestionnaireSite())
         .set(HYDRANT.SUFFIXE_VOIE, h.getSuffixeVoie())
         .set(HYDRANT.COMMUNE, h.getCommune())
         .set(HYDRANT.DOMAINE, h.getDomaine())

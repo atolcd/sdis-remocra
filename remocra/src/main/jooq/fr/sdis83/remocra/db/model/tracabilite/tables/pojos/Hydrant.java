@@ -26,7 +26,7 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant implements Serializable {
 
-	private static final long serialVersionUID = 679988139;
+	private static final long serialVersionUID = -2116677333;
 
 	private Integer  id;
 	private Long     numTransac;
@@ -73,7 +73,7 @@ public class Hydrant implements Serializable {
 	private String   suffixeVoie;
 	private String   niveau;
 	private String   gestionnaire;
-	private String   site;
+	private String   gestionnaireSite;
 	private String   autoriteDeci;
 	private String   jumele;
 	private Boolean  dispositifInviolabilite;
@@ -141,7 +141,7 @@ public class Hydrant implements Serializable {
 		this.suffixeVoie = value.suffixeVoie;
 		this.niveau = value.niveau;
 		this.gestionnaire = value.gestionnaire;
-		this.site = value.site;
+		this.gestionnaireSite = value.gestionnaireSite;
 		this.autoriteDeci = value.autoriteDeci;
 		this.jumele = value.jumele;
 		this.dispositifInviolabilite = value.dispositifInviolabilite;
@@ -208,7 +208,7 @@ public class Hydrant implements Serializable {
 		String   suffixeVoie,
 		String   niveau,
 		String   gestionnaire,
-		String   site,
+		String   gestionnaireSite,
 		String   autoriteDeci,
 		String   jumele,
 		Boolean  dispositifInviolabilite,
@@ -273,7 +273,7 @@ public class Hydrant implements Serializable {
 		this.suffixeVoie = suffixeVoie;
 		this.niveau = niveau;
 		this.gestionnaire = gestionnaire;
-		this.site = site;
+		this.gestionnaireSite = gestionnaireSite;
 		this.autoriteDeci = autoriteDeci;
 		this.jumele = jumele;
 		this.dispositifInviolabilite = dispositifInviolabilite;
@@ -699,12 +699,12 @@ public class Hydrant implements Serializable {
 		return this;
 	}
 
-	public String getSite() {
-		return this.site;
+	public String getGestionnaireSite() {
+		return this.gestionnaireSite;
 	}
 
-	public Hydrant setSite(String site) {
-		this.site = site;
+	public Hydrant setGestionnaireSite(String gestionnaireSite) {
+		this.gestionnaireSite = gestionnaireSite;
 		return this;
 	}
 

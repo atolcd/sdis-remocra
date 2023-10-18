@@ -129,21 +129,6 @@ public class GestionnaireController {
   }
 
   @RequestMapping(
-      value = "/delete/{id}",
-      method = RequestMethod.DELETE,
-      headers = "Accept=application/json")
-  @PreAuthorize("hasRight('HYDRANTS_GESTIONNAIRE_C')")
-  public ResponseEntity<java.lang.String> delete(@PathVariable("id") Long id) {
-    try {
-      deleteGestionnaireUseCase.execute(id);
-      return new SuccessErrorExtSerializer(true, "Gestionnaire supprimé").serialize();
-    } catch (Exception e) {
-      logger.error(e.getMessage());
-      return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
-    }
-  }
-
-  @RequestMapping(
       value = "/manageGestionnaire",
       method = RequestMethod.GET,
       headers = "Accept=application/json")

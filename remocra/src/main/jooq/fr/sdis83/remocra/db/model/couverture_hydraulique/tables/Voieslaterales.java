@@ -28,7 +28,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Voieslaterales extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 1513138026;
+	private static final long serialVersionUID = -102357520;
 
 	/**
 	 * The reference instance of <code>couverture_hydraulique.voieslaterales</code>
@@ -67,6 +67,12 @@ public class Voieslaterales extends TableImpl<Record> {
 	 * The column <code>couverture_hydraulique.voieslaterales.traversable</code>. Indique si la voie est traversable
 	 */
 	public final TableField<Record, Boolean> TRAVERSABLE = createField("traversable", org.jooq.impl.SQLDataType.BOOLEAN, this, "Indique si la voie est traversable");
+
+	/**
+	 * The column <code>couverture_hydraulique.voieslaterales.accessible</code>. Voie accessible depuis le point de jonction (non accessible si entre 
+les voies gauche et droite si ces dernières sont non traversables)
+	 */
+	public final TableField<Record, Boolean> ACCESSIBLE = createField("accessible", org.jooq.impl.SQLDataType.BOOLEAN.defaulted(true), this, "Voie accessible depuis le point de jonction (non accessible si entre \nles voies gauche et droite si ces dernières sont non traversables)");
 
 	/**
 	 * Create a <code>couverture_hydraulique.voieslaterales</code> table reference

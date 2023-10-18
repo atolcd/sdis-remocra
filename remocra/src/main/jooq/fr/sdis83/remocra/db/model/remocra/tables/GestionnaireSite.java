@@ -4,6 +4,9 @@
 package fr.sdis83.remocra.db.model.remocra.tables;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
+import fr.sdis83.remocra.db.converter.GeometryBinding;
 import fr.sdis83.remocra.db.model.remocra.Keys;
 import fr.sdis83.remocra.db.model.remocra.Remocra;
 
@@ -35,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class GestionnaireSite extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 508670383;
+	private static final long serialVersionUID = -944334827;
 
 	/**
 	 * The reference instance of <code>remocra.gestionnaire_site</code>
@@ -71,14 +74,14 @@ public class GestionnaireSite extends TableImpl<Record> {
 	public final TableField<Record, String> NOM = createField("nom", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Libellé du gestionnaire de site");
 
 	/**
-	 * The column <code>remocra.gestionnaire_site.version</code>.
+	 * The column <code>remocra.gestionnaire_site.geometrie</code>.
 	 */
-	public final TableField<Record, Integer> VERSION = createField("version", org.jooq.impl.SQLDataType.INTEGER.defaulted(true), this, "");
+	public final TableField<Record, Geometry> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("USER-DEFINED"), this, "", new GeometryBinding());
 
 	/**
-	 * The column <code>remocra.gestionnaire_site.gestionnaire</code>. Identifiant du gestionnaire auquel est rattaché le gestionnaire de site
+	 * The column <code>remocra.gestionnaire_site.id_gestionnaire</code>. Identifiant du gestionnaire auquel est rattaché le gestionnaire de site
 	 */
-	public final TableField<Record, Long> GESTIONNAIRE = createField("gestionnaire", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant du gestionnaire auquel est rattaché le gestionnaire de site");
+	public final TableField<Record, Long> ID_GESTIONNAIRE = createField("id_gestionnaire", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant du gestionnaire auquel est rattaché le gestionnaire de site");
 
 	/**
 	 * Create a <code>remocra.gestionnaire_site</code> table reference

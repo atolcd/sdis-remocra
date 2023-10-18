@@ -25,7 +25,7 @@ public class DebitSimultane implements Featurable {
   @Column(name = "id")
   private Long id;
 
-  @ManyToOne private Site site;
+  @ManyToOne private GestionnaireSite gestionnaireSite;
 
   @Type(type = "org.hibernate.spatial.GeometryType")
   private Geometry geometrie;

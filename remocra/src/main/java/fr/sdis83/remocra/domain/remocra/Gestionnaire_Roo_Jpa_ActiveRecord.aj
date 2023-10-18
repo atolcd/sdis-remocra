@@ -14,7 +14,7 @@ privileged aspect Gestionnaire_Roo_Jpa_ActiveRecord {
     @PersistenceContext
     transient EntityManager Gestionnaire.entityManager;
     
-    public static final List<String> Gestionnaire.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "version", "nom", "code", "actif");
+    public static final List<String> Gestionnaire.fieldNames4OrderClauseFilter = java.util.Arrays.asList("id", "nom", "code", "actif");
     
     public static final EntityManager Gestionnaire.entityManager() {
         EntityManager em = new Gestionnaire().entityManager;

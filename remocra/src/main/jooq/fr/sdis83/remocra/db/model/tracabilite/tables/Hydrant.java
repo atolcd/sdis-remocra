@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -224623852;
+	private static final long serialVersionUID = 138550091;
 
 	/**
 	 * The reference instance of <code>tracabilite.hydrant</code>
@@ -281,9 +281,9 @@ public class Hydrant extends TableImpl<Record> {
 	public final TableField<Record, String> GESTIONNAIRE = createField("gestionnaire", org.jooq.impl.SQLDataType.VARCHAR, this, "");
 
 	/**
-	 * The column <code>tracabilite.hydrant.site</code>.
+	 * The column <code>tracabilite.hydrant.gestionnaire_site</code>.
 	 */
-	public final TableField<Record, String> SITE = createField("site", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+	public final TableField<Record, String> GESTIONNAIRE_SITE = createField("gestionnaire_site", org.jooq.impl.SQLDataType.VARCHAR, this, "");
 
 	/**
 	 * The column <code>tracabilite.hydrant.autorite_deci</code>.

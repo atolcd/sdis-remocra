@@ -56,13 +56,15 @@
             </b-form-group>
           </div>
         </div>
+        <!-- TODO a cause des hangements en base, ca pète l'appli, sera de retour avec un commit futur de gestion des sites
         <div class="row">
           <div class="col-md-10" v-if="hydrant.natureDeci != idDeciPublic">
             <b-form-group label="Site" label-for="site" label-cols-md="2">
               <b-form-select id="site" v-model="hydrant.site" class="parametre" :options="ellipsis(comboSite)" size="sm"></b-form-select>
             </b-form-group>
           </div>
-        </div>
+        </div> 
+        -->
       </div>
       <div>
         <b-tabs fill content-class="mt-3" active-nav-item-class="text-primary" nav-class="fiche-onglets">
@@ -212,7 +214,7 @@ export default {
       comboDeci: [],
       comboSpDeci: [],
       comboGestionnaire: [],
-      comboSite: [],
+      // comboSite: [], TODO : Gestion des sites
       comboAutoriteDeci: [],
       listeNaturesDeci: [],
       comboMaintenanceDeci: [],
@@ -624,26 +626,11 @@ export default {
       this.$refs.ficheVisite.onNatureChange();
       this.hydrant.gestionnaire = null
       this.hydrant.site = null
-    },
-    /**
-     * Appelée lorsque l'on créé un gestionnaire grâce à la modale
-     * @param values Les données du gestionnaire créé (transmises par le composant ModalGestionnaire)
-     */
-    onGestionnaireCreated(values) {
-      // Création : ajout du gestionnaire dans la combo
-      if ((_.findIndex(this.comboGestionnaire, o => o.value == values.id) == -1)) {
-        this.comboGestionnaire.push({
-          text: values.nom,
-          value: values.id
-        });
-      } else { // Modification : mise à jour du nom pour le gestionnaire déjà sélectionné
-        _.find(this.comboGestionnaire, o => o.value == values.id).text = values.nom;
-      }
-      this.hydrant.gestionnaire = values.id
-    },
+    }, 
     /**
      * En cas de changement de gestionnaire, on met à jour la liste des sites
      */
+    /** TODO : Gestion des sites
     onGestionnaireChange() {
       if (this.hydrant.gestionnaire != null) {
         this.getComboData(this, 'comboSite', '/remocra/site.json', {
@@ -665,6 +652,7 @@ export default {
         this.hydrant.site = null;
       }
     },
+    */
     /**
      * Fonction appelée lorsque les coordonnées du PEI sont modifies
      * On peut notifier les composants enfant, notamment si certains de leurs champs sont dépendant de la géométrie du PEI

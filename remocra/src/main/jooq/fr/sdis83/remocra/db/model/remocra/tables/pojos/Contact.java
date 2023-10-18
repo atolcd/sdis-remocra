@@ -22,7 +22,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Contact implements Serializable {
 
-	private static final long serialVersionUID = 439289808;
+	private static final long serialVersionUID = -536571996;
 
 	private Long   id;
 	private String appartenance;
@@ -40,6 +40,7 @@ public class Contact implements Serializable {
 	private String pays;
 	private String telephone;
 	private String email;
+	private Long   idGestionnaireSite;
 
 	public Contact() {}
 
@@ -60,6 +61,7 @@ public class Contact implements Serializable {
 		this.pays = value.pays;
 		this.telephone = value.telephone;
 		this.email = value.email;
+		this.idGestionnaireSite = value.idGestionnaireSite;
 	}
 
 	public Contact(
@@ -78,7 +80,8 @@ public class Contact implements Serializable {
 		String ville,
 		String pays,
 		String telephone,
-		String email
+		String email,
+		Long   idGestionnaireSite
 	) {
 		this.id = id;
 		this.appartenance = appartenance;
@@ -96,6 +99,7 @@ public class Contact implements Serializable {
 		this.pays = pays;
 		this.telephone = telephone;
 		this.email = email;
+		this.idGestionnaireSite = idGestionnaireSite;
 	}
 
 	public Long getId() {
@@ -239,6 +243,15 @@ public class Contact implements Serializable {
 
 	public Contact setEmail(String email) {
 		this.email = email;
+		return this;
+	}
+
+	public Long getIdGestionnaireSite() {
+		return this.idGestionnaireSite;
+	}
+
+	public Contact setIdGestionnaireSite(Long idGestionnaireSite) {
+		this.idGestionnaireSite = idGestionnaireSite;
 		return this;
 	}
 }

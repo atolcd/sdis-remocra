@@ -4,6 +4,8 @@
 package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import java.io.Serializable;
 
 import javax.annotation.Generated;
@@ -22,14 +24,14 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class GestionnaireSite implements Serializable {
 
-	private static final long serialVersionUID = 464086611;
+	private static final long serialVersionUID = 1016899591;
 
-	private Long    id;
-	private Boolean actif;
-	private String  code;
-	private String  nom;
-	private Integer version;
-	private Long    gestionnaire;
+	private Long     id;
+	private Boolean  actif;
+	private String   code;
+	private String   nom;
+	private Geometry geometrie;
+	private Long     idGestionnaire;
 
 	public GestionnaireSite() {}
 
@@ -38,24 +40,24 @@ public class GestionnaireSite implements Serializable {
 		this.actif = value.actif;
 		this.code = value.code;
 		this.nom = value.nom;
-		this.version = value.version;
-		this.gestionnaire = value.gestionnaire;
+		this.geometrie = value.geometrie;
+		this.idGestionnaire = value.idGestionnaire;
 	}
 
 	public GestionnaireSite(
-		Long    id,
-		Boolean actif,
-		String  code,
-		String  nom,
-		Integer version,
-		Long    gestionnaire
+		Long     id,
+		Boolean  actif,
+		String   code,
+		String   nom,
+		Geometry geometrie,
+		Long     idGestionnaire
 	) {
 		this.id = id;
 		this.actif = actif;
 		this.code = code;
 		this.nom = nom;
-		this.version = version;
-		this.gestionnaire = gestionnaire;
+		this.geometrie = geometrie;
+		this.idGestionnaire = idGestionnaire;
 	}
 
 	public Long getId() {
@@ -94,21 +96,21 @@ public class GestionnaireSite implements Serializable {
 		return this;
 	}
 
-	public Integer getVersion() {
-		return this.version;
+	public Geometry getGeometrie() {
+		return this.geometrie;
 	}
 
-	public GestionnaireSite setVersion(Integer version) {
-		this.version = version;
+	public GestionnaireSite setGeometrie(Geometry geometrie) {
+		this.geometrie = geometrie;
 		return this;
 	}
 
-	public Long getGestionnaire() {
-		return this.gestionnaire;
+	public Long getIdGestionnaire() {
+		return this.idGestionnaire;
 	}
 
-	public GestionnaireSite setGestionnaire(Long gestionnaire) {
-		this.gestionnaire = gestionnaire;
+	public GestionnaireSite setIdGestionnaire(Long idGestionnaire) {
+		this.idGestionnaire = idGestionnaire;
 		return this;
 	}
 }

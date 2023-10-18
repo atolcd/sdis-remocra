@@ -5,7 +5,6 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.CONTACT_ROLES;
 import static fr.sdis83.remocra.db.model.remocra.Tables.GESTIONNAIRE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.GESTIONNAIRE_SITE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
-import static fr.sdis83.remocra.db.model.remocra.Tables.SITE;
 
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Gestionnaire;
 import java.util.List;
@@ -115,17 +114,8 @@ public class GestionnaireRepository {
    */
   public void createGestionnaire(Gestionnaire gestionnaire) {
     context
-        .insertInto(
-            GESTIONNAIRE,
-            GESTIONNAIRE.NOM,
-            GESTIONNAIRE.CODE,
-            GESTIONNAIRE.ACTIF,
-            GESTIONNAIRE.VERSION)
-        .values(
-            gestionnaire.getNom(),
-            gestionnaire.getCode(),
-            gestionnaire.getActif(),
-            gestionnaire.getVersion())
+        .insertInto(GESTIONNAIRE, GESTIONNAIRE.NOM, GESTIONNAIRE.CODE, GESTIONNAIRE.ACTIF)
+        .values(gestionnaire.getNom(), gestionnaire.getCode(), gestionnaire.getActif())
         .execute();
   }
 
@@ -140,7 +130,6 @@ public class GestionnaireRepository {
         .set(GESTIONNAIRE.NOM, gestionnaire.getNom())
         .set(GESTIONNAIRE.CODE, gestionnaire.getCode())
         .set(GESTIONNAIRE.ACTIF, gestionnaire.getActif())
-        .set(GESTIONNAIRE.VERSION, gestionnaire.getVersion())
         .where(GESTIONNAIRE.ID.eq(idGestionnaire))
         .execute();
   }
@@ -170,7 +159,7 @@ public class GestionnaireRepository {
     return context
         .select(GESTIONNAIRE_SITE.ID)
         .from(GESTIONNAIRE_SITE)
-        .where(GESTIONNAIRE_SITE.GESTIONNAIRE.eq(idGestionnaire))
+        .where(GESTIONNAIRE_SITE.ID_GESTIONNAIRE.eq(idGestionnaire))
         .fetchInto(Long.class);
   }
 
@@ -195,14 +184,6 @@ public class GestionnaireRepository {
         .and(CONTACT.ID_APPARTENANCE.eq(idGestionnaire.toString()))
         .execute();
   }
-  /**
-   * Supprime le site
-   *
-   * @param listIdGestionnaireSite
-   */
-  public void deleteSite(List<Long> listIdGestionnaireSite) {
-    context.deleteFrom(SITE).where(SITE.GESTIONNAIRE_SITE.in(listIdGestionnaireSite)).execute();
-  }
 
   /**
    * Supprime le gestionnaire site
@@ -212,7 +193,19 @@ public class GestionnaireRepository {
   public void deleteGestionnaireSite(Long idGestionnaire) {
     context
         .deleteFrom(GESTIONNAIRE_SITE)
-        .where(GESTIONNAIRE_SITE.GESTIONNAIRE.eq(idGestionnaire))
+        .where(GESTIONNAIRE_SITE.ID_GESTIONNAIRE.eq(idGestionnaire))
+        .execute();
+  }
+
+  /**
+   * Supprime une liste de gestionnaires site
+   *
+   * @param idGestionnaire
+   */
+  public void deleteGestionnaireSite(List<Long> idGestionnaire) {
+    context
+        .deleteFrom(GESTIONNAIRE_SITE)
+        .where(GESTIONNAIRE_SITE.ID_GESTIONNAIRE.in(idGestionnaire))
         .execute();
   }
 

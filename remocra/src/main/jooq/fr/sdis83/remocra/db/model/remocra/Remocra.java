@@ -107,7 +107,6 @@ import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleSelection;
 import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleSelectionDetail;
 import fr.sdis83.remocra.db.model.remocra.tables.Role;
 import fr.sdis83.remocra.db.model.remocra.tables.ServiceEaux;
-import fr.sdis83.remocra.db.model.remocra.tables.Site;
 import fr.sdis83.remocra.db.model.remocra.tables.SousTypeAlerteElt;
 import fr.sdis83.remocra.db.model.remocra.tables.SuiviPatches;
 import fr.sdis83.remocra.db.model.remocra.tables.Synchronisation;
@@ -201,7 +200,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Remocra extends SchemaImpl {
 
-	private static final long serialVersionUID = -2144647167;
+	private static final long serialVersionUID = 345909761;
 
 	/**
 	 * The reference instance of <code>remocra</code>
@@ -307,7 +306,6 @@ public class Remocra extends SchemaImpl {
 			Sequences.REQUETE_MODELE_SELECTION_ID_SEQ,
 			Sequences.ROLE_ID_SEQ,
 			Sequences.SERVICE_EAUX_ID_SEQ,
-			Sequences.SITE_ID_SEQ,
 			Sequences.SOUS_TYPE_ALERTE_ELT_ID_SEQ,
 			Sequences.SYNCHRONISATION_ID_SEQ,
 			Sequences.THEMATIQUE_ID_SEQ,
@@ -482,7 +480,6 @@ public class Remocra extends SchemaImpl {
 			RequeteModeleSelectionDetail.REQUETE_MODELE_SELECTION_DETAIL,
 			Role.ROLE,
 			ServiceEaux.SERVICE_EAUX,
-			Site.SITE,
 			SousTypeAlerteElt.SOUS_TYPE_ALERTE_ELT,
 			SuiviPatches.SUIVI_PATCHES,
 			Synchronisation.SYNCHRONISATION,

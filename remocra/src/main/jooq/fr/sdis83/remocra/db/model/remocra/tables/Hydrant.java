@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant extends TableImpl<Record> {
 
-	private static final long serialVersionUID = -2040950844;
+	private static final long serialVersionUID = -1416424292;
 
 	/**
 	 * The reference instance of <code>remocra.hydrant</code>
@@ -241,9 +241,9 @@ public class Hydrant extends TableImpl<Record> {
 	public final TableField<Record, Long> GESTIONNAIRE = createField("gestionnaire", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant du gestionnaire de l'hydrant");
 
 	/**
-	 * The column <code>remocra.hydrant.site</code>. Identifiant du site auquel appartient l'hydrant
+	 * The column <code>remocra.hydrant.gestionnaire_site</code>. Identifiant du site auquel appartient l'hydrant
 	 */
-	public final TableField<Record, Long> SITE = createField("site", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant du site auquel appartient l'hydrant");
+	public final TableField<Record, Long> GESTIONNAIRE_SITE = createField("gestionnaire_site", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant du site auquel appartient l'hydrant");
 
 	/**
 	 * The column <code>remocra.hydrant.autorite_deci</code>. Identifiant de l'autorité de police DECI
@@ -331,7 +331,7 @@ public class Hydrant extends TableImpl<Record> {
 	 */
 	@Override
 	public List<ForeignKey<Record, ?>> getReferences() {
-		return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT__FK51B8F028D2DA796C, Keys.HYDRANT__FK51B8F0285D29D8A8, Keys.HYDRANT__FK51B8F028D10A0428, Keys.HYDRANT__FK51B8F028374ADD52, Keys.HYDRANT__FK_ZONE_SPECIALE, Keys.HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION, Keys.HYDRANT__FK_NATURE_DECI, Keys.HYDRANT__FK_NIVEAU, Keys.HYDRANT__FK_GESTIONNAIRE, Keys.HYDRANT__FK_SITE, Keys.HYDRANT__FK_AUTORITE_DECI, Keys.HYDRANT__FK_SP_DECI, Keys.HYDRANT__FK_MAINTENANCE_DECI_ORGANISME);
+		return Arrays.<ForeignKey<Record, ?>>asList(Keys.HYDRANT__FK51B8F028D2DA796C, Keys.HYDRANT__FK51B8F0285D29D8A8, Keys.HYDRANT__FK51B8F028D10A0428, Keys.HYDRANT__FK51B8F028374ADD52, Keys.HYDRANT__FK_ZONE_SPECIALE, Keys.HYDRANT__FK_HYDRANT_UTILISATEUR_MODIFICATION, Keys.HYDRANT__FK_NATURE_DECI, Keys.HYDRANT__FK_NIVEAU, Keys.HYDRANT__FK_GESTIONNAIRE, Keys.HYDRANT__FK_GESTIONNAIRE_SITE, Keys.HYDRANT__FK_AUTORITE_DECI, Keys.HYDRANT__FK_SP_DECI, Keys.HYDRANT__FK_MAINTENANCE_DECI_ORGANISME);
 	}
 
 	/**

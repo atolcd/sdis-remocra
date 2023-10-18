@@ -33,12 +33,12 @@ privileged aspect DebitSimultane_Roo_JavaBean {
         this.jsonGeometrie = jsonGeometrie;
     }
     
-    public Site DebitSimultane.getSite() {
-        return this.site;
+    public GestionnaireSite DebitSimultane.getGestionnaireSite() {
+        return this.gestionnaireSite;
     }
     
-    public void DebitSimultane.setSite(Site site) {
-        this.site = site;
+    public void DebitSimultane.setGestionnaireSite(GestionnaireSite gestionnaireSite) {
+        this.gestionnaireSite = gestionnaireSite;
     }
     
     public String DebitSimultane.getNumDossier() {

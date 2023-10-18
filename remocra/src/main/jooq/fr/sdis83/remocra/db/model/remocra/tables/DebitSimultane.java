@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DebitSimultane extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 944772689;
+	private static final long serialVersionUID = 915178861;
 
 	/**
 	 * The reference instance of <code>remocra.debit_simultane</code>
@@ -59,9 +59,9 @@ public class DebitSimultane extends TableImpl<Record> {
 	public final TableField<Record, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaulted(true), this, "");
 
 	/**
-	 * The column <code>remocra.debit_simultane.site</code>.
+	 * The column <code>remocra.debit_simultane.gestionnaire_site</code>.
 	 */
-	public final TableField<Record, Long> SITE = createField("site", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+	public final TableField<Record, Long> GESTIONNAIRE_SITE = createField("gestionnaire_site", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
 	/**
 	 * The column <code>remocra.debit_simultane.geometrie</code>.
@@ -124,7 +124,7 @@ public class DebitSimultane extends TableImpl<Record> {
 	 */
 	@Override
 	public List<ForeignKey<Record, ?>> getReferences() {
-		return Arrays.<ForeignKey<Record, ?>>asList(Keys.DEBIT_SIMULTANE__FK_SITE);
+		return Arrays.<ForeignKey<Record, ?>>asList(Keys.DEBIT_SIMULTANE__FK_GESTIONNAIRE_SITE);
 	}
 
 	/**

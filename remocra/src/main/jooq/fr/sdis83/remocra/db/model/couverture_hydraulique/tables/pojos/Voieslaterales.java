@@ -22,13 +22,14 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Voieslaterales implements Serializable {
 
-	private static final long serialVersionUID = 1484550049;
+	private static final long serialVersionUID = -1189456900;
 
 	private Integer voie;
 	private Double  angle;
 	private Boolean gauche;
 	private Boolean droite;
 	private Boolean traversable;
+	private Boolean accessible;
 
 	public Voieslaterales() {}
 
@@ -38,6 +39,7 @@ public class Voieslaterales implements Serializable {
 		this.gauche = value.gauche;
 		this.droite = value.droite;
 		this.traversable = value.traversable;
+		this.accessible = value.accessible;
 	}
 
 	public Voieslaterales(
@@ -45,13 +47,15 @@ public class Voieslaterales implements Serializable {
 		Double  angle,
 		Boolean gauche,
 		Boolean droite,
-		Boolean traversable
+		Boolean traversable,
+		Boolean accessible
 	) {
 		this.voie = voie;
 		this.angle = angle;
 		this.gauche = gauche;
 		this.droite = droite;
 		this.traversable = traversable;
+		this.accessible = accessible;
 	}
 
 	public Integer getVoie() {
@@ -96,6 +100,15 @@ public class Voieslaterales implements Serializable {
 
 	public Voieslaterales setTraversable(Boolean traversable) {
 		this.traversable = traversable;
+		return this;
+	}
+
+	public Boolean getAccessible() {
+		return this.accessible;
+	}
+
+	public Voieslaterales setAccessible(Boolean accessible) {
+		this.accessible = accessible;
 		return this;
 	}
 }

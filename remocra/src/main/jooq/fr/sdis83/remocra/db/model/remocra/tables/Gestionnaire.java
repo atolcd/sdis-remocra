@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Gestionnaire extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 906951029;
+	private static final long serialVersionUID = -64536632;
 
 	/**
 	 * The reference instance of <code>remocra.gestionnaire</code>
@@ -62,17 +62,12 @@ public class Gestionnaire extends TableImpl<Record> {
 	/**
 	 * The column <code>remocra.gestionnaire.code</code>. Code du statut. Facilite les échanges de données
 	 */
-	public final TableField<Record, String> CODE = createField("code", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Code du statut. Facilite les échanges de données");
+	public final TableField<Record, String> CODE = createField("code", org.jooq.impl.SQLDataType.VARCHAR, this, "Code du statut. Facilite les échanges de données");
 
 	/**
 	 * The column <code>remocra.gestionnaire.nom</code>. Libellé du gestionnaire
 	 */
 	public final TableField<Record, String> NOM = createField("nom", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Libellé du gestionnaire");
-
-	/**
-	 * The column <code>remocra.gestionnaire.version</code>.
-	 */
-	public final TableField<Record, Integer> VERSION = createField("version", org.jooq.impl.SQLDataType.INTEGER.defaulted(true), this, "");
 
 	/**
 	 * Create a <code>remocra.gestionnaire</code> table reference

@@ -16,7 +16,9 @@ import fr.sdis83.remocra.db.model.pdi.tables.VueCommuneOldeb;
 import fr.sdis83.remocra.db.model.pdi.tables.VueCommuneOuIntercoOne;
 import fr.sdis83.remocra.db.model.pdi.tables.VueCommunes;
 import fr.sdis83.remocra.db.model.pdi.tables.VueFamillesPromethee;
+import fr.sdis83.remocra.db.model.pdi.tables.VueModeleCourrierFicheTourneeTournee;
 import fr.sdis83.remocra.db.model.pdi.tables.VueModeleCourrierHydrantsNonDispo;
+import fr.sdis83.remocra.db.model.pdi.tables.VueModeleCourrierIndispos;
 import fr.sdis83.remocra.db.model.pdi.tables.VueModeleCourrierInformationTournee;
 import fr.sdis83.remocra.db.model.pdi.tables.VueModeleCourrierRapportTournee;
 import fr.sdis83.remocra.db.model.pdi.tables.VueModeleExport;
@@ -25,6 +27,7 @@ import fr.sdis83.remocra.db.model.pdi.tables.VueOrganismeCis;
 import fr.sdis83.remocra.db.model.pdi.tables.VuePermisEtats;
 import fr.sdis83.remocra.db.model.pdi.tables.VueProfilSdis;
 import fr.sdis83.remocra.db.model.pdi.tables.VueTelechargements;
+import fr.sdis83.remocra.db.model.pdi.tables.VueTournees;
 import fr.sdis83.remocra.db.model.pdi.tables.VueUtilisateurs;
 import fr.sdis83.remocra.db.model.pdi.tables.VueZoneCompetence;
 
@@ -52,7 +55,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Pdi extends SchemaImpl {
 
-	private static final long serialVersionUID = 645814696;
+	private static final long serialVersionUID = 771736907;
 
 	/**
 	 * The reference instance of <code>pdi</code>
@@ -98,7 +101,9 @@ public class Pdi extends SchemaImpl {
 			VueCommuneOuIntercoOne.VUE_COMMUNE_OU_INTERCO_ONE,
 			VueCommunes.VUE_COMMUNES,
 			VueFamillesPromethee.VUE_FAMILLES_PROMETHEE,
+			VueModeleCourrierFicheTourneeTournee.VUE_MODELE_COURRIER_FICHE_TOURNEE_TOURNEE,
 			VueModeleCourrierHydrantsNonDispo.VUE_MODELE_COURRIER_HYDRANTS_NON_DISPO,
+			VueModeleCourrierIndispos.VUE_MODELE_COURRIER_INDISPOS,
 			VueModeleCourrierInformationTournee.VUE_MODELE_COURRIER_INFORMATION_TOURNEE,
 			VueModeleCourrierRapportTournee.VUE_MODELE_COURRIER_RAPPORT_TOURNEE,
 			VueModeleExport.VUE_MODELE_EXPORT,
@@ -107,6 +112,7 @@ public class Pdi extends SchemaImpl {
 			VuePermisEtats.VUE_PERMIS_ETATS,
 			VueProfilSdis.VUE_PROFIL_SDIS,
 			VueTelechargements.VUE_TELECHARGEMENTS,
+			VueTournees.VUE_TOURNEES,
 			VueUtilisateurs.VUE_UTILISATEURS,
 			VueZoneCompetence.VUE_ZONE_COMPETENCE);
 	}

@@ -16,40 +16,8 @@ public class DeleteGestionnaireUseCase {
   public DeleteGestionnaireUseCase() {}
 
   @Transactional
-  public void execute(Long idGestionnaire) throws Exception {
-    // On vérifie d'abord que le gestionnaire n'est pas utilisé pour un autre point d'eau
-    List<String> listeNumerosHydrant =
-        gestionnaireRepository.getHydrantWithIdGestionnaire(idGestionnaire);
-
-    if (!listeNumerosHydrant.isEmpty()) {
-      throw new IllegalArgumentException(
-          "Le gestionnaire que vous essayez de supprimer "
-              + "est utilisé sur d'autres PEI : "
-              + listeNumerosHydrant);
-    }
-
-    // Si tous est bon, on récupère les id des contacts du gestionnaire
-    List<Long> listIdContact = gestionnaireRepository.getContactGestionnaire(idGestionnaire);
-
-    // Puis, on supprime les liens rôle - contact
-    gestionnaireRepository.deleteContactRole(listIdContact);
-
-    // Puis, les contacts
-    gestionnaireRepository.deleteContactGestionnaire(idGestionnaire);
-
-    // Puis, le site
-    List<Long> listIdGestionnaireSite = gestionnaireRepository.getGestionnaireSite(idGestionnaire);
-    gestionnaireRepository.deleteSite(listIdGestionnaireSite);
-
-    // Puis, le gestionnaire site
-    gestionnaireRepository.deleteGestionnaireSite(idGestionnaire);
-
-    // Puis le gestionnaire lui-même
-    gestionnaireRepository.deleteGestionnaire(idGestionnaire);
-  }
-
-  @Transactional
   public void deleteGestionnaire(Long idGestionnaire) throws Exception {
+    // TODO réétudier pour voir si ca fait ce qu'on en attend
     List<Long> listIdHydrant =
         gestionnaireRepository.getIdHydrantWithIdGestionnaire(idGestionnaire);
     // Suppression des liens avec les hydrants, s'il y en a
@@ -66,7 +34,7 @@ public class DeleteGestionnaireUseCase {
 
     // Suppression du gestionnaires Site
     List<Long> listIdGestionnaireSite = gestionnaireRepository.getGestionnaireSite(idGestionnaire);
-    gestionnaireRepository.deleteSite(listIdGestionnaireSite);
+    gestionnaireRepository.deleteGestionnaireSite(listIdGestionnaireSite);
 
     // Suppression du gestionnaire
     gestionnaireRepository.deleteGestionnaire(idGestionnaire);

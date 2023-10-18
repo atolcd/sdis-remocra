@@ -26,7 +26,7 @@ import org.joda.time.Instant;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant implements Serializable {
 
-	private static final long serialVersionUID = 1094443946;
+	private static final long serialVersionUID = -1429425406;
 
 	private Long     id;
 	private String   agent1;
@@ -65,13 +65,14 @@ public class Hydrant implements Serializable {
 	private String   suffixeVoie;
 	private Long     niveau;
 	private Long     gestionnaire;
-	private Long     site;
+	private Long     gestionnaireSite;
 	private Long     autoriteDeci;
 	private Boolean  enFace;
 	private Instant  dateCrea;
 	private Long     spDeci;
 	private Long     maintenanceDeci;
 	private String   auteurModificationFlag;
+	private Instant  dateChangementDispoTerrestre;
 
 	public Hydrant() {}
 
@@ -113,13 +114,14 @@ public class Hydrant implements Serializable {
 		this.suffixeVoie = value.suffixeVoie;
 		this.niveau = value.niveau;
 		this.gestionnaire = value.gestionnaire;
-		this.site = value.site;
+		this.gestionnaireSite = value.gestionnaireSite;
 		this.autoriteDeci = value.autoriteDeci;
 		this.enFace = value.enFace;
 		this.dateCrea = value.dateCrea;
 		this.spDeci = value.spDeci;
 		this.maintenanceDeci = value.maintenanceDeci;
 		this.auteurModificationFlag = value.auteurModificationFlag;
+		this.dateChangementDispoTerrestre = value.dateChangementDispoTerrestre;
 	}
 
 	public Hydrant(
@@ -160,13 +162,14 @@ public class Hydrant implements Serializable {
 		String   suffixeVoie,
 		Long     niveau,
 		Long     gestionnaire,
-		Long     site,
+		Long     gestionnaireSite,
 		Long     autoriteDeci,
 		Boolean  enFace,
 		Instant  dateCrea,
 		Long     spDeci,
 		Long     maintenanceDeci,
-		String   auteurModificationFlag
+		String   auteurModificationFlag,
+		Instant  dateChangementDispoTerrestre
 	) {
 		this.id = id;
 		this.agent1 = agent1;
@@ -205,13 +208,14 @@ public class Hydrant implements Serializable {
 		this.suffixeVoie = suffixeVoie;
 		this.niveau = niveau;
 		this.gestionnaire = gestionnaire;
-		this.site = site;
+		this.gestionnaireSite = gestionnaireSite;
 		this.autoriteDeci = autoriteDeci;
 		this.enFace = enFace;
 		this.dateCrea = dateCrea;
 		this.spDeci = spDeci;
 		this.maintenanceDeci = maintenanceDeci;
 		this.auteurModificationFlag = auteurModificationFlag;
+		this.dateChangementDispoTerrestre = dateChangementDispoTerrestre;
 	}
 
 	public Long getId() {
@@ -547,12 +551,12 @@ public class Hydrant implements Serializable {
 		return this;
 	}
 
-	public Long getSite() {
-		return this.site;
+	public Long getGestionnaireSite() {
+		return this.gestionnaireSite;
 	}
 
-	public Hydrant setSite(Long site) {
-		this.site = site;
+	public Hydrant setGestionnaireSite(Long gestionnaireSite) {
+		this.gestionnaireSite = gestionnaireSite;
 		return this;
 	}
 
@@ -607,6 +611,15 @@ public class Hydrant implements Serializable {
 
 	public Hydrant setAuteurModificationFlag(String auteurModificationFlag) {
 		this.auteurModificationFlag = auteurModificationFlag;
+		return this;
+	}
+
+	public Instant getDateChangementDispoTerrestre() {
+		return this.dateChangementDispoTerrestre;
+	}
+
+	public Hydrant setDateChangementDispoTerrestre(Instant dateChangementDispoTerrestre) {
+		this.dateChangementDispoTerrestre = dateChangementDispoTerrestre;
 		return this;
 	}
 }

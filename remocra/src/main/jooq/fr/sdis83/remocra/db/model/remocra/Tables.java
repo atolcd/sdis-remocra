@@ -106,7 +106,6 @@ import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleSelection;
 import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleSelectionDetail;
 import fr.sdis83.remocra.db.model.remocra.tables.Role;
 import fr.sdis83.remocra.db.model.remocra.tables.ServiceEaux;
-import fr.sdis83.remocra.db.model.remocra.tables.Site;
 import fr.sdis83.remocra.db.model.remocra.tables.SousTypeAlerteElt;
 import fr.sdis83.remocra.db.model.remocra.tables.SuiviPatches;
 import fr.sdis83.remocra.db.model.remocra.tables.Synchronisation;
@@ -418,7 +417,7 @@ public class Tables {
 	public static final Gestionnaire GESTIONNAIRE = fr.sdis83.remocra.db.model.remocra.tables.Gestionnaire.GESTIONNAIRE;
 
 	/**
-	 * Gestionnaire de site de PEI
+	 * Gestionnaire_Site de PEI
 	 */
 	public static final GestionnaireSite GESTIONNAIRE_SITE = fr.sdis83.remocra.db.model.remocra.tables.GestionnaireSite.GESTIONNAIRE_SITE;
 
@@ -702,10 +701,6 @@ public class Tables {
 	 */
 	public static final ServiceEaux SERVICE_EAUX = fr.sdis83.remocra.db.model.remocra.tables.ServiceEaux.SERVICE_EAUX;
 
-	/**
-	 * Site de PEI
-	 */
-	public static final Site SITE = fr.sdis83.remocra.db.model.remocra.tables.Site.SITE;
 
 	/**
 	 * The table remocra.sous_type_alerte_elt

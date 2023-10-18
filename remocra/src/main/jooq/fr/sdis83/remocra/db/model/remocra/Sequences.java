@@ -441,11 +441,6 @@ public class Sequences {
 	public static final Sequence<Long> SERVICE_EAUX_ID_SEQ = new SequenceImpl<Long>("service_eaux_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
 	/**
-	 * The sequence <code>remocra.site_id_seq</code>
-	 */
-	public static final Sequence<Long> SITE_ID_SEQ = new SequenceImpl<Long>("site_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
-
-	/**
 	 * The sequence <code>remocra.sous_type_alerte_elt_id_seq</code>
 	 */
 	public static final Sequence<Long> SOUS_TYPE_ALERTE_ELT_ID_SEQ = new SequenceImpl<Long>("sous_type_alerte_elt_id_seq", Remocra.REMOCRA, org.jooq.impl.SQLDataType.BIGINT.nullable(false));

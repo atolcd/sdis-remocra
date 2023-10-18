@@ -202,7 +202,7 @@ public class Hydrant implements Featurable {
 
   @ManyToOne private Organisme spDeci;
 
-  @ManyToOne private Site site;
+  @ManyToOne private GestionnaireSite gestionnaire_site;
 
   @ManyToOne private Organisme autoriteDeci;
 
@@ -233,8 +233,8 @@ public class Hydrant implements Featurable {
     feature.addProperty("nom tournées", this.getTourneesNom());
     feature.addProperty("nomNatureDeci", this.getNomNatureDeci());
     feature.addProperty("codeNatureDeci", this.getCodeNatureDeci());
-    feature.addProperty("siteId", this.getSiteId());
-    feature.addProperty("siteNom", this.getSiteNom());
+    feature.addProperty("gestionnaireSiteId", this.getGestionnaireSiteId());
+    feature.addProperty("gestionnaireSiteNom", this.getGestionnaireSiteNom());
     feature.addProperty("gestionnaireNom", this.getGestionnaireNom());
     feature.addProperty("dateChangementDispoTerrestre", this.getDateChangementDispoTerrestre());
 
@@ -334,16 +334,16 @@ public class Hydrant implements Featurable {
     return null;
   }
 
-  public Long getSiteId() {
-    if (this.getSite() != null) {
-      return this.getSite().getId();
+  public Long getGestionnaireSiteId() {
+    if (this.getGestionnaireSite() != null) {
+      return this.getGestionnaireSite().getId();
     }
     return null;
   }
 
-  public String getSiteNom() {
-    if (this.getSite() != null) {
-      return this.getSite().getNom();
+  public String getGestionnaireSiteNom() {
+    if (this.getGestionnaireSite() != null) {
+      return this.getGestionnaireSite().getNom();
     }
     return null;
   }
