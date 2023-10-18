@@ -241,7 +241,7 @@ export default {
               title: 'Succès',
               text: 'Les listes ont bien été mises à jour'
             });
-          }).catch((error) => {
+          }).catch(() => {
         this.$notify({
           group: 'remocra',
           type: 'error',
