@@ -165,7 +165,7 @@
     </form>
     <div class="modal-footer">
         <b-button size="sm" type="reset" variant="secondary" @click="$modal.hide('modalFiche')">Annuler</b-button>
-        <b-button size="sm" type="submit" variant="primary" @click="handleOk" :disabled="!dataLoaded">Valider</b-button>
+        <b-button size="sm" type="submit" variant="primary" @click="handleOk" :disabled="!dataLoaded && !isEnabledValider">Valider</b-button>
       </div>
     <notifications group="remocra" position="top right" animation-type="velocity" :duration="3000" />
   </modal>
@@ -206,6 +206,7 @@ export default {
       hydrant: {}, // Données actuelles du PEI
       utilisateurDroits: [],
       dataLoaded: false,
+      isEnabledValider: true,
       //ComboBox
       comboType: [],
       comboDeci: [],
@@ -744,6 +745,7 @@ export default {
      * @param url L'url à contacter
      */
     handleOk(evt) {
+      this.isEnabledValider = false;
       evt.preventDefault()
       var url = null;
       if (this.hydrant != null) {
@@ -766,6 +768,7 @@ export default {
               text: "Les informations de l'hydrant sélectionné ne sont pas valides. Veuillez les corriger via la fiche PEI avant de saisir des visites",
               duration: 5000
             });
+            isEnabledValider = true
           }
         });
       } else if (this.checkFormValidity()) {
@@ -844,6 +847,8 @@ export default {
           })
         }
       });
+
+      this.isEnabledValider = true
     },
     close() {
       loadProgressBar({
