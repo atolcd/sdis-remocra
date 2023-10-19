@@ -1,6 +1,6 @@
 <template>
   <div id="formGestionnaire"> <!-- Définition page de la pop up de formulaire de gestionnaire -->
-    <b-modal name="modalFormGestionnaire" id="formGestionnaire" v-bind:title="buildedTitle" no-close-on-backdrop cancel-title="Annuler" 
+    <b-modal name="modalFormGestionnaire" id="formGestionnaire" v-bind:title="buildedTitle" no-close-on-backdrop cancel-title="Annuler"
       ok-title="Valider" refs="modalFormGestionnaire" @cancel="resetFormGestionnaire" @ok="handleOk" :clickToClose="false">
         <form id='formGestionnaireId' ref='formGestionnaire'>
           <div class="col-md-6" id="divInputNom">
@@ -10,21 +10,24 @@
             </b-form-group>
           </div>
           <div class="col-md-6" id="divInputCode">
-            <b-form-group id="formInputCode" label-for="inputCode" invalid-feedback="Le code est invalide (champ vide OU 9 chiffres)">
-              N°SIREN :
-              <b-form-input id="inputCode" v-model="codeGestionnaire" pattern="[0-9]{9}"></b-form-input>
+            <b-form-group id="formInputCode" label-for="inputCode" invalid-feedback="Le code est invalide (champ vide OU uniquement des chiffres)">
+              N°SIREN/SIRET :
+              <b-form-input id="inputCode" v-model="codeGestionnaire" pattern="[0-9]*"></b-form-input>
             </b-form-group>
           </div>
           <div class="row msgErrorDiv">
             <span id="msgError" style="display:none">Ce N°SIREN est déja assigné à un gestionnaire</span>
           </div>
-          <div class="col-md-6" id="divCBoxActif"> 
+          <div class="col-md-6" id="divCBoxActif">
             <b-form-group id="formCBoxActif" label-for="inputActif">
-              Statut : 
+              Statut :
               <b-form-checkbox id="actif" v-model="actifGestionnaire">
                 {{this.actifGestionnaire ? "Gestionnaire Actif" : "Gestionnaire Inactif"}}
               </b-form-checkbox>
             </b-form-group>
+          </div>
+          <div id="selectionSite">
+            <!-- TODO -->
           </div>
         </form>
     </b-modal>
@@ -33,7 +36,7 @@
 
 <script>
   import axios from 'axios'
-  
+
   export default {
     data(){
       return{
@@ -59,8 +62,6 @@
           if(response.data) {
             this.codesGestionnaire = response.data.data;
           }
-        }).catch(function(error){
-          console.error('erreur recup codes gestionnaire', error);
         })
       },
       getGestionnaireById(idGestionnaire_){
@@ -73,8 +74,6 @@
                                   this.versionGestionnaire = response.data.data.version) : null
             this.buildedTitle='Modification de '+this.nomGestionnaire
             this.$bvModal.show('formGestionnaire');
-          }).catch(function(error){
-            console.error('erreur recup info gestionnaire', error);
           })
         }
         else{ // Création d'un gestionnaire
@@ -111,9 +110,7 @@
             this.resetFormGestionnaire();
             this.$bvModal.hide('formGestionnaire')
           })
-        }).catch(function(error) {
-          console.error('erreur upsert gestionnaire', error);
-        });
+        })
       },
       resetFormGestionnaire(){
         this.$refs.formGestionnaire.reset();

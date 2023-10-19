@@ -1176,4 +1176,12 @@ public class HydrantRepository {
         .where(HYDRANT.ID.eq(idHydrant))
         .execute();
   }
+
+  public void updateHydrantGestionnaireSite(Long idHydrant, Long newGestionnaireSiteId) {
+    context
+        .update(HYDRANT)
+        .set(HYDRANT.GESTIONNAIRE_SITE, newGestionnaireSiteId)
+        .where(HYDRANT.ID.eq(idHydrant))
+        .execute();
+  }
 }

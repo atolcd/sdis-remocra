@@ -3,7 +3,6 @@ package fr.sdis83.remocra.repository;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CONTACT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CONTACT_ROLES;
 import static fr.sdis83.remocra.db.model.remocra.Tables.GESTIONNAIRE;
-import static fr.sdis83.remocra.db.model.remocra.Tables.GESTIONNAIRE_SITE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
 
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Gestionnaire;
@@ -27,6 +26,10 @@ public class GestionnaireRepository {
   @Bean
   public GestionnaireRepository gestionnaireRepository(DSLContext context) {
     return new GestionnaireRepository(context);
+  }
+
+  public List<Gestionnaire> findAllGestionnaires() {
+    return context.selectFrom(GESTIONNAIRE).fetchInto(Gestionnaire.class);
   }
 
   /**
@@ -150,20 +153,6 @@ public class GestionnaireRepository {
   }
 
   /**
-   * Récupère tous les gestionnaires site d'un gestionnaire
-   *
-   * @param idGestionnaire
-   * @return la liste des identifiants des contacts
-   */
-  public List<Long> getGestionnaireSite(Long idGestionnaire) {
-    return context
-        .select(GESTIONNAIRE_SITE.ID)
-        .from(GESTIONNAIRE_SITE)
-        .where(GESTIONNAIRE_SITE.ID_GESTIONNAIRE.eq(idGestionnaire))
-        .fetchInto(Long.class);
-  }
-
-  /**
    * Supprime les liens entre les contacts et les rôles
    *
    * @param listIdContact
@@ -182,30 +171,6 @@ public class GestionnaireRepository {
         .deleteFrom(CONTACT)
         .where(CONTACT.APPARTENANCE.eq("GESTIONNAIRE"))
         .and(CONTACT.ID_APPARTENANCE.eq(idGestionnaire.toString()))
-        .execute();
-  }
-
-  /**
-   * Supprime le gestionnaire site
-   *
-   * @param idGestionnaire
-   */
-  public void deleteGestionnaireSite(Long idGestionnaire) {
-    context
-        .deleteFrom(GESTIONNAIRE_SITE)
-        .where(GESTIONNAIRE_SITE.ID_GESTIONNAIRE.eq(idGestionnaire))
-        .execute();
-  }
-
-  /**
-   * Supprime une liste de gestionnaires site
-   *
-   * @param idGestionnaire
-   */
-  public void deleteGestionnaireSite(List<Long> idGestionnaire) {
-    context
-        .deleteFrom(GESTIONNAIRE_SITE)
-        .where(GESTIONNAIRE_SITE.ID_GESTIONNAIRE.in(idGestionnaire))
         .execute();
   }
 

@@ -1,9 +1,9 @@
 package fr.sdis83.remocra.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Contact;
-import fr.sdis83.remocra.domain.remocra.Gestionnaire;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.repository.ContactRepository;
 import fr.sdis83.remocra.repository.GestionnaireRepository;
@@ -19,6 +19,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -41,6 +42,7 @@ public class GestionnaireController {
   @Autowired GestionnaireRepository gestionnaireRepository;
 
   private final Logger logger = Logger.getLogger(getClass());
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   public JSONSerializer decorateSerializer(JSONSerializer serializer) {
     return serializer.exclude("data.actif").exclude("*.class");
@@ -48,7 +50,7 @@ public class GestionnaireController {
 
   @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/json")
   public ResponseEntity<String> listJson() {
-    return new AbstractExtListSerializer<Gestionnaire>(
+    return new AbstractExtListSerializer<fr.sdis83.remocra.domain.remocra.Gestionnaire>(
         "fr.sdis83.remocra.domain.remocra.Gestionnaire retrieved.") {
 
       @Override
@@ -57,20 +59,35 @@ public class GestionnaireController {
       }
 
       @Override
-      protected List<Gestionnaire> getRecords() {
-        return Gestionnaire.findAllGestionnaires();
+      protected List<fr.sdis83.remocra.domain.remocra.Gestionnaire> getRecords() {
+        return fr.sdis83.remocra.domain.remocra.Gestionnaire.findAllGestionnaires();
       }
     }.serialize();
   }
 
+  @RequestMapping(
+      value = "/findAllGestionnaires",
+      method = RequestMethod.GET,
+      headers = "Accept=application/json;charset=utf-8")
+  public ResponseEntity<String> findAllGesitonnaires() {
+    try {
+      return new ResponseEntity<>(
+          objectMapper.writeValueAsString(gestionnaireRepository.findAllGestionnaires()),
+          HttpStatus.OK);
+    } catch (Exception e) {
+      this.logger.error(e.getMessage(), e);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
   public ResponseEntity<String> listJson(@PathVariable("id") final Long id) {
-    return new AbstractExtObjectSerializer<Gestionnaire>(
+    return new AbstractExtObjectSerializer<fr.sdis83.remocra.domain.remocra.Gestionnaire>(
         "fr.sdis83.remocra.domain.remocra.Gestionnaire retrieved.") {
 
       @Override
-      protected Gestionnaire getRecord() throws BusinessException {
-        return Gestionnaire.findGestionnaire(id);
+      protected fr.sdis83.remocra.domain.remocra.Gestionnaire getRecord() throws BusinessException {
+        return fr.sdis83.remocra.domain.remocra.Gestionnaire.findGestionnaire(id);
       }
 
       @Override
@@ -88,13 +105,16 @@ public class GestionnaireController {
       String contactsJson = request.getParameter("contacts");
       String appartenance = request.getParameter("appartenance");
 
-      final Gestionnaire attached = service.create(gestionnaire, null);
+      final fr.sdis83.remocra.domain.remocra.Gestionnaire attached =
+          service.create(gestionnaire, null);
 
       contactRepository.createContactsFromJson(contactsJson, appartenance, attached.getId());
 
-      return new AbstractExtObjectSerializer<Gestionnaire>("Gestionnaire created") {
+      return new AbstractExtObjectSerializer<fr.sdis83.remocra.domain.remocra.Gestionnaire>(
+          "Gestionnaire created") {
         @Override
-        protected Gestionnaire getRecord() throws BusinessException {
+        protected fr.sdis83.remocra.domain.remocra.Gestionnaire getRecord()
+            throws BusinessException {
           return attached;
         }
       }.serialize();
@@ -113,12 +133,15 @@ public class GestionnaireController {
       String contactsJson = request.getParameter("contacts");
       String appartenance = request.getParameter("appartenance");
 
-      final Gestionnaire attached = service.update(id, gestionnaire, null);
+      final fr.sdis83.remocra.domain.remocra.Gestionnaire attached =
+          service.update(id, gestionnaire, null);
       contactRepository.updateContactsFromJson(contactsJson, appartenance, id);
 
-      return new AbstractExtObjectSerializer<Gestionnaire>("Gestionnaire created") {
+      return new AbstractExtObjectSerializer<fr.sdis83.remocra.domain.remocra.Gestionnaire>(
+          "Gestionnaire created") {
         @Override
-        protected Gestionnaire getRecord() throws BusinessException {
+        protected fr.sdis83.remocra.domain.remocra.Gestionnaire getRecord()
+            throws BusinessException {
           return attached;
         }
       }.serialize();

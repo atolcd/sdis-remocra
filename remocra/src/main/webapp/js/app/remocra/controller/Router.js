@@ -27,6 +27,7 @@ Ext.require('Sdis.Remocra.features.hydrants.Planification');
 Ext.require('Sdis.Remocra.features.courriers.Courriers');
 Ext.require('Sdis.Remocra.features.documents.ImportDocuments');
 Ext.require('Sdis.Remocra.features.gestionnaires.ManageGestionnaires');
+Ext.require('Sdis.Remocra.features.gestionnaires.ManageSites');
 Ext.require('Sdis.Remocra.features.parametre.ManageInfosPeiMobile');
 Ext.require('Sdis.Remocra.features.organismes.OrganismesAPI');
 Ext.require('Sdis.Remocra.features.transfertsAutomatises.TransfertsAutomatises');
@@ -159,6 +160,7 @@ Ext.define('Sdis.Remocra.controller.Router', {
         this.routes['courriers'] = this.getCourriersRoutes();
         this.routes['importDocuments'] = this.getImportDocumentsRoutes();
         this.routes['manageGestionnaires'] = this.getManageGestionnairesRoutes();
+        this.routes['manageSites'] = this.getManageSitesRoutes();
         this.routes['manageInfosPeiMobile'] = this.getManageInfosPeiMobileRoutes();
         this.routes['organismesAPI'] = this.getOrganismesAPIRoutes();
         this.routes['transfertsAutomatises'] = this.getTransfertsAutomatisesRoutes();
@@ -412,6 +414,15 @@ Ext.define('Sdis.Remocra.controller.Router', {
         };
         return routes;
     },
+
+    getManageSitesRoutes: function() {
+        var routes = [];
+        routes['index'] = {
+            xtype: 'crManageSites'
+        };
+        return routes;
+    },
+
     getManageInfosPeiMobileRoutes: function() {
         var routes = [];
         routes['index'] = {

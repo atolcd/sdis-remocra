@@ -269,4 +269,12 @@ public class ContactRepository {
   public void deleteContact(Long idContact) {
     context.delete(CONTACT).where(CONTACT.ID.eq(idContact)).execute();
   }
+
+  public void updateContactGestionnaireSite(Long idContact, Long newIdGestionnaireSite) {
+    context
+        .update(CONTACT)
+        .set(CONTACT.ID_GESTIONNAIRE_SITE, newIdGestionnaireSite)
+        .where(CONTACT.ID.eq(idContact))
+        .execute();
+  }
 }

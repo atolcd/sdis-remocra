@@ -17,6 +17,7 @@ import ImportDocuments from './components/ImportDocuments.vue'
 import ModalSaisieVisite from './components/tournee/ModalSaisieVisite.vue'
 import ModalImportCTP from './components/ModalImportCTP.vue'
 import ManageGestionnaires from './components/ManageGestionnaires.vue'
+import ManageSites from './components/ManageSites.vue'
 import ManageInfosPeiMobile from './components/ManageInfosPeiMobile.vue'
 
 // import router from './router'
@@ -265,6 +266,18 @@ const manageGestionnaires = function(id) {
   return v
 }
 
+const manageSites = function(id) {
+  var v = new Vue({
+    el: '#' + id,
+    bus: new Vue(),
+    components: {
+      ManageSites
+    },
+    template: "<ManageSites/>"
+  })
+  return v
+}
+
 const manageInfosPeiMobile = function(id) {
   var v = new Vue({
     el: '#' + id,
@@ -295,5 +308,6 @@ export {
   modalImportCTP,
   importDocuments,
   manageGestionnaires,
+  manageSites,
   manageInfosPeiMobile,
 }

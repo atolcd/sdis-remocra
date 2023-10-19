@@ -146,13 +146,9 @@
                     this.idGestionnaire = id_
                     axios.get('/remocra/gestionnaire/' + this.idGestionnaire).then(response => {
                         this.nomGestionnaire = response.data.data ? response.data.data.nom:''
-                    }).catch(function(error){
-                        console.error('erreur recup nom suppression gestionnaire', error);
                     })
                     axios.get('/remocra/gestionnaire/getHydrant/'+this.idGestionnaire).then(response => {
                         this.listHydrantGestionnaire = response.data.data
-                    }).catch(function(error){
-                        console.error('erreur recup numéro hydrant gestionnaire', error);
                     })
                     this.$bvModal.show('confirmDelete')
                 }
@@ -163,8 +159,6 @@
                         this.onGestionnaireUpdated()
                         this.$bvModal.hide('confirmDelete')
                     })
-                }).catch(function(error){
-                    console.error('erreur suppression totale gestionnaire',error);
                 });
             },
             filtering(){
@@ -172,7 +166,7 @@
                 this.filterCodeGestionnaireValue = document.getElementById("inputCodeGestionnaire").value.toUpperCase();
                 this.filterContactGestionnaireValue = document.getElementById("selectBoxContact").value;
                 this.filteredResultGestionnaire = this.listeGestionnaireSource;
-                var temp=[]
+                let temp=[]
 
                 if(this.filterNomGestionnaireValue!=''){ // Filtrage sur 'Nom'
                     temp = [] 
@@ -237,8 +231,6 @@
 
     .btnAction {
         display: inline-block;
-        background-color: #fff;
-        color: black;
         border-radius: 5px;
         padding: 0px 2px;
         font-size:10px;
