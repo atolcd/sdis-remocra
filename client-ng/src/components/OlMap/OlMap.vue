@@ -1,8 +1,5 @@
 <template>
   <b-container id="olMap" class="map-container" style="max-width:100%; max-height: 100%;">
-
-
-
     <div id="map" class="map">
       <div>
         <slot name="toolbar" v-if="mapCreated">
@@ -183,7 +180,8 @@ export default {
 </script>
 
 <style scoped>
-#map {
+#olMap, #map {
+  height: 700px;
   width: 100%;
   position: relative;
 }
