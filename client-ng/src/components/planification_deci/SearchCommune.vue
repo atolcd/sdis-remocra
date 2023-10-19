@@ -8,7 +8,8 @@
                 :component-item='communeTemplate'
                 :auto-select-one-item="false"
                 @update-items="search"
-                @item-selected="communeSelected" />
+                @item-selected="communeSelected"
+                :min-len="2" />
 </form>
 </template>
 
