@@ -15,4 +15,16 @@ public class GlobalConstants {
    * gestion de crise
    */
   public static final String CATEGORIE_CRISE = "GESTION_CRISE";
+
+  //////// Couverture hydraulique
+  /** Clé du param conf correspondant à la profondeur de la couverture hydraulique */
+  public static final String PROFONDEUR_COUVERTURE = "PROFONDEUR_COUVERTURE";
+
+  /**
+   * Clé du param conf correspondant à la distance maximal de parcours de la couverture hydraulique
+   */
+  public static final String DECI_DISTANCE_MAX_PARCOURS = "DECI_DISTANCE_MAX_PARCOURS";
+
+  /** Clé du param conf correspondant aux distances à parcourir de la couverture hydraulique */
+  public static final String DECI_ISODISTANCES = "DECI_ISODISTANCES";
 }

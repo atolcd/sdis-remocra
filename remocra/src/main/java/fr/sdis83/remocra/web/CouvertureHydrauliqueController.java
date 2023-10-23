@@ -1,12 +1,14 @@
 package fr.sdis83.remocra.web;
 
 import fr.sdis83.remocra.repository.CouvertureHydrauliqueRepository;
+import fr.sdis83.remocra.usecase.couverturehydraulique.CouvertureHydrauliqueUseCase;
 import fr.sdis83.remocra.web.model.PlusProchePei;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import org.cts.IllegalCoordinateException;
 import org.cts.crs.CRSException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 @Controller
 public class CouvertureHydrauliqueController {
 
+  @Autowired private CouvertureHydrauliqueUseCase couvertureHydrauliqueUseCase;
   @Autowired private CouvertureHydrauliqueRepository couvertureHydrauliqueRepository;
 
   @RequestMapping(
@@ -32,18 +35,17 @@ public class CouvertureHydrauliqueController {
     try {
       String hydrantsExistants = request.getParameter("hydrantsExistants");
       String hydrantsProjet = request.getParameter("hydrantsProjet");
-      String etude = request.getParameter("etude");
-      String useReseauImporte = request.getParameter("reseauImporte");
+      Long etude = Long.valueOf(request.getParameter("etude"));
+      Boolean useReseauImporte = Boolean.valueOf(request.getParameter("reseauImporte"));
 
-      couvertureHydrauliqueRepository.calcul(
+      couvertureHydrauliqueUseCase.calcul(
           hydrantsExistants, hydrantsProjet, etude, useReseauImporte);
-      return new SuccessErrorExtSerializer(true, "La couverture hydraulique a bien été tracée")
-          .serialize();
+      return new ResponseEntity<>("La couverture hydraulique a bien été tracée", HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
-      return new SuccessErrorExtSerializer(
-              false, "Une erreur est survenue lors du calcul de la couverture hydraulique")
-          .serialize();
+      return new ResponseEntity<>(
+          "Une erreur est survenue lors du calcul de la couverture hydraulique",
+          HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

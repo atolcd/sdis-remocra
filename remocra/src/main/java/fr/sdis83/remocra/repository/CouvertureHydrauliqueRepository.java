@@ -2,6 +2,8 @@ package fr.sdis83.remocra.repository;
 
 import static fr.sdis83.remocra.db.model.couverture_hydraulique.Tables.COUVERTURE_HYDRAULIQUE_PEI;
 import static fr.sdis83.remocra.db.model.couverture_hydraulique.Tables.COUVERTURE_HYDRAULIQUE_ZONAGE;
+import static fr.sdis83.remocra.db.model.couverture_hydraulique.Tables.PEI;
+import static fr.sdis83.remocra.db.model.couverture_hydraulique.Tables.RESEAU;
 
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
@@ -9,13 +11,14 @@ import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.model.PlusProchePei;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.cts.IllegalCoordinateException;
 import org.cts.crs.CRSException;
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -31,80 +34,108 @@ public class CouvertureHydrauliqueRepository {
 
   @PersistenceContext private EntityManager entityManager;
 
+  private static final String TYPE_HYDRANT = "HYDRANT";
+  private static final String TYPE_PROJET = "PROJET";
+
   public CouvertureHydrauliqueRepository() {}
 
-  /** Calcul de la couverture hydraulique */
-  public void calcul(
-      String hydrantsExistants, String hydrantsProjet, String etude, String useReseauImporte) {
-    HashMap<String, ArrayList<Integer>> existants =
-        new JSONDeserializer<HashMap<String, ArrayList<Integer>>>().deserialize(hydrantsExistants);
-    HashMap<String, ArrayList<Integer>> projets =
-        new JSONDeserializer<HashMap<String, ArrayList<Integer>>>().deserialize(hydrantsProjet);
-    Long idEtude = Long.valueOf(etude);
-    String reseauImporte = (Boolean.valueOf(useReseauImporte)) ? idEtude.toString() : "NULL";
+  public void executeInsererJoinctionPei(
+      int distanceMaxAuReseau,
+      Long reseauImporte,
+      List<Integer> idsHydrant,
+      List<Integer> idsHydrantProjet) {
 
-    String listeHydrants = existants.get("hydrants").toString().replace("[", "").replace("]", "");
-    String listeProjets = projets.get("projets").toString().replace("[", "").replace("]", "");
+    context
+        .select(
+            DSL.field(
+                "couverture_hydraulique.inserer_jonction_pei("
+                    + PEI.ID
+                    + ", "
+                    + distanceMaxAuReseau
+                    + ", "
+                    + reseauImporte
+                    + ")"))
+        .from(PEI)
+        .where(
+            idsHydrant.size() > 0
+                ? PEI.IDENTIFIANT.in(idsHydrant).and(PEI.TYPE.eq(TYPE_HYDRANT))
+                : DSL.falseCondition())
+        .or(
+            idsHydrantProjet.size() > 0
+                ? PEI.IDENTIFIANT.in(idsHydrantProjet).and(PEI.TYPE.eq(TYPE_PROJET))
+                : DSL.falseCondition())
+        .execute();
+  }
 
-    // Nettoyage des entrées
-    this.deleteCouverture(idEtude);
+  public void executeParcoursCouverture(
+      Long reseauImporte,
+      Long idEtude,
+      List<Integer> distances,
+      List<Integer> idsHydrant,
+      List<Integer> idsHydrantProjet,
+      int profondeurCouverture) {
+    context
+        .select(
+            DSL.field(
+                "couverture_hydraulique.parcours_couverture_hydraulique("
+                    + PEI.ID
+                    + ", "
+                    + idEtude
+                    + ", "
+                    + reseauImporte
+                    + ", array"
+                    + distances
+                    + ", "
+                    + profondeurCouverture
+                    + ")"))
+        .from(PEI)
+        .where(
+            idsHydrant.size() > 0
+                ? PEI.IDENTIFIANT.in(idsHydrant).and(PEI.TYPE.eq(TYPE_HYDRANT))
+                : DSL.falseCondition())
+        .or(
+            idsHydrantProjet.size() > 0
+                ? PEI.IDENTIFIANT.in(idsHydrantProjet).and(PEI.TYPE.eq(TYPE_PROJET))
+                : DSL.falseCondition())
+        .execute();
+  }
 
-    // Condition pour restreindre les traitements aux PEI souhaités
-    StringBuilder condition = new StringBuilder("WHERE FALSE ");
-    if (listeHydrants.length() > 0) {
-      condition.append("OR (identifiant IN (" + listeHydrants + ") AND type = 'HYDRANT')");
-    }
-    if (listeProjets.length() > 0) {
-      condition.append("OR (identifiant IN (" + listeProjets + ") AND type = 'PROJET')");
-    }
+  public void executeCouvertureHydrauliqueZonage(
+      Long idEtude,
+      List<Integer> distances,
+      List<Integer> idsHydrant,
+      List<Integer> idsHydrantProjet,
+      int profondeurCouverture) {
 
-    // Récupération des isodistances
-    ArrayList<Integer> distances = new ArrayList<Integer>();
-    for (String s : paramConfService.getDeciIsodistances().replaceAll(" ", "").split(",")) {
-      distances.add(Integer.parseInt(s));
-    }
+    context
+        .select(
+            DSL.field(
+                "couverture_hydraulique.couverture_hydraulique_zonage("
+                    + idEtude
+                    + ", array"
+                    + distances
+                    + ", "
+                    + profondeurCouverture
+                    + ")"))
+        .from(PEI)
+        .where(
+            idsHydrant.size() > 0
+                ? PEI.IDENTIFIANT.in(idsHydrant).and(PEI.TYPE.eq(TYPE_HYDRANT))
+                : DSL.falseCondition())
+        .or(
+            idsHydrantProjet.size() > 0
+                ? PEI.IDENTIFIANT.in(idsHydrantProjet).and(PEI.TYPE.eq(TYPE_PROJET))
+                : DSL.falseCondition())
+        .execute();
+  }
 
-    // Ajout des jonctions
-    entityManager
-        .createNativeQuery(
-            "SELECT couverture_hydraulique.inserer_jonction_pei(id, 25, "
-                + reseauImporte
-                + ") "
-                + "FROM couverture_hydraulique.pei "
-                + condition)
-        .getResultList();
-
-    // Parcours du graphe
-    entityManager
-        .createNativeQuery(
-            "SELECT couverture_hydraulique.parcours_couverture_hydraulique(id, "
-                + idEtude
-                + ", "
-                + reseauImporte
-                + ", array"
-                + distances
-                + ") "
-                + "FROM couverture_hydraulique.pei "
-                + condition)
-        .getResultList();
-
-    // Zonage
-    entityManager
-        .createNativeQuery(
-            "SELECT couverture_hydraulique.couverture_hydraulique_zonage("
-                + idEtude
-                + ", array"
-                + distances
-                + ")")
-        .getResultList();
-
-    // Retrait des jonctions
-    entityManager
-        .createNativeQuery(
-            "SELECT couverture_hydraulique.retirer_jonction_pei(r.pei_troncon) "
-                + "FROM couverture_hydraulique.reseau r "
-                + "WHERE r.pei_troncon IS NOT NULL")
-        .getResultList();
+  public void executeRetirerJonctionPei() {
+    context
+        .select(
+            DSL.field("couverture_hydraulique.retirer_jonction_pei(" + RESEAU.PEI_TRONCON + ")"))
+        .from(RESEAU)
+        .where(RESEAU.PEI_TRONCON.isNotNull())
+        .execute();
   }
 
   public void deleteCouverture(Long idEtude) {
