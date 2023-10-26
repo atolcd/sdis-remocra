@@ -3,7 +3,7 @@ package fr.sdis83.remocra.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.Contact;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.Gestionnaire;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.repository.ContactRepository;
 import fr.sdis83.remocra.repository.GestionnaireRepository;
@@ -81,13 +81,13 @@ public class GestionnaireController {
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
-  public ResponseEntity<String> listJson(@PathVariable("id") final Long id) {
+  public ResponseEntity<String> listJson(@PathVariable("id") final Long idGestionnaire) {
     return new AbstractExtObjectSerializer<fr.sdis83.remocra.domain.remocra.Gestionnaire>(
         "fr.sdis83.remocra.domain.remocra.Gestionnaire retrieved.") {
 
       @Override
       protected fr.sdis83.remocra.domain.remocra.Gestionnaire getRecord() throws BusinessException {
-        return fr.sdis83.remocra.domain.remocra.Gestionnaire.findGestionnaire(id);
+        return fr.sdis83.remocra.domain.remocra.Gestionnaire.findGestionnaire(idGestionnaire);
       }
 
       @Override
@@ -127,15 +127,15 @@ public class GestionnaireController {
   @RequestMapping(value = "/{id}", method = RequestMethod.POST, headers = "Accept=application/json")
   @PreAuthorize("hasRight('HYDRANTS_GESTIONNAIRE_C')")
   public ResponseEntity<java.lang.String> update(
-      HttpServletRequest request, @PathVariable("id") final Long id) {
+      HttpServletRequest request, @PathVariable("id") final Long idGestionnaire) {
     try {
       String gestionnaire = request.getParameter("gestionnaire");
       String contactsJson = request.getParameter("contacts");
       String appartenance = request.getParameter("appartenance");
 
       final fr.sdis83.remocra.domain.remocra.Gestionnaire attached =
-          service.update(id, gestionnaire, null);
-      contactRepository.updateContactsFromJson(contactsJson, appartenance, id);
+          service.update(idGestionnaire, gestionnaire, null);
+      contactRepository.updateContactsFromJson(contactsJson, appartenance, idGestionnaire);
 
       return new AbstractExtObjectSerializer<fr.sdis83.remocra.domain.remocra.Gestionnaire>(
           "Gestionnaire created") {
@@ -165,24 +165,34 @@ public class GestionnaireController {
     }.serialize();
   }
 
+  /**
+   * Retourne une liste de ContactGestionnaireSite a partir d'un id de gestionnaire
+   *
+   * @param idGestionnaire
+   * @return
+   */
   @RequestMapping(
-      value = "/listeContact/{id}",
+      value = "/listeContactGestionnaireSite/{id}",
       method = RequestMethod.GET,
-      headers = "Accept=application/json")
+      headers = "Accept=application/json;charset=utf-8")
   @PreAuthorize("hasRight('REFERENTIELS_C')")
-  public ResponseEntity<String> fetchContactsDataByGestionnaireId(@PathVariable("id") Long id) {
-    return new AbstractExtListSerializer<Contact>("Get Gestionnaire's contacts") {
-      @Override
-      protected List<Contact> getRecords() throws BusinessException {
-        return manageContactsUseCase.fetchContactsDataByGestionnaireId(id);
-      }
-    }.serialize();
+  public ResponseEntity<String> fetchContactsGestionnaireSiteByGestionnaireId(
+      @PathVariable("id") Long idGestionnaire) {
+    try {
+      return new ResponseEntity<>(
+          objectMapper.writeValueAsString(
+              manageContactsUseCase.fetchContactsGestionnaireSiteByGestionnaireId(idGestionnaire)),
+          HttpStatus.OK);
+    } catch (Exception e) {
+      this.logger.error(e.getMessage(), e);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**
    * Retourne la liste des gestionnaire.code non null qui n'appartiennent pas au gestionnaire fourni
    *
-   * @param id
+   * @param idGestionnaire
    * @return
    */
   @RequestMapping(
@@ -190,11 +200,11 @@ public class GestionnaireController {
       method = RequestMethod.GET,
       headers = "Accept=application/json")
   @PreAuthorize("hasRight('REFERENTIELS_C')")
-  public ResponseEntity<String> getGestionnaireCodes(@PathVariable("id") Long id) {
+  public ResponseEntity<String> getGestionnaireCodes(@PathVariable("id") Long idGestionnaire) {
     return new AbstractExtListSerializer<String>("Get Other Gestionnaires' codes") {
       @Override
       protected List<String> getRecords() throws BusinessException {
-        return gestionnaireRepository.getOtherGestionnaireCodes(id);
+        return gestionnaireRepository.getOtherGestionnaireCodes(idGestionnaire);
       }
     }.serialize();
   }
@@ -226,9 +236,9 @@ public class GestionnaireController {
   public ResponseEntity<java.lang.String> createGestionnaire(HttpServletRequest request) {
     try {
       String gestionnaire = request.getParameter("gestionnaire");
-      fr.sdis83.remocra.db.model.remocra.tables.pojos.Gestionnaire objGestionnaire =
-          new JSONDeserializer<fr.sdis83.remocra.db.model.remocra.tables.pojos.Gestionnaire>()
-              .use(null, fr.sdis83.remocra.db.model.remocra.tables.pojos.Gestionnaire.class)
+      Gestionnaire objGestionnaire =
+          new JSONDeserializer<Gestionnaire>()
+              .use(null, Gestionnaire.class)
               .deserialize(gestionnaire);
       gestionnaireRepository.createGestionnaire(objGestionnaire);
       return new SuccessErrorExtSerializer(true, "").serialize();
@@ -246,14 +256,14 @@ public class GestionnaireController {
       headers = "Accept=application/json")
   @PreAuthorize("hasRight('REFERENTIELS_C')")
   public ResponseEntity<java.lang.String> updateGestionnaire(
-      @PathVariable("id") Long id, HttpServletRequest request) {
+      @PathVariable("id") Long idGestionnaire, HttpServletRequest request) {
     try {
       String gestionnaire = request.getParameter("gestionnaire");
-      fr.sdis83.remocra.db.model.remocra.tables.pojos.Gestionnaire objGestionnaire =
-          new JSONDeserializer<fr.sdis83.remocra.db.model.remocra.tables.pojos.Gestionnaire>()
-              .use(null, fr.sdis83.remocra.db.model.remocra.tables.pojos.Gestionnaire.class)
+      Gestionnaire objGestionnaire =
+          new JSONDeserializer<Gestionnaire>()
+              .use(null, Gestionnaire.class)
               .deserialize(gestionnaire);
-      gestionnaireRepository.updateGestionnaire(id, objGestionnaire);
+      gestionnaireRepository.updateGestionnaire(idGestionnaire, objGestionnaire);
       return new SuccessErrorExtSerializer(true, "").serialize();
     } catch (Exception e) {
       this.logger.error(e.getMessage(), e);
@@ -263,16 +273,23 @@ public class GestionnaireController {
     }
   }
 
+  /**
+   * Retourne la liste des numeros hydrant ratachés à l'idGestionnaire fournit
+   *
+   * @param idGestionnaire
+   * @return
+   */
   @RequestMapping(
       value = "/getHydrant/{id}",
       method = RequestMethod.GET,
       headers = "Accept=application/json")
   @PreAuthorize("hasRight('REFERENTIELS_C')")
-  public ResponseEntity<java.lang.String> getHydrantByGestionnaireId(@PathVariable("id") Long id) {
+  public ResponseEntity<java.lang.String> getHydrantByGestionnaireId(
+      @PathVariable("id") Long idGestionnaire) {
     return new AbstractExtListSerializer<String>("Get hydrant num by Gestionnaire Id") {
       @Override
       protected List<String> getRecords() throws BusinessException {
-        return gestionnaireRepository.getHydrantWithIdGestionnaire(id);
+        return gestionnaireRepository.getHydrantWithIdGestionnaire(idGestionnaire);
       }
     }.serialize();
   }
@@ -282,9 +299,10 @@ public class GestionnaireController {
       method = RequestMethod.DELETE,
       headers = "Accept=application/json")
   @PreAuthorize("hasRight('REFERENTIELS_C')")
-  public ResponseEntity<java.lang.String> deleteGestionnaire(@PathVariable("id") Long id) {
+  public ResponseEntity<java.lang.String> deleteGestionnaire(
+      @PathVariable("id") Long idGestionnaire) {
     try {
-      deleteGestionnaireUseCase.deleteGestionnaire(id);
+      deleteGestionnaireUseCase.deleteGestionnaire(idGestionnaire);
       return new SuccessErrorExtSerializer(true, "Gestionnaire intégralement supprimé").serialize();
     } catch (Exception e) {
       logger.error(e.getMessage());

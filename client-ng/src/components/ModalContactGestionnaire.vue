@@ -10,14 +10,15 @@
         <b-table id="tabContactGestionnaire" :fields="fields" :items="filteredContacts" :per-page="perPage" :current-page="currentPage" small hover bordered striped>
           <template slot="top-row" slot-scope="{fields}"> <!-- Contenu première ligne : input recherche -->
             <td v-for="field in fields" :key="field.key">
-              <input v-if="field.key=='nom'" id="inputNomContact" v-on:keyup="filtering()" :placeholder="'Rechercher par '+field.label">
-              <input v-else-if="field.key=='prenom'" id="inputPrenomContact" v-on:keyup="filtering()" :placeholder="'Rechercher par '+field.label">
-              <input v-else-if="field.key=='fonction'" id="inputFonctionContact" v-on:keyup="filtering()" :placeholder="'Rechercher par '+field.label">
-            </td> 
+              <input v-if="field.key=='contact.nom'" id="inputNomContact" v-on:keyup="filtering()" :placeholder="'Rechercher par '+field.label" class="w-100">
+              <input v-else-if="field.key=='contact.prenom'" id="inputPrenomContact" v-on:keyup="filtering()" :placeholder="'Rechercher par '+field.label" class="w-100">
+              <input v-else-if="field.key=='contact.fonction'" id="inputFonctionContact" v-on:keyup="filtering()" :placeholder="'Rechercher par '+field.label" class="w-100">
+              <input v-else-if="field.key=='siteContactNom'" id="inputSiteContact" v-on:keyup="filtering()" :placeholder="'Rechercher par '+field.label" class="w-100">
+            </td>
           </template>
           <template slot="actions" slot-scope="data"> <!-- Contenu spécial colonne des boutons d'actions -->
-            <button class="btnAction editG" @click="editContact(data.item.id)"><img src="/remocra/static/img/pencil.png"> Modifier</button>
-            <button class="btnAction delG" @click="deleteContact(data.item.id)"><img src="/remocra/static/img/decline.png"> Supprimer</button>
+            <button class="btnAction editG" @click="editContact(data.item.contact.id)"><img src="/remocra/static/img/pencil.png"> Modifier</button>
+            <button class="btnAction delG" @click="deleteContact(data.item.contact.id)"><img src="/remocra/static/img/decline.png"> Supprimer</button>
           </template>
         </b-table>
         <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" aria-cotnrols="tabContactGestionnaire"></b-pagination>
@@ -56,12 +57,13 @@
         filteredContacts:[],
 
         fields: [
-          { key:'civilite', label:'Civilité'},
-          { key:'nom', label:'Nom', sortable: true},
-          { key:'prenom', label:'Prenom', sortable: true},
-          { key:'fonction', label:'Fonction', sortable: true},
-          { key:'telephone', label:'Téléphone'}, 
-          { key:'email', label:'Email'},
+          { key:'contact.civilite', label:'Civilité'},
+          { key:'contact.nom', label:'Nom', sortable: true},
+          { key:'contact.prenom', label:'Prenom', sortable: true},
+          { key:'contact.fonction', label:'Fonction', sortable: true},
+          { key:'siteContactNom', label:'Site', sortable: true},
+          { key:'contact.telephone', label:'Téléphone'},
+          { key:'contact.email', label:'Email'},
           { key:'actions', label:'', tdClass:'buttonCell'}
         ],
         civilites: [
@@ -72,6 +74,7 @@
         filterNomValue: '',
         filterPrenomValue: '',
         filterFonctionValue: '',
+        filterSiteValue: '',
 
         perPage:14,
         currentPage:1,
@@ -85,10 +88,8 @@
 
     methods: {
       getContactData(idGestionnaire_){
-        axios.get('/remocra/gestionnaire/listeContact/'+idGestionnaire_).then(response => {
-          this.contacts = this.filteredContacts = response.data.data;
-        }).catch(function(error){
-          console.error('erreur recup liste contacts gestionnaire', error);
+        axios.get('/remocra/gestionnaire/listeContactGestionnaireSite/'+idGestionnaire_).then(response => {
+          this.contacts = this.filteredContacts = response.data;
         })
       },
       showModalListeContacts(idGestionnaire_, nomGestionnaire_) {
@@ -122,9 +123,7 @@
         }
         else{
           axios.get('/remocra/contact/contactInfos/'+this.idContact).then(response => {
-            this.nomContact = response.data.data ? response.data.data.nom : ''
-          }).catch(function(error){
-            console.error('erreur recup nom suppression contact', error);
+            this.nomContact = response.data ? response.data.nom : ''
           })
           this.$bvModal.show('confirmDeleteContact')
         }
@@ -135,30 +134,36 @@
             this.onContactUpdated()
             this.$bvModal.hide('confirmDeleteContact')
           })
-        }).catch(function(error){
-          console.error('erreur suppression contact', error);
         })
       },
       onContactUpdated(){
         this.$emit('gestionnaireContactsUpdate')
-        this.showModalListeContacts(this.idGestionnaire, this.nomGestionnaire) 
+        this.showModalListeContacts(this.idGestionnaire, this.nomGestionnaire)
       },
       filtering(){
-        this.filterNomValue = document.getElementById("inputNomContact").value.toUpperCase();
-        this.filterPrenomValue = document.getElementById("inputPrenomContact").value.toUpperCase();
-        this.filterFonctionValue = document.getElementById("inputFonctionContact").value.toUpperCase();
+        this.filterNomValue = document.getElementById("inputNomContact").value;
+        this.filterPrenomValue = document.getElementById("inputPrenomContact").value;
+        this.filterFonctionValue = document.getElementById("inputFonctionContact").value;
+        this.filterSiteValue = document.getElementById("inputSiteContact").value;
         this.filteredContacts = this.contacts;
 
-        this.filteredContacts = this.filteringPart(this.filteredContacts, 'nom', this.filterNomValue) // Filtrage sur les noms
-        this.filteredContacts = this.filteringPart(this.filteredContacts, 'prenom', this.filterPrenomValue) // Filtrage sur les prenoms
-        this.filteredContacts = this.filteringPart(this.filteredContacts, 'fonction', this.filterFonctionValue) // Filtrage sur les fonctions
+        this.filteredContacts = this.filteringPart(this.filteredContacts, 'contact', 'nom', this.filterNomValue) // Filtrage sur les noms
+        this.filteredContacts = this.filteringPart(this.filteredContacts, 'contact', 'prenom', this.filterPrenomValue) // Filtrage sur les prenoms
+        this.filteredContacts = this.filteringPart(this.filteredContacts, 'contact', 'fonction', this.filterFonctionValue) // Filtrage sur les fonctions
+        this.filteredContacts = this.filteringPart(this.filteredContacts, 'siteContactNom', null, this.filterSiteValue) // Filtrage sur les sites
       },
-      filteringPart(list_, champ_, valeurFiltre_){
-        var temp = []
-        if(valeurFiltre_!=''){
+      filteringPart(list_, champ1_, champ2_, valeurFiltre_){
+        let temp = []
+        if(valeurFiltre_!==''){
           _.forEach(list_, row => {
-            if(row[champ_].toUpperCase().startsWith(valeurFiltre_)){
-              temp.push(row)
+            if(champ2_){
+              if(row[champ1_][champ2_] && row[champ1_][champ2_].toUpperCase().includes(valeurFiltre_.toUpperCase())){
+                temp.push(row)
+              }
+            } else {
+              if(row[champ1_] && row[champ1_].toUpperCase().includes(valeurFiltre_.toUpperCase())){
+                temp.push(row)
+              }
             }
           })
           return temp
@@ -172,7 +177,6 @@
 <style>
   div#modalListContact___BV_modal_content_{width:unset;min-width:unset !important;}
   #modalListContact .modal-dialog.modal-md{min-width: 920px;max-width:75%;}
-  #inputNomContact, #inputPrenomContact, #inputFonctionContact{width:100%;}
 
   #tabContact{
     width: auto;

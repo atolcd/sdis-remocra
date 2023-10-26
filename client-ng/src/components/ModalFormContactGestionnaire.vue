@@ -89,6 +89,12 @@
                             <!-- Utilise les rêgles d'HTML5 -->
                         </b-form-group>
                     </div>
+                    <div class="cellGestionnaireSite">
+                        <a>Site</a>
+                        <b-form-group label-for="site">
+                            <b-form-select id="site" v-model="idGestionnaireSite" class="parametre" :options="comboGestionnaireSite" size="sm"></b-form-select>
+                        </b-form-group>
+                    </div>
                     <div class="cellContacter"> 
                         <a>A contacter pour</a>
                         <b-form-group label-for="contacter">
@@ -128,10 +134,14 @@
                 pays:'',
                 telephone:'',
                 email:'',
+                idGestionnaireSite:'',
 
                 roles: [],
                 contactRoles:[],
                 formatedContactRoles:[],
+
+                comboGestionnaireSite: [],
+                streamChampVide: ' ',
 
                 civilites: [{
                     value: 'M',
@@ -153,35 +163,34 @@
                             value: role.id
                         })
                     })
-                }).catch(function(error) {
-                    console.error('error recup liste globale roles', error);
                 })
+                // Gestionnaire Site
+                this.getComboGestionnaireSite(idGestionnaire_)
 
                 if(idContact_!==null){ // Modification contact
                     this.idContact=idContact_;
                     axios.get('/remocra/contact/contactInfos/'+this.idContact).then(response => {
                         // Infos contact
-                        response.data.data ? (this.appartenance = nomGestionnaire_,
-                                                this.idAppartenance = response.data.data.idAppartenance,
-                                                this.fonction = response.data.data.fonction,
-                                                this.civilite = response.data.data.civilite,
-                                                this.nom =  response.data.data.nom,
-                                                this.prenom = response.data.data.prenom,
-                                                this.numeroVoie = response.data.data.numeroVoie,
-                                                this.suffixeVoie = response.data.data.suffixeVoie,
-                                                this.voie = response.data.data.voie,
-                                                this.lieuDit = response.data.data.lieuDit,
-                                                this.codePostal = response.data.data.codePostal,
-                                                this.ville = response.data.data.ville,
-                                                this.pays = response.data.data.pays,
-                                                this.telephone = response.data.data.telephone,
-                                                this.email = response.data.data.email) : null
+                        response.data ? (this.appartenance = nomGestionnaire_,
+                                                this.idAppartenance = response.data.idAppartenance,
+                                                this.fonction = response.data.fonction,
+                                                this.civilite = response.data.civilite,
+                                                this.nom =  response.data.nom,
+                                                this.prenom = response.data.prenom,
+                                                this.numeroVoie = response.data.numeroVoie,
+                                                this.suffixeVoie = response.data.suffixeVoie,
+                                                this.voie = response.data.voie,
+                                                this.lieuDit = response.data.lieuDit,
+                                                this.codePostal = response.data.codePostal,
+                                                this.ville = response.data.ville,
+                                                this.pays = response.data.pays,
+                                                this.telephone = response.data.telephone,
+                                                this.email = response.data.email,
+                                                this.idGestionnaireSite = response.data.idGestionnaireSite) : null
                         // Role Contact
                         this.getContactRoles(this.idContact)
                         // Titre pop up
                         this.buildedTitle='Modification de '+this.nom;
-                    }).catch(function(error){
-                        console.error('error recup infos contact form',error);
                     })
                     this.$bvModal.show('formContactGestionnaire')
                 }
@@ -193,11 +202,28 @@
                     this.$bvModal.show('formContactGestionnaire')
                 }
             },
+            getComboGestionnaireSite(idGestionnaire_){
+                this.comboGestionnaireSite = []
+                if (idGestionnaire_ != null) {
+                    axios.get('/remocra/gestionnairesite/getComboSiteByGestionnaireId/' + idGestionnaire_).then(response => {
+                    if(response.data) {
+                        _.forEach(response.data, item => {
+                        this.comboGestionnaireSite.push(
+                            {text: item.nomGestionnaireSite,
+                            value: item.idGestionnaireSite})
+                        })
+                    }
+                    })
+                    this.comboGestionnaireSite.push(
+                        {text: this.streamChampVide,
+                        value: null})
+                } else {
+                    this.comboGestionnaireSite = this.comboGestionnaireSite.filter(i => i.value == null);
+                }
+            },
             getContactRoles(idContact_){
                 axios.get('/remocra/contact/contactRoles/'+idContact_).then(response => {
-                    this.contactRoles = response.data.data
-                }).catch(function(error){
-                    console.error('error recup contact roles', error);
+                    this.contactRoles = response.data
                 })
             },
             handleOk(bvModalEvt){
@@ -230,6 +256,7 @@
                     pays: this.pays,
                     telephone: this.telephone,
                     email: this.email,
+                    idGestionnaireSite: this.idGestionnaireSite
                 }))
                 formData.append('role', this.contactRoles)
                 var url = this.idContact !== null ? '/remocra/contact/updateContact/'+this.idContact : '/remocra/contact/createContact';
@@ -239,9 +266,7 @@
                         this.resetFormContact();
                         this.$bvModal.hide('formContactGestionnaire');
                     })
-                }).catch(function(error) {
-                    console.error('error upsert contact', error);
-                });
+                })
             },
             resetFormContact() {
                 // permet de vider les champs du form pour toujours partir d'une base saine
@@ -264,6 +289,8 @@
                 this.telephone = ''
                 this.email = ''
                 this.contactRoles = []
+                this.idGestionnaireSite = ''
+                this.comboGestionnaireSite = []
             },
             checkFormValidity(){
                 const valid = this.$refs.formContactGestionnaire.checkValidity();
@@ -280,7 +307,7 @@
     .grilleFormulaire {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        grid-template-rows: repeat(6, 1fr), minmax(20px, auto);
+        grid-template-rows: repeat(7, 1fr), minmax(20px, auto);
         grid-column-gap: 0px;
         grid-row-gap: 0px;
     }
@@ -298,7 +325,8 @@
     .cellPays { grid-area: 4 / 4 / 5 / 5; }
     .cellTelephone { grid-area: 5 / 1 / 6 / 3; }
     .cellMail { grid-area: 5 / 3 / 6 / 5; }
-    .cellContacter { grid-area: 6 / 1 / 7 / 5; }
+    .cellGestionnaireSite { grid-area: 6 / 1 / 7 / 3; }
+    .cellContacter { grid-area: 7 / 1 / 8 / 5; }
     
     .form-control, .custom-select{width:99% !important;margin:auto !important;}
 

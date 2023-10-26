@@ -213,4 +213,18 @@ public class GestionnaireSiteRepository {
         .and(CONTACT.ID_GESTIONNAIRE_SITE.eq(idGestionnaireSite))
         .fetchInto(Long.class);
   }
+
+  /**
+   * Récupère les noms et id des gestionnaire_site a partir de leur id
+   *
+   * @param listIdGestionnaireSite
+   * @return liste de noms et d'id de gesitonnaire_site
+   */
+  public List<String> getSiteNameByListSiteId(List<Long> listIdGestionnaireSite) {
+    return context
+        .select(GESTIONNAIRE_SITE.ID, GESTIONNAIRE_SITE.NOM)
+        .from(GESTIONNAIRE_SITE)
+        .where(GESTIONNAIRE_SITE.ID.in(listIdGestionnaireSite))
+        .fetchInto(String.class);
+  }
 }

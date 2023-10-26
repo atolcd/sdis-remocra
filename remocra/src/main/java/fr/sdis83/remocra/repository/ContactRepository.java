@@ -2,11 +2,13 @@ package fr.sdis83.remocra.repository;
 
 import static fr.sdis83.remocra.db.model.remocra.Tables.CONTACT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CONTACT_ROLES;
+import static fr.sdis83.remocra.db.model.remocra.Tables.GESTIONNAIRE_SITE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ROLE;
 
 import flexjson.JSONDeserializer;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Contact;
 import fr.sdis83.remocra.domain.remocra.Role;
+import fr.sdis83.remocra.usecase.contacts.ContactGestionnaireSite;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -217,7 +219,8 @@ public class ContactRepository {
             CONTACT.VILLE,
             CONTACT.PAYS,
             CONTACT.TELEPHONE,
-            CONTACT.EMAIL)
+            CONTACT.EMAIL,
+            CONTACT.ID_GESTIONNAIRE_SITE)
         .values(
             contact.getAppartenance(),
             contact.getIdAppartenance(),
@@ -233,7 +236,8 @@ public class ContactRepository {
             contact.getVille(),
             contact.getPays(),
             contact.getTelephone(),
-            contact.getEmail())
+            contact.getEmail(),
+            contact.getIdGestionnaireSite())
         .returning(CONTACT.ID)
         .fetchOne()
         .getValue(CONTACT.ID);
@@ -262,6 +266,7 @@ public class ContactRepository {
         .set(CONTACT.PAYS, contact.getPays())
         .set(CONTACT.TELEPHONE, contact.getTelephone())
         .set(CONTACT.EMAIL, contact.getEmail())
+        .set(CONTACT.ID_GESTIONNAIRE_SITE, contact.getIdGestionnaireSite())
         .where(CONTACT.ID.eq(idContact))
         .execute();
   }
@@ -276,5 +281,34 @@ public class ContactRepository {
         .set(CONTACT.ID_GESTIONNAIRE_SITE, newIdGestionnaireSite)
         .where(CONTACT.ID.eq(idContact))
         .execute();
+  }
+
+  public List<ContactGestionnaireSite> getContactGestionnaireSiteByGestionnaireId(
+      Long idGestionnaire) {
+    return context
+        .select(
+            CONTACT.ID.as("contact.id"),
+            CONTACT.APPARTENANCE.as("contact.appartenance"),
+            CONTACT.ID_APPARTENANCE.as("contact.idAppartenance"),
+            CONTACT.FONCTION.as("contact.fonction"),
+            CONTACT.CIVILITE.as("contact.civilite"),
+            CONTACT.NOM.as("contact.nom"),
+            CONTACT.PRENOM.as("contact.prenom"),
+            CONTACT.NUMERO_VOIE.as("contact.numeroVoie"),
+            CONTACT.SUFFIXE_VOIE.as("contact.suffixeVoie"),
+            CONTACT.LIEU_DIT.as("contact.lieuDit"),
+            CONTACT.VOIE.as("contact.voie"),
+            CONTACT.CODE_POSTAL.as("contact.codePostal"),
+            CONTACT.VILLE.as("contact.ville"),
+            CONTACT.PAYS.as("contact.pays"),
+            CONTACT.TELEPHONE.as("contact.telephone"),
+            CONTACT.EMAIL.as("contact.email"),
+            CONTACT.ID_GESTIONNAIRE_SITE.as("contact.idGestionnaireSite"),
+            GESTIONNAIRE_SITE.NOM.as("siteContactNom"))
+        .from(CONTACT)
+        .leftOuterJoin(GESTIONNAIRE_SITE)
+        .on(CONTACT.ID_GESTIONNAIRE_SITE.eq(GESTIONNAIRE_SITE.ID))
+        .where(CONTACT.ID_APPARTENANCE.eq(idGestionnaire.toString()))
+        .fetchInto(ContactGestionnaireSite.class);
   }
 }

@@ -1,20 +1,19 @@
 package fr.sdis83.remocra.web;
 
-import flexjson.JSONDeserializer;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Contact;
-import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.repository.ContactRepository;
 import fr.sdis83.remocra.repository.ContactRolesRepository;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
-import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
-import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -31,6 +30,7 @@ public class ContactController {
   @Autowired ContactRolesRepository contactRolesRepository;
 
   private final Logger logger = Logger.getLogger(getClass());
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   @RequestMapping(
       value = "/{idappartenance}",
@@ -60,15 +60,16 @@ public class ContactController {
   @RequestMapping(
       value = "/contactInfos/{id}",
       method = RequestMethod.GET,
-      headers = "Accept=application/json")
+      headers = "Accept=application/json;charset=utf-8")
   @PreAuthorize("hasRight('REFERENTIELS_C')")
   public ResponseEntity<String> getContact(@PathVariable("id") Long id) {
-    return new AbstractExtObjectSerializer<Contact>("Get Contact Informations by id") {
-      @Override
-      protected Contact getRecord() throws BusinessException {
-        return contactRepository.getContact(id);
-      }
-    }.serialize();
+    try {
+      return new ResponseEntity<>(
+          objectMapper.writeValueAsString(contactRepository.getContact(id)), HttpStatus.OK);
+    } catch (Exception e) {
+      this.logger.error(e.getMessage(), e);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @RequestMapping(
@@ -77,76 +78,87 @@ public class ContactController {
       headers = "Accept=application/json")
   @PreAuthorize("hasRight('REFERENTIELS_C')")
   public ResponseEntity<String> getContactRolesById(@PathVariable("id") Long id) {
-    return new AbstractExtListSerializer<Long>("Get Contact Informations by id") {
-      @Override
-      protected List<Long> getRecords() throws BusinessException {
-        return contactRepository.getContactRolesById(id);
-      }
-    }.serialize();
+    try {
+      return new ResponseEntity<>(
+          objectMapper.writeValueAsString(contactRepository.getContactRolesById(id)),
+          HttpStatus.OK);
+    } catch (Exception e) {
+      this.logger.error(e.getMessage(), e);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @RequestMapping(
       value = "/updateContact/{id}",
       method = RequestMethod.POST,
-      headers = "Accept=application/json")
+      headers = "Accept=application/json;charset=utf-8")
   @PreAuthorize("hasRight('REFERENTIELS_C')")
   public ResponseEntity<java.lang.String> updateContact(
       HttpServletRequest request, @PathVariable("id") final Long idContact) {
     try {
-      String contact = request.getParameter("contact");
-      Contact objContact =
-          new JSONDeserializer<Contact>().use(null, Contact.class).deserialize(contact);
-      contactRepository.updateContact(idContact, objContact);
-    } catch (Exception e) {
-      this.logger.error(e.getMessage(), e);
-      return new SuccessErrorExtSerializer(false, "update contact infos").serialize();
-    }
-    try {
-      String role = request.getParameter("role");
-      contactRolesRepository.deleteContactRolesById(idContact);
-      List<String> listRolesS = new ArrayList<String>(Arrays.asList(role.split(",")));
-      System.out.println(role.isEmpty());
-      if (!role.isEmpty()) {
-        for (String s : listRolesS)
-          contactRolesRepository.createContactRoles(idContact, Long.valueOf(s));
+      try {
+        Contact objContact =
+            objectMapper.readValue(
+                request.getParameter("contact"), new TypeReference<Contact>() {});
+        contactRepository.updateContact(idContact, objContact);
+      } catch (Exception e) {
+        this.logger.error(e.getMessage(), e);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
       }
+      try {
+        contactRolesRepository.deleteContactRolesById(idContact);
+        if (!request.getParameter("role").equals(null) && !request.getParameter("role").isEmpty()) {
+          List<String> listRolesS =
+              new ArrayList<>(Arrays.asList(request.getParameter("role").split(",")));
+          if (!listRolesS.isEmpty()) {
+            for (String s : listRolesS)
+              contactRolesRepository.createContactRoles(idContact, Long.valueOf(s));
+          }
+        }
+      } catch (Exception e) {
+        this.logger.error(e.getMessage(), e);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      return new ResponseEntity<>("Succes", HttpStatus.OK);
     } catch (Exception e) {
-      this.logger.error(e.getMessage(), e);
-      return new SuccessErrorExtSerializer(false, "update contact roles").serialize();
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    return new SuccessErrorExtSerializer(true, "Le contact et ses roles ont été mis à jour.")
-        .serialize();
   }
 
   @RequestMapping(
       value = "/createContact",
       method = RequestMethod.POST,
-      headers = "Accept=application/json")
+      headers = "Accept=application/json;charset=utf-8")
   @PreAuthorize("hasRight('REFERENTIELS_C')")
   public ResponseEntity<java.lang.String> createContact(HttpServletRequest request) {
     Long idContact_ = null;
     try {
-      String contact = request.getParameter("contact");
-      Contact objContact =
-          new JSONDeserializer<Contact>().use(null, Contact.class).deserialize(contact);
-      idContact_ = contactRepository.createContact(objContact);
-    } catch (Exception e) {
-      this.logger.error(e.getMessage(), e);
-      return new SuccessErrorExtSerializer(false, "create contact infos").serialize();
-    }
-    try {
-      String role = request.getParameter("role");
-      if (!role.isEmpty()) {
-        List<String> listRolesS = new ArrayList<String>(Arrays.asList(role.split(",")));
-        for (String s : listRolesS)
-          contactRolesRepository.createContactRoles(idContact_, Long.valueOf(s));
+      try {
+        Contact objContact =
+            objectMapper.readValue(
+                request.getParameter("contact"), new TypeReference<Contact>() {});
+        idContact_ = contactRepository.createContact(objContact);
+      } catch (Exception e) {
+        this.logger.error(e.getMessage(), e);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
       }
+      try {
+        if (!request.getParameter("role").equals(null) && !request.getParameter("role").isEmpty()) {
+          List<String> listRolesS =
+              new ArrayList<>(Arrays.asList(request.getParameter("role").split(",")));
+          if (!listRolesS.isEmpty()) {
+            for (String s : listRolesS)
+              contactRolesRepository.createContactRoles(idContact_, Long.valueOf(s));
+          }
+        }
+      } catch (Exception e) {
+        this.logger.error(e.getMessage(), e);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      return new ResponseEntity<>("Succes", HttpStatus.OK);
     } catch (Exception e) {
-      this.logger.error(e.getMessage(), e);
-      return new SuccessErrorExtSerializer(false, "create contact roles").serialize();
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    return new SuccessErrorExtSerializer(true, "Le contact et ses roles ont été créés.")
-        .serialize();
   }
 
   @RequestMapping(
@@ -156,19 +168,22 @@ public class ContactController {
   @PreAuthorize("hasRight('REFERENTIELS_C')")
   public ResponseEntity<java.lang.String> deleteContact(@PathVariable("id") final Long idContact) {
     try {
-      contactRolesRepository.deleteContactRolesById(idContact);
+      try {
+        contactRolesRepository.deleteContactRolesById(idContact);
+      } catch (Exception e) {
+        this.logger.error(e.getMessage(), e);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      try {
+        contactRepository.deleteContact(idContact);
+      } catch (Exception e) {
+        this.logger.error(e.getMessage(), e);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      return new ResponseEntity<>("Succes", HttpStatus.OK);
     } catch (Exception e) {
       this.logger.error(e.getMessage(), e);
-      return new SuccessErrorExtSerializer(false, "delete contact roles").serialize();
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    try {
-      contactRepository.deleteContact(idContact);
-    } catch (Exception e) {
-      this.logger.error(e.getMessage(), e);
-      return new SuccessErrorExtSerializer(false, "delete contact infos").serialize();
-    }
-
-    return new SuccessErrorExtSerializer(true, "Le contact et ses roles ont été supprimés")
-        .serialize();
   }
 }
