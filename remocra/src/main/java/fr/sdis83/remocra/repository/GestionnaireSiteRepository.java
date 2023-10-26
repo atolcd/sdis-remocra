@@ -9,6 +9,7 @@ import static org.jooq.impl.DSL.val;
 
 import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.GestionnaireSite;
+import fr.sdis83.remocra.usecase.gestionnaireSite.ComboGestionnaireSiteInfos;
 import fr.sdis83.remocra.usecase.gestionnaireSite.GestionnaireSiteInfos;
 import java.util.List;
 import org.jooq.DSLContext;
@@ -42,6 +43,23 @@ public class GestionnaireSiteRepository {
         .selectFrom(GESTIONNAIRE_SITE)
         .where(GESTIONNAIRE_SITE.ID.eq(idGestionnaireSite))
         .fetchOneInto(GestionnaireSite.class);
+  }
+
+  /**
+   * Récupère tous les gestionnaire_site d'un gestionnaire
+   *
+   * @param idGestionnaire
+   * @return une liste d'objet de type Gestionnaire_Site
+   */
+  public List<ComboGestionnaireSiteInfos> getComboSiteByGestionnaireId(Long idGestionnaire) {
+    return context
+        .select(
+            GESTIONNAIRE_SITE.ID.as("idGestionnaireSite"),
+            GESTIONNAIRE_SITE.NOM.as("nomGestionnaireSite"))
+        .from(GESTIONNAIRE_SITE)
+        .where(GESTIONNAIRE_SITE.ID_GESTIONNAIRE.eq(idGestionnaire))
+        .and(GESTIONNAIRE_SITE.ACTIF)
+        .fetchInto(ComboGestionnaireSiteInfos.class);
   }
 
   /**

@@ -53,6 +53,30 @@ public class GestionnaireSiteController {
     }
   }
 
+  /**
+   * Récupère tous les gestionnaire_site actif d'un gestionnaire
+   *
+   * @param idGestionnaire
+   * @return une liste d'id et de nom de gesitonnaire_site sous forme d'objet gesitonnaire_site
+   */
+  @RequestMapping(
+      value = "/getComboSiteByGestionnaireId/{id}",
+      method = RequestMethod.GET,
+      headers = "Accept=application/json;charset=utf-8")
+  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  public ResponseEntity<String> getComboSiteByGestionnaireId(
+      @PathVariable("id") final Long idGestionnaire) {
+    try {
+      return new ResponseEntity<>(
+          objectMapper.writeValueAsString(
+              gestionnaireSiteRepository.getComboSiteByGestionnaireId(idGestionnaire)),
+          HttpStatus.OK);
+    } catch (Exception e) {
+      this.logger.error(e.getMessage(), e);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   @RequestMapping(
       value = "/updateGestionnaireSite/{id}",
       method = RequestMethod.POST,

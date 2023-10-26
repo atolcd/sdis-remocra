@@ -56,15 +56,13 @@
             </b-form-group>
           </div>
         </div>
-        <!-- TODO a cause des hangements en base, ca pète l'appli, sera de retour avec un commit futur de gestion des sites
         <div class="row">
           <div class="col-md-10" v-if="hydrant.natureDeci != idDeciPublic">
-            <b-form-group label="Site" label-for="site" label-cols-md="2">
-              <b-form-select id="site" v-model="hydrant.site" class="parametre" :options="ellipsis(comboSite)" size="sm"></b-form-select>
+            <b-form-group label="Site" label-for="gestionnaireSite" label-cols-md="2">
+              <b-form-select id="gestionnaireSite" v-model="hydrant.gestionnaireSite" class="parametre" :options="ellipsis(comboGestionnaireSite)" size="sm"></b-form-select>
             </b-form-group>
           </div>
-        </div> 
-        -->
+        </div>
       </div>
       <div>
         <b-tabs fill content-class="mt-3" active-nav-item-class="text-primary" nav-class="fiche-onglets">
@@ -188,6 +186,7 @@ import FicheDocument from './FicheDocument.vue'
 import FicheResume from './FicheResume.vue'
 import BarChart from './utils/BarChart.js'
 import moment from 'moment'
+import { ESPACE_VIDE_FORMULAIRE } from '../GlobalConstants.js'
 
 export default {
   name: 'Fiche',
@@ -214,7 +213,7 @@ export default {
       comboDeci: [],
       comboSpDeci: [],
       comboGestionnaire: [],
-      // comboSite: [], TODO : Gestion des sites
+      comboGestionnaireSite: [],
       comboAutoriteDeci: [],
       listeNaturesDeci: [],
       comboMaintenanceDeci: [],
@@ -389,7 +388,7 @@ export default {
         id: null,
         nature: null,
         gestionnaire: null,
-        site: null,
+        gestionnaireSite: null,
         autoriteDeci: null,
         natureDeci: null,
         spDeci: null,
@@ -410,7 +409,7 @@ export default {
           self.hydrant = _.clone(self.hydrantRecord, true);
           self.getHistoriqueForChart(self.idHydrant)
           self.getHistoriqueForGrid(self.idHydrant)
-          self.resolveForeignKey(['nature', 'site', 'autoriteDeci', 'natureDeci', 'gestionnaire', 'maintenanceDeci']);
+          self.resolveForeignKey(['nature', 'gestionnaireSite', 'autoriteDeci', 'natureDeci', 'gestionnaire', 'maintenanceDeci']);
           self.createCombo();
           self.dataLoaded = true;
           if (self.newVisite === true) {
@@ -571,7 +570,7 @@ export default {
     },
     getComboGestionnaire(init) {
       if(!init) {
-        this.hydrant.site = null;
+        this.hydrant.gestionnaireSite = null;
       }
 
       //Si DECI privé ou conventionne , le gestionnaire est un privé
@@ -625,34 +624,35 @@ export default {
       }
       this.$refs.ficheVisite.onNatureChange();
       this.hydrant.gestionnaire = null
-      this.hydrant.site = null
-    }, 
+      this.hydrant.gestionnaireSite = null
+    },
     /**
      * En cas de changement de gestionnaire, on met à jour la liste des sites
      */
-    /** TODO : Gestion des sites
     onGestionnaireChange() {
+      this.comboGestionnaireSite = []
       if (this.hydrant.gestionnaire != null) {
-        this.getComboData(this, 'comboSite', '/remocra/site.json', {
-          "filter": JSON.stringify([{
-            "property": "gestionnaire",
-            "value": this.hydrant.gestionnaire
-          }]),
-          "sort": JSON.stringify([{
-            "property": "nom",
-            "direction": "ASC"
-          }])
-        }, 'id', 'nom', 'Aucun');
+        axios.get('/remocra/gestionnairesite/getComboSiteByGestionnaireId/' + this.hydrant.gestionnaire).then(response => {
+          if(response.data) {
+            _.forEach(response.data, item => {
+              this.comboGestionnaireSite.push(
+                {text: item.nomGestionnaireSite,
+                value: item.idGestionnaireSite})
+            })
+          }
+        })
+        this.comboGestionnaireSite.push(
+          {text: ESPACE_VIDE_FORMULAIRE,
+          value: null})
       } else {
-        this.comboSite = this.comboSite.filter(i => i.value == null);
+        this.comboGestionnaireSite = this.comboGestionnaireSite.filter(i => i.value == null);
       }
       if (this.hydrantRecord.gestionnaire && this.hydrantRecord.gestionnaire.id == this.hydrant.gestionnaire) {
-        this.hydrant.site = (this.hydrantRecord.site) ? this.hydrantRecord.site.id : null;
+        this.hydrant.gestionnaireSite = (this.hydrantRecord.gestionnaireSite) ? this.hydrantRecord.gestionnaireSite.id : null;
       } else {
-        this.hydrant.site = null;
+        this.hydrant.gestionnaireSite = null;
       }
     },
-    */
     /**
      * Fonction appelée lorsque les coordonnées du PEI sont modifies
      * On peut notifier les composants enfant, notamment si certains de leurs champs sont dépendant de la géométrie du PEI
@@ -788,7 +788,7 @@ export default {
       });
       if (this.hydrant.natureDeci == this.idDeciPublic) {
         data["gestionnaire"] = null
-        data["site"] = null
+        data["gestionnaireSite"] = null
       }
       data["geometrie"] = this.geometrie;
       if (!this.idHydrant) {

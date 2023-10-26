@@ -149,7 +149,7 @@ public class HydrantRepository {
     h.setSpDeci(JSONUtil.getLong(data, "spDeci"));
     h.setMaintenanceDeci(JSONUtil.getLong(data, "maintenanceDeci"));
     h.setGestionnaire(JSONUtil.getLong(data, "gestionnaire"));
-    h.setGestionnaireSite(JSONUtil.getLong(data, "gestionnaire_site"));
+    h.setGestionnaireSite(JSONUtil.getLong(data, "gestionnaireSite"));
     h.setSuffixeVoie(JSONUtil.getString(data, "suffixeVoie"));
     h.setCommune(JSONUtil.getLong(data, "commune"));
     h.setDomaine(JSONUtil.getLong(data, "domaine"));
