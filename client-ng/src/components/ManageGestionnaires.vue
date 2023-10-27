@@ -82,7 +82,7 @@
                 filteredResultGestionnaire: [],
                 fields: [
                     { key:'gestionnaire.nom', label:'Nom', tdClass:'nomCell', sortable: true},
-                    { key:'gestionnaire.code', label:'N° Siren', tdClass:'codeCell', sortable: true},
+                    { key:'gestionnaire.code', label:'N° SIREN/SIRET', tdClass:'codeCell', sortable: true},
                     { key:'contact', label:'Contact', tdClass:'contactCell'},
                     { key:'actif', label:'Actif', tdClass:'actifCell'},
                     { key:'actions', label:'', tdClass:'buttonCell'}

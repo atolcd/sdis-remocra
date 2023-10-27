@@ -26,9 +26,6 @@
               </b-form-checkbox>
             </b-form-group>
           </div>
-          <div id="selectionSite">
-            <!-- TODO -->
-          </div>
         </form>
     </b-modal>
   </div>
@@ -46,7 +43,6 @@
         nomGestionnaire:'',
         codeGestionnaire:'',
         actifGestionnaire: '',
-        versionGestionnaire:0,
         idGestionnaire:'',
         buildedTitle:'',
       }
@@ -70,8 +66,7 @@
           axios.get('/remocra/gestionnaire/' + idGestionnaire_).then(response => {
             response.data.data ? (this.nomGestionnaire = response.data.data.nom, 
                                   this.codeGestionnaire = response.data.data.code,
-                                  this.actifGestionnaire = response.data.data.actif,
-                                  this.versionGestionnaire = response.data.data.version) : null
+                                  this.actifGestionnaire = response.data.data.actif) : null
             this.buildedTitle='Modification de '+this.nomGestionnaire
             this.$bvModal.show('formGestionnaire');
           })
@@ -101,7 +96,6 @@
           nom: this.nomGestionnaire,
           code: this.codeGestionnaire == '' ? null: this.codeGestionnaire,
           actif: this.actifGestionnaire,
-          version: this.versionGestionnaire == 0 ? 1 : this.versionGestionnaire+1,
         }))
         let url = this.idGestionnaire !== null ? '/remocra/gestionnaire/updateGestionnaire/' + this.idGestionnaire : '/remocra/gestionnaire/createGestionnaire';
         axios.post(url, formData).then(() => {
@@ -118,7 +112,6 @@
         this.nomGestionnaire='';
         this.codeGestionnaire='';
         this.actifGestionnaire='';
-        this.versionGestionnaire=0;
         this.contacts=[];
       },
       checkFormValidity() { 
