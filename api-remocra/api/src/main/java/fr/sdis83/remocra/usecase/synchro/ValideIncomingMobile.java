@@ -157,6 +157,8 @@ public class ValideIncomingMobile {
       Long idGestionnaire = null;
       if (gestionnaireHydrant.isPresent()) {
         idGestionnaire = gestionnaireHydrant.get().getIdGestionnaireRemocra();
+      } else if (newHydrant.getIdGestionnaireRemocra() != null) {
+        idGestionnaire = newHydrant.getIdGestionnaireRemocra();
       }
       Hydrant hydrantTemp =
           new Hydrant(

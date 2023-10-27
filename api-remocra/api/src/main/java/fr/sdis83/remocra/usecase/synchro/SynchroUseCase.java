@@ -92,6 +92,7 @@ public class SynchroUseCase {
   public Response insertHydrant(
       UUID idHydrant,
       UUID idGestionnaire,
+      Long idGestionnaireRemocra,
       Long idNature,
       Long idNatureDeci,
       Double lon,
@@ -119,7 +120,8 @@ public class SynchroUseCase {
       int result =
           incomingRepository.insertPei(
               idHydrant,
-              idGestionnaire,
+              idGestionnaireRemocra == null ? idGestionnaire : null,
+              idGestionnaireRemocra,
               idCommune,
               idNature,
               idNatureDeci,
@@ -134,7 +136,7 @@ public class SynchroUseCase {
           "L'hydrant " + idHydrant + " est déjà dans le schéma incoming.",
           error);
     } catch (Exception e) {
-      logger.error(error);
+      logger.error(error, e);
       return Response.serverError().entity(error).build();
     }
   }

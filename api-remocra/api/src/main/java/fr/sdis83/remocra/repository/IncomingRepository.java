@@ -48,6 +48,7 @@ public class IncomingRepository {
   public int insertPei(
       UUID idHydrant,
       UUID idGestionnaire,
+      Long idGestionnaireRemocra,
       Long idCommune,
       Long idNature,
       Long idNatureDeci,
@@ -77,6 +78,7 @@ public class IncomingRepository {
                 .set(NEW_HYDRANT.ID_NATUREDECI, idNatureDeci)
                 .set(NEW_HYDRANT.ID_NATURE, idNature)
                 .set(NEW_HYDRANT.ID_GESTIONNAIRE, idGestionnaire)
+                .set(NEW_HYDRANT.ID_GESTIONNAIRE_REMOCRA, idGestionnaireRemocra)
                 .set(NEW_HYDRANT.OBSERVATION_NEW_HYDRANT, observations)
                 .onConflictDoNothing()
                 .execute());

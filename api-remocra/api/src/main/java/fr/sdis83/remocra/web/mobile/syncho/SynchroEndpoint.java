@@ -114,6 +114,7 @@ public class SynchroEndpoint {
       @FormParam("lon") Double lon,
       @FormParam("code") String code,
       @FormParam("idGestionnaire") UUID idGestionnaire,
+      @FormParam("idGestionnaireRemocra") Long idGestionnaireRemocra,
       @FormParam("observations") String observations,
       @FormParam("idNatureDeci") Long idNatureDeci,
       @FormParam("idNature") Long idNature) {
@@ -125,7 +126,15 @@ public class SynchroEndpoint {
     }
 
     return synchroUseCase.insertHydrant(
-        idHydrant, idGestionnaire, idNature, idNatureDeci, lon, lat, code, observations);
+        idHydrant,
+        idGestionnaire,
+        idGestionnaireRemocra,
+        idNature,
+        idNatureDeci,
+        lon,
+        lat,
+        code,
+        observations);
   }
 
   private Response accessDenied(TypeDroitsPourMobile typeDroit) {
