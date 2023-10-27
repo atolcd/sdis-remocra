@@ -768,7 +768,7 @@ export default {
               text: "Les informations de l'hydrant sélectionné ne sont pas valides. Veuillez les corriger via la fiche PEI avant de saisir des visites",
               duration: 5000
             });
-            isEnabledValider = true
+            this.isEnabledValider = true;
           }
         });
       } else if (this.checkFormValidity()) {
