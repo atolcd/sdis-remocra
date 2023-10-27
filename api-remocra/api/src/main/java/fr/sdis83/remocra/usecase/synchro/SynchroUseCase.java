@@ -145,6 +145,7 @@ public class SynchroUseCase {
       Long idRemocra, String codeGestionnaire, String nomGestionnaire, UUID idGestionnaire) {
     String erreur = checkErrorGestionnaire(idRemocra);
     if (erreur != null) {
+      logger.error(erreur);
       return Response.serverError().entity(erreur).build();
     }
 
@@ -161,7 +162,7 @@ public class SynchroUseCase {
           error);
 
     } catch (Exception e) {
-      logger.error(error);
+      logger.error(error, e);
       return Response.serverError().entity(error).build();
     }
   }
@@ -191,7 +192,7 @@ public class SynchroUseCase {
           "Le contact " + idContact + " est déjà dans le schéma incoming.",
           error);
     } catch (Exception e) {
-      logger.error(error);
+      logger.error(error, e);
       return Response.serverError().entity(error).build();
     }
   }
@@ -232,7 +233,7 @@ public class SynchroUseCase {
           error);
 
     } catch (Exception e) {
-      logger.error(error);
+      logger.error(error, e);
       return Response.serverError().entity(error).build();
     }
   }
@@ -276,7 +277,7 @@ public class SynchroUseCase {
           return serverErrorBuild;
       }
     } catch (Exception e) {
-      logger.error(error);
+      logger.error(error, e);
       return serverErrorBuild;
     }
   }
@@ -358,6 +359,7 @@ public class SynchroUseCase {
           error);
 
     } catch (Exception e) {
+      logger.error(error, e);
       return Response.serverError().entity(error).build();
     }
   }
@@ -394,7 +396,7 @@ public class SynchroUseCase {
           error);
 
     } catch (Exception e) {
-      logger.error(error);
+      logger.error(error, e);
       return Response.serverError().entity(error).build();
     }
   }
