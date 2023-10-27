@@ -23,7 +23,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class NewHydrant implements Serializable {
 
-    private static final long serialVersionUID = -703822423;
+    private static final long serialVersionUID = 1911686632;
 
     private UUID   idNewHydrant;
     private Object geometrie;
@@ -34,6 +34,7 @@ public class NewHydrant implements Serializable {
     private Long   idNature;
     private Long   idNaturedeci;
     private String observationNewHydrant;
+    private Long   idGestionnaireRemocra;
 
     public NewHydrant() {}
 
@@ -47,6 +48,7 @@ public class NewHydrant implements Serializable {
         this.idNature = value.idNature;
         this.idNaturedeci = value.idNaturedeci;
         this.observationNewHydrant = value.observationNewHydrant;
+        this.idGestionnaireRemocra = value.idGestionnaireRemocra;
     }
 
     public NewHydrant(
@@ -58,7 +60,8 @@ public class NewHydrant implements Serializable {
         UUID   idGestionnaire,
         Long   idNature,
         Long   idNaturedeci,
-        String observationNewHydrant
+        String observationNewHydrant,
+        Long   idGestionnaireRemocra
     ) {
         this.idNewHydrant = idNewHydrant;
         this.geometrie = geometrie;
@@ -69,6 +72,7 @@ public class NewHydrant implements Serializable {
         this.idNature = idNature;
         this.idNaturedeci = idNaturedeci;
         this.observationNewHydrant = observationNewHydrant;
+        this.idGestionnaireRemocra = idGestionnaireRemocra;
     }
 
     public UUID getIdNewHydrant() {
@@ -162,6 +166,15 @@ public class NewHydrant implements Serializable {
         return this;
     }
 
+    public Long getIdGestionnaireRemocra() {
+        return this.idGestionnaireRemocra;
+    }
+
+    public NewHydrant setIdGestionnaireRemocra(Long idGestionnaireRemocra) {
+        this.idGestionnaireRemocra = idGestionnaireRemocra;
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("NewHydrant (");
@@ -175,6 +188,7 @@ public class NewHydrant implements Serializable {
         sb.append(", ").append(idNature);
         sb.append(", ").append(idNaturedeci);
         sb.append(", ").append(observationNewHydrant);
+        sb.append(", ").append(idGestionnaireRemocra);
 
         sb.append(")");
         return sb.toString();

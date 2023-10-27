@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class NewHydrant extends TableImpl<Record> {
 
-	private static final long serialVersionUID = 1627617184;
+	private static final long serialVersionUID = -1538868468;
 
 	/**
 	 * The reference instance of <code>incoming.new_hydrant</code>
@@ -97,6 +97,11 @@ public class NewHydrant extends TableImpl<Record> {
 	 * The column <code>incoming.new_hydrant.observation_new_hydrant</code>.
 	 */
 	public final TableField<Record, String> OBSERVATION_NEW_HYDRANT = createField("observation_new_hydrant", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+
+	/**
+	 * The column <code>incoming.new_hydrant.id_gestionnaire_remocra</code>.
+	 */
+	public final TableField<Record, Long> ID_GESTIONNAIRE_REMOCRA = createField("id_gestionnaire_remocra", org.jooq.impl.SQLDataType.BIGINT, this, "");
 
 	/**
 	 * Create a <code>incoming.new_hydrant</code> table reference

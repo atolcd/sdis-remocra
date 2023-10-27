@@ -25,7 +25,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class NewHydrant implements Serializable {
 
-	private static final long serialVersionUID = 1028499148;
+	private static final long serialVersionUID = -2059506752;
 
 	private UUID     idNewHydrant;
 	private Geometry geometrie;
@@ -36,6 +36,7 @@ public class NewHydrant implements Serializable {
 	private Long     idNature;
 	private Long     idNaturedeci;
 	private String   observationNewHydrant;
+	private Long     idGestionnaireRemocra;
 
 	public NewHydrant() {}
 
@@ -49,6 +50,7 @@ public class NewHydrant implements Serializable {
 		this.idNature = value.idNature;
 		this.idNaturedeci = value.idNaturedeci;
 		this.observationNewHydrant = value.observationNewHydrant;
+		this.idGestionnaireRemocra = value.idGestionnaireRemocra;
 	}
 
 	public NewHydrant(
@@ -60,7 +62,8 @@ public class NewHydrant implements Serializable {
 		UUID     idGestionnaire,
 		Long     idNature,
 		Long     idNaturedeci,
-		String   observationNewHydrant
+		String   observationNewHydrant,
+		Long     idGestionnaireRemocra
 	) {
 		this.idNewHydrant = idNewHydrant;
 		this.geometrie = geometrie;
@@ -71,6 +74,7 @@ public class NewHydrant implements Serializable {
 		this.idNature = idNature;
 		this.idNaturedeci = idNaturedeci;
 		this.observationNewHydrant = observationNewHydrant;
+		this.idGestionnaireRemocra = idGestionnaireRemocra;
 	}
 
 	public UUID getIdNewHydrant() {
@@ -151,6 +155,15 @@ public class NewHydrant implements Serializable {
 
 	public NewHydrant setObservationNewHydrant(String observationNewHydrant) {
 		this.observationNewHydrant = observationNewHydrant;
+		return this;
+	}
+
+	public Long getIdGestionnaireRemocra() {
+		return this.idGestionnaireRemocra;
+	}
+
+	public NewHydrant setIdGestionnaireRemocra(Long idGestionnaireRemocra) {
+		this.idGestionnaireRemocra = idGestionnaireRemocra;
 		return this;
 	}
 }
