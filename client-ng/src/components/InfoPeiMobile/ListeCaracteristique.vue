@@ -1,6 +1,6 @@
 <template>
 
-  <select size="10" class="w-100" v-model="selectRow" @click="windowsClicked" >
+  <select size="8" class="w-100" v-model="selectRow" @click="windowsClicked" >
     <option v-for="data in datas" :value="data" :key="data">{{ data.libelle }}</option>
   </select>
 </template>

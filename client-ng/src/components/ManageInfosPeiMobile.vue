@@ -3,28 +3,30 @@
 <meta charset="UTF-8">
 </head>
 <template>
-  <div id="caracteristiqueMobile" class="container-fluid">
+  <div id="caracteristiqueMobile" class="container">
     <div class="row">
       <div class="col-md-12">
-        <h1 class="title">Gestion des infos PEI visibles sur l'appli mobile</h1>
+        <h1 class="title">Gestion des caractéristiques des PEI affichées dans l'appli mobile</h1>
       </div>
     </div>
     <div class="row">
       <p class="paragraphe col-12">
-        Vous pouvez ici gérer les champs que vous souhaitez voir apparaître dans l'infobulle des hydrants dans l'appli
-        mobile
+        Permet de gérer les informations qui seront affichées dans l'infobulle des PEI de l'application mobile.
+        Chaque type de PEI (PIBI, PENA) dispose de sa propre liste car les données affichables ne sont pas toutes les mêmes.
+        Pour chaque type, en partie gauche se trouve la liste des caractéristiques affichables, que vous pouvez placer en partie droite pour les afficher.
+        De plus, vous pouvez trier les données affichées dans l'ordre qui vous sied
       </p>
     </div>
     <div class="row mt-3">
       <!--      PIBI-->
       <h2 class="col-12 m-2 ">PIBI</h2>
-      <div class="col-5">
+      <div class="col-3">
         <!--        Select des Non Choisi-->
         <!--        Id qui sert pour savoir quel "select" est cliqué-->
-        <label for="PIBINC">Non Affiché</label>
+        <label class="col-12" for="PIBINC" >Valeurs affichables</label>
         <ListeCaracteristique v-on:rowChange="onChangeRow" :datas="champPibiNonChoisie" id="PIBINC"/>
       </div>
-      <div class="col-2 text-center m-auto">
+      <div class="col-2 text-center my-auto">
         <div v-if="isPibi">
           <!--          LE BOUTON AJOUTER PIBI-->
           <div v-if="isNc">
@@ -50,10 +52,10 @@
           </div>
         </div>
       </div>
-      <div class="col-5">
+      <div class="col-3">
         <!--        Champs Choisi-->
-        <label for="PIBIC">Affiché</label>
-        <ListeCaracteristique v-on:rowChange="onChangeRow" :datas="champPibiChoisie" id="PIBIC" libelle="Affiché"/>
+        <label class="col-12" for="PIBIC">Valeurs affichées</label>
+        <ListeCaracteristique v-on:rowChange="onChangeRow" :datas="champPibiChoisie" id="PIBIC" libelle="Valeurs affichées"/>
       </div>
     </div>
 
@@ -61,14 +63,14 @@
     <div class="row  mt-3">
       <!--      PENA-->
       <h2 class="col-12">PENA</h2>
-      <div class="col-5">
+      <div class="col-3">
         <!--        Select des Non Choisi-->
         <!--        Id qui sert pour savoir quel "select" est cliqué-->
-        <label for="PENANC">Non Affiché</label>
+        <label class="col-12" for="PENANC">Valeurs affichables</label>
         <ListeCaracteristique v-on:rowChange="onChangeRow" :datas="champPenaNonChoisie" id="PENANC"
-                              libelle="Non affiché"/>
+                              libelle="Valeurs affichables"/>
       </div>
-      <div class="col-2 text-center m-auto">
+      <div class="col-2 text-center my-auto">
         <div v-if="isPena">
           <!--          LE BOUTON AJOUTER PIBI-->
           <div v-if="isNc">
@@ -94,15 +96,14 @@
           </div>
         </div>
       </div>
-      <div class="col-5">
+      <div class="col-3">
         <!--        Champs Choisi-->
-        <label for="PENAC">Affiché</label>
-        <ListeCaracteristique v-on:rowChange="onChangeRow" :datas="champPenaChoisie" id="PENAC" libelle="Affiché"/>
+        <label class="col-12" for="PENAC">Valeurs affichées</label>
+        <ListeCaracteristique v-on:rowChange="onChangeRow" :datas="champPenaChoisie" id="PENAC" libelle="Valeurs affichées"/>
       </div>
     </div>
-    <div class="row  mt-3 justify-content-center d-flex">
+    <div class="row  mt-3 justify-content-end d-flex col-8">
       <button class="btn btn-primary p-2" @click="valideForm()"> Valider</button>
-
     </div>
     <notifications group="remocra" position="top right" animation-type="velocity" :duration="3000"/>
   </div>
