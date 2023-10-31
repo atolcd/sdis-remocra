@@ -1,5 +1,6 @@
 package fr.sdis83.remocra.usecase.utils;
 
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -14,6 +15,8 @@ public class DateUtils {
   /** Pattern attendu pour les chaînes représentatives d'une date (moment) */
   public static final String PATTERN = "yyyy-MM-dd HH:mm:ss";
 
+  public static final String PATTERN_NATUREL = "dd/MM/yyyy HH:mm:ss";
+
   /**
    * Retourne un moment (ZoneDateTime) à partir d'une chaîne de date à l'heure "naturelle"
    *
@@ -24,5 +27,29 @@ public class DateUtils {
   public static ZonedDateTime getMoment(String dateString) throws DateTimeParseException {
     return ZonedDateTime.parse(
         dateString, DateTimeFormatter.ofPattern(PATTERN).withZone(ZoneId.systemDefault()));
+  }
+
+  public static String format(ZonedDateTime date) {
+    return format(date, PATTERN);
+  }
+
+  public static String format(Instant instant) {
+    return instant.atZone(ZoneId.systemDefault()).format(getFormatter());
+  }
+
+  public static String formatNaturel(Instant instant) {
+    return instant.atZone(ZoneId.systemDefault()).format(getFormatter(PATTERN_NATUREL));
+  }
+
+  private static DateTimeFormatter getFormatter() {
+    return DateTimeFormatter.ofPattern(PATTERN);
+  }
+
+  private static DateTimeFormatter getFormatter(String pattern) {
+    return DateTimeFormatter.ofPattern(pattern);
+  }
+
+  public static String format(ZonedDateTime date, String pattern) {
+    return date.format(DateTimeFormatter.ofPattern(pattern));
   }
 }

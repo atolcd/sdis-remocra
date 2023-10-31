@@ -20,11 +20,13 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE_NATURE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_CRITERE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_DIAMETRE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE_DECI;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_SAISIE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
 
+import fr.sdis83.remocra.db.model.remocra.tables.Organisme;
 import fr.sdis83.remocra.enums.PeiCaracteristique;
 import fr.sdis83.remocra.util.GlobalConstants;
 import fr.sdis83.remocra.web.model.authn.ParamConfModel;
@@ -57,6 +59,7 @@ import org.jooq.Record;
 import org.jooq.RecordHandler;
 import org.jooq.SelectOnConditionStep;
 import org.jooq.impl.DSL;
+import org.jooq.impl.TableImpl;
 
 public class ReferentielRepository {
 
@@ -336,28 +339,33 @@ public class ReferentielRepository {
   public Map<Long, List<PeiCaracteristiquePojo>> getPeiCaracteristiques(
       List<PeiCaracteristique> pibiSelectedFields, List<PeiCaracteristique> penaSelectedFields) {
 
-    // Les PIBI
-    SelectOnConditionStep<Record> onClausePibi =
-        context
-            .select(buildSelectFields(pibiSelectedFields))
-            .from(HYDRANT)
-            .innerJoin(HYDRANT_PIBI)
-            .on(HYDRANT.ID.eq(HYDRANT_PIBI.ID));
-    onClausePibi = buildJoinClauses(pibiSelectedFields, onClausePibi);
+    Map<Long, List<PeiCaracteristiquePojo>> mapPeiCaracteristiques = new HashMap<>();
 
-    Map<Long, List<PeiCaracteristiquePojo>> mapPeiCaracteristiques =
-        new HashMap<>(fetchAndMapResults(pibiSelectedFields, onClausePibi));
+    // Les PIBI
+    if (!pibiSelectedFields.isEmpty()) {
+      SelectOnConditionStep<Record> onClausePibi =
+          context
+              .select(buildSelectFields(pibiSelectedFields))
+              .from(HYDRANT)
+              .innerJoin(HYDRANT_PIBI)
+              .on(HYDRANT.ID.eq(HYDRANT_PIBI.ID));
+      onClausePibi = buildJoinClauses(pibiSelectedFields, onClausePibi, createAlias());
+
+      mapPeiCaracteristiques.putAll(fetchAndMapResults(pibiSelectedFields, onClausePibi));
+    }
 
     // Les PENA
-    SelectOnConditionStep<Record> onClausePena =
-        context
-            .select(buildSelectFields(penaSelectedFields))
-            .from(HYDRANT)
-            .innerJoin(HYDRANT_PENA)
-            .on(HYDRANT.ID.eq(HYDRANT_PENA.ID));
-    onClausePena = buildJoinClauses(pibiSelectedFields, onClausePena);
+    if (!penaSelectedFields.isEmpty()) {
+      SelectOnConditionStep<Record> onClausePena =
+          context
+              .select(buildSelectFields(penaSelectedFields))
+              .from(HYDRANT)
+              .innerJoin(HYDRANT_PENA)
+              .on(HYDRANT.ID.eq(HYDRANT_PENA.ID));
+      onClausePena = buildJoinClauses(penaSelectedFields, onClausePena, createAlias());
 
-    mapPeiCaracteristiques.putAll(fetchAndMapResults(pibiSelectedFields, onClausePena));
+      mapPeiCaracteristiques.putAll(fetchAndMapResults(penaSelectedFields, onClausePena));
+    }
 
     return mapPeiCaracteristiques;
   }
@@ -374,9 +382,23 @@ public class ReferentielRepository {
     fieldsToSelect.add(HYDRANT.ID);
     for (PeiCaracteristique selectedField : selectedFields) {
       // à chaque objet correspond un champ en base
-      fieldsToSelect.add(getFieldFromCaracteristique(selectedField));
+      fieldsToSelect.add(getFieldFromCaracteristique(selectedField, createAlias()));
     }
     return fieldsToSelect;
+  }
+
+  private static Map<PeiCaracteristique, TableImpl<?>> createAlias() {
+
+    Map<PeiCaracteristique, TableImpl<?>> mapAliases = new HashMap<>();
+
+    Organisme autoritePolice = Organisme.ORGANISME.as("autorite_police");
+    Organisme servicePublic = Organisme.ORGANISME.as("service_public");
+    Organisme maintenceCtp = Organisme.ORGANISME.as("maintenance_ctp");
+
+    mapAliases.put(PeiCaracteristique.AUTORITE_POLICE, autoritePolice);
+    mapAliases.put(PeiCaracteristique.SERVICE_PUBLIC, servicePublic);
+    mapAliases.put(PeiCaracteristique.MAINTENANCE_CTP, maintenceCtp);
+    return mapAliases;
   }
 
   /**
@@ -397,7 +419,9 @@ public class ReferentielRepository {
                   selectedFields.stream()
                       .map(
                           caracteristique -> {
-                            Object value = record.get(getFieldFromCaracteristique(caracteristique));
+                            Object value =
+                                record.get(
+                                    getFieldFromCaracteristique(caracteristique, createAlias()));
                             return new PeiCaracteristiquePojo(caracteristique, value);
                           })
                       .collect(Collectors.toList());
@@ -413,44 +437,69 @@ public class ReferentielRepository {
    * S'assure qu'on n'a qu'une seule fois la même jointure
    *
    * @param selectedFields List<PeiCaracteristique>
-   * @param onClausePibi SelectOnConditionStep
+   * @param onClause SelectOnConditionStep
    * @return SelectOnConditionStep (mis à jour)
    */
   private static SelectOnConditionStep<Record> buildJoinClauses(
-      List<PeiCaracteristique> selectedFields, SelectOnConditionStep<Record> onClausePibi) {
+      List<PeiCaracteristique> selectedFields,
+      SelectOnConditionStep<Record> onClause,
+      Map<PeiCaracteristique, TableImpl<?>> mapAlias) {
     boolean jointureNature = false;
     for (PeiCaracteristique caracteristique : selectedFields) {
       switch (caracteristique) {
           // Valeurs communes aux 2 types
         case TYPE_PEI:
           if (!jointureNature) {
-            onClausePibi =
-                onClausePibi
+            onClause =
+                onClause
                     .innerJoin(TYPE_HYDRANT_NATURE)
                     .on(HYDRANT.NATURE.eq(TYPE_HYDRANT_NATURE.ID));
             jointureNature = true;
           }
-          onClausePibi =
-              onClausePibi
+          onClause =
+              onClause
                   .innerJoin(TYPE_HYDRANT)
                   .on(TYPE_HYDRANT_NATURE.TYPE_HYDRANT.eq(TYPE_HYDRANT.ID));
           break;
         case NATURE_PEI:
           if (!jointureNature) {
-            onClausePibi =
-                onClausePibi
+            onClause =
+                onClause
                     .innerJoin(TYPE_HYDRANT_NATURE)
                     .on(HYDRANT.NATURE.eq(TYPE_HYDRANT_NATURE.ID));
             jointureNature = true;
           }
           break;
+
+        case TYPE_DECI:
+          onClause =
+              onClause
+                  .innerJoin(TYPE_HYDRANT_NATURE_DECI)
+                  .on(HYDRANT.NATURE_DECI.eq(TYPE_HYDRANT_NATURE_DECI.ID));
+          break;
+        case AUTORITE_POLICE:
+          Organisme autoriteDeci = (Organisme) mapAlias.get(PeiCaracteristique.AUTORITE_POLICE);
+          onClause = onClause.innerJoin(autoriteDeci).on(HYDRANT.AUTORITE_DECI.eq(autoriteDeci.ID));
+          break;
+        case SERVICE_PUBLIC:
+          Organisme servicePublic = (Organisme) mapAlias.get(PeiCaracteristique.SERVICE_PUBLIC);
+          onClause = onClause.innerJoin(servicePublic).on(HYDRANT.SP_DECI.eq(servicePublic.ID));
+          break;
+        case MAINTENANCE_CTP:
+          Organisme maintenanceCtp = (Organisme) mapAlias.get(PeiCaracteristique.MAINTENANCE_CTP);
+          onClause =
+              onClause.innerJoin(maintenanceCtp).on(HYDRANT.MAINTENANCE_DECI.eq(maintenanceCtp.ID));
+          break;
           // Valeurs spécifiques aux PIBI
-
-          // Valeurs spécifiques aux PENA
-
+        case DIAMETRE_NOMINAL:
+          onClause =
+              onClause
+                  .innerJoin(TYPE_HYDRANT_DIAMETRE)
+                  .on(HYDRANT_PIBI.DIAMETRE.eq(TYPE_HYDRANT_DIAMETRE.ID));
+          break;
       }
     }
-    return onClausePibi;
+    return onClause;
   }
 
   /**
@@ -459,7 +508,8 @@ public class ReferentielRepository {
    * @param caracteristique PeiCaracteristique
    * @return Field<?>
    */
-  private Field<?> getFieldFromCaracteristique(PeiCaracteristique caracteristique) {
+  private Field<?> getFieldFromCaracteristique(
+      PeiCaracteristique caracteristique, Map<PeiCaracteristique, TableImpl<?>> mapAlias) {
     switch (caracteristique) {
         // Valeurs communes aux 2 types
       case TYPE_PEI:
@@ -467,22 +517,25 @@ public class ReferentielRepository {
       case NATURE_PEI:
         return TYPE_HYDRANT_NATURE.NOM;
       case AUTORITE_POLICE:
-        return null;
+        return ((Organisme) mapAlias.get(PeiCaracteristique.AUTORITE_POLICE)).NOM;
       case TYPE_DECI:
-        // TODO Pas sûr !
-        return HYDRANT.NATURE_DECI;
+        return TYPE_HYDRANT_NATURE_DECI.NOM;
       case SERVICE_PUBLIC:
+        return ((Organisme) mapAlias.get(PeiCaracteristique.SERVICE_PUBLIC)).NOM;
       case MAINTENANCE_CTP:
-        return null;
-
+        return ((Organisme) mapAlias.get(PeiCaracteristique.MAINTENANCE_CTP)).NOM;
       case COMPLEMENT:
         return HYDRANT.COMPLEMENT;
       case DATE_RECEPTION:
         return HYDRANT.DATE_RECEP;
         // Valeurs spécifiques aux PIBI
       case DIAMETRE_NOMINAL:
-        return HYDRANT_PIBI.DIAMETRE;
+        return TYPE_HYDRANT_DIAMETRE.NOM;
+      case DEBIT:
+        return HYDRANT_PIBI.DEBIT;
         // Valeurs spécifiques aux PENA
+      case CAPACITE:
+        return HYDRANT_PENA.CAPACITE;
     }
     throw new IllegalArgumentException("Valeur '" + caracteristique + "' non prévue");
   }
