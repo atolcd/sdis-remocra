@@ -334,7 +334,9 @@ export default {
     // Création du fond de carte OpenStreetMap
     createOSMLayer(layerDef) {
       return new TileLayer({
-        source: new OSM(),
+        source: new OSM({
+          url: layerDef.url
+        }),
         libelle: layerDef.libelle,
         groupe: layerDef.groupe,
         code: layerDef.id,
