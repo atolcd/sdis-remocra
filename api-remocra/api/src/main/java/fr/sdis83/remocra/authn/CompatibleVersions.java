@@ -12,7 +12,7 @@ public class CompatibleVersions {
 
   // Versions autorisées pour l'appli mobile
   private final List<String> mobileCompatibleVersions =
-      Collections.singletonList(MobileVersion.M2_0_beta2.version);
+      Collections.singletonList(MobileVersion.M2_0_beta3.version);
 
   public CompatibleVersions() {}
 
@@ -32,7 +32,7 @@ public class CompatibleVersions {
   }
 
   enum MobileVersion {
-    M2_0_beta2("2.0-beta2");
+    M2_0_beta3("2.0-beta3");
 
     public final String version;
 
