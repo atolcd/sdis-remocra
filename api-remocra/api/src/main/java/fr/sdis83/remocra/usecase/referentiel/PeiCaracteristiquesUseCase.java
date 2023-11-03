@@ -83,7 +83,7 @@ public class PeiCaracteristiquesUseCase {
   private static String formatValue(Object value, PeiCaracteristique peiCaracteristique) {
     switch (peiCaracteristique) {
       case DATE_RECEPTION:
-        return DateUtils.formatNaturel((Instant) value);
+        return (value == null) ? "Non renseignée" : DateUtils.formatNaturel((Instant) value);
       case CAPACITE:
         return (value == null) ? "Non renseignée" : value + " m3";
       case DEBIT:

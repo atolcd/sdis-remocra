@@ -3,7 +3,7 @@ package fr.sdis83.remocra.enums;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO Temps que nous n'avons pas de commons bien penser a répliquer dans l'api
+// TODO Tant que nous n'avons pas de commons bien pensé à répliquer dans l'api
 
 /**
  * Cette énumération représente les caractéristiques associées à un PEI (Point d'Eau Incendie).
