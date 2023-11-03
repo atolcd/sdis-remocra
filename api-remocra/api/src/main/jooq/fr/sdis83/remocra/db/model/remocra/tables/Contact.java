@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Contact extends TableImpl<Record> {
 
-    private static final long serialVersionUID = -217236818;
+    private static final long serialVersionUID = -1159616210;
 
     /**
      * The reference instance of <code>remocra.contact</code>
@@ -136,6 +136,11 @@ public class Contact extends TableImpl<Record> {
     public final TableField<Record, String> EMAIL = createField("email", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "");
 
     /**
+     * The column <code>remocra.contact.id_gestionnaire_site</code>. Identifiant du site de rattachement
+     */
+    public final TableField<Record, Long> ID_GESTIONNAIRE_SITE = createField("id_gestionnaire_site", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant du site de rattachement");
+
+    /**
      * Create a <code>remocra.contact</code> table reference
      */
     public Contact() {
@@ -206,6 +211,18 @@ public class Contact extends TableImpl<Record> {
     @Override
     public List<UniqueKey<Record>> getKeys() {
         return Arrays.<UniqueKey<Record>>asList(Keys.CONTACT_PKEY);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<ForeignKey<Record, ?>> getReferences() {
+        return Arrays.<ForeignKey<Record, ?>>asList(Keys.CONTACT__FK_GESTIONNAIRE_SITE);
+    }
+
+    public GestionnaireSite gestionnaireSite() {
+        return new GestionnaireSite(this, Keys.CONTACT__FK_GESTIONNAIRE_SITE);
     }
 
     /**

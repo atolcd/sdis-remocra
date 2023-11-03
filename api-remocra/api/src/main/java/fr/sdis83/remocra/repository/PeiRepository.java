@@ -1,12 +1,12 @@
 package fr.sdis83.remocra.repository;
 
 import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.GESTIONNAIRE_SITE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_ANOMALIES;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PENA;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PIBI;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ORGANISME;
-import static fr.sdis83.remocra.db.model.remocra.Tables.SITE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_DIAMETRE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_DOMAINE;
@@ -95,7 +95,7 @@ public class PeiRepository {
             HYDRANT_PIBI.DIAMETRE_CANALISATION.as("diamCana"),
             TYPE_HYDRANT_NATURE.NOM.as("sourcePei"),
             DSL.lower(DSL.replace(TYPE_HYDRANT_DOMAINE.NOM, "é", "e")).as("statut"),
-            SITE.NOM.as("nomEtab"),
+            GESTIONNAIRE_SITE.NOM.as("nomEtab"),
             HYDRANT.VOIE.as("situation"),
             HYDRANT_PIBI.PRESSION_DYN.as("pressDyn"),
             HYDRANT_PIBI.PRESSION.as("pressStat"),
@@ -134,8 +134,8 @@ public class PeiRepository {
         .on(HYDRANT_PENA.ID.eq(HYDRANT.ID))
         .leftJoin(TYPE_HYDRANT_NATURE_DECI)
         .on(TYPE_HYDRANT_NATURE_DECI.ID.eq(HYDRANT.NATURE_DECI))
-        .leftJoin(SITE)
-        .on(SITE.ID.eq(HYDRANT.SITE))
+        .leftJoin(GESTIONNAIRE_SITE)
+        .on(GESTIONNAIRE_SITE.ID.eq(HYDRANT.GESTIONNAIRE_SITE))
         .leftJoin(ORGANISME)
         .on(ORGANISME.ID.eq(HYDRANT_PIBI.SERVICE_EAUX))
         .where(condition)

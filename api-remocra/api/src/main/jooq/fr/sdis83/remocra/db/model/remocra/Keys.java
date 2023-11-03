@@ -106,7 +106,6 @@ import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleSelection;
 import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleSelectionDetail;
 import fr.sdis83.remocra.db.model.remocra.tables.Role;
 import fr.sdis83.remocra.db.model.remocra.tables.ServiceEaux;
-import fr.sdis83.remocra.db.model.remocra.tables.Site;
 import fr.sdis83.remocra.db.model.remocra.tables.SousTypeAlerteElt;
 import fr.sdis83.remocra.db.model.remocra.tables.SuiviPatches;
 import fr.sdis83.remocra.db.model.remocra.tables.Synchronisation;
@@ -282,7 +281,6 @@ public class Keys {
     public static final Identity<Record, Long> IDENTITY_REQUETE_MODELE_SELECTION_DETAIL = Identities0.IDENTITY_REQUETE_MODELE_SELECTION_DETAIL;
     public static final Identity<Record, Long> IDENTITY_ROLE = Identities0.IDENTITY_ROLE;
     public static final Identity<Record, Long> IDENTITY_SERVICE_EAUX = Identities0.IDENTITY_SERVICE_EAUX;
-    public static final Identity<Record, Long> IDENTITY_SITE = Identities0.IDENTITY_SITE;
     public static final Identity<Record, Long> IDENTITY_SOUS_TYPE_ALERTE_ELT = Identities0.IDENTITY_SOUS_TYPE_ALERTE_ELT;
     public static final Identity<Record, Long> IDENTITY_SYNCHRONISATION = Identities0.IDENTITY_SYNCHRONISATION;
     public static final Identity<Record, Long> IDENTITY_THEMATIQUE = Identities0.IDENTITY_THEMATIQUE;
@@ -478,7 +476,6 @@ public class Keys {
     public static final UniqueKey<Record> REQUETE_MODELE_SELECTION_DETAIL_PKEY = UniqueKeys0.REQUETE_MODELE_SELECTION_DETAIL_PKEY;
     public static final UniqueKey<Record> ROLE_PKEY = UniqueKeys0.ROLE_PKEY;
     public static final UniqueKey<Record> SERVICE_EAUX_PKEY = UniqueKeys0.SERVICE_EAUX_PKEY;
-    public static final UniqueKey<Record> SITE_PKEY = UniqueKeys0.SITE_PKEY;
     public static final UniqueKey<Record> SOUS_TYPE_ALERTE_ELT_PKEY = UniqueKeys0.SOUS_TYPE_ALERTE_ELT_PKEY;
     public static final UniqueKey<Record> SUIVI_PATCHES_PKEY = UniqueKeys0.SUIVI_PATCHES_PKEY;
     public static final UniqueKey<Record> SYNCHRONISATION_PKEY = UniqueKeys0.SYNCHRONISATION_PKEY;
@@ -583,6 +580,7 @@ public class Keys {
     public static final ForeignKey<Record, Record> BLOC_DOCUMENT_THEMATIQUES__FK140D14A9FDEC3D27 = ForeignKeys0.BLOC_DOCUMENT_THEMATIQUES__FK140D14A9FDEC3D27;
     public static final ForeignKey<Record, Record> CADASTRE_PARCELLE__FK_CADASTRE_PARCELLE_SECTION = ForeignKeys0.CADASTRE_PARCELLE__FK_CADASTRE_PARCELLE_SECTION;
     public static final ForeignKey<Record, Record> CADASTRE_SECTION__FK_CADASTRE_SECTION_COMMUNE = ForeignKeys0.CADASTRE_SECTION__FK_CADASTRE_SECTION_COMMUNE;
+    public static final ForeignKey<Record, Record> CONTACT__FK_GESTIONNAIRE_SITE = ForeignKeys0.CONTACT__FK_GESTIONNAIRE_SITE;
     public static final ForeignKey<Record, Record> CONTACT_ROLES__CONTACT_ROLES_CONTACT = ForeignKeys0.CONTACT_ROLES__CONTACT_ROLES_CONTACT;
     public static final ForeignKey<Record, Record> CONTACT_ROLES__CONTACT_ROLES_ROLES = ForeignKeys0.CONTACT_ROLES__CONTACT_ROLES_ROLES;
     public static final ForeignKey<Record, Record> COURRIER_DOCUMENT__COURRIER_DOCUMENT_DOCUMENT_FK = ForeignKeys0.COURRIER_DOCUMENT__COURRIER_DOCUMENT_DOCUMENT_FK;
@@ -614,7 +612,7 @@ public class Keys {
     public static final ForeignKey<Record, Record> CRISE_SUIVI__CRISE_SUIVI_EVENEMENT_FK = ForeignKeys0.CRISE_SUIVI__CRISE_SUIVI_EVENEMENT_FK;
     public static final ForeignKey<Record, Record> DDE_API__FK_ORGANISME_DDE_API = ForeignKeys0.DDE_API__FK_ORGANISME_DDE_API;
     public static final ForeignKey<Record, Record> DDE_MDP__FK5A4FDE5FA98055B2 = ForeignKeys0.DDE_MDP__FK5A4FDE5FA98055B2;
-    public static final ForeignKey<Record, Record> DEBIT_SIMULTANE__FK_SITE = ForeignKeys0.DEBIT_SIMULTANE__FK_SITE;
+    public static final ForeignKey<Record, Record> DEBIT_SIMULTANE__FK_GESTIONNAIRESITE = ForeignKeys0.DEBIT_SIMULTANE__FK_GESTIONNAIRESITE;
     public static final ForeignKey<Record, Record> DEBIT_SIMULTANE_DOCUMENT__FK_DOCUMENT = ForeignKeys0.DEBIT_SIMULTANE_DOCUMENT__FK_DOCUMENT;
     public static final ForeignKey<Record, Record> DEBIT_SIMULTANE_DOCUMENT__FK_DEBIT_SIMULTANE_MESURE = ForeignKeys0.DEBIT_SIMULTANE_DOCUMENT__FK_DEBIT_SIMULTANE_MESURE;
     public static final ForeignKey<Record, Record> DEBIT_SIMULTANE_HYDRANT__FK_DEBIT = ForeignKeys0.DEBIT_SIMULTANE_HYDRANT__FK_DEBIT;
@@ -646,7 +644,7 @@ public class Keys {
     public static final ForeignKey<Record, Record> HYDRANT__FK_NATURE_DECI = ForeignKeys0.HYDRANT__FK_NATURE_DECI;
     public static final ForeignKey<Record, Record> HYDRANT__FK_NIVEAU = ForeignKeys0.HYDRANT__FK_NIVEAU;
     public static final ForeignKey<Record, Record> HYDRANT__FK_GESTIONNAIRE = ForeignKeys0.HYDRANT__FK_GESTIONNAIRE;
-    public static final ForeignKey<Record, Record> HYDRANT__FK_SITE = ForeignKeys0.HYDRANT__FK_SITE;
+    public static final ForeignKey<Record, Record> HYDRANT__FK_GESTIONNAIRE_SITE = ForeignKeys0.HYDRANT__FK_GESTIONNAIRE_SITE;
     public static final ForeignKey<Record, Record> HYDRANT__FK_AUTORITE_DECI = ForeignKeys0.HYDRANT__FK_AUTORITE_DECI;
     public static final ForeignKey<Record, Record> HYDRANT__FK_SP_DECI = ForeignKeys0.HYDRANT__FK_SP_DECI;
     public static final ForeignKey<Record, Record> HYDRANT__FK_MAINTENANCE_DECI_ORGANISME = ForeignKeys0.HYDRANT__FK_MAINTENANCE_DECI_ORGANISME;
@@ -758,7 +756,6 @@ public class Keys {
     public static final ForeignKey<Record, Record> REQUETE_MODELE_SELECTION__REQUETE_MODELE_SELECTION_UTILISATEUR = ForeignKeys0.REQUETE_MODELE_SELECTION__REQUETE_MODELE_SELECTION_UTILISATEUR;
     public static final ForeignKey<Record, Record> REQUETE_MODELE_SELECTION_DETAIL__REQUETE_MODELE_SELECTION = ForeignKeys0.REQUETE_MODELE_SELECTION_DETAIL__REQUETE_MODELE_SELECTION;
     public static final ForeignKey<Record, Record> ROLE__ROLE_THEMATIQUE = ForeignKeys0.ROLE__ROLE_THEMATIQUE;
-    public static final ForeignKey<Record, Record> SITE__FK_GESTIONNAIRE_SITE = ForeignKeys0.SITE__FK_GESTIONNAIRE_SITE;
     public static final ForeignKey<Record, Record> SOUS_TYPE_ALERTE_ELT__FK91F5E3D755054712 = ForeignKeys0.SOUS_TYPE_ALERTE_ELT__FK91F5E3D755054712;
     public static final ForeignKey<Record, Record> SYNCHRONISATION__FK43A80607D27676E2 = ForeignKeys0.SYNCHRONISATION__FK43A80607D27676E2;
     public static final ForeignKey<Record, Record> TOURNEE__FKBC630036DBF82B2F = ForeignKeys0.TOURNEE__FKBC630036DBF82B2F;
@@ -874,7 +871,6 @@ public class Keys {
         public static Identity<Record, Long> IDENTITY_REQUETE_MODELE_SELECTION_DETAIL = Internal.createIdentity(RequeteModeleSelectionDetail.REQUETE_MODELE_SELECTION_DETAIL, RequeteModeleSelectionDetail.REQUETE_MODELE_SELECTION_DETAIL.ID);
         public static Identity<Record, Long> IDENTITY_ROLE = Internal.createIdentity(Role.ROLE, Role.ROLE.ID);
         public static Identity<Record, Long> IDENTITY_SERVICE_EAUX = Internal.createIdentity(ServiceEaux.SERVICE_EAUX, ServiceEaux.SERVICE_EAUX.ID);
-        public static Identity<Record, Long> IDENTITY_SITE = Internal.createIdentity(Site.SITE, Site.SITE.ID);
         public static Identity<Record, Long> IDENTITY_SOUS_TYPE_ALERTE_ELT = Internal.createIdentity(SousTypeAlerteElt.SOUS_TYPE_ALERTE_ELT, SousTypeAlerteElt.SOUS_TYPE_ALERTE_ELT.ID);
         public static Identity<Record, Long> IDENTITY_SYNCHRONISATION = Internal.createIdentity(Synchronisation.SYNCHRONISATION, Synchronisation.SYNCHRONISATION.ID);
         public static Identity<Record, Long> IDENTITY_THEMATIQUE = Internal.createIdentity(Thematique.THEMATIQUE, Thematique.THEMATIQUE.ID);
@@ -1068,7 +1064,6 @@ public class Keys {
         public static final UniqueKey<Record> REQUETE_MODELE_SELECTION_DETAIL_PKEY = Internal.createUniqueKey(RequeteModeleSelectionDetail.REQUETE_MODELE_SELECTION_DETAIL, "requete_modele_selection_detail_pkey", RequeteModeleSelectionDetail.REQUETE_MODELE_SELECTION_DETAIL.ID);
         public static final UniqueKey<Record> ROLE_PKEY = Internal.createUniqueKey(Role.ROLE, "role_pkey", Role.ROLE.ID);
         public static final UniqueKey<Record> SERVICE_EAUX_PKEY = Internal.createUniqueKey(ServiceEaux.SERVICE_EAUX, "service_eaux_pkey", ServiceEaux.SERVICE_EAUX.ID);
-        public static final UniqueKey<Record> SITE_PKEY = Internal.createUniqueKey(Site.SITE, "site_pkey", Site.SITE.ID);
         public static final UniqueKey<Record> SOUS_TYPE_ALERTE_ELT_PKEY = Internal.createUniqueKey(SousTypeAlerteElt.SOUS_TYPE_ALERTE_ELT, "sous_type_alerte_elt_pkey", SousTypeAlerteElt.SOUS_TYPE_ALERTE_ELT.ID);
         public static final UniqueKey<Record> SUIVI_PATCHES_PKEY = Internal.createUniqueKey(SuiviPatches.SUIVI_PATCHES, "suivi_patches_pkey", SuiviPatches.SUIVI_PATCHES.NUMERO);
         public static final UniqueKey<Record> SYNCHRONISATION_PKEY = Internal.createUniqueKey(Synchronisation.SYNCHRONISATION, "synchronisation_pkey", Synchronisation.SYNCHRONISATION.ID);
@@ -1171,6 +1166,7 @@ public class Keys {
         public static final ForeignKey<Record, Record> BLOC_DOCUMENT_THEMATIQUES__FK140D14A9FDEC3D27 = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.THEMATIQUE_PKEY, BlocDocumentThematiques.BLOC_DOCUMENT_THEMATIQUES, "bloc_document_thematiques__fk140d14a9fdec3d27", BlocDocumentThematiques.BLOC_DOCUMENT_THEMATIQUES.THEMATIQUES);
         public static final ForeignKey<Record, Record> CADASTRE_PARCELLE__FK_CADASTRE_PARCELLE_SECTION = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.CADASTRE_SECTION_PKEY, CadastreParcelle.CADASTRE_PARCELLE, "cadastre_parcelle__fk_cadastre_parcelle_section", CadastreParcelle.CADASTRE_PARCELLE.SECTION);
         public static final ForeignKey<Record, Record> CADASTRE_SECTION__FK_CADASTRE_SECTION_COMMUNE = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.COMMUNE_PKEY, CadastreSection.CADASTRE_SECTION, "cadastre_section__fk_cadastre_section_commune", CadastreSection.CADASTRE_SECTION.COMMUNE);
+        public static final ForeignKey<Record, Record> CONTACT__FK_GESTIONNAIRE_SITE = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.GESTIONNAIRE_SITE_PKEY, Contact.CONTACT, "contact__fk_gestionnaire_site", Contact.CONTACT.ID_GESTIONNAIRE_SITE);
         public static final ForeignKey<Record, Record> CONTACT_ROLES__CONTACT_ROLES_CONTACT = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.CONTACT_PKEY, ContactRoles.CONTACT_ROLES, "contact_roles__contact_roles_contact", ContactRoles.CONTACT_ROLES.CONTACT);
         public static final ForeignKey<Record, Record> CONTACT_ROLES__CONTACT_ROLES_ROLES = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ROLE_PKEY, ContactRoles.CONTACT_ROLES, "contact_roles__contact_roles_roles", ContactRoles.CONTACT_ROLES.ROLES);
         public static final ForeignKey<Record, Record> COURRIER_DOCUMENT__COURRIER_DOCUMENT_DOCUMENT_FK = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.DOCUMENT_PKEY, CourrierDocument.COURRIER_DOCUMENT, "courrier_document__courrier_document_document_fk", CourrierDocument.COURRIER_DOCUMENT.DOCUMENT);
@@ -1202,7 +1198,7 @@ public class Keys {
         public static final ForeignKey<Record, Record> CRISE_SUIVI__CRISE_SUIVI_EVENEMENT_FK = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.CRISE_EVENEMENT_PKEY, CriseSuivi.CRISE_SUIVI, "crise_suivi__crise_suivi_evenement_fk", CriseSuivi.CRISE_SUIVI.EVENEMENT);
         public static final ForeignKey<Record, Record> DDE_API__FK_ORGANISME_DDE_API = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, DdeApi.DDE_API, "dde_api__fk_organisme_dde_api", DdeApi.DDE_API.ORGANISME);
         public static final ForeignKey<Record, Record> DDE_MDP__FK5A4FDE5FA98055B2 = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.UTILISATEUR_PKEY, DdeMdp.DDE_MDP, "dde_mdp__fk5a4fde5fa98055b2", DdeMdp.DDE_MDP.UTILISATEUR);
-        public static final ForeignKey<Record, Record> DEBIT_SIMULTANE__FK_SITE = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.SITE_PKEY, DebitSimultane.DEBIT_SIMULTANE, "debit_simultane__fk_site", DebitSimultane.DEBIT_SIMULTANE.SITE);
+        public static final ForeignKey<Record, Record> DEBIT_SIMULTANE__FK_GESTIONNAIRESITE = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.GESTIONNAIRE_SITE_PKEY, DebitSimultane.DEBIT_SIMULTANE, "debit_simultane__fk_gestionnairesite", DebitSimultane.DEBIT_SIMULTANE.GESTIONNAIRE_SITE);
         public static final ForeignKey<Record, Record> DEBIT_SIMULTANE_DOCUMENT__FK_DOCUMENT = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.DOCUMENT_PKEY, DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT, "debit_simultane_document__fk_document", DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT.DOCUMENT, DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT.DOCUMENT);
         public static final ForeignKey<Record, Record> DEBIT_SIMULTANE_DOCUMENT__FK_DEBIT_SIMULTANE_MESURE = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.DEBIT_SIMULTANE_MESURE_PKEY, DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT, "debit_simultane_document__fk_debit_simultane_mesure", DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT.DEBIT_SIMULTANE_MESURE);
         public static final ForeignKey<Record, Record> DEBIT_SIMULTANE_HYDRANT__FK_DEBIT = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.DEBIT_SIMULTANE_MESURE_PKEY, DebitSimultaneHydrant.DEBIT_SIMULTANE_HYDRANT, "debit_simultane_hydrant__fk_debit", DebitSimultaneHydrant.DEBIT_SIMULTANE_HYDRANT.DEBIT);
@@ -1224,7 +1220,7 @@ public class Keys {
         public static final ForeignKey<Record, Record> ETUDE_HYDRANT_PROJET__FK_ETUDE = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ETUDE_STATUT_PKEY, EtudeHydrantProjet.ETUDE_HYDRANT_PROJET, "etude_hydrant_projet__fk_etude", EtudeHydrantProjet.ETUDE_HYDRANT_PROJET.ETUDE);
         public static final ForeignKey<Record, Record> ETUDE_HYDRANT_PROJET__FK_TYPE_DECI = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_NATURE_DECI_PKEY, EtudeHydrantProjet.ETUDE_HYDRANT_PROJET, "etude_hydrant_projet__fk_type_deci", EtudeHydrantProjet.ETUDE_HYDRANT_PROJET.TYPE_DECI);
         public static final ForeignKey<Record, Record> ETUDE_HYDRANT_PROJET__FK_DIAMETRE_NOMINAL = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_DIAMETRE_PKEY, EtudeHydrantProjet.ETUDE_HYDRANT_PROJET, "etude_hydrant_projet__fk_diametre_nominal", EtudeHydrantProjet.ETUDE_HYDRANT_PROJET.DIAMETRE_NOMINAL);
-        public static final ForeignKey<Record, Record> GESTIONNAIRE_SITE__FK_GESTIONNAIRE = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.GESTIONNAIRE_PKEY, GestionnaireSite.GESTIONNAIRE_SITE, "gestionnaire_site__fk_gestionnaire", GestionnaireSite.GESTIONNAIRE_SITE.GESTIONNAIRE);
+        public static final ForeignKey<Record, Record> GESTIONNAIRE_SITE__FK_GESTIONNAIRE = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.GESTIONNAIRE_PKEY, GestionnaireSite.GESTIONNAIRE_SITE, "gestionnaire_site__fk_gestionnaire", GestionnaireSite.GESTIONNAIRE_SITE.ID_GESTIONNAIRE);
         public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028D2DA796C = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.COMMUNE_PKEY, Hydrant.HYDRANT, "hydrant__fk51b8f028d2da796c", Hydrant.HYDRANT.COMMUNE);
         public static final ForeignKey<Record, Record> HYDRANT__FK51B8F0285D29D8A8 = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_DOMAINE_PKEY, Hydrant.HYDRANT, "hydrant__fk51b8f0285d29d8a8", Hydrant.HYDRANT.DOMAINE);
         public static final ForeignKey<Record, Record> HYDRANT__FK51B8F028D10A0428 = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_NATURE_PKEY, Hydrant.HYDRANT, "hydrant__fk51b8f028d10a0428", Hydrant.HYDRANT.NATURE);
@@ -1234,7 +1230,7 @@ public class Keys {
         public static final ForeignKey<Record, Record> HYDRANT__FK_NATURE_DECI = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_NATURE_DECI_PKEY, Hydrant.HYDRANT, "hydrant__fk_nature_deci", Hydrant.HYDRANT.NATURE_DECI);
         public static final ForeignKey<Record, Record> HYDRANT__FK_NIVEAU = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_HYDRANT_NIVEAU_PKEY, Hydrant.HYDRANT, "hydrant__fk_niveau", Hydrant.HYDRANT.NIVEAU);
         public static final ForeignKey<Record, Record> HYDRANT__FK_GESTIONNAIRE = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.GESTIONNAIRE_PKEY, Hydrant.HYDRANT, "hydrant__fk_gestionnaire", Hydrant.HYDRANT.GESTIONNAIRE);
-        public static final ForeignKey<Record, Record> HYDRANT__FK_SITE = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.SITE_PKEY, Hydrant.HYDRANT, "hydrant__fk_site", Hydrant.HYDRANT.SITE);
+        public static final ForeignKey<Record, Record> HYDRANT__FK_GESTIONNAIRE_SITE = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.GESTIONNAIRE_SITE_PKEY, Hydrant.HYDRANT, "hydrant__fk_gestionnaire_site", Hydrant.HYDRANT.GESTIONNAIRE_SITE);
         public static final ForeignKey<Record, Record> HYDRANT__FK_AUTORITE_DECI = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, Hydrant.HYDRANT, "hydrant__fk_autorite_deci", Hydrant.HYDRANT.AUTORITE_DECI);
         public static final ForeignKey<Record, Record> HYDRANT__FK_SP_DECI = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, Hydrant.HYDRANT, "hydrant__fk_sp_deci", Hydrant.HYDRANT.SP_DECI);
         public static final ForeignKey<Record, Record> HYDRANT__FK_MAINTENANCE_DECI_ORGANISME = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, Hydrant.HYDRANT, "hydrant__fk_maintenance_deci_organisme", Hydrant.HYDRANT.MAINTENANCE_DECI);
@@ -1346,7 +1342,6 @@ public class Keys {
         public static final ForeignKey<Record, Record> REQUETE_MODELE_SELECTION__REQUETE_MODELE_SELECTION_UTILISATEUR = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.UTILISATEUR_PKEY, RequeteModeleSelection.REQUETE_MODELE_SELECTION, "requete_modele_selection__requete_modele_selection_utilisateur", RequeteModeleSelection.REQUETE_MODELE_SELECTION.UTILISATEUR);
         public static final ForeignKey<Record, Record> REQUETE_MODELE_SELECTION_DETAIL__REQUETE_MODELE_SELECTION = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.REQUETE_MODELE_SELECTION_PKEY, RequeteModeleSelectionDetail.REQUETE_MODELE_SELECTION_DETAIL, "requete_modele_selection_detail__requete_modele_selection", RequeteModeleSelectionDetail.REQUETE_MODELE_SELECTION_DETAIL.SELECTION);
         public static final ForeignKey<Record, Record> ROLE__ROLE_THEMATIQUE = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.THEMATIQUE_PKEY, Role.ROLE, "role__role_thematique", Role.ROLE.THEMATIQUE);
-        public static final ForeignKey<Record, Record> SITE__FK_GESTIONNAIRE_SITE = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.GESTIONNAIRE_SITE_PKEY, Site.SITE, "site__fk_gestionnaire_site", Site.SITE.GESTIONNAIRE_SITE);
         public static final ForeignKey<Record, Record> SOUS_TYPE_ALERTE_ELT__FK91F5E3D755054712 = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.TYPE_ALERTE_ELT_PKEY, SousTypeAlerteElt.SOUS_TYPE_ALERTE_ELT, "sous_type_alerte_elt__fk91f5e3d755054712", SousTypeAlerteElt.SOUS_TYPE_ALERTE_ELT.TYPE_ALERTE_ELT);
         public static final ForeignKey<Record, Record> SYNCHRONISATION__FK43A80607D27676E2 = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.THEMATIQUE_PKEY, Synchronisation.SYNCHRONISATION, "synchronisation__fk43a80607d27676e2", Synchronisation.SYNCHRONISATION.THEMATIQUE);
         public static final ForeignKey<Record, Record> TOURNEE__FKBC630036DBF82B2F = Internal.createForeignKey(fr.sdis83.remocra.db.model.remocra.Keys.ORGANISME_PKEY, Tournee.TOURNEE, "tournee__fkbc630036dbf82b2f", Tournee.TOURNEE.AFFECTATION);

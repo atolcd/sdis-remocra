@@ -22,13 +22,12 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Gestionnaire implements Serializable {
 
-    private static final long serialVersionUID = 1248259131;
+    private static final long serialVersionUID = 1549077266;
 
     private Long    id;
     private Boolean actif;
     private String  code;
     private String  nom;
-    private Integer version;
 
     public Gestionnaire() {}
 
@@ -37,21 +36,18 @@ public class Gestionnaire implements Serializable {
         this.actif = value.actif;
         this.code = value.code;
         this.nom = value.nom;
-        this.version = value.version;
     }
 
     public Gestionnaire(
         Long    id,
         Boolean actif,
         String  code,
-        String  nom,
-        Integer version
+        String  nom
     ) {
         this.id = id;
         this.actif = actif;
         this.code = code;
         this.nom = nom;
-        this.version = version;
     }
 
     public Long getId() {
@@ -90,15 +86,6 @@ public class Gestionnaire implements Serializable {
         return this;
     }
 
-    public Integer getVersion() {
-        return this.version;
-    }
-
-    public Gestionnaire setVersion(Integer version) {
-        this.version = version;
-        return this;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Gestionnaire (");
@@ -107,7 +94,6 @@ public class Gestionnaire implements Serializable {
         sb.append(", ").append(actif);
         sb.append(", ").append(code);
         sb.append(", ").append(nom);
-        sb.append(", ").append(version);
 
         sb.append(")");
         return sb.toString();

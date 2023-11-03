@@ -104,7 +104,6 @@ import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleSelection;
 import fr.sdis83.remocra.db.model.remocra.tables.RequeteModeleSelectionDetail;
 import fr.sdis83.remocra.db.model.remocra.tables.Role;
 import fr.sdis83.remocra.db.model.remocra.tables.ServiceEaux;
-import fr.sdis83.remocra.db.model.remocra.tables.Site;
 import fr.sdis83.remocra.db.model.remocra.tables.SousTypeAlerteElt;
 import fr.sdis83.remocra.db.model.remocra.tables.SuiviPatches;
 import fr.sdis83.remocra.db.model.remocra.tables.Synchronisation;
@@ -292,7 +291,6 @@ public class Indexes {
     public static final Index EXPORT_MODELE_CODE_KEY = Indexes0.EXPORT_MODELE_CODE_KEY;
     public static final Index EXPORT_MODELE_PKEY = Indexes0.EXPORT_MODELE_PKEY;
     public static final Index GESTIONNAIRE_PKEY = Indexes0.GESTIONNAIRE_PKEY;
-    public static final Index GESTIONNAIRE_SITE_GESTIONNAIRE_IDX = Indexes0.GESTIONNAIRE_SITE_GESTIONNAIRE_IDX;
     public static final Index GESTIONNAIRE_SITE_PKEY = Indexes0.GESTIONNAIRE_SITE_PKEY;
     public static final Index HYDRANT_AUTORITE_DECI_IDX = Indexes0.HYDRANT_AUTORITE_DECI_IDX;
     public static final Index HYDRANT_COMMUNE_IDX = Indexes0.HYDRANT_COMMUNE_IDX;
@@ -466,7 +464,6 @@ public class Indexes {
     public static final Index REQUETE_MODELE_SELECTION_DETAIL_SELECTION_IDX = Indexes0.REQUETE_MODELE_SELECTION_DETAIL_SELECTION_IDX;
     public static final Index ROLE_PKEY = Indexes0.ROLE_PKEY;
     public static final Index SERVICE_EAUX_PKEY = Indexes0.SERVICE_EAUX_PKEY;
-    public static final Index SITE_PKEY = Indexes0.SITE_PKEY;
     public static final Index SOUS_TYPE_ALERTE_ELT_PKEY = Indexes0.SOUS_TYPE_ALERTE_ELT_PKEY;
     public static final Index SOUS_TYPE_ALERTE_ELT_TYPE_ALERTE_ELT_IDX = Indexes0.SOUS_TYPE_ALERTE_ELT_TYPE_ALERTE_ELT_IDX;
     public static final Index SUIVI_PATCHES_PKEY = Indexes0.SUIVI_PATCHES_PKEY;
@@ -651,7 +648,7 @@ public class Indexes {
         public static Index DDE_MDP_PKEY = Internal.createIndex("dde_mdp_pkey", DdeMdp.DDE_MDP, new OrderField[] { DdeMdp.DDE_MDP.ID }, true);
         public static Index DDE_MDP_UTILISATEUR_IDX = Internal.createIndex("dde_mdp_utilisateur_idx", DdeMdp.DDE_MDP, new OrderField[] { DdeMdp.DDE_MDP.UTILISATEUR }, false);
         public static Index DEBIT_SIMULTANE_PKEY = Internal.createIndex("debit_simultane_pkey", DebitSimultane.DEBIT_SIMULTANE, new OrderField[] { DebitSimultane.DEBIT_SIMULTANE.ID }, true);
-        public static Index DEBIT_SIMULTANE_SITE_IDX = Internal.createIndex("debit_simultane_site_idx", DebitSimultane.DEBIT_SIMULTANE, new OrderField[] { DebitSimultane.DEBIT_SIMULTANE.SITE }, false);
+        public static Index DEBIT_SIMULTANE_SITE_IDX = Internal.createIndex("debit_simultane_site_idx", DebitSimultane.DEBIT_SIMULTANE, new OrderField[] { DebitSimultane.DEBIT_SIMULTANE.GESTIONNAIRE_SITE }, false);
         public static Index NUMDOSSIER_UNIQUE = Internal.createIndex("numdossier_unique", DebitSimultane.DEBIT_SIMULTANE, new OrderField[] { DebitSimultane.DEBIT_SIMULTANE.NUMDOSSIER }, true);
         public static Index DEBIT_SIMULTANE_DOCUMENT_DEBIT_SIMULTANE_MESURE_IDX = Internal.createIndex("debit_simultane_document_debit_simultane_mesure_idx", DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT, new OrderField[] { DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT.DEBIT_SIMULTANE_MESURE }, false);
         public static Index DEBIT_SIMULTANE_DOCUMENT_DOCUMENT_IDX = Internal.createIndex("debit_simultane_document_document_idx", DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT, new OrderField[] { DebitSimultaneDocument.DEBIT_SIMULTANE_DOCUMENT.DOCUMENT }, false);
@@ -682,7 +679,6 @@ public class Indexes {
         public static Index EXPORT_MODELE_CODE_KEY = Internal.createIndex("export_modele_code_key", ExportModele.EXPORT_MODELE, new OrderField[] { ExportModele.EXPORT_MODELE.CODE }, true);
         public static Index EXPORT_MODELE_PKEY = Internal.createIndex("export_modele_pkey", ExportModele.EXPORT_MODELE, new OrderField[] { ExportModele.EXPORT_MODELE.ID }, true);
         public static Index GESTIONNAIRE_PKEY = Internal.createIndex("gestionnaire_pkey", Gestionnaire.GESTIONNAIRE, new OrderField[] { Gestionnaire.GESTIONNAIRE.ID }, true);
-        public static Index GESTIONNAIRE_SITE_GESTIONNAIRE_IDX = Internal.createIndex("gestionnaire_site_gestionnaire_idx", GestionnaireSite.GESTIONNAIRE_SITE, new OrderField[] { GestionnaireSite.GESTIONNAIRE_SITE.GESTIONNAIRE }, false);
         public static Index GESTIONNAIRE_SITE_PKEY = Internal.createIndex("gestionnaire_site_pkey", GestionnaireSite.GESTIONNAIRE_SITE, new OrderField[] { GestionnaireSite.GESTIONNAIRE_SITE.ID }, true);
         public static Index HYDRANT_AUTORITE_DECI_IDX = Internal.createIndex("hydrant_autorite_deci_idx", Hydrant.HYDRANT, new OrderField[] { Hydrant.HYDRANT.AUTORITE_DECI }, false);
         public static Index HYDRANT_COMMUNE_IDX = Internal.createIndex("hydrant_commune_idx", Hydrant.HYDRANT, new OrderField[] { Hydrant.HYDRANT.COMMUNE }, false);
@@ -695,7 +691,7 @@ public class Indexes {
         public static Index HYDRANT_NUMERO_KEY = Internal.createIndex("hydrant_numero_key", Hydrant.HYDRANT, new OrderField[] { Hydrant.HYDRANT.NUMERO }, true);
         public static Index HYDRANT_ORGANISME_IDX = Internal.createIndex("hydrant_organisme_idx", Hydrant.HYDRANT, new OrderField[] { Hydrant.HYDRANT.ORGANISME }, false);
         public static Index HYDRANT_PKEY = Internal.createIndex("hydrant_pkey", Hydrant.HYDRANT, new OrderField[] { Hydrant.HYDRANT.ID }, true);
-        public static Index HYDRANT_SITE_IDX = Internal.createIndex("hydrant_site_idx", Hydrant.HYDRANT, new OrderField[] { Hydrant.HYDRANT.SITE }, false);
+        public static Index HYDRANT_SITE_IDX = Internal.createIndex("hydrant_site_idx", Hydrant.HYDRANT, new OrderField[] { Hydrant.HYDRANT.GESTIONNAIRE_SITE }, false);
         public static Index HYDRANT_SP_DECI_IDX = Internal.createIndex("hydrant_sp_deci_idx", Hydrant.HYDRANT, new OrderField[] { Hydrant.HYDRANT.SP_DECI }, false);
         public static Index HYDRANT_UTILISATEUR_MODIFICATION_IDX = Internal.createIndex("hydrant_utilisateur_modification_idx", Hydrant.HYDRANT, new OrderField[] { Hydrant.HYDRANT.UTILISATEUR_MODIFICATION }, false);
         public static Index HYDRANT_ZONE_SPECIALE_IDX = Internal.createIndex("hydrant_zone_speciale_idx", Hydrant.HYDRANT, new OrderField[] { Hydrant.HYDRANT.ZONE_SPECIALE }, false);
@@ -856,7 +852,6 @@ public class Indexes {
         public static Index REQUETE_MODELE_SELECTION_DETAIL_SELECTION_IDX = Internal.createIndex("requete_modele_selection_detail_selection_idx", RequeteModeleSelectionDetail.REQUETE_MODELE_SELECTION_DETAIL, new OrderField[] { RequeteModeleSelectionDetail.REQUETE_MODELE_SELECTION_DETAIL.SELECTION }, false);
         public static Index ROLE_PKEY = Internal.createIndex("role_pkey", Role.ROLE, new OrderField[] { Role.ROLE.ID }, true);
         public static Index SERVICE_EAUX_PKEY = Internal.createIndex("service_eaux_pkey", ServiceEaux.SERVICE_EAUX, new OrderField[] { ServiceEaux.SERVICE_EAUX.ID }, true);
-        public static Index SITE_PKEY = Internal.createIndex("site_pkey", Site.SITE, new OrderField[] { Site.SITE.ID }, true);
         public static Index SOUS_TYPE_ALERTE_ELT_PKEY = Internal.createIndex("sous_type_alerte_elt_pkey", SousTypeAlerteElt.SOUS_TYPE_ALERTE_ELT, new OrderField[] { SousTypeAlerteElt.SOUS_TYPE_ALERTE_ELT.ID }, true);
         public static Index SOUS_TYPE_ALERTE_ELT_TYPE_ALERTE_ELT_IDX = Internal.createIndex("sous_type_alerte_elt_type_alerte_elt_idx", SousTypeAlerteElt.SOUS_TYPE_ALERTE_ELT, new OrderField[] { SousTypeAlerteElt.SOUS_TYPE_ALERTE_ELT.TYPE_ALERTE_ELT }, false);
         public static Index SUIVI_PATCHES_PKEY = Internal.createIndex("suivi_patches_pkey", SuiviPatches.SUIVI_PATCHES, new OrderField[] { SuiviPatches.SUIVI_PATCHES.NUMERO }, true);

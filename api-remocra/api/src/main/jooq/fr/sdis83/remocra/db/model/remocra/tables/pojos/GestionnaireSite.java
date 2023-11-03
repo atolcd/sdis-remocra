@@ -10,7 +10,7 @@ import javax.annotation.Generated;
 
 
 /**
- * Gestionnaire de site de PEI
+ * Site de PEI
  */
 @Generated(
     value = {
@@ -22,14 +22,14 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class GestionnaireSite implements Serializable {
 
-    private static final long serialVersionUID = -271409994;
+    private static final long serialVersionUID = 591892147;
 
     private Long    id;
     private Boolean actif;
     private String  code;
     private String  nom;
-    private Integer version;
-    private Long    gestionnaire;
+    private Object  geometrie;
+    private Long    idGestionnaire;
 
     public GestionnaireSite() {}
 
@@ -38,8 +38,8 @@ public class GestionnaireSite implements Serializable {
         this.actif = value.actif;
         this.code = value.code;
         this.nom = value.nom;
-        this.version = value.version;
-        this.gestionnaire = value.gestionnaire;
+        this.geometrie = value.geometrie;
+        this.idGestionnaire = value.idGestionnaire;
     }
 
     public GestionnaireSite(
@@ -47,15 +47,15 @@ public class GestionnaireSite implements Serializable {
         Boolean actif,
         String  code,
         String  nom,
-        Integer version,
-        Long    gestionnaire
+        Object  geometrie,
+        Long    idGestionnaire
     ) {
         this.id = id;
         this.actif = actif;
         this.code = code;
         this.nom = nom;
-        this.version = version;
-        this.gestionnaire = gestionnaire;
+        this.geometrie = geometrie;
+        this.idGestionnaire = idGestionnaire;
     }
 
     public Long getId() {
@@ -94,21 +94,31 @@ public class GestionnaireSite implements Serializable {
         return this;
     }
 
-    public Integer getVersion() {
-        return this.version;
+
+    /**
+     * @deprecated Unknown data type. Please define an explicit {@link org.jooq.Binding} to specify how this type should be handled. Deprecation can be turned off using {@literal <deprecationOnUnknownTypes/>} in your code generator configuration.
+     */
+    @java.lang.Deprecated
+    public Object getGeometrie() {
+        return this.geometrie;
     }
 
-    public GestionnaireSite setVersion(Integer version) {
-        this.version = version;
+
+    /**
+     * @deprecated Unknown data type. Please define an explicit {@link org.jooq.Binding} to specify how this type should be handled. Deprecation can be turned off using {@literal <deprecationOnUnknownTypes/>} in your code generator configuration.
+     */
+    @java.lang.Deprecated
+    public GestionnaireSite setGeometrie(Object geometrie) {
+        this.geometrie = geometrie;
         return this;
     }
 
-    public Long getGestionnaire() {
-        return this.gestionnaire;
+    public Long getIdGestionnaire() {
+        return this.idGestionnaire;
     }
 
-    public GestionnaireSite setGestionnaire(Long gestionnaire) {
-        this.gestionnaire = gestionnaire;
+    public GestionnaireSite setIdGestionnaire(Long idGestionnaire) {
+        this.idGestionnaire = idGestionnaire;
         return this;
     }
 
@@ -120,8 +130,8 @@ public class GestionnaireSite implements Serializable {
         sb.append(", ").append(actif);
         sb.append(", ").append(code);
         sb.append(", ").append(nom);
-        sb.append(", ").append(version);
-        sb.append(", ").append(gestionnaire);
+        sb.append(", ").append(geometrie);
+        sb.append(", ").append(idGestionnaire);
 
         sb.append(")");
         return sb.toString();

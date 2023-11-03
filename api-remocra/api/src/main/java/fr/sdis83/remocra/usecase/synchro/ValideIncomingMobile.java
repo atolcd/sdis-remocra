@@ -261,8 +261,7 @@ public class ValideIncomingMobile {
                     null,
                     true,
                     gestionnaire.getCodeGestionnaire(),
-                    gestionnaire.getNomGestionnaire(),
-                    1));
+                    gestionnaire.getNomGestionnaire()));
 
         // on update le gestionnaire dans incoming
         incomingRepository.updateIdRemocraGestionnaire(
@@ -280,8 +279,7 @@ public class ValideIncomingMobile {
                 gestionnaire.getIdGestionnaireRemocra(),
                 true,
                 gestionnaire.getCodeGestionnaire(),
-                gestionnaire.getNomGestionnaire(),
-                null));
+                gestionnaire.getNomGestionnaire()));
       }
     }
   }
@@ -332,13 +330,16 @@ public class ValideIncomingMobile {
                     ensureData(contact.getVilleContact()),
                     ensureData(contact.getPaysContact()),
                     contact.getTelephoneContact(),
-                    ensureData(contact.getEmailContact())));
+                    ensureData(contact.getEmailContact()),
+                    null));
         // On insert les rôles
         rolesRecuperes.forEach(
             idRole -> gestionnaireRepository.insertContactRole(idContact, idRole));
 
       } else {
         // C'est un update
+        Long idGestionnaireSite =
+            gestionnaireRepository.getGestionnaireSiteContact(contact.getIdContactRemocra());
         logger.info(
             "UPDATE CONTACT : " + contact.getNomContact() + ", idGestionnaire = " + idAppartenance);
         gestionnaireRepository.updateContact(
@@ -358,7 +359,8 @@ public class ValideIncomingMobile {
                 contact.getVilleContact(),
                 contact.getPaysContact(),
                 contact.getTelephoneContact(),
-                contact.getEmailContact()));
+                contact.getEmailContact(),
+                idGestionnaireSite));
 
         // On gère aussi les rôles
         List<Long> rolesDansRemocra = mapRolesByContact.get(contact.getIdContactRemocra());

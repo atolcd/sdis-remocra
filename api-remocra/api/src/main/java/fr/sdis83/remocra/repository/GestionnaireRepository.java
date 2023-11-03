@@ -36,7 +36,6 @@ public class GestionnaireRepository {
         .set(GESTIONNAIRE.ACTIF, gestionnaire.getActif())
         .set(GESTIONNAIRE.NOM, gestionnaire.getNom())
         .set(GESTIONNAIRE.CODE, gestionnaire.getCode())
-        .set(GESTIONNAIRE.VERSION, gestionnaire.getVersion())
         .returning(GESTIONNAIRE.ID)
         .fetchOne()
         .getValue(GESTIONNAIRE.ID);
@@ -48,7 +47,6 @@ public class GestionnaireRepository {
         .set(GESTIONNAIRE.ACTIF, gestionnaire.getActif())
         .set(GESTIONNAIRE.NOM, gestionnaire.getNom())
         .set(GESTIONNAIRE.CODE, gestionnaire.getCode())
-        .set(GESTIONNAIRE.VERSION, gestionnaire.getVersion())
         .where(GESTIONNAIRE.ID.eq(gestionnaire.getId()))
         .execute();
   }
@@ -71,6 +69,7 @@ public class GestionnaireRepository {
         .set(CONTACT.PAYS, contact.getPays())
         .set(CONTACT.TELEPHONE, contact.getTelephone())
         .set(CONTACT.EMAIL, contact.getEmail())
+        .set(CONTACT.ID_GESTIONNAIRE_SITE, contact.getIdGestionnaireSite())
         .returning(CONTACT.ID)
         .fetchOne()
         .getValue(CONTACT.ID);
@@ -94,8 +93,17 @@ public class GestionnaireRepository {
         .set(CONTACT.PAYS, contact.getPays())
         .set(CONTACT.TELEPHONE, contact.getTelephone())
         .set(CONTACT.EMAIL, contact.getEmail())
+        .set(CONTACT.ID_GESTIONNAIRE_SITE, contact.getIdGestionnaireSite())
         .where(CONTACT.ID.eq(contact.getId()))
         .execute();
+  }
+
+  public Long getGestionnaireSiteContact(Long idContact) {
+    return context
+        .select(CONTACT.ID_GESTIONNAIRE_SITE)
+        .from(CONTACT)
+        .where(CONTACT.ID.eq(idContact))
+        .fetchOneInto(Long.class);
   }
 
   // Map<idContact, List<IdRole>>

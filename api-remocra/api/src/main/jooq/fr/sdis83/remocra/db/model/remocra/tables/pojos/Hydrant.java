@@ -23,7 +23,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Hydrant implements Serializable {
 
-    private static final long serialVersionUID = -1032275891;
+    private static final long serialVersionUID = -92781523;
 
     private Long    id;
     private String  agent1;
@@ -62,7 +62,7 @@ public class Hydrant implements Serializable {
     private String  suffixeVoie;
     private Long    niveau;
     private Long    gestionnaire;
-    private Long    site;
+    private Long    gestionnaireSite;
     private Long    autoriteDeci;
     private Boolean enFace;
     private Instant dateCrea;
@@ -111,7 +111,7 @@ public class Hydrant implements Serializable {
         this.suffixeVoie = value.suffixeVoie;
         this.niveau = value.niveau;
         this.gestionnaire = value.gestionnaire;
-        this.site = value.site;
+        this.gestionnaireSite = value.gestionnaireSite;
         this.autoriteDeci = value.autoriteDeci;
         this.enFace = value.enFace;
         this.dateCrea = value.dateCrea;
@@ -159,7 +159,7 @@ public class Hydrant implements Serializable {
         String  suffixeVoie,
         Long    niveau,
         Long    gestionnaire,
-        Long    site,
+        Long    gestionnaireSite,
         Long    autoriteDeci,
         Boolean enFace,
         Instant dateCrea,
@@ -205,7 +205,7 @@ public class Hydrant implements Serializable {
         this.suffixeVoie = suffixeVoie;
         this.niveau = niveau;
         this.gestionnaire = gestionnaire;
-        this.site = site;
+        this.gestionnaireSite = gestionnaireSite;
         this.autoriteDeci = autoriteDeci;
         this.enFace = enFace;
         this.dateCrea = dateCrea;
@@ -558,12 +558,12 @@ public class Hydrant implements Serializable {
         return this;
     }
 
-    public Long getSite() {
-        return this.site;
+    public Long getGestionnaireSite() {
+        return this.gestionnaireSite;
     }
 
-    public Hydrant setSite(Long site) {
-        this.site = site;
+    public Hydrant setGestionnaireSite(Long gestionnaireSite) {
+        this.gestionnaireSite = gestionnaireSite;
         return this;
     }
 
@@ -671,7 +671,7 @@ public class Hydrant implements Serializable {
         sb.append(", ").append(suffixeVoie);
         sb.append(", ").append(niveau);
         sb.append(", ").append(gestionnaire);
-        sb.append(", ").append(site);
+        sb.append(", ").append(gestionnaireSite);
         sb.append(", ").append(autoriteDeci);
         sb.append(", ").append(enFace);
         sb.append(", ").append(dateCrea);

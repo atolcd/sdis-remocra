@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DebitSimultane extends TableImpl<Record> {
 
-    private static final long serialVersionUID = 2083419711;
+    private static final long serialVersionUID = 2051167812;
 
     /**
      * The reference instance of <code>remocra.debit_simultane</code>
@@ -61,9 +61,9 @@ public class DebitSimultane extends TableImpl<Record> {
     public final TableField<Record, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('remocra.debit_simultane_id_seq'::regclass)", org.jooq.impl.SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>remocra.debit_simultane.site</code>.
+     * The column <code>remocra.debit_simultane.gestionnaire_site</code>.
      */
-    public final TableField<Record, Long> SITE = createField("site", org.jooq.impl.SQLDataType.BIGINT, this, "");
+    public final TableField<Record, Long> GESTIONNAIRE_SITE = createField("gestionnaire_site", org.jooq.impl.SQLDataType.BIGINT, this, "");
 
     /**
      * @deprecated Unknown data type. Please define an explicit {@link org.jooq.Binding} to specify how this type should be handled. Deprecation can be turned off using {@literal <deprecationOnUnknownTypes/>} in your code generator configuration.
@@ -154,11 +154,11 @@ public class DebitSimultane extends TableImpl<Record> {
      */
     @Override
     public List<ForeignKey<Record, ?>> getReferences() {
-        return Arrays.<ForeignKey<Record, ?>>asList(Keys.DEBIT_SIMULTANE__FK_SITE);
+        return Arrays.<ForeignKey<Record, ?>>asList(Keys.DEBIT_SIMULTANE__FK_GESTIONNAIRESITE);
     }
 
-    public Site site() {
-        return new Site(this, Keys.DEBIT_SIMULTANE__FK_SITE);
+    public GestionnaireSite gestionnaireSite() {
+        return new GestionnaireSite(this, Keys.DEBIT_SIMULTANE__FK_GESTIONNAIRESITE);
     }
 
     /**

@@ -22,10 +22,10 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DebitSimultane implements Serializable {
 
-    private static final long serialVersionUID = -861605567;
+    private static final long serialVersionUID = 690656289;
 
     private Long   id;
-    private Long   site;
+    private Long   gestionnaireSite;
     private Object geometrie;
     private String numdossier;
 
@@ -33,19 +33,19 @@ public class DebitSimultane implements Serializable {
 
     public DebitSimultane(DebitSimultane value) {
         this.id = value.id;
-        this.site = value.site;
+        this.gestionnaireSite = value.gestionnaireSite;
         this.geometrie = value.geometrie;
         this.numdossier = value.numdossier;
     }
 
     public DebitSimultane(
         Long   id,
-        Long   site,
+        Long   gestionnaireSite,
         Object geometrie,
         String numdossier
     ) {
         this.id = id;
-        this.site = site;
+        this.gestionnaireSite = gestionnaireSite;
         this.geometrie = geometrie;
         this.numdossier = numdossier;
     }
@@ -59,12 +59,12 @@ public class DebitSimultane implements Serializable {
         return this;
     }
 
-    public Long getSite() {
-        return this.site;
+    public Long getGestionnaireSite() {
+        return this.gestionnaireSite;
     }
 
-    public DebitSimultane setSite(Long site) {
-        this.site = site;
+    public DebitSimultane setGestionnaireSite(Long gestionnaireSite) {
+        this.gestionnaireSite = gestionnaireSite;
         return this;
     }
 
@@ -101,7 +101,7 @@ public class DebitSimultane implements Serializable {
         StringBuilder sb = new StringBuilder("DebitSimultane (");
 
         sb.append(id);
-        sb.append(", ").append(site);
+        sb.append(", ").append(gestionnaireSite);
         sb.append(", ").append(geometrie);
         sb.append(", ").append(numdossier);
 

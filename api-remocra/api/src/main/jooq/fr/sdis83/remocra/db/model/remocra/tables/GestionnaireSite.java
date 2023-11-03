@@ -28,7 +28,7 @@ import org.jooq.impl.TableImpl;
 
 
 /**
- * Gestionnaire de site de PEI
+ * Site de PEI
  */
 @Generated(
     value = {
@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class GestionnaireSite extends TableImpl<Record> {
 
-    private static final long serialVersionUID = 1974432946;
+    private static final long serialVersionUID = -1279802953;
 
     /**
      * The reference instance of <code>remocra.gestionnaire_site</code>
@@ -71,19 +71,20 @@ public class GestionnaireSite extends TableImpl<Record> {
     public final TableField<Record, String> CODE = createField("code", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Code du statut. Facilite les échanges de données");
 
     /**
-     * The column <code>remocra.gestionnaire_site.nom</code>. Libellé du gestionnaire de site
+     * The column <code>remocra.gestionnaire_site.nom</code>. Libellé du site
      */
-    public final TableField<Record, String> NOM = createField("nom", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Libellé du gestionnaire de site");
+    public final TableField<Record, String> NOM = createField("nom", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "Libellé du site");
 
     /**
-     * The column <code>remocra.gestionnaire_site.version</code>.
+     * @deprecated Unknown data type. Please define an explicit {@link org.jooq.Binding} to specify how this type should be handled. Deprecation can be turned off using {@literal <deprecationOnUnknownTypes/>} in your code generator configuration.
      */
-    public final TableField<Record, Integer> VERSION = createField("version", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("1", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    @java.lang.Deprecated
+    public final TableField<Record, Object> GEOMETRIE = createField("geometrie", org.jooq.impl.DefaultDataType.getDefaultDataType("\"public\".\"geometry\""), this, "");
 
     /**
-     * The column <code>remocra.gestionnaire_site.gestionnaire</code>. Identifiant du gestionnaire auquel est rattaché le gestionnaire de site
+     * The column <code>remocra.gestionnaire_site.id_gestionnaire</code>.
      */
-    public final TableField<Record, Long> GESTIONNAIRE = createField("gestionnaire", org.jooq.impl.SQLDataType.BIGINT, this, "Identifiant du gestionnaire auquel est rattaché le gestionnaire de site");
+    public final TableField<Record, Long> ID_GESTIONNAIRE = createField("id_gestionnaire", org.jooq.impl.SQLDataType.BIGINT, this, "");
 
     /**
      * Create a <code>remocra.gestionnaire_site</code> table reference
@@ -111,7 +112,7 @@ public class GestionnaireSite extends TableImpl<Record> {
     }
 
     private GestionnaireSite(Name alias, Table<Record> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment("Gestionnaire de site de PEI"));
+        super(alias, null, aliased, parameters, DSL.comment("Site de PEI"));
     }
 
     public <O extends Record> GestionnaireSite(Table<O> child, ForeignKey<O, Record> key) {
@@ -131,7 +132,7 @@ public class GestionnaireSite extends TableImpl<Record> {
      */
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.GESTIONNAIRE_SITE_GESTIONNAIRE_IDX, Indexes.GESTIONNAIRE_SITE_PKEY);
+        return Arrays.<Index>asList(Indexes.GESTIONNAIRE_SITE_PKEY);
     }
 
     /**
