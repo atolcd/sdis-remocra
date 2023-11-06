@@ -56,7 +56,11 @@ Ext.define('Sdis.Remocra.features.hydrants.TabAnalyses', {
                         valueField: 'id',
                         fieldLabel: 'Analyses',
                         labelStyle: 'font-weight: bold;',
-                        queryMode: 'local',
+                        editable : true,
+                        typeAhead: true,
+                        minChars: 0,
+                        mode : 'remote',
+                        triggerAction : 'all',
                         forceSelection: true
                         },{
                         xtype: 'label',

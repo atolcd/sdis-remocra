@@ -48,6 +48,10 @@ public class RequeteModeleController {
 
     final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
 
+    if (query != null && !query.isEmpty()) {
+      itemFilterList.add(new ItemFilter("query", query));
+    }
+
     return new AbstractExtListSerializer<RequeteModele>("RequeteModele retrieved.") {
 
       @Override

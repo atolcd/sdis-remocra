@@ -35,6 +35,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.apache.log4j.Logger;
 import org.joda.time.Instant;
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -65,12 +66,15 @@ public class RequeteModeleRepository {
   }
 
   public List<RequeteModele> getAll(List<ItemFilter> itemFilters) {
-    String categorie = null;
+    List<Condition> conditions = new ArrayList<>();
     // On filtre par rapport aux catégories (POINTDEAU,DFCI,...)
     if (itemFilters != null && !itemFilters.isEmpty()) {
       for (ItemFilter itemFilter : itemFilters) {
         if ("categorie".equals(itemFilter.getFieldName())) {
-          categorie = itemFilter.getValue();
+          conditions.add(REQUETE_MODELE.CATEGORIE.eq(itemFilter.getValue()));
+        }
+        if ("query".equals(itemFilter.getFieldName())) {
+          conditions.add(REQUETE_MODELE.LIBELLE.likeIgnoreCase("%" + itemFilter.getValue() + "%"));
         }
       }
     }
@@ -78,17 +82,15 @@ public class RequeteModeleRepository {
     // On récupere les requêtes en fonction des profils
     List<RequeteModele> l = null;
     try {
+      conditions.add(
+          REQUETE_MODELE_DROIT.PROFIL_DROIT.eq(utilisateurService.getCurrentProfilDroit().getId()));
       l =
           context
               .select()
               .from(REQUETE_MODELE)
               .leftOuterJoin(REQUETE_MODELE_DROIT)
               .on(REQUETE_MODELE.ID.eq(REQUETE_MODELE_DROIT.REQUETE_MODELE))
-              .where(
-                  REQUETE_MODELE_DROIT
-                      .PROFIL_DROIT
-                      .eq(utilisateurService.getCurrentProfilDroit().getId())
-                      .and(REQUETE_MODELE.CATEGORIE.eq(categorie)))
+              .where(conditions)
               .orderBy(REQUETE_MODELE.LIBELLE)
               .fetchInto(RequeteModele.class);
     } catch (BusinessException e) {
