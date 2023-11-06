@@ -18,7 +18,7 @@ import ModalSaisieVisite from './components/tournee/ModalSaisieVisite.vue'
 import ModalImportCTP from './components/ModalImportCTP.vue'
 import ManageGestionnaires from './components/ManageGestionnaires.vue'
 import ManageSites from './components/ManageSites.vue'
-import ManageInfosPeiMobile from './components/ManageInfosPeiMobile.vue'
+import ManageInfosPeiMobile from './components/ManageParametre.vue'
 
 // import router from './router'
 import BootstrapVue from 'bootstrap-vue'

@@ -439,7 +439,7 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             items.push({
                 type: 'href',
                 href: 'manageInfosPeiMobile',
-                lbl: 'Gestion des infos PEI mobile'
+                lbl: 'Paramètres de l\'application mobile'
             });
             items.push({
                 type: 'sep'
