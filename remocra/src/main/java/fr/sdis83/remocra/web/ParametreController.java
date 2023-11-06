@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.sdis83.remocra.domain.datasource.CodeLibelleOrdreData;
 import fr.sdis83.remocra.enums.PeiCaracteristique;
+import fr.sdis83.remocra.usecase.parametre.agents.AgentsUseCase;
 import fr.sdis83.remocra.usecase.parametre.caracteristiques.CaracteristiqueUseCase;
 import java.io.IOException;
 import java.util.List;
@@ -21,6 +22,7 @@ public class ParametreController {
   private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Autowired CaracteristiqueUseCase caracteristiquesUseCase;
+  @Autowired AgentsUseCase agentsUseCase;
 
   @RequestMapping(
       value = "/caracteristiques/nonChoisie/{type}",
@@ -51,6 +53,53 @@ public class ParametreController {
 
     } catch (Exception e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @RequestMapping(
+      value = "/agents/selected/",
+      method = RequestMethod.GET,
+      headers = "Accept=application/json;charset=utf-8")
+  public ResponseEntity<String> getParametreAgentsSelected() {
+    try {
+
+      return new ResponseEntity<>(agentsUseCase.getTypeAgentsSelected(), HttpStatus.OK);
+
+    } catch (Exception e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @RequestMapping(
+      value = "/agents/selectable/",
+      method = RequestMethod.GET,
+      headers = "Accept=application/json;charset=utf-8")
+  public ResponseEntity<String> getAllParametreAgents() {
+    try {
+
+      return new ResponseEntity<>(agentsUseCase.getTypeAgentsSelectable(), HttpStatus.OK);
+
+    } catch (Exception e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @RequestMapping(
+      value = "/agents/update/",
+      method = RequestMethod.POST,
+      headers = "Accept=application/json;charset=utf-8")
+  public ResponseEntity<String> updateAgent(HttpServletRequest request) {
+
+    try {
+      // On récupére le code de a insérer en base
+      String agentParam =
+          objectMapper.readValue(request.getParameter("agent"), new TypeReference<String>() {});
+
+      caracteristiquesUseCase.updateAgentParam(agentParam);
+
+      return new ResponseEntity<>("Succes", HttpStatus.OK);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 

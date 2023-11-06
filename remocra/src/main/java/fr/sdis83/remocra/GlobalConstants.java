@@ -30,4 +30,7 @@ public class GlobalConstants {
 
   /** Champ appartenance dans la table gestionnaire */
   public static final String GESTIONNAIRE = "GESTIONNAIRE";
+
+  //////// Parametre
+  public static final String PARAMETRE_AGENTS = "GESTION_AGENT";
 }

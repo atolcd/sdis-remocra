@@ -2,6 +2,7 @@ package fr.sdis83.remocra.usecase.parametre.caracteristiques;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.datasource.CodeLibelleOrdreData;
 import fr.sdis83.remocra.enums.PeiCaracteristique;
 import fr.sdis83.remocra.repository.ParametreRepository;
@@ -127,6 +128,10 @@ public class CaracteristiqueUseCase {
     }
     // Cas particulier : aucun élément
     return "";
+  }
+
+  public void updateAgentParam(String agentParam) {
+    parametreRepository.updateByKey(GlobalConstants.PARAMETRE_AGENTS, agentParam);
   }
 
   static class SortCodeLibelleOrdre implements java.util.Comparator<CodeLibelleOrdreData> {
