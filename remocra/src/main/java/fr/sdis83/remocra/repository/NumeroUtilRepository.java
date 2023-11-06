@@ -349,7 +349,7 @@ public class NumeroUtilRepository {
               suffixe = "D";
               break;
             case "SECTEUR CHANGE RIVE GAUCHE": // Rive gauche
-              suffixe = "D";
+              suffixe = "G";
               break;
             case "SECTEUR CHANGE 1":
               if ("PRIVE".equalsIgnoreCase(natureDeci)) {
@@ -804,7 +804,7 @@ public class NumeroUtilRepository {
               case "SECTEUR CHANGE PRIVE":
               case "SECTEUR CHANGE RIVE DROITE":
               case "SECTEUR CHANGE RIVE GAUCHE":
-                numInterne = computeNumeroInterne53Private(hydrant);
+                numInterne = computeNumeroInterne53Private(hydrant, true);
                 return numInterne;
             }
           }
@@ -867,21 +867,41 @@ public class NumeroUtilRepository {
   }
 
   private static Integer computeNumeroInterne53Private(Hydrant hydrant) {
+    return computeNumeroInterne53Private(hydrant, false);
+  }
+
+  private static Integer computeNumeroInterne53Private(Hydrant hydrant, boolean ignoreDECI) {
     Integer numInterne = null;
     if ("PIBI".equalsIgnoreCase(hydrant.getCode())) {
-      numInterne =
-          context
-              .resultQuery(
-                  "select remocra.nextNumeroInterne(null, {0}, {1}, {2}, {3}, null, null, true)",
-                  DSL.val(hydrant.getCode(), SQLDataType.VARCHAR),
-                  DSL.val(hydrant.getNatureDeci(), SQLDataType.BIGINT),
-                  (hydrant.getZoneSpeciale() == null)
-                      ? hydrant.getCommune()
-                      : DSL.val(null, SQLDataType.BIGINT),
-                  (hydrant.getZoneSpeciale() != null)
-                      ? hydrant.getZoneSpeciale()
-                      : DSL.val(null, SQLDataType.BIGINT))
-              .fetchOneInto(Integer.class);
+      if (ignoreDECI) { // si on ignore la nature DECI ; Cas des secteurs Changé Rive Gauche/Droite
+        // Et Changé Privé
+        numInterne =
+            context
+                .resultQuery(
+                    "select remocra.nextNumeroInterne(null, {0}, null, {1}, {2}, null, null, true)",
+                    DSL.val(hydrant.getCode(), SQLDataType.VARCHAR),
+                    (hydrant.getZoneSpeciale() == null)
+                        ? hydrant.getCommune()
+                        : DSL.val(null, SQLDataType.BIGINT),
+                    (hydrant.getZoneSpeciale() != null)
+                        ? hydrant.getZoneSpeciale()
+                        : DSL.val(null, SQLDataType.BIGINT))
+                .fetchOneInto(Integer.class);
+      } else {
+        numInterne =
+            context
+                .resultQuery(
+                    "select remocra.nextNumeroInterne(null, {0}, {1}, {2}, {3}, null, null, true)",
+                    DSL.val(hydrant.getCode(), SQLDataType.VARCHAR),
+                    DSL.val(hydrant.getNatureDeci(), SQLDataType.BIGINT),
+                    (hydrant.getZoneSpeciale() == null)
+                        ? hydrant.getCommune()
+                        : DSL.val(null, SQLDataType.BIGINT),
+                    (hydrant.getZoneSpeciale() != null)
+                        ? hydrant.getZoneSpeciale()
+                        : DSL.val(null, SQLDataType.BIGINT))
+                .fetchOneInto(Integer.class);
+      }
     } else {
       numInterne =
           context
