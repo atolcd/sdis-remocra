@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,7 @@ public class ParametreController {
       value = "/caracteristiques/nonChoisie/{type}",
       method = RequestMethod.GET,
       headers = "Accept=application/json;charset=utf-8")
+  @PreAuthorize("hasRight('REFERENTIELS_C')")
   public ResponseEntity<String> getCaracteristiquesPossible(
       @PathVariable("type") PeiCaracteristique.TypeCaracteristique type) {
     try {
@@ -44,6 +46,7 @@ public class ParametreController {
       value = "/caracteristiques/choisie/{type}",
       method = RequestMethod.GET,
       headers = "Accept=application/json;charset=utf-8")
+  @PreAuthorize("hasRight('REFERENTIELS_C')")
   public ResponseEntity<String> getCaracteristiquesSelectByType(
       @PathVariable("type") PeiCaracteristique.TypeCaracteristique type) {
     try {
@@ -60,6 +63,7 @@ public class ParametreController {
       value = "/agents/selected/",
       method = RequestMethod.GET,
       headers = "Accept=application/json;charset=utf-8")
+  @PreAuthorize("hasRight('REFERENTIELS_C')")
   public ResponseEntity<String> getParametreAgentsSelected() {
     try {
 
@@ -74,6 +78,7 @@ public class ParametreController {
       value = "/agents/selectable/",
       method = RequestMethod.GET,
       headers = "Accept=application/json;charset=utf-8")
+  @PreAuthorize("hasRight('REFERENTIELS_C')")
   public ResponseEntity<String> getAllParametreAgents() {
     try {
 
@@ -88,6 +93,7 @@ public class ParametreController {
       value = "/agents/update/",
       method = RequestMethod.POST,
       headers = "Accept=application/json;charset=utf-8")
+  @PreAuthorize("hasRight('REFERENTIELS_C')")
   public ResponseEntity<String> updateAgent(HttpServletRequest request) {
 
     try {
@@ -107,6 +113,7 @@ public class ParametreController {
       value = "/caracteristiques/update/",
       method = RequestMethod.POST,
       headers = "Accept=application/json;charset=utf-8")
+  @PreAuthorize("hasRight('REFERENTIELS_C')")
   public ResponseEntity<String> updateCaracteristiquesSelectByType(HttpServletRequest request) {
 
     try {
