@@ -2,23 +2,24 @@ Ext.define('Sdis.Remocra.features.documents.ImportDocuments', {
     extend: 'Ext.Component',
     alias: 'widget.crImportDocuments',
 
-    vueImportDocuments  : null,
-    id : "importDocuments",
+    vueImportDocuments: null,
+    id: "importDocuments",
 
     listeners: {
-        'afterrender': function(){
-            if(Ext.isDefined(window.remocraVue)) {
-                this.vueImportDocuments = remocraVue.importDocuments(this.id);
-            } else {
-                console.log('importDocuments : remocraVue undefined');
+        'afterrender': function () {
+            if (Sdis.Remocra.Rights.hasRight('REFERENTIELS_C')) {
+
+                if (Ext.isDefined(window.remocraVue)) {
+                    this.vueImportDocuments = remocraVue.importDocuments(this.id);
+                }
             }
         },
-        'beforedestroy': function() {
+        'beforedestroy': function () {
             this.vueImportDocuments.$el.remove();
         }
     },
 
-    initComponent: function() {
+    initComponent: function () {
         this.callParent(arguments);
     }
 });
