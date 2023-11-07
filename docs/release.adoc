@@ -10,6 +10,58 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
+== v2.3
+
+=== Evolution
+* Couverture hydraulique
+** nom étude (#189678)
+** zoom sur la commune choisie (#189676)
+** Algorithme de calcul de couverture hydraulique (#193413)
+
+* Requêtes
+** Tri par ordre alphabétique (#185247)
+
+* Indisponibilité temporaire
+** accès au champ "observations" (#184859)
+** ajout infobulle (#191581)
+
+* Création interface gestion des gestionnaires et des sites de PEI (#161935)
+* Ajout d'un champ vide aux champs facultatifs de la fiche PEI (#191886)
+* Gestion des caractéristiques (#190246)
+
+=== Fix
+* Affichage fiche résumé (#191190)
+* Réajustement du module de "Carte des adresses" (#187309)
+
+CAUTION: Ceci a pour effet de bord de ne plus avoir les outils d'édition activé automatiquement
+
+* Injection javascript sur choix du mot de passe (#174903)
+* Anomalie de sécurité remonté par un audit : Interface d'administration accessible depuis internet (#173137)
+* Pas de localisation rapide en mode "grand public" (#172577)
+* Mise en place de la recherche de lieux impossible (#139527)
+
+* Couverture hydraulique
+** fonds de carte (#194892)
+
+=== Mise à jour
+
+* Indiquer la valeur de version `2.3` dans le fichier .env (ou remocra.env)
+
+NOTE: Patchs généraux
+
+* Appliquer les patchs du 179 au 188 (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches[Disponibles ici]).
+
+NOTE: Patch spécifique
+
+* [ SDIS 39 ]
+** Appliquer le patch 181_001.sql (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis/39[Disponibles ici])
+* [ SDIS 61 ]
+** Appliquer le patch 177_002.sql (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis/61[Disponibles ici])
+** Appliquer le patch 185_001.sql (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis/61[Disponibles ici])
+** Appliquer le patch 188_001.sql (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis/61[Disponibles ici])
+* [ SDIS 95 ]
+** Appliquer le patch 178_001.sql (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis/95[Disponibles ici])
+
 == v2.2.5.4
 
 === Evolution
