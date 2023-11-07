@@ -63,6 +63,7 @@
         <b-button size="sm" type="reset" variant="secondary" @click="$modal.hide('modalProcess')">Annuler</b-button>
         <b-button size="sm" type="submit" variant="primary" @click="handleOk" >Valider</b-button>
       </div>
+    <notifications group="remocra" position="top right" animation-type="velocity" :duration="3000" />
   </modal>
 </div>
 </template>
@@ -173,7 +174,18 @@ export default {
         }
       }).then((response) => {
         if (response.data.success) {
-          this.$refs.modal.hide()
+          this.$nextTick(() => {
+           this.$notify({
+                group: 'remocra',
+                title: 'Processus enregistré',
+                type: 'success',
+                text: response.data.message
+              })
+
+          setTimeout(() =>{
+              this.$modal.hide('modalProcess');
+            }, 2000)
+          })
         }
       }).catch(function(error) {
         console.error('postProcess', error)

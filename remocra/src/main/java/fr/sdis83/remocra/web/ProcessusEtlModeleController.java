@@ -145,15 +145,18 @@ public class ProcessusEtlModeleController {
       value = "{idmodele}",
       method = RequestMethod.POST,
       headers = "Content-Type=multipart/form-data")
-  @PreAuthorize("hasRight('CRISE_C')")
+  @PreAuthorize("hasRight('CRISE_C') or hasRight('PLANIFIER_DECI')")
   @Transactional
   public ResponseEntity<java.lang.String> createProcessEtl(MultipartHttpServletRequest request) {
     try {
       ProcessusEtl p = processusEtlModeleRepository.createProcess(request);
-      return new SuccessErrorExtSerializer(true, "Le processus Etl  a été enregistrée").serialize();
+      return new SuccessErrorExtSerializer(
+              true,
+              "Le processus ETL a été enregistré. Un mail vous informera de l'issue du traitement.")
+          .serialize();
     } catch (Exception e) {
       return new SuccessErrorExtSerializer(
-              false, "Une erreur est survenue lors de l\'enregistrement du processus Etl")
+              false, "Une erreur est survenue lors de l\'enregistrement du processus ETL")
           .serialize();
     }
   }
