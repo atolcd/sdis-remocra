@@ -2,7 +2,6 @@ package fr.sdis83.remocra.repository;
 
 import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ORGANISME;
-import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ZONE_COMPETENCE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ZONE_COMPETENCE_COMMUNE;
 
@@ -46,7 +45,13 @@ public class CommuneRepository {
    * @return la liste des communes auxquelles l'utilisateur a accès
    */
   public List<Commune> getListCommune(
-      List<Integer> organismes, String query, String insee, boolean asc, int limit, int offset) {
+      List<Integer> organismes,
+      String query,
+      String insee,
+      boolean asc,
+      int limit,
+      int offset,
+      boolean withGeom) {
     // On prend en compte la longueur pour éviter que les communes à 2 caractères n'apparaissent pas
     Collection<SortField<?>> order = new ArrayList();
     if (asc) {
@@ -56,7 +61,13 @@ public class CommuneRepository {
       order.add(COMMUNE.NOM.desc());
     }
     return context
-        .select(COMMUNE.fields())
+        .select(
+            COMMUNE.ID,
+            COMMUNE.NOM,
+            COMMUNE.INSEE,
+            COMMUNE.CODE,
+            COMMUNE.PPRIF,
+            (withGeom ? COMMUNE.GEOMETRIE : DSL.val(null)))
         .distinctOn(COMMUNE.NOM.length(), COMMUNE.NOM)
         .from(COMMUNE)
         .join(ZONE_COMPETENCE_COMMUNE)
@@ -65,12 +76,10 @@ public class CommuneRepository {
         .on(ZONE_COMPETENCE_COMMUNE.ZONE_COMPETENCE_ID.eq(ZONE_COMPETENCE.ID))
         .join(ORGANISME)
         .on(ORGANISME.ZONE_COMPETENCE.eq(ZONE_COMPETENCE.ID))
-        .join(UTILISATEUR)
-        .on(UTILISATEUR.ORGANISME.eq(ORGANISME.ID))
         // Si on a pas d'organisme, c'est-à-dire pas d'utilisateur connecté et que la page est
         // ouverte au public
         // on ne fitre pas en fonction des organismes
-        .where(organismes != null ? UTILISATEUR.ORGANISME.in(organismes) : DSL.trueCondition())
+        .where(!organismes.isEmpty() ? ORGANISME.ID.in(organismes) : DSL.trueCondition())
         .and(COMMUNE.NOM.upper().like("%" + query.toUpperCase() + "%"))
         .and(COMMUNE.INSEE.like(insee))
         .orderBy(order)

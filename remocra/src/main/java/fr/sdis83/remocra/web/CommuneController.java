@@ -11,6 +11,7 @@ import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
+import java.util.Collections;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +71,7 @@ public class CommuneController {
         // cet organisme)
         SecurityContext sc = SecurityContextHolder.getContext();
         Authentication aut = sc.getAuthentication();
-        List<Integer> organismes = null;
+        List<Integer> organismes = Collections.EMPTY_LIST;
 
         // Si on n'a pas d'utilisateur connecté, on ne va pas chercher les organismes
         if (aut != null && aut.isAuthenticated() && !"anonymousUser".equals(aut.getPrincipal())) {
@@ -105,7 +106,7 @@ public class CommuneController {
 
         // On retourne la liste des communes en fonction des critères
         return communeRepository.getListCommune(
-            organismes, query, dep, itemSorting.isAsc(), limit, start);
+            organismes, query, dep, itemSorting.isAsc(), limit, start, withgeom);
       }
     }.serialize();
   }
