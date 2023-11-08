@@ -404,6 +404,9 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
              fiche.down('crHydrantsTournee #finaliseTournee').hide();
              fiche.down('crHydrantsTournee #resetTournee').hide();
         }
+        if (!Sdis.Remocra.Rights.hasRight('COURRIER_C')) {
+             fiche.down('crHydrantsTournee #newCourrierBtn').hide();
+        }
         if (!Sdis.Remocra.Rights.hasRight('HYDRANTS_CONTROLE_C')
         && !Sdis.Remocra.Rights.hasRight('HYDRANTS_RECEPTION_C')
         && !Sdis.Remocra.Rights.hasRight('HYDRANTS_RECONNAISSANCE_C')
