@@ -341,7 +341,8 @@ export default {
         groupe: layerDef.groupe,
         code: layerDef.id,
         zIndex: layerDef.zIndex,
-        properties: layerDef.properties
+        properties: layerDef.properties,
+        visible: layerDef.visibility,
       });
     },
 
