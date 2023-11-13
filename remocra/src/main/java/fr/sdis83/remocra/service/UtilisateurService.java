@@ -135,7 +135,6 @@ public class UtilisateurService {
           utilisateur,
           EmailModele.emptyKeyMap()
               .add(EmailModeleKeys.EMAIL, utilisateur.getEmail())
-              .add(EmailModeleKeys.MOT_DE_PASSE, plainPassword)
               .add(EmailModeleKeys.IDENTIFIANT, utilisateur.getIdentifiant())
               .add(EmailModeleKeys.URL_SITE, paramConfService.getUrlSite()));
     }
@@ -235,7 +234,6 @@ public class UtilisateurService {
         utilisateur,
         EmailModele.emptyKeyMap()
             .add(EmailModeleKeys.EMAIL, utilisateur.getEmail())
-            .add(EmailModeleKeys.MOT_DE_PASSE, plainPassword)
             .add(EmailModeleKeys.IDENTIFIANT, utilisateur.getIdentifiant())
             .add(EmailModeleKeys.URL_SITE, paramConfService.getUrlSite()));
 
