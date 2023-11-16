@@ -12,6 +12,7 @@ import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import fr.sdis83.remocra.web.serialize.transformer.GeometryTransformer;
 import java.util.List;
+import org.apache.log4j.Logger;
 import org.jooq.tools.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class TypeHydrantAnomalieController {
 
   @Autowired TypeHydrantAnomalieService service;
+
+  private final Logger logger = Logger.getLogger(getClass());
 
   @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/json")
   public ResponseEntity<java.lang.String> listJson(
@@ -134,7 +137,10 @@ public class TypeHydrantAnomalieController {
       service.delete(id);
       return new SuccessErrorExtSerializer(true, "TypeHydrantAnomalie supprimé").serialize();
     } catch (Exception e) {
-      return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
+      logger.error("Problème lors de la suppression", e);
+      return new SuccessErrorExtSerializer(
+              false, "Une erreur est survenue, consultez les logs pour plus de détails")
+          .serialize();
     }
   }
 }
