@@ -922,7 +922,8 @@ public class HydrantRepository {
 
     List<HydrantRecord> hr = new ArrayList<HydrantRecord>();
     StringBuffer sbReq =
-        new StringBuffer(
+        new StringBuffer(getAutoriteDeci())
+            .append(
                 "select h.id  as  id , h.code as code, ST_AsGeoJSON(h.geometrie) as jsonGeometrie, h.numero as numero, h.date_contr as dateContr,")
             .append(
                 " case when char_length(h.voie)>0 and char_length(h.voie2)>0 then h.voie || ' - ' || h.voie2 else voie end as adresse,")
@@ -940,11 +941,13 @@ public class HydrantRepository {
             .append(
                 " t.id in (SELECT tournees FROM remocra.hydrant_tournees ht where ht.hydrant = h.id)) as nomTournee,")
             .append(
-                " (select count(*) from remocra.hydrant_anomalies ha where ha.hydrant = h.id AND ha.anomalies = (select tha.id from remocra.type_hydrant_anomalie tha where tha.code = 'INDISPONIBILITE_TEMP')) as indispoTemp")
+                " (select count(*) from remocra.hydrant_anomalies ha where ha.hydrant = h.id AND ha.anomalies = (select tha.id from remocra.type_hydrant_anomalie tha where tha.code = 'INDISPONIBILITE_TEMP')) as indispoTemp, ")
+            .append(" autoriteDeci.autoriteDeci")
             .append(" from remocra.hydrant h")
             .append(" join remocra.commune c on c.id = h.commune")
             .append(" join remocra.type_hydrant_nature_deci thnd on thnd.id = h.nature_deci")
             .append(" join remocra.type_hydrant_nature thn on thn.id = h.nature")
+            .append(" left join autoriteDeci on autoriteDeci.id = h.autorite_deci ")
             .append(" where " + condition)
             .append(" order by " + sortFields)
             .append(" limit " + limit)
@@ -976,6 +979,8 @@ public class HydrantRepository {
             " and st_contains((select st_simplify(zc.geometrie ,1) from remocra.zone_competence zc where  id ="
                 + zoneCompetenceId
                 + " ), h.geometrie)";
+      } else if ("autoriteDeci".equals(itemFilter.getFieldName())) {
+        condition += " and autoriteDeci ilike '%" + itemFilter.getValue() + "%'";
       } else if ("numero".equals(itemFilter.getFieldName())) {
         condition +=
             " and upper(h.numero) like '%"
@@ -1083,15 +1088,34 @@ public class HydrantRepository {
     return condition;
   }
 
+  /**
+   * Bout de requête qui permet de récupérer l'autorité DECI
+   *
+   * @return
+   */
+  private String getAutoriteDeci() {
+    return "with autoriteDeci AS (select h.autorite_deci as id,  "
+        + " case "
+        + "   when type_organisme.code = 'COMMUNE' then 'Maire (' || o.nom || ')'"
+        + "   when type_organisme.code = 'EPCI' then 'Président (' || o.nom||')'"
+        + "   when type_organisme.code = 'PREFECTURE' then 'Préfet (' || o.nom||')'"
+        + " else o.nom end as autoriteDeci"
+        + " from remocra.organisme o join remocra.type_organisme on type_organisme.id = o.type_organisme"
+        + " join remocra.hydrant h on h.autorite_deci = o.id"
+        + " group by h.autorite_deci, type_organisme.code, o.nom) ";
+  }
+
   @Transactional
   public long countHydrants(List<ItemFilter> itemFilters) {
     String condition = this.getFilters(itemFilters);
     StringBuffer sbReq =
-        new StringBuffer(" select count(h.id) as  total")
+        new StringBuffer(getAutoriteDeci())
+            .append(" select count(h.id) as  total")
             .append(" from remocra.hydrant h")
             .append(" join remocra.commune c on c.id = h.commune")
             .append(" join remocra.type_hydrant_nature_deci thnd on thnd.id = h.nature_deci")
             .append(" join remocra.type_hydrant_nature thn on thn.id = h.nature")
+            .append(" left join autoriteDeci on autoriteDeci.id = h.autorite_deci")
             .append(" where")
             .append(" " + condition);
 

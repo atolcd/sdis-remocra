@@ -449,6 +449,7 @@ Méthodes disponibles pour la symbologie des PEI : link:../pei/Symbologie_PEI{ou
 ** ```nomNatureDeci``` Statut de la nature DECI (privé, publique, privé sous convention)
 ** ```adresse``` Adresse postale
 ** ```numeroInterne``` Numéro interne du PEI
+** ```autoriteDeci``` Autorité de police DECI
 
 === HYDRANT_LONGUE_INDISPONIBILITE_JOURS ===
 * Nombre de jours avant de considérer un PEI comme indisponible depuis trop longtemps

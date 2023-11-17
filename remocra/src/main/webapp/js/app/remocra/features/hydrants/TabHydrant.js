@@ -381,6 +381,18 @@ Ext.define('Sdis.Remocra.features.hydrants.TabHydrant', {
                     change: deferredApplyFilter
                 }
             }
+        }, {
+            text: 'Autorité de police DECI',
+            dataIndex: 'autoriteDeci',
+            filterable: true,
+            filter: {
+                emptyText: 'Autorité de police DECI...',
+                xtype: 'textfield',
+                hideTrigger: true,
+                listeners: {
+                    change: deferredApplyFilter
+                }
+            }
         }];
 
         var colonnesOrdonnees = [];

@@ -113,6 +113,16 @@ public class HydrantRecord {
     return nomNatureDeci;
   }
 
+  private String autoriteDeci;
+
+  public void setAutoriteDeci(String autoriteDeci) {
+    this.autoriteDeci = autoriteDeci;
+  }
+
+  public String getAutoriteDeci() {
+    return autoriteDeci;
+  }
+
   public String getAdresse() {
     return adresse;
   }
