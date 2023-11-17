@@ -15,7 +15,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Optional;
 import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
@@ -213,12 +215,23 @@ public class DocumentUtil {
 
   public File getFile(String filePath, String code) {
     if (filePath == null) {
-      logger.info("Fichier demandé non trouvé dans la base (" + code + ")");
+      logger.error("Fichier demandé non trouvé dans la base (" + code + ")");
       return null;
     }
     File file = new File(filePath);
     if (!file.exists()) {
-      logger.info("Fichier demandé non trouvé sur disque (" + code + ") : " + filePath);
+      // On regarde si le dossier existe
+      if (file.getParentFile().exists()) {
+        // On prend le fichier dedans, car un dossier = un fichier
+        Optional<File> fichier = Arrays.stream(file.getParentFile().listFiles()).findFirst();
+
+        if (fichier.isPresent()) {
+          return fichier.get();
+        }
+      }
+
+      logger.error("Fichier demandé non trouvé sur disque (" + code + ") : " + filePath);
+
       return null;
     }
     return file;
@@ -228,7 +241,7 @@ public class DocumentUtil {
       throws IOException {
     File file = getFile(filePath, code);
     if (file == null) {
-      response.setStatus(404);
+      response.setStatus(500);
       return;
     }
 
