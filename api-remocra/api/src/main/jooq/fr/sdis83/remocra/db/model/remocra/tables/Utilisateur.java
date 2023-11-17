@@ -4,10 +4,12 @@
 package fr.sdis83.remocra.db.model.remocra.tables;
 
 
+import fr.sdis83.remocra.db.converter.OffsetDateTimeToInstantConverter;
 import fr.sdis83.remocra.db.model.remocra.Indexes;
 import fr.sdis83.remocra.db.model.remocra.Keys;
 import fr.sdis83.remocra.db.model.remocra.Remocra;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Utilisateur extends TableImpl<Record> {
 
-    private static final long serialVersionUID = -1650471043;
+    private static final long serialVersionUID = 282322885;
 
     /**
      * The reference instance of <code>remocra.utilisateur</code>
@@ -119,6 +121,11 @@ public class Utilisateur extends TableImpl<Record> {
      * The column <code>remocra.utilisateur.profil_utilisateur</code>.
      */
     public final TableField<Record, Long> PROFIL_UTILISATEUR = createField("profil_utilisateur", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+
+    /**
+     * The column <code>remocra.utilisateur.derniere_connexion</code>. Date de dernière connexion de l'utilisateur
+     */
+    public final TableField<Record, Instant> DERNIERE_CONNEXION = createField("derniere_connexion", org.jooq.impl.SQLDataType.TIMESTAMPWITHTIMEZONE, this, "Date de dernière connexion de l'utilisateur", new OffsetDateTimeToInstantConverter());
 
     /**
      * Create a <code>remocra.utilisateur</code> table reference

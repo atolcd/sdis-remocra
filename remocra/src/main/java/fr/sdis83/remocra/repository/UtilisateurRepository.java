@@ -3,6 +3,7 @@ package fr.sdis83.remocra.repository;
 import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
 
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Utilisateur;
+import org.joda.time.Instant;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -49,5 +50,18 @@ public class UtilisateurRepository {
         .from(UTILISATEUR)
         .where(UTILISATEUR.IDENTIFIANT.eq(identifiant))
         .fetchOneInto(String.class);
+  }
+
+  /**
+   * Met à jour la dernière connexion de l'utilisateur
+   *
+   * @param idUtilisateur
+   */
+  public void postDerniereConnexion(Long idUtilisateur) {
+    context
+        .update(UTILISATEUR)
+        .set(UTILISATEUR.DERNIERE_CONNEXION, new Instant())
+        .where(UTILISATEUR.ID.eq(idUtilisateur))
+        .execute();
   }
 }

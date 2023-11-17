@@ -2,8 +2,10 @@ package fr.sdis83.remocra.domain.remocra;
 
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.web.deserialize.GeometryFactory;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -12,10 +14,13 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Formula;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
@@ -69,6 +74,10 @@ public class Utilisateur {
   @NotNull
   @Column(columnDefinition = "boolean default true")
   private Boolean actif;
+
+  @Temporal(TemporalType.TIMESTAMP)
+  @DateTimeFormat(pattern = RemocraDateHourTransformer.FORMAT)
+  private Date derniereConnexion;
 
   @Formula(
       "(select pd.nom||' ('||pd.feuille_de_style_geo_server||')' from remocra.utilisateur u join remocra.organisme o on (u.organisme=o.id) join remocra.profil_organisme_utilisateur_droit popupd on (popupd.profil_organisme=o.profil_organisme and popupd.profil_utilisateur=u.profil_utilisateur) join remocra.profil_droit pd on(popupd.profil_droit=pd.id) where u.profil_utilisateur = popupd.profil_utilisateur and o.profil_organisme = popupd.profil_organisme and u.id = id)")

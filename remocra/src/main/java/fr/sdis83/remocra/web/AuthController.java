@@ -75,6 +75,7 @@ public class AuthController {
     if (autResult == null) {
       return "redirect:/auth/login/failure";
     } else {
+      utilisateurRepository.postDerniereConnexion(utilisateur.getId());
       return "redirect:/utilisateurs/current";
     }
   }

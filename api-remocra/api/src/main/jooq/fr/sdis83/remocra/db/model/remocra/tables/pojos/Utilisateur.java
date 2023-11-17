@@ -5,6 +5,7 @@ package fr.sdis83.remocra.db.model.remocra.tables.pojos;
 
 
 import java.io.Serializable;
+import java.time.Instant;
 
 import javax.annotation.Generated;
 
@@ -22,7 +23,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Utilisateur implements Serializable {
 
-    private static final long serialVersionUID = 521425888;
+    private static final long serialVersionUID = -2015129623;
 
     private Long    id;
     private Boolean actif;
@@ -37,6 +38,7 @@ public class Utilisateur implements Serializable {
     private Integer version;
     private Long    organisme;
     private Long    profilUtilisateur;
+    private Instant derniereConnexion;
 
     public Utilisateur() {}
 
@@ -54,6 +56,7 @@ public class Utilisateur implements Serializable {
         this.version = value.version;
         this.organisme = value.organisme;
         this.profilUtilisateur = value.profilUtilisateur;
+        this.derniereConnexion = value.derniereConnexion;
     }
 
     public Utilisateur(
@@ -69,7 +72,8 @@ public class Utilisateur implements Serializable {
         String  telephone,
         Integer version,
         Long    organisme,
-        Long    profilUtilisateur
+        Long    profilUtilisateur,
+        Instant derniereConnexion
     ) {
         this.id = id;
         this.actif = actif;
@@ -84,6 +88,7 @@ public class Utilisateur implements Serializable {
         this.version = version;
         this.organisme = organisme;
         this.profilUtilisateur = profilUtilisateur;
+        this.derniereConnexion = derniereConnexion;
     }
 
     public Long getId() {
@@ -203,6 +208,15 @@ public class Utilisateur implements Serializable {
         return this;
     }
 
+    public Instant getDerniereConnexion() {
+        return this.derniereConnexion;
+    }
+
+    public Utilisateur setDerniereConnexion(Instant derniereConnexion) {
+        this.derniereConnexion = derniereConnexion;
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Utilisateur (");
@@ -220,6 +234,7 @@ public class Utilisateur implements Serializable {
         sb.append(", ").append(version);
         sb.append(", ").append(organisme);
         sb.append(", ").append(profilUtilisateur);
+        sb.append(", ").append(derniereConnexion);
 
         sb.append(")");
         return sb.toString();

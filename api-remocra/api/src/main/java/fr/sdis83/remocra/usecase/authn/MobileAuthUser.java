@@ -4,6 +4,8 @@ import com.google.inject.Inject;
 import fr.sdis83.remocra.authn.CompatibleVersions;
 import fr.sdis83.remocra.repository.UtilisateurModel;
 import fr.sdis83.remocra.repository.UtilisateursRepository;
+import fr.sdis83.remocra.usecase.utils.DateUtils;
+import java.time.Instant;
 import org.immutables.value.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +74,8 @@ public class MobileAuthUser {
           .build();
     }
 
-    logger.trace("L'utilisateur " + username + " est connecté");
+    logger.trace(
+        "L'utilisateur " + username + " est connecté (" + DateUtils.format(Instant.now()) + ")");
     return ImmutableJWTAuthUser.Response.builder()
         .status(JWTAuthUser.Status.OK)
         .token(authCommun.generateToken(username))

@@ -200,7 +200,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Remocra extends SchemaImpl {
 
-	private static final long serialVersionUID = 345909761;
+	private static final long serialVersionUID = 827717429;
 
 	/**
 	 * The reference instance of <code>remocra</code>
