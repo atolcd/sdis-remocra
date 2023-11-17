@@ -1,12 +1,15 @@
 package fr.sdis83.remocra.repository;
 
+import static fr.sdis83.remocra.GlobalConstants.SRID_2154;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CONTACT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.GESTIONNAIRE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ORGANISME;
 import static fr.sdis83.remocra.db.model.remocra.Tables.PROFIL_UTILISATEUR;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_ORGANISME;
 import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
+import static fr.sdis83.remocra.db.model.remocra.Tables.ZONE_COMPETENCE;
 
+import com.vividsolutions.jts.geom.Geometry;
 import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.enums.DestinataireType;
 import fr.sdis83.remocra.web.model.DestinataireModel;
@@ -34,11 +37,31 @@ public class DestinataireRepository {
   }
 
   /**
+   * Récupère tous les id_organisme contenu dans la zone de compétence de l'organisme fourni
+   *
+   * @param organismeGeometrie
+   * @return une liste de long, id_gestionnaire
+   */
+  public List<Long> getAllOrganismeIdZCByGeometry(Geometry organismeGeometrie) {
+    return context
+        .select(ORGANISME.ID)
+        .from(ORGANISME)
+        .join(ZONE_COMPETENCE)
+        .on(ORGANISME.ZONE_COMPETENCE.eq(ZONE_COMPETENCE.ID))
+        .where(
+            "ST_CONTAINS(st_setsrid(ST_GeomFromText({0})," + SRID_2154 + "), {1})",
+            organismeGeometrie.toText(),
+            ZONE_COMPETENCE.GEOMETRIE)
+        .fetchInto(Long.class);
+  }
+
+  /**
    * Récupère toutes les informations destinataire des utilisateurs
    *
    * @return une liste de DestinataireModel de type utilisateur
    */
-  public List<DestinataireModel> getDestinataireUtilisateur() {
+  public List<DestinataireModel> getDestinataireUtilisateur(List<Long> listeIdOrganisme) {
+    boolean condition = !listeIdOrganisme.isEmpty();
     return context
         .select(
             UTILISATEUR.ID,
@@ -49,8 +72,10 @@ public class DestinataireRepository {
         .from(UTILISATEUR)
         .join(PROFIL_UTILISATEUR)
         .on(UTILISATEUR.PROFIL_UTILISATEUR.eq(PROFIL_UTILISATEUR.ID))
-        .where(UTILISATEUR.EMAIL.isNotNull())
+        .where(condition ? UTILISATEUR.ORGANISME.in(listeIdOrganisme) : DSL.trueCondition())
+        .and(UTILISATEUR.EMAIL.isNotNull())
         .and(UTILISATEUR.ACTIF)
+        .and(UTILISATEUR.MESSAGE_REMOCRA)
         .fetchInto(DestinataireModel.class);
   }
 
@@ -59,7 +84,8 @@ public class DestinataireRepository {
    *
    * @return une liste de DestinataireModel de type organismes
    */
-  public List<DestinataireModel> getDestinataireOrganisme() {
+  public List<DestinataireModel> getDestinataireOrganisme(List<Long> listeIdOrganisme) {
+    boolean condition = !listeIdOrganisme.isEmpty();
     return context
         .select(
             ORGANISME.ID,
@@ -70,7 +96,8 @@ public class DestinataireRepository {
         .from(ORGANISME)
         .join(TYPE_ORGANISME)
         .on(ORGANISME.TYPE_ORGANISME.eq(TYPE_ORGANISME.ID))
-        .where(ORGANISME.ACTIF)
+        .where(condition ? ORGANISME.ID.in(listeIdOrganisme) : DSL.trueCondition())
+        .and(ORGANISME.ACTIF)
         .and(ORGANISME.EMAIL_CONTACT.isNotNull())
         .fetchInto(DestinataireModel.class);
   }
@@ -93,6 +120,7 @@ public class DestinataireRepository {
         .on(CONTACT.ID_APPARTENANCE.eq(GESTIONNAIRE.ID.cast(String.class)))
         .where(CONTACT.APPARTENANCE.eq(GlobalConstants.GESTIONNAIRE))
         .and(GESTIONNAIRE.ACTIF)
+        .and(CONTACT.EMAIL.isNotNull())
         .fetchInto(DestinataireModel.class);
   }
 
@@ -101,7 +129,8 @@ public class DestinataireRepository {
    *
    * @return une liste de DestinataireModel de type contacts Organismes
    */
-  public List<DestinataireModel> getDestinataireContactOrganisme() {
+  public List<DestinataireModel> getDestinataireContactOrganisme(List<Long> listeIdOrganisme) {
+    boolean condition = !listeIdOrganisme.isEmpty();
     return context
         .select(
             CONTACT.ID,
@@ -112,8 +141,10 @@ public class DestinataireRepository {
         .from(CONTACT)
         .join(ORGANISME)
         .on(CONTACT.ID_APPARTENANCE.eq(ORGANISME.ID.cast(String.class)))
-        .where(CONTACT.APPARTENANCE.eq(GlobalConstants.ORGANISME))
+        .where(condition ? CONTACT.ID_APPARTENANCE.in(listeIdOrganisme) : DSL.trueCondition())
+        .and(CONTACT.APPARTENANCE.eq(GlobalConstants.ORGANISME))
         .and(ORGANISME.ACTIF)
+        .and(CONTACT.EMAIL.isNotNull())
         .fetchInto(DestinataireModel.class);
   }
 }

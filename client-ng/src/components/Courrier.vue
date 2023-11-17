@@ -129,10 +129,9 @@
         <b-form-checkbox id="chkBoxRechStricte" v-model="filtreStrict" @input="filtering()" title="Les résultats commencent par ..." name="chkBoxRechStricte">Recherche stricte</b-form-checkbox>
       </div>
     </div>
-<!-- @@ TODO @@ Sera réintégré dans un prochain commit @@ TODO @@ -->
-    <!-- <div class="row" style="margin-left:0; padding-top: 0.5rem!important;">
-      <b-form-checkbox id="chkBoxZoneComp" v-model="filtreZC" title="Restreint la recherche à votre zone de compétence" name="chkBoxZoneComp">Restreindre à ma zone de compétence</b-form-checkbox>
-    </div> -->
+    <div class="row" style="margin-left:0; padding-top: 0.5rem!important;">
+      <b-form-checkbox id="chkBoxZoneComp" v-model="useZC" @input="reloadDestinataire()" title="Restreint la recherche à votre zone de compétence" name="chkBoxZoneComp">Restreindre à ma zone de compétence</b-form-checkbox>
+    </div>
     <div class="row mt-2">
       <div class="col-md-4 FiltreTitre">
         <label>Afficher les destinataires de type</label>
@@ -263,6 +262,7 @@ export default {
       filterRechercheValue: '',
       // Checkbox
       filtreStrict: false,
+      useZC: true,
       filterUtilisateurCheckValue: true,
       filterOrganismeCheckValue: true,
       filterOrgaContactCheckValue: true,
@@ -340,7 +340,7 @@ export default {
     resetModalVariable() {
       this.filtreStrict = false;
       this.filterRechercheValue = '';
-      this.filterUtilisateurCheckValue = this.filterOrganismeCheckValue = this.filterOrgaContactCheckValue = this.filterGestContactCheckValue = true;
+      this.useZC = this.filterUtilisateurCheckValue = this.filterOrganismeCheckValue = this.filterOrgaContactCheckValue = this.filterGestContactCheckValue = true;
       this.ajouteDestinataire = this.retireDestinataire = this.destinataireChoisi = [];
       this.currentPagePossible = this.currentPageChoisi = 1;
     },
@@ -523,10 +523,16 @@ export default {
     },
 
     getListeDestinataire() {
-      axios.get('/remocra/courrier/destinataires').then(response => {
-        this.initialeListeDestinataire = this.filteredListeDestinataire = response.data ? response.data : ''
+      axios.get('/remocra/courrier/destinataires/'+this.useZC).then(response => {
+        this.initialeListeDestinataire = this.filteredListeDestinataire = response.data ? response.data : []
+        this.filtering()
       })
     },
+
+    reloadDestinataire(){
+      this.getListeDestinataire();
+    },
+
     filtering() {
       // Récupération des types destinataires a faire remonter dans le filtrage
       let listeTypeSelected = [

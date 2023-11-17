@@ -1,6 +1,7 @@
 package fr.sdis83.remocra.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CourrierModele;
@@ -273,14 +274,23 @@ public class CourrierController {
    *     gestionnaire et organisme
    */
   @RequestMapping(
-      value = "/destinataires",
+      value = "/destinataires/{useZC}",
       method = RequestMethod.GET,
       headers = "Accept=application/json;charset=utf-8")
   @PreAuthorize("hasRight('COURRIER_C')")
-  public ResponseEntity<String> getAllDestinatairesCourrier() {
+  public ResponseEntity<String> getAllDestinatairesCourrier(
+      @PathVariable("useZC") final boolean useZC) {
     try {
+      Geometry geometryOrganismeCurrentUser =
+          utilisateurService
+              .getCurrentUtilisateur()
+              .getOrganisme()
+              .getZoneCompetence()
+              .getGeometrie();
       return new ResponseEntity<>(
-          objectMapper.writeValueAsString(destinataireCourrierUseCase.getAllDestinataireCourrier()),
+          objectMapper.writeValueAsString(
+              destinataireCourrierUseCase.getAllDestinataireCourrier(
+                  useZC, geometryOrganismeCurrentUser)),
           HttpStatus.OK);
     } catch (Exception e) {
       this.logger.error(e.getMessage(), e);
