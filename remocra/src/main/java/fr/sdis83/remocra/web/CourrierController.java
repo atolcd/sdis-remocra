@@ -1,11 +1,11 @@
 package fr.sdis83.remocra.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CourrierModele;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CourrierParametre;
 import fr.sdis83.remocra.domain.remocra.Document;
-import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.repository.CourrierRepository;
@@ -13,11 +13,11 @@ import fr.sdis83.remocra.repository.DestinataireRepository;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.TelechargementService;
 import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.usecase.destinatairecourrier.DestinataireCourrierUseCase;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.model.CourrierDocumentModel;
-import fr.sdis83.remocra.web.model.DestinataireModel;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import freemarker.ext.dom.NodeModel;
@@ -37,7 +37,9 @@ import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jooreports.templates.DocumentTemplate;
 import net.sf.jooreports.templates.DocumentTemplateFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
@@ -56,16 +58,17 @@ import org.xml.sax.InputSource;
 public class CourrierController {
 
   @Autowired TelechargementService telechargementsService;
-
   @Autowired CourrierRepository courrierRepository;
-
   @Autowired UtilisateurService utilisateurService;
-
   @Autowired DestinataireRepository destinataireRepository;
+  @Autowired DestinataireCourrierUseCase destinataireCourrierUseCase;
 
   @Autowired private ParamConfService paramConfService;
 
   @Autowired private MessageDigestPasswordEncoder messageDigestPasswordEncoder;
+
+  private final ObjectMapper objectMapper = new ObjectMapper();
+  private final Logger logger = Logger.getLogger(getClass());
 
   @RequestMapping(
       value = "/with/{thematique}",
@@ -263,59 +266,27 @@ public class CourrierController {
     }.serialize();
   }
 
-  /** Retourne la liste des destinataires potentiels d'un courrier. */
+  /**
+   * Récupère la liste des destinataires possible pour l'émission de courriers
+   *
+   * @return une liste de DestinataireModel contenant des organismes, utilisateur et contacts
+   *     gestionnaire et organisme
+   */
   @RequestMapping(
-      value = "/contacts",
+      value = "/destinataires",
       method = RequestMethod.GET,
-      headers = "Accept=application/json")
+      headers = "Accept=application/json;charset=utf-8")
   @PreAuthorize("hasRight('COURRIER_C')")
-  public ResponseEntity<String> getContactsCourrier(
-      final @RequestParam(value = "filter", required = false) String filters,
-      final @RequestParam(value = "useZc", required = false) boolean useZc,
-      final @RequestParam(value = "listeTypes", required = true) String listeTypes,
-      final @RequestParam(value = "strict", required = true) boolean strict) {
-    final List<ItemFilter> listeFiltre = ItemFilter.decodeJson(filters);
-    ArrayList<String> types = new JSONDeserializer<ArrayList<String>>().deserialize(listeTypes);
-
-    return new AbstractExtListSerializer<DestinataireModel>("Contacts retrieved.") {
-
-      @Override
-      protected List<DestinataireModel> getRecords() {
-        String filter = "";
-        for (ItemFilter f : listeFiltre) {
-          if ("filtreString".equalsIgnoreCase(f.getFieldName()) && f.getValue() != null) {
-            filter = f.getValue();
-          }
-        }
-
-        List<Integer> organismes = new ArrayList<Integer>();
-        organismes =
-            (useZc)
-                ? Organisme.getOrganismesZC(
-                    utilisateurService.getCurrentUtilisateur().getOrganisme().getId())
-                : destinataireRepository.getAllIdOrganismes();
-
-        List<DestinataireModel> destinataires = new ArrayList<DestinataireModel>();
-        for (String t : types) {
-          if ("CONTACT_ORGANISME".equalsIgnoreCase(t)) {
-            destinataires.addAll(
-                destinataireRepository.getDestinataireContactOrganisme(organismes, filter, strict));
-          } else if ("ORGANISME".equalsIgnoreCase(t)) {
-            destinataires.addAll(
-                destinataireRepository.getDestinataireOrganisme(organismes, filter, strict));
-          } else if ("UTILISATEUR".equalsIgnoreCase(t)) {
-            destinataires.addAll(
-                destinataireRepository.getDestinataireUtilisateur(organismes, filter, strict));
-          } else if ("CONTACT_GESTIONNAIRE".equalsIgnoreCase(t)) {
-            destinataires.addAll(
-                destinataireRepository.getDestinataireContactGestionnaire(filter, strict));
-          }
-        }
-
-        return destinataires;
-      }
-    }.serialize();
-  }
+  public ResponseEntity<String> getAllDestinatairesCourrier() {
+    try {
+      return new ResponseEntity<>(
+          objectMapper.writeValueAsString(destinataireCourrierUseCase.getAllDestinataireCourrier()),
+          HttpStatus.OK);
+    } catch (Exception e) {
+      this.logger.error(e.getMessage(), e);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  };
 
   // Génération du courrier a partir des informations du formulaire
   @RequestMapping(

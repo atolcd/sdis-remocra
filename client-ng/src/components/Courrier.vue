@@ -41,6 +41,7 @@
           </div>
         </div>
       </b-form-group>
+
       <p v-if="params.length > 0">Veuillez renseigner les paramètres suivants </p>
       <p v-else-if="choixModele">Aucun paramètre pour cette requête</p>
       <!--Début boucle for-->
@@ -121,30 +122,30 @@
         <label>Recherche rapide</label>
       </div>
       <div class="col-md-5">
-        <b-form-input v-model="filtre" size="sm" @input="initListeDestinataire" id="filtre" placeholder="Recherche ..." >
+        <b-form-input v-model="filterRechercheValue" size="sm" v-on:keyup="filtering()" id="filtre" placeholder="Recherche ..." >
         </b-form-input>
       </div>
       <div class="col-md-4 mt-1">
-        <b-form-checkbox id="chkBoxRechStricte" v-model="filtreStrict" @input="initListeDestinataire" title="Les résultats commencent par ..." name="chkBoxRechStricte">Recherche stricte</b-form-checkbox>
+        <b-form-checkbox id="chkBoxRechStricte" v-model="filtreStrict" @input="filtering()" title="Les résultats commencent par ..." name="chkBoxRechStricte">Recherche stricte</b-form-checkbox>
       </div>
     </div>
-    <div class="row" style="margin-left:0; padding-top: 0.5rem!important;">
-      <b-form-checkbox id="chkBoxZoneComp" v-model="filtreZC" @input="initListeDestinataire" title="Restreint la recherche à votre zone de compétence" name="chkBoxZoneComp">Restreindre à ma zone de compétence</b-form-checkbox>
-    </div>
+<!-- @@ TODO @@ Sera réintégré dans un prochain commit @@ TODO @@ -->
+    <!-- <div class="row" style="margin-left:0; padding-top: 0.5rem!important;">
+      <b-form-checkbox id="chkBoxZoneComp" v-model="filtreZC" title="Restreint la recherche à votre zone de compétence" name="chkBoxZoneComp">Restreindre à ma zone de compétence</b-form-checkbox>
+    </div> -->
     <div class="row mt-2">
       <div class="col-md-4 FiltreTitre">
         <label>Afficher les destinataires de type</label>
       </div>
       <div class="col-md-2 FiltreCkbox">
-        <b-form-checkbox id="chkBoxUtilisateur" v-model="filtreUtil" @input="initListeDestinataire" title="Retourne les utilisateurs" name="chkBoxUtilisateur">Utilisateur</b-form-checkbox>
+        <b-form-checkbox id="chkBoxUtilisateur" v-model="filterUtilisateurCheckValue" @input="filtering()" title="Retourne les utilisateurs" name="chkBoxUtilisateur">Utilisateur</b-form-checkbox>
       </div>
       <div class="col-md-3 FiltreCkbox">
-        <b-form-checkbox id="chkBoxOrganisme" v-model="filtreOrga" @input="initListeDestinataire" title="Retourne les organismes" name="chkBoxOrganisme">Organisme</b-form-checkbox>
-          <b-form-checkbox v-if="!filtreOrga" disabled id="chkBoxOrgaContact" v-model="filtreOrgaContact" @input="initListeDestinataire" title="Retourne les contacts des organismes" name="chkBoxOrgaContact"> Contacts Organisme</b-form-checkbox>
-          <b-form-checkbox v-else id="chkBoxOrgaContact" v-model="filtreOrgaContact" @input="initListeDestinataire" title="Retourne les contacts des organismes" name="chkBoxOrgaContact" > Contacts Organisme </b-form-checkbox>
+        <b-form-checkbox id="chkBoxOrganisme" v-model="filterOrganismeCheckValue" @input="filtering()" title="Retourne les organismes" name="chkBoxOrganisme">Organisme</b-form-checkbox>
+        <b-form-checkbox id="chkBoxOrgaContact" v-model="filterOrgaContactCheckValue" @input="filtering()" title="Retourne les contacts des organismes" name="chkBoxOrgaContact"> Contacts Organisme</b-form-checkbox>
       </div>
       <div class="col-md-3 FiltreCkbox">
-        <b-form-checkbox id="chkBoxGestContact" v-model="filtreGestContact" @input="initListeDestinataire" title="Retourne les contacts des gestionnaires" name="chkBoxGestContact">Contacts Gestionnaire</b-form-checkbox>
+        <b-form-checkbox id="chkBoxGestContact" v-model="filterGestContactCheckValue" @input="filtering()" title="Retourne les contacts des gestionnaires" name="chkBoxGestContact">Contacts Gestionnaire</b-form-checkbox>
       </div>
     </div>
     <div class="row ">
@@ -153,9 +154,9 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12 tabNotifNon">
+      <div class="col-md-12 tabDestinatairePossible">
         <b-table  id="tabDestinataireNotifier" small selectable select-mode="multi" @row-selected="onRowSelectedAjoute" :fields="fields"
-          :items="tabDestinataireNotifierNon" :per-page="perPage" :current-page="currentPageNon">
+          :items="filteredListeDestinataire" :per-page="perPage" :current-page="currentPagePossible">
         </b-table>
       </div>
     </div>
@@ -164,13 +165,13 @@
     </div>
     <div class="row mt-1">
       <div class="col-md-6 text-right">
-        <b-button id="boutonUpDown" @click="addNotifierOui" variant="primary"><img id="arrow" src="/remocra/static/img/navigate-down-arrow.png"></b-button>
+        <b-button id="boutonUpDown" @click="addNotifierChoisi" variant="primary"><img id="arrow" src="/remocra/static/img/navigate-down-arrow.png"></b-button>
       </div>
       <div class="col-md-2">
-        <b-button id="boutonUpDown" @click="addNotifierNon" variant="primary"> <img id="arrow" src="/remocra/static/img/navigate-up-arrow.png"> </b-button>
+        <b-button id="boutonUpDown" @click="removeNotifierChoisi" variant="primary"> <img id="arrow" src="/remocra/static/img/navigate-up-arrow.png"> </b-button>
       </div>
       <div class="col-md-4 overflow-auto">
-          <b-pagination v-model="currentPageNon" :total-rows="rowsNon" :per-page="perPage" size="sm" align="right" aria-controls="tabDestinataireNotifierNon">
+          <b-pagination v-model="currentPagePossible" :total-rows="rowsPossible" :per-page="perPage" size="sm" align="right" aria-controls="filteredListeDestinataire">
           </b-pagination>
         </div>
     </div>
@@ -180,9 +181,9 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12 tabNotifOui">
+      <div class="col-md-12 tabDestinataireChoisi">
         <b-table id="tabDestinataireNotifier" responsive small selectable select-mode="multi" @row-selected="onRowSelectedSupprime" :fields="fields"
-          :items="tabDestinataireNotifierOui" :per-page="perPage" :current-page="currentPageOui">
+          :items="destinataireChoisi" :per-page="perPage" :current-page="currentPageChoisi">
         </b-table>
       </div>
     </div>
@@ -256,23 +257,30 @@ export default {
       pdfLoading: false,
 
       /************** Partie notification ***********************/
-      filtre: null,
+      initialeListeDestinataire: [],
+      filteredListeDestinataire: [],
+      // Input Texte
+      filterRechercheValue: '',
+      // Checkbox
       filtreStrict: false,
-      filtreZC: true,
-      filtreUtil: true,
-      filtreOrga: true,
-      filtreOrgaContact: true,
-      filtreGestContact: true,
-      selectAll: false,
-      destinatairesLoaded: false,
+      filterUtilisateurCheckValue: true,
+      filterOrganismeCheckValue: true,
+      filterOrgaContactCheckValue: true,
+      filterGestContactCheckValue: true,
+
       ajouteDestinataire: [],
       retireDestinataire: [],
-      tabDestinataireNotifierNon: [],
-      tabDestinataireNotifierOui: [],
-      fields: ['Type', 'Nom', 'Email', 'Fonction' ],
+      // Destinataires choisis pour etre notifié
+      destinataireChoisi: [],
+      fields: [
+        { key:'type', label:'Type', sortable: true},
+        { key:'nom', label:'Nom', sortable: true},
+        { key:'email', label:'Email', sortable: true},
+        { key:'fonction', label:'Fonction', sortable: true}
+      ],
       perPage: 15,
-      currentPageNon: 1,
-      currentPageOui: 1,
+      currentPagePossible: 1,
+      currentPageChoisi: 1,
       retourNotification: "",
       titleNotif: "",
       styleHeaderNotif: ""
@@ -287,8 +295,8 @@ export default {
   },
 
   computed: {
-    rowsNon() {
-        return this.tabDestinataireNotifierNon.length
+    rowsPossible() {
+        return this.filteredListeDestinataire.length
     },
   },
 
@@ -307,9 +315,7 @@ export default {
     setModalVisibility(modalName, visibility){
       if(visibility == true){
         if(modalName == "modalNotifier"){
-          if(!this.destinatairesLoaded){
-            this.initListeDestinataire();
-          }
+          this.getListeDestinataire();
         }
         this.$refs[modalName].show();
         if(modalName == "modalApercu"){
@@ -320,11 +326,23 @@ export default {
           var element = document.getElementById("Courrier");
           element.parentNode.removeChild(element);
         } else if (modalName == "modalCourrier"){
-           this.$modal.hide('modalCourrier');
+          this.$modal.hide('modalCourrier');
+        } else if (modalName == "modalNotifier"){
+          this.resetModalVariable();
+          this.$refs.modalNotifier.hide();
         }else {
           this.$refs[modalName].hide();
+
         }
       }
+    },
+
+    resetModalVariable() {
+      this.filtreStrict = false;
+      this.filterRechercheValue = '';
+      this.filterUtilisateurCheckValue = this.filterOrganismeCheckValue = this.filterOrgaContactCheckValue = this.filterGestContactCheckValue = true;
+      this.ajouteDestinataire = this.retireDestinataire = this.destinataireChoisi = [];
+      this.currentPagePossible = this.currentPageChoisi = 1;
     },
 
     onRowSelectedAjoute(items){
@@ -335,11 +353,11 @@ export default {
       this.retireDestinataire = items;
     },
 
-    addNotifierOui(){
+    addNotifierChoisi(){
       _.forEach(this.ajouteDestinataire, dest =>{
-        if(!this.tabDestinataireNotifierOui.filter(e => e.Email === dest.Email).length>0){
-          this.tabDestinataireNotifierOui.push(dest);
-          this.tabDestinataireNotifierNon.splice(this.tabDestinataireNotifierNon.indexOf(dest),1);
+        if(!this.destinataireChoisi.filter(e => e.email === dest.email).length>0){
+          this.destinataireChoisi.push(dest);
+          this.filteredListeDestinataire.splice(this.filteredListeDestinataire.indexOf(dest),1);
         }else{
           var msgAlreadyInElement = document.getElementById("msgAlreadyIn");
           msgAlreadyInElement.style="display:bloc";
@@ -347,15 +365,14 @@ export default {
             msgAlreadyInElement.style="display:none";
           },2000)
         }
-        
       })
       this.ajouteDestinataire = [];
     },
 
-    addNotifierNon(){
+    removeNotifierChoisi(){
       _.forEach(this.retireDestinataire, dest =>{
-        this.tabDestinataireNotifierNon.push(dest);
-        this.tabDestinataireNotifierOui.splice(this.tabDestinataireNotifierOui.indexOf(dest),1);
+        this.filteredListeDestinataire.push(dest);
+        this.destinataireChoisi.splice(this.destinataireChoisi.indexOf(dest),1);
       })
       this.retireDestinataire = [];
     },
@@ -374,10 +391,7 @@ export default {
             'text': courrier.libelle
           })
           });
-
-        }).catch(function(error) {
-              console.error(error)
-          });
+        })
     },
 
     //Récupère les paramètres du modèle de courrier selectionné
@@ -407,8 +421,6 @@ export default {
                   }
                   this.comboOptions.push(o)
                 })
-              }).catch(function(error) {
-                console.error('Combo', error)
               })
             }
           })
@@ -437,9 +449,6 @@ export default {
 
           fileLink.click();
           })
-          .catch(function(error) {
-            console.error('Erreur lors du téléchargement du courrier : ', error)
-      })
     },
 
     handleOk(evt){
@@ -507,61 +516,44 @@ export default {
           this.pdfLoading=false;
         }
       }).catch(function(error) {
-        console.error(error)
         self.pdfLoading = false;
         self.showErrorGeneration = true;
         self.msgError = error.response.data.message;
       })
     },
 
-    initListeDestinataire() {
-      var types = [];
-      if(this.filtreUtil) { types.push("UTILISATEUR"); }
-      if(this.filtreOrga) { 
-        types.push("ORGANISME");
-        if(this.filtreOrgaContact) { types.push("CONTACT_ORGANISME"); }
-      }else{ this.filtreOrgaContact = false }
-      if(this.filtreGestContact) { types.push("CONTACT_GESTIONNAIRE"); }
-
-      axios.get('/remocra/courrier/contacts',{
-        params: {
-          strict: this.filtreStrict,
-          useZc: this.filtreZC,
-          listeTypes: JSON.stringify(types),
-          filter: JSON.stringify(
-            [{
-              "property": "filtreString",
-              "value": this.filtre
-            }]
-          ),
-        }
-      }).then((response)=> {
-        this.tabDestinataireNotifierNon = [];
-        var contacts = response.data.data;
-        _.forEach(contacts, contact => {
-          this.tabDestinataireNotifierNon.push({
-            'id': contact.id,
-            'Type': contact.type,
-            'Nom' : contact.nom,
-            'Email' : contact.email,
-            'Fonction' : contact.fonction
-          });
-        });
-      }).catch(function(error) {
-        console.error(error)
-      });
+    getListeDestinataire() {
+      axios.get('/remocra/courrier/destinataires').then(response => {
+        this.initialeListeDestinataire = this.filteredListeDestinataire = response.data ? response.data : ''
+      })
+    },
+    filtering() {
+      // Récupération des types destinataires a faire remonter dans le filtrage
+      let listeTypeSelected = [
+        {key:'Utilisateur', value:this.filterUtilisateurCheckValue},
+        {key:'Organisme', value:this.filterOrganismeCheckValue},
+        {key:'Contact Organisme', value:this.filterOrgaContactCheckValue},
+        {key:'Contact Gestionnaire', value:this.filterGestContactCheckValue},
+      ]
+      let flatListeTypeSelected = listeTypeSelected.filter((row) => row.value == true).map((item) => item.key);
+      // Filtrage de Initiale vers Filtered
+      if(this.filtreStrict){
+        this.filteredListeDestinataire = this.initialeListeDestinataire
+          .filter((item) => item.nom.toUpperCase().startsWith(this.filterRechercheValue.toUpperCase()))
+          .filter((item) => flatListeTypeSelected.includes(item.type));
+      } else {
+        this.filteredListeDestinataire = this.initialeListeDestinataire
+          .filter((item) => item.nom.toUpperCase().includes(this.filterRechercheValue.toUpperCase()))
+          .filter((item) => flatListeTypeSelected.includes(item.type));
+      }
     },
 
-    /**
-     * codeCourrier
-     * tabNotifierOui
-     */
     notificationCourrier(){
-      if(this.tabDestinataireNotifierOui.length != 0){
+      if(this.destinataireChoisi.length != 0){
         var datas = {
           "codeCourrier": this.codeCourrier,
           "nomCourrier": this.nomCourrier,
-          "destinataires": this.tabDestinataireNotifierOui,
+          "destinataires": this.destinataireChoisi,
           "reference": this.reference,
           "codeModele": this.choixModele.code,
           "objet": this.objet
@@ -674,33 +666,29 @@ export default {
   background-color: white;
 }
 
-#addNotifierNon{
+#addNotifierChoisi, #removeNotifierChoisi{
   width: 38px;
 }
 
-#addNotifierOui{
-  width: 38px;
-}
-
-.tabNotifNon{
+.tabDestinatairePossible{
   height: 100%;
   font-size: 10pt;
 }
 
-.tabNotifOui{
+.tabDestinataireChoisi{
   height: 100%;
   font-size: 10pt;
 }
 
-.tabNotifOui .table-responsive{
+.tabDestinataireChoisi .table-responsive{
   max-height: 200px;
 }
 
-.tabNotifNon .table-sm th, .tabNotifNon .table-sm td{
+.tabDestinatairePossible .table-sm th, .tabDestinatairePossible .table-sm td{
   padding: 0;
 }
 
-.tabNotifOui .table-sm th, .tabNotifOui .table-sm td{
+.tabDestinataireChoisi .table-sm th, .tabDestinataireChoisi .table-sm td{
   padding: 0;
 }
 

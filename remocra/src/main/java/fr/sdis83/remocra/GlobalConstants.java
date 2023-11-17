@@ -28,8 +28,10 @@ public class GlobalConstants {
   /** Clé du param conf correspondant aux distances à parcourir de la couverture hydraulique */
   public static final String DECI_ISODISTANCES = "DECI_ISODISTANCES";
 
-  /** Champ appartenance dans la table gestionnaire */
+  /** Champ appartenance dans la table contact */
   public static final String GESTIONNAIRE = "GESTIONNAIRE";
+
+  public static final String ORGANISME = "ORGANISME";
 
   //////// Parametre
   public static final String PARAMETRE_AGENTS = "GESTION_AGENT";
