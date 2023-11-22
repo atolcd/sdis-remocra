@@ -35,7 +35,7 @@
 
           <div class="row">
             <div class="col-md-4 checkbox-align">
-              <b-form-checkbox :id="ctrl_debit_pression+'-'+_uid" v-model="formCtrlDebitPression" :disabled="ctrlDebitPressionDisabled" size="sm"> Contrôle débit pression (CDP)
+              <b-form-checkbox :id="ctrl_debit_pression+'-'+_uid" v-model="formCtrlDebitPression" @input="onChangeCtrlDebitPression" :disabled="ctrlDebitPressionDisabled" size="sm"> Contrôle débit pression (CDP)
               </b-form-checkbox>
             </div>
 
@@ -102,18 +102,19 @@
                       </td>
                       <td>
                         <b-form inline>
-                          <div class="onoffswitch">
+                          <!-- On cache le bouton RAS si la case CDP est cochée -->
+                          <div v-if="getConditionAffichageRas(item)" class="onoffswitch">
                             <input type="checkbox" class="onoffswitch-checkbox" :id="'switchRAS-'+_uid+'-'+item.id" v-model="item.ras">
                             <label class="onoffswitch-label" :for="'switchRAS-'+_uid+'-'+item.id">
                               <span class="onoffswitch-inner"></span>
                               <span class="onoffswitch-switch"></span>
                             </label>
                           </div>
-                          <b-button :variant="item.ras ? 'primary' : item.variant"
+                          <b-button :variant="getConditionColorMesuresAnomalies(item) ? 'primary' : item.variant"
                                     @click="onClickPointsSpecifiques(item)"
                                     size="sm"
                                     class="boutonMesures"
-                                    :disabled="formTypeVisite === null || item.ras">Mesures / anomalies
+                                    :disabled="getConditionDisableMesuresAnomalies(item)">Mesures / anomalies
                           </b-button>
                         </b-form>
                       </td>
@@ -179,6 +180,7 @@ import axios from 'axios'
 import _ from 'lodash'
 
 import ModalPointsSpecifiques from './ModalPointsSpecifiques.vue'
+import { PENA, PIBI } from '../../GlobalConstants.js'
 
 
 export default {
@@ -590,6 +592,28 @@ export default {
         hasInvalidState = hasInvalidState || this.etats[key] == "invalid";
       }
       return !hasInvalidState;
+    },
+
+    onChangeCtrlDebitPression: function() {
+      if(this.formCtrlDebitPression) {
+        this.hydrants.forEach((h) => {
+          if(h.code == PIBI) {
+            h.ras = false;
+          }
+        });
+      }
+    },
+
+    getConditionAffichageRas(item) {
+        return !this.formCtrlDebitPression || item.code == PENA;
+    },
+
+    getConditionColorMesuresAnomalies(item) {
+      return (item.ras && item.code == PENA) || (item.ras && !this.formCtrlDebitPression);
+    },
+
+    getConditionDisableMesuresAnomalies(item) {
+      return this.formTypeVisite === null || this.getConditionColorMesuresAnomalies(item);
     }
   }
 };

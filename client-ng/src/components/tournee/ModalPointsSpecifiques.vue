@@ -13,7 +13,7 @@
        <div class="row">
          <div class="col-md-12">
            <b-tabs fill content-class="mt-3" active-nav-item-class="text-primary">
-             <b-tab title="Mesures" active v-if="saisieDebitPression">
+             <b-tab title="Mesures" active v-if="getConditionAffichageMesure()">
                <div>
                  <b-form-group label="Débit à 1 bar (㎥/h) :" label-for="debit" label-cols-md="6">
                    <b-form-input id="debit" v-model="debit" type="number" size="sm"></b-form-input>
@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import { PIBI } from '../../GlobalConstants.js'
 export default {
   name: 'ModalPointsSpecifiques',
 
@@ -268,6 +269,10 @@ export default {
       this.$nextTick(() => { //Fermeture manuelle de la modale
         this.$refs.modalPointsSpecifiques.hide();
       })
+    },
+
+    getConditionAffichageMesure() {
+      return this.hydrant !== null && this.saisieDebitPression && this.hydrant.code == PIBI;
     }
   }
 };
