@@ -365,10 +365,10 @@ export default {
 
       var IGNLayer = new TileLayer({
         source: new WMTS({
-          url: 'https://wxs.ign.fr/'+this.cleIgn+'/geoportail/wmts',
+          url: layerDef.urlBase,
           layer: layerDef.ignLayer,
           matrixSet: 'PM',
-          format: 'image/jpeg',
+          format: layerDef.format !== null ? layerDef.format : 'image/jpeg',
           projection: 'EPSG:3857',
           tileGrid: tileGrid,
           style: 'normal'
