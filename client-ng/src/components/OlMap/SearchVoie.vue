@@ -6,7 +6,7 @@
                 :get-label="getLabel"
                 :component-item='template'
                 @item-selected="onValueChanged"
-                @update-items="updateItems"
+                @update-items="refreshData"
                 :auto-select-one-item="false"
                 :min-len="0"
                 placeholder="Voie"
@@ -49,12 +49,12 @@ export default {
 
   watch: {
     commune: function() {
-      this.refreshData();
+      this.refreshData(null);
     }
   },
   methods: {
 
-    refreshData() {
+    refreshData(text) {
       if(this.commune !== null) {
         this.items = [];
         axios.get('/remocra/voies/mc.json', {
@@ -63,6 +63,7 @@ export default {
             page: 1,
             start: 0,
             limit: 10,
+            query: text,
             filter: JSON.stringify([{
               "property": "communeId",
               "value": this.commune.id
@@ -80,8 +81,6 @@ export default {
           if (this.defaultValue) {
             this.item = this.defaultValue;
           }
-        }).catch(function(error) {
-          console.error('Retrieving coordonnees from /remocra/voies/mc', error);
         });
       } else {
         this.item = null;
@@ -96,12 +95,6 @@ export default {
       this.item = voie;
       this.$emit('onVoieSelected', voie);
     },
-
-    updateItems(text) {
-      if (this.itemsFiltered) {
-        this.itemsFiltered = this.items.filter(item => (text) ? item.nom.toUpperCase().indexOf(text.toUpperCase()) !== -1 : true);
-      }
-    }
   }
 };
 </script>
