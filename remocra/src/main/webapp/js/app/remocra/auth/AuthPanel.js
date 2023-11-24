@@ -117,7 +117,7 @@ Ext.define('Sdis.Remocra.auth.AuthPanel', {
                 style: 'margin-left:20px;',
                 href: '',
                 onclick: 'Ext.getCmp(\'' + this.id + '\').passwordForgotten();return false;',
-                html: 'Choix du mot de passe'
+                html: 'Mot de passe oublié'
             }
         });
 
