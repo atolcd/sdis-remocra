@@ -25,8 +25,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -181,123 +183,8 @@ public class RequeteModeleRepository {
     return lstResult;
   }
 
-  public List<HashMap> executeRequest(Long idmodele, String json)
-      throws SQLException, IOException, ParseException {
-    List<HashMap> resultat = new ArrayList<HashMap>();
-    RequeteModele r =
-        context
-            .select()
-            .from(REQUETE_MODELE)
-            .where(REQUETE_MODELE.ID.eq(idmodele))
-            .fetchOne()
-            .into(RequeteModele.class);
-    String sourceSql = r.getSourceSql();
-    List<RequeteModeleParametre> requeteModeleParametres =
-        requeteModeleParametereRepository.getByRequeteModele(idmodele);
-    List<HashMap> typeParametre = new ArrayList<HashMap>();
-    // On parcourt le json
-
-    List<HashMap> result = new ObjectMapper().readValue(json, List.class);
-    // On crée une liste des parametres demandés par la séléction
-    for (RequeteModeleParametre requeteModeleParametre : requeteModeleParametres) {
-      for (int i = 0; i < result.size(); i++) {
-        if (requeteModeleParametre.getNom().equals(result.get(i).get("nomparametre"))) {
-          HashMap<String, Object> typeParametreTmp = new HashMap<String, Object>();
-          typeParametreTmp.put("nomparametre", requeteModeleParametre.getNom());
-          typeParametreTmp.put("type", requeteModeleParametre.getTypeValeur());
-          typeParametreTmp.put("valeur", result.get(i).get("valeur").toString());
-          typeParametre.add(typeParametreTmp);
-        }
-      }
-    }
-
-    // On rajoute systématiquement la zone de compétence
-    HashMap<String, String> zcTmp = new HashMap<String, String>();
-    zcTmp.put("nomparametre", "ZONE_COMPETENCE_ID");
-    zcTmp.put("type", "integer");
-    zcTmp.put("valeur", String.valueOf(utilisateurService.getCurrentZoneCompetenceId()));
-    typeParametre.add(zcTmp);
-
-    try {
-      //
-      Pattern p = Pattern.compile("\\$\\{(.+?)\\}");
-      Matcher matcher = p.matcher(sourceSql);
-      List<String> requestParams = new ArrayList<String>();
-      Connection connection = context.configuration().connectionProvider().acquire();
-
-      // on fait une liste des parametres de la requetes '${}'
-      while (matcher.find()) {
-        String match = matcher.group(1);
-        requestParams.add(match);
-      }
-
-      // On remplace tous les '${}' par '?'
-      sourceSql = matcher.replaceAll("?");
-      for (int i = 0; i < sourceSql.length(); i++) {
-        sourceSql = sourceSql.replace("'?'", "?");
-      }
-
-      // On parcourt la liste des paramètres demandés par la requête et on boucle sur la liste des
-      // paramètres venus du json
-      PreparedStatement preparedStatement = connection.prepareStatement(sourceSql);
-      for (int i = 0; i < requestParams.size(); i++) {
-        for (int j = 0; j < typeParametre.size(); j++) {
-          // si le parametre de la requete correspond au parametre de json on le remplace par la
-          // valeur (les index preparedStatement commence par 1)
-          if (requestParams.get(i).equals(typeParametre.get(j).get("nomparametre"))) {
-            StatementFormat.PreparedStatement(preparedStatement, i + 1, typeParametre.get(j));
-          }
-        }
-      }
-      // Insertion de la requete dans requete_modele_selection
-      RequeteModeleSelection rms = new RequeteModeleSelection();
-      Instant instant = new Instant();
-      rms.setDate(instant);
-      rms.setUtilisateur(utilisateurService.getCurrentUtilisateur().getId());
-      rms.setRequete(preparedStatement.toString());
-      rms.setModele(r.getId());
-      int id = this.insert(rms);
-      // Le renvoi des clés automatiquement générées n'est pas supporté pour cette version de jooq
-      // (3.6) : On fait une requete pour selectionner le dernier id ajouté
-      Long lastRmd =
-          context
-              .select(REQUETE_MODELE_SELECTION.ID)
-              .from(REQUETE_MODELE_SELECTION)
-              .where(
-                  REQUETE_MODELE_SELECTION
-                      .MODELE
-                      .eq(rms.getModele())
-                      .and(REQUETE_MODELE_SELECTION.UTILISATEUR.eq(rms.getUtilisateur())))
-              .fetchOne()
-              .value1();
-      ResultSet resultSet;
-      if (id != 0) {
-        resultSet = connection.createStatement().executeQuery(rms.getRequete());
-      } else {
-        return null;
-      }
-
-      for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
-        if (!resultSet.getMetaData().getColumnName(i).equalsIgnoreCase("wkt")) {
-          HashMap<String, Object> colonne = new HashMap<String, Object>();
-          colonne.put("header", resultSet.getMetaData().getColumnName(i));
-          colonne.put("type", resultSet.getMetaData().getColumnTypeName(i));
-          colonne.put("requete", lastRmd);
-          resultat.add(colonne);
-        }
-      }
-      preparedStatement.close();
-      connection.close();
-      return resultat;
-
-    } catch (PatternSyntaxException pse) {
-      System.err.println("Le pattern n'a pas un format correct.");
-    }
-    return null;
-  }
-
-  public int insert(RequeteModeleSelection requeteModeleSelection) {
-    // On supprime la requetemodeleselection ayant le meme modele et le meme utilisateur
+  public Long insert(RequeteModeleSelection requeteModeleSelection) {
+    // On supprime la requetemodeleselection ayant le même modèle et le même utilisateur
     context
         .deleteFrom(REQUETE_MODELE_SELECTION)
         .where(
@@ -321,7 +208,9 @@ public class RequeteModeleRepository {
             requeteModeleSelection.getDate(),
             requeteModeleSelection.getRequete(),
             requeteModeleSelection.getModele())
-        .execute();
+        .returning(REQUETE_MODELE_SELECTION.ID)
+        .fetchOne()
+        .getValue(REQUETE_MODELE_SELECTION.ID);
   }
 
   @Transactional
@@ -335,6 +224,101 @@ public class RequeteModeleRepository {
             .setParameter("geometrie", geom)
             .setParameter("srid", GlobalConstants.SRID_2154);
     return query.executeUpdate();
+  }
+
+  public List<Map> executeRequest(Long idmodele, String json)
+      throws SQLException, IOException, ParseException {
+    List<Map> resultat = Collections.emptyList();
+    RequeteModele requeteModele = getById(idmodele);
+
+    String sourceSql = requeteModele.getSourceSql();
+    List<RequeteModeleParametre> requeteModeleParametres =
+        requeteModeleParametereRepository.getByRequeteModele(idmodele);
+
+    List<Map> typeParametre = Collections.emptyList();
+    // On parcourt le json
+
+    List<Map> result = new ObjectMapper().readValue(json, List.class);
+
+    // On crée une liste des parametres demandés par la séléction
+    for (RequeteModeleParametre requeteModeleParametre : requeteModeleParametres) {
+      for (int i = 0; i < result.size(); i++) {
+        if (requeteModeleParametre.getNom().equals(result.get(i).get("nomparametre"))) {
+          Map<String, Object> typeParametreTmp = result.get(i);
+          typeParametreTmp.put("type", requeteModeleParametre.getTypeValeur());
+          typeParametre.add(typeParametreTmp);
+        }
+      }
+    }
+
+    // On rajoute systématiquement la zone de compétence
+    Map<String, String> zcTmp = Collections.emptyMap();
+    zcTmp.put("nomparametre", "ZONE_COMPETENCE_ID");
+    zcTmp.put("type", "integer");
+    zcTmp.put("valeur", String.valueOf(utilisateurService.getCurrentZoneCompetenceId()));
+    typeParametre.add(zcTmp);
+
+    try {
+      //
+      Pattern p = Pattern.compile("\\$\\{(.+?)\\}");
+      Matcher matcher = p.matcher(sourceSql);
+      List<String> requestParams = Collections.emptyList();
+      Connection connection = context.configuration().connectionProvider().acquire();
+
+      // on fait une liste des parametres de la requetes '${}'
+      while (matcher.find()) {
+        requestParams.add(matcher.group(1));
+      }
+
+      // On remplace tous les '${}' par '?'
+      sourceSql = matcher.replaceAll("?");
+      sourceSql = sourceSql.replaceAll("'\\?'", "?");
+
+      // On parcourt la liste des paramètres demandés par la requête et on boucle sur la liste des
+      // paramètres venus du json
+      PreparedStatement preparedStatement = connection.prepareStatement(sourceSql);
+      for (int i = 0; i < requestParams.size(); i++) {
+        for (int j = 0; j < typeParametre.size(); j++) {
+          // si le parametre de la requete correspond au parametre de json on le remplace par la
+          // valeur (les index preparedStatement commence par 1)
+          if (requestParams.get(i).equals(typeParametre.get(j).get("nomparametre"))) {
+            StatementFormat.PreparedStatement(preparedStatement, i + 1, typeParametre.get(j));
+          }
+        }
+      }
+      // Insertion de la requete dans requete_modele_selection
+      RequeteModeleSelection requeteModeleSelection = new RequeteModeleSelection();
+      Instant instant = new Instant();
+      requeteModeleSelection.setDate(instant);
+      requeteModeleSelection.setUtilisateur(utilisateurService.getCurrentUtilisateur().getId());
+      requeteModeleSelection.setRequete(preparedStatement.toString());
+      requeteModeleSelection.setModele(requeteModele.getId());
+      Long idRequeteModeleSelection = this.insert(requeteModeleSelection);
+
+      ResultSet resultSet;
+      if (idRequeteModeleSelection != null) {
+        resultSet = connection.createStatement().executeQuery(requeteModeleSelection.getRequete());
+      } else {
+        return null;
+      }
+
+      for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
+        if (!resultSet.getMetaData().getColumnName(i).equalsIgnoreCase("wkt")) {
+          HashMap<String, Object> colonne = new HashMap<String, Object>();
+          colonne.put("header", resultSet.getMetaData().getColumnName(i));
+          colonne.put("type", resultSet.getMetaData().getColumnTypeName(i));
+          colonne.put("requete", idRequeteModeleSelection);
+          resultat.add(colonne);
+        }
+      }
+      preparedStatement.close();
+      connection.close();
+      return resultat;
+
+    } catch (PatternSyntaxException pse) {
+      System.err.println("Le pattern n'a pas un format correct.");
+    }
+    return null;
   }
 
   @Transactional
@@ -466,5 +450,12 @@ public class RequeteModeleRepository {
             .where(REQUETE_MODELE_SELECTION.ID.eq(id))
             .fetchOne(REQUETE_MODELE_SELECTION.REQUETE);
     return s;
+  }
+
+  public RequeteModele getById(Long idRequeteModele) {
+    return context
+        .selectFrom(REQUETE_MODELE)
+        .where(REQUETE_MODELE.ID.eq(idRequeteModele))
+        .fetchOneInto(RequeteModele.class);
   }
 }

@@ -36,13 +36,10 @@ public class RequeteModeleParametereRepository {
   }
 
   public List<RequeteModeleParametre> getByRequeteModele(Long requeteModele) {
-    List<RequeteModeleParametre> l =
-        context
-            .select()
-            .from(REQUETE_MODELE_PARAMETRE)
-            .where(REQUETE_MODELE_PARAMETRE.REQUETE_MODELE.eq(requeteModele))
-            .orderBy(REQUETE_MODELE_PARAMETRE.FORMULAIRE_NUM_ORDRE)
-            .fetchInto(RequeteModeleParametre.class);
-    return l;
+    return context
+        .selectFrom(REQUETE_MODELE_PARAMETRE)
+        .where(REQUETE_MODELE_PARAMETRE.REQUETE_MODELE.eq(requeteModele))
+        .orderBy(REQUETE_MODELE_PARAMETRE.FORMULAIRE_NUM_ORDRE)
+        .fetchInto(RequeteModeleParametre.class);
   }
 }

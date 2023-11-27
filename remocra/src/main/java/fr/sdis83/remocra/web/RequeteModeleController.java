@@ -14,7 +14,6 @@ import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.jooq.tools.json.JSONArray;
@@ -161,7 +160,7 @@ public class RequeteModeleController {
     }
   }
 
-  public String listmap_to_json_string(List<HashMap> list) {
+  public String listmap_to_json_string(List<Map> list) {
     JSONArray json_arr = new JSONArray();
     for (Map<String, Object> map : list) {
       JSONObject json_obj = new JSONObject();
