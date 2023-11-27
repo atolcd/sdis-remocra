@@ -7,8 +7,10 @@ Ext.define('Sdis.Remocra.features.gestionnaires.ManageSites', {
 
     listeners: {
         'afterrender': function(){
-            if(Ext.isDefined(window.remocraVue)) {
-                this.vueManageSites = remocraVue.manageSites(this.id);
+            if (Sdis.Remocra.Rights.hasRight('GESTIONNAIRE_E') || Sdis.Remocra.Rights.hasRight('GESTIONNAIRE_L')) {
+                if(Ext.isDefined(window.remocraVue)) {
+                    this.vueManageSites = remocraVue.manageSites(this.id);
+                }
             }
         },
         'beforedestroy': function() {

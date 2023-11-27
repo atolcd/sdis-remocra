@@ -10,11 +10,11 @@
             </p>
         </div>
         <div>
-            <a>
+            <a v-if="allowed">
                 <button class="btnAction addG" @click="createGestionnaire()"><img src="/remocra/static/img/add.png"> Ajouter un gestionnaire</button>
             </a>
             <div class=divTabGestionnaire>
-                <b-table id="tabGestionnaire" :fields="fields" :sort-by.sync="sortBy" :items="filteredResultGestionnaire" :per-page="perPage" :current-page="currentPage" small hover bordered striped>
+                <b-table id="tabGestionnaire" :fields="computedFields" :sort-by.sync="sortBy" :items="filteredResultGestionnaire" :per-page="perPage" :current-page="currentPage" small hover bordered striped>
                     <template slot="top-row" slot-scope="{fields}"> <!-- Contenu première ligne : input recherche -->
                         <td v-for="field in fields" :key="field.key">
                             <input v-if="field.key=='gestionnaire.nom'" id="inputNomGestionnaire" v-on:keyup="filtering()" :placeholder="'Rechercher par '+field.label" class="w-100">
@@ -70,6 +70,8 @@
     import ModalContactGestionnaire from './ModalContactGestionnaire.vue'
     import ModalFormGestionnaire from './ModalFormGestionnaire.vue'
 
+    import { GESTIONNAIRE_E } from '../GlobalConstants.js'
+
     export default{
         components:{
             ModalContactGestionnaire,
@@ -85,9 +87,8 @@
                     { key:'gestionnaire.code', label:'N° SIREN/SIRET', tdClass:'codeCell', sortable: true},
                     { key:'contact', label:'Contact', tdClass:'contactCell'},
                     { key:'actif', label:'Actif', tdClass:'actifCell'},
-                    { key:'actions', label:'', tdClass:'buttonCell'}
+                    { key:'actions', label:'', tdClass:'buttonCell', requiresAdmin: true}
                 ],
-
                 filterNomGestionnaireValue: '',
                 filterCodeGestionnaireValue: '',
                 filterContactGestionnaireValue: '',
@@ -96,6 +97,7 @@
                 currentPage:1,
                 sortBy:'gestionnaire.nom',
 
+                allowed: false,
                 
                 idGestionnaire:'',
                 nomGestionnaire:'',
@@ -105,16 +107,29 @@
         },
 
         mounted : function() {
-            this.getGestionnaireData()
+            this.getUserRights();
+            this.getGestionnaireData();
         },
 
         computed: {
             rows() {
                 return this.filteredResultGestionnaire.length
+            },
+            computedFields() {
+                if(!this.allowed){
+                    return this.fields.filter(field => !field.requiresAdmin);
+                } else {
+                    return this.fields
+                }
             }
         },
 
         methods: {
+            getUserRights(){
+                axios.get('/remocra/utilisateurs/current/getRight/' + GESTIONNAIRE_E).then(response => {
+                    this.allowed = response.data;
+                });
+            },
             getGestionnaireData(){
                 axios.get('/remocra/gestionnaire/manageGestionnaire').then(response => {
                     if(response.data) {

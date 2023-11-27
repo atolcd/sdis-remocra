@@ -11,7 +11,7 @@
         </div>
         <div>
             <div class=divTabSite>
-                <b-table id="tabSite" :fields="fields" :sort-by.sync="sortBy" :items="filteredResultSite" :per-page="perPage"
+                <b-table id="tabSite" :fields="computedFields" :sort-by.sync="sortBy" :items="filteredResultSite" :per-page="perPage"
                     :current-page="currentPage" small hover bordered striped>
                     <template slot="top-row" slot-scope="{fields}"> <!-- Contenu première ligne : input recherche -->
                         <td v-for="field in fields" :key="field.key">
@@ -68,6 +68,8 @@
     import _ from 'lodash'
     import ModalFormGestionnaireSite from './ModalFormGestionnaireSite.vue'
 
+    import { GESTIONNAIRE_E } from '../GlobalConstants.js'
+
     export default {
         components: {
             ModalFormGestionnaireSite
@@ -82,8 +84,11 @@
                     { key: 'gestionnaireSite.code', label: 'Code', tdClass: 'codeCell', sortable: true },
                     { key: 'gestionnaireName', label: 'Gestionnaire', tdClass: 'gestionnaireCell', sortable: true },
                     { key: 'actif', label: 'Actif', tdClass: 'actifCell' },
-                    { key: 'actions', label: '', tdClass: 'buttonCell' }
+                    { key: 'actions', label: '', tdClass: 'buttonCell', requiresAdmin: true}
                 ],
+
+                allowed: false,
+
                 filterNomSiteValue: '',
                 filterCodeSiteValue: '',
                 filterGestionnaireSiteValue: '',
@@ -100,16 +105,29 @@
         },
 
         mounted : function() {
-            this.getGestionnaireSiteData()
+            this.getUserRights();
+            this.getGestionnaireSiteData();
         },
 
         computed: {
             rows() {
-                return this.filteredResultSite.length
+                return this.filteredResultSite.length;
+            },
+            computedFields() {
+                if(!this.allowed){
+                    return this.fields.filter(field => !field.requiresAdmin);
+                } else {
+                    return this.fields;
+                }
             }
         },
 
         methods: { 
+            getUserRights(){
+                axios.get('/remocra/utilisateurs/current/getRight/' + GESTIONNAIRE_E).then(response => {
+                    this.allowed = response.data;
+                });
+            },
             getGestionnaireSiteData(){
                 axios.get('/remocra/gestionnairesite/manageGestionnaireSite').then(response => {
                     if(response.data) {

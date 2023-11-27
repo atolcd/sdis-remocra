@@ -397,6 +397,9 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
                lbl: 'Paramètres de configuration'
              });
              items.push({
+                 type: 'sep'
+             });
+             items.push({
                  type: 'href',
                  href: 'hydrants/anomalies',
                  lbl: 'Gestion des anomalies'
@@ -422,6 +425,17 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
             });
             items.push({
                 type: 'href',
+                href: 'manageInfosPeiMobile',
+                lbl: 'Paramètres de l\'application mobile'
+            });
+            items.push({
+                type: 'sep'
+            });
+        }
+        if (Sdis.Remocra.Rights.hasRight('GESTIONNAIRE_L')
+            || Sdis.Remocra.Rights.hasRight('GESTIONNAIRE_E')) {
+            items.push({
+                type: 'href',
                 href: 'manageGestionnaires',
                 lbl: 'Gestion des gestionnaires'
             });
@@ -432,14 +446,6 @@ Ext.define('Sdis.Remocra.features.index.BlocsFactory', {
                 type: 'href',
                 href: 'manageSites',
                 lbl: 'Gestion des sites'
-            });
-            items.push({
-                type: 'sep'
-            });
-            items.push({
-                type: 'href',
-                href: 'manageInfosPeiMobile',
-                lbl: 'Paramètres de l\'application mobile'
             });
             items.push({
                 type: 'sep'

@@ -40,7 +40,7 @@ public class GestionnaireSiteController {
       value = "/{id}",
       method = RequestMethod.GET,
       headers = "Accept=application/json;charset=utf-8")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  @PreAuthorize("hasRight('GESTIONNAIRE_L') or hasRight('GESTIONNAIRE_E')")
   public ResponseEntity<String> listJson(@PathVariable("id") final Long idGestionnaireSite) {
     try {
       return new ResponseEntity<>(
@@ -63,7 +63,7 @@ public class GestionnaireSiteController {
       value = "/getComboSiteByGestionnaireId/{id}",
       method = RequestMethod.GET,
       headers = "Accept=application/json;charset=utf-8")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  @PreAuthorize("hasRight('GESTIONNAIRE_E')")
   public ResponseEntity<String> getComboSiteByGestionnaireId(
       @PathVariable("id") final Long idGestionnaire) {
     try {
@@ -81,7 +81,7 @@ public class GestionnaireSiteController {
       value = "/updateGestionnaireSite/{id}",
       method = RequestMethod.POST,
       headers = "Accept=application/json;charset=utf-8")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  @PreAuthorize("hasRight('GESTIONNAIRE_E')")
   public ResponseEntity<java.lang.String> updateGestionnaireSite(
       @PathVariable("id") Long idGestionnaireSite, HttpServletRequest request) {
     try {
@@ -100,7 +100,7 @@ public class GestionnaireSiteController {
       value = "/deleteGestionnaireSite/{id}",
       method = RequestMethod.DELETE,
       headers = "Accept=application/json;charset=utf-8")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  @PreAuthorize("hasRight('GESTIONNAIRE_E')")
   public ResponseEntity<String> deleteGestionnaireSite(
       @PathVariable("id") Long idGestionnaireSite) {
     try {
@@ -121,7 +121,7 @@ public class GestionnaireSiteController {
       value = "/manageGestionnaireSite",
       method = RequestMethod.GET,
       headers = "Accept=application/json;charset=utf-8")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  @PreAuthorize("hasRight('GESTIONNAIRE_L')")
   public ResponseEntity<String> fetchGestionnaireSiteData() {
     try {
       return new ResponseEntity<>(
@@ -144,7 +144,7 @@ public class GestionnaireSiteController {
       value = "/gethydrant/{id}",
       method = RequestMethod.GET,
       headers = "Accept=application/json;charset=utf-8")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  @PreAuthorize("hasRight('GESTIONNAIRE_E')")
   public ResponseEntity<String> getHydrantByGestionnaireSiteId(
       @PathVariable("id") Long idGestionnaireSite) {
     try {
@@ -168,7 +168,7 @@ public class GestionnaireSiteController {
       value = "/getcontact/{id}",
       method = RequestMethod.GET,
       headers = "Accept=application/json;charset=utf-8")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  @PreAuthorize("hasRight('GESTIONNAIRE_E')")
   public ResponseEntity<String> getContactByGestionnaireSiteId(
       @PathVariable("id") Long idGestionnaireSite) {
     try {

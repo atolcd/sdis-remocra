@@ -61,11 +61,11 @@ public class ContactController {
       value = "/contactInfos/{id}",
       method = RequestMethod.GET,
       headers = "Accept=application/json;charset=utf-8")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
-  public ResponseEntity<String> getContact(@PathVariable("id") Long id) {
+  @PreAuthorize("hasRight('GESTIONNAIRE_L') or hasRight('GESTIONNAIRE_E')")
+  public ResponseEntity<String> getContact(@PathVariable("id") Long idContact) {
     try {
       return new ResponseEntity<>(
-          objectMapper.writeValueAsString(contactRepository.getContact(id)), HttpStatus.OK);
+          objectMapper.writeValueAsString(contactRepository.getContact(idContact)), HttpStatus.OK);
     } catch (Exception e) {
       this.logger.error(e.getMessage(), e);
       return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -76,11 +76,11 @@ public class ContactController {
       value = "/contactRoles/{id}",
       method = RequestMethod.GET,
       headers = "Accept=application/json")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
-  public ResponseEntity<String> getContactRolesById(@PathVariable("id") Long id) {
+  @PreAuthorize("hasRight('GESTIONNAIRE_E')")
+  public ResponseEntity<String> getContactRolesById(@PathVariable("id") Long idContact) {
     try {
       return new ResponseEntity<>(
-          objectMapper.writeValueAsString(contactRepository.getContactRolesById(id)),
+          objectMapper.writeValueAsString(contactRepository.getContactRolesById(idContact)),
           HttpStatus.OK);
     } catch (Exception e) {
       this.logger.error(e.getMessage(), e);
@@ -92,7 +92,7 @@ public class ContactController {
       value = "/updateContact/{id}",
       method = RequestMethod.POST,
       headers = "Accept=application/json;charset=utf-8")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  @PreAuthorize("hasRight('GESTIONNAIRE_E')")
   public ResponseEntity<java.lang.String> updateContact(
       HttpServletRequest request, @PathVariable("id") final Long idContact) {
     try {
@@ -129,7 +129,7 @@ public class ContactController {
       value = "/createContact",
       method = RequestMethod.POST,
       headers = "Accept=application/json;charset=utf-8")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  @PreAuthorize("hasRight('GESTIONNAIRE_E')")
   public ResponseEntity<java.lang.String> createContact(HttpServletRequest request) {
     Long idContact_ = null;
     try {
@@ -165,7 +165,7 @@ public class ContactController {
       value = "deleteContact/{id}",
       method = RequestMethod.DELETE,
       headers = "Accept=Application/json")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  @PreAuthorize("hasRight('GESTIONNAIRE_E')")
   public ResponseEntity<java.lang.String> deleteContact(@PathVariable("id") final Long idContact) {
     try {
       try {

@@ -3,11 +3,11 @@
   <b-modal name="modalContactGestionnaire" id="modalContactGestionnaire" v-bind:title="buildedTitle"
     refs="modalContactGestionnaire" hide-footer :clickToClose="false">
     <div>
-      <p>
+      <p v-if="allowed">
         <button class="btnAction addG" @click="createContact"><img src="/remocra/static/img/add.png"> Ajouter un contact</button>
       </p>
       <div class=divTabContactGestionnaire>
-        <b-table id="tabContactGestionnaire" :fields="fields" :items="filteredContacts" :per-page="perPage" :current-page="currentPage" small hover bordered striped>
+        <b-table id="tabContactGestionnaire" :fields="computedFields" :items="filteredContacts" :per-page="perPage" :current-page="currentPage" small hover bordered striped>
           <template slot="top-row" slot-scope="{fields}"> <!-- Contenu première ligne : input recherche -->
             <td v-for="field in fields" :key="field.key">
               <input v-if="field.key=='contact.nom'" id="inputNomContact" v-on:keyup="filtering()" :placeholder="'Rechercher par '+field.label" class="w-100">
@@ -41,6 +41,8 @@
   import _ from 'lodash'
   import ModalFormContactGestionnaire from './ModalFormContactGestionnaire.vue'
   
+  import { GESTIONNAIRE_E } from '../GlobalConstants.js'
+
   export default {
     components:{
       ModalFormContactGestionnaire,
@@ -64,12 +66,14 @@
           { key:'siteContactNom', label:'Site', sortable: true},
           { key:'contact.telephone', label:'Téléphone'},
           { key:'contact.email', label:'Email'},
-          { key:'actions', label:'', tdClass:'buttonCell'}
+          { key:'actions', label:'', tdClass:'buttonCell', requiresAdmin: true}
         ],
         civilites: [
           { value: 'M', text: 'M'},
           { value: 'MMe', text: 'MME'}
         ],
+
+        allowed: false,
 
         filterNomValue: '',
         filterPrenomValue: '',
@@ -83,10 +87,22 @@
     computed:{
       rows(){
         return this.filteredContacts.length
+      },
+      computedFields() {
+        if(!this.allowed){
+          return this.fields.filter(field => !field.requiresAdmin);
+        } else {
+          return this.fields
+        }
       }
     },
 
     methods: {
+      getUserRights(){
+        axios.get('/remocra/utilisateurs/current/getRight/' + GESTIONNAIRE_E).then(response => {
+          this.allowed = response.data;
+        });
+      },
       getContactData(idGestionnaire_){
         axios.get('/remocra/gestionnaire/listeContactGestionnaireSite/'+idGestionnaire_).then(response => {
           this.contacts = this.filteredContacts = response.data;
@@ -96,6 +112,7 @@
         this.nomGestionnaire=nomGestionnaire_
         this.idGestionnaire=idGestionnaire_
         this.buildedTitle="Liste des contacts de "+nomGestionnaire_
+        this.getUserRights();
         this.getContactData(idGestionnaire_)
         this.$bvModal.show('modalContactGestionnaire')
       },

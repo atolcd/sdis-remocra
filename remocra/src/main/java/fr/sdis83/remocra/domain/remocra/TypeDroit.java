@@ -70,7 +70,6 @@ public class TypeDroit {
     HYDRANTS_PRESCRIT_R("hydrants.prescrit_R"),
     HYDRANTS_PRESCRIT_C("hydrants.prescrit_C"),
     HYDRANTS_ANOMALIES_C("hydrants.anomalies_C"),
-    HYDRANTS_GESTIONNAIRE_C("hydrants.gestionnaire_C"),
     HYDRANTS_ADRESSE_C("hydrants.adresse_C"),
     HYDRANTS_VISITE_NP_D("hydrants.visite_np_D"),
     HYDRANTS_VISITE_RECO_D("hydrants.visite_reco_D"),
@@ -119,7 +118,11 @@ public class TypeDroit {
 
     // API
     APP_ADMINISTRER("app_administrer"),
-    APP_TRANSFERTS_AUTOMATISES("app_transferts_automatises");
+    APP_TRANSFERTS_AUTOMATISES("app_transferts_automatises"),
+
+    // Gestion des gestionnaires
+    GESTIONNAIRE_E("GESTIONNAIRE_E"),
+    GESTIONNAIRE_L("GESTIONNAIRE_L");
 
     private final String value;
 

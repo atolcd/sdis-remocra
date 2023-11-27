@@ -7,7 +7,7 @@ Ext.define('Sdis.Remocra.features.gestionnaires.ManageGestionnaires', {
 
     listeners: {
         'afterrender': function () {
-            if (Sdis.Remocra.Rights.hasRight('REFERENTIELS_C')) {
+            if (Sdis.Remocra.Rights.hasRight('GESTIONNAIRE_E') || Sdis.Remocra.Rights.hasRight('GESTIONNAIRE_L')) {
 
                 if (Ext.isDefined(window.remocraVue)) {
                     this.vueManageGestionnaires = remocraVue.manageGestionnaires(this.id);

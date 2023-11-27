@@ -1,5 +1,6 @@
 package fr.sdis83.remocra.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
 import fr.sdis83.remocra.domain.remocra.Organisme;
@@ -48,6 +49,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UtilisateurController {
 
   private final Logger logger = Logger.getLogger(getClass());
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Autowired private UtilisateurService utilisateurService;
 
@@ -118,6 +120,22 @@ public class UtilisateurController {
         return serializer.transform(new DateTransformer("MM/dd/yy"), Date.class);
       }
     }.serialize();
+  }
+
+  @RequestMapping(
+      value = "/current/getRight/{typeDroit}",
+      method = RequestMethod.GET,
+      headers = "Accept=application/json")
+  @PreAuthorize("isAuthenticated()")
+  public ResponseEntity<java.lang.String> getAccreditationByUserRightCode(
+      @PathVariable("typeDroit") TypeDroitEnum typeDroit) {
+    try {
+      return new ResponseEntity<>(
+          objectMapper.writeValueAsString(authUtils.hasRight(typeDroit)), HttpStatus.OK);
+    } catch (Exception e) {
+      this.logger.error(e.getMessage(), e);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @RequestMapping(value = "/current/xml", headers = "Accept=application/xml")

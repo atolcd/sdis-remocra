@@ -97,65 +97,11 @@ public class GestionnaireController {
     }.serialize();
   }
 
-  @RequestMapping(value = "", method = RequestMethod.POST, headers = "Accept=application/json")
-  @PreAuthorize("hasRight('HYDRANTS_GESTIONNAIRE_C')")
-  public ResponseEntity<java.lang.String> create(HttpServletRequest request) {
-    try {
-      String gestionnaire = request.getParameter("gestionnaire");
-      String contactsJson = request.getParameter("contacts");
-      String appartenance = request.getParameter("appartenance");
-
-      final fr.sdis83.remocra.domain.remocra.Gestionnaire attached =
-          service.create(gestionnaire, null);
-
-      contactRepository.createContactsFromJson(contactsJson, appartenance, attached.getId());
-
-      return new AbstractExtObjectSerializer<fr.sdis83.remocra.domain.remocra.Gestionnaire>(
-          "Gestionnaire created") {
-        @Override
-        protected fr.sdis83.remocra.domain.remocra.Gestionnaire getRecord()
-            throws BusinessException {
-          return attached;
-        }
-      }.serialize();
-    } catch (Exception e) {
-      e.printStackTrace();
-      return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
-    }
-  }
-
-  @RequestMapping(value = "/{id}", method = RequestMethod.POST, headers = "Accept=application/json")
-  @PreAuthorize("hasRight('HYDRANTS_GESTIONNAIRE_C')")
-  public ResponseEntity<java.lang.String> update(
-      HttpServletRequest request, @PathVariable("id") final Long idGestionnaire) {
-    try {
-      String gestionnaire = request.getParameter("gestionnaire");
-      String contactsJson = request.getParameter("contacts");
-      String appartenance = request.getParameter("appartenance");
-
-      final fr.sdis83.remocra.domain.remocra.Gestionnaire attached =
-          service.update(idGestionnaire, gestionnaire, null);
-      contactRepository.updateContactsFromJson(contactsJson, appartenance, idGestionnaire);
-
-      return new AbstractExtObjectSerializer<fr.sdis83.remocra.domain.remocra.Gestionnaire>(
-          "Gestionnaire created") {
-        @Override
-        protected fr.sdis83.remocra.domain.remocra.Gestionnaire getRecord()
-            throws BusinessException {
-          return attached;
-        }
-      }.serialize();
-    } catch (Exception e) {
-      e.printStackTrace();
-      return new SuccessErrorExtSerializer(false, e.getMessage()).serialize();
-    }
-  }
-
   @RequestMapping(
       value = "/manageGestionnaire",
       method = RequestMethod.GET,
       headers = "Accept=application/json")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  @PreAuthorize("hasRight('GESTIONNAIRE_L') or hasRight('GESTIONNAIRE_E')")
   public ResponseEntity<String> fetchGestionnaireData() {
     return new AbstractExtListSerializer<GestionnaireInfos>("Get Gestionnaires Informations") {
       @Override
@@ -175,7 +121,7 @@ public class GestionnaireController {
       value = "/listeContactGestionnaireSite/{id}",
       method = RequestMethod.GET,
       headers = "Accept=application/json;charset=utf-8")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  @PreAuthorize("hasRight('GESTIONNAIRE_L') or hasRight('GESTIONNAIRE_E')")
   public ResponseEntity<String> fetchContactsGestionnaireSiteByGestionnaireId(
       @PathVariable("id") Long idGestionnaire) {
     try {
@@ -199,7 +145,7 @@ public class GestionnaireController {
       value = "/listeGestionnaireCodes/{id}",
       method = RequestMethod.GET,
       headers = "Accept=application/json")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  @PreAuthorize("hasRight('GESTIONNAIRE_E')")
   public ResponseEntity<String> getGestionnaireCodes(@PathVariable("id") Long idGestionnaire) {
     return new AbstractExtListSerializer<String>("Get Other Gestionnaires' codes") {
       @Override
@@ -218,7 +164,7 @@ public class GestionnaireController {
       value = "/listeGestionnaireCodes",
       method = RequestMethod.GET,
       headers = "Accept=application/json")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  @PreAuthorize("hasRight('GESTIONNAIRE_E')")
   public ResponseEntity<String> getGestionnaireCodes() {
     return new AbstractExtListSerializer<String>("Get Gestionnaires' codes") {
       @Override
@@ -232,7 +178,7 @@ public class GestionnaireController {
       value = "/createGestionnaire",
       method = RequestMethod.POST,
       headers = "Accept=application/json")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  @PreAuthorize("hasRight('GESTIONNAIRE_E')")
   public ResponseEntity<java.lang.String> createGestionnaire(HttpServletRequest request) {
     try {
       String gestionnaire = request.getParameter("gestionnaire");
@@ -254,7 +200,7 @@ public class GestionnaireController {
       value = "/updateGestionnaire/{id}",
       method = RequestMethod.POST,
       headers = "Accept=application/json")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  @PreAuthorize("hasRight('GESTIONNAIRE_E')")
   public ResponseEntity<java.lang.String> updateGestionnaire(
       @PathVariable("id") Long idGestionnaire, HttpServletRequest request) {
     try {
@@ -283,7 +229,7 @@ public class GestionnaireController {
       value = "/getHydrant/{id}",
       method = RequestMethod.GET,
       headers = "Accept=application/json")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  @PreAuthorize("hasRight('GESTIONNAIRE_E')")
   public ResponseEntity<java.lang.String> getHydrantByGestionnaireId(
       @PathVariable("id") Long idGestionnaire) {
     return new AbstractExtListSerializer<String>("Get hydrant num by Gestionnaire Id") {
@@ -298,7 +244,7 @@ public class GestionnaireController {
       value = "/deleteGestionnaire/{id}",
       method = RequestMethod.DELETE,
       headers = "Accept=application/json")
-  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  @PreAuthorize("hasRight('GESTIONNAIRE_E')")
   public ResponseEntity<java.lang.String> deleteGestionnaire(
       @PathVariable("id") Long idGestionnaire) {
     try {
