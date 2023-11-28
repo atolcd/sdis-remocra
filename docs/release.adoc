@@ -10,6 +10,36 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
+
+== v2.3.1
+=== Evolution
+* Modifie le texte "Choix du mot de passe" en "Mot de passe oublié" (#186690)
+* Ajoute une colonne "Autorité de police DECI" dans le tableau des PEI (#196438)
+* Ajoute un rôle "read only" dans la base de données (#195860)
+
+=== Fonctionnalité
+* Gestion des gestionnaires - Création droit spécifique (#197627)
+* Ajoute un champ en base avec la date de la dernière connexion d'un utilisateur (#197501)
+* Permet de cacher des couches dans le module de couverture hydraulique (#195499)
+
+=== Fix
+* Corrige la recherche de voies dans le module de couverture hydraulique (#197194)
+* Adapte la saisie en masse de visite CTP (CDP) (#196944)
+* Corrige l'export CTP des communes avec accents (#196527)
+* Corrige le "Notifier des contacts" (#196285)
+* Modifie le template de changements de mot de passe pour ne pas afficher le mot de passe (#195904)
+* Optimise la recherche de communes (#195398)
+* Masque le bouton "générer document" si l'utilisateur n'a pas les droits (#195334)
+
+=== Mise à jour
+
+* Indiquer la valeur de version `2.3.1` dans le fichier .env (ou remocra.env)
+
+NOTE: Patchs généraux
+
+* Appliquer les patchs du 189, 190 et 191  (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches[Disponibles ici]).
+
+
 == v2.3
 
 === Evolution
