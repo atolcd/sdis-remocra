@@ -30,7 +30,8 @@
                     </template>
                     <template slot="contact" slot-scope="data"> <!-- Contenu spécial colonne 'Contact' -->
                         <button v-if="data.item.gestionnaireHasContact==true" class="btnLink" @click="openListeContacts(data.item.gestionnaire.id, data.item.gestionnaire.nom)">Ouvrir la liste</button>
-                        <button v-else class="btnLink" @click="directCreateContact(data.item.gestionnaire.id, data.item.gestionnaire.nom)">Ajouter un contact</button>
+                        <button v-else-if="allowed" class="btnLink" @click="directCreateContact(data.item.gestionnaire.id, data.item.gestionnaire.nom)">Ajouter un contact</button>
+                        <a v-else>N'a pas de contact</a>
                     </template>
                     <template slot="actif" slot-scope="data" slot-class=actifCell> <!-- Contenu spécial colonne 'Actif' -->
                         <input v-if="data.item.gestionnaire.actif" type="checkbox" checked disabled label:none>
