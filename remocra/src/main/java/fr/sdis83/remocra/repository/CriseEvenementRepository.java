@@ -864,7 +864,7 @@ public class CriseEvenementRepository {
     // On rajoute systématiquement les parametres Utilisateurs
     Utilisateur u = utilisateurService.getCurrentUtilisateur();
     HashMap<String, String> zcTmp = new HashMap<String, String>();
-    zcTmp.put("nomparametre", "ZONE_COMPETENCE_ID");
+    zcTmp.put("nomparametre", GlobalConstants.ZONE_COMPETENCE_ID);
     zcTmp.put("type", "integer");
     zcTmp.put("valeur", String.valueOf(u.getOrganisme().getZoneCompetence().getId()));
     typeParametre.add(zcTmp);

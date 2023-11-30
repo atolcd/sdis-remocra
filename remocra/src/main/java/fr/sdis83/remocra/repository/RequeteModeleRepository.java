@@ -25,7 +25,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,7 +137,7 @@ public class RequeteModeleRepository {
     // On rajoute systématiquement les parametres Utilisateurs
     Utilisateur u = utilisateurService.getCurrentUtilisateur();
     HashMap<String, String> zcTmp = new HashMap<String, String>();
-    zcTmp.put("nomparametre", "ZONE_COMPETENCE_ID");
+    zcTmp.put("nomparametre", GlobalConstants.ZONE_COMPETENCE_ID);
     zcTmp.put("type", "integer");
     zcTmp.put("valeur", String.valueOf(utilisateurService.getCurrentZoneCompetenceId()));
     typeParametre.add(zcTmp);
@@ -228,14 +227,15 @@ public class RequeteModeleRepository {
 
   public List<Map> executeRequest(Long idmodele, String json)
       throws SQLException, IOException, ParseException {
-    List<Map> resultat = Collections.emptyList();
+    List<Map> resultat = new ArrayList<>();
     RequeteModele requeteModele = getById(idmodele);
 
     String sourceSql = requeteModele.getSourceSql();
     List<RequeteModeleParametre> requeteModeleParametres =
         requeteModeleParametereRepository.getByRequeteModele(idmodele);
 
-    List<Map> typeParametre = Collections.emptyList();
+    List<Map> typeParametre = new ArrayList<>();
+    ;
     // On parcourt le json
 
     List<Map> result = new ObjectMapper().readValue(json, List.class);
@@ -252,8 +252,8 @@ public class RequeteModeleRepository {
     }
 
     // On rajoute systématiquement la zone de compétence
-    Map<String, String> zcTmp = Collections.emptyMap();
-    zcTmp.put("nomparametre", "ZONE_COMPETENCE_ID");
+    Map<String, String> zcTmp = new HashMap<>();
+    zcTmp.put("nomparametre", GlobalConstants.ZONE_COMPETENCE_ID);
     zcTmp.put("type", "integer");
     zcTmp.put("valeur", String.valueOf(utilisateurService.getCurrentZoneCompetenceId()));
     typeParametre.add(zcTmp);
@@ -262,7 +262,7 @@ public class RequeteModeleRepository {
       //
       Pattern p = Pattern.compile("\\$\\{(.+?)\\}");
       Matcher matcher = p.matcher(sourceSql);
-      List<String> requestParams = Collections.emptyList();
+      List<String> requestParams = new ArrayList<>();
       Connection connection = context.configuration().connectionProvider().acquire();
 
       // on fait une liste des parametres de la requetes '${}'

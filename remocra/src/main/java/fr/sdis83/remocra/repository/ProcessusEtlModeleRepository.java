@@ -8,6 +8,7 @@ import static fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtl.PROCESSUS_E
 import static fr.sdis83.remocra.db.model.remocra.tables.ProcessusEtlStatut.PROCESSUS_ETL_STATUT;
 
 import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.Tables;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtl;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlModele;
@@ -126,7 +127,7 @@ public class ProcessusEtlModeleRepository {
     // On rajoute systématiquement les parametres Utilisateurs
     Utilisateur u = utilisateurService.getCurrentUtilisateur();
     HashMap<String, String> zcTmp = new HashMap<String, String>();
-    zcTmp.put("nomparametre", "ZONE_COMPETENCE_ID");
+    zcTmp.put("nomparametre", GlobalConstants.ZONE_COMPETENCE_ID);
     zcTmp.put("type", "integer");
     zcTmp.put("valeur", String.valueOf(u.getOrganisme().getZoneCompetence().getId()));
     typeParametre.add(zcTmp);

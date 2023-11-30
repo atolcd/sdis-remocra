@@ -35,4 +35,7 @@ public class GlobalConstants {
 
   //////// Parametre
   public static final String PARAMETRE_AGENTS = "GESTION_AGENT";
+
+  // Paramètre requête Zone de compétence
+  public static final String ZONE_COMPETENCE_ID = "ZONE_COMPETENCE_ID";
 }

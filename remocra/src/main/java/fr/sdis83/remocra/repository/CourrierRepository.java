@@ -12,6 +12,7 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.PARAM_CONF;
 import static fr.sdis83.remocra.db.model.remocra.Tables.THEMATIQUE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
 
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CourrierModele;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.CourrierParametre;
 import fr.sdis83.remocra.domain.remocra.Organisme;
@@ -647,7 +648,7 @@ public class CourrierRepository {
     // On rajoute systématiquement les parametres Utilisateurs
     Utilisateur u = utilisateurService.getCurrentUtilisateur();
     HashMap<String, String> zcTmp = new HashMap<String, String>();
-    zcTmp.put("nomparametre", "ZONE_COMPETENCE_ID");
+    zcTmp.put("nomparametre", GlobalConstants.ZONE_COMPETENCE_ID);
     zcTmp.put("type", "integer");
     zcTmp.put("valeur", String.valueOf(u.getOrganisme().getZoneCompetence().getId()));
     typeParametre.add(zcTmp);
