@@ -1,19 +1,20 @@
 package fr.sdis83.remocra.usecase.utils;
 
+import fr.sdis83.remocra.authn.UserInfo;
+import fr.sdis83.remocra.authn.UserRoles;
 import fr.sdis83.remocra.util.GlobalConstants;
 import java.util.stream.Stream;
 
 /** Classe regroupant les utilitaires ayant attrait aux cas d'utilisation des PEI */
 public class UseCaseUtils {
   /**
-   * Vérifie si l'organisme connecté est le profil API_ADMIN TODO implémenter
+   * Vérifie si l'organisme connecté est le profil API_ADMIN
    *
    * @param organisme OrganismeIdType
    * @return boolean
    */
   public static boolean isApiAdmin(OrganismeIdType organisme) {
-    // Not yet implemented
-    return false;
+    return organisme.isApiAdmin();
   }
 
   public static boolean isServicePublicDECI(OrganismeIdType organisme) {
@@ -76,9 +77,19 @@ public class UseCaseUtils {
     private final Long idOrganisme;
     private final String typeOrganisme;
 
-    public OrganismeIdType(Long idOrganisme, String typeOrganisme) {
+    private final boolean apiAdmin;
+
+    public OrganismeIdType(UserInfo userInfo) {
+      this(
+          userInfo.userId(),
+          userInfo.type(),
+          userInfo.roles().stream().anyMatch(it -> it.equals(UserRoles.ADMINISTRER)));
+    }
+
+    public OrganismeIdType(Long idOrganisme, String typeOrganisme, boolean apiAdmin) {
       this.idOrganisme = idOrganisme;
       this.typeOrganisme = typeOrganisme;
+      this.apiAdmin = apiAdmin;
     }
 
     public Long getIdOrganisme() {
@@ -87,6 +98,10 @@ public class UseCaseUtils {
 
     public String getTypeOrganisme() {
       return typeOrganisme;
+    }
+
+    public boolean isApiAdmin() {
+      return apiAdmin;
     }
   }
 }

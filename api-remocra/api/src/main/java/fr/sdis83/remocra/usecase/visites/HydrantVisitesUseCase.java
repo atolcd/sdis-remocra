@@ -567,8 +567,7 @@ public class HydrantVisitesUseCase {
       return false;
     }
 
-    UseCaseUtils.OrganismeIdType organisme =
-        new UseCaseUtils.OrganismeIdType(currentUser.get().userId(), currentUser.get().type());
+    UseCaseUtils.OrganismeIdType organisme = new UseCaseUtils.OrganismeIdType(currentUser.get());
 
     // L'admin peut tout modifier
     if (UseCaseUtils.isApiAdmin(organisme)) {

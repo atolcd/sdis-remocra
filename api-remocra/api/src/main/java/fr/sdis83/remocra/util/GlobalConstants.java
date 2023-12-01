@@ -15,9 +15,6 @@ public class GlobalConstants {
   /** Type prédéfini pour un organisme de type "EPCI" */
   public static final String EPCI = "EPCI";
 
-  /** Type d'organisme "admin" ayant la main sur tous les PEI sans distinction */
-  public static final String API_ADMIN = "API_ADMIN";
-
   /** Tag pour les endpoints de l'application mobile */
   public static final String REMOCRA_MOBILE_TAG = "REMOcRA Mobile";
 

@@ -431,8 +431,7 @@ public class PeiUseCase {
       throw new IllegalArgumentException("null argument given : listPei");
     }
 
-    UseCaseUtils.OrganismeIdType organisme =
-        new UseCaseUtils.OrganismeIdType(currentUser.get().userId(), currentUser.get().type());
+    UseCaseUtils.OrganismeIdType organisme = new UseCaseUtils.OrganismeIdType(currentUser.get());
 
     return context
         .select(
@@ -486,8 +485,7 @@ public class PeiUseCase {
    */
   public boolean userCanEditPei(String numero) {
 
-    UseCaseUtils.OrganismeIdType organisme =
-        new UseCaseUtils.OrganismeIdType(currentUser.get().userId(), currentUser.get().type());
+    UseCaseUtils.OrganismeIdType organisme = new UseCaseUtils.OrganismeIdType(currentUser.get());
 
     if (UseCaseUtils.isApiAdmin(organisme)) {
       return true;
