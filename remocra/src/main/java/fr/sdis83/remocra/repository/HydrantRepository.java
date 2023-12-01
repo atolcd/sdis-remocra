@@ -26,6 +26,7 @@ import fr.sdis83.remocra.domain.remocra.Commune;
 import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.domain.remocra.TypeDroit;
+import fr.sdis83.remocra.enums.TypeErreurImportCtp;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.exception.ImportCTPException;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
@@ -431,7 +432,9 @@ public class HydrantRepository {
       TypeHydrantImportctpErreur erreur =
           context
               .selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
-              .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq("ERR_FICHIER_INNAC"))
+              .where(
+                  TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq(
+                      TypeErreurImportCtp.ERR_FICHIER_INNAC.getCode()))
               .fetchOneInto(TypeHydrantImportctpErreur.class);
       erreurFichier.put("bilan", erreur.getMessage());
       arrayResultatVerifications.add(erreurFichier);
@@ -444,14 +447,16 @@ public class HydrantRepository {
       if (lecturePossible) {
         sheet = workbook.getSheetAt(1);
         if (sheet == null || !"Saisies_resultats_CT".equals(sheet.getSheetName())) {
-          throw new Exception("ERR_ONGLET_ABS");
+          throw new Exception(TypeErreurImportCtp.ERR_ONGLET_ABS.getCode());
         }
       }
     } catch (Exception e) {
       TypeHydrantImportctpErreur erreur =
           context
               .selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
-              .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq("ERR_ONGLET_ABS"))
+              .where(
+                  TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq(
+                      TypeErreurImportCtp.ERR_ONGLET_ABS.getCode()))
               .fetchOneInto(TypeHydrantImportctpErreur.class);
       erreurFichier.put("bilan", erreur.getMessage());
       arrayResultatVerifications.add(erreurFichier);
@@ -460,16 +465,22 @@ public class HydrantRepository {
 
     // Lecture des valeurs
     if (lecturePossible) {
-      for (int nbLigne = 4; nbLigne < sheet.getPhysicalNumberOfRows(); nbLigne++) {
+      int nbLigne = 4;
+      boolean estFini = false;
+      while (nbLigne < sheet.getPhysicalNumberOfRows() && !estFini) {
         ObjectNode resultatVerification = null;
         try {
           Row r = sheet.getRow(nbLigne);
-          if (r.getFirstCellNum()
-              == 0) { // Evite de traiter la ligne "fantôme" détectée par la librairie à cause des
+          if (r.getFirstCellNum() == 0
+              && r.getCell(0)
+                  != null) { // Evite de traiter la ligne "fantôme" détectée par la librairie à
+            // cause des
             // combo des anomalies
             resultatVerification = this.checkLineValidity(r);
             resultatVerification.put("numero_ligne", nbLigne + 1);
             arrayResultatVerifications.add(resultatVerification);
+          } else {
+            estFini = true;
           }
         } catch (
             ImportCTPException
@@ -487,6 +498,7 @@ public class HydrantRepository {
           resultatVerification.remove("warnings");
           arrayResultatVerifications.add(resultatVerification);
         }
+        nbLigne++;
       }
     }
     data.set("bilanVerifications", arrayResultatVerifications);
@@ -532,7 +544,7 @@ public class HydrantRepository {
             .fetchOneInto(Hydrant.class);
 
     if (h == null || (h.getId() != xls_codeSdis.longValue())) {
-      throw new ImportCTPException("ERR_MAUVAIS_NUM_PEI", data);
+      throw new ImportCTPException(TypeErreurImportCtp.ERR_MAUVAIS_NUM_PEI.getCode(), data);
     }
 
     // On vérifie si le PEI est bien dans la zone de compétence de l'utilisateur
@@ -547,7 +559,7 @@ public class HydrantRepository {
             .fetchOneInto(Boolean.class);
 
     if (dansZoneCompetence == null || !dansZoneCompetence) {
-      throw new ImportCTPException("ERR_DEHORS_ZC", data);
+      throw new ImportCTPException(TypeErreurImportCtp.ERR_DEHORS_ZC.getCode(), data);
     }
 
     // Si la visite CTP n'est pas renseignée (si tous les champs composant les informations de la
@@ -561,23 +573,23 @@ public class HydrantRepository {
     if (!ctpRenseigne) {
       // On passe par un throw car à ce stade on a déjà toutes les infos que l'on souhaite afficher
       // On n'a pas besoin de continuer les vérifications
-      throw new ImportCTPException("INFO_IGNORE", data);
+      throw new ImportCTPException(TypeErreurImportCtp.INFO_IGNORE.getCode(), data);
     }
 
     // Vérifications au niveau de la date
     if (row.getCell(9) == null || row.getCell(9).getCellType() == CellType.BLANK) {
-      throw new ImportCTPException("ERR_DATE_MANQ", data);
+      throw new ImportCTPException(TypeErreurImportCtp.ERR_DATE_MANQ.getCode(), data);
     }
 
     Date xls_dateCtp = null;
     try {
       xls_dateCtp = row.getCell(9).getDateCellValue();
     } catch (Exception e) {
-      throw new ImportCTPException("ERR_FORMAT_DATE", data);
+      throw new ImportCTPException(TypeErreurImportCtp.ERR_FORMAT_DATE.getCode(), data);
     }
 
     if (xls_dateCtp.after(new Date())) {
-      throw new ImportCTPException("ERR_DATE_POST", data);
+      throw new ImportCTPException(TypeErreurImportCtp.ERR_DATE_POST.getCode(), data);
     }
 
     Integer nbVisite =
@@ -599,7 +611,9 @@ public class HydrantRepository {
           context
               .select(TYPE_HYDRANT_IMPORTCTP_ERREUR.MESSAGE)
               .from(TYPE_HYDRANT_IMPORTCTP_ERREUR)
-              .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq("WARN_DATE_ANTE"))
+              .where(
+                  TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq(
+                      TypeErreurImportCtp.WARN_DATE_ANTE.getCode()))
               .fetchOneInto(String.class);
       arrayWarnings.add(str);
     }
@@ -613,7 +627,7 @@ public class HydrantRepository {
             .where(HYDRANT_VISITE.HYDRANT.eq(h.getId()))
             .fetchOneInto(Integer.class);
     if (nbVisite < 2) {
-      throw new ImportCTPException("ERR_VISITES_MANQUANTES", data);
+      throw new ImportCTPException(TypeErreurImportCtp.ERR_VISITES_MANQUANTES.getCode(), data);
     }
 
     // On vérifie si il n'y pas de visite à la même date et heure
@@ -633,14 +647,14 @@ public class HydrantRepository {
             .fetchOneInto(Integer.class);
 
     if (nbVisite > 0) {
-      throw new ImportCTPException("ERR_VISITE_EXISTANTE", data);
+      throw new ImportCTPException(TypeErreurImportCtp.ERR_VISITE_EXISTANTE.getCode(), data);
     }
 
     data.put("dateCtp", formatter.format(xls_dateCtp));
 
     String xls_agent1 = null;
     if (row.getCell(10) == null || row.getCell(10).getCellType() == CellType.BLANK) {
-      throw new ImportCTPException("ERR_AGENT1_ABS", data);
+      throw new ImportCTPException(TypeErreurImportCtp.ERR_AGENT1_ABS.getCode(), data);
     } else {
       xls_agent1 = row.getCell(10).getStringCellValue();
     }
@@ -656,7 +670,9 @@ public class HydrantRepository {
           TypeHydrantImportctpErreur info =
               context
                   .selectFrom(TYPE_HYDRANT_IMPORTCTP_ERREUR)
-                  .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq("INFO_TRONC_DEBIT"))
+                  .where(
+                      TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq(
+                          TypeErreurImportCtp.INFO_TRONC_DEBIT.getCode()))
                   .fetchOneInto(TypeHydrantImportctpErreur.class);
           data.put("bilan", info.getMessage());
           data.put("bilan_style", info.getType());
@@ -666,7 +682,7 @@ public class HydrantRepository {
         }
       }
     } catch (Exception e) {
-      throw new ImportCTPException("ERR_FORMAT_DEBIT", data);
+      throw new ImportCTPException(TypeErreurImportCtp.ERR_FORMAT_DEBIT.getCode(), data);
     }
 
     Double xls_pression = null;
@@ -680,20 +696,20 @@ public class HydrantRepository {
         }
       }
     } catch (Exception e) {
-      throw new ImportCTPException("ERR_FORMAT_PRESS", data);
+      throw new ImportCTPException(TypeErreurImportCtp.ERR_FORMAT_PRESS.getCode(), data);
     }
 
     if (xls_pression != null && xls_pression > 20.0) {
-      throw new ImportCTPException("ERR_PRESS_ELEVEE", data);
+      throw new ImportCTPException(TypeErreurImportCtp.ERR_PRESS_ELEVEE.getCode(), data);
     }
 
     String warningDebitPression = null;
     if (xls_pression == null && xls_debit == null) {
-      warningDebitPression = "WARN_DEB_PRESS_VIDE";
+      warningDebitPression = TypeErreurImportCtp.WARN_DEB_PRESS_VIDE.getCode();
     } else if (xls_pression == null) {
-      warningDebitPression = "WARN_PRESS_VIDE";
+      warningDebitPression = TypeErreurImportCtp.WARN_PRESS_VIDE.getCode();
     } else if (xls_debit == null) {
-      warningDebitPression = "WARN_DEBIT_VIDE";
+      warningDebitPression = TypeErreurImportCtp.WARN_DEBIT_VIDE.getCode();
     }
 
     if (warningDebitPression != null) {
@@ -715,7 +731,7 @@ public class HydrantRepository {
         latitude = this.getNumericValueFromCell(row.getCell(5));
         longitude = this.getNumericValueFromCell(row.getCell(6));
       } catch (Exception e) {
-        throw new ImportCTPException("ERR_COORD_GPS", data);
+        throw new ImportCTPException(TypeErreurImportCtp.ERR_COORD_GPS.getCode(), data);
       }
 
       Integer distance =
@@ -732,7 +748,9 @@ public class HydrantRepository {
             context
                 .select(TYPE_HYDRANT_IMPORTCTP_ERREUR.MESSAGE)
                 .from(TYPE_HYDRANT_IMPORTCTP_ERREUR)
-                .where(TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq("WARN_DEPLACEMENT"))
+                .where(
+                    TYPE_HYDRANT_IMPORTCTP_ERREUR.CODE.eq(
+                        TypeErreurImportCtp.WARN_DEPLACEMENT.getCode()))
                 .fetchOneInto(String.class);
         arrayWarnings.add(str);
       }
@@ -755,7 +773,7 @@ public class HydrantRepository {
                 .where(TYPE_HYDRANT_ANOMALIE.CODE.upper().eq(code.toUpperCase()))
                 .fetchOneInto(TypeHydrantAnomalie.class);
         if (anomalie == null) {
-          throw new ImportCTPException("ERR_ANO_INCONNU", data);
+          throw new ImportCTPException(TypeErreurImportCtp.ERR_ANO_INCONNU.getCode(), data);
         }
         id_anomalies.add(anomalie.getId());
       }
