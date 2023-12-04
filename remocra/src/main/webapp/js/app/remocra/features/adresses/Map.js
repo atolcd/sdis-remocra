@@ -10,6 +10,9 @@ Ext.define('Sdis.Remocra.features.adresses.Map', {
     alias: 'widget.crAdressesMap',
 
     alertePointRadius: 10,
+
+    // Force le non affichage de la toolBar
+    hideToolBarByDefault: true,
     
     // Items qui doivent figurer juste avant le bouton d'affichage de la barre d'édition
     moreItems: [

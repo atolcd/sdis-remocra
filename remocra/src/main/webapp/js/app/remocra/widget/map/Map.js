@@ -47,6 +47,9 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
     extend: 'Ext.container.Container',
     alias: 'widget.crMap',
 
+    // Permet de forcer le non rendu de la toolBar2
+    hideToolBarByDefault: null,
+
     // Items qui doivent figurer juste avant le bouton d'affichage de la barre
     // d'édition
     moreItems: [],
@@ -424,7 +427,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
                 iconCls: 'editIcon',
                 itemId: 'edit',
                 enableToggle: true,
-                pressed: !REMOCRA_MAP_TOOLBAR_MASQUEE,
+                pressed: this.hideToolBarByDefault == null ? !REMOCRA_MAP_TOOLBAR_MASQUEE : !this.hideToolBarByDefault,
                 handler: Ext.bind(this.edit, this)
             });
         }
@@ -446,7 +449,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
         var tbar = Ext.DomQuery.selectNode("div.maptbar2", this.getEl().dom);
         this.maptbar2 = Ext.create('Ext.toolbar.Toolbar', {
             style: 'background: none;border: none;',
-            hidden: REMOCRA_MAP_TOOLBAR_MASQUEE,
+            hidden: this.hideToolBarByDefault == null ? REMOCRA_MAP_TOOLBAR_MASQUEE : this.hideToolBarByDefault,
             // On doit gérer la hauteur du conteneur lorsque la barre est
             // affichée / masquée (éviter décalage curseur)
             listeners: {

@@ -70,7 +70,7 @@
 			var REMOCRA_INIT_BOUNDS = '${initBounds}';
 			var REMOCRA_IGN_KEYS = ${clesIgn};
 			var REMOCRA_MAXINACTIVEINTERVAL_SEC = ${maxInactiveIntervalSec};
-			var REMOCRA_MAP_TOOLBAR_MASQUEE = true;
+			var REMOCRA_MAP_TOOLBAR_MASQUEE = false;
 			var REMOCRA_USR_IDENTIFIANT = '<c:if test="${pageContext['request'].userPrincipal != null}">
 				<c:set var="username" value="${pageContext['request'].userPrincipal.principal.username}" />
 				<c:out value="${username}"/>
