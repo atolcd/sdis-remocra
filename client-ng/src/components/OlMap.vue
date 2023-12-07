@@ -297,6 +297,9 @@ import Process from './Process.vue'
 import MapFeatures from './MapFeatures.vue'
 import TableauDonnees from './TableauDonnees.vue'
 import Indicateur from './Indicateur.vue'
+
+const IGN_URL = 'https://data.geopf.fr/wmts'
+
 export default {
   name: 'OlMap',
   components: {
@@ -808,7 +811,7 @@ export default {
       return wmsLayer
     },
     createIGNLayer(layerDef) {
-      layerDef.url = 'https://wxs.ign.fr/' + this.ignKey + '/geoportail/wmts'
+      layerDef.url = IGN_URL;
       layerDef.projection = 'EPSG:3857'
       layerDef.matrixSet = 'PM'
       layerDef.attribution = '<a href="http://www.geoportail.fr/" target="_blank">' + '<img src="/remocra/images/remocra/cartes/logo_gp.gif"></a>' + '<a href="http://www.geoportail.gouv.fr/depot/api/cgu/licAPI_CGUF.pdf" ' +
@@ -830,7 +833,7 @@ export default {
           visibility: layerDef.visibility,
           opacity: layerDef.opacity,
           projection: layerDef.projection || 'EPSG:3857',
-          url: 'https://wxs.ign.fr/' + this.ignKey + '/geoportail/wmts',
+          url: IGN_URL,
           tileMatrixSet: {
             nom: 'PM',
             resolution_min: 0.5971642834779,
