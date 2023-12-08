@@ -1,6 +1,7 @@
 package fr.sdis83.remocra.usecase.tournee;
 
 import com.google.inject.Inject;
+import fr.sdis83.remocra.repository.OrganismesRepository;
 import fr.sdis83.remocra.repository.TourneeRepository;
 import fr.sdis83.remocra.web.model.mobilemodel.ImmutableTourneeModel;
 import fr.sdis83.remocra.web.model.mobilemodel.TourneeModel;
@@ -12,14 +13,16 @@ import javax.ws.rs.core.Response;
 
 public class TourneeUseCase {
   @Inject TourneeRepository tourneeRepository;
+  @Inject OrganismesRepository organismesRepository;
 
   @Inject
   public TourneeUseCase(TourneeRepository tourneeRepository) {
     this.tourneeRepository = tourneeRepository;
   }
 
-  public List<TourneeModel> getTourneesDisponibles(Long idOrganisme) {
-    return tourneeRepository.getTourneesDisponibles(idOrganisme);
+  public List<TourneeModel> getTourneesDisponibles(Long idOrganismeUtilisateur) {
+    List<Long> idsOrganisme = organismesRepository.getOrganismeAvecEnfants(idOrganismeUtilisateur);
+    return tourneeRepository.getTourneesDisponibles(idsOrganisme);
   }
 
   public ReservationTourneesResponse reserveTournees(List<Long> listIdTournees, Long idUser) {

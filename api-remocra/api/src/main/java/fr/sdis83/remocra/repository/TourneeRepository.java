@@ -31,15 +31,15 @@ public class TourneeRepository {
    * l'utilisateur et donc de son organisme * de si un autre utilisateur est en train de la faire ou
    * non
    *
-   * @param idOrganisme : id de l'organisme de l'utilisateur
+   * @param idsOrganisme : liste des ids de l'organisme de l'utilisateur et ces organismes enfants
    * @return la liste des tournées disponibles
    */
-  public List<TourneeModel> getTourneesDisponibles(Long idOrganisme) {
+  public List<TourneeModel> getTourneesDisponibles(List<Long> idsOrganisme) {
     return context
         .select(TOURNEE.ID, TOURNEE.NOM, TOURNEE.AFFECTATION, TOURNEE.RESERVATION)
         .from(TOURNEE)
         .where(TOURNEE.RESERVATION.isNull())
-        .and(TOURNEE.AFFECTATION.eq(idOrganisme))
+        .and(TOURNEE.AFFECTATION.in(idsOrganisme))
         .and(TOURNEE.ETAT.lessThan(100))
         .fetch(
             (RecordMapper<Record, TourneeModel>)

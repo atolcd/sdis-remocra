@@ -3,6 +3,8 @@ package fr.sdis83.remocra.repository;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ORGANISME;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TRANSFERTS_AUTOMATISES;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_ORGANISME;
+import static org.jooq.impl.DSL.name;
+import static org.jooq.impl.SQLDataType.BIGINT;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +15,7 @@ import fr.sdis83.remocra.web.model.referentielsCommuns.OrganismesModel;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import org.jooq.CommonTableExpression;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -100,5 +103,25 @@ public class OrganismesRepository {
       o.setRoles(roles);
     }
     return o;
+  }
+
+  public List<Long> getOrganismeAvecEnfants(Long idOrganisme) {
+    CommonTableExpression<?> cte =
+        name("org")
+            .fields("id")
+            .as(
+                context
+                    .selectDistinct(ORGANISME.ID)
+                    .from(ORGANISME)
+                    .where(ORGANISME.ID.eq(idOrganisme))
+                    .unionAll(
+                        context
+                            .select(ORGANISME.ID)
+                            .from((DSL.table("org")).crossJoin(ORGANISME))
+                            .where(
+                                ORGANISME.ORGANISME_PARENT.eq(
+                                    DSL.field(name("org", "id"), BIGINT)))));
+
+    return context.withRecursive(cte).selectFrom(cte).fetchInto(Long.class);
   }
 }
