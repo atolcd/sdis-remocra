@@ -6,6 +6,7 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.GESTIONNAIRE_SITE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ROLE;
 
 import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Contact;
 import fr.sdis83.remocra.domain.remocra.Role;
 import fr.sdis83.remocra.usecase.contacts.ContactGestionnaireSite;
@@ -309,6 +310,7 @@ public class ContactRepository {
         .leftOuterJoin(GESTIONNAIRE_SITE)
         .on(CONTACT.ID_GESTIONNAIRE_SITE.eq(GESTIONNAIRE_SITE.ID))
         .where(CONTACT.ID_APPARTENANCE.eq(idGestionnaire.toString()))
+        .and(CONTACT.APPARTENANCE.eq(GlobalConstants.GESTIONNAIRE))
         .fetchInto(ContactGestionnaireSite.class);
   }
 }
