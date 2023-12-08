@@ -8,6 +8,7 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.PROFIL_UTILISATEUR;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_ORGANISME;
 import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ZONE_COMPETENCE;
+import static org.jooq.impl.DSL.coalesce;
 
 import com.vividsolutions.jts.geom.Geometry;
 import fr.sdis83.remocra.GlobalConstants;
@@ -65,7 +66,11 @@ public class DestinataireRepository {
     return context
         .select(
             UTILISATEUR.ID,
-            DSL.concat(UTILISATEUR.NOM, DSL.val(" "), UTILISATEUR.PRENOM).as("nom"),
+            DSL.concat(
+                    coalesce(UTILISATEUR.NOM, DSL.val("")),
+                    DSL.val(" "),
+                    coalesce(UTILISATEUR.PRENOM, DSL.val("")))
+                .as("nom"),
             UTILISATEUR.EMAIL,
             PROFIL_UTILISATEUR.NOM.as("fonction"),
             DSL.val(DestinataireType.UTILISATEUR.getType()).as("type"))
@@ -89,7 +94,7 @@ public class DestinataireRepository {
     return context
         .select(
             ORGANISME.ID,
-            ORGANISME.NOM,
+            coalesce(ORGANISME.NOM, DSL.val("")).as("nom"),
             ORGANISME.EMAIL_CONTACT.as("email"),
             TYPE_ORGANISME.NOM.as("fonction"),
             DSL.val(DestinataireType.ORGANISME.getType()).as("type"))
