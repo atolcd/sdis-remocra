@@ -448,7 +448,7 @@ public class EtudeRepository {
                     "St_AsEwkt(St_transform(St_SetSrid(CAST(St_Extent("
                         + COMMUNE.GEOMETRIE
                         + ") as Geometry), "
-                        + GlobalConstants.SRID_2154
+                        + GlobalConstants.SRID_PARAM
                         + "), 3857))")
                 .as("geometrie"))
         .from(ETUDE)

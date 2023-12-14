@@ -382,12 +382,12 @@ public class HydrantController {
               degres) {
     try {
       // Lambert 83, on renvoie les coordonnées existantes
-      if (srid == GlobalConstants.SRID_2154) {
+      if (srid == GlobalConstants.SRID_PARAM) {
         return new SuccessErrorExtSerializer(true, longitude + "," + latitude).serialize();
       } else {
         double[] coordonneConvert =
             GeometryUtil.transformCordinate(
-                longitude, latitude, GlobalConstants.SRID_2154.toString(), srid.toString());
+                longitude, latitude, GlobalConstants.SRID_PARAM.toString(), srid.toString());
 
         // Si on a choisi le système WGS84 et qu'on ne souhaite pas l'exprimer en degrés décimaux,
         // on le convertit en degrés minutes secondes

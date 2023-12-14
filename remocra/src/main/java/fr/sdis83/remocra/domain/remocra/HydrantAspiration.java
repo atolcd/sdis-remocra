@@ -60,7 +60,7 @@ public class HydrantAspiration {
     Point p = this.getGeometrie();
     double[] coordonneConvert =
         GeometryUtil.transformCordinate(
-            p.getX(), p.getY(), GlobalConstants.SRID_2154.toString(), "4326");
+            p.getX(), p.getY(), GlobalConstants.SRID_PARAM.toString(), "4326");
     double longitude =
         BigDecimal.valueOf(coordonneConvert[0]).setScale(5, RoundingMode.HALF_UP).doubleValue();
     return longitude;
@@ -71,7 +71,7 @@ public class HydrantAspiration {
     Point p = this.getGeometrie();
     double[] coordonneConvert =
         GeometryUtil.transformCordinate(
-            p.getX(), p.getY(), GlobalConstants.SRID_2154.toString(), "4326");
+            p.getX(), p.getY(), GlobalConstants.SRID_PARAM.toString(), "4326");
     double latitude =
         BigDecimal.valueOf(coordonneConvert[1]).setScale(5, RoundingMode.HALF_UP).doubleValue();
     return latitude;

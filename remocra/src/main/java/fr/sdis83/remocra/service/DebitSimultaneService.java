@@ -75,7 +75,7 @@ public class DebitSimultaneService extends AbstractService<DebitSimultane> {
             .setParameter("lon", lon)
             .setParameter("lat", lat)
             .setParameter("srid", srid)
-            .setParameter("geomsrid", GlobalConstants.SRID_2154)
+            .setParameter("geomsrid", GlobalConstants.SRID_PARAM)
             .setParameter("distance", distance);
     return query.getResultList();
   }
@@ -99,7 +99,7 @@ public class DebitSimultaneService extends AbstractService<DebitSimultane> {
                     + "LIMIT 1)) "
                     + "WHERE id=:idDebitSimultane"))
             .setParameter("idDebitSimultane", id)
-            .setParameter("srid", GlobalConstants.SRID_2154);
+            .setParameter("srid", GlobalConstants.SRID_PARAM);
     query.executeUpdate();
   }
 

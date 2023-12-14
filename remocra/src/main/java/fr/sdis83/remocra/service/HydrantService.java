@@ -404,7 +404,7 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
                       "select code from remocra.zone_speciale "
                           + "where ST_GeomFromText(:geometrie,:srid) && geometrie and st_distance(ST_GeomFromText(:geometrie,:srid), geometrie)<=0")
                   .setParameter("geometrie", geometrie)
-                  .setParameter("srid", GlobalConstants.SRID_2154)
+                  .setParameter("srid", GlobalConstants.SRID_PARAM)
                   .getSingleResult();
       zs = ZoneSpeciale.findZoneSpecialesByCode(codeZS).getSingleResult();
 
@@ -431,7 +431,7 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
     Geometry convertedGeometry = null;
     try {
       convertedGeometry = fromText.read(geometrie);
-      convertedGeometry.setSRID(GlobalConstants.SRID_2154);
+      convertedGeometry.setSRID(GlobalConstants.SRID_PARAM);
     } catch (ParseException e) {
       throw new RuntimeException(e);
     }
@@ -465,7 +465,7 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
             .createQuery(
                 "SELECT o FROM Hydrant o where dwithin (geometrie, transform(:filter, :srid), 0) = true and dwithin (geometrie, :zoneCompetence, 0) = true",
                 Hydrant.class)
-            .setParameter("srid", GlobalConstants.SRID_2154)
+            .setParameter("srid", GlobalConstants.SRID_PARAM)
             .setParameter("filter", GeometryUtil.geometryFromBBox(bbox))
             .setParameter(
                 "zoneCompetence",
@@ -513,9 +513,9 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
     double latitude;
 
     GeometryFactory geometryFactory =
-        new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_2154);
-    // Si les données sont déjà en Lambert 93, on peut mettre à jour
-    if (srid == GlobalConstants.SRID_2154) {
+        new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_PARAM);
+    // Si les données sont déjà dans la projection du SDIS, on peut mettre à jour
+    if (srid == GlobalConstants.SRID_PARAM) {
       longitude = Double.parseDouble(items.get("longitude").toString());
       latitude = Double.parseDouble(items.get("latitude").toString());
 
@@ -538,7 +538,7 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
               longitude,
               latitude,
               items.get("systeme").toString(),
-              GlobalConstants.SRID_2154.toString());
+              GlobalConstants.SRID_PARAM.toString());
       longitude =
           BigDecimal.valueOf(coordonneConvert[0]).setScale(0, RoundingMode.HALF_UP).intValue();
       latitude =

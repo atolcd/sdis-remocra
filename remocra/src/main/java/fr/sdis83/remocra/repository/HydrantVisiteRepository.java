@@ -176,12 +176,11 @@ public class HydrantVisiteRepository {
           && longitude != null
           && this.authUtils.hasRight(TypeDroit.TypeDroitEnum.HYDRANTS_DEPLACEMENT_CTP_C)) {
         GeometryFactory geometryFactory =
-            new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_2154);
-        double[] coordsLambert93 =
+            new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_PARAM);
+        double[] coords =
             GeometryUtil.transformCordinate(
-                longitude, latitude, "4326", GlobalConstants.SRID_2154.toString());
-        Point p =
-            geometryFactory.createPoint(new Coordinate(coordsLambert93[0], coordsLambert93[1]));
+                longitude, latitude, "4326", GlobalConstants.SRID_PARAM.toString());
+        Point p = geometryFactory.createPoint(new Coordinate(coords[0], coords[1]));
         context
             .update(HYDRANT)
             .set(HYDRANT.GEOMETRIE, p)

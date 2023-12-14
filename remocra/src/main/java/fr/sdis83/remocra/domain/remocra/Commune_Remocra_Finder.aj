@@ -51,7 +51,7 @@ privileged aspect Commune_Remocra_Finder {
         EntityManager em = Commune.entityManager();
         Query query = em.createQuery("select c from Commune c where "
             + depClause
-            + " dwithin(c.geometrie, transform(:filter, 2154), :delta) = true order by st_distance(c.geometrie, transform(:filter, 2154)) asc",
+            + " dwithin(c.geometrie, transform(:filter, "+srid+"), :delta) = true order by st_distance(c.geometrie, transform(:filter,  "+srid+")) asc",
             Commune.class);
         query.setParameter("filter", filter);
         query.setParameter("delta", delta);

@@ -1,6 +1,6 @@
 package fr.sdis83.remocra.repository;
 
-import static fr.sdis83.remocra.GlobalConstants.SRID_2154;
+import static fr.sdis83.remocra.GlobalConstants.SRID_PARAM;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CONTACT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.GESTIONNAIRE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ORGANISME;
@@ -50,7 +50,7 @@ public class DestinataireRepository {
         .join(ZONE_COMPETENCE)
         .on(ORGANISME.ZONE_COMPETENCE.eq(ZONE_COMPETENCE.ID))
         .where(
-            "ST_CONTAINS(st_setsrid(ST_GeomFromText({0})," + SRID_2154 + "), {1})",
+            "ST_CONTAINS(st_setsrid(ST_GeomFromText({0})," + SRID_PARAM + "), {1})",
             organismeGeometrie.toText(),
             ZONE_COMPETENCE.GEOMETRIE)
         .fetchInto(Long.class);

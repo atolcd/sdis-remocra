@@ -223,7 +223,7 @@ public class CriseEvenementRepository {
             + "),"
             + projection
             + "), "
-            + GlobalConstants.SRID_2154
+            + GlobalConstants.SRID_PARAM
             + ")) = true "
             // Et que la crise est dans la zone de compétence de
             // l'utilisateur connecté
@@ -232,7 +232,7 @@ public class CriseEvenementRepository {
             + "),"
             + projection
             + "), "
-            + GlobalConstants.SRID_2154
+            + GlobalConstants.SRID_PARAM
             + ")) < 100 "
             + "and st_dwithin(geometrie, st_geomfromtext('"
             + utilisateurService
@@ -241,7 +241,7 @@ public class CriseEvenementRepository {
                 .getZoneCompetence()
                 .getGeometrie()
             + "', "
-            + GlobalConstants.SRID_2154
+            + GlobalConstants.SRID_PARAM
             + "), 0) = true)";
 
     List<CriseEvenement> l = new ArrayList<CriseEvenement>();

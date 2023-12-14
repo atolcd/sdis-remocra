@@ -132,7 +132,7 @@ public class HydrantIndispoTemporaireRepository {
       List<HydrantRecord> hydrantRecords = new ArrayList<HydrantRecord>();
       for (Record h : context.fetch(reqHydrants.toString())) {
         HydrantRecord hr = modelMapper.map(h, HydrantRecord.class);
-        hr.setGeometrie(GeometryUtil.toGeometry(hr.getWktGeometrie(), GlobalConstants.SRID_2154));
+        hr.setGeometrie(GeometryUtil.toGeometry(hr.getWktGeometrie(), GlobalConstants.SRID_PARAM));
 
         // Récupération de la commune + remontée dans l'indispo temp
         CommuneRecord c =

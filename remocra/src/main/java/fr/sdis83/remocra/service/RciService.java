@@ -88,7 +88,7 @@ public class RciService extends AbstractService<Rci> {
                 "SELECT o FROM Rci o where contains (transform(:filter, :srid), geometrie) = true",
                 Rci.class)
             .setParameter("filter", GeometryUtil.geometryFromBBox(bbox))
-            .setParameter("srid", GlobalConstants.SRID_2154);
+            .setParameter("srid", GlobalConstants.SRID_PARAM);
     return query.getResultList();
   }
 
@@ -104,7 +104,7 @@ public class RciService extends AbstractService<Rci> {
       throws Exception {
 
     // Géométrie
-    attached.getGeometrie().setSRID(GlobalConstants.SRID_2154);
+    attached.getGeometrie().setSRID(GlobalConstants.SRID_PARAM);
 
     // Coordonnées DFCI
     try {

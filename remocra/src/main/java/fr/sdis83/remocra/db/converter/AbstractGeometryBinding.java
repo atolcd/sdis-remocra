@@ -83,7 +83,7 @@ public abstract class AbstractGeometryBinding<T extends Geometry> implements Bin
     ctx.render()
         .sql("ST_GeomFromText(")
         .visit(DSL.val(value))
-        .sql("," + GlobalConstants.SRID_2154 + ")");
+        .sql("," + GlobalConstants.SRID_PARAM + ")");
   }
 
   // Registering BLOB types for JDBC CallableStatement OUT parameters

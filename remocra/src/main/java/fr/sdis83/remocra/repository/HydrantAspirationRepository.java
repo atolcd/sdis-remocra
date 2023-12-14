@@ -71,14 +71,14 @@ public class HydrantAspirationRepository {
         if (longitude != null && latitude != null) {
           double[] coordonneConvert =
               GeometryUtil.transformCordinate(
-                  longitude, latitude, "4326", GlobalConstants.SRID_2154.toString());
+                  longitude, latitude, "4326", GlobalConstants.SRID_PARAM.toString());
           int lon =
               BigDecimal.valueOf(coordonneConvert[0]).setScale(0, RoundingMode.HALF_UP).intValue();
           int lat =
               BigDecimal.valueOf(coordonneConvert[1]).setScale(0, RoundingMode.HALF_UP).intValue();
 
           GeometryFactory geometryFactory =
-              new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_2154);
+              new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_PARAM);
           Point p = geometryFactory.createPoint(new Coordinate(lon, lat));
           aspiration.setGeometrie(p);
         } else {

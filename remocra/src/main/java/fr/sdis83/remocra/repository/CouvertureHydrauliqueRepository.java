@@ -162,13 +162,13 @@ public class CouvertureHydrauliqueRepository {
         GeometryUtil.createPoint(
             longitude,
             latitude,
-            GlobalConstants.SRID_2154.toString(),
-            GlobalConstants.SRID_2154.toString());
+            GlobalConstants.SRID_PARAM.toString(),
+            GlobalConstants.SRID_PARAM.toString());
     String query =
         "SELECT pei, chemin, dist FROM couverture_hydraulique.plus_proche_pei(ST_GeomFromText('"
             + geom.toText()
             + "', "
-            + GlobalConstants.SRID_2154
+            + GlobalConstants.SRID_PARAM
             + "), "
             + distanceMaxParcours
             + ", NULL)";
@@ -187,7 +187,7 @@ public class CouvertureHydrauliqueRepository {
           "SELECT ST_AsText(geometrie) " + "FROM couverture_hydraulique.pei WHERE id = " + idPei;
       String wktGeomPei = entityManager.createNativeQuery(q).getSingleResult().toString();
       PlusProchePei p = new PlusProchePei();
-      Geometry geomPei = GeometryUtil.toGeometry(wktGeomPei, GlobalConstants.SRID_2154);
+      Geometry geomPei = GeometryUtil.toGeometry(wktGeomPei, GlobalConstants.SRID_PARAM);
 
       p.setWktGeometriePei(geomPei.toText());
       p.setWktGeometrieChemin(geometrieChemin);

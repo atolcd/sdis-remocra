@@ -8,6 +8,7 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE_DECI;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ZONE_SPECIALE;
 
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Commune;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ZoneSpeciale;
@@ -581,8 +582,9 @@ public class NumeroUtilRepository {
           .select(ZONE_SPECIALE.fields())
           .from(ZONE_SPECIALE)
           .where(
-              "ST_Contains({0}, st_pointfromtext({1},2154))",
-              ZONE_SPECIALE.GEOMETRIE, hydrant.getGeometrie().toString())
+              "ST_Contains({0}, st_pointfromtext({1}," + GlobalConstants.SRID_PARAM + "))",
+              ZONE_SPECIALE.GEOMETRIE,
+              hydrant.getGeometrie().toString())
           .limit(1)
           .fetchOneInto(ZoneSpeciale.class);
     } catch (Exception e) {

@@ -80,7 +80,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
       Query query, Map<String, Object> parameters, List<ItemFilter> itemFilters) {
     ItemFilter wktFilter = ItemFilter.getFilter(itemFilters, "wkt");
     if (wktFilter != null) {
-      String wktValue = "SRID=" + GlobalConstants.SRID_2154 + ";" + wktFilter.getValue();
+      String wktValue = "SRID=" + GlobalConstants.SRID_PARAM + ";" + wktFilter.getValue();
       query.setParameter((Parameter) parameters.get("WKT_PARAM"), wktValue);
       query.setParameter(
           (Parameter) parameters.get("DIST_PARAM"),
@@ -115,7 +115,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
       Predicate[] predicates) {
     ItemFilter wktFilter = ItemFilter.getFilter(itemFilters, "wkt");
     if (orders != null && wktFilter != null) {
-      String wktValue = "SRID=" + GlobalConstants.SRID_2154 + ";" + wktFilter.getValue();
+      String wktValue = "SRID=" + GlobalConstants.SRID_PARAM + ";" + wktFilter.getValue();
       itemTypedQuery.setParameter("wkt", wktValue);
     }
   }

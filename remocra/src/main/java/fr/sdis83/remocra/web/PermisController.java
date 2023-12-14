@@ -112,7 +112,7 @@ public class PermisController extends AbstractRemocraController {
 
       @Override
       protected List<Permis> getRecords() {
-        int srid = GlobalConstants.SRID_2154;
+        int srid = GlobalConstants.SRID_PARAM;
         int firstResult = 0;
         int maxResults = 10;
         Geometry geom =
@@ -179,7 +179,7 @@ public class PermisController extends AbstractRemocraController {
       final @RequestParam int fileCounter) {
     try {
       Permis record = Permis.fromJsonToPermis(jsonPermis);
-      record.getGeometrie().setSRID(GlobalConstants.SRID_2154);
+      record.getGeometrie().setSRID(GlobalConstants.SRID_PARAM);
       checkZoneCompetence(record.getGeometrie());
       if (!id.equals(record.getId())) {
         logger.error("Requête non valide : idUrl = " + id + " est different de " + record.getId());

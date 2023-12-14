@@ -6,6 +6,7 @@ import fr.sdis83.remocra.domain.datasource.CodeLibelleOrdreData;
 import fr.sdis83.remocra.enums.PeiCaracteristique;
 import fr.sdis83.remocra.usecase.parametre.agents.AgentsUseCase;
 import fr.sdis83.remocra.usecase.parametre.caracteristiques.CaracteristiqueUseCase;
+import fr.sdis83.remocra.usecase.parametre.srid.SridParametre;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @RequestMapping("/parametre")
 @Controller
@@ -24,6 +27,8 @@ public class ParametreController {
 
   @Autowired CaracteristiqueUseCase caracteristiquesUseCase;
   @Autowired AgentsUseCase agentsUseCase;
+
+  @Autowired SridParametre sridParametre;
 
   @RequestMapping(
       value = "/caracteristiques/nonChoisie/{type}",
@@ -132,5 +137,13 @@ public class ParametreController {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  @RequestMapping(
+      value = "/srid",
+      method = RequestMethod.GET,
+      headers = "Accept=application/json;charset=utf-8")
+  public ResponseEntity<String> getSrid() {
+    return new ResponseEntity<>(sridParametre.getSRID(), HttpStatus.OK);
   }
 }

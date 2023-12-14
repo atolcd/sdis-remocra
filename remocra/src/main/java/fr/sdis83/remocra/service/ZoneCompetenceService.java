@@ -54,7 +54,7 @@ public class ZoneCompetenceService extends AbstractService<ZoneCompetence> {
             "select dwithin(zc.geometrie, transform(:filter, :srid), :tolerance) from ZoneCompetence zc where zc.id = :id");
     query.setParameter("tolerance", toleranceMeters);
     query.setParameter("filter", filter);
-    query.setParameter("srid", GlobalConstants.SRID_2154);
+    query.setParameter("srid", GlobalConstants.SRID_PARAM);
     query.setParameter("id", zoneCompetence);
     return (Boolean) query.getSingleResult();
   }
@@ -76,7 +76,7 @@ public class ZoneCompetenceService extends AbstractService<ZoneCompetence> {
         em.createQuery(
             "select within(transform(:point, :srid), zc.geometrie) from ZoneCompetence zc where zc.id = :id");
     query.setParameter("point", geometrie);
-    query.setParameter("srid", GlobalConstants.SRID_2154);
+    query.setParameter("srid", GlobalConstants.SRID_PARAM);
     query.setParameter("id", zoneCompetence);
     return (Boolean) query.getSingleResult();
   }

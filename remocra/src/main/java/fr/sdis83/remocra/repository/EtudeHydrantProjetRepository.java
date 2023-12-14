@@ -176,8 +176,8 @@ public class EtudeHydrantProjetRepository {
         GeometryUtil.createPoint(
             longitude,
             latitude,
-            GlobalConstants.SRID_2154.toString(),
-            GlobalConstants.SRID_2154.toString());
+            GlobalConstants.SRID_PARAM.toString(),
+            GlobalConstants.SRID_PARAM.toString());
 
     long idPeiProjet =
         context
@@ -244,8 +244,8 @@ public class EtudeHydrantProjetRepository {
         GeometryUtil.createPoint(
             longitude,
             latitude,
-            GlobalConstants.SRID_2154.toString(),
-            GlobalConstants.SRID_2154.toString());
+            GlobalConstants.SRID_PARAM.toString(),
+            GlobalConstants.SRID_PARAM.toString());
     context
         .update(ETUDE_HYDRANT_PROJET)
         .set(ETUDE_HYDRANT_PROJET.GEOMETRIE, geom)

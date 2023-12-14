@@ -14,7 +14,7 @@ public class PermisService {
 
   @Transactional
   public void setUpToDateInfo(Permis permis) {
-    permis.getGeometrie().setSRID(GlobalConstants.SRID_2154);
+    permis.getGeometrie().setSRID(GlobalConstants.SRID_PARAM);
     permis.setDateModification(new Date());
     permis.setInstructeur(utilisateurService.getCurrentUtilisateur());
   }

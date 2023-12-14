@@ -631,7 +631,7 @@ public class OldebService extends AbstractService<Oldeb> {
       throws Exception {
 
     // Géométrie
-    attached.getGeometrie().setSRID(GlobalConstants.SRID_2154);
+    attached.getGeometrie().setSRID(GlobalConstants.SRID_PARAM);
     Geometry geom = attached.getGeometrie();
     geom = GeometryUtil.getMultiGeometry(geom);
     attached.setGeometrie(geom);
@@ -687,7 +687,7 @@ public class OldebService extends AbstractService<Oldeb> {
             + "),"
             + projection
             + "),"
-            + GlobalConstants.SRID_2154
+            + GlobalConstants.SRID_PARAM
             + ")) = true "
             + "and o.actif = true "
             // Et que l'oldeb est dans la zone de compétence de

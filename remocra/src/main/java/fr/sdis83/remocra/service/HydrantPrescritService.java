@@ -52,7 +52,7 @@ public class HydrantPrescritService extends AbstractService<HydrantPrescrit> {
                     .getOrganisme()
                     .getZoneCompetence()
                     .getGeometrie())
-            .setParameter("srid", GlobalConstants.SRID_2154);
+            .setParameter("srid", GlobalConstants.SRID_PARAM);
     return query.getResultList();
   }
 
@@ -62,7 +62,7 @@ public class HydrantPrescritService extends AbstractService<HydrantPrescrit> {
       HydrantPrescrit attached, Map<String, MultipartFile> files, Object... params)
       throws Exception {
     // traitement géométrie
-    attached.getGeometrie().setSRID(GlobalConstants.SRID_2154);
+    attached.getGeometrie().setSRID(GlobalConstants.SRID_PARAM);
     if (attached.getOrganisme() == null) {
       attached.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme());
     }

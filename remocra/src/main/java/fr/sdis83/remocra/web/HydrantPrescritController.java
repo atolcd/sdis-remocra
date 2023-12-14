@@ -88,7 +88,7 @@ public class HydrantPrescritController
             .use(Date.class, RemocraDateHourTransformer.getInstance())
             .use(Geometry.class, new GeometryFactory())
             .deserialize(json);
-    current.getGeometrie().setSRID(GlobalConstants.SRID_2154);
+    current.getGeometrie().setSRID(GlobalConstants.SRID_PARAM);
     if (zoneCompetenceService.check(
         current.getGeometrie(), serviceUtilisateur.getCurrentZoneCompetenceId())) {
       return this.doUpdate(id, json);
@@ -108,7 +108,7 @@ public class HydrantPrescritController
             .use(Date.class, RemocraDateHourTransformer.getInstance())
             .use(Geometry.class, new GeometryFactory())
             .deserialize(json);
-    current.getGeometrie().setSRID(GlobalConstants.SRID_2154);
+    current.getGeometrie().setSRID(GlobalConstants.SRID_PARAM);
     if (zoneCompetenceService.check(
         current.getGeometrie(), serviceUtilisateur.getCurrentZoneCompetenceId())) {
       return this.doCreate(json);

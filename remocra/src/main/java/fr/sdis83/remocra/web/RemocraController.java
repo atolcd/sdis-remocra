@@ -2,14 +2,17 @@ package fr.sdis83.remocra.web;
 
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONSerializer;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.domain.remocra.TypeDroit;
 import fr.sdis83.remocra.exception.BusinessException;
+import fr.sdis83.remocra.repository.ParametreRepository;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.service.AuthService;
 import fr.sdis83.remocra.service.HydrantService;
 import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.util.FunctionsUtils;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.serialize.AccessRightSerializer;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
@@ -62,6 +65,7 @@ public class RemocraController {
   @Autowired private ParamConfService paramConfService;
 
   @Autowired private UtilisateurService utilisateurService;
+  @Autowired private ParametreRepository parametreRepository;
 
   @Autowired private HydrantService hydrantService;
 
@@ -72,9 +76,14 @@ public class RemocraController {
     String serialRights = new AccessRightSerializer().serialize(authUtils.getCurrentRights());
     log.debug("Loading with Rights : " + serialRights);
     model.addAttribute("userRights", serialRights);
+    int srid =
+        Integer.valueOf(
+            parametreRepository.getByCle(GlobalConstants.CLE_SRID).getValeurParametre());
+    FunctionsUtils.setSRIDValue(srid);
 
     // Emprise du territoire de compétence de l'utilisateur
     String bounds = null;
+    Geometry territoire = null;
 
     // Récupération du code du profil de l'utilisateur connecté
     String userProfilDroit = null;
@@ -83,7 +92,7 @@ public class RemocraController {
       if (AuthService.isUserAuthenticated()) {
         userProfilDroit = utilisateurService.getCurrentProfilDroit().getCode();
         Organisme organisme = utilisateurService.getCurrentUtilisateur().getOrganisme();
-        Geometry territoire = organisme.getZoneCompetence().getGeometrie();
+        territoire = organisme.getZoneCompetence().getGeometrie();
         bounds = GeometryUtil.bboxFromGeometry(territoire);
         nomOrganisme = organisme.getNom().replace("'", "\\'");
       }
@@ -169,6 +178,9 @@ public class RemocraController {
     model.addAttribute("vitesse_eau", paramConfService.getVitesseEau());
 
     model.addAttribute("show_historique", paramConfService.getHydrantNombreHistorique() > 0);
+
+    model.addAttribute(
+        "srid", parametreRepository.getByCle(GlobalConstants.CLE_SRID).getValeurParametre());
 
     return "remocra";
   }

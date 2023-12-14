@@ -154,7 +154,7 @@ public class OrganismeService extends AbstractService<Organisme> {
                     + "WHERE (ST_Intersects(ST_GeomFromText(:geometrie, :srid), zc.geometrie)) AND (o.type_organisme IN "
                     + "(SELECT id FROM remocra.type_organisme WHERE code IN (:typeOrganismes) ))")
             .setParameter("geometrie", geometrie)
-            .setParameter("srid", GlobalConstants.SRID_2154)
+            .setParameter("srid", GlobalConstants.SRID_PARAM)
             .setParameter("typeOrganismes", organismesAcceptes);
 
     JSONArray json = new JSONArray();

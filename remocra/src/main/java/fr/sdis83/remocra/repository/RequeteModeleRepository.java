@@ -221,7 +221,7 @@ public class RequeteModeleRepository {
                 "INSERT INTO remocra.requete_modele_selection_detail (selection,geometrie) SELECT :selection, (select st_geometryfromtext(:geometrie, :srid))")
             .setParameter("selection", lastRmd)
             .setParameter("geometrie", geom)
-            .setParameter("srid", GlobalConstants.SRID_2154);
+            .setParameter("srid", GlobalConstants.SRID_PARAM);
     return query.executeUpdate();
   }
 
@@ -358,7 +358,7 @@ public class RequeteModeleRepository {
                       + s.toString()
                       + ") AS selection")
               .setParameter("id", id)
-              .setParameter("srid", GlobalConstants.SRID_2154);
+              .setParameter("srid", GlobalConstants.SRID_PARAM);
       ;
       int r = q.executeUpdate();
 
@@ -370,7 +370,7 @@ public class RequeteModeleRepository {
                     "UPDATE remocra.requete_modele_selection SET etendu = (SELECT st_setsrid(CAST(st_extent(geometrie) AS Geometry), :srid) "
                         + "FROM remocra.requete_modele_selection_detail WHERE selection = :id) WHERE id = :id")
                 .setParameter("id", id)
-                .setParameter("srid", GlobalConstants.SRID_2154);
+                .setParameter("srid", GlobalConstants.SRID_PARAM);
         query.executeUpdate();
       }
     }

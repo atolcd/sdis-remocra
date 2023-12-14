@@ -41,11 +41,11 @@ privileged aspect Permis_Remocra_Finder {
 
         Geometry point = GeometryUtil.toGeometry("POINT(" + x + " " + y + ")", srid);
 
-        String sql = "SELECT o.* FROM remocra.Permis AS o WHERE ST_DWithin(st_transform(:point, 2154), geometrie, :tolerance) ";
+        String sql = "SELECT o.* FROM remocra.Permis AS o WHERE ST_DWithin(st_transform(:point,  "+srid+"), geometrie, :tolerance) ";
         if (zoneInclusion != null) {
-            sql += " AND (st_transform(:point, 2154) && :zoneInclusion AND ST_Within(st_transform(:point, 2154), :zoneInclusion) )";
+            sql += " AND (st_transform(:point,  "+srid+") && :zoneInclusion AND ST_Within(st_transform(:point,  "+srid+"), :zoneInclusion) )";
         }
-        sql += " order by ST_Distance(st_transform(:point, 2154), geometrie)";
+        sql += " order by ST_Distance(st_transform(:point,  "+srid+"), geometrie)";
 
         Query q = em.createNativeQuery(sql, Permis.class);
 

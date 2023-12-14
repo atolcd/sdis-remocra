@@ -166,7 +166,7 @@ public class CriseRepository {
     String extent = null;
     String sql =
         "SELECT St_AsEwkt(St_transform(St_SetSrid(CAST(St_Extent(geometrie) AS Geometry),"
-            + GlobalConstants.SRID_2154
+            + GlobalConstants.SRID_PARAM
             + "),3857)) AS geometrie FROM remocra.commune WHERE id IN(SELECT commune FROM remocra.crise_commune WHERE crise ="
             + id
             + ")";

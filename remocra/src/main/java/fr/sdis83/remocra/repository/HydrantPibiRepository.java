@@ -24,7 +24,7 @@ public class HydrantPibiRepository {
 
   private static final String BI = "BI";
   private static final Integer DISTANCE_MINIMAL_JUMELAGE = 25;
-  private static final String SRID = "SRID=" + GlobalConstants.SRID_2154 + ";";
+  private static final String SRID = "SRID=" + GlobalConstants.SRID_PARAM + ";";
 
   @Autowired DSLContext context;
 

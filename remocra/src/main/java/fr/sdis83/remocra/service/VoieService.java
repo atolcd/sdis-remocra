@@ -71,7 +71,7 @@ public class VoieService {
 
     // Valeur pour les paramètres (si besoin)
     if (wktFilter != null) {
-      String wktValue = "SRID=" + GlobalConstants.SRID_2154 + ";" + wktFilter.getValue();
+      String wktValue = "SRID=" + GlobalConstants.SRID_PARAM + ";" + wktFilter.getValue();
       itemTypedQuery.setParameter((Parameter) wktOrderParam, wktValue);
       itemTypedQuery.setParameter((Parameter) parameters.get("WKT_PARAM"), wktValue);
       itemTypedQuery.setParameter(

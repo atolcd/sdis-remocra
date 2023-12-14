@@ -2,7 +2,8 @@ package fr.sdis83.remocra;
 
 /** Classe permettant de définir des constantes globales */
 public class GlobalConstants {
-  public static final Integer SRID_2154 = 2154;
+
+  public static Integer SRID_PARAM = 2154;
   public static final String LDAP_PASSWORD = "LDAP";
 
   /**
@@ -38,4 +39,7 @@ public class GlobalConstants {
 
   // Paramètre requête Zone de compétence
   public static final String ZONE_COMPETENCE_ID = "ZONE_COMPETENCE_ID";
+
+  // Clé du paramètre SRID stocké dans la table remocra.parametre
+  public static final String CLE_SRID = "SRID";
 }

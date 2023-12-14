@@ -71,7 +71,7 @@ public class GeometryUtil {
     }
     Envelope env = geometry.getEnvelopeInternal();
     return String.format(
-        "EPSG:" + GlobalConstants.SRID_2154 + ";%s,%s,%s,%s",
+        "EPSG:" + GlobalConstants.SRID_PARAM + ";%s,%s,%s,%s",
         env.getMinX(),
         env.getMinY(),
         env.getMaxX(),
@@ -79,7 +79,7 @@ public class GeometryUtil {
   }
 
   public static Integer sridFromBBox(String bbox) {
-    Integer srid = GlobalConstants.SRID_2154;
+    Integer srid = GlobalConstants.SRID_PARAM;
     if (bbox != null) {
       String[] coord = bbox.split(",");
       if (coord.length == 5) {
@@ -121,7 +121,7 @@ public class GeometryUtil {
       throws CRSException, IllegalCoordinateException {
     double[] coord = transformCordinate(longitude, latitude, projFrom, projTo);
     GeometryFactory geometryFactory =
-        new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_2154);
+        new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_PARAM);
     return geometryFactory.createPoint(new Coordinate(coord[0], coord[1]));
   }
 
@@ -161,7 +161,7 @@ public class GeometryUtil {
               + "', "
               + geom.getSRID()
               + "), "
-              + GlobalConstants.SRID_2154
+              + GlobalConstants.SRID_PARAM
               + "), 0) = true");
       rs = st.getResultSet();
       rs.next();

@@ -68,14 +68,14 @@ public class HydrantAspirationService extends AbstractService<HydrantAspiration>
 
         double[] coordonneConvert =
             GeometryUtil.transformCordinate(
-                longitude, latitude, "4326", GlobalConstants.SRID_2154.toString());
+                longitude, latitude, "4326", GlobalConstants.SRID_PARAM.toString());
         longitude =
             BigDecimal.valueOf(coordonneConvert[0]).setScale(0, RoundingMode.HALF_UP).intValue();
         latitude =
             BigDecimal.valueOf(coordonneConvert[1]).setScale(0, RoundingMode.HALF_UP).intValue();
 
         GeometryFactory geometryFactory =
-            new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_2154);
+            new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_PARAM);
         Point p = geometryFactory.createPoint(new Coordinate(longitude, latitude));
         obj.put("geometrie", p);
       } else {

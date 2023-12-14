@@ -81,7 +81,7 @@ public class AdressesController extends AbstractRemocraController {
       Geometry[] geometries = new Geometry[alerte.getAlerteElts().size()];
       int j = 0;
       for (AlerteElt elt : alerte.getAlerteElts()) {
-        elt.getGeometrie().setSRID(GlobalConstants.SRID_2154);
+        elt.getGeometrie().setSRID(GlobalConstants.SRID_PARAM);
         geometries[j++] = elt.getGeometrie();
         elt.setAlerte(alerte);
 
@@ -91,7 +91,7 @@ public class AdressesController extends AbstractRemocraController {
         }
       }
       Point centroid = new GeometryCollection(geometries, new GeometryFactory()).getCentroid();
-      centroid.setSRID(GlobalConstants.SRID_2154);
+      centroid.setSRID(GlobalConstants.SRID_PARAM);
       alerte.setGeometrie(centroid);
 
       // Récupération des fichiers

@@ -652,27 +652,4 @@ public class CriseEvenementController {
     }
     s.addStatement(statement);
   }
-  /*
-      TODO cva retirer ces lignes :
-
-  Droits d'accès aux catégories d'événements (exemple) :
-    insert into remocra.type_crise_evenement_droit(profil_droit, categorie_evenement) select 20, id from remocra.type_crise_categorie_evenement;
-
-  GeoServer :
-  Création couche WMS remocra:v_crise_evenement :
-  select
-    ce.geometrie,
-    ce.id, ce.crise, ce.nature_evenement, ce.constat, ce.cloture, ce.tags, ce.origine, ce.importance,
-    (select (c.cloture is null) from remocra.crise c where c.id = ce.crise) as crise_active,
-    (select creation from remocra.crise_suivi cs where cs.evenement=ce.id order by creation desc limit 1) as dernier_message,
-    (select tcne.categorie_evenement from remocra.type_crise_nature_evenement tcne where tcne.id=ce.nature_evenement) as categorie_evenement
-  from remocra.crise_evenement ce
-
-  Puis :
-  * geometrie : 2154
-  * id : identifiant
-
-  "SRC natif" et "SRC des données" : EPSG:2154
-      */
-
 }

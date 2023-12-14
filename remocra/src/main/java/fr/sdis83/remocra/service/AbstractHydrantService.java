@@ -202,7 +202,7 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
                   + "where ST_Distance(h.geometrie, st_pointFromText('"
                   + itemFilter.getValue().toString()
                   + "',"
-                  + GlobalConstants.SRID_2154
+                  + GlobalConstants.SRID_PARAM
                   + ")) < 500",
               Long.class);
       List<Long> resultList = itemTypedQuery.getResultList();
@@ -266,7 +266,7 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
   public T setUpInformation(T attached, Map<String, MultipartFile> files, Object... params)
       throws Exception {
     // traitement géométrie
-    attached.getGeometrie().setSRID(GlobalConstants.SRID_2154);
+    attached.getGeometrie().setSRID(GlobalConstants.SRID_PARAM);
 
     // date de modification
     attached.setDateModification(new Date());
