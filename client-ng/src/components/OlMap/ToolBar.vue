@@ -48,6 +48,7 @@ import Stroke from 'ol/style/Stroke'
 import Point from 'ol/geom/Point'
 import CircleStyle from 'ol/style/Circle'
 import MouseWheelZoom from 'ol/interaction/MouseWheelZoom';
+import { getSrid } from '../utils/FunctionsUtils.js'
 
 export default {
   name: 'ToolBar',
@@ -71,6 +72,8 @@ export default {
         idx: -1,
         btns: false
       },
+
+      srid: null,
 
       //itemDisabled: {},
       activeButton: null,
@@ -310,8 +313,8 @@ export default {
     });
   },
 
-  mounted: function() {
-
+  mounted: async function() {
+    this.srid = await getSrid();
   },
 
   destroyed() {
@@ -460,11 +463,11 @@ export default {
       selectionLayer.getSource().clear();
       _.forEach(this.selectedFeatures, feature => {
         var circle = new Feature(new Circle(
-            OlProj.transform(feature.geometry.coordinates, 'EPSG:2154', 'EPSG:3857'),
+            OlProj.transform(feature.geometry.coordinates, 'EPSG:'+this.srid, 'EPSG:3857'),
         ));
 
         circle.setStyle(new Style({
-          geometry: new Point(OlProj.transform(feature.geometry.coordinates, 'EPSG:2154', 'EPSG:3857')),
+          geometry: new Point(OlProj.transform(feature.geometry.coordinates, 'EPSG:'+this.srid, 'EPSG:3857')),
           image: new CircleStyle({
             radius: 12,
             stroke: new Stroke({

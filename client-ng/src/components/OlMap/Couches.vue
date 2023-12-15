@@ -90,6 +90,7 @@ import WMTS from 'ol/source/WMTS';
 import OSM from 'ol/source/OSM.js'
 import GeoJSON from 'ol/format/GeoJSON.js'
 import * as OlProj from 'ol/proj'
+import { getSrid } from '../utils/FunctionsUtils.js'
 
 import {
   Stroke,
@@ -124,7 +125,8 @@ export default {
       jsonData: null,
       layers: [],
       layersGroups: [],
-      coucheActive: null
+      coucheActive: null,
+      srid: null,
     }
   },
 
@@ -179,7 +181,8 @@ export default {
     this.$root.$options.bus.$off(eventTypes.OLMAP_COUCHES_REFRESHLAYER);
   },
 
-  mounted: function() {
+  mounted: async function() {
+    this.srid = await getSrid();
     //this.dragElement(document.getElementById("cardCouche"));
     this.map.addLayer(this.createWorkingLayer('workingLayer'));
     this.map.addLayer(this.createWorkingLayer('selectionLayer'));
@@ -418,10 +421,10 @@ export default {
       * @param coordonnées Les coordonnées du point
       */
     getFeaturesFromPoint(evtRetour, coordonnees) {
-      coordonnees = OlProj.transform(coordonnees, 'EPSG:3857', 'EPSG:2154');
-      var radius = Math.abs(20-this.map.getView().getZoom())
-      var layer = _.find(this.layers, l => l.get('code') == this.coucheActive);
-      var viewParams = _.find(this.couchesViewParams, f => f.layer == layer.get('code'));
+      coordonnees = OlProj.transform(coordonnees, 'EPSG:3857', 'EPSG:'+this.srid);
+      let radius = Math.abs(20-this.map.getView().getZoom())
+      let layer = _.find(this.layers, l => l.get('code') == this.coucheActive);
+      let viewParams = _.find(this.couchesViewParams, f => f.layer == layer.get('code'));
       axios.get('/remocra/geoserver/remocra/wfs', {
         params: {
           service: 'wfs',
@@ -447,9 +450,9 @@ export default {
     },
 
     getFeaturesFromBBOX(evtRetour, bbox) {
-      bbox = OlProj.transformExtent(bbox, 'EPSG:3857', 'EPSG:2154');
-      var layer = _.find(this.layers, l => l.get('code') == this.coucheActive);
-      var viewParams = _.find(this.couchesViewParams, f => f.layer == layer.get('code'));
+      bbox = OlProj.transformExtent(bbox, 'EPSG:3857', 'EPSG:'+this.srid);
+      let layer = _.find(this.layers, l => l.get('code') == this.coucheActive);
+      let viewParams = _.find(this.couchesViewParams, f => f.layer == layer.get('code'));
       axios.get('/remocra/geoserver/remocra/wfs', {
         params: {
           service: 'wfs',

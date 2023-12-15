@@ -10,12 +10,12 @@
   </div>
   <div class="row">
     <div class="col-md-6">
-      <b-form-group :label="systeme == 2154 ? 'X' : 'Longitude: '" label-for="domaine" label-cols-md="2">
+      <b-form-group :label="systeme != 4326 && systeme != -1 ? 'X' : 'Longitude: '" label-for="domaine" label-cols-md="2">
         <b-form-input id="longitude" v-model="longitude" type="text" size="sm" :disabled="utilisateurDroits.indexOf('HYDRANTS_DEPLACEMENT_C') == -1" v-on:change="$emit('onCoordsChange', longitude, latitude)" required></b-form-input>
       </b-form-group>
     </div>
     <div class="col-md-6">
-      <b-form-group :label="systeme == 2154 ? 'Y' : 'Latitude: '" label-for="domaine" label-cols-md="2">
+      <b-form-group :label="systeme != 4326 && systeme != -1 ? 'Y' : 'Latitude: '" label-for="domaine" label-cols-md="2">
         <b-form-input id="latitude" v-model="latitude" type="text" size="sm" :disabled="utilisateurDroits.indexOf('HYDRANTS_DEPLACEMENT_C') == -1" v-on:change="$emit('onCoordsChange', longitude, latitude)" required></b-form-input>
       </b-form-group>
     </div>
@@ -86,6 +86,8 @@
 import axios from 'axios'
 import _ from 'lodash'
 import SearchVoie from './SearchVoie.vue'
+import { getSrid } from './utils/FunctionsUtils'
+
 export default {
   name: 'FicheLocalisation',
   components: {
@@ -100,6 +102,7 @@ export default {
       comboVoie: [],
       comboCarrefour: [],
       systeme: null,
+      srid: null,
       latitude: '',
       longitude: '',
       etats: {
@@ -130,14 +133,16 @@ export default {
       return this.utilisateurDroits.indexOf('HYDRANTS_ADRESSE_C') == -1
     },
   },
-  mounted: function() {
+  mounted: async function() {
+    this.srid = await getSrid();
+    
     this.$emit('resolveForeignKey', ['commune', 'domaine', 'niveau'])
     // Récupération des communes selon la position du PEI
     // les communes sont triées de la plus proche à la plus éloignée
     axios.get('/remocra/communes/xy', {
       params: {
         wkt: this.geometrie,
-        srid: 2154,
+        srid: this.srid,
       },
     }).then(response => {
       _.forEach(response.data.data, item => {
@@ -159,8 +164,8 @@ export default {
     this.$emit('getComboData', this, 'comboNiveau', '/remocra/typehydrantniveau.json', null, 'id', 'nom', 'Aucun')
     //Combo des systèmes de coordonnées
     this.comboSysteme.push({
-      text: 'Lambert 93',
-      value: 2154,
+      text: SRID == 2154 ?'Lambert 93' : SRID === 2972 ? 'RGFG95' : '',
+      value: SRID,
     }, {
       text: 'WGS84 degrés décimaux',
       value: 4326,
@@ -168,7 +173,7 @@ export default {
       text: 'WGS84 degrés sexagésimaux',
       value: -1,
     })
-    this.systeme = 2154
+    this.systeme = this.srid;
     this.onSystemeChange()
   },
   methods: {

@@ -297,6 +297,7 @@ import Process from './Process.vue'
 import MapFeatures from './MapFeatures.vue'
 import TableauDonnees from './TableauDonnees.vue'
 import Indicateur from './Indicateur.vue'
+import { getSrid } from './utils/FunctionsUtils.js';
 
 const IGN_URL = 'https://data.geopf.fr/wmts'
 
@@ -337,9 +338,9 @@ export default {
       oldSelectedFeatureGeom: null,
       modalShow: false,
       workingLayer: null,
-      sridL93: 2154,
+      srid: null,
       proj: null,
-      epsgL93: null,
+      epsg: null,
       selectedRuler: null,
       select: null,
       modeAffichage: 'OPERATIONNEL',
@@ -399,7 +400,8 @@ export default {
       oldLegend: []
     }
   },
-  mounted() {
+  mounted: async function() {
+    this.srid = await getSrid();
     this.map = new Map({
       target: 'map' + this.criseId,
       layers: [],
@@ -427,8 +429,8 @@ export default {
       console.error('cleign', error)
     })
     this.proj = this.map.getView().getProjection()
-    this.epsgL93 = 'EPSG:' + this.sridL93
-    proj4.defs(this.epsgL93, '+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs')
+    this.epsg = 'EPSG:' + this.srid
+    proj4.defs(this.epsg, '+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs')
     register(proj4)
     this.constructMap()
     _.delay(this.map.updateSize.bind(this.map), 10)
@@ -861,7 +863,7 @@ export default {
           layers: 'remocra:v_crise_evenement',
           url: '/remocra/evenements/wms',
           sld: null,
-          projection: 'EPSG:2154',
+          projection: 'EPSG:'+this.srid,
           styles: [{
             id: 'crise',
             libelle: 'Crise',
@@ -1142,9 +1144,9 @@ export default {
       })
       this.map.addInteraction(draw)
       draw.on('drawend', function(evt) {
-        var geomL93 = evt.feature.getGeometry().transform(self.proj, Proj.get(self.epsgL93))
-        var wktGeomL93 = 'srid=' + self.sridL93 + ';' + new WKT().writeGeometry(geomL93)
-        self.$refs['newEvenement'].createCartoEvent(self.criseId, natureId, wktGeomL93)
+        let geom = evt.feature.getGeometry().transform(self.proj, Proj.get(self.epsg))
+        let wktGeom = 'srid=' + self.srid + ';' + new WKT().writeGeometry(geom)
+        self.$refs['newEvenement'].createCartoEvent(self.criseId, natureId, wktGeom)
         self.map.removeInteraction(draw)
       })
       snap = new Snap({
@@ -1267,11 +1269,11 @@ export default {
       })
     },
     addToWorkingLayer(selectedFeature) {
-      var geom = selectedFeature.getGeometry().transform(Proj.get(this.epsgL93), this.proj)
+      let geom = selectedFeature.getGeometry().transform(Proj.get(this.epsg), this.proj)
       selectedFeature.setGeometry(geom)
       this.map.getLayers().forEach(function(layer) {
         if (layer.get('name') !== undefined && layer.get('name') === 'workingLayer') {
-          var workingFeature = selectedFeature.clone()
+          let workingFeature = selectedFeature.clone()
           workingFeature.id_ = selectedFeature.id_
           layer.getSource().addFeature(workingFeature)
         }
@@ -1332,9 +1334,9 @@ export default {
       })
     },
     formatGeomFromMap(geom) {
-      var geomL93 = geom.transform(this.proj, Proj.get(this.epsgL93))
-      var wktGeomL93 = 'srid=' + this.sridL93 + ';' + new WKT().writeGeometry(geomL93)
-      return wktGeomL93
+      let geomProj = geom.transform(this.proj, Proj.get(this.epsg))
+      let wktGeom = 'srid=' + this.srid + ';' + new WKT().writeGeometry(geomProj)
+      return wktGeom
     },
     openAttributes(isActive) {
       this.desactivateControls()
@@ -1345,11 +1347,11 @@ export default {
       }
     },
     addStampedCard() {
-      var self = this
-      var extent = this.map.getView().calculateExtent()
-      extent = Proj.transformExtent(extent, this.map.getView().getProjection().getCode(), Proj.get(this.epsgL93))
+      let self = this
+      let extent = this.map.getView().calculateExtent()
+      extent = Proj.transformExtent(extent, this.map.getView().getProjection().getCode(), Proj.get(this.epsg))
       this.map.once('postcompose', function(event) {
-        var canvas = event.context.canvas
+        let canvas = event.context.canvas
         self.$refs.stampedCard.makeCard(canvas, extent)
       })
       this.map.renderSync()
@@ -1489,7 +1491,7 @@ export default {
     },
     zoomToGeom(geometrie) {
       let geom = new WKT().readGeometry(geometrie, {
-        dataProjection: this.epsgL93,
+        dataProjection: this.epsg,
         featureProjection: this.proj
       })
       if (geom.getType() === 'Point') {
@@ -1503,7 +1505,7 @@ export default {
     },
     zoomToExtent(geometrie) {
       this.map.getView().fit(new GeoJSON().readGeometry(geometrie, {
-        dataProjection: this.epsgL93,
+        dataProjection: this.epsg,
         featureProjection: this.proj
       }).getExtent(), {
         nearest: true

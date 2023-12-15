@@ -40,6 +40,7 @@ import Couches from './Couches.vue'
 import ModaleInfo from './ModaleInfo.vue'
 import WKT from 'ol/format/WKT.js'
 import * as eventTypes from '../../bus/event-types.js'
+import { getSrid } from '../utils/FunctionsUtils.js'
 
 export default {
   name: 'OlMap',
@@ -72,9 +73,9 @@ export default {
         default: {}
       },
       mapCreated: false,
-      sridL93: 2154,
+      srid: null,
       proj: null,
-      epsgL93: null,
+      epsg: null,
       extent: [
         256805.64470225616,
         6249216.947446961,
@@ -99,7 +100,9 @@ export default {
     this.$root.$options.bus.$off(eventTypes.OLMAP_SHOW_MODALEINFO);
   },
 
-  mounted: function() {
+  mounted: async function() {
+    this.srid = await getSrid();
+
     this.map = new Map({
       target: 'map',
       controls: defaultControls({
@@ -122,8 +125,8 @@ export default {
     });
 
     this.proj = this.map.getView().getProjection()
-    this.epsgL93 = 'EPSG:' + this.sridL93;
-    proj4.defs(this.epsgL93, '+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs')
+    this.epsg = 'EPSG:' + this.srid;
+    proj4.defs(this.epsg, '+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs')
     register(proj4);
     this.map.getView().fit(this.extent);
     this.mapCreated = true;
@@ -137,7 +140,7 @@ export default {
     // Zoom sur une géométrie donnée
     zoomToGeom(geometrie) {
       let geom = new WKT().readGeometry(geometrie, {
-        dataProjection: this.epsgL93,
+        dataProjection: this.epsg,
         featureProjection: this.proj
       })
       if (geom.getType() === 'Point') {

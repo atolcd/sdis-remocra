@@ -54,6 +54,7 @@ import {Style, Circle as CircleStyle, Stroke, Text, Fill} from 'ol/style'
 import Translate from 'ol/interaction/Translate'
 import Collection from 'ol/Collection'
 import WKT from 'ol/format/WKT'
+import { getSrid } from '../utils/FunctionsUtils.js'
 
 export default {
   name: 'OlMapEtude',
@@ -94,6 +95,8 @@ export default {
     return {
       olMap : null,
       toolBar: null,
+
+      srid: null,
       
       categorieProcess: GlobalConstants.COUVERTURE_HYDRAULIQUE,
       idHydrantProjet: null,
@@ -132,7 +135,9 @@ export default {
       this.$root.$options.bus.$off(eventTypes.OLMAP_COUCHES_ONLAYERSLOADED);
   },
 
-  mounted: function() {
+  mounted: async function() {
+    this.srid = await getSrid();
+
     this.olMap = this.$refs['olMap'];
     axios.get('/remocra/etudes/etendu/' + this.idEtude).then(response => {
       // Si on a une ou plusieurs communes, on zoom dessus
@@ -226,11 +231,11 @@ export default {
           if(state) {
             var layer = this.olMap.getLayerById('deplacementLayer');
             this.featureMovePei = new Feature(new Circle(
-                OlProj.transform(this.selectedFeatures[0].geometry.coordinates, 'EPSG:2154', 'EPSG:3857'),
+                OlProj.transform(this.selectedFeatures[0].geometry.coordinates, 'EPSG:'+this.srid, 'EPSG:3857'),
             ));
 
             this.featureMovePei.setStyle(new Style({
-              geometry: () => { return new Point(OlProj.transform(this.selectedFeatures[0].geometry.coordinates, 'EPSG:2154', 'EPSG:3857'))},
+              geometry: () => { return new Point(OlProj.transform(this.selectedFeatures[0].geometry.coordinates, 'EPSG:'+this.srid, 'EPSG:3857'))},
               zIndex: 1000000,
               image: new CircleStyle({
                 radius: 6,
@@ -248,7 +253,7 @@ export default {
             });
 
             this.interactionMovePei.on("translateend", e => {
-              var coords = OlProj.transform(e.features.getArray()[0].getGeometry().flatCoordinates, 'EPSG:3857', 'EPSG:2154');
+              var coords = OlProj.transform(e.features.getArray()[0].getGeometry().flatCoordinates, 'EPSG:3857', 'EPSG:'+this.srid);
               var formData = new FormData();
               formData.append("peiProjet", JSON.stringify({
                 id: this.selectedFeatures[0].properties.id,
@@ -438,7 +443,7 @@ export default {
       var workingLayer = this.olMap.getLayerById('workingLayer');
       _.forEach(workingLayer.getSource().getFeatures(), feature => {
         if(feature.getGeometryName() === 'newPeiPosition') {
-          var coords = OlProj.transform(feature.getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:2154');
+          var coords = OlProj.transform(feature.getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:'+this.srid);
           var formData = new FormData();
           formData.append("peiProjet", JSON.stringify({
             id: this.selectedFeatures[0].properties.id,
@@ -470,11 +475,11 @@ export default {
       * Clic sur la carte pour trouver le PEI le plus proche
       */
     handleMapClickFindClosestPei() {
-      var workingLayer = this.olMap.getLayerById('workingLayer');
+      let workingLayer = this.olMap.getLayerById('workingLayer');
       _.forEach(workingLayer.getSource().getFeatures(), feature => {
         if(feature.getGeometryName() === 'closestPei') {
-          var coordsClic = OlProj.transform(feature.getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:2154');
-          var formData = new FormData();
+          let coordsClic = OlProj.transform(feature.getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:'+this.srid);
+          let formData = new FormData();
           formData.append("data", JSON.stringify({
             idEtude: this.idEtude,
             longitude: coordsClic[0],
@@ -488,9 +493,9 @@ export default {
             if(response.data && response.data.data) {
 
               workingLayer.getSource().clear();
-              var wktChemin = response.data.data.wktGeometrieChemin;
-              var wktPei = response.data.data.wktGeometriePei;
-              var distance = response.data.data.distance;
+              let wktChemin = response.data.data.wktGeometrieChemin;
+              let wktPei = response.data.data.wktGeometriePei;
+              let distance = response.data.data.distance;
 
               // Affichage des features
               this.cheminPlusCourtFeaturePei(workingLayer, wktPei, distance);
@@ -594,7 +599,7 @@ export default {
 
     cheminPlusCourtFeaturePei(workingLayer, wktPei, distance) {
       var featurePei = (new WKT()).readFeature(wktPei, {
-        dataProjection: 'EPSG:2154',
+        dataProjection: 'EPSG:'+this.srid,
         featureProjection: 'EPSG:3857',
       });
 
@@ -629,7 +634,7 @@ export default {
     cheminPlusCourtFeatureChemin(workingLayer, wktChemin) {
       var featureChemin = (new WKT()).readFeature(wktChemin);
       var path = new Feature({
-        geometry: new MultiLineString(featureChemin.getGeometry().getCoordinates()).transform('EPSG:2154','EPSG:3857'),
+        geometry: new MultiLineString(featureChemin.getGeometry().getCoordinates()).transform('EPSG:'+this.srid,'EPSG:3857'),
         name: 'chemin'
       });
 
@@ -644,9 +649,9 @@ export default {
     },
 
     cheminPlusCourtFeatureClic(workingLayer, coordsClic) {
-      var pointClic = new Feature(new Point(OlProj.transform(coordsClic, 'EPSG:2154', 'EPSG:3857')));
+      let pointClic = new Feature(new Point(OlProj.transform(coordsClic, 'EPSG:'+this.srid, 'EPSG:3857')));
       pointClic.setStyle(new Style({
-        geometry: new Point(OlProj.transform(coordsClic, 'EPSG:2154', 'EPSG:3857')),
+        geometry: new Point(OlProj.transform(coordsClic, 'EPSG:'+this.srid, 'EPSG:3857')),
         image: new CircleStyle({
           radius: 6,
           stroke: new Stroke({
