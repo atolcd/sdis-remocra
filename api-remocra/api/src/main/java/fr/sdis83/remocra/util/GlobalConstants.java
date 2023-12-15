@@ -87,7 +87,7 @@ public class GlobalConstants {
     }
   }
 
-  public static final Integer SRID_2154 = 2154;
+  public static Integer SRID_PARAM = 2154;
   public static final Integer SRID_4326 = 4326;
 
   public static final String DOSSIER_DOC_HYDRANT = "DOSSIER_DOC_HYDRANT";
@@ -112,4 +112,7 @@ public class GlobalConstants {
   public static final String PARAMETRE_CARACTERISTIQUE_PIBI = "CARACTERISTIQUE_PIBI";
 
   public static final String PARAMETRE_CARACTERISTIQUE_PENA = "CARACTERISTIQUE_PENA";
+
+  // Clé du paramètre SRID stocké dans la table remocra.parametre
+  public static final String CLE_SRID = "SRID";
 }

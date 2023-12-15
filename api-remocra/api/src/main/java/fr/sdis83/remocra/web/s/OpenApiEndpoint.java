@@ -1,8 +1,11 @@
 package fr.sdis83.remocra.web.s;
 
+import fr.sdis83.remocra.repository.ParametreRepository;
+import fr.sdis83.remocra.util.GlobalConstants;
 import io.swagger.v3.jaxrs2.integration.resources.BaseOpenApiResource;
 import io.swagger.v3.oas.annotations.Operation;
 import javax.annotation.security.PermitAll;
+import javax.inject.Inject;
 import javax.servlet.ServletConfig;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -21,6 +24,8 @@ public class OpenApiEndpoint extends BaseOpenApiResource {
 
   @Context Application app;
 
+  @Inject ParametreRepository parametreRepository;
+
   @GET
   @Path("openapi.{type:json|yaml}")
   @Produces({MediaType.APPLICATION_JSON, "application/yaml"})
@@ -29,6 +34,11 @@ public class OpenApiEndpoint extends BaseOpenApiResource {
   public Response getOpenApi(
       @Context HttpHeaders headers, @Context UriInfo uriInfo, @PathParam("type") String type)
       throws Exception {
+    // Au lancement de l'API on charge le SRID renseigné dans la base
+    GlobalConstants.SRID_PARAM =
+        Integer.valueOf(
+            parametreRepository.getParametre(GlobalConstants.CLE_SRID).getValeurParametre());
+
     return super.getOpenApi(headers, config, app, uriInfo, type);
   }
 

@@ -18,7 +18,7 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE_DECI
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NIVEAU;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_RESEAU_ALIMENTATION;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_RESEAU_CANALISATION;
-import static fr.sdis83.remocra.util.GlobalConstants.SRID_2154;
+import static fr.sdis83.remocra.util.GlobalConstants.SRID_PARAM;
 import static fr.sdis83.remocra.util.GlobalConstants.TypeHydrant;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -519,7 +519,7 @@ public class PeiRepository {
                     "ST_setsrid(ST_GeomFromText(st_asText('"
                         + geometry
                         + "')), "
-                        + SRID_2154
+                        + SRID_PARAM
                         + ")"))
         .set(HYDRANT.ORGANISME, h.getOrganisme())
         .set(HYDRANT.UTILISATEUR_MODIFICATION, h.getUtilisateurModification())

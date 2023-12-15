@@ -5,6 +5,7 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.*;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Commune;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ZoneSpeciale;
+import fr.sdis83.remocra.util.GlobalConstants;
 import javax.inject.Inject;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jooq.DSLContext;
@@ -568,8 +569,10 @@ public class NumeroUtilRepository {
           .select(ZONE_SPECIALE.fields())
           .from(ZONE_SPECIALE)
           .where(
-              "ST_Contains({0}, st_pointfromtext({1},2154))",
-              ZONE_SPECIALE.GEOMETRIE, hydrant.getGeometrie().toString())
+              "ST_Contains({0}, st_pointfromtext({1},{2}))",
+              ZONE_SPECIALE.GEOMETRIE,
+              hydrant.getGeometrie().toString(),
+              GlobalConstants.SRID_PARAM)
           .limit(1)
           .fetchOneInto(ZoneSpeciale.class);
     } catch (Exception e) {

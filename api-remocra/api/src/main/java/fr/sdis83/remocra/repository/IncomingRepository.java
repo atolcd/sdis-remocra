@@ -10,8 +10,8 @@ import static fr.sdis83.remocra.db.model.incoming.Tables.NEW_HYDRANT;
 import static fr.sdis83.remocra.db.model.incoming.Tables.TOURNEE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.VOIE;
-import static fr.sdis83.remocra.util.GlobalConstants.SRID_2154;
 import static fr.sdis83.remocra.util.GlobalConstants.SRID_4326;
+import static fr.sdis83.remocra.util.GlobalConstants.SRID_PARAM;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
@@ -70,7 +70,7 @@ public class IncomingRepository {
                                 + "'), "
                                 + SRID_4326
                                 + "), "
-                                + SRID_2154
+                                + SRID_PARAM
                                 + ")"))
                 .set(NEW_HYDRANT.CODE_NEW_HYDRANT, code)
                 .set(NEW_HYDRANT.ID_COMMUNE, idCommune)
@@ -97,7 +97,7 @@ public class IncomingRepository {
     Geometry geometry = null;
     try {
       geometry = fromText.read(wkt);
-      geometry.setSRID(SRID_2154);
+      geometry.setSRID(SRID_PARAM);
     } catch (ParseException e) {
       throw new RuntimeException("Not a WKT string:" + wkt);
     }
@@ -118,7 +118,7 @@ public class IncomingRepository {
             "ST_CONTAINS({0}, st_transform(st_setsrid(ST_GeomFromText({1}), "
                 + SRID_4326
                 + "), "
-                + SRID_2154
+                + SRID_PARAM
                 + "))",
             COMMUNE.GEOMETRIE,
             geometrie.toText())
@@ -133,7 +133,7 @@ public class IncomingRepository {
             "ST_CONTAINS({0}, st_transform(st_setsrid(ST_GeomFromText({1}), "
                 + SRID_4326
                 + "), "
-                + SRID_2154
+                + SRID_PARAM
                 + "))",
             VOIE.GEOMETRIE,
             geometrie.toText())
