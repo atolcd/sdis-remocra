@@ -110,9 +110,8 @@ public class UtilisateurService {
 
     Utilisateur utilisateur = getCurrentUtilisateur();
 
-    return ProfilOrganismeUtilisateurDroit.findByOrganismeUtilisateur(
-            utilisateur.getOrganisme().getProfilOrganisme(), utilisateur.getProfilUtilisateur())
-        .getProfilDroit();
+    return ProfilOrganismeUtilisateurDroit.getProfilDroitByOrganismeUtilisateur(
+        utilisateur.getOrganisme().getProfilOrganisme(), utilisateur.getProfilUtilisateur());
   }
 
   /**

@@ -43,23 +43,23 @@ public class ProfilOrganismeUtilisateurDroit {
 
   @NotNull @ManyToOne private ProfilDroit profilDroit;
 
-  public static ProfilOrganismeUtilisateurDroit findByOrganismeUtilisateur(
+  public static ProfilDroit getProfilDroitByOrganismeUtilisateur(
       ProfilOrganisme profilOrganisme, ProfilUtilisateur profilUtilisateur)
       throws BusinessException {
 
     EntityManager em = ProfilOrganismeUtilisateurDroit.entityManager();
-    TypedQuery<ProfilOrganismeUtilisateurDroit> q =
+    TypedQuery<ProfilDroit> q =
         em.createQuery(
-            "SELECT o FROM ProfilOrganismeUtilisateurDroit AS o WHERE o.profilUtilisateur = :pu AND o.profilOrganisme = :po",
-            ProfilOrganismeUtilisateurDroit.class);
+            "SELECT o.profilDroit FROM ProfilOrganismeUtilisateurDroit AS o WHERE o.profilUtilisateur = :pu AND o.profilOrganisme = :po",
+            ProfilDroit.class);
     q.setParameter("pu", profilUtilisateur);
     q.setParameter("po", profilOrganisme);
-    ProfilOrganismeUtilisateurDroit singleResult;
+    ProfilDroit singleResult;
     try {
       singleResult = q.getSingleResult();
     } catch (EmptyResultDataAccessException ex) {
       throw new BusinessException(
-          "Aucun profil n'a été trouvé pour le profil organisme : "
+          "Aucun ProfilDroit n'a été trouvé pour le profil organisme : "
               + profilOrganisme.getNom()
               + " et le profil utilisateur : "
               + profilUtilisateur.getNom());

@@ -46,9 +46,8 @@ public class ProfileProvider {
       throws BusinessException {
 
     ProfilDroit profil =
-        ProfilOrganismeUtilisateurDroit.findByOrganismeUtilisateur(
-                profilOrganisme, profilUtilisateur)
-            .getProfilDroit();
+        ProfilOrganismeUtilisateurDroit.getProfilDroitByOrganismeUtilisateur(
+            profilOrganisme, profilUtilisateur);
 
     if (profil == null) {
 
