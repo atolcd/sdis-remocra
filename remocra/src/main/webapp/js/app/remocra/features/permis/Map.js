@@ -97,7 +97,7 @@ Ext.define('Sdis.Remocra.features.permis.Map', {
                         }
                         var wktFormat = new OpenLayers.Format.WKT( {
                             internalProjection: this.map.getProjection(),
-                            externalProjection: new OpenLayers.Projection('EPSG:2154')
+                            externalProjection: new OpenLayers.Projection('EPSG:'+SRID)
                         });
                         var str = wktFormat.write(feature);
                         permis.set('geometrie', str);
@@ -355,7 +355,7 @@ Ext.define('Sdis.Remocra.features.permis.Map', {
         
         var feature = new OpenLayers.Format.WKT({
             internalProjection: this.map.getProjection(),
-            externalProjection: new OpenLayers.Projection('EPSG:2154')
+            externalProjection: new OpenLayers.Projection('EPSG:'+SRID)
         }).read(permisModel.get('geometrie'));
         feature.attributes['model'] = permisModel;
         
@@ -424,7 +424,7 @@ Ext.define('Sdis.Remocra.features.permis.Map', {
     setXYFilter: function(feature) {
         var wktFormat = new OpenLayers.Format.WKT({
             internalProjection: this.map.getProjection(),
-            externalProjection: new OpenLayers.Projection('EPSG:2154')
+            externalProjection: new OpenLayers.Projection('EPSG:'+SRID)
         });
         this.permisPanel.setXYFilter(wktFormat.write(feature));
     }

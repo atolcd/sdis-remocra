@@ -88,7 +88,7 @@ Ext.define('Sdis.Remocra.features.adresses.Map', {
                         var i;
                         var wktFormat = new OpenLayers.Format.WKT({
                             internalProjection: mapProjection,
-                            externalProjection: new OpenLayers.Projection('EPSG:2154')
+                            externalProjection: new OpenLayers.Projection('EPSG:'+SRID)
                         });
                         for (i=0 ; i<this.workingLayer.features.length ; i++) {
                             var feature = this.workingLayer.features[i];

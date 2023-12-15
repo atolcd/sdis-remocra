@@ -100,7 +100,7 @@ Ext.define('Sdis.Remocra.features.adresses.CreateAlerte', {
                             var format = new OpenLayers.Format.GeoJSON({
                                 ignoreExtraDims: true,
                                 internalProjection: mapProjection,
-                                externalProjection: new OpenLayers.Projection('EPSG:2154')
+                                externalProjection: new OpenLayers.Projection('EPSG:'+SRID)
                             });
                             var centroidFeat = format.parseFeature(geojson);
                             this.ownerCt.fireEvent('alerteCreated', centroidFeat);

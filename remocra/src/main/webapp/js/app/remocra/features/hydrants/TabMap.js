@@ -892,7 +892,7 @@ Ext.define('Sdis.Remocra.features.hydrants.TabMap', {
 
                       // Conversion des coordonnées au format pseudo-mercator
                       var point = new OpenLayers.LonLat(x, y).transform(
-                          new OpenLayers.Projection("EPSG:2154"),
+                          new OpenLayers.Projection("EPSG:"+SRID),
                           new OpenLayers.Projection("EPSG:3857")
                       );
 

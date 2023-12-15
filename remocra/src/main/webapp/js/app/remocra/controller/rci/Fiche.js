@@ -207,7 +207,7 @@ Ext.define('Sdis.Remocra.controller.rci.Fiche', {
             var wktFormat = new OpenLayers.Format.WKT();
             var wkt = "POINT(" + coordX + " " + coordY + ")";
             var geom = wktFormat.read(wkt).geometry;
-            geom.transform(Sdis.Remocra.widget.map.EPSG4326, 'EPSG:2154');
+            geom.transform(Sdis.Remocra.widget.map.EPSG4326, 'EPSG:'+SRID);
             
             fiche.record.set('geometrie', 'POINT('+geom.x + ' '+geom.y+')');
             this.cascadeXY();
@@ -255,7 +255,7 @@ Ext.define('Sdis.Remocra.controller.rci.Fiche', {
         
         var wkt = fiche.record.get('geometrie');
         var geom = new OpenLayers.Format.WKT().read(wkt).geometry;
-        Sdis.Remocra.model.Commune.loadByXY(geom.x, geom.y, '2154', {
+        Sdis.Remocra.model.Commune.loadByXY(geom.x, geom.y, SRID, {
             scope: this,
             success: function(record) {
                 if (!record) {
@@ -280,7 +280,7 @@ Ext.define('Sdis.Remocra.controller.rci.Fiche', {
             url: Sdis.Remocra.util.Util.withBaseUrl('../hydrantspena/dfci'),
             params: {
                 wkt: wkt,
-                srid: '2154'
+                srid: SRID
             },
             success: function(response) {
                 var result = Ext.decode(response.responseText);
@@ -379,7 +379,7 @@ Ext.define('Sdis.Remocra.controller.rci.Fiche', {
             var wktFormat = new OpenLayers.Format.WKT();
             var result = wktFormat.read(wkt);
             var geom = result.geometry;
-            geom.transform('EPSG:2154', Sdis.Remocra.widget.map.EPSG4326);
+            geom.transform('EPSG:'+SRID, Sdis.Remocra.widget.map.EPSG4326);
             this.updDd(geom.x, geom.y);
             this.updDm(geom.x, geom.y);
             this.updDms(geom.x, geom.y);

@@ -20,7 +20,7 @@ Ext.define('Sdis.Remocra.features.cartographie.PreviewMap', {
         this.map = new OpenLayers.Map(mapNode, {
             controls : [],
             allOverlays : true,
-            projection : 'EPSG:2154',
+            projection : 'EPSG:'+SRID,
             maxExtent : new OpenLayers.Bounds(-25, -20, 30, 20),
             theme : false // Evite style.css quand module serveur PageSpeed
         });

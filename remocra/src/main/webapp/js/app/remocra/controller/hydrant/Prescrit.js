@@ -110,7 +110,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Prescrit', {
                     var mapProjection = this.getMap().map.getProjection();
                     var wktFormat = new OpenLayers.Format.WKT({
                         internalProjection: mapProjection,
-                        externalProjection: new OpenLayers.Projection('EPSG:2154')
+                        externalProjection: new OpenLayers.Projection('EPSG:'+SRID)
                     });
                     var str = wktFormat.write(event.feature);
                     hydrant.set('geometrie', str);
@@ -140,7 +140,7 @@ Ext.define('Sdis.Remocra.controller.hydrant.Prescrit', {
                 var wktFormat = new OpenLayers.Format.WKT();
                 var result = wktFormat.read(wkt);
                 var geom = result.geometry;
-                geom.transform('EPSG:2154', Sdis.Remocra.widget.map.EPSG4326);
+                geom.transform('EPSG:'+SRID, Sdis.Remocra.widget.map.EPSG4326);
                 
 
                 var x = Sdis.Remocra.util.Util.getFormattedCoord('x', geom.x, COORDONNEES_FORMAT_AFFICHAGE, 5);

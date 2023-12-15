@@ -189,7 +189,7 @@ Ext.define('Sdis.Remocra.features.permis.FichePermis', {
                             var wkt = decoded.data.geometrie;
                             var centroidFeat = new OpenLayers.Format.WKT({
                                 internalProjection: mapProjection,
-                                externalProjection: new OpenLayers.Projection('EPSG:2154')
+                                externalProjection: new OpenLayers.Projection('EPSG:'+SRID)
                             }).read(wkt);
                             
                             this.reset(); // Panneau des documents

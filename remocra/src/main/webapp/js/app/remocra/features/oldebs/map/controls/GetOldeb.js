@@ -62,7 +62,7 @@ Sdis.Remocra.features.oldebs.map.controls.GetOldeb = OpenLayers.Class(OpenLayers
         // Oldebs trouvées
         // Conversion des géometries dans le bon format
         for (i = 0; i < features.length; i++) {
-            features[i].geometry.transform('EPSG:2154', this.map.getProjection());
+            features[i].geometry.transform('EPSG:'+SRID, this.map.getProjection());
         }
         this.events.triggerEvent('oldeb_selected', {
             features: features

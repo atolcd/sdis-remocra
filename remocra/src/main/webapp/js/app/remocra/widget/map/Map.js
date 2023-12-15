@@ -40,6 +40,7 @@ Sdis.Remocra.widget.map.WMTS_RESOLUTIONS_3857 =  [
     0.14929107086948493,
     0.07464553543474241
 ];
+
 Sdis.Remocra.widget.map.TMS_TILEORIGIN_3857 = new OpenLayers.LonLat(-20037508.34, -20037508.34);
 Sdis.Remocra.widget.map.TMS_RESOLUTIONS_3857 = Sdis.Remocra.widget.map.WMTS_RESOLUTIONS_3857;
 
@@ -171,10 +172,11 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
         this.map = new OpenLayers.Map(mapNode, {
             controls: [],
             allOverlays: false,
-            projection: 'EPSG:2154',
+            projection: 'EPSG:'+ SRID,
             theme : false // Evite style.css quand module serveur PageSpeed
         });
-
+        
+    
         // Controles OpenLayers
         this.map.addControl(new OpenLayers.Control.Navigation());
 
@@ -218,6 +220,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
         }
         // Charge la légende et les couches
         this.loadMapConfig();
+        
     },
 
     renderLegend: function(legendData) {
@@ -498,7 +501,8 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
         // this.map.zoomToMaxExtent();
 
         // A peu près sur le département du Var : EPSG:900913;523593.64368054,5303506.7698006,849521.13224316,5486955.6376594
-        var sridBounds = REMOCRA_INIT_BOUNDS.split(";");
+       var sridBounds = REMOCRA_INIT_BOUNDS.split(";");
+
         var srid = sridBounds[0];
         var bounds = sridBounds[1];
         var initExtent = new OpenLayers.Bounds(bounds.split(',')).transform(srid, this.map.getProjection());
@@ -515,9 +519,9 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
             });
         } else {
             if (!Ext.isDefined(srid) || Ext.isEmpty(srid)) {
-                srid = "2154";
+                srid = SRID;
             }
-            srid = "epsg:" + srid;
+            srid = "EPSG:" + srid;
             var lonlat = new OpenLayers.LonLat(x, y);
             lonlat.transform(srid, this.map.getProjection());
 
@@ -537,7 +541,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
                 single: true
             });
         } else {
-            bounds.transform("epsg:2154", this.map.getProjection());
+            bounds.transform("EPSG:"+SRID, this.map.getProjection());
             this.map.zoomToExtent(bounds);
         }
     },
@@ -723,9 +727,9 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
 
         // On s'assure qu'il y a bien une base layer
         this.assumeBaseLayer();
+        this.fireEvent('layersadded', this);
 
         this.zoomToBestExtent();
-        this.fireEvent('layersadded', this);
     },
 
     // Affectation d'une base layer si nécessaire. Normalement pas nécessaire car toujours
@@ -743,7 +747,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
         return new OpenLayers.Layer.Vector("Couche de travail", {
             styleMap: this.workingLayerStyleMap(),
             displayInLayerSwitcher: false,
-            projection: 'EPSG:2154'
+            projection: 'EPSG:'+SRID
         });
     },
 
@@ -1053,7 +1057,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
             var feature = new OpenLayers.Format.WKT().read(wkt);
             var bounds = feature.geometry.getBounds();
             // On reprojette
-            var newBounds = bounds.transform('EPSG:2154', this.map.getProjection());
+            var newBounds = bounds.transform('EPSG:'+SRID, this.map.getProjection());
             this.map.zoomToExtent(newBounds, true);
         }
     },

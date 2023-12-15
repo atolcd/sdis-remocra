@@ -271,6 +271,6 @@ Ext.define('Sdis.Remocra.features.permis.Recherche', {
         var feat = new OpenLayers.Format.WKT().read(wkt);
         var pt = feat.geometry;
         var lonlat = new OpenLayers.LonLat(pt.x, pt.y);
-        this.fireEvent('centerToLonLat', lonlat, 'EPSG:2154'); // Données brutes !
+        this.fireEvent('centerToLonLat', lonlat, 'EPSG:'+SRID); // Données brutes !
     }
 });

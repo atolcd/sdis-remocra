@@ -386,7 +386,7 @@ Ext.define('Sdis.Remocra.controller.oldeb.Oldeb', {
                 var mapProjection = this.getTabMap().map.getProjection();
                 var wktFormat = new OpenLayers.Format.WKT({
                     internalProjection: mapProjection,
-                    externalProjection: new OpenLayers.Projection('EPSG:2154')
+                    externalProjection: new OpenLayers.Projection('EPSG:'+SRID)
                 });
             }
             var str = wktFormat.write(feature);
@@ -459,7 +459,7 @@ Ext.define('Sdis.Remocra.controller.oldeb.Oldeb', {
         var mapProjection = this.getTabMap().map.getProjection();
         var wktFormat = new OpenLayers.Format.WKT({
             internalProjection: mapProjection,
-            externalProjection: new OpenLayers.Projection('EPSG:2154')
+            externalProjection: new OpenLayers.Projection('EPSG:'+SRID)
         });
         var transfGeom = wktFormat.extractGeometry(feature.geometry);
         Ext.Ajax.request({
@@ -468,7 +468,7 @@ Ext.define('Sdis.Remocra.controller.oldeb.Oldeb', {
             url: Sdis.Remocra.util.Util.withBaseUrl('../oldeb/' + feature.data['id'] + '/updategeom'),
             params: {
                 geometrie: transfGeom,
-                srid: 2154
+                srid: SRID
             },
             callback: function(param, success, response) {
                 var res = Ext.decode(response.responseText);

@@ -219,10 +219,10 @@ Ext.define('Sdis.Remocra.features.cartographie.Map', {
     // Enregistrement de l'emprise courante de la carte de cartographie dans un
     // Cookie (1 journée)
     saveBounds: function() {
-        var bounds2154 = this.map.getExtent().transform(this.map.getProjection(), "epsg:2154");
+        var bounds = this.map.getExtent().transform(this.map.getProjection(), "epsg:"+SRID);
         var expires = new Date();
         expires.setDate(expires.getDate()+1); // Expiration 1 jour
-        Ext.util.Cookies.set("lastBoundsCarto", bounds2154.toBBOX(), expires);
+        Ext.util.Cookies.set("lastBoundsCarto", bounds.toBBOX(), expires);
     },
 
     getInitHeight : function() {

@@ -177,7 +177,7 @@ Ext.define('Sdis.Remocra.controller.rci.Rci', {
         var mapProjection = this.getMap().map.getProjection();
         var wktFormat = new OpenLayers.Format.WKT({
             internalProjection: mapProjection,
-            externalProjection: new OpenLayers.Projection('EPSG:2154')
+            externalProjection: new OpenLayers.Projection('EPSG:'+SRID)
         });
         var transfGeom = wktFormat.extractGeometry(feature.geometry);
         Ext.Ajax.request({
@@ -186,7 +186,7 @@ Ext.define('Sdis.Remocra.controller.rci.Rci', {
             url: Sdis.Remocra.util.Util.withBaseUrl('../rci/'+feature.data['id']+'/deplacer'),
             params: {
                 geometrie: transfGeom,
-                srid: 2154
+                srid: SRID
             },
             callback: function(param, success, response) {
                 var res = Ext.decode(response.responseText);
@@ -307,7 +307,7 @@ Ext.define('Sdis.Remocra.controller.rci.Rci', {
         var mapProjection = this.getMap().map.getProjection();
         var wktFormat = new OpenLayers.Format.WKT({
             internalProjection: mapProjection,
-            externalProjection: new OpenLayers.Projection('EPSG:2154')
+            externalProjection: new OpenLayers.Projection('EPSG:'+SRID)
         });
         var str = wktFormat.write(feature);
         record.set('geometrie', str);
