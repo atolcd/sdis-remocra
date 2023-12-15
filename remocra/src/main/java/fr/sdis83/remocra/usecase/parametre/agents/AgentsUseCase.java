@@ -4,14 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.enums.TypeGestionAgent;
-import fr.sdis83.remocra.repository.ParametreRepository;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AgentsUseCase {
 
-  @Autowired ParametreRepository parametreRepository;
+  @Autowired ParametreDataProvider parametreDataProvider;
 
   /**
    * Renvoie le type d'agent sélectionné en fonction des paramètres de l'application.
@@ -19,8 +19,7 @@ public class AgentsUseCase {
    * @return Une chaîne de caractères représentant le type d'agent sélectionné.
    */
   public String getTypeAgentsSelected() {
-
-    return parametreRepository.getByCle(GlobalConstants.PARAMETRE_AGENTS).getValeurParametre();
+    return parametreDataProvider.get().getValeurString(GlobalConstants.PARAMETRE_AGENTS);
   }
 
   /**

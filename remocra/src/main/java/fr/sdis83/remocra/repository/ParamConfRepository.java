@@ -2,13 +2,17 @@ package fr.sdis83.remocra.repository;
 
 import static fr.sdis83.remocra.db.model.remocra.Tables.PARAM_CONF;
 
+import fr.sdis83.remocra.data.CleValeurClasseData;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ParamConf;
+import java.util.Collection;
+import javax.inject.Singleton;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@Singleton
 public class ParamConfRepository {
   @Autowired DSLContext context;
 
@@ -33,5 +37,20 @@ public class ParamConfRepository {
         .selectFrom(PARAM_CONF)
         .where(PARAM_CONF.CLE.eq(cle))
         .fetchOneInto(ParamConf.class);
+  }
+
+  public Collection<CleValeurClasseData> getParametres() {
+    return context
+        .select(PARAM_CONF.CLE, PARAM_CONF.VALEUR)
+        .from(PARAM_CONF)
+        .fetchInto(CleValeurClasseData.class);
+  }
+
+  public void updateParamConf(String cle, String valeur) {
+    context
+        .update(PARAM_CONF)
+        .set(PARAM_CONF.VALEUR, valeur)
+        .where(PARAM_CONF.CLE.eq(cle))
+        .execute();
   }
 }
