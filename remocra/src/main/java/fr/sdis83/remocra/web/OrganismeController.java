@@ -66,6 +66,11 @@ public class OrganismeController
       protected List<Organisme> getRecords() {
         return getService().find(start, limit, sortList, itemFilterList);
       }
+
+      @Override
+      protected Long countRecords() {
+        return getService().count(itemFilterList);
+      }
     }.serialize();
   }
 
