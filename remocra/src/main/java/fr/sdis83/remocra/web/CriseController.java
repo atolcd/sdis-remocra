@@ -9,7 +9,7 @@ import fr.sdis83.remocra.domain.utils.RemocraInstantTransformer;
 import fr.sdis83.remocra.repository.CriseRepository;
 import fr.sdis83.remocra.repository.ProcessusEtlPlanificationRepository;
 import fr.sdis83.remocra.repository.TypeCriseStatutRepository;
-import fr.sdis83.remocra.service.ParamConfService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
@@ -49,7 +49,7 @@ public class CriseController {
 
   @Autowired private ProcessusEtlPlanificationRepository processusEtlPlanificationRepository;
 
-  @Autowired private ParamConfService paramConfService;
+  @Autowired private ParametreDataProvider parametreProvider;
 
   @Autowired private TypeCriseStatutRepository typeCriseStatutRepository;
 
@@ -371,7 +371,7 @@ public class CriseController {
 
       @Override
       protected String getRecord() {
-        return paramConfService.getCoordonneesFormatAffichage();
+        return parametreProvider.get().getCoordonneesFormatAffichage();
       }
     }.serialize();
   }
@@ -387,7 +387,7 @@ public class CriseController {
 
       @Override
       protected String getRecord() {
-        return paramConfService.getClesIgn();
+        return parametreProvider.get().getClesIgn();
       }
     }.serialize();
   }

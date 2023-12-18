@@ -84,7 +84,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
       query.setParameter((Parameter) parameters.get("WKT_PARAM"), wktValue);
       query.setParameter(
           (Parameter) parameters.get("DIST_PARAM"),
-          paramConfService.getToleranceAssociationCiternePIMetres());
+          parametreProvider.get().getToleranceAssociationCiternePIMetres());
     }
   }
 
@@ -213,7 +213,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
   }
 
   public HistoriqueModel getHistoVerifHydrauForChart(Long id) {
-    Integer limit = paramConfService.getHydrantNombreHistorique();
+    Integer limit = parametreProvider.get().getHydrantNombreHistorique();
     if (limit != 0) {
       try {
 
@@ -248,7 +248,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
   }
 
   public List<Object> getHistoVerifHydrauForGrid(Long id) {
-    Integer limit = paramConfService.getHydrantNombreHistorique();
+    Integer limit = parametreProvider.get().getHydrantNombreHistorique();
     if (limit != 0) {
       try {
         List<Object> l =

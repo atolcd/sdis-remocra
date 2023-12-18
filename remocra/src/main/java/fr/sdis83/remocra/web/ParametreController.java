@@ -2,11 +2,12 @@ package fr.sdis83.remocra.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.datasource.CodeLibelleOrdreData;
 import fr.sdis83.remocra.enums.PeiCaracteristique;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.usecase.parametre.agents.AgentsUseCase;
 import fr.sdis83.remocra.usecase.parametre.caracteristiques.CaracteristiqueUseCase;
-import fr.sdis83.remocra.usecase.parametre.srid.SridParametre;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +29,7 @@ public class ParametreController {
   @Autowired CaracteristiqueUseCase caracteristiquesUseCase;
   @Autowired AgentsUseCase agentsUseCase;
 
-  @Autowired SridParametre sridParametre;
+  @Autowired ParametreDataProvider parametreDataProvider;
 
   @RequestMapping(
       value = "/caracteristiques/nonChoisie/{type}",
@@ -144,6 +145,7 @@ public class ParametreController {
       method = RequestMethod.GET,
       headers = "Accept=application/json;charset=utf-8")
   public ResponseEntity<String> getSrid() {
-    return new ResponseEntity<>(sridParametre.getSRID(), HttpStatus.OK);
+    return new ResponseEntity<>(
+        parametreDataProvider.get().getValeurString(GlobalConstants.CLE_SRID), HttpStatus.OK);
   }
 }

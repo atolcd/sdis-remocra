@@ -140,7 +140,7 @@ public class AdressesController extends AbstractRemocraController {
 
   protected void saveAlerteFile(MultipartFile mf, Alerte alerte) throws Exception {
 
-    String depotRepertoire = paramConfService.getDossierDepotAlerte();
+    String depotRepertoire = parametreProvider.get().getDossierDepotAlerte();
 
     // Document "générique"
     Document d = createNonPersistedDocument(TypeDocument.ALERTE, mf, depotRepertoire);

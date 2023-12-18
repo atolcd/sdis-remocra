@@ -15,8 +15,8 @@ import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlModele;
 import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.exception.BusinessException;
-import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.StatementFormat;
 import java.io.File;
 import java.io.IOException;
@@ -53,7 +53,7 @@ public class ProcessusEtlModeleRepository {
 
   @Autowired private UtilisateurService utilisateurService;
 
-  @Autowired private ParamConfService paramConfService;
+  @Autowired private ParametreDataProvider parametreProvider;
 
   public ProcessusEtlModeleRepository() {}
 
@@ -310,7 +310,7 @@ public class ProcessusEtlModeleRepository {
             .value1();
     // Ajout des fichiers
     // Répertoire "depots PDI"
-    String basePath = paramConfService.getDossierDepotPdi();
+    String basePath = parametreProvider.get().getDossierDepotPdi();
     // Répertoire "depots PDI" du traitement
     String uploadDirPath = basePath + File.separator + codeProcess;
 

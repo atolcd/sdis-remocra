@@ -23,8 +23,8 @@ import fr.sdis83.remocra.db.model.remocra.tables.pojos.RepertoireLieu;
 import fr.sdis83.remocra.domain.remocra.Commune;
 import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
-import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.web.deserialize.GeometryFactory;
 import fr.sdis83.remocra.web.message.ItemFilter;
@@ -71,7 +71,7 @@ public class CriseRepository {
 
   @Autowired DSLContext context;
 
-  @Autowired protected ParamConfService paramConfService;
+  @Autowired protected ParametreDataProvider parametreProvider;
 
   @Autowired private UtilisateurService utilisateurService;
 
@@ -826,7 +826,9 @@ public class CriseRepository {
             Document d =
                 DocumentUtil.getInstance()
                     .createNonPersistedDocument(
-                        Document.TypeDocument.CRISE, file, paramConfService.getDossierDocCrise());
+                        Document.TypeDocument.CRISE,
+                        file,
+                        parametreProvider.get().getDossierDocCrise());
             String sousType = DocumentUtil.getInstance().getSousType(file);
             context
                 .insertInto(

@@ -11,10 +11,10 @@ import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.repository.CourrierRepository;
 import fr.sdis83.remocra.repository.DestinataireRepository;
-import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.TelechargementService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.usecase.destinatairecourrier.DestinataireCourrierUseCase;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
@@ -64,7 +64,7 @@ public class CourrierController {
   @Autowired DestinataireRepository destinataireRepository;
   @Autowired DestinataireCourrierUseCase destinataireCourrierUseCase;
 
-  @Autowired private ParamConfService paramConfService;
+  @Autowired private ParametreDataProvider parametreProvider;
 
   @Autowired private MessageDigestPasswordEncoder messageDigestPasswordEncoder;
 
@@ -338,7 +338,7 @@ public class CourrierController {
               .createNonPersistedDocument(
                   Document.TypeDocument.COURRIER,
                   fichier,
-                  paramConfService.getDossierCourriersExternes() + "/courrier_temp");
+                  parametreProvider.get().getDossierCourriersExternes() + "/courrier_temp");
       FileOutputStream textFileOutputStream =
           new FileOutputStream(new File(docOTT.getRepertoire() + docOTT.getFichier()));
       // Association du modèle et du XML
@@ -353,11 +353,12 @@ public class CourrierController {
       DocumentUtil.getInstance().generePdf(textFileInputStream, pdfFileOutputStream);
 
       // Signature du pdf
-      if (!paramConfService.getPdiCheminPfxFile().equals("")
-          && !paramConfService.getPdiPfxPassword().equals("")) {
+      if (!parametreProvider.get().getPdiCheminPfxFile().equals("")
+          && !parametreProvider.get().getPdiPfxPassword().equals("")) {
         // todo : ajouter les dépendances qu'il faut
         // DocumentUtil.getInstance().signPdf(docOTT.getRepertoire() + nomPdf,
-        // paramConfService.getPdiCheminPfxFile(), paramConfService.getPdiPfxPassword());
+        // parametreProvider.get().getPdiCheminPfxFile(),
+        // parametreProvider.get().getPdiPfxPassword());
       }
 
       // Suppression de l'ott
@@ -404,9 +405,11 @@ public class CourrierController {
       // Déplacement du dossier+pdf dans dossier courriers
       File origine =
           new File(
-              paramConfService.getDossierCourriersExternes() + "/courrier_temp/" + codeCourrier);
+              parametreProvider.get().getDossierCourriersExternes()
+                  + "/courrier_temp/"
+                  + codeCourrier);
       File destination =
-          new File(paramConfService.getDossierCourriersExternes() + "/" + codeCourrier);
+          new File(parametreProvider.get().getDossierCourriersExternes() + "/" + codeCourrier);
       origine.renameTo(destination);
 
       // Insertion dans table document

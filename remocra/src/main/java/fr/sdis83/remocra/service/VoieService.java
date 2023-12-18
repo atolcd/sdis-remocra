@@ -3,6 +3,7 @@ package fr.sdis83.remocra.service;
 import com.vividsolutions.jts.geom.Geometry;
 import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.Voie;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class VoieService {
 
-  @Autowired private ParamConfService paramConfService;
+  @Autowired private ParametreDataProvider parametreProvider;
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   public List<Voie> findVoiesByMotClassantOrNomLike(
@@ -75,7 +76,8 @@ public class VoieService {
       itemTypedQuery.setParameter((Parameter) wktOrderParam, wktValue);
       itemTypedQuery.setParameter((Parameter) parameters.get("WKT_PARAM"), wktValue);
       itemTypedQuery.setParameter(
-          (Parameter) parameters.get("DIST_PARAM"), paramConfService.getToleranceVoiesMetres());
+          (Parameter) parameters.get("DIST_PARAM"),
+          parametreProvider.get().getToleranceVoiesMetres());
     }
 
     return itemTypedQuery.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();

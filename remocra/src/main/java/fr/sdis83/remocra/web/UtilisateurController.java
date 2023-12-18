@@ -9,7 +9,6 @@ import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.security.AccessRight;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
-import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.util.ExceptionUtils;
 import fr.sdis83.remocra.web.message.ItemFilter;
@@ -54,8 +53,6 @@ public class UtilisateurController {
   @Autowired private UtilisateurService utilisateurService;
 
   @Autowired private AuthoritiesUtil authUtils;
-
-  @Autowired protected ParamConfService paramConfService;
 
   @RequestMapping(headers = "Accept=application/json")
   @PreAuthorize("isAuthenticated()")

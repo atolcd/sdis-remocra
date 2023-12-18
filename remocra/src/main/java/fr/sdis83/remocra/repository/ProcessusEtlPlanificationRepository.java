@@ -11,11 +11,9 @@ import static org.quartz.CronScheduleBuilder.cronSchedule;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlPlanification;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlPlanificationParametre;
 import fr.sdis83.remocra.jobs.ProcessEtlJob;
-import fr.sdis83.remocra.service.ParamConfService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import java.text.ParseException;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
 import org.joda.time.Instant;
 import org.jooq.DSLContext;
@@ -44,22 +42,20 @@ public class ProcessusEtlPlanificationRepository {
 
   @Autowired DSLContext context;
 
-  @Autowired ParamConfService paramConfService;
+  @Autowired ParametreDataProvider parametreDataProvider;
 
   public ProcessusEtlPlanificationRepository() {}
 
-  @PersistenceContext private EntityManager entityManager;
-
   @Bean
   public ProcessusEtlPlanificationRepository processusEtlPlanificationRepository(
-      DSLContext context, ParamConfService paramConfService) throws SchedulerException {
-    return new ProcessusEtlPlanificationRepository(context, paramConfService);
+      DSLContext context, ParametreDataProvider parametreDataProvider) throws SchedulerException {
+    return new ProcessusEtlPlanificationRepository(context, parametreDataProvider);
   }
 
-  public ProcessusEtlPlanificationRepository(DSLContext context, ParamConfService paramConfService)
-      throws SchedulerException {
+  public ProcessusEtlPlanificationRepository(
+      DSLContext context, ParametreDataProvider parametreDataProvider) throws SchedulerException {
     this.context = context;
-    this.paramConfService = paramConfService;
+    this.parametreDataProvider = parametreDataProvider;
     try {
       List<ProcessusEtlPlanification> newPlannifs = this.getAll();
       scheduleJobs(newPlannifs);
@@ -205,7 +201,7 @@ public class ProcessusEtlPlanificationRepository {
         JobDataMap j = new JobDataMap();
         j.put("repository", this);
         // On relance les process avec le user hors ligne
-        String userName = paramConfService.getProcessOfflineUser();
+        String userName = parametreDataProvider.get().getProcessOfflineUser();
         Long idUtilisateur = findOfflineUser(userName);
         j.put("idUtilisateur", idUtilisateur);
         JobDetail job =

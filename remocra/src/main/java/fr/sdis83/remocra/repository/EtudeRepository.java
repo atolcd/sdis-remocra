@@ -17,8 +17,8 @@ import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeEtude;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeEtudeStatut;
 import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
-import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
@@ -59,7 +59,7 @@ public class EtudeRepository {
 
   @PersistenceContext private EntityManager entityManager;
 
-  @Autowired protected ParamConfService paramConfService;
+  @Autowired protected ParametreDataProvider parametreProvider;
 
   @Autowired private UtilisateurService utilisateurService;
 
@@ -375,7 +375,7 @@ public class EtudeRepository {
                     .createNonPersistedDocument(
                         Document.TypeDocument.PLANIFICATION,
                         file,
-                        paramConfService.getDossierDepotPlanification());
+                        parametreProvider.get().getDossierDepotPlanification());
             String sousType = DocumentUtil.getInstance().getSousType(file);
             context
                 .insertInto(

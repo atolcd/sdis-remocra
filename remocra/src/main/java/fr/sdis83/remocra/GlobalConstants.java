@@ -42,4 +42,6 @@ public class GlobalConstants {
 
   // Clé du paramètre SRID stocké dans la table remocra.parametre
   public static final String CLE_SRID = "SRID";
+  public static final String GENERIQUE_MESSAGE_ERROR =
+      "Une erreur est survenue lors de l'éxécution de la requête. Un log a été écrit, veuillez contacter votre référent technique pour qu'il puisse le consulter.";
 }

@@ -8,7 +8,7 @@ import static fr.sdis83.remocra.db.model.couverture_hydraulique.Tables.RESEAU;
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
 import fr.sdis83.remocra.GlobalConstants;
-import fr.sdis83.remocra.service.ParamConfService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.model.PlusProchePei;
 import java.util.HashMap;
@@ -30,7 +30,7 @@ public class CouvertureHydrauliqueRepository {
 
   @Autowired JpaTransactionManager transactionManager;
 
-  @Autowired ParamConfService paramConfService;
+  @Autowired ParametreDataProvider parametreProvider;
 
   @PersistenceContext private EntityManager entityManager;
 
@@ -156,7 +156,7 @@ public class CouvertureHydrauliqueRepository {
     Double latitude =
         (obj.get("latitude") != null) ? Double.valueOf(obj.get("latitude").toString()) : null;
 
-    Integer distanceMaxParcours = paramConfService.getDeciDistanceMaxParcours();
+    Integer distanceMaxParcours = parametreProvider.get().getDeciDistanceMaxParcours();
 
     Geometry geom =
         GeometryUtil.createPoint(

@@ -11,6 +11,7 @@ import fr.sdis83.remocra.domain.remocra.RciDocument;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourFormat;
 import fr.sdis83.remocra.exception.BusinessException;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
@@ -42,7 +43,7 @@ public class RciService extends AbstractService<Rci> {
 
   @Autowired private UtilisateurService utilisateurService;
 
-  @Autowired protected ParamConfService paramConfService;
+  @Autowired protected ParametreDataProvider parametreProvider;
 
   @Autowired private MailUtils mailUtils;
 
@@ -122,7 +123,7 @@ public class RciService extends AbstractService<Rci> {
 
     // Cas de la création : envoi de mail
     if (attached.getId() == null) {
-      String emailDestinataire = paramConfService.getEmailCreationRci();
+      String emailDestinataire = parametreProvider.get().getEmailCreationRci();
       EmailModele emailModele = EmailModele.findByValue(EmailModeleEnum.CREATION_RCI);
 
       Utilisateur utilisateur = attached.getUtilisateur();
@@ -146,7 +147,7 @@ public class RciService extends AbstractService<Rci> {
             getSystemUtilisateur(),
             emailDestinataire,
             EmailModele.emptyKeyMap()
-                .add(EmailModeleKeys.URL_SITE, paramConfService.getUrlSite())
+                .add(EmailModeleKeys.URL_SITE, parametreProvider.get().getUrlSite())
                 .add(EmailModeleKeys.CODE, rciCode)
                 .add(EmailModeleKeys.NOM_ORGANISME, nomOrganisme)
                 .add(EmailModeleKeys.IDENTIFIANT, utilisateur.getIdentifiant()));
@@ -205,7 +206,7 @@ public class RciService extends AbstractService<Rci> {
   }
 
   public Utilisateur getSystemUtilisateur() throws BusinessException {
-    Long sysUId = paramConfService.getSystemUtilisateurId();
+    Long sysUId = parametreProvider.get().getSystemUtilisateurId();
     if (sysUId == null) {
       BusinessException e = new BusinessException("L'utilisateur système n'a pas été paramétré");
       logger.error(e.getMessage(), e);

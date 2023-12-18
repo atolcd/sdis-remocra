@@ -12,9 +12,9 @@ import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.repository.RequeteModeleRepository;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
-import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.TraitementsService;
 import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
@@ -51,7 +51,7 @@ public class TraitementsController {
 
   @Autowired private TraitementsService traitementsService;
 
-  @Autowired private ParamConfService paramConfService;
+  @Autowired private ParametreDataProvider parametreProvider;
 
   @Autowired private UtilisateurService utilisateurService;
 
@@ -243,7 +243,7 @@ public class TraitementsController {
   public ResponseEntity<java.lang.String> createTraitement(HttpServletRequest request)
       throws BusinessException {
 
-    Integer idModeleRequetage = paramConfService.getIdTraitementRequetage();
+    Integer idModeleRequetage = parametreProvider.get().getIdTraitementRequetage();
     ModeleTraitement modele = ModeleTraitement.findModeleTraitement(idModeleRequetage);
     // checkRightsForThematique(modele.getCode().intValue());
 
@@ -305,7 +305,7 @@ public class TraitementsController {
         if (multipartRequest.getFileNames() != null) {
           // Répertoire "depots PDI"
 
-          String basePath = paramConfService.getDossierDepotPdi();
+          String basePath = parametreProvider.get().getDossierDepotPdi();
 
           // Répertoire "depots PDI" du traitement
           String lpadDirname = String.format("%010d", newTraitement.getIdtraitement());
@@ -473,7 +473,7 @@ public class TraitementsController {
       HttpServletRequest request) throws BusinessException {
 
     // Id du traitement Atlas
-    Integer idModeleAtlas = paramConfService.getIdTraitementAtlas();
+    Integer idModeleAtlas = parametreProvider.get().getIdTraitementAtlas();
     ModeleTraitement modele = ModeleTraitement.findModeleTraitement(idModeleAtlas);
 
     // Id de l'utilisateur
@@ -534,7 +534,7 @@ public class TraitementsController {
     String parcelle = request.getParameter("parcelle");
 
     // Id du traitement Oldeb
-    Integer idModeleOldeb = paramConfService.getIdTraitementOldeb();
+    Integer idModeleOldeb = parametreProvider.get().getIdTraitementOldeb();
     ModeleTraitement modele = ModeleTraitement.findModeleTraitement(idModeleOldeb);
 
     // Id de l'utilisateur
@@ -606,7 +606,7 @@ public class TraitementsController {
       HttpServletRequest request) throws BusinessException {
 
     // Id du traitement Purge Kml
-    Integer idModelePurgeKml = paramConfService.getIdTraitementPurgeKml();
+    Integer idModelePurgeKml = parametreProvider.get().getIdTraitementPurgeKml();
 
     // Paramètres
     String jsonValeurs = "[]";
@@ -631,7 +631,7 @@ public class TraitementsController {
       HttpServletRequest request) throws BusinessException {
 
     // Id du traitement Hydrants à numéroter
-    Integer idModeleHydrantsNonNum = paramConfService.getIdTraitementHydrantsNonNum();
+    Integer idModeleHydrantsNonNum = parametreProvider.get().getIdTraitementHydrantsNonNum();
     ModeleTraitement modele = ModeleTraitement.findModeleTraitement(idModeleHydrantsNonNum);
 
     // ORGANISME_CIS_ID
@@ -686,7 +686,8 @@ public class TraitementsController {
       HttpServletRequest request) throws BusinessException {
 
     // Id du traitement Hydrants à numéroter
-    Integer idModeleAlertesUtilisateurs = paramConfService.getIdTraitementNbAlertesParUtilisateur();
+    Integer idModeleAlertesUtilisateurs =
+        parametreProvider.get().getIdTraitementNbAlertesParUtilisateur();
     ModeleTraitement modele = ModeleTraitement.findModeleTraitement(idModeleAlertesUtilisateurs);
 
     // ORGANISME_CIS_ID

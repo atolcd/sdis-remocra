@@ -85,7 +85,7 @@ public class PermisController extends AbstractRemocraController {
       protected List<Permis> getRecords() {
         ZoneCompetence zc =
             utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence();
-        Integer tolerance = paramConfService.getToleranceChargementMetres();
+        Integer tolerance = parametreProvider.get().getToleranceChargementMetres();
         int firstResult = 0;
         int maxResults = 10;
         return Permis.findPermisByXYTolerance(
@@ -276,7 +276,7 @@ public class PermisController extends AbstractRemocraController {
 
   protected void savePermisFile(MultipartFile mf, Permis permis) throws Exception {
 
-    String depotRepertoire = paramConfService.getDossierDepotPermis();
+    String depotRepertoire = parametreProvider.get().getDossierDepotPermis();
 
     // Document "générique"
     Document d = createNonPersistedDocument(TypeDocument.PERMIS, mf, depotRepertoire);

@@ -14,6 +14,7 @@ import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.repository.UtilisateurRepository;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.security.RemocraAuthenticationProvider;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import java.text.ParseException;
@@ -44,7 +45,7 @@ public class UtilisateurService {
 
   private final Logger logger = Logger.getLogger(getClass());
 
-  @Autowired private ParamConfService paramConfService;
+  @Autowired private ParametreDataProvider parametreProvider;
 
   @Autowired RemocraAuthenticationProvider dbAuthProvider;
 
@@ -84,7 +85,7 @@ public class UtilisateurService {
   }
 
   public Utilisateur getSystemUtilisateur() throws BusinessException {
-    Long sysUId = paramConfService.getSystemUtilisateurId();
+    Long sysUId = parametreProvider.get().getSystemUtilisateurId();
     if (sysUId == null) {
       BusinessException e = new BusinessException("L'utilisateur système n'a pas été paramétré");
       logger.error(e.getMessage(), e);
@@ -135,7 +136,7 @@ public class UtilisateurService {
           EmailModele.emptyKeyMap()
               .add(EmailModeleKeys.EMAIL, utilisateur.getEmail())
               .add(EmailModeleKeys.IDENTIFIANT, utilisateur.getIdentifiant())
-              .add(EmailModeleKeys.URL_SITE, paramConfService.getUrlSite()));
+              .add(EmailModeleKeys.URL_SITE, parametreProvider.get().getUrlSite()));
     }
     attached.setMessageRemocra(utilisateur.isMessageRemocra());
 
@@ -188,7 +189,7 @@ public class UtilisateurService {
             .add(EmailModeleKeys.EMAIL, utilisateur.getEmail())
             .add(EmailModeleKeys.MOT_DE_PASSE, plainPassword)
             .add(EmailModeleKeys.IDENTIFIANT, utilisateur.getIdentifiant())
-            .add(EmailModeleKeys.URL_SITE, paramConfService.getUrlSite()));
+            .add(EmailModeleKeys.URL_SITE, parametreProvider.get().getUrlSite()));
 
     utilisateur.persist();
   }
@@ -202,7 +203,7 @@ public class UtilisateurService {
    * @return TRUE si le password est conforme, FALSE le cas échéant
    */
   public Boolean checkPasswordValidity(String plainPwd) {
-    if ("complexe".equals(paramConfService.getComplexitePassword())) {
+    if ("complexe".equals(parametreProvider.get().getComplexitePassword())) {
       return (plainPwd.length() >= 9 && plainPwd.matches("^(?=.*[0-9])(?=.*[a-zA-Z])(.+)$"));
     } else {
       return plainPwd.length() > 0;
@@ -234,7 +235,7 @@ public class UtilisateurService {
         EmailModele.emptyKeyMap()
             .add(EmailModeleKeys.EMAIL, utilisateur.getEmail())
             .add(EmailModeleKeys.IDENTIFIANT, utilisateur.getIdentifiant())
-            .add(EmailModeleKeys.URL_SITE, paramConfService.getUrlSite()));
+            .add(EmailModeleKeys.URL_SITE, parametreProvider.get().getUrlSite()));
 
     utilisateur.merge();
   }
@@ -258,7 +259,7 @@ public class UtilisateurService {
         EmailModele.emptyKeyMap()
             .add(EmailModeleKeys.EMAIL, utilisateur.getEmail())
             .add(EmailModeleKeys.IDENTIFIANT, utilisateur.getIdentifiant())
-            .add(EmailModeleKeys.URL_SITE, paramConfService.getUrlSite())
+            .add(EmailModeleKeys.URL_SITE, parametreProvider.get().getUrlSite())
             .add(EmailModeleKeys.CODE, demande.getCode()));
 
     utilisateur.merge();

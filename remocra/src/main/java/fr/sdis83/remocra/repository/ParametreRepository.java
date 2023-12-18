@@ -25,18 +25,6 @@ public class ParametreRepository {
     this.context = context;
   }
 
-  /**
-   * @deprecated ne plus utiliser, le ParametreProvider arrive !
-   * @param cle
-   * @return
-   */
-  public Parametre getByCle(String cle) {
-    return context
-        .selectFrom(PARAMETRE)
-        .where(PARAMETRE.CLE_PARAMETRE.eq(cle))
-        .fetchOneInto(Parametre.class);
-  }
-
   public void updateByKey(String key, String valeur) {
     context
         .update(PARAMETRE)

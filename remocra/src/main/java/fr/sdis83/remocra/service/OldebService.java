@@ -17,6 +17,7 @@ import fr.sdis83.remocra.domain.remocra.TypeOldebResidence;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.exception.BusinessException;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.deserialize.GeometryFactory;
@@ -59,7 +60,7 @@ public class OldebService extends AbstractService<Oldeb> {
   private final Logger logger = Logger.getLogger(getClass());
   @Autowired private UtilisateurService utilisateurService;
   @Autowired private TypeOldebResidenceService residenceService;
-  @Autowired protected ParamConfService paramConfService;
+  @Autowired protected ParametreDataProvider parametreProvider;
 
   public OldebService() {
     super(Oldeb.class);
@@ -795,7 +796,9 @@ public class OldebService extends AbstractService<Oldeb> {
           Document d =
               DocumentUtil.getInstance()
                   .createNonPersistedDocument(
-                      TypeDocument.OLDEBVISITE, file, paramConfService.getDossierDocOldebVisite());
+                      TypeDocument.OLDEBVISITE,
+                      file,
+                      parametreProvider.get().getDossierDocOldebVisite());
           OldebVisiteDocument ovd = new OldebVisiteDocument();
           ovd.setVisite(visite);
           ovd.setDocument(this.entityManager.merge(d));

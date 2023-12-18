@@ -32,6 +32,7 @@ import fr.sdis83.remocra.exception.SQLBusinessException;
 import fr.sdis83.remocra.exception.XmlDroitException;
 import fr.sdis83.remocra.exception.XmlValidationException;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.util.ExceptionUtils;
 import fr.sdis83.remocra.util.GeometryUtil;
@@ -125,7 +126,7 @@ public class XmlService {
 
   private final Logger logger = Logger.getLogger(getClass());
 
-  @Autowired private ParamConfService paramConfService;
+  @Autowired private ParametreDataProvider parametreProvider;
 
   @Autowired private TourneeService tourneeService;
 
@@ -1143,7 +1144,7 @@ public class XmlService {
                   TypeDocument.HYDRANT,
                   bImageFromConvert,
                   filename,
-                  paramConfService.getDossierDocHydrant());
+                  parametreProvider.get().getDossierDocHydrant());
       HydrantDocument hd = new HydrantDocument();
       hd.setHydrant(hydrant);
       hd.setDocument(Hydrant.entityManager().merge(d));

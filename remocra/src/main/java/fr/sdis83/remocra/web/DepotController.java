@@ -108,11 +108,11 @@ public class DepotController extends AbstractRemocraController {
 
     String depotRepertoire = null;
     if (typeDocument == TypeDocument.DELIB) {
-      depotRepertoire = paramConfService.getDossierDepotDelib();
+      depotRepertoire = parametreProvider.get().getDossierDepotDelib();
     } else if (typeDocument == TypeDocument.DECLAHYDRANT) {
-      depotRepertoire = paramConfService.getDossierDepotDeclaHydrant();
+      depotRepertoire = parametreProvider.get().getDossierDepotDeclaHydrant();
     } else if (typeDocument == TypeDocument.RECEPTRAVAUX) {
-      depotRepertoire = paramConfService.getDossierDepotRecepTravaux();
+      depotRepertoire = parametreProvider.get().getDossierDepotRecepTravaux();
     }
 
     if (depotRepertoire == null || depotRepertoire.isEmpty()) {
@@ -136,13 +136,13 @@ public class DepotController extends AbstractRemocraController {
     String emailDestinataire = null;
     EmailModele emailModele = null;
     if (typeDocument == TypeDocument.DELIB) {
-      emailDestinataire = paramConfService.getEmailDepotDelib();
+      emailDestinataire = parametreProvider.get().getEmailDepotDelib();
       emailModele = EmailModele.findByValue(EmailModeleEnum.DEPOT_DELIB);
     } else if (typeDocument == TypeDocument.DECLAHYDRANT) {
-      emailDestinataire = paramConfService.getEmailDepotDeclaHydrant();
+      emailDestinataire = parametreProvider.get().getEmailDepotDeclaHydrant();
       emailModele = EmailModele.findByValue(EmailModeleEnum.DEPOT_DECLAHYDRANT);
     } else if (typeDocument == TypeDocument.RECEPTRAVAUX) {
-      emailDestinataire = paramConfService.getEmailDepotRecepTravaux();
+      emailDestinataire = parametreProvider.get().getEmailDepotRecepTravaux();
       emailModele = EmailModele.findByValue(EmailModeleEnum.DEPOT_RECEPTRAVAUX);
     }
 
@@ -160,14 +160,14 @@ public class DepotController extends AbstractRemocraController {
           getSystemUtilisateur(),
           emailDestinataire,
           EmailModele.emptyKeyMap()
-              .add(EmailModeleKeys.URL_SITE, paramConfService.getUrlSite())
+              .add(EmailModeleKeys.URL_SITE, parametreProvider.get().getUrlSite())
               .add(EmailModeleKeys.CODE, d.getCode())
               .add(EmailModeleKeys.NOM_ORGANISME, nomOrganisme));
     }
   }
 
   public Utilisateur getSystemUtilisateur() throws BusinessException {
-    Long sysUId = paramConfService.getSystemUtilisateurId();
+    Long sysUId = parametreProvider.get().getSystemUtilisateurId();
     if (sysUId == null) {
       BusinessException e = new BusinessException("L'utilisateur système n'a pas été paramétré");
       logger.error(e.getMessage(), e);

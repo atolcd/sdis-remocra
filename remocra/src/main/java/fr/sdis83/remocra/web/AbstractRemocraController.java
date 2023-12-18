@@ -2,8 +2,8 @@ package fr.sdis83.remocra.web;
 
 import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.remocra.Document.TypeDocument;
-import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.DocumentUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,7 +12,8 @@ public abstract class AbstractRemocraController {
 
   @Autowired protected UtilisateurService utilisateurService;
 
-  @Autowired protected ParamConfService paramConfService;
+  // Sera utile par héritage
+  @Autowired protected ParametreDataProvider parametreProvider;
 
   // ------------------------------
   // --- Methodes de gestion des documents

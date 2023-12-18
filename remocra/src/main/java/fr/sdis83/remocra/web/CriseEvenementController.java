@@ -18,7 +18,6 @@ import fr.sdis83.remocra.ogc.cql.Operator;
 import fr.sdis83.remocra.ogc.cql.Statement;
 import fr.sdis83.remocra.repository.CriseEvenementRepository;
 import fr.sdis83.remocra.repository.CriseRepository;
-import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.service.ZoneCompetenceService;
 import fr.sdis83.remocra.util.FeatureUtil;
@@ -71,8 +70,6 @@ public class CriseEvenementController {
   @Autowired private ZoneCompetenceService zoneCompetenceService;
 
   @Autowired private UtilisateurService utilisateurService;
-
-  @Autowired ParamConfService paramConfService;
 
   @Autowired private GeoserverController geoserverController;
 

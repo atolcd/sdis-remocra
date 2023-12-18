@@ -2,9 +2,9 @@ package fr.sdis83.remocra.web;
 
 import fr.sdis83.remocra.domain.remocra.ProfilDroit;
 import fr.sdis83.remocra.exception.BusinessException;
-import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.service.ZoneCompetenceService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.GeometryUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -47,7 +47,7 @@ public class ProxyController {
 
   @Autowired private UtilisateurService utilisateurService;
 
-  @Autowired private ParamConfService paramConfService;
+  @Autowired private ParametreDataProvider parametreProvider;
 
   @Autowired private ZoneCompetenceService zoneCompetenceService;
 
@@ -74,7 +74,7 @@ public class ProxyController {
       log.error("Unable to find profile for utilisateur.");
       codeFeuille = defaultCodeFeuille;
     }
-    String folder = paramConfService.getDossierGetFeatureInfo();
+    String folder = parametreProvider.get().getDossierGetFeatureInfo();
     File returned = new File(folder + File.separatorChar + codeFeuille + ".xsl");
     if (!returned.exists()) {
       returned = new File(folder + File.separatorChar + defaultCodeFeuille + ".xsl");
@@ -195,14 +195,14 @@ public class ProxyController {
       // Si dev local, on pointe sur le geoserver de tests, sinon sur le
       // geoserver local
       String pattern = "http://.*/remocra/proxy/wms";
-      String wmsBaseUrl = paramConfService.getWmsBaseUrl();
+      String wmsBaseUrl = parametreProvider.get().getWmsBaseUrl();
       String targetURL =
           request
               .getRequestURL()
               .toString()
               .replaceFirst(
                   pattern,
-                  paramConfService.getWmsBaseUrl()
+                  parametreProvider.get().getWmsBaseUrl()
                       + (wmsBaseUrl.endsWith("/") ? "" : "/")
                       + "remocra/wms");
 
@@ -390,7 +390,7 @@ public class ProxyController {
     // Toute couche demandée
     for (String aParamLayer : paramLayers) {
       // Toute couche publique en base
-      for (String aPublicDbLayer : paramConfService.getWmsPublicLayers()) {
+      for (String aPublicDbLayer : parametreProvider.get().getWmsPublicLayers()) {
         if (aPublicDbLayer.equals(aParamLayer)) {
           // Couche trouvée : publique
           return true;

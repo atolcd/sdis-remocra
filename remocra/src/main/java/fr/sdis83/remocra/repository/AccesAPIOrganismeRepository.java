@@ -6,7 +6,6 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.EMAIL_MODELE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ORGANISME;
 import static fr.sdis83.remocra.db.model.remocra.Tables.PARAM_CONF;
 
-import fr.sdis83.remocra.service.ParamConfService;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.text.ParseException;
@@ -26,8 +25,6 @@ public class AccesAPIOrganismeRepository {
   @Autowired DSLContext context;
 
   @Autowired private MessageDigestPasswordEncoder messageDigestPasswordEncoder;
-
-  @Autowired protected ParamConfService paramConfService;
 
   public AccesAPIOrganismeRepository() {}
 

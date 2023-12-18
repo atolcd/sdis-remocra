@@ -9,6 +9,7 @@ import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.remocra.Document.TypeDocument;
 import fr.sdis83.remocra.domain.remocra.Hydrant;
 import fr.sdis83.remocra.domain.remocra.HydrantDocument;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.util.NumeroUtil;
@@ -43,7 +44,7 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
 
   private final Logger logger = Logger.getLogger(getClass());
 
-  @Autowired protected ParamConfService paramConfService;
+  @Autowired protected ParametreDataProvider parametreProvider;
 
   @Autowired private UtilisateurService utilisateurService;
 
@@ -122,18 +123,22 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
       Integer nbMonths = Integer.valueOf(itemFilter.getValue());
       Expression<Character> cpNatureDECI = from.get("natureDeci");
       DateTime datePrive =
-          new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementRecoPrive()));
+          new DateTime()
+              .minus(Period.days(parametreProvider.get().getHydrantRenouvellementRecoPrive()));
       DateTime datePublic =
-          new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementRecoPublic()));
+          new DateTime()
+              .minus(Period.days(parametreProvider.get().getHydrantRenouvellementRecoPublic()));
       predicat = this.getDatePredicat(cpPath, nbMonths, cpNatureDECI, datePrive, datePublic);
     } else if ("dateContr".equals(itemFilter.getFieldName())) {
       Expression<Date> cpPath = from.get("dateContr");
       Integer nbMonths = Integer.valueOf(itemFilter.getValue());
       Expression<Character> cpNatureDECI = from.get("natureDeci");
       DateTime datePrive =
-          new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementCtrlPrive()));
+          new DateTime()
+              .minus(Period.days(parametreProvider.get().getHydrantRenouvellementCtrlPrive()));
       DateTime datePublic =
-          new DateTime().minus(Period.days(paramConfService.getHydrantRenouvellementCtrlPublic()));
+          new DateTime()
+              .minus(Period.days(parametreProvider.get().getHydrantRenouvellementCtrlPublic()));
       predicat = this.getDatePredicat(cpPath, nbMonths, cpNatureDECI, datePrive, datePublic);
     } else if ("nature".equals(itemFilter.getFieldName())) {
       Expression<Integer> cpPath = from.join("nature").get("id");
@@ -278,7 +283,7 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
           Document d =
               DocumentUtil.getInstance()
                   .createNonPersistedDocument(
-                      TypeDocument.HYDRANT, file, paramConfService.getDossierDocHydrant());
+                      TypeDocument.HYDRANT, file, parametreProvider.get().getDossierDocHydrant());
           HydrantDocument hd = new HydrantDocument();
           hd.setHydrant(attached);
           hd.setDocument(this.entityManager.merge(d));
@@ -299,7 +304,7 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
     // nécessaire (valable dans le cas de mise à jour)
     boolean hasNumero =
         attached.getNumeroInterne() != null && attached.getNumeroInterne().intValue() > 0;
-    Boolean numeroter = !hasNumero || paramConfService.getHydrantRenumerotationActivation();
+    Boolean numeroter = !hasNumero || parametreProvider.get().getHydrantRenumerotationActivation();
     if (numeroter || attached.getId() == null) {
       NumeroUtil.setCodeZoneSpecAndNumeros(attached);
     }

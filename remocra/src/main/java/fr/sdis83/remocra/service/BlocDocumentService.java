@@ -3,6 +3,7 @@ package fr.sdis83.remocra.service;
 import fr.sdis83.remocra.domain.remocra.BlocDocument;
 import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.remocra.Document.TypeDocument;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
@@ -24,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Configuration
 public class BlocDocumentService extends AbstractService<BlocDocument> {
 
-  @Autowired private ParamConfService paramConfService;
+  @Autowired private ParametreDataProvider parametreProvider;
 
   public BlocDocumentService() {
     super(BlocDocument.class);
@@ -103,7 +104,7 @@ public class BlocDocumentService extends AbstractService<BlocDocument> {
       Document d =
           DocumentUtil.getInstance()
               .createNonPersistedDocument(
-                  TypeDocument.BLOC, file, paramConfService.getDossierDepotBloc());
+                  TypeDocument.BLOC, file, parametreProvider.get().getDossierDepotBloc());
       this.entityManager.persist(d);
       attached.setDocument(d);
     }

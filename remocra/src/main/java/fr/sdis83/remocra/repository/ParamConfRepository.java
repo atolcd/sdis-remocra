@@ -3,6 +3,7 @@ package fr.sdis83.remocra.repository;
 import static fr.sdis83.remocra.db.model.remocra.Tables.PARAM_CONF;
 
 import fr.sdis83.remocra.data.CleValeurClasseData;
+import fr.sdis83.remocra.data.ParamConfWithClDisplay;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ParamConf;
 import java.util.Collection;
 import javax.inject.Singleton;
@@ -44,6 +45,10 @@ public class ParamConfRepository {
         .select(PARAM_CONF.CLE, PARAM_CONF.VALEUR)
         .from(PARAM_CONF)
         .fetchInto(CleValeurClasseData.class);
+  }
+
+  public Collection<ParamConfWithClDisplay> getParametresForAdmin() {
+    return context.selectFrom(PARAM_CONF).fetchInto(ParamConfWithClDisplay.class);
   }
 
   public void updateParamConf(String cle, String valeur) {

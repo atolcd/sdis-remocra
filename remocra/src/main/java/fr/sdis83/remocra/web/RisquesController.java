@@ -1,6 +1,6 @@
 package fr.sdis83.remocra.web;
 
-import fr.sdis83.remocra.service.ParamConfService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,13 +19,13 @@ public class RisquesController {
 
   private final Logger logger = Logger.getLogger(getClass());
 
-  @Autowired private ParamConfService paramConfService;
+  @Autowired private ParametreDataProvider parametreProvider;
 
   @RequestMapping(value = "/express")
   @PreAuthorize("hasRight('RISQUES_KML_R')")
   public void risqueExpress(HttpServletResponse response) throws IOException {
 
-    String filePath = paramConfService.getPdiCheminKml() + "/risques.kml";
+    String filePath = parametreProvider.get().getPdiCheminKml() + "/risques.kml";
     File file = new File(filePath);
     if (!file.exists()) {
       logger.info("Fichier des risques express non trouvé : " + filePath);

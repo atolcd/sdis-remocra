@@ -260,7 +260,7 @@ public class RciController extends AbstractServiceableController<RciService, Rci
   }
 
   protected void saveRciFile(MultipartFile mf, Rci rci) throws Exception {
-    String depotRepertoire = paramConfService.getDossierDepotRci();
+    String depotRepertoire = parametreProvider.get().getDossierDepotRci();
 
     // Document "générique"
     Document d = createNonPersistedDocument(TypeDocument.RCI, mf, depotRepertoire);

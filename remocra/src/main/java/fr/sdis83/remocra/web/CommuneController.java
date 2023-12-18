@@ -7,8 +7,8 @@ import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.repository.CommuneRepository;
 import fr.sdis83.remocra.repository.OrganismeRepository;
 import fr.sdis83.remocra.repository.ParamConfRepository;
-import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import java.util.Collections;
@@ -31,7 +31,7 @@ public class CommuneController {
   @Autowired private CommuneRepository communeRepository;
   @Autowired private ParamConfRepository paramConfRepository;
   @Autowired private OrganismeRepository organismeRepository;
-  @Autowired private ParamConfService paramConfService;
+  @Autowired private ParametreDataProvider parametreProvider;
 
   private final Logger logger = Logger.getLogger(getClass());
 
@@ -130,7 +130,7 @@ public class CommuneController {
 
       @Override
       protected List<Commune> getRecords() {
-        Long delta = paramConfService.getHydrantToleranceCommuneMetres();
+        Long delta = parametreProvider.get().getHydrantToleranceCommuneMetres();
         return Commune.findCommunesByPointWithDelta(srid, wkt, delta);
       }
     }.serialize();

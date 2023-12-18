@@ -19,6 +19,7 @@ import fr.sdis83.remocra.domain.remocra.TypeHydrantNatureDeci;
 import fr.sdis83.remocra.domain.remocra.ZoneSpeciale;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.repository.NumeroUtilRepository;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
@@ -44,6 +45,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class HydrantService extends AbstractHydrantService<Hydrant> {
 
   @Autowired private UtilisateurService utilisateurService;
+
+  @Autowired private ParametreDataProvider parametreDataProvider;
 
   public HydrantService() {
     super(Hydrant.class);
@@ -244,7 +247,8 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
             // dans la zone de
             // compétence de
             // l'utilisateur
-            .setParameter("dureeIndispo", paramConfService.getHydrantLongueIndisponibiliteJours())
+            .setParameter(
+                "dureeIndispo", parametreDataProvider.get().getHydrantLongueIndisponibiliteJours())
             .setParameter(
                 "zoneCompetenceId",
                 utilisateurService

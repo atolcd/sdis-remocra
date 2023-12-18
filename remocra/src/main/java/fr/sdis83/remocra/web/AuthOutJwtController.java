@@ -3,7 +3,7 @@ package fr.sdis83.remocra.web;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
-import fr.sdis83.remocra.service.ParamConfService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
@@ -67,7 +67,7 @@ public class AuthOutJwtController extends AbstractRemocraController {
 
   private final Logger logger = Logger.getLogger(getClass());
 
-  @Autowired protected ParamConfService paramConfService;
+  @Autowired protected ParametreDataProvider parametreProvider;
 
   @PersistenceContext protected EntityManager entityManager;
 
@@ -103,18 +103,20 @@ public class AuthOutJwtController extends AbstractRemocraController {
 
   protected String createToken(String username, String audience) {
     try {
-      RSAPublicKey publicKey = (RSAPublicKey) getPublicKey(paramConfService.getJwtOutPublicKey());
+      RSAPublicKey publicKey =
+          (RSAPublicKey) getPublicKey(parametreProvider.get().getJwtOutPublicKey());
       RSAPrivateKey privateKey =
-          (RSAPrivateKey) getPrivateKey(paramConfService.getJwtOutPrivateKey());
+          (RSAPrivateKey) getPrivateKey(parametreProvider.get().getJwtOutPrivateKey());
 
       Algorithm algorithm = Algorithm.RSA256(publicKey, privateKey);
       return JWT.create()
           // Issuer
-          .withIssuer(paramConfService.getJwtOutIssuer())
+          .withIssuer(parametreProvider.get().getJwtOutIssuer())
           .withIssuedAt(new Date(System.currentTimeMillis()))
           // ExpiresAt
           .withExpiresAt(
-              new Date(System.currentTimeMillis() + paramConfService.getJwtOutValidite() * 1000))
+              new Date(
+                  System.currentTimeMillis() + parametreProvider.get().getJwtOutValidite() * 1000))
           // Subject
           .withSubject(username)
           // Audience

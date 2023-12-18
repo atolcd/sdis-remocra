@@ -140,37 +140,29 @@ Ext.define('Sdis.Remocra.features.admin.typereference.ParamConf', {
     },
     
     saveData: function() {
-        var atLeastARecordDirty = false;
         this.store.each(function(r){
             var cle = r.get('cle');
             var cmp = Ext.getCmp(cle);
             var newValeur = cmp.getValue();
             r.set('valeur', newValeur);
-            if (r.dirty) {
-                atLeastARecordDirty = true;
-            }
+            r.dirty = true;
         }, this);
 
-        if (atLeastARecordDirty) {
-            this.setLoading(true);
-            // On synchronise sans recharger les données en provenance du serveur (serait mieux de le faire)
-            this.store.sync({
-                scope: this,
-                success: function(batch, options) {
-                    this.setLoading(false);
-                        Sdis.Remocra.util.Msg.msg('Paramètres de configuration',
-                            'Les paramètres de configuration ont été mis à jour.', 3);
-                },
-                failure: function(batch, options) {
-                    this.setLoading(false);
-                    Ext.Msg.alert('Paramètres de configurations',
-                        'Un problème est survenu lors de la mis à jour.');
-                }
-            });
-        } else {
-            Ext.Msg.alert('Paramètres de configurations',
-                'Les paramètres de configuration n\'ont pas été modifiés.');
-        }
+        this.setLoading(true);
+        // On synchronise sans recharger les données en provenance du serveur (serait mieux de le faire)
+        this.store.sync({
+            scope: this,
+            success: function(batch, options) {
+                this.setLoading(false);
+                    Sdis.Remocra.util.Msg.msg('Paramètres de configuration',
+                        'Les paramètres de configuration ont été mis à jour.', 3);
+            },
+            failure: function(batch, options) {
+                this.setLoading(false);
+                Ext.Msg.alert('Paramètres de configurations',
+                    'Un problème est survenu lors de la mis à jour.');
+            }
+        });
     },
 
     reloadLayers: function() {

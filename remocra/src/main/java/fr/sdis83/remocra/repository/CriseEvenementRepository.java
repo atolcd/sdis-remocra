@@ -32,8 +32,8 @@ import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
-import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.util.StatementFormat;
@@ -81,7 +81,7 @@ public class CriseEvenementRepository {
 
   @Autowired DSLContext context;
 
-  @Autowired protected ParamConfService paramConfService;
+  @Autowired protected ParametreDataProvider parametreProvider;
 
   @Autowired protected CriseRepository criseRepository;
 
@@ -975,7 +975,9 @@ public class CriseEvenementRepository {
             Document d =
                 DocumentUtil.getInstance()
                     .createNonPersistedDocument(
-                        Document.TypeDocument.CRISE, file, paramConfService.getDossierDocCrise());
+                        Document.TypeDocument.CRISE,
+                        file,
+                        parametreProvider.get().getDossierDocCrise());
             String sousType = DocumentUtil.getInstance().getSousType(file);
             context
                 .insertInto(

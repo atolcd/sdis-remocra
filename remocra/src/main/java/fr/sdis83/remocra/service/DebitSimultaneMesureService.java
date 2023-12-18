@@ -9,6 +9,7 @@ import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.remocra.Hydrant;
 import fr.sdis83.remocra.domain.utils.JSONMap;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.web.deserialize.GeometryFactory;
 import fr.sdis83.remocra.web.deserialize.RemocraBeanObjectFactory;
@@ -40,7 +41,7 @@ public class DebitSimultaneMesureService<T extends DebitSimultaneMesure>
 
   private final Logger logger = Logger.getLogger(getClass());
 
-  @Autowired protected ParamConfService paramConfService;
+  @Autowired protected ParametreDataProvider parametreProvider;
 
   public DebitSimultaneMesureService() {
     super(DebitSimultaneMesure.class);
@@ -214,7 +215,7 @@ public class DebitSimultaneMesureService<T extends DebitSimultaneMesure>
                   .createNonPersistedDocument(
                       Document.TypeDocument.ATTESTATION,
                       file.getValue(),
-                      paramConfService.getDossierDepotAttestation());
+                      parametreProvider.get().getDossierDepotAttestation());
           DebitSimultaneDocument dsd = new DebitSimultaneDocument();
           dsd.setDebitSimultaneMesure(attached);
           dsd.setDocument(this.entityManager.merge(d));

@@ -21,8 +21,8 @@ import fr.sdis83.remocra.domain.remocra.TypeDroit;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
-import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.StatementFormat;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
@@ -60,7 +60,7 @@ public class CourrierRepository {
 
   @Autowired DSLContext context;
 
-  @Autowired protected ParamConfService paramConfService;
+  @Autowired protected ParametreDataProvider parametreProvider;
 
   @Autowired private UtilisateurService utilisateurService;
 
@@ -401,7 +401,7 @@ public class CourrierRepository {
                 .values(
                     code,
                     fichier,
-                    paramConfService.getDossierCourriersExternes() + "/" + code + "/",
+                    parametreProvider.get().getDossierCourriersExternes() + "/" + code + "/",
                     "COURRIER")
                 .execute();
       }

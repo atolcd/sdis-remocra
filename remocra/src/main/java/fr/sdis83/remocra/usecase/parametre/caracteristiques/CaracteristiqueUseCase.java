@@ -5,8 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.datasource.CodeLibelleOrdreData;
 import fr.sdis83.remocra.enums.PeiCaracteristique;
-import fr.sdis83.remocra.repository.ParametreRepository;
-import java.util.*;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
+import fr.sdis83.remocra.usecase.parametre.UpdateParametreUseCase;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,7 +20,8 @@ public class CaracteristiqueUseCase {
   private static final String PARAMETRE_PENA = PREFIX_PARAMETRE + "PENA";
   private static final String PARAMETRE_PIBI = PREFIX_PARAMETRE + "PIBI";
 
-  @Autowired ParametreRepository parametreRepository;
+  @Autowired UpdateParametreUseCase updateParametreUseCase;
+  @Autowired ParametreDataProvider parametreDataProvider;
 
   public CaracteristiqueUseCase() {}
 
@@ -68,7 +72,8 @@ public class CaracteristiqueUseCase {
       PeiCaracteristique.TypeCaracteristique typeCaracteristique) {
 
     String cle = PREFIX_PARAMETRE + typeCaracteristique;
-    String param = parametreRepository.getByCle(cle).getValeurParametre();
+
+    String param = parametreDataProvider.get().getValeurString(cle);
     List<CodeLibelleOrdreData> list = new ArrayList<>();
     int index = 0;
     for (String caracString : param.split(",")) {
@@ -99,8 +104,8 @@ public class CaracteristiqueUseCase {
     // on fait une list de code dans le bon ordre (on a juste besoin des codes)
     String parametrePibi = getParam(pibiValeur);
     String parametrePena = getParam(penaValeur);
-    parametreRepository.updateByKey(PARAMETRE_PIBI, parametrePibi);
-    parametreRepository.updateByKey(PARAMETRE_PENA, parametrePena);
+    updateParametreUseCase.updateParametre(PARAMETRE_PIBI, parametrePibi);
+    updateParametreUseCase.updateParametre(PARAMETRE_PENA, parametrePena);
   }
 
   private String getParam(List<CodeLibelleOrdreData> list) {
@@ -131,7 +136,7 @@ public class CaracteristiqueUseCase {
   }
 
   public void updateAgentParam(String agentParam) {
-    parametreRepository.updateByKey(GlobalConstants.PARAMETRE_AGENTS, agentParam);
+    updateParametreUseCase.updateParametre(GlobalConstants.PARAMETRE_AGENTS, agentParam);
   }
 
   static class SortCodeLibelleOrdre implements java.util.Comparator<CodeLibelleOrdreData> {

@@ -18,6 +18,6 @@ public class ExtResourcesController extends AbstractProxyResourcesController {
 
   @Override
   String getFileBasePath() {
-    return paramConfService.getDossierRessourcesExternes();
+    return parametreProvider.get().getDossierRessourcesExternes();
   }
 }

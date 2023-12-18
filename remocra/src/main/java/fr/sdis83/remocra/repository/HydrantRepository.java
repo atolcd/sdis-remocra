@@ -31,8 +31,8 @@ import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.exception.ImportCTPException;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.service.HydrantService;
-import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.util.JSONUtil;
@@ -87,7 +87,7 @@ public class HydrantRepository {
 
   @Autowired HydrantService hydrantService;
 
-  @Autowired ParamConfService paramConfService;
+  @Autowired ParametreDataProvider parametreProvider;
 
   @Autowired UtilisateurService utilisateurService;
 
@@ -194,7 +194,9 @@ public class HydrantRepository {
           Document d =
               DocumentUtil.getInstance()
                   .createNonPersistedDocument(
-                      Document.TypeDocument.HYDRANT, file, paramConfService.getDossierDocHydrant());
+                      Document.TypeDocument.HYDRANT,
+                      file,
+                      parametreProvider.get().getDossierDocHydrant());
           String sousType = DocumentUtil.getInstance().getSousType(file);
 
           Long idDoc =
@@ -289,7 +291,9 @@ public class HydrantRepository {
           Document d =
               DocumentUtil.getInstance()
                   .createNonPersistedDocument(
-                      Document.TypeDocument.HYDRANT, file, paramConfService.getDossierDocHydrant());
+                      Document.TypeDocument.HYDRANT,
+                      file,
+                      parametreProvider.get().getDossierDocHydrant());
           String sousType = DocumentUtil.getInstance().getSousType(file);
 
           Long idDoc =
@@ -368,7 +372,7 @@ public class HydrantRepository {
   private Hydrant updateHydrant(Hydrant h) {
 
     if ((h.getNumeroInterne() == null || h.getNumeroInterne() <= 0)
-        || paramConfService.getHydrantRenumerotationActivation()) {
+        || parametreProvider.get().getHydrantRenumerotationActivation()) {
       h = NumeroUtilRepository.setCodeZoneSpecAndNumeros(h, h.getCode());
     }
 
@@ -747,7 +751,7 @@ public class HydrantRepository {
                   longitude, latitude, GlobalConstants.SRID_PARAM, h.getId())
               .fetchOneInto(Integer.class);
 
-      if (distance > this.paramConfService.getHydrantDeplacementDistWarn()) {
+      if (distance > this.parametreProvider.get().getHydrantDeplacementDistWarn()) {
         String str =
             context
                 .select(TYPE_HYDRANT_IMPORTCTP_ERREUR.MESSAGE)
@@ -912,7 +916,7 @@ public class HydrantRepository {
       List<ItemFilter> itemFilters, Integer limit, Integer start, List<ItemSorting> itemSortings) {
     String condition = this.getFilters(itemFilters);
 
-    boolean triAlphaNumerique = this.paramConfService.getHydrantMethodeTriAlphanumerique();
+    boolean triAlphaNumerique = this.parametreProvider.get().getHydrantMethodeTriAlphanumerique();
 
     String sortFields =
         (triAlphaNumerique)
@@ -1018,10 +1022,10 @@ public class HydrantRepository {
         if (nbMonths != 0) {
           final DateTime datePrive =
               new DateTime()
-                  .minus(Period.days(paramConfService.getHydrantRenouvellementRecoPrive()));
+                  .minus(Period.days(parametreProvider.get().getHydrantRenouvellementRecoPrive()));
           final DateTime datePublic =
               new DateTime()
-                  .minus(Period.days(paramConfService.getHydrantRenouvellementRecoPublic()));
+                  .minus(Period.days(parametreProvider.get().getHydrantRenouvellementRecoPublic()));
           if (nbMonths > 0) {
             condition +=
                 " and case when thnd.code = 'PRIVE' then h.date_reco <= '"
@@ -1048,10 +1052,10 @@ public class HydrantRepository {
         if (nbMonths != 0) {
           final DateTime datePrive =
               new DateTime()
-                  .minus(Period.days(paramConfService.getHydrantRenouvellementCtrlPrive()));
+                  .minus(Period.days(parametreProvider.get().getHydrantRenouvellementCtrlPrive()));
           final DateTime datePublic =
               new DateTime()
-                  .minus(Period.days(paramConfService.getHydrantRenouvellementCtrlPublic()));
+                  .minus(Period.days(parametreProvider.get().getHydrantRenouvellementCtrlPublic()));
           if (nbMonths > 0) {
             condition +=
                 " and case when thnd.code = 'PRIVE' then h.date_contr <= '"

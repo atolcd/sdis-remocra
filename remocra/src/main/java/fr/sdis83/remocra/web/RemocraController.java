@@ -10,8 +10,8 @@ import fr.sdis83.remocra.repository.ParametreRepository;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.service.AuthService;
 import fr.sdis83.remocra.service.HydrantService;
-import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.FunctionsUtils;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.serialize.AccessRightSerializer;
@@ -62,7 +62,7 @@ public class RemocraController {
 
   @Autowired private AuthoritiesUtil authUtils;
 
-  @Autowired private ParamConfService paramConfService;
+  @Autowired private ParametreDataProvider parametreProvider;
 
   @Autowired private UtilisateurService utilisateurService;
   @Autowired private ParametreRepository parametreRepository;
@@ -76,9 +76,8 @@ public class RemocraController {
     String serialRights = new AccessRightSerializer().serialize(authUtils.getCurrentRights());
     log.debug("Loading with Rights : " + serialRights);
     model.addAttribute("userRights", serialRights);
-    int srid =
-        Integer.valueOf(
-            parametreRepository.getByCle(GlobalConstants.CLE_SRID).getValeurParametre());
+
+    int srid = Integer.parseInt(parametreProvider.get().getValeurString(GlobalConstants.CLE_SRID));
     FunctionsUtils.setSRIDValue(srid);
 
     // Emprise du territoire de compétence de l'utilisateur
@@ -112,11 +111,11 @@ public class RemocraController {
 
     model.addAttribute(
         "url_site",
-        paramConfService.getUrlSite() == null
+        parametreProvider.get().getUrlSite() == null
             ? "http://localhost:8080/remocra/"
-            : paramConfService.getUrlSite());
+            : parametreProvider.get().getUrlSite());
     // Structure ou Chaine de caractères
-    String clesIgn = paramConfService.getClesIgn();
+    String clesIgn = parametreProvider.get().getClesIgn();
     model.addAttribute("clesIgn", clesIgn.contains("{") ? clesIgn : "'" + clesIgn + "'");
 
     // Information mode debug en cours
@@ -132,55 +131,56 @@ public class RemocraController {
             .toString());
 
     // Afficher un message en haut de la page
-    model.addAttribute("message_entete", paramConfService.getMessageEntete());
-    model.addAttribute("titre_page", paramConfService.getTitrePage());
+    model.addAttribute("message_entete", parametreProvider.get().getMessageEntete());
+    model.addAttribute("titre_page", parametreProvider.get().getTitrePage());
 
     // Afficher un message en haut de la page
-    model.addAttribute("mention_cnil", paramConfService.getMentionCnil());
+    model.addAttribute("mention_cnil", parametreProvider.get().getMentionCnil());
 
-    model.addAttribute("hydrant_cfg", paramConfService.getHydrantCfg());
-    model.addAttribute("hydrant_symbologie", paramConfService.getHydrantSymbologieMethode());
+    model.addAttribute("hydrant_cfg", parametreProvider.get().getHydrantCfg());
+    model.addAttribute("hydrant_symbologie", parametreProvider.get().getHydrantSymbologieMethode());
 
     model.addAttribute(
-        "coordonnees_format_affichage", paramConfService.getCoordonneesFormatAffichage());
+        "coordonnees_format_affichage", parametreProvider.get().getCoordonneesFormatAffichage());
 
     // Durée d'inactivité permis en secondes
     model.addAttribute("maxInactiveIntervalSec", request.getSession().getMaxInactiveInterval());
 
     // Orientations par défaut
-    model.addAttribute("orientationX", paramConfService.getDefaultOrientationX());
-    model.addAttribute("orientationY", paramConfService.getDefaultOrientationY());
+    model.addAttribute("orientationX", parametreProvider.get().getDefaultOrientationX());
+    model.addAttribute("orientationY", parametreProvider.get().getDefaultOrientationY());
 
     // Mode de visite des hydrants
-    model.addAttribute("hydrant_visite_rapide", paramConfService.getHydrantVisiteRapide());
+    model.addAttribute("hydrant_visite_rapide", parametreProvider.get().getHydrantVisiteRapide());
 
     // Durée de mise en évidence lors de la localisation
-    model.addAttribute("hydrant_highlight_duree", paramConfService.getHydrantHighlightDuree());
+    model.addAttribute(
+        "hydrant_highlight_duree", parametreProvider.get().getHydrantHighlightDuree());
 
     // Paramétrage des colonnes du tableau de suivi des PEI
     model.addAttribute(
         "hydrant_colonnes",
-        (new JSONSerializer()).serialize(paramConfService.getHydrantColonnes()));
+        (new JSONSerializer()).serialize(parametreProvider.get().getHydrantColonnes()));
 
     // Autoriser le zoom sur les adresses adresse.data.gouv.fr
-    model.addAttribute("hydrant_zoom_numero", paramConfService.getHydrantZoomNumero());
+    model.addAttribute("hydrant_zoom_numero", parametreProvider.get().getHydrantZoomNumero());
 
     model.addAttribute(
-        "hydrant_deplacement_dist_warn", paramConfService.getHydrantDeplacementDistWarn());
+        "hydrant_deplacement_dist_warn", parametreProvider.get().getHydrantDeplacementDistWarn());
 
     model.addAttribute(
-        "hydrant_generation_carte_tournee", paramConfService.getHydrantGenerationCarteTournee());
+        "hydrant_generation_carte_tournee",
+        parametreProvider.get().getHydrantGenerationCarteTournee());
 
     // Définit la complexité du mot de passe
-    model.addAttribute("complexite_password", paramConfService.getComplexitePassword());
+    model.addAttribute("complexite_password", parametreProvider.get().getComplexitePassword());
 
     // Vitesse de l'eau dans le réseau retenue par le SDIS
-    model.addAttribute("vitesse_eau", paramConfService.getVitesseEau());
+    model.addAttribute("vitesse_eau", parametreProvider.get().getVitesseEau());
 
-    model.addAttribute("show_historique", paramConfService.getHydrantNombreHistorique() > 0);
+    model.addAttribute("show_historique", parametreProvider.get().getHydrantNombreHistorique() > 0);
 
-    model.addAttribute(
-        "srid", parametreRepository.getByCle(GlobalConstants.CLE_SRID).getValeurParametre());
+    model.addAttribute("srid", parametreProvider.get().getValeurString(GlobalConstants.CLE_SRID));
 
     return "remocra";
   }
@@ -283,16 +283,18 @@ public class RemocraController {
   public ResponseEntity<java.lang.String> checkMessage(final @RequestBody String json) {
     // PEIs indisponibles depuis trop longtemps
     if (authUtils.hasRight(TypeDroit.TypeDroitEnum.HYDRANTS_R)
-        && paramConfService.getHydrantLongueIndisponibiliteJours() > 0
-        && paramConfService.getHydrantLongueIndisponibiliteMessage().trim().length() > 0) {
+        && parametreProvider.get().getHydrantLongueIndisponibiliteJours() > 0
+        && parametreProvider.get().getHydrantLongueIndisponibiliteMessage().trim().length() > 0) {
 
       String codeOrganisme =
           utilisateurService.getCurrentUtilisateur().getOrganisme().getTypeOrganisme().getCode();
 
-      if (codeOrganisme.matches(paramConfService.getHydrantLongueIndisponibiliteTypeOrganisme())) {
+      if (codeOrganisme.matches(
+          parametreProvider.get().getHydrantLongueIndisponibiliteTypeOrganisme())) {
         ArrayList<String> peis = hydrantService.checkHydrantsDureeIndispo();
         if (peis.size() > 0) {
-          Integer nbJoursIndispoMax = paramConfService.getHydrantLongueIndisponibiliteJours();
+          Integer nbJoursIndispoMax =
+              parametreProvider.get().getHydrantLongueIndisponibiliteJours();
           DateTime today = new DateTime();
           DateTime limitDate = today.minus(Period.days(nbJoursIndispoMax));
           int nbMonths = Months.monthsBetween(limitDate, today).getMonths();
@@ -303,7 +305,8 @@ public class RemocraController {
           StringBuffer sb =
               new StringBuffer("<div class=\"listHydrant\">")
                   .append(
-                      paramConfService
+                      parametreProvider
+                          .get()
                           .getHydrantLongueIndisponibiliteMessage()
                           .replace("%MOIS%", String.valueOf(nbMonths))
                           .replace("%JOURS%", String.valueOf(nbJours)));

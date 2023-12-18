@@ -4,8 +4,8 @@ import fr.sdis83.remocra.exception.AnomalieException;
 import fr.sdis83.remocra.exception.SQLBusinessException;
 import fr.sdis83.remocra.exception.XmlDroitException;
 import fr.sdis83.remocra.exception.XmlValidationException;
-import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.XmlService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,7 +51,7 @@ public class XmlController {
 
   @Autowired private XmlService xmlService;
 
-  @Autowired private ParamConfService paramConfService;
+  @Autowired private ParametreDataProvider parametreProvider;
 
   @RequestMapping(value = "/communes")
   public void getCommunes(HttpServletResponse response) throws IOException {
@@ -264,7 +264,7 @@ public class XmlController {
       // Sérialisation de la requête sur disque
       PrintWriter out =
           new PrintWriter(
-              paramConfService.getPdiCheminLog()
+              parametreProvider.get().getPdiCheminLog()
                   + File.separator
                   + UPDATEHYDRANTS_XML_DEBUG_FILE_REQ);
       out.print(xml);
@@ -306,7 +306,7 @@ public class XmlController {
       // Sérialisation de la réponse sur disque
       PrintWriter out =
           new PrintWriter(
-              paramConfService.getPdiCheminLog()
+              parametreProvider.get().getPdiCheminLog()
                   + File.separator
                   + UPDATEHYDRANTS_XML_DEBUG_FILE_RESP);
       out.print(xmlResp);

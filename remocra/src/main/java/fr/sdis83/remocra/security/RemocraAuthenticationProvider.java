@@ -1,11 +1,12 @@
 package fr.sdis83.remocra.security;
 
+import fr.sdis83.remocra.data.ParametreData;
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.domain.remocra.ProfilUtilisateur;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.exception.BusinessException;
-import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -42,11 +43,7 @@ import org.springframework.util.StringUtils;
 public class RemocraAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
   private final Logger logger = Logger.getLogger(getClass());
 
-  @Autowired private ParamConfService paramConfService;
-
-  public void setParamConfService(ParamConfService paramConfService) {
-    this.provider = provider;
-  }
+  @Autowired private ParametreDataProvider parametreProvider;
 
   @Autowired private ProfileProvider provider;
 
@@ -203,7 +200,7 @@ public class RemocraAuthenticationProvider extends AbstractUserDetailsAuthentica
   }
 
   boolean ldapAuthentication(String username, String password) {
-    ParamConfService.LdapMethod method = paramConfService.getLdapMethod();
+    ParametreData.LdapMethod method = parametreProvider.get().getLdapMethod();
     switch (method) {
       case SIMPLE:
         return ldapAuthenticationDistinguishedName(username, password);
@@ -215,7 +212,7 @@ public class RemocraAuthenticationProvider extends AbstractUserDetailsAuthentica
   }
 
   boolean ldapAuthenticationDistinguishedName(String username, String password) {
-    Hashtable<String, String> ldapEnv = paramConfService.getLdapEnvironmentSimple();
+    Hashtable<String, String> ldapEnv = parametreProvider.get().getLdapEnvironmentSimple();
     if (ldapEnv != null) {
       ldapEnv.put(Context.SECURITY_PRINCIPAL, username);
       ldapEnv.put(Context.SECURITY_CREDENTIALS, password);
@@ -241,7 +238,7 @@ public class RemocraAuthenticationProvider extends AbstractUserDetailsAuthentica
   }
 
   boolean LdapAuthenticationSearchUser(String username, String password) {
-    Hashtable<String, String> ldapEnv = paramConfService.getLdapEnvironmentSearchUser();
+    Hashtable<String, String> ldapEnv = parametreProvider.get().getLdapEnvironmentSearchUser();
     if (ldapEnv != null) {
       DirContext ctx;
       try {
@@ -259,8 +256,8 @@ public class RemocraAuthenticationProvider extends AbstractUserDetailsAuthentica
         controls.setCountLimit(1);
         controls.setTimeLimit(5000);
 
-        String ldapUserBaseName = paramConfService.getLdapUserBaseName();
-        String ldapUserFilter = paramConfService.getLdapUserFilter();
+        String ldapUserBaseName = parametreProvider.get().getLdapUserBaseName();
+        String ldapUserFilter = parametreProvider.get().getLdapUserFilter();
         ldapUserFilter = ldapUserFilter.replace("[USERNAME]", username);
         results = ctx.search(ldapUserBaseName, ldapUserFilter, controls);
 

@@ -1,7 +1,6 @@
 package fr.sdis83.remocra.web;
 
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
-import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +11,11 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.http.*;
+import org.apache.http.Header;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.MethodNotSupportedException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.DefaultHttpRequestFactory;
@@ -37,8 +40,6 @@ public class RedashController {
   private static final int NB_SECONDES_REFRESH = 120;
 
   @Autowired private UtilisateurService utilisateurService;
-
-  @Autowired private ParamConfService paramConfService;
 
   @RequestMapping(value = "/**")
   @PreAuthorize("hasRight('DASHBOARD_R')")

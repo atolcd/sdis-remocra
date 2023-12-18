@@ -5,9 +5,9 @@ import flexjson.JSONSerializer;
 import fr.sdis83.remocra.domain.remocra.ProfilDroit;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.AuthService;
-import fr.sdis83.remocra.service.ParamConfService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.service.ZoneCompetenceService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.util.Layer;
 import fr.sdis83.remocra.util.Layer.AccessLevel;
@@ -83,7 +83,7 @@ public class GeoserverController {
 
   @Autowired private UtilisateurService utilisateurService;
 
-  @Autowired private ParamConfService paramConfService;
+  @Autowired private ParametreDataProvider parametreProvider;
 
   @Autowired private ZoneCompetenceService zoneCompetenceService;
 
@@ -93,7 +93,7 @@ public class GeoserverController {
     if (layers == null) {
       layers = new HashMap<String, Layer>();
       // HD : Couches publiques, privées et restreintes sur la zone
-      String folder = paramConfService.getDossierLayers();
+      String folder = parametreProvider.get().getDossierLayers();
       try {
         FileReader filereader = new FileReader(folder + "/layers.json");
         List<Layer> confLayers =
@@ -109,7 +109,7 @@ public class GeoserverController {
       int layersCountInFile = layers.size();
       // DB : couches publiques supplémentaires éventuelles
       // (rétrocompatibilité)
-      for (String aPublicDbLayer : paramConfService.getWmsPublicLayers()) {
+      for (String aPublicDbLayer : parametreProvider.get().getWmsPublicLayers()) {
         if (!layers.containsKey(aPublicDbLayer)) {
           layers.put(
               aPublicDbLayer, new Layer(aPublicDbLayer, true, new String[] {}, new String[] {}));
@@ -205,9 +205,11 @@ public class GeoserverController {
     // --------------------
 
     try {
-      String wmsBaseUrl = paramConfService.getWmsBaseUrl();
+      String wmsBaseUrl = parametreProvider.get().getWmsBaseUrl();
       String targetURL =
-          paramConfService.getWmsBaseUrl() + (wmsBaseUrl.endsWith("/") ? "" : "/") + geoserverPath;
+          parametreProvider.get().getWmsBaseUrl()
+              + (wmsBaseUrl.endsWith("/") ? "" : "/")
+              + geoserverPath;
 
       // Récupération de l'URL cible
       URI targetUri = new UrlResource(targetURL).getURI();
@@ -439,9 +441,11 @@ public class GeoserverController {
     // --------------------
 
     try {
-      String wmsBaseUrl = paramConfService.getWmsBaseUrl();
+      String wmsBaseUrl = parametreProvider.get().getWmsBaseUrl();
       String targetURL =
-          paramConfService.getWmsBaseUrl() + (wmsBaseUrl.endsWith("/") ? "" : "/") + geoserverPath;
+          parametreProvider.get().getWmsBaseUrl()
+              + (wmsBaseUrl.endsWith("/") ? "" : "/")
+              + geoserverPath;
 
       // Récupération de l'URL cible
       URI targetUri = new UrlResource(targetURL).getURI();
@@ -838,7 +842,7 @@ public class GeoserverController {
       log.error("Proxy WMS : unable to find profile for utilisateur.");
       codeFeuille = defaultCodeFeuille;
     }
-    String folder = paramConfService.getDossierGetFeatureInfo();
+    String folder = parametreProvider.get().getDossierGetFeatureInfo();
     File returned = new File(folder + File.separatorChar + codeFeuille + ".xsl");
     if (!returned.exists()) {
       returned = new File(folder + File.separatorChar + defaultCodeFeuille + ".xsl");
@@ -898,7 +902,7 @@ public class GeoserverController {
     if (url != null) {
       String rewritten =
           url.replaceFirst(
-              "http(s?):\\/\\/.*\\/geoserver", paramConfService.getUrlSite() + "geoserver");
+              "http(s?):\\/\\/.*\\/geoserver", parametreProvider.get().getUrlSite() + "geoserver");
       log.debug("Proxy WMS : rewrite url (" + url + " -> " + rewritten + ")");
       return rewritten;
     }
