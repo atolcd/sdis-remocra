@@ -44,7 +44,6 @@ public class OrganismeController
   }
 
   @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/json")
-  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<java.lang.String> listJson(
       @RequestParam(value = "page", required = false) Integer page,
       final @RequestParam(value = "start", required = false) Integer start,
