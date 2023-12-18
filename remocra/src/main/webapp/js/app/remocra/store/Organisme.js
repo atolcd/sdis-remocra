@@ -10,6 +10,6 @@ Ext.define('Sdis.Remocra.store.Organisme', {
     remoteFilter: true,
     pageSize: 20,
     
-    autoLoad : false,
-    autoSync: false
+    autoLoad : true,
+    autoSync: true
 });

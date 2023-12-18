@@ -40,7 +40,8 @@ public class OrganismeService extends AbstractService<Organisme> {
     if ("id".equals(itemFilter.getFieldName())) {
       Expression<String> cpPath = from.get("id");
       predicat = cBuilder.equal(cpPath, itemFilter.getValue());
-    } else if ("query".equals(itemFilter.getFieldName())) {
+    } else if ("query".equals(itemFilter.getFieldName())
+        || "nom".equals(itemFilter.getFieldName())) {
       Expression<String> cpPath = from.get("nom");
       predicat =
           cBuilder.like(cBuilder.upper(cpPath), "%" + itemFilter.getValue().toUpperCase() + "%");

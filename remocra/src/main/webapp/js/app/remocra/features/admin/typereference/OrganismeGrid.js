@@ -24,16 +24,37 @@ Ext.define('Sdis.Remocra.features.admin.typereference.OrganismeGrid', {
     uniqueConstraints: ['code'],
     modelType: 'Sdis.Remocra.model.Organisme',
     store: null, // créé à la construction
+    plugins: [
+        Sdis.Remocra.widget.WidgetFactory.createRoweditingPluginCfg(false),
+        Ext.create('Ext.ux.grid.plugin.HeaderFilters')
+ ],
     
     constructor: function(config) {
         config = config || {};
+        var deferredApplyFilter = Ext.Function.createBuffered(function() {
+            this.headerFilterPlugin.applyFilters();
+        }, 600, this);
         
         // Ajout des définitions des colonnes si elles ne sont pas déjà définies
         var typeRefGridCols = Sdis.Remocra.features.admin.typereference.TypeReferenceGrid.columns;
         Ext.applyIf(config, {
             columns: [
                 typeRefGridCols.code,
-                typeRefGridCols.nom,
+                {
+                    header : 'Nom',
+                    dataIndex : 'nom',
+                    menuDisabled : true,
+                    flex: 5,
+                    filterable: true,
+                    filter: {
+                        xtype: 'textfield',
+                        hideTrigger: true,
+                        listeners: {
+                            change: deferredApplyFilter
+                        }
+                    },
+                    editor: {xtype: 'textfield'}
+                },
                 this.statics().columns.emailContact,
                 {
                     header: 'Type Organisme',

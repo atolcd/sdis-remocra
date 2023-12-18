@@ -6,6 +6,8 @@ import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.repository.ContactRepository;
 import fr.sdis83.remocra.service.OrganismeService;
 import fr.sdis83.remocra.util.ExceptionUtils;
+import fr.sdis83.remocra.web.message.ItemFilter;
+import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
@@ -41,11 +43,31 @@ public class OrganismeController
     return service;
   }
 
-  @Override
-  protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
-    return serializer
-        .include("data.organismeParent.id", "data.organismeParent.code", "data.organismeParent.nom")
-        .exclude("data.zoneCompetence.geometrie", "data.organismeParent.*");
+  @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/json")
+  @PreAuthorize("isAuthenticated()")
+  public ResponseEntity<java.lang.String> listJson(
+      @RequestParam(value = "page", required = false) Integer page,
+      final @RequestParam(value = "start", required = false) Integer start,
+      final @RequestParam(value = "limit", required = false) Integer limit,
+      @RequestParam(value = "sort", required = false) String sorts,
+      @RequestParam(value = "filter", required = false) String filters) {
+    final List<ItemSorting> sortList = ItemSorting.decodeJson(sorts);
+    final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
+    return new AbstractExtListSerializer<Organisme>("Organisme retrieved.") {
+
+      @Override
+      protected JSONSerializer additionnalIncludeExclude(JSONSerializer serializer) {
+        return serializer
+            .include(
+                "data.organismeParent.id", "data.organismeParent.code", "data.organismeParent.nom")
+            .exclude("data.zoneCompetence.geometrie", "data.organismeParent.*", "");
+      }
+
+      @Override
+      protected List<Organisme> getRecords() {
+        return getService().find(start, limit, sortList, itemFilterList);
+      }
+    }.serialize();
   }
 
   @RequestMapping(value = "", method = RequestMethod.POST, headers = "Accept=application/json")
