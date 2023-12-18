@@ -10,6 +10,26 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
+== v2.3.2
+=== Mise à jour
+* Permet de filtrer par nom les organismes dans la table organismes (#149613)
+
+=== Fix
+* Corrige l'import CTP (#198328)
+* Corrige le rôle Administrateur dans l'API (#198229)
+* Corrige la recherche dans la notification de courrier (#198970)
+* Corrige la liste des contacts d'un gestionnaire (#198972)
+* Affiche par défaut les outils d'édition dans le module Points d'eau (#198438)
+
+=== Mise à jour
+
+* Indiquer la valeur de version `2.3.2` dans le fichier .env (ou remocra.env)
+
+NOTE: Patch spécifique
+
+* [ SDIS 14 ]
+** Appliquer le patch 191_001.sql (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis/14[Disponibles ici])
+
 
 == v2.3.1
 === Evolution
