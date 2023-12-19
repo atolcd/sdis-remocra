@@ -312,7 +312,7 @@ public class GeoserverController {
           // On passe par l'id avec des doubles quotes car mot réservé.
           // C'est plus sûr qu'en passant par une chaine de caractères (code=VAR par exemple)
           fullCQLFilter.append(
-              "INTERSECTS(geometrie,(querySingle('remocra:zone_competence','geometrie','\"id\"="
+              "WITHIN(geometrie,(querySingle('remocra:zone_competence','geometrie','\"id\"="
                   + idZone
                   + "')))");
         }
@@ -521,7 +521,7 @@ public class GeoserverController {
           // On passe par l'id avec des doubles quotes car mot réservé.
           // C'est plus sûr qu'en passant par une chaine de caractères (code=VAR par exemple)
           fullCQLFilter.append(
-              "INTERSECTS(geometrie,(querySingle('remocra:zone_competence','geometrie','\"id\"="
+              "WITHIN(geometrie,(querySingle('remocra:zone_competence','geometrie','\"id\"="
                   + idZone
                   + "')))");
         }

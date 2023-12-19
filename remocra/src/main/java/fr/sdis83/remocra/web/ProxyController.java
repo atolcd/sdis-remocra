@@ -275,7 +275,7 @@ public class ProxyController {
           // (code=VAR par exemple)
           String idZone = zoneCompetence.toString();
           String cqlFilterValue =
-              "INTERSECTS(geometrie,(querySingle('remocra:zone_competence','geometrie','%22id%22="
+              "WITHIN(geometrie,(querySingle('remocra:zone_competence','geometrie','%22id%22="
                   + idZone
                   + "')))";
 
