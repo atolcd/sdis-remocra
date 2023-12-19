@@ -34,18 +34,17 @@ GRANT CONNECT ON DATABASE remocra TO read_only_user;
 
 DO $$
 DECLARE
-	nameSchema varchar;
+    schema_name varchar;
 BEGIN
-	FOR nameSchema IN (SELECT schema_name FROM information_schema.schemata) LOOP
-		EXECUTE 'GRANT USAGE ON SCHEMA '|| nameSchema ||' TO read_only_user';
-		EXECUTE 'GRANT USAGE ON ALL SEQUENCES IN SCHEMA '|| nameSchema ||' TO read_only_user';
-		EXECUTE 'GRANT SELECT ON ALL TABLES IN SCHEMA '|| nameSchema ||' TO read_only_user';
-
-		-- Permet d'affecter le droit de select aux futures tables du schéma
-		EXECUTE 'ALTER DEFAULT PRIVILEGES IN SCHEMA '|| nameSchema ||' GRANT SELECT ON TABLES TO read_only_user';
-	END LOOP;
+    FOR schema_name IN (SELECT DISTINCT table_schema FROM information_schema.role_table_grants WHERE grantee = 'remocra' AND lower(is_grantable) = 'yes') LOOP
+            EXECUTE 'GRANT USAGE ON SCHEMA '|| schema_name ||' TO read_only_user';
+            EXECUTE 'GRANT USAGE ON ALL SEQUENCES IN SCHEMA '|| schema_name ||' TO read_only_user';
+        END LOOP;
+    FOR schema_name IN (SELECT DISTINCT object_schema FROM information_schema.role_usage_grants WHERE grantee = 'remocra' AND lower(is_grantable) = 'yes') LOOP
+            EXECUTE 'GRANT SELECT ON ALL TABLES IN SCHEMA '|| schema_name ||' TO read_only_user';
+            EXECUTE 'ALTER DEFAULT PRIVILEGES IN SCHEMA '|| schema_name ||' GRANT SELECT ON TABLES TO read_only_user';
+        END LOOP;
 END$$;
-
 
 -- Contenu réel du patch fin
 --------------------------------------------------
