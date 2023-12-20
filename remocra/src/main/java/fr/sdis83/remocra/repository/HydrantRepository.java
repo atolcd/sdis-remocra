@@ -1173,7 +1173,12 @@ public class HydrantRepository {
     // Gestion de la commune
     List<Commune> listeCommune = Commune.findCommunesByPoint(srid, point.toString());
     if (!listeCommune.isEmpty()) {
-      h.setCommune(listeCommune.get(0).getId());
+      if (!h.getCommune().equals(listeCommune.get(0).getId())) { // Si la commune a changé
+        h.setCommune(listeCommune.get(0).getId()); // update h.commune
+        // remise à zéro de SpDECI et AutoritéDECI car ces valeurs dépendent de la commune
+        h.setSpDeci(null);
+        h.setAutoriteDeci(null);
+      }
     }
     return this.updateHydrant(h);
   }
