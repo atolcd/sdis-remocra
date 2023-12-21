@@ -225,6 +225,7 @@ export default {
       type: "button",
       name: "selectionPoint",
       iconPath: "/remocra/static/img/selection_point.png",
+      title: "Sélectionner",
       onClick: () => {
         this.toggleButton("selectionPoint");
       },
