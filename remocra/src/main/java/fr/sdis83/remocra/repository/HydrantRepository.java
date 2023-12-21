@@ -115,6 +115,8 @@ public class HydrantRepository {
   }
 
   public static final int NUM_CELL_OBSERVATION = 18;
+  public static final int NUM_CELL_DEBUT_ANOMALIE = 13;
+  public static final int NUM_CELL_FIN_ANOMALIE = 17;
 
   public void updateHydrantFromFiche(
       Long id, String jsonData, String typeHydrant, Map<String, MultipartFile> files)
@@ -765,8 +767,10 @@ public class HydrantRepository {
     ArrayList<Long> id_anomalies = new ArrayList<Long>();
 
     // On récupère les identifiants des anomalies inscrites dans le fichier
-    for (int i = 13; i < 17; i++) {
-      if (row.getCell(i) != null && row.getCell(i).getCellType() != CellType.BLANK) {
+    for (int i = NUM_CELL_DEBUT_ANOMALIE; i < NUM_CELL_FIN_ANOMALIE; i++) {
+      if (row.getCell(i) != null
+          && row.getCell(i).getCellType() != CellType.BLANK
+          && !row.getCell(i).getStringCellValue().trim().isEmpty()) {
         String xls_anomalie = row.getCell(i).getStringCellValue();
         String code = xls_anomalie.substring(xls_anomalie.indexOf('-') + 2);
         TypeHydrantAnomalie anomalie =
