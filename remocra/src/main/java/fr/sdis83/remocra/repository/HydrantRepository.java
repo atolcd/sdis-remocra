@@ -114,6 +114,8 @@ public class HydrantRepository {
     this.context = context;
   }
 
+  public static final int NUM_CELL_OBSERVATION = 18;
+
   public void updateHydrantFromFiche(
       Long id, String jsonData, String typeHydrant, Map<String, MultipartFile> files)
       throws Exception {
@@ -836,7 +838,10 @@ public class HydrantRepository {
     }
 
     String observation =
-        (row.getLastCellNum() - 1 >= 18) ? row.getCell(18).getStringCellValue() : null;
+        (row.getLastCellNum() - 1 >= NUM_CELL_OBSERVATION)
+                && row.getCell(NUM_CELL_OBSERVATION) != null
+            ? row.getCell(NUM_CELL_OBSERVATION).getStringCellValue()
+            : null;
 
     /**
      * Ajout des données de la visite à ajouter aux informations JSON Ces données ont déjà été
