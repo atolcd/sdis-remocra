@@ -56,11 +56,10 @@
           <p class="layerGroup">{{groupe}}</p>
           <div v-for="(layer, index) in getSortedLayers(groupe)" :key="index" class="layerItemLegende">
             <div v-if="layer.get('legende') && layer.get('legende').visible">
-              <div v-if="layer.get('legende').type == 'getLegendGraphic'" class='legendeItem'>
-                <img :src="'/remocra/geoserver/remocra/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER='+layer.get('layer')" alt="legende"/>
+              <div v-if="layer.get('legende').type == 'getLegendGraphic' && layer.get('source') != null" class='legendeItem'>
+                <img :src="layer.get('source').url_+'?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER='+layer.get('layer')" alt="legende"/>
                 <p class="legendeLibelle">{{layer.get("libelle")}}</p>
               </div>
-
               <div v-if="layer.get('legende') && layer.get('legende').type == 'url'" class='legendeItem'>
                 <img :src="'/remocra/ext-res/layers/legendes/'+layer.get('legende').src" alt="legende" />
                 <p class="legendeLibelle" v-if="layer.get('legende').libelle != false">{{layer.get("libelle")}}</p>
