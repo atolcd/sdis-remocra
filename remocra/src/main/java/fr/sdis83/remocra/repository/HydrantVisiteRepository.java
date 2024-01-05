@@ -10,24 +10,15 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_SAISIE;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.PrecisionModel;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite;
-import fr.sdis83.remocra.domain.remocra.TypeDroit;
 import fr.sdis83.remocra.security.AuthoritiesUtil;
 import fr.sdis83.remocra.service.UtilisateurService;
-import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.util.JSONUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import org.cts.IllegalCoordinateException;
-import org.cts.crs.CRSException;
 import org.joda.time.Instant;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -143,62 +134,6 @@ public class HydrantVisiteRepository {
     return null;
   }
 
-  public void addVisiteFromImportCtp(String visitesData)
-      throws IOException, IllegalCoordinateException, CRSException {
-    ArrayList<Map<String, Object>> data =
-        objectMapper.readValue(
-            visitesData.toString(), new TypeReference<ArrayList<Map<String, Object>>>() {});
-    Long typeVisite =
-        context
-            .select(TYPE_HYDRANT_SAISIE.ID)
-            .from(TYPE_HYDRANT_SAISIE)
-            .where(TYPE_HYDRANT_SAISIE.CODE.equalIgnoreCase("CTRL"))
-            .fetchOneInto(Long.class);
-
-    for (Map<String, Object> visite : data) {
-      HydrantVisite v = new HydrantVisite();
-      v.setHydrant(JSONUtil.getLong(visite, "hydrant"));
-      v.setDate(JSONUtil.getInstant(visite, "date"));
-      v.setAgent1(JSONUtil.getString(visite, "agent1"));
-      v.setDebit(JSONUtil.getInteger(visite, "debit"));
-      v.setPression(JSONUtil.getDouble(visite, "pression"));
-      v.setObservations(JSONUtil.getString(visite, "observation"));
-      v.setType(typeVisite);
-      v.setCtrlDebitPression(v.getDebit() != null && v.getPression() != null);
-      v.setAnomalies(JSONUtil.getString(visite, "anomalies"));
-
-      HydrantVisite newVisite = this.addVisite(v);
-
-      // Si données de longitude/latitude fournies, on déplace le PEI
-      Double latitude = JSONUtil.getDouble(visite, "latitude");
-      Double longitude = JSONUtil.getDouble(visite, "longitude");
-      if (latitude != null
-          && longitude != null
-          && this.authUtils.hasRight(TypeDroit.TypeDroitEnum.HYDRANTS_DEPLACEMENT_CTP_C)) {
-        GeometryFactory geometryFactory =
-            new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_PARAM);
-        double[] coords =
-            GeometryUtil.transformCordinate(
-                longitude, latitude, "4326", GlobalConstants.SRID_PARAM.toString());
-        Point p = geometryFactory.createPoint(new Coordinate(coords[0], coords[1]));
-        context
-            .update(HYDRANT)
-            .set(HYDRANT.GEOMETRIE, p)
-            .where(HYDRANT.ID.eq(JSONUtil.getLong(visite, "hydrant")))
-            .execute();
-      }
-
-      this.launchTriggerAnomalies(JSONUtil.getLong(visite, "hydrant"));
-
-      // launch trigger pibi pour calcul d'indispo
-      context
-          .update(HYDRANT_PIBI)
-          .set(HYDRANT_PIBI.ID, newVisite.getHydrant())
-          .where(HYDRANT_PIBI.ID.eq(newVisite.getHydrant()))
-          .execute();
-    }
-  }
-
   /**
    * Ajoute des visites aux hydrants depuis la saisie de visite d'une tournéee
    *
@@ -283,7 +218,7 @@ public class HydrantVisiteRepository {
    * @param visite Les informations de la visite
    * @return la visite créée
    */
-  private HydrantVisite addVisite(HydrantVisite visite) {
+  public HydrantVisite addVisite(HydrantVisite visite) {
     Long idVisite =
         context
             .insertInto(HYDRANT_VISITE)
@@ -468,14 +403,14 @@ public class HydrantVisiteRepository {
   /**
    * Déclenche le trigger pour calculer la disponibilité du PEI
    *
-   * @param idhydrant L'identifiant du PEI
+   * @param idHydrant L'identifiant du PEI
    */
-  private void launchTriggerAnomalies(Long idhydrant) throws IOException {
+  public void launchTriggerAnomalies(Long idHydrant) throws IOException {
     HydrantVisite visitePlusRecente =
         context
             .select()
             .from(HYDRANT_VISITE)
-            .where(HYDRANT_VISITE.HYDRANT.eq(idhydrant))
+            .where(HYDRANT_VISITE.HYDRANT.eq(idHydrant))
             .orderBy(HYDRANT_VISITE.DATE.desc())
             .limit(1)
             .fetchOneInto(HydrantVisite.class);
@@ -493,7 +428,7 @@ public class HydrantVisiteRepository {
         .where(
             HYDRANT_ANOMALIES
                 .HYDRANT
-                .eq(idhydrant)
+                .eq(idHydrant)
                 .and(HYDRANT_ANOMALIES.ANOMALIES.notIn(idAnomalieSysteme)))
         .execute();
 
@@ -505,10 +440,18 @@ public class HydrantVisiteRepository {
       for (Long anomalie : anomalies) {
         context
             .insertInto(HYDRANT_ANOMALIES)
-            .set(HYDRANT_ANOMALIES.HYDRANT, idhydrant)
+            .set(HYDRANT_ANOMALIES.HYDRANT, idHydrant)
             .set(HYDRANT_ANOMALIES.ANOMALIES, anomalie)
             .execute();
       }
     }
+  }
+
+  public Long getIdControle() {
+    return context
+        .select(TYPE_HYDRANT_SAISIE.ID)
+        .from(TYPE_HYDRANT_SAISIE)
+        .where(TYPE_HYDRANT_SAISIE.CODE.equalIgnoreCase("CTRL"))
+        .fetchOneInto(Long.class);
   }
 }

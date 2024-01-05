@@ -11,9 +11,9 @@
           <th scope="col">Bilan du contrôle</th>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in items" :key="index" :class="item.bilan_style">
+          <tr v-for="(item, index) in items" :key="index" :class="item.bilanStyle">
             <td>
-              {{item.numero_ligne}}
+              {{item.numeroLigne}}
             </td>
             <td>
               {{item.insee}}
@@ -74,10 +74,10 @@ export default {
     loadData(bilanVerifications, fileName) {
       this.items = bilanVerifications;
       this.fullTitle = "Résultat du contrôle du fichier : " + fileName;
-      this.nbCTValides = this.items.filter(bilanVerif => bilanVerif.bilan_style == "OK" ||  bilanVerif.bilan_style == "WARNING").length;
-      this.nbCTValidesWarn =  this.items.filter(bilanVerif => bilanVerif.bilan_style == "WARNING").length;
-      this.nbCTRejetes =  this.items.filter(bilanVerif => bilanVerif.bilan_style == "ERREUR" || bilanVerif.bilan_style == "INFO").length;
-      this.nbCTRejetesNR = this.items.filter(bilanVerif => bilanVerif.bilan_style == "INFO").length;
+      this.nbCTValides = this.items.filter(bilanVerif => bilanVerif.bilanStyle == "OK" ||  bilanVerif.bilanStyle == "WARNING").length;
+      this.nbCTValidesWarn =  this.items.filter(bilanVerif => bilanVerif.bilanStyle == "WARNING").length;
+      this.nbCTRejetes =  this.items.filter(bilanVerif => bilanVerif.bilanStyle == "ERREUR" || bilanVerif.bilanStyle == "INFO").length;
+      this.nbCTRejetesNR = this.items.filter(bilanVerif => bilanVerif.bilanStyle == "INFO").length;
       this.dataVisites = _.filter(_.map(bilanVerifications, 'dataVisite'), o => o != null);
     },
     exportResultat() {
@@ -85,7 +85,7 @@ export default {
       csvContent+= "N°Ligne;Code Insee;N° du PEI;Date du CT;Bilan du contrôle\n";
       var rows = [];
       _.forEach(this.items, item => {
-        var row = [item.numero_ligne, item.insee, item.numeroInterne, item.dateCtp ? item.dateCtp : "", this.getBilan(item)];
+        var row = [item.numeroLigne, item.insee, item.numeroInterne, item.dateCtp ? item.dateCtp : "", this.getBilan(item)];
         rows.push(row);
       });
       // transforme les données en CSV

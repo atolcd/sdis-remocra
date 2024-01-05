@@ -13,6 +13,7 @@ import fr.sdis83.remocra.service.HydrantService;
 import fr.sdis83.remocra.service.TourneeService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.service.ZoneCompetenceService;
+import fr.sdis83.remocra.usecase.importctp.ImportCtpUseCase;
 import fr.sdis83.remocra.util.ExceptionUtils;
 import fr.sdis83.remocra.util.FeatureUtil;
 import fr.sdis83.remocra.util.GeometryUtil;
@@ -56,6 +57,8 @@ public class HydrantController {
   @Autowired private HydrantRepository hydrantRepository;
 
   @Autowired private HydrantVisiteRepository hydrantVisiteRepository;
+
+  @Autowired private ImportCtpUseCase importCtpUseCase;
 
   private final Logger logger = Logger.getLogger(getClass());
 
@@ -462,12 +465,12 @@ public class HydrantController {
       MultipartHttpServletRequest request) {
     try {
       MultipartFile mf = request.getFile("file");
-      String result = this.hydrantRepository.importCTP(mf);
+      String result = this.importCtpUseCase.importCTP(mf);
       return new SuccessErrorExtSerializer(true, result).serialize();
     } catch (Exception e) {
       this.logger.error(e.getMessage(), e);
       return new SuccessErrorExtSerializer(
-              false, "Problème survenu lors de la verification de l'import CTP'")
+              false, "Problème survenu lors de la vérification de l'import CTP")
           .serialize();
     }
   }
@@ -479,7 +482,7 @@ public class HydrantController {
   public ResponseEntity<java.lang.String> importCtp(MultipartHttpServletRequest request) {
     try {
       String json = request.getParameter("visites");
-      this.hydrantVisiteRepository.addVisiteFromImportCtp(json);
+      this.importCtpUseCase.addVisiteFromImportCtp(json);
       return new SuccessErrorExtSerializer(true, "").serialize();
     } catch (Exception e) {
       this.logger.error(e.getMessage(), e);

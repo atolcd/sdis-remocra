@@ -1,23 +1,24 @@
 package fr.sdis83.remocra.exception;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import fr.sdis83.remocra.enums.TypeErreurImportCtp;
+import fr.sdis83.remocra.usecase.importctp.LigneImportCtpData;
 
 public class ImportCTPException extends Exception {
 
-  private String codeErreur;
+  private TypeErreurImportCtp typeErreur;
 
-  private ObjectNode data;
+  private LigneImportCtpData data;
 
-  public ImportCTPException(String codeErreur, ObjectNode data) {
-    this.codeErreur = codeErreur;
+  public ImportCTPException(TypeErreurImportCtp typeErreur, LigneImportCtpData data) {
+    this.typeErreur = typeErreur;
     this.data = data;
   }
 
-  public String getCodeErreur() {
-    return this.codeErreur;
+  public TypeErreurImportCtp getTypeErreur() {
+    return typeErreur;
   }
 
-  public ObjectNode getData() {
+  public LigneImportCtpData getData() {
     return this.data;
   }
 }
