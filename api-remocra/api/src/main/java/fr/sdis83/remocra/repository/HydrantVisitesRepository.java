@@ -17,7 +17,9 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import org.jooq.Condition;
@@ -252,26 +254,8 @@ public class HydrantVisitesRepository {
 
       TableField<Record, Instant> field = null;
 
-      TypeVisite typeVisite;
       try {
-        typeVisite = TypeVisite.valueOf(codeTypeVisite);
-        switch (typeVisite) {
-          case CREATION:
-            field = HYDRANT.DATE_CREA;
-            break;
-
-          case RECEPTION:
-            field = HYDRANT.DATE_RECEP;
-            break;
-
-          case RECONNAISSANCE:
-            field = HYDRANT.DATE_RECO;
-            break;
-
-          case CONTROLE:
-            field = HYDRANT.DATE_CONTR;
-            break;
-        }
+        field = findFieldDate(codeTypeVisite);
       } catch (IllegalArgumentException iae) {
         // rien à faire
       }
@@ -399,27 +383,9 @@ public class HydrantVisitesRepository {
     }
 
     // On met à jour la date dans la table hydrant
-    TypeVisite typeVisite;
     TableField<Record, Instant> field = null;
     try {
-      typeVisite = TypeVisite.valueOf(codeVisite);
-      switch (typeVisite) {
-        case CREATION:
-          field = HYDRANT.DATE_CREA;
-          break;
-
-        case RECEPTION:
-          field = HYDRANT.DATE_RECEP;
-          break;
-
-        case RECONNAISSANCE:
-          field = HYDRANT.DATE_RECO;
-          break;
-
-        case CONTROLE:
-          field = HYDRANT.DATE_CONTR;
-          break;
-      }
+      field = findFieldDate(codeVisite);
     } catch (IllegalArgumentException iae) {
       // rien à faire
     }
@@ -508,5 +474,35 @@ public class HydrantVisitesRepository {
         .orderBy(HYDRANT_VISITE.DATE.desc())
         .limit(1)
         .fetchOneInto(HydrantVisite.class);
+  }
+
+  private TableField<Record, Instant> findFieldDate(String codeTypeVisite) {
+    TableField<Record, Instant> field = null;
+    Optional<TypeVisite> optionalTypeVisite =
+        Arrays.stream(TypeVisite.values())
+            .filter(it -> it.getCode().equals(codeTypeVisite))
+            .findFirst();
+    if (optionalTypeVisite.isEmpty()) {
+      return null;
+    }
+    TypeVisite typeVisite = optionalTypeVisite.get();
+    switch (typeVisite) {
+      case CREATION:
+        field = HYDRANT.DATE_CREA;
+        break;
+
+      case RECEPTION:
+        field = HYDRANT.DATE_RECEP;
+        break;
+
+      case RECONNAISSANCE:
+        field = HYDRANT.DATE_RECO;
+        break;
+
+      case CONTROLE:
+        field = HYDRANT.DATE_CONTR;
+        break;
+    }
+    return field;
   }
 }
