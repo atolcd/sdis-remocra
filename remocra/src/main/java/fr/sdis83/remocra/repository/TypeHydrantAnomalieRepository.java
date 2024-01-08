@@ -5,6 +5,7 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE_NA
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_SAISIE;
 
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.Tables;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantAnomalie;
 import java.util.List;
@@ -39,7 +40,8 @@ public class TypeHydrantAnomalieRepository {
                 TYPE_HYDRANT_ANOMALIE_NATURE.ID))
         .join(TYPE_HYDRANT_SAISIE)
         .on(TYPE_HYDRANT_SAISIE.ID.eq(TYPE_HYDRANT_ANOMALIE_NATURE_SAISIES.SAISIES))
-        .where(TYPE_HYDRANT_SAISIE.CODE.equalIgnoreCase("CTRL"))
+        .where(
+            TYPE_HYDRANT_SAISIE.CODE.equalIgnoreCase(GlobalConstants.TypeVisite.CONTROLE.getCode()))
         .fetchInto(Long.class);
   }
 }

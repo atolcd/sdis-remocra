@@ -1404,7 +1404,7 @@ public class XmlService {
       return Hydrant.TYPE_SAISIE.RECEP;
     } else if (authUtils.hasRight(TypeDroitEnum.HYDRANTS_CONTROLE_C)
         && authUtils.hasRight(TypeDroitEnum.HYDRANTS_RECONNAISSANCE_C)) {
-      return (typeSaisie != null && "CTRL".equals(typeSaisie))
+      return (GlobalConstants.TypeVisite.CONTROLE.getCode().equals(typeSaisie))
           ? Hydrant.TYPE_SAISIE.CTRL
           : Hydrant.TYPE_SAISIE.RECO;
     } else if (authUtils.hasRight(TypeDroitEnum.HYDRANTS_CONTROLE_C)) {

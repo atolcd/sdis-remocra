@@ -1,5 +1,6 @@
 package fr.sdis83.remocra.repository;
 
+import static fr.sdis83.remocra.GlobalConstants.TypeVisite;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_ANOMALIES;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PIBI;
@@ -86,26 +87,28 @@ public class HydrantVisiteRepository {
               .where(HYDRANT_VISITE.HYDRANT.eq(id))
               .fetchOneInto(Integer.class);
 
-      String typeVisite =
+      String strTypeVisite =
           context
               .select(TYPE_HYDRANT_SAISIE.CODE)
               .from(TYPE_HYDRANT_SAISIE)
               .where(TYPE_HYDRANT_SAISIE.ID.eq(JSONUtil.getLong(data, "type")))
               .fetchOneInto(String.class);
 
-      if (nbVisites == 0 && !typeVisite.toUpperCase().equals("CREA")) {
+      TypeVisite typeVisite = TypeVisite.fromCode(strTypeVisite.toUpperCase());
+
+      if (nbVisites == 0 && !typeVisite.equals(TypeVisite.CREATION)) {
         throw new Exception(
             "Le contexte de visite doit être de type CREA (première visite du PEI)");
-      } else if (nbVisites == 1 && !typeVisite.toUpperCase().equals("RECEP")) {
+      } else if (nbVisites == 1 && !typeVisite.equals(TypeVisite.RECEPTION)) {
         throw new Exception(
             "Le contexte de visite doit être de type RECEP (deuxième visite du PEI)");
       } else if (nbVisites > 1
-          && (!typeVisite.toUpperCase().equals("NP")
-              && !typeVisite.toUpperCase().equals("RECO")
-              && !typeVisite.equals("CTRL"))) {
+          && (!typeVisite.equals(TypeVisite.NON_PROGRAMMEE)
+              && !typeVisite.equals(TypeVisite.RECONNAISSANCE)
+              && !typeVisite.equals(TypeVisite.CONTROLE))) {
         throw new Exception(
             "Une visite de type "
-                + typeVisite.toUpperCase()
+                + typeVisite.getCode()
                 + " existe déjà. Veuillez utiliser une visite de type NP, RECO ou CTRL");
       }
 
@@ -268,17 +271,18 @@ public class HydrantVisiteRepository {
               .fetchOneInto(String.class);
 
       TableField<Record, Instant> field = null;
-      switch (codeTypeVisite) {
-        case "CREA":
+      TypeVisite typeVisite = TypeVisite.fromCode(codeTypeVisite);
+      switch (typeVisite) {
+        case CREATION:
           field = HYDRANT.DATE_CREA;
           break;
-        case "RECEP":
+        case RECEPTION:
           field = HYDRANT.DATE_RECEP;
           break;
-        case "RECO":
+        case RECONNAISSANCE:
           field = HYDRANT.DATE_RECO;
           break;
-        case "CTRL":
+        case CONTROLE:
           field = HYDRANT.DATE_CONTR;
           break;
       }
@@ -375,17 +379,18 @@ public class HydrantVisiteRepository {
     }
     // On met à jour la date dans la table hydrant
     TableField<Record, Instant> field = null;
-    switch (codeVisite) {
-      case "CREA":
+    TypeVisite typeVisite = TypeVisite.fromCode(codeVisite);
+    switch (typeVisite) {
+      case CREATION:
         field = HYDRANT.DATE_CREA;
         break;
-      case "RECEP":
+      case RECEPTION:
         field = HYDRANT.DATE_RECEP;
         break;
-      case "RECO":
+      case RECONNAISSANCE:
         field = HYDRANT.DATE_RECO;
         break;
-      case "CTRL":
+      case CONTROLE:
         field = HYDRANT.DATE_CONTR;
         break;
     }
@@ -451,7 +456,7 @@ public class HydrantVisiteRepository {
     return context
         .select(TYPE_HYDRANT_SAISIE.ID)
         .from(TYPE_HYDRANT_SAISIE)
-        .where(TYPE_HYDRANT_SAISIE.CODE.equalIgnoreCase("CTRL"))
+        .where(TYPE_HYDRANT_SAISIE.CODE.equalIgnoreCase(TypeVisite.CONTROLE.getCode()))
         .fetchOneInto(Long.class);
   }
 }

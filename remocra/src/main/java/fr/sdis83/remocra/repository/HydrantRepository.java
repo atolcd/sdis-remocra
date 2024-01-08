@@ -704,7 +704,7 @@ public class HydrantRepository {
             HYDRANT_VISITE
                 .HYDRANT
                 .eq(idHydrant)
-                .and(TYPE_HYDRANT_SAISIE.CODE.eq("CTRL"))
+                .and(TYPE_HYDRANT_SAISIE.CODE.eq(GlobalConstants.TypeVisite.CONTROLE.getCode()))
                 .and(HYDRANT_VISITE.CTRL_DEBIT_PRESSION)
                 .and(predicatInstant))
         .fetchOneInto(int.class);
