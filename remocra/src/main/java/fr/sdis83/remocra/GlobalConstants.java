@@ -1,5 +1,7 @@
 package fr.sdis83.remocra;
 
+import java.util.Objects;
+
 /** Classe permettant de définir des constantes globales */
 public class GlobalConstants {
 
@@ -44,4 +46,46 @@ public class GlobalConstants {
   public static final String CLE_SRID = "SRID";
   public static final String GENERIQUE_MESSAGE_ERROR =
       "Une erreur est survenue lors de l'éxécution de la requête. Un log a été écrit, veuillez contacter votre référent technique pour qu'il puisse le consulter.";
+
+  /**
+   * Enumération des types de visite, avec
+   *
+   * <ul>
+   *   <li>Le code tel que représenté en BDD
+   *   <li>Le libellé à titre informatif
+   * </ul>
+   */
+  public enum TypeVisite {
+    LECTURE("LECT", "Lecture"),
+    CREATION("CREA", "Création"),
+    RECEPTION("RECEP", "Réception"),
+    RECONNAISSANCE("RECO", "Reconnaissance"),
+    CONTROLE("CTRL", "Contrôle"),
+    NON_PROGRAMMEE("NP", "Non programmée");
+
+    private final String codeTypeVisite;
+    private final String libelleTypeVisite;
+
+    TypeVisite(String code, String libelle) {
+      codeTypeVisite = code;
+      libelleTypeVisite = libelle;
+    }
+
+    public String getCode() {
+      return codeTypeVisite;
+    }
+
+    public String getLibelle() {
+      return libelleTypeVisite;
+    }
+
+    public static TypeVisite fromCode(String codeTypeVisite) {
+      for (TypeVisite typeVisite : values()) {
+        if (Objects.equals(typeVisite.codeTypeVisite, codeTypeVisite)) {
+          return typeVisite;
+        }
+      }
+      throw new IllegalArgumentException("TypeVisite non reconnu : " + codeTypeVisite);
+    }
+  }
 }
