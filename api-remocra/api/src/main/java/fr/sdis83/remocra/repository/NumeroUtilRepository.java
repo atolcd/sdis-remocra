@@ -1,6 +1,12 @@
 package fr.sdis83.remocra.repository;
 
-import static fr.sdis83.remocra.db.model.remocra.Tables.*;
+import static fr.sdis83.remocra.db.model.remocra.Tables.COMMUNE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_DOMAINE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE;
+import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE_DECI;
+import static fr.sdis83.remocra.db.model.remocra.Tables.ZONE_SPECIALE;
 
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Commune;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant;
@@ -82,7 +88,10 @@ public class NumeroUtilRepository {
     try {
       m =
           MethodeNumerotationInterne.valueOf(
-              "M_" + paramsConfRepository.getByCle("HYDRANT_NUMEROTATION_METHODE").getValeur());
+              "M_"
+                  + paramsConfRepository
+                      .getByCle("HYDRANT_NUMEROTATION_INTERNE_METHODE")
+                      .getValeur());
     } catch (Exception e) {
       System.err.println(
           "HYDRANT_NUMEROTATION_METHODE non reconnu (-> 83). Valeurs autorisées (sans M_) : "
