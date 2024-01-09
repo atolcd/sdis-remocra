@@ -3,7 +3,6 @@ package fr.sdis83.remocra.web;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 import flexjson.JSONSerializer;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.remocra.Document.TypeDocument;
 import fr.sdis83.remocra.domain.remocra.Permis;
@@ -112,7 +111,7 @@ public class PermisController extends AbstractRemocraController {
 
       @Override
       protected List<Permis> getRecords() {
-        int srid = GlobalConstants.SRID_PARAM;
+        int srid = parametreProvider.get().getSridInt();
         int firstResult = 0;
         int maxResults = 10;
         Geometry geom =
@@ -179,7 +178,7 @@ public class PermisController extends AbstractRemocraController {
       final @RequestParam int fileCounter) {
     try {
       Permis record = Permis.fromJsonToPermis(jsonPermis);
-      record.getGeometrie().setSRID(GlobalConstants.SRID_PARAM);
+      record.getGeometrie().setSRID(parametreProvider.get().getSridInt());
       checkZoneCompetence(record.getGeometrie());
       if (!id.equals(record.getId())) {
         logger.error("Requête non valide : idUrl = " + id + " est different de " + record.getId());

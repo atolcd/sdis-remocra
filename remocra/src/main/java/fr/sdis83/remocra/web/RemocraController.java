@@ -12,7 +12,6 @@ import fr.sdis83.remocra.service.AuthService;
 import fr.sdis83.remocra.service.HydrantService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
-import fr.sdis83.remocra.util.FunctionsUtils;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.serialize.AccessRightSerializer;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
@@ -78,7 +77,6 @@ public class RemocraController {
     model.addAttribute("userRights", serialRights);
 
     int srid = Integer.parseInt(parametreProvider.get().getValeurString(GlobalConstants.CLE_SRID));
-    FunctionsUtils.setSRIDValue(srid);
 
     // Emprise du territoire de compétence de l'utilisateur
     String bounds = null;
@@ -92,7 +90,7 @@ public class RemocraController {
         userProfilDroit = utilisateurService.getCurrentProfilDroit().getCode();
         Organisme organisme = utilisateurService.getCurrentUtilisateur().getOrganisme();
         territoire = organisme.getZoneCompetence().getGeometrie();
-        bounds = GeometryUtil.bboxFromGeometry(territoire);
+        bounds = GeometryUtil.bboxFromGeometry(territoire, parametreProvider.get().getSridInt());
         nomOrganisme = organisme.getNom().replace("'", "\\'");
       }
     } catch (BusinessException e) {

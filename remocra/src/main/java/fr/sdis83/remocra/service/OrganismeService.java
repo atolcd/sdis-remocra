@@ -1,7 +1,7 @@
 package fr.sdis83.remocra.service;
 
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.Organisme;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ import javax.persistence.criteria.Root;
 import org.apache.log4j.Logger;
 import org.jooq.tools.json.JSONArray;
 import org.jooq.tools.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrganismeService extends AbstractService<Organisme> {
 
   private final Logger logger = Logger.getLogger(getClass());
+  @Autowired private ParametreDataProvider parametreProvider;
 
   public OrganismeService() {
     super(Organisme.class);
@@ -154,7 +156,7 @@ public class OrganismeService extends AbstractService<Organisme> {
                     + "WHERE (ST_Intersects(ST_GeomFromText(:geometrie, :srid), zc.geometrie)) AND (o.type_organisme IN "
                     + "(SELECT id FROM remocra.type_organisme WHERE code IN (:typeOrganismes) ))")
             .setParameter("geometrie", geometrie)
-            .setParameter("srid", GlobalConstants.SRID_PARAM)
+            .setParameter("srid", parametreProvider.get().getSridInt())
             .setParameter("typeOrganismes", organismesAcceptes);
 
     JSONArray json = new JSONArray();

@@ -1,6 +1,7 @@
 package fr.sdis83.remocra.data;
 
 import flexjson.JSONSerializer;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.enums.TypeParametre;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Parametre;
 import fr.sdis83.remocra.domain.remocra.ParamConf;
@@ -542,5 +543,13 @@ public class ParametreData {
     env.put(Context.SECURITY_PRINCIPAL, getLdapAdminDn());
     env.put(Context.SECURITY_CREDENTIALS, getLdapAdminPassword());
     return env;
+  }
+
+  public int getSridInt() {
+    return Integer.parseInt(this.getValeurString(GlobalConstants.CLE_SRID));
+  }
+
+  public String getSridString() {
+    return this.getValeurString(GlobalConstants.CLE_SRID);
   }
 }

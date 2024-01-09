@@ -4,7 +4,6 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.Hydrant;
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.repository.HydrantRepository;
@@ -14,6 +13,7 @@ import fr.sdis83.remocra.service.TourneeService;
 import fr.sdis83.remocra.service.UtilisateurService;
 import fr.sdis83.remocra.service.ZoneCompetenceService;
 import fr.sdis83.remocra.usecase.importctp.ImportCtpUseCase;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.ExceptionUtils;
 import fr.sdis83.remocra.util.FeatureUtil;
 import fr.sdis83.remocra.util.GeometryUtil;
@@ -59,6 +59,7 @@ public class HydrantController {
   @Autowired private HydrantVisiteRepository hydrantVisiteRepository;
 
   @Autowired private ImportCtpUseCase importCtpUseCase;
+  @Autowired ParametreDataProvider parametreProvider;
 
   private final Logger logger = Logger.getLogger(getClass());
 
@@ -385,12 +386,12 @@ public class HydrantController {
               degres) {
     try {
       // Lambert 83, on renvoie les coordonnées existantes
-      if (srid == GlobalConstants.SRID_PARAM) {
+      if (srid == parametreProvider.get().getSridInt()) {
         return new SuccessErrorExtSerializer(true, longitude + "," + latitude).serialize();
       } else {
         double[] coordonneConvert =
             GeometryUtil.transformCordinate(
-                longitude, latitude, GlobalConstants.SRID_PARAM.toString(), srid.toString());
+                longitude, latitude, parametreProvider.get().getSridString(), srid.toString());
 
         // Si on a choisi le système WGS84 et qu'on ne souhaite pas l'exprimer en degrés décimaux,
         // on le convertit en degrés minutes secondes

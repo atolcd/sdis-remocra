@@ -6,8 +6,8 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_INDISPO_STA
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
@@ -35,6 +35,8 @@ public class HydrantIndispoTemporaireRepository {
   @Autowired DSLContext context;
 
   @Autowired UtilisateurService utilisateurService;
+
+  @Autowired protected ParametreDataProvider parametreProvider;
 
   public HydrantIndispoTemporaireRepository() {}
 
@@ -132,7 +134,8 @@ public class HydrantIndispoTemporaireRepository {
       List<HydrantRecord> hydrantRecords = new ArrayList<HydrantRecord>();
       for (Record h : context.fetch(reqHydrants.toString())) {
         HydrantRecord hr = modelMapper.map(h, HydrantRecord.class);
-        hr.setGeometrie(GeometryUtil.toGeometry(hr.getWktGeometrie(), GlobalConstants.SRID_PARAM));
+        hr.setGeometrie(
+            GeometryUtil.toGeometry(hr.getWktGeometrie(), parametreProvider.get().getSridInt()));
 
         // Récupération de la commune + remontée dans l'indispo temp
         CommuneRecord c =

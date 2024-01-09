@@ -250,7 +250,7 @@ public class HydrantRepository {
     h.setAuteurModificationFlag(AUTEUR_MODIFICATION_FLAG);
     h.setDateModification(new Instant());
 
-    Long id = this.createHydrant(h);
+    Long id = this.createHydrant(h, parametreProvider.get().getSridInt());
 
     if (TYPE_HYDRANT_PIBI.equalsIgnoreCase(typeHydrant)) {
       this.hydrantPibiRepository.createHydrantPibiFromFiche(id, data);
@@ -302,8 +302,8 @@ public class HydrantRepository {
    *
    * @return
    */
-  private Long createHydrant(Hydrant h) {
-    h = NumeroUtilRepository.setCodeZoneSpecAndNumeros(h, h.getCode());
+  private Long createHydrant(Hydrant h, int srid) {
+    h = NumeroUtilRepository.setCodeZoneSpecAndNumeros(h, h.getCode(), srid);
 
     Long id =
         context
@@ -352,7 +352,9 @@ public class HydrantRepository {
 
     if ((h.getNumeroInterne() == null || h.getNumeroInterne() <= 0)
         || parametreProvider.get().getHydrantRenumerotationActivation()) {
-      h = NumeroUtilRepository.setCodeZoneSpecAndNumeros(h, h.getCode());
+      h =
+          NumeroUtilRepository.setCodeZoneSpecAndNumeros(
+              h, h.getCode(), parametreProvider.get().getSridInt());
     }
 
     context
@@ -784,7 +786,9 @@ public class HydrantRepository {
 
     if (TYPE_HYDRANT_PENA.equalsIgnoreCase(h.getCode())) {
       try {
-        String coordDFCI = GeometryUtil.findCoordDFCIFromGeom(dataSource, point);
+        String coordDFCI =
+            GeometryUtil.findCoordDFCIFromGeom(
+                dataSource, point, parametreProvider.get().getSridInt());
         hydrantPenaRepository.updateCoorDdfci(id, coordDFCI);
       } catch (Exception e) {
         logger.debug("Problème lors de la requête sur la table remocra_referentiel.carro_dfci", e);

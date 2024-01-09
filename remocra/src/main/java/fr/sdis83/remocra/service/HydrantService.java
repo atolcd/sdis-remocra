@@ -9,7 +9,6 @@ import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.Commune;
 import fr.sdis83.remocra.domain.remocra.Hydrant;
 import fr.sdis83.remocra.domain.remocra.Organisme;
@@ -408,7 +407,7 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
                       "select code from remocra.zone_speciale "
                           + "where ST_GeomFromText(:geometrie,:srid) && geometrie and st_distance(ST_GeomFromText(:geometrie,:srid), geometrie)<=0")
                   .setParameter("geometrie", geometrie)
-                  .setParameter("srid", GlobalConstants.SRID_PARAM)
+                  .setParameter("srid", parametreDataProvider.get().getSridInt())
                   .getSingleResult();
       zs = ZoneSpeciale.findZoneSpecialesByCode(codeZS).getSingleResult();
 
@@ -435,7 +434,7 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
     Geometry convertedGeometry = null;
     try {
       convertedGeometry = fromText.read(geometrie);
-      convertedGeometry.setSRID(GlobalConstants.SRID_PARAM);
+      convertedGeometry.setSRID(parametreDataProvider.get().getSridInt());
     } catch (ParseException e) {
       throw new RuntimeException(e);
     }
@@ -464,13 +463,14 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
   }
 
   public List<Hydrant> findHydrantsByBBOX(String bbox) {
+    int srid = parametreDataProvider.get().getSridInt();
     TypedQuery<Hydrant> query =
         entityManager
             .createQuery(
                 "SELECT o FROM Hydrant o where dwithin (geometrie, transform(:filter, :srid), 0) = true and dwithin (geometrie, :zoneCompetence, 0) = true",
                 Hydrant.class)
-            .setParameter("srid", GlobalConstants.SRID_PARAM)
-            .setParameter("filter", GeometryUtil.geometryFromBBox(bbox))
+            .setParameter("srid", srid)
+            .setParameter("filter", GeometryUtil.geometryFromBBox(bbox, srid))
             .setParameter(
                 "zoneCompetence",
                 utilisateurService
@@ -516,10 +516,10 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
     double longitude;
     double latitude;
 
-    GeometryFactory geometryFactory =
-        new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_PARAM);
+    int sridParam = parametreDataProvider.get().getSridInt();
+    GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), sridParam);
     // Si les données sont déjà dans la projection du SDIS, on peut mettre à jour
-    if (srid == GlobalConstants.SRID_PARAM) {
+    if (srid == sridParam) {
       longitude = Double.parseDouble(items.get("longitude").toString());
       latitude = Double.parseDouble(items.get("latitude").toString());
 
@@ -542,7 +542,7 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
               longitude,
               latitude,
               items.get("systeme").toString(),
-              GlobalConstants.SRID_PARAM.toString());
+              parametreProvider.get().getSridString());
       longitude =
           BigDecimal.valueOf(coordonneConvert[0]).setScale(0, RoundingMode.HALF_UP).intValue();
       latitude =

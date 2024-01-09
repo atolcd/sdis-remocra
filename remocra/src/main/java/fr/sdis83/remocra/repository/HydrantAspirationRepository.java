@@ -8,8 +8,8 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantAspiration;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.util.JSONUtil;
 import java.io.IOException;
@@ -29,6 +29,8 @@ import org.springframework.context.annotation.Configuration;
 public class HydrantAspirationRepository {
 
   @Autowired DSLContext context;
+
+  @Autowired protected ParametreDataProvider parametreProvider;
 
   private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -71,14 +73,14 @@ public class HydrantAspirationRepository {
         if (longitude != null && latitude != null) {
           double[] coordonneConvert =
               GeometryUtil.transformCordinate(
-                  longitude, latitude, "4326", GlobalConstants.SRID_PARAM.toString());
+                  longitude, latitude, "4326", parametreProvider.get().getSridString());
           int lon =
               BigDecimal.valueOf(coordonneConvert[0]).setScale(0, RoundingMode.HALF_UP).intValue();
           int lat =
               BigDecimal.valueOf(coordonneConvert[1]).setScale(0, RoundingMode.HALF_UP).intValue();
 
           GeometryFactory geometryFactory =
-              new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_PARAM);
+              new GeometryFactory(new PrecisionModel(), parametreProvider.get().getSridInt());
           Point p = geometryFactory.createPoint(new Coordinate(lon, lat));
           aspiration.setGeometrie(p);
         } else {

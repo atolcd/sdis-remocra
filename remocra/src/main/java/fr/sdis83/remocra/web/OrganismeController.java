@@ -125,7 +125,8 @@ public class OrganismeController
   @Override
   protected ResponseEntity<java.lang.String> doUpdate(final Long id, final String json) {
     try {
-      final Organisme attached = getService().update(id, json, null);
+      final Organisme attached =
+          getService().update(id, json, null, parametreProvider.get().getSridInt());
       if (attached != null) {
         return new SuccessErrorExtSerializer(true, "Model updated").serialize();
       }

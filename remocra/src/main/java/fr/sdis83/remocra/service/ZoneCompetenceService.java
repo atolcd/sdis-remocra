@@ -2,8 +2,8 @@ package fr.sdis83.remocra.service;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.ZoneCompetence;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import java.util.Map;
@@ -14,10 +14,13 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ZoneCompetenceService extends AbstractService<ZoneCompetence> {
+
+  @Autowired private ParametreDataProvider parametreProvider;
 
   public ZoneCompetenceService() {
     super(ZoneCompetence.class);
@@ -54,7 +57,7 @@ public class ZoneCompetenceService extends AbstractService<ZoneCompetence> {
             "select dwithin(zc.geometrie, transform(:filter, :srid), :tolerance) from ZoneCompetence zc where zc.id = :id");
     query.setParameter("tolerance", toleranceMeters);
     query.setParameter("filter", filter);
-    query.setParameter("srid", GlobalConstants.SRID_PARAM);
+    query.setParameter("srid", parametreProvider.get().getSridInt());
     query.setParameter("id", zoneCompetence);
     return (Boolean) query.getSingleResult();
   }
@@ -76,7 +79,7 @@ public class ZoneCompetenceService extends AbstractService<ZoneCompetence> {
         em.createQuery(
             "select within(transform(:point, :srid), zc.geometrie) from ZoneCompetence zc where zc.id = :id");
     query.setParameter("point", geometrie);
-    query.setParameter("srid", GlobalConstants.SRID_PARAM);
+    query.setParameter("srid", parametreProvider.get().getSridInt());
     query.setParameter("id", zoneCompetence);
     return (Boolean) query.getSingleResult();
   }

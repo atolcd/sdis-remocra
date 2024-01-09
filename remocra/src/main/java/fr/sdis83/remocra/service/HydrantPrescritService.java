@@ -1,7 +1,7 @@
 package fr.sdis83.remocra.service;
 
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.HydrantPrescrit;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.GeometryUtil;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class HydrantPrescritService extends AbstractService<HydrantPrescrit> {
 
   @Autowired private UtilisateurService utilisateurService;
+
+  @Autowired private ParametreDataProvider parametreProvider;
 
   public HydrantPrescritService() {
     super(HydrantPrescrit.class);
@@ -36,7 +38,7 @@ public class HydrantPrescritService extends AbstractService<HydrantPrescrit> {
     return query.getResultList();
   }
 
-  public List<HydrantPrescrit> findHydrantPrescritsByBBOX(String bbox) {
+  public List<HydrantPrescrit> findHydrantPrescritsByBBOX(String bbox, int srid) {
     TypedQuery<HydrantPrescrit> query =
         entityManager
             .createQuery(
@@ -44,7 +46,7 @@ public class HydrantPrescritService extends AbstractService<HydrantPrescrit> {
                     + "where contains (transform(:filter, :srid), geometrie) = true "
                     + "and contains (:zoneCompetence, geometrie) = true",
                 HydrantPrescrit.class)
-            .setParameter("filter", GeometryUtil.geometryFromBBox(bbox))
+            .setParameter("filter", GeometryUtil.geometryFromBBox(bbox, srid))
             .setParameter(
                 "zoneCompetence",
                 utilisateurService
@@ -52,7 +54,7 @@ public class HydrantPrescritService extends AbstractService<HydrantPrescrit> {
                     .getOrganisme()
                     .getZoneCompetence()
                     .getGeometrie())
-            .setParameter("srid", GlobalConstants.SRID_PARAM);
+            .setParameter("srid", srid);
     return query.getResultList();
   }
 
@@ -62,7 +64,7 @@ public class HydrantPrescritService extends AbstractService<HydrantPrescrit> {
       HydrantPrescrit attached, Map<String, MultipartFile> files, Object... params)
       throws Exception {
     // traitement géométrie
-    attached.getGeometrie().setSRID(GlobalConstants.SRID_PARAM);
+    attached.getGeometrie().setSRID(parametreProvider.get().getSridInt());
     if (attached.getOrganisme() == null) {
       attached.setOrganisme(utilisateurService.getCurrentUtilisateur().getOrganisme());
     }

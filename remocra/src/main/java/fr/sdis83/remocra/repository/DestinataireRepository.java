@@ -1,6 +1,5 @@
 package fr.sdis83.remocra.repository;
 
-import static fr.sdis83.remocra.GlobalConstants.SRID_PARAM;
 import static fr.sdis83.remocra.db.model.remocra.Tables.CONTACT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.GESTIONNAIRE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ORGANISME;
@@ -13,6 +12,7 @@ import static org.jooq.impl.DSL.coalesce;
 import com.vividsolutions.jts.geom.Geometry;
 import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.enums.DestinataireType;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.web.model.DestinataireModel;
 import java.util.List;
 import org.jooq.DSLContext;
@@ -25,6 +25,8 @@ import org.springframework.context.annotation.Configuration;
 public class DestinataireRepository {
 
   @Autowired DSLContext context;
+
+  @Autowired private ParametreDataProvider parametreProvider;
 
   DestinataireRepository(DSLContext context) {
     this.context = context;
@@ -50,7 +52,9 @@ public class DestinataireRepository {
         .join(ZONE_COMPETENCE)
         .on(ORGANISME.ZONE_COMPETENCE.eq(ZONE_COMPETENCE.ID))
         .where(
-            "ST_CONTAINS(st_setsrid(ST_GeomFromText({0})," + SRID_PARAM + "), {1})",
+            "ST_CONTAINS(st_setsrid(ST_GeomFromText({0}),"
+                + parametreProvider.get().getSridInt()
+                + "), {1})",
             organismeGeometrie.toText(),
             ZONE_COMPETENCE.GEOMETRIE)
         .fetchInto(Long.class);

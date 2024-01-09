@@ -4,6 +4,7 @@ import flexjson.JSONSerializer;
 import fr.sdis83.remocra.domain.remocra.HydrantReservoir;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.HydrantReservoirService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HydrantReservoirController {
 
   @Autowired HydrantReservoirService service;
+
+  @Autowired protected ParametreDataProvider parametreProvider;
 
   public JSONSerializer decorateSerializer(JSONSerializer serializer) {
     return serializer.exclude("data.actif").exclude("*.class");

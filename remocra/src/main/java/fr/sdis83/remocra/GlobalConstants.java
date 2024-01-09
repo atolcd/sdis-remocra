@@ -4,8 +4,6 @@ import java.util.Objects;
 
 /** Classe permettant de définir des constantes globales */
 public class GlobalConstants {
-
-  public static Integer SRID_PARAM = 2154;
   public static final String LDAP_PASSWORD = "LDAP";
 
   /**

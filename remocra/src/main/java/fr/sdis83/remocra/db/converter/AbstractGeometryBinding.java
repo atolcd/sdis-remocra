@@ -4,7 +4,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKTWriter;
-import fr.sdis83.remocra.GlobalConstants;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.sql.Types;
@@ -18,6 +18,7 @@ import org.jooq.BindingSetSQLOutputContext;
 import org.jooq.BindingSetStatementContext;
 import org.jooq.Converter;
 import org.jooq.impl.DSL;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /** Binding Jooq pour les géométries. */
 public abstract class AbstractGeometryBinding<T extends Geometry> implements Binding<Object, T> {
@@ -26,6 +27,8 @@ public abstract class AbstractGeometryBinding<T extends Geometry> implements Bin
   private final WKTWriter writer;
 
   private final Class<T> geometryClass;
+
+  @Autowired private ParametreDataProvider parametreProvider;
 
   /** Constructeur par défaut. */
   public AbstractGeometryBinding(Class<T> geometryClass) {
@@ -83,7 +86,7 @@ public abstract class AbstractGeometryBinding<T extends Geometry> implements Bin
     ctx.render()
         .sql("ST_GeomFromText(")
         .visit(DSL.val(value))
-        .sql("," + GlobalConstants.SRID_PARAM + ")");
+        .sql("," + parametreProvider.get().getSridInt() + ")");
   }
 
   // Registering BLOB types for JDBC CallableStatement OUT parameters

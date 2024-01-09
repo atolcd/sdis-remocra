@@ -6,7 +6,6 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import flexjson.JSONSerializer;
 import flexjson.transformer.AbstractTransformer;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.Alerte;
 import fr.sdis83.remocra.domain.remocra.AlerteDocument;
 import fr.sdis83.remocra.domain.remocra.AlerteElt;
@@ -81,7 +80,7 @@ public class AdressesController extends AbstractRemocraController {
       Geometry[] geometries = new Geometry[alerte.getAlerteElts().size()];
       int j = 0;
       for (AlerteElt elt : alerte.getAlerteElts()) {
-        elt.getGeometrie().setSRID(GlobalConstants.SRID_PARAM);
+        elt.getGeometrie().setSRID(parametreProvider.get().getSridInt());
         geometries[j++] = elt.getGeometrie();
         elt.setAlerte(alerte);
 
@@ -91,7 +90,7 @@ public class AdressesController extends AbstractRemocraController {
         }
       }
       Point centroid = new GeometryCollection(geometries, new GeometryFactory()).getCentroid();
-      centroid.setSRID(GlobalConstants.SRID_PARAM);
+      centroid.setSRID(parametreProvider.get().getSridInt());
       alerte.setGeometrie(centroid);
 
       // Récupération des fichiers

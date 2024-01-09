@@ -165,7 +165,8 @@ public class RciController extends AbstractServiceableController<RciService, Rci
       final @RequestParam String jsonRci,
       final @RequestParam int fileCounter) {
     try {
-      final Rci attached = getService().update(id, jsonRci, null);
+      final Rci attached =
+          getService().update(id, jsonRci, null, parametreProvider.get().getSridInt());
       if (attached != null) {
 
         // AJOUT PAR RAPPORT AU PARENT : DEBUT

@@ -3,7 +3,6 @@ package fr.sdis83.remocra.service;
 import static java.lang.Boolean.TRUE;
 
 import com.vividsolutions.jts.geom.Geometry;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.Commune;
 import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.remocra.Document.TypeDocument;
@@ -207,7 +206,7 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
                   + "where ST_Distance(h.geometrie, st_pointFromText('"
                   + itemFilter.getValue().toString()
                   + "',"
-                  + GlobalConstants.SRID_PARAM
+                  + parametreProvider.get().getSridInt()
                   + ")) < 500",
               Long.class);
       List<Long> resultList = itemTypedQuery.getResultList();
@@ -271,7 +270,7 @@ public abstract class AbstractHydrantService<T extends Hydrant> extends Abstract
   public T setUpInformation(T attached, Map<String, MultipartFile> files, Object... params)
       throws Exception {
     // traitement géométrie
-    attached.getGeometrie().setSRID(GlobalConstants.SRID_PARAM);
+    attached.getGeometrie().setSRID(parametreProvider.get().getSridInt());
 
     // date de modification
     attached.setDateModification(new Date());

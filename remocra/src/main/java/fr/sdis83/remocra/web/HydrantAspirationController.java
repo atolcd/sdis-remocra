@@ -4,6 +4,7 @@ import flexjson.JSONSerializer;
 import fr.sdis83.remocra.domain.remocra.HydrantAspiration;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.HydrantAspirationService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class HydrantAspirationController {
 
   @Autowired private HydrantAspirationService hydrantAspirationService;
+
+  @Autowired private ParametreDataProvider parametreProvider;
 
   @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/xml")
   public ResponseEntity<java.lang.String> listJson(

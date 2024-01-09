@@ -1,7 +1,6 @@
 package fr.sdis83.remocra.service;
 
 import com.vividsolutions.jts.geom.Point;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.remocra.EmailModele;
 import fr.sdis83.remocra.domain.remocra.EmailModele.EmailModeleEnum;
@@ -83,13 +82,14 @@ public class RciService extends AbstractService<Rci> {
 
   public List<Rci> findByBBOX(String bbox) {
     // Pas de restriction au territoire de compétence
+    int srid = parametreProvider.get().getSridInt();
     TypedQuery<Rci> query =
         entityManager
             .createQuery(
                 "SELECT o FROM Rci o where contains (transform(:filter, :srid), geometrie) = true",
                 Rci.class)
-            .setParameter("filter", GeometryUtil.geometryFromBBox(bbox))
-            .setParameter("srid", GlobalConstants.SRID_PARAM);
+            .setParameter("filter", GeometryUtil.geometryFromBBox(bbox, srid))
+            .setParameter("srid", srid);
     return query.getResultList();
   }
 
@@ -105,12 +105,13 @@ public class RciService extends AbstractService<Rci> {
       throws Exception {
 
     // Géométrie
-    attached.getGeometrie().setSRID(GlobalConstants.SRID_PARAM);
+    attached.getGeometrie().setSRID(parametreProvider.get().getSridInt());
 
     // Coordonnées DFCI
     try {
       attached.setCoordDFCI(
-          GeometryUtil.findCoordDFCIFromGeom(dataSource, attached.getGeometrie()));
+          GeometryUtil.findCoordDFCIFromGeom(
+              dataSource, attached.getGeometrie(), parametreProvider.get().getSridInt()));
     } catch (Exception e) {
       logger.debug("Impossible de calculer les coordonnées DFCI", e);
     }
@@ -197,7 +198,9 @@ public class RciService extends AbstractService<Rci> {
 
     // Coordonnées DFCI
     try {
-      r.setCoordDFCI(GeometryUtil.findCoordDFCIFromGeom(dataSource, r.getGeometrie()));
+      r.setCoordDFCI(
+          GeometryUtil.findCoordDFCIFromGeom(
+              dataSource, r.getGeometrie(), parametreProvider.get().getSridInt()));
     } catch (Exception e) {
       logger.debug("Impossible de calculer les coordonnées DFCI", e);
     }

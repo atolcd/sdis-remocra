@@ -1,7 +1,6 @@
 package fr.sdis83.remocra.service;
 
 import com.vividsolutions.jts.geom.Geometry;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.Voie;
 import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.web.message.ItemFilter;
@@ -72,7 +71,7 @@ public class VoieService {
 
     // Valeur pour les paramètres (si besoin)
     if (wktFilter != null) {
-      String wktValue = "SRID=" + GlobalConstants.SRID_PARAM + ";" + wktFilter.getValue();
+      String wktValue = "SRID=" + parametreProvider.get().getSridInt() + ";" + wktFilter.getValue();
       itemTypedQuery.setParameter((Parameter) wktOrderParam, wktValue);
       itemTypedQuery.setParameter((Parameter) parameters.get("WKT_PARAM"), wktValue);
       itemTypedQuery.setParameter(

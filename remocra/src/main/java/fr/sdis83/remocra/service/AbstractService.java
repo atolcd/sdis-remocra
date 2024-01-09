@@ -3,6 +3,7 @@ package fr.sdis83.remocra.service;
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.web.deserialize.GeometryFactory;
 import fr.sdis83.remocra.web.deserialize.RemocraBeanObjectFactory;
 import fr.sdis83.remocra.web.message.ItemFilter;
@@ -24,6 +25,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +33,8 @@ import org.springframework.web.multipart.MultipartFile;
 public abstract class AbstractService<T> {
 
   private final Logger logger = Logger.getLogger(getClass());
+
+  @Autowired private ParametreDataProvider parametreProvider;
 
   protected Class<T> cls;
 
@@ -233,7 +237,7 @@ public abstract class AbstractService<T> {
         .use(Object.class, new RemocraBeanObjectFactory(this.entityManager));
 
     T attached = deserializer.deserialize(json);
-    this.setUpInformation(attached, files);
+    this.setUpInformation(attached, files, parametreProvider.get().getSridInt());
     this.entityManager.persist(attached);
     return attached;
   }
@@ -278,7 +282,7 @@ public abstract class AbstractService<T> {
     }
     // Fin "hack"
 
-    this.setUpInformation(attached, files, params);
+    this.setUpInformation(attached, files, parametreProvider.get().getSridInt(), params);
     T merged = this.entityManager.merge(attached);
     this.entityManager.flush();
     return merged;

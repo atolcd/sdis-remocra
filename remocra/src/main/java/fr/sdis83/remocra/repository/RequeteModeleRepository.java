@@ -14,6 +14,7 @@ import fr.sdis83.remocra.domain.remocra.RemocraVueCombo;
 import fr.sdis83.remocra.domain.remocra.Utilisateur;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.StatementFormat;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import java.io.IOException;
@@ -50,6 +51,8 @@ public class RequeteModeleRepository {
   @Autowired DSLContext context;
 
   @Autowired private UtilisateurService utilisateurService;
+
+  @Autowired protected ParametreDataProvider parametreProvider;
 
   @Autowired private RequeteModeleParametereRepository requeteModeleParametereRepository;
 
@@ -212,19 +215,6 @@ public class RequeteModeleRepository {
         .getValue(REQUETE_MODELE_SELECTION.ID);
   }
 
-  @Transactional
-  public int insertDetail(String rs, Long lastRmd) throws SQLException {
-    String geom = rs.split(";")[1];
-    Query query =
-        entityManager
-            .createNativeQuery(
-                "INSERT INTO remocra.requete_modele_selection_detail (selection,geometrie) SELECT :selection, (select st_geometryfromtext(:geometrie, :srid))")
-            .setParameter("selection", lastRmd)
-            .setParameter("geometrie", geom)
-            .setParameter("srid", GlobalConstants.SRID_PARAM);
-    return query.executeUpdate();
-  }
-
   public List<Map> executeRequest(Long idmodele, String json)
       throws SQLException, IOException, ParseException {
     List<Map> resultat = new ArrayList<>();
@@ -358,7 +348,7 @@ public class RequeteModeleRepository {
                       + s.toString()
                       + ") AS selection")
               .setParameter("id", id)
-              .setParameter("srid", GlobalConstants.SRID_PARAM);
+              .setParameter("srid", parametreProvider.get().getSridInt());
       ;
       int r = q.executeUpdate();
 
@@ -370,7 +360,7 @@ public class RequeteModeleRepository {
                     "UPDATE remocra.requete_modele_selection SET etendu = (SELECT st_setsrid(CAST(st_extent(geometrie) AS Geometry), :srid) "
                         + "FROM remocra.requete_modele_selection_detail WHERE selection = :id) WHERE id = :id")
                 .setParameter("id", id)
-                .setParameter("srid", GlobalConstants.SRID_PARAM);
+                .setParameter("srid", parametreProvider.get().getSridInt());
         query.executeUpdate();
       }
     }

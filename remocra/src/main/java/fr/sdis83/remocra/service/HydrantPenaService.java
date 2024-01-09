@@ -42,7 +42,9 @@ public class HydrantPenaService extends AbstractHydrantService<HydrantPena> {
     // Calcul des coordonnées DFCI si nécessaire
     if (attached.getCoordDFCI() == null || attached.getCoordDFCI().isEmpty()) {
       try {
-        String coordDFCI = GeometryUtil.findCoordDFCIFromGeom(dataSource, attached.getGeometrie());
+        String coordDFCI =
+            GeometryUtil.findCoordDFCIFromGeom(
+                dataSource, attached.getGeometrie(), parametreProvider.get().getSridInt());
         attached.setCoordDFCI(coordDFCI);
       } catch (Exception e) {
         logger.debug("Problème lors de la requête sur la table remocra_referentiel.carro_dfci", e);

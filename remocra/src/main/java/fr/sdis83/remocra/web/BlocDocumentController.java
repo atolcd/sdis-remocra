@@ -138,7 +138,8 @@ public class BlocDocumentController extends AbstractRemocraController {
     String json = request.getParameter("data");
     Map<String, MultipartFile> files = request.getFileMap();
     try {
-      final BlocDocument blocDocument = blocDocumentService.update(id, json, files);
+      final BlocDocument blocDocument =
+          blocDocumentService.update(id, json, files, parametreProvider.get().getSridInt());
       return new AbstractExtObjectSerializer<BlocDocument>(
           "BlocDocument updated", SuccessErrorExtSerializer.DEFAULT_CONTENT_TYPE) {
         @Override

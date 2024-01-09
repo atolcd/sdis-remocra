@@ -7,8 +7,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import flexjson.JSONDeserializer;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.HydrantAspiration;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import java.math.BigDecimal;
@@ -21,6 +21,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +31,8 @@ public class HydrantAspirationService extends AbstractService<HydrantAspiration>
   public HydrantAspirationService() {
     super(HydrantAspiration.class);
   }
+
+  @Autowired private ParametreDataProvider parametreProvider;
 
   @Override
   protected Predicate processFilterItem(
@@ -68,14 +71,14 @@ public class HydrantAspirationService extends AbstractService<HydrantAspiration>
 
         double[] coordonneConvert =
             GeometryUtil.transformCordinate(
-                longitude, latitude, "4326", GlobalConstants.SRID_PARAM.toString());
+                longitude, latitude, "4326", parametreProvider.get().getSridString());
         longitude =
             BigDecimal.valueOf(coordonneConvert[0]).setScale(0, RoundingMode.HALF_UP).intValue();
         latitude =
             BigDecimal.valueOf(coordonneConvert[1]).setScale(0, RoundingMode.HALF_UP).intValue();
 
         GeometryFactory geometryFactory =
-            new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_PARAM);
+            new GeometryFactory(new PrecisionModel(), parametreProvider.get().getSridInt());
         Point p = geometryFactory.createPoint(new Coordinate(longitude, latitude));
         obj.put("geometrie", p);
       } else {

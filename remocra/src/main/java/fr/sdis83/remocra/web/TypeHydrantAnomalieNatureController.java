@@ -3,6 +3,7 @@ package fr.sdis83.remocra.web;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantAnomalieNature;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.TypeHydrantAnomalieNatureService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class TypeHydrantAnomalieNatureController {
 
   @Autowired private TypeHydrantAnomalieNatureService service;
+
+  @Autowired protected ParametreDataProvider parametreProvider;
 
   @RequestMapping(value = "", method = RequestMethod.POST, headers = "Accept=application/json")
   @PreAuthorize("hasRight('REFERENTIELS_C')")
@@ -44,7 +47,8 @@ public class TypeHydrantAnomalieNatureController {
   public ResponseEntity<java.lang.String> update(
       final @PathVariable Long id, final @RequestBody String json) {
     try {
-      final TypeHydrantAnomalieNature attached = service.update(id, json, null);
+      final TypeHydrantAnomalieNature attached =
+          service.update(id, json, null, parametreProvider.get().getSridInt());
       if (attached != null) {
         return new AbstractExtObjectSerializer<TypeHydrantAnomalieNature>(
             "TypeHydrantAnomalieNature updated.") {

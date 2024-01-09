@@ -1,7 +1,6 @@
 package fr.sdis83.remocra.domain.remocra;
 
 import com.vividsolutions.jts.geom.Point;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.util.Feature;
 import fr.sdis83.remocra.util.GeometryUtil;
 import java.math.BigDecimal;
@@ -48,30 +47,26 @@ public class HydrantAspiration {
   @Column(name = "version", columnDefinition = "INTEGER default 1")
   private Integer version;
 
-  public Feature toFeature() throws CRSException, IllegalCoordinateException {
+  public Feature toFeature(String srid) throws CRSException, IllegalCoordinateException {
     Feature feature = new Feature(this.id, null);
-    feature.addProperty("longitude", this.getLongitude());
-    feature.addProperty("latitude", this.getLatitude());
+    feature.addProperty("longitude", this.getLongitude(srid));
+    feature.addProperty("latitude", this.getLatitude(srid));
     return feature;
   }
 
-  public Double getLongitude() throws CRSException, IllegalCoordinateException {
+  public Double getLongitude(String srid) throws CRSException, IllegalCoordinateException {
     if (this.getGeometrie() == null) return null;
     Point p = this.getGeometrie();
-    double[] coordonneConvert =
-        GeometryUtil.transformCordinate(
-            p.getX(), p.getY(), GlobalConstants.SRID_PARAM.toString(), "4326");
+    double[] coordonneConvert = GeometryUtil.transformCordinate(p.getX(), p.getY(), srid, "4326");
     double longitude =
         BigDecimal.valueOf(coordonneConvert[0]).setScale(5, RoundingMode.HALF_UP).doubleValue();
     return longitude;
   }
 
-  public Double getLatitude() throws CRSException, IllegalCoordinateException {
+  public Double getLatitude(String srid) throws CRSException, IllegalCoordinateException {
     if (this.getGeometrie() == null) return null;
     Point p = this.getGeometrie();
-    double[] coordonneConvert =
-        GeometryUtil.transformCordinate(
-            p.getX(), p.getY(), GlobalConstants.SRID_PARAM.toString(), "4326");
+    double[] coordonneConvert = GeometryUtil.transformCordinate(p.getX(), p.getY(), srid, "4326");
     double latitude =
         BigDecimal.valueOf(coordonneConvert[1]).setScale(5, RoundingMode.HALF_UP).doubleValue();
     return latitude;

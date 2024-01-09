@@ -15,7 +15,7 @@ public class DestinataireCourrierUseCase {
   public DestinataireCourrierUseCase() {}
 
   public List<DestinataireModel> getAllDestinataireCourrier(
-      boolean useZC, Geometry geometryOrganismeCurrentUser) {
+      boolean useZC, Geometry geometryOrganismeCurrentUser, int sridParam) {
     List<Long> listeIdOrganismeByZC = Collections.EMPTY_LIST;
     if (useZC) {
       listeIdOrganismeByZC =

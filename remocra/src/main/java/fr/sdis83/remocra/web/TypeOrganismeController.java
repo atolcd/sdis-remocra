@@ -71,7 +71,8 @@ public class TypeOrganismeController
   @Override
   protected ResponseEntity<java.lang.String> doUpdate(final Long id, final String json) {
     try {
-      final TypeOrganisme attached = getService().update(id, json, null);
+      final TypeOrganisme attached =
+          getService().update(id, json, null, parametreProvider.get().getSridInt());
       if (attached != null) {
         return new SuccessErrorExtSerializer(true, "Model updated").serialize();
       }

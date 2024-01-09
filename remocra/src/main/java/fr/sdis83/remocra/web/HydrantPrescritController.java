@@ -3,7 +3,6 @@ package fr.sdis83.remocra.web;
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.HydrantPrescrit;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.exception.BusinessException;
@@ -74,7 +73,8 @@ public class HydrantPrescritController
     if (bbox == null || bbox.isEmpty()) {
       return FeatureUtil.getResponse(service.findAllHydrantPrescrits());
     } else {
-      return FeatureUtil.getResponse(service.findHydrantPrescritsByBBOX(bbox));
+      return FeatureUtil.getResponse(
+          service.findHydrantPrescritsByBBOX(bbox, parametreProvider.get().getSridInt()));
     }
   }
 
@@ -88,7 +88,7 @@ public class HydrantPrescritController
             .use(Date.class, RemocraDateHourTransformer.getInstance())
             .use(Geometry.class, new GeometryFactory())
             .deserialize(json);
-    current.getGeometrie().setSRID(GlobalConstants.SRID_PARAM);
+    current.getGeometrie().setSRID(parametreProvider.get().getSridInt());
     if (zoneCompetenceService.check(
         current.getGeometrie(), serviceUtilisateur.getCurrentZoneCompetenceId())) {
       return this.doUpdate(id, json);
@@ -108,7 +108,7 @@ public class HydrantPrescritController
             .use(Date.class, RemocraDateHourTransformer.getInstance())
             .use(Geometry.class, new GeometryFactory())
             .deserialize(json);
-    current.getGeometrie().setSRID(GlobalConstants.SRID_PARAM);
+    current.getGeometrie().setSRID(parametreProvider.get().getSridInt());
     if (zoneCompetenceService.check(
         current.getGeometrie(), serviceUtilisateur.getCurrentZoneCompetenceId())) {
       return this.doCreate(json);

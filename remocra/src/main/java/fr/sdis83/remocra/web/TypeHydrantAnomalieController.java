@@ -5,6 +5,7 @@ import flexjson.JSONSerializer;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantAnomalie;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.TypeHydrantAnomalieService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
@@ -30,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class TypeHydrantAnomalieController {
 
   @Autowired TypeHydrantAnomalieService service;
+
+  @Autowired protected ParametreDataProvider parametreProvider;
 
   private final Logger logger = Logger.getLogger(getClass());
 
@@ -108,7 +111,8 @@ public class TypeHydrantAnomalieController {
   public ResponseEntity<java.lang.String> update(
       final @PathVariable Long id, final @RequestBody String json) {
     try {
-      final TypeHydrantAnomalie attached = service.update(id, json, null);
+      final TypeHydrantAnomalie attached =
+          service.update(id, json, null, parametreProvider.get().getSridInt());
       if (attached != null) {
         return new AbstractExtObjectSerializer<TypeHydrantAnomalie>(
             "TypeHydrantAnomalie updated.") {

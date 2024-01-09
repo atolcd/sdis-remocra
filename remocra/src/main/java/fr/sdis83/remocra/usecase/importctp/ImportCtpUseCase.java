@@ -9,7 +9,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantAnomalie;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeHydrantImportctpErreur;
@@ -524,15 +523,14 @@ public class ImportCtpUseCase {
       Double latitude = JSONUtil.getDouble(visite, "latitude");
       Double longitude = JSONUtil.getDouble(visite, "longitude");
 
-      int srid =
-          Integer.parseInt(parametreDataProvider.get().getValeurString(GlobalConstants.CLE_SRID));
-
       if (latitude != null
           && longitude != null
           && this.authUtils.hasRight(TypeDroit.TypeDroitEnum.HYDRANTS_DEPLACEMENT_CTP_C)) {
-        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), srid);
+        GeometryFactory geometryFactory =
+            new GeometryFactory(new PrecisionModel(), parametreDataProvider.get().getSridInt());
         double[] coordonnees =
-            GeometryUtil.transformCordinate(longitude, latitude, "4326", String.valueOf(srid));
+            GeometryUtil.transformCordinate(
+                longitude, latitude, "4326", parametreDataProvider.get().getSridString());
         Point p = geometryFactory.createPoint(new Coordinate(coordonnees[0], coordonnees[1]));
         hydrantRepository.updateGeometrie(idHydrant, p);
       }

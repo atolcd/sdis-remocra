@@ -4,9 +4,9 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.*;
 
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantDiametre;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantNatureDeci;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
@@ -41,6 +41,8 @@ public class EtudeHydrantProjetRepository {
   @Autowired JpaTransactionManager transactionManager;
 
   @PersistenceContext private EntityManager entityManager;
+
+  @Autowired private ParametreDataProvider parametreProvider;
 
   public EtudeHydrantProjetRepository() {}
 
@@ -176,8 +178,8 @@ public class EtudeHydrantProjetRepository {
         GeometryUtil.createPoint(
             longitude,
             latitude,
-            GlobalConstants.SRID_PARAM.toString(),
-            GlobalConstants.SRID_PARAM.toString());
+            parametreProvider.get().getSridString(),
+            parametreProvider.get().getSridString());
 
     long idPeiProjet =
         context
@@ -232,7 +234,8 @@ public class EtudeHydrantProjetRepository {
         .execute();
   }
 
-  public void updateGeometrie(String json) throws CRSException, IllegalCoordinateException {
+  public void updateGeometrie(String json, String srid)
+      throws CRSException, IllegalCoordinateException {
     HashMap<String, Object> obj = new JSONDeserializer<HashMap<String, Object>>().deserialize(json);
 
     Double longitude =
@@ -240,12 +243,7 @@ public class EtudeHydrantProjetRepository {
     Double latitude =
         (obj.get("latitude") != null) ? Double.valueOf(obj.get("latitude").toString()) : null;
 
-    Geometry geom =
-        GeometryUtil.createPoint(
-            longitude,
-            latitude,
-            GlobalConstants.SRID_PARAM.toString(),
-            GlobalConstants.SRID_PARAM.toString());
+    Geometry geom = GeometryUtil.createPoint(longitude, latitude, srid);
     context
         .update(ETUDE_HYDRANT_PROJET)
         .set(ETUDE_HYDRANT_PROJET.GEOMETRIE, geom)

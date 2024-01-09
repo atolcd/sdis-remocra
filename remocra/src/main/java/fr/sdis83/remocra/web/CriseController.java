@@ -175,7 +175,7 @@ public class CriseController {
       if (request.getParameter("geometrie") != null
           && !(request.getParameter("geometrie").isEmpty())) {
         String geometrie = request.getParameter("geometrie");
-        geom = GeometryUtil.geometryFromBBox(geometrie);
+        geom = GeometryUtil.geometryFromBBox(geometrie, parametreProvider.get().getSridInt());
       }
       // traitement des fichiers
       int i = criseRepository.addDocuments(files, idCrise, geom);

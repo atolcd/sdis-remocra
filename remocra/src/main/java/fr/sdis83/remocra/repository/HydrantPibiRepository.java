@@ -4,9 +4,9 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PIBI;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE;
 
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantPibi;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.JSONUtil;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +24,8 @@ public class HydrantPibiRepository {
 
   private static final String BI = "BI";
   private static final Integer DISTANCE_MINIMAL_JUMELAGE = 25;
-  private static final String SRID = "SRID=" + GlobalConstants.SRID_PARAM + ";";
+
+  @Autowired protected ParametreDataProvider parametreProvider;
 
   @Autowired DSLContext context;
 
@@ -199,7 +200,9 @@ public class HydrantPibiRepository {
             .on(HYDRANT.ID.eq(HYDRANT_PIBI.ID))
             .where(
                 "ST_DISTANCE({0}, {1}) < {2}",
-                HYDRANT.GEOMETRIE, SRID + geometrie, DISTANCE_MINIMAL_JUMELAGE)
+                HYDRANT.GEOMETRIE,
+                parametreProvider.get().getSridInt() + geometrie,
+                DISTANCE_MINIMAL_JUMELAGE)
             .and(TYPE_HYDRANT_NATURE.CODE.eq(BI))
             .and(HYDRANT_PIBI.JUMELE.isNull())
             .fetchInto(Hydrant.class);

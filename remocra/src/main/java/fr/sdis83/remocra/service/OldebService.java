@@ -2,7 +2,6 @@ package fr.sdis83.remocra.service;
 
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.Commune;
 import fr.sdis83.remocra.domain.remocra.Document;
 import fr.sdis83.remocra.domain.remocra.Document.TypeDocument;
@@ -60,7 +59,7 @@ public class OldebService extends AbstractService<Oldeb> {
   private final Logger logger = Logger.getLogger(getClass());
   @Autowired private UtilisateurService utilisateurService;
   @Autowired private TypeOldebResidenceService residenceService;
-  @Autowired protected ParametreDataProvider parametreProvider;
+  @Autowired private ParametreDataProvider parametreProvider;
 
   public OldebService() {
     super(Oldeb.class);
@@ -632,7 +631,7 @@ public class OldebService extends AbstractService<Oldeb> {
       throws Exception {
 
     // Géométrie
-    attached.getGeometrie().setSRID(GlobalConstants.SRID_PARAM);
+    attached.getGeometrie().setSRID(parametreProvider.get().getSridInt());
     Geometry geom = attached.getGeometrie();
     geom = GeometryUtil.getMultiGeometry(geom);
     attached.setGeometrie(geom);
@@ -688,7 +687,7 @@ public class OldebService extends AbstractService<Oldeb> {
             + "),"
             + projection
             + "),"
-            + GlobalConstants.SRID_PARAM
+            + parametreProvider.get().getSridInt()
             + ")) = true "
             + "and o.actif = true "
             // Et que l'oldeb est dans la zone de compétence de

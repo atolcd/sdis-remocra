@@ -8,7 +8,6 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_NATURE_DECI;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ZONE_SPECIALE;
 
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Commune;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ZoneSpeciale;
@@ -576,13 +575,13 @@ public class NumeroUtilRepository {
    * @param hydrant
    * @return
    */
-  public static ZoneSpeciale computeZoneSpeciale(Hydrant hydrant) {
+  public static ZoneSpeciale computeZoneSpeciale(Hydrant hydrant, int srid) {
     try {
       return context
           .select(ZONE_SPECIALE.fields())
           .from(ZONE_SPECIALE)
           .where(
-              "ST_Contains({0}, st_pointfromtext({1}," + GlobalConstants.SRID_PARAM + "))",
+              "ST_Contains({0}, st_pointfromtext({1}," + srid + "))",
               ZONE_SPECIALE.GEOMETRIE,
               hydrant.getGeometrie().toString())
           .limit(1)
@@ -602,7 +601,7 @@ public class NumeroUtilRepository {
    * @param hydrant Les informations de l'hydrant
    * @param typeHydrant Le type d'hydrant si celui-ci n'existe pas encore en base
    */
-  public static Hydrant setCodeZoneSpecAndNumeros(Hydrant hydrant, String typeHydrant) {
+  public static Hydrant setCodeZoneSpecAndNumeros(Hydrant hydrant, String typeHydrant, int srid) {
     // Code
     String code =
         context
@@ -618,7 +617,7 @@ public class NumeroUtilRepository {
     hydrant.setCode((code != null) ? code : typeHydrant);
 
     // Zone Spéciale
-    ZoneSpeciale zp = computeZoneSpeciale(hydrant);
+    ZoneSpeciale zp = computeZoneSpeciale(hydrant, srid);
     hydrant.setZoneSpeciale((zp != null) ? zp.getId() : null);
 
     // Si création : attribution d'un nouveau numéro interne

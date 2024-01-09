@@ -290,7 +290,7 @@ public class CourrierController {
       return new ResponseEntity<>(
           objectMapper.writeValueAsString(
               destinataireCourrierUseCase.getAllDestinataireCourrier(
-                  useZC, geometryOrganismeCurrentUser)),
+                  useZC, geometryOrganismeCurrentUser, parametreProvider.get().getSridInt())),
           HttpStatus.OK);
     } catch (Exception e) {
       this.logger.error(e.getMessage(), e);

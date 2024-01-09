@@ -1,8 +1,8 @@
 package fr.sdis83.remocra.service;
 
 import flexjson.JSONDeserializer;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.DebitSimultane;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DebitSimultaneService extends AbstractService<DebitSimultane> {
 
   @Autowired private UtilisateurService utilisateurService;
+
+  @Autowired private ParametreDataProvider parametreProvider;
 
   @PersistenceContext protected EntityManager entityManager;
 
@@ -75,7 +77,7 @@ public class DebitSimultaneService extends AbstractService<DebitSimultane> {
             .setParameter("lon", lon)
             .setParameter("lat", lat)
             .setParameter("srid", srid)
-            .setParameter("geomsrid", GlobalConstants.SRID_PARAM)
+            .setParameter("geomsrid", parametreProvider.get().getSridInt())
             .setParameter("distance", distance);
     return query.getResultList();
   }
@@ -99,7 +101,7 @@ public class DebitSimultaneService extends AbstractService<DebitSimultane> {
                     + "LIMIT 1)) "
                     + "WHERE id=:idDebitSimultane"))
             .setParameter("idDebitSimultane", id)
-            .setParameter("srid", GlobalConstants.SRID_PARAM);
+            .setParameter("srid", parametreProvider.get().getSridInt());
     query.executeUpdate();
   }
 

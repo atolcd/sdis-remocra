@@ -1,7 +1,6 @@
 package fr.sdis83.remocra.service;
 
 import com.vividsolutions.jts.geom.Geometry;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.HistoVerificationHydraulique;
 import fr.sdis83.remocra.domain.remocra.HydrantPena;
 import fr.sdis83.remocra.domain.remocra.HydrantPibi;
@@ -80,7 +79,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
       Query query, Map<String, Object> parameters, List<ItemFilter> itemFilters) {
     ItemFilter wktFilter = ItemFilter.getFilter(itemFilters, "wkt");
     if (wktFilter != null) {
-      String wktValue = "SRID=" + GlobalConstants.SRID_PARAM + ";" + wktFilter.getValue();
+      String wktValue = "SRID=" + parametreProvider.get().getSridInt() + ";" + wktFilter.getValue();
       query.setParameter((Parameter) parameters.get("WKT_PARAM"), wktValue);
       query.setParameter(
           (Parameter) parameters.get("DIST_PARAM"),
@@ -115,7 +114,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
       Predicate[] predicates) {
     ItemFilter wktFilter = ItemFilter.getFilter(itemFilters, "wkt");
     if (orders != null && wktFilter != null) {
-      String wktValue = "SRID=" + GlobalConstants.SRID_PARAM + ";" + wktFilter.getValue();
+      String wktValue = "SRID=" + parametreProvider.get().getSridInt() + ";" + wktFilter.getValue();
       itemTypedQuery.setParameter("wkt", wktValue);
     }
   }
@@ -130,7 +129,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
       attached.setNumeroInterne(pena.getNumeroInterne());
       attached.setCommune(pena.getCommune());
     }
-    return super.setUpInformation(attached, files, params);
+    return super.setUpInformation(attached, files, parametreProvider.get().getSridInt(), params);
   }
 
   @Transactional
@@ -154,7 +153,7 @@ public class HydrantPibiService extends AbstractHydrantService<HydrantPibi> {
     // Hydrant jumele actuel (peut valoir null si pas jumelé)
     HydrantPibi hydrantJumele = HydrantPibi.findHydrantPibi(id).getJumele();
 
-    HydrantPibi hp = super.update(id, json, files, params);
+    HydrantPibi hp = super.update(id, json, files, parametreProvider.get().getSridInt(), params);
     // Pour déclencher le calcul des anomalies via trigger
     entityManager
         .createNativeQuery("update remocra.hydrant_pibi set debit=debit where id=:id")

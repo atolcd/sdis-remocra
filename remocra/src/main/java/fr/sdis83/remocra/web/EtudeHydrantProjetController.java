@@ -3,6 +3,7 @@ package fr.sdis83.remocra.web;
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONSerializer;
 import fr.sdis83.remocra.repository.EtudeHydrantProjetRepository;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import fr.sdis83.remocra.web.model.EtudeHydrantProjet;
@@ -26,6 +27,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 public class EtudeHydrantProjetController {
 
   @Autowired private EtudeHydrantProjetRepository etudeHydrantProjetRepository;
+
+  @Autowired private ParametreDataProvider parametreProvider;
 
   @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/xml")
   @PreAuthorize("hasRight('PLANIFIER_DECI')")
@@ -123,7 +126,8 @@ public class EtudeHydrantProjetController {
     try {
       String json = request.getParameter("peiProjet");
 
-      etudeHydrantProjetRepository.updateGeometrie(json);
+      etudeHydrantProjetRepository.updateGeometrie(
+          json, String.valueOf(parametreProvider.get().getSridInt()));
       return new SuccessErrorExtSerializer(true, "Le pei projet a bien été déplacé.").serialize();
     } catch (Exception e) {
       e.printStackTrace();

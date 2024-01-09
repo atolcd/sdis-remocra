@@ -11,7 +11,6 @@ import static fr.sdis83.remocra.db.model.remocra.tables.Commune.COMMUNE;
 import static fr.sdis83.remocra.db.model.remocra.tables.Document.DOCUMENT;
 
 import flexjson.JSONDeserializer;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Organisme;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeEtude;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeEtudeStatut;
@@ -448,7 +447,7 @@ public class EtudeRepository {
                     "St_AsEwkt(St_transform(St_SetSrid(CAST(St_Extent("
                         + COMMUNE.GEOMETRIE
                         + ") as Geometry), "
-                        + GlobalConstants.SRID_PARAM
+                        + parametreProvider.get().getSridInt()
                         + "), 3857))")
                 .as("geometrie"))
         .from(ETUDE)

@@ -9,6 +9,7 @@ import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.repository.HydrantRepository;
 import fr.sdis83.remocra.service.HydrantPenaService;
 import fr.sdis83.remocra.service.HydrantPibiService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.ExceptionUtils;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
@@ -40,6 +41,8 @@ public class HydrantPenaController {
   @Autowired private HydrantPibiService hydrantPibiService;
 
   @Autowired private HydrantRepository hydrantRepository;
+
+  @Autowired ParametreDataProvider parametreProvider;
 
   @Autowired DataSource dataSource;
 
@@ -151,7 +154,8 @@ public class HydrantPenaController {
     String jsonAssocie = request.getParameter("associe");
     Map<String, MultipartFile> files = request.getFileMap();
     try {
-      final HydrantPena attached = hydrantPenaService.update(id, json, files);
+      final HydrantPena attached =
+          hydrantPenaService.update(id, json, files, parametreProvider.get().getSridInt());
       if (attached != null) {
         if (paramPibi != null
             && !paramPibi.isEmpty()
@@ -220,7 +224,9 @@ public class HydrantPenaController {
       } catch (ParseException e) {
         throw new RuntimeException("Not a WKT string:" + wkt);
       }
-      String result = GeometryUtil.findCoordDFCIFromGeom(dataSource, filter);
+      String result =
+          GeometryUtil.findCoordDFCIFromGeom(
+              dataSource, filter, parametreProvider.get().getSridInt());
       return new SuccessErrorExtSerializer(true, result).serialize();
     } catch (BusinessException e) {
       logger.debug(

@@ -4,6 +4,7 @@ import flexjson.JSONSerializer;
 import fr.sdis83.remocra.domain.remocra.DebitSimultane;
 import fr.sdis83.remocra.exception.BusinessException;
 import fr.sdis83.remocra.service.DebitSimultaneService;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.FeatureUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
@@ -29,6 +30,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 public class DebitSimultaneController {
 
   @Autowired private DebitSimultaneService debitSimultaneService;
+
+  @Autowired private ParametreDataProvider parametreProvider;
 
   public JSONSerializer decorateSerializer(JSONSerializer serializer) {
     return serializer.exclude("data.actif").exclude("*.class");
@@ -169,7 +172,8 @@ public class DebitSimultaneController {
     String json = request.getParameter("debitSimultane");
     Map<String, MultipartFile> files = request.getFileMap();
     try {
-      final DebitSimultane attached = debitSimultaneService.update(id, json, files);
+      final DebitSimultane attached =
+          debitSimultaneService.update(id, json, files, parametreProvider.get().getSridInt());
       if (attached != null) {
         return new AbstractExtObjectSerializer<DebitSimultane>(
             "Debit simultane updated.", SuccessErrorExtSerializer.DEFAULT_CONTENT_TYPE) {

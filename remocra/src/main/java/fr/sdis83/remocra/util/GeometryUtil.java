@@ -11,7 +11,6 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.Commune;
 import fr.sdis83.remocra.exception.BusinessException;
 import java.math.BigDecimal;
@@ -49,7 +48,7 @@ public class GeometryUtil {
         coord[0], coord[1], coord[2], coord[3]);
   }
 
-  public static Geometry geometryFromBBox(String bbox) {
+  public static Geometry geometryFromBBox(String bbox, int srid) {
     String polygon = wktFromBBox(bbox);
     if (polygon == null) {
       return null;
@@ -61,25 +60,25 @@ public class GeometryUtil {
     } catch (ParseException e) {
       throw new RuntimeException("Not a WKT String:" + polygon);
     }
-    geometry.setSRID(sridFromBBox(bbox));
+    geometry.setSRID(sridFromBBox(bbox, srid));
     return geometry;
   }
 
-  public static String bboxFromGeometry(Geometry geometry) {
+  public static String bboxFromGeometry(Geometry geometry, int srid) {
     if (geometry == null) {
       return null;
     }
     Envelope env = geometry.getEnvelopeInternal();
     return String.format(
-        "EPSG:" + GlobalConstants.SRID_PARAM + ";%s,%s,%s,%s",
+        "EPSG:" + srid + ";%s,%s,%s,%s",
         env.getMinX(),
         env.getMinY(),
         env.getMaxX(),
         env.getMaxY());
   }
 
-  public static Integer sridFromBBox(String bbox) {
-    Integer srid = GlobalConstants.SRID_PARAM;
+  public static Integer sridFromBBox(String bbox, int sridParam) {
+    Integer srid = sridParam;
     if (bbox != null) {
       String[] coord = bbox.split(",");
       if (coord.length == 5) {
@@ -117,11 +116,18 @@ public class GeometryUtil {
     return cRSFactory;
   }
 
+  public static Point createPoint(double longitude, double latitude, String proj)
+      throws CRSException, IllegalCoordinateException {
+    GeometryFactory geometryFactory =
+        new GeometryFactory(new PrecisionModel(), Integer.getInteger(proj));
+    return geometryFactory.createPoint(new Coordinate(longitude, latitude));
+  }
+
   public static Point createPoint(double longitude, double latitude, String projFrom, String projTo)
       throws CRSException, IllegalCoordinateException {
     double[] coord = transformCordinate(longitude, latitude, projFrom, projTo);
     GeometryFactory geometryFactory =
-        new GeometryFactory(new PrecisionModel(), GlobalConstants.SRID_PARAM);
+        new GeometryFactory(new PrecisionModel(), Integer.getInteger(projTo));
     return geometryFactory.createPoint(new Coordinate(coord[0], coord[1]));
   }
 
@@ -147,7 +153,7 @@ public class GeometryUtil {
    * @return
    * @throws BusinessException
    */
-  public static String findCoordDFCIFromGeom(DataSource ds, Geometry geom)
+  public static String findCoordDFCIFromGeom(DataSource ds, Geometry geom, int srid)
       throws BusinessException {
     Connection cx = null;
     Statement st = null;
@@ -161,7 +167,7 @@ public class GeometryUtil {
               + "', "
               + geom.getSRID()
               + "), "
-              + GlobalConstants.SRID_PARAM
+              + srid
               + "), 0) = true");
       rs = st.getResultSet();
       rs.next();
