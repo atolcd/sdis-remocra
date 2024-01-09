@@ -93,6 +93,7 @@
 			var VITESSE_EAU = '${vitesse_eau}';
 			var SHOW_HISTORIQUE = '${show_historique}';
 			var SRID = '${srid}';
+			var BUFFER_CARTE = '${buffer_carte}';
 		</script>
 	</head>
 

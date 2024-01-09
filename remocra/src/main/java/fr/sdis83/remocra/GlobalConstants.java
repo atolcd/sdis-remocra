@@ -47,6 +47,9 @@ public class GlobalConstants {
   public static final String GENERIQUE_MESSAGE_ERROR =
       "Une erreur est survenue lors de l'éxécution de la requête. Un log a été écrit, veuillez contacter votre référent technique pour qu'il puisse le consulter.";
 
+  // Clé du paramètre BUFFER_CARTE stocké dans la table remocra.parametre
+  public static final String CLE_BUFFER_CARTE = "BUFFER_CARTE";
+
   /**
    * Enumération des types de visite, avec
    *

@@ -1200,10 +1200,13 @@ Ext.define('Sdis.Remocra.controller.hydrant.Hydrant', {
     downloadMapTournee: function() {
         var tournee = this.getSelectedTournee();
         var bounds = Sdis.Remocra.util.Util.getBounds(tournee.get('geometrie'));
-        var Xmin = bounds.left - 50 ;
-        var Xmax = bounds.right + 50;
-        var Ymin = bounds.bottom - 50;
-        var Ymax = bounds.top + 50;
+        // Obligé de parseInt car l'automagie d'Ext retourne une String
+            // le 10 correspond au radix, conversion en base 10
+        var buffer = parseInt(BUFFER_CARTE, 10);
+        var Xmin = bounds.left - buffer;
+        var Xmax = bounds.right + buffer;
+        var Ymin = bounds.bottom - buffer;
+        var Ymax = bounds.top + buffer;
         // définir le mode paysage/portrait
         var mode = Xmax - Xmin > Ymax - Ymin  ? "paysage" : "portrait";
         // calcul des centroids

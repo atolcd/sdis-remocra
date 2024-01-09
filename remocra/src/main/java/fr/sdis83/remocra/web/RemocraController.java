@@ -180,6 +180,9 @@ public class RemocraController {
 
     model.addAttribute("srid", parametreProvider.get().getValeurString(GlobalConstants.CLE_SRID));
 
+    model.addAttribute(
+        "buffer_carte", parametreProvider.get().getValeur(GlobalConstants.CLE_BUFFER_CARTE));
+
     return "remocra";
   }
 
