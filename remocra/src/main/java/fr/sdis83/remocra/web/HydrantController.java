@@ -4,6 +4,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.Hydrant;
 import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.repository.HydrantRepository;
@@ -395,7 +396,7 @@ public class HydrantController {
 
         // Si on a choisi le système WGS84 et qu'on ne souhaite pas l'exprimer en degrés décimaux,
         // on le convertit en degrés minutes secondes
-        if (srid == 4326 && !degres) {
+        if (srid == Integer.parseInt(GlobalConstants.SRID_4326) && !degres) {
           String longitudeConvert =
               GeometryUtil.convertDegresDecimauxToSexagesimaux(coordonneConvert[0]);
           String latitudeConvert =

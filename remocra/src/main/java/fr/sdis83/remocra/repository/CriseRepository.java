@@ -16,6 +16,7 @@ import static org.jooq.impl.DSL.row;
 
 import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.OgcCouche;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.ProcessusEtlPlanificationParametre;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.RepertoireLieu;
@@ -166,7 +167,9 @@ public class CriseRepository {
     String sql =
         "SELECT St_AsEwkt(St_transform(St_SetSrid(CAST(St_Extent(geometrie) AS Geometry),"
             + parametreProvider.get().getSridInt()
-            + "),3857)) AS geometrie FROM remocra.commune WHERE id IN(SELECT commune FROM remocra.crise_commune WHERE crise ="
+            + "),"
+            + GlobalConstants.SRID_3857
+            + ")) AS geometrie FROM remocra.commune WHERE id IN(SELECT commune FROM remocra.crise_commune WHERE crise ="
             + id
             + ")";
     Result<Record> result = context.fetch(sql);

@@ -1,6 +1,7 @@
 package fr.sdis83.remocra.domain.remocra;
 
 import com.vividsolutions.jts.geom.Point;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.util.Feature;
 import fr.sdis83.remocra.util.GeometryUtil;
 import java.math.BigDecimal;
@@ -57,7 +58,8 @@ public class HydrantAspiration {
   public Double getLongitude(String srid) throws CRSException, IllegalCoordinateException {
     if (this.getGeometrie() == null) return null;
     Point p = this.getGeometrie();
-    double[] coordonneConvert = GeometryUtil.transformCordinate(p.getX(), p.getY(), srid, "4326");
+    double[] coordonneConvert =
+        GeometryUtil.transformCordinate(p.getX(), p.getY(), srid, GlobalConstants.SRID_4326);
     double longitude =
         BigDecimal.valueOf(coordonneConvert[0]).setScale(5, RoundingMode.HALF_UP).doubleValue();
     return longitude;
@@ -66,7 +68,8 @@ public class HydrantAspiration {
   public Double getLatitude(String srid) throws CRSException, IllegalCoordinateException {
     if (this.getGeometrie() == null) return null;
     Point p = this.getGeometrie();
-    double[] coordonneConvert = GeometryUtil.transformCordinate(p.getX(), p.getY(), srid, "4326");
+    double[] coordonneConvert =
+        GeometryUtil.transformCordinate(p.getX(), p.getY(), srid, GlobalConstants.SRID_4326);
     double latitude =
         BigDecimal.valueOf(coordonneConvert[1]).setScale(5, RoundingMode.HALF_UP).doubleValue();
     return latitude;

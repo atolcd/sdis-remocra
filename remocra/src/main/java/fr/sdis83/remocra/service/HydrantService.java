@@ -9,6 +9,7 @@ import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
+import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.remocra.Commune;
 import fr.sdis83.remocra.domain.remocra.Hydrant;
 import fr.sdis83.remocra.domain.remocra.Organisme;
@@ -528,7 +529,7 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
     } else {
       // Si les données sont en WSG84 en degrés sexagésiamaux, on les convertit d'abord en degrés
       // décimaux
-      if (srid == 4326 && !degres) {
+      if (srid == Integer.parseInt(GlobalConstants.SRID_4326) && !degres) {
         longitude =
             GeometryUtil.convertDegresSexagesimauxToDecimaux(items.get("longitude").toString());
         latitude =

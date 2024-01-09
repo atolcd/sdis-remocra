@@ -832,10 +832,10 @@ public class HydrantRepository {
     String srid = parametreProvider.get().getValeurString(GlobalConstants.CLE_SRID);
     return context
         .resultQuery(
-            "SELECT ST_DISTANCE(ST_transform(ST_SetSRID(ST_MakePoint({0}, {1}),4326), {2}), h.geometrie) "
+            "SELECT ST_DISTANCE(ST_transform(ST_SetSRID(ST_MakePoint({0}, {1}),{2}), {3}), h.geometrie) "
                 + "FROM remocra.hydrant h "
-                + "WHERE h.id = {3};",
-            longitude, latitude, srid, idHydrant)
+                + "WHERE h.id = {4};",
+            longitude, latitude, GlobalConstants.SRID_4326, srid, idHydrant)
         .fetchOneInto(int.class);
   }
 
