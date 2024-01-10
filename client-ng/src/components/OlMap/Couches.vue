@@ -29,7 +29,7 @@
             <b-tooltip :target="'tooltip-couche'+layer.get('code')" triggers="click blur" placement="bottom" class="tooltip-couche">
               Opacité: {{Math.round(layer.get('opacity')*100)}}%
               <div class="slidecontainer">
-                <input type="range" min="0" max="1" step="0.01" @input="layer.setOpacity(Number($event.explicitOriginalTarget.value));">
+                <input type="range" min="0" max="1" step="0.01" @input="layer.setOpacity(Number($event.target.value));">
               </div>
               <b-form-checkbox v-if="layer.get('legende')" @change="layer.get('legende').visible = $event" :checked="layer.get('legende').visible">
                 Légende
