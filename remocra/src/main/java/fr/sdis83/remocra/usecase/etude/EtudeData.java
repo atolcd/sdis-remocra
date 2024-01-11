@@ -1,15 +1,11 @@
-package fr.sdis83.remocra.web.model;
+package fr.sdis83.remocra.usecase.etude;
 
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Commune;
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.Document;
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.Organisme;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeEtude;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeEtudeStatut;
-import java.util.ArrayList;
-import java.util.Map;
-import org.joda.time.Instant;
+import java.util.List;
 
-public class Etude {
+public class EtudeData {
   private Long id;
 
   private String nom;
@@ -18,19 +14,21 @@ public class Etude {
 
   private String description;
 
-  private Instant date_maj;
+  private String instantMaj;
+
+  public boolean isReseauImporte() {
+    return reseauImporte;
+  }
+
+  private Long organisme;
 
   private TypeEtude type;
 
   private TypeEtudeStatut statut;
 
-  private Organisme organisme;
+  private List<Commune> communes;
 
-  private ArrayList<Commune> communes;
-
-  private ArrayList<Document> documents;
-
-  private Map<String, String> documentsNoms;
+  private List<DocumentEtudeData> documents;
 
   private boolean readOnly;
 
@@ -68,12 +66,12 @@ public class Etude {
     this.description = description;
   }
 
-  public Instant getDate_maj() {
-    return date_maj;
+  public String getInstantMaj() {
+    return instantMaj;
   }
 
-  public void setDate_maj(Instant date_maj) {
-    this.date_maj = date_maj;
+  public void setInstantMaj(String instantMaj) {
+    this.instantMaj = instantMaj;
   }
 
   public TypeEtude getType() {
@@ -92,36 +90,20 @@ public class Etude {
     this.statut = statut;
   }
 
-  public ArrayList<Commune> getCommunes() {
+  public List<Commune> getCommunes() {
     return communes;
   }
 
-  public void setCommunes(ArrayList<Commune> communes) {
+  public void setCommunes(List<Commune> communes) {
     this.communes = communes;
   }
 
-  public ArrayList<Document> getDocuments() {
+  public List<DocumentEtudeData> getDocuments() {
     return documents;
   }
 
-  public void setDocuments(ArrayList<Document> documents) {
+  public void setDocuments(List<DocumentEtudeData> documents) {
     this.documents = documents;
-  }
-
-  public Map<String, String> getDocumentsNoms() {
-    return documentsNoms;
-  }
-
-  public void setDocumentsNoms(Map<String, String> documentsNoms) {
-    this.documentsNoms = documentsNoms;
-  }
-
-  public Organisme getOrganisme() {
-    return organisme;
-  }
-
-  public void setOrganisme(Organisme organisme) {
-    this.organisme = organisme;
   }
 
   public boolean isReadOnly() {
@@ -132,11 +114,15 @@ public class Etude {
     this.readOnly = readOnly;
   }
 
-  public boolean getReseauImporte() {
-    return reseauImporte;
-  }
-
   public void setReseauImporte(boolean reseauImporte) {
     this.reseauImporte = reseauImporte;
+  }
+
+  public Long getOrganisme() {
+    return organisme;
+  }
+
+  public void setOrganisme(Long organisme) {
+    this.organisme = organisme;
   }
 }

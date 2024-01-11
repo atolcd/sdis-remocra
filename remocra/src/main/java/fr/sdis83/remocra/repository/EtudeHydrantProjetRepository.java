@@ -6,11 +6,11 @@ import com.vividsolutions.jts.geom.Geometry;
 import flexjson.JSONDeserializer;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantDiametre;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantNatureDeci;
+import fr.sdis83.remocra.usecase.etude.EtudeData;
 import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.GeometryUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
-import fr.sdis83.remocra.web.model.Etude;
 import fr.sdis83.remocra.web.model.EtudeHydrantProjet;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -91,12 +91,12 @@ public class EtudeHydrantProjetRepository {
       EtudeHydrantProjet peiProjet = modelMapper.map(r, EtudeHydrantProjet.class);
 
       // Etude
-      Etude etude =
+      EtudeData etude =
           context
               .select(ETUDE.ID)
               .from(ETUDE)
               .where(ETUDE.ID.eq(Long.valueOf(r.getValue("etude").toString())))
-              .fetchOneInto(Etude.class);
+              .fetchOneInto(EtudeData.class);
       peiProjet.setEtude(etude);
 
       // Deci

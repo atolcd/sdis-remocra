@@ -1,22 +1,18 @@
 package fr.sdis83.remocra.web;
 
-import com.vividsolutions.jts.geom.Geometry;
-import flexjson.JSONSerializer;
-import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
-import fr.sdis83.remocra.domain.utils.RemocraInstantTransformer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.sdis83.remocra.repository.EtudeRepository;
+import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.usecase.etude.EtudeUseCase;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
-import fr.sdis83.remocra.web.model.Etude;
-import fr.sdis83.remocra.web.serialize.ext.AbstractExtListSerializer;
 import fr.sdis83.remocra.web.serialize.ext.AbstractExtObjectSerializer;
 import fr.sdis83.remocra.web.serialize.ext.SuccessErrorExtSerializer;
-import fr.sdis83.remocra.web.serialize.transformer.GeometryTransformer;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import org.joda.time.Instant;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,6 +30,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 public class EtudeController {
 
   @Autowired private EtudeRepository etudeRepository;
+  @Autowired private EtudeUseCase etudeUseCase;
+
+  @Autowired private UtilisateurService utilisateurService;
+
+  private final Logger logger = Logger.getLogger(getClass());
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   @RequestMapping(value = "", method = RequestMethod.GET, headers = "Accept=application/xml")
   @PreAuthorize("hasRight('PLANIFIER_DECI')")
@@ -46,29 +48,23 @@ public class EtudeController {
       @RequestParam(value = "filter", required = false) String filters) {
     final List<ItemFilter> itemFilterList = ItemFilter.decodeJson(filters);
     final List<ItemSorting> sortList = ItemSorting.decodeJson(sorts);
-
-    return new AbstractExtListSerializer<Etude>("Etude retrieved.") {
-
-      @Override
-      protected JSONSerializer getJsonSerializer() {
-        return new JSONSerializer()
-            .exclude("*.class")
-            .transform(new GeometryTransformer(), Geometry.class)
-            .transform(RemocraDateHourTransformer.getInstance(), Date.class)
-            .transform(new RemocraInstantTransformer(), Instant.class)
-            .include("data.*");
-      }
-
-      @Override
-      protected List<Etude> getRecords() {
-        return etudeRepository.getAll(itemFilterList, limit, start, sortList);
-      }
-
-      @Override
-      protected Long countRecords() {
-        return Long.valueOf(etudeRepository.count(itemFilterList));
-      }
-    }.serialize();
+    try {
+      HttpHeaders responseHeaders = new HttpHeaders();
+      responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+      return new ResponseEntity<>(
+          objectMapper.writeValueAsString(
+              etudeUseCase.getAll(
+                  itemFilterList,
+                  limit,
+                  start,
+                  sortList,
+                  utilisateurService.getCurrentUtilisateur().getOrganisme().getId())),
+          responseHeaders,
+          HttpStatus.OK);
+    } catch (Exception e) {
+      logger.error("Impossible de récupérer les études " + e.getMessage());
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /**

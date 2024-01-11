@@ -138,11 +138,11 @@
                     <tbody>
                       <tr v-for="(document, index) in documents" :key="index">
                         <td>
-                          <b-form-checkbox :value="index" v-if="!readOnly">{{document.nom}}</b-form-checkbox>
-                          <div v-else >{{document.nom}}</div>
+                          <b-form-checkbox :value="index" v-if="!readOnly">{{document.nomEtudeDocument}}</b-form-checkbox>
+                          <div v-else >{{document.nomEtudeDocument}}</div>
                         </td>
-                        <td v-if="document.code">
-                          <a :href="'telechargement/document/'+document.code" :download="document.name">{{document.name}}
+                        <td v-if="document.codeDocument">
+                          <a :href="'telechargement/document/'+document.codeDocument" :download="document.name">{{document.name}}
                           </a>
                         </td>
                         <td v-else>{{document.name}}</td>
@@ -260,10 +260,11 @@ export default {
         this.description = this.etude.description;
         this.communes = _.cloneDeep(this.etude.communes);
         this.documents = _.clone(this.etude.documents);
-        _.forEach(this.documents, d => {
-          d.name = d.fichier;
-          d.nom = this.etude.documentsNoms[d.code];
-        })
+
+      _.forEach(this.documents, d => {
+         d.name = d.fichierDocument;
+         d.nom = d.nomEtudeDocument;
+      })
 
         this.readOnly = this.etude.readOnly || this.etude.statut.code == "TERMINEE";
       }
@@ -380,7 +381,7 @@ export default {
       }));
 
       _.forEach(this.documents, document => {
-        formData.append(document.nom, document)
+        formData.append(document.nomEtudeDocument, document)
       })
 
       axios.post('/remocra/etudes/', formData, {
@@ -446,12 +447,12 @@ export default {
         var addedFiles = _.difference(this.documents, this.etude.documents);
         if(addedFiles.length) {
           _.forEach(addedFiles, document => {
-            formData.append(document.nom, document)
+            formData.append(document.nomEtudeDocument, document)
           })
         }
 
         // Suppression de fichiers (envoi du code)
-        var removedFiles = _.difference(this.etude.documents, this.documents).map(document => document.code);
+        var removedFiles = _.difference(this.etude.documents, this.documents).map(document => document.codeDocument);
         formData.append("removedDocuments", JSON.stringify(removedFiles));
 
         // Envoi au serveur

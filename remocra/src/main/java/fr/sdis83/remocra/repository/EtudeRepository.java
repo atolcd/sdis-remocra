@@ -4,7 +4,6 @@ import static fr.sdis83.remocra.db.model.couverture_hydraulique.Tables.RESEAU;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ETUDE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ETUDE_COMMUNES;
 import static fr.sdis83.remocra.db.model.remocra.Tables.ETUDE_DOCUMENTS;
-import static fr.sdis83.remocra.db.model.remocra.Tables.ORGANISME;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_ETUDE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_ETUDE_STATUT;
 import static fr.sdis83.remocra.db.model.remocra.tables.Commune.COMMUNE;
@@ -12,20 +11,21 @@ import static fr.sdis83.remocra.db.model.remocra.tables.Document.DOCUMENT;
 
 import flexjson.JSONDeserializer;
 import fr.sdis83.remocra.GlobalConstants;
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.Organisme;
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeEtude;
-import fr.sdis83.remocra.db.model.remocra.tables.pojos.TypeEtudeStatut;
+import fr.sdis83.remocra.db.model.remocra.tables.pojos.Commune;
 import fr.sdis83.remocra.domain.remocra.Document;
+import fr.sdis83.remocra.domain.remocra.Organisme;
 import fr.sdis83.remocra.domain.utils.RemocraDateHourTransformer;
 import fr.sdis83.remocra.service.UtilisateurService;
+import fr.sdis83.remocra.usecase.etude.DocumentEtudeData;
+import fr.sdis83.remocra.usecase.etude.EtudeData;
 import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.DocumentUtil;
 import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
-import fr.sdis83.remocra.web.model.Etude;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,17 +35,12 @@ import org.apache.log4j.Logger;
 import org.joda.time.Instant;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Record;
 import org.jooq.SortOrder;
 import org.jooq.impl.DSL;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.NameTokenizers;
-import org.modelmapper.jooq.RecordValueReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Configuration
@@ -74,169 +69,88 @@ public class EtudeRepository {
     this.context = context;
   }
 
-  public List<Etude> getAll(
-      List<ItemFilter> itemFilters, Integer limit, Integer start, List<ItemSorting> itemSortings) {
-    if (limit == null) limit = 100;
-    if (start == null) start = 0;
-
-    long idOrganismeUtilisateur = utilisateurService.getCurrentUtilisateur().getOrganisme().getId();
-    // Etudes créées par l'organisme de l'utilisateur ou l'un de ses organismes enfant
-    ArrayList<Integer> organismesAppartenance =
-        fr.sdis83.remocra.domain.remocra.Organisme.getOrganismeAndChildren(
-            (int) idOrganismeUtilisateur);
-    // Etudes créées par son organisme d’appartenance de l’utilisateur connecté ou un de ses enfants
-    ArrayList<Integer> organismesZC =
-        fr.sdis83.remocra.domain.remocra.Organisme.getOrganismesZC(idOrganismeUtilisateur);
-
-    Condition condition = this.getFilters(itemFilters, organismesZC);
-
-    String sortField = "date_maj";
-    SortOrder sortOrder = SortOrder.DESC;
-    for (ItemSorting itemSorting : itemSortings) {
-      sortField = itemSorting.getFieldName();
-      sortOrder = itemSorting.isDesc() ? SortOrder.DESC : SortOrder.ASC;
-    }
-
-    List<Record> listRecords =
-        context
-            .select()
-            .from(ETUDE)
-            .join(TYPE_ETUDE)
-            .on(TYPE_ETUDE.ID.eq(ETUDE.TYPE))
-            .join(TYPE_ETUDE_STATUT)
-            .on(TYPE_ETUDE_STATUT.ID.eq(ETUDE.STATUT))
-            .where(condition)
-            .orderBy(ETUDE.field(DSL.field(sortField)).sort(sortOrder))
-            .limit(limit)
-            .offset(start)
-            .fetch();
-
-    ModelMapper modelMapper = new ModelMapper();
-    modelMapper.getConfiguration().addValueReader(new RecordValueReader());
-    modelMapper.getConfiguration().setSourceNameTokenizer(NameTokenizers.CAMEL_CASE);
-
-    List<Etude> listeEtudes = new ArrayList<>();
-
-    for (Record r : listRecords) {
-      Etude etude = modelMapper.map(r, Etude.class);
-
-      // Type
-      TypeEtude type =
-          context
-              .select()
-              .from(TYPE_ETUDE)
-              .where(TYPE_ETUDE.ID.eq(Long.valueOf(r.getValue("type").toString())))
-              .fetchOneInto(TypeEtude.class);
-      etude.setType(type);
-
-      // Statut
-      TypeEtudeStatut statut =
-          context
-              .select()
-              .from(TYPE_ETUDE_STATUT)
-              .where(TYPE_ETUDE_STATUT.ID.eq(Long.valueOf(r.getValue("statut").toString())))
-              .fetchOneInto(TypeEtudeStatut.class);
-      etude.setStatut(statut);
-
-      // Organisme
-      Organisme organisme =
-          context
-              .select()
-              .from(ORGANISME)
-              .where(ORGANISME.ID.eq(Long.valueOf(r.getValue("organisme").toString())))
-              .fetchOneInto(Organisme.class);
-      etude.setOrganisme(organisme);
-
-      // Communes
-      List<fr.sdis83.remocra.db.model.remocra.tables.pojos.Commune> recordsCommune =
-          context
-              .select(
-                  COMMUNE.ID,
-                  COMMUNE.NOM,
-                  COMMUNE.CODE,
-                  COMMUNE.INSEE,
-                  COMMUNE.PPRIF,
-                  COMMUNE.GEOMETRIE)
-              .from(COMMUNE)
-              .join(ETUDE_COMMUNES)
-              .on(ETUDE_COMMUNES.COMMUNE.eq(COMMUNE.ID))
-              .join(ETUDE)
-              .on(ETUDE.ID.eq(ETUDE_COMMUNES.ETUDE))
-              .where(ETUDE.ID.eq(Long.valueOf(r.getValue("id").toString())))
-              .fetchInto(fr.sdis83.remocra.db.model.remocra.tables.pojos.Commune.class);
-      etude.setCommunes(
-          new ArrayList<fr.sdis83.remocra.db.model.remocra.tables.pojos.Commune>(recordsCommune));
-
-      // Documents
-      List<fr.sdis83.remocra.db.model.remocra.tables.pojos.Document> recordsDocument =
-          context
-              .select(
-                  DOCUMENT.ID,
-                  DOCUMENT.DATE,
-                  DOCUMENT.DATE_DOC,
-                  DOCUMENT.TYPE,
-                  DOCUMENT.REPERTOIRE,
-                  DOCUMENT.FICHIER,
-                  DOCUMENT.CODE)
-              .from(DOCUMENT)
-              .join(ETUDE_DOCUMENTS)
-              .on(ETUDE_DOCUMENTS.DOCUMENT.eq(DOCUMENT.ID))
-              .join(ETUDE)
-              .on(ETUDE.ID.eq(ETUDE_DOCUMENTS.ETUDE))
-              .where(ETUDE.ID.eq(Long.valueOf(r.getValue("id").toString())))
-              .fetchInto(fr.sdis83.remocra.db.model.remocra.tables.pojos.Document.class);
-      etude.setDocuments(
-          new ArrayList<fr.sdis83.remocra.db.model.remocra.tables.pojos.Document>(recordsDocument));
-
-      Map<String, String> documentsNoms =
-          context
-              .select(DOCUMENT.CODE, ETUDE_DOCUMENTS.NOM)
-              .from(DOCUMENT)
-              .join(ETUDE_DOCUMENTS)
-              .on(ETUDE_DOCUMENTS.DOCUMENT.eq(DOCUMENT.ID))
-              .join(ETUDE)
-              .on(ETUDE.ID.eq(ETUDE_DOCUMENTS.ETUDE))
-              .where(ETUDE.ID.eq(Long.valueOf(r.getValue("id").toString())))
-              .fetch()
-              .intoMap(DOCUMENT.CODE, ETUDE_DOCUMENTS.NOM);
-      listeEtudes.add(etude);
-      etude.setDocumentsNoms(documentsNoms);
-
-      // On vérifie la présence d'un réseau importé
-      Integer nbReseauImportes =
-          context
-              .select(RESEAU.ID.count())
-              .from(RESEAU)
-              .where(RESEAU.ETUDE.eq(Long.valueOf(r.getValue("id").toString())))
-              .fetchOneInto(Integer.class);
-      etude.setReseauImporte((nbReseauImportes > 0) ? true : false);
-
-      // On détermine si l'étude peut être modifiée ou non
-      etude.setReadOnly(
-          (organismesAppartenance.contains(organisme.getId().intValue()) ? false : true));
-    }
-    return listeEtudes;
+  public Collection<EtudeData> getAll(
+      Integer limit, Integer start, ItemSorting itemSortings, Condition condition) {
+    return context
+        .select(
+            ETUDE.ID,
+            ETUDE.NOM,
+            ETUDE.NUMERO,
+            ETUDE.DESCRIPTION,
+            ETUDE.DATE_MAJ.as("instantMaj"),
+            ETUDE.ORGANISME,
+            TYPE_ETUDE.ID.as("type.id"),
+            TYPE_ETUDE.NOM.as("type.nom"),
+            TYPE_ETUDE.CODE.as("type.code"),
+            TYPE_ETUDE_STATUT.ID.as("statut.id"),
+            TYPE_ETUDE_STATUT.NOM.as("statut.nom"),
+            TYPE_ETUDE_STATUT.CODE.as("statut.code"))
+        .from(ETUDE)
+        .join(TYPE_ETUDE)
+        .on(TYPE_ETUDE.ID.eq(ETUDE.TYPE))
+        .join(TYPE_ETUDE_STATUT)
+        .on(TYPE_ETUDE_STATUT.ID.eq(ETUDE.STATUT))
+        .where(condition)
+        .orderBy(
+            itemSortings == null
+                ? ETUDE.STATUT.asc()
+                : ETUDE
+                    .field(itemSortings.getFieldName())
+                    .sort(itemSortings.isAsc() ? SortOrder.ASC : SortOrder.DESC))
+        .limit(limit != null ? limit : 10)
+        .offset(start != null ? start : 0)
+        .fetchInto(EtudeData.class);
   }
 
-  @Transactional
-  public int count(List<ItemFilter> itemFilters) {
-    long idOrganismeUtilisateur = utilisateurService.getCurrentUtilisateur().getOrganisme().getId();
-    ArrayList<Integer> organismesZC =
-        fr.sdis83.remocra.domain.remocra.Organisme.getOrganismesZC(idOrganismeUtilisateur);
-
-    Condition condition = this.getFilters(itemFilters, organismesZC);
-    return context.fetchCount(
-        context
-            .select()
-            .from(ETUDE)
-            .join(TYPE_ETUDE)
-            .on(TYPE_ETUDE.ID.eq(ETUDE.TYPE))
-            .join(TYPE_ETUDE_STATUT)
-            .on(TYPE_ETUDE_STATUT.ID.eq(ETUDE.STATUT))
-            .where(condition));
+  public Map<Long, List<Commune>> getCommunesByEtude(Collection<Long> listIdEtude) {
+    return context
+        .select(ETUDE_COMMUNES.ETUDE, COMMUNE.ID, COMMUNE.NOM, COMMUNE.INSEE)
+        .from(ETUDE_COMMUNES)
+        .join(COMMUNE)
+        .on(ETUDE_COMMUNES.COMMUNE.eq(COMMUNE.ID))
+        .where(ETUDE_COMMUNES.ETUDE.in(listIdEtude))
+        .fetchGroups(ETUDE_COMMUNES.ETUDE, Commune.class);
   }
 
-  public Condition getFilters(List<ItemFilter> itemFilters, ArrayList<Integer> organismesZC) {
+  public Map<Long, List<DocumentEtudeData>> getDocumentsByEtude(Collection<Long> listIdEtude) {
+    return context
+        .select(
+            ETUDE_DOCUMENTS.ETUDE,
+            DOCUMENT.CODE.as("codeDocument"),
+            DOCUMENT.ID.as("idDocument"),
+            DOCUMENT.FICHIER.as("fichierDocument"),
+            ETUDE_DOCUMENTS.NOM.as("nomEtudeDocument"))
+        .from(ETUDE_DOCUMENTS)
+        .join(DOCUMENT)
+        .on(ETUDE_DOCUMENTS.DOCUMENT.eq(DOCUMENT.ID))
+        .where(ETUDE_DOCUMENTS.ETUDE.in(listIdEtude))
+        .fetchGroups(ETUDE_DOCUMENTS.ETUDE, DocumentEtudeData.class);
+  }
+
+  public Collection<Long> getEtudeIdsWithReseauImporte() {
+    return context
+        .selectDistinct(RESEAU.ETUDE)
+        .from(RESEAU)
+        .where(RESEAU.ETUDE.isNotNull())
+        .fetchInto(Long.class);
+  }
+
+  public int count(Condition condition) {
+    return context
+        .selectCount()
+        .from(ETUDE)
+        .join(TYPE_ETUDE)
+        .on(TYPE_ETUDE.ID.eq(ETUDE.TYPE))
+        .join(TYPE_ETUDE_STATUT)
+        .on(TYPE_ETUDE_STATUT.ID.eq(ETUDE.STATUT))
+        .where(condition)
+        .fetchOneInto(int.class);
+  }
+
+  public Condition getFilters(
+      List<ItemFilter> itemFilters,
+      long idOrganismeUtilisateur,
+      Collection<Integer> organismesAppartenance) {
     ItemFilter type = ItemFilter.getFilter(itemFilters, "type");
     ItemFilter statut = ItemFilter.getFilter(itemFilters, "statut");
     ItemFilter id = ItemFilter.getFilter(itemFilters, "id");
@@ -252,11 +166,7 @@ public class EtudeRepository {
       condition = condition.and(ETUDE.ID.eq(Long.valueOf(id.getValue())));
     }
 
-    long idOrganismeUtilisateur = utilisateurService.getCurrentUtilisateur().getOrganisme().getId();
-    // Etudes créées par son organisme d’appartenance de l’utilisateur connecté ou un de ses enfants
-    ArrayList<Integer> organismesAppartenance =
-        fr.sdis83.remocra.domain.remocra.Organisme.getOrganismeAndChildren(
-            (int) idOrganismeUtilisateur);
+    Collection<Integer> organismesZC = Organisme.getOrganismesZC(idOrganismeUtilisateur);
     condition =
         condition.and(
             ETUDE

@@ -2,12 +2,13 @@ package fr.sdis83.remocra.web.model;
 
 import fr.sdis83.remocra.domain.remocra.TypeHydrantDiametre;
 import fr.sdis83.remocra.domain.remocra.TypeHydrantNatureDeci;
+import fr.sdis83.remocra.usecase.etude.EtudeData;
 
 public class EtudeHydrantProjet {
 
   private Long id;
 
-  private Etude etude;
+  private EtudeData etude;
 
   private TypeHydrantNatureDeci type_deci;
 
@@ -29,11 +30,11 @@ public class EtudeHydrantProjet {
     this.id = id;
   }
 
-  public Etude getEtude() {
+  public EtudeData getEtude() {
     return etude;
   }
 
-  public void setEtude(Etude etude) {
+  public void setEtude(EtudeData etude) {
     this.etude = etude;
   }
 

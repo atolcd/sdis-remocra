@@ -90,7 +90,7 @@
                 <td class="colDescription" >{{item.description}}</td>
                 <td>{{item.communes | printCommunes}}</td>
                 <td>{{item.statut.nom}}</td>
-                <td>{{item.date_maj | printDate}}</td>
+                <td>{{item.instantMaj | printDate}}</td>
               </tr>
             </tbody>
           </table>
@@ -157,8 +157,8 @@ export default {
       },
 
       sorter: {
-        property: 'date_maj',
-        direction: 'DESC'
+        property: 'statut',
+        direction: 'ASC'
       },
 
       comboFilterType: [],
@@ -184,7 +184,7 @@ export default {
     },
 
     printCommunes: function(communes) {
-      return communes.map(commune => commune.nom).toString().replace("[", "").replace("]", "").replace("\"", "").replace(",", ", ").trim();
+      return communes.map(commune => commune.nom).toString().replace("[", "").replace("]", "").replace("\"", "").replace(",", ", ").trim() ;
     }
   },
 
@@ -268,8 +268,8 @@ export default {
           "limit": this.nbEtudesParPage
         }
       }).then(response => {
-        this.listeEtudes = response.data.data;
-        this.nbEtudes = response.data.total;
+        this.listeEtudes = response.data.list;
+        this.nbEtudes = response.data.count;
         // Force le refresh de la table. La fréquence de tick de la réactivité est parfois trop lente et mène à des problème de style dans la table le temps que les
         // changements soient détectés
         this.tableKey++;
