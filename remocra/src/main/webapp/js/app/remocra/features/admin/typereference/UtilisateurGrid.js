@@ -122,7 +122,10 @@ Ext.define('Sdis.Remocra.features.admin.typereference.UtilisateurGrid', {
                         minChars: 1,
                         store : Ext.create('Sdis.Remocra.store.Organisme', {
                             autoLoad: true,
-                            pageSize: 20
+                            pageSize: 20,
+                            sorters: [{
+                                property: 'nom',
+                                direction: 'ASC'}]
                         }),
                         pageSize: true,
                         listeners: {
