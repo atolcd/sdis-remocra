@@ -17,15 +17,15 @@
 
       <b-modal id="modaleChoixReseau"
               title="Choix du reseau"
-              ok-title="Commun"
-              cancel-title="Importé"
-              ok-variant="primary"
-              cancel-variant="primary"
-              @ok="calculCouvertureHydraulique(false)"
-              @cancel="calculCouvertureHydraulique(true)"
+              hide-footer="true"
               centered
               no-close-on-backdrop>
         <p class="my-4 modalContent">Souhaitez-vous calculer la couverture hydraulique de cet hydrant sur le réseau routier commun ou sur le réseau routier précédemment importé ?</p>
+        <div class="buttonChoixReseau row">
+            <b-button class="btn btn-outline-primary" variant="primary" @click="calculCouvertureHydraulique(false)">Commun</b-button>
+            <b-button class="btn btn-outline-primary" variant="primary" @click="calculCouvertureHydraulique(true)">Importé</b-button>
+            <b-button class="btn btn-outline-primary" variant="primary" @click="calculCouvertureHydraulique(true, true)">Commun et importé</b-button>
+        </div>
       </b-modal>
     </template>
   </OlMap>
@@ -555,7 +555,7 @@ export default {
       })
     },
 
-    calculCouvertureHydraulique(reseauImporte) {
+    calculCouvertureHydraulique(reseauImporte, reseauImporteWithCourant = false) {
       this.spinnerMap = true;
       this.disableToolbar = true;
 
@@ -580,6 +580,7 @@ export default {
       formData.append("hydrantsProjet", JSON.stringify({projets}));
       formData.append("etude", this.idEtude);
       formData.append("reseauImporte", reseauImporte);
+      formData.append("reseauImporteWithCourant", reseauImporteWithCourant);
 
       axios.post('/remocra/couverturehydraulique/calcul', formData, {
         headers: {
@@ -591,6 +592,8 @@ export default {
         this.$nextTick(() => {
           this.$root.$options.bus.$emit(eventTypes.OLMAP_COUCHES_REFRESHLAYER);
         });
+
+        this.$bvModal.hide("modaleChoixReseau");
       }).catch(() => {
         this.disableToolbar = false;
         this.spinnerMap = false;
@@ -681,5 +684,23 @@ export default {
   font-size: 14px;
   text-indent: 5%;
   font-family: Segoe UI,Roboto,Helvetica,Arial;
+}
+
+.buttonChoixReseau {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttonChoixReseau .btn {
+  background-color: transparent;
+  margin-left: 10px;
+}
+
+.buttonChoixReseau .btn:hover {
+  background-color: #007bff;
+  color: white;
+  margin-left: 10px;
 }
 </style>

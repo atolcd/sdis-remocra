@@ -37,9 +37,15 @@ public class CouvertureHydrauliqueController {
       String hydrantsProjet = request.getParameter("hydrantsProjet");
       Long etude = Long.valueOf(request.getParameter("etude"));
       Boolean useReseauImporte = Boolean.valueOf(request.getParameter("reseauImporte"));
+      Boolean useReseauImporteWithReseauCourant =
+          Boolean.valueOf(request.getParameter("reseauImporteWithCourant"));
 
       couvertureHydrauliqueUseCase.calcul(
-          hydrantsExistants, hydrantsProjet, etude, useReseauImporte);
+          hydrantsExistants,
+          hydrantsProjet,
+          etude,
+          useReseauImporte,
+          useReseauImporteWithReseauCourant);
       return new ResponseEntity<>("La couverture hydraulique a bien été tracée", HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();

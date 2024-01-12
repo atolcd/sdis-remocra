@@ -2,9 +2,8 @@ package fr.sdis83.remocra.usecase.couverturehydraulique;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.repository.CouvertureHydrauliqueRepository;
-import fr.sdis83.remocra.repository.ParamConfRepository;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,15 +19,19 @@ public class CouvertureHydrauliqueUseCase {
 
   @Autowired CouvertureHydrauliqueRepository couvertureHydrauliqueRepository;
 
-  @Autowired ParamConfRepository paramConfRepository;
+  @Autowired protected ParametreDataProvider parametreDataProvider;
 
   private static final Logger logger = LoggerFactory.getLogger(CouvertureHydrauliqueUseCase.class);
-  private ObjectMapper objectMapper = new ObjectMapper();
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   public CouvertureHydrauliqueUseCase() {}
 
   public void calcul(
-      String hydrantsExistants, String hydrantsProjet, Long idEtude, Boolean useReseauImporte) {
+      String hydrantsExistants,
+      String hydrantsProjet,
+      Long idEtude,
+      Boolean useReseauImporte,
+      Boolean useReseauImporteWithCourant) {
     List<Integer> listPei = new ArrayList<>();
     List<Integer> listPeiProjet = new ArrayList<>();
     try {
@@ -57,28 +60,26 @@ public class CouvertureHydrauliqueUseCase {
 
     couvertureHydrauliqueRepository.deleteCouverture(idEtude);
 
-    int profondeurCouverture =
-        Integer.parseInt(
-            paramConfRepository.getByCle(GlobalConstants.PROFONDEUR_COUVERTURE).getValeur());
-    int distanceMaxParcours =
-        Integer.parseInt(
-            paramConfRepository.getByCle(GlobalConstants.DECI_DISTANCE_MAX_PARCOURS).getValeur());
+    int profondeurCouverture = parametreDataProvider.get().getProfondeurCouverture();
+    int distanceMaxParcours = parametreDataProvider.get().getDeciDistanceMaxParcours();
 
     List<Integer> distances = new ArrayList<>();
     for (String s :
-        paramConfRepository
-            .getByCle(GlobalConstants.DECI_ISODISTANCES)
-            .getValeur()
-            .replaceAll(" ", "")
-            .split(",")) {
+        parametreDataProvider.get().getDeciIsodistances().replaceAll(" ", "").split(",")) {
       distances.add(Integer.parseInt(s));
     }
 
     couvertureHydrauliqueRepository.executeInsererJoinctionPei(
-        distanceMaxParcours, reseauImporte, listPei, listPeiProjet);
+        distanceMaxParcours, reseauImporte, listPei, listPeiProjet, useReseauImporteWithCourant);
 
     couvertureHydrauliqueRepository.executeParcoursCouverture(
-        reseauImporte, idEtude, distances, listPei, listPeiProjet, profondeurCouverture);
+        reseauImporte,
+        idEtude,
+        distances,
+        listPei,
+        listPeiProjet,
+        profondeurCouverture,
+        useReseauImporteWithCourant);
 
     couvertureHydrauliqueRepository.executeCouvertureHydrauliqueZonage(
         idEtude, distances, listPei, listPeiProjet, profondeurCouverture);

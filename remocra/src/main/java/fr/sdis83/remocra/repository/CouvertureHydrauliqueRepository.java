@@ -42,7 +42,8 @@ public class CouvertureHydrauliqueRepository {
       int distanceMaxAuReseau,
       Long reseauImporte,
       List<Integer> idsHydrant,
-      List<Integer> idsHydrantProjet) {
+      List<Integer> idsHydrantProjet,
+      boolean useReseauImporteWithCourant) {
 
     context
         .select(
@@ -53,6 +54,8 @@ public class CouvertureHydrauliqueRepository {
                     + distanceMaxAuReseau
                     + ", "
                     + reseauImporte
+                    + ", "
+                    + useReseauImporteWithCourant
                     + ")"))
         .from(PEI)
         .where(
@@ -72,7 +75,8 @@ public class CouvertureHydrauliqueRepository {
       List<Integer> distances,
       List<Integer> idsHydrant,
       List<Integer> idsHydrantProjet,
-      int profondeurCouverture) {
+      int profondeurCouverture,
+      boolean useReseauImporteWithCourant) {
     context
         .select(
             DSL.field(
@@ -86,6 +90,8 @@ public class CouvertureHydrauliqueRepository {
                     + distances
                     + ", "
                     + profondeurCouverture
+                    + ", "
+                    + useReseauImporteWithCourant
                     + ")"))
         .from(PEI)
         .where(

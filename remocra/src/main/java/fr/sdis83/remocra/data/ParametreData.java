@@ -383,6 +383,10 @@ public class ParametreData {
     return (Integer) this.getValeur(ParamConf.ParamConfParam.DECI_DISTANCE_MAX_PARCOURS.getCle());
   }
 
+  public Integer getProfondeurCouverture() {
+    return (Integer) this.getValeur(ParamConf.ParamConfParam.PROFONDEUR_COUVERTURE.getCle());
+  }
+
   public String getDeciIsodistances() {
     return (String) this.getValeur(ParamConf.ParamConfParam.DECI_ISODISTANCES.getCle());
   }
