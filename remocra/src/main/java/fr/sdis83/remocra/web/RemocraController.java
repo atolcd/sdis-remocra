@@ -76,8 +76,6 @@ public class RemocraController {
     log.debug("Loading with Rights : " + serialRights);
     model.addAttribute("userRights", serialRights);
 
-    int srid = Integer.parseInt(parametreProvider.get().getValeurString(GlobalConstants.CLE_SRID));
-
     // Emprise du territoire de compétence de l'utilisateur
     String bounds = null;
     Geometry territoire = null;
