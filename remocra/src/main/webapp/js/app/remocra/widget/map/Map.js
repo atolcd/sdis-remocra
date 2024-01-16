@@ -498,15 +498,16 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
     },
 
     zoomToBestExtent: function() {
-        // this.map.zoomToMaxExtent();
+        // Si on a déjà centré sur quelque chose, on ne zoome pas sur la zone de compétence de l'utilisateur
+        if(this.map.center == null) {
+            // A peu près sur le département du Var : EPSG:900913;523593.64368054,5303506.7698006,849521.13224316,5486955.6376594
+            var sridBounds = REMOCRA_INIT_BOUNDS.split(";");
 
-        // A peu près sur le département du Var : EPSG:900913;523593.64368054,5303506.7698006,849521.13224316,5486955.6376594
-       var sridBounds = REMOCRA_INIT_BOUNDS.split(";");
-
-        var srid = sridBounds[0];
-        var bounds = sridBounds[1];
-        var initExtent = new OpenLayers.Bounds(bounds.split(',')).transform(srid, this.map.getProjection());
-        this.map.zoomToExtent(initExtent, true);
+            var srid = sridBounds[0];
+            var bounds = sridBounds[1];
+            var initExtent = new OpenLayers.Bounds(bounds.split(',')).transform(srid, this.map.getProjection());
+            this.map.zoomToExtent(initExtent, true);
+        }
     },
 
     centerToPoint: function(x, y, srid) {
