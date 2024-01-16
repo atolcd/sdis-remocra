@@ -153,7 +153,7 @@ export default {
       // Filtres en-tête datagrid
       filters: {
         type: '',
-        statut: ''
+        statut: 'EN_COURS'
       },
 
       sorter: {
