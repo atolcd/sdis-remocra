@@ -139,9 +139,6 @@ public class RemocraController {
     model.addAttribute(
         "coordonnees_format_affichage", parametreProvider.get().getCoordonneesFormatAffichage());
 
-    // Durée d'inactivité permis en secondes
-    model.addAttribute("maxInactiveIntervalSec", request.getSession().getMaxInactiveInterval());
-
     // Orientations par défaut
     model.addAttribute("orientationX", parametreProvider.get().getDefaultOrientationX());
     model.addAttribute("orientationY", parametreProvider.get().getDefaultOrientationY());

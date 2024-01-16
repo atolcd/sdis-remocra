@@ -106,10 +106,6 @@ Ext.application({
         // Si utilisateur connecté, on gère son (in)activité // session
         var login = Sdis.Remocra.network.ServerSession.getUserData('login');
         if (login!=null && login.length>0) {
-            Sdis.Remocra.network.ClientSession.setDelaysSec(
-                typeof(REMOCRA_MAXINACTIVEINTERVAL_SEC)=='number' ? REMOCRA_MAXINACTIVEINTERVAL_SEC : 1800,
-                30);
-            Sdis.Remocra.network.ClientSession.startListeningCom();
             // Mise à jour cookie (cas où one ne passe jamais par formulaire)
             var expires = new Date();
             expires.setDate(expires.getDate()+7); // Expiration à 7 jours

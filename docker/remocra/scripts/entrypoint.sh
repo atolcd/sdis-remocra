@@ -19,7 +19,5 @@ export REMOCRA_OPTS="\
   -Dfile.encoding=UTF8 -Djavax.servlet.request.encoding=UTF-8 -Djavax.servlet.response.encoding=UTF-8"
 export JAVA_OPTS="${REMOCRA_OPTS} ${JAVA_OPTS}"
 
-sed -i "s/<session-timeout>.*<\/session-timeout>/<session-timeout>${REMOCRA_SESSION_MIN}<\/session-timeout>/g" /usr/local/tomcat/webapps/remocra/WEB-INF/web.xml
-
 catalina.sh run \
     2>&1 | tee -a ${REMOCRA_LOGFILE}
