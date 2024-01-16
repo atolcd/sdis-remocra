@@ -29,7 +29,8 @@ drop function versionnement_dffd4df4df();
 --------------------------------------------------
 -- Contenu réel du patch début
 DROP FUNCTION couverture_hydraulique.inserer_jonction_pei(integer, integer, integer);
-CREATE OR REPLACE FUNCTION couverture_hydraulique.inserer_jonction_pei(pei_id integer, distance_max_au_reseau integer, idetude integer, useReseauImporteWithCourant boolean)
+
+CREATE OR REPLACE FUNCTION couverture_hydraulique.inserer_jonction_pei(pei_id integer, distance_max_au_reseau integer, idetude integer, usereseauimportewithcourant boolean)
  RETURNS integer
  LANGUAGE plpgsql
 AS $function$
@@ -63,8 +64,8 @@ AS $function$
       WHERE
         ST_Dwithin(p.geometrie,t.geometrie,distance_max_au_reseau)
 	    AND CASE
-		    WHEN  useReseauImporteWithCourant THEN  (t.etude IS NOT DISTINCT FROM idEtude OR t.etude IS NULL)
-		    ELSE t.etude IS NOT DISTINCT FROM idEtude
+		    WHEN useReseauImporteWithCourant THEN  (t.etude IS NOT DISTINCT FROM  idEtude OR t.etude IS NULL)
+		    ELSE t.etude IS NOT DISTINCT FROM  idEtude
 		 END
 	    AND t.pei_troncon IS NULL
       ORDER BY
@@ -106,8 +107,16 @@ AS $function$
       -- Création du sommet entre les 3 voies et du sommet sur le PEI, modification des sommets source/destination en adéquation
       SELECT * into voie1 from couverture_hydraulique.reseau where id = jonction.troncon_id;
       SELECT * into voie2 from couverture_hydraulique.reseau where id = voie2Id;
+
+     SELECT id INTO sommetJonction FROM couverture_hydraulique.sommet WHERE geometrie = jonction.jonction_geometrie;
+     SELECT id INTO sommetPei FROM couverture_hydraulique.sommet WHERE geometrie = jonction.pei_geometrie;
+
+    IF sommetJonction IS NULL THEN
       INSERT INTO couverture_hydraulique.sommet(geometrie) VALUES(jonction.jonction_geometrie) RETURNING id INTO sommetJonction;
+     END IF;
+    IF sommetPei IS NULL THEN
       INSERT INTO couverture_hydraulique.sommet(geometrie) VALUES(jonction.pei_geometrie) RETURNING id INTO sommetPei;
+     END IF;
 
       UPDATE couverture_hydraulique.reseau SET destination = voie1.destination WHERE id = voie2.id;
       UPDATE couverture_hydraulique.reseau SET destination = sommetJonction WHERE id = voie1.id OR id = voieJonctionId;
@@ -116,7 +125,10 @@ AS $function$
 
 	ELSIF jonction.jonction_geometrie IS NOT NULL AND (jonction.jonction_fraction < 0.00001 OR jonction.jonction_fraction = 1) THEN
 	  SELECT id INTO sommetJonction FROM couverture_hydraulique.sommet order by st_distance(geometrie, jonction.jonction_geometrie) limit 1;
-	  INSERT INTO couverture_hydraulique.sommet(geometrie) VALUES(jonction.pei_geometrie) RETURNING id INTO sommetPei;
+      SELECT id INTO sommetPei FROM couverture_hydraulique.sommet WHERE geometrie = jonction.pei_geometrie;
+	  IF sommetPei IS NULL THEN
+	      INSERT INTO couverture_hydraulique.sommet(geometrie) VALUES(jonction.pei_geometrie) RETURNING id INTO sommetPei;
+	     END IF;
 	  INSERT INTO couverture_hydraulique.reseau (
         geometrie,
         pei_troncon,
@@ -139,6 +151,7 @@ $function$
 
 
 DROP FUNCTION couverture_hydraulique.parcours_couverture_hydraulique(integer, integer, integer, integer[], integer);
+
 CREATE OR REPLACE FUNCTION couverture_hydraulique.parcours_couverture_hydraulique(depart integer, idetude integer, idreseauimporte integer, isodistances integer[], profondeurcouverture integer, usereseauimportewithcourant boolean)
  RETURNS integer
  LANGUAGE plpgsql
@@ -211,7 +224,7 @@ BEGIN
         SELECT id INTO voieCourante FROM couverture_hydraulique.reseau WHERE pei_troncon = depart;
       END IF;
 
-      PERFORM couverture_hydraulique.voiesLaterales(COALESCE(courantRecord.voie, voieCourante), noeudCourant, idReseauImporte);
+      PERFORM couverture_hydraulique.voiesLaterales(COALESCE(courantRecord.voie, voieCourante), noeudCourant, idReseauImporte, useReseauImporteWithCourant);
       SELECT * FROM couverture_hydraulique.voiesLaterales WHERE gauche INTO voieGauche;
       SELECT * FROM couverture_hydraulique.voiesLaterales WHERE droite INTO voieDroite;
 
@@ -222,8 +235,8 @@ BEGIN
         	WHERE source = noeudCourant
         	AND (id IN ((SELECT voie FROM couverture_hydraulique.voieslaterales)) OR (voieGauche.voie IS NULL AND voieDroite.voie IS NULL))
         	AND CASE
-                WHEN  useReseauImporteWithCourant THEN  (etude IS NOT DISTINCT FROM idReseauImporte OR etude IS NULL)
-                ELSE etude IS NOT DISTINCT FROM idEtude
+                WHEN useReseauImporteWithCourant THEN  (etude IS NOT DISTINCT FROM idReseauImporte OR etude IS NULL)
+                ELSE etude IS NOT DISTINCT FROM idReseauImporte
             END)
          UNION
         (SELECT id, source as destination, source as source, ST_LENGTH(geometrie) as distance, ST_REVERSE(geometrie), pei_troncon, traversable, niveau
@@ -231,8 +244,8 @@ BEGIN
         	WHERE destination = noeudCourant
         	AND (id IN ((SELECT voie FROM couverture_hydraulique.voieslaterales)) OR (voieGauche.voie IS NULL AND voieDroite.voie IS NULL))
         	AND  CASE
-                WHEN  useReseauImporteWithCourant THEN  (etude IS NOT DISTINCT FROM idReseauImporte OR etude IS NULL)
-                ELSE etude IS NOT DISTINCT FROM idEtude
+                WHEN  useReseauImporteWithCourant THEN (etude IS NOT DISTINCT FROM idReseauImporte OR etude IS NULL)
+                ELSE etude IS NOT DISTINCT FROM idReseauImporte
             END)
       ) as R ) LOOP
 
@@ -337,7 +350,11 @@ BEGIN
             FROM (SELECT geometrie FROM couverture_hydraulique.reseau
                     WHERE pei_troncon IS NULL AND NOT traversable
                     AND niveau = 0 AND id != voisinRecord.id AND ST_INTERSECTS(buffer, geometrie)
-                    AND etude IS NOT DISTINCT FROM idReseauImporte) AS R;
+                    AND
+                   CASE
+		    WHEN useReseauImporteWithCourant THEN  (etude IS NOT DISTINCT FROM idReseauImporte OR etude IS NULL)
+		    ELSE etude IS NOT DISTINCT FROM idReseauImporte
+		 END) AS R;
 
           IF blade IS NOT NULL THEN
             splitResult = ST_SPLIT(buffer, blade);
@@ -367,6 +384,7 @@ BEGIN
           DELETE FROM couverture_hydraulique.temp_distances
             WHERE start = depart AND voie = voisinRecord.id AND  sommet = voisinRecord.destination;
 
+          -- Si le buffer est un MultiPolygon, on le cast en Polygon
           -- Si le buffer est un MultiPolygon, on le cast en Polygon
           IF ST_GeometryType(buffer) = 'ST_MultiPolygon' THEN
             SELECT (ST_Dump(buffer)).geom INTO buffer;
@@ -411,6 +429,79 @@ END;
 $function$
 ;
 
+
+DROP FUNCTION couverture_hydraulique.voieslaterales(integer, integer, integer);
+
+CREATE OR REPLACE FUNCTION couverture_hydraulique.voieslaterales(depart integer, matchingpoint integer, idetude integer, usereseauimportewithcourant boolean)
+ RETURNS void
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+  voieCourante record;
+  voieVoisine record;
+  geometrieCourante geometry;
+  geometrieVoisine geometry;
+BEGIN
+
+  TRUNCATE ONLY couverture_hydraulique.voiesLaterales;
+  SELECT * INTO voieCourante FROM couverture_hydraulique.reseau WHERE id = depart AND CASE
+		    WHEN useReseauImporteWithCourant THEN  (etude IS NOT DISTINCT FROM idEtude OR etude IS NULL)
+		    ELSE etude IS NOT DISTINCT FROM idEtude
+		 END;
+  -- On ne prend qu'une toute petite section de la voie courante (5%) pour éviter les formes exotiques
+  SELECT ST_LineSubstring(
+    (CASE WHEN voieCourante.destination != matchingPoint THEN st_reverse(voieCourante.geometrie) ELSE voieCourante.geometrie END),
+    0.95, 1)::geometry(LineString,2154) INTO geometrieCourante;
+
+  -- Pour chaque voie voisine (reliée à notre croisement)
+  FOR voieVoisine IN (SELECT * FROM (
+    (SELECT id, destination, source, ST_LENGTH(geometrie) AS distance, geometrie, pei_troncon, r.traversable FROM couverture_hydraulique.reseau r
+    WHERE source = matchingPoint and pei_troncon IS NULL AND id != depart
+    AND  CASE
+		    WHEN useReseauImporteWithCourant THEN (etude IS NOT DISTINCT FROM idEtude OR etude IS NULL)
+		    ELSE etude IS NOT DISTINCT FROM idEtude
+		 END)
+     UNION
+    (SELECT id, source as destination, source as source, ST_LENGTH(geometrie) as distance, geometrie, pei_troncon, r.traversable FROM couverture_hydraulique.reseau r
+    WHERE destination = matchingPoint AND pei_troncon IS NULL AND id != depart
+    AND  CASE
+		    WHEN useReseauImporteWithCourant THEN  (etude IS NOT DISTINCT FROM idEtude OR etude IS NULL)
+		    ELSE etude IS NOT DISTINCT FROM idEtude
+		 END)
+  ) as R) LOOP
+
+    IF depart != voieVoisine.id THEN
+      -- On ne prend qu'une toute petite section de la voie voisine (5%)
+      Select ST_LineSubstring(
+        (CASE when voieVoisine.source != matchingPoint THEN st_reverse(voieVoisine.geometrie) ELSE voieVoisine.geometrie END),
+         0.05, 1)::geometry(LineString,2154) INTO geometrieVoisine;
+     -- On calcule l'angle et on stocke le résultat
+     INSERT INTO couverture_hydraulique.voiesLaterales (voie, angle, gauche, droite, traversable, accessible)
+     VALUES(voieVoisine.id, ST_ANGLE(ST_StartPoint(geometrieCourante), ST_EndPoint(geometrieCourante), ST_StartPoint(geometrieVoisine)), false, false, voieVoisine.traversable, true);
+
+    END IF;
+  END LOOP;
+
+  -- On marque les voies de gauche et de droite
+  UPDATE couverture_hydraulique.voiesLaterales SET gauche = TRUE WHERE angle = (SELECT min(angle) FROM couverture_hydraulique.voiesLaterales);
+  UPDATE couverture_hydraulique.voiesLaterales SET droite = TRUE WHERE angle = (SELECT max(angle) FROM couverture_hydraulique.voiesLaterales);
+
+  /*
+   On marque toutes les voies non accessibles
+   Les voies non accessibles sont celles situées entre les voies de gauche et de droite si ces dernières sont non traversables (on ne traverse pas le carrefour)
+  */
+  IF (SELECT COUNT(*) FROM couverture_hydraulique.voiesLaterales) >= 3
+    AND (SELECT traversable FROM couverture_hydraulique.voiesLaterales WHERE gauche = TRUE) = FALSE
+	AND (SELECT traversable FROM couverture_hydraulique.voiesLaterales WHERE droite = TRUE) = FALSE
+  THEN
+    UPDATE couverture_hydraulique.voiesLaterales
+	SET accessible = FALSE
+	WHERE angle > (SELECT angle FROM couverture_hydraulique.voieslaterales WHERE gauche = true)
+    AND angle < (SELECT angle FROM couverture_hydraulique.voiesLaterales WHERE droite = true);
+  END IF;
+END
+$function$
+;
 
 
 -- Contenu réel du patch fin
