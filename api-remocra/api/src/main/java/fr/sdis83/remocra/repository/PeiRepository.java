@@ -29,6 +29,7 @@ import fr.sdis83.remocra.db.model.remocra.tables.Organisme;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.Hydrant;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantPena;
 import fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantPibi;
+import fr.sdis83.remocra.util.GlobalConstants;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
 import fr.sdis83.remocra.web.model.pei.PeiModel;
 import fr.sdis83.remocra.web.model.pei.PeiSpecifiqueModel;
@@ -368,7 +369,9 @@ public class PeiRepository {
         .update(HYDRANT)
         .set(HYDRANT.ANNEE_FABRICATION, anneeFabrication)
         .set(HYDRANT.ORGANISME, this.currentUser.get().userId())
-        .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, "API")
+        .set(
+            HYDRANT.AUTEUR_MODIFICATION_FLAG,
+            GlobalConstants.AuteurModificationFlag.API.getAuteurModificationFlag())
         .where(HYDRANT.ID.eq(hydrantPibi.getId()))
         .execute();
   }
@@ -383,7 +386,9 @@ public class PeiRepository {
         .set(HYDRANT_PENA.Q_APPOINT, hydrantPena.getQAppoint())
         .set(HYDRANT_PENA.HBE, hydrantPena.getHbe())
         .set(HYDRANT.ORGANISME, this.currentUser.get().userId())
-        .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, "API")
+        .set(
+            HYDRANT.AUTEUR_MODIFICATION_FLAG,
+            GlobalConstants.AuteurModificationFlag.API.getAuteurModificationFlag())
         .where(HYDRANT_PENA.ID.eq(hydrantPena.getId()))
         .execute();
   }

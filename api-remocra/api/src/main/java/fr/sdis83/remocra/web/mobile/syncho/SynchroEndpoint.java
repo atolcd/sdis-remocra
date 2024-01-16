@@ -37,6 +37,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Path("/mobile/synchro")
 @Produces("application/json; charset=UTF-8")
@@ -53,6 +55,8 @@ public class SynchroEndpoint {
   @Inject ParamConfRepository paramConfRepository;
 
   @Inject @CurrentUser Provider<UserInfo> currentUser;
+
+  private static final Logger logger = LoggerFactory.getLogger(SynchroEndpoint.class);
 
   @AuthDevice
   @Path("/tourneesdispos")
@@ -340,6 +344,7 @@ public class SynchroEndpoint {
       valideIncomingMobile.execute(currentUser.get().userId());
       return Response.ok().build();
     } catch (Exception e) {
+      logger.error(e.getMessage());
       return Response.serverError().entity(e.getMessage()).build();
     }
   }

@@ -5,6 +5,7 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_PIBI;
 import static fr.sdis83.remocra.db.model.remocra.Tables.HYDRANT_VISITE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_ANOMALIE;
 import static fr.sdis83.remocra.db.model.remocra.Tables.TYPE_HYDRANT_SAISIE;
+import static fr.sdis83.remocra.util.GlobalConstants.AuteurModificationFlag;
 import static fr.sdis83.remocra.util.GlobalConstants.TypeVisite;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -206,7 +207,9 @@ public class HydrantVisitesRepository {
 
   public HydrantVisite addVisite(HydrantVisite visite, Long organismeId) {
     String auteurModificationFlag =
-        visite.getAuteurModificationFlag() == null ? "API" : visite.getAuteurModificationFlag();
+        visite.getAuteurModificationFlag() == null
+            ? AuteurModificationFlag.API.getAuteurModificationFlag()
+            : visite.getAuteurModificationFlag();
     Long idVisite =
         context
             .insertInto(HYDRANT_VISITE)
@@ -264,7 +267,12 @@ public class HydrantVisitesRepository {
         context
             .update(HYDRANT)
             .set(field, visite.getDate())
-            .set(HYDRANT.ORGANISME, this.currentUser.get().userId())
+            .set(
+                HYDRANT.ORGANISME,
+                auteurModificationFlag.equals(
+                        AuteurModificationFlag.API.getAuteurModificationFlag())
+                    ? this.currentUser.get().userId()
+                    : organismeId)
             .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, auteurModificationFlag)
             .set(HYDRANT.AGENT1, visite.getAgent1())
             .set(HYDRANT.AGENT2, visite.getAgent2())
@@ -307,7 +315,9 @@ public class HydrantVisitesRepository {
         .set(HYDRANT_VISITE.ANOMALIES, visite.getAnomalies())
         .set(HYDRANT_VISITE.OBSERVATIONS, visite.getObservations())
         .set(HYDRANT_VISITE.ORGANISME, this.currentUser.get().userId())
-        .set(HYDRANT_VISITE.AUTEUR_MODIFICATION_FLAG, "API")
+        .set(
+            HYDRANT_VISITE.AUTEUR_MODIFICATION_FLAG,
+            AuteurModificationFlag.API.getAuteurModificationFlag())
         .where(HYDRANT_VISITE.ID.eq(visite.getId()))
         .execute();
 
@@ -399,7 +409,9 @@ public class HydrantVisitesRepository {
           .update(HYDRANT)
           .set(field, date)
           .set(HYDRANT.ORGANISME, this.currentUser.get().userId())
-          .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, "API")
+          .set(
+              HYDRANT.AUTEUR_MODIFICATION_FLAG,
+              AuteurModificationFlag.API.getAuteurModificationFlag())
           .where(HYDRANT.ID.eq(visite.getHydrant()))
           .execute();
     }
@@ -409,7 +421,9 @@ public class HydrantVisitesRepository {
     context
         .update(HYDRANT_VISITE)
         .set(HYDRANT.ORGANISME, this.currentUser.get().userId())
-        .set(HYDRANT.AUTEUR_MODIFICATION_FLAG, "API")
+        .set(
+            HYDRANT.AUTEUR_MODIFICATION_FLAG,
+            AuteurModificationFlag.API.getAuteurModificationFlag())
         .where(HYDRANT_VISITE.ID.eq(visite.getId()))
         .execute();
 
