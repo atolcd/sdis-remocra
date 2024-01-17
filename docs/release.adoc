@@ -10,6 +10,40 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
+== v2.3.3
+=== Fonctionnalité
+* Ajoute un buffer pour la génération de la carte des tournées (#194290)
+* Ajoute une tooltip dans la planification DECI pour la sélection (#200222)
+* Retire la déconnexion à partir d'un certain temps (#203144)
+* Rend paramétrable la projection (#193108)
+* Permet de lancer une simulation dans la planification DECI avec le réseau courant et le réseau importé (#203163)
+* Rend accessible les couches privées IGN (#203384)
+
+=== Fix
+* Corrige les profilsLimites (#200222)
+* Corrige l'affichage de la légende dans la planification DECI (#201515)
+* Trie les études de la planification DECI par statut et sélectionne le filtre "en cours" (#203052)
+* Corrige des erreurs lors de l'import des CTP (#200477)
+* Corrige la mise à jour de la prochaine date de contrôle / reco lors de la synchro mobile (#201872)
+* Corrige la numérotation du numéro interne d'un nouveau PEI envoyé depuis l'application mobile (#201873)
+* Corrige le slider permettant de jouer sur l'opacité des couches dans la planification DECI (#201873)
+* Corrige dans la page des utilisateurs le tri de la liste déroulante des organismes (#202608)
+* Corrige l'enregistrement de la fiche après un déplacement d'un PEI hors de sa commune d'origine (#200357)
+
+=== Mise à jour
+
+* Indiquer la valeur de version `2.3.3` dans le fichier .env (ou remocra.env)
+
+NOTE: Patchs généraux
+
+* Appliquer les patchs du 191 au 195 (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches[Disponibles ici]).
+
+NOTE: Patch spécifique
+
+* [ SDIS 61 ]
+** Appliquer le patch 195_001.sql (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis/61[Disponibles ici])
+
+
 == v2.3.2
 === Mise à jour
 * Permet de filtrer par nom les organismes dans la table organismes (#149613)
