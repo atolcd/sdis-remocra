@@ -891,7 +891,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
     },
 
     createIGNLayer: function(layerDef) {
-        layerDef.url = 'https://data.geopf.fr/wmts';
+        layerDef.url = layerDef.isPrivate == true ?  'https://data.geopf.fr/private/wmts?apikey=ign_scan_ws' : 'https://data.geopf.fr/wmts';
         layerDef.projection = 'EPSG:3857';
         layerDef.matrixSet = 'PM';
         layerDef.attribution = '<a href="http://www.geoportail.fr/" target="_blank">'
