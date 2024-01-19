@@ -829,7 +829,7 @@ public class HydrantRepository {
    * @return int
    */
   public int getDistanceFromCoordonnees(long idHydrant, double latitude, double longitude) {
-    String srid = parametreProvider.get().getValeurString(GlobalConstants.CLE_SRID);
+    int srid = parametreProvider.get().getSridInt();
     return context
         .resultQuery(
             "SELECT ST_DISTANCE(ST_transform(ST_SetSRID(ST_MakePoint({0}, {1}),{2}), {3}), h.geometrie) "
