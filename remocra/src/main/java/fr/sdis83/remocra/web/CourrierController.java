@@ -417,14 +417,14 @@ public class CourrierController {
       String erreurDocument = courrierRepository.insertDocument(codeCourrier, nomCourrier);
 
       // Insertion dans table courrier_document
-      ArrayList<Object> destinataires = new ArrayList<Object>();
-      destinataires.addAll((ArrayList<Object>) mapParametres.get("destinataires"));
+      List<Object> destinataires = new ArrayList<>();
+      destinataires.addAll((List<Object>) mapParametres.get("destinataires"));
       String erreurCourrierDocument = "";
       String erreurEmail = "";
-      for (Object dest : destinataires) {
-        Long idDest = Long.valueOf(String.valueOf(((HashMap) dest).get("id")));
-        String typeDest = String.valueOf(((HashMap) dest).get("Type")).toUpperCase();
-        String nomDest = String.valueOf(((HashMap) dest).get("Nom"));
+      for (Object destinataire : destinataires) {
+        Long idDest = Long.valueOf(String.valueOf(((Map) destinataire).get("id")));
+        String typeDest = String.valueOf(((Map) destinataire).get("type")).toUpperCase();
+        String nomDest = String.valueOf(((Map) destinataire).get("nom"));
 
         if (erreurDocument.equals("")) {
           // Insertion dans la table courrier_document
