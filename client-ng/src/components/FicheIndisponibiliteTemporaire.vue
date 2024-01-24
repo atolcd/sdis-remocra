@@ -419,8 +419,8 @@ export default {
       this.etats.tabNumeroPeiConcernes = (this.value.tabNumeroPeiConcernes.length > 0) ? 'valid' : 'invalid';
       //Si l'utilisateur choisit date de début immédiat, on met la date et heure courante
       if (this.value.typeDateIndispo == "immediat") {
-        this.value.dateIndispo = this.getCurrentDateTime().split(' ')[0];
-        this.value.heureIndispo = this.getCurrentDateTime().split(' ')[1];
+        this.value.dateIndispo = null;
+        this.value.heureIndispo = null;
       }
       //Si on connait la date de début d'indispo, on concatène la date et l'heure
       if (this.value.dateIndispo != null) {
@@ -430,28 +430,33 @@ export default {
       if (this.value.heureDispo != null) {
         this.dateTimeDispo = this.value.dateDispo + " " + this.value.heureDispo + ":00";
       } else this.dateTimeDispo = null;
+
       //Vérification date début après date courante
       if (this.dateTimeIndispo != null) {
         if (this.getCurrentDateTime() > this.dateTimeIndispo) {
           this.alertDebutAvantCourant = this.secondesAlert;
           this.etats.dateIndispo = 'invalid';
           this.etats.heureIndispo = 'invalid';
-          if (this.dateTimeDispo != null && this.getCurrentDateTime() > this.dateTimeDispo) {
-            this.etats.dateDispo = 'invalid';
-            this.etats.heureDispo = 'invalid';
-          }
           this.erreurDate = true;
-        } else if (this.dateTimeIndispo != null && this.dateTimeDispo != null) { //Vérification date début avant fin
-          if (this.dateTimeIndispo > this.dateTimeDispo) {
-            this.alertDateHeure = this.secondesAlert;
-            this.etats.dateIndispo = 'invalid';
-            this.etats.heureIndispo = 'invalid';
-            this.etats.dateDispo = 'invalid';
-            this.etats.heureDispo = 'invalid';
-            this.erreurDate = true;
-          }
         }
       }
+
+      // Vérification date début avant fin
+      if (this.dateTimeDispo != null) {
+        if (this.dateTimeIndispo == null && this.getCurrentDateTime() > this.dateTimeDispo) {
+          this.etats.dateDispo = 'invalid';
+          this.etats.heureDispo = 'invalid';
+          this.erreurDate = true;
+        } else if (this.dateTimeIndispo != null && this.dateTimeIndispo > this.dateTimeDispo) {
+          this.alertDateHeure = this.secondesAlert;
+          this.etats.dateIndispo = 'invalid';
+          this.etats.heureIndispo = 'invalid';
+          this.etats.dateDispo = 'invalid';
+          this.etats.heureDispo = 'invalid';
+          this.erreurDate = true;
+        }
+      }
+
       var isFormValid = true;
       if (this.hasInvalidState(this.etats)) {
         isFormValid = false;

@@ -12,6 +12,7 @@ import fr.sdis83.remocra.web.message.ItemFilter;
 import fr.sdis83.remocra.web.message.ItemSorting;
 import java.math.BigInteger;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -281,21 +282,35 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
     obj.remove("tabIdPeiConcernes");
 
     // Formatage des dates
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     Date dateDebut = null;
     Date dateFin = null;
+    Date dateCourante = null;
+
     try {
-      dateDebut =
-          new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(String.valueOf(obj.get("dateDebut")));
-    } catch (Exception e) {
+      dateCourante = dateFormat.parse(dateFormat.format(new Date()));
+    } catch (ParseException e) {
       e.printStackTrace();
     }
-    obj.remove("dateDebut");
+
+    if (!String.valueOf(obj.get("dateDebut")).equals("null")) {
+      try {
+        dateDebut = dateFormat.parse(String.valueOf(obj.get("dateDebut")));
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
+      obj.remove("dateDebut");
+    }
+
+    // Début immédiat de l'indispo
+    if (dateDebut == null) {
+      dateDebut = dateCourante;
+    }
 
     if (!String.valueOf(obj.get("dateFin")).equals("null")) {
       try {
-        dateFin =
-            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(String.valueOf(obj.get("dateFin")));
-      } catch (Exception e) {
+        dateFin = dateFormat.parse(String.valueOf(obj.get("dateFin")));
+      } catch (ParseException e) {
         e.printStackTrace();
       }
       obj.remove("dateFin");
@@ -318,25 +333,16 @@ public class IndisponibiliteTemporaireService extends AbstractService<HydrantInd
     indispo.setDateFin(dateFin);
     indispo.setObservation(observation);
 
-    // Définition du statut
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    Date date = new Date();
-    Date dateCourante = null;
-    try {
-      dateCourante = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateFormat.format(date));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    if (dateDebut.before(dateCourante) && (dateFin == null || dateCourante.before(dateFin))) {
+    if (!dateDebut.after(dateCourante) && (dateFin == null || dateCourante.before(dateFin))) {
       indispo.setStatut(
           TypeHydrantIndispoStatut.findTypeHydrantIndispoStatutByCode("EN_COURS")
               .getSingleResult());
-    } else if (dateCourante.before(dateDebut)) {
+    } else if (dateDebut.after(dateCourante)) {
       indispo.setStatut(
           TypeHydrantIndispoStatut.findTypeHydrantIndispoStatutByCode("PLANIFIE")
               .getSingleResult());
     } else {
+      // Ne devrait plus arriver
       indispo.setStatut(
           TypeHydrantIndispoStatut.findTypeHydrantIndispoStatutByCode("TERMINE").getSingleResult());
     }
