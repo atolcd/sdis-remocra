@@ -119,7 +119,7 @@ public class GeometryUtil {
   public static Point createPoint(double longitude, double latitude, String proj)
       throws CRSException, IllegalCoordinateException {
     GeometryFactory geometryFactory =
-        new GeometryFactory(new PrecisionModel(), Integer.getInteger(proj));
+        new GeometryFactory(new PrecisionModel(), Integer.parseInt(proj));
     return geometryFactory.createPoint(new Coordinate(longitude, latitude));
   }
 
@@ -127,7 +127,7 @@ public class GeometryUtil {
       throws CRSException, IllegalCoordinateException {
     double[] coord = transformCordinate(longitude, latitude, projFrom, projTo);
     GeometryFactory geometryFactory =
-        new GeometryFactory(new PrecisionModel(), Integer.getInteger(projTo));
+        new GeometryFactory(new PrecisionModel(), Integer.parseInt(projTo));
     return geometryFactory.createPoint(new Coordinate(coord[0], coord[1]));
   }
 
