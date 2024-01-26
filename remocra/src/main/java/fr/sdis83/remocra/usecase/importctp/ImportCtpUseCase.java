@@ -408,7 +408,7 @@ public class ImportCtpUseCase {
           && row.getCell(i).getCellType() != CellType.BLANK
           && !row.getCell(i).getStringCellValue().trim().isEmpty()) {
         String xls_anomalie = row.getCell(i).getStringCellValue();
-        String codeAnomalie = xls_anomalie.split(ANOMALIES_SEPARATEUR)[1].toUpperCase();
+        String codeAnomalie = xls_anomalie.split(ANOMALIES_SEPARATEUR)[1].trim().toUpperCase();
 
         TypeHydrantAnomalie anomalie = mapAnomalies.get(codeAnomalie);
         if (anomalie == null) {
@@ -458,14 +458,15 @@ public class ImportCtpUseCase {
 
     // Ajout des données de la visite à ajouter aux informations JSON Ces données ont déjà été
     // vérifiées ici, il n'y a pas besoin de dupliquer les vérifications avant l'ajout en base
-    new LigneImportCtpVisiteData(
-        id_anomalies,
-        formatterDateTime.format(dateCtp),
-        idHydrant,
-        xls_agent1,
-        xls_debit,
-        xls_pression,
-        observation);
+    dataVisite =
+        new LigneImportCtpVisiteData(
+            id_anomalies,
+            formatterDateTime.format(dateCtp),
+            idHydrant,
+            xls_agent1,
+            xls_debit,
+            xls_pression,
+            observation);
 
     data.setDataVisite(dataVisite);
 
@@ -504,10 +505,10 @@ public class ImportCtpUseCase {
     for (Map<String, Object> visite : data) {
       HydrantVisite v = new HydrantVisite();
 
-      if (JSONUtil.getLong(visite, "hydrant") == null) {
+      if (JSONUtil.getLong(visite, "idHydrant") == null) {
         throw new IllegalArgumentException("id hydrant null");
       }
-      long idHydrant = JSONUtil.getLong(visite, "hydrant");
+      long idHydrant = JSONUtil.getLong(visite, "idHydrant");
       v.setHydrant(idHydrant);
       v.setDate(JSONUtil.getInstant(visite, "date"));
       v.setAgent1(JSONUtil.getString(visite, "agent1"));
