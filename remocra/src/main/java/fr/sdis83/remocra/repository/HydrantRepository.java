@@ -757,7 +757,8 @@ public class HydrantRepository {
     h.setGeometrie(point);
 
     // Gestion de la commune
-    List<Commune> listeCommune = Commune.findCommunesByPoint(srid, point.toString());
+    List<Commune> listeCommune =
+        Commune.findCommunesByPoint(srid, point.toString(), parametreProvider.get().getSridInt());
     if (!listeCommune.isEmpty()) {
       if (!h.getCommune().equals(listeCommune.get(0).getId())) { // Si la commune a changé
         h.setCommune(listeCommune.get(0).getId()); // update h.commune

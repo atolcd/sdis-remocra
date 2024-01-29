@@ -130,8 +130,11 @@ public class CommuneController {
 
       @Override
       protected List<Commune> getRecords() {
-        Long delta = parametreProvider.get().getHydrantToleranceCommuneMetres();
-        return Commune.findCommunesByPointWithDelta(srid, wkt, delta);
+        return Commune.findCommunesByPointWithDelta(
+            srid,
+            wkt,
+            parametreProvider.get().getSridInt(),
+            parametreProvider.get().getHydrantToleranceCommuneMetres());
       }
     }.serialize();
   }

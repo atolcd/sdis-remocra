@@ -16,17 +16,17 @@ privileged aspect Commune_Remocra_Finder {
     private static final Logger log = Logger.getLogger(Commune.class);
 
     @SuppressWarnings("unchecked")
-    public static List<Commune> Commune.findCommunesByPoint(int srid, String wktPoint) {
-        return findCommunesByPointWithDelta(srid, wktPoint, 0L);
+    public static List<Commune> Commune.findCommunesByPoint(int sridSource, String wktPoint, int sridCible) {
+        return findCommunesByPointWithDelta(sridSource, wktPoint, sridCible, 0L);
     }
 
     @SuppressWarnings("unchecked")
-    public static List<Commune> Commune.findCommunesByPointWithDelta(int srid, String wktPoint, Long delta) {
+    public static List<Commune> Commune.findCommunesByPointWithDelta(int sridSource, String wktPoint, int sridCible, Long delta) {
         WKTReader fromText = new WKTReader();
         Geometry filter = null;
         try {
             filter = fromText.read(wktPoint);
-            filter.setSRID(srid);
+            filter.setSRID(sridSource);
         } catch (ParseException e) {
             throw new RuntimeException("Not a WKT string:" + wktPoint);
         }
@@ -51,7 +51,7 @@ privileged aspect Commune_Remocra_Finder {
         EntityManager em = Commune.entityManager();
         Query query = em.createQuery("select c from Commune c where "
             + depClause
-            + " dwithin(c.geometrie, transform(:filter, "+srid+"), :delta) = true order by st_distance(c.geometrie, transform(:filter,  "+srid+")) asc",
+            + " dwithin(c.geometrie, transform(:filter, "+sridCible+"), :delta) = true order by st_distance(c.geometrie, transform(:filter,  "+sridCible+")) asc",
             Commune.class);
         query.setParameter("filter", filter);
         query.setParameter("delta", delta);
