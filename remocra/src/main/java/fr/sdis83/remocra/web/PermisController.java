@@ -85,10 +85,18 @@ public class PermisController extends AbstractRemocraController {
         ZoneCompetence zc =
             utilisateurService.getCurrentUtilisateur().getOrganisme().getZoneCompetence();
         Integer tolerance = parametreProvider.get().getToleranceChargementMetres();
+        int sridCible = parametreProvider.get().getSridInt();
         int firstResult = 0;
         int maxResults = 10;
         return Permis.findPermisByXYTolerance(
-            srid.intValue(), x, y, tolerance, firstResult, maxResults, zc.getGeometrie());
+            srid.intValue(),
+            x,
+            y,
+            sridCible,
+            tolerance,
+            firstResult,
+            maxResults,
+            zc.getGeometrie());
       }
     }.serialize();
   }

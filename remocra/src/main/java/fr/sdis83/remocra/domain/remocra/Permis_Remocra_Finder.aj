@@ -36,16 +36,16 @@ privileged aspect Permis_Remocra_Finder {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static List<Permis> Permis.findPermisByXYTolerance(int srid, float x, float y, int toleranceMeters, int firstResult, int maxResults, Geometry zoneInclusion) {
+    public static List<Permis> Permis.findPermisByXYTolerance(int sridSource, float x, float y, int sridCible, int toleranceMeters, int firstResult, int maxResults, Geometry zoneInclusion) {
         EntityManager em = Permis.entityManager();
 
-        Geometry point = GeometryUtil.toGeometry("POINT(" + x + " " + y + ")", srid);
+        Geometry point = GeometryUtil.toGeometry("POINT(" + x + " " + y + ")", sridSource);
 
-        String sql = "SELECT o.* FROM remocra.Permis AS o WHERE ST_DWithin(st_transform(:point,  "+srid+"), geometrie, :tolerance) ";
+        String sql = "SELECT o.* FROM remocra.Permis AS o WHERE ST_DWithin(st_transform(:point,  "+sridCible+"), geometrie, :tolerance) ";
         if (zoneInclusion != null) {
-            sql += " AND (st_transform(:point,  "+srid+") && :zoneInclusion AND ST_Within(st_transform(:point,  "+srid+"), :zoneInclusion) )";
+            sql += " AND (st_transform(:point,  "+sridCible+") && :zoneInclusion AND ST_Within(st_transform(:point,  "+sridCible+"), :zoneInclusion) )";
         }
-        sql += " order by ST_Distance(st_transform(:point,  "+srid+"), geometrie)";
+        sql += " order by ST_Distance(st_transform(:point,  "+sridCible+"), geometrie)";
 
         Query q = em.createNativeQuery(sql, Permis.class);
 
