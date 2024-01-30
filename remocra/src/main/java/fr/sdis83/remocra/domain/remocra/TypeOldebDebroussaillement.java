@@ -24,6 +24,7 @@ public class TypeOldebDebroussaillement {
       strategy = GenerationType.SEQUENCE,
       generator = "type_oldeb_debroussaillement_seq")
   @SequenceGenerator(
+      allocationSize = 1,
       name = "type_oldeb_debroussaillement_seq",
       sequenceName = "type_oldeb_debroussaillement_id_seq")
   @Column(name = "id")

@@ -22,6 +22,7 @@ public class TypeOldebCategorieAnomalie {
       strategy = GenerationType.SEQUENCE,
       generator = "type_oldeb_categorie_anomalie_seq")
   @SequenceGenerator(
+      allocationSize = 1,
       name = "type_oldeb_categorie_anomalie_seq",
       sequenceName = "type_oldeb_categorie_anomalie_id_seq")
   @Column(name = "id")

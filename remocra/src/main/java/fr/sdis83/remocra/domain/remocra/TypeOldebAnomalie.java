@@ -21,7 +21,10 @@ public class TypeOldebAnomalie {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "type_oldeb_anomalie_seq")
-  @SequenceGenerator(name = "type_oldeb_anomalie_seq", sequenceName = "type_oldeb_anomalie_id_seq")
+  @SequenceGenerator(
+      allocationSize = 1,
+      name = "type_oldeb_anomalie_seq",
+      sequenceName = "type_oldeb_anomalie_id_seq")
   @Column(name = "id")
   private Long id;
 

@@ -19,7 +19,10 @@ public class TypeOldebAction {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "type_oldeb_action_seq")
-  @SequenceGenerator(name = "type_oldeb_action_seq", sequenceName = "type_oldeb_action_id_seq")
+  @SequenceGenerator(
+      allocationSize = 1,
+      name = "type_oldeb_action_seq",
+      sequenceName = "type_oldeb_action_id_seq")
   @Column(name = "id")
   private Long id;
 

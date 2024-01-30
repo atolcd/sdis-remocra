@@ -30,7 +30,10 @@ public class HydrantIndispoTemporaire {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "indispo_temp_seq")
-  @SequenceGenerator(name = "indispo_temp_seq", sequenceName = "hydrant_indispo_temporaire_id_seq")
+  @SequenceGenerator(
+      allocationSize = 1,
+      name = "indispo_temp_seq",
+      sequenceName = "hydrant_indispo_temporaire_id_seq")
   @Column(name = "id")
   private Long id;
 

@@ -19,7 +19,10 @@ public class TypeOldebAcces {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "type_oldeb_acces_seq")
-  @SequenceGenerator(name = "type_oldeb_acces_seq", sequenceName = "type_oldeb_acces_id_seq")
+  @SequenceGenerator(
+      allocationSize = 1,
+      name = "type_oldeb_acces_seq",
+      sequenceName = "type_oldeb_acces_id_seq")
   @Column(name = "id")
   private Long id;
 

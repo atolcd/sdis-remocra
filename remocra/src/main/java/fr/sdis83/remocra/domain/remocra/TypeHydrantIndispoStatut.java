@@ -24,6 +24,7 @@ public class TypeHydrantIndispoStatut {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "type_hydrant_indispo_statut_seq")
   @SequenceGenerator(
+      allocationSize = 1,
       name = "type_hydrant_indispo_statut_seq",
       sequenceName = "type_hydrant_indispo_statut_id_seq")
   @Column(name = "id")

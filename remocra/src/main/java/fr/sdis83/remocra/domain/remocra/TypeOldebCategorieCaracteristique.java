@@ -25,6 +25,7 @@ public class TypeOldebCategorieCaracteristique {
       strategy = GenerationType.SEQUENCE,
       generator = "type_oldeb_categorie_caracteristique_seq")
   @SequenceGenerator(
+      allocationSize = 1,
       name = "type_oldeb_categorie_caracteristique_seq",
       sequenceName = "type_oldeb_categorie_caracteristique_id_seq")
   @Column(name = "id")
