@@ -161,7 +161,12 @@ export default {
     idHydrantProjet: {
       type: Number,
       required: false
-    }
+    },
+
+    srid: {
+      type: Number,
+      required: true
+    },
   },
   methods: {
     initModal(idHydrantProjet) {

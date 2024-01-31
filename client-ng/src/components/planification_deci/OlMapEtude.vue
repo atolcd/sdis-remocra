@@ -6,7 +6,7 @@
         <b-spinner v-if="spinnerMap" id="spinner" variant="primary"></b-spinner>
       </div>
 
-      <ModalePeiProjet ref="modalePeiProjet" id="modalePeiProjet" :idEtude="parseInt(idEtude)" :coordonnees="peiProjetCoordonnees" :idHydrantProjet="idHydrantProjet">
+      <ModalePeiProjet ref="modalePeiProjet" id="modalePeiProjet" :idEtude="parseInt(idEtude)" :coordonnees="peiProjetCoordonnees" :idHydrantProjet="idHydrantProjet" :srid="srid">
       </ModalePeiProjet>
 
       <Process ref="process" :categorieProcess=categorieProcess></Process>
