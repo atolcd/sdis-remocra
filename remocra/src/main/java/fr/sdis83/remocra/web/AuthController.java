@@ -68,6 +68,7 @@ public class AuthController {
     }
     // Create a new session for the user.
     session = request.getSession(true);
+    session.setMaxInactiveInterval(-1);
 
     String autResult = authService.authUser(utilisateur.getIdentifiant(), password);
     // On utilise le redirect sinon le header Set-Cookie avec le nouveau
@@ -107,6 +108,7 @@ public class AuthController {
     }
     // Create a new session for the user.
     session = request.getSession(true);
+    session.setMaxInactiveInterval(-1);
 
     String autResult = authService.authUser(username, password);
     // On utilise le redirect sinon le header Set-Cookie avec le nouveau
