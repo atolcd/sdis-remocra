@@ -168,7 +168,7 @@ public class CriseRepository {
         "SELECT St_AsEwkt(St_transform(St_SetSrid(CAST(St_Extent(geometrie) AS Geometry),"
             + parametreProvider.get().getSridInt()
             + "),"
-            + GlobalConstants.SRID_3857
+            + Integer.parseInt(GlobalConstants.SRID_3857)
             + ")) AS geometrie FROM remocra.commune WHERE id IN(SELECT commune FROM remocra.crise_commune WHERE crise ="
             + id
             + ")";

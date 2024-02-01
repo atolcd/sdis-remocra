@@ -835,7 +835,7 @@ public class HydrantRepository {
             "SELECT ST_DISTANCE(ST_transform(ST_SetSRID(ST_MakePoint({0}, {1}),{2}), {3}), h.geometrie) "
                 + "FROM remocra.hydrant h "
                 + "WHERE h.id = {4};",
-            longitude, latitude, GlobalConstants.SRID_4326, srid, idHydrant)
+            longitude, latitude, Integer.parseInt(GlobalConstants.SRID_4326), srid, idHydrant)
         .fetchOneInto(int.class);
   }
 

@@ -360,7 +360,7 @@ public class EtudeRepository {
                         + ") as Geometry), "
                         + parametreProvider.get().getSridInt()
                         + "), "
-                        + GlobalConstants.SRID_3857
+                        + Integer.parseInt(GlobalConstants.SRID_3857)
                         + "))")
                 .as("geometrie"))
         .from(ETUDE)
