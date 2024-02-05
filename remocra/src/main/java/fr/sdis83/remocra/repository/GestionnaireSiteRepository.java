@@ -75,7 +75,6 @@ public class GestionnaireSiteRepository {
             GESTIONNAIRE_SITE.CODE.as("gestionnaireSite.code"),
             GESTIONNAIRE_SITE.ACTIF.as("gestionnaireSite.actif"),
             GESTIONNAIRE_SITE.ID_GESTIONNAIRE.as("gestionnaireSite.id_gestionnaire"),
-            GESTIONNAIRE_SITE.GEOMETRIE.as("gestionnaireSite.geometrie"),
             GESTIONNAIRE.NOM.as("gestionnaireName"))
         .from(GESTIONNAIRE_SITE)
         .leftOuterJoin(GESTIONNAIRE)
