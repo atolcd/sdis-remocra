@@ -23,18 +23,16 @@ public class AuthnModule extends AbstractModule {
     String issuer();
 
     int expirationSec();
-
-    int mobileExpirationMin();
   }
 
   public static AuthnModule create(Config config) {
     Key key = Keys.hmacShaKeyFor(config.getString("secret").getBytes(StandardCharsets.UTF_8));
+
     return new AuthnModule(
         ImmutableAuthnModule.Settings.builder()
             .key(key)
             .issuer(config.getString("issuer"))
             .expirationSec(config.getInt("expirationSec"))
-            .mobileExpirationMin(config.getInt("mobileExpirationMin"))
             .build());
   }
 

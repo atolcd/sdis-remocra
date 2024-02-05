@@ -43,14 +43,19 @@ public class AuthCommun {
     return null;
   }
 
-  public String generateToken(String username) {
+  public String generateToken(String username, Integer nbHeureValideMobile) {
     String jws =
         Jwts.builder()
             //
             .setIssuer(settings.issuer())
             .setSubject(username)
             .setExpiration(
-                Date.from(Instant.now().plus(Duration.ofMinutes(settings.mobileExpirationMin()))))
+                Date.from(
+                    Instant.now()
+                        .plus(
+                            nbHeureValideMobile != null
+                                ? Duration.ofHours(nbHeureValideMobile)
+                                : Duration.ofSeconds(settings.expirationSec()))))
             .setIssuedAt(new Date())
             .setId(UUID.randomUUID().toString())
             //

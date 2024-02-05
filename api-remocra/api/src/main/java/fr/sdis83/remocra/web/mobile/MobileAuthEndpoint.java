@@ -62,7 +62,14 @@ public class MobileAuthEndpoint {
       throws Exception {
     JWTAuthUser.Response res = mobileAuthUser.authenticateMobile(username, password, versionName);
     if (res.status() == JWTAuthUser.Status.OK) {
-      return Response.ok(new LoginResponse(username, res.token().get())).build();
+      return Response.ok(
+              new LoginResponse(
+                  username,
+                  res.token().get(),
+                  res.dateProchaineDeconnexion().isPresent()
+                      ? res.dateProchaineDeconnexion().get()
+                      : null))
+          .build();
     }
     throw new NotAuthorizedException("Unauthorized");
   }
@@ -70,10 +77,12 @@ public class MobileAuthEndpoint {
   static class LoginResponse {
     public final String username;
     public final String token;
+    public final String dateProchaineDeconnexion;
 
-    public LoginResponse(String username, String token) {
+    public LoginResponse(String username, String token, String dateProchaineDeconnexion) {
       this.username = username;
       this.token = token;
+      this.dateProchaineDeconnexion = dateProchaineDeconnexion;
     }
   }
 }

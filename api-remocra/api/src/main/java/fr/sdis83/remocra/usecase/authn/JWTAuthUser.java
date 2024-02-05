@@ -29,7 +29,7 @@ public class JWTAuthUser {
     if (user.getPassword().equals(encodedPassword)) {
       return ImmutableJWTAuthUser.Response.builder()
           .status(Status.OK)
-          .token(authCommun.generateToken(user.getEmail()))
+          .token(authCommun.generateToken(user.getEmail(), null))
           .build();
     }
 
@@ -42,6 +42,8 @@ public class JWTAuthUser {
     Status status();
 
     Optional<String> token();
+
+    Optional<String> dateProchaineDeconnexion();
   }
 
   public enum Status {
