@@ -29,7 +29,6 @@ import static fr.sdis83.remocra.db.model.remocra.Tables.UTILISATEUR;
 import fr.sdis83.remocra.db.model.remocra.tables.Organisme;
 import fr.sdis83.remocra.enums.PeiCaracteristique;
 import fr.sdis83.remocra.util.GlobalConstants;
-import fr.sdis83.remocra.web.model.authn.ParamConfModel;
 import fr.sdis83.remocra.web.model.mobilemodel.TypeDroitModel;
 import fr.sdis83.remocra.web.model.referentiel.CommuneModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactModel;
@@ -37,6 +36,7 @@ import fr.sdis83.remocra.web.model.referentiel.ContactRoleModel;
 import fr.sdis83.remocra.web.model.referentiel.GestionnaireModel;
 import fr.sdis83.remocra.web.model.referentiel.HydrantAnomalieModel;
 import fr.sdis83.remocra.web.model.referentiel.HydrantModel;
+import fr.sdis83.remocra.web.model.referentiel.ParametreData;
 import fr.sdis83.remocra.web.model.referentiel.RoleModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantAnomalieModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantAnomalieNatureModel;
@@ -306,11 +306,12 @@ public class ReferentielRepository {
         .fetchInto(TypeHydrantSaisieModel.class);
   }
 
-  public List<ParamConfModel> getParamConfMobileList() {
+  public List<ParametreData> getParamConfMobileList() {
     return context
-        .selectFrom(PARAM_CONF)
+        .select(PARAM_CONF.CLE, PARAM_CONF.VALEUR)
+        .from(PARAM_CONF)
         .where(PARAM_CONF.NOMGROUPE.eq(NOM_GROUPE_MOBILE))
-        .fetchInto(ParamConfModel.class);
+        .fetchInto(ParametreData.class);
   }
 
   public List<TypeDroitModel> getTypeDroitMobileList(Long idUtilisateur) {

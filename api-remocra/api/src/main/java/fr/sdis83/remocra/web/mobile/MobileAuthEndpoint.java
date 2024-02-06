@@ -2,6 +2,7 @@ package fr.sdis83.remocra.web.mobile;
 
 import com.google.inject.Inject;
 import fr.sdis83.remocra.authn.AuthDevice;
+import fr.sdis83.remocra.repository.ParametreRepository;
 import fr.sdis83.remocra.usecase.authn.JWTAuthUser;
 import fr.sdis83.remocra.usecase.authn.MobileAuthUser;
 import fr.sdis83.remocra.util.GlobalConstants;
@@ -23,6 +24,7 @@ import javax.ws.rs.core.Response;
 public class MobileAuthEndpoint {
 
   @Inject MobileAuthUser mobileAuthUser;
+  @Inject ParametreRepository parametreRepository;
 
   @Path("/token")
   @Operation(
@@ -34,6 +36,21 @@ public class MobileAuthEndpoint {
   public Response checkToken() {
     // On fait rien, @AuthDevice fait le travail
     return Response.ok().build();
+  }
+
+  @Path("/mdpAdministrateur")
+  @Operation(
+      summary = "Renvoie le mdp Admin",
+      tags = {GlobalConstants.REMOCRA_MOBILE_TAG},
+      hidden = true)
+  @PUT
+  @PermitAll
+  public Response mdpAdministrateur() {
+    return Response.ok(
+            parametreRepository
+                .getParametre(GlobalConstants.PARAMETRE_MDP_ADMINISTRATEUR)
+                .getValeurParametre())
+        .build();
   }
 
   @Path("/check")

@@ -10,13 +10,13 @@ import fr.sdis83.remocra.usecase.referentiel.BuildAdresseCompleteUseCase;
 import fr.sdis83.remocra.usecase.referentiel.GetTypeVisiteUtilisateur;
 import fr.sdis83.remocra.usecase.referentiel.PeiCaracteristiquesUseCase;
 import fr.sdis83.remocra.util.GlobalConstants;
-import fr.sdis83.remocra.web.model.authn.ParamConfModel;
 import fr.sdis83.remocra.web.model.mobilemodel.TypeDroitModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactModel;
 import fr.sdis83.remocra.web.model.referentiel.ContactRoleModel;
 import fr.sdis83.remocra.web.model.referentiel.GestionnaireModel;
 import fr.sdis83.remocra.web.model.referentiel.HydrantAnomalieModel;
 import fr.sdis83.remocra.web.model.referentiel.HydrantModel;
+import fr.sdis83.remocra.web.model.referentiel.ParametreData;
 import fr.sdis83.remocra.web.model.referentiel.RoleModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantAnomalieModel;
 import fr.sdis83.remocra.web.model.referentiel.TypeHydrantAnomalieNatureModel;
@@ -63,10 +63,8 @@ public class MobileReferentielEndpoint {
   public Response getReferentiel() {
     Long idUtilisateur = currentUser.get().userId();
 
-    String agent =
-        parametreRepository.getParametre(GlobalConstants.GESTION_AGENT).getValeurParametre();
-    List<ParamConfModel> paramsConf = referentielRepository.getParamConfMobileList();
-    paramsConf.add(new ParamConfModel(GlobalConstants.GESTION_AGENT, null, agent, 1, "Mobile"));
+    List<ParametreData> paramsConf = referentielRepository.getParamConfMobileList();
+    paramsConf.addAll(parametreRepository.getParametresMobile());
 
     List<TypeHydrantSaisieModel> typeVisiteUtilisateur =
         getTypeVisiteUtilisateur.execute(
@@ -113,7 +111,7 @@ public class MobileReferentielEndpoint {
     public final List<TypeHydrantAnomalieNatureSaisieModel> typesHydrantAnomalieNatureSaisie;
     public final List<TypeHydrantCritereModel> typesHydrantCritere;
     public final List<TypeHydrantSaisieModel> typesHydrantSaisie;
-    public final List<ParamConfModel> paramsConf;
+    public final List<ParametreData> paramsConf;
     public final List<TypeDroitModel> typesDroit;
     public final String utilisateurConnecte;
     public final Map<Long, String> peiCaracteristiques;
@@ -133,7 +131,7 @@ public class MobileReferentielEndpoint {
         List<TypeHydrantAnomalieNatureSaisieModel> typesHydrantAnomalieNatureSaisie,
         List<TypeHydrantCritereModel> typesHydrantCritere,
         List<TypeHydrantSaisieModel> typesHydrantSaisie,
-        List<ParamConfModel> paramsConf,
+        List<ParametreData> paramsConf,
         List<TypeDroitModel> typesDroit,
         String utilisateurConnecte,
         Map<Long, String> peiCaracteristiques) {
