@@ -1,11 +1,13 @@
 package fr.sdis83.remocra.web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.sdis83.remocra.GlobalConstants;
 import fr.sdis83.remocra.domain.datasource.CodeLibelleOrdreData;
 import fr.sdis83.remocra.enums.PeiCaracteristique;
 import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
+import fr.sdis83.remocra.usecase.parametre.affichageIndispo.AffichageIndispoUseCase;
 import fr.sdis83.remocra.usecase.parametre.agents.AgentsUseCase;
 import fr.sdis83.remocra.usecase.parametre.caracteristiques.CaracteristiqueUseCase;
 import java.io.IOException;
@@ -23,11 +25,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/parametre")
 @Controller
 public class ParametreController {
-
   private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Autowired CaracteristiqueUseCase caracteristiquesUseCase;
   @Autowired AgentsUseCase agentsUseCase;
+  @Autowired AffichageIndispoUseCase affichageIndispoUseCase;
 
   @Autowired ParametreDataProvider parametreDataProvider;
 
@@ -147,5 +149,38 @@ public class ParametreController {
   public ResponseEntity<String> getSrid() {
     return new ResponseEntity<>(
         parametreDataProvider.get().getValeurString(GlobalConstants.CLE_SRID), HttpStatus.OK);
+  }
+
+  @RequestMapping(
+      value = "/affichageIndispo",
+      method = RequestMethod.GET,
+      headers = "Accept=application/json;charset=utf-8")
+  public ResponseEntity<String> getAffichageIndispo() {
+    try {
+      return new ResponseEntity<>(
+          objectMapper.writeValueAsString(affichageIndispoUseCase.getAffichageIndispo()),
+          HttpStatus.OK);
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @RequestMapping(
+      value = "/affichageIndispo/update/",
+      method = RequestMethod.POST,
+      headers = "Accept=application/json;charset=utf-8")
+  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  public ResponseEntity<String> updateAffichageIndispo(HttpServletRequest request) {
+
+    try {
+      Boolean affichageIndispoParam =
+          objectMapper.readValue(request.getParameter("affichageIndispo"), Boolean.class);
+
+      affichageIndispoUseCase.updateAffichageIndispoParam(affichageIndispoParam);
+
+      return new ResponseEntity<>("Succes", HttpStatus.OK);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

@@ -38,6 +38,9 @@ public class GlobalConstants {
   // Clé du paramètre BUFFER_CARTE stocké dans la table remocra.parametre
   public static final String CLE_BUFFER_CARTE = "BUFFER_CARTE";
 
+  // Clé du paramètre AFFICHAGE_INDISPO stocké dans la table remocra.parametre
+  public static final String AFFICHAGE_INDISPO = "AFFICHAGE_INDISPO";
+
   /**
    * Enumération des types de visite, avec
    *

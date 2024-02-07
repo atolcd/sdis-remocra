@@ -45,6 +45,8 @@ public class ParametreData {
         return Integer.class;
       case DOUBLE:
         return Double.class;
+      case BOOLEAN:
+        return Boolean.class;
       case GEOMETRY:
       case BINARY:
       case STRING:
@@ -94,6 +96,10 @@ public class ParametreData {
 
   public String getUrlSite() {
     return (String) this.getValeur(ParamConf.ParamConfParam.PDI_URL_SITE.getCle());
+  }
+
+  public Boolean getAffichageIndispo() {
+    return (Boolean) this.getValeur(GlobalConstants.AFFICHAGE_INDISPO);
   }
 
   public Integer getToleranceAssociationCiternePIMetres() {
