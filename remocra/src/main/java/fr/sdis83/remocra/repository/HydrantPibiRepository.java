@@ -201,7 +201,7 @@ public class HydrantPibiRepository {
             .where(
                 "ST_DISTANCE({0}, {1}) < {2}",
                 HYDRANT.GEOMETRIE,
-                parametreProvider.get().getSridInt() + geometrie,
+                "SRID=" + parametreProvider.get().getSridInt() + ";" + geometrie,
                 DISTANCE_MINIMAL_JUMELAGE)
             .and(TYPE_HYDRANT_NATURE.CODE.eq(BI))
             .and(HYDRANT_PIBI.JUMELE.isNull())
