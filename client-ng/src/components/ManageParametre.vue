@@ -146,6 +146,28 @@
     </fieldset>
 
 
+    <fieldset class="col-12 border border-1 m-2">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="title">Affichage hydrants</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <b-form-group label="Afficher l'état de disponibilité">
+
+              <b-form-radio v-model="affichageIndispo" name="affichageIndispo" value="true" class="d-inline-block col-2" size="lg">Oui</b-form-radio>
+              <b-form-radio v-model="affichageIndispo" name="affichageIndispo" value="false" class="d-inline-block col-2" size="lg">Non</b-form-radio>
+          </b-form-group>
+        </div>
+        <p class="col-6 my-auto">
+          Ajout d'une croix rouge sur le symbole de l'hydrant pour signifier l'indisponibilité
+        </p>
+
+      </div>
+    </fieldset>
+
+
     <div class="row  mt-3 justify-content-end d-flex col-8">
       <button class="btn btn-primary p-2" @click="valideForm()"> Valider</button>
     </div>
@@ -214,7 +236,8 @@ export default {
       "champPenaNonChoisie": null,
       "champPibiNonChoisie": null,
       "agentsSelected": null,
-      "agentsSelectable": []
+      "agentsSelectable": [],
+      "affichageIndispo": null
 
     }
   },
@@ -222,6 +245,23 @@ export default {
     this.loadData();
   },
   methods: {
+    getAffichageIndispo() {
+      axios.get('/remocra/parametre/affichageIndispo')
+          .then((response) => {
+            this.affichageIndispo = response.data;
+
+          }).catch(
+          () =>{
+
+            this.$notify({
+              group: 'remocra',
+              type: 'error',
+              title: 'Erreur',
+              text: 'Le paramaètre AFFICHAGE_INDISPO n\'a pas pu être récupéré correctement'
+            });
+          }
+      )
+    },
     getCaracteristiqueNonChoisies(type) {
       axios.get('/remocra/parametre/caracteristiques/nonChoisie/' + type)
           .then((response) => {
@@ -264,6 +304,7 @@ export default {
       this.getCaracteritiquesChoisies(PIBI);
       this.getCaracteristiqueNonChoisies(PENA);
       this.getCaracteristiqueNonChoisies(PIBI);
+      this.getAffichageIndispo();
 
     },
     onChangeRow(valueSelected, idSelected) {
@@ -320,6 +361,7 @@ export default {
       dataToUpdate.append("pibi", JSON.stringify(this.champPibiChoisie))
       dataToUpdate.append("pena", JSON.stringify(this.champPenaChoisie))
       dataToUpdate.append("agent", JSON.stringify(this.agentsSelected))
+      dataToUpdate.append("affichageIndispo", JSON.stringify(this.affichageIndispo))
       axios.post('/remocra/parametre/caracteristiques/update/', dataToUpdate)
           .then(() => {
             this.$notify({
@@ -351,7 +393,25 @@ export default {
           group: 'remocra',
           type: 'error',
           title: 'Erreur',
-          text: 'L\'agent n\'a pas été mis a jour'
+          text: 'L\'agent n\'a pas été mis à jour'
+        });
+      });
+
+
+      axios.post("/remocra/parametre/affichageIndispo/update/", dataToUpdate)
+          .then(() => {
+            this.$notify({
+              group: 'remocra',
+              type: 'success',
+              title: 'Succès',
+              text: 'Le paramètre d\'indispo a bien été mis à jour'
+            });
+          }).catch(() => {
+        this.$notify({
+          group: 'remocra',
+          type: 'error',
+          title: 'Erreur',
+          text: 'Le paramètre d\'indispo n\'a pas été mis à jour'
         });
       });
     }
