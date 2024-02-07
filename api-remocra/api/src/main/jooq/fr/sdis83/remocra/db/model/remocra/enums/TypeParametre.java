@@ -34,7 +34,9 @@ public enum TypeParametre implements EnumType {
 
     BINARY("BINARY"),
 
-    DOUBLE("DOUBLE");
+    DOUBLE("DOUBLE"),
+
+    BOOLEAN("BOOLEAN");
 
     private final String literal;
 

@@ -26,7 +26,9 @@ import org.jooq.Schema;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public enum TypeCategorieParametre implements EnumType {
 
-    MOBILE("MOBILE");
+    MOBILE("MOBILE"),
+
+    GENERAL("GENERAL");
 
     private final String literal;
 
