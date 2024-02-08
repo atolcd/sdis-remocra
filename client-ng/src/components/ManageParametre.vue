@@ -156,12 +156,37 @@
         <div class="col-6">
           <b-form-group label="Afficher l'état de disponibilité">
 
-              <b-form-radio v-model="affichageIndispo" name="affichageIndispo" value="true" class="d-inline-block col-2" size="lg">Oui</b-form-radio>
-              <b-form-radio v-model="affichageIndispo" name="affichageIndispo" value="false" class="d-inline-block col-2" size="lg">Non</b-form-radio>
+            <b-form-radio v-model="affichageIndispo" name="affichageIndispo" value="true" class="d-inline-block col-2"
+                          size="lg">Oui
+            </b-form-radio>
+            <b-form-radio v-model="affichageIndispo" name="affichageIndispo" value="false" class="d-inline-block col-2"
+                          size="lg">Non
+            </b-form-radio>
           </b-form-group>
         </div>
         <p class="col-6 my-auto">
           Ajout d'une croix rouge sur le symbole de l'hydrant pour signifier l'indisponibilité
+        </p>
+
+      </div>
+    </fieldset>
+
+    <fieldset class="col-12 border border-1 m-2">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="title">Mot de passe admin</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <label for="passAdmin">Mot de passe</label>
+          <b-form-input id='passAdmin' type="password" v-model="passwordAdmin"
+                        placeholder="Mot de passe admin"></b-form-input>
+        </div>
+        <p class="col-6 my-auto">
+          Une fois l'adresse du serveur renseignée et validée, pour accéder à la partie "Administrer" on donne la
+          possibilité de mettre un mot de passe dit "Admin".
+          Cela restreint l'accès à la partie administrer et donc limite la possibilité de modifier le nom du serveur.
         </p>
 
       </div>
@@ -178,11 +203,15 @@
 
       <!-- The modal -->
       <b-modal id="my-modal" size="xl">
-        <p class="m-2">C'est un champ texte mixé avec une liste déroulante, comme par exemple les listes déroulantes de l'accès rapide du module point d'eau (application web remocra).
+        <p class="m-2">C'est un champ texte mixé avec une liste déroulante, comme par exemple les listes déroulantes de
+          l'accès rapide du module point d'eau (application web remocra).
           Par défaut il est vide.
-          L'utilisateur saisit ce qu'il veut ( Michel Dupont par exemple, ou toto@sdisXX.fr ), on va stocker cette valeur dans les propriétés de l'application (commun à tous les utilisateurs de cette tablette)
-          A la prochaine saisie, l'utilisateur peut soit rajouter un autre agent, soit retrouver les valeurs précédemment saisies.
-          La liste des agents disponibles pour le composant n'est pas envoyée au serveur, c'est un facilitateur de saisie ; la tablette enverra le résultat de la saisie pour chaque PEI.
+          L'utilisateur saisit ce qu'il veut ( Michel Dupont par exemple, ou toto@sdisXX.fr ), on va stocker cette
+          valeur dans les propriétés de l'application (commun à tous les utilisateurs de cette tablette)
+          A la prochaine saisie, l'utilisateur peut soit rajouter un autre agent, soit retrouver les valeurs
+          précédemment saisies.
+          La liste des agents disponibles pour le composant n'est pas envoyée au serveur, c'est un facilitateur de
+          saisie ; la tablette enverra le résultat de la saisie pour chaque PEI.
           <br>
           Pour l'instant les scénarios suivants ont été identifiés</p>
         <div class="h5">Cas 1 - Utilisateur connecté obligatoire</div>
@@ -215,6 +244,13 @@ import ParametreAgent from "./Parametre/ParametreAgents.vue";
 const PIBI = "PIBI";
 const PENA = "PENA";
 const NON_CHOISIE = "NC";
+const typeParametre = {
+  MDP_ADMINISTRATEUR: 'MDP_ADMINISTRATEUR',
+  AFFICHAGE_INDISPO: 'AFFICHAGE_INDISPO',
+  AGENT: 'AGENT',
+  CARACTERISTIQUE: 'CARACTERISTIQUE'
+
+};
 export default {
 
   name: 'caracteristiqueMobile',
@@ -237,7 +273,8 @@ export default {
       "champPibiNonChoisie": null,
       "agentsSelected": null,
       "agentsSelectable": [],
-      "affichageIndispo": null
+      "affichageIndispo": null,
+      "passwordAdmin": ''
 
     }
   },
@@ -251,13 +288,30 @@ export default {
             this.affichageIndispo = response.data;
 
           }).catch(
-          () =>{
+          () => {
 
             this.$notify({
               group: 'remocra',
               type: 'error',
               title: 'Erreur',
               text: 'Le paramaètre AFFICHAGE_INDISPO n\'a pas pu être récupéré correctement'
+            });
+          }
+      )
+    },
+    getPasswordAdmin() {
+      axios.get('/remocra/parametre/passwordAdmin')
+          .then((response) => {
+            this.passwordAdmin = response.data;
+
+          }).catch(
+          () => {
+
+            this.$notify({
+              group: 'remocra',
+              type: 'error',
+              title: 'Erreur',
+              text: 'Le mot de passe admin pas n\'a pu être récupéré correctement'
             });
           }
       )
@@ -305,6 +359,7 @@ export default {
       this.getCaracteristiqueNonChoisies(PENA);
       this.getCaracteristiqueNonChoisies(PIBI);
       this.getAffichageIndispo();
+      this.getPasswordAdmin();
 
     },
     onChangeRow(valueSelected, idSelected) {
@@ -348,74 +403,74 @@ export default {
     },
 
     valideForm() {
+
+      for (let typeParametreKey in typeParametre) {
+        this.updateParam(typeParametreKey);
+      }
+
+    },
+    updateParam(param) {
+      let url, textSucces, textError;
+      let dataToUpdate;
       /**
-       * Réordonne les item pour assurer l'ordre en back
+       * Réordonne les items des caractéristiques pour assurer l'ordre en back
        */
-      let dataToUpdate = new FormData();
+      dataToUpdate = new FormData();
       this.champPibiChoisie.forEach((element, index) => {
         element.ordre = index;
       });
-      this.champPibiChoisie.forEach((element, index) => {
+      this.champPenaChoisie.forEach((element, index) => {
         element.ordre = index;
-      })
+      });
+
       dataToUpdate.append("pibi", JSON.stringify(this.champPibiChoisie))
       dataToUpdate.append("pena", JSON.stringify(this.champPenaChoisie))
       dataToUpdate.append("agent", JSON.stringify(this.agentsSelected))
       dataToUpdate.append("affichageIndispo", JSON.stringify(this.affichageIndispo))
-      axios.post('/remocra/parametre/caracteristiques/update/', dataToUpdate)
+      dataToUpdate.append("passwordAdmin", JSON.stringify(this.passwordAdmin))
+
+      switch (param) {
+        case typeParametre.MDP_ADMINISTRATEUR :
+          url = "/remocra/parametre/passwordAdmin/update/";
+          textSucces = 'Le mot de passe administrateur a bien été mis à jour';
+          textError = 'Le mot de passe administrateur n\'a pas été mis à jour';
+          break;
+        case typeParametre.AFFICHAGE_INDISPO :
+          url = "/remocra/parametre/affichageIndispo/update/";
+          textSucces = 'Le paramètre d\'indispo a bien été mis à jour';
+          textError = 'Le paramètre d\'indispo n\'a pas été mis à jour';
+          break;
+        case typeParametre.AGENT :
+          url = "/remocra/parametre/agents/update/";
+          textSucces = 'L\'agent a bien été mis à jour';
+          textError = 'L\'agent n\'a pas été mis à jour';
+          break;
+        case typeParametre.CARACTERISTIQUE :
+          url = "/remocra/parametre/caracteristiques/update/";
+          textSucces = 'Les listes des caractéristiques ont bien été mises à jour';
+          textError = 'Les listes des caractéristiques n\'ont pas pu être mises à jour';
+          break;
+      }
+
+      axios.post(url, dataToUpdate)
           .then(() => {
             this.$notify({
               group: 'remocra',
               type: 'success',
               title: 'Succès',
-              text: 'Les listes des caractéristiques ont bien été mises à jour'
+              text: textSucces
             });
           }).catch(() => {
         this.$notify({
           group: 'remocra',
           type: 'error',
           title: 'Erreur',
-          text: 'Les listes des caractéristiques n\'ont pas pu être mises à jour'
-        });
-      });
-
-
-      axios.post("/remocra/parametre/agents/update/", dataToUpdate)
-          .then(() => {
-            this.$notify({
-              group: 'remocra',
-              type: 'success',
-              title: 'Succès',
-              text: 'L\'agent a bien été mis à jour'
-            });
-          }).catch(() => {
-        this.$notify({
-          group: 'remocra',
-          type: 'error',
-          title: 'Erreur',
-          text: 'L\'agent n\'a pas été mis à jour'
-        });
-      });
-
-
-      axios.post("/remocra/parametre/affichageIndispo/update/", dataToUpdate)
-          .then(() => {
-            this.$notify({
-              group: 'remocra',
-              type: 'success',
-              title: 'Succès',
-              text: 'Le paramètre d\'indispo a bien été mis à jour'
-            });
-          }).catch(() => {
-        this.$notify({
-          group: 'remocra',
-          type: 'error',
-          title: 'Erreur',
-          text: 'Le paramètre d\'indispo n\'a pas été mis à jour'
+          text: textError
         });
       });
     }
   },
+
 };
 
 
