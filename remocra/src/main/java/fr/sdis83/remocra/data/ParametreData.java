@@ -102,6 +102,10 @@ public class ParametreData {
     return (Boolean) this.getValeur(GlobalConstants.AFFICHAGE_INDISPO);
   }
 
+  public String getPasswordAdmin() {
+    return (String) this.getValeur(GlobalConstants.MDP_ADMINISTRATEUR);
+  }
+
   public Integer getToleranceAssociationCiternePIMetres() {
     return (Integer)
         this.getValeur(ParamConf.ParamConfParam.CITERNE_TOLERANCE_ASSOCIATION_PI_METRES.getCle());

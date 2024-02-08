@@ -10,6 +10,7 @@ import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.usecase.parametre.affichageIndispo.AffichageIndispoUseCase;
 import fr.sdis83.remocra.usecase.parametre.agents.AgentsUseCase;
 import fr.sdis83.remocra.usecase.parametre.caracteristiques.CaracteristiqueUseCase;
+import fr.sdis83.remocra.usecase.parametre.passwordAdmin.PasswordAdminUseCase;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ public class ParametreController {
   @Autowired CaracteristiqueUseCase caracteristiquesUseCase;
   @Autowired AgentsUseCase agentsUseCase;
   @Autowired AffichageIndispoUseCase affichageIndispoUseCase;
+  @Autowired PasswordAdminUseCase passwordAdminUseCase;
 
   @Autowired ParametreDataProvider parametreDataProvider;
 
@@ -177,6 +179,39 @@ public class ParametreController {
           objectMapper.readValue(request.getParameter("affichageIndispo"), Boolean.class);
 
       affichageIndispoUseCase.updateAffichageIndispoParam(affichageIndispoParam);
+
+      return new ResponseEntity<>("Succes", HttpStatus.OK);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @RequestMapping(
+      value = "/passwordAdmin",
+      method = RequestMethod.GET,
+      headers = "Accept=application/json;charset=utf-8")
+  public ResponseEntity<String> getPasswordAdmin() {
+    try {
+      return new ResponseEntity<>(
+          objectMapper.writeValueAsString(passwordAdminUseCase.getPasswordAdmin()), HttpStatus.OK);
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @RequestMapping(
+      value = "/passwordAdmin/update/",
+      method = RequestMethod.POST,
+      headers = "Accept=application/json;charset=utf-8")
+  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  public ResponseEntity<String> updatePasswordAdmin(HttpServletRequest request) {
+
+    try {
+      // On récupére le code de a insérer en base
+      String passwordAdminParam =
+          objectMapper.readValue(request.getParameter("passwordAdmin"), String.class);
+
+      passwordAdminUseCase.updatePasswordAdminParam(passwordAdminParam);
 
       return new ResponseEntity<>("Succes", HttpStatus.OK);
     } catch (IOException e) {

@@ -41,6 +41,9 @@ public class GlobalConstants {
   // Clé du paramètre AFFICHAGE_INDISPO stocké dans la table remocra.parametre
   public static final String AFFICHAGE_INDISPO = "AFFICHAGE_INDISPO";
 
+  // Clé du paramètre MDP_ADMINISTRATEUR stocké dans la table remocra.parametre
+  public static final String MDP_ADMINISTRATEUR = "MDP_ADMINISTRATEUR";
+
   /**
    * Enumération des types de visite, avec
    *
