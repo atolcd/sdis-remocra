@@ -11,6 +11,7 @@ import fr.sdis83.remocra.usecase.parametre.affichageIndispo.AffichageIndispoUseC
 import fr.sdis83.remocra.usecase.parametre.agents.AgentsUseCase;
 import fr.sdis83.remocra.usecase.parametre.caracteristiques.CaracteristiqueUseCase;
 import fr.sdis83.remocra.usecase.parametre.passwordAdmin.PasswordAdminUseCase;
+import fr.sdis83.remocra.usecase.parametre.validiteToken.ValiditeTokenUseCase;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +33,7 @@ public class ParametreController {
   @Autowired AgentsUseCase agentsUseCase;
   @Autowired AffichageIndispoUseCase affichageIndispoUseCase;
   @Autowired PasswordAdminUseCase passwordAdminUseCase;
+  @Autowired ValiditeTokenUseCase validiteTokenUseCase;
 
   @Autowired ParametreDataProvider parametreDataProvider;
 
@@ -212,6 +214,39 @@ public class ParametreController {
           objectMapper.readValue(request.getParameter("passwordAdmin"), String.class);
 
       passwordAdminUseCase.updatePasswordAdminParam(passwordAdminParam);
+
+      return new ResponseEntity<>("Succes", HttpStatus.OK);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @RequestMapping(
+      value = "/validiteToken",
+      method = RequestMethod.GET,
+      headers = "Accept=application/json;charset=utf-8")
+  public ResponseEntity<String> getValiditeToken() {
+    try {
+      return new ResponseEntity<>(
+          objectMapper.writeValueAsString(validiteTokenUseCase.getValiditeToken()), HttpStatus.OK);
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @RequestMapping(
+      value = "/validiteToken/update/",
+      method = RequestMethod.POST,
+      headers = "Accept=application/json;charset=utf-8")
+  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  public ResponseEntity<String> updateValiditeToken(HttpServletRequest request) {
+
+    try {
+      // On récupére le code à insérer en base
+      Integer validiteTokenParam =
+          objectMapper.readValue(request.getParameter("validiteToken"), Integer.class);
+
+      validiteTokenUseCase.updateValiditeTokenParam(validiteTokenParam);
 
       return new ResponseEntity<>("Succes", HttpStatus.OK);
     } catch (IOException e) {

@@ -44,6 +44,9 @@ public class GlobalConstants {
   // Clé du paramètre MDP_ADMINISTRATEUR stocké dans la table remocra.parametre
   public static final String MDP_ADMINISTRATEUR = "MDP_ADMINISTRATEUR";
 
+  // Clé du paramètre DUREE_VALIDITE_TOKEN stocké dans la table remocra.parametre
+  public static final String DUREE_VALIDITE_TOKEN = "DUREE_VALIDITE_TOKEN";
+
   /**
    * Enumération des types de visite, avec
    *

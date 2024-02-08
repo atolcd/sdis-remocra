@@ -465,6 +465,10 @@ public class ParametreData {
     return ((String) this.getValeur(ParamConf.ParamConfParam.HYDRANT_COLONNES.getCle())).split("%");
   }
 
+  public int getValiditeToken() {
+    return (int) this.getValeur(GlobalConstants.DUREE_VALIDITE_TOKEN);
+  }
+
   // LDAP
 
   public static enum LdapMethod {
