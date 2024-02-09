@@ -33,14 +33,21 @@ public class GestionnaireSiteRepository {
   }
 
   /**
-   * Récupère un objet gestionnaire_site à partir de son id
+   * Récupère id, nom, code, statut actif, id_gestionnaire d'un gestionnaire_site à partir de son id
+   * /!\ ne remonte pas la géométrie car problème de sérialisation avec objectMapper /!\
    *
    * @param idGestionnaireSite
-   * @return un objet de type Gestionnaire_Site
+   * @return un objet de type Gestionnaire_Site sans géométrie
    */
   public GestionnaireSite getGestionnaireSiteById(Long idGestionnaireSite) {
     return context
-        .selectFrom(GESTIONNAIRE_SITE)
+        .select(
+            GESTIONNAIRE_SITE.ID,
+            GESTIONNAIRE_SITE.NOM,
+            GESTIONNAIRE_SITE.CODE,
+            GESTIONNAIRE_SITE.ACTIF,
+            GESTIONNAIRE_SITE.ID_GESTIONNAIRE)
+        .from(GESTIONNAIRE_SITE)
         .where(GESTIONNAIRE_SITE.ID.eq(idGestionnaireSite))
         .fetchOneInto(GestionnaireSite.class);
   }
