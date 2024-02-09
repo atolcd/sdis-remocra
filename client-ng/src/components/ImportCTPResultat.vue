@@ -81,8 +81,7 @@ export default {
       this.dataVisites = _.filter(_.map(bilanVerifications, 'dataVisite'), o => o != null);
     },
     exportResultat() {
-      var csvContent = "data:text/csv;charset=utf-8,"
-      csvContent+= "N°Ligne;Code Insee;N° du PEI;Date du CT;Bilan du contrôle\n";
+      var csvContent = "N°Ligne;Code Insee;N° du PEI;Date du CT;Bilan du contrôle\n";
       var rows = [];
       _.forEach(this.items, item => {
         var row = [item.numeroLigne, item.insee, item.numeroInterne, item.dateCtp ? item.dateCtp : "", this.getBilan(item)];
