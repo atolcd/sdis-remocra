@@ -192,6 +192,24 @@
       </div>
     </fieldset>
 
+    <fieldset class="col-12 border border-1 m-2">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="title">Durée de validité du token</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <label for="passAdmin">Durée</label>
+          <b-form-input id='passAdmin' type="number" v-model="validiteToken"></b-form-input>
+        </div>
+        <p class="col-6 my-auto">
+          Durée (en heures) de validité du jeton de connexion à l'application mobile.
+        </p>
+
+      </div>
+    </fieldset>
+
 
     <div class="row  mt-3 justify-content-end d-flex col-8">
       <button class="btn btn-primary p-2" @click="valideForm()"> Valider</button>
@@ -248,7 +266,8 @@ const typeParametre = {
   MDP_ADMINISTRATEUR: 'MDP_ADMINISTRATEUR',
   AFFICHAGE_INDISPO: 'AFFICHAGE_INDISPO',
   AGENT: 'AGENT',
-  CARACTERISTIQUE: 'CARACTERISTIQUE'
+  CARACTERISTIQUE: 'CARACTERISTIQUE',
+  DUREE_VALIDITE_TOKEN: 'DUREE_VALIDITE_TOKEN'
 
 };
 export default {
@@ -274,6 +293,7 @@ export default {
       "agentsSelected": null,
       "agentsSelectable": [],
       "affichageIndispo": null,
+      "validiteToken": null,
       "passwordAdmin": ''
 
     }
@@ -282,6 +302,23 @@ export default {
     this.loadData();
   },
   methods: {
+    getValiditeToken() {
+      axios.get('/remocra/parametre/validiteToken')
+          .then((response) => {
+            this.validiteToken = response.data;
+
+          }).catch(
+          () => {
+
+            this.$notify({
+              group: 'remocra',
+              type: 'error',
+              title: 'Erreur',
+              text: 'La durée de validité du token n\'a pas pu être récupérée correctement'
+            });
+          }
+      )
+    },
     getAffichageIndispo() {
       axios.get('/remocra/parametre/affichageIndispo')
           .then((response) => {
@@ -360,6 +397,7 @@ export default {
       this.getCaracteristiqueNonChoisies(PIBI);
       this.getAffichageIndispo();
       this.getPasswordAdmin();
+      this.getValiditeToken();
 
     },
     onChangeRow(valueSelected, idSelected) {
@@ -428,6 +466,7 @@ export default {
       dataToUpdate.append("agent", JSON.stringify(this.agentsSelected))
       dataToUpdate.append("affichageIndispo", JSON.stringify(this.affichageIndispo))
       dataToUpdate.append("passwordAdmin", JSON.stringify(this.passwordAdmin))
+      dataToUpdate.append("validiteToken", JSON.stringify(this.validiteToken))
 
       switch (param) {
         case typeParametre.MDP_ADMINISTRATEUR :
@@ -447,9 +486,15 @@ export default {
           break;
         case typeParametre.CARACTERISTIQUE :
           url = "/remocra/parametre/caracteristiques/update/";
-          textSucces = 'Les listes des caractéristiques ont bien été mises à jour';
-          textError = 'Les listes des caractéristiques n\'ont pas pu être mises à jour';
+          textSucces = 'Les listes des caractéristiques ont bien été mise à jour';
+          textError = 'Les listes des caractéristiques n\'ont pas pu être mise à jour';
           break;
+        case typeParametre.DUREE_VALIDITE_TOKEN :
+          url = "/remocra/parametre/validiteToken/update/";
+          textSucces = 'La durée du token a bien été mise à jour';
+          textError = 'La durée du token n\'a pas pu être mise à jour';
+          break;
+
       }
 
       axios.post(url, dataToUpdate)
