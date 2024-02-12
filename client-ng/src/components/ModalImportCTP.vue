@@ -1,32 +1,35 @@
 <template>
-<div>
-  <b-modal id="modalImportCTP" title="Import fichier CTP" centered ref="modalImportCTP">
-    <form ref="formImportCTP">
-       <b-form-group
-       id="fieldset-horizontal"
-       label-cols-sm="4"
-       label-cols-lg="3"
-       label="Fichier"
-       label-for="document"
-       invalid-feedback="Champ obligatoire"
-       >
-        <b-form-file
-          v-model="fileToImport"
-          id="document"
-          placeholder="Choisissez un document..."
-          drop-placeholder="Glisser le fichier à importer ici"
-          accept=".xls, .xlsx"
-        ></b-form-file>
-      </b-form-group>
-    </form>
-    <template #modal-footer="">
-      <b-button size="sm" type="reset" variant="secondary" @click="$bvModal.hide('modalImportCTP')">Annuler</b-button>
-      <b-button size="sm" type="submit" variant="primary" @click="handleOk" :disabled="!fileToImport">Valider</b-button>
-    </template>
-    <notifications group="remocra" position="top right" animation-type="velocity" :duration="3000" />
-  </b-modal>
-  <ImportCTPResultat id="importCTPResultat" ref="importCTPResultat"> </ImportCTPResultat>
-</div>
+  <div>
+    <b-modal id="modalImportCTP" title="Import fichier CTP" centered ref="modalImportCTP">
+        <form ref="formImportCTP">
+          <b-form-group
+              id="fieldset-horizontal"
+              label-cols-sm="4"
+              label-cols-lg="3"
+              label="Fichier"
+              label-for="document"
+              invalid-feedback="Champ obligatoire"
+          >
+            <b-form-file
+                v-model="fileToImport"
+                id="document"
+                placeholder="Choisissez un document..."
+                drop-placeholder="Glisser le fichier à importer ici"
+                accept=".xls, .xlsx"
+            ></b-form-file>
+          </b-form-group>
+        </form>
+      <template #modal-footer="">
+        <b-button size="sm" type="reset" variant="secondary" @click="$bvModal.hide('modalImportCTP')" >Annuler</b-button>
+        <b-button size="sm" type="submit" variant="primary" @click="handleOk" :disabled="!fileToImport || isloading">
+          <span v-if="!isloading">Valider</span>
+          <span v-else><b-spinner small></b-spinner>Chargement...</span>
+        </b-button>
+      </template>
+      <notifications group="remocra" position="top right" animation-type="velocity" :duration="3000"/>
+    </b-modal>
+    <ImportCTPResultat id="importCTPResultat" ref="importCTPResultat"></ImportCTPResultat>
+  </div>
 </template>
 
 <script>
@@ -38,15 +41,16 @@ import {
 
 export default {
   name: 'ModalImportCTP',
-  components : {
+  components: {
     ImportCTPResultat
   },
   data() {
     return {
-       fileToImport: null
+      fileToImport: null,
+      isloading: false
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.$refs.modalImportCTP.show();
   },
   methods: {
@@ -55,7 +59,17 @@ export default {
       this.handleSubmit();
     },
     handleSubmit() {
-      if(this.fileToImport == null) return;
+      if (this.fileToImport == null) return;
+      this.isloading = true
+
+      this.$notify({
+        group: 'remocra',
+        type: 'info',
+        title: 'Info',
+        text: "En cours d'importation"
+      });
+
+
       var formData = new FormData();
       formData.append('file', this.fileToImport);
       loadProgressBar({
@@ -67,11 +81,13 @@ export default {
           'Content-Type': 'multipart/form-data'
         }
       }).then(response => {
+        this.isloading = false;
         var data = JSON.parse(response.data.message);
         this.$refs.importCTPResultat.loadData(data.bilanVerifications, this.fileToImport.name);
         this.$refs.modalImportCTP.hide();
         this.$bvModal.show("importCTPResultat");
       }).catch(() => {
+        this.isloading = false;
         this.$notify({
           group: 'remocra',
           type: 'error',
