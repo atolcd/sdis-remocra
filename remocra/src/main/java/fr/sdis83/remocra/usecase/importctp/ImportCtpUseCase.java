@@ -308,7 +308,7 @@ public class ImportCtpUseCase {
     }
 
     // On vérifie si il n'y pas de visite à la même date et heure
-    nbVisite = hydrantRepository.getNbVisitesCtrlEqInstant(idHydrant, instantCtp);
+    nbVisite = hydrantRepository.getNbVisitesEqInstant(idHydrant, instantCtp);
     if (nbVisite > 0) {
       throw new ImportCTPException(TypeErreurImportCtp.ERR_VISITE_EXISTANTE, data);
     }

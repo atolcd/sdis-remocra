@@ -692,8 +692,14 @@ public class HydrantRepository {
    * @param instant Instant
    * @return int
    */
-  public int getNbVisitesCtrlEqInstant(long idHydrant, Instant instant) {
-    return getNbVisitesCtrlWithCondition(idHydrant, HYDRANT_VISITE.DATE.eq(instant));
+  public int getNbVisitesEqInstant(long idHydrant, Instant instant) {
+
+    return context
+        .selectCount()
+        .from(HYDRANT_VISITE)
+        .where(HYDRANT_VISITE.HYDRANT.eq(idHydrant))
+        .and(HYDRANT_VISITE.DATE.eq(instant))
+        .fetchOneInto(int.class);
   }
 
   private int getNbVisitesCtrlWithCondition(long idHydrant, Condition predicatInstant) {
