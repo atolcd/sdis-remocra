@@ -60,6 +60,7 @@
             </a>
         </b-modal>
         <ModalFormGestionnaireSite v-on:gestionnaireSiteUpdate="onGestionnaireSiteUpdated" ref="modalFormGestionnaireSite"/>
+        <notifications group="remocra" position="top right" animation-type="velocity" :duration="3000"/>
     </div>
 </template>
 
@@ -164,7 +165,16 @@
                         this.onGestionnaireSiteUpdated()
                         this.$bvModal.hide('confirmDelete')
                     })
-                });
+                }).catch(
+                    ()=>{
+                        this.$notify({
+                            group: 'remocra',
+                            type: 'error',
+                            title: 'Erreur',
+                            text: 'Une erreur est survenue, le site n\'a pas pu être supprimé'
+                        });
+                    }
+                );
             },
             filtering(){
                 this.filterNomSiteValue = document.getElementById("inputNomSite").value.toUpperCase();
