@@ -10,6 +10,34 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
+== v2.3.4
+=== Fonctionnalité
+* Ajoute un paramètre permettant de définir l'utilisation ou non de la symbologie RNDECI dans l'appli mobile depuis l'application web, dans "Paramètres de l'application mobile" (#206615)
+* Ajoute un paramètre permettant de configurer le temps de session de l'appli mobile depuis l'application web, dans "Paramètres de l'application mobile" (#206612)
+* Ajoute un paramètre permettant de renseigner un mot de passe pour accéder à la partie "administrer" de l'appli mobile depuis l'application web, dans "Paramètres de l'application mobile" (#206608)
+* Ajoute un paramètre pour l'affichage de disponibilité des PEI dans l'appli mobile depuis l'application web, dans "Paramètres de l'application mobile" (#203273)
+* Annule le temps de déconnexion à la plateforme REMOcRA (#203144)
+
+=== Fix
+* Corrige des erreurs lors de l'import CTP (#206603)
+* Corrige la liste déroulante "jumelé" pour remonter les BI dans un rayon de 25m (#206044)
+* Corrige l'affichage des gestionnaires sites dans l'onglet de gestion dédié (#205708)
+* Corrige l'affichage des destinataires dans la fenêtre de recherche des courriers (#205512)
+* Corrige la mise en place des indisponibilités temporaires immédiates (#205369)
+* Corrige les boutons de fonctionnalité dans la carte des permis (#205368)
+* Corrige la définition des séquences pour l'insertion de certaines données en base avec Hibernate (#205242)
+* Corrige un problème lors de la validation du formulaire de création d'un PEI en projet (#205077)
+* Corrige la fonction de recherche du PEI le plus proche dans le module "Planification DECI" (#204499)
+
+=== Mise à jour
+
+* Indiquer la valeur de version `2.3.4` dans le fichier .env (ou remocra.env)
+
+NOTE: Patchs généraux
+
+* Appliquer les patchs du 196 au 201 (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches[Disponibles ici]).
+
+
 == v2.3.3
 === Fonctionnalité
 * Ajoute un buffer pour la génération de la carte des tournées (#194290)
