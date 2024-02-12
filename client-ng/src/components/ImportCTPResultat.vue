@@ -110,6 +110,20 @@ export default {
     importControle() {
       // On précise que l'import des CTP a déjà été fait pour éviter que l'utilisateur réimporte les CTP valides
       this.importDejaFait = true
+      //on notifie que l'import est en cours
+      this.$notify({
+        group: 'remocra',
+        type: 'success',
+        title: 'Succès',
+        text: 'L\'import est en cours... veuillez patienter quelques instants'
+      });
+
+      // on cache la modale
+
+      setTimeout(() =>{
+        this.$bvModal.hide('importCTPResultat');
+      }, 2000)
+
 
       var formData = new FormData();
       formData.append('visites', JSON.stringify(this.dataVisites));
@@ -121,16 +135,7 @@ export default {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
-      }).then(() => {
-        this.$bvModal.hide('importCTPResultat');
-      }).catch(() => {
-        this.$notify({
-          group: 'remocra',
-          type: 'error',
-          title: 'Erreur',
-          text: "Une erreur est survenue lors de l'import des CT valides"
-        });
-      });
+      })
     },
     close() {
       this.$root.$options.bus.$emit('closed')
