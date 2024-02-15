@@ -2,17 +2,20 @@ package fr.sdis83.remocra.domain.remocra;
 
 import com.vividsolutions.jts.geom.Point;
 import fr.sdis83.remocra.GlobalConstants;
-import fr.sdis83.remocra.util.Feature;
+import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.util.GeometryUtil;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import javax.inject.Inject;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
+import org.apache.log4j.Logger;
 import org.cts.IllegalCoordinateException;
 import org.cts.crs.CRSException;
 import org.hibernate.annotations.Type;
@@ -48,30 +51,44 @@ public class HydrantAspiration {
   @Column(name = "version", columnDefinition = "INTEGER default 1")
   private Integer version;
 
-  public Feature toFeature(String srid) throws CRSException, IllegalCoordinateException {
-    Feature feature = new Feature(this.id, null);
-    feature.addProperty("longitude", this.getLongitude(srid));
-    feature.addProperty("latitude", this.getLatitude(srid));
-    return feature;
+  @Transient @Inject ParametreDataProvider parametreDataProvider;
+
+  @Transient private static final int LATITUDE = 1;
+  @Transient private static final int LONGITUDE = 0;
+  @Transient private final Logger logger = Logger.getLogger(getClass());
+
+  public Double getLongitude() {
+    return getLatOrLong(LONGITUDE);
   }
 
-  public Double getLongitude(String srid) throws CRSException, IllegalCoordinateException {
-    if (this.getGeometrie() == null) return null;
-    Point p = this.getGeometrie();
-    double[] coordonneConvert =
-        GeometryUtil.transformCordinate(p.getX(), p.getY(), srid, GlobalConstants.SRID_4326);
-    double longitude =
-        BigDecimal.valueOf(coordonneConvert[0]).setScale(5, RoundingMode.HALF_UP).doubleValue();
-    return longitude;
+  public Double getLatitude() {
+
+    return getLatOrLong(LATITUDE);
   }
 
-  public Double getLatitude(String srid) throws CRSException, IllegalCoordinateException {
-    if (this.getGeometrie() == null) return null;
-    Point p = this.getGeometrie();
-    double[] coordonneConvert =
-        GeometryUtil.transformCordinate(p.getX(), p.getY(), srid, GlobalConstants.SRID_4326);
-    double latitude =
-        BigDecimal.valueOf(coordonneConvert[1]).setScale(5, RoundingMode.HALF_UP).doubleValue();
-    return latitude;
+  private Double getLatOrLong(int param) {
+
+    if (this.getGeometrie() == null) {
+      logger.info("Géométrie null pour l'aire d'aspiration :" + this.getNumero());
+      return null;
+    }
+    ;
+    try {
+      Point p = this.getGeometrie();
+      double[] coordonneConvert =
+          GeometryUtil.transformCordinate(
+              p.getX(),
+              p.getY(),
+              parametreDataProvider.get().getSridString(),
+              GlobalConstants.SRID_4326);
+
+      return BigDecimal.valueOf(coordonneConvert[param])
+          .setScale(5, RoundingMode.HALF_UP)
+          .doubleValue();
+
+    } catch (CRSException | IllegalCoordinateException exception) {
+      logger.error(exception.getMessage());
+      return null;
+    }
   }
 }
