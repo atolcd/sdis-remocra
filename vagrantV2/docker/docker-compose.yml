@@ -33,6 +33,7 @@ services:
       timeout: 10s
       retries: 3
     network_mode: host
+    restart: always
 
   remocra:
     container_name: remocra
@@ -61,32 +62,8 @@ services:
       timeout: 10s
       retries: 3
     network_mode: host
-    
-  api:
-    container_name: remocra-api
-    image: remocra-api
-    user: "${REMOCRA_UID:-2000}:${REMOCRA_GID:-2000}"
-    build:
-      context: ../api-remocra/
-      dockerfile: ./dist/Dockerfile
-    volumes:
-      - ../api-remocra/dist/example/log:/app/log
-      - ../api-remocra/dist/example/config:/app/config:ro
-    environment:
-      POSTGRES_DB_SERVERNAME: ${POSTGRES_DB_SERVERNAME:-localhost}
-      POSTGRES_DB_USERNAME: ${POSTGRES_DB_USERNAME}
-      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD}
-      POSTGRES_DB_PORT: ${POSTGRES_DB_PORT}
-      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
-      API_REMOCRA_HTTP_PORT: ${API_REMOCRA_HTTP_PORT}
-    ports:
-      - "8881:8881"
-    healthcheck:
-      test: curl --fail -s http://localhost:8881/openapi/ || exit 1
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
-    network_mode: host
+    restart: always
+
 
   jobs-4.4:
     container_name: remocra-pdi-4.4-dkron
@@ -124,6 +101,7 @@ services:
       timeout: 10s
       retries: 3
     network_mode: host
+    restart: always
 
   jobs:
     container_name: remocra-pdi-dkron
@@ -162,6 +140,7 @@ services:
       timeout: 10s
       retries: 3
     network_mode: host
+    restart: always
 
   api:
     container_name: remocra-api
@@ -170,6 +149,7 @@ services:
     volumes:
       - ./api/log:/app/log
       - ./api/config:/app/config:ro
+      - ${STOCKAGE_REMOCRA:-/var/remocra/hydrants}:/var/remocra/hydrants
     environment:
       POSTGRES_DB_SERVERNAME: ${POSTGRES_DB_SERVERNAME:-localhost}
       POSTGRES_DB_USERNAME: ${POSTGRES_DB_USERNAME}
