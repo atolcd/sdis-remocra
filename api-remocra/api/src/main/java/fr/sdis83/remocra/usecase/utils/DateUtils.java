@@ -13,7 +13,7 @@ import java.time.format.DateTimeParseException;
  */
 public class DateUtils {
   /** Pattern attendu pour les chaînes représentatives d'une date (moment) */
-  public static final String PATTERN = "yyyy-MM-dd HH:mm:ss";
+  public static final String PATTERN = "yyyy-MM-dd HH:mm";
 
   public static final String PATTERN_NATUREL = "dd/MM/yyyy HH:mm:ss";
 
