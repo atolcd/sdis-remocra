@@ -406,12 +406,6 @@ public class SynchroUseCase {
       return "Impossible de trouver la tournée " + tourneeModel.idRemocra() + " dans REMOcRA.";
     }
 
-    if (!tourneeRepository.getReservation(tourneeModel.idRemocra()).equals(idUtilisateur)) {
-      return "L'utilisateur qui envoie la tournée "
-          + tourneeModel.idRemocra()
-          + " n'est pas celui qui l'a réservée.";
-    }
-
     return null;
   }
 
