@@ -340,8 +340,18 @@ export default {
         if(this.value.tabNumeroPeiConcernes.length === this.peiSelected.length) {
           this.alertNbPei = this.secondesAlert
         } else {
-          this.value.tabNumeroPeiConcernes =
-            this.value.tabNumeroPeiConcernes.filter((el) => !this.peiSelected.includes(el) );
+            // On récupère les index des PEI dans le tableau à supprimer
+            let removeIndex = this.value.tabNumeroPeiConcernes.map((element, i) => [element, i])
+              .filter(([element]) => this.peiSelected.includes(element))
+              .map(([, i]) => i);
+
+            this.value.tabIdPeiConcernes = this.value.tabIdPeiConcernes.filter((elt, index) =>
+              !removeIndex.includes(index)
+            );
+
+            this.value.tabNumeroPeiConcernes = this.value.tabNumeroPeiConcernes.filter((elt, index) =>
+              !removeIndex.includes(index)
+            );
         }
       }
     },
