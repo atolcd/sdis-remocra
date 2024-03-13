@@ -403,7 +403,7 @@ public class ImportCtpUseCase {
     List<Long> id_anomalies = new ArrayList<>();
 
     // On récupère les identifiants des anomalies inscrites dans le fichier
-    for (int i = CTP_DEBUT_ANOMALIE_INDEX; i < CTP_FIN_ANOMALIE_INDEX; i++) {
+    for (int i = CTP_DEBUT_ANOMALIE_INDEX; i <= CTP_FIN_ANOMALIE_INDEX; i++) {
       if (row.getCell(i) != null
           && row.getCell(i).getCellType() != CellType.BLANK
           && !row.getCell(i).getStringCellValue().trim().isEmpty()) {
