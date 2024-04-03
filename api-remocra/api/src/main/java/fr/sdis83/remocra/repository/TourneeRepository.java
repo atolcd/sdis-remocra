@@ -40,7 +40,7 @@ public class TourneeRepository {
         .from(TOURNEE)
         .where(TOURNEE.RESERVATION.isNull())
         .and(TOURNEE.AFFECTATION.in(idsOrganisme))
-        .and(TOURNEE.ETAT.lessThan(100))
+        .and(TOURNEE.ETAT.isNull().or(TOURNEE.ETAT.lessThan(100)))
         .fetch(
             (RecordMapper<Record, TourneeModel>)
                 record ->
