@@ -41,7 +41,6 @@ public class ParametreRepository {
         List.of(
             GlobalConstants.PARAMETRE_CARACTERISTIQUE_PENA,
             GlobalConstants.PARAMETRE_CARACTERISTIQUE_PIBI,
-            GlobalConstants.PARAMETRE_MDP_ADMINISTRATEUR,
             GlobalConstants.PARAMETRE_MODE_DECONNECTE,
             GlobalConstants.PARAMETRE_DUREE_VALIDITE_TOKEN);
 

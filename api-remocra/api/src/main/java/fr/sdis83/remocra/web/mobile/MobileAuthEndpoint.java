@@ -38,30 +38,19 @@ public class MobileAuthEndpoint {
     return Response.ok().build();
   }
 
-  @Path("/mdpAdministrateur")
-  @Operation(
-      summary = "Renvoie le mdp Admin",
-      tags = {GlobalConstants.REMOCRA_MOBILE_TAG},
-      hidden = true)
-  @PUT
-  @PermitAll
-  public Response mdpAdministrateur() {
-    return Response.ok(
-            parametreRepository
-                .getParametre(GlobalConstants.PARAMETRE_MDP_ADMINISTRATEUR)
-                .getValeurParametre())
-        .build();
-  }
-
   @Path("/check")
   @Operation(
-      summary = "Check url",
+      summary = "Check url et envoie le mot de passe admin",
       tags = {GlobalConstants.REMOCRA_MOBILE_TAG},
       hidden = true)
   @PUT
   @PermitAll
   public Response checkUrl() {
-    return Response.ok().build();
+    return Response.ok(
+            parametreRepository
+                .getParametre(GlobalConstants.PARAMETRE_MDP_ADMINISTRATEUR)
+                .getValeurParametre())
+        .build();
   }
 
   @Path("/login")
