@@ -269,14 +269,17 @@ export default {
 
     saisieMesuresAnomaliesCompleted: function() {
       if (this.hydrants != null) {
-        return this.hydrants.filter(h =>
-          h.ras == true
-          || (
-            h.newVisite != null &&
-            ((h.newVisite.anomalies != null && h.newVisite.anomalies.length > 0 )
-              || h.newVisite.debit != null || h.newVisite.debitMax != null
-               || h.newVisite.pression != null || h.newVisite.pressionDyn != null || h.newVisite.pressionDynDeb != null
-            ))
+        return this.hydrants.filter(h => {
+          let lastVisite = h.visites != null && h.visites.length > 0 ? h.visites[0] : null;
+          return h.ras === true
+            || (
+              h.newVisite != null &&
+              (h.newVisite.anomalies != null &&
+                    ((lastVisite == null && h.newVisite.anomalies.length > 0) ||
+                        (lastVisite != null && JSON.parse(lastVisite.anomalies).sort().toString() != h.newVisite.anomalies.sort().toString()))
+                    || h.newVisite.debit != null || h.newVisite.debitMax != null
+                    || h.newVisite.pression != null || h.newVisite.pressionDyn != null || h.newVisite.pressionDynDeb != null
+            ))}
         ).length == this.hydrants.length;
       }
       return false;
