@@ -481,6 +481,17 @@ public class HydrantVisitesRepository {
         .fetchOneInto(HydrantVisite.class);
   }
 
+  public boolean checkVisiteMemeHeure(Long idHydrant, Instant instantVisite) {
+    return context.fetchExists(
+        context
+            .selectFrom(HYDRANT_VISITE)
+            .where(
+                HYDRANT_VISITE
+                    .HYDRANT
+                    .eq(idHydrant)
+                    .and(HYDRANT_VISITE.DATE.equal(instantVisite))));
+  }
+
   public HydrantVisite getLatestVisite(Long idHydrant) {
     return context
         .selectFrom(HYDRANT_VISITE)

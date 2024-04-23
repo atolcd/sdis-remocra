@@ -18,6 +18,7 @@ import fr.sdis83.remocra.repository.IncomingRepository;
 import fr.sdis83.remocra.repository.NumeroUtilRepository;
 import fr.sdis83.remocra.repository.PeiRepository;
 import fr.sdis83.remocra.repository.TourneeRepository;
+import fr.sdis83.remocra.repository.TransactionManager;
 import fr.sdis83.remocra.repository.TypeHydrantAnomalieRepository;
 import fr.sdis83.remocra.repository.UtilisateursRepository;
 import fr.sdis83.remocra.usecase.visites.HydrantVisitesUseCase;
@@ -52,6 +53,7 @@ public class ValideIncomingMobile {
   @Inject UtilisateursRepository utilisateursRepository;
   @Inject DocumentsRepository documentsRepository;
   @Inject HydrantAnomalieRepository hydrantAnomalieRepository;
+  @Inject TransactionManager transactionManager;
 
   public static final String APPARTENANCE_GESTIONNAIRE = "GESTIONNAIRE";
 
@@ -66,7 +68,8 @@ public class ValideIncomingMobile {
       GestionnaireRepository gestionnaireRepository,
       NumeroUtilRepository numeroUtilRepository,
       DocumentsRepository documentsRepository,
-      HydrantAnomalieRepository hydrantAnomalieRepository) {
+      HydrantAnomalieRepository hydrantAnomalieRepository,
+      TransactionManager transactionManager) {
     this.incomingRepository = incomingRepository;
     this.peiRepository = peiRepository;
     this.tourneeRepository = tourneeRepository;
@@ -77,46 +80,67 @@ public class ValideIncomingMobile {
     this.numeroUtilRepository = numeroUtilRepository;
     this.documentsRepository = documentsRepository;
     this.hydrantAnomalieRepository = hydrantAnomalieRepository;
+    this.transactionManager = transactionManager;
   }
 
   public void execute(Long currentUserId) throws IOException {
-    // On s'occupe des gestionnaires avec leurs contacts en premier
-    gestionGestionnaire();
-    gestionContact();
+    transactionManager.transaction(
+        configuration -> {
+          // On s'occupe des gestionnaires avec leurs contacts en premier
+          gestionGestionnaire();
+          gestionContact();
 
-    // On continue par insérer les hydrants qui peuvent utiliser les gestionnaires
-    gestionHydrant(currentUserId);
+          // On continue par insérer les hydrants qui peuvent utiliser les gestionnaires
+          gestionHydrant(currentUserId);
 
-    // Pour toutes les tournées
-    List<Tournee> tournees = incomingRepository.getTournees();
-    List<Long> idsTournees =
-        tournees.stream().map(Tournee::getIdTourneeRemocra).collect(Collectors.toList());
-    Map<Long, List<Long>> mapHydrantByTournee = tourneeRepository.getHydrantsByTournee(idsTournees);
-    tournees.forEach(
-        tournee -> {
-          try {
-            gestionHydrantVisite(currentUserId, tournee, mapHydrantByTournee);
-          } catch (IOException e) {
-            throw new RuntimeException(e);
-          }
+          // Pour toutes les tournées
+          List<Tournee> tournees = incomingRepository.getTournees();
+          List<Long> idsTournees =
+              tournees.stream().map(Tournee::getIdTourneeRemocra).collect(Collectors.toList());
+          Map<Long, List<Long>> mapHydrantByTournee =
+              tourneeRepository.getHydrantsByTournee(idsTournees);
+          tournees.forEach(
+              tournee -> {
+                try {
+                  gestionHydrantVisite(currentUserId, tournee, mapHydrantByTournee);
+                } catch (IOException e) {
+                  throw new RuntimeException(e);
+                }
+              });
+
+          // Puis les photos
+          gestionHydrantPhoto();
+
+          // Tournée finie, on la passe à terminer et on la supprime de incoming
+          logger.info(
+              "Mise à jour des tournées (état à 100 et reservation à null) : {}", idsTournees);
+          tourneeRepository.setTourneesFinies(idsTournees);
+
+          logger.info("Suppression des données dans le schéma incoming");
+
+          // On supprime les données des tables gestionnaire / contact et contact_role de incoming
+          logger.info("Suppression des contactRole");
+          incomingRepository.deleteContactRole();
+
+          logger.info("Suppression des contact");
+          incomingRepository.deleteContact();
+
+          logger.info("Suppression des gestionnaire");
+          incomingRepository.deleteGestionnaire();
+
+          // On a fini, on supprime les hydrants visite, les tournees
+          logger.info("Suppression des anomalies");
+          incomingRepository.deleteHydrantVisiteAnomalie();
+
+          logger.info("Suppression des visites");
+          incomingRepository.deleteHydrantVisite();
+
+          logger.info("Suppression des photos");
+          incomingRepository.deleteHydrantPhoto();
+
+          logger.info("Suppression des tournées");
+          incomingRepository.deleteTournee();
         });
-
-    // Puis les photos
-    gestionHydrantPhoto();
-
-    // Tournée finie, on la passe à terminer et on la supprime de incoming
-    tourneeRepository.setTourneesFinies(idsTournees);
-
-    // On supprime les données des tables gestionnaire / contact et contact_role de incoming
-    incomingRepository.deleteContactRole();
-    incomingRepository.deleteContact();
-    incomingRepository.deleteGestionnaire();
-
-    // On a fini, on supprime les hydrants visite, les tournees
-    incomingRepository.deleteHydrantVisiteAnomalie();
-    incomingRepository.deleteHydrantVisite();
-    incomingRepository.deleteHydrantPhoto();
-    incomingRepository.deleteTournee();
   }
 
   private void gestionHydrantPhoto() {
@@ -406,7 +430,16 @@ public class ValideIncomingMobile {
                 .map(HydrantVisite::getIdHydrantVisite)
                 .collect(Collectors.toList()));
 
+    logger.info(
+        "Insertion des visites pour la tournée {} (id: {})",
+        tournee.getNomTournee(),
+        tournee.getIdTourneeRemocra());
     for (HydrantVisite hydrantVisite : listHydrantVisite) {
+      if (hydrantVisitesRepository.checkVisiteMemeHeure(
+          hydrantVisite.getIdHydrant(), hydrantVisite.getDateHydrantVisite())) {
+        continue;
+      }
+
       List<Long> anomaliesId;
       if (!hydrantVisite.getHasAnomalieChanges()) {
         // Les anomalies n'ont pas changé, on va donc chercher les dernières en base
@@ -427,7 +460,7 @@ public class ValideIncomingMobile {
             "[" + anomaliesId.stream().map(String::valueOf).collect(Collectors.joining(",")) + "]";
       }
 
-      logger.info("CREATION VISITE : idHydrant " + hydrantVisite.getIdHydrant());
+      logger.info("CREATION VISITE : idHydrant {}", hydrantVisite.getIdHydrant());
       hydrantVisitesRepository.addVisite(
           new fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite(
               null,
@@ -452,7 +485,13 @@ public class ValideIncomingMobile {
           utilisateursRepository.getOrganisme(currentUserId));
 
       // On gère les anomalies
+      logger.info("Ajout des anomalies pour la visite {}", hydrantVisite.getIdHydrant());
       hydrantVisitesUseCase.launchTriggerAnomalies(hydrantVisite.getIdHydrant());
+      logger.info("Fin d'ajout des anomalies pour la visite {}", hydrantVisite.getIdHydrant());
     }
+    logger.info(
+        "Fin d'intégration des visites pour la tournée {} (id: {})",
+        tournee.getNomTournee(),
+        tournee.getIdTourneeRemocra());
   }
 }
