@@ -48,6 +48,7 @@ public class NumeroUtil {
     M_78,
     M_83,
     M_86,
+    M_91,
   }
 
   public static MethodeNumerotationInterne getHydrantNumerotationInterneMethode() {
@@ -376,6 +377,8 @@ public class NumeroUtil {
         return NumeroUtil.computeNumeroInterne78(hydrant);
       case M_86:
         return NumeroUtil.computeNumeroInterne86(hydrant);
+      case M_91:
+        return NumeroUtil.computeNumeroInterne91(hydrant);
       case M_83:
       default:
         return NumeroUtil.computeNumeroInterne83(hydrant);
@@ -527,6 +530,51 @@ public class NumeroUtil {
           Hydrant.entityManager()
               .createNativeQuery("select max(numero_interne) from remocra.hydrant");
       numInterne = Integer.valueOf(query.getSingleResult().toString()) + 1;
+    } catch (Exception e) {
+      numInterne = 99999;
+    }
+    return numInterne;
+  }
+
+  /**
+   * Numérotation interne du 91
+   *
+   * <pre>
+   * PIBI public : le premier numéro disponible à partir de 1
+   * PIBI privés : le premier numéro disponible à partir de 500
+   * PENA publics ou privés : le premier numéro disponible à partir de 800</pre>
+   */
+  public static Integer computeNumeroInterne91(Hydrant hydrant) {
+    // Retour du numéro interne s'il existe
+    if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
+      return hydrant.getNumeroInterne();
+    }
+    Integer numInterne = null;
+    try {
+      // Dernier numéro interne dispo pour le couple (type hydrant, commune) ou (type hydrant, zone
+      // spéciale)
+      Long idZoneSpeciale =
+          hydrant.getZoneSpeciale() != null ? hydrant.getZoneSpeciale().getId() : null;
+
+      StringBuffer sb =
+          new StringBuffer(
+              "select remocra.nextNumeroInterne(null, :idtypehydrant, :idnaturedeci, ");
+      sb.append(idZoneSpeciale == null ? ":idcommune" : "null");
+      sb.append(", ");
+      sb.append(idZoneSpeciale == null ? "null" : ":idzonespeciale");
+
+      Query query =
+          Hydrant.entityManager()
+              .createNativeQuery(sb.toString())
+              .setParameter("idtypehydrant", hydrant.getNature().getTypeHydrant().getId())
+              .setParameter("idnaturedeci", hydrant.getNatureDeci().getId());
+      if (idZoneSpeciale == null) {
+        query.setParameter("idcommune", hydrant.getCommune().getId());
+      } else {
+        query.setParameter("idzonespeciale", idZoneSpeciale);
+      }
+
+      numInterne = Integer.valueOf(query.getSingleResult().toString());
     } catch (Exception e) {
       numInterne = 99999;
     }
