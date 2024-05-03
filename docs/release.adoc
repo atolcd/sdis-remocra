@@ -10,6 +10,37 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
+== v2.3.5
+=== Fonctionnalité
+* Modifie le format de la date dans l'API (#209027)
+
+=== Fix
+* Corrige les coordonnées GPS des points d'aspiration déportés (#205476)
+* Corrige le bouton "Retirer" dans la fiche "Indisponibilité temporaire" (#209973)
+* Affiche les tournées avec un pourcentage d'avancement à null sur l'application mobile (#212309)
+* Corrige le bouton "Valider" de la saisie en masse des tournées (#212767)
+* Empêche la synchronisation de plusieurs visites identiques dans l'application mobile (#214311)
+* Corrige l'accès à "Administrer" en mode déconnecté (#210953)
+* Corrige les visites en cours de l'application mobile (#210980)
+* Enlève la contrainte "l'utilisateur qui synchronise la tournée doit être celui qui l'a réservé" (#209482)
+
+=== Mise à jour
+
+* Indiquer la valeur de version `2.3.5` dans le fichier .env (ou remocra.env)
+
+
+NOTE: Patchs spécifiques
+
+* [ SDIS 61 ]
+** Appliquer le patch 201_001.sql (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis/61[Disponibles ici])
+
+* [ SDIS 71 ]
+** Appliquer le patch 201_001.sql (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis/71[Disponibles ici])
+
+* [ SDIS 91 ]
+** Appliquer le patch 201_001.sql pour la mise en place de la numérotation (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis/91[Disponibles ici])
+
+
 == v2.3.4
 === Fonctionnalité
 * Ajoute un paramètre permettant de définir l'utilisation ou non de la symbologie RNDECI dans l'appli mobile depuis l'application web, dans "Paramètres de l'application mobile" (#206615)
