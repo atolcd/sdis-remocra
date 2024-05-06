@@ -180,6 +180,7 @@ export default {
         //Partie points d'eau
         tabNumeroPeiConcernes: [],
         tabIdPeiConcernes: []
+
       },
       etats: {
         //Partie indispo
@@ -257,31 +258,11 @@ export default {
         }
         _.forEach(indispoTemp.hydrants, hydrant => {
           this.value.tabNumeroPeiConcernes.push(hydrant.numero)
+          this.value.tabIdPeiConcernes.push(hydrant.id.toString())
         });
-        this.$nextTick(() => {
-          this.initTabIdPeiConcernes()
-        })
       }).catch(function(error) {
         console.error(error)
       });
-    },
-    initTabIdPeiConcernes() {
-      var i = 0;
-      for (i; i < this.value.tabNumeroPeiConcernes.length; i++) {
-        axios.get('/remocra/hydrants', { // Récupération des mesures effectuées
-          params: {
-            filter: JSON.stringify([{
-              "property": "numero",
-              "value": this.value.tabNumeroPeiConcernes[i]
-            }]),
-          }
-        }).then((response) => {
-          var pei = response.data.data
-          this.value.tabIdPeiConcernes.push(pei[0].id.toString())
-        }).catch(function(error) {
-          console.error(error)
-        });
-      }
     },
     activeDateTimeIndispo() {
       this.activeIndispo = true;
