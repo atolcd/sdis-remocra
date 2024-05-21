@@ -271,16 +271,20 @@ export default {
       if (this.hydrants != null) {
         return this.hydrants.filter(h => {
           let lastVisite = h.visites != null && h.visites.length > 0 ? h.visites[0] : null;
-          return h.ras === true
+          let anomalieLastVisite = lastVisite !=null && lastVisite.anomalies ? JSON.parse(lastVisite.anomalies): null;
+          return h.ras
             || (
               h.newVisite != null &&
               (h.newVisite.anomalies != null &&
-                    ((lastVisite == null && h.newVisite.anomalies.length > 0) ||
-                        (lastVisite != null && JSON.parse(lastVisite.anomalies).sort().toString() != h.newVisite.anomalies.sort().toString()))
+                    (
+                        (lastVisite == null && h.newVisite.anomalies.length > 0) ||
+                        (anomalieLastVisite === null && h.newVisite.anomalies!==null)  ||
+                        (lastVisite !== null && (anomalieLastVisite.sort().toString() !== h.newVisite.anomalies.sort().toString()))
+                    )
                     || h.newVisite.debit != null || h.newVisite.debitMax != null
                     || h.newVisite.pression != null || h.newVisite.pressionDyn != null || h.newVisite.pressionDynDeb != null
             ))}
-        ).length == this.hydrants.length;
+        ).length === this.hydrants.length;
       }
       return false;
     }
