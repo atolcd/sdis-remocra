@@ -10,6 +10,16 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
+== v2.3.6
+
+=== Fix
+* Corrige la saisie d'anomalies pour la saisie en masse des tournées (#216459)
+
+=== Mise à jour
+
+* Indiquer la valeur de version `2.3.6` dans le fichier .env (ou remocra.env)
+
+
 == v2.3.5
 === Fonctionnalité
 * Modifie le format de la date dans l'API (#209027)
