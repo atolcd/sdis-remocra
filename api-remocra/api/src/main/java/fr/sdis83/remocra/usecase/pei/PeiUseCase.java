@@ -530,7 +530,8 @@ public class PeiUseCase {
     if (!valide) {
       throw new ResponseException(
           Response.Status.BAD_REQUEST,
-          "1010 : La date spécifiée n'existe pas ou ne respecte pas le format YYYY-MM-DD hh:mm:ss");
+          "1010 : La date spécifiée n'existe pas ou ne respecte pas le format "
+              + DateUtils.PATTERN);
     }
 
     Organisme organisme = ORGANISME.as("organisme");

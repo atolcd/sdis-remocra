@@ -5,6 +5,7 @@ import fr.sdis83.remocra.authn.CurrentUser;
 import fr.sdis83.remocra.authn.UserInfo;
 import fr.sdis83.remocra.authn.UserRoles;
 import fr.sdis83.remocra.usecase.pei.PeiUseCase;
+import fr.sdis83.remocra.usecase.utils.DateUtils;
 import fr.sdis83.remocra.web.exceptions.ResponseException;
 import fr.sdis83.remocra.web.model.pei.PeiForm;
 import io.swagger.v3.oas.annotations.Operation;
@@ -131,7 +132,7 @@ public class PeiEndpoint {
   public Response diff(
       final @Parameter(
               description =
-                  "Moment à partir duquel retourner les résultats, format YYYY-MM-DD hh:mm:ss",
+                  "Moment à partir duquel retourner les résultats, format " + DateUtils.PATTERN,
               required = true) @QueryParam("moment") String moment) {
     try {
       return Response.ok(peiUseCase.diff(moment), MediaType.APPLICATION_JSON).build();
