@@ -279,7 +279,8 @@ export default {
                     (
                         (lastVisite == null && h.newVisite.anomalies.length > 0) ||
                         (anomalieLastVisite === null && h.newVisite.anomalies!==null)  ||
-                        (lastVisite !== null && (anomalieLastVisite.sort().toString() !== h.newVisite.anomalies.sort().toString()))
+                        (lastVisite !== null && (anomalieLastVisite.sort().toString() !== h.newVisite.anomalies.sort().toString())) ||
+                        (!h.ras && (anomalieLastVisite.sort().toString() === h.newVisite.anomalies.sort().toString()))
                     )
                     || h.newVisite.debit != null || h.newVisite.debitMax != null
                     || h.newVisite.pression != null || h.newVisite.pressionDyn != null || h.newVisite.pressionDynDeb != null
