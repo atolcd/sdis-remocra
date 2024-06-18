@@ -10,6 +10,20 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
+== v2.3.7
+
+=== Fix
+* Corrige la saisie en masse des tournées  si les anomalies des PEI n'ont pas changé (#219357)
+* Corrige le format des dates attendu pour l'API  (#218114)
+
+
+=== Mise à jour
+
+* Indiquer la valeur de version `2.3.7` dans le fichier .env (ou remocra.env)
+
+
+
+
 == v2.3.6
 
 === Fix
