@@ -41,6 +41,7 @@ public class NumeroUtilRepository {
     M_42,
     M_49,
     M_53,
+    M_58,
     M_61,
     M_66,
     M_77,
@@ -75,6 +76,7 @@ public class NumeroUtilRepository {
     M_42,
     M_49,
     M_53,
+    M_58,
     M_61,
     M_77,
     M_78,
@@ -134,6 +136,8 @@ public class NumeroUtilRepository {
         return NumeroUtilRepository.computeNumero49(hydrant);
       case M_53:
         return NumeroUtilRepository.computeNumero53(hydrant);
+      case M_58:
+        return NumeroUtilRepository.computeNumero58(hydrant);
       case M_66:
         return NumeroUtilRepository.computeNumero66(hydrant);
       case M_77:
@@ -384,6 +388,24 @@ public class NumeroUtilRepository {
     }
     sb.append(suffixe);
     return sb.toString();
+  }
+
+  /**
+   * <code insee commune> <numéro interne>
+   * numéro interne sur 3 chiffres:
+   * - 0 à 599 : PIBI
+   * - 600 à 799 : PUISARDS
+   * - 800 à 999 : PENA
+   * Exemple : 58267 805 - PEA sur commune de SAINT-SAULGE
+   *
+   * @param hydrant
+   * @return
+   */
+  protected static String computeNumero58(Hydrant hydrant) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(getHydrantCommune(hydrant).getInsee());
+    sb.append(" ");
+    return sb.append(String.format("%03d", hydrant.getNumeroInterne())).toString();
   }
 
   /**
@@ -654,6 +676,8 @@ public class NumeroUtilRepository {
         return NumeroUtilRepository.computeNumeroInterne49(hydrant);
       case M_53:
         return NumeroUtilRepository.computeNumeroInterne53(hydrant);
+      case M_58:
+        return NumeroUtilRepository.computeNumeroInterne58(hydrant);
       case M_77:
         return NumeroUtilRepository.computeNumeroInterne77(hydrant);
       case M_86:
@@ -911,6 +935,56 @@ public class NumeroUtilRepository {
                   "select remocra.nextNumeroInterne(null, {0}, null, {1}, null, null, null, true)",
                   DSL.val(hydrant.getCode(), SQLDataType.VARCHAR), hydrant.getCommune())
               .fetchOneInto(Integer.class);
+    }
+    return numInterne;
+  }
+
+  /**
+   * numéro interne en fonction de la commune et de la nature PIBI, PUISARD ou PENA
+   *
+   * @param hydrant
+   * @return
+   */
+  public static Integer computeNumeroInterne58(Hydrant hydrant) {
+    if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
+      return hydrant.getNumeroInterne();
+    }
+
+    Integer numInterne = null;
+    try {
+      Integer startRange = null;
+      Integer stopRange = null;
+      if (hydrant.getCode().equals("PIBI")) {
+        startRange = 1;
+        stopRange = 599;
+      } else {
+        String nature =
+            context
+                .select(TYPE_HYDRANT_NATURE.CODE)
+                .from(TYPE_HYDRANT_NATURE)
+                .where(TYPE_HYDRANT_NATURE.ID.eq(hydrant.getNature()))
+                .fetchOneInto(String.class);
+        if (nature.equals("PU")) {
+          startRange = 600;
+          stopRange = 799;
+        } else {
+          startRange = 800;
+          stopRange = 999;
+        }
+      }
+
+      numInterne =
+          context
+              .resultQuery(
+                  "select remocra.nextNumeroInterne(null, {0}, {1}, {2}, {3}, {4})",
+                  DSL.val(hydrant.getCode(), SQLDataType.VARCHAR),
+                  DSL.val(hydrant.getNature(), SQLDataType.BIGINT),
+                  DSL.val(hydrant.getCommune(), SQLDataType.BIGINT),
+                  startRange,
+                  stopRange)
+              .fetchOneInto(Integer.class);
+    } catch (Exception e) {
+      numInterne = 99999;
     }
     return numInterne;
   }
