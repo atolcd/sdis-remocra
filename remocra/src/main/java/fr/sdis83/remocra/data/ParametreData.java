@@ -570,4 +570,8 @@ public class ParametreData {
   public String getSridString() {
     return this.getValeurString(GlobalConstants.CLE_SRID);
   }
+
+  public String getCentrageGrandPublic() {
+    return this.getValeurString(GlobalConstants.CLE_CENTRAGE_GRAND_PUBLIC);
+  }
 }

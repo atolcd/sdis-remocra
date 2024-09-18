@@ -99,11 +99,19 @@ public class RemocraController {
     model.addAttribute("organisme", nomOrganisme);
 
     // Emprise par défaut
-    model.addAttribute(
-        "initBounds",
-        bounds == null
-            ? "EPSG:900913;523593.64368054,5303506.7698006,849521.13224316,5486955.6376594" /* Var */
-            : bounds);
+    String centrageDefaut;
+    if (bounds == null) {
+      // Centrage sur la BBOX saisie au niveau paramètre, sinon fallback sur le Var
+      if (parametreProvider.get().getCentrageGrandPublic() != null) {
+        centrageDefaut = parametreProvider.get().getCentrageGrandPublic();
+      } else {
+        centrageDefaut =
+            "EPSG:900913;523593.64368054,5303506.7698006,849521.13224316,5486955.6376594";
+      }
+    } else {
+      centrageDefaut = bounds;
+    }
+    model.addAttribute("initBounds", centrageDefaut);
 
     model.addAttribute(
         "url_site",

@@ -47,6 +47,8 @@ public class GlobalConstants {
   // Clé du paramètre DUREE_VALIDITE_TOKEN stocké dans la table remocra.parametre
   public static final String DUREE_VALIDITE_TOKEN = "DUREE_VALIDITE_TOKEN";
 
+  public static final String CLE_CENTRAGE_GRAND_PUBLIC = "CENTRAGE_GRAND_PUBLIC";
+
   /**
    * Enumération des types de visite, avec
    *
