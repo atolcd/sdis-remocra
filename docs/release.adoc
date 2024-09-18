@@ -10,6 +10,16 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
+== v2.3.8
+
+=== Fonctionnalité
+* Ajoute un paramètre pour définir l'emprise par défaut pour la carte grand public (#227645)
+
+
+=== Mise à jour
+
+* Indiquer la valeur de version `2.3.8` dans le fichier .env (ou remocra.env)
+
 == v2.3.7
 
 === Fix
