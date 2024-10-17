@@ -578,7 +578,7 @@ public class NumeroUtilRepository {
           .select(ZONE_SPECIALE.fields())
           .from(ZONE_SPECIALE)
           .where(
-              "ST_Contains({0}, st_pointfromtext({1},{2}))",
+              "ST_Contains({0}, st_pointfromtext(ST_AsText({1}),{2}))",
               ZONE_SPECIALE.GEOMETRIE,
               hydrant.getGeometrie().toString(),
               GlobalConstants.SRID_PARAM)

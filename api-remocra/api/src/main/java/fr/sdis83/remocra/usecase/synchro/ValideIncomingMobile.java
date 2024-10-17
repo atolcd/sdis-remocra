@@ -199,7 +199,7 @@ public class ValideIncomingMobile {
               null,
               null,
               null,
-              null,
+              newHydrant.getGeometrie(),
               null,
               null,
               null,
