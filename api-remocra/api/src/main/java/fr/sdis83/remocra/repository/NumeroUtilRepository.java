@@ -348,10 +348,12 @@ public class NumeroUtilRepository {
               suffixe = "D";
               break;
             case "SECTEUR CHANGE RIVE GAUCHE": // Rive gauche
-              suffixe = "D";
+              suffixe = "G";
               break;
             case "SECTEUR CHANGE 1":
-              suffixe = "S1";
+              if ("PRIVE".equalsIgnoreCase(natureDeci)) {
+                suffixe = "S1";
+              }
               break;
             case "SECTEUR CHANGE 2":
               if ("PRIVE".equalsIgnoreCase(natureDeci)) {
@@ -599,7 +601,7 @@ public class NumeroUtilRepository {
    * @param hydrant Les informations de l'hydrant
    * @param typeHydrant Le type d'hydrant si celui-ci n'existe pas encore en base
    */
-  public Hydrant setCodeZoneSpecAndNumeros(Hydrant hydrant, String typeHydrant) {
+  public static Hydrant setCodeZoneSpecAndNumeros(Hydrant hydrant, String typeHydrant) {
     // Code
     String code =
         context
@@ -796,7 +798,7 @@ public class NumeroUtilRepository {
           if (codeZoneSpeciale != null) {
             switch (codeZoneSpeciale) {
               case "SECTEUR CHANGE 1":
-                numInterne = computeNumeroInterne53Public(hydrant, 101, 199);
+                numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 101, 199);
                 return numInterne;
               case "SECTEUR CHANGE 2":
                 numInterne = computeNumeroInterne53ZoneSpeciale(hydrant, 201, 299);
@@ -804,7 +806,7 @@ public class NumeroUtilRepository {
               case "SECTEUR CHANGE PRIVE":
               case "SECTEUR CHANGE RIVE DROITE":
               case "SECTEUR CHANGE RIVE GAUCHE":
-                numInterne = computeNumeroInterne53Private(hydrant);
+                numInterne = computeNumeroInterne53Private(hydrant, true);
                 return numInterne;
             }
           }
@@ -867,21 +869,41 @@ public class NumeroUtilRepository {
   }
 
   private static Integer computeNumeroInterne53Private(Hydrant hydrant) {
+    return computeNumeroInterne53Private(hydrant, false);
+  }
+
+  private static Integer computeNumeroInterne53Private(Hydrant hydrant, boolean ignoreDECI) {
     Integer numInterne = null;
     if ("PIBI".equalsIgnoreCase(hydrant.getCode())) {
-      numInterne =
-          context
-              .resultQuery(
-                  "select remocra.nextNumeroInterne(null, {0}, {1}, {2}, {3}, null, null, true)",
-                  DSL.val(hydrant.getCode(), SQLDataType.VARCHAR),
-                  DSL.val(hydrant.getNatureDeci(), SQLDataType.BIGINT),
-                  (hydrant.getZoneSpeciale() == null)
-                      ? hydrant.getCommune()
-                      : DSL.val(null, SQLDataType.BIGINT),
-                  (hydrant.getZoneSpeciale() != null)
-                      ? hydrant.getZoneSpeciale()
-                      : DSL.val(null, SQLDataType.BIGINT))
-              .fetchOneInto(Integer.class);
+      if (ignoreDECI) { // si on ignore la nature DECI ; Cas des secteurs Changé Rive Gauche/Droite
+        // Et Changé Privé
+        numInterne =
+            context
+                .resultQuery(
+                    "select remocra.nextNumeroInterne(null, {0}, null, {1}, {2}, null, null, true)",
+                    DSL.val(hydrant.getCode(), SQLDataType.VARCHAR),
+                    (hydrant.getZoneSpeciale() == null)
+                        ? hydrant.getCommune()
+                        : DSL.val(null, SQLDataType.BIGINT),
+                    (hydrant.getZoneSpeciale() != null)
+                        ? hydrant.getZoneSpeciale()
+                        : DSL.val(null, SQLDataType.BIGINT))
+                .fetchOneInto(Integer.class);
+      } else {
+        numInterne =
+            context
+                .resultQuery(
+                    "select remocra.nextNumeroInterne(null, {0}, {1}, {2}, {3}, null, null, true)",
+                    DSL.val(hydrant.getCode(), SQLDataType.VARCHAR),
+                    DSL.val(hydrant.getNatureDeci(), SQLDataType.BIGINT),
+                    (hydrant.getZoneSpeciale() == null)
+                        ? hydrant.getCommune()
+                        : DSL.val(null, SQLDataType.BIGINT),
+                    (hydrant.getZoneSpeciale() != null)
+                        ? hydrant.getZoneSpeciale()
+                        : DSL.val(null, SQLDataType.BIGINT))
+                .fetchOneInto(Integer.class);
+      }
     } else {
       numInterne =
           context
@@ -911,53 +933,6 @@ public class NumeroUtilRepository {
           context
               .resultQuery(
                   "select remocra.nextNumeroInterne(null, null, {0}, {1}, true)",
-                  (hydrant.getZoneSpeciale() == null)
-                      ? hydrant.getCommune()
-                      : DSL.val(null, SQLDataType.BIGINT),
-                  (hydrant.getZoneSpeciale() != null)
-                      ? hydrant.getZoneSpeciale()
-                      : DSL.val(null, SQLDataType.BIGINT))
-              .fetchOneInto(Integer.class);
-
-    } catch (Exception e) {
-      numInterne = 99999;
-    }
-    return numInterne;
-  }
-
-  /**
-   * Numérotation interne du 91
-   *
-   * <pre>
-   * PIBI public : le premier numéro disponible à partir de 1
-   * PIBI privés : le premier numéro disponible à partir de 500
-   * PENA publics ou privés : le premier numéro disponible à partir de 800</pre>
-   *
-   * @param hydrant
-   * @return
-   */
-  public static Integer computeNumeroInterne91(Hydrant hydrant) {
-    // Retour du numéro interne s'il existe
-    if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
-      return hydrant.getNumeroInterne();
-    }
-    Integer numInterne = null;
-    try {
-      Integer idTypeHydrant =
-          context
-              .select(TYPE_HYDRANT.ID)
-              .from(TYPE_HYDRANT)
-              .join(TYPE_HYDRANT_NATURE)
-              .on(TYPE_HYDRANT_NATURE.TYPE_HYDRANT.eq(TYPE_HYDRANT.ID))
-              .where(TYPE_HYDRANT_NATURE.ID.eq(hydrant.getNature()))
-              .fetchOneInto(Integer.class);
-
-      numInterne =
-          context
-              .resultQuery(
-                  "select remocra.nextNumeroInterne(null, {0}, {1}, {2}, {3})",
-                  DSL.val(idTypeHydrant, SQLDataType.BIGINT),
-                  DSL.val(hydrant.getNatureDeci(), SQLDataType.BIGINT),
                   (hydrant.getZoneSpeciale() == null)
                       ? hydrant.getCommune()
                       : DSL.val(null, SQLDataType.BIGINT),
@@ -1035,6 +1010,53 @@ public class NumeroUtilRepository {
           context
               .resultQuery("select remocra.nextNumeroInterne(null, null, null, null, false)")
               .fetchOneInto(Integer.class);
+    } catch (Exception e) {
+      numInterne = 99999;
+    }
+    return numInterne;
+  }
+
+  /**
+   * Numérotation interne du 91
+   *
+   * <pre>
+   * PIBI public : le premier numéro disponible à partir de 1
+   * PIBI privés : le premier numéro disponible à partir de 500
+   * PENA publics ou privés : le premier numéro disponible à partir de 800</pre>
+   *
+   * @param hydrant
+   * @return
+   */
+  public static Integer computeNumeroInterne91(Hydrant hydrant) {
+    // Retour du numéro interne s'il existe
+    if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
+      return hydrant.getNumeroInterne();
+    }
+    Integer numInterne = null;
+    try {
+      Integer idTypeHydrant =
+          context
+              .select(TYPE_HYDRANT.ID)
+              .from(TYPE_HYDRANT)
+              .join(TYPE_HYDRANT_NATURE)
+              .on(TYPE_HYDRANT_NATURE.TYPE_HYDRANT.eq(TYPE_HYDRANT.ID))
+              .where(TYPE_HYDRANT_NATURE.ID.eq(hydrant.getNature()))
+              .fetchOneInto(Integer.class);
+
+      numInterne =
+          context
+              .resultQuery(
+                  "select remocra.nextNumeroInterne(null, {0}, {1}, {2}, {3})",
+                  DSL.val(idTypeHydrant, SQLDataType.BIGINT),
+                  DSL.val(hydrant.getNatureDeci(), SQLDataType.BIGINT),
+                  (hydrant.getZoneSpeciale() == null)
+                      ? hydrant.getCommune()
+                      : DSL.val(null, SQLDataType.BIGINT),
+                  (hydrant.getZoneSpeciale() != null)
+                      ? hydrant.getZoneSpeciale()
+                      : DSL.val(null, SQLDataType.BIGINT))
+              .fetchOneInto(Integer.class);
+
     } catch (Exception e) {
       numInterne = 99999;
     }
