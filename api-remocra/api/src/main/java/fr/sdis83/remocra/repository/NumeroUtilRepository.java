@@ -51,7 +51,8 @@ public class NumeroUtilRepository {
     M_86,
     M_89,
     M_91,
-    M_95
+    M_95,
+    M_973
   }
 
   public static MethodeNumerotation getHydrantNumerotationMethode() {
@@ -82,7 +83,8 @@ public class NumeroUtilRepository {
     M_83,
     M_86,
     M_91,
-    M_95
+    M_95,
+    M_973
   }
 
   public static MethodeNumerotationInterne getHydrantNumerotationInterneMethode() {
@@ -149,6 +151,8 @@ public class NumeroUtilRepository {
         return NumeroUtilRepository.computeNumero91(hydrant);
       case M_95:
         return NumeroUtilRepository.computeNumero95(hydrant);
+      case M_973:
+        return NumeroUtilRepository.computeNumero973(hydrant);
       case M_83:
       default:
         return NumeroUtilRepository.computeNumero83(hydrant);
@@ -586,6 +590,26 @@ public class NumeroUtilRepository {
     return sb.append(String.format("%04d", hydrant.getNumeroInterne())).toString();
   }
 
+  /**
+   * <code insee commune><PI.BI.PA><numéro interne>
+   * sans espace
+   * Exemple : 97309PI10, 97304PI122, 97314PA1
+   *
+   * @param hydrant
+   * @return
+   */
+  protected static String computeNumero973(Hydrant hydrant) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(getHydrantCommune(hydrant).getInsee());
+    sb.append(
+        context
+            .select(TYPE_HYDRANT_NATURE.CODE)
+            .from(TYPE_HYDRANT_NATURE)
+            .where(TYPE_HYDRANT_NATURE.ID.eq(hydrant.getNature()))
+            .fetchOneInto(String.class));
+    return sb.append(hydrant.getNumeroInterne()).toString();
+  }
+
   // ******************************
   // ** Zone spéciale
   // ******************************
@@ -679,6 +703,7 @@ public class NumeroUtilRepository {
       case M_58:
         return NumeroUtilRepository.computeNumeroInterne58(hydrant);
       case M_77:
+      case M_973:
         return NumeroUtilRepository.computeNumeroInterne77(hydrant);
       case M_86:
         return NumeroUtilRepository.computeNumeroInterne86(hydrant);
