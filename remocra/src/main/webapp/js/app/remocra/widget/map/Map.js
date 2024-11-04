@@ -264,7 +264,7 @@ Ext.define('Sdis.Remocra.widget.map.Map', {
                     listeners: {
                         scope: this,
                         'change': function (combo) {
-                            if(combo.getValue()){
+                            if(combo.getValue() && combo.getValue().length >= 3) {
 
                                 // On donne la priorité géographique des résultats aux coordonnées situées près de l'utilisateur
                                 var sridBounds = REMOCRA_INIT_BOUNDS.split(";");
