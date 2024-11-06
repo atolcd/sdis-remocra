@@ -10,6 +10,29 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
+== v2.3.9
+=== Fix
+* Corrige un erreur dans l'onglet localisation lors de l'utilisation de l'option "Zoomer sur la voie..." (#230650)
+* Corrige la synchronisation de PEI nouvellements créés utilisant les zones spéciales pour la numérotation (#232733)
+
+=== Modifications spécifiques
+* SDIS 58
+** Met en place une méthode de numérotation (#203548)
+* SDIS 78
+** Modifie la méthode de numérotation pour prendre en compte les PEI sur le domaine Autoroute (#224893)
+* SDIS 973
+** Met en place une méthode de numérotation (#221784)
+
+=== Mise à jour
+
+* Indiquer la valeur de version `2.3.9` dans le fichier .env (ou remocra.env)
+
+NOTE: Patchs spécifiques
+
+* [ SDIS 58 ]
+** Appliquer le patch 203_001.sql (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis/58[Disponibles ici])
+
+
 == v2.3.8
 
 === Fonctionnalité
