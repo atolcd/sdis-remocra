@@ -459,28 +459,36 @@ public class NumeroUtilRepository {
   }
 
   /**
+   * Pour les PEI du domaine non autoroute
    * <code insee commune><numéro interne> ou <code insee commune>A<numéro interne>
    * sans espace
    * avec num_interne sur 4 chiffres pour Autoroutes
    * sinon num_interne sur 5 chiffres
+   * Pour les PEI sur autoroute : nom de l'autoroute (Zone spéciale) + num interne sur 7 positions
    * Exemple : 8904300012 ou  89043A0012 pour les Autoroutes
    *
    * @param hydrant
    * @return
    */
   protected static String computeNumero78(Hydrant hydrant) {
-    StringBuilder sb = new StringBuilder();
     String codeDomaine =
         context
             .select(TYPE_HYDRANT_DOMAINE.CODE)
             .from(TYPE_HYDRANT_DOMAINE)
             .where(TYPE_HYDRANT_DOMAINE.ID.eq(hydrant.getDomaine()))
             .fetchOneInto(String.class);
-    sb.append(getHydrantCommune(hydrant).getInsee());
+    StringBuilder sb = new StringBuilder();
     if ("AUTOROUTE".equals(codeDomaine)) {
-      sb.append("A");
-      return sb.append(String.format("%04d", hydrant.getNumeroInterne())).toString();
+      String codeZS =
+          (getHydrantZoneSpeciale(hydrant) != null)
+              ? getHydrantZoneSpeciale(hydrant).getCode()
+              : null;
+
+      sb.append(codeZS);
+      return sb.append(String.format("%07d", hydrant.getNumeroInterne())).toString();
     }
+
+    sb.append(getHydrantCommune(hydrant).getInsee());
     return sb.append(String.format("%05d", hydrant.getNumeroInterne())).toString();
   }
 
@@ -692,7 +700,6 @@ public class NumeroUtilRepository {
       case M_01:
       case M_42:
       case M_61:
-      case M_78:
         return NumeroUtilRepository.computeNumeroInterne01(hydrant);
       case M_39:
         return NumeroUtilRepository.computeNumeroInterne39(hydrant);
@@ -705,6 +712,8 @@ public class NumeroUtilRepository {
       case M_77:
       case M_973:
         return NumeroUtilRepository.computeNumeroInterne77(hydrant);
+      case M_78:
+        return NumeroUtilRepository.computeNumeroInterne78(hydrant);
       case M_86:
         return NumeroUtilRepository.computeNumeroInterne86(hydrant);
       case M_91:
@@ -1040,6 +1049,54 @@ public class NumeroUtilRepository {
                       : DSL.val(null, SQLDataType.BIGINT))
               .fetchOneInto(Integer.class);
 
+    } catch (Exception e) {
+      numInterne = 99999;
+    }
+    return numInterne;
+  }
+
+  /**
+   * Si PEI sur un domaine non autoroute, numéro interne en fonction de la commune max +1 => pas de
+   * remplissage Si le PEI est sur le domaine autoroute, on se sert de sa zone spéciale pour faire
+   * un max +1
+   *
+   * @param hydrant
+   * @return
+   */
+  public static Integer computeNumeroInterne78(Hydrant hydrant) {
+    // Retour du numéro interne s'il existe
+    if (hydrant.getNumeroInterne() != null && hydrant.getId() != null) {
+      return hydrant.getNumeroInterne();
+    }
+    Integer numInterne;
+    try {
+      String codeDomaine =
+          context
+              .select(TYPE_HYDRANT_DOMAINE.CODE)
+              .from(TYPE_HYDRANT_DOMAINE)
+              .where(TYPE_HYDRANT_DOMAINE.ID.eq(hydrant.getDomaine()))
+              .fetchOneInto(String.class);
+
+      if ("AUTOROUTE".equals(codeDomaine)) {
+        // On va chercher le max + 1 de la zone spéciale concernée
+        numInterne =
+            context
+                .select(DSL.coalesce(DSL.max(HYDRANT.NUMERO_INTERNE), 0))
+                .from(HYDRANT)
+                .where(HYDRANT.ZONE_SPECIALE.eq(hydrant.getZoneSpeciale()))
+                .fetchOneInto(Integer.class);
+      } else {
+        // On va chercher le max + 1 sur la commune
+        numInterne =
+            context
+                .select(DSL.coalesce(DSL.max(HYDRANT.NUMERO_INTERNE), 0))
+                .from(HYDRANT)
+                .where(HYDRANT.COMMUNE.eq(hydrant.getCommune()))
+                .fetchOneInto(Integer.class);
+      }
+
+      // On prend le suivant
+      numInterne++;
     } catch (Exception e) {
       numInterne = 99999;
     }
