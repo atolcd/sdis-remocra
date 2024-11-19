@@ -12,8 +12,8 @@ link:index{outfilesuffix}[Retour à l'accueil]
 '''
 == v2.3.9
 === Fix
-* Corrige un erreur dans l'onglet localisation lors de l'utilisation de l'option "Zoomer sur la voie..." (#230650)
-* Corrige la synchronisation de PEI nouvellements créés utilisant les zones spéciales pour la numérotation (#232733)
+* Corrige une erreur dans l'onglet localisation lors de l'utilisation de l'option "Zoomer sur la voie..." (#230650)
+* Corrige la synchronisation de PEI nouvellement créés utilisant les zones spéciales pour la numérotation (#232733)
 
 === Modifications spécifiques
 * SDIS 58
