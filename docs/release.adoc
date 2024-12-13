@@ -10,6 +10,25 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
+== v2.3.10
+=== Fix
+* Corrige l'intégration des données de l'application mobile vers REMOcRA (#236496)
+
+=== Modifications spécifiques
+* SDIS 973
+** Corrige la conversion en EPSG:RGFG95 dans la fiche PEI lors de l'utilisation du SRID 2972 (#236687)
+** Définie l'étendue Guyanaise pour les outils de cartographie (#236688)
+
+NOTE: Patchs spécifiques
+
+* [ SDIS 58 ]
+** Appliquer le patch 203_002.sql (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis/58[Disponibles ici])
+* [ SDIS 61 ]
+** Appliquer le patch 203_001.sql (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis/61[Disponibles ici])
+* [ SDIS 973 ]
+** Appliquer le patch 203_001.sql (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis/973[Disponibles ici])
+
+
 == v2.3.9
 === Fix
 * Corrige une erreur dans l'onglet localisation lors de l'utilisation de l'option "Zoomer sur la voie..." (#230650)
