@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,8 +87,9 @@ public class ValideIncomingMobile {
   public void execute(Long currentUserId) throws IOException {
     transactionManager.transaction(
         configuration -> {
+          List<Gestionnaire> gestionnaires = incomingRepository.getGestionnaires();
           // On s'occupe des gestionnaires avec leurs contacts en premier
-          gestionGestionnaire();
+          gestionGestionnaire(gestionnaires);
           gestionContact();
 
           // On continue par insérer les hydrants qui peuvent utiliser les gestionnaires
@@ -118,28 +120,15 @@ public class ValideIncomingMobile {
 
           logger.info("Suppression des données dans le schéma incoming");
 
-          // On supprime les données des tables gestionnaire / contact et contact_role de incoming
-          logger.info("Suppression des contactRole");
-          incomingRepository.deleteContactRole();
-
-          logger.info("Suppression des contact");
-          incomingRepository.deleteContact();
-
           logger.info("Suppression des gestionnaire");
-          incomingRepository.deleteGestionnaire();
-
-          // On a fini, on supprime les hydrants visite, les tournees
-          logger.info("Suppression des anomalies");
-          incomingRepository.deleteHydrantVisiteAnomalie();
-
-          logger.info("Suppression des visites");
-          incomingRepository.deleteHydrantVisite();
-
-          logger.info("Suppression des photos");
-          incomingRepository.deleteHydrantPhoto();
+          incomingRepository.deleteGestionnaire(
+              gestionnaires.stream()
+                  .map(Gestionnaire::getIdGestionnaire)
+                  .collect(Collectors.toList()));
 
           logger.info("Suppression des tournées");
-          incomingRepository.deleteTournee();
+          incomingRepository.deleteTournee(
+              tournees.stream().map(Tournee::getIdTourneeRemocra).collect(Collectors.toList()));
         });
   }
 
@@ -159,11 +148,18 @@ public class ValideIncomingMobile {
               + " (idHydrant : "
               + photo.getIdHydrantHydrantPhoto()
               + ")");
+
       Long idDocument =
           documentsRepository.insertDocumentTypeHydrant(
               path, code, photo.getDateHydrantPhoto(), photo.getNomHydrantPhoto());
 
-      documentsRepository.insertHydrantDocument(photo.getIdHydrantHydrantPhoto(), idDocument);
+      if (idDocument != null) {
+        documentsRepository.insertHydrantDocument(photo.getIdHydrantHydrantPhoto(), idDocument);
+      }
+
+      logger.info("Suppression des photos");
+      incomingRepository.deleteHydrantPhoto(
+          hydrantPhotos.stream().map(HydrantPhoto::getIdHydrantPhoto).collect(Collectors.toList()));
     }
   }
 
@@ -269,8 +265,7 @@ public class ValideIncomingMobile {
     }
   }
 
-  private void gestionGestionnaire() {
-    List<Gestionnaire> gestionnaires = incomingRepository.getGestionnaires();
+  private void gestionGestionnaire(List<Gestionnaire> gestionnaires) {
     for (Gestionnaire gestionnaire : gestionnaires) {
       if (gestionnaire.getIdGestionnaireRemocra() == null) {
         // C'est une création
@@ -409,6 +404,15 @@ public class ValideIncomingMobile {
         }
       }
     }
+
+    // On supprime les données des tables gestionnaire / contact et contact_role de incoming
+    List<UUID> contactsId =
+        contacts.stream().map(Contact::getIdContact).collect(Collectors.toList());
+    logger.info("Suppression des contactRole");
+    incomingRepository.deleteContactRole(contactsId);
+
+    logger.info("Suppression des contact");
+    incomingRepository.deleteContact(contactsId);
   }
 
   private String ensureData(String data) {
@@ -489,6 +493,17 @@ public class ValideIncomingMobile {
       hydrantVisitesUseCase.launchTriggerAnomalies(hydrantVisite.getIdHydrant());
       logger.info("Fin d'ajout des anomalies pour la visite {}", hydrantVisite.getIdHydrant());
     }
+
+    // On a fini, on supprime les hydrants visite, les tournees
+    List<UUID> visitesId =
+        listHydrantVisite.stream()
+            .map(HydrantVisite::getIdHydrantVisite)
+            .collect(Collectors.toList());
+    logger.info("Suppression des anomalies");
+    incomingRepository.deleteHydrantVisiteAnomalie(visitesId);
+    logger.info("Suppression des visites");
+    incomingRepository.deleteHydrantVisite(visitesId);
+
     logger.info(
         "Fin d'intégration des visites pour la tournée {} (id: {})",
         tournee.getNomTournee(),

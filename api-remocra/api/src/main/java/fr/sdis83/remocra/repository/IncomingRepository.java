@@ -328,31 +328,40 @@ public class IncomingRepository {
     return context.selectFrom(CONTACT_ROLE).fetchInto(ContactRole.class);
   }
 
-  public void deleteGestionnaire() {
-    context.deleteFrom(GESTIONNAIRE).execute();
+  public void deleteGestionnaire(List<UUID> gestionnairesId) {
+    context
+        .deleteFrom(GESTIONNAIRE)
+        .where(GESTIONNAIRE.ID_GESTIONNAIRE.in(gestionnairesId))
+        .execute();
   }
 
-  public void deleteContact() {
-    context.deleteFrom(CONTACT).execute();
+  public void deleteContact(List<UUID> contactId) {
+    context.deleteFrom(CONTACT).where(CONTACT.ID_CONTACT.in(contactId)).execute();
   }
 
-  public void deleteContactRole() {
-    context.deleteFrom(CONTACT_ROLE).execute();
+  public void deleteContactRole(List<UUID> contactId) {
+    context.deleteFrom(CONTACT_ROLE).where(CONTACT_ROLE.ID_CONTACT.in(contactId)).execute();
   }
 
-  public void deleteTournee() {
-    context.deleteFrom(TOURNEE).execute();
+  public void deleteTournee(List<Long> ids) {
+    context.deleteFrom(TOURNEE).where(TOURNEE.ID_TOURNEE_REMOCRA.in(ids)).execute();
   }
 
-  public void deleteHydrantVisiteAnomalie() {
-    context.deleteFrom(HYDRANT_VISITE_ANOMALIE).execute();
+  public void deleteHydrantVisiteAnomalie(List<UUID> visitesId) {
+    context
+        .deleteFrom(HYDRANT_VISITE_ANOMALIE)
+        .where(HYDRANT_VISITE_ANOMALIE.ID_HYDRANT_VISITE.in(visitesId))
+        .execute();
   }
 
-  public void deleteHydrantVisite() {
-    context.deleteFrom(HYDRANT_VISITE).execute();
+  public void deleteHydrantVisite(List<UUID> visitesId) {
+    context
+        .deleteFrom(HYDRANT_VISITE)
+        .where(HYDRANT_VISITE.ID_HYDRANT_VISITE.in(visitesId))
+        .execute();
   }
 
-  public void deleteHydrantPhoto() {
-    context.deleteFrom(HYDRANT_PHOTO).execute();
+  public void deleteHydrantPhoto(List<UUID> photosId) {
+    context.deleteFrom(HYDRANT_PHOTO).where(HYDRANT_PHOTO.ID_HYDRANT_PHOTO.in(photosId)).execute();
   }
 }
