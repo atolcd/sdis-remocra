@@ -180,6 +180,7 @@ public class ValideIncomingMobile {
       } else if (newHydrant.getIdGestionnaireRemocra() != null) {
         idGestionnaire = newHydrant.getIdGestionnaireRemocra();
       }
+
       Hydrant hydrantTemp =
           new Hydrant(
               null,
@@ -228,6 +229,8 @@ public class ValideIncomingMobile {
               GlobalConstants.AuteurModificationFlag.MOBILE.getAuteurModificationFlag(),
               null);
 
+      logger.info("POJO - création d'un PEI : {}", hydrantTemp);
+
       numeroUtilRepository.setCodeZoneSpecAndNumeros(hydrantTemp, newHydrant.getCodeNewHydrant());
 
       Long idHydrant = peiRepository.insertHydrant(hydrantTemp, newHydrant.getGeometrie());
@@ -268,19 +271,20 @@ public class ValideIncomingMobile {
   private void gestionGestionnaire(List<Gestionnaire> gestionnaires) {
     for (Gestionnaire gestionnaire : gestionnaires) {
       if (gestionnaire.getIdGestionnaireRemocra() == null) {
+        fr.sdis83.remocra.db.model.remocra.tables.pojos.Gestionnaire gestionnairePojo =
+            new fr.sdis83.remocra.db.model.remocra.tables.pojos.Gestionnaire(
+                null, true, gestionnaire.getCodeGestionnaire(), gestionnaire.getNomGestionnaire());
+
         // C'est une création
         logger.info(
             "CREATION GESTIONNAIRE : "
                 + gestionnaire.getCodeGestionnaire()
                 + ", "
                 + gestionnaire.getNomGestionnaire());
-        Long idGestionnaireCree =
-            gestionnaireRepository.insertGestionnaire(
-                new fr.sdis83.remocra.db.model.remocra.tables.pojos.Gestionnaire(
-                    null,
-                    true,
-                    gestionnaire.getCodeGestionnaire(),
-                    gestionnaire.getNomGestionnaire()));
+
+        logger.info("POJO - création d'un gestionnaire : {}", gestionnairePojo);
+
+        Long idGestionnaireCree = gestionnaireRepository.insertGestionnaire(gestionnairePojo);
 
         // on update le gestionnaire dans incoming
         incomingRepository.updateIdRemocraGestionnaire(
@@ -293,12 +297,17 @@ public class ValideIncomingMobile {
                 + gestionnaire.getCodeGestionnaire()
                 + ", "
                 + gestionnaire.getNomGestionnaire());
-        gestionnaireRepository.updateGestionnaire(
+
+        fr.sdis83.remocra.db.model.remocra.tables.pojos.Gestionnaire gestionnairePojo =
             new fr.sdis83.remocra.db.model.remocra.tables.pojos.Gestionnaire(
                 gestionnaire.getIdGestionnaireRemocra(),
                 true,
                 gestionnaire.getCodeGestionnaire(),
-                gestionnaire.getNomGestionnaire()));
+                gestionnaire.getNomGestionnaire());
+
+        logger.info("POJO - update d'un gestionnaire : {}", gestionnairePojo);
+
+        gestionnaireRepository.updateGestionnaire(gestionnairePojo);
       }
     }
   }
@@ -331,26 +340,30 @@ public class ValideIncomingMobile {
                 + contact.getNomContact()
                 + ", idGestionnaire = "
                 + idAppartenance);
-        Long idContact =
-            gestionnaireRepository.insertContact(
-                new fr.sdis83.remocra.db.model.remocra.tables.pojos.Contact(
-                    null,
-                    APPARTENANCE_GESTIONNAIRE,
-                    idAppartenance.toString(), // L'id est stocké en string
-                    contact.getFonctionContact(),
-                    ensureData(contact.getCiviliteContact()),
-                    ensureData(contact.getNomContact()),
-                    ensureData(contact.getPrenomContact()),
-                    contact.getNumeroVoieContact(),
-                    contact.getSuffixeVoieContact(),
-                    contact.getLieuDitContact(),
-                    ensureData(contact.getVoieContact()),
-                    ensureData(contact.getCodePostalContact()),
-                    ensureData(contact.getVilleContact()),
-                    ensureData(contact.getPaysContact()),
-                    contact.getTelephoneContact(),
-                    ensureData(contact.getEmailContact()),
-                    null));
+
+        fr.sdis83.remocra.db.model.remocra.tables.pojos.Contact contactPojo =
+            new fr.sdis83.remocra.db.model.remocra.tables.pojos.Contact(
+                null,
+                APPARTENANCE_GESTIONNAIRE,
+                idAppartenance.toString(), // L'id est stocké en string
+                contact.getFonctionContact(),
+                ensureData(contact.getCiviliteContact()),
+                ensureData(contact.getNomContact()),
+                ensureData(contact.getPrenomContact()),
+                contact.getNumeroVoieContact(),
+                contact.getSuffixeVoieContact(),
+                contact.getLieuDitContact(),
+                ensureData(contact.getVoieContact()),
+                ensureData(contact.getCodePostalContact()),
+                ensureData(contact.getVilleContact()),
+                ensureData(contact.getPaysContact()),
+                contact.getTelephoneContact(),
+                ensureData(contact.getEmailContact()),
+                null);
+
+        logger.info("POJO - création d'un contact : {}", contactPojo);
+
+        Long idContact = gestionnaireRepository.insertContact(contactPojo);
         // On insert les rôles
         rolesRecuperes.forEach(
             idRole -> gestionnaireRepository.insertContactRole(idContact, idRole));
@@ -361,7 +374,8 @@ public class ValideIncomingMobile {
             gestionnaireRepository.getGestionnaireSiteContact(contact.getIdContactRemocra());
         logger.info(
             "UPDATE CONTACT : " + contact.getNomContact() + ", idGestionnaire = " + idAppartenance);
-        gestionnaireRepository.updateContact(
+
+        fr.sdis83.remocra.db.model.remocra.tables.pojos.Contact contactPojo =
             new fr.sdis83.remocra.db.model.remocra.tables.pojos.Contact(
                 contact.getIdContactRemocra(),
                 APPARTENANCE_GESTIONNAIRE,
@@ -379,7 +393,11 @@ public class ValideIncomingMobile {
                 contact.getPaysContact(),
                 contact.getTelephoneContact(),
                 contact.getEmailContact(),
-                idGestionnaireSite));
+                idGestionnaireSite);
+
+        logger.info("POJO - update d'un contact : {}", contactPojo);
+
+        gestionnaireRepository.updateContact(contactPojo);
 
         // On gère aussi les rôles
         List<Long> rolesDansRemocra = mapRolesByContact.get(contact.getIdContactRemocra());
@@ -465,7 +483,7 @@ public class ValideIncomingMobile {
       }
 
       logger.info("CREATION VISITE : idHydrant {}", hydrantVisite.getIdHydrant());
-      hydrantVisitesRepository.addVisite(
+      fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite visitePojo =
           new fr.sdis83.remocra.db.model.remocra.tables.pojos.HydrantVisite(
               null,
               hydrantVisite.getIdHydrant(),
@@ -485,8 +503,12 @@ public class ValideIncomingMobile {
               null,
               GlobalConstants.AuteurModificationFlag.MOBILE.getAuteurModificationFlag(),
               null,
-              null),
-          utilisateursRepository.getOrganisme(currentUserId));
+              null);
+
+      logger.info("POJO - création d'une visite : {}", visitePojo);
+
+      hydrantVisitesRepository.addVisite(
+          visitePojo, utilisateursRepository.getOrganisme(currentUserId));
 
       // On gère les anomalies
       logger.info("Ajout des anomalies pour la visite {}", hydrantVisite.getIdHydrant());
