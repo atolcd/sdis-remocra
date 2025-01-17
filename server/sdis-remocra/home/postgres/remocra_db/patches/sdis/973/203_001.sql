@@ -19,12 +19,6 @@ BEGIN
         select thn.code into p_code_type_hydrant_nature from remocra.hydrant h left join remocra.type_hydrant_nature thn on (thn.id=h.nature) where h.id = id_hydrant;
     -- Définition des règles de calcul_debit_pression_973
     IF FOUND THEN
-        -- Pression dynamique
-        ---- Pression dynamique insuffisante
-        IF(p_rec.pression_dyn IS NULL) THEN
-            SELECT id INTO p_anomalie_id FROM remocra.type_hydrant_anomalie WHERE code = 'PRESSION_DYN_INSUFF';
-            INSERT INTO remocra.hydrant_anomalies (hydrant,anomalies) VALUES (p_rec.id,p_anomalie_id);
-        END IF;
         -- Pression
         ---- Pression insuffisante
         IF(p_rec.pression IS NULL OR p_rec.pression < 1) THEN
