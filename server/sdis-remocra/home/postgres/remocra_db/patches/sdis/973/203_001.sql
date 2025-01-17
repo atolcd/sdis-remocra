@@ -43,6 +43,8 @@ BEGIN
             INSERT INTO remocra.hydrant_anomalies (hydrant,anomalies) VALUES (p_rec.id,p_anomalie_id);
         END IF;
     END IF;
+
+    perform remocra.calcul_indispo(p_rec.id);
 END;
 $function$;
 
