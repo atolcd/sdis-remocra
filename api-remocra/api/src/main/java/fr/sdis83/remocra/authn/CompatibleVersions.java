@@ -1,6 +1,6 @@
 package fr.sdis83.remocra.authn;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -12,7 +12,7 @@ public class CompatibleVersions {
 
   // Versions autorisées pour l'appli mobile
   private final List<String> mobileCompatibleVersions =
-      Collections.singletonList(MobileVersion.M2_2.version);
+      Arrays.asList(MobileVersion.M2_2.version, MobileVersion.M2_3.version);
 
   public CompatibleVersions() {}
 
@@ -34,7 +34,8 @@ public class CompatibleVersions {
   enum MobileVersion {
     M2_0("2.0"),
     M2_1("2.1"),
-    M2_2("2.2");
+    M2_2("2.2"),
+    M2_3("2.3");
 
     public final String version;
 
