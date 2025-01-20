@@ -10,6 +10,16 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
+== v2.3.11
+=== Fix
+* Corrige l'affichage de la carte de la "Planification DECI" et du module de crise (#239731)
+
+NOTE: Patchs spécifiques
+
+* [ SDIS 61 ]
+** Appliquer le patch 203_002.sql (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis/61[Disponibles ici])
+
+
 == v2.3.10
 === Fix
 * Corrige l'intégration des données de l'application mobile vers REMOcRA (#236496)
