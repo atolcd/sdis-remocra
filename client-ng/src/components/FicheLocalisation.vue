@@ -164,7 +164,7 @@ export default {
     this.$emit('getComboData', this, 'comboNiveau', '/remocra/typehydrantniveau.json', null, 'id', 'nom', 'Aucun')
     //Combo des systèmes de coordonnées
     this.comboSysteme.push({
-      text: SRID == 2154 ?'Lambert 93' : SRID == 2972 ? 'RGFG95' : '',
+      text: SRID == 2154 ?'Lambert 93' : SRID == 2972 ? 'RGFG95' : SRID == 32620 ?'UTM 20 Nord - WGS84' : '',
       value: SRID,
     }, {
       text: 'WGS84 degrés décimaux',

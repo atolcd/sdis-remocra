@@ -130,8 +130,11 @@ export default {
         case 2154:
             proj4.defs(this.epsg, '+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs')
             break;
-        case 2972:
+        case 2972: // RGFG95 UTM zone 22N - Guyane
             proj4.defs(this.epsg, '+proj=utm +zone=22 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs')
+            break;
+        case 32620: // WGS 84 UTM zone 20N - Guadeloupe
+            proj4.defs(this.epsg,'+proj=utm +zone=20 +datum=WGS84 +units=m +no_defs +type=crs');
             break;
     }
     register(proj4);
