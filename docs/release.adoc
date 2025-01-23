@@ -10,6 +10,21 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 link:index{outfilesuffix}[Retour à l'accueil]
 
 '''
+== v2.3.12
+=== Fix
+* Corrige l'affichage de la carte du module de crise (#241279)
+* Corrige la récupération JS du SRID (#242323)
+
+=== Modifications spécifiques
+* SDIS 971
+** Définie l'étendue Guadeloupéenne pour les outils de cartographie (#241227)
+
+NOTE: Patchs spécifiques
+
+* [ SDIS 21 ]
+** Appliquer le patch 203_001.sql (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis/21[Disponibles ici])
+
+
 == v2.3.11
 === Fix
 * Corrige l'affichage de la carte de la "Planification DECI" et du module de crise (#239731)
