@@ -535,7 +535,7 @@ public class ImportCtpUseCase {
                 longitude,
                 latitude,
                 GlobalConstants.SRID_4326,
-                parametreDataProvider.get().getSridString());
+                parametreDataProvider.get().getSridInt());
         Point p = geometryFactory.createPoint(new Coordinate(coordonnees[0], coordonnees[1]));
         hydrantRepository.updateGeometrie(idHydrant, p);
       }

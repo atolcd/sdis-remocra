@@ -392,11 +392,11 @@ public class HydrantController {
       } else {
         double[] coordonneConvert =
             GeometryUtil.transformCordinate(
-                longitude, latitude, parametreProvider.get().getSridString(), srid.toString());
+                longitude, latitude, parametreProvider.get().getSridInt(), srid);
 
         // Si on a choisi le système WGS84 et qu'on ne souhaite pas l'exprimer en degrés décimaux,
         // on le convertit en degrés minutes secondes
-        if (srid == Integer.parseInt(GlobalConstants.SRID_4326) && !degres) {
+        if (srid == GlobalConstants.SRID_4326 && !degres) {
           String longitudeConvert =
               GeometryUtil.convertDegresDecimauxToSexagesimaux(coordonneConvert[0]);
           String latitudeConvert =

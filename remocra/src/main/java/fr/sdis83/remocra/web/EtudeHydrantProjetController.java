@@ -126,8 +126,7 @@ public class EtudeHydrantProjetController {
     try {
       String json = request.getParameter("peiProjet");
 
-      etudeHydrantProjetRepository.updateGeometrie(
-          json, String.valueOf(parametreProvider.get().getSridInt()));
+      etudeHydrantProjetRepository.updateGeometrie(json, parametreProvider.get().getSridInt());
       return new SuccessErrorExtSerializer(true, "Le pei projet a bien été déplacé.").serialize();
     } catch (Exception e) {
       e.printStackTrace();

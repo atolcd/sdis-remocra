@@ -116,23 +116,21 @@ public class GeometryUtil {
     return cRSFactory;
   }
 
-  public static Point createPoint(double longitude, double latitude, String proj)
+  public static Point createPoint(double longitude, double latitude, int proj)
       throws CRSException, IllegalCoordinateException {
-    GeometryFactory geometryFactory =
-        new GeometryFactory(new PrecisionModel(), Integer.parseInt(proj));
+    GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), proj);
     return geometryFactory.createPoint(new Coordinate(longitude, latitude));
   }
 
-  public static Point createPoint(double longitude, double latitude, String projFrom, String projTo)
+  public static Point createPoint(double longitude, double latitude, int projFrom, int projTo)
       throws CRSException, IllegalCoordinateException {
     double[] coord = transformCordinate(longitude, latitude, projFrom, projTo);
-    GeometryFactory geometryFactory =
-        new GeometryFactory(new PrecisionModel(), Integer.parseInt(projTo));
+    GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), projTo);
     return geometryFactory.createPoint(new Coordinate(coord[0], coord[1]));
   }
 
   public static double[] transformCordinate(
-      double longitude, double latitude, String projFrom, String projTo)
+      double longitude, double latitude, int projFrom, int projTo)
       throws CRSException, IllegalCoordinateException {
     CoordinateReferenceSystem fromCoordRefSys = getCRSFactory().getCRS("EPSG:" + projFrom);
     CoordinateReferenceSystem toCoordRefSys = getCRSFactory().getCRS("EPSG:" + projTo);

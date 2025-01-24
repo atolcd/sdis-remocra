@@ -178,8 +178,8 @@ public class EtudeHydrantProjetRepository {
         GeometryUtil.createPoint(
             longitude,
             latitude,
-            parametreProvider.get().getSridString(),
-            parametreProvider.get().getSridString());
+            parametreProvider.get().getSridInt(),
+            parametreProvider.get().getSridInt());
 
     long idPeiProjet =
         context
@@ -234,7 +234,7 @@ public class EtudeHydrantProjetRepository {
         .execute();
   }
 
-  public void updateGeometrie(String json, String srid)
+  public void updateGeometrie(String json, int srid)
       throws CRSException, IllegalCoordinateException {
     HashMap<String, Object> obj = new JSONDeserializer<HashMap<String, Object>>().deserialize(json);
 

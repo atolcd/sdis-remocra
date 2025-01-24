@@ -181,7 +181,7 @@ public class RemocraController {
 
     model.addAttribute("show_historique", parametreProvider.get().getHydrantNombreHistorique() > 0);
 
-    model.addAttribute("srid", parametreProvider.get().getValeurString(GlobalConstants.CLE_SRID));
+    model.addAttribute("srid", parametreProvider.get().getSridInt());
 
     model.addAttribute(
         "buffer_carte", parametreProvider.get().getValeur(GlobalConstants.CLE_BUFFER_CARTE));

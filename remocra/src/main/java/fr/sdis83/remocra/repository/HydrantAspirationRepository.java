@@ -77,7 +77,7 @@ public class HydrantAspirationRepository {
                   longitude,
                   latitude,
                   GlobalConstants.SRID_4326,
-                  parametreProvider.get().getSridString());
+                  parametreProvider.get().getSridInt());
           int lon =
               BigDecimal.valueOf(coordonneConvert[0]).setScale(0, RoundingMode.HALF_UP).intValue();
           int lat =

@@ -740,7 +740,7 @@ public class XmlService {
           GeometryUtil.transformCordinate(
               hydrant.getGeometrie().getX(),
               hydrant.getGeometrie().getY(),
-              parametreProvider.get().getSridString(),
+              parametreProvider.get().getSridInt(),
               GlobalConstants.SRID_4326);
       hydrantXML.setCoordonnee(new Coordonnee(coordonneConvert[0], coordonneConvert[1]));
     }
@@ -851,7 +851,7 @@ public class XmlService {
                   coordonnee.getLongitude(),
                   coordonnee.getLatitude(),
                   GlobalConstants.SRID_4326,
-                  parametreProvider.get().getSridString());
+                  parametreProvider.get().getSridInt());
           hydrantPena.setGeometrie(point);
           hydrantPena.setDateGps(null);
         }
@@ -883,7 +883,7 @@ public class XmlService {
                   coordonnee.getLongitude(),
                   coordonnee.getLatitude(),
                   GlobalConstants.SRID_4326,
-                  parametreProvider.get().getSridString());
+                  parametreProvider.get().getSridInt());
           hydrantPibi.setGeometrie(point);
           hydrantPibi.setDateGps(null);
         }

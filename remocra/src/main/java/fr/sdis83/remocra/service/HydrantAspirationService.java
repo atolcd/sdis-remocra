@@ -75,7 +75,7 @@ public class HydrantAspirationService extends AbstractService<HydrantAspiration>
                 longitude,
                 latitude,
                 GlobalConstants.SRID_4326,
-                parametreProvider.get().getSridString());
+                parametreProvider.get().getSridInt());
         longitude =
             BigDecimal.valueOf(coordonneConvert[0]).setScale(0, RoundingMode.HALF_UP).intValue();
         latitude =

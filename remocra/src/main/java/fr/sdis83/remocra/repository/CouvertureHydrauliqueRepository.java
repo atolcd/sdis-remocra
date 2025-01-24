@@ -163,7 +163,7 @@ public class CouvertureHydrauliqueRepository {
 
     Integer distanceMaxParcours = parametreProvider.get().getDeciDistanceMaxParcours();
 
-    String srid = parametreProvider.get().getSridString();
+    int srid = parametreProvider.get().getSridInt();
     Geometry geom = GeometryUtil.createPoint(longitude, latitude, srid);
     String query =
         "SELECT pei, chemin, dist FROM couverture_hydraulique.plus_proche_pei(ST_GeomFromText('"

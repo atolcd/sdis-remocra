@@ -529,7 +529,7 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
     } else {
       // Si les données sont en WSG84 en degrés sexagésiamaux, on les convertit d'abord en degrés
       // décimaux
-      if (srid == Integer.parseInt(GlobalConstants.SRID_4326) && !degres) {
+      if (srid == GlobalConstants.SRID_4326 && !degres) {
         longitude =
             GeometryUtil.convertDegresSexagesimauxToDecimaux(items.get("longitude").toString());
         latitude =
@@ -542,8 +542,8 @@ public class HydrantService extends AbstractHydrantService<Hydrant> {
           GeometryUtil.transformCordinate(
               longitude,
               latitude,
-              items.get("systeme").toString(),
-              parametreProvider.get().getSridString());
+              Integer.parseInt(items.get("systeme").toString()),
+              parametreProvider.get().getSridInt());
       longitude =
           BigDecimal.valueOf(coordonneConvert[0]).setScale(0, RoundingMode.HALF_UP).intValue();
       latitude =

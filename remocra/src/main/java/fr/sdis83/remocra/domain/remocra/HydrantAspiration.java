@@ -79,7 +79,7 @@ public class HydrantAspiration {
           GeometryUtil.transformCordinate(
               p.getX(),
               p.getY(),
-              parametreDataProvider.get().getSridString(),
+              parametreDataProvider.get().getSridInt(),
               GlobalConstants.SRID_4326);
 
       return BigDecimal.valueOf(coordonneConvert[param])

@@ -4,8 +4,8 @@ import java.util.Objects;
 
 /** Classe permettant de définir des constantes globales */
 public class GlobalConstants {
-  public static final String SRID_4326 = "4326";
-  public static final String SRID_3857 = "3857";
+  public static final int SRID_4326 = 4326;
+  public static final int SRID_3857 = 3857;
   public static final String LDAP_PASSWORD = "LDAP";
 
   /**
