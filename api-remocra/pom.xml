@@ -23,7 +23,7 @@
     <immutables.version>2.7.5</immutables.version>
     <jackson.version>2.9.9</jackson.version>
     <log4j.version>2.16.0</log4j.version>
-    <jetty.version>9.4.19.v20190610</jetty.version>
+    <jetty.version>9.4.41.v20210516</jetty.version>
     <guava.version>28.0-jre</guava.version>
     <jsr305.version>3.0.2</jsr305.version>
     <guice.version>4.2.2</guice.version>
