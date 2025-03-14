@@ -15,7 +15,7 @@ BEGIN
   					when codehydrant = 'PIBI' then h.code = codehydrant
   					when codehydrant = 'PENA' then
   						CASE WHEN naturehydrant = (select id from remocra.type_hydrant_nature where code = 'PU') THEN h.nature = naturehydrant
-	  					ELSE h.nature <> naturehydrant END
+  						ELSE true END
   					ELSE TRUE END)
 			and (case when idcommune is not null then h.commune = idcommune else true end)
 	order BY 1
