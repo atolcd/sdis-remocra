@@ -489,7 +489,7 @@ public class ReferentielRepository {
         case MAINTENANCE_CTP:
           Organisme maintenanceCtp = (Organisme) mapAlias.get(PeiCaracteristique.MAINTENANCE_CTP);
           onClause =
-              onClause.innerJoin(maintenanceCtp).on(HYDRANT.MAINTENANCE_DECI.eq(maintenanceCtp.ID));
+              onClause.leftJoin(maintenanceCtp).on(HYDRANT.MAINTENANCE_DECI.eq(maintenanceCtp.ID));
           break;
           // Valeurs spécifiques aux PIBI
         case DIAMETRE_NOMINAL:
