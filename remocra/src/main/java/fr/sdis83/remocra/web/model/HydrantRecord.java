@@ -95,6 +95,12 @@ public class HydrantRecord {
 
   private String nomNatureDeci;
 
+  public void setCodeDeci(String codeDeci) {
+    this.codeDeci = codeDeci;
+  }
+
+  private String codeDeci;
+
   private Organisme organisme;
 
   private Geometry geometrie;
@@ -111,6 +117,10 @@ public class HydrantRecord {
 
   public String getNomNatureDeci() {
     return nomNatureDeci;
+  }
+
+  public String getCodeDeci() {
+    return codeDeci;
   }
 
   private String autoriteDeci;

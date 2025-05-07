@@ -137,7 +137,7 @@ Ext.define('Sdis.Remocra.model.HydrantRecord', {
         useNull: true,
         persist: false
    },{
-        name: 'codeNatureDeci',
+        name: 'codeDeci',
         type: 'string',
         useNull: true,
         persist: false

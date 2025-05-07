@@ -443,6 +443,7 @@ public class HydrantRepository {
             .append(" h.date_recep as dateRecep,")
             .append(" c.nom as nomCommune,")
             .append(" thnd.nom as nomNatureDeci,")
+            .append(" thnd.code as codeDeci,")
             .append(" thn.nom as natureNom,")
             .append(
                 " (SELECT COALESCE(string_agg(nom, ', ' order by nom), '') FROM remocra.tournee t where t.affectation in ("
