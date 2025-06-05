@@ -9,7 +9,20 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 
 link:index{outfilesuffix}[Retour à l'accueil]
 
+
 '''
+== v2.3.13
+=== Fix
+* Corrige le calcul de la prochaine date reco et prochain CTP (#247083)
+* Corrige l'affichage des caractéristiques dans l'infobulle mobile (#248383)
+
+NOTE: Patchs spécifiques
+
+* [ SDIS 58 ]
+** Appliquer le patch 203_001.sql (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis/58[Disponibles ici])
+** Appliquer le patch 203_003.sql (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches/sdis/58[Disponibles ici])
+
+
 == v2.3.12
 === Fix
 * Corrige l'affichage de la carte du module de crise (#241279)
