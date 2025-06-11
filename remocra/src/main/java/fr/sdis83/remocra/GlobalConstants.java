@@ -49,6 +49,9 @@ public class GlobalConstants {
 
   public static final String CLE_CENTRAGE_GRAND_PUBLIC = "CENTRAGE_GRAND_PUBLIC";
 
+  // Clé du paramètre BRIDAGE_PHOTO stocké dans la table remocra.parametre
+  public static final String BRIDAGE_PHOTO = "BRIDAGE_PHOTO";
+
   /**
    * Enumération des types de visite, avec
    *

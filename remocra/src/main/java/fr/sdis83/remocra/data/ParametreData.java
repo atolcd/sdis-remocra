@@ -102,6 +102,10 @@ public class ParametreData {
     return (Boolean) this.getValeur(GlobalConstants.AFFICHAGE_INDISPO);
   }
 
+  public Boolean getBridagePhoto() {
+    return (Boolean) this.getValeur(GlobalConstants.BRIDAGE_PHOTO);
+  }
+
   public String getPasswordAdmin() {
     return (String) this.getValeur(GlobalConstants.MDP_ADMINISTRATEUR);
   }

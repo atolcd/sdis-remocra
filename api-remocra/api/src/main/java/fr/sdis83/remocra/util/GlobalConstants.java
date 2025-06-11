@@ -115,6 +115,7 @@ public class GlobalConstants {
   public static final String PARAMETRE_DUREE_VALIDITE_TOKEN = "DUREE_VALIDITE_TOKEN";
   public static final String PARAMETRE_MODE_DECONNECTE = "MODE_DECONNECTE";
   public static final String PARAMETRE_MDP_ADMINISTRATEUR = "MDP_ADMINISTRATEUR";
+  public static final String PARAMETRE_BRIDAGE_PHOTO = "BRIDAGE_PHOTO";
 
   // Clé du paramètre SRID stocké dans la table remocra.parametre
   public static final String CLE_SRID = "SRID";

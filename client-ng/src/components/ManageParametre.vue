@@ -210,6 +210,32 @@
       </div>
     </fieldset>
 
+    <fieldset class="col-12 border border-1 m-2">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="title">Brider la taille des photos<h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <b-form-group label="Brider la taille des photos">
+
+            <b-form-radio v-model="bridagePhoto" name="bridagePhoto" value="true" class="d-inline-block col-2"
+                          size="lg">Oui
+            </b-form-radio>
+            <b-form-radio v-model="bridagePhoto" name="bridagePhoto" value="false" class="d-inline-block col-2"
+                          size="lg">Non
+            </b-form-radio>
+          </b-form-group>
+        </div>
+        <p class="col-6 my-auto">
+          Les photos prises par l'application mobile peut être de taille importante, et en fonction de la volumétrie des PEI des tournées, 
+          on peut avoir des problèmes de synchronisation. Réduire à environ 1920*1080px les photos limite drastiquement le poids de celles-ci, 
+          donc les problèmes liés lors de la synchronisation.
+        </p>
+      </div>
+    </fieldset>
+
 
     <div class="row  mt-3 justify-content-end d-flex col-8">
       <button class="btn btn-primary p-2" @click="valideForm()"> Valider</button>
@@ -267,7 +293,8 @@ const typeParametre = {
   AFFICHAGE_INDISPO: 'AFFICHAGE_INDISPO',
   AGENT: 'AGENT',
   CARACTERISTIQUE: 'CARACTERISTIQUE',
-  DUREE_VALIDITE_TOKEN: 'DUREE_VALIDITE_TOKEN'
+  DUREE_VALIDITE_TOKEN: 'DUREE_VALIDITE_TOKEN',
+  BRIDAGE_PHOTO: 'BRIDAGE_PHOTO'
 
 };
 export default {
@@ -293,6 +320,7 @@ export default {
       "agentsSelected": null,
       "agentsSelectable": [],
       "affichageIndispo": null,
+      "bridagePhoto": null,
       "validiteToken": null,
       "passwordAdmin": ''
 
@@ -332,6 +360,23 @@ export default {
               type: 'error',
               title: 'Erreur',
               text: 'Le paramaètre AFFICHAGE_INDISPO n\'a pas pu être récupéré correctement'
+            });
+          }
+      )
+    },
+     getBridagePhoto() {
+      axios.get('/remocra/parametre/bridagePhoto')
+          .then((response) => {
+            this.bridagePhoto = response.data;
+
+          }).catch(
+          () => {
+
+            this.$notify({
+              group: 'remocra',
+              type: 'error',
+              title: 'Erreur',
+              text: 'Le paramaètre BRIDAGE_PHOTO n\'a pas pu être récupéré correctement'
             });
           }
       )
@@ -396,6 +441,7 @@ export default {
       this.getCaracteristiqueNonChoisies(PENA);
       this.getCaracteristiqueNonChoisies(PIBI);
       this.getAffichageIndispo();
+      this.getBridagePhoto();
       this.getPasswordAdmin();
       this.getValiditeToken();
 
@@ -465,6 +511,7 @@ export default {
       dataToUpdate.append("pena", JSON.stringify(this.champPenaChoisie))
       dataToUpdate.append("agent", JSON.stringify(this.agentsSelected))
       dataToUpdate.append("affichageIndispo", JSON.stringify(this.affichageIndispo))
+      dataToUpdate.append("bridagePhoto", JSON.stringify(this.bridagePhoto))
       dataToUpdate.append("passwordAdmin", JSON.stringify(this.passwordAdmin))
       dataToUpdate.append("validiteToken", JSON.stringify(this.validiteToken))
 
@@ -493,6 +540,11 @@ export default {
           url = "/remocra/parametre/validiteToken/update/";
           textSucces = 'La durée du token a bien été mise à jour';
           textError = 'La durée du token n\'a pas pu être mise à jour';
+          break;
+        case typeParametre.BRIDAGE_PHOTO :
+          url = "/remocra/parametre/bridagePhoto/update/";
+          textSucces = 'Le paramètre de bridage de photo a été mis à jour';
+          textError = 'Le paramètre de bridage de photo n\'ont pas pu être mise à jour';
           break;
 
       }

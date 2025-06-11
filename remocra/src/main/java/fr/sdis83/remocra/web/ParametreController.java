@@ -9,6 +9,7 @@ import fr.sdis83.remocra.enums.PeiCaracteristique;
 import fr.sdis83.remocra.usecase.parametre.ParametreDataProvider;
 import fr.sdis83.remocra.usecase.parametre.affichageIndispo.AffichageIndispoUseCase;
 import fr.sdis83.remocra.usecase.parametre.agents.AgentsUseCase;
+import fr.sdis83.remocra.usecase.parametre.bridagephoto.BridagePhotoUseCase;
 import fr.sdis83.remocra.usecase.parametre.caracteristiques.CaracteristiqueUseCase;
 import fr.sdis83.remocra.usecase.parametre.passwordAdmin.PasswordAdminUseCase;
 import fr.sdis83.remocra.usecase.parametre.validiteToken.ValiditeTokenUseCase;
@@ -32,6 +33,7 @@ public class ParametreController {
   @Autowired CaracteristiqueUseCase caracteristiquesUseCase;
   @Autowired AgentsUseCase agentsUseCase;
   @Autowired AffichageIndispoUseCase affichageIndispoUseCase;
+  @Autowired BridagePhotoUseCase bridagePhotoUseCase;
   @Autowired PasswordAdminUseCase passwordAdminUseCase;
   @Autowired ValiditeTokenUseCase validiteTokenUseCase;
 
@@ -181,6 +183,37 @@ public class ParametreController {
           objectMapper.readValue(request.getParameter("affichageIndispo"), Boolean.class);
 
       affichageIndispoUseCase.updateAffichageIndispoParam(affichageIndispoParam);
+
+      return new ResponseEntity<>("Succes", HttpStatus.OK);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @RequestMapping(
+      value = "/bridagePhoto",
+      method = RequestMethod.GET,
+      headers = "Accept=application/json;charset=utf-8")
+  public ResponseEntity<String> geBridagePhoto() {
+    try {
+      return new ResponseEntity<>(
+          objectMapper.writeValueAsString(bridagePhotoUseCase.getBridagePhoto()), HttpStatus.OK);
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @RequestMapping(
+      value = "/bridagePhoto/update/",
+      method = RequestMethod.POST,
+      headers = "Accept=application/json;charset=utf-8")
+  @PreAuthorize("hasRight('REFERENTIELS_C')")
+  public ResponseEntity<String> updateBridagePhoto(HttpServletRequest request) {
+    try {
+      Boolean bridagePhoto =
+          objectMapper.readValue(request.getParameter("bridagePhoto"), Boolean.class);
+
+      bridagePhotoUseCase.updateBridagePhoto(bridagePhoto);
 
       return new ResponseEntity<>("Succes", HttpStatus.OK);
     } catch (IOException e) {
