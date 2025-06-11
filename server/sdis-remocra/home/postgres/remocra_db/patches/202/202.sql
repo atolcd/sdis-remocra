@@ -29,7 +29,7 @@ drop function versionnement_dffd4df4df();
 --------------------------------------------------
 -- Contenu réel du patch début
 INSERT INTO remocra.parametre (cle_parametre, valeur_parametre, type_parametre, description_parametre, categorie_parametre)
-VALUES('CENTRAGE_GRAND_PUBLIC', null, 'STRING', 'Boîte englobante par défaut pour la carte grand public', 'GENERAL')
+VALUES('CENTRAGE_GRAND_PUBLIC', 'EPSG:900913;523593.64368054,5303506.7698006,849521.13224316,5486955.6376594', 'STRING', 'Boîte englobante par défaut pour la carte grand public', 'GENERAL')
 ON CONFLICT (cle_parametre) DO NOTHING;
 
 
