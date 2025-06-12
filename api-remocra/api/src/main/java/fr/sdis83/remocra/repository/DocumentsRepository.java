@@ -26,10 +26,19 @@ public class DocumentsRepository {
         .set(DOCUMENT.FICHIER, nomPhoto)
         .set(DOCUMENT.REPERTOIRE, path)
         .set(DOCUMENT.TYPE, GlobalConstants.TypeDocument.TYPE_DOCUMENT_HYDRANT.getTypeDocument())
-        .onConflictDoNothing()
         .returning(DOCUMENT.ID)
         .fetchOne()
         .getValue(DOCUMENT.ID);
+  }
+
+  public Boolean getDocument(String path, String code, Instant instant, String nomPhoto) {
+    return context.fetchExists(
+        context
+            .selectFrom(DOCUMENT)
+            .where(DOCUMENT.CODE.eq(code))
+            .and(DOCUMENT.REPERTOIRE.eq(path))
+            .and(DOCUMENT.DATE_DOC.eq(instant))
+            .and(DOCUMENT.FICHIER.eq(nomPhoto)));
   }
 
   public void insertHydrantDocument(Long idHydrant, Long idDocument) {

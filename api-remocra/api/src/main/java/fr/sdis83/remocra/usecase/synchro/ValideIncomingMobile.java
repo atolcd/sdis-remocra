@@ -149,12 +149,18 @@ public class ValideIncomingMobile {
               + photo.getIdHydrantHydrantPhoto()
               + ")");
 
-      Long idDocument =
-          documentsRepository.insertDocumentTypeHydrant(
+      Boolean exists =
+          documentsRepository.getDocument(
               path, code, photo.getDateHydrantPhoto(), photo.getNomHydrantPhoto());
 
-      if (idDocument != null) {
-        documentsRepository.insertHydrantDocument(photo.getIdHydrantHydrantPhoto(), idDocument);
+      if (!exists) {
+        Long idDocument =
+            documentsRepository.insertDocumentTypeHydrant(
+                path, code, photo.getDateHydrantPhoto(), photo.getNomHydrantPhoto());
+
+        if (idDocument != null) {
+          documentsRepository.insertHydrantDocument(photo.getIdHydrantHydrantPhoto(), idDocument);
+        }
       }
 
       logger.info("Suppression des photos");
