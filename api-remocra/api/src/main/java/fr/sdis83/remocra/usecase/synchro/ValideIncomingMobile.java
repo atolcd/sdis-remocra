@@ -448,6 +448,11 @@ public class ValideIncomingMobile {
       throws IOException {
     List<Long> listIdHydrant = mapHydrantByTournee.get(tournee.getIdTourneeRemocra());
 
+    // Si aucun PEI n'est associé à une tournée
+    if (listIdHydrant == null) {
+      return;
+    }
+
     // Récupérer les hydrants visites
     List<HydrantVisite> listHydrantVisite = incomingRepository.getHydrantVisite(listIdHydrant);
 
