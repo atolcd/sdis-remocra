@@ -11,6 +11,16 @@ link:index{outfilesuffix}[Retour à l'accueil]
 
 
 '''
+== v2.3.14
+=== Fix
+* Permet de brider la taille des photos prises par l'application mobile (#256196)
+* Corrige l'insertion des photos lors de la synchronisation des tournées (#256199)
+* Vérifie si les tournées synchronisées n'ont pas de PEI associés (#256202)
+
+NOTE: Patchs généraux
+
+* Appliquer les patchs jusqu'au 203 (https://github.com/atolcd/sdis-remocra/tree/master/server/sdis-remocra/home/postgres/remocra_db/patches[Disponibles ici]).
+
 == v2.3.13
 === Fix
 * Corrige le calcul de la prochaine date reco et prochain CTP (#247083)
