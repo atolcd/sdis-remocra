@@ -12,7 +12,7 @@
     "axios-progress-bar": "^1.2.0",
     "bootstrap-vue": "^2.0.0-rc.19",
     "chart.js": "^2.9.3",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "moment-timezone": "^0.5.23",
     "ol": "^5.3.1",
     "proj4": "^2.5.0",
