@@ -14,7 +14,7 @@
 
     <!-- dependencies version -->
 
-    <resteasy.version>3.0.19.Final</resteasy.version>
+    <resteasy.version>4.6.1.Final</resteasy.version>
     <resteasy-validator-provider-11.version>3.0.19.Final</resteasy-validator-provider-11.version>
     <async-http-servlet-3.0.version>3.0.19.Final</async-http-servlet-3.0.version>
     <jboss-annotations-api_1.2_spec.version>1.0.2.Final</jboss-annotations-api_1.2_spec.version>
